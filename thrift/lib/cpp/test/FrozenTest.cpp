@@ -26,7 +26,10 @@
 using namespace apache::thrift;
 using namespace FrozenTypes;
 using std::string;
+using std::unordered_map;
 using std::vector;
+using std::map;
+using std::unordered_map;
 using folly::fbstring;
 using folly::StringPiece;
 
@@ -123,8 +126,131 @@ TEST(Frozen, FieldOrdering) {
                  static_cast<const void*>(&f.c));
 }
 
-TEST(Frozen, IntMap) {
-  std::map<string, int> tmap {
+TEST(Frozen, IntHashMap) {
+  std::unordered_map<int, int> tmap {
+    { 1, 2 },
+    { 3, 4 },
+    { 7, 8 },
+    { 5, 6 },
+  };
+  auto pfmap = freeze(tmap);
+  auto& fmap = *pfmap;
+  EXPECT_EQ(fmap.size(), tmap.size());
+  EXPECT_EQ(fmap.at(3), 4);
+  auto b = fmap.begin();
+  auto e = fmap.end();
+  using std::make_pair;
+  EXPECT_TRUE(fmap.find(0) == e);
+  EXPECT_TRUE(fmap.find(3) == b + 1);
+  EXPECT_TRUE(fmap.find(4) == e);
+  EXPECT_TRUE(fmap.find(9) == e);
+  EXPECT_TRUE(fmap.count(0) == 0);
+  EXPECT_TRUE(fmap.count(1) == 1);
+  EXPECT_TRUE(fmap.count(3) == 1);
+  EXPECT_TRUE(fmap.count(4) == 0);
+  EXPECT_TRUE(fmap.count(9) == 0);
+
+  EXPECT_EQ(fmap.at(1), 2);
+  EXPECT_EQ(fmap.at(7), 8);
+  EXPECT_THROW(fmap.at(9), std::out_of_range);
+
+  EXPECT_TRUE(folly::get_ptr(fmap, 1));
+  EXPECT_EQ(2, *folly::get_ptr(fmap, 1));
+
+  EXPECT_TRUE(!folly::get_ptr(fmap, 2));
+
+  EXPECT_TRUE(folly::get_ptr(fmap, 3));
+  EXPECT_EQ(4, *folly::get_ptr(fmap, 3));
+}
+
+TEST(Frozen, StringHashMap) {
+  std::unordered_map<string, int> tmap {
+    { "1", 2 },
+    { "3", 4 },
+    { "7", 8 },
+    { "5", 6 },
+  };
+  auto pfmap = freeze(tmap);
+  auto& fmap = *pfmap;
+  EXPECT_EQ(fmap.at("3"), 4);
+  auto b = fmap.begin();
+  auto e = fmap.end();
+  using std::make_pair;
+  EXPECT_TRUE(fmap.find("0") == e);
+  EXPECT_TRUE(fmap.find("3") == b + 1);
+  EXPECT_TRUE(fmap.find("4") == e);
+  EXPECT_TRUE(fmap.find("9") == e);
+  EXPECT_TRUE(fmap.count("0") == 0);
+  EXPECT_TRUE(fmap.count("1") == 1);
+  EXPECT_TRUE(fmap.count("3") == 1);
+  EXPECT_TRUE(fmap.count("4") == 0);
+  EXPECT_TRUE(fmap.count("9") == 0);
+
+  EXPECT_EQ(fmap.at("1"), 2);
+  EXPECT_EQ(fmap.at("7"), 8);
+  EXPECT_THROW(fmap.at("9"), std::out_of_range);
+
+  EXPECT_TRUE(folly::get_ptr(fmap, *freezeStr("1")));
+  EXPECT_EQ(2, *folly::get_ptr(fmap, *freezeStr("1")));
+
+  EXPECT_TRUE(!folly::get_ptr(fmap, *freezeStr("2")));
+
+  EXPECT_TRUE(folly::get_ptr(fmap, *freezeStr("3")));
+  EXPECT_EQ(4, *folly::get_ptr(fmap, *freezeStr("3")));
+}
+
+TEST(Frozen, IntHashMapBig) {
+  std::unordered_map<int, int> tmap;
+  for (int i = 0; i < 100; ++i) {
+    int k = i * 100;
+    tmap[k] = i;
+  }
+  auto pfmap = freeze(tmap);
+  auto& fmap = *pfmap;
+  for (int i = 0; i < 100; ++i) {
+    int k = i * 100;
+    EXPECT_EQ(i, fmap.at(k));
+  }
+  for (int i = 100; i < 200; ++i) {
+    int k = i * 100;
+    EXPECT_EQ(0, fmap.count(k));
+  }
+}
+
+TEST(Frozen, StringHashMapBig) {
+  std::unordered_map<string, int> tmap;
+  for (int i = 0; i < 100; ++i) {
+    auto k = folly::to<string>(i);
+    tmap[k] = i;
+  }
+  auto pfmap = freeze(tmap);
+  auto& fmap = *pfmap;
+  for (int i = 0; i < 100; ++i) {
+    auto k = folly::to<string>(i);
+    EXPECT_EQ(i, fmap.at(*freeze(k)));
+  }
+  for (int i = 100; i < 200; ++i) {
+    auto k = folly::to<string>(i);
+    EXPECT_EQ(0, fmap.count(*freeze(k)));
+  }
+}
+
+
+TEST(Frozen, LookupDemo) {
+  unordered_map<string, vector<string>> roots{
+    {"1", {"1", "2", "3"}},
+    {"2", {"4", "5", "6", "7", "8"}},
+    {"3", {"9", "10", "11", "12", "13", "14", "15"}},
+  };
+  size_t bytes = frozenSize(roots);
+  // corresponding source data: >500 by
+  EXPECT_LT(bytes, 250);
+  auto frozen = freeze(roots);
+  EXPECT_EQ(frozen->at(*freezeStr("2"))[3].range(), "7");
+}
+
+TEST(Frozen, StringMap) {
+  map<string, int> tmap {
     { "1", 2 },
     { "3", 4 },
     { "7", 8 },
