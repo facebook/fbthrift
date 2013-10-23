@@ -1,0 +1,29 @@
+# Server
+cpp_binary(
+  name = 'FetcherServer',
+  srcs = [
+    'FetcherServer.cpp',
+    'FetcherHandler.cpp',
+    'HttpFetcher.cpp',
+  ],
+  deps = [':thrift'],
+)
+
+# Client
+cpp_binary(
+  name = 'FetcherClient',
+  srcs = ['FetcherClient.cpp'],
+  deps = [':thrift'],
+)
+
+# Thrift-generated code.
+# Built as a library, since both the client and server use this
+cpp_library(
+  name = 'thrift',
+  thrift_srcs = {'fetcher.thrift' : 'Fetcher'},
+  thrift_cpp_options = 'cob_style,templates',
+  deps = [
+    '@/thrift/lib/cpp:thrift',
+    '@/thrift/lib/cpp/async',
+  ],
+)

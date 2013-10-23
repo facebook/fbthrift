@@ -1,0 +1,49 @@
+python_binary (
+  name = "py-tutorial-server",
+  base_module = "",
+  main_module = "PythonServer",
+  srcs = [
+    "PythonServer.py",
+  ],
+  deps = [
+    "@/thrift/tutorial:tutorial-py",
+  ],
+)
+
+python_binary (
+  name = "py-tutorial-client",
+  base_module = "",
+  main_module = "PythonClient",
+  srcs = [
+    "PythonClient.py",
+  ],
+  deps = [
+    "@/thrift/tutorial:tutorial-py",
+  ],
+)
+
+python_binary(
+  name = 'reverse_server',
+  base_module = '',
+  main_module = 'reverse_server',
+  srcs = [
+    'reverse_server.py',
+  ],
+  deps = [
+    '@/common/fb303/py',
+    '@/thrift/lib/py:cpp_server',
+    '@/thrift/tutorial:reverse-py',
+  ],
+)
+
+python_binary(
+  name = "reverse_client",
+  srcs = ["reverse_client.py"],
+  base_module = '',
+  main_module = "reverse_client",
+  deps = [
+    "@/thrift/tutorial:reverse-py",
+    "@/libfb/py:decorators",
+    "@/servicerouter/client/python/swig:ServiceRouterLibSWIGModule",
+  ],
+)

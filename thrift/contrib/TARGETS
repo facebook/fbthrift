@@ -1,0 +1,12 @@
+cpp_binary (
+  name = "thrift_dump",
+  srcs = [
+    "thrift_dump.cpp"
+    ],
+  deps = [
+    "@/thrift/lib/cpp:thrift",
+    ],
+  external_deps = [
+    ('boost', None),
+    ],
+)

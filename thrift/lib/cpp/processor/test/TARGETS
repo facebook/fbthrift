@@ -1,0 +1,45 @@
+cpp_unittest(
+  name = 'ProcessorTest',
+  srcs = [
+    'EventLog.cpp',
+    'ProcessorTest.cpp',
+    'ServerThread.cpp',
+  ],
+  deps = [
+    ':thrift',
+    '@/thrift/lib/cpp/server:nonblocking',
+  ],
+  external_deps = [
+    # Versions of boost lower than 1.37 don't support BOOST_AUTO_TEST_CASE.
+    ('boost', '>= 1.37', 'boost_unit_test_framework'),
+  ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_library(
+  name = 'thrift',
+  thrift_srcs = { 'proc.thrift' : ['ParentService', 'ChildService']},
+  thrift_cpp_options = 'templates',
+)
+
+thrift_library(
+  name = 'except_thrift',
+  thrift_srcs = { 'except.thrift' : ['SampleService', 'SampleService2']},
+  languages = [ 'cpp' ],
+)
+
+cpp_unittest (
+  name = "ProcessorExceptionTest",
+  type = 'gtest',
+  emails = ["thrift-team@lists.facebook.com"],
+  srcs = [
+    "ProcessorExceptions.cpp",
+  ],
+  deps = [
+    ":except_thrift-cpp",
+  ],
+  external_deps = [
+    ('boost', None),
+  ]
+)

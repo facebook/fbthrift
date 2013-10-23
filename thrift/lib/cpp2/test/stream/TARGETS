@@ -1,0 +1,68 @@
+# cpp_unittest(
+#     name = "StreamTest",
+#     srcs = [
+#       "StreamTest.cpp",
+#     ],
+#     deps = [
+#       ":StreamService-cpp2",
+#       ":MockCallbacks",
+#       "@/thrift/lib/cpp2:server",
+#       "@/thrift/lib/cpp/util",
+#       "@/thrift/lib/cpp/async",
+#       "@/thrift/lib/cpp/test:util",
+#     ],
+#     type = "gtest",
+# )
+
+# cpp_unittest(
+#     name = "StreamClasses",
+#     srcs = [
+#       "StreamClasses.cpp",
+#     ],
+#     deps = [
+#       ":MockCallbacks",
+#     ],
+#     type = "gtest",
+# )
+
+# cpp_unittest(
+#     name = "StreamProcessor",
+#     srcs = [
+#       "StreamProcessor.cpp",
+#       "MockServer.cpp",
+#       "MockClient.cpp",
+#     ],
+#     deps = [
+#       ":MockCallbacks",
+#       ":StreamService-cpp2",
+#       "@/thrift/lib/cpp2:thrift",
+#       "@/thrift/lib/cpp2:server",
+#       "@/thrift/lib/cpp/util",
+#     ],
+#     type = "gtest",
+#     tags = ["extended"],
+# )
+
+# cpp_library (
+#     name = "MockCallbacks",
+#     srcs = [
+#       "MockCallbacks.cpp",
+#     ],
+#     deps = [
+#       "@/folly/io",
+#       "@/thrift/lib/cpp2:thrift",
+#       ":StreamService-cpp2",
+#     ],
+#     external_deps = [
+#       ("gtest"),
+#     ],
+# )
+
+# thrift_library(
+#     name = "StreamService",
+#     languages = ["cpp2"],
+#     thrift_cpp2_options='future',
+#     thrift_srcs = {
+#       "stream.thrift" : ["StreamService", "SimilarService"],
+#     },
+# )

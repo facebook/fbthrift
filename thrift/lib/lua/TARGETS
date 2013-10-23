@@ -1,0 +1,73 @@
+# Copyright 2004-present Facebook. All Rights Reserved.
+
+# Lua Thrift
+lua_module_deprecated(
+  name = "lua",
+  srcs = [
+    "Thrift.lua",
+    "TBinaryProtocol.lua",
+    "TProtocol.lua",
+    "TServer.lua",
+    "TBufferedTransport.lua",
+    "TFramedTransport.lua",
+    "TMemoryBuffer.lua",
+    "TSocket.lua",
+    "TTransport.lua",
+  ],
+  deps = [
+    ":luabitwise",
+    ":luabpack",
+    ":lualongnumber",
+    ":luasocket",
+  ],
+)
+
+# Bitwise Operations
+lua_library_deprecated(
+  name = "luabitwise",
+  srcs = [
+    "src/luabitwise.c",
+  ],
+)
+
+# Binary to String/String to Binary
+lua_library_deprecated(
+  name = "luabpack",
+  srcs = [
+    "src/luabpack.c",
+  ],
+  deps = [
+    ":longNumberUtils",
+  ],
+)
+
+# Support for 64 bit int
+lua_library_deprecated(
+  name = "lualongnumber",
+  srcs = [
+    "src/lualongnumber.c"
+  ],
+  deps = [
+    ":longNumberUtils"
+  ],
+)
+
+# Push/Check 64 bit ints
+cpp_library(
+  name = "longNumberUtils",
+  srcs = [
+    "src/longnumberutils.c",
+  ],
+  external_deps = [
+    ('lua', 'any')
+  ],
+)
+
+# Socket Library
+lua_library_deprecated(
+  name = "luasocket",
+  srcs = [
+    "src/luasocket.c",
+    "src/usocket.c",
+  ],
+)

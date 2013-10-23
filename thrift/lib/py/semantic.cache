@@ -1,0 +1,22 @@
+;; Object py/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "py/"
+  :tables (list
+   (semanticdb-table "Thrift.py"
+    :major-mode 'python-mode
+    :tags '(("sys" include nil nil [787 797]) ("TType" type (:members (\.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\.) :type "class") nil [799 1043]) ("TMessageType" type (:members (\.\.\. \.\.\. \.\.\. \.\.\.) :type "class") nil [1043 1118]) ("TProcessorEventHandler" type (:members (\.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\.) :type "class") nil [1118 2321]) ("TProcessor" type (:members (\.\.\. \.\.\. \.\.\. \.\.\.) :type "class") nil [2321 2714]) ("TException" type (:superclasses ("Exception" variable nil \.\.\. [2731 2741]) :members (\.\.\. \.\.\. \.\.\.) :type "class") nil [2714 3170]) ("TApplicationException" type (:superclasses ("TException" variable nil \.\.\. [3198 3209]) :members (\.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\.) :type "class") nil [3170 4990]))
+    :file "Thrift.py"
+    :pointmax 4990
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "TARGETS"
+    :major-mode 'python-mode
+    :tags '(("python_library" code nil nil [1 815]) ("python_library" code nil nil [817 1042]) ("python_library" code nil nil [1044 1240]) ("python_library" code nil nil [1514 1632]) ("cpp_binary" code nil nil [1634 1878]))
+    :file "TARGETS"
+    :pointmax 1879
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

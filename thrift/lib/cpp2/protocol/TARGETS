@@ -1,0 +1,14 @@
+cpp_library (
+    name = "protocol",
+    srcs = [
+            "BinaryProtocol.cpp",
+            "CompactProtocol.cpp",
+            "DebugProtocol.cpp",
+            "VirtualProtocol.cpp",
+            "StreamSerializers.cpp",
+            ],
+    deps = [
+        "@/folly/io",
+        "@/thrift/lib/cpp:thrift_exception",
+        ],
+)

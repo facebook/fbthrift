@@ -1,0 +1,15 @@
+;; Object perf/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "perf/"
+  :tables (list
+   (semanticdb-table "loadtest.py"
+    :major-mode 'python-mode
+    :tags '(("sys" include nil nil [23 33]) ("subprocess" include nil nil [34 51]) ("re" include nil nil [52 61]) ("os" include nil nil [62 71]) ("argparse" include nil nil [72 87]) ("server_machine" variable nil nil [89 139]) ("root_server_machine" code nil nil [140 186]) ("client_machine" variable nil nil [187 237]) ("root_client_machine" code nil nil [238 284]) ("deploy" function nil nil [286 2130]) ("start_server" function (:arguments (("server" variable nil (reparse-symbol function_parameters) [2147 2153]) ("test" variable nil (reparse-symbol function_parameters) [2155 2159]))) nil [2130 2416]) ("stop_server" function (:arguments (("server" variable nil (reparse-symbol function_parameters) [2432 2438]))) nil [2416 2590]) ("get_cpu_used" function (:arguments (("before" variable nil (reparse-symbol function_parameters) [2607 2613]) ("after" variable nil (reparse-symbol function_parameters) [2615 2620]))) nil [2590 3063]) ("run_loadtest" function (:arguments (("prog" variable nil (reparse-symbol function_parameters) [3080 3084]) ("test" variable nil (reparse-symbol function_parameters) [3086 3090]))) nil [3063 3786]) ("reserve_server" function nil nil [3786 4548]) ("free_server" function nil nil [4548 4699]) ("test" function nil nil [4699 6385]) ("tests" variable nil nil [6385 7490]) ("parser" variable nil nil [7492 7562]) ("parser" code nil nil [7563 7719]) ("parser" code nil nil [7720 7831]) ("parser" code nil nil [7832 7933]) ("parser" code nil nil [7934 8041]) ("parser" code nil nil [8042 8185]) ("args" variable nil nil [8187 8213]) ("if" code nil nil [8215 8283]) ("if" code nil nil [8283 8317]) ("if" code nil nil [8317 8381]) ("if" code nil nil [8381 8497]) ("if" code nil nil [8497 8607]) ("try" code nil nil [8607 8693]) ("print" code nil nil [8693 8711]))
+    :file "loadtest.py"
+    :pointmax 8712
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

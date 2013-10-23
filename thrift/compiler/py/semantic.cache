@@ -1,0 +1,35 @@
+;; Object py/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "py/"
+  :tables (list
+   (semanticdb-table "py_frontend.tcc"
+    :major-mode 'c++-mode
+    :tags '(("PY_FRONTEND_TCC_" variable (:constant-flag t) nil [831 858]) ("thrift/compiler/py/compiler.h" include nil nil [857 897]) ("thrift" type (:members (...) :type "namespace") nil [899 12409]))
+    :file "py_frontend.tcc"
+    :pointmax 12442
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "compiler.cc"
+    :major-mode 'c++-mode
+    :tags '(("thrift/compiler/py/compiler.h" include nil nil [1172 1212]) ("g_type_void_sptr" variable (:type "int") nil [1238 1255]) ("validate_throws" function (:arguments (...) :type ("bool" type ... nil nil)) nil [1431 1488]) ("thrift" type (:members (...) :type "namespace") nil [1490 5653]))
+    :file "compiler.cc"
+    :pointmax 5678
+    )
+   (semanticdb-table "TARGETS"
+    :major-mode 'python-mode
+    :tags '(("python_library" code nil nil [40 156]) ("cpp_binary" code nil nil [195 510]))
+    :file "TARGETS"
+    :pointmax 511
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "compiler.h"
+    :major-mode 'c++-mode
+    :tags '(("THRIFT_PY_COMPILER_H" variable (:constant-flag t) nil [834 865]) ("thrift/compiler/common.h" include nil nil [864 899]) ("boost/python.hpp" include (:system-flag t) nil [917 944]) ("boost/python/stl_iterator.hpp" include (:system-flag t) nil [945 985]) ("boost/python/object.hpp" include (:system-flag t) nil [986 1020]) ("boost/python/call.hpp" include (:system-flag t) nil [1021 1053]) ("thrift/compiler/py/conv.h" include nil nil [1129 1165]) ("unnamed" type (:type "namespace") nil [1167 1314]) ("g_type_void_sptr" variable (:type "int") nil [1347 1364]) ("thrift" type (:members (...) :type "namespace") nil [1366 2532]) ("thrift/compiler/py/py_frontend.tcc" include nil nil [2661 2706]))
+    :file "compiler.h"
+    :pointmax 2739
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

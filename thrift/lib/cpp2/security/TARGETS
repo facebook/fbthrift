@@ -1,0 +1,25 @@
+cpp_library (
+  name = "thrift_kerberos_sasl_handshake",
+  srcs = [
+          "KerberosSASLHandshakeClient.cpp",
+          "KerberosSASLHandshakeServer.cpp",
+          "KerberosSASLHandshakeUtils.cpp",
+         ],
+  deps = [
+          "@/folly",
+          "@/folly/io",
+          "@/common/network:address",
+         ],
+  external_deps = [
+    ("krb5", None, "gssapi_krb5"),
+  ],
+)
+
+cpp_binary (
+  name = "thrift_kerberos_sasl_handshake_test",
+  srcs = [ "main.cpp" ],
+  deps = [
+           ":thrift_kerberos_sasl_handshake",
+           "@/common/init",
+         ],
+)

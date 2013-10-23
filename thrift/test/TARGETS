@@ -1,0 +1,821 @@
+cpp_binary (
+  name = "test_client",
+  srcs = [
+          "cpp/src/TestClient.cpp",
+         ],
+  deps = [
+          ":thrift_test-cpp",
+          "@/thrift/lib/cpp/transport:transport_ssl",
+          "@/thrift/lib/cpp/transport:header",
+         ],
+    external_deps = [
+        ('glibc', None, 'dl'),
+    ],
+)
+
+cpp_binary (
+  name = "test_server",
+  srcs = [
+          "cpp/src/TestServer.cpp",
+         ],
+  deps = [
+          ":thrift_test-cpp",
+          "@/thrift/lib/cpp/server:nonblocking",
+          "@/thrift/lib/cpp/server",
+          "@/thrift/lib/cpp/transport:transport_ssl",
+          "@/thrift/lib/cpp/transport:header",
+         ],
+    external_deps = [
+        ('glibc', None, 'dl'),
+    ],
+)
+
+cpp_unittest (
+  name = 'TBufferBaseTest',
+  srcs = [
+          'TBufferBaseTest.cpp',
+         ],
+  deps = [
+          '@/thrift/lib/cpp:thrift',
+         ],
+  external_deps = [
+          ('boost', '>= 1.37', 'boost_unit_test_framework'),
+         ],
+  type = 'boost',
+  owner = 'davejwatson',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = 'VarintTest',
+  srcs = [
+          'VarintTest.cpp',
+         ],
+  deps = [
+          '@/thrift/lib/cpp:thrift',
+         ],
+  external_deps = [
+          ('boost', '>= 1.37', 'boost_unit_test_framework'),
+         ],
+  type = 'boost',
+  owner = 'davejwatson',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = 'TransportTest',
+  srcs = [
+          'TransportTest.cpp',
+         ],
+  deps = [
+          '@/thrift/lib/cpp:thrift',
+          '@/thrift/lib/cpp/transport:zlib',
+         ],
+  external_deps = [
+          ('boost', '>= 1.37', 'boost_unit_test_framework'),
+         ],
+  type = 'boost',
+  owner = 'simpkins',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = 'TFileTransportTest',
+  srcs = [
+          'TFileTransportTest.cpp',
+         ],
+  deps = [
+          '@/thrift/lib/cpp:thrift',
+          '@/thrift/lib/cpp/test:util',
+         ],
+  external_deps = [
+          ('boost', '>= 1.37', 'boost_unit_test_framework'),
+         ],
+  type = 'boost',
+  owner = 'simpkins',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_binary (
+  name = "debug_proto_test",
+  srcs = [
+    "DebugProtoTest.cpp",
+    "DebugProtoTest_extras.cpp",
+  ],
+  deps = [
+    ":debug_proto_test-cpp",
+    ":debug_proto_test-cpp2",
+  ]
+)
+
+cpp_binary (
+  name = "Benchmark",
+  srcs = [
+          "Benchmark.cpp",
+         ],
+  deps = [
+          ":debug_proto_test-cpp",
+          "@/thrift/lib/cpp/transport:header",
+         ]
+)
+
+cpp_unittest (
+  name = "BenchmarkCpp2",
+  srcs = [
+          "Benchmark2.cpp",
+         ],
+  deps = [
+          ":debug_proto_test-cpp2",
+          "@/common/fbunit:old_folly_benchmark",
+          '@/external/google_base',
+          '@/external/gflags',
+         ],
+  type = 'gtest',
+)
+
+cpp_unittest (
+  name = "Cpp2ProtocolTest",
+  srcs = [
+          "Cpp2ProtocolTest.cpp",
+         ],
+  deps = [
+          ":debug_proto_test-cpp2",
+          ":debug_proto_test-cpp",
+          "@/common/fbunit:old_folly_benchmark",
+          '@/external/google_base',
+          '@/external/gflags',
+         ],
+  type = 'gtest',
+)
+
+cpp_unittest (
+  name = "SerializedFieldsCpp2Test",
+  srcs = [
+          "SerializedFieldsCpp2Test.cpp",
+         ],
+  deps = [
+          ":serialized_fields_test-cpp2",
+          '@/external/google_base',
+          '@/external/gflags',
+         ],
+  type = 'gtest',
+)
+
+cpp_unittest (
+  name = "OpaqueTest",
+  srcs = [
+          "OpaqueTest.cpp",
+         ],
+  deps = [
+          ":opaque_test-cpp",
+          ":opaque_test-cpp2",
+          '@/external/google_base',
+          '@/external/gflags',
+         ],
+  type = 'gtest',
+)
+
+cpp_unittest (
+  name = 'header_compress',
+  srcs = [ 'CompressTest.cpp' ],
+  deps = [
+          ':thrift_test-cpp2',
+          '@/common/fbunit:benchmark',
+          '@/external/gflags',
+          '@/thrift/lib/cpp/transport:header',
+          ],
+  type = 'gtest',
+)
+
+cpp_binary (
+  name = 'fb_benchmark',
+  srcs = [ 'FbBenchmark.cpp',
+         ],
+  deps = [
+          ':debug_proto_test-cpp',
+          '@/common/fbunit:benchmark',
+          '@/external/gflags',
+          '@/thrift/lib/cpp/transport:header',
+         ],
+)
+
+cpp_unittest (
+  name = "ZlibTest",
+  srcs = [
+          "ZlibTest.cpp",
+         ],
+  deps = [
+          "@/thrift/lib/cpp:thrift",
+          "@/thrift/lib/cpp/transport:zlib",
+         ],
+  external_deps = [
+          ("boost", ">= 1.37", "boost_unit_test_framework")
+         ],
+  type = 'boost',
+  owner = 'simpkins',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+custom_rule (
+  name = "duplicate_enum_thrift",
+  output_gen_files = [
+    "EnumTestStrict.thrift",
+  ],
+  build_script = "copy_files.py",
+  build_args = "duplicate_enum_thrift",
+)
+
+cpp_unittest (
+  name = "EnumTest",
+  srcs = [
+          "EnumTest.cpp",
+         ],
+  thrift_srcs = { "EnumTest.thrift" : [] },
+  deps = [
+          "@/thrift/lib/cpp:thrift",
+         ],
+  external_deps = [
+          ("boost", ">= 1.37", "boost_unit_test_framework")
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = "HashMapTest",
+  srcs = [
+          "HashMapTest.cpp",
+         ],
+  thrift_srcs = { "HashMapTest.thrift" : [] },
+  deps = [
+          "@/thrift/lib/cpp:thrift",
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = "FloatTest",
+  srcs = [
+          "FloatTest.cpp",
+         ],
+  thrift_srcs = { "FloatTest.thrift" : [] },
+  deps = [
+          "@/thrift/lib/cpp:thrift",
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = "ExceptionTest",
+  srcs = [
+          "ExceptionTest.cpp",
+         ],
+  thrift_srcs = { "ExceptionTest.thrift" : [] },
+  deps = [
+          "@/thrift/lib/cpp:thrift",
+         ],
+  external_deps = [
+          ("boost", ">= 1.37", "boost_unit_test_framework")
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = "EnumTestStrict",
+  srcs = [
+          "EnumTestStrict.cpp",
+         ],
+  thrift_srcs = { "EnumTestStrict.thrift" : [] },
+  thrift_cpp_options = 'enum_strict',
+  deps = [
+          ":duplicate_enum_thrift",
+          "@/thrift/lib/cpp:thrift",
+         ],
+  external_deps = [
+          ("boost", ">= 1.37", "boost_unit_test_framework")
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_binary (
+  name = "AllProtocolTests",
+  srcs = [
+          "AllProtocolTests.cpp",
+         ],
+  deps = [
+          "@/thrift/lib/cpp:thrift",
+          "@/thrift/lib/cpp/transport:header",
+         ],
+)
+
+cpp_binary (
+  name = "SpecializationTest",
+  srcs = [
+          "SpecializationTest.cpp",
+         ],
+  deps = [
+          ":debug_proto_test-cpp",
+         ]
+)
+
+cpp_unittest (
+  name = "RWMutexStarveTest",
+  srcs = [ "RWMutexStarveTest.cpp" ],
+  deps = [
+          "@/thrift/lib/cpp/concurrency",
+         ],
+  external_deps = [
+          ("boost", ">= 1.37", "boost_unit_test_framework")
+         ],
+  type = 'boost',
+  owner = 'dihde',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = 'SwapTest',
+  srcs = [
+          'SwapTest.cpp',
+         ],
+  deps = [
+          ':optional_required_test',
+          ':thrift_test-cpp',
+          ':thrift_test_extras',
+          '@/thrift/lib/cpp:thrift',
+         ],
+  external_deps = [
+          ('boost', '>= 1.37', 'boost_unit_test_framework'),
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = 'UnionTest_cpp',
+  type = 'gtest',
+  srcs = [
+    'UnionTest.cpp',
+  ],
+  deps = [
+    ':union_test-cpp',
+    ':union_test-cpp2'
+  ],
+  external_deps = [
+    ('gtest', None, 'gtest_main'),
+    'glog',
+  ]
+)
+
+cpp_unittest (
+  name = 'UnionTest_cpp2',
+  type = 'gtest',
+  srcs = [
+    'UnionTest2.cpp',
+  ],
+  deps = [
+    ':union_test2-cpp2'
+  ],
+  external_deps = [
+    ('gtest', None, 'gtest_main'),
+    'glog',
+  ]
+)
+
+thrift_library (
+  name = "thrift_test",
+  languages = ["cpp", "cpp2", "py", "php", "java", "lua_deprecated"],
+  thrift_srcs = { "ThriftTest.thrift" : [ "ThriftTest", "SecondService" ] },
+  thrift_cpp_options = 'templates',
+  thrift_cpp2_options = 'compatibility',
+  py_base_module = '',
+)
+
+python_library (
+  name = "thrift_test-twisted",
+  thrift_srcs = { "ThriftTest.thrift" : [ "ThriftTest", "SecondService" ] },
+  base_module = '',
+  thrift_py_options = "twisted",
+)
+
+cpp_library(
+  name = "thrift_test_extras",
+  srcs = [
+    'ThriftTest_extras.cpp',
+  ],
+  deps = [
+    ':thrift_test-cpp',
+  ],
+  link_whole = True,
+)
+
+thrift_library (
+  name = "optional_required_test_thrift",
+  languages = ["cpp", "py", "php"],
+  thrift_srcs = { "OptionalRequiredTest.thrift" : None, },
+  py_base_module = '',
+)
+
+thrift_library (
+  name = "default_values_test_thrift",
+  languages = ["py"],
+  thrift_srcs = { "DefaultValuesTest.thrift" : None, },
+  py_base_module = '',
+)
+
+cpp_library (
+  name = "optional_required_test",
+  deps = [ "@/thrift/lib/cpp:thrift",
+           ':optional_required_test_thrift-cpp' ],
+)
+
+thrift_library (
+  name = "debug_proto_test",
+  languages = ["cpp", "cpp2", "java"],
+  thrift_srcs = { "DebugProtoTest.thrift" : [ "Srv" ] },
+  thrift_cpp_options = 'templates,json',
+)
+
+thrift_library (
+  name = "union_test",
+  languages = ["cpp", "cpp2", "py", "java"],
+  thrift_srcs = { "UnionTest.thrift" : [] },
+  thrift_cpp_options = 'templates,json',
+  thrift_cpp2_options = 'compatibility',
+  thrift_py_options = 'json',
+)
+
+thrift_library (
+  name = "union_test2",
+  languages = ["cpp2"],
+  thrift_srcs = { "UnionTest2.thrift" : [] },
+)
+
+thrift_library (
+  name = "serialized_fields_test",
+  languages = ["cpp2"],
+  thrift_srcs = { "SerializedFieldsTest.thrift" : [] },
+)
+
+thrift_library (
+  name = "opaque_test",
+  languages = ["cpp", "cpp2"],
+  thrift_srcs = { "OpaqueTest.thrift" : [] },
+  thrift_cpp_options = 'json',
+)
+
+php_library (
+  name = "constants-php",
+  thrift_srcs = {
+    "ConstantsDemo.thrift" : [ "yowza" ],
+  },
+)
+
+cpp_library (
+  name = "php_serialize_data",
+  thrift_srcs = { "PhpSerializeTest.thrift" : [ ] },
+  thrift_cpp_options = 'templates',
+  deps = [ "@/thrift/lib/cpp:thrift" ],
+)
+
+php_library (
+  name = "php_serialize",
+  thrift_srcs = {
+    "PhpSerializeTest.thrift" : [ ],
+  },
+)
+
+cpp_binary (
+    name = "php_serialize_test",
+    srcs = [ 'PhpSerializeTest.cpp' ],
+    deps = [
+             '@/thrift/lib/cpp/protocol',
+             ':php_serialize_data',
+           ]
+)
+
+cpp_binary (
+    name = "json_proto_test",
+    srcs = [ 'JSONProtoTest.cpp' ],
+    deps = [
+             ':debug_proto_test-cpp',
+             '@/external/google_base',
+             '@/external/gflags',
+             '@/thrift/lib/cpp:thrift',
+             '@/thrift/lib/cpp/transport:header',
+           ]
+)
+
+thrift_library (
+    name = "json_reader_test-if",
+    languages = ["py"],
+    thrift_srcs = { "JsonReaderTest.thrift" : [] },
+    thrift_py_options = 'json',
+    py_base_module = '',
+)
+
+java_unittest (
+    name = "java_client_handler_test",
+    srcs = [ 'ClientHandlerTest.java', ],
+    test_classes = [ 'com.facebook.thrift.test.ClientHandlerTest', ],
+    deps = [
+        '@/thrift/lib/java/src:thrift',
+        "@/external/slf4j:simple",
+        ':thrift_test-java',
+    ],
+    emails = ['thrift-team@lists.facebook.com'],
+)
+
+java_unittest (
+    name = "java_theader_test",
+    srcs = [ 'THeaderJava.java', ],
+    test_classes = [ 'com.facebook.thrift.test.THeaderJava', ],
+    deps = [
+        '@/thrift/lib/java/src:thrift',
+        '@/thrift/lib/java/src/com/facebook/thrift/direct_server:TDirectServer',
+        "@/external/slf4j:simple",
+        ':thrift_test-java',
+    ],
+    emails = ['thrift-team@lists.facebook.com'],
+)
+
+thrift_library (
+  name = "stress_test",
+  languages = ["cpp"],
+  thrift_srcs = { "StressTest.thrift" : [ "Service", ] },
+  thrift_cpp_options = 'templates,cob_style',
+)
+
+cpp_unittest (
+  name = 'theader_cpp_test',
+  srcs = [
+          'THeaderTest.cpp',
+         ],
+  deps = [
+          ':stress_test-cpp',
+          '@/thrift/lib/cpp:thrift',
+          '@/thrift/lib/cpp/util:util',
+          '@/thrift/lib/cpp/util:nonblocking',
+          '@/thrift/lib/cpp/util:async',
+          '@/thrift/lib/cpp/util/example',
+          '@/thrift/lib/cpp/transport:header',
+          '@/thrift/lib/cpp/transport:transport_ssl',
+          "@/thrift/lib/cpp/server:nonblocking",
+          "@/thrift/lib/cpp/server",
+          "@/thrift/lib/cpp/async",
+         ],
+  external_deps = [
+          ('boost', '>= 1.37', 'boost_unit_test_framework'),
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = 'teventbase_per_thread_cpp_test',
+  srcs = ['TEventBasePerThreadTest.cpp'],
+  deps = [
+          ':stress_test-cpp',
+          '@/thrift/lib/cpp:thrift',
+          '@/thrift/lib/cpp/util:util',
+          '@/thrift/lib/cpp/util:nonblocking',
+          '@/thrift/lib/cpp/util:async',
+          '@/thrift/lib/cpp/util/example',
+          "@/thrift/lib/cpp/server:nonblocking",
+          "@/thrift/lib/cpp/server",
+          "@/thrift/lib/cpp/async",
+         ],
+  type = 'gtest'
+)
+
+cpp_unittest (
+  name = 'event_handler_test',
+  srcs = [
+          'ClientEventHandlerTest.cpp',
+         ],
+  deps = [
+          ':stress_test-cpp',
+          '@/thrift/lib/cpp:thrift',
+          '@/thrift/lib/cpp/async:async',
+          '@/thrift/lib/cpp/util:util',
+          '@/thrift/lib/cpp/util/example',
+          "@/thrift/lib/cpp/server",
+         ],
+  external_deps = [
+          ('boost', '>= 1.37', 'boost_unit_test_framework'),
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = 'async_connection_context_test',
+  srcs = [
+          'AsyncConnectionContextTest.cpp',
+         ],
+  deps = [
+          ':stress_test-cpp',
+          '@/thrift/lib/cpp:thrift',
+          '@/thrift/lib/cpp/util',
+          '@/thrift/lib/cpp/util/example',
+          '@/thrift/lib/cpp/util:async',
+          '@/thrift/lib/cpp/server',
+          '@/thrift/lib/cpp/async',
+         ],
+  external_deps = [
+          ('boost', '>= 1.37', 'boost_unit_test_framework'),
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest(
+  name = 'reflection_test',
+  srcs = [
+    'ReflectionTest.cpp',
+  ],
+  thrift_srcs = {
+    'ReflectionTest.thrift' : [],
+  },
+  external_deps = [
+    ('gtest', None, 'gtest_main'),
+  ],
+  type = 'gtest',
+)
+
+cpp_unittest (
+  name = 'merge_test',
+  srcs = [
+    'MergeTest.cpp',
+         ],
+  deps = [
+    ':optional_required_test',
+    ':thrift_test-cpp',
+    ':thrift_test_extras',
+    '@/folly',
+    '@/thrift/lib/cpp:thrift',
+  ],
+  external_deps = [
+    ('gtest', None, 'gtest_main'),
+  ],
+  type = 'gtest',
+)
+
+thrift_library(
+  name = "iobufptr_test_if",
+  thrift_srcs = {
+      "IOBufPtrTest.thrift": ["IOBufPtrTestService"],
+  },
+  languages = ["cpp2"],
+)
+
+cpp_unittest(
+  name = "iobufptr_test",
+  srcs = [
+      "IOBufPtrTest.cpp",
+  ],
+  deps = [
+      ":iobufptr_test_if-cpp2",
+      "@/thrift/lib/cpp2:server",
+  ],
+  type = "gtest",
+)
+
+thrift_library(
+    name = "cpp2ops_native_if",
+    thrift_srcs = {
+        "Cpp2OpsNative.thrift": [],
+    },
+    languages = ["cpp2"],
+)
+
+thrift_library(
+    name = "cpp2ops_compat_if",
+    thrift_srcs = {
+        "Cpp2OpsCompat.thrift": [],
+    },
+    languages = ["cpp", "cpp2"],
+    thrift_cpp2_options = ["compatibility"],
+)
+
+cpp_unittest(
+    name = "cpp2ops_test",
+    srcs = [
+        "Cpp2OpsTest.cpp",
+    ],
+    deps = [
+        ":cpp2ops_native_if-cpp2",
+        ":cpp2ops_compat_if-cpp2",
+        "@/thrift/lib/cpp2/protocol",
+    ],
+    type = "gtest",
+)
+
+thrift_library(
+    name = "noexcept_if",
+    thrift_srcs = {
+        "NoExcept.thrift": [],
+    },
+    languages = ["cpp", "cpp2"],
+)
+
+cpp_unittest(
+    name = "noexcept_test",
+    srcs = [
+        "NoExceptTest.cpp",
+    ],
+    deps = [
+        ":noexcept_if-cpp",
+        ":noexcept_if-cpp2",
+    ],
+    type = "gtest",
+)
+
+thrift_library(
+    name = "noex_move_ctor_if",
+    thrift_srcs = {
+        "NoExMoveCtorTest.thrift": [],
+    },
+    languages = ["cpp", "cpp2"],
+)
+
+cpp_unittest(
+    name = "noex_move_ctor_test",
+    srcs = [
+        "NoExMoveCtorTest.cpp",
+    ],
+    deps = [
+        ":noex_move_ctor_if-cpp",
+        ":noex_move_ctor_if-cpp2",
+    ],
+    type = "gtest",
+)
+
+# LUA
+# lua_unittest_deprecated(
+#   name = "lua_bitwise",
+#   srcs = [
+#     "lua/test_bitwise.lua",
+#   ],
+#   deps = [
+#     "@/thrift/lib/lua:luabitwise",
+#   ],
+# )
+
+# lua_unittest_deprecated(
+#   name = "lua_bpack",
+#   srcs = [
+#     "lua/test_bpack.lua",
+#   ],
+#   deps = [
+#     "@/thrift/lib/lua:luabpack",
+#     "@/thrift/lib/lua:lualongnumber"
+#   ],
+# )
+
+# lua_unittest_deprecated(
+#   name = "lua_longnumber",
+#   srcs = [
+#     "lua/test_longnumber.lua",
+#   ],
+#   deps = [
+#     "@/thrift/lib/lua:lualongnumber"
+#   ],
+# )
+
+# lua_unittest_deprecated(
+#   name = "lua_socket",
+#   srcs = [
+#     "lua/test_luasocket_server.lua",
+#     "lua/test_luasocket_client.lua",
+#   ],
+#   deps = [
+#     "@/thrift/lib/lua:luasocket",
+#   ],
+# )
+
+# lua_unittest_deprecated(
+#   name = "lua_tsocket",
+#   srcs = [
+#     "lua/test_tsocket_server.lua",
+#     "lua/test_tsocket_client.lua",
+#   ],
+#   deps = [
+#     "@/thrift/lib/lua:lua",
+#   ],
+# )
+
+# lua_unittest_deprecated(
+#   name = "lua_basic",
+#   srcs = [
+#     "lua/test_basic_server.lua",
+#     "lua/test_basic_client.lua",
+#   ],
+#   deps = [
+#     "@/thrift/lib/lua:lualongnumber",
+#     ":thrift_test-lua",
+#   ],
+# )

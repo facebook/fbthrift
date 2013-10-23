@@ -1,0 +1,15 @@
+;; Object thrift/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "thrift/"
+  :tables (list
+   (semanticdb-table "canary.py"
+    :major-mode 'python-mode
+    :tags '(("sys" include nil nil [23 33]) ("subprocess" include nil nil [34 51]) ("re" include nil nil [52 61]) ("argparse" include nil nil [63 78]) ("deploy" function nil nil [80 1918]) ("start_server" function (:arguments (("server" variable nil (reparse-symbol function_parameters) [1935 1941]) ("test" variable nil (reparse-symbol function_parameters) [1943 1947]))) nil [1918 2221]) ("stop_server" function (:arguments (("server" variable nil (reparse-symbol function_parameters) [2237 2243]))) nil [2221 2414]) ("run_loadtest" function (:arguments (("prog" variable nil (reparse-symbol function_parameters) [2431 2435]) ("test" variable nil (reparse-symbol function_parameters) [2437 2441]))) nil [2414 3211]) ("reserve_server" function nil nil [3211 3674]) ("free_server" function nil nil [3674 3844]) ("test" function nil nil [3844 5706]) ("tests" variable nil nil [5706 6811]) ("parser" variable nil nil [6813 6883]) ("parser" code nil nil [6884 7040]) ("parser" code nil nil [7041 7152]) ("parser" code nil nil [7153 7254]) ("parser" code nil nil [7255 7362]) ("parser" code nil nil [7363 7505]) ("args" variable nil nil [7507 7533]) ("if" code nil nil [7535 7602]) ("if" code nil nil [7602 7685]) ("if" code nil nil [7685 7719]) ("if" code nil nil [7719 7783]) ("if" code nil nil [7783 7898]) ("if" code nil nil [7898 7932]) ("test" code nil nil [7932 7938]) ("print" code nil nil [7940 7958]))
+    :file "canary.py"
+    :pointmax 7959
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

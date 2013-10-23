@@ -1,0 +1,121 @@
+thrift_library (
+    name = 'thrift_test_json',
+    languages = ["cpp", "py", "java"],
+    thrift_srcs = {'mySimpleStruct.thrift': None,
+                   'mySetStruct.thrift' : None,
+                   'myByteStruct.thrift' : None,
+                   'myDoubleStruct.thrift' : None,
+                   'myI16Struct.thrift' : None,
+                   'myI32Struct.thrift' : None,
+                   'myBoolStruct.thrift' : None,
+                   'myStringStruct.thrift' : None,
+                   'myMixedStruct.thrift' : None,
+                   'myBinaryStruct.thrift' : None,
+                   'myComplexStruct.thrift' : None,
+                   'myMapStruct.thrift' : None,
+                   'myNestedMapStruct.thrift' : None,
+                   'myEmptyStruct.thrift' : None,
+                   'config.thrift' : None,
+                  },
+    thrift_cpp_options = 'json',
+    thrift_py_options = 'json',
+    thrift_php_options = 'json',
+    py_base_module = '',
+    cpp_deps = [ '@/folly' ],
+)
+
+thrift_library (
+    name = 'thrift_test_json',
+    languages = ["php"],
+    thrift_srcs = {'mySimpleStruct.thrift': None,
+                   'mySetStruct.thrift' : None,
+                   'myByteStruct.thrift' : None,
+                   'myDoubleStruct.thrift' : None,
+                   'myI16Struct.thrift' : None,
+                   'myI32Struct.thrift' : None,
+                   'myBoolStruct.thrift' : None,
+                   'myStringStruct.thrift' : None,
+                   'myMixedStruct.thrift' : None,
+                   'myBinaryStruct.thrift' : None,
+                   'myComplexStruct.thrift' : None,
+                   #'myMapStruct.thrift' : None,
+                   'myPHPMapStruct.thrift' : None,
+                   'myNestedMapStruct.thrift' : None,
+                   'config.thrift' : None,
+                  },
+    thrift_cpp_options = 'json',
+    thrift_py_options = 'json',
+    thrift_php_options = 'json',
+    py_base_module = '',
+    cpp_deps = [ '@/folly' ],
+)
+
+cpp_unittest (
+    name = 'cpp_simpleJSONToThriftTest',
+    srcs = ['SimpleJSONToThriftTest.cpp'],
+    deps = [
+        "@/folly",
+        "@/common/fbunit",
+        "@/thrift/lib/cpp/protocol",
+        ":thrift_test_json-cpp",
+        ],
+    thrift_srcs = {
+        'myCombinedStructs.thrift': None,
+        'myKeyStruct.thrift' : None,
+        },
+  external_deps = [
+          ('boost', '>= 1.37', 'boost_unit_test_framework'),
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+    name = 'readFromJsonTest',
+    srcs = ['jsonToThrift_unittest.cpp'],
+    deps = [
+        "@/folly",
+        "@/common/fbunit",
+        "@/thrift/lib/cpp/protocol",
+        ":thrift_test_json-cpp",
+        ],
+  external_deps = [
+          ('boost', '>= 1.37', 'boost_unit_test_framework'),
+         ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+python_unittest (
+    name = "python_simpleJSONToThriftTest",
+    srcs = [ 'SimpleJSONToThriftTest.py', ],
+    deps = [
+      ':thrift_test_json-py',
+      '@/thrift/lib/py',
+    ],
+    base_module = '',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+custom_unittest (
+    name = "php_unittest",
+    type = 'simple',
+    command = [
+    "thrift/test/JsonToThriftTest/php_unittest.sh",
+    ],
+    deps = [
+        ':thrift_test_json-php',
+    ],
+)
+
+java_unittest (
+    name = "java_tcompactjsonprotocol_test",
+    srcs = [ 'TCompactJSONProtocolTest.java', ],
+    test_classes = [ 'thrift.test.JsonToThriftTest.TCompactJSONProtocolTest', ],
+    deps = [
+        '@/thrift/lib/java/src:thrift',
+        ':thrift_test_json-java',
+    ],
+    emails = ['thrift-team@lists.facebook.com'],
+)
+

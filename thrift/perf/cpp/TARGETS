@@ -1,0 +1,113 @@
+cpp_binary(
+  name = 'loadgen',
+  srcs = [
+    'ClientLoadConfig.cpp',
+    'ClientWorker.cpp',
+    'ClientWorker2.cpp',
+    'AsyncClientWorker.cpp',
+    'AsyncClientWorker2.cpp',
+    'loadgen.cpp',
+  ],
+  deps = [
+    '@/common/config',
+    '@/common/services/cpp',
+    '@/thrift/lib/cpp/async',
+    '@/thrift/lib/cpp/test/loadgen:loadgen',
+    '@/thrift/lib/cpp2:thrift',
+    '@/thrift/lib/cpp/transport:header',
+    '@/thrift/perf/if:load-cpp2',
+    '@/servicerouter/client/cpp2',
+    ':load-handler',
+    ':async-load-handler',
+  ],
+)
+
+cpp_binary(
+  name = 'EventServer',
+  srcs = [
+    'EventServer.cpp',
+  ],
+  deps = [
+    ':async-load-handler',
+    ':load-handler',
+    '@/common/config',
+    '@/common/services/cpp',
+    '@/thrift/lib/cpp/transport:header',
+  ],
+)
+
+cpp_binary(
+  name = 'ThriftServer',
+  srcs = [
+    'Cpp2Server.cpp',
+  ],
+  deps = [
+    ':async-load-handler',
+    '@/thrift/lib/cpp2:server',
+    '@/common/config',
+    '@/common/services/cpp',
+    '@/thrift/lib/cpp/transport:header',
+  ],
+)
+
+cpp_binary(
+  name = 'NonblockingServer',
+  srcs = [
+    'NonblockingServer.cpp',
+  ],
+  deps = [
+    ':load-handler',
+    '@/common/config',
+    '@/thrift/lib/cpp/server:nonblocking',
+    '@/thrift/lib/cpp/transport:header',
+  ],
+)
+
+cpp_binary(
+  name = 'ThreadPoolServer',
+  srcs = [
+    'ThreadPoolServer.cpp',
+  ],
+  deps = [
+    ':load-handler',
+    '@/common/config',
+    '@/thrift/lib/cpp/transport:header',
+  ],
+)
+
+cpp_binary(
+  name = 'ThreadedServer',
+  srcs = [
+    'ThreadedServer.cpp',
+  ],
+  deps = [
+    ':load-handler',
+    '@/common/config',
+    '@/thrift/lib/cpp/transport:header',
+  ],
+)
+
+cpp_library(
+  name = 'load-handler',
+  srcs = [
+    'LoadHandler.cpp',
+  ],
+  deps = [
+    '@/thrift/perf/if:load-cpp',
+    '@/common/fb303/cpp:fb303',
+  ],
+)
+
+cpp_library(
+  name = 'async-load-handler',
+  srcs = [
+    'AsyncLoadHandler.cpp',
+    'AsyncLoadHandler2.cpp',
+  ],
+  deps = [
+    '@/common/fb303/cpp:fb303',
+    '@/thrift/lib/cpp/async',
+    '@/thrift/perf/if:load-cpp',
+    '@/thrift/perf/if:load-cpp2',
+  ],
+)

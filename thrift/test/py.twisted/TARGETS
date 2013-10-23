@@ -1,0 +1,10 @@
+python_unittest (
+  name = "python_twisted_test",
+  srcs = [ "test_suite.py", ],
+  deps = [
+    '@/thrift/test:thrift_test-twisted',
+    '@/thrift/lib/py:twisted',
+  ],
+  base_module = '',
+  emails = ['thrift-team@lists.facebook.com'],
+)

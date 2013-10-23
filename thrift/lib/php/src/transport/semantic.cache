@@ -1,0 +1,33 @@
+;; Object transport/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "transport/"
+  :tables (list
+   (semanticdb-table "TSocket.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "TSocket.php"
+    :pointmax 8927
+    )
+   (semanticdb-table "TBufferedTransport.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "TBufferedTransport.php"
+    :pointmax 4123
+    )
+   (semanticdb-table "TFramedTransport.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "TFramedTransport.php"
+    :pointmax 4063
+    )
+   (semanticdb-table "TTransport.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "TTransport.php"
+    :pointmax 2804
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

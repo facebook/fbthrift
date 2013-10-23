@@ -1,0 +1,10 @@
+scala_binary (
+    name = "server",
+    main_class = "com.facebook.swift.scalaexample.server.server",
+    srcs = [
+        "server.scala",
+        ],
+    aether_deps = [
+        "com.facebook.swift-for-fbcode:swift-for-fbcode:0.6.0-SNAPSHOT",
+        ],
+    )

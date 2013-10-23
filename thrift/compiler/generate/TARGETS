@@ -1,0 +1,48 @@
+# TARGETS file for thrift/compiler/generate
+
+base_generators = [
+    "t_generator.cc",
+    "t_cocoa_generator.cc",
+    "t_cpp_generator.cc",
+    "t_d_generator.cc",
+    "t_erl_generator.cc",
+    "t_go_generator.cc",
+    "t_hs_generator.cc",
+    "t_java_generator.cc",
+    "t_js_generator.cc",
+    "t_json_generator.cc",
+    "t_perl_generator.cc",
+    "t_lua_generator.cc",
+    "t_php_generator.cc",
+    "t_hack_generator.cc",
+    "t_py_generator.cc",
+    "t_rb_generator.cc",
+    "t_xsd_generator.cc",
+]
+
+extra_generators = [
+    "t_csharp_generator.cc",
+    "t_st_generator.cc",
+    "t_ocaml_generator.cc",
+    "t_html_generator.cc",
+]
+
+# Yeah.  I went there.
+import os
+gen_all = os.environ.get('THRIFT_GEN_ALL', None)
+if gen_all:
+  generators = base_generators + extra_generators
+else:
+  generators = base_generators
+
+cpp_library (
+  name = "generate",
+  srcs = generators,
+  link_whole = True,
+  deps = [
+    "@/folly",
+  ],
+  external_deps = [
+    ("openssl", None, "crypto"),
+  ],
+)
