@@ -1,0 +1,37 @@
+cpp_unittest(
+  name = 'ServerCreatorTest',
+  srcs = [
+    'ServerCreatorTest.cpp',
+  ],
+  deps = [
+    '@/thrift/lib/cpp/util:async',
+    '@/thrift/lib/cpp/util:nonblocking',
+    '@/thrift/lib/cpp/util/example',
+    '@/thrift/perf/cpp:load-handler',
+    '@/thrift/perf/cpp:async-load-handler',
+  ],
+  external_deps = [
+    ('boost', '>= 1.37', 'boost_unit_test_framework'),
+  ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)
+
+cpp_unittest (
+  name = "FrozenUtilTest",
+  srcs = [
+    "FrozenUtilTest.cpp",
+  ],
+  deps = [
+    "@/folly",
+    "@/thrift/lib/cpp/test:FrozenTypes-cpp",
+    "@/thrift/lib/cpp/util:frozen_util",
+    "@/thrift/lib/cpp/util:frozen_test_util",
+    "@/thrift/lib/cpp:thrift",
+  ],
+  external_deps = [
+    ("boost", ">= 1.37", "boost_unit_test_framework")
+  ],
+  type = 'boost',
+  emails = ['thrift-team@lists.facebook.com'],
+)

@@ -1,0 +1,51 @@
+# The following comment causes the continuous build system to skip this file:
+# CABIE_EXCLUDE_TARGET
+#
+# The continuous build system currently only builds on FC4 systems.
+# FC4 doesn't have the openat() system call, used by ShellHandler.cpp.
+
+cpp_binary(
+  name = 'AuthClient',
+  srcs = ['AuthClient.cpp'],
+  deps = [':auth-if'],
+)
+
+cpp_binary(
+  name = 'ShellClient',
+  srcs = ['ShellClient.cpp'],
+  deps = [':shell-if'],
+)
+
+cpp_binary(
+  name = 'ShellServer',
+  srcs = [
+    'ShellHandler.cpp',
+    'ShellServer.cpp'
+  ],
+  deps = [
+    ':authservice',
+    ':shell-if'
+  ],
+)
+
+cpp_library(
+  name = 'authservice',
+  srcs = [
+    'AuthHandler.cpp',
+    'ServiceAuthState.cpp',
+  ],
+  deps = [':auth-if']
+)
+
+cpp_library(
+  name = 'auth-if',
+  thrift_cpp_options = 'templates,cob_style',
+  thrift_srcs = { 'auth.thrift' : ['AuthenticatedService'], },
+)
+
+cpp_library(
+  name = 'shell-if',
+  thrift_srcs = { 'shell.thrift' : ['ShellService'], },
+  thrift_cpp_options = 'templates,cob_style',
+  deps = [':auth-if'],
+)

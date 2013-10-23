@@ -1,0 +1,132 @@
+thrift_library(
+    name = 'testservice',
+    languages = ['cpp', 'cpp2'],
+    thrift_srcs = {
+            'Service.thrift' : ['TestService'],
+            },
+)
+
+thrift_library(
+    name = 'futureservice',
+    languages = ['cpp2'],
+    thrift_cpp2_options='future',
+    thrift_srcs = {
+            'Future.thrift' : ['FutureService'],
+            },
+)
+
+thrift_library(
+    name = 'exceptservice',
+    languages = ['cpp2'],
+    thrift_srcs = {
+            'except.thrift' : ['SampleService', 'SampleService2'],
+            },
+    thrift_cpp2_options = 'stack_arguments',
+)
+
+cpp_unittest(
+  name = 'ThriftServerTest',
+  srcs = [ 'ThriftServerTest.cpp' ],
+  deps = [ ':testservice-cpp',
+           ':testservice-cpp2',
+           '@/thrift/lib/cpp2:server',
+           '@/thrift/lib/cpp/util',
+           '@/thrift/lib/cpp/async',
+           '@/thrift/lib/cpp/test:util' ],
+  external_deps = [('gtest', None, 'gtest')],
+  type = 'gtest',
+)
+
+cpp_unittest(
+  name = 'SerializationTest',
+  srcs = [ 'SerializationTest.cpp' ],
+  deps = [ ':testservice-cpp2',
+           '@/thrift/lib/cpp2:server' ],
+  external_deps = [('gtest', None, 'gtest')],
+  type = 'gtest',
+)
+
+cpp_unittest(
+  name = 'FutureTest',
+  srcs = [ 'FutureTest.cpp' ],
+  deps = [ ':futureservice-cpp2',
+           '@/thrift/lib/cpp/util',
+           '@/thrift/lib/cpp2:server',
+           '@/thrift/lib/cpp/async',
+           '@/thrift/lib/cpp/test:util',
+           '@/common/concurrency:executor',
+           ],
+  external_deps = [('gtest', None, 'gtest')],
+  type = 'gtest',
+)
+
+cpp_unittest(
+  name = 'Cpp2TimeoutTest',
+  srcs = [ 'Cpp2TimeoutTest.cpp' ],
+  deps = [ '@/thrift/lib/cpp2:server',
+           '@/thrift/lib/cpp/util',
+           ':testservice-cpp2',
+           '@/thrift/lib/cpp/async',
+           '@/thrift/lib/cpp/test:util' ],
+  external_deps = [('gtest', None, 'gtest')],
+  type = 'gtest',
+)
+
+cpp_unittest(
+  name = 'HeaderChannelTest',
+  srcs = [ 'ChannelTest.cpp' ],
+  deps = [ '@/thrift/lib/cpp2:server',
+           '@/thrift/lib/cpp/async',
+           '@/thrift/lib/cpp/test:util' ],
+  external_deps = [('gtest', None, 'gtest')],
+  type = 'gtest',
+)
+
+cpp_unittest(
+  name = "AsyncExceptionTest",
+  type = 'gtest',
+  emails = ["thrift-team@lists.facebook.com"],
+  srcs = [
+    "ProcessorExceptions.cpp",
+  ],
+  deps = [
+    '@/thrift/lib/cpp2:thrift',
+    '@/thrift/lib/cpp2:server',
+    '@/thrift/lib/cpp/util',
+    ':exceptservice-cpp2',
+  ],
+)
+
+cpp_unittest(
+    name = 'cloneableiobuf',
+    srcs = [
+            "CloneableIOBufTest.cpp",
+           ],
+    deps = [
+            "@/folly/io"
+           ],
+    type = 'gtest',
+)
+
+thrift_library(
+    name = 'protocol_benchmark_if',
+    languages = ['cpp2'],
+    thrift_srcs = {
+        'ProtocolBenchmark.thrift' : [],
+    },
+)
+
+cpp_binary(
+    name = 'protocol_test',
+    srcs = [
+        'ProtocolTest.cpp',
+    ],
+    deps = [
+        ':protocol_benchmark_if-cpp2',
+        '@/thrift/lib/cpp2/protocol',
+        '@/folly:benchmark',
+    ],
+    external_deps = [
+        'gtest',
+    ],
+)

@@ -1,0 +1,10 @@
+cpp_library (
+  name = "reflection-cpp",
+  thrift_srcs = {
+    "reflection.thrift" : [],
+  },
+  external_deps = [
+    ('boost', None),
+  ],
+  thrift_cpp_options = "bootstrap",
+)

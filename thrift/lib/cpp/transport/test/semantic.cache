@@ -1,0 +1,27 @@
+;; Object test/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "test/"
+  :tables (list
+   (semanticdb-table "THeaderTest.cpp"
+    :major-mode 'c++-mode
+    :tags '(("thrift/lib/cpp/transport/THeader.h" include nil nil [806 851]) ("boost/test/unit_test.hpp" include (:system-flag t) nil [853 888]) ("boost/shared_ptr.hpp" include (:system-flag t) nil [889 920]) ("folly/experimental/io/IOBuf.h" include nil nil [921 961]) ("folly/experimental/io/IOBufQueue.h" include nil nil [962 1007]) ("BOOST_AUTO_TEST_CASE" function (:arguments (("" variable (:type ("largetransform" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1152 1167])) :type "int") nil [1131 1886]) ("init_unit_test_suite" function (:pointer 1 :arguments (("argc" variable (:type "int") (reparse-symbol arg-sub-list) [1939 1948]) ("argv" variable (:pointer 1 :dereference 1 :type "char") (reparse-symbol arg-sub-list) [1949 1962])) :type ("boost::unit_test::test_suite" type (:type "class") nil nil)) nil [1888 2164]))
+    :file "THeaderTest.cpp"
+    :pointmax 2166
+    )
+   (semanticdb-table "TransportTest.cpp"
+    :major-mode 'c++-mode
+    :tags '(("cerrno" include (:system-flag t) nil [806 823]) ("exception" include (:system-flag t) nil [824 844]) ("iostream" include (:system-flag t) nil [845 864]) ("thrift/lib/cpp/transport/TMemPagedTransport.tcc" include nil nil [866 924]) ("unistd.h" include (:system-flag t) nil [926 945]) ("apache" type (:members (("thrift" type (:members (("transport" type (:members (("testFixedMemoryPagedTransport" function (:type "void") (reparse-symbol namespacesubparts) [1060 2827])) :type "namespace") (reparse-symbol namespacesubparts) [1037 2831])) :type "namespace") (reparse-symbol namespacesubparts) [1018 2832])) :type "namespace") nil [999 2833]) ("main" function (:arguments (("argc" variable (:type "int") (reparse-symbol arg-sub-list) [2873 2882]) ("argv" variable (:pointer 2 :type "char") (reparse-symbol arg-sub-list) [2883 2894])) :type "int") nil [2864 2972]))
+    :file "TransportTest.cpp"
+    :pointmax 2973
+    )
+   (semanticdb-table "TARGETS"
+    :major-mode 'python-mode
+    :tags 'nil
+    :file "TARGETS"
+    :pointmax 1319
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

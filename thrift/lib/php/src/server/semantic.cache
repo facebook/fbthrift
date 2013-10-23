@@ -1,0 +1,15 @@
+;; Object server/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "server/"
+  :tables (list
+   (semanticdb-table "TServer.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "TServer.php"
+    :pointmax 5645
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

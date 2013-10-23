@@ -1,0 +1,25 @@
+---
+abstract: unknown
+author:
+  - 'T Jake Luciani <jakers@gmail.com>'
+build_requires:
+  ExtUtils::MakeMaker: 0
+configure_requires:
+  ExtUtils::MakeMaker: 0
+dynamic_config: 0
+generated_by: 'ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.112150'
+license: unknown
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Thrift
+no_index:
+  directory:
+    - t
+    - inc
+requires:
+  Bit::Vector: 0
+  Class::Accessor: 0
+  Compress::Zlib: 0
+  IO::String: 0
+version: 0.1

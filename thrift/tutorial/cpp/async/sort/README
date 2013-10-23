@@ -1,0 +1,30 @@
+This example builds 3 programs:
+
+- SortServer:
+
+  This program listens on port 12345 by default, and handles sort() requests.
+  It accepts a list of integers, and returns the list sorted in ascending
+  order.
+
+  Although it uses TEventServer, the operation isn't really asynchronous, so
+  the callback is always invoked immediately.
+
+- SortClient
+
+  This program reads a list of integers on stdin, connects to the specified
+  server to sort them, and prints the result on stdout.
+
+- SortDistributor:
+
+  This program accepts a list of sort server addresses as arguments.  At least
+  2 sort servers must be specified.  When it receives a sort request, it breaks
+  the list into chunks, and distributes the chunks among the sort servers it
+  knows about.  When all the responses have been received, it merges the
+  resulting list and returns it.
+
+  This is perhaps the most interesting example, as the server performs the
+  backend sort calls in parallel using the cob version of the client, and then
+  asynchronously responds to the original request.
+
+  The SortDistributor can be configured to point to itself.  This isn't
+  realistic for most scenarios, but does exercise the code more thoroughly.

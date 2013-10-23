@@ -1,0 +1,85 @@
+python_library (
+  name = "py",
+  base_module = "thrift",
+  srcs = [
+          "Thrift.py",
+          "transport/TTransport.py",
+          "transport/THeaderTransport.py",
+          "transport/TSocket.py",
+          "transport/TSSLSocket.py",
+          "transport/THttpClient.py",
+          "protocol/TProtocol.py",
+          "protocol/TBinaryProtocol.py",
+          "protocol/TSimpleJSONProtocol.py",
+          "protocol/TCompactProtocol.py",
+          "protocol/THeaderProtocol.py",
+          "protocol/TJSONProtocol.py",
+          "server/TServer.py",
+          "server/TNonblockingServer.py",
+          "server/TProcessPoolServer.py",
+          "server/THttpServer.py",
+          "util/__init__.py",
+          "util/Serializer.py",
+          "util/TValidator.py",
+         ],
+  external_deps = [
+        ( 'python-snappy', '0.3.2' ),
+        ],
+)
+
+python_library (
+  name = 'gevent',
+  base_module = 'thrift',
+  srcs = [
+          'server/TGeventServer.py',
+          ],
+  deps = [
+          ':py',
+          ],
+    external_deps = [
+        ('gevent', 'any'),
+        ],
+)
+
+python_library (
+  name = "twisted",
+  base_module = "thrift",
+  srcs = [
+          "transport/TTwisted.py",
+         ],
+  deps = [
+    ":py",
+  ],
+  external_deps = [
+    ('Twisted', 'any')
+  ]
+)
+
+cpp_python_extension(
+    name = '_cpp_server_wrapper',
+    base_module = '',
+    srcs = [ "server/CppServerWrapper.cpp" ],
+    deps = [ "@/thrift/lib/cpp2:server",
+             '@/folly/io',
+         ],
+    external_deps = [ ('boost', None, 'boost_python') ],
+)
+
+python_library(
+    name = 'cpp_server',
+    base_module = "thrift",
+    srcs = [ "server/TCppServer.py" ],
+    deps = [
+        ':_cpp_server_wrapper',
+        ],
+    )
+
+# Individual projects will need to explicitly depend on this if they
+# use TBinaryProtocolAccelerated, and want the code to actually be accelerated.
+cpp_python_extension(
+  name = "fastbinary",
+  srcs = [
+    "protocol/fastbinary.c",
+  ],
+  base_module='thrift.protocol',
+)

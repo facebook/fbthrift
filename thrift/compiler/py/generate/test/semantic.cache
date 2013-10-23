@@ -1,0 +1,15 @@
+;; Object test/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "test/"
+  :tables (list
+   (semanticdb-table "TARGETS"
+    :major-mode 'python-mode
+    :tags '(("python_unittest" code nil nil [2 464]))
+    :file "TARGETS"
+    :pointmax 465
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

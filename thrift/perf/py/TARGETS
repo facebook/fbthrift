@@ -1,0 +1,71 @@
+python_library(
+  name = 'load-handler-twisted',
+  base_module = 'apache.thrift.test.twisted',
+  srcs = [
+    'load_handler.py',
+  ],
+  deps = [
+    '@/thrift/perf/if:load-py-twisted',
+  ],
+)
+
+python_library(
+  name = 'load-handler',
+  base_module = 'apache.thrift.test',
+  srcs = [
+    'sync_load_handler.py',
+  ],
+  deps = [
+    '@/thrift/perf/if:load-py',
+  ],
+)
+
+python_library(
+  name = 'py3-load-handler',
+  base_module = 'apache.thrift.test.py3',
+  srcs = [
+    'py3_load_handler.py',
+  ],
+  deps = [
+    '@/thrift/perf/if:load-py',
+  ],
+)
+
+python_binary(
+  name = 'TwistedServer',
+  base_module = 'apache.thrift.test.twisted',
+  main_module = 'apache.thrift.test.twisted.twisted_server',
+  srcs = [
+    'twisted_server.py',
+  ],
+  deps = [
+    ':load-handler-twisted',
+    '@/thrift/lib/py:twisted',
+  ],
+)
+
+python_binary(
+  name = 'TestServer',
+  base_module = '',
+  main_module = 'test_server',
+  srcs = [
+    'test_server.py',
+  ],
+  deps = [
+    ':load-handler',
+    '@/thrift/lib/py:gevent',
+  ],
+)
+
+python_binary(
+  name = 'Py3Server',
+  base_module = '',
+  main_module = 'py3_test_server',
+  srcs = [
+    'py3_test_server.py',
+  ],
+  deps = [
+    ':py3-load-handler',
+    '@/thrift/lib/py',
+  ],
+)

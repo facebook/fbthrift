@@ -1,0 +1,15 @@
+;; Object php/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "php/"
+  :tables (list
+   (semanticdb-table "standalone_server.php"
+    :major-mode 'php-mode
+    :tags '(("catch" function (:arguments (("$tx" variable (:type ("TException" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1981 1996])) :type "int") nil [1974 2050]))
+    :file "standalone_server.php"
+    :pointmax 2055
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

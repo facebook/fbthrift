@@ -1,0 +1,19 @@
+java_binary (
+    name = "server",
+    main_class = "com.facebook.swift.exampleservice.App",
+    srcs = util.files("src/main/java/com/facebook/swift/exampleservice/*.java"),
+    aether_deps = [
+        "com.facebook.swift:swift-service:0.10.0",
+        "com.facebook.swift:swift-fb303:0.10.0",
+        "com.facebook.nifty:nifty-header-protocol:0.10.0",
+        "com.mycila:mycila-guice:2.10.ga",
+        "io.airlift:bootstrap:0.83",
+        "io.airlift:jmx:0.83",
+        ],
+    deps = [
+        "@/external/slf4j:api",
+        "@/external/slf4j:simple",
+        ],
+    openjdk = True,
+    onejar_guice_compatibility = True,
+    )

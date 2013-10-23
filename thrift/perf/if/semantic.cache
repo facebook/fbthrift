@@ -1,0 +1,15 @@
+;; Object if/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "if/"
+  :tables (list
+   (semanticdb-table "TARGETS"
+    :major-mode 'python-mode
+    :tags '(("thrift_library" code nil nil [1 250]) ("python_library" code nil nil [252 463]))
+    :file "TARGETS"
+    :pointmax 464
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

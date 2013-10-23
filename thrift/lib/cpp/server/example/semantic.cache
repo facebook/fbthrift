@@ -1,0 +1,39 @@
+;; Object example/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "example/"
+  :tables (list
+   (semanticdb-table "TARGETS"
+    :major-mode 'python-mode
+    :tags '(("cpp_library" code nil nil [51 279]))
+    :file "TARGETS"
+    :pointmax 281
+    )
+   (semanticdb-table "TThreadPoolServer.cpp"
+    :major-mode 'c++-mode
+    :tags '(("common/base/Deprecation.h" include nil nil [806 842]) ("thrift/lib/cpp/server/example/TThreadPoolServer.h" include nil nil [902 962]) ("thrift/lib/cpp/concurrency/Thread.h" include nil nil [964 1010]) ("thrift/lib/cpp/concurrency/ThreadManager.h" include nil nil [1011 1064]) ("thrift/lib/cpp/server/TRpcTransportContext.h" include nil nil [1065 1120]) ("thrift/lib/cpp/transport/TSocketAddress.h" include nil nil [1121 1173]) ("thrift/lib/cpp/transport/TTransportException.h" include nil nil [1174 1231]) ("string" include (:system-flag t) nil [1233 1250]) ("iostream" include (:system-flag t) nil [1251 1270]) ("apache" type (:members (("thrift" type (:members (("server" type (:members (("Task" type (:parent "TThreadPoolServer" :superclasses ("Runnable") :members (("public" label nil (reparse-symbol classsubparts) [1591 1598]) ("Task" function (:constructor-flag t :arguments (("server" variable (:type ("TThreadPoolServer" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1607 1633]) ("" variable (:type ("shared_ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1641 1662]) ("" variable (:type ("input" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1663 1669]) ("" variable (:type ("shared_ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1677 1698]) ("" variable (:type ("output" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1699 1706]) ("transport" variable (:type ("shared_ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1714 1750])) :type ("Task" type "class")) (reparse-symbol classsubparts) [1602 1949]) ("Task" function (:destructor-flag t :type "void") (reparse-symbol classsubparts) [1953 1963]) ("run" function (:type "void") (reparse-symbol classsubparts) [1967 2150]) ("getConnectionContext" function (:pointer 1 :type ("TConnectionContext" type (:type "class") nil nil)) (reparse-symbol classsubparts) [2154 2224]) ("private" label nil (reparse-symbol classsubparts) [2227 2235]) ("runImpl" function (:type "void") (reparse-symbol classsubparts) [2238 3762]) ("server_" variable (:type ("TThreadPoolServer" type (:type "class") nil nil)) (reparse-symbol classsubparts) [3766 3793]) ("processor_" variable (:type ("shared_ptr" type (:type "class") nil nil)) (reparse-symbol classsubparts) [3796 3830]) ("input_" variable (:type ("shared_ptr" type (:type "class") nil nil)) (reparse-symbol classsubparts) [3833 3862]) ("output_" variable (:type ("shared_ptr" type (:type "class") nil nil)) (reparse-symbol classsubparts) [3865 3895]) ("context_" variable (:type ("TRpcTransportContext" type (:type "class") nil nil)) (reparse-symbol classsubparts) [3898 3928])) :type "class") (reparse-symbol namespacesubparts) [1540 3931]) ("TThreadPoolServer" function (:destructor-flag t :parent "TThreadPoolServer" :type "void") (reparse-symbol namespacesubparts) [3933 3975]) ("serve" function (:parent "TThreadPoolServer" :type "void") (reparse-symbol namespacesubparts) [3977 6725]) ("getTimeout" function (:parent "TThreadPoolServer" :type ("int64_t" type (:type "class") nil nil)) (reparse-symbol namespacesubparts) [6727 6795]) ("setTimeout" function (:parent "TThreadPoolServer" :arguments (("value" variable (:type ("int64_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6832 6846])) :type "void") (reparse-symbol namespacesubparts) [6797 6870]) ("getConnectionContext" function (:pointer 1 :parent "TThreadPoolServer" :type ("TConnectionContext" type (:type "class") nil nil)) (reparse-symbol namespacesubparts) [6872 7052]) ("setCurrentTask" function (:parent "TThreadPoolServer" :arguments (("task" variable (:pointer 1 :type ("Task" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7093 7104])) :type "void") (reparse-symbol namespacesubparts) [7054 7172]) ("clearCurrentTask" function (:parent "TThreadPoolServer" :type "void") (reparse-symbol namespacesubparts) [7174 7244])) :type "namespace") (reparse-symbol namespacesubparts) [1310 7247])) :type "namespace") (reparse-symbol namespacesubparts) [1291 7248])) :type "namespace") nil [1272 7249]))
+    :file "TThreadPoolServer.cpp"
+    :pointmax 7276
+    )
+   (semanticdb-table "TThreadPoolServer.h"
+    :major-mode 'c++-mode
+    :tags '(("THRIFT_SERVER_TTHREADPOOLSERVER_H" variable (:constant-flag t :default-value (nil)) nil [848 891]) ("common/base/Deprecation.h" include nil nil [893 929]) ("thrift/lib/cpp/concurrency/ThreadManager.h" include nil nil [930 983]) ("thrift/lib/cpp/server/TServer.h" include nil nil [984 1026]) ("thrift/lib/cpp/transport/TServerTransport.h" include nil nil [1027 1081]) ("thrift/lib/cpp/concurrency/ThreadLocal.h" include nil nil [1082 1133]) ("boost/shared_ptr.hpp" include (:system-flag t) nil [1135 1166]) ("apache" type (:members (("thrift" type (:members (("server" type (:type "namespace") (reparse-symbol namespacesubparts) [1206 4701])) :type "namespace") (reparse-symbol namespacesubparts) [1187 4702])) :type "namespace") nil [1168 4703]))
+    :file "TThreadPoolServer.h"
+    :pointmax 4783
+    )
+   (semanticdb-table "TSimpleServer.cpp"
+    :major-mode 'c++-mode
+    :tags '(("common/base/Deprecation.h" include nil nil [806 842]) ("thrift/lib/cpp/server/example/TSimpleServer.h" include nil nil [902 958]) ("thrift/lib/cpp/server/TRpcTransportContext.h" include nil nil [960 1015]) ("thrift/lib/cpp/transport/TSocketAddress.h" include nil nil [1016 1068]) ("thrift/lib/cpp/transport/TTransportException.h" include nil nil [1069 1126]) ("string" include (:system-flag t) nil [1127 1144]) ("iostream" include (:system-flag t) nil [1145 1164]) ("apache" type (:members (("thrift" type (:members (("server" type (:members (("serve" function (:parent "TSimpleServer" :type "void") (reparse-symbol namespacesubparts) [1471 5399]) ("stop" function (:parent "TSimpleServer" :type "void") (reparse-symbol namespacesubparts) [5447 5846]) ("getConnectionContext" function (:pointer 1 :parent "TSimpleServer" :type ("TConnectionContext" type (:type "class") nil nil)) (reparse-symbol namespacesubparts) [5848 5940])) :type "namespace") (reparse-symbol namespacesubparts) [1204 5943])) :type "namespace") (reparse-symbol namespacesubparts) [1185 5944])) :type "namespace") nil [1166 5945]))
+    :file "TSimpleServer.cpp"
+    :pointmax 5972
+    )
+   (semanticdb-table "TSimpleServer.h"
+    :major-mode 'c++-mode
+    :tags '(("THRIFT_SERVER_TSIMPLESERVER_H" variable (:constant-flag t :default-value (nil)) nil [844 883]) ("common/base/Deprecation.h" include nil nil [885 921]) ("thrift/lib/cpp/server/TServer.h" include nil nil [922 964]) ("thrift/lib/cpp/transport/TServerTransport.h" include nil nil [965 1019]) ("apache" type (:members (("thrift" type (:members (("server" type (:type "namespace") (reparse-symbol namespacesubparts) [1059 3676])) :type "namespace") (reparse-symbol namespacesubparts) [1040 3677])) :type "namespace") nil [1021 3678]))
+    :file "TSimpleServer.h"
+    :pointmax 3754
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

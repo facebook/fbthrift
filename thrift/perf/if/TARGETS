@@ -1,0 +1,19 @@
+thrift_library(
+  name = 'load',
+  languages = ['cpp', 'cpp2', 'py', 'java'],
+  thrift_srcs = {'load.thrift' : ['LoadTest']},
+  thrift_cpp_options = 'templates,cob_style',
+  thrift_py_options = 'new_style',
+  py_base_module = 'apache.thrift.test',
+  deps = [
+        '@/common/fb303/if:fb303',
+  ],
+)
+
+python_library(
+  name = 'load-py-twisted',
+  output_subdir = 'twisted',
+  thrift_srcs = {'load.thrift' : ['LoadTest']},
+  base_module = 'apache.thrift.test.twisted',
+  thrift_py_options = 'new_style,twisted',
+)

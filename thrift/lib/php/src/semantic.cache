@@ -1,0 +1,15 @@
+;; Object src/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "src/"
+  :tables (list
+    (semanticdb-table "Thrift.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "Thrift.php"
+    :pointmax 22875
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0beta3"
+  :semanticdb-version "2.0beta3"
+  )

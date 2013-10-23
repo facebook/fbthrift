@@ -1,0 +1,101 @@
+cpp_library(
+  name = 'util',
+  srcs = [
+    'ScopedServerThread.cpp',
+    'ServerCreatorBase.cpp',
+    'SocketRetriever.cpp',
+    'SyncServerCreator.cpp',
+    'TThreadedServerCreator.cpp',
+  ],
+  deps = [
+    '@/thrift/lib/cpp/server',
+    '@/thrift/lib/cpp/protocol',
+    '@/folly',
+  ],
+)
+
+cpp_library(
+  name = 'internal_util',
+  srcs = [
+    'VarintUtils.cpp',
+    'FdUtils.cpp',
+  ],
+  deps = [
+    '@/folly',
+  ],
+  external_deps = [
+    ('gflags', None, 'gflags'),
+    ('glog', None, 'glog'),
+  ],
+)
+
+cpp_library(
+  name = 'nonblocking',
+  srcs = [
+  'TNonblockingServerCreator.cpp',
+  ],
+  deps = [
+    ':util',
+    '@/thrift/lib/cpp/server:nonblocking',
+  ],
+)
+
+cpp_library(
+  name = 'async',
+  srcs = [
+  'TEventServerCreator.cpp',
+  ],
+  deps = [
+    ':util',
+    '@/thrift/lib/cpp/async',
+  ],
+)
+
+cpp_library(
+  name = 'httpparser',
+  srcs = [
+  'THttpParser.cpp',
+  ],
+  deps = [
+    '@/thrift/lib/cpp/transport',
+  ],
+)
+
+cpp_unittest(
+  name = 'ThriftSerializerTest',
+  srcs = [ 'ThriftSerializerTest.cpp' ],
+  thrift_srcs = { 'ThriftSerializerTest.thrift' : [ ] },
+  thrift_cpp_options = 'templates',
+  deps = [
+    '@/common/strings:strings',
+    '@/common/fbunit',
+  ],
+)
+
+cpp_library (
+  name = 'frozen_util',
+  srcs = [
+    #header only
+  ],
+  deps = [
+    '@/folly',
+    '@/thrift/lib/cpp:thrift_base',
+  ],
+  external_deps = [
+    ('glog', None),
+  ],
+)
+
+cpp_library (
+  name = 'frozen_test_util',
+  srcs = [
+    #header only
+  ],
+  deps = [
+    ':frozen_util',
+    '@/folly/experimental:test_util',
+  ],
+  external_deps = [
+    ('glog', None),
+  ],
+)
