@@ -30,6 +30,9 @@ lib_path = glob.glob('../../lib/py/build/lib.*')
 if lib_path:
   sys.path.insert(0, lib_path[0])
 
+if sys.version_info[0] >= 3:
+    xrange = range
+
 from ThriftTest import ThriftTest
 from ThriftTest.ttypes import *
 from thrift.transport import TTransport
@@ -79,12 +82,12 @@ class TestEof(unittest.TestCase):
 
     x = Xtruct()
     x.read(prot)
-    self.assertEqual(x.string_thing, "Zero")
+    self.assertEqual(x.string_thing, b"Zero")
     self.assertEqual(x.byte_thing, 0)
 
     x = Xtruct()
     x.read(prot)
-    self.assertEqual(x.string_thing, "One")
+    self.assertEqual(x.string_thing, b"One")
     self.assertEqual(x.byte_thing, 1)
 
     try:

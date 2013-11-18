@@ -26,6 +26,7 @@ from __future__ import unicode_literals
 from .TTransport import TTransportBase, TTransportException, \
         TServerTransportBase
 import os
+import sys
 import errno
 import select
 import socket
@@ -103,9 +104,11 @@ class TSocketBase(TTransportBase):
                                 socket.AI_PASSIVE | socket.AI_ADDRCONFIG)
 
   def close(self):
-    for handle in self.handles.values():
-      del self.handles[handle.fileno()]
-      handle.close()
+    klist = self.handles.keys() if sys.version_info[0] < 3 else \
+        list(self.handles.keys())
+    for key in klist:
+      self.handles[key].close()
+      del self.handles[key]
 
   def getSocketName(self):
     if not self.handles:
@@ -117,7 +120,10 @@ class TSocketBase(TTransportBase):
     if not self.handles:
       raise TTransportException(TTransportException.NOT_OPEN,
           'Transport not open')
-    return self.handles.values()[0].fileno()
+    if sys.version_info[0] >= 3:
+      return list(self.handles.values())[0].fileno()
+    else:
+      return self.handles.values()[0].fileno()
 
   def setCloseOnExec(self, closeOnExec):
     self.close_on_exec = closeOnExec

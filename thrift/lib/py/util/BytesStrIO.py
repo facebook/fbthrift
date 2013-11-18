@@ -22,17 +22,24 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from os import path
-from SCons.Builder import Builder
+import sys
 
-def scons_env(env, add=''):
-    opath = path.dirname(path.abspath('$TARGET'))
-    lstr = 'thrift --gen cpp -o ' + opath + ' ' + add + ' $SOURCE'
-    cppbuild = Builder(action=lstr)
-    env.Append(BUILDERS={'ThriftCpp': cppbuild})
+if sys.version_info[0] >= 3:
 
-def gen_cpp(env, dir, file):
-    scons_env(env)
-    suffixes = ['_types.h', '_types.cpp']
-    targets = ['gen-cpp' + file + s for s in suffixes]
-    return env.ThriftCpp(targets, dir + file + '.thrift')
+    from io import BytesIO
+
+    class BytesStrIO(BytesIO):
+        def __init__(self, *args):
+            args_new = []
+            for arg in args:
+                if not isinstance(arg, bytes):
+                    args_new.append(arg.encode())
+                else:
+                    args_new.append(arg)
+            BytesIO.__init__(self, *args_new)
+
+        def write(self, data):
+            if isinstance(data, bytes):
+                BytesIO.write(self, data)
+            else:
+                BytesIO.write(self, data.encode())

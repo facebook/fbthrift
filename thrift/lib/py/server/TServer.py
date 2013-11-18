@@ -27,7 +27,11 @@ import sys
 import os
 import traceback
 import threading
-import Queue
+if sys.version_info[0] >= 3:
+    import queue
+    Queue = queue
+else:
+    import Queue
 import warnings
 
 from thrift.Thrift import TProcessor, TApplicationException

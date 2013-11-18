@@ -8,6 +8,7 @@ from .TTransport import *
 import socket
 import ssl
 import traceback
+import sys
 
 # workaround for a python bug.  see http://bugs.python.org/issue8484
 import hashlib
@@ -55,7 +56,8 @@ class TSSLSocket(TSocket):
         # validate the peer certificate commonName against the hostname (or
         # given name) that we were expecting.
         cert = sslh.getpeercert()
-        if isinstance(self.verify_name, (str, unicode)):
+        str_type = (str, unicode) if sys.version_info[0] < 3 else str
+        if isinstance(self.verify_name, str_type):
           valid_names = self._getCertNames(cert)
           name = self.verify_name
         else:

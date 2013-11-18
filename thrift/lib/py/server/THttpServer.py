@@ -22,7 +22,12 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import BaseHTTPServer
+import sys
+if sys.version_info[0] >= 3:
+    from http import server
+    BaseHTTPServer = server
+else:
+    import BaseHTTPServer
 
 from thrift.server import TServer
 from thrift.transport import TTransport

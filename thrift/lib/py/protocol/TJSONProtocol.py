@@ -29,32 +29,32 @@ __all__ = ['TJSONProtocol', 'TJSONProtocolFactory']
 
 VERSION = 1
 
-COMMA = b','
-COLON = b':'
-LBRACE = b'{'
-RBRACE = b'}'
-LBRACKET = b'['
-RBRACKET = b']'
-QUOTE = b'"'
-BACKSLASH = b'\\'
-ZERO = b'0'
+COMMA = ','
+COLON = ':'
+LBRACE = '{'
+RBRACE = '}'
+LBRACKET = '['
+RBRACKET = ']'
+QUOTE = '"'
+BACKSLASH = '\\'
+ZERO = '0'
 
-ESCSEQ = b'\\u00'
-ESCAPE_CHAR = b'"\\bfnrt'
-ESCAPE_CHAR_VALS = [b'"', b'\\', b'\b', b'\f', b'\n', b'\r', b'\t']
-NUMERIC_CHAR = b'+-.0123456789Ee'
+ESCSEQ = '\\u00'
+ESCAPE_CHAR = '"\\bfnrt'
+ESCAPE_CHAR_VALS = ['"', '\\', '\b', '\f', '\n', '\r', '\t']
+NUMERIC_CHAR = '+-.0123456789Ee'
 
-CTYPES = {TType.BOOL:       b'tf',
-          TType.BYTE:       b'i8',
-          TType.I16:        b'i16',
-          TType.I32:        b'i32',
-          TType.I64:        b'i64',
-          TType.DOUBLE:     b'dbl',
-          TType.STRING:     b'str',
-          TType.STRUCT:     b'rec',
-          TType.LIST:       b'lst',
-          TType.SET:        b'set',
-          TType.MAP:        b'map'}
+CTYPES = {TType.BOOL:       'tf',
+          TType.BYTE:       'i8',
+          TType.I16:        'i16',
+          TType.I32:        'i32',
+          TType.I64:        'i64',
+          TType.DOUBLE:     'dbl',
+          TType.STRING:     'str',
+          TType.STRUCT:     'rec',
+          TType.LIST:       'lst',
+          TType.SET:        'set',
+          TType.MAP:        'map'}
 
 JTYPES = {}
 for key in CTYPES.keys():
@@ -118,7 +118,7 @@ class JSONPairContext(JSONBaseContext):
 
 class LookaheadReader():
   hasData = False
-  data = b''
+  data = ''
 
   def __init__(self, protocol):
     self.protocol = protocol
@@ -128,12 +128,16 @@ class LookaheadReader():
       self.hasData = False
     else:
       self.data = self.protocol.trans.read(1)
+    if sys.version_info[0] >= 3 and isinstance(self.data, bytes):
+        self.data = str(self.data, 'utf-8')
     return self.data
 
   def peek(self):
     if self.hasData is False:
       self.data = self.protocol.trans.read(1)
     self.hasData = True
+    if sys.version_info[0] >= 3 and isinstance(self.data, bytes):
+        self.data = str(self.data, 'utf-8')
     return self.data
 
 class TJSONProtocolBase(TProtocolBase):
@@ -166,7 +170,7 @@ class TJSONProtocolBase(TProtocolBase):
     self.context.write()
     jsNumber = str(number)
     if self.context.escapeNum():
-      jsNumber = b"%s%s%s" % (QUOTE, jsNumber,  QUOTE)
+      jsNumber = "%s%s%s" % (QUOTE, jsNumber,  QUOTE)
     self.trans.write(jsNumber)
 
   def writeJSONBase64(self, binary):
@@ -213,7 +217,12 @@ class TJSONProtocolBase(TProtocolBase):
         if character == ESCSEQ[1]:
           self.readJSONSyntaxChar(ZERO)
           self.readJSONSyntaxChar(ZERO)
-          character = json.JSONDecoder().decode(b'"\u00%s"' % self.trans.read(2))
+          data = self.trans.read(2)
+          if sys.version_info[0] >= 3 and isinstance(data, bytes):
+            character = json.JSONDecoder().decode(
+                    '"\\u00%s"' % str(data, 'utf-8'))
+          else:
+            character = json.JSONDecoder().decode('"\\u00%s"' % data)
         else:
           off = ESCAPE_CHAR.find(character)
           if off == -1:
@@ -221,7 +230,7 @@ class TJSONProtocolBase(TProtocolBase):
                                      "Expected control char")
           character = ESCAPE_CHAR_VALS[off]
       string.append(character)
-    return b''.join(string)
+    return ''.join(string)
 
   def isJSONNumeric(self, character):
     return (True if NUMERIC_CHAR.find(character) != - 1 else False)
@@ -237,7 +246,7 @@ class TJSONProtocolBase(TProtocolBase):
       if self.isJSONNumeric(character) is False:
         break
       numeric.append(self.reader.read())
-    return b''.join(numeric)
+    return ''.join(numeric)
 
   def readJSONInteger(self):
     self.context.read()

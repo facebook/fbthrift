@@ -64,7 +64,7 @@ class TestUnionStructs(unittest.TestCase):
         j = {'string_field': 'test'}
         self._test_json(j, v)
 
-    def _test_read_write(self, u):
+    def _test_read_write(self, u, j):
         protocol_factory = TBinaryProtocol.TBinaryProtocolAcceleratedFactory()
         databuf = TTransport.TMemoryBuffer()
         prot = protocol_factory.getProtocol(databuf)
@@ -74,17 +74,17 @@ class TestUnionStructs(unittest.TestCase):
         prot = protocol_factory.getProtocol(ndatabuf)
         v = TestUnion()
         v.read(prot)
-        self.assertEquals(u, v)
+        self.assertEquals(v, j)
 
     def test_read_write(self):
         l = [
-            TestUnion(string_field='test'),
-            TestUnion(),
-            TestUnion(i32_field=100),
+            (TestUnion(string_field='test'), TestUnion(string_field=b'test')),
+            (TestUnion(), TestUnion()),
+            (TestUnion(i32_field=100), TestUnion(i32_field=100))
         ]
 
-        for i in l:
-            self._test_read_write(i)
+        for i, j in l:
+            self._test_read_write(i, j)
 
     def _test_json_output(self, u, j):
         protocol_factory = TSimpleJSONProtocol.TSimpleJSONProtocolFactory()
@@ -92,7 +92,7 @@ class TestUnionStructs(unittest.TestCase):
         prot = protocol_factory.getProtocol(databuf)
         u.write(prot)
 
-        self.assertEquals(j, json.loads(databuf.getvalue()))
+        self.assertEquals(j, json.loads(databuf.getvalue().decode()))
 
     def test_json_output(self):
         l = [

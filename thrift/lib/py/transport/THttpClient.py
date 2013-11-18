@@ -23,15 +23,24 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from .TTransport import *
-from cStringIO import StringIO
 
-import urlparse
-import httplib
 import os
 import socket
 import sys
-import urllib
 import warnings
+
+if sys.version_info[0] >= 3:
+    from io import StringIO
+    from urllib import parse
+    from http import client
+    urlparse = parse
+    urllib = parse
+    httplib = client
+else:
+    from cStringIO import StringIO
+    import urlparse
+    import httplib
+    import urllib
 
 class THttpClient(TTransportBase):
 
@@ -141,7 +150,11 @@ class THttpClient(TTransportBase):
       self.__http.putheader('User-Agent', user_agent)
 
     if self.__custom_headers:
-        for key, val in self.__custom_headers.iteritems():
+        if sys.version_info[0] > 3:
+            custom_headers_iter = self.__custom_headers.items()
+        else:
+            custom_headers_iter = self.__custom_headers.iteritems()
+        for key, val in custom_headers_iter:
             self.__http.putheader(key, val)
 
     self.__http.endheaders()

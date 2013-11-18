@@ -30,6 +30,9 @@ lib_path = glob.glob('../../lib/py/build/lib.*')
 if lib_path:
   sys.path.insert(0, lib_path[0])
 
+if sys.version_info[0] >= 3:
+    xrange = range
+
 from ThriftTest import ThriftTest
 from ThriftTest.ttypes import *
 from thrift.transport import TTransport

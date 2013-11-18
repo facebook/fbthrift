@@ -22,17 +22,17 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from os import path
-from SCons.Builder import Builder
+from ThriftTest import ThriftTest
+from ThriftTest.ttypes import *
+from ThriftTest.SecondService import *
 
-def scons_env(env, add=''):
-    opath = path.dirname(path.abspath('$TARGET'))
-    lstr = 'thrift --gen cpp -o ' + opath + ' ' + add + ' $SOURCE'
-    cppbuild = Builder(action=lstr)
-    env.Append(BUILDERS={'ThriftCpp': cppbuild})
+import unittest
 
-def gen_cpp(env, dir, file):
-    scons_env(env)
-    suffixes = ['_types.h', '_types.cpp']
-    targets = ['gen-cpp' + file + s for s in suffixes]
-    return env.ThriftCpp(targets, dir + file + '.thrift')
+# do nothing, just verify imports work
+class NoopTest(unittest.TestCase):
+    def testNoop(self):
+        pass
+
+if __name__ == '__main__':
+    unittest.main()
+

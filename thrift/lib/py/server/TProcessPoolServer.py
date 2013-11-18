@@ -23,6 +23,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import logging
+import collections
 from multiprocessing import  Process, Value, Condition, reduction
 
 from .TServer import TServer
@@ -46,7 +47,7 @@ class TProcessPoolServer(TServer):
         self.postForkCallback = None
 
     def setPostForkCallback(self, callback):
-        if not callable(callback):
+        if not isinstance(callback, collections.Callable):
             raise TypeError("This is not a callback!")
         self.postForkCallback = callback
 

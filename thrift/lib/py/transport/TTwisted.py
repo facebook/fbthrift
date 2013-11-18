@@ -32,7 +32,12 @@ from twisted.python import log
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
 from thrift.server import TServer
 from thrift.transport import TTransport
-from cStringIO import StringIO
+
+import sys
+if sys.version_info[0] >= 3:
+    from io import StringIO
+else:
+    from cStringIO import StringIO
 
 
 class TMessageSenderTransport(TTransport.TTransportBase):
@@ -86,7 +91,11 @@ class ThriftClientProtocol(basic.Int32StringReceiver):
         self.started.callback(self.client)
 
     def connectionLost(self, reason=connectionDone):
-        for k, v in self.client._reqs.iteritems():
+        if sys.version_info[0] >= 3:
+            client_req_iter = self.client._reqs.items()
+        else:
+            client_req_iter = self.client._reqs.iteritems()
+        for k, v in client_req_iter:
             tex = TTransport.TTransportException(
                 type=TTransport.TTransportException.END_OF_FILE,
                 message=self._errormsg or 'Connection closed')

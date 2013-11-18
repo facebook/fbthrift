@@ -22,8 +22,17 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import BaseHTTPServer
-from cStringIO import StringIO
+import sys
+if sys.version_info[0] >= 3:
+    from http import server
+    BaseHTTPServer = server
+    xrange = range
+    from thrift.util.BytesStrIO import BytesStrIO
+    StringIO = BytesStrIO
+else:
+    import BaseHTTPServer
+    from cStringIO import StringIO
+
 import getpass
 import os
 from struct import pack, unpack
@@ -32,7 +41,8 @@ import zlib
 
 from thrift.Thrift import TApplicationException
 from thrift.protocol.TBinaryProtocol import TBinaryProtocol
-from .TTransport import *
+from .TTransport import TTransportException, TTransportBase, \
+        CReadableTransport
 from thrift.protocol.TCompactProtocol import getVarint, readVarint
 
 # Import the snappy module if it is available
@@ -482,6 +492,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
   @staticmethod
   def _serialize_string(str_):
+    if sys.version_info[0] >= 3 and not isinstance(str_, bytes):
+      str_ = str_.encode()
     return getVarint(len(str_)) + str_
 
   @staticmethod
@@ -489,7 +501,11 @@ class THeaderTransport(TTransportBase, CReadableTransport):
     if (len(write_headers) > 0):
       info_data.write(getVarint(type))
       info_data.write(getVarint(len(write_headers)))
-      for str_key, str_value in write_headers.iteritems():
+      if sys.version_info[0] >= 3:
+          write_headers_iter = write_headers.items()
+      else:
+          write_headers_iter = write_headers.iteritems()
+      for str_key, str_value in write_headers_iter:
         info_data.write(THeaderTransport._serialize_string(str_key))
         info_data.write(THeaderTransport._serialize_string(str_value))
       write_headers.clear()

@@ -22,6 +22,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import collections
 import logging
 import multiprocessing
 from multiprocessing import  Process
@@ -52,7 +53,7 @@ class TGeventServer(TServer):
         self.postForkCallback = None
 
     def setPostForkCallback(self, callback):
-        if not callable(callback):
+        if not isinstance(callback, collections.Callable):
             raise TypeError("This is not a callback!")
         self.postForkCallback = callback
 

@@ -30,7 +30,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import logging
-import Queue
 import select
 import socket
 import struct
@@ -38,6 +37,13 @@ import sys
 import threading
 import time
 import errno
+
+if sys.version_info[0] >= 3:
+    import queue
+    Queue = queue
+    xrange = range
+else:
+    import Queue
 
 from thrift.server import TServer
 from thrift.Thrift import TProcessor, TApplicationException
@@ -362,7 +368,11 @@ class TNonblockingServer(TServer.TServer):
         if self._readTimeout:
             readExpiration = time.time() - self._readTimeout
 
-        for i, connection in self.clients.items():
+        if sys.version_info[0] >= 3:
+            item_list = list(self.clients.items())
+        else:
+            item_list = self.clients.items()
+        for i, connection in item_list:
             if connection.is_readable(readExpiration):
                 poller.read(connection.fileno())
             if connection.is_writeable():

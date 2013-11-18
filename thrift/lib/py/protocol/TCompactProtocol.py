@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import sys
 from .TProtocol import *
 from struct import pack, unpack
 
@@ -35,15 +36,18 @@ def fromZigZag(n):
   return (n >> 1) ^ -(n & 1)
 
 def getVarint(n):
-  out = []
-  while True:
-    if n & ~0x7f == 0:
-      out.append(n)
-      break
+    out = []
+    while True:
+        if n & ~0x7f == 0:
+            out.append(n)
+            break
+        else:
+            out.append((n & 0xff) | 0x80)
+            n = n >> 7
+    if sys.version_info[0] >= 3:
+        return bytes(out)
     else:
-      out.append((n & 0xff) | 0x80)
-      n = n >> 7
-  return b''.join(map(chr, out))
+        return b''.join(map(chr, out))
 
 def writeVarint(trans, n):
   trans.write(getVarint(n))
@@ -250,6 +254,8 @@ class TCompactProtocol(TProtocolBase):
       self.trans.write(pack(b'f', flt))
 
   def __writeString(self, s):
+    if sys.version_info[0] >= 3 and not isinstance(s, bytes):
+        s = s.encode('utf-8')
     self.__writeSize(len(s))
     self.trans.write(s)
   writeString = writer(__writeString)

@@ -128,6 +128,8 @@ class TBinaryProtocol(TProtocolBase):
     self.trans.write(buff)
 
   def writeString(self, str):
+    if sys.version_info[0] >= 3 and not isinstance(str, bytes):
+      str = str.encode('utf-8')
     self.writeI32(len(str))
     self.trans.write(str)
 
