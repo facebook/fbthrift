@@ -157,7 +157,15 @@ template getMethodMeta(T) if (isService!T) {
  * members, artifacts like package aliases, …
  */
 template isValueMember(T, string name) {
-  static if (!is(MemberType!(T, name))) {
+  // TODO: This is a horrible hack.  thriftOpEqualsImpl() and opEquals()
+  // are member functions that internally use isValueMember().  We can't
+  // try to use MemberType() to examine them, otherwise this will cause
+  // recursive template errors.  Even trying to use is(MemberType!()) generates
+  // errors.
+  static if (name == "thriftOpEqualsImpl" ||
+             name == "opEquals") {
+    enum isValueMember = false;
+  } else static if (!is(MemberType!(T, name))) {
     enum isValueMember = false;
   } else static if (
     is(MemberType!(T, name) == void) ||
