@@ -258,6 +258,9 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "union"              { thrift_reserved_keyword(yytext); }
 "yield"              { thrift_reserved_keyword(yytext); }
 "Object"             { thrift_reserved_keyword(yytext); }
+"Client"             { thrift_reserved_keyword(yytext); }
+"IFace"              { thrift_reserved_keyword(yytext); }
+"Processor"          { thrift_reserved_keyword(yytext); }
 
 {octconstant} {
   errno = 0;
