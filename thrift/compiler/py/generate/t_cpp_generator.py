@@ -1238,6 +1238,96 @@ class CppGenerator(t_generator.Generator):
             y('LOG(ERROR) << {0} << " in oneway function {1}";'.format(
                     errorstr, functionname))
 
+    def _generate_process_function(self, f, service, function):
+        if function.oneway:
+            if self._is_processed_in_eb(function):
+                # Old clients may not send the special
+                # oneway id, so we need to send a fake
+                # response to them while in event base.
+                with f('if (!req->isOneway())') as cb:
+                    cb('req->sendReply(std::unique_ptr<folly::IOBuf>());')
+        f("// make sure getConnectionContext is null")
+        f("// so async calls don't accidentally use it")
+        f('iface_->setConnectionContext(nullptr);')
+        aprefix = 'uarg_'
+        if self.flag_stack_arguments:
+            f('{0}_{1}_args args;'.format(service.name, function.name))
+        else:
+            f('{0}_{1}_pargs args;'.format(service.name, function.name))
+        for field in function.arglist.members:
+            val = ""
+            t = self._get_true_type(field.type)
+            if t.is_base_type or t.is_enum:
+                val = self._member_default_value(field)
+            if self.flag_stack_arguments:
+                pass
+            elif t.is_stream:
+                pass
+            elif self._is_complex_type(field.type):
+                f('std::unique_ptr<{0}> {1}(new {0}({2}));'.format(
+                        self._type_name(field.type), aprefix + field.name, val))
+                f('args.{0} = reinterpret_cast<decltype(args.{0})>({1}.get());'.format(
+                        field.name, aprefix + field.name))
+            else:
+                # use uniform initialization syntax to avoid most vexing parse
+                f('{0} {1}{{{2}}};'.format(
+                        self._type_name(field.type), aprefix + field.name, val))
+                ref_prefix = "&"
+                if self.flag_stack_arguments:
+                    ref_prefix = ""
+                f('args.{0} = {2}{1};'.format(
+                        field.name, aprefix + field.name, ref_prefix))
+        f(('std::unique_ptr<apache::thrift::' +
+           'ContextStack> c(this->getContextStack' +
+           '(this->getServiceName(), "{0}.{1}", ctx));'
+           ).format(service.name, function.name))
+        f()
+        with f('try') as t:
+            t('deserializeRequest(args, buf.get(), iprot.get(), c.get());')
+        with f('catch (const std::exception& ex)') as c:
+            if function.oneway:
+                t('LOG(ERROR) << ex.what() << " in function noResponse";')
+                t('return;')
+            else:
+                t('ProtocolOut_ prot;')
+                self._generate_app_ex(service, 'ex.what()',
+                                      function.name, "iprot->getSeqId()",
+                                      False, c, False, 'PROTOCOL_ERROR')
+        args = []
+        for member in function.arglist.members:
+            if member.type.is_stream:
+                pass
+            elif self.flag_stack_arguments:
+                args.append("args." + member.name)
+            elif self._is_complex_type(member.type):
+                args.append("std::move({0})".format(
+                        aprefix + member.name))
+            else:
+                args.append("*args." + member.name)
+        if function.oneway:
+            f('std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(' +
+              'new apache::thrift::HandlerCallbackBase(std::move(req), ' +
+              'std::move(c), nullptr, eb, tm, ctx));')
+        else:
+            if self._function_uses_streams(function):
+                rettype = ('apache::thrift::StreamManager *')
+            elif self._is_complex_type(function.returntype) and \
+                    not self.flag_stack_arguments:
+                rettype = self._type_name(function.returntype)
+                rettype = 'std::unique_ptr<' + rettype + '>'
+            else:
+                rettype = self._type_name(function.returntype)
+            f(('std::unique_ptr<apache::thrift::' +
+               'HandlerCallback<{0}>> callback(new apache::thrift::' +
+               'HandlerCallback<{0}>(std::move(req), ' +
+               'std::move(c), return_{1}<ProtocolIn_,' +
+               'ProtocolOut_>, throw_{1}<ProtocolIn_,' +
+               ' ProtocolOut_>, iprot->getSeqId(),' +
+               ' eb, tm, ctx));').format(rettype, function.name))
+        args.insert(0, 'std::move(callback)')
+        f('iface_->{0}({1});'.format(self._get_async_func_name(function),
+                                     ", ".join(args)))
+
     def _generate_processor(self, service, s):
         if not service.extends:
             class_signature = 'class {0} : '.format(
@@ -1410,126 +1500,7 @@ class CppGenerator(t_generator.Generator):
                             'apache::thrift::concurrency::ThreadManager* tm)',
                             name="process_{0}".format(function.name),
                             output=self._out_tcc) as f:
-                    if function.oneway:
-                        if self._is_processed_in_eb(function):
-                            # Old clients may not send the special
-                            # oneway id, so we need to send a fake
-                            # response to them while in event base.
-                            with c('if (!req->isOneway())') as cb:
-                                cb('req->sendReply('
-                                   'std::unique_ptr<folly::IOBuf>()'
-                                   ');')
-                    f("// make sure getConnectionContext is null")
-                    f("// so async calls don't accidentally use it")
-                    f('iface_->setConnectionContext(nullptr);')
-                    aprefix = 'uarg_'
-                    if self.flag_stack_arguments:
-                        f('{0}_{1}_args args;'.format(
-                                service.name, function.name))
-                    else:
-                        f('{0}_{1}_pargs args;'.format(
-                                service.name, function.name))
-                    for field in function.arglist.members:
-                        val = ""
-                        t = self._get_true_type(field.type)
-                        if t.is_base_type or t.is_enum:
-                            val = self._member_default_value(field)
-
-                        if self.flag_stack_arguments:
-                            pass
-                        elif t.is_stream:
-                            pass
-                        elif self._is_complex_type(field.type):
-                            f('std::unique_ptr<'
-                              '{0}> {1}(new {0}({2}));'.format(
-                                      self._type_name(field.type),
-                                      aprefix + field.name,
-                                      val))
-                            f('args.{0} = reinterpret_cast<decltype(args.{0})>({1}.get());'.format(
-                                    field.name,
-                                    aprefix + field.name))
-                        else:
-                            # use uniform initialization syntax to
-                            # avoid most vexing parse
-                            f('{0} {1}{{{2}}};'.format(
-                                    self._type_name(field.type),
-                                    aprefix + field.name,
-                                    val))
-                            ref_prefix = "&"
-                            if self.flag_stack_arguments:
-                                ref_prefix = ""
-                            f('args.{0} = {2}{1};'.format(
-                                    field.name,
-                                    aprefix + field.name,
-                                    ref_prefix))
-                    f(('std::unique_ptr<apache::thrift::' +
-                      'ContextStack> c(this->getContextStack' +
-                      '(this->getServiceName(), "{0}.{1}", ctx));'
-                       ).format(service.name, function.name))
-                    f()
-                    with f('try') as t:
-                        t('deserializeRequest(args, buf.get(), '
-                          'iprot.get(), c.get());')
-                    with f('catch (const std::exception& ex)') as c:
-                        if function.oneway:
-                            t('LOG(ERROR) << ex.what() << " '
-                              'in function noResponse";')
-                            t('return;')
-                        else:
-                            t('ProtocolOut_ prot;')
-                            self._generate_app_ex(
-                                service, 'ex.what()',
-                                function.name, "iprot->getSeqId()",
-                                False, c, False, 'PROTOCOL_ERROR')
-                    args = []
-                    for member in function.arglist.members:
-                        if member.type.is_stream:
-                            pass
-                        elif self.flag_stack_arguments:
-                            args.append("args." + member.name)
-                        elif self._is_complex_type(member.type):
-                            args.append("std::move({0})".format(
-                                    aprefix + member.name))
-                        else:
-                            args.append("*args." + member.name)
-
-                    if function.oneway:
-                        c('std::unique_ptr<apache::thrift::' +
-                          'HandlerCallbackBase> callback(' +
-                          'new apache::thrift::' +
-                          'HandlerCallbackBase(std::move(req), ' +
-                          'std::move(c), nullptr, eb, ' +
-                          'tm, ctx));')
-                    else:
-                        if self._function_uses_streams(function):
-                            rettype = ('apache::thrift::'
-                                        'StreamManager *')
-                        elif self._is_complex_type(
-                                function.returntype) and \
-                                not self.flag_stack_arguments:
-                            rettype = self._type_name(
-                                    function.returntype)
-                            rettype = 'std::unique_ptr<' + \
-                                    rettype + '>'
-                        else:
-                            rettype = self._type_name(
-                                    function.returntype)
-
-                        c(('std::unique_ptr<apache::thrift::' +
-                           'HandlerCallback<{0}>> callback(' +
-                           'new apache::thrift::' +
-                           'HandlerCallback<{0}>(std::move(req), ' +
-                           'std::move(c), return_{1}<ProtocolIn_,' +
-                           'ProtocolOut_>, throw_{1}<ProtocolIn_,' +
-                           ' ProtocolOut_>, iprot->getSeqId(),' +
-                           ' eb, ' +
-                           'tm, ctx));').format(rettype,
-                                                 function.name))
-
-                    args.insert(0, 'std::move(callback)')
-                    f('iface_->{0}({1});'.format(
-                      self._get_async_func_name(function),
-                      ", ".join(args)))
+                    self._generate_process_function(f, service, function)
 
                 if not function.oneway:
                     args = [
