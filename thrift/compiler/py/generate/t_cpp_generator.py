@@ -38,6 +38,7 @@ from thrift.compiler.generate import t_generator
 
 from thrift.compiler.generate.t_cpp_context import *
 from thrift.compiler.generate.t_output_aggregator import get_global_scope
+from thrift.compiler.generate.t_output_aggregator import out
 from thrift.compiler.generate.t_output import IndentedOutput
 
 # TODO move from here
@@ -324,19 +325,16 @@ class CppGenerator(t_generator.Generator):
         primitive = s.defn('enum class {0.name}'.format(tenum), in_header=True)
         # what follows after the closing brace
         primitive.epilogue = ';\n\n'
-        with primitive as s1:
-            txt = self._generate_enum_constant_list(tenum.name, constants,
-                    quote_names=False, include_values=True)
-            s1(txt)
+        with primitive:
+            out(self._generate_enum_constant_list(tenum.name, constants,
+                    quote_names=False, include_values=True))
         # Generate a character array of enum values for debugging purposes.
-        with s.impl('{0} _k{0}Values[] ='.format(tenum.name)) as s1:
-            txt = self._generate_enum_constant_list(tenum.name, constants,
-                    quote_names=False, include_values=False)
-            s1(txt)
-        with s.impl('const char* _k{0}Names[] ='.format(tenum.name)) as t:
-            txt = self._generate_enum_constant_list(tenum.name, constants,
-                    quote_names=True, include_values=False)
-            t(txt)
+        with s.impl('{0} _k{0}Values[] ='.format(tenum.name)):
+            out(self._generate_enum_constant_list(tenum.name, constants,
+                    quote_names=False, include_values=False))
+        with s.impl('const char* _k{0}Names[] ='.format(tenum.name)):
+            out(self._generate_enum_constant_list(tenum.name, constants,
+                    quote_names=True, include_values=False))
         s.extern('const std::map<{0}, const char*> _{0}_VALUES_TO_NAMES'.format(
             tenum.name), value=('(apache::thrift::TEnumIterator<{0}>({1}, '
                 '_k{0}Values, _k{0}Names), apache::thrift::TEnumIterator<{0}>('
@@ -357,20 +355,18 @@ class CppGenerator(t_generator.Generator):
 
         ns = self._namespace_prefix(self._get_namespace())
         fullName = ns + tenum.name
-        s = self._types_global.namespace('apache.thrift').scope
-        s.acquire()
+        with self._types_global.namespace('apache.thrift').scope:
 
-        with s.defn('template <> const char* TEnumTraitsBase<{fullName}>::'
-                'findName({fullName} value)'.format(**locals()),
-                name='findName') as f:
-            f('return findName({ns}_{tenum.name}_VALUES_TO_NAMES, '
+            with out().defn('template <> const char* TEnumTraitsBase<{fullName}>::'
+                        'findName({fullName} value)'.format(**locals()),
+                        name='findName'):
+                out('return findName({ns}_{tenum.name}_VALUES_TO_NAMES, '
                     'value);'.format(**locals()))
-        with s.defn('template <> bool TEnumTraitsBase<{fullName}>::'
-                'findValue(const char* name, {fullName}* outValue)'.
-                format(**locals()), name='findName') as f:
-            f('return findValue({ns}_{tenum.name}_NAMES_TO_VALUES, '
+            with out().defn('template <> bool TEnumTraitsBase<{fullName}>::'
+                        'findValue(const char* name, {fullName}* outValue)'.
+                        format(**locals()), name='findName'):
+                out('return findValue({ns}_{tenum.name}_NAMES_TO_VALUES, '
                     'name, outValue);'.format(**locals()))
-        s.release()
         s = self._types_scope = \
                 s.namespace(self._get_namespace()).scope
         s.acquire()
@@ -604,8 +600,8 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_service_stream_serializer(self, service, s):
         class_signature = 'class {0}StreamSerializer'.format(service.name)
-        with s.cls(class_signature) as c:
-            c.label('public:')
+        with s.cls(class_signature):
+            out().label('public:')
 
             generated_stream_types = set()
             for function in service.functions:
@@ -616,10 +612,10 @@ class CppGenerator(t_generator.Generator):
                         true_type = self._get_true_type(type)
                         type_name = self._type_name(true_type)
                         if type_name not in generated_stream_types:
-                            self._generate_stream_type_serializer(c, type)
-                            self._generate_stream_type_deserializer(c, type)
+                            self._generate_stream_type_serializer(type)
+                            self._generate_stream_type_deserializer(type)
                             generated_stream_types.add(type_name)
-                            c()
+                            out("")
 
                 if self._function_uses_streams(function):
                     return_type = function.returntype
@@ -631,79 +627,79 @@ class CppGenerator(t_generator.Generator):
                         true_type = self._get_true_type(type)
                         type_name = self._type_name(true_type)
                         if type_name not in generated_stream_types:
-                            self._generate_stream_type_serializer(c, type)
-                            self._generate_stream_type_deserializer(c, type)
+                            self._generate_stream_type_serializer(type)
+                            self._generate_stream_type_deserializer(type)
                             generated_stream_types.add(type_name)
-                            c()
+                            out("")
 
-                    self._generate_function_exception_serializer(c, function)
-                    self._generate_function_exception_deserializer(c, function)
-                    c()
+                    self._generate_function_exception_serializer(function)
+                    self._generate_function_exception_deserializer(function)
+                    out("")
 
-    def _generate_stream_type_serializer(self, c, type):
+    def _generate_stream_type_serializer(self, type):
         type_name = self._type_name(type)
-        with c.defn('template<typename Writer>\n'
+        with out().defn('template<typename Writer>\n'
                     'uint32_t {name}(Writer& writer, const ' + type_name +
                     '& value)',
                     name='serialize',
                     modifiers='static',
-                    output=self._out_tcc) as f:
-            f('Writer * prot_ = &writer;')
-            f('uint32_t xfer = 0;')
+                    output=self._out_tcc):
+            out('Writer * prot_ = &writer;')
+            out('uint32_t xfer = 0;')
             ttype = self._get_true_type(type)
-            self._generate_serialize_type(f, ttype, 'value')
-            f('return xfer;')
+            self._generate_serialize_type(out(), ttype, 'value')
+            out('return xfer;')
 
-    def _generate_stream_type_deserializer(self, c, type):
+    def _generate_stream_type_deserializer(self, type):
         type_name = self._type_name(type)
-        with c.defn('template<typename Reader>\n'
+        with out().defn('template<typename Reader>\n'
                     'uint32_t {name}(Reader& reader, ' + type_name + '& value)',
                     name='deserialize',
                     modifiers='static',
-                    output=self._out_tcc) as f:
-            f('Reader * iprot = &reader;')
-            f('uint32_t xfer = 0;')
+                    output=self._out_tcc):
+            out('Reader * iprot = &reader;')
+            out('uint32_t xfer = 0;')
             ttype = self._get_true_type(type)
-            self._generate_deserialize_type(f, ttype, 'value')
-            f('return xfer;')
+            self._generate_deserialize_type(out(), ttype, 'value')
+            out('return xfer;')
 
-    def _generate_function_exception_serializer(self, c, function):
-        with c.defn('void {name}(apache::thrift::StreamWriter& writer, '
+    def _generate_function_exception_serializer(self, function):
+        with out().defn('void {name}(apache::thrift::StreamWriter& writer, '
                     'const std::exception_ptr& exception)',
                     name=function.name + 'ExceptionSerializer',
-                    modifiers='static') as f:
+                    modifiers='static'):
 
-            with f('try') as t:
-                t('std::rethrow_exception(exception);')
+            with out('try'):
+                out('std::rethrow_exception(exception);')
 
                 for exception_field in function.xceptions.members:
                     exception_type = self._type_name(exception_field.type)
 
-                    with t.catch('const ' + exception_type + '& e') as h:
-                        h('writer.writeExceptionItem({exception_id}, e);'
+                    with out().catch('const ' + exception_type + '& e'):
+                        out('writer.writeExceptionItem({exception_id}, e);'
                           .format(exception_id=exception_field.key))
 
-                with t.catch('...') as h:
-                    h('throw;')
+                with out().catch('...'):
+                    out('throw;')
 
-    def _generate_function_exception_deserializer(self, c, function):
-        with c.defn('std::exception_ptr {name}('
+    def _generate_function_exception_deserializer(self, function):
+        with out().defn('std::exception_ptr {name}('
                     'apache::thrift::StreamReader& reader)',
                     name=function.name + 'ExceptionDeserializer',
-                    modifiers='static') as f:
+                    modifiers='static'):
 
-            f('int16_t exceptionId = reader.readExceptionId();')
+            out('int16_t exceptionId = reader.readExceptionId();')
 
-            with f('switch(exceptionId)') as s:
+            with out('switch(exceptionId)'):
                 for exception_field in function.xceptions.members:
                     exception_type = self._type_name(exception_field.type)
-                    with s.case(str(exception_field.key), nobreak=True) as a:
-                        a('return reader.readExceptionItem<{exception_type}>();'
+                    with out().case(str(exception_field.key), nobreak=True):
+                        out('return reader.readExceptionItem<{exception_type}>();'
                                 .format(exception_type=exception_type))
 
-                with s.case('default', nobreak=True) as a:
-                    a('reader.skipException();')
-                    a('return std::make_exception_ptr(apache::thrift::'
+                with out().case('default', nobreak=True):
+                    out('reader.skipException();')
+                    out('return std::make_exception_ptr(apache::thrift::'
                       'TApplicationException("Unknown exception received."));')
 
     def _generate_service_client(self, service, s):
@@ -715,14 +711,14 @@ class CppGenerator(t_generator.Generator):
             class_signature = 'class ' + classname + \
                 ' : public ' + self._type_name(service.extends) +\
                 'AsyncClient'
-        with s.cls(class_signature) as c:
-            c.label('public:')
+        with s.cls(class_signature):
+            out().label('public:')
 
-            with c.defn('std::string {name}()', name='getServiceName',
-                        modifiers='virtual') as gsn:
-                gsn("return \"{0}\";".format(service.name))
+            with out().defn('std::string {name}()', name='getServiceName',
+                        modifiers='virtual'):
+                out("return \"{0}\";".format(service.name))
 
-            c("typedef std::unique_ptr<apache::thrift::RequestChannel"
+            out("typedef std::unique_ptr<apache::thrift::RequestChannel"
               ", apache::thrift::async::TDelayedDestruction::Destructor>"
               " channel_ptr;")
             init = OrderedDict()
@@ -733,61 +729,61 @@ class CppGenerator(t_generator.Generator):
                 init["channel_"] = "std::move(channel)"
             # TODO: make it possible to create a connection context from a
             # thrift channel
-            c.defn('~{name}()', name=classname,
+            out().defn('~{name}()', name=classname,
                    modifiers='virtual', in_header=True).scope.empty()
 
-            with c.defn('{name}(channel_ptr channel)', name=classname,
+            with out().defn('{name}(channel_ptr channel)', name=classname,
                         init_dict=init,
-                        in_header=True) as cons:
-                cons('connectionContext_ = '
+                        in_header=True):
+                out('connectionContext_ = '
                   'std::unique_ptr<TClientBase::ConnContext>('
                   'new TClientBase::ConnContext(channel_->getHeader(),'
                      'nullptr));')
 
             if not service.extends:
-                with c.defn('apache::thrift::RequestChannel* '
+                with out().defn('apache::thrift::RequestChannel* '
                             ' {name}()', name='getChannel',
-                            in_header=True) as getchannel:
-                    getchannel("return this->channel_.get();")
+                            in_header=True):
+                    out("return this->channel_.get();")
 
             # Write out all the functions
             for function in service.functions:
-                self._generate_client_async_function(c, service, function)
-                self._generate_client_async_function(c, service, function,
+                self._generate_client_async_function(service, function)
+                self._generate_client_async_function(service, function,
                                                      name_prefix="callback_")
 
-                self._generate_client_async_function(c, service, function,
+                self._generate_client_async_function(service, function,
                                                      uses_rpc_options=True)
 
-                self._generate_client_sync_function(c, service, function)
-                self._generate_client_sync_function(c, service, function,
+                self._generate_client_sync_function(service, function)
+                self._generate_client_sync_function(service, function,
                                                     uses_rpc_options=True)
 
                 if not self._function_uses_streams(function):
-                    self._generate_client_std_function(c, function)
-                    self._generate_client_std_function(c, function,
+                    self._generate_client_std_function(function)
+                    self._generate_client_std_function(function,
                                                        name_prefix="functor_")
 
                 if self.flag_future:
                     if not self._function_uses_streams(function):
-                        self._generate_client_future_gate_function(c, function)
+                        self._generate_client_future_gate_function(function)
 
-                    self._generate_client_future_function(c, service, function)
-                    self._generate_client_future_function(c, service, function,
+                    self._generate_client_future_function(service, function)
+                    self._generate_client_future_function(service, function,
                                                           uses_rpc_options=True)
                 if not function.oneway:
-                    self._generate_recv_function(c, function)
+                    self._generate_recv_function(function)
 
-                self._generate_templated_client_function(c, service, function)
+                self._generate_templated_client_function(service, function)
 
                 if not function.oneway:
-                    self._generate_templated_recv_function(c, service, function)
+                    self._generate_templated_recv_function(service, function)
 
             if not service.extends:
-                c.label('protected:')
-                c("std::unique_ptr<apache::thrift::server::TConnectionContext>"
+                out().label('protected:')
+                out("std::unique_ptr<apache::thrift::server::TConnectionContext>"
                   "connectionContext_;")
-                c("channel_ptr channel_;")
+                out("channel_ptr channel_;")
 
     def _get_async_func_name(self, function):
         if self._is_processed_in_eb(function):
@@ -796,17 +792,16 @@ class CppGenerator(t_generator.Generator):
             return 'async_tm_' + function.name
 
 
-
     def _generate_service_server_interface_async(self, service, s):
         classname = service.name + "SvAsyncIf"
         class_signature = "class " + classname
-        with s.cls(class_signature) as c:
-            c.label('public:')
-            c.defn('~{0}()'.format(classname), name=classname,
+        with s.cls(class_signature):
+            out().label('public:')
+            out().defn('~{0}()'.format(classname), name=classname,
                    modifiers='virtual',
                    in_header=True).scope.empty()
             for function in service.functions:
-                c.defn(self._get_process_function_signature_async(service,
+                out().defn(self._get_process_function_signature_async(service,
                                                                   function),
                        name=self._get_async_func_name(function),
                        modifiers='virtual',
@@ -814,7 +809,7 @@ class CppGenerator(t_generator.Generator):
 
                 # TODO: Remove this once everything has migrated to async_eb or
                 # async_tm
-                c.defn(self._get_process_function_signature_async(service,
+                out().defn(self._get_process_function_signature_async(service,
                                                                   function),
                        name="async_" + function.name,
                        modifiers='virtual',
@@ -822,7 +817,7 @@ class CppGenerator(t_generator.Generator):
                 if self.flag_future and not self._function_uses_streams(
                     function
                 ):
-                    c.defn(self._get_process_function_signature_future(
+                    out().defn(self._get_process_function_signature_future(
                             service, function),
                            name="future_" + function.name,
                            modifiers='virtual',
@@ -838,25 +833,25 @@ class CppGenerator(t_generator.Generator):
             class_signature = "class " + classname + " : public " + \
                 service.name + "SvAsyncIf, virtual public " + \
                 self._type_name(service.extends) + "SvIf"
-        with s.cls(class_signature) as c:
-            c.label('public:')
-            c('typedef ' + service.name + 'AsyncProcessor ProcessorType;')
-            c.defn('~{0}()'.format(classname), name=classname,
+        with s.cls(class_signature):
+            out().label('public:')
+            out('typedef ' + service.name + 'AsyncProcessor ProcessorType;')
+            out().defn('~{0}()'.format(classname), name=classname,
                    modifiers='virtual',
                    in_header=True).scope.empty()
-            with c.defn('std::unique_ptr<apache::thrift::AsyncProcessor>' +
+            with out().defn('std::unique_ptr<apache::thrift::AsyncProcessor>' +
                         ' {name}()',
                         name='getProcessor',
-                        modifiers='virtual') as p:
-                p('return std::unique_ptr<' +
+                        modifiers='virtual'):
+                out('return std::unique_ptr<' +
                   'apache::thrift::AsyncProcessor>(' +
                   'new {0}AsyncProcessor(({0}SvIf*)this));'.format(
                           service.name))
             for function in service.functions:
                 if not self._function_uses_streams(function):
-                    with c.defn(self._get_prio_function_signature(service,
+                    with out().defn(self._get_prio_function_signature(service,
                                                                   function),
-                                name="getprio_" + function.name) as d:
+                                name="getprio_" + function.name):
                         if function.annotations is not None and \
                                 'priority' in function.annotations.annotations:
                             prio = function.annotations.annotations['priority']
@@ -866,73 +861,72 @@ class CppGenerator(t_generator.Generator):
                             prio = 'NORMAL'
                         PTM = 'apache::thrift::concurrency'
                         priovar = self.tmp('prio')
-                        d('{0}::PRIORITY {1} = reqCtx->getHeader()->'
+                        out('{0}::PRIORITY {1} = reqCtx->getHeader()->'
                           'getCallPriority();'.format(PTM, priovar))
-                        with d('if ({0} != {1}::N_PRIORITIES)'.format(
-                               priovar, PTM)) as e:
-                            e('return {0};'.format(priovar))
-                        d('return {0}::{1};'.format(PTM, prio))
+                        with out('if ({0} != {1}::N_PRIORITIES)'.format(
+                               priovar, PTM)):
+                            out('return {0};'.format(priovar))
+                        out('return {0}::{1};'.format(PTM, prio))
                 if self._function_uses_streams(function) or \
                   (not self.flag_future and
                    not self._is_processed_in_eb(function)):
-                    with c.defn(self._get_process_function_signature(service,
+                    with out().defn(self._get_process_function_signature(service,
                                                                      function),
                                 name=function.name,
-                                modifiers='virtual') as d:
-                        d('throw apache::thrift::TApplicationException('
+                                modifiers='virtual'):
+                        out('throw apache::thrift::TApplicationException('
                           '"Function {0} is unimplemented");'
                           .format(function.name))
                         if not function.oneway and \
                           not function.returntype.is_void and \
                           not self._function_uses_streams(function) and \
                           not self._is_complex_type(function.returntype):
-                            d('return ' +
+                            out('return ' +
                               self._default_value(function.returntype) + ';')
                 else:
                     # TODO: Remove this once everything is moved over to
                     # async_tm and async_eb. This is to ensure that if we
                     # switch to async_eb with a flag, we do not accidentally
                     # unimplement a sync function.
-                    c.defn(self._get_process_function_signature(service,
+                    out().defn(self._get_process_function_signature(service,
                                                                 function),
                            name=function.name,
                            modifiers='virtual',
                            delete=True)
                 if self._function_uses_streams(function):
-                    self._generate_server_async_stream_function(c, service,
+                    self._generate_server_async_stream_function(service,
                                                                 function)
                 else:
                     if self.flag_future:
-                        self._generate_server_future_function(c, service,
-                                                              function)
-                    self._generate_server_async_non_stream_function(c, service,
+                        self._generate_server_future_function(service, function)
+                    self._generate_server_async_non_stream_function(service,
                                                                     function)
 
-    def _generate_server_future_function(self, c, service, function):
-        with c.defn(self._get_process_function_signature_future(service,
-                                                               function),
-                    name="future_" + function.name) as f:
+    def _generate_server_future_function(self, service, function):
+        with out().defn(self._get_process_function_signature_future(service,
+                                                                    function),
+                    name="future_" + function.name):
             rettype = self._type_name(function.returntype)
             if self._is_complex_type(function.returntype):
                 rettype = "std::unique_ptr<{0}>".format(
                     self._type_name(function.returntype))
             promise_name = self.tmp("promise")
-            f("facebook::wangle::Promise<{type}> {promise};"
+            out("facebook::wangle::Promise<{type}> {promise};"
               .format(type=rettype, promise=promise_name))
             future_name = self.tmp("future")
-            f(("auto {future} = {promise}.getFuture();")
+            out(("auto {future} = {promise}.getFuture();")
               .format(future=future_name, promise=promise_name))
-            f('apache::thrift::TApplicationException ex("Function {0} is '
+            out('apache::thrift::TApplicationException ex("Function {0} is '
               'unimplemented");'.format(function.name))
-            f("{promise}.setException(ex);"
+            out("{promise}.setException(ex);"
               .format(promise=promise_name))
-            f("return {future};".format(future=future_name))
+            out("return {future};".format(future=future_name))
 
-    def _generate_server_async_non_stream_function(self, c, service, function):
-        with c.defn(self._get_process_function_signature_async(service,
-                                                               function),
+    def _generate_server_async_non_stream_function(self, service, function):
+        with out().defn(self._get_process_function_signature_async(service,
+                                                                   function),
                     name=self._get_async_func_name(function),
-                    modifiers='virtual') as f:
+                    modifiers='virtual'):
             args = []
             for member in function.arglist.members:
                 if self._is_complex_type(member.type) \
@@ -943,61 +937,61 @@ class CppGenerator(t_generator.Generator):
 
             if self._is_processed_in_eb(function):
                 if (self.flag_future):
-                    f('auto callbackp = callback.release();')
-                    f('setConnectionContext(callbackp->getConnectionContext()'
+                    out('auto callbackp = callback.release();')
+                    out('setConnectionContext(callbackp->getConnectionContext()'
                       ');')
-                    f('setThreadManager(callbackp->getThreadManager());')
-                    f('setEventBase(callbackp->getEventBase());')
+                    out('setThreadManager(callbackp->getThreadManager());')
+                    out('setEventBase(callbackp->getEventBase());')
                     future_name = self.tmp('future')
                     rettype = "facebook::wangle::Try<{0}>".format(
                         self._type_name(function.returntype))
                     if self._is_complex_type(function.returntype):
                         rettype = "facebook::wangle::Try<std::unique_ptr" \
                           "<{0}>>".format(self._type_name(function.returntype))
-                    with f("try") as t:
+                    with out("try"):
                         if not function.oneway and \
                           not function.returntype.is_void:
-                            t("auto {2} = future_{0}({1});".format(
+                            out("auto {2} = future_{0}({1});".format(
                                 function.name, ", ".join(args), future_name))
-                            with t("{0}.then([=]({1}&& _return)".format(
-                                   future_name, rettype)) as w:
-                                with w("try") as g:
-                                    g("callbackp->resultInThread("
+                            with out("{0}.then([=]({1}&& _return)".format(
+                                   future_name, rettype)):
+                                with out("try"):
+                                    out("callbackp->resultInThread("
                                       "std::move(_return.value()));")
-                                    with g.catch("...") as fin:
-                                        fin("callbackp->exceptionInThread("
+                                    with out().catch("..."):
+                                        out("callbackp->exceptionInThread("
                                             "std::current_exception());")
-                            t(");")
+                            out(");")
                         else:
-                            t("auto {1} = future_{0}(".format(
+                            out("auto {1} = future_{0}(".format(
                               function.name, future_name)
                               + ", ".join(args) + ");")
                             if not function.oneway:
-                                t(("{0}.then([=](facebook::wangle" +
+                                out(("{0}.then([=](facebook::wangle" +
                                    "::Try<void>&& t){{").format(future_name))
-                                t("  callbackp->doneInThread();")
-                                t("});")
+                                out("  callbackp->doneInThread();")
+                                out("});")
                             else:
-                                t("delete callbackp;")
-                        with t.catch("const std::exception& ex") as cth:
+                                out("delete callbackp;")
+                        with out().catch("const std::exception& ex"):
                             if not function.oneway:
-                                cth("callbackp->exceptionInThread(std::"
+                                out("callbackp->exceptionInThread(std::"
                                     "current_exception());")
                             else:
-                                cth("delete callbackp;")
+                                out("delete callbackp;")
                 else:
-                    f('apache::thrift::TApplicationException ex("Function {0} '
+                    out('apache::thrift::TApplicationException ex("Function {0} '
                       'is unimplemented");'.format(function.name))
-                    f('callback->exception(std::make_exception_ptr(ex));')
+                    out('callback->exception(std::make_exception_ptr(ex));')
             else:
-                f('auto callbackp = callback.release();')
+                out('auto callbackp = callback.release();')
                 # Oneway request won't be canceled if expired. see D1006482 for
                 # further details. TODO: fix this
                 if not function.oneway:
-                    with f('if (!callbackp->isRequestActive())') as g:
-                        g('callbackp->deleteInThread();')
-                        g('return;')
-                f('setConnectionContext(callbackp->getConnectionContext());')
+                    with out('if (!callbackp->isRequestActive())'):
+                        out('callbackp->deleteInThread();')
+                        out('return;')
+                out('setConnectionContext(callbackp->getConnectionContext());')
                 if not function.oneway and self._is_complex_type(
                     function.returntype
                 ):
@@ -1005,46 +999,46 @@ class CppGenerator(t_generator.Generator):
                         args.insert(0, "_return")
                     else:
                         args.insert(0, "*_return")
-                with f("try") as t:
+                with out("try"):
                     if not function.oneway and not function.returntype.is_void:
                         if self._is_complex_type(function.returntype) \
                           and not self.flag_stack_arguments:
-                            t("std::unique_ptr<{0}> _return(new {0});"
+                            out("std::unique_ptr<{0}> _return(new {0});"
                               .format(self._type_name(function.returntype)))
 
-                            t("{0}({1});".format(function.name,
+                            out("{0}({1});".format(function.name,
                                                  ", ".join(args)))
-                            t("callbackp->resultInThread(std::move(_return));")
+                            out("callbackp->resultInThread(std::move(_return));")
                         elif self._is_complex_type(function.returntype):
-                            t("{0} _return;".format(self._type_name(
+                            out("{0} _return;".format(self._type_name(
                                 function.returntype)))
-                            t("{0}({1});".format(function.name,
+                            out("{0}({1});".format(function.name,
                                                  ", ".join(args)))
-                            t("callbackp->resultInThread(_return);")
+                            out("callbackp->resultInThread(_return);")
                         else:
-                            t("callbackp->resultInThread({0}({1}));"
+                            out("callbackp->resultInThread({0}({1}));"
                               .format(function.name, ", ".join(args)))
                     else:
-                        t("{0}(".format(function.name) + ", ".join(args) + ");")
+                        out("{0}(".format(function.name) + ", ".join(args) + ");")
                         if not function.oneway:
-                            t("callbackp->doneInThread();")
+                            out("callbackp->doneInThread();")
                         else:
-                            t("callbackp->deleteInThread();")
-                    with t.catch("const std::exception& ex") as cth:
+                            out("callbackp->deleteInThread();")
+                    with out().catch("const std::exception& ex"):
                         if not function.oneway:
-                            cth("callbackp->exceptionInThread(std::"
+                            out("callbackp->exceptionInThread(std::"
                                 "current_exception());")
                         else:
-                            cth("callbackp->deleteInThread();")
-                f('setConnectionContext(nullptr);')
+                            out("callbackp->deleteInThread();")
+                out('setConnectionContext(nullptr);')
 
-    def _generate_server_async_stream_function(self, c, service, function):
+    def _generate_server_async_stream_function(self, service, function):
         serializer = "{service}StreamSerializer".format(service=service.name)
 
-        with c.defn(self._get_process_function_signature_async(service,
+        with out().defn(self._get_process_function_signature_async(service,
                                                                function),
                     name=self._get_async_func_name(function),
-                    modifiers='virtual') as f:
+                    modifiers='virtual'):
 
             args = []
             for member in function.arglist.members:
@@ -1058,7 +1052,7 @@ class CppGenerator(t_generator.Generator):
             if not function.returntype.is_void:
                 template = ("apache::thrift::AsyncOutputStream<{type}> "
                             "_return;")
-                f(self._format_stream_declaration(template,
+                out(self._format_stream_declaration(template,
                                                   function.returntype))
                 args.insert(0, "_return")
 
@@ -1066,59 +1060,59 @@ class CppGenerator(t_generator.Generator):
                 if arg.type.is_stream:
                     template = ("apache::thrift::AsyncInputStream<{type}> "
                                 "{name};")
-                    f(self._format_stream_declaration(template,
+                    out(self._format_stream_declaration(template,
                                                       arg.type,
                                                       arg.name))
-            with f("try") as t:
-                t("{name}({args});"
+            with out("try"):
+                out("{name}({args});"
                   .format(name=function.name, args=", ".join(args)))
-                t()
+                out("")
 
-                t("apache::thrift::StreamSource::StreamMap sourceMap;")
+                out("apache::thrift::StreamSource::StreamMap sourceMap;")
                 for arg in function.arglist.members:
                     if arg.type.is_stream:
                         type_enum = self._stream_type_to_enum(arg.type)
                         handler = "_{arg}Handler".format(arg=arg.name)
 
-                        f("auto {handler} = {arg}.makeHandler<{ser}>();"
+                        out("auto {handler} = {arg}.makeHandler<{ser}>();"
                           .format(handler=handler,
                                   arg=arg.name,
                                   ser=serializer))
-                        with f("if ({0})".format(handler)) as i:
-                            i("{handler}->setType({enum});"
+                        with out("if ({0})".format(handler)):
+                            out("{handler}->setType({enum});"
                               .format(handler=handler, enum=type_enum))
-                            i("sourceMap[{key}] = std::move({handler});"
+                            out("sourceMap[{key}] = std::move({handler});"
                               .format(key=arg.key, handler=handler))
-                t()
+                out("")
 
-                t("apache::thrift::StreamSink::StreamMap sinkMap;")
+                out("apache::thrift::StreamSink::StreamMap sinkMap;")
                 if not function.returntype.is_void:
                     type_enum = self._stream_type_to_enum(
                             function.returntype)
 
-                    f("auto _returnHandler = _return.makeHandler<{ser}>();"
+                    out("auto _returnHandler = _return.makeHandler<{ser}>();"
                       .format(ser=serializer))
-                    with f("if (_returnHandler)") as i:
-                        i("_returnHandler->setType({enum});"
+                    with out("if (_returnHandler)"):
+                        out("_returnHandler->setType({enum});"
                           .format(enum=type_enum))
-                        i("sinkMap[0] = std::move(_returnHandler);")
-                t()
+                        out("sinkMap[0] = std::move(_returnHandler);")
+                out("")
 
                 prefix = ("{service}StreamSerializer::{func}Exception"
                          .format(service=service.name, func=function.name))
-                t("apache::thrift::StreamManager * stream = ")
-                t("     new apache::thrift::StreamManager(")
-                t("         callback->getEventBase(),")
-                t("         std::move(sourceMap),")
-                t("         {prefix}Deserializer,".format(prefix=prefix))
-                t("         std::move(sinkMap),")
-                t("         {prefix}Serializer);".format(prefix=prefix))
-                t()
+                out("apache::thrift::StreamManager * stream = ")
+                out("     new apache::thrift::StreamManager(")
+                out("         callback->getEventBase(),")
+                out("         std::move(sourceMap),")
+                out("         {prefix}Deserializer,".format(prefix=prefix))
+                out("         std::move(sinkMap),")
+                out("         {prefix}Serializer);".format(prefix=prefix))
+                out()
 
-                t("callback->result(stream);")
+                out("callback->result(stream);")
 
-                with t.catch("...") as h:
-                    h("callback->exception("
+                with out().catch("..."):
+                    out("callback->exception("
                       "std::current_exception());")
 
 
@@ -1189,53 +1183,53 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_app_ex(self, service, errorstr, functionname, seqid, is_in_eb,
                          s, static=True, err_code=None, err_header=True):
-        with s('if (req)') as se:
-            se('LOG(ERROR) << {0} << " in function {1}";'.format(
+        with out('if (req)'):
+            out('LOG(ERROR) << {0} << " in function {1}";'.format(
                     errorstr, functionname))
             code = '' if err_code is None else \
                     'apache::thrift::TApplicationException::' \
                     'TApplicationExceptionType::' + err_code + ', '
-            se('apache::thrift::TApplicationException x({0}{1});'.
+            out('apache::thrift::TApplicationException x({0}{1});'.
                 format(code, errorstr))
             if static:
                 ctx = 'ctx.get()'
                 if err_header:
-                    se('ctx->userException(' +
+                    out('ctx->userException(' +
                        'folly::demangle(typeid(e)).toStdString());')
             else:
                 ctx = 'nullptr'
             if is_in_eb:
-                se('auto queue = serializeException("{0}", &prot, {1}, {2}, '
+                out('auto queue = serializeException("{0}", &prot, {1}, {2}, '
                    'x);'.format(functionname, seqid, ctx))
-                se('req->sendReply(queue.move());')
+                out('req->sendReply(queue.move());')
             else:
-                se('auto queue_mw = makeMoveWrapper(serializeException("{0}", '
+                out('auto queue_mw = makeMoveWrapper(serializeException("{0}", '
                    '&prot, {1}, {2}, x));'.format(functionname, seqid, ctx))
-                se('auto req_mw = makeMoveWrapper(std::move(req));')
-                with se('eb->runInEventBaseThread([=]() mutable') as seeb:
-                    seeb('(*req_mw)->sendReply(queue_mw->move());')
-                se(');')
-            se('return;')
-        with s('else') as y:
-            y('LOG(ERROR) << {0} << " in oneway function {1}";'.format(
+                out('auto req_mw = makeMoveWrapper(std::move(req));')
+                with out('eb->runInEventBaseThread([=]() mutable'):
+                    out('(*req_mw)->sendReply(queue_mw->move());')
+                out(');')
+            out('return;')
+        with out('else'):
+            out('LOG(ERROR) << {0} << " in oneway function {1}";'.format(
                     errorstr, functionname))
 
-    def _generate_process_function(self, f, service, function):
+    def _generate_process_function(self, service, function):
         if function.oneway:
             if self._is_processed_in_eb(function):
                 # Old clients may not send the special
                 # oneway id, so we need to send a fake
                 # response to them while in event base.
-                with f('if (!req->isOneway())') as cb:
-                    cb('req->sendReply(std::unique_ptr<folly::IOBuf>());')
-        f("// make sure getConnectionContext is null")
-        f("// so async calls don't accidentally use it")
-        f('iface_->setConnectionContext(nullptr);')
+                with out('if (!req->isOneway())'):
+                    out('req->sendReply(std::unique_ptr<folly::IOBuf>());')
+        out("// make sure getConnectionContext is null")
+        out("// so async calls don't accidentally use it")
+        out('iface_->setConnectionContext(nullptr);')
         aprefix = 'uarg_'
         if self.flag_stack_arguments:
-            f('{0}_{1}_args args;'.format(service.name, function.name))
+            out('{0}_{1}_args args;'.format(service.name, function.name))
         else:
-            f('{0}_{1}_pargs args;'.format(service.name, function.name))
+            out('{0}_{1}_pargs args;'.format(service.name, function.name))
         for field in function.arglist.members:
             val = ""
             t = self._get_true_type(field.type)
@@ -1246,35 +1240,35 @@ class CppGenerator(t_generator.Generator):
             elif t.is_stream:
                 pass
             elif self._is_complex_type(field.type):
-                f('std::unique_ptr<{0}> {1}(new {0}({2}));'.format(
+                out('std::unique_ptr<{0}> {1}(new {0}({2}));'.format(
                         self._type_name(field.type), aprefix + field.name, val))
-                f('args.{0} = reinterpret_cast<decltype(args.{0})>({1}.get());'.format(
+                out('args.{0} = reinterpret_cast<decltype(args.{0})>({1}.get());'.format(
                         field.name, aprefix + field.name))
             else:
                 # use uniform initialization syntax to avoid most vexing parse
-                f('{0} {1}{{{2}}};'.format(
+                out('{0} {1}{{{2}}};'.format(
                         self._type_name(field.type), aprefix + field.name, val))
                 ref_prefix = "&"
                 if self.flag_stack_arguments:
                     ref_prefix = ""
-                f('args.{0} = {2}{1};'.format(
+                out('args.{0} = {2}{1};'.format(
                         field.name, aprefix + field.name, ref_prefix))
-        f(('std::unique_ptr<apache::thrift::' +
+        out(('std::unique_ptr<apache::thrift::' +
            'ContextStack> c(this->getContextStack' +
            '(this->getServiceName(), "{0}.{1}", ctx));'
            ).format(service.name, function.name))
-        f()
-        with f('try') as t:
-            t('deserializeRequest(args, buf.get(), iprot.get(), c.get());')
-        with f('catch (const std::exception& ex)') as c:
+        out("")
+        with out('try'):
+            out('deserializeRequest(args, buf.get(), iprot.get(), c.get());')
+        with out('catch (const std::exception& ex)'):
             if function.oneway:
-                t('LOG(ERROR) << ex.what() << " in function noResponse";')
-                t('return;')
+                out('LOG(ERROR) << ex.what() << " in function noResponse";')
+                out('return;')
             else:
-                t('ProtocolOut_ prot;')
+                out('ProtocolOut_ prot;')
                 self._generate_app_ex(service, 'ex.what()',
                                       function.name, "iprot->getSeqId()",
-                                      False, c, False, 'PROTOCOL_ERROR')
+                                      False, out, False, 'PROTOCOL_ERROR')
         args = []
         for member in function.arglist.members:
             if member.type.is_stream:
@@ -1287,7 +1281,7 @@ class CppGenerator(t_generator.Generator):
             else:
                 args.append("*args." + member.name)
         if function.oneway:
-            f('std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(' +
+            out('std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(' +
               'new apache::thrift::HandlerCallbackBase(std::move(req), ' +
               'std::move(c), nullptr, eb, tm, ctx));')
         else:
@@ -1299,7 +1293,7 @@ class CppGenerator(t_generator.Generator):
                 rettype = 'std::unique_ptr<' + rettype + '>'
             else:
                 rettype = self._type_name(function.returntype)
-            f(('std::unique_ptr<apache::thrift::' +
+            out(('std::unique_ptr<apache::thrift::' +
                'HandlerCallback<{0}>> callback(new apache::thrift::' +
                'HandlerCallback<{0}>(std::move(req), ' +
                'std::move(c), return_{1}<ProtocolIn_,' +
@@ -1307,7 +1301,7 @@ class CppGenerator(t_generator.Generator):
                ' ProtocolOut_>, iprot->getSeqId(),' +
                ' eb, tm, ctx));').format(rettype, function.name))
         args.insert(0, 'std::move(callback)')
-        f('iface_->{0}({1});'.format(self._get_async_func_name(function),
+        out('iface_->{0}({1});'.format(self._get_async_func_name(function),
                                      ", ".join(args)))
 
     def _generate_processor(self, service, s):
@@ -1320,16 +1314,16 @@ class CppGenerator(t_generator.Generator):
                 service.name + 'AsyncProcessor') + \
                 'public ' + self._type_name(service.extends) + \
                 'AsyncProcessor'
-        with s.cls(class_signature) as p:
-            p.label('public:')
-            with p.defn('std::string {name}()', name='getServiceName',
-                        modifiers='virtual') as gsn:
-                gsn("return \"{0}\";".format(service.name))
+        with s.cls(class_signature):
+            out().label('public:')
+            with out().defn('std::string {name}()', name='getServiceName',
+                        modifiers='virtual'):
+                out("return \"{0}\";".format(service.name))
 
-            p.label('protected:')
+            out().label('protected:')
 
-            p('{0}SvIf* iface_;'.format(service.name))
-            with p.defn('void {name}(std::unique_ptr<' +
+            out('{0}SvIf* iface_;'.format(service.name))
+            with out().defn('void {name}(std::unique_ptr<' +
                         'apache::thrift::ResponseChannel::Request> req, ' +
                         'std::unique_ptr<folly::IOBuf> buf, ' +
                         'apache::thrift::protocol::PROTOCOL_TYPES protType,' +
@@ -1337,102 +1331,102 @@ class CppGenerator(t_generator.Generator):
                         'apache::thrift::async::TEventBase* eb, ' +
                         'apache::thrift::concurrency::ThreadManager* tm)',
                         name='process',
-                        modifiers='virtual') as d:
-                d('std::string fname;')
-                d('apache::thrift::MessageType mtype;')
-                d('int32_t protoSeqId = 0;')
-                switch = d('switch(protType)').scope
+                        modifiers='virtual'):
+                out('std::string fname;')
+                out('apache::thrift::MessageType mtype;')
+                out('int32_t protoSeqId = 0;')
+                switch = out('switch(protType)').scope
                 for shortprot, protname, prottype in self.protocols:
                     with switch.case('apache::thrift::protocol::' +
-                                     prottype, nobreak=True) as b:
-                        b(('std::unique_ptr<apache::thrift::' +
+                                     prottype, nobreak=True):
+                        out(('std::unique_ptr<apache::thrift::' +
                            '{0}Reader> ' +
                            'iprot(new apache::thrift::' +
                            '{0}Reader());').format(protname))
-                        b('iprot->setInput(buf.get());')
-                        with b('try') as t:
-                            t('iprot->readMessageBegin(fname, mtype,' + \
+                        out('iprot->setInput(buf.get());')
+                        with out('try'):
+                            out('iprot->readMessageBegin(fname, mtype,' + \
                                   ' protoSeqId);')
-                            with t.catch("const TException& ex") as x:
-                                x('LOG(ERROR) << "received invalid message' +
+                            with out().catch("const TException& ex"):
+                                out('LOG(ERROR) << "received invalid message' +
                                   ' from client: " << ex.what();')
-                                b('apache::thrift::{0}Writer prot;'
+                                out('apache::thrift::{0}Writer prot;'
                                   .format(protname))
                                 self._generate_app_ex(
                                     service, '"invalid message from client"',
-                                    "process", "protoSeqId", False, x, False)
-                                x('return;')
-                        with b('if (mtype != apache::thrift::T_CALL && ' +
-                               'mtype != apache::thrift::T_ONEWAY)') as x:
-                            x('LOG(ERROR) << "received invalid message of ' +
+                                    "process", "protoSeqId", False, out(), False)
+                                out('return;')
+                        with out('if (mtype != apache::thrift::T_CALL && ' +
+                               'mtype != apache::thrift::T_ONEWAY)'):
+                            out('LOG(ERROR) << "received invalid message of ' +
                               'type " << mtype;')
-                            b('apache::thrift::{0}Writer prot;'
+                            out('apache::thrift::{0}Writer prot;'
                               .format(protname))
                             self._generate_app_ex(
                                 service, '"invalid message arguments"',
-                                "process", "protoSeqId", False, x, False)
-                        b('auto pfn = {0}ProcessMap_.find(fname);'.format(
+                                "process", "protoSeqId", False, out(), False)
+                        out('auto pfn = {0}ProcessMap_.find(fname);'.format(
                                 shortprot))
-                        with b('if (pfn == {0}ProcessMap_.end())'.format(
-                                shortprot)) as i:
+                        with out('if (pfn == {0}ProcessMap_.end())'.format(
+                                shortprot)):
                             if not service.extends:
-                                x('const std::string exMsg = ' +
+                                out('const std::string exMsg = ' +
                                   'folly::stringPrintf(' +
                                   ' "Method name %s not found",' +
                                   ' fname.c_str());')
-                                b('apache::thrift::{0}Writer prot;'
+                                out('apache::thrift::{0}Writer prot;'
                                   .format(protname))
                                 self._generate_app_ex(
                                     service, 'exMsg',
-                                    "process", "protoSeqId", False, x, False)
+                                    "process", "protoSeqId", False, out(), False)
                             else:
-                                i(self._type_name(service.extends) +
+                                out(self._type_name(service.extends) +
                                   'AsyncProcessor::process(std::move(req), ' +
                                   'std::move(buf), protType, context, eb, tm);')
-                            i('return;')
-                        b('(this->*(pfn->second))(std::move(req), ' +
+                            out('return;')
+                        out('(this->*(pfn->second))(std::move(req), ' +
                           'std::move(buf), std::move(iprot), context, eb, tm);')
-                        b('return;')
-                with switch.case('default') as d:
-                    d('LOG(ERROR) << "invalid protType: " << protType;')
-                    d('return;')
+                        out('return;')
+                with switch.case('default'):
+                    out('LOG(ERROR) << "invalid protType: " << protType;')
+                    out('return;')
                 switch.release()
 
-            with p.defn('bool {name}(const folly::IOBuf* buf, ' +
+            with out().defn('bool {name}(const folly::IOBuf* buf, ' +
                     'const apache::thrift::transport::THeader* header)',
                         name='isOnewayMethod',
-                        modifiers='virtual') as d:
-                d('std::string fname;')
-                d('apache::thrift::MessageType mtype;')
-                d('int32_t protoSeqId = 0;')
-                d('apache::thrift::protocol::PROTOCOL_TYPES protType = ' +
+                        modifiers='virtual'):
+                out('std::string fname;')
+                out('apache::thrift::MessageType mtype;')
+                out('int32_t protoSeqId = 0;')
+                out('apache::thrift::protocol::PROTOCOL_TYPES protType = ' +
                   'static_cast<apache::thrift::protocol::PROTOCOL_TYPES>' +
                   '(header->getProtocolId());')
-                switch = d('switch(protType)').scope
+                switch = out('switch(protType)').scope
                 for shortprot, protname, prottype in self.protocols:
                     with switch.case('apache::thrift::protocol::' +
-                                     prottype, nobreak=True) as b:
-                        b(('apache::thrift::{0}Reader iprot;')
+                                     prottype, nobreak=True):
+                        out(('apache::thrift::{0}Reader iprot;')
                                 .format(protname))
-                        b('iprot.setInput(buf);')
-                        with b('try') as t:
-                            t('iprot.readMessageBegin(fname, mtype,' +
+                        out('iprot.setInput(buf);')
+                        with out('try'):
+                            out('iprot.readMessageBegin(fname, mtype,' +
                                   ' protoSeqId);')
-                            t('auto it = onewayMethods.find(fname);')
-                            t('return it != onewayMethods.end();')
-                            with t.catch("const TException& ex") as x:
-                                x('LOG(ERROR) << "received invalid message' +
+                            out('auto it = onewayMethods.find(fname);')
+                            out('return it != onewayMethods.end();')
+                            with out().catch("const TException& ex"):
+                                out('LOG(ERROR) << "received invalid message' +
                                   ' from client: " << ex.what();')
-                                x('return false;')
-                with switch.case('default') as d:
-                    d('LOG(ERROR) << "invalid protType: " << protType;')
+                                out('return false;')
+                with switch.case('default'):
+                    out('LOG(ERROR) << "invalid protType: " << protType;')
                 switch.release()
-                d('return false;')
+                out('return false;')
 
-            p.label('private:')
-            p('std::unordered_set<std::string> onewayMethods;')
+            out().label('private:')
+            out('std::unordered_set<std::string> onewayMethods;')
             for shortprot, protname, prottype in self.protocols:
-                p(('typedef void ({0}::*{1}ProcessFunction)(std::unique_ptr' +
+                out(('typedef void ({0}::*{1}ProcessFunction)(std::unique_ptr' +
                    '<apache::thrift::ResponseChannel::Request> req, ').format(
                            service.name + "AsyncProcessor", shortprot) +
                   'std::unique_ptr<folly::IOBuf> buf, ' +
@@ -1441,14 +1435,14 @@ class CppGenerator(t_generator.Generator):
                   'apache::thrift::Cpp2RequestContext* context, ' +
                   'apache::thrift::async::TEventBase* eb, ' +
                   'apache::thrift::concurrency::ThreadManager* tm' + ');')
-                p('typedef std::unordered_map<std::string, ' +
+                out('typedef std::unordered_map<std::string, ' +
                   '{0}ProcessFunction>'.format(shortprot) +
                   ' {0}ProcessMap;'.format(shortprot))
-                p('{0}ProcessMap {0}ProcessMap_;'.format(shortprot))
+                out('{0}ProcessMap {0}ProcessMap_;'.format(shortprot))
             for function in service.functions:
                 loadname = '"{0}.{1}"'.format(service.name, function.name)
                 if not self._is_processed_in_eb(function):
-                    with p.defn('template <typename ProtocolIn_, '
+                    with out().defn('template <typename ProtocolIn_, '
                                 'typename ProtocolOut_>\n'
                                 'void {name}(std::unique_ptr<'
                                 'apache::thrift::ResponseChannel::Request> req,'
@@ -1460,10 +1454,10 @@ class CppGenerator(t_generator.Generator):
                                 ')',
                                 name="_processInThread_{0}"
                                 .format(function.name),
-                                output=self._out_tcc) as f:
-                        f('auto pri = iface_->getprio_{0}(ctx);'.format(
+                                output=self._out_tcc):
+                        out('auto pri = iface_->getprio_{0}(ctx);'.format(
                                 function.name))
-                        f('processInThread<ProtocolIn_, ProtocolOut_>' +
+                        out('processInThread<ProtocolIn_, ProtocolOut_>' +
                           '(std::move(req), std::move(buf),' +
                           'std::move(iprot), ctx, eb, tm, pri, '
                           + (function.oneway and 'true' or 'false') +
@@ -1471,7 +1465,7 @@ class CppGenerator(t_generator.Generator):
                                   service.name, function.name) +
                           '<ProtocolIn_, ProtocolOut_>, this);')
 
-                with p.defn('template <typename ProtocolIn_, ' +
+                with out().defn('template <typename ProtocolIn_, ' +
                             'typename ProtocolOut_>\n' +
                             'void {name}(std::unique_ptr<' +
                             'apache::thrift::ResponseChannel::Request> req, ' +
@@ -1481,8 +1475,8 @@ class CppGenerator(t_generator.Generator):
                             'apache::thrift::async::TEventBase* eb, ' +
                             'apache::thrift::concurrency::ThreadManager* tm)',
                             name="process_{0}".format(function.name),
-                            output=self._out_tcc) as f:
-                    self._generate_process_function(f, service, function)
+                            output=self._out_tcc):
+                    self._generate_process_function(service, function)
 
                 if not function.oneway:
                     args = [
@@ -1496,44 +1490,44 @@ class CppGenerator(t_generator.Generator):
                         args.append("{0} const& _return".format(
                                 self._type_name(function.returntype)))
 
-                    with p.defn(
+                    with out().defn(
                         'template <class ProtocolIn_, class ProtocolOut_>\n' +
                                 'folly::IOBufQueue {name}' + '({0})'
                                 .format(", ".join(args)),
                                 name="return_{0}".format(function.name),
                                 output=self._out_tcc,
-                                modifiers='static') as f:
+                                modifiers='static'):
                         if self._function_uses_streams(function):
-                            f('_return->setInputProtocol('
+                            out('_return->setInputProtocol('
                               'ProtocolIn_::protocolType());')
-                            f('_return->setOutputProtocol('
+                            out('_return->setOutputProtocol('
                              'ProtocolOut_::protocolType());')
-                            f()
-                        f('ProtocolOut_ prot;')
+                            out("")
+                        out('ProtocolOut_ prot;')
                         result_type = '{0}_{1}_presult'.format(
                                 service.name, function.name)
-                        f('{0} result;'.format(result_type))
+                        out('{0} result;'.format(result_type))
                         if self._function_produces_result(function):
-                            f('result.success = const_cast' +
+                            out('result.success = const_cast' +
                               '<{0}*>(&_return);'.format(
                                       self._type_name(
                                            function.returntype)))
-                            f('result.__isset.success = true;')
-                        f('return serializeResponse("{0}", '
+                            out('result.__isset.success = true;')
+                        out('return serializeResponse("{0}", '
                           '&prot, protoSeqId, ctx.get(), result);'
                           .format(function.name))
 
-                def cast_xceptions(xceptions, f):
+                def cast_xceptions(xceptions):
                     for xception in xceptions:
-                        with f('catch (const {0}& e)'.format(
-                            self._type_name(xception.type))) as e:
-                            e('ctx->userException(' +
+                        with out('catch (const {0}& e)'.format(
+                            self._type_name(xception.type))):
+                            out('ctx->userException(' +
                               'folly::demangle(typeid(e)).toStdString());')
-                            e('result.{0} = e;'.format(xception.name))
-                            e('result.__isset.{0} = true;'.format(
+                            out('result.{0} = e;'.format(xception.name))
+                            out('result.__isset.{0} = true;'.format(
                                 xception.name))
                 if not function.oneway:
-                    with p.defn(
+                    with out().defn(
                         'template <class ProtocolIn_, class ProtocolOut_>\n' +
                         'void {name}(std::unique_ptr' +
                         '<apache::thrift::ResponseChannel::Request> req,' +
@@ -1542,37 +1536,35 @@ class CppGenerator(t_generator.Generator):
                         'std::exception_ptr ep)',
                                 name="throw_{0}".format(function.name),
                                 modifiers='static',
-                                output=self._out_tcc) as f:
-                        f('ProtocolOut_ prot;')
+                                output=self._out_tcc):
+                        out('ProtocolOut_ prot;')
                         if len(function.xceptions.members) > 0:
-                            f('{0}_{1}_result result;'.format(
+                            out('{0}_{1}_result result;'.format(
                                     service.name, function.name))
-                        with f('try') as tb:
-                            tb('std::rethrow_exception(ep);')
+                        with out('try'):
+                            out('std::rethrow_exception(ep);')
                         cast_xceptions(
-                            function.xceptions.members, f)
-                        with f('catch (const std::exception& e)') \
-                            as e:
+                            function.xceptions.members)
+                        with out('catch (const std::exception& e)'):
                             self._generate_app_ex(
                                 service,
                                 "folly::exceptionStr(e)." +
                                 "toStdString()",
                                 function.name, "protoSeqId", True,
-                                e)
-                        with f('catch (...)') as e:
+                                out())
+                        with out('catch (...)'):
                             self._generate_app_ex(
                                 service,
                                 "\"<unknown exception>\"",
                                 function.name, "protoSeqId", True,
-                                e, False)
+                                out(), False)
                         if len(function.xceptions.members) > 0:
-                            f('auto queue = serializeResponse('
+                            out('auto queue = serializeResponse('
                               '"{0}", &prot, protoSeqId, ctx.get(),'
                               ' result);'.format(function.name))
-                            f('return req->sendReply(' +
-                              'queue.move());')
+                            out('return req->sendReply(queue.move());')
 
-            p.label('public:')
+            out().label('public:')
             init = OrderedDict()
             if service.extends:
                 init[self._type_name(service.extends) + 'AsyncProcessor'] = \
@@ -1588,11 +1580,11 @@ class CppGenerator(t_generator.Generator):
                     '<apache::thrift::{0}Reader, '
                     'apache::thrift::{0}Writer>}}'.format(protname)
                         for function in service.functions) + '}'
-            p.defn('{name}(' + service.name + 'SvIf* iface)',
+            out().defn('{name}(' + service.name + 'SvIf* iface)',
                    name=service.name + 'AsyncProcessor',
                    init_dict=init,
                    in_header=True).scope.empty()
-            p.defn('{name}()', name='~' + service.name + 'AsyncProcessor',
+            out().defn('{name}()', name='~' + service.name + 'AsyncProcessor',
                    in_header=True, modifiers='virtual').scope.empty()
 
     def _get_handler_function_name(self, function):
@@ -1601,13 +1593,13 @@ class CppGenerator(t_generator.Generator):
         else:
             return '_processInThread_' + function.name
 
-    def _generate_client_sync_function(self, c, service, function,
+    def _generate_client_sync_function(self, service, function,
                                        uses_rpc_options=False):
 
         signature = self._get_sync_function_signature(function,
                                                       uses_rpc_options)
-        with c.defn(signature, name="sync_" + function.name,
-                    modifiers='virtual') as f:
+        with out().defn(signature, name="sync_" + function.name,
+                    modifiers='virtual'):
             common_args = [arg.name for arg in function.arglist.members]
 
             if not uses_rpc_options:
@@ -1615,7 +1607,7 @@ class CppGenerator(t_generator.Generator):
                     args = ["::apache::thrift::RpcOptions()"]
                     args.extend(common_args)
                     args_list = ", ".join(args)
-                    f("sync_{name}({args_list});".format(name=function.name,
+                    out("sync_{name}({args_list});".format(name=function.name,
                                                          args_list=args_list))
                 elif self._function_uses_streams(function) or \
                      not self._is_complex_type(function.returntype):
@@ -1623,14 +1615,14 @@ class CppGenerator(t_generator.Generator):
                     args.extend(common_args)
                     args_list = ", ".join(args)
 
-                    f("return sync_{name}({args_list});"
+                    out("return sync_{name}({args_list});"
                          .format(name=function.name, args_list=args_list))
                 else:
                     args = ["::apache::thrift::RpcOptions()", "_return"]
                     args.extend(common_args)
                     args_list = ", ".join(args)
 
-                    f("sync_{name}({args_list});"
+                    out("sync_{name}({args_list});"
                          .format(name=function.name, args_list=args_list))
 
             elif self._function_uses_streams(function):
@@ -1641,7 +1633,7 @@ class CppGenerator(t_generator.Generator):
                 if function.returntype.is_stream:
                     template = ("apache::thrift::SyncInputStream<{type}> "
                                 "{name};")
-                    f(self._format_stream_declaration(template,
+                    out(self._format_stream_declaration(template,
                                                       function.returntype,
                                                       stream))
                     args.append("{stream}.makeHandler<{serializer}>()"
@@ -1649,7 +1641,7 @@ class CppGenerator(t_generator.Generator):
                 elif not function.returntype.is_void:
                     template = ("apache::thrift::StreamSingleton<{type}> "
                                 "{name};")
-                    f(self._format_stream_declaration(template,
+                    out(self._format_stream_declaration(template,
                                                       function.returntype,
                                                       stream))
                     args.append("{stream}.makeHandler<{serializer}>()"
@@ -1666,16 +1658,16 @@ class CppGenerator(t_generator.Generator):
 
                 args_list = ", ".join(args)
 
-                f("{name}({args});".format(name=function.name, args=args_list))
+                out("{name}({args});".format(name=function.name, args=args_list))
 
                 if not function.returntype.is_void:
-                    f("return std::move({stream});".format(stream=stream))
+                    out("return std::move({stream});".format(stream=stream))
 
             else:
-                f('apache::thrift::ClientReceiveState _returnState;')
+                out('apache::thrift::ClientReceiveState _returnState;')
 
                 sync_callback_name = self.tmp("callback")
-                f("std::unique_ptr<apache::thrift::RequestCallback> "
+                out("std::unique_ptr<apache::thrift::RequestCallback> "
                   "{sync_callback_name}("
                   "new apache::thrift::ClientSyncCallback("
                   "&_returnState, getChannel()->getEventBase(), {isOneWay}));"
@@ -1687,25 +1679,25 @@ class CppGenerator(t_generator.Generator):
                 args.extend(common_args)
                 args_list = ", ".join(args)
 
-                f("{name}({args_list});".format(name=function.name,
+                out("{name}({args_list});".format(name=function.name,
                                                 args_list=args_list))
 
-                f("getChannel()->getEventBase()->loopForever();")
+                out("getChannel()->getEventBase()->loopForever();")
 
                 if not function.oneway:
-                    with f("if (!_returnState.buf())") as i:
-                        i("assert(_returnState.exception());")
-                        i("std::rethrow_exception(_returnState.exception());")
+                    with out("if (!_returnState.buf())"):
+                        out("assert(_returnState.exception());")
+                        out("std::rethrow_exception(_returnState.exception());")
 
                     if not function.returntype.is_void:
                         if not self._is_complex_type(function.returntype):
-                            f("return recv_" + function.name +
+                            out("return recv_" + function.name +
                                 "(_returnState);")
                         else:
-                            f("recv_" + function.name +
+                            out("recv_" + function.name +
                                 "(_return, _returnState);")
                     else:
-                        f("recv_" + function.name + "(_returnState);")
+                        out("recv_" + function.name + "(_returnState);")
 
     def _get_sync_function_signature(self, function, uses_rpc_options=False):
         params = []
@@ -1738,11 +1730,11 @@ class CppGenerator(t_generator.Generator):
 
         return return_type + " {name}(" + param_list + ")"
 
-    def _generate_client_future_gate_function(self, c, function):
+    def _generate_client_future_gate_function(self, function):
         signature = self._get_future_gate_function_signature(function)
 
-        with c.defn(signature, name="future_" + function.name,
-                    modifiers='virtual') as f:
+        with out().defn(signature, name="future_" + function.name,
+                    modifiers='virtual'):
             if function.returntype.is_stream:
                 return_type = "void"
             else:
@@ -1755,7 +1747,7 @@ class CppGenerator(t_generator.Generator):
             args.extend([arg.name for arg in function.arglist.members])
             args_list = ", ".join(args)
 
-            f("return gate->gate<{2}>([=](){{return future_{0}({1});}});"
+            out("return gate->gate<{2}>([=](){{return future_{0}({1});}});"
               .format(function.name, args_list, return_type))
 
     def _get_future_gate_function_signature(self, function):
@@ -1780,14 +1772,14 @@ class CppGenerator(t_generator.Generator):
 
         return return_type + " {name}(" + param_list + ")"
 
-    def _generate_client_future_function(self, c, service, function,
+    def _generate_client_future_function(self, service, function,
                                          uses_rpc_options=False):
 
         function_name = "future_" + function.name
         signature = self._get_future_function_signature(function,
                                                         uses_rpc_options)
-        with c.defn(signature, name=function_name,
-                    modifiers='virtual') as f:
+        with out().defn(signature, name=function_name,
+                    modifiers='virtual'):
             if not uses_rpc_options:
                 args = ["::apache::thrift::RpcOptions()"]
                 if function.returntype.is_stream:
@@ -1796,7 +1788,7 @@ class CppGenerator(t_generator.Generator):
                 args.extend([arg.name for arg in function.arglist.members])
                 args_list = ", ".join(args)
 
-                f("return {function}({args});"
+                out("return {function}({args});"
                       .format(function=function_name, args=args_list))
             else:
                 serializer_name = service.name + "StreamSerializer"
@@ -1817,11 +1809,11 @@ class CppGenerator(t_generator.Generator):
                 else:
                     return_type = self._type_name(function.returntype)
 
-                f("facebook::wangle::Promise<{type}> {promise};"
+                out("facebook::wangle::Promise<{type}> {promise};"
                   .format(type=return_type, promise=promise_name))
 
                 future_name = self.tmp("future")
-                f("auto {future} = {promise}.getFuture();"
+                out("auto {future} = {promise}.getFuture();"
                   .format(future=future_name, promise=promise_name))
 
                 args = ["rpcOptions"]
@@ -1837,7 +1829,7 @@ class CppGenerator(t_generator.Generator):
                         args.append("_return.makeHandler<{serializer}>()"
                                       .format(serializer=serializer_name))
 
-                    f("std::unique_ptr<apache::thrift::StreamEndCallback> "
+                    out("std::unique_ptr<apache::thrift::StreamEndCallback> "
                       "{callback}(new apache::thrift::FutureStreamEndCallback("
                       "std::move({promise})));"
                       .format(callback=callback, promise=promise_name))
@@ -1845,7 +1837,7 @@ class CppGenerator(t_generator.Generator):
                     end_args.append("std::move({0})".format(callback))
 
                 elif function.returntype.is_void:
-                    f("std::unique_ptr<apache::thrift::RequestCallback> "
+                    out("std::unique_ptr<apache::thrift::RequestCallback> "
                       "{callback}("
                       "new apache::thrift::FutureCallback<void>("
                       "std::move({promise}), {isOneWay}));"
@@ -1859,10 +1851,10 @@ class CppGenerator(t_generator.Generator):
                     stream = self.tmp("stream")
                     type_name = self._type_name(function.returntype)
 
-                    f("apache::thrift::AsyncInputStream<{type}> {name};"
+                    out("apache::thrift::AsyncInputStream<{type}> {name};"
                       .format(type=type_name, name=stream))
 
-                    f("std::unique_ptr<apache::thrift::InputStreamCallback"
+                    out("std::unique_ptr<apache::thrift::InputStreamCallback"
                       "<{type}>> {name}("
                       "new apache::thrift::FutureStreamItemCallback<{type}>("
                       "std::move({promise})));"
@@ -1870,7 +1862,7 @@ class CppGenerator(t_generator.Generator):
                                 name=callback,
                                 promise=promise_name))
 
-                    f("{stream}.setCallback(std::move({callback}));"
+                    out("{stream}.setCallback(std::move({callback}));"
                         .format(stream=stream, callback=callback))
 
                     args.append("{stream}.makeHandler<{serializer}>()"
@@ -1879,7 +1871,7 @@ class CppGenerator(t_generator.Generator):
                     end_args.append("nullptr")
 
                 else:
-                    f("std::unique_ptr<apache::thrift::RequestCallback> "
+                    out("std::unique_ptr<apache::thrift::RequestCallback> "
                       "{callback}("
                       "new apache::thrift::FutureCallback<{type}>("
                       "std::move({promise}), recv_{name}));"
@@ -1894,10 +1886,10 @@ class CppGenerator(t_generator.Generator):
                 args.extend(end_args)
                 args_list = ", ".join(args)
 
-                f("{name}({args_list});".format(name=function.name,
+                out("{name}({args_list});".format(name=function.name,
                                                 args_list=args_list))
 
-                f("return std::move({0});".format(future_name))
+                out("return std::move({0});".format(future_name))
 
     def _get_future_function_signature(self, function, uses_rpc_options):
         params = []
@@ -1923,14 +1915,14 @@ class CppGenerator(t_generator.Generator):
 
         return return_type + " {name}(" + param_list + ")"
 
-    def _generate_client_async_function(self, c, service, function,
+    def _generate_client_async_function(self, service, function,
                                         uses_rpc_options=False,
                                         name_prefix=""):
         if not uses_rpc_options:
             signature = self._get_async_function_signature(function,
                                                            uses_rpc_options)
-            with c.defn(signature, name=name_prefix + function.name,
-                        modifiers='virtual') as f:
+            with out().defn(signature, name=name_prefix + function.name,
+                        modifiers='virtual'):
                 args = ["::apache::thrift::RpcOptions()"]
 
                 if not self._function_uses_streams(function):
@@ -1941,15 +1933,15 @@ class CppGenerator(t_generator.Generator):
                 args.extend([arg.name for arg in function.arglist.members])
                 args_list = ", ".join(args)
 
-                f("{name}({args});".format(name=function.name, args=args_list))
+                out("{name}({args});".format(name=function.name, args=args_list))
 
         else:
             # we generate an extra function that accepts Async{In,Out}putStreams
             if self._function_uses_streams(function):
                 signature = self._get_async_function_signature(
                         function, uses_rpc_options=True)
-                with c.defn(signature, name=name_prefix + function.name,
-                            modifiers='virtual') as f:
+                with out().defn(signature, name=name_prefix + function.name,
+                            modifiers='virtual'):
                     serializer = service.name + "StreamSerializer"
 
                     args = ["rpcOptions"]
@@ -1969,14 +1961,14 @@ class CppGenerator(t_generator.Generator):
 
                     args_list = ", ".join(args)
 
-                    f("{name}({args});".format(name=function.name,
+                    out("{name}({args});".format(name=function.name,
                                                args=args_list))
 
             signature = self._get_async_function_signature(
                     function, uses_rpc_options=True, uses_callback_ptr=True)
 
-            with c.defn(signature, name=name_prefix + function.name,
-                        modifiers='virtual') as f:
+            with out().defn(signature, name=name_prefix + function.name,
+                        modifiers='virtual'):
                 args = ["&writer", "rpcOptions"]
                 if not self._function_uses_streams(function):
                     args.append("std::move(callback)")
@@ -1994,18 +1986,18 @@ class CppGenerator(t_generator.Generator):
 
                 args_list = ", ".join(args)
 
-                with f("switch(getChannel()->getProtocolId())") as s:
+                with out("switch(getChannel()->getProtocolId())"):
                     for key, val, prot in self.protocols:
-                        with s.case("apache::thrift::protocol::" + prot) as a:
-                            a("apache::thrift::{0}Writer writer;".format(val))
-                            a("{name}T({args});".
+                        with out().case("apache::thrift::protocol::" + prot):
+                            out("apache::thrift::{0}Writer writer;".format(val))
+                            out("{name}T({args});".
                               format(name=function.name, args=args_list))
 
-                    with s.case("default", nobreak=True) as a:
-                        a("throw apache::thrift::TApplicationException("
+                    with out().case("default", nobreak=True):
+                        out("throw apache::thrift::TApplicationException("
                           '"Could not find Protocol");')
 
-    def _generate_templated_client_function(self, c, service, function):
+    def _generate_templated_client_function(self, service, function):
         signature = self._get_async_function_signature(function,
                                                        uses_rpc_options=True,
                                                        uses_template=True,
@@ -2013,70 +2005,70 @@ class CppGenerator(t_generator.Generator):
 
         func_name = function.name + "T"
 
-        with c.defn(signature, name=func_name, output=self._out_tcc) as f:
+        with out().defn(signature, name=func_name, output=self._out_tcc):
             is_sync = self.tmp("isSync")
             if self._function_uses_streams(function):
-                f("bool {sync} = false;".format(sync=is_sync))
-                f()
+                out("bool {sync} = false;".format(sync=is_sync))
+                out("")
 
-                f("apache::thrift::StreamSource::StreamMap sourceMap;")
+                out("apache::thrift::StreamSource::StreamMap sourceMap;")
                 if not function.returntype.is_void:
                     type_enum = self._stream_type_to_enum(function.returntype)
 
-                    with f("if (_return)") as i:
-                        i("{sync} = {sync} || _return->isSync();"
+                    with out("if (_return)"):
+                        out("{sync} = {sync} || _return->isSync();"
                           .format(sync=is_sync))
-                        i("_return->setType({enum});".format(enum=type_enum))
-                        i("sourceMap[0] = std::move(_return);")
-                f()
+                        out("_return->setType({enum});".format(enum=type_enum))
+                        out("sourceMap[0] = std::move(_return);")
+                out("")
 
-                f("apache::thrift::StreamSink::StreamMap sinkMap;")
+                out("apache::thrift::StreamSink::StreamMap sinkMap;")
                 for arg in function.arglist.members:
                     if arg.type.is_stream:
                         type_enum = self._stream_type_to_enum(arg.type)
 
-                        with f("if ({arg})".format(arg=arg.name)) as i:
-                            i("{sync} = {sync} || {arg}->isSync();"
+                        with out("if ({arg})".format(arg=arg.name)):
+                            out("{sync} = {sync} || {arg}->isSync();"
                               .format(sync=is_sync, arg=arg.name))
-                            i("{arg}->setType({enum});"
+                            out("{arg}->setType({enum});"
                               .format(arg=arg.name, enum=type_enum))
-                            i("sinkMap[{key}] = std::move({arg});"
+                            out("sinkMap[{key}] = std::move({arg});"
                               .format(key=arg.key, arg=arg.name))
-                f()
+                out("")
 
                 prefix = "{service}StreamSerializer::{func}Exception".format(
                             service=service.name, func=function.name)
-                f("std::unique_ptr<apache::thrift::StreamManager> stream(")
-                f("     new apache::thrift::StreamManager(")
-                f("         getChannel()->getEventBase(),")
-                f("         std::move(sourceMap),")
-                f("         {prefix}Deserializer,".format(prefix=prefix))
-                f("         std::move(sinkMap),")
-                f("         {prefix}Serializer,".format(prefix=prefix))
-                f("         std::move(_streamEndCallback)));")
-                f()
+                out("std::unique_ptr<apache::thrift::StreamManager> stream(")
+                out("     new apache::thrift::StreamManager(")
+                out("         getChannel()->getEventBase(),")
+                out("         std::move(sourceMap),")
+                out("         {prefix}Deserializer,".format(prefix=prefix))
+                out("         std::move(sinkMap),")
+                out("         {prefix}Serializer,".format(prefix=prefix))
+                out("         std::move(_streamEndCallback)));")
+                out("")
 
-                f("stream->setOutputProtocol(")
-                f("    static_cast<apache::thrift::ProtocolType>(")
-                f("        getChannel()->getProtocolId()));")
-                f()
+                out("stream->setOutputProtocol(")
+                out("    static_cast<apache::thrift::ProtocolType>(")
+                out("        getChannel()->getProtocolId()));")
+                out("")
 
-                f("apache::thrift::RpcOptions streamOptions(rpcOptions);")
-                f("streamOptions.setStreaming(true);")
-                f()
+                out("apache::thrift::RpcOptions streamOptions(rpcOptions);")
+                out("streamOptions.setStreaming(true);")
+                out("")
 
-                f("std::unique_ptr<apache::thrift::StreamCallback> callback(")
-                f("    new apache::thrift::StreamCallback(std::move(stream),")
-                f("    getChannel()->getEventBase(), recv_{name}, {is_sync}));"
+                out("std::unique_ptr<apache::thrift::StreamCallback> callback(")
+                out("    new apache::thrift::StreamCallback(std::move(stream),")
+                out("    getChannel()->getEventBase(), recv_{name}, {is_sync}));"
                     .format(name=function.name, is_sync=is_sync))
-                f()
+                out("")
 
-            f("std::unique_ptr<apache::thrift::ContextStack> ctx = "
+            out("std::unique_ptr<apache::thrift::ContextStack> ctx = "
               "this->getContextStack(this->getServiceName(), "
               '"{0}.{1}", connectionContext_.get());'
               .format(service.name, function.name))
 
-            f("{0}_{1}_pargs args;".format(service.name, function.name))
+            out("{0}_{1}_pargs args;".format(service.name, function.name))
 
             # Generate list of function args
             for field in function.arglist.members:
@@ -2085,54 +2077,54 @@ class CppGenerator(t_generator.Generator):
                     pass
                 elif rtype.is_string or rtype.is_container \
                         or rtype.is_struct:
-                    f("args.{1} = reinterpret_cast<decltype(args.{1})>(const_cast<{0}*>(&{2}));".format(
+                    out("args.{1} = reinterpret_cast<decltype(args.{1})>(const_cast<{0}*>(&{2}));".format(
                             self._type_name(rtype),
                             field.name, field.name))
                 else:
-                    f("args.{0} = &{0};".format(field.name))
+                    out("args.{0} = &{0};".format(field.name))
 
             if self.flag_compatibility:
-                f("size_t bufSize = "
+                out("size_t bufSize = "
                   "{0}_{1}_pargs_serializedSizeZC(prot, &args);".
                   format(service.name, function.name))
             else:
-                f("size_t bufSize = args.serializedSizeZC(prot);")
+                out("size_t bufSize = args.serializedSizeZC(prot);")
 
-            f('bufSize += prot->serializedMessageSize("{name}");'
+            out('bufSize += prot->serializedMessageSize("{name}");'
                 .format(name=function.name))
-            f("folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());")
-            f("prot->setOutput(&queue, bufSize);")
-            f("auto guard = folly::makeGuard([&]{prot->setOutput(nullptr);});")
-            f()
+            out("folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());")
+            out("prot->setOutput(&queue, bufSize);")
+            out("auto guard = folly::makeGuard([&]{prot->setOutput(nullptr);});")
+            out("")
 
-            with f("try") as t:
-                t('ctx->preWrite();')
-                t("prot->writeMessageBegin"
+            with out("try"):
+                out('ctx->preWrite();')
+                out("prot->writeMessageBegin"
                   "(\"{0}\", apache::thrift::T_CALL, 0);".format(
                               function.name))
                 if self.flag_compatibility:
-                    t("{0}_{1}_pargs_write(prot, &args);".format(
+                    out("{0}_{1}_pargs_write(prot, &args);".format(
                             service.name, function.name))
                 else:
-                    t("args.write(prot);")
-                t("prot->writeMessageEnd();")
-                t("::apache::thrift::SerializedMessage smsg;")
-                t("smsg.protocolType = prot->protocolType();")
-                t("smsg.buffer = queue.front();")
-                t("ctx->onWriteData(smsg);")
-                t("ctx->postWrite(queue.chainLength());")
+                    out("args.write(prot);")
+                out("prot->writeMessageEnd();")
+                out("::apache::thrift::SerializedMessage smsg;")
+                out("smsg.protocolType = prot->protocolType();")
+                out("smsg.buffer = queue.front();")
+                out("ctx->onWriteData(smsg);")
+                out("ctx->postWrite(queue.chainLength());")
 
-                with t.catch("apache::thrift::TException &ex") as h:
-                    h("ctx->handlerError();")
-                    h("throw;")
-            f()
+                with out().catch("apache::thrift::TException &ex"):
+                    out("ctx->handlerError();")
+                    out("throw;")
+            out("")
 
             if not function.oneway:
                 optionName = "rpcOptions"
                 if self._function_uses_streams(function):
                     optionName = "streamOptions"
 
-                f("this->channel_->sendRequest(std::move(" + optionName + "), "
+                out("this->channel_->sendRequest(std::move(" + optionName + "), "
                                               "std::move(callback), "
                                               "std::move(ctx), "
                                               "queue.move());")
@@ -2140,15 +2132,15 @@ class CppGenerator(t_generator.Generator):
             else:
                 # Calling asyncComplete before sending because
                 # sendOnewayRequest moves from ctx and clears it.
-                f("ctx->asyncComplete();")
-                f("this->channel_->sendOnewayRequest(std::move(rpcOptions), "
+                out("ctx->asyncComplete();")
+                out("this->channel_->sendOnewayRequest(std::move(rpcOptions), "
                                                     "std::move(callback), "
                                                     "std::move(ctx), "
                                                     "queue.move());")
 
             if self._function_uses_streams(function):
-                with f("if ({sync})".format(sync=is_sync)) as i:
-                    i("this->channel_->getEventBase()->loopForever();")
+                with out("if ({sync})".format(sync=is_sync)):
+                    out("this->channel_->getEventBase()->loopForever();")
 
     def _get_async_function_signature(self,
                                       function,
@@ -2201,7 +2193,7 @@ class CppGenerator(t_generator.Generator):
 
         return signature_prefix + "void {name}(" + param_list + ")"
 
-    def _generate_client_std_function(self, c, function, name_prefix=""):
+    def _generate_client_std_function(self, function, name_prefix=""):
         sig = ("void {name}(std::function<void ("
                "::apache::thrift::ClientReceiveState&&)> callback" +
                self._argument_list(function.arglist, True, unique=False) + ")")
@@ -2213,23 +2205,23 @@ class CppGenerator(t_generator.Generator):
         args_list = ",".join(args)
 
         name = name_prefix + function.name
-        with c.defn(sig, name=name) as f:
-            f("{name}({args});".format(name=function.name, args=args_list))
+        with out().defn(sig, name=name):
+            out("{name}({args});".format(name=function.name, args=args_list))
 
-    def _generate_recv_function(self, c, function):
-        with c.defn(self._get_recv_function_signature(function),
+    def _generate_recv_function(self, function):
+        with out().defn(self._get_recv_function_signature(function),
                     name="recv_" + function.name,
-                    modifiers="static") as f:
-            with f('if (state.exception())') as ex:
-                ex('std::rethrow_exception(state.exception());')
-            with f('if (!state.buf())') as e:
-                e('throw apache::thrift::TApplicationException('
+                    modifiers="static"):
+            with out('if (state.exception())'):
+                out('std::rethrow_exception(state.exception());')
+            with out('if (!state.buf())'):
+                out('throw apache::thrift::TApplicationException('
                   '"recv_ called without result");')
 
-            with f("switch(state.protocolId())") as s:
+            with out("switch(state.protocolId())"):
                 for key, value, prottype in self.protocols:
-                    with s.case('apache::thrift::protocol::' + prottype) as a:
-                        a("apache::thrift::{0}Reader reader;".format(value))
+                    with out().case('apache::thrift::protocol::' + prottype):
+                        out("apache::thrift::{0}Reader reader;".format(value))
 
                         callee_name = "recv_" + function.name + "T"
 
@@ -2246,113 +2238,113 @@ class CppGenerator(t_generator.Generator):
                         if function.returntype.is_void or \
                            self._is_complex_type(function.returntype) or \
                            self._function_uses_streams(function):
-                            a(callee_name + "(" + args_list + ");")
-                            a("return;")
+                            out(callee_name + "(" + args_list + ");")
+                            out("return;")
                         else:
-                            a("return " + callee_name + "(" + args_list + ");")
+                            out("return " + callee_name + "(" + args_list + ");")
 
-                with s.case("default", nobreak=True) as a:
+                with out().case("default", nobreak=True):
                     pass
-            f("throw apache::thrift::TApplicationException("
+            out("throw apache::thrift::TApplicationException("
               '"Could not find Protocol");')
 
-    def _generate_templated_recv_function(self, c, service, function):
+    def _generate_templated_recv_function(self, service, function):
         sig = self._get_recv_function_signature(function, uses_template=True)
 
-        with c.defn(sig,
+        with out().defn(sig,
                     name="recv_" + function.name + "T",
                     modifiers="static",
-                    output=self._out_tcc) as f:
-            f("prot->setInput(state.buf());")
-            f("auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});")
-            f("apache::thrift::ContextStack* ctx = state.ctx();")
-            f("std::string fname;")
-            f("int32_t protoSeqId = 0;")
-            f("apache::thrift::MessageType mtype;")
-            f("ctx->preRead();")
+                    output=self._out_tcc):
+            out("prot->setInput(state.buf());")
+            out("auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});")
+            out("apache::thrift::ContextStack* ctx = state.ctx();")
+            out("std::string fname;")
+            out("int32_t protoSeqId = 0;")
+            out("apache::thrift::MessageType mtype;")
+            out("ctx->preRead();")
 
-            with f("try") as t:
-                t("prot->readMessageBegin(fname, mtype, protoSeqId);")
+            with out("try"):
+                out("prot->readMessageBegin(fname, mtype, protoSeqId);")
 
-                with f("if (mtype == apache::thrift::T_EXCEPTION)") as e:
-                    e("apache::thrift::TApplicationException x;")
-                    e("x.read(prot);")
-                    e("prot->readMessageEnd();")
-                    e("throw x;")
+                with out("if (mtype == apache::thrift::T_EXCEPTION)"):
+                    out("apache::thrift::TApplicationException x;")
+                    out("x.read(prot);")
+                    out("prot->readMessageEnd();")
+                    out("throw x;")
 
-                with f("if (mtype != apache::thrift::T_REPLY)") as e:
-                    e("prot->skip(apache::thrift::protocol::T_STRUCT);")
-                    e("prot->readMessageEnd();")
-                    e("throw apache::thrift::TApplicationException"
+                with out("if (mtype != apache::thrift::T_REPLY)"):
+                    out("prot->skip(apache::thrift::protocol::T_STRUCT);")
+                    out("prot->readMessageEnd();")
+                    out("throw apache::thrift::TApplicationException"
                       "(apache::thrift::TApplicationException"
                       "::TApplicationExceptionType::INVALID_MESSAGE_TYPE);")
 
-                with f('if (fname.compare("' + function.name + '") != 0)') as e:
-                    e("prot->skip(apache::thrift::protocol::T_STRUCT);")
-                    e("prot->readMessageEnd();")
-                    e("throw apache::thrift::TApplicationException"
+                with out('if (fname.compare("' + function.name + '") != 0)'):
+                    out("prot->skip(apache::thrift::protocol::T_STRUCT);")
+                    out("prot->readMessageEnd();")
+                    out("throw apache::thrift::TApplicationException"
                       "(apache::thrift::TApplicationException"
                       "::TApplicationExceptionType::WRONG_METHOD_NAME);")
 
-                f("::apache::thrift::SerializedMessage smsg;")
-                f("smsg.protocolType = prot->protocolType();")
-                f("smsg.buffer = state.buf();")
-                f("ctx->onReadData(smsg);")
+                out("::apache::thrift::SerializedMessage smsg;")
+                out("smsg.protocolType = prot->protocolType();")
+                out("smsg.buffer = state.buf();")
+                out("ctx->onReadData(smsg);")
 
                 if not function.returntype.is_void and \
                    not self._is_complex_type(function.returntype) and \
                    not self._function_uses_streams(function):
-                    f(self._type_name(function.returntype) + " _return;")
+                    out(self._type_name(function.returntype) + " _return;")
 
-                f("{0}_{1}_presult result;".format(service.name, function.name))
+                out("{0}_{1}_presult result;".format(service.name, function.name))
 
                 if not function.returntype.is_void and \
                    not self._function_uses_streams(function):
-                    f("result.success = &_return;")
+                    out("result.success = &_return;")
 
                 if self.flag_compatibility:
-                    f("{0}_{1}_presult_read(prot, &result);".format(
+                    out("{0}_{1}_presult_read(prot, &result);".format(
                             service.name, function.name))
                 else:
-                    f("result.read(prot);")
+                    out("result.read(prot);")
 
-                f("prot->readMessageEnd();")
-                f('ctx->postRead(state.buf()->length());')
+                out("prot->readMessageEnd();")
+                out('ctx->postRead(state.buf()->length());')
 
                 if not function.returntype.is_void and \
                    not self._function_uses_streams(function):
 
                     if self._is_complex_type(function.returntype):
-                        with f("if (result.__isset.success)") as e:
-                            e("// _return pointer has been filled")
-                            e("return;")
+                        with out("if (result.__isset.success)"):
+                            out("// _return pointer has been filled")
+                            out("return;")
                     else:
-                        with f("if (result.__isset.success)") as e:
-                            e("return _return;")
+                        with out("if (result.__isset.success)"):
+                            out("return _return;")
 
                 for xs in function.xceptions.members:
-                    with f("if (result.__isset.{0})".format(xs.name)) as e:
-                        e("throw result.{0};".format(xs.name))
+                    with out("if (result.__isset.{0})".format(xs.name)):
+                        out("throw result.{0};".format(xs.name))
 
                 if not function.returntype.is_void and \
                    not self._function_uses_streams(function):
                     # else throw, no success
-                    f("throw apache::thrift::TApplicationException("
+                    out("throw apache::thrift::TApplicationException("
                       "apache::thrift::TApplicationException::"
                       "TApplicationExceptionType::MISSING_RESULT, "
                       '"failed: unknown result");')
 
-                with t.catch("apache::thrift::TException &ex") as h:
-                    h("ctx->handlerError();")
-                    h("throw;")
+                with out().catch("apache::thrift::TException &ex"):
+                    out("ctx->handlerError();")
+                    out("throw;")
 
             if self._function_uses_streams(function):
-                f("stream->setInputProtocol(")
-                f("    static_cast<apache::thrift::ProtocolType>(")
-                f("        state.protocolId()));")
-                f()
-                f("state.setStreamManager(std::move(stream));")
-                f()
+                out("stream->setInputProtocol(")
+                out("    static_cast<apache::thrift::ProtocolType>(")
+                out("        state.protocolId()));")
+                out("")
+                out("state.setStreamManager(std::move(stream));")
+                out("")
 
     def _get_recv_function_signature(self, function, uses_template=False):
         signature_prefix = ""
@@ -2505,31 +2497,31 @@ class CppGenerator(t_generator.Generator):
             else:
                 sig = '{name}(const {name}& rhs)'
 
-        with s.defn(sig, name=obj.name, in_header=True, init_dict=i) as d:
+        with s.defn(sig, name=obj.name, in_header=True, init_dict=i):
             if is_move or is_operator:
-                d('__clear();')
-            d('if (rhs.type_ == Type::__EMPTY__) {{ return{0}; }}'.format(
+                out('__clear();')
+            out('if (rhs.type_ == Type::__EMPTY__) {{ return{0}; }}'.format(
                 ' *this' if is_operator else ''))
 
             if is_move:
                 fmt = 'set_{field}(std::move(rhs.value_.{field}));'
             else:
                 fmt = 'set_{field}(rhs.value_.{field});'
-            self._gen_union_switch(d, obj.members, fmt, val='rhs.type_')
+            self._gen_union_switch(obj.members, fmt, val='rhs.type_')
 
             if is_move:
-                d('rhs.__clear();')
+                out('rhs.__clear();')
             if is_operator:
-                d('return *this;')
+                out('return *this;')
 
-    def _gen_union_switch(self, s, members, stmt,
+    def _gen_union_switch(self, members, stmt,
                           val='type_', default='assert(false);'):
-        with s('switch({0})'.format(val)).scope as s1:
+        with out('switch({0})'.format(val)):
             for member in members:
-                with s1.case('Type::' + member.name) as s2:
-                    s2(stmt.format(field=member.name))
-            with s1.case('default') as s2:
-                s2(default)
+                with out().case('Type::' + member.name):
+                    out(stmt.format(field=member.name))
+            with out().case('default'):
+                out(default)
 
     def _generate_struct_complete(self, s, obj, is_exception,
                                     pointers, read, write, swap,
@@ -2543,27 +2535,27 @@ class CppGenerator(t_generator.Generator):
                 # typedef, make a wrapper class that allows access to the
                 # serialization functions
                 with s.cls('class {0} : public{1}'.format(
-                        obj.name, base)).scope as s1:
-                    s1.label('public:')
-                    s1('typedef{0} Base;'.format(base))
-                    s1('{0}() : Base() {{}};'.format(obj.name))
-                    s1('{0}(const {0}& rhs) : Base(rhs) {{}};'.format(
+                        obj.name, base)):
+                    out().label('public:')
+                    out('typedef{0} Base;'.format(base))
+                    out('{0}() : Base() {{}};'.format(obj.name))
+                    out('{0}(const {0}& rhs) : Base(rhs) {{}};'.format(
                         obj.name))
-                    s1('{0}({0}&& rhs) : Base(rhs) {{}};'.format(obj.name))
-                    s1('virtual ~{0}() throw() {{}}'.format(obj.name))
+                    out('{0}({0}&& rhs) : Base(rhs) {{}};'.format(obj.name))
+                    out('virtual ~{0}() throw() {{}}'.format(obj.name))
                     if read:
-                        s1('template <class Protocol_>')
-                        s1('friend uint32_t'
+                        out('template <class Protocol_>')
+                        out('friend uint32_t'
                             ' {0}_read(Protocol_* iprot, {0}* obj);'
                             .format(obj.name))
                     if write:
-                        s1('template <class Protocol_>')
-                        s1('friend uint32_t'
+                        out('template <class Protocol_>')
+                        out('friend uint32_t'
                             ' {0}_write(Protocol_* iprot, const {0}* obj);'
                             .format(obj.name))
                         for suffix in '', 'ZC':
-                            s1('template <class Protocol_>')
-                            s1('friend uint32_t {0}_serializedSize{1}'
+                            out('template <class Protocol_>')
+                            out('friend uint32_t {0}_serializedSize{1}'
                                '(Protocol_* iprot, const {0}* obj);'.format(
                                    obj.name, suffix))
             else:
@@ -2594,12 +2586,12 @@ class CppGenerator(t_generator.Generator):
 
         # Type enum for unions
         if obj.is_union:
-            with struct('enum Type') as e:
-                e('__EMPTY__ = 0,')
+            with struct('enum Type'):
+                out('__EMPTY__ = 0,')
                 i = 0
                 for member in members:
                     i += 1
-                    e('{0} = {1},'.format(member.name, i))
+                    out('{0} = {1},'.format(member.name, i))
             struct.sameLine(';')
 
         if not pointers:
@@ -2667,12 +2659,12 @@ class CppGenerator(t_generator.Generator):
                         self._gen_union_constructor(struct, obj, op, mv)
 
             if len(members) > 0:
-                with struct.defn('void __clear()', in_header=True) as c:
+                with struct.defn('void __clear()', in_header=True):
                     if obj.is_union:
-                        c('if (type_ == Type::__EMPTY__) { return; }')
-                        self._gen_union_switch(c, members,
+                        out('if (type_ == Type::__EMPTY__) { return; }')
+                        self._gen_union_switch(members,
                             'destruct(value_.{field});')
-                        c('type_ = Type::__EMPTY__;')
+                        out('type_ = Type::__EMPTY__;')
                     else:
                         for member in members:
                             t = self._get_true_type(member.type)
@@ -2681,19 +2673,19 @@ class CppGenerator(t_generator.Generator):
                             if t.is_base_type or t.is_enum:
                                 dval = self._member_default_value(
                                         member, explicit=True)
-                                c('{0} = {1};'.format(name, dval))
+                                out('{0} = {1};'.format(name, dval))
                             elif t.is_struct or t.is_xception:
                                 if len(member.type.as_struct.members) > 0:
-                                    c('{0}.__clear();'.format(name))
+                                    out('{0}.__clear();'.format(name))
                             elif t.is_container:
-                                c('{0}.clear();'.format(name))
+                                out('{0}.clear();'.format(name))
                             else:
                                 raise TypeError('Unknown type for member:' +
                                                 member.name)
                         if has_nonrequired_fields:
-                            c('__isset.__clear();')
+                            out('__isset.__clear();')
                         if struct_options.has_serialized_fields:
-                            c('{0}.reset();'.format(
+                            out('{0}.reset();'.format(
                                 self._serialized_fields_name))
 
         # END if not pointers
@@ -2724,12 +2716,12 @@ class CppGenerator(t_generator.Generator):
                 ((not pointers) or read) and not obj.is_union:
             struct()
             with struct.cls('struct __isset', epilogue=' __isset;') as ist:
-                with ist.defn('__isset()', in_header=True) as s:
-                    s('__clear();')
-                with ist.defn('void __clear()', in_header=True) as c:
+                with ist.defn('__isset()', in_header=True):
+                    out('__clear();')
+                with ist.defn('void __clear()', in_header=True):
                     for member in members:
                         if member.req != e_req.required:
-                            c("{0} = false;".format(member.name))
+                            out("{0} = false;".format(member.name))
                 # Declare boolean fields
                 if has_nonrequired_fields:
                     ist()
@@ -2749,10 +2741,10 @@ class CppGenerator(t_generator.Generator):
 
             with struct.defn('bool operator == (const {0}& {1}) const' \
               .format(obj.name, len(members) > 0 and 'rhs' or '/* rhs */'),
-              in_header=True) as op:
+              in_header=True):
                 if obj.is_union:
-                    op('if (type_ != rhs.type_) { return false; }')
-                    self._gen_union_switch(op, members,
+                    out('if (type_ != rhs.type_) { return false; }')
+                    self._gen_union_switch(members,
                         'return value_.{field} == rhs.value_.{field};',
                         default='return true;')
                 else:
@@ -2761,22 +2753,22 @@ class CppGenerator(t_generator.Generator):
                         # optional/required, so we treat "default" fields as
                         # required.
                         if m.req != e_req.optional:
-                            with op('if (!({0} == rhs.{0}))'.format(
-                                    m.name)) as x1:
-                                x1('return false;')
+                            with out('if (!({0} == rhs.{0}))'.format(
+                                    m.name)):
+                                out('return false;')
                         else:
-                            with op('if (__isset.{0} != rhs.__isset.{0})'
-                                    .format(m.name)) as x1:
-                                x1('return false;')
-                            with op('else if'
+                            with out('if (__isset.{0} != rhs.__isset.{0})'
+                                    .format(m.name)):
+                                out('return false;')
+                            with out('else if'
                                     ' (__isset.{0} && !({0} == rhs.{0}))'
-                                    .format(m.name)) as x1:
-                                x1('return false;')
-                    op('return true;')
+                                    .format(m.name)):
+                                out('return false;')
+                    out('return true;')
 
             with struct.defn('bool operator != (const {0}& rhs) const'.format(
-                             obj.name), in_header=True) as x1:
-                x1('return !(*this == rhs);')
+                             obj.name), in_header=True):
+                out('return !(*this == rhs);')
 
             # Generate the declaration of a less-than operator. This must be
             # implemented by the application developer if they wish to use it.
@@ -2785,19 +2777,19 @@ class CppGenerator(t_generator.Generator):
             if self._is_orderable_type(obj) and \
               'no_default_comparators' not in obj.annotations:
                 with struct.defn('bool operator < (const {0}& rhs) const'
-                  .format(obj.name), in_header=True) as op:
+                  .format(obj.name), in_header=True):
                     if obj.is_union:
-                        op('if (type_ != rhs.type_)'
+                        out('if (type_ != rhs.type_)'
                             ' { return type_ < rhs.type_; }')
-                        self._gen_union_switch(op, members,
+                        self._gen_union_switch(members,
                             'return value_.{field} < rhs.value_.{field};',
                             default='return false;')
                     else:
                         for m in members:
-                            with op('if (!({0} == rhs.{0}))'
-                                    .format(m.name)) as x1:
-                                x1('return {0} < rhs.{0};'.format(m.name))
-                        op('return false;')
+                            with out('if (!({0} == rhs.{0}))'
+                                    .format(m.name)):
+                                out('return {0} < rhs.{0};'.format(m.name))
+                        out('return false;')
             else:
                 struct('bool operator < (const {0}& rhs) const;'
                   .format(obj.name))
@@ -2808,26 +2800,26 @@ class CppGenerator(t_generator.Generator):
                 t = self._type_name(self._get_true_type(member.type))
                 with struct.defn('template<typename... T>\n'
                                  'void set_{name}(T&&... t)',
-                                 in_header=True, name=member.name) as d:
-                    d('__clear();')
-                    d('type_ = Type::{0};'.format(member.name))
-                    d('new (&value_.{0}) {1}(std::forward<T>(t)...);'.format(
+                                 in_header=True, name=member.name):
+                    out('__clear();')
+                    out('type_ = Type::{0};'.format(member.name))
+                    out('new (&value_.{0}) {1}(std::forward<T>(t)...);'.format(
                         member.name, t))
 
             for member in members:
                 t = self._type_name(self._get_true_type(member.type))
                 with struct.defn('get_{name}() const', in_header=True,
                         name=member.name,
-                        modifiers='const {0}&'.format(t)) as d:
-                    d('assert(type_ == Type::{0});'.format(member.name))
-                    d('return value_.{0};'.format(member.name))
+                        modifiers='const {0}&'.format(t)):
+                    out('assert(type_ == Type::{0});'.format(member.name))
+                    out('return value_.{0};'.format(member.name))
 
             for member in members:
                 t = self._type_name(self._get_true_type(member.type))
                 with struct.defn('move_{name}()', in_header=True,
-                        name=member.name, modifiers=t) as d:
-                    d('assert(type_ == Type::{0});'.format(member.name))
-                    d('return std::move(value_.{0});'.format(member.name))
+                        name=member.name, modifiers=t):
+                    out('assert(type_ == Type::{0});'.format(member.name))
+                    out('return std::move(value_.{0});'.format(member.name))
 
             struct()
             struct('Type getType() const { return type_; }')
@@ -2854,8 +2846,8 @@ class CppGenerator(t_generator.Generator):
         if obj.is_union:
             struct.label('protected:')
             with struct.defn('template <class T>\n' + 'void destruct(T &val)',
-                            in_header=True) as d:
-                d('(&val)->~T();')
+                            in_header=True):
+                out('(&val)->~T();')
             struct()
             struct('Type type_;')
             struct('storage_type value_;')
@@ -2866,34 +2858,33 @@ class CppGenerator(t_generator.Generator):
         if swap:
             s = self._types_scope
             # Generate a namespace-scope swap() function
-            d = s.defn('void {{name}}({0}& a, {0}& b)'.format(obj.name),
-                       name='swap').scope
-            if obj.is_union:
-                # For unions, the members cannot be swapped individually
-                # so instead we use the logic in the copy constructors to
-                # swap the object wholesale
-                d('{0} temp = a;'.format(obj.name))
-                d('a = std::move(b);')
-                d('b = std::move(temp);')
-            else:
-                # Let argument-dependent name lookup find the correct swap()
-                # function to use based on the argument types. If none is found
-                # in the arguments' namespaces, fall back to ::std::swap().
-                d('using ::std::swap;')
-                has_nonrequired_fields = False
-                for tfield in members:
-                    ttype = self._get_true_type(tfield.type)
-                    if tfield.req != e_req.required:
-                        has_nonrequired_fields = True
-                    d('swap(a.{0}, b.{0});'.format(tfield.name))
-                if has_nonrequired_fields:
-                    d('swap(a.__isset, b.__isset);')
-                if struct_options.has_serialized_fields:
-                    d('swap(a.{0}, b.{0});'.format(
-                        self._serialized_fields_protocol_name))
-                    d('swap(a.{0}, b.{0});'.format(
-                        self._serialized_fields_name))
-            d.release()
+            with s.defn('void {{name}}({0}& a, {0}& b)'.format(obj.name),
+                        name='swap'):
+                if obj.is_union:
+                    # For unions, the members cannot be swapped individually
+                    # so instead we use the logic in the copy constructors to
+                    # swap the object wholesale
+                    out('{0} temp = a;'.format(obj.name))
+                    out('a = std::move(b);')
+                    out('b = std::move(temp);')
+                else:
+                    # Let argument-dependent name lookup find the correct swap()
+                    # function to use based on the argument types. If none is found
+                    # in the arguments' namespaces, fall back to ::std::swap().
+                    out('using ::std::swap;')
+                    has_nonrequired_fields = False
+                    for tfield in members:
+                        ttype = self._get_true_type(tfield.type)
+                        if tfield.req != e_req.required:
+                            has_nonrequired_fields = True
+                        out('swap(a.{0}, b.{0});'.format(tfield.name))
+                    if has_nonrequired_fields:
+                        out('swap(a.__isset, b.__isset);')
+                    if struct_options.has_serialized_fields:
+                        out('swap(a.{0}, b.{0});'.format(
+                                self._serialized_fields_protocol_name))
+                        out('swap(a.{0}, b.{0});'.format(
+                                self._serialized_fields_name))
 
     # ======================================================================
     # DESERIALIZATION CODE
@@ -2961,11 +2952,11 @@ class CppGenerator(t_generator.Generator):
             # Read beginning field marker
             s1('xfer += iprot->readFieldBegin(fname, ftype, fid);')
             # Check for field STOP marker
-            with s1('if (ftype == apache::thrift::protocol::T_STOP)') as s2:
-                s2('break;')
+            with s1('if (ftype == apache::thrift::protocol::T_STOP)'):
+                out('break;')
 
         # Switch statement on the field we are reading
-        s2 = s1('switch (fid)').scope
+        s2 = s('switch (fid)').scope
         # Generate deserialization code for known cases
         for field in fields:
             if field.type.is_stream:
@@ -2999,24 +2990,24 @@ class CppGenerator(t_generator.Generator):
                     isset_prefix = (this + '->__isset.') if \
                         field.req != e_req.required else 'isset_'
                     s4('{0}{1} = true;'.format(isset_prefix, field.name))
-            with s3.sameLine('else') as s4:
-                s4('xfer += iprot->skip(ftype);')
+            with s3.sameLine('else'):
+                out('xfer += iprot->skip(ftype);')
                 # TODO(dreiss): Make this an option when thrift structs have a
                 # common base class.
                 # s4('throw TProtocolException(TProtocolException::'
                 #    'INVALID_DATA);')
             s3.release()  # "break;"
         # Default case
-        with s2.case('default') as s3:
-            s3('xfer += iprot->skip(ftype);')
+        with s2.case('default'):
+            out('xfer += iprot->skip(ftype);')
             if struct_options.keep_unknown_fields:
-                s3('fserialized = true;')
+                out('fserialized = true;')
         s2.release()  # switch
         # Read field end marker
         s1('xfer += iprot->readFieldEnd();')
         if struct_options.has_serialized_fields:
-            with s1('if (fserialized)').scope as s2:
-                s2('iprot->readFromPositionAndAppend(fbegin, serialized);')
+            with s1('if (fserialized)').scope:
+                out('iprot->readFromPositionAndAppend(fbegin, serialized);')
         s1.release()  # while(true)
         s('xfer += iprot->readStructEnd();')
         # Finalize serialized fields buffer if necessary
@@ -3030,8 +3021,8 @@ class CppGenerator(t_generator.Generator):
             # entire buffer around. However, the current implementation leaves
             # it to the application to call coalesce() on __serialized field
             # if necessary.
-            with s('if (serialized)') as s1:
-                s(('{0}->{1} = std::move(serialized);').format(
+            with s('if (serialized)'):
+                out(('{0}->{1} = std::move(serialized);').format(
                        this, self._serialized_fields_name))
         # Throw if any required fields are missing.
         # We do this after reading the struct end so that there might possibly
@@ -3040,8 +3031,8 @@ class CppGenerator(t_generator.Generator):
         for field in filter(self._should_generate_field, fields):
             if not field.req == e_req.required:
                 continue
-            with s('if (!isset_{0.name})'.format(field)) as s1:
-                s1('throw TProtocolException(TProtocolException::'
+            with s('if (!isset_{0.name})'.format(field)):
+                out('throw TProtocolException(TProtocolException::'
                    'MISSING_REQUIRED_FIELD);')
         s('return xfer;')
         s.release()  # the function
@@ -3143,13 +3134,13 @@ class CppGenerator(t_generator.Generator):
         # For loop iterates over elements
         i = self.tmp('_i')
         s('uint32_t {0};'.format(i))
-        with s('for ({0} = 0; {0} < {1}; ++{0})'.format(i, size)) as s1:
+        with s('for ({0} = 0; {0} < {1}; ++{0})'.format(i, size)):
             if cont.is_map:
-                self._generate_deserialize_map_element(s1, cont.as_map, prefix)
+                self._generate_deserialize_map_element(out(), cont.as_map, prefix)
             elif cont.is_set:
-                self._generate_deserialize_set_element(s1, cont.as_set, prefix)
+                self._generate_deserialize_set_element(out(), cont.as_set, prefix)
             elif cont.is_list:
-                self._generate_deserialize_list_element(s1, cont.as_list,
+                self._generate_deserialize_list_element(out(), cont.as_list,
                                                         prefix, use_push, i)
         # Read container end
         if cont.is_map:
@@ -3224,9 +3215,9 @@ class CppGenerator(t_generator.Generator):
                     'Protocol_::protocolType() != {0}->{2})'.format(
                         this,
                         self._serialized_fields_name,
-                        self._serialized_fields_protocol_name)).scope as s1:
-                s1('using apache::thrift::TProtocolException;')
-                s1('throw TProtocolException(TProtocolException::BAD_VERSION);')
+                        self._serialized_fields_protocol_name)):
+                out('using apache::thrift::TProtocolException;')
+                out('throw TProtocolException(TProtocolException::BAD_VERSION);')
         s('uint32_t xfer = 0;')
         s('xfer += prot_->serializedStructSize("{0}");'.format(obj.name))
 
@@ -3357,9 +3348,9 @@ class CppGenerator(t_generator.Generator):
                     'Protocol_::protocolType() != {0}->{2})'.format(
                         this,
                         self._serialized_fields_name,
-                        self._serialized_fields_protocol_name)).scope as s1:
-                s1('using apache::thrift::TProtocolException;')
-                s1('throw TProtocolException(TProtocolException::BAD_VERSION);')
+                        self._serialized_fields_protocol_name)).scope:
+                out('using apache::thrift::TProtocolException;')
+                out('throw TProtocolException(TProtocolException::BAD_VERSION);')
 
         s('uint32_t xfer = 0;')
         s('xfer += prot_->writeStructBegin("{0}");'.format(name))
@@ -3524,15 +3515,15 @@ class CppGenerator(t_generator.Generator):
         ite = self.tmp('_iter')
         typename = self._type_name(ttype)
         with s('for (auto {0} = {1}.begin(); {0} != {1}.end(); ++{0})'.format(
-                ite, prefix)) as s1:
+                ite, prefix)):
             if ttype.is_map:
-                self._generate_serialize_map_element(s1, ttype.as_map,
+                self._generate_serialize_map_element(out(), ttype.as_map,
                                                      ite, method, **kwargs)
             elif ttype.is_set:
-                self._generate_serialize_set_element(s1, ttype.as_set,
+                self._generate_serialize_set_element(out(), ttype.as_set,
                                                      ite, method, **kwargs)
             elif ttype.is_list:
-                self._generate_serialize_list_element(s1, ttype.as_list,
+                self._generate_serialize_list_element(out(), ttype.as_list,
                                                       ite, method, **kwargs)
         if ttype.is_map:
             s('xfer += prot_->{0}MapEnd();'.format(method))
@@ -3583,15 +3574,12 @@ class CppGenerator(t_generator.Generator):
                 ('template <> template <class Protocol> inline '
                  'uint32_t Cpp2Ops<{compat_full_name}>::{method}('
                  'Protocol* proto, {const} {full_name}* obj)'.
-                 format(**locals())),
-                name=method,
-                in_header=True
-            ) as f:
+                 format(**locals())), name=method, in_header=True):
                 if self.flag_compatibility:
-                    f(('return {full_name}_{method}(proto, obj);'.
+                    out(('return {full_name}_{method}(proto, obj);'.
                       format(**locals())))
                 else:
-                    f('return obj->{method}(proto);'.format(**locals()))
+                    out('return obj->{method}(proto);'.format(**locals()))
 
     def _generate_cpp_struct(self, obj, is_exception=False):
         # We write all of these to the types scope

@@ -24,6 +24,13 @@ import weakref
 
 from t_output import Output
 
+global_out = None
+
+def out(str = None):
+    if not str:
+        return global_out
+    return global_out(str)
+
 class Primitive(object):
     '''
     Primitives are what we print to LogicalScopes.
@@ -264,6 +271,8 @@ class LogicalScope:
         if self._acquired > 0:
             raise Exception('Can not reacquire scope')
         changes = {}
+        global global_out
+        global_out = self
         if self.parent is not None:
             returned = self.enter_scope_callback(self._global_context,
                                                  self)
@@ -293,6 +302,8 @@ class LogicalScope:
             # Do nothing if already released
             return
         changes = {}
+        global global_out
+        global_out = self.parent
         if self.parent is not None:
             returned = self.exit_scope_callback(self._global_context,
                                                 self)
