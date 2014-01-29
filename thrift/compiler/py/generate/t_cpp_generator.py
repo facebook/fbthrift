@@ -1389,67 +1389,15 @@ class CppGenerator(t_generator.Generator):
                                 name="_processInThread_{0}"
                                 .format(function.name),
                                 output=self._out_tcc) as f:
-                        f('using folly::makeMoveWrapper;')
-                        if function.oneway:
-                                        # Old clients may not send the special
-                                        # oneway id, so we need to send a fake
-                                        # response to them while in event base.
-                            with f('if (!req->isOneway())') as g:
-                                g('req->sendReply(std::unique_ptr<'
-                                  'folly::IOBuf>());')
-                        f('auto preq = req.get();')
-                        f('auto piprot = iprot.get();')
-                        f('auto buf_mw = makeMoveWrapper('
-                          'std::move(buf));')
-                        f()
-                        with f('try') as t:
-
-                            with t(
-                                'tm->add(std::make_shared<'
-                                'apache::thrift::PriorityEventTask>'
-                                '(iface_->getprio_{0}(ctx), '
-                                '[=]() mutable'
-                                .format(function.name)
-                            ) as g:
-                                g('auto req_mw = makeMoveWrapper('
-                                  'std::unique_ptr'
-                                  '<apache::thrift::ResponseChannel'
-                                  '::Request>(preq));')
-                                g('auto iprot_holder = '
-                                  'std::unique_ptr<ProtocolIn_>('
-                                  'piprot);')
-                                if not function.oneway:
-                                    # Oneway request won't be
-                                    # canceled if expired. see
-                                    # D1006482 for furhter details.
-                                    # TODO: fix this
-                                    with g('if (!(*req_mw)->'
-                                           'isActive())') as h:
-                                        with h(
-                                            'eb->runInEventBase'
-                                            'Thread([=]() mutable'
-                                        ) as i:
-                                            i('delete req_mw->'
-                                              'release();')
-                                        h(');')
-                                        h('return;')
-                                g('this->process_{0}'
-                                  '<ProtocolIn_, ProtocolOut_>('
-                                  'std::move(*req_mw), '
-                                  'std::move(*buf_mw), '
-                                  'std::move(iprot_holder), ctx, '
-                                  'eb, tm);'.format(function.name))
-                            t('));')
-                            t('req.release();')
-                            t('iprot.release();')
-                            with t.catch('std::exception& e') as x:
-                                if not function.oneway:
-                                    x('apache::thrift::TApplication'
-                                      'Exception ex("Failed to add '
-                                      'task to queue, too full");')
-                                    x('req->sendError(std::make_'
-                                      'exception_ptr(ex),'
-                                      'kOverloadedErrorCode);')
+                        f('auto pri = iface_->getprio_{0}(ctx);'.format(
+                                function.name))
+                        f('processInThread<ProtocolIn_, ProtocolOut_>' +
+                          '(std::move(req), std::move(buf),' +
+                          'std::move(iprot), ctx, eb, tm, pri, '
+                          + (function.oneway and 'true' or 'false') +
+                          ', &{0}AsyncProcessor::process_{1}'.format(
+                                  service.name, function.name) +
+                          '<ProtocolIn_, ProtocolOut_>, this);')
 
                 with p.defn('template <typename ProtocolIn_, ' +
                             'typename ProtocolOut_>\n' +

@@ -45,6 +45,36 @@ enum class SerializationThread {
   EVENT_BASE
 };
 
+class EventTask : public virtual apache::thrift::concurrency::Runnable {
+ public:
+  /* implicit */ EventTask(std::function<void()>&& taskFunc)
+      : taskFunc_(std::move(taskFunc)) {}
+
+  void run() {
+    taskFunc_();
+  }
+
+ private:
+  std::function<void()> taskFunc_;
+};
+
+class PriorityEventTask : public apache::thrift::concurrency::PriorityRunnable,
+                          public EventTask {
+ public:
+  PriorityEventTask(
+    apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
+    std::function<void()>&& taskFunc)
+      : EventTask(std::move(taskFunc)), priority_(priority) {}
+
+  apache::thrift::concurrency::PriorityThreadManager::PRIORITY
+  getPriority() const {
+    return priority_;
+  }
+  using EventTask::run;
+ private:
+  apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority_;
+};
+
 class AsyncProcessor : public TProcessorBase {
  public:
   virtual ~AsyncProcessor() {}
@@ -121,6 +151,56 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     x.write(prot);
     prot->writeMessageEnd();
     return queue;
+  }
+
+  template <typename ProtocolIn_, typename ProtocolOut_,
+            typename ProcessFunc, typename ChildType>
+  static void processInThread(
+      std::unique_ptr<apache::thrift::ResponseChannel::Request> req,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::unique_ptr<ProtocolIn_> iprot,
+      apache::thrift::Cpp2RequestContext* ctx,
+      apache::thrift::async::TEventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm,
+      apache::thrift::concurrency::PRIORITY pri,
+      bool oneway,
+      ProcessFunc processFunc,
+      ChildType* childClass) {
+    using folly::makeMoveWrapper;
+    if (oneway) {
+      if (!req->isOneway()) {
+        req->sendReply(std::unique_ptr<folly::IOBuf>());
+      }
+    }
+    auto req_mw = makeMoveWrapper(std::move(req));
+    auto iprot_holder = makeMoveWrapper(std::move(iprot));
+    auto buf_mw = makeMoveWrapper(std::move(buf));
+    try {
+      tm->add(
+        std::make_shared<apache::thrift::PriorityEventTask>(
+          pri,
+          [=]() mutable {
+            // Oneway request won't be canceled if expired. see
+            // D1006482 for furhter details.  TODO: fix this
+            if (!oneway) {
+              if (!(*req_mw)->isActive()) {
+                eb->runInEventBaseThread([=]() mutable {
+                  delete req_mw->release();
+                });
+                return;
+              }
+            }
+            (childClass->*processFunc)(std::move(*req_mw), std::move(*buf_mw),
+                        std::move(*iprot_holder), ctx, eb, tm);
+
+          }));
+    } catch (const std::exception& e) {
+      if (!oneway) {
+        apache::thrift::TApplicationException ex(
+          "Failed to add task to queue, too full");
+        req->sendError(std::make_exception_ptr(ex), kOverloadedErrorCode);
+      }
+    }
   }
 };
 
@@ -507,36 +587,6 @@ class HandlerCallback<void> : public HandlerCallbackBase {
   }
 
   cob_ptr cp_;
-};
-
-class EventTask : public virtual apache::thrift::concurrency::Runnable {
- public:
-  /* implicit */ EventTask(std::function<void()>&& taskFunc)
-      : taskFunc_(std::move(taskFunc)) {}
-
-  void run() {
-    taskFunc_();
-  }
-
- private:
-  std::function<void()> taskFunc_;
-};
-
-class PriorityEventTask : public apache::thrift::concurrency::PriorityRunnable,
-                          public EventTask {
- public:
-  PriorityEventTask(
-    apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
-    std::function<void()>&& taskFunc)
-      : EventTask(std::move(taskFunc)), priority_(priority) {}
-
-  apache::thrift::concurrency::PriorityThreadManager::PRIORITY
-  getPriority() const {
-    return priority_;
-  }
-  using EventTask::run;
- private:
-  apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority_;
 };
 
 class AsyncProcessorFactory {
