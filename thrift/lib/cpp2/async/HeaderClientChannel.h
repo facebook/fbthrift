@@ -46,7 +46,6 @@ namespace apache { namespace thrift {
  */
 class HeaderClientChannel : public RequestChannel,
                             public MessageChannel::RecvCallback,
-                            public SaslClient::Callback,
                             protected Cpp2Channel,
                             public apache::thrift::async::HHWheelTimer {
  private:
@@ -99,11 +98,6 @@ class HeaderClientChannel : public RequestChannel,
                        std::unique_ptr<MessageChannel::RecvCallback::sample>);
   void messageChannelEOF();
   void messageReceiveError(std::exception_ptr&&);
-
-  // Interface from SaslClient::Callback
-  void saslSendServer(std::unique_ptr<folly::IOBuf>&&);
-  void saslError(std::exception_ptr&&);
-  void saslComplete();
 
   // Client timeouts for read, write.
   // Servers should use timeout methods on underlying transport.
@@ -437,7 +431,9 @@ private:
   void maybeSetTimeoutHeader(const RpcOptions& rpcOptions);
 
   uint32_t sendSeqId_;
+
   std::unique_ptr<SaslClient> saslClient_;
+
   typedef void (HeaderClientChannel::*AfterSecurityMethod)(
     const RpcOptions&,
     std::unique_ptr<RequestCallback>,
@@ -459,6 +455,18 @@ private:
   uint32_t handshakeMessagesSent_;
 
   bool keepRegisteredForClose_;
+
+ private:
+  class SaslClientCallback : public SaslClient::Callback {
+   public:
+    explicit SaslClientCallback(HeaderClientChannel& channel)
+      : channel_(channel) {}
+    void saslSendServer(std::unique_ptr<folly::IOBuf>&&);
+    void saslError(std::exception_ptr&&);
+    void saslComplete();
+   private:
+    HeaderClientChannel& channel_;
+  } saslClientCallback_;
 };
 
 }} // apache::thrift
