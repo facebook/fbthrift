@@ -40,7 +40,6 @@ namespace apache { namespace thrift {
 HeaderClientChannel::HeaderClientChannel(
   const std::shared_ptr<TAsyncTransport>& transport)
     : Cpp2Channel(transport)
-    , HHWheelTimer(getEventBase())
     , sendSeqId_(0)
     , saslClient_(new GssSaslClient(transport->getEventBase()))
     , closeCallback_(nullptr)
@@ -48,7 +47,8 @@ HeaderClientChannel::HeaderClientChannel(
     , timeoutSASL_(500)
     , handshakeMessagesSent_(0)
     , keepRegisteredForClose_(true)
-    , saslClientCallback_(*this) {
+    , saslClientCallback_(*this)
+    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
   header_.reset(new THeader);
   header_->setSupportedClients(nullptr);
   header_->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
@@ -71,7 +71,7 @@ void HeaderClientChannel::destroy() {
 void HeaderClientChannel::attachEventBase(
     TEventBase* eventBase) {
   Cpp2Channel::attachEventBase(eventBase);
-  HHWheelTimer::attachEventBase(eventBase);
+  timer_->attachEventBase(eventBase);
 }
 
 void HeaderClientChannel::detachEventBase() {
@@ -79,7 +79,7 @@ void HeaderClientChannel::detachEventBase() {
   saslClientCallback_.cancelTimeout();
 
   Cpp2Channel::detachEventBase();
-  HHWheelTimer::detachEventBase();
+  timer_->detachEventBase();
 }
 
 void HeaderClientChannel::startSecurity() {
@@ -101,8 +101,8 @@ void HeaderClientChannel::startSecurity() {
   // Schedule timeout because in saslClient_->start() we may be talking
   // to the KDC.
   if (timeoutSASL_ > 0) {
-    scheduleTimeout(&saslClientCallback_,
-                    std::chrono::milliseconds(timeoutSASL_));
+    timer_->scheduleTimeout(&saslClientCallback_,
+                            std::chrono::milliseconds(timeoutSASL_));
   }
   saslClient_->start(&saslClientCallback_);
 }
@@ -134,8 +134,8 @@ unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
 void HeaderClientChannel::SaslClientCallback::saslSendServer(
     std::unique_ptr<folly::IOBuf>&& message) {
   if (channel_.timeoutSASL_ > 0) {
-    channel_.scheduleTimeout(this,
-                             std::chrono::milliseconds(channel_.timeoutSASL_));
+    channel_.timer_->scheduleTimeout(this,
+        std::chrono::milliseconds(channel_.timeoutSASL_));
   }
   channel_.handshakeMessagesSent_++;
   channel_.sendMessage(nullptr, std::move(message));
@@ -341,7 +341,7 @@ void HeaderClientChannel::sendRequest(
                                  std::move(ctx));
 
   if (timeout > std::chrono::milliseconds(0)) {
-    scheduleTimeout(twcb, timeout);
+    timer_->scheduleTimeout(twcb, timeout);
   }
   maybeSetPriorityHeader(rpcOptions);
 
@@ -643,7 +643,7 @@ void HeaderClientChannel::StreamCallback::onOutOfLoopStreamError(
 void HeaderClientChannel::StreamCallback::resetTimeout() {
   cancelTimeout();
   if (timeout_ > std::chrono::milliseconds(0)) {
-    channel_->scheduleTimeout(this, timeout_);
+    channel_->timer_->scheduleTimeout(this, timeout_);
   }
 }
 

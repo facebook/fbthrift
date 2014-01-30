@@ -193,6 +193,9 @@ class HHWheelTimer : protected apache::thrift::async::TAsyncTimeout,
     catchupEveryN_ = everyN;
   }
 
+  using apache::thrift::async::TAsyncTimeout::attachEventBase;
+  using apache::thrift::async::TAsyncTimeout::detachEventBase;
+
  protected:
   /**
    * Protected destructor.

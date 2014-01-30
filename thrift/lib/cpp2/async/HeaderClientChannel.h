@@ -46,8 +46,7 @@ namespace apache { namespace thrift {
  */
 class HeaderClientChannel : public RequestChannel,
                             public MessageChannel::RecvCallback,
-                            protected Cpp2Channel,
-                            public apache::thrift::async::HHWheelTimer {
+                            protected Cpp2Channel {
  private:
   virtual ~HeaderClientChannel(){}
 
@@ -467,6 +466,8 @@ private:
    private:
     HeaderClientChannel& channel_;
   } saslClientCallback_;
+
+  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
 };
 
 }} // apache::thrift
