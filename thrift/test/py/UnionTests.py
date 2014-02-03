@@ -102,7 +102,7 @@ class TestUnionStructs(unittest.TestCase):
         ]
 
         for i, j in l:
-          self._test_json_output(i, j)
+            self._test_json_output(i, j)
 
 
 if __name__ == '__main__':

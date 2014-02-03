@@ -6,4 +6,3 @@
 
 from thrift.Thrift import *
 from ttypes import *
-

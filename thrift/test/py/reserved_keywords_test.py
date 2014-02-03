@@ -25,9 +25,9 @@ from __future__ import unicode_literals
 import unittest
 
 class TestPythonReservedKeywords(unittest.TestCase):
-  def testImport(self):
-    # The test passes if the module can be imported.
-    from .PythonReservedKeywords import ttypes
+    def testImport(self):
+        # The test passes if the module can be imported.
+        from .PythonReservedKeywords import ttypes
 
 if __name__ == '__main__':
-  unittest.main()
+    unittest.main()

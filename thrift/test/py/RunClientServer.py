@@ -66,4 +66,3 @@ for with_prerequest in (True,False):
       "THttpServer",
       ]:
         runTest(server, with_prerequest)
-

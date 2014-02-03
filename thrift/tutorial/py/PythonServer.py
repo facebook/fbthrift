@@ -33,51 +33,51 @@ from thrift.protocol import TBinaryProtocol
 from thrift.server import TServer
 
 class CalculatorHandler(Calculator.Iface):
-  def __init__(self):
-    self.log = {}
+    def __init__(self):
+        self.log = {}
 
-  def ping(self):
-    print('ping()')
+    def ping(self):
+        print('ping()')
 
-  def add(self, n1, n2):
-    print('add(%d,%d)' % (n1, n2))
-    return n1 + n2
+    def add(self, n1, n2):
+        print('add(%d,%d)' % (n1, n2))
+        return n1 + n2
 
-  def calculate(self, logid, work):
-    print('calculate(%d, %r)' % (logid, work))
+    def calculate(self, logid, work):
+        print('calculate(%d, %r)' % (logid, work))
 
-    if work.op == Operation.ADD:
-      val = work.num1 + work.num2
-    elif work.op == Operation.SUBTRACT:
-      val = work.num1 - work.num2
-    elif work.op == Operation.MULTIPLY:
-      val = work.num1 * work.num2
-    elif work.op == Operation.DIVIDE:
-      if work.num2 == 0:
-        x = InvalidOperation()
-        x.what = work.op
-        x.why = 'Cannot divide by 0'
-        raise x
-      val = work.num1 / work.num2
-    else:
-      x = InvalidOperation()
-      x.what = work.op
-      x.why = 'Invalid operation'
-      raise x
+        if work.op == Operation.ADD:
+            val = work.num1 + work.num2
+        elif work.op == Operation.SUBTRACT:
+            val = work.num1 - work.num2
+        elif work.op == Operation.MULTIPLY:
+            val = work.num1 * work.num2
+        elif work.op == Operation.DIVIDE:
+            if work.num2 == 0:
+                x = InvalidOperation()
+                x.what = work.op
+                x.why = 'Cannot divide by 0'
+                raise x
+            val = work.num1 / work.num2
+        else:
+            x = InvalidOperation()
+            x.what = work.op
+            x.why = 'Invalid operation'
+            raise x
 
-    log = SharedStruct()
-    log.key = logid
-    log.value = '%d' % (val)
-    self.log[logid] = log
+        log = SharedStruct()
+        log.key = logid
+        log.value = '%d' % (val)
+        self.log[logid] = log
 
-    return val
+        return val
 
-  def getStruct(self, key):
-    print('getStruct(%d)' % (key))
-    return self.log[key]
+    def getStruct(self, key):
+        print('getStruct(%d)' % (key))
+        return self.log[key]
 
-  def zip(self):
-    print('zip()')
+    def zip(self):
+        print('zip()')
 
 handler = CalculatorHandler()
 transport = TSocket.TServerSocket(9090)

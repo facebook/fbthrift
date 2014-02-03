@@ -88,259 +88,261 @@ class ConnectionSelect:
 
 
 class TSocketBase(TTransportBase):
-  """Base class for both connected and listening sockets"""
-  def __init__(self):
-    self.handles = {}
+    """Base class for both connected and listening sockets"""
+    def __init__(self):
+        self.handles = {}
 
-  def _resolveAddr(self, family=None):
-    if family is None:
-      family = socket.AF_UNSPEC
-    if self._unix_socket is not None:
-      return [(socket.AF_UNIX, socket.SOCK_STREAM, None, None,
-               self._unix_socket)]
-    else:
-      return socket.getaddrinfo(self.host, self.port, family,
-                                socket.SOCK_STREAM, 0,
-                                socket.AI_PASSIVE | socket.AI_ADDRCONFIG)
+    def _resolveAddr(self, family=None):
+        if family is None:
+            family = socket.AF_UNSPEC
+        if self._unix_socket is not None:
+            return [(socket.AF_UNIX, socket.SOCK_STREAM, None, None,
+                     self._unix_socket)]
+        else:
+            return socket.getaddrinfo(self.host, self.port, family,
+                                      socket.SOCK_STREAM, 0,
+                                      socket.AI_PASSIVE | socket.AI_ADDRCONFIG)
 
-  def close(self):
-    klist = self.handles.keys() if sys.version_info[0] < 3 else \
-        list(self.handles.keys())
-    for key in klist:
-      self.handles[key].close()
-      del self.handles[key]
+    def close(self):
+        klist = self.handles.keys() if sys.version_info[0] < 3 else \
+            list(self.handles.keys())
+        for key in klist:
+            self.handles[key].close()
+            del self.handles[key]
 
-  def getSocketName(self):
-    if not self.handles:
-      raise TTransportException(TTransportException.NOT_OPEN,
-          'Transport not open')
-    return self.handles.values()[0].getsockname()
+    def getSocketName(self):
+        if not self.handles:
+            raise TTransportException(TTransportException.NOT_OPEN,
+                'Transport not open')
+        return self.handles.values()[0].getsockname()
 
-  def fileno(self):
-    if not self.handles:
-      raise TTransportException(TTransportException.NOT_OPEN,
-          'Transport not open')
-    if sys.version_info[0] >= 3:
-      return list(self.handles.values())[0].fileno()
-    else:
-      return self.handles.values()[0].fileno()
+    def fileno(self):
+        if not self.handles:
+            raise TTransportException(TTransportException.NOT_OPEN,
+                'Transport not open')
+        if sys.version_info[0] >= 3:
+            return list(self.handles.values())[0].fileno()
+        else:
+            return self.handles.values()[0].fileno()
 
-  def setCloseOnExec(self, closeOnExec):
-    self.close_on_exec = closeOnExec
-    for handle in self.handles.values():
-      self._setHandleCloseOnExec(handle)
+    def setCloseOnExec(self, closeOnExec):
+        self.close_on_exec = closeOnExec
+        for handle in self.handles.values():
+            self._setHandleCloseOnExec(handle)
 
-  def _setHandleCloseOnExec(self, handle):
-    flags = fcntl.fcntl(handle, fcntl.F_GETFD, 0)
-    if flags < 0:
-      raise IOError('Error in retrieving file options')
-    if self.close_on_exec:
-      fcntl.fcntl(handle, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
-    else:
-      fcntl.fcntl(handle, fcntl.F_SETFD, flags & ~fcntl.FD_CLOEXEC)
+    def _setHandleCloseOnExec(self, handle):
+        flags = fcntl.fcntl(handle, fcntl.F_GETFD, 0)
+        if flags < 0:
+            raise IOError('Error in retrieving file options')
+        if self.close_on_exec:
+            fcntl.fcntl(handle, fcntl.F_SETFD, flags | fcntl.FD_CLOEXEC)
+        else:
+            fcntl.fcntl(handle, fcntl.F_SETFD, flags & ~fcntl.FD_CLOEXEC)
 
 
 class TSocket(TSocketBase):
-  """Connection Socket implementation of TTransport base."""
+    """Connection Socket implementation of TTransport base."""
 
-  def __init__(self, host='localhost', port=9090, unix_socket=None):
-    """Initialize a TSocket
+    def __init__(self, host='localhost', port=9090, unix_socket=None):
+        """Initialize a TSocket
 
-    @param host(str)  The host to connect to.
-    @param port(int)  The (TCP) port to connect to.
-    @param unix_socket(str)  The filename of a unix socket to connect to.
-                             (host and port will be ignored.)
-    """
-    TSocketBase.__init__(self)
-    self.host = host
-    self.port = port
-    self.handle = None
-    self._unix_socket = unix_socket
-    self._timeout = None
-    self.close_on_exec = True
+        @param host(str)  The host to connect to.
+        @param port(int)  The (TCP) port to connect to.
+        @param unix_socket(str)  The filename of a unix socket to connect to.
+                                 (host and port will be ignored.)
+        """
+        TSocketBase.__init__(self)
+        self.host = host
+        self.port = port
+        self.handle = None
+        self._unix_socket = unix_socket
+        self._timeout = None
+        self.close_on_exec = True
 
-  def setHandle(self, h):
-    self.handle = h
-    self.handles[h.fileno()] = h
+    def setHandle(self, h):
+        self.handle = h
+        self.handles[h.fileno()] = h
 
-  def getHandle(self):
-    return self.handle
+    def getHandle(self):
+        return self.handle
 
-  def close(self):
-    TSocketBase.close(self)
-    self.handle = None
+    def close(self):
+        TSocketBase.close(self)
+        self.handle = None
 
-  def isOpen(self):
-    return self.handle != None
+    def isOpen(self):
+        return self.handle is not None
 
-  def setTimeout(self, ms):
-    if ms is None:
-      self._timeout = None
-    else:
-      self._timeout = ms / 1000.0
+    def setTimeout(self, ms):
+        if ms is None:
+            self._timeout = None
+        else:
+            self._timeout = ms / 1000.0
 
-    if self.handle != None:
-      self.handle.settimeout(self._timeout)
+        if self.handle is not None:
+            self.handle.settimeout(self._timeout)
 
-  def getPeerName(self):
-    if not self.handle:
-      raise TTransportException(TTransportException.NOT_OPEN,
-          'Transport not open')
-    return self.handle.getpeername()
+    def getPeerName(self):
+        if not self.handle:
+            raise TTransportException(TTransportException.NOT_OPEN,
+                'Transport not open')
+        return self.handle.getpeername()
 
-  def open(self):
-    try:
-      res0 = self._resolveAddr()
-      for res in res0:
-        handle = socket.socket(res[0], res[1])
-        self.setHandle(handle)
-        handle.settimeout(self._timeout)
-        self.setCloseOnExec(self.close_on_exec)
+    def open(self):
         try:
-          handle.connect(res[4])
+            res0 = self._resolveAddr()
+            for res in res0:
+                handle = socket.socket(res[0], res[1])
+                self.setHandle(handle)
+                handle.settimeout(self._timeout)
+                self.setCloseOnExec(self.close_on_exec)
+                try:
+                    handle.connect(res[4])
+                except socket.error as e:
+                    if res is not res0[-1]:
+                        continue
+                    else:
+                        raise e
+                break
         except socket.error as e:
-          if res is not res0[-1]:
-            continue
-          else:
-            raise e
-        break
-    except socket.error as e:
-      if self._unix_socket:
-        message = 'Could not connect to socket %s' % self._unix_socket
-      else:
-        message = 'Could not connect to %s:%d' % (self.host, self.port)
-      raise TTransportException(TTransportException.NOT_OPEN, message)
+            if self._unix_socket:
+                message = 'Could not connect to socket %s' % self._unix_socket
+            else:
+                message = 'Could not connect to %s:%d' % (self.host, self.port)
+            raise TTransportException(TTransportException.NOT_OPEN, message)
 
-  def read(self, sz):
-    buff = self.handle.recv(sz)
-    if len(buff) == 0:
-      raise TTransportException(TTransportException.UNKNOWN,
-                                'TSocket read 0 bytes')
-    return buff
+    def read(self, sz):
+        buff = self.handle.recv(sz)
+        if len(buff) == 0:
+            raise TTransportException(TTransportException.UNKNOWN,
+                                      'TSocket read 0 bytes')
+        return buff
 
-  def write(self, buff):
-    if not self.handle:
-      raise TTransportException(TTransportException.NOT_OPEN, 'Transport not open')
-    sent = 0
-    have = len(buff)
-    while sent < have:
-      try:
-        plus = self.handle.send(buff)
-      except socket.error as e:
-        message = 'Socket send failed with error %s (%s)' %(e.errno, e.strerror)
-        raise TTransportException(TTransportException.UNKNOWN, message)
-      assert plus > 0
-      sent += plus
-      buff = buff[plus:]
+    def write(self, buff):
+        if not self.handle:
+            raise TTransportException(TTransportException.NOT_OPEN,
+                    'Transport not open')
+        sent = 0
+        have = len(buff)
+        while sent < have:
+            try:
+                plus = self.handle.send(buff)
+            except socket.error as e:
+                message = 'Socket send failed with error %s (%s)' % (e.errno,
+                        e.strerror)
+                raise TTransportException(TTransportException.UNKNOWN, message)
+            assert plus > 0
+            sent += plus
+            buff = buff[plus:]
 
-  def flush(self):
-    pass
+    def flush(self):
+        pass
 
 class TServerSocket(TSocketBase, TServerTransportBase):
-  """Socket implementation of TServerTransport base."""
+    """Socket implementation of TServerTransport base."""
 
-  def __init__(self, port=9090, unix_socket=None, family=None, backlog=128):
-    TSocketBase.__init__(self)
-    self.host = None
-    self.port = port
-    self._unix_socket = unix_socket
-    self.family = family
-    self.tcp_backlog = backlog
-    self.close_on_exec = True
+    def __init__(self, port=9090, unix_socket=None, family=None, backlog=128):
+        TSocketBase.__init__(self)
+        self.host = None
+        self.port = port
+        self._unix_socket = unix_socket
+        self.family = family
+        self.tcp_backlog = backlog
+        self.close_on_exec = True
 
-    # Since we now rely on select() by default to do accepts across multiple
-    # socket fds, we can receive two connections concurrently.  In order to
-    # maintain compatibility with the existing .accept() API, we need to keep
-    # track of the accept backlog.
-    self._queue = []
+        # Since we now rely on select() by default to do accepts across
+        # multiple socket fds, we can receive two connections concurrently.
+        # In order to maintain compatibility with the existing .accept() API,
+        # we need to keep track of the accept backlog.
+        self._queue = []
 
-  def getSocketName(self):
-    warnings.warn('getSocketName() is deprecated for TServerSocket.  '
-                  'Please use getSocketNames() instead.')
-    return TSocketBase.getSocketName(self)
+    def getSocketName(self):
+        warnings.warn('getSocketName() is deprecated for TServerSocket.  '
+                      'Please use getSocketNames() instead.')
+        return TSocketBase.getSocketName(self)
 
-  def getSocketNames(self):
-    return [handle.getsockname() for handle in self.handles.values()]
+    def getSocketNames(self):
+        return [handle.getsockname() for handle in self.handles.values()]
 
-  def fileno(self):
-    warnings.warn('fileno() is deprecated for TServerSocket.  '
-                  'Please use filenos() instead.')
-    return TSocketBase.fileno(self)
+    def fileno(self):
+        warnings.warn('fileno() is deprecated for TServerSocket.  '
+                      'Please use filenos() instead.')
+        return TSocketBase.fileno(self)
 
-  def filenos(self):
-    return [handle.fileno() for handle in self.handles.values()]
+    def filenos(self):
+        return [handle.fileno() for handle in self.handles.values()]
 
-  def _cleanup_unix_socket(self, addrinfo):
-    tmp = socket.socket(addrinfo[0], addrinfo[1])
-    try:
-      tmp.connect(addrinfo[4])
-    except socket.error as err:
-      eno, message = err.args
-      if eno == errno.ECONNREFUSED:
-        os.unlink(addrinfo[4])
+    def _cleanup_unix_socket(self, addrinfo):
+        tmp = socket.socket(addrinfo[0], addrinfo[1])
+        try:
+            tmp.connect(addrinfo[4])
+        except socket.error as err:
+            eno, message = err.args
+            if eno == errno.ECONNREFUSED:
+                os.unlink(addrinfo[4])
 
-  def listen(self):
-    res0 = self._resolveAddr(self.family)
+    def listen(self):
+        res0 = self._resolveAddr(self.family)
 
-    for res in res0:
-      if res[0] == socket.AF_INET6 and res[4][0] == socket.AF_INET6:
-        # This happens if your version of python was built without IPv6
-        # support.  getaddrinfo() will return IPv6 addresses, but the
-        # contents of the address field are bogus.
-        # (For example, see http://bugs.python.org/issue8858)
-        #
-        # Ignore IPv6 addresses if python doesn't have IPv6 support.
-        continue
+        for res in res0:
+            if res[0] == socket.AF_INET6 and res[4][0] == socket.AF_INET6:
+                # This happens if your version of python was built without IPv6
+                # support.  getaddrinfo() will return IPv6 addresses, but the
+                # contents of the address field are bogus.
+                # (For example, see http://bugs.python.org/issue8858)
+                #
+                # Ignore IPv6 addresses if python doesn't have IPv6 support.
+                continue
 
-      # We need remove the old unix socket if the file exists and
-      # nobody is listening on it.
-      if self._unix_socket:
-        self._cleanup_unix_socket(res)
+            # We need remove the old unix socket if the file exists and
+            # nobody is listening on it.
+            if self._unix_socket:
+                self._cleanup_unix_socket(res)
 
-      handle = socket.socket(res[0], res[1])
-      handle.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-      self._setHandleCloseOnExec(handle)
+            handle = socket.socket(res[0], res[1])
+            handle.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self._setHandleCloseOnExec(handle)
 
-      # Always set IPV6_V6ONLY for IPv6 sockets
-      if res[0] == socket.AF_INET6:
-        handle.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, True)
+            # Always set IPV6_V6ONLY for IPv6 sockets
+            if res[0] == socket.AF_INET6:
+                handle.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, True)
 
-      handle.settimeout(None)
-      handle.bind(res[4])
-      handle.listen(self.tcp_backlog)
+            handle.settimeout(None)
+            handle.bind(res[4])
+            handle.listen(self.tcp_backlog)
 
-      self.handles[handle.fileno()] = handle
+            self.handles[handle.fileno()] = handle
 
-    if not self.handles:
-      raise TTransportException("No valid interfaces to listen on!")
+        if not self.handles:
+            raise TTransportException("No valid interfaces to listen on!")
 
-  def _sock_accept(self):
-    if self._queue:
-      return self._queue.pop()
+    def _sock_accept(self):
+        if self._queue:
+            return self._queue.pop()
 
-    if hasattr(select, "epoll"):
-        poller = ConnectionEpoll()
-    else:
-        poller = ConnectionSelect()
+        if hasattr(select, "epoll"):
+            poller = ConnectionEpoll()
+        else:
+            poller = ConnectionSelect()
 
-    for filenos in self.handles.keys():
-        poller.read(filenos)
+        for filenos in self.handles.keys():
+            poller.read(filenos)
 
-    r, _, x = poller.process(0)
+        r, _, x = poller.process(0)
 
-    for fd in r:
-      self._queue.append(self.handles[fd].accept())
+        for fd in r:
+            self._queue.append(self.handles[fd].accept())
 
-    if not self._queue:
-      raise TTransportException("Accept interrupt without client?")
+        if not self._queue:
+            raise TTransportException("Accept interrupt without client?")
 
-    return self._queue.pop()
+        return self._queue.pop()
 
-  def accept(self):
-    return self._makeTSocketFromAccepted(self._sock_accept())
+    def accept(self):
+        return self._makeTSocketFromAccepted(self._sock_accept())
 
-  def _makeTSocketFromAccepted(self, accepted):
-    client, addr = accepted
-    result = TSocket()
-    result.setHandle(client)
-    return result
+    def _makeTSocketFromAccepted(self, accepted):
+        client, addr = accepted
+        result = TSocket()
+        result.setHandle(client)
+        return result

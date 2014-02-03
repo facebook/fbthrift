@@ -44,127 +44,131 @@ else:
 
 class THttpClient(TTransportBase):
 
-  """Http implementation of TTransport base."""
+    """Http implementation of TTransport base."""
 
-  def __init__(self, uri_or_host, port=None, path=None):
-    """THttpClient supports two different types constructor parameters.
+    def __init__(self, uri_or_host, port=None, path=None):
+        """THttpClient supports two different types constructor parameters.
 
-    THttpClient(host, port, path) - deprecated
-    THttpClient(uri)
+        THttpClient(host, port, path) - deprecated
+        THttpClient(uri)
 
-    Only the second supports https."""
+        Only the second supports https."""
 
-    if port is not None:
-      warnings.warn("Please use the THttpClient('http://host:port/path') syntax", DeprecationWarning, stacklevel=2)
-      self.host = uri_or_host
-      self.port = port
-      assert path
-      self.path = path
-      self.scheme = 'http'
-    else:
-      parsed = urlparse.urlparse(uri_or_host)
-      self.scheme = parsed.scheme
-      assert self.scheme in ('http', 'https')
-      if self.scheme == 'http':
-        self.port = parsed.port or httplib.HTTP_PORT
-      elif self.scheme == 'https':
-        self.port = parsed.port or httplib.HTTPS_PORT
-      self.host = parsed.hostname
-      self.path = parsed.path
-      if parsed.query:
-        self.path += '?%s' % parsed.query
-    self.__wbuf = StringIO()
-    self.__http = None
-    self.__timeout = None
-    self.__custom_headers = None
-
-  def open(self):
-    if self.scheme == 'http':
-      self.__http = httplib.HTTP(self.host, self.port)
-    else:
-      self.__http = httplib.HTTPS(self.host, self.port)
-
-  def close(self):
-    self.__http.close()
-    self.__http = None
-
-  def isOpen(self):
-    return self.__http != None
-
-  def setTimeout(self, ms):
-    if not hasattr(socket, 'getdefaulttimeout'):
-      raise NotImplementedError
-
-    if ms is None:
-      self.__timeout = None
-    else:
-      self.__timeout = ms/1000.0
-
-  def setCustomHeaders(self, headers):
-    self.__custom_headers = headers
-
-  def setCustomHeader(self, name, value):
-    if self.__custom_headers is None:
-      self.__custom_headers = {}
-    self.__custom_headers[name] = value
-
-  def read(self, sz):
-    return self.__http.file.read(sz)
-
-  def write(self, buf):
-    self.__wbuf.write(buf)
-
-  def __withTimeout(f):
-    def _f(*args, **kwargs):
-      orig_timeout = socket.getdefaulttimeout()
-      socket.setdefaulttimeout(args[0].__timeout)
-      result = f(*args, **kwargs)
-      socket.setdefaulttimeout(orig_timeout)
-      return result
-    return _f
-
-  def flush(self):
-    if self.isOpen():
-      self.close()
-    self.open();
-
-    # Pull data out of buffer
-    data = self.__wbuf.getvalue()
-    self.__wbuf = StringIO()
-
-    # HTTP request
-    self.__http.putrequest('POST', self.path)
-
-    # Write headers
-    if not self.__custom_headers or 'Host' not in self.__custom_headers:
-      self.__http.putheader('Host', self.host)
-
-    self.__http.putheader('Content-Type', 'application/x-thrift')
-    self.__http.putheader('Content-Length', str(len(data)))
-
-    if not self.__custom_headers or 'User-Agent' not in self.__custom_headers:
-      user_agent = 'Python/THttpClient'
-      script = os.path.basename(sys.argv[0])
-      if script:
-        user_agent = '%s (%s)' % (user_agent, urllib.quote(script))
-      self.__http.putheader('User-Agent', user_agent)
-
-    if self.__custom_headers:
-        if sys.version_info[0] > 3:
-            custom_headers_iter = self.__custom_headers.items()
+        if port is not None:
+            warnings.warn(
+                "Please use the THttpClient('http://host:port/path') syntax",
+                DeprecationWarning,
+                stacklevel=2)
+            self.host = uri_or_host
+            self.port = port
+            assert path
+            self.path = path
+            self.scheme = 'http'
         else:
-            custom_headers_iter = self.__custom_headers.iteritems()
-        for key, val in custom_headers_iter:
-            self.__http.putheader(key, val)
+            parsed = urlparse.urlparse(uri_or_host)
+            self.scheme = parsed.scheme
+            assert self.scheme in ('http', 'https')
+            if self.scheme == 'http':
+                self.port = parsed.port or httplib.HTTP_PORT
+            elif self.scheme == 'https':
+                self.port = parsed.port or httplib.HTTPS_PORT
+            self.host = parsed.hostname
+            self.path = parsed.path
+            if parsed.query:
+                self.path += '?%s' % parsed.query
+        self.__wbuf = StringIO()
+        self.__http = None
+        self.__timeout = None
+        self.__custom_headers = None
 
-    self.__http.endheaders()
+    def open(self):
+        if self.scheme == 'http':
+            self.__http = httplib.HTTP(self.host, self.port)
+        else:
+            self.__http = httplib.HTTPS(self.host, self.port)
 
-    # Write payload
-    self.__http.send(data)
+    def close(self):
+        self.__http.close()
+        self.__http = None
 
-    # Get reply to flush the request
-    self.code, self.message, self.headers = self.__http.getreply()
+    def isOpen(self):
+        return self.__http is not None
 
-  # Decorate if we know how to timeout
-  if hasattr(socket, 'getdefaulttimeout'):
-    flush = __withTimeout(flush)
+    def setTimeout(self, ms):
+        if not hasattr(socket, 'getdefaulttimeout'):
+            raise NotImplementedError
+
+        if ms is None:
+            self.__timeout = None
+        else:
+            self.__timeout = ms / 1000.0
+
+    def setCustomHeaders(self, headers):
+        self.__custom_headers = headers
+
+    def setCustomHeader(self, name, value):
+        if self.__custom_headers is None:
+            self.__custom_headers = {}
+        self.__custom_headers[name] = value
+
+    def read(self, sz):
+        return self.__http.file.read(sz)
+
+    def write(self, buf):
+        self.__wbuf.write(buf)
+
+    def __withTimeout(f):
+        def _f(*args, **kwargs):
+            orig_timeout = socket.getdefaulttimeout()
+            socket.setdefaulttimeout(args[0].__timeout)
+            result = f(*args, **kwargs)
+            socket.setdefaulttimeout(orig_timeout)
+            return result
+        return _f
+
+    def flush(self):
+        if self.isOpen():
+            self.close()
+        self.open()
+
+        # Pull data out of buffer
+        data = self.__wbuf.getvalue()
+        self.__wbuf = StringIO()
+
+        # HTTP request
+        self.__http.putrequest('POST', self.path)
+
+        # Write headers
+        if not self.__custom_headers or 'Host' not in self.__custom_headers:
+            self.__http.putheader('Host', self.host)
+
+        self.__http.putheader('Content-Type', 'application/x-thrift')
+        self.__http.putheader('Content-Length', str(len(data)))
+
+        if not self.__custom_headers or 'User-Agent' not in \
+                self.__custom_headers:
+            user_agent = 'Python/THttpClient'
+            script = os.path.basename(sys.argv[0])
+            if script:
+                user_agent = '%s (%s)' % (user_agent, urllib.quote(script))
+            self.__http.putheader('User-Agent', user_agent)
+
+        if self.__custom_headers:
+            if sys.version_info[0] > 3:
+                custom_headers_iter = self.__custom_headers.items()
+            else:
+                custom_headers_iter = self.__custom_headers.iteritems()
+            for key, val in custom_headers_iter:
+                self.__http.putheader(key, val)
+
+        self.__http.endheaders()
+
+        # Write payload
+        self.__http.send(data)
+
+        # Get reply to flush the request
+        self.code, self.message, self.headers = self.__http.getreply()
+
+    # Decorate if we know how to timeout
+    if hasattr(socket, 'getdefaulttimeout'):
+        flush = __withTimeout(flush)

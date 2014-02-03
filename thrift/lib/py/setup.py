@@ -41,4 +41,3 @@ setup(name = 'Thrift',
       package_dir = {'thrift' : '.'},
       ext_modules = [fastbinarymod],
       )
-

@@ -28,7 +28,7 @@ import sys, glob
 sys.path.insert(0, './gen-py')
 lib_path = glob.glob('../../lib/py/build/lib.*')
 if lib_path:
-  sys.path.insert(0, lib_path[0])
+    sys.path.insert(0, lib_path[0])
 
 if sys.version_info[0] >= 3:
     xrange = range

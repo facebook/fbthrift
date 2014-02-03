@@ -31,17 +31,18 @@ from thrift.protocol.TProtocol import TProtocolException
 
 class TestJSONReader(unittest.TestCase):
 
-  def testReadNullOptionalList(self):
-    struct = StructContainingOptionalList()
-    struct.readFromJson('{ "data" : null }')
+    def testReadNullOptionalList(self):
+        struct = StructContainingOptionalList()
+        struct.readFromJson('{ "data" : null }')
 
-  def testReadNullRequiredList(self):
-    try:
-      struct = StructContainingRequiredList()
-      struct.readFromJson('{ "data" : null }')
-      self.assertFalse(True, "Should have failed with required field missing")
-    except TProtocolException as ex:
-      pass
+    def testReadNullRequiredList(self):
+        try:
+            struct = StructContainingRequiredList()
+            struct.readFromJson('{ "data" : null }')
+            self.assertFalse(True,
+                    "Should have failed with required field missing")
+        except TProtocolException as ex:
+            pass
 
 if __name__ == '__main__':
-  unittest.main()
+    unittest.main()
