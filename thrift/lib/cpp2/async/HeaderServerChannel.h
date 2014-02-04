@@ -43,9 +43,7 @@ namespace apache { namespace thrift {
  */
 class HeaderServerChannel : public ResponseChannel,
                             public MessageChannel::RecvCallback,
-                            public SaslServer::Callback,
-                            protected Cpp2Channel,
-                            public apache::thrift::async::HHWheelTimer {
+                            protected Cpp2Channel {
  private:
   virtual ~HeaderServerChannel(){}
 
@@ -91,11 +89,6 @@ class HeaderServerChannel : public ResponseChannel,
                        std::unique_ptr<sample>);
   void messageChannelEOF();
   void messageReceiveError(std::exception_ptr&&);
-
-  // Interface from SaslServer::Callback
-  void saslSendClient(std::unique_ptr<folly::IOBuf>&&);
-  void saslError(std::exception_ptr&&);
-  void saslComplete();
 
   // Header framing
   virtual std::unique_ptr<folly::IOBuf>
@@ -261,6 +254,19 @@ private:
   uint32_t sampleRate_;
 
   uint32_t timeoutSASL_;
+
+  class SaslServerCallback : public SaslServer::Callback {
+   public:
+    explicit SaslServerCallback(HeaderServerChannel& channel)
+      : channel_(channel) {}
+    virtual void saslSendClient(std::unique_ptr<folly::IOBuf>&&);
+    virtual void saslError(std::exception_ptr&&);
+    virtual void saslComplete();
+   private:
+    HeaderServerChannel& channel_;
+  } saslServerCallback_;
+
+  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
 };
 
 }} // apache::thrift
