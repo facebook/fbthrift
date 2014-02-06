@@ -257,6 +257,12 @@ uint32_t DebugProtocolWriter::writeBinary(
   return 0;
 }
 
+uint32_t DebugProtocolWriter::writeBinary(
+    const folly::IOBuf& str) {
+  writeSP(folly::StringPiece(str.clone()->coalesce()));
+  return 0;
+}
+
 void DebugProtocolWriter::writeSP(folly::StringPiece str) {
   static constexpr size_t kStringLimit = 256;
   static constexpr size_t kStringPrefixSize = 128;

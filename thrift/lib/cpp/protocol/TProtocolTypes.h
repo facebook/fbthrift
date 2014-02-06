@@ -26,9 +26,10 @@ enum PROTOCOL_TYPES {
   T_BINARY_PROTOCOL = 0,
   T_JSON_PROTOCOL = 1,
   T_COMPACT_PROTOCOL = 2,
+  T_DEBUG_PROTOCOL = 3,
+  T_VIRTUAL_PROTOCOL = 4,
 };
 
 }}} // apache::thrift::protocol
 
 #endif // #define _THRIFT_PROTOCOL_TPROTOCOLTYPES_H_ 1
-

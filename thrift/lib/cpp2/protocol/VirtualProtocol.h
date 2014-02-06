@@ -21,6 +21,7 @@
 #define CPP2_PROTOCOL_VIRTUALPROTOCOL_H_ 1
 
 #include "folly/FBString.h"
+#include "folly/io/Cursor.h"
 
 #include "thrift/lib/cpp/Thrift.h"
 #include "thrift/lib/cpp2/protocol/Protocol.h"
@@ -75,7 +76,12 @@ class VirtualReaderBase {
   virtual uint32_t readBinary(std::string& str) = 0;
   virtual uint32_t readBinary(folly::fbstring& str) = 0;
   virtual uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str) = 0;
+  virtual uint32_t readBinary(folly::IOBuf& str) = 0;
   virtual uint32_t skip(TType type) = 0;
+  virtual folly::io::Cursor getCurrentPosition() const = 0;
+  virtual uint32_t readFromPositionAndAppend(
+    folly::io::Cursor& cursor,
+    std::unique_ptr<folly::IOBuf>& ser) = 0;
 };
 
 class VirtualWriterBase {
@@ -259,8 +265,19 @@ class VirtualReader : public VirtualReaderBase {
   uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str) {
     return protocol_.readBinary(str);
   }
+  uint32_t readBinary(folly::IOBuf& str) {
+    return protocol_.readBinary(str);
+  }
   uint32_t skip(TType type) {
     return protocol_.skip(type);
+  }
+  folly::io::Cursor getCurrentPosition() const {
+    return protocol_.getCurrentPosition();
+  }
+  uint32_t readFromPositionAndAppend(
+    folly::io::Cursor& cursor,
+    std::unique_ptr<folly::IOBuf>& ser) {
+    return protocol_.readFromPositionAndAppend(cursor, ser);
   }
 
  private:

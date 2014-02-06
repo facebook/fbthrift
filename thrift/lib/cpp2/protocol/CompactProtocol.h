@@ -114,6 +114,11 @@ class CompactProtocolWriter {
   inline uint32_t writeBinary(const StrType& str);
   inline uint32_t writeBinary(const std::unique_ptr<IOBuf>& str);
   inline uint32_t writeBinary(const IOBuf& str);
+  inline uint32_t writeSerializedData(
+    const std::unique_ptr<folly::IOBuf>& data) {
+    // TODO
+    return 0;
+  }
 
   /**
    * Functions that return the serialized size
@@ -161,6 +166,11 @@ class CompactProtocolWriter {
   uint32_t serializedSizeZCBinary(const IOBuf& v) {
     // size only
     return serializedSizeI32();
+  }
+  inline uint32_t serializedSizeSerializedData(
+    const std::unique_ptr<folly::IOBuf>& data) {
+    // TODO
+    return 0;
   }
 
  protected:
@@ -257,6 +267,16 @@ class CompactProtocolReader {
   inline uint32_t readBinary(IOBuf& str);
   uint32_t skip(TType type) {
     return apache::thrift::skip(*this, type);
+  }
+
+  Cursor getCurrentPosition() const {
+    return in_;
+  }
+  inline uint32_t readFromPositionAndAppend(
+    Cursor& cursor,
+    std::unique_ptr<folly::IOBuf>& ser) {
+    // TODO
+    return 0;
   }
 
   // Returns the last read sequence ID.  Used in servers

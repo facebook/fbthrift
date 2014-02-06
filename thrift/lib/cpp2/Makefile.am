@@ -40,6 +40,7 @@ libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   async/OutputStream.cpp \
 			   protocol/StreamSerializers.cpp \
 			   protocol/Serializer.cpp \
+			   protocol/DebugProtocol.cpp \
 			   security/KerberosSASLHandshakeClient.cpp \
 			   security/KerberosSASLHandshakeServer.cpp \
 			   security/KerberosSASLHandshakeUtils.cpp \
@@ -80,7 +81,8 @@ gen-cpp2/Sasl_types.h: Sasl.thrift
 	PYTHONPATH=$(PYPATH) python $(top_builddir)/compiler/main.py --gen cpp2 $<
 
 libsaslstubs_a_SOURCES = gen-cpp2/Sasl_constants.cpp \
-			 gen-cpp2/Sasl_types.cpp
+			 gen-cpp2/Sasl_types.cpp \
+			 gen-cpp2/SaslAuthService.cpp
 
 libsaslstubs_a_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
 

@@ -463,8 +463,6 @@ class CppGenerator(t_generator.Generator):
         for inc in self._program.includes:
             s('#include "{0}_types.h"' \
               .format(self._with_include_prefix(inc, inc.name)))
-            print >>self._out_tcc, '#include "{0}_types.tcc"'.format(
-                self._with_include_prefix(inc, inc.name))
         s()
         # Include custom headers
         for inc in self._program.cpp_includes:
@@ -497,14 +495,6 @@ class CppGenerator(t_generator.Generator):
         s.release()
 
         self._generate_service_helpers_serializers(service, s)
-
-        # Include the types.tcc file from the types header file,
-        # so clients don't have to explicitly include the tcc file.
-        s = self._service_global
-        s()
-        s('#include "{0}.tcc"'.format(
-                self._with_include_prefix(self._program, service.name)))
-        self._service_global.release()
 
     def _generate_service_helpers_serializers(self, service, s):
         s = s.namespace('apache.thrift').scope
@@ -2526,6 +2516,58 @@ class CppGenerator(t_generator.Generator):
     def _generate_struct_complete(self, s, obj, is_exception,
                                     pointers, read, write, swap,
                                   result, has_isset=True):
+        for a,b,c in self.protocols:
+            if not self.flag_compatibility:
+                s.impl(("template uint32_t {1}::read<apache::thrift::{0}Reader>"
+                       "(apache::thrift::{0}Reader*);").format(b,obj.name))
+                s.impl(("template uint32_t {1}::write<"
+                        "apache::thrift::{0}Writer"">("
+                        "apache::thrift::{0}Writer*) const;").format(
+                                b,obj.name))
+                s.impl(("template uint32_t {1}::serializedSize"
+                       "<apache::thrift::{0}Writer>(apache::thrift::{0}Writer*)"
+                        " const;").format(b,obj.name))
+                s.impl(("template uint32_t {1}::serializedSizeZC"
+                        "<apache::thrift::{0}Writer>("
+                        "apache::thrift::{0}Writer*) const;").format(
+                                    b,obj.name))
+            else:
+                s.impl(("template uint32_t {1}_read<"
+                        "apache::thrift::{0}Reader>("
+                        "apache::thrift::{0}Reader*, {1}*);").format(
+                                    b,obj.name))
+                s.impl(("template uint32_t {1}_write<"
+                        "apache::thrift::{0}Writer>("
+                        "apache::thrift::{0}Writer*, const {1}*);").format(
+                                b,obj.name))
+                s.impl(("template uint32_t {1}_serializedSize<"
+                        "apache::thrift::{0}Writer>("
+                        "apache::thrift::{0}Writer*, const {1}*);").format(
+                                b,obj.name))
+                s.impl(("template uint32_t {1}_serializedSizeZC<"
+                        "apache::thrift::{0}Writer>("
+                        "apache::thrift::{0}Writer*, const {1}*);").format(
+                                    b,obj.name))
+        # Special case a few protocols
+        if not self.flag_compatibility:
+            s.impl(("template uint32_t {0}::write<"
+                   "apache::thrift::DebugProtocolWriter>("
+                    "apache::thrift::DebugProtocolWriter*) const;").format(
+                            obj.name))
+            s.impl(("template uint32_t {0}::read<"
+                    "apache::thrift::VirtualReaderBase>("
+                    "apache::thrift::VirtualReaderBase*);").format(obj.name))
+        else:
+            s.impl(
+                ("template uint32_t {0}_write<"
+                 "apache::thrift::DebugProtocolWriter>("
+                 "apache::thrift::DebugProtocolWriter*, const {0}*);").format(
+                         obj.name))
+            s.impl(("template uint32_t {0}_read<"
+                    "apache::thrift::VirtualReaderBase>("
+                    "apache::thrift::VirtualReaderBase*, {0}*);").format(
+                            obj.name))
+
         if self.flag_compatibility:
             base = self._namespace_prefix(
                     self._program.get_namespace('cpp')) + obj.name
@@ -2904,7 +2946,7 @@ class CppGenerator(t_generator.Generator):
         s()
         # Special handling for serialized fields
         if struct_options.has_serialized_fields:
-            s('{0}->{1} = Protocol_::protocolType();'.format(
+            s('{0}->{1} = iprot->protocolType();'.format(
                 this, self._serialized_fields_protocol_name))
             s('std::unique_ptr<folly::IOBuf> serialized;')
         # Required variables aren't in __isset, so we need tmp vars to
@@ -3196,7 +3238,7 @@ class CppGenerator(t_generator.Generator):
         s = d.scope
         if struct_options.has_serialized_fields:
             with s('if ({0}->{1} && '
-                    'Protocol_::protocolType() != {0}->{2})'.format(
+                    'prot_->protocolType() != {0}->{2})'.format(
                         this,
                         self._serialized_fields_name,
                         self._serialized_fields_protocol_name)):
@@ -3587,6 +3629,7 @@ class CppGenerator(t_generator.Generator):
 
         self._generate_cpp2ops(False, obj, self._types_scope)
 
+
         scope.release()
 
         # Re-enter types scope, but we can't actually re-enter a scope,
@@ -3759,7 +3802,7 @@ class CppGenerator(t_generator.Generator):
         # open files and instantiate outputs
         output_h = self._write_to(filename + '.h')
         output_impl = self._write_to(filename + '.cpp')
-        header_path = self._with_include_prefix(self._program, filename + '.h')
+        header_path = self._with_include_prefix(self._program, filename)
         if tcc:
             output_tcc = self._write_to(filename + '.tcc')
             tcc_path = self._with_include_prefix(
@@ -3832,6 +3875,10 @@ class CppGenerator(t_generator.Generator):
         # Include base types
         s('#include "thrift/lib/cpp2/Thrift.h"')
         s('#include "thrift/lib/cpp2/protocol/Protocol.h"')
+        for a, b, c in self.protocols:
+            s('#include "thrift/lib/cpp2/protocol/{0}.h"'.format(b))
+        s('#include "thrift/lib/cpp2/protocol/DebugProtocol.h"')
+        s('#include "thrift/lib/cpp2/protocol/VirtualProtocol.h"')
         s('#include "thrift/lib/cpp/protocol/TProtocol.h"')
         if not self.flag_bootstrap:
             s('#include "thrift/lib/cpp/TApplicationException.h"')
@@ -3848,8 +3895,6 @@ class CppGenerator(t_generator.Generator):
         for inc in self._program.includes:
             s('#include "{0}_types.h"' \
               .format(self._with_include_prefix(inc, inc.name)))
-            print >>types_out_tcc, '#include "{0}_types.tcc"'.format(
-                self._with_include_prefix(inc, inc.name))
         print >>types_out_tcc
         s()
         # Include custom headers
@@ -3873,15 +3918,6 @@ class CppGenerator(t_generator.Generator):
     def close_generator(self):
         # make sure that the main types namespace is closed
         self._types_scope.release()
-
-        # Include the types.tcc file from the types header file,
-        # so clients don't have to explicitly include the tcc file.
-        # TODO(simpkins): Make this a separate option.
-        s = self._types_global
-        s()
-        s('#include "{0}_types.tcc"'.format(
-                self._with_include_prefix(self._program, self._program.name)))
-        self._types_global.release()
 
     def _generate_comment(self, text, style='auto'):
         'Style = block, line or auto'

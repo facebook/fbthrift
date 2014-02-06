@@ -377,13 +377,15 @@ class CppOutputContext(OutputContext):
             # start guard in h
             print >>self._output_h, '#pragma once\n'
             # include h in cpp
-            print >>self._output_cpp, '#include "{0}"\n'.format(  \
+            print >>self._output_cpp, '#include "{0}.h"\n'.format(
                         self._header_path)
             if self._templates:
+                print >>self._output_cpp, '#include "{0}.tcc"\n'.format(
+                    self._header_path)
                 # start guard in tcc
                 print >>self._output_tcc, '#pragma once\n'
                 # include h in tcc
-                print >>self._output_tcc, '#include "{0}"\n'.format(  \
+                print >>self._output_tcc, '#include "{0}.h"\n'.format(
                             self._header_path)
                 print >>self._output_tcc, \
                     '#include "thrift/lib/cpp/TApplicationException.h"\n'
