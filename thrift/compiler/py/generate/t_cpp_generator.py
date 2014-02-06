@@ -1497,7 +1497,7 @@ class CppGenerator(t_generator.Generator):
                                       self._type_name(field.type),
                                       aprefix + field.name,
                                       val))
-                            f('args.{0} = {1}.get();'.format(
+                            f('args.{0} = reinterpret_cast<decltype(args.{0})>({1}.get());'.format(
                                     field.name,
                                     aprefix + field.name))
                         else:
@@ -2184,7 +2184,7 @@ class CppGenerator(t_generator.Generator):
                     pass
                 elif rtype.is_string or rtype.is_container \
                         or rtype.is_struct:
-                    f("args.{1} = const_cast<{0}*>(&{2});".format(
+                    f("args.{1} = reinterpret_cast<decltype(args.{1})>(const_cast<{0}*>(&{2}));".format(
                             self._type_name(rtype),
                             field.name, field.name))
                 else:
@@ -3089,9 +3089,9 @@ class CppGenerator(t_generator.Generator):
                     # since the struct is exposed in generated code only.
                     self._generate_deserialize_field(
                         s4, field,
-                        '(*const_cast<{0}*>('.format(
+                        '(*const_cast<{0}*>(reinterpret_cast<const {0}*>('.format(
                                 self._type_name(field.type)) +
-                                                field_prefix, '))')
+                                                field_prefix, ')))')
                 else:
                     self._generate_deserialize_field(s4, field, field_prefix)
                 if has_isset:
@@ -3208,7 +3208,7 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_deserialize_struct(self, scope, struct, prefix):
         scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
-              'iprot, &{1});'.format(
+              'iprot, reinterpret_cast<{0}*>(&{1}));'.format(
                   self._type_name(struct),
                   prefix))
 
@@ -3365,8 +3365,8 @@ class CppGenerator(t_generator.Generator):
             if pointers and not field.type.is_xception:
                 self._generate_serialize_field(
                     s1, field,
-                    '(*const_cast<{0}*>('.format(
-                            self._type_name(field.type)) + field_prefix, '))',
+                    '(*const_cast<{0}*>(reinterpret_cast<const {0}*>('.format(
+                            self._type_name(field.type)) + field_prefix, ')))',
                     method="serializedSize",
                     struct_method=method,
                     binary_method=method)
@@ -3496,9 +3496,9 @@ class CppGenerator(t_generator.Generator):
                 field_prefix += 'value_.'
             if pointers and not field.type.is_xception:
                 self._generate_serialize_field(
-                    s1, field, '(*const_cast<{0}*>('.format(
+                    s1, field, '(*const_cast<{0}*>(reinterpret_cast<const {0}*>('.format(
                             self._type_name(field.type)) + field_prefix,
-                    '))')
+                    ')))')
             else:
                 self._generate_serialize_field(s1, field, field_prefix)
             # Write field closer
@@ -3595,7 +3595,7 @@ class CppGenerator(t_generator.Generator):
     def _generate_serialize_struct(self, scope, tstruct, prefix='',
                                    method='write'):
         scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::{1}('
-              'prot_, &{2});'.format(
+              'prot_, reinterpret_cast<const {0}*>(&{2}));'.format(
                   self._type_name(tstruct),
                   method,
                   prefix))
