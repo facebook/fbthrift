@@ -817,8 +817,7 @@ class ClientCloseTest
     , public ResponseCallback {
 public:
   explicit ClientCloseTest(bool halfClose)
-      : halfClose_(halfClose)
-      , len_(1) {
+      : halfClose_(halfClose) {
   }
 
   void preLoop() {
@@ -861,7 +860,6 @@ public:
 
  private:
   bool halfClose_;
-  size_t len_;
 };
 
 TEST(Channel, ClientCloseTest) {
@@ -875,8 +873,7 @@ class ServerCloseTest
     , public ResponseCallback {
 public:
   explicit ServerCloseTest(bool halfClose)
-      : halfClose_(halfClose)
-      , len_(1) {
+      : halfClose_(halfClose) {
   }
 
   void preLoop() {
@@ -919,7 +916,6 @@ public:
 
  private:
   bool halfClose_;
-  size_t len_;
 };
 
 TEST(Channel, ServerCloseTest) {
