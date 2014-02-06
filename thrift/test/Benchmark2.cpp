@@ -31,14 +31,6 @@ using namespace thrift::test::debug::cpp2;
 using namespace apache::thrift;
 using namespace std;
 
-namespace thrift { namespace test { namespace debug {
-
-bool Empty::operator<(Empty const& other) const {
-  // It is empty, so all are equal.
-  return false;
-}
-
-}}}
 
 // Globals so that the read test can read the write test data.
 OneOfEach ooe;

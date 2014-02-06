@@ -26,13 +26,6 @@
 #include "thrift/lib/cpp/protocol/TDebugProtocol.h"
 #include "thrift/lib/cpp2/protocol/DebugProtocol.h"
 
-namespace thrift { namespace test { namespace debug { namespace cpp2 {
-
-bool Empty::operator<(const Empty& other) const {
-  return false;
-}
-
-}}}}  // namespaces
 
 int main() {
   using std::cout;

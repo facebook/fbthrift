@@ -117,9 +117,7 @@ struct Backwards {
 }
 
 struct Empty {
-} (
-  no_default_comparators = "true",
-)
+}
 
 struct Wrapper {
   1: Empty foo
