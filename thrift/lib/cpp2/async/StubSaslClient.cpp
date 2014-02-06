@@ -20,12 +20,13 @@
 #include "thrift/lib/cpp2/async/StubSaslClient.h"
 
 #include "folly/io/Cursor.h"
+#include "folly/MoveWrapper.h"
 #include "folly/io/IOBuf.h"
 #include "folly/io/IOBufQueue.h"
 #include "thrift/lib/cpp/async/TEventBase.h"
 #include "thrift/lib/cpp/concurrency/FunctionRunner.h"
 #include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
+#include "thrift/lib/cpp2/protocol/Serializer.h"
 #include "thrift/lib/cpp2/gen-cpp2/Sasl_types.h"
 
 #include <memory>
@@ -35,7 +36,6 @@ using folly::IOBufQueue;
 using apache::thrift::concurrency::FunctionRunner;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
-using apache::thrift::util::ThriftSerializerCompact;
 using apache::thrift::sasl::SaslRequest;
 using apache::thrift::sasl::SaslReply;
 using apache::thrift::sasl::SaslStart;
@@ -68,13 +68,13 @@ void StubSaslClient::start(Callback *cb) {
         start.__isset.request = true;
         start.request.__isset.response = true;
 
-        std::string data;
-        ThriftSerializerCompact<SaslStart> serializer;
-        serializer.serialize(start, &data);
+        folly::MoveWrapper<IOBufQueue> q;
+        Serializer<CompactProtocolReader, CompactProtocolWriter> serializer;
+        serializer.serialize(start, &*q);
         phase_ = 1;
 
-        evb_->runInEventBaseThread([=] {
-            cb->saslSendServer(IOBuf::copyBuffer(data.data(), data.length()));
+        evb_->runInEventBaseThread([=] () mutable {
+            cb->saslSendServer(q->move());
           });}));
 }
 
@@ -83,7 +83,7 @@ void StubSaslClient::consumeFromServer(
   std::shared_ptr<IOBuf> smessage(std::move(message));
 
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
-        std::string req_data;
+        folly::MoveWrapper<IOBufQueue> req_data;
         std::exception_ptr ex;
         bool complete = false;
 
@@ -97,10 +97,10 @@ void StubSaslClient::consumeFromServer(
                 "expected challenge 1 force failed"));
           } else {
             SaslReply reply;
-            ThriftSerializerCompact<SaslReply> deserializer;
+            Serializer<CompactProtocolReader, CompactProtocolWriter>
+              deserializer;
             try {
-              deserializer.deserialize(smessage->data(), smessage->length(),
-                                       &reply);
+              deserializer.deserialize(smessage.get(), reply);
             } catch (...) {
               ex = std::current_exception();
             }
@@ -111,11 +111,12 @@ void StubSaslClient::consumeFromServer(
                     "server reports failure in phase 1"));
               } else if (reply.__isset.challenge &&
                          reply.challenge == CHALLENGE1) {
-                ThriftSerializerCompact<SaslRequest> serializer;
+                Serializer<CompactProtocolReader, CompactProtocolWriter>
+                  serializer;
                 SaslRequest req;
                 req.response = RESPONSE1;
                 req.__isset.response = true;
-                serializer.serialize(req, &req_data);
+                serializer.serialize(req, &*req_data);
                 phase_ = 2;
               } else {
                 ex = std::make_exception_ptr(
@@ -124,11 +125,10 @@ void StubSaslClient::consumeFromServer(
             }
           }
         } else if (phase_ == 2) {
-          ThriftSerializerCompact<SaslReply> deserializer;
+          Serializer<CompactProtocolReader, CompactProtocolWriter> deserializer;
           SaslReply reply;
           try {
-            deserializer.deserialize(smessage->data(), smessage->length(),
-                                     &reply);
+            deserializer.deserialize(smessage.get(), reply);
           } catch (...) {
             ex = std::current_exception();
           }
@@ -160,20 +160,19 @@ void StubSaslClient::consumeFromServer(
         }
 
         if (complete) {
-          CHECK(req_data.empty());
+          CHECK(req_data->empty());
           CHECK(!ex);
         } else {
-          CHECK(req_data.empty() == !!ex);
+          CHECK(req_data->empty() == !!ex);
         }
 
         if (ex) {
           phase_ = -2;
         }
 
-        evb_->runInEventBaseThread([=] {
-            if (!req_data.empty()) {
-              cb->saslSendServer(
-                IOBuf::copyBuffer(req_data.data(), req_data.length()));
+        evb_->runInEventBaseThread([=] () mutable {
+            if (!req_data->empty()) {
+              cb->saslSendServer(req_data->move());
             }
             if (ex) {
               threadManager_->stop();

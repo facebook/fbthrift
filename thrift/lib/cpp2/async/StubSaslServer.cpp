@@ -22,10 +22,11 @@
 #include "folly/io/Cursor.h"
 #include "folly/io/IOBuf.h"
 #include "folly/io/IOBufQueue.h"
+#include "folly/MoveWrapper.h"
 #include "thrift/lib/cpp/async/TEventBase.h"
 #include "thrift/lib/cpp/concurrency/FunctionRunner.h"
 #include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
+#include "thrift/lib/cpp2/protocol/Serializer.h"
 #include "thrift/lib/cpp2/gen-cpp2/Sasl_types.h"
 
 #include <memory>
@@ -35,7 +36,6 @@ using folly::IOBufQueue;
 using apache::thrift::concurrency::FunctionRunner;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
-using apache::thrift::util::ThriftSerializerCompact;
 using apache::thrift::sasl::SaslRequest;
 using apache::thrift::sasl::SaslReply;
 using apache::thrift::sasl::SaslStart;
@@ -63,16 +63,15 @@ void StubSaslServer::consumeFromClient(
 
   // Double-dispatch, as the more complex implementation will.
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
-        std::string reply_data;
+        folly::MoveWrapper<IOBufQueue> reply_data;
         std::exception_ptr ex;
         bool complete = false;
 
         if (phase_ == 0) {
           SaslStart start;
-          ThriftSerializerCompact<SaslStart> deserializer;
+          Serializer<CompactProtocolReader, CompactProtocolWriter> deserializer;
           try {
-            deserializer.deserialize(smessage->data(), smessage->length(),
-                                     &start);
+            deserializer.deserialize(smessage.get(), start);
           } catch (...) {
             ex = std::current_exception();
           }
@@ -81,11 +80,13 @@ void StubSaslServer::consumeFromClient(
                 start.__isset.request &&
                 start.request.__isset.response &&
                 start.request.response == RESPONSE0) {
-              ThriftSerializerCompact<SaslReply> serializer;
+
+              Serializer<CompactProtocolReader, CompactProtocolWriter>
+                serializer;
               SaslReply reply;
               reply.challenge = CHALLENGE1;
               reply.__isset.challenge = true;
-              serializer.serialize(reply, &reply_data);
+              serializer.serialize(reply, &*reply_data);
               phase_ = 1;
             } else {
               ex = std::make_exception_ptr(
@@ -100,24 +101,25 @@ void StubSaslServer::consumeFromClient(
                 "expected response 1 force failed"));
           } else {
             SaslRequest req;
-            ThriftSerializerCompact<SaslRequest> deserializer;
+            Serializer<CompactProtocolReader, CompactProtocolWriter>
+              deserializer;
             try {
-              deserializer.deserialize(smessage->data(), smessage->length(),
-                                       &req);
+              deserializer.deserialize(smessage.get(), req);
             } catch (...) {
               ex = std::current_exception();
             }
             if (!ex) {
               if (req.__isset.response &&
                   req.response == RESPONSE1) {
-                ThriftSerializerCompact<SaslReply> serializer;
+                Serializer<CompactProtocolReader, CompactProtocolWriter>
+                  serializer;
                 SaslReply reply;
                 reply.challenge = CHALLENGE2;
                 reply.__isset.challenge = true;
                 reply.outcome.success = true;
                 reply.__isset.outcome = true;
                 reply.outcome.__isset.success = true;
-                serializer.serialize(reply, &reply_data);
+                serializer.serialize(reply, &*reply_data);
                 complete = true;
                 phase_ = -1;
               } else {
@@ -137,26 +139,25 @@ void StubSaslServer::consumeFromClient(
               "unexpected message after error"));
         }
 
-        if (!ex && !complete && reply_data.empty()) {
-          ThriftSerializerCompact<SaslReply> serializer;
+        if (!ex && !complete && reply_data->empty()) {
+          Serializer<CompactProtocolReader, CompactProtocolWriter> serializer;
           SaslReply reply;
           reply.outcome.success = false;
           reply.__isset.outcome = true;
           reply.outcome.__isset.success = true;
-          serializer.serialize(reply, &reply_data);
+          serializer.serialize(reply, &*reply_data);
         }
 
-        CHECK(reply_data.empty() == !!ex);
+        CHECK(reply_data->empty() == !!ex);
         CHECK(!(complete && !!ex));
 
         if (ex) {
           phase_ = -2;
         }
 
-        evb_->runInEventBaseThread([=] {
-            if (!reply_data.empty()) {
-              cb->saslSendClient(
-                IOBuf::copyBuffer(reply_data.data(), reply_data.length()));
+        evb_->runInEventBaseThread([=] () mutable {
+            if (!reply_data->empty()) {
+              cb->saslSendClient(reply_data->move());
             }
             if (ex) {
               threadManager_->stop();
