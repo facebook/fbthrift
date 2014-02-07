@@ -22,13 +22,17 @@
 
 #include <math.h>
 
+DEFINE_int64(thriftLatencyBucketMax, 5000,
+    "Maximum latency bucket in ms.");
+
 namespace apache { namespace thrift { namespace loadgen {
 
 /*
  * LatencyScoreBoard::OpData methods
  */
 
-LatencyScoreBoard::OpData::OpData() {
+LatencyScoreBoard::OpData::OpData()
+  : latDistHist_(50, 0, FLAGS_thriftLatencyBucketMax) {
   zero();
 }
 
@@ -38,18 +42,21 @@ void LatencyScoreBoard::OpData::addDataPoint(uint64_t latency) {
   ++count_;
   usecSum_ += latency;
   sumOfSquares_ += latency*latency;
+  latDistHist_.addValue(latency);
 }
 
 void LatencyScoreBoard::OpData::zero() {
   count_ = 0;
   usecSum_ = 0;
   sumOfSquares_ = 0;
+  latDistHist_.clear();
 }
 
 void LatencyScoreBoard::OpData::accumulate(const OpData* other) {
   count_ += other->count_;
   usecSum_ += other->usecSum_;
   sumOfSquares_ += other->sumOfSquares_;
+  latDistHist_.merge(other->latDistHist_);
 }
 
 uint64_t LatencyScoreBoard::OpData::getCount() const {
@@ -65,6 +72,35 @@ double LatencyScoreBoard::OpData::getLatencyAvg() const {
     return 0;
   }
   return static_cast<double>(usecSum_) / count_;
+}
+
+double LatencyScoreBoard::OpData::getLatencyPct(double pct) const {
+  if (count_ == 0) {
+    return 0;
+  }
+  uint64_t pct_lat = latDistHist_.getPercentileEstimate(pct);
+  if (pct_lat > FLAGS_thriftLatencyBucketMax) {
+    LOG(WARNING) << "Estimated percentile latency " << pct_lat
+                 << " ms is greater than the maximum bucket value "
+                 << FLAGS_thriftLatencyBucketMax << " ms.";
+  }
+  return pct_lat;
+}
+
+double LatencyScoreBoard::OpData::getLatencyPctSince(
+    double pct, const OpData* other) const {
+  if (other->count_ >= count_) {
+    return 0;
+  }
+  folly::Histogram<uint64_t> tmp = latDistHist_;
+  tmp.subtract(other->latDistHist_);
+  uint64_t pct_lat = tmp.getPercentileEstimate(pct);
+  if (pct_lat > FLAGS_thriftLatencyBucketMax) {
+    LOG(WARNING) << "Estimated percentile latency " << pct_lat
+                 << " ms is greater than the maximum bucket value "
+                 << FLAGS_thriftLatencyBucketMax << " ms.";
+  }
+  return pct_lat;
 }
 
 double LatencyScoreBoard::OpData::getLatencyAvgSince(

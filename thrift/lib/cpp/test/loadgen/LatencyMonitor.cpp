@@ -24,6 +24,9 @@
 #include "thrift/lib/cpp/test/loadgen/WeightedLoadConfig.h"
 #include "thrift/lib/cpp/Thrift.h"
 
+DEFINE_double(thriftLatencyMonPct, 99,
+    "x-th percentail latencies to show in stats: (0 - 100)");
+
 using std::shared_ptr;
 
 namespace apache { namespace thrift { namespace loadgen {
@@ -41,6 +44,8 @@ LatencyMonitor::LatencyMonitor(const shared_ptr<LoadConfig>& config)
   , config_(config)
   , currentQps_(0) {
   setDefaultOpFields();
+  CHECK(FLAGS_thriftLatencyMonPct > 0
+      && FLAGS_thriftLatencyMonPct < 100);
 }
 
 void LatencyMonitor::setFields(uint32_t opType, const FieldInfoVector* fields) {
@@ -229,12 +234,16 @@ const char* LatencyMonitor::getFieldName(FieldEnum field) const {
       return "QPS";
     case FIELD_LATENCY:
       return "Latency";
+    case FIELD_PCT_LATENCY:
+      return "PCT Latency";
     case FIELD_ALL_TIME_COUNT:
       return "Tot. Count";
     case FIELD_ALL_TIME_QPS:
       return "Tot. QPS";
     case FIELD_ALL_TIME_LATENCY:
       return "Tot. Latency";
+    case FIELD_ALL_TIME_PCT_LATENCY:
+      return "Tot. PCT Latency";
   }
 
   assert(false);
@@ -249,12 +258,16 @@ uint32_t LatencyMonitor::getDefaultFieldWidth(FieldEnum field) const {
       return 8;
     case FIELD_LATENCY:
       return 12;
+    case FIELD_PCT_LATENCY:
+      return 8;
     case FIELD_ALL_TIME_COUNT:
       return 12;
     case FIELD_ALL_TIME_QPS:
       return 10;
     case FIELD_ALL_TIME_LATENCY:
       return 14;
+    case FIELD_ALL_TIME_PCT_LATENCY:
+      return 10;
   }
 
   assert(false);
@@ -282,6 +295,10 @@ void LatencyMonitor::formatFieldValue(FieldEnum field,
                     current->getLatencyAvgSince(prev),
                     current->getLatencyStdDevSince(prev));
       return;
+    case FIELD_PCT_LATENCY:
+      formatLatency(buf, buflen, current->getLatencyPctSince(
+            FLAGS_thriftLatencyMonPct/100, prev));
+      return;
     case FIELD_ALL_TIME_COUNT:
       snprintf(buf, buflen, "%" PRIu64, current->getCountSince(initial));
       return;
@@ -294,10 +311,27 @@ void LatencyMonitor::formatFieldValue(FieldEnum field,
                     current->getLatencyAvgSince(initial),
                     current->getLatencyStdDevSince(initial));
       return;
+    case FIELD_ALL_TIME_PCT_LATENCY:
+      formatLatency(buf, buflen, current->getLatencyPctSince(
+            FLAGS_thriftLatencyMonPct/100, initial));
+      return;
   }
 
   assert(false);
   throw TLibraryException("unknown field type");
+}
+
+void LatencyMonitor::formatLatency(char* buf, size_t buflen,
+                                   double pct) {
+  int pctPrecision = 0;
+  if (pct < 1) {
+    pctPrecision = 2;
+  } else if (pct < 10) {
+    pctPrecision = 1;
+  }
+
+  snprintf(buf, buflen, "%.*f",
+           pctPrecision, pct);
 }
 
 void LatencyMonitor::formatLatency(char* buf, size_t buflen,
@@ -384,12 +418,15 @@ void LatencyMonitor::setDefaultOpFields() {
     // If there is just 1 operation, print all statistics for it
     defaultFields.push_back(FieldInfo(FIELD_QPS));
     defaultFields.push_back(FieldInfo(FIELD_LATENCY));
+    defaultFields.push_back(FieldInfo(FIELD_PCT_LATENCY));
     defaultFields.push_back(FieldInfo(FIELD_ALL_TIME_QPS));
     defaultFields.push_back(FieldInfo(FIELD_ALL_TIME_LATENCY));
+    defaultFields.push_back(FieldInfo(FIELD_ALL_TIME_PCT_LATENCY));
   } else {
     // Otherwise, print the QPS and latency for each operation
     defaultFields.push_back(FieldInfo(FIELD_QPS));
     defaultFields.push_back(FieldInfo(FIELD_LATENCY));
+    defaultFields.push_back(FieldInfo(FIELD_PCT_LATENCY));
     // And the print the all-time QPS summed across all operations
     totalFields_.push_back(FieldInfo(FIELD_ALL_TIME_QPS));
   }
@@ -418,6 +455,11 @@ void LatencyMonitor::printLegend() {
            "  %10s  displayed value is (average/standard deviation)\n",
            getFieldName(FIELD_LATENCY), "");
   }
+  if (isFieldInUse(FIELD_PCT_LATENCY)) {
+    printf("  %10s: %2.1fth percentile microseconds per operation over\
+        the last interval\n",
+        getFieldName(FIELD_PCT_LATENCY), FLAGS_thriftLatencyMonPct);
+  }
   if (isFieldInUse(FIELD_ALL_TIME_COUNT)) {
     printf("  %10s: number of operations since the test started\n",
            getFieldName(FIELD_ALL_TIME_COUNT));
@@ -430,6 +472,11 @@ void LatencyMonitor::printLegend() {
     printf("  %10s: average microseconds per operation since the test started\n"
            "  %10s  displayed value is (average/standard deviation)\n",
            getFieldName(FIELD_ALL_TIME_LATENCY), "");
+  }
+  if (isFieldInUse(FIELD_ALL_TIME_PCT_LATENCY)) {
+    printf("  %10s: %2.1fth percentile microseconds per operation since\
+        the test started\n",
+        getFieldName(FIELD_ALL_TIME_PCT_LATENCY), FLAGS_thriftLatencyMonPct);
   }
 
   fflush(stdout);

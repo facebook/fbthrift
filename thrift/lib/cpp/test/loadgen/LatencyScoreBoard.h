@@ -22,6 +22,9 @@
 #include "thrift/lib/cpp/test/loadgen/ScoreBoard.h"
 #include "thrift/lib/cpp/test/loadgen/ScoreBoardOpVector.h"
 
+#include "folly/stats/Histogram.h"
+#include "folly/stats/Histogram-defs.h"
+
 namespace apache { namespace thrift { namespace loadgen {
 
 /**
@@ -48,15 +51,20 @@ class LatencyScoreBoard : public ScoreBoard {
     uint64_t getCountSince(const OpData* other) const;
     double getLatencyAvg() const;
     double getLatencyAvgSince(const OpData* other) const;
+    double getLatencyPct(double pct) const;
+    double getLatencyPctSince(double pct, const OpData* other) const;
     double getLatencyStdDev() const;
     double getLatencyStdDevSince(const OpData* other) const;
 
     uint64_t count_;
     uint64_t usecSum_;
     uint64_t sumOfSquares_;
+
+    // latency distribution histogram
+    folly::Histogram<uint64_t> latDistHist_;
   };
 
-  LatencyScoreBoard(uint32_t numOpsHint)
+  explicit LatencyScoreBoard(uint32_t numOpsHint)
     : startTime_(0)
     , opData_(numOpsHint) {}
 

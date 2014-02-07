@@ -38,9 +38,11 @@ class LatencyMonitor : public TerminalMonitor {
     FIELD_COUNT,
     FIELD_QPS,
     FIELD_LATENCY,
+    FIELD_PCT_LATENCY,
     FIELD_ALL_TIME_COUNT,
     FIELD_ALL_TIME_QPS,
     FIELD_ALL_TIME_LATENCY,
+    FIELD_ALL_TIME_PCT_LATENCY,
   };
 
   struct FieldInfo {
@@ -98,6 +100,7 @@ class LatencyMonitor : public TerminalMonitor {
                         const LatencyScoreBoard::OpData* initial,
                         uint64_t intervalUsec,
                         uint64_t allTimeUsec);
+  void formatLatency(char* buf, size_t buflen, double pct);
   void formatLatency(char* buf, size_t buflen, double avg, double stddev);
 
   void aggregateWorkerScorboards(LatencyScoreBoard* scoreboard);
