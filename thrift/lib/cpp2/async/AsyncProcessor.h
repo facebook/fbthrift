@@ -172,7 +172,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
         req->sendReply(std::unique_ptr<folly::IOBuf>());
       }
     }
-    auto req_mw = makeMoveWrapper(std::move(req));
+    auto preq = req.get();
     auto iprot_holder = makeMoveWrapper(std::move(iprot));
     auto buf_mw = makeMoveWrapper(std::move(buf));
     try {
@@ -180,6 +180,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
         std::make_shared<apache::thrift::PriorityEventTask>(
           pri,
           [=]() mutable {
+            auto req_mw = makeMoveWrapper(
+              std::unique_ptr<apache::thrift::ResponseChannel::Request>(preq));
             // Oneway request won't be canceled if expired. see
             // D1006482 for furhter details.  TODO: fix this
             if (!oneway) {
@@ -194,6 +196,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
                         std::move(*iprot_holder), ctx, eb, tm);
 
           }));
+      req.release();
     } catch (const std::exception& e) {
       if (!oneway) {
         apache::thrift::TApplicationException ex(
