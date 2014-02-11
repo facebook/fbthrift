@@ -70,7 +70,8 @@ class Cpp2Worker :
     eventBase_(),
     workerID_(workerID),
     activeRequests_(0),
-    pendingCount_(0) {
+    pendingCount_(0),
+    pendingTime_(std::chrono::steady_clock::now()) {
     eventBase_.setObserver(server_->getObserver());
   }
 
@@ -144,7 +145,7 @@ class Cpp2Worker :
    * Count the number of pending fds.  Used for overload detection
    * Not thread-safe
    */
-  void pendingCount();
+  int pendingCount();
 
   /**
    * Cached pending count.  Thread-safe.
@@ -193,6 +194,7 @@ class Cpp2Worker :
   uint32_t activeRequests_;
 
   int pendingCount_;
+  std::chrono::steady_clock::time_point pendingTime_;
 
   friend class Cpp2Connection;
 };

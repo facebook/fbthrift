@@ -218,7 +218,7 @@ void Cpp2Connection::requestReceived(
   }
 
   int activeRequests = worker_->activeRequests_;
-  activeRequests += worker_->getPendingCount();
+  activeRequests += worker_->pendingCount();
 
   if (server->isOverloaded(activeRequests)) {
     killRequest(*req,

@@ -190,9 +190,6 @@ void Cpp2Worker::serve() {
     // request timeout.
     timer_.reset(new HHWheelTimer(&eventBase_));
 
-    // Start counting pending fd's for overload detection
-    pendingCount();
-
     // No events are registered by default, loopForever.
     eventBase_.loopForever();
 
@@ -223,18 +220,20 @@ Cpp2Worker::~Cpp2Worker() {
   eventBase_.terminateLoopSoon();
 }
 
-void Cpp2Worker::pendingCount() {
-  pendingCount_ = 0;
-  for (auto& connection : activeConnections_) {
-    if (connection->pending()) {
-      pendingCount_++;
+int Cpp2Worker::pendingCount() {
+  auto now = std::chrono::steady_clock::now();
+
+  // Only recalculate once every pending_interval
+  if (pendingTime_ < now) {
+    pendingTime_ = now + std::chrono::milliseconds(FLAGS_pending_interval);
+    pendingCount_ = 0;
+    for (auto& connection : activeConnections_) {
+      if (connection->pending()) {
+        pendingCount_++;
+      }
     }
   }
-
-  // Recalculate once in the next loop
-  eventBase_.runAfterDelay([&](){
-    pendingCount();
-  }, FLAGS_pending_interval);
+  return pendingCount_;
 }
 
 int Cpp2Worker::getPendingCount() {
