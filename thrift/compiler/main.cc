@@ -137,8 +137,18 @@ bool generate(t_program* program, const vector<string>& generator_strings,
         string path = getenv("_");
         size_t last = path.find_last_of("/");
         if (last != string::npos) {
-          string pycompiler = path.substr(0, last + 1) + "thrift-py.par";
-          ifstream ifile(pycompiler);
+          ifstream ifile;
+          auto dirname = path.substr(0, last + 1);
+          std::string pycompiler;
+          std::vector<std::string> pycompilers = {
+            "thrift-py.lpar",
+            "thrift-py.par",
+          };
+          for (const auto& comp : pycompilers) {
+            pycompiler = dirname + comp;
+            ifile.open(pycompiler.c_str());
+            if (ifile) break;
+          }
           int ret = 0;
           if (ifile) {
             ret = execv(pycompiler.c_str(), argv);
