@@ -62,6 +62,12 @@ public class DirectServer {
     public void onAsyncDrop(Logger logger);
   }
 
+  public static class DoNothing implements Runnable {
+    @Override
+    public void run() {
+    }
+  };
+
   private static final Logger LOG = LoggerFactory.getLogger(DirectServer.class);
 
   private volatile LoggingCallback loggingCallback =
@@ -71,6 +77,9 @@ public class DirectServer {
   private final int port_;
 
   private final int totalSelectorThreads_;
+
+  // runnable which is intended to run when the server is ready to serve traffic
+  private final Runnable onServerListens_;
 
   // parameter to listen().
   private volatile int backlog_;
@@ -104,6 +113,7 @@ public class DirectServer {
         new ThreadPoolExecutor.AbortPolicy());
 
     maxPendingPerSelector_ = 64;
+    onServerListens_ = new DoNothing();
   }
 
   public DirectServer(
@@ -111,7 +121,8 @@ public class DirectServer {
     ChannelHandlerFactory creator,
     int numSelectors,
     int numSyncHandlers,
-    ThreadPoolExecutor service) {
+    ThreadPoolExecutor service,
+    Runnable onServerListens) {
 
     port_ = port;
     totalSelectorThreads_ = numSelectors;
@@ -121,6 +132,7 @@ public class DirectServer {
 
     executorService_ = service;
     maxPendingPerSelector_ = 64;
+    onServerListens_ = onServerListens;
   }
 
   /**
@@ -213,6 +225,7 @@ public class DirectServer {
       return;
     }
 
+    (new Thread(onServerListens_)).start();
 
     // An index to selector threads. Titan server uses this to dispatch
     // incoming connection in a round robin fashion.

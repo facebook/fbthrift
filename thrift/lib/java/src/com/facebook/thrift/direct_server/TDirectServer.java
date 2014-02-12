@@ -35,6 +35,7 @@ public class TDirectServer extends TServer {
    * @param numThreads How many worker threads in the thread pool
    * @param maxPending The max number of tasks in thread pool task queue
    * @param p The TProcessor instance
+   * @param onServerListens Runnable to be run when server is listening on port
    */
   public TDirectServer(
     int port,
@@ -42,7 +43,8 @@ public class TDirectServer extends TServer {
     int numThreads,
     int maxPending,
     int numSyncHandlers,
-    TProcessor p) {
+    TProcessor p,
+    Runnable onServerListens) {
 
     super(new TProcessorFactory(p), (TServerTransport)null,
           (TTransportFactory)null, (TProtocolFactory)null);
@@ -57,7 +59,23 @@ public class TDirectServer extends TServer {
 
     directServer_ = new DirectServer(
         port, new FramedTransportChannelHandlerFactory(this),
-        numSelectors, numSyncHandlers, executorService);
+        numSelectors, numSyncHandlers, executorService, onServerListens);
+  }
+
+  /**
+   * Helper constructor to create a TDirectServer that do not need an extra
+   * hook to know when the TDirectServer is ready to serve traffic
+   */
+  public TDirectServer(
+    int port,
+    int numSelectors,
+    int numThreads,
+    int maxPending,
+    int numSyncHandlers,
+    TProcessor p) {
+
+    this(port, numSelectors, numThreads, maxPending, numSyncHandlers,
+      p, new DirectServer.DoNothing());
   }
 
   /**
