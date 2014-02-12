@@ -21,7 +21,9 @@ namespace cpp thrift.test.debug
 namespace py thrift.test.UnionTest
 
 struct OneOfEach {
-  1: bool im_true,
+  // make at least one field of a struct contained in a union required
+  // to test exception handling in union code
+  1: required bool im_true,
   2: bool im_false,
   3: byte a_bite = 200,
   4: i16 integer16 = 33000,

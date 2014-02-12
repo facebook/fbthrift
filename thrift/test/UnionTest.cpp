@@ -157,3 +157,20 @@ TEST_F(UnionTestFixture, FromJson) {
   u.readFromJson(j.c_str());
   EXPECT_EQ(TestUnion::Type::__EMPTY__, u.getType());
 }
+
+TEST_F(UnionTestFixture, CppAndCpp2Compat) {
+  // test copy ctor
+  TestUnion u1{cpp2::TestUnion()};
+  cpp2::TestUnion u2{u1};
+
+  // test assignment
+  u1 = u2;
+  u2 = u1;
+
+  // test as part of larger type
+  // (vector<X> and vector<Y> are incompatible if X != Y)
+  std::vector<TestUnion> v1;
+  std::vector<cpp2::TestUnion> v2;
+  v1 = v2;
+  v2 = v1;
+}

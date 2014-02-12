@@ -1242,7 +1242,7 @@ class CppGenerator(t_generator.Generator):
             elif self._is_complex_type(field.type):
                 out('std::unique_ptr<{0}> {1}(new {0}({2}));'.format(
                         self._type_name(field.type), aprefix + field.name, val))
-                out('args.{0} = reinterpret_cast<decltype(args.{0})>({1}.get());'.format(
+                out('args.{0} = {1}.get();'.format(
                         field.name, aprefix + field.name))
             else:
                 # use uniform initialization syntax to avoid most vexing parse
@@ -2077,7 +2077,7 @@ class CppGenerator(t_generator.Generator):
                     pass
                 elif rtype.is_string or rtype.is_container \
                         or rtype.is_struct:
-                    out("args.{1} = reinterpret_cast<decltype(args.{1})>(const_cast<{0}*>(&{2}));".format(
+                    out("args.{1} = const_cast<{0}*>(&{2});".format(
                             self._type_name(rtype),
                             field.name, field.name))
                 else:
@@ -2529,37 +2529,7 @@ class CppGenerator(t_generator.Generator):
         if self.flag_compatibility:
             base = self._namespace_prefix(
                     self._program.get_namespace('cpp')) + obj.name
-            if obj.is_union:
-                # Unlike structs, cpp1 unions have private members that the
-                # read/write/size functions need to access. So instead of a
-                # typedef, make a wrapper class that allows access to the
-                # serialization functions
-                with s.cls('class {0} : public{1}'.format(
-                        obj.name, base)):
-                    out().label('public:')
-                    out('typedef{0} Base;'.format(base))
-                    out('{0}() : Base() {{}};'.format(obj.name))
-                    out('{0}(const {0}& rhs) : Base(rhs) {{}};'.format(
-                        obj.name))
-                    out('{0}({0}&& rhs) : Base(rhs) {{}};'.format(obj.name))
-                    out('virtual ~{0}() throw() {{}}'.format(obj.name))
-                    if read:
-                        out('template <class Protocol_>')
-                        out('friend uint32_t'
-                            ' {0}_read(Protocol_* iprot, {0}* obj);'
-                            .format(obj.name))
-                    if write:
-                        out('template <class Protocol_>')
-                        out('friend uint32_t'
-                            ' {0}_write(Protocol_* iprot, const {0}* obj);'
-                            .format(obj.name))
-                        for suffix in '', 'ZC':
-                            out('template <class Protocol_>')
-                            out('friend uint32_t {0}_serializedSize{1}'
-                               '(Protocol_* iprot, const {0}* obj);'.format(
-                                   obj.name, suffix))
-            else:
-                s('typedef{0} {1};'.format(base, obj.name))
+            s('typedef{0} {1};'.format(base, obj.name))
 
             if read:
                 self._generate_struct_reader(s, obj, pointers,
@@ -2816,6 +2786,14 @@ class CppGenerator(t_generator.Generator):
 
             for member in members:
                 t = self._type_name(self._get_true_type(member.type))
+                with struct.defn('mutable_{name}()', in_header=True,
+                        name=member.name,
+                        modifiers='{0}&'.format(t)):
+                    out('assert(type_ == Type::{0});'.format(member.name))
+                    out('return value_.{0};'.format(member.name))
+
+            for member in members:
+                t = self._type_name(self._get_true_type(member.type))
                 with struct.defn('move_{name}()', in_header=True,
                         name=member.name, modifiers=t):
                     out('assert(type_ == Type::{0});'.format(member.name))
@@ -2973,19 +2951,23 @@ class CppGenerator(t_generator.Generator):
                     field.type))).scope
             with s4:
                 field_prefix = this + '->'
+                field_suffix = ''
                 if obj.is_union:
                     s4(field_prefix + 'set_{0}();'.format(field.name))
-                    field_prefix += 'value_.'
+                    field_prefix += 'mutable_'
+                    field_suffix = '()'
                 if pointers and not field.type.is_xception:
                     # This is only used for read pargs, so a const-cast is okay
                     # since the struct is exposed in generated code only.
                     self._generate_deserialize_field(
                         s4, field,
-                        '(*const_cast<{0}*>(reinterpret_cast<const {0}*>('.format(
+                        '(*const_cast<{0}*>('.format(
                                 self._type_name(field.type)) +
-                                                field_prefix, ')))')
+                                                field_prefix,
+                                                field_suffix + '))')
                 else:
-                    self._generate_deserialize_field(s4, field, field_prefix)
+                    self._generate_deserialize_field(s4, field, field_prefix,
+                                                     field_suffix)
                 if has_isset:
                     isset_prefix = (this + '->__isset.') if \
                         field.req != e_req.required else 'isset_'
@@ -3100,7 +3082,7 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_deserialize_struct(self, scope, struct, prefix):
         scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
-              'iprot, reinterpret_cast<{0}*>(&{1}));'.format(
+              'iprot, &{1});'.format(
                   self._type_name(struct),
                   prefix))
 
@@ -3252,18 +3234,22 @@ class CppGenerator(t_generator.Generator):
                                 field.key))
             # Add the sizes of field contents
             field_prefix = this + '->'
+            field_suffix = ''
             if obj.is_union:
-                field_prefix += 'value_.'
+                field_prefix += 'get_'
+                field_suffix = '()'
             if pointers and not field.type.is_xception:
                 self._generate_serialize_field(
                     s1, field,
-                    '(*const_cast<{0}*>(reinterpret_cast<const {0}*>('.format(
-                            self._type_name(field.type)) + field_prefix, ')))',
+                    '(*const_cast<{0}*>('.format(
+                            self._type_name(field.type)) + field_prefix,
+                    field_suffix + '))',
                     method="serializedSize",
                     struct_method=method,
                     binary_method=method)
             else:
                 self._generate_serialize_field(s1, field, field_prefix,
+                                               field_suffix,
                                                method="serializedSize",
                                                struct_method=method,
                                                binary_method=method)
@@ -3384,15 +3370,19 @@ class CppGenerator(t_generator.Generator):
                 field.name, self._type_to_enum(field.type), field.key))
             # Write field contents
             field_prefix = this + '->'
+            field_suffix = ''
             if obj.is_union:
-                field_prefix += 'value_.'
+                field_prefix += 'get_'
+                field_suffix = '()'
             if pointers and not field.type.is_xception:
                 self._generate_serialize_field(
-                    s1, field, '(*const_cast<{0}*>(reinterpret_cast<const {0}*>('.format(
-                            self._type_name(field.type)) + field_prefix,
-                    ')))')
+                    s1, field,
+                    '(*const_cast<{0}*>('.format(
+                        self._type_name(field.type)) + field_prefix,
+                    field_suffix + '))')
             else:
-                self._generate_serialize_field(s1, field, field_prefix)
+                self._generate_serialize_field(s1, field, field_prefix,
+                                               field_suffix)
             # Write field closer
             s1('xfer += prot_->writeFieldEnd();')
             if s1 is not s:
@@ -3487,7 +3477,7 @@ class CppGenerator(t_generator.Generator):
     def _generate_serialize_struct(self, scope, tstruct, prefix='',
                                    method='write'):
         scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::{1}('
-              'prot_, reinterpret_cast<const {0}*>(&{2}));'.format(
+              'prot_, &{2});'.format(
                   self._type_name(tstruct),
                   method,
                   prefix))

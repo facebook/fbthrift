@@ -1402,6 +1402,17 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
     indent(out) << "}" << endl << endl;
   }
 
+  // Generate `mutable` methods
+  for (auto& member: members) {
+    auto type = type_name(member->get_type());
+    auto name = member->get_name();
+    indent(out) << type << "& mutable_" << name << "() {" << endl;
+    indent(out) << "  assert(type_ == Type::" << member->get_name() << ");"
+                << endl;
+    indent(out) << "  return value_." << name << ";" << endl;
+    indent(out) << "}" << endl << endl;
+  }
+
   // Generate `move` methods
   for (auto& member: members) {
     auto type = type_name(member->get_type());
@@ -1446,7 +1457,7 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent_down();
 
   // Declare all fields
-  indent(out) << " protected:" << endl;
+  indent(out) << " private:" << endl;
   indent(out) << "  Type type_;" << endl;
   indent(out) << "  storage_type value_;" << endl << endl;
   indent(out) << "};" << endl << endl;
