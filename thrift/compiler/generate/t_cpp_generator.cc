@@ -1510,6 +1510,20 @@ void t_cpp_generator::generate_union_reader(ofstream& out,
 
   indent_up();
 
+  bool can_throw = false;
+  for (const auto& mem : members) {
+    if (type_can_throw(mem->get_type())) {
+      can_throw = true;
+      break;
+    }
+  }
+
+  if (can_throw) {
+    indent(out) << "using apache::thrift::protocol::TProtocolException;"
+                << endl;
+    indent(out) << "std::exception_ptr exception;" << endl << endl;
+  }
+
   indent(out) << "uint32_t xfer = 0;" << endl;
   indent(out) << "std::string fname;" << endl;
   indent(out) << "apache::thrift::protocol::TType ftype;" << endl;
@@ -1554,6 +1568,26 @@ void t_cpp_generator::generate_union_reader(ofstream& out,
   indent(out) << "}" << endl;
 
   indent(out) << "xfer += iprot->readStructEnd();" << endl;
+
+  // Throw if any required fields (in contained structs) are missing.
+  // We do this after reading the struct end so that
+  // there might possibly be a chance of continuing.
+  out << endl;
+  if (can_throw) {
+    out << indent() << "if (exception != std::exception_ptr()) {" << endl;
+    indent_up();
+    out << indent() << "std::rethrow_exception(exception);" << endl;
+    indent_down();
+    out << indent() << "}" << endl;
+  }
+  for (const auto& mem : members) {
+    if (mem->get_req() == t_field::T_REQUIRED ||
+        mem->get_req() == t_field::T_OPTIONAL) {
+      throw "compiler error: Union field " + tstruct->get_name() + "." +
+            mem->get_name() + " cannot be required or optional";
+    }
+  }
+
   indent(out) << "return xfer;" << endl;
 
   indent_down();
