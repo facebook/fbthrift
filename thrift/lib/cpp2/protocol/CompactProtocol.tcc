@@ -423,7 +423,7 @@ uint32_t CompactProtocolReader::readMessageEnd() {
 }
 
 uint32_t CompactProtocolReader::readStructBegin(std::string& name) {
-  name = "";
+  name.clear();
   lastField_.push(lastFieldId_);
   lastFieldId_ = 0;
   return 0;

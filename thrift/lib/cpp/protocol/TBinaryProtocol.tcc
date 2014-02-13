@@ -458,9 +458,8 @@ uint32_t TBinaryProtocolT<Transport_>::readStringBody(StrType& str,
   }
 
   // Try to borrow first
-  const uint8_t* borrow_buf;
   uint32_t got = size;
-  if ((borrow_buf = this->trans_->borrow(nullptr, &got))) {
+  if (const uint8_t* borrow_buf = this->trans_->borrow(nullptr, &got)) {
     str.assign((const char*)borrow_buf, size);
     this->trans_->consume(size);
     return size;
@@ -476,8 +475,8 @@ uint32_t TBinaryProtocolT<Transport_>::readStringBody(StrType& str,
     this->string_buf_size_ = size;
   }
   this->trans_->readAll(this->string_buf_, size);
-  str.assign((char*)this->string_buf_, size);
-  return (uint32_t)size;
+  str.assign((const char*)this->string_buf_, size);
+  return size;
 }
 
 }}} // apache::thrift::protocol

@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #ifndef THRIFT_PROTOCOL_TCOMPACTPROTOCOL_TCC_
 #define THRIFT_PROTOCOL_TCOMPACTPROTOCOL_TCC_ 1
 
@@ -441,7 +442,7 @@ uint32_t TCompactProtocolT<Transport_>::readMessageBegin(
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::readStructBegin(std::string& name) {
-  name = "";
+  name.clear();
   lastField_.push(lastFieldId_);
   lastFieldId_ = 0;
   return 0;
@@ -704,7 +705,7 @@ uint32_t TCompactProtocolT<Transport_>::readBinary(String_& str) {
   rsize += readVarint32(size);
   // Catch empty string case
   if (size == 0) {
-    str = "";
+    str.clear();
     return rsize;
   }
 
@@ -714,6 +715,14 @@ uint32_t TCompactProtocolT<Transport_>::readBinary(String_& str) {
   }
   if (string_limit_ > 0 && size > string_limit_) {
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
+  }
+
+  // Try to borrow first
+  uint32_t got = size;
+  if (const uint8_t* borrow_buf = trans_->borrow(nullptr, &got)) {
+    str.assign((const char*)borrow_buf, size);
+    trans_->consume(size);
+    return rsize + (uint32_t)size;
   }
 
   // Use the heap here to prevent stack overflow for v. large strings
@@ -726,7 +735,7 @@ uint32_t TCompactProtocolT<Transport_>::readBinary(String_& str) {
     string_buf_size_ = size;
   }
   trans_->readAll(string_buf_, size);
-  str.assign((char*)string_buf_, size);
+  str.assign((const char*)string_buf_, size);
 
   return rsize + (uint32_t)size;
 }
