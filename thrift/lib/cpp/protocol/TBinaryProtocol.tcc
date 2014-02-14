@@ -23,6 +23,7 @@
 #include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
 
 #include <limits>
+#include <string>
 #include <boost/static_assert.hpp>
 
 
@@ -217,14 +218,17 @@ uint32_t TBinaryProtocolT<Transport_>::readMessageBegin(std::string& name,
     // Check for correct version number
     int32_t version = sz & VERSION_MASK;
     if (version != VERSION_1) {
-      throw TProtocolException(TProtocolException::BAD_VERSION, "Bad version identifier");
+      throw TProtocolException(TProtocolException::BAD_VERSION,
+          "Bad version identifier, sz=" + std::to_string(sz));
     }
     messageType = (TMessageType)(sz & 0x000000ff);
     result += readString(name);
     result += readI32(seqid);
   } else {
     if (this->strict_read_) {
-      throw TProtocolException(TProtocolException::BAD_VERSION, "No version identifier... old protocol client in strict mode?");
+      throw TProtocolException(TProtocolException::BAD_VERSION,
+          "No version identifier... old protocol client in strict mode? sz=" +
+          std::to_string(sz));
     } else {
       // Handle pre-versioned input
       int8_t type;

@@ -23,6 +23,7 @@
 #include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
 
 #include <limits>
+#include <string>
 #include <boost/static_assert.hpp>
 
 namespace apache { namespace thrift {
@@ -308,16 +309,18 @@ uint32_t BinaryProtocolReader::readMessageBegin(std::string& name,
     int32_t version = sz & VERSION_MASK;
     if (version != VERSION_1) {
       throw TProtocolException(TProtocolException::BAD_VERSION,
-                               "Bad version identifier");
+                               "Bad version identifier, sz=" +
+                                 std::to_string(sz));
     }
     messageType = (MessageType)(sz & 0x000000ff);
     result += readString(name);
     result += readI32(seqid);
   } else {
     if (this->strict_read_) {
-      throw TProtocolException(
+      throw TProtocolException (
         TProtocolException::BAD_VERSION,
-        "No version identifier... old protocol client in strict mode?");
+        "No version identifier... old protocol client in strict mode? sz=" +
+          std::to_string(sz));
     } else {
       // Handle pre-versioned input
       int8_t type;
