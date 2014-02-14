@@ -154,7 +154,7 @@ void Cpp2Connection::requestTimeoutExpired() {
     context_.getPeerAddress()->describe();
   auto observer = worker_->getServer()->getObserver();
   if (observer) {
-    observer->taskKilled();
+    observer->taskTimeout();
   }
 }
 
@@ -172,7 +172,12 @@ void Cpp2Connection::killRequest(
   auto server = worker_->getServer();
   auto observer = server->getObserver();
   if (observer) {
-    observer->taskKilled();
+    if (reason ==
+         TApplicationException::TApplicationExceptionType::LOADSHEDDING) {
+      observer->serverOverloaded();
+    } else {
+      observer->taskKilled();
+    }
   }
 
   // Nothing to do for Thrift oneway request.

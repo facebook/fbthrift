@@ -66,6 +66,10 @@ class TServerObserver {
 
   virtual void taskKilled() {}
 
+  virtual void taskTimeout() {}
+
+  virtual void serverOverloaded() {}
+
   virtual void receivedRequest() {}
 
   virtual void queuedRequests(int32_t numRequests) {}
