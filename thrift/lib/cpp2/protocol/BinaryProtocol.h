@@ -100,6 +100,7 @@ class BinaryProtocolWriter {
   template <typename StrType>
   inline uint32_t writeBinary(const StrType& str);
   inline uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
+  inline uint32_t writeBinary(const folly::IOBuf& str);
   inline uint32_t writeSerializedData(
       const std::unique_ptr<folly::IOBuf>& data);
 
@@ -137,11 +138,16 @@ class BinaryProtocolWriter {
     return serializedSizeString(v);
   }
   inline uint32_t serializedSizeBinary(const std::unique_ptr<folly::IOBuf>& v);
+  inline uint32_t serializedSizeBinary(const folly::IOBuf& v);
   template <typename StrType>
   uint32_t serializedSizeZCBinary(const StrType& v) {
     return serializedSizeBinary(v);
   }
   uint32_t serializedSizeZCBinary(const std::unique_ptr<folly::IOBuf>& v) {
+    // size only
+    return serializedSizeI32();
+  }
+  uint32_t serializedSizeZCBinary(const folly::IOBuf& v) {
     // size only
     return serializedSizeI32();
   }
@@ -234,6 +240,7 @@ class BinaryProtocolReader {
   template <typename StrType>
   inline uint32_t readBinary(StrType& str);
   inline uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str);
+  inline uint32_t readBinary(folly::IOBuf& str);
 
   uint32_t skip(TType type) {
     return apache::thrift::skip(*this, type);

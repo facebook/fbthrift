@@ -274,15 +274,21 @@ uint32_t CompactProtocolWriter::writeBinary(const StrType& str) {
 
 uint32_t CompactProtocolWriter::writeBinary(
     const std::unique_ptr<folly::IOBuf>& str) {
-  size_t size = str ? str->computeChainDataLength() : 0;
+  if (!str) {
+    return writeI32(0);
+  }
+  return writeBinary(*str);
+}
+
+uint32_t CompactProtocolWriter::writeBinary(
+    const folly::IOBuf& str) {
+  size_t size = str.computeChainDataLength();
   // leave room for varint size
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
   }
   uint32_t result = apache::thrift::util::writeVarint(out_, (int32_t)size);
-  if (str) {
-    out_.insert(str->clone());
-  }
+  out_.insert(str.clone());
   return result + size;
 }
 
@@ -377,7 +383,12 @@ uint32_t CompactProtocolWriter::serializedSizeString(const StrType& str) {
 
 uint32_t CompactProtocolWriter::serializedSizeBinary(
     const std::unique_ptr<folly::IOBuf>& v) {
-  size_t size = v ? v->computeChainDataLength() : 0;
+  return v ? serializedSizeBinary(*v) : 0;
+}
+
+uint32_t CompactProtocolWriter::serializedSizeBinary(
+    const folly::IOBuf& v) {
+  size_t size = v.computeChainDataLength();
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
   }
@@ -653,6 +664,14 @@ uint32_t CompactProtocolReader::readBinary(StrType& str) {
 }
 
 uint32_t CompactProtocolReader::readBinary(std::unique_ptr<folly::IOBuf>& str) {
+  int32_t size = 0;
+  uint32_t rsize = readStringSize(size);
+
+  in_.clone(str, size);
+  return rsize + (uint32_t) size;
+}
+
+uint32_t CompactProtocolReader::readBinary(folly::IOBuf& str) {
   int32_t size = 0;
   uint32_t rsize = readStringSize(size);
 
