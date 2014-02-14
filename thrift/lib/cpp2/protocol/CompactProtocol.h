@@ -113,6 +113,7 @@ class CompactProtocolWriter {
   template <typename StrType>
   inline uint32_t writeBinary(const StrType& str);
   inline uint32_t writeBinary(const std::unique_ptr<IOBuf>& str);
+  inline uint32_t writeBinary(const IOBuf& str);
 
   /**
    * Functions that return the serialized size
@@ -148,11 +149,16 @@ class CompactProtocolWriter {
     return serializedSizeString(v);
   }
   inline uint32_t serializedSizeBinary(const std::unique_ptr<IOBuf>& v);
+  inline uint32_t serializedSizeBinary(const IOBuf& v);
   template <typename StrType>
   uint32_t serializedSizeZCBinary(const StrType& v) {
     return serializedSizeBinary(v);
   }
   uint32_t serializedSizeZCBinary(const std::unique_ptr<IOBuf>& v) {
+    // size only
+    return serializedSizeI32();
+  }
+  uint32_t serializedSizeZCBinary(const IOBuf& v) {
     // size only
     return serializedSizeI32();
   }
@@ -248,6 +254,7 @@ class CompactProtocolReader {
   template <typename StrType>
   inline uint32_t readBinary(StrType& str);
   inline uint32_t readBinary(std::unique_ptr<IOBuf>& str);
+  inline uint32_t readBinary(IOBuf& str);
   uint32_t skip(TType type) {
     return apache::thrift::skip(*this, type);
   }

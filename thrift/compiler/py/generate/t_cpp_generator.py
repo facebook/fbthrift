@@ -2722,17 +2722,23 @@ class CppGenerator(t_generator.Generator):
                         # Most existing Thrift code does not use isset or
                         # optional/required, so we treat "default" fields as
                         # required.
+                        check = "({0} == rhs.{0})".format(m.name)
+                        ctype = self._get_true_type(m.type)
+                        if ctype.is_base_type and ctype.as_base_type.is_binary:
+                            check = "apache::thrift::StringTraits<{0}>::" \
+                                "isEqual({1}, rhs.{1})".format(
+                                self._type_name(ctype), m.name)
                         if m.req != e_req.optional:
-                            with out('if (!({0} == rhs.{0}))'.format(
-                                    m.name)):
+                            with out('if (!({0}))'.format(
+                                    check)):
                                 out('return false;')
                         else:
                             with out('if (__isset.{0} != rhs.__isset.{0})'
                                     .format(m.name)):
                                 out('return false;')
                             with out('else if'
-                                    ' (__isset.{0} && !({0} == rhs.{0}))'
-                                    .format(m.name)):
+                                    ' (__isset.{0} && !({1}))'
+                                    .format(m.name, check)):
                                 out('return false;')
                     out('return true;')
 

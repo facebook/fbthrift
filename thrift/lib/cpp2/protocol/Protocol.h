@@ -180,6 +180,34 @@ struct StringTraits {
   static bool isEmpty(const StrType& str) {
     return str.empty();
   }
+
+  static bool isEqual(const StrType& lhs, const StrType& rhs) {
+    return lhs == rhs;
+  }
+};
+
+template <>
+struct StringTraits<folly::IOBuf> {
+  static bool isEqual(const folly::IOBuf& lhs, const folly::IOBuf& rhs) {
+    auto llink = &lhs;
+    auto rlink = &rhs;
+    while (llink != nullptr &&
+           rlink != nullptr) {
+      if (rlink->length() != llink->length() ||
+        0 != memcmp(llink->data(), rlink->data(), llink->length())) {
+        return false;
+      }
+
+      // Advance
+      llink = llink->next();
+      rlink = rlink->next();
+      if (llink == &lhs) {
+        break;
+      }
+    }
+
+    return true;
+  }
 };
 
 template <>
@@ -194,8 +222,12 @@ struct StringTraits<std::unique_ptr<folly::IOBuf>> {
   static bool isEmpty(const std::unique_ptr<folly::IOBuf>& str) {
     return !str || str->empty();
   }
-};
 
+  static bool isEqual(const std::unique_ptr<folly::IOBuf>& lhs,
+                         const std::unique_ptr<folly::IOBuf>& rhs) {
+    return StringTraits<folly::IOBuf>::isEqual(*lhs, *rhs);
+  }
+};
 
 }} // apache::thrift
 
