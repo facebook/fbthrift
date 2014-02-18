@@ -2736,10 +2736,6 @@ class CppGenerator(t_generator.Generator):
                                 out('return false;')
                     out('return true;')
 
-            with struct.defn('bool operator != (const {0}& rhs) const'.format(
-                             obj.name), in_header=True):
-                out('return !(*this == rhs);')
-
             # Generate the declaration of a less-than operator. This must be
             # implemented by the application developer if they wish to use it.
             # (They will get a link error if they try to use it without an
