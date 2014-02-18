@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /*
@@ -39,17 +36,6 @@
 #include "thrift/compiler/platform.h"
 
 using namespace std;
-
-/**
- * A helper for automatically formatting the emitted Go code from the Thrift
- * IDL per the Go style guide.
- *
- * Returns:
- *  - true, if the formatting process succeeded.
- *  - false, if the formatting process failed, which means the basic output was
- *           still generated.
- */
-bool format_go_output(const string &file_path);
 
 const string default_thrift_import = "git.apache.org/thrift.git/lib/go/thrift";
 
@@ -617,8 +603,6 @@ void t_go_generator::close_generator()
     // Close types and constants files
     f_consts_.close();
     f_types_.close();
-    format_go_output(f_types_name_);
-    format_go_output(f_consts_name_);
 }
 
 /**
@@ -1406,7 +1390,6 @@ void t_go_generator::generate_service(t_service* tservice)
     // Close service file
     f_service_ << endl;
     f_service_.close();
-    format_go_output(f_service_name);
 }
 
 /**
@@ -2169,7 +2152,6 @@ void t_go_generator::generate_service_remote(t_service* tservice)
              indent() << "}" << endl;
     // Close service file
     f_remote.close();
-    format_go_output(f_remote_name);
 #ifndef _MSC_VER
     // Make file executable, love that bitwise OR action
     chmod(f_remote_name.c_str(),
@@ -3344,18 +3326,6 @@ string t_go_generator::type_to_spec_args(t_type* ttype)
     }
 
     throw "INVALID TYPE IN type_to_spec_args: " + ttype->get_name();
-}
-
-bool format_go_output(const string &file_path)
-{
-    const string command = "gofmt -w " + file_path;
-
-    if (system(command.c_str()) == 0) {
-        return true;
-    }
-
-    fprintf(stderr, "WARNING - Running '%s' failed.\n", command.c_str());
-    return false;
 }
 
 
