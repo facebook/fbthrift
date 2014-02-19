@@ -246,7 +246,8 @@ template TServiceProcessor(Interface, Protocols...) if (
         paramList ~= "args." ~ paramName;
       }
 
-      immutable call = "iface_." ~ methodName ~ "(" ~ join(paramList) ~ ")";
+      immutable call = "iface_." ~ methodName ~
+        "(" ~ join(paramList, ", ") ~ ")";
       if (is(ReturnType!(mixin("Interface." ~ methodName)) == void)) {
         code ~= call ~ ";\n";
       } else {
@@ -401,7 +402,7 @@ template TArgsStruct(Interface, string methodName) {
       }
     }
     immutable fieldMetaCode =
-      fieldMetaCodes.empty ? "" : "[" ~ join(fieldMetaCodes) ~ "]";
+      fieldMetaCodes.empty ? "" : "[" ~ join(fieldMetaCodes, ", ") ~ "]";
     code ~= "mixin TStructHelpers!(" ~ fieldMetaCode  ~ ");\n";
     code ~= "}\n";
     return code;
@@ -488,7 +489,7 @@ template TResultStruct(Interface, string methodName) {
     }
 
     immutable fieldMetaCode =
-      fieldMetaCodes.empty ? "" : "[" ~ join(fieldMetaCodes) ~ "]";
+      fieldMetaCodes.empty ? "" : "[" ~ join(fieldMetaCodes, ", ") ~ "]";
     code ~= "mixin TStructHelpers!(" ~ fieldMetaCode  ~ ");\n";
     code ~= "}\n";
     return code;

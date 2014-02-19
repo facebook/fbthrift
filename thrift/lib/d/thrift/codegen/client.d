@@ -175,7 +175,7 @@ template TClient(Interface, InputProtocol = TProtocol, OutputProtocol = void) if
           paramAssignCode ~= "args." ~ paramName ~ " = &" ~ paramName ~ ";\n";
         }
         code ~= "ReturnType!(Interface." ~ methodName ~ ") " ~ methodName ~
-          "(" ~ join(paramList) ~ ") {\n";
+          "(" ~ join(paramList, ", ") ~ ") {\n";
 
         code ~= "immutable methodName = `" ~ methodName ~ "`;\n";
 
@@ -355,7 +355,7 @@ template TPargsStruct(Interface, string methodName) {
       }
     }
     code ~= "void write(P)(P proto) const if (isTProtocol!P) {\n";
-    code ~= "writeStruct!(typeof(this), P, [" ~ join(fieldMetaCodes) ~
+    code ~= "writeStruct!(typeof(this), P, [" ~ join(fieldMetaCodes, ", ") ~
       "], true)(this, proto);\n";
     code ~= "}\n";
     code ~= "}\n";
@@ -474,7 +474,7 @@ template TPresultStruct(Interface, string methodName) {
     };
 
     code ~= "void read(P)(P proto) if (isTProtocol!P) {\n";
-    code ~= "readStruct!(typeof(this), P, [" ~ join(fieldMetaCodes) ~
+    code ~= "readStruct!(typeof(this), P, [" ~ join(fieldMetaCodes, ", ") ~
       "], true)(this, proto);\n";
     code ~= "}\n";
     code ~= "}\n";
