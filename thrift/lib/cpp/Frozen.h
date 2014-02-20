@@ -477,7 +477,7 @@ struct RangeFreezer {
 
 /**
  * FrozenMap<...> - Wraps a sorted FrozenRange<K, V> with the expected
- * interface for a map. find() and others are templetized to allow searching for
+ * interface for a map. find() and others are templatized to allow searching for
  * values of any type which may be compared to the key, though may not be of
  * type K.
  */
