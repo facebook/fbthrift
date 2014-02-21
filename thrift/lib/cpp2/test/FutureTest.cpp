@@ -38,6 +38,7 @@
 #include "thrift/lib/cpp2/test/TestUtils.h"
 
 #include "common/concurrency/Executor.h"
+#include "common/wangle/Executor.h"
 #include "common/wangle/GenericThreadGate.h"
 
 using namespace apache::thrift;
@@ -167,7 +168,9 @@ TEST(ThriftServer, FutureClientTest) {
   TEventBase base;
   TEventBaseExecutor e(&base);
 
-  auto gate = GenericThreadGate<Executor*, Executor*, TEventBaseExecutor*>(
+  auto gate = GenericThreadGate<
+    facebook::wangle::Executor*, facebook::wangle::Executor*,
+    TEventBaseExecutor*>(
     nullptr, nullptr, &e);
 
   auto port = Server::get(getServer)->getAddress().getPort();
@@ -232,7 +235,9 @@ TEST(ThriftServer, FutureGetOrderTest) {
   TEventBase base;
   TEventBaseExecutor e(&base);
 
-  auto gate = GenericThreadGate<Executor*, Executor*, TEventBaseExecutor*>(
+  auto gate = GenericThreadGate<
+    facebook::wangle::Executor*, facebook::wangle::Executor*,
+    TEventBaseExecutor*>(
     nullptr, nullptr, &e);
 
   auto port = Server::get(getServer)->getAddress().getPort();
@@ -340,7 +345,8 @@ TEST(ThriftServer, ThreadGateTest) {
   TEventBaseExecutor eastExecutor(eventBase);
   ManualExecutor westExecutor;
 
-  auto gate = GenericThreadGate<Executor*, Executor*, ManualExecutor*>(
+  auto gate = GenericThreadGate<
+    facebook::wangle::Executor*, facebook::wangle::Executor*, ManualExecutor*>(
     &westExecutor, &eastExecutor, &westExecutor);
 
   auto future0 = client->future_sendResponse(&gate, 0);
