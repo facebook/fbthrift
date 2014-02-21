@@ -39,6 +39,7 @@ libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   async/InputStream.cpp \
 			   async/OutputStream.cpp \
 			   protocol/StreamSerializers.cpp \
+			   protocol/Serializer.cpp \
 			   security/KerberosSASLHandshakeClient.cpp \
 			   security/KerberosSASLHandshakeServer.cpp \
 			   security/KerberosSASLHandshakeUtils.cpp \
@@ -87,4 +88,3 @@ PYPATH = $(top_builddir)/compiler/py/build/lib.linux-x86_64-2.7
 
 clean:
 	rm -rf gen-cpp2 gen-cpp
-
