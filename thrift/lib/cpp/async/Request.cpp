@@ -18,10 +18,16 @@
  */
 #include "Request.h"
 
-DEFINE_bool(enable_thrift_request_context, true,
-            "Enable collection of per-request queueing stats for thrift");
+#ifndef NO_LIB_GFLAGS
+  DEFINE_bool(enable_thrift_request_context, true,
+              "Enable collection of per-request queueing stats for thrift");
+#endif
 
 namespace apache { namespace thrift { namespace async {
+
+#ifdef NO_LIB_GFLAGS
+  bool FLAGS_enable_thrift_request_context = true;
+#endif
 
 RequestContext* defaultContext;
 

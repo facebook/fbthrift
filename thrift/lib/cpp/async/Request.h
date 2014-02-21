@@ -21,12 +21,28 @@
 
 #include <map>
 #include <memory>
+#include <glog/logging.h>
 #include "folly/ThreadLocal.h"
 #include "folly/RWSpinLock.h"
 
-DECLARE_bool(enable_thrift_request_context);
+/**
+ * In many cases this header is included as a
+ * dependency to libraries which do not need
+ * command line flags. GFLAGS is a large binary
+ * and thus we do this so that a library which
+ * is size sensitive doesn't have to pull in
+ * GFLAGS if it doesn't want to.
+ */
+#ifndef NO_LIB_GFLAGS
+  #include <gflags/gflags.h>
+  DECLARE_bool(enable_thrift_request_context);
+#endif
 
 namespace apache { namespace thrift { namespace async {
+
+#ifdef NO_LIB_GFLAGS
+  extern bool FLAGS_enable_thrift_request_context;
+#endif
 
 // Some request context that follows a request through a thrift server.
 // Everything in the context must be thread safe
