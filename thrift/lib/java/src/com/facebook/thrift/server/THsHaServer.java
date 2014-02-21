@@ -32,7 +32,6 @@ import com.facebook.thrift.TProcessor;
 import com.facebook.thrift.TProcessorFactory;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
-import com.facebook.thrift.server.example.TThreadPoolServer;
 import com.facebook.thrift.transport.TFramedTransport;
 import com.facebook.thrift.transport.TNonblockingServerTransport;
 
@@ -229,7 +228,7 @@ public class THsHaServer extends TNonblockingServer {
     invoker = new ThreadPoolExecutor(options_.minHsHaWorkerThreads,
         options_.maxHsHaWorkerThreads,
         options_.stopTimeoutVal, options_.stopTimeoutUnit, queue,
-        new TThreadPoolServer.ThreadFactoryImpl("THsHaServer-Invoker"));
+        new TThreadFactoryImpl("THsHaServer-Invoker"));
 
     return true;
   }

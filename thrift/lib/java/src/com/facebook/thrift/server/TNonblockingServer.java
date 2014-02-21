@@ -49,7 +49,6 @@ import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.THeaderProtocol;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
-import com.facebook.thrift.server.example.TThreadPoolServer;
 import com.facebook.thrift.transport.TFramedTransport;
 import com.facebook.thrift.transport.TIOStreamTransport;
 import com.facebook.thrift.transport.TNonblockingServerTransport;
@@ -178,7 +177,7 @@ public class TNonblockingServer extends TServer {
         : new LinkedBlockingQueue<Runnable>(options_.queueSize);
     tcpWorkerPool_ = new ThreadPoolExecutor(options_.minWorkerThreads,
         options_.maxWorkerThreads, Integer.MAX_VALUE, TimeUnit.MILLISECONDS,
-        queue, new TThreadPoolServer.ThreadFactoryImpl("thrift-tcpworker"));
+        queue, new TThreadFactoryImpl("thrift-tcpworker"));
   }
 
   protected void submitTask(Runnable r) throws ServerOverloadedException {

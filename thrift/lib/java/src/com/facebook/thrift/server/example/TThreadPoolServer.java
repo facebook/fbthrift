@@ -28,6 +28,7 @@ import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.THeaderProtocol;
 import com.facebook.thrift.server.TServer;
 import com.facebook.thrift.server.TRpcConnectionContext;
+import com.facebook.thrift.server.TThreadFactoryImpl;
 import com.facebook.thrift.transport.TServerTransport;
 import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.transport.TTransportException;
@@ -36,18 +37,14 @@ import com.facebook.thrift.transport.TTransportFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -145,7 +142,7 @@ public class TThreadPoolServer extends TServer {
           inputProtocolFactory, outputProtocolFactory);
     options_ = new Options();
     executorService_ = Executors.newCachedThreadPool(
-        new ThreadFactoryImpl("thrift")
+        new TThreadFactoryImpl("thrift")
     );
   }
 
@@ -194,7 +191,7 @@ public class TThreadPoolServer extends TServer {
                                                 60,
                                                 TimeUnit.SECONDS,
                                                 executorQueue,
-                                                new ThreadFactoryImpl("thrift"),
+                                                new TThreadFactoryImpl("thrift"),
                                                 rejectedExecutionHandler);
     }
 
@@ -317,46 +314,6 @@ public class TThreadPoolServer extends TServer {
         outputTransport.close();
       }
     }
-  }
-
-  /**
-  * This class is an implementation of the <i>ThreadFactory</i> interface. This
-  * is useful to give Java threads meaningful names which is useful when using
-  * a tool like JConsole.
-  * Author : Avinash Lakshman ( alakshman@facebook.com) & Prashant Malik ( pmalik@facebook.com )
-  */
-
-  public static class ThreadFactoryImpl implements ThreadFactory
-  {
-      protected String id_;
-      protected Long version_;
-      protected ThreadGroup threadGroup_;
-      protected final AtomicInteger threadNbr_ = new AtomicInteger(1);
-      protected static final Map<String, Long> poolVersionByName =
-        new HashMap<String, Long>();
-
-      public ThreadFactoryImpl(String id)
-      {
-          SecurityManager sm = System.getSecurityManager();
-          threadGroup_ = ( sm != null ) ? sm.getThreadGroup() : Thread.currentThread().getThreadGroup();
-          Long lastVersion;
-          synchronized(this) {
-            if ((lastVersion = poolVersionByName.get(id)) == null) {
-              lastVersion = Long.valueOf(-1);
-            }
-            poolVersionByName.put(id, lastVersion + 1);
-          }
-          version_ = lastVersion != null ? lastVersion + 1 : 0;
-          id_ = id;
-      }
-
-      public Thread newThread(Runnable runnable)
-      {
-          String name = id_ + "-" + version_ +
-              "-thread-" + threadNbr_.getAndIncrement();
-          Thread thread = new Thread(threadGroup_, runnable, name);
-          return thread;
-      }
   }
 
 }
