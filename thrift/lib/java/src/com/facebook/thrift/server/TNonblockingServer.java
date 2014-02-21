@@ -55,7 +55,6 @@ import com.facebook.thrift.transport.TNonblockingServerTransport;
 import com.facebook.thrift.transport.TNonblockingTransport;
 import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.transport.TTransportException;
-import com.facebook.thrift.transport.TTransportFactory;
 
 /**
  * A nonblocking TServer implementation. This allows for fairness amongst all
@@ -322,10 +321,6 @@ public class TNonblockingServer extends TServer {
       TcpHandler(SelectionKey sKey) {
         sKey_ = sKey;
       }
-
-      protected Object getAttachment() {
-        return sKey_.attachment();
-      }
     }
 
     private class TcpReader extends TcpHandler {
@@ -466,22 +461,19 @@ public class TNonblockingServer extends TServer {
      * Accept a new connection.
      */
     private void handleAccept() throws IOException {
-      SelectionKey clientKey = null;
       TNonblockingTransport client = null;
       try {
-        // accept the connection
         client = (TNonblockingTransport)serverTransport.accept();
-        clientKey = client.registerSelector(selector, SelectionKey.OP_READ);
-
-        // add this key to the map
-        FrameBuffer frameBuffer = new FrameBuffer(client, clientKey);
-        clientKey.attach(frameBuffer);
       } catch (TTransportException tte) {
-        // something went wrong accepting.
         LOGGER.warn("Exception trying to accept!", tte);
-        if (clientKey != null) cleanupSelectionkey(clientKey);
-        if (client != null) client.close();
+        return;
       }
+
+      SelectionKey clientKey = client.registerSelector(selector, SelectionKey.OP_READ);
+
+      // add this key to the map
+      FrameBuffer frameBuffer = new FrameBuffer(client, clientKey);
+      clientKey.attach(frameBuffer);
     }
 
     /**
@@ -879,6 +871,8 @@ public class TNonblockingServer extends TServer {
   } // FrameBuffer
 
   public static class ServerOverloadedException extends Exception {
+    private static final long serialVersionUID = 1L;
+
     public ServerOverloadedException() {
 
     }

@@ -12,6 +12,7 @@ import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolException;
 import com.facebook.thrift.protocol.TStruct;
 
+@SuppressWarnings("serial")
 public abstract class TUnion implements TBase {
 
   protected Object value_;

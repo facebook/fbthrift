@@ -19,7 +19,6 @@
 
 package com.facebook.thrift.protocol;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Stack;
 import java.util.Map;
 
@@ -41,6 +40,7 @@ public class TCompactJSONProtocol extends TJSONProtocolBase {
   /**
    * Factory
    */
+  @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
     public TProtocol getProtocol(TTransport trans) {
       return new TCompactJSONProtocol(trans);

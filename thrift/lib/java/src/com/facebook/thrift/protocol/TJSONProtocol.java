@@ -22,10 +22,7 @@ package com.facebook.thrift.protocol;
 import java.util.Map;
 
 import com.facebook.thrift.TException;
-import com.facebook.thrift.TByteArrayOutputStream;
 import com.facebook.thrift.transport.TTransport;
-import java.io.UnsupportedEncodingException;
-import java.util.Stack;
 
 /**
  * JSON protocol implementation for thrift.
@@ -41,6 +38,7 @@ public class TJSONProtocol extends TJSONProtocolBase {
   /**
    * Factory for JSON protocol objects
    */
+  @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
 
     public TProtocol getProtocol(TTransport trans) {

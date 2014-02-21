@@ -19,7 +19,6 @@
 
 package com.facebook.thrift;
 
-import com.facebook.thrift.TProcessor;
 import com.facebook.thrift.server.TConnectionContext;
 
 /**

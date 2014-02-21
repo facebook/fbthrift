@@ -51,16 +51,6 @@ public class TNonblockingSocket extends TNonblockingTransport
   private Socket socket_ = null;
 
   /**
-   * Remote host
-   */
-  private String host_  = null;
-
-  /**
-   * Remote port
-   */
-  private int port_ = 0;
-
-  /**
    * Socket timeout
    */
   private int timeout_ = 0;

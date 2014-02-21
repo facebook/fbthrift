@@ -25,6 +25,7 @@ import com.facebook.thrift.protocol.TType;
  * FieldValueMetaData and collection of subclasses to store metadata about
  * the value(s) of a field
  */
+@SuppressWarnings("serial")
 public class FieldValueMetaData implements java.io.Serializable {
   public final byte type;
 

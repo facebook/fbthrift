@@ -22,6 +22,7 @@ import com.facebook.thrift.transport.TTransport;
 /**
  * Servlet implementation class ThriftServer
  */
+@SuppressWarnings("serial")
 public class TServlet extends HttpServlet {
 
   private final TProcessor processor;

@@ -19,11 +19,10 @@
 
 package com.facebook.thrift.protocol;
 
-import java.util.Map;
-
 import com.facebook.thrift.TException;
 import com.facebook.thrift.TByteArrayOutputStream;
 import com.facebook.thrift.transport.TTransport;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Stack;
 
@@ -629,6 +628,7 @@ public abstract class TJSONProtocolBase extends TProtocol {
 
   // Read in a JSON string, unescaping as appropriate.. Skip reading from the
   // context if skipContext is true.
+  @SuppressWarnings("resource")
   protected TByteArrayOutputStream readJSONString(boolean skipContext)
     throws TException {
     TByteArrayOutputStream arr = new TByteArrayOutputStream(DEF_STRING_SIZE);

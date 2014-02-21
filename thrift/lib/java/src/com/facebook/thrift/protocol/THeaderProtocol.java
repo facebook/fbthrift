@@ -58,6 +58,7 @@ public class THeaderProtocol extends TProtocol {
   /**
    * Factory
    */
+  @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
     List<THeaderTransport.ClientTypes> clientTypes;
 

@@ -327,7 +327,6 @@ public final class TBaseHelper {
    *  @param obj    The object to be printed
    *  @param indent The level of indentation
    */
-  @SuppressWarnings("unchecked")
   public static String toString(Object obj, int indent, boolean prettyPrint) {
     if (obj == null) return "";
     String indentStr = prettyPrint ? getIndentedString(indent) : "";
@@ -337,7 +336,7 @@ public final class TBaseHelper {
     try {
       if (obj instanceof Map) {
         sb.append("{");
-        for (Map.Entry entry : (Set<Map.Entry>)(((java.util.Map)obj).entrySet())) {
+        for (Map.Entry<?,?> entry : (((java.util.Map<?,?>)obj).entrySet())) {
           Object key = (Object)entry.getKey();
           Object val = (Object)entry.getValue();
           sb.append(newLine + indentStr + toString(key, indent + 2, prettyPrint)
@@ -346,7 +345,7 @@ public final class TBaseHelper {
         sb.append(newLine + reduceIndent(indentStr) + "}");
       } else if (obj instanceof java.util.Collection) {
         sb.append("[");
-        for (Object o : (java.util.Collection)obj) {
+        for (Object o : (java.util.Collection<?>)obj) {
           sb.append(newLine + indentStr + toString(o, indent + 2, prettyPrint));
         }
         sb.append(newLine + reduceIndent(indentStr) + "]");
@@ -358,10 +357,8 @@ public final class TBaseHelper {
         } else {
           sb.append(obj);
         }
-      } else if (obj != null) {
-        sb.append(obj.toString());
       } else {
-        sb.append("");
+        sb.append(obj.toString());
       }
     } catch (RuntimeException re) {
       sb.append("Exception occured :" + re.getClass() + re.getMessage());

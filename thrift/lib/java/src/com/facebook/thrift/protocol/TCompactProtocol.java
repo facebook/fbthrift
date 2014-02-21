@@ -21,10 +21,7 @@
 package com.facebook.thrift.protocol;
 
 import java.util.Map;
-
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-
 import com.facebook.thrift.ShortStack;
 import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.TTransport;
@@ -63,6 +60,7 @@ public final class TCompactProtocol extends TProtocol {
   /**
    * TProtocolFactory that produces TCompactProtocols.
    */
+  @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
     public Factory() {}
 

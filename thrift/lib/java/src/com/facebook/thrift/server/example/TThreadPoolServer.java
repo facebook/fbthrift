@@ -209,7 +209,6 @@ public class TThreadPoolServer extends TServer {
 
     stopped_ = false;
     while (!stopped_) {
-      int failureCount = 0;
       try {
         TTransport client = serverTransport_.accept();
         WorkerProcess wp = new WorkerProcess(client);
@@ -225,7 +224,6 @@ public class TThreadPoolServer extends TServer {
         }
       } catch (TTransportException ttx) {
         if (!stopped_) {
-          ++failureCount;
           LOGGER.warn("Transport error occurred during acceptance of message.", ttx);
         }
       }

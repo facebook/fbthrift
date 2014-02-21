@@ -39,6 +39,7 @@ public class TSimpleJSONProtocol extends TProtocol {
   /**
    * Factory
    */
+  @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
     public TProtocol getProtocol(TTransport trans) {
       return new TSimpleJSONProtocol(trans);

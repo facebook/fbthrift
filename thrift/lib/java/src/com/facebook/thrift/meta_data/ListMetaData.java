@@ -19,6 +19,7 @@
 
 package com.facebook.thrift.meta_data;
 
+@SuppressWarnings("serial")
 public class ListMetaData extends FieldValueMetaData {
   public final FieldValueMetaData elemMetaData;
 

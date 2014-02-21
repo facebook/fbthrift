@@ -29,6 +29,7 @@ import com.facebook.thrift.TBase;
  * a struct should have a corresponding instance of this class describing it.
  *
  */
+@SuppressWarnings("serial")
 public class FieldMetaData implements java.io.Serializable {
   public final String fieldName;
   public final byte requirementType;

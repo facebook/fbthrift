@@ -21,6 +21,7 @@ package com.facebook.thrift.meta_data;
 
 import com.facebook.thrift.TBase;
 
+@SuppressWarnings("serial")
 public class StructMetaData extends FieldValueMetaData {
   public final Class<? extends TBase> structClass;
 

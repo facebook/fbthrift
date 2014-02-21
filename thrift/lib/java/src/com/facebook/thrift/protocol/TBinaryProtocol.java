@@ -20,10 +20,7 @@
 package com.facebook.thrift.protocol;
 
 import java.util.Map;
-
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-
 import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.TTransport;
 
@@ -46,6 +43,7 @@ public class TBinaryProtocol extends TProtocol {
   /**
    * Factory
    */
+  @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
     protected boolean strictRead_ = false;
     protected boolean strictWrite_ = true;

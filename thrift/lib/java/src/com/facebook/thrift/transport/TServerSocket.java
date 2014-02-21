@@ -28,8 +28,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 /**
  * Wrapper around ServerSocket for Thrift.
  *
@@ -42,11 +40,6 @@ public class TServerSocket extends TServerTransport {
    * Underlying serversocket object
    */
   private ServerSocket serverSocket_ = null;
-
-  /**
-   * Port to listen on
-   */
-  private int port_ = 0;
 
   /**
    * Timeout for client sockets from accept
@@ -80,7 +73,6 @@ public class TServerSocket extends TServerTransport {
    */
   public TServerSocket(int port, int clientTimeout) throws TTransportException {
     this(new InetSocketAddress(port), clientTimeout);
-    port_ = port;
   }
 
   /**
@@ -88,7 +80,6 @@ public class TServerSocket extends TServerTransport {
    */
   public TServerSocket(int port, int clientTimeout, int backlog) throws TTransportException {
     this(new InetSocketAddress(port), clientTimeout, backlog);
-    port_ = port;
   }
 
 
