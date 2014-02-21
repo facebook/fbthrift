@@ -219,6 +219,11 @@ class t_java_generator : public t_oop_generator {
   std::string java_package();
   std::string java_type_imports();
   std::string java_thrift_imports();
+  std::string java_suppress_warnings_enum();
+  std::string java_suppress_warnings_consts();
+  std::string java_suppress_warnings_union();
+  std::string java_suppress_warnings_struct();
+  std::string java_suppress_warnings_service();
   std::string type_name(t_type* ttype, bool in_container=false, bool in_init=false, bool skip_generic=false);
   std::string base_type_name(t_base_type* tbase, bool in_container=false);
   std::string declare_field(t_field* tfield, bool init=false);
@@ -344,6 +349,36 @@ string t_java_generator::java_thrift_imports() {
     "import com.facebook.thrift.protocol.*;\n\n";
 }
 
+string t_java_generator::java_suppress_warnings_enum() {
+  return
+    string() +
+    "@SuppressWarnings({ \"unused\" })\n";
+}
+
+string t_java_generator::java_suppress_warnings_consts() {
+  return
+    string() +
+    "@SuppressWarnings({ \"unused\" })\n";
+}
+
+string t_java_generator::java_suppress_warnings_union() {
+  return
+    string() +
+    "@SuppressWarnings({ \"unused\", \"serial\" })\n";
+}
+
+string t_java_generator::java_suppress_warnings_struct() {
+  return
+    string() +
+    "@SuppressWarnings({ \"unused\", \"serial\" })\n";
+}
+
+string t_java_generator::java_suppress_warnings_service() {
+  return
+    string() +
+    "@SuppressWarnings({ \"unused\", \"serial\" })\n";
+}
+
 /**
  * Nothing in Java
  */
@@ -385,6 +420,7 @@ void t_java_generator::generate_enum(t_enum* tenum) {
     "import java.util.HashMap;\n" << endl;
 
   f_enum <<
+    java_suppress_warnings_enum() <<
     "public class " << tenum->get_name() << " ";
   scope_up(f_enum);
 
@@ -413,7 +449,9 @@ void t_java_generator::generate_enum(t_enum* tenum) {
   f_enum << " );" << endl << endl;
   indent_down();
 
-  indent(f_enum) << "public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>() {{" << endl;
+  indent(f_enum) <<
+    "@SuppressWarnings(\"serial\")" << endl <<
+    "public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>() {{" << endl;
 
   indent_up();
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
@@ -449,6 +487,7 @@ void t_java_generator::generate_consts(std::vector<t_const*> consts) {
     java_type_imports();
 
   f_consts <<
+    java_suppress_warnings_consts() <<
     "public class Constants {" << endl <<
     endl;
   indent_up();
@@ -689,6 +728,7 @@ void t_java_generator::generate_java_union(t_struct* tstruct) {
   bool is_final = (tstruct->annotations_.find("final") != tstruct->annotations_.end());
 
   indent(f_struct) <<
+    java_suppress_warnings_union() <<
     "public " << (is_final ? "final " : "") << "class " << tstruct->get_name()
     << " extends TUnion ";
 
@@ -1065,6 +1105,7 @@ void t_java_generator::generate_java_struct_definition(ofstream &out,
   bool is_final = (tstruct->annotations_.find("final") != tstruct->annotations_.end());
 
   indent(out) <<
+    (in_class ? string() : java_suppress_warnings_struct()) <<
     "public " << (is_final ? "final " : "") <<
      (in_class ? "static " : "") << "class " << tstruct->get_name() << " ";
 
@@ -1716,6 +1757,7 @@ void t_java_generator::generate_generic_field_getters_setters(std::ofstream& out
   std::ostringstream setter_stream;
 
   // build up the bodies of both the getter and setter at once
+  bool needs_suppress_warnings = false;
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -1723,6 +1765,9 @@ void t_java_generator::generate_generic_field_getters_setters(std::ofstream& out
     t_type* type = get_true_type(field->get_type());
     std::string field_name = field->get_name();
     std::string cap_name = get_cap_name(field_name);
+
+    if (type->is_list() || type->is_map() || type->is_set())
+      needs_suppress_warnings = true;
 
     indent_up();
     generate_reflection_setters(setter_stream, type, field_name, cap_name);
@@ -1733,7 +1778,8 @@ void t_java_generator::generate_generic_field_getters_setters(std::ofstream& out
 
   // create the setter
   // TODO: fix this code
-  indent(out) << "@SuppressWarnings(\"unchecked\")" << endl;
+  if (needs_suppress_warnings)
+    indent(out) << "@SuppressWarnings(\"unchecked\")" << endl;
   indent(out) << "public void setFieldValue(int fieldID, Object value) {" << endl;
   indent_up();
 
@@ -2150,6 +2196,7 @@ void t_java_generator::generate_service(t_service* tservice) {
     java_thrift_imports();
 
   f_service_ <<
+    java_suppress_warnings_service() <<
     "public class " << service_name_ << " {" << endl <<
     endl;
   indent_up();
@@ -2182,8 +2229,8 @@ void t_java_generator::generate_service_interface(t_service* tservice) {
   }
 
   generate_java_doc(f_service_, tservice);
-  f_service_ << indent() << "public interface Iface" << extends_iface <<
-    " {" << endl << endl;
+  f_service_ << indent() <<
+    "public interface Iface" << extends_iface << " {" << endl << endl;
   indent_up();
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
@@ -2203,7 +2250,8 @@ void t_java_generator::generate_service_async_interface(t_service* tservice) {
     extends_iface = " extends " + extends + ".AsyncIface";
   }
 
-  f_service_ << indent() << "public interface AsyncIface" << extends_iface << " {" << endl << endl;
+  f_service_ << indent() <<
+    "public interface AsyncIface" << extends_iface << " {" << endl << endl;
   indent_up();
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
