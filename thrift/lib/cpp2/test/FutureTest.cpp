@@ -37,16 +37,17 @@
 
 #include "thrift/lib/cpp2/test/TestUtils.h"
 
+#include "folly/wangle/Executor.h"
+#include "folly/wangle/ManualExecutor.h"
 #include "common/concurrency/Executor.h"
-#include "common/wangle/Executor.h"
-#include "common/wangle/GenericThreadGate.h"
+#include "folly/wangle/GenericThreadGate.h"
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::async;
-using namespace facebook::concurrency;
-using namespace facebook::wangle;
+using namespace folly::wangle;
 using namespace folly;
+using facebook::concurrency::TEventBaseExecutor;
 
 class TestInterface : public FutureServiceSvIf {
   Future<std::unique_ptr<std::string>> future_sendResponse(int64_t size) {
@@ -169,7 +170,7 @@ TEST(ThriftServer, FutureClientTest) {
   TEventBaseExecutor e(&base);
 
   auto gate = GenericThreadGate<
-    facebook::wangle::Executor*, facebook::wangle::Executor*,
+    folly::wangle::Executor*, folly::wangle::Executor*,
     TEventBaseExecutor*>(
     nullptr, nullptr, &e);
 
@@ -205,7 +206,7 @@ TEST(ThriftServer, FutureClientTest) {
   EXPECT_GE(waitTime, factor * sentTime);
 
   auto len = client.future_sendResponse(64).then(
-    [](facebook::wangle::Try<std::string>&& response) {
+    [](folly::wangle::Try<std::string>&& response) {
       EXPECT_TRUE(response.hasValue());
       EXPECT_EQ(response.value(), "test64");
       return response.value().size();
@@ -236,7 +237,7 @@ TEST(ThriftServer, FutureGetOrderTest) {
   TEventBaseExecutor e(&base);
 
   auto gate = GenericThreadGate<
-    facebook::wangle::Executor*, facebook::wangle::Executor*,
+    folly::wangle::Executor*, folly::wangle::Executor*,
     TEventBaseExecutor*>(
     nullptr, nullptr, &e);
 
@@ -346,7 +347,7 @@ TEST(ThriftServer, ThreadGateTest) {
   ManualExecutor westExecutor;
 
   auto gate = GenericThreadGate<
-    facebook::wangle::Executor*, facebook::wangle::Executor*, ManualExecutor*>(
+    folly::wangle::Executor*, folly::wangle::Executor*, ManualExecutor*>(
     &westExecutor, &eastExecutor, &westExecutor);
 
   auto future0 = client->future_sendResponse(&gate, 0);

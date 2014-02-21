@@ -447,7 +447,7 @@ class CppGenerator(t_generator.Generator):
             s('#include "thrift/lib/cpp/TApplicationException.h"')
         if self.flag_future:
             s('#include "thrift/lib/cpp2/async/FutureRequest.h"')
-            s('#include "common/wangle/Future.h"')
+            s('#include "folly/wangle/Future.h"')
         s('#include "{0}"'.format(self._with_include_prefix(self._program,
                                                              self._program.name
                                                              + '_types.h')))
@@ -911,7 +911,7 @@ class CppGenerator(t_generator.Generator):
                 rettype = "std::unique_ptr<{0}>".format(
                     self._type_name(function.returntype))
             promise_name = self.tmp("promise")
-            out("facebook::wangle::Promise<{type}> {promise};"
+            out("folly::wangle::Promise<{type}> {promise};"
               .format(type=rettype, promise=promise_name))
             future_name = self.tmp("future")
             out(("auto {future} = {promise}.getFuture();")
@@ -943,10 +943,10 @@ class CppGenerator(t_generator.Generator):
                     out('setThreadManager(callbackp->getThreadManager());')
                     out('setEventBase(callbackp->getEventBase());')
                     future_name = self.tmp('future')
-                    rettype = "facebook::wangle::Try<{0}>".format(
+                    rettype = "folly::wangle::Try<{0}>".format(
                         self._type_name(function.returntype))
                     if self._is_complex_type(function.returntype):
-                        rettype = "facebook::wangle::Try<std::unique_ptr" \
+                        rettype = "folly::wangle::Try<std::unique_ptr" \
                           "<{0}>>".format(self._type_name(function.returntype))
                     with out("try"):
                         if not function.oneway and \
@@ -967,7 +967,7 @@ class CppGenerator(t_generator.Generator):
                               function.name, future_name)
                               + ", ".join(args) + ");")
                             if not function.oneway:
-                                out(("{0}.then([=](facebook::wangle" +
+                                out(("{0}.then([=](folly::wangle" +
                                    "::Try<void>&& t){{").format(future_name))
                                 out("  callbackp->doneInThread();")
                                 out("});")
@@ -1143,7 +1143,7 @@ class CppGenerator(t_generator.Generator):
         if self._is_complex_type(function.returntype) and \
                 not self.flag_stack_arguments:
             rettype = 'std::unique_ptr<' + rettype + '>'
-        sig = 'facebook::wangle::Future<' + \
+        sig = 'folly::wangle::Future<' + \
             rettype + '> {name}('
 
         sig += self._argument_list(function.arglist, False, unique=True)
@@ -1751,16 +1751,16 @@ class CppGenerator(t_generator.Generator):
               .format(function.name, args_list, return_type))
 
     def _get_future_gate_function_signature(self, function):
-        params = ["facebook::wangle::ThreadGate* gate"]
+        params = ["folly::wangle::ThreadGate* gate"]
 
         if function.returntype.is_stream:
-            return_type = "facebook::wangle::Future<void>"
+            return_type = "folly::wangle::Future<void>"
             template = "apache::thrift::AsyncInputStream<{type}>& _return"
             params.append(self._format_stream_declaration(template,
                                                           function.returntype))
         else:
             result_type = self._type_name(function.returntype)
-            return_type = "facebook::wangle::Future<" + result_type + ">"
+            return_type = "folly::wangle::Future<" + result_type + ">"
 
         stream_type = "apache::thrift::AsyncOutputStream<{type}>&"
 
@@ -1809,7 +1809,7 @@ class CppGenerator(t_generator.Generator):
                 else:
                     return_type = self._type_name(function.returntype)
 
-                out("facebook::wangle::Promise<{type}> {promise};"
+                out("folly::wangle::Promise<{type}> {promise};"
                   .format(type=return_type, promise=promise_name))
 
                 future_name = self.tmp("future")
@@ -1897,13 +1897,13 @@ class CppGenerator(t_generator.Generator):
             params.append("const apache::thrift::RpcOptions& rpcOptions")
 
         if function.returntype.is_stream:
-            return_type = "facebook::wangle::Future<void>"
+            return_type = "folly::wangle::Future<void>"
             template = "apache::thrift::AsyncInputStream<{type}>& _return"
             params.append(self._format_stream_declaration(template,
                                                           function.returntype))
         else:
             result_type = self._type_name(function.returntype)
-            return_type = "facebook::wangle::Future<" + result_type + ">"
+            return_type = "folly::wangle::Future<" + result_type + ">"
 
         stream_type = "apache::thrift::AsyncOutputStream<{type}>&"
 

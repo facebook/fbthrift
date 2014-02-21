@@ -18,8 +18,8 @@
  */
 #pragma once
 
-#include "common/wangle/Future.h"
-#include "common/wangle/ThreadGate.h"
+#include "folly/wangle/Future.h"
+#include "folly/wangle/ThreadGate.h"
 #include "thrift/lib/cpp2/async/RequestChannel.h"
 
 namespace apache { namespace thrift {
@@ -27,13 +27,13 @@ namespace apache { namespace thrift {
 // Gate specific to thrift - no extra storage needed
 // Assumes TEventBase* pointer outlives result
 template <class T>
-facebook::wangle::Future<T> thriftGate(
-  facebook::wangle::Promise<T>& p,
+folly::wangle::Future<T> thriftGate(
+  folly::wangle::Promise<T>& p,
   apache::thrift::async::TEventBase* base) {
-  folly::MoveWrapper<facebook::wangle::Promise<T>> p2;
+  folly::MoveWrapper<folly::wangle::Promise<T>> p2;
   auto f = p2->getFuture();
-  p.getFuture().then([=](facebook::wangle::Try<T>&& t) mutable {
-      folly::MoveWrapper<facebook::wangle::Try<T>> tm(std::move(t));
+  p.getFuture().then([=](folly::wangle::Try<T>&& t) mutable {
+      folly::MoveWrapper<folly::wangle::Try<T>> tm(std::move(t));
       std::function<void()> lambda = [=]() mutable {
         p2->fulfilTry(std::move(*tm));
       };
@@ -45,7 +45,7 @@ facebook::wangle::Future<T> thriftGate(
 template <typename Result>
 class FutureCallbackBase : public RequestCallback {
   public:
-    explicit FutureCallbackBase(facebook::wangle::Promise<Result>&& promise)
+    explicit FutureCallbackBase(folly::wangle::Promise<Result>&& promise)
           : promise_(std::move(promise)) {}
 
     void requestSent() {};
@@ -56,7 +56,7 @@ class FutureCallbackBase : public RequestCallback {
     }
 
   protected:
-    facebook::wangle::Promise<Result> promise_;
+    folly::wangle::Promise<Result> promise_;
 };
 
 template <typename Result, typename IsScalar = void>
@@ -65,7 +65,7 @@ class FutureCallback : public FutureCallbackBase<Result> {
     typedef void (*Processor)(Result&,ClientReceiveState&);
 
   public:
-    FutureCallback(facebook::wangle::Promise<Result>&& promise,
+    FutureCallback(folly::wangle::Promise<Result>&& promise,
                    Processor processor)
           : FutureCallbackBase<Result>(std::move(promise)),
             processor_(processor) {}
@@ -100,7 +100,7 @@ class FutureCallback<Result,
     typedef Result (*Processor)(ClientReceiveState&);
 
   public:
-    FutureCallback(facebook::wangle::Promise<Result>&& promise,
+    FutureCallback(folly::wangle::Promise<Result>&& promise,
                    Processor processor)
           : FutureCallbackBase<Result>(std::move(promise)),
             processor_(processor) {}
@@ -123,7 +123,7 @@ class FutureCallback<Result,
 template <>
 class FutureCallback<void> : public FutureCallbackBase<void> {
   public:
-    FutureCallback(facebook::wangle::Promise<void>&& promise, bool isOneWay)
+    FutureCallback(folly::wangle::Promise<void>&& promise, bool isOneWay)
         : FutureCallbackBase<void>(std::move(promise)),
           isOneWay_(isOneWay) {}
 
@@ -147,7 +147,7 @@ class FutureCallback<void> : public FutureCallbackBase<void> {
 template <typename T>
 class FutureStreamItemCallback : public InputStreamCallback<T> {
   public:
-    explicit FutureStreamItemCallback(facebook::wangle::Promise<T>&& promise)
+    explicit FutureStreamItemCallback(folly::wangle::Promise<T>&& promise)
         : promise_(std::move(promise)),
           hasSetPromise_(false) {
     }
@@ -173,7 +173,7 @@ class FutureStreamItemCallback : public InputStreamCallback<T> {
     }
 
   private:
-    facebook::wangle::Promise<T> promise_;
+    folly::wangle::Promise<T> promise_;
     bool hasSetPromise_;
 
     void setResultIfNotSet(T& value) {
@@ -199,7 +199,7 @@ class FutureStreamItemCallback : public InputStreamCallback<T> {
 
 class FutureStreamEndCallback : public StreamEndCallback {
   public:
-    explicit FutureStreamEndCallback(facebook::wangle::Promise<void>&& promise)
+    explicit FutureStreamEndCallback(folly::wangle::Promise<void>&& promise)
         : promise_(std::move(promise)) {
     }
 
@@ -216,7 +216,7 @@ class FutureStreamEndCallback : public StreamEndCallback {
     }
 
   private:
-    facebook::wangle::Promise<void> promise_;
+    folly::wangle::Promise<void> promise_;
 };
 
 }} // Namespace
