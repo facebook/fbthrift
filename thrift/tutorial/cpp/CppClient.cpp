@@ -38,9 +38,9 @@ using namespace shared;
 using namespace boost;
 
 int main(int argc, char** argv) {
-  std::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
-  std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-  std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+  std::shared_ptr<TTransport> socket{std::make_shared<TSocket>("localhost", 9090)};
+  std::shared_ptr<TTransport> transport{std::make_shared<TBufferedTransport>(socket)};
+  std::shared_ptr<TProtocol> protocol{std::make_shared<TBinaryProtocol>(transport)};
   CalculatorClient client(protocol);
 
   try {
