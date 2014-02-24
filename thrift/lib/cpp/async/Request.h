@@ -162,6 +162,26 @@ class RequestContext {
   std::map<std::string, std::unique_ptr<RequestData>> data_;
 };
 
+/**
+ * Set the request context for a specific scope. For example,
+ * if you ran a part of a request in another thread you could
+ * use RequestContextGuard to copy apply the request context
+ * inside the other therad.
+ */
+class RequestContextGuard {
+ public:
+  explicit RequestContextGuard(std::shared_ptr<RequestContext> ctx) {
+    oldctx_ = RequestContext::setContext(std::move(ctx));
+  }
+
+  ~RequestContextGuard() {
+    RequestContext::setContext(std::move(oldctx_));
+  }
+
+ private:
+  std::shared_ptr<RequestContext> oldctx_;
+};
+
 }}}
 
 #endif
