@@ -107,6 +107,12 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
           importMemoryCache(mem);
           LOG(INFO) << "do kInit because CC is about to expire";
         } else if (reached_half_life) {
+          // If we've reached half-life, but not about to expire, it means
+          // the cache we just got is still valid, so we can use it while
+          // we update the old one.
+          if (getCache() == nullptr) {
+            importMemoryCache(mem);
+          }
           mem = buildRenewedCache();
           importMemoryCache(mem);
           LOG(INFO) << "renewed CC at half-life";
@@ -292,6 +298,9 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
 
     // Store the cred into a file
     code = krb5_cc_store_cred(ctx_.get(), file_cache.get(), &(*it));
+    // Erase from top_services struct so we don't persist the same
+    // principal more than once.
+    top_services.erase(princ_string);
     raiseIf(code, "Failed storing a credential into a file");
   }
 }
