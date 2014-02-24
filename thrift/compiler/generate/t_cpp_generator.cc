@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #include <cinttypes>
@@ -106,6 +103,8 @@ class t_cpp_generator : public t_oop_generator {
 
     iter = parsed_options.find("frozen");
     frozen_ = (iter != parsed_options.end());
+
+    frozen_packed_ = (iter != parsed_options.end() && iter->second == "packed");
 
     // Reminder: Add documentation for new options at the end of this file!
 
@@ -406,6 +405,11 @@ class t_cpp_generator : public t_oop_generator {
    * mmaping from disk
    */
   bool frozen_;
+
+  /*
+   * Add #pragma pack for frozen structs
+  */
+  bool frozen_packed_;
 
   /**
    * Strings for namespace, computed once up front then used directly
@@ -2036,8 +2040,11 @@ void t_cpp_generator::generate_frozen_struct_definition(t_struct* tstruct) {
     "namespace apache { namespace thrift {" <<
     endl;
   // Frozen Type
+  f_types_ << endl;
+  if (frozen_packed_) {
+    f_types_ << "#pragma pack(push, 1)" << endl;
+  }
   f_types_ <<
-    endl <<
     "template<>" << endl <<
     "struct " << frozenName << " {" <<
     endl;
@@ -2064,6 +2071,9 @@ void t_cpp_generator::generate_frozen_struct_definition(t_struct* tstruct) {
   f_types_ <<
     "};" << // struct frozenName
     endl;
+  if (frozen_packed_) {
+    f_types_ << "#pragma pack(pop)" << endl;
+  }
   f_types_ <<
     "}} // apache::thrift " << endl << endl <<
     ns_open_ << endl;
@@ -6803,7 +6813,7 @@ THRIFT_REGISTER_GENERATOR(cpp, "C++",
 //   bootstrap:       Internal use.
 "    cob_style:       Generate \"Continuation OBject\"-style classes as well.\n"
 "    enum_strict:     Generate C++11 class enums instead of C-style enums.\n"
-"    frozen:          Generate support code for frozen (mmap-able) structs.\n"
+"    frozen[=packed]: Generate support code for frozen (mmap-able) structs.\n"
 "    include_prefix:  Use full include paths in generated files.\n"
 "    json:            Generate functions to parse JsonEntity to thrift struct.\n"
 "    no_client_completion: Omit calls to completion__() in CobClient classes.\n"
