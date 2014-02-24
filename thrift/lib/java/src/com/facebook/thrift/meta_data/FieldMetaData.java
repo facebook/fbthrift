@@ -19,9 +19,8 @@
 
 package com.facebook.thrift.meta_data;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.facebook.thrift.TBase;
 
 /**
@@ -36,7 +35,7 @@ public class FieldMetaData implements java.io.Serializable {
   private static Map<Class<? extends TBase>, Map<Integer, FieldMetaData>> structMap;
 
   static {
-    structMap = new ConcurrentHashMap<>();
+    structMap = new HashMap<Class<? extends TBase>, Map<Integer, FieldMetaData>>();
   }
 
   public FieldMetaData(String name, byte req, FieldValueMetaData vMetaData){
