@@ -146,7 +146,7 @@ int64_t Schema::fixedSizeForField(const StructField& field) const {
     case reflection::TYPE_DOUBLE:
       return field.isFixed ? 8 : -1;
     case reflection::TYPE_STRING:
-      return field.isFixed ? field.fixedStringSize : -1;
+      return field.isFixed ? static_cast<int64_t>(field.fixedStringSize) : -1;
     default:
       break;
     }
