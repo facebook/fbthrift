@@ -30,6 +30,7 @@
 #include <krb5.h>
 
 #include "folly/Conv.h"
+#include "thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h"
 
 namespace std {
 
@@ -118,6 +119,7 @@ public:
   krb5_principal release();
 
   krb5_principal get() const { return principal_; }
+
   uint size() { return krb5_princ_size(context_, principal_); }
   std::string getRealm() {
     krb5_data* d = krb5_princ_realm(context_, principal_);

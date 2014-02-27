@@ -16,6 +16,7 @@
 
 #include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
 
+#include <glog/logging.h>
 #include <memory>
 #include <set>
 
@@ -69,6 +70,10 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
     client_ = Krb5Principal::snameToPrincipal(ctx_.get(), KRB5_NT_UNKNOWN);
   }
 
+  std::string sname = folly::to<string>(client_);
+  std::hash<std::string> hash_fn;
+  size_t sname_hash = hash_fn(sname);
+
   manageThread_ = std::thread([=] {
     while(true) {
       MutexGuard l(manageThreadMutex_);
@@ -94,8 +99,15 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
         auto lifetime = mem->getLifetime();
         time_t now;
         time(&now);
-        bool reached_half_life = (uint64_t) now >
+
+        // Set the renew interval to be about 25% of lifetime
+        uint64_t quarter_life_time = (lifetime.second - lifetime.first) / 4;
+        uint64_t renew_offset = sname_hash % quarter_life_time;
+        uint64_t half_life_time =
           (lifetime.first + (lifetime.second - lifetime.first) / 2);
+
+        bool reached_renew_time = (uint64_t) now >
+          (half_life_time + renew_offset);
         // about_to_expire is true if the cache will expire in 5 minutes,
         // or has already expired
         bool about_to_expire = ((uint64_t) now +
@@ -106,7 +118,13 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
           mem = kInit();
           importMemoryCache(mem);
           LOG(INFO) << "do kInit because CC is about to expire";
-        } else if (reached_half_life) {
+        } else if (reached_renew_time) {
+          // If we've reached half-life, but not about to expire, it means
+          // the cache we just got is still valid, so we can use it while
+          // we update the old one.
+          if (getCache() == nullptr) {
+            importMemoryCache(mem);
+          }
           mem = buildRenewedCache();
           importMemoryCache(mem);
           LOG(INFO) << "renewed CC at half-life";
@@ -262,7 +280,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   ReadLock readLock(&serviceCountLock_);
   for (auto& element : serviceCountMap_) {
     count_vector.push_back(pair<string, uint64_t>(
-      element.first, element.second.getCount()));
+      element.first, element.second->getCount()));
   }
   readLock.reset();
   sort(count_vector.begin(), count_vector.end(), serviceCountCompare);
@@ -292,6 +310,9 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
 
     // Store the cred into a file
     code = krb5_cc_store_cred(ctx_.get(), file_cache.get(), &(*it));
+    // Erase from top_services struct so we don't persist the same
+    // principal more than once.
+    top_services.erase(princ_string);
     raiseIf(code, "Failed storing a credential into a file");
   }
 }
@@ -322,12 +343,13 @@ void Krb5CredentialsCacheManager::incUsedService(
   auto found = serviceCountMap_.find(service);
   if (found != serviceCountMap_.end()) {
     // Here we already have the element, so we can just bump the count.
-    found->second.bumpCount();
+    found->second->bumpCount();
   } else {
     // Here let's upgrade the lock to a write lock and insert a new element
     // into the map.
     WriteLock writeLock(std::move(readLock));
-    serviceCountMap_[service].bumpCount();
+    serviceCountMap_[service] = folly::make_unique<ServiceTimeSeries>();
+    serviceCountMap_[service]->bumpCount();
   }
 }
 

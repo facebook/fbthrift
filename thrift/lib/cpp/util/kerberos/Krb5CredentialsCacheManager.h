@@ -132,7 +132,8 @@ class Krb5CredentialsCacheManager {
 
   // Count struct
   mutable Lock serviceCountLock_;
-  std::unordered_map<std::string, ServiceTimeSeries> serviceCountMap_;
+  std::unordered_map<std::string,
+    std::unique_ptr<ServiceTimeSeries>> serviceCountMap_;
 
   // In-memory cache. Will be shared across different threads. Operations
   // on the CC should be thread-safe within the krb5 library.

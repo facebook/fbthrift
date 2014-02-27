@@ -16,6 +16,7 @@
 
 #include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
 
+#include <glog/logging.h>
 #include <memory>
 #include <string>
 #include <vector>

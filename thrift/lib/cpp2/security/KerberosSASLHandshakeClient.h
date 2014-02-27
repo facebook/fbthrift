@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #ifndef KERBEROS_SASL_HANDSHAKE_CLIENT_H
 #define KERBEROS_SASL_HANDSHAKE_CLIENT_H
 
@@ -29,50 +27,11 @@
 
 #include "folly/io/IOBuf.h"
 #include "thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h"
+#include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
+#include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
+#include "thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h"
 
 namespace apache { namespace thrift {
-
-/**
- * Struct for kinit data.
- */
-struct Krb5Data {
-  krb5_context ctx;
-  krb5_ccache cc;
-  krb5_principal me;
-  krb5_get_init_creds_opt *options;
-  krb5_keytab keytab;
-
-  Krb5Data() :
-    ctx(0),
-    cc(0),
-    me(0),
-    options(NULL),
-    keytab(0) {}
-
-  ~Krb5Data() {
-    if (me)
-        krb5_free_principal(ctx, me);
-    if (cc)
-        krb5_cc_close(ctx, cc);
-    if (options)
-        krb5_get_init_creds_opt_free(ctx, options);
-    if (keytab)
-        krb5_kt_close(ctx, keytab);
-    if (ctx)
-        krb5_free_context(ctx);
-  }
-};
-
-static inline int
-k5_data_eq(krb5_data d1, krb5_data d2) {
-  return (d1.length == d2.length && !memcmp(d1.data, d2.data, d1.length));
-}
-
-static inline int
-k5_data_eq_string (krb5_data d, const char *s) {
-  return (d.length == strlen(s) && !memcmp(d.data, s, d.length));
-}
-
 
 /**
  * Kerberos handshake from the client-side.
@@ -130,6 +89,11 @@ class KerberosSASLHandshakeClient {
     std::unique_ptr<folly::IOBuf> unwrapMessage(
       std::unique_ptr<folly::IOBuf>&& buf);
 
+    static krb5::Krb5CredentialsCacheManager& getCredentialsCacheManager() {
+      static krb5::Krb5CredentialsCacheManager manager;
+      return manager;
+    }
+
   private:
     uint32_t securityLayerBitmask_;
     std::unique_ptr<folly::IOBuf> securityLayerBitmaskBuffer_;
@@ -138,7 +102,6 @@ class KerberosSASLHandshakeClient {
 
     std::string clientPrincipal_;
     std::string servicePrincipal_;
-    struct Krb5Data servicePrincipalKrbStruct_;
 
     // Some data about the context after it is established
     std::string establishedClientPrincipal_;
@@ -162,13 +125,12 @@ class KerberosSASLHandshakeClient {
     OM_uint32 requiredFlags_;
 
     void initSecurityContext();
-    void kInit();
-    struct Krb5Data getKrb5Data();
-    int getTgtLifetime();
     void throwKrb5Exception(
       const std::string& str,
       krb5_context ctx,
       krb5_error_code code);
+
+    std::shared_ptr<krb5::Krb5CCache> cc_;
 };
 
 }}  // apache::thrift
