@@ -66,7 +66,8 @@ void HeaderServerChannel::destroy() {
   saslServer_->markChannelCallbackUnavailable();
 
   if (callback_) {
-    callback_->channelClosed(nullptr);
+    TTransportException error("Channel destroyed");
+    callback_->channelClosed(std::make_exception_ptr(error));
   }
 
   Cpp2Channel::destroy();
@@ -436,7 +437,7 @@ void HeaderServerChannel::messageChannelEOF() {
   }
 
   if (callback_) {
-    callback_->channelClosed(nullptr);
+    callback_->channelClosed(std::make_exception_ptr(error));
   }
 }
 
