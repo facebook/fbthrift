@@ -109,6 +109,8 @@ Cpp2Connection::~Cpp2Connection() {
 void Cpp2Connection::stop() {
   cancelTimeout();
   for (auto req : activeRequests_) {
+    VLOG(1) << "Task killed due to channel close: " <<
+      context_.getPeerAddress()->describe();
     req->cancelRequest();
     auto observer = worker_->getServer()->getObserver();
     if (observer) {
@@ -293,7 +295,8 @@ void Cpp2Connection::channelClosed(std::exception_ptr&& ex) {
   });
 
   VLOG(4) << "Channel " <<
-    context_.getPeerAddress()->describe() << " closed";
+    context_.getPeerAddress()->describe() << " closed: " <<
+    folly::exceptionStr(ex);
 }
 
 void Cpp2Connection::removeRequest(Cpp2Request *req) {
