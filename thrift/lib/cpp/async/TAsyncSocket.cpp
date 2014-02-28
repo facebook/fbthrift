@@ -315,7 +315,7 @@ void TAsyncSocket::connect(ConnectCallback* callback,
     fd_ = socket(address.getFamily(), SOCK_STREAM, 0);
     if (fd_ < 0) {
       throw TTransportException(TTransportException::INTERNAL_ERROR,
-                                "failed to create socket", errno);
+                                withAddr("failed to create socket"), errno);
     }
     if (shutdownSocketSet_) {
       shutdownSocketSet_->add(fd_);
@@ -327,20 +327,22 @@ void TAsyncSocket::connect(ConnectCallback* callback,
     int rv = fcntl(fd_, F_SETFD, FD_CLOEXEC);
     if (rv != 0) {
       throw TTransportException(TTransportException::INTERNAL_ERROR,
-                                "failed to set close-on-exec flag", errno);
+                                withAddr("failed to set close-on-exec flag"),
+                                errno);
     }
 
     // Put the socket in non-blocking mode
     int flags = fcntl(fd_, F_GETFL, 0);
     if (flags == -1) {
       throw TTransportException(TTransportException::INTERNAL_ERROR,
-                                "failed to get socket flags", errno);
+                                withAddr("failed to get socket flags"), errno);
     }
     rv = fcntl(fd_, F_SETFL, flags | O_NONBLOCK);
     if (rv == -1) {
-      throw TTransportException(TTransportException::INTERNAL_ERROR,
-                                "failed to put socket in non-blocking mode",
-                                errno);
+      throw TTransportException(
+          TTransportException::INTERNAL_ERROR,
+          withAddr("failed to put socket in non-blocking mode"),
+          errno);
     }
 
     // By default, turn on TCP_NODELAY
@@ -378,7 +380,7 @@ void TAsyncSocket::connect(ConnectCallback* callback,
       int rv = opt.first.apply(fd_, opt.second);
       if (rv != 0) {
         throw TTransportException(TTransportException::INTERNAL_ERROR,
-                                  "failed to set socket option",
+                                  withAddr("failed to set socket option"),
                                   errno);
       }
     }
@@ -392,8 +394,7 @@ void TAsyncSocket::connect(ConnectCallback* callback,
           // Start a timer in case the connection takes too long.
           if (!writeTimeout_.scheduleTimeout(timeout)) {
             throw TTransportException(TTransportException::INTERNAL_ERROR,
-                                      "failed to schedule TAsyncSocket "
-                                      "connect timeout");
+                withAddr("failed to schedule TAsyncSocket connect timeout"));
           }
         }
 
@@ -404,8 +405,7 @@ void TAsyncSocket::connect(ConnectCallback* callback,
         eventFlags_ = TEventHandler::WRITE;
         if (!ioHandler_.registerHandler(eventFlags_)) {
           throw TTransportException(TTransportException::INTERNAL_ERROR,
-                                    "failed to register TAsyncSocket connect "
-                                    "handler");
+              withAddr("failed to register TAsyncSocket connect handler"));
         }
         return;
       } else {
@@ -424,7 +424,8 @@ void TAsyncSocket::connect(ConnectCallback* callback,
                << "): unexpected " << typeid(ex).name() << " exception: "
                << ex.what();
     TTransportException tex(TTransportException::INTERNAL_ERROR,
-                            string("unexpected exception: ") + ex.what());
+                            withAddr(string("unexpected exception: ") +
+                                     ex.what()));
     return failConnect(__func__, tex);
   }
 
@@ -467,8 +468,7 @@ void TAsyncSocket::setSendTimeout(uint32_t milliseconds) {
     if (sendTimeout_ > 0) {
       if (!writeTimeout_.scheduleTimeout(sendTimeout_)) {
         TTransportException ex(TTransportException::INTERNAL_ERROR,
-                               "failed to reschedule send timeout in "
-                               "setSendTimeout");
+            withAddr("failed to reschedule send timeout in setSendTimeout"));
         return failWrite(__func__, ex);
       }
     } else {
@@ -663,7 +663,7 @@ void TAsyncSocket::writeImpl(WriteCallback* callback, const iovec* vec,
                                   &countWritten, &partialWritten);
       if (bytesWritten < 0) {
         TTransportException ex(TTransportException::INTERNAL_ERROR,
-                               "writev failed", errno);
+                               withAddr("writev failed"), errno);
         return failWrite(__func__, callback, 0, ex);
       } else if (countWritten == count) {
         // We successfully wrote everything.
@@ -689,8 +689,7 @@ void TAsyncSocket::writeImpl(WriteCallback* callback, const iovec* vec,
   } catch (const std::exception& ex) {
     // we mainly expect to catch std::bad_alloc here
     TTransportException tex(TTransportException::INTERNAL_ERROR,
-                            string("failed to append new WriteRequest: ") +
-                            ex.what());
+        withAddr(string("failed to append new WriteRequest: ") + ex.what()));
     return failWrite(__func__, callback, bytesWritten, tex);
   }
   req->consume(0, partialWritten, bytesWritten);
@@ -715,7 +714,7 @@ void TAsyncSocket::writeImpl(WriteCallback* callback, const iovec* vec,
       // Schedule a timeout to fire if the write takes too long.
       if (!writeTimeout_.scheduleTimeout(sendTimeout_)) {
         TTransportException ex(TTransportException::INTERNAL_ERROR,
-                               "failed to schedule send timeout");
+                               withAddr("failed to schedule send timeout"));
         return failWrite(__func__, ex);
       }
     }
@@ -1288,7 +1287,7 @@ void TAsyncSocket::handleRead() noexcept {
         return;
     } else if (bytesRead == READ_ERROR) {
       TTransportException ex(TTransportException::INTERNAL_ERROR,
-                             "recv() failed", errno);
+                             withAddr("recv() failed"), errno);
       return failRead(__func__, ex);
     } else {
       assert(bytesRead == READ_EOF);
@@ -1352,7 +1351,7 @@ void TAsyncSocket::handleWrite() noexcept {
                                     writeFlags, &countWritten, &partialWritten);
     if (bytesWritten < 0) {
       TTransportException ex(TTransportException::INTERNAL_ERROR,
-                             "writev() failed", errno);
+                             withAddr("writev() failed"), errno);
       return failWrite(__func__, ex);
     } else if (countWritten == writeReqHead_->getOpCount()) {
       // We finished this request
@@ -1435,7 +1434,7 @@ void TAsyncSocket::handleWrite() noexcept {
       if (sendTimeout_ > 0) {
         if (!writeTimeout_.scheduleTimeout(sendTimeout_)) {
           TTransportException ex(TTransportException::INTERNAL_ERROR,
-                                 "failed to reschedule write timeout");
+              withAddr("failed to reschedule write timeout"));
           return failWrite(__func__, ex);
         }
       }
@@ -1521,7 +1520,7 @@ void TAsyncSocket::handleConnect() noexcept {
   int rv = getsockopt(fd_, SOL_SOCKET, SO_ERROR, &error, &len);
   if (rv != 0) {
     TTransportException ex(TTransportException::INTERNAL_ERROR,
-                           "error calling getsockopt() after connect",
+                           withAddr("error calling getsockopt() after connect"),
                            errno);
     VLOG(4) << "TAsyncSocket::handleConnect(this=" << this << ", fd="
                << fd_ << " host=" << addr_.describe()
@@ -1692,7 +1691,7 @@ bool TAsyncSocket::updateEventRegistration() {
   if (!ioHandler_.registerHandler(eventFlags_ | TEventHandler::PERSIST)) {
     eventFlags_ = TEventHandler::NONE; // we're not registered after error
     TTransportException ex(TTransportException::INTERNAL_ERROR,
-                           "failed to update TAsyncSocket event registration");
+        withAddr("failed to update TAsyncSocket event registration"));
     fail("updateEventRegistration", ex);
     return false;
   }
@@ -1738,7 +1737,7 @@ void TAsyncSocket::finishFail() {
   assert(getDestructorGuardCount() > 0);
 
   TTransportException ex(TTransportException::INTERNAL_ERROR,
-                         "socket closing after error");
+                         withAddr("socket closing after error"));
   if (connectCallback_) {
     ConnectCallback* callback = connectCallback_;
     connectCallback_ = nullptr;
@@ -1907,7 +1906,7 @@ void TAsyncSocket::invalidState(WriteCallback* callback) {
              << "): write() called in invalid state " << state_;
 
   TTransportException ex(TTransportException::NOT_OPEN,
-                         "write() called with socket in invalid state");
+                         withAddr("write() called with socket in invalid state"));
   if (state_ == StateEnum::CLOSED || state_ == StateEnum::ERROR) {
     if (callback) {
       callback->writeError(0, ex);
@@ -1935,6 +1934,19 @@ std::ostream& operator << (std::ostream& os,
                            const TAsyncSocket::StateEnum& state) {
   os << static_cast<int>(state);
   return os;
+}
+
+std::string TAsyncSocket::withAddr(const std::string& s) {
+  // Don't use addr_ directly because it may not be initialized
+  // e.g. if constructed from fd
+  TSocketAddress peer, local;
+  try {
+    getPeerAddress(&peer);
+    getLocalAddress(&local);
+  } catch (const TTransportException&) {
+    // ignore
+  }
+  return s + " (peer=" + peer.describe() + ", local=" + local.describe() + ")";
 }
 
 }}} // apache::thrift::async

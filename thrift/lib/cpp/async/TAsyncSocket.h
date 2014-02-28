@@ -626,6 +626,8 @@ class TAsyncSocket : public TAsyncTransport {
   void invalidState(ReadCallback* callback);
   void invalidState(WriteCallback* callback);
 
+  std::string withAddr(const std::string& s);
+
   StateEnum state_;                     ///< StateEnum describing current state
   uint8_t shutdownFlags_;               ///< Shutdown state (ShutdownFlags)
   uint16_t eventFlags_;                 ///< TEventBase::HandlerFlags settings
