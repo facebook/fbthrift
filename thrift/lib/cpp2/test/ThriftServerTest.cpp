@@ -513,7 +513,10 @@ class Callback : public RequestCallback {
       std::rethrow_exception(state.exception());
     } catch(const apache::thrift::transport::TTransportException& ex) {
       // Verify we got a write and not a read error
-      EXPECT_STREQ(ex.what(), "write() called with socket in invalid state");
+      // Comparing substring because the rest contains ips and ports
+      std::string expected = "write() called with socket in invalid state";
+      std::string actual = std::string(ex.what()).substr(0, expected.size());
+      EXPECT_EQ(expected, actual);
     } catch (...) {
       ADD_FAILURE();
     }
