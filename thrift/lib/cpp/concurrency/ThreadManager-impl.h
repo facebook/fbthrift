@@ -19,6 +19,8 @@
 #ifndef THREADMANAGERIMPL_H
 #define THREADMANAGERIMPL_H
 
+#include "thrift/lib/cpp/concurrency/Util.h"
+
 namespace apache { namespace thrift { namespace concurrency {
 
 using std::shared_ptr;
@@ -28,7 +30,6 @@ using std::unique_ptr;
 using apache::thrift::async::RequestContext;
 
 class ThreadManager::Task {
-
  public:
   enum STATE {
     WAITING,
@@ -38,19 +39,18 @@ class ThreadManager::Task {
   };
 
   Task(shared_ptr<Runnable> runnable,
-       int64_t expirationMs = 0,
+       const std::chrono::milliseconds& expiration,
        bool enableStats = false)
     : runnable_(runnable),
-      expireTimeUs_(0),
-      entryTimeUs_(0),
       context_(RequestContext::saveContext()) {
-    if (enableStats || expirationMs > 0) {
-      int64_t nowUs(Util::currentTimeUsec());
+    bool expirable = expiration > std::chrono::milliseconds::zero();
+    if (enableStats || expirable) {
+      auto now = SystemClock::now();
       if (enableStats) {
-        entryTimeUs_ = nowUs;
+        queueBeginTime_ = now;
       }
-      if (expirationMs > 0) {
-        expireTimeUs_ = nowUs + (expirationMs * Util::US_PER_MS);
+      if (expirable) {
+        expireTime_ = now + expiration;
       }
     }
   }
@@ -68,18 +68,26 @@ class ThreadManager::Task {
     return runnable_;
   }
 
-  int64_t getExpireTime() const {
-    return expireTimeUs_;
+  SystemClockTimePoint getExpireTime() const {
+    return expireTime_;
   }
 
-  int64_t getEntryTime() const {
-    return entryTimeUs_;
+  SystemClockTimePoint getQueueBeginTime() const {
+    return queueBeginTime_;
+  }
+
+  bool canExpire() const {
+    return expireTime_ != SystemClockTimePoint();
+  }
+
+  bool statsEnabled() const {
+    return queueBeginTime_ != SystemClockTimePoint();
   }
 
  private:
   shared_ptr<Runnable> runnable_;
-  int64_t expireTimeUs_;
-  int64_t entryTimeUs_;
+  SystemClockTimePoint expireTime_;
+  SystemClockTimePoint queueBeginTime_;
   std::shared_ptr<RequestContext> context_;
 };
 
@@ -193,7 +201,9 @@ class ThreadManager::ImplT : public ThreadManager  {
   // Methods to be invoked by workers
   void workerStarted(Worker<SemType>* worker);
   void workerExiting(Worker<SemType>* worker);
-  void reportTaskStats(int64_t waitTimeUs, int64_t runTimeUs);
+  void reportTaskStats(const SystemClockTimePoint& queueBegin,
+                       const SystemClockTimePoint& workBegin,
+                       const SystemClockTimePoint& workEnd);
   Task* waitOnTask();
   void taskExpired(Task* task);
 

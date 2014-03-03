@@ -22,7 +22,6 @@
 #include "thrift/lib/cpp/concurrency/Exception.h"
 #include "thrift/lib/cpp/concurrency/Monitor.h"
 #include "thrift/lib/cpp/concurrency/Thread.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
 #include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
 #include "folly/Conv.h"
 #include "ThreadManager.h"
@@ -93,14 +92,14 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
 
       // Getting the current time is moderately expensive,
       // so only get the time if we actually need it.
-      int64_t startTimeUs = 0;
-      if (task->getExpireTime() || task->getEntryTime()) {
-        startTimeUs = Util::currentTimeUsec();
+      SystemClockTimePoint startTime;
+      if (task->canExpire() || task->statsEnabled()) {
+        startTime = SystemClock::now();
       }
 
       // Check if the task is expired
-      if (task->getExpireTime() != 0 &&
-          task->getExpireTime() <= startTimeUs) {
+      if (task->canExpire() &&
+          task->getExpireTime() <= startTime) {
         manager_->taskExpired(task);
         delete task;
         continue;
@@ -116,10 +115,11 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
                 "non-exception object");
       }
 
-      if (task->getEntryTime() != 0) {
-        int64_t endTimeUs = Util::currentTimeUsec();
-        manager_->reportTaskStats(startTimeUs - task->getEntryTime(),
-                                  endTimeUs - startTimeUs);
+      if (task->statsEnabled()) {
+        auto endTime = SystemClock::now();
+        manager_->reportTaskStats(task->getQueueBeginTime(),
+                                  startTime,
+                                  endTime);
       }
       delete task;
     }
@@ -368,7 +368,9 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
 
   // If an idle thread is available notify it, otherwise all worker threads are
   // running and will get around to this task in time.
-  Task* task = new ThreadManager::Task(value, expiration, enableTaskStats_);
+  Task* task = new ThreadManager::Task(value,
+                                       std::chrono::milliseconds{expiration},
+                                       enableTaskStats_);
   if (!tasks_.write(task)) {
     T_ERROR("ThreadManager: Failed to enqueue item. Increase maxQueueLen?");
     delete task;
@@ -524,8 +526,14 @@ void ThreadManager::ImplT<SemType>::getStats(int64_t& waitTimeUs, int64_t& runTi
 }
 
 template <typename SemType>
-void ThreadManager::ImplT<SemType>::reportTaskStats(int64_t waitTimeUs,
-                                          int64_t runTimeUs) {
+void ThreadManager::ImplT<SemType>::reportTaskStats(
+    const SystemClockTimePoint& queueBegin,
+    const SystemClockTimePoint& workBegin,
+    const SystemClockTimePoint& workEnd) {
+  int64_t waitTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(
+      workBegin - queueBegin).count();
+  int64_t runTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(
+      workEnd - workBegin).count();
   Guard g(mutex_);
   waitingTimeUs_ += waitTimeUs;
   executingTimeUs_ += runTimeUs;

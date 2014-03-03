@@ -25,6 +25,7 @@
 #include <stdint.h>
 #include <time.h>
 #include <sys/time.h>
+#include <chrono>
 
 namespace apache { namespace thrift { namespace concurrency {
 
@@ -165,6 +166,9 @@ class Util {
     return monotonicTimeTicks(US_PER_S);
   }
 };
+
+typedef std::chrono::system_clock SystemClock;
+typedef std::chrono::time_point<SystemClock> SystemClockTimePoint;
 
 }}} // apache::thrift::concurrency
 
