@@ -1414,7 +1414,13 @@ class CppGenerator(t_generator.Generator):
                 out('return false;')
 
             out().label('private:')
-            out('std::unordered_set<std::string> onewayMethods;')
+            oneways = out().defn('std::unordered_set<std::string> {name}',
+                                 name='onewayMethods',
+                                 modifiers='static')
+            oneways.epilogue = ';\n'
+            with oneways:
+                out(',\n'.join('"' + function.name + '"'
+                        for function in service.functions if function.oneway))
             for shortprot, protname, prottype in self.protocols:
                 out(('typedef void ({0}::*{1}ProcessFunction)(std::unique_ptr' +
                    '<apache::thrift::ResponseChannel::Request> req, ').format(
@@ -1428,7 +1434,22 @@ class CppGenerator(t_generator.Generator):
                 out('typedef std::unordered_map<std::string, ' +
                   '{0}ProcessFunction>'.format(shortprot) +
                   ' {0}ProcessMap;'.format(shortprot))
-                out('{0}ProcessMap {0}ProcessMap_;'.format(shortprot))
+                map_type = '{0}::{1}ProcessMap'.format(
+                    service.name + "AsyncProcessor",
+                    shortprot)
+                map_name = '{0}ProcessMap_'.format(shortprot)
+                process_map = out().defn(map_type + ' {name}',
+                                         name=map_name,
+                                         modifiers='static')
+                process_map.epilogue = ';'
+
+                with process_map:
+                    out(',\n'.join('{"' + function.name + '", &' +
+                        service.name + 'AsyncProcessor::' +
+                        self._get_handler_function_name(function) +
+                        '<apache::thrift::{0}Reader, '
+                        'apache::thrift::{0}Writer>}}'.format(protname)
+                            for function in service.functions))
             for function in service.functions:
                 loadname = '"{0}.{1}"'.format(service.name, function.name)
                 if not self._is_processed_in_eb(function):
@@ -1560,16 +1581,6 @@ class CppGenerator(t_generator.Generator):
                 init[self._type_name(service.extends) + 'AsyncProcessor'] = \
                     'iface'
             init['iface_'] = 'iface'
-            init['onewayMethods'] = '{' + ','.join('"' + function.name + '"'
-                    for function in service.functions if function.oneway) + '}'
-            for shortprot, protname, prottype in self.protocols:
-                init['{0}ProcessMap_'.format(shortprot)] = '\n{' + ',\n'.join(
-                    '{"' + function.name + '", &' + service.name +
-                    'AsyncProcessor::' +
-                    self._get_handler_function_name(function) +
-                    '<apache::thrift::{0}Reader, '
-                    'apache::thrift::{0}Writer>}}'.format(protname)
-                        for function in service.functions) + '}'
             out().defn('{name}(' + service.name + 'SvIf* iface)',
                    name=service.name + 'AsyncProcessor',
                    init_dict=init,
