@@ -1,32 +1,30 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #ifndef THRIFT_LIB_CPP_FROZEN_H_
 #define THRIFT_LIB_CPP_FROZEN_H_
 
-#include "folly/Range.h"
-#include <memory>
-#include <map>
-#include <vector>
-#include <set>
 #include <algorithm>
+#include <map>
+#include <memory>
+#include <set>
 #include <type_traits>
+#include <vector>
+
+#include "folly/Range.h"
 #include "thrift/lib/cpp/RelativePtr.h"
 
 /**
@@ -367,8 +365,18 @@ struct FrozenRange {
   RelativePtr<const value_type> begin_, end_;
 };
 
+namespace detail {
+
+template<class T>
+struct IsFrozenRange : std::false_type { };
+
+template<class ThawedItem, class FrozenItem>
+struct IsFrozenRange<FrozenRange<ThawedItem, FrozenItem>> : std::true_type { };
+
+} // namespace detail
+
 /**
- * operator overloads to facilitate comparison and sorting of FrozenRange's.
+ * Operator overloads to facilitate comparison and sorting of FrozenRange's.
  * Primarily needed for inclusion in std::map's.
  */
 template<class ThawedString>
@@ -399,8 +407,9 @@ template<class ThawedItem,
          class FrozenItem,
          class Range,
          class = decltype(std::declval<Range>().begin())>
-bool operator<(const Range& range,
-               const FrozenRange<ThawedItem, FrozenItem>& frozen) {
+typename std::enable_if<!detail::IsFrozenRange<Range>::value, bool>::type
+operator<(const Range& range,
+          const FrozenRange<ThawedItem, FrozenItem>& frozen) {
   return frozen > range;
 }
 
@@ -408,8 +417,9 @@ template<class ThawedItem,
          class FrozenItem,
          class Range,
          class = decltype(std::declval<Range>().begin())>
-bool operator==(const Range& range,
-                const FrozenRange<ThawedItem, FrozenItem>& frozen) {
+typename std::enable_if<!detail::IsFrozenRange<Range>::value, bool>::type
+operator==(const Range& range,
+           const FrozenRange<ThawedItem, FrozenItem>& frozen) {
   return range.size() == frozen.size()
     && std::equal(range.begin(), range.end(), frozen.begin());
 }
@@ -662,4 +672,5 @@ inline freezeStr(folly::StringPiece str) {
 }
 
 }} // apache::thrift
+
 #endif // #ifndef THRIFT_LIB_CPP_FROZEN_H_
