@@ -108,6 +108,7 @@ Cpp2Connection::~Cpp2Connection() {
 
 void Cpp2Connection::stop() {
   cancelTimeout();
+
   for (auto req : activeRequests_) {
     VLOG(1) << "Task killed due to channel close: " <<
       context_.getPeerAddress()->describe();
@@ -126,6 +127,10 @@ void Cpp2Connection::stop() {
   if (handler) {
     handler->connectionDestroyed(&context_);
   }
+
+  // Release the socket to avoid long CLOSE_WAIT times
+  channel_.reset();
+  socket_.reset();
 }
 
 void Cpp2Connection::timeoutExpired() noexcept {
@@ -158,6 +163,7 @@ void Cpp2Connection::requestTimeoutExpired() {
   if (observer) {
     observer->taskTimeout();
   }
+
 }
 
 bool Cpp2Connection::pending() {
