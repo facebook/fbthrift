@@ -456,6 +456,8 @@ private:
   bool keepRegisteredForClose_;
 
  private:
+  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
+
   class SaslClientCallback : public SaslClient::Callback {
    public:
     explicit SaslClientCallback(HeaderClientChannel& channel)
@@ -466,8 +468,6 @@ private:
    private:
     HeaderClientChannel& channel_;
   } saslClientCallback_;
-
-  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
 };
 
 }} // apache::thrift

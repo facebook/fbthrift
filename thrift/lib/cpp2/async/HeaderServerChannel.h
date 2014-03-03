@@ -255,6 +255,8 @@ private:
 
   uint32_t timeoutSASL_;
 
+  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
+
   class SaslServerCallback : public SaslServer::Callback {
    public:
     explicit SaslServerCallback(HeaderServerChannel& channel)
@@ -265,8 +267,6 @@ private:
    private:
     HeaderServerChannel& channel_;
   } saslServerCallback_;
-
-  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
 };
 
 }} // apache::thrift

@@ -47,8 +47,8 @@ HeaderClientChannel::HeaderClientChannel(
     , timeoutSASL_(500)
     , handshakeMessagesSent_(0)
     , keepRegisteredForClose_(true)
-    , saslClientCallback_(*this)
-    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
+    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase()))
+    , saslClientCallback_(*this) {
   header_.reset(new THeader);
   header_->setSupportedClients(nullptr);
   header_->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);

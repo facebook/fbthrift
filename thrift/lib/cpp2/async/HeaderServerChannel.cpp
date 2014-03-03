@@ -53,8 +53,8 @@ HeaderServerChannel::HeaderServerChannel(
     , lastWrittenSeqId_(0)
     , sampleRate_(0)
     , timeoutSASL_(5000)
-    , saslServerCallback_(*this)
-    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
+    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase()))
+    , saslServerCallback_(*this) {
   header_.reset(new THeader);
   header_->setSupportedClients(nullptr);
   header_->setProtocolId(0);
