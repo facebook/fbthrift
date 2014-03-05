@@ -126,6 +126,10 @@ void Cpp2Connection::stop() {
   if (handler) {
     handler->connectionDestroyed(&context_);
   }
+
+  // Release the socket to avoid long CLOSE_WAIT times
+  channel_->closeNow();
+  socket_.reset();
 }
 
 void Cpp2Connection::timeoutExpired() noexcept {

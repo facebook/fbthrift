@@ -229,6 +229,10 @@ class HeaderServerChannel : public ResponseChannel,
     Cpp2Channel::setQueueSends(queueSends);
   }
 
+  void closeNow() {
+    Cpp2Channel::closeNow();
+  }
+
 private:
   std::unique_ptr<folly::IOBuf> handleSecurityMessage(
       std::unique_ptr<folly::IOBuf>&& buf);
