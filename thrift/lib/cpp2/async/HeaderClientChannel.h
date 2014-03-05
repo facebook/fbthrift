@@ -178,6 +178,11 @@ class HeaderClientChannel : public RequestChannel,
     }
   }
 
+  // Returns true if security is negotiated and used
+  bool isSecurityActive() {
+    return protectionState_ == ProtectionState::VALID;
+  }
+
 private:
   bool clientSupportHeader();
   /**
