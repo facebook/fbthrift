@@ -26,6 +26,9 @@
 #include "thrift/lib/cpp/concurrency/Mutex.h"
 #include "thrift/lib/cpp/transport/TSocketAddress.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
+#include "thrift/lib/cpp/concurrency/Exception.h"
+#include "thrift/lib/cpp/concurrency/FunctionRunner.h"
+#include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
 
 extern "C" {
   #include <sys/types.h>
@@ -38,6 +41,8 @@ using namespace apache::thrift;
 using namespace folly;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::krb5;
+using apache::thrift::concurrency::FunctionRunner;
+using apache::thrift::concurrency::TooManyPendingTasksException;
 
 /**
  * Client functions.
@@ -72,15 +77,37 @@ KerberosSASLHandshakeClient::KerberosSASLHandshakeClient() : phase_(INIT) {
 }
 
 KerberosSASLHandshakeClient::~KerberosSASLHandshakeClient() {
+  auto threadManager = SaslThreadManager::getThreadManager();
+  // Copy locally since 'this' may not exist when the async function runs
+  gss_ctx_id_t context = context_;
+  gss_name_t target_name = targetName_;
+  gss_cred_id_t client_creds = clientCreds_;
+  try {
+    threadManager->add(std::make_shared<FunctionRunner>([=] {
+      KerberosSASLHandshakeClient::cleanUpState(
+        context, target_name, client_creds);
+    }));
+  } catch (const TooManyPendingTasksException& e) {
+    // If we can't do this async, do it inline, since we don't want to leak
+    // memory.
+    KerberosSASLHandshakeClient::cleanUpState(
+      context, target_name, client_creds);
+  }
+}
+
+void KerberosSASLHandshakeClient::cleanUpState(
+    gss_ctx_id_t context,
+    gss_name_t target_name,
+    gss_cred_id_t client_creds) {
   OM_uint32 min_stat;
-  if (context_ != GSS_C_NO_CONTEXT) {
-    gss_delete_sec_context(&min_stat, &context_, GSS_C_NO_BUFFER);
+  if (context != GSS_C_NO_CONTEXT) {
+    gss_delete_sec_context(&min_stat, &context, GSS_C_NO_BUFFER);
   }
-  if (targetName_ != GSS_C_NO_NAME) {
-    gss_release_name(&min_stat, &targetName_);
+  if (target_name != GSS_C_NO_NAME) {
+    gss_release_name(&min_stat, &target_name);
   }
-  if (clientCreds_ != GSS_C_NO_CREDENTIAL) {
-    gss_release_cred(&min_stat, &clientCreds_);
+  if (client_creds != GSS_C_NO_CREDENTIAL) {
+    gss_release_cred(&min_stat, &client_creds);
   }
 }
 

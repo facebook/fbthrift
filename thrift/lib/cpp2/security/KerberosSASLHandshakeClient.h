@@ -94,6 +94,11 @@ class KerberosSASLHandshakeClient {
       return manager;
     }
 
+    static void cleanUpState(
+      gss_ctx_id_t context,
+      gss_name_t target_name,
+      gss_cred_id_t client_creds);
+
   private:
     uint32_t securityLayerBitmask_;
     std::unique_ptr<folly::IOBuf> securityLayerBitmaskBuffer_;

@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #ifndef THRIFT_GSSSASLCLIENT_H_
@@ -34,36 +31,6 @@ class TEventBase;
 }}}
 
 namespace apache { namespace thrift {
-
-class SaslThreadManager {
- public:
-  SaslThreadManager() {
-    threadManager_ = concurrency::ThreadManager::newSimpleThreadManager(
-      256, /* count */
-      0, /* pendingTaskCountMax */
-      false, /* enableTaskStats */
-      1<<10 /* maxQueueLen */);
-
-    threadManager_->threadFactory(
-      std::make_shared<concurrency::PosixThreadFactory>(
-      concurrency::PosixThreadFactory::kDefaultPolicy,
-      concurrency::PosixThreadFactory::kDefaultPriority,
-      2 // 2MB stack size, necessary for allowing pthread creation in hphp.
-    ));
-    threadManager_->start();
-  }
-
-  ~SaslThreadManager() {
-    threadManager_->stop();
-  }
-
-  std::shared_ptr<concurrency::ThreadManager> getThreadManager() {
-    return threadManager_;
-  }
-
- private:
-  std::shared_ptr<concurrency::ThreadManager> threadManager_;
-};
 
 /**
  * Client responsible for the GSS SASL handshake.
@@ -101,11 +68,6 @@ public:
       std::to_string((int)clientHandshake_->getPhase()) +
       " " + str;
     errorString_ = folly::make_unique<std::string>(err);
-  }
-
-  static std::shared_ptr<concurrency::ThreadManager> getThreadManager() {
-    static SaslThreadManager manager;
-    return manager.getThreadManager();
   }
 
 private:
