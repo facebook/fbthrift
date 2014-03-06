@@ -10,8 +10,10 @@ Building
 
 For your convenience, a build script is provided for ubuntu 12.10 64-bit:
 
+```sh
 cd fbthrift/thrift
 ./deps.sh
+```
 
 It will automatically pull down folly and build it, and then configure and build thrift.
 
