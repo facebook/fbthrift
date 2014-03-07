@@ -45,7 +45,9 @@ class Krb5CredentialsCacheManager {
   virtual ~Krb5CredentialsCacheManager();
 
   /**
-   * Wait for a credentials cache object to become available.
+   * Wait for a credentials cache object to become available. Will throw
+   * runtime_exception if the cache is not available because of an internal
+   * error.
    */
   std::shared_ptr<Krb5CCache> waitForCache();
 
@@ -101,7 +103,15 @@ class Krb5CredentialsCacheManager {
    */
   void writeOutCache(size_t limit);
 
+  /**
+   * Import the new cache.
+   */
   void importMemoryCache(std::shared_ptr<Krb5CCache> cache);
+
+  /**
+   * Notify that some sort of error happened in the renewal thread.
+   */
+  void notifyOfError(const std::string& error);
 
   /**
    * Do tgs request and store the ticket in provided ccache.
@@ -140,6 +150,8 @@ class Krb5CredentialsCacheManager {
   Mutex ccLock_; // A lock for ccMemory_
   std::shared_ptr<Krb5CCache> ccMemory_;
   std::condition_variable ccMemoryCondVar_;
+  // Error string, also locked by ccLock_.
+  std::string ccMemoryFetchError_;
 
   // Members for controlling the manager thread
   std::thread manageThread_;

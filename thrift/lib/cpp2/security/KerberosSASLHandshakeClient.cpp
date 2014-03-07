@@ -231,7 +231,13 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
   }
 
   // Attempt to acquire client credentials.
-  cc_ = getCredentialsCacheManager().waitForCache();
+  try {
+    cc_ = getCredentialsCacheManager().waitForCache();
+  } catch (const std::runtime_error& e) {
+    throw TKerberosException(
+      string("Kerberos ccache init error: ") + e.what());
+  }
+
   getCredentialsCacheManager().incUsedService(princ_name);
 
   maj_stat = gss_krb5_import_cred(

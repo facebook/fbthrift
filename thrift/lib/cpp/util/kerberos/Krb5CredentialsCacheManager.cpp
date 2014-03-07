@@ -139,12 +139,21 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
         writeOutCache(
           Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE);
       } catch (const std::runtime_error& e) {
+        // Notify the waitForCache functions that an error happened.
+        // We should propagate this error up.
+        notifyOfError(e.what());
         LOG(ERROR) << "Failure in credential cache thread: " << e.what();
       }
 
       if (!stopManageThread_) {
-        manageThreadCondVar_.wait_for(l, std::chrono::milliseconds(
-          Krb5CredentialsCacheManager::MANAGE_THREAD_SLEEP_PERIOD));
+        int wait_time =
+          Krb5CredentialsCacheManager::MANAGE_THREAD_SLEEP_PERIOD;
+        if (getCache() == nullptr) {
+          // Shorten loop time to 1 second if first iteration didn't initialize
+          // the cache successfully
+          wait_time = 1000;
+        }
+        manageThreadCondVar_.wait_for(l, std::chrono::milliseconds(wait_time));
       }
     }
   });
@@ -324,10 +333,23 @@ void Krb5CredentialsCacheManager::importMemoryCache(
   ccMemoryCondVar_.notify_all();
 }
 
+void Krb5CredentialsCacheManager::notifyOfError(const std::string& error) {
+  MutexGuard guard(ccLock_);
+  ccMemoryFetchError_ = error;
+  ccMemoryCondVar_.notify_all();
+}
+
 std::shared_ptr<Krb5CCache> Krb5CredentialsCacheManager::waitForCache() {
   MutexGuard guard(ccLock_);
-  while (ccMemory_ == nullptr) {
+  // If the manager still hasn't fully initialized, we force this to block
+  while (ccMemory_ == nullptr && ccMemoryFetchError_.empty()) {
     ccMemoryCondVar_.wait(guard);
+  }
+  // If the thread manager has been through the initialization thread loop
+  // at least once, and ccMemory_ is still null, then throw an error. It means
+  // there was some sort of failure and we need to report it up.
+  if (ccMemory_ == nullptr) {
+    throw std::runtime_error(ccMemoryFetchError_);
   }
   return ccMemory_;
 }
