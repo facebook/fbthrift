@@ -27,7 +27,14 @@
 #include <memory>
 #include <string>
 
+/**
+ * Some platforms have a com_err.h that doesn't guard itself
+ * with C linkage.  Since krb5.h includes com_err.h, we need to
+ * enclose it with C linkage here.
+ */
+extern "C" {
 #include <krb5.h>
+}
 
 #include "folly/Conv.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h"
