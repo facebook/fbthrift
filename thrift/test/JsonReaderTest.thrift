@@ -24,3 +24,11 @@ struct StructContainingOptionalList {
 struct StructContainingRequiredList {
   1 : required list<i32> data;
 }
+
+typedef i64 int64
+struct JsonTypedefs {
+ 1: map<int64, int64> x,
+ 2: list<int64> y,
+ 3: set<int64> z,
+ 4: int64 w,
+}

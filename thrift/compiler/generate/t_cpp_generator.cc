@@ -2408,7 +2408,7 @@ void t_cpp_generator::generate_json_container(ofstream& out,
     scope_down(out);
 
   } else if (ttype->is_map()) {
-    t_type* key_type = ((t_map*)ttype)->get_key_type();
+    t_type* key_type = get_true_type(((t_map*)ttype)->get_key_type());
     if (!(key_type->is_base_type() || key_type->is_enum())) {
       return;
     }
@@ -2466,7 +2466,7 @@ void t_cpp_generator::generate_json_map_element(ofstream& out,
   string _val = tmp("_val");
   t_field kval(tmap->get_key_type(), _key);
   t_field fval(tmap->get_val_type(), _val);
-  t_type* key_type = tmap->get_key_type();
+  t_type* key_type = get_true_type(tmap->get_key_type());
   out << indent() << declare_field(&kval) << ";" << endl;
   out << indent() << declare_field(&fval) << ";" << endl;
   if (key_type->is_string()) {
