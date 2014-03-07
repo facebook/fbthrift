@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #include <python/Python.h>
@@ -234,11 +231,12 @@ parse_set_list_args(SetListTypeArgs* dest, PyObject* typeargs) {
     return false;
   }
 
-  dest->element_type = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 0));
-  if (INT_CONV_ERROR_OCCURRED(dest->element_type)) {
+  long element_type = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 0));
+  if (INT_CONV_ERROR_OCCURRED(element_type)) {
     return false;
   }
 
+  dest->element_type = element_type;
   dest->typeargs = PyTuple_GET_ITEM(typeargs, 1);
 
   return true;
@@ -251,16 +249,18 @@ parse_map_args(MapTypeArgs* dest, PyObject* typeargs) {
     return false;
   }
 
-  dest->ktag = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 0));
-  if (INT_CONV_ERROR_OCCURRED(dest->ktag)) {
+  long ktag = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 0));
+  if (INT_CONV_ERROR_OCCURRED(ktag)) {
     return false;
   }
 
-  dest->vtag = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 2));
-  if (INT_CONV_ERROR_OCCURRED(dest->vtag)) {
+  long vtag = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 2));
+  if (INT_CONV_ERROR_OCCURRED(vtag)) {
     return false;
   }
 
+  dest->ktag = ktag;
+  dest->vtag = vtag;
   dest->ktypeargs = PyTuple_GET_ITEM(typeargs, 1);
   dest->vtypeargs = PyTuple_GET_ITEM(typeargs, 3);
 
@@ -282,27 +282,29 @@ parse_struct_args(StructTypeArgs* dest, PyObject* typeargs) {
 
 static int
 parse_struct_item_spec(StructItemSpec* dest, PyObject* spec_tuple) {
-
   // i'd like to use ParseArgs here, but it seems to be a bottleneck.
   if (PyTuple_Size(spec_tuple) != 6) {
     PyErr_SetString(PyExc_TypeError, "expecting 6 arguments for spec tuple");
     return false;
   }
 
-  dest->tag = PyInt_AsLong(PyTuple_GET_ITEM(spec_tuple, 0));
-  if (INT_CONV_ERROR_OCCURRED(dest->tag)) {
+  long tag = PyInt_AsLong(PyTuple_GET_ITEM(spec_tuple, 0));
+  if (INT_CONV_ERROR_OCCURRED(tag)) {
     return false;
   }
 
-  dest->type = PyInt_AsLong(PyTuple_GET_ITEM(spec_tuple, 1));
-  if (INT_CONV_ERROR_OCCURRED(dest->type)) {
+  long type = PyInt_AsLong(PyTuple_GET_ITEM(spec_tuple, 1));
+  if (INT_CONV_ERROR_OCCURRED(type)) {
     return false;
   }
 
+  dest->tag = tag;
+  dest->type = type;
   dest->attrname = PyTuple_GET_ITEM(spec_tuple, 2);
   dest->typeargs = PyTuple_GET_ITEM(spec_tuple, 3);
   dest->defval = PyTuple_GET_ITEM(spec_tuple, 4);
   // Arg #5 is the 'required' field, which is ignored when serializing.
+
   return true;
 }
 
@@ -852,7 +854,7 @@ static float readFloat(DecodeBuffer* input) {
 
 static bool
 checkTypeByte(DecodeBuffer* input, TType expected) {
-  TType got = readByte(input);
+  int8_t got = readByte(input);
   if (INT_CONV_ERROR_OCCURRED(got)) {
     return false;
   }
@@ -897,7 +899,7 @@ skip(DecodeBuffer* input, TType type) {
 
   case T_LIST:
   case T_SET: {
-    TType etype;
+    int8_t etype;
     int len, i;
 
     etype = readByte(input);
@@ -919,7 +921,7 @@ skip(DecodeBuffer* input, TType type) {
   }
 
   case T_MAP: {
-    TType ktype, vtype;
+    int8_t ktype, vtype;
     int len, i;
 
     ktype = readByte(input);
@@ -947,15 +949,16 @@ skip(DecodeBuffer* input, TType type) {
 
   case T_STRUCT: {
     while (true) {
-      TType type;
+      int8_t type;
 
       type = readByte(input);
       if (type == -1) {
         return false;
       }
 
-      if (type == T_STOP)
+      if (type == T_STOP) {
         break;
+      }
 
       SKIPBYTES(2); // tag
       if (!skip(input, type)) {
@@ -973,7 +976,6 @@ skip(DecodeBuffer* input, TType type) {
   default:
     PyErr_SetString(PyExc_TypeError, "Unexpected TType");
     return false;
-
   }
 
   return true;
@@ -995,7 +997,7 @@ decode_struct(DecodeBuffer* input, PyObject* output, PyObject* spec_seq) {
   }
 
   while (true) {
-    TType type;
+    int8_t type;
     int16_t tag;
     PyObject* item_spec;
     PyObject* fieldval = NULL;
