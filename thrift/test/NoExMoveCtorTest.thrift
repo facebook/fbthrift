@@ -11,6 +11,7 @@ struct Simple {
   6: list<float> f,
   7: map<i32, string> g,
   8: map<string, string> h,
+  9: optional bool i,
 } (cpp.noexcept_move_ctor, not.used.key = "not.used.value")
 
 

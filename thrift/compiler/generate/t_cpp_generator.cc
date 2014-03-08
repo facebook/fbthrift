@@ -1747,6 +1747,8 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
       break;
     }
   }
+  const bool should_generate_isset =
+    has_nonrequired_fields && (!pointers || read);
 
   if (!pointers) {
     // Default constructor
@@ -1833,6 +1835,10 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
                     << "{std::move(other." << (*m_iter)->get_name() << ")}";
         prefix[2] = ',';
       }
+      if (should_generate_isset) {
+        out << endl;
+        indent(out) << prefix << "__isset(other.__isset)";
+      }
       out << " {" << endl;
       indent(out) << "}" << endl;
     }
@@ -1861,7 +1867,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
         throw "UNKNOWN TYPE for member: " + name;
       }
     }
-    if (has_nonrequired_fields && (!pointers || read)) {
+    if (should_generate_isset) {
       indent(out) << "__isset.__clear();" << endl;
     }
     indent_down();
@@ -1882,7 +1888,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
                     !read) << endl;
   }
 
-  if (has_nonrequired_fields && (!pointers || read)) {
+  if (should_generate_isset) {
     generate_struct_isset(out, members);
   }
 

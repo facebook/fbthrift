@@ -2525,7 +2525,7 @@ class CppGenerator(t_generator.Generator):
                 out(default)
 
     def _generate_struct_complete(self, s, obj, is_exception,
-                                    pointers, read, write, swap,
+                                  pointers, read, write, swap,
                                   result, has_isset=True):
         for a,b,c in self.protocols:
             if not self.flag_compatibility:
@@ -2605,6 +2605,8 @@ class CppGenerator(t_generator.Generator):
         members = filter(self._should_generate_field, obj.members)
         has_nonrequired_fields = any(member.req != e_req.required
                                         for member in members)
+        should_generate_isset = has_nonrequired_fields and \
+            ((not pointers) or read) and not obj.is_union
         struct_options = self._get_serialized_fields_options(obj)
 
         # Type enum for unions
@@ -2658,6 +2660,8 @@ class CppGenerator(t_generator.Generator):
                     for member in members:
                         i[member.name] = 'std::move(other.{name})'.format(
                             name=member.name)
+                    if should_generate_isset:
+                        i['__isset'] = 'other.__isset'
                     c = struct.defn('{name}({name}&& other)',
                                     name=obj.name,
                                     in_header=True,
@@ -2705,7 +2709,7 @@ class CppGenerator(t_generator.Generator):
                             else:
                                 raise TypeError('Unknown type for member:' +
                                                 member.name)
-                        if has_nonrequired_fields:
+                        if should_generate_isset:
                             out('__isset.__clear();')
                         if struct_options.has_serialized_fields:
                             out('{0}.reset();'.format(
@@ -2735,8 +2739,7 @@ class CppGenerator(t_generator.Generator):
             struct.sameLine(';')
 
         # Isset struct has boolean fields, but only for non-required fields
-        if has_nonrequired_fields and \
-                ((not pointers) or read) and not obj.is_union:
+        if should_generate_isset:
             struct()
             with struct.cls('struct __isset', epilogue=' __isset;') as ist:
                 with ist.defn('__isset()', in_header=True):
@@ -2746,11 +2749,10 @@ class CppGenerator(t_generator.Generator):
                         if member.req != e_req.required:
                             out("{0} = false;".format(member.name))
                 # Declare boolean fields
-                if has_nonrequired_fields:
-                    ist()
-                    for member in members:
-                        if member.req != e_req.required:
-                            ist('bool {0};'.format(member.name))
+                ist()
+                for member in members:
+                    if member.req != e_req.required:
+                        ist('bool {0};'.format(member.name))
         if struct_options.has_serialized_fields:
             struct()
             struct('apache::thrift::ProtocolType {0};'.format(
