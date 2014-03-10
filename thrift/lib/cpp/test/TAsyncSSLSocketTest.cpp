@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #include "thrift/lib/cpp/test/TAsyncSSLSocketTest.h"
 
 #include <signal.h>
@@ -673,6 +671,134 @@ BOOST_AUTO_TEST_CASE(SSLServerCacheCloseTest) {
   BOOST_CHECK_EQUAL(client->getHit(), 0);
 
   cerr << "SSLServerCacheCloseTest test completed" << endl;
+}
+
+/**
+ * Verify sucessful behavior of SSL certificate validation.
+ */
+BOOST_AUTO_TEST_CASE(SSLHandshakeValidationSuccess) {
+  TEventBase eventBase;
+  auto clientCtx = std::make_shared<SSLContext>();
+  auto dfServerCtx = std::make_shared<SSLContext>();
+
+  int fds[2];
+  getfds(fds);
+  getctx(clientCtx, dfServerCtx);
+
+  TAsyncSSLSocket::UniquePtr clientSock(
+    new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
+  TAsyncSSLSocket::UniquePtr serverSock(
+    new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
+
+  SSLHandshakeClient client(std::move(clientSock), true, true, true);
+  clientCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
+
+  SSLHandshakeServer server(std::move(serverSock), true, true, true);
+
+  eventBase.loop();
+
+  BOOST_CHECK(client.handshakeVerify_);
+  BOOST_CHECK(client.handshakeSuccess_);
+  BOOST_CHECK(!client.handshakeError_);
+  BOOST_CHECK(!server.handshakeVerify_);
+  BOOST_CHECK(server.handshakeSuccess_);
+  BOOST_CHECK(!server.handshakeError_);
+}
+
+/**
+ * Verify that the client's verification callback is able to fail SSL
+ * connection establishment.
+ */
+BOOST_AUTO_TEST_CASE(SSLHandshakeValidationFailure) {
+  TEventBase eventBase;
+  auto clientCtx = std::make_shared<SSLContext>();
+  auto dfServerCtx = std::make_shared<SSLContext>();
+
+  int fds[2];
+  getfds(fds);
+  getctx(clientCtx, dfServerCtx);
+
+  TAsyncSSLSocket::UniquePtr clientSock(
+    new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
+  TAsyncSSLSocket::UniquePtr serverSock(
+    new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
+
+  SSLHandshakeClient client(std::move(clientSock), true, true, false);
+  clientCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
+
+  SSLHandshakeServer server(std::move(serverSock), true, true, true);
+
+  eventBase.loop();
+
+  BOOST_CHECK(client.handshakeVerify_);
+  BOOST_CHECK(!client.handshakeSuccess_);
+  BOOST_CHECK(client.handshakeError_);
+  BOOST_CHECK(!server.handshakeVerify_);
+  BOOST_CHECK(!server.handshakeSuccess_);
+  BOOST_CHECK(server.handshakeError_);
+}
+
+/**
+ * Verify that the client's verification callback is able to override
+ * the preverification failure and allow a successful connection.
+ */
+BOOST_AUTO_TEST_CASE(SSLHandshakeValidationOverride) {
+  TEventBase eventBase;
+  auto clientCtx = std::make_shared<SSLContext>();
+  auto dfServerCtx = std::make_shared<SSLContext>();
+
+  int fds[2];
+  getfds(fds);
+  getctx(clientCtx, dfServerCtx);
+
+  TAsyncSSLSocket::UniquePtr clientSock(
+    new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
+  TAsyncSSLSocket::UniquePtr serverSock(
+    new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
+
+  SSLHandshakeClient client(std::move(clientSock), true, false, true);
+  SSLHandshakeServer server(std::move(serverSock), true, true, true);
+
+  eventBase.loop();
+
+  BOOST_CHECK(client.handshakeVerify_);
+  BOOST_CHECK(client.handshakeSuccess_);
+  BOOST_CHECK(!client.handshakeError_);
+  BOOST_CHECK(!server.handshakeVerify_);
+  BOOST_CHECK(server.handshakeSuccess_);
+  BOOST_CHECK(!server.handshakeError_);
+}
+
+/**
+ * Verify that specifying that no validation should be performed allows an
+ * otherwise-invalid certificate to be accepted and doesn't fire the validation
+ * callback.
+ */
+BOOST_AUTO_TEST_CASE(SSLHandshakeValidationSkip) {
+  TEventBase eventBase;
+  auto clientCtx = std::make_shared<SSLContext>();
+  auto dfServerCtx = std::make_shared<SSLContext>();
+
+  int fds[2];
+  getfds(fds);
+  getctx(clientCtx, dfServerCtx);
+
+  TAsyncSSLSocket::UniquePtr clientSock(
+    new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
+  TAsyncSSLSocket::UniquePtr serverSock(
+    new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
+
+  SSLHandshakeClient client(std::move(clientSock), false, false, false);
+  SSLHandshakeServer server(std::move(serverSock), false, false, false);
+
+  eventBase.loop();
+
+  BOOST_CHECK(!client.handshakeVerify_);
+  BOOST_CHECK(client.handshakeSuccess_);
+  BOOST_CHECK(!client.handshakeError_);
+  BOOST_CHECK(!server.handshakeVerify_);
+  BOOST_CHECK(server.handshakeSuccess_);
+  BOOST_CHECK(!server.handshakeError_);
 }
 
 ///////////////////////////////////////////////////////////////////////////

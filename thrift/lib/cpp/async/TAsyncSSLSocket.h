@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #ifndef THRIFT_ASYNC_TASYNCSSLSOCKET_H_
 #define THRIFT_ASYNC_TASYNCSSLSOCKET_H_ 1
 
@@ -77,6 +75,26 @@ class TAsyncSSLSocket : public TAsyncSocket {
   class HandshakeCallback {
    public:
     virtual ~HandshakeCallback() {}
+
+    /**
+     * handshakeVerify() is invoked during handshaking to give the
+     * application chance to validate it's peer's certificate.
+     *
+     * Note that OpenSSL performs only rudimentary internal
+     * consistency verification checks by itself. Any other validation
+     * like whether or not the certificate was issued by a trusted CA.
+     * The default implementation of this callback mimics what what
+     * OpenSSL does internally if SSL_VERIFY_PEER is set with no
+     * verification callback.
+     *
+     * See the passages on verify_callback in SSL_CTX_set_verify(3)
+     * for more details.
+     */
+    virtual bool handshakeVerify(TAsyncSSLSocket* sock,
+                                 bool preverifyOk,
+                                 X509_STORE_CTX* ctx) noexcept {
+      return preverifyOk;
+    }
 
     /**
      * handshakeSuccess() is called when a new SSL connection is
@@ -255,8 +273,12 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * @param callback callback object to invoke on success/failure
    * @param timeout timeout for this function in milliseconds, or 0 for no
    *                timeout
+   * @param verifyPeer whether or not to verify the peer's certificate; sets
+   *                   SSL_VERIFY_PEER and invokes
+   *                   HandshakeCallback::handshakeVerify()
    */
-  void sslAccept(HandshakeCallback* callback, uint32_t timeout = 0);
+  void sslAccept(HandshakeCallback* callback, uint32_t timeout = 0,
+                 bool verifyPeer = false);
 
   /**
    * Invoke SSL accept following an asynchronous session cache lookup
@@ -285,8 +307,13 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * @param callback callback object to invoke on success/failure
    * @param timeout timeout for this function in milliseconds, or 0 for no
    *                timeout
+   * @param verifyPeer whether or not to verify the peer's certificate; sets
+   *                   SSL_VERIFY_PEER and invokes
+   *                   HandshakeCallback::handshakeVerify()
    */
-  void sslConnect(HandshakeCallback *callback, uint64_t timeout = 0);
+  void sslConnect(HandshakeCallback *callback,
+                  uint64_t timeout = 0,
+                  bool verifyPeer = false);
 
   enum SSLStateEnum {
     STATE_UNINIT,
@@ -576,6 +603,10 @@ class TAsyncSSLSocket : public TAsyncSocket {
   std::shared_ptr<transport::SSLContext> handshakeCtx_;
   std::string tlsextHostname_;
 #endif
+  bool verifyPeer_{false};
+
+  // Callback for SSL_CTX_set_verify()
+  static int sslVerifyCallback(int preverifyOk, X509_STORE_CTX* ctx);
 };
 
 }}} // apache::thrift::async

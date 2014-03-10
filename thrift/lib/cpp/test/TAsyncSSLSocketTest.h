@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #pragma once
 
 #include <signal.h>
@@ -564,8 +562,8 @@ TestSSLServer::TestSSLServer(
     acb_(acb),
     socket_(new apache::thrift::async::TAsyncSSLServerSocket(ctx_, &evb_)) {
   // Set up the SSL context
-  ctx_->loadCertificate("thrift/lib/cpp/test/STAR.newdev.facebook.com.crt");
-  ctx_->loadPrivateKey("thrift/lib/cpp/test/STAR.newdev.facebook.com.key");
+  ctx_->loadCertificate("thrift/lib/cpp/test/ssl/tests-cert.pem");
+  ctx_->loadPrivateKey("thrift/lib/cpp/test/ssl/tests-key.pem");
   ctx_->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
 
   //set up the listening socket
@@ -663,9 +661,9 @@ void getctx(
 
   serverCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
   serverCtx->loadCertificate(
-      "thrift/lib/cpp/test/STAR.newdev.facebook.com.crt");
+      "thrift/lib/cpp/test/ssl/tests-cert.pem");
   serverCtx->loadPrivateKey(
-      "thrift/lib/cpp/test/STAR.newdev.facebook.com.key");
+      "thrift/lib/cpp/test/ssl/tests-key.pem");
 }
 
 void sslsocketpair(
@@ -1139,6 +1137,90 @@ class SSLClient : public apache::thrift::async::TAsyncSocket::ConnectCallback,
     }
   }
 
+};
+
+class SSLHandshakeBase :
+  public apache::thrift::async::TAsyncSSLSocket::HandshakeCallback,
+  private apache::thrift::async::TAsyncTransport::WriteCallback {
+ public:
+  explicit SSLHandshakeBase(
+   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
+   bool preverifyResult,
+   bool verifyResult) :
+    socket_(std::move(socket)),
+    preverifyResult_(preverifyResult),
+    verifyResult_(verifyResult),
+    handshakeVerify_(false),
+    handshakeSuccess_(false),
+    handshakeError_(false) {
+  }
+
+  bool handshakeVerify_;
+  bool handshakeSuccess_;
+  bool handshakeError_;
+
+ protected:
+  apache::thrift::async::TAsyncSSLSocket::UniquePtr socket_;
+  bool preverifyResult_;
+  bool verifyResult_;
+
+  // HandshakeCallback
+  bool handshakeVerify(
+   apache::thrift::async::TAsyncSSLSocket* sock,
+   bool preverifyOk,
+   X509_STORE_CTX* ctx) noexcept {
+    handshakeVerify_ = true;
+
+    BOOST_CHECK_EQUAL(preverifyOk, preverifyResult_);
+    return verifyResult_;
+  }
+
+  void handshakeSuccess(
+   apache::thrift::async::TAsyncSSLSocket*) noexcept {
+    handshakeSuccess_ = true;
+  }
+
+  void handshakeError(
+   apache::thrift::async::TAsyncSSLSocket*,
+   const apache::thrift::transport::TTransportException& ex) noexcept {
+    handshakeError_ = true;
+  }
+
+  // WriteCallback
+  void writeSuccess() noexcept {
+    socket_->close();
+  }
+
+  void writeError(
+   size_t bytesWritten,
+   const apache::thrift::transport::TTransportException& ex) noexcept {
+    BOOST_ERROR("client write error after " << bytesWritten << " bytes: " <<
+                ex.what());
+  }
+};
+
+class SSLHandshakeClient : public SSLHandshakeBase {
+ public:
+  SSLHandshakeClient(
+   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
+   bool verifyCertificate,
+   bool preverifyResult,
+   bool verifyResult) :
+    SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
+    socket_->sslConnect(this, 0, verifyCertificate);
+  }
+};
+
+class SSLHandshakeServer : public SSLHandshakeBase {
+ public:
+  SSLHandshakeServer(
+   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
+   bool verifyCertificate,
+   bool preverifyResult,
+   bool verifyResult) :
+    SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
+    socket_->sslAccept(this, 0, verifyCertificate);
+  }
 };
 
 class EventBaseAborter : public apache::thrift::async::TAsyncTimeout {
