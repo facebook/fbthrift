@@ -277,8 +277,8 @@ class TAsyncSSLSocket : public TAsyncSocket {
    *                   SSL_VERIFY_PEER and invokes
    *                   HandshakeCallback::handshakeVerify()
    */
-  void sslAccept(HandshakeCallback* callback, uint32_t timeout = 0,
-                 bool verifyPeer = false);
+  virtual void sslAccept(HandshakeCallback* callback, uint32_t timeout = 0,
+                         bool verifyPeer = false);
 
   /**
    * Invoke SSL accept following an asynchronous session cache lookup
@@ -311,9 +311,9 @@ class TAsyncSSLSocket : public TAsyncSocket {
    *                   SSL_VERIFY_PEER and invokes
    *                   HandshakeCallback::handshakeVerify()
    */
-  void sslConnect(HandshakeCallback *callback,
-                  uint64_t timeout = 0,
-                  bool verifyPeer = false);
+  virtual void sslConnect(HandshakeCallback *callback,
+                          uint64_t timeout = 0,
+                          bool verifyPeer = false);
 
   enum SSLStateEnum {
     STATE_UNINIT,
