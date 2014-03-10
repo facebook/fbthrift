@@ -48,7 +48,7 @@ class TEventBaseManager {
   }
 
   explicit TEventBaseManager(
-    const std::shared_ptr<apache::thrift::server::TServerObserver>& observer
+    const std::shared_ptr<apache::thrift::async::EventBaseObserver>& observer
   ) : observer_(observer) {}
 
   /**
@@ -159,7 +159,7 @@ class TEventBaseManager {
   // a mutex to use as a guard for the above set
   apache::thrift::concurrency::Mutex eventBaseSetMutex_;
 
-  std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
+  std::shared_ptr<apache::thrift::async::EventBaseObserver> observer_;
 };
 
 }}} // apache::thrift::async

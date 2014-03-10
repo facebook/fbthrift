@@ -48,6 +48,16 @@ typedef std::function<void()> Cob;
 template <typename MessageT>
 class TNotificationQueue;
 
+class EventBaseObserver {
+ public:
+  virtual ~EventBaseObserver() {}
+
+  virtual uint32_t getSampleRate() const = 0;
+
+  virtual void loopSample(
+    int64_t busyTime, int64_t idleTime) = 0;
+};
+
 /**
  * This class is a wrapper for all asynchronous I/O processing functionality
  * used in thrift.
@@ -394,12 +404,11 @@ class TEventBase : private boost::noncopyable, public TimeoutManager {
   };
 
   void setObserver(
-    const std::shared_ptr<apache::thrift::server::TServerObserver>& observer) {
+    const std::shared_ptr<EventBaseObserver>& observer) {
     observer_ = observer;
   }
 
-  const std::shared_ptr<
-      apache::thrift::server::TServerObserver>& getObserver() {
+  const std::shared_ptr<EventBaseObserver>& getObserver() {
     return observer_;
   }
 
@@ -535,7 +544,7 @@ class TEventBase : private boost::noncopyable, public TimeoutManager {
   uint64_t startWork_;
 
   // Observer to export counters
-  std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
+  std::shared_ptr<EventBaseObserver> observer_;
   uint32_t observerSampleCount_;
 
   // Name of the thread running this TEventBase

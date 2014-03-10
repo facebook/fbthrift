@@ -72,7 +72,12 @@ class Cpp2Worker :
     activeRequests_(0),
     pendingCount_(0),
     pendingTime_(std::chrono::steady_clock::now()) {
-    eventBase_.setObserver(server_->getObserver());
+    auto observer =
+      std::dynamic_pointer_cast<apache::thrift::async::EventBaseObserver>(
+      server_->getObserver());
+    if (observer) {
+      eventBase_.setObserver(observer);
+    }
   }
 
   /**

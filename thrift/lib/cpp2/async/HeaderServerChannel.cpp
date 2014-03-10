@@ -36,6 +36,7 @@ using apache::thrift::async::TEventBase;
 using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::TApplicationException;
+using apache::thrift::server::TServerObserver;
 
 namespace apache { namespace thrift {
 
@@ -510,7 +511,8 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     protectionState_ = ProtectionState::NONE;
     saslServerCallback_.cancelTimeout();
     saslServer_->markChannelCallbackUnavailable();
-    const auto& observer = getEventBase()->getObserver();
+    const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
+      getEventBase()->getObserver());
     if (observer) {
       observer->saslFallBack();
     }
@@ -535,7 +537,8 @@ void HeaderServerChannel::SaslServerCallback::saslSendClient(
 void HeaderServerChannel::SaslServerCallback::saslError(
     std::exception_ptr&& ex) {
   apache::thrift::async::HHWheelTimer::Callback::cancelTimeout();
-  const auto& observer = channel_.getEventBase()->getObserver();
+  const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
+    channel_.getEventBase()->getObserver());
 
   try {
     // Fall back to insecure.  This will throw an exception if the
@@ -580,7 +583,9 @@ void HeaderServerChannel::SaslServerCallback::saslError(
 }
 
 void HeaderServerChannel::SaslServerCallback::saslComplete() {
-  const auto& observer = channel_.getEventBase()->getObserver();
+  const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
+    channel_.getEventBase()->getObserver());
+
   if (observer) {
     observer->saslComplete();
   }

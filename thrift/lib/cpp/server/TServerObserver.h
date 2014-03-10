@@ -85,9 +85,6 @@ class TServerObserver {
     return sampleRate_;
   }
 
-  virtual void loopSample(
-    int64_t busyTime, int64_t idleTime) = 0;
-
  protected:
   uint32_t sampleRate_;
 };
