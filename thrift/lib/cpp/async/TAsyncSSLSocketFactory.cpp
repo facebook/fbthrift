@@ -26,7 +26,8 @@ namespace apache { namespace thrift { namespace async {
 TAsyncSSLSocketFactory::TAsyncSSLSocketFactory(TEventBase* eventBase) :
   TAsyncSocketFactory(eventBase),
   eventBase_(eventBase),
-  context_() {
+  context_(),
+  serverMode_(false) {
 }
 
 TAsyncSSLSocketFactory::~TAsyncSSLSocketFactory() {
@@ -36,8 +37,20 @@ void TAsyncSSLSocketFactory::setSSLContext(SSLContextPtr& ctx) {
   context_ = ctx;
 }
 
+void TAsyncSSLSocketFactory::setServerMode(bool serverMode) {
+  serverMode_ = serverMode;
+}
+
 TAsyncSocket::UniquePtr TAsyncSSLSocketFactory::make() const {
+  if (serverMode_) {
+    throw std::logic_error("cannot create unconnected server socket");
+  }
+
   return TAsyncSocket::UniquePtr(new TAsyncSSLSocket(context_, eventBase_));
+}
+
+TAsyncSocket::UniquePtr TAsyncSSLSocketFactory::make(int fd) const {
+  return TAsyncSocket::UniquePtr(new TAsyncSSLSocket(context_, eventBase_, fd, serverMode_));
 }
 
 }}}

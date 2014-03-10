@@ -22,6 +22,9 @@
 
 namespace apache { namespace thrift { namespace async {
 
+/**
+ * Factory class for producing TAsyncSSLSocket instances.
+ */
 class TAsyncSSLSocketFactory :
  public TAsyncSocketFactory {
  public:
@@ -33,12 +36,21 @@ class TAsyncSSLSocketFactory :
    */
   void setSSLContext(transport::SSLContextPtr& context);
 
+  /**
+   * Set whether or not we're constructing client or server sockets.
+   *
+   * By default, client sockets are created.
+   */
+  void setServerMode(bool serverMode);
+
   // TAsyncSocketFactory
   virtual TAsyncSocket::UniquePtr make() const override;
+  virtual TAsyncSocket::UniquePtr make(int fd) const override;
 
  protected:
   TEventBase* eventBase_;
   transport::SSLContextPtr context_;
+  bool serverMode_;
 };
 
 }}}

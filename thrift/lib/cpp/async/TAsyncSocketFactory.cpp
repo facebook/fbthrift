@@ -31,4 +31,8 @@ TAsyncSocket::UniquePtr TAsyncSocketFactory::make() const {
   return TAsyncSocket::UniquePtr(new TAsyncSocket(eventBase_));
 }
 
+TAsyncSocket::UniquePtr TAsyncSocketFactory::make(int fd) const {
+  return TAsyncSocket::UniquePtr(new TAsyncSocket(eventBase_, fd));
+}
+
 }}}

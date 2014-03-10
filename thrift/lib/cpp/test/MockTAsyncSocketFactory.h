@@ -34,12 +34,18 @@ class MockTAsyncSocketFactory : public async::TAsyncSocketFactory {
   explicit MockTAsyncSocketFactory(async::TEventBase* base) :
    async::TAsyncSocketFactory(base) {
   }
-  async::TAsyncSocket::UniquePtr make() const {
+
+  async::TAsyncSocket::UniquePtr make() const override {
     return async::TAsyncSocket::UniquePtr(make_mocked());
+  }
+
+  async::TAsyncSocket::UniquePtr make(int fd) const override {
+    return async::TAsyncSocket::UniquePtr(make_mocked(fd));
   }
 
   // GMock can't handle non-copy-constructable types
   MOCK_CONST_METHOD0(make_mocked, async::TAsyncSocket*());
+  MOCK_CONST_METHOD1(make_mocked, async::TAsyncSocket*(int));
 };
 
 }}}

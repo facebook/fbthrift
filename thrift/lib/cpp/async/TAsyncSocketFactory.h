@@ -33,7 +33,16 @@ class TAsyncSocketFactory {
  public:
   explicit TAsyncSocketFactory(TEventBase* eventBase);
   virtual ~TAsyncSocketFactory();
+
+  /**
+   * Construct a new, unconnected socket.
+   */
   virtual TAsyncSocket::UniquePtr make() const;
+
+  /**
+   * Construct a new socket based on the given connected file descriptor.
+   */
+  virtual TAsyncSocket::UniquePtr make(int fd) const;
 
  protected:
   TEventBase* eventBase_;
