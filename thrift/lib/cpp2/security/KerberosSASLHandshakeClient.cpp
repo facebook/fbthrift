@@ -77,12 +77,18 @@ KerberosSASLHandshakeClient::KerberosSASLHandshakeClient() : phase_(INIT) {
 }
 
 KerberosSASLHandshakeClient::~KerberosSASLHandshakeClient() {
-  auto threadManager = SaslThreadManager::getThreadManager();
   // Copy locally since 'this' may not exist when the async function runs
   gss_ctx_id_t context = context_;
   gss_name_t target_name = targetName_;
   gss_cred_id_t client_creds = clientCreds_;
+  // Check if we actually need to clean up.
+  if (context == GSS_C_NO_CONTEXT &&
+      target_name == GSS_C_NO_NAME &&
+      client_creds == GSS_C_NO_CREDENTIAL) {
+    return;
+  }
   try {
+    auto threadManager = SaslThreadManager::getThreadManager();
     threadManager->add(std::make_shared<FunctionRunner>([=] {
       KerberosSASLHandshakeClient::cleanUpState(
         context, target_name, client_creds);
