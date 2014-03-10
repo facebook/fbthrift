@@ -37,6 +37,7 @@
 #include <list>
 #include <map>
 #include <unordered_map>
+#include <memory>
 #include <set>
 #include <string>
 #include <typeinfo>
@@ -325,6 +326,11 @@ inline void reallyClear(ThriftContainer& container) {
 template <typename T>
 inline void merge(const T& from, T& to) {
   to = from;
+}
+
+template <typename T>
+inline void merge(const std::unique_ptr<T>& from, std::unique_ptr<T>& to) {
+  throw TLibraryException("unique_ptr merge not implemented");
 }
 
 template <typename T>
