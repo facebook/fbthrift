@@ -97,6 +97,7 @@ ThriftServer::ThriftServer() :
   minCompressBytes_(0),
   isOverloaded_([]() { return false; }),
   queueSends_(true),
+  enableCodel_(false),
   stopWorkersOnStopListening_(true) {
 
   if (FLAGS_sasl_policy == "required") {
@@ -232,9 +233,22 @@ void ThriftServer::setup() {
         threadManager(PriorityThreadManager::newPriorityThreadManager(
                         nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_,
                         true /*stats*/));
+      threadManager->enableCodel(getEnableCodel());
       threadManager->start();
       setThreadManager(threadManager);
     }
+    threadManager_->setExpireCallback([&](std::shared_ptr<Runnable> r) {
+        EventTask* task = dynamic_cast<EventTask*>(r.get());
+        if (task) {
+          task->expired();
+        }
+    });
+    threadManager_->setCodelCallback([&](std::shared_ptr<Runnable> r) {
+        auto observer = getObserver();
+        if (observer) {
+          observer->queueTimeout();
+        }
+    });
 
     auto b = std::make_shared<boost::barrier>(nWorkers_ + 1);
 

@@ -27,6 +27,11 @@
 #include <unistd.h>
 #include "thrift/lib/cpp/concurrency/Monitor.h"
 #include "thrift/lib/cpp/concurrency/Thread.h"
+#include <chrono>
+
+#include <gflags/gflags.h>
+
+DECLARE_bool(codel_enabled);
 
 namespace apache { namespace thrift { namespace concurrency {
 
@@ -181,6 +186,7 @@ class ThreadManager {
    * the expired task.
    */
   virtual void setExpireCallback(ExpireCallback expireCallback) = 0;
+  virtual void setCodelCallback(ExpireCallback expireCallback) = 0;
 
   /**
    * Set a callback to be called when a worker thread is created.
@@ -215,6 +221,8 @@ class ThreadManager {
     waitTimeUs = 0;
     runTimeUs = 0;
   }
+
+  virtual void enableCodel(bool) = 0;
 
   template <typename SemType>
   class ImplT;

@@ -121,7 +121,8 @@ class ThreadManager::ImplT : public ThreadManager  {
     deadWorkerMonitor_(&mutex_),
     deadWorkers_(),
     namePrefix_(""),
-    namePrefixCounter_(0) {
+    namePrefixCounter_(0),
+    codelEnabled_(false || FLAGS_codel_enabled) {
       RequestContext::getStaticContext();
   }
 
@@ -192,11 +193,13 @@ class ThreadManager::ImplT : public ThreadManager  {
   shared_ptr<Runnable> removeNextPending();
 
   void setExpireCallback(ExpireCallback expireCallback);
+  void setCodelCallback(ExpireCallback expireCallback);
   void setThreadInitCallback(InitCallback initCallback) {
     initCallback_ = initCallback;
   }
 
   void getStats(int64_t& waitTimeUs, int64_t& runTimeUs, int64_t maxItems);
+  void enableCodel(bool);
 
   // Methods to be invoked by workers
   void workerStarted(Worker<SemType>* worker);
@@ -206,6 +209,8 @@ class ThreadManager::ImplT : public ThreadManager  {
                        const SystemClockTimePoint& workEnd);
   Task* waitOnTask();
   void taskExpired(Task* task);
+
+  Codel codel_;
 
  private:
   void stopImpl(bool joinArg);
@@ -231,6 +236,7 @@ class ThreadManager::ImplT : public ThreadManager  {
   int64_t numTasks_;
 
   ExpireCallback expireCallback_;
+  ExpireCallback codelCallback_;
   InitCallback initCallback_;
 
   ThreadManager::STATE state_;
@@ -257,6 +263,8 @@ class ThreadManager::ImplT : public ThreadManager  {
   std::map<const Thread::id_t, shared_ptr<Thread> > idMap_;
   std::string namePrefix_;
   uint32_t namePrefixCounter_;
+
+  bool codelEnabled_;
 
   class NotificationWorker;
 };

@@ -47,15 +47,49 @@ enum class SerializationThread {
 
 class EventTask : public virtual apache::thrift::concurrency::Runnable {
  public:
-  /* implicit */ EventTask(std::function<void()>&& taskFunc)
-      : taskFunc_(std::move(taskFunc)) {}
+  EventTask(std::function<void()>&& taskFunc,
+  apache::thrift::ResponseChannel::Request* req,
+    apache::thrift::async::TEventBase* base,
+    bool oneway)
+      : taskFunc_(std::move(taskFunc))
+      , req_(req)
+      , base_(base)
+      , oneway_(oneway) {
+}
 
   void run() {
+    if (!oneway_) {
+      if (req_ && !req_->isActive()) {
+        auto req = req_;
+        base_->runInEventBaseThread([req]() {
+          delete req;
+        });
+
+        return;
+      }
+    }
     taskFunc_();
+  }
+
+  void expired() {
+    if (!oneway_) {
+      auto req = req_;
+      if (req) {
+        base_->runInEventBaseThread([req] () {
+            apache::thrift::TApplicationException ex(
+              "Failed to add task to queue, too full");
+            req->sendError(std::make_exception_ptr(ex), kOverloadedErrorCode);
+            delete req;
+          });
+      }
+    }
   }
 
  private:
   std::function<void()> taskFunc_;
+  apache::thrift::ResponseChannel::Request* req_;
+  apache::thrift::async::TEventBase* base_;
+  bool oneway_;
 };
 
 class PriorityEventTask : public apache::thrift::concurrency::PriorityRunnable,
@@ -63,8 +97,12 @@ class PriorityEventTask : public apache::thrift::concurrency::PriorityRunnable,
  public:
   PriorityEventTask(
     apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
-    std::function<void()>&& taskFunc)
-      : EventTask(std::move(taskFunc)), priority_(priority) {}
+    std::function<void()>&& taskFunc,
+    apache::thrift::ResponseChannel::Request* req,
+    apache::thrift::async::TEventBase* base,
+    bool oneway)
+      : EventTask(std::move(taskFunc), req, base, oneway)
+      , priority_(priority) {}
 
   apache::thrift::concurrency::PriorityThreadManager::PRIORITY
   getPriority() const {
@@ -195,7 +233,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
             (childClass->*processFunc)(std::move(*req_mw), std::move(*buf_mw),
                         std::move(*iprot_holder), ctx, eb, tm);
 
-          }));
+          },
+          preq, eb, oneway));
       req.release();
     } catch (const std::exception& e) {
       if (!oneway) {
@@ -251,7 +290,8 @@ class HandlerCallbackBase {
       eb_(eb),
       tm_(tm),
       reqCtx_(reqCtx),
-      protoSeqId_(0) {}
+      protoSeqId_(0) {
+  }
 
   virtual ~HandlerCallbackBase() {
   }
@@ -306,6 +346,10 @@ class HandlerCallbackBase {
     // If req_ is nullptr probably it is not managed by this HandlerCallback
     // object and we just return true. An example can be found in task 3106731
     return !req_ || req_->isActive();
+  }
+
+  ResponseChannel::Request* getRequest() {
+    return req_.get();
   }
 
   void runInQueue(

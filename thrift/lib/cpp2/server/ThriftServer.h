@@ -230,6 +230,8 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   bool queueSends_;
 
+  bool enableCodel_;
+
   bool stopWorkersOnStopListening_;
 
   enum class InjectedFailure {
@@ -827,6 +829,18 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   bool getQueueSends() {
     return queueSends_;
+  }
+
+  /**
+   * Codel queuing timeout - limit queueing time before overload
+   * http://en.wikipedia.org/wiki/CoDel
+   */
+  void setEnableCodel(bool enableCodel) {
+    enableCodel_ = enableCodel;
+  }
+
+  bool getEnableCodel() {
+    return enableCodel_;
   }
 
   /**

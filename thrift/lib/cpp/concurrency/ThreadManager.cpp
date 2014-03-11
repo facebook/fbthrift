@@ -23,6 +23,7 @@
 #include "thrift/lib/cpp/concurrency/Thread.h"
 #include "thrift/lib/cpp/concurrency/Util.h"
 #include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
+#include "thrift/lib/cpp/concurrency/Codel.h"
 #include "folly/Conv.h"
 #include "ThreadManager.h"
 #include "PosixThreadFactory.h"
@@ -40,6 +41,8 @@
 #include <iostream>
 #endif //defined(DEBUG)
 
+DEFINE_bool(codel_enabled, false, "Enable codel queue timeout algorithm");
+
 namespace apache { namespace thrift { namespace concurrency {
 
 using std::shared_ptr;
@@ -51,7 +54,5 @@ using apache::thrift::async::RequestContext;
 shared_ptr<ThreadManager> ThreadManager::newThreadManager() {
   return make_shared<ThreadManager::Impl>();
 }
-
-
 
 }}} // apache::thrift::concurrency

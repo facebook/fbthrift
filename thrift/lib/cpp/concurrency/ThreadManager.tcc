@@ -23,11 +23,13 @@
 #include "thrift/lib/cpp/concurrency/Monitor.h"
 #include "thrift/lib/cpp/concurrency/Thread.h"
 #include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
+#include "thrift/lib/cpp/concurrency/Codel.h"
 #include "folly/Conv.h"
 #include "ThreadManager.h"
 #include "PosixThreadFactory.h"
 #include "folly/MPMCQueue.h"
 #include "thrift/lib/cpp/async/Request.h"
+#include "folly/Logging.h"
 
 #include <memory>
 
@@ -95,6 +97,23 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
       SystemClockTimePoint startTime;
       if (task->canExpire() || task->statsEnabled()) {
         startTime = SystemClock::now();
+
+        // Codel auto-expire time algorithm
+        int64_t delay = std::chrono::duration_cast<std::chrono::milliseconds>(
+          startTime - task->getQueueBeginTime()).count();
+
+        if (manager_->codel_.overloaded(std::chrono::microseconds(delay))) {
+          if (manager_->codelCallback_) {
+            manager_->codelCallback_(task->getRunnable());
+          }
+          if (manager_->codelEnabled_) {
+            FB_LOG_EVERY_MS(WARNING, 10000) << "Queueing delay timeout";
+
+            manager_->taskExpired(task);
+            delete task;
+            continue;
+          }
+        }
       }
 
       // Check if the task is expired
@@ -508,6 +527,11 @@ void ThreadManager::ImplT<SemType>::setExpireCallback(ExpireCallback expireCallb
 }
 
 template <typename SemType>
+void ThreadManager::ImplT<SemType>::setCodelCallback(ExpireCallback expireCallback) {
+  codelCallback_ = expireCallback;
+}
+
+template <typename SemType>
 void ThreadManager::ImplT<SemType>::getStats(int64_t& waitTimeUs, int64_t& runTimeUs,
                                    int64_t maxItems) {
   Guard g(mutex_);
@@ -538,6 +562,11 @@ void ThreadManager::ImplT<SemType>::reportTaskStats(
   waitingTimeUs_ += waitTimeUs;
   executingTimeUs_ += runTimeUs;
   ++numTasks_;
+}
+
+template <typename SemType>
+void ThreadManager::ImplT<SemType>::enableCodel(bool enabled) {
+  codelEnabled_ = enabled || FLAGS_codel_enabled;
 }
 
 template <typename SemType>
@@ -729,11 +758,25 @@ public:
   }
 
   virtual void setExpireCallback(ExpireCallback expireCallback) {
-    throw IllegalStateException("Not implemented");
+    for (const auto& m : managers_) {
+      m->setExpireCallback(expireCallback);
+    }
+  }
+
+  virtual void setCodelCallback(ExpireCallback expireCallback) {
+    for (const auto& m : managers_) {
+      m->setCodelCallback(expireCallback);
+    }
   }
 
   virtual void setThreadInitCallback(InitCallback initCallback) {
     throw IllegalStateException("Not implemented");
+  }
+
+  void enableCodel(bool enabled) {
+    for (const auto& m : managers_) {
+      m->enableCodel(enabled);
+    }
   }
 
 private:
