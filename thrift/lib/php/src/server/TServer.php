@@ -1,4 +1,6 @@
 <?php
+// Copyright 2004-present Facebook. All Rights Reserved.
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -24,7 +26,6 @@ include_once $GLOBALS['THRIFT_ROOT'].'/Thrift.php';
 include_once $GLOBALS['THRIFT_ROOT'].'/transport/TTransport.php';
 include_once $GLOBALS['THRIFT_ROOT'].'/protocol/TBinaryProtocol.php';
 
-
 /**
  * Event handler base class.  Override selected methods on this class
  * to implement custom event handling
@@ -45,6 +46,11 @@ abstract class TServerEventHandler {
  *     be set to an instance of TServerEventHandler.
  */
 abstract class TServer {
+  protected $processor;
+  protected $serverTransport;
+  protected $transportFactory;
+  protected $protocolFactory;
+  protected $serverEventHandler;
 
   public function __construct($processor, $serverTransport,
                               $transportFactory, $protocolFactory) {
@@ -67,13 +73,10 @@ abstract class TServer {
     $prot  = $this->protocolFactory->getProtocol($trans);
 
     $this->_clientBegin($prot);
-
     try {
-      while (true) {
-        $this->processor->process($prot, $prot);
-      }
+      $this->processor->process($prot, $prot);
     } catch (TTransportException $tx) {
-       // ignore
+      // ignore
     } catch (Exception $x) {
       echo 'Handle caught transport exception: ' . $x->getMessage() . "\n";
     }
@@ -85,9 +88,10 @@ abstract class TServer {
 }
 
 /**
- * Simple single-threaded server that just pumps around one transport.
+ * Server that can run in non-blocking mode
  */
-class TSimpleServer extends TServer {
+class TNonBlockingServer extends TServer {
+  protected $clients = array();
 
   public function __construct($processor, $serverTransport,
                               $transportFactory, $protocolFactory) {
@@ -95,102 +99,64 @@ class TSimpleServer extends TServer {
                         $transportFactory, $protocolFactory);
   }
 
-  public function serve() {
-    $this->serverTransport->listen();
-    while (true) {
-      $client = $this->serverTransport->accept();
-      $this->handle($client);
-    }
-  }
-}
+  /**
+   * Because our server is non-blocking, don't close this socket
+   * until we need to.
+   *
+   * @return bool true if we should keep the client alive
+   */
+  protected function handle($client) {
+    $trans = $this->transportFactory->getTransport($client);
+    $prot  = $this->protocolFactory->getProtocol($trans);
 
-/**
- * A Thrift server that forks a new process for each request
- *
- * Note that this has different semantics from the threading server.
- * Specifically, updates to shared variables are not shared.
- *
- * This code is heavily inspired by SocketServer.ForkingMixIn in the
- * Python stdlib.
- */
-class TForkingServer extends TServer {
-
-  public function __construct($processor, $serverTransport,
-                              $transportFactory, $protocolFactory) {
-    parent::__construct($processor, $serverTransport,
-                        $transportFactory, $protocolFactory);
-    $this->children = array();
-  }
-
-  private function tryClose($file) {
+    $this->_clientBegin($prot);
     try {
-      $file->close();
-    } catch (IOError $e) {
-      echo 'Close caught IOError: ' . $e->getMessage() . "\n";
+      // First check the transport is readable to avoid
+      // blocking on read
+      if ($trans->isReadable()) {
+        $this->processor->process($prot, $prot);
+      }
+    } catch (Exception $x) {
+      $md = $client->getMetaData();
+      if ($md['timed_out']) {
+        // keep waiting for the client to send more requests
+      } else if ($md['eof']) {
+        $trans->close();
+        return false;
+      } else {
+        echo 'Handle caught transport exception: ' . $x->getMessage() . "\n";
+      }
+    }
+    return true;
+  }
+
+  protected function processExistingClients() {
+    foreach ($this->clients as $i => $client) {
+      if (!$this->handle($client)) {
+        // remove the client from our list of open clients if
+        // our handler reports that the client is no longer alive
+        unset($this->clients[$i]);
+      }
     }
   }
 
+  /*
+   * This method should be called repeately on idle to listen and
+   * process an request. If there is no pending request, it will
+   * return;
+   */
   public function serve() {
     $this->serverTransport->listen();
-    while (true) {
-      $client = $this->serverTransport->accept();
-      try {
-        $trans = $this->transportFactory->getTransport($client);
-        $prot  = $this->protocolFactory->getProtocol($trans);
-
-        $this->_clientBegin($prot);
-
-        $pid = pcntl_fork();
-
-        if ($pid) { // parent
-          // add before collect, otherwise you race w/ waitpid
-          $this->children[$pid] = 1;
-          $this->_collectChildren();
-
-          // Parent must close socket or the connection may not get
-          // closed promptly
-          $this->tryClose($trans);
-        } else {
-          $ecode = 0;
-          try {
-            try {
-              while (true) {
-                $this->processor->process($prot, $prot);
-              }
-            } catch (TTransportException $tx) {
-              // ignore
-            } catch (Exception $e) {
-              echo 'Serve caught Exception: ' . $e->getMessage() . "\n";
-              $ecode = 1;
-            }
-          } catch (Exception $e) {
-            $this->tryClose($trans);
-          }
-
-          exit($ecode);
-        }
-      } catch (TTransportException $tx) {
-        // ignore
-      } catch (Exception $e) {
-        echo 'Serve caught outer Exception: ' . $e->getMessage() . "\n";
-      }
-    }
+    $this->process();
   }
 
-  private function _collectChildren() {
-    while (count($this->children)) {
-      try {
-        $pid = pcntl_waitpid(0, $status, WNOHANG);
-      } catch (Exception $e) {
-        echo 'Waitpid caught Exception: ' . $e->getMessage() . "\n";
-        $pid = null;
-      }
-
-      if ($pid) {
-        unset($this->children[$pid]);
-      } else {
-        break;
-      }
+  public function process() {
+    // 0 timeout is non-blocking
+    $client = $this->serverTransport->accept(0);
+    if ($client) {
+      array_unshift($this->clients, $client);
     }
+
+    $this->processExistingClients();
   }
 }

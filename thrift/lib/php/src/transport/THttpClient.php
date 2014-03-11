@@ -1,32 +1,23 @@
 <?php
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+// Copyright 2004-present Facebook. All Rights Reserved.
+
+
+/**
+ * Copyright (c) 2006- Facebook
+ * Distributed under the Thrift Software License
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * See accompanying file LICENSE or visit the Thrift site at:
+ * http://developers.facebook.com/thrift/
  *
  * @package thrift.transport
  */
-
 
 /**
  * HTTP client for Thrift
  *
  * @package thrift.transport
  */
-class THttpClient extends TTransport {
+class THttpClient extends TTransport implements IThriftRemoteConn {
 
   /**
    * The host to connect to
@@ -64,11 +55,18 @@ class THttpClient extends TTransport {
   protected $buf_;
 
   /**
-   * Input socket stream.
+   * Input data stream.
    *
    * @var resource
    */
-  protected $handle_;
+  protected $data_;
+
+  /**
+   * Error message
+   *
+   * @var string
+   */
+  protected $errstr_;
 
   /**
    * Read timeout
@@ -78,14 +76,42 @@ class THttpClient extends TTransport {
   protected $timeout_;
 
   /**
+   * Custom HTTP headers
+   *
+   * @var array
+   */
+  protected $custom_headers_;
+
+  /**
+   * Debugging on?
+   *
+   * @var bool
+   */
+  protected $debug_ = false;
+
+  /**
+   * Debug handler
+   *
+   * @var mixed
+   */
+  protected $debugHandler_ = null;
+
+  /**
+   * Specifies the maximum number of bytes to read
+   * at once from internal stream.
+   */
+  protected $maxReadChunkSize_ = null;
+
+  /**
    * Make a new HTTP client.
    *
    * @param string $host
    * @param int    $port
    * @param string $uri
    */
-  public function __construct($host, $port=80, $uri='', $scheme = 'http') {
-    if ((strlen($uri) > 0) && ($uri{0} != '/')) {
+  public function __construct($host, $port=80, $uri='', $scheme = 'http',
+                              $debugHandler = null) {
+    if ($uri && ($uri[0] != '/')) {
       $uri = '/'.$uri;
     }
     $this->scheme_ = $scheme;
@@ -93,8 +119,19 @@ class THttpClient extends TTransport {
     $this->port_ = $port;
     $this->uri_ = $uri;
     $this->buf_ = '';
-    $this->handle_ = null;
+    $this->data_ = '';
+    $this->errstr_ = '';
     $this->timeout_ = null;
+    $this->custom_headers_ = null;
+    $this->debugHandler_ = $debugHandler ?: 'error_log';
+  }
+
+  /**
+   * Sets the internal max read chunk size.
+   * null for no limit (default).
+   */
+  public function setMaxReadChunkSize($maxReadChunkSize) {
+    $this->maxReadChunkSize_ = $maxReadChunkSize;
   }
 
   /**
@@ -104,6 +141,60 @@ class THttpClient extends TTransport {
    */
   public function setTimeoutSecs($timeout) {
     $this->timeout_ = $timeout;
+  }
+
+  /**
+   * Set custom headers
+   *
+   * @param array of key value pairs of custom headers
+   */
+  public function setCustomHeaders($custom_headers) {
+    $this->custom_headers_ = $custom_headers;
+  }
+
+  /**
+   * Get custom headers
+   *
+   * @return array key value pairs of custom headers
+   */
+  public function getCustomHeaders() {
+    return $this->custom_headers_;
+  }
+
+  /**
+   * Get the remote host that this transport is connected to.
+   *
+   * @return string host
+   */
+  public function getHost() {
+    return $this->host_;
+  }
+
+  /**
+   * Get the remote port that this transport is connected to.
+   *
+   * @return int port
+   */
+  public function getPort() {
+    return $this->port_;
+  }
+
+  /**
+   * Get the scheme used to connect to the remote server.
+   *
+   * @return string scheme
+   */
+  public function getScheme() {
+    return $this->scheme_;
+  }
+
+  /**
+   * Sets debugging output on or off
+   *
+   * @param bool $debug
+   */
+  public function setDebug($debug) {
+    $this->debug_ = $debug;
   }
 
   /**
@@ -126,10 +217,7 @@ class THttpClient extends TTransport {
    * Close the transport.
    */
   public function close() {
-    if ($this->handle_) {
-      @fclose($this->handle_);
-      $this->handle_ = null;
-    }
+    $this->data_ = '';
   }
 
   /**
@@ -140,14 +228,31 @@ class THttpClient extends TTransport {
    * @throws TTransportException if cannot read any more data
    */
   public function read($len) {
-    $data = @fread($this->handle_, $len);
+    if ($this->maxReadChunkSize_ !== null) {
+      $len = min($len, $this->maxReadChunkSize_);
+    }
+
+    $t_start = microtime(true);
+    if (strlen($this->data_) < $len) {
+      $data = $this->data_;
+      $this->data_ = '';
+    } else {
+      $data = substr($this->data_, 0, $len);
+      $this->data_ = substr($this->data_, $len);
+    }
+    $t_delta = microtime(true) - $t_start;
+    ProfilingCounters::incrCount(IProfilingCounters::THRIFT_READ_COUNT);
+    ProfilingCounters::incrCount(
+      IProfilingCounters::THRIFT_READ_BYTES, strlen($data));
+    ProfilingCounters::incrDuration(
+      IProfilingCounters::THRIFT_READ_DURATION, $t_delta);
+
     if ($data === FALSE || $data === '') {
-      $md = stream_get_meta_data($this->handle_);
-      if ($md['timed_out']) {
-        throw new TTransportException('THttpClient: timed out reading '.$len.' bytes from '.$this->host_.':'.$this->port_.'/'.$this->uri_, TTransportException::TIMED_OUT);
-      } else {
-        throw new TTransportException('THttpClient: Could not read '.$len.' bytes from '.$this->host_.':'.$this->port_.'/'.$this->uri_, TTransportException::UNKNOWN);
-      }
+      throw new TTransportException('THttpClient: Could not read '.$len.
+                                    ' bytes from '.$this->host_.
+                                    ':'.$this->port_.'/'.$this->uri_.
+                                    " Reason: ".$this->errstr_,
+                                    TTransportException::UNKNOWN);
     }
     return $data;
   }
@@ -170,33 +275,65 @@ class THttpClient extends TTransport {
   public function flush() {
     // God, PHP really has some esoteric ways of doing simple things.
     $host = $this->host_.($this->port_ != 80 ? ':'.$this->port_ : '');
+    $user_agent = 'PHP/THttpClient';
+    $script = urlencode(basename($_SERVER['SCRIPT_FILENAME']));
+    if ($script) {
+      $user_agent .= ' ('.$script.')';
+    }
+
+    $curl = curl_init($this->scheme_.'://'.$host.$this->uri_);
 
     $headers = array('Host: '.$host,
                      'Accept: application/x-thrift',
-                     'User-Agent: PHP/THttpClient',
+                     'User-Agent: '.$user_agent,
                      'Content-Type: application/x-thrift',
                      'Content-Length: '.strlen($this->buf_));
 
-    $options = array('method' => 'POST',
-                     'header' => implode("\r\n", $headers),
-                     'max_redirects' => 1,
-                     'content' => $this->buf_);
-    if ($this->timeout_ > 0) {
-      $options['timeout'] = $this->timeout_;
+
+    if (is_array($this->custom_headers_)) {
+      foreach ($this->custom_headers_ as $header => $value) {
+        $headers[] = $header.': '.$value;
+      }
     }
+    curl_setopt($curl, CURLOPT_PROXY, '');
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
+    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $this->buf_);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_BINARYTRANSFER, true);
+
+    curl_setopt($curl, CURLOPT_TIMEOUT,
+                $this->timeout_);
     $this->buf_ = '';
 
-    $contextid = stream_context_create(array('http' => $options));
-    $this->handle_ = @fopen($this->scheme_.'://'.$host.$this->uri_, 'r', false, $contextid);
+    $t_start = microtime(true);
+    $this->data_ = curl_exec($curl);
+
+    $t_delta = microtime(true) - $t_start;
+    ProfilingCounters::incrCount(IProfilingCounters::THRIFT_FLUSH_COUNT);
+    ProfilingCounters::incrDuration(
+      IProfilingCounters::THRIFT_FLUSH_DURATION, $t_delta);
+
+    $this->errstr_ = curl_error($curl);
+    curl_close($curl);
 
     // Connect failed?
-    if ($this->handle_ === FALSE) {
-      $this->handle_ = null;
+    if ($this->data_ === false) {
       $error = 'THttpClient: Could not connect to '.$host.$this->uri_;
       throw new TTransportException($error, TTransportException::NOT_OPEN);
     }
   }
 
-}
+  public function isReadable() {
+    return (bool) $this->data_;
+  }
 
-?>
+  public function isWritable() {
+    return true;
+  }
+
+  public function getRecvTimeout() { return 0; }
+  public function setRecvTimeout($timeout) { /* do nothing */ }
+}

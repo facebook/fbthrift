@@ -1,43 +1,59 @@
 <?php
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- *
- * @package thrift.protocol
- */
+// Copyright 2004-present Facebook. All Rights Reserved.
 
 include_once $GLOBALS['THRIFT_ROOT'].'/transport/TBufferedTransport.php';
 
 /**
- * Binary implementation of the Thrift protocol.
+ * Copyright (c) 2006- Facebook
+ * Distributed under the Thrift Software License
  *
+ * See accompanying file LICENSE or visit the Thrift site at:
+ * http://developers.facebook.com/thrift/
+ *
+ * @package thrift.protocol
  */
-class TBinaryProtocol extends TProtocol {
+
+/**
+ * Binary implementation of the Thrift protocol.
+ */
+abstract class TBinaryProtocolBase extends TProtocol {
 
   const VERSION_MASK = 0xffff0000;
   const VERSION_1 = 0x80010000;
 
   protected $strictRead_ = false;
   protected $strictWrite_ = true;
+  protected $littleendian_ = false;
+  protected $memory_limit = 128000000; //128M, the default
+  protected $sequenceID = null;
 
   public function __construct($trans, $strictRead=false, $strictWrite=true) {
     parent::__construct($trans);
     $this->strictRead_ = $strictRead;
     $this->strictWrite_ = $strictWrite;
+    if (pack('S', 1) == "\x01\x00") {
+      $this->littleendian_ = true;
+    }
+    $this->memory_limit = self::getBytes(ini_get('memory_limit'));
+  }
+
+  // helper function to get integer from potential php short notation
+  public static function getBytes($notation) {
+    $val = trim($notation);
+    $last = strtolower($val[strlen($val) - 1]);
+    switch ($last) {
+        // The 'G' modifier is available since PHP 5.1.0
+        case 'g':
+            $val *= 1024;
+            // FALLTHROUGH
+        case 'm':
+            $val *= 1024;
+            // FALLTHROUGH
+        case 'k':
+            $val *= 1024;
+    }
+
+    return $val;
   }
 
   public function writeMessageBegin($name, $type, $seqid) {
@@ -115,29 +131,35 @@ class TBinaryProtocol extends TProtocol {
 
   public function writeBool($value) {
     $data = pack('c', $value ? 1 : 0);
-    $this->trans_->write($data, 1);
+    $this->trans_->write($data);
     return 1;
   }
 
   public function writeByte($value) {
-    $data = pack('c', $value);
-    $this->trans_->write($data, 1);
+    $this->trans_->write(chr($value));
     return 1;
   }
 
   public function writeI16($value) {
-    $data = pack('n', $value);
-    $this->trans_->write($data, 2);
+    $data = chr($value) . chr($value >> 8);
+    if ($this->littleendian_) {
+      $data = strrev($data);
+    }
+    $this->trans_->write($data);
     return 2;
   }
 
   public function writeI32($value) {
-    $data = pack('N', $value);
-    $this->trans_->write($data, 4);
+    $data = chr($value) . chr($value >> 8) . chr($value >> 16) . chr($value >> 24);
+    if ($this->littleendian_) {
+      $data = strrev($data);
+    }
+    $this->trans_->write($data);
     return 4;
   }
 
   public function writeI64($value) {
+    $data = '';
     // If we are on a 32bit architecture we have to explicitly deal with
     // 64-bit twos-complement arithmetic since PHP wants to treat all ints
     // as signed and any int over 2^31 - 1 as a float
@@ -164,24 +186,38 @@ class TBinaryProtocol extends TProtocol {
       $data = pack('N2', $hi, $lo);
 
     } else {
-      $hi = $value >> 32;
-      $lo = $value & 0xFFFFFFFF;
-      $data = pack('N2', $hi, $lo);
+      $data = chr($value)
+        . chr($value >> 8)
+        . chr($value >> 16)
+        . chr($value >> 24)
+        . chr($value >> 32)
+        . chr($value >> 40)
+        . chr($value >> 48)
+        . chr($value >> 56);
+      if ($this->littleendian_) {
+        $data = strrev($data);
+      }
     }
 
-    $this->trans_->write($data, 8);
+    $this->trans_->write($data);
     return 8;
   }
 
   public function writeDouble($value) {
     $data = pack('d', $value);
-    $this->trans_->write(strrev($data), 8);
+    if ($this->littleendian_) {
+      $data = strrev($data);
+    }
+    $this->trans_->write($data);
     return 8;
   }
 
   public function writeFloat($value) {
     $data = pack('f', $value);
-    $this->trans_->write(strrev($data), 4);
+    if ($this->littleendian_) {
+      $data = strrev($data);
+    }
+    $this->trans_->write($data);
     return 4;
   }
 
@@ -189,16 +225,86 @@ class TBinaryProtocol extends TProtocol {
     $len = strlen($value);
     $result = $this->writeI32($len);
     if ($len) {
-      $this->trans_->write($value, $len);
+      $this->trans_->write($value);
     }
     return $result + $len;
   }
 
+  private function unpackI32($data) {
+    $value = ord($data[3])
+      | (ord($data[2]) << 8)
+      | (ord($data[1]) << 16)
+      | (ord($data[0]) << 24);
+    if ($value > 0x7fffffff) {
+      $value = 0 - (($value - 1) ^ 0xffffffff);
+    }
+    return $value;
+  }
+
+  /**
+   * Returns the sequence ID of the next message; only valid when called
+   * before readMessageBegin()
+   */
+  public function peekSequenceID() {
+    if (!method_exists($this->trans_, 'peek')) {
+      throw new TProtocolException(get_class($this->trans_).
+                                   ' does not support peek',
+                                   TProtocolException::BAD_VERSION);
+    }
+    if ($this->sequenceID !== null) {
+      throw new TProtocolException('peekSequenceID can only be called '.
+                                   'before readMessageBegin',
+                                   TProtocolException::INVALID_DATA);
+    }
+
+    $data = $this->trans_->peek(4);
+    $sz = $this->unpackI32($data);
+    $start = 4;
+
+    if ($sz < 0) {
+      $version = $sz & self::VERSION_MASK;
+      if ($version != self::VERSION_1) {
+        throw new TProtocolException('Bad version identifier: '.$sz,
+                                     TProtocolException::BAD_VERSION);
+      }
+      // skip name string
+      $data = $this->trans_->peek(4, $start);
+      $name_len = $this->unpackI32($data);
+      $start += 4 + $name_len;
+      // peek seqId
+      $data = $this->trans_->peek(4, $start);
+      $seqid = $this->unpackI32($data);
+    } else {
+      if ($this->strictRead_) {
+        throw new TProtocolException(
+                    'No version identifier, old protocol client?',
+                    TProtocolException::BAD_VERSION);
+      } else {
+        // need to guard the length from mis-configured other type of TCP server
+        // for example, if mis-configure sshd, will read 'SSH-' as the length
+        // if memory limit is -1, means no limit.
+        if ($this->memory_limit > 0 && $sz > $this->memory_limit) {
+          throw new TProtocolException('Length overflow: ' . $sz,
+                                       TProtocolException::SIZE_LIMIT);
+        }
+        // Handle pre-versioned input
+        $start += $sz;
+        // skip type byte
+        $start += 1;
+        // peek seqId
+        $data = $this->trans_->peek(4, $start);
+        $seqid = $this->unpackI32($data);
+      }
+    }
+    return $seqid;
+  }
+
   public function readMessageBegin(&$name, &$type, &$seqid) {
+    $sz = 0;
     $result = $this->readI32($sz);
     if ($sz < 0) {
-      $version = (int) ($sz & self::VERSION_MASK);
-      if ($version != (int) self::VERSION_1) {
+      $version = $sz & self::VERSION_MASK;
+      if ($version != self::VERSION_1) {
         throw new TProtocolException('Bad version identifier: '.$sz, TProtocolException::BAD_VERSION);
       }
       $type = $sz & 0x000000ff;
@@ -209,6 +315,13 @@ class TBinaryProtocol extends TProtocol {
       if ($this->strictRead_) {
         throw new TProtocolException('No version identifier, old protocol client?', TProtocolException::BAD_VERSION);
       } else {
+        // need to guard the length from mis-configured other type of TCP server
+        // for example, if mis-configure sshd, will read 'SSH-' as the length
+        // if memory limit is -1, means no limit.
+        if ($this->memory_limit > 0 && $sz > $this->memory_limit) {
+          throw new TProtocolException('Length overflow: ' . $sz,
+                                       TProtocolException::SIZE_LIMIT);
+        }
         // Handle pre-versioned input
         $name = $this->trans_->readAll($sz);
         $result +=
@@ -217,10 +330,12 @@ class TBinaryProtocol extends TProtocol {
           $this->readI32($seqid);
       }
     }
+    $this->sequenceID = $seqid;
     return $result;
   }
 
   public function readMessageEnd() {
+    $this->sequenceID = null;
     return 0;
   }
 
@@ -287,15 +402,13 @@ class TBinaryProtocol extends TProtocol {
 
   public function readByte(&$value) {
     $data = $this->trans_->readAll(1);
-    $arr = unpack('c', $data);
-    $value = $arr[1];
+    $value = ord($data);
     return 1;
   }
 
   public function readI16(&$value) {
     $data = $this->trans_->readAll(2);
-    $arr = unpack('n', $data);
-    $value = $arr[1];
+    $value = ord($data[1]) | (ord($data[0]) << 8);;
     if ($value > 0x7fff) {
       $value = 0 - (($value - 1) ^ 0xffff);
     }
@@ -304,11 +417,7 @@ class TBinaryProtocol extends TProtocol {
 
   public function readI32(&$value) {
     $data = $this->trans_->readAll(4);
-    $arr = unpack('N', $data);
-    $value = $arr[1];
-    if ($value > 0x7fffffff) {
-      $value = 0 - (($value - 1) ^ 0xffffffff);
-    }
+    $value = $this->unpackI32($data);
     return 4;
   }
 
@@ -369,9 +478,9 @@ class TBinaryProtocol extends TProtocol {
         $arr[1] = $arr[1] & 0xffffffff;
         $arr[1] = $arr[1] ^ 0xffffffff;
         $arr[2] = $arr[2] ^ 0xffffffff;
-        $value = 0 - $arr[1]*4294967296 - $arr[2] - 1;
+        $value = 0 - $arr[1] * 4294967296 - $arr[2] - 1;
       } else {
-        $value = $arr[1]*4294967296 + $arr[2];
+        $value = $arr[1] * 4294967296 + $arr[2];
       }
     }
 
@@ -379,20 +488,27 @@ class TBinaryProtocol extends TProtocol {
   }
 
   public function readDouble(&$value) {
-    $data = strrev($this->trans_->readAll(8));
+    $data = $this->trans_->readAll(8);
+    if ($this->littleendian_) {
+      $data = strrev($data);
+    }
     $arr = unpack('d', $data);
     $value = $arr[1];
     return 8;
   }
 
   public function readFloat(&$value) {
-    $data = strrev($this->trans_->readAll(4));
+    $data = $this->trans_->readAll(4);
+    if ($this->littleendian_) {
+      $data = strrev($data);
+    }
     $arr = unpack('f', $data);
     $value = $arr[1];
     return 4;
   }
 
   public function readString(&$value) {
+    $len = 0;
     $result = $this->readI32($len);
     if ($len) {
       $value = $this->trans_->readAll($len);
@@ -404,19 +520,11 @@ class TBinaryProtocol extends TProtocol {
 }
 
 /**
- * Binary Protocol Factory
+ * Old slow unaccelerated protocol.
  */
-class TBinaryProtocolFactory implements TProtocolFactory {
-  private $strictRead_ = false;
-  private $strictWrite_ = false;
-
-  public function __construct($strictRead=false, $strictWrite=false) {
-    $this->strictRead_ = $strictRead;
-    $this->strictWrite_ = $strictWrite;
-  }
-
-  public function getProtocol($trans) {
-    return new TBinaryProtocol($trans, $this->strictRead_, $this->strictWrite_);
+class TBinaryProtocolUnaccelerated extends TBinaryProtocolBase {
+  public function __construct($trans, $strict_read=false, $strict_write=true) {
+    parent::__construct($trans, $strict_read, $strict_write);
   }
 }
 
@@ -424,14 +532,14 @@ class TBinaryProtocolFactory implements TProtocolFactory {
  * Accelerated binary protocol: used in conjunction with the thrift_protocol
  * extension for faster deserialization
  */
-class TBinaryProtocolAccelerated extends TBinaryProtocol {
-  public function __construct($trans, $strictRead=false, $strictWrite=true) {
+class TBinaryProtocolAccelerated extends TBinaryProtocolBase {
+  public function __construct($trans, $strict_read=false, $strict_write=true) {
     // If the transport doesn't implement putBack, wrap it in a
     // TBufferedTransport (which does)
     if (!method_exists($trans, 'putBack')) {
       $trans = new TBufferedTransport($trans);
     }
-    parent::__construct($trans, $strictRead, $strictWrite);
+    parent::__construct($trans, $strict_read, $strict_write);
   }
   public function isStrictRead() {
     return $this->strictRead_;
@@ -441,4 +549,35 @@ class TBinaryProtocolAccelerated extends TBinaryProtocol {
   }
 }
 
-?>
+/**
+ * Do not use this class.
+ *
+ * This class exists for backwards compatibility, use TBinaryProtocolAccelerated
+ * or TBinaryProtocolUnaccelerated
+ * @deprecated
+ */
+class TBinaryProtocol extends TBinaryProtocolAccelerated {
+  public function __construct($trans, $strict_read=false, $strict_write=true) {
+    parent::__construct($trans, $strict_read, $strict_write);
+  }
+}
+
+/**
+ * Binary Protocol Factory
+ */
+class TBinaryProtocolFactory implements TProtocolFactory {
+  protected $strictRead = false;
+  protected $strictWrite = true;
+
+  public function __construct($strict_read=false, $strict_write=true) {
+    $this->strictRead = $strict_read;
+    $this->strictWrite = $strict_write;
+  }
+
+  public function getProtocol($trans) {
+    return new TBinaryProtocolAccelerated(
+      $trans,
+      $this->strictRead,
+      $this->strictWrite);
+  }
+}

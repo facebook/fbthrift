@@ -1,25 +1,16 @@
 <?php
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+// Copyright 2004-present Facebook. All Rights Reserved.
+
+
+/**
+ * Copyright (c) 2006- Facebook
+ * Distributed under the Thrift Software License
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * See accompanying file LICENSE or visit the Thrift site at:
+ * http://developers.facebook.com/thrift/
  *
  * @package thrift.transport
  */
-
 
 /**
  * Framed transport. Writes and reads data in chunks that are stamped with
@@ -34,21 +25,28 @@ class TFramedTransport extends TTransport {
    *
    * @var TTransport
    */
-  private $transport_;
+  protected $transport_;
 
   /**
    * Buffer for read data.
    *
    * @var string
    */
-  private $rBuf_;
+  protected $rBuf_;
+
+  /**
+   * Position in rBuf_ to read the next char
+   *
+   * @var int
+   */
+  protected $rIndex_;
 
   /**
    * Buffer for queued output data
    *
    * @var string
    */
-  private $wBuf_;
+  protected $wBuf_;
 
   /**
    * Whether to frame reads
@@ -80,11 +78,19 @@ class TFramedTransport extends TTransport {
   }
 
   public function open() {
-    $this->transport_->open();
+    return $this->transport_->open();
   }
 
   public function close() {
     $this->transport_->close();
+  }
+
+  public function isReadable() {
+    if (strlen($this->rBuf_) > 0) {
+      return true;
+    }
+
+    return $this->transport_->isReadable();
   }
 
   /**
@@ -102,16 +108,36 @@ class TFramedTransport extends TTransport {
       $this->readFrame();
     }
 
-    // Just return full buff
-    if ($len >= strlen($this->rBuf_)) {
-      $out = $this->rBuf_;
+
+    // Return substr
+    $out = substr($this->rBuf_, $this->rIndex_, $len);
+    $this->rIndex_ += $len;
+
+    if (strlen($this->rBuf_) <= $this->rIndex_) {
       $this->rBuf_ = null;
-      return $out;
+      $this->rIndex_ = 0;
+    }
+    return $out;
+  }
+
+  /**
+   * Peek some bytes in the frame without removing the bytes from the buffer
+   *
+   * @param int $len   length to peek
+   * @param int $start the start position of the returned string
+   */
+  public function peek($len, $start = 0) {
+    if (!$this->read_) {
+      return false;
+    }
+
+    if (strlen($this->rBuf_) === 0) {
+      $this->readFrame();
     }
 
     // Return substr
-    $out = substr($this->rBuf_, 0, $len);
-    $this->rBuf_ = substr($this->rBuf_, $len);
+    $out = substr($this->rBuf_, $this->rIndex_ + $start, $len);
+
     return $out;
   }
 
@@ -124,8 +150,9 @@ class TFramedTransport extends TTransport {
     if (strlen($this->rBuf_) === 0) {
       $this->rBuf_ = $data;
     } else {
-      $this->rBuf_ = ($data . $this->rBuf_);
+      $this->rBuf_ = ($data . substr($this->rBuf_, $this->rIndex_));
     }
+    $this->rIndex_ = 0;
   }
 
   /**
@@ -137,6 +164,7 @@ class TFramedTransport extends TTransport {
     $sz = $val[1];
 
     $this->rBuf_ = $this->transport_->readAll($sz);
+    $this->rIndex_ = 0;
   }
 
   /**
@@ -161,7 +189,7 @@ class TFramedTransport extends TTransport {
    * followed by the actual data.
    */
   public function flush() {
-    if (!$this->write_) {
+    if (!$this->write_ || strlen($this->wBuf_) == 0) {
       return $this->transport_->flush();
     }
 

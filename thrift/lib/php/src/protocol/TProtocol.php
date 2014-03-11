@@ -1,25 +1,16 @@
 <?php
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+// Copyright 2004-present Facebook. All Rights Reserved.
+
+
+/**
+ * Copyright (c) 2006- Facebook
+ * Distributed under the Thrift Software License
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * See accompanying file LICENSE or visit the Thrift site at:
+ * http://developers.facebook.com/thrift/
  *
  * @package thrift.protocol
  */
-
 
 /**
  * Protocol module. Contains all the types and definitions needed to implement
@@ -40,8 +31,7 @@ class TProtocolException extends TException {
   const NOT_IMPLEMENTED = 5;
   const MISSING_REQUIRED_FIELD = 6;
 
-
-  function __construct($message=null, $code=0) {
+  public function __construct($message=null, $code=0) {
     parent::__construct($message, $code);
   }
 }
@@ -55,8 +45,10 @@ abstract class TProtocol {
   // or T_CONSTANT_ENCAPSED_STRING. Using "is_a()" instead of "instanceof" is
   // a workaround but is deprecated in PHP5. This is used in the generated
   // deserialization code.
-  static $TBINARYPROTOCOLACCELERATED = 'TBinaryProtocolAccelerated';
-  static $TCOMPACTPROTOCOLACCELERATED = 'TCompactProtocolAccelerated';
+  public static $TBINARYPROTOCOLACCELERATED = 'TBinaryProtocolAccelerated';
+  public static $TCOMPACTPROTOCOLACCELERATED = 'TCompactProtocolAccelerated';
+  public static $TBINARYPROTOCOLUNACCELERATED = 'TBinaryProtocolUnaccelerated';
+  public static $TCOMPACTPROTOCOLUNACCELERATED = 'TCompactProtocolUnaccelerated';
 
   /**
    * Underlying transport
@@ -80,6 +72,15 @@ abstract class TProtocol {
   public function getTransport() {
     return $this->trans_;
   }
+
+  // NOTE: These are deprecated
+  public function getOutputTransport() {
+    return $this->trans_;
+  }
+  public function getInputTransport() {
+    return $this->trans_;
+  }
+
 
   /**
    * Writes the message header
@@ -160,7 +161,7 @@ abstract class TProtocol {
    *
    * @param string $name Function name
    * @param int $type message type TMessageType::CALL or TMessageType::REPLY
-   * @parem int $seqid The sequence id of this message
+   * @param int $seqid The sequence id of this message
    */
   public abstract function readMessageBegin(&$name, &$type, &$seqid);
 
@@ -212,28 +213,29 @@ abstract class TProtocol {
    * @param TType $type What type is it
    */
   public function skip($type) {
+    $_ = null;
     switch ($type) {
     case TType::BOOL:
-      return $this->readBool($bool);
+      return $this->readBool($_);
     case TType::BYTE:
-      return $this->readByte($byte);
+      return $this->readByte($_);
     case TType::I16:
-      return $this->readI16($i16);
+      return $this->readI16($_);
     case TType::I32:
-      return $this->readI32($i32);
+      return $this->readI32($_);
     case TType::I64:
-      return $this->readI64($i64);
+      return $this->readI64($_);
     case TType::DOUBLE:
-      return $this->readDouble($dub);
+      return $this->readDouble($_);
     case TType::FLOAT:
-      return $this->readFloat($flt);
+      return $this->readFloat($_);
     case TType::STRING:
-      return $this->readString($str);
-    case TType::STRUCT:
-      {
-        $result = $this->readStructBegin($name);
+      return $this->readString($_);
+    case TType::STRUCT: {
+        $result = $this->readStructBegin($_);
         while (true) {
-          $result += $this->readFieldBegin($name, $ftype, $fid);
+          $ftype = null;
+          $result += $this->readFieldBegin($_, $ftype, $_);
           if ($ftype == TType::STOP) {
             break;
           }
@@ -243,9 +245,15 @@ abstract class TProtocol {
         $result += $this->readStructEnd();
         return $result;
       }
-    case TType::MAP:
-      {
-        $result = $this->readMapBegin($keyType, $valType, $size);
+    case TType::MAP: {
+        $keyType = null;
+        $valType = null;
+        $size = 0;
+        $result = $this->readMapBegin(
+          $keyType,
+          $valType,
+          $size
+        );
         for ($i = 0; $i < $size; $i++) {
           $result += $this->skip($keyType);
           $result += $this->skip($valType);
@@ -253,8 +261,9 @@ abstract class TProtocol {
         $result += $this->readMapEnd();
         return $result;
       }
-    case TType::SET:
-      {
+    case TType::SET: {
+        $elemType = null;
+        $size = 0;
         $result = $this->readSetBegin($elemType, $size);
         for ($i = 0; $i < $size; $i++) {
           $result += $this->skip($elemType);
@@ -262,8 +271,9 @@ abstract class TProtocol {
         $result += $this->readSetEnd();
         return $result;
       }
-    case TType::LST:
-      {
+    case TType::LST: {
+        $elemType = null;
+        $size = 0;
         $result = $this->readListBegin($elemType, $size);
         for ($i = 0; $i < $size; $i++) {
           $result += $this->skip($elemType);
@@ -297,6 +307,8 @@ abstract class TProtocol {
       return $itrans->readAll(8);
     case TType::DOUBLE:
       return $itrans->readAll(8);
+    case TType::FLOAT:
+      return $itrans->readAll(4);
     case TType::STRING:
       $len = unpack('N', $itrans->readAll(4));
       $len = $len[1];
@@ -304,8 +316,7 @@ abstract class TProtocol {
         $len = 0 - (($len - 1) ^ 0xffffffff);
       }
       return 4 + $itrans->readAll($len);
-    case TType::STRUCT:
-      {
+    case TType::STRUCT: {
         $result = 0;
         while (true) {
           $ftype = 0;
@@ -322,8 +333,7 @@ abstract class TProtocol {
         }
         return $result;
       }
-    case TType::MAP:
-      {
+    case TType::MAP: {
         // Ktype
         $data = $itrans->readAll(1);
         $arr = unpack('c', $data);
@@ -347,8 +357,7 @@ abstract class TProtocol {
         return $result;
       }
     case TType::SET:
-    case TType::LST:
-      {
+    case TType::LST: {
         // Vtype
         $data = $itrans->readAll(1);
         $arr = unpack('c', $data);
@@ -380,10 +389,7 @@ interface TProtocolFactory {
   /**
    * Build a protocol from the base transport
    *
-   * @return TProtcol protocol
+   * @return TProtocol protocol
    */
   public function getProtocol($trans);
 }
-
-
-?>

@@ -1,28 +1,28 @@
 <?php
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+// Copyright 2004-present Facebook. All Rights Reserved.
+
+
+/**
+ * Copyright (c) 2006- Facebook
+ * Distributed under the Thrift Software License
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * See accompanying file LICENSE or visit the Thrift site at:
+ * http://developers.facebook.com/thrift/
  *
  * @package thrift.transport
  */
 
-
 /**
  * Transport exceptions
+ *
+ * Types deriving from TTransport exception may not be able to
+ * translate their custom error into the set of error code
+ * supported by TTransportException. For that the $shortMessage
+ * facility is provided.
+ *
+ * @param mixed  $message Message (string) or type-spec (array)
+ * @param mixed  $code Code (integer) or values (array)
+ * @param string $shortMessage (string)
  */
 class TTransportException extends TException {
 
@@ -31,9 +31,25 @@ class TTransportException extends TException {
   const ALREADY_OPEN = 2;
   const TIMED_OUT = 3;
   const END_OF_FILE = 4;
+  const INVALID_CLIENT = 5;
+  const INVALID_FRAME_SIZE = 6;
+  const INVALID_TRANSFORM = 7;
+  const COULD_NOT_CONNECT = 8;
+  const COULD_NOT_READ = 9;
+  const COULD_NOT_WRITE = 10;
 
-  function __construct($message=null, $code=0) {
+  protected string $shortMessage;
+
+  public function __construct(
+    $message=null,
+    $code=0,
+    string $short_message='') {
+    $this->shortMessage = $short_message;
     parent::__construct($message, $code);
+  }
+
+  public function getShortMessage(): string {
+    return $this->shortMessage;
   }
 }
 
@@ -103,20 +119,87 @@ abstract class TTransport {
    * @throws TTransportException if a writing error occurs
    */
   public function flush() {}
-}
 
-/**
- * Base class for a Transport Factory
- */
-class TTransportFactoryBase {
   /**
-   * Build a transport from the base transport
+   * Flushes any pending data out of a buffer for a oneway call
    *
-   * @return TTransport transport
+   * @throws TTransportException if a writing error occurs
    */
-  public function getTransport($trans) {
-    return $trans;
+  public function onewayFlush() {
+    // Default to flush()
+    $this->flush();
   }
 }
 
-?>
+/**
+ *  Determine (as best as possible) whether the transport can preform
+ *  non-blocking read and write operations.
+ */
+interface TTransportStatus {
+
+  /**
+   *  Test whether the transport is ready for a non-blocking read. It is
+   *  possible, though, that a transport is ready for a partial read, but a full
+   *  read will block.
+   *
+   *  In the case a transport becomes unavailable for reading due to an error
+   *  an exception should be raised. Any timeout logic should also raise an
+   *  exception.
+   *
+   *  @return bool True if a non-blocking read can be preformed on the
+   *               transport.
+   */
+  public function isReadable();
+
+  /**
+   *  Test whether the transport is ready for a non-blocking write.
+   *
+   *  In the case a transport becomes unavailable for writing due to an error
+   *  an exception should be raised. Any timeout logic should also raise an
+   *  exception.
+   *
+   *  @return bool True if a non-blocking write can be preformed on the
+   *               transport.
+   */
+  public function isWritable();
+}
+
+/**
+ * TTransport subclasses that implement InstrumentedTTransport and use
+ * InstrumentedTTransportTrait have a simple set of counters available.
+ */
+trait InstrumentedTTransportTrait {
+  private $bytesWritten = 0;
+  private $bytesRead = 0;
+
+  public function getBytesWritten() {
+    return $this->bytesWritten;
+  }
+
+  public function getBytesRead() {
+    return $this->bytesRead;
+  }
+
+  public function resetBytesWritten() {
+    $this->bytesWritten = 0;
+  }
+
+  public function resetBytesRead() {
+    $this->bytesRead = 0;
+  }
+
+  protected function onWrite(int $bytes_written) {
+    $this->bytesWritten += $bytes_written;
+  }
+
+  protected function onRead(int $bytes_read) {
+    $this->bytesRead += $bytes_read;
+  }
+}
+
+interface InstrumentedTTransport {
+  public function getBytesWritten();
+  public function getBytesRead();
+  public function resetBytesWritten();
+  public function resetBytesRead();
+}

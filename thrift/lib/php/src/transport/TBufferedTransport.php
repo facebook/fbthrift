@@ -1,25 +1,16 @@
 <?php
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+// Copyright 2004-present Facebook. All Rights Reserved.
+
+
+/**
+ * Copyright (c) 2006- Facebook
+ * Distributed under the Thrift Software License
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * See accompanying file LICENSE or visit the Thrift site at:
+ * http://developers.facebook.com/thrift/
  *
  * @package thrift.transport
  */
-
 
 /**
  * Buffered transport. Stores data to an internal buffer that it doesn't
@@ -28,7 +19,7 @@
  *
  * @package thrift.transport
  */
-class TBufferedTransport extends TTransport {
+class TBufferedTransport extends TTransport implements TTransportStatus{
 
   /**
    * Constructor. Creates a buffered transport around an underlying transport
@@ -79,7 +70,7 @@ class TBufferedTransport extends TTransport {
   }
 
   public function open() {
-    $this->transport_->open();
+    return $this->transport_->open();
   }
 
   public function close() {
@@ -94,6 +85,22 @@ class TBufferedTransport extends TTransport {
     }
   }
 
+  public function getMetaData() {
+    return $this->transport_->getMetaData();
+  }
+
+  public function isReadable() {
+    if (strlen($this->rBuf_) > 0) {
+      return true;
+    }
+
+    return $this->transport_->isReadable();
+  }
+
+  public function isWritable() {
+    return $this->transport_->isWritable();
+  }
+
   /**
    * The reason that we customize readAll here is that the majority of PHP
    * streams are already internally buffered by PHP. The socket stream, for
@@ -105,6 +112,7 @@ class TBufferedTransport extends TTransport {
    */
   public function readAll($len) {
     $have = strlen($this->rBuf_);
+    $data = null;
     if ($have == 0) {
       $data = $this->transport_->readAll($len);
     } else if ($have < $len) {
@@ -137,6 +145,28 @@ class TBufferedTransport extends TTransport {
     return $ret;
   }
 
+  /**
+   * Peek some bytes in the buffer without removing the bytes from it
+   *
+   * @param int $len   length to peek
+   * @param int $start the start position of the returned string
+   *
+   * @return null on peek failure
+   */
+  public function peek($len, $start = 0) {
+    $bytes_needed = $len + $start;
+    // read until either timeout OR get enough bytes
+    if (strlen($this->rBuf_) == 0) {
+      $this->rBuf_ = $this->transport_->readAll($bytes_needed);
+    } else if ($bytes_needed > strlen($this->rBuf_)) {
+      $this->rBuf_ .= $this->transport_->readAll($bytes_needed -
+                                                 strlen($this->rBuf_));
+    }
+
+    $ret = substr($this->rBuf_, $start, $len);
+    return $ret;
+  }
+
   public function write($buf) {
     $this->wBuf_ .= $buf;
     if (strlen($this->wBuf_) >= $this->wBufSize_) {
@@ -160,4 +190,3 @@ class TBufferedTransport extends TTransport {
 
 }
 
-?>

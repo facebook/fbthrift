@@ -1,25 +1,16 @@
 <?php
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+// Copyright 2004-present Facebook. All Rights Reserved.
+
+
+/**
+ * Copyright (c) 2006- Facebook
+ * Distributed under the Thrift Software License
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * See accompanying file LICENSE or visit the Thrift site at:
+ * http://developers.facebook.com/thrift/
  *
  * @package thrift.transport
  */
-
 
 /**
  * A memory buffer is a tranpsort that simply reads from and writes to an
@@ -31,15 +22,18 @@
  */
 class TMemoryBuffer extends TTransport {
 
+  private
+    $buf_ = '',
+    $index_ = 0,
+    $length_ = null;
+
   /**
    * Constructor. Optionally pass an initial value
    * for the buffer.
    */
   public function __construct($buf = '') {
-    $this->buf_ = $buf;
+    $this->buf_ = (string) $buf;
   }
-
-  protected $buf_ = '';
 
   public function isOpen() {
     return true;
@@ -49,36 +43,64 @@ class TMemoryBuffer extends TTransport {
 
   public function close() {}
 
-  public function write($buf) {
-    $this->buf_ .= $buf;
-  }
-
-  public function read($len) {
-    if (strlen($this->buf_) === 0) {
-      throw new TTransportException('TMemoryBuffer: Could not read ' .
-                                    $len . ' bytes from buffer.',
-                                    TTransportException::UNKNOWN);
+  private function length() {
+    if ($this->length_ === null) {
+      $this->length_ = strlen($this->buf_);
     }
-
-    if (strlen($this->buf_) <= $len) {
-      $ret = $this->buf_;
-      $this->buf_ = '';
-      return $ret;
-    }
-
-    $ret = substr($this->buf_, 0, $len);
-    $this->buf_ = substr($this->buf_, $len);
-
-    return $ret;
-  }
-
-  function getBuffer() {
-    return $this->buf_;
+    return $this->length_;
   }
 
   public function available() {
-    return strlen($this->buf_);
+    return $this->length() - $this->index_;
+  }
+
+  public function write($buf) {
+    $this->buf_ .= $buf;
+    $this->length_ = null; // reset length
+  }
+
+  public function read($len) {
+    $available = $this->available();
+    if ($available === 0) {
+      $buffer_dump = get_site_variable('THRIFT_DUMP_CORRUPTED_BUFFERS') ?
+          bin2hex($this->buf_) : 'DISABLED by SITEVAR';
+      throw new TTransportException(
+          'TMemoryBuffer: Could not read ' .  $len . ' bytes from buffer.' .
+          ' Original length is ' . $this->length() .
+          ' Current index is ' . $this->index_ .
+          ' Buffer content <start>' . $buffer_dump . '<end>',
+          TTransportException::UNKNOWN);
+    }
+
+    if ($available < $len) {
+      $len = $available;
+    }
+    $ret = substr($this->buf_, $this->index_, $len);
+    $this->index_  += $len;
+    return $ret;
+  }
+
+  public function putBack($buf) {
+    if ($this->available() === 0) {
+      $this->buf_ = $buf;
+    } else {
+      $remaining = substr($this->buf_, $this->index_);
+      $this->buf_ = $buf.$remaining;
+    }
+    $this->length_ = null;
+    $this->index_ = 0;
+  }
+
+  public function getBuffer() {
+    if ($this->index_ === 0) {
+      return $this->buf_;
+    }
+    return substr($this->buf_, $this->index_);
+  }
+
+  public function resetBuffer() {
+    $this->buf_ = '';
+    $this->index_ = 0;
+    $this->length_ = null;
   }
 }
-
-?>
