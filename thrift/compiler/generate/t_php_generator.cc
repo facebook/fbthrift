@@ -957,8 +957,12 @@ void t_php_generator::generate_php_type_spec(ofstream& out,
   t = get_true_type(t);
   indent(out) << "'type' => " << type_to_enum(t) << "," << endl;
 
-  if (t->is_base_type() || t->is_enum()) {
+  if (t->is_base_type()) {
     // Noop, type is all we need
+  } else if (t->is_enum()) {
+    t_enum* tenum = (t_enum*) t;
+    indent(out) << "'enum' => '" << php_namespace(tenum->get_program())
+                << tenum->get_name() << "'," << endl;
   } else if (t->is_struct() || t->is_xception()) {
     indent(out) << "'class' => '" << php_namespace(t->get_program()) << t->get_name() <<"'," << endl;
   } else if (t->is_map()) {
