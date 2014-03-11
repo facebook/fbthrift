@@ -24,14 +24,11 @@
 #include "thrift/lib/cpp/async/TEventBase.h"
 
 #include "thrift/lib/cpp/async/TNotificationQueue.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
 
 #include <boost/static_assert.hpp>
 #include <fcntl.h>
 #include <pthread.h>
 #include <unistd.h>
-
-using apache::thrift::concurrency::Util;
 
 namespace {
 
@@ -210,7 +207,8 @@ void TEventBase::resetLoadAvg(double value) {
 }
 
 static int64_t getTimeDelta(int64_t *prev) {
-  int64_t now = Util::currentTime();
+  int64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(
+    std::chrono::steady_clock::now().time_since_epoch()).count();
   int64_t delta = now - *prev;
   *prev = now;
   return delta;
@@ -239,8 +237,10 @@ bool TEventBase::loop() {
 
   // TODO: Read stop_ atomically with an acquire barrier.
   // Do this once thrift can depend on google-base's atomic primitives.
-  int64_t prev      = Util::currentTime();
-  int64_t idleStart = Util::monotonicTimeUsec();
+  int64_t prev = std::chrono::duration_cast<std::chrono::milliseconds>(
+    std::chrono::steady_clock::now().time_since_epoch()).count();
+  int64_t idleStart = std::chrono::duration_cast<std::chrono::microseconds>(
+    std::chrono::steady_clock::now().time_since_epoch()).count();
   while (!stop_) {
     ++nextLoopCnt_;
 
@@ -250,7 +250,8 @@ bool TEventBase::loop() {
     res = event_base_loop(evb_, EVLOOP_ONCE | nonBlocking);
     ranLoopCallbacks = runLoopCallbacks();
 
-    int64_t busy = Util::monotonicTimeUsec() - startWork_;
+    int64_t busy = std::chrono::duration_cast<std::chrono::microseconds>(
+      std::chrono::steady_clock::now().time_since_epoch()).count() - startWork_;
     int64_t idle = startWork_ - idleStart;
 
     avgLoopTime_.addSample(idle, busy);
@@ -282,7 +283,8 @@ bool TEventBase::loop() {
     }
 
     // Our loop run did real work; reset the idle timer
-    idleStart = Util::monotonicTimeUsec();
+    idleStart = std::chrono::duration_cast<std::chrono::microseconds>(
+      std::chrono::steady_clock::now().time_since_epoch()).count();
 
     // If the event loop indicate that there were no more events, and
     // we also didn't have any loop callbacks to run, there is nothing left to
@@ -343,7 +345,8 @@ bool TEventBase::bumpHandlingTime() {
   if(nothingHandledYet()) {
     latestLoopCnt_ = nextLoopCnt_;
     // set the time
-    startWork_ = Util::monotonicTimeUsec();
+    startWork_ = std::chrono::duration_cast<std::chrono::microseconds>(
+      std::chrono::steady_clock::now().time_since_epoch()).count();
     VLOG(11) << "TEventBase " << this << " " << __PRETTY_FUNCTION__ <<
       " (loop) startWork_ " << startWork_;
     return true;
@@ -618,7 +621,8 @@ bool TEventBase::scheduleTimeout(TAsyncTimeout* obj,
   assert(isInEventBaseThread());
   // Set up the timeval and add the event
   struct timeval tv;
-  Util::toTimeval(tv, timeout.count());
+  tv.tv_sec = timeout.count() / 1000LL;
+  tv.tv_usec = (timeout.count() % 1000LL) * 1000LL;
 
   struct event* ev = obj->getEvent();
   if (event_add(ev, &tv) < 0) {
