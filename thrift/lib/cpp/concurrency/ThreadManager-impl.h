@@ -19,7 +19,7 @@
 #ifndef THREADMANAGERIMPL_H
 #define THREADMANAGERIMPL_H
 
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include "folly/SmallLocks.h"
 
 namespace apache { namespace thrift { namespace concurrency {
 
@@ -39,21 +39,12 @@ class ThreadManager::Task {
   };
 
   Task(shared_ptr<Runnable> runnable,
-       const std::chrono::milliseconds& expiration,
-       bool enableStats = false)
-    : runnable_(runnable),
-      context_(RequestContext::saveContext()) {
-    bool expirable = expiration > std::chrono::milliseconds::zero();
-    if (enableStats || expirable) {
-      auto now = SystemClock::now();
-      if (enableStats) {
-        queueBeginTime_ = now;
-      }
-      if (expirable) {
-        expireTime_ = now + expiration;
-      }
-    }
-  }
+       const std::chrono::milliseconds& expiration)
+    : runnable_(std::move(runnable))
+    , queueBeginTime_(SystemClock::now())
+    , expireTime_(expiration > std::chrono::milliseconds::zero() ?
+                  queueBeginTime_ + expiration : SystemClockTimePoint())
+    , context_(RequestContext::saveContext()) {}
 
   ~Task() {}
 
@@ -86,8 +77,8 @@ class ThreadManager::Task {
 
  private:
   shared_ptr<Runnable> runnable_;
-  SystemClockTimePoint expireTime_;
   SystemClockTimePoint queueBeginTime_;
+  SystemClockTimePoint expireTime_;
   std::shared_ptr<RequestContext> context_;
 };
 
@@ -109,6 +100,7 @@ class ThreadManager::ImplT : public ThreadManager  {
     expiredCount_(0),
     workersToStop_(0),
     enableTaskStats_(enableTaskStats),
+    statsLock_{0},
     waitingTimeUs_(0),
     executingTimeUs_(0),
     numTasks_(0),
@@ -231,6 +223,7 @@ class ThreadManager::ImplT : public ThreadManager  {
   std::atomic<int> workersToStop_;
 
   const bool enableTaskStats_;
+  folly::MicroSpinLock statsLock_;
   int64_t waitingTimeUs_;
   int64_t executingTimeUs_;
   int64_t numTasks_;

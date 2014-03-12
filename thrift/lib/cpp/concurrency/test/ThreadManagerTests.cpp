@@ -663,6 +663,53 @@ BOOST_AUTO_TEST_CASE(OnlyStartedTest) {
   }
 }
 
+class TestObserver : public ThreadManager::Observer {
+ public:
+  TestObserver(int64_t timeout, const std::string& expectedName)
+    : timesCalled(0)
+    , timeout(timeout)
+    , expectedName(expectedName) {}
+
+  void addStats(const std::string& threadPoolName,
+                const SystemClockTimePoint& queueBegin,
+                const SystemClockTimePoint& workBegin,
+                const SystemClockTimePoint& workEnd) {
+    BOOST_CHECK_EQUAL(threadPoolName, expectedName);
+
+    // Note: Technically could fail if system clock changes.
+    BOOST_CHECK_GT((workBegin - queueBegin).count(), 0);
+    BOOST_CHECK_GT((workEnd - workBegin).count(), 0);
+    BOOST_CHECK_GT((workEnd - workBegin).count(), timeout - 1);
+    ++timesCalled;
+  }
+
+  uint64_t timesCalled;
+  int64_t timeout;
+  std::string expectedName;
+};
+
+BOOST_AUTO_TEST_CASE(ObserverTest) {
+  int64_t timeout = 1000;
+  auto observer = std::make_shared<TestObserver>(1000, "foo");
+  ThreadManager::setObserver(observer);
+
+  Monitor monitor;
+  size_t tasks = 1;
+
+  std::shared_ptr<ThreadManager> threadManager =
+      ThreadManager::newSimpleThreadManager(10);
+  threadManager->setNamePrefix("foo");
+  std::shared_ptr<PosixThreadFactory> threadFactory =
+    std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+  threadManager->threadFactory(threadFactory);
+  threadManager->start();
+
+  auto task = std::make_shared<LoadTask>(&monitor, &tasks, 1000);
+  threadManager->add(task);
+  threadManager->stop();
+  BOOST_CHECK_EQUAL(observer->timesCalled, 1);
+}
+
 ///////////////////////////////////////////////////////////////////////////
 // init_unit_test_suite()
 ///////////////////////////////////////////////////////////////////////////

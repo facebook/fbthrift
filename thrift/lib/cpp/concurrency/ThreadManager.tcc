@@ -387,9 +387,8 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
 
   // If an idle thread is available notify it, otherwise all worker threads are
   // running and will get around to this task in time.
-  Task* task = new ThreadManager::Task(value,
-                                       std::chrono::milliseconds{expiration},
-                                       enableTaskStats_);
+  Task* task = new ThreadManager::Task(std::move(value),
+                                       std::chrono::milliseconds{expiration});
   if (!tasks_.write(task)) {
     T_ERROR("ThreadManager: Failed to enqueue item. Increase maxQueueLen?");
     delete task;
@@ -534,7 +533,7 @@ void ThreadManager::ImplT<SemType>::setCodelCallback(ExpireCallback expireCallba
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::getStats(int64_t& waitTimeUs, int64_t& runTimeUs,
                                    int64_t maxItems) {
-  Guard g(mutex_);
+  folly::MSLGuard g(statsLock_);
   if (numTasks_) {
     if (numTasks_ >= maxItems) {
       waitingTimeUs_ /= numTasks_;
@@ -558,10 +557,27 @@ void ThreadManager::ImplT<SemType>::reportTaskStats(
       workBegin - queueBegin).count();
   int64_t runTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(
       workEnd - workBegin).count();
-  Guard g(mutex_);
-  waitingTimeUs_ += waitTimeUs;
-  executingTimeUs_ += runTimeUs;
-  ++numTasks_;
+  if (enableTaskStats_) {
+    folly::MSLGuard g(statsLock_);
+    waitingTimeUs_ += waitTimeUs;
+    executingTimeUs_ += runTimeUs;
+    ++numTasks_;
+  }
+
+  // Optimistic check lock free
+  if (ThreadManager::ImplT<SemType>::observer_) {
+    // Hold lock to ensure that observer_ does not get deleted.
+    folly::RWSpinLock::ReadHolder g(ThreadManager::ImplT<SemType>::observerLock_);
+    if (ThreadManager::ImplT<SemType>::observer_) {
+      // Note: We are assuming the namePrefix_ does not change after the thread is
+      // started.
+      // TODO: enforce this.
+      ThreadManager::ImplT<SemType>::observer_->addStats(namePrefix_,
+                                                         queueBegin,
+                                                         workBegin,
+                                                         workEnd);
+    }
+  }
 }
 
 template <typename SemType>

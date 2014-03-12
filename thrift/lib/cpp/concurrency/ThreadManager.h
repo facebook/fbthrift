@@ -25,11 +25,12 @@
 #include <sys/types.h>
 #include <array>
 #include <unistd.h>
+#include "folly/RWSpinLock.h"
 #include "thrift/lib/cpp/concurrency/Monitor.h"
 #include "thrift/lib/cpp/concurrency/Thread.h"
-#include <chrono>
-
 #include <gflags/gflags.h>
+
+#include "thrift/lib/cpp/concurrency/Util.h"
 
 DECLARE_bool(codel_enabled);
 
@@ -37,6 +38,7 @@ namespace apache { namespace thrift { namespace concurrency {
 
 class Runnable;
 class ThreadFactory;
+class ThreadManagerObserver;
 
 /**
  * ThreadManager class
@@ -222,12 +224,27 @@ class ThreadManager {
     runTimeUs = 0;
   }
 
+  class Observer {
+   public:
+    virtual ~Observer() {}
+
+    virtual void addStats(const std::string& threadPoolName,
+                          const SystemClockTimePoint& queueBegin,
+                          const SystemClockTimePoint& workBegin,
+                          const SystemClockTimePoint& workEnd) = 0;
+  };
+
+  static void setObserver(std::shared_ptr<Observer> observer);
+
   virtual void enableCodel(bool) = 0;
 
   template <typename SemType>
   class ImplT;
 
   typedef ImplT<PosixSemaphore> Impl;
+ protected:
+  static folly::RWSpinLock observerLock_;
+  static std::shared_ptr<Observer> observer_;
 };
 
 /**
