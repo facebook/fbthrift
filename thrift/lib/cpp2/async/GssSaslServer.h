@@ -23,12 +23,8 @@
 #include "thrift/lib/cpp2/async/SaslServer.h"
 #include "thrift/lib/cpp/concurrency/ThreadManager.h"
 #include "thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h"
+#include "thrift/lib/cpp/async/TEventBase.h"
 
-namespace apache { namespace thrift { namespace async {
-
-class TEventBase;
-
-}}}
 
 namespace apache { namespace thrift {
 

@@ -22,13 +22,10 @@
 #include <gmock/gmock.h>
 
 #include "thrift/lib/cpp/async/TAsyncServerSocket.h"
+#include "thrift/lib/cpp/async/TEventBase.h"
 
 namespace apache {
 namespace thrift {
-
-namespace async {
-class TEventBase;
-}
 
 namespace test {
 

@@ -18,14 +18,11 @@
 #define THRIFT_TEST_MOCKTASYNCSOCKETFACTORY_H_ 1
 
 #include "thrift/lib/cpp/async/TAsyncSocketFactory.h"
+#include "thrift/lib/cpp/async/TEventBase.h"
 
 #include <gmock/gmock.h>
 
 namespace apache { namespace thrift {
-
-namespace async {
-class TEventBase;
-}
 
 namespace test {
 

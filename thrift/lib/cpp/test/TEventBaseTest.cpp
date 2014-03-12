@@ -933,7 +933,6 @@ class ReschedulingTimeout : public TAsyncTimeout {
   vector<TimePoint> timestamps;
 
  private:
-  int iteration_;
   vector<uint32_t> timeouts_;
   vector<uint32_t>::const_iterator iterator_;
 };
@@ -1420,7 +1419,6 @@ class IdleTimeTimeoutSeries : public TAsyncTimeout {
   explicit IdleTimeTimeoutSeries(TEventBase *base,
                                  std::deque<std::uint64_t>& timeout) :
     TAsyncTimeout(base),
-    base_(base),
     timeouts_(0),
     timeout_(timeout) {
       scheduleTimeout(1);
@@ -1448,7 +1446,6 @@ class IdleTimeTimeoutSeries : public TAsyncTimeout {
   }
 
  private:
-  TEventBase *base_;
   int timeouts_;
   std::deque<uint64_t>& timeout_;
 };

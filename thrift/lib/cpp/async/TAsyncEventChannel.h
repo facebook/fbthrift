@@ -20,11 +20,10 @@
 #define THRIFT_ASYNC_TASYNCEVENTCHANNEL_H_ 1
 
 #include "thrift/lib/cpp/async/TAsyncChannel.h"
+#include "thrift/lib/cpp/async/TEventBase.h"
 #include "thrift/lib/cpp/async/TDelayedDestruction.h"
 
 namespace apache { namespace thrift { namespace async {
-
-class TEventBase;
 
 /**
  * TAsyncEventChannel defines an API for TAsyncChannel objects that are driven

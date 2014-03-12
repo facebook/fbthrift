@@ -20,12 +20,11 @@
 #define THRIFT_ASYNC_TASYNCSIGNALHANDLER_H_ 1
 
 #include "thrift/lib/cpp/thrift_config.h"
+#include "thrift/lib/cpp/async/TEventBase.h"
 #include <event.h>
 #include <map>
 
 namespace apache { namespace thrift { namespace async {
-
-class TEventBase;
 
 /**
  * A handler to receive notification about POSIX signals.

@@ -22,12 +22,7 @@
 
 #include "thrift/lib/cpp/concurrency/ThreadManager.h"
 #include "thrift/lib/cpp2/async/SaslServer.h"
-
-namespace apache { namespace thrift { namespace async {
-
-class TEventBase;
-
-}}}
+#include "thrift/lib/cpp/async/TEventBase.h"
 
 namespace apache { namespace thrift {
 

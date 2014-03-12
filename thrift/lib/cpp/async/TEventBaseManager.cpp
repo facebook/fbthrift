@@ -19,6 +19,7 @@
 #include "thrift/lib/cpp/async/TEventBaseManager.h"
 
 #include "thrift/lib/cpp/async/TEventBase.h"
+#include "thrift/lib/cpp/Thrift.h"
 
 namespace apache { namespace thrift { namespace async {
 

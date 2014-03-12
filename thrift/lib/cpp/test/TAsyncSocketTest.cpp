@@ -28,6 +28,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/thread/barrier.hpp>
+#include <boost/scoped_array.hpp>
 #include <iostream>
 #include <unistd.h>
 #include <fcntl.h>
@@ -57,6 +58,7 @@ using apache::thrift::transport::TSocket;
 using apache::thrift::transport::TSocketAddress;
 using apache::thrift::transport::TTransportException;
 using folly::IOBuf;
+using boost::scoped_array;
 
 enum StateEnum {
   STATE_WAITING,

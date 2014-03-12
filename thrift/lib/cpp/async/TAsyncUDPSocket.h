@@ -21,6 +21,7 @@
 #include "folly/io/IOBuf.h"
 #include "folly/ScopeGuard.h"
 #include "thrift/lib/cpp/async/TEventHandler.h"
+#include "thrift/lib/cpp/async/TEventBase.h"
 #include "thrift/lib/cpp/transport/TTransportException.h"
 #include "thrift/lib/cpp/transport/TSocketAddress.h"
 

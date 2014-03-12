@@ -26,7 +26,6 @@
 
 using apache::thrift::async::TEventBase;
 using apache::thrift::async::TNotificationQueue;
-using apache::thrift::async::TQueueFullException;
 using apache::thrift::test::ScopedEventBaseThread;
 using std::list;
 using std::vector;
@@ -230,7 +229,7 @@ void QueueTest::maxQueueSize() {
   }
 
   // Calling tryPutMessage() now should fail
-  BOOST_CHECK_THROW(queue.tryPutMessage(5), TQueueFullException);
+  BOOST_CHECK_THROW(queue.tryPutMessage(5), std::overflow_error);
 
   BOOST_CHECK_EQUAL(queue.tryPutMessageNoThrow(5), false);
   int val = 5;
@@ -244,7 +243,7 @@ void QueueTest::maxQueueSize() {
   // We should be able to write another message now that we popped one off.
   queue.tryPutMessage(5);
   // But now we are full again.
-  BOOST_CHECK_THROW(queue.tryPutMessage(6), TQueueFullException);
+  BOOST_CHECK_THROW(queue.tryPutMessage(6), std::overflow_error);
   // putMessage() should let us exceed the maximum
   queue.putMessage(6);
 
@@ -254,7 +253,7 @@ void QueueTest::maxQueueSize() {
 
   // tryPutMessage() should still fail since putMessage() actually put us over
   // the max.
-  BOOST_CHECK_THROW(queue.tryPutMessage(7), TQueueFullException);
+  BOOST_CHECK_THROW(queue.tryPutMessage(7), std::overflow_error);
 
   // Pull another message off and try again
   BOOST_CHECK(queue.tryConsume(result));
@@ -416,7 +415,7 @@ void QueueTest::fillQueue(bool expectFail) {
       queue.putMessage(i);
     }
     BOOST_CHECK(!expectFail);
-  } catch (const apache::thrift::TLibraryException &ex) {
+  } catch (const std::system_error &ex) {
     BOOST_CHECK(expectFail);
   } catch (...) {
     BOOST_CHECK(false);

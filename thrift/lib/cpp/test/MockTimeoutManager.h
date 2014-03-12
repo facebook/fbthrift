@@ -20,6 +20,7 @@
 #define MOCKTIMEOUTMANAGER_H
 
 #include "thrift/lib/cpp/async/TimeoutManager.h"
+#include "thrift/lib/cpp/async/TAsyncTimeout.h"
 
 #include <chrono>
 #include <gtest/gtest.h>
