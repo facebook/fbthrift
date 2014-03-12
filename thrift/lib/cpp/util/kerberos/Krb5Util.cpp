@@ -355,6 +355,16 @@ krb5_keytab Krb5Keytab::release() {
   return ret;
 }
 
+std::string Krb5Keytab::getName() const {
+  char name[256];
+  krb5_error_code code = krb5_kt_get_name(context_,
+                                          keytab_,
+                                          name,
+                                          sizeof(name));
+  raiseIf(context_, code, "getting keytab name");
+  return name;
+}
+
 Krb5InitCredsOpt::Krb5InitCredsOpt(krb5_context context)
     : context_(context)
     , options_(nullptr) {

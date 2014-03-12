@@ -197,7 +197,13 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::kInit() {
     0,
     nullptr,
     options.get());
-  raiseIf(code, "Getting new tgt ticket");
+  raiseIf(code,
+          "Getting new tgt ticket using keytab. If the application is "
+          "authenticating as a user, run \"kinit\" to get new kerberos "
+          "tickets. If the application is authenticating as a service "
+          "identity, make sure the keytab is in " + keytab.getName() +
+          " and is accessible");
+
   SCOPE_EXIT { krb5_free_cred_contents(ctx_.get(), &creds); };
 
   code = krb5_cc_store_cred(ctx_.get(), mem->get(), &creds);

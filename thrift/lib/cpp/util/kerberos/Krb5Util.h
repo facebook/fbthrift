@@ -269,6 +269,7 @@ class Krb5Keytab {
   krb5_keytab release();
   krb5_keytab get() const { return keytab_; }
   krb5_context getContext() const { return context_; }
+  std::string getName() const;
 
  private:
   krb5_context context_;
