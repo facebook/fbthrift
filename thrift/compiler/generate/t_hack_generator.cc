@@ -2173,9 +2173,15 @@ void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
           indent() << "}" << endl;
       }
     }
+
+    f_service_ << indent();
+    if (!(*f_iter)->get_returntype()->is_void()) {
+      f_service_ << "return ";
+    }
     f_service_ <<
-      indent() << "return $this->impl_->" << (*f_iter)->get_name() <<
+      "$this->impl_->" << (*f_iter)->get_name() <<
       "(" << argument_list((*f_iter)->get_arglist(), "", false) << ");" << endl;
+
     indent_down();
     indent(f_service_) <<
       "}" << endl <<
