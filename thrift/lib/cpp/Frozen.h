@@ -24,6 +24,7 @@
 #include <set>
 #include <type_traits>
 #include <vector>
+#include <unordered_map>
 
 #include "folly/Bits.h"
 #include "folly/Range.h"
