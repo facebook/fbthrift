@@ -156,7 +156,7 @@ class TNonblockingServer : TServer {
 
     logInfo("Using %s I/O thread(s).", numIOThreads_);
     if (taskPool_) {
-      logInfo("Using task pool with size: %s.", numIOThreads_, taskPool_.size);
+      logInfo("Using task pool with size: %s.", taskPool_.size);
     }
 
     assert(numIOThreads_ > 0);
