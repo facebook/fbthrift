@@ -2206,7 +2206,7 @@ class CppGenerator(t_generator.Generator):
         args_list = ",".join(args)
 
         name = name_prefix + function.name
-        with out().defn(sig, name=name):
+        with out().defn(sig, name=name, modifiers="virtual"):
             out("{name}({args});".format(name=function.name, args=args_list))
 
     def _generate_recv_function(self, function):
@@ -2248,6 +2248,26 @@ class CppGenerator(t_generator.Generator):
                     pass
             out("throw apache::thrift::TApplicationException("
               '"Could not find Protocol");')
+
+        # Most mock frameworks require your functions to be virtual instance
+        # functions. Generating a virtual instance version of recv_ so
+        # that folks wanting to mock the thrift service clients can use
+        # this function and override in their mock objects.
+        out("// Mock friendly virtual instance method")
+        with out().defn(self._get_recv_function_signature(function),
+                    name="recv_" + "instance_" + function.name,
+                    modifiers="virtual"):
+
+            if not function.oneway:
+                if not function.returntype.is_void:
+                    if not self._is_complex_type(function.returntype):
+                        out("return recv_" + function.name +
+                            "(state);")
+                    else:
+                        out("recv_" + function.name +
+                            "(_return, state);")
+                else:
+                    out("recv_" + function.name + "(state);")
 
     def _generate_templated_recv_function(self, service, function):
         sig = self._get_recv_function_signature(function, uses_template=True)

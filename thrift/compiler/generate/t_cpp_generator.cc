@@ -4148,13 +4148,15 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
     t_function send_function(g_type_void,
         string("send_") + (*f_iter)->get_name(),
         (*f_iter)->get_arglist());
-    indent(f_header_) << function_signature(&send_function, "") << ";" << endl;
+    indent(f_header_) << "virtual " <<
+      function_signature(&send_function, "") << ";" << endl;
     if (!(*f_iter)->is_oneway()) {
       t_struct noargs(program_);
       t_function recv_function((*f_iter)->get_returntype(),
           string("recv_") + (*f_iter)->get_name(),
           &noargs);
-      indent(f_header_) << function_signature(&recv_function, "") << ";" << endl;
+      indent(f_header_) << "virtual " <<
+        function_signature(&recv_function, "") << ";" << endl;
     }
   }
   indent_down();
