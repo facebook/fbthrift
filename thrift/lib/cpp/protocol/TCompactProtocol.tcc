@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #ifndef THRIFT_PROTOCOL_TCOMPACTPROTOCOL_TCC_
@@ -760,45 +757,48 @@ template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::readVarint64(int64_t& i64) {
   uint32_t rsize = 0;
   uint64_t val = 0;
-  int shift = 0;
-  uint8_t buf[10];  // 64 bits / (7 bits/byte) = 10 bytes.
-  uint32_t buf_size = sizeof(buf);
-  const uint8_t* borrowed = trans_->borrow(buf, &buf_size);
 
-  // Fast path.
-  if (borrowed != nullptr) {
-    while (true) {
-      uint8_t byte = borrowed[rsize];
-      rsize++;
-      val |= (uint64_t)(byte & 0x7f) << shift;
-      shift += 7;
-      if (!(byte & 0x80)) {
-        i64 = val;
-        trans_->consume(rsize);
-        return rsize;
-      }
-      // Have to check for invalid data so we don't crash.
-      if (UNLIKELY(rsize == sizeof(buf))) {
-        throw TProtocolException(TProtocolException::INVALID_DATA, "Variable-length int over 10 bytes.");
-      }
-    }
+  // Try to borrow first (fast path).
+  uint8_t buf[10];  // 64 bits / (7 bits/byte) = 10 bytes.
+  uint32_t got = sizeof(buf);
+  if (const uint8_t* borrow_buf = trans_->borrow(buf, &got)) {
+    auto p = reinterpret_cast<const int8_t*>(borrow_buf);
+    do {
+      int64_t byte;
+      byte = *p++; val  = (byte & 0x7f)      ; if (byte >= 0) break;
+      byte = *p++; val |= (byte & 0x7f) <<  7; if (byte >= 0) break;
+      byte = *p++; val |= (byte & 0x7f) << 14; if (byte >= 0) break;
+      byte = *p++; val |= (byte & 0x7f) << 21; if (byte >= 0) break;
+      byte = *p++; val |= (byte & 0x7f) << 28; if (byte >= 0) break;
+      byte = *p++; val |= (byte & 0x7f) << 35; if (byte >= 0) break;
+      byte = *p++; val |= (byte & 0x7f) << 42; if (byte >= 0) break;
+      byte = *p++; val |= (byte & 0x7f) << 49; if (byte >= 0) break;
+      byte = *p++; val |= (byte & 0x7f) << 56; if (byte >= 0) break;
+      byte = *p++; val |= (byte & 0x7f) << 63; if (byte >= 0) break;
+      throw TProtocolException(TProtocolException::INVALID_DATA,
+                               "Variable-length int over 10 bytes.");
+    } while (false);
+    rsize = p - reinterpret_cast<const int8_t*>(borrow_buf);
+    trans_->consume(rsize);
+    i64 = val;
+    return rsize;
   }
 
   // Slow path.
-  else {
-    while (true) {
-      uint8_t byte;
-      rsize += trans_->readAll(&byte, 1);
-      val |= (uint64_t)(byte & 0x7f) << shift;
-      shift += 7;
-      if (!(byte & 0x80)) {
-        i64 = val;
-        return rsize;
-      }
-      // Might as well check for invalid data on the slow path too.
-      if (UNLIKELY(rsize >= sizeof(buf))) {
-        throw TProtocolException(TProtocolException::INVALID_DATA, "Variable-length int over 10 bytes.");
-      }
+  int shift = 0;
+  while (true) {
+    uint8_t byte;
+    rsize += trans_->readAll(&byte, 1);
+    val |= (uint64_t)(byte & 0x7f) << shift;
+    shift += 7;
+    if (!(byte & 0x80)) {
+      i64 = val;
+      return rsize;
+    }
+    // Might as well check for invalid data on the slow path too.
+    if (UNLIKELY(rsize >= sizeof(buf))) {
+      throw TProtocolException(TProtocolException::INVALID_DATA,
+                               "Variable-length int over 10 bytes.");
     }
   }
 }
