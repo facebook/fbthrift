@@ -31,7 +31,7 @@ from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport import TSocket, TSSLSocket
 from thrift.transport import TTransport
 from thrift.server import TServer, TNonblockingServer, \
-    TProcessPoolServer, THttpServer
+    TProcessPoolServer, THttpServer, TCppServer
 
 def main():
     op = optparse.OptionParser(usage='%prog [options]', add_help_option=False)
@@ -104,6 +104,9 @@ def main():
                                              tfactory,
                                              pfactory)
         server.setNumWorkers(options.workers)
+    elif options.servertype == "TCppServer":
+        server = TCppServer.TCppServer(processor)
+        server.setPort(options.port)
     else:
         ServerClass = getattr(TServer, options.servertype)
         server = ServerClass(processor, transport, tfactory, pfactory)
