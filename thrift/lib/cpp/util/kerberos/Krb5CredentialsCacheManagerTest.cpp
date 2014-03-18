@@ -27,7 +27,8 @@ class Krb5CredentialsCacheManagerTest :
   public apache::thrift::krb5::Krb5CredentialsCacheManager {
  public:
   explicit Krb5CredentialsCacheManagerTest(
-      const std::string& principal = "") {
+      const std::string& principal = "")
+    : Krb5CredentialsCacheManager(principal) {
     // Kill the manage thread
     stopThread();
   }
@@ -72,6 +73,11 @@ protected:
 TEST_F(KrbCCTest, TestKinit) {
   auto mem = manager_.kInit();
   EXPECT_EQ(1, mem->getServicePrincipalList(false).size());
+}
+
+TEST_F(KrbCCTest, TestKinitNoPrinc) {
+  Krb5CredentialsCacheManagerTest manager("no/such/principal@REALM");
+  ASSERT_THROW(manager.kInit(), runtime_error);
 }
 
 TEST_F(KrbCCTest, TestRead) {

@@ -175,6 +175,24 @@ void Krb5CredentialsCacheManager::stopThread() {
 }
 
 std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::kInit() {
+  // Get default keytab
+  Krb5Keytab keytab(ctx_.get());
+
+  // Check if we have a matching keytab entry so we don't query the
+  // KDC unnecessarily.
+  bool client_ok = false;
+  for (auto& ktentry : keytab) {
+    if (client_ == Krb5Principal(ctx_.get(), std::move(ktentry.principal))) {
+      client_ok = true;
+      break;
+    }
+  }
+  if (!client_ok) {
+    throw std::runtime_error(
+      folly::to<string>("client principal ", client_,
+                        " is not available in keytab ", keytab.getName()));
+  }
+
   // Make a new memory cache.
   auto mem = folly::make_unique<Krb5CCache>(
     Krb5CCache::makeNewUnique(ctx_.get(), "MEMORY"));
@@ -183,9 +201,8 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::kInit() {
     ctx_.get(), mem->get(), client_.get());
   raiseIf(code, "initializing memory ccache");
 
-  // Get default options and keytab objects
+  // Get default init options
   Krb5InitCredsOpt options(ctx_.get());
-  Krb5Keytab keytab(ctx_.get());
 
   // Grab the tgt
   krb5_creds creds;
