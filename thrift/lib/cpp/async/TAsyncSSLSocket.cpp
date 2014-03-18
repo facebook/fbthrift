@@ -188,13 +188,18 @@ class CorkGuard {
 };
 
 void setup_SSL_CTX(SSL_CTX *ctx) {
+#ifdef SSL_MODE_RELEASE_BUFFERS
   SSL_CTX_set_mode(ctx,
                    SSL_MODE_ACCEPT_MOVING_WRITE_BUFFER |
                    SSL_MODE_ENABLE_PARTIAL_WRITE
-#ifdef SSL_MODE_RELEASE_BUFFERS
                    | SSL_MODE_RELEASE_BUFFERS
-#endif
                    );
+#else
+  SSL_CTX_set_mode(ctx,
+                   SSL_MODE_ACCEPT_MOVING_WRITE_BUFFER |
+                   SSL_MODE_ENABLE_PARTIAL_WRITE
+                   );
+#endif
 }
 
 BIO_METHOD eorAwareBioMethod;
