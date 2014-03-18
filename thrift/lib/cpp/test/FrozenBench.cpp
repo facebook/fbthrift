@@ -124,48 +124,90 @@ BENCHMARK_RELATIVE(DeserializerBinary, iters) {
 
 BENCHMARK_DRAW_LINE()
 
-std::vector<int> keys;
-auto map = [] {
+const int nEntries = 10000000;
+auto entries = []{
+  std::vector<std::pair<int, int>> entries(nEntries);
+  for (size_t i = 0; i < nEntries; ++i) {
+    entries[i].first = i;
+  }
+  std::random_shuffle(entries.begin(), entries.end());
+  for (int i = 0; i < nEntries; ++i) {
+
+    entries[i].second = i;
+  }
+  return entries;
+}();
+auto shuffled = []{
+  auto shuffled = entries;
+  std::random_shuffle(shuffled.begin(), shuffled.end());
+  return shuffled;
+}();
+auto hmap = [] {
   std::unordered_map<int, int> ret;
-  const int kSalt = 0x619abc7e;
-  const int nKeys = 1000000;
-  for (int i = 0; i < nKeys; ++i) {
-    auto key = int(folly::hash::jenkins_rev_mix32(i ^ kSalt));
-    keys.push_back(key);
+  for (auto& e : entries) {
+    if (e.second % 2 == 0) {
+      CHECK(ret.insert(e).second) << e.second;
+    }
   }
-  for (int i = 0; i < nKeys; i += 2) {
-    auto key = keys[i];
-    ret[key] = i;
-  }
-  std::random_shuffle(keys.begin(), keys.end());
   return ret;
 }();
+std::map<int, int> map(hmap.begin(), hmap.end());
 auto fmap = freeze(map);
+auto fhmap = freeze(hmap);
 
-BENCHMARK(frozenHashMap, iters) {
-  int k = 0;
+BENCHMARK(thawedMap, iters) {
   while (iters--) {
-    for (auto key : keys) {
-      auto found = fmap->find(key);
-      if (found != fmap->end()) {
-        k ^= found->second;
+    for (auto& e : shuffled) {
+      auto found = map.find(e.first);
+      if (found != map.end()) {
+        CHECK_EQ(found->second, e.second);
+      } else {
+        CHECK(e.second % 2) << e.second;
       }
     }
   }
-  folly::doNotOptimizeAway(k);
 }
 
-BENCHMARK_RELATIVE(thawedHashMap, iters) {
-  int k = 0;
+
+BENCHMARK_RELATIVE(frozenMap, iters) {
   while (iters--) {
-    for (auto key : keys) {
-      auto found = map.find(key);
-      if (found != map.end()) {
-        k ^= found->second;
+    for (auto& e : shuffled) {
+      auto found = fmap->find(e.first);
+      if (found != fmap->end()) {
+        CHECK_EQ(found->second, e.second) << e.first;
+      } else {
+        CHECK(e.second % 2) << e.second;
       }
     }
   }
-  folly::doNotOptimizeAway(k);
+}
+
+BENCHMARK_DRAW_LINE()
+
+BENCHMARK(thawedHashMap, iters) {
+  while (iters--) {
+    for (auto& e : shuffled) {
+      auto found = hmap.find(e.first);
+      if (found != hmap.end()) {
+        CHECK_EQ(found->second, e.second);
+      } else {
+        CHECK(e.second % 2) << e.second;
+      }
+    }
+  }
+}
+
+BENCHMARK_RELATIVE(frozenHashMap, iters) {
+  while (iters--) {
+    for (auto& e : shuffled) {
+      auto found = fhmap->find(e.first);
+      if (found != fhmap->end()) {
+        CHECK_EQ(found->second, e.second) << e.first;
+      } else {
+        CHECK(e.second % 2) << e.second;
+      }
+    }
+  }
 }
 
 BENCHMARK_DRAW_LINE()
@@ -202,6 +244,29 @@ BENCHMARK_RELATIVE(FreezeBigHashMap, iters) {
   folly::doNotOptimizeAway(k);
 }
 
+/*
+============================================================================
+thrift/lib/cpp/test/FrozenBench.cpp             relative  time/iter  iters/s
+============================================================================
+Freeze                                                     357.35us    2.80K
+FreezePreallocated                               174.97%   204.23us    4.90K
+SerializerCompact                                228.34%   156.50us    6.39K
+SerializerBinary                                 365.94%    97.65us   10.24K
+----------------------------------------------------------------------------
+Thaw                                                       620.40us    1.61K
+DeserializerCompact                               62.20%   997.36us    1.00K
+DeserializerBinary                                73.01%   849.74us    1.18K
+----------------------------------------------------------------------------
+thawedMap                                                    11.50s   86.98m
+frozenMap                                        257.34%      4.47s  223.83m
+----------------------------------------------------------------------------
+thawedHashMap                                                 1.00s  998.40m
+frozenHashMap                                    141.39%   708.39ms     1.41
+----------------------------------------------------------------------------
+FreezeBigMap                                               224.39ms     4.46
+FreezeBigHashMap                                 227.49%    98.63ms    10.14
+============================================================================
+ */
 int main(int argc, char** argv) {
   google::ParseCommandLineFlags(&argc, &argv, true);
   folly::runBenchmarks();

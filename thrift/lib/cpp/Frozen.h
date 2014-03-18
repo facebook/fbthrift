@@ -615,7 +615,7 @@ inline size_t frozenHash(const FrozenRange<char>& fr) {
 }
 
 inline size_t frozenHash(size_t i) {
-  return std::hash<size_t>()(i);
+  return std::hash<size_t>()(i) * 3; // avoid contiguous hash values
 }
 
 template<>
@@ -639,12 +639,12 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
 
   template<class Key>
   const_iterator find(const Key& key) const {
-    size_t h = frozenHash(key);
-    size_t chunks = blockIndex.size();
+    auto h = frozenHash(key);
+    auto chunks = blockIndex.size();
     auto bits = detail::BlockIndex::kSize;
-    size_t buckets = chunks * bits;
+    auto buckets = chunks * bits;
     for (size_t p = 0; p < buckets; h += ++p) { // quadratic probing
-      int bucket = h % buckets;
+      auto bucket = h % buckets;
       auto major = bucket / bits;
       auto minor = bucket % bits;
       const detail::BlockIndex* block = &blockIndex[major];
@@ -652,16 +652,17 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
         if (0 == (1 & (block->mask >> minor))) {
           return this->end();
         }
-        int subOffset = folly::popcount(block->mask & ((1ULL << minor) - 1));
-        int index = block->offset +subOffset;
-        const_iterator found = this->begin() + index;
+        size_t subOffset = folly::popcount(block->mask & ((1ULL << minor) - 1));
+        auto index = block->offset + subOffset;
+        auto found = this->begin() + index;
         if (found->first == key) {
           return found;
         }
-        minor += p;
-        if (minor < bits) {
-          h += ++p; // same block shortcut
+        minor += ++p;
+        if (LIKELY(minor < bits)) {
+          h += p; // same block shortcut
         } else {
+          --p; //undo
           break;
         }
       }
@@ -726,7 +727,7 @@ struct HashMapFreezer {
     auto bits = detail::BlockIndex::kSize;
     // 1.5 => 66% load factor => 3 bits/entry overhead
     // 2.0 => 50% load factor => 4 bits/entry overhead
-    return size_t(size * 1.5 + bits - 1) / bits;
+    return size_t(size * 2.0 + bits - 1) / bits;
   }
 
   static void freezeImpl(const ThawedType& src,

@@ -127,21 +127,20 @@ TEST(Frozen, FieldOrdering) {
 }
 
 TEST(Frozen, IntHashMap) {
-  std::unordered_map<int, int> tmap {
+  std::unordered_map<int, int> umap {
     { 1, 2 },
     { 3, 4 },
     { 7, 8 },
     { 5, 6 },
   };
-  auto pfmap = freeze(tmap);
+  auto pfmap = freeze(umap);
   auto& fmap = *pfmap;
-  EXPECT_EQ(fmap.size(), tmap.size());
-  EXPECT_EQ(fmap.at(3), 4);
-  auto b = fmap.begin();
+  std::unordered_map<int, int> tmap;
+  thaw(fmap, tmap);
+  EXPECT_EQ(umap, tmap);
   auto e = fmap.end();
   using std::make_pair;
   EXPECT_TRUE(fmap.find(0) == e);
-  EXPECT_TRUE(fmap.find(3) == b + 1);
   EXPECT_TRUE(fmap.find(4) == e);
   EXPECT_TRUE(fmap.find(9) == e);
   EXPECT_TRUE(fmap.count(0) == 0);
@@ -151,6 +150,7 @@ TEST(Frozen, IntHashMap) {
   EXPECT_TRUE(fmap.count(9) == 0);
 
   EXPECT_EQ(fmap.at(1), 2);
+  EXPECT_EQ(fmap.at(3), 4);
   EXPECT_EQ(fmap.at(7), 8);
   EXPECT_THROW(fmap.at(9), std::out_of_range);
 
@@ -164,20 +164,20 @@ TEST(Frozen, IntHashMap) {
 }
 
 TEST(Frozen, StringHashMap) {
-  std::unordered_map<string, int> tmap {
+  std::unordered_map<string, int> umap {
     { "1", 2 },
     { "3", 4 },
     { "7", 8 },
     { "5", 6 },
   };
-  auto pfmap = freeze(tmap);
+  auto pfmap = freeze(umap);
   auto& fmap = *pfmap;
-  EXPECT_EQ(fmap.at("3"), 4);
-  auto b = fmap.begin();
+  std::unordered_map<string, int> tmap;
+  thaw(fmap, tmap);
+  EXPECT_EQ(umap, tmap);
   auto e = fmap.end();
   using std::make_pair;
   EXPECT_TRUE(fmap.find("0") == e);
-  EXPECT_TRUE(fmap.find("3") == b + 1);
   EXPECT_TRUE(fmap.find("4") == e);
   EXPECT_TRUE(fmap.find("9") == e);
   EXPECT_TRUE(fmap.count("0") == 0);
@@ -186,6 +186,7 @@ TEST(Frozen, StringHashMap) {
   EXPECT_TRUE(fmap.count("4") == 0);
   EXPECT_TRUE(fmap.count("9") == 0);
 
+  EXPECT_EQ(fmap.at("1"), 2);
   EXPECT_EQ(fmap.at("1"), 2);
   EXPECT_EQ(fmap.at("7"), 8);
   EXPECT_THROW(fmap.at("9"), std::out_of_range);
