@@ -34,7 +34,7 @@ protected:
 
   static uint count_creds(Krb5CCache& cc) {
     uint count = 0;
-    for (auto& creds : cc) {
+    for (const auto& creds : cc) {
       ++count;
     }
     return count;
@@ -43,6 +43,14 @@ protected:
   static uint count_all_creds(Krb5CCache& cc) {
     uint count = 0;
     for (auto it = cc.begin(true); it != cc.end(); ++it) {
+      ++count;
+    }
+    return count;
+  }
+
+  static uint count_ktentries(Krb5Keytab& kt) {
+    uint count = 0;
+    for (const auto& kte : kt) {
       ++count;
     }
     return count;
@@ -72,6 +80,16 @@ TEST_F(Krb5UtilTest, TestKrb5Conf) {
   ifstream ifile("/etc/krb5.conf");
   EXPECT_TRUE(ifile);
 
+}
+
+TEST_F(Krb5UtilTest, TestPrincipalEquals) {
+  Krb5Principal p1(context_.get(), "one@REALM");
+  Krb5Principal p2(context_.get(), "two@REALM");
+  Krb5Principal p3(context_.get(), "one@REALM");
+
+  EXPECT_NE(p1, p2);
+  EXPECT_EQ(p1, p3);
+  EXPECT_NE(p2, p3);
 }
 
 TEST_F(Krb5UtilTest, TestPrincipalParseUnparse) {
@@ -236,6 +254,22 @@ TEST_F(Krb5UtilTest, TestCCIterator) {
   raiseIf(context_.get(), code, "storing service");
   EXPECT_EQ(1, count_creds(ccache));
   EXPECT_EQ(2, count_all_creds(ccache));
+}
+
+TEST_F(Krb5UtilTest, TestKTIterator) {
+  Krb5Keytab keytab(context_.get(), "MEMORY:foo");
+  auto p1 = Krb5Principal(context_.get(), "p1@REALM");
+  auto p2 = Krb5Principal(context_.get(), "p2@REALM");
+
+  krb5_keytab_entry kte;
+  kte.principal = p1.get();
+  krb5_error_code code = krb5_kt_add_entry(context_.get(), keytab.get(), &kte);
+  raiseIf(context_.get(), code, "storing p1");
+  kte.principal = p2.get();
+  code = krb5_kt_add_entry(context_.get(), keytab.get(), &kte);
+  raiseIf(context_.get(), code, "storing p2");
+
+  EXPECT_EQ(2, count_ktentries(keytab));
 }
 
 TEST_F(Krb5UtilTest, TestKeytab) {

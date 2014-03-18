@@ -365,6 +365,69 @@ std::string Krb5Keytab::getName() const {
   return name;
 }
 
+struct Krb5Keytab::Iterator::State {
+  State(Krb5Keytab* kt)
+    : kt_(kt) {
+    CHECK(kt);
+    krb5_error_code code =
+      krb5_kt_start_seq_get(kt_->getContext(), kt_->get(), &cursor_);
+    raiseIf(kt_->getContext(), code, "reading keytab");
+    memset(&ktentry_, 0, sizeof(ktentry_));
+  }
+
+  ~State() {
+    krb5_free_keytab_entry_contents(kt_->getContext(), &ktentry_);
+    krb5_error_code code =
+      krb5_kt_end_seq_get(kt_->getContext(), kt_->get(), &cursor_);
+    raiseIf(kt_->getContext(), code, "ending read of keytab");
+  }
+
+  bool next() {
+    krb5_free_keytab_entry_contents(kt_->getContext(), &ktentry_);
+    memset(&ktentry_, 0, sizeof(ktentry_));
+    krb5_error_code code =
+      krb5_kt_next_entry(kt_->getContext(), kt_->get(), &ktentry_, &cursor_);
+    if (code == KRB5_KT_END) {
+      return false;
+    } else {
+      raiseIf(kt_->getContext(), code, "reading next credential");
+    }
+    return true;
+  }
+
+  Krb5Keytab* kt_;
+  krb5_kt_cursor cursor_;
+  krb5_keytab_entry ktentry_;
+};
+
+Krb5Keytab::Iterator::Iterator(Krb5Keytab* kt) {
+  if (!kt) {
+    return;
+  }
+  state_.reset(new State(kt));
+  next();
+}
+
+void Krb5Keytab::Iterator::next() {
+  try {
+    if (!state_->next()) {
+      state_.reset();
+    }
+  } catch (...) {
+    state_.reset();
+    throw;
+  }
+}
+
+Krb5Keytab::Iterator& Krb5Keytab::Iterator::operator++() {  // prefix
+  next();
+  return *this;
+}
+
+Krb5Keytab::Iterator::reference Krb5Keytab::Iterator::operator*() {
+  return state_->ktentry_;
+}
+
 Krb5InitCredsOpt::Krb5InitCredsOpt(krb5_context context)
     : context_(context)
     , options_(nullptr) {

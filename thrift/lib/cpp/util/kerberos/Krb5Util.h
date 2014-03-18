@@ -144,6 +144,14 @@ public:
     return size() == 2 && getComponent(0) == "krbtgt";
   }
 
+  bool operator==(const Krb5Principal& other) const {
+    return krb5_principal_compare(context_, principal_, other.principal_);
+  }
+
+  bool operator!=(const Krb5Principal& other) const {
+    return !(*this == other);
+  }
+
   krb5_context get_context() const { return context_; }
 
 private:
@@ -255,7 +263,42 @@ public:
 };
 
 class Krb5Keytab {
- public:
+public:
+  class Iterator : public std::iterator<std::input_iterator_tag,
+                                        krb5_keytab_entry> {
+  private:
+    friend class Krb5Keytab;
+
+    explicit Iterator(Krb5Keytab* kt);
+
+    void next();
+
+  public:
+    ~Iterator() {}
+
+    Iterator& operator++();  // prefix
+    reference operator*();
+
+    Iterator operator++(int) {  // postfix
+      Iterator inc(*this);
+      ++inc;
+      return inc;
+    }
+
+    bool operator==(const Iterator& other) {
+      return state_ == other.state_;
+    }
+
+    bool operator!=(const Iterator& other) {
+      return !(*this == other);
+    }
+
+    pointer operator->() { return &(*(*this)); }
+
+  private:
+    struct State;
+    std::shared_ptr<State> state_;
+  };
   /**
    * Get a new keytab. If name is not specified uses the default keytab,
    * otherwise uses a keytab identified by name.
@@ -270,6 +313,9 @@ class Krb5Keytab {
   krb5_keytab get() const { return keytab_; }
   krb5_context getContext() const { return context_; }
   std::string getName() const;
+
+  Iterator begin() { return Iterator(this); }
+  Iterator end() { return Iterator(nullptr); }
 
  private:
   krb5_context context_;
