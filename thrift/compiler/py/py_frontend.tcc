@@ -159,7 +159,7 @@ BOOST_PYTHON_MODULE(frontend) {
       .add_property("value",
           make_function(static_cast<const t_const_value* (t_field::*)() const>
                         (&t_field::get_value), policy_reo()))
-      .def_readonly("annotations", &t_field::annotations_)
+      .add_property("annotations", &t_field::annotations_)
       .add_property("key", &t_field::get_key)
       .add_property("req", &t_field::get_req)
       ;

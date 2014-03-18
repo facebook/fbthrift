@@ -6629,6 +6629,13 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
   // but that's okay, as the initializers all do the same thing (the hashes
   // are the same)
 
+  // Generate forward decls for dependent initializers
+  for (auto& p : deps) {
+    f_reflection_impl_
+      << "void  " << p.first << "(" << ns << "Schema&);"
+      << "  // " << p.second << endl;
+  }
+
   f_reflection_impl_ <<
     "// Reflection initializer for " << tinfo.name << endl <<
     "void " << initializer << "(" << ns << "Schema& schema) {" << endl;

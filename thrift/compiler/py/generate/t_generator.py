@@ -76,6 +76,8 @@ class Generator(object):
         self.init_generator()
         # Generate them all by passing each object to self._generate
         program = self.program
+        for item in program.objects:
+            self._gen_forward_declaration(item)
         for item in chain(program.enums, program.typedefs, \
                 program.objects, program.services):
             self._generate(item)

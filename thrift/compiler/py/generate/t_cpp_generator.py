@@ -243,6 +243,9 @@ class CppGenerator(t_generator.Generator):
         else:
             return False
 
+    def _is_reference(self, tfield):
+        return self._has_cpp_annotation(tfield, "ref")
+
     # noncopyable is a hack to support gcc < 4.8, where declaring a constructor
     # as defaulted tries to generate it, even though it should be deleted.
     def _is_copyable_struct(self, ttype):
@@ -295,6 +298,10 @@ class CppGenerator(t_generator.Generator):
         if not ttype.is_typedef:
             return ''
         return self._cpp_annotation(ttype.as_typedef.type, 'indirection', '')
+
+    def _gen_forward_declaration(self, tstruct):
+        if not self.flag_compatibility:
+            out("class {0};".format(tstruct.name))
 
     def _generate_enum_constant_list(self, enum, constants, quote_names,
                                       include_values):
@@ -379,7 +386,7 @@ class CppGenerator(t_generator.Generator):
         self._types_scope(txt)
 
     def _declare_field(self, field, pointer=False, constant=False,
-                        reference=False):
+                        reference=False, unique=False):
         # I removed the 'init' argument, as all inits happen in default
         # constructor
         result = ''
@@ -390,6 +397,8 @@ class CppGenerator(t_generator.Generator):
             result += '*'
         if reference:
             result += '&'
+        if unique:
+            result = "std::unique_ptr<" + result + ">"
         result += ' ' + field.name
         if not reference:
             result += ';'
@@ -2659,8 +2668,10 @@ class CppGenerator(t_generator.Generator):
                 init_vars.append('apache::thrift::FragileConstructor')
                 for member in members:
                     t = self._get_true_type(member.type)
-                    init_vars.append("{0} {1}".format(self._type_name(t),
-                                                         member.name))
+                    typename = self._type_name(member.type)
+                    if self._is_reference(member):
+                        typename = "std::unique_ptr<" + typename + ">"
+                    init_vars.append("{0} {1}".format(typename, member.name))
                 i = OrderedDict()
                 for member in members:
                     i[member.name] = 'std::move({name})'.format(
@@ -2691,8 +2702,30 @@ class CppGenerator(t_generator.Generator):
                     c = struct.defn('{name}({name}&&)',
                                     name=obj.name, in_header=True, default=True)
                 if is_copyable:
-                    c = struct.defn('{name}(const {name}&)',
-                                    name=obj.name, in_header=True, default=True)
+                    needs_copy_constructor = False
+                    for member in members:
+                        if self._is_reference(member):
+                            needs_copy_constructor = True
+                    if needs_copy_constructor:
+                        tmpname = self.tmp('copy')
+                        with struct.defn(
+                                '{name}(const ' + obj.name +
+                                '& ' + tmpname + ')',
+                                name=obj.name):
+                            for member in members:
+                                if self._is_reference(member):
+                                    out(
+                                        ("{0} = std::unique_ptr<{1}>(" +
+                                        "new {1}(*{2}.{0}));").format(
+                                        member.name, self._type_name(
+                                            member.type), tmpname))
+                                else:
+                                    out("{0} = {1}.{0};".format(
+                                        member.name, tmpname))
+                    else:
+                        c = struct.defn(
+                            '{name}(const {name}&)',
+                            name=obj.name, in_header=True, default=True)
                 c = struct.defn('{name}& operator=({name}&&)',
                                 name=obj.name, in_header=True, default=True)
                 if is_copyable:
@@ -2706,7 +2739,7 @@ class CppGenerator(t_generator.Generator):
                         self._gen_union_constructor(struct, obj, op, mv)
 
             if len(members) > 0:
-                with struct.defn('void __clear()', in_header=True):
+                with struct.defn('void {name}()', name="__clear"):
                     if obj.is_union:
                         out('if (type_ == Type::__EMPTY__) { return; }')
                         self._gen_union_switch(members,
@@ -2722,8 +2755,14 @@ class CppGenerator(t_generator.Generator):
                                         member, explicit=True)
                                 out('{0} = {1};'.format(name, dval))
                             elif t.is_struct or t.is_xception:
-                                if len(member.type.as_struct.members) > 0:
-                                    out('{0}.__clear();'.format(name))
+                                stype = self._get_true_type(
+                                    member.type.as_struct)
+                                if len(stype.members) > 0:
+                                    if self._is_reference(member):
+                                        out('if ({0}) {0}->__clear();'.format(
+                                            name))
+                                    else:
+                                        out('{0}.__clear();'.format(name))
                             elif t.is_container:
                                 out('{0}.clear();'.format(name))
                             else:
@@ -2748,8 +2787,11 @@ class CppGenerator(t_generator.Generator):
 
         # Declare all fields.
         for member in members:
-            s1(self._declare_field(member,
-                pointers and not member.type.is_xception, not read))
+            s1(self._declare_field(
+                member,
+                pointers and not member.type.is_xception,
+                not read, False,
+                self._is_reference(member)))
 
         if s1 is not struct:
             s1()
@@ -3101,9 +3143,10 @@ class CppGenerator(t_generator.Generator):
         ttype = self._get_true_type(field.type)
         name = prefix + field.name + self._type_access_suffix(field.type) + \
                 suffix
-        self._generate_deserialize_type(scope, ttype, name)
+        self._generate_deserialize_type(
+            scope, ttype, name, self._is_reference(field))
 
-    def _generate_deserialize_type(self, scope, ttype, name):
+    def _generate_deserialize_type(self, scope, ttype, name, pointer=False):
         'Deserializes a variable of any type.'
 
         s = scope
@@ -3111,7 +3154,8 @@ class CppGenerator(t_generator.Generator):
             raise TypeError('CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: '\
                             + name)
         if ttype.is_struct or ttype.is_xception:
-            self._generate_deserialize_struct(scope, ttype.as_struct, name)
+            self._generate_deserialize_struct(
+                scope, ttype.as_struct, name, pointer)
         elif ttype.is_container:
             self._generate_deserialize_container(scope, ttype.as_container,
                                                  name)
@@ -3157,11 +3201,25 @@ class CppGenerator(t_generator.Generator):
             raise TypeError(("DO NOT KNOW HOW TO DESERIALIZE '{0}' "
                              "TYPE {1}").format(name, self._type_name(ttype)))
 
-    def _generate_deserialize_struct(self, scope, struct, prefix):
-        scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
-              'iprot, &{1});'.format(
-                  self._type_name(struct),
-                  prefix))
+    def _generate_deserialize_struct(
+            self, scope, struct, prefix, pointer=False):
+        if pointer:
+            scope("{0} = std::unique_ptr<{1}>(new {1});".format(
+                prefix, self._type_name(struct)))
+            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
+                  'iprot, {1}.get());'.format(
+                      self._type_name(struct), prefix))
+            scope('bool wasSet = false;')
+            for member in struct.members:
+                with scope('if ({0}->__isset.{1})'.format(
+                        prefix, member.name)):
+                    out("wasSet = true;")
+            with scope('if (!wasSet)'):
+                out("{0} = nullptr;".format(prefix))
+        else:
+            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
+                  'iprot, &{1});'.format(
+                      self._type_name(struct), prefix))
 
     def _generate_deserialize_container(self, scope, cont, prefix):
         s = scope
@@ -3486,13 +3544,15 @@ class CppGenerator(t_generator.Generator):
         ttype = self._get_true_type(tfield.type)
         name = prefix + tfield.name + self._type_access_suffix(tfield.type) + \
                 suffix
+        pointer = self._is_reference(tfield)
         self._generate_serialize_type(scope, ttype, name, method,
-                                      struct_method, binary_method)
+                                      struct_method, binary_method, pointer)
 
     def _generate_serialize_type(self, scope, ttype, name,
                                  method='write',
                                  struct_method=None,
-                                 binary_method=None):
+                                 binary_method=None,
+                                 pointer=False):
         'Serializes a variable of any type.'
         if struct_method is None:
             struct_method = method
@@ -3505,7 +3565,7 @@ class CppGenerator(t_generator.Generator):
                             + name)
         if ttype.is_struct or ttype.is_xception:
             self._generate_serialize_struct(scope, ttype.as_struct, name,
-                                            struct_method)
+                                            struct_method, pointer)
         elif ttype.is_container:
             self._generate_serialize_container(scope, ttype.as_container,
                                                name,
@@ -3552,12 +3612,24 @@ class CppGenerator(t_generator.Generator):
                              "TYPE {1}").format(name, self._type_name(ttype)))
 
     def _generate_serialize_struct(self, scope, tstruct, prefix='',
-                                   method='write'):
-        scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::{1}('
-              'prot_, &{2});'.format(
-                  self._type_name(tstruct),
-                  method,
-                  prefix))
+                                   method='write', pointer=False):
+        if pointer:
+            with scope('if ({0})'.format(prefix)):
+                out('xfer += ::apache::thrift::Cpp2Ops< {0}>::{1}('
+                    'prot_, {2}.get());'.format(
+                        self._type_name(tstruct),
+                        method,
+                        prefix))
+            with scope('else'):
+                out('prot_->writeStructBegin(\"{0}\");'.format(tstruct.name))
+                out('prot_->writeStructEnd();')
+                out('prot_->writeFieldStop();')
+        else:
+            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::{1}('
+                  'prot_, &{2});'.format(
+                      self._type_name(tstruct),
+                      method,
+                      prefix))
 
     def _generate_serialize_container(self, scope, ttype, prefix='',
                                       method='write', **kwargs):
