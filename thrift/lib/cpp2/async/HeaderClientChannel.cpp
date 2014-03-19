@@ -342,6 +342,7 @@ void HeaderClientChannel::sendRequest(
     timer_->scheduleTimeout(twcb, timeout);
   }
   maybeSetPriorityHeader(rpcOptions);
+  maybeSetTimeoutHeader(rpcOptions);
 
   if (header_->getClientType() != THRIFT_HEADER_CLIENT_TYPE &&
       header_->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
