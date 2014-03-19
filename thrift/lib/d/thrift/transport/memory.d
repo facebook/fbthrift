@@ -72,6 +72,12 @@ final class TMemoryBuffer : TBaseTransport {
     writeOffset_ = size;
   }
 
+  this(ubyte* data, size_t len) {
+    reset(len);
+    buffer_[0..len] = cast(ubyte[])data[0..len];
+    writeOffset_ = len;
+  }
+
   /**
    * Destructor, frees the internally allocated buffer.
    */
@@ -174,6 +180,12 @@ final class TMemoryBuffer : TBaseTransport {
       cRealloc(buffer_, capacity);
       bufferLen_ = capacity;
     }
+  }
+
+  void reset(ubyte* data, size_t len) {
+    reset(len);
+    buffer_[0..len] = cast(ubyte[])data[0..len];
+    writeOffset_ = len;
   }
 
 private:
