@@ -107,8 +107,6 @@ class TEventJobQueue {
      * Thread main loop
      */
     void run() {
-      // Hold a reference so we can join this thread later
-      thread_ = thread();
       // Listen for new work
       startConsuming(&eventBase_, &jobQueue_);
       try {
@@ -118,6 +116,23 @@ class TEventJobQueue {
           ex.what();
       }
       TNotificationQueue<TEventRunnable*>::Consumer::stopConsuming();
+    }
+
+    /**
+     * Hold a reference so we can join this thread later
+     */
+    void thread(
+      std::shared_ptr<apache::thrift::concurrency::Thread> value) override {
+
+      thread_ = value;
+      apache::thrift::concurrency::Runnable::thread(value);
+    }
+
+    /**
+     * Only overridden because the other thread() is overridden.
+     */
+    std::shared_ptr<apache::thrift::concurrency::Thread> thread() override {
+      return apache::thrift::concurrency::Runnable::thread();
     }
 
    private:

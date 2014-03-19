@@ -132,6 +132,19 @@ BOOST_AUTO_TEST_CASE(ArgsJobQueueTest) {
   cerr << "ArgsJobQueueTest test completed" << endl;
 }
 
+/**
+ * Catch any race conditions between startup and shutdown.
+ */
+BOOST_AUTO_TEST_CASE(ShortLivedJobQueueTest) {
+  TEventJobQueue jobQueue(4);
+
+  jobQueue.init();
+
+  jobQueue.shutdown();
+
+  cerr << "ShortLivedJobQueueTest test completed" << endl;
+}
+
 ///////////////////////////////////////////////////////////////////////////
 // init_unit_test_suite
 ///////////////////////////////////////////////////////////////////////////
