@@ -17,6 +17,7 @@
 #include <sstream>
 #include <gtest/gtest.h>
 
+#include "folly/Memory.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
 
@@ -33,8 +34,13 @@ class Krb5CredentialsCacheManagerTest :
     stopThread();
   }
 
+  std::unique_ptr<Krb5CCache> kInit() {
+    auto mem = Krb5CredentialsCacheManager::kInit();
+    client_ = folly::make_unique<Krb5Principal>(mem->getClientPrincipal());
+    return mem;
+  }
+
   using Krb5CredentialsCacheManager::getCache;
-  using Krb5CredentialsCacheManager::kInit;
   using Krb5CredentialsCacheManager::buildRenewedCache;
   using Krb5CredentialsCacheManager::readInCache;
   using Krb5CredentialsCacheManager::writeOutCache;

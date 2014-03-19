@@ -137,8 +137,7 @@ class Krb5CredentialsCacheManager {
   };
 
   Krb5Context ctx_;
-  std::string clientString_;
-  Krb5Principal client_;
+  std::unique_ptr<Krb5Principal> client_;
 
   // Count struct
   mutable Lock serviceCountLock_;
