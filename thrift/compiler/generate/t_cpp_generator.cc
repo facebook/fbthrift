@@ -1612,6 +1612,8 @@ void t_cpp_generator::generate_union_reader(ofstream& out,
   indent(out) << "}" << endl;
 
   indent(out) << "xfer += iprot->readFieldEnd();" << endl;
+  indent(out) << "xfer += iprot->readFieldBegin(fname, ftype, fid);" << endl;
+  indent(out) << "xfer += iprot->readFieldEnd();" << endl;
   indent_down();
   indent(out) << "}" << endl;
 

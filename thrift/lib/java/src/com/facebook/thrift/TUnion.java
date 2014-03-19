@@ -120,6 +120,7 @@ public abstract class TUnion implements TBase {
     // make sure that it actually *is* the stop byte, but it's faster to do it
     // this way.
     iprot.readFieldBegin();
+    iprot.readFieldEnd();
     iprot.readStructEnd();
   }
 
