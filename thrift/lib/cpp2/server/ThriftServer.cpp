@@ -42,7 +42,7 @@ DEFINE_string(sasl_policy, "permitted",
 
 DEFINE_string(
   kerberos_service_name,
-  "host",
+  "",
   "The service part of the principal name for the service");
 
 namespace apache { namespace thrift {
@@ -108,6 +108,11 @@ ThriftServer::ThriftServer() :
   }
 
   if (FLAGS_sasl_policy == "required" || FLAGS_sasl_policy == "permitted") {
+    // If the service name is not specified, not need to pin the principal.
+    // Allow the server to accept anything in the keytab.
+    if (FLAGS_kerberos_service_name.empty()) {
+      return;
+    }
     // Enable both secure / insecure connections
     char hostname[256];
     if (gethostname(hostname, 255)) {
