@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #include <string>
@@ -255,7 +252,7 @@ string t_hs_generator::hs_autogen_comment() {
 string t_hs_generator::hs_imports() {
   const vector<t_program*>& includes = program_->get_includes();
   string result = string(
-      "import Prelude ( Bool(..), Enum, Double, String, Maybe(..),\n"
+      "import Prelude ( Bool(..), Enum, Float, Double, String, Maybe(..),\n"
       "                 Eq, Show, Ord,\n"
       "                 return, length, IO, fromIntegral, fromEnum, toEnum,\n"
       "                 enumFromTo, Bounded, minBound, maxBound,\n"
@@ -417,11 +414,19 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
       out << "(" << value->get_integer() << " :: Int64)";
       break;
 
+    case t_base_type::TYPE_FLOAT:
+      if (value->get_type() == t_const_value::CV_INTEGER) {
+        out << "(" << value->get_integer() << " :: Float)";
+      } else {
+        out << "(" << value->get_double() << " :: Float)";
+      }
+      break;
+
     case t_base_type::TYPE_DOUBLE:
       if (value->get_type() == t_const_value::CV_INTEGER) {
-        out << value->get_integer();
+        out << "(" << value->get_integer() << " :: Double)";
       } else {
-        out << value->get_double();
+        out << "(" << value->get_double() << " :: Double)";
       }
       break;
 
@@ -1482,6 +1487,9 @@ void t_hs_generator::generate_deserialize_type(ofstream &out,
     case t_base_type::TYPE_I64:
       out << "readI64";
       break;
+    case t_base_type::TYPE_FLOAT:
+      out << "readFloat";
+      break;
     case t_base_type::TYPE_DOUBLE:
       out << "readDouble";
       break;
@@ -1603,6 +1611,10 @@ void t_hs_generator::generate_serialize_field(ofstream &out,
 
       case t_base_type::TYPE_I64:
         out << "writeI64 oprot " << name;
+        break;
+
+      case t_base_type::TYPE_FLOAT:
+        out << "writeFloat oprot " << name;
         break;
 
       case t_base_type::TYPE_DOUBLE:
@@ -1749,9 +1761,8 @@ string t_hs_generator::type_to_enum(t_type* type) {
     case t_base_type::TYPE_I16:    return "T_I16";
     case t_base_type::TYPE_I32:    return "T_I32";
     case t_base_type::TYPE_I64:    return "T_I64";
+    case t_base_type::TYPE_FLOAT:  return "T_FLOAT";
     case t_base_type::TYPE_DOUBLE: return "T_DOUBLE";
-    case t_base_type::TYPE_FLOAT:
-      throw "Float type is not supported";
     }
 
   } else if (type->is_enum()) {
@@ -1790,9 +1801,8 @@ string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
     case t_base_type::TYPE_I16:    return "Int16";
     case t_base_type::TYPE_I32:    return "Int32";
     case t_base_type::TYPE_I64:    return "Int64";
+    case t_base_type::TYPE_FLOAT:  return "Float";
     case t_base_type::TYPE_DOUBLE: return "Double";
-    case t_base_type::TYPE_FLOAT:
-      throw "Float type is not supported";
     }
 
   } else if (type->is_enum()) {

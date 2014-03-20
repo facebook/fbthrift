@@ -27,12 +27,12 @@ module Thrift.Protocol
     , ProtocolExnType(..)
     ) where
 
-import Control.Monad ( replicateM_, unless )
+import Control.Monad (replicateM_, unless, void)
 import Control.Exception
 import Data.ByteString.Lazy
 import Data.Int
-import Data.Text.Lazy ( Text )
-import Data.Typeable ( Typeable )
+import Data.Text.Lazy (Text)
+import Data.Typeable (Typeable)
 
 import Thrift.Transport
 
@@ -51,6 +51,7 @@ data ThriftType
     | T_MAP
     | T_SET
     | T_LIST
+    | T_FLOAT
       deriving ( Eq )
 
 instance Enum ThriftType where
@@ -67,6 +68,7 @@ instance Enum ThriftType where
     fromEnum T_MAP    = 13
     fromEnum T_SET    = 14
     fromEnum T_LIST   = 15
+    fromEnum T_FLOAT  = 19
 
     toEnum 0  = T_STOP
     toEnum 1  = T_VOID
@@ -81,6 +83,7 @@ instance Enum ThriftType where
     toEnum 13 = T_MAP
     toEnum 14 = T_SET
     toEnum 15 = T_LIST
+    toEnum 19 = T_FLOAT
     toEnum t = error $ "Invalid ThriftType " ++ show t
 
 data MessageType
@@ -123,6 +126,7 @@ class Protocol a where
     writeI16    :: Transport t => a t -> Int16 -> IO ()
     writeI32    :: Transport t => a t -> Int32 -> IO ()
     writeI64    :: Transport t => a t -> Int64 -> IO ()
+    writeFloat  :: Transport t => a t -> Float -> IO ()
     writeDouble :: Transport t => a t -> Double -> IO ()
     writeString :: Transport t => a t -> Text -> IO ()
     writeBinary :: Transport t => a t -> ByteString -> IO ()
@@ -147,6 +151,7 @@ class Protocol a where
     readI16    :: Transport t => a t -> IO Int16
     readI32    :: Transport t => a t -> IO Int32
     readI64    :: Transport t => a t -> IO Int64
+    readFloat  :: Transport t => a t -> IO Float
     readDouble :: Transport t => a t -> IO Double
     readString :: Transport t => a t -> IO Text
     readBinary :: Transport t => a t -> IO ByteString
@@ -155,13 +160,14 @@ class Protocol a where
 skip :: (Protocol p, Transport t) => p t -> ThriftType -> IO ()
 skip _ T_STOP = return ()
 skip _ T_VOID = return ()
-skip p T_BOOL = readBool p >> return ()
-skip p T_BYTE = readByte p >> return ()
-skip p T_I16 = readI16 p >> return ()
-skip p T_I32 = readI32 p >> return ()
-skip p T_I64 = readI64 p >> return ()
-skip p T_DOUBLE = readDouble p >> return ()
-skip p T_STRING = readString p >> return ()
+skip p T_BOOL = void $ readBool p
+skip p T_BYTE = void $ readByte p
+skip p T_I16 = void $ readI16 p
+skip p T_I32 = void $ readI32 p
+skip p T_I64 = void $ readI64 p
+skip p T_FLOAT = void $ readFloat p
+skip p T_DOUBLE = void $ readDouble p
+skip p T_STRING = void $ readString p
 skip p T_STRUCT = do _ <- readStructBegin p
                      skipFields p
                      readStructEnd p

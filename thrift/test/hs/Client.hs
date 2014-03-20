@@ -17,36 +17,53 @@
 -- under the License.
 --
 
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module Client where
+
+import Control.Exception as CE
+import qualified Data.HashMap.Strict as Map
+import qualified Data.HashSet as Set
+import qualified Data.Vector as Vec
+import Network
+
 import Thrift
+import Thrift.Protocol.Binary
+import Thrift.Transport.Handle
+
 import ThriftTest_Client
 import ThriftTest_Types
-import TSocket
-import TBinaryProtocol
-import qualified Data.Map as Map
-import qualified Data.Set as Set
-import Control.Monad
-import Control.Exception as CE
-t = TSocket "127.0.0.1" 9090 Nothing
 
-main = do to <- topen t
-          let p =  TBinaryProtocol to
-          let ps = (p,p)
-          print =<< testString ps "bya"
-          print =<< testByte ps 8
-          print =<< testByte ps (-8)
-          print =<< testI32 ps 32
-          print =<< testI32 ps (-32)
-          print =<< testI64 ps 64
-          print =<< testI64 ps (-64)
-          print =<< testDouble ps 3.14
-          print =<< testDouble ps (-3.14)
-          print =<< testMap ps (Map.fromList [(1,1),(2,2),(3,3)])
-          print =<< testList ps [1,2,3,4,5]
-          print =<< testSet ps (Set.fromList [1,2,3,4,5])
-          print =<< testStruct ps (Xtruct (Just "hi") (Just 4) (Just 5) Nothing)
-          CE.catch (testException ps "e" >> print "bad") (\e -> print (e :: Xception))
-          CE.catch (testMultiException ps "e" "e2" >> print "ok") (\e -> print (e :: Xception))
-          CE.catch (CE.catch (testMultiException ps "e" "e2">> print "bad") (\e -> print (e :: Xception2))) (\(e :: SomeException) -> print "ok")
-          tclose to
+t :: (HostName, PortID)
+t = ("127.0.0.1", PortNumber 9090)
+
+main :: IO ()
+main = do
+  to <- hOpen t
+  let p =  BinaryProtocol to
+  let ps = (p,p)
+  print =<< testString ps "bya"
+  print =<< testByte ps 8
+  print =<< testByte ps (-8)
+  print =<< testI32 ps 32
+  print =<< testI32 ps (-32)
+  print =<< testI64 ps 64
+  print =<< testI64 ps (-64)
+  print =<< testFloat ps (exp 1)
+  print =<< testFloat ps (- exp 1)
+  print =<< testDouble ps pi
+  print =<< testDouble ps (- pi)
+  print =<< testMap ps (Map.fromList [(1,1),(2,2),(3,3)])
+  print =<< testList ps (Vec.fromList [1,2,3,4,5])
+  print =<< testSet ps (Set.fromList [1,2,3,4,5])
+  print =<< testStruct ps (Xtruct (Just "hi") (Just 4) (Just 5) Nothing)
+  CE.catch (testException ps "e" >> putStrLn "bad")
+           (\e -> print (e :: Xception))
+  CE.catch (testMultiException ps "e" "e2" >> putStrLn "ok")
+           (\e -> print (e :: Xception))
+  CE.catch (CE.catch (testMultiException ps "e" "e2">> putStrLn "bad")
+                     (\e -> print (e :: Xception2)))
+           (\(_ :: SomeException) -> putStrLn "ok")
+  tClose to
 

@@ -5,12 +5,13 @@ module Thrift.Arbitraries where
 import Data.Bits()
 
 import Test.QuickCheck.Arbitrary
-import Test.QuickCheck.Gen
 
+import Control.Applicative ((<$>))
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import qualified Data.Vector as Vector
 import qualified Data.Text.Lazy as Text
+import qualified Data.HashSet as HSet
 import qualified Data.HashMap.Strict as HMap
 import Data.Hashable (Hashable)
 
@@ -19,32 +20,29 @@ import qualified Data.ByteString.Lazy.Char8 as BS
 
 -- String has an Arbitrary instance already
 -- Bool has an Arbitrary instance already
--- A Thrift 'list' is a [].
--- [] has an Arbitrary instance already
+-- A Thrift 'list' is a Vector.
 
-instance Arbitrary ByteString
-  where arbitrary = do lst <- (arbitrary :: Gen String)
-                       return $ BS.pack lst
+instance Arbitrary ByteString where
+  arbitrary = BS.pack <$> arbitrary
 
-instance (Ord k, Arbitrary k, Arbitrary v) => Arbitrary (Map.Map k v)
-   where arbitrary = do lst <- arbitrary
-                        return $ Map.fromList lst
+instance (Ord k, Arbitrary k, Arbitrary v) => Arbitrary (Map.Map k v) where
+  arbitrary = Map.fromList <$> arbitrary
 
-instance (Ord k, Arbitrary k) => Arbitrary (Set.Set k)
-    where arbitrary = do lst <- arbitrary
-                         return $ Set.fromList lst
+instance (Ord k, Arbitrary k) => Arbitrary (Set.Set k) where
+  arbitrary = Set.fromList <$> arbitrary
 
-instance (Arbitrary k) => Arbitrary (Vector.Vector k)
-    where arbitrary = do lst <- arbitrary
-                         return $ Vector.fromList lst
+instance (Arbitrary k) => Arbitrary (Vector.Vector k) where
+  arbitrary = Vector.fromList <$> arbitrary
 
-instance Arbitrary Text.Text
-    where arbitrary = do str <- arbitrary
-                         return $ Text.pack str
+instance Arbitrary Text.Text where
+  arbitrary = Text.pack <$> arbitrary
 
-instance (Ord k, Hashable k, Arbitrary k, Arbitrary v) => Arbitrary (HMap.HashMap k v)
-   where arbitrary = do lst <- arbitrary
-                        return $ HMap.fromList lst
+instance (Eq k, Hashable k, Arbitrary k) => Arbitrary (HSet.HashSet k) where
+  arbitrary = HSet.fromList <$> arbitrary
+
+instance (Eq k, Hashable k, Arbitrary k, Arbitrary v) =>
+    Arbitrary (HMap.HashMap k v) where
+  arbitrary = HMap.fromList <$> arbitrary
 
 {-
    To handle Thrift 'enum' we would ideally use something like:

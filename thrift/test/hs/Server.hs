@@ -17,15 +17,20 @@
 -- under the License.
 --
 
+{-# OPTIONS_GHC -fno-warn-unused-matches -fno-warn-incomplete-patterns #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 module Server where
+
+import Control.Exception
+import Data.HashMap.Strict as Map
+
 import Thrift
+import Thrift.Server
+
 import ThriftTest
 import ThriftTest_Iface
-import Data.Map as Map
-import TServer
-import Control.Exception
 import ThriftTest_Types
-
 
 data TestHandler = TestHandler
 instance ThriftTest_Iface TestHandler where
@@ -35,6 +40,7 @@ instance ThriftTest_Iface TestHandler where
     testI32 a (Just x) = do print x; return x
     testI64 a (Just x) = do print x; return x
     testDouble a (Just x) = do print x; return x
+    testFloat a (Just x) = do print x; return x
     testStruct a (Just x) = do print x; return x
     testNest a (Just x) = do print x; return x
     testMap a (Just x) = do print x; return x
@@ -51,9 +57,9 @@ instance ThriftTest_Iface TestHandler where
     testMulti a a1 a2 a3 a4 a5 a6 = return (Xtruct Nothing Nothing Nothing Nothing)
     testException a c = throw (Xception (Just 1) (Just "bya"))
     testMultiException a c1 c2 = throw (Xception (Just 1) (Just "bya"))
-    testOneway a (Just i) = do print i
+    testOneway a (Just i) = print i
 
 
-main = do (run_basic_server TestHandler process 9090)
-          `Control.Exception.catch`
-          (\(TransportExn s t) -> print s)
+main :: IO ()
+main = catch (runBasicServer TestHandler process 9090)
+             (\(TransportExn s t) -> print s)
