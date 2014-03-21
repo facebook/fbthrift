@@ -142,7 +142,12 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
         // Notify the waitForCache functions that an error happened.
         // We should propagate this error up.
         notifyOfError(e.what());
-        LOG(ERROR) << "Failure in credential cache thread: " << e.what();
+        LOG(ERROR) << "Failure in credential cache thread: " << e.what()
+                   << " If the application is authenticating as a user,"
+                   << " run \"kinit\" to get new kerberos tickets. If the"
+                   << " application is authenticating as a service identity,"
+                   << " make sure the keytab is in the right place"
+                   << " and is accessible";
       }
 
       if (!stopManageThread_) {
@@ -214,12 +219,7 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::kInit() {
     0,
     nullptr,
     options.get());
-  raiseIf(code,
-          "Getting new tgt ticket using keytab. If the application is "
-          "authenticating as a user, run \"kinit\" to get new kerberos "
-          "tickets. If the application is authenticating as a service "
-          "identity, make sure the keytab is in " + keytab.getName() +
-          " and is accessible");
+  raiseIf(code, "Getting new tgt ticket using keytab " + keytab.getName());
 
   SCOPE_EXIT { krb5_free_cred_contents(ctx_.get(), &creds); };
 

@@ -371,7 +371,7 @@ struct Krb5Keytab::Iterator::State {
     CHECK(kt);
     krb5_error_code code =
       krb5_kt_start_seq_get(kt_->getContext(), kt_->get(), &cursor_);
-    raiseIf(kt_->getContext(), code, "reading keytab");
+    raiseIf(kt_->getContext(), code, "reading keytab " + kt_->getName());
     memset(&ktentry_, 0, sizeof(ktentry_));
   }
 
@@ -379,7 +379,7 @@ struct Krb5Keytab::Iterator::State {
     krb5_free_keytab_entry_contents(kt_->getContext(), &ktentry_);
     krb5_error_code code =
       krb5_kt_end_seq_get(kt_->getContext(), kt_->get(), &cursor_);
-    raiseIf(kt_->getContext(), code, "ending read of keytab");
+    raiseIf(kt_->getContext(), code, "ending read of keytab " + kt_->getName());
   }
 
   bool next() {
