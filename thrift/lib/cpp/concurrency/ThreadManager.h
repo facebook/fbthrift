@@ -107,6 +107,8 @@ class ThreadManager {
 
   virtual void threadFactory(std::shared_ptr<ThreadFactory> value) = 0;
 
+  virtual std::string getNamePrefix() const = 0;
+
   virtual void setNamePrefix(const std::string& name) = 0;
 
   virtual void addWorker(size_t value=1) = 0;

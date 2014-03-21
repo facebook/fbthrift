@@ -108,6 +108,9 @@ class ThriftServer : public apache::thrift::server::TServer {
   //! Prefix for worker thread names
   std::string cpp2WorkerThreadName_;
 
+  //! Prefix for pool thread names
+  std::string poolThreadName_;
+
   //! SSL context
   std::shared_ptr<apache::thrift::transport::SSLContext> sslContext_;
 
@@ -287,6 +290,17 @@ class ThriftServer : public apache::thrift::server::TServer {
   void setCpp2WorkerThreadName(const std::string& cpp2WorkerThreadName) {
     assert(workers_.size() == 0);
     cpp2WorkerThreadName_ = cpp2WorkerThreadName;
+  }
+
+  /**
+   * Set the prefix for naming the pool threads. Not set by default.
+   * must be called before serve() for it to take effect
+   * ignored if setThreadManager() is called.
+   *
+   *@param poolThreadName thread name prefix
+   */
+  void setPoolThreadName(const std::string& poolThreadName) {
+    poolThreadName_ = poolThreadName;
   }
 
   /**

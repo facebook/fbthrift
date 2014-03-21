@@ -660,6 +660,10 @@ public:
     }
   }
 
+  std::string getNamePrefix() const override {
+    return managers_[0]->getNamePrefix();
+  }
+
   void setNamePrefix(const std::string& name) {
     for (auto& m : managers_) {
       m->setNamePrefix(name);

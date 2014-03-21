@@ -233,6 +233,9 @@ void ThriftServer::setup() {
                         nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_,
                         true /*stats*/));
       threadManager->enableCodel(getEnableCodel());
+      if (!poolThreadName_.empty()) {
+        threadManager->setNamePrefix(poolThreadName_);
+      }
       threadManager->start();
       setThreadManager(threadManager);
     }

@@ -140,6 +140,11 @@ class ThreadManager::ImplT : public ThreadManager  {
     threadFactory_ = value;
   }
 
+  std::string getNamePrefix() const override {
+    Guard g(mutex_);
+    return namePrefix_;
+  }
+
   void setNamePrefix(const std::string& name) {
     Guard g(mutex_);
     namePrefix_ = name;
