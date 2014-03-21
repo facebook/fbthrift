@@ -19,7 +19,6 @@
 #ifndef THRIFT_UTIL_TSIMPLESERVERCREATOR_H_
 #define THRIFT_UTIL_TSIMPLESERVERCREATOR_H_ 1
 
-#include "common/base/Deprecation.h"
 #include "thrift/lib/cpp/util/SyncServerCreator.h"
 
 namespace apache { namespace thrift {
@@ -30,11 +29,13 @@ class TSimpleServer;
 
 namespace util {
 
-class FBCODE_DEPRECATED TSimpleServerCreator : public SyncServerCreator {
+class __attribute__((deprecated)) TSimpleServerCreator : public SyncServerCreator {
  public:
-  FBCODE_DISABLE_DEPRECATED_WARNING("Deprecated factory for TSimpleServer")
+  // "Deprecated factory for TSimpleServer"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   typedef server::TSimpleServer ServerType;
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 
   /**
    * Create a new TSimpleServerCreator.
@@ -55,9 +56,11 @@ class FBCODE_DEPRECATED TSimpleServerCreator : public SyncServerCreator {
 
   virtual std::shared_ptr<server::TServer> createServer();
 
-  FBCODE_DISABLE_DEPRECATED_WARNING("Deprecated factory for TSimpleServer")
+  // "Deprecated factory for TSimpleServer"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   std::shared_ptr<server::TSimpleServer> createSimpleServer();
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 };
 
 }}} // apache::thrift::util

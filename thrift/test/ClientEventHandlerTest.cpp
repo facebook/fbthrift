@@ -186,10 +186,12 @@ BOOST_AUTO_TEST_CASE(clientHandlerTest) {
   testProcessor->addEventHandler(server_add_handler2);
   testProcessor->setEventHandler(server_set_handler);
 
-  FBCODE_DISABLE_DEPRECATED_WARNING("Handler test, so pick the simplest server")
+  // "Handler test, so pick the simplest server"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   std::shared_ptr<TSimpleServerCreator> serverCreator(
     new TSimpleServerCreator(testProcessor, 0));
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 
   std::shared_ptr<TServer> server(serverCreator->createServer());
   ScopedServerThread serverThread(server);

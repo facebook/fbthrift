@@ -56,7 +56,9 @@ using namespace apache::thrift::test;
  * Traits classes that encapsulate how to create various types of servers.
  */
 
-FBCODE_DISABLE_DEPRECATED_WARNING("For testing TSimpleServer")
+// "For testing TSimpleServer"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 class TSimpleServerTraits {
  public:
   typedef TSimpleServer ServerType;
@@ -71,7 +73,7 @@ class TSimpleServerTraits {
           processor, socket, transportFactory, protocolFactory));
   }
 };
-FBCODE_RESTORE_DEPRECATED_WARNING()
+#pragma GCC diagnostic pop
 
 class TThreadedServerTraits {
  public:
@@ -88,7 +90,9 @@ class TThreadedServerTraits {
   }
 };
 
-FBCODE_DISABLE_DEPRECATED_WARNING("For testing TThreadPoolServer")
+// "For testing TThreadPoolServer"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 class TThreadPoolServerTraits {
  public:
   typedef TThreadPoolServer ServerType;
@@ -111,7 +115,7 @@ class TThreadPoolServerTraits {
           threadManager));
   }
 };
-FBCODE_RESTORE_DEPRECATED_WARNING()
+#pragma GCC diagnostic pop
 
 class TNonblockingServerTraits {
  public:

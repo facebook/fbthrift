@@ -506,12 +506,14 @@ int main(int argc, char **argv) {
   if (serverType == "simple") {
 
     // Server
-    FBCODE_DISABLE_DEPRECATED_WARNING("Testing TSimpleServer")
+    // "Testing TSimpleServer"
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     server = std::shared_ptr<TServer>(new TSimpleServer(testProcessor,
                                                    serverSocket,
                                                    transportFactory,
                                                    protocolFactory));
-    FBCODE_RESTORE_DEPRECATED_WARNING()
+    #pragma GCC diagnostic pop
 
     printf("Starting the server on port %d...\n", port);
 
@@ -527,13 +529,15 @@ int main(int argc, char **argv) {
 
     threadManager->start();
 
-    FBCODE_DISABLE_DEPRECATED_WARNING("Testing TThreadPoolServer")
+    // "Testing TThreadPoolServer"
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     server = std::shared_ptr<TServer>(new TThreadPoolServer(testProcessor,
                                                        serverSocket,
                                                        transportFactory,
                                                        protocolFactory,
                                                        threadManager));
-    FBCODE_RESTORE_DEPRECATED_WARNING()
+    #pragma GCC diagnostic pop
 
     printf("Starting the server on port %d...\n", port);
 

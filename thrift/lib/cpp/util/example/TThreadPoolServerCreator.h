@@ -19,7 +19,6 @@
 #ifndef THRIFT_UTIL_TTHREADPOOLSERVERCREATOR_H_
 #define THRIFT_UTIL_TTHREADPOOLSERVERCREATOR_H_ 1
 
-#include "common/base/Deprecation.h"
 #include "thrift/lib/cpp/util/SyncServerCreator.h"
 
 namespace apache { namespace thrift {
@@ -33,11 +32,14 @@ class TThreadPoolServer;
 
 namespace util {
 
-class FBCODE_DEPRECATED TThreadPoolServerCreator : public SyncServerCreator {
+class __attribute__((deprecated)) TThreadPoolServerCreator
+    : public SyncServerCreator {
  public:
-  FBCODE_DISABLE_DEPRECATED_WARNING("Deprecated factory for TThreadPoolServer")
+  // "Deprecated factory for TThreadPoolServer"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   typedef server::TThreadPoolServer ServerType;
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 
   enum OverloadAction {
     OVERLOAD_STOP_ACCEPTING,
@@ -123,9 +125,11 @@ class FBCODE_DEPRECATED TThreadPoolServerCreator : public SyncServerCreator {
 
   virtual std::shared_ptr<server::TServer> createServer();
 
-  FBCODE_DISABLE_DEPRECATED_WARNING("Deprecated factory for TThreadPoolServer")
+  // "Deprecated factory for TThreadPoolServer"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   std::shared_ptr<server::TThreadPoolServer> createThreadPoolServer();
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 
  private:
   OverloadAction overloadAction_;

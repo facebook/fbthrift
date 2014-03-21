@@ -76,7 +76,9 @@ shared_ptr<TServer> TThreadPoolServerCreator::createServer() {
   return createThreadPoolServer();
 }
 
-FBCODE_DISABLE_DEPRECATED_WARNING("Deprecated factory for TThreadPoolServer")
+// "Deprecated factory for TThreadPoolServer"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 shared_ptr<TThreadPoolServer>
 TThreadPoolServerCreator::createThreadPoolServer() {
   // Set up the thread factory and thread manager
@@ -144,6 +146,6 @@ TThreadPoolServerCreator::createThreadPoolServer() {
   SyncServerCreator::configureServer(server);
   return server;
 }
-FBCODE_RESTORE_DEPRECATED_WARNING()
+#pragma GCC diagnostic pop
 
 }}} // apache::thrift::util

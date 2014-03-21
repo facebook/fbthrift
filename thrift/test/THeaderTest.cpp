@@ -395,11 +395,13 @@ void runTestCase(ServerType sType, ClientType clientType) {
   std::shared_ptr<ServerCreatorBase> serverCreator;
   switch(sType) {
     case SERVER_TYPE_SIMPLE:
-      FBCODE_DISABLE_DEPRECATED_WARNING("Testing TSimpleServerCreator")
+      // "Testing TSimpleServerCreator"
+      #pragma GCC diagnostic push
+      #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
       serverCreator = std::shared_ptr<ServerCreatorBase>(new TSimpleServerCreator(
                                                       testProcessor, port,
                                                       false));
-      FBCODE_RESTORE_DEPRECATED_WARNING()
+      #pragma GCC diagnostic pop
       break;
     case SERVER_TYPE_THREADED:
       serverCreator = std::shared_ptr<ServerCreatorBase>(new TThreadedServerCreator(
@@ -407,10 +409,12 @@ void runTestCase(ServerType sType, ClientType clientType) {
                                                       false));
       break;
     case SERVER_TYPE_THREADPOOL:
-      FBCODE_DISABLE_DEPRECATED_WARNING("Testing TThreadPoolServerCreator")
+      // "Testing TThreadPoolServerCreator"
+      #pragma GCC diagnostic push
+      #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
       serverCreator = std::shared_ptr<ServerCreatorBase>(
         new TThreadPoolServerCreator(testProcessor, port, false));
-      FBCODE_RESTORE_DEPRECATED_WARNING()
+      #pragma GCC diagnostic pop
       break;
     case SERVER_TYPE_NONBLOCKING:
       serverCreator.reset(new TNonblockingServerCreator(testProcessor, port));

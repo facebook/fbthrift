@@ -17,7 +17,6 @@
  * under the License.
  */
 
-#include "common/base/Deprecation.h"
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include "thrift/lib/cpp/server/example/TSimpleServer.h"
 

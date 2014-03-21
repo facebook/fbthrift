@@ -20,7 +20,6 @@
 #ifndef THRIFT_SERVER_TTHREADPOOLSERVER_H
 #define THRIFT_SERVER_TTHREADPOOLSERVER_H 1
 
-#include "common/base/Deprecation.h"
 #include "thrift/lib/cpp/concurrency/ThreadManager.h"
 #include "thrift/lib/cpp/server/TServer.h"
 #include "thrift/lib/cpp/transport/TServerTransport.h"
@@ -35,7 +34,7 @@ using apache::thrift::protocol::TProtocolFactory;
 using apache::thrift::transport::TServerTransport;
 using apache::thrift::transport::TTransportFactory;
 
-class FBCODE_DEPRECATED TThreadPoolServer : public TServer {
+class __attribute__((deprecated)) TThreadPoolServer : public TServer {
  public:
   template<typename ProcessorFactory>
   TThreadPoolServer(

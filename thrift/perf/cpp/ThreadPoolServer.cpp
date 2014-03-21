@@ -52,9 +52,11 @@ DEFINE_int32(accept_timeout, 0, "accept timeout");
 DEFINE_int32(send_buffer, 0, "TCP send buffer");
 DEFINE_int32(recv_buffer, 0, "TCP receive buffer");
 
-FBCODE_DISABLE_DEPRECATED_WARNING("Testing TThreadPoolServer")
+// "Testing TThreadPoolServer"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 void setTunables(TServerSocket* socket, TThreadPoolServer* server) {
-FBCODE_RESTORE_DEPRECATED_WARNING()
+#pragma GCC diagnostic pop
   if (FLAGS_task_timeout > 0) {
     server->setTimeout(FLAGS_task_timeout);
   }
@@ -136,7 +138,9 @@ int main(int argc, char* argv[]) {
   typedef LoadTestProcessorT<ProtocolType> LoadProcessor;
   std::shared_ptr<LoadProcessor> processor(new LoadProcessor(handler));
 
-  FBCODE_DISABLE_DEPRECATED_WARNING("Testing TThreadPoolServer")
+  // "Testing TThreadPoolServer"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   // the server itself
   scoped_ptr<TThreadPoolServer> server;
   if (FLAGS_header) {
@@ -149,7 +153,7 @@ int main(int argc, char* argv[]) {
                                        transportFactory, protocolFactory,
                                        threadManager));
   }
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 
   // set tunable parameters
   setTunables(serverSocket.get(), server.get());

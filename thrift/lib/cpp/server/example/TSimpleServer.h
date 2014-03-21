@@ -20,7 +20,6 @@
 #ifndef THRIFT_SERVER_TSIMPLESERVER_H
 #define THRIFT_SERVER_TSIMPLESERVER_H 1
 
-#include "common/base/Deprecation.h"
 #include "thrift/lib/cpp/server/TServer.h"
 #include "thrift/lib/cpp/transport/TServerTransport.h"
 
@@ -33,7 +32,7 @@ namespace apache { namespace thrift { namespace server {
  * of how to extend the TServer interface.
  *
  */
-class FBCODE_DEPRECATED TSimpleServer : public TServer {
+class __attribute__((deprecated)) TSimpleServer : public TServer {
  public:
   template<typename ProcessorFactory>
   TSimpleServer(

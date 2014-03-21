@@ -225,9 +225,11 @@ void runTest() {
 }
 
 BOOST_AUTO_TEST_CASE(TSimpleServerTest) {
-  FBCODE_DISABLE_DEPRECATED_WARNING("For testing TSimpleServerCreator")
+  // "For testing TSimpleServerCreator"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   runTest<TSimpleServerCreator>();
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 }
 
 BOOST_AUTO_TEST_CASE(TThreadedServerTest) {
@@ -235,9 +237,11 @@ BOOST_AUTO_TEST_CASE(TThreadedServerTest) {
 }
 
 BOOST_AUTO_TEST_CASE(TThreadPoolServerTest) {
-  FBCODE_DISABLE_DEPRECATED_WARNING("For testing TThreadPoolServerCreator")
+  // "For testing TThreadPoolServerCreator"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   runTest<TThreadPoolServerCreator>();
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 }
 
 /**

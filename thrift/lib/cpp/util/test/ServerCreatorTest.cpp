@@ -82,9 +82,11 @@ void testServerCreator() {
 }
 
 BOOST_AUTO_TEST_CASE(SimpleServer) {
-  FBCODE_DISABLE_DEPRECATED_WARNING("Testing TSimpleServerCreator")
+  // "Testing TSimpleServerCreator"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   testServerCreator<TSimpleServerCreator>();
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 }
 
 BOOST_AUTO_TEST_CASE(ThreadedServer) {
@@ -92,9 +94,11 @@ BOOST_AUTO_TEST_CASE(ThreadedServer) {
 }
 
 BOOST_AUTO_TEST_CASE(ThreadPoolServer) {
-  FBCODE_DISABLE_DEPRECATED_WARNING("Testing TThreadPoolServerCreator")
+  // "Testing TThreadPoolServerCreator"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   testServerCreator<TThreadPoolServerCreator>();
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 }
 
 BOOST_AUTO_TEST_CASE(NonblockingServer) {
@@ -149,9 +153,11 @@ void testBindFailure() {
 }
 
 BOOST_AUTO_TEST_CASE(SimpleServerBindFailure) {
-  FBCODE_DISABLE_DEPRECATED_WARNING("Testing TSimpleServerCreator")
+  // "Testing TSimpleServerCreator"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   testBindFailure<TSimpleServerCreator>();
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 }
 
 BOOST_AUTO_TEST_CASE(ThreadedServerBindFailure) {
@@ -159,9 +165,11 @@ BOOST_AUTO_TEST_CASE(ThreadedServerBindFailure) {
 }
 
 BOOST_AUTO_TEST_CASE(ThreadPoolServerBindFailure) {
-  FBCODE_DISABLE_DEPRECATED_WARNING("TestingTThreadPoolServerCreator")
+  // "TestingTThreadPoolServerCreator"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   testBindFailure<TThreadPoolServerCreator>();
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 }
 
 BOOST_AUTO_TEST_CASE(NonblockingServerBindFailure) {
@@ -210,9 +218,11 @@ void testThreadedBindFailure() {
 }
 
 BOOST_AUTO_TEST_CASE(SimpleServerThreadedBindFailure) {
-  FBCODE_DISABLE_DEPRECATED_WARNING("Testing TSimpleServerCreator")
+  // "Testing TSimpleServerCreator"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   testThreadedBindFailure<TSimpleServerCreator>();
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 }
 
 BOOST_AUTO_TEST_CASE(ThreadedServerThreadedBindFailure) {
@@ -220,9 +230,11 @@ BOOST_AUTO_TEST_CASE(ThreadedServerThreadedBindFailure) {
 }
 
 BOOST_AUTO_TEST_CASE(ThreadPoolServerThreadedBindFailure) {
-  FBCODE_DISABLE_DEPRECATED_WARNING("Testing TThreadPoolServerCreator")
+  // "Testing TThreadPoolServerCreator"
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   testThreadedBindFailure<TThreadPoolServerCreator>();
-  FBCODE_RESTORE_DEPRECATED_WARNING()
+  #pragma GCC diagnostic pop
 }
 
 BOOST_AUTO_TEST_CASE(NonblockingServerThreadedBindFailure) {

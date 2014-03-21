@@ -31,7 +31,9 @@ shared_ptr<TServer> TSimpleServerCreator::createServer() {
   return createSimpleServer();
 }
 
-FBCODE_DISABLE_DEPRECATED_WARNING("Deprecated factory for TSimpleServer")
+// "Deprecated factory for TSimpleServer"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 shared_ptr<TSimpleServer> TSimpleServerCreator::createSimpleServer() {
   shared_ptr<TSimpleServer> server;
 
@@ -50,6 +52,6 @@ shared_ptr<TSimpleServer> TSimpleServerCreator::createSimpleServer() {
   SyncServerCreator::configureServer(server);
   return server;
 }
-FBCODE_RESTORE_DEPRECATED_WARNING()
+#pragma GCC diagnostic pop
 
 }}} // apache::thrift::util
