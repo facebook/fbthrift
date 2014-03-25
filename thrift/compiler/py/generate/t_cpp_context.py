@@ -317,29 +317,18 @@ class CppPrimitiveFactory(PrimitiveFactory):
 
 class CppOutputContext(OutputContext):
 
-    def __init__(self, output_cpp, output_h, header_path, output_tcc=None,
-                 tcc_path=None):
+    def __init__(self, output_cpp, output_h, output_tcc, header_path):
         self._output_cpp = output_cpp
         self._output_h = output_h
+        self._output_tcc = output_tcc
         self._header_path = header_path
         outputs = [output_cpp, output_h]
-        # if we define a tcc output, make sure tcc path is passed as well
-        assert (output_tcc is None) == (tcc_path is None)
-        self._templates = output_tcc is not None
-        if self._templates:
-            self._output_tcc = output_tcc
-            self._tcc_path = tcc_path
-            outputs.append(output_tcc)
-        else:
-            self._output_tcc = DummyOutput()
 
-        cpp_scope_factory = create_scope_factory(CppScope, self._output_cpp)
-        h_scope_factory = create_scope_factory(CppScope, self._output_h)
-        tcc_scope_factory = create_scope_factory(CppScope, self._output_tcc)
-        # accessors in the context to get a scope
-        self._output_cpp.make_scope = cpp_scope_factory
-        self._output_h.make_scope = h_scope_factory
-        self._output_tcc.make_scope = tcc_scope_factory
+        if output_tcc:
+            outputs.append(output_tcc)
+
+        for output in outputs:
+            output.make_scope = create_scope_factory(CppScope, output)
 
         # shorthand to write to all outputs at the same time
         self._all_outputs = CompositeOutput(*outputs)
@@ -379,7 +368,7 @@ class CppOutputContext(OutputContext):
             # include h in cpp
             print >>self._output_cpp, '#include "{0}.h"\n'.format(
                         self._header_path)
-            if self._templates:
+            if self._output_tcc:
                 print >>self._output_cpp, '#include "{0}.tcc"\n'.format(
                     self._header_path)
                 # start guard in tcc

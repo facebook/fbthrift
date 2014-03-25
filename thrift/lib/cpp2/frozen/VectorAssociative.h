@@ -1,0 +1,72 @@
+/*
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+#pragma once
+
+#include <vector>
+#include <utility>
+
+namespace apache {
+namespace thrift {
+namespace frozen {
+
+/*
+ * Vector-backed associative types without support for lookup, strictly for
+ * building large maps and sets with minimal memory. Uniqueness assumed.
+ */
+template <class V>
+class VectorAsSet : public std::vector<V> {
+  typedef std::vector<V> Base;
+ public:
+  /**
+   * Insert value into the set at unspecified location.
+   */
+  void insert(const V& value) { this->emplace_back(value); }
+  void insert(V&& value) { this->emplace_back(std::move(value)); }
+
+  template <class T>
+  void insert(T&& value) {
+    this->emplace_back(std::forward<T>(value));
+  }
+
+  /**
+   * Insert value into the set with a specified hint location.
+   * Note: Hint is ignored, insertion always adds to the end.
+   */
+  void insert(typename Base::iterator hint, const V& value) {
+    this->emplace_back(value);
+  }
+
+  void insert(typename Base::iterator hint, V&& value) {
+    this->emplace_back(std::move(value));
+  }
+
+  template <class T>
+  void insert(typename Base::iterator hint, T&& value) {
+    this->emplace_back(std::forward<T>(value));
+  }
+};
+template <class V>
+class VectorAsHashSet : public VectorAsSet<V> {};
+
+template <class K, class V>
+class VectorAsMap : public VectorAsSet<std::pair<const K, V>> {};
+
+template <class K, class V>
+class VectorAsHashMap : public VectorAsMap<K, V> {};
+
+}
+}
+}

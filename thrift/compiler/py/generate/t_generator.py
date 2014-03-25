@@ -82,6 +82,8 @@ class Generator(object):
                 program.objects, program.services):
             self._generate(item)
         self._generate_consts(program.consts)
+        if self._flag('frozen2'):
+            self._generate_layouts(program.objects)
         self.close_generator()
 
     def init_generator(self):
@@ -95,6 +97,9 @@ class Generator(object):
         return self._program
 
     def _generate_consts(self, constants):
+        raise NotImplementedError
+
+    def _generate_layouts(self):
         raise NotImplementedError
 
     def _generate(self, what):

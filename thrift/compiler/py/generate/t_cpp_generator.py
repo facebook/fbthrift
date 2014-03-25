@@ -90,6 +90,7 @@ class CppGenerator(t_generator.Generator):
         'stack_arguments': 'Pass arguments on stack instead of heap',
         'future': 'enable wangle futures',
         'process_in_event_base': 'Process request in event base thread',
+        'frozen2': 'enable frozen structures',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -2829,8 +2830,8 @@ class CppGenerator(t_generator.Generator):
                         if struct_options.has_serialized_fields:
                             out('{0}.reset();'.format(
                                 self._serialized_fields_name))
-
         # END if not pointers
+
         if 'final' not in obj.annotations:
             with struct.defn('~{name}() throw()', name=obj.name,
                              modifiers='virtual', in_header=True):
@@ -3784,6 +3785,39 @@ class CppGenerator(t_generator.Generator):
                 else:
                     out('return obj->{method}(proto);'.format(**locals()))
 
+    def _generate_frozen_layout(self, obj, s):
+        fields = obj.as_struct.members
+        type_name = self._type_name(obj)
+
+        def visitFields(fmt, fieldFmt, **kwargs):
+            return fmt.format(
+                type=type_name,
+                fields=''.join([
+                    fieldFmt.format(
+                        type=self._type_name(f.type),
+                        name=f.name,
+                        _opt='_OPT' if f.req == e_req.optional else '',
+                        id=f.key,
+                        **kwargs) for f in fields]),
+                **kwargs)
+        s(visitFields(
+            'FROZEN_TYPE({type},{fields}{view})',
+            '\n  FROZEN_FIELD{_opt}({name}, {id}, {type})',
+            view=visitFields(
+                '\n  FROZEN_VIEW({fields})',
+                '\n    FROZEN_VIEW_FIELD{_opt}({name}, {type})')))
+        for (typeFmt, fieldFmt) in [
+                ('CTOR', 'CTOR_FIELD{_opt}({name}, {id})'),
+                ('LAYOUT', 'LAYOUT_FIELD{_opt}({name})'),
+                ('FREEZE', 'FREEZE_FIELD{_opt}({name})'),
+                ('THAW', 'THAW_FIELD{_opt}({name})'),
+                ('DEBUG', 'DEBUG_FIELD({name})'),
+                ('CLEAR', 'CLEAR_FIELD({name})'),
+                ('SAVE', 'SAVE_FIELD({name})'),
+                ('LOAD', 'LOAD_FIELD({name})')]:
+            s.impl(visitFields('FROZEN_' + typeFmt + '({type},{fields})',
+                               '\n  FROZEN_' + fieldFmt))
+
     def _generate_cpp_struct(self, obj, is_exception=False):
         # We write all of these to the types scope
         scope = self._types_scope
@@ -3792,14 +3826,8 @@ class CppGenerator(t_generator.Generator):
 
         # We're at types scope now
         scope.release()
-        scope = self._types_global.namespace('apache.thrift').scope
-
-        scope.acquire()
-
-        self._generate_cpp2ops(False, obj, self._types_scope)
-
-
-        scope.release()
+        with self._types_global.namespace('apache.thrift').scope:
+            self._generate_cpp2ops(False, obj, self._types_scope)
 
         # Re-enter types scope, but we can't actually re-enter a scope,
         # so let's recreate it
@@ -3807,12 +3835,8 @@ class CppGenerator(t_generator.Generator):
                 scope.namespace(self._get_namespace()).scope
         scope.acquire()
 
-
     def _generate_object(self, obj):
-        if obj.is_xception:
-            self._generate_cpp_struct(obj, True)
-        else:
-            self._generate_cpp_struct(obj)
+        self._generate_cpp_struct(obj, obj.is_xception)
 
     _generate_map = {
         frontend.t_typedef: _generate_typedef,
@@ -3923,6 +3947,18 @@ class CppGenerator(t_generator.Generator):
         else:
             raise TypeError('INVALID TYPE IN print_const_definition: ' + t.name)
 
+    def _generate_layouts(self, objects):
+        if not self.flag_frozen2:
+            return
+        context = self._make_context(self._program.name + '_layouts')
+        s = get_global_scope(CppPrimitiveFactory, context)
+        s('#include "thrift/lib/cpp2/frozen/Frozen.h"')
+        s('#include "{0}"'.format(self._with_include_prefix(self._program,
+            self._program.name + '_types.h')))
+        with s.namespace('apache.thrift.frozen').scope:
+            for obj in objects:
+                self._generate_frozen_layout(obj, out())
+
     def _generate_consts(self, constants):
         name = self._program.name
         # build the const scope
@@ -3971,17 +4007,11 @@ class CppGenerator(t_generator.Generator):
         # open files and instantiate outputs
         output_h = self._write_to(filename + '.h')
         output_impl = self._write_to(filename + '.cpp')
+        output_tcc = self._write_to(filename + '.tcc') if tcc else None
         header_path = self._with_include_prefix(self._program, filename)
-        if tcc:
-            output_tcc = self._write_to(filename + '.tcc')
-            tcc_path = self._with_include_prefix(
-                self._program, filename + ".tcc")
-            tcc_stuff = output_tcc, tcc_path
-        else:
-            tcc_stuff = ()
 
-        context = CppOutputContext(output_impl, output_h, header_path,
-                                   *tcc_stuff)
+        context = CppOutputContext(output_impl, output_h, output_tcc,
+                                   header_path)
 
         print >>context.outputs, self._autogen_comment
         return context

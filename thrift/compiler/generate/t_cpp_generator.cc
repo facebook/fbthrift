@@ -104,6 +104,9 @@ class t_cpp_generator : public t_oop_generator {
     iter = parsed_options.find("frozen");
     frozen_ = (iter != parsed_options.end());
 
+    iter = parsed_options.find("frozen2");
+    frozen2_ = (iter != parsed_options.end());
+
     frozen_packed_ = (iter != parsed_options.end() && iter->second == "packed");
 
     // Reminder: Add documentation for new options at the end of this file!
@@ -145,7 +148,10 @@ class t_cpp_generator : public t_oop_generator {
 
   void generate_service(t_service* tservice);
 
-  void print_const_value(std::ofstream& out, std::string name, t_type* type, t_const_value* value);
+  void print_const_value(std::ofstream& out,
+                         std::string name,
+                         t_type* type,
+                         t_const_value* value);
   std::string render_const_value     (std::ofstream& out,
                                       t_type*        type,
                                       t_const_value* value,
@@ -165,6 +171,7 @@ class t_cpp_generator : public t_oop_generator {
                                       bool needs_copy_constructor=false);
   void generate_copy_constructor    (std::ofstream& out, t_struct* tstruct);
   void generate_frozen_struct_definition(t_struct* tstruct);
+  void generate_frozen2_struct_definition(t_struct* tstruct);
 
   void generate_json_reader          (std::ofstream& out, t_struct* tstruct);
   void generate_json_struct          (std::ofstream& out, t_struct* tstruct,
@@ -415,6 +422,7 @@ class t_cpp_generator : public t_oop_generator {
    * mmaping from disk
    */
   bool frozen_;
+  bool frozen2_;
 
   /*
    * Add #pragma pack for frozen structs
@@ -441,6 +449,8 @@ class t_cpp_generator : public t_oop_generator {
   std::ofstream f_types_;
   std::ofstream f_types_impl_;
   std::ofstream f_types_tcc_;
+  std::ofstream f_types_layouts_;
+  std::ofstream f_types_layouts_impl_;
   std::ofstream f_header_;
   std::ofstream f_service_;
   std::ofstream f_service_tcc_;
@@ -473,13 +483,27 @@ void t_cpp_generator::init_generator() {
   MKDIR(get_out_dir().c_str());
 
   // Make output file
-  string f_types_name = get_out_dir()+program_name_+"_types.h";
+  string f_types_name = get_out_dir() + program_name_ + "_types.h";
   f_types_.open(f_types_name.c_str());
   record_genfile(f_types_name);
 
-  string f_types_impl_name = get_out_dir()+program_name_+"_types.cpp";
+  string f_types_impl_name = get_out_dir() + program_name_ + "_types.cpp";
   f_types_impl_.open(f_types_impl_name.c_str());
   record_genfile(f_types_impl_name);
+
+  if (frozen2_) {
+    string f_types_layouts_name = get_out_dir() + program_name_ + "_layouts.h";
+    f_types_layouts_.open(f_types_layouts_name.c_str());
+    record_genfile(f_types_layouts_name);
+    string f_types_layouts_impl_name =
+        get_out_dir() + program_name_ + "_layouts.cpp";
+    f_types_layouts_impl_.open(f_types_layouts_impl_name.c_str());
+    record_genfile(f_types_layouts_impl_name);
+    f_types_layouts_ <<
+      autogen_comment();
+    f_types_layouts_impl_ <<
+      autogen_comment();
+  }
 
   if (gen_templates_) {
     // If we don't open the stream, it appears to just discard data,
@@ -531,6 +555,21 @@ void t_cpp_generator::init_generator() {
     f_types_ <<
       "#include \"thrift/lib/cpp/Frozen.h\"" << endl <<
       endl;
+  }
+
+  if (frozen2_) {
+    f_types_layouts_
+        << get_include_guard("_LAYOUTS_H") << endl
+        << "#include \"" << get_include_prefix(*get_program())
+          << program_name_ << "_types.h\"" << endl
+        << "#include \"thrift/lib/cpp2/frozen/Frozen.h\"" << endl
+        << endl << "namespace apache { namespace thrift { namespace frozen {"
+        << endl;
+
+    f_types_layouts_impl_
+        << "#include \"" << get_include_prefix(*get_program()) << program_name_
+        << "_layouts.h\"" << endl << endl
+        << "namespace apache { namespace thrift { namespace frozen {" << endl;
   }
 
   if (gen_json_) {
@@ -688,6 +727,17 @@ void t_cpp_generator::close_generator() {
     "#endif" << endl;
 
   // Close output file
+  if (frozen2_) {
+    f_types_layouts_
+      << endl
+      << "}}} // apache::thrift::frozen " << endl
+      << "#endif" << endl;
+    f_types_layouts_impl_
+      << endl
+      << "}}} // apache::thrift::frozen " << endl;
+    f_types_layouts_.close();
+    f_types_layouts_impl_.close();
+  }
   f_types_.close();
   f_types_impl_.close();
   f_types_tcc_.close();
@@ -1123,6 +1173,11 @@ void t_cpp_generator::generate_cpp_struct(t_struct* tstruct, bool is_exception) 
   if ((frozen_ && !is_exception) ||
       tstruct->annotations_.count("frozen") != 0) {
     generate_frozen_struct_definition(tstruct);
+  }
+
+  if ((frozen2_ && !is_exception) ||
+      tstruct->annotations_.count("frozen2") != 0) {
+    generate_frozen2_struct_definition(tstruct);
   }
 
   std::ofstream& out = (gen_templates_ ? f_types_tcc_ : f_types_impl_);
@@ -2210,7 +2265,7 @@ void t_cpp_generator::generate_frozen_struct_definition(t_struct* tstruct) {
     indent() << "const " << freezerName << "::FrozenType& src," << endl <<
     indent() << freezerName << "::ThawedType& dst) {" << endl;
   indent_down();
-  for (t_field* field : members) {
+  for (const t_field* field : members) {
     const string& fname = field->get_name();
     if (is_boolean_type(field->get_type())) {
       indent(f_types_impl_) << "dst." << fname << " = src." << fname << ";" <<
@@ -2231,6 +2286,59 @@ void t_cpp_generator::generate_frozen_struct_definition(t_struct* tstruct) {
   f_types_impl_ <<
     "}} // apache::thrift " << endl << endl <<
     ns_open_ << endl;
+}
+
+/**
+ * Generate Frozen2 Layout specializations (see cpp2/frozen/Frozen.h).
+ */
+void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
+  string structName = type_name(tstruct,  ALWAYS_NAMESPACE);
+  const auto& members = tstruct->get_members();
+  auto emitFieldFormat = [&](
+      ostream& os, const string& format, const t_field* f) {
+    os << folly::vformat(
+              format,
+              map<string, string>{
+                  {"name", f->get_name()},
+                  {"type", type_name(f->get_type(), ALWAYS_NAMESPACE)},
+                  {"id", folly::to<string>(f->get_key())},
+                  {"_opt", f->get_req() == t_field::T_OPTIONAL ? "_OPT" : ""}});
+  };
+
+  // Header
+  f_types_layouts_ << endl;
+  f_types_layouts_ << folly::format("FROZEN_TYPE({},", structName);
+  for (const t_field* field : members) {
+    emitFieldFormat(f_types_layouts_,
+                    "\n  FROZEN_FIELD{_opt}({name}, {id}, {type})",
+                    field);
+  }
+  f_types_layouts_ << "\n  FROZEN_VIEW(";
+  for (const t_field* field : members) {
+    emitFieldFormat(f_types_layouts_,
+                    "\n    FROZEN_VIEW_FIELD{_opt}({name}, {type})",
+                    field);
+  }
+  f_types_layouts_ << "));" << endl;
+
+  // Implementation
+  f_types_layouts_impl_ << endl;
+  for (auto step : {make_pair("CTOR", "CTOR_FIELD{_opt}({name}, {id})"),
+                    make_pair("LAYOUT", "LAYOUT_FIELD{_opt}({name})"),
+                    make_pair("FREEZE", "FREEZE_FIELD{_opt}({name})"),
+                    make_pair("THAW", "THAW_FIELD{_opt}({name})"),
+                    make_pair("DEBUG", "DEBUG_FIELD({name})"),
+                    make_pair("CLEAR", "CLEAR_FIELD({name})"),
+                    make_pair("SAVE", "SAVE_FIELD({name})"),
+                    make_pair("LOAD", "LOAD_FIELD({name})")}) {
+    f_types_layouts_impl_
+        << folly::format("FROZEN_{}({},", step.first, structName);
+    for (const t_field* field : members) {
+      emitFieldFormat(
+          f_types_layouts_impl_, string("\n  FROZEN_") + step.second, field);
+    }
+    f_types_layouts_impl_ << ");\n";
+  }
 }
 
 void t_cpp_generator::generate_json_field(ofstream& out,
@@ -6970,7 +7078,8 @@ THRIFT_REGISTER_GENERATOR(cpp, "C++",
 //   bootstrap:       Internal use.
 "    cob_style:       Generate \"Continuation OBject\"-style classes as well.\n"
 "    enum_strict:     Generate C++11 class enums instead of C-style enums.\n"
-"    frozen[=packed]: Generate support code for frozen (mmap-able) structs.\n"
+"    frozen[=packed]: Enable frozen (mmap-able) structs.\n"
+"    frozen2:         Enable frozen2 (versioned, mmap-able) structs.\n"
 "    include_prefix:  Use full include paths in generated files.\n"
 "    json:            Generate functions to parse JsonEntity to thrift struct.\n"
 "    no_client_completion: Omit calls to completion__() in CobClient classes.\n"
