@@ -3106,6 +3106,10 @@ class CppGenerator(t_generator.Generator):
         s2.release()  # switch
         # Read field end marker
         s1('xfer += iprot->readFieldEnd();')
+        # Eat the stop byte that terminates union content
+        if obj.is_union:
+            s1('xfer += iprot->readFieldBegin(fname, ftype, fid);')
+            s1('xfer += iprot->readFieldEnd();')
         if struct_options.has_serialized_fields:
             with s1('if (fserialized)').scope:
                 out('iprot->readFromPositionAndAppend(fbegin, serialized);')
