@@ -458,13 +458,13 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
 
     bool first = true;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = NULL;
+      t_type* field_type = nullptr;
 
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter)
         if ((*f_iter)->get_name() == v_iter->first->get_string())
           field_type = (*f_iter)->get_type();
 
-      if (field_type == NULL)
+      if (field_type == nullptr)
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
 
       string fname = v_iter->first->get_string();
@@ -841,7 +841,7 @@ void t_hs_generator::generate_service_interface(t_service* tservice) {
   f_iface_ << nl;
 
   string sname = capitalize(service_name_);
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     string extends = type_name(tservice->get_extends());
 
     indent(f_iface_) << "import " << extends << "_Iface" << nl;
@@ -894,7 +894,7 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
   string sname = capitalize(service_name_);
   indent(f_client_) << "module " << sname << "_Client(" << exports << ") where" << nl;
 
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     indent(f_client_) << "import " << extends << "_Client" << nl;
   }
@@ -1044,7 +1044,7 @@ void t_hs_generator::generate_service_server(t_service* tservice) {
   }
 
   indent(f_service_) << "_ -> ";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     f_service_ << type_name(tservice->get_extends()) << ".proc_ handler (iprot,oprot) (name,typ,seqid)" << nl;
 
   } else {
@@ -1738,7 +1738,7 @@ string t_hs_generator::type_name(t_type* ttype, string function_prefix) {
   string prefix = "";
   t_program* program = ttype->get_program();
 
-  if (program != NULL && program != program_)
+  if (program != nullptr && program != program_)
     if (!ttype->is_service())
       prefix = capitalize(program->get_name()) + "_Types.";
 

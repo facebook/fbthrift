@@ -75,7 +75,7 @@ class HeaderServerChannel : public ResponseChannel,
     if (callback) {
       setReceiveCallback(this);
     } else {
-      setReceiveCallback(NULL);
+      setReceiveCallback(nullptr);
     }
   }
 

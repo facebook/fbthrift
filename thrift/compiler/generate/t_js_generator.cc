@@ -197,7 +197,7 @@ class t_js_generator : public t_oop_generator {
 
   std::string js_type_namespace(t_program* p) {
     if (gen_node_) {
-      if (p != NULL && p != program_) {
+      if (p != nullptr && p != program_) {
         return p->get_name() + "_ttypes.";
       }
       return "ttypes.";
@@ -421,13 +421,13 @@ string t_js_generator::render_const_value(t_type* type, t_const_value* value) {
     const map<t_const_value*, t_const_value*>& val = value->get_map();
     map<t_const_value*, t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = NULL;
+      t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
         }
       }
-      if (field_type == NULL) {
+      if (field_type == nullptr) {
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
       if (v_iter != val.begin())
@@ -539,7 +539,7 @@ void t_js_generator::generate_js_struct_definition(ofstream& out,
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     string dval = declare_field(*m_iter,false,true);
     t_type* t = get_true_type((*m_iter)->get_type());
-    if ((*m_iter)->get_value() != NULL && !(t->is_struct() || t->is_xception())) {
+    if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
         dval = render_const_value((*m_iter)-> get_type(), (*m_iter)->get_value());
         out << indent() << "this." << (*m_iter)->get_name() << " = " << dval << ";" << endl;
     } else {
@@ -553,7 +553,7 @@ void t_js_generator::generate_js_struct_definition(ofstream& out,
 
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       t_type* t = get_true_type((*m_iter)->get_type());
-      if ((*m_iter)->get_value() != NULL && (t->is_struct() || t->is_xception())) {
+      if ((*m_iter)->get_value() != nullptr && (t->is_struct() || t->is_xception())) {
         indent(out) << "this." << (*m_iter)->get_name() << " = " << render_const_value(t, (*m_iter)->get_value())  << ";" << endl;
       }
     }
@@ -748,7 +748,7 @@ void t_js_generator::generate_service(t_service* tservice) {
       render_includes() << endl;
 
     if (gen_node_) {
-      if (tservice->get_extends() != NULL) {
+      if (tservice->get_extends() != nullptr) {
         f_service_ <<
           "var " << tservice->get_extends()->get_name() <<
           " = require('" << js_node_module(tservice->get_extends()->get_program()) << "/" <<
@@ -793,7 +793,7 @@ void t_js_generator::generate_service_processor(t_service* tservice) {
 
     scope_down(f_service_);
 
-    if (tservice->get_extends() != NULL) {
+    if (tservice->get_extends() != nullptr) {
         indent(f_service_) << "Thrift.inherits(" <<
             js_namespace(tservice->get_program()) <<
             service_name_ << "Processor, " <<
@@ -995,7 +995,7 @@ void t_js_generator::generate_service_client(t_service* tservice) {
       indent() << "};" << endl;
 
 
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     indent(f_service_) << "Thrift.inherits(" <<
         js_namespace(tservice->get_program()) <<
         service_name_ << "Client, " <<

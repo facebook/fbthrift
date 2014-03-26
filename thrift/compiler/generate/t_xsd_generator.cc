@@ -64,7 +64,7 @@ class t_xsd_generator : public t_generator {
 
  private:
 
-  void generate_element(std::ostream& out, std::string name, t_type* ttype, t_struct* attrs=NULL, bool optional=false, bool nillable=false, bool list_element=false);
+  void generate_element(std::ostream& out, std::string name, t_type* ttype, t_struct* attrs=nullptr, bool optional=false, bool nillable=false, bool list_element=false);
 
   std::string ns(std::string in, std::string ns) {
     return ns + ":" + in;
@@ -181,7 +181,7 @@ void t_xsd_generator::generate_element(ostream& out,
     indent(out) <<
       "<xsd:element name=\"" << name << "\"" << soptional << snillable << ">" << endl;
     indent_up();
-    if (attrs == NULL && ttype->is_void()) {
+    if (attrs == nullptr && ttype->is_void()) {
       indent(out) <<
         "<xsd:complexType />" << endl;
     } else {
@@ -199,12 +199,12 @@ void t_xsd_generator::generate_element(ostream& out,
           subname = type_name(subtype);
         }
         f_php_ << "$GLOBALS['" << program_->get_name() << "_xsd_elt_" << name << "'] = '" << subname << "';" << endl;
-        generate_element(out, subname, subtype, NULL, false, false, true);
+        generate_element(out, subname, subtype, nullptr, false, false, true);
         indent_down();
         indent(out) << "</xsd:sequence>" << endl;
         indent(out) << "<xsd:attribute name=\"list\" type=\"xsd:boolean\" />" << endl;
       }
-      if (attrs != NULL) {
+      if (attrs != nullptr) {
         const vector<t_field*>& members = attrs->get_members();
         vector<t_field*>::const_iterator a_iter;
         for (a_iter = members.begin(); a_iter != members.end(); ++a_iter) {
@@ -219,7 +219,7 @@ void t_xsd_generator::generate_element(ostream& out,
     indent(out) <<
       "</xsd:element>" << endl;
   } else {
-    if (attrs == NULL) {
+    if (attrs == nullptr) {
       indent(out) <<
         "<xsd:element name=\"" << name << "\"" << " type=\"" << type_name(ttype) << "\"" << soptional << snillable << " />" << endl;
     } else {

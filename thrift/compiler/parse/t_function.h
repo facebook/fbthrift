@@ -43,7 +43,7 @@ class t_function : public t_doc {
     arglist_(arglist),
     annotations_(annotations),
     oneway_(oneway) {
-    xceptions_ = new t_struct(NULL);
+    xceptions_ = new t_struct(nullptr);
 
     if (oneway_) {
       if (returntype_ == nullptr || !returntype_->is_void()) {

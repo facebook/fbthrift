@@ -960,13 +960,13 @@ string t_py_generator::render_const_value(t_type* type, t_const_value* value) {
     const map<t_const_value*, t_const_value*>& val = value->get_map();
     map<t_const_value*, t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = NULL;
+      t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
         }
       }
-      if (field_type == NULL) {
+      if (field_type == nullptr) {
         throw "type error: " + type->get_name() +
           " has no field " + v_iter->first->get_string();
       }
@@ -1391,7 +1391,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
       // Initialize fields
       t_type* type = (*m_iter)->get_type();
       if (!type->is_base_type() && !type->is_enum() &&
-          (*m_iter)->get_value() != NULL) {
+          (*m_iter)->get_value() != nullptr) {
         indent(out) <<
           "if " << rename_reserved_keywords((*m_iter)->get_name()) << " is " <<
           "self.thrift_spec[" <<
@@ -1659,7 +1659,7 @@ void t_py_generator::generate_py_struct_writer(ofstream& out,
       "if self." << rename_reserved_keywords((*f_iter)->get_name()) <<
       " != None";
     if ((*f_iter)->get_req() == t_field::T_OPTIONAL &&
-        (*f_iter)->get_value() != NULL) {
+        (*f_iter)->get_value() != nullptr) {
       // An optional field with a value set should not be serialized if
       // the value equals the default value
       out << " and self." <<
@@ -1709,7 +1709,7 @@ void t_py_generator::generate_service(t_service* tservice) {
     py_autogen_comment() << endl <<
     py_imports() << endl;
 
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     f_service_ <<
       "import " << get_real_py_module(tservice->get_extends()->get_program(),
                                       gen_twisted_) << "."
@@ -1798,7 +1798,7 @@ void t_py_generator::generate_service_interface(t_service* tservice,
   string iface_prefix = with_context ? "Context" : "";
   string extends = "";
   string extends_if = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     extends_if = "(" + extends + "." + iface_prefix + "Iface)";
   } else {
@@ -1842,7 +1842,7 @@ void t_py_generator::generate_service_interface(t_service* tservice,
 void t_py_generator::generate_service_client(t_service* tservice) {
   string extends = "";
   string extends_client = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     if (gen_twisted_) {
       extends_client = "(" + extends + ".Client)";
@@ -2179,7 +2179,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
 
   set<string> processed_fns;
   for (t_service* cur_service = tservice;
-       cur_service != NULL;
+       cur_service != nullptr;
        cur_service = cur_service->get_extends()) {
     const vector<t_function*>& functions = cur_service->get_functions();
     for (vector<t_function*>::const_iterator it = functions.begin();
@@ -2403,7 +2403,7 @@ void t_py_generator::generate_service_server(t_service* tservice,
 
   string extends = "";
   string extends_processor = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     extends_processor = extends + "." + class_prefix + "Processor, ";
   }
@@ -3262,7 +3262,7 @@ void t_py_generator::generate_python_docstring(ofstream& out,
 string t_py_generator::declare_argument(t_field* tfield) {
   std::ostringstream result;
   result << rename_reserved_keywords(tfield->get_name()) << "=";
-  if (tfield->get_value() != NULL) {
+  if (tfield->get_value() != nullptr) {
     result << "thrift_spec[" <<
       tfield->get_key() << "][4]";
   } else {
@@ -3278,7 +3278,7 @@ string t_py_generator::declare_argument(t_field* tfield) {
  */
 string t_py_generator::render_field_default_value(t_field* tfield) {
   t_type* type = get_true_type(tfield->get_type());
-  if (tfield->get_value() != NULL) {
+  if (tfield->get_value() != nullptr) {
     return render_const_value(type, tfield->get_value());
   } else {
     return "None";
@@ -3347,7 +3347,7 @@ string t_py_generator::type_name(t_type* ttype) {
     return get_real_py_module(program, gen_twisted_) + "." +
       rename_reserved_keywords(ttype->get_name());
   }
-  if (program != NULL && program != program_) {
+  if (program != nullptr && program != program_) {
     return get_real_py_module(program, gen_twisted_) + ".ttypes." +
       rename_reserved_keywords(ttype->get_name());
   }

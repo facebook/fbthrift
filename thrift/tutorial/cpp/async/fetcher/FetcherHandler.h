@@ -31,7 +31,7 @@ namespace tutorial { namespace async { namespace fetcher {
 class FetcherHandler : public FetcherCobSvIf,
                        public boost::noncopyable {
  public:
-  FetcherHandler() : server_(NULL) { }
+  FetcherHandler() : server_(nullptr) { }
 
   void fetchHttp(std::function<void(std::string const&)> cob,
                  std::function<void(std::exception const&)>,

@@ -87,7 +87,7 @@ unique_ptr<folly::IOBuf> KerberosSASLHandshakeUtils::unwrapMessage(
     &in_buf,
     out_buf.get(),
     &state,
-    (gss_qop_t *) NULL // quality of protection output... we don't need it
+    (gss_qop_t *) nullptr // quality of protection output... we don't need it
   );
   if (maj_stat != GSS_S_COMPLETE) {
     KerberosSASLHandshakeUtils::throwGSSException(
@@ -168,10 +168,10 @@ void KerberosSASLHandshakeUtils::getContextData(
     client_name.get(),
     service_name.get(),
     &context_lifetime,
-    NULL, // mechanism
+    nullptr, // mechanism
     &context_security_flags,
-    NULL, // is local
-    NULL // is open
+    nullptr, // is local
+    nullptr // is open
   );
   if (maj_stat != GSS_S_COMPLETE) {
     KerberosSASLHandshakeUtils::throwGSSException(
@@ -188,7 +188,7 @@ void KerberosSASLHandshakeUtils::getContextData(
     &min_stat,
     *client_name.get(),
     client_name_buf.get(),
-    (gss_OID *) NULL);
+    (gss_OID *) nullptr);
   if (maj_stat != GSS_S_COMPLETE) {
     KerberosSASLHandshakeUtils::throwGSSException(
       "Error getting client name", maj_stat, min_stat);
@@ -198,7 +198,7 @@ void KerberosSASLHandshakeUtils::getContextData(
     &min_stat,
     *service_name.get(),
     service_name_buf.get(),
-    (gss_OID *) NULL);
+    (gss_OID *) nullptr);
   if (maj_stat != GSS_S_COMPLETE) {
     KerberosSASLHandshakeUtils::throwGSSException(
       "Error getting service name", maj_stat, min_stat);

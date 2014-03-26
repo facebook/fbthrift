@@ -1984,7 +1984,7 @@ string t_cocoa_generator::type_name(t_type* ttype, bool class_ref) {
   } else {
     // Check for prefix
     t_program* program = ttype->get_program();
-    if (program != NULL) {
+    if (program != nullptr) {
       result = program->get_namespace("cocoa") + ttype->get_name();
     } else {
       result = ttype->get_name();
@@ -2077,13 +2077,13 @@ string t_cocoa_generator::render_const_value(string name,
     map<t_const_value*, t_const_value*>::const_iterator v_iter;
     bool first = true;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = NULL;
+      t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
         }
       }
-      if (field_type == NULL) {
+      if (field_type == nullptr) {
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
       if (first) {

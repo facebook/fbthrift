@@ -66,7 +66,7 @@ void setTunables(ThriftServer* server) {
   }
 }
 
-ThriftServer *g_server = NULL;
+ThriftServer *g_server = nullptr;
 
 void sigHandler(int signo) {
   g_server->stop();

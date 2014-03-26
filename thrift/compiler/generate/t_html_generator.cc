@@ -544,7 +544,7 @@ void t_html_generator::generate_struct(t_struct* tstruct) {
     }
     f_out_ << "</td><td>";
     t_const_value* default_val = (*mem_iter)->get_value();
-    if (default_val != NULL) {
+    if (default_val != nullptr) {
       print_const_value(default_val);
     }
     f_out_ << "</td></tr>" << endl;
@@ -604,7 +604,7 @@ void t_html_generator::generate_service(t_service* tservice) {
 	first = false;
 	print_type((*arg_iter)->get_type());
 	f_out_ << " " << (*arg_iter)->get_name();
-	if ((*arg_iter)->get_value() != NULL) {
+	if ((*arg_iter)->get_value() != nullptr) {
 	  f_out_ << " = ";
 	  print_const_value((*arg_iter)->get_value());
 	}

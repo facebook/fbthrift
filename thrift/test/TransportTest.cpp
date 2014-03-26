@@ -347,7 +347,7 @@ struct TriggerInfo {
     timeoutSeconds(seconds),
     transport(transport),
     writeLength(writeLength),
-    next(NULL) {}
+    next(nullptr) {}
 
   int timeoutSeconds;
   std::shared_ptr<TTransport> transport;
@@ -369,7 +369,7 @@ void alarm_handler(int signum) {
   // tools/test/runner only records stdout messages in the failure messages for
   // boost tests.  (boost prints its test info to stdout.)
   printf("Timeout alarm expired; attempting to unblock transport\n");
-  if (triggerInfo == NULL) {
+  if (triggerInfo == nullptr) {
     printf("  trigger stack is empty!\n");
   }
 
@@ -389,7 +389,7 @@ void alarm_handler(int signum) {
 }
 
 void set_alarm() {
-  if (triggerInfo == NULL) {
+  if (triggerInfo == nullptr) {
     // clear any alarm
     alarm(0);
     return;
@@ -400,7 +400,7 @@ void set_alarm() {
   action.sa_handler = alarm_handler;
   action.sa_flags = SA_ONESHOT;
   sigemptyset(&action.sa_mask);
-  sigaction(SIGALRM, &action, NULL);
+  sigaction(SIGALRM, &action, nullptr);
 
   alarm(triggerInfo->timeoutSeconds);
 }
@@ -418,7 +418,7 @@ void add_trigger(unsigned int seconds,
                  uint32_t write_len) {
   TriggerInfo* info = new TriggerInfo(seconds, transport, write_len);
 
-  if (triggerInfo == NULL) {
+  if (triggerInfo == nullptr) {
     // This is the first trigger.
     // Set triggerInfo, and schedule the alarm
     triggerInfo = info;
@@ -437,10 +437,10 @@ void add_trigger(unsigned int seconds,
 void clear_triggers() {
   TriggerInfo *info = triggerInfo;
   alarm(0);
-  triggerInfo = NULL;
+  triggerInfo = nullptr;
   numTriggersFired = 0;
 
-  while (info != NULL) {
+  while (info != nullptr) {
     TriggerInfo* next = info->next;
     delete info;
     info = next;
@@ -489,8 +489,8 @@ void test_rw(uint32_t totalSize,
              SizeGenerator& rChunkGenerator,
              uint32_t maxOutstanding) {
   CoupledTransports transports;
-  BOOST_REQUIRE(transports.in != NULL);
-  BOOST_REQUIRE(transports.out != NULL);
+  BOOST_REQUIRE(transports.in != nullptr);
+  BOOST_REQUIRE(transports.out != nullptr);
 
   boost::shared_array<uint8_t> wbuf =
     boost::shared_array<uint8_t>(new uint8_t[totalSize]);
@@ -582,8 +582,8 @@ void test_rw(uint32_t totalSize,
 template <class CoupledTransports>
 void test_read_part_available() {
   CoupledTransports transports;
-  BOOST_REQUIRE(transports.in != NULL);
-  BOOST_REQUIRE(transports.out != NULL);
+  BOOST_REQUIRE(transports.in != nullptr);
+  BOOST_REQUIRE(transports.out != nullptr);
 
   uint8_t write_buf[16];
   uint8_t read_buf[16];
@@ -604,8 +604,8 @@ void test_read_part_available() {
 template <class CoupledTransports>
 void test_read_part_available_in_chunks() {
   CoupledTransports transports;
-  BOOST_REQUIRE(transports.in != NULL);
-  BOOST_REQUIRE(transports.out != NULL);
+  BOOST_REQUIRE(transports.in != nullptr);
+  BOOST_REQUIRE(transports.out != nullptr);
 
   uint8_t write_buf[16];
   uint8_t read_buf[16];
@@ -631,8 +631,8 @@ void test_read_part_available_in_chunks() {
 template <class CoupledTransports>
 void test_read_partial_midframe() {
   CoupledTransports transports;
-  BOOST_REQUIRE(transports.in != NULL);
-  BOOST_REQUIRE(transports.out != NULL);
+  BOOST_REQUIRE(transports.in != nullptr);
+  BOOST_REQUIRE(transports.out != nullptr);
 
   uint8_t write_buf[16];
   uint8_t read_buf[16];
@@ -689,8 +689,8 @@ void test_read_partial_midframe() {
 template <class CoupledTransports>
 void test_borrow_part_available() {
   CoupledTransports transports;
-  BOOST_REQUIRE(transports.in != NULL);
-  BOOST_REQUIRE(transports.out != NULL);
+  BOOST_REQUIRE(transports.in != nullptr);
+  BOOST_REQUIRE(transports.out != nullptr);
 
   uint8_t write_buf[16];
   uint8_t read_buf[16];
@@ -704,7 +704,7 @@ void test_borrow_part_available() {
   uint32_t borrow_len = 10;
   const uint8_t* borrowed_buf = transports.in->borrow(read_buf, &borrow_len);
   BOOST_CHECK_EQUAL(numTriggersFired, 0);
-  BOOST_CHECK(borrowed_buf == NULL);
+  BOOST_CHECK(borrowed_buf == nullptr);
 
   clear_triggers();
 }
@@ -712,8 +712,8 @@ void test_borrow_part_available() {
 template <class CoupledTransports>
 void test_read_none_available() {
   CoupledTransports transports;
-  BOOST_REQUIRE(transports.in != NULL);
-  BOOST_REQUIRE(transports.out != NULL);
+  BOOST_REQUIRE(transports.in != nullptr);
+  BOOST_REQUIRE(transports.out != nullptr);
 
   uint8_t write_buf[16];
   uint8_t read_buf[16];
@@ -742,8 +742,8 @@ void test_read_none_available() {
 template <class CoupledTransports>
 void test_borrow_none_available() {
   CoupledTransports transports;
-  BOOST_REQUIRE(transports.in != NULL);
-  BOOST_REQUIRE(transports.out != NULL);
+  BOOST_REQUIRE(transports.in != nullptr);
+  BOOST_REQUIRE(transports.out != nullptr);
 
   uint8_t write_buf[16];
   memset(write_buf, 'a', sizeof(write_buf));
@@ -751,8 +751,8 @@ void test_borrow_none_available() {
   // Attempting to borrow when no data is available should fail immediately
   set_trigger(1, transports.out, 10);
   uint32_t borrow_len = 10;
-  const uint8_t* borrowed_buf = transports.in->borrow(NULL, &borrow_len);
-  BOOST_CHECK(borrowed_buf == NULL);
+  const uint8_t* borrowed_buf = transports.in->borrow(nullptr, &borrow_len);
+  BOOST_CHECK(borrowed_buf == nullptr);
   BOOST_CHECK_EQUAL(numTriggersFired, 0);
 
   clear_triggers();
@@ -1033,16 +1033,16 @@ void parse_args(int argc, char* argv[], Options* options) {
   options->sizeMultiplier = 1;
 
   struct option long_opts[] = {
-    { "help", false, NULL, 'h' },
-    { "seed", true, NULL, 's' },
-    { "tmp-dir", true, NULL, 't' },
-    { "size-multiplier", true, NULL, 'x' },
-    { NULL, 0, NULL, 0 }
+    { "help", false, nullptr, 'h' },
+    { "seed", true, nullptr, 's' },
+    { "tmp-dir", true, nullptr, 't' },
+    { "size-multiplier", true, nullptr, 'x' },
+    { nullptr, 0, nullptr, 0 }
   };
 
   while (true) {
     optopt = 1;
-    int optchar = getopt_long(argc, argv, "hs:t:x:", long_opts, NULL);
+    int optchar = getopt_long(argc, argv, "hs:t:x:", long_opts, nullptr);
     if (optchar == -1) {
       break;
     }
@@ -1116,5 +1116,5 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
   TransportTestGen transport_test_generator(suite, options.sizeMultiplier);
   transport_test_generator.generate();
 
-  return NULL;
+  return nullptr;
 }

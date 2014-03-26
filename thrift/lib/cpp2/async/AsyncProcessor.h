@@ -416,7 +416,7 @@ class HandlerCallback : public HandlerCallbackBase {
   typedef T ResultType;
 
   HandlerCallback()
-      : cp_(NULL) {}
+      : cp_(nullptr) {}
 
   HandlerCallback(
     std::unique_ptr<ResponseChannel::Request> req,
@@ -490,7 +490,7 @@ class HandlerCallback<std::unique_ptr<T>> : public HandlerCallbackBase {
   typedef T ResultType;
 
   HandlerCallback()
-      : cp_(NULL) {}
+      : cp_(nullptr) {}
 
   HandlerCallback(
     std::unique_ptr<ResponseChannel::Request> req,
@@ -583,7 +583,7 @@ class HandlerCallback<void> : public HandlerCallbackBase {
   typedef void ResultType;
 
   HandlerCallback()
-      : cp_(NULL) {}
+      : cp_(nullptr) {}
 
   HandlerCallback(
     std::unique_ptr<ResponseChannel::Request> req,

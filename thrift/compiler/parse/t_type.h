@@ -131,7 +131,7 @@ class t_type : public t_doc {
 
  protected:
   t_type() :
-    program_(NULL)
+    program_(nullptr)
   {
   }
 
@@ -147,7 +147,7 @@ class t_type : public t_doc {
   }
 
   explicit t_type(std::string name) :
-    program_(NULL),
+    program_(nullptr),
     name_(name)
   {
   }

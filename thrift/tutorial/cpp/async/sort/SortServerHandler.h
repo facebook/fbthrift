@@ -35,7 +35,7 @@ class SortServerHandler : public SorterCobSvIf, public boost::noncopyable {
   typedef std::function<void(const IntVector& _return)> SortReturnCob;
   typedef std::function<void(std::exception const& ex)> SortErrorCob;
 
-  SortServerHandler() : server_(NULL) { }
+  SortServerHandler() : server_(nullptr) { }
 
   void sort(SortReturnCob cob, SortErrorCob errcob, const IntVector &values);
 

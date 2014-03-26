@@ -50,7 +50,7 @@ class t_enum : public t_type {
         return it;
       }
     }
-    return NULL;
+    return nullptr;
   }
 
   bool is_enum() const {

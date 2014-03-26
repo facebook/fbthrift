@@ -226,7 +226,7 @@ class t_d_generator : public t_oop_generator {
     }
 
     t_service* extends_service = tservice->get_extends();
-    if (extends_service != NULL) {
+    if (extends_service != nullptr) {
       f_service <<
         "import " << render_package(*(extends_service->get_program())) <<
         extends_service->get_name() << ";" << endl;
@@ -235,7 +235,7 @@ class t_d_generator : public t_oop_generator {
     f_service << endl;
 
     string extends = "";
-    if (tservice->get_extends() != NULL) {
+    if (tservice->get_extends() != nullptr) {
       extends = " : " + render_type_name(tservice->get_extends());
     }
 
@@ -306,7 +306,7 @@ class t_d_generator : public t_oop_generator {
         meta << "TParamMeta(`" << (*p_iter)->get_name() << "`, " << (*p_iter)->get_key();
 
         t_const_value* cv = (*p_iter)->get_value();
-        if (cv != NULL) {
+        if (cv != nullptr) {
           meta << ", q{" << render_const_value((*p_iter)->get_type(), cv) << "}";
         }
         meta << ")";
@@ -497,7 +497,7 @@ class t_d_generator : public t_oop_generator {
         t_const_value* cv = (*m_iter)->get_value();
         t_field::e_req req = (*m_iter)->get_req();
         out << ", " << render_req(req);
-        if (cv != NULL) {
+        if (cv != nullptr) {
           out << ", q{" << render_const_value((*m_iter)->get_type(), cv) << "}";
         }
         out << ")";
@@ -595,13 +595,13 @@ class t_d_generator : public t_oop_generator {
         const map<t_const_value*, t_const_value*>& val = value->get_map();
         map<t_const_value*, t_const_value*>::const_iterator v_iter;
         for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-          t_type* field_type = NULL;
+          t_type* field_type = nullptr;
           for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
             if ((*f_iter)->get_name() == v_iter->first->get_string()) {
               field_type = (*f_iter)->get_type();
             }
           }
-          if (field_type == NULL) {
+          if (field_type == nullptr) {
             throw "Type error: " + type->get_name() + " has no field " +
               v_iter->first->get_string();
           }

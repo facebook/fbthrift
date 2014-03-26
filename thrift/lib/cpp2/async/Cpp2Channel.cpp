@@ -45,8 +45,8 @@ Cpp2Channel::Cpp2Channel(
     , protectionState_(ProtectionState::UNKNOWN)
     , queue_(new IOBufQueue)
     , remaining_(DEFAULT_BUFFER_SIZE)
-    , recvCallback_(NULL)
-    , saslEndpoint_(NULL)
+    , recvCallback_(nullptr)
+    , saslEndpoint_(nullptr)
     , pendingPlaintext_(new IOBufQueue)
     , closing_(false)
     , eofInvoked_(false)
@@ -57,7 +57,7 @@ void Cpp2Channel::closeNow() {
   // closeNow can invoke callbacks
   DestructorGuard dg(this);
   closing_ = true;
-  transport_->setReadCallback(NULL);
+  transport_->setReadCallback(nullptr);
   transport_->closeNow();
 
   processReadEOF(); // Call failure callbacks
@@ -75,7 +75,7 @@ void Cpp2Channel::attachEventBase(
 
 void Cpp2Channel::detachEventBase() {
   if (transport_->getReadCallback() == this) {
-    transport_->setReadCallback(NULL);
+    transport_->setReadCallback(nullptr);
   }
 
   transport_->detachEventBase();
@@ -139,7 +139,7 @@ void Cpp2Channel::readDataAvailable(size_t len) noexcept {
       // ciphertext.
       if (!unframed && protectionState_ == ProtectionState::VALID &&
           queue_->front()) {
-        assert(saslEndpoint_ != NULL);
+        assert(saslEndpoint_ != nullptr);
         unique_ptr<IOBuf> unwrapped =
           saslEndpoint_->unwrap(queue_.get(), &remaining);
         assert(!(unwrapped && remaining > 0));
@@ -224,7 +224,7 @@ void Cpp2Channel::writeError(size_t bytesWritten,
 }
 
 void Cpp2Channel::processReadEOF() noexcept {
-  transport_->setReadCallback(NULL);
+  transport_->setReadCallback(nullptr);
 
   VLOG(5) << "Got an EOF on channel";
   if (recvCallback_ && !eofInvoked_) {
@@ -343,13 +343,13 @@ void Cpp2Channel::setReceiveCallback(RecvCallback* callback) {
   recvCallback_ = callback;
 
   if (!transport_->good()) {
-    transport_->setReadCallback(NULL);
+    transport_->setReadCallback(nullptr);
     return;
   }
   if (callback) {
     transport_->setReadCallback(this);
   } else {
-    transport_->setReadCallback(NULL);
+    transport_->setReadCallback(nullptr);
   }
 }
 

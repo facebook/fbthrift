@@ -457,7 +457,7 @@ void t_json_generator::generate_struct(t_struct* tstruct) {
     f_out_ << "," << endl << indent() <<  "\"required\" : "
       << ((*mem_iter)->get_req() != t_field::T_OPTIONAL ? "true" : "false");
     t_const_value* default_val = (*mem_iter)->get_value();
-    if (default_val != NULL) {
+    if (default_val != nullptr) {
       f_out_ << "," << endl << indent() << "\"default_value\" : ";
       print_const_value(default_val);
     }
@@ -537,7 +537,7 @@ void t_json_generator::generate_service(t_service* tservice) {
         indent(f_out_) << "{" << endl;
         indent_up();
         print_type((*arg_iter)->get_type());
-        if ((*arg_iter)->get_value() != NULL) {
+        if ((*arg_iter)->get_value() != nullptr) {
           f_out_ << "," << endl << indent() << "\"value\" : ";
           print_const_value((*arg_iter)->get_value());
         }

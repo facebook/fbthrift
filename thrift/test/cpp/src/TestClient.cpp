@@ -51,7 +51,7 @@ uint64_t now()
   long long ret;
   struct timeval tv;
 
-  gettimeofday(&tv, NULL);
+  gettimeofday(&tv, nullptr);
   ret = tv.tv_sec;
   ret = ret*1000*1000 + tv.tv_usec;
   return ret;
@@ -68,11 +68,11 @@ int main(int argc, char** argv) {
   for (int i = 0; i < argc; ++i) {
     if (strcmp(argv[i], "-h") == 0) {
       char* pch = strtok(argv[++i], ":");
-      if (pch != NULL) {
+      if (pch != nullptr) {
         host = string(pch);
       }
-      pch = strtok(NULL, ":");
-      if (pch != NULL) {
+      pch = strtok(nullptr, ":");
+      if (pch != nullptr) {
         port = atoi(pch);
       }
     } else if (strcmp(argv[i], "-n") == 0) {

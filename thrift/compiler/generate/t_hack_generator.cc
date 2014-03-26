@@ -806,13 +806,13 @@ string t_hack_generator::render_const_value(t_type* type, t_const_value* value) 
     const map<t_const_value*, t_const_value*>& val = value->get_map();
     map<t_const_value*, t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = NULL;
+      t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
         }
       }
-      if (field_type == NULL) {
+      if (field_type == nullptr) {
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
       out << indent();
@@ -1089,7 +1089,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
     string dval = "";
-    if ((*m_iter)->get_value() != NULL && !(t->is_struct() || t->is_xception())) {
+    if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
       dval = render_const_value(t, (*m_iter)->get_value());
     } else {
       dval = render_default_value(t);
@@ -1101,7 +1101,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     bool nullable = (dval == "null")
         || is_result
         || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-            && (*m_iter)->get_value() == NULL);
+            && (*m_iter)->get_value() == nullptr);
     string typehint = nullable ? "?" : "";
 
     typehint += type_to_typehint(t);
@@ -1129,7 +1129,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       t_type* t = get_true_type((*m_iter)->get_type());
       string dval = "";
-      if ((*m_iter)->get_value() != NULL && !(t->is_struct() || t->is_xception())) {
+      if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
         dval = render_const_value(t, (*m_iter)->get_value());
       } else {
         dval = render_default_value(t);
@@ -1141,7 +1141,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
       bool nullable = (dval == "null")
           || is_result
           || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-              && (*m_iter)->get_value() == NULL);
+              && (*m_iter)->get_value() == nullptr);
 
       if (!first) {
         out << ", ";
@@ -1161,7 +1161,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
   for (m_iter = members.begin(); !is_result && m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
     string dval = "";
-    if ((*m_iter)->get_value() != NULL && !(t->is_struct() || t->is_xception())) {
+    if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
       dval = render_const_value(t, (*m_iter)->get_value());
     } else {
       dval = render_default_value(t);
@@ -1175,7 +1175,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
           indent() << "$this->" << (*m_iter)->get_name() << " = " << cast << "($vals->get('" <<
             (*m_iter)->get_name() << "') ?: " << dval << ");" << endl;
       } else {
-        if ((*m_iter)->get_req() == t_field::T_OPTIONAL && (*m_iter)->get_value() == NULL) {
+        if ((*m_iter)->get_req() == t_field::T_OPTIONAL && (*m_iter)->get_value() == nullptr) {
           out <<
             indent() << "if (array_key_exists('" << (*m_iter)->get_name() << "', $vals)) {" << endl;
           indent_up();
@@ -1183,7 +1183,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
         out <<
           indent() << "$this->" << (*m_iter)->get_name() << " = " << cast << "idx($vals, '" <<
             (*m_iter)->get_name() << "', " << dval << ");" << endl;
-        if ((*m_iter)->get_req() == t_field::T_OPTIONAL && (*m_iter)->get_value() == NULL) {
+        if ((*m_iter)->get_req() == t_field::T_OPTIONAL && (*m_iter)->get_value() == nullptr) {
           indent_down();
           out << indent() << "}" << endl;
         }
@@ -1195,7 +1195,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
       bool nullable = (dval == "null")
           || is_result
           || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-              && (*m_iter)->get_value() == NULL);
+              && (*m_iter)->get_value() == nullptr);
 
       if (nullable) {
         indent(out) << "$this->" << (*m_iter)->get_name() << " = $" << (*m_iter)->get_name() << ";" << endl;
@@ -1388,7 +1388,7 @@ void t_hack_generator::generate_php_struct_writer(ofstream& out,
 
     if ((*f_iter)->get_req() == t_field::T_OPTIONAL) {
       string dval = "";
-      if ((*f_iter)->get_value() != NULL && !(type->is_struct() || type->is_xception())) {
+      if ((*f_iter)->get_value() != nullptr && !(type->is_struct() || type->is_xception())) {
         dval = render_const_value(type, (*f_iter)->get_value());
       } else {
         dval = render_default_value(type);
@@ -1584,7 +1584,7 @@ void t_hack_generator::generate_service_processor(t_service* tservice,
 
   string extends = "";
   string extends_processor = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = php_servicename_mangle(mangle, tservice->get_extends());
     extends_processor = " extends " + extends + "Processor";
   }
@@ -2073,7 +2073,7 @@ void t_hack_generator::generate_service_interface(t_service* tservice,
   generate_php_docstring(f_service_, tservice);
   string extends = "";
   string extends_if = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     string ext_prefix = php_servicename_mangle(mangle, tservice->get_extends());
     extends = " extends " + ext_prefix;
     extends_if = " extends " + ext_prefix + "If";
@@ -2108,7 +2108,7 @@ void t_hack_generator::generate_service_interface(t_service* tservice,
 void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
   string extends = "";
   string extends_if = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     string ext_prefix = php_servicename_mangle(mangle, tservice->get_extends());
     extends = " extends " + ext_prefix;
     extends_if = " extends " + ext_prefix + "Rest";
@@ -2201,7 +2201,7 @@ void t_hack_generator::_generate_service_client(
   generate_php_docstring(out, tservice);
   string extends = "";
   string extends_client = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = php_servicename_mangle(mangle, tservice->get_extends());
     extends_client = " extends " + extends + "Client";
   }

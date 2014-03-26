@@ -318,7 +318,7 @@ class t_cpp_generator : public t_oop_generator {
                                    const std::vector<t_enum_value*>& constants,
                                    bool quote_names,
                                    bool include_values,
-                                   const char* typed_name = NULL);
+                                   const char* typed_name = nullptr);
 
   bool is_reference(t_field* tfield) {
     return tfield->annotations_.count("cpp.ref") != 0;
@@ -753,7 +753,7 @@ void t_cpp_generator::generate_enum_constant_list(std::ofstream& f,
 void t_cpp_generator::generate_enum(t_enum* tenum) {
   vector<t_enum_value*> constants = tenum->get_constants();
   auto value_type   = gen_enum_strict_ ? tenum->get_name().c_str() : "int";
-  auto typed_prefix = gen_enum_strict_ ? tenum->get_name().c_str() : NULL;
+  auto typed_prefix = gen_enum_strict_ ? tenum->get_name().c_str() : nullptr;
   auto enum_suffix  = gen_enum_strict_ ? " class "                 : " ";
   auto name = tenum->get_name();
   auto fullname = folly::to<string>(ns_prefix_, name);
@@ -958,13 +958,13 @@ void t_cpp_generator::print_const_value(ofstream& out, string name, t_type* type
     const map<t_const_value*, t_const_value*>& val = value->get_map();
     map<t_const_value*, t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = NULL;
+      t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
         }
       }
-      if (field_type == NULL) {
+      if (field_type == nullptr) {
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
       string val = render_const_value(out, field_type, v_iter->second);
@@ -1026,7 +1026,7 @@ string t_cpp_generator::render_const_value(
                           t_const_value* value,
                           bool           allow_null_val) {
   std::ostringstream render;
-  if (value == NULL) {
+  if (value == nullptr) {
     if (allow_null_val) {
       if (type->is_enum()) {
         render << "static_cast<" << type_name(type) << ">(0)";
@@ -1071,7 +1071,7 @@ string t_cpp_generator::render_const_value(
       // Search the enum definitions for the label with the given value
       const t_enum_value* val =
         static_cast<t_enum*>(type)->find_value(value->get_integer());
-      if (val == NULL) {
+      if (val == nullptr) {
         std::ostringstream except;
         except << "Unrecognized value " << value->get_integer()  <<
                   " for enum \"" << type_name(type) << "\"";
@@ -1843,7 +1843,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
 
       if (!t->is_base_type()) {
         t_const_value* cv = (*m_iter)->get_value();
-        if (cv != NULL) {
+        if (cv != nullptr) {
           print_const_value(out, (*m_iter)->get_name(), t, cv);
         }
       }
@@ -2871,9 +2871,9 @@ bool t_cpp_generator::try_terse_write_predicate(
       (type->is_base_type() && ((t_base_type*)type)->is_void()) ||
       // only support string, if default empty.
       (type->is_base_type() && ((t_base_type*)type)->is_string() &&
-       tval != NULL && !tval->get_string().empty()) ||
+       tval != nullptr && !tval->get_string().empty()) ||
       // only support container, if default empty.
-      (type->is_container() && tval != NULL &&
+      (type->is_container() && tval != nullptr &&
        ((tval->get_type() == t_const_value::CV_LIST &&
          !tval->get_list().empty()) ||
         (tval->get_type() == t_const_value::CV_MAP &&
@@ -3209,7 +3209,7 @@ void t_cpp_generator::generate_service(t_service* tservice) {
     "_types.h\"" << endl;
 
   t_service* extends_service = tservice->get_extends();
-  if (extends_service != NULL) {
+  if (extends_service != nullptr) {
     f_header_ <<
       "#include \"" << get_include_prefix(*(extends_service->get_program())) <<
       extends_service->get_name() << ".h\"" << endl;
@@ -3469,7 +3469,7 @@ void t_cpp_generator::generate_service_interface(t_service* tservice, string sty
   }
 
   string extends = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = " : virtual public " + type_name(tservice->get_extends()) +
       style + "If";
     if (style == "CobCl" && gen_templates_) {
@@ -3538,7 +3538,7 @@ void t_cpp_generator::generate_service_interface_factory(t_service* tservice,
   //   type.  Implementations can use dynamic_cast to cast the pointer to the
   //   subclass type if desired.
   t_service* base_service = tservice;
-  while (base_service->get_extends() != NULL) {
+  while (base_service->get_extends() != nullptr) {
     base_service = base_service->get_extends();
   }
   string base_if_name = type_name(base_service) + style + "If";
@@ -3546,7 +3546,7 @@ void t_cpp_generator::generate_service_interface_factory(t_service* tservice,
   // Generate the abstract factory class
   string factory_name = service_if_name + "Factory";
   string extends;
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = " : virtual public " + type_name(tservice->get_extends()) +
       style + "IfFactory";
   }
@@ -3606,7 +3606,7 @@ void t_cpp_generator::generate_service_interface_factory(t_service* tservice,
  */
 void t_cpp_generator::generate_service_null(t_service* tservice, string style) {
   string extends = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = " , virtual public " + type_name(tservice->get_extends()) + style + "Null";
   }
   f_header_ <<
@@ -3793,7 +3793,7 @@ void t_cpp_generator::generate_service_multiface(t_service* tservice) {
 
   string extends = "";
   string extends_multiface = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     extends_multiface = ", public " + extends + "Multiface";
   }
@@ -3931,7 +3931,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
 
   string extends = "";
   string extends_client = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     // TODO(simpkins): If gen_templates_ is enabled, we currently assume all
     // parent services were also generated with templates enabled.
     extends = type_name(tservice->get_extends());
@@ -4750,7 +4750,7 @@ ProcessorGenerator::ProcessorGenerator(t_cpp_generator* generator,
     factory_class_name_ += "T";
   }
 
-  if (service_->get_extends() != NULL) {
+  if (service_->get_extends() != nullptr) {
     extends_ = type_name(service_->get_extends()) + pstyle_ + "Processor";
     if (generator_->gen_templates_) {
       // TODO(simpkins): If gen_templates_ is enabled, we currently assume all
@@ -4766,7 +4766,7 @@ void ProcessorGenerator::generate_class_definition() {
   vector<t_function*>::iterator f_iter;
 
   string parent_class;
-  if (service_->get_extends() != NULL) {
+  if (service_->get_extends() != nullptr) {
     parent_class = extends_;
   } else {
     if (style_ == "Cob") {
@@ -6492,7 +6492,7 @@ string t_cpp_generator::type_name(t_type* ttype, int flags) {
   // Check if it needs to be namespaced
   string pname;
   t_program* program = ttype->get_program();
-  if (program != NULL && (always_namespace || program != program_)) {
+  if (program != nullptr && (always_namespace || program != program_)) {
     pname =
       class_prefix +
       namespace_prefix(program->get_namespace("cpp")) +

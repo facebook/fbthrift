@@ -179,7 +179,7 @@ class TempFile {
     if (path_) {
       ::unlink(path_);
       delete[] path_;
-      path_ = NULL;
+      path_ = nullptr;
     }
   }
 
@@ -312,7 +312,7 @@ void test_flush_max_us_impl(uint32_t flush_us, uint32_t write_us,
   BOOST_CHECK(fsyncTimer.isFlushed());
 
   // Stop logging new fsync() calls
-  fsyncHandler = NULL;
+  fsyncHandler = nullptr;
 
   // FsyncTimer will have recorded a list of predicate_results that we need to
   // evaluate in the main thread.
@@ -380,17 +380,17 @@ void print_usage(FILE* f, const char* argv0) {
 
 void parse_args(int argc, char* argv[]) {
   int seed;
-  int *seedptr = NULL;
+  int *seedptr = nullptr;
 
   struct option long_opts[] = {
-    { "help", false, NULL, 'h' },
-    { "tmp-dir", true, NULL, 't' },
-    { NULL, 0, NULL, 0 }
+    { "help", false, nullptr, 'h' },
+    { "tmp-dir", true, nullptr, 't' },
+    { nullptr, 0, nullptr, 0 }
   };
 
   while (true) {
     optopt = 1;
-    int optchar = getopt_long(argc, argv, "ht:", long_opts, NULL);
+    int optchar = getopt_long(argc, argv, "ht:", long_opts, nullptr);
     if (optchar == -1) {
       break;
     }
@@ -428,5 +428,5 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
     tmp_dir = shm_dir;
   }
 
-  return NULL;
+  return nullptr;
 }

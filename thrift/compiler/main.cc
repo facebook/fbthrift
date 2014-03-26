@@ -132,7 +132,7 @@ bool generate(t_program* program, const vector<string>& generator_strings,
     for (iter = generator_strings.begin(); iter != generator_strings.end(); ++iter) {
       t_generator* generator = t_generator_registry::get_generator(program, *iter);
 
-      if (generator == NULL) {
+      if (generator == nullptr) {
         // Attempt to call the new python compiler if we can find it
         string path = getenv("_");
         size_t last = path.find_last_of("/");
@@ -204,7 +204,7 @@ int main(int argc, char** argv) {
   std::string out_path;
 
   // Setup time string
-  time_t now = time(NULL);
+  time_t now = time(nullptr);
   g_time_str = ctime(&now);
 
   // Check for necessary arguments, you gotta have at least a filename and
@@ -223,7 +223,7 @@ int main(int argc, char** argv) {
     char* arg;
 
     arg = strtok(argv[i], " ");
-    while (arg != NULL) {
+    while (arg != nullptr) {
       // Treat double dashes as single dashes
       if (arg[0] == '-' && arg[1] == '-') {
         ++arg;
@@ -249,14 +249,14 @@ int main(int argc, char** argv) {
       } else if (strcmp(arg, "-record-genfiles") == 0) {
         record_genfiles = true;
         arg = argv[++i];
-        if (arg == NULL) {
+        if (arg == nullptr) {
           fprintf(stderr, "!!! Missing genfile file specification\n");
           usage();
         }
         genfile_file.open(arg);
       } else if (strcmp(arg, "-gen") == 0) {
         arg = argv[++i];
-        if (arg == NULL) {
+        if (arg == nullptr) {
           fprintf(stderr, "!!! Missing generator specification\n");
           usage();
         }
@@ -317,14 +317,14 @@ int main(int argc, char** argv) {
         // An argument of "-I\ asdf" is invalid and has unknown results
         arg = argv[++i];
 
-        if (arg == NULL) {
+        if (arg == nullptr) {
           fprintf(stderr, "!!! Missing Include directory\n");
           usage();
         }
         g_incl_searchpath.push_back(arg);
       } else if (strcmp(arg, "-o") == 0) {
         arg = argv[++i];
-        if (arg == NULL) {
+        if (arg == nullptr) {
           fprintf(stderr, "-o: missing output directory\n");
           usage();
         }
@@ -354,7 +354,7 @@ int main(int argc, char** argv) {
       }
 
       // Tokenize more
-      arg = strtok(NULL, " ");
+      arg = strtok(nullptr, " ");
     }
   }
 
@@ -443,11 +443,11 @@ int main(int argc, char** argv) {
 
   // Real-pathify it
   char rp[PATH_MAX];
-  if (argv[i] == NULL) {
+  if (argv[i] == nullptr) {
     fprintf(stderr, "!!! Missing file name\n");
     usage();
   }
-  if (saferealpath(argv[i], rp) == NULL) {
+  if (saferealpath(argv[i], rp) == nullptr) {
     failure("Could not open input file with realpath: %s", argv[i]);
   }
   string input_file(rp);
@@ -486,7 +486,7 @@ int main(int argc, char** argv) {
   g_type_float  = new t_base_type("float",  t_base_type::TYPE_FLOAT);
 
   // Parse it!
-  parse(program, NULL);
+  parse(program, nullptr);
 
   // The current path is not really relevant when we are doing generation.
   // Reset the variable to make warning messages clearer.

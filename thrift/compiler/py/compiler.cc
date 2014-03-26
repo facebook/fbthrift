@@ -132,7 +132,7 @@ void process(const dict& params, const object& generate_callback) {
   g_type_float = type_float.get();
 
   // Parse it!
-  parse(program.get(), NULL);
+  parse(program.get(), nullptr);
 
   // The current path is not really relevant when we are doing generation.
   // Reset the variable to make warning messages clearer.

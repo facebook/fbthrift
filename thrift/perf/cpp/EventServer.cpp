@@ -94,7 +94,7 @@ void setTunables(TEventServer* server) {
   }
 }
 
-TEventServer *g_server = NULL;
+TEventServer *g_server = nullptr;
 
 void sigHandler(int signo) {
   // graceful stop which allows the profiler to work

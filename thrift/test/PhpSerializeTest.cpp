@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
     shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer());
     shared_ptr<TPhpSerializeProtocol> prot(new TPhpSerializeProtocol(buffer));
     fl.write(prot.get());
-    uint8_t* buf = NULL;
+    uint8_t* buf = nullptr;
     uint32_t size;
     buffer->getBuffer(&buf, &size);
 

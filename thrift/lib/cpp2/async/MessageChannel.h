@@ -81,7 +81,7 @@ class MessageChannel :
    */
   virtual void setReceiveCallback(RecvCallback*) = 0;
 
-  apache::thrift::async::TAsyncTransport* getTransport() { return NULL;}
+  apache::thrift::async::TAsyncTransport* getTransport() { return nullptr;}
 };
 
 }} // apache::thrift

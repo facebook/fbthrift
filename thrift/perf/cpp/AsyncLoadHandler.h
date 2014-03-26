@@ -45,7 +45,7 @@ class AsyncLoadHandler : public LoadTestCobSvIf
   typedef std::function<void(const std::string&)> StringCob;
   typedef std::function<void(const int64_t&)> I64Cob;
 
-  explicit AsyncLoadHandler(async::TEventServer* server = NULL)
+  explicit AsyncLoadHandler(async::TEventServer* server = nullptr)
     : AsyncFacebookBase("AsyncLoadHandler")
     , server_(server)
     , burnIntervalUsec_(5000) {}

@@ -390,13 +390,13 @@ string t_rb_generator::render_const_value(t_type* type, t_const_value* value) {
     const map<t_const_value*, t_const_value*>& val = value->get_map();
     map<t_const_value*, t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = NULL;
+      t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
         }
       }
-      if (field_type == NULL) {
+      if (field_type == nullptr) {
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
       out << indent();
@@ -577,7 +577,7 @@ void t_rb_generator::generate_field_defns(std::ofstream& out, t_struct* tstruct)
 }
 
 void t_rb_generator::generate_field_data(std::ofstream& out, t_type* field_type,
-    const std::string& field_name = "", t_const_value* field_value = NULL, bool optional = false) {
+    const std::string& field_name = "", t_const_value* field_value = nullptr, bool optional = false) {
   field_type = get_true_type(field_type);
 
   // Begin this field's defn
@@ -587,7 +587,7 @@ void t_rb_generator::generate_field_data(std::ofstream& out, t_type* field_type,
     out << ", :name => '" << field_name << "'";
   }
 
-  if (field_value != NULL) {
+  if (field_value != nullptr) {
     out << ", :default => " << render_const_value(field_type, field_value);
   }
 
@@ -649,7 +649,7 @@ void t_rb_generator::generate_service(t_service* tservice) {
     rb_autogen_comment() << endl <<
     "require 'thrift'" << endl;
 
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     f_service_ <<
       "require '" << underscore(tservice->get_extends()->get_name()) << "'" << endl;
   }
@@ -726,7 +726,7 @@ void t_rb_generator::generate_rb_function_helpers(t_function* tfunction) {
 void t_rb_generator::generate_service_client(t_service* tservice) {
   string extends = "";
   string extends_client = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = full_type_name(tservice->get_extends());
     extends_client = " < " + extends + "::Client ";
   }
@@ -858,7 +858,7 @@ void t_rb_generator::generate_service_server(t_service* tservice) {
 
   string extends = "";
   string extends_processor = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = full_type_name(tservice->get_extends());
     extends_processor = " < " + extends + "::Processor ";
   }

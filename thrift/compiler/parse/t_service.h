@@ -33,7 +33,7 @@ class t_service : public t_type {
  public:
   explicit t_service(t_program* program) :
     t_type(program),
-    extends_(NULL) {}
+    extends_(nullptr) {}
 
   bool is_service() const {
     return true;

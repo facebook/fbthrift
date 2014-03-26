@@ -55,7 +55,7 @@ class CompactProtocolWriter {
  public:
 
   CompactProtocolWriter()
-      : out_(NULL, 0)
+      : out_(nullptr, 0)
       , booleanField_({nullptr, TType::T_BOOL, 0}) {}
 
   static inline ProtocolType protocolType() {
@@ -198,14 +198,14 @@ class CompactProtocolReader {
   CompactProtocolReader()
     : string_limit_(0)
     , container_limit_(0)
-    , in_(NULL)
+    , in_(nullptr)
     , boolValue_({false, false}) {}
 
   CompactProtocolReader(int32_t string_limit,
                   int32_t container_limit)
     : string_limit_(string_limit)
     , container_limit_(container_limit)
-    , in_(NULL)
+    , in_(nullptr)
     , boolValue_({false, false}) {}
 
   static inline ProtocolType protocolType() {

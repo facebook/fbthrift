@@ -76,7 +76,7 @@ static std::string serializeJSON(T dataStruct,
 
     dataStruct.write(protocol.get());
 
-    uint8_t* buf = NULL;
+    uint8_t* buf = nullptr;
     uint32_t size;
     buffer->getBuffer(&buf, &size);
 
@@ -478,5 +478,5 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
     exit(1);
   }
 
-  return NULL;
+  return nullptr;
 }

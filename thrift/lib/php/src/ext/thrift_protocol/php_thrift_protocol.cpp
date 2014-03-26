@@ -73,20 +73,20 @@ const int MISSING_REQUIRED_FIELD = 6;
 #include "php_thrift_protocol.h"
 
 static function_entry thrift_protocol_functions[] = {
-  PHP_FE(thrift_protocol_write_binary, NULL)
-  PHP_FE(thrift_protocol_read_binary, NULL)
-  {NULL, NULL, NULL}
+  PHP_FE(thrift_protocol_write_binary, nullptr)
+  PHP_FE(thrift_protocol_read_binary, nullptr)
+  {nullptr, nullptr, nullptr}
 } ;
 
 zend_module_entry thrift_protocol_module_entry = {
   STANDARD_MODULE_HEADER,
   "thrift_protocol",
   thrift_protocol_functions,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
+  nullptr,
   "1.0",
   STANDARD_MODULE_PROPERTIES
 };
@@ -128,7 +128,7 @@ protected:
     MAKE_STD_ZVAL(t);
     ZVAL_NULL(t);
     TSRMLS_FETCH();
-    call_user_function(EG(function_table), &p, &gettransport, t, 0, NULL TSRMLS_CC);
+    call_user_function(EG(function_table), &p, &gettransport, t, 0, nullptr TSRMLS_CC);
   }
   ~PHPTransport() {
     efree(buffer);
@@ -213,7 +213,7 @@ protected:
     zval flushfn;
     ZVAL_STRING(&flushfn, "flush", 0);
     TSRMLS_FETCH();
-    call_user_function(EG(function_table), &t, &flushfn, &ret, 0, NULL TSRMLS_CC);
+    call_user_function(EG(function_table), &t, &flushfn, &ret, 0, nullptr TSRMLS_CC);
     zval_dtor(&ret);
   }
   void directWrite(const char* data, size_t len) {
@@ -233,7 +233,7 @@ protected:
     zval_dtor(&ret);
     if (EG(exception)) {
       zval* ex = EG(exception);
-      EG(exception) = NULL;
+      EG(exception) = nullptr;
       throw PHPExceptionWrapper(ex);
     }
   }
@@ -347,7 +347,7 @@ protected:
     if (EG(exception)) {
       zval_dtor(&retval);
       zval* ex = EG(exception);
-      EG(exception) = NULL;
+      EG(exception) = nullptr;
       throw PHPExceptionWrapper(ex);
     }
 
@@ -366,19 +366,19 @@ void binary_serialize(int8_t thrift_typeID, PHPOutputTransport& transport, zval*
 void skip_element(long thrift_typeID, PHPInputTransport& transport);
 
 // Create a PHP object given a typename and call the ctor, optionally passing up to 2 arguments
-void createObject(char* obj_typename, zval* return_value, int nargs = 0, zval* arg1 = NULL, zval* arg2 = NULL) {
+void createObject(char* obj_typename, zval* return_value, int nargs = 0, zval* arg1 = nullptr, zval* arg2 = nullptr) {
   TSRMLS_FETCH();
   size_t obj_typename_len = strlen(obj_typename);
   zend_class_entry* ce = zend_fetch_class(obj_typename, obj_typename_len, ZEND_FETCH_CLASS_DEFAULT TSRMLS_CC);
   if (! ce) {
-    php_error_docref(NULL TSRMLS_CC, E_ERROR, "Class %s does not exist", obj_typename);
+    php_error_docref(nullptr TSRMLS_CC, E_ERROR, "Class %s does not exist", obj_typename);
     RETURN_NULL();
   }
 
-  object_and_properties_init(return_value, ce, NULL);
+  object_and_properties_init(return_value, ce, nullptr);
   zend_function* constructor = zend_std_get_constructor(return_value TSRMLS_CC);
-  zval* ctor_rv = NULL;
-  zend_call_method(&return_value, ce, &constructor, NULL, 0, &ctor_rv, nargs, arg1, arg2 TSRMLS_CC);
+  zval* ctor_rv = nullptr;
+  zend_call_method(&return_value, ce, &constructor, nullptr, 0, &ctor_rv, nargs, arg1, arg2 TSRMLS_CC);
   zval_ptr_dtor(&ctor_rv);
 }
 
@@ -511,11 +511,11 @@ void binary_deserialize(int8_t thrift_typeID, PHPInputTransport& transport, zval
         binary_deserialize(types[0], transport, key, keyspec);
         binary_deserialize(types[1], transport, value, valspec);
         if (Z_TYPE_P(key) == IS_LONG) {
-          zend_hash_index_update(return_value->value.ht, Z_LVAL_P(key), &value, sizeof(zval *), NULL);
+          zend_hash_index_update(return_value->value.ht, Z_LVAL_P(key), &value, sizeof(zval *), nullptr);
         }
         else {
           if (Z_TYPE_P(key) != IS_STRING) convert_to_string(key);
-          zend_hash_update(return_value->value.ht, Z_STRVAL_P(key), Z_STRLEN_P(key) + 1, &value, sizeof(zval *), NULL);
+          zend_hash_update(return_value->value.ht, Z_STRVAL_P(key), Z_STRLEN_P(key) + 1, &value, sizeof(zval *), nullptr);
         }
         zval_ptr_dtor(&key);
       }
@@ -532,7 +532,7 @@ void binary_deserialize(int8_t thrift_typeID, PHPInputTransport& transport, zval
         zval *value;
         MAKE_STD_ZVAL(value);
         binary_deserialize(type, transport, value, elemspec);
-        zend_hash_next_index_insert(return_value->value.ht, &value, sizeof(zval *), NULL);
+        zend_hash_next_index_insert(return_value->value.ht, &value, sizeof(zval *), nullptr);
       }
       return;
     }
@@ -557,11 +557,11 @@ void binary_deserialize(int8_t thrift_typeID, PHPInputTransport& transport, zval
         binary_deserialize(type, transport, key, elemspec);
 
         if (Z_TYPE_P(key) == IS_LONG) {
-          zend_hash_index_update(return_value->value.ht, Z_LVAL_P(key), &value, sizeof(zval *), NULL);
+          zend_hash_index_update(return_value->value.ht, Z_LVAL_P(key), &value, sizeof(zval *), nullptr);
         }
         else {
           if (Z_TYPE_P(key) != IS_STRING) convert_to_string(key);
-          zend_hash_update(return_value->value.ht, Z_STRVAL_P(key), Z_STRLEN_P(key) + 1, &value, sizeof(zval *), NULL);
+          zend_hash_update(return_value->value.ht, Z_STRVAL_P(key), Z_STRLEN_P(key) + 1, &value, sizeof(zval *), nullptr);
         }
         zval_ptr_dtor(&key);
       }
@@ -646,7 +646,7 @@ void binary_serialize_hashtable_key(int8_t keytype, PHPOutputTransport& transpor
   int res = zend_hash_get_current_key_ex(ht, &key, &key_len, (ulong*)&index, 0, &ht_pos);
   if (keytype_is_numeric) {
     if (res == HASH_KEY_IS_STRING) {
-      index = strtol(key, NULL, 10);
+      index = strtol(key, nullptr, 10);
     }
     ZVAL_LONG(z, index);
   } else {
@@ -659,7 +659,7 @@ void binary_serialize_hashtable_key(int8_t keytype, PHPOutputTransport& transpor
     }
     ZVAL_STRINGL(z, key, key_len, 1);
   }
-  binary_serialize(keytype, transport, &z, NULL);
+  binary_serialize(keytype, transport, &z, nullptr);
   zval_ptr_dtor(&z);
 }
 
@@ -679,7 +679,7 @@ void binary_deserialize_spec(zval* zthis, PHPInputTransport& transport, HashTabl
   TSRMLS_FETCH();
   zend_class_entry* ce = zend_get_class_entry(zthis TSRMLS_CC);
   while (true) {
-    zval** val_ptr = NULL;
+    zval** val_ptr = nullptr;
 
     int8_t ttype = transport.readI8();
     if (ttype == T_STOP) return;
@@ -697,7 +697,7 @@ void binary_deserialize_spec(zval* zthis, PHPInputTransport& transport, HashTabl
       int8_t expected_ttype = Z_LVAL_PP(val_ptr);
 
       if (ttypes_are_compatible(ttype, expected_ttype)) {
-        zval* rv = NULL;
+        zval* rv = nullptr;
         MAKE_STD_ZVAL(rv);
         binary_deserialize(ttype, transport, rv, fieldspec);
         zend_update_property(ce, zthis, varname, strlen(varname), rv TSRMLS_CC);
@@ -895,7 +895,7 @@ void binary_serialize_spec(zval* zthis, PHPOutputTransport& transport, HashTable
 
   for (zend_hash_internal_pointer_reset_ex(spec, &key_ptr); zend_hash_get_current_data_ex(spec, (void**)&val_ptr, &key_ptr) == SUCCESS; zend_hash_move_forward_ex(spec, &key_ptr)) {
     ulong fieldno;
-    if (zend_hash_get_current_key_ex(spec, NULL, NULL, &fieldno, 0, &key_ptr) != HASH_KEY_IS_LONG) {
+    if (zend_hash_get_current_key_ex(spec, nullptr, nullptr, &fieldno, 0, &key_ptr) != HASH_KEY_IS_LONG) {
       throw_tprotocolexception("Bad keytype in TSPEC (expected 'long')", INVALID_DATA);
       return;
     }
@@ -931,19 +931,19 @@ PHP_FUNCTION(thrift_protocol_write_binary) {
   zend_get_parameters_array_ex(argc, args);
 
   if (Z_TYPE_PP(args[0]) != IS_OBJECT) {
-    php_error_docref(NULL TSRMLS_CC, E_ERROR, "1st parameter is not an object (transport)");
+    php_error_docref(nullptr TSRMLS_CC, E_ERROR, "1st parameter is not an object (transport)");
     efree(args);
     RETURN_NULL();
   }
 
   if (Z_TYPE_PP(args[1]) != IS_STRING) {
-    php_error_docref(NULL TSRMLS_CC, E_ERROR, "2nd parameter is not a string (method name)");
+    php_error_docref(nullptr TSRMLS_CC, E_ERROR, "2nd parameter is not a string (method name)");
     efree(args);
     RETURN_NULL();
   }
 
   if (Z_TYPE_PP(args[3]) != IS_OBJECT) {
-    php_error_docref(NULL TSRMLS_CC, E_ERROR, "4th parameter is not an object (request struct)");
+    php_error_docref(nullptr TSRMLS_CC, E_ERROR, "4th parameter is not an object (request struct)");
     efree(args);
     RETURN_NULL();
   }
@@ -959,7 +959,7 @@ PHP_FUNCTION(thrift_protocol_write_binary) {
     convert_to_boolean(*args[5]);
     bool strictWrite = Z_BVAL_PP(args[5]);
     efree(args);
-    args = NULL;
+    args = nullptr;
 
     if (strictWrite) {
       int32_t version = VERSION_1 | msgtype;
@@ -999,13 +999,13 @@ PHP_FUNCTION(thrift_protocol_read_binary) {
   zend_get_parameters_array_ex(argc, args);
 
   if (Z_TYPE_PP(args[0]) != IS_OBJECT) {
-    php_error_docref(NULL TSRMLS_CC, E_ERROR, "1st parameter is not an object (transport)");
+    php_error_docref(nullptr TSRMLS_CC, E_ERROR, "1st parameter is not an object (transport)");
     efree(args);
     RETURN_NULL();
   }
 
   if (Z_TYPE_PP(args[1]) != IS_STRING) {
-    php_error_docref(NULL TSRMLS_CC, E_ERROR, "2nd parameter is not a string (typename of expected response struct)");
+    php_error_docref(nullptr TSRMLS_CC, E_ERROR, "2nd parameter is not a string (typename of expected response struct)");
     efree(args);
     RETURN_NULL();
   }
@@ -1016,7 +1016,7 @@ PHP_FUNCTION(thrift_protocol_read_binary) {
     convert_to_boolean(*args[2]);
     bool strict_read = Z_BVAL_PP(args[2]);
     efree(args);
-    args = NULL;
+    args = nullptr;
 
     int8_t messageType = 0;
     int32_t sz = transport.readI32();

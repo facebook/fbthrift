@@ -62,7 +62,7 @@ int util_parse_port(const char* value, uint16_t* port) {
  */
 int util_parse_host_port(const char* value, std::string* host, uint16_t* port) {
   const char* colon = strchr(value, ':');
-  if (colon == NULL) {
+  if (colon == nullptr) {
     // No port specified.  Assign host, and return with port unmodified.
     host->assign(value);
     return 0;
@@ -99,7 +99,7 @@ int util_resolve_host(const std::string& host, std::string* ip) {
 
   // Call getaddrinfo() to resolve the name
   struct addrinfo* addr;
-  int error = getaddrinfo(host.c_str(), NULL, &hints, &addr);
+  int error = getaddrinfo(host.c_str(), nullptr, &hints, &addr);
   if (error != 0) {
     return error;
   }
@@ -111,7 +111,7 @@ int util_resolve_host(const std::string& host, std::string* ip) {
     const struct sockaddr_in* in_addr =
       reinterpret_cast<const struct sockaddr_in*>(addr->ai_addr);
     if (inet_ntop(addr->ai_family, &in_addr->sin_addr,
-                  addr_buf, sizeof(addr_buf)) == NULL) {
+                  addr_buf, sizeof(addr_buf)) == nullptr) {
       // inet_ntop() stores the error code in errno;
       // EAI_SYSTEM means check errno
       return EAI_SYSTEM;
@@ -120,7 +120,7 @@ int util_resolve_host(const std::string& host, std::string* ip) {
     const struct sockaddr_in6* in6_addr =
       reinterpret_cast<const struct sockaddr_in6*>(addr->ai_addr);
     if (inet_ntop(addr->ai_family, &in6_addr->sin6_addr,
-                  addr_buf, sizeof(addr_buf)) == NULL) {
+                  addr_buf, sizeof(addr_buf)) == nullptr) {
       // inet_ntop() stores the error code in errno;
       // EAI_SYSTEM means check errno
       return EAI_SYSTEM;

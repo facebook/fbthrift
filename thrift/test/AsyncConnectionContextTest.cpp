@@ -168,13 +168,13 @@ class ServerEventHandler : public TProcessorEventHandler {
    *          transport::TSocketAddress* casted into a void*.
    */
   void* getContext(const char* fn_name,
-                   TConnectionContext* serverContext = NULL) {
-    if (serverContext != NULL) {
+                   TConnectionContext* serverContext = nullptr) {
+    if (serverContext != nullptr) {
       return (void *)serverContext->getPeerAddress();
     }
     else {
       BOOST_FAIL("The given connection context is null\n");
-      return NULL;
+      return nullptr;
     }
   }
 
@@ -305,5 +305,5 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
     exit(1);
   }
 
-  return NULL;
+  return nullptr;
 }

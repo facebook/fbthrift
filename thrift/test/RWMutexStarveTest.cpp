@@ -170,5 +170,5 @@ test_suite* init_unit_test_suite(int argc, char* argv[])
   suite->add(BOOST_TEST_CASE(test_starve_rr));
   suite->add(BOOST_TEST_CASE(test_starve_fifo));
 
-  return NULL;
+  return nullptr;
 }

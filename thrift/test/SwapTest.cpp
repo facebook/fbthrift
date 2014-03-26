@@ -166,5 +166,5 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
     exit(1);
   }
 
-  return NULL;
+  return nullptr;
 }

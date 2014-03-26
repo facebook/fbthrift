@@ -241,7 +241,7 @@ class MessageTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>
   virtual void messageReceived(unique_ptr<IOBuf>&& buf,
                                unique_ptr<sample> sample) {
     MessageCallback::messageReceived(std::move(buf), std::move(sample));
-    channel1_->setReceiveCallback(NULL);
+    channel1_->setReceiveCallback(nullptr);
   }
 
 
@@ -277,7 +277,7 @@ public:
 
   virtual void messageChannelEOF() {
     MessageCallback::messageChannelEOF();
-    channel1_->setReceiveCallback(NULL);
+    channel1_->setReceiveCallback(nullptr);
   }
 
  private:
@@ -303,7 +303,7 @@ public:
     : c_(c) {}
     void replyReceived(ClientReceiveState&& state) {
       TestRequestCallback::replyReceived(std::move(state));
-      c_->channel1_->setCallback(NULL);
+      c_->channel1_->setCallback(nullptr);
     }
    private:
     HeaderChannelTest* c_;
@@ -335,7 +335,7 @@ public:
     EXPECT_EQ(request_, 2);
     EXPECT_EQ(requestBytes_, len_*2);
     EXPECT_EQ(oneway_, 1);
-    channel1_->setCallback(NULL);
+    channel1_->setCallback(nullptr);
   }
 
  private:
@@ -390,7 +390,7 @@ public:
         c_->channel0_->setCloseCallback(nullptr);
       }
       if (!c_->serverClosed_) {
-        c_->channel1_->setCallback(NULL);
+        c_->channel1_->setCallback(nullptr);
       }
     }
     // Leave requestError() alone.  If the request fails, don't
@@ -411,7 +411,7 @@ public:
   virtual void channelClosed(std::exception_ptr&& ep) {
     EXPECT_EQ(channel1_->getSaslPeerIdentity(), "");
     ResponseCallback::channelClosed(std::move(ep));
-    channel1_->setCallback(NULL);
+    channel1_->setCallback(nullptr);
   }
 
   void preLoop() {
@@ -546,7 +546,7 @@ class InOrderTest
     : c_(c) {}
     void replyReceived(ClientReceiveState&& state) {
       if (reply_ == 1) {
-        c_->channel1_->setCallback(NULL);
+        c_->channel1_->setCallback(nullptr);
         // Verify that they came back in the same order
         EXPECT_EQ(state.buf()->computeChainDataLength(), c_->len_ + 1);
       }
@@ -619,7 +619,7 @@ public:
     : c_(c) {}
 
     void requestError(ClientReceiveState&& state) {
-      c_->channel1_->setCallback(NULL);
+      c_->channel1_->setCallback(nullptr);
       TestRequestCallback::requestError(std::move(state));
     }
 
@@ -718,8 +718,8 @@ public:
     EXPECT_EQ(request_, 2);
     EXPECT_EQ(requestBytes_, len_ * 2);
     EXPECT_EQ(oneway_, 0);
-    channel0_->setCloseCallback(NULL);
-    channel1_->setCallback(NULL);
+    channel0_->setCloseCallback(nullptr);
+    channel1_->setCallback(nullptr);
   }
 
   void requestReceived(unique_ptr<ResponseChannel::Request>&& req) {
@@ -729,8 +729,8 @@ public:
     // TestRequestCallback::replyReceived(std::move(buf));
     channel1_->getEventBase()->runAfterDelay(
       [&](){
-        channel1_->setCallback(NULL);
-        channel0_->setCloseCallback(NULL);
+        channel1_->setCallback(nullptr);
+        channel0_->setCloseCallback(nullptr);
       },
       timeout_ * 2); // enough time for server socket to close also
   }
@@ -799,7 +799,7 @@ public:
       requestBytes_ += req->getBuf()->computeChainDataLength();
     } else {
       ResponseCallback::requestReceived(std::move(req));
-      channel1_->setCallback(NULL);
+      channel1_->setCallback(nullptr);
     }
   }
 
@@ -837,12 +837,12 @@ public:
     }
     channel1_->getEventBase()->runAfterDelay(
       [&](){
-        channel1_->setCallback(NULL);
+        channel1_->setCallback(nullptr);
       },
     20);
     channel0_->getEventBase()->runAfterDelay(
       [&](){
-        channel0_->setCloseCallback(NULL);
+        channel0_->setCloseCallback(nullptr);
       },
     20);
   }
@@ -893,12 +893,12 @@ public:
     }
     channel1_->getEventBase()->runAfterDelay(
       [&](){
-        channel1_->setCallback(NULL);
+        channel1_->setCallback(nullptr);
       },
     20);
     channel0_->getEventBase()->runAfterDelay(
       [&](){
-        channel0_->setCloseCallback(NULL);
+        channel0_->setCloseCallback(nullptr);
       },
     20);
   }

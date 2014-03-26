@@ -249,13 +249,13 @@ void t_csharp_generator::print_const_def_value(std::ofstream& out, string name, 
     const map<t_const_value*, t_const_value*>& val = value->get_map();
     map<t_const_value*, t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = NULL;
+      t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
         }
       }
-      if (field_type == NULL) {
+      if (field_type == nullptr) {
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
       string val = render_const_value(out, name, field_type, v_iter->second);
@@ -457,7 +457,7 @@ void t_csharp_generator::generate_csharp_struct_definition(ofstream &out, t_stru
     while (t->is_typedef()) {
       t = ((t_typedef*)t)->get_type();
     }
-    if ((*m_iter)->get_value() != NULL) {
+    if ((*m_iter)->get_value() != nullptr) {
       print_const_value(out, "this." + (*m_iter)->get_name(), t, (*m_iter)->get_value(), true, true);
     }
   }
@@ -763,7 +763,7 @@ void t_csharp_generator::generate_service(t_service* tservice) {
 void t_csharp_generator::generate_service_interface(t_service* tservice) {
   string extends = "";
   string extends_iface = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     extends_iface = " : " + extends + ".Iface";
   }
@@ -797,7 +797,7 @@ void t_csharp_generator::generate_service_helpers(t_service* tservice) {
 void t_csharp_generator::generate_service_client(t_service* tservice) {
   string extends = "";
   string extends_client = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     extends_client = extends + ".Client, ";
   }
@@ -979,7 +979,7 @@ void t_csharp_generator::generate_service_server(t_service* tservice) {
 
   string extends = "";
   string extends_processor = "";
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     extends_processor = extends + ".Processor, ";
   }
@@ -1555,7 +1555,7 @@ string t_csharp_generator::type_name(t_type* ttype, bool in_container, bool in_i
   }
 
   t_program* program = ttype->get_program();
-  if (program != NULL && program != program_) {
+  if (program != nullptr && program != program_) {
     string ns = program->get_namespace("csharp");
     if (!ns.empty()) {
       return ns + "." + ttype->get_name();
@@ -1599,7 +1599,7 @@ string t_csharp_generator::declare_field(t_field* tfield, bool init) {
     while (ttype->is_typedef()) {
       ttype = ((t_typedef*)ttype)->get_type();
     }
-    if (ttype->is_base_type() && tfield->get_value() != NULL) {
+    if (ttype->is_base_type() && tfield->get_value() != nullptr) {
       ofstream dummy;
       result += " = " + render_const_value(dummy, tfield->get_name(), ttype, tfield->get_value());
     } else if (ttype->is_base_type()) {

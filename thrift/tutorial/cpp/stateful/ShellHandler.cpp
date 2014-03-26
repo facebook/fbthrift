@@ -82,7 +82,7 @@ class DirGuard : public boost::noncopyable {
 
   DIR* release() {
     DIR* tmp = dir_;
-    dir_ = NULL;
+    dir_ = nullptr;
     return tmp;
   }
 
@@ -156,7 +156,7 @@ void ShellHandler::listDirectory(std::vector<StatInfo> &_return,
   while (true) {
     errno = 0;
     struct dirent* ent = readdir(d);
-    if (ent == NULL) {
+    if (ent == nullptr) {
       if (errno != 0) {
         throwErrno("readdir() failed");
       }

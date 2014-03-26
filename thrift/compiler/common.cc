@@ -233,7 +233,7 @@ string include_file(string filename) {
   if (filename[0] == '/') {
     // Realpath!
     char rp[PATH_MAX];
-    if (saferealpath(filename.c_str(), rp) == NULL) {
+    if (saferealpath(filename.c_str(), rp) == nullptr) {
       pwarning(0, "Cannot open include file %s\n", filename.c_str());
       return std::string();
     }
@@ -255,7 +255,7 @@ string include_file(string filename) {
 
       // Realpath!
       char rp[PATH_MAX];
-      if (saferealpath(sfilename.c_str(), rp) == NULL) {
+      if (saferealpath(sfilename.c_str(), rp) == nullptr) {
         continue;
       }
 
@@ -273,11 +273,11 @@ string include_file(string filename) {
 }
 
 void clear_doctext() {
-  if (g_doctext != NULL) {
+  if (g_doctext != nullptr) {
     pwarning(2, "Uncaptured doctext at on line %d.", g_doctext_lineno);
   }
   free(g_doctext);
-  g_doctext = NULL;
+  g_doctext = nullptr;
 }
 
 char* clean_up_doctext(char* doctext) {
@@ -307,7 +307,7 @@ char* clean_up_doctext(char* doctext) {
 
   // A very profound docstring.
   if (lines.empty()) {
-    return NULL;
+    return nullptr;
   }
 
   // Clear leading whitespace from the first line.
@@ -535,13 +535,13 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
       if (v_iter->first->get_type() != t_const_value::CV_STRING) {
         throw string("type error: " + name + " struct key must be string");
       }
-      t_type* field_type = NULL;
+      t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
         }
       }
-      if (field_type == NULL) {
+      if (field_type == nullptr) {
         throw string("type error: " + type->get_name() + " has no field " +
           v_iter->first->get_string());
       }
@@ -622,7 +622,7 @@ void parse(t_program* program, t_program* parent_program) {
   g_parse_mode = PROGRAM;
   g_program = program;
   g_scope = program->scope();
-  g_parent_scope = (parent_program != NULL) ? parent_program->scope() : NULL;
+  g_parent_scope = (parent_program != nullptr) ? parent_program->scope() : nullptr;
   g_parent_prefix = program->get_name() + ".";
   g_curpath = path;
   yyin = fopen(path.c_str(), "r");

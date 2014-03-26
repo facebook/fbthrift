@@ -144,7 +144,7 @@ public:
     oprot_ = std::dynamic_pointer_cast<THeaderProtocol>
       (connectionContext->getOutputProtocol());
     // we don't need to return any context
-    return NULL;
+    return nullptr;
   }
 
   /**
@@ -152,7 +152,7 @@ public:
    * headers
    */
   void preWrite(void* ctx, const char* fn_name) {
-    if (iprot_.get() != NULL && oprot_.get() != NULL) {
+    if (iprot_.get() != nullptr && oprot_.get() != nullptr) {
       auto headers = iprot_->getHeaders();
       oprot_->getWriteHeaders() = headers;
       oprot_->setIdentity(testIdentity);
@@ -354,7 +354,7 @@ void* runServer(void*data) {
   std::shared_ptr<TServer> server(*(std::shared_ptr<TServer>*)data);
   server->serve();
 
-  return NULL;
+  return nullptr;
 }
 
 void runTestCase(ServerType sType, ClientType clientType) {
@@ -550,5 +550,5 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
     exit(1);
   }
 
-  return NULL;
+  return nullptr;
 }

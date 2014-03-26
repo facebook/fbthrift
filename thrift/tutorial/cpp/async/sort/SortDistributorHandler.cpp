@@ -269,8 +269,8 @@ void SortDistributorHandler::Aggregator::sortDone(AsyncSortClient* client) {
       // re-sending the request to a different backend server, or performing
       // the sort locally.
       SortErrorCob tmp_errcob = errorCob_;
-      errorCob_ = NULL;
-      cob_ = NULL;
+      errorCob_ = nullptr;
+      cob_ = nullptr;
 
       // Convert the exception to a SortError so the client will be able to
       // catch it.

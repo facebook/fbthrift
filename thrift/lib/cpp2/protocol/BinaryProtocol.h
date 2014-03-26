@@ -48,7 +48,7 @@ class BinaryProtocolWriter {
   static const int32_t VERSION_1 = 0x80010000;
 
   BinaryProtocolWriter()
-      : out_(NULL, 0) {}
+      : out_(nullptr, 0) {}
 
   static inline ProtocolType protocolType() {
     return ProtocolType::T_BINARY_PROTOCOL;
@@ -171,14 +171,14 @@ class BinaryProtocolReader {
     : string_limit_(0)
     , container_limit_(0)
     , strict_read_(true)
-    , in_(NULL) {}
+    , in_(nullptr) {}
 
   BinaryProtocolReader(int32_t string_limit,
                   int32_t container_limit)
     : string_limit_(string_limit)
     , container_limit_(container_limit)
     , strict_read_(true)
-    , in_(NULL) {}
+    , in_(nullptr) {}
 
   static inline ProtocolType protocolType() {
     return ProtocolType::T_BINARY_PROTOCOL;

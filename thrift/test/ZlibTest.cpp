@@ -392,14 +392,14 @@ void parse_args(int argc, char* argv[]) {
   bool has_seed = false;
 
   struct option long_opts[] = {
-    { "help", false, NULL, 'h' },
-    { "seed", true, NULL, 's' },
-    { NULL, 0, NULL, 0 }
+    { "help", false, nullptr, 'h' },
+    { "seed", true, nullptr, 's' },
+    { nullptr, 0, nullptr, 0 }
   };
 
   while (true) {
     optopt = 1;
-    int optchar = getopt_long(argc, argv, "hs:", long_opts, NULL);
+    int optchar = getopt_long(argc, argv, "hs:", long_opts, nullptr);
     if (optchar == -1) {
       break;
     }
@@ -451,5 +451,5 @@ unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
 
   suite->add(BOOST_TEST_CASE(test_no_write));
 
-  return NULL;
+  return nullptr;
 }

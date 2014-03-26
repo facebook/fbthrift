@@ -75,7 +75,7 @@ bool readNextCommand(vector<string>* cmd) {
   char buf[1024];
   buf[sizeof(buf) - 2] = '\n';
   buf[sizeof(buf) - 1] = '\0';
-  if (fgets(buf, sizeof(buf), stdin) == NULL) {
+  if (fgets(buf, sizeof(buf), stdin) == nullptr) {
     // We can't distinguish between I/O error and EOF,
     // but it shouldn't matter much.
     //

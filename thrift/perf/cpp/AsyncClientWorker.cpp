@@ -177,7 +177,7 @@ LoadTestClientPtr AsyncClientWorker::createConnection(
   std::shared_ptr<TAsyncSocket> socket) {
   const std::shared_ptr<ClientLoadConfig>& config = getConfig();
 
-  LoadTestCobClient *loadClient = NULL;
+  LoadTestCobClient *loadClient = nullptr;
   if (config->useHeaderProtocol()) {
     std::shared_ptr<THeaderAsyncChannel> channel(
       THeaderAsyncChannel::newChannel(socket));

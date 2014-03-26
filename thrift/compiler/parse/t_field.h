@@ -40,20 +40,20 @@ class t_field : public t_doc {
     type_(type),
     name_(name),
     key_(0),
-    value_(NULL),
+    value_(nullptr),
     xsd_optional_(false),
     xsd_nillable_(false),
-    xsd_attrs_(NULL) {}
+    xsd_attrs_(nullptr) {}
 
   t_field(t_type* type, std::string name, int32_t key) :
     type_(type),
     name_(name),
     key_(key),
     req_(T_OPT_IN_REQ_OUT),
-    value_(NULL),
+    value_(nullptr),
     xsd_optional_(false),
     xsd_nillable_(false),
-    xsd_attrs_(NULL) {}
+    xsd_attrs_(nullptr) {}
 
   t_field(const t_field&) = default;
 

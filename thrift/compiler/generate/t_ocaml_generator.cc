@@ -414,13 +414,13 @@ string t_ocaml_generator::render_const_value(t_type* type, t_const_value* value)
     const map<t_const_value*, t_const_value*>& val = value->get_map();
     map<t_const_value*, t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = NULL;
+      t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
         }
       }
-      if (field_type == NULL) {
+      if (field_type == nullptr) {
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
       string fname = v_iter->first->get_string();
@@ -798,7 +798,7 @@ void t_ocaml_generator::generate_service_interface(t_service* tservice) {
 
   indent_up();
 
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     string extends = type_name(tservice->get_extends());
     indent(f_service_) << "inherit " << extends << ".iface" << endl;
     indent(f_service_i_) << "inherit " << extends << ".iface" << endl;
@@ -833,7 +833,7 @@ void t_ocaml_generator::generate_service_client(t_service* tservice) {
   indent_up();
 
 
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     indent(f_service_) << "inherit " << extends << ".client iprot oprot as super" << endl;
     indent(f_service_i_) << "inherit " << extends << ".client" << endl;
@@ -1004,7 +1004,7 @@ void t_ocaml_generator::generate_service_server(t_service* tservice) {
     endl;
   string extends = "";
 
-  if (tservice->get_extends() != NULL) {
+  if (tservice->get_extends() != nullptr) {
     extends = type_name(tservice->get_extends());
     indent(f_service_) << "inherit " + extends + ".processor (handler :> " + extends + ".iface)" << endl;
     indent(f_service_i_) << "inherit " + extends + ".processor" << endl;
@@ -1559,7 +1559,7 @@ string t_ocaml_generator::argument_list(t_struct* tstruct) {
 string t_ocaml_generator::type_name(t_type* ttype) {
   string prefix = "";
   t_program* program = ttype->get_program();
-  if (program != NULL && program != program_) {
+  if (program != nullptr && program != program_) {
     if (!ttype->is_service()) {
       prefix = capitalize(program->get_name()) + "_types.";
     }
