@@ -386,9 +386,17 @@ class ThriftServer : public apache::thrift::server::TServer {
     }
   }
 
-  int32_t getGlobalActiveRequests() {
+  int32_t getGlobalActiveRequests() const {
     return globalActiveRequests_;
   }
+
+  /**
+   * Number of connections that epoll says need attention but ThriftServer
+   * didn't have a chance to "ack" yet. A rough proxy for a number of pending
+   * requests that are waiting to be processed (though it's an imperfect proxy
+   * as there may be more than one request sent through a single connection).
+   */
+  int32_t getPendingCount() const;
 
   bool isOverloaded(uint32_t workerActiveRequests = 0);
 

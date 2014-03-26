@@ -434,6 +434,14 @@ ThriftServer::CumulativeFailureInjection::test() const {
   return InjectedFailure::NONE;
 }
 
+int32_t ThriftServer::getPendingCount() const {
+  int pendingCount = 0;
+  for (const auto& worker : workers_) {
+    pendingCount += worker.worker->getPendingCount();
+  }
+  return pendingCount;
+}
+
 bool ThriftServer::isOverloaded(uint32_t workerActiveRequests) {
   if (UNLIKELY(isOverloaded_())) {
     return true;
@@ -441,11 +449,7 @@ bool ThriftServer::isOverloaded(uint32_t workerActiveRequests) {
 
   if (maxRequests_ > 0) {
     if (isUnevenLoad_) {
-      int pendingRequests = 0;
-      for (auto& worker: workers_) {
-        pendingRequests += worker.worker->getPendingCount();
-      }
-      return (globalActiveRequests_ + pendingRequests) >= maxRequests_;
+      return globalActiveRequests_ + getPendingCount() >= maxRequests_;
     } else {
       return workerActiveRequests >= maxRequests_ / nWorkers_;
     }
