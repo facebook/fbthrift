@@ -1365,8 +1365,11 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent(out) << "}" << endl;
 
   if (tstruct->annotations_.find("final") == tstruct->annotations_.end()) {
-    indent(out) << "virtual ~" << tstruct->get_name()
-                << "() throw() {}" << endl << endl;
+    indent(out) << "virtual ~" << tstruct->get_name() << "() throw() {" << endl;
+    indent_up();
+    indent(out) << "__clear();" << endl;
+    indent_down();
+    indent(out) << "}" << endl << endl;
   }
 
   // Declare the storage type

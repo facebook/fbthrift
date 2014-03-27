@@ -2778,8 +2778,10 @@ class CppGenerator(t_generator.Generator):
 
         # END if not pointers
         if 'final' not in obj.annotations:
-            struct.defn('~{name}() throw()', name=obj.name,
-                modifiers='virtual', in_header=True).scope.empty()
+            with struct.defn('~{name}() throw()', name=obj.name,
+                             modifiers='virtual', in_header=True):
+                if obj.is_union:
+                    out('__clear();')
             struct()
 
         s1 = struct
