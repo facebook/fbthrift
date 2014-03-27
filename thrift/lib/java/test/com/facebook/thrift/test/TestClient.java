@@ -33,7 +33,7 @@ import com.facebook.thrift.transport.TTransportException;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TCompactProtocol;
-import com.facebook.thrift.protocol.TSimpleJSONProtocol;
+import com.facebook.thrift.protocol.TCompactJSONProtocol;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -426,7 +426,7 @@ public class TestClient {
       System.out.println("Max time: " + timeMax/1000 + "us");
       System.out.println("Avg time: " + timeAvg/1000 + "us");
 
-      String json = (new TSerializer(new TSimpleJSONProtocol.Factory())).toString(insane);
+      String json = (new TSerializer(new TCompactJSONProtocol.Factory())).toString(insane);
 
       System.out.println("\nFor good meausre here is some JSON:\n" + json);
 

@@ -37,7 +37,6 @@ import java.io.ByteArrayOutputStream;
 
 import com.facebook.thrift.TBase;
 import com.facebook.thrift.protocol.TCompactJSONProtocol;
-import com.facebook.thrift.protocol.TSimpleJSONProtocol;
 import com.facebook.thrift.protocol.TJSONProtocol;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
@@ -54,7 +53,6 @@ import thrift.test.*;
  */
 public class TCompactJSONProtocolTest {
   private static TProtocolFactory compactProtocolFactory = new TCompactJSONProtocol.Factory();
-  private static TProtocolFactory simpleProtocolFactory = new TSimpleJSONProtocol.Factory();
   private static TProtocolFactory fullProtocolFactory = new TJSONProtocol.Factory();
 
   /**
@@ -86,19 +84,9 @@ public class TCompactJSONProtocolTest {
    */
   private static void debugOutput(TBase s) throws Exception {
     System.out.println(s.getClass());
-    System.out.println("  TSimpleJSONProtocol:  " + write(simpleProtocolFactory, s));
     System.out.println("  TCompactJSONProtocol: " +  write(compactProtocolFactory, s));
     System.out.println("  TJSONProtocol:        " + write(fullProtocolFactory, s));
     System.out.println();
-  }
-
-  /**
-   * Assert that simple and compact protocols write out the same JSON.
-   */
-  private static void assertMatchSimple(TBase s) throws Exception {
-    String simpleString = write(simpleProtocolFactory, s);
-    String compactString = write(compactProtocolFactory, s);
-    assertEquals(simpleString, compactString);
   }
 
   /**
@@ -126,14 +114,6 @@ public class TCompactJSONProtocolTest {
   }
 
   /**
-   * Annotate structs for assertion of simple and compact protocol match.
-   */
-  @Target(ElementType.FIELD)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface MatchSimple {
-  }
-
-  /**
    * Annotate structs for assertion of compact protocol reading JSON back.
    */
   @Target(ElementType.FIELD)
@@ -153,25 +133,24 @@ public class TCompactJSONProtocolTest {
   public @interface Filter {
   }
 
-  // No @MatchSimple as TSimpleJSONProtocol doesn't use base64 for binary
   @ReadBack
   private static myBinaryStruct binaryStruct = new myBinaryStruct(
     new byte[] {'x', 'y', 'z', 'z', 'y'});
 
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myBoolStruct boolStruct1 = new myBoolStruct(true);
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myBoolStruct boolStruct2 = new myBoolStruct(false);
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myByteStruct byteStruct = new myByteStruct((byte)101);
 
   // No bad case as Java's byte is equivalent to Thrift's byte
   // private static myByteStruct byteStructBad = new myByteStruct(3232);
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myComplexStruct complexStruct1 = new myComplexStruct(
     new mySimpleStruct(
       true,
@@ -200,30 +179,28 @@ public class TCompactJSONProtocolTest {
   // Skipped because Java expects valid enum value for myComplexStruct.b
   // private static myComplexStruct complexStruct2 = new myComplexStruct();
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myDoubleStruct doubleStruct1 = new myDoubleStruct(-2.192);
 
-  // No @MatchSimple as TSimpleJSONProtocol doesn't enclose Infinity in quotes
   @ReadBack
   private static myDoubleStruct doubleStruct2 = new myDoubleStruct(Double.POSITIVE_INFINITY);
 
-  // No @MatchSimple as TSimpleJSONProtocol doesn't enclose -Infinity in quotes
   @ReadBack
   private static myDoubleStruct doubleStruct3 = new myDoubleStruct(Double.NEGATIVE_INFINITY);
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myI16Struct I16Struct = new myI16Struct((short)4567);
 
   // No bad case as Java's short is equivalent to Thrift's I16
   // private static myI16Struct I16StructBad = new myI16Struct(0xFEDCBA987);
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myI32Struct I32Struct = new myI32Struct(12131415);
 
   // No bad case as Java's int is equivalent to Thrift's I32
   // private static myI32Struct I32StructBad = new myI32Struct(0xFFFFFFFFEDCBA);
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myMixedStruct mixedStruct = new myMixedStruct(
     new ArrayList<Short>(),
     Arrays.asList(new mySuperSimpleStruct((short)5)),
@@ -235,18 +212,17 @@ public class TCompactJSONProtocolTest {
     new HashSet<Short>(Arrays.asList((short)1, (short)2, (short)3, (short)4))
   );
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static mySetStruct setStruct1 = new mySetStruct(
     new HashSet<Short>(Arrays.asList((short)4, (short)8, (short)15, (short)16))
   );
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static mySetStruct setStruct2 = new mySetStruct(new HashSet<Short>());
 
   // No bad case as Java's short is equivalent to Thrift's I16
   // private static mySetStruct setStructBad = new mySetStruct(set([1, 0xFFFFFFFFFF, 2]));
 
-  // No @MatchSimple because TSimpleJSONProtocol doesn't enclose numeric keys in quotes
   @ReadBack
   private static myMapStruct mapStruct = new myMapStruct(
     new HashMap<String, String>() {{
@@ -271,7 +247,7 @@ public class TCompactJSONProtocolTest {
     }}
   );
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myNestedMapStruct nestedMapStruct = new myNestedMapStruct(
     new HashMap<String, Map<String, mySimpleStruct>>() {{
       put("1", new HashMap<String, mySimpleStruct>() {{
@@ -288,7 +264,7 @@ public class TCompactJSONProtocolTest {
     }}
   );
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static mySimpleStruct simpleStruct1 = new mySimpleStruct(
     false,
     (byte)87,
@@ -299,21 +275,21 @@ public class TCompactJSONProtocolTest {
     "T-bone"
   );
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static mySimpleStruct simpleStruct2 = new mySimpleStruct() {{
     setC((short)9);
   }};
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static mySimpleStruct simpleStructBad = new mySimpleStruct();
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myStringStruct stringStruct1 = new myStringStruct("");
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myStringStruct stringStruct2 = new myStringStruct();
 
-  @MatchSimple @ReadBack
+  @ReadBack
   private static myStringStruct stringStruct3 = new myStringStruct("foobar");
 
   @Test
@@ -337,10 +313,6 @@ public class TCompactJSONProtocolTest {
 
       if (field.isAnnotationPresent(DebugOutput.class)) {
         debugOutput((TBase)field.get(null));
-      }
-
-      if (field.isAnnotationPresent(MatchSimple.class)) {
-        assertMatchSimple((TBase)field.get(null));
       }
 
       ReadBack readBackAnnotation = (ReadBack)field.getAnnotation(ReadBack.class);
