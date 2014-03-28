@@ -26,8 +26,6 @@
 #include "thrift/lib/cpp/protocol/TProtocol.h"
 #include "thrift/lib/cpp2/protocol/Protocol.h"
 
-using apache::thrift::protocol::TType;
-
 namespace apache { namespace thrift {
 
 using folly::IOBuf;

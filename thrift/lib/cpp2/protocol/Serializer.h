@@ -26,8 +26,6 @@
 #include "thrift/lib/cpp/TApplicationException.h"
 #include "folly/io/IOBuf.h"
 
-using apache::thrift::TApplicationException;
-
 namespace apache { namespace thrift {
 
 template <typename Reader, typename Writer>

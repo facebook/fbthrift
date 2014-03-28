@@ -33,11 +33,6 @@
 #include "folly/String.h"
 #include "folly/MoveWrapper.h"
 
-using apache::thrift::TProcessorBase;
-using apache::thrift::TException;
-using apache::thrift::transport::THeader;
-using folly::makeMoveWrapper;
-
 namespace apache { namespace thrift {
 
 enum class SerializationThread {
@@ -125,7 +120,7 @@ class AsyncProcessor : public TProcessorBase {
                        apache::thrift::concurrency::ThreadManager* tm) = 0;
 
   virtual bool isOnewayMethod(const folly::IOBuf* buf,
-                              const THeader* header) = 0;
+                              const transport::THeader* header) = 0;
 
 };
 
@@ -211,14 +206,14 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       }
     }
     auto preq = req.get();
-    auto iprot_holder = makeMoveWrapper(std::move(iprot));
-    auto buf_mw = makeMoveWrapper(std::move(buf));
+    auto iprot_holder = folly::makeMoveWrapper(std::move(iprot));
+    auto buf_mw = folly::makeMoveWrapper(std::move(buf));
     try {
       tm->add(
         std::make_shared<apache::thrift::PriorityEventTask>(
           pri,
           [=]() mutable {
-            auto req_mw = makeMoveWrapper(
+            auto req_mw = folly::makeMoveWrapper(
               std::unique_ptr<apache::thrift::ResponseChannel::Request>(preq));
             // Oneway request won't be canceled if expired. see
             // D1006482 for furhter details.  TODO: fix this
@@ -520,7 +515,7 @@ class HandlerCallback<std::unique_ptr<T>> : public HandlerCallbackBase {
       result(r);
       delete this;
     } else {
-      auto r_mw = makeMoveWrapper(std::move(r));
+      auto r_mw = folly::makeMoveWrapper(std::move(r));
       getEventBase()->runInEventBaseThread([=](){
         this->result(*r_mw);
         delete this;

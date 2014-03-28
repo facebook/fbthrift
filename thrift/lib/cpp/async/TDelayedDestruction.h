@@ -23,7 +23,7 @@
 #include <inttypes.h>
 #include <assert.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache { namespace thrift {
 
 /**
  * TDelayedDestruction is a helper class to ensure objects are not deleted
@@ -179,6 +179,12 @@ class TDelayedDestruction : private boost::noncopyable {
   bool destroyPending_;
 };
 
-}}} // apache::thrift::async
+// For legacy reasons, also provide TDelayedDestruction in the
+// apache::thrift::async namespace
+namespace async {
+typedef apache::thrift::TDelayedDestruction TDelayedDestruction;
+}
+
+}} // apache::thrift
 
 #endif // THRIFT_ASYNC_TDELAYEDDESTRUCTION_H_

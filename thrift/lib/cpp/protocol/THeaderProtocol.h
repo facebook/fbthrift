@@ -30,9 +30,6 @@
 
 #include <bitset>
 
-using apache::thrift::transport::THeaderTransport;
-using apache::thrift::transport::TTransportPair;
-
 namespace apache { namespace thrift { namespace protocol {
 
 /**
@@ -49,8 +46,8 @@ class THeaderProtocol
                            int8_t protoVersion = -1) :
       TVirtualProtocol<THeaderProtocol>(getTransportWrapper(trans,
                                                             clientTypes))
-      , trans_(std::dynamic_pointer_cast<THeaderTransport, TTransport>(
-                   this->getTransport()))
+      , trans_(std::dynamic_pointer_cast<transport::THeaderTransport,
+                                         TTransport>(this->getTransport()))
       , protoId_(protoId)
       , protoVersion_(protoVersion)
   {
@@ -67,8 +64,8 @@ class THeaderProtocol
       TVirtualProtocol<THeaderProtocol>(getInOutTransportWrapper(inTrans,
                                                                  outTrans,
                                                                  clientTypes))
-      , trans_(std::dynamic_pointer_cast<THeaderTransport, TTransport>(
-                 this->getTransport()))
+      , trans_(std::dynamic_pointer_cast<transport::THeaderTransport,
+                                         TTransport>(this->getTransport()))
       , protoId_(protoId)
       , protoVersion_(protoVersion)
   {
@@ -92,8 +89,8 @@ class THeaderProtocol
               std::shared_ptr<TTransport>(trans,
                                             NoopPtrDestructor<TTransport>()),
               clientTypes))
-      , trans_(std::dynamic_pointer_cast<THeaderTransport, TTransport>(
-                 this->getTransport()))
+      , trans_(std::dynamic_pointer_cast<transport::THeaderTransport,
+                                         TTransport>(this->getTransport()))
       , protoId_(protoId)
       , protoVersion_(protoVersion)
   {
@@ -119,7 +116,7 @@ class THeaderProtocol
 
   void resetProtocol();
 
-  typedef THeaderTransport::StringToStringMap StringToStringMap;
+  typedef transport::THeaderTransport::StringToStringMap StringToStringMap;
 
   // these work with write headers
   void setHeader(const std::string& key, const std::string& value) {
@@ -162,8 +159,8 @@ class THeaderProtocol
     trans_->setIdentity(identity);
   }
 
-  void setHmac(THeaderTransport::MacCallback macCb,
-               THeaderTransport::VerifyMacCallback verifyCb) {
+  void setHmac(transport::THeaderTransport::MacCallback macCb,
+               transport::THeaderTransport::VerifyMacCallback verifyCb) {
     trans_->setHmac(macCb, verifyCb);
   }
 
@@ -294,11 +291,11 @@ class THeaderProtocol
   std::shared_ptr<TTransport> getTransportWrapper(
     const std::shared_ptr<TTransport>& trans,
     std::bitset<CLIENT_TYPES_LEN>* clientTypes) {
-    if (dynamic_cast<THeaderTransport*>(trans.get()) != nullptr) {
+    if (dynamic_cast<transport::THeaderTransport*>(trans.get()) != nullptr) {
       return trans;
     } else {
-      return std::shared_ptr<THeaderTransport>(
-        new THeaderTransport(trans, clientTypes));
+      return std::shared_ptr<transport::THeaderTransport>(
+        new transport::THeaderTransport(trans, clientTypes));
     }
   }
 
@@ -306,15 +303,17 @@ class THeaderProtocol
     const std::shared_ptr<TTransport>& inTrans,
     const std::shared_ptr<TTransport>& outTrans,
     std::bitset<CLIENT_TYPES_LEN>* clientTypes) {
-    assert(dynamic_cast<THeaderTransport*>(inTrans.get()) == nullptr
-           && dynamic_cast<THeaderTransport*>(outTrans.get()) == nullptr);
+    assert(dynamic_cast<transport::THeaderTransport*>(inTrans.get()) ==
+              nullptr &&
+           dynamic_cast<transport::THeaderTransport*>(outTrans.get()) ==
+              nullptr);
 
-    return std::shared_ptr<THeaderTransport>(
-      new THeaderTransport(inTrans, outTrans, clientTypes)
+    return std::shared_ptr<transport::THeaderTransport>(
+      new transport::THeaderTransport(inTrans, outTrans, clientTypes)
     );
   }
 
-  std::shared_ptr<THeaderTransport> trans_;
+  std::shared_ptr<transport::THeaderTransport> trans_;
 
   std::shared_ptr<TProtocol> proto_;
   uint32_t protoId_;
@@ -370,7 +369,7 @@ class THeaderProtocolFactory : public TDuplexProtocolFactory {
     return TProtocolPair(pprot, pprot);
   }
 
-  virtual TProtocolPair getProtocol(TTransportPair transports) {
+  virtual TProtocolPair getProtocol(transport::TTransportPair transports) {
     THeaderProtocol* prot = new THeaderProtocol(transports.first,
                                                 transports.second,
                                                 &clientTypes,

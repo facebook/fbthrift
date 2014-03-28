@@ -28,8 +28,6 @@
 #include "thrift/lib/cpp2/protocol/StreamSerializers.h"
 #include "thrift/lib/cpp/protocol/TProtocol.h"
 
-using apache::thrift::protocol::TType;
-
 namespace apache { namespace thrift {
 
 class StreamChannelCallback;

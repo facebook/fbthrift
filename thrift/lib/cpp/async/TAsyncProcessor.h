@@ -26,8 +26,6 @@
 #include "thrift/lib/cpp/server/TConnectionContext.h"
 #include "thrift/lib/cpp/protocol/TProtocol.h"
 
-using apache::thrift::server::TConnectionContext;
-
 namespace apache { namespace thrift { namespace async {
 
 /**
@@ -46,7 +44,7 @@ class TAsyncProcessor : public TProcessorBase {
   virtual void process(std::function<void(bool success)> _return,
                        std::shared_ptr<protocol::TProtocol> in,
                        std::shared_ptr<protocol::TProtocol> out,
-                       TConnectionContext* context = nullptr) = 0;
+                       server::TConnectionContext* context = nullptr) = 0;
 
   void process(std::function<void(bool success)> _return,
                std::shared_ptr<apache::thrift::protocol::TProtocol> io) {

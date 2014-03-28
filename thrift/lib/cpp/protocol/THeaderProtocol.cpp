@@ -29,6 +29,8 @@
 #include <boost/static_assert.hpp>
 
 
+using apache::thrift::transport::THeaderTransport;
+
 namespace apache { namespace thrift { namespace protocol {
 
 void THeaderProtocol::resetProtocol() {

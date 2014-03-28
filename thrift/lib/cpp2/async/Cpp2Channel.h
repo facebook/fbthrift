@@ -30,8 +30,6 @@
 #include <deque>
 #include <vector>
 
-using apache::thrift::async::TDelayedDestruction;
-
 namespace apache { namespace thrift {
 
 class Cpp2Channel

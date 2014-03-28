@@ -34,8 +34,6 @@ class TAsyncTransport;
 
 namespace apache { namespace thrift {
 
-using apache::thrift::async::TDelayedDestruction;
-
 /**
  * MessageChannel defines an asynchronous API for message-based I/O.
  */

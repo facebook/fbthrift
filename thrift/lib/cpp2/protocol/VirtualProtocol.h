@@ -32,8 +32,6 @@
 #include <string>
 #include <vector>
 
-using apache::thrift::protocol::TType;
-
 namespace apache { namespace thrift {
 
 class VirtualReaderBase {

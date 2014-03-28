@@ -1202,9 +1202,10 @@ class CppGenerator(t_generator.Generator):
                    'x);'.format(functionname, seqid, ctx))
                 out('req->sendReply(queue.move());')
             else:
-                out('auto queue_mw = makeMoveWrapper(serializeException("{0}", '
-                   '&prot, {1}, {2}, x));'.format(functionname, seqid, ctx))
-                out('auto req_mw = makeMoveWrapper(std::move(req));')
+                out('auto queue_mw = '
+                    'folly::makeMoveWrapper(serializeException("{0}", '
+                    '&prot, {1}, {2}, x));'.format(functionname, seqid, ctx))
+                out('auto req_mw = folly::makeMoveWrapper(std::move(req));')
                 with out('eb->runInEventBaseThread([=]() mutable'):
                     out('(*req_mw)->sendReply(queue_mw->move());')
                 out(');')
@@ -1346,7 +1347,8 @@ class CppGenerator(t_generator.Generator):
                         with out('try'):
                             out('iprot->readMessageBegin(fname, mtype,' + \
                                   ' protoSeqId);')
-                            with out().catch("const TException& ex"):
+                            with out().catch('const apache::thrift::'
+                                             'TException& ex'):
                                 out('LOG(ERROR) << "received invalid message' +
                                   ' from client: " << ex.what();')
                                 out('apache::thrift::{0}Writer prot;'
@@ -1413,7 +1415,8 @@ class CppGenerator(t_generator.Generator):
                                   ' protoSeqId);')
                             out('auto it = onewayMethods.find(fname);')
                             out('return it != onewayMethods.end();')
-                            with out().catch("const TException& ex"):
+                            with out().catch('const apache::thrift::'
+                                             'TException& ex'):
                                 out('LOG(ERROR) << "received invalid message' +
                                   ' from client: " << ex.what();')
                                 out('return false;')

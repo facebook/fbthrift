@@ -29,6 +29,7 @@
 #include "folly/Memory.h"
 
 using namespace apache::thrift;
+using apache::thrift::transport::THeader;
 using namespace boost::python;
 
 class PythonAsyncProcessor : public AsyncProcessor {

@@ -28,8 +28,6 @@
 #include "folly/io/IOBuf.h"
 #include "thrift/lib/cpp2/protocol/StreamSerializers.h"
 
-using apache::thrift::protocol::TType;
-
 namespace apache { namespace thrift {
 
 class StreamManager;

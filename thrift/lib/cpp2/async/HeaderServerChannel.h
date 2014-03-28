@@ -31,8 +31,6 @@
 
 #include <unordered_map>
 
-using apache::thrift::async::TDelayedDestruction;
-
 namespace apache { namespace thrift {
 
 /**

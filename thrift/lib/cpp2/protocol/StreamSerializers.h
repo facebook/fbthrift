@@ -27,8 +27,6 @@
 #include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
 #include "thrift/lib/cpp2/protocol/CompactProtocol.h"
 
-using apache::thrift::protocol::TType;
-
 namespace apache { namespace thrift {
 
 enum class StreamFlag : int8_t {

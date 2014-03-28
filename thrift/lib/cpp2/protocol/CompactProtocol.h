@@ -27,8 +27,6 @@
 
 #include <stack>
 
-using apache::thrift::protocol::TType;
-
 namespace apache { namespace thrift {
 
 using folly::IOBuf;
