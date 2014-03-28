@@ -1147,12 +1147,12 @@ class SSLHandshakeBase :
    apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
    bool preverifyResult,
    bool verifyResult) :
-    socket_(std::move(socket)),
-    preverifyResult_(preverifyResult),
-    verifyResult_(verifyResult),
     handshakeVerify_(false),
     handshakeSuccess_(false),
-    handshakeError_(false) {
+    handshakeError_(false),
+    socket_(std::move(socket)),
+    preverifyResult_(preverifyResult),
+    verifyResult_(verifyResult) {
   }
 
   bool handshakeVerify_;
