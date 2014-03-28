@@ -48,6 +48,12 @@ class MockTAsyncSSLSocket :
   MOCK_METHOD3(
    sslConnect,
    void(TAsyncSSLSocket::HandshakeCallback*, uint64_t, bool));
+  MOCK_CONST_METHOD2(
+   getSelectedNextProtocol,
+   void(const unsigned char**, unsigned*));
+  MOCK_CONST_METHOD2(
+   getSelectedNextProtocolNoThrow,
+   bool(const unsigned char**, unsigned*));
 };
 
 }}}

@@ -361,7 +361,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
    *                       of this string.
    * @param protoNameLen   Length of the name.
    */
-  void getSelectedNextProtocol(const unsigned char** protoName,
+  virtual void getSelectedNextProtocol(const unsigned char** protoName,
       unsigned* protoLen) const;
 
   /**
@@ -376,7 +376,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * @param protoNameLen   Length of the name.
    * @return false if openssl does not support NPN
    */
-  bool getSelectedNextProtocolNoThrow(const unsigned char** protoName,
+  virtual bool getSelectedNextProtocolNoThrow(const unsigned char** protoName,
       unsigned* protoLen) const;
 
   /**
