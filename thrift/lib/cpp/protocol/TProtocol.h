@@ -478,6 +478,11 @@ class TProtocol {
     return writeBinary_virt(str);
   }
 
+  uint32_t writeBinary(const folly::fbstring& str) {
+    T_VIRTUAL_CALL();
+    return writeBinary_virt(str.toStdString());
+  }
+
   /**
    * Reading functions
    */
@@ -681,6 +686,14 @@ class TProtocol {
   uint32_t readBinary(std::string& str) {
     T_VIRTUAL_CALL();
     return readBinary_virt(str);
+  }
+
+  uint32_t readBinary(folly::fbstring& str) {
+    T_VIRTUAL_CALL();
+    std::string data;
+    uint32_t ret = readBinary_virt(data);
+    str = data;
+    return ret;
   }
 
   /*

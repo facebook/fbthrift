@@ -223,7 +223,10 @@ class THeaderProtocol
     return proto_->writeString(str);
   }
 
-  uint32_t writeBinary(const std::string& str);
+  template<typename StrType>
+  uint32_t writeBinary(const StrType& str) {
+    return proto_->writeBinary(str);
+  }
 
   /**
    * Reading functions
@@ -282,7 +285,10 @@ class THeaderProtocol
     return proto_->readString(str);
   }
 
-  uint32_t readBinary(std::string& binary);
+  template<typename StrType>
+  uint32_t readBinary(StrType& binary) {
+    return proto_->readBinary(binary);
+  }
 
  protected:
   std::shared_ptr<TTransport> getTransportWrapper(
