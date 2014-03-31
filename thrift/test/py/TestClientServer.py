@@ -410,7 +410,9 @@ def add_test_classes(module):
                         'server_context': server_context,
                     }
                     classes.append(new_test_class(NormalBinaryTest, vars))
-                    classes.append(new_test_class(AcceleratedBinaryTest, vars))
+                    # fastbinary is unavailable in Python 3
+                    if sys.version_info[0] < 3:
+                        classes.append(new_test_class(AcceleratedBinaryTest, vars))
                     # header client to non-header server hangs
                     if server_header:
                         classes.append(new_test_class(HeaderTest, vars))

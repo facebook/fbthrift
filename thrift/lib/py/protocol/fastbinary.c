@@ -15,16 +15,7 @@
  */
 
 #include <python/Python.h>
-
-#if PY_MAJOR_VERSION >= 3
- #define PyInt_FromLong PyLong_FromLong
- #define PyInt_AsLong PyLong_AsLong
- #define PyString_FromStringAndSize PyUnicode_FromStringAndSize
- #define py3_write_int(buf, data, type) \
-  PyObject_CallMethod(buf, "write", "(y#)", (char*)&data, sizeof(type));
-#else
- #include <python/cStringIO.h>
-#endif
+#include <python/cStringIO.h>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -176,16 +167,8 @@ typedef struct {
  */
 typedef struct {
   PyObject* stringiobuf;
-#if PY_MAJOR_VERSION >= 3
-  int pos;
-#endif
   PyObject* refill_callable;
 } DecodeBuffer;
-
-/** io module in python3. */
-#if PY_MAJOR_VERSION >= 3
-static PyObject* Python3IO;
-#endif
 
 /** Pointer to interned string to speed up attribute lookup. */
 static PyObject* INTERN_STRING(cstringio_buf);
@@ -317,38 +300,22 @@ parse_struct_item_spec(StructItemSpec* dest, PyObject* spec_tuple) {
 
 static void writeByte(PyObject* outbuf, int8_t val) {
   int8_t net = val;
-#if PY_MAJOR_VERSION >= 3
-  py3_write_int(outbuf, net, int8_t)
-#else
   PycStringIO->cwrite(outbuf, (char*)&net, sizeof(int8_t));
-#endif
 }
 
 static void writeI16(PyObject* outbuf, int16_t val) {
   int16_t net = (int16_t)htons(val);
-#if PY_MAJOR_VERSION >= 3
-  py3_write_int(outbuf, net, int16_t)
-#else
   PycStringIO->cwrite(outbuf, (char*)&net, sizeof(int16_t));
-#endif
 }
 
 static void writeI32(PyObject* outbuf, int32_t val) {
   int32_t net = (int32_t)htonl(val);
-#if PY_MAJOR_VERSION >= 3
-  py3_write_int(outbuf, net, int32_t)
-#else
   PycStringIO->cwrite(outbuf, (char*)&net, sizeof(int32_t));
-#endif
 }
 
 static void writeI64(PyObject* outbuf, int64_t val) {
   int64_t net = (int64_t)htonll(val);
-#if PY_MAJOR_VERSION >= 3
-  py3_write_int(outbuf, net, int64_t)
-#else
   PycStringIO->cwrite(outbuf, (char*)&net, sizeof(int64_t));
-#endif
 }
 
 static void writeDouble(PyObject* outbuf, double dub) {
@@ -464,30 +431,14 @@ output_val(PyObject* output, PyObject* value, TType type, PyObject* typeargs) {
   }
 
   case T_STRING: {
-#if PY_MAJOR_VERSION >= 3
-    // Allow passing bytes
-    Py_ssize_t len = PyBytes_Check(value) ?
-        PyBytes_Size(value) : PyUnicode_GetLength(value);
-#else
     Py_ssize_t len = PyString_Size(value);
-#endif
 
     if (!check_ssize_t_32(len)) {
       return false;
     }
 
     writeI32(output, (int32_t) len);
-#if PY_MAJOR_VERSION >= 3
-    if (PyBytes_Check(value)) {
-      PyObject_CallMethod(output, "write", "(S)", value);
-    } else {
-      PyObject *bytes = PyObject_CallMethod(value, "encode", "()");
-      PyObject_CallMethod(output, "write", "(S)", bytes);
-      Py_DECREF(bytes);
-    }
-#else
     PycStringIO->cwrite(output, PyString_AsString(value), (int32_t) len);
-#endif
     break;
   }
 
@@ -657,17 +608,9 @@ encode_binary(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args, "OO", &enc_obj, &type_args)) {
     return NULL;
   }
-#if PY_MAJOR_VERSION >= 3
-  buf = PyObject_CallMethod(Python3IO, "BytesIO", "()");
-#else
   buf = PycStringIO->NewOutput(INIT_OUTBUF_SIZE);
-#endif
   if (output_val(buf, enc_obj, T_STRUCT, type_args)) {
-#if PY_MAJOR_VERSION >= 3
-    ret = PyUnicode_FromEncodedObject(buf, NULL, NULL);
-#else
     ret = PycStringIO->cgetvalue(buf);
-#endif
   }
 
   Py_DECREF(buf);
@@ -694,11 +637,7 @@ decode_buffer_from_obj(DecodeBuffer* dest, PyObject* obj) {
     return false;
   }
 
-#if PY_MAJOR_VERSION >= 3
-  if (!PyBytes_Check(dest->stringiobuf)) {
-#else
   if (!PycStringIO_InputCheck(dest->stringiobuf)) {
-#endif
     free_decodebuf(dest);
     PyErr_SetString(PyExc_TypeError, "expecting stringio input");
     return false;
@@ -731,24 +670,12 @@ static bool readBytes(DecodeBuffer* input, char** output, int len) {
   //               the partial read instead of forcing the transport
   //               to prepend it to its buffer.
 
-#if PY_MAJOR_VERSION >= 3
-  char* start = PyBytes_AsString(input->stringiobuf);
-  if (start == NULL) {
-    return -1;
-  }
-  Py_ssize_t size = PyBytes_Size(input->stringiobuf);
-  *output = start + input->pos;
-  input->pos += len;
-  if (size >= input->pos) {
-    return true;
-#else
   read = PycStringIO->cread(input->stringiobuf, output, len);
 
   if (read == len) {
     return true;
   } else if (read == -1) {
     return false;
-#endif
   } else {
     PyObject* newiobuf;
 
@@ -762,25 +689,12 @@ static bool readBytes(DecodeBuffer* input, char** output, int len) {
     // must do this *AFTER* the call so that we don't deref the io buffer
     Py_CLEAR(input->stringiobuf);
     input->stringiobuf = newiobuf;
-#if PY_MAJOR_VERSION >= 3
-    input->pos = 0;
-    char* start = PyBytes_AsString(input->stringiobuf);
-    if (start == NULL) {
-      return -1;
-    }
-    Py_ssize_t size = PyBytes_Size(input->stringiobuf);
-    *output = start + input->pos;
-    input->pos += len;
-    if (size >= input->pos) {
-      return true;
-#else
     read = PycStringIO->cread(input->stringiobuf, output, len);
 
     if (read == len) {
       return true;
     } else if (read == -1) {
       return false;
-#endif
     } else {
       // TODO(dreiss): This could be a valid code path for big binary blobs.
       PyErr_SetString(PyExc_TypeError,
@@ -1323,54 +1237,6 @@ static PyMethodDef ThriftFastBinaryMethods[] = {
   {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
-#if PY_MAJOR_VERSION >= 3
-struct module_state {
-  PyObject *error;
-};
-
-#define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
-
-static int fastbinary_traverse(PyObject *m, visitproc visit, void *arg) {
-  Py_VISIT(GETSTATE(m)->error);
-  return 0;
-}
-
-static int fastbinary_clear(PyObject *m) {
-  Py_CLEAR(GETSTATE(m)->error);
-  return 0;
-}
-
-static struct PyModuleDef ThriftFastBinaryModuleDef = {
-  PyModuleDef_HEAD_INIT,
-  "thrift.protocol.fastbinary",
-  NULL,
-  sizeof(struct module_state),
-  ThriftFastBinaryMethods,
-  NULL,
-  fastbinary_traverse,
-  fastbinary_clear,
-  NULL
-};
-
-PyObject*
-PyInit_fastbinary(void) {
-  Python3IO = PyImport_ImportModule("io");
-  if (Python3IO == NULL) {
-    return NULL;
-  }
-
-  PyObject *module = PyModule_Create(&ThriftFastBinaryModuleDef);
-  if (module == NULL) {
-    return NULL;
-  }
-  struct module_state *st = GETSTATE(module);
-
-  st->error = PyErr_NewException("fastbinary.Error", NULL, NULL);
-  if (st->error == NULL) {
-    Py_DECREF(module);
-    return NULL;
-  }
-#else
 PyMODINIT_FUNC
 initfastbinary(void) {
   PycString_IMPORT;
@@ -1378,21 +1244,12 @@ initfastbinary(void) {
 
   PyObject* module =
     Py_InitModule("thrift.protocol.fastbinary", ThriftFastBinaryMethods);
-#endif
 
-#if PY_MAJOR_VERSION >= 3
-#define INIT_INTERN_STRING(value) \
-  do { \
-    INTERN_STRING(value) = PyUnicode_InternFromString(#value); \
-    if(!INTERN_STRING(value)) return NULL; \
-  } while(0)
-#else
 #define INIT_INTERN_STRING(value) \
   do { \
     INTERN_STRING(value) = PyString_InternFromString(#value); \
     if(!INTERN_STRING(value)) return; \
   } while(0)
-#endif
 
   INIT_INTERN_STRING(cstringio_buf);
   INIT_INTERN_STRING(cstringio_refill);
@@ -1401,7 +1258,4 @@ initfastbinary(void) {
   // Version one of fastbinary.
   (void) PyModule_AddIntConstant(module, "version", 2);
 
-#if PY_MAJOR_VERSION >= 3
-  return module;
-#endif
 }
