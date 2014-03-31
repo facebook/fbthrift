@@ -1242,7 +1242,7 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
 
   out <<
     indent() << "$xfer = 0;" << endl <<
-    indent() << "$fname = null;" << endl <<
+    indent() << "$fname = '';" << endl <<
     indent() << "$ftype = 0;" << endl <<
     indent() << "$fid = 0;" << endl;
 
@@ -1641,7 +1641,7 @@ void t_hack_generator::generate_service_processor(t_service* tservice,
 
   f_service_ <<
     indent() << "$rseqid = 0;" << endl <<
-    indent() << "$fname = null;" << endl <<
+    indent() << "$fname = '';" << endl <<
     indent() << "$mtype = 0;" << endl <<
     endl;
 
@@ -2531,7 +2531,7 @@ void t_hack_generator::_generate_service_client(
 
       out <<
         indent() << "$rseqid = 0;" << endl <<
-        indent() << "$fname = null;" << endl <<
+        indent() << "$fname = '';" << endl <<
         indent() << "$mtype = 0;" << endl <<
         endl;
 
