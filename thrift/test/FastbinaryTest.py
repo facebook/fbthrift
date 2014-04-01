@@ -32,8 +32,14 @@ from DebugProtoTest.ttypes import *
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
 
+import sys
 import timeit
-from cStringIO import StringIO
+
+if sys.version_info[0] >= 3:
+    from io import BytesIO
+    StringIO = BytesIO
+else:
+    from cStringIO import StringIO
 from copy import deepcopy
 from pprint import pprint
 
@@ -51,7 +57,7 @@ ooe1.integer16 = 27000
 ooe1.integer32 = 1<<24
 ooe1.integer64 = 6000 * 1000 * 1000
 ooe1.double_precision = math.pi
-ooe1.some_characters  = "Debug THIS!"
+ooe1.some_characters  = b"Debug THIS!"
 ooe1.zomg_unicode     = "\xd7\n\a\t".encode("utf-8")
 
 ooe2 = OneOfEach()
@@ -59,7 +65,7 @@ ooe2.integer16 = 16
 ooe2.integer32 = 32
 ooe2.integer64 = 64
 ooe2.double_precision = (math.sqrt(5)+1)/2
-ooe2.some_characters  = ":R (me going \"rrrr\")"
+ooe2.some_characters  = b":R (me going \"rrrr\")"
 ooe2.zomg_unicode     = "\xd3\x80\xe2\x85\xae\xce\x9d\x20"\
                         "\xd0\x9d\xce\xbf\xe2\x85\xbf\xd0\xbe"\
                         "\xc9\xa1\xd0\xb3\xd0\xb0\xcf\x81\xe2\x84\x8e"\
@@ -69,36 +75,42 @@ ooe2.zomg_unicode     = "\xd3\x80\xe2\x85\xae\xce\x9d\x20"\
 hm = HolyMoley(big=[], contain=set(), bonks={})
 hm.big.append(ooe1)
 hm.big.append(ooe2)
-hm.big[0].a_bite = 0x22;
-hm.big[1].a_bite = 0x22;
+hm.big[0].a_bite = 0x22
+hm.big[1].a_bite = 0x22
 
-hm.contain.add(("and a one", "and a two"))
-hm.contain.add(("then a one, two", "three!", "FOUR!"))
+hm.contain.add((b"and a one", b"and a two"))
+hm.contain.add((b"then a one, two", b"three!", "FOUR!"))
 hm.contain.add(())
 
-hm.bonks["nothing"] = [];
-hm.bonks["something"] = [
-    Bonk(type=1, message="Wait."),
-    Bonk(type=2, message="What?"),
+hm.bonks[b"nothing"] = []
+hm.bonks[b"something"] = [
+    Bonk(type=1, message=b"Wait."),
+    Bonk(type=2, message=b"What?"),
 ]
-hm.bonks["poe"] = [
-    Bonk(type=3, message="quoth"),
-    Bonk(type=4, message="the raven"),
-    Bonk(type=5, message="nevermore"),
+hm.bonks[b"poe"] = [
+    Bonk(type=3, message=b"quoth"),
+    Bonk(type=4, message=b"the raven"),
+    Bonk(type=5, message=b"nevermore"),
 ]
 
 rs = RandomStuff()
 rs.a = 1
 rs.b = 2
 rs.c = 3
-rs.myintlist = range(20)
+if sys.version_info[0] >= 3:
+    rs.myintlist = list(range(20))
+else:
+    rs.myintlist = range(20)
 rs.maps = {1:Wrapper(foo=Empty()), 2:Wrapper(foo=Empty())}
-rs.bigint = 124523452435L
+rs.bigint = 124523452435
 rs.triple = 3.14
 
 # make sure this splits two buffers in a buffered protocol
 rshuge = RandomStuff()
-rshuge.myintlist=range(10000)
+if sys.version_info[0] >= 3:
+    rshuge.myintlist = list(range(10000))
+else:
+    rshuge.myintlist = range(10000)
 
 my_zero = Srv.Janky_result(5)
 
