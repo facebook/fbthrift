@@ -20,6 +20,8 @@
 using namespace apache::thrift;
 using namespace apache::thrift::async;
 using namespace apache::thrift::concurrency;
+using namespace apache::thrift::transport;
+using folly::makeMoveWrapper;
 
 // D defined funcs
 class ThriftServerInterface {
