@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #include "thrift/lib/cpp/transport/THeader.h"
@@ -87,7 +84,7 @@ void THeader::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
     case THRIFT_SECURITY_DISABLED: {
       clients[THRIFT_UNFRAMED_DEPRECATED] = true;
       clients[THRIFT_FRAMED_DEPRECATED] = true;
-      clients[THRIFT_HTTP_CLIENT_TYPE] = true;
+      clients[THRIFT_HTTP_SERVER_TYPE] = true;
       clients[THRIFT_HEADER_CLIENT_TYPE] = true;
       clients[THRIFT_FRAMED_COMPACT] = true;
       break;
@@ -95,7 +92,7 @@ void THeader::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
     case THRIFT_SECURITY_PERMITTED: {
       clients[THRIFT_UNFRAMED_DEPRECATED] = true;
       clients[THRIFT_FRAMED_DEPRECATED] = true;
-      clients[THRIFT_HTTP_CLIENT_TYPE] = true;
+      clients[THRIFT_HTTP_SERVER_TYPE] = true;
       clients[THRIFT_HEADER_CLIENT_TYPE] = true;
       clients[THRIFT_HEADER_SASL_CLIENT_TYPE] = true;
       clients[THRIFT_FRAMED_COMPACT] = true;
@@ -195,8 +192,8 @@ unique_ptr<IOBuf> THeader::removeHeader(IOBufQueue* queue,
     }
 
     buf = std::move(queue->split(msgSize));
-  } else if (sz == HTTP_MAGIC) {
-    clientType = THRIFT_HTTP_CLIENT_TYPE;
+  } else if (sz == HTTP_SERVER_MAGIC) {
+    clientType = THRIFT_HTTP_SERVER_TYPE;
 
     // TODO: doesn't work with async case.
     // in sync THeader, wraps this in a THttpTransport.
@@ -428,7 +425,7 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(unique_ptr<IOBuf> buf) {
   // Untransform data section
   buf = untransform(std::move(buf));
 
-  if (protoId_ == T_JSON_PROTOCOL && clientType != THRIFT_HTTP_CLIENT_TYPE) {
+  if (protoId_ == T_JSON_PROTOCOL && clientType != THRIFT_HTTP_SERVER_TYPE) {
     throw TApplicationException(TApplicationException::UNSUPPORTED_CLIENT_TYPE,
                                 "Client is trying to send JSON without HTTP");
   }
@@ -785,7 +782,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf) {
   }
   size_t chainSize = buf->computeChainDataLength();
 
-  if (protoId_ == T_JSON_PROTOCOL && clientType != THRIFT_HTTP_CLIENT_TYPE) {
+  if (protoId_ == T_JSON_PROTOCOL && clientType != THRIFT_HTTP_SERVER_TYPE) {
     throw TTransportException(TTransportException::BAD_ARGS,
                               "Trying to send JSON without HTTP");
   }
@@ -938,7 +935,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf) {
     header->prependChain(std::move(buf));
     buf = std::move(header);
   } else if (clientType == THRIFT_UNFRAMED_DEPRECATED ||
-             clientType == THRIFT_HTTP_CLIENT_TYPE) {
+             clientType == THRIFT_HTTP_SERVER_TYPE) {
     // We just return buf
     // TODO: IOBufize httpTransport.
   } else {

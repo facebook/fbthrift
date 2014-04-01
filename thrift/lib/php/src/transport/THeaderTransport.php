@@ -18,7 +18,7 @@ class THeaderTransport extends TFramedTransport {
   const TCOMPACT_PROTOCOL = 2;
 
   const HEADER_MAGIC = 0x0fff;
-  const HTTP_MAGIC = 0x504f5354; // POST
+  const HTTP_SERVER_MAGIC = 0x504f5354; // POST
   const MAX_FRAME_SIZE = 0x3fffffff;
 
   // Transforms
@@ -189,7 +189,7 @@ class THeaderTransport extends TFramedTransport {
       } else {
         $this->rBuf_ = $buf . $this->transport_->readAll($req_sz - 4);
       }
-    } else if ($sz === self::HTTP_MAGIC) {
+    } else if ($sz === self::HTTP_SERVER_MAGIC) {
       throw new TTransportException('PHP HeaderTransport does not support HTTP',
                                     TTransportException::INVALID_CLIENT);
     } else {

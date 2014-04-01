@@ -71,9 +71,9 @@ class THeaderTransport(TTransportBase, CReadableTransport):
     HEADER_MAGIC = 0x0FFF
 
     # HTTP has different magic.
-    HTTP_MAGIC = 0x504F5354       # 'POST'
+    HTTP_SERVER_MAGIC = 0x504F5354       # 'POST'
 
-    # Note max frame size is slightly less than HTTP_MAGIC
+    # Note max frame size is slightly less than HTTP_SERVER_MAGIC
     MAX_FRAME_SIZE = 0x3FFFFFFF
 
     # TRANSFORMS
@@ -221,7 +221,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 self.__rbuf = StringIO(word1)
             else:
                 self.__rbuf = StringIO(word1 + self.__trans.read(req_sz - 4))
-        elif sz == self.HTTP_MAGIC:
+        elif sz == self.HTTP_SERVER_MAGIC:
             self.__client_type = self.HTTP_CLIENT_TYPE
             mf = self.__trans.handle.makefile('rb', -1)
 

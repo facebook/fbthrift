@@ -39,9 +39,9 @@ public class THeaderTransport extends TFramedTransport {
   public static final int HEADER_MAGIC = 0x0FFF0000;
 
   // HTTP has different magic
-  public static final int HTTP_MAGIC = 0x504F5354; // 'POST'
+  public static final int HTTP_SERVER_MAGIC = 0x504F5354; // 'POST'
 
-  // Note max frame size is slightly less than HTTP_MAGIC
+  // Note max frame size is slightly less than HTTP_SERVER_MAGIC
   public static final int MAX_FRAME_SIZE = 0x3FFFFFFF;
 
   private int zlibBufferSize = 512;
@@ -283,7 +283,7 @@ public class THeaderTransport extends TFramedTransport {
         transport_.readAll(buff, 4, reqLen - 4);
         readBuffer_.reset(buff);
       }
-    } else if (word1 == HTTP_MAGIC) {
+    } else if (word1 == HTTP_SERVER_MAGIC) {
       throw new THeaderException("This transport does not support HTTP");
     } else {
       if (word1 - 4 > MAX_FRAME_SIZE) {
