@@ -94,12 +94,12 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
         if (mem == nullptr) {
           try {
             mem = readInCache();
-            LOG(INFO) << "Initialized the krb5 credentials cache from file";
+            VLOG(4) << "Initialized the krb5 credentials cache from file";
           } catch(...) {
             // Failed reading in file cache, probably means it's not there.
             // Just get a new cache.
             mem = kInit();
-            LOG(INFO) << "Initialized the krb5 credentials cache via kinit";
+            VLOG(4) << "Initialized the krb5 credentials cache via kinit";
           }
         }
 
@@ -132,7 +132,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
         if (about_to_expire || lifetime.first == 0) {
           mem = kInit();
           importMemoryCache(mem);
-          LOG(INFO) << "do kInit because CC is about to expire";
+          VLOG(4) << "do kInit because CC is about to expire";
         } else if (reached_renew_time) {
           // If we've reached half-life, but not about to expire, it means
           // the cache we just got is still valid, so we can use it while
@@ -142,7 +142,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
           }
           mem = buildRenewedCache();
           importMemoryCache(mem);
-          LOG(INFO) << "renewed CC at half-life";
+          VLOG(4) << "renewed CC at half-life";
         }
 
         // If we still haven't persisted here, persist the cache to memory
