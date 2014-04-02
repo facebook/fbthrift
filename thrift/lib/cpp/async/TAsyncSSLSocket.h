@@ -390,8 +390,8 @@ class TAsyncSSLSocket : public TAsyncSocket {
    */
   bool sessionIDResumed() const { return sessionIDResumed_; }
 
-  void setSessionIDResumed(bool sessionIDResumed) {
-    sessionIDResumed_ = sessionIDResumed;
+  void setSessionIDResumed(bool resumed) {
+    sessionIDResumed_ = resumed;
   }
 
   /**
