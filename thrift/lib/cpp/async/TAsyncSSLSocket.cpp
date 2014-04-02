@@ -826,7 +826,7 @@ void TAsyncSSLSocket::checkForImmediateRead() noexcept {
   // openssl may have buffered data that it read from the socket already.
   // In this case we have to process it immediately, rather than waiting for
   // the socket to become readable again.
-  if (SSL_pending(ssl_) > 0) {
+  if (ssl_ != nullptr && SSL_pending(ssl_) > 0) {
     TAsyncSocket::handleRead();
   }
 }
