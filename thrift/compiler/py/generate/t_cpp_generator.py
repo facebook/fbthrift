@@ -357,11 +357,18 @@ class CppGenerator(t_generator.Generator):
         s.impl('\n')
 
         # specialize TEnumTraitsBase
-        # TODO: generate TEnumTraits<T>::min(), max()
         s.release()
 
         ns = self._namespace_prefix(self._get_namespace())
         fullName = ns + tenum.name
+        minName = None
+        maxName = None
+
+        if len(constants) > 0:
+            sortedConstants = sorted(constants, key=lambda c: c.value)
+            minName = sortedConstants[0].name
+            maxName = sortedConstants[-1].name
+
         with self._types_global.namespace('apache.thrift').scope:
 
             with out().defn('template <> const char* TEnumTraitsBase<{fullName}>::'
@@ -374,6 +381,15 @@ class CppGenerator(t_generator.Generator):
                         format(**locals()), name='findName'):
                 out('return findValue({ns}_{tenum.name}_NAMES_TO_VALUES, '
                     'name, outValue);'.format(**locals()))
+            if minName is not None and maxName is not None:
+                with out().defn('template <> constexpr {fullName} '
+                            'TEnumTraits<{fullName}>::min()'
+                            .format(**locals()), name='min', in_header=True):
+                    out('return {fullName}::{minName};'.format(**locals()))
+                with out().defn('template <> constexpr {fullName} '
+                            'TEnumTraits<{fullName}>::max()'
+                            .format(**locals()), name='max', in_header=True):
+                    out('return {fullName}::{maxName};'.format(**locals()))
         s = self._types_scope = \
                 s.namespace(self._get_namespace()).scope
         s.acquire()
