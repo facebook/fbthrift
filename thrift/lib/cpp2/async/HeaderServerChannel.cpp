@@ -15,7 +15,6 @@
  */
 
 #include "thrift/lib/cpp2/async/HeaderServerChannel.h"
-#include "thrift/lib/cpp2/async/GssSaslServer.h"
 #include "thrift/lib/cpp/async/TAsyncSocket.h"
 #include "thrift/lib/cpp/TApplicationException.h"
 #include "thrift/lib/cpp/transport/TTransportException.h"
@@ -46,7 +45,6 @@ HeaderServerChannel::HeaderServerChannel(
   const std::shared_ptr<TAsyncTransport>& transport)
     : Cpp2Channel(transport)
     , callback_(nullptr)
-    , saslServer_(new GssSaslServer(transport->getEventBase()))
     , arrivalSeqId_(1)
     , lastWrittenSeqId_(0)
     , sampleRate_(0)
@@ -62,7 +60,9 @@ void HeaderServerChannel::destroy() {
   DestructorGuard dg(this);
 
   saslServerCallback_.cancelTimeout();
-  saslServer_->markChannelCallbackUnavailable();
+  if (saslServer_) {
+    saslServer_->markChannelCallbackUnavailable();
+  }
 
   if (callback_) {
     TTransportException error("Channel destroyed");
@@ -457,7 +457,7 @@ void HeaderServerChannel::messageReceiveError(std::exception_ptr&& ex) {
 unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
   unique_ptr<IOBuf>&& buf) {
   if (header_->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    if (!header_->isSupportedClient()) {
+    if (!header_->isSupportedClient() || !saslServer_) {
       if (protectionState_ == ProtectionState::UNKNOWN) {
         // The client tried to use SASL, but it's not supported by
         // policy.  Tell the client to fall back.
@@ -510,7 +510,11 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     // Cancel any SASL-related state, and log
     protectionState_ = ProtectionState::NONE;
     saslServerCallback_.cancelTimeout();
-    saslServer_->markChannelCallbackUnavailable();
+    if (saslServer_) {
+      // Should be set here, but just in case check that saslServer_
+      // exists
+      saslServer_->markChannelCallbackUnavailable();
+    }
     const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
       getEventBase()->getObserver());
     if (observer) {

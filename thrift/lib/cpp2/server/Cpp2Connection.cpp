@@ -61,30 +61,17 @@ Cpp2Connection::Cpp2Connection(
     worker_->getServer()->setNonSaslEnabled(true);
   }
 
+  auto factory = worker_->getServer()->getSaslServerFactory();
+  if (factory) {
+    channel_->setSaslServer(
+      unique_ptr<SaslServer>(factory(asyncSocket->getEventBase()))
+    );
+  }
+
   if (worker_->getServer()->getSaslEnabled() &&
       worker_->getServer()->getNonSaslEnabled()) {
-    // Check if we need to use a stub, otherwise set the kerberos principal
-    auto factory = worker_->getServer()->getSaslServerFactory();
-    if (factory) {
-      channel_->setSaslServer(
-        unique_ptr<SaslServer>(factory(asyncSocket->getEventBase()))
-      );
-    } else {
-      channel_->getSaslServer()->setServiceIdentity(
-        worker_->getServer()->getServicePrincipal());
-    }
     channel_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
   } else if (worker_->getServer()->getSaslEnabled()) {
-    // Check if we need to use a stub, otherwise set the kerberos principal
-    auto factory = worker_->getServer()->getSaslServerFactory();
-    if (factory) {
-      channel_->setSaslServer(
-        unique_ptr<SaslServer>(factory(asyncSocket->getEventBase()))
-      );
-    } else {
-      channel_->getSaslServer()->setServiceIdentity(
-        worker_->getServer()->getServicePrincipal());
-    }
     channel_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
   } else {
     // If neither is set, act as if non-sasl was specified.

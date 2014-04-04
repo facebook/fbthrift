@@ -126,9 +126,10 @@ class ThriftServer : public apache::thrift::server::TServer {
   // Security negotiation settings
   bool saslEnabled_;
   bool nonSaslEnabled_;
-  std::string servicePrincipal_;
   std::function<std::unique_ptr<SaslServer> (
     apache::thrift::async::TEventBase*)> saslServerFactory_;
+  std::shared_ptr<apache::thrift::concurrency::ThreadManager>
+    saslThreadManager_;
 
   std::unique_ptr<apache::thrift::ShutdownSocketSet> shutdownSocketSet_;
 
@@ -531,17 +532,6 @@ class ThriftServer : public apache::thrift::server::TServer {
   }
   bool getSaslEnabled() {
     return saslEnabled_;
-  }
-
-  /**
-   * Set / get service principals for the SASL negotiations.
-   */
-  void setServicePrincipal(const std::string& service_principal) {
-    servicePrincipal_ = service_principal;
-  }
-
-  const std::string& getServicePrincipal() {
-    return servicePrincipal_;
   }
 
   // The default SASL implementation can be overridden for testing or

@@ -20,9 +20,11 @@
 #include "folly/Memory.h"
 #include "folly/Random.h"
 #include "folly/ScopeGuard.h"
+#include "thrift/lib/cpp2/async/GssSaslServer.h"
 #include "thrift/lib/cpp2/server/Cpp2Connection.h"
 #include "thrift/lib/cpp2/server/Cpp2Worker.h"
 #include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
+#include "thrift/lib/cpp/concurrency/ThreadManager.h"
 
 #include <boost/thread/barrier.hpp>
 
@@ -56,6 +58,7 @@ using std::shared_ptr;
 using apache::thrift::async::TEventBaseManager;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadFactory;
+using apache::thrift::concurrency::ThreadManager;
 using apache::thrift::concurrency::PriorityThreadManager;
 
 const int ThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
@@ -98,32 +101,13 @@ ThriftServer::ThriftServer() :
   queueSends_(true),
   enableCodel_(false),
   stopWorkersOnStopListening_(true) {
-
-  if (FLAGS_sasl_policy == "required") {
-    setSaslEnabled(true);
-    setNonSaslEnabled(false);
-  } else if (FLAGS_sasl_policy == "permitted") {
-    setSaslEnabled(true);
-    setNonSaslEnabled(true);
-  }
-
-  if (FLAGS_sasl_policy == "required" || FLAGS_sasl_policy == "permitted") {
-    // If the service name is not specified, not need to pin the principal.
-    // Allow the server to accept anything in the keytab.
-    if (FLAGS_kerberos_service_name.empty()) {
-      return;
-    }
-    // Enable both secure / insecure connections
-    char hostname[256];
-    if (gethostname(hostname, 255)) {
-      LOG(FATAL) << "Failed getting hostname";
-      return;
-    }
-    setServicePrincipal(FLAGS_kerberos_service_name + "/" + hostname);
-  }
 }
 
 ThriftServer::~ThriftServer() {
+  if (saslThreadManager_) {
+    saslThreadManager_->stop();
+  }
+
   if (stopWorkersOnStopListening_) {
     // Everything is already taken care of.
     return;
@@ -230,6 +214,50 @@ void ThriftServer::setup() {
     if (!threadFactory_) {
       setThreadFactory(std::shared_ptr<ThreadFactory>(
         new PosixThreadFactory));
+    }
+
+    // SASL setup
+    if (FLAGS_sasl_policy == "required") {
+      setSaslEnabled(true);
+      setNonSaslEnabled(false);
+    } else if (FLAGS_sasl_policy == "permitted") {
+      setSaslEnabled(true);
+      setNonSaslEnabled(true);
+    }
+
+    if (FLAGS_sasl_policy == "required" || FLAGS_sasl_policy == "permitted") {
+      if (!saslThreadManager_) {
+        saslThreadManager_ = ThreadManager::newSimpleThreadManager(
+          nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_, /* count */
+          0, /* pendingTaskCountMax */
+          false, /* enableTaskStats */
+          1<<10 /* maxQueueLen */);
+        saslThreadManager_->threadFactory(threadFactory_);
+        saslThreadManager_->start();
+      }
+      auto saslThreadManager = saslThreadManager_;
+
+      // If the service name is not specified, not need to pin the principal.
+      // Allow the server to accept anything in the keytab.
+      if (FLAGS_kerberos_service_name.empty()) {
+        setSaslServerFactory([=] (TEventBase* evb) {
+          return std::unique_ptr<SaslServer>(
+            new GssSaslServer(evb, saslThreadManager));
+        });
+      } else {
+        // Enable both secure / insecure connections
+        char hostname[256];
+        if (gethostname(hostname, 255)) {
+          LOG(FATAL) << "Failed getting hostname";
+        }
+        setSaslServerFactory([=] (TEventBase* evb) {
+          auto saslServer = std::unique_ptr<SaslServer>(
+            new GssSaslServer(evb, saslThreadManager));
+          saslServer->setServiceIdentity(
+            FLAGS_kerberos_service_name + "/" + hostname);
+          return std::move(saslServer);
+        });
+      }
     }
 
     if (!threadManager_) {
