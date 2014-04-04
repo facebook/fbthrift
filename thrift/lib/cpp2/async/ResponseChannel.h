@@ -75,6 +75,11 @@ class ResponseChannel : virtual public TDelayedDestruction {
 
     virtual ~Request() {}
 
+    virtual apache::thrift::server::TServerObserver::CallTimestamps&
+    getTimestamps() {
+      return timestamps_;
+    }
+
     apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
    protected:
     std::unique_ptr<folly::IOBuf> buf_;

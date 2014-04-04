@@ -215,6 +215,12 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
           [=]() mutable {
             auto req_mw = folly::makeMoveWrapper(
               std::unique_ptr<apache::thrift::ResponseChannel::Request>(preq));
+            if ((*req_mw)->getTimestamps().processBegin != 0) {
+              // Since this request was queued, reset the processBegin
+              // time to the actual start time, and not the queue time.
+              (*req_mw)->getTimestamps().processBegin =
+                apache::thrift::concurrency::Util::currentTimeUsec();
+            }
             // Oneway request won't be canceled if expired. see
             // D1006482 for furhter details.  TODO: fix this
             if (!oneway) {

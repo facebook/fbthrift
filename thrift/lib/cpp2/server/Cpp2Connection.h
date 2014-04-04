@@ -128,6 +128,11 @@ class Cpp2Connection
       return &reqContext_;
     }
 
+    virtual apache::thrift::server::TServerObserver::CallTimestamps&
+    getTimestamps() {
+      return req_->getTimestamps();
+    }
+
    private:
     MessageChannel::SendCallback* prepareSendCallback(
         MessageChannel::SendCallback* sendCallback,
