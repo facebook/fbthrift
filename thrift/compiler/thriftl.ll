@@ -36,7 +36,7 @@
  * Must be included AFTER parse/t_program.h, but I can't remember why anymore
  * because I wrote this a while ago.
  */
-#include "thrift/compiler/thrifty.h"
+#include "thrift/compiler/thrifty.hh"
 
 void thrift_reserved_keyword(char* keyword) {
   yyerror("Cannot use reserved language keyword: \"%s\"\n", keyword);

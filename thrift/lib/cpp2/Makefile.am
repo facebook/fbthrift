@@ -44,13 +44,12 @@ libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   security/KerberosSASLHandshakeClient.cpp \
 			   security/KerberosSASLHandshakeServer.cpp \
 			   security/KerberosSASLHandshakeUtils.cpp \
+			   security/KerberosSASLThreadManager.cpp \
 			   security/SecurityKillSwitch.cpp \
 			   async/HeaderServerChannel.cpp \
 			   server/Cpp2Connection.cpp \
 			   server/Cpp2Worker.cpp \
 			   server/ThriftServer.cpp \
-			   ../cpp/async/TEventBase.cpp \
-			   ../cpp/async/Request.cpp \
 			   ../cpp/async/TAsyncSocket.cpp \
 			   ../cpp/async/TAsyncSSLSocket.cpp \
 			   ../cpp/EventHandlerBase.cpp \
@@ -59,17 +58,17 @@ libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   ../cpp/transport/TSocketAddress.cpp \
 			   ../cpp/util/ScopedServerThread.cpp \
 			   ../cpp/util/SocketRetriever.cpp \
-			   ../cpp/async/TEventHandler.cpp \
 			   ../cpp/async/TAsyncServerSocket.cpp \
 			   ../cpp/async/HHWheelTimer.cpp \
 			   ../cpp/util/VarintUtils.cpp \
-			   ../cpp/async/TAsyncTimeout.cpp \
 			   ../cpp/async/TAsyncTimeoutSet.cpp \
 			   ../cpp/async/TEventBaseManager.cpp \
-			   ../cpp/util/FdUtils.cpp
+			   ../cpp/util/FdUtils.cpp \
+			   ../cpp/util/kerberos/Krb5Util.cpp \
+			   ../cpp/util/kerberos/Krb5CredentialsCacheManager.cpp
 
 
-libthriftcpp2_la_LIBADD = ../cpp/libthrift.la
+libthriftcpp2_la_LIBADD = ../cpp/libthrift.la -lkrb5 -lgssapi_krb5
 libthriftcpp2_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
 
 THRIFT = $(top_builddir)/compiler/thrift1

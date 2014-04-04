@@ -49,6 +49,7 @@ libthrift_la_SOURCES = Thrift.cpp \
                        concurrency/ThreadManager.cpp \
                        concurrency/TimerManager.cpp \
                        concurrency/Util.cpp \
+		       concurrency/Codel.cpp \
                        protocol/TDebugProtocol.cpp \
                        protocol/TJSONProtocol.cpp \
                        protocol/TBase64Utils.cpp \
