@@ -229,9 +229,9 @@ void ThriftServer::setup() {
       if (!saslThreadManager_) {
         saslThreadManager_ = ThreadManager::newSimpleThreadManager(
           nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_, /* count */
-          0, /* pendingTaskCountMax */
+          0, /* pendingTaskCountMax -- no limit */
           false, /* enableTaskStats */
-          1<<10 /* maxQueueLen */);
+          0 /* maxQueueLen -- large default */);
         saslThreadManager_->threadFactory(threadFactory_);
         saslThreadManager_->start();
       }

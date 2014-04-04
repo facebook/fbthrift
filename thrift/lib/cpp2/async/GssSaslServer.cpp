@@ -65,108 +65,116 @@ void GssSaslServer::consumeFromClient(
 
   auto channelCallbackUnavailable = channelCallbackUnavailable_;
   auto serverHandshake = serverHandshake_;
-  threadManager_->add(std::make_shared<FunctionRunner>([=] {
-    std::string reply_data;
-    std::exception_ptr ex;
+  try {
+    threadManager_->add(std::make_shared<FunctionRunner>([=] {
+      std::string reply_data;
+      std::exception_ptr ex;
 
-    // Get the input string. We deserialize differently depending on the
-    // current state.
-    std::string input;
-    bool isFirstRequest;
-    if (serverHandshake->getPhase() == INIT) {
-      isFirstRequest = true;
+      // Get the input string. We deserialize differently depending on the
+      // current state.
+      std::string input;
+      bool isFirstRequest;
+      if (serverHandshake->getPhase() == INIT) {
+        isFirstRequest = true;
 
-      SaslStart start;
-      SaslAuthService_authFirstRequest_pargs pargs;
-      pargs.saslStart = &start;
-      try {
-        string methodName =
-          PargsPresultCompactDeserialize(pargs, smessage.get(), T_CALL);
+        SaslStart start;
+        SaslAuthService_authFirstRequest_pargs pargs;
+        pargs.saslStart = &start;
+        try {
+          string methodName =
+            PargsPresultCompactDeserialize(pargs, smessage.get(), T_CALL);
 
-        if (methodName != "authFirstRequest") {
-          throw TKerberosException("Bad Thrift first call: " + methodName);
-        }
-        if (start.mechanism != MECH) {
-          throw TKerberosException("Unknown mechanism: " + start.mechanism);
-        }
-
-        input = start.request.response;
-      } catch (...) {
-        ex = std::current_exception();
-      }
-    } else {
-      isFirstRequest = false;
-
-      SaslRequest req;
-      SaslAuthService_authNextRequest_pargs pargs;
-      pargs.saslRequest = &req;
-      try {
-        string methodName =
-          PargsPresultCompactDeserialize(pargs, smessage.get(), T_CALL);
-
-        if (methodName != "authNextRequest") {
-          throw TKerberosException("Bad Thrift next call: " + methodName);
-        }
-
-        input = req.response;
-      } catch (...) {
-        ex = std::current_exception();
-      }
-    }
-
-    MoveWrapper<unique_ptr<IOBuf>> outbuf;
-    if (!ex) {
-      // If there were no exceptions, send a reply. If we're finished, then
-      // send a success indicator reply, otherwise send a generic token.
-      try {
-        serverHandshake->handleResponse(input);
-        auto token = serverHandshake->getTokenToSend();
-        if (token != nullptr) {
-          SaslReply reply;
-          if (serverHandshake->getPhase() != COMPLETE) {
-            reply.challenge = *token;
-            reply.__isset.challenge = true;
-          } else {
-            reply.outcome.success = true;
-            reply.__isset.outcome = true;
+          if (methodName != "authFirstRequest") {
+            throw TKerberosException("Bad Thrift first call: " + methodName);
           }
-          if (isFirstRequest) {
-            SaslAuthService_authFirstRequest_presult resultp;
-            resultp.success = &reply;
-            resultp.__isset.success = true;
-            *outbuf = PargsPresultCompactSerialize(resultp, "authFirstRequest",
-                                                   T_REPLY);
-          } else {
-            SaslAuthService_authNextRequest_presult resultp;
-            resultp.success = &reply;
-            resultp.__isset.success = true;
-            *outbuf = PargsPresultCompactSerialize(resultp, "authNextRequest",
-                                                   T_REPLY);
+          if (start.mechanism != MECH) {
+            throw TKerberosException("Unknown mechanism: " + start.mechanism);
           }
-        }
-      } catch (...) {
-        ex = std::current_exception();
-      }
-    }
 
-    evb_->runInEventBaseThread([=]() mutable {
-        // If the callback has already been destroyed, the request must
-        // have terminated, so we don't need to do anything.
-        if (*channelCallbackUnavailable) {
-          return;
+          input = start.request.response;
+        } catch (...) {
+          ex = std::current_exception();
         }
-        if (ex) {
-          cb->saslError(std::exception_ptr(ex));
-          return;
+      } else {
+        isFirstRequest = false;
+
+        SaslRequest req;
+        SaslAuthService_authNextRequest_pargs pargs;
+        pargs.saslRequest = &req;
+        try {
+          string methodName =
+            PargsPresultCompactDeserialize(pargs, smessage.get(), T_CALL);
+
+          if (methodName != "authNextRequest") {
+            throw TKerberosException("Bad Thrift next call: " + methodName);
+          }
+
+          input = req.response;
+        } catch (...) {
+          ex = std::current_exception();
         }
-        if (*outbuf && !(*outbuf)->empty()) {
-          cb->saslSendClient(std::move(*outbuf));
+      }
+
+      MoveWrapper<unique_ptr<IOBuf>> outbuf;
+      if (!ex) {
+        // If there were no exceptions, send a reply. If we're finished, then
+        // send a success indicator reply, otherwise send a generic token.
+        try {
+          serverHandshake->handleResponse(input);
+          auto token = serverHandshake->getTokenToSend();
+          if (token != nullptr) {
+            SaslReply reply;
+            if (serverHandshake->getPhase() != COMPLETE) {
+              reply.challenge = *token;
+              reply.__isset.challenge = true;
+            } else {
+              reply.outcome.success = true;
+              reply.__isset.outcome = true;
+            }
+            if (isFirstRequest) {
+              SaslAuthService_authFirstRequest_presult resultp;
+              resultp.success = &reply;
+              resultp.__isset.success = true;
+              *outbuf = PargsPresultCompactSerialize(resultp,
+                                                     "authFirstRequest",
+                                                     T_REPLY);
+            } else {
+              SaslAuthService_authNextRequest_presult resultp;
+              resultp.success = &reply;
+              resultp.__isset.success = true;
+              *outbuf = PargsPresultCompactSerialize(resultp,
+                                                     "authNextRequest",
+                                                     T_REPLY);
+            }
+          }
+        } catch (...) {
+          ex = std::current_exception();
         }
-        if (serverHandshake->isContextEstablished()) {
-          cb->saslComplete();
-        }
-      });
-  }));
+      }
+
+      evb_->runInEventBaseThread([=]() mutable {
+          // If the callback has already been destroyed, the request must
+          // have terminated, so we don't need to do anything.
+          if (*channelCallbackUnavailable) {
+            return;
+          }
+          if (ex) {
+            cb->saslError(std::exception_ptr(ex));
+            return;
+          }
+          if (*outbuf && !(*outbuf)->empty()) {
+            cb->saslSendClient(std::move(*outbuf));
+          }
+          if (serverHandshake->isContextEstablished()) {
+            cb->saslComplete();
+          }
+        });
+    }));
+  } catch (const std::exception &ex) {
+    // If we fail to schedule.
+    std::exception_ptr ex = std::current_exception();
+    cb->saslError(std::move(ex));
+  }
 }
 
 std::unique_ptr<IOBuf> GssSaslServer::wrap(std::unique_ptr<IOBuf>&& buf) {
