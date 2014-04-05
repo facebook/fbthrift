@@ -172,8 +172,7 @@ void GssSaslServer::consumeFromClient(
     }));
   } catch (const std::exception &ex) {
     // If we fail to schedule.
-    std::exception_ptr ex = std::current_exception();
-    cb->saslError(std::move(ex));
+    cb->saslError(std::current_exception());
   }
 }
 

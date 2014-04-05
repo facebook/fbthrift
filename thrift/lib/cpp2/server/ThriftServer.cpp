@@ -101,6 +101,15 @@ ThriftServer::ThriftServer() :
   queueSends_(true),
   enableCodel_(false),
   stopWorkersOnStopListening_(true) {
+
+  // SASL setup
+  if (FLAGS_sasl_policy == "required") {
+    setSaslEnabled(true);
+    setNonSaslEnabled(false);
+  } else if (FLAGS_sasl_policy == "permitted") {
+    setSaslEnabled(true);
+    setNonSaslEnabled(true);
+  }
 }
 
 ThriftServer::~ThriftServer() {
@@ -216,15 +225,6 @@ void ThriftServer::setup() {
         new PosixThreadFactory));
     }
 
-    // SASL setup
-    if (FLAGS_sasl_policy == "required") {
-      setSaslEnabled(true);
-      setNonSaslEnabled(false);
-    } else if (FLAGS_sasl_policy == "permitted") {
-      setSaslEnabled(true);
-      setNonSaslEnabled(true);
-    }
-
     if (FLAGS_sasl_policy == "required" || FLAGS_sasl_policy == "permitted") {
       if (!saslThreadManager_) {
         saslThreadManager_ = ThreadManager::newSimpleThreadManager(
@@ -237,15 +237,16 @@ void ThriftServer::setup() {
       }
       auto saslThreadManager = saslThreadManager_;
 
-      // If the service name is not specified, not need to pin the principal.
-      // Allow the server to accept anything in the keytab.
-      if (FLAGS_kerberos_service_name.empty()) {
+      if (getSaslServerFactory()) {
+        // If the factory is already set, don't override it with the default
+      } else if (FLAGS_kerberos_service_name.empty()) {
+        // If the service name is not specified, not need to pin the principal.
+        // Allow the server to accept anything in the keytab.
         setSaslServerFactory([=] (TEventBase* evb) {
           return std::unique_ptr<SaslServer>(
             new GssSaslServer(evb, saslThreadManager));
         });
       } else {
-        // Enable both secure / insecure connections
         char hostname[256];
         if (gethostname(hostname, 255)) {
           LOG(FATAL) << "Failed getting hostname";
