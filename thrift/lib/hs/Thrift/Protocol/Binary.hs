@@ -31,6 +31,7 @@ import Control.Monad ( liftM )
 import qualified Data.Binary
 import Data.Bits
 import Data.Int
+import Data.Word
 import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
 import Unsafe.Coerce
 
@@ -40,10 +41,10 @@ import Thrift.Transport
 import qualified Data.ByteString.Lazy as LBS
 
 version_mask :: Int32
-version_mask = 0xffff0000
+version_mask = fromIntegral (0xffff0000 :: Word32)
 
 version_1 :: Int32
-version_1    = 0x80010000
+version_1    = fromIntegral (0x80010000 :: Word32)
 
 data BinaryProtocol a = Transport a => BinaryProtocol a
 
@@ -154,4 +155,3 @@ readType :: (Protocol p, Transport t) => p t -> IO ThriftType
 readType p = do
     b <- readByte p
     return $ toEnum $ fromIntegral b
-
