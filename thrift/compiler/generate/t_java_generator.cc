@@ -2419,10 +2419,11 @@ void t_java_generator::generate_service_client(t_service* tservice) {
 
     string bytes = tmp("_bytes");
 
+    string flush = (*f_iter)->is_oneway() ? "onewayFlush" : "flush";
     f_service_ <<
       indent() << "args.write(oprot_);" << endl <<
       indent() << "oprot_.writeMessageEnd();" << endl <<
-      indent() << "oprot_.getTransport().flush();" << endl <<
+      indent() << "oprot_.getTransport()." << flush << "();" << endl <<
       indent() << "super.postWrite(ctx, " << service_func_name
                << ", args);" << endl <<
       indent() << "return;" << endl;

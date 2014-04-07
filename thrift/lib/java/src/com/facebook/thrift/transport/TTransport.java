@@ -120,6 +120,15 @@ public abstract class TTransport {
     throws TTransportException {}
 
   /**
+   * Flush any pending data out of a transport buffer for a oneway call.
+   *
+   * @throws TTransportException if there was an error writing out data.
+   */
+  public void onewayFlush() throws TTransportException {
+    flush();
+  }
+
+  /**
    * Access the protocol's underlying buffer directly. If this is not a
    * buffered transport, return null.
    * @return
