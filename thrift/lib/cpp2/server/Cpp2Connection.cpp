@@ -66,6 +66,8 @@ Cpp2Connection::Cpp2Connection(
     channel_->setSaslServer(
       unique_ptr<SaslServer>(factory(asyncSocket->getEventBase()))
     );
+    // Refresh the saslServer_ pointer in context_
+    context_.setSaslServer(channel_->getSaslServer());
   }
 
   if (worker_->getServer()->getSaslEnabled() &&
