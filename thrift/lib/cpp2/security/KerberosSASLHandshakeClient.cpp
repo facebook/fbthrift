@@ -284,7 +284,7 @@ void KerberosSASLHandshakeClient::initSecurityContext() {
                       // lifetime. Limited by lifetime indicated in
                       // krb5.conf file.
     nullptr, // channel bindings
-    &inputToken_ != nullptr ? inputToken_.get() : GSS_C_NO_BUFFER,
+    inputToken_.get() != nullptr ? inputToken_.get() : GSS_C_NO_BUFFER,
     nullptr, // mech type
     outputToken_.get(), // output token
     &retFlags_, // return flags
