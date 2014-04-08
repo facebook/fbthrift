@@ -89,9 +89,9 @@ cpp_unittest(
     '@/thrift/lib/cpp/async:async_ssl',
   ],
   external_deps = [
-    ('boost', '>= 1.37', 'boost_unit_test_framework'),
+    ('gtest', None, 'gtest')
   ],
-  type = 'boost',
+  type = 'gtest',
   emails = ['ti-bugs@lists.facebook.com',
             'thrift-team@lists.facebook.com'],
 )
@@ -106,9 +106,9 @@ cpp_unittest(
     '@/thrift/lib/cpp/async:async_ssl',
   ],
   external_deps = [
-    ('boost', '>= 1.37', 'boost_unit_test_framework'),
+    ('gtest', None, 'gtest')
   ],
-  type = 'boost',
+  type = 'gtest',
   emails = ['ti-bugs@lists.facebook.com',
             'thrift-team@lists.facebook.com'],
 )

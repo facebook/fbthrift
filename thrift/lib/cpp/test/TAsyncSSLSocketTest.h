@@ -23,11 +23,10 @@
 #include "thrift/lib/cpp/async/TAsyncSSLSocket.h"
 #include "thrift/lib/cpp/async/TEventBase.h"
 #include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/test/TimeUtil.h"
 #include "thrift/lib/cpp/transport/TSSLSocket.h"
 #include "thrift/lib/cpp/transport/TSocketAddress.h"
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <list>
 #include <unistd.h>
@@ -57,7 +56,7 @@ public:
       , exception() {}
 
   ~WriteCallbackBase() {
-    BOOST_CHECK_EQUAL(state, STATE_SUCCEEDED);
+    EXPECT_EQ(state, STATE_SUCCEEDED);
   }
 
   void setSocket(
@@ -97,7 +96,7 @@ public:
       , state(STATE_WAITING) {}
 
   ~ReadCallbackBase() {
-    BOOST_CHECK_EQUAL(state, STATE_SUCCEEDED);
+    EXPECT_EQ(state, STATE_SUCCEEDED);
   }
 
   void setSocket(
@@ -210,7 +209,7 @@ public:
 
   virtual void readDataAvailable(size_t len) noexcept {
     // This should never to called.
-    BOOST_CHECK(false);
+    FAIL();
   }
 
   virtual void readError(
@@ -307,7 +306,7 @@ public:
   // Functions inherited from TAsyncSSLSocket::HandshakeCallback
   virtual void handshakeSuccess(apache::thrift::async::TAsyncSSLSocket *sock)
     noexcept {
-    BOOST_CHECK_EQUAL(sock, socket_.get());
+    EXPECT_EQ(sock, socket_.get());
     std::cerr << "HandshakeCallback::connectionAccepted" << std::endl;
     rcb_->setSocket(socket_);
     sock->setReadCallback(rcb_);
@@ -325,7 +324,7 @@ public:
   }
 
   ~HandshakeCallback() {
-    BOOST_CHECK_EQUAL(state, STATE_SUCCEEDED);
+    EXPECT_EQ(state, STATE_SUCCEEDED);
   }
 
   void closeSocket() {
@@ -346,7 +345,7 @@ public:
       state(STATE_WAITING), hcb_(hcb) {}
 
   ~SSLServerAcceptCallbackBase() {
-    BOOST_CHECK_EQUAL(state, STATE_SUCCEEDED);
+    EXPECT_EQ(state, STATE_SUCCEEDED);
   }
 
   virtual void acceptError(const std::exception& ex) noexcept {
@@ -371,7 +370,7 @@ public:
   virtual ~SSLServerAcceptCallback() {
     if (timeout_ > 0) {
       // if we set a timeout, we expect failure
-      BOOST_CHECK_EQUAL(hcb_->state, STATE_FAILED);
+      EXPECT_EQ(hcb_->state, STATE_FAILED);
       hcb_->setState(STATE_SUCCEEDED);
     }
   }
@@ -384,7 +383,7 @@ public:
 
     hcb_->setSocket(sock);
     sock->sslAccept(hcb_, timeout_);
-    BOOST_CHECK_EQUAL(sock->getSSLState(),
+    EXPECT_EQ(sock->getSSLState(),
                       apache::thrift::async::TAsyncSSLSocket::STATE_ACCEPTING);
 
     state = STATE_SUCCEEDED;
@@ -410,8 +409,8 @@ public:
     int value;
     socklen_t valueLength = sizeof(value);
     int rc = getsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &value, &valueLength);
-    BOOST_CHECK_EQUAL(rc, 0);
-    BOOST_CHECK_EQUAL(value, 1);
+    EXPECT_EQ(rc, 0);
+    EXPECT_EQ(value, 1);
     }
 #endif
 
@@ -419,11 +418,11 @@ public:
     int value = 0;
     socklen_t valueLength = sizeof(value);
     int rc = setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &value, valueLength);
-    BOOST_CHECK_EQUAL(rc, 0);
+    EXPECT_EQ(rc, 0);
 
     rc = getsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &value, &valueLength);
-    BOOST_CHECK_EQUAL(rc, 0);
-    BOOST_CHECK_EQUAL(value, 0);
+    EXPECT_EQ(rc, 0);
+    EXPECT_EQ(value, 0);
 
     SSLServerAcceptCallback::connectionAccepted(sock);
   }
@@ -443,7 +442,7 @@ public:
 
     hcb_->setSocket(sock);
     sock->sslAccept(hcb_, timeout_);
-    BOOST_CHECK((sock->getSSLState() ==
+    ASSERT_TRUE((sock->getSSLState() ==
                  apache::thrift::async::TAsyncSSLSocket::STATE_ACCEPTING) ||
                 (sock->getSSLState() ==
                  apache::thrift::async::TAsyncSSLSocket::STATE_CACHE_LOOKUP));
@@ -467,19 +466,19 @@ public:
     // The first call to sslAccept() should succeed.
     hcb_->setSocket(sock);
     sock->sslAccept(hcb_);
-    BOOST_CHECK_EQUAL(sock->getSSLState(),
+    EXPECT_EQ(sock->getSSLState(),
                       apache::thrift::async::TAsyncSSLSocket::STATE_ACCEPTING);
 
     // The second call to sslAccept() should fail.
     ::HandshakeCallback callback2(hcb_->rcb_);
     callback2.setSocket(sock);
     sock->sslAccept(&callback2);
-    BOOST_CHECK_EQUAL(sock->getSSLState(),
+    EXPECT_EQ(sock->getSSLState(),
                       apache::thrift::async::TAsyncSSLSocket::STATE_ERROR);
 
     // Both callbacks should be in the error state.
-    BOOST_CHECK_EQUAL(hcb_->state, STATE_FAILED);
-    BOOST_CHECK_EQUAL(callback2.state, STATE_FAILED);
+    EXPECT_EQ(hcb_->state, STATE_FAILED);
+    EXPECT_EQ(callback2.state, STATE_FAILED);
 
     sock->detachEventBase();
 
@@ -505,12 +504,12 @@ public:
         std::cerr << "Delayed SSL accept, client will have close by now"
                   << std::endl;
         // SSL accept will fail
-        BOOST_CHECK_EQUAL(
+        EXPECT_EQ(
           sock->getSSLState(),
           apache::thrift::async::TAsyncSSLSocket::STATE_UNINIT);
         hcb_->socket_->sslAccept(hcb_);
         // This registers for an event
-        BOOST_CHECK_EQUAL(
+        EXPECT_EQ(
           sock->getSSLState(),
           apache::thrift::async::TAsyncSSLSocket::STATE_ACCEPTING);
 
@@ -639,17 +638,17 @@ class TestSSLAsyncCacheServer : public TestSSLServer {
 
 void getfds(int fds[2]) {
   if (socketpair(PF_LOCAL, SOCK_STREAM, 0, fds) != 0) {
-    BOOST_FAIL("failed to create socketpair: " << strerror(errno));
+    FAIL() << "failed to create socketpair: " << strerror(errno);
   }
   for (int idx = 0; idx < 2; ++idx) {
     int flags = fcntl(fds[idx], F_GETFL, 0);
     if (flags == -1) {
-      BOOST_FAIL("failed to get flags for socket " << idx << ": " <<
-                 strerror(errno));
+      FAIL() << "failed to get flags for socket " << idx << ": "
+             << strerror(errno);
     }
     if (fcntl(fds[idx], F_SETFL, flags | O_NONBLOCK) != 0) {
-      BOOST_FAIL("failed to put socket " << idx << " in non-blocking mode: " <<
-                 strerror(errno));
+      FAIL() << "failed to put socket " << idx << " in non-blocking mode: "
+             << strerror(errno);
     }
   }
 }
@@ -730,7 +729,7 @@ class BlockingWriteClient :
   virtual void handshakeError(
     apache::thrift::async::TAsyncSSLSocket*,
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("client handshake error: " << ex.what());
+    ADD_FAILURE() << "client handshake error: " << ex.what();
   }
   virtual void writeSuccess() noexcept {
     socket_->close();
@@ -738,8 +737,8 @@ class BlockingWriteClient :
   virtual void writeError(
     size_t bytesWritten,
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("client write error after " << bytesWritten << " bytes: " <<
-                ex.what());
+    ADD_FAILURE() << "client write error after " << bytesWritten << " bytes: "
+                  << ex.what();
   }
 
   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket_;
@@ -769,21 +768,21 @@ class BlockingWriteServer :
       int rc = memcmp(buf_.get() + idx, iov[n].iov_base,
                       std::min(iov[n].iov_len, bytesLeft));
       if (rc != 0) {
-        BOOST_FAIL("buffer mismatch at iovec " << n << "/" << count <<
-                   ": rc=" << rc);
+        FAIL() << "buffer mismatch at iovec " << n << "/" << count
+               << ": rc=" << rc;
 
       }
       if (iov[n].iov_len > bytesLeft) {
-        BOOST_FAIL("server did not read enough data: " <<
-                   "ended at byte " << bytesLeft << "/" << iov[n].iov_len <<
-                   " in iovec " << n << "/" << count);
+        FAIL() << "server did not read enough data: "
+               << "ended at byte " << bytesLeft << "/" << iov[n].iov_len
+               << " in iovec " << n << "/" << count;
       }
 
       idx += iov[n].iov_len;
     }
     if (idx != bytesRead_) {
-      BOOST_ERROR("server read extra data: " << bytesRead_ <<
-                  " bytes read; expected " << idx);
+      ADD_FAILURE() << "server read extra data: " << bytesRead_
+                    << " bytes read; expected " << idx;
     }
   }
 
@@ -797,14 +796,13 @@ class BlockingWriteServer :
   virtual void handshakeError(
     apache::thrift::async::TAsyncSSLSocket*,
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("server handshake error: " << ex.what());
+    ADD_FAILURE() << "server handshake error: " << ex.what();
   }
   virtual void getReadBuffer(void** bufReturn, size_t* lenReturn) {
     *bufReturn = buf_.get() + bytesRead_;
     *lenReturn = bufSize_ - bytesRead_;
   }
   virtual void readDataAvailable(size_t len) noexcept {
-    // BOOST_TEST_MESSAGE("server read " << len << " bytes");
     bytesRead_ += len;
     socket_->setReadCallback(nullptr);
     socket_->getEventBase()->runAfterDelay(
@@ -815,7 +813,7 @@ class BlockingWriteServer :
   }
   virtual void readError(
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("server read error: " << ex.what());
+    ADD_FAILURE() << "server read error: " << ex.what();
   }
 
   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket_;
@@ -845,7 +843,7 @@ class NpnClient :
   virtual void handshakeError(
     apache::thrift::async::TAsyncSSLSocket*,
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("client handshake error: " << ex.what());
+    ADD_FAILURE() << "client handshake error: " << ex.what();
   }
   virtual void writeSuccess() noexcept {
     socket_->close();
@@ -853,8 +851,8 @@ class NpnClient :
   virtual void writeError(
     size_t bytesWritten,
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("client write error after " << bytesWritten << " bytes: " <<
-                ex.what());
+    ADD_FAILURE() << "client write error after " << bytesWritten << " bytes: "
+                  << ex.what();
   }
 
   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket_;
@@ -880,7 +878,7 @@ class NpnServer :
   virtual void handshakeError(
     apache::thrift::async::TAsyncSSLSocket*,
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("server handshake error: " << ex.what());
+    ADD_FAILURE() << "server handshake error: " << ex.what();
   }
   virtual void getReadBuffer(void** bufReturn, size_t* lenReturn) {
     *lenReturn = 0;
@@ -892,7 +890,7 @@ class NpnServer :
   }
   virtual void readError(
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("server read error: " << ex.what());
+    ADD_FAILURE() << "server read error: " << ex.what();
   }
 
   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket_;
@@ -919,7 +917,7 @@ class SNIClient :
   virtual void handshakeError(
     apache::thrift::async::TAsyncSSLSocket*,
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("client handshake error: " << ex.what());
+    ADD_FAILURE() << "client handshake error: " << ex.what();
   }
   virtual void writeSuccess() noexcept {
     socket_->close();
@@ -927,8 +925,8 @@ class SNIClient :
   virtual void writeError(
     size_t bytesWritten,
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("client write error after " << bytesWritten << " bytes: " <<
-                ex.what());
+    ADD_FAILURE() << "client write error after " << bytesWritten << " bytes: "
+                  << ex.what();
   }
 
   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket_;
@@ -959,7 +957,7 @@ class SNIServer :
   virtual void handshakeError(
     apache::thrift::async::TAsyncSSLSocket*,
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("server handshake error: " << ex.what());
+    ADD_FAILURE() << "server handshake error: " << ex.what();
   }
   virtual void getReadBuffer(void** bufReturn, size_t* lenReturn) {
     *lenReturn = 0;
@@ -971,7 +969,7 @@ class SNIServer :
   }
   virtual void readError(
     const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("server read error: " << ex.what());
+    ADD_FAILURE() << "server read error: " << ex.what();
   }
 
   apache::thrift::transport::SSLContext::ServerNameCallbackResult
@@ -1042,7 +1040,7 @@ class SSLClient : public apache::thrift::async::TAsyncSocket::ConnectCallback,
       SSL_SESSION_free(session_);
     }
     if (errors_ == 0) {
-      BOOST_CHECK_EQUAL(bytesRead_, sizeof(buf_));
+      EXPECT_EQ(bytesRead_, sizeof(buf_));
     }
   }
 
@@ -1128,7 +1126,7 @@ class SSLClient : public apache::thrift::async::TAsyncSocket::ConnectCallback,
     std::cerr << "client read data: " << len << std::endl;
     bytesRead_ += len;
     if (len == sizeof(buf_)) {
-      BOOST_CHECK_EQUAL(memcmp(buf_, readbuf_, bytesRead_), 0);
+      EXPECT_EQ(memcmp(buf_, readbuf_, bytesRead_), 0);
       sslSocket_->closeNow();
       sslSocket_.reset();
       if (requests_ != 0) {
@@ -1171,7 +1169,7 @@ class SSLHandshakeBase :
    X509_STORE_CTX* ctx) noexcept {
     handshakeVerify_ = true;
 
-    BOOST_CHECK_EQUAL(preverifyOk, preverifyResult_);
+    EXPECT_EQ(preverifyOk, preverifyResult_);
     return verifyResult_;
   }
 
@@ -1194,8 +1192,8 @@ class SSLHandshakeBase :
   void writeError(
    size_t bytesWritten,
    const apache::thrift::transport::TTransportException& ex) noexcept {
-    BOOST_ERROR("client write error after " << bytesWritten << " bytes: " <<
-                ex.what());
+    ADD_FAILURE() << "client write error after " << bytesWritten << " bytes: "
+                  << ex.what();
   }
 };
 
@@ -1234,7 +1232,7 @@ class EventBaseAborter : public apache::thrift::async::TAsyncTimeout {
   }
 
   virtual void timeoutExpired() noexcept {
-    BOOST_FAIL("test timed out");
+    FAIL() << "test timed out";
     eventBase_->terminateLoopSoon();
   }
 

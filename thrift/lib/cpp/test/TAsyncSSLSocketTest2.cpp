@@ -18,17 +18,14 @@
  */
 #include "thrift/lib/cpp/test/TAsyncSSLSocketTest.h"
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 #include <pthread.h>
 
 #include "thrift/lib/cpp/async/TAsyncSSLServerSocket.h"
 #include "thrift/lib/cpp/async/TAsyncSSLSocket.h"
 #include "thrift/lib/cpp/async/TEventBase.h"
 #include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/test/TimeUtil.h"
 #include "thrift/lib/cpp/transport/TSSLSocket.h"
-
-using namespace boost;
 
 using std::string;
 using std::vector;
@@ -80,7 +77,7 @@ class AttachDetachClient : public TAsyncSocket::ConnectCallback,
       sslSocket_->attachSSLContext(ctx_);
     }
 
-    BOOST_CHECK_EQUAL(ctx_->getSSLCtx()->references, 2);
+    EXPECT_EQ(ctx_->getSSLCtx()->references, 2);
 
     sslSocket_->write(this, buf_, sizeof(buf_));
     sslSocket_->setReadCallback(this);
@@ -120,7 +117,7 @@ class AttachDetachClient : public TAsyncSocket::ConnectCallback,
     cerr << "client read data: " << len << endl;
     bytesRead_ += len;
     if (len == sizeof(buf_)) {
-      BOOST_CHECK_EQUAL(memcmp(buf_, readbuf_, bytesRead_), 0);
+      EXPECT_EQ(memcmp(buf_, readbuf_, bytesRead_), 0);
       sslSocket_->closeNow();
     }
   }
@@ -129,7 +126,7 @@ class AttachDetachClient : public TAsyncSocket::ConnectCallback,
 /**
  * Test passing contexts between threads
  */
-BOOST_AUTO_TEST_CASE(AttachDetachSSLContext) {
+TEST(TAsyncSSLSocketTest2, AttachDetachSSLContext) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadCallback readCallback(&writeCallback);
@@ -151,24 +148,15 @@ BOOST_AUTO_TEST_CASE(AttachDetachSSLContext) {
 // init_unit_test_suite
 ///////////////////////////////////////////////////////////////////////////
 
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value =
-    "TAsyncSSLSocketTest2";
-  signal(SIGPIPE, SIG_IGN);
-
-  apache::thrift::transport::SSLContext::setSSLLockTypes({
-      {CRYPTO_LOCK_EVP_PKEY, SSLContext::LOCK_NONE},
-      {CRYPTO_LOCK_SSL_SESSION, SSLContext::LOCK_SPINLOCK},
-      {CRYPTO_LOCK_SSL_CTX, SSLContext::LOCK_NONE}});
-
-  if (argc != 1) {
-    cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      cerr << " " << argv[n];
-    }
-    cerr << endl;
-    exit(1);
+namespace {
+struct Initializer {
+  Initializer() {
+    signal(SIGPIPE, SIG_IGN);
+    apache::thrift::transport::SSLContext::setSSLLockTypes({
+        {CRYPTO_LOCK_EVP_PKEY, SSLContext::LOCK_NONE},
+        {CRYPTO_LOCK_SSL_SESSION, SSLContext::LOCK_SPINLOCK},
+        {CRYPTO_LOCK_SSL_CTX, SSLContext::LOCK_NONE}});
   }
-
-  return nullptr;
-}
+};
+Initializer initializer;
+} // anonymous

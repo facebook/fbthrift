@@ -23,11 +23,10 @@
 #include "thrift/lib/cpp/async/TAsyncSSLSocket.h"
 #include "thrift/lib/cpp/async/TEventBase.h"
 #include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/test/TimeUtil.h"
 #include "thrift/lib/cpp/transport/TSSLSocket.h"
 #include "thrift/lib/cpp/transport/TSocketAddress.h"
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <list>
 #include <set>
@@ -37,8 +36,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/tcp.h>
-
-using namespace boost;
 
 using std::string;
 using std::vector;
@@ -66,7 +63,7 @@ uint32_t TestSSLAsyncCacheServer::lookupDelay_ = 0;
  * Test connecting to, writing to, reading from, and closing the
  * connection to the SSL server.
  */
-BOOST_AUTO_TEST_CASE(ConnectWriteReadClose) {
+TEST(TAsyncSSLSocketTest, ConnectWriteReadClose) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadCallback readCallback(&writeCallback);
@@ -93,8 +90,8 @@ BOOST_AUTO_TEST_CASE(ConnectWriteReadClose) {
   // read()
   uint8_t readbuf[128];
   uint32_t bytesRead = socket->readAll(readbuf, sizeof(readbuf));
-  BOOST_CHECK_EQUAL(bytesRead, 128);
-  BOOST_CHECK_EQUAL(memcmp(buf, readbuf, bytesRead), 0);
+  EXPECT_EQ(bytesRead, 128);
+  EXPECT_EQ(memcmp(buf, readbuf, bytesRead), 0);
 
   // close()
   socket->close();
@@ -105,7 +102,7 @@ BOOST_AUTO_TEST_CASE(ConnectWriteReadClose) {
 /**
  * Negative test for handshakeError().
  */
-BOOST_AUTO_TEST_CASE(HandshakeError) {
+TEST(TAsyncSSLSocketTest, HandshakeError) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadCallback readCallback(&writeCallback);
@@ -130,7 +127,7 @@ BOOST_AUTO_TEST_CASE(HandshakeError) {
   } catch (TSSLException &e) {
     ex = true;
   }
-  BOOST_CHECK(ex);
+  EXPECT_TRUE(ex);
 
   // close()
   socket->close();
@@ -140,7 +137,7 @@ BOOST_AUTO_TEST_CASE(HandshakeError) {
 /**
  * Negative test for readError().
  */
-BOOST_AUTO_TEST_CASE(ReadError) {
+TEST(TAsyncSSLSocketTest, ReadError) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadErrorCallback readCallback(&writeCallback);
@@ -169,7 +166,7 @@ BOOST_AUTO_TEST_CASE(ReadError) {
 /**
  * Negative test for writeError().
  */
-BOOST_AUTO_TEST_CASE(WriteError) {
+TEST(TAsyncSSLSocketTest, WriteError) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   WriteErrorCallback readCallback(&writeCallback);
@@ -198,7 +195,7 @@ BOOST_AUTO_TEST_CASE(WriteError) {
 /**
  * Test a socket with TCP_NODELAY unset.
  */
-BOOST_AUTO_TEST_CASE(SocketWithDelay) {
+TEST(TAsyncSSLSocketTest, SocketWithDelay) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadCallback readCallback(&writeCallback);
@@ -223,8 +220,8 @@ BOOST_AUTO_TEST_CASE(SocketWithDelay) {
   // read()
   uint8_t readbuf[128];
   uint32_t bytesRead = socket->readAll(readbuf, sizeof(readbuf));
-  BOOST_CHECK_EQUAL(bytesRead, 128);
-  BOOST_CHECK_EQUAL(memcmp(buf, readbuf, bytesRead), 0);
+  EXPECT_EQ(bytesRead, 128);
+  EXPECT_EQ(memcmp(buf, readbuf, bytesRead), 0);
 
   // close()
   socket->close();
@@ -232,7 +229,7 @@ BOOST_AUTO_TEST_CASE(SocketWithDelay) {
   cerr << "SocketWithDelay test completed" << endl;
 }
 
-BOOST_AUTO_TEST_CASE(NpnTestOverlap) {
+TEST(TAsyncSSLSocketTest, NpnTestOverlap) {
   TEventBase eventBase;
   std::shared_ptr<SSLContext> clientCtx(new SSLContext);
   std::shared_ptr<SSLContext> serverCtx(new SSLContext);;
@@ -252,15 +249,15 @@ BOOST_AUTO_TEST_CASE(NpnTestOverlap) {
 
   eventBase.loop();
 
-  BOOST_CHECK(client.nextProtoLength != 0);
-  BOOST_CHECK_EQUAL(client.nextProtoLength, server.nextProtoLength);
-  BOOST_CHECK_EQUAL(memcmp(client.nextProto, server.nextProto,
+  EXPECT_TRUE(client.nextProtoLength != 0);
+  EXPECT_EQ(client.nextProtoLength, server.nextProtoLength);
+  EXPECT_EQ(memcmp(client.nextProto, server.nextProto,
                            server.nextProtoLength), 0);
   string selected((const char*)client.nextProto, client.nextProtoLength);
-  BOOST_CHECK_EQUAL(selected.compare("baz"), 0);
+  EXPECT_EQ(selected.compare("baz"), 0);
 }
 
-BOOST_AUTO_TEST_CASE(NpnTestUnset) {
+TEST(TAsyncSSLSocketTest, NpnTestUnset) {
   // Identical to above test, except that we want unset NPN before
   // looping.
   TEventBase eventBase;
@@ -287,13 +284,13 @@ BOOST_AUTO_TEST_CASE(NpnTestUnset) {
 
   eventBase.loop();
 
-  BOOST_CHECK(client.nextProtoLength == 0);
-  BOOST_CHECK(server.nextProtoLength == 0);
-  BOOST_CHECK(client.nextProto == nullptr);
-  BOOST_CHECK(server.nextProto == nullptr);
+  EXPECT_TRUE(client.nextProtoLength == 0);
+  EXPECT_TRUE(server.nextProtoLength == 0);
+  EXPECT_TRUE(client.nextProto == nullptr);
+  EXPECT_TRUE(server.nextProto == nullptr);
 }
 
-BOOST_AUTO_TEST_CASE(NpnTestNoOverlap) {
+TEST(TAsyncSSLSocketTest, NpnTestNoOverlap) {
   TEventBase eventBase;
   std::shared_ptr<SSLContext> clientCtx(new SSLContext);
   std::shared_ptr<SSLContext> serverCtx(new SSLContext);;
@@ -313,15 +310,15 @@ BOOST_AUTO_TEST_CASE(NpnTestNoOverlap) {
 
   eventBase.loop();
 
-  BOOST_CHECK(client.nextProtoLength != 0);
-  BOOST_CHECK_EQUAL(client.nextProtoLength, server.nextProtoLength);
-  BOOST_CHECK_EQUAL(memcmp(client.nextProto, server.nextProto,
+  EXPECT_TRUE(client.nextProtoLength != 0);
+  EXPECT_EQ(client.nextProtoLength, server.nextProtoLength);
+  EXPECT_EQ(memcmp(client.nextProto, server.nextProto,
                            server.nextProtoLength), 0);
   string selected((const char*)client.nextProto, client.nextProtoLength);
-  BOOST_CHECK_EQUAL(selected.compare("blub"), 0);
+  EXPECT_EQ(selected.compare("blub"), 0);
 }
 
-BOOST_AUTO_TEST_CASE(RandomizedNpnTest) {
+TEST(TAsyncSSLSocketTest, RandomizedNpnTest) {
   // Probability that this test will fail is 2^-64, which could be considered
   // as negligible.
   const int kTries = 64;
@@ -349,14 +346,14 @@ BOOST_AUTO_TEST_CASE(RandomizedNpnTest) {
 
     eventBase.loop();
 
-    BOOST_CHECK(client.nextProtoLength != 0);
-    BOOST_CHECK_EQUAL(client.nextProtoLength, server.nextProtoLength);
-    BOOST_CHECK_EQUAL(memcmp(client.nextProto, server.nextProto,
+    EXPECT_TRUE(client.nextProtoLength != 0);
+    EXPECT_EQ(client.nextProtoLength, server.nextProtoLength);
+    EXPECT_EQ(memcmp(client.nextProto, server.nextProto,
                              server.nextProtoLength), 0);
     string selected((const char*)client.nextProto, client.nextProtoLength);
     selectedProtocols.insert(selected);
   }
-  BOOST_CHECK_EQUAL(selectedProtocols.size(), 2);
+  EXPECT_EQ(selectedProtocols.size(), 2);
 }
 
 
@@ -367,7 +364,7 @@ BOOST_AUTO_TEST_CASE(RandomizedNpnTest) {
  *    continue the SSL handshake.
  * 3. Server sends back TLSEXT_HOSTNAME in server hello.
  */
-BOOST_AUTO_TEST_CASE(SNITestMatch) {
+TEST(TAsyncSSLSocketTest, SNITestMatch) {
   TEventBase eventBase;
   std::shared_ptr<SSLContext> clientCtx(new SSLContext);
   std::shared_ptr<SSLContext> dfServerCtx(new SSLContext);
@@ -391,8 +388,8 @@ BOOST_AUTO_TEST_CASE(SNITestMatch) {
 
   eventBase.loop();
 
-  BOOST_CHECK(client.serverNameMatch);
-  BOOST_CHECK(server.serverNameMatch);
+  EXPECT_TRUE(client.serverNameMatch);
+  EXPECT_TRUE(server.serverNameMatch);
 }
 
 /**
@@ -401,7 +398,7 @@ BOOST_AUTO_TEST_CASE(SNITestMatch) {
  *    the current SSL_CTX to do the handshake.
  * 3. Server does not send back TLSEXT_HOSTNAME in server hello.
  */
-BOOST_AUTO_TEST_CASE(SNITestNotMatch) {
+TEST(TAsyncSSLSocketTest, SNITestNotMatch) {
   TEventBase eventBase;
   std::shared_ptr<SSLContext> clientCtx(new SSLContext);
   std::shared_ptr<SSLContext> dfServerCtx(new SSLContext);
@@ -430,15 +427,15 @@ BOOST_AUTO_TEST_CASE(SNITestNotMatch) {
 
   eventBase.loop();
 
-  BOOST_CHECK(!client.serverNameMatch);
-  BOOST_CHECK(!server.serverNameMatch);
+  EXPECT_TRUE(!client.serverNameMatch);
+  EXPECT_TRUE(!server.serverNameMatch);
 }
 
 /**
  * 1. Client does not send TLSEXT_HOSTNAME in client hello.
  * 2. Server does not send back TLSEXT_HOSTNAME in server hello.
  */
-BOOST_AUTO_TEST_CASE(SNITestClientHelloNoHostname) {
+TEST(TAsyncSSLSocketTest, SNITestClientHelloNoHostname) {
   TEventBase eventBase;
   std::shared_ptr<SSLContext> clientCtx(new SSLContext);
   std::shared_ptr<SSLContext> dfServerCtx(new SSLContext);
@@ -463,15 +460,15 @@ BOOST_AUTO_TEST_CASE(SNITestClientHelloNoHostname) {
 
   eventBase.loop();
 
-  BOOST_CHECK(!client.serverNameMatch);
-  BOOST_CHECK(!server.serverNameMatch);
+  EXPECT_TRUE(!client.serverNameMatch);
+  EXPECT_TRUE(!server.serverNameMatch);
 }
 
 #endif
 /**
  * Test SSL client socket
  */
-BOOST_AUTO_TEST_CASE(SSLClientTest) {
+TEST(TAsyncSSLSocketTest, SSLClientTest) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadCallback readCallback(&writeCallback);
@@ -488,8 +485,8 @@ BOOST_AUTO_TEST_CASE(SSLClientTest) {
   EventBaseAborter eba(&eventBase, 3000);
   eventBase.loop();
 
-  BOOST_CHECK_EQUAL(client->getMiss(), 1);
-  BOOST_CHECK_EQUAL(client->getHit(), 0);
+  EXPECT_EQ(client->getMiss(), 1);
+  EXPECT_EQ(client->getHit(), 0);
 
   cerr << "SSLClientTest test completed" << endl;
 }
@@ -498,7 +495,7 @@ BOOST_AUTO_TEST_CASE(SSLClientTest) {
 /**
  * Test SSL client socket session re-use
  */
-BOOST_AUTO_TEST_CASE(SSLClientTestReuse) {
+TEST(TAsyncSSLSocketTest, SSLClientTestReuse) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadCallback readCallback(&writeCallback);
@@ -515,8 +512,8 @@ BOOST_AUTO_TEST_CASE(SSLClientTestReuse) {
   EventBaseAborter eba(&eventBase, 3000);
   eventBase.loop();
 
-  BOOST_CHECK_EQUAL(client->getMiss(), 1);
-  BOOST_CHECK_EQUAL(client->getHit(), 9);
+  EXPECT_EQ(client->getMiss(), 1);
+  EXPECT_EQ(client->getHit(), 9);
 
   cerr << "SSLClientTestReuse test completed" << endl;
 }
@@ -524,7 +521,7 @@ BOOST_AUTO_TEST_CASE(SSLClientTestReuse) {
 /**
  * Test SSL client socket timeout
  */
-BOOST_AUTO_TEST_CASE(SSLClientTimeoutTest) {
+TEST(TAsyncSSLSocketTest, SSLClientTimeoutTest) {
   // Start listening on a local port
   EmptyReadCallback readCallback;
   HandshakeCallback handshakeCallback(&readCallback,
@@ -543,10 +540,10 @@ BOOST_AUTO_TEST_CASE(SSLClientTimeoutTest) {
   usleep(100000);
   // This is checking that the connectError callback precedes any queued
   // writeError callbacks.  This matches TAsyncSocket's behavior
-  BOOST_CHECK_EQUAL(client->getWriteAfterConnectErrors(), 1);
-  BOOST_CHECK_EQUAL(client->getErrors(), 1);
-  BOOST_CHECK_EQUAL(client->getMiss(), 0);
-  BOOST_CHECK_EQUAL(client->getHit(), 0);
+  EXPECT_EQ(client->getWriteAfterConnectErrors(), 1);
+  EXPECT_EQ(client->getErrors(), 1);
+  EXPECT_EQ(client->getMiss(), 0);
+  EXPECT_EQ(client->getHit(), 0);
 
   cerr << "SSLClientTimeoutTest test completed" << endl;
 }
@@ -555,7 +552,7 @@ BOOST_AUTO_TEST_CASE(SSLClientTimeoutTest) {
 /**
  * Test SSL server async cache
  */
-BOOST_AUTO_TEST_CASE(SSLServerAsyncCacheTest) {
+TEST(TAsyncSSLSocketTest, SSLServerAsyncCacheTest) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadCallback readCallback(&writeCallback);
@@ -572,10 +569,10 @@ BOOST_AUTO_TEST_CASE(SSLServerAsyncCacheTest) {
   EventBaseAborter eba(&eventBase, 3000);
   eventBase.loop();
 
-  BOOST_CHECK_EQUAL(server.getAsyncCallbacks(), 18);
-  BOOST_CHECK_EQUAL(server.getAsyncLookups(), 9);
-  BOOST_CHECK_EQUAL(client->getMiss(), 10);
-  BOOST_CHECK_EQUAL(client->getHit(), 0);
+  EXPECT_EQ(server.getAsyncCallbacks(), 18);
+  EXPECT_EQ(server.getAsyncLookups(), 9);
+  EXPECT_EQ(client->getMiss(), 10);
+  EXPECT_EQ(client->getHit(), 0);
 
   cerr << "SSLServerAsyncCacheTest test completed" << endl;
 }
@@ -584,7 +581,7 @@ BOOST_AUTO_TEST_CASE(SSLServerAsyncCacheTest) {
 /**
  * Test SSL server accept timeout with cache path
  */
-BOOST_AUTO_TEST_CASE(SSLServerTimeoutTest) {
+TEST(TAsyncSSLSocketTest, SSLServerTimeoutTest) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadCallback readCallback(&writeCallback);
@@ -604,7 +601,7 @@ BOOST_AUTO_TEST_CASE(SSLServerTimeoutTest) {
   EventBaseAborter eba(&eventBase, 3000);
   eventBase.loop();
 
-  BOOST_CHECK_EQUAL(readCallback.state, STATE_WAITING);
+  EXPECT_EQ(readCallback.state, STATE_WAITING);
 
   cerr << "SSLServerTimeoutTest test completed" << endl;
 }
@@ -612,7 +609,7 @@ BOOST_AUTO_TEST_CASE(SSLServerTimeoutTest) {
 /**
  * Test SSL server accept timeout with cache path
  */
-BOOST_AUTO_TEST_CASE(SSLServerAsyncCacheTimeoutTest) {
+TEST(TAsyncSSLSocketTest, SSLServerAsyncCacheTimeoutTest) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadCallback readCallback(&writeCallback);
@@ -629,11 +626,11 @@ BOOST_AUTO_TEST_CASE(SSLServerAsyncCacheTimeoutTest) {
   EventBaseAborter eba(&eventBase, 3000);
   eventBase.loop();
 
-  BOOST_CHECK_EQUAL(server.getAsyncCallbacks(), 1);
-  BOOST_CHECK_EQUAL(server.getAsyncLookups(), 1);
-  BOOST_CHECK_EQUAL(client->getErrors(), 1);
-  BOOST_CHECK_EQUAL(client->getMiss(), 1);
-  BOOST_CHECK_EQUAL(client->getHit(), 0);
+  EXPECT_EQ(server.getAsyncCallbacks(), 1);
+  EXPECT_EQ(server.getAsyncLookups(), 1);
+  EXPECT_EQ(client->getErrors(), 1);
+  EXPECT_EQ(client->getMiss(), 1);
+  EXPECT_EQ(client->getHit(), 0);
 
   cerr << "SSLServerAsyncCacheTimeoutTest test completed" << endl;
 }
@@ -641,7 +638,7 @@ BOOST_AUTO_TEST_CASE(SSLServerAsyncCacheTimeoutTest) {
 /**
  * Test SSL server accept timeout with cache path
  */
-BOOST_AUTO_TEST_CASE(SSLServerCacheCloseTest) {
+TEST(TAsyncSSLSocketTest, SSLServerCacheCloseTest) {
   // Start listening on a local port
   WriteCallbackBase writeCallback;
   ReadCallback readCallback(&writeCallback);
@@ -664,11 +661,11 @@ BOOST_AUTO_TEST_CASE(SSLServerCacheCloseTest) {
   // give time for the cache lookup to come back and find it closed
   usleep(500000);
 
-  BOOST_CHECK_EQUAL(server.getAsyncCallbacks(), 1);
-  BOOST_CHECK_EQUAL(server.getAsyncLookups(), 1);
-  BOOST_CHECK_EQUAL(client->getErrors(), 1);
-  BOOST_CHECK_EQUAL(client->getMiss(), 1);
-  BOOST_CHECK_EQUAL(client->getHit(), 0);
+  EXPECT_EQ(server.getAsyncCallbacks(), 1);
+  EXPECT_EQ(server.getAsyncLookups(), 1);
+  EXPECT_EQ(client->getErrors(), 1);
+  EXPECT_EQ(client->getMiss(), 1);
+  EXPECT_EQ(client->getHit(), 0);
 
   cerr << "SSLServerCacheCloseTest test completed" << endl;
 }
@@ -676,7 +673,7 @@ BOOST_AUTO_TEST_CASE(SSLServerCacheCloseTest) {
 /**
  * Verify sucessful behavior of SSL certificate validation.
  */
-BOOST_AUTO_TEST_CASE(SSLHandshakeValidationSuccess) {
+TEST(TAsyncSSLSocketTest, SSLHandshakeValidationSuccess) {
   TEventBase eventBase;
   auto clientCtx = std::make_shared<SSLContext>();
   auto dfServerCtx = std::make_shared<SSLContext>();
@@ -697,19 +694,19 @@ BOOST_AUTO_TEST_CASE(SSLHandshakeValidationSuccess) {
 
   eventBase.loop();
 
-  BOOST_CHECK(client.handshakeVerify_);
-  BOOST_CHECK(client.handshakeSuccess_);
-  BOOST_CHECK(!client.handshakeError_);
-  BOOST_CHECK(!server.handshakeVerify_);
-  BOOST_CHECK(server.handshakeSuccess_);
-  BOOST_CHECK(!server.handshakeError_);
+  EXPECT_TRUE(client.handshakeVerify_);
+  EXPECT_TRUE(client.handshakeSuccess_);
+  EXPECT_TRUE(!client.handshakeError_);
+  EXPECT_TRUE(!server.handshakeVerify_);
+  EXPECT_TRUE(server.handshakeSuccess_);
+  EXPECT_TRUE(!server.handshakeError_);
 }
 
 /**
  * Verify that the client's verification callback is able to fail SSL
  * connection establishment.
  */
-BOOST_AUTO_TEST_CASE(SSLHandshakeValidationFailure) {
+TEST(TAsyncSSLSocketTest, SSLHandshakeValidationFailure) {
   TEventBase eventBase;
   auto clientCtx = std::make_shared<SSLContext>();
   auto dfServerCtx = std::make_shared<SSLContext>();
@@ -730,19 +727,19 @@ BOOST_AUTO_TEST_CASE(SSLHandshakeValidationFailure) {
 
   eventBase.loop();
 
-  BOOST_CHECK(client.handshakeVerify_);
-  BOOST_CHECK(!client.handshakeSuccess_);
-  BOOST_CHECK(client.handshakeError_);
-  BOOST_CHECK(!server.handshakeVerify_);
-  BOOST_CHECK(!server.handshakeSuccess_);
-  BOOST_CHECK(server.handshakeError_);
+  EXPECT_TRUE(client.handshakeVerify_);
+  EXPECT_TRUE(!client.handshakeSuccess_);
+  EXPECT_TRUE(client.handshakeError_);
+  EXPECT_TRUE(!server.handshakeVerify_);
+  EXPECT_TRUE(!server.handshakeSuccess_);
+  EXPECT_TRUE(server.handshakeError_);
 }
 
 /**
  * Verify that the client's verification callback is able to override
  * the preverification failure and allow a successful connection.
  */
-BOOST_AUTO_TEST_CASE(SSLHandshakeValidationOverride) {
+TEST(TAsyncSSLSocketTest, SSLHandshakeValidationOverride) {
   TEventBase eventBase;
   auto clientCtx = std::make_shared<SSLContext>();
   auto dfServerCtx = std::make_shared<SSLContext>();
@@ -761,12 +758,12 @@ BOOST_AUTO_TEST_CASE(SSLHandshakeValidationOverride) {
 
   eventBase.loop();
 
-  BOOST_CHECK(client.handshakeVerify_);
-  BOOST_CHECK(client.handshakeSuccess_);
-  BOOST_CHECK(!client.handshakeError_);
-  BOOST_CHECK(!server.handshakeVerify_);
-  BOOST_CHECK(server.handshakeSuccess_);
-  BOOST_CHECK(!server.handshakeError_);
+  EXPECT_TRUE(client.handshakeVerify_);
+  EXPECT_TRUE(client.handshakeSuccess_);
+  EXPECT_TRUE(!client.handshakeError_);
+  EXPECT_TRUE(!server.handshakeVerify_);
+  EXPECT_TRUE(server.handshakeSuccess_);
+  EXPECT_TRUE(!server.handshakeError_);
 }
 
 /**
@@ -774,7 +771,7 @@ BOOST_AUTO_TEST_CASE(SSLHandshakeValidationOverride) {
  * otherwise-invalid certificate to be accepted and doesn't fire the validation
  * callback.
  */
-BOOST_AUTO_TEST_CASE(SSLHandshakeValidationSkip) {
+TEST(TAsyncSSLSocketTest, SSLHandshakeValidationSkip) {
   TEventBase eventBase;
   auto clientCtx = std::make_shared<SSLContext>();
   auto dfServerCtx = std::make_shared<SSLContext>();
@@ -793,31 +790,22 @@ BOOST_AUTO_TEST_CASE(SSLHandshakeValidationSkip) {
 
   eventBase.loop();
 
-  BOOST_CHECK(!client.handshakeVerify_);
-  BOOST_CHECK(client.handshakeSuccess_);
-  BOOST_CHECK(!client.handshakeError_);
-  BOOST_CHECK(!server.handshakeVerify_);
-  BOOST_CHECK(server.handshakeSuccess_);
-  BOOST_CHECK(!server.handshakeError_);
+  EXPECT_TRUE(!client.handshakeVerify_);
+  EXPECT_TRUE(client.handshakeSuccess_);
+  EXPECT_TRUE(!client.handshakeError_);
+  EXPECT_TRUE(!server.handshakeVerify_);
+  EXPECT_TRUE(server.handshakeSuccess_);
+  EXPECT_TRUE(!server.handshakeError_);
 }
 
 ///////////////////////////////////////////////////////////////////////////
 // init_unit_test_suite
 ///////////////////////////////////////////////////////////////////////////
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value =
-    "TAsyncSSLSocketTest";
-  signal(SIGPIPE, SIG_IGN);
-
-  if (argc != 1) {
-    cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      cerr << " " << argv[n];
-    }
-    cerr << endl;
-    exit(1);
+namespace {
+struct Initializer {
+  Initializer() {
+    signal(SIGPIPE, SIG_IGN);
   }
-
-  return nullptr;
-}
+};
+Initializer initializer;
+} // anonymous
