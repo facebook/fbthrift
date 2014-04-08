@@ -509,6 +509,7 @@ class CppGenerator(t_generator.Generator):
         self._generate_service_server_interface_async(service, s)
         s('class ' + service.name + 'AsyncProcessor;')
         self._generate_service_server_interface(service, s)
+        self._generate_service_server_null(service, s)
         self._generate_processor(service, s)
         self._generate_service_client(service, s)
         self._generate_service_helpers(service, s)
@@ -806,6 +807,36 @@ class CppGenerator(t_generator.Generator):
         else:
             return 'async_tm_' + function.name
 
+    def _generate_service_server_null(self, service, s):
+        classname = service.name + "SvNull"
+        if not service.extends:
+            class_signature = "class " + classname + " : public " + \
+                service.name + \
+                "SvIf"
+        else:
+            class_signature = "class " + classname + " : public " + \
+                service.name + "SvIf, virtual public " + \
+                self._type_name(service.extends) + "SvIf"
+        with s.cls(class_signature):
+            out().label('public:')
+            out().defn('~{0}()'.format(classname), name=classname,
+                   modifiers='virtual',
+                   in_header=True).scope.empty()
+            for function in service.functions:
+                if self._function_uses_streams(function) or \
+                  (not self.flag_future and
+                   not self._is_processed_in_eb(function)):
+                    with out().defn(
+                            self._get_process_function_signature(service,
+                                                                 function),
+                            name=function.name,
+                            modifiers='virtual'):
+                        if not function.oneway and \
+                          not function.returntype.is_void and \
+                          not self._function_uses_streams(function) and \
+                          not self._is_complex_type(function.returntype):
+                            out('return ' +
+                              self._default_value(function.returntype) + ';')
 
     def _generate_service_server_interface_async(self, service, s):
         classname = service.name + "SvAsyncIf"
