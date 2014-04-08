@@ -277,8 +277,10 @@ class TAsyncSSLSocket : public TAsyncSocket {
    *                   SSL_VERIFY_PEER and invokes
    *                   HandshakeCallback::handshakeVerify()
    */
+  // TODO(agartrell): Move verification options into SSLContext t4116111
   virtual void sslAccept(HandshakeCallback* callback, uint32_t timeout = 0,
-                         bool verifyPeer = false);
+                         bool verifyPeer = false,
+                         bool requireClientCert = false);
 
   /**
    * Invoke SSL accept following an asynchronous session cache lookup
@@ -604,6 +606,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
   std::string tlsextHostname_;
 #endif
   bool verifyPeer_{false};
+  bool requireClientCert_{false};
 
   // Callback for SSL_CTX_set_verify()
   static int sslVerifyCallback(int preverifyOk, X509_STORE_CTX* ctx);

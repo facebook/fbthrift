@@ -1169,7 +1169,7 @@ class SSLHandshakeBase :
    X509_STORE_CTX* ctx) noexcept {
     handshakeVerify_ = true;
 
-    EXPECT_EQ(preverifyOk, preverifyResult_);
+    EXPECT_EQ(preverifyResult_, preverifyOk);
     return verifyResult_;
   }
 
@@ -1212,12 +1212,13 @@ class SSLHandshakeClient : public SSLHandshakeBase {
 class SSLHandshakeServer : public SSLHandshakeBase {
  public:
   SSLHandshakeServer(
-   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
-   bool verifyCertificate,
-   bool preverifyResult,
-   bool verifyResult) :
-    SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
-    socket_->sslAccept(this, 0, verifyCertificate);
+      apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
+      bool verifyCertificate,
+      bool requireClientCert,
+      bool preverifyResult,
+      bool verifyResult)
+    : SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
+    socket_->sslAccept(this, 0, verifyCertificate, requireClientCert);
   }
 };
 

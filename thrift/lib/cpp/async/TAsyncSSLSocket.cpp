@@ -433,11 +433,13 @@ void TAsyncSSLSocket::invalidState(HandshakeCallback* callback) {
 
 void TAsyncSSLSocket::sslAccept(HandshakeCallback* callback,
                                 uint32_t timeout,
-                                bool verifyPeer) {
+                                bool verifyPeer,
+                                bool requireClientCert) {
   DestructorGuard dg(this);
   assert(eventBase_->isInEventBaseThread());
 
   verifyPeer_ = verifyPeer;
+  requireClientCert_ = requireClientCert;
 
   // Make sure we're in the uninitialized state
   if (!server_ || sslState_ != STATE_UNINIT || handshakeCallback_ != nullptr) {
@@ -884,8 +886,12 @@ TAsyncSSLSocket::handleAccept() noexcept {
     SSL_set_ex_data(ssl_, getSSLExDataIndex(), this);
 
     if (verifyPeer_) {
+      int mode = SSL_VERIFY_PEER;
+      if (requireClientCert_) {
+        mode |= SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
+      }
       SSL_set_verify(
-        ssl_, SSL_VERIFY_PEER, TAsyncSSLSocket::sslVerifyCallback);
+          ssl_, mode, TAsyncSSLSocket::sslVerifyCallback);
     }
   }
 
