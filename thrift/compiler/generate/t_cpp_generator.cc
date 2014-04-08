@@ -2320,7 +2320,7 @@ void t_cpp_generator::generate_json_field(ofstream& out,
       indent(out) <<  "int64_t " << temp << " = (int64_t)"
         << prefix_json << ".as" << asTypeString << ";" <<
         endl;
-      indent(out) << "if (fabs(" << temp << ") > " << number_limit <<
+      indent(out) << "if (imaxabs(" << temp << ") > " << number_limit <<
         ") {" <<endl;
       indent_up();
       indent(out) << "throw apache::thrift::TLibraryException"
