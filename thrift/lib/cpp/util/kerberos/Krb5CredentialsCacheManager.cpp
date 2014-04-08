@@ -19,10 +19,12 @@
 #include <glog/logging.h>
 #include <memory>
 #include <set>
+#include <stdio.h>
 
 #include "folly/stats/BucketedTimeSeries-defs.h"
 #include "folly/Memory.h"
 #include "folly/ScopeGuard.h"
+#include "folly/String.h"
 
 namespace apache { namespace thrift { namespace krb5 {
 using namespace std;
@@ -346,8 +348,8 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     throw std::runtime_error("Trying to persist an empty cache");
   }
 
-  // Get a default file cache and empty it out
-  Krb5CCache file_cache = Krb5CCache::makeDefault(ctx_.get());
+  // Make a new file cache.
+  auto file_cache = Krb5CCache::makeNewUnique(ctx_.get(), "FILE");
   Krb5Principal client = cc_mem->getClientPrincipal();
   krb5_error_code code = krb5_cc_initialize(
     ctx_.get(), file_cache.get(), client.get());
@@ -393,6 +395,29 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     // principal more than once.
     top_services.erase(princ_string);
     raiseIf(code, "Failed storing a credential into a file");
+  }
+
+  // Now let's rename the tmp file.
+  Krb5CCache default_cache = Krb5CCache::makeDefault(ctx_.get());
+  folly::StringPiece default_type, default_name;
+  folly::split<false>(
+    ":", default_cache.getName(), default_type, default_name);
+  if (default_type != "FILE") {
+    LOG(ERROR) << "Default cache is not of type FILE, the type is: " +
+      default_type.str();
+    return;
+  }
+  folly::StringPiece tmp_type, tmp_name;
+  folly::split<false>(
+    ":", file_cache.getName(), tmp_type, tmp_name);
+  if (tmp_type != "FILE") {
+    LOG(ERROR) << "Tmp cache is not of type FILE, the type is: " +
+      tmp_type.str();
+    return;
+  }
+  int result = rename(tmp_name.str().c_str(), default_name.str().c_str());
+  if (result != 0) {
+    LOG(ERROR) << "Failed modifying the default credentials cache";
   }
 }
 

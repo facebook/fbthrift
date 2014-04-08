@@ -253,6 +253,7 @@ public:
    * client principal.
    */
   std::pair<uint64_t, uint64_t> getLifetime(krb5_principal principal = nullptr);
+  std::string getName();
   Krb5Principal getClientPrincipal();
 
  private:

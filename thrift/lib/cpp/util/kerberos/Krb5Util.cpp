@@ -236,6 +236,11 @@ Krb5Principal Krb5CCache::getClientPrincipal() {
   return Krb5Principal(context_, std::move(client));
 }
 
+std::string Krb5CCache::getName() {
+  return std::string(krb5_cc_get_type(context_, ccache_)) + ":" +
+         std::string(krb5_cc_get_name(context_, ccache_));
+}
+
 Krb5CCache::~Krb5CCache() {
   if (ccache_) {
     krb5_cc_close(context_, ccache_);
