@@ -482,7 +482,7 @@ void t_php_generator::generate_json_container(std::ofstream& out,
   if (ttype->is_list()) {
     generate_json_list_element(out, (t_list*)ttype, value, prefix_thrift);
   } else if (ttype->is_set()) {
-    generate_json_set_element(out, (t_set*)ttype, key, prefix_thrift);
+    generate_json_set_element(out, (t_set*)ttype, value, prefix_thrift);
   } else if (ttype->is_map()) {
     generate_json_map_element(out, (t_map*)ttype, key, value, prefix_thrift);
   } else {
