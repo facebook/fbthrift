@@ -1991,17 +1991,18 @@ void t_py_generator::generate_service_client(t_service* tservice) {
         rename_reserved_keywords((*fld_iter)->get_name()) << endl;
     }
 
+    std::string flush = (*f_iter)->is_oneway() ? "onewayFlush" : "flush";
     // Write to the stream
     if (gen_twisted_) {
       f_service_ <<
         indent() << "args.write(oprot)" << endl <<
         indent() << "oprot.writeMessageEnd()" << endl <<
-        indent() << "oprot.trans.flush()" << endl;
+        indent() << "oprot.trans." << flush << "()" << endl;
     } else {
       f_service_ <<
         indent() << "args.write(self._oprot)" << endl <<
         indent() << "self._oprot.writeMessageEnd()" << endl <<
-        indent() << "self._oprot.trans.flush()" << endl;
+        indent() << "self._oprot.trans." << flush << "()" << endl;
     }
 
     indent_down();

@@ -88,6 +88,9 @@ class TTransportBase:
     def flush(self):
         pass
 
+    def onewayFlush(self):
+        self.flush()
+
 
 # This class should be thought of as an interface.
 class CReadableTransport:
