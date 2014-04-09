@@ -36,6 +36,8 @@ using folly::IOBuf;
 using folly::IOBufQueue;
 using folly::MoveWrapper;
 using apache::thrift::concurrency::FunctionRunner;
+using apache::thrift::concurrency::Guard;
+using apache::thrift::concurrency::Mutex;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
 using namespace std;
@@ -56,7 +58,8 @@ GssSaslServer::GssSaslServer(
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> thread_manager)
     : threadManager_(thread_manager)
     , evb_(evb)
-    , serverHandshake_(new KerberosSASLHandshakeServer) {
+    , serverHandshake_(new KerberosSASLHandshakeServer)
+    , mutex_(new Mutex) {
 }
 
 void GssSaslServer::consumeFromClient(
@@ -65,6 +68,7 @@ void GssSaslServer::consumeFromClient(
 
   auto channelCallbackUnavailable = channelCallbackUnavailable_;
   auto serverHandshake = serverHandshake_;
+  auto mutex = mutex_;
   try {
     threadManager_->add(std::make_shared<FunctionRunner>([=] {
       std::string reply_data;
@@ -150,6 +154,12 @@ void GssSaslServer::consumeFromClient(
         } catch (...) {
           ex = std::current_exception();
         }
+      }
+
+      Guard guard(*mutex);
+      // Return if channel is unavailable. Ie. evb_ may not be good.
+      if (*channelCallbackUnavailable) {
+        return;
       }
 
       evb_->runInEventBaseThread([=]() mutable {

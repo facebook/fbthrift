@@ -21,7 +21,7 @@
 #include "thrift/lib/cpp/concurrency/ThreadManager.h"
 #include "thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h"
 #include "thrift/lib/cpp/async/TEventBase.h"
-
+#include "thrift/lib/cpp/concurrency/Mutex.h"
 
 namespace apache { namespace thrift {
 
@@ -45,6 +45,7 @@ public:
   virtual std::string getClientIdentity() const;
   virtual std::string getServerIdentity() const;
   virtual void markChannelCallbackUnavailable() {
+    apache::thrift::concurrency::Guard guard(*mutex_);
     *channelCallbackUnavailable_ = true;
   }
 
@@ -52,6 +53,8 @@ private:
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   apache::thrift::async::TEventBase* evb_;
   std::shared_ptr<KerberosSASLHandshakeServer> serverHandshake_;
+  std::shared_ptr<apache::thrift::concurrency::Mutex> mutex_;
+
 };
 
 }} // apache::thrift
