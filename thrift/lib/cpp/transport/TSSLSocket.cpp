@@ -382,6 +382,8 @@ void SSLContext::loadPrivateKey(const char* path, const char* format) {
     if (SSL_CTX_use_PrivateKey_file(ctx_, path, SSL_FILETYPE_PEM) == 0) {
       throw TSSLException("SSL_CTX_use_PrivateKey_file: " + getErrors());
     }
+  } else {
+    throw TSSLException("Unsupported private key format: " + string(format));
   }
 }
 
