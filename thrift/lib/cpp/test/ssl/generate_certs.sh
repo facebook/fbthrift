@@ -1,10 +1,12 @@
 #!/bin/bash
 
 # This script exists to generate the test_key.pem, test_cert.pem,
-# ca_key.pem, and ca_cert.pem files.  It shouldn't really ever be run again
+# ca-key.pem, and ca-cert.pem files.  It shouldn't really ever be run again
 # until the year 2041 (when these certs expire)., unless you need to change
 # or update attributes of the certificate (Common Name, Organization,
 # whatever).
+
+set -e
 
 DAYS=10000
 
@@ -21,22 +23,48 @@ openssl req -x509 -new -nodes \
 # CA serial number
 echo 00000009 > ca-cert.srl
 
-# Generate the test key
-openssl genrsa -out tests-key.pem 2048
+function generateCert() {
+    cat > conf.tmp <<EOF
+prompt = no
+[req]
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
 
-# Generate the test key certificate request
-openssl req -new -nodes \
-    -key tests-key.pem \
-    -days ${DAYS} \
-    -out tests-cert.csr \
-    -subj '/C=US/O=Asox/CN=test.thrift.org'
+[req_distinguished_name]
+countryName = US
+stateOrProvinceName = Ohio
+localityName = Hilliard
+commonName = Asox Company
 
-# Sign the test key
-openssl x509 -req \
-    -in tests-cert.csr \
-    -CA ca-cert.pem \
-    -CAkey ca-key.pem \
-    -out tests-cert.pem
+[v3_req]
+# Extensions to add to a certificate request
+# basicConstraints = CA:FALSE
+# keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = IP:$3, IP:$4
+EOF
 
-# Clean up the signing request as well as the serial number
-rm ca-cert.srl tests-cert.csr
+    # Generate the test key
+    openssl genrsa -out $1 2048
+
+    # Generate the test key certificate request
+    openssl req -new -nodes \
+	-config conf.tmp \
+	-key $1 \
+	-days ${DAYS} \
+	-out test_cert.csr \
+	-subj '/C=US/O=Asox/CN=test.thrift.org'
+
+    # Sign the test key
+    openssl x509 -req \
+	-extensions v3_req \
+	-extfile conf.tmp \
+	-in test_cert.csr \
+	-CA ca-cert.pem \
+	-CAkey ca-key.pem \
+	-out $2
+
+    # Clean up the signing request as well as the serial number
+    rm ca-cert.srl test_cert.csr conf.tmp
+}
+
+generateCert tests-key.pem tests-cert.pem 127.0.0.1 ::1
