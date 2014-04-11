@@ -62,7 +62,6 @@ class QueueTest {
   void maxQueueSize();
   void maxReadAtOnce();
   void destroyCallback();
-  void fillQueue(bool expectFail);
   void useAfterFork();
 
   IntQueue queue;
@@ -409,19 +408,6 @@ void QueueTest::destroyCallback() {
   BOOST_CHECK_EQUAL(result, 2);
 }
 
-void QueueTest::fillQueue(bool expectFail) {
-  try {
-    for (uint32_t i = 0; i < 0x000fffff; i++) {
-      queue.putMessage(i);
-    }
-    BOOST_CHECK(!expectFail);
-  } catch (const std::system_error &ex) {
-    BOOST_CHECK(expectFail);
-  } catch (...) {
-    BOOST_CHECK(false);
-  }
-}
-
 BOOST_AUTO_TEST_CASE(SendOne) {
   QueueTest qt;
   qt.sendOne();
@@ -452,11 +438,6 @@ BOOST_AUTO_TEST_CASE(DestroyCallback) {
   qt.destroyCallback();
 }
 
-BOOST_AUTO_TEST_CASE(FillQueue) {
-  QueueTest qt(0);
-  qt.fillQueue(false /* expect no failure */);
-}
-
 BOOST_AUTO_TEST_CASE(SendOnePipe) {
   QueueTest qt(0, IntQueue::FdType::PIPE);
   qt.sendOne();
@@ -485,11 +466,6 @@ BOOST_AUTO_TEST_CASE(MaxReadAtOncePipe) {
 BOOST_AUTO_TEST_CASE(DestroyCallbackPipe) {
   QueueTest qt(0, IntQueue::FdType::PIPE);
   qt.destroyCallback();
-}
-
-BOOST_AUTO_TEST_CASE(FillQueuePipe) {
-  QueueTest qt(0, IntQueue::FdType::PIPE);
-  qt.fillQueue(true /* expect fail */);
 }
 
 /*
