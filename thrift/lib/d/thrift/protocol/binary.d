@@ -310,12 +310,6 @@ private:
       return null;
     }
 
-    auto borrowed = cast(ubyte[])trans_.borrow(null, size);
-    if (borrowed) {
-      trans_.consume(size);
-      return borrowed[0..size];
-    }
-
     auto buf = uninitializedArray!(ubyte[])(size);
     trans_.readAll(buf);
     return buf;
