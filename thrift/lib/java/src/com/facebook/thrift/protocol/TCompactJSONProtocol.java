@@ -24,7 +24,6 @@ import java.util.Map;
 
 import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.TTransport;
-import com.facebook.thrift.protocol.TType;
 import com.facebook.thrift.meta_data.FieldMetaData;
 
 /**

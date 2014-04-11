@@ -20,8 +20,6 @@
 
 package com.facebook.thrift.transport;
 
-import com.facebook.thrift.transport.TSocketIf;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;

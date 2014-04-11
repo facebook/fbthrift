@@ -1,4 +1,4 @@
-package com.facebook.thrift.direct_server.tests;
+package com.facebook.thrift.direct_server.tests; // NOPMD
 
 /**
  * Copyright 2011 Facebook

@@ -80,7 +80,7 @@ public class Tester {
 
     private String prepareValue() {
       if (!Tester.bigPayloadTest_) {
-        return new String();
+        return "";
       }
 
       char[] arr = new char[15*1024];

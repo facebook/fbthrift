@@ -19,7 +19,6 @@
 
 package com.facebook.thrift;
 
-import com.facebook.thrift.TProcessorEventHandler;
 import com.facebook.thrift.server.TConnectionContext;
 import java.util.ArrayList;
 

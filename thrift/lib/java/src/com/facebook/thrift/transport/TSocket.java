@@ -19,8 +19,6 @@
 
 package com.facebook.thrift.transport;
 
-import com.facebook.thrift.transport.TSocketIf;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;

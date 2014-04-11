@@ -336,7 +336,7 @@ public final class TBaseHelper {
     try {
       if (obj instanceof Map) {
         sb.append("{");
-        for (Map.Entry<?,?> entry : (((java.util.Map<?,?>)obj).entrySet())) {
+        for (Map.Entry<?,?> entry : (((Map<?,?>)obj).entrySet())) {
           Object key = (Object)entry.getKey();
           Object val = (Object)entry.getValue();
           sb.append(newLine + indentStr + toString(key, indent + 2, prettyPrint)
