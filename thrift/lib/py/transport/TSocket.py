@@ -46,12 +46,20 @@ class ConnectionEpoll:
         self.ERR_MASK = select.EPOLLERR | select.EPOLLHUP
 
     def read(self, fileno):
+        self.unregister(fileno)
         self.epoll.register(
             fileno, self.READ_MASK | self.ERR_MASK
         )
 
     def write(self, fileno):
+        self.unregister(fileno)
         self.epoll.register(fileno, self.WRITE_MASK)
+
+    def unregister(self, fileno):
+        try:
+            self.epoll.unregister(fileno)
+        except:
+            pass
 
     def process(self, timeout):
         msgs = self.epoll.poll(timeout=(float(timeout or -1)))
@@ -72,19 +80,31 @@ class ConnectionEpoll:
 
 class ConnectionSelect:
     def __init__(self):
-        self.readable = []
-        self.writable = []
+        self.readable = set()
+        self.writable = set()
 
     def read(self, fileno):
-        self.readable.append(fileno)
+        if fileno in self.writable:
+            self.writable.remove(fileno)
+        self.readable.add(fileno)
 
     def write(self, fileno):
-        self.writable.append(fileno)
+        if fileno in self.readable:
+            self.readable.remove(fileno)
+        self.writable.add(fileno)
+
+    def unregister(self, fileno):
+        if fileno in self.readable:
+            self.readble.remove(fileno)
+        elif fileno in self.writable:
+            self.writable.remove(fileno)
+
+    def registered(self, fileno):
+        return fileno in self.readable or fileno in self.writable
 
     def process(self, timeout):
-        return select.select(
-            self.readable, self.writable, self.readable, timeout
-        )
+        return select.select(list(self.readable), list(self.writable),
+                list(self.readable), timeout)
 
 
 class TSocketBase(TTransportBase):

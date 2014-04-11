@@ -112,28 +112,41 @@ class Connection:
             of answer).
         CLOSED --- socket was closed and connection should be deleted.
     """
-    def __init__(self, client_socket, wake_up, server_event_handler):
+    def __init__(self, client_socket, server):
         self.socket = client_socket.getHandle()
         self.socket.setblocking(False)
-        self._set_status(WAIT_LEN)
+        self.lock = threading.RLock()
+        self._server = server
+        self._timer = None
         self.len = 0
         self.message = b''
-        self.lock = threading.Lock()
-        self.wake_up = wake_up
-        self.server_event_handler = server_event_handler
         self.context = TServer.TRpcConnectionContext(client_socket)
-        self.server_event_handler.newConnection(self.context)
+        self._server.serverEventHandler.newConnection(self.context)
+        self._set_status(WAIT_LEN)
 
+    @locked
     def _set_status(self, status):
-        if status in (WAIT_LEN, WAIT_MESSAGE):
-            self.lastRead = time.time()
         self.status = status
+        if self.status in (WAIT_LEN, WAIT_MESSAGE):
+            self._server.poller.read(self.fileno())
+            if self._server._readTimeout is not None:
+                if self._timer is not None:
+                    self._timer.cancel()
+                self._timer = threading.Timer(self._server._readTimeout,
+                        self._cleanup)
+                self._timer.start()
+        elif self._timer is not None:
+            self._timer.cancel()
+
+        if self.status == SEND_ANSWER:
+            self._server.poller.write(self.fileno())
+
+        if self.status in (WAIT_PROCESS, CLOSED):
+            self._server.poller.unregister(self.fileno())
+
 
     def getContext(self):
         return self.context
-
-    def connectionDestroyed(self):
-        self.server_event_handler.connectionDestroyed(self.context)
 
     def success(self, reply):
         self.ready(True, reply)
@@ -170,6 +183,7 @@ class Connection:
     def read(self):
         """Reads data from stream and switch state."""
         assert self.status in (WAIT_LEN, WAIT_MESSAGE)
+
         if self.status == WAIT_LEN:
             self._read_len()
             # go back to the main loop here for simplicity instead of
@@ -215,9 +229,9 @@ class Connection:
         assert self.status == WAIT_PROCESS
         if not all_ok:
             self.close()
-            self.wake_up()
+            self._server.wake_up()
             return
-        self.len = b''
+        self.len = 0
         if len(message) == 0:
             # it was a oneway request, do not write answer
             self.message = b''
@@ -225,30 +239,7 @@ class Connection:
         else:
             self.message = message
             self._set_status(SEND_ANSWER)
-        self.wake_up()
-
-    @locked
-    def is_writeable(self):
-        "Returns True if connection should be added to write list of select."
-        return self.status == SEND_ANSWER
-
-    # it's not necessary, but...
-    @locked
-    def is_readable(self, timeoutReads=None):
-        """Returns True if connection should be added to read list of select.
-
-        Closes the connection if the read timeout has expired"""
-        if self.status in (WAIT_LEN, WAIT_MESSAGE):
-            if timeoutReads and timeoutReads > self.lastRead:
-                self.close()
-                return False
-            return True
-        return False
-
-    @locked
-    def is_closed(self):
-        "Returns True if connection is closed."
-        return self.status == CLOSED
+        self._server.wake_up()
 
     def fileno(self):
         "Returns the file descriptor of the associated socket."
@@ -256,9 +247,14 @@ class Connection:
 
     def close(self):
         "Closes connection"
-        self._set_status(CLOSED)
-        self.socket.close()
+        if self._timer is not None:
+            self._timer.cancel()
+        self._cleanup()
 
+    def _cleanup(self):
+        self._set_status(CLOSED)
+        self._server.connection_closed(self)
+        self.socket.close()
 
 class TNonblockingServer(TServer.TServer):
     """Non-blocking server."""
@@ -280,7 +276,8 @@ class TNonblockingServer(TServer.TServer):
         self._stop = False
         self.serverEventHandler = TServer.TServerEventHandler()
         self.select_timeout = DEFAULT_SELECT_TIMEOUT
-        self.use_epoll = hasattr(select, "epoll")
+        self.poller = TSocket.ConnectionEpoll() if hasattr(select, "epoll") \
+                else TSocket.ConnectionSelect()
         self.last_logged_error = 0
         timeouts = [x for x in [self.select_timeout, readTimeout] \
                         if x is not None]
@@ -313,6 +310,11 @@ class TNonblockingServer(TServer.TServer):
             thread = Worker(self.tasks)
             thread.setDaemon(True)
             thread.start()
+
+        for fileno in self.socket.handles:
+            self.poller.read(fileno)
+        self.poller.read(self._read.fileno())
+
         self.prepared = True
 
     def wake_up(self):
@@ -352,37 +354,8 @@ class TNonblockingServer(TServer.TServer):
 
     def _select(self):
         """Does epoll or select on open connections."""
-
-        # We may not have epoll on older systems.
-        if self.use_epoll:
-            poller = TSocket.ConnectionEpoll()
-        else:
-            poller = TSocket.ConnectionSelect()
-
-        for fileno in self.socket.handles:
-            poller.read(fileno)
-        poller.read(self._read.fileno())
-
-        readExpiration = None
-        # If the last read time was older than this, close the connection.
-        if self._readTimeout:
-            readExpiration = time.time() - self._readTimeout
-
-        if sys.version_info[0] >= 3:
-            item_list = list(self.clients.items())
-        else:
-            item_list = self.clients.items()
-        for i, connection in item_list:
-            if connection.is_readable(readExpiration):
-                poller.read(connection.fileno())
-            if connection.is_writeable():
-                poller.write(connection.fileno())
-            if connection.is_closed():
-                connection.connectionDestroyed()
-                del self.clients[i]
-
         try:
-            return poller.process(self.select_timeout)
+            return self.poller.process(self.select_timeout)
         except Exception as e:
             if not (isinstance(e, IOError) and e.errno == errno.EINTR):
                 self.log_poll_problem("problem polling: %s" % e)
@@ -401,8 +374,7 @@ class TNonblockingServer(TServer.TServer):
                 self._read.recv(1024)
             elif readable in self.socket.handles:
                 client_socket = self.socket.accept()
-                connection = Connection(client_socket, self.wake_up,
-                    self.serverEventHandler)
+                connection = Connection(client_socket, self)
                 self.clients[client_socket.fileno()] = connection
             else:
                 connection = self.clients[readable]
@@ -444,6 +416,11 @@ class TNonblockingServer(TServer.TServer):
             self.tasks.put([None, None, None, None, None])
         self.socket.close()
         self.prepared = False
+
+    def connection_closed(self, connection):
+        """Connection close callback"""
+        self.serverEventHandler.connectionDestroyed(connection.context)
+        del self.clients[connection.fileno()]
 
     def serve(self):
         """Serve requests.
