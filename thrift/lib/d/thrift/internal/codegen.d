@@ -19,7 +19,8 @@
 
 module thrift.internal.codegen;
 
-import std.traits : InterfacesTuple, isSomeFunction, isSomeString;
+import std.traits : InterfacesTuple, isAssociativeArray, isDynamicArray,
+       isSomeFunction, isSomeString;
 import std.typetuple : staticIndexOf, staticMap, NoDuplicates, TypeTuple;
 import thrift.codegen.base;
 
@@ -50,7 +51,13 @@ template FullyUnqual(T) {
  * true if null can be assigned to the passed type, false if not.
  */
 template isNullable(T) {
-  enum isNullable = __traits(compiles, { T t = null; });
+  static if (isDynamicArray!T || isAssociativeArray!T) {
+    // We can't distinguish empty arrays from null, so we must treat them as
+    // non-nullable.
+    enum isNullable = false;
+  } else {
+    enum isNullable = __traits(compiles, { T t = null; });
+  }
 }
 
 template isStruct(T) {
