@@ -72,7 +72,7 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::timedOut() const {
 template<typename WriteRequest_, typename ReadState_>
 transport::TTransportException::TTransportExceptionType
 TStreamAsyncChannel<WriteRequest_, ReadState_>::errorType() const {
-  DCHECK(error());
+  DCHECK(!good());
   return errorType_;
 }
 
