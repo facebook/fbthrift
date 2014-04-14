@@ -644,7 +644,13 @@ void TAsyncSSLSocket::sslConnect(HandshakeCallback* callback,
   }
 
   if (verifyPeer) {
-    SSL_set_verify(ssl_, SSL_VERIFY_PEER, TAsyncSSLSocket::sslVerifyCallback);
+    SSL_set_verify(ssl_,
+      SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
+      nullptr);
+
+    SSL_CTX_set_cert_verify_callback(ctx_->getSSLCtx(),
+      TAsyncSSLSocket::sslVerifyCallback,
+      nullptr);
   }
 
   SSL_set_fd(ssl_, fd_);
@@ -890,8 +896,9 @@ TAsyncSSLSocket::handleAccept() noexcept {
       if (requireClientCert_) {
         mode |= SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
       }
-      SSL_set_verify(
-          ssl_, mode, TAsyncSSLSocket::sslVerifyCallback);
+      SSL_set_verify(ssl_, mode, nullptr);
+      SSL_CTX_set_cert_verify_callback(
+          ctx_->getSSLCtx(), TAsyncSSLSocket::sslVerifyCallback, nullptr);
     }
   }
 
@@ -1328,17 +1335,20 @@ int TAsyncSSLSocket::eorAwareBioWrite(BIO *b, const char *in, int inl) {
   return(ret);
 }
 
-int TAsyncSSLSocket::sslVerifyCallback(int preverifyOk,
-                                       X509_STORE_CTX* x509Ctx) {
+int TAsyncSSLSocket::sslVerifyCallback(X509_STORE_CTX* x509Ctx, void* nullarg) {
   SSL* ssl = (SSL*) X509_STORE_CTX_get_ex_data(
     x509Ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
   TAsyncSSLSocket* self = TAsyncSSLSocket::getFromSSL(ssl);
 
   T_DEBUG_L(3, "TAsyncSSLSocket::sslVerifyCallback() this=%p, "
-            "fd=%d, preverifyOk=%d", self, self->fd_, preverifyOk);
-  return (self->handshakeCallback_) ?
-    self->handshakeCallback_->handshakeVerify(self, preverifyOk, x509Ctx) :
-    preverifyOk;
+            "fd=%d", self, self->fd_);
+
+  if (!self->handshakeCallback_) {
+    LOG(DFATAL) << "handshakeCallback_ should not be null";
+    return false;
+  }
+
+  return self->handshakeCallback_->handshakeVerify(self, x509Ctx);
 }
 
 }}} // apache::thrift::async

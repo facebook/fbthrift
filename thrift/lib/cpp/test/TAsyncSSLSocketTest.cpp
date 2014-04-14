@@ -687,10 +687,10 @@ TEST(TAsyncSSLSocketTest, SSLHandshakeValidationSuccess) {
   TAsyncSSLSocket::UniquePtr serverSock(
     new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), true, true, true);
+  SSLHandshakeClient client(std::move(clientSock), true, true);
   clientCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
 
-  SSLHandshakeServer server(std::move(serverSock), true, false, true, true);
+  SSLHandshakeServer server(std::move(serverSock), true, false, true);
 
   eventBase.loop();
 
@@ -720,15 +720,15 @@ TEST(TAsyncSSLSocketTest, SSLHandshakeValidationFailure) {
   TAsyncSSLSocket::UniquePtr serverSock(
     new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), true, true, false);
+  SSLHandshakeClient client(std::move(clientSock), true, false);
   clientCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
 
-  SSLHandshakeServer server(std::move(serverSock), true, false, true, true);
+  SSLHandshakeServer server(std::move(serverSock), true, false, true);
 
   eventBase.loop();
 
   EXPECT_TRUE(client.handshakeVerify_);
-  EXPECT_TRUE(!client.handshakeSuccess_);
+  EXPECT_FALSE(client.handshakeSuccess_);
   EXPECT_TRUE(client.handshakeError_);
   EXPECT_TRUE(!server.handshakeVerify_);
   EXPECT_TRUE(!server.handshakeSuccess_);
@@ -753,8 +753,8 @@ TEST(TAsyncSSLSocketTest, SSLHandshakeValidationOverride) {
   TAsyncSSLSocket::UniquePtr serverSock(
     new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), true, false, true);
-  SSLHandshakeServer server(std::move(serverSock), true, false, true, true);
+  SSLHandshakeClient client(std::move(clientSock), true, true);
+  SSLHandshakeServer server(std::move(serverSock), true, false, true);
 
   eventBase.loop();
 
@@ -785,8 +785,8 @@ TEST(TAsyncSSLSocketTest, SSLHandshakeValidationSkip) {
   TAsyncSSLSocket::UniquePtr serverSock(
     new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), false, false, false);
-  SSLHandshakeServer server(std::move(serverSock), false, false, false, false);
+  SSLHandshakeClient client(std::move(clientSock), false, false);
+  SSLHandshakeServer server(std::move(serverSock), false, false, false);
 
   eventBase.loop();
 
@@ -824,8 +824,8 @@ TEST(TAsyncSSLSocketTest, ClientCertHandshakeSuccess) {
   TAsyncSSLSocket::UniquePtr serverSock(
       new TAsyncSSLSocket(serverCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), true, true, true);
-  SSLHandshakeServer server(std::move(serverSock), true, true, true, true);
+  SSLHandshakeClient client(std::move(clientSock), true, true);
+  SSLHandshakeServer server(std::move(serverSock), true, true, true);
 
   eventBase.loop();
 
@@ -860,8 +860,8 @@ TEST(TAsyncSSLSocketTest, NoClientCertHandshakeError) {
   TAsyncSSLSocket::UniquePtr serverSock(
       new TAsyncSSLSocket(serverCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), false, false, false);
-  SSLHandshakeServer server(std::move(serverSock), true, true, false, false);
+  SSLHandshakeClient client(std::move(clientSock), false, false);
+  SSLHandshakeServer server(std::move(serverSock), true, true, false);
 
   eventBase.loop();
 

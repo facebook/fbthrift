@@ -1143,13 +1143,11 @@ class SSLHandshakeBase :
  public:
   explicit SSLHandshakeBase(
    apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
-   bool preverifyResult,
    bool verifyResult) :
     handshakeVerify_(false),
     handshakeSuccess_(false),
     handshakeError_(false),
     socket_(std::move(socket)),
-    preverifyResult_(preverifyResult),
     verifyResult_(verifyResult) {
   }
 
@@ -1159,17 +1157,13 @@ class SSLHandshakeBase :
 
  protected:
   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket_;
-  bool preverifyResult_;
   bool verifyResult_;
 
   // HandshakeCallback
   bool handshakeVerify(
    apache::thrift::async::TAsyncSSLSocket* sock,
-   bool preverifyOk,
    X509_STORE_CTX* ctx) noexcept {
     handshakeVerify_ = true;
-
-    EXPECT_EQ(preverifyResult_, preverifyOk);
     return verifyResult_;
   }
 
@@ -1202,9 +1196,8 @@ class SSLHandshakeClient : public SSLHandshakeBase {
   SSLHandshakeClient(
    apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
    bool verifyCertificate,
-   bool preverifyResult,
    bool verifyResult) :
-    SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
+    SSLHandshakeBase(std::move(socket), verifyResult) {
     socket_->sslConnect(this, 0, verifyCertificate);
   }
 };
@@ -1215,9 +1208,8 @@ class SSLHandshakeServer : public SSLHandshakeBase {
       apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
       bool verifyCertificate,
       bool requireClientCert,
-      bool preverifyResult,
       bool verifyResult)
-    : SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
+    : SSLHandshakeBase(std::move(socket), verifyResult) {
     socket_->sslAccept(this, 0, verifyCertificate, requireClientCert);
   }
 };
