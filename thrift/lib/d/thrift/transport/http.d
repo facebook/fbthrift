@@ -158,7 +158,7 @@ private:
         if (httpBufRemaining_.empty) {
           httpBufRemaining_ = httpBuf_[0 .. 0];
         } else {
-          httpBuf_[0 .. httpBufRemaining_.length] = httpBufRemaining_;
+          httpBuf_[0 .. httpBufRemaining_.length] = httpBufRemaining_[];
           httpBufRemaining_ = httpBuf_[0 .. httpBufRemaining_.length];
         }
 

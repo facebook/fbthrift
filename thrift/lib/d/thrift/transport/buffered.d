@@ -133,7 +133,7 @@ final class TBufferedTransport : TBaseTransport {
   override void write(in ubyte[] buf) {
     if (writeAvail_.length >= buf.length) {
       // If the data fits in the buffer, just save it there.
-      writeAvail_[0 .. buf.length] = buf;
+      writeAvail_[0 .. buf.length] = buf[];
       writeAvail_ = writeAvail_[buf.length .. $];
       return;
     }
