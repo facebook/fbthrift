@@ -233,6 +233,12 @@ class THeader {
     return readHeaders_;
   }
 
+  StringToStringMap releaseHeaders() {
+    StringToStringMap headers;
+    readHeaders_.swap(headers);
+    return headers;
+  }
+
   std::string getPeerIdentity();
   void setIdentity(const std::string& identity);
 
