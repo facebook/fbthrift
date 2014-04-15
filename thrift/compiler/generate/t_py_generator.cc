@@ -70,6 +70,10 @@ class t_py_generator : public t_generator {
       throw "Twisted isn't supported in Python 3 yet";
     }
 
+    if (gen_python3_ && gen_newstyle_) {
+      throw "Python 3 supports new style class by default";
+    }
+
     iter = parsed_options.find("utf8strings");
     gen_utf8strings_ = (iter != parsed_options.end());
 
