@@ -38,7 +38,6 @@ HeaderClientChannel::HeaderClientChannel(
   const std::shared_ptr<TAsyncTransport>& transport)
     : Cpp2Channel(transport)
     , sendSeqId_(0)
-    , saslClient_(new GssSaslClient(transport->getEventBase()))
     , closeCallback_(nullptr)
     , timeout_(0)
     , timeoutSASL_(500)
@@ -62,7 +61,9 @@ void HeaderClientChannel::setSaslTimeout(uint32_t ms) {
 
 void HeaderClientChannel::destroy() {
   saslClientCallback_.cancelTimeout();
-  saslClient_->markChannelCallbackUnavailable();
+  if (saslClient_) {
+    saslClient_->markChannelCallbackUnavailable();
+  }
   Cpp2Channel::destroy();
 }
 
@@ -74,7 +75,9 @@ void HeaderClientChannel::attachEventBase(
 
 void HeaderClientChannel::detachEventBase() {
   saslClientCallback_.cancelTimeout();
-  saslClient_->markChannelCallbackUnavailable();
+  if (saslClient_) {
+    saslClient_->markChannelCallbackUnavailable();
+  }
 
   Cpp2Channel::detachEventBase();
   timer_->detachEventBase();
@@ -91,6 +94,10 @@ void HeaderClientChannel::startSecurity() {
   if (header_->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
     protectionState_ = ProtectionState::NONE;
     return;
+  }
+
+  if (!saslClient_) {
+    throw TTransportException("Security requested, but SASL client not set");
   }
 
   // Let's get this party started.

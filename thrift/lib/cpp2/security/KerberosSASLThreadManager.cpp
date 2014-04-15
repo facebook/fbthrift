@@ -27,11 +27,6 @@ using namespace apache::thrift;
 using namespace folly;
 using namespace apache::thrift::concurrency;
 
-std::shared_ptr<ThreadManager> SaslThreadManager::getThreadManager() {
-  static SaslThreadManager manager;
-  return manager.threadManager_;
-}
-
 SaslThreadManager::SaslThreadManager() {
   threadManager_ = concurrency::ThreadManager::newSimpleThreadManager(
     256, /* count */

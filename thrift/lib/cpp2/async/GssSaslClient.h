@@ -19,10 +19,10 @@
 
 #include "thrift/lib/cpp/async/TEventBase.h"
 #include "thrift/lib/cpp2/async/SaslClient.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
 #include "thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
+#include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
 #include "thrift/lib/cpp/concurrency/Mutex.h"
+#include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
 #include "folly/Memory.h"
 
 namespace apache { namespace thrift {
@@ -65,11 +65,23 @@ public:
     errorString_ = folly::make_unique<std::string>(err);
   }
 
+  virtual void setSaslThreadManager(
+      const std::shared_ptr<SaslThreadManager>& thread_manager) {
+    saslThreadManager_ = thread_manager;
+    clientHandshake_->setSaslThreadManager(thread_manager);
+  }
+
+  virtual void setCredentialsCacheManager(
+      const std::shared_ptr<krb5::Krb5CredentialsCacheManager>& cc_manager) {
+    clientHandshake_->setCredentialsCacheManager(cc_manager);
+  }
+
 private:
   apache::thrift::async::TEventBase* evb_;
   std::shared_ptr<KerberosSASLHandshakeClient> clientHandshake_;
   std::unique_ptr<std::string> errorString_;
   std::shared_ptr<apache::thrift::concurrency::Mutex> mutex_;
+  std::shared_ptr<SaslThreadManager> saslThreadManager_;
 };
 
 }} // apache::thrift

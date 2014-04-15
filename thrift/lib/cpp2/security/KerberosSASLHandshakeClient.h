@@ -27,6 +27,7 @@
 
 #include "folly/io/IOBuf.h"
 #include "thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h"
+#include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h"
@@ -89,15 +90,20 @@ class KerberosSASLHandshakeClient {
     std::unique_ptr<folly::IOBuf> unwrapMessage(
       std::unique_ptr<folly::IOBuf>&& buf);
 
-    static krb5::Krb5CredentialsCacheManager& getCredentialsCacheManager() {
-      static krb5::Krb5CredentialsCacheManager manager;
-      return manager;
-    }
-
     static void cleanUpState(
       gss_ctx_id_t context,
       gss_name_t target_name,
       gss_cred_id_t client_creds);
+
+    virtual void setSaslThreadManager(
+        const std::shared_ptr<SaslThreadManager>& thread_manager) {
+      saslThreadManager_ = thread_manager;
+    }
+
+    virtual void setCredentialsCacheManager(
+        const std::shared_ptr<krb5::Krb5CredentialsCacheManager>& cc_manager) {
+      credentialsCacheManager_ = cc_manager;
+    }
 
   private:
     uint32_t securityLayerBitmask_;
@@ -136,6 +142,9 @@ class KerberosSASLHandshakeClient {
       krb5_error_code code);
 
     std::shared_ptr<krb5::Krb5CCache> cc_;
+    std::shared_ptr<SaslThreadManager> saslThreadManager_;
+    std::shared_ptr<krb5::Krb5CredentialsCacheManager>
+      credentialsCacheManager_;
 };
 
 }}  // apache::thrift

@@ -59,18 +59,23 @@ static const char MECH[] = "krb5";
 GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb)
     : evb_(evb)
     , clientHandshake_(new KerberosSASLHandshakeClient)
-    , mutex_(new Mutex) {
+    , mutex_(new Mutex)
+    , saslThreadManager_(nullptr) {
 }
 
 void GssSaslClient::start(Callback *cb) {
 
   auto channelCallbackUnavailable = channelCallbackUnavailable_;
   auto clientHandshake = clientHandshake_;
-  auto threadManager = SaslThreadManager::getThreadManager();
   auto mutex = mutex_;
 
   try {
-    threadManager->add(std::make_shared<FunctionRunner>([=] {
+    if (!saslThreadManager_) {
+      throw TApplicationException(
+        "saslThreadManager is not set in GssSaslClient");
+    }
+
+    saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
       MoveWrapper<unique_ptr<IOBuf>> iobuf;
       std::exception_ptr ex;
 
@@ -130,11 +135,10 @@ void GssSaslClient::consumeFromServer(
 
   auto channelCallbackUnavailable = channelCallbackUnavailable_;
   auto clientHandshake = clientHandshake_;
-  auto threadManager = SaslThreadManager::getThreadManager();
   auto mutex = mutex_;
 
   try {
-    threadManager->add(std::make_shared<FunctionRunner>([=] {
+    saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
       std::string req_data;
       MoveWrapper<unique_ptr<IOBuf>> iobuf;
       std::exception_ptr ex;

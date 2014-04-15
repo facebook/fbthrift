@@ -28,7 +28,6 @@
 #include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
 #include "thrift/lib/cpp/concurrency/Exception.h"
 #include "thrift/lib/cpp/concurrency/FunctionRunner.h"
-#include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
 
 extern "C" {
   #include <sys/types.h>
@@ -87,17 +86,20 @@ KerberosSASLHandshakeClient::~KerberosSASLHandshakeClient() {
       client_creds == GSS_C_NO_CREDENTIAL) {
     return;
   }
+  if (!saslThreadManager_) {
+    cleanUpState(context, target_name, client_creds);
+    return;
+  }
+
   try {
-    auto threadManager = SaslThreadManager::getThreadManager();
-    threadManager->add(std::make_shared<FunctionRunner>([=] {
-      KerberosSASLHandshakeClient::cleanUpState(
+    saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
+      cleanUpState(
         context, target_name, client_creds);
     }));
   } catch (const TooManyPendingTasksException& e) {
     // If we can't do this async, do it inline, since we don't want to leak
     // memory.
-    KerberosSASLHandshakeClient::cleanUpState(
-      context, target_name, client_creds);
+    cleanUpState(context, target_name, client_creds);
   }
 }
 
@@ -237,14 +239,18 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
   }
 
   // Attempt to acquire client credentials.
+  if (!credentialsCacheManager_) {
+    throw TKerberosException("Credentials cache manager not provided");
+  }
+
   try {
-    cc_ = getCredentialsCacheManager().waitForCache();
+    cc_ = credentialsCacheManager_->waitForCache();
   } catch (const std::runtime_error& e) {
     throw TKerberosException(
       string("Kerberos ccache init error: ") + e.what());
   }
 
-  getCredentialsCacheManager().incUsedService(princ_name);
+  credentialsCacheManager_->incUsedService(princ_name);
 
   maj_stat = gss_krb5_import_cred(
     &min_stat,

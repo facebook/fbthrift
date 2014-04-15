@@ -18,18 +18,19 @@
 #define KERBEROS_SASL_THREAD_MANAGER_H
 
 #include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
 
 namespace apache { namespace thrift {
 
 class SaslThreadManager {
  public:
-  static std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-      getThreadManager();
+  std::shared_ptr<apache::thrift::concurrency::ThreadManager> get() {
+    return threadManager_;
+  }
 
- private:
   SaslThreadManager();
   ~SaslThreadManager();
+
+ private:
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
 };
 
