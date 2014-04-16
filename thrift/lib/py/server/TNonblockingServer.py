@@ -407,8 +407,9 @@ class TNonblockingServer(TServer.TServer):
         for writeable in wset:
             self.clients[writeable].write()
         for oob in xset:
-            connection = self.clients[oob]
-            connection.close()
+            if oob in self.clients:
+                connection = self.clients[oob]
+                connection.close()
 
     def close(self):
         """Closes the server."""
