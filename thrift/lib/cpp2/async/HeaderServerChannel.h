@@ -66,6 +66,11 @@ class HeaderServerChannel : public ResponseChannel,
     return transport_.get();
   }
 
+  void setTransport(
+    std::shared_ptr<apache::thrift::async::TAsyncTransport> transport) {
+    transport_ = transport;
+  }
+
   // Server interface from ResponseChannel
   void setCallback(ResponseChannel::Callback* callback) {
     callback_ = callback;

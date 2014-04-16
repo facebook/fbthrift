@@ -38,8 +38,14 @@
 #include "thrift/lib/cpp2/Thrift.h"
 #include "thrift/lib/cpp2/async/AsyncProcessor.h"
 #include "thrift/lib/cpp2/async/SaslServer.h"
+#include "thrift/lib/cpp2/async/HeaderServerChannel.h"
 
 namespace apache { namespace thrift {
+
+typedef std::function<void(
+  apache::thrift::async::TEventBase*,
+  std::shared_ptr<apache::thrift::async::TAsyncTransport>,
+  std::unique_ptr<folly::IOBuf>)> getHandlerFunc;
 
 // Forward declaration of classes
 class Cpp2Connection;
@@ -276,6 +282,8 @@ class ThriftServer : public apache::thrift::server::TServer {
   InjectedFailure maybeInjectFailure() const {
     return failureInjection_.test();
   }
+
+  getHandlerFunc getHandler_;
 
  public:
   ThriftServer();
@@ -880,6 +888,14 @@ class ThriftServer : public apache::thrift::server::TServer {
    * Set failure injection parameters.
    */
   void setFailureInjection(FailureInjection fi) { failureInjection_.set(fi); }
+
+  void setGetHandler(getHandlerFunc func) {
+    getHandler_ = func;
+  }
+
+  getHandlerFunc getGetHandler() {
+    return getHandler_;
+  }
 };
 
 }} // apache::thrift

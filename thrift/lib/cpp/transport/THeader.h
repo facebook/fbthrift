@@ -46,7 +46,8 @@ enum CLIENT_TYPE {
   THRIFT_HTTP_CLIENT_TYPE = 4,
   THRIFT_FRAMED_COMPACT = 5,
   THRIFT_HEADER_SASL_CLIENT_TYPE = 6,
-  THRIFT_UNKNOWN_CLIENT_TYPE = 7,
+  THRIFT_HTTP_GET_CLIENT_TYPE = 7,
+  THRIFT_UNKNOWN_CLIENT_TYPE = 8,
 };
 
 // These appear on the wire.
@@ -342,6 +343,8 @@ class THeader {
   static const uint16_t STREAM_FLAG_MASK = 0x0006;
   static const uint32_t HTTP_SERVER_MAGIC = 0x504F5354; // POST
   static const uint32_t HTTP_CLIENT_MAGIC = 0x48545450; // HTTP
+  static const uint32_t HTTP_GET_CLIENT_MAGIC = 0x47455420; // GET
+  static const uint32_t HTTP_HEAD_CLIENT_MAGIC = 0x48454144; // HEAD
 
   static const uint32_t MAX_FRAME_SIZE = 0x3FFFFFFF;
 

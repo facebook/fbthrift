@@ -47,6 +47,7 @@ Cpp2Connection::Cpp2Connection(
                channel_->getSaslServer(),
                worker->getServer()->getEventBaseManager())
     , socket_(asyncSocket) {
+
   channel_->setQueueSends(worker->getServer()->getQueueSends());
   channel_->getHeader()->setMinCompressBytes(
     worker_->getServer()->getMinCompressBytes());
@@ -210,6 +211,22 @@ void Cpp2Connection::requestReceived(
     return;
   case ThriftServer::InjectedFailure::DISCONNECT:
     disconnect("injected failure");
+    return;
+  }
+
+  if (channel_->getHeader()->getClientType() == THRIFT_HTTP_GET_CLIENT_TYPE) {
+    if (worker_->getServer()->getGetHandler()) {
+      worker_->getServer()->getGetHandler()(worker_->getEventBase(),
+                                            socket_,
+                                            std::move(req->extractBuf()));
+    } else {
+      LOG(ERROR) << "Received HTTP GET and no handler installed - " <<
+        "are you using Service Framework?";
+    }
+    // Close the channel, since the handler now owns the socket.
+    channel_->setCallback(nullptr);
+    channel_->setTransport(nullptr);
+    worker_->closeConnection(shared_from_this());
     return;
   }
 

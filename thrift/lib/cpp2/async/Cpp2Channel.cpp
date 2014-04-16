@@ -57,10 +57,12 @@ void Cpp2Channel::closeNow() {
   // closeNow can invoke callbacks
   DestructorGuard dg(this);
   closing_ = true;
-  transport_->setReadCallback(nullptr);
-  transport_->closeNow();
+  if (transport_) {
+    transport_->setReadCallback(nullptr);
+    transport_->closeNow();
 
-  processReadEOF(); // Call failure callbacks
+    processReadEOF(); // Call failure callbacks
+  }
 }
 
 void Cpp2Channel::destroy() {
