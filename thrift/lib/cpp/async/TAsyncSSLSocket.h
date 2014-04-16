@@ -80,16 +80,20 @@ class TAsyncSSLSocket : public TAsyncSocket {
      * handshakeVerify() is invoked during handshaking to give the
      * application chance to validate it's peer's certificate.
      *
-     * An app overriding this should take responsibility of the entire
-     * cert verification flow. Note that this isn't for the faint of
-     * heart.
+     * Note that OpenSSL performs only rudimentary internal
+     * consistency verification checks by itself. Any other validation
+     * like whether or not the certificate was issued by a trusted CA.
+     * The default implementation of this callback mimics what what
+     * OpenSSL does internally if SSL_VERIFY_PEER is set with no
+     * verification callback.
      *
-     * See the passages on verify_callback in
-     * SSL_CTX_set_cert_verify_callback(3) for more details.
+     * See the passages on verify_callback in SSL_CTX_set_verify(3)
+     * for more details.
      */
     virtual bool handshakeVerify(TAsyncSSLSocket* sock,
+                                 bool preverifyOk,
                                  X509_STORE_CTX* ctx) noexcept {
-      return false;
+      return preverifyOk;
     }
 
     /**
@@ -604,8 +608,8 @@ class TAsyncSSLSocket : public TAsyncSocket {
   bool verifyPeer_{false};
   bool requireClientCert_{false};
 
-  // Callback for SSL_CTX_set_cert_verify_callback()
-  static int sslVerifyCallback(X509_STORE_CTX* ctx, void* arg);
+  // Callback for SSL_CTX_set_verify()
+  static int sslVerifyCallback(int preverifyOk, X509_STORE_CTX* ctx);
 };
 
 }}} // apache::thrift::async
