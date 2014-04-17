@@ -953,7 +953,8 @@ class CppGenerator(t_generator.Generator):
                                                                     function),
                     name="future_" + function.name):
             rettype = self._type_name(function.returntype)
-            if self._is_complex_type(function.returntype):
+            if self._is_complex_type(function.returntype) and \
+              not self.flag_stack_arguments:
                 rettype = "std::unique_ptr<{0}>".format(
                     self._type_name(function.returntype))
             promise_name = self.tmp("promise")
@@ -991,7 +992,8 @@ class CppGenerator(t_generator.Generator):
                     future_name = self.tmp('future')
                     rettype = "folly::wangle::Try<{0}>".format(
                         self._type_name(function.returntype))
-                    if self._is_complex_type(function.returntype):
+                    if self._is_complex_type(function.returntype) and \
+                      not self.flag_stack_arguments:
                         rettype = "folly::wangle::Try<std::unique_ptr" \
                           "<{0}>>".format(self._type_name(function.returntype))
                     with out("try"):
