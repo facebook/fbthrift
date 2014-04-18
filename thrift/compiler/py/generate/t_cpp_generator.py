@@ -235,7 +235,8 @@ class CppGenerator(t_generator.Generator):
                     return False
             return True
         elif ttype.is_map and not ttype.as_map.is_unordered:
-            return self._is_orderable_type(ttype.as_map.key_type)
+            return self._is_orderable_type(ttype.as_map.key_type) \
+                    and self._is_orderable_type(ttype.as_map.value_type)
         elif ttype.is_set:
             return self._is_orderable_type(ttype.as_set.elem_type)
         elif ttype.is_list:
