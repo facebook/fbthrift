@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #ifndef THRIFT_ASYNC_TASYNCTRANSPORT_H_
 #define THRIFT_ASYNC_TASYNCTRANSPORT_H_ 1
 
@@ -269,9 +267,11 @@ class TAsyncTransport: public TDelayedDestruction {
    *                    until the callback is invoked.  This parameter may not
    *                    be nullptr.
    * @param bytes       The number of bytes to write.
+   * @param flags       Set of write flags.
    */
   virtual void write(WriteCallback* callback,
-                     const void* buf, size_t bytes) = 0;
+                     const void* buf, size_t bytes,
+                     WriteFlags flags = WriteFlags::NONE) = 0;
 
   /**
    * Write non-contiguous data to the transport.
@@ -290,9 +290,11 @@ class TAsyncTransport: public TDelayedDestruction {
    *                    until the callback is invoked.  This parameter may not
    *                    be nullptr.
    * @param count       The number of iovec objects in the vec array.
+   * @param flags       Set of write flags.
    */
   virtual void writev(WriteCallback* callback,
-                      const iovec* vec, size_t count) = 0;
+                      const iovec* vec, size_t count,
+                      WriteFlags flags = WriteFlags::NONE) = 0;
 
   /**
    * Write a chain of IOBufs to the transport.

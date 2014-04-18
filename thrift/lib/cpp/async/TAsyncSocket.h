@@ -21,7 +21,6 @@
 #include <sys/socket.h>
 #include <glog/logging.h>
 #include "thrift/lib/cpp/ShutdownSocketSet.h"
-#include "glog/logging.h"
 #include "thrift/lib/cpp/transport/TSocketAddress.h"
 #include "thrift/lib/cpp/async/TAsyncTimeout.h"
 #include "thrift/lib/cpp/async/TAsyncTransport.h"
@@ -188,7 +187,7 @@ class TAsyncSocket : public TAsyncTransport {
   /**
    * Get the TEventBase used by this socket.
    */
-  virtual TEventBase* getEventBase() const {
+  TEventBase* getEventBase() const override {
     return eventBase_;
   }
 
@@ -272,7 +271,7 @@ class TAsyncSocket : public TAsyncTransport {
    * @param milliseconds  The timeout duration, in milliseconds.  If 0, no
    *                      timeout will be used.
    */
-  void setSendTimeout(uint32_t milliseconds);
+  void setSendTimeout(uint32_t milliseconds) override;
 
   /**
    * Get the send timeout.
@@ -280,7 +279,7 @@ class TAsyncSocket : public TAsyncTransport {
    * @return Returns the current send timeout, in milliseconds.  A return value
    *         of 0 indicates that no timeout is set.
    */
-  uint32_t getSendTimeout() const {
+  uint32_t getSendTimeout() const override {
     return sendTimeout_;
   }
 
@@ -312,47 +311,58 @@ class TAsyncSocket : public TAsyncTransport {
 
   // Methods inherited from TAsyncTransport
   // See the documentation in TAsyncTransport.h
-  virtual void setReadCallback(ReadCallback* callback);
-  virtual ReadCallback* getReadCallback() const;
+  void setReadCallback(ReadCallback* callback) override;
+  ReadCallback* getReadCallback() const override;
 
-  virtual void write(WriteCallback* callback, const void* buf, size_t bytes);
-  virtual void writev(WriteCallback* callback, const iovec* vec, size_t count);
-  virtual void writeChain(WriteCallback* callback,
-                          std::unique_ptr<folly::IOBuf>&& buf,
-                          WriteFlags flags = WriteFlags::NONE);
-  virtual void write(WriteCallback* callback, const void* buf, size_t bytes,
-                     WriteFlags flags);
-  virtual void writev(WriteCallback* callback, const iovec* vec, size_t count,
-                      WriteFlags flags);
+  void write(WriteCallback* callback, const void* buf, size_t bytes,
+             WriteFlags flags = WriteFlags::NONE) override;
+  void writev(WriteCallback* callback, const iovec* vec, size_t count,
+              WriteFlags flags = WriteFlags::NONE) override;
+  void writeChain(WriteCallback* callback,
+                  std::unique_ptr<folly::IOBuf>&& buf,
+                  WriteFlags flags = WriteFlags::NONE) override;
 
-  virtual void close();
-  virtual void closeNow();
-  virtual void closeWithReset();
-  virtual void shutdownWrite();
-  virtual void shutdownWriteNow();
+  void close() override;
+  void closeNow() override;
+  void closeWithReset() override;
+  void shutdownWrite() override;
+  void shutdownWriteNow() override;
 
-  virtual bool readable() const;
+  bool readable() const override;
   virtual bool isPending();
   virtual bool hangup() const;
-  virtual bool good() const;
-  virtual bool error() const;
-  virtual void attachEventBase(TEventBase* eventBase);
-  virtual void detachEventBase();
-  virtual bool isDetachable() const;
+  bool good() const override;
+  bool error() const override;
+  void attachEventBase(TEventBase* eventBase) override;
+  void detachEventBase() override;
+  bool isDetachable() const override;
 
-  virtual void getLocalAddress(transport::TSocketAddress* address) const;
-  virtual void getPeerAddress(transport::TSocketAddress* address) const;
+  void getLocalAddress(
+    transport::TSocketAddress* address) const override;
+  void getPeerAddress(
+    transport::TSocketAddress* address) const override;
 
-  virtual void setEorTracking(bool track) {};
+  void setEorTracking(bool track) override {}
 
-  virtual bool connecting() const {
+  bool connecting() const override {
     return (state_ == StateEnum::CONNECTING);
   }
 
-  virtual size_t getAppBytesWritten() const { return appBytesWritten_; }
-  virtual size_t getRawBytesWritten() const { return getAppBytesWritten(); }
-  virtual size_t getAppBytesReceived() const { return appBytesReceived_; }
-  virtual size_t getRawBytesReceived() const { return getAppBytesReceived(); }
+  size_t getAppBytesWritten() const override {
+    return appBytesWritten_;
+  }
+
+  size_t getRawBytesWritten() const override {
+    return getAppBytesWritten();
+  }
+
+  size_t getAppBytesReceived() const override {
+    return appBytesReceived_;
+  }
+
+  size_t getRawBytesReceived() const override {
+    return getAppBytesReceived();
+  }
 
   // Methods controlling socket options
 
