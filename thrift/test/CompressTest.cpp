@@ -77,43 +77,6 @@ void testMessage(uint8_t flag,
 
 }
 
-void testChainedCompression(uint8_t flag, int iters) {
-  THeader header;
-  if (flag) {
-    header.setTransform(flag);
-  }
-
-  auto head = folly::IOBuf::create(0);
-
-  for (int i = 0; i < iters; i++) {
-    auto buf = folly::IOBuf::create(1);
-    buf->append(1);
-    *(buf->writableData()) = 66 + rand() % 24;
-    head->prependChain(std::move(buf));
-  }
-
-  auto cloned = head->clone();
-
-  auto compressed = header.addHeader(std::move(head));
-  EXPECT_NE(compressed, nullptr);
-  printf("%i\n", (int)compressed->length());
-
-  size_t needed = 0;
-  folly::IOBufQueue q;
-  q.append(std::move(compressed));
-
-  auto uncompressed = header.removeHeader(&q, needed);
-  EXPECT_NE(uncompressed, nullptr);
-  EXPECT_EQ(needed, 0);
-  EXPECT_TRUE(q.empty());
-
-  cloned->coalesce();
-  uncompressed->coalesce();
-  printf("%i, %i\n", (int)cloned->length(), (int)uncompressed->length());
-  EXPECT_EQ(cloned->length(), uncompressed->length());
-  EXPECT_EQ(0, memcmp(cloned->data(), uncompressed->data(), cloned->length()));
-}
-
 void BM_UncompressedBinary(int iters) {
   testMessage(0, iters, true, true);
 }
@@ -175,19 +138,6 @@ void BM_QlzHard(int iters) {
 }
 
 BM_REGISTER(BM_QlzHard);
-
-
-TEST(chained, none) {
-  testChainedCompression(0, 1000);
-}
-
-TEST(chained, zlib) {
-  testChainedCompression(1, 1000);
-}
-
-TEST(chained, snappy) {
-  testChainedCompression(3, 1000);
-}
 
 TEST(sdf, sdfsd) {
   Bonk b;
