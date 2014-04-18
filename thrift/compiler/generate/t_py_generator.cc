@@ -1724,6 +1724,7 @@ void t_py_generator::generate_service(t_service* tservice) {
   f_service_ <<
     py2or3("from ttypes import *", "from .ttypes import *") << endl <<
     "from thrift.Thrift import TProcessor" << endl <<
+    "from thrift.util.Decorators import *" << endl <<
     render_fastbinary_includes() << endl;
 
   if (gen_twisted_) {
@@ -2542,27 +2543,18 @@ void t_py_generator::generate_service_server(t_service* tservice,
 void t_py_generator::generate_process_function(t_service* tservice,
                                                t_function* tfunction,
                                                bool with_context) {
-  // Open function
-  indent(f_service_) <<
-    "def process_" << tfunction->get_name() <<
-    "(self, seqid, iprot, oprot, server_ctx):" << endl;
-  indent_up();
-
-  string argsname = tfunction->get_name() + "_args";
-  string resultname = tfunction->get_name() + "_result";
   string fn_name = tfunction->get_name();
 
-  f_service_ <<
-    indent() << "handler_ctx = self._event_handler.getHandlerContext('"
-             << fn_name << "', server_ctx)" << endl <<
-    indent() << "args = " << argsname << "()" << endl <<
-    indent() << "reply_type = TMessageType.REPLY" << endl <<
-    indent() << "self._event_handler.preRead(handler_ctx, '"
-             << fn_name << "', args)" << endl <<
-    indent() << "args.read(iprot)" << endl <<
-    indent() << "iprot.readMessageEnd()" << endl <<
-    indent() << "self._event_handler.postRead(handler_ctx, '"
-             << fn_name << "', args)" << endl;
+  // Open function
+  indent(f_service_)
+    << "@process_method(oneway="
+    << (tfunction->is_oneway() ? "True" : "False")
+    << (gen_twisted_ ? ", twisted=True)" : ")") << endl;
+
+  f_service_
+    << indent() << "def process_" << fn_name << "(self, args, handler_ctx"
+    << (gen_twisted_ ? ", seqid, oprot):" : "):") << endl;
+  indent_up();
 
   t_struct* xs = tfunction->get_xceptions();
   const std::vector<t_field*>& xceptions = xs->get_members();
@@ -2571,7 +2563,7 @@ void t_py_generator::generate_process_function(t_service* tservice,
   // Declare result for non oneway function
   if (!tfunction->is_oneway()) {
     f_service_ <<
-      indent() << "result = " << resultname << "()" << endl;
+      indent() << "result = " << fn_name + "_result()" << endl;
   }
 
   if (gen_twisted_) {
@@ -2582,7 +2574,7 @@ void t_py_generator::generate_process_function(t_service* tservice,
 
     f_service_ <<
       indent() << "d = defer.maybeDeferred(self._handler." <<
-      rename_reserved_keywords(tfunction->get_name()) << ", ";
+      rename_reserved_keywords(fn_name) << ", ";
     bool first = true;
     if (with_context) {
       f_service_ << "handler_ctx";
@@ -2623,28 +2615,15 @@ void t_py_generator::generate_process_function(t_service* tservice,
     indent_down();
     f_service_ << endl;
 
-    indent(f_service_) <<
-        "def write_results_success_" << tfunction->get_name() <<
-        "(self, success, result, seqid, oprot, handler_ctx):" << endl;
-    indent_up();
-    f_service_ <<
-      indent() << "result.success = success" << endl <<
-      indent() << "self._event_handler.preWrite(handler_ctx, '"
-               << fn_name << "', result)" << endl <<
-      indent() << "oprot.writeMessageBegin(\"" << tfunction->get_name() <<
-        "\", TMessageType.REPLY, seqid)" << endl <<
-      indent() << "result.write(oprot)" << endl <<
-      indent() << "oprot.writeMessageEnd()" << endl <<
-      indent() << "oprot.trans.flush()" << endl <<
-      indent() << "self._event_handler.postWrite(handler_ctx, '"
-               << fn_name << "', result)" << endl;
-    indent_down();
-    f_service_ << endl;
+    indent(f_service_) << "@write_results_success_callback" << endl;
+    f_service_
+      << indent() << "def write_results_success_" << fn_name <<
+      "(self,): pass" << endl << endl;
 
-    // Try block for a function with exceptions
-    indent(f_service_) <<
-      "def write_results_exception_" << tfunction->get_name() <<
-      "(self, error, result, seqid, oprot, handler_ctx):" << endl;
+    indent(f_service_) << "@write_results_exception_callback" << endl;
+    f_service_
+      << indent() << "def write_results_exception_" << fn_name <<
+      "(self, error, result):" << endl;
     indent_up();
     f_service_ <<
       indent() << "try:" << endl;
@@ -2658,19 +2637,14 @@ void t_py_generator::generate_process_function(t_service* tservice,
       f_service_ <<
         indent() << "except " << type_name((*x_iter)->get_type())
                  << " as exc" << exc_num << ":" << endl;
-      if (!tfunction->is_oneway()) {
-        indent_up();
-        f_service_ <<
-          indent() << "reply_type = TMessageType.REPLY" << endl;
-        f_service_ <<
-          indent() << "result." <<
-          rename_reserved_keywords((*x_iter)->get_name())
-                   << " = exc" << exc_num << endl;
-        indent_down();
-      } else {
-        f_service_ <<
-          indent() << "pass" << endl;
-      }
+      indent_up();
+      f_service_ <<
+        indent() << "reply_type = TMessageType.REPLY" << endl;
+      f_service_ <<
+        indent() << "result." <<
+        rename_reserved_keywords((*x_iter)->get_name())
+                 << " = exc" << exc_num << endl;
+      indent_down();
     }
     f_service_ <<
       indent() << "except:" << endl <<
@@ -2679,20 +2653,8 @@ void t_py_generator::generate_process_function(t_service* tservice,
       indent() << "  self._event_handler.handlerError(handler_ctx, '"
                << fn_name << "', ex)" << endl <<
       indent() << "  result = Thrift.TApplicationException(message="
-               << "str(ex))" << endl;
-
-    if (!tfunction->is_oneway()) {
-      f_service_ <<
-        indent() << "self._event_handler.preWrite(handler_ctx, '"
-                 << fn_name << "', result)" << endl <<
-        indent() << "oprot.writeMessageBegin(\"" << tfunction->get_name() <<
-          "\", reply_type, seqid)" << endl <<
-        indent() << "result.write(oprot)" << endl <<
-        indent() << "oprot.writeMessageEnd()" << endl <<
-        indent() << "oprot.trans.flush()" << endl <<
-        indent() << "self._event_handler.postWrite(handler_ctx, '"
-                 << fn_name << "', result)" << endl;
-    }
+               << "str(ex))" << endl <<
+      indent() << "return reply_type, result" << endl;
     indent_down();
     f_service_ << endl;
   } else {
@@ -2752,32 +2714,14 @@ void t_py_generator::generate_process_function(t_service* tservice,
     }
     f_service_ <<
       indent() << "except:" << endl <<
-      indent() << "  reply_type = TMessageType.EXCEPTION" << endl <<
       indent() << "  ex = sys.exc_info()[1]" << endl <<
       indent() << "  self._event_handler.handlerError(handler_ctx, '"
                << fn_name << "', ex)" << endl <<
       indent() << "  result = Thrift.TApplicationException(message="
                << "str(ex))" << endl;
-
-    // Shortcut out here for oneway functions
-    if (tfunction->is_oneway()) {
-      f_service_ <<
-        indent() << "return" << endl;
-      indent_down();
-      f_service_ << endl;
-      return;
+    if (!tfunction->is_oneway()) {
+      f_service_ << indent() << "return result" << endl;
     }
-
-    f_service_ <<
-      indent() << "self._event_handler.preWrite(handler_ctx, '"
-               << fn_name << "', result)" << endl <<
-      indent() << "oprot.writeMessageBegin(\"" << tfunction->get_name()
-               << "\", reply_type, seqid)" << endl <<
-      indent() << "result.write(oprot)" << endl <<
-      indent() << "oprot.writeMessageEnd()" << endl <<
-      indent() << "oprot.trans.flush()" << endl <<
-      indent() << "self._event_handler.postWrite(handler_ctx, '"
-               << fn_name << "', result)" << endl;
 
     // Close function
     indent_down();
