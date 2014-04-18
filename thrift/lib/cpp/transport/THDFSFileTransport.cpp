@@ -16,8 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include <hdfs.h>
 #include "THDFSFileTransport.h"
+#include <hdfs.h>
 
 using namespace std;
 using std::shared_ptr;
