@@ -104,6 +104,15 @@ class PthreadThread: public Thread {
   weak_ptr<PthreadThread> self_;
   bool detached_;
   Mutex stateLock_;
+  std::string name_;
+
+  // push our given name upstream into pthreads
+  bool updateName() {
+    if (!pthread_ || name_.empty()) {
+      return false;
+    }
+    return setPosixThreadName(pthread_, name_);
+  }
 
  public:
 
@@ -166,6 +175,8 @@ class PthreadThread: public Thread {
       throw SystemResourceException("pthread_create failed");
     }
 
+    // Now that we have a thread, we can set the name we've been given, if any.
+    updateName();
     addLiveThreadId(pthread_);
   }
 
@@ -207,11 +218,11 @@ class PthreadThread: public Thread {
   }
 
   bool setName(const std::string& name) {
-    if (!pthread_) {
-      return false;
-    }
-    return setPosixThreadName(pthread_, name);
+    Guard g(stateLock_);
+    name_ = name;
+    return updateName();
   }
+
 };
 
 void* PthreadThread::threadMain(void* arg) {
