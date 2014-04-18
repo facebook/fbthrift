@@ -248,6 +248,7 @@ void ThreadManager::ImplT<SemType>::start() {
         notifySem_, waitSem_, stopNotificationThread_);
     notificationThread_ = threadFactory_->newThread(notificationWorker,
                                                     ThreadFactory::ATTACHED);
+    notificationThread_->setName("threadmgr-notif");
     notificationThread_->start();
     state_ = ThreadManager::STARTED;
     monitor_.notifyAll();
