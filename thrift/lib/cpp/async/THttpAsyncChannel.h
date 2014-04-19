@@ -1,30 +1,31 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #ifndef THRIFT_ASYNC_THTTPASYNCCHANNEL_H_
 #define THRIFT_ASYNC_THTTPASYNCCHANNEL_H_ 1
 
 #include "thrift/lib/cpp/async/TStreamAsyncChannel.h"
 #include "thrift/lib/cpp/util/THttpParser.h"
+#include "folly/io/IOBuf.h"
 
 namespace apache { namespace thrift { namespace async {
 
 class THttpAsyncChannel;
+
+using folly::IOBuf;
 
 namespace detail {
 
@@ -49,7 +50,6 @@ class THttpACWriteRequest :
                   const transport::TTransportException& ex) noexcept;
 
  private:
-  char lengthBuf_[64];
   THttpAsyncChannel* channel_;
 };
 
@@ -68,6 +68,7 @@ class THttpACReadState {
   void setCallbackBuffer(transport::TMemoryBuffer* buffer) {
     parser_->setDataBuffer(buffer);
   }
+
   void unsetCallbackBuffer() {
     parser_->unsetDataBuffer();
   }
@@ -75,6 +76,7 @@ class THttpACReadState {
   bool hasReadAheadData() {
     return parser_->hasReadAheadData();
   }
+
   bool hasPartialMessage() {
     return parser_->hasPartialMessage();
   }
@@ -144,14 +146,8 @@ class THttpAsyncChannel :
     return parser_;
   }
 
-  int constructHeader(iovec* ops,
-                      int opsLen,
-                      int contentLength,
-                      char* contentLengthBuf) {
-    return parser_->constructHeader(ops,
-                                    opsLen,
-                                    contentLength,
-                                    contentLengthBuf);
+  std::unique_ptr<IOBuf> constructHeader(std::unique_ptr<IOBuf> buf) {
+    return std::move(parser_->constructHeader(std::move(buf)));
   }
 
  protected:

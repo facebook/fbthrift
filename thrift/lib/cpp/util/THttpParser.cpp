@@ -1,23 +1,22 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #include "thrift/lib/cpp/util/THttpParser.h"
 
+#include "folly/io/IOBufQueue.h"
 #include "thrift/lib/cpp/transport/TTransportException.h"
 #include <cstdlib>
 #include <sstream>
@@ -27,12 +26,12 @@
 namespace apache { namespace thrift { namespace util {
 
 using namespace std;
+using namespace folly;
 using apache::thrift::transport::TTransportException;
 using apache::thrift::transport::TMemoryBuffer;
 
-// Yeah, yeah, hacky to put these here, I know.
-const char* THttpParser::CRLF = "\r\n";
 const int THttpParser::CRLF_LEN = 2;
+const char* const CRLF = "\r\n";
 
 THttpParser::THttpParser()
   : httpPos_(0)
@@ -285,7 +284,7 @@ void THttpClientParser::parseHeaderLine(const char* header) {
   if (colon == nullptr) {
     return;
   }
-  const char* value = colon+1;
+  const char* value = colon + 1;
 
   if (boost::istarts_with(header, "Transfer-Encoding")) {
     if (boost::iends_with(value, "chunked")) {
@@ -295,7 +294,7 @@ void THttpClientParser::parseHeaderLine(const char* header) {
     chunked_ = false;
     contentLength_ = atoi(value);
   } else if (boost::istarts_with(header, "Connection")) {
-    if(boost::iends_with(header, "close")) {
+    if (boost::iends_with(header, "close")) {
       connectionClosedByServer_ = true;
     }
   }
@@ -335,32 +334,30 @@ bool THttpClientParser::isConnectClosedByServer() {
   return connectionClosedByServer_;
 }
 
-int THttpClientParser::constructHeader(
-  iovec* ops,
-  int opsLen,
-  int contentLength,
-  char* contentLengthBuf) {
-  assert(opsLen >= 9);
-  iovec* base = ops;
-  static const string part1 = "POST ";
-  setiovec(ops++, part1.c_str(), part1.size());
-  setiovec(ops++, path_.c_str(), path_.size());
-  static const string part2 = " HTTP/1.1\r\nHost: ";
-  setiovec(ops++, part2.c_str(), part2.size());
-  setiovec(ops++, host_.c_str(), host_.size());
-  static const string part3 =
-    "\r\nContent-Type: application/x-thrift\r\nContent-Length: ";
-  setiovec(ops++, part3.c_str(), part3.size());
-  sprintf(contentLengthBuf, "%d", contentLength);
-  setiovec(ops++, (char*)contentLengthBuf, strlen(contentLengthBuf));
-  static const string part4 =
-    "\r\nAccept: application/x-thrift\r\nuser-Agent:";
-  setiovec(ops++, part4.c_str(), part4.size());
-  setiovec(ops++, userAgent_.c_str(), userAgent_.size());
-  static const string part5 = "\r\n\r\n";
-  setiovec(ops++, part5.c_str(), part5.size());
-
-  return ops - base;
+unique_ptr<IOBuf> THttpClientParser::constructHeader(unique_ptr<IOBuf> buf) {
+  IOBufQueue queue;
+  queue.append("POST ");
+  queue.append(path_);
+  queue.append(" HTTP/1.1");
+  queue.append(CRLF);
+  queue.append("Host: ");
+  queue.append(host_);
+  queue.append(CRLF);
+  queue.append("Content-Type: application/x-thrift");
+  queue.append(CRLF);
+  queue.append("Accept: application/x-thrift");
+  queue.append(CRLF);
+  queue.append("User-Agent: ");
+  queue.append(userAgent_);
+  queue.append(CRLF);
+  queue.append("Content-Length: ");
+  string contentLen = std::to_string(buf->computeChainDataLength());
+  queue.append(contentLen);
+  queue.append(CRLF);
+  queue.append(CRLF);
+  auto res = queue.move();
+  res->appendChain(std::move(buf));
+  return std::move(res);
 }
 
 }}}

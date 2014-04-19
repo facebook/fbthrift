@@ -84,6 +84,7 @@ void THeader::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
       clients[THRIFT_UNFRAMED_DEPRECATED] = true;
       clients[THRIFT_FRAMED_DEPRECATED] = true;
       clients[THRIFT_HTTP_SERVER_TYPE] = true;
+      clients[THRIFT_HTTP_CLIENT_TYPE] = true;
       clients[THRIFT_HEADER_CLIENT_TYPE] = true;
       clients[THRIFT_FRAMED_COMPACT] = true;
       break;
@@ -92,6 +93,7 @@ void THeader::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
       clients[THRIFT_UNFRAMED_DEPRECATED] = true;
       clients[THRIFT_FRAMED_DEPRECATED] = true;
       clients[THRIFT_HTTP_SERVER_TYPE] = true;
+      clients[THRIFT_HTTP_CLIENT_TYPE] = true;
       clients[THRIFT_HEADER_CLIENT_TYPE] = true;
       clients[THRIFT_HEADER_SASL_CLIENT_TYPE] = true;
       clients[THRIFT_FRAMED_COMPACT] = true;
@@ -200,6 +202,40 @@ unique_ptr<IOBuf> THeader::removeHeader(IOBufQueue* queue,
     // won't need to call coalesce.
 
     buf = queue->move();
+  } else if (sz == HTTP_CLIENT_MAGIC) {
+    clientType = THRIFT_HTTP_CLIENT_TYPE;
+
+    TMemoryBuffer memBuffer;
+    THttpClientParser parser;
+    parser.setDataBuffer(&memBuffer);
+    const IOBuf* headBuf = queue->front();
+    const IOBuf* nextBuf = headBuf;
+    bool success = false;
+    do {
+      auto remainingDataLen = nextBuf->length();
+      size_t offset = 0;
+      auto ioBufData = nextBuf->data();
+      do {
+        void* parserBuf;
+        size_t parserBufLen;
+        parser.getReadBuffer(&parserBuf, &parserBufLen);
+        size_t toCopyLen = std::min(parserBufLen, remainingDataLen);
+        memcpy(parserBuf, ioBufData + offset, toCopyLen);
+        success |= parser.readDataAvailable(toCopyLen);
+        remainingDataLen -= toCopyLen;
+        offset += toCopyLen;
+      } while (remainingDataLen > 0);
+      nextBuf = nextBuf->next();
+    } while (nextBuf != headBuf);
+    if (!success) {
+      // We don't have full data yet and we don't know how many bytes we need,
+      // but it is at least 1.
+      needed = 1;
+      return nullptr;
+    }
+    buf = std::move(memBuffer.cloneBufferAsIOBuf());
+    // Empty the queue
+    queue->move();
   } else {
     if (sz > MAX_FRAME_SIZE) {
       std::string err =
@@ -243,7 +279,7 @@ unique_ptr<IOBuf> THeader::removeHeader(IOBufQueue* queue,
       buf = queue->split(sz);
     } else if (compactFramed(magic)) {
       clientType = THRIFT_FRAMED_COMPACT;
-            // Trim off the frame size.
+      // Trim off the frame size.
       queue->trimStart(4);
       buf = queue->split(sz);
     } else if (HEADER_MAGIC == (magic & HEADER_MASK)) {
@@ -789,6 +825,9 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf) {
              clientType == THRIFT_HTTP_SERVER_TYPE) {
     // We just return buf
     // TODO: IOBufize httpTransport.
+  } else if (clientType == THRIFT_HTTP_CLIENT_TYPE) {
+    CHECK(httpClientParser_.get() != nullptr);
+    buf = std::move(httpClientParser_->constructHeader(std::move(buf)));
   } else {
     throw TTransportException(TTransportException::BAD_ARGS,
                               "Unknown client type");
@@ -836,6 +875,11 @@ std::chrono::milliseconds THeader::getClientTimeout() {
 
 void THeader::setClientTimeout(std::chrono::milliseconds timeout) {
   setHeader(CLIENT_TIMEOUT_HEADER, folly::to<std::string>(timeout.count()));
+}
+
+void THeader::useAsHttpClient(const std::string& host, const std::string& uri) {
+  setClientType(THRIFT_HTTP_CLIENT_TYPE);
+  httpClientParser_.reset(new THttpClientParser(host, uri));
 }
 
 }}} // apache::thrift::transport

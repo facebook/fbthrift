@@ -15,8 +15,8 @@
  */
 
 #include <gtest/gtest.h>
-#include "thrift/lib/cpp2/test/gen-cpp2/TestService.h"
 #include "thrift/lib/cpp2/test/gen-cpp/TestService.h"
+#include "thrift/lib/cpp2/test/gen-cpp2/TestService.h"
 #include "thrift/lib/cpp2/server/ThriftServer.h"
 #include "thrift/lib/cpp2/async/HeaderClientChannel.h"
 #include "thrift/lib/cpp2/async/RequestChannel.h"
