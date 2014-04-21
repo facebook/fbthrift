@@ -343,6 +343,17 @@ void TAsyncSocket::connect(ConnectCallback* callback,
           errno);
     }
 
+#if !defined(MSG_NOSIGNAL) && defined(F_SETNOSIGPIPE)
+    // iOS and OS X don't support MSG_NOSIGNAL; set F_SETNOSIGPIPE instead
+    rv = fcntl(fd_, F_SETNOSIGPIPE, 1);
+    if (rv == -1) {
+      throw TTransportException(
+          TTransportException::INTERNAL_ERROR,
+          "failed to enable F_SETNOSIGPIPE on socket",
+          errno);
+    }
+#endif
+
     // By default, turn on TCP_NODELAY
     // If setNoDelay() fails, we continue anyway; this isn't a fatal error.
     // setNoDelay() will log an error message if it fails.
