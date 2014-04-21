@@ -2726,10 +2726,11 @@ class CppGenerator(t_generator.Generator):
                     typename = self._type_name(member.type)
                     if self._is_reference(member):
                         typename = "std::unique_ptr<" + typename + ">"
-                    init_vars.append("{0} {1}".format(typename, member.name))
+                    init_vars.append("{0} {1}__arg".format(
+                        typename, member.name))
                 i = OrderedDict()
                 for member in members:
-                    i[member.name] = 'std::move({name})'.format(
+                    i[member.name] = 'std::move({name}__arg)'.format(
                         name=member.name)
                 struct('// FragileConstructor for use in'
                        ' initialization lists only')
