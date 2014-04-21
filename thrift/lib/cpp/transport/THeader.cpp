@@ -458,7 +458,7 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(unique_ptr<IOBuf> buf) {
   }
 
   // Untransform data section
-  buf = untransform(std::move(buf));
+  buf = untransform(std::move(buf), readTrans_);
 
   if (protoId_ == T_JSON_PROTOCOL && clientType != THRIFT_HTTP_SERVER_TYPE) {
     throw TApplicationException(TApplicationException::UNSUPPORTED_CLIENT_TYPE,
@@ -468,9 +468,10 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(unique_ptr<IOBuf> buf) {
   return std::move(buf);
 }
 
-unique_ptr<IOBuf> THeader::untransform(unique_ptr<IOBuf> buf) {
-  for (vector<uint16_t>::const_reverse_iterator it = readTrans_.rbegin();
-       it != readTrans_.rend(); ++it) {
+unique_ptr<IOBuf> THeader::untransform(
+  unique_ptr<IOBuf> buf, std::vector<uint16_t>& readTrans) {
+  for (vector<uint16_t>::const_reverse_iterator it = readTrans.rbegin();
+       it != readTrans.rend(); ++it) {
     const uint16_t transId = *it;
 
     if (transId == ZLIB_TRANSFORM) {
@@ -580,10 +581,10 @@ unique_ptr<IOBuf> THeader::untransform(unique_ptr<IOBuf> buf) {
   return std::move(buf);
 }
 
-unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
-                                     std::vector<uint16_t>& writeTrans) {
-  // TODO(davejwatson) look at doing these as stream operations on write
-  // instead of memory buffer operations.  Would save a memcpy.
+unique_ptr<IOBuf> THeader::transform(
+  unique_ptr<IOBuf> buf,
+  std::vector<uint16_t>& writeTrans,
+uint32_t minCompressBytes) {
   uint32_t dataSize = buf->computeChainDataLength();
 
   for (vector<uint16_t>::iterator it = writeTrans.begin();
@@ -593,7 +594,7 @@ unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
     if (transId == ZLIB_IF_MORE_THAN) {
       // Applies only to receiver, do nothing.
     } else if (transId == ZLIB_TRANSFORM) {
-      if (dataSize < minCompressBytes_) {
+      if (dataSize < minCompressBytes) {
         it = writeTrans.erase(it);
         continue;
       }
@@ -669,7 +670,7 @@ unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
 
       buf = std::move(out);
     } else if (transId == SNAPPY_TRANSFORM) {
-      if (dataSize < minCompressBytes_) {
+      if (dataSize < minCompressBytes) {
         it = writeTrans.erase(it);
         continue;
       }
@@ -684,7 +685,7 @@ unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
       out->append(compressed_sz);
       buf = std::move(out);
     } else if (transId == QLZ_TRANSFORM) {
-      if (dataSize < minCompressBytes_) {
+      if (dataSize < minCompressBytes) {
         it = writeTrans.erase(it);
         continue;
       }
@@ -813,14 +814,17 @@ void THeader::setIdentity(const string& identity) {
   this->identity = identity;
 }
 
-unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf) {
+unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
+                                    bool transform) {
   // We may need to modify some transforms before send.  Make
   // a copy here
   std::vector<uint16_t> writeTrans = writeTrans_;
 
   if (clientType == THRIFT_HEADER_CLIENT_TYPE ||
       clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    buf = transform(std::move(buf), writeTrans);
+    if (transform) {
+      buf = THeader::transform(std::move(buf), writeTrans, minCompressBytes_);
+    }
   }
   size_t chainSize = buf->computeChainDataLength();
 

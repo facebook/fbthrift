@@ -112,6 +112,8 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
       auto header = ctx_->getHeader();
       if (header) {
         headers_ = header->getHeaders();
+        transforms_ = header->getTransforms();
+        minCompressBytes_ = header->getMinCompressBytes();
       }
     }
   }
@@ -150,6 +152,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return headers_;
   }
 
+
   virtual std::map<std::string, std::string> getWriteHeaders() {
     return std::move(writeHeaders_);
   }
@@ -157,6 +160,15 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   virtual bool setHeader(const std::string& key, const std::string& value) {
     writeHeaders_[key] = value;
     return true;
+  }
+
+  virtual std::vector<uint16_t>& getTransforms() {
+    return transforms_;
+  }
+
+  virtual uint32_t getMinCompressBytes() {
+    return minCompressBytes_;
+
   }
 
   virtual const apache::thrift::SaslServer* getSaslServer() const {
@@ -181,6 +193,8 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   // Headers are per-request, not per-connection
   std::map<std::string, std::string> headers_;
   std::map<std::string, std::string> writeHeaders_;
+  std::vector<uint16_t> transforms_;
+  uint32_t minCompressBytes_;
 };
 
 } }

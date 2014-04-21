@@ -91,7 +91,9 @@ HeaderServerChannel::frameMessage(unique_ptr<IOBuf>&& buf) {
   // Note: This THeader function may throw.  However, we don't want to catch
   // it here, because this would send an empty message out on the wire.
   // Instead we have to catch it at sendMessage
-  return header_->addHeader(std::move(buf));
+  return header_->addHeader(
+    std::move(buf),
+    false /* Data already transformed in AsyncProcessor.h */);
 }
 
 std::unique_ptr<folly::IOBuf>

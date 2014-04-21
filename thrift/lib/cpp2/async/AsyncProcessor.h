@@ -399,6 +399,15 @@ class HandlerCallbackBase {
     }
   }
 
+  virtual void transform(folly::IOBufQueue& queue) {
+    // Do any compression or other transforms in this thread, the same thread
+    // that serialization happens on.
+    queue.append(
+      transport::THeader::transform(queue.move(),
+                                    reqCtx_->getTransforms(),
+                                    reqCtx_->getMinCompressBytes()));
+  }
+
   // Required for this call
   std::unique_ptr<ResponseChannel::Request> req_;
   std::unique_ptr<apache::thrift::ContextStack> ctx_;
@@ -459,12 +468,14 @@ class HandlerCallback : public HandlerCallbackBase {
     }
   }
  protected:
+
   // Always called in IO thread
   virtual void doResult(const T& r) {
     assert(cp_);
     auto queue = cp_(this->protoSeqId_,
                      std::move(this->ctx_),
                      r);
+    transform(queue);
     sendReply(std::move(queue), r);
   }
 
@@ -569,6 +580,9 @@ class HandlerCallback<std::unique_ptr<T>> : public HandlerCallbackBase {
     auto queue = cp_(this->protoSeqId_,
                      std::move(this->ctx_),
                      r);
+
+    transform(queue);
+
     if (getEventBase()->isInEventBaseThread()) {
       req_->sendReply(queue.move());
     } else {
@@ -631,6 +645,8 @@ class HandlerCallback<void> : public HandlerCallbackBase {
     assert(cp_);
     auto queue = cp_(this->protoSeqId_,
                      std::move(this->ctx_));
+    transform(queue);
+
     if (getEventBase()->isInEventBaseThread()) {
       req_->sendReply(queue.move());
     } else {

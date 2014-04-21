@@ -171,7 +171,9 @@ class THeader {
    * @param IOBuf input data section
    * @return IOBuf output data section
    */
-  std::unique_ptr<folly::IOBuf> untransform(std::unique_ptr<folly::IOBuf>);
+  static std::unique_ptr<folly::IOBuf> untransform(
+    std::unique_ptr<folly::IOBuf>,
+    std::vector<uint16_t>& readTrans);
 
   /**
    * Transform the data based on our write transform flags
@@ -181,8 +183,10 @@ class THeader {
    * @param IOBuf to transform.  Returns transformed IOBuf (or chain)
    * @return transformed data IOBuf
    */
-  std::unique_ptr<folly::IOBuf> transform(std::unique_ptr<folly::IOBuf>,
-                                          std::vector<uint16_t>& transforms);
+  static std::unique_ptr<folly::IOBuf> transform(
+    std::unique_ptr<folly::IOBuf>,
+    std::vector<uint16_t>& writeTrans,
+    uint32_t minCompressBytes);
 
   uint16_t getNumTransforms(std::vector<uint16_t>& transforms) const {
     int trans = transforms.size();
@@ -291,7 +295,8 @@ class THeader {
    *
    * @return IOBuf chain with header _and_ data.  Data is not copied
    */
-  std::unique_ptr<folly::IOBuf> addHeader(std::unique_ptr<folly::IOBuf>);
+  std::unique_ptr<folly::IOBuf> addHeader(std::unique_ptr<folly::IOBuf>,
+                                         bool transform=true);
   /**
    * Given an IOBuf Chain, remove the header.  Supports unframed (sync
    * only), framed, header, and http (sync case only).  This doesn't
@@ -315,6 +320,10 @@ class THeader {
 
   void setMinCompressBytes(uint32_t bytes) {
     minCompressBytes_ = bytes;
+  }
+
+  uint32_t getMinCompressBytes() {
+    return minCompressBytes_;
   }
 
   apache::thrift::concurrency::PriorityThreadManager::PRIORITY
