@@ -1,7 +1,0 @@
-# TARGETS file
-
-perl_library(
-  name='perl',
-  local_modules=[ '.' ],
-)
-
