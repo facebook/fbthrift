@@ -95,7 +95,7 @@ class ConnectionSelect:
 
     def unregister(self, fileno):
         if fileno in self.readable:
-            self.readble.remove(fileno)
+            self.readable.remove(fileno)
         elif fileno in self.writable:
             self.writable.remove(fileno)
 
