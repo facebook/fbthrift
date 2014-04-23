@@ -17,6 +17,7 @@
 #ifndef THRIFT_ASYNC_TASYNCSSLSOCKET_H_
 #define THRIFT_ASYNC_TASYNCSSLSOCKET_H_ 1
 
+#include "folly/Optional.h"
 #include "thrift/lib/cpp/async/TAsyncSocket.h"
 #include "thrift/lib/cpp/async/TAsyncTimeout.h"
 #include "thrift/lib/cpp/concurrency/Mutex.h"
@@ -269,18 +270,19 @@ class TAsyncSSLSocket : public TAsyncSocket {
    *
    * The callback will be invoked and uninstalled when an SSL
    * connection has been established on the underlying socket.
+   * The value of verifyPeer determines the client verification method.
+   * By default, its set to use the value in the underlying context
    *
    * @param callback callback object to invoke on success/failure
    * @param timeout timeout for this function in milliseconds, or 0 for no
    *                timeout
-   * @param verifyPeer whether or not to verify the peer's certificate; sets
-   *                   SSL_VERIFY_PEER and invokes
-   *                   HandshakeCallback::handshakeVerify()
+   * @param verifyPeer  SSLVerifyPeerEnum uses the options specified in the
+   *                context by default, can be set explcitly to override the
+   *                method in the context
    */
-  // TODO(agartrell): Move verification options into SSLContext t4116111
   virtual void sslAccept(HandshakeCallback* callback, uint32_t timeout = 0,
-                         bool verifyPeer = false,
-                         bool requireClientCert = false);
+      const transport::SSLContext::SSLVerifyPeerEnum& verifyPeer =
+            transport::SSLContext::SSLVerifyPeerEnum::USE_CTX);
 
   /**
    * Invoke SSL accept following an asynchronous session cache lookup
@@ -305,17 +307,22 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * Initiate an SSL connection on the socket
    * THe callback will be invoked and uninstalled when an SSL connection
    * has been establshed on the underlying socket.
+   * The verification option verifyPeer is applied if its passed explicitly.
+   * If its not, the options in SSLContext set on the underying SSLContext
+   * are applied.
    *
    * @param callback callback object to invoke on success/failure
    * @param timeout timeout for this function in milliseconds, or 0 for no
    *                timeout
-   * @param verifyPeer whether or not to verify the peer's certificate; sets
-   *                   SSL_VERIFY_PEER and invokes
-   *                   HandshakeCallback::handshakeVerify()
+   * @param verifyPeer  SSLVerifyPeerEnum uses the options specified in the
+   *                context by default, can be set explcitly to override the
+   *                method in the context. If verification is turned on sets
+   *                SSL_VERIFY_PEER and invokes
+   *                HandshakeCallback::handshakeVerify().
    */
-  virtual void sslConnect(HandshakeCallback *callback,
-                          uint64_t timeout = 0,
-                          bool verifyPeer = false);
+  virtual void sslConnect(HandshakeCallback *callback, uint64_t timeout = 0,
+            const transport::SSLContext::SSLVerifyPeerEnum& verifyPeer =
+                  transport::SSLContext::SSLVerifyPeerEnum::USE_CTX);
 
   enum SSLStateEnum {
     STATE_UNINIT,
@@ -561,6 +568,16 @@ class TAsyncSSLSocket : public TAsyncSocket {
   }
 
   /**
+   * Apply verification options passed to sslConnect/sslAccept or those set
+   * in the underlying SSLContext object.
+   *
+   * @param ssl pointer to the SSL object on which verification options will be
+   * applied. If verifyPeer_ was explicitly set either via sslConnect/sslAccept,
+   * those options override the settings in the underlying SSLContext.
+   */
+  void applyVerificationOptions(SSL * ssl);
+
+  /**
    * A SSL_write wrapper that understand EOR
    *
    * @param ssl: SSL* object
@@ -611,8 +628,8 @@ class TAsyncSSLSocket : public TAsyncSocket {
   std::shared_ptr<transport::SSLContext> handshakeCtx_;
   std::string tlsextHostname_;
 #endif
-  bool verifyPeer_{false};
-  bool requireClientCert_{false};
+  transport::SSLContext::SSLVerifyPeerEnum
+    verifyPeer_{transport::SSLContext::SSLVerifyPeerEnum::USE_CTX};
 
   // Callback for SSL_CTX_set_verify()
   static int sslVerifyCallback(int preverifyOk, X509_STORE_CTX* ctx);

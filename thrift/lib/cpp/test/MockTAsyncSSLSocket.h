@@ -47,7 +47,8 @@ class MockTAsyncSSLSocket :
   MOCK_CONST_METHOD0(hangup, bool());
   MOCK_METHOD3(
    sslConnect,
-   void(TAsyncSSLSocket::HandshakeCallback*, uint64_t, bool));
+   void(TAsyncSSLSocket::HandshakeCallback*, uint64_t,
+     const apache::thrift::transport::SSLContext::SSLVerifyPeerEnum&));
   MOCK_CONST_METHOD2(
    getSelectedNextProtocol,
    void(const unsigned char**, unsigned*));

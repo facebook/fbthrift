@@ -682,15 +682,18 @@ TEST(TAsyncSSLSocketTest, SSLHandshakeValidationSuccess) {
   getfds(fds);
   getctx(clientCtx, dfServerCtx);
 
+  clientCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+  dfServerCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+
   TAsyncSSLSocket::UniquePtr clientSock(
     new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
   TAsyncSSLSocket::UniquePtr serverSock(
     new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), true, true, true);
+  SSLHandshakeClient client(std::move(clientSock), true, true);
   clientCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
 
-  SSLHandshakeServer server(std::move(serverSock), true, false, true, true);
+  SSLHandshakeServer server(std::move(serverSock), true, true);
 
   eventBase.loop();
 
@@ -715,15 +718,18 @@ TEST(TAsyncSSLSocketTest, SSLHandshakeValidationFailure) {
   getfds(fds);
   getctx(clientCtx, dfServerCtx);
 
+  clientCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+  dfServerCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+
   TAsyncSSLSocket::UniquePtr clientSock(
     new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
   TAsyncSSLSocket::UniquePtr serverSock(
     new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), true, true, false);
+  SSLHandshakeClient client(std::move(clientSock), true, false);
   clientCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
 
-  SSLHandshakeServer server(std::move(serverSock), true, false, true, true);
+  SSLHandshakeServer server(std::move(serverSock), true, true);
 
   eventBase.loop();
 
@@ -733,6 +739,87 @@ TEST(TAsyncSSLSocketTest, SSLHandshakeValidationFailure) {
   EXPECT_TRUE(!server.handshakeVerify_);
   EXPECT_TRUE(!server.handshakeSuccess_);
   EXPECT_TRUE(server.handshakeError_);
+}
+
+/**
+ * Verify that the options in SSLContext can be overridden in
+ * sslConnect/Accept.i.e specifying that no validation should be performed
+ * allows an otherwise-invalid certificate to be accepted and doesn't fire
+ * the validation callback.
+ */
+TEST(TAsyncSSLSocketTest, OverrideSSLCtxDisableVerify) {
+  TEventBase eventBase;
+  auto clientCtx = std::make_shared<SSLContext>();
+  auto dfServerCtx = std::make_shared<SSLContext>();
+
+  int fds[2];
+  getfds(fds);
+  getctx(clientCtx, dfServerCtx);
+
+  clientCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+  dfServerCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+
+  TAsyncSSLSocket::UniquePtr clientSock(
+    new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
+  TAsyncSSLSocket::UniquePtr serverSock(
+    new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
+
+  SSLHandshakeClientNoVerify client(std::move(clientSock), false, false);
+  clientCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
+
+  SSLHandshakeServerNoVerify server(std::move(serverSock), false, false);
+
+  eventBase.loop();
+
+  EXPECT_TRUE(!client.handshakeVerify_);
+  EXPECT_TRUE(client.handshakeSuccess_);
+  EXPECT_TRUE(!client.handshakeError_);
+  EXPECT_TRUE(!server.handshakeVerify_);
+  EXPECT_TRUE(server.handshakeSuccess_);
+  EXPECT_TRUE(!server.handshakeError_);
+}
+
+/**
+ * Verify that the options in SSLContext can be overridden in
+ * sslConnect/Accept. Enable verification even if context says otherwise.
+ * Test requireClientCert with client cert
+ */
+TEST(TAsyncSSLSocketTest, OverrideSSLCtxEnableVerify) {
+  TEventBase eventBase;
+  auto clientCtx = std::make_shared<SSLContext>();
+  auto serverCtx = std::make_shared<SSLContext>();
+  serverCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
+  serverCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+  serverCtx->loadPrivateKey("thrift/lib/cpp/test/ssl/tests-key.pem");
+  serverCtx->loadCertificate("thrift/lib/cpp/test/ssl/tests-cert.pem");
+  serverCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
+  serverCtx->loadClientCAList("thrift/lib/cpp/test/ssl/ca-cert.pem");
+
+  clientCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
+  clientCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+  clientCtx->loadPrivateKey("thrift/lib/cpp/test/ssl/tests-key.pem");
+  clientCtx->loadCertificate("thrift/lib/cpp/test/ssl/tests-cert.pem");
+  clientCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
+
+  int fds[2];
+  getfds(fds);
+
+  TAsyncSSLSocket::UniquePtr clientSock(
+      new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
+  TAsyncSSLSocket::UniquePtr serverSock(
+      new TAsyncSSLSocket(serverCtx, &eventBase, fds[1], true));
+
+  SSLHandshakeClientDoVerify client(std::move(clientSock), true, true);
+  SSLHandshakeServerDoVerify server(std::move(serverSock), true, true);
+
+  eventBase.loop();
+
+  EXPECT_TRUE(client.handshakeVerify_);
+  EXPECT_TRUE(client.handshakeSuccess_);
+  EXPECT_FALSE(client.handshakeError_);
+  EXPECT_TRUE(server.handshakeVerify_);
+  EXPECT_TRUE(server.handshakeSuccess_);
+  EXPECT_FALSE(server.handshakeError_);
 }
 
 /**
@@ -748,13 +835,16 @@ TEST(TAsyncSSLSocketTest, SSLHandshakeValidationOverride) {
   getfds(fds);
   getctx(clientCtx, dfServerCtx);
 
+  clientCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+  dfServerCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+
   TAsyncSSLSocket::UniquePtr clientSock(
     new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
   TAsyncSSLSocket::UniquePtr serverSock(
     new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), true, false, true);
-  SSLHandshakeServer server(std::move(serverSock), true, false, true, true);
+  SSLHandshakeClient client(std::move(clientSock), false, true);
+  SSLHandshakeServer server(std::move(serverSock), true, true);
 
   eventBase.loop();
 
@@ -780,13 +870,16 @@ TEST(TAsyncSSLSocketTest, SSLHandshakeValidationSkip) {
   getfds(fds);
   getctx(clientCtx, dfServerCtx);
 
+  clientCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
+  dfServerCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
+
   TAsyncSSLSocket::UniquePtr clientSock(
     new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
   TAsyncSSLSocket::UniquePtr serverSock(
     new TAsyncSSLSocket(dfServerCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), false, false, false);
-  SSLHandshakeServer server(std::move(serverSock), false, false, false, false);
+  SSLHandshakeClient client(std::move(clientSock), false, false);
+  SSLHandshakeServer server(std::move(serverSock), false, false);
 
   eventBase.loop();
 
@@ -799,18 +892,21 @@ TEST(TAsyncSSLSocketTest, SSLHandshakeValidationSkip) {
 }
 
 /**
- * Test requireClientCert with no client cert
+ * Test requireClientCert with client cert
  */
 TEST(TAsyncSSLSocketTest, ClientCertHandshakeSuccess) {
   TEventBase eventBase;
   auto clientCtx = std::make_shared<SSLContext>();
   auto serverCtx = std::make_shared<SSLContext>();
+  serverCtx->setVerificationOption(
+      SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT);
   serverCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
   serverCtx->loadPrivateKey("thrift/lib/cpp/test/ssl/tests-key.pem");
   serverCtx->loadCertificate("thrift/lib/cpp/test/ssl/tests-cert.pem");
   serverCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
   serverCtx->loadClientCAList("thrift/lib/cpp/test/ssl/ca-cert.pem");
 
+  clientCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
   clientCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
   clientCtx->loadPrivateKey("thrift/lib/cpp/test/ssl/tests-key.pem");
   clientCtx->loadCertificate("thrift/lib/cpp/test/ssl/tests-cert.pem");
@@ -824,8 +920,8 @@ TEST(TAsyncSSLSocketTest, ClientCertHandshakeSuccess) {
   TAsyncSSLSocket::UniquePtr serverSock(
       new TAsyncSSLSocket(serverCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), true, true, true);
-  SSLHandshakeServer server(std::move(serverSock), true, true, true, true);
+  SSLHandshakeClient client(std::move(clientSock), true, true);
+  SSLHandshakeServer server(std::move(serverSock), true, true);
 
   eventBase.loop();
 
@@ -845,11 +941,14 @@ TEST(TAsyncSSLSocketTest, NoClientCertHandshakeError) {
   TEventBase eventBase;
   auto clientCtx = std::make_shared<SSLContext>();
   auto serverCtx = std::make_shared<SSLContext>();
+  serverCtx->setVerificationOption(
+      SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT);
   serverCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
   serverCtx->loadPrivateKey("thrift/lib/cpp/test/ssl/tests-key.pem");
   serverCtx->loadCertificate("thrift/lib/cpp/test/ssl/tests-cert.pem");
   serverCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
   serverCtx->loadClientCAList("thrift/lib/cpp/test/ssl/ca-cert.pem");
+  clientCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
   clientCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
 
   int fds[2];
@@ -860,8 +959,8 @@ TEST(TAsyncSSLSocketTest, NoClientCertHandshakeError) {
   TAsyncSSLSocket::UniquePtr serverSock(
       new TAsyncSSLSocket(serverCtx, &eventBase, fds[1], true));
 
-  SSLHandshakeClient client(std::move(clientSock), false, false, false);
-  SSLHandshakeServer server(std::move(serverSock), true, true, false, false);
+  SSLHandshakeClient client(std::move(clientSock), false, false);
+  SSLHandshakeServer server(std::move(serverSock), false, false);
 
   eventBase.loop();
 

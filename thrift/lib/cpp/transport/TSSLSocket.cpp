@@ -336,6 +336,42 @@ void SSLContext::setCiphersOrThrow(const string& ciphers) {
   }
 }
 
+void SSLContext::setVerificationOption(const SSLContext::SSLVerifyPeerEnum&
+    verifyPeer) {
+  CHECK(verifyPeer != SSLVerifyPeerEnum::USE_CTX); // dont recurse
+  verifyPeer_ = verifyPeer;
+}
+
+int SSLContext::getVerificationMode(const SSLContext::SSLVerifyPeerEnum&
+    verifyPeer) {
+  CHECK(verifyPeer != SSLVerifyPeerEnum::USE_CTX);
+  int mode = SSL_VERIFY_NONE;
+  switch(verifyPeer) {
+    // case SSLVerifyPeerEnum::USE_CTX: // can't happen
+    // break;
+
+    case SSLVerifyPeerEnum::VERIFY:
+      mode = SSL_VERIFY_PEER;
+      break;
+
+    case SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT:
+      mode = SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
+      break;
+
+    case SSLVerifyPeerEnum::NO_VERIFY:
+      mode = SSL_VERIFY_NONE;
+      break;
+
+    default:
+      break;
+  }
+  return mode;
+}
+
+int SSLContext::getVerificationMode() {
+  return getVerificationMode(verifyPeer_);
+}
+
 void SSLContext::authenticate(bool checkPeerCert, bool checkPeerName,
                               const string& peerName) {
   int mode;

@@ -1201,11 +1201,34 @@ class SSLHandshakeClient : public SSLHandshakeBase {
  public:
   SSLHandshakeClient(
    apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
-   bool verifyCertificate,
    bool preverifyResult,
    bool verifyResult) :
     SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
-    socket_->sslConnect(this, 0, verifyCertificate);
+    socket_->sslConnect(this, 0);
+  }
+};
+
+class SSLHandshakeClientNoVerify : public SSLHandshakeBase {
+ public:
+  SSLHandshakeClientNoVerify(
+   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
+   bool preverifyResult,
+   bool verifyResult) :
+    SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
+    socket_->sslConnect(this, 0,
+      apache::thrift::transport::SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
+  }
+};
+
+class SSLHandshakeClientDoVerify : public SSLHandshakeBase {
+ public:
+  SSLHandshakeClientDoVerify(
+   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
+   bool preverifyResult,
+   bool verifyResult) :
+    SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
+    socket_->sslConnect(this, 0,
+      apache::thrift::transport::SSLContext::SSLVerifyPeerEnum::VERIFY);
   }
 };
 
@@ -1213,12 +1236,34 @@ class SSLHandshakeServer : public SSLHandshakeBase {
  public:
   SSLHandshakeServer(
       apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
-      bool verifyCertificate,
-      bool requireClientCert,
       bool preverifyResult,
       bool verifyResult)
     : SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
-    socket_->sslAccept(this, 0, verifyCertificate, requireClientCert);
+    socket_->sslAccept(this, 0);
+  }
+};
+
+class SSLHandshakeServerNoVerify : public SSLHandshakeBase {
+ public:
+  SSLHandshakeServerNoVerify(
+      apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
+      bool preverifyResult,
+      bool verifyResult)
+    : SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
+    socket_->sslAccept(this, 0,
+      apache::thrift::transport::SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
+  }
+};
+
+class SSLHandshakeServerDoVerify : public SSLHandshakeBase {
+ public:
+  SSLHandshakeServerDoVerify(
+      apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
+      bool preverifyResult,
+      bool verifyResult)
+    : SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
+    socket_->sslAccept(this, 0,
+      apache::thrift::transport::SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT);
   }
 };
 

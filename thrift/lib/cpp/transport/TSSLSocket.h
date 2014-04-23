@@ -179,6 +179,13 @@ class SSLContext {
      TLSv1
   };
 
+  enum SSLVerifyPeerEnum{
+    USE_CTX,
+    VERIFY,
+    VERIFY_REQ_CLIENT_CERT,
+    NO_VERIFY
+  };
+
   struct NextProtocolsItem {
     int weight;
     std::list<std::string> protocols;
@@ -220,6 +227,45 @@ class SSLContext {
    * SSL_CTX object, and throws if something goes wrong.
    */
   virtual void setCiphersOrThrow(const std::string& ciphers);
+
+  /**
+   * Method to set verification option in the context object.
+   *
+   * @param verifyPeer SSLVerifyPeerEnum indicating the verification
+   *                       method to use.
+   */
+  virtual void setVerificationOption(const SSLVerifyPeerEnum& verifyPeer);
+
+  /**
+   * Method to check if peer verfication is set.
+   *
+   * @return true if peer verification is required.
+   *
+   */
+  virtual bool needsPeerVerification() {
+    return (verifyPeer_ == SSLVerifyPeerEnum::VERIFY ||
+              verifyPeer_ == SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT);
+  }
+
+  /**
+   * Method to fetch Verification mode for a SSLVerifyPeerEnum.
+   * verifyPeer cannot be SSLVerifyPeerEnum::USE_CTX since there is no
+   * context.
+   *
+   * @param verifyPeer SSLVerifyPeerEnum for which the flags need to
+   *                  to be returned
+   *
+   * @return mode flags that can be used with SSL_set_verify
+   */
+  static int getVerificationMode(const SSLVerifyPeerEnum& verifyPeer);
+
+  /**
+   * Method to fetch Verification mode determined by the options
+   * set using setVerificationOption.
+   *
+   * @return mode flags that can be used with SSL_set_verify
+   */
+  virtual int getVerificationMode();
 
   /**
    * Enable/Disable authentication. Peer name validation can only be done
@@ -459,6 +505,8 @@ class SSLContext {
   SSL_CTX* ctx_;
 
  private:
+  SSLVerifyPeerEnum verifyPeer_{SSLVerifyPeerEnum::NO_VERIFY};
+
   bool checkPeerName_;
   std::string peerFixedName_;
   std::shared_ptr<PasswordCollector> collector_;

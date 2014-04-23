@@ -46,6 +46,7 @@ using apache::thrift::async::TAsyncSSLSocket;
 using apache::thrift::concurrency::Util;
 using apache::thrift::concurrency::SpinLock;
 using apache::thrift::concurrency::SpinLockGuard;
+using folly::Optional;
 
 /** Try to avoid calling SSL_write() for buffers smaller than this: */
 size_t MIN_WRITE_SIZE = 1500;
@@ -431,15 +432,11 @@ void TAsyncSSLSocket::invalidState(HandshakeCallback* callback) {
   }
 }
 
-void TAsyncSSLSocket::sslAccept(HandshakeCallback* callback,
-                                uint32_t timeout,
-                                bool verifyPeer,
-                                bool requireClientCert) {
+void TAsyncSSLSocket::sslAccept(HandshakeCallback* callback, uint32_t timeout,
+      const transport::SSLContext::SSLVerifyPeerEnum& verifyPeer) {
   DestructorGuard dg(this);
   assert(eventBase_->isInEventBaseThread());
-
   verifyPeer_ = verifyPeer;
-  requireClientCert_ = requireClientCert;
 
   // Make sure we're in the uninitialized state
   if (!server_ || sslState_ != STATE_UNINIT || handshakeCallback_ != nullptr) {
@@ -621,9 +618,24 @@ void TAsyncSSLSocket::connect(ConnectCallback* callback,
   TAsyncSocket::connect(connector, address, timeout, options, bindAddr);
 }
 
-void TAsyncSSLSocket::sslConnect(HandshakeCallback* callback,
-                                 uint64_t timeout,
-                                 bool verifyPeer) {
+void TAsyncSSLSocket::applyVerificationOptions(SSL * ssl) {
+  // apply the settings specified in verifyPeer_
+  if (verifyPeer_ == SSLContext::SSLVerifyPeerEnum::USE_CTX) {
+    if(ctx_->needsPeerVerification()) {
+      SSL_set_verify(ssl, ctx_->getVerificationMode(),
+        TAsyncSSLSocket::sslVerifyCallback);
+    }
+  } else {
+    if (verifyPeer_ == SSLContext::SSLVerifyPeerEnum::VERIFY ||
+        verifyPeer_ == SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT) {
+      SSL_set_verify(ssl, SSLContext::getVerificationMode(verifyPeer_),
+        TAsyncSSLSocket::sslVerifyCallback);
+    }
+  }
+}
+
+void TAsyncSSLSocket::sslConnect(HandshakeCallback* callback, uint64_t timeout,
+        const transport::SSLContext::SSLVerifyPeerEnum& verifyPeer) {
   DestructorGuard dg(this);
   assert(eventBase_->isInEventBaseThread());
 
@@ -648,9 +660,7 @@ void TAsyncSSLSocket::sslConnect(HandshakeCallback* callback,
     return failHandshake(__func__, ex);
   }
 
-  if (verifyPeer) {
-    SSL_set_verify(ssl_, SSL_VERIFY_PEER, TAsyncSSLSocket::sslVerifyCallback);
-  }
+  applyVerificationOptions(ssl_);
 
   SSL_set_fd(ssl_, fd_);
   if (sslSession_ != nullptr) {
@@ -883,21 +893,14 @@ TAsyncSSLSocket::handleAccept() noexcept {
       sslState_ = STATE_ERROR;
       TTransportException ex(TTransportException::INTERNAL_ERROR,
                              "error calling SSLContext::createSSL()");
-      T_ERROR("TAsyncSSLSocket::sslAccept(this=%p, fd=%d): %s",
+      T_ERROR("TAsyncSSLSocket::handleAccept(this=%p, fd=%d): %s",
               this, fd_, e.what());
       return failHandshake(__func__, ex);
     }
     SSL_set_fd(ssl_, fd_);
     SSL_set_ex_data(ssl_, getSSLExDataIndex(), this);
 
-    if (verifyPeer_) {
-      int mode = SSL_VERIFY_PEER;
-      if (requireClientCert_) {
-        mode |= SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
-      }
-      SSL_set_verify(
-          ssl_, mode, TAsyncSSLSocket::sslVerifyCallback);
-    }
+    applyVerificationOptions(ssl_);
   }
 
   errno = 0;
