@@ -400,16 +400,16 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   // Now let's rename the tmp file.
   Krb5CCache default_cache = Krb5CCache::makeDefault(ctx_.get());
   folly::StringPiece default_type, default_name;
-  folly::split<false>(
-    ":", default_cache.getName(), default_type, default_name);
+  string default_cache_name = default_cache.getName();
+  folly::split<false>(":", default_cache_name, default_type, default_name);
   if (default_type != "FILE") {
     LOG(ERROR) << "Default cache is not of type FILE, the type is: " +
       default_type.str();
     return;
   }
   folly::StringPiece tmp_type, tmp_name;
-  folly::split<false>(
-    ":", file_cache.getName(), tmp_type, tmp_name);
+  string file_cache_name = file_cache.getName();
+  folly::split<false>(":", file_cache_name, tmp_type, tmp_name);
   if (tmp_type != "FILE") {
     LOG(ERROR) << "Tmp cache is not of type FILE, the type is: " +
       tmp_type.str();
