@@ -493,6 +493,12 @@ class TAsyncSSLSocket : public TAsyncSocket {
    *                 is not supported by server
    */
   bool isServerNameMatch() const;
+
+  /**
+   * Set the SNI hostname that we'll advertise to the server in the
+   * ClientHello message.
+   */
+  void setServerName(std::string serverName) noexcept;
 #endif
 
   void timeoutExpired() noexcept;

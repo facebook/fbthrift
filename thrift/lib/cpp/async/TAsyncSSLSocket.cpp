@@ -535,6 +535,11 @@ bool TAsyncSSLSocket::isServerNameMatch() const {
 
   return (ss->tlsext_hostname ? true : false);
 }
+
+void TAsyncSSLSocket::setServerName(std::string serverName) noexcept {
+  tlsextHostname_ = std::move(serverName);
+}
+
 #endif
 
 void TAsyncSSLSocket::timeoutExpired() noexcept {
