@@ -38,6 +38,24 @@ using std::vector;
 
 using namespace std;
 
+/*
+ * If the name of an identifier in the object model
+ * is a keword in D language, replacing
+ *   obj->get_name()
+ * with
+ *   get_name(obj)
+ * will append an underscore to the name thus solving the problem.
+ */
+template <class T>
+string get_name(const T& obj) {
+  static const set<string> reserved = { "version" };
+  string name = obj->get_name();
+  while (reserved.find(name) != reserved.end()) {
+    name += "_";
+  }
+  return name;
+}
+
 /**
  * D code generator.
  *
@@ -468,7 +486,7 @@ class t_d_generator : public t_oop_generator {
     vector<t_field*>::const_iterator m_iter;
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       indent(out) << render_type_name((*m_iter)->get_type()) << " " <<
-        (*m_iter)->get_name() << ";" << endl;
+        get_name(*m_iter) << ";" << endl;
     }
 
     if (!members.empty()) indent(out) << endl;
@@ -491,7 +509,7 @@ class t_d_generator : public t_oop_generator {
         }
         out << endl;
 
-        indent(out) << "TFieldMeta(`" << (*m_iter)->get_name() << "`, " <<
+        indent(out) << "TFieldMeta(`" << get_name(*m_iter) << "`, " <<
           (*m_iter)->get_key();
 
         t_const_value* cv = (*m_iter)->get_value();
@@ -533,7 +551,7 @@ class t_d_generator : public t_oop_generator {
         out << ", ";
       }
       out << render_type_name((*f_iter)->get_type(), true) << " " <<
-          (*f_iter)->get_name();
+          get_name(*f_iter);
     }
 
     out << ")";
