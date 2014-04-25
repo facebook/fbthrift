@@ -205,7 +205,8 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     }
   } else {
     if (!buf) {
-      LOG(ERROR) << "sendReply() called with nullptr.  Bug?";
+      // oneway calls are OK do this, but is a bug for twoway.
+      DCHECK(isOneway());
       return;
     }
     try {
