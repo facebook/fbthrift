@@ -1122,6 +1122,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
 
     for (auto& member: sorted_members) {
       indent(out) << "if " << member->get_name() << " is not None:" << endl;
+      indent(out) << "  assert self.field == 0 and self.value is None" << endl;
       indent(out) << "  self.field = " << member->get_key() << endl;
       indent(out) << "  self.value = " << member->get_name() << endl;
     }
@@ -1172,10 +1173,13 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
   indent(out) << "self.field = 0" << endl;
   indent(out) << "self.value = None" << endl;
   indent(out) << "iprot.readStructBegin()" << endl;
+  indent(out) << "while True:" << endl;
+  indent_up();
   indent(out) << "(fname, ftype, fid) = iprot.readFieldBegin()" << endl;
   indent(out) << "if ftype == TType.STOP:" << endl;
-  indent(out) << "  iprot.readStructEnd()" << endl;
-  indent(out) << "  return" << endl << endl;
+  indent_up();
+  indent(out) << "break" << endl << endl;
+  indent_down();
 
   bool first = true;
   for (auto& member: sorted_members) {
@@ -1187,6 +1191,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
     indent(out) << "if ftype == " << t << ":" << endl;
     indent_up();
     generate_deserialize_field(out, member, "");
+    indent(out) << "assert self.field == 0 and self.value is None" << endl;
     indent(out) << "self.set_" << n << "(" << n << ")" << endl;
     indent_down();
     indent(out) << "else:" << endl;
@@ -1199,10 +1204,10 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
   indent(out) << "else:" << endl;
   indent(out) << "  iprot.skip(ftype)" << endl;
   indent(out) << "iprot.readFieldEnd()" << endl;
-  indent(out) << "iprot.readStructEnd()" << endl;
-
   indent_down();
-  indent(out) << endl;
+
+  indent(out) << "iprot.readStructEnd()" << endl << endl;
+  indent_down();
 
   // Generate `write` method
   indent(out) << "def write(self, oprot):" << endl;
