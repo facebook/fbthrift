@@ -575,7 +575,7 @@ void t_hack_generator::generate_json_reader(ofstream &out,
       out << " else {" << endl;
       indent_up();
       indent(out) << "throw new TProtocolException(\"Required field "
-                  << tf->get_name() << "cannot be found.\");" << endl;
+                  << tf->get_name() << " cannot be found.\");" << endl;
       indent_down();
       indent(out) << "}";
     }
