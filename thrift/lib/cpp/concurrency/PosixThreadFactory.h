@@ -24,16 +24,22 @@
 #include <string>
 
 #include "thrift/lib/cpp/concurrency/Thread.h"
+#include "folly/ThreadName.h"
 
 #include <memory>
 
 namespace apache { namespace thrift { namespace concurrency {
 
 void getLiveThreadIds(std::set<pthread_t>* tids);
+
+
 /**
  * Wrapper around pthread_setname_np that handles older glibc versions
+ * -> moved to folly.
  */
-bool setPosixThreadName(pthread_t id, const std::string& name);
+inline bool setPosixThreadName(pthread_t id, const std::string& name) {
+  return folly::setThreadName(id, name);
+}
 
 /**
  * A thread factory to create posix threads

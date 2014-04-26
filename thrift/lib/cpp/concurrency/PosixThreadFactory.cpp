@@ -68,16 +68,6 @@ void getLiveThreadIds(std::set<pthread_t>* tids) {
   }
 }
 
-#if (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 12))
-bool setPosixThreadName(pthread_t id, const std::string& name) {
-  return 0 == pthread_setname_np(id, name.substr(0, 15).c_str());
-}
-#else
-bool setPosixThreadName(pthread_t id, const std::string& name) {
-  return false;
-}
-#endif
-
 /**
  * The POSIX thread class.
  *
