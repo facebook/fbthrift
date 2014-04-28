@@ -25,6 +25,7 @@
 #include <sys/types.h>
 #include <array>
 #include <unistd.h>
+#include "folly/LifoSem.h"
 #include "folly/RWSpinLock.h"
 #include "thrift/lib/cpp/concurrency/Monitor.h"
 #include "thrift/lib/cpp/concurrency/Thread.h"
@@ -206,7 +207,7 @@ class ThreadManager {
    * number of non-completed tasks ThreadManager can handle. 0 means a large
    * default.
    */
-  template <typename SemType = PosixSemaphore>
+  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager>
     newSimpleThreadManager(size_t count = 4,
                            size_t pendingTaskCountMax = 0,
@@ -243,7 +244,7 @@ class ThreadManager {
   template <typename SemType>
   class ImplT;
 
-  typedef ImplT<PosixSemaphore> Impl;
+  typedef ImplT<folly::LifoSem> Impl;
  protected:
   static folly::RWSpinLock observerLock_;
   static std::shared_ptr<Observer> observer_;
@@ -282,7 +283,7 @@ public:
    * Creates a priority-aware thread manager that uses counts[X]
    * worker threads for priority X.
    */
-  template <typename SemType = PosixSemaphore>
+  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager>
     newPriorityThreadManager(std::array<size_t, N_PRIORITIES> counts,
                              bool enableTaskStats = false);
@@ -296,7 +297,7 @@ public:
    * @param normalThreadsCount - number of threads of NORMAL priority, defaults
    *          to the number of CPUs on the system
    */
-  template <typename SemType = PosixSemaphore>
+  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager>
     newPriorityThreadManager(size_t normalThreadsCount
                                       = sysconf(_SC_NPROCESSORS_ONLN),
@@ -305,7 +306,7 @@ public:
   template <typename SemType>
   class PriorityImplT;
 
-  typedef PriorityImplT<PosixSemaphore> PriorityImpl;
+  typedef PriorityImplT<folly::LifoSem> PriorityImpl;
 };
 
 }}} // apache::thrift::concurrency
