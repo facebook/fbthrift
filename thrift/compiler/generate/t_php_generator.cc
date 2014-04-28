@@ -2342,7 +2342,8 @@ void t_php_generator::_generate_service_client(
         indent() << "thrift_protocol_write_binary($this->output_, '" <<
         (*f_iter)->get_name() << "', " <<
         "TMessageType::CALL, $args, $currentseqid, " <<
-        "$this->output_->isStrictWrite());" << endl;
+        "$this->output_->isStrictWrite(), " <<
+        ((*f_iter)->is_oneway() ? "true" : "false") << ");" << endl;
 
       scope_down(out);
       out <<
@@ -2352,14 +2353,15 @@ void t_php_generator::_generate_service_client(
       out <<
         indent() << "thrift_protocol_write_compact($this->output_, '" <<
         (*f_iter)->get_name() << "', " <<
-        "TMessageType::CALL, $args, $currentseqid);" << endl;
+        "TMessageType::CALL, $args, $currentseqid, " <<
+        ((*f_iter)->is_oneway() ? "true" : "false") << ");" << endl;
 
       scope_down(out);
       out <<
         indent() << "else" << endl;
       scope_up(out);
 
-      // Serialize the request header
+      // Serialize the request header and write to the stream
       if (binary_inline_) {
         out <<
           indent() << "$buff = pack('N', (0x80010000 | TMessageType::CALL));"
@@ -2367,25 +2369,22 @@ void t_php_generator::_generate_service_client(
           indent() << "$buff .= pack('N', strlen('" << funname << "'));"
                    << endl <<
           indent() << "$buff .= '" << funname << "';" << endl <<
-          indent() << "$buff .= pack('N', $currentseqid);" << endl;
-      } else {
-        out <<
-          indent() << "$this->output_->writeMessageBegin('" <<
-          (*f_iter)->get_name() <<
-          "', TMessageType::CALL, $currentseqid);" << endl;
-      }
-
-      // Write to the stream
-      if (binary_inline_) {
-        out <<
+          indent() << "$buff .= pack('N', $currentseqid);" << endl <<
           indent() << "$args->write($buff);" << endl <<
           indent() << "$this->output_->write($buff);" << endl <<
           indent() << "$this->output_->flush();" << endl;
       } else {
         out <<
+          indent() << "$this->output_->writeMessageBegin('" <<
+          (*f_iter)->get_name() <<
+          "', TMessageType::CALL, $currentseqid);" << endl <<
           indent() << "$args->write($this->output_);" << endl <<
-          indent() << "$this->output_->writeMessageEnd();" << endl <<
-          indent() << "$this->output_->getTransport()->flush();" << endl;
+          indent() << "$this->output_->writeMessageEnd();" << endl;
+        if ((*f_iter)->is_oneway()) {
+          out << indent() << "$this->output_->getTransport()->onewayFlush();" << endl;
+        } else {
+          out << indent() << "$this->output_->getTransport()->flush();" << endl;
+        }
       }
 
     scope_down(out);

@@ -2395,33 +2395,32 @@ void t_hack_generator::_generate_service_client(
       out <<
         indent() << "$this->eventHandler_->preSend('" << (*f_iter)->get_name() <<
                     "', $args, $currentseqid);" << endl;
-      if (!(*f_iter)->is_oneway()) {
-        // Force native php implementation if this is a oneway call, so we call onewayFlush() rather than flush()
-        out <<
-          indent() << "if ($this->output_ instanceof TBinaryProtocolAccelerated)" << endl;
-        scope_up(out);
+      out <<
+        indent() << "if ($this->output_ instanceof TBinaryProtocolAccelerated)" << endl;
+      scope_up(out);
 
-        out <<
-          indent() << "thrift_protocol_write_binary($this->output_, '" <<
-          (*f_iter)->get_name() << "', " <<
-          "TMessageType::CALL, $args, $currentseqid, " <<
-          "$this->output_->isStrictWrite());" << endl;
+      out <<
+        indent() << "thrift_protocol_write_binary($this->output_, '" <<
+        (*f_iter)->get_name() << "', " <<
+        "TMessageType::CALL, $args, $currentseqid, " <<
+        "$this->output_->isStrictWrite(), " <<
+        ((*f_iter)->is_oneway() ? "true" : "false") << ");" << endl;
 
-        scope_down(out);
-        out <<
-          indent() << "else if ($this->output_ instanceof TCompactProtocolAccelerated)" << endl;
-        scope_up(out);
+      scope_down(out);
+      out <<
+        indent() << "else if ($this->output_ instanceof TCompactProtocolAccelerated)" << endl;
+      scope_up(out);
 
-        out <<
-          indent() << "thrift_protocol_write_compact($this->output_, '" <<
-          (*f_iter)->get_name() << "', " <<
-          "TMessageType::CALL, $args, $currentseqid);" << endl;
+      out <<
+        indent() << "thrift_protocol_write_compact($this->output_, '" <<
+        (*f_iter)->get_name() << "', " <<
+        "TMessageType::CALL, $args, $currentseqid, " <<
+        ((*f_iter)->is_oneway() ? "true" : "false") << ");" << endl;
 
-        scope_down(out);
-        out <<
-          indent() << "else" << endl;
-        scope_up(out);
-      }
+      scope_down(out);
+      out <<
+        indent() << "else" << endl;
+      scope_up(out);
 
       // Serialize the request header
       out <<
@@ -2441,9 +2440,7 @@ void t_hack_generator::_generate_service_client(
           indent() << "$this->output_->getTransport()->flush();" << endl;
       }
 
-    if (!(*f_iter)->is_oneway()) {
-      scope_down(out);
-    }
+    scope_down(out);
 
     indent_down();
     indent(out) << "} catch (THandlerShortCircuitException $ex) {" << endl;
