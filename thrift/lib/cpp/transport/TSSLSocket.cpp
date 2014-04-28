@@ -942,4 +942,10 @@ string SSLContext::getErrors(int errnoCopy) {
   return errors;
 }
 
+std::ostream&
+operator<<(std::ostream& os, const PasswordCollector& collector) {
+  os << collector.describe();
+  return os;
+}
+
 }}}

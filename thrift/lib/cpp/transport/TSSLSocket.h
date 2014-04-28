@@ -534,7 +534,14 @@ class PasswordCollector {
    * @param size     Maximum length of password including nullptr character
    */
   virtual void getPassword(std::string& password, int size) = 0;
+
+  /**
+   * Return a description of this collector for logging purposes
+   */
+  virtual std::string describe() const = 0;
 };
+
+std::ostream& operator<<(std::ostream& os, const PasswordCollector& collector);
 
 }}}
 
