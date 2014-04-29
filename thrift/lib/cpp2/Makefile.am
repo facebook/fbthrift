@@ -64,6 +64,7 @@ libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   ../cpp/async/TAsyncTimeoutSet.cpp \
 			   ../cpp/async/TEventBaseManager.cpp \
 			   ../cpp/util/FdUtils.cpp \
+			   ../cpp/util/THttpParser.cpp \
 			   ../cpp/util/kerberos/Krb5Util.cpp \
 			   ../cpp/util/kerberos/Krb5CredentialsCacheManager.cpp
 
