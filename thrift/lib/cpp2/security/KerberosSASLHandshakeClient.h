@@ -28,6 +28,7 @@
 #include "folly/io/IOBuf.h"
 #include "thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h"
 #include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
+#include "thrift/lib/cpp2/security/SecurityLogger.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h"
@@ -40,7 +41,9 @@ namespace apache { namespace thrift {
 class KerberosSASLHandshakeClient {
   public:
 
-    KerberosSASLHandshakeClient();
+    explicit KerberosSASLHandshakeClient(
+      const std::shared_ptr<SecurityLogger>& logger =
+        std::make_shared<SecurityLogger>());
 
     virtual ~KerberosSASLHandshakeClient();
 
@@ -93,7 +96,8 @@ class KerberosSASLHandshakeClient {
     static void cleanUpState(
       gss_ctx_id_t context,
       gss_name_t target_name,
-      gss_cred_id_t client_creds);
+      gss_cred_id_t client_creds,
+      const std::shared_ptr<SecurityLogger>& logger);
 
     virtual void setSaslThreadManager(
         const std::shared_ptr<SaslThreadManager>& thread_manager) {
@@ -145,6 +149,7 @@ class KerberosSASLHandshakeClient {
     std::shared_ptr<SaslThreadManager> saslThreadManager_;
     std::shared_ptr<krb5::Krb5CredentialsCacheManager>
       credentialsCacheManager_;
+    std::shared_ptr<SecurityLogger> logger_;
 };
 
 }}  // apache::thrift

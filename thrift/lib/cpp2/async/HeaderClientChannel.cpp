@@ -149,6 +149,7 @@ void HeaderClientChannel::SaslClientCallback::saslSendServer(
 void HeaderClientChannel::SaslClientCallback::saslError(
     std::exception_ptr&& ex) {
   apache::thrift::async::HHWheelTimer::Callback::cancelTimeout();
+  auto logger = channel_.saslClient_->getSaslLogger();
 
   // Record error string
   try {
@@ -157,6 +158,10 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     std::string errorMessage =
       "MsgNum: " + std::to_string(channel_.handshakeMessagesSent_);
     channel_.saslClient_->setErrorString(errorMessage + " " + e.what());
+
+    if (logger) {
+      logger->log("sasl_error", e.what());
+    }
   } catch (...) {
   }
 
@@ -166,6 +171,9 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     channel_.header_->setClientType(THRIFT_HEADER_CLIENT_TYPE);
   } catch (const std::exception& e) {
     LOG(ERROR) << "SASL required by client but failed or rejected by server";
+    if (logger) {
+      logger->log("sasl_failed_hard");
+    }
     channel_.messageReceiveError(std::move(ex));
     channel_.closeNow();
     return;
@@ -178,6 +186,9 @@ void HeaderClientChannel::SaslClientCallback::saslError(
   } catch (...) {
     VLOG(5) << "SASL client falling back to insecure";
   }
+  if (logger) {
+    logger->log("sasl_fell_back_to_insecure");
+  }
   // We need to tell saslClient that the security channel is no longer
   // available, so that it does not attempt to send messages to the server.
   channel_.saslClient_->markChannelCallbackUnavailable();
@@ -189,6 +200,17 @@ void HeaderClientChannel::SaslClientCallback::saslComplete() {
   VLOG(5) << "SASL client negotiation complete: "
           << channel_.saslClient_->getClientIdentity() << " => "
           << channel_.saslClient_->getServerIdentity();
+  auto logger = channel_.saslClient_->getSaslLogger();
+  if (logger) {
+    logger->log(
+      "sasl_complete",
+      {
+        channel_.saslClient_->getClientIdentity(),
+        channel_.saslClient_->getServerIdentity()
+      }
+    );
+  }
+
   channel_.setSecurityComplete(ProtectionState::VALID);
 }
 

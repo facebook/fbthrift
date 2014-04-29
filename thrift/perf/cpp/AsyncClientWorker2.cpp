@@ -27,6 +27,7 @@
 #include "thrift/lib/cpp2/async/HeaderClientChannel.h"
 #include "thrift/lib/cpp2/async/RequestChannel.h"
 #include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
+#include "thrift/lib/cpp2/security/SecurityLogger.h"
 #include "thrift/lib/cpp/test/loadgen/ScoreBoard.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
 
@@ -171,11 +172,12 @@ class LoadCallback :
   bool oneway_;
 };
 
-std::shared_ptr<SaslThreadManager> saslThreadManager_(new SaslThreadManager());
-std::shared_ptr<krb5::Krb5CredentialsCacheManager> credentialsCacheManager_(
-  new krb5::Krb5CredentialsCacheManager());
-
 LoadTestClientPtr AsyncClientWorker2::createConnection() {
+  static auto saslThreadManager_ = std::make_shared<SaslThreadManager>();
+  static auto ccManagerLogger_ = std::make_shared<SecurityLogger>();
+  static auto credentialsCacheManager_ =
+    std::make_shared<krb5::Krb5CredentialsCacheManager>("", ccManagerLogger_);
+
   const std::shared_ptr<apache::thrift::test::ClientLoadConfig>& config =
     getConfig();
   if (config->useSR()) {

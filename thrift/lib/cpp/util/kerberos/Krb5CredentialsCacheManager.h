@@ -26,6 +26,7 @@
 
 #include "folly/stats/BucketedTimeSeries.h"
 #include "folly/RWSpinLock.h"
+#include "thrift/lib/cpp2/security/SecurityLogger.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
 
 namespace apache { namespace thrift { namespace krb5 {
@@ -40,7 +41,10 @@ class Krb5CredentialsCacheManager {
   /**
    * Specify the client to use when doing kInit.
    */
-  explicit Krb5CredentialsCacheManager(const std::string& client = "");
+  explicit Krb5CredentialsCacheManager(
+    const std::string& client = "",
+    const std::shared_ptr<SecurityLogger>& logger =
+      std::make_shared<SecurityLogger>());
 
   virtual ~Krb5CredentialsCacheManager();
 
@@ -157,7 +161,7 @@ class Krb5CredentialsCacheManager {
   Mutex manageThreadMutex_; // A lock for the two members below
   bool stopManageThread_;
   std::condition_variable manageThreadCondVar_;
-
+  std::shared_ptr<SecurityLogger> logger_;
 };
 
 }}}

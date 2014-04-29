@@ -29,6 +29,7 @@
 #include "thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h"
 #include "thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h"
 #include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
+#include "thrift/lib/cpp2/security/SecurityLogger.h"
 #include "thrift/lib/cpp/concurrency/Exception.h"
 
 #include <memory>
@@ -56,9 +57,11 @@ namespace apache { namespace thrift {
 
 static const char MECH[] = "krb5";
 
-GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb)
-    : evb_(evb)
-    , clientHandshake_(new KerberosSASLHandshakeClient)
+GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb,
+      const std::shared_ptr<SecurityLogger>& logger)
+    : SaslClient(logger)
+    , evb_(evb)
+    , clientHandshake_(new KerberosSASLHandshakeClient(logger))
     , mutex_(new Mutex)
     , saslThreadManager_(nullptr) {
 }
@@ -68,14 +71,18 @@ void GssSaslClient::start(Callback *cb) {
   auto channelCallbackUnavailable = channelCallbackUnavailable_;
   auto clientHandshake = clientHandshake_;
   auto mutex = mutex_;
+  auto logger = saslLogger_;
 
+  logger->logStart("prepare_first_request");
   try {
     if (!saslThreadManager_) {
       throw TApplicationException(
         "saslThreadManager is not set in GssSaslClient");
     }
 
+    logger->logStart("thread_manager_overhead");
     saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
+      logger->logEnd("thread_manager_overhead");
       MoveWrapper<unique_ptr<IOBuf>> iobuf;
       std::exception_ptr ex;
 
@@ -120,11 +127,13 @@ void GssSaslClient::start(Callback *cb) {
           cb->saslError(std::exception_ptr(ex));
           return;
         } else {
+          logger->logStart("first_rtt");
           cb->saslSendServer(std::move(*iobuf));
         }
       });
     }));
   } catch (const TooManyPendingTasksException& e) {
+    logger->log("too_many_pending_tasks_in_start");
     cb->saslError(std::current_exception());
   }
 }
@@ -136,6 +145,7 @@ void GssSaslClient::consumeFromServer(
   auto channelCallbackUnavailable = channelCallbackUnavailable_;
   auto clientHandshake = clientHandshake_;
   auto mutex = mutex_;
+  auto logger = saslLogger_;
 
   try {
     saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
@@ -206,6 +216,7 @@ void GssSaslClient::consumeFromServer(
         return;
       }
 
+      auto phase = clientHandshake->getPhase();
       evb_->runInEventBaseThread([=]() mutable {
         if (*channelCallbackUnavailable) {
           return;
@@ -215,6 +226,11 @@ void GssSaslClient::consumeFromServer(
           return;
         }
         if (*iobuf && !(*iobuf)->empty()) {
+          if (phase == SELECT_SECURITY_LAYER) {
+            logger->logStart("third_rtt");
+          } else {
+            logger->logStart("second_rtt");
+          }
           cb->saslSendServer(std::move(*iobuf));
         }
         if (clientHandshake_->isContextEstablished()) {
@@ -223,6 +239,7 @@ void GssSaslClient::consumeFromServer(
       });
     }));
   } catch (const TooManyPendingTasksException& e) {
+    logger->log("too_many_pending_tasks_in_consume");
     cb->saslError(std::current_exception());
   }
 }

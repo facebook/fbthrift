@@ -15,6 +15,7 @@
  */
 
 #include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
+#include "thrift/lib/cpp2/security/SecurityLogger.h"
 
 #include <glog/logging.h>
 #include <memory>
@@ -25,6 +26,7 @@
 #include "folly/Memory.h"
 #include "folly/ScopeGuard.h"
 #include "folly/String.h"
+
 
 namespace apache { namespace thrift { namespace krb5 {
 using namespace std;
@@ -63,8 +65,10 @@ uint64_t Krb5CredentialsCacheManager::ServiceTimeSeries::getCount() {
 }
 
 Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
-    const string& client)
-  : stopManageThread_(false) {
+    const string& client,
+    const std::shared_ptr<SecurityLogger>& logger)
+  : stopManageThread_(false)
+  , logger_(logger) {
 
   // Client principal choice: first of explicitly specified, principal
   // in current ccache, or first principal in keytab.  It's possible
@@ -78,6 +82,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
   }
 
   manageThread_ = std::thread([=] {
+    logger->log("manager_started", client);
     size_t sname_hash = 0;
 
     if (client_) {
@@ -96,11 +101,13 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
         if (mem == nullptr) {
           try {
             mem = readInCache();
+            logger->log("init_via_file");
             VLOG(4) << "Initialized the krb5 credentials cache from file";
           } catch(...) {
             // Failed reading in file cache, probably means it's not there.
             // Just get a new cache.
             mem = kInit();
+            logger->log("init_via_kinit");
             VLOG(4) << "Initialized the krb5 credentials cache via kinit";
           }
         }
@@ -111,6 +118,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
           client_ = folly::make_unique<Krb5Principal>(
             std::move(mem->getClientPrincipal()));
           sname_hash = std::hash<std::string>()(folly::to<string>(*client_));
+          logger->log("get_client_from_ccache", folly::to<string>(*client_));
         }
 
         auto lifetime = mem->getLifetime();
@@ -132,6 +140,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
             lifetime.second;
 
         if (about_to_expire || lifetime.first == 0) {
+          logger->log("about_to_expire");
           mem = kInit();
           importMemoryCache(mem);
           VLOG(4) << "do kInit because CC is about to expire";
@@ -142,7 +151,9 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
           if (getCache() == nullptr) {
             importMemoryCache(mem);
           }
+          logger->logStart("build_renewed_cache");
           mem = buildRenewedCache();
+          logger->logEnd("build_renewed_cache");
           importMemoryCache(mem);
           VLOG(4) << "renewed CC at half-life";
         }
@@ -158,6 +169,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
       } catch (const std::runtime_error& e) {
         // Notify the waitForCache functions that an error happened.
         // We should propagate this error up.
+        logger->log("cc_manager_thread_error", e.what());
         notifyOfError(e.what());
         static string oldError = "";
         if (oldError != e.what()) {
@@ -187,6 +199,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
 
 Krb5CredentialsCacheManager::~Krb5CredentialsCacheManager() {
   stopThread();
+  logger_->log("manager_destroyed");
 }
 
 void Krb5CredentialsCacheManager::stopThread() {
@@ -250,6 +263,7 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::kInit() {
   // Get default init options
   Krb5InitCredsOpt options(ctx_.get());
 
+  logger_->logStart("kinit_get_tgt", folly::to<string>(*client));
   // Grab the tgt
   krb5_creds creds;
   code = krb5_get_init_creds_keytab(
@@ -261,6 +275,7 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::kInit() {
     nullptr,
     options.get());
   raiseIf(code, "Getting new tgt ticket using keytab " + keytab.getName());
+  logger_->logEnd("kinit_get_tgt");
 
   SCOPE_EXIT { krb5_free_cred_contents(ctx_.get(), &creds); };
 
@@ -305,7 +320,9 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::buildRenewedCache() {
   for (auto& creds : *cc_cur) {
     Krb5Principal server(ctx_.get(), std::move(creds.server));
     if (!server.isTgt()) {
+      logger_->logStart("do_tgs_request", folly::to<string>(server));
       doTgsReq(server.get(), *mem);
+      logger_->logEnd("do_tgs_request");
     }
   }
 
@@ -334,9 +351,12 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
   code = krb5_cc_copy_creds(ctx_.get(), file_cache.get(), mem->get());
   raiseIf(code, "copying to memory cache");
 
-  auto service_list = mem->getServicePrincipalList();
+  auto service_list = mem->getServicePrincipalList(false /* filter tgt */);
   for (auto& service : service_list)  {
-    incUsedService(folly::to<string>(service));
+    logger_->log("read_in_principal", folly::to<string>(service));
+    if (!service.isTgt()) {
+      incUsedService(folly::to<string>(service));
+    }
   }
 
   return mem;
@@ -388,7 +408,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
         top_services.count(princ_string) == 0) {
       continue;
     }
-
+    logger_->log("write_out_principal", folly::to<string>(server));
     // Store the cred into a file
     code = krb5_cc_store_cred(ctx_.get(), file_cache.get(), &(*it));
     // Erase from top_services struct so we don't persist the same

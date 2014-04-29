@@ -46,7 +46,11 @@ using apache::thrift::concurrency::TooManyPendingTasksException;
 /**
  * Client functions.
  */
-KerberosSASLHandshakeClient::KerberosSASLHandshakeClient() : phase_(INIT) {
+KerberosSASLHandshakeClient::KerberosSASLHandshakeClient(
+    const std::shared_ptr<SecurityLogger>& logger) :
+    phase_(INIT),
+    logger_(logger) {
+
   // Override the location of the conf file if it doesn't already exist.
   setenv("KRB5_CONFIG", "/etc/krb5-thrift.conf", 0);
 
@@ -86,27 +90,31 @@ KerberosSASLHandshakeClient::~KerberosSASLHandshakeClient() {
       client_creds == GSS_C_NO_CREDENTIAL) {
     return;
   }
+  auto logger = logger_;
   if (!saslThreadManager_) {
-    cleanUpState(context, target_name, client_creds);
+    cleanUpState(context, target_name, client_creds, logger);
     return;
   }
 
   try {
     saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
       cleanUpState(
-        context, target_name, client_creds);
+        context, target_name, client_creds, logger);
     }));
   } catch (const TooManyPendingTasksException& e) {
     // If we can't do this async, do it inline, since we don't want to leak
     // memory.
-    cleanUpState(context, target_name, client_creds);
+    logger->log("too_many_pending_tasks_in_cleanup");
+    cleanUpState(context, target_name, client_creds, logger);
   }
 }
 
 void KerberosSASLHandshakeClient::cleanUpState(
     gss_ctx_id_t context,
     gss_name_t target_name,
-    gss_cred_id_t client_creds) {
+    gss_cred_id_t client_creds,
+    const std::shared_ptr<SecurityLogger>& logger) {
+  logger->logStart("clean_up_state");
   OM_uint32 min_stat;
   if (context != GSS_C_NO_CONTEXT) {
     gss_delete_sec_context(&min_stat, &context, GSS_C_NO_BUFFER);
@@ -117,6 +125,7 @@ void KerberosSASLHandshakeClient::cleanUpState(
   if (client_creds != GSS_C_NO_CREDENTIAL) {
     gss_release_cred(&min_stat, &client_creds);
   }
+  logger->logEnd("clean_up_state");
 }
 
 void KerberosSASLHandshakeClient::throwKrb5Exception(
@@ -182,16 +191,19 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
   try {
     apache::thrift::transport::TSocketAddress ipaddr(addr, 0);
     if (ipaddr.getFamily() == AF_INET || ipaddr.getFamily() == AF_INET6) {
+      logger_->logStart("hostname_lookup");
       string hostname = getHostByAddr(addr);
       if (!hostname.empty()) {
         addr = hostname;
         servicePrincipal_ = service + "@" + addr;
       }
+      logger_->logEnd("hostname_lookup");
     }
   } catch (...) {
     // If invalid ip address, don't do anything and swallow this exception.
   }
 
+  logger_->logStart("import_sname");
   Krb5Context ctx;
   auto princ = Krb5Principal::snameToPrincipal(
     ctx.get(),
@@ -213,11 +225,13 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
     KerberosSASLHandshakeUtils::throwGSSException(
       "Error parsing server name on client", maj_stat, min_stat);
   }
+  logger_->logEnd("import_sname");
 
   unique_ptr<gss_name_t, GSSNameDeleter> client_name(new gss_name_t);
   *client_name = GSS_C_NO_NAME;
 
   if (clientPrincipal_.size() > 0) {
+    logger_->logStart("import_cname");
     // If a client principal was explicitly specified, then establish
     // credentials using that principal, otherwise use the default.
     gss_buffer_desc client_name_tok;
@@ -236,6 +250,7 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
       KerberosSASLHandshakeUtils::throwGSSException(
         "Error parsing client name on client", maj_stat, min_stat);
     }
+    logger_->logEnd("import_cname");
   }
 
   // Attempt to acquire client credentials.
@@ -244,7 +259,9 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
   }
 
   try {
+    logger_->logStart("wait_for_cache");
     cc_ = credentialsCacheManager_->waitForCache();
+    logger_->logEnd("wait_for_cache");
   } catch (const std::runtime_error& e) {
     throw TKerberosException(
       string("Kerberos ccache init error: ") + e.what());
@@ -252,12 +269,14 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
 
   credentialsCacheManager_->incUsedService(princ_name);
 
+  logger_->logStart("import_cred");
   maj_stat = gss_krb5_import_cred(
     &min_stat,
     cc_->get(),
     nullptr,
     nullptr,
     &clientCreds_);
+  logger_->logEnd("import_cred");
 
   if (maj_stat != GSS_S_COMPLETE) {
     KerberosSASLHandshakeUtils::throwGSSException(
@@ -278,6 +297,14 @@ void KerberosSASLHandshakeClient::initSecurityContext() {
   outputToken_.reset(new gss_buffer_desc);
   *outputToken_ = GSS_C_EMPTY_BUFFER;
 
+  bool first_call = false;
+  if (context_ == GSS_C_NO_CONTEXT) {
+    first_call = true;
+    logger_->logStart("init_sec_context");
+  } else {
+    logger_->logStart("cont_init_sec_context");
+  }
+
   OM_uint32 time_rec = 0;
   contextStatus_ = gss_init_sec_context(
     &min_stat, // minor status
@@ -296,6 +323,12 @@ void KerberosSASLHandshakeClient::initSecurityContext() {
     &retFlags_, // return flags
     &time_rec // time_rec
   );
+
+  if (first_call) {
+    logger_->logEnd("init_sec_context");
+  } else {
+    logger_->logEnd("cont_init_sec_context");
+  }
 
   if (contextStatus_ != GSS_S_COMPLETE &&
       contextStatus_ != GSS_S_CONTINUE_NEEDED) {
@@ -328,17 +361,26 @@ std::unique_ptr<std::string> KerberosSASLHandshakeClient::getTokenToSend() {
       assert(false);
     case ESTABLISH_CONTEXT:
     case CONTEXT_NEGOTIATION_COMPLETE:
+    {
+      if (phase_ == ESTABLISH_CONTEXT) {
+        logger_->logEnd("prepare_first_request");
+      } else {
+        logger_->logEnd("prepare_second_request");
+      }
       return unique_ptr<string>(
         new string((const char*) outputToken_->value, outputToken_->length));
       break;
+    }
     case SELECT_SECURITY_LAYER:
     {
       unique_ptr<IOBuf> wrapped_sec_layer_message = wrapMessage(
         std::move(securityLayerBitmaskBuffer_));
-      return unique_ptr<string>(new string(
+      auto ptr = unique_ptr<string>(new string(
         (char *)wrapped_sec_layer_message->data(),
         wrapped_sec_layer_message->length()
       ));
+      logger_->logEnd("prepare_third_request");
+      return std::move(ptr);
       break;
     }
     default:
@@ -353,6 +395,8 @@ void KerberosSASLHandshakeClient::handleResponse(const string& msg) {
       // Should not call this function if in INIT state
       assert(false);
     case ESTABLISH_CONTEXT:
+      logger_->logEnd("first_rtt");
+      logger_->logStart("prepare_second_request");
       assert(contextStatus_ == GSS_S_CONTINUE_NEEDED);
       if (inputToken_ == nullptr) {
         inputToken_.reset(new gss_buffer_desc);
@@ -364,6 +408,8 @@ void KerberosSASLHandshakeClient::handleResponse(const string& msg) {
       break;
     case CONTEXT_NEGOTIATION_COMPLETE:
     {
+      logger_->logEnd("second_rtt");
+      logger_->logStart("prepare_third_request");
       unique_ptr<IOBuf> unwrapped_security_layer_msg = unwrapMessage(std::move(
         IOBuf::wrapBuffer(msg.c_str(), msg.length())));
       io::Cursor c = io::Cursor(unwrapped_security_layer_msg.get());
@@ -382,6 +428,7 @@ void KerberosSASLHandshakeClient::handleResponse(const string& msg) {
       break;
     }
     case SELECT_SECURITY_LAYER:
+      logger_->logEnd("third_rtt");
       // If we are in select security layer state and we get any message
       // from the server, it means that the server is successful, so complete
       // the handshake

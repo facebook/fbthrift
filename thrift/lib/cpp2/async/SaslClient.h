@@ -18,6 +18,7 @@
 #define THRIFT_SASLCLIENT_H_ 1
 
 #include "thrift/lib/cpp2/async/SaslEndpoint.h"
+#include "thrift/lib/cpp2/security/SecurityLogger.h"
 #include "thrift/lib/cpp/async/HHWheelTimer.h"
 #include "thrift/lib/cpp2/async/MessageChannel.h"
 #include "thrift/lib/cpp2/async/RequestChannel.h"
@@ -27,7 +28,7 @@
 namespace apache { namespace thrift {
 
 class SaslClient : public SaslEndpoint {
-public:
+ public:
   class Callback : public apache::thrift::async::HHWheelTimer::Callback {
    public:
     virtual ~Callback() {}
@@ -52,6 +53,11 @@ public:
     }
 
   };
+
+  explicit SaslClient(
+    const std::shared_ptr<SecurityLogger>& logger =
+      std::make_shared<SecurityLogger>()) :
+    saslLogger_(logger) {}
 
   virtual void setClientIdentity(const std::string& identity) = 0;
   virtual void setServiceIdentity(const std::string& identity) = 0;
@@ -78,6 +84,13 @@ public:
 
   virtual void setCredentialsCacheManager(
     const std::shared_ptr<krb5::Krb5CredentialsCacheManager>& cc_manager) {}
+
+  std::shared_ptr<SecurityLogger> getSaslLogger() {
+    return saslLogger_;
+  }
+
+ protected:
+  std::shared_ptr<SecurityLogger> saslLogger_;
 };
 
 }} // apache::thrift

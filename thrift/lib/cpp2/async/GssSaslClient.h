@@ -21,6 +21,7 @@
 #include "thrift/lib/cpp2/async/SaslClient.h"
 #include "thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h"
 #include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
+#include "thrift/lib/cpp2/security/SecurityLogger.h"
 #include "thrift/lib/cpp/concurrency/Mutex.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
 #include "folly/Memory.h"
@@ -32,7 +33,9 @@ namespace apache { namespace thrift {
  */
 class GssSaslClient : public SaslClient {
 public:
-  explicit GssSaslClient(apache::thrift::async::TEventBase*);
+  explicit GssSaslClient(apache::thrift::async::TEventBase*,
+    const std::shared_ptr<SecurityLogger>& logger =
+      std::make_shared<SecurityLogger>());
   virtual void start(Callback *cb);
   virtual void consumeFromServer(
     Callback *cb, std::unique_ptr<folly::IOBuf>&& message);
