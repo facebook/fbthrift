@@ -214,15 +214,41 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
-  if (channel_->getHeader()->getClientType() == THRIFT_HTTP_GET_CLIENT_TYPE) {
-    if (worker_->getServer()->getGetHandler()) {
-      worker_->getServer()->getGetHandler()(worker_->getEventBase(),
-                                            socket_,
-                                            std::move(req->extractBuf()));
-    } else {
-      LOG(ERROR) << "Received HTTP GET and no handler installed - " <<
-        "are you using Service Framework?";
+  bool useHttpHandler = false;
+  // Any POST not for / should go to the status handler
+  if (channel_->getHeader()->getClientType() == THRIFT_HTTP_SERVER_TYPE) {
+    auto buf = req->getBuf();
+    // 7 == length of "POST / " - we are matching on the path
+    if (buf->length() >= 7 &&
+        0 == strncmp(reinterpret_cast<const char*>(buf->data()),
+                     "POST",
+                     4) &&
+        buf->data()[6] != ' ') {
+      useHttpHandler = true;
     }
+
+    // Any GET should use the handler
+    if (buf->length() >= 3 &&
+        0 == strncmp(reinterpret_cast<const char*>(buf->data()),
+                     "GET",
+                     3)) {
+      useHttpHandler = true;
+    }
+
+    // Any HEAD should use the handler
+    if (buf->length() >= 4 &&
+        0 == strncmp(reinterpret_cast<const char*>(buf->data()),
+                     "HEAD",
+                     4)) {
+      useHttpHandler = true;
+    }
+  }
+
+  if (useHttpHandler && worker_->getServer()->getGetHandler()) {
+    worker_->getServer()->getGetHandler()(worker_->getEventBase(),
+                                          socket_,
+                                          std::move(req->extractBuf()));
+
     // Close the channel, since the handler now owns the socket.
     channel_->setCallback(nullptr);
     channel_->setTransport(nullptr);

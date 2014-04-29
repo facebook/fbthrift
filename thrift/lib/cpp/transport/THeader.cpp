@@ -86,7 +86,6 @@ void THeader::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
       clients[THRIFT_FRAMED_DEPRECATED] = true;
       clients[THRIFT_HTTP_SERVER_TYPE] = true;
       clients[THRIFT_HTTP_CLIENT_TYPE] = true;
-      clients[THRIFT_HTTP_GET_CLIENT_TYPE] = true;
       clients[THRIFT_HEADER_CLIENT_TYPE] = true;
       clients[THRIFT_FRAMED_COMPACT] = true;
       break;
@@ -96,7 +95,6 @@ void THeader::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
       clients[THRIFT_FRAMED_DEPRECATED] = true;
       clients[THRIFT_HTTP_SERVER_TYPE] = true;
       clients[THRIFT_HTTP_CLIENT_TYPE] = true;
-      clients[THRIFT_HTTP_GET_CLIENT_TYPE] = true;
       clients[THRIFT_HEADER_CLIENT_TYPE] = true;
       clients[THRIFT_HEADER_SASL_CLIENT_TYPE] = true;
       clients[THRIFT_FRAMED_COMPACT] = true;
@@ -196,15 +194,10 @@ unique_ptr<IOBuf> THeader::removeHeader(IOBufQueue* queue,
     }
 
     buf = std::move(queue->split(msgSize));
-  } else if (sz == HTTP_SERVER_MAGIC) {
-    clientType = THRIFT_HTTP_SERVER_TYPE;
-
-    // Users must explicitly support this.
-
-    buf = queue->move();
-  } else if (sz == HTTP_GET_CLIENT_MAGIC ||
+  } else if (sz == HTTP_SERVER_MAGIC ||
+            sz == HTTP_GET_CLIENT_MAGIC ||
             sz == HTTP_HEAD_CLIENT_MAGIC) {
-    clientType = THRIFT_HTTP_GET_CLIENT_TYPE;
+    clientType = THRIFT_HTTP_SERVER_TYPE;
 
     // Users must explicitly support this.
 
