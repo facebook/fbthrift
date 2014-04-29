@@ -591,7 +591,12 @@ void TAsyncServerSocket::handlerReady(
         addressFamily, &addrLen);
 
     // Accept a new client socket
+#ifdef SOCK_NONBLOCK
+    int clientSocket = accept4(fd, addrStorage, &addrLen, SOCK_NONBLOCK);
+#else
     int clientSocket = accept(fd, addrStorage, &addrLen);
+#endif
+
     address.addressUpdated(addressFamily, addrLen);
 
     int64_t nowMs = concurrency::Util::currentTime();
@@ -633,6 +638,7 @@ void TAsyncServerSocket::handlerReady(
       return;
     }
 
+#ifndef SOCK_NONBLOCK
     // Explicitly set the new connection to non-blocking mode
     if (fcntl(clientSocket, F_SETFL, O_NONBLOCK) != 0) {
       ::close(clientSocket);
@@ -640,6 +646,7 @@ void TAsyncServerSocket::handlerReady(
                     errno);
       return;
     }
+#endif
 
     // Inform the callback about the new connection
     dispatchSocket(clientSocket, std::move(address));
