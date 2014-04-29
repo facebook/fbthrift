@@ -143,6 +143,29 @@ std::ostream& operator<<(std::ostream& os, const Krb5Principal& obj) {
   return os;
 }
 
+Krb5Credentials::Krb5Credentials(krb5_context context, krb5_creds&& creds)
+  : context_(context)
+  , creds_(folly::make_unique<krb5_creds>()) {
+  // struct assignment.  About 16 words.
+  *creds_ = creds;
+  // Zero the struct we copied from.  This can be safely passed to
+  // krb5_free_cred_contents().
+  memset(&creds, 0, sizeof(creds));
+}
+
+Krb5Credentials::Krb5Credentials(Krb5Credentials&& other)
+  : context_(other.context_)
+  , creds_(std::move(other.creds_)) {}
+
+Krb5Credentials& Krb5Credentials::operator=(Krb5Credentials&& other) {
+  if (this != &other) {
+    context_ = other.context_;
+    creds_ = std::move(other.creds_);
+    other.context_ = nullptr;
+  }
+  return *this;
+}
+
 Krb5CCache::Krb5CCache(Krb5CCache&& other)
   : context_(other.context_)
   , ccache_(other.release()) {}
@@ -239,6 +262,63 @@ Krb5Principal Krb5CCache::getClientPrincipal() {
 std::string Krb5CCache::getName() {
   return std::string(krb5_cc_get_type(context_, ccache_)) + ":" +
          std::string(krb5_cc_get_name(context_, ccache_));
+}
+
+void Krb5CCache::initialize(krb5_principal cprinc) {
+  krb5_error_code code = krb5_cc_initialize(context_, ccache_, cprinc);
+  raiseIf(context_, code, "initializing ccache");
+}
+
+void Krb5CCache::storeCred(krb5_creds* creds) {
+  krb5_error_code code = krb5_cc_store_cred(context_, ccache_, creds);
+  raiseIf(context_, code, "store cred to ccache");
+}
+
+Krb5Credentials Krb5CCache::retrieveCred(
+  krb5_creds* match_creds, krb5_flags match_flags) {
+
+  krb5_creds matched;
+  krb5_error_code code = krb5_cc_retrieve_cred(context_, ccache_, match_flags,
+                                               match_creds, &matched);
+  raiseIf(context_, code, "retrieve cred");
+
+  return Krb5Credentials(context_, std::move(matched));
+}
+
+Krb5Credentials Krb5CCache::retrieveCred(krb5_principal sprinc) {
+  Krb5Principal cprinc = getClientPrincipal();
+
+  krb5_creds in_creds;
+  memset(&in_creds, 0, sizeof(in_creds));
+  in_creds.client = cprinc.get();
+  in_creds.server = sprinc;
+
+  return retrieveCred(&in_creds, 0 /* flags */);
+}
+
+Krb5Credentials Krb5CCache::getCredentials(
+  krb5_creds* in_creds, krb5_flags options) {
+
+  krb5_creds* out_creds;
+  krb5_error_code code = krb5_get_credentials(context_, options, ccache_,
+                                              in_creds, &out_creds);
+  raiseIf(context_, code, "get credentials");
+  SCOPE_EXIT { krb5_free_creds(context_, out_creds); };
+
+  return Krb5Credentials(context_, std::move(*out_creds));
+}
+
+Krb5Credentials Krb5CCache::getCredentials(
+  krb5_principal sprinc, krb5_flags options) {
+
+  Krb5Principal cprinc = getClientPrincipal();
+
+  krb5_creds in_creds;
+  memset(&in_creds, 0, sizeof(in_creds));
+  in_creds.client = cprinc.get();
+  in_creds.server = sprinc;
+
+  return getCredentials(&in_creds, options);
 }
 
 Krb5CCache::~Krb5CCache() {
@@ -368,6 +448,17 @@ std::string Krb5Keytab::getName() const {
                                           sizeof(name));
   raiseIf(context_, code, "getting keytab name");
   return name;
+}
+
+Krb5Credentials Krb5Keytab::getInitCreds(
+  krb5_principal princ, krb5_get_init_creds_opt* opts) {
+
+  krb5_creds creds;
+  krb5_error_code code = krb5_get_init_creds_keytab(
+    context_, &creds, princ, keytab_, 0 /* starttime */,
+    nullptr /* initial sname */, opts);
+  raiseIf(context_, code, "getting credentials from keytab");
+  return Krb5Credentials(context_, std::move(creds));
 }
 
 struct Krb5Keytab::Iterator::State {

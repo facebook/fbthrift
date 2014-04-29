@@ -37,6 +37,7 @@ extern "C" {
 }
 
 #include "folly/Conv.h"
+#include "folly/Memory.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h"
 
 namespace std {
@@ -184,6 +185,22 @@ toAppend(const Krb5Principal& value, Tgt * result) {
 
 std::ostream& operator<<(std::ostream& os, const Krb5Principal& obj);
 
+class Krb5Credentials {
+public:
+  Krb5Credentials(krb5_context context, krb5_creds&& creds);
+  Krb5Credentials(Krb5Credentials&& other);
+  Krb5Credentials& operator=(Krb5Credentials&& other);
+
+  ~Krb5Credentials() { krb5_free_cred_contents(context_, creds_.get()); }
+
+  krb5_creds* get() const { return creds_.get(); }
+
+private:
+
+  krb5_context context_;
+  std::unique_ptr<krb5_creds> creds_;
+};
+
 class Krb5CCache {
 public:
   class Iterator : public std::iterator<std::input_iterator_tag, krb5_creds> {
@@ -255,6 +272,12 @@ public:
   std::pair<uint64_t, uint64_t> getLifetime(krb5_principal principal = nullptr);
   std::string getName();
   Krb5Principal getClientPrincipal();
+  void initialize(krb5_principal cprinc);
+  void storeCred(krb5_creds* creds);
+  Krb5Credentials retrieveCred(krb5_creds* match_creds, krb5_flags match_flags);
+  Krb5Credentials retrieveCred(krb5_principal sprinc);
+  Krb5Credentials getCredentials(krb5_creds* in_creds, krb5_flags options = 0);
+  Krb5Credentials getCredentials(krb5_principal sprinc, krb5_flags options = 0);
 
  private:
   Krb5CCache(krb5_context context, krb5_ccache ccache);
@@ -314,6 +337,8 @@ public:
   krb5_keytab get() const { return keytab_; }
   krb5_context getContext() const { return context_; }
   std::string getName() const;
+  Krb5Credentials getInitCreds(krb5_principal princ,
+                               krb5_get_init_creds_opt* opts = nullptr);
 
   Iterator begin() { return Iterator(this); }
   Iterator end() { return Iterator(nullptr); }
