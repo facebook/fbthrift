@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #ifndef THRIFT_ASYNC_THEADERCLIENTCHANNEL_H_
 #define THRIFT_ASYNC_THEADERCLIENTCHANNEL_H_ 1
 
@@ -254,7 +252,9 @@ private:
         cbCalled_ = true;
         auto old_ctx =
           apache::thrift::async::RequestContext::setContext(cb_->context_);
-        cb_->requestError(ClientReceiveState(ex, std::move(ctx_)));
+        cb_->requestError(
+          ClientReceiveState(ex, std::move(ctx_),
+                             channel_->isSecurityActive()));
         apache::thrift::async::RequestContext::setContext(old_ctx);
       }
       delete this;
@@ -276,7 +276,8 @@ private:
       cb_->replyReceived(ClientReceiveState(protoId_,
                                             std::move(buf),
                                             std::move(ctx_),
-                                            &streamManager));
+                                            &streamManager,
+                                            channel_->isSecurityActive()));
 
       if (streamManager && !streamManager->isDone()) {
         if (serverExpectsStreaming) {
@@ -303,7 +304,9 @@ private:
         cbCalled_ = true;
         auto old_ctx =
           apache::thrift::async::RequestContext::setContext(cb_->context_);
-        cb_->requestError(ClientReceiveState(ex, std::move(ctx_)));
+        cb_->requestError(
+          ClientReceiveState(ex, std::move(ctx_),
+                             channel_->isSecurityActive()));
         apache::thrift::async::RequestContext::setContext(old_ctx);
       }
       maybeDeleteThis();
@@ -322,7 +325,8 @@ private:
         auto old_ctx =
           apache::thrift::async::RequestContext::setContext(cb_->context_);
         cb_->requestError(ClientReceiveState(std::make_exception_ptr(ex),
-                                             std::move(ctx_)));
+                                             std::move(ctx_),
+                                             channel_->isSecurityActive()));
         apache::thrift::async::RequestContext::setContext(old_ctx);
       }
       maybeDeleteThis();
@@ -352,9 +356,11 @@ private:
   class OnewayCallback : public MessageChannel::SendCallback {
    public:
     OnewayCallback(std::unique_ptr<RequestCallback> cb,
-                   std::unique_ptr<apache::thrift::ContextStack> ctx)
+                   std::unique_ptr<apache::thrift::ContextStack> ctx,
+                   bool isSecurityActive)
         : cb_(std::move(cb))
-        , ctx_(std::move(ctx)) {}
+        , ctx_(std::move(ctx))
+        , isSecurityActive_(isSecurityActive) {}
     void sendQueued() { }
     void messageSent() {
       CHECK(cb_);
@@ -368,13 +374,15 @@ private:
       CHECK(cb_);
       auto old_ctx =
         apache::thrift::async::RequestContext::setContext(cb_->context_);
-      cb_->requestError(ClientReceiveState(ex, std::move(ctx_)));
+      cb_->requestError(
+        ClientReceiveState(ex, std::move(ctx_), isSecurityActive_));
       apache::thrift::async::RequestContext::setContext(old_ctx);
       delete this;
     }
    private:
     std::unique_ptr<RequestCallback> cb_;
     std::unique_ptr<apache::thrift::ContextStack> ctx_;
+    bool isSecurityActive_;
   };
 
   // Remove a callback from the recvCallbacks_ map.

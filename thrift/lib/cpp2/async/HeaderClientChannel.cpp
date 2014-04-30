@@ -288,7 +288,8 @@ void HeaderClientChannel::sendOnewayRequest(
   sendSeqId_ = ResponseChannel::ONEWAY_REQUEST_ID;
 
   if (cb) {
-    sendMessage(new OnewayCallback(std::move(cb), std::move(ctx)),
+    sendMessage(new OnewayCallback(std::move(cb), std::move(ctx),
+                                   isSecurityActive()),
                 std::move(buf));
   } else {
     sendMessage(nullptr, std::move(buf));
@@ -513,7 +514,8 @@ void HeaderClientChannel::messageReceiveError(std::exception_ptr&& ex) {
     auto& cb = std::get<2>(funcarg);
     auto& ctx = std::get<3>(funcarg);
     if (cb) {
-      cb->requestError(ClientReceiveState(ex, std::move(ctx)));
+        cb->requestError(
+          ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
     }
   }
 

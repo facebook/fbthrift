@@ -154,6 +154,9 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
   virtual void replyReceived(ClientReceiveState&& state) {
     reply_++;
     replyBytes_ += state.buf()->computeChainDataLength();
+    if (state.isSecurityActive()) {
+      replySecurityActive_++;
+    }
   }
   virtual void requestError(ClientReceiveState&& state) {
     std::exception_ptr ex = state.exception();
@@ -173,18 +176,21 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
     reply_ = 0;
     replyBytes_ = 0;
     replyError_ = 0;
+    replySecurityActive_ = 0;
   }
 
   static bool closed_;
   static uint32_t reply_;
   static uint32_t replyBytes_;
   static uint32_t replyError_;
+  static uint32_t replySecurityActive_;
 };
 
 bool TestRequestCallback::closed_ = false;
 uint32_t TestRequestCallback::reply_ = 0;
 uint32_t TestRequestCallback::replyBytes_ = 0;
 uint32_t TestRequestCallback::replyError_ = 0;
+uint32_t TestRequestCallback::replySecurityActive_ = 0;
 
 class ResponseCallback
     : public ResponseChannel::Callback {
@@ -463,6 +469,9 @@ public:
     if (expectSecurity_) {
       EXPECT_NE(channel0_->getSaslPeerIdentity(), "");
       EXPECT_NE(channel1_->getSaslPeerIdentity(), "");
+      EXPECT_EQ(replySecurityActive_, 1);
+    } else {
+      EXPECT_EQ(replySecurityActive_, 0);
     }
   }
 

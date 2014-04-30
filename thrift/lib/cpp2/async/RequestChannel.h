@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #ifndef THRIFT_ASYNC_REQUESTCHANNEL_H_
@@ -45,24 +42,29 @@ class ClientReceiveState {
  public:
   ClientReceiveState()
       : protocolId_(-1),
-        streamManager_(nullptr) {
+        streamManager_(nullptr),
+        isSecurityActive_(false) {
   }
 
   ClientReceiveState(uint16_t protocolId,
                      std::unique_ptr<folly::IOBuf> buf,
                      std::unique_ptr<apache::thrift::ContextStack> ctx,
-                     std::unique_ptr<StreamManager> * streamManager)
+                     std::unique_ptr<StreamManager> * streamManager,
+                     bool isSecurityActive)
     : protocolId_(protocolId),
       ctx_(std::move(ctx)),
       buf_(std::move(buf)),
-      streamManager_(streamManager) {
+      streamManager_(streamManager),
+      isSecurityActive_(isSecurityActive) {
   }
   ClientReceiveState(std::exception_ptr exc,
-                     std::unique_ptr<apache::thrift::ContextStack> ctx)
+                     std::unique_ptr<apache::thrift::ContextStack> ctx,
+                     bool isSecurityActive)
     : protocolId_(-1),
       ctx_(std::move(ctx)),
       streamManager_(nullptr),
-      exc_(std::move(exc)) {
+      exc_(std::move(exc)),
+      isSecurityActive_(isSecurityActive) {
   }
   ClientReceiveState(folly::exception_wrapper excw,
                      std::unique_ptr<apache::thrift::ContextStack> ctx)
@@ -106,6 +108,9 @@ class ClientReceiveState {
   apache::thrift::ContextStack* ctx() const {
     return ctx_.get();
   }
+  bool isSecurityActive() const {
+    return isSecurityActive_;
+  }
 
   void resetCtx(std::unique_ptr<apache::thrift::ContextStack> ctx) {
     ctx_ = std::move(ctx);
@@ -128,6 +133,7 @@ class ClientReceiveState {
   std::unique_ptr<StreamManager> * streamManager_;
   std::exception_ptr exc_;
   folly::exception_wrapper excw_;
+  bool isSecurityActive_;
 };
 
 class RequestCallback {
