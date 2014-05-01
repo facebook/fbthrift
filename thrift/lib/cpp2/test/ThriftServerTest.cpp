@@ -253,6 +253,7 @@ TEST(ThriftServer, LargeSendTest) {
     client.sync_echoRequest(response, request);
   } catch (const TTransportException& e) {
     EXPECT_EQ(int(TTransportException::TIMED_OUT), int(e.getType()));
+    sleep(1); // Wait for server to timeout also - otherwise other tests fail
     return;
   }
   ADD_FAILURE();
