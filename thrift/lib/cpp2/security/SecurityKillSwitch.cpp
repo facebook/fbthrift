@@ -24,20 +24,20 @@ using namespace apache::thrift;
 
 // DO NOT modify this flag from your application
 DEFINE_string(
-  security_kill_switch_file,
-  "/var/thrift_security/enabled",
-  "A file, which when present acts as a kill switch and disables security \
-  everywhere. This includes thrift security and acl checking both.");
+  thrift_security_kill_switch_file,
+  "/var/thrift_security/disable_thrift_security",
+  "A file, which when present acts as a kill switch and disables thrift "
+  " security everywhere. This DOES NOT disable ACL checking / authorization.");
 
-// Time in seconds after kill switch expires
-static const time_t killSwitchExpired = 86400;
+// Time in seconds after which thrift kill switch expires
+static const time_t thriftKillSwitchExpired = 86400;
 
 namespace apache { namespace thrift {
 
 bool isSecurityKillSwitchEnabled() {
   struct stat info;
-  int ret = stat(FLAGS_security_kill_switch_file.c_str(), &info);
-  if (ret == 0 && time(nullptr) - info.st_mtime < killSwitchExpired) {
+  int ret = stat(FLAGS_thrift_security_kill_switch_file.c_str(), &info);
+  if (ret == 0 && time(nullptr) - info.st_mtime < thriftKillSwitchExpired) {
     return true;
   }
   return false;
