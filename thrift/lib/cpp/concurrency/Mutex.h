@@ -25,6 +25,8 @@
 #include <boost/noncopyable.hpp>
 
 namespace apache { namespace thrift { namespace concurrency {
+class ProfiledPthreadMutex;
+class ProfiledPthreadRWMutex;
 
 #ifndef THRIFT_NO_CONTENTION_PROFILING
 
@@ -59,18 +61,15 @@ void enableMutexProfiling(int32_t profilingSampleRate,
  */
 class Mutex {
  public:
-  typedef void (*Initializer)(void*);
-
-  // Specifying the type of the mutex with one of the static Initializer
-  // methods defined in this class.
-  explicit Mutex(Initializer init = DEFAULT_INITIALIZER);
-
   // Specifying the type of the mutex with an integer. The value has
   // to be supported by the underlying implementation, currently
   // pthread_mutex. So the possible values are PTHREAD_MUTEX_NORMAL,
   // PTHREAD_MUTEX_ERRORCHECK, PTHREAD_MUTEX_RECURSIVE and
   // PTHREAD_MUTEX_DEFAULT.
-  explicit Mutex(int type);
+  //
+  // Backwards compatibility: pass DEFAULT_INITIALIZER for PTHREAD_MUTEX_NORMAL
+  // or RECURSIVE_INITIALIZER for PTHREAD_MUTEX_RECURSIVE.
+  explicit Mutex(int type = DEFAULT_INITIALIZER);
 
   virtual ~Mutex() {}
   virtual void lock() const;
@@ -93,14 +92,11 @@ class Mutex {
 
   void* getUnderlyingImpl() const;
 
-  static void DEFAULT_INITIALIZER(void*);
-  static void ADAPTIVE_INITIALIZER(void*);
-  static void RECURSIVE_INITIALIZER(void*);
+  static int DEFAULT_INITIALIZER;
+  static int RECURSIVE_INITIALIZER;
 
  private:
-
-  class impl;
-  std::shared_ptr<impl> impl_;
+  std::shared_ptr<ProfiledPthreadMutex> impl_;
 };
 
 class ReadWriteMutex {
@@ -125,9 +121,7 @@ public:
   virtual void release() const;
 
 private:
-
-  class impl;
-  std::shared_ptr<impl> impl_;
+  std::shared_ptr<ProfiledPthreadRWMutex> impl_;
 };
 
 /**
