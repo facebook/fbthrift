@@ -378,6 +378,17 @@ void TAsyncServerSocket::getAddress(TSocketAddress* addressReturn) const {
   addressReturn->setFromLocalAddress(sockets_[0].socket_);
 }
 
+std::vector<transport::TSocketAddress> TAsyncServerSocket::getAddresses()
+    const {
+  CHECK(sockets_.size() >= 1);
+  auto tsaVec = std::vector<transport::TSocketAddress>(sockets_.size());
+  auto tsaIter = tsaVec.begin();
+  for (const auto& socket : sockets_) {
+    (tsaIter++)->setFromLocalAddress(socket.socket_);
+  };
+  return tsaVec;
+}
+
 void TAsyncServerSocket::addAcceptCallback(AcceptCallback *callback,
                                            TEventBase *eventBase,
                                            uint32_t maxAtOnce) {

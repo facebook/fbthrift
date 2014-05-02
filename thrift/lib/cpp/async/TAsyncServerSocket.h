@@ -270,6 +270,13 @@ class TAsyncServerSocket : public TDelayedDestruction {
   void getAddress(transport::TSocketAddress* addressReturn) const;
 
   /**
+   * Get all the local addresses to which the socket is bound.
+   *
+   * Throws TTransportException on error.
+   */
+  std::vector<transport::TSocketAddress> getAddresses() const;
+
+  /**
    * Begin listening for connections.
    *
    * This calls ::listen() with the specified backlog.
