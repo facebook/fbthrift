@@ -36,8 +36,9 @@ if lib_path:
     sys.path.insert(0, lib_path[0])
 from optparse import OptionParser
 
-from ThriftTest import ThriftTest
+from ThriftTest import ThriftTest, SecondService
 from ThriftTest.ttypes import *
+from thrift import TMultiplexedProcessor
 from thrift.transport import TTransport
 from thrift.transport import TSocket, TSSLSocket
 from thrift.transport.THeaderTransport import THeaderTransport
@@ -46,6 +47,16 @@ from thrift.protocol import THeaderProtocol
 from thrift.server import TServer, TNonblockingServer, \
     TProcessPoolServer, THttpServer
 
+class SecondHandler(SecondService.Iface):
+    def blahBlah(self):
+        print('blahBlah()')
+
+class SecondContextHandler(SecondService.ContextIface):
+    def __init__(self,):
+        self.th = SecondHandler()
+
+    def blahBlah(self, handler_ctx):
+        self.th.blahBlah()
 
 class TestHandler(ThriftTest.Iface):
 
@@ -256,6 +267,12 @@ if __name__ == "__main__":
         default=False,
         help="use SSL for encrypted transport")
     parser.add_option(
+        "--multiple",
+        action="store_true",
+        dest="multiple",
+        default=False,
+        help="use multiple service")
+    parser.add_option(
         "--header",
         action="store_true",
         dest="header",
@@ -293,14 +310,29 @@ if __name__ == "__main__":
         pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 
     if options.context:
-        handler = ThriftTest.ContextProcessor(TestContextHandler(options.port))
+        processor = ThriftTest.ContextProcessor(TestContextHandler(
+                options.port))
     else:
-        handler = TestHandler()
+        processor = ThriftTest.Processor(TestHandler())
+
+    if options.multiple:
+        processor = TMultiplexedProcessor.TMultiplexedProcessor()
+        if options.context:
+            processor.registerProcessor("ThriftTest",
+                    ThriftTest.ContextProcessor(TestContextHandler(
+                            options.port)))
+            processor.registerProcessor("SecondService",
+                    SecondService.ContextProcessor(SecondContextHandler()))
+        else:
+            processor.registerProcessor("ThriftTest",
+                    ThriftTest.Processor(TestHandler()))
+            processor.registerProcessor("SecondService",
+                    SecondService.Processor(SecondHandler()))
 
     if args[0] == "THttpServer":
         try:
             server = THttpServer.THttpServer(
-                    handler, ('', options.port), pfactory)
+                    processor, ('', options.port), pfactory)
         except:
             print("Could not load THttpServer")
             raise
@@ -317,13 +349,14 @@ if __name__ == "__main__":
 
         if args[0] == "TNonblockingServer":
             server = TNonblockingServer.TNonblockingServer(
-                    handler, transport, pfactory, readTimeout=options.timeout)
+                    processor, transport, pfactory,
+                    readTimeout=options.timeout)
         elif args[0] == "TProcessPoolServer":
             server = TProcessPoolServer.TProcessPoolServer(
-                    handler, transport, tfactory, pfactory)
+                    processor, transport, tfactory, pfactory)
         else:
             ServerClass = getattr(TServer, server_class_name)
-            server = ServerClass(handler, transport, tfactory, pfactory)
+            server = ServerClass(processor, transport, tfactory, pfactory)
 
     if options.header:
         server.processor.setEventHandler(HeaderEventHandler())

@@ -31,12 +31,13 @@ lib_path = glob.glob('../../lib/py/build/lib.*')
 if lib_path:
     sys.path.insert(0, lib_path[0])
 
-from ThriftTest import ThriftTest
+from ThriftTest import ThriftTest, SecondService
 from ThriftTest.ttypes import *
 from thrift.transport import TTransport
 from thrift.transport import TSocket
 from thrift.transport import THttpClient
 from thrift.transport import THeaderTransport
+from thrift.protocol import TMultiplexedProtocol
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol import THeaderProtocol
 import unittest
@@ -51,6 +52,8 @@ parser.add_option("--port", type="int", dest="port",
     help="connect to server at port")
 parser.add_option("--host", type="string", dest="host",
     help="connect to server")
+parser.add_option("--multiple", action="store_true", dest="multiple",
+    help="use Multiple service")
 parser.add_option("--framed", action="store_true", dest="framed",
     help="use framed transport")
 parser.add_option("--header", action="store_true", dest="header",
@@ -88,6 +91,16 @@ class AbstractTest():
 
         self.transport.open()
         self.client = ThriftTest.Client(protocol)
+        if options.multiple:
+            p = TMultiplexedProtocol.TMultiplexedProtocol(protocol,
+                    "ThriftTest")
+            self.client = ThriftTest.Client(p)
+            p = TMultiplexedProtocol.TMultiplexedProtocol(protocol,
+                    "SecondService")
+            self.client2 = SecondService.Client(p)
+        else:
+            self.client = ThriftTest.Client(protocol)
+            self.client2 = None
 
     def tearDown(self):
         # Close!
@@ -149,6 +162,10 @@ class AbstractTest():
         end = time.time()
         self.assertTrue(end - start < 0.2,
                         "oneway sleep took %f sec" % (end - start))
+
+    def testblahBlah(self):
+        if self.client2:
+            self.assertEqual(self.client2.blahBlah(), None)
 
     def testPreServe(self):
         count = self.client.testPreServe()

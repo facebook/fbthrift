@@ -28,13 +28,14 @@ import socket
 import errno
 import ssl as SSL
 
-from ThriftTest import ThriftTest
+from ThriftTest import ThriftTest, SecondService
 from ThriftTest.ttypes import *
 
 from thrift.transport import TTransport
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport import TSocket, TSSLSocket
-from thrift.protocol import TBinaryProtocol, THeaderProtocol
+from thrift.protocol import TBinaryProtocol, THeaderProtocol, \
+        TMultiplexedProtocol
 
 if sys.version_info[0] >= 3:
     xrange = range
@@ -51,7 +52,8 @@ _servers = []
 _ports = {}
 
 
-def start_server(server_type, ssl, server_header, server_context, port):
+def start_server(server_type, ssl, server_header, server_context,
+        multiple, port):
     if sys.version_info[0] >= 3:
         server_path = '_bin/thrift/test/py/py3_test_server.par'
     else:
@@ -65,6 +67,8 @@ def start_server(server_type, ssl, server_header, server_context, port):
         args.append('--timeout=1')
     if server_context:
         args.append('--context')
+    if multiple:
+        args.append('--multiple')
     args.append(server_type)
     stdout = None
     stderr = None
@@ -113,6 +117,7 @@ class AbstractTest(object):
             cls.ssl,
             cls.server_header,
             cls.server_context,
+            cls.multiple,
             port)
 
         if not wait_for_server(port, 5.0, ssl=cls.ssl):
@@ -155,6 +160,17 @@ class AbstractTest(object):
         self.protocol = self.protocol_factory.getProtocol(self.transport)
         self.transport.open()
         self.client = ThriftTest.Client(self.protocol)
+        if self.multiple:
+            p = TMultiplexedProtocol.TMultiplexedProtocol(self.protocol,
+                    "ThriftTest")
+            self.client = ThriftTest.Client(p)
+            p = TMultiplexedProtocol.TMultiplexedProtocol(self.protocol,
+                    "SecondService")
+            self.client2 = SecondService.Client(p)
+        else:
+            self.client = ThriftTest.Client(self.protocol)
+            self.client2 = None
+
 
     def tearDown(self):
         self.transport.close()
@@ -215,6 +231,10 @@ class AbstractTest(object):
         end = time.time()
         self.assertTrue(end - start < 0.2,
                         "oneway sleep took %f sec" % (end - start))
+
+    def testblahBlah(self):
+        if self.client2:
+            self.assertEqual(self.client2.blahBlah(), None)
 
     def testPreServe(self):
         count = self.client.testPreServe()
@@ -403,19 +423,22 @@ def add_test_classes(module):
                 continue
             for server_header in (True, False):
                 for server_context in (True, False):
-                    vars = {
-                        'server_type': server_type,
-                        'ssl': ssl,
-                        'server_header': server_header,
-                        'server_context': server_context,
-                    }
-                    classes.append(new_test_class(NormalBinaryTest, vars))
-                    # fastbinary is unavailable in Python 3
-                    if sys.version_info[0] < 3:
-                        classes.append(new_test_class(AcceleratedBinaryTest, vars))
-                    # header client to non-header server hangs
-                    if server_header:
-                        classes.append(new_test_class(HeaderTest, vars))
+                    for multiple in (True, False):
+                        vars = {
+                            'server_type': server_type,
+                            'ssl': ssl,
+                            'server_header': server_header,
+                            'server_context': server_context,
+                            'multiple': multiple,
+                        }
+                        classes.append(new_test_class(NormalBinaryTest, vars))
+                        # fastbinary is unavailable in Python 3
+                        if sys.version_info[0] < 3:
+                            classes.append(new_test_class(
+                                AcceleratedBinaryTest, vars))
+                        # header client to non-header server hangs
+                        if server_header:
+                            classes.append(new_test_class(HeaderTest, vars))
 
     for cls in classes:
         setattr(module, cls.__name__, cls)
