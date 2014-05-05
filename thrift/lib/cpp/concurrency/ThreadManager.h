@@ -64,7 +64,7 @@ class ThreadManager {
   ThreadManager() {}
 
  public:
-  static const int DEFAULT_MAX_QUEUE_SIZE = 1<<18;   // should be power of 2
+  static const int DEFAULT_MAX_QUEUE_SIZE = 1<<16;   // should be power of 2
 
   class Task;
   typedef std::function<void(std::shared_ptr<Runnable>)> ExpireCallback;
@@ -286,7 +286,8 @@ public:
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager>
     newPriorityThreadManager(std::array<size_t, N_PRIORITIES> counts,
-                             bool enableTaskStats = false);
+                             bool enableTaskStats = false,
+                             size_t maxQueueLen = 0);
 
   /**
    * Creates a priority-aware thread manager that uses normalThreadsCount
@@ -301,7 +302,8 @@ public:
   static std::shared_ptr<PriorityThreadManager>
     newPriorityThreadManager(size_t normalThreadsCount
                                       = sysconf(_SC_NPROCESSORS_ONLN),
-                             bool enableTaskStats = false);
+                             bool enableTaskStats = false,
+                             size_t maxQueueLen = 0);
 
   template <typename SemType>
   class PriorityImplT;

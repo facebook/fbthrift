@@ -266,7 +266,8 @@ void ThriftServer::setup() {
       std::shared_ptr<apache::thrift::concurrency::ThreadManager>
         threadManager(PriorityThreadManager::newPriorityThreadManager(
                         nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_,
-                        true /*stats*/));
+                        true /*stats*/,
+                        getMaxRequests() /*maxQueueLen*/));
       threadManager->enableCodel(getEnableCodel());
       if (!poolThreadName_.empty()) {
         threadManager->setNamePrefix(poolThreadName_);

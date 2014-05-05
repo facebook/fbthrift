@@ -627,9 +627,11 @@ public:
   PriorityImplT(std::array<
                std::pair<shared_ptr<ThreadFactory>, size_t>,
                N_PRIORITIES> factories,
-               bool enableTaskStats = false) {
+               bool enableTaskStats = false,
+               size_t maxQueueLen = 0) {
     for (int i = 0; i < N_PRIORITIES; i++) {
-      unique_ptr<ThreadManager> m(new ThreadManager::ImplT<SemType>(0, enableTaskStats));
+      unique_ptr<ThreadManager> m(
+        new ThreadManager::ImplT<SemType>(0, enableTaskStats, maxQueueLen));
       m->threadFactory(factories[i].first);
       managers_[i] = std::move(m);
       counts_[i] = factories[i].second;
@@ -814,7 +816,8 @@ template <typename SemType>
 shared_ptr<PriorityThreadManager>
 PriorityThreadManager::newPriorityThreadManager(
     std::array<size_t,N_PRIORITIES> counts,
-    bool enableTaskStats) {
+    bool enableTaskStats,
+    size_t maxQueueLen) {
 
   assert(N_PRIORITIES == 5);
   // Note that priorities for HIGH and IMPORTANT are the same, the difference
@@ -831,16 +834,23 @@ PriorityThreadManager::newPriorityThreadManager(
   }};
 
   return shared_ptr<PriorityThreadManager>(
-    new PriorityThreadManager::PriorityImplT<SemType>(factories, enableTaskStats));
+    new PriorityThreadManager::PriorityImplT<SemType>(
+      factories,
+      enableTaskStats,
+      maxQueueLen
+    )
+  );
 }
 
 template <typename SemType>
 shared_ptr<PriorityThreadManager>
 PriorityThreadManager::newPriorityThreadManager(
     size_t normalThreadsCount,
-    bool enableTaskStats) {
+    bool enableTaskStats,
+    size_t maxQueueLen) {
   return newPriorityThreadManager<SemType>({{2, 2, 2, normalThreadsCount, 2}},
-                                  enableTaskStats);
+                                           enableTaskStats,
+                                           maxQueueLen);
 }
 
 }}} // apache::thrift::concurrency
