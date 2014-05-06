@@ -114,6 +114,7 @@ class THeaderTransport
   virtual uint32_t readSlow(uint8_t* buf, uint32_t len);
   virtual uint32_t readAll(uint8_t* buf, uint32_t len);
   virtual void flush();
+  virtual void onewayFlush();
 
   std::shared_ptr<TTransport> getUnderlyingTransport() {
     return getUnderlyingInputTransport();
@@ -121,8 +122,6 @@ class THeaderTransport
 
   std::shared_ptr<TTransport> getUnderlyingInputTransport();
   std::shared_ptr<TTransport> getUnderlyingOutputTransport();
-
-  void flushUnderlyingTransport();
 
   virtual uint32_t readEnd() {
     return readBuf_->length() + sizeof(uint32_t);
@@ -145,6 +144,9 @@ class THeaderTransport
 
   void allocateReadBuffer(uint32_t sz);
   uint32_t getWriteBytes();
+
+  void flushUnderlyingTransport(bool oneway);
+  void flushImpl(bool oneway);
 
   void initBuffers() {
     setReadBuffer(nullptr, 0);

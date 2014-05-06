@@ -142,12 +142,24 @@ shared_ptr<TTransport> THeaderTransport::getUnderlyingOutputTransport() {
   }
 }
 
-void THeaderTransport::flushUnderlyingTransport() {
-  getUnderlyingOutputTransport()->flush();
+void THeaderTransport::flushUnderlyingTransport(bool oneway) {
+  if (oneway) {
+    getUnderlyingOutputTransport()->onewayFlush();
+  } else {
+    getUnderlyingOutputTransport()->flush();
+  }
   shrinkWriteBuffer();
 }
 
 void THeaderTransport::flush()  {
+  flushImpl(false);
+}
+
+void THeaderTransport::onewayFlush()  {
+  flushImpl(true);
+}
+
+void THeaderTransport::flushImpl(bool oneway)  {
   ptrdiff_t writableBytes = wBase_ - wBuf_.get();
 
   if (writableBytes < 0) {
@@ -156,7 +168,7 @@ void THeaderTransport::flush()  {
   }
 
   if (writableBytes == 0) {
-    flushUnderlyingTransport();
+    flushUnderlyingTransport(oneway);
     return;
   }
 
@@ -177,7 +189,7 @@ void THeaderTransport::flush()  {
     getUnderlyingOutputTransport()->write(buf->data(), buf->length());
   } while (nullptr != (buf = buf->pop()));
 
-  flushUnderlyingTransport();
+  flushUnderlyingTransport(oneway);
 }
 
 }}} // apache::thrift::transport
