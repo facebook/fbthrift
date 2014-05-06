@@ -67,7 +67,6 @@ class AsyncClientWorker2 : public Worker<
 
  private:
 
-  static facebook::servicerouter::cpp2::ClientFactory srClientFactory_;
   apache::thrift::async::TEventBase eb_;
   TBinaryProtocolFactory binProtoFactory_;
   THeaderProtocolFactory duplexProtoFactory_;

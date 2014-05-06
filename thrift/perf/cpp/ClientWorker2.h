@@ -68,7 +68,6 @@ class ClientWorker2 : public loadgen::Worker<
   void performAdd(const std::shared_ptr<Client>& client);
 
   apache::thrift::async::TEventBaseManager ebm_;
-  static facebook::servicerouter::cpp2::ClientFactory srClientFactory_;
 };
 
 }}} // apache::thrift::test

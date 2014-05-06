@@ -171,8 +171,6 @@ class LoadCallback :
   bool oneway_;
 };
 
-facebook::servicerouter::cpp2::ClientFactory
-AsyncClientWorker2::srClientFactory_;
 std::shared_ptr<SaslThreadManager> saslThreadManager_(new SaslThreadManager());
 std::shared_ptr<krb5::Krb5CredentialsCacheManager> credentialsCacheManager_(
   new krb5::Krb5CredentialsCacheManager());
@@ -184,19 +182,20 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
     std::shared_ptr<LoadTestAsyncClient> loadClient;
     if (config->SASLPolicy() != "required" &&
         config->SASLPolicy() != "permitted") {
-      loadClient.reset(srClientFactory_.getClient<LoadTestAsyncClient>(
-        config->srTier(), &eb_));
+      loadClient.reset(facebook::servicerouter::cpp2::getClientFactory()
+        .getClient<LoadTestAsyncClient>(config->srTier(), &eb_));
     } else {
       facebook::servicerouter::ConnConfigs configs;
       configs["thrift_security"] = config->SASLPolicy();
       if (!config->SASLServiceTier().empty()) {
         configs["thrift_security_service_tier"] = config->SASLServiceTier();
       }
-      loadClient.reset(srClientFactory_.getClient<LoadTestAsyncClient>(
-        config->srTier(),
-        &eb_,
-        facebook::servicerouter::ServiceOptions(),
-        configs));
+      loadClient.reset(facebook::servicerouter::cpp2::getClientFactory()
+        .getClient<LoadTestAsyncClient>(
+          config->srTier(),
+          &eb_,
+          facebook::servicerouter::ServiceOptions(),
+          configs));
     }
     return loadClient;
   } else {

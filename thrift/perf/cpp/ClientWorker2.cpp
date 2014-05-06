@@ -38,8 +38,6 @@ namespace apache { namespace thrift { namespace test {
 
 const int kTimeout = 60000;
 
-facebook::servicerouter::cpp2::ClientFactory
-ClientWorker2::srClientFactory_;
 std::shared_ptr<SaslThreadManager> saslThreadManager_(new SaslThreadManager());
 std::shared_ptr<krb5::Krb5CredentialsCacheManager> credentialsCacheManager_(
   new krb5::Krb5CredentialsCacheManager());
@@ -62,7 +60,8 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
         configs["thrift_security_service_tier"] = config->SASLServiceTier();
       }
     }
-    channel = std::move(srClientFactory_.getChannel(config->srTier(),
+    channel = std::move(facebook::servicerouter::cpp2::getClientFactory()
+                                        .getChannel(config->srTier(),
                                                     ebm_.getEventBase(),
                                                     std::move(options),
                                                     std::move(configs)));
