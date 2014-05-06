@@ -741,21 +741,21 @@ void writeString(uint8_t* &ptr, const string& str) {
  * Writes headers to a byte buffer and clear the header map
  */
 void flushInfoHeaders(uint8_t* &pkt,
-                      THeader::StringToStringMap &headers_,
+                      THeader::StringToStringMap &headers,
                       uint32_t infoIdType) {
-    uint32_t headerCount = headers_.size();
-    if (headerCount > 0) {
-      pkt += writeVarint32(infoIdType, pkt);
-      // Write key-value headers count
-      pkt += writeVarint32(headerCount, pkt);
-      // Write info headers
-      map<string, string>::const_iterator it;
-      for (it = headers_.begin(); it != headers_.end(); ++it) {
-        writeString(pkt, it->first);  // key
-        writeString(pkt, it->second); // value
-      }
-      headers_.clear();
+  uint32_t headerCount = headers.size();
+  if (headerCount > 0) {
+    pkt += writeVarint32(infoIdType, pkt);
+    // Write key-value headers count
+    pkt += writeVarint32(headerCount, pkt);
+    // Write info headers
+    map<string, string>::const_iterator it;
+    for (it = headers.begin(); it != headers.end(); ++it) {
+      writeString(pkt, it->first);  // key
+      writeString(pkt, it->second); // value
     }
+    headers.clear();
+  }
 }
 
 void THeader::setHeader(const string& key, const string& value) {
@@ -763,13 +763,16 @@ void THeader::setHeader(const string& key, const string& value) {
 }
 
 void THeader::setPersistentHeader(const string& key,
-                                           const string& value) {
+                                  const string& value) {
   persisWriteHeaders_[key] = value;
 }
 
-size_t getInfoHeaderSize(const THeader::StringToStringMap &headers_) {
-  size_t maxWriteHeadersSize = 0;
-  for (auto& it : headers_) {
+size_t getInfoHeaderSize(const THeader::StringToStringMap &headers) {
+  if (headers.empty()) {
+    return 0;
+  }
+  size_t maxWriteHeadersSize = 5 + 5;  // type and count (2 varints32)
+  for (const auto& it : headers) {
     // add sizes of key and value to maxWriteHeadersSize
     // 2 varints32 + the strings themselves
     maxWriteHeadersSize += 5 + 5 + (it.first).length() +
@@ -856,9 +859,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf) {
     headerSize += getMaxWriteHeadersSize();
 
     // Pkt size
-    uint32_t maxSzHbo = headerSize + chainSize // thrift header + payload
-                        + 10;                  // common header section
-    unique_ptr<IOBuf> header = IOBuf::create(headerSize + 10);
+    unique_ptr<IOBuf> header = IOBuf::create(14 + headerSize);
     uint8_t* pkt = header->writableData();
     uint8_t* headerStart;
     uint8_t* headerSizePtr;
@@ -868,7 +869,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf) {
     uint32_t szNbo;
     uint16_t headerSizeN;
 
-    // Fixup szHbo later
+    // Fixup szNbo later
     pkt += sizeof(szNbo);
     uint16_t magicN = htons(HEADER_MAGIC >> 16);
     memcpy(pkt, &magicN, sizeof(magicN));
@@ -889,12 +890,11 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf) {
 
     for (auto& transId : writeTrans) {
       pkt += writeVarint32(transId, pkt);
-      if(transId == ZLIB_IF_MORE_THAN) {
+      if (transId == ZLIB_IF_MORE_THAN) {
         uint32_t minCompressN = htonl(minCompressBytes_);
         memcpy(pkt, &minCompressN, sizeof(minCompressN));
         pkt += sizeof(minCompressN);
       }
-
     }
 
     uint8_t* mac_loc = nullptr;
@@ -910,7 +910,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf) {
     // write persistent kv-headers
     flushInfoHeaders(pkt, persisWriteHeaders_, infoIdType::PKEYVALUE);
 
-    //write non-persistent kv-headers
+    // write non-persistent kv-headers
     flushInfoHeaders(pkt, writeHeaders_, infoIdType::KEYVALUE);
 
     // TODO(davejwatson) optimize this for writing twice/memcopy to pkt buffer.
@@ -925,6 +925,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf) {
     for (int i = 0; i < padding; i++) {
       *(pkt++) = 0x00;
     }
+    assert(pkt - pktStart <= header->capacity());
 
     // Pkt size
     szHbo = headerSize + chainSize           // thrift header + payload
@@ -981,7 +982,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf) {
                               "Unknown client type");
   }
 
-  return std::move(buf);
+  return buf;
 }
 
 apache::thrift::concurrency::PriorityThreadManager::PRIORITY
