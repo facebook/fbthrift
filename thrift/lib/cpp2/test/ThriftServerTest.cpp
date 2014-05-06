@@ -66,12 +66,16 @@ class TestInterface : public TestServiceSvIf {
     std::unique_ptr<std::string> sp(new std::string("hello world"));
     auto st = inEventBase ? SerializationThread::EVENT_BASE :
                             SerializationThread::CURRENT;
-    callback.release()->resultInThread(std::move(sp), st);
+    callback->result(std::move(sp));
   }
 
   void async_eb_eventBaseAsync(std::unique_ptr<StringCob> callback) {
     std::unique_ptr<std::string> hello(new std::string("hello world"));
     callback->result(std::move(hello));
+  }
+
+  void async_tm_notCalledBack(std::unique_ptr<
+                              apache::thrift::HandlerCallback<void>> cb) {
   }
 };
 
@@ -679,6 +683,32 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
   client.sync_sendResponse(response, 200);
   EXPECT_EQ(response, "test200");
   base.loop();
+}
+
+TEST(ThriftServer, FreeCallbackTest) {
+
+  auto port = Server::get(getServer)->getAddress().getPort();
+
+  TEventBase base;
+
+  std::shared_ptr<TAsyncSocket> socket(
+    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+
+  TestServiceAsyncClient client(
+    std::unique_ptr<HeaderClientChannel,
+                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                      new HeaderClientChannel(socket)));
+
+  RpcOptions options;
+  options.setTimeout(std::chrono::milliseconds(1));
+
+  try {
+    client.sync_notCalledBack(options);
+  } catch (...) {
+    // Expect timeout
+    return;
+  }
+  ADD_FAILURE();
 }
 
 int main(int argc, char** argv) {

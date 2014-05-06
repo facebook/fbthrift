@@ -295,6 +295,14 @@ class HandlerCallbackBase {
   }
 
   virtual ~HandlerCallbackBase() {
+    // req must be deleted in the eb
+    if (req_) {
+      DCHECK(eb_);
+      auto req_mw = folly::makeMoveWrapper(std::move(req_));
+      eb_->runInEventBaseThread([=]() mutable {
+        req_mw->reset();
+      });
+    }
   }
 
   void exception(std::exception_ptr ex) {

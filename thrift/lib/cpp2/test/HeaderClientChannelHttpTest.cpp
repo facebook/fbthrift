@@ -58,6 +58,8 @@ class TestServiceHandler : public TestServiceIf {
   virtual void eventBaseAsync(string& _return) override {
     _return = "hello world";
   }
+
+  virtual void notCalledBack() override {}
 };
 
 std::unique_ptr<ScopedServerThread> createHttpServer() {
