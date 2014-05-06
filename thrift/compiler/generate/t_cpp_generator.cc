@@ -2832,7 +2832,10 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
       out <<
         indent() << "if (!isset_" << (*f_iter)->get_name() << ')' << endl <<
         indent() << "  throw TProtocolException(" <<
-          "TProtocolException::MISSING_REQUIRED_FIELD);" << endl;
+          "TProtocolException::MISSING_REQUIRED_FIELD, \"" <<
+          "Required field '" << (*f_iter)->get_name() <<
+          "' was not found in serialized data! Struct: " <<
+          tstruct->get_name() << "\");" << endl;
   }
 
   indent(out) << "return xfer;" << endl;
