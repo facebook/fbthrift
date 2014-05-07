@@ -226,7 +226,11 @@ class Connection:
 
         The one wakes up main thread.
         """
-        assert self.status == WAIT_PROCESS
+        if self.status != WAIT_PROCESS:
+            logging.error("Connection status switched to {} when"
+                    "processing requests. Server bug?".format(self.status))
+            all_ok = False
+
         if not all_ok:
             self.close()
             self._server.wake_up()
