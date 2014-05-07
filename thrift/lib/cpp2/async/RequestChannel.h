@@ -28,6 +28,7 @@
 #include "thrift/lib/cpp/async/TEventBase.h"
 #include "thrift/lib/cpp/async/Request.h"
 #include "thrift/lib/cpp/EventHandlerBase.h"
+#include "folly/ExceptionWrapper.h"
 #include "folly/String.h"
 
 #include <glog/logging.h>
@@ -63,21 +64,45 @@ class ClientReceiveState {
       streamManager_(nullptr),
       exc_(std::move(exc)) {
   }
-  std::exception_ptr exception() const {
+  ClientReceiveState(folly::exception_wrapper excw,
+                     std::unique_ptr<apache::thrift::ContextStack> ctx)
+    : protocolId_(-1),
+      ctx_(std::move(ctx)),
+      streamManager_(nullptr),
+      excw_(std::move(excw)) {
+  }
+
+  bool isException() const {
+    return exc_ || excw_.get();
+  }
+
+  // TODO: Once everything is using the folly::exception_wrapper constructor,
+  // expose a API to get the ptr to that exception without having to throw it.
+
+  std::exception_ptr exception() {
+    if (!exc_ && excw_.get()) {
+      exc_ = excw_.getExceptionPtr();
+    }
     return exc_;
   }
+
   void resetException(std::exception_ptr exc) {
+    excw_ = folly::exception_wrapper();
     exc_ = exc;
   }
+
   uint16_t protocolId() const {
     return protocolId_;
   }
+
   folly::IOBuf* buf() const {
     return buf_.get();
   }
+
   std::unique_ptr<folly::IOBuf> extractBuf() {
     return std::move(buf_);
   }
+
   apache::thrift::ContextStack* ctx() const {
     return ctx_.get();
   }
@@ -102,6 +127,7 @@ class ClientReceiveState {
   std::unique_ptr<folly::IOBuf> buf_;
   std::unique_ptr<StreamManager> * streamManager_;
   std::exception_ptr exc_;
+  folly::exception_wrapper excw_;
 };
 
 class RequestCallback {
