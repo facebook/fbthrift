@@ -25,6 +25,7 @@
 #include <errno.h>
 #include <pthread.h>
 #include <signal.h>
+#include <glog/logging.h>
 
 #include "thrift/lib/cpp/concurrency/Util.h"
 
@@ -216,12 +217,14 @@ class PthreadMutex {
  public:
   explicit PthreadMutex(int type) {
     pthread_mutexattr_t mutexattr;
-    assert(0 == pthread_mutexattr_init(&mutexattr));
-    assert(0 == pthread_mutexattr_settype(&mutexattr, type));
-    assert(0 == pthread_mutex_init(&pthread_mutex_, &mutexattr));
-    assert(0 == pthread_mutexattr_destroy(&mutexattr));
+    CHECK(0 == pthread_mutexattr_init(&mutexattr));
+    CHECK(0 == pthread_mutexattr_settype(&mutexattr, type));
+    CHECK(0 == pthread_mutex_init(&pthread_mutex_, &mutexattr));
+    CHECK(0 == pthread_mutexattr_destroy(&mutexattr));
   }
-  ~PthreadMutex() { assert(0 == pthread_mutex_destroy(&pthread_mutex_)); }
+  ~PthreadMutex() {
+    CHECK(0 == pthread_mutex_destroy(&pthread_mutex_));
+  }
 
   void lock() { pthread_mutex_lock(&pthread_mutex_); }
 
@@ -263,16 +266,16 @@ class PthreadMutex {
 class PthreadRWMutex {
  public:
   PthreadRWMutex() {
-    assert(0 == pthread_rwlock_init(&rw_lock_, nullptr));
+    CHECK(0 == pthread_rwlock_init(&rw_lock_, nullptr));
   }
 
   ~PthreadRWMutex() {
-    assert(0 == pthread_rwlock_destroy(&rw_lock_));
+    CHECK(0 == pthread_rwlock_destroy(&rw_lock_));
   }
 
   void lock() {
     int ret = pthread_rwlock_wrlock(&rw_lock_);
-    assert(ret != EDEADLK);
+    CHECK(ret != EDEADLK);
   }
 
   bool try_lock() {
@@ -294,7 +297,7 @@ class PthreadRWMutex {
 
   void lock_shared() {
     int ret = pthread_rwlock_rdlock(&rw_lock_);
-    assert(ret != EDEADLK);
+    CHECK (ret != EDEADLK);
   }
 
   bool try_lock_shared() {

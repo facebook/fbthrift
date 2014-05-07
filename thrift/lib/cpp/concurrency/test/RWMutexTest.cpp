@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/concurrency/Mutex.h"
+#include "thrift/lib/cpp/concurrency/Mutex-impl.h"
 
 #include <gtest/gtest.h>
 #include "common/concurrency/Timeout.h"
@@ -195,4 +195,13 @@ TEST(RWMutexTest, Write_Holders) {
   RWGuard guard(l, true);
   EXPECT_FALSE(l.timedWrite(kTimeoutMs));
   EXPECT_FALSE(l.timedRead(kTimeoutMs));
+}
+
+TEST(MutexTest, Recursive_Holders) {
+  Mutex mutex(Mutex::RECURSIVE_INITIALIZER);
+  Guard g1(mutex);
+  {
+    Guard g2(mutex);
+  }
+  Guard g2(mutex);
 }
