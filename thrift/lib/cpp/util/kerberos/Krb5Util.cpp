@@ -269,17 +269,21 @@ void Krb5CCache::initialize(krb5_principal cprinc) {
   raiseIf(context_, code, "initializing ccache");
 }
 
-void Krb5CCache::storeCred(krb5_creds* creds) {
-  krb5_error_code code = krb5_cc_store_cred(context_, ccache_, creds);
+void Krb5CCache::storeCred(const krb5_creds& creds) {
+  // The krb5 impl doesn't modify creds.
+  krb5_error_code code = krb5_cc_store_cred(
+    context_, ccache_, const_cast<krb5_creds*>(&creds));
   raiseIf(context_, code, "store cred to ccache");
 }
 
 Krb5Credentials Krb5CCache::retrieveCred(
-  krb5_creds* match_creds, krb5_flags match_flags) {
+  const krb5_creds& match_creds, krb5_flags match_flags) {
 
   krb5_creds matched;
-  krb5_error_code code = krb5_cc_retrieve_cred(context_, ccache_, match_flags,
-                                               match_creds, &matched);
+  // The krb5 impl doesn't modify match_creds.
+  krb5_error_code code = krb5_cc_retrieve_cred(
+    context_, ccache_, match_flags, const_cast<krb5_creds*>(&match_creds),
+    &matched);
   raiseIf(context_, code, "retrieve cred");
 
   return Krb5Credentials(context_, std::move(matched));
@@ -293,15 +297,17 @@ Krb5Credentials Krb5CCache::retrieveCred(krb5_principal sprinc) {
   in_creds.client = cprinc.get();
   in_creds.server = sprinc;
 
-  return retrieveCred(&in_creds, 0 /* flags */);
+  return retrieveCred(in_creds, 0 /* flags */);
 }
 
 Krb5Credentials Krb5CCache::getCredentials(
-  krb5_creds* in_creds, krb5_flags options) {
+  const krb5_creds& in_creds, krb5_flags options) {
 
   krb5_creds* out_creds;
-  krb5_error_code code = krb5_get_credentials(context_, options, ccache_,
-                                              in_creds, &out_creds);
+  // The krb5 impl doesn't modify in_creds.
+  krb5_error_code code = krb5_get_credentials(
+    context_, options, ccache_, const_cast<krb5_creds*>(&in_creds),
+    &out_creds);
   raiseIf(context_, code, "get credentials");
   SCOPE_EXIT { krb5_free_creds(context_, out_creds); };
 
@@ -318,7 +324,7 @@ Krb5Credentials Krb5CCache::getCredentials(
   in_creds.client = cprinc.get();
   in_creds.server = sprinc;
 
-  return getCredentials(&in_creds, options);
+  return getCredentials(in_creds, options);
 }
 
 Krb5CCache::~Krb5CCache() {

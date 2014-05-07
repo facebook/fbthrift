@@ -50,7 +50,7 @@ namespace std {
 
 template <class Tgt>
 typename std::enable_if<folly::IsSomeString<Tgt>::value>::type
-toAppend(const std::pair<krb5_context, krb5_principal>& value, Tgt * result) {
+toAppend(const std::pair<krb5_context, krb5_principal>& value, Tgt* result) {
   char *name = nullptr;
   krb5_error_code code = krb5_unparse_name(value.first, value.second, &name);
   if (code == 0) {
@@ -167,7 +167,7 @@ private:
 
 template <class Tgt>
 typename std::enable_if<folly::IsSomeString<Tgt>::value>::type
-toAppend(const Krb5Principal& value, Tgt * result) {
+toAppend(const Krb5Principal& value, Tgt* result) {
   char *name = nullptr;
   krb5_error_code code =
     krb5_unparse_name(value.get_context(), value.get(), &name);
@@ -193,7 +193,7 @@ public:
 
   ~Krb5Credentials() { krb5_free_cred_contents(context_, creds_.get()); }
 
-  krb5_creds* get() const { return creds_.get(); }
+  krb5_creds& get() const { return *creds_.get(); }
 
 private:
 
@@ -273,10 +273,12 @@ public:
   std::string getName();
   Krb5Principal getClientPrincipal();
   void initialize(krb5_principal cprinc);
-  void storeCred(krb5_creds* creds);
-  Krb5Credentials retrieveCred(krb5_creds* match_creds, krb5_flags match_flags);
+  void storeCred(const krb5_creds& creds);
+  Krb5Credentials retrieveCred(const krb5_creds& match_creds,
+                               krb5_flags match_flags);
   Krb5Credentials retrieveCred(krb5_principal sprinc);
-  Krb5Credentials getCredentials(krb5_creds* in_creds, krb5_flags options = 0);
+  Krb5Credentials getCredentials(const krb5_creds& in_creds,
+                                 krb5_flags options = 0);
   Krb5Credentials getCredentials(krb5_principal sprinc, krb5_flags options = 0);
 
  private:
