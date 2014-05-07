@@ -40,6 +40,12 @@ class TestUnionStructs(unittest.TestCase):
         self.assertEquals('test', v.value)
         self.assertNotEqual(u, v)
 
+        try:
+            j = TestUnion(string_field="test", i32_field=100)
+            self.assertTrue(False, "Cannot initialize union with 1+ fields")
+        except:
+            pass
+
     def test_get_set(self):
         u = TestUnion()
         u.set_i32_field(10)
@@ -72,15 +78,18 @@ class TestUnionStructs(unittest.TestCase):
 
         ndatabuf = TTransport.TMemoryBuffer(databuf.getvalue())
         prot = protocol_factory.getProtocol(ndatabuf)
-        v = TestUnion()
+        v = u.__class__()
         v.read(prot)
         self.assertEquals(v, j)
 
     def test_read_write(self):
         l = [
-            (TestUnion(string_field='test'), TestUnion(string_field=b'test')),
+            (TestUnion(string_field='test'),
+                TestUnion(string_field=b'test')),
             (TestUnion(), TestUnion()),
-            (TestUnion(i32_field=100), TestUnion(i32_field=100))
+            (TestUnion(i32_field=100), TestUnion(i32_field=100)),
+            (StructWithUnionAndOther(TestUnion(i32_field=100), 'test'),
+                StructWithUnionAndOther(TestUnion(i32_field=100), b'test')),
         ]
 
         for i, j in l:
@@ -98,7 +107,9 @@ class TestUnionStructs(unittest.TestCase):
         l = [
           (TestUnion(), {}),
           (TestUnion(i32_field=10), {'i32_field': 10}),
-          (TestUnion(string_field='test'), {'string_field': 'test'})
+          (TestUnion(string_field='test'), {'string_field': 'test'}),
+          (StructWithUnionAndOther(TestUnion(i32_field=10), 'test'),
+              {'test_union': {'i32_field': 10}, 'string_field': 'test'})
         ]
 
         for i, j in l:

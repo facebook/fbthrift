@@ -63,3 +63,8 @@ union TestUnion {
 struct StructWithAUnion {
   1: TestUnion test_union;
 }
+
+struct StructWithUnionAndOther {
+  1: TestUnion test_union;
+  2: string string_field;
+}
