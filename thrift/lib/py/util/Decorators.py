@@ -25,6 +25,36 @@ from __future__ import unicode_literals
 import sys
 from thrift.Thrift import TMessageType, TApplicationException
 
+def process_main(twisted=False):
+    """Decorator for process method."""
+    def _decorator(func):
+        def nested(self, iprot, oprot, server_ctx=None):
+            (name, type, seqid) = iprot.readMessageBegin()
+            if sys.version_info[0] >= 3:
+                name = name.decode()
+            if name not in self._processMap:
+                iprot.skip(TType.STRUCT)
+                iprot.readMessageEnd()
+                x = TApplicationException(TApplicationException.UNKNOWN_METHOD,
+                        'Unknown function %s' % (name))
+                oprot.writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
+                x.write(oprot)
+                oprot.writeMessageEnd()
+                oprot.trans.flush()
+                if twisted is True:
+                    return defer.succeed(None)
+            else:
+                ret = self._processMap[name](self, seqid, iprot, oprot,
+                        server_ctx)
+                if twisted is True:
+                    return ret
+                else:
+                    return True
+
+        return nested
+
+    return _decorator
+
 def process_method(oneway=False, twisted=False):
     """Decorator for process_xxx methods."""
     def _decorator(func):

@@ -2472,60 +2472,10 @@ void t_py_generator::generate_service_server(t_service* tservice,
   f_service_ << endl;
 
   // Generate the server implementation
+  indent(f_service_) << "@process_main" <<
+    (gen_twisted_ ? "(twisted=True)" : "()") << endl;
   indent(f_service_) <<
-    "def process(self, iprot, oprot, server_ctx=None):" << endl;
-  indent_up();
-
-  f_service_ <<
-    indent() << "(name, type, seqid) = iprot.readMessageBegin()" << endl;
-
-  // TODO(mcslee): validate message
-
-  // HOT: dictionary function lookup
-  if (gen_python3_) {
-    f_service_ <<
-      indent() << "name = name.decode()" << endl;
-  }
-  f_service_ <<
-    indent() << "if name not in self._processMap:" << endl <<
-    indent() << "  iprot.skip(TType.STRUCT)" << endl <<
-    indent() << "  iprot.readMessageEnd()" << endl <<
-    indent() << "  x = TApplicationException("
-             << "TApplicationException.UNKNOWN_METHOD, "
-             << "'Unknown function %s' % (name))" << endl <<
-    indent() << "  oprot.writeMessageBegin(name, TMessageType.EXCEPTION, "
-             << "seqid)" << endl <<
-    indent() << "  x.write(oprot)" << endl <<
-    indent() << "  oprot.writeMessageEnd()" << endl <<
-    indent() << "  oprot.trans.flush()" << endl;
-
-  if (gen_twisted_) {
-    f_service_ <<
-      indent() << "  return defer.succeed(None)" << endl;
-  } else {
-    f_service_ <<
-      indent() << "  return" << endl;
-  }
-
-  f_service_ <<
-    indent() << "else:" << endl;
-
-  if (gen_twisted_) {
-    f_service_ <<
-      indent() << "  return self._processMap[name]"
-               << "(self, seqid, iprot, oprot, server_ctx)" << endl;
-  } else {
-    f_service_ <<
-      indent() << "  self._processMap[name]"
-               << "(self, seqid, iprot, oprot, server_ctx)" << endl;
-
-    // Read end of args field, the T_STOP, and the struct close
-    f_service_ <<
-      indent() << "return True" << endl;
-  }
-
-  indent_down();
-  f_service_ << endl;
+    "def process(self,): pass" << endl << endl;
 
   // Generate the process subfunctions
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
