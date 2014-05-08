@@ -19,6 +19,7 @@
 #include "thrift/lib/cpp/transport/TSocket.h"
 
 #include "thrift/lib/cpp/config.h"
+#include "thrift/lib/cpp/util/PausableTimer.h"
 #include <cstring>
 #include <sstream>
 #include <sys/socket.h>
@@ -142,6 +143,9 @@ bool TSocket::peek() {
 }
 
 void TSocket::openConnection(struct addrinfo *res) {
+  apache::thrift::util::PausableTimer pausableTimer(options_.connTimeout);
+  int errno_after_poll;
+
   if (isOpen()) {
     throw TTransportException(TTransportException::ALREADY_OPEN);
   }
@@ -206,12 +210,23 @@ void TSocket::openConnection(struct addrinfo *res) {
                               + getSocketInfo(), errno_copy);
   }
 
-
+try_again:
   struct pollfd fds[1];
   std::memset(fds, 0 , sizeof(fds));
   fds[0].fd = socket_;
   fds[0].events = POLLOUT;
+
+  // When there is a poll timeout set, an EINTR will restart the
+  // poll() and hence reset the timer. So if we receive EINTRs at a
+  // faster rate than the timeout value, the timeout will never
+  // trigger. Therefore, we keep track of the total amount of time
+  // we've spend in poll(), and if this value exceeds the timeout then
+  // we stop retrying on EINTR. Note that we might still exceed the
+  // timeout, but by at most a factor of 2.
+  pausableTimer.start();
   ret = poll(fds, 1, options_.connTimeout);
+  errno_after_poll = errno; // gettimeofday, used by PausableTimer, can change errno
+  pausableTimer.stop();
 
   if (ret > 0) {
     // Ensure the socket is connected and that there are no errors set
@@ -220,9 +235,8 @@ void TSocket::openConnection(struct addrinfo *res) {
     lon = sizeof(int);
     int ret2 = getsockopt(socket_, SOL_SOCKET, SO_ERROR, (void *)&val, &lon);
     if (ret2 == -1) {
-      int errno_copy = errno;
-      GlobalOutput.perror("TSocket::open() getsockopt() " + getSocketInfo(), errno_copy);
-      throw TTransportException(TTransportException::NOT_OPEN, "getsockopt()", errno_copy);
+      GlobalOutput.perror("TSocket::open() getsockopt() " + getSocketInfo(), errno_after_poll);
+      throw TTransportException(TTransportException::NOT_OPEN, "getsockopt()", errno_after_poll);
     }
     // no errors on socket, go to town
     if (val == 0) {
@@ -237,10 +251,29 @@ void TSocket::openConnection(struct addrinfo *res) {
     throw TTransportException(TTransportException::NOT_OPEN,
                               "open() timed out " + getSocketInfo());
   } else {
-    // error on poll()
-    int errno_copy = errno;
-    GlobalOutput.perror("TSocket::open() poll() " + getSocketInfo(), errno_copy);
-    throw TTransportException(TTransportException::NOT_OPEN, "poll() failed", errno_copy);
+    // If interrupted, try again, but only if we haven't exceeded the
+    // timeout value yet.
+    if (errno_after_poll == EINTR) {
+      if (pausableTimer.hasExceededTimeLimit()) {
+        GlobalOutput.perror(
+          "TSocket::open() poll() (EINTRs, then timed out) " + getSocketInfo(),
+          errno_after_poll);
+        throw TTransportException(
+          TTransportException::NOT_OPEN,
+          "poll() failed (EINTRs, then timed out)",
+          errno_after_poll);
+      } else {
+        goto try_again;
+      }
+    } else { // error on poll() other than EINTR
+      GlobalOutput.perror(
+        "TSocket::open() poll() " + getSocketInfo(),
+        errno_after_poll);
+      throw TTransportException(
+        TTransportException::NOT_OPEN,
+        "poll() failed",
+        errno_after_poll);
+    }
   }
 
  done:
@@ -339,6 +372,9 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
         maxRecvRetries_ : 2);
   }
 
+  apache::thrift::util::PausableTimer pausableTimer(options_.recvTimeout);
+
+ try_again:
   // When there is a recv timeout set, an EINTR will restart the
   // recv() and hence reset the timer.  So if we receive EINTRs at a
   // faster rate than the timeout value, the timeout will never
@@ -346,37 +382,26 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
   // we've spend in recv(), and if this value exceeds the timeout then
   // we stop retrying on EINTR.  Note that we might still exceed the
   // timeout, but by at most a factor of 2.
-  struct timeval waited;        // total time waiting so far
-  waited.tv_sec = waited.tv_usec = 0;
-
- try_again:
-  // Read from the socket
-  struct timeval begin;
-  if (options_.recvTimeout > 0) {
-    gettimeofday(&begin, nullptr);
-  } else {
-    // if there is no read timeout we don't need the TOD to determine whether
-    // an EAGAIN is due to a timeout or an out-of-resource condition.
-    begin.tv_sec = begin.tv_usec = 0;
-  }
+  pausableTimer.start();
   int got = recv(socket_, buf, len, 0);
+  int errno_after_recv = errno; // gettimeofday, used by PausableTimer, can change errno
+  pausableTimer.stop();
   ++g_socket_syscalls;
-  int errno_copy = errno; //gettimeofday can change errno
 
   // Check for error on read
   if (got < 0) {
-    if (errno_copy == EAGAIN) {
+    if (errno_after_recv == EAGAIN) {
       // if no timeout we can assume that resource exhaustion has occurred.
       if (options_.recvTimeout == 0) {
         throw TTransportException(TTransportException::TIMED_OUT,
                                     "EAGAIN (unavailable resources)");
       }
       // check if this is the lack of resources or timeout case
-      struct timeval end;
-      gettimeofday(&end, nullptr);
-      uint32_t readElapsedMicros =  (((end.tv_sec - begin.tv_sec) * 1000 * 1000)
-                                     + (((uint64_t)(end.tv_usec - begin.tv_usec))));
-      if (!eagainThresholdMicros || (readElapsedMicros < eagainThresholdMicros)) {
+      if (pausableTimer.didLastRunningTimeExceedLimit(eagainThresholdMicros)) {
+        // infer that timeout has been hit
+        throw TTransportException(TTransportException::TIMED_OUT,
+                                  "EAGAIN (timed out) " + getSocketInfo());
+      } else {
         if (retries++ < maxRecvRetries_) {
           usleep(50);
           goto try_again;
@@ -384,49 +409,30 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
           throw TTransportException(TTransportException::TIMED_OUT,
                                     "EAGAIN (unavailable resources)");
         }
-      } else {
-        // infer that timeout has been hit
-        throw TTransportException(TTransportException::TIMED_OUT,
-                                  "EAGAIN (timed out) " + getSocketInfo());
       }
     }
 
     // If interrupted, try again, but only if we haven't exceeded the
     // timeout value yet.
-    if (errno_copy == EINTR) {
-      if (options_.recvTimeout == 0) {
-        goto try_again;
-      } else {
-        // waited += (end - begin);
-        struct timeval end;
-        struct timeval duration;
-        gettimeofday(&end, nullptr);
-        timersub(&end, &begin, &duration);
-        timeradd(&duration, &waited, &waited);
-
-        struct timeval timeout = {
-          static_cast<int>(options_.recvTimeout/1000),
-          static_cast<int>((options_.recvTimeout%1000)*1000)
-        };
-        // if (waited < timeout) ...
-        if (timercmp(&waited, &timeout, <)) {
+    if (errno_after_recv == EINTR) {
+      if (pausableTimer.hasExceededTimeLimit()) {
+        // Exceeded the timeout value, this is a real retry now.
+        if (retries++ < maxRecvRetries_) {
+          pausableTimer.reset();
           goto try_again;
         } else {
-          // Exceeded the timeout value, this is a real retry now.
-          if (retries++ < maxRecvRetries_) {
-            // Reset the total waiting time
-            waited.tv_sec = waited.tv_usec = 0;
-            goto try_again;
-          } else {
-            throw TTransportException(TTransportException::TIMED_OUT,
-                                      "EINTR (timed out)");
-          }
+          throw TTransportException(
+            TTransportException::TIMED_OUT,
+            "recv() failed (EINTRs, then timed out)",
+            errno_after_recv);
         }
+      } else {
+        goto try_again;
       }
     }
 
     #if defined __FreeBSD__ || defined __MACH__
-    if (errno_copy == ECONNRESET) {
+    if (errno_after_recv == ECONNRESET) {
       /* shigin: freebsd doesn't follow POSIX semantic of recv and fails with
        * ECONNRESET if peer performed shutdown
        * edhall: eliminated close() since we do that in the destructor.
@@ -436,29 +442,29 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
     #endif
 
     // Now it's not a try again case, but a real probblez
-    GlobalOutput.perror("TSocket::read() recv() " + getSocketInfo(), errno_copy);
+    GlobalOutput.perror("TSocket::read() recv() " + getSocketInfo(), errno_after_recv);
 
     // If we disconnect with no linger time
-    if (errno_copy == ECONNRESET) {
+    if (errno_after_recv == ECONNRESET) {
       throw TTransportException(TTransportException::NOT_OPEN,
                                 "ECONNRESET " + getSocketInfo());
     }
 
     // This ish isn't open
-    if (errno_copy == ENOTCONN) {
+    if (errno_after_recv == ENOTCONN) {
       throw TTransportException(TTransportException::NOT_OPEN,
                                 "ENOTCONN " + getSocketInfo());
     }
 
     // Timed out!
-    if (errno_copy == ETIMEDOUT) {
+    if (errno_after_recv == ETIMEDOUT) {
       throw TTransportException(TTransportException::TIMED_OUT,
                                 "ETIMEDOUT " + getSocketInfo());
     }
 
     // Some other error, whatevz
     throw TTransportException(TTransportException::UNKNOWN,
-                              "Unknown " + getSocketInfo(), errno_copy);
+                              "Unknown " + getSocketInfo(), errno_after_recv);
   }
 
   // The remote host has closed the socket
