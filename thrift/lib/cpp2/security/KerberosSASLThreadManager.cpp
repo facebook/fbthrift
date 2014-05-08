@@ -29,10 +29,7 @@ using namespace apache::thrift::concurrency;
 
 SaslThreadManager::SaslThreadManager() {
   threadManager_ = concurrency::ThreadManager::newSimpleThreadManager(
-    256, /* count */
-    0, /* pendingTaskCountMax */
-    false, /* enableTaskStats */
-    1<<10 /* maxQueueLen */);
+    256 /* count */);
 
   threadManager_->threadFactory(
     std::make_shared<concurrency::PosixThreadFactory>(
