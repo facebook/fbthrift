@@ -19,6 +19,6 @@
 #ifndef THRIFTY_H
 #define THRIFTY_H
 
-#include "thrift/compiler/thrifty.yy.h"
+#include "thrift/compiler/thrifty.h"
 
 #endif
