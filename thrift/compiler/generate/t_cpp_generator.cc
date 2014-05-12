@@ -103,11 +103,10 @@ class t_cpp_generator : public t_oop_generator {
 
     iter = parsed_options.find("frozen");
     frozen_ = (iter != parsed_options.end());
+    frozen_packed_ = (iter != parsed_options.end() && iter->second == "packed");
 
     iter = parsed_options.find("frozen2");
     frozen2_ = (iter != parsed_options.end());
-
-    frozen_packed_ = (iter != parsed_options.end() && iter->second == "packed");
 
     // Reminder: Add documentation for new options at the end of this file!
 
