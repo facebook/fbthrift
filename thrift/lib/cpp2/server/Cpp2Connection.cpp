@@ -343,7 +343,7 @@ void Cpp2Connection::removeRequest(Cpp2Request *req) {
 Cpp2Connection::Cpp2Request::Cpp2Request(
     std::unique_ptr<ResponseChannel::Request> req,
     std::shared_ptr<Cpp2Connection> con)
-  : req_(std::move(req))
+  : req_(static_cast<HeaderServerChannel::HeaderRequest*>(req.release()))
   , connection_(con)
   , reqContext_(&con->context_) {
   RequestContext::create();
@@ -377,7 +377,8 @@ void Cpp2Connection::Cpp2Request::sendReply(
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
     req_->sendReply(
       std::move(buf),
-      prepareSendCallback(sendCallback, observer));
+      prepareSendCallback(sendCallback, observer),
+      std::move(reqContext_.getWriteHeaders()));
     cancelTimeout();
     if (observer) {
       observer->sentReply();

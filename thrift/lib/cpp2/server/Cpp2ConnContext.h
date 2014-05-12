@@ -145,8 +145,18 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_->getHeader();
   }
 
+  // The following two header functions _are_ thread safe
   virtual std::map<std::string, std::string> getHeaders() {
     return headers_;
+  }
+
+  virtual std::map<std::string, std::string> getWriteHeaders() {
+    return std::move(writeHeaders_);
+  }
+
+  virtual bool setHeader(const std::string& key, const std::string& value) {
+    writeHeaders_[key] = value;
+    return true;
   }
 
   virtual const apache::thrift::SaslServer* getSaslServer() const {
@@ -170,6 +180,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
   // Headers are per-request, not per-connection
   std::map<std::string, std::string> headers_;
+  std::map<std::string, std::string> writeHeaders_;
 };
 
 } }

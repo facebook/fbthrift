@@ -762,6 +762,10 @@ void THeader::setHeader(const string& key, const string& value) {
   writeHeaders_[key] = value;
 }
 
+void THeader::setHeaders(THeader::StringToStringMap&& headers) {
+  writeHeaders_ = std::move(headers);
+}
+
 void THeader::setPersistentHeader(const string& key,
                                   const string& value) {
   persisWriteHeaders_[key] = value;

@@ -192,16 +192,18 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
  */
 void HeaderServerChannel::HeaderRequest::sendReply(
     unique_ptr<IOBuf>&& buf,
-    MessageChannel::SendCallback* cb) {
+    MessageChannel::SendCallback* cb,
+    THeader::StringToStringMap&& headers) {
   if (!outOfOrder_) {
     // In order processing, make sure the ordering is correct.
     if (seqId_ != channel_->lastWrittenSeqId_ + 1) {
       // Save it until we can send it in order.
       channel_->inOrderRequests_[seqId_] =
-          std::make_tuple(cb, std::move(buf), transforms_);
+        std::make_tuple(cb, std::move(buf), transforms_, headers);
     } else {
       // Send it now, and send any subsequent requests in order.
-      channel_->sendCatchupRequests(std::move(buf), cb, transforms_);
+      channel_->sendCatchupRequests(
+        std::move(buf), cb, transforms_, std::move(headers));
     }
   } else {
     if (!buf) {
@@ -213,6 +215,7 @@ void HeaderServerChannel::HeaderRequest::sendReply(
       // out of order, send as soon as it is done.
       channel_->header_->setSequenceNumber(seqId_);
       channel_->header_->setTransforms(transforms_);
+      channel_->header_->setHeaders(std::move(headers));
       channel_->sendMessage(cb, std::move(buf));
     } catch (const std::exception& e) {
       LOG(ERROR) << "Failed to send message: " << e.what();
@@ -233,10 +236,11 @@ void HeaderServerChannel::HeaderRequest::sendError(
   try {
     std::rethrow_exception(ep);
   } catch (const TApplicationException& ex) {
-    channel_->header_->setHeader("ex", exCode);
+    THeader::StringToStringMap headers;
+    headers["ex"] = exCode;
     std::unique_ptr<folly::IOBuf> exbuf(
-        serializeError(channel_->header_->getProtocolId(), ex, getBuf()));
-    sendReply(std::move(exbuf), cb);
+      serializeError(channel_->header_->getProtocolId(), ex, getBuf()));
+    sendReply(std::move(exbuf), cb, std::move(headers));
   } catch (const std::exception& ex) {
     // Other types are unimplemented.
     DCHECK(false);
@@ -290,7 +294,8 @@ void HeaderServerChannel::HeaderRequest::setStreamTimeout(
 void HeaderServerChannel::sendCatchupRequests(
     std::unique_ptr<folly::IOBuf> next_req,
     MessageChannel::SendCallback* cb,
-    std::vector<uint16_t> transforms) {
+    std::vector<uint16_t> transforms,
+    THeader::StringToStringMap&& headers) {
 
   DestructorGuard dg(this);
 
@@ -299,6 +304,7 @@ void HeaderServerChannel::sendCatchupRequests(
       try {
         header_->setSequenceNumber(lastWrittenSeqId_ + 1);
         header_->setTransforms(transforms);
+        header_->setHeaders(std::move(headers));
         sendMessage(cb, std::move(next_req));
       } catch (const std::exception& e) {
         LOG(ERROR) << "Failed to send message: " << e.what();
@@ -316,6 +322,7 @@ void HeaderServerChannel::sendCatchupRequests(
       next_req = std::move(std::get<1>(next->second));
       cb = std::get<0>(next->second);
       transforms = std::get<2>(next->second);
+      headers = std::get<3>(next->second);
       inOrderRequests_.erase(lastWrittenSeqId_ + 1);
     } else {
       break;

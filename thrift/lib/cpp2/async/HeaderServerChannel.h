@@ -103,9 +103,11 @@ class HeaderServerChannel : public ResponseChannel,
       return Cpp2Channel::getEventBase();
   }
 
-  void sendCatchupRequests(std::unique_ptr<folly::IOBuf> next_req,
-                           MessageChannel::SendCallback* cb,
-                           std::vector<uint16_t> transforms);
+  void sendCatchupRequests(
+    std::unique_ptr<folly::IOBuf> next_req,
+    MessageChannel::SendCallback* cb,
+    std::vector<uint16_t> transforms,
+    apache::thrift::transport::THeader::StringToStringMap&&);
 
   class Stream : public StreamChannelCallback,
                  public MessageChannel::SendCallback,
@@ -170,8 +172,14 @@ class HeaderServerChannel : public ResponseChannel,
 
     bool isOneway() {return seqId_ == ONEWAY_REQUEST_ID; }
 
+    void sendReply(std::unique_ptr<folly::IOBuf>&& buf,
+                   MessageChannel::SendCallback* cb = nullptr) {
+      apache::thrift::transport::THeader::StringToStringMap headers;
+      sendReply(std::move(buf), cb, std::move(headers));
+    }
     void sendReply(std::unique_ptr<folly::IOBuf>&&,
-                   MessageChannel::SendCallback* cb = nullptr);
+                   MessageChannel::SendCallback* cb,
+                   apache::thrift::transport::THeader::StringToStringMap&&);
     void sendError(std::exception_ptr ex,
                    std::string exCode,
                    MessageChannel::SendCallback* cb = nullptr);
@@ -248,10 +256,13 @@ private:
   std::unique_ptr<SaslServer> saslServer_;
 
   // For backwards-compatible in-order responses support
-  std::unordered_map<uint32_t,
-                     std::tuple<MessageChannel::SendCallback*,
-                                std::unique_ptr<folly::IOBuf>,
-                                std::vector<uint16_t>>> inOrderRequests_;
+  std::unordered_map<
+    uint32_t,
+    std::tuple<
+      MessageChannel::SendCallback*,
+      std::unique_ptr<folly::IOBuf>,
+      std::vector<uint16_t>,
+      apache::thrift::transport::THeader::StringToStringMap>> inOrderRequests_;
   std::unordered_map<uint32_t, Stream*> streams_;
 
   uint32_t arrivalSeqId_;

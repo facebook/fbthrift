@@ -138,7 +138,7 @@ class Cpp2Connection
         MessageChannel::SendCallback* sendCallback,
         apache::thrift::server::TServerObserver* observer);
 
-    std::unique_ptr<ResponseChannel::Request> req_;
+    std::unique_ptr<HeaderServerChannel::HeaderRequest> req_;
     std::shared_ptr<Cpp2Connection> connection_;
     Cpp2RequestContext reqContext_;
   };

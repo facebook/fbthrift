@@ -211,6 +211,7 @@ class THeader {
 
   // these work with write headers
   void setHeader(const std::string& key, const std::string& value);
+  void setHeaders(StringToStringMap&&);
   void setPersistentHeader(const std::string& key, const std::string& value);
   void clearHeaders();
   /**

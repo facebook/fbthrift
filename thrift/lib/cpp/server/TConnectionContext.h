@@ -68,6 +68,16 @@ class TConnectionContext {
     return nullptr;
   }
 
+  virtual bool setHeader(const std::string& key, const std::string& value) {
+    auto header = getHeader();
+    if (header) {
+      header->setHeader(key, value);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   virtual std::map<std::string, std::string> getHeaders() {
     auto header = getHeader();
     if (header) {
