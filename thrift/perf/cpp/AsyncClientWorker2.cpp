@@ -234,8 +234,7 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
       static auto saslThreadManager_ = std::make_shared<SaslThreadManager>();
       static auto ccManagerLogger_ = std::make_shared<SecurityLogger>();
       static auto credentialsCacheManager_ =
-        std::make_shared<krb5::Krb5CredentialsCacheManager>(
-          "", ccManagerLogger_);
+        std::make_shared<krb5::Krb5CredentialsCacheManager>(ccManagerLogger_);
       channel->setSaslClient(std::unique_ptr<apache::thrift::SaslClient>(
         new apache::thrift::GssSaslClient(socket->getEventBase())
       ));

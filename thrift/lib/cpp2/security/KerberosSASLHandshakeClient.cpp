@@ -204,7 +204,7 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
   }
 
   logger_->logStart("import_sname");
-  Krb5Context ctx;
+  Krb5Context ctx(true);
   auto princ = Krb5Principal::snameToPrincipal(
     ctx.get(),
     KRB5_NT_UNKNOWN,
@@ -260,14 +260,12 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
 
   try {
     logger_->logStart("wait_for_cache");
-    cc_ = credentialsCacheManager_->waitForCache();
+    cc_ = credentialsCacheManager_->waitForCache(princ);
     logger_->logEnd("wait_for_cache");
   } catch (const std::runtime_error& e) {
     throw TKerberosException(
       string("Kerberos ccache init error: ") + e.what());
   }
-
-  credentialsCacheManager_->incUsedService(princ_name);
 
   logger_->logStart("import_cred");
   maj_stat = gss_krb5_import_cred(

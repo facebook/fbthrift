@@ -27,6 +27,7 @@
 #include "folly/stats/BucketedTimeSeries.h"
 #include "folly/RWSpinLock.h"
 #include "thrift/lib/cpp2/security/SecurityLogger.h"
+#include "thrift/lib/cpp/util/kerberos/Krb5CCacheStore.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
 
 namespace apache { namespace thrift { namespace krb5 {
@@ -38,65 +39,30 @@ namespace apache { namespace thrift { namespace krb5 {
 class Krb5CredentialsCacheManager {
  public:
 
-  /**
-   * Specify the client to use when doing kInit.
-   */
   explicit Krb5CredentialsCacheManager(
-    const std::string& client = "",
     const std::shared_ptr<SecurityLogger>& logger =
       std::make_shared<SecurityLogger>());
 
   virtual ~Krb5CredentialsCacheManager();
 
-  /**
-   * Wait for a credentials cache object to become available. Will throw
-   * runtime_exception if the cache is not available because of an internal
-   * error.
-   */
-  std::shared_ptr<Krb5CCache> waitForCache();
-
-  /**
-   * Call this whenever a credential is used. This will allow this manager
-   * to keep track of credentials usage. Note that this method may
-   * potentially hold a lock.
-   */
-  void incUsedService(const std::string& service);
-
- protected:
-  static const int MANAGE_THREAD_SLEEP_PERIOD;
-  static const int SERVICE_HISTOGRAM_NUM_BUCKETS;
-  static const int SERVICE_HISTOGRAM_PERIOD;
-  static const int ABOUT_TO_EXPIRE_THRESHOLD;
-  static const int NUM_ELEMENTS_TO_PERSIST_TO_FILE;
-
   typedef std::mutex Mutex;
   typedef std::unique_lock<Mutex> MutexGuard;
 
-  typedef folly::RWSpinLock Lock;
-  typedef folly::RWSpinLock::WriteHolder WriteLock;
-  typedef folly::RWSpinLock::ReadHolder ReadLock;
-  typedef folly::RWSpinLock::UpgradedHolder UpgradeLock;
-
   /**
-   * Returns the pointer to the currently active credentials cache. There
-   * could be multiple active caches at any given time.
+   * Wait for a credentials cache object to become available. This will throw
+   * runtime_exception if the cache is not available because of an internal
+   * error.
    */
-  std::shared_ptr<Krb5CCache> getCache();
+  std::shared_ptr<Krb5CCache> waitForCache(const Krb5Principal& service);
+
+ protected:
+  static const int MANAGE_THREAD_SLEEP_PERIOD;
+  static const int ABOUT_TO_EXPIRE_THRESHOLD;
+  static const int NUM_ELEMENTS_TO_PERSIST_TO_FILE;
 
   /**
-   * Run kInit on the in-memory cache. All the old credentials will be lost
-   * in the new cache returned by getCache().
-   */
-  std::unique_ptr<Krb5CCache> kInit();
-
-  /**
-   * Run kInit on a new cache, and try to renew all the credentials that are in
-   * the old cache.
-   */
-  std::unique_ptr<Krb5CCache> buildRenewedCache();
-
-  /**
-   * Read in credentials from the default CC file
+   * Read in credentials from the default CC file. Throws if
+   * cache is invalid or about to expire.
    */
   std::unique_ptr<Krb5CCache> readInCache();
 
@@ -107,56 +73,31 @@ class Krb5CredentialsCacheManager {
    */
   void writeOutCache(size_t limit);
 
-  /**
-   * Import the new cache.
-   */
-  void importMemoryCache(std::shared_ptr<Krb5CCache> cache);
-
-  /**
-   * Notify that some sort of error happened in the renewal thread.
-   */
-  void notifyOfError(const std::string& error);
-
-  /**
-   * Do tgs request and store the ticket in provided ccache.
-   */
-  void doTgsReq(krb5_principal server, Krb5CCache& cache);
-
   void raiseIf(krb5_error_code code, const std::string& what) {
     apache::thrift::krb5::raiseIf(ctx_.get(), code, what);
   }
 
   void stopThread();
 
-  class ServiceTimeSeries {
-   public:
-     ServiceTimeSeries();
-     void bumpCount();
-     uint64_t getCount();
-     std::string getName();
+  /**
+   * Keytab access helpers.
+   */
+  std::unique_ptr<Krb5Principal> getFirstPrincipalInKeytab();
+  bool isPrincipalInKeytab(const Krb5Principal& princ);
 
-   private:
-     folly::BucketedTimeSeries<uint64_t> timeSeries_;
-     Lock serviceTimeseriesLock_;
-  };
+  void initCacheStore();
+
+  bool aboutToExpire(const std::pair<uint64_t, uint64_t>& lifetime);
+  bool reachedRenewTime(
+    const std::pair<uint64_t, uint64_t>& lifetime, const std::string& client);
 
   Krb5Context ctx_;
-  std::unique_ptr<Krb5Principal> client_;
 
-  // Count struct
-  mutable Lock serviceCountLock_;
-  std::unordered_map<std::string,
-    std::unique_ptr<ServiceTimeSeries>> serviceCountMap_;
+  Krb5CCacheStore store_;
 
-  // In-memory cache. Will be shared across different threads. Operations
-  // on the CC should be thread-safe within the krb5 library.
-  Mutex ccLock_; // A lock for ccMemory_
-  std::shared_ptr<Krb5CCache> ccMemory_;
-  std::condition_variable ccMemoryCondVar_;
-  // Error string, also locked by ccLock_.
-  std::string ccMemoryFetchError_;
-
-  // Members for controlling the manager thread
+  /**
+   * Members for controlling the manager thread
+   */
   std::thread manageThread_;
   Mutex manageThreadMutex_; // A lock for the two members below
   bool stopManageThread_;
