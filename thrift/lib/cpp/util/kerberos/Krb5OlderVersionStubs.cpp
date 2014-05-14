@@ -22,6 +22,8 @@
 #include <gssapi/gssapi_krb5.h>
 #include <krb5.h>
 
+// Proxy for older krb5 builds
+#ifndef KRB5_GC_NO_STORE
 int gss_krb5_import_cred(
     int *minor_status,
     krb5_ccache id,
@@ -39,3 +41,4 @@ krb5_boolean krb5_is_config_principal(
              << "krb5_is_config_principal";
   return false;
 }
+#endif
