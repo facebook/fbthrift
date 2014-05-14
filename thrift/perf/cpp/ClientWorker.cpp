@@ -71,6 +71,9 @@ std::shared_ptr<ClientWorker::Client> ClientWorker::createConnection() {
         context, config->getAddress());
       protocol = std::dynamic_pointer_cast<THeaderProtocol>(
         client->getOutputProtocol());
+      if (config->zlib()) {
+        protocol->setTransform(THeader::ZLIB_TRANSFORM);
+      }
       protocol->setProtocolId(T_BINARY_PROTOCOL);
       return client;
     } else {

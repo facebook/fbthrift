@@ -208,6 +208,13 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
       apache::thrift::async::TDelayedDestruction::Destructor> channel(
         HeaderClientChannel::newChannel(socket));
     channel->setTimeout(kTimeout);
+    // For testing equality, make sure to use binary
+    if (!config->useHeaderProtocol()) {
+      channel->getHeader()->setClientType(THRIFT_FRAMED_DEPRECATED);
+    }
+    if (config->zlib()) {
+      channel->getHeader()->setTransform(THeader::ZLIB_TRANSFORM);
+    }
 
     if (config->SASLPolicy() == "permitted") {
       channel->getHeader()->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);

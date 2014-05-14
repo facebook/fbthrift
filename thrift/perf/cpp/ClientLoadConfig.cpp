@@ -50,6 +50,7 @@ DEFINE_int32(async_clients, 1,
              "number of simultaneous connections per thread");
 DEFINE_int32(async_ops, 10,
              "number of oustanding async ops per connection");
+DEFINE_bool(zlib, false, "use zlib compression");
 
 // Relative weights for operation frequencies
 DEFINE_int32(weight_noop, 0, "frequency weight for noop()");
@@ -194,6 +195,10 @@ bool ClientLoadConfig::useSR() const {
 
 std::string ClientLoadConfig::srTier() const {
   return FLAGS_srtier;
+}
+
+bool ClientLoadConfig::zlib() const {
+  return FLAGS_zlib;
 }
 
 std::string ClientLoadConfig::SASLPolicy() const {

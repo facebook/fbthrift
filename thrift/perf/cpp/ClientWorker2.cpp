@@ -84,6 +84,9 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
     // Always use binary in loadtesting to get apples to apples comparison
     headerChannel->getHeader()->setProtocolId(
         apache::thrift::protocol::T_BINARY_PROTOCOL);
+    if (config->zlib()) {
+      headerChannel->getHeader()->setTransform(THeader::ZLIB_TRANSFORM);
+    }
     if (!config->useHeaderProtocol()) {
       headerChannel->getHeader()->setClientType(THRIFT_FRAMED_DEPRECATED);
     }

@@ -100,6 +100,8 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
 
   std::string srTier() const;
 
+  bool zlib() const;
+
   std::string SASLPolicy() const;
   std::string SASLServiceTier() const;
 

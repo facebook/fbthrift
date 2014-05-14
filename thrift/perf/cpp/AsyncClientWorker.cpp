@@ -182,6 +182,9 @@ LoadTestClientPtr AsyncClientWorker::createConnection(
     std::shared_ptr<THeaderAsyncChannel> channel(
       THeaderAsyncChannel::newChannel(socket));
     channel->setRecvTimeout(kTimeout);
+    if (config->zlib()) {
+      duplexProtoFactory_.setTransform(THeader::ZLIB_TRANSFORM);
+    }
     loadClient = new LoadTestCobClient(channel, &duplexProtoFactory_);
   } else if (config->useFramedTransport()) {
     std::shared_ptr<TFramedAsyncChannel> channel(
