@@ -93,7 +93,7 @@ std::vector<std::string> getHostRealm(krb5_context context,
  */
 class Krb5Context {
 public:
-  Krb5Context();
+  explicit Krb5Context(bool thread_local_ctx = false);
   ~Krb5Context();
 
   krb5_context get() { return context_; }
@@ -116,6 +116,8 @@ public:
   static Krb5Principal snameToPrincipal(krb5_context context,
     krb5_int32 type, const std::string& hostname = "",
     const std::string& sname = "");
+  static Krb5Principal copyPrincipal(
+    krb5_context context, krb5_const_principal princ);
 
   // Take ownership of principal
   Krb5Principal(krb5_context context, krb5_principal&& principal);
@@ -128,12 +130,12 @@ public:
 
   krb5_principal get() const { return principal_; }
 
-  uint size() { return krb5_princ_size(context_, principal_); }
-  std::string getRealm() {
+  uint size() const { return krb5_princ_size(context_, principal_); }
+  std::string getRealm() const {
     krb5_data* d = krb5_princ_realm(context_, principal_);
     return std::string(d->data, d->length);
   }
-  std::string getComponent(uint nth) {
+  std::string getComponent(uint nth) const {
     krb5_data* d = krb5_princ_component(context_, principal_, nth);
     if (!d) {
       return "";
@@ -141,7 +143,7 @@ public:
     return std::string(d->data, d->length);
   }
 
-  bool isTgt() {
+  bool isTgt() const {
     return size() == 2 && getComponent(0) == "krbtgt";
   }
 
@@ -207,7 +209,7 @@ public:
   private:
     friend class Krb5CCache;
 
-    explicit Iterator(Krb5CCache* cc, bool include_config_entries);
+    explicit Iterator(const Krb5CCache* cc, bool include_config_entries);
 
     void next_any();
     void next();
@@ -255,10 +257,10 @@ public:
   krb5_ccache get() const { return ccache_; }
   krb5_context getContext() const { return context_; }
 
-  Iterator begin(bool include_config_entries=false) {
+  Iterator begin(bool include_config_entries=false) const {
     return Iterator(this, include_config_entries);
   }
-  Iterator end() { return Iterator(nullptr, false); }
+  Iterator end() const { return Iterator(nullptr, false); }
 
   /**
    * Gets a list of service credential principals.
@@ -269,9 +271,10 @@ public:
    * of 'principal'.  If the principal is nullptr, use the ccache's
    * client principal.
    */
-  std::pair<uint64_t, uint64_t> getLifetime(krb5_principal principal = nullptr);
+  std::pair<uint64_t, uint64_t> getLifetime(
+    krb5_principal principal = nullptr) const;
   std::string getName();
-  Krb5Principal getClientPrincipal();
+  Krb5Principal getClientPrincipal() const;
   void initialize(krb5_principal cprinc);
   void storeCred(const krb5_creds& creds);
   Krb5Credentials retrieveCred(const krb5_creds& match_creds,

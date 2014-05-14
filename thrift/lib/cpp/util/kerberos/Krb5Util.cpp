@@ -70,8 +70,13 @@ std::vector<std::string> getHostRealm(krb5_context context,
   return vRealms;
 }
 
-Krb5Context::Krb5Context() {
-  krb5_error_code code = krb5_init_context(&context_);
+Krb5Context::Krb5Context(bool thread_local_ctx) {
+  krb5_error_code code;
+  if (thread_local_ctx) {
+    code = krb5_init_thread_local_context(&context_);
+  } else {
+    code = krb5_init_context(&context_);
+  }
   if (code) {
     LOG(FATAL) << "Error initializing kerberos library: "
                << error_message(code);
@@ -95,6 +100,17 @@ Krb5Principal Krb5Principal::snameToPrincipal(krb5_context context,
   raiseIf(context, code, folly::to<std::string>(
     "snameToPrincipal error: ", type, " ", hostname, " ", sname));
   return Krb5Principal(context, std::move(princ));
+}
+
+Krb5Principal Krb5Principal::copyPrincipal(krb5_context context,
+    krb5_const_principal princ) {
+  krb5_principal copied_princ;
+  krb5_error_code code = krb5_copy_principal(
+    context,
+    princ,
+    &copied_princ);
+  raiseIf(context, code, "krb5_principal copy failed");
+  return Krb5Principal(context, std::move(copied_princ));
 }
 
 Krb5Principal::Krb5Principal(krb5_context context, const std::string& name)
@@ -229,7 +245,7 @@ std::vector<Krb5Principal> Krb5CCache::getServicePrincipalList(
 }
 
 std::pair<uint64_t, uint64_t> Krb5CCache::getLifetime(
-    krb5_principal principal) {
+    krb5_principal principal) const {
   const std::string client_realm = getClientPrincipal().getRealm();
   std::string princ_realm;
   if (principal) {
@@ -252,7 +268,7 @@ std::pair<uint64_t, uint64_t> Krb5CCache::getLifetime(
   return std::make_pair(0, 0);
 }
 
-Krb5Principal Krb5CCache::getClientPrincipal() {
+Krb5Principal Krb5CCache::getClientPrincipal() const {
   krb5_principal client;
   krb5_error_code code = krb5_cc_get_principal(context_, ccache_, &client);
   raiseIf(context_, code, "getting client from ccache");
@@ -340,7 +356,7 @@ krb5_ccache Krb5CCache::release() {
 }
 
 struct Krb5CCache::Iterator::State {
-  State(Krb5CCache* cc, bool include_config_entries)
+  State(const Krb5CCache* cc, bool include_config_entries)
     : cc_(cc)
     , include_config_entries_(include_config_entries) {
     CHECK(cc);
@@ -382,13 +398,14 @@ struct Krb5CCache::Iterator::State {
     return valid;
   }
 
-  Krb5CCache* cc_;
+  const Krb5CCache* cc_;
   bool include_config_entries_;
   krb5_cc_cursor cursor_;
   krb5_creds creds_;
 };
 
-Krb5CCache::Iterator::Iterator(Krb5CCache* cc, bool include_config_entries) {
+Krb5CCache::Iterator::Iterator(
+    const Krb5CCache* cc, bool include_config_entries) {
   if (!cc) {
     return;
   }
