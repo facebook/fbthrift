@@ -329,7 +329,7 @@ class TAsyncSocket : public TAsyncTransport {
   void shutdownWriteNow() override;
 
   bool readable() const override;
-  virtual bool isPending();
+  bool isPending() const override;
   virtual bool hangup() const;
   bool good() const override;
   bool error() const override;

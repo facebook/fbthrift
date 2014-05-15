@@ -970,7 +970,7 @@ bool TAsyncSocket::readable() const {
   return rc == 1;
 }
 
-bool TAsyncSocket::isPending() {
+bool TAsyncSocket::isPending() const {
   return ioHandler_.isPending();
 }
 

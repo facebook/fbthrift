@@ -410,6 +410,14 @@ class TAsyncTransport: public TDelayedDestruction {
   virtual bool readable() const = 0;
 
   /**
+   * Determine if the there is pending data on the transport.
+   *
+   * @return  true iff the if the there is pending data, false otherwise.
+   */
+  virtual bool isPending() const {
+    return readable();
+  }
+  /**
    * Determine if transport is connected to the endpoint
    *
    * @return  false iff the transport is connected, otherwise true
