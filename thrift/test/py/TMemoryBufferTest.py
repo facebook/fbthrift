@@ -43,5 +43,11 @@ class TestTMemoryBuffer(unittest.TestCase):
         self.assertEquals(data, b"")
         self.assertEquals(buf.getvalue(), b"world")
 
+    def testClose(self):
+        buf = TMemoryBuffer(b"hello")
+        buf.close()
+        self.assertRaises(RuntimeError, buf.read, 5)
+        self.assertRaises(RuntimeError, buf.write, b"world")
+
 if __name__ == '__main__':
     unittest.main()

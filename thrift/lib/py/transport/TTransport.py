@@ -234,27 +234,39 @@ class TMemoryBuffer(TTransportBase, CReadableTransport):
         otherwise, it is for writing"""
         self._readBuffer = StringIO(value or b"")
         self._writeBuffer = StringIO()
+        self._open = True
 
     def isOpen(self):
-        return not self._buffer.closed
+        return self._open
 
     def open(self):
         pass
 
     def close(self):
-        self._buffer.close()
+        self._readBuffer.close()
+        self._writeBuffer.close()
+        self._open = False
 
     def read(self, sz):
-        return self._readBuffer.read(sz)
+        if self._open:
+            return self._readBuffer.read(sz)
+        else:
+            raise RuntimeError("Buffer already closed!")
 
     def write(self, buf):
-        self._writeBuffer.write(buf)
+        if self._open:
+            self._writeBuffer.write(buf)
+        else:
+            raise RuntimeError("Buffer already closed!")
 
     def flush(self):
         pass
 
     def getvalue(self):
-        return self._writeBuffer.getvalue()
+        if self._open:
+            return self._writeBuffer.getvalue()
+        else:
+            raise RuntimeError("Buffer already closed!")
 
     # Implement the CReadableTransport interface.
     @property
