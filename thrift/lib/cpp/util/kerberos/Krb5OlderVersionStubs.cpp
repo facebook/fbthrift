@@ -42,3 +42,9 @@ extern "C" krb5_boolean krb5_is_config_principal(
   return false;
 }
 #endif
+
+#ifndef KRB5_HAS_INIT_THREAD_LOCAL_CONTEXT
+krb5_error_code krb5_init_thread_local_context(krb5_context *context) {
+  return krb5_init_context(context);
+}
+#endif

@@ -36,4 +36,10 @@ krb5_boolean krb5_is_config_principal(
 }
 #endif
 
+// If krb5_init_thread_local_context is not defined, replace it with
+// a stub.
+#ifndef KRB5_HAS_INIT_THREAD_LOCAL_CONTEXT
+krb5_error_code krb5_init_thread_local_context(krb5_context *context);
+#endif
+
 #endif
