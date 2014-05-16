@@ -58,6 +58,7 @@ EOF
     openssl x509 -req \
 	-extensions v3_req \
 	-extfile conf.tmp \
+	-days ${DAYS} \
 	-in test_cert.csr \
 	-CA ca-cert.pem \
 	-CAkey ca-key.pem \
