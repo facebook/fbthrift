@@ -1,0 +1,53 @@
+*~
+
+# autoreconf artifacts
+Makefile.in
+/COPYING
+/INSTALL
+/aclocal.m4
+/autom4te.cache/
+/compile
+/config.guess
+/config.hin
+/config.sub
+/configure
+/depcomp
+/install-sh
+/ltmain.sh
+/missing
+/test-driver
+/ylwrap
+
+# Configure artifacts
+# Can't include all Makefiles, since some are non-autoconf
+.deps
+/Makefile
+/compiler/Makefile
+/compiler/py/Makefile
+/compiler/version.h
+/config.h
+/config.log
+/config.status
+/lib/Makefile
+/lib/cpp/Makefile
+/lib/cpp2/Makefile
+/lib/cpp2/test/Makefile
+/lib/thrift/Makefile
+/libtool
+/stamp-h1
+
+# Build artifacts
+.libs
+*.o
+*.lo
+*.a
+*.la
+gen-cpp
+gen-cpp2
+
+/compiler/thrifty.hh
+/compiler/thrift1
+/compiler/thriftl.cc
+/compiler/thrifty.cc
+/compiler/py/build/
+/compiler/py/frontend.so
