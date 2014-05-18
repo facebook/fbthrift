@@ -68,7 +68,8 @@ libthrift_la_SOURCES = Thrift.cpp \
                        transport/TTransportUtils.cpp \
                        transport/TBufferTransports.cpp \
                        server/TServer.cpp \
-                       processor/PeekProcessor.cpp
+                       processor/PeekProcessor.cpp \
+                       util/THttpParser.cpp
 
 libthrift_la_SOURCES += concurrency/Mutex.cpp \
                         concurrency/Monitor.cpp \
