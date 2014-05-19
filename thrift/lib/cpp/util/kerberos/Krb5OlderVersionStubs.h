@@ -23,6 +23,7 @@
 
 // Proxy for older krb5 builds
 #ifndef KRB5_GC_NO_STORE
+extern "C" {
 OM_uint32 gss_krb5_import_cred(
     OM_uint32 *minor_status,
     krb5_ccache id,
@@ -32,6 +33,7 @@ OM_uint32 gss_krb5_import_cred(
 
 krb5_boolean krb5_is_config_principal(
   krb5_context context, krb5_const_principal principal);
+}
 #endif
 
 #endif

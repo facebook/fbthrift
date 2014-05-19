@@ -24,8 +24,8 @@
 
 // Proxy for older krb5 builds
 #ifndef KRB5_GC_NO_STORE
-int gss_krb5_import_cred(
-    int *minor_status,
+extern "C" OM_uint32 gss_krb5_import_cred(
+    OM_uint32 *minor_status,
     krb5_ccache id,
     krb5_principal keytab_principal,
     krb5_keytab keytab,
@@ -35,7 +35,7 @@ int gss_krb5_import_cred(
   return GSS_S_NO_CRED;
 }
 
-krb5_boolean krb5_is_config_principal(
+extern "C" krb5_boolean krb5_is_config_principal(
     krb5_context context, krb5_const_principal principal) {
   LOG(ERROR) << "Linking against older version of krb5 which does not support "
              << "krb5_is_config_principal";
