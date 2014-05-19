@@ -23,7 +23,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys
-from thrift.Thrift import TMessageType, TApplicationException
+from thrift.Thrift import TMessageType, TApplicationException, TType
 
 def process_main(twisted=False):
     """Decorator for process method."""
