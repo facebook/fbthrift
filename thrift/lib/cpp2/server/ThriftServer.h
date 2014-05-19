@@ -857,8 +857,17 @@ class ThriftServer : public apache::thrift::server::TServer {
    * To be used only in dire situations. We're using it from the failure
    * signal handler to close all connections quickly, even though the server
    * might take multiple seconds to finish crashing.
+   *
+   * The optional bool parameter indicates whether to set the active
+   * connections in the ShutdownSocketSet to not linger.  The effect of that
+   * includes RST packets being immediately sent to clients which will result
+   * in errors (and not normal EOF) on the client side.  This also causes
+   * the local (ip, tcp port number) tuple to be reusable immediately, instead
+   * of having to wait the standard amount of time.  For full details see
+   * the `shutdown` method of `ShutdownSocketSet` (incl. notes about the
+   * `abortive` parameter).
    */
-  void immediateShutdown();
+  void immediateShutdown(bool abortConnections = false);
 
   /**
    * Queue sends - better throughput by avoiding syscalls, but can increase

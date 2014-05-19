@@ -427,8 +427,8 @@ void ThriftServer::stopWorkers() {
   }
 }
 
-void ThriftServer::immediateShutdown() {
-  shutdownSocketSet_->shutdownAll();
+void ThriftServer::immediateShutdown(bool abortConnections) {
+  shutdownSocketSet_->shutdownAll(abortConnections);
 }
 
 void ThriftServer::CumulativeFailureInjection::set(
