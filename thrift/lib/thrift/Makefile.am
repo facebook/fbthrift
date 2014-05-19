@@ -7,7 +7,7 @@ gen-cpp/reflection_constants.cpp: reflection.thrift
 	$(THRIFT) --gen cpp:templates,cob_style -r $<
 
 gen-cpp/frozen_constants.cpp: frozen.thrift
-	$(THRIFT) --gen cpp2:templates -r $<
+	$(THRIFT) --gen cpp:templates -r $<
 
 all: gen-cpp/reflection_constants.cpp gen-cpp/frozen_constants.cpp
 
