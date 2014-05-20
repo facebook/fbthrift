@@ -1386,17 +1386,12 @@ void t_hack_generator::generate_php_struct_writer(ofstream& out,
 
     indent(out) << "if ($this->" << (*f_iter)->get_name() << " !== null";
 
-    if ((*f_iter)->get_req() == t_field::T_OPTIONAL) {
-      string dval = "";
-      if ((*f_iter)->get_value() != nullptr && !(type->is_struct() || type->is_xception())) {
-        dval = render_const_value(type, (*f_iter)->get_value());
-      } else {
-        dval = render_default_value(type);
-      }
-
-      if (dval != "null") {
-        out << " && $this->" << (*f_iter)->get_name() << " !== " << dval;
-      }
+    if ((*f_iter)->get_req() == t_field::T_OPTIONAL
+        && (*f_iter)->get_value() != nullptr
+        && !(type->is_struct() || type->is_xception())
+    ) {
+      out << " && $this->" << (*f_iter)->get_name() << " !== "
+          << render_const_value(type, (*f_iter)->get_value());
     }
 
     out << ") {" << endl;
