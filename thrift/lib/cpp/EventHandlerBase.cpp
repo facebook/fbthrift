@@ -37,7 +37,11 @@ vector<shared_ptr<TProcessorEventHandlerFactory>>
   TProcessorBase::registeredHandlerFactories_;
 std::shared_ptr<server::TServerObserverFactory> observerFactory_(nullptr);
 
+concurrency::ReadWriteMutex TClientBase::handlerFactoriesMutex_;
+concurrency::ReadWriteMutex TProcessorBase::handlerFactoriesMutex_;
+
 TProcessorBase::TProcessorBase() {
+  concurrency::RWGuard lock(handlerFactoriesMutex_, concurrency::RW_READ);
   for (auto factory: registeredHandlerFactories_) {
     auto handler = factory->getEventHandler();
     if (handler) {
@@ -48,6 +52,7 @@ TProcessorBase::TProcessorBase() {
 
 void TProcessorBase::addProcessorEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
+  concurrency::RWGuard lock(handlerFactoriesMutex_, concurrency::RW_WRITE);
   assert(find(registeredHandlerFactories_.begin(),
               registeredHandlerFactories_.end(),
               factory) ==
@@ -57,6 +62,7 @@ void TProcessorBase::addProcessorEventHandlerFactory(
 
 void TProcessorBase::removeProcessorEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
+  concurrency::RWGuard lock(handlerFactoriesMutex_, concurrency::RW_WRITE);
   assert(find(registeredHandlerFactories_.begin(),
               registeredHandlerFactories_.end(),
               factory) !=
@@ -72,6 +78,7 @@ TClientBase::TClientBase()
     : s_() {
   // Automatically ask all registered factories to produce an event
   // handler, and attach the handlers
+  concurrency::RWGuard lock(handlerFactoriesMutex_, concurrency::RW_READ);
   for (auto factory: registeredHandlerFactories_) {
     auto handler = factory->getEventHandler();
     if (handler) {
@@ -82,6 +89,7 @@ TClientBase::TClientBase()
 
 void TClientBase::addClientEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
+  concurrency::RWGuard lock(handlerFactoriesMutex_, concurrency::RW_WRITE);
   assert(find(registeredHandlerFactories_.begin(),
               registeredHandlerFactories_.end(),
               factory) ==
@@ -91,6 +99,7 @@ void TClientBase::addClientEventHandlerFactory(
 
 void TClientBase::removeClientEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
+  concurrency::RWGuard lock(handlerFactoriesMutex_, concurrency::RW_WRITE);
   assert(find(registeredHandlerFactories_.begin(),
               registeredHandlerFactories_.end(),
               factory) !=

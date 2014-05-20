@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "thrift/lib/cpp/concurrency/Mutex.h"
 #include "thrift/lib/cpp/protocol/TProtocolTypes.h"
 #include "thrift/lib/cpp/transport/TSocketAddress.h"
 #include "thrift/lib/cpp/server/TConnectionContext.h"
@@ -386,6 +387,7 @@ class TProcessorBase : public EventHandlerBase {
  private:
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>
     registeredHandlerFactories_;
+  static concurrency::ReadWriteMutex handlerFactoriesMutex_;
 };
 
 /**
@@ -505,6 +507,7 @@ class TClientBase : public EventHandlerBase {
  private:
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>
     registeredHandlerFactories_;
+  static concurrency::ReadWriteMutex handlerFactoriesMutex_;
   std::unique_ptr<ContextStack> s_;
 };
 
