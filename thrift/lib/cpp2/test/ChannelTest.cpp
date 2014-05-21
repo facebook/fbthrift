@@ -127,6 +127,9 @@ class MessageCallback
   virtual void messageSendError(std::exception_ptr&& ep) {
     sendError_++;
   }
+  virtual void messageSendErrorWrapped(folly::exception_wrapper&& ex) {
+    sendError_++;
+  }
 
   virtual void messageReceived(unique_ptr<IOBuf>&& buf,
                                unique_ptr<sample>) {
@@ -138,6 +141,9 @@ class MessageCallback
   }
   virtual void messageReceiveError(std::exception_ptr&& ep) {
     recvError_++;
+  }
+  virtual void messageReceiveErrorWrapped(folly::exception_wrapper&& ex) {
+    sendError_++;
   }
 
   uint32_t sent_;
@@ -988,6 +994,7 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
     channel_.reset();
   }
   void messageReceiveError(std::exception_ptr&&) { }
+  void messageReceiveErrorWrapped(folly::exception_wrapper&&) { }
  private:
   ChannelPointer channel_;
   int invocations_;

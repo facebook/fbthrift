@@ -23,6 +23,7 @@
 #include <memory>
 #include "thrift/lib/cpp/async/TDelayedDestruction.h"
 #include "thrift/lib/cpp/Thrift.h"
+#include "folly/ExceptionWrapper.h"
 
 namespace folly {
 class IOBuf;
@@ -49,6 +50,7 @@ class MessageChannel :
     virtual void sendQueued() = 0;
     virtual void messageSent() = 0;
     virtual void messageSendError(std::exception_ptr&&) = 0;
+    virtual void messageSendErrorWrapped(folly::exception_wrapper&&) = 0;
   };
 
   class RecvCallback {
@@ -66,6 +68,7 @@ class MessageChannel :
                                  std::unique_ptr<sample>) = 0;
     virtual void messageChannelEOF() = 0;
     virtual void messageReceiveError(std::exception_ptr&&) = 0;
+    virtual void messageReceiveErrorWrapped(folly::exception_wrapper&&) = 0;
   };
 
   virtual void sendMessage(SendCallback*,

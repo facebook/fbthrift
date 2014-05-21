@@ -462,6 +462,11 @@ void HeaderServerChannel::messageReceiveError(std::exception_ptr&& ex) {
   }
 }
 
+void HeaderServerChannel::messageReceiveErrorWrapped(
+    folly::exception_wrapper&& ex) {
+  messageReceiveError(ex.getExceptionPtr());
+}
+
 unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
   unique_ptr<IOBuf>&& buf) {
   if (header_->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
@@ -675,6 +680,24 @@ void HeaderServerChannel::Stream::messageSendError(std::exception_ptr&& error) {
 
   if (!manager_->isDone()) {
     manager_->notifyError(error);
+  }
+
+  deleteThisIfNecessary();
+}
+
+void HeaderServerChannel::Stream::messageSendErrorWrapped(
+    folly::exception_wrapper&& error) {
+  CHECK(hasOutstandingSend_);
+  hasOutstandingSend_ = false;
+
+  if (hasSendCallback()) {
+    auto errorCopy = error;
+    sendCallback_->messageSendErrorWrapped(std::move(errorCopy));
+    sendCallback_ = nullptr;
+  }
+
+  if (!manager_->isDone()) {
+    manager_->notifyError(error.getExceptionPtr());
   }
 
   deleteThisIfNecessary();

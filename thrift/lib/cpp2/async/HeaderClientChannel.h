@@ -93,6 +93,7 @@ class HeaderClientChannel : public RequestChannel,
                        std::unique_ptr<MessageChannel::RecvCallback::sample>);
   void messageChannelEOF();
   void messageReceiveError(std::exception_ptr&&);
+  void messageReceiveErrorWrapped(folly::exception_wrapper&&);
 
   // Client timeouts for read, write.
   // Servers should use timeout methods on underlying transport.
@@ -180,6 +181,48 @@ class HeaderClientChannel : public RequestChannel,
   }
 
 private:
+  template <class ExceptionT>
+  void messageReceiveErrorImpl(ExceptionT&& ex) {
+    DestructorGuard dg(this);
+    // Clear callbacks early.  The last callback can delete the client,
+    // which may cause the channel to be destroy()ed, which will call
+    // messageChannelEOF(), which will reenter messageReceiveError().
+
+    decltype(recvCallbacks_) callbacks;
+    decltype(afterSecurity_) otherCallbacks;
+    using std::swap;
+    swap(recvCallbacks_, callbacks);
+    swap(afterSecurity_, otherCallbacks);
+
+    if (!callbacks.empty()) {
+      auto exp = getExceptionPtr(ex);
+      for (auto& cb : callbacks) {
+        if (cb.second) {
+          cb.second->requestError(exp);
+        }
+      }
+    }
+
+    for (auto& funcarg : otherCallbacks) {
+      auto& cb = std::get<2>(funcarg);
+      auto& ctx = std::get<3>(funcarg);
+      if (cb) {
+        cb->requestError(
+            ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
+      }
+    }
+
+    setBaseReceivedCallback();
+  }
+
+  static std::exception_ptr getExceptionPtr(const std::exception_ptr& e) {
+    return e;
+  }
+
+  static std::exception_ptr getExceptionPtr(const folly::exception_wrapper& e) {
+    return e.getExceptionPtr();
+  }
+
   bool clientSupportHeader();
   /**
    * Callback to manage the lifetime of a two-way call.
@@ -241,6 +284,13 @@ private:
       maybeDeleteThis();
     }
     void messageSendError(std::exception_ptr&& ex) {
+      messageSendErrorImpl(std::move(ex));
+    }
+    void messageSendErrorWrapped(folly::exception_wrapper&& ex) {
+      messageSendErrorImpl(std::move(ex));
+    }
+    template <class T>
+    void messageSendErrorImpl(T&& ex) {
       X_CHECK_STATE_NE(sendState_, QState::DONE);
       sendState_ = QState::DONE;
       if (recvState_ == QState::QUEUED) {
@@ -253,7 +303,7 @@ private:
         auto old_ctx =
           apache::thrift::async::RequestContext::setContext(cb_->context_);
         cb_->requestError(
-          ClientReceiveState(ex, std::move(ctx_),
+          ClientReceiveState(std::move(ex), std::move(ctx_),
                              channel_->isSecurityActive()));
         apache::thrift::async::RequestContext::setContext(old_ctx);
       }
@@ -373,6 +423,14 @@ private:
       delete this;
     }
     void messageSendError(std::exception_ptr&& ex) {
+      messageSendErrorImpl(std::move(ex));
+    }
+    void messageSendErrorWrapped(folly::exception_wrapper&& ex) {
+      messageSendErrorImpl(std::move(ex));
+    }
+   private:
+    template<class T>
+    void messageSendErrorImpl(T&& ex) {
       CHECK(cb_);
       auto old_ctx =
         apache::thrift::async::RequestContext::setContext(cb_->context_);
@@ -405,6 +463,7 @@ private:
       void sendQueued();
       void messageSent();
       void messageSendError(std::exception_ptr&& ex);
+      void messageSendErrorWrapped(folly::exception_wrapper&& ex);
 
       void replyReceived(std::unique_ptr<folly::IOBuf> buf);
       void requestError(std::exception_ptr ex);
@@ -425,6 +484,18 @@ private:
 
       void resetTimeout();
       void deleteThisIfNecessary();
+      template <class T>
+      void messageSendErrorImpl(T&& ex) {
+        CHECK(hasOutstandingSend_);
+        hasOutstandingSend_ = false;
+
+        if (!manager_->isDone()) {
+          auto exp = HeaderClientChannel::getExceptionPtr(ex);
+          manager_->notifyError(exp);
+        }
+
+        deleteThisIfNecessary();
+      }
   };
 
   void registerStream(uint32_t seqId, StreamCallback* cb);

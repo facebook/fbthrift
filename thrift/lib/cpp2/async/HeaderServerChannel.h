@@ -92,6 +92,7 @@ class HeaderServerChannel : public ResponseChannel,
                        std::unique_ptr<sample>);
   void messageChannelEOF();
   void messageReceiveError(std::exception_ptr&&);
+  void messageReceiveErrorWrapped(folly::exception_wrapper&&);
 
   // Header framing
   virtual std::unique_ptr<folly::IOBuf>
@@ -127,6 +128,7 @@ class HeaderServerChannel : public ResponseChannel,
       void sendQueued();
       void messageSent();
       void messageSendError(std::exception_ptr&&);
+      void messageSendErrorWrapped(folly::exception_wrapper&&);
 
       void onStreamSend(std::unique_ptr<folly::IOBuf>&& data);
       void onOutOfLoopStreamError(const std::exception_ptr& error);

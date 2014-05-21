@@ -493,33 +493,12 @@ void HeaderClientChannel::messageChannelEOF() {
 }
 
 void HeaderClientChannel::messageReceiveError(std::exception_ptr&& ex) {
-  DestructorGuard dg(this);
-  // Clear callbacks early.  The last callback can delete the client,
-  // which may cause the channel to be destroy()ed, which will call
-  // messageChannelEOF(), which will reenter messageReceiveError().
+  messageReceiveErrorImpl(std::move(ex));
+}
 
-  decltype(recvCallbacks_) callbacks;
-  decltype(afterSecurity_) otherCallbacks;
-  using std::swap;
-  swap(recvCallbacks_, callbacks);
-  swap(afterSecurity_, otherCallbacks);
-
-  for (auto& cb : callbacks) {
-    if (cb.second) {
-      cb.second->requestError(ex);
-    }
-  }
-
-  for (auto& funcarg : otherCallbacks) {
-    auto& cb = std::get<2>(funcarg);
-    auto& ctx = std::get<3>(funcarg);
-    if (cb) {
-        cb->requestError(
-          ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
-    }
-  }
-
-  setBaseReceivedCallback();
+void HeaderClientChannel::messageReceiveErrorWrapped(
+    folly::exception_wrapper&& ex) {
+  messageReceiveErrorImpl(std::move(ex));
 }
 
 void HeaderClientChannel::eraseCallback(uint32_t seqId, TwowayCallback* cb) {
@@ -593,15 +572,14 @@ void HeaderClientChannel::StreamCallback::messageSent() {
 
 void HeaderClientChannel::StreamCallback::messageSendError(
     std::exception_ptr&& ex) {
-  CHECK(hasOutstandingSend_);
-  hasOutstandingSend_ = false;
-
-  if (!manager_->isDone()) {
-    manager_->notifyError(ex);
-  }
-
-  deleteThisIfNecessary();
+  messageSendErrorImpl(std::move(ex));
 }
+
+void HeaderClientChannel::StreamCallback::messageSendErrorWrapped(
+    folly::exception_wrapper&& ex) {
+  messageSendErrorImpl(std::move(ex));
+}
+
 
 void HeaderClientChannel::StreamCallback::replyReceived(
     std::unique_ptr<folly::IOBuf> buf) {

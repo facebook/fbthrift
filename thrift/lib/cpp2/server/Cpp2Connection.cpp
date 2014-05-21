@@ -479,6 +479,16 @@ void Cpp2Connection::Cpp2Sample::messageSendError(std::exception_ptr&& e){
   delete this;
 }
 
+void Cpp2Connection::Cpp2Sample::messageSendErrorWrapped(
+    folly::exception_wrapper&& e) {
+  if (chainedCallback_ != nullptr) {
+    chainedCallback_->messageSendErrorWrapped(std::move(e));
+  }
+  timestamps_.writeEnd =
+    apache::thrift::concurrency::Util::currentTimeUsec();
+  delete this;
+}
+
 Cpp2Connection::Cpp2Sample::~Cpp2Sample() {
   if (observer_) {
     observer_->callCompleted(timestamps_);
