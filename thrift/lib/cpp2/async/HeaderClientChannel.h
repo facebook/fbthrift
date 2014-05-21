@@ -324,9 +324,11 @@ private:
         ex.setOptions(TTransportException::CHANNEL_IS_VALID);  // framing okay
         auto old_ctx =
           apache::thrift::async::RequestContext::setContext(cb_->context_);
-        cb_->requestError(ClientReceiveState(std::make_exception_ptr(ex),
-                                             std::move(ctx_),
-                                             channel_->isSecurityActive()));
+        cb_->requestError(
+            ClientReceiveState(
+              folly::make_exception_wrapper<TTransportException>(std::move(ex)),
+              std::move(ctx_),
+              channel_->isSecurityActive()));
         apache::thrift::async::RequestContext::setContext(old_ctx);
       }
       maybeDeleteThis();

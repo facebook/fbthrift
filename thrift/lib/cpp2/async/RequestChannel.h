@@ -67,11 +67,13 @@ class ClientReceiveState {
       isSecurityActive_(isSecurityActive) {
   }
   ClientReceiveState(folly::exception_wrapper excw,
-                     std::unique_ptr<apache::thrift::ContextStack> ctx)
+                     std::unique_ptr<apache::thrift::ContextStack> ctx,
+                     bool isSecurityActive)
     : protocolId_(-1),
       ctx_(std::move(ctx)),
       streamManager_(nullptr),
-      excw_(std::move(excw)) {
+      excw_(std::move(excw)),
+      isSecurityActive_(isSecurityActive) {
   }
 
   bool isException() const {
