@@ -202,11 +202,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "float"              { thrift_reserved_keyword(yytext); }
 "for"                { thrift_reserved_keyword(yytext); }
 "foreach"            { thrift_reserved_keyword(yytext); }
-"from"               {
-  pwarning(0, "\"%s\" will soon become a reserved keyword.", yytext);
-  yylval.id = strdup(yytext);
-  return tok_identifier;
-}
 "function"           { thrift_reserved_keyword(yytext); }
 "global"             { thrift_reserved_keyword(yytext); }
 "goto"               { thrift_reserved_keyword(yytext); }
