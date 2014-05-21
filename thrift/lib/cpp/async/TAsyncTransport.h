@@ -286,9 +286,10 @@ class TAsyncTransport: public TDelayedDestruction {
    * @param callback    The callback to invoke when the data has been written.
    *                    The callback may not be nullptr.
    * @param vec         A pointer to an array of iovec objects.  The caller is
-   *                    responsible for ensuring that the buffers remain valid
-   *                    until the callback is invoked.  This parameter may not
-   *                    be nullptr.
+   *                    responsible for ensuring that the buffers that iovec
+   *                    objects are pointing to remain valid until the callback
+   *                    is invoked (the vec array itself doesn't have to remain
+   *                    valid).  This parameter may not be nullptr.
    * @param count       The number of iovec objects in the vec array.
    * @param flags       Set of write flags.
    */
