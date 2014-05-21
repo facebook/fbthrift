@@ -25,6 +25,7 @@
 #include "thrift/lib/cpp2/server/Cpp2Worker.h"
 #include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
 #include "thrift/lib/cpp/concurrency/ThreadManager.h"
+#include "thrift/lib/cpp/concurrency/NumaThreadManager.h"
 
 #include <boost/thread/barrier.hpp>
 
@@ -221,8 +222,8 @@ void ThriftServer::setup() {
 
     // We always need a threadmanager for cpp2.
     if (!threadFactory_) {
-      setThreadFactory(std::shared_ptr<ThreadFactory>(
-        new PosixThreadFactory));
+      setThreadFactory(
+        std::make_shared<apache::thrift::concurrency::NumaThreadFactory>());
     }
 
     if (FLAGS_sasl_policy == "required" || FLAGS_sasl_policy == "permitted") {
@@ -264,7 +265,7 @@ void ThriftServer::setup() {
 
     if (!threadManager_) {
       std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-        threadManager(PriorityThreadManager::newPriorityThreadManager(
+        threadManager(new apache::thrift::concurrency::NumaThreadManager(
                         nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_,
                         true /*stats*/,
                         getMaxRequests() /*maxQueueLen*/));
