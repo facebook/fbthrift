@@ -42,14 +42,15 @@ AM_LDFLAGS = $(BOOST_LDFLAGS)
 
 # Define the source files for the module
 
-libthrift_la_SOURCES = Thrift.cpp \
+libthrift_la_SOURCES = EventHandlerBase.cpp \
+                       Thrift.cpp \
                        TApplicationException.cpp \
                        VirtualProfiling.cpp \
                        ShutdownSocketSet.cpp \
                        concurrency/ThreadManager.cpp \
                        concurrency/TimerManager.cpp \
                        concurrency/Util.cpp \
-		       concurrency/Codel.cpp \
+                       concurrency/Codel.cpp \
                        protocol/TDebugProtocol.cpp \
                        protocol/TJSONProtocol.cpp \
                        protocol/TBase64Utils.cpp \
@@ -57,19 +58,25 @@ libthrift_la_SOURCES = Thrift.cpp \
                        transport/TFDTransport.cpp \
                        transport/TFileTransport.cpp \
                        transport/TSimpleFileTransport.cpp \
+                       transport/THeaderTransport.cpp \
                        transport/THttpTransport.cpp \
                        transport/THttpClient.cpp \
                        transport/THttpServer.cpp \
                        transport/TSocket.cpp \
                        transport/TSSLSocket.cpp \
+                       transport/TSocketAddress.cpp \
                        transport/TSocketPool.cpp \
                        transport/TServerSocket.cpp \
                        transport/TSSLServerSocket.cpp \
                        transport/TTransportUtils.cpp \
                        transport/TBufferTransports.cpp \
+                       transport/THeader.cpp \
                        server/TServer.cpp \
                        processor/PeekProcessor.cpp \
-                       util/THttpParser.cpp
+                       util/FdUtils.cpp \
+                       util/THttpParser.cpp \
+                       util/SocketRetriever.cpp \
+                       util/VarintUtils.cpp
 
 libthrift_la_SOURCES += concurrency/Mutex.cpp \
                         concurrency/Monitor.cpp \
@@ -91,6 +98,7 @@ libthriftz_la_LDFLAGS   = -release $(VERSION) $(BOOST_LDFLAGS)
 include_thriftdir = $(includedir)/thrift
 include_thrift_HEADERS = \
                          $(top_builddir)/config.h \
+                         EventHandlerBase.h \
                          TDispatchProcessor.h \
                          Thrift.h \
                          TReflectionLocal.h \

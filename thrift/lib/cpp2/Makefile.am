@@ -67,7 +67,8 @@ libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   ../cpp/util/THttpParser.cpp \
 			   ../cpp/util/PausableTimer.cpp \
 			   ../cpp/util/kerberos/Krb5Util.cpp \
-			   ../cpp/util/kerberos/Krb5CredentialsCacheManager.cpp
+			   ../cpp/util/kerberos/Krb5CredentialsCacheManager.cpp \
+         ../cpp/ssl/SSLUtils.cpp
 
 
 libthriftcpp2_la_LIBADD = ../cpp/libthrift.la libsaslstubs.a -lkrb5 -lgssapi_krb5

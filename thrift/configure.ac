@@ -130,13 +130,17 @@ if test "$with_cpp" = "yes";  then
              [Please install google-glog library])])
   AC_CHECK_LIB([gflags],[getenv],[],[AC_MSG_ERROR(
              [Please install google-gflags library])])
+  AC_CHECK_LIB([snappy], [_init], [], [AC_MSG_ERROR(
+             [Please install snappy library])])
+  AC_CHECK_LIB([folly], [getenv], [], [AC_MSG_ERROR(
+             [Please install folly library])])
 
   AX_BOOST_BASE([1.40.0])
   if test "x$succeeded" != "xyes" ; then
     AC_MSG_ERROR([Please install libboost-dev-all])
     have_cpp="no"
   fi
-  
+
   if test "x$LEX" != xflex; then
     AC_MSG_ERROR([Please install flex])
     have_cpp="no"
@@ -149,7 +153,7 @@ if test "$with_cpp" = "yes";  then
   AC_CHECK_HEADER([folly/String.h], [], [
     AC_MSG_ERROR([Please install folly])
     have_cpp="no"
-  ], [])  
+  ], [])
 
   AX_LIB_EVENT([1.0])
   have_libevent=$success
@@ -172,7 +176,7 @@ if test "$with_cpp" = "yes";  then
 
   AX_LIB_ZLIB([1.2.3])
   have_zlib=$success
-  
+
   AX_THRIFT_LIB(qt4, [Qt], yes)
   have_qt=no
   if test "$with_qt4" = "yes";  then
