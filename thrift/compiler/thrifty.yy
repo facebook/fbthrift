@@ -537,11 +537,15 @@ CommaOrSemicolonOptional:
     {}
 
 Enum:
-  tok_enum tok_identifier '{' EnumDefList '}'
+  tok_enum tok_identifier '{' EnumDefList '}' TypeAnnotations
     {
       pdebug("Enum -> tok_enum tok_identifier { EnumDefList }");
       $$ = $4;
       $$->set_name($2);
+      if ($6 != NULL) {
+        $$->annotations_ = $6->annotations_;
+        delete $6;
+      }
     }
 
 EnumDefList:

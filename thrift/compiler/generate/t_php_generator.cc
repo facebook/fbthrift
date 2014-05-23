@@ -236,6 +236,10 @@ class t_php_generator : public t_oop_generator {
                                    int start_pos,
                                    t_struct* arg_list);
 
+  bool is_bitmask_enum(t_enum* tenum) {
+    return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
+  }
+
   std::string php_namespace(t_program* p) {
     std::string ns = p->get_namespace("php");
     return ns.size() ? (ns + "_") : "";
@@ -727,10 +731,17 @@ void t_php_generator::generate_enum(t_enum* tenum) {
   // code but you can't do things like an 'extract' on it, which is a bit of
   // a downer.
   if (hphpenum_) {
-    f_types_ <<
-      "final class " <<
-      php_namespace(tenum->get_program()) <<
-      tenum->get_name() << " extends Enum {" << endl;
+    if (is_bitmask_enum(tenum)) {
+      f_types_ <<
+        "final class " <<
+        php_namespace(tenum->get_program()) <<
+        tenum->get_name() << " extends Enum {" << endl;
+    } else {
+      f_types_ <<
+        "final class " <<
+        php_namespace(tenum->get_program()) <<
+        tenum->get_name() << " extends Flags {" << endl;
+    }
   }
   else {
     f_types_ <<
@@ -1091,6 +1102,11 @@ void t_php_generator::_generate_php_struct_definition(ofstream& out,
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     string dval = "null";
     t_type* t = get_true_type((*m_iter)->get_type());
+
+    if (t->is_enum() && is_bitmask_enum((t_enum*) t)) {
+      throw "Enum " + (((t_enum*) t)->get_name()) + "is actually a bitmask, cannot generate a field of this enum type";
+    }
+
     if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
       dval = render_const_value((*m_iter)->get_type(), (*m_iter)->get_value());
     }

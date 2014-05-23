@@ -231,6 +231,10 @@ class t_hack_generator : public t_oop_generator {
   std::string type_to_typehint(t_type* ttype, bool nullable=false);
   std::string type_to_param_typehint(t_type* ttype, bool nullable=false);
 
+  bool is_bitmask_enum(t_enum* tenum) {
+    return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
+  }
+
   std::string php_namespace(t_program* p) {
     std::string ns = p->get_namespace("php");
     return ns.size() ? (ns + "_") : "";
@@ -666,15 +670,24 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
   vector<t_enum_value*> constants = tenum->get_constants();
   vector<t_enum_value*>::iterator c_iter;
 
+  std::string typehint;
   generate_php_docstring(f_types_, tenum);
-  f_types_ <<
-    "newtype " << php_namespace(tenum->get_program()) <<
-      tenum->get_name() << "Type = int;" << endl <<
-    "final class " <<
-      php_namespace(tenum->get_program()) <<
-      tenum->get_name() << " extends Enum<" <<
-      php_namespace(tenum->get_program()) << tenum->get_name() << "Type> {" <<
-      endl;
+  if (is_bitmask_enum(tenum)) {
+    typehint = "int";
+    f_types_ <<
+      "final class " <<
+        php_namespace(tenum->get_program()) <<
+        tenum->get_name() << " extends Flags {" <<
+        endl;
+  } else {
+    typehint = php_namespace(tenum->get_program()) + tenum->get_name() + "Type";
+    f_types_ <<
+      "newtype " << typehint << " = int;" << endl <<
+      "final class " <<
+        php_namespace(tenum->get_program()) <<
+        tenum->get_name() << " extends Enum<" <<
+        typehint << "> {" << endl;
+  }
 
   indent_up();
 
@@ -683,14 +696,13 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
 
     generate_php_docstring(f_types_, *c_iter);
     indent(f_types_) <<
-      "const " << php_namespace(tenum->get_program()) << tenum->get_name() <<
-        "Type " << (*c_iter)->get_name() << " = " << value << ";" << endl;
+      "const " << typehint << " " << (*c_iter)->get_name() << " = " << value << ";" << endl;
   }
 
   // This is a static property to avoid confusing the real enum values
   indent(f_types_) <<
-    "public static " << php_namespace(tenum->get_program()) << tenum->get_name() <<
-      "Type $__UNSET_DEFAULT = 0;" << endl;
+    "public static " << typehint <<
+      " $__UNSET_DEFAULT = 0;" << endl;
 
   if (oldenum_) {
     // names
@@ -1088,6 +1100,11 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
+
+    if (t->is_enum() && is_bitmask_enum((t_enum*) t)) {
+      throw "Enum " + (((t_enum*) t)->get_name()) + "is actually a bitmask, cannot generate a field of this enum type";
+    }
+
     string dval = "";
     if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
       dval = render_const_value(t, (*m_iter)->get_value());
@@ -2015,7 +2032,11 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable) {
   } else if (ttype->is_typedef()) {
     return type_to_typehint(((t_typedef*) ttype)->get_type());
   } else if (ttype->is_enum()) {
-    return php_namespace(ttype->get_program()) + ttype->get_name() + "Type";
+    if (is_bitmask_enum((t_enum*) ttype)) {
+      return "int";
+    } else {
+      return php_namespace(ttype->get_program()) + ttype->get_name() + "Type";
+    }
   } else if (ttype->is_struct() || ttype->is_xception()) {
     return (nullable ? "?" : "") + php_namespace(ttype->get_program()) + ttype->get_name();
   } else if (ttype->is_list()) {
