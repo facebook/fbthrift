@@ -124,10 +124,7 @@ class MessageCallback
   virtual void messageSent() {
     sent_++;
   }
-  virtual void messageSendError(std::exception_ptr&& ep) {
-    sendError_++;
-  }
-  virtual void messageSendErrorWrapped(folly::exception_wrapper&& ex) {
+  virtual void messageSendError(folly::exception_wrapper&& ex) {
     sendError_++;
   }
 

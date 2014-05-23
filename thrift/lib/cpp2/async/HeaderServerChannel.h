@@ -127,8 +127,7 @@ class HeaderServerChannel : public ResponseChannel,
 
       void sendQueued();
       void messageSent();
-      void messageSendError(std::exception_ptr&&);
-      void messageSendErrorWrapped(folly::exception_wrapper&&);
+      void messageSendError(folly::exception_wrapper&&);
 
       void onStreamSend(std::unique_ptr<folly::IOBuf>&& data);
       void onOutOfLoopStreamError(const std::exception_ptr& error);

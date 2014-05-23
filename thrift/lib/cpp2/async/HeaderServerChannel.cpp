@@ -668,31 +668,14 @@ void HeaderServerChannel::Stream::messageSent() {
   deleteThisIfNecessary();
 }
 
-void HeaderServerChannel::Stream::messageSendError(std::exception_ptr&& error) {
-  CHECK(hasOutstandingSend_);
-  hasOutstandingSend_ = false;
-
-  if (hasSendCallback()) {
-    std::exception_ptr errorCopy = error;
-    sendCallback_->messageSendError(std::move(errorCopy));
-    sendCallback_ = nullptr;
-  }
-
-  if (!manager_->isDone()) {
-    manager_->notifyError(error);
-  }
-
-  deleteThisIfNecessary();
-}
-
-void HeaderServerChannel::Stream::messageSendErrorWrapped(
+void HeaderServerChannel::Stream::messageSendError(
     folly::exception_wrapper&& error) {
   CHECK(hasOutstandingSend_);
   hasOutstandingSend_ = false;
 
   if (hasSendCallback()) {
     auto errorCopy = error;
-    sendCallback_->messageSendErrorWrapped(std::move(errorCopy));
+    sendCallback_->messageSendError(std::move(errorCopy));
     sendCallback_ = nullptr;
   }
 
@@ -748,8 +731,8 @@ void HeaderServerChannel::Stream::onChannelDestroy() {
   }
 
   if (hasSendCallback()) {
-    std::exception_ptr error = std::make_exception_ptr(
-        TTransportException("An error occurred before send completed."));
+    auto error = folly::make_exception_wrapper<TTransportException>(
+        "An error occurred before send completed.");
     sendCallback_->messageSendError(std::move(error));
     sendCallback_ = nullptr;
   }

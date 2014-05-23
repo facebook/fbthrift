@@ -470,19 +470,10 @@ void Cpp2Connection::Cpp2Sample::messageSent() {
   delete this;
 }
 
-void Cpp2Connection::Cpp2Sample::messageSendError(std::exception_ptr&& e){
-  if (chainedCallback_ != nullptr) {
-    chainedCallback_->messageSendError(std::move(e));
-  }
-  timestamps_.writeEnd =
-    apache::thrift::concurrency::Util::currentTimeUsec();
-  delete this;
-}
-
-void Cpp2Connection::Cpp2Sample::messageSendErrorWrapped(
+void Cpp2Connection::Cpp2Sample::messageSendError(
     folly::exception_wrapper&& e) {
   if (chainedCallback_ != nullptr) {
-    chainedCallback_->messageSendErrorWrapped(std::move(e));
+    chainedCallback_->messageSendError(std::move(e));
   }
   timestamps_.writeEnd =
     apache::thrift::concurrency::Util::currentTimeUsec();

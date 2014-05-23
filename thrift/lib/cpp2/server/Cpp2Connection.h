@@ -153,8 +153,7 @@ class Cpp2Connection
 
     void sendQueued();
     void messageSent();
-    void messageSendError(std::exception_ptr&& e);
-    void messageSendErrorWrapped(folly::exception_wrapper&& e);
+    void messageSendError(folly::exception_wrapper&& e);
     ~Cpp2Sample();
 
    private:

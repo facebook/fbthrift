@@ -283,14 +283,7 @@ private:
       sendState_ = QState::DONE;
       maybeDeleteThis();
     }
-    void messageSendError(std::exception_ptr&& ex) {
-      messageSendErrorImpl(std::move(ex));
-    }
-    void messageSendErrorWrapped(folly::exception_wrapper&& ex) {
-      messageSendErrorImpl(std::move(ex));
-    }
-    template <class T>
-    void messageSendErrorImpl(T&& ex) {
+    void messageSendError(folly::exception_wrapper&& ex) {
       X_CHECK_STATE_NE(sendState_, QState::DONE);
       sendState_ = QState::DONE;
       if (recvState_ == QState::QUEUED) {
@@ -422,15 +415,7 @@ private:
       apache::thrift::async::RequestContext::setContext(old_ctx);
       delete this;
     }
-    void messageSendError(std::exception_ptr&& ex) {
-      messageSendErrorImpl(std::move(ex));
-    }
-    void messageSendErrorWrapped(folly::exception_wrapper&& ex) {
-      messageSendErrorImpl(std::move(ex));
-    }
-   private:
-    template<class T>
-    void messageSendErrorImpl(T&& ex) {
+    void messageSendError(folly::exception_wrapper&& ex) {
       CHECK(cb_);
       auto old_ctx =
         apache::thrift::async::RequestContext::setContext(cb_->context_);
@@ -462,8 +447,7 @@ private:
 
       void sendQueued();
       void messageSent();
-      void messageSendError(std::exception_ptr&& ex);
-      void messageSendErrorWrapped(folly::exception_wrapper&& ex);
+      void messageSendError(folly::exception_wrapper&& ex);
 
       void replyReceived(std::unique_ptr<folly::IOBuf> buf);
       void requestError(std::exception_ptr ex);
@@ -484,18 +468,6 @@ private:
 
       void resetTimeout();
       void deleteThisIfNecessary();
-      template <class T>
-      void messageSendErrorImpl(T&& ex) {
-        CHECK(hasOutstandingSend_);
-        hasOutstandingSend_ = false;
-
-        if (!manager_->isDone()) {
-          auto exp = HeaderClientChannel::getExceptionPtr(ex);
-          manager_->notifyError(exp);
-        }
-
-        deleteThisIfNecessary();
-      }
   };
 
   void registerStream(uint32_t seqId, StreamCallback* cb);

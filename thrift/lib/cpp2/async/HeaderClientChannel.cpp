@@ -593,13 +593,15 @@ void HeaderClientChannel::StreamCallback::messageSent() {
 }
 
 void HeaderClientChannel::StreamCallback::messageSendError(
-    std::exception_ptr&& ex) {
-  messageSendErrorImpl(std::move(ex));
-}
-
-void HeaderClientChannel::StreamCallback::messageSendErrorWrapped(
     folly::exception_wrapper&& ex) {
-  messageSendErrorImpl(std::move(ex));
+  CHECK(hasOutstandingSend_);
+  hasOutstandingSend_ = false;
+
+  if (!manager_->isDone()) {
+    manager_->notifyError(ex.getExceptionPtr());
+  }
+
+  deleteThisIfNecessary();
 }
 
 

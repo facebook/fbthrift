@@ -220,7 +220,8 @@ void Cpp2Channel::writeError(size_t bytesWritten,
   DestructorGuard dg(this);
   VLOG(5) << "Got a write error: " << folly::exceptionStr(ex);
   for (auto& cb : sendCallbacks_.front()) {
-    cb->messageSendError(make_exception_ptr(ex));
+    cb->messageSendError(
+        folly::make_exception_wrapper<TTransportException>(ex));
   }
   sendCallbacks_.pop_front();
 }
@@ -243,10 +244,11 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
 
   if (!transport_->good()) {
     VLOG(5) << "Channel is !good() in sendMessage";
-    TTransportException ex("Channel is !good()");
     // Callback must be last thing in sendMessage, or use guard
     if (callback) {
-      callback->messageSendError(make_exception_ptr(ex));
+      callback->messageSendError(
+          folly::make_exception_wrapper<TTransportException>(
+            "Channel is !good()"));
     }
     return;
   }
