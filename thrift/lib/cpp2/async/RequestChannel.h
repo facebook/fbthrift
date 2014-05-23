@@ -95,6 +95,11 @@ class ClientReceiveState {
     exc_ = exc;
   }
 
+  void resetException(folly::exception_wrapper ex) {
+    excw_ = std::move(ex);
+    exc_ = std::exception_ptr();
+  }
+
   uint16_t protocolId() const {
     return protocolId_;
   }
