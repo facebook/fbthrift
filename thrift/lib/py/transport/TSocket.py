@@ -226,9 +226,11 @@ class TSocket(TSocketBase):
                 break
         except socket.error as e:
             if self._unix_socket:
-                message = 'Could not connect to socket %s' % self._unix_socket
+                message = 'Could not connect to socket %s: %s' % \
+                          (self._unix_socket, repr(e))
             else:
-                message = 'Could not connect to %s:%d' % (self.host, self.port)
+                message = 'Could not connect to %s:%d: %s' % \
+                          (self.host, self.port, repr(e))
             raise TTransportException(TTransportException.NOT_OPEN, message)
 
     def read(self, sz):
