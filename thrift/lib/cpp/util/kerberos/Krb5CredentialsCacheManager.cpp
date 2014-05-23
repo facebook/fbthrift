@@ -26,6 +26,7 @@
 #include "folly/Memory.h"
 #include "folly/ScopeGuard.h"
 #include "folly/String.h"
+#include "folly/ThreadName.h"
 
 
 namespace apache { namespace thrift { namespace krb5 {
@@ -82,6 +83,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
   }
 
   manageThread_ = std::thread([=] {
+    folly::setThreadName("krb5-cache");
     logger->log("manager_started", client);
     size_t sname_hash = 0;
 

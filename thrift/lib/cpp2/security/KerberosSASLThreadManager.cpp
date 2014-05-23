@@ -37,6 +37,7 @@ SaslThreadManager::SaslThreadManager() {
     concurrency::PosixThreadFactory::kDefaultPriority,
     2 // 2MB stack size, necessary for allowing pthread creation in hphp.
   ));
+  threadManager_->setNamePrefix("sasl-thread");
   threadManager_->start();
 }
 
