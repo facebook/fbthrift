@@ -965,6 +965,7 @@ class DestroyAsyncTransport : public apache::thrift::async::TAsyncTransport {
   size_t getAppBytesReceived() const { return 0; }
   size_t getRawBytesReceived() const { return 0; }
   void setEorTracking(bool track) { }
+  bool isEorTrackingEnabled() const { return false; }
 
   void invokeEOF() {
     cb_->readEOF();
