@@ -40,11 +40,6 @@ namespace apache { namespace thrift { namespace test {
 const int kTimeout = 60000;
 
 std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
-  static auto saslThreadManager_ = std::make_shared<SaslThreadManager>();
-  static auto ccManagerLogger_ = std::make_shared<SecurityLogger>();
-  static auto credentialsCacheManager_ =
-    std::make_shared<krb5::Krb5CredentialsCacheManager>("", ccManagerLogger_);
-
   const std::shared_ptr<ClientLoadConfig>& config = getConfig();
   std::shared_ptr<TAsyncSocket> socket;
   std::unique_ptr<
@@ -101,6 +96,11 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
 
     if (config->SASLPolicy() == "required" ||
         config->SASLPolicy() == "permitted") {
+      static auto saslThreadManager_ = std::make_shared<SaslThreadManager>();
+      static auto ccManagerLogger_ = std::make_shared<SecurityLogger>();
+      static auto credentialsCacheManager_ =
+        std::make_shared<krb5::Krb5CredentialsCacheManager>(
+          "", ccManagerLogger_);
       headerChannel->setSaslClient(std::unique_ptr<apache::thrift::SaslClient>(
         new apache::thrift::GssSaslClient(socket->getEventBase())
       ));
