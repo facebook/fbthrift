@@ -364,6 +364,11 @@ bool TAsyncSSLSocket::connecting() const {
                                      sslState_ == STATE_CONNECTING))));
 }
 
+bool TAsyncSSLSocket::isEorTrackingEnabled() const {
+  const BIO *wb = SSL_get_wbio(ssl_);
+  return wb && wb->method == &eorAwareBioMethod;
+}
+
 void TAsyncSSLSocket::setEorTracking(bool track) {
   BIO *wb = SSL_get_wbio(ssl_);
   if (!wb) {

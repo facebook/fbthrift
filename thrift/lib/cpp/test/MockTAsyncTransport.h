@@ -68,6 +68,7 @@ class MockTAsyncTransport: public apache::thrift::async::TAsyncTransport {
   MOCK_CONST_METHOD0(getRawBytesWritten, size_t());
   MOCK_CONST_METHOD0(getAppBytesReceived, size_t());
   MOCK_CONST_METHOD0(getRawBytesReceived, size_t());
+  MOCK_CONST_METHOD0(isEorTrackingEnabled, bool());
   MOCK_METHOD1(setEorTracking, void(bool));
 
 };

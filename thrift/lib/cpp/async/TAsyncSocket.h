@@ -342,6 +342,8 @@ class TAsyncSocket : public TAsyncTransport {
   void getPeerAddress(
     transport::TSocketAddress* address) const override;
 
+  bool isEorTrackingEnabled() const override { return false; }
+
   void setEorTracking(bool track) override {}
 
   bool connecting() const override {

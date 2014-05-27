@@ -511,6 +511,11 @@ class TAsyncTransport: public TDelayedDestruction {
    */
   virtual void getPeerAddress(transport::TSocketAddress* address) const = 0;
 
+  /**
+   * @return True iff end of record tracking is enabled
+   */
+  virtual bool isEorTrackingEnabled() const = 0;
+
   virtual void setEorTracking(bool track) = 0;
 
   virtual size_t getAppBytesWritten() const = 0;

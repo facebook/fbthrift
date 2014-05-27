@@ -261,6 +261,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
   virtual bool good() const;
   virtual bool connecting() const;
 
+  bool isEorTrackingEnabled() const override;
   virtual void setEorTracking(bool track);
   virtual size_t getRawBytesWritten() const;
   virtual size_t getRawBytesReceived() const;
