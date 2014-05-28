@@ -38,7 +38,7 @@ class SaslClient : public SaslEndpoint {
 
     // Invoked when the most recently consumed message results in an
     // error.  Continuation is impossible at this point.
-    virtual void saslError(std::exception_ptr&&) = 0;
+    virtual void saslError(folly::exception_wrapper&&) = 0;
 
     // Invoked when the most recently consumed message completes the
     // SASL exchange successfully.
@@ -46,10 +46,9 @@ class SaslClient : public SaslEndpoint {
 
     void timeoutExpired() noexcept {
       using apache::thrift::transport::TTransportException;
-      TTransportException ex(
+      saslError(folly::make_exception_wrapper<TTransportException>(
           TTransportException::TIMED_OUT,
-          "SASL handshake timed out");
-      saslError(std::make_exception_ptr(ex));
+          "SASL handshake timed out"));
     }
 
   };

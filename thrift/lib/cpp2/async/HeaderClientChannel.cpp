@@ -128,8 +128,9 @@ unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
     // something else happens, it's either an attack or something is
     // very broken.  Fail hard.
     LOG(WARNING) << "non-SASL message received on SASL channel";
-    TTransportException ex("non-SASL message received on SASL channel");
-    saslClientCallback_.saslError(make_exception_ptr(ex));
+    saslClientCallback_.saslError(
+        folly::make_exception_wrapper<TTransportException>(
+          "non-SASL message received on SASL channel"));
     return nullptr;
   }
 
@@ -147,22 +148,17 @@ void HeaderClientChannel::SaslClientCallback::saslSendServer(
 }
 
 void HeaderClientChannel::SaslClientCallback::saslError(
-    std::exception_ptr&& ex) {
+    folly::exception_wrapper&& ex) {
   apache::thrift::async::HHWheelTimer::Callback::cancelTimeout();
   auto logger = channel_.saslClient_->getSaslLogger();
 
   // Record error string
-  try {
-    std::rethrow_exception(ex);
-  } catch (const std::exception& e) {
-    std::string errorMessage =
-      "MsgNum: " + std::to_string(channel_.handshakeMessagesSent_);
-    channel_.saslClient_->setErrorString(errorMessage + " " + e.what());
+  std::string errorMessage =
+    "MsgNum: " + std::to_string(channel_.handshakeMessagesSent_);
+  channel_.saslClient_->setErrorString(errorMessage + " " + ex->what());
 
-    if (logger) {
-      logger->log("sasl_error", e.what());
-    }
-  } catch (...) {
+  if (logger) {
+    logger->log("sasl_error", ex->what());
   }
 
   try {
@@ -174,18 +170,12 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     if (logger) {
       logger->log("sasl_failed_hard");
     }
-    channel_.messageReceiveError(std::move(ex));
+    channel_.messageReceiveErrorWrapped(std::move(ex));
     channel_.closeNow();
     return;
   }
 
-  try {
-    std::rethrow_exception(ex);
-  } catch (const std::exception& e) {
-    VLOG(5) << "SASL client falling back to insecure: " << e.what();
-  } catch (...) {
-    VLOG(5) << "SASL client falling back to insecure";
-  }
+  VLOG(5) << "SASL client falling back to insecure: " << ex->what();
   if (logger) {
     logger->log("sasl_fell_back_to_insecure");
   }

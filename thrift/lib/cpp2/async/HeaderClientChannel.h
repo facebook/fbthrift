@@ -519,7 +519,7 @@ private:
     explicit SaslClientCallback(HeaderClientChannel& channel)
       : channel_(channel) {}
     void saslSendServer(std::unique_ptr<folly::IOBuf>&&);
-    void saslError(std::exception_ptr&&);
+    void saslError(folly::exception_wrapper&&);
     void saslComplete();
    private:
     HeaderClientChannel& channel_;

@@ -43,6 +43,7 @@ using apache::thrift::concurrency::FunctionRunner;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
 using apache::thrift::concurrency::TooManyPendingTasksException;
+using apache::thrift::transport::TTransportException;
 
 using namespace std;
 using apache::thrift::sasl::SaslStart;
@@ -74,7 +75,7 @@ void GssSaslClient::start(Callback *cb) {
   auto logger = saslLogger_;
 
   logger->logStart("prepare_first_request");
-  try {
+  auto ew_tm = folly::try_and_catch<TooManyPendingTasksException>([&]() {
     if (!saslThreadManager_) {
       throw TApplicationException(
         "saslThreadManager is not set in GssSaslClient");
@@ -84,7 +85,7 @@ void GssSaslClient::start(Callback *cb) {
     saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
       logger->logEnd("thread_manager_overhead");
       MoveWrapper<unique_ptr<IOBuf>> iobuf;
-      std::exception_ptr ex;
+      folly::exception_wrapper ex;
 
       // This is an optimization. If the channel is unavailable, we have no
       // need to attempt to communicate to the KDC. Note that this is just
@@ -93,7 +94,9 @@ void GssSaslClient::start(Callback *cb) {
         return;
       }
 
-      try {
+      ex = folly::try_and_catch<std::exception, TTransportException,
+          TProtocolException, TApplicationException, TKerberosException>(
+          [&]() {
         clientHandshake->startClientHandshake();
         auto token = clientHandshake->getTokenToSend();
 
@@ -109,9 +112,7 @@ void GssSaslClient::start(Callback *cb) {
 
         *iobuf = PargsPresultCompactSerialize(
           argsp, "authFirstRequest", T_CALL);
-      } catch (const std::exception& e) {
-        ex = std::current_exception();
-      }
+      });
 
       Guard guard(*mutex);
       // Return if channel is unavailable. Ie. evb_ may not be good.
@@ -124,7 +125,7 @@ void GssSaslClient::start(Callback *cb) {
           return;
         }
         if (ex) {
-          cb->saslError(std::exception_ptr(ex));
+          cb->saslError(std::move(ex));
           return;
         } else {
           logger->logStart("first_rtt");
@@ -132,9 +133,10 @@ void GssSaslClient::start(Callback *cb) {
         }
       });
     }));
-  } catch (const TooManyPendingTasksException& e) {
+  });
+  if (ew_tm) {
     logger->log("too_many_pending_tasks_in_start");
-    cb->saslError(std::current_exception());
+    cb->saslError(std::move(ew_tm));
   }
 }
 
@@ -147,11 +149,11 @@ void GssSaslClient::consumeFromServer(
   auto mutex = mutex_;
   auto logger = saslLogger_;
 
-  try {
+  auto ew_tm = folly::try_and_catch<TooManyPendingTasksException>([&]() {
     saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
       std::string req_data;
       MoveWrapper<unique_ptr<IOBuf>> iobuf;
-      std::exception_ptr ex;
+      folly::exception_wrapper ex;
 
       // This is an optimization. If the channel is unavailable, we have no
       // need to attempt to communicate to the KDC. Note that this is just
@@ -172,7 +174,9 @@ void GssSaslClient::consumeFromServer(
           decltype(SaslAuthService_authFirstRequest_presult::success),
           decltype(SaslAuthService_authNextRequest_presult::success)>::value,
         "Types should be structurally identical");
-      try {
+      ex = folly::try_and_catch<std::exception, TTransportException,
+          TProtocolException, TApplicationException, TKerberosException>(
+          [&]() {
         SaslReply reply;
         SaslAuthService_authFirstRequest_presult presult;
         presult.success = &reply;
@@ -206,9 +210,7 @@ void GssSaslClient::consumeFromServer(
           *iobuf = PargsPresultCompactSerialize(argsp, "authNextRequest",
                                                 T_CALL);
         }
-      } catch (const std::exception& e) {
-        ex = std::current_exception();
-      }
+      });
 
       Guard guard(*mutex);
       // Return if channel is unavailable. Ie. evb_ may not be good.
@@ -222,7 +224,7 @@ void GssSaslClient::consumeFromServer(
           return;
         }
         if (ex) {
-          cb->saslError(std::exception_ptr(ex));
+          cb->saslError(std::move(ex));
           return;
         }
         if (*iobuf && !(*iobuf)->empty()) {
@@ -238,9 +240,10 @@ void GssSaslClient::consumeFromServer(
         }
       });
     }));
-  } catch (const TooManyPendingTasksException& e) {
+  });
+  if (ew_tm) {
     logger->log("too_many_pending_tasks_in_consume");
-    cb->saslError(std::current_exception());
+    cb->saslError(std::move(ew_tm));
   }
 }
 

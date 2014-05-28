@@ -84,31 +84,30 @@ void StubSaslClient::consumeFromServer(
 
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
         folly::MoveWrapper<IOBufQueue> req_data;
-        std::exception_ptr ex;
+        folly::exception_wrapper ex;
         bool complete = false;
 
         if (phase_ == 0) {
-          ex = std::make_exception_ptr(
-            thrift::protocol::TProtocolException("unexpected phase 0"));
+          ex = folly::make_exception_wrapper<
+            thrift::protocol::TProtocolException>("unexpected phase 0");
         } else if (phase_ == 1) {
           if (forceFallback_) {
-            ex = std::make_exception_ptr(
-              thrift::protocol::TProtocolException(
-                "expected challenge 1 force failed"));
+            ex = folly::make_exception_wrapper<
+              thrift::protocol::TProtocolException>(
+                "expected challenge 1 force failed");
           } else {
             SaslReply reply;
             Serializer<CompactProtocolReader, CompactProtocolWriter>
               deserializer;
-            try {
-              deserializer.deserialize(smessage.get(), reply);
-            } catch (...) {
-              ex = std::current_exception();
-            }
+            ex = folly::try_and_catch<std::exception, TProtocolException>(
+              [&]() {
+                deserializer.deserialize(smessage.get(), reply);
+              });
             if (!ex) {
               if (reply.__isset.outcome && !reply.outcome.success) {
-                ex = std::make_exception_ptr(
-                  thrift::protocol::TProtocolException(
-                    "server reports failure in phase 1"));
+                ex = folly::make_exception_wrapper<
+                  thrift::protocol::TProtocolException>(
+                    "server reports failure in phase 1");
               } else if (reply.__isset.challenge &&
                          reply.challenge == CHALLENGE1) {
                 Serializer<CompactProtocolReader, CompactProtocolWriter>
@@ -119,25 +118,23 @@ void StubSaslClient::consumeFromServer(
                 serializer.serialize(req, &*req_data);
                 phase_ = 2;
               } else {
-                ex = std::make_exception_ptr(
-                  thrift::protocol::TProtocolException("expected challenge 1"));
+                ex = folly::make_exception_wrapper<
+                  thrift::protocol::TProtocolException>("expected challenge 1");
               }
             }
           }
         } else if (phase_ == 2) {
           Serializer<CompactProtocolReader, CompactProtocolWriter> deserializer;
           SaslReply reply;
-          try {
+          ex = folly::try_and_catch<std::exception, TProtocolException>([&]() {
             deserializer.deserialize(smessage.get(), reply);
-          } catch (...) {
-            ex = std::current_exception();
-          }
+          });
           if (!ex) {
             if (reply.__isset.outcome &&
                 !reply.outcome.success) {
-              ex = std::make_exception_ptr(
-                thrift::protocol::TProtocolException(
-                "server reports failure in phase 2"));
+              ex = folly::make_exception_wrapper<
+                thrift::protocol::TProtocolException>(
+                "server reports failure in phase 2");
             } else if (reply.__isset.outcome &&
                        reply.outcome.success &&
                        reply.__isset.challenge &&
@@ -145,18 +142,18 @@ void StubSaslClient::consumeFromServer(
               complete = true;
               phase_ = -1;
             } else {
-              ex = std::make_exception_ptr(
-                thrift::protocol::TProtocolException("expected challenge 2"));
+              ex = folly::make_exception_wrapper<
+                thrift::protocol::TProtocolException>("expected challenge 2");
             }
           }
         } else if (phase_ == -1) {
-          ex = std::make_exception_ptr(
-            thrift::protocol::TProtocolException(
-              "unexpected message after complete"));
+          ex = folly::make_exception_wrapper<
+            thrift::protocol::TProtocolException>(
+              "unexpected message after complete");
         } else {
-          ex = std::make_exception_ptr(
-            thrift::protocol::TProtocolException(
-              "unexpected message after complete"));
+          ex = folly::make_exception_wrapper<
+            thrift::protocol::TProtocolException>(
+              "unexpected message after complete");
         }
 
         if (complete) {
@@ -176,7 +173,7 @@ void StubSaslClient::consumeFromServer(
             }
             if (ex) {
               threadManager_->stop();
-              cb->saslError(std::exception_ptr(ex));
+              cb->saslError(std::move(ex));
             }
             if (complete) {
               threadManager_->stop();
