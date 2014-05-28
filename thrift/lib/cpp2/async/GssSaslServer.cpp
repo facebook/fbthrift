@@ -69,10 +69,10 @@ void GssSaslServer::consumeFromClient(
   auto channelCallbackUnavailable = channelCallbackUnavailable_;
   auto serverHandshake = serverHandshake_;
   auto mutex = mutex_;
-  try {
+  auto exw = folly::try_and_catch<std::exception>([&]() {
     threadManager_->add(std::make_shared<FunctionRunner>([=] {
       std::string reply_data;
-      std::exception_ptr ex;
+      folly::exception_wrapper ex;
 
       // Get the input string. We deserialize differently depending on the
       // current state.
@@ -84,7 +84,7 @@ void GssSaslServer::consumeFromClient(
         SaslStart start;
         SaslAuthService_authFirstRequest_pargs pargs;
         pargs.saslStart = &start;
-        try {
+        ex = folly::try_and_catch<std::exception>([&]() {
           string methodName =
             PargsPresultCompactDeserialize(pargs, smessage.get(), T_CALL);
 
@@ -96,16 +96,14 @@ void GssSaslServer::consumeFromClient(
           }
 
           input = start.request.response;
-        } catch (...) {
-          ex = std::current_exception();
-        }
+        });
       } else {
         isFirstRequest = false;
 
         SaslRequest req;
         SaslAuthService_authNextRequest_pargs pargs;
         pargs.saslRequest = &req;
-        try {
+        ex = folly::try_and_catch<std::exception>([&]() {
           string methodName =
             PargsPresultCompactDeserialize(pargs, smessage.get(), T_CALL);
 
@@ -114,16 +112,14 @@ void GssSaslServer::consumeFromClient(
           }
 
           input = req.response;
-        } catch (...) {
-          ex = std::current_exception();
-        }
+        });
       }
 
       MoveWrapper<unique_ptr<IOBuf>> outbuf;
       if (!ex) {
         // If there were no exceptions, send a reply. If we're finished, then
         // send a success indicator reply, otherwise send a generic token.
-        try {
+        ex = folly::try_and_catch<std::exception>([&]() {
           serverHandshake->handleResponse(input);
           auto token = serverHandshake->getTokenToSend();
           if (token != nullptr) {
@@ -151,9 +147,7 @@ void GssSaslServer::consumeFromClient(
                                                      T_REPLY);
             }
           }
-        } catch (...) {
-          ex = std::current_exception();
-        }
+        });
       }
 
       Guard guard(*mutex);
@@ -169,7 +163,7 @@ void GssSaslServer::consumeFromClient(
             return;
           }
           if (ex) {
-            cb->saslError(std::exception_ptr(ex));
+            cb->saslError(std::move(ex));
             return;
           }
           if (*outbuf && !(*outbuf)->empty()) {
@@ -180,9 +174,10 @@ void GssSaslServer::consumeFromClient(
           }
         });
     }));
-  } catch (const std::exception &ex) {
+  });
+  if (exw) {
     // If we fail to schedule.
-    cb->saslError(std::current_exception());
+    cb->saslError(std::move(exw));
   }
 }
 

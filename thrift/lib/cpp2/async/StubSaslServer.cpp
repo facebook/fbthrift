@@ -64,17 +64,15 @@ void StubSaslServer::consumeFromClient(
   // Double-dispatch, as the more complex implementation will.
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
         folly::MoveWrapper<IOBufQueue> reply_data;
-        std::exception_ptr ex;
+        folly::exception_wrapper ex;
         bool complete = false;
 
         if (phase_ == 0) {
           SaslStart start;
           Serializer<CompactProtocolReader, CompactProtocolWriter> deserializer;
-          try {
+          ex = folly::try_and_catch<std::exception>([&]() {
             deserializer.deserialize(smessage.get(), start);
-          } catch (...) {
-            ex = std::current_exception();
-          }
+          });
           if (!ex) {
             if (start.mechanism == MECH &&
                 start.__isset.request &&
@@ -89,25 +87,23 @@ void StubSaslServer::consumeFromClient(
               serializer.serialize(reply, &*reply_data);
               phase_ = 1;
             } else {
-              ex = std::make_exception_ptr(
-                thrift::protocol::TProtocolException(
-                  "expected response 0"));
+              ex = folly::make_exception_wrapper<
+                thrift::protocol::TProtocolException>(
+                  "expected response 0");
             }
           }
         } else if (phase_ == 1) {
           if (forceFallback_) {
-            ex = std::make_exception_ptr(
-              thrift::protocol::TProtocolException(
-                "expected response 1 force failed"));
+            ex = folly::make_exception_wrapper<
+              thrift::protocol::TProtocolException>(
+                "expected response 1 force failed");
           } else {
             SaslRequest req;
             Serializer<CompactProtocolReader, CompactProtocolWriter>
               deserializer;
-            try {
+            ex = folly::try_and_catch<std::exception>([&]() {
               deserializer.deserialize(smessage.get(), req);
-            } catch (...) {
-              ex = std::current_exception();
-            }
+            });
             if (!ex) {
               if (req.__isset.response &&
                   req.response == RESPONSE1) {
@@ -123,20 +119,20 @@ void StubSaslServer::consumeFromClient(
                 complete = true;
                 phase_ = -1;
               } else {
-                ex = std::make_exception_ptr(
-                  thrift::protocol::TProtocolException(
-                    "expected response 1"));
+                ex = folly::make_exception_wrapper<
+                  thrift::protocol::TProtocolException>(
+                    "expected response 1");
               }
             }
           }
         } else if (phase_ == -1) {
-          ex = std::make_exception_ptr(
-            thrift::protocol::TProtocolException(
-              "unexpected message after complete"));
+          ex = folly::make_exception_wrapper<
+            thrift::protocol::TProtocolException>(
+              "unexpected message after complete");
         } else {
-          ex = std::make_exception_ptr(
-            thrift::protocol::TProtocolException(
-              "unexpected message after error"));
+          ex = folly::make_exception_wrapper<
+            thrift::protocol::TProtocolException>(
+              "unexpected message after error");
         }
 
         if (!ex && !complete && reply_data->empty()) {
@@ -161,7 +157,7 @@ void StubSaslServer::consumeFromClient(
             }
             if (ex) {
               threadManager_->stop();
-              cb->saslError(std::exception_ptr(ex));
+              cb->saslError(std::move(ex));
             }
             if (complete) {
               threadManager_->stop();

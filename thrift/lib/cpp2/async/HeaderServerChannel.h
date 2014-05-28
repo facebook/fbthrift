@@ -281,7 +281,7 @@ private:
     explicit SaslServerCallback(HeaderServerChannel& channel)
       : channel_(channel) {}
     virtual void saslSendClient(std::unique_ptr<folly::IOBuf>&&);
-    virtual void saslError(std::exception_ptr&&);
+    virtual void saslError(folly::exception_wrapper&&);
     virtual void saslComplete();
    private:
     HeaderServerChannel& channel_;

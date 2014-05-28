@@ -552,7 +552,7 @@ void HeaderServerChannel::SaslServerCallback::saslSendClient(
 }
 
 void HeaderServerChannel::SaslServerCallback::saslError(
-    std::exception_ptr&& ex) {
+    folly::exception_wrapper&& ex) {
   apache::thrift::async::HHWheelTimer::Callback::cancelTimeout();
   const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
     channel_.getEventBase()->getObserver());
@@ -567,7 +567,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
     }
     channel_.protectionState_ = ProtectionState::INVALID;
     LOG(ERROR) << "SASL required by server but failed";
-    channel_.messageReceiveError(std::move(ex));
+    channel_.messageReceiveErrorWrapped(std::move(ex));
     return;
   }
 
@@ -575,13 +575,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
     observer->saslFallBack();
   }
 
-  try {
-    std::rethrow_exception(ex);
-  } catch (const std::exception& e) {
-    LOG(INFO) << "SASL server falling back to insecure: " << e.what();
-  } catch (...) {
-    LOG(INFO) << "SASL server falling back to insecure";
-  }
+  LOG(INFO) << "SASL server falling back to insecure: " << ex->what();
 
   // Send the client a null message so the client will try again.
   // TODO mhorowitz: generate a real message here.

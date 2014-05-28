@@ -40,7 +40,7 @@ public:
     // error.  Continuation is impossible at this point.  The
     // implementation will call saslSendClient() first with a message
     // for the client which indicates mechanism failure.
-    virtual void saslError(std::exception_ptr&&) = 0;
+    virtual void saslError(folly::exception_wrapper&&) = 0;
 
     // Invoked after the most recently consumed message completes the
     // SASL exchange successfully.
@@ -48,10 +48,10 @@ public:
 
     void timeoutExpired() noexcept {
       using apache::thrift::transport::TTransportException;
-      TTransportException ex(
+      auto ex = folly::make_exception_wrapper<TTransportException>(
           TTransportException::TIMED_OUT,
           "SASL handshake timed out");
-      saslError(std::make_exception_ptr(ex));
+      saslError(std::move(ex));
     }
   };
 
