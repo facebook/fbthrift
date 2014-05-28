@@ -161,11 +161,12 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     logger->log("sasl_error", ex->what());
   }
 
-  try {
+  auto ew = folly::try_and_catch<std::exception>([&]() {
     // Fall back to insecure.  This will throw an exception if the
     // insecure client type is not supported.
     channel_.header_->setClientType(THRIFT_HEADER_CLIENT_TYPE);
-  } catch (const std::exception& e) {
+  });
+  if (ew) {
     LOG(ERROR) << "SASL required by client but failed or rejected by server";
     if (logger) {
       logger->log("sasl_failed_hard");
@@ -495,8 +496,8 @@ void HeaderClientChannel::messageReceived(
 void HeaderClientChannel::messageChannelEOF() {
   DestructorGuard dg(this);
   protectionState_ = ProtectionState::INVALID;
-  TTransportException ex("Channel got EOF");
-  messageReceiveError(std::make_exception_ptr(ex));
+  messageReceiveErrorWrapped(folly::make_exception_wrapper<TTransportException>(
+      "Channel got EOF"));
   if (closeCallback_) {
     closeCallback_->channelClosed();
     closeCallback_ = nullptr;
@@ -504,13 +505,37 @@ void HeaderClientChannel::messageChannelEOF() {
   setBaseReceivedCallback();
 }
 
-void HeaderClientChannel::messageReceiveError(std::exception_ptr&& ex) {
-  messageReceiveErrorImpl(std::move(ex));
-}
-
 void HeaderClientChannel::messageReceiveErrorWrapped(
     folly::exception_wrapper&& ex) {
-  messageReceiveErrorImpl(std::move(ex));
+  DestructorGuard dg(this);
+
+  // Clear callbacks early.  The last callback can delete the client,
+  // which may cause the channel to be destroy()ed, which will call
+  // messageChannelEOF(), which will reenter messageReceiveError().
+
+  decltype(recvCallbacks_) callbacks;
+  decltype(afterSecurity_) otherCallbacks;
+  using std::swap;
+  swap(recvCallbacks_, callbacks);
+  swap(afterSecurity_, otherCallbacks);
+
+  if (!callbacks.empty()) {
+    for (auto& cb : callbacks) {
+      if (cb.second) {
+        cb.second->requestError(ex);
+      }
+    }
+  }
+
+  for (auto& funcarg : otherCallbacks) {
+    auto& cb = std::get<2>(funcarg);
+    auto& ctx = std::get<3>(funcarg);
+    if (cb) {
+      cb->requestError(
+          ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
+    }
+  }
+  setBaseReceivedCallback();
 }
 
 void HeaderClientChannel::eraseCallback(uint32_t seqId, TwowayCallback* cb) {

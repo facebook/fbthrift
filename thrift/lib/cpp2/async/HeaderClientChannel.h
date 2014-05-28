@@ -92,7 +92,6 @@ class HeaderClientChannel : public RequestChannel,
   void messageReceived(std::unique_ptr<folly::IOBuf>&&,
                        std::unique_ptr<MessageChannel::RecvCallback::sample>);
   void messageChannelEOF();
-  void messageReceiveError(std::exception_ptr&&);
   void messageReceiveErrorWrapped(folly::exception_wrapper&&);
 
   // Client timeouts for read, write.
@@ -181,48 +180,6 @@ class HeaderClientChannel : public RequestChannel,
   }
 
 private:
-  template <class ExceptionT>
-  void messageReceiveErrorImpl(ExceptionT&& ex) {
-    DestructorGuard dg(this);
-    // Clear callbacks early.  The last callback can delete the client,
-    // which may cause the channel to be destroy()ed, which will call
-    // messageChannelEOF(), which will reenter messageReceiveError().
-
-    decltype(recvCallbacks_) callbacks;
-    decltype(afterSecurity_) otherCallbacks;
-    using std::swap;
-    swap(recvCallbacks_, callbacks);
-    swap(afterSecurity_, otherCallbacks);
-
-    if (!callbacks.empty()) {
-      auto exp = getExceptionPtr(ex);
-      for (auto& cb : callbacks) {
-        if (cb.second) {
-          cb.second->requestError(exp);
-        }
-      }
-    }
-
-    for (auto& funcarg : otherCallbacks) {
-      auto& cb = std::get<2>(funcarg);
-      auto& ctx = std::get<3>(funcarg);
-      if (cb) {
-        cb->requestError(
-            ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
-      }
-    }
-
-    setBaseReceivedCallback();
-  }
-
-  static std::exception_ptr getExceptionPtr(const std::exception_ptr& e) {
-    return e;
-  }
-
-  static std::exception_ptr getExceptionPtr(const folly::exception_wrapper& e) {
-    return e.getExceptionPtr();
-  }
-
   bool clientSupportHeader();
   /**
    * Callback to manage the lifetime of a two-way call.
@@ -338,7 +295,7 @@ private:
       apache::thrift::async::RequestContext::setContext(old_ctx);
       maybeDeleteThis();
     }
-    void requestError(std::exception_ptr ex) {
+    void requestError(folly::exception_wrapper ex) {
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       recvState_ = QState::DONE;
       cancelTimeout();
@@ -348,7 +305,7 @@ private:
         auto old_ctx =
           apache::thrift::async::RequestContext::setContext(cb_->context_);
         cb_->requestError(
-          ClientReceiveState(ex, std::move(ctx_),
+          ClientReceiveState(std::move(ex), std::move(ctx_),
                              channel_->isSecurityActive()));
         apache::thrift::async::RequestContext::setContext(old_ctx);
       }

@@ -57,15 +57,6 @@ class ClientReceiveState {
       streamManager_(streamManager),
       isSecurityActive_(isSecurityActive) {
   }
-  ClientReceiveState(std::exception_ptr exc,
-                     std::unique_ptr<apache::thrift::ContextStack> ctx,
-                     bool isSecurityActive)
-    : protocolId_(-1),
-      ctx_(std::move(ctx)),
-      streamManager_(nullptr),
-      exc_(std::move(exc)),
-      isSecurityActive_(isSecurityActive) {
-  }
   ClientReceiveState(folly::exception_wrapper excw,
                      std::unique_ptr<apache::thrift::ContextStack> ctx,
                      bool isSecurityActive)
@@ -77,22 +68,18 @@ class ClientReceiveState {
   }
 
   bool isException() const {
-    return exc_ || excw_.get();
+    return excw_.get();
   }
 
-  // TODO: Once everything is using the folly::exception_wrapper constructor,
-  // expose a API to get the ptr to that exception without having to throw it.
+  folly::exception_wrapper exceptionWrapper() {
+    return excw_;
+  }
 
   std::exception_ptr exception() {
     if (!exc_ && excw_.get()) {
       exc_ = excw_.getExceptionPtr();
     }
     return exc_;
-  }
-
-  void resetException(std::exception_ptr exc) {
-    excw_ = folly::exception_wrapper();
-    exc_ = exc;
   }
 
   void resetException(folly::exception_wrapper ex) {
