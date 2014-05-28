@@ -54,9 +54,7 @@ class SaslClient : public SaslEndpoint {
 
   };
 
-  explicit SaslClient(
-    const std::shared_ptr<SecurityLogger>& logger =
-      std::make_shared<SecurityLogger>()) :
+  explicit SaslClient(const std::shared_ptr<SecurityLogger>& logger = nullptr) :
     saslLogger_(logger) {}
 
   virtual void setClientIdentity(const std::string& identity) = 0;
