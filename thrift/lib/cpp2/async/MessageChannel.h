@@ -66,7 +66,6 @@ class MessageChannel :
     virtual void messageReceived(std::unique_ptr<folly::IOBuf>&&,
                                  std::unique_ptr<sample>) = 0;
     virtual void messageChannelEOF() = 0;
-    virtual void messageReceiveError(std::exception_ptr&&) = 0;
     virtual void messageReceiveErrorWrapped(folly::exception_wrapper&&) = 0;
   };
 

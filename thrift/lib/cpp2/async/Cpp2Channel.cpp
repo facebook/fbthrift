@@ -117,7 +117,8 @@ void Cpp2Channel::readDataAvailable(size_t len) noexcept {
   while (true) {
     unique_ptr<IOBuf> unframed;
 
-    try {
+    bool shouldContinue = false;
+    auto ex = folly::try_and_catch<std::exception>([&]() {
       if (protectionState_ == ProtectionState::INVALID) {
         throw TTransportException("protection state is invalid");
       }
@@ -148,13 +149,18 @@ void Cpp2Channel::readDataAvailable(size_t len) noexcept {
         if (unwrapped) {
           pendingPlaintext_->append(std::move(unwrapped));
           // Start again from the top.
-          continue;
+          shouldContinue = true;
+          return; // from try_and_catch
         }
       }
-    } catch (const std::exception& e) {
+    });
+    if (shouldContinue) {
+      continue;
+    }
+    if (ex) {
       if (recvCallback_) {
         VLOG(5) << "Failed to read a message header";
-        recvCallback_->messageReceiveError(std::current_exception());
+        recvCallback_->messageReceiveErrorWrapped(std::move(ex));
       } else {
         LOG(ERROR) << "Failed to read a message header";
       }
@@ -196,7 +202,8 @@ void Cpp2Channel::readError(const TTransportException & ex) noexcept {
   DestructorGuard dg(this);
   VLOG(5) << "Got a read error: " << folly::exceptionStr(ex);
   if (recvCallback_) {
-    recvCallback_->messageReceiveError(make_exception_ptr(ex));
+    recvCallback_->messageReceiveErrorWrapped(
+        folly::make_exception_wrapper<TTransportException>(ex));
   }
   processReadEOF();
 }
