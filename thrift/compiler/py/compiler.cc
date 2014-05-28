@@ -63,6 +63,9 @@ void process(const dict& params, const object& generate_callback) {
   g_strict = extract<int> (opts.attr("strict"));
   g_verbose = extract<bool> (opts.attr("verbose"));
   out_path = extract<string> (opts.attr("outputDir"));
+  g_allow_neg_field_keys = extract<bool> (opts.attr("allow_neg_keys"));
+  g_allow_neg_enum_vals = extract<bool> (opts.attr("allow_neg_enum_vals"));
+
   auto e = extract<list> (opts.attr("includeDirs"));
   if (e.check()) {
     // if it's set, push the include dirs into the global search path
