@@ -262,6 +262,7 @@ TEST_F(Krb5UtilTest, TestKTIterator) {
   auto p2 = Krb5Principal(context_.get(), "p2@REALM");
 
   krb5_keytab_entry kte;
+  memset(&kte, 0, sizeof(kte));
   kte.principal = p1.get();
   krb5_error_code code = krb5_kt_add_entry(context_.get(), keytab.get(), &kte);
   raiseIf(context_.get(), code, "storing p1");
