@@ -344,6 +344,9 @@ void ThriftServer::setup() {
       socket_.reset();
     }
 
+    // avoid crash on stop()
+    serveEventBase_ = nullptr;
+
     throw;
   }
 }
