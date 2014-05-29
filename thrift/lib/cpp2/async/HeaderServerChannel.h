@@ -184,6 +184,9 @@ class HeaderServerChannel : public ResponseChannel,
     void sendError(std::exception_ptr ex,
                    std::string exCode,
                    MessageChannel::SendCallback* cb = nullptr);
+    void sendErrorWrapped(folly::exception_wrapper ex,
+                          std::string exCode,
+                          MessageChannel::SendCallback* cb = nullptr);
 
     // XXX this function should only be called in the async thread, which is
     //     fine because we do not support sync versions of streams on the

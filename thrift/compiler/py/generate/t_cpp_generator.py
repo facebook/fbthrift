@@ -1232,7 +1232,8 @@ class CppGenerator(t_generator.Generator):
         return sig
 
     def _generate_app_ex(self, service, errorstr, functionname, seqid, is_in_eb,
-                         s, static=True, err_code=None, err_header=True):
+                         s, static=True, err_code=None, err_header=True,
+                         ex_name='e'):
         with out('if (req)'):
             out('LOG(ERROR) << {0} << " in function {1}";'.format(
                     errorstr, functionname))
@@ -1245,7 +1246,8 @@ class CppGenerator(t_generator.Generator):
                 ctx = 'ctx.get()'
                 if err_header:
                     out('ctx->userException(' +
-                       'folly::demangle(typeid(e)).toStdString());')
+                        'folly::demangle(typeid(' + ex_name +
+                        ')).toStdString());')
             else:
                 ctx = 'nullptr'
             if is_in_eb:
@@ -1334,7 +1336,7 @@ class CppGenerator(t_generator.Generator):
         if function.oneway:
             out('std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(' +
               'new apache::thrift::HandlerCallbackBase(std::move(req), ' +
-              'std::move(c), nullptr, eb, tm, ctx));')
+              'std::move(c), nullptr, nullptr, eb, tm, ctx));')
         else:
             if self._function_uses_streams(function):
                 rettype = ('apache::thrift::StreamManager *')
@@ -1349,6 +1351,7 @@ class CppGenerator(t_generator.Generator):
                'HandlerCallback<{0}>(std::move(req), ' +
                'std::move(c), return_{1}<ProtocolIn_,' +
                'ProtocolOut_>, throw_{1}<ProtocolIn_,' +
+               ' ProtocolOut_>, throw_wrapped_{1}<ProtocolIn_,' +
                ' ProtocolOut_>, iprot->getSeqId(),' +
                ' eb, tm, ctx));').format(rettype, function.name))
         args.insert(0, 'std::move(callback)')
@@ -1637,6 +1640,54 @@ class CppGenerator(t_generator.Generator):
                               '"{0}", &prot, protoSeqId, ctx.get(),'
                               ' result);'.format(function.name))
                             out('return req->sendReply(queue.move());')
+                    with out().defn(
+                        'template <class ProtocolIn_, class ProtocolOut_>\n' +
+                        'void {name}(std::unique_ptr' +
+                        '<apache::thrift::ResponseChannel::Request> req,' +
+                        'int32_t protoSeqId,'
+                        + 'std::unique_ptr<apache::thrift::ContextStack> ctx,' +
+                        'folly::exception_wrapper ew)',
+                        name="throw_wrapped_{0}".format(function.name),
+                        modifiers='static',
+                        output=self._out_tcc
+                    ):
+                        with out('if (ew)'):
+                            out('ProtocolOut_ prot;')
+                            if len(function.xceptions.members) > 0:
+                                out('{0}_{1}_result result;'.format(
+                                    service.name, function.name))
+                            out('bool cast = false;')
+                            for xception in function.xceptions.members:
+                                with out('if (!cast)'):
+                                    xception_type = self._type_name(
+                                        xception.type)
+                                    wrapper_name = 'ew_' + xception.name
+                                    out('auto ' + wrapper_name + ' = dynamic_' +
+                                        'cast<' + xception_type +
+                                        '*>(ew.get());')
+                                    with out('if (' + wrapper_name + ')'):
+                                        out('cast = true;')
+                                        out('ctx->userException(' +
+                                            'folly::demangle(typeid(*' +
+                                            wrapper_name +
+                                            ')).toStdString());')
+                                        out('result.{0} = *{1};'.format(
+                                            xception.name, wrapper_name))
+                                        out('result.__isset.{0} = true;'.format(
+                                            xception.name))
+                            with out('if (!cast)'):
+                                self._generate_app_ex(
+                                    service,
+                                    "folly::exceptionStr(*ew)." +
+                                    "toStdString()",
+                                    function.name, "protoSeqId", True,
+                                    out(), True, None, True, '*ew')
+                            if len(function.xceptions.members) > 0:
+                                out('auto queue = serializeResponse('
+                                    '"{0}", &prot, protoSeqId, ctx.get(),'
+                                    ' result);'.format(function.name))
+                                out('return req->sendReply(queue.move());')
+
 
             out().label('public:')
             init = OrderedDict()

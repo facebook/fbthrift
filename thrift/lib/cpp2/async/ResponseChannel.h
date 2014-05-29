@@ -66,6 +66,11 @@ class ResponseChannel : virtual public TDelayedDestruction {
                            std::string exCode,
                            MessageChannel::SendCallback* cb = nullptr) = 0;
 
+    virtual void sendErrorWrapped(
+        folly::exception_wrapper ex,
+        std::string exCode,
+        MessageChannel::SendCallback* cb = nullptr) = 0;
+
     virtual void sendReplyWithStreams(
         std::unique_ptr<folly::IOBuf>&&,
         std::unique_ptr<StreamManager>&&,

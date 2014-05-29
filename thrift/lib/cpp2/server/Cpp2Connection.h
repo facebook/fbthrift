@@ -113,6 +113,10 @@ class Cpp2Connection
     virtual void sendError(std::exception_ptr ex,
                    std::string exCode,
                    MessageChannel::SendCallback* notUsed = nullptr);
+    virtual void sendErrorWrapped(
+        folly::exception_wrapper ew,
+        std::string exCode,
+        MessageChannel::SendCallback* notUsed = nullptr);
     virtual void sendReplyWithStreams(std::unique_ptr<folly::IOBuf>&&,
                               std::unique_ptr<StreamManager>&&,
                               MessageChannel::SendCallback* cb = nullptr);

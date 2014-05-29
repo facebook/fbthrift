@@ -181,8 +181,10 @@ void Cpp2Connection::killRequest(
   // may end up here. No need to send error back for such requests
   if (!processor_->isOnewayMethod(req.getBuf(),
       channel_->getHeader())) {
-    apache::thrift::TApplicationException x(reason, comment);
-    req.sendError(std::make_exception_ptr(x), kOverloadedErrorCode);
+    req.sendErrorWrapped(
+        folly::make_exception_wrapper<TApplicationException>(reason,
+                                                             comment),
+        kOverloadedErrorCode);
   } else {
     // Send an empty request so reqId will be handler properly
     req.sendReply(std::unique_ptr<folly::IOBuf>());
@@ -397,6 +399,19 @@ void Cpp2Connection::Cpp2Request::sendError(
   }
 }
 
+void Cpp2Connection::Cpp2Request::sendErrorWrapped(
+    folly::exception_wrapper ew,
+    std::string exCode,
+    MessageChannel::SendCallback* sendCallback) {
+  if (req_->isActive()) {
+    auto observer = connection_->getWorker()->getServer()->getObserver().get();
+    req_->sendErrorWrapped(std::move(ew),
+                           std::move(exCode),
+                           prepareSendCallback(sendCallback, observer));
+    cancelTimeout();
+  }
+}
+
 void Cpp2Connection::Cpp2Request::sendReplyWithStreams(
     std::unique_ptr<folly::IOBuf>&& data,
     std::unique_ptr<StreamManager>&& streams,
@@ -425,7 +440,11 @@ void Cpp2Connection::Cpp2Request::timeoutExpired() noexcept {
   apache::thrift::TApplicationException x(
       TApplicationException::TApplicationExceptionType::TIMEOUT,
       "Task expired");
-  sendError(std::make_exception_ptr(x), kTaskExpiredErrorCode);
+  sendErrorWrapped(
+      folly::make_exception_wrapper<TApplicationException>(
+        TApplicationException::TApplicationExceptionType::TIMEOUT,
+        "Task expired"),
+      kTaskExpiredErrorCode);
   req_->cancel();
   connection_->requestTimeoutExpired();
 }

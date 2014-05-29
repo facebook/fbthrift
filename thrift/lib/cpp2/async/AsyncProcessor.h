@@ -71,9 +71,10 @@ class EventTask : public virtual apache::thrift::concurrency::Runnable {
       auto req = req_;
       if (req) {
         base_->runInEventBaseThread([req] () {
-            apache::thrift::TApplicationException ex(
-              "Failed to add task to queue, too full");
-            req->sendError(std::make_exception_ptr(ex), kOverloadedErrorCode);
+            req->sendErrorWrapped(
+                folly::make_exception_wrapper<TApplicationException>(
+                  "Failed to add task to queue, too full"),
+                kOverloadedErrorCode);
             delete req;
           });
       }
@@ -239,9 +240,10 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       req.release();
     } catch (const std::exception& e) {
       if (!oneway) {
-        apache::thrift::TApplicationException ex(
-          "Failed to add task to queue, too full");
-        req->sendError(std::make_exception_ptr(ex), kOverloadedErrorCode);
+        req->sendErrorWrapped(
+            folly::make_exception_wrapper<TApplicationException>(
+              "Failed to add task to queue, too full"),
+            kOverloadedErrorCode);
       }
     }
   }
@@ -269,6 +271,10 @@ class HandlerCallbackBase {
                          int32_t protoSeqId,
                          std::unique_ptr<apache::thrift::ContextStack>,
                          std::exception_ptr);
+  typedef void(*exnw_ptr)(std::unique_ptr<ResponseChannel::Request>,
+                          int32_t protoSeqId,
+                          std::unique_ptr<apache::thrift::ContextStack>,
+                          folly::exception_wrapper);
  public:
 
   HandlerCallbackBase()
@@ -282,12 +288,14 @@ class HandlerCallbackBase {
     std::unique_ptr<ResponseChannel::Request> req,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     exn_ptr ep,
+    exnw_ptr ewp,
     apache::thrift::async::TEventBase* eb,
     apache::thrift::concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx) :
       req_(std::move(req)),
       ctx_(std::move(ctx)),
       ep_(ep),
+      ewp_(ewp),
       eb_(eb),
       tm_(tm),
       reqCtx_(reqCtx),
@@ -309,6 +317,10 @@ class HandlerCallbackBase {
     doException(ex);
   }
 
+  void exception(folly::exception_wrapper ew) {
+    doExceptionWrapped(ew);
+  }
+
   // Warning: just like "throw ex", this captures the STATIC type of ex, not
   // the dynamic type.  If you need the dynamic type, then either you should
   // be using exception_ptr instead of a reference to a base exception class,
@@ -316,7 +328,7 @@ class HandlerCallbackBase {
   // see // http://www.parashift.com/c++-faq/throwing-polymorphically.html
   template <class Exception>
   void exception(const Exception& ex) {
-    exception(std::make_exception_ptr(ex));
+    exception(folly::make_exception_wrapper<Exception>(ex));
   }
 
   void deleteInThread() {
@@ -370,7 +382,9 @@ class HandlerCallbackBase {
       apache::thrift::TApplicationException ex(
         "Failed to add task to queue, too full");
       if (req_ && ep_) {
-        req_->sendError(std::make_exception_ptr(ex), kOverloadedErrorCode);
+        req_->sendErrorWrapped(
+            folly::make_exception_wrapper<TApplicationException>(std::move(ex)),
+            kOverloadedErrorCode);
       } else {
         LOG(ERROR) << folly::exceptionStr(ex);
       }
@@ -408,12 +422,23 @@ class HandlerCallbackBase {
                                     reqCtx_->getMinCompressBytes()));
   }
 
+  virtual void doExceptionWrapped(folly::exception_wrapper ew) {
+    if (req_ == nullptr) {
+      LOG(ERROR) << folly::exceptionStr(*ew);
+    } else {
+      if (ewp_) {
+        ewp_(std::move(req_), protoSeqId_, std::move(ctx_), ew);
+      }
+    }
+  }
+
   // Required for this call
   std::unique_ptr<ResponseChannel::Request> req_;
   std::unique_ptr<apache::thrift::ContextStack> ctx_;
 
   // May be null in a oneway call
   exn_ptr ep_;
+  exnw_ptr ewp_;
 
   // Useful pointers, so handler doesn't need to have a pointer to the server
   apache::thrift::async::TEventBase* eb_;
@@ -441,11 +466,12 @@ class HandlerCallback : public HandlerCallbackBase {
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     cob_ptr cp,
     exn_ptr ep,
+    exnw_ptr ewp,
     int32_t protoSeqId,
     apache::thrift::async::TEventBase* eb,
     apache::thrift::concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx) :
-      HandlerCallbackBase(std::move(req), std::move(ctx), ep,
+      HandlerCallbackBase(std::move(req), std::move(ctx), ep, ewp,
                           eb, tm, reqCtx),
       cp_(cp) {
     this->protoSeqId_ = protoSeqId;
@@ -517,11 +543,12 @@ class HandlerCallback<std::unique_ptr<T>> : public HandlerCallbackBase {
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     cob_ptr cp,
     exn_ptr ep,
+    exnw_ptr ewp,
     int32_t protoSeqId,
     apache::thrift::async::TEventBase* eb,
     apache::thrift::concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx):
-      HandlerCallbackBase(std::move(req), std::move(ctx), ep,
+      HandlerCallbackBase(std::move(req), std::move(ctx), ep, ewp,
                           eb, tm, reqCtx),
       cp_(cp) {
     this->protoSeqId_ = protoSeqId;
@@ -613,11 +640,12 @@ class HandlerCallback<void> : public HandlerCallbackBase {
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     cob_ptr cp,
     exn_ptr ep,
+    exnw_ptr ewp,
     int32_t protoSeqId,
     apache::thrift::async::TEventBase* eb,
     apache::thrift::concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx) :
-      HandlerCallbackBase(std::move(req), std::move(ctx), ep,
+      HandlerCallbackBase(std::move(req), std::move(ctx), ep, ewp,
                           eb, tm, reqCtx),
       cp_(cp) {
     this->protoSeqId_ = protoSeqId;
