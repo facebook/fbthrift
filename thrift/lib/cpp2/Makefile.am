@@ -67,6 +67,7 @@ libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   ../cpp/util/THttpParser.cpp \
 			   ../cpp/util/PausableTimer.cpp \
 			   ../cpp/util/kerberos/Krb5Util.cpp \
+			   ../cpp/util/kerberos/Krb5OlderVersionStubs.cpp \
 			   ../cpp/util/kerberos/Krb5CredentialsCacheManager.cpp \
          ../cpp/ssl/SSLUtils.cpp
 
