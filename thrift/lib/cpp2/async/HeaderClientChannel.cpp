@@ -27,6 +27,7 @@ using std::unique_ptr;
 using std::pair;
 using folly::IOBuf;
 using folly::IOBufQueue;
+using folly::make_unique;
 using namespace apache::thrift::transport;
 using apache::thrift::async::TEventBase;
 using apache::thrift::async::TAsyncTransport;
@@ -36,22 +37,24 @@ namespace apache { namespace thrift {
 
 HeaderClientChannel::HeaderClientChannel(
   const std::shared_ptr<TAsyncTransport>& transport)
-    : Cpp2Channel(transport)
-    , sendSeqId_(0)
+    : sendSeqId_(0)
     , closeCallback_(nullptr)
     , timeout_(0)
     , timeoutSASL_(500)
     , handshakeMessagesSent_(0)
     , keepRegisteredForClose_(true)
-    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase()))
-    , saslClientCallback_(*this) {
+    , protectionState_(ProtectionState::UNKNOWN)
+    , saslClientCallback_(*this)
+    , cpp2Channel_(Cpp2Channel::newChannel(transport,
+                       make_unique<ClientFramingHandler>(*this)))
+    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
   header_.reset(new THeader);
   header_->setSupportedClients(nullptr);
   header_->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
 }
 
 void HeaderClientChannel::setTimeout(uint32_t ms) {
-  transport_->setSendTimeout(ms);
+  getTransport()->setSendTimeout(ms);
   timeout_ = ms;
 }
 
@@ -64,12 +67,11 @@ void HeaderClientChannel::destroy() {
   if (saslClient_) {
     saslClient_->markChannelCallbackUnavailable();
   }
-  Cpp2Channel::destroy();
 }
 
 void HeaderClientChannel::attachEventBase(
     TEventBase* eventBase) {
-  Cpp2Channel::attachEventBase(eventBase);
+  cpp2Channel_->attachEventBase(eventBase);
   timer_->attachEventBase(eventBase);
 }
 
@@ -79,7 +81,7 @@ void HeaderClientChannel::detachEventBase() {
     saslClient_->markChannelCallbackUnavailable();
   }
 
-  Cpp2Channel::detachEventBase();
+  cpp2Channel_->detachEventBase();
   timer_->detachEventBase();
 }
 
@@ -92,7 +94,7 @@ void HeaderClientChannel::startSecurity() {
   // but since it's internal state, it's not clear there's any
   // value.
   if (header_->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    protectionState_ = ProtectionState::NONE;
+    setProtectionState(ProtectionState::NONE);
     return;
   }
 
@@ -101,7 +103,7 @@ void HeaderClientChannel::startSecurity() {
   }
 
   // Let's get this party started.
-  protectionState_ = ProtectionState::INPROGRESS;
+  setProtectionState(ProtectionState::INPROGRESS);
   setBaseReceivedCallback();
   // Schedule timeout because in saslClient_->start() we may be talking
   // to the KDC.
@@ -122,7 +124,7 @@ unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
     // else, fall through to application message processing
   } else if (protectionState_ == ProtectionState::INPROGRESS ||
              protectionState_ == ProtectionState::VALID) {
-    protectionState_ = ProtectionState::INVALID;
+    setProtectionState(ProtectionState::INVALID);
     // If the security negotiation has completed successfully, or is
     // in progress, we expect SASL to continue to be used.  If
     // something else happens, it's either an attack or something is
@@ -172,7 +174,7 @@ void HeaderClientChannel::SaslClientCallback::saslError(
       logger->log("sasl_failed_hard");
     }
     channel_.messageReceiveErrorWrapped(std::move(ex));
-    channel_.closeNow();
+    channel_.cpp2Channel_->closeNow();
     return;
   }
 
@@ -233,12 +235,8 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
   assert(state == ProtectionState::NONE ||
          state == ProtectionState::VALID);
 
-  protectionState_ = state;
+  setProtectionState(state);
   setBaseReceivedCallback();
-
-  if (state == ProtectionState::VALID) {
-    setSaslEndpoint(saslClient_.get());
-  }
 
   // Replay any pending requests
   for (auto&& funcarg : afterSecurity_) {
@@ -384,7 +382,7 @@ void HeaderClientChannel::sendRequest(
 
 void HeaderClientChannel::sendStreamingMessage(
     uint32_t streamSequenceId,
-    SendCallback* callback,
+    Cpp2Channel::SendCallback* callback,
     std::unique_ptr<folly::IOBuf>&& data,
     HEADER_FLAGS streamFlag) {
 
@@ -404,19 +402,27 @@ void HeaderClientChannel::sendStreamingMessage(
 
 // Header framing
 std::unique_ptr<folly::IOBuf>
-HeaderClientChannel::frameMessage(unique_ptr<IOBuf>&& buf) {
-  header_->setSequenceNumber(sendSeqId_);
-  return header_->addHeader(std::move(buf));
+HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<IOBuf> buf) {
+  THeader* header = channel_.getHeader();
+  header->setSequenceNumber(channel_.sendSeqId_);
+  return header->addHeader(std::move(buf));
 }
 
-std::unique_ptr<folly::IOBuf>
-HeaderClientChannel::removeFrame(IOBufQueue* q, size_t& remaining) {
-  std::unique_ptr<folly::IOBuf> buf = header_->removeHeader(q, remaining);
-  if (!buf) {
-    return buf;
+std::pair<std::unique_ptr<IOBuf>, size_t>
+HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
+  THeader* header = channel_.getHeader();
+  queue_.append(*q);
+  if (!queue_.front() || queue_.front()->empty()) {
+    return make_pair(std::unique_ptr<IOBuf>(), 0);
   }
-  header_->checkSupportedClient();
-  return buf;
+
+  size_t remaining = 0;
+  std::unique_ptr<folly::IOBuf> buf = header->removeHeader(&queue_, remaining);
+  if (!buf) {
+    return make_pair(std::unique_ptr<folly::IOBuf>(), remaining);
+  }
+  header->checkSupportedClient();
+  return make_pair(std::move(buf), 0);
 }
 
 // Interface from MessageChannel::RecvCallback
@@ -495,7 +501,7 @@ void HeaderClientChannel::messageReceived(
 
 void HeaderClientChannel::messageChannelEOF() {
   DestructorGuard dg(this);
-  protectionState_ = ProtectionState::INVALID;
+  setProtectionState(ProtectionState::INVALID);
   messageReceiveErrorWrapped(folly::make_exception_wrapper<TTransportException>(
       "Channel got EOF"));
   if (closeCallback_) {
@@ -571,9 +577,9 @@ void HeaderClientChannel::setBaseReceivedCallback() {
       streamCallbacks_.size() != 0 ||
       recvCallbacks_.size() != 0 ||
       (closeCallback_ && keepRegisteredForClose_)) {
-    setReceiveCallback(this);
+    cpp2Channel_->setReceiveCallback(this);
   } else {
-    setReceiveCallback(nullptr);
+    cpp2Channel_->setReceiveCallback(nullptr);
   }
 }
 
