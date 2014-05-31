@@ -286,16 +286,16 @@ TEST(ThriftServer, OverloadTest) {
   int exception_headers = 0;
   auto lambda = [&](ClientReceiveState&& state) {
       std::string response;
-      try {
-        auto header = boost::polymorphic_downcast<HeaderClientChannel*>(
+      auto header = boost::polymorphic_downcast<HeaderClientChannel*>(
           client.getChannel())->getHeader();
-        auto headers = header->getHeaders();
-        if (headers.size() > 0) {
-          EXPECT_EQ(headers["ex"], kOverloadedErrorCode);
-          exception_headers++;
-        }
-        TestServiceAsyncClient::recv_sendResponse(response, state);
-      } catch (apache::thrift::TApplicationException& e) {
+      auto headers = header->getHeaders();
+      if (headers.size() > 0) {
+        EXPECT_EQ(headers["ex"], kOverloadedErrorCode);
+        exception_headers++;
+      }
+      auto ew = TestServiceAsyncClient::recv_wrapped_sendResponse(response,
+                                                                  state);
+      if (ew) {
         usleep(tval); // Wait for large task to finish
         too_full++;
       }
@@ -580,6 +580,18 @@ TEST(ThriftServer, FailureInjection) {
         EXPECT_EQ(ERROR, *expected_);
       } catch (...) {
         ADD_FAILURE() << "Unexpected exception thrown";
+      }
+
+      // Now do it again with exception_wrappers.
+      auto ew = TestServiceAsyncClient::recv_wrapped_sendResponse(response,
+                                                                  state);
+      if (ew) {
+        auto exc = ew.get();
+        auto appEx = dynamic_cast<apache::thrift::TApplicationException*>(exc);
+        EXPECT_TRUE(appEx);
+        EXPECT_EQ(ERROR, *expected_);
+      } else {
+        EXPECT_EQ(NONE, *expected_);
       }
     }
 

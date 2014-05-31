@@ -12,4 +12,5 @@ service TestService {
   string serializationTest(1: bool inEventBase)
   string eventBaseAsync() (thread = 'eb')
   void notCalledBack()
+  void voidResponse()
 }

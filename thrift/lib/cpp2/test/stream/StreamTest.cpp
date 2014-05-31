@@ -45,7 +45,7 @@
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::async;
-using namespace facebook::wangle;
+using namespace folly::wangle;
 
 typedef std::unique_ptr<InputStreamCallback<int>> ICP;
 typedef std::unique_ptr<OutputStreamCallback<int>> OCP;

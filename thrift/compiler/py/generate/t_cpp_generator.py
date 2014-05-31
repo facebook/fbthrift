@@ -790,7 +790,7 @@ class CppGenerator(t_generator.Generator):
                     self._generate_client_future_function(service, function,
                                                           uses_rpc_options=True)
                 if not function.oneway:
-                    self._generate_recv_function(function)
+                    self._generate_recv_functions(function)
 
                 self._generate_templated_client_function(service, function)
 
@@ -2325,45 +2325,81 @@ class CppGenerator(t_generator.Generator):
         with out().defn(sig, name=name, modifiers="virtual"):
             out("{name}({args});".format(name=function.name, args=args_list))
 
-    def _generate_recv_function(self, function):
-        with out().defn(self._get_recv_function_signature(function),
-                    name="recv_" + function.name,
-                    modifiers="static"):
-            with out('if (state.exception())'):
-                out('std::rethrow_exception(state.exception());')
-            with out('if (!state.buf())'):
-                out('throw apache::thrift::TApplicationException('
-                  '"recv_ called without result");')
+    def _generate_throwing_recv_function(self, function, uses_template):
+        callee_name = function.name
+        if uses_template:
+            callee_name = callee_name + 'T'
+        output = None
+        if uses_template:
+            output = self._out_tcc
+        with out().defn(self._get_recv_function_signature(function,
+                                                          uses_template),
+                        name='recv_' + callee_name,
+                        modifiers='static',
+                        output=output):
+            simple_return = not function.returntype.is_void and \
+                not self._is_complex_type(function.returntype) and \
+                not self._function_uses_streams(function)
+            if simple_return:
+                out(self._type_name(function.returntype) + ' _return;')
 
+            params = []
+            if uses_template:
+                params.append('prot')
+            if self._function_uses_streams(function):
+                params.append('std::move(stream)')
+            elif not function.returntype.is_void:
+                params.append('_return')
+            params.append('state')
+            func_name = 'recv_wrapped_' + function.name
+            if uses_template:
+                func_name = func_name + 'T'
+            out('auto ew = {0}({1});'.format(func_name, ', '.join(params)))
+            with out('if (ew)'):
+                out('ew.throwException();')
+            if simple_return:
+                out('return _return;')
+
+    def _generate_recv_functions(self, function):
+        with out().defn(self._get_recv_function_signature(function,
+                                                          is_wrapped=True),
+                        name="recv_wrapped_" + function.name,
+                        modifiers="static"):
+            out('auto ew = state.exceptionWrapper();')
+            with out('if (ew)'):
+                out('return ew;')
+            with out('if (!state.buf())'):
+                out('return folly::make_exception_wrapper<'
+                    'apache::thrift::TApplicationException>('
+                    '"recv_ called without result");')
             with out("switch(state.protocolId())"):
                 for key, value, prottype in self.protocols:
-                    with out().case('apache::thrift::protocol::' + prottype):
+                    with out().case('apache::thrift::protocol::' + prottype,
+                                    nobreak=True):
                         out("apache::thrift::{0}Reader reader;".format(value))
 
-                        callee_name = "recv_" + function.name + "T"
+                        callee_name = "recv_wrapped" + function.name + "T"
 
                         args = ["&reader"]
 
                         if self._function_uses_streams(function):
                             args.append("std::move(stream)")
-                        elif self._is_complex_type(function.returntype):
+                        elif not function.returntype.is_void:
                             args.append("_return")
 
                         args.append("state")
                         args_list = ", ".join(args)
 
-                        if function.returntype.is_void or \
-                           self._is_complex_type(function.returntype) or \
-                           self._function_uses_streams(function):
-                            out(callee_name + "(" + args_list + ");")
-                            out("return;")
-                        else:
-                            out("return " + callee_name + "(" + args_list + ");")
+                        out('return recv_wrapped_' + function.name + 'T(' +
+                            args_list + ');')
 
                 with out().case("default", nobreak=True):
                     pass
-            out("throw apache::thrift::TApplicationException("
-              '"Could not find Protocol");')
+            out('return folly::make_exception_wrapper<'
+                'apache::thrift::TApplicationException>('
+                '"Could not find Protocol");')
+
+        self._generate_throwing_recv_function(function, False)
 
         # Most mock frameworks require your functions to be virtual instance
         # functions. Generating a virtual instance version of recv_ so
@@ -2374,24 +2410,32 @@ class CppGenerator(t_generator.Generator):
                     name="recv_" + "instance_" + function.name,
                     modifiers="virtual"):
 
+            params = []
+            if self._function_uses_streams(function):
+                params.append('std::move(stream)')
+            elif self._is_complex_type(function.returntype):
+                params.append('_return')
+            params.append('state')
             if not function.oneway:
-                if not function.returntype.is_void:
-                    if not self._is_complex_type(function.returntype):
-                        out("return recv_" + function.name +
-                            "(state);")
-                    else:
-                        out("recv_" + function.name +
-                            "(_return, state);")
+                if not function.returntype.is_void and \
+                  not self._function_uses_streams(function):
+                    out("return recv_" + function.name +
+                        "(" + ", ".join(params) + ");")
                 else:
-                    out("recv_" + function.name + "(state);")
+                    out("recv_" + function.name + "(" + ", ".join(params) +
+                        ");")
 
     def _generate_templated_recv_function(self, service, function):
-        sig = self._get_recv_function_signature(function, uses_template=True)
+        sig = self._get_recv_function_signature(function,
+                                                uses_template=True,
+                                                is_wrapped=True)
 
         with out().defn(sig,
-                    name="recv_" + function.name + "T",
+                    name="recv_wrapped_" + function.name + "T",
                     modifiers="static",
                     output=self._out_tcc):
+            with out('if (state.isException())'):
+                out('return state.exceptionWrapper();')
             out("prot->setInput(state.buf());")
             out("auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});")
             out("apache::thrift::ContextStack* ctx = state.ctx();")
@@ -2400,43 +2444,46 @@ class CppGenerator(t_generator.Generator):
             out("apache::thrift::MessageType mtype;")
             out("ctx->preRead();")
 
-            with out("try"):
+            out("folly::exception_wrapper interior_ew;")
+            with out("auto caught_ew = folly::try_and_catch<"
+                     "apache::thrift::TException, "
+                     "apache::thrift::protocol::TProtocolException>([&]() "):
                 out("prot->readMessageBegin(fname, mtype, protoSeqId);")
 
                 with out("if (mtype == apache::thrift::T_EXCEPTION)"):
                     out("apache::thrift::TApplicationException x;")
                     out("x.read(prot);")
                     out("prot->readMessageEnd();")
-                    out("throw x;")
+                    out("interior_ew = folly::make_exception_wrapper<"
+                        "apache::thrift::TApplicationException>(x);")
+                    out("return; // from try_and_catch")
 
                 with out("if (mtype != apache::thrift::T_REPLY)"):
                     out("prot->skip(apache::thrift::protocol::T_STRUCT);")
                     out("prot->readMessageEnd();")
-                    out("throw apache::thrift::TApplicationException"
-                      "(apache::thrift::TApplicationException"
-                      "::TApplicationExceptionType::INVALID_MESSAGE_TYPE);")
+                    out("interior_ew = folly::make_exception_wrapper<"
+                        "apache::thrift::TApplicationException>("
+                        "apache::thrift::TApplicationException"
+                        "::TApplicationExceptionType::INVALID_MESSAGE_TYPE);")
+                    out("return; // from try_and_catch")
 
                 with out('if (fname.compare("' + function.name + '") != 0)'):
                     out("prot->skip(apache::thrift::protocol::T_STRUCT);")
                     out("prot->readMessageEnd();")
-                    out("throw apache::thrift::TApplicationException"
-                      "(apache::thrift::TApplicationException"
-                      "::TApplicationExceptionType::WRONG_METHOD_NAME);")
-
+                    out("interior_ew = folly::make_exception_wrapper<"
+                        "apache::thrift::TApplicationException>("
+                        "apache::thrift::TApplicationException"
+                        "::TApplicationExceptionType::WRONG_METHOD_NAME);")
+                    out("return; // from try_and_catch")
                 out("::apache::thrift::SerializedMessage smsg;")
                 out("smsg.protocolType = prot->protocolType();")
                 out("smsg.buffer = state.buf();")
                 out("ctx->onReadData(smsg);")
 
-                if not function.returntype.is_void and \
-                   not self._is_complex_type(function.returntype) and \
-                   not self._function_uses_streams(function):
-                    out(self._type_name(function.returntype) + " _return;")
-
                 out("{0}_{1}_presult result;".format(service.name, function.name))
 
                 if not function.returntype.is_void and \
-                   not self._function_uses_streams(function):
+                  not self._function_uses_streams(function):
                     out("result.success = &_return;")
 
                 if self.flag_compatibility:
@@ -2449,47 +2496,51 @@ class CppGenerator(t_generator.Generator):
                 out('ctx->postRead(state.buf()->length());')
 
                 if not function.returntype.is_void and \
-                   not self._function_uses_streams(function):
-
-                    if self._is_complex_type(function.returntype):
-                        with out("if (result.__isset.success)"):
-                            out("// _return pointer has been filled")
-                            out("return;")
-                    else:
-                        with out("if (result.__isset.success)"):
-                            out("return _return;")
-
+                  not self._function_uses_streams(function):
+                    with out("if (result.__isset.success)"):
+                        out("// _return pointer has been filled")
+                        out("return; // from try_and_catch")
                 for xs in function.xceptions.members:
                     with out("if (result.__isset.{0})".format(xs.name)):
-                        out("throw result.{0};".format(xs.name))
+                        out("interior_ew = folly::make_exception_wrapper<"
+                            "{0}>(result.{1});".format(
+                                self._type_name(xs.type), xs.name))
+                        out("return; // from try_and_catch")
 
                 if not function.returntype.is_void and \
-                   not self._function_uses_streams(function):
-                    # else throw, no success
-                    out("throw apache::thrift::TApplicationException("
-                      "apache::thrift::TApplicationException::"
-                      "TApplicationExceptionType::MISSING_RESULT, "
-                      '"failed: unknown result");')
-
-                with out().catch("apache::thrift::TException &ex"):
-                    out("ctx->handlerError();")
-                    out("throw;")
-
+                  not self._function_uses_streams(function):
+                    with out("else"):
+                        # else throw, no success
+                        out("interior_ew = folly::make_exception_wrapper<"
+                            "apache::thrift::TApplicationException>("
+                            "apache::thrift::TApplicationException::"
+                            "TApplicationExceptionType::MISSING_RESULT, "
+                            '"failed: unknown result");')
+                        out("return; // from try_and_catch")
+            out(");")
+            with out("if (interior_ew || caught_ew)"):
+                out("ctx->handlerError();")
+                out("return interior_ew ? interior_ew : caught_ew;")
             if self._function_uses_streams(function):
                 out("stream->setInputProtocol(")
                 out("    static_cast<apache::thrift::ProtocolType>(")
                 out("        state.protocolId()));")
                 out("")
                 out("state.setStreamManager(std::move(stream));")
-                out("")
+            out("return folly::exception_wrapper();")
 
-    def _get_recv_function_signature(self, function, uses_template=False):
+        self._generate_throwing_recv_function(function, True)
+
+    def _get_recv_function_signature(self, function, uses_template=False,
+                                     is_wrapped=False):
         signature_prefix = ""
 
         if uses_template:
             signature_prefix = "template <typename Protocol_>\n"
 
-        if function.returntype.is_void or \
+        if is_wrapped:
+            signature_prefix += 'folly::exception_wrapper'
+        elif function.returntype.is_void or \
            self._is_complex_type(function.returntype) or \
            self._function_uses_streams(function):
             signature_prefix += "void"
@@ -2503,11 +2554,12 @@ class CppGenerator(t_generator.Generator):
         if self._function_uses_streams(function):
             params.append("std::unique_ptr<apache::thrift::StreamManager>&& "
                           "stream")
-        elif self._is_complex_type(function.returntype):
+        elif not function.returntype.is_void and (
+            self._is_complex_type(function.returntype) or is_wrapped
+        ):
             params.append(self._type_name(function.returntype) + "& _return")
 
         params.append("::apache::thrift::ClientReceiveState& state")
-
         param_list = ", ".join(params)
         return signature_prefix + " {name}(" + param_list + ")"
 

@@ -60,6 +60,9 @@ class TestServiceHandler : public TestServiceIf {
   }
 
   virtual void notCalledBack() override {}
+  virtual void voidResponse() override {
+
+  }
 };
 
 std::unique_ptr<ScopedServerThread> createHttpServer() {
