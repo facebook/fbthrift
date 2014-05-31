@@ -36,7 +36,8 @@ class StreamException : public apache::thrift::TLibraryException {
 class StreamChannelCallback {
   public:
     virtual void onStreamSend(std::unique_ptr<folly::IOBuf>&& data) = 0;
-    virtual void onOutOfLoopStreamError(const std::exception_ptr& error) =0;
+    virtual void onOutOfLoopStreamError(
+        const folly::exception_wrapper& error) =0;
     virtual ~StreamChannelCallback() {};
 };
 
@@ -51,7 +52,7 @@ class StreamEndCallback {
   public:
     virtual void onStreamComplete() noexcept = 0;
     virtual void onStreamCancel() noexcept = 0;
-    virtual void onStreamError(const std::exception_ptr& ep) noexcept = 0;
+    virtual void onStreamError(const folly::exception_wrapper& ep) noexcept = 0;
     virtual ~StreamEndCallback() {};
 };
 
@@ -90,8 +91,8 @@ class StreamManager {
     void startEventBaseLoop();
     void stopEventBaseLoop();
     void sendData(std::unique_ptr<folly::IOBuf>&& data);
-    void notifyError(const std::exception_ptr& error);
-    void notifyOutOfLoopError(const std::exception_ptr& error);
+    void notifyError(const folly::exception_wrapper& error);
+    void notifyOutOfLoopError(const folly::exception_wrapper& error);
     bool needToSendEnd();
     bool hasOpenSyncStreams();
 

@@ -62,10 +62,6 @@ class ResponseChannel : virtual public TDelayedDestruction {
     virtual void sendReply(std::unique_ptr<folly::IOBuf>&&,
                            MessageChannel::SendCallback* cb = nullptr) = 0;
 
-    virtual void sendError(std::exception_ptr ex,
-                           std::string exCode,
-                           MessageChannel::SendCallback* cb = nullptr) = 0;
-
     virtual void sendErrorWrapped(
         folly::exception_wrapper ex,
         std::string exCode,
@@ -98,7 +94,7 @@ class ResponseChannel : virtual public TDelayedDestruction {
      * reason is empty if closed due to EOF, or a pointer to an exception
      * if closed due to some sort of error.
      */
-    virtual void channelClosed(std::exception_ptr&&) = 0;
+    virtual void channelClosed(folly::exception_wrapper&&) = 0;
 
     virtual ~Callback() {}
   };

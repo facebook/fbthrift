@@ -136,9 +136,6 @@ class MessageCallback
   virtual void messageChannelEOF() {
     recvEOF_++;
   }
-  virtual void messageReceiveError(std::exception_ptr&& ep) {
-    recvError_++;
-  }
   virtual void messageReceiveErrorWrapped(folly::exception_wrapper&& ex) {
     sendError_++;
   }
@@ -214,7 +211,7 @@ class ResponseCallback
     }
   }
 
-  virtual void channelClosed(std::exception_ptr&& ep) {
+  virtual void channelClosed(folly::exception_wrapper&& ew) {
     serverClosed_ = true;
   }
 
@@ -415,9 +412,9 @@ public:
     TestRequestCallback::channelClosed();
   }
 
-  virtual void channelClosed(std::exception_ptr&& ep) {
+  virtual void channelClosed(folly::exception_wrapper&& ew) {
     EXPECT_EQ(channel1_->getSaslPeerIdentity(), "");
-    ResponseCallback::channelClosed(std::move(ep));
+    ResponseCallback::channelClosed(std::move(ew));
     channel1_->setCallback(nullptr);
   }
 
@@ -991,7 +988,6 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
     invocations_++;
     channel_.reset();
   }
-  void messageReceiveError(std::exception_ptr&&) { }
   void messageReceiveErrorWrapped(folly::exception_wrapper&&) { }
  private:
   ChannelPointer channel_;

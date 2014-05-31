@@ -18,12 +18,14 @@
  */
 
 #include "thrift/lib/cpp2/async/Stream.h"
+#include "thrift/lib/cpp/TApplicationException.h"
 #include "thrift/lib/cpp/transport/TTransportException.h"
 #include <utility>
 #include <unordered_set>
 
 using namespace apache::thrift;
 using apache::thrift::protocol::TType;
+using apache::thrift::transport::TTransportException;
 
 InputStreamCallbackBase::InputStreamCallbackBase(bool isSync)
     : sink_(nullptr),
@@ -194,10 +196,12 @@ void StreamSource::onReceive(std::unique_ptr<folly::IOBuf>&& data) {
   streamReader_.insertBuffer(std::move(data));
 
   if (!isBlockedOnItem()) {
-    try {
+    auto ew = folly::try_and_catch<std::exception, TProtocolException,
+        TTransportException, TApplicationException>([&]() {
       readBuffer();
-    } catch (...) {
-      manager_->notifyError(std::current_exception());
+    });
+    if (ew) {
+      manager_->notifyError(ew);
     }
   } else {
     CHECK(isSync());
@@ -271,7 +275,7 @@ void StreamSource::readBuffer() {
   }
 }
 
-void StreamSource::onError(const std::exception_ptr& error) {
+void StreamSource::onError(const folly::exception_wrapper& error) {
   hasError_ = true;
 
   // marking all streams as closed before notifying the steams ensures the

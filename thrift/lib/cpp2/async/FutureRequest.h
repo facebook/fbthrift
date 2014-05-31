@@ -160,11 +160,11 @@ class FutureStreamItemCallback : public InputStreamCallback<T> {
       this->setNoResultIfNotSet();
     }
 
-    void onException(const std::exception_ptr& ex) noexcept {
+    void onException(const folly::exception_wrapper& ex) noexcept {
       this->setExceptionIfNotSet(ex);
     }
 
-    void onError(const std::exception_ptr& ex) noexcept {
+    void onError(const folly::exception_wrapper& ex) noexcept {
       this->setExceptionIfNotSet(ex);
     }
 
@@ -189,10 +189,10 @@ class FutureStreamItemCallback : public InputStreamCallback<T> {
       this->setExceptionIfNotSet(std::make_exception_ptr(exception));
     }
 
-    void setExceptionIfNotSet(const std::exception_ptr& ex) {
+    void setExceptionIfNotSet(const folly::exception_wrapper& ex) {
       if (!hasSetPromise_) {
         hasSetPromise_ = true;
-        promise_.setException(std::exception_ptr(ex));
+        promise_.setException(ex.getExceptionPtr());
       }
     }
 };
@@ -211,8 +211,8 @@ class FutureStreamEndCallback : public StreamEndCallback {
       promise_.setValue();
     }
 
-    void onStreamError(const std::exception_ptr& ep) noexcept {
-      promise_.setException(std::exception_ptr(ep));
+    void onStreamError(const folly::exception_wrapper& ew) noexcept {
+      promise_.setException(ew.getExceptionPtr());
     }
 
   private:

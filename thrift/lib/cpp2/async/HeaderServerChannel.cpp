@@ -65,8 +65,9 @@ void HeaderServerChannel::destroy() {
   }
 
   if (callback_) {
-    TTransportException error("Channel destroyed");
-    callback_->channelClosed(std::make_exception_ptr(error));
+    auto error = folly::make_exception_wrapper<TTransportException>(
+        "Channel destroyed");
+    callback_->channelClosed(std::move(error));
   }
 
   Cpp2Channel::destroy();
@@ -230,25 +231,6 @@ void HeaderServerChannel::HeaderRequest::sendReply(
  * For a header server, this means serializing the exception, and setting
  * an error flag in the header.
  */
-void HeaderServerChannel::HeaderRequest::sendError(
-    std::exception_ptr ep,
-    std::string exCode,
-    MessageChannel::SendCallback* cb) {
-
-  try {
-    std::rethrow_exception(ep);
-  } catch (const TApplicationException& ex) {
-    THeader::StringToStringMap headers;
-    headers["ex"] = exCode;
-    std::unique_ptr<folly::IOBuf> exbuf(
-      serializeError(channel_->header_->getProtocolId(), ex, getBuf()));
-    sendReply(std::move(exbuf), cb, std::move(headers));
-  } catch (const std::exception& ex) {
-    // Other types are unimplemented.
-    DCHECK(false);
-  }
-}
-
 void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
     folly::exception_wrapper ew,
     std::string exCode,
@@ -432,8 +414,9 @@ void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
       if (inOrderRequests_.size() > MAX_REQUEST_SIZE) {
         // There is probably nothing useful we can do here.
         LOG(WARNING) << "Hit in order request buffer limit";
-        TTransportException ex("Hit in order request buffer limit");
-        messageReceiveError(make_exception_ptr(ex));
+        auto ex = folly::make_exception_wrapper<TTransportException>(
+            "Hit in order request buffer limit");
+        messageReceiveErrorWrapped(std::move(ex));
         return;
       }
     }
@@ -455,21 +438,22 @@ void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
 void HeaderServerChannel::messageChannelEOF() {
   DestructorGuard dg(this);
 
-  TTransportException error("Channel Closed");
-  std::exception_ptr errorPtr = std::make_exception_ptr(error);
+  auto ew = folly::make_exception_wrapper<TTransportException>(
+      "Channel Closed");
   for (auto& pair: streams_) {
-    pair.second->notifyError(errorPtr);
+    pair.second->notifyError(ew);
   }
 
   if (callback_) {
-    callback_->channelClosed(std::make_exception_ptr(error));
+    callback_->channelClosed(std::move(ew));
   }
 }
 
-void HeaderServerChannel::messageReceiveError(std::exception_ptr&& ex) {
+void HeaderServerChannel::messageReceiveErrorWrapped(
+    folly::exception_wrapper&& ex) {
   DestructorGuard dg(this);
 
-  VLOG(1) << "Receive error: " << folly::exceptionStr(ex);
+  VLOG(1) << "Receive error: " << folly::exceptionStr(*ex);
 
   for (auto& pair: streams_) {
     pair.second->notifyError(ex);
@@ -478,11 +462,6 @@ void HeaderServerChannel::messageReceiveError(std::exception_ptr&& ex) {
   if (callback_) {
     callback_->channelClosed(std::move(ex));
   }
-}
-
-void HeaderServerChannel::messageReceiveErrorWrapped(
-    folly::exception_wrapper&& ex) {
-  messageReceiveError(ex.getExceptionPtr());
 }
 
 unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
@@ -506,8 +485,9 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
         // something.  Bail out.
         protectionState_ = ProtectionState::INVALID;
         LOG(WARNING) << "Inconsistent SASL support";
-        TTransportException ex("Inconsistent SASL support");
-        messageReceiveError(make_exception_ptr(ex));
+        auto ex = folly::make_exception_wrapper<TTransportException>(
+            "Inconsistent SASL support");
+        messageReceiveErrorWrapped(std::move(ex));
         return nullptr;
       }
     } else if (protectionState_ == ProtectionState::UNKNOWN ||
@@ -525,8 +505,9 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     // We should fail hard in this case.
     protectionState_ = ProtectionState::INVALID;
     LOG(WARNING) << "non-SASL message received on SASL channel";
-    TTransportException ex("non-SASL message received on SASL channel");
-    messageReceiveError(make_exception_ptr(ex));
+    auto ex = folly::make_exception_wrapper<TTransportException>(
+        "non-SASL message received on SASL channel");
+    messageReceiveErrorWrapped(std::move(ex));
     return nullptr;
   } else if (protectionState_ == ProtectionState::UNKNOWN) {
     // This is the path non-SASL-aware (or SASL-disabled) clients will
@@ -692,7 +673,7 @@ void HeaderServerChannel::Stream::messageSendError(
   }
 
   if (!manager_->isDone()) {
-    manager_->notifyError(error.getExceptionPtr());
+    manager_->notifyError(error);
   }
 
   deleteThisIfNecessary();
@@ -708,15 +689,16 @@ void HeaderServerChannel::Stream::notifyReceive(unique_ptr<IOBuf>&& buf) {
   deleteThisIfNecessary();
 }
 
-void HeaderServerChannel::Stream::notifyError(const std::exception_ptr& error) {
+void HeaderServerChannel::Stream::notifyError(
+    const folly::exception_wrapper& error) {
   manager_->notifyError(error);
   deleteThisIfNecessary();
 }
 
 void HeaderServerChannel::Stream::timeoutExpired() noexcept {
-  TTransportException error(TTransportException::TIMED_OUT, "Receive Expired");
-  std::exception_ptr errorPtr = std::make_exception_ptr(error);
-  manager_->notifyError(errorPtr);
+  auto ew = folly::make_exception_wrapper<TTransportException>(
+      TTransportException::TIMED_OUT, "Receive Expired");
+  manager_->notifyError(ew);
 
   TApplicationException serializableError(
       TApplicationException::TApplicationExceptionType::TIMEOUT,
@@ -736,8 +718,9 @@ void HeaderServerChannel::Stream::onChannelDestroy() {
   //       and the channel closes before the send callback fires
 
   if (!manager_->hasError()) {
-    TTransportException error("Channel Destroyed");
-    manager_->notifyError(std::make_exception_ptr(error));
+    auto error = folly::make_exception_wrapper<TTransportException>(
+        "Channel Destroyed");
+    manager_->notifyError(error);
   } else if (manager_->hasError()) {
     CHECK(hasOutstandingSend_);
   }
@@ -791,7 +774,7 @@ void HeaderServerChannel::Stream::sendStreamingMessage(
 }
 
 void HeaderServerChannel::Stream::onOutOfLoopStreamError(
-    const std::exception_ptr& error) {
+    const folly::exception_wrapper& error) {
   // Since sync streams are not supported on the server side,
   // it is not possible to have a stream error from outside
   // the event base loop

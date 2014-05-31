@@ -138,7 +138,7 @@ void StreamManager::sendData(std::unique_ptr<folly::IOBuf>&& data) {
   channel_->onStreamSend(std::move(data));
 }
 
-void StreamManager::notifyError(const std::exception_ptr& error) {
+void StreamManager::notifyError(const folly::exception_wrapper& error) {
   sink_.onError(error);
   source_.onError(error);
 
@@ -148,7 +148,7 @@ void StreamManager::notifyError(const std::exception_ptr& error) {
   }
 }
 
-void StreamManager::notifyOutOfLoopError(const std::exception_ptr& error){
+void StreamManager::notifyOutOfLoopError(const folly::exception_wrapper& error){
   notifyError(error);
   channel_->onOutOfLoopStreamError(error);
 }

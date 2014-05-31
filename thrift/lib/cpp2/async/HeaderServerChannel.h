@@ -91,7 +91,6 @@ class HeaderServerChannel : public ResponseChannel,
   void messageReceived(std::unique_ptr<folly::IOBuf>&&,
                        std::unique_ptr<sample>);
   void messageChannelEOF();
-  void messageReceiveError(std::exception_ptr&&);
   void messageReceiveErrorWrapped(folly::exception_wrapper&&);
 
   // Header framing
@@ -130,12 +129,12 @@ class HeaderServerChannel : public ResponseChannel,
       void messageSendError(folly::exception_wrapper&&);
 
       void onStreamSend(std::unique_ptr<folly::IOBuf>&& data);
-      void onOutOfLoopStreamError(const std::exception_ptr& error);
+      void onOutOfLoopStreamError(const folly::exception_wrapper& error);
 
       void timeoutExpired() noexcept;
       void onChannelDestroy();
 
-      void notifyError(const std::exception_ptr& error);
+      void notifyError(const folly::exception_wrapper& error);
       void notifyReceive(std::unique_ptr<folly::IOBuf>&& buf);
 
     private:
@@ -181,9 +180,6 @@ class HeaderServerChannel : public ResponseChannel,
     void sendReply(std::unique_ptr<folly::IOBuf>&&,
                    MessageChannel::SendCallback* cb,
                    apache::thrift::transport::THeader::StringToStringMap&&);
-    void sendError(std::exception_ptr ex,
-                   std::string exCode,
-                   MessageChannel::SendCallback* cb = nullptr);
     void sendErrorWrapped(folly::exception_wrapper ex,
                           std::string exCode,
                           MessageChannel::SendCallback* cb = nullptr);

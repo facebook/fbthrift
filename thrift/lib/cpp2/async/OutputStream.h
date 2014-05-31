@@ -49,7 +49,7 @@ class OutputStreamControllable {
     virtual bool isClosed() = 0;
     virtual void close() = 0;
     virtual void put(const T& data) = 0;
-    virtual void putException(const std::exception_ptr& exception) = 0;
+    virtual void putException(const folly::exception_wrapper& exception) = 0;
     virtual ~OutputStreamControllable();
 };
 
@@ -59,7 +59,7 @@ class OutputStreamController {
     virtual bool isClosed() = 0;
     virtual void close() = 0;
     virtual void put(const T& data) = 0;
-    virtual void putException(const std::exception_ptr& exception) = 0;
+    virtual void putException(const folly::exception_wrapper& exception) = 0;
     virtual ~OutputStreamController();
 };
 
@@ -73,7 +73,7 @@ class OutputStreamControllerImpl : public OutputStreamController<T> {
     bool isClosed();
     void close();
     void put(const T& data);
-    void putException(const std::exception_ptr& exception);
+    void putException(const folly::exception_wrapper& exception);
 
     void markAsClosed();
 
@@ -89,7 +89,7 @@ class OutputStreamCallback {
   public:
     OutputStreamCallback();
     virtual void onSend() noexcept = 0;
-    virtual void onError(const std::exception_ptr& error) noexcept = 0;
+    virtual void onError(const folly::exception_wrapper& error) noexcept = 0;
     virtual void onClose() noexcept = 0;
     virtual ~OutputStreamCallback();
 
@@ -97,7 +97,7 @@ class OutputStreamCallback {
     bool isClosed();
     void close();
     void put(const T& data);
-    void putException(const std::exception_ptr& exception);
+    void putException(const folly::exception_wrapper& exception);
 
   private:
     OutputStreamControllable<T>* controllable_;
@@ -115,7 +115,7 @@ class OutputStreamCallbackBase {
     virtual ~OutputStreamCallbackBase();
 
     virtual void notifySend() = 0;
-    virtual void notifyError(const std::exception_ptr& error) = 0;
+    virtual void notifyError(const folly::exception_wrapper& error) = 0;
     virtual void notifyClose() = 0;
 
     bool isSync();
@@ -163,13 +163,13 @@ class OutputStreamCallbackSerializer : public OutputStreamCallbackBase,
         bool isSync);
 
     void notifySend();
-    void notifyError(const std::exception_ptr& error);
+    void notifyError(const folly::exception_wrapper& error);
     void notifyClose();
 
     bool isClosed();
     void close();
     void put(const T& data);
-    void putException(const std::exception_ptr& exception);
+    void putException(const folly::exception_wrapper& exception);
 
     ~OutputStreamCallbackSerializer();
 
@@ -216,7 +216,8 @@ class SyncOutputStreamControllable {
     // the object may be deleted after this function, so do not access any
     // member variables after calling this function
     virtual void runEventBaseLoop() = 0;
-    virtual void notifyOutOfLoopError(const std::exception_ptr& error) = 0;
+    virtual void notifyOutOfLoopError(
+        const folly::exception_wrapper& error) = 0;
 
     virtual ~SyncOutputStreamControllable();
 };
@@ -232,19 +233,19 @@ class SyncOutputStreamCallback
         const std::shared_ptr<OutputStreamControllerImpl<T>>& controller);
 
     void notifySend();
-    void notifyError(const std::exception_ptr& error);
+    void notifyError(const folly::exception_wrapper& error);
     void notifyClose();
 
     void setStream(SyncOutputStream<T>* stream);
     void runEventBaseLoop();
-    void notifyOutOfLoopError(const std::exception_ptr& error);
+    void notifyOutOfLoopError(const folly::exception_wrapper& error);
 
     ~SyncOutputStreamCallback();
 
   private:
     SyncOutputStream<T>* stream_;
     bool thisStartedTheEventBaseLoop_;
-    std::exception_ptr* errorPtr_;
+    folly::exception_wrapper* errorPtr_;
     bool* deletedFlagPtr_;
 
     bool needToRunEventBaseLoop();
@@ -262,7 +263,7 @@ class SyncOutputStream {
     SyncOutputStream& operator=(SyncOutputStream<T>&& another) noexcept;
 
     void put(const T& value);
-    void putException(const std::exception_ptr& exception);
+    void putException(const folly::exception_wrapper& exception);
     void close();
     bool isClosed();
 
@@ -291,7 +292,7 @@ class StreamSink {
             std::unique_ptr<OutputStreamCallbackBase>> StreamMap;
 
     typedef void (*ExceptionSerializer)(StreamWriter&,
-                                        const std::exception_ptr&);
+                                        const folly::exception_wrapper&);
 
     StreamSink(StreamManager* manager,
                StreamMap&& streamMap,
@@ -305,7 +306,7 @@ class StreamSink {
     void onStreamPut(OutputStreamCallbackBase* stream);
     void onStreamClose(OutputStreamCallbackBase* stream);
     void onStreamException(OutputStreamCallbackBase* stream,
-                           const std::exception_ptr& exception);
+                           const folly::exception_wrapper& exception);
 
     void onCancel();
     bool hasWrittenEnd();
@@ -314,7 +315,7 @@ class StreamSink {
     bool hasOpenStreams();
     bool hasOpenSyncStreams();
     void onSend();
-    void onError(const std::exception_ptr& error);
+    void onError(const folly::exception_wrapper& error);
     bool isSendingEnd();
 
     void sendAcknowledgement();

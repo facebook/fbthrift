@@ -324,7 +324,7 @@ void Cpp2Connection::requestReceived(
   }
 }
 
-void Cpp2Connection::channelClosed(std::exception_ptr&& ex) {
+void Cpp2Connection::channelClosed(folly::exception_wrapper&& ex) {
   // This must be the last call, it may delete this.
   folly::ScopeGuard guard = folly::makeGuard([&]{
     worker_->closeConnection(shared_from_this());
@@ -332,7 +332,7 @@ void Cpp2Connection::channelClosed(std::exception_ptr&& ex) {
 
   VLOG(4) << "Channel " <<
     context_.getPeerAddress()->describe() << " closed: " <<
-    folly::exceptionStr(ex);
+    folly::exceptionStr(*ex);
 }
 
 void Cpp2Connection::removeRequest(Cpp2Request *req) {
@@ -385,17 +385,6 @@ void Cpp2Connection::Cpp2Request::sendReply(
     if (observer) {
       observer->sentReply();
     }
-  }
-}
-
-void Cpp2Connection::Cpp2Request::sendError(
-    std::exception_ptr ex,
-    std::string exCode,
-    MessageChannel::SendCallback* sendCallback) {
-  if (req_->isActive()) {
-    auto observer = connection_->getWorker()->getServer()->getObserver().get();
-    req_->sendError(ex, exCode, prepareSendCallback(sendCallback, observer));
-    cancelTimeout();
   }
 }
 

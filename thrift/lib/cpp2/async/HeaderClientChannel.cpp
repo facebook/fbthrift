@@ -613,7 +613,7 @@ void HeaderClientChannel::StreamCallback::messageSendError(
   hasOutstandingSend_ = false;
 
   if (!manager_->isDone()) {
-    manager_->notifyError(ex.getExceptionPtr());
+    manager_->notifyError(ex);
   }
 
   deleteThisIfNecessary();
@@ -633,7 +633,8 @@ void HeaderClientChannel::StreamCallback::replyReceived(
   deleteThisIfNecessary();
 }
 
-void HeaderClientChannel::StreamCallback::requestError(std::exception_ptr ex) {
+void HeaderClientChannel::StreamCallback::requestError(
+    folly::exception_wrapper ex) {
   if (!manager_->isDone()) {
     manager_->notifyError(ex);
   }
@@ -642,8 +643,9 @@ void HeaderClientChannel::StreamCallback::requestError(std::exception_ptr ex) {
 
 void HeaderClientChannel::StreamCallback::timeoutExpired() noexcept {
   if (!manager_->isDone()) {
-    TTransportException ex(TTransportException::TIMED_OUT, "Timed Out");
-    manager_->notifyError(std::make_exception_ptr(ex));
+    auto ew = folly::make_exception_wrapper<TTransportException>(
+        TTransportException::TIMED_OUT, "Timed Out");
+    manager_->notifyError(ew);
   }
   deleteThisIfNecessary();
 }
@@ -661,7 +663,7 @@ void HeaderClientChannel::StreamCallback::onStreamSend(
 }
 
 void HeaderClientChannel::StreamCallback::onOutOfLoopStreamError(
-    const std::exception_ptr& error) {
+    const folly::exception_wrapper& error) {
   deleteThisIfNecessary();
 }
 

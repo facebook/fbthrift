@@ -61,7 +61,7 @@ class Cpp2Connection
 
   // ResponseChannel callbacks
   void requestReceived(std::unique_ptr<ResponseChannel::Request>&&);
-  void channelClosed(std::exception_ptr&&);
+  void channelClosed(folly::exception_wrapper&&);
 
   void start() {
     channel_->setCallback(this);
@@ -109,9 +109,6 @@ class Cpp2Connection
     virtual bool isOneway() { return req_->isOneway(); }
 
     virtual void sendReply(std::unique_ptr<folly::IOBuf>&& buf,
-                   MessageChannel::SendCallback* notUsed = nullptr);
-    virtual void sendError(std::exception_ptr ex,
-                   std::string exCode,
                    MessageChannel::SendCallback* notUsed = nullptr);
     virtual void sendErrorWrapped(
         folly::exception_wrapper ew,

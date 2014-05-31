@@ -121,7 +121,7 @@ InputStreamCallbackDeserializer<Serializer, T>::InputStreamCallbackDeserializer(
 
 template <typename Serializer, typename T>
 void InputStreamCallbackDeserializer<Serializer, T>::notifyException(
-    const std::exception_ptr& ex) {
+    const folly::exception_wrapper& ex) {
   CHECK(isClosed());
   if (hasCallback()) {
     callback_->onException(ex);
@@ -138,7 +138,7 @@ void InputStreamCallbackDeserializer<Serializer, T>::notifyFinish() {
 
 template <typename Serializer, typename T>
 void InputStreamCallbackDeserializer<Serializer, T>::notifyError(
-    const std::exception_ptr& error) {
+    const folly::exception_wrapper& error) {
   CHECK(isClosed());
   if (hasCallback()) {
     callback_->onError(error);
@@ -310,14 +310,14 @@ void SyncInputStreamCallback<Deserializer, T>::notifyFinish() {
 
 template <typename Deserializer, typename T>
 void SyncInputStreamCallback<Deserializer, T>::notifyException(
-    const std::exception_ptr& exception) {
+    const folly::exception_wrapper& exception) {
   CHECK_NOTNULL(stream_);
   stream_->setException(exception);
 }
 
 template <typename Deserializer, typename T>
 void SyncInputStreamCallback<Deserializer, T>::notifyError(
-    const std::exception_ptr& error) {
+    const folly::exception_wrapper& error) {
   if (thisStartedTheEventBaseLoop_) {
     CHECK_NOTNULL(errorPtr_);
     *errorPtr_ = error;
@@ -433,7 +433,7 @@ void SyncInputStreamCallback<Deserializer, T>::setStream(
 // this object may be deleted after this method finishes
 template <typename Deserializer, typename T>
 void SyncInputStreamCallback<Deserializer, T>::runEventBaseLoop() {
-  std::exception_ptr error;
+  folly::exception_wrapper error;
   errorPtr_ = &error;
 
   bool isDeleted = false;
@@ -446,7 +446,7 @@ void SyncInputStreamCallback<Deserializer, T>::runEventBaseLoop() {
 
   if (error) {
     CHECK(isDeleted);
-    std::rethrow_exception(error);
+    error.throwException();
   } else if (!isDeleted) {
     thisStartedTheEventBaseLoop_ = false;
     errorPtr_ = nullptr;
@@ -462,7 +462,7 @@ bool SyncInputStreamCallback<Deserializer, T>::needToRunEventBaseLoop() {
 
 template <typename Deserializer, typename T>
 void SyncInputStreamCallback<Deserializer, T>::notifyOutOfLoopError(
-    const std::exception_ptr& error) {
+    const folly::exception_wrapper& error) {
   StreamManager* manager = this->getStreamManager();
   manager->notifyOutOfLoopError(error);
 }
@@ -622,21 +622,22 @@ bool SyncInputStream<T>::hasException() {
 }
 
 template <typename T>
-void SyncInputStream<T>::setException(const std::exception_ptr& exception) {
+void SyncInputStream<T>::setException(
+    const folly::exception_wrapper& exception) {
   exception_ = exception;
 }
 
 template <typename T>
 void SyncInputStream<T>::rethrowException() {
   CHECK(hasException());
-  std::exception_ptr copy = exception_;
+  folly::exception_wrapper copy = exception_;
   clearException();
-  std::rethrow_exception(copy);
+  copy.throwException();
 }
 
 template <typename T>
 void SyncInputStream<T>::clearException() {
-  exception_ = nullptr;
+  exception_ = folly::exception_wrapper();
 }
 
 template <typename T>

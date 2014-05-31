@@ -162,7 +162,7 @@ class StreamCallback : public RequestCallback {
     }
 
     void requestError(ClientReceiveState&& state) {
-      auto exception = state.exception();
+      auto exception = state.exceptionWrapper();
       CHECK(exception);
       streamManager_->notifyError(exception);
       stopEventBaseIfIsSync();

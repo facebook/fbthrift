@@ -260,7 +260,7 @@ void StreamSink::onSend() {
 }
 
 void StreamSink::onStreamException(OutputStreamCallbackBase* stream,
-                                   const std::exception_ptr& exception) {
+                                   const folly::exception_wrapper& exception) {
   CHECK_NOTNULL(stream);
   CHECK(!stream->isSync() || (stream->getSendState() == SendState::NONE));
   CHECK(exception);
@@ -286,7 +286,7 @@ void StreamSink::onStreamException(OutputStreamCallbackBase* stream,
   }
 }
 
-void StreamSink::onError(const std::exception_ptr& error) {
+void StreamSink::onError(const folly::exception_wrapper& error) {
   hasError_ = true;
 
   // marking all streams as closed before notifying the steams ensures the

@@ -20,11 +20,10 @@
 #ifndef THRIFT_ASYNC_INPUTSTREAM_H_
 #define THRIFT_ASYNC_INPUTSTREAM_H_ 1
 
-#include <exception>
 #include <memory>
 #include <unordered_map>
 
-
+#include "folly/ExceptionWrapper.h"
 #include "folly/io/IOBuf.h"
 #include "thrift/lib/cpp2/protocol/StreamSerializers.h"
 
@@ -83,8 +82,9 @@ class InputStreamCallback {
     InputStreamCallback();
     virtual void onFinish() noexcept = 0;
     virtual void onReceive(T& value) noexcept = 0;
-    virtual void onException(const std::exception_ptr& exception) noexcept = 0;
-    virtual void onError(const std::exception_ptr& error) noexcept = 0;
+    virtual void onException(
+        const folly::exception_wrapper& exception) noexcept = 0;
+    virtual void onError(const folly::exception_wrapper& error) noexcept = 0;
     virtual void onClose() noexcept = 0;
     virtual ~InputStreamCallback();
 
@@ -104,10 +104,10 @@ class InputStreamCallback {
 class InputStreamCallbackBase {
   public:
     explicit InputStreamCallbackBase(bool isSync);
-    virtual void notifyException(const std::exception_ptr& exception) = 0;
+    virtual void notifyException(const folly::exception_wrapper& exception) = 0;
     virtual void notifyClose() = 0;
     virtual void notifyFinish() = 0;
-    virtual void notifyError(const std::exception_ptr& error) = 0;
+    virtual void notifyError(const folly::exception_wrapper& error) = 0;
     virtual ~InputStreamCallbackBase();
 
     bool isSync();
@@ -153,10 +153,10 @@ class InputStreamCallbackDeserializer : public InputStreamCallbackBase,
         const std::shared_ptr<InputStreamControllerImpl<T>>& controller,
         bool isSync);
 
-    void notifyException(const std::exception_ptr& exception);
+    void notifyException(const folly::exception_wrapper& exception);
     void notifyClose();
     void notifyFinish();
-    void notifyError(const std::exception_ptr& error);
+    void notifyError(const folly::exception_wrapper& error);
 
     bool isClosed();
     void close();
@@ -217,10 +217,10 @@ class SyncInputStreamCallback :
   public:
     explicit SyncInputStreamCallback(SyncInputStream<T>* stream);
 
-    void notifyException(const std::exception_ptr& exception);
+    void notifyException(const folly::exception_wrapper& exception);
     void notifyClose();
     void notifyFinish();
-    void notifyError(const std::exception_ptr& error);
+    void notifyError(const folly::exception_wrapper& error);
 
     void readItem(StreamReader& reader);
 
@@ -241,14 +241,14 @@ class SyncInputStreamCallback :
   private:
     SyncInputStream<T>* stream_;
     bool thisStartedTheEventBaseLoop_;
-    std::exception_ptr* errorPtr_;
+    folly::exception_wrapper* errorPtr_;
     bool* deletedFlagPtr_;
     StreamReader* reader_;
     bool hasGottenItem_;
 
     void sendAcknowledgementIfGottenItems();
     bool needToRunEventBaseLoop();
-    void notifyOutOfLoopError(const std::exception_ptr& error);
+    void notifyOutOfLoopError(const folly::exception_wrapper& error);
 };
 
 template <typename T>
@@ -282,7 +282,7 @@ class SyncInputStream {
     SyncInputStreamControllable<T>* controllable_;
     bool finished_;
     bool closed_;
-    std::exception_ptr exception_;
+    folly::exception_wrapper exception_;
 
     bool hasControllable();
     bool hasBeenClosed();
@@ -292,7 +292,7 @@ class SyncInputStream {
 
     template <typename Deserializer, typename S>
     friend class SyncInputStreamCallback;
-    void setException(const std::exception_ptr& exception);
+    void setException(const folly::exception_wrapper& exception);
     void markAsFinished();
     void markAsClosed();
     void clearControllable();
@@ -326,7 +326,7 @@ class StreamSource {
     typedef std::unordered_map<int16_t,
             std::unique_ptr<InputStreamCallbackBase>> StreamMap;
 
-    typedef std::exception_ptr (*ExceptionDeserializer)(StreamReader&);
+    typedef folly::exception_wrapper (*ExceptionDeserializer)(StreamReader&);
 
     StreamSource(StreamSink* sink,
                  StreamManager* manager,
@@ -348,7 +348,7 @@ class StreamSource {
     bool hasReceivedEnd();
     bool hasError();
     void onReceive(std::unique_ptr<folly::IOBuf>&& newBuffer);
-    void onError(const std::exception_ptr& error);
+    void onError(const folly::exception_wrapper& error);
 
     void onStreamClose(InputStreamCallbackBase* stream);
 

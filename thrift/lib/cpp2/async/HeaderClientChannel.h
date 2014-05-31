@@ -407,12 +407,12 @@ private:
       void messageSendError(folly::exception_wrapper&& ex);
 
       void replyReceived(std::unique_ptr<folly::IOBuf> buf);
-      void requestError(std::exception_ptr ex);
+      void requestError(folly::exception_wrapper ex);
 
       void timeoutExpired() noexcept;
 
       void onStreamSend(std::unique_ptr<folly::IOBuf>&& buf);
-      void onOutOfLoopStreamError(const std::exception_ptr& error);
+      void onOutOfLoopStreamError(const folly::exception_wrapper& error);
 
       ~StreamCallback();
 

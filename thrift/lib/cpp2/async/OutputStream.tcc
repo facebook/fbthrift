@@ -53,7 +53,8 @@ void OutputStreamCallback<T>::put(const T& data) {
 }
 
 template <typename T>
-void OutputStreamCallback<T>::putException(const std::exception_ptr& error) {
+void OutputStreamCallback<T>::putException(
+    const folly::exception_wrapper& error) {
   CHECK_NOTNULL(controllable_);
   controllable_->putException(error);
 }
@@ -116,7 +117,7 @@ void OutputStreamControllerImpl<T>::put(const T& data) {
 
 template <typename T>
 void OutputStreamControllerImpl<T>::putException(
-    const std::exception_ptr& exception) {
+    const folly::exception_wrapper& exception) {
   if (isClosed()) {
     throw StreamException("Stream has already been closed.");
   } else if (!hasControllable()) {
@@ -164,7 +165,7 @@ void OutputStreamCallbackSerializer<Serializer, T>::notifySend() {
 
 template <typename Serializer, typename T>
 void OutputStreamCallbackSerializer<Serializer, T>::notifyError(
-    const std::exception_ptr& error) {
+    const folly::exception_wrapper& error) {
   CHECK(isClosed());
   if (hasCallback()) {
     callback_->onError(error);
@@ -210,7 +211,7 @@ void OutputStreamCallbackSerializer<Serializer, T>::put(const T& value) {
 
 template <typename Serializer, typename T>
 void OutputStreamCallbackSerializer<Serializer, T>::putException(
-    const std::exception_ptr& exception){
+    const folly::exception_wrapper& exception){
   CHECK(isLinked());
 
   if (isClosed()) {
@@ -340,7 +341,7 @@ void SyncOutputStreamCallback<Serializer, T>::notifySend() {
 
 template <typename Serializer, typename T>
 void SyncOutputStreamCallback<Serializer, T>::notifyError(
-    const std::exception_ptr& error) {
+    const folly::exception_wrapper& error) {
   if (thisStartedTheEventBaseLoop_) {
     CHECK_NOTNULL(errorPtr_);
     *errorPtr_ = error;
@@ -364,7 +365,7 @@ void SyncOutputStreamCallback<Serializer, T>::notifyClose() {
 // this object may be deleted after this method finishes
 template <typename Serializer, typename T>
 void SyncOutputStreamCallback<Serializer, T>::runEventBaseLoop() {
-  std::exception_ptr error;
+  folly::exception_wrapper error;
   errorPtr_ = &error;
 
   bool isDeleted = false;
@@ -377,7 +378,7 @@ void SyncOutputStreamCallback<Serializer, T>::runEventBaseLoop() {
 
   if (error) {
     CHECK(isDeleted);
-    std::rethrow_exception(error);
+    error.throwException();
   } else if (!isDeleted) {
     thisStartedTheEventBaseLoop_ = false;
     errorPtr_ = nullptr;
@@ -393,7 +394,7 @@ bool SyncOutputStreamCallback<Serializer, T>::needToRunEventBaseLoop() {
 
 template <typename Serializer, typename T>
 void SyncOutputStreamCallback<Serializer, T>::notifyOutOfLoopError(
-    const std::exception_ptr& error) {
+    const folly::exception_wrapper& error) {
   StreamManager* manager = this->getStreamManager();
   manager->notifyOutOfLoopError(error);
 }
@@ -468,7 +469,8 @@ void SyncOutputStream<T>::put(const T& value) {
 }
 
 template <typename T>
-void SyncOutputStream<T>::putException(const std::exception_ptr& exception) {
+void SyncOutputStream<T>::putException(
+    const folly::exception_wrapper& exception) {
   try {
     controller_->putException(exception);
 
