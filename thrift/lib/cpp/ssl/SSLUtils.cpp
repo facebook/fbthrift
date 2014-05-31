@@ -40,7 +40,7 @@ bool OpenSSLUtils::getPeerAddressFromX509StoreCtx(X509_STORE_CTX* ctx,
     return false;
   }
 
-  *addrLen = sizeof(addrStorage);
+  *addrLen = sizeof(*addrStorage);
   if (getpeername(fd, reinterpret_cast<sockaddr*>(addrStorage), addrLen) != 0) {
     PLOG(ERROR) << "Unable to get peer name";
     return false;
