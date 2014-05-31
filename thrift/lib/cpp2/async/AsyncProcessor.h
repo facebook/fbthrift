@@ -344,9 +344,16 @@ class HandlerCallbackBase {
       });
   }
 
+  void exceptionInThread(folly::exception_wrapper ew) {
+    getEventBase()->runInEventBaseThread([=](){
+        this->exception(ew);
+        delete this;
+      });
+  }
+
   template <class Exception>
   void exceptionInThread(const Exception& ex) {
-    exceptionInThread(std::make_exception_ptr(ex));
+    exceptionInThread(folly::make_exception_wrapper<Exception>(ex));
   }
 
   apache::thrift::async::TEventBase* getEventBase() {
