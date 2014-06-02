@@ -112,7 +112,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
       auto header = ctx_->getHeader();
       if (header) {
         headers_ = header->getHeaders();
-        transforms_ = header->getTransforms();
+        transforms_ = header->getWriteTransforms();
         minCompressBytes_ = header->getMinCompressBytes();
       }
     }

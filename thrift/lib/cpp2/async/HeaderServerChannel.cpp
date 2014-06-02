@@ -404,7 +404,7 @@ void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
     unique_ptr<Request> request(
         new HeaderRequest(recvSeqId, this, std::move(buf),
                           header_->getHeaders(),
-                          header_->getTransforms(),
+                          header_->getWriteTransforms(),
                           outOfOrder,
                           clientExpectsStreaming,
                           &streamPtr,

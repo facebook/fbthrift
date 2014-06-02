@@ -209,6 +209,8 @@ class THeader {
     writeTrans_ = trans;
   }
   const std::vector<uint16_t>& getTransforms() const { return readTrans_; }
+  const std::vector<uint16_t>& getWriteTransforms() const {
+    return writeTrans_; }
 
   // Info headers
   typedef std::map<std::string, std::string> StringToStringMap;
