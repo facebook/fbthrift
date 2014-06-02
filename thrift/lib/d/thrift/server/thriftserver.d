@@ -1,11 +1,15 @@
+import thrift.async.teventbasemanager;
+import thrift.async.teventbase;
 import thrift.codegen.processor;
 import thrift.protocol.processor;
 import thrift.protocol.binary;
-import thrift.transport.memory;
 import thrift.server.base;
+import thrift.transport.memory;
+import thrift.util.cancellation;
+import thrift.transport.tsocketaddress;
+import thrift.async.teventbasemanager;
 import std.stdio;
 import core.thread;
-import thrift.util.cancellation;
 
 // Public D interface
 
@@ -23,6 +27,35 @@ class CppServer {
   void serve() {
     thriftserver_serve(server_);
   }
+
+  void setup() {
+    thriftserver_setup(server_);
+  }
+
+  void stop() {
+    thriftserver_stop(server_);
+  }
+
+  void stopListening() {
+    thriftserver_stopListening(server_);
+  }
+
+  void cleanUp() {
+    thriftserver_cleanUp(server_);
+  }
+
+  CppTEventBaseManager getEventBaseManager() {
+    auto ebm = new CppTEventBaseManager(
+      thriftserver_getEventBaseManager(server_));
+    return ebm;
+  }
+
+  CppTSocketAddress getAddress() {
+    auto tsockAddr = thriftserver_getAddress(server_);
+    auto cppTsockAddr = new CppTSocketAddress(tsockAddr);
+    return cppTsockAddr;
+  }
+
  private:
   ThriftServer* server_ = null;
 }
@@ -31,7 +64,6 @@ class CppServer {
 
 // Opaque C++ pointers
 struct ThriftServer;
-struct TEventBase;
 struct ThriftServerRequest;
 
 // C++ interface.
@@ -39,14 +71,21 @@ extern (C) {
 
   void thriftserver_setPort(ThriftServer*, ushort);
   void thriftserver_serve(ThriftServer*);
+  void thriftserver_stop(ThriftServer*);
+  void thriftserver_stopListening(ThriftServer*);
+  void thriftserver_setup(ThriftServer*);
+  void thriftserver_cleanUp(ThriftServer*);
   void thriftserver_setInterface(ThriftServer*, ThriftServerInterface);
   void thriftserver_sendReply(ThriftServerRequest* req,
                               TEventBase* eb,
                               const ubyte* data, size_t len);
   void thriftserver_freeRequest(ThriftServerRequest* req);
+  TEventBaseManager* thriftserver_getEventBaseManager(ThriftServer*);
+  TSocketAddress* thriftserver_getAddress(ThriftServer*);
 
   ThriftServer* thriftserver_new();
   void thriftserver_free(ThriftServer*);
+  ushort tsocketaddress_getPort(TSocketAddress*);
 }
 
 // Interface exposed to C++
@@ -54,6 +93,7 @@ extern (C++) interface ThriftServerInterface {
   void process(ThriftServerRequest* req, TEventBase* eb,
                ubyte* data, size_t len, ubyte protType);
 }
+
 
 // Globals to avoid new class every request
 TMemoryBuffer buf = null;

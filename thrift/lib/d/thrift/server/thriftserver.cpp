@@ -81,6 +81,15 @@ class DServerInterface : public ServerInterface {
 // members, to avoid mismatched virtual tables.
 extern "C" {
 
+TEventBaseManager* thriftserver_getEventBaseManager(ThriftServer* server) {
+  return server->getEventBaseManager();
+}
+
+const TSocketAddress* thriftserver_getAddress(ThriftServer* server) {
+  auto& tsockAddr = server->getAddress();
+  return &tsockAddr;
+}
+
 ThriftServer* thriftserver_new() {
   return new ThriftServer;
 }
@@ -95,6 +104,22 @@ void thriftserver_setPort(ThriftServer* server, uint16_t port) {
 
 void thriftserver_serve(ThriftServer* server) {
   server->serve();
+}
+
+void thriftserver_stop(ThriftServer* server) {
+  server->stop();
+}
+
+void thriftserver_stopListening(ThriftServer* server) {
+  server->stopListening();
+}
+
+void thriftserver_cleanUp(ThriftServer* server) {
+  server->cleanUp();
+}
+
+void thriftserver_setup(ThriftServer* server) {
+  server->setup();
 }
 
 void thriftserver_setInterface(
