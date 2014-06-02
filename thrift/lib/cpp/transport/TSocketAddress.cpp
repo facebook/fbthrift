@@ -1,26 +1,26 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #define __STDC_FORMAT_MACROS
 
 #include "thrift/lib/cpp/transport/TSocketAddress.h"
 
 #include "thrift/lib/cpp/transport/TTransportException.h"
+
+#include "folly/Hash.h"
 
 #include <boost/functional/hash.hpp>
 #include <boost/static_assert.hpp>
@@ -660,16 +660,20 @@ bool TSocketAddress::prefixMatch(const TSocketAddress& other,
   }
 }
 
+
 size_t TSocketAddress::hash() const {
-  size_t seed = storage_.addr.sa_family;
+  size_t seed = folly::hash::twang_mix64(storage_.addr.sa_family);
 
   switch (storage_.addr.sa_family) {
     case AF_INET:
-      boost::hash_combine(seed, storage_.ipv4.sin_port);
-      boost::hash_combine(seed, storage_.ipv4.sin_addr.s_addr);
+      boost::hash_combine(seed,
+                          folly::hash::twang_mix64(storage_.ipv4.sin_port));
+      boost::hash_combine(
+          seed, folly::hash::twang_mix64(storage_.ipv4.sin_addr.s_addr));
       break;
     case AF_INET6: {
-      boost::hash_combine(seed, storage_.ipv6.sin6_port);
+      boost::hash_combine(seed,
+                          folly::hash::twang_mix64(storage_.ipv6.sin6_port));
       // The IPv6 address is 16 bytes long.
       // Combine it in blocks of sizeof(size_t) bytes each.
       BOOST_STATIC_ASSERT(sizeof(struct in6_addr) % sizeof(size_t) == 0);
@@ -678,9 +682,10 @@ size_t TSocketAddress::hash() const {
       for (int amtHashed = 0;
            amtHashed < sizeof(struct in6_addr);
            amtHashed += sizeof(*p), ++p) {
-        boost::hash_combine(seed, *p);
+        boost::hash_combine(seed, folly::hash::twang_mix64(*p));
       }
-      boost::hash_combine(seed, storage_.ipv6.sin6_scope_id);
+      boost::hash_combine(
+          seed, folly::hash::twang_mix64(storage_.ipv6.sin6_scope_id));
       break;
     }
     case AF_UNIX:
@@ -690,7 +695,7 @@ size_t TSocketAddress::hash() const {
       size_t pathLength = storage_.un.pathLength();
       // TODO: this probably could be made more efficient
       for (unsigned int n = 0; n < pathLength; ++n) {
-        boost::hash_combine(seed, path[n]);
+        boost::hash_combine(seed, folly::hash::twang_mix64(path[n]));
       }
       break;
     }
