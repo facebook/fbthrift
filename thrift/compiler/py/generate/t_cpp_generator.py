@@ -3443,7 +3443,7 @@ class CppGenerator(t_generator.Generator):
         fval = frontend.t_field(tmap.value_type, val)
         scope(self._declare_field(fkey))
         self._generate_deserialize_field(scope, fkey)
-        txt = '{0} = {1}[{2}];'.format(
+        txt = '{0} = {1}[std::move({2})];'.format(
             self._declare_field(fval, reference=True), prefix, key)
         scope(txt)
         self._generate_deserialize_field(scope, fval)
