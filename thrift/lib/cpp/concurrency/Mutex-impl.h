@@ -226,7 +226,10 @@ class PthreadMutex {
     CHECK(0 == pthread_mutex_destroy(&pthread_mutex_));
   }
 
-  void lock() { pthread_mutex_lock(&pthread_mutex_); }
+  void lock() {
+    int ret = pthread_mutex_lock(&pthread_mutex_);
+    CHECK(ret != EDEADLK);
+  }
 
   bool try_lock() { return (0 == pthread_mutex_trylock(&pthread_mutex_)); }
 
