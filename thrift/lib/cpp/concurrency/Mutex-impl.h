@@ -242,7 +242,10 @@ class PthreadMutex {
     return 0 == pthread_mutex_timedlock(&pthread_mutex_, &ts);
   }
 
-  void unlock() { pthread_mutex_unlock(&pthread_mutex_); }
+  void unlock() {
+    int ret = pthread_mutex_unlock(&pthread_mutex_);
+    CHECK(ret != EPERM);
+  }
 
   bool isLocked() {
     // TODO: this doesn't work with recursive locks
