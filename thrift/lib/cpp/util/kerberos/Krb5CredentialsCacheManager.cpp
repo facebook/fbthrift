@@ -21,6 +21,8 @@
 #include <memory>
 #include <set>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #include "folly/stats/BucketedTimeSeries-defs.h"
 #include "folly/Memory.h"
@@ -370,8 +372,51 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     throw std::runtime_error("Trying to persist an empty cache");
   }
 
+  // Get the default name
+  Krb5CCache default_cache = Krb5CCache::makeDefault(ctx_.get());
+  folly::StringPiece default_type, default_name;
+  string default_cache_name = default_cache.getName();
+  folly::split<false>(":", default_cache_name, default_type, default_name);
+  if (default_type != "FILE") {
+    LOG(ERROR) << "Default cache is not of type FILE, the type is: " +
+      default_type.str();
+    return;
+  }
+
+  // Create a temporary file in the same directory as the default cache
+  std::vector<folly::StringPiece> path_tokens;
+  folly::split("/", default_name, path_tokens);
+  std::string tmp_template;
+  folly::join(
+    "/",
+    path_tokens.begin(),
+    path_tokens.begin() + path_tokens.size() - 1,
+    tmp_template);
+  tmp_template += "/tmpcache_XXXXXX";
+
+  char str_buf[4096];
+  int ret = snprintf(str_buf, 4096, "%s", tmp_template.c_str());
+  if (ret < 0 || ret >= 4096) {
+    LOG(ERROR) << "Temp file template name too long: " << tmp_template;
+    return;
+  }
+
+  int fd = mkstemp(str_buf);
+  if (fd == -1) {
+    LOG(ERROR) << "Could not open a temporary cache file with template: "
+               << tmp_template << " error: " << strerror(errno);
+    return;
+  }
+  ret = close(fd);
+  if (ret == -1) {
+    LOG(ERROR) << "Failed to close file: "
+               << str_buf << " error: " << strerror(errno);
+    // Don't return. Not closing the file is still OK. At worst, it's a
+    // fd leak.
+  }
+
   // Make a new file cache.
-  auto file_cache = Krb5CCache::makeNewUnique(ctx_.get(), "FILE");
+  auto file_cache = Krb5CCache::makeResolve(ctx_.get(), str_buf);
   Krb5Principal client = cc_mem->getClientPrincipal();
   krb5_error_code code = krb5_cc_initialize(
     ctx_.get(), file_cache.get(), client.get());
@@ -419,16 +464,6 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     raiseIf(code, "Failed storing a credential into a file");
   }
 
-  // Now let's rename the tmp file.
-  Krb5CCache default_cache = Krb5CCache::makeDefault(ctx_.get());
-  folly::StringPiece default_type, default_name;
-  string default_cache_name = default_cache.getName();
-  folly::split<false>(":", default_cache_name, default_type, default_name);
-  if (default_type != "FILE") {
-    LOG(ERROR) << "Default cache is not of type FILE, the type is: " +
-      default_type.str();
-    return;
-  }
   folly::StringPiece tmp_type, tmp_name;
   string file_cache_name = file_cache.getName();
   folly::split<false>(":", file_cache_name, tmp_type, tmp_name);
@@ -440,6 +475,13 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   int result = rename(tmp_name.str().c_str(), default_name.str().c_str());
   if (result != 0) {
     LOG(ERROR) << "Failed modifying the default credentials cache";
+    // Attempt to delete tmp file. We shouldn't leave it around. If delete
+    // fails for some reason, not much we can do.
+    ret = unlink(tmp_name.str().c_str());
+    if (ret == -1) {
+      LOG(ERROR) << "Error deleting temp file: " << tmp_name.str().c_str()
+                 << " because of error: " << strerror(errno);
+    }
   }
 }
 
