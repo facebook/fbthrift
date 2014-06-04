@@ -2425,6 +2425,21 @@ class CppGenerator(t_generator.Generator):
                     out("recv_" + function.name + "(" + ", ".join(params) +
                         ");")
 
+        with out().defn(self._get_recv_function_signature(function,
+                                                          is_wrapped=True),
+                    name="recv_instance_wrapped_" + function.name,
+                    modifiers="virtual"):
+
+            params = []
+            if self._function_uses_streams(function):
+                params.append('std::move(stream)')
+            elif not function.returntype.is_void:
+                params.append('_return')
+            params.append('state')
+            if not function.oneway:
+                out("return recv_wrapped_" + function.name +
+                    "(" + ", ".join(params) + ");")
+
     def _generate_templated_recv_function(self, service, function):
         sig = self._get_recv_function_signature(function,
                                                 uses_template=True,
