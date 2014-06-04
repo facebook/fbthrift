@@ -111,6 +111,7 @@ public class FramedTransportChannelHandler implements ChannelHandler {
         status_ = STATUS_ERR;
         break;
       }
+      //$FALL-THROUGH$
 
       case STATUS_READING_SIZE:
       try {
@@ -205,6 +206,7 @@ public class FramedTransportChannelHandler implements ChannelHandler {
           return;
         }
       }
+      //$FALL-THROUGH$
 
       case STATUS_WRITING:
       try {
