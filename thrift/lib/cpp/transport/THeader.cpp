@@ -675,6 +675,8 @@ uint32_t minCompressBytes) {
         continue;
       }
 
+      buf->coalesce(); // required for snappy compression
+
       // Check that we have enough space
       size_t maxCompressedLength = snappy::MaxCompressedLength(buf->length());
       unique_ptr<IOBuf> out(IOBuf::create(maxCompressedLength));
