@@ -95,10 +95,13 @@ class TGeventServer(TServer):
             except Exception as x:
                 logging.exception(x)
 
-    def serve(self):
+    def serve(self, listener=None):
         """Start a fixed number of worker threads and put client into a queue"""
 
-        self.server = StreamServer(('', self.port), self.serveClient)
+        if not listener:
+            listener = ('', self.port)
+
+        self.server = StreamServer(listener, self.serveClient)
         # Temporary patch for gevent 0.13.x
         # Remove pre_start when we are fully on gevent 1.0
         if gevent.version_info[0] == 0:
