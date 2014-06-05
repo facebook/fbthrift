@@ -30,6 +30,7 @@
 #include "thrift/test/JsonToThriftTest/gen-cpp/myI32Struct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/myBoolStruct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/myComplexStruct_types.h"
+#include "thrift/test/JsonToThriftTest/gen-cpp/myDefaultStruct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/myMixedStruct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/myMapStruct_types.h"
 #include "thrift/lib/cpp/Thrift.h"
@@ -142,6 +143,31 @@ BOOST_AUTO_TEST_CASE(SimpleJSON_ComplexSerialization) {
 
    testSimpleJSON(thriftMixedObj);
    testSimpleJSON(thriftComplexObj);
+}
+
+BOOST_AUTO_TEST_CASE(SimpleJSON_DefaultSerialization) {
+  myDefaultStruct thriftDefaultObj;
+  BOOST_CHECK_EQUAL(thriftDefaultObj.a.size(), 3);
+  BOOST_CHECK_EQUAL(thriftDefaultObj.b.size(), 1);
+  BOOST_CHECK_EQUAL(thriftDefaultObj.b[0].a.size(), 1);
+
+  mySuperSimpleDefaultStruct superSimple;
+  superSimple.a.clear();
+  superSimple.a.push_back(121);
+  thriftDefaultObj.a.clear();
+  thriftDefaultObj.a.push_back(18);
+  thriftDefaultObj.b.clear();
+  thriftDefaultObj.b.push_back(superSimple);
+  thriftDefaultObj.c.clear();
+  thriftDefaultObj.c.insert(std::make_pair("flame", -8));
+  thriftDefaultObj.c.insert(std::make_pair("fire", -191));
+  thriftDefaultObj.d.clear();
+  thriftDefaultObj.d.insert(std::make_pair("key1", superSimple));
+  thriftDefaultObj.e.clear();
+  thriftDefaultObj.e.insert(88);
+  thriftDefaultObj.e.insert(89);
+
+  testSimpleJSON(thriftDefaultObj);
 }
 
 BOOST_AUTO_TEST_CASE(SimpleJSON_BasicSerialization) {

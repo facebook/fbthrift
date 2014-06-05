@@ -2556,6 +2556,7 @@ void t_cpp_generator::generate_json_container(ofstream& out,
     }
     indent(out) << "folly::dynamic " << json << " = " << prefix_json  <<
       ";" << endl;
+    indent(out) << prefix_thrift << ".clear();" << endl;
     string iter = tmp("_iter");
     indent(out) << "for (folly::dynamic::const_item_iterator " << iter << " = "
       << json << ".items().begin(); " << iter << " != "
