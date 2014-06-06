@@ -77,6 +77,9 @@ void GssSaslServer::consumeFromClient(
       // Get the input string. We deserialize differently depending on the
       // current state.
       std::string input;
+
+      int requestSeqId;
+
       bool isFirstRequest;
       if (serverHandshake->getPhase() == INIT) {
         isFirstRequest = true;
@@ -85,7 +88,8 @@ void GssSaslServer::consumeFromClient(
         SaslAuthService_authFirstRequest_pargs pargs;
         pargs.saslStart = &start;
         ex = folly::try_and_catch<std::exception>([&]() {
-          string methodName =
+          string methodName;
+          std::tie(methodName, requestSeqId) =
             PargsPresultCompactDeserialize(pargs, smessage.get(), T_CALL);
 
           if (methodName != "authFirstRequest") {
@@ -104,7 +108,8 @@ void GssSaslServer::consumeFromClient(
         SaslAuthService_authNextRequest_pargs pargs;
         pargs.saslRequest = &req;
         ex = folly::try_and_catch<std::exception>([&]() {
-          string methodName =
+          string methodName;
+          std::tie(methodName, requestSeqId) =
             PargsPresultCompactDeserialize(pargs, smessage.get(), T_CALL);
 
           if (methodName != "authNextRequest") {
@@ -137,14 +142,16 @@ void GssSaslServer::consumeFromClient(
               resultp.__isset.success = true;
               *outbuf = PargsPresultCompactSerialize(resultp,
                                                      "authFirstRequest",
-                                                     T_REPLY);
+                                                     T_REPLY,
+                                                     requestSeqId);
             } else {
               SaslAuthService_authNextRequest_presult resultp;
               resultp.success = &reply;
               resultp.__isset.success = true;
               *outbuf = PargsPresultCompactSerialize(resultp,
                                                      "authNextRequest",
-                                                     T_REPLY);
+                                                     T_REPLY,
+                                                     requestSeqId);
             }
           }
         });

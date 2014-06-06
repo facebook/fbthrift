@@ -37,18 +37,18 @@ namespace apache { namespace thrift {
 
 template <typename T>
 std::unique_ptr<folly::IOBuf> PargsPresultCompactSerialize(
-    const T& value, const char *methodName, MessageType messageType) {
+    const T& value, const char *methodName, MessageType messageType, int seqId) {
   IOBufQueue q;
   CompactProtocolWriter writer;
   writer.setOutput(&q);
-  writer.writeMessageBegin(methodName, messageType, 1);
+  writer.writeMessageBegin(methodName, messageType, seqId);
   value.write(&writer);
   writer.writeMessageEnd();
   return q.move();
 }
 
 template <typename T>
-std::string PargsPresultCompactDeserialize(
+std::pair<std::string, int> PargsPresultCompactDeserialize(
     T& valuep, const folly::IOBuf* iobuf, MessageType messageType) {
   CompactProtocolReader reader;
   reader.setInput(iobuf);
@@ -63,7 +63,7 @@ std::string PargsPresultCompactDeserialize(
   }
   valuep.read(&reader);
   reader.readMessageEnd();
-  return methodName;
+  return std::make_pair(methodName, privSeqId);
 }
 
 }}

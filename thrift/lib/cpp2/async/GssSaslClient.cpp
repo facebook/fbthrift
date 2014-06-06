@@ -64,7 +64,8 @@ GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb,
     , evb_(evb)
     , clientHandshake_(new KerberosSASLHandshakeClient(logger))
     , mutex_(new Mutex)
-    , saslThreadManager_(nullptr) {
+    , saslThreadManager_(nullptr)
+    , seqId_(0) {
 }
 
 void GssSaslClient::start(Callback *cb) {
@@ -111,7 +112,7 @@ void GssSaslClient::start(Callback *cb) {
         argsp.saslStart = &start;
 
         *iobuf = PargsPresultCompactSerialize(
-          argsp, "authFirstRequest", T_CALL);
+          argsp, "authFirstRequest", T_CALL, seqId_++);
       });
 
       Guard guard(*mutex);
@@ -181,7 +182,7 @@ void GssSaslClient::consumeFromServer(
         SaslAuthService_authFirstRequest_presult presult;
         presult.success = &reply;
         string methodName =
-          PargsPresultCompactDeserialize(presult, smessage.get(), T_REPLY);
+          PargsPresultCompactDeserialize(presult, smessage.get(), T_REPLY).first;
         if (methodName != "authFirstRequest" &&
             methodName != "authNextRequest") {
           throw TApplicationException("Bad return method name: " + methodName);
@@ -208,7 +209,7 @@ void GssSaslClient::consumeFromServer(
           SaslAuthService_authNextRequest_pargs argsp;
           argsp.saslRequest = &req;
           *iobuf = PargsPresultCompactSerialize(argsp, "authNextRequest",
-                                                T_CALL);
+                                                T_CALL, seqId_++);
         }
       });
 
