@@ -38,6 +38,11 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
     : stopManageThread_(false)
     , logger_(logger) {
 
+  // Override the location of the conf file if it doesn't already exist.
+  setenv("KRB5_CONFIG", "/etc/krb5-thrift.conf", 0);
+  ctx_ = folly::make_unique<Krb5Context>();
+  store_ = folly::make_unique<Krb5CCacheStore>();
+
   // Client principal choice: principal
   // in current ccache, or first principal in keytab.  It's possible
   // for none to be available at startup.  In that case, we just keep
@@ -55,16 +60,16 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
       try {
         // Reinit or init the cache store if it expired or has never been
         // initialized
-        if (!store_.isInitialized() || aboutToExpire(store_.getLifetime())) {
+        if (!store_->isInitialized() || aboutToExpire(store_->getLifetime())) {
           initCacheStore();
         }
 
         // If the cache store needs to be renewed, renew it
-        auto lifetime = store_.getLifetime();
+        auto lifetime = store_->getLifetime();
         bool reached_renew_time = reachedRenewTime(
-          lifetime, folly::to<string>(store_.getClientPrincipal()));
+          lifetime, folly::to<string>(store_->getClientPrincipal()));
         if (reached_renew_time) {
-          store_.renewCreds();
+          store_->renewCreds();
         }
 
         // Persist cache store to a file
@@ -73,7 +78,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
       } catch (const std::runtime_error& e) {
         // Notify the waitForCache functions that an error happened.
         // We should propagate this error up.
-        store_.notifyOfError(e.what());
+        store_->notifyOfError(e.what());
         static string oldError = "";
         if (oldError != e.what()) {
           oldError = e.what();
@@ -89,7 +94,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
       if (!stopManageThread_) {
         int wait_time =
           Krb5CredentialsCacheManager::MANAGE_THREAD_SLEEP_PERIOD;
-        if (!store_.isInitialized()) {
+        if (!store_->isInitialized()) {
           // Shorten loop time to 1 second if first iteration didn't initialize
           // the client successfully
           wait_time = 1000;
@@ -127,10 +132,11 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
   // If a client principal has already been set, make sure the ccache
   // matches.  If it doesn't, bail out. This is so we make sure that
   // we don't accidentally read in a ccache for a different client.
-  if (store_.isInitialized() && store_.getClientPrincipal() != client) {
+  if (store_->isInitialized() && store_->getClientPrincipal() != client) {
     throw std::runtime_error(
       folly::to<string>("ccache contains client principal ", client,
-                        " but ", store_.getClientPrincipal(), " was required"));
+                        " but ", store_->getClientPrincipal(),
+                        " was required"));
   }
 
   mem->initialize(client.get());
@@ -144,7 +150,7 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
 
 void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   Krb5Context ctx(true);
-  Krb5Principal client_principal = store_.getClientPrincipal();
+  Krb5Principal client_principal = store_->getClientPrincipal();
 
   // Check if client matches.
   Krb5CCache default_cache = Krb5CCache::makeDefault(ctx.get());
@@ -215,10 +221,10 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     // fd leak.
   }
 
-  std::unique_ptr<Krb5CCache> temp_cache = store_.exportCache(limit);
+  std::unique_ptr<Krb5CCache> temp_cache = store_->exportCache(limit);
 
   // Move the in-memory temp_cache to a temporary file
-  auto file_cache = Krb5CCache::makeResolve(ctx_.get(), str_buf);
+  auto file_cache = Krb5CCache::makeResolve(ctx_->get(), str_buf);
   file_cache.initialize(client_principal.get());
   krb5_error_code code = krb5_cc_copy_creds(
     ctx.get(), temp_cache->get(), file_cache.get());
@@ -248,7 +254,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
 
 std::shared_ptr<Krb5CCache> Krb5CredentialsCacheManager::waitForCache(
     const Krb5Principal& service) {
-  return store_.waitForCache(service);
+  return store_->waitForCache(service);
 }
 
 void Krb5CredentialsCacheManager::initCacheStore() {
@@ -265,7 +271,7 @@ void Krb5CredentialsCacheManager::initCacheStore() {
 
   // If the file cache is usable (ie. not expired), then just import it
   if (file_cache && !aboutToExpire(file_cache->getLifetime())) {
-    store_.importCache(*file_cache);
+    store_->importCache(*file_cache);
     return;
   } else if (file_cache) {
     err_string += "File cache about to expire";
@@ -274,7 +280,7 @@ void Krb5CredentialsCacheManager::initCacheStore() {
   // If file cache is not present or expired, we want to do a kinit
   auto first_principal = getFirstPrincipalInKeytab();
   if (first_principal) {
-    store_.kInit(*first_principal);
+    store_->kInit(*first_principal);
   } else {
     throw std::runtime_error(
       "The credentials cache and keytab are both unavailable: "
@@ -286,29 +292,29 @@ void Krb5CredentialsCacheManager::initCacheStore() {
   if (file_cache) {
     vector<Krb5Principal> princ_list = file_cache->getServicePrincipalList();
     for (const auto& princ : princ_list) {
-      store_.waitForCache(princ);
+      store_->waitForCache(princ);
     }
   }
 }
 
 unique_ptr<Krb5Principal>
     Krb5CredentialsCacheManager::getFirstPrincipalInKeytab() {
-  Krb5Keytab keytab(ctx_.get());
+  Krb5Keytab keytab(ctx_->get());
   // No client has been chosen.  Try the first principal in the
   // keytab.
   for (auto& ktentry : keytab) {
     return folly::make_unique<Krb5Principal>(
-      ctx_.get(), std::move(ktentry.principal));
+      ctx_->get(), std::move(ktentry.principal));
   }
   return nullptr;
 }
 
 bool Krb5CredentialsCacheManager::isPrincipalInKeytab(
     const Krb5Principal& princ) {
-  Krb5Keytab keytab(ctx_.get());
+  Krb5Keytab keytab(ctx_->get());
   for (auto& ktentry : keytab) {
     if (princ == Krb5Principal(
-        ctx_.get(), std::move(ktentry.principal))) {
+        ctx_->get(), std::move(ktentry.principal))) {
       return true;
     }
   }

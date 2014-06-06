@@ -74,7 +74,7 @@ class Krb5CredentialsCacheManager {
   void writeOutCache(size_t limit);
 
   void raiseIf(krb5_error_code code, const std::string& what) {
-    apache::thrift::krb5::raiseIf(ctx_.get(), code, what);
+    apache::thrift::krb5::raiseIf(ctx_->get(), code, what);
   }
 
   void stopThread();
@@ -91,9 +91,9 @@ class Krb5CredentialsCacheManager {
   bool reachedRenewTime(
     const std::pair<uint64_t, uint64_t>& lifetime, const std::string& client);
 
-  Krb5Context ctx_;
+  std::unique_ptr<Krb5Context> ctx_;
 
-  Krb5CCacheStore store_;
+  std::unique_ptr<Krb5CCacheStore> store_;
 
   /**
    * Members for controlling the manager thread
