@@ -34,6 +34,7 @@ DEFINE_bool(async, false, "Use async client");
 DEFINE_bool(cpp2, false, "Use cpp cpp2");
 DEFINE_bool(ssl, false, "Use SSL");
 DEFINE_bool(sr, false, "Use Service Router");
+DEFINE_bool(single_host, false, "Use Single Hosts option with Service Router");
 DEFINE_string(srtier, "thrift.loadgen",
               "Tier to grab Service Router config from");
 DEFINE_string(sasl_policy_test, "disabled",
@@ -191,6 +192,10 @@ bool ClientLoadConfig::useSSL() const {
 
 bool ClientLoadConfig::useSR() const {
   return FLAGS_sr;
+}
+
+bool ClientLoadConfig::useSingleHost() const {
+  return FLAGS_single_host;
 }
 
 std::string ClientLoadConfig::srTier() const {

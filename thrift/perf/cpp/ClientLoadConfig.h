@@ -98,6 +98,8 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
 
   bool useSR() const;
 
+  bool useSingleHost() const;
+
   std::string srTier() const;
 
   bool zlib() const;

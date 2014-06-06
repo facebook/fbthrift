@@ -176,11 +176,21 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
   const std::shared_ptr<apache::thrift::test::ClientLoadConfig>& config =
     getConfig();
   if (config->useSR()) {
+    facebook::servicerouter::ServiceOptions options;
+    if (config->useSingleHost()) {
+      std::vector<facebook::servicerouter::Host> hosts;
+      facebook::servicerouter::cpp2::getClientFactory()
+          .getSelector()
+          ->getSelection(hosts, config->srTier());
+
+      options["single_host"] = {hosts[0].ip(), TOSTRING(hosts[0].port())};
+    }
     std::shared_ptr<LoadTestAsyncClient> loadClient;
     if (config->SASLPolicy() != "required" &&
         config->SASLPolicy() != "permitted") {
+
       loadClient.reset(facebook::servicerouter::cpp2::getClientFactory()
-        .getClient<LoadTestAsyncClient>(config->srTier(), &eb_));
+        .getClient<LoadTestAsyncClient>(config->srTier(), &eb_, options));
     } else {
       facebook::servicerouter::ConnConfigs configs;
       configs["thrift_security"] = config->SASLPolicy();
@@ -191,7 +201,7 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
         .getClient<LoadTestAsyncClient>(
           config->srTier(),
           &eb_,
-          facebook::servicerouter::ServiceOptions(),
+          options,
           configs));
     }
     return loadClient;
