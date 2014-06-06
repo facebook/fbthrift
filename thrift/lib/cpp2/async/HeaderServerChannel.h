@@ -267,6 +267,9 @@ private:
 
   uint32_t arrivalSeqId_;
   uint32_t lastWrittenSeqId_;
+
+  // Save seqIds from inorder requests so they can be written back later
+  std::deque<uint32_t> inorderSeqIds_;
   static const int MAX_REQUEST_SIZE = 2000;
   static std::atomic<uint32_t> sample_;
   uint32_t sampleRate_;

@@ -302,7 +302,8 @@ void HeaderServerChannel::sendCatchupRequests(
   while (true) {
     if (next_req) {
       try {
-        header_->setSequenceNumber(lastWrittenSeqId_ + 1);
+        header_->setSequenceNumber(inorderSeqIds_.front());
+        inorderSeqIds_.pop_front();
         header_->setTransforms(transforms);
         header_->setHeaders(std::move(headers));
         sendMessage(cb, std::move(next_req));
@@ -365,6 +366,7 @@ void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
   if (!outOfOrder) {
     // Create a new seqid for in-order messages because they might not
     // be sequential.  This seqid is only used internally in HeaderServerChannel
+    inorderSeqIds_.push_back(recvSeqId);
     recvSeqId = arrivalSeqId_++;
   }
 
