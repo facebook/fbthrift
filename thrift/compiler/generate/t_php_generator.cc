@@ -735,12 +735,12 @@ void t_php_generator::generate_enum(t_enum* tenum) {
       f_types_ <<
         "final class " <<
         php_namespace(tenum->get_program()) <<
-        tenum->get_name() << " extends Enum {" << endl;
+        tenum->get_name() << " extends Flags {" << endl;
     } else {
       f_types_ <<
         "final class " <<
         php_namespace(tenum->get_program()) <<
-        tenum->get_name() << " extends Flags {" << endl;
+        tenum->get_name() << " extends Enum {" << endl;
     }
   }
   else {
