@@ -114,6 +114,7 @@ class t_py_generator : public t_generator {
   void generate_enum     (t_enum*     tenum);
   void generate_const    (t_const*    tconst);
   void generate_struct   (t_struct*   tstruct);
+  void generate_forward_declaration   (t_struct*   tstruct);
   void generate_xception (t_struct*   txception);
   void generate_service  (t_service*  tservice);
 
@@ -124,6 +125,7 @@ class t_py_generator : public t_generator {
    */
 
   void generate_py_struct(t_struct* tstruct, bool is_exception);
+  void generate_py_thrift_spec(std::ofstream& out, t_struct* tstruct, bool is_exception);
   void generate_py_union(std::ofstream& out, t_struct* tstruct);
   void generate_py_struct_definition(std::ofstream& out, t_struct* tstruct,
       bool is_xception=false, bool is_result=false);
@@ -253,7 +255,7 @@ class t_py_generator : public t_generator {
   std::string rename_reserved_keywords(const std::string& value);
   std::string render_includes();
   std::string render_fastbinary_includes();
-  std::string declare_argument(t_field* tfield);
+  std::string declare_argument(std::string structname, t_field* tfield);
   std::string render_field_default_value(t_field* tfield);
   std::string type_name(t_type* ttype);
   std::string function_signature(t_function* tfunction, std::string prefix="");
@@ -1037,6 +1039,10 @@ string t_py_generator::render_const_value(t_type* type, t_const_value* value) {
   return out.str();
 }
 
+void t_py_generator::generate_forward_declaration(t_struct* tstruct) {
+  generate_py_struct(tstruct, tstruct->is_xception());
+}
+
 /**
  * Generates a python struct
  */
@@ -1044,7 +1050,7 @@ void t_py_generator::generate_struct(t_struct* tstruct) {
   if (tstruct->is_union()) {
     generate_py_union(f_types_, tstruct);
   } else {
-    generate_py_struct(tstruct, false);
+    generate_py_thrift_spec(f_types_, tstruct, false);
   }
 }
 
@@ -1055,7 +1061,7 @@ void t_py_generator::generate_struct(t_struct* tstruct) {
  * @param txception The struct definition
  */
 void t_py_generator::generate_xception(t_struct* txception) {
-  generate_py_struct(txception, true);
+  generate_py_thrift_spec(f_types_, txception, true);
 }
 
 /**
@@ -1299,6 +1305,92 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
   indent_down();
 }
 
+void t_py_generator::generate_py_thrift_spec(ofstream& out,
+                                             t_struct* tstruct,
+                                             bool is_exception) {
+
+  const vector<t_field*>& members = tstruct->get_members();
+  const vector<t_field*>& sorted_members = tstruct->get_sorted_members();
+  vector<t_field*>::const_iterator m_iter;
+
+  indent(out) << rename_reserved_keywords(tstruct->get_name())
+              << ".thrift_spec = (" << endl;
+
+  indent_up();
+
+  int sorted_keys_pos = 0;
+  for (m_iter = sorted_members.begin(); m_iter != sorted_members.end();
+      ++m_iter) {
+
+    if (sorted_keys_pos >= 0 && (*m_iter)->get_key() < 0) {
+      sorted_keys_pos = (*m_iter)->get_key();
+    }
+
+    for (; sorted_keys_pos != (*m_iter)->get_key(); sorted_keys_pos++) {
+      indent(out) << "None, # " << sorted_keys_pos << endl;
+    }
+
+    indent(out) << "(" << (*m_iter)->get_key() << ", "
+          << type_to_enum((*m_iter)->get_type()) << ", "
+          << "'" << (*m_iter)->get_name() << "'" << ", "
+          << type_to_spec_args((*m_iter)->get_type()) << ", "
+          << render_field_default_value(*m_iter) << ", "
+          << (*m_iter)->get_req() << ", "
+          << "),"
+          << " # " << sorted_keys_pos
+          << endl;
+
+    sorted_keys_pos ++;
+  }
+
+  indent_down();
+  indent(out) << ")" << endl << endl;
+
+  if (members.size() > 0) {
+    out <<
+      indent() << "def " << rename_reserved_keywords(tstruct->get_name())
+               << "__init__(self,";
+
+    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+      // This fills in default values, as opposed to nulls
+      out << " " << declare_argument(rename_reserved_keywords(tstruct->get_name()),
+                                     *m_iter) << ",";
+    }
+
+    out << "):" << endl;
+
+    indent_up();
+
+    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+      // Initialize fields
+      t_type* type = (*m_iter)->get_type();
+      if (!type->is_base_type() && !type->is_enum() &&
+          (*m_iter)->get_value() != nullptr) {
+        indent(out) <<
+          "if " << rename_reserved_keywords((*m_iter)->get_name()) << " is " <<
+          "self.thrift_spec[" <<
+            (*m_iter)->get_key() << "][4]:" << endl;
+        indent(out) << "  " << rename_reserved_keywords((*m_iter)->get_name())
+                    << " = " <<
+          render_field_default_value(*m_iter) << endl;
+      }
+      indent(out) <<
+        "self." << rename_reserved_keywords((*m_iter)->get_name()) << " = " <<
+        rename_reserved_keywords((*m_iter)->get_name()) << endl;
+    }
+
+    indent_down();
+
+    out << endl;
+    out <<
+      indent() << rename_reserved_keywords(tstruct->get_name())
+               << ".__init__ = "
+               << rename_reserved_keywords(tstruct->get_name())
+               << "__init__" << endl << endl;
+  }
+
+}
+
 /**
  * Generates a struct definition for a thrift data type.
  *
@@ -1320,7 +1412,8 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
   } else if (gen_newstyle_) {
     out << "(object)";
   }
-  out << ":" << endl;
+  out <<
+    ":" << endl;
   indent_up();
   generate_python_docstring(out, tstruct);
 
@@ -1359,72 +1452,9 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
 
   // TODO(dreiss): Test encoding of structs where some inner structs
   // don't have thrift_spec.
-
-  indent(out) << "thrift_spec = (" << endl;
-  indent_up();
-
-  int sorted_keys_pos = 0;
-  for (m_iter = sorted_members.begin(); m_iter != sorted_members.end();
-      ++m_iter) {
-
-    if (sorted_keys_pos >= 0 && (*m_iter)->get_key() < 0) {
-      sorted_keys_pos = (*m_iter)->get_key();
-    }
-
-    for (; sorted_keys_pos != (*m_iter)->get_key(); sorted_keys_pos++) {
-      indent(out) << "None, # " << sorted_keys_pos << endl;
-    }
-
-    indent(out) << "(" << (*m_iter)->get_key() << ", "
-          << type_to_enum((*m_iter)->get_type()) << ", "
-          << "'" << (*m_iter)->get_name() << "'" << ", "
-          << type_to_spec_args((*m_iter)->get_type()) << ", "
-          << render_field_default_value(*m_iter) << ", "
-          << (*m_iter)->get_req() << ", "
-          << "),"
-          << " # " << sorted_keys_pos
-          << endl;
-
-    sorted_keys_pos ++;
-  }
-
-  indent_down();
-  indent(out) << ")" << endl << endl;
-
-  if (members.size() > 0) {
-    out <<
-      indent() << "def __init__(self,";
-
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      // This fills in default values, as opposed to nulls
-      out << " " << declare_argument(*m_iter) << ",";
-    }
-
-    out << "):" << endl;
-
-    indent_up();
-
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      // Initialize fields
-      t_type* type = (*m_iter)->get_type();
-      if (!type->is_base_type() && !type->is_enum() &&
-          (*m_iter)->get_value() != nullptr) {
-        indent(out) <<
-          "if " << rename_reserved_keywords((*m_iter)->get_name()) << " is " <<
-          "self.thrift_spec[" <<
-            (*m_iter)->get_key() << "][4]:" << endl;
-        indent(out) << "  " << rename_reserved_keywords((*m_iter)->get_name())
-                    << " = " <<
-          render_field_default_value(*m_iter) << endl;
-      }
-      indent(out) <<
-        "self." << rename_reserved_keywords((*m_iter)->get_name()) << " = " <<
-        rename_reserved_keywords((*m_iter)->get_name()) << endl;
-    }
-
-    indent_down();
-
-    out << endl;
+  indent(out) << "thrift_spec = None" << endl;
+  if (members.size() != 0) {
+    indent(out) << "__init__ = None" << endl;
   }
 
   // Generate `isUnion` method to distinguish union
@@ -1526,6 +1556,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
       indent() << "  return not (self == other)" << endl <<
       endl;
   }
+
   indent_down();
 }
 
@@ -1789,6 +1820,7 @@ void t_py_generator::generate_service_helpers(t_service* tservice) {
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     t_struct* ts = (*f_iter)->get_arglist();
     generate_py_struct_definition(f_service_, ts, false);
+    generate_py_thrift_spec(f_service_, ts, false);
     generate_py_function_helpers(*f_iter);
   }
 }
@@ -1814,6 +1846,7 @@ void t_py_generator::generate_py_function_helpers(t_function* tfunction) {
       result.append(*f_iter);
     }
     generate_py_struct_definition(f_service_, &result, false, true);
+    generate_py_thrift_spec(f_service_, &result, false);
   }
 }
 
@@ -3296,11 +3329,11 @@ void t_py_generator::generate_python_docstring(ofstream& out,
  *
  * @param tfield The field
  */
-string t_py_generator::declare_argument(t_field* tfield) {
+string t_py_generator::declare_argument(std::string structname, t_field* tfield) {
   std::ostringstream result;
   result << rename_reserved_keywords(tfield->get_name()) << "=";
   if (tfield->get_value() != nullptr) {
-    result << "thrift_spec[" <<
+    result << structname << ".thrift_spec[" <<
       tfield->get_key() << "][4]";
   } else {
     result << "None";
