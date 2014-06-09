@@ -39,6 +39,9 @@ namespace apache { namespace thrift { namespace krb5 {
 class Krb5CredentialsCacheManager {
  public:
 
+  /**
+   * The logger object here will log internal events happening in the class.
+   */
   explicit Krb5CredentialsCacheManager(
     const std::shared_ptr<SecurityLogger>& logger =
       std::make_shared<SecurityLogger>());
@@ -52,8 +55,15 @@ class Krb5CredentialsCacheManager {
    * Wait for a credentials cache object to become available. This will throw
    * runtime_exception if the cache is not available because of an internal
    * error.
+   *
+   * Note the logger object is optional here and is different from the logger
+   * object in the class constructor. The logger object passed in here is
+   * designed specifically to log events from waitForCache call (since it
+   * occurs much more frequently than other internal events from the class).
    */
-  std::shared_ptr<Krb5CCache> waitForCache(const Krb5Principal& service);
+  std::shared_ptr<Krb5CCache> waitForCache(
+    const Krb5Principal& service,
+    SecurityLogger* logger = nullptr);
 
  protected:
   static const int MANAGE_THREAD_SLEEP_PERIOD;

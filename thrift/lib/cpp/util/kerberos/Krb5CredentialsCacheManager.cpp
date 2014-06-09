@@ -41,7 +41,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
   // Override the location of the conf file if it doesn't already exist.
   setenv("KRB5_CONFIG", "/etc/krb5-thrift.conf", 0);
   ctx_ = folly::make_unique<Krb5Context>();
-  store_ = folly::make_unique<Krb5CCacheStore>();
+  store_ = folly::make_unique<Krb5CCacheStore>(logger);
 
   // Client principal choice: principal
   // in current ccache, or first principal in keytab.  It's possible
@@ -50,6 +50,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
   // is chosen, we keep using that one and it never changes.
 
   manageThread_ = std::thread([=] {
+    logger->log("manager_started");
     while(true) {
       MutexGuard l(manageThreadMutex_);
       if (stopManageThread_) {
@@ -60,8 +61,14 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
       try {
         // Reinit or init the cache store if it expired or has never been
         // initialized
-        if (!store_->isInitialized() || aboutToExpire(store_->getLifetime())) {
+        if (!store_->isInitialized()) {
+          logger->logStart("init_cache_store");
           initCacheStore();
+          logger->logEnd("init_cache_store");
+        } else if (aboutToExpire(store_->getLifetime())) {
+          logger->logStart("init_cache_store_after_expiration");
+          initCacheStore();
+          logger->logEnd("init_cache_store_after_expiration");
         }
 
         // If the cache store needs to be renewed, renew it
@@ -69,15 +76,20 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
         bool reached_renew_time = reachedRenewTime(
           lifetime, folly::to<string>(store_->getClientPrincipal()));
         if (reached_renew_time) {
+          logger->logStart("build_renewed_cache");
           store_->renewCreds();
+          logger->logEnd("build_renewed_cache");
         }
 
         // Persist cache store to a file
+        logger->logStart("persist_ccache");
         writeOutCache(
           Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE);
+        logger->logEnd("persist_ccache");
       } catch (const std::runtime_error& e) {
         // Notify the waitForCache functions that an error happened.
         // We should propagate this error up.
+        logger->log("cc_manager_thread_error", e.what());
         store_->notifyOfError(e.what());
         static string oldError = "";
         if (oldError != e.what()) {
@@ -107,6 +119,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
 
 Krb5CredentialsCacheManager::~Krb5CredentialsCacheManager() {
   stopThread();
+  logger_->log("manager_destroyed");
 }
 
 void Krb5CredentialsCacheManager::stopThread() {
@@ -160,6 +173,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     bool about_to_expire = aboutToExpire(default_cache.getLifetime());
     if (!about_to_expire && client_principal != def_princ) {
       VLOG(4) << "File cache principal does not match client, not overwriting";
+      logger_->log("persist_ccache_fail_client_mismatch");
       return;
     }
   } catch (...) {
@@ -176,6 +190,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   }
   if (!can_renew) {
     VLOG(4) << "CC manager can't renew creds, won't overwrite ccache";
+    logger_->log("persist_ccache_fail_keytab_mismatch");
     return;
   }
 
@@ -186,6 +201,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   if (default_type != "FILE") {
     LOG(ERROR) << "Default cache is not of type FILE, the type is: " +
       default_type.str();
+    logger_->log("persist_ccache_fail_default_name_invalid");
     return;
   }
 
@@ -204,6 +220,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   int ret = snprintf(str_buf, 4096, "%s", tmp_template.c_str());
   if (ret < 0 || ret >= 4096) {
     LOG(ERROR) << "Temp file template name too long: " << tmp_template;
+    logger_->log("persist_ccache_fail_tmp_file_too_long", tmp_template);
     return;
   }
 
@@ -211,6 +228,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   if (fd == -1) {
     LOG(ERROR) << "Could not open a temporary cache file with template: "
                << tmp_template << " error: " << strerror(errno);
+    logger_->log("persist_ccache_fail_tmp_file_create_fail", tmp_template);
     return;
   }
   ret = close(fd);
@@ -236,10 +254,12 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   if (tmp_type != "FILE") {
     LOG(ERROR) << "Tmp cache is not of type FILE, the type is: " +
       tmp_type.str();
+    logger_->log("persist_ccache_fail_file_not_of_type_file");
     return;
   }
   int result = rename(tmp_name.str().c_str(), default_name.str().c_str());
   if (result != 0) {
+    logger_->log("persist_ccache_fail_rename", strerror(errno));
     LOG(ERROR) << "Failed modifying the default credentials cache: "
                << strerror(errno);
     // Attempt to delete tmp file. We shouldn't leave it around. If delete
@@ -249,12 +269,15 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
       LOG(ERROR) << "Error deleting temp file: " << tmp_name.str().c_str()
                  << " because of error: " << strerror(errno);
     }
+    return;
   }
+  logger_->log("persist_ccache_success");
 }
 
 std::shared_ptr<Krb5CCache> Krb5CredentialsCacheManager::waitForCache(
-    const Krb5Principal& service) {
-  return store_->waitForCache(service);
+    const Krb5Principal& service,
+    SecurityLogger* logger) {
+  return store_->waitForCache(service, logger);
 }
 
 void Krb5CredentialsCacheManager::initCacheStore() {
@@ -271,7 +294,9 @@ void Krb5CredentialsCacheManager::initCacheStore() {
 
   // If the file cache is usable (ie. not expired), then just import it
   if (file_cache && !aboutToExpire(file_cache->getLifetime())) {
+    logger_->logStart("import_ccache");
     store_->importCache(*file_cache);
+    logger_->logEnd("import_ccache");
     return;
   } else if (file_cache) {
     err_string += "File cache about to expire";
@@ -280,7 +305,9 @@ void Krb5CredentialsCacheManager::initCacheStore() {
   // If file cache is not present or expired, we want to do a kinit
   auto first_principal = getFirstPrincipalInKeytab();
   if (first_principal) {
+    logger_->logStart("kinit_ccache");
     store_->kInit(*first_principal);
+    logger_->logEnd("kinit_ccache");
   } else {
     throw std::runtime_error(
       "The credentials cache and keytab are both unavailable: "
@@ -292,6 +319,7 @@ void Krb5CredentialsCacheManager::initCacheStore() {
   if (file_cache) {
     vector<Krb5Principal> princ_list = file_cache->getServicePrincipalList();
     for (const auto& princ : princ_list) {
+      logger_->log("renew_expired_princ", folly::to<string>(princ));
       store_->waitForCache(princ);
     }
   }

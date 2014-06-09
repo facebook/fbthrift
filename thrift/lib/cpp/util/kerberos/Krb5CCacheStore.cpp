@@ -65,17 +65,25 @@ uint64_t Krb5CCacheStore::ServiceData::getCount() {
 }
 
 std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
-    const Krb5Principal& service) {
+    const Krb5Principal& service,
+    SecurityLogger* logger) {
   std::shared_ptr<ServiceData> dataPtr = getServiceDataPtr(service);
 
   // Bump that we've used the principal
   dataPtr->bumpCount();
+
+  if (logger) {
+    logger->logStart("get_prepared_cache", folly::to<string>(service));
+  }
 
   {
     ReadLock readLock(dataPtr->lock);
     // If there is a cache, just return it. Try with a read lock first
     // for performance reasons.
     if (dataPtr->cache) {
+      if (logger) {
+        logger->logEnd("get_prepared_cache");
+      }
       return dataPtr->cache;
     }
   }
@@ -84,11 +92,19 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
   // the cache.
   WriteLock writeLock(dataPtr->lock);
   if (dataPtr->cache) {
+    if (logger) {
+      logger->logEnd("get_prepared_cache");
+    }
     return dataPtr->cache;
   }
 
+  if (logger) {
+    logger->logStart("init_cache_for_service", folly::to<string>(service));
+  }
   dataPtr->cache = initCacheForService(service);
-
+  if (logger) {
+    logger->logEnd("init_cache_for_service");
+  }
   return dataPtr->cache;
 }
 
@@ -158,6 +174,7 @@ void Krb5CCacheStore::importCache(
     Krb5Credentials cred(ctx.get(), std::move(tmp_cred));
     Krb5Principal server = Krb5Principal::copyPrincipal(
       ctx.get(), cred.get().server);
+    logger_->log("import_principal", folly::to<string>(server));
     if (server.isTgt()) {
       tgts.push_back(std::move(cred));
     } else {
@@ -233,7 +250,9 @@ void Krb5CCacheStore::renewCreds() {
   std::unordered_map<string, std::unique_ptr<Krb5CCache>> renewed_map;
   for (auto& service : getServicePrincipalList()) {
     try {
+      logger_->logStart("renew_princ", folly::to<string>(service));
       auto mem = initCacheForService(service);
+      logger_->logEnd("renew_princ");
       renewed_map[folly::to<string>(service)] = std::move(mem);
     } catch (const std::runtime_error& e) {
       VLOG(4) << "Failed to renew cred for service: "

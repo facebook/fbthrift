@@ -260,7 +260,7 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
 
   try {
     logger_->logStart("wait_for_cache");
-    cc_ = credentialsCacheManager_->waitForCache(princ);
+    cc_ = credentialsCacheManager_->waitForCache(princ, logger_.get());
     logger_->logEnd("wait_for_cache");
   } catch (const std::runtime_error& e) {
     throw TKerberosException(

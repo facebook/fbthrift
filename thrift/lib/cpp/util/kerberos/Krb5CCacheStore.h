@@ -29,19 +29,23 @@
 #include "folly/stats/BucketedTimeSeries.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5Tgts.h"
 #include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
+#include "thrift/lib/cpp2/security/SecurityLogger.h"
 
 namespace apache { namespace thrift { namespace krb5 {
 
 class Krb5CCacheStore {
  public:
-  Krb5CCacheStore() {}
+  explicit Krb5CCacheStore(const std::shared_ptr<SecurityLogger>& logger)
+    : logger_(logger) {}
   virtual ~Krb5CCacheStore() {}
 
   typedef boost::shared_mutex Lock;
   typedef boost::unique_lock<Lock> WriteLock;
   typedef boost::shared_lock<Lock> ReadLock;
 
-  std::shared_ptr<Krb5CCache> waitForCache(const Krb5Principal& service);
+  std::shared_ptr<Krb5CCache> waitForCache(
+    const Krb5Principal& service,
+    SecurityLogger* logger = nullptr);
 
   void kInit(const Krb5Principal& client);
   bool isInitialized();
@@ -110,6 +114,7 @@ class Krb5CCacheStore {
    * Storage for krbtgt credentials
    */
   Krb5Tgts tgts_;
+  std::shared_ptr<SecurityLogger> logger_;
 };
 
 }}}
