@@ -42,8 +42,7 @@ namespace apache { namespace thrift {
  */
 class HeaderClientChannel : public RequestChannel,
                             public MessageChannel::RecvCallback,
-                            virtual public async::TDelayedDestruction {
-  typedef ProtectionChannelHandler::ProtectionState ProtectionState;
+                            protected Cpp2Channel {
  private:
   virtual ~HeaderClientChannel(){}
 
@@ -62,16 +61,11 @@ class HeaderClientChannel : public RequestChannel,
     return Ptr(new HeaderClientChannel(transport));
   }
 
-  void sendMessage(Cpp2Channel::SendCallback* callback,
-                   std::unique_ptr<folly::IOBuf>&& buf) {
-    cpp2Channel_->sendMessage(callback, std::move(buf));
-  }
-
   // TDelayedDestruction methods
   void destroy();
 
   apache::thrift::async::TAsyncTransport* getTransport() {
-    return cpp2Channel_->getTransport();
+    return transport_.get();
   }
 
   // Client interface from RequestChannel
@@ -88,7 +82,7 @@ class HeaderClientChannel : public RequestChannel,
                          std::unique_ptr<folly::IOBuf>);
 
   void sendStreamingMessage(uint32_t streamSequenceId,
-                            Cpp2Channel::SendCallback* callback,
+                            SendCallback* callback,
                             std::unique_ptr<folly::IOBuf>&& buf,
                             HEADER_FLAGS streamFlag);
 
@@ -104,7 +98,7 @@ class HeaderClientChannel : public RequestChannel,
   // Servers should use timeout methods on underlying transport.
   void setTimeout(uint32_t ms);
   uint32_t getTimeout() {
-    return getTransport()->getSendTimeout();
+    return transport_->getSendTimeout();
   }
 
   // SASL handshake timeout. This timeout is reset between each trip
@@ -128,12 +122,18 @@ class HeaderClientChannel : public RequestChannel,
   }
 
   apache::thrift::async::TEventBase* getEventBase() {
-      return cpp2Channel_->getEventBase();
+      return Cpp2Channel::getEventBase();
   }
 
   // event base methods
   void attachEventBase(apache::thrift::async::TEventBase*);
   void detachEventBase();
+
+  // Header framing
+  virtual std::unique_ptr<folly::IOBuf>
+    frameMessage(std::unique_ptr<folly::IOBuf>&&);
+  virtual std::unique_ptr<folly::IOBuf>
+    removeFrame(folly::IOBufQueue*, size_t& remaining);
 
   apache::thrift::transport::THeader* getHeader() {
     return header_.get();
@@ -178,20 +178,6 @@ class HeaderClientChannel : public RequestChannel,
   bool isSecurityActive() {
     return protectionState_ == ProtectionState::VALID;
   }
-
-  class ClientFramingHandler : public FramingChannelHandler {
-  public:
-    explicit ClientFramingHandler(HeaderClientChannel& channel)
-      : channel_(channel) {}
-
-    std::pair<std::unique_ptr<IOBuf>, size_t>
-    removeFrame(IOBufQueue* q) override;
-
-    std::unique_ptr<IOBuf> addFrame(std::unique_ptr<IOBuf> buf) override;
-  private:
-    HeaderClientChannel& channel_;
-    IOBufQueue queue_;
-  };
 
 private:
   bool clientSupportHeader();
@@ -482,13 +468,8 @@ private:
 
   bool keepRegisteredForClose_;
 
-  ProtectionState protectionState_;
-
-  void setProtectionState(ProtectionState newState) {
-    protectionState_ = newState;
-    cpp2Channel_->getProtectionHandler()->setProtectionState(newState,
-                                                             saslClient_.get());
-  }
+ private:
+  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
 
   class SaslClientCallback : public SaslClient::Callback {
    public:
@@ -500,10 +481,6 @@ private:
    private:
     HeaderClientChannel& channel_;
   } saslClientCallback_;
-
-  std::unique_ptr<Cpp2Channel, TDelayedDestruction::Destructor> cpp2Channel_;
-
-  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
 };
 
 }} // apache::thrift

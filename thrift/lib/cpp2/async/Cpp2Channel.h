@@ -24,7 +24,6 @@
 #include "thrift/lib/cpp/async/TDelayedDestruction.h"
 #include "thrift/lib/cpp/async/TAsyncTransport.h"
 #include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/transport/THeader.h"
 #include "folly/io/IOBufQueue.h"
 #include <memory>
 
@@ -32,73 +31,6 @@
 #include <vector>
 
 namespace apache { namespace thrift {
-
-class ProtectionChannelHandler {
-public:
-  enum class ProtectionState {
-    UNKNOWN,
-    NONE,
-    INPROGRESS,
-    VALID,
-    INVALID,
-  };
-
-  ProtectionChannelHandler()
-    : protectionState_(ProtectionState::UNKNOWN)
-    , saslEndpoint_(nullptr)
-  {}
-
-  void setProtectionState(ProtectionState protectionState,
-                          SaslEndpoint* saslEndpoint = nullptr) {
-    protectionState_ = protectionState;
-    saslEndpoint_ = saslEndpoint;
-  }
-
-  ProtectionState getProtectionState() {
-    return protectionState_;
-  }
-
-  /**
-   * If q contains enough data, read it (removing it from q, but retaining
-   * following data), decrypt it and return as result.first.
-   * result.second is set to 0.
-   *
-   * If q doesn't contain enough data, return an empty unique_ptr in
-   * result.first and return the requested amount of bytes in result.second.
-   */
-  std::pair<std::unique_ptr<folly::IOBuf>, size_t>
-  decrypt(folly::IOBufQueue* q);
-
-  /**
-   * Encrypt an IOBuf
-   */
-  std::unique_ptr<folly::IOBuf> encrypt(std::unique_ptr<folly::IOBuf> buf);
-private:
-  ProtectionState protectionState_;
-  SaslEndpoint* saslEndpoint_;
-};
-
-class FramingChannelHandler {
-public:
-  virtual ~FramingChannelHandler() {}
-
-  /**
-   * If q contains enough data, read it (removing it from q, but retaining
-   * following data), unframe it and return as result.first.
-   * result.second is set to 0.
-   *
-   * If q doesn't contain enough data, return an empty unique_ptr in
-   * result.first and return the requested amount of bytes in result.second.
-   */
-  virtual std::pair<std::unique_ptr<folly::IOBuf>, size_t>
-  removeFrame(folly::IOBufQueue* q) = 0;
-
-  /**
-   * Wrap and IOBuf in any headers/footers
-   */
-  virtual std::unique_ptr<folly::IOBuf>
-  addFrame(std::unique_ptr<folly::IOBuf> buf) = 0;
-};
 
 class Cpp2Channel
   : public MessageChannel
@@ -111,28 +43,19 @@ class Cpp2Channel
  public:
 
   explicit Cpp2Channel(
-    const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
-    std::unique_ptr<FramingChannelHandler> framingHandler);
+    const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport);
 
   static std::unique_ptr<Cpp2Channel,
                          apache::thrift::async::TDelayedDestruction::Destructor>
   newChannel(
-      const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
-      std::unique_ptr<FramingChannelHandler> framingHandler) {
+      const std::shared_ptr<apache::thrift::async::TAsyncTransport>&
+      transport) {
     return std::unique_ptr<Cpp2Channel,
       apache::thrift::async::TDelayedDestruction::Destructor>(
-      new Cpp2Channel(transport, std::move(framingHandler)));
+      new Cpp2Channel(transport));
   }
 
   void closeNow();
-
-  void setTransport(
-      const std::shared_ptr<async::TAsyncTransport>& transport) {
-    transport_ = transport;
-  }
-  async::TAsyncTransport* getTransport() {
-    return transport_.get();
-  }
 
   // TDelayedDestruction methods
   void destroy();
@@ -161,6 +84,31 @@ class Cpp2Channel
   virtual void detachEventBase();
   apache::thrift::async::TEventBase* getEventBase();
 
+  // Message framing methods.  Defaults to 4-byte
+  // size, override for a different method.
+
+  /**
+   * Given an IOBuf of data, wrap it in any headers/footers
+   */
+  virtual std::unique_ptr<folly::IOBuf>
+    frameMessage(std::unique_ptr<folly::IOBuf>&&);
+
+  /**
+   * Given an IOBuf Chain, remove the framing.
+   *
+   * @param IOBufQueue - queue to try to read message from.
+   *
+   * @param needed - if the return is NULL (i.e. we didn't read a full
+   *                 message), needed is set to the number of bytes needed
+   *                 before you should call removeFrame again.
+   *
+   * @return IOBuf - the message chain.  May be shared, may be chained.
+   *                 If NULL, we didn't get enough data for a whole message,
+   *                 call removeFrame again after reading needed more bytes.
+   */
+  virtual std::unique_ptr<folly::IOBuf>
+    removeFrame(folly::IOBufQueue*, size_t& remaining_);
+
   // callback from TEventBase::LoopCallback.  Used for sends
   virtual void runLoopCallback() noexcept;
 
@@ -172,20 +120,30 @@ class Cpp2Channel
     queueSends_ = queueSends;
   }
 
-  ProtectionChannelHandler* getProtectionHandler() const {
-    return protectionHandler_.get();
+protected:
+  void setSaslEndpoint(SaslEndpoint* saslEndpoint) {
+    saslEndpoint_ = saslEndpoint;
   }
 
-  FramingChannelHandler* getChannelHandler() const {
-    return framingHandler_.get();
-  }
+  std::shared_ptr<apache::thrift::async::TAsyncTransport> transport_;
+
+  enum class ProtectionState {
+    UNKNOWN,
+    NONE,
+    INPROGRESS,
+    VALID,
+    INVALID,
+  } protectionState_;
 
 private:
-  std::shared_ptr<apache::thrift::async::TAsyncTransport> transport_;
   std::unique_ptr<folly::IOBufQueue> queue_;
   std::deque<std::vector<SendCallback*>> sendCallbacks_;
   uint32_t remaining_; // Used to attempt to allocate 'perfect' sized IOBufs
   RecvCallback* recvCallback_;
+  // This is a pointer to a unique_ptr<> in the derived class, so the
+  // object's lifetime, will exceed our own.
+  SaslEndpoint* saslEndpoint_;
+  std::unique_ptr<folly::IOBufQueue> pendingPlaintext_;
   bool closing_;
   bool eofInvoked_;
 
@@ -199,9 +157,6 @@ private:
   // loads for greater throughput, but at the expense of some
   // minor latency increase.
   bool queueSends_;
-
-  std::unique_ptr<ProtectionChannelHandler> protectionHandler_;
-  std::unique_ptr<FramingChannelHandler> framingHandler_;
 };
 
 }} // apache::thrift

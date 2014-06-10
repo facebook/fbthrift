@@ -29,7 +29,6 @@ using std::unique_ptr;
 using std::pair;
 using folly::IOBuf;
 using folly::IOBufQueue;
-using folly::make_unique;
 using namespace apache::thrift::transport;
 using namespace apache::thrift;
 using apache::thrift::async::TEventBase;
@@ -44,16 +43,14 @@ std::atomic<uint32_t> HeaderServerChannel::sample_(0);
 
 HeaderServerChannel::HeaderServerChannel(
   const std::shared_ptr<TAsyncTransport>& transport)
-    : protectionState_(ProtectionState::UNKNOWN)
+    : Cpp2Channel(transport)
     , callback_(nullptr)
     , arrivalSeqId_(1)
     , lastWrittenSeqId_(0)
     , sampleRate_(0)
     , timeoutSASL_(5000)
-    , saslServerCallback_(*this)
-    , cpp2Channel_(Cpp2Channel::newChannel(transport,
-                       make_unique<ServerFramingHandler>(*this)))
-    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
+    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase()))
+    , saslServerCallback_(*this) {
   header_.reset(new THeader);
   header_->setSupportedClients(nullptr);
   header_->setProtocolId(0);
@@ -73,6 +70,8 @@ void HeaderServerChannel::destroy() {
     callback_->channelClosed(std::move(error));
   }
 
+  Cpp2Channel::destroy();
+
   destroyStreams();
 }
 
@@ -88,45 +87,38 @@ void HeaderServerChannel::destroyStreams() {
 }
 
 // Header framing
-unique_ptr<IOBuf>
-HeaderServerChannel::ServerFramingHandler::addFrame(unique_ptr<IOBuf> buf) {
+std::unique_ptr<folly::IOBuf>
+HeaderServerChannel::frameMessage(unique_ptr<IOBuf>&& buf) {
   // Note: This THeader function may throw.  However, we don't want to catch
   // it here, because this would send an empty message out on the wire.
   // Instead we have to catch it at sendMessage
-  return channel_.getHeader()->addHeader(
+  return header_->addHeader(
     std::move(buf),
     false /* Data already transformed in AsyncProcessor.h */);
 }
 
-std::pair<unique_ptr<IOBuf>, size_t>
-HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
-  THeader* header = channel_.getHeader();
+std::unique_ptr<folly::IOBuf>
+HeaderServerChannel::removeFrame(IOBufQueue* q, size_t& remaining) {
   // removeHeader will set seqid in header_.
   // For older clients with seqid in the protocol, header_
   // will dig in to the protocol to get the seqid correctly.
-  queue_.append(*q);
-  if (!queue_.front() || queue_.front()->empty()) {
-    return make_pair(std::unique_ptr<IOBuf>(), 0);
-  }
-
   std::unique_ptr<folly::IOBuf> buf;
-  size_t remaining = 0;
   try {
-    buf = header->removeHeader(&queue_, remaining);
+    buf = header_->removeHeader(q, remaining);
   } catch (const std::exception& e) {
     LOG(ERROR) << "Received invalid request from client: "
                << folly::exceptionStr(e) << " "
-               << getTransportDebugString(channel_.getTransport());
-    return make_pair(std::unique_ptr<IOBuf>(), remaining);
+               << getTransportDebugString(getTransport());
+    return buf;
   }
   if (!buf) {
-    return make_pair(std::unique_ptr<IOBuf>(), remaining);
+    return buf;
   }
-  if (!header->isSupportedClient() &&
-      header->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (!header_->isSupportedClient() &&
+      header_->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
     LOG(ERROR) << "Server rejecting unsupported client type "
-               << header->getClientType();
-    header->checkSupportedClient();
+               << header_->getClientType();
+    header_->checkSupportedClient();
   }
 
   // In order to allow negotiation to happen when the client requests
@@ -135,7 +127,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   // the client is supported in handleSecurityMessage called from the
   // messageReceived callback.
 
-  return make_pair(std::move(buf), 0);
+  return buf;
 }
 
 std::string
@@ -340,7 +332,7 @@ void HeaderServerChannel::sendCatchupRequests(
 }
 
 void HeaderServerChannel::sendStreamingMessage(
-    Cpp2Channel::SendCallback* callback,
+    SendCallback* callback,
     std::unique_ptr<folly::IOBuf>&& data,
     HEADER_FLAGS streamFlag) {
 
@@ -493,7 +485,7 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
       } else {
         // The supported client set changed halfway through or
         // something.  Bail out.
-        setProtectionState(ProtectionState::INVALID);
+        protectionState_ = ProtectionState::INVALID;
         LOG(WARNING) << "Inconsistent SASL support";
         auto ex = folly::make_exception_wrapper<TTransportException>(
             "Inconsistent SASL support");
@@ -502,7 +494,7 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
       }
     } else if (protectionState_ == ProtectionState::UNKNOWN ||
         protectionState_ == ProtectionState::INPROGRESS) {
-      setProtectionState(ProtectionState::INPROGRESS);
+      protectionState_ = ProtectionState::INPROGRESS;
       saslServer_->consumeFromClient(&saslServerCallback_, std::move(buf));
       return nullptr;
     }
@@ -513,7 +505,7 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     // Either negotiation has completed or negotiation is incomplete,
     // non-sasl was received, but is not permitted.
     // We should fail hard in this case.
-    setProtectionState(ProtectionState::INVALID);
+    protectionState_ = ProtectionState::INVALID;
     LOG(WARNING) << "non-SASL message received on SASL channel";
     auto ex = folly::make_exception_wrapper<TTransportException>(
         "non-SASL message received on SASL channel");
@@ -523,14 +515,14 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     // This is the path non-SASL-aware (or SASL-disabled) clients will
     // take.
     VLOG(5) << "non-SASL client connection received";
-    setProtectionState(ProtectionState::NONE);
+    protectionState_ = ProtectionState::NONE;
   } else if (protectionState_ == ProtectionState::INPROGRESS &&
       header_->isSupportedClient()) {
     // If a client  permits a non-secure connection, we allow falling back to
     // one even if a SASL handshake is in progress.
     LOG(INFO) << "Client initiated a fallback during a SASL handshake";
     // Cancel any SASL-related state, and log
-    setProtectionState(ProtectionState::NONE);
+    protectionState_ = ProtectionState::NONE;
     saslServerCallback_.cancelTimeout();
     if (saslServer_) {
       // Should be set here, but just in case check that saslServer_
@@ -574,7 +566,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
     if (observer) {
       observer->saslError();
     }
-    channel_.setProtectionState(ProtectionState::INVALID);
+    channel_.protectionState_ = ProtectionState::INVALID;
     LOG(ERROR) << "SASL required by server but failed";
     channel_.messageReceiveErrorWrapped(std::move(ex));
     return;
@@ -594,7 +586,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
   } catch (const std::exception& e) {
     LOG(ERROR) << "Failed to send message: " << e.what();
   }
-  channel_.setProtectionState(ProtectionState::NONE);
+  channel_.protectionState_ = ProtectionState::NONE;
   // We need to tell saslServer that the security channel is no longer
   // available, so that it does not attempt to send messages to the server.
   // Since the server-side SASL code is virtually non-blocking, it should be
@@ -615,7 +607,8 @@ void HeaderServerChannel::SaslServerCallback::saslComplete() {
   VLOG(5) << "SASL server negotiation complete: "
              << saslServer->getServerIdentity() << " <= "
              << saslServer->getClientIdentity();
-  channel_.setProtectionState(ProtectionState::VALID);
+  channel_.protectionState_ = ProtectionState::VALID;
+  channel_.setSaslEndpoint(saslServer.get());
 }
 
 void HeaderServerChannel::unregisterStream(uint32_t sequenceId) {
