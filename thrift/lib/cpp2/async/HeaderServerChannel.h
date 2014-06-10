@@ -41,8 +41,9 @@ namespace apache { namespace thrift {
  */
 class HeaderServerChannel : public ResponseChannel,
                             public MessageChannel::RecvCallback,
-                            protected Cpp2Channel {
- private:
+                            virtual public async::TDelayedDestruction {
+  typedef ProtectionChannelHandler::ProtectionState ProtectionState;
+private:
   virtual ~HeaderServerChannel(){}
 
  public:
@@ -63,12 +64,12 @@ class HeaderServerChannel : public ResponseChannel,
   void destroy();
 
   apache::thrift::async::TAsyncTransport* getTransport() {
-    return transport_.get();
+    return cpp2Channel_->getTransport();
   }
 
   void setTransport(
     std::shared_ptr<apache::thrift::async::TAsyncTransport> transport) {
-    transport_ = transport;
+    cpp2Channel_->setTransport(transport);
   }
 
   // Server interface from ResponseChannel
@@ -76,13 +77,18 @@ class HeaderServerChannel : public ResponseChannel,
     callback_ = callback;
 
     if (callback) {
-      setReceiveCallback(this);
+      cpp2Channel_->setReceiveCallback(this);
     } else {
-      setReceiveCallback(nullptr);
+      cpp2Channel_->setReceiveCallback(nullptr);
     }
   }
 
-  void sendStreamingMessage(SendCallback* callback,
+  void sendMessage(Cpp2Channel::SendCallback* callback,
+                   std::unique_ptr<folly::IOBuf>&& buf) {
+    cpp2Channel_->sendMessage(callback, std::move(buf));
+  }
+
+  void sendStreamingMessage(Cpp2Channel::SendCallback* callback,
                             std::unique_ptr<folly::IOBuf>&& buf,
                             HEADER_FLAGS streamFlag);
 
@@ -93,14 +99,8 @@ class HeaderServerChannel : public ResponseChannel,
   void messageChannelEOF();
   void messageReceiveErrorWrapped(folly::exception_wrapper&&);
 
-  // Header framing
-  virtual std::unique_ptr<folly::IOBuf>
-    frameMessage(std::unique_ptr<folly::IOBuf>&&);
-  virtual std::unique_ptr<folly::IOBuf>
-    removeFrame(folly::IOBufQueue*, size_t& remaining);
-
   apache::thrift::async::TEventBase* getEventBase() {
-      return Cpp2Channel::getEventBase();
+      return cpp2Channel_->getEventBase();
   }
 
   void sendCatchupRequests(
@@ -237,18 +237,40 @@ class HeaderServerChannel : public ResponseChannel,
   void destroyStreams();
 
   void setQueueSends(bool queueSends) {
-    Cpp2Channel::setQueueSends(queueSends);
+    cpp2Channel_->setQueueSends(queueSends);
   }
 
   void closeNow() {
-    Cpp2Channel::closeNow();
+    cpp2Channel_->closeNow();
   }
 
+  class ServerFramingHandler : public FramingChannelHandler {
+  public:
+    explicit ServerFramingHandler(HeaderServerChannel& channel)
+      : channel_(channel) {}
+
+    std::pair<std::unique_ptr<IOBuf>, size_t>
+    removeFrame(IOBufQueue* q) override;
+
+    std::unique_ptr<IOBuf> addFrame(std::unique_ptr<IOBuf> buf) override;
+  private:
+    HeaderServerChannel& channel_;
+    IOBufQueue queue_;
+  };
+
 private:
+  ProtectionState protectionState_;
+
+  void setProtectionState(ProtectionState newState) {
+    protectionState_ = newState;
+    cpp2Channel_->getProtectionHandler()->setProtectionState(newState,
+                                                             saslServer_.get());
+  }
+
   std::unique_ptr<folly::IOBuf> handleSecurityMessage(
       std::unique_ptr<folly::IOBuf>&& buf);
 
-  std::string getTransportDebugString(
+  static std::string getTransportDebugString(
       apache::thrift::async::TAsyncTransport *transport);
 
   std::unique_ptr<apache::thrift::transport::THeader> header_;
@@ -276,8 +298,6 @@ private:
 
   uint32_t timeoutSASL_;
 
-  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
-
   class SaslServerCallback : public SaslServer::Callback {
    public:
     explicit SaslServerCallback(HeaderServerChannel& channel)
@@ -288,6 +308,10 @@ private:
    private:
     HeaderServerChannel& channel_;
   } saslServerCallback_;
+
+  std::unique_ptr<Cpp2Channel, TDelayedDestruction::Destructor> cpp2Channel_;
+
+  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
 };
 
 }} // apache::thrift

@@ -40,17 +40,17 @@ using apache::thrift::async::TAsyncTransport;
 namespace apache { namespace thrift {
 
 Cpp2Channel::Cpp2Channel(
-  const std::shared_ptr<TAsyncTransport>& transport)
+  const std::shared_ptr<TAsyncTransport>& transport,
+  std::unique_ptr<FramingChannelHandler> framingHandler)
     : transport_(transport)
-    , protectionState_(ProtectionState::UNKNOWN)
     , queue_(new IOBufQueue)
     , remaining_(DEFAULT_BUFFER_SIZE)
     , recvCallback_(nullptr)
-    , saslEndpoint_(nullptr)
-    , pendingPlaintext_(new IOBufQueue)
     , closing_(false)
     , eofInvoked_(false)
-    , queueSends_(true) {
+    , queueSends_(true)
+    , protectionHandler_(folly::make_unique<ProtectionChannelHandler>())
+    , framingHandler_(std::move(framingHandler)) {
 }
 
 void Cpp2Channel::closeNow() {
@@ -114,49 +114,38 @@ void Cpp2Channel::readDataAvailable(size_t len) noexcept {
   // variable below for the next call to getReadBuffer
   size_t remaining = 0;
 
+  // Loop as long as there are complete (decrypted and deframed) frames.
+  // Partial frames are stored inside the handlers between calls to
+  // readDataAvailable.
+  // On the last iteration, remaining_ is updated to the anticipated remaining
+  // frame length (if we're in the middle of a frame) or to DEFAULT_BUFFER_SIZE
+  // (if we are exactly between frames)
   while (true) {
     unique_ptr<IOBuf> unframed;
 
-    bool shouldContinue = false;
     auto ex = folly::try_and_catch<std::exception>([&]() {
-      if (protectionState_ == ProtectionState::INVALID) {
-        throw TTransportException("protection state is invalid");
+      unique_ptr<IOBuf> decrypted;
+      size_t rem = 0;
+      std::tie(decrypted, rem) = protectionHandler_->decrypt(queue_.get());
+
+      if (!decrypted) {
+        // no full message available, remember how many more bytes we need
+        // and continue to frame decoding (because frame decoder might have
+        // cached messages)
+        remaining = rem;
       }
 
-      // If we have a full frame already in a queue ready to go, use
-      // it.
+      // message decrypted
+      IOBufQueue q;
+      q.append(std::move(decrypted));
+      std::tie(unframed, rem) = framingHandler_->removeFrame(&q);
 
-      if (protectionState_ != ProtectionState::VALID && queue_->front()) {
-        unframed = removeFrame(queue_.get(), remaining);
-      } else if (protectionState_ == ProtectionState::VALID &&
-                 pendingPlaintext_->front()) {
-        unframed = removeFrame(pendingPlaintext_.get(), remaining);
-      }
-      // We should either get a buffer back, or a remaining indicator.
-      // Never both.  Neither is possible, if the length of the framed
-      // data is zero.
-      assert(!(unframed && remaining > 0));
-
-      // If there wasn't a full message available and we have a
-      // protection layer, attempt to unwrap the next piece of
-      // ciphertext.
-      if (!unframed && protectionState_ == ProtectionState::VALID &&
-          queue_->front()) {
-        assert(saslEndpoint_ != nullptr);
-        unique_ptr<IOBuf> unwrapped =
-          saslEndpoint_->unwrap(queue_.get(), &remaining);
-        assert(!(unwrapped && remaining > 0));
-        if (unwrapped) {
-          pendingPlaintext_->append(std::move(unwrapped));
-          // Start again from the top.
-          shouldContinue = true;
-          return; // from try_and_catch
-        }
+      if (!unframed && remaining == 0) {
+        // no full message available, update remaining but only if previous
+        // handler (encryption) hasn't already provided a value
+        remaining = rem;
       }
     });
-    if (shouldContinue) {
-      continue;
-    }
     if (ex) {
       if (recvCallback_) {
         VLOG(5) << "Failed to read a message header";
@@ -168,13 +157,10 @@ void Cpp2Channel::readDataAvailable(size_t len) noexcept {
       return;
     }
 
-    if (remaining > 0) {
-      this->remaining_ = remaining;
-      return;
-    }
-
     if (!unframed) {
-      break;
+      // no more data
+      remaining_ = remaining > 0 ? remaining : DEFAULT_BUFFER_SIZE;
+      return;
     }
 
     if (!recvCallback_) {
@@ -190,8 +176,6 @@ void Cpp2Channel::readDataAvailable(size_t len) noexcept {
       return; // don't call more callbacks if we are going to be destroyed
     }
   }
-
-  this->remaining_ = 2048;
 }
 
 void Cpp2Channel::readEOF() noexcept {
@@ -260,11 +244,8 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
     return;
   }
 
-  buf = frameMessage(std::move(buf));
-  if (protectionState_ == ProtectionState::VALID) {
-    assert(saslEndpoint_);
-    buf = saslEndpoint_->wrap(std::move(buf));
-  }
+  buf = framingHandler_->addFrame(std::move(buf));
+  buf = protectionHandler_->encrypt(std::move(buf));
 
   if (!queueSends_) {
     // Send immediately.
@@ -304,47 +285,6 @@ void Cpp2Channel::runLoopCallback() noexcept {
   transport_->writeChain(this, std::move(sends_));
 }
 
-std::unique_ptr<folly::IOBuf>
-Cpp2Channel::frameMessage(unique_ptr<IOBuf>&& buf) {
-  assert(buf);
-  unique_ptr<IOBuf> framing;
-
-  if (buf->headroom() > 4) {
-    framing = std::move(buf);
-    buf->prepend(4);
-  } else {
-    framing = IOBuf::create(4);
-    framing->append(4);
-    framing->appendChain(std::move(buf));
-  }
-  RWPrivateCursor c(framing.get());
-  c.writeBE<uint32_t>(framing->computeChainDataLength() - 4);
-
-  return std::move(framing);
-}
-
-std::unique_ptr<folly::IOBuf>
-Cpp2Channel::removeFrame(IOBufQueue* queue, size_t& remaining) {
-  assert(queue);
-  uint32_t len = queue->front()->computeChainDataLength();
-
-  if (len < 4) {
-    remaining = 4 - len;
-    return nullptr;
-  }
-
-  Cursor c(queue->front());
-  uint32_t msgLen = c.readBE<uint32_t>();
-  if (len - 4 < msgLen) {
-    remaining = msgLen - (len - 4);
-    return nullptr;
-  }
-
-  queue->trimStart(4);
-  remaining = 0;
-  return queue->split(msgLen);
-}
-
 void Cpp2Channel::setReceiveCallback(RecvCallback* callback) {
   if (recvCallback_ == callback) {
     return;
@@ -362,6 +302,39 @@ void Cpp2Channel::setReceiveCallback(RecvCallback* callback) {
   } else {
     transport_->setReadCallback(nullptr);
   }
+}
+
+std::pair<std::unique_ptr<folly::IOBuf>, size_t>
+ProtectionChannelHandler::decrypt(folly::IOBufQueue* q) {
+  if (protectionState_ == ProtectionState::INVALID) {
+    throw TTransportException("protection state is invalid");
+  }
+
+  if (protectionState_ != ProtectionState::VALID) {
+    // not an encrypted message, so pass-through
+    return std::make_pair(q->move(), 0);
+  }
+
+  assert(saslEndpoint_ != nullptr);
+  size_t remaining = 0;
+
+  if (!q->front() || q->front()->empty()) {
+    return std::make_pair(unique_ptr<IOBuf>(), 0);
+  }
+  // decrypt
+  unique_ptr<IOBuf> unwrapped = saslEndpoint_->unwrap(q, &remaining);
+  assert(bool(unwrapped) ^ (remaining > 0));   // 1 and only 1 should be true
+
+  return std::make_pair(std::move(unwrapped), remaining);
+}
+
+std::unique_ptr<folly::IOBuf>
+ProtectionChannelHandler::encrypt(std::unique_ptr<folly::IOBuf> buf) {
+  if (protectionState_ == ProtectionState::VALID) {
+    assert(saslEndpoint_);
+    return saslEndpoint_->wrap(std::move(buf));
+  }
+  return std::move(buf);
 }
 
 }} // apache::thrift

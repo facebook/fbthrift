@@ -23,6 +23,7 @@
 #include "thrift/lib/cpp2/async/HeaderServerChannel.h"
 #include "thrift/lib/cpp2/async/Cpp2Channel.h"
 #include "folly/io/IOBuf.h"
+#include "folly/io/IOBufQueue.h"
 #include "thrift/lib/cpp/test/SocketPair.h"
 #include "thrift/lib/cpp/EventHandlerBase.h"
 #include "thrift/lib/cpp/async/TAsyncTimeout.h"
@@ -39,7 +40,9 @@ using namespace apache::thrift::transport;
 using apache::thrift::ContextStack;
 using std::unique_ptr;
 using folly::IOBuf;
+using folly::IOBufQueue;
 using std::shared_ptr;
+using folly::make_unique;
 
 unique_ptr<IOBuf> makeTestBuf(size_t len) {
   unique_ptr<IOBuf> buf = IOBuf::create(len);
@@ -65,6 +68,67 @@ class EventBaseAborter : public TAsyncTimeout {
   TEventBase* eventBase_;
 };
 
+// Creates/unwraps a framed message (LEN(MSG) | MSG)
+class FramingHandler : public FramingChannelHandler {
+public:
+  std::pair<unique_ptr<IOBuf>, size_t> removeFrame(IOBufQueue* q) override {
+    assert(q);
+    queue_.append(*q);
+    if (!queue_.front() || queue_.front()->empty()) {
+      return make_pair(std::unique_ptr<IOBuf>(), 0);
+    }
+
+    uint32_t len = queue_.front()->computeChainDataLength();
+
+    if (len < 4) {
+      size_t remaining = 4 - len;
+      return make_pair(unique_ptr<IOBuf>(), remaining);
+    }
+
+    folly::io::Cursor c(queue_.front());
+    uint32_t msgLen = c.readBE<uint32_t>();
+    if (len - 4 < msgLen) {
+      size_t remaining = msgLen - (len - 4);
+      return make_pair(unique_ptr<IOBuf>(), remaining);
+    }
+
+    queue_.trimStart(4);
+    return make_pair(queue_.split(msgLen), 0);
+  }
+
+  unique_ptr<IOBuf> addFrame(unique_ptr<IOBuf> buf) override {
+    assert(buf);
+    unique_ptr<IOBuf> framing;
+
+    if (buf->headroom() > 4) {
+      framing = std::move(buf);
+      buf->prepend(4);
+    } else {
+      framing = IOBuf::create(4);
+      framing->append(4);
+      framing->appendChain(std::move(buf));
+    }
+    folly::io::RWPrivateCursor c(framing.get());
+    c.writeBE<uint32_t>(framing->computeChainDataLength() - 4);
+
+    return std::move(framing);
+  }
+private:
+  IOBufQueue queue_;
+};
+
+template <typename Channel>
+unique_ptr<Channel, TDelayedDestruction::Destructor> createChannel(
+    const shared_ptr<TAsyncTransport>& transport) {
+  return Channel::newChannel(transport);
+}
+
+template <>
+unique_ptr<Cpp2Channel, TDelayedDestruction::Destructor> createChannel(
+    const shared_ptr<TAsyncTransport>& transport) {
+  return Cpp2Channel::newChannel(transport, make_unique<FramingHandler>());
+}
+
 template<typename Channel1, typename Channel2>
 class SocketPairTest {
  public:
@@ -75,8 +139,8 @@ class SocketPairTest {
     socket0_ = TAsyncSocket::newSocket(&eventBase_, socketPair.extractFD0());
     socket1_ = TAsyncSocket::newSocket(&eventBase_, socketPair.extractFD1());
 
-    channel0_ = Channel1::newChannel(socket0_);
-    channel1_ = Channel2::newChannel(socket1_);
+    channel0_ = createChannel<Channel1>(socket0_);
+    channel1_ = createChannel<Channel2>(socket1_);
   }
   virtual ~SocketPairTest() {}
 
@@ -998,7 +1062,7 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
 TEST(Channel, DestroyInEOF) {
   auto t = new DestroyAsyncTransport;
   std::shared_ptr<TAsyncTransport> transport(t);
-  auto channel = Cpp2Channel::newChannel(transport);
+  auto channel = createChannel<Cpp2Channel>(transport);
   DestroyRecvCallback drc(std::move(channel));
   t->invokeEOF();
 }
@@ -1019,7 +1083,7 @@ TEST(Channel, SetKeepRegisteredForClose) {
   TEventBase base;
   auto transport =
     TAsyncSocket::newSocket(&base, "127.0.0.1", ntohs(addr.sin_port));
-  auto channel = HeaderClientChannel::newChannel(transport);
+  auto channel = createChannel<HeaderClientChannel>(transport);
   NullCloseCallback ncc;
   channel->setCloseCallback(&ncc);
   channel->setKeepRegisteredForClose(false);
