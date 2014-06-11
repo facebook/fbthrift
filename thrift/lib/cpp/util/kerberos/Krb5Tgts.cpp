@@ -137,16 +137,14 @@ std::shared_ptr<const Krb5Credentials> Krb5Tgts::getTgtForRealm(
     return tgt;
   }
 
-  Krb5Context ctx(true);
-
   Krb5Principal princ = Krb5Principal::copyPrincipal(
     ctx_.get(), tgt_->get().server);
 
   // Get the tgt name for the realm
-  Krb5Principal realm_princ(ctx.get(), string("krbtgt/") + realm);
+  Krb5Principal realm_princ(ctx_.get(), string("krbtgt/") + realm);
 
   // Make a new memory cache.
-  auto mem = Krb5CCache::makeNewUnique(ctx.get(), "MEMORY");
+  auto mem = Krb5CCache::makeNewUnique("MEMORY");
   // Initialize the new CC
   mem.initialize(client_->get());
   mem.storeCred(tgt_->get());

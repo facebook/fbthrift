@@ -134,12 +134,9 @@ void Krb5CredentialsCacheManager::stopThread() {
 }
 
 std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
-  // Note that ccache creation requires a unique context per thread
-  Krb5Context ctx(true);
-
   auto mem = folly::make_unique<Krb5CCache>(
-    Krb5CCache::makeNewUnique(ctx.get(), "MEMORY"));
-  Krb5CCache file_cache = Krb5CCache::makeDefault(ctx.get());
+    Krb5CCache::makeNewUnique("MEMORY"));
+  Krb5CCache file_cache = Krb5CCache::makeDefault();
   Krb5Principal client = file_cache.getClientPrincipal();
 
   // If a client principal has already been set, make sure the ccache
@@ -155,18 +152,17 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
   mem->initialize(client.get());
   // Copy the file cache into memory
   krb5_error_code code = krb5_cc_copy_creds(
-    ctx.get(), file_cache.get(), mem->get());
+    ctx_->get(), file_cache.get(), mem->get());
   raiseIf(code, "copying to memory cache");
 
   return mem;
 }
 
 void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
-  Krb5Context ctx(true);
   Krb5Principal client_principal = store_->getClientPrincipal();
 
   // Check if client matches.
-  Krb5CCache default_cache = Krb5CCache::makeDefault(ctx.get());
+  Krb5CCache default_cache = Krb5CCache::makeDefault();
   try {
     Krb5Principal def_princ = default_cache.getClientPrincipal();
     // We still want to overwrite caches that are about to expire.
@@ -242,10 +238,10 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   std::unique_ptr<Krb5CCache> temp_cache = store_->exportCache(limit);
 
   // Move the in-memory temp_cache to a temporary file
-  auto file_cache = Krb5CCache::makeResolve(ctx_->get(), str_buf);
+  auto file_cache = Krb5CCache::makeResolve(str_buf);
   file_cache.initialize(client_principal.get());
   krb5_error_code code = krb5_cc_copy_creds(
-    ctx.get(), temp_cache->get(), file_cache.get());
+    ctx_->get(), temp_cache->get(), file_cache.get());
   raiseIf(code, "copying to file cache");
 
   folly::StringPiece tmp_type, tmp_name;

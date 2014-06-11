@@ -160,13 +160,12 @@ TEST_F(Krb5UtilTest, TestGetHostRealm) {
 
 TEST_F(Krb5UtilTest, TestCCache) {
   // Test that we can create a default cache
-  auto ccache = Krb5CCache::makeDefault(context_.get());
+  auto ccache = Krb5CCache::makeDefault();
   // Test that we can resolve some cache name
   auto ccache2 = Krb5CCache::makeResolve(
-    context_.get(),
     "/var/run/ccache/krb5cc_doesnotexist");
   // Create a new in-memory cache
-  auto ccache3 = Krb5CCache::makeNewUnique(context_.get(), "MEMORY");
+  auto ccache3 = Krb5CCache::makeNewUnique("MEMORY");
   EXPECT_EQ(0, ccache3.getServicePrincipalList().size());
   EXPECT_EQ(0, count_creds(ccache3));
 }
@@ -183,7 +182,7 @@ TEST_F(Krb5UtilTest, TestCCacheGetLifetime) {
   auto missing_service =
     Krb5Principal(context_.get(), "missing_service@MISSINGREALM");
 
-  auto ccache = Krb5CCache::makeNewUnique(context_.get(), "MEMORY");
+  auto ccache = Krb5CCache::makeNewUnique("MEMORY");
   krb5_error_code code = krb5_cc_initialize(
     context_.get(), ccache.get(), client.get());
 
@@ -234,7 +233,7 @@ TEST_F(Krb5UtilTest, TestCCIterator) {
   auto service = Krb5Principal(context_.get(), "service@TESTREALM");
 
   // Create a new in-memory cache
-  auto ccache = Krb5CCache::makeNewUnique(context_.get(), "MEMORY");
+  auto ccache = Krb5CCache::makeNewUnique("MEMORY");
   krb5_error_code code = krb5_cc_initialize(
     context_.get(), ccache.get(), client.get());
   raiseIf(context_.get(), code, "initializing ccache");

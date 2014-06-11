@@ -142,14 +142,9 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::initCacheForService(
     tgt = tgts_.getTgt();
   }
 
-  // Thread-local context. Note that we can't reuse the main ctx_ context
-  // because credentials cache creation / access expect a unique
-  // context per thread.
-  Krb5Context ctx(true);
-
   // Make a new memory cache.
   auto mem = folly::make_unique<Krb5CCache>(
-    Krb5CCache::makeNewUnique(ctx.get(), "MEMORY"));
+    Krb5CCache::makeNewUnique("MEMORY"));
   // Initialize the new CC
   mem->initialize(client_princ.get());
   mem->storeCred(tgt->get());
@@ -165,15 +160,13 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::initCacheForService(
 
 void Krb5CCacheStore::importCache(
     Krb5CCache& file_cache) {
-  Krb5Context ctx(true);
-
   // Split out tgts and service principals
   std::vector<Krb5Credentials> tgts;
   std::vector<Krb5Credentials> services;
   for (auto& tmp_cred : file_cache) {
-    Krb5Credentials cred(ctx.get(), std::move(tmp_cred));
+    Krb5Credentials cred(std::move(tmp_cred));
     Krb5Principal server = Krb5Principal::copyPrincipal(
-      ctx.get(), cred.get().server);
+      ctx_.get(), cred.get().server);
     logger_->log("import_principal", folly::to<string>(server));
     if (server.isTgt()) {
       tgts.push_back(std::move(cred));
@@ -188,7 +181,7 @@ void Krb5CCacheStore::importCache(
   tgts_obj.setClientPrincipal(client_principal);
   for (auto& tgt : tgts) {
     Krb5Principal server_principal = Krb5Principal::copyPrincipal(
-      ctx.get(), tgt.get().server);
+      ctx_.get(), tgt.get().server);
     if (server_principal.getComponent(1) == client_principal.getRealm()) {
       tgts_obj.setTgt(folly::make_unique<Krb5Credentials>(std::move(tgt)));
     } else {
@@ -203,7 +196,7 @@ void Krb5CCacheStore::importCache(
   DataMapType new_data_map;
   for (auto& service : services) {
     Krb5Principal princ = Krb5Principal::copyPrincipal(
-      ctx.get(), service.get().server);
+      ctx_.get(), service.get().server);
     auto mem = initCacheForService(princ, &service.get());
 
     auto data = std::make_shared<ServiceData>();
@@ -286,12 +279,11 @@ void Krb5CCacheStore::renewCreds() {
 }
 
 std::unique_ptr<Krb5CCache> Krb5CCacheStore::exportCache(size_t limit) {
-  Krb5Context ctx(true);
   Krb5Principal client_principal = tgts_.getClientPrincipal();
 
   // Make a new memory cache.
   auto temp_cache = folly::make_unique<Krb5CCache>(
-    Krb5CCache::makeNewUnique(ctx.get(), "MEMORY"));
+    Krb5CCache::makeNewUnique("MEMORY"));
   // Initialize the new CC
   temp_cache->initialize(client_principal.get());
 

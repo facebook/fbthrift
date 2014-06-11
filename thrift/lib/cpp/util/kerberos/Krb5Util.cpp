@@ -70,7 +70,8 @@ std::vector<std::string> getHostRealm(krb5_context context,
   return vRealms;
 }
 
-Krb5Context::Krb5Context(bool thread_local_ctx) {
+Krb5Context::Krb5Context(bool thread_local_ctx)
+    : threadLocal_(thread_local_ctx) {
   krb5_error_code code;
   if (thread_local_ctx) {
     code = krb5_init_thread_local_context(&context_);
@@ -84,7 +85,34 @@ Krb5Context::Krb5Context(bool thread_local_ctx) {
 }
 
 Krb5Context::~Krb5Context() {
+#ifndef KRB5_HAS_INIT_THREAD_LOCAL_CONTEXT
+  // If thread-local context is not define, we're using regular context,
+  // so we should free to avoid leaks.
   krb5_free_context(context_);
+#else
+  if (!threadLocal_) {
+    // No need to free thread-local contexts. There is only one per thread,
+    // and they're updated as needed.
+    krb5_free_context(context_);
+  }
+#endif
+}
+
+krb5_context Krb5Context::get() const {
+#ifdef KRB5_HAS_INIT_THREAD_LOCAL_CONTEXT
+  if (threadLocal_) {
+    // Note that we need to re-init the thread-local context every time,
+    // since every call to krb5_init_thread_local_context may invalidate
+    // the old context pointers.
+    krb5_error_code code = krb5_init_thread_local_context(
+      (krb5_context*)(&context_));
+    if (code) {
+      LOG(FATAL) << "Error reinitializing thread-local context: "
+                 << error_message(code);
+    }
+  }
+#endif
+  return context_;
 }
 
 Krb5Principal Krb5Principal::snameToPrincipal(krb5_context context,
@@ -159,8 +187,8 @@ std::ostream& operator<<(std::ostream& os, const Krb5Principal& obj) {
   return os;
 }
 
-Krb5Credentials::Krb5Credentials(krb5_context context, krb5_creds&& creds)
-  : context_(context)
+Krb5Credentials::Krb5Credentials(krb5_creds&& creds)
+  : context_(true)
   , creds_(folly::make_unique<krb5_creds>()) {
   // struct assignment.  About 16 words.
   *creds_ = creds;
@@ -170,61 +198,61 @@ Krb5Credentials::Krb5Credentials(krb5_context context, krb5_creds&& creds)
 }
 
 Krb5Credentials::Krb5Credentials(Krb5Credentials&& other)
-  : context_(other.context_)
+  : context_(true)
   , creds_(std::move(other.creds_)) {}
 
 Krb5Credentials& Krb5Credentials::operator=(Krb5Credentials&& other) {
   if (this != &other) {
-    context_ = other.context_;
     creds_ = std::move(other.creds_);
-    other.context_ = nullptr;
   }
   return *this;
 }
 
 Krb5CCache::Krb5CCache(Krb5CCache&& other)
-  : context_(other.context_)
+  : context_(true)
   , ccache_(other.release()) {}
 
-Krb5CCache Krb5CCache::makeDefault(krb5_context context) {
+Krb5CCache Krb5CCache::makeDefault() {
   krb5_ccache ccache;
-  krb5_error_code code = krb5_cc_default(context, &ccache);
-  raiseIf(context, code, "getting default ccache");
-  return Krb5CCache(context, ccache);
+  Krb5Context context(true);
+  krb5_context ctx = context.get();
+  krb5_error_code code = krb5_cc_default(ctx, &ccache);
+  raiseIf(ctx, code, "getting default ccache");
+  return Krb5CCache(ccache);
 }
 
-Krb5CCache Krb5CCache::makeResolve(krb5_context context,
-    const std::string& name) {
+Krb5CCache Krb5CCache::makeResolve(const std::string& name) {
   krb5_ccache ccache;
-  krb5_error_code code = krb5_cc_resolve(context, name.c_str(), &ccache);
-  raiseIf(context, code, folly::to<std::string>(
+  Krb5Context context(true);
+  krb5_context ctx = context.get();
+  krb5_error_code code = krb5_cc_resolve(ctx, name.c_str(), &ccache);
+  raiseIf(ctx, code, folly::to<std::string>(
     "failed to resolve ccache: ", name));
-  return Krb5CCache(context, ccache);
+  return Krb5CCache(ccache);
 }
 
-Krb5CCache Krb5CCache::makeNewUnique(krb5_context context,
-    const std::string& type) {
+Krb5CCache Krb5CCache::makeNewUnique(const std::string& type) {
   krb5_ccache ccache;
-  krb5_error_code code = krb5_cc_new_unique(context, type.c_str(), nullptr,
-    &ccache);
-  raiseIf(context, code, folly::to<std::string>(
+  Krb5Context context(true);
+  krb5_context ctx = context.get();
+  krb5_error_code code = krb5_cc_new_unique(
+    ctx, type.c_str(), nullptr, &ccache);
+  raiseIf(ctx, code, folly::to<std::string>(
     "failed to get new ccache with type: ", type));
-  return Krb5CCache(context, ccache);
+  return Krb5CCache(ccache);
 }
 
-Krb5CCache::Krb5CCache(krb5_context context, krb5_ccache ccache)
-    : context_(context)
+Krb5CCache::Krb5CCache(krb5_ccache ccache)
+    : context_(true)
     , ccache_(ccache) {
 }
 
 Krb5CCache& Krb5CCache::operator=(Krb5CCache&& other) {
   if (this != &other) {
     if (ccache_) {
-      krb5_cc_close(context_, ccache_);
+      krb5_cc_close(context_.get(), ccache_);
     }
-    context_ = other.context_;
     ccache_ = other.release();
-    other.context_ = nullptr;
   }
   return *this;
 }
@@ -232,8 +260,9 @@ Krb5CCache& Krb5CCache::operator=(Krb5CCache&& other) {
 std::vector<Krb5Principal> Krb5CCache::getServicePrincipalList(
     bool filter_tgt) {
   std::vector<Krb5Principal> ret;
+  krb5_context ctx = context_.get();
   for (auto it = begin(); it != end(); ++it) {
-    Krb5Principal server(context_, std::move(it->server));
+    Krb5Principal server(ctx, std::move(it->server));
     if (filter_tgt && server.isTgt()) {
       continue;
     }
@@ -248,8 +277,9 @@ std::pair<uint64_t, uint64_t> Krb5CCache::getLifetime(
     krb5_principal principal) const {
   const std::string client_realm = getClientPrincipal().getRealm();
   std::string princ_realm;
+  krb5_context ctx = context_.get();
   if (principal) {
-    Krb5Principal princ(context_, std::move(principal));
+    Krb5Principal princ(ctx, std::move(principal));
     princ_realm = princ.getRealm();
     princ.release();
   } else {
@@ -257,7 +287,7 @@ std::pair<uint64_t, uint64_t> Krb5CCache::getLifetime(
   }
 
   for (auto& creds : *this) {
-    Krb5Principal server(context_, std::move(creds.server));
+    Krb5Principal server(ctx, std::move(creds.server));
     if (server.isTgt() &&
         server.getComponent(1) == princ_realm &&
         server.getRealm() == client_realm) {
@@ -270,39 +300,44 @@ std::pair<uint64_t, uint64_t> Krb5CCache::getLifetime(
 
 Krb5Principal Krb5CCache::getClientPrincipal() const {
   krb5_principal client;
-  krb5_error_code code = krb5_cc_get_principal(context_, ccache_, &client);
-  raiseIf(context_, code, "getting client from ccache");
-  return Krb5Principal(context_, std::move(client));
+  krb5_context ctx = context_.get();
+  krb5_error_code code = krb5_cc_get_principal(ctx, ccache_, &client);
+  raiseIf(ctx, code, "getting client from ccache");
+  return Krb5Principal(ctx, std::move(client));
 }
 
 std::string Krb5CCache::getName() {
-  return std::string(krb5_cc_get_type(context_, ccache_)) + ":" +
-         std::string(krb5_cc_get_name(context_, ccache_));
+  krb5_context ctx = context_.get();
+  return std::string(krb5_cc_get_type(ctx, ccache_)) + ":" +
+         std::string(krb5_cc_get_name(ctx, ccache_));
 }
 
 void Krb5CCache::initialize(krb5_principal cprinc) {
-  krb5_error_code code = krb5_cc_initialize(context_, ccache_, cprinc);
-  raiseIf(context_, code, "initializing ccache");
+  krb5_context ctx = context_.get();
+  krb5_error_code code = krb5_cc_initialize(ctx, ccache_, cprinc);
+  raiseIf(ctx, code, "initializing ccache");
 }
 
 void Krb5CCache::storeCred(const krb5_creds& creds) {
+  krb5_context ctx = context_.get();
   // The krb5 impl doesn't modify creds.
   krb5_error_code code = krb5_cc_store_cred(
-    context_, ccache_, const_cast<krb5_creds*>(&creds));
-  raiseIf(context_, code, "store cred to ccache");
+    ctx, ccache_, const_cast<krb5_creds*>(&creds));
+  raiseIf(ctx, code, "store cred to ccache");
 }
 
 Krb5Credentials Krb5CCache::retrieveCred(
   const krb5_creds& match_creds, krb5_flags match_flags) {
 
   krb5_creds matched;
+  krb5_context ctx = context_.get();
   // The krb5 impl doesn't modify match_creds.
   krb5_error_code code = krb5_cc_retrieve_cred(
-    context_, ccache_, match_flags, const_cast<krb5_creds*>(&match_creds),
+    ctx, ccache_, match_flags, const_cast<krb5_creds*>(&match_creds),
     &matched);
-  raiseIf(context_, code, "retrieve cred");
+  raiseIf(ctx, code, "retrieve cred");
 
-  return Krb5Credentials(context_, std::move(matched));
+  return Krb5Credentials(std::move(matched));
 }
 
 Krb5Credentials Krb5CCache::retrieveCred(krb5_principal sprinc) {
@@ -320,14 +355,15 @@ Krb5Credentials Krb5CCache::getCredentials(
   const krb5_creds& in_creds, krb5_flags options) {
 
   krb5_creds* out_creds;
+  krb5_context ctx = context_.get();
   // The krb5 impl doesn't modify in_creds.
   krb5_error_code code = krb5_get_credentials(
-    context_, options, ccache_, const_cast<krb5_creds*>(&in_creds),
+    ctx, options, ccache_, const_cast<krb5_creds*>(&in_creds),
     &out_creds);
-  raiseIf(context_, code, "get credentials");
-  SCOPE_EXIT { krb5_free_creds(context_, out_creds); };
+  raiseIf(ctx, code, "get credentials");
+  SCOPE_EXIT { krb5_free_creds(ctx, out_creds); };
 
-  return Krb5Credentials(context_, std::move(*out_creds));
+  return Krb5Credentials(std::move(*out_creds));
 }
 
 Krb5Credentials Krb5CCache::getCredentials(
@@ -345,7 +381,7 @@ Krb5Credentials Krb5CCache::getCredentials(
 
 Krb5CCache::~Krb5CCache() {
   if (ccache_) {
-    krb5_cc_close(context_, ccache_);
+    krb5_cc_close(context_.get(), ccache_);
   }
 }
 
@@ -358,30 +394,33 @@ krb5_ccache Krb5CCache::release() {
 struct Krb5CCache::Iterator::State {
   State(const Krb5CCache* cc, bool include_config_entries)
     : cc_(cc)
-    , include_config_entries_(include_config_entries) {
+    , include_config_entries_(include_config_entries)
+    , context_(true) {
     CHECK(cc);
+    krb5_context ctx = context_.get();
     krb5_error_code code =
-      krb5_cc_start_seq_get(cc_->getContext(), cc_->get(), &cursor_);
-    raiseIf(cc_->getContext(), code, "reading credentials cache");
+      krb5_cc_start_seq_get(ctx, cc_->get(), &cursor_);
+    raiseIf(ctx, code, "reading credentials cache");
     memset(&creds_, 0, sizeof(creds_));
   }
 
   ~State() {
-    krb5_free_cred_contents(cc_->getContext(), &creds_);
-    krb5_error_code code =
-      krb5_cc_end_seq_get(cc_->getContext(), cc_->get(), &cursor_);
-    raiseIf(cc_->getContext(), code, "ending read of credentials cache");
+    krb5_context ctx = context_.get();
+    krb5_free_cred_contents(ctx, &creds_);
+    krb5_error_code code = krb5_cc_end_seq_get(ctx, cc_->get(), &cursor_);
+    raiseIf(ctx, code, "ending read of credentials cache");
   }
 
   bool next_any() {
-    krb5_free_cred_contents(cc_->getContext(), &creds_);
+    krb5_context ctx = context_.get();
+    krb5_free_cred_contents(ctx, &creds_);
     memset(&creds_, 0, sizeof(creds_));
     krb5_error_code code =
-      krb5_cc_next_cred(cc_->getContext(), cc_->get(), &cursor_, &creds_);
+      krb5_cc_next_cred(ctx, cc_->get(), &cursor_, &creds_);
     if (code == KRB5_CC_END) {
       return false;
     } else {
-      raiseIf(cc_->getContext(), code, "reading next credential");
+      raiseIf(ctx, code, "reading next credential");
     }
     return true;
   }
@@ -391,8 +430,9 @@ struct Krb5CCache::Iterator::State {
     if (include_config_entries_) {
       return valid;
     }
+    krb5_context ctx = context_.get();
     while (valid &&
-           krb5_is_config_principal(cc_->getContext(), creds_.server)) {
+           krb5_is_config_principal(ctx, creds_.server)) {
       valid = next_any();
     }
     return valid;
@@ -402,6 +442,7 @@ struct Krb5CCache::Iterator::State {
   bool include_config_entries_;
   krb5_cc_cursor cursor_;
   krb5_creds creds_;
+  Krb5Context context_;
 };
 
 Krb5CCache::Iterator::Iterator(
@@ -426,7 +467,7 @@ void Krb5CCache::Iterator::next() {
 
 bool Krb5CCache::Iterator::isConfigEntry() {
   return state_ && krb5_is_config_principal(
-    state_->cc_->getContext(), state_->creds_.server);
+    state_->context_.get(), state_->creds_.server);
 }
 
 Krb5CCache::Iterator& Krb5CCache::Iterator::operator++() {  // prefix
@@ -481,7 +522,7 @@ Krb5Credentials Krb5Keytab::getInitCreds(
     context_, &creds, princ, keytab_, 0 /* starttime */,
     nullptr /* initial sname */, opts);
   raiseIf(context_, code, "getting credentials from keytab");
-  return Krb5Credentials(context_, std::move(creds));
+  return Krb5Credentials(std::move(creds));
 }
 
 struct Krb5Keytab::Iterator::State {

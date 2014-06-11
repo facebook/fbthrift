@@ -96,10 +96,11 @@ public:
   explicit Krb5Context(bool thread_local_ctx = false);
   ~Krb5Context();
 
-  krb5_context get() { return context_; }
+  krb5_context get() const;
 
 private:
-  krb5_context context_;
+  mutable krb5_context context_;
+  bool threadLocal_;
 };
 
 /**
@@ -189,17 +190,17 @@ std::ostream& operator<<(std::ostream& os, const Krb5Principal& obj);
 
 class Krb5Credentials {
 public:
-  Krb5Credentials(krb5_context context, krb5_creds&& creds);
+  Krb5Credentials(krb5_creds&& creds);
   Krb5Credentials(Krb5Credentials&& other);
   Krb5Credentials& operator=(Krb5Credentials&& other);
 
-  ~Krb5Credentials() { krb5_free_cred_contents(context_, creds_.get()); }
+  ~Krb5Credentials() { krb5_free_cred_contents(context_.get(), creds_.get()); }
 
   krb5_creds& get() const { return *creds_.get(); }
 
 private:
 
-  krb5_context context_;
+  Krb5Context context_;
   std::unique_ptr<krb5_creds> creds_;
 };
 
@@ -242,10 +243,9 @@ public:
     std::shared_ptr<State> state_;
   };
 
-  static Krb5CCache makeDefault(krb5_context context);
-  static Krb5CCache makeResolve(krb5_context context,const std::string& name);
-  static Krb5CCache makeNewUnique(krb5_context context,
-    const std::string& type);
+  static Krb5CCache makeDefault();
+  static Krb5CCache makeResolve(const std::string& name);
+  static Krb5CCache makeNewUnique(const std::string& type);
 
   // Disable copy
   Krb5CCache(const Krb5CCache& that) = delete;
@@ -255,7 +255,6 @@ public:
 
   krb5_ccache release();
   krb5_ccache get() const { return ccache_; }
-  krb5_context getContext() const { return context_; }
 
   Iterator begin(bool include_config_entries=false) const {
     return Iterator(this, include_config_entries);
@@ -285,9 +284,9 @@ public:
   Krb5Credentials getCredentials(krb5_principal sprinc, krb5_flags options = 0);
 
  private:
-  Krb5CCache(krb5_context context, krb5_ccache ccache);
+  explicit Krb5CCache(krb5_ccache ccache);
 
-  krb5_context context_;
+  Krb5Context context_;
   krb5_ccache ccache_;
 };
 
