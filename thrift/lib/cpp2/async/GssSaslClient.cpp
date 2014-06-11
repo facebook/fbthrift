@@ -121,7 +121,11 @@ void GssSaslClient::start(Callback *cb) {
         return;
       }
 
+      // Log the overhead around rescheduling the remainder of the
+      // handshake at the back of the evb queue.
+      logger->logStart("evb_overhead");
       evb_->runInEventBaseThread([=]() mutable {
+        logger->logEnd("evb_overhead");
         if (*channelCallbackUnavailable) {
           return;
         }
