@@ -6757,11 +6757,6 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
     "  const uint64_t id = " << tinfo.id << "U;" << endl <<
     "  if (schema.dataTypes.count(id)) return;" << endl;
 
-  // Call dependent initializers
-  for (auto& p : deps) {
-    f_reflection_impl_
-      << "  " << p.first << "(schema);" << "  // " << p.second << endl;
-  }
 
   f_reflection_impl_ <<
     "  " << ns << "DataType& dt = schema.dataTypes[id];" << endl <<
@@ -6814,6 +6809,12 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
         << "  dt.enumValues[\"" << escape(p.first) << "\"] = " << p.second
         << ";" << endl;
     }
+  }
+
+  // Call dependent initializers
+  for (auto& p : deps) {
+    f_reflection_impl_
+      << "  " << p.first << "(schema);" << "  // " << p.second << endl;
   }
 
   f_reflection_impl_ <<

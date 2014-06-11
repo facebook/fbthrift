@@ -71,3 +71,18 @@ TEST(Recursive, CoRec) {
   EXPECT_TRUE(c.other != nullptr);
   EXPECT_TRUE(c.other->other.other == nullptr);
 }
+
+TEST(Recursive, CoRecJson) {
+  CoRec c;
+  std::unique_ptr<CoRec2> r(new CoRec2);
+  c.other = std::move(r);
+
+  ThriftSerializerSimpleJson<void> serializer;
+  std::string serialized;
+  serializer.serialize(c, &serialized);
+
+  RecList result;
+  serializer.deserialize(serialized, &result);
+  EXPECT_TRUE(c.other != nullptr);
+  EXPECT_TRUE(c.other->other.other == nullptr);
+}
