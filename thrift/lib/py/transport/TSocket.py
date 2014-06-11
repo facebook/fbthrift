@@ -62,7 +62,18 @@ class ConnectionEpoll:
             pass
 
     def process(self, timeout):
-        msgs = self.epoll.poll(timeout=(float(timeout or -1)))
+        # poll() invokes a "long" syscall that will be interrupted by any signal
+        # that comes in, causing an EINTR error.  If this happens, avoid dying
+        # horribly by pretending you timed out
+        try:
+            msgs = self.epoll.poll(timeout=(float(timeout or -1)))
+        except IOError as e:
+            if e.errno == errno.EINTR:
+                # Treat interrupted polls as if they had timed out
+                msgs = []
+            else:
+                raise
+
 
         rset = []
         wset = []
@@ -103,8 +114,18 @@ class ConnectionSelect:
         return fileno in self.readable or fileno in self.writable
 
     def process(self, timeout):
-        return select.select(list(self.readable), list(self.writable),
-                list(self.readable), timeout)
+        # select() invokes a "long" syscall that will be interrupted by any
+        # signal that comes in, causing an EINTR error.  If this happens,
+        # avoid dying horribly by pretending you timed out
+        try:
+            return select.select(list(self.readable), list(self.writable),
+                    list(self.readable), timeout)
+        except OSError as e:
+            if e.errno == errno.EINTR:
+                # Treat interrupted polls as if they had timed out
+                return ([], [], [])
+            else:
+                raise
 
 
 class TSocketBase(TTransportBase):
