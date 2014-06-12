@@ -44,12 +44,15 @@ class HeaderClientChannel : public RequestChannel,
                             public MessageChannel::RecvCallback,
                             virtual public async::TDelayedDestruction {
   typedef ProtectionChannelHandler::ProtectionState ProtectionState;
- private:
+ protected:
   virtual ~HeaderClientChannel(){}
 
  public:
   explicit HeaderClientChannel(
     const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport);
+
+  explicit HeaderClientChannel(
+    const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
   typedef
     std::unique_ptr<HeaderClientChannel,
@@ -62,8 +65,8 @@ class HeaderClientChannel : public RequestChannel,
     return Ptr(new HeaderClientChannel(transport));
   }
 
-  void sendMessage(Cpp2Channel::SendCallback* callback,
-                   std::unique_ptr<folly::IOBuf>&& buf) {
+  virtual void sendMessage(Cpp2Channel::SendCallback* callback,
+                   std::unique_ptr<folly::IOBuf> buf) {
     cpp2Channel_->sendMessage(callback, std::move(buf));
   }
 
@@ -501,7 +504,7 @@ private:
     HeaderClientChannel& channel_;
   } saslClientCallback_;
 
-  std::unique_ptr<Cpp2Channel, TDelayedDestruction::Destructor> cpp2Channel_;
+  std::shared_ptr<Cpp2Channel> cpp2Channel_;
 
   apache::thrift::async::HHWheelTimer::UniquePtr timer_;
 };

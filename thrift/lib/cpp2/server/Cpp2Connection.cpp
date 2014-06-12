@@ -35,17 +35,27 @@ using namespace std;
 using apache::thrift::TApplicationException;
 
 Cpp2Connection::Cpp2Connection(
-  std::shared_ptr<TAsyncSocket> asyncSocket,
+  const std::shared_ptr<TAsyncSocket>& asyncSocket,
   const TSocketAddress* address,
-  Cpp2Worker* worker)
+  Cpp2Worker* worker,
+  const std::shared_ptr<HeaderServerChannel>& serverChannel)
     : processor_(worker->getServer()->getCpp2Processor())
-    , channel_(new HeaderServerChannel(asyncSocket))
+    , duplexChannel_(worker->getServer()->isDuplex() ?
+        folly::make_unique<DuplexChannel>(
+            DuplexChannel::Who::SERVER, asyncSocket) :
+        nullptr)
+    , channel_(serverChannel ? serverChannel :  // used by client
+               duplexChannel_ ? duplexChannel_->getServerChannel() : // server
+               std::shared_ptr<HeaderServerChannel>(
+                   new HeaderServerChannel(asyncSocket),
+                   TDelayedDestruction::Destructor()))
     , worker_(worker)
     , context_(address,
                asyncSocket.get(),
                channel_->getHeader(),
                channel_->getSaslServer(),
-               worker->getServer()->getEventBaseManager())
+               worker->getServer()->getEventBaseManager(),
+               duplexChannel_ ? duplexChannel_->getClientChannel() : nullptr)
     , socket_(asyncSocket) {
 
   channel_->setQueueSends(worker->getServer()->getQueueSends());
@@ -62,13 +72,15 @@ Cpp2Connection::Cpp2Connection(
     worker_->getServer()->setNonSaslEnabled(true);
   }
 
-  auto factory = worker_->getServer()->getSaslServerFactory();
-  if (factory) {
-    channel_->setSaslServer(
-      unique_ptr<SaslServer>(factory(asyncSocket->getEventBase()))
-    );
-    // Refresh the saslServer_ pointer in context_
-    context_.setSaslServer(channel_->getSaslServer());
+  if (asyncSocket) {
+    auto factory = worker_->getServer()->getSaslServerFactory();
+    if (factory) {
+      channel_->setSaslServer(
+        unique_ptr<SaslServer>(factory(asyncSocket->getEventBase()))
+      );
+      // Refresh the saslServer_ pointer in context_
+      context_.setSaslServer(channel_->getSaslServer());
+    }
   }
 
   if (worker_->getServer()->getSaslEnabled() &&
@@ -151,7 +163,7 @@ void Cpp2Connection::requestTimeoutExpired() {
 }
 
 bool Cpp2Connection::pending() {
-  return socket_->isPending();
+  return socket_ ? socket_->isPending() : false;
 }
 
 void Cpp2Connection::killRequest(

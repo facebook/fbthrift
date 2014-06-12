@@ -742,15 +742,17 @@ class CppGenerator(t_generator.Generator):
             init = OrderedDict()
             if service.extends:
                 init[self._type_name(service.extends) + 'AsyncClient'] = \
-                    'std::move(channel)'
+                    'channel'
             if not service.extends:
-                init["channel_"] = "std::move(channel)"
+                init["channel_"] = "channel"
             # TODO: make it possible to create a connection context from a
             # thrift channel
             out().defn('~{name}()', name=classname,
                    modifiers='virtual', in_header=True).scope.empty()
 
-            with out().defn('{name}(channel_ptr channel)', name=classname,
+            with out().defn('{name}(std::shared_ptr<' +
+                            'apache::thrift::RequestChannel> channel)',
+                        name=classname,
                         init_dict=init,
                         in_header=True):
                 out('connectionContext_ = '
@@ -801,7 +803,7 @@ class CppGenerator(t_generator.Generator):
                 out().label('protected:')
                 out("std::unique_ptr<apache::thrift::server::TConnectionContext>"
                   "connectionContext_;")
-                out("channel_ptr channel_;")
+                out("std::shared_ptr<apache::thrift::RequestChannel> channel_;")
 
     def _get_async_func_name(self, function):
         if self._is_processed_in_eb(function):

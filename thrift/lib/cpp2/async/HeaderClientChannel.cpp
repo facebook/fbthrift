@@ -37,6 +37,14 @@ namespace apache { namespace thrift {
 
 HeaderClientChannel::HeaderClientChannel(
   const std::shared_ptr<TAsyncTransport>& transport)
+    : HeaderClientChannel(
+        std::shared_ptr<Cpp2Channel>(
+            Cpp2Channel::newChannel(transport,
+                make_unique<ClientFramingHandler>(*this))))
+{}
+
+HeaderClientChannel::HeaderClientChannel(
+  const std::shared_ptr<Cpp2Channel>& cpp2Channel)
     : sendSeqId_(0)
     , closeCallback_(nullptr)
     , timeout_(0)
@@ -45,8 +53,7 @@ HeaderClientChannel::HeaderClientChannel(
     , keepRegisteredForClose_(true)
     , protectionState_(ProtectionState::UNKNOWN)
     , saslClientCallback_(*this)
-    , cpp2Channel_(Cpp2Channel::newChannel(transport,
-                       make_unique<ClientFramingHandler>(*this)))
+    , cpp2Channel_(cpp2Channel)
     , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
   header_.reset(new THeader);
   header_->setSupportedClients(nullptr);

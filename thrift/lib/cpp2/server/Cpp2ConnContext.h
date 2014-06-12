@@ -22,6 +22,7 @@
 #include "thrift/lib/cpp/transport/THeader.h"
 #include "thrift/lib/cpp/transport/TSocketAddress.h"
 #include "thrift/lib/cpp2/async/SaslServer.h"
+#include "thrift/lib/cpp2/async/HeaderClientChannel.h"
 
 #include <memory>
 
@@ -34,11 +35,13 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     const apache::thrift::async::TAsyncSocket* socket,
     apache::thrift::transport::THeader* header,
     const apache::thrift::SaslServer* sasl_server,
-    apache::thrift::async::TEventBaseManager* manager)
+    apache::thrift::async::TEventBaseManager* manager,
+    const std::shared_ptr<HeaderClientChannel>& duplexChannel = nullptr)
     : peerAddress_(*address),
       header_(header),
       saslServer_(sasl_server),
-      manager_(manager) {
+      manager_(manager),
+      duplexChannel_(duplexChannel) {
     if (socket) {
       socket->getLocalAddress(&localAddress_);
     }
@@ -90,12 +93,24 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return manager_;
   }
 
+  template <typename Client>
+  Client* getDuplexClient() {
+    DCHECK(duplexChannel_);
+    Client* client = dynamic_cast<Client*>(duplexClient_.get());
+    if (!client) {
+      client = new Client(duplexChannel_);
+      duplexClient_.reset(client);
+    }
+    return client;
+  }
  private:
   apache::thrift::transport::TSocketAddress peerAddress_;
   apache::thrift::transport::TSocketAddress localAddress_;
   apache::thrift::transport::THeader* header_;
   const apache::thrift::SaslServer* saslServer_;
   apache::thrift::async::TEventBaseManager* manager_;
+  std::shared_ptr<HeaderClientChannel> duplexChannel_;
+  std::unique_ptr<TClientBase> duplexClient_;
 };
 
 // Request-specific context
@@ -185,6 +200,10 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
   virtual void* setUserData(void* data, void (*destructor)(void*) = nullptr) {
     return ctx_->setUserData(data, destructor);
+  }
+
+  virtual Cpp2ConnContext* getConnectionContext() const {
+    return ctx_;
   }
 
  private:

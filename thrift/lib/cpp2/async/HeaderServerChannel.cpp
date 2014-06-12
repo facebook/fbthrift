@@ -44,6 +44,14 @@ std::atomic<uint32_t> HeaderServerChannel::sample_(0);
 
 HeaderServerChannel::HeaderServerChannel(
   const std::shared_ptr<TAsyncTransport>& transport)
+    : HeaderServerChannel(
+        std::shared_ptr<Cpp2Channel>(
+            Cpp2Channel::newChannel(transport,
+                make_unique<ServerFramingHandler>(*this))))
+{}
+
+HeaderServerChannel::HeaderServerChannel(
+    const std::shared_ptr<Cpp2Channel>& cpp2Channel)
     : protectionState_(ProtectionState::UNKNOWN)
     , callback_(nullptr)
     , arrivalSeqId_(1)
@@ -51,8 +59,7 @@ HeaderServerChannel::HeaderServerChannel(
     , sampleRate_(0)
     , timeoutSASL_(5000)
     , saslServerCallback_(*this)
-    , cpp2Channel_(Cpp2Channel::newChannel(transport,
-                       make_unique<ServerFramingHandler>(*this)))
+    , cpp2Channel_(cpp2Channel)
     , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
   header_.reset(new THeader);
   header_->setSupportedClients(nullptr);

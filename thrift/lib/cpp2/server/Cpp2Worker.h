@@ -59,9 +59,12 @@ class Cpp2Worker :
    *        responses (if any) after processing completes.
    * @param server the ThriftServer which created us.
    * @param workerID the ID assigned to this worker
+   * @param serverChannel existing server channel to use, only for duplex server
    */
   Cpp2Worker(ThriftServer* server,
-               uint32_t workerID) :
+             uint32_t workerID,
+             const std::shared_ptr<HeaderServerChannel>&
+                 serverChannel = nullptr) :
     TServer(std::shared_ptr<apache::thrift::server::TProcessor>()),
     server_(server),
     eventBase_(),
@@ -72,8 +75,14 @@ class Cpp2Worker :
     auto observer =
       std::dynamic_pointer_cast<apache::thrift::async::EventBaseObserver>(
       server_->getObserver());
+    if (serverChannel) {
+      // duplex
+      useExistingChannel(serverChannel);
+    } else {
+      eventBase_.reset(new async::TEventBase);
+    }
     if (observer) {
-      eventBase_.setObserver(observer);
+      eventBase_->setObserver(observer);
     }
   }
 
@@ -88,7 +97,7 @@ class Cpp2Worker :
    * @returns pointer to my TEventBase object.
    */
   apache::thrift::async::TEventBase* getEventBase() {
-    return &eventBase_;
+    return eventBase_.get();
   }
 
   /**
@@ -154,6 +163,7 @@ class Cpp2Worker :
    */
   int getPendingCount() const;
 
+
  protected:
     apache::thrift::async::HHWheelTimer::UniquePtr timer_;
 
@@ -162,7 +172,7 @@ class Cpp2Worker :
   ThriftServer* server_;
 
   /// An instance's TEventBase for I/O.
-  apache::thrift::async::TEventBase eventBase_;
+  std::shared_ptr<apache::thrift::async::TEventBase> eventBase_;
 
   /// Our ID in [0:nWorkers).
   uint32_t workerID_;
@@ -187,6 +197,12 @@ class Cpp2Worker :
    * Handler called when a new connection may be available.
    */
   void acceptConnections();
+
+  /**
+   * For a duplex Thrift server, use an existing channel
+   */
+  void useExistingChannel(
+      const std::shared_ptr<HeaderServerChannel>& serverChannel);
 
   /**
    * The list of active connections

@@ -97,11 +97,13 @@ void Cpp2Worker::connectionAccepted(int fd, const TSocketAddress& clientAddr)
   }
 
   if (server_->getSSLContext()) {
-    sslSock = new TAsyncSSLSocket(server_->getSSLContext(), &eventBase_, fd,
+    sslSock = new TAsyncSSLSocket(server_->getSSLContext(),
+                                  eventBase_.get(),
+                                  fd,
                                   true);
     asyncSock = sslSock;
   } else {
-    asyncSock = new TAsyncSocket(&eventBase_, fd);
+    asyncSock = new TAsyncSocket(eventBase_.get(), fd);
   }
   asyncSock->setShutdownSocketSet(server_->shutdownSocketSet_.get());
 
@@ -152,6 +154,27 @@ void Cpp2Worker::finishConnectionAccepted(TAsyncSocket *asyncSocket) {
   clientConnection->start();
 }
 
+void Cpp2Worker::useExistingChannel(
+    const std::shared_ptr<HeaderServerChannel>& serverChannel) {
+
+  TSocketAddress address;
+
+  auto conn = std::make_shared<Cpp2Connection>(
+      nullptr, &address, this, serverChannel);
+  activeConnections_.insert(conn);
+
+  DCHECK(!eventBase_);
+  // Use supplied event base and don't delete it when finished
+  eventBase_.reset(serverChannel->getEventBase(), [](TEventBase*){});
+
+  // Set up HHWheelTimer. It manages connection idle timeout as well as
+  // request timeout.
+  DCHECK(!timer_);
+  timer_.reset(new HHWheelTimer(eventBase_.get()));
+
+  conn->start();
+}
+
 void Cpp2Worker::acceptError(const std::exception& ex) noexcept {
   // We just log an error message if an accept error occurs.
   // Most accept errors are transient (e.g., out of file descriptors), so we
@@ -167,7 +190,7 @@ void Cpp2Worker::acceptStopped() noexcept {
 }
 
 void Cpp2Worker::stopEventBase() noexcept {
-  eventBase_.terminateLoopSoon();
+  eventBase_->terminateLoopSoon();
 }
 
 /**
@@ -180,14 +203,14 @@ void Cpp2Worker::serve() {
     // for this thread.  This relies on the fact that Cpp2Worker always
     // starts in a brand new thread, so nothing else has tried to use the
     // TEventBaseManager to get an event base for this thread yet.
-    server_->getEventBaseManager()->setEventBase(&eventBase_, false);
+    server_->getEventBaseManager()->setEventBase(eventBase_.get(), false);
 
     // Set up HHWheelTimer. It manages connection idle timeout as well as
     // request timeout.
-    timer_.reset(new HHWheelTimer(&eventBase_));
+    timer_.reset(new HHWheelTimer(eventBase_.get()));
 
     // No events are registered by default, loopForever.
-    eventBase_.loopForever();
+    eventBase_->loopForever();
 
     // Inform the TEventBaseManager that our TEventBase is no longer valid.
     // This prevents iterations over the manager's TEventBases from
@@ -213,7 +236,7 @@ void Cpp2Worker::closeConnections() {
 
 Cpp2Worker::~Cpp2Worker() {
   closeConnections();
-  eventBase_.terminateLoopSoon();
+  eventBase_->terminateLoopSoon();
 }
 
 int Cpp2Worker::pendingCount() {

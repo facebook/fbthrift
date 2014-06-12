@@ -30,6 +30,7 @@
 #include "thrift/lib/cpp2/server/Cpp2ConnContext.h"
 #include "thrift/lib/cpp2/server/ThriftServer.h"
 #include "thrift/lib/cpp2/server/Cpp2Worker.h"
+#include "thrift/lib/cpp2/async/DuplexChannel.h"
 #include <memory>
 #include <unordered_set>
 
@@ -45,16 +46,19 @@ class Cpp2Connection
  public:
 
   /**
-   * Constructor for TEventConnection.
+   * Constructor for Cpp2Connection.
    *
    * @param asyncSocket shared pointer to the async socket
    * @param address the peer address of this connection
    * @param worker the worker instance that is handling this connection
+   * @param serverChannel server channel to use in duplex mode,
+   *        should be nullptr in normal mode
    */
   Cpp2Connection(
-    std::shared_ptr<apache::thrift::async::TAsyncSocket> asyncSocket,
+    const std::shared_ptr<apache::thrift::async::TAsyncSocket>& asyncSocket,
       const apache::thrift::transport::TSocketAddress* address,
-      Cpp2Worker* worker);
+      Cpp2Worker* worker,
+      const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr);
 
   /// Destructor -- close down the connection.
   ~Cpp2Connection();
@@ -77,9 +81,8 @@ class Cpp2Connection
 
  protected:
   std::unique_ptr<apache::thrift::AsyncProcessor> processor_;
-  std::unique_ptr<
-    apache::thrift::HeaderServerChannel,
-    apache::thrift::async::TDelayedDestruction::Destructor> channel_;
+  std::unique_ptr<DuplexChannel> duplexChannel_;
+  std::shared_ptr<apache::thrift::HeaderServerChannel> channel_;
   Cpp2Worker* worker_;
   Cpp2Worker* getWorker() {
     return worker_;

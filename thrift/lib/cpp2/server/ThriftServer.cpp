@@ -100,7 +100,8 @@ ThriftServer::ThriftServer() :
   isOverloaded_([]() { return false; }),
   queueSends_(true),
   enableCodel_(false),
-  stopWorkersOnStopListening_(true) {
+  stopWorkersOnStopListening_(true),
+  isDuplex_(false) {
 
   // SASL setup
   if (FLAGS_sasl_policy == "required") {
@@ -110,6 +111,15 @@ ThriftServer::ThriftServer() :
     setSaslEnabled(true);
     setNonSaslEnabled(true);
   }
+}
+
+ThriftServer::ThriftServer(
+    const std::shared_ptr<HeaderServerChannel>& serverChannel)
+    : ThriftServer()
+{
+  serverChannel_ = serverChannel;
+  nWorkers_ = 1;
+  timeout_ = std::chrono::milliseconds(0);
 }
 
 ThriftServer::~ThriftServer() {
@@ -204,20 +214,22 @@ void ThriftServer::setup() {
     }
 
     // bind to the socket
-    if (socket_ == nullptr) {
-      socket_.reset(new TAsyncServerSocket());
-      socket_->setShutdownSocketSet(shutdownSocketSet_.get());
-      if (port_ != -1) {
-        socket_->bind(port_);
-      } else {
-        DCHECK(address_.isInitialized());
-        socket_->bind(address_);
+    if (!serverChannel_) {
+      if (socket_ == nullptr) {
+        socket_.reset(new TAsyncServerSocket());
+        socket_->setShutdownSocketSet(shutdownSocketSet_.get());
+        if (port_ != -1) {
+          socket_->bind(port_);
+        } else {
+          DCHECK(address_.isInitialized());
+          socket_->bind(address_);
+        }
       }
-    }
 
-    socket_->listen(listenBacklog_);
-    socket_->setMaxNumMessagesInQueue(maxNumMsgsInQueue_);
-    socket_->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
+      socket_->listen(listenBacklog_);
+      socket_->setMaxNumMessagesInQueue(maxNumMsgsInQueue_);
+      socket_->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
+    }
 
     // We always need a threadmanager for cpp2.
     if (!threadFactory_) {
@@ -288,40 +300,61 @@ void ThriftServer::setup() {
         }
     });
 
-    auto b = std::make_shared<boost::barrier>(nWorkers_ + 1);
+    if (!serverChannel_) {
+      // regular server
+      auto b = std::make_shared<boost::barrier>(nWorkers_ + 1);
 
-    // Create the worker threads.
-    workers_.reserve(nWorkers_);
-    for (uint32_t n = 0; n < nWorkers_; ++n) {
-      addWorker();
-      workers_[n].worker->getEventBase()->runInLoop([b](){
-        b->wait();
-      });
+      // Create the worker threads.
+      workers_.reserve(nWorkers_);
+      for (uint32_t n = 0; n < nWorkers_; ++n) {
+        addWorker();
+        workers_[n].worker->getEventBase()->runInLoop([b](){
+          b->wait();
+        });
+      }
+
+      // Update address_ with the address that we are actually bound to.
+      // (This is needed if we were supplied a pre-bound socket, or if
+      // address_'s port was set to 0, so an ephemeral port was chosen by
+      // the kernel.)
+      if (socket_) {
+        socket_->getAddress(&address_);
+      }
+
+      // Notify handler of the preServe event
+      if (eventHandler_ != nullptr) {
+        eventHandler_->preServe(&address_);
+      }
+
+      for (auto& worker: workers_) {
+        worker.thread->start();
+        ++threadsStarted;
+        worker.thread->setName(folly::to<std::string>(cpp2WorkerThreadName_,
+                                                      threadsStarted));
+      }
+
+      // Wait for all workers to start
+      b->wait();
+
+      if (socket_) {
+        socket_->attachEventBase(eventBaseManager_->getEventBase());
+      }
+      eventBaseAttached = true;
+      if (socket_) {
+        socket_->startAccepting();
+      }
+    } else {
+      // duplex server
+      // Create the Cpp2Worker
+      DCHECK(workers_.empty());
+      WorkerInfo info;
+      uint32_t workerID = 0;
+      info.worker.reset(new Cpp2Worker(this, workerID, serverChannel_));
+      // no thread, use current one (shared with client)
+      info.thread = nullptr;
+
+      workers_.push_back(info);
     }
-
-    // Update address_ with the address that we are actually bound to.
-    // (This is needed if we were supplied a pre-bound socket, or if address_'s
-    // port was set to 0, so an ephemeral port was chosen by the kernel.)
-    socket_->getAddress(&address_);
-
-    // Notify handler of the preServe event
-    if (eventHandler_ != nullptr) {
-      eventHandler_->preServe(&address_);
-    }
-
-    for (auto& worker: workers_) {
-      worker.thread->start();
-      ++threadsStarted;
-      worker.thread->setName(folly::to<std::string>(cpp2WorkerThreadName_,
-                                                    threadsStarted));
-    }
-
-    // Wait for all workers to start
-    b->wait();
-
-    socket_->attachEventBase(eventBaseManager_->getEventBase());
-    eventBaseAttached = true;
-    socket_->startAccepting();
   } catch (...) {
     // XXX: Cpp2Worker::acceptStopped() calls
     //      eventBase_.terminateLoopSoon().  Normally this stops the
@@ -330,9 +363,11 @@ void ThriftServer::setup() {
     //      run yet this won't do the right thing. The worker thread
     //      will still continue to call startConsuming() later, and
     //      will then start the event loop.
-    for (uint32_t i = 0; i < threadsStarted; ++i) {
-      workers_[i].worker->acceptStopped();
-      workers_[i].thread->join();
+    if (!serverChannel_) {
+      for (uint32_t i = 0; i < threadsStarted; ++i) {
+        workers_[i].worker->acceptStopped();
+        workers_[i].thread->join();
+      }
     }
     workers_.clear();
 
@@ -356,6 +391,11 @@ void ThriftServer::setup() {
  */
 void ThriftServer::serve() {
   setup();
+  if (serverChannel_ != nullptr) {
+    // A duplex server (the one running on a client) doesn't uses its own EB
+    // since it reuses the client's EB
+    return;
+  }
   SCOPE_EXIT { this->cleanUp(); };
   eventBaseManager_->getEventBase()->loop();
 }
@@ -417,12 +457,17 @@ void ThriftServer::addWorker() {
   info.thread = threadFactory_->newThread(info.worker, ThreadFactory::ATTACHED);
 
   // Add the worker as an accept callback
-  socket_->addAcceptCallback(info.worker.get(), info.worker->getEventBase());
+  if (socket_) {
+    socket_->addAcceptCallback(info.worker.get(), info.worker->getEventBase());
+  }
 
   workers_.push_back(info);
 }
 
 void ThriftServer::stopWorkers() {
+  if (serverChannel_) {
+    return;
+  }
   for (auto& info : workers_) {
     info.worker->stopEventBase();
     info.thread->join();

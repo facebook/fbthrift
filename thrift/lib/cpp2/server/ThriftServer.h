@@ -245,6 +245,12 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   bool stopWorkersOnStopListening_;
 
+  // HeaderServerChannel to use for a duplex server (used by client).
+  // nullptr for a regular server.
+  std::shared_ptr<HeaderServerChannel> serverChannel_;
+
+  bool isDuplex_;   // is server in duplex mode? (used by server)
+
   enum class InjectedFailure {
     NONE,
     ERROR,
@@ -287,6 +293,14 @@ class ThriftServer : public apache::thrift::server::TServer {
 
  public:
   ThriftServer();
+
+  // NOTE: Don't use this constructor to create a regular Thrift server. This
+  // constructor is used by the client to create a duplex server on an existing
+  // connection.
+  // Don't create a listening server. Instead use the channel to run incoming
+  // requests.
+  explicit ThriftServer(
+      const std::shared_ptr<HeaderServerChannel>& serverChannel);
 
   virtual ~ThriftServer();
 
@@ -905,6 +919,26 @@ class ThriftServer : public apache::thrift::server::TServer {
   getHandlerFunc getGetHandler() {
     return getHandler_;
   }
+
+
+  // client side duplex
+  std::shared_ptr<HeaderServerChannel> getDuplexServerChannel() {
+    return serverChannel_;
+  }
+
+  // server side duplex
+  bool isDuplex() {
+    return isDuplex_;
+  }
+
+  void setDuplex(bool duplex) {
+    // setDuplex may only be called on the server side.
+    // serverChannel_ must be nullptr in this case
+    DCHECK(serverChannel_ == nullptr);
+    DCHECK(workers_.size() == 0);
+    isDuplex_ = duplex;
+  }
+
 };
 
 }} // apache::thrift

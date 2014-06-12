@@ -57,6 +57,8 @@ enum HEADER_FLAGS {
   HEADER_FLAG_STREAM_BEGIN = 0x02,
   HEADER_FLAG_STREAM_PIECE = 0x06,
   HEADER_FLAG_STREAM_END = 0x04,
+  // Set for reverse messages (server->client requests, client->server replies)
+  HEADER_FLAG_DUPLEX_REVERSE = 0x08,
 };
 
 enum THRIFT_SECURITY_POLICY {
@@ -343,17 +345,6 @@ class THeader {
    */
   void useAsHttpClient(const std::string& host, const std::string& uri);
 
- protected:
-
-  void setBestClientType();
-
-  std::bitset<CLIENT_TYPES_LEN> supported_clients;
-
-  std::unique_ptr<folly::IOBufQueue> queue_;
-
-  // Http client parser
-  std::unique_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
-
   // 0 and 16th bits must be 0 to differentiate from framed & unframed
   static const uint32_t HEADER_MAGIC = 0x0FFF0000;
   static const uint32_t HEADER_MASK = 0xFFFF0000;
@@ -365,6 +356,17 @@ class THeader {
   static const uint32_t HTTP_HEAD_CLIENT_MAGIC = 0x48454144; // HEAD
 
   static const uint32_t MAX_FRAME_SIZE = 0x3FFFFFFF;
+
+ protected:
+
+  void setBestClientType();
+
+  std::bitset<CLIENT_TYPES_LEN> supported_clients;
+
+  std::unique_ptr<folly::IOBufQueue> queue_;
+
+  // Http client parser
+  std::unique_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
 
   int16_t protoId_;
   int8_t protoVersion;

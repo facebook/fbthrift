@@ -35,6 +35,7 @@ libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   async/GssSaslServer.cpp \
 			   async/Cpp2Channel.cpp \
 			   async/AsyncProcessor.cpp \
+			   async/DuplexChannel.cpp \
 			   async/Stream.cpp \
 			   async/InputStream.cpp \
 			   async/OutputStream.cpp \

@@ -405,6 +405,8 @@ class TClientBase : public EventHandlerBase {
     EventHandlerBase(original),
     s_() {}
 
+  virtual ~TClientBase() {}
+
   static void addClientEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
