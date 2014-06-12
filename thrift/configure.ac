@@ -132,6 +132,8 @@ if test "$with_cpp" = "yes";  then
              [Please install google-gflags library])])
   AC_CHECK_LIB([snappy], [_init], [], [AC_MSG_ERROR(
              [Please install snappy library])])
+  AC_CHECK_LIB([numa], [numa_available], [], [AC_MSG_ERROR(
+             [Please install numa library])])
   AC_CHECK_LIB([folly], [getenv], [], [AC_MSG_ERROR(
              [Please install folly library])])
 
@@ -172,6 +174,10 @@ if test "$with_cpp" = "yes";  then
 
   AC_CHECK_HEADER([snappy.h], [], [
     AC_MSG_ERROR([Please install libsnappy-dev])
+  ], [])
+
+  AC_CHECK_HEADER([numa.h], [], [
+    AC_MSG_ERROR([Please install libnuma-dev])
   ], [])
 
   AX_LIB_ZLIB([1.2.3])

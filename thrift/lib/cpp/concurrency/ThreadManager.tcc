@@ -362,8 +362,16 @@ bool ThreadManager::ImplT<SemType>::canSleep() {
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
-                              int64_t timeout,
-                              int64_t expiration) {
+                                        int64_t timeout,
+                                        int64_t expiration,
+                                        bool cancellable,
+                                        bool numa) {
+
+  if (numa) {
+    VLOG_EVERY_N(1, 100) << "ThreadManager::add called with numa == true, but "
+                         << "not a NumaThreadManager";
+  }
+
   if (state_ != ThreadManager::STARTED) {
     throw IllegalStateException("ThreadManager::Impl::add ThreadManager "
                                 "not started");
@@ -714,27 +722,36 @@ public:
   }
 
   virtual std::shared_ptr<ThreadFactory> threadFactory() const {
+
     throw IllegalStateException("Not implemented");
     return std::shared_ptr<ThreadFactory>();
   }
 
   virtual void threadFactory(std::shared_ptr<ThreadFactory> value) {
-    throw IllegalStateException("Not implemented");
+    Guard g(mutex_);
+    for (auto& m : managers_) {
+      m->threadFactory(value);
+    }
   }
 
   virtual void add(std::shared_ptr<Runnable>task,
                    int64_t timeout=0LL,
-                   int64_t expiration=0LL) {
+                   int64_t expiration=0LL,
+                   bool cancellable = false,
+                   bool numa = false) {
     PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
     PRIORITY prio = p ? p->getPriority() : NORMAL;
-    add(prio, task, timeout, expiration);
+    add(prio, task, timeout, expiration, cancellable, numa);
   }
 
   virtual void add(PRIORITY priority,
                    std::shared_ptr<Runnable>task,
                    int64_t timeout=0LL,
-                   int64_t expiration=0LL) {
-    managers_[priority]->add(task, timeout, expiration);
+                   int64_t expiration=0LL,
+                   bool cancellable = false,
+                   bool numa = false) {
+
+    managers_[priority]->add(task, timeout, expiration, cancellable, numa);
   }
 
   template <typename T>

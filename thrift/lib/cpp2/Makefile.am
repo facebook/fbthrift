@@ -74,10 +74,11 @@ libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   ../cpp/util/kerberos/Krb5CredentialsCacheManager.cpp \
 			   ../cpp/util/kerberos/Krb5CCacheStore.cpp \
 			   ../cpp/util/kerberos/Krb5Tgts.cpp \
+                           ../cpp/concurrency/NumaThreadManager.cpp \
          ../cpp/ssl/SSLUtils.cpp
 
 
-libthriftcpp2_la_LIBADD = ../cpp/libthrift.la libsaslstubs.a -lkrb5 -lgssapi_krb5 -lsnappy
+libthriftcpp2_la_LIBADD = ../cpp/libthrift.la libsaslstubs.a -lkrb5 -lgssapi_krb5 -lsnappy -lnuma
 libthriftcpp2_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
 
 THRIFT = $(top_builddir)/compiler/thrift1

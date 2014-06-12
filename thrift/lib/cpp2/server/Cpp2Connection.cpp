@@ -22,6 +22,7 @@
 #include "thrift/lib/cpp2/server/Cpp2Worker.h"
 #include "thrift/lib/cpp2/security/SecurityKillSwitch.h"
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include "thrift/lib/cpp/concurrency/NumaThreadManager.h"
 
 #include <assert.h>
 
@@ -30,6 +31,7 @@ namespace apache { namespace thrift {
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::server;
 using namespace apache::thrift::transport;
+using namespace apache::thrift::concurrency;
 using namespace apache::thrift::async;
 using namespace std;
 using apache::thrift::TApplicationException;
@@ -361,6 +363,8 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
   , connection_(con)
   , reqContext_(&con->context_) {
   RequestContext::create();
+
+  NumaThreadFactory::setNumaNode();
 }
 
 MessageChannel::SendCallback*

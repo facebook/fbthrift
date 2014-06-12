@@ -188,7 +188,8 @@ class ThreadManager::ImplT : public ThreadManager  {
 
   bool canSleep();
 
-  void add(shared_ptr<Runnable> value, int64_t timeout, int64_t expiration);
+  void add(shared_ptr<Runnable> value, int64_t timeout, int64_t expiration,
+           bool cancellable, bool numa);
 
   void remove(shared_ptr<Runnable> task);
 
