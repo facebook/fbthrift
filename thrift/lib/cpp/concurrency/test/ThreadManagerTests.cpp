@@ -25,14 +25,10 @@
 #include <boost/test/unit_test.hpp>
 
 #include "thrift/lib/cpp/concurrency/Monitor.h"
-#include "thrift/lib/cpp/concurrency/FunctionRunner.h"
 #include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
 #include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/concurrency/NumaThreadManager.h"
 #include "thrift/lib/cpp/concurrency/Util.h"
 #include "thrift/lib/cpp/concurrency/Codel.h"
-
-#include "folly/Synchronized.h"
 
 using namespace boost;
 using namespace apache::thrift::concurrency;
@@ -691,80 +687,6 @@ class TestObserver : public ThreadManager::Observer {
   int64_t timeout;
   std::string expectedName;
 };
-
-BOOST_AUTO_TEST_CASE(NumaThreadManagerTest) {
-  auto numa = new NumaThreadManager(2);
-  bool failed = false;
-
-  numa->setNamePrefix("foo");
-  numa->start();
-
-  folly::Synchronized<std::set<int>> nodes;
-
-  auto data = RequestContext::get()->getContextData(
-    "numa");
-  BOOST_CHECK(nullptr == data);
-
-  auto checkFunc = FunctionRunner::create([&](){
-      auto data = RequestContext::get()->getContextData(
-        "numa");
-      // Boost_check macros are not thread safe :(
-      // Check that the request is not bound unless requested
-      if (nullptr != data) {
-        failed = true;
-      }
-      auto node = NumaThreadFactory::getNumaNode();
-      SYNCHRONIZED(nodes) {
-        nodes.insert(node);
-      }
-
-      numa->add(FunctionRunner::create([=,&failed]() {
-            auto data = RequestContext::get()->getContextData(
-              "numa");
-            if (nullptr != data) {
-              failed = true;
-            }
-            // Check that multiple calls stay on the same node
-            auto node2 = NumaThreadFactory::getNumaNode();
-            if (node != node2) {
-              failed = true;
-            }
-          }),
-        0,
-        0,
-        true,
-        true);
-    });
-
-  for (int i = 0; i < 100; i++) {
-    numa->add(checkFunc,
-    0,
-    0,
-    true,
-    true);
-  }
-
-  numa->join();
-  BOOST_CHECK_EQUAL(numa_num_configured_nodes(), nodes->size());
-  BOOST_CHECK_EQUAL(failed, false);
-}
-
-BOOST_AUTO_TEST_CASE(NumaThreadManagerBind) {
-
-  auto numa = new NumaThreadManager(2);
-  numa->setNamePrefix("foo");
-  numa->start();
-
-  // Test binding the request.  Only works on threads started with
-  // NumaThreadManager.
-  numa->add(FunctionRunner::create([=](){
-      // Try binding the numa node
-      NumaThreadFactory::setNumaNode();
-      auto node = NumaThreadFactory::getNumaNode();
-      BOOST_CHECK(-1 != node);
-      }));
-  numa->join();
-}
 
 BOOST_AUTO_TEST_CASE(ObserverTest) {
   int64_t timeout = 1000;

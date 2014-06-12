@@ -167,9 +167,7 @@ class ThreadManager {
    */
   virtual void add(std::shared_ptr<Runnable>task,
                    int64_t timeout=0LL,
-                   int64_t expiration=0LL,
-                   bool cancellable = false,
-                   bool numa = false) = 0;
+                   int64_t expiration=0LL) = 0;
 
   /**
    * Removes a pending task
@@ -276,9 +274,7 @@ public:
   virtual void add(PRIORITY priority,
                    std::shared_ptr<Runnable>task,
                    int64_t timeout=0LL,
-                   int64_t expiration=0LL,
-                   bool cancellable = false,
-                   bool numa = false) = 0;
+                   int64_t expiration=0LL) = 0;
 
   /**
    * Creates a priority-aware thread manager that uses counts[X]

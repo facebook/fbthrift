@@ -236,11 +236,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
                         std::move(*iprot_holder), ctx, eb, tm);
 
           },
-          preq, eb, oneway),
-        0, // timeout
-        0, // expiration
-        true, // cancellable
-        true); // numa
+          preq, eb, oneway));
       req.release();
     } catch (const std::exception& e) {
       if (!oneway) {
@@ -388,11 +384,7 @@ class HandlerCallbackBase {
     std::shared_ptr<apache::thrift::concurrency::Runnable> task) {
     assert(tm_);
     try {
-      tm_->add(task,
-        0, // timeout
-        0, // expiration
-        true, // cancellable
-        true); // numa
+      tm_->add(task);
     } catch (...) {
       apache::thrift::TApplicationException ex(
         "Failed to add task to queue, too full");
