@@ -74,7 +74,7 @@ class EventTask : public virtual apache::thrift::concurrency::Runnable {
             req->sendErrorWrapped(
                 folly::make_exception_wrapper<TApplicationException>(
                   "Failed to add task to queue, too full"),
-                kOverloadedErrorCode);
+                kQueueOverloadedErrorCode);
             delete req;
           });
       }
@@ -243,7 +243,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
         req->sendErrorWrapped(
             folly::make_exception_wrapper<TApplicationException>(
               "Failed to add task to queue, too full"),
-            kOverloadedErrorCode);
+            kQueueOverloadedErrorCode);
       }
     }
   }
@@ -391,7 +391,7 @@ class HandlerCallbackBase {
       if (req_ && ep_) {
         req_->sendErrorWrapped(
             folly::make_exception_wrapper<TApplicationException>(std::move(ex)),
-            kOverloadedErrorCode);
+            kQueueOverloadedErrorCode);
       } else {
         LOG(ERROR) << folly::exceptionStr(ex);
       }

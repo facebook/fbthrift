@@ -36,6 +36,7 @@ const std::string kOverloadedErrorCode = "1";
 const std::string kTaskExpiredErrorCode = "2";
 const std::string kProxyTransportExceptionErrorCode = "3";
 const std::string kProxyProtocolExceptionErrorCode = "4";
+const std::string kQueueOverloadedErrorCode = "5";
 
 namespace apache { namespace thrift {
 
