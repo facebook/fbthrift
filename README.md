@@ -36,6 +36,7 @@ Dependencies
     - libkrb5-dev
     - libsnappy-dev
     - libsasl2-dev
+    - libnuma-dev
 
 Docs
 ----
