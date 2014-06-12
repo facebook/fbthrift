@@ -3947,6 +3947,23 @@ class CppGenerator(t_generator.Generator):
         with self._types_global.namespace('apache.thrift').scope:
             self._generate_cpp2ops(False, obj, self._types_scope)
 
+        gen_hash = self._has_cpp_annotation(obj, 'generate_hash')
+        gen_equal_to = self._has_cpp_annotation(obj, 'generate_equal_to')
+        if gen_hash or gen_equal_to:
+            full_name = self._namespace_prefix(
+                    self._program.get_namespace('cpp')) + obj.name
+            with self._types_global.namespace('std').scope:
+                if gen_hash:
+                    out('template<> struct hash<typename ' + full_name + '> {')
+                    out('size_t operator()(const ' + full_name + '&) const;')
+                    out("};")
+
+                if gen_equal_to:
+                    out('template<> struct equal_to<typename ' + full_name + '> {')
+                    out('bool operator()(const ' + full_name + '&,')
+                    out('const ' + full_name + '&) const;')
+                    out("};")
+
         # Re-enter types scope, but we can't actually re-enter a scope,
         # so let's recreate it
         scope = self._types_scope = \

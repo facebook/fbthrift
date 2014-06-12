@@ -1558,6 +1558,7 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
 
   generate_union_reader(gen_templates_ ? f_types_tcc_ : f_types_impl_, tstruct);
   generate_union_writer(gen_templates_ ? f_types_tcc_ : f_types_impl_, tstruct);
+
 }
 
 void t_cpp_generator::generate_union_json_reader(ofstream& out,
@@ -2115,6 +2116,35 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
   out << indent() << "void merge("
       << tstruct->get_name() << "&& from, "
       << tstruct->get_name() << "& to);" << endl;
+
+  /*
+   * Should generate template specialization for std::hash and std::equal_to
+   * which can be used by unordered associative container.
+   */
+  const bool genHash = tstruct->annotations_.count("cpp.generate_hash") > 0;
+  const bool genEqualTo = tstruct->annotations_.count("cpp.generate_equal_to") > 0;
+  if (genHash || genEqualTo) {
+    out << indent() << ns_close_ << endl << endl
+      << indent() << namespace_open("std") << endl;
+
+    const auto fullName = (ns_prefix_ + tstruct->get_name());
+    if (genHash) {
+      out << indent() << "template<> struct hash<typename "
+        << fullName << "> {" << endl
+        << indent() << "size_t operator()(const " << fullName << "&) const;"
+        << endl << indent() << "};" << endl;
+    }
+    if (genEqualTo) {
+      out << indent() << "template<> struct equal_to<typename "
+        << fullName << "> {" << endl
+        << indent() << "bool operator()(const " << fullName << "&, " << endl
+        << indent() << "const " << fullName << "&) const;"
+        << endl << indent() << "};" << endl;
+    }
+
+    out << indent() << namespace_close("std") << endl << endl
+      << indent() << ns_open_ << endl << endl;
+  }
 }
 
 bool is_boolean_type(t_type* ttype) {
