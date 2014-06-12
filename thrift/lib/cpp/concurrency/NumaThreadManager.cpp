@@ -161,7 +161,6 @@ NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
     // with any 0-thread managers.
     size_t threads = (size_t)
       ((((double)normalThreadsCount) / (nodes - i)) + .5);
-    CHECK(threads >= 0);
     normalThreadsCount -= threads;
     managers_.push_back(PriorityThreadManager::newPriorityThreadManager(
                           {{0, 0, 1, threads, 0}},
