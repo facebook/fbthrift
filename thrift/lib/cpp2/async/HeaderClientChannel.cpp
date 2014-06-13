@@ -68,6 +68,8 @@ void HeaderClientChannel::destroy() {
     saslClient_->markChannelCallbackUnavailable();
   }
 
+  cpp2Channel_->closeNow();
+
   TDelayedDestruction::destroy();
 }
 

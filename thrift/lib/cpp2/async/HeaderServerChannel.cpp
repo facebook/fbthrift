@@ -75,6 +75,8 @@ void HeaderServerChannel::destroy() {
 
   destroyStreams();
 
+  cpp2Channel_->closeNow();
+
   TDelayedDestruction::destroy();
 }
 
