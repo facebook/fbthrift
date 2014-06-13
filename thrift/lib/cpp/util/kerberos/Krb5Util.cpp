@@ -73,7 +73,7 @@ std::vector<std::string> getHostRealm(krb5_context context,
 Krb5Context::Krb5Context(bool thread_local_ctx)
     : threadLocal_(thread_local_ctx) {
   krb5_error_code code;
-  if (thread_local_ctx) {
+  if (threadLocal_) {
     code = krb5_init_thread_local_context(&context_);
   } else {
     code = krb5_init_context(&context_);
