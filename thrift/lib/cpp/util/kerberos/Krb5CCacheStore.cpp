@@ -235,7 +235,7 @@ std::vector<Krb5Principal> Krb5CCacheStore::getServicePrincipalList() {
   std::vector<Krb5Principal> services;
   ReadLock lock(serviceDataMapLock_);
   for (auto& data : serviceDataMap_) {
-    WriteLock lock(data.second->lock);
+    ReadLock lock(data.second->lock);
     if (!data.second->cache) {
       continue;
     }
