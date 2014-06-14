@@ -54,6 +54,7 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
                        protocol/TDebugProtocol.cpp \
                        protocol/TJSONProtocol.cpp \
                        protocol/TBase64Utils.cpp \
+                       ssl/SSLUtils.cpp \
                        transport/TTransportException.cpp \
                        transport/TFDTransport.cpp \
                        transport/TFileTransport.cpp \
@@ -131,6 +132,10 @@ include_protocol_HEADERS = \
                          protocol/TProtocolException.h \
                          protocol/TVirtualProtocol.h \
                          protocol/TProtocol.h
+
+include_ssldir = $(include_thriftdir)/ssl
+include_ssl_HEADERS = \
+                         ssl/SSLUtils.h
 
 include_transportdir = $(include_thriftdir)/transport
 include_transport_HEADERS = \

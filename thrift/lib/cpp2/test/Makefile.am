@@ -2,7 +2,7 @@
 # Common thrift code generation rules
 #
 THRIFT = $(top_builddir)/compiler/thrift1
-PYPATH = $(top_builddir)/compiler/py/build/lib.linux-x86_64-2.7
+PYPATH = $(top_builddir)/compiler/py/build/lib.linux-x86_64-2.7:$(top_builddir)/compiler/py/build/lib
 
 noinst_LIBRARIES = libService.a
 
