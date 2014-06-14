@@ -145,10 +145,10 @@ if test "$with_cpp" = "yes";  then
     AC_MSG_ERROR([Please install flex])
     have_cpp="no"
   fi
-  if test x"$YACC" != x"bison -y"; then
-    AC_MSG_ERROR([Please install bison])
-    have_cpp="no"
-  fi
+  case $YACC in bison*) ;;
+    *) AC_MSG_ERROR([Please install bison])
+       have_cpp="no" ;;
+  esac
 
   AC_CHECK_HEADER([folly/String.h], [], [
     AC_MSG_ERROR([Please install folly])
