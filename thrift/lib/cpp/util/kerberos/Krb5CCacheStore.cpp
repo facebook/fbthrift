@@ -51,13 +51,13 @@ Krb5CCacheStore::ServiceData::ServiceData() :
 }
 
 void Krb5CCacheStore::ServiceData::bumpCount() {
-  WriteLock guard(lock);
+  WriteLock guard(lockTimeSeries);
   time_t now = time(nullptr);
   timeSeries.addValue(std::chrono::seconds(now), 1);
 }
 
 uint64_t Krb5CCacheStore::ServiceData::getCount() {
-  ReadLock guard(lock);
+  ReadLock guard(lockTimeSeries);
   // Note that we don't have a need to call timeSeries_.update(<time>)
   // here because we don't care to have the exact count at the current
   // time. We're ok with grabbing the count at the last update.
@@ -77,7 +77,7 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
   }
 
   {
-    ReadLock readLock(dataPtr->lock);
+    ReadLock readLock(dataPtr->lockCache);
     // If there is a cache, just return it. Try with a read lock first
     // for performance reasons.
     if (dataPtr->cache) {
@@ -90,7 +90,7 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
 
   // If we didn't find a cache, upgrade to a write lock, and initialize
   // the cache.
-  WriteLock writeLock(dataPtr->lock);
+  WriteLock writeLock(dataPtr->lockCache);
   if (dataPtr->cache) {
     if (logger) {
       logger->logEnd("get_prepared_cache");
@@ -235,7 +235,7 @@ std::vector<Krb5Principal> Krb5CCacheStore::getServicePrincipalList() {
   std::vector<Krb5Principal> services;
   ReadLock lock(serviceDataMapLock_);
   for (auto& data : serviceDataMap_) {
-    ReadLock lock(data.second->lock);
+    ReadLock lock(data.second->lockCache);
     if (!data.second->cache) {
       continue;
     }
@@ -281,7 +281,7 @@ void Krb5CCacheStore::renewCreds() {
   WriteLock service_data_lock(serviceDataMapLock_);
   for (auto& entry : serviceDataMap_) {
     auto renewed_entry = renewed_map.find(entry.first);
-    WriteLock lock(entry.second->lock);
+    WriteLock lock(entry.second->lockCache);
     if (renewed_entry != renewed_map.end()) {
       entry.second->cache = std::move(renewed_entry->second);
     } else if (entry.second->cache) {
@@ -330,7 +330,7 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::exportCache(size_t limit) {
     }
 
     for (auto& data : serviceDataMap_) {
-      ReadLock lock(data.second->lock);
+      ReadLock lock(data.second->lockCache);
       if (!data.second->cache) {
         continue;
       }

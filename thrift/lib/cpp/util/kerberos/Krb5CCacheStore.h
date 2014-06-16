@@ -78,8 +78,9 @@ class Krb5CCacheStore {
      void bumpCount();
      uint64_t getCount();
 
-     Lock lock;
+     Lock lockTimeSeries;
      folly::BucketedTimeSeries<uint64_t> timeSeries;
+     Lock lockCache;
      // Credentials cache for the service
      std::shared_ptr<Krb5CCache> cache;
   };
