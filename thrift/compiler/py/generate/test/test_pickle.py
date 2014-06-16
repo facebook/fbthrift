@@ -68,8 +68,9 @@ class TestPickle(unittest.TestCase):
         # the CppOutputContext that wraps them
         bufcpp = StringIO()
         bufh = StringIO()
+        buftcc = StringIO()
         context = CppOutputContext(IndentedOutput(bufcpp),
-            IndentedOutput(bufh), 'test.h')
+            IndentedOutput(bufh), IndentedOutput(buftcc), 'test.h')
         # now write it to the context
         scope.commit(context)
         return dict(cpp=bufcpp, h=bufh)
