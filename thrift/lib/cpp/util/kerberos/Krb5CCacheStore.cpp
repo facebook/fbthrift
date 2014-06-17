@@ -167,7 +167,6 @@ void Krb5CCacheStore::importCache(
     Krb5Credentials cred(std::move(tmp_cred));
     Krb5Principal server = Krb5Principal::copyPrincipal(
       ctx_.get(), cred.get().server);
-    logger_->log("import_principal", folly::to<string>(server));
     if (server.isTgt()) {
       tgts.push_back(std::move(cred));
     } else {
@@ -179,6 +178,7 @@ void Krb5CCacheStore::importCache(
   Krb5Tgts tgts_obj;
   Krb5Principal client_principal = file_cache.getClientPrincipal();
   tgts_obj.setClientPrincipal(client_principal);
+  logger_->logStart("import_tgts");
   for (auto& tgt : tgts) {
     Krb5Principal server_principal = Krb5Principal::copyPrincipal(
       ctx_.get(), tgt.get().server);
@@ -191,9 +191,11 @@ void Krb5CCacheStore::importCache(
     }
   }
   tgts_ = std::move(tgts_obj);
+  logger_->logEnd("import_tgts");
 
   // Import service creds
   DataMapType new_data_map;
+  logger_->logStart("import_service_creds");
   for (auto& service : services) {
     Krb5Principal princ = Krb5Principal::copyPrincipal(
       ctx_.get(), service.get().server);
@@ -206,6 +208,7 @@ void Krb5CCacheStore::importCache(
   }
   WriteLock service_data_lock(serviceDataMapLock_);
   serviceDataMap_ = std::move(new_data_map);
+  logger_->logEnd("import_service_creds");
 }
 
 std::vector<Krb5Principal> Krb5CCacheStore::getServicePrincipalList() {
@@ -243,9 +246,7 @@ void Krb5CCacheStore::renewCreds() {
   std::unordered_map<string, std::unique_ptr<Krb5CCache>> renewed_map;
   for (auto& service : getServicePrincipalList()) {
     try {
-      logger_->logStart("renew_princ", folly::to<string>(service));
       auto mem = initCacheForService(service);
-      logger_->logEnd("renew_princ");
       renewed_map[folly::to<string>(service)] = std::move(mem);
     } catch (const std::runtime_error& e) {
       VLOG(4) << "Failed to renew cred for service: "

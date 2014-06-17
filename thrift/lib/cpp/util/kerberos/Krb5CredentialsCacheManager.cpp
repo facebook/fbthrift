@@ -314,10 +314,11 @@ void Krb5CredentialsCacheManager::initCacheStore() {
   // old creds.
   if (file_cache) {
     vector<Krb5Principal> princ_list = file_cache->getServicePrincipalList();
+    logger_->logStart("renew_expired_princ");
     for (const auto& princ : princ_list) {
-      logger_->log("renew_expired_princ", folly::to<string>(princ));
       store_->waitForCache(princ);
     }
+    logger_->logEnd("renew_expired_princ");
   }
 }
 
