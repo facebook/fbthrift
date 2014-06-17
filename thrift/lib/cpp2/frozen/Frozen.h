@@ -346,11 +346,11 @@ class ViewBase {
   /**
    * Unowned pointer to the layout of this object.
    */
-  const Layout* const layout_;
+  const Layout* layout_;
   /**
    * Position in memory to view.
    */
-  const ViewPosition position_;
+  ViewPosition position_;
 
   static const Layout* defaultLayout() {
     static Layout layout;

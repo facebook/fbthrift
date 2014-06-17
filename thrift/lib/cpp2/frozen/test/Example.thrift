@@ -51,6 +51,7 @@ struct EveryLayout {
   5: set<i32> ( cpp.template = "std::unordered_set" ) aHashSet,
   6: map<i32, i32> aMap,
   7: hash_map<i32, i32> aHashMap,
-  8: optional i32 aOptInt, // optional layout
+  8: optional i32 optInt, // optional layout
   9: float aFloat, // trivial layout
+  10: optional map<i32, i32> optMap,
 }
