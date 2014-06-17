@@ -160,6 +160,7 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::initCacheForService(
 
 void Krb5CCacheStore::importCache(
     Krb5CCache& file_cache) {
+  logger_->logStart("import_tgts");
   // Split out tgts and service principals
   std::vector<Krb5Credentials> tgts;
   std::vector<Krb5Credentials> services;
@@ -178,7 +179,6 @@ void Krb5CCacheStore::importCache(
   Krb5Tgts tgts_obj;
   Krb5Principal client_principal = file_cache.getClientPrincipal();
   tgts_obj.setClientPrincipal(client_principal);
-  logger_->logStart("import_tgts");
   for (auto& tgt : tgts) {
     Krb5Principal server_principal = Krb5Principal::copyPrincipal(
       ctx_.get(), tgt.get().server);

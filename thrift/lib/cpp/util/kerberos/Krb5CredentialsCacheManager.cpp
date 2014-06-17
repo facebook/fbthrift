@@ -281,12 +281,14 @@ void Krb5CredentialsCacheManager::initCacheStore() {
   // client will not be read in.
   std::unique_ptr<Krb5CCache> file_cache;
   string err_string;
+  logger_->logStart("read_in_cache_attempt");
   try {
     file_cache = readInCache();
   } catch (const std::runtime_error& e) {
     VLOG(4) << "Failed to read file cache: " << e.what();
     err_string += (string(e.what()) + ". ");
   }
+  logger_->logEnd("read_in_cache_attempt");
 
   // If the file cache is usable (ie. not expired), then just import it
   if (file_cache && !aboutToExpire(file_cache->getLifetime())) {
