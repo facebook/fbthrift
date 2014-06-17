@@ -790,7 +790,7 @@ class ThriftServer : public apache::thrift::server::TServer {
   /**
    * Get the minimum response compression size
    *
-   * @return task expire time
+   * @return minimum response compression size
    */
   uint32_t getMinCompressBytes() const {
     return minCompressBytes_;
