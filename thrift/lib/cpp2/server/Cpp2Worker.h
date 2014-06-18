@@ -215,6 +215,7 @@ class Cpp2Worker :
   std::chrono::steady_clock::time_point pendingTime_;
 
   friend class Cpp2Connection;
+  friend class ThriftServer;
 };
 
 }} // apache::thrift

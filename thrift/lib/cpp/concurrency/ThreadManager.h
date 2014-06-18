@@ -26,6 +26,7 @@
 #include <folly/RWSpinLock.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/concurrency/Codel.h>
 #include <gflags/gflags.h>
 
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -239,6 +240,8 @@ class ThreadManager {
   static void setObserver(std::shared_ptr<Observer> observer);
 
   virtual void enableCodel(bool) = 0;
+
+  virtual Codel* getCodel() = 0;
 
   template <typename SemType>
   class ImplT;

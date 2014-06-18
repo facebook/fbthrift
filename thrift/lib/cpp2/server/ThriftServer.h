@@ -239,6 +239,7 @@ class ThriftServer : public apache::thrift::server::TServer {
   uint32_t minCompressBytes_;
 
   std::function<bool(void)> isOverloaded_;
+  std::function<int64_t(const std::string&)> getLoad_;
 
   bool queueSends_;
 
@@ -423,6 +424,10 @@ class ThriftServer : public apache::thrift::server::TServer {
   int32_t getPendingCount() const;
 
   bool isOverloaded(uint32_t workerActiveRequests = 0);
+
+  // Get load percent of the server.  Must be a number between 0 and 100:
+  // 0 - no load, 100-fully loaded.
+  int64_t getLoad(const std::string& counter = "", bool check_custom = true);
 
   void setObserver(
     const std::shared_ptr<apache::thrift::server::TServerObserver>& observer) {
@@ -866,6 +871,14 @@ class ThriftServer : public apache::thrift::server::TServer {
    */
   void setIsOverloaded(std::function<bool(void)> isOverloaded) {
     isOverloaded_ = isOverloaded;
+  }
+
+  void setGetLoad(std::function<int64_t(const std::string&)> getLoad) {
+    getLoad_ = getLoad;
+  }
+
+  std::function<int64_t(const std::string&)> getGetLoad() {
+    return getLoad_;
   }
 
   /**

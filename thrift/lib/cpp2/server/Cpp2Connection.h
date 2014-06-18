@@ -45,6 +45,7 @@ class Cpp2Connection
     , public std::enable_shared_from_this<Cpp2Connection> {
  public:
 
+  static const std::string loadHeader;
   /**
    * Constructor for Cpp2Connection.
    *
@@ -173,6 +174,11 @@ class Cpp2Connection
                    TApplicationException::TApplicationExceptionType reason,
                    const char* comment);
   void disconnect(const char* comment) noexcept;
+
+  // Set any error headers necessary, based on the received headers
+  apache::thrift::transport::THeader::StringToStringMap setErrorHeaders(
+    const apache::thrift::transport::THeader::StringToStringMap&
+    recv_headers);
 
   friend class Cpp2Request;
 

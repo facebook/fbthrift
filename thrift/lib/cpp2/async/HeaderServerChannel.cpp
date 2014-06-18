@@ -252,13 +252,13 @@ void HeaderServerChannel::HeaderRequest::sendReply(
 void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
     folly::exception_wrapper ew,
     std::string exCode,
-    MessageChannel::SendCallback* cb) {
+    MessageChannel::SendCallback* cb,
+    THeader::StringToStringMap&& headers) {
 
   auto ex = dynamic_cast<TApplicationException*>(ew.get());
   // Other types are unimplemented.
   DCHECK(ex);
 
-  THeader::StringToStringMap headers;
   headers["ex"] = exCode;
   std::unique_ptr<folly::IOBuf> exbuf(
       serializeError(channel_->header_->getProtocolId(), *ex, getBuf()));

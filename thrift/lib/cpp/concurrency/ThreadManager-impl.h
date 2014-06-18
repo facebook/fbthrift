@@ -203,6 +203,7 @@ class ThreadManager::ImplT : public ThreadManager  {
 
   void getStats(int64_t& waitTimeUs, int64_t& runTimeUs, int64_t maxItems);
   void enableCodel(bool);
+  Codel* getCodel();
 
   // Methods to be invoked by workers
   void workerStarted(Worker<SemType>* worker);

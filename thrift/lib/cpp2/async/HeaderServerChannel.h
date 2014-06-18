@@ -185,7 +185,15 @@ protected:
                    apache::thrift::transport::THeader::StringToStringMap&&);
     void sendErrorWrapped(folly::exception_wrapper ex,
                           std::string exCode,
-                          MessageChannel::SendCallback* cb = nullptr);
+                          MessageChannel::SendCallback* cb = nullptr) {
+      apache::thrift::transport::THeader::StringToStringMap headers;
+      sendErrorWrapped(ex, exCode, cb, std::move(headers));
+    }
+    void sendErrorWrapped(
+      folly::exception_wrapper ex,
+      std::string exCode,
+      MessageChannel::SendCallback* cb,
+      apache::thrift::transport::THeader::StringToStringMap&& headers);
 
     // XXX this function should only be called in the async thread, which is
     //     fine because we do not support sync versions of streams on the

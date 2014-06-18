@@ -192,6 +192,11 @@ class NumaThreadManager : public ThreadManager {
     }
   }
 
+  virtual Codel* getCodel() {
+    // They *should* be roughtly the same, just return one for now.
+    return managers_[0]->getCodel();
+  }
+
  private:
   template <typename T>
   size_t sum(T method) const {

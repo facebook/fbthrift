@@ -590,6 +590,11 @@ void ThreadManager::ImplT<SemType>::enableCodel(bool enabled) {
 }
 
 template <typename SemType>
+Codel* ThreadManager::ImplT<SemType>::getCodel() {
+  return &codel_;
+}
+
+template <typename SemType>
 class SimpleThreadManager : public ThreadManager::ImplT<SemType> {
 
  public:
@@ -812,6 +817,10 @@ public:
     for (const auto& m : managers_) {
       m->enableCodel(enabled);
     }
+  }
+
+  Codel* getCodel() {
+    return managers_[NORMAL]->getCodel();
   }
 
 private:

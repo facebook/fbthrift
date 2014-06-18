@@ -41,6 +41,8 @@ class Codel {
   // Comment
   bool overloaded(std::chrono::microseconds delay);
 
+  int getLoad();
+
  private:
   std::chrono::microseconds codelMinDelay_;
   std::chrono::time_point<std::chrono::steady_clock> codelIntervalTime_;

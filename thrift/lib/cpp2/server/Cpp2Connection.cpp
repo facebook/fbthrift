@@ -36,6 +36,8 @@ using namespace apache::thrift::async;
 using namespace std;
 using apache::thrift::TApplicationException;
 
+const std::string Cpp2Connection::loadHeader{"load"};
+
 Cpp2Connection::Cpp2Connection(
   const std::shared_ptr<TAsyncSocket>& asyncSocket,
   const TSocketAddress* address,
@@ -195,14 +197,35 @@ void Cpp2Connection::killRequest(
   // may end up here. No need to send error back for such requests
   if (!processor_->isOnewayMethod(req.getBuf(),
       channel_->getHeader())) {
-    req.sendErrorWrapped(
+    auto recv_headers = channel_->getHeader()->getHeaders();
+
+    auto header_req = static_cast<HeaderServerChannel::HeaderRequest*>(&req);
+    header_req->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(reason,
                                                              comment),
-        kOverloadedErrorCode);
+        kOverloadedErrorCode,
+        nullptr,
+        setErrorHeaders(recv_headers));
   } else {
     // Send an empty request so reqId will be handler properly
     req.sendReply(std::unique_ptr<folly::IOBuf>());
   }
+}
+
+THeader::StringToStringMap Cpp2Connection::setErrorHeaders(
+  const THeader::StringToStringMap& recv_headers) {
+  THeader::StringToStringMap err_headers;
+
+  auto load_header = recv_headers.find(Cpp2Connection::loadHeader);
+  std::string counter_name = "";
+  if (load_header != recv_headers.end()) {
+    counter_name = load_header->second;
+  }
+
+  err_headers[Cpp2Connection::loadHeader] = folly::to<std::string>(
+    getWorker()->getServer()->getLoad(counter_name));
+
+  return err_headers;
 }
 
 // Response Channel callbacks
@@ -318,6 +341,16 @@ void Cpp2Connection::requestReceived(
   }
   auto reqContext = t2r->getContext();
 
+  auto headers = reqContext->getHeaders();
+  auto load_header = headers.find(Cpp2Connection::loadHeader);
+  if (load_header != headers.end()) {
+    reqContext->setHeader(Cpp2Connection::loadHeader,
+                          folly::to<std::string>(
+                            getWorker()->getServer()->getLoad(
+                              load_header->second)));
+
+  }
+
   try {
     processor_->process(std::move(t2r),
                         std::move(buf),
@@ -404,10 +437,13 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
     std::string exCode,
     MessageChannel::SendCallback* sendCallback) {
   if (req_->isActive()) {
+    auto recv_headers = connection_->channel_->getHeader()->getHeaders();
+
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
     req_->sendErrorWrapped(std::move(ew),
                            std::move(exCode),
-                           prepareSendCallback(sendCallback, observer));
+                           prepareSendCallback(sendCallback, observer),
+                           connection_->setErrorHeaders(recv_headers));
     cancelTimeout();
   }
 }

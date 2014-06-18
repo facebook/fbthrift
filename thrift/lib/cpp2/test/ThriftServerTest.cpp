@@ -188,6 +188,47 @@ TEST(ThriftServer, SyncClientTest) {
   ADD_FAILURE();
 }
 
+TEST(ThriftServer, GetLoadTest) {
+
+  auto serv = getServer();
+  ScopedServerThread sst(serv);
+  auto port = sst.getAddress()->getPort();
+
+  TEventBase base;
+
+  std::shared_ptr<TAsyncSocket> socket(
+    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+
+  TestServiceAsyncClient client(
+    std::unique_ptr<HeaderClientChannel,
+                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                      new HeaderClientChannel(socket)));
+
+  auto header_channel = boost::polymorphic_downcast<HeaderClientChannel*>(
+    client.getChannel());
+  header_channel->getHeader()->setHeader("load", "thrift.active_requests");
+  std::string response;
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+  auto headers = header_channel->getHeader()->getHeaders();
+  auto load = headers.find("load");
+  EXPECT_NE(load, headers.end());
+  EXPECT_EQ(load->second, "0");
+
+  serv->setGetLoad([&](std::string counter){
+    EXPECT_EQ(counter, "thrift.active_requests");
+    return 1;
+  });
+
+  header_channel->getHeader()->setHeader("load", "thrift.active_requests");
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+  headers = header_channel->getHeader()->getHeaders();
+  load = headers.find("load");
+  EXPECT_NE(load, headers.end());
+  EXPECT_EQ(load->second, "1");
+}
+
 TEST(ThriftServer, SerializationInEventBaseTest) {
 
   ScopedServerThread sst(getServer());

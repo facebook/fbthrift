@@ -557,4 +557,33 @@ std::chrono::milliseconds ThriftServer::getTaskExpireTimeForRequest(
   return timeoutTime;
 }
 
+int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
+  if (check_custom && getLoad_) {
+    return getLoad_(counter);
+  }
+
+  int reqload = 0;
+  int connload = 0;
+  int queueload = 0;
+  if (maxRequests_ > 0) {
+    reqload = (100*(globalActiveRequests_ + getPendingCount()))
+      / ((float)maxRequests_);
+  }
+  if (maxConnections_ > 0) {
+    int connections = 0;
+    for (auto& worker: workers_) {
+      connections += worker.worker->activeConnections_.size();
+    }
+    connload = (100*connections) / (float)maxConnections_;
+  }
+
+  queueload = threadManager_->getCodel()->getLoad();
+
+  int load = std::max({reqload, connload, queueload});
+  FB_LOG_EVERY_MS(WARNING, 1000*10) << "Load is: " << reqload << "% requests "
+                  << connload << "% connections "
+                  << queueload << "% queue time";
+  return load;
+}
+
 }} // apache::thrift
