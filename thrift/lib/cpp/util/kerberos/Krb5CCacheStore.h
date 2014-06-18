@@ -89,7 +89,9 @@ class Krb5CCacheStore {
    * to later fetch the service cred from the kdc.
    */
   std::unique_ptr<Krb5CCache> initCacheForService(
-    const Krb5Principal& service, const krb5_creds* creds = nullptr);
+    const Krb5Principal& service,
+    const krb5_creds* creds = nullptr,
+    SecurityLogger* logger = nullptr);
 
   std::shared_ptr<ServiceData> getServiceDataPtr(const Krb5Principal& service);
   std::vector<Krb5Principal> getServicePrincipalList();

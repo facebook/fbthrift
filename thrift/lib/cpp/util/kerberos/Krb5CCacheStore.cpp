@@ -101,7 +101,7 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
   if (logger) {
     logger->logStart("init_cache_for_service", folly::to<string>(service));
   }
-  dataPtr->cache = initCacheForService(service);
+  dataPtr->cache = initCacheForService(service, nullptr, logger);
   if (logger) {
     logger->logEnd("init_cache_for_service");
   }
@@ -130,8 +130,13 @@ std::shared_ptr<Krb5CCacheStore::ServiceData>
 }
 
 std::unique_ptr<Krb5CCache> Krb5CCacheStore::initCacheForService(
-    const Krb5Principal& service, const krb5_creds* creds) {
+    const Krb5Principal& service,
+    const krb5_creds* creds,
+    SecurityLogger* logger) {
 
+  if (logger) {
+    logger->logStart("wait_for_tgt");
+  }
   std::shared_ptr<const Krb5Credentials> tgt;
   auto client_princ = tgts_.getClientPrincipal();
   // Get a cross-realm tgt if we need
@@ -141,18 +146,33 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::initCacheForService(
   } else {
     tgt = tgts_.getTgt();
   }
+  if (logger) {
+    logger->logEnd("wait_for_tgt");
+  }
 
+  if (logger) {
+    logger->logStart("init_barebones_ccache");
+  }
   // Make a new memory cache.
   auto mem = folly::make_unique<Krb5CCache>(
     Krb5CCache::makeNewUnique("MEMORY"));
   // Initialize the new CC
   mem->initialize(client_princ.get());
   mem->storeCred(tgt->get());
+  if (logger) {
+    logger->logEnd("init_barebones_ccache");
+  }
 
   if (creds != nullptr) {
     mem->storeCred(*creds);
   } else {
+    if (logger) {
+      logger->logStart("get_credential_from_kdc");
+    }
     mem->getCredentials(service.get());
+    if (logger) {
+      logger->logEnd("get_credential_from_kdc");
+    }
   }
 
   return mem;
