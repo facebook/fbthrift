@@ -56,6 +56,7 @@ public class IntRangeSet implements Set<Integer> {
 
     int ext_start = values[0];
     int ext_end_so_far = values[0];
+    realSet.add(values[0]);
     for (int i = 1; i < values.length; i++) {
       realSet.add(values[i]);
 
