@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #ifndef _THRIFT_CONCURRENCY_FUNCTION_RUNNER_H
@@ -59,19 +56,22 @@ class FunctionRunner : public Runnable {
    * Syntactic sugar to make it easier to create new FunctionRunner
    * objects wrapped in shared_ptr.
    */
-  static std::shared_ptr<FunctionRunner> create(const VoidFunc& cob) {
-    return std::shared_ptr<FunctionRunner>(new FunctionRunner(cob));
+  template <class F>
+  static std::shared_ptr<FunctionRunner> create(F&& cob) {
+    return std::shared_ptr<FunctionRunner>(
+      new FunctionRunner(std::forward<F>(cob)));
   }
 
-  static std::shared_ptr<FunctionRunner> create(PthreadFuncPtr func,
-                                                  void* arg) {
+  static std::shared_ptr<FunctionRunner> create(const PthreadFuncPtr& func,
+                                                void* arg) {
     return std::shared_ptr<FunctionRunner>(new FunctionRunner(func, arg));
   }
 
-  static std::shared_ptr<FunctionRunner> create(const BoolFunc& cob,
-                                                  int intervalMs) {
-    return std::shared_ptr<FunctionRunner>(new FunctionRunner(cob,
-                                                                intervalMs));
+  template <class F>
+  static std::shared_ptr<FunctionRunner> create(F&& cob,
+                                                int intervalMs) {
+    return std::shared_ptr<FunctionRunner>(
+      new FunctionRunner(std::forward<F>(cob), intervalMs));
   }
 
   /**
@@ -85,8 +85,9 @@ class FunctionRunner : public Runnable {
   /**
    * Given a generic callback, this FunctionRunner will execute it.
    */
-  FunctionRunner(const VoidFunc& cob)
-   : func_(cob), repFunc_(0), initFunc_(0)
+  template <class F>
+  FunctionRunner(F&& cob)
+   : func_(std::forward<F>(cob)), repFunc_(0), initFunc_(0)
   { }
 
   /**
@@ -95,8 +96,10 @@ class FunctionRunner : public Runnable {
    * until it returns false. Note that the actual interval between calls will
    * be intervalMs plus execution time of the callback.
    */
-  FunctionRunner(const BoolFunc& cob, int intervalMs)
-   : func_(0), repFunc_(cob), intervalMs_(intervalMs), initFunc_(0)
+  template <class F>
+  FunctionRunner(F&& cob, int intervalMs)
+   : func_(0), repFunc_(std::forward<F>(cob)), intervalMs_(intervalMs),
+     initFunc_(0)
   { }
 
   /**
