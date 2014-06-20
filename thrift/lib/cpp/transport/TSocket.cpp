@@ -301,7 +301,7 @@ void TSocket::open() {
   std::memset(&hints, 0, sizeof(hints));
   hints.ai_family = PF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
-  hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;
+  hints.ai_flags = 0;
   sprintf(port, "%d", port_);
 
   error = getaddrinfo(host_.c_str(), port, &hints, &res0);
