@@ -671,6 +671,49 @@ TEST(TAsyncSSLSocketTest, SSLServerCacheCloseTest) {
 }
 
 /**
+ * Verify Client Ciphers obtained using SSL MSG Callback.
+ */
+TEST(TAsyncSSLSocketTest, SSLParseClientHelloSuccess) {
+  TEventBase eventBase;
+  auto clientCtx = std::make_shared<SSLContext>();
+  auto serverCtx = std::make_shared<SSLContext>();
+  serverCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+  serverCtx->ciphers("RSA:!SHA:!NULL:!SHA256@STRENGTH");
+  serverCtx->loadPrivateKey("thrift/lib/cpp/test/ssl/tests-key.pem");
+  serverCtx->loadCertificate("thrift/lib/cpp/test/ssl/tests-cert.pem");
+  serverCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
+  serverCtx->loadClientCAList("thrift/lib/cpp/test/ssl/ca-cert.pem");
+
+  clientCtx->setVerificationOption(SSLContext::SSLVerifyPeerEnum::VERIFY);
+  clientCtx->ciphers("RC4-SHA:AES128-SHA:AES256-SHA:RC4-MD5");
+  clientCtx->loadPrivateKey("thrift/lib/cpp/test/ssl/tests-key.pem");
+  clientCtx->loadCertificate("thrift/lib/cpp/test/ssl/tests-cert.pem");
+  clientCtx->loadTrustedCertificates("thrift/lib/cpp/test/ssl/ca-cert.pem");
+
+  int fds[2];
+  getfds(fds);
+
+  TAsyncSSLSocket::UniquePtr clientSock(
+      new TAsyncSSLSocket(clientCtx, &eventBase, fds[0], false));
+  TAsyncSSLSocket::UniquePtr serverSock(
+      new TAsyncSSLSocket(serverCtx, &eventBase, fds[1], true));
+
+  SSLHandshakeClient client(std::move(clientSock), true, true);
+  SSLHandshakeServerParseClientHello server(std::move(serverSock), true, true);
+
+  eventBase.loop();
+
+  EXPECT_EQ(server.clientCiphers_,
+            "RC4-SHA:AES128-SHA:AES256-SHA:RC4-MD5:00ff");
+  EXPECT_TRUE(client.handshakeVerify_);
+  EXPECT_TRUE(client.handshakeSuccess_);
+  EXPECT_TRUE(!client.handshakeError_);
+  EXPECT_TRUE(server.handshakeVerify_);
+  EXPECT_TRUE(server.handshakeSuccess_);
+  EXPECT_TRUE(!server.handshakeError_);
+}
+
+/**
  * Verify sucessful behavior of SSL certificate validation.
  */
 TEST(TAsyncSSLSocketTest, SSLHandshakeValidationSuccess) {

@@ -33,12 +33,21 @@
 #include <openssl/asn1.h>
 #include <openssl/ssl.h>
 
+#include "folly/Bits.h"
+#include "folly/io/IOBuf.h"
+#include "folly/io/Cursor.h"
+
 using apache::thrift::transport::TSocketAddress;
 using apache::thrift::transport::TTransportException;
 using apache::thrift::transport::SSLContext;
 using std::string;
 using std::shared_ptr;
 
+using folly::Endian;
+using folly::IOBuf;
+using folly::io::Cursor;
+using std::unique_ptr;
+using std::bind;
 
 namespace {
 using apache::thrift::async::TAsyncSocket;
@@ -908,6 +917,11 @@ TAsyncSSLSocket::handleAccept() noexcept {
     applyVerificationOptions(ssl_);
   }
 
+  if (server_ && parseClientHello_) {
+    SSL_set_msg_callback_arg(ssl_, this);
+    SSL_set_msg_callback(ssl_, &TAsyncSSLSocket::clientHelloParsingCallback);
+  }
+
   errno = 0;
   int ret = SSL_accept(ssl_);
   if (ret <= 0) {
@@ -1352,6 +1366,95 @@ int TAsyncSSLSocket::sslVerifyCallback(int preverifyOk,
   return (self->handshakeCallback_) ?
     self->handshakeCallback_->handshakeVerify(self, preverifyOk, x509Ctx) :
     preverifyOk;
+}
+
+void TAsyncSSLSocket::enableClientHelloParsing()  {
+    parseClientHello_ = true;
+    clientHelloInfo_.reset(new ClientHelloInfo());
+}
+
+void TAsyncSSLSocket::resetClientHelloParsing(SSL *ssl)  {
+  SSL_set_msg_callback(ssl, nullptr);
+  SSL_set_msg_callback_arg(ssl, nullptr);
+  clientHelloInfo_->clientHelloBuf_.clear();
+}
+
+void
+TAsyncSSLSocket::clientHelloParsingCallback(int written, int version,
+    int contentType, const void *buf, size_t len, SSL *ssl, void *arg)
+{
+  TAsyncSSLSocket *sock = static_cast<TAsyncSSLSocket*>(arg);
+  if (written != 0) {
+    sock->resetClientHelloParsing(ssl);
+    return;
+  }
+  if (contentType != SSL3_RT_HANDSHAKE) {
+    sock->resetClientHelloParsing(ssl);
+    return;
+  }
+  if (len == 0) {
+    return;
+  }
+
+  sock->clientHelloInfo_->clientHelloBuf_.append(IOBuf::copyBuffer(buf, len));
+  try {
+    Cursor cursor(sock->clientHelloInfo_->clientHelloBuf_.front());
+    if (cursor.read<uint8_t>() != SSL3_MT_CLIENT_HELLO) {
+      sock->resetClientHelloParsing(ssl);
+      return;
+    }
+
+    if (cursor.length() < 3) {
+      return;
+    }
+    uint32_t messageLength = cursor.read<uint8_t>();
+    messageLength <<= 8;
+    messageLength |= cursor.read<uint8_t>();
+    messageLength <<= 8;
+    messageLength |= cursor.read<uint8_t>();
+    if (cursor.length() < messageLength) {
+      return;
+    }
+
+    sock->clientHelloInfo_->clientHelloMajorVersion_ = cursor.read<uint8_t>();
+    sock->clientHelloInfo_->clientHelloMinorVersion_ = cursor.read<uint8_t>();
+
+    cursor.skip(4); // gmt_unix_time
+    cursor.skip(28); // random_bytes
+
+    cursor.skip(cursor.read<uint8_t>()); // session_id
+
+    uint16_t cipherSuitesLength = cursor.readBE<uint16_t>();
+    for (int i = 0; i < cipherSuitesLength; i += 2) {
+      sock->clientHelloInfo_->
+        clientHelloCipherSuites_.push_back(cursor.readBE<uint16_t>());
+    }
+
+    uint8_t compressionMethodsLength = cursor.read<uint8_t>();
+    for (int i = 0; i < compressionMethodsLength; ++i) {
+      sock->clientHelloInfo_->
+        clientHelloCompressionMethods_.push_back(cursor.readBE<uint8_t>());
+    }
+
+    if (cursor.length() > 0) {
+      uint16_t extensionsLength = cursor.readBE<uint16_t>();
+      while (extensionsLength) {
+        sock->clientHelloInfo_->
+          clientHelloExtensions_.push_back(cursor.readBE<uint16_t>());
+        extensionsLength -= 2;
+        uint16_t extensionDataLength = cursor.readBE<uint16_t>();
+        extensionsLength -= 2;
+        cursor.skip(extensionDataLength);
+        extensionsLength -= extensionDataLength;
+      }
+    }
+  } catch (std::out_of_range& e) {
+    // we'll use what we found and cleanup below.
+    VLOG(4) << "TAsyncSSLSocket::clientHelloParsingCallback(): "
+      << "buffer finished unexpectedly." << " TAsyncSSLSocket socket=" << sock;
+  }
+
+  sock->resetClientHelloParsing(ssl);
 }
 
 }}} // apache::thrift::async

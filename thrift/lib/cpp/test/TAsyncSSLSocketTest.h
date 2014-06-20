@@ -1243,6 +1243,30 @@ class SSLHandshakeServer : public SSLHandshakeBase {
   }
 };
 
+class SSLHandshakeServerParseClientHello : public SSLHandshakeBase {
+ public:
+  SSLHandshakeServerParseClientHello(
+      apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
+      bool preverifyResult,
+      bool verifyResult)
+      : SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
+    socket_->enableClientHelloParsing();
+    socket_->sslAccept(this, 0);
+  }
+
+  std::string clientCiphers_, sharedCiphers_, serverCiphers_, chosenCipher_;
+
+ protected:
+  void handshakeSuccess(apache::thrift::async::TAsyncSSLSocket* sock) noexcept {
+    handshakeSuccess_ = true;
+    sock->getSSLSharedCiphers(sharedCiphers_);
+    sock->getSSLServerCiphers(serverCiphers_);
+    sock->getSSLClientCiphers(clientCiphers_);
+    chosenCipher_ = sock->getNegotiatedCipherName();
+  }
+};
+
+
 class SSLHandshakeServerNoVerify : public SSLHandshakeBase {
  public:
   SSLHandshakeServerNoVerify(

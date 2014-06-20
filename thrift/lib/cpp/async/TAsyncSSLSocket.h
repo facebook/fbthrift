@@ -17,12 +17,25 @@
 #ifndef THRIFT_ASYNC_TASYNCSSLSOCKET_H_
 #define THRIFT_ASYNC_TASYNCSSLSOCKET_H_ 1
 
+#include <arpa/inet.h>
+#include <iomanip>
+#include <openssl/ssl.h>
+
 #include "folly/Optional.h"
 #include "thrift/lib/cpp/async/TAsyncSocket.h"
 #include "thrift/lib/cpp/async/TAsyncTimeout.h"
 #include "thrift/lib/cpp/concurrency/Mutex.h"
 #include "thrift/lib/cpp/transport/TSSLSocket.h"
 #include "thrift/lib/cpp/transport/TTransportException.h"
+
+#include "folly/Bits.h"
+#include "folly/io/IOBuf.h"
+#include "folly/io/Cursor.h"
+
+using folly::IOBuf;
+using folly::io::Cursor;
+using std::unique_ptr;
+
 
 namespace apache { namespace thrift {
 
@@ -265,6 +278,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
   virtual void setEorTracking(bool track);
   virtual size_t getRawBytesWritten() const;
   virtual size_t getRawBytesReceived() const;
+  void enableClientHelloParsing();
 
   /**
    * Accept an SSL connection on the socket.
@@ -511,13 +525,53 @@ class TAsyncSSLSocket : public TAsyncSocket {
 
   void timeoutExpired() noexcept;
 
+  /**
+   * Get the list of supported ciphers sent by the client in the client's
+   * preference order.
+   */
   void getSSLClientCiphers(std::string& clientCiphers) {
+    std::stringstream ciphersStream;
+    std::string cipherName;
+
+    if (parseClientHello_ == false
+        || clientHelloInfo_->clientHelloCipherSuites_.empty()) {
+      clientCiphers = "";
+      return;
+    }
+
+    for (auto originalCipherCode : clientHelloInfo_->clientHelloCipherSuites_)
+    {
+      // OpenSSL expects code as a big endian char array
+      auto cipherCode = htons(originalCipherCode);
+      const SSL_CIPHER* cipher =
+          TLSv1_2_method()->get_cipher_by_char((unsigned char*)&cipherCode);
+      if (cipher == nullptr) {
+        ciphersStream << std::setfill('0') << std::setw(4) << std::hex
+                      << originalCipherCode << ":";
+      } else {
+        ciphersStream << SSL_CIPHER_get_name(cipher) << ":";
+      }
+    }
+
+    clientCiphers = ciphersStream.str();
+    clientCiphers.erase(clientCiphers.end() - 1);
+  }
+
+  /**
+   * Get the list of shared ciphers between the server and the client.
+   * Works well for only SSLv2, not so good for SSLv3 or TLSv1.
+   */
+  void getSSLSharedCiphers(std::string& sharedCiphers) {
     char ciphersBuffer[1024];
     ciphersBuffer[0] = '\0';
     SSL_get_shared_ciphers(ssl_, ciphersBuffer, sizeof(ciphersBuffer) - 1);
-    clientCiphers = ciphersBuffer;
+    sharedCiphers = ciphersBuffer;
   }
 
+  /**
+   * Get the list of ciphers supported by the server in the server's
+   * preference order.
+   */
   void getSSLServerCiphers(std::string& serverCiphers) {
     serverCiphers = SSL_get_cipher_list(ssl_, 0);
     int i = 1;
@@ -532,6 +586,9 @@ class TAsyncSSLSocket : public TAsyncSocket {
   static int getSSLExDataIndex();
   static TAsyncSSLSocket* getFromSSL(const SSL *ssl);
   static int eorAwareBioWrite(BIO *b, const char *in, int inl);
+  void resetClientHelloParsing(SSL *ssl);
+  static void clientHelloParsingCallback(int write_p, int version,
+      int content_type, const void *buf, size_t len, SSL *ssl, void *arg);
 
  protected:
 
@@ -634,6 +691,17 @@ class TAsyncSSLSocket : public TAsyncSocket {
 
   // Callback for SSL_CTX_set_verify()
   static int sslVerifyCallback(int preverifyOk, X509_STORE_CTX* ctx);
+
+  bool parseClientHello_{false};
+  struct ClientHelloInfo {
+    folly::IOBufQueue clientHelloBuf_;
+    uint8_t clientHelloMajorVersion_;
+    uint8_t clientHelloMinorVersion_;
+    std::vector<uint16_t> clientHelloCipherSuites_;
+    std::vector<uint8_t> clientHelloCompressionMethods_;
+    std::vector<uint16_t> clientHelloExtensions_;
+  };
+  unique_ptr<ClientHelloInfo> clientHelloInfo_;
 };
 
 }}} // apache::thrift::async
