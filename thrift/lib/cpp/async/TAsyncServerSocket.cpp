@@ -310,7 +310,7 @@ void TAsyncServerSocket::bind(uint16_t port) {
   memset(&hints, 0, sizeof(hints));
   hints.ai_family = AF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
-  hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;
+  hints.ai_flags = AI_PASSIVE;
   snprintf(sport, sizeof(sport), "%u", port);
 
   if (getaddrinfo(nullptr, sport, &hints, &res0)) {
@@ -325,6 +325,10 @@ void TAsyncServerSocket::bind(uint16_t port) {
 
   for (res = res0; res; res = res->ai_next) {
     int s = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    // IPv6/IPv4 may not be supported by the kernel
+    if (s < 0 && errno == EAFNOSUPPORT) {
+      continue;
+    }
     CHECK(s);
 
     try {
@@ -353,6 +357,11 @@ void TAsyncServerSocket::bind(uint16_t port) {
         "failed to bind to async server socket for port",
         errno);
     }
+  }
+  if (sockets_.size() == 0) {
+    throw TTransportException(
+        TTransportException::COULD_NOT_BIND,
+        "did not bind any async server socket for port");
   }
 }
 
