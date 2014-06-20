@@ -140,9 +140,12 @@ class TSocketBase(TTransportBase):
             return [(socket.AF_UNIX, socket.SOCK_STREAM, None, None,
                      self._unix_socket)]
         else:
+            ai_flags = 0
+            if self.host is None:
+                ai_flags |= socket.AI_PASSIVE
             return socket.getaddrinfo(self.host, self.port, family,
                                       socket.SOCK_STREAM, 0,
-                                      socket.AI_PASSIVE | socket.AI_ADDRCONFIG)
+                                      ai_flags)
 
     def close(self):
         klist = self.handles.keys() if sys.version_info[0] < 3 else \
@@ -342,7 +345,12 @@ class TServerSocket(TSocketBase, TServerTransportBase):
             if self._unix_socket:
                 self._cleanup_unix_socket(res)
 
-            handle = socket.socket(res[0], res[1])
+            # Don't complain if we can't create a socket
+            # since this is handled below.
+            try:
+                handle = socket.socket(res[0], res[1])
+            except:
+                continue
             handle.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self._setHandleCloseOnExec(handle)
 
