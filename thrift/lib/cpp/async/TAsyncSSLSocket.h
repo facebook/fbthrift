@@ -543,8 +543,21 @@ class TAsyncSSLSocket : public TAsyncSocket {
     {
       // OpenSSL expects code as a big endian char array
       auto cipherCode = htons(originalCipherCode);
+
+#if defined(SSL_OP_NO_TLSv1_2)
       const SSL_CIPHER* cipher =
           TLSv1_2_method()->get_cipher_by_char((unsigned char*)&cipherCode);
+#elif defined(SSL_OP_NO_TLSv1_1)
+      const SSL_CIPHER* cipher =
+          TLSv1_1_method()->get_cipher_by_char((unsigned char*)&cipherCode);
+#elif defined(SSL_OP_NO_TLSv1)
+      const SSL_CIPHER* cipher =
+          TLSv1_method()->get_cipher_by_char((unsigned char*)&cipherCode);
+#else
+      const SSL_CIPHER* cipher =
+          SSLv3_method()->get_cipher_by_char((unsigned char*)&cipherCode);
+#endif
+
       if (cipher == nullptr) {
         ciphersStream << std::setfill('0') << std::setw(4) << std::hex
                       << originalCipherCode << ":";
