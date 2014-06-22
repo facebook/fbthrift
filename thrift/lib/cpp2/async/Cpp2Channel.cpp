@@ -44,7 +44,8 @@ Cpp2Channel::Cpp2Channel(
   std::unique_ptr<FramingChannelHandler> framingHandler)
     : transport_(transport)
     , queue_(new IOBufQueue)
-    , remaining_(DEFAULT_BUFFER_SIZE)
+    , readBufferSize_(DEFAULT_BUFFER_SIZE)
+    , remaining_(readBufferSize_)
     , recvCallback_(nullptr)
     , closing_(false)
     , eofInvoked_(false)
@@ -88,10 +89,10 @@ TEventBase* Cpp2Channel::getEventBase() {
 }
 
 void Cpp2Channel::getReadBuffer(void** bufReturn, size_t* lenReturn) {
-  // If remaining_ > DEFAULT_BUFFER_SIZE, preallocate only allocates
-  // DEFAULT_BUFFER_SIZE chunks at a time.
+  // If remaining_ > readBufferSize_, preallocate only allocates
+  // readBufferSize_ chunks at a time.
   pair<void*, uint32_t> data = queue_->preallocate(remaining_,
-                                                   DEFAULT_BUFFER_SIZE);
+                                                   readBufferSize_);
 
   *lenReturn = data.second;
   *bufReturn = data.first;
@@ -118,7 +119,7 @@ void Cpp2Channel::readDataAvailable(size_t len) noexcept {
   // Partial frames are stored inside the handlers between calls to
   // readDataAvailable.
   // On the last iteration, remaining_ is updated to the anticipated remaining
-  // frame length (if we're in the middle of a frame) or to DEFAULT_BUFFER_SIZE
+  // frame length (if we're in the middle of a frame) or to readBufferSize_
   // (if we are exactly between frames)
   while (true) {
     unique_ptr<IOBuf> unframed;
@@ -159,7 +160,7 @@ void Cpp2Channel::readDataAvailable(size_t len) noexcept {
 
     if (!unframed) {
       // no more data
-      remaining_ = remaining > 0 ? remaining : DEFAULT_BUFFER_SIZE;
+      remaining_ = remaining > 0 ? remaining : readBufferSize_;
       return;
     }
 

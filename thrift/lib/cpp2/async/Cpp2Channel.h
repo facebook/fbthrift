@@ -180,11 +180,21 @@ class Cpp2Channel
     return framingHandler_.get();
   }
 
+  void setReadBufferSize(uint32_t readBufferSize) {
+    CHECK(remaining_ == readBufferSize_); // channel has not been used
+    remaining_ = readBufferSize_ = std::max(readBufferSize,
+                                            DEFAULT_BUFFER_SIZE);
+  }
+
 private:
   std::shared_ptr<apache::thrift::async::TAsyncTransport> transport_;
   std::unique_ptr<folly::IOBufQueue> queue_;
   std::deque<std::vector<SendCallback*>> sendCallbacks_;
+
+  static const uint32_t DEFAULT_BUFFER_SIZE = 2048;
+  uint32_t readBufferSize_;
   uint32_t remaining_; // Used to attempt to allocate 'perfect' sized IOBufs
+
   RecvCallback* recvCallback_;
   bool closing_;
   bool eofInvoked_;
@@ -192,8 +202,6 @@ private:
   std::unique_ptr<folly::IOBuf> sends_; // buffer of data to send.
 
   std::unique_ptr<RecvCallback::sample> sample_;
-
-  static const uint32_t DEFAULT_BUFFER_SIZE = 2048;
 
   // Queued sends feature - optimizes by minimizing syscalls in high-QPS
   // loads for greater throughput, but at the expense of some

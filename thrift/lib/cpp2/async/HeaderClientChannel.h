@@ -77,6 +77,10 @@ class HeaderClientChannel : public RequestChannel,
     return cpp2Channel_->getTransport();
   }
 
+  void setReadBufferSize(uint32_t readBufferSize) {
+    cpp2Channel_->setReadBufferSize(readBufferSize);
+  }
+
   // Client interface from RequestChannel
   using RequestChannel::sendRequest;
   void sendRequest(const RpcOptions&,
