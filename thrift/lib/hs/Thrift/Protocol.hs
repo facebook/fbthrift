@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 --
 -- Licensed to the Apache Software Foundation (ASF) under one
@@ -27,7 +28,11 @@ module Thrift.Protocol
     , ProtocolExnType(..)
     ) where
 
-import Control.Monad (replicateM_, unless, void)
+import Control.Monad hiding (void)
+#if __GLASGOW_HASKELL__ >= 710
+import Control.Monad (void)
+#endif
+import Control.Monad.IO.Class
 import Control.Exception
 import Data.ByteString.Lazy
 import Data.Int
@@ -106,58 +111,66 @@ instance Enum MessageType where
 class Protocol a where
     getTransport :: Transport t => a t -> t
 
-    writeMessageBegin :: Transport t => a t -> (Text, MessageType, Int32) -> IO ()
-    writeMessageEnd   :: Transport t => a t -> IO ()
+    writeMessageBegin :: (MonadIO m, Transport t) => a t
+                         -> (Text, MessageType, Int32) -> m ()
+    writeMessageEnd   :: (MonadIO m, Transport t) => a t -> m ()
 
-    writeStructBegin :: Transport t => a t -> Text -> IO ()
-    writeStructEnd   :: Transport t => a t -> IO ()
-    writeFieldBegin  :: Transport t => a t -> (Text, ThriftType, Int16) -> IO ()
-    writeFieldEnd    :: Transport t => a t -> IO ()
-    writeFieldStop   :: Transport t => a t -> IO ()
-    writeMapBegin    :: Transport t => a t -> (ThriftType, ThriftType, Int32) -> IO ()
-    writeMapEnd      :: Transport t => a t -> IO ()
-    writeListBegin   :: Transport t => a t -> (ThriftType, Int32) -> IO ()
-    writeListEnd     :: Transport t => a t -> IO ()
-    writeSetBegin    :: Transport t => a t -> (ThriftType, Int32) -> IO ()
-    writeSetEnd      :: Transport t => a t -> IO ()
+    writeStructBegin :: (MonadIO m, Transport t) => a t -> Text -> m ()
+    writeStructEnd   :: (MonadIO m, Transport t) => a t -> m ()
+    writeFieldBegin  :: (MonadIO m, Transport t) => a t
+                        -> (Text, ThriftType, Int16) -> m ()
+    writeFieldEnd    :: (MonadIO m, Transport t) => a t -> m ()
+    writeFieldStop   :: (MonadIO m, Transport t) => a t -> m ()
+    writeMapBegin    :: (MonadIO m, Transport t) => a t
+                        -> (ThriftType, ThriftType, Int32) -> m ()
+    writeMapEnd      :: (MonadIO m, Transport t) => a t -> m ()
+    writeListBegin   :: (MonadIO m, Transport t) => a t ->
+                        (ThriftType, Int32) -> m ()
+    writeListEnd     :: (MonadIO m, Transport t) => a t -> m ()
+    writeSetBegin    :: (MonadIO m, Transport t) => a t -> (ThriftType, Int32)
+                        -> m ()
+    writeSetEnd      :: (MonadIO m, Transport t) => a t -> m ()
 
-    writeBool   :: Transport t => a t -> Bool -> IO ()
-    writeByte   :: Transport t => a t -> Int8 -> IO ()
-    writeI16    :: Transport t => a t -> Int16 -> IO ()
-    writeI32    :: Transport t => a t -> Int32 -> IO ()
-    writeI64    :: Transport t => a t -> Int64 -> IO ()
-    writeFloat  :: Transport t => a t -> Float -> IO ()
-    writeDouble :: Transport t => a t -> Double -> IO ()
-    writeString :: Transport t => a t -> Text -> IO ()
-    writeBinary :: Transport t => a t -> ByteString -> IO ()
-
-
-    readMessageBegin :: Transport t => a t -> IO (Text, MessageType, Int32)
-    readMessageEnd   :: Transport t => a t -> IO ()
-
-    readStructBegin :: Transport t => a t -> IO Text
-    readStructEnd   :: Transport t => a t -> IO ()
-    readFieldBegin  :: Transport t => a t -> IO (Text, ThriftType, Int16)
-    readFieldEnd    :: Transport t => a t -> IO ()
-    readMapBegin    :: Transport t => a t -> IO (ThriftType, ThriftType, Int32)
-    readMapEnd      :: Transport t => a t -> IO ()
-    readListBegin   :: Transport t => a t -> IO (ThriftType, Int32)
-    readListEnd     :: Transport t => a t -> IO ()
-    readSetBegin    :: Transport t => a t -> IO (ThriftType, Int32)
-    readSetEnd      :: Transport t => a t -> IO ()
-
-    readBool   :: Transport t => a t -> IO Bool
-    readByte   :: Transport t => a t -> IO Int8
-    readI16    :: Transport t => a t -> IO Int16
-    readI32    :: Transport t => a t -> IO Int32
-    readI64    :: Transport t => a t -> IO Int64
-    readFloat  :: Transport t => a t -> IO Float
-    readDouble :: Transport t => a t -> IO Double
-    readString :: Transport t => a t -> IO Text
-    readBinary :: Transport t => a t -> IO ByteString
+    writeBool   :: (MonadIO m, Transport t) => a t -> Bool -> m ()
+    writeByte   :: (MonadIO m, Transport t) => a t -> Int8 -> m ()
+    writeI16    :: (MonadIO m, Transport t) => a t -> Int16 -> m ()
+    writeI32    :: (MonadIO m, Transport t) => a t -> Int32 -> m ()
+    writeI64    :: (MonadIO m, Transport t) => a t -> Int64 -> m ()
+    writeFloat  :: (MonadIO m, Transport t) => a t -> Float -> m ()
+    writeDouble :: (MonadIO m, Transport t) => a t -> Double -> m ()
+    writeString :: (MonadIO m, Transport t) => a t -> Text -> m ()
+    writeBinary :: (MonadIO m, Transport t) => a t -> ByteString -> m ()
 
 
-skip :: (Protocol p, Transport t) => p t -> ThriftType -> IO ()
+    readMessageBegin :: (MonadIO m, Transport t) => a t
+                        -> m (Text, MessageType, Int32)
+    readMessageEnd   :: (MonadIO m, Transport t) => a t -> m ()
+
+    readStructBegin :: (MonadIO m, Transport t) => a t -> m Text
+    readStructEnd   :: (MonadIO m, Transport t) => a t -> m ()
+    readFieldBegin  :: (MonadIO m, Transport t) => a t
+                       -> m (Text, ThriftType, Int16)
+    readFieldEnd    :: (MonadIO m, Transport t) => a t -> m ()
+    readMapBegin    :: (MonadIO m, Transport t) => a t
+                       -> m (ThriftType, ThriftType, Int32)
+    readMapEnd      :: (MonadIO m, Transport t) => a t -> m ()
+    readListBegin   :: (MonadIO m, Transport t) => a t -> m (ThriftType, Int32)
+    readListEnd     :: (MonadIO m, Transport t) => a t -> m ()
+    readSetBegin    :: (MonadIO m, Transport t) => a t -> m (ThriftType, Int32)
+    readSetEnd      :: (MonadIO m, Transport t) => a t -> m ()
+
+    readBool   :: (MonadIO m, Transport t) => a t -> m Bool
+    readByte   :: (MonadIO m, Transport t) => a t -> m Int8
+    readI16    :: (MonadIO m, Transport t) => a t -> m Int16
+    readI32    :: (MonadIO m, Transport t) => a t -> m Int32
+    readI64    :: (MonadIO m, Transport t) => a t -> m Int64
+    readFloat  :: (MonadIO m, Transport t) => a t -> m Float
+    readDouble :: (MonadIO m, Transport t) => a t -> m Double
+    readString :: (MonadIO m, Transport t) => a t -> m Text
+    readBinary :: (MonadIO m, Transport t) => a t -> m ByteString
+
+
+skip :: (Protocol p, MonadIO m, Transport t) => p t -> ThriftType -> m ()
 skip _ T_STOP = return ()
 skip _ T_VOID = return ()
 skip p T_BOOL = void $ readBool p
@@ -182,11 +195,10 @@ skip p T_LIST = do (t, n) <- readListBegin p
                    readListEnd p
 
 
-skipFields :: (Protocol p, Transport t) => p t -> IO ()
+skipFields :: (Protocol p, MonadIO m, Transport t) => p t -> m ()
 skipFields p = do
     (_, t, _) <- readFieldBegin p
     unless (t == T_STOP) (skip p t >> readFieldEnd p >> skipFields p)
-
 
 data ProtocolExnType
     = PE_UNKNOWN
@@ -201,3 +213,8 @@ data ProtocolExnType
 data ProtocolExn = ProtocolExn ProtocolExnType String
   deriving ( Show, Typeable )
 instance Exception ProtocolExn
+
+#if __GLASGOW_HASKELL__ < 710
+void :: (Monad m) => m a -> m ()
+void = liftM (const ())
+#endif

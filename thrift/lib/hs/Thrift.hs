@@ -32,6 +32,7 @@ module Thrift
     ) where
 
 import Control.Monad ( when )
+import Control.Monad.IO.Class
 import Control.Exception
 
 import Data.Text.Lazy ( pack, unpack )
@@ -89,7 +90,7 @@ data AppExn = AppExn { ae_type :: AppExnType, ae_message :: String }
   deriving ( Show, Typeable )
 instance Exception AppExn
 
-writeAppExn :: (Protocol p, Transport t) => p t -> AppExn -> IO ()
+writeAppExn :: (Protocol p, MonadIO m, Transport t) => p t -> AppExn -> m ()
 writeAppExn pt ae = do
     writeStructBegin pt "TApplicationException"
 
@@ -104,30 +105,36 @@ writeAppExn pt ae = do
     writeFieldStop pt
     writeStructEnd pt
 
-readAppExn :: (Protocol p, Transport t) => p t -> IO AppExn
+readAppExn :: (Protocol p, MonadIO m, Transport t) => p t -> m AppExn
 readAppExn pt = do
     _ <- readStructBegin pt
-    record <- readAppExnFields pt (AppExn {ae_type = undefined, ae_message = undefined})
+    record <- readAppExnFields pt
+              AppExn {ae_type = undefined, ae_message = undefined}
     readStructEnd pt
     return record
 
-readAppExnFields :: forall (a :: * -> *) t. (Protocol a, Transport t) => a t -> AppExn -> IO AppExn 
+readAppExnFields
+  :: forall (a :: * -> *) m t. (Protocol a, MonadIO m, Transport t)
+     => a t -> AppExn -> m AppExn
 readAppExnFields pt record = do
-    (_, ft, tag) <- readFieldBegin pt
-    if ft == T_STOP
-        then return record
-        else case tag of
-                 1 -> if ft == T_STRING then
-                          do s <- readString pt
-                             readAppExnFields pt record{ae_message = unpack s}
-                          else do skip pt ft
-                                  readAppExnFields pt record
-                 2 -> if ft == T_I32 then
-                          do i <- readI32 pt
-                             readAppExnFields pt record{ae_type = (toEnum $ fromIntegral i)}
-                          else do skip pt ft
-                                  readAppExnFields pt record
-                 _ -> do skip pt ft
-                         readFieldEnd pt
-                         readAppExnFields pt record
-
+  (_, ft, tag) <- readFieldBegin pt
+  if ft == T_STOP
+    then return record
+    else case tag of
+      1 -> if ft == T_STRING then do
+             s <- readString pt
+             readAppExnFields pt record{ae_message = unpack s}
+           else do
+             skip pt ft
+             readAppExnFields pt record
+      2 -> if ft == T_I32 then do
+             i <- readI32 pt
+             readAppExnFields pt
+               record{ae_type = toEnum $ fromIntegral i}
+           else do
+             skip pt ft
+             readAppExnFields pt record
+      _ -> do
+        skip pt ft
+        readFieldEnd pt
+        readAppExnFields pt record

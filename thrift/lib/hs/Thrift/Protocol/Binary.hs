@@ -27,6 +27,7 @@ module Thrift.Protocol.Binary
 
 import Control.Exception ( throw )
 import Control.Monad ( liftM )
+import Control.Monad.IO.Class
 
 import qualified Data.Binary
 import Data.Bits
@@ -46,7 +47,7 @@ version_mask = fromIntegral (0xffff0000 :: Word32)
 version_1 :: Int32
 version_1    = fromIntegral (0x80010000 :: Word32)
 
-data BinaryProtocol a = Transport a => BinaryProtocol a
+data BinaryProtocol a = BinaryProtocol a
 
 
 instance Protocol BinaryProtocol where
@@ -115,7 +116,7 @@ instance Protocol BinaryProtocol where
         return (t, n)
     readSetEnd _ = return ()
 
-    readBool p = (== 1) `fmap` readByte p
+    readBool p = (== 1) `liftM` readByte p
 
     readByte p = do
         bs <- tReadAll (getTransport p) 1
@@ -133,9 +134,9 @@ instance Protocol BinaryProtocol where
         bs <- tReadAll (getTransport p) 8
         return $ Data.Binary.decode bs
 
-    readFloat p = unsafeCoerce $ readI32 p
+    readFloat p = unsafeCoerce `liftM` readI32 p
 
-    readDouble p = unsafeCoerce $ readI64 p
+    readDouble p = unsafeCoerce `liftM` readI64 p
 
     readString p = do
         i <- readI32 p
@@ -147,11 +148,11 @@ instance Protocol BinaryProtocol where
 
 
 -- | Write a type as a byte
-writeType :: (Protocol p, Transport t) => p t -> ThriftType -> IO ()
+writeType :: (Protocol p, MonadIO m, Transport t) => p t -> ThriftType -> m ()
 writeType p t = writeByte p (fromIntegral $ fromEnum t)
 
 -- | Read a byte as though it were a ThriftType
-readType :: (Protocol p, Transport t) => p t -> IO ThriftType
+readType :: (Protocol p, MonadIO m, Transport t) => p t -> m ThriftType
 readType p = do
     b <- readByte p
     return $ toEnum $ fromIntegral b

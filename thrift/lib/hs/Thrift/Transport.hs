@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 --
 -- Licensed to the Apache Software Foundation (ASF) under one
 -- or more contributor license agreements. See the NOTICE file
@@ -24,21 +25,24 @@ module Thrift.Transport
   , TransportExnType(..)
   ) where
 
-import Control.Monad ( when )
+import Control.Monad ( liftM, when )
+import Control.Monad.IO.Class
 import Control.Exception ( Exception, throw )
 
 import Data.Typeable ( Typeable )
+import Data.Word
 
 import qualified Data.ByteString.Lazy as LBS
 import Data.Monoid
 
 class Transport a where
-    tIsOpen :: a -> IO Bool
-    tClose  :: a -> IO ()
-    tRead   :: a -> Int -> IO LBS.ByteString
-    tWrite  :: a -> LBS.ByteString -> IO ()
-    tFlush  :: a -> IO ()
-    tReadAll :: a -> Int -> IO LBS.ByteString
+    tIsOpen :: (MonadIO m) => a -> m Bool
+    tClose  :: (MonadIO m) => a -> m ()
+    tRead   :: (MonadIO m) => a -> Int -> m LBS.ByteString
+    tPeek   :: (MonadIO m) => a -> m Word8
+    tWrite  :: (MonadIO m) => a -> LBS.ByteString -> m ()
+    tFlush  :: (MonadIO m) => a -> m ()
+    tReadAll :: (MonadIO m) => a -> Int -> m LBS.ByteString
 
     tReadAll _ 0 = return mempty
     tReadAll a len = do
@@ -46,8 +50,8 @@ class Transport a where
         let rlen = fromIntegral $ LBS.length result
         when (rlen == 0) (throw $ TransportExn "Cannot read. Remote side has closed." TE_UNKNOWN)
         if len <= rlen
-            then return result
-            else (result `mappend`) `fmap` (tReadAll a (len - rlen))
+          then return result
+          else (result `mappend`) `liftM` tReadAll a (len - rlen)
 
 data TransportExn = TransportExn String TransportExnType
   deriving ( Show, Typeable )
@@ -60,4 +64,3 @@ data TransportExnType
     | TE_TIMED_OUT
     | TE_END_OF_FILE
       deriving ( Eq, Show, Typeable )
-

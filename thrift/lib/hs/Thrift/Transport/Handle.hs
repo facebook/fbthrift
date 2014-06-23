@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
@@ -28,7 +29,9 @@ module Thrift.Transport.Handle
     ) where
 
 import Control.Exception ( catch, throw )
-import Control.Monad ()
+import Control.Monad.IO.Class
+import Data.Char
+import Data.Functor
 
 import Network
 
@@ -41,23 +44,24 @@ import qualified Data.ByteString.Lazy as LBS
 import Data.Monoid
 
 instance Transport Handle where
-    tIsOpen = hIsOpen
-    tClose h    = hClose h
-    tRead  h n  = LBS.hGet h n `catch` handleEOF
-    tWrite h s  = LBS.hPut h s
-    tFlush = hFlush
+    tIsOpen = liftIO . hIsOpen
+    tClose  = liftIO . hClose
+    tRead h n = liftIO $ LBS.hGet h n `catch` handleEOF
+    tPeek h = liftIO $ (fromIntegral . ord) <$> hLookAhead h
+    tWrite h n = liftIO $ LBS.hPut h n
+    tFlush = liftIO . hFlush
 
 
 -- | Type class for all types that can open a Handle. This class is used to
 -- replace tOpen in the Transport type class.
 class HandleSource s where
-    hOpen :: s -> IO Handle
+    hOpen :: MonadIO m => s -> m Handle
 
 instance HandleSource FilePath where
-    hOpen s = openFile s ReadWriteMode
+    hOpen s = liftIO $ openFile s ReadWriteMode
 
 instance HandleSource (HostName, PortID) where
-    hOpen = uncurry connectTo
+    hOpen = liftIO . uncurry connectTo
 
 
 handleEOF :: forall a (m :: * -> *).(Monoid a, Monad m) => IOError -> m a
