@@ -163,11 +163,31 @@ TEST_F(Krb5UtilTest, TestCCache) {
   auto ccache = Krb5CCache::makeDefault();
   // Test that we can resolve some cache name
   auto ccache2 = Krb5CCache::makeResolve(
-    "/var/run/ccache/krb5cc_doesnotexist");
+    "FILE:/var/run/ccache/krb5cc_doesnotexist");
   // Create a new in-memory cache
-  auto ccache3 = Krb5CCache::makeNewUnique("MEMORY");
-  EXPECT_EQ(0, ccache3.getServicePrincipalList().size());
-  EXPECT_EQ(0, count_creds(ccache3));
+  string name3;
+  {
+    auto ccache3 = Krb5CCache::makeNewUnique("MEMORY");
+    ccache3.initialize(Krb5Principal(context_.get(), "client3").get());
+    EXPECT_EQ(0, ccache3.getServicePrincipalList().size());
+    EXPECT_EQ(0, count_creds(ccache3));
+    name3 = ccache3.getName();
+  }
+  // Test the cache persists after close.
+  auto ccache3b = Krb5CCache::makeResolve(name3);
+  EXPECT_NO_THROW(ccache3b.getClientPrincipal());
+  // Test a cache which deletes itself.
+  string name4;
+  {
+    auto ccache4 = Krb5CCache::makeNewUnique("MEMORY");
+    ccache4.initialize(Krb5Principal(context_.get(), "client4").get());
+    EXPECT_EQ(0, ccache4.getServicePrincipalList().size());
+    EXPECT_EQ(0, count_creds(ccache4));
+    ccache4.setDestroyOnClose();
+    name4 = ccache4.getName();
+  }
+  auto ccache4b = Krb5CCache::makeResolve(name4);
+  EXPECT_THROW(ccache4b.getClientPrincipal(), std::runtime_error);
 }
 
 TEST_F(Krb5UtilTest, TestCCacheGetLifetime) {

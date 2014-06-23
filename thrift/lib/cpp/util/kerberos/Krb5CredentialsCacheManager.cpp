@@ -134,8 +134,6 @@ void Krb5CredentialsCacheManager::stopThread() {
 }
 
 std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
-  auto mem = folly::make_unique<Krb5CCache>(
-    Krb5CCache::makeNewUnique("MEMORY"));
   Krb5CCache file_cache = Krb5CCache::makeDefault();
   Krb5Principal client = file_cache.getClientPrincipal();
 
@@ -149,6 +147,9 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
                         " was required"));
   }
 
+  auto mem = folly::make_unique<Krb5CCache>(
+    Krb5CCache::makeNewUnique("MEMORY"));
+  mem->setDestroyOnClose();
   mem->initialize(client.get());
   // Copy the file cache into memory
   krb5_error_code code = krb5_cc_copy_creds(
@@ -236,6 +237,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   }
 
   std::unique_ptr<Krb5CCache> temp_cache = store_->exportCache(limit);
+  temp_cache->setDestroyOnClose();
 
   // Move the in-memory temp_cache to a temporary file
   auto file_cache = Krb5CCache::makeResolve(str_buf);

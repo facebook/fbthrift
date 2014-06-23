@@ -122,7 +122,7 @@ public:
 
   // Take ownership of principal
   Krb5Principal(krb5_context context, krb5_principal&& principal);
-  Krb5Principal(Krb5Principal&& other);
+  Krb5Principal(Krb5Principal&& other) noexcept;
   Krb5Principal& operator=(Krb5Principal&& other);
 
   ~Krb5Principal();
@@ -190,8 +190,8 @@ std::ostream& operator<<(std::ostream& os, const Krb5Principal& obj);
 
 class Krb5Credentials {
 public:
-  Krb5Credentials(krb5_creds&& creds);
-  Krb5Credentials(Krb5Credentials&& other);
+  explicit Krb5Credentials(krb5_creds&& creds);
+  Krb5Credentials(Krb5Credentials&& other) noexcept;
   Krb5Credentials& operator=(Krb5Credentials&& other);
 
   ~Krb5Credentials() { krb5_free_cred_contents(context_.get(), creds_.get()); }
@@ -249,7 +249,7 @@ public:
 
   // Disable copy
   Krb5CCache(const Krb5CCache& that) = delete;
-  Krb5CCache(Krb5CCache&& other);
+  Krb5CCache(Krb5CCache&& other) noexcept;
   ~Krb5CCache();
   Krb5CCache& operator=(Krb5CCache&& other);
 
@@ -282,11 +282,15 @@ public:
   Krb5Credentials getCredentials(const krb5_creds& in_creds,
                                  krb5_flags options = 0);
   Krb5Credentials getCredentials(krb5_principal sprinc, krb5_flags options = 0);
+  // If this is true, when the Krb5CCache object is deleted, the
+  // underlying persistent ccache will also be destroyed.
+  void setDestroyOnClose(bool destroy = true) { destroy_ = destroy; }
 
  private:
   explicit Krb5CCache(krb5_ccache ccache);
 
   Krb5Context context_;
+  bool destroy_;
   krb5_ccache ccache_;
 };
 

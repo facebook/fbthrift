@@ -157,6 +157,7 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::initCacheForService(
   auto mem = folly::make_unique<Krb5CCache>(
     Krb5CCache::makeNewUnique("MEMORY"));
   // Initialize the new CC
+  mem->setDestroyOnClose();
   mem->initialize(client_princ.get());
   mem->storeCred(tgt->get());
   if (logger) {

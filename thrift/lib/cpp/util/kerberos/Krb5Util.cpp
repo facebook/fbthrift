@@ -154,7 +154,7 @@ Krb5Principal::Krb5Principal(krb5_context context, krb5_principal&& principal)
   principal = nullptr;
 }
 
-Krb5Principal::Krb5Principal(Krb5Principal&& other)
+Krb5Principal::Krb5Principal(Krb5Principal&& other) noexcept
   : context_(other.context_)
   , principal_(other.release()) {}
 
@@ -197,7 +197,7 @@ Krb5Credentials::Krb5Credentials(krb5_creds&& creds)
   memset(&creds, 0, sizeof(creds));
 }
 
-Krb5Credentials::Krb5Credentials(Krb5Credentials&& other)
+Krb5Credentials::Krb5Credentials(Krb5Credentials&& other) noexcept
   : context_(true)
   , creds_(std::move(other.creds_)) {}
 
@@ -208,8 +208,11 @@ Krb5Credentials& Krb5Credentials::operator=(Krb5Credentials&& other) {
   return *this;
 }
 
-Krb5CCache::Krb5CCache(Krb5CCache&& other)
+Krb5CCache::Krb5CCache(Krb5CCache&& other) noexcept
   : context_(true)
+    // order matters here.  We need to copy the destroy flag before
+    // release() clears it.
+  , destroy_(other.destroy_)
   , ccache_(other.release()) {}
 
 Krb5CCache Krb5CCache::makeDefault() {
@@ -244,14 +247,22 @@ Krb5CCache Krb5CCache::makeNewUnique(const std::string& type) {
 
 Krb5CCache::Krb5CCache(krb5_ccache ccache)
     : context_(true)
+    , destroy_(false)
     , ccache_(ccache) {
 }
 
 Krb5CCache& Krb5CCache::operator=(Krb5CCache&& other) {
   if (this != &other) {
     if (ccache_) {
-      krb5_cc_close(context_.get(), ccache_);
+      if (destroy_) {
+        krb5_cc_destroy(context_.get(), ccache_);
+      } else {
+        krb5_cc_close(context_.get(), ccache_);
+      }
     }
+    // order matters here.  We need to copy the destroy flag before
+    // release() clears it.
+    destroy_ = other.destroy_;
     ccache_ = other.release();
   }
   return *this;
@@ -379,15 +390,21 @@ Krb5Credentials Krb5CCache::getCredentials(
   return getCredentials(in_creds, options);
 }
 
+
 Krb5CCache::~Krb5CCache() {
   if (ccache_) {
-    krb5_cc_close(context_.get(), ccache_);
+    if (destroy_) {
+      krb5_cc_destroy(context_.get(), ccache_);
+    } else {
+      krb5_cc_close(context_.get(), ccache_);
+    }
   }
 }
 
 krb5_ccache Krb5CCache::release() {
   krb5_ccache ret = ccache_;
   ccache_ = nullptr;
+  destroy_ = false;
   return ret;
 }
 
