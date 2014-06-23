@@ -27,5 +27,5 @@ libfrontend_la_SOURCES = compiler.cc
 libfrontend_la_LDFLAGS = -lpython2.7 -lboost_python
 libfrontend_la_LIBADD = ../libparse.la ../libthriftcompilerbase.la
 
-all-local:
+all-local: libfrontend.la
 	$(PYTHON) setup.py build

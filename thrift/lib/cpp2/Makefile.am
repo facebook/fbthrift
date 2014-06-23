@@ -27,6 +27,8 @@ lib_LTLIBRARIES = libthriftcpp2.la
 noinst_LIBRARIES = libsaslstubs.a
 
 gen-cpp2/Sasl_constants.cpp: gen-cpp2/Sasl_types.h
+gen-cpp2/Sasl_types.cpp: gen-cpp2/Sasl_types.h
+gen-cpp2/SaslAuthService.cpp: gen-cpp2/Sasl_types.h
 
 libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   async/StubSaslClient.cpp \
