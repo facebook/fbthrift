@@ -39,6 +39,8 @@ using apache::thrift::async::TAsyncTransport;
 
 namespace apache { namespace thrift {
 
+const uint32_t Cpp2Channel::DEFAULT_BUFFER_SIZE;
+
 Cpp2Channel::Cpp2Channel(
   const std::shared_ptr<TAsyncTransport>& transport,
   std::unique_ptr<FramingChannelHandler> framingHandler)
