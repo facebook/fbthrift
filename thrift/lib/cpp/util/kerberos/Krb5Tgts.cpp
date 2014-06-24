@@ -142,7 +142,7 @@ std::shared_ptr<const Krb5Credentials> Krb5Tgts::getTgtForRealm(
 
   // Get the tgt name for the realm
   Krb5Principal realm_princ(
-    ctx_.get(), folly::to<string>("krbtgt/", realm));
+    ctx_.get(), folly::to<string>("krbtgt/", realm, "@", realm));
 
   // Make a new memory cache.
   auto mem = Krb5CCache::makeNewUnique("MEMORY");
