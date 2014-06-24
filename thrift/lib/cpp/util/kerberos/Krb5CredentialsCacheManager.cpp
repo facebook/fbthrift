@@ -90,16 +90,18 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
         // Notify the waitForCache functions that an error happened.
         // We should propagate this error up.
         logger->log("cc_manager_thread_error", e.what());
-        store_->notifyOfError(e.what());
+        const string credentialCacheErrorMessage =
+                     ". If the application is authenticating as a user," \
+                     " run \"kinit\" to get new kerberos tickets. If the" \
+                     " application is authenticating as a service identity," \
+                     " make sure the keytab is in the right place"
+                     " and is accessible.";
+        store_->notifyOfError(e.what() + credentialCacheErrorMessage);
         static string oldError = "";
         if (oldError != e.what()) {
           oldError = e.what();
           LOG(ERROR) << "Failure in credential cache thread: " << e.what()
-                     << " If the application is authenticating as a user,"
-                     << " run \"kinit\" to get new kerberos tickets. If the"
-                     << " application is authenticating as a service identity,"
-                     << " make sure the keytab is in the right place"
-                     << " and is accessible";
+                     << credentialCacheErrorMessage;
         }
       }
 
