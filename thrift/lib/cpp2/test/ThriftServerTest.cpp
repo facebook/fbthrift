@@ -290,7 +290,7 @@ TEST(ThriftServer, OverloadTest) {
           client.getChannel())->getHeader();
       auto headers = header->getHeaders();
       if (headers.size() > 0) {
-        EXPECT_EQ(headers["ex"], kOverloadedErrorCode);
+        EXPECT_EQ(headers["ex"], kQueueOverloadedErrorCode);
         exception_headers++;
       }
       auto ew = TestServiceAsyncClient::recv_wrapped_sendResponse(response,
