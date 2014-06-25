@@ -1162,7 +1162,7 @@ void TNonblockingServer::createAndListenOnSocket() {
   memset(&hints, 0, sizeof(hints));
   hints.ai_family = PF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
-  hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;
+  hints.ai_flags = AI_PASSIVE;
   sprintf(port, "%d", port_);
 
   // Wildcard address
@@ -1186,6 +1186,7 @@ void TNonblockingServer::createAndListenOnSocket() {
     throw TLibraryException("TNonblockingServer::serve() socket() -1");
   }
 
+#if 0 // XXX: Until this supports 2 sockets, we can't bind only to IPv6
   #ifdef IPV6_V6ONLY
   if (res->ai_family == AF_INET6) {
     int zero = 0;
@@ -1194,6 +1195,7 @@ void TNonblockingServer::createAndListenOnSocket() {
     }
   }
   #endif // #ifdef IPV6_V6ONLY
+#endif
 
 
   int one = 1;
