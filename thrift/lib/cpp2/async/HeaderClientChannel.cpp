@@ -49,6 +49,7 @@ HeaderClientChannel::HeaderClientChannel(
     , closeCallback_(nullptr)
     , timeout_(0)
     , timeoutSASL_(500)
+    , suppressSaslFallbackOnTransientFailure_(false)
     , handshakeMessagesSent_(0)
     , keepRegisteredForClose_(true)
     , protectionState_(ProtectionState::UNKNOWN)
@@ -172,6 +173,20 @@ void HeaderClientChannel::SaslClientCallback::saslError(
 
   if (logger) {
     logger->log("sasl_error", ex->what());
+  }
+
+  // If saslError() was called due to a SASL Handshake Timeout, and fall back to
+  // insecure is suppressed for transient failures, then don't fall back to
+  // insecure
+  auto tex = dynamic_cast<TTransportException*>(ex.get());
+  if (tex &&
+      tex->getType() == TTransportException::SASL_HANDSHAKE_TIMEOUT &&
+      channel_.shouldSuppressSaslFallbackOnTransientFailure()) {
+    LOG(INFO) << "Not falling back to insecure because SASL fallback was"
+      " suppressed";
+    channel_.messageReceiveErrorWrapped(std::move(ex));
+    channel_.cpp2Channel_->closeNow();
+    return;
   }
 
   auto ew = folly::try_and_catch<std::exception>([&]() {

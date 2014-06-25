@@ -79,6 +79,11 @@ public:
     clientHandshake_->setCredentialsCacheManager(cc_manager);
   }
 
+  void setHandshakeClient(
+      const std::shared_ptr<KerberosSASLHandshakeClient>& clientHandshake) {
+    clientHandshake_ = clientHandshake;
+  }
+
 private:
   apache::thrift::async::TEventBase* evb_;
   std::shared_ptr<KerberosSASLHandshakeClient> clientHandshake_;

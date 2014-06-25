@@ -107,6 +107,7 @@ void THeader::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
   }
 
   setSupportedClients(&clients);
+  securityPolicy_ = policy;
 }
 
 void THeader::setBestClientType() {

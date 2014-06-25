@@ -51,7 +51,7 @@ class KerberosSASLHandshakeClient {
      * Start the client-server kerberos handshake. Can only call this
      * function once.
      */
-    void startClientHandshake();
+    virtual void startClientHandshake();
 
     /**
      * Get the token to send. If nullptr then we don't need to send

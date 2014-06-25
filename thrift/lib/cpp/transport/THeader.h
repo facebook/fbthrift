@@ -120,6 +120,9 @@ class THeader {
   // will be used.
   void setSupportedClients(std::bitset<CLIENT_TYPES_LEN> const* clients);
   void setSecurityPolicy(THRIFT_SECURITY_POLICY policy);
+  THRIFT_SECURITY_POLICY getSecurityPolicy() {
+    return securityPolicy_;
+  }
 
   void setClientType(CLIENT_TYPE ct);
 
@@ -379,6 +382,7 @@ class THeader {
   uint32_t seqId;
   uint16_t flags_;
   std::string identity;
+  THRIFT_SECURITY_POLICY securityPolicy_;
 
   std::vector<uint16_t> readTrans_;
   std::vector<uint16_t> writeTrans_;
