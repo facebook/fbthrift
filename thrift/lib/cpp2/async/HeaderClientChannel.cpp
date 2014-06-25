@@ -251,6 +251,7 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
 
   // Replay any pending requests
   for (auto&& funcarg : afterSecurity_) {
+    header_->setHeaders(std::move(std::get<5>(funcarg)));
     (this->*(std::get<0>(funcarg)))(std::get<1>(funcarg),
                                     std::move(std::get<2>(funcarg)),
                                     std::move(std::get<3>(funcarg)),
@@ -298,7 +299,8 @@ void HeaderClientChannel::sendOnewayRequest(
                       RpcOptions(rpcOptions),
                       std::move(cb),
                       std::move(ctx),
-                      std::move(buf)));
+                      std::move(buf),
+                      header_->releaseWriteHeaders()));
     return;
   }
 
@@ -341,7 +343,8 @@ void HeaderClientChannel::sendRequest(
                       RpcOptions(rpcOptions),
                       std::move(cb),
                       std::move(ctx),
-                      std::move(buf)));
+                      std::move(buf),
+                      header_->releaseWriteHeaders()));
     return;
   }
 

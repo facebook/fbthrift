@@ -476,7 +476,8 @@ private:
                         RpcOptions,
                         std::unique_ptr<RequestCallback>,
                         std::unique_ptr<apache::thrift::ContextStack>,
-                        std::unique_ptr<folly::IOBuf>>> afterSecurity_;
+                        std::unique_ptr<folly::IOBuf>,
+                        std::map<std::string, std::string>>> afterSecurity_;
   std::unordered_map<uint32_t, TwowayCallback*> recvCallbacks_;
   std::unordered_map<uint32_t, StreamCallback*> streamCallbacks_;
   std::deque<uint32_t> recvCallbackOrder_;

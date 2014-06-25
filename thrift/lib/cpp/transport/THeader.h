@@ -248,6 +248,10 @@ class THeader {
     return headers;
   }
 
+  StringToStringMap&& releaseWriteHeaders() {
+    return std::move(writeHeaders_);
+  }
+
   std::string getPeerIdentity();
   void setIdentity(const std::string& identity);
 
