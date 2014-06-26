@@ -69,8 +69,12 @@ Return mapFrozen(folly::MemoryMapping mapping) {
 }
 
 template <class T, class Return = Bundled<typename Layout<T>::View>>
-Return mapFrozen(folly::File file) {
-  return mapFrozen<T, Return>(folly::MemoryMapping(std::move(file), 0));
+Return mapFrozen(folly::File file,
+                 folly::MemoryMapping::LockMode lockMode =
+                     folly::MemoryMapping::LockMode::TRY_LOCK) {
+  folly::MemoryMapping mapping(std::move(file), 0);
+  mapping.mlock(lockMode);
+  return mapFrozen<T, Return>(std::move(mapping));
 }
 
 }}}
