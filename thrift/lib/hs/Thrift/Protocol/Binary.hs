@@ -17,6 +17,7 @@
 -- under the License.
 --
 
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -31,15 +32,19 @@ import Control.Monad.IO.Class
 
 import qualified Data.Binary
 import Data.Bits
+import Data.ByteString.Builder
 import Data.Int
 import Data.Word
 import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
-import Unsafe.Coerce
+
+import Foreign.Ptr
+import Foreign.Storable
 
 import Thrift.Protocol
 import Thrift.Transport
 
 import qualified Data.ByteString.Lazy as LBS
+import Data.ByteString.Unsafe
 
 version_mask :: Int32
 version_mask = fromIntegral (0xffff0000 :: Word32)
@@ -50,6 +55,10 @@ version_1    = fromIntegral (0x80010000 :: Word32)
 data BinaryProtocol a = BinaryProtocol a
 
 
+-- NOTE: Reading and Writing functions rely on Data.Binary to encode and decode
+-- data.  Data.Binary assumes that the binary values it is encoding to and
+-- decoding from are in BIG ENDIAN format, and converts the endianness as
+-- necessary to match the local machine.
 instance Protocol BinaryProtocol where
     getTransport (BinaryProtocol t) = t
 
@@ -76,8 +85,8 @@ instance Protocol BinaryProtocol where
     writeI16 p b = tWrite (getTransport p) $ Data.Binary.encode b
     writeI32 p b = tWrite (getTransport p) $ Data.Binary.encode b
     writeI64 p b = tWrite (getTransport p) $ Data.Binary.encode b
-    writeFloat p = writeI32 p . unsafeCoerce
-    writeDouble p = writeI64 p . unsafeCoerce
+    writeFloat p  = tWrite (getTransport p) . toLazyByteString . floatBE
+    writeDouble p = tWrite (getTransport p) . toLazyByteString . doubleBE
     writeString p s = writeI32 p (fromIntegral $ LBS.length s') >> tWrite (getTransport p) s'
       where
         s' = encodeUtf8 s
@@ -134,9 +143,9 @@ instance Protocol BinaryProtocol where
         bs <- tReadAll (getTransport p) 8
         return $ Data.Binary.decode bs
 
-    readFloat p = unsafeCoerce `liftM` readI32 p
+    readFloat p = tRead (getTransport p) 4 >>= bsToFloating byteSwap32
 
-    readDouble p = unsafeCoerce `liftM` readI64 p
+    readDouble p = tRead (getTransport p) 8 >>= bsToFloating byteSwap64
 
     readString p = do
         i <- readI32 p
@@ -156,3 +165,20 @@ readType :: (Protocol p, MonadIO m, Transport t) => p t -> m ThriftType
 readType p = do
     b <- readByte p
     return $ toEnum $ fromIntegral b
+
+-- | Converts a ByteString to a Floating point number
+-- The ByteString is assumed to be encoded in network order (Big Endian)
+-- therefore the behavior of this function varies based on whether the local
+-- machine is big endian or little endian.
+bsToFloating :: (Floating f, MonadIO m, Storable f, Storable a)
+                => (a -> a) -> LBS.ByteString -> m f
+bsToFloating byteSwap bs = liftIO $ unsafeUseAsCString (LBS.toStrict bs) castBs
+  where
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+    castBs chrPtr = do
+      w <- peek (castPtr chrPtr)
+      poke (castPtr chrPtr) (byteSwap w)
+      peek (castPtr chrPtr)
+#else
+    castBs = peek . castPtr
+#endif

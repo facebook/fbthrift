@@ -43,6 +43,7 @@ roundtripTest write read a = TestCase $ do
   b <- read t
   assertEqual "same result" a b
 
+
 main :: IO Counts
 main = runTestTT $ TestList [
   TestList $ map (roundtripTest writeBool readBool) [True, False],
@@ -50,7 +51,7 @@ main = runTestTT $ TestList [
   TestList $ map (roundtripTest writeI16 readI16) [0, 10, 32767, -32767],
   TestList $ map (roundtripTest writeI32 readI32) [0, 10, 111111, -574839],
   TestList $ map (roundtripTest writeI64 readI64) [0, 10, 15684615, -839283],
-  TestList $ map (roundtripTest writeFloat readFloat) [0, 1.001e76, 3.14159],
-  TestList $ map (roundtripTest writeFloat readFloat) [0, 1.001e76, 3.14159],
+  TestList $ map (roundtripTest writeFloat readFloat) [0, 1.001e25, 3.14159],
+  TestList $ map (roundtripTest writeDouble readDouble) [0, 1.001e76, 3.14159],
   roundtripTest writeBinary readBinary "Hello World"
   ]

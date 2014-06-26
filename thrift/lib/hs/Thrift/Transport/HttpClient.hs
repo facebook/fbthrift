@@ -128,7 +128,6 @@ writeBuf w s = modifyMVar_ w $ return . (\builder ->
 flushBuf :: WriteBuffer -> IO LBS.ByteString
 flushBuf w = B.toLazyByteString `liftM` swapMVar w mempty
 
-
 type ReadBuffer = MVar LBS.ByteString
 
 newReadBuffer :: IO ReadBuffer
