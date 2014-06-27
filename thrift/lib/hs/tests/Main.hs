@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE NegativeLiterals #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -5,12 +6,14 @@ module Main where
 
 import Control.Monad
 import Control.Monad.IO.Class
-import Data.Binary
+import Data.Functor
 import Data.IORef
 import Prelude
-import Test.HUnit
-
+import Test.QuickCheck
+import Test.QuickCheck.Property
+import System.Exit
 import qualified Data.ByteString.Lazy as LBS
+import qualified Data.Text.Lazy as LT
 
 import Thrift.Transport
 import Thrift.Protocol.Binary
@@ -20,7 +23,7 @@ data TestTransport = TestTransport (IORef LBS.ByteString)
 instance Transport TestTransport where
   tIsOpen _ = return True
   tClose _ = return ()
-  tPeek (TestTransport t) = liftIO $ LBS.head `liftM` readIORef t
+  tPeek (TestTransport t) = liftIO $ LBS.head <$> readIORef t
   tRead (TestTransport t) i = liftIO $ do
     s <- readIORef t
     let (hd, tl) = LBS.splitAt (fromIntegral i) s
@@ -30,28 +33,40 @@ instance Transport TestTransport where
     readIORef t >>= writeIORef t . (`LBS.append` bs)
   tFlush _ = return ()
 
-roundtripTest
-  :: (Binary a, Eq a, Show a)
+prop_roundtrip
+  :: (Eq a, Show a)
      => (BinaryProtocol TestTransport -> a -> IO ())
      -> (BinaryProtocol TestTransport -> IO a)
      -> a
-     -> Test
-roundtripTest write read a = TestCase $ do
+     -> Property
+prop_roundtrip write read a = morallyDubiousIOProperty $ do
   ref <- newIORef ""
   let t = BinaryProtocol (TestTransport ref)
   write t a
   b <- read t
-  assertEqual "same result" a b
+  return (a == b)
 
 
-main :: IO Counts
-main = runTestTT $ TestList [
-  TestList $ map (roundtripTest writeBool readBool) [True, False],
-  TestList $ map (roundtripTest writeByte readByte) [0, 10, 127, -128],
-  TestList $ map (roundtripTest writeI16 readI16) [0, 10, 32767, -32767],
-  TestList $ map (roundtripTest writeI32 readI32) [0, 10, 111111, -574839],
-  TestList $ map (roundtripTest writeI64 readI64) [0, 10, 15684615, -839283],
-  TestList $ map (roundtripTest writeFloat readFloat) [0, 1.001e25, 3.14159],
-  TestList $ map (roundtripTest writeDouble readDouble) [0, 1.001e76, 3.14159],
-  roundtripTest writeBinary readBinary "Hello World"
-  ]
+main :: IO ()
+main = do
+  results <- sequence
+    [ qcrt writeBool readBool
+    , qcrt writeByte readByte
+    , qcrt writeI16 readI16
+    , qcrt writeI32 readI32
+    , qcrt writeI64 readI64
+    , qcrt writeFloat readFloat
+    , qcrt writeDouble readDouble
+    , quickCheckWithResult args $
+      prop_roundtrip writeString readString . LT.pack
+    , quickCheckWithResult args $
+      prop_roundtrip writeBinary readBinary . LBS.pack
+    ]
+  if all success results
+    then exitSuccess
+    else exitFailure
+  where
+    qcrt w r = quickCheckWithResult args $ prop_roundtrip w r
+    args = Args Nothing 50 10 100 True
+    success Success{..} = True
+    success _ = False
