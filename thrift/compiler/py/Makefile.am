@@ -29,3 +29,6 @@ libfrontend_la_LIBADD = ../libparse.la ../libthriftcompilerbase.la
 
 all-local: libfrontend.la
 	$(PYTHON) setup.py build
+
+install:
+	PYTHONPATH=@prefix@ $(PYTHON) setup.py install --install-lib=@prefix@

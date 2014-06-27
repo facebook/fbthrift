@@ -30,6 +30,76 @@ gen-cpp2/Sasl_constants.cpp: gen-cpp2/Sasl_types.h
 gen-cpp2/Sasl_types.cpp: gen-cpp2/Sasl_types.h
 gen-cpp2/SaslAuthService.cpp: gen-cpp2/Sasl_types.h
 
+thrift2includedir = $(includedir)/thrift/lib/cpp2
+
+thrift2include_HEADERS = \
+	Thrift.h \
+	ServiceIncludes.h \
+	CloneableIOBuf.h
+
+thrift2include_asyncdir = $(thrift2includedir)/async
+
+thrift2include_async_HEADERS = \
+	async/AsyncProcessor.h \
+	async/Cpp2Channel.h \
+	async/DuplexChannel.h \
+	async/FutureRequest.h \
+	async/GssSaslClient.h \
+	async/GssSaslServer.h \
+	async/HeaderClientChannel.h \
+	async/HeaderServerChannel.h \
+	async/InputStream.h \
+	async/InputStream.tcc \
+	async/MessageChannel.h \
+	async/OutputStream.h \
+	async/OutputStream.tcc \
+	async/RequestChannel.h \
+	async/ResponseChannel.h \
+	async/SaslClient.h \
+	async/SaslEndpoint.h \
+	async/SaslServer.h \
+	async/Stream.h \
+	async/StubSaslClient.h \
+	async/StubSaslServer.h
+
+thrift2include_serverdir = $(thrift2includedir)/server
+
+thrift2include_server_HEADERS = \
+	server/Cpp2ConnContext.h \
+	server/Cpp2Connection.h \
+	server/Cpp2Worker.h \
+	server/ThriftServer.h
+
+thrift2include_securitydir = $(thrift2includedir)/security
+
+thrift2include_security_HEADERS = \
+	security/KerberosSASLHandshakeClient.h \
+	security/KerberosSASLHandshakeServer.h \
+	security/KerberosSASLHandshakeUtils.h \
+	security/KerberosSASLThreadManager.h \
+	security/SecurityKillSwitch.h \
+	security/SecurityLogger.h 
+
+thrift2include_testdir = $(thrift2includedir)/test
+
+thrift2include_test_HEADERS = \
+	test/TestUtils.h
+
+thrift2include_protocoldir = $(thrift2includedir)/protocol
+
+thrift2include_protocol_HEADERS = \
+	protocol/Protocol.h \
+	protocol/BinaryProtocol.h \
+	protocol/BinaryProtocol.tcc \
+	protocol/CompactProtocol.h \
+	protocol/CompactProtocol.tcc \
+	protocol/DebugProtocol.h \
+	protocol/MessageSerializer.h \
+	protocol/Serializer.h \
+	protocol/StreamSerializers.h \
+	protocol/StreamSerializers.tcc \
+	protocol/VirtualProtocol.h
+
 libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
 			   async/StubSaslClient.cpp \
 			   async/StubSaslServer.cpp \
@@ -99,3 +169,4 @@ PYPATH = $(top_builddir)/compiler/py/build/lib.linux-x86_64-2.7:$(top_builddir)/
 
 clean:
 	rm -rf gen-cpp2 gen-cpp
+

@@ -97,16 +97,18 @@ libthriftz_la_CXXFLAGS  = $(AM_CXXFLAGS)
 libthriftnb_la_LDFLAGS  = -release $(VERSION) $(BOOST_LDFLAGS)
 libthriftz_la_LDFLAGS   = -release $(VERSION) $(BOOST_LDFLAGS)
 
-include_thriftdir = $(includedir)/thrift
+include_thriftdir = $(includedir)/thrift/lib/cpp/
 include_thrift_HEADERS = \
                          $(top_builddir)/config.h \
                          EventHandlerBase.h \
                          TDispatchProcessor.h \
                          Thrift.h \
+			 thrift_config.h \
                          TReflectionLocal.h \
                          TProcessor.h \
                          TApplicationException.h \
-                         TLogging.h
+                         TLogging.h \
+			 ShutdownSocketSet.h
 
 include_concurrencydir = $(include_thriftdir)/concurrency
 include_concurrency_HEADERS = \
@@ -116,12 +118,16 @@ include_concurrency_HEADERS = \
                          concurrency/PosixThreadFactory.h \
                          concurrency/Thread.h \
                          concurrency/ThreadManager.h \
+                         concurrency/ThreadManager-impl.h \
+                         concurrency/ThreadManager.tcc \
+                         concurrency/Codel.h \
                          concurrency/TimerManager.h \
                          concurrency/FunctionRunner.h \
                          concurrency/Util.h
 
 include_protocoldir = $(include_thriftdir)/protocol
 include_protocol_HEADERS = \
+                         protocol/TProtocolTypes.h \
                          protocol/TBinaryProtocol.h \
                          protocol/TBinaryProtocol.tcc \
                          protocol/TCompactProtocol.h \
@@ -142,12 +148,14 @@ include_ssl_HEADERS = \
 
 include_transportdir = $(include_thriftdir)/transport
 include_transport_HEADERS = \
+                         transport/THeader.h \
                          transport/TFDTransport.h \
                          transport/TFileTransport.h \
                          transport/TSimpleFileTransport.h \
                          transport/TServerSocket.h \
                          transport/TSSLServerSocket.h \
                          transport/TServerTransport.h \
+                         transport/TRpcTransport.h \
                          transport/THttpTransport.h \
                          transport/THttpClient.h \
                          transport/THttpServer.h \
@@ -160,12 +168,15 @@ include_transport_HEADERS = \
                          transport/TTransportUtils.h \
                          transport/TBufferTransports.h \
                          transport/TShortReadTransport.h \
+                         transport/TSocketAddress.h \
                          transport/TZlibTransport.h
 
 include_serverdir = $(include_thriftdir)/server
 include_server_HEADERS = \
                          server/TServer.h \
-                         server/TNonblockingServer.h
+                         server/TNonblockingServer.h \
+                         server/TConnectionContext.h \
+                         server/TServerObserver.h
 
 include_processordir = $(include_thriftdir)/processor
 include_processor_HEADERS = \
@@ -175,10 +186,47 @@ include_processor_HEADERS = \
 
 include_asyncdir = $(include_thriftdir)/async
 include_async_HEADERS = \
+		     async/HHWheelTimer.h \
+		     async/Request.h \
                      async/TAsyncChannel.h \
                      async/TAsyncDispatchProcessor.h \
-                     async/TAsyncProcessor.h
+                     async/TAsyncProcessor.h \
+                     async/TAsyncSSLServerSocket.h \
+                     async/TAsyncSSLSocket.h \
+                     async/TAsyncSSLSocketFactory.h \
+                     async/TAsyncTimeout.h \
+                     async/TAsyncTimeoutSet.h \
+                     async/TAsyncTransport.h \
+                     async/TAsyncUDPServerSocket.h \
+                     async/TAsyncUDPSocket.h \
+                     async/TDelayedDestruction.h \
+                     async/TEventBase.h \
+                     async/TEventBaseManager.h \
+                     async/TEventConnection.h \
+                     async/TEventFDWrapper.h \
+                     async/TEventHandler.h \
+                     async/TEventJobQueue.h \
+                     async/TNotificationQueue.h \
+                     async/TimeoutManager.h \
+                     async/TAsyncSocket.h \
+                     async/TAsyncServerSocket.h 
 
+include_utildir = $(include_thriftdir)/util
+include_util_HEADERS = \
+		util/BitwiseCast.h \
+		util/shared_ptr_util.h \
+		util/THttpParser.h \
+		util/VarintUtils.h \
+		util/VarintUtils.tcc \
+		util/ScopedServerThread.h
+
+include_utilkerberosdir = $(include_utildir)/kerberos
+include_utilkerberos_HEADERS = \
+	util/kerberos/Krb5CCacheStore.h \
+	util/kerberos/Krb5CredentialsCacheManager.h \
+	util/kerberos/Krb5OlderVersionStubs.h \
+	util/kerberos/Krb5Tgts.h \
+	util/kerberos/Krb5Util.h
 
 THRIFT = $(top_builddir)/compiler/cpp/thrift
 

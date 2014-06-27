@@ -4,7 +4,7 @@
 THRIFT = $(top_builddir)/compiler/thrift1
 PYPATH = $(top_builddir)/compiler/py/build/lib.linux-x86_64-2.7:$(top_builddir)/compiler/py/build/lib
 
-noinst_LIBRARIES = libService.a
+check_LIBRARIES = libService.a
 
 gen-cpp2/Service_constants.cpp: Service.thrift
 	PYTHONPATH=$(PYPATH) python $(top_builddir)/compiler/main.py --gen cpp2 $<
@@ -29,3 +29,13 @@ TESTS = ThriftServerTest
 
 clean:
 	rm -rf gen-cpp2
+	rm -rf gen-cpp
+	rm -rf InstalledCheck
+
+gen-cpp2/InstalledCheck_types.cpp: InstalledCheck.thrift
+	PYTHONPATH=@prefix@ python -mthrift.main --gen cpp2 InstalledCheck.thrift
+
+InstalledCheck:
+	$(CC) $(CXXFLAGS) -o InstalledCheck $(LDFLAGS) -L@prefix@/lib $(CPPFLAGS) -I@prefix@/include InstalledCheck.cpp gen-cpp2/InstalledCheck_types.cpp gen-cpp2/TestService.cpp -lstdc++ -lthriftcpp2 -lthrift -lfolly -lglog -lboost_system -lboost_thread -lpthread -lm
+
+installcheck: gen-cpp2/InstalledCheck_types.cpp InstalledCheck
