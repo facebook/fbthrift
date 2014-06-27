@@ -127,6 +127,8 @@ include_protocol_HEADERS = \
                          protocol/TCompactProtocol.tcc \
                          protocol/TDebugProtocol.h \
                          protocol/TBase64Utils.h \
+                         protocol/TMultiplexedProtocol.h \
+                         protocol/TProtocolDecorator.h \
                          protocol/TJSONProtocol.h \
                          protocol/TProtocolTap.h \
                          protocol/TProtocolException.h \
@@ -153,6 +155,7 @@ include_transport_HEADERS = \
                          transport/TSocketPool.h \
                          transport/TVirtualTransport.h \
                          transport/TTransport.h \
+                         src/thrift/protocol/TMultiplexedProtocol.cpp \
                          transport/TTransportException.h \
                          transport/TTransportUtils.h \
                          transport/TBufferTransports.h \
@@ -167,7 +170,8 @@ include_server_HEADERS = \
 include_processordir = $(include_thriftdir)/processor
 include_processor_HEADERS = \
                          processor/PeekProcessor.h \
-                         processor/StatsProcessor.h
+                         processor/StatsProcessor.h \
+                         src/thrift/processor/TMultiplexedProcessor.h
 
 include_asyncdir = $(include_thriftdir)/async
 include_async_HEADERS = \
