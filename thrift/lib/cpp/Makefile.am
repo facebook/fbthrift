@@ -54,6 +54,7 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
                        protocol/TDebugProtocol.cpp \
                        protocol/TJSONProtocol.cpp \
                        protocol/TBase64Utils.cpp \
+                       protocol/TMultiplexedProtocol.cpp \
                        ssl/SSLUtils.cpp \
                        transport/TTransportException.cpp \
                        transport/TFDTransport.cpp \
@@ -155,7 +156,6 @@ include_transport_HEADERS = \
                          transport/TSocketPool.h \
                          transport/TVirtualTransport.h \
                          transport/TTransport.h \
-                         src/thrift/protocol/TMultiplexedProtocol.cpp \
                          transport/TTransportException.h \
                          transport/TTransportUtils.h \
                          transport/TBufferTransports.h \
@@ -171,7 +171,7 @@ include_processordir = $(include_thriftdir)/processor
 include_processor_HEADERS = \
                          processor/PeekProcessor.h \
                          processor/StatsProcessor.h \
-                         src/thrift/processor/TMultiplexedProcessor.h
+                         processor/TMultiplexedProcessor.h
 
 include_asyncdir = $(include_thriftdir)/async
 include_async_HEADERS = \
