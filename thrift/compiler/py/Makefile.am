@@ -45,7 +45,8 @@ all-local: frontend.la
 
 # Note, not install-exec-hook, see the comment above
 install-exec-am:
-	$(PYTHON) setup.py install $(PY_INSTALL_ARGS)
+	mkdir -p $(PY_INSTALL_HOME)/lib/python
+	$(PY_RUN_ENV) $(PYTHON) setup.py install $(PY_INSTALL_ARGS)
 
 clean-local:
 	rm -f frontend.so
