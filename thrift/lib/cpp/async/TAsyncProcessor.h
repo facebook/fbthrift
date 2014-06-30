@@ -22,9 +22,9 @@
 
 #include <functional>
 #include <memory>
-#include "thrift/lib/cpp/TProcessor.h"
-#include "thrift/lib/cpp/server/TConnectionContext.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
+#include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/server/TConnectionContext.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
 
 namespace apache { namespace thrift { namespace async {
 

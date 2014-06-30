@@ -18,13 +18,13 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "folly/File.h"
-#include "folly/MemoryMapping.h"
+#include <folly/File.h>
+#include <folly/MemoryMapping.h>
 
-#include "thrift/lib/cpp/protocol/TDebugProtocol.h"
-#include "thrift/lib/cpp/test/gen-cpp/FrozenTypes_types.h"
-#include "thrift/lib/cpp/util/FrozenUtil.h"
-#include "thrift/lib/cpp/util/FrozenTestUtil.h"
+#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
+#include <thrift/lib/cpp/test/gen-cpp/FrozenTypes_types.h>
+#include <thrift/lib/cpp/util/FrozenUtil.h>
+#include <thrift/lib/cpp/util/FrozenTestUtil.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::util;

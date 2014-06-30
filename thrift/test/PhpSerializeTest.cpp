@@ -22,8 +22,8 @@
 #include "thrift/test/gen-cpp/PhpSerializeTest_types.h"
 #include <boost/lexical_cast.hpp>
 #include <memory>
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/protocol/TPhpSerializeProtocol.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/protocol/TPhpSerializeProtocol.h>
 
 /**
  * This is a random test of the php serialization protocol

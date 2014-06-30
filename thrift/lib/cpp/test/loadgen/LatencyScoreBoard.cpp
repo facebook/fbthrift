@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/test/loadgen/LatencyScoreBoard.h"
+#include <thrift/lib/cpp/test/loadgen/LatencyScoreBoard.h>
 
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <math.h>
 

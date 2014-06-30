@@ -20,9 +20,9 @@
 #include "external/gflags/gflags.h"
 #include "common/fbunit/OldFollyBenchmark.h"
 
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 
 #include "thrift/test/gen-cpp/DebugProtoTest_types.h"
 

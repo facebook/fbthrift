@@ -19,8 +19,8 @@
 #include <gtest/gtest.h>
 #include <thread>
 
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/Request.h"
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/Request.h>
 
 using namespace apache::thrift::async;
 

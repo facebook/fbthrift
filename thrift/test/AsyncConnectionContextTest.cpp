@@ -21,16 +21,16 @@
 #include <boost/test/unit_test.hpp>
 #include <memory>
 
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/Thread.h"
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/util/TEventServerCreator.h"
-#include "thrift/lib/cpp/util/example/TSimpleServerCreator.h"
-#include "thrift/lib/cpp/async/TEventServer.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
-#include "thrift/lib/cpp/async/TSyncToAsyncProcessor.h"
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/util/TEventServerCreator.h>
+#include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
+#include <thrift/lib/cpp/async/TEventServer.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/async/TSyncToAsyncProcessor.h>
 
 using namespace apache::thrift::async;
 using namespace apache::thrift;

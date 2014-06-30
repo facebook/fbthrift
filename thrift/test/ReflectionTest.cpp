@@ -18,7 +18,7 @@
  */
 
 #include "thrift/test/gen-cpp/ReflectionTest_types.h"
-#include "thrift/lib/cpp/Reflection.h"
+#include <thrift/lib/cpp/Reflection.h>
 
 #include <gtest/gtest.h>
 

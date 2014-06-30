@@ -23,10 +23,10 @@
 #include <string>
 #include <sys/time.h>
 
-#include "thrift/lib/cpp/transport/TRpcTransport.h"
-#include "thrift/lib/cpp/transport/TVirtualTransport.h"
-#include "thrift/lib/cpp/transport/TServerSocket.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
+#include <thrift/lib/cpp/transport/TRpcTransport.h>
+#include <thrift/lib/cpp/transport/TVirtualTransport.h>
+#include <thrift/lib/cpp/transport/TServerSocket.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
 
 namespace apache { namespace thrift { namespace transport {
 

@@ -20,7 +20,7 @@
 #include "HDFS.h"
 
 #include "hdfs.h"
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 using namespace std;
 using std::shared_ptr;

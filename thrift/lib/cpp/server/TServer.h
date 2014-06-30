@@ -20,11 +20,11 @@
 #ifndef THRIFT_SERVER_TSERVER_H
 #define THRIFT_SERVER_TSERVER_H 1
 
-#include "thrift/lib/cpp/TProcessor.h"
-#include "thrift/lib/cpp/transport/TServerTransport.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/concurrency/Thread.h"
-#include "thrift/lib/cpp/util/shared_ptr_util.h"
+#include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/transport/TServerTransport.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/util/shared_ptr_util.h>
 
 namespace apache { namespace thrift {
 

@@ -22,13 +22,13 @@
 #include <sys/types.h>
 #include <array>
 #include <unistd.h>
-#include "folly/LifoSem.h"
-#include "folly/RWSpinLock.h"
-#include "thrift/lib/cpp/concurrency/Monitor.h"
-#include "thrift/lib/cpp/concurrency/Thread.h"
+#include <folly/LifoSem.h>
+#include <folly/RWSpinLock.h>
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
 #include <gflags/gflags.h>
 
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
 
 DECLARE_bool(codel_enabled);
 
@@ -314,6 +314,6 @@ public:
 
 }}} // apache::thrift::concurrency
 
-#include "thrift/lib/cpp/concurrency/ThreadManager.tcc"
+#include <thrift/lib/cpp/concurrency/ThreadManager.tcc>
 
 #endif // #ifndef _THRIFT_CONCURRENCY_THREADMANAGER_H_

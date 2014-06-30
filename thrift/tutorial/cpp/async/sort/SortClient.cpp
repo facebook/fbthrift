@@ -19,10 +19,10 @@
 #include <iostream>
 #include <memory>
 
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
-#include "thrift/lib/cpp/ClientUtil.h"
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/ClientUtil.h>
 
 #include "thrift/tutorial/cpp/async/sort/util.h"
 #include "thrift/tutorial/cpp/async/sort/gen-cpp/Sorter.h"

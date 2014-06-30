@@ -20,7 +20,7 @@
 #ifndef _THRIFT_TRANSPORT_TMEMPAGEDTRANSPORT_HPP_
 #define _THRIFT_TRANSPORT_TMEMPAGEDTRANSPORT_HPP_ 1
 
-#include "thrift/lib/cpp/transport/TMemPagedTransport.h"
+#include <thrift/lib/cpp/transport/TMemPagedTransport.h>
 #include <cstring>
 
 namespace apache { namespace thrift { namespace transport {

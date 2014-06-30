@@ -19,10 +19,10 @@
 #ifndef THRIFT_ASYNC_TEVENTBASEMANAGER_H
 #define THRIFT_ASYNC_TEVENTBASEMANAGER_H 1
 
-#include "folly/ThreadLocal.h"
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/server/TServerObserver.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
+#include <folly/ThreadLocal.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
 #include <set>
 #include <list>
 

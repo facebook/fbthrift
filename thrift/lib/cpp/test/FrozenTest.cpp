@@ -17,11 +17,11 @@
 #include <gtest/gtest.h>
 #include <random>
 
-#include "folly/Conv.h"
-#include "folly/Hash.h"
-#include "folly/MapUtil.h"
-#include "thrift/lib/cpp/protocol/TDebugProtocol.h"
-#include "thrift/lib/cpp/test/gen-cpp/FrozenTypes_types.h"
+#include <folly/Conv.h>
+#include <folly/Hash.h>
+#include <folly/MapUtil.h>
+#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
+#include <thrift/lib/cpp/test/gen-cpp/FrozenTypes_types.h>
 
 using namespace apache::thrift;
 using namespace FrozenTypes;

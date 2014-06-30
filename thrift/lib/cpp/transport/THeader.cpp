@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/transport/THeader.h"
+#include <thrift/lib/cpp/transport/THeader.h>
 
-#include "folly/io/IOBuf.h"
-#include "folly/io/Cursor.h"
-#include "folly/Conv.h"
-#include "folly/String.h"
-#include "thrift/lib/cpp/TApplicationException.h"
-#include "thrift/lib/cpp/protocol/TProtocolTypes.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/util/VarintUtils.h"
-#include "thrift/lib/cpp/concurrency/Thread.h"
+#include <folly/io/IOBuf.h>
+#include <folly/io/Cursor.h>
+#include <folly/Conv.h>
+#include <folly/String.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/util/VarintUtils.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
 #include "snappy.h"
 
 #ifdef HAVE_QUICKLZ

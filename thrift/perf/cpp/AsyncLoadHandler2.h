@@ -23,7 +23,7 @@
 
 #include "thrift/perf/if/gen-cpp2/LoadTest.h"
 
-#include "thrift/lib/cpp/async/TEventServer.h"
+#include <thrift/lib/cpp/async/TEventServer.h>
 
 using apache::thrift::async::TEventServer;
 

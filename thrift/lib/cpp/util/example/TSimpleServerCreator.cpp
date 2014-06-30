@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/util/example/TSimpleServerCreator.h"
+#include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 
-#include "thrift/lib/cpp/server/example/TSimpleServer.h"
-#include "thrift/lib/cpp/transport/TServerSocket.h"
+#include <thrift/lib/cpp/server/example/TSimpleServer.h>
+#include <thrift/lib/cpp/transport/TServerSocket.h>
 
 using std::shared_ptr;
 using namespace apache::thrift::server;

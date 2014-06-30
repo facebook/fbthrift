@@ -19,10 +19,10 @@
 #ifndef THRIFT_UTIL_TNONBLOCKINGSERVERCREATOR_H_
 #define THRIFT_UTIL_TNONBLOCKINGSERVERCREATOR_H_ 1
 
-#include "thrift/lib/cpp/util/ServerCreatorBase.h"
+#include <thrift/lib/cpp/util/ServerCreatorBase.h>
 
-#include "thrift/lib/cpp/server/TNonblockingServer.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
+#include <thrift/lib/cpp/server/TNonblockingServer.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
 
 namespace apache { namespace thrift {
 

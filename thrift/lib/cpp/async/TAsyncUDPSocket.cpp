@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/async/TAsyncUDPSocket.h"
+#include <thrift/lib/cpp/async/TAsyncUDPSocket.h>
 
-#include "thrift/lib/cpp/async/TEventBase.h"
+#include <thrift/lib/cpp/async/TEventBase.h>
 
 #include <errno.h>
 #include <unistd.h>

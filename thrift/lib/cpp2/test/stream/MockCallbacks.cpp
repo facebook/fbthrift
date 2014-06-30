@@ -19,8 +19,8 @@
 
 #include "MockCallbacks.h"
 
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
-#include "thrift/lib/cpp2/protocol/CompactProtocol.h"
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 #include <utility>
 #include <time.h>

@@ -25,15 +25,15 @@
 #include <boost/test/unit_test.hpp>
 #include <numa.h>
 
-#include "thrift/lib/cpp/concurrency/Monitor.h"
-#include "thrift/lib/cpp/concurrency/FunctionRunner.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/concurrency/NumaThreadManager.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/concurrency/Codel.h"
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/FunctionRunner.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/concurrency/Codel.h>
 
-#include "folly/Synchronized.h"
+#include <folly/Synchronized.h>
 
 using namespace boost;
 using namespace apache::thrift::concurrency;

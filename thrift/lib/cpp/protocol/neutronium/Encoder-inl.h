@@ -24,7 +24,7 @@
 #error This file may only be included from Encoder.h
 #endif
 
-#include "folly/Conv.h"
+#include <folly/Conv.h>
 
 namespace apache {
 namespace thrift {

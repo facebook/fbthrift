@@ -14,9 +14,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/async/TNotificationQueue.h"
+#include <thrift/lib/cpp/async/TNotificationQueue.h>
 
-#include "thrift/lib/cpp/test/ScopedEventBaseThread.h"
+#include <thrift/lib/cpp/test/ScopedEventBaseThread.h>
 
 #include <boost/test/unit_test.hpp>
 #include <list>

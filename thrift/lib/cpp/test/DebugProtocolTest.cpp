@@ -17,9 +17,9 @@
  * under the License.
  */
 #include <iostream>
-#include "thrift/lib/cpp/test/gen-cpp/DebugProtocolTest_types.h"
+#include <thrift/lib/cpp/test/gen-cpp/DebugProtocolTest_types.h>
 #include "common/base/Base.h"
-#include "thrift/lib/cpp/protocol/TDebugProtocol.h"
+#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
 
 using apache::thrift::ThriftDebugString;
 

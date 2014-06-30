@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/server/ThriftServer.h"
-#include "thrift/lib/cpp/concurrency/FunctionRunner.h"
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::async;

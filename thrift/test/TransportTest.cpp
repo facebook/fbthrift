@@ -34,12 +34,12 @@
 #include <boost/type_traits.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TFDTransport.h"
-#include "thrift/lib/cpp/transport/TFileTransport.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
-#include "thrift/lib/cpp/transport/TZlibTransport.h"
-#include "thrift/lib/cpp/transport/TMemPagedTransport.tcc"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TFDTransport.h>
+#include <thrift/lib/cpp/transport/TFileTransport.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/transport/TZlibTransport.h>
+#include <thrift/lib/cpp/transport/TMemPagedTransport.tcc>
 
 using namespace apache::thrift::transport;
 

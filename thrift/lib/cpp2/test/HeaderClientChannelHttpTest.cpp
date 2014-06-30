@@ -16,15 +16,15 @@
 
 #include <gtest/gtest.h>
 
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/transport/THttpServer.h"
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
-#include "thrift/lib/cpp/util/TThreadedServerCreator.h"
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/transport/THttpServer.h>
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 
-#include "thrift/lib/cpp2/test/gen-cpp/TestService.h"
-#include "thrift/lib/cpp2/test/gen-cpp2/TestService.h"
-#include "thrift/lib/cpp2/async/HeaderClientChannel.h"
+#include <thrift/lib/cpp2/test/gen-cpp/TestService.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
 #include <boost/lexical_cast.hpp>
 

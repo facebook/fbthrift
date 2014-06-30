@@ -16,13 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
 
-#include "thrift/lib/cpp/concurrency/Monitor.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
-#include "thrift/lib/cpp/util/ServerCreator.h"
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/util/ServerCreator.h>
 
 using std::shared_ptr;
 using namespace apache::thrift::concurrency;

@@ -23,22 +23,22 @@
 #include <mutex>
 #include <vector>
 
-#include "folly/Memory.h"
-#include "thrift/lib/cpp/ShutdownSocketSet.h"
-#include "thrift/lib/cpp/async/TAsyncServerSocket.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TEventBaseManager.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/server/TServerObserver.h"
-#include "thrift/lib/cpp/transport/TSSLSocket.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
-#include "thrift/lib/cpp/transport/TTransportUtils.h"
-#include "thrift/lib/cpp2/Thrift.h"
-#include "thrift/lib/cpp2/async/AsyncProcessor.h"
-#include "thrift/lib/cpp2/async/SaslServer.h"
-#include "thrift/lib/cpp2/async/HeaderServerChannel.h"
+#include <folly/Memory.h>
+#include <thrift/lib/cpp/ShutdownSocketSet.h>
+#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TEventBaseManager.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/transport/TTransportUtils.h>
+#include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/async/SaslServer.h>
+#include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 
 namespace apache { namespace thrift {
 

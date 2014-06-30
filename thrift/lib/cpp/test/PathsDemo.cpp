@@ -20,8 +20,8 @@
 #include <iostream>
 #include <string>
 
-#include "thrift/lib/cpp/test/gen-cpp/Paths_types.h"
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
+#include <thrift/lib/cpp/test/gen-cpp/Paths_types.h>
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
 
 int main(int argc, char **argv) {
   Path1 p1; // list of pairs, 5005 bytes

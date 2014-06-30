@@ -21,9 +21,9 @@
 #define THRIFT_ASYNC_MESSAGECHANNEL_H_ 1
 
 #include <memory>
-#include "thrift/lib/cpp/async/TDelayedDestruction.h"
-#include "thrift/lib/cpp/Thrift.h"
-#include "folly/ExceptionWrapper.h"
+#include <thrift/lib/cpp/async/TDelayedDestruction.h>
+#include <thrift/lib/cpp/Thrift.h>
+#include <folly/ExceptionWrapper.h>
 
 namespace folly {
 class IOBuf;

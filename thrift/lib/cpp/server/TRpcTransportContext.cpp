@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/server/TRpcTransportContext.h"
+#include <thrift/lib/cpp/server/TRpcTransportContext.h>
 
-#include "thrift/lib/cpp/transport/TRpcTransport.h"
+#include <thrift/lib/cpp/transport/TRpcTransport.h>
 
 namespace apache { namespace thrift { namespace server {
 

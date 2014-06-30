@@ -19,18 +19,18 @@
 #ifndef THRIFT_ASYNC_TEVENTSERVER_H_
 #define THRIFT_ASYNC_TEVENTSERVER_H_ 1
 
-#include "thrift/lib/cpp/Thrift.h"
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/async/TAsyncProcessor.h"
-#include "thrift/lib/cpp/transport/TTransportUtils.h"
-#include "thrift/lib/cpp/transport/TSSLSocket.h"
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/concurrency/ThreadLocal.h"
-#include "thrift/lib/cpp/async/TAsyncServerSocket.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TEventBaseManager.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/async/TAsyncProcessor.h>
+#include <thrift/lib/cpp/transport/TTransportUtils.h>
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/ThreadLocal.h>
+#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TEventBaseManager.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <vector>
 #include <map>
 #include <cstdlib>

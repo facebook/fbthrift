@@ -24,10 +24,10 @@
 #include <cstring>
 #include <string>
 #include <algorithm>
-#include "thrift/lib/cpp/transport/TTransport.h"
+#include <thrift/lib/cpp/transport/TTransport.h>
 // Include the buffered transports that used to be defined here.
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TFileTransport.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TFileTransport.h>
 
 namespace apache { namespace thrift { namespace transport {
 

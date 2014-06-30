@@ -26,20 +26,20 @@
 #include <functional>
 #include <boost/test/unit_test.hpp>
 
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/Monitor.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/server/TThreadedServer.h"
-#include "thrift/lib/cpp/server/example/TThreadPoolServer.h"
-#include "thrift/lib/cpp/server/TNonblockingServer.h"
-#include "thrift/lib/cpp/server/example/TSimpleServer.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
-#include "thrift/lib/cpp/ClientUtil.h"
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/server/TThreadedServer.h>
+#include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
+#include <thrift/lib/cpp/server/TNonblockingServer.h>
+#include <thrift/lib/cpp/server/example/TSimpleServer.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/ClientUtil.h>
 
-#include "thrift/lib/cpp/processor/test/EventLog.h"
-#include "thrift/lib/cpp/processor/test/ServerThread.h"
-#include "thrift/lib/cpp/processor/test/Handlers.h"
-#include "thrift/lib/cpp/processor/test/gen-cpp/ChildService.h"
+#include <thrift/lib/cpp/processor/test/EventLog.h>
+#include <thrift/lib/cpp/processor/test/ServerThread.h>
+#include <thrift/lib/cpp/processor/test/Handlers.h>
+#include <thrift/lib/cpp/processor/test/gen-cpp/ChildService.h>
 
 using std::string;
 using std::vector;

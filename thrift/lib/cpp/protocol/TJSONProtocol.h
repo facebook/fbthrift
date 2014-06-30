@@ -423,7 +423,7 @@ class TJSONProtocolFactory : public TProtocolFactory {
 
 
 // TODO(dreiss): Move part of ThriftJSONString into a .cpp file and remove this.
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 
 /*namespace apache { namespace thrift {
 

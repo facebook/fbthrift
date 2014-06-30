@@ -18,7 +18,7 @@
 
 #include <gmock/gmock.h>
 
-#include "thrift/lib/cpp/async/TAsyncTransport.h"
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
 
 namespace apache { namespace thrift { namespace test {
 

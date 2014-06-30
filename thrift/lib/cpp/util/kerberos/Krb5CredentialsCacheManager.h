@@ -24,11 +24,11 @@
 #include <thread>
 #include <unordered_map>
 
-#include "folly/stats/BucketedTimeSeries.h"
-#include "folly/RWSpinLock.h"
-#include "thrift/lib/cpp2/security/SecurityLogger.h"
-#include "thrift/lib/cpp/util/kerberos/Krb5CCacheStore.h"
-#include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
+#include <folly/stats/BucketedTimeSeries.h>
+#include <folly/RWSpinLock.h>
+#include <thrift/lib/cpp2/security/SecurityLogger.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5CCacheStore.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
 
 namespace apache { namespace thrift { namespace krb5 {
 

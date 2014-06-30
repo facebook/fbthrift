@@ -20,8 +20,8 @@
 #define THRIFT_TEST_PERF_CLIENTWORKER2_H_ 1
 
 #include "thrift/perf/if/gen-cpp2/LoadTest.h"
-#include "thrift/lib/cpp/test/loadgen/Worker.h"
-#include "thrift/lib/cpp/async/TEventBaseManager.h"
+#include <thrift/lib/cpp/test/loadgen/Worker.h>
+#include <thrift/lib/cpp/async/TEventBaseManager.h>
 
 #include "servicerouter/client/cpp2/ClientFactory.h"
 

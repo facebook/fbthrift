@@ -22,8 +22,8 @@
 
 #include <functional>
 #include <memory>
-#include "thrift/lib/cpp/TProcessor.h"
-#include "thrift/lib/cpp/async/TAsyncProcessor.h"
+#include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/async/TAsyncProcessor.h>
 
 namespace apache { namespace thrift { namespace async {
 

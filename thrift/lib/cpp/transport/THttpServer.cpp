@@ -17,13 +17,13 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/THttpServer.h"
+#include <thrift/lib/cpp/transport/THttpServer.h>
 
 #include <cstdlib>
 #include <sstream>
 #include <iostream>
 
-#include "thrift/lib/cpp/transport/TSocket.h"
+#include <thrift/lib/cpp/transport/TSocket.h>
 
 namespace apache { namespace thrift { namespace transport {
 

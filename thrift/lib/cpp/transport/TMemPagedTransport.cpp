@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/TMemPagedTransport.tcc"
+#include <thrift/lib/cpp/transport/TMemPagedTransport.tcc>
 
 namespace apache { namespace thrift { namespace transport {
 

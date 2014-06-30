@@ -26,10 +26,10 @@
 #include <thread>
 #include <unordered_map>
 
-#include "folly/stats/BucketedTimeSeries.h"
-#include "thrift/lib/cpp/util/kerberos/Krb5Tgts.h"
-#include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
-#include "thrift/lib/cpp2/security/SecurityLogger.h"
+#include <folly/stats/BucketedTimeSeries.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5Tgts.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
+#include <thrift/lib/cpp2/security/SecurityLogger.h>
 
 namespace apache { namespace thrift { namespace krb5 {
 

@@ -23,8 +23,8 @@
 #include <memory>
 #include <boost/test/unit_test.hpp>
 
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 
 using std::shared_ptr;
 using boost::unit_test::test_suite;

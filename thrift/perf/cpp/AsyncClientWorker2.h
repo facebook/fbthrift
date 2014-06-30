@@ -21,10 +21,10 @@
 
 #include "thrift/perf/cpp/ClientLoadConfig.h"
 #include "thrift/perf/if/gen-cpp2/LoadTest.h"
-#include "thrift/lib/cpp/test/loadgen/Worker.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
+#include <thrift/lib/cpp/test/loadgen/Worker.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 
 #include "servicerouter/client/cpp2/ClientFactory.h"
 

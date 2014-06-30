@@ -20,9 +20,9 @@
 
 #include "thrift/tutorial/cpp/stateful/gen-cpp/AuthenticatedService.h"
 
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
 
 using std::string;
 using namespace apache::thrift::protocol;

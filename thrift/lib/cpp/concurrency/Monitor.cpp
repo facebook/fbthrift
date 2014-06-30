@@ -17,9 +17,9 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/concurrency/Monitor.h"
-#include "thrift/lib/cpp/concurrency/Exception.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/Exception.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <boost/scoped_ptr.hpp>
 

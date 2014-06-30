@@ -16,11 +16,11 @@
 
 #include "thrift/perf/cpp/LoadHandler.h"
 
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
-#include "thrift/lib/cpp/server/TThreadedServer.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TServerSocket.h"
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/server/TThreadedServer.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TServerSocket.h>
 
 #include "common/config/Flags.h"
 #include <iostream>

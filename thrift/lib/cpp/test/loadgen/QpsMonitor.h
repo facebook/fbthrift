@@ -19,9 +19,9 @@
 #ifndef THRIFT_TEST_LOADGEN_QPSMONITOR_H_
 #define THRIFT_TEST_LOADGEN_QPSMONITOR_H_ 1
 
-#include "thrift/lib/cpp/test/loadgen/TerminalMonitor.h"
-#include "thrift/lib/cpp/test/loadgen/OpEnabledState.h"
-#include "thrift/lib/cpp/test/loadgen/QpsScoreBoard.h"
+#include <thrift/lib/cpp/test/loadgen/TerminalMonitor.h>
+#include <thrift/lib/cpp/test/loadgen/OpEnabledState.h>
+#include <thrift/lib/cpp/test/loadgen/QpsScoreBoard.h>
 
 namespace apache { namespace thrift { namespace loadgen {
 

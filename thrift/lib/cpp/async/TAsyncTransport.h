@@ -17,9 +17,9 @@
 #ifndef THRIFT_ASYNC_TASYNCTRANSPORT_H_
 #define THRIFT_ASYNC_TASYNCTRANSPORT_H_ 1
 
-#include "thrift/lib/cpp/async/TDelayedDestruction.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/thrift_config.h"
+#include <thrift/lib/cpp/async/TDelayedDestruction.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/thrift_config.h>
 #include <sys/uio.h>
 #include <inttypes.h>
 #include <memory>

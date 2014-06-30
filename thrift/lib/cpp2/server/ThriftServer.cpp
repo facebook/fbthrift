@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/server/ThriftServer.h"
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include "folly/Conv.h"
-#include "folly/Memory.h"
-#include "folly/Random.h"
-#include "folly/ScopeGuard.h"
-#include "thrift/lib/cpp2/async/GssSaslServer.h"
-#include "thrift/lib/cpp2/server/Cpp2Connection.h"
-#include "thrift/lib/cpp2/server/Cpp2Worker.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/concurrency/NumaThreadManager.h"
+#include <folly/Conv.h>
+#include <folly/Memory.h>
+#include <folly/Random.h>
+#include <folly/ScopeGuard.h>
+#include <thrift/lib/cpp2/async/GssSaslServer.h>
+#include <thrift/lib/cpp2/server/Cpp2Connection.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 
 #include <boost/thread/barrier.hpp>
 

@@ -17,10 +17,10 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/TProcessor.h"
-#include "thrift/lib/cpp/async/TAsyncChannel.h"
-#include "thrift/lib/cpp/async/TAsyncTransport.h"
-#include "thrift/lib/cpp/util/SocketRetriever.h"
+#include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/async/TAsyncChannel.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <thrift/lib/cpp/util/SocketRetriever.h>
 #include <algorithm>
 
 using std::vector;

@@ -17,8 +17,8 @@
 #ifndef THRIFT_TRANSPORT_THTTPPARSER_H_
 #define THRIFT_TRANSPORT_THTTPPARSER_H_ 1
 
-#include "folly/io/IOBuf.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
+#include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 
 namespace apache { namespace thrift { namespace util {
 

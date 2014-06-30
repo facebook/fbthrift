@@ -17,7 +17,7 @@
 #ifndef TIMEOUTMANAGER_H
 #define TIMEOUTMANAGER_H
 
-#include "folly/io/async/TimeoutManager.h"
+#include <folly/io/async/TimeoutManager.h>
 
 namespace apache { namespace thrift { namespace async {
 

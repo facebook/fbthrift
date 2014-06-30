@@ -28,15 +28,15 @@
 #include <unordered_set>
 #include <vector>
 
-#include "folly/Bits.h"
-#include "folly/Demangle.h"
-#include "folly/Hash.h"
-#include "folly/MapUtil.h"
-#include "folly/Optional.h"
-#include "folly/Range.h"
-#include "folly/experimental/Bits.h"
-#include "thrift/lib/cpp2/frozen/FrozenMacros.h"
-#include "thrift/lib/thrift/gen-cpp/frozen_types.h"
+#include <folly/Bits.h>
+#include <folly/Demangle.h>
+#include <folly/Hash.h>
+#include <folly/MapUtil.h>
+#include <folly/Optional.h>
+#include <folly/Range.h>
+#include <folly/experimental/Bits.h>
+#include <thrift/lib/cpp2/frozen/FrozenMacros.h>
+#include <thrift/lib/thrift/gen-cpp/frozen_types.h>
 
 namespace apache {
 namespace thrift {
@@ -674,13 +674,13 @@ void thawField(ViewPosition self,
 }
 }
 
-#include "thrift/lib/cpp2/frozen/FrozenTrivial-inl.h"
-#include "thrift/lib/cpp2/frozen/FrozenIntegral-inl.h"
-#include "thrift/lib/cpp2/frozen/FrozenBool-inl.h"
-#include "thrift/lib/cpp2/frozen/FrozenOptional-inl.h"
-#include "thrift/lib/cpp2/frozen/FrozenString-inl.h"
-#include "thrift/lib/cpp2/frozen/FrozenPair-inl.h"
-#include "thrift/lib/cpp2/frozen/FrozenRange-inl.h"
-#include "thrift/lib/cpp2/frozen/FrozenOrderedTable-inl.h"
-#include "thrift/lib/cpp2/frozen/FrozenHashTable-inl.h"
-#include "thrift/lib/cpp2/frozen/FrozenAssociative-inl.h"
+#include <thrift/lib/cpp2/frozen/FrozenTrivial-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenIntegral-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenBool-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenOptional-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenString-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenPair-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenRange-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenOrderedTable-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenHashTable-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenAssociative-inl.h>

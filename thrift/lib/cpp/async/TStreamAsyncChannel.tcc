@@ -19,8 +19,8 @@
 #ifndef THRIFT_ASYNC_TSTREAMASYNCCHANNEL_TCC_
 #define THRIFT_ASYNC_TSTREAMASYNCCHANNEL_TCC_ 1
 
-#include "thrift/lib/cpp/async/TStreamAsyncChannel.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
+#include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
 
 namespace apache { namespace thrift { namespace async {
 
@@ -509,7 +509,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadCallback(
     // to trace the exception call stack. For this:
     // - Add "@/folly/experimental/exception_tracer:exception_tracer" as a dep
     //   to your TARGETS file,
-    // - #include "folly/experimental/exception_tracer/ExceptionTracer.h"
+    // - #include <folly/experimental/exception_tracer/ExceptionTracer.h>
     //   in this file
     // - Uncomment the following line:
     //     for (const auto& e : getCurrentExceptions()) { LOG(ERROR) << e; }

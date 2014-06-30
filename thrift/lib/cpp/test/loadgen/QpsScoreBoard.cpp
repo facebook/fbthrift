@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/test/loadgen/QpsScoreBoard.h"
+#include <thrift/lib/cpp/test/loadgen/QpsScoreBoard.h>
 
 namespace apache { namespace thrift { namespace loadgen {
 

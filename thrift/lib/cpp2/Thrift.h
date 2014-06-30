@@ -20,7 +20,7 @@
 #ifndef THRIFT_CPP2_H_
 #define THRIFT_CPP2_H_
 
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/Thrift.h>
 
 namespace apache { namespace thrift {
 

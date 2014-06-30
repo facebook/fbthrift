@@ -17,12 +17,12 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/THeader.h"
+#include <thrift/lib/cpp/transport/THeader.h>
 
 #include <boost/test/unit_test.hpp>
 #include <memory>
-#include "folly/io/IOBuf.h"
-#include "folly/io/IOBufQueue.h"
+#include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
 
 using namespace boost;
 using namespace apache::thrift;

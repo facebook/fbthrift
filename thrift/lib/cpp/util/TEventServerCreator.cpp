@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/util/TEventServerCreator.h"
+#include <thrift/lib/cpp/util/TEventServerCreator.h>
 
-#include "thrift/lib/cpp/async/TEventServer.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
+#include <thrift/lib/cpp/async/TEventServer.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
 using std::shared_ptr;
 using apache::thrift::async::TAsyncProcessor;

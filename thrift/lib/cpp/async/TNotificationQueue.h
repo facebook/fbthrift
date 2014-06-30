@@ -17,9 +17,9 @@
 #ifndef TNOTIFICATIONQUEUE_H
 #define TNOTIFICATIONQUEUE_H
 
-#include "folly/io/async/NotificationQueue.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/Thrift.h"
+#include <folly/io/async/NotificationQueue.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/Thrift.h>
 
 namespace apache { namespace thrift { namespace async {
 

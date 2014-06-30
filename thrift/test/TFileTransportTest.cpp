@@ -26,10 +26,10 @@
 #include <boost/scoped_ptr.hpp>
 #include <deque>
 
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/transport/TFileTransport.h"
-#include "thrift/lib/cpp/test/TimeUtil.h"
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/transport/TFileTransport.h>
+#include <thrift/lib/cpp/test/TimeUtil.h>
 
 using apache::thrift::concurrency::Guard;
 using apache::thrift::concurrency::Mutex;

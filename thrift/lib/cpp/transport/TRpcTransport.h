@@ -19,7 +19,7 @@
 #ifndef THRIFT_TRANSPORT_TRPCTRANSPORT_H_
 #define THRIFT_TRANSPORT_TRPCTRANSPORT_H_ 1
 
-#include "thrift/lib/cpp/transport/TTransport.h"
+#include <thrift/lib/cpp/transport/TTransport.h>
 
 namespace apache { namespace thrift { namespace transport {
 

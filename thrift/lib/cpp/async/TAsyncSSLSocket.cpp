@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/async/TAsyncSSLSocket.h"
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 
-#include "thrift/lib/cpp/TLogging.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
-#include "thrift/lib/cpp/transport/TTransportException.h"
-#include "thrift/lib/cpp/concurrency/SpinLock.h"
+#include <thrift/lib/cpp/TLogging.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp/concurrency/SpinLock.h>
 
 #include <errno.h>
 #include <unistd.h>
@@ -33,9 +33,9 @@
 #include <openssl/asn1.h>
 #include <openssl/ssl.h>
 
-#include "folly/Bits.h"
-#include "folly/io/IOBuf.h"
-#include "folly/io/Cursor.h"
+#include <folly/Bits.h>
+#include <folly/io/IOBuf.h>
+#include <folly/io/Cursor.h>
 
 using apache::thrift::transport::TSocketAddress;
 using apache::thrift::transport::TTransportException;

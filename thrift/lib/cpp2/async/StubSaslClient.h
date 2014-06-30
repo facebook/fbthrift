@@ -20,9 +20,9 @@
 #ifndef THRIFT_SASLCLIENTSTUB_H_
 #define THRIFT_SASLCLIENTSTUB_H_ 1
 
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp2/async/SaslClient.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp2/async/SaslClient.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
 
 
 namespace apache { namespace thrift {

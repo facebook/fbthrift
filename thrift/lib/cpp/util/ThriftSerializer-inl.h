@@ -26,7 +26,7 @@
 
 #include <stdexcept>
 #include <string>
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
 
 namespace apache { namespace thrift { namespace util {
 

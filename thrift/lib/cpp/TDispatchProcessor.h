@@ -19,7 +19,7 @@
 #ifndef _THRIFT_TDISPATCHPROCESSOR_H_
 #define _THRIFT_TDISPATCHPROCESSOR_H_ 1
 
-#include "thrift/lib/cpp/TProcessor.h"
+#include <thrift/lib/cpp/TProcessor.h>
 
 namespace apache { namespace thrift {
 

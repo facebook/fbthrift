@@ -20,10 +20,10 @@
 #ifndef THRIFT_LIB_CPP_PROTOCOL_TNEUTRONIUMPROTOCOL_H_
 #define THRIFT_LIB_CPP_PROTOCOL_TNEUTRONIUMPROTOCOL_H_
 
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "thrift/lib/cpp/protocol/TVirtualProtocol.h"
-#include "thrift/lib/cpp/protocol/neutronium/Encoder.h"
-#include "thrift/lib/cpp/protocol/neutronium/Decoder.h"
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/protocol/TVirtualProtocol.h>
+#include <thrift/lib/cpp/protocol/neutronium/Encoder.h>
+#include <thrift/lib/cpp/protocol/neutronium/Decoder.h>
 
 namespace apache { namespace thrift { namespace protocol {
 

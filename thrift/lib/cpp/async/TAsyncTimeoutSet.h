@@ -19,9 +19,9 @@
 #ifndef THRIFT_ASYNC_TASYNCTIMEOUTSET_H_
 #define THRIFT_ASYNC_TASYNCTIMEOUTSET_H_ 1
 
-#include "thrift/lib/cpp/async/TAsyncTimeout.h"
-#include "thrift/lib/cpp/async/TDelayedDestruction.h"
-#include "thrift/lib/cpp/async/TimeoutManager.h"
+#include <thrift/lib/cpp/async/TAsyncTimeout.h>
+#include <thrift/lib/cpp/async/TDelayedDestruction.h>
+#include <thrift/lib/cpp/async/TimeoutManager.h>
 
 #include <chrono>
 #include <cstddef>

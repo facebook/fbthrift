@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/async/HHWheelTimer.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TUndelayedDestruction.h"
-#include "thrift/lib/cpp/test/TimeUtil.h"
+#include <thrift/lib/cpp/async/HHWheelTimer.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TUndelayedDestruction.h>
+#include <thrift/lib/cpp/test/TimeUtil.h>
 
 #include <boost/test/unit_test.hpp>
 #include <vector>

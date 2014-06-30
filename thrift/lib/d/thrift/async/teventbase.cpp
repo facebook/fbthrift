@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/async/TEventBase.h"
+#include <thrift/lib/cpp/async/TEventBase.h>
 
 using namespace apache::thrift::async;
 

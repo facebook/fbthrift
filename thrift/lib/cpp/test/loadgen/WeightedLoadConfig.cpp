@@ -18,11 +18,11 @@
  */
 #define __STDC_FORMAT_MACROS
 
-#include "thrift/lib/cpp/test/loadgen/WeightedLoadConfig.h"
+#include <thrift/lib/cpp/test/loadgen/WeightedLoadConfig.h>
 
-#include "thrift/lib/cpp/test/loadgen/OpEnabledState.h"
-#include "thrift/lib/cpp/test/loadgen/RNG.h"
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/test/loadgen/OpEnabledState.h>
+#include <thrift/lib/cpp/test/loadgen/RNG.h>
+#include <thrift/lib/cpp/Thrift.h>
 
 using namespace std;
 

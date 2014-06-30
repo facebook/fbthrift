@@ -22,8 +22,8 @@
 #include <stddef.h>
 
 #include <memory>
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "thrift/lib/cpp/transport/THeader.h"
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 
 namespace apache { namespace thrift {
 

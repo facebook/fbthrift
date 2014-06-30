@@ -20,8 +20,8 @@
 #ifndef THRIFT_SOCKETRETRIEVER_H_
 #define THRIFT_SOCKETRETRIEVER_H_
 
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
 
 namespace apache { namespace thrift { namespace util {
 

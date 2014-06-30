@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/util/PausableTimer.h"
+#include <thrift/lib/cpp/util/PausableTimer.h>
 
 #include <stdint.h>
 #include <sys/time.h>

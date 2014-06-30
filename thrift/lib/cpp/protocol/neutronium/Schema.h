@@ -23,11 +23,11 @@
 #include <vector>
 #include "boost/interprocess/containers/flat_map.hpp"
 #include "boost/interprocess/containers/flat_set.hpp"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "thrift/lib/cpp/Reflection.h"
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/Reflection.h>
 #include "external/glog/logging.h"
-#include "folly/Bits.h"
-#include "thrift/lib/cpp/protocol/neutronium/Utils.h"
+#include <folly/Bits.h>
+#include <thrift/lib/cpp/protocol/neutronium/Utils.h>
 
 namespace apache {
 namespace thrift {
@@ -118,7 +118,7 @@ TType toTType(reflection::Type t);
 }  // namespace apache
 
 #define THRIFT_INCLUDE_SCHEMA_INL
-#include "thrift/lib/cpp/protocol/neutronium/Schema-inl.h"
+#include <thrift/lib/cpp/protocol/neutronium/Schema-inl.h>
 #undef  THRIFT_INCLUDE_SCHEMA_INL
 
 #endif /* THRIFT_LIB_CPP_PROTOCOL_NEUTRONIUM_SCHEMA_H_ */

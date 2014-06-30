@@ -27,8 +27,8 @@
 #include <gssapi/gssapi_krb5.h>
 #include <krb5.h>
 
-#include "folly/io/IOBuf.h"
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace apache { namespace thrift {
 

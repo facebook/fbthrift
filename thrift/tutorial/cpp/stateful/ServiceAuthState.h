@@ -21,7 +21,7 @@
 
 #include <boost/noncopyable.hpp>
 
-#include "thrift/lib/cpp/concurrency/Mutex.h"
+#include <thrift/lib/cpp/concurrency/Mutex.h>
 
 #include "thrift/tutorial/cpp/stateful/gen-cpp/AuthenticatedService.h"
 

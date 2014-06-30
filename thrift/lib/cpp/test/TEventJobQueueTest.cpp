@@ -20,8 +20,8 @@
 #include <signal.h>
 #include <pthread.h>
 
-#include "thrift/lib/cpp/async/TEventJobQueue.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
+#include <thrift/lib/cpp/async/TEventJobQueue.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>

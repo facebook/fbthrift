@@ -30,8 +30,8 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "thrift/lib/cpp/server/test/gen-cpp/AggregatorTest_types.h"
-#include "thrift/lib/cpp/server/test/gen-cpp/AggregatorTest.h"
+#include <thrift/lib/cpp/server/test/gen-cpp/AggregatorTest_types.h>
+#include <thrift/lib/cpp/server/test/gen-cpp/AggregatorTest.h>
 
 #include "common/logging/logging.h"
 

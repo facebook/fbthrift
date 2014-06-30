@@ -20,8 +20,8 @@
 #ifndef THRIFT_CONCURRENCY_MONITOR_H_
 #define THRIFT_CONCURRENCY_MONITOR_H_ 1
 
-#include "thrift/lib/cpp/concurrency/Exception.h"
-#include "thrift/lib/cpp/concurrency/Mutex.h"
+#include <thrift/lib/cpp/concurrency/Exception.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
 
 #include <boost/utility.hpp>
 

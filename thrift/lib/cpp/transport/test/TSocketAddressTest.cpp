@@ -16,8 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>

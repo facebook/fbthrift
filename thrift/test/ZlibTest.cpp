@@ -36,8 +36,8 @@
 #include <boost/shared_array.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TZlibTransport.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TZlibTransport.h>
 
 using std::string;
 using namespace boost;

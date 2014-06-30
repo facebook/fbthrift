@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/TServerSocket.h"
+#include <thrift/lib/cpp/transport/TServerSocket.h>
 
 #include <cstring>
 #include <sys/types.h>
@@ -30,8 +30,8 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include "thrift/lib/cpp/transport/TSocket.h"
-#include "thrift/lib/cpp/util/FdUtils.h"
+#include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/util/FdUtils.h>
 #include <memory>
 
 namespace apache { namespace thrift { namespace transport {

@@ -18,7 +18,7 @@
 #include <gtest/gtest.h>
 #include <sstream>
 
-#include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
+#include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
 
 using namespace std;
 using namespace apache::thrift::krb5;

@@ -19,11 +19,11 @@
 #ifndef THRIFT_PROTOCOL_THEADERPROTOCOL_CPP_
 #define THRIFT_PROTOCOL_THEADERPROTOCOL_CPP_ 1
 
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/TCompactProtocol.h"
-#include "thrift/lib/cpp/protocol/TJSONProtocol.h"
-#include "thrift/lib/cpp/TApplicationException.h"
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
+#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
+#include <thrift/lib/cpp/TApplicationException.h>
 
 #include <limits>
 #include <boost/static_assert.hpp>

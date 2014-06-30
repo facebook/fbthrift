@@ -19,14 +19,14 @@
 #ifndef _THRIFT_TEST_SERVERTHREAD_TCC_
 #define _THRIFT_TEST_SERVERTHREAD_TCC_ 1
 
-#include "thrift/lib/cpp/processor/test/ServerThread.h"
+#include <thrift/lib/cpp/processor/test/ServerThread.h>
 
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/server/example/TThreadPoolServer.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TServerSocket.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TServerSocket.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
 
 namespace apache { namespace thrift { namespace test {
 

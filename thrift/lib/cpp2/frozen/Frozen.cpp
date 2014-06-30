@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/frozen/Frozen.h"
+#include <thrift/lib/cpp2/frozen/Frozen.h>
 
 namespace apache { namespace thrift { namespace frozen {
 

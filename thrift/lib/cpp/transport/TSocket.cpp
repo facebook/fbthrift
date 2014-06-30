@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/transport/TSocket.h"
+#include <thrift/lib/cpp/transport/TSocket.h>
 
-#include "thrift/lib/cpp/config.h"
-#include "thrift/lib/cpp/util/PausableTimer.h"
+#include <thrift/lib/cpp/config.h>
+#include <thrift/lib/cpp/util/PausableTimer.h>
 #include <cstring>
 #include <sstream>
 #include <sys/socket.h>
@@ -33,8 +33,8 @@
 #include <errno.h>
 #include <fcntl.h>
 
-#include "thrift/lib/cpp/concurrency/Monitor.h"
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace apache { namespace thrift { namespace transport {
 

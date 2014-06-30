@@ -18,11 +18,11 @@
  */
 #define __STDC_FORMAT_MACROS
 
-#include "thrift/lib/cpp/test/loadgen/LatencyMonitor.h"
+#include <thrift/lib/cpp/test/loadgen/LatencyMonitor.h>
 
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/test/loadgen/WeightedLoadConfig.h"
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/test/loadgen/WeightedLoadConfig.h>
+#include <thrift/lib/cpp/Thrift.h>
 
 DEFINE_double(thriftLatencyMonPct, 99,
     "x-th percentail latencies to show in stats: (0 - 100)");

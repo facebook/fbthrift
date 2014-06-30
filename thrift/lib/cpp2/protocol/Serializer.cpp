@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp2/protocol/Serializer.h"
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 namespace apache { namespace thrift {
 

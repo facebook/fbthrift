@@ -17,12 +17,12 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/concurrency/Mutex-impl.h"
+#include <thrift/lib/cpp/concurrency/Mutex-impl.h>
 
 #include <gtest/gtest.h>
 #include "common/concurrency/Timeout.h"
 #include "common/time/TimeConstants.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
 #include <thread>
 #include <vector>
 

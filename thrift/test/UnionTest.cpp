@@ -17,11 +17,11 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp2/protocol/CompactProtocol.h"
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/TCompactProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include "thrift/test/gen-cpp/UnionTest_types.h"
 #include "thrift/test/gen-cpp2/UnionTest_types.h"
 

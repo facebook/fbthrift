@@ -20,9 +20,9 @@
 #ifndef _THRIFT_TEST_GENERICHELPERS_H_
 #define _THRIFT_TEST_GENERICHELPERS_H_ 1
 
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/Thrift.h>
 
 using std::shared_ptr;
 

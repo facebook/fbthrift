@@ -20,18 +20,18 @@
 #include <signal.h>
 #include <pthread.h>
 
-#include "thrift/lib/cpp/util/TEventServerCreator.h"
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
-#include "thrift/lib/cpp/util/AsyncClientUtil.h"
-#include "thrift/lib/cpp/test/gen-cpp/TEventServerTestService.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TEventServer.h"
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp/async/TFramedAsyncChannel.h"
-#include "thrift/lib/cpp/async/THeaderAsyncChannel.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
-#include "thrift/lib/cpp/transport/THeaderTransport.h"
+#include <thrift/lib/cpp/util/TEventServerCreator.h>
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/util/AsyncClientUtil.h>
+#include <thrift/lib/cpp/test/gen-cpp/TEventServerTestService.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TEventServer.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
+#include <thrift/lib/cpp/async/THeaderAsyncChannel.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/transport/THeaderTransport.h>
 
 #include <boost/test/unit_test.hpp>
 #include <memory>

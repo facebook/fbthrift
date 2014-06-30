@@ -20,8 +20,8 @@
 #include <algorithm>
 #include <boost/foreach.hpp>
 #include <boost/test/unit_test.hpp>
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TShortReadTransport.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TShortReadTransport.h>
 
 using std::string;
 using std::shared_ptr;

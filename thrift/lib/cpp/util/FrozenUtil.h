@@ -17,9 +17,9 @@
 #ifndef THRIFT_LIB_CPP_UTIL_FROZENUTIL_H_
 #define THRIFT_LIB_CPP_UTIL_FROZENUTIL_H_
 
-#include "thrift/lib/cpp/Frozen.h"
-#include "folly/File.h"
-#include "folly/MemoryMapping.h"
+#include <thrift/lib/cpp/Frozen.h>
+#include <folly/File.h>
+#include <folly/MemoryMapping.h>
 
 namespace apache { namespace thrift { namespace util {
 
@@ -45,6 +45,6 @@ const Frozen* mapFrozen(const folly::MemoryMapping& mapping);
 
 }}} // apache::thrift
 
-#include "thrift/lib/cpp/util/FrozenUtil-inl.h"
+#include <thrift/lib/cpp/util/FrozenUtil-inl.h>
 
 #endif // include guard

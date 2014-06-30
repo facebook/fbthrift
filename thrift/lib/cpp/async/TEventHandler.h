@@ -17,7 +17,7 @@
 #ifndef TEVENTHANDLER_H
 #define TEVENTHANDLER_H
 
-#include "folly/io/async/EventHandler.h"
+#include <folly/io/async/EventHandler.h>
 
 namespace apache { namespace thrift { namespace async {
 

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/test/loadgen/RNG.h"
+#include <thrift/lib/cpp/test/loadgen/RNG.h>
 
 #include "common/concurrency/ThreadLocal.h"
 

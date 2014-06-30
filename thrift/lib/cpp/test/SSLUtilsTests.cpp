@@ -24,9 +24,9 @@
 
 #include <string>
 
-#include "thrift/lib/cpp/ssl/SSLUtils.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
-#include "thrift/lib/cpp/transport/TSSLSocket.h"
+#include <thrift/lib/cpp/ssl/SSLUtils.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 using apache::thrift::ssl::OpenSSLUtils;
 using apache::thrift::transport::SSLContext;

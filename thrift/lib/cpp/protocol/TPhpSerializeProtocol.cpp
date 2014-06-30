@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/protocol/TPhpSerializeProtocol.h"
+#include <thrift/lib/cpp/protocol/TPhpSerializeProtocol.h>
 
 #include <boost/lexical_cast.hpp>
 

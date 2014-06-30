@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 #include <gtest/gtest.h>
-#include "thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h"
-#include "thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h"
-#include "thrift/lib/cpp2/frozen/FrozenUtil.h"
-#include "thrift/lib/cpp2/frozen/FrozenTestUtil.h"
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
+#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
+#include <thrift/lib/cpp2/frozen/FrozenTestUtil.h>
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
 
 using namespace apache::thrift;
 using namespace frozen;

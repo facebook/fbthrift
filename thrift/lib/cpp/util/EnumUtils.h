@@ -19,7 +19,7 @@
 
 #include <cstring>
 #include <string>
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/Thrift.h>
 
 namespace apache { namespace thrift {
 

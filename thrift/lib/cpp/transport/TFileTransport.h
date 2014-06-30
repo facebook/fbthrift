@@ -20,9 +20,9 @@
 #ifndef _THRIFT_TRANSPORT_TFILETRANSPORT_H_
 #define _THRIFT_TRANSPORT_TFILETRANSPORT_H_ 1
 
-#include "thrift/lib/cpp/transport/TTransport.h"
-#include "thrift/lib/cpp/Thrift.h"
-#include "thrift/lib/cpp/TProcessor.h"
+#include <thrift/lib/cpp/transport/TTransport.h>
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/TProcessor.h>
 
 #include <string>
 #include <stdio.h>

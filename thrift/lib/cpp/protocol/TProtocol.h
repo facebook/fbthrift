@@ -20,10 +20,10 @@
 #ifndef THRIFT_PROTOCOL_TPROTOCOL_H_
 #define THRIFT_PROTOCOL_TPROTOCOL_H_ 1
 
-#include "thrift/lib/cpp/transport/TTransport.h"
-#include "thrift/lib/cpp/protocol/TProtocolException.h"
-#include "thrift/lib/cpp/util/BitwiseCast.h"
-#include "thrift/lib/cpp/util/shared_ptr_util.h"
+#include <thrift/lib/cpp/transport/TTransport.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
+#include <thrift/lib/cpp/util/BitwiseCast.h>
+#include <thrift/lib/cpp/util/shared_ptr_util.h>
 
 #include <memory>
 
@@ -33,7 +33,7 @@
 #include <map>
 #include <vector>
 
-#include "folly/FBString.h"
+#include <folly/FBString.h>
 
 namespace apache { namespace thrift { namespace reflection {
   class Schema;

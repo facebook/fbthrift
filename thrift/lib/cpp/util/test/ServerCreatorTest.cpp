@@ -18,13 +18,13 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include "thrift/lib/cpp/ClientUtil.h"
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
-#include "thrift/lib/cpp/util/TEventServerCreator.h"
-#include "thrift/lib/cpp/util/TNonblockingServerCreator.h"
-#include "thrift/lib/cpp/util/example/TSimpleServerCreator.h"
-#include "thrift/lib/cpp/util/TThreadedServerCreator.h"
-#include "thrift/lib/cpp/util/example/TThreadPoolServerCreator.h"
+#include <thrift/lib/cpp/ClientUtil.h>
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/util/TEventServerCreator.h>
+#include <thrift/lib/cpp/util/TNonblockingServerCreator.h>
+#include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
+#include <thrift/lib/cpp/util/TThreadedServerCreator.h>
+#include <thrift/lib/cpp/util/example/TThreadPoolServerCreator.h>
 #include "thrift/perf/if/gen-cpp/LoadTest.h"
 #include "thrift/perf/cpp/AsyncLoadHandler.h"
 #include "thrift/perf/cpp/LoadHandler.h"

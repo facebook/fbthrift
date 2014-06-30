@@ -20,9 +20,9 @@
 
 #include <gtest/gtest.h>
 
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
-#include "thrift/lib/cpp2/protocol/CompactProtocol.h"
-#include "thrift/lib/cpp2/test/stream/gen-cpp2/stream_types.h"
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/test/stream/gen-cpp2/stream_types.h>
 
 #include <utility>
 #include <chrono>

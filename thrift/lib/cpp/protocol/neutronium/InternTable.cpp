@@ -17,11 +17,11 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/protocol/neutronium/InternTable.h"
-#include "thrift/lib/cpp/protocol/neutronium/gen-cpp/intern_table_types.h"
-#include "thrift/lib/cpp/protocol/TNeutroniumProtocol.h"
-#include "folly/io/IOBufQueue.h"
-#include "folly/Bits.h"
+#include <thrift/lib/cpp/protocol/neutronium/InternTable.h>
+#include <thrift/lib/cpp/protocol/neutronium/gen-cpp/intern_table_types.h>
+#include <thrift/lib/cpp/protocol/TNeutroniumProtocol.h>
+#include <folly/io/IOBufQueue.h>
+#include <folly/Bits.h>
 
 namespace apache {
 namespace thrift {

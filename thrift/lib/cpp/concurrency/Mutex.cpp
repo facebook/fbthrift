@@ -17,9 +17,9 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/concurrency/Mutex-impl.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/concurrency/Exception.h"
+#include <thrift/lib/cpp/concurrency/Mutex-impl.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/concurrency/Exception.h>
 
 #include <assert.h>
 #include <pthread.h>

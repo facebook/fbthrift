@@ -21,7 +21,7 @@
 
 #include <memory>
 
-#include "thrift/lib/cpp/test/loadgen/IntervalTimer.h"
+#include <thrift/lib/cpp/test/loadgen/IntervalTimer.h>
 
 namespace apache { namespace thrift { namespace loadgen {
 

@@ -22,9 +22,9 @@
 
 #include <string>
 #include <vector>
-#include "thrift/lib/cpp/EventHandlerBase.h"
-#include "thrift/lib/cpp/server/TConnectionContext.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
+#include <thrift/lib/cpp/EventHandlerBase.h>
+#include <thrift/lib/cpp/server/TConnectionContext.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <memory>
 
 namespace apache { namespace thrift {

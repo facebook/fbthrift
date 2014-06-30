@@ -17,12 +17,12 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/server/TThreadedServer.h"
+#include <thrift/lib/cpp/server/TThreadedServer.h>
 
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/server/TRpcTransportContext.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/server/TRpcTransportContext.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 #include <string>
 #include <iostream>

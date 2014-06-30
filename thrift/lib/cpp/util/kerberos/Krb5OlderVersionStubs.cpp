@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h"
+#include <thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h>
 
 #include <assert.h>
 #include <glog/logging.h>

@@ -20,9 +20,9 @@
 #ifndef THRIFT_TRANSPORT_TTRANSPORT_H
 #define THRIFT_TRANSPORT_TTRANSPORT_H 1
 
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/Thrift.h>
 #include <memory>
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/transport/TTransportException.h>
 #include <string>
 
 namespace apache { namespace thrift { namespace transport {

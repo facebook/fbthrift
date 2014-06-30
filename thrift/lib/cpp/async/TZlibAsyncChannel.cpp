@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/async/TZlibAsyncChannel.h"
+#include <thrift/lib/cpp/async/TZlibAsyncChannel.h>
 
 using apache::thrift::transport::TMemoryBuffer;
 using std::shared_ptr;

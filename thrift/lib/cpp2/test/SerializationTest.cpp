@@ -19,8 +19,8 @@
 
 #include <gtest/gtest.h>
 
-#include "thrift/lib/cpp2/test/gen-cpp2/TestService.h"
-#include "thrift/lib/cpp2/protocol/Serializer.h"
+#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;

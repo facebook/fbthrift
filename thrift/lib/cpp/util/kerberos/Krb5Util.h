@@ -36,9 +36,9 @@ extern "C" {
 #include <krb5.h>
 }
 
-#include "folly/Conv.h"
-#include "folly/Memory.h"
-#include "thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h"
+#include <folly/Conv.h>
+#include <folly/Memory.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h>
 
 namespace std {
 

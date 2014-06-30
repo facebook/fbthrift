@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/async/THttpAsyncChannel.h"
+#include <thrift/lib/cpp/async/THttpAsyncChannel.h>
 
-#include "thrift/lib/cpp/async/TStreamAsyncChannel.tcc"
+#include <thrift/lib/cpp/async/TStreamAsyncChannel.tcc>
 
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;

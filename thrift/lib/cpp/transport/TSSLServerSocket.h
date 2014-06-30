@@ -21,7 +21,7 @@
 #define _THRIFT_TRANSPORT_TSSLSERVERSOCKET_H_ 1
 
 #include <memory>
-#include "thrift/lib/cpp/transport/TServerSocket.h"
+#include <thrift/lib/cpp/transport/TServerSocket.h>
 
 namespace apache { namespace thrift { namespace transport {
 

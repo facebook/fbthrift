@@ -21,8 +21,8 @@
 #define THRIFT_CLONEABLE_IOBUF_H_
 
 #include <memory>
-#include "folly/io/IOBuf.h"
-#include "thrift/lib/cpp/Thrift.h"
+#include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp/Thrift.h>
 
 namespace apache { namespace thrift {
 

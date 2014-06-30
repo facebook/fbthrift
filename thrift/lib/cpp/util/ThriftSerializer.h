@@ -27,11 +27,11 @@
 #include <string>
 #include <memory>
 
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"  // for serialization
-#include "thrift/lib/cpp/protocol/TCompactProtocol.h"  // for serialization
-#include "thrift/lib/cpp/protocol/TJSONProtocol.h"    // for serialization
-#include "thrift/lib/cpp/protocol/TSimpleJSONProtocol.h"    // for serialization
-#include "thrift/lib/cpp/transport/TTransportUtils.h" // for serialization
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>  // for serialization
+#include <thrift/lib/cpp/protocol/TCompactProtocol.h>  // for serialization
+#include <thrift/lib/cpp/protocol/TJSONProtocol.h>    // for serialization
+#include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>    // for serialization
+#include <thrift/lib/cpp/transport/TTransportUtils.h> // for serialization
 
 namespace apache { namespace thrift { namespace util {
 
@@ -246,6 +246,6 @@ template<typename ThriftStruct>
 }} // apache::thrift
 
 
-#include "thrift/lib/cpp/util/ThriftSerializer-inl.h"
+#include <thrift/lib/cpp/util/ThriftSerializer-inl.h>
 
 #endif

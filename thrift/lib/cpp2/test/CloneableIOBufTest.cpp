@@ -20,7 +20,7 @@
 
 
 #include <gtest/gtest.h>
-#include "thrift/lib/cpp2/CloneableIOBuf.h"
+#include <thrift/lib/cpp2/CloneableIOBuf.h>
 
 using namespace folly;
 using namespace apache::thrift;

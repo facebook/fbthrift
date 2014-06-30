@@ -18,7 +18,7 @@
 
 #include "thrift/perf/cpp/ClientLoadConfig.h"
 
-#include "thrift/lib/cpp/test/loadgen/RNG.h"
+#include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include "common/config/Flags.h"
 #include "common/network/NetworkUtil.h"
 

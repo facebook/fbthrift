@@ -19,7 +19,7 @@
 #ifndef THRIFT_TUTORIAL_ASYNC_SORTDISTRIBUTORHANDLER_H
 #define THRIFT_TUTORIAL_ASYNC_SORTDISTRIBUTORHANDLER_H
 
-#include "thrift/lib/cpp/async/TEventServer.h"
+#include <thrift/lib/cpp/async/TEventServer.h>
 
 #include "thrift/tutorial/cpp/async/sort/util.h"
 #include "thrift/tutorial/cpp/async/sort/gen-cpp/Sorter.h"

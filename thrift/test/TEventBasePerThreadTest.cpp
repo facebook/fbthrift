@@ -20,8 +20,8 @@
 #include <atomic>
 #include <pthread.h>
 #include <list>
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TEventBaseManager.h"
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TEventBaseManager.h>
 #include <stdio.h>
 
 #include <gtest/gtest.h>

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/transport/THeaderTransport.h"
+#include <thrift/lib/cpp/transport/THeaderTransport.h>
 
-#include "folly/io/IOBuf.h"
+#include <folly/io/IOBuf.h>
 
 #include <algorithm>
 #include <bitset>

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/util/FdUtils.h"
+#include <thrift/lib/cpp/util/FdUtils.h>
 
 #include <fcntl.h>
 

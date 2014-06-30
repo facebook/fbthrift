@@ -19,7 +19,7 @@
 #ifndef THRIFT_TEST_LOADGEN_LOADGEN_H_
 #define THRIFT_TEST_LOADGEN_LOADGEN_H_ 1
 
-#include "thrift/lib/cpp/test/loadgen/Worker.h"
+#include <thrift/lib/cpp/test/loadgen/Worker.h>
 
 namespace apache { namespace thrift {
 

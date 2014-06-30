@@ -20,13 +20,13 @@
 #ifndef THRIFT_SERVER_TEVENTWORKER_H_
 #define THRIFT_SERVER_TEVENTWORKER_H_ 1
 
-#include "thrift/lib/cpp/async/TAsyncServerSocket.h"
-#include "thrift/lib/cpp/async/TAsyncSSLSocket.h"
-#include "thrift/lib/cpp/async/TEventServer.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TEventHandler.h"
-#include "thrift/lib/cpp/async/TNotificationQueue.h"
-#include "thrift/lib/cpp/server/TServer.h"
+#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TEventServer.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TEventHandler.h>
+#include <thrift/lib/cpp/async/TNotificationQueue.h>
+#include <thrift/lib/cpp/server/TServer.h>
 #include <ext/hash_map>
 #include <list>
 #include <stack>

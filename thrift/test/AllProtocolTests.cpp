@@ -19,11 +19,11 @@
 
 #include <stdio.h>
 
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/TCompactProtocol.h"
-#include "thrift/lib/cpp/protocol/TJSONProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
+#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include "AllProtocolTests.tcc"
 
 using namespace apache::thrift;

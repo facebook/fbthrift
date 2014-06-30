@@ -18,10 +18,10 @@
  */
 #define __STDC_FORMAT_MACROS
 
-#include "thrift/lib/cpp/test/loadgen/QpsMonitor.h"
+#include <thrift/lib/cpp/test/loadgen/QpsMonitor.h>
 
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/test/loadgen/LoadConfig.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/test/loadgen/LoadConfig.h>
 
 #include <stdio.h>
 #include <string.h>

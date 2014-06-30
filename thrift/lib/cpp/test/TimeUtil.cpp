@@ -18,10 +18,10 @@
  */
 #define __STDC_FORMAT_MACROS
 
-#include "thrift/lib/cpp/test/TimeUtil.h"
+#include <thrift/lib/cpp/test/TimeUtil.h>
 
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/Thrift.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>

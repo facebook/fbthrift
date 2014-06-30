@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include "thrift/lib/cpp/async/TAsyncSocketFactory.h"
+#include <thrift/lib/cpp/async/TAsyncSocketFactory.h>
 
-#include "thrift/lib/cpp/transport/TSSLSocket.h"
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 namespace apache { namespace thrift { namespace async {
 

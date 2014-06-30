@@ -19,7 +19,7 @@
 #ifndef THRIFT_TEST_LOADGEN_WEIGHTEDLOADCONFIG_H_
 #define THRIFT_TEST_LOADGEN_WEIGHTEDLOADCONFIG_H_ 1
 
-#include "thrift/lib/cpp/test/loadgen/LoadConfig.h"
+#include <thrift/lib/cpp/test/loadgen/LoadConfig.h>
 
 #include <string>
 #include <vector>

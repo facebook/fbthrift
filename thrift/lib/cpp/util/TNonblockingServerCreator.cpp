@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/util/TNonblockingServerCreator.h"
+#include <thrift/lib/cpp/util/TNonblockingServerCreator.h>
 
 using std::shared_ptr;
 using namespace apache::thrift::concurrency;

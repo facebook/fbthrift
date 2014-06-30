@@ -18,7 +18,7 @@
 
 #include <gmock/gmock.h>
 
-#include "thrift/lib/cpp/async/TAsyncSSLSocket.h"
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 
 namespace apache { namespace thrift { namespace test {
 

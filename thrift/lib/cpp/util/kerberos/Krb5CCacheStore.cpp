@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/util/kerberos/Krb5CCacheStore.h"
+#include <thrift/lib/cpp/util/kerberos/Krb5CCacheStore.h>
 
 #include <glog/logging.h>
 #include <memory>
 #include <set>
 #include <stdio.h>
 
-#include "folly/stats/BucketedTimeSeries-defs.h"
-#include "folly/Memory.h"
-#include "folly/ScopeGuard.h"
-#include "folly/String.h"
+#include <folly/stats/BucketedTimeSeries-defs.h>
+#include <folly/Memory.h>
+#include <folly/ScopeGuard.h>
+#include <folly/String.h>
 
 // In older version of krb, this constant is not defined. Define it
 #ifndef KRB5_GC_NO_STORE

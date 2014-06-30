@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
+#include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
 
 #include <glog/logging.h>
 #include <memory>
 #include <string>
 #include <vector>
-#include "folly/ScopeGuard.h"
+#include <folly/ScopeGuard.h>
 
 namespace std {
 

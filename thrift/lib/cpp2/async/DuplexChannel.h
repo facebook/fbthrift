@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include "thrift/lib/cpp2/async/HeaderClientChannel.h"
-#include "thrift/lib/cpp2/async/HeaderServerChannel.h"
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 
 #include <memory>
 

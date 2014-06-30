@@ -16,11 +16,11 @@
 
 #define __STDC_FORMAT_MACROS
 
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
 
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
-#include "folly/Hash.h"
+#include <folly/Hash.h>
 
 #include <boost/functional/hash.hpp>
 #include <boost/static_assert.hpp>

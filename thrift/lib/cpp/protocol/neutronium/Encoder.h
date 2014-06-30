@@ -20,14 +20,14 @@
 #ifndef THRIFT_LIB_CPP_PROTOCOL_NEUTRONIUM_ENCODER_H_
 #define THRIFT_LIB_CPP_PROTOCOL_NEUTRONIUM_ENCODER_H_
 
-#include "thrift/lib/cpp/protocol/neutronium/Utils.h"
-#include "thrift/lib/cpp/protocol/neutronium/Schema.h"
-#include "thrift/lib/cpp/protocol/neutronium/InternTable.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "folly/FBString.h"
-#include "folly/Range.h"
-#include "folly/io/IOBuf.h"
-#include "folly/io/Cursor.h"
+#include <thrift/lib/cpp/protocol/neutronium/Utils.h>
+#include <thrift/lib/cpp/protocol/neutronium/Schema.h>
+#include <thrift/lib/cpp/protocol/neutronium/InternTable.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <folly/FBString.h>
+#include <folly/Range.h>
+#include <folly/io/IOBuf.h>
+#include <folly/io/Cursor.h>
 
 namespace apache {
 namespace thrift {
@@ -188,7 +188,7 @@ class Encoder {
 
 
 #define THRIFT_INCLUDE_ENCODER_INL
-#include "thrift/lib/cpp/protocol/neutronium/Encoder-inl.h"
+#include <thrift/lib/cpp/protocol/neutronium/Encoder-inl.h>
 #undef THRIFT_INCLUDE_ENCODER_INL
 
 #endif /* THRIFT_LIB_CPP_PROTOCOL_NEUTRONIUM_ENCODER_H_ */

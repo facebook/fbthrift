@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/server/Cpp2Connection.h"
+#include <thrift/lib/cpp2/server/Cpp2Connection.h>
 
-#include "thrift/lib/cpp/async/TEventConnection.h"
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp2/server/ThriftServer.h"
-#include "thrift/lib/cpp2/server/Cpp2Worker.h"
-#include "thrift/lib/cpp2/security/SecurityKillSwitch.h"
+#include <thrift/lib/cpp/async/TEventConnection.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include "thrift/lib/cpp/concurrency/NumaThreadManager.h"
+#include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 
 #include <assert.h>
 

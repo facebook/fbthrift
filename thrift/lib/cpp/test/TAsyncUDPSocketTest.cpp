@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/async/TAsyncUDPSocket.h"
-#include "thrift/lib/cpp/async/TAsyncUDPServerSocket.h"
-#include "thrift/lib/cpp/async/TAsyncTimeout.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
-#include "thrift/lib/cpp/test/ScopedEventBaseThread.h"
+#include <thrift/lib/cpp/async/TAsyncUDPSocket.h>
+#include <thrift/lib/cpp/async/TAsyncUDPServerSocket.h>
+#include <thrift/lib/cpp/async/TAsyncTimeout.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/test/ScopedEventBaseThread.h>
 
-#include "folly/io/IOBuf.h"
+#include <folly/io/IOBuf.h>
 
 #include <boost/test/unit_test.hpp>
 #include <boost/thread.hpp>

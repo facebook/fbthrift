@@ -22,8 +22,8 @@
 #include <gtest/gtest.h>
 #include "thrift/test/gen-cpp/OpaqueTest_types.h"
 #include "thrift/test/gen-cpp2/OpaqueTest_types.h"
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 
 template<class T>
 T getTestStruct() {

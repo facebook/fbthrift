@@ -20,15 +20,15 @@
 #ifndef THRIFT_SERVER_TNONBLOCKINGSERVER_H_
 #define THRIFT_SERVER_TNONBLOCKINGSERVER_H_ 1
 
-#include "thrift/lib/cpp/Thrift.h"
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/concurrency/Thread.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/concurrency/ThreadLocal.h"
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/ThreadLocal.h>
 #include <stack>
 #include <vector>
 #include <string>

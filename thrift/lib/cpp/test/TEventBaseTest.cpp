@@ -18,14 +18,14 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include "thrift/lib/cpp/async/TAsyncTimeout.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TEventHandler.h"
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/test/SocketPair.h"
-#include "thrift/lib/cpp/test/TimeUtil.h"
+#include <thrift/lib/cpp/async/TAsyncTimeout.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TEventHandler.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/test/SocketPair.h>
+#include <thrift/lib/cpp/test/TimeUtil.h>
 
 #include <iostream>
 #include <unistd.h>

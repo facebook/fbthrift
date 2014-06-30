@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/async/TAsyncSocketFactory.h"
+#include <thrift/lib/cpp/async/TAsyncSocketFactory.h>
 
-#include "folly/Memory.h"
+#include <folly/Memory.h>
 
 namespace apache { namespace thrift { namespace async {
 

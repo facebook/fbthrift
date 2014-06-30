@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/async/TAsyncServerSocket.h"
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp/async/TAsyncTimeout.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/test/TimeUtil.h"
-#include "thrift/lib/cpp/transport/TServerSocket.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
+#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TAsyncTimeout.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/test/TimeUtil.h>
+#include <thrift/lib/cpp/transport/TServerSocket.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
 
-#include "folly/io/IOBuf.h"
+#include <folly/io/IOBuf.h>
 
 #include <boost/test/unit_test.hpp>
 #include <boost/thread/barrier.hpp>

@@ -19,7 +19,7 @@
 #ifndef THRIFT_ASYNC_TBINARYASYNCCHANNEL_H_
 #define THRIFT_ASYNC_TBINARYASYNCCHANNEL_H_ 1
 
-#include "thrift/lib/cpp/async/TUnframedAsyncChannel.h"
+#include <thrift/lib/cpp/async/TUnframedAsyncChannel.h>
 
 namespace apache { namespace thrift { namespace async {
 

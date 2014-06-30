@@ -22,8 +22,8 @@
 #include <memory>
 #include <thread>
 
-#include "thrift/lib/cpp2/server/ThriftServer.h"
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
 
 struct Server {
   template <typename Function>

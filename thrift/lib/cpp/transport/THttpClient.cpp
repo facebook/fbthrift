@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/THttpClient.h"
+#include <thrift/lib/cpp/transport/THttpClient.h>
 
 #include <cstdlib>
 #include <sstream>
@@ -25,7 +25,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "thrift/lib/cpp/transport/TSocket.h"
+#include <thrift/lib/cpp/transport/TSocket.h>
 
 namespace apache { namespace thrift { namespace transport {
 

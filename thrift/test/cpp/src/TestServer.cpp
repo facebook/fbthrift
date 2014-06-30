@@ -15,18 +15,18 @@
  */
 
 #define __STDC_FORMAT_MACROS
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
-#include "thrift/lib/cpp/server/example/TSimpleServer.h"
-#include "thrift/lib/cpp/server/TThreadedServer.h"
-#include "thrift/lib/cpp/server/example/TThreadPoolServer.h"
-#include "thrift/lib/cpp/server/TNonblockingServer.h"
-#include "thrift/lib/cpp/transport/TServerSocket.h"
-#include "thrift/lib/cpp/transport/TTransportUtils.h"
-#include "thrift/lib/cpp/transport/TSSLSocket.h"
-#include "thrift/lib/cpp/transport/TSSLServerSocket.h"
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/server/example/TSimpleServer.h>
+#include <thrift/lib/cpp/server/TThreadedServer.h>
+#include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
+#include <thrift/lib/cpp/server/TNonblockingServer.h>
+#include <thrift/lib/cpp/transport/TServerSocket.h>
+#include <thrift/lib/cpp/transport/TTransportUtils.h>
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
+#include <thrift/lib/cpp/transport/TSSLServerSocket.h>
 #include "thrift/test/gen-cpp/ThriftTest.h"
 
 #include <iostream>

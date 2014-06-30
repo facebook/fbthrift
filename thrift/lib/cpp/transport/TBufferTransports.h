@@ -19,11 +19,11 @@
 
 #include <cstring>
 #include "boost/scoped_array.hpp"
-#include "folly/Likely.h"
-#include "folly/io/IOBuf.h"
+#include <folly/Likely.h>
+#include <folly/io/IOBuf.h>
 
-#include "thrift/lib/cpp/transport/TTransport.h"
-#include "thrift/lib/cpp/transport/TVirtualTransport.h"
+#include <thrift/lib/cpp/transport/TTransport.h>
+#include <thrift/lib/cpp/transport/TVirtualTransport.h>
 
 namespace apache { namespace thrift { namespace transport {
 

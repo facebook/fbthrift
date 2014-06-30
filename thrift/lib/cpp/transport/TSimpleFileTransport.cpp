@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/TSimpleFileTransport.h"
+#include <thrift/lib/cpp/transport/TSimpleFileTransport.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>

@@ -20,9 +20,9 @@
 #ifndef CPP2_PROTOCOL_DEBUGPROTOCOL_H_
 #define CPP2_PROTOCOL_DEBUGPROTOCOL_H_
 
-#include "thrift/lib/cpp2/protocol/Protocol.h"
-#include "folly/Format.h"
-#include "thrift/lib/cpp2/Thrift.h"
+#include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <folly/Format.h>
+#include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache { namespace thrift {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/transport/TSSLSocket.h"
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 #include <errno.h>
 #include <string>
@@ -26,12 +26,12 @@
 #include <openssl/rand.h>
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
-#include "thrift/lib/cpp/concurrency/Mutex.h"
+#include <thrift/lib/cpp/concurrency/Mutex.h>
 #ifdef __x86_64__
-#include "folly/SmallLocks.h"
-#include "folly/String.h"
+#include <folly/SmallLocks.h>
+#include <folly/String.h>
 #else
-#include "thrift/lib/cpp/concurrency/SpinLock.h"
+#include <thrift/lib/cpp/concurrency/SpinLock.h>
 #endif
 #include <glog/logging.h>
 

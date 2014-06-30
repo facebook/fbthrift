@@ -25,13 +25,13 @@
 #include <gssapi/gssapi_krb5.h>
 #include <krb5.h>
 
-#include "folly/io/IOBuf.h"
-#include "thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h"
-#include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
-#include "thrift/lib/cpp2/security/SecurityLogger.h"
-#include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
-#include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
-#include "thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h"
+#include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
+#include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
+#include <thrift/lib/cpp2/security/SecurityLogger.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5OlderVersionStubs.h>
 
 namespace apache { namespace thrift {
 

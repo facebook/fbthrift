@@ -19,9 +19,9 @@
 #ifndef THRIFT_ASYNC_TASYNCEVENTCHANNEL_H_
 #define THRIFT_ASYNC_TASYNCEVENTCHANNEL_H_ 1
 
-#include "thrift/lib/cpp/async/TAsyncChannel.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TDelayedDestruction.h"
+#include <thrift/lib/cpp/async/TAsyncChannel.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TDelayedDestruction.h>
 
 namespace apache { namespace thrift { namespace async {
 

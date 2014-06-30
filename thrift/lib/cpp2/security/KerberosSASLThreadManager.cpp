@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
+#include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
 
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 
 
 namespace apache { namespace thrift {

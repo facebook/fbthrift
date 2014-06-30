@@ -23,8 +23,8 @@
 #include <set>
 #include <string>
 
-#include "thrift/lib/cpp/concurrency/Thread.h"
-#include "folly/ThreadName.h"
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <folly/ThreadName.h>
 
 #include <memory>
 

@@ -20,10 +20,10 @@
 #ifndef THRIFT_SASLSERVER_H_
 #define THRIFT_SASLSERVER_H_ 1
 
-#include "thrift/lib/cpp2/async/SaslEndpoint.h"
-#include "thrift/lib/cpp/async/HHWheelTimer.h"
-#include "thrift/lib/cpp2/async/MessageChannel.h"
-#include "thrift/lib/cpp2/async/RequestChannel.h"
+#include <thrift/lib/cpp2/async/SaslEndpoint.h>
+#include <thrift/lib/cpp/async/HHWheelTimer.h>
+#include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 
 namespace apache { namespace thrift {
 

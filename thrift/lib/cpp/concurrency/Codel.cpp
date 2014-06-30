@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/concurrency/Codel.h"
+#include <thrift/lib/cpp/concurrency/Codel.h>
 #include <math.h>
 #include <gflags/gflags.h>
 

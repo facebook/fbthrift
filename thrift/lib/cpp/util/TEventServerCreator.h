@@ -19,7 +19,7 @@
 #ifndef THRIFT_UTIL_TEVENTSERVERCREATOR_H_
 #define THRIFT_UTIL_TEVENTSERVERCREATOR_H_ 1
 
-#include "thrift/lib/cpp/util/ServerCreatorBase.h"
+#include <thrift/lib/cpp/util/ServerCreatorBase.h>
 
 #include <stdint.h>
 

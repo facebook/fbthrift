@@ -19,7 +19,7 @@
 #ifndef AUTHHANDLER_H
 #define AUTHHANDLER_H
 
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
 #include "thrift/tutorial/cpp/stateful/gen-cpp/AuthenticatedService.h"
 
 class ServiceAuthState;

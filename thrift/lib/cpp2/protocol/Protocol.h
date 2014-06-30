@@ -20,14 +20,14 @@
 #ifndef CPP2_PROTOCOL_PROTOCOL_H_
 #define CPP2_PROTOCOL_PROTOCOL_H_ 1
 
-#include "folly/io/IOBuf.h"
-#include "folly/io/IOBufQueue.h"
-#include "thrift/lib/cpp/Thrift.h"
-#include "thrift/lib/cpp/protocol/TProtocolException.h"
-#include "thrift/lib/cpp/protocol/TProtocolTypes.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "thrift/lib/cpp/util/BitwiseCast.h"
-#include "thrift/lib/cpp2/CloneableIOBuf.h"
+#include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/util/BitwiseCast.h>
+#include <thrift/lib/cpp2/CloneableIOBuf.h>
 
 #include <map>
 #include <memory>

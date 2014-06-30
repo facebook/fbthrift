@@ -19,8 +19,8 @@
 #ifndef THRIFT_ASYNC_TASYNCSSLSERVERSOCKET_H_
 #define THRIFT_ASYNC_TASYNCSSLSERVERSOCKET_H_ 1
 
-#include "thrift/lib/cpp/async/TAsyncServerSocket.h"
-#include "thrift/lib/cpp/transport/TSSLSocket.h"
+#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 namespace apache { namespace thrift {
 

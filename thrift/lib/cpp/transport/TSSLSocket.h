@@ -22,8 +22,8 @@
 #include <memory>
 #include <openssl/ssl.h>
 #include <openssl/tls1.h>
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
 
 namespace apache { namespace thrift { namespace transport {
 

@@ -17,10 +17,10 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/TFileTransport.h"
+#include <thrift/lib/cpp/transport/TFileTransport.h>
 
-#include "thrift/lib/cpp/config.h"
-#include "thrift/lib/cpp/transport/TTransportUtils.h"
+#include <thrift/lib/cpp/config.h>
+#include <thrift/lib/cpp/transport/TTransportUtils.h>
 
 #include <pthread.h>
 #ifdef HAVE_SYS_TIME_H

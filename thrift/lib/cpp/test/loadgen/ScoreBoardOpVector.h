@@ -19,7 +19,7 @@
 #ifndef THRIFT_TEST_LOADGEN_SCOREBOARDOPVECTOR_H_
 #define THRIFT_TEST_LOADGEN_SCOREBOARDOPVECTOR_H_ 1
 
-#include "thrift/lib/cpp/test/loadgen/ScoreBoard.h"
+#include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
 
 #include <assert.h>
 #include <vector>

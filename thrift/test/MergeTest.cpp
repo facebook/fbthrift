@@ -20,7 +20,7 @@
 #include <gtest/gtest.h>
 #include <string>
 
-#include "folly/Format.h"
+#include <folly/Format.h>
 #include "thrift/test/gen-cpp/OptionalRequiredTest_types.h"
 #include "thrift/test/gen-cpp/ThriftTest_types.h"
 

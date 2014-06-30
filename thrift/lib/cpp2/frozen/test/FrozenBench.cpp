@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "folly/Benchmark.h"
-#include "thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h"
-#include "thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h"
+#include <folly/Benchmark.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 
 using namespace apache::thrift;
 using namespace frozen;

@@ -21,9 +21,9 @@
 #define STATSPROCESSOR_H
 
 #include <memory>
-#include "thrift/lib/cpp/transport/TTransport.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "thrift/lib/cpp/TProcessor.h"
+#include <thrift/lib/cpp/transport/TTransport.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/TProcessor.h>
 
 namespace apache { namespace thrift { namespace processor {
 

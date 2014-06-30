@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/ShutdownSocketSet.h"
+#include <thrift/lib/cpp/ShutdownSocketSet.h>
 
 #include <atomic>
 #include <chrono>

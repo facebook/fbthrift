@@ -20,7 +20,7 @@
 #ifndef THRIFT_ASYNC_OUTPUTSTREAM_TCC_
 #define THRIFT_ASYNC_OUTPUTSTREAM_TCC_ 1
 
-#include "thrift/lib/cpp2/async/Stream.h"
+#include <thrift/lib/cpp2/async/Stream.h>
 #include <utility>
 #include <memory>
 

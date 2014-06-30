@@ -22,9 +22,9 @@
 #include "common/fbunit/benchmark.h"
 #include "common/fbunit/fbunit.h"
 #include "common/init/Init.h"
-#include "thrift/lib/cpp/util/gen-cpp/ThriftSerializerTest_types.h"
-#include "thrift/lib/cpp/protocol/TProtocolException.h"
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
+#include <thrift/lib/cpp/util/gen-cpp/ThriftSerializerTest_types.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
 
 using namespace facebook;
 using namespace std;

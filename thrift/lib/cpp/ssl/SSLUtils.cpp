@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/ssl/SSLUtils.h"
+#include <thrift/lib/cpp/ssl/SSLUtils.h>
 
 #include <arpa/inet.h>
 #include <glog/logging.h>
@@ -22,7 +22,7 @@
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
 
-#include "folly/ScopeGuard.h"
+#include <folly/ScopeGuard.h>
 
 namespace apache { namespace thrift { namespace ssl {
 

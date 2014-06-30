@@ -20,11 +20,11 @@
 
 #include "thrift/perf/cpp/ClientWorker.h"
 
-#include "thrift/lib/cpp/ClientUtil.h"
-#include "thrift/lib/cpp/test/loadgen/RNG.h"
+#include <thrift/lib/cpp/ClientUtil.h>
+#include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include "thrift/perf/cpp/ClientLoadConfig.h"
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
-#include "thrift/lib/cpp/transport/TSSLSocket.h"
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 using namespace boost;
 using namespace apache::thrift::protocol;

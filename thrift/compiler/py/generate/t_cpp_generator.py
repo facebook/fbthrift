@@ -469,12 +469,12 @@ class CppGenerator(t_generator.Generator):
                                                     context)
         # Enter the scope (prints guard)
         s.acquire()
-        s('#include "thrift/lib/cpp2/ServiceIncludes.h"')
+        s('#include <thrift/lib/cpp2/ServiceIncludes.h>')
         if not self.flag_bootstrap:
-            s('#include "thrift/lib/cpp/TApplicationException.h"')
+            s('#include <thrift/lib/cpp/TApplicationException.h>')
         if self.flag_future:
-            s('#include "thrift/lib/cpp2/async/FutureRequest.h"')
-            s('#include "folly/wangle/Future.h"')
+            s('#include <thrift/lib/cpp2/async/FutureRequest.h>')
+            s('#include <folly/wangle/Future.h>')
         s('#include "{0}"'.format(self._with_include_prefix(self._program,
                                                              self._program.name
                                                              + '_types.h')))
@@ -4089,7 +4089,7 @@ class CppGenerator(t_generator.Generator):
             return
         context = self._make_context(self._program.name + '_layouts')
         s = get_global_scope(CppPrimitiveFactory, context)
-        s('#include "thrift/lib/cpp2/frozen/Frozen.h"')
+        s('#include <thrift/lib/cpp2/frozen/Frozen.h>')
         s('#include "{0}"'.format(self._with_include_prefix(self._program,
             self._program.name + '_types.h')))
         with s.namespace('apache.thrift.frozen').scope:
@@ -4209,17 +4209,17 @@ class CppGenerator(t_generator.Generator):
         # Enter the scope (prints guard)
         s.acquire()
         # Include base types
-        s('#include "thrift/lib/cpp2/Thrift.h"')
-        s('#include "thrift/lib/cpp2/protocol/Protocol.h"')
+        s('#include <thrift/lib/cpp2/Thrift.h>')
+        s('#include <thrift/lib/cpp2/protocol/Protocol.h>')
         for a, b, c in self.protocols:
-            s('#include "thrift/lib/cpp2/protocol/{0}.h"'.format(b))
-        s('#include "thrift/lib/cpp2/protocol/DebugProtocol.h"')
-        s('#include "thrift/lib/cpp2/protocol/VirtualProtocol.h"')
-        s('#include "thrift/lib/cpp/protocol/TProtocol.h"')
+            s('#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b))
+        s('#include <thrift/lib/cpp2/protocol/DebugProtocol.h>')
+        s('#include <thrift/lib/cpp2/protocol/VirtualProtocol.h>')
+        s('#include <thrift/lib/cpp/protocol/TProtocol.h>')
         if not self.flag_bootstrap:
-            s('#include "thrift/lib/cpp/TApplicationException.h"')
-        s('#include "folly/io/IOBuf.h"')
-        s('#include "folly/io/Cursor.h"')
+            s('#include <thrift/lib/cpp/TApplicationException.h>')
+        s('#include <folly/io/IOBuf.h>')
+        s('#include <folly/io/Cursor.h>')
         s('#include <boost/operators.hpp>')
         s()
         if self.flag_compatibility:

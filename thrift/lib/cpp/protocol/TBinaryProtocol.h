@@ -20,8 +20,8 @@
 #ifndef THRIFT_PROTOCOL_TBINARYPROTOCOL_H_
 #define THRIFT_PROTOCOL_TBINARYPROTOCOL_H_ 1
 
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "thrift/lib/cpp/protocol/TVirtualProtocol.h"
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/protocol/TVirtualProtocol.h>
 
 #include <memory>
 

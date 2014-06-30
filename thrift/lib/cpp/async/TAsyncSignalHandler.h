@@ -19,8 +19,8 @@
 #ifndef THRIFT_ASYNC_TASYNCSIGNALHANDLER_H_
 #define THRIFT_ASYNC_TASYNCSIGNALHANDLER_H_ 1
 
-#include "thrift/lib/cpp/thrift_config.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
+#include <thrift/lib/cpp/thrift_config.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
 #include <event.h>
 #include <map>
 

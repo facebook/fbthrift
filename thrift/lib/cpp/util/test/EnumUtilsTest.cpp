@@ -16,9 +16,9 @@
 
 #include <gtest/gtest.h>
 
-#include "thrift/lib/cpp/util/EnumUtils.h"
-#include "thrift/lib/cpp/util/test/gen-cpp/enum_non_strict_types.h"
-#include "thrift/lib/cpp/util/test/gen-cpp/enum_strict_types.h"
+#include <thrift/lib/cpp/util/EnumUtils.h>
+#include <thrift/lib/cpp/util/test/gen-cpp/enum_non_strict_types.h>
+#include <thrift/lib/cpp/util/test/gen-cpp/enum_strict_types.h>
 
 using namespace apache::thrift::util;
 

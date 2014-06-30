@@ -52,16 +52,16 @@
  */
 #include "common/fb303/cpp/FacebookBase.h"
 
-#include "thrift/lib/cpp/server/test/AggregatorUtilTest.h"
+#include <thrift/lib/cpp/server/test/AggregatorUtilTest.h>
 
-#include "thrift/lib/cpp/server/TNonblockingServer.h"
+#include <thrift/lib/cpp/server/TNonblockingServer.h>
 
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 
-#include "thrift/lib/cpp/transport/TServerSocket.h"
-#include "thrift/lib/cpp/transport/TTransportUtils.h"
+#include <thrift/lib/cpp/transport/TServerSocket.h>
+#include <thrift/lib/cpp/transport/TTransportUtils.h>
 
 #include "common/fb303/cpp/TFunctionStatHandler.h"
 #include "common/fb303/cpp/TClientInfo.h"

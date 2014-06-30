@@ -20,8 +20,8 @@
 #ifndef _THRIFT_TRANSPORT_THDFSFILETRANSPORT_H_
 #define _THRIFT_TRANSPORT_THDFSFILETRANSPORT_H_
 
-#include "thrift/lib/cpp/transport/TTransport.h"
-#include "thrift/lib/cpp/transport/TVirtualTransport.h"
+#include <thrift/lib/cpp/transport/TTransport.h>
+#include <thrift/lib/cpp/transport/TVirtualTransport.h>
 #include "HDFS.h"
 #include <string>
 

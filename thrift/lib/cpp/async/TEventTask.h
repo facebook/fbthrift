@@ -19,15 +19,15 @@
 #ifndef _THRIFT_TEVENTTASK_H_
 #define _THRIFT_TEVENTTASK_H_ 1
 
-#include "thrift/lib/cpp/Thrift.h"
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/async/TEventConnection.h"
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/async/TEventConnection.h>
 #include <functional>
 #include <memory>
-#include "thrift/lib/cpp/TProcessor.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
+#include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
 
 namespace apache { namespace thrift { namespace async {
 

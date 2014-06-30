@@ -16,19 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/server/TConnectionContext.h"
-#include "thrift/lib/cpp/server/test/gen-cpp/ConnCtxService.h"
-#include "thrift/lib/cpp/test/NetworkUtil.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
-#include "thrift/lib/cpp/util/TNonblockingServerCreator.h"
-#include "thrift/lib/cpp/util/example/TSimpleServerCreator.h"
-#include "thrift/lib/cpp/util/TThreadedServerCreator.h"
-#include "thrift/lib/cpp/util/example/TThreadPoolServerCreator.h"
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/server/TConnectionContext.h>
+#include <thrift/lib/cpp/server/test/gen-cpp/ConnCtxService.h>
+#include <thrift/lib/cpp/test/NetworkUtil.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/util/TNonblockingServerCreator.h>
+#include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
+#include <thrift/lib/cpp/util/TThreadedServerCreator.h>
+#include <thrift/lib/cpp/util/example/TThreadPoolServerCreator.h>
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>

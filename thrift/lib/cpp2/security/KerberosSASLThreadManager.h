@@ -17,7 +17,7 @@
 #ifndef KERBEROS_SASL_THREAD_MANAGER_H
 #define KERBEROS_SASL_THREAD_MANAGER_H
 
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
 namespace apache { namespace thrift {
 

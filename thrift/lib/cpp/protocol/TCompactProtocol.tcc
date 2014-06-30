@@ -17,9 +17,9 @@
 #ifndef THRIFT_PROTOCOL_TCOMPACTPROTOCOL_TCC_
 #define THRIFT_PROTOCOL_TCOMPACTPROTOCOL_TCC_ 1
 
-#include "thrift/lib/cpp/thrift_config.h"
-#include "thrift/lib/cpp/util/VarintUtils.h"
-#include "folly/Likely.h"
+#include <thrift/lib/cpp/thrift_config.h>
+#include <thrift/lib/cpp/util/VarintUtils.h>
+#include <folly/Likely.h>
 #include <limits>
 
 /*

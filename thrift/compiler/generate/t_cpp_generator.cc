@@ -544,15 +544,15 @@ void t_cpp_generator::init_generator() {
 
   // Include base types
   f_types_ <<
-    "#include \"thrift/lib/cpp/Thrift.h\"" << endl <<
-    "#include \"thrift/lib/cpp/TApplicationException.h\"" << endl <<
-    "#include \"thrift/lib/cpp/protocol/TProtocol.h\"" << endl <<
-    "#include \"thrift/lib/cpp/transport/TTransport.h\"" << endl <<
+    "#include <thrift/lib/cpp/Thrift.h>" << endl <<
+    "#include <thrift/lib/cpp/TApplicationException.h>" << endl <<
+    "#include <thrift/lib/cpp/protocol/TProtocol.h>" << endl <<
+    "#include <thrift/lib/cpp/transport/TTransport.h>" << endl <<
     endl;
 
   if (frozen_) {
     f_types_ <<
-      "#include \"thrift/lib/cpp/Frozen.h\"" << endl <<
+      "#include <thrift/lib/cpp/Frozen.h>" << endl <<
       endl;
   }
 
@@ -561,7 +561,7 @@ void t_cpp_generator::init_generator() {
         << get_include_guard("_LAYOUTS_H") << endl
         << "#include \"" << get_include_prefix(*get_program())
           << program_name_ << "_types.h\"" << endl
-        << "#include \"thrift/lib/cpp2/frozen/Frozen.h\"" << endl
+        << "#include <thrift/lib/cpp2/frozen/Frozen.h>" << endl
         << endl << "namespace apache { namespace thrift { namespace frozen {"
         << endl;
 
@@ -576,7 +576,7 @@ void t_cpp_generator::init_generator() {
       endl << "#include <folly/Range.h>" << endl <<
       endl << "#include <folly/Conv.h>" << endl <<
       endl << "#include <math.h>" << endl <<
-      endl << "#include \"thrift/lib/cpp/Thrift.h\"" << endl <<
+      endl << "#include <thrift/lib/cpp/Thrift.h>" << endl <<
       endl << "using namespace folly::json;" << endl;
   }
 
@@ -3337,16 +3337,16 @@ void t_cpp_generator::generate_service(t_service* tservice) {
     f_header_ <<
       "#include <functional>" << endl <<
       // TODO(dreiss): Libify the base client so we don't have to include this.
-      "#include \"thrift/lib/cpp/transport/TTransportUtils.h\"" << endl <<
+      "#include <thrift/lib/cpp/transport/TTransportUtils.h>" << endl <<
       "namespace apache { namespace thrift { namespace async {" << endl <<
       "class TAsyncChannel;" << endl <<
       "}}}" << endl;
   }
   f_header_ <<
-    "#include \"thrift/lib/cpp/TDispatchProcessor.h\"" << endl;
+    "#include <thrift/lib/cpp/TDispatchProcessor.h>" << endl;
   if (gen_cob_style_) {
     f_header_ <<
-      "#include \"thrift/lib/cpp/async/TAsyncDispatchProcessor.h\"" << endl;
+      "#include <thrift/lib/cpp/async/TAsyncDispatchProcessor.h>" << endl;
   }
   f_header_ <<
     "#include \"" << get_include_prefix(*get_program()) << program_name_ <<
@@ -3393,10 +3393,10 @@ void t_cpp_generator::generate_service(t_service* tservice) {
   }
 
   f_service_
-    << "#include \"folly/ScopeGuard.h\"" << endl;
+    << "#include <folly/ScopeGuard.h>" << endl;
   if (gen_cob_style_) {
     f_service_
-      << "#include \"thrift/lib/cpp/async/TAsyncChannel.h\"" << endl;
+      << "#include <thrift/lib/cpp/async/TAsyncChannel.h>" << endl;
   }
 
   if (gen_templates_) {
@@ -3405,10 +3405,10 @@ void t_cpp_generator::generate_service(t_service* tservice) {
       ".h\"" << endl;
 
     f_service_tcc_
-      << "#include \"folly/ScopeGuard.h\"" << endl;
+      << "#include <folly/ScopeGuard.h>" << endl;
     if (gen_cob_style_) {
       f_service_tcc_
-        << "#include \"thrift/lib/cpp/async/TAsyncChannel.h\"" << endl;
+        << "#include <thrift/lib/cpp/async/TAsyncChannel.h>" << endl;
     }
   }
 
@@ -3845,8 +3845,8 @@ void t_cpp_generator::generate_service_async_skeleton(t_service* tservice) {
     "// avoid overwriting it.\n"
     "\n"
     "#include \"" << get_include_prefix(*get_program()) << svcname << ".h\"\n"<<
-    "#include \"thrift/lib/cpp/async/TEventServer.h\"\n"
-    "#include \"thrift/lib/cpp/util/TEventServerCreator.h\"\n"
+    "#include <thrift/lib/cpp/async/TEventServer.h>\n"
+    "#include <thrift/lib/cpp/util/TEventServerCreator.h>\n"
     "\n"
     "using apache::thrift::async::TAsyncProcessor;\n"
     "using apache::thrift::async::TEventServer;\n"
@@ -5913,9 +5913,9 @@ void t_cpp_generator::generate_service_skeleton(t_service* tservice) {
     "// You should copy it to another filename to avoid overwriting it.\n"
     "\n"
     "#include \"" << get_include_prefix(*get_program()) << svcname << ".h\"\n"<<
-    "#include \"thrift/lib/cpp/async/TEventServer.h\"\n"
-    "#include \"thrift/lib/cpp/server/TConnectionContext.h\"\n"
-    "#include \"thrift/lib/cpp/util/TEventServerCreator.h\"\n"
+    "#include <thrift/lib/cpp/async/TEventServer.h>\n"
+    "#include <thrift/lib/cpp/server/TConnectionContext.h>\n"
+    "#include <thrift/lib/cpp/util/TEventServerCreator.h>\n"
     "\n"
     "using apache::thrift::TProcessor;\n"
     "using apache::thrift::async::TEventServer;\n"

@@ -17,8 +17,8 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/Thrift.h"
-#include "thrift/lib/cpp/config.h"
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/config.h>
 #include <cstring>
 #include <boost/lexical_cast.hpp>
 #include <stdarg.h>

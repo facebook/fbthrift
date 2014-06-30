@@ -19,9 +19,9 @@
 #ifndef THRIFT_ASYNC_TSTREAMASYNCCHANNEL_H_
 #define THRIFT_ASYNC_TSTREAMASYNCCHANNEL_H_ 1
 
-#include "thrift/lib/cpp/async/TAsyncEventChannel.h"
-#include "thrift/lib/cpp/async/TAsyncTransport.h"
-#include "thrift/lib/cpp/async/TAsyncTimeout.h"
+#include <thrift/lib/cpp/async/TAsyncEventChannel.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <thrift/lib/cpp/async/TAsyncTimeout.h>
 
 #include <memory>
 

@@ -22,7 +22,7 @@
 
 #include <vector>
 #include <limits.h>
-#include "thrift/lib/cpp/transport/TSocket.h"
+#include <thrift/lib/cpp/transport/TSocket.h>
 
 namespace apache { namespace thrift { namespace transport {
 

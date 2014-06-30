@@ -23,7 +23,7 @@
 #include <iostream>
 
 #include "thrift/tutorial/cpp/stateful/ServiceAuthState.h"
-#include "thrift/lib/cpp/server/TConnectionContext.h"
+#include <thrift/lib/cpp/server/TConnectionContext.h>
 
 using std::endl;
 using std::vector;

@@ -19,7 +19,7 @@
 #define BOOST_TEST_MODULE EnumTest
 #include <boost/test/unit_test.hpp>
 #include "thrift/test/gen-cpp/EnumTest_types.h"
-#include "thrift/lib/cpp/util/EnumUtils.h"
+#include <thrift/lib/cpp/util/EnumUtils.h>
 
 using apache::thrift::TEnumTraits;
 using namespace apache::thrift::util;

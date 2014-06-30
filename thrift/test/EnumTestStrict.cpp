@@ -18,11 +18,11 @@
  */
 #define BOOST_TEST_MODULE EnumTest
 #include <boost/test/unit_test.hpp>
-#include "thrift/lib/cpp/protocol/TJSONProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
+#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include "thrift/test/gen-cpp/EnumTestStrict_types.h"
 #include "thrift/test/gen-cpp/EnumTestStrict_constants.h"
-#include "thrift/lib/cpp/util/EnumUtils.h"
+#include <thrift/lib/cpp/util/EnumUtils.h>
 
 using namespace apache::thrift::util;
 using apache::thrift::transport::TMemoryBuffer;

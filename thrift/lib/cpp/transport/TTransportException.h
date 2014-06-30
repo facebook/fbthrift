@@ -18,7 +18,7 @@
 #define _THRIFT_TRANSPORT_TTRANSPORTEXCEPTION_H_ 1
 
 #include <string>
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/Thrift.h>
 
 namespace apache { namespace thrift { namespace transport {
 

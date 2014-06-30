@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "folly/SmallLocks.h"
+#include <folly/SmallLocks.h>
 #include <glog/logging.h>
 
 namespace apache { namespace thrift { namespace concurrency {

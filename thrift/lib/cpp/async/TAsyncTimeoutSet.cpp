@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/async/TAsyncTimeoutSet.h"
+#include <thrift/lib/cpp/async/TAsyncTimeoutSet.h>
 
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
 
-#include "folly/ScopeGuard.h"
+#include <folly/ScopeGuard.h>
 
 #include <cassert>
 

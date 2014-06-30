@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/async/TUnframedAsyncChannel.h"
+#include <thrift/lib/cpp/async/TUnframedAsyncChannel.h>
 
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;

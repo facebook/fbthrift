@@ -17,8 +17,8 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp2/protocol/StreamSerializers.h"
-#include "thrift/lib/cpp/protocol/TProtocolException.h"
+#include <thrift/lib/cpp2/protocol/StreamSerializers.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
 
 using namespace apache::thrift;
 

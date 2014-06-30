@@ -19,21 +19,21 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/random.hpp>
 
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TFramedAsyncChannel.h"
-#include "thrift/lib/cpp/async/THttpAsyncChannel.h"
-#include "thrift/lib/cpp/async/THeaderAsyncChannel.h"
-#include "thrift/lib/cpp/async/TZlibAsyncChannel.h"
-#include "thrift/lib/cpp/async/TBinaryAsyncChannel.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
+#include <thrift/lib/cpp/async/THttpAsyncChannel.h>
+#include <thrift/lib/cpp/async/THeaderAsyncChannel.h>
+#include <thrift/lib/cpp/async/TZlibAsyncChannel.h>
+#include <thrift/lib/cpp/async/TBinaryAsyncChannel.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include "thrift/perf/cpp/LoadHandler.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
-#include "thrift/lib/cpp/transport/TZlibTransport.h"
-#include "thrift/lib/cpp/transport/THttpServer.h"
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
-#include "thrift/lib/cpp/util/TThreadedServerCreator.h"
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/transport/TZlibTransport.h>
+#include <thrift/lib/cpp/transport/THttpServer.h>
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 
 using namespace apache::thrift::async;
 using namespace apache::thrift::protocol;

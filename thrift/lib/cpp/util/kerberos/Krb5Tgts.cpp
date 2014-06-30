@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/util/kerberos/Krb5Tgts.h"
+#include <thrift/lib/cpp/util/kerberos/Krb5Tgts.h>
 
 #include <glog/logging.h>
 #include <memory>
 #include <set>
 #include <stdio.h>
 
-#include "folly/Memory.h"
-#include "folly/ScopeGuard.h"
-#include "folly/String.h"
+#include <folly/Memory.h>
+#include <folly/ScopeGuard.h>
+#include <folly/String.h>
 
 // In older version of krb, this constant is not defined. Define it
 #ifndef KRB5_GC_NO_STORE

@@ -18,8 +18,8 @@
 
 #include <memory>
 
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

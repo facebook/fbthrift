@@ -20,7 +20,7 @@
 #ifndef THRIFT_PROTOCOL_TCOMPACTPROTOCOL_H_
 #define THRIFT_PROTOCOL_TCOMPACTPROTOCOL_H_ 1
 
-#include "thrift/lib/cpp/protocol/TVirtualProtocol.h"
+#include <thrift/lib/cpp/protocol/TVirtualProtocol.h>
 
 #include <stack>
 #include <memory>

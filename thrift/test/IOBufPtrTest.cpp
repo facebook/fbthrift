@@ -25,10 +25,10 @@
 #include <glog/logging.h>
 #include <gtest/gtest.h>
 
-#include "folly/Memory.h"
-#include "folly/io/IOBufQueue.h"
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp2/server/ThriftServer.h"
+#include <folly/Memory.h>
+#include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include "thrift/test/gen-cpp2/IOBufPtrTestService.h"
 
 namespace thrift { namespace test { namespace iobufptr {

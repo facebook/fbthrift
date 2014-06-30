@@ -20,7 +20,7 @@
 #ifndef THRIFT_THRIFT_H_
 #define THRIFT_THRIFT_H_
 
-#include "thrift/lib/cpp/thrift_config.h"
+#include <thrift/lib/cpp/thrift_config.h>
 
 #include <assert.h>
 #include <sys/types.h>
@@ -43,7 +43,7 @@
 #include <typeinfo>
 #include <vector>
 
-#include "thrift/lib/cpp/TLogging.h"
+#include <thrift/lib/cpp/TLogging.h>
 
 namespace apache { namespace thrift {
 

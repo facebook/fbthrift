@@ -26,11 +26,11 @@
 
 #include <gtest/gtest.h>
 #include <memory>
-#include "thrift/lib/cpp/processor/test/gen-cpp/SampleService.h"
-#include "thrift/lib/cpp/processor/test/gen-cpp/SampleService2.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/TApplicationException.h"
+#include <thrift/lib/cpp/processor/test/gen-cpp/SampleService.h>
+#include <thrift/lib/cpp/processor/test/gen-cpp/SampleService2.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/TApplicationException.h>
 
 #include <iostream>
 

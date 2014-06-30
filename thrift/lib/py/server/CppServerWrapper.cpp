@@ -25,10 +25,10 @@
 #include "boost/python/module.hpp"
 #include "boost/python/tuple.hpp"
 
-#include "thrift/lib/cpp2/async/AsyncProcessor.h"
-#include "thrift/lib/cpp2/server/ThriftServer.h"
-#include "folly/Memory.h"
-#include "folly/ScopeGuard.h"
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <folly/Memory.h>
+#include <folly/ScopeGuard.h>
 
 using namespace apache::thrift;
 using apache::thrift::transport::THeader;

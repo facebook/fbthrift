@@ -20,11 +20,11 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TFDTransport.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/TDebugProtocol.h"
-#include "thrift/lib/cpp/protocol/TProtocolTap.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TFDTransport.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
+#include <thrift/lib/cpp/protocol/TProtocolTap.h>
 
 using std::shared_ptr;
 using std::cout;

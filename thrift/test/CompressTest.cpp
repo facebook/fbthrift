@@ -22,7 +22,7 @@
 
 #include <cstdlib>
 #include <ctime>
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <gtest/gtest.h>
 
 #include "thrift/test/gen-cpp2/ThriftTest.h"

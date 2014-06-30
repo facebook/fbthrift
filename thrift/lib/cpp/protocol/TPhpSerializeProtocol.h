@@ -20,8 +20,8 @@
 #ifndef _THRIFT_PROTOCOL_TPHPSERIALIZEPROTOCOL_H_
 #define _THRIFT_PROTOCOL_TPHPSERIALIZEPROTOCOL_H_ 1
 
-#include "thrift/lib/cpp/protocol/TVirtualProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
+#include <thrift/lib/cpp/protocol/TVirtualProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 
 #include <stack>
 #include <memory>

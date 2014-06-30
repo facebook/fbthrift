@@ -19,14 +19,14 @@
 
 #include <functional>
 
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/TCompactProtocol.h"
-#include "thrift/lib/cpp/protocol/TProtocolTypes.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/util/THttpParser.h"
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/util/THttpParser.h>
 
-#include "folly/io/IOBuf.h"
-#include "folly/io/IOBufQueue.h"
+#include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
 
 #include <bitset>
 #include "boost/scoped_array.hpp"

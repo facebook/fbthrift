@@ -19,13 +19,13 @@
 #ifndef THRIFT_TEST_LOADGEN_WORKER_H_
 #define THRIFT_TEST_LOADGEN_WORKER_H_ 1
 
-#include "thrift/lib/cpp/test/loadgen/WorkerIf.h"
+#include <thrift/lib/cpp/test/loadgen/WorkerIf.h>
 
-#include "thrift/lib/cpp/test/loadgen/IntervalTimer.h"
-#include "thrift/lib/cpp/test/loadgen/LoadConfig.h"
-#include "thrift/lib/cpp/test/loadgen/ScoreBoard.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/TLogging.h"
+#include <thrift/lib/cpp/test/loadgen/IntervalTimer.h>
+#include <thrift/lib/cpp/test/loadgen/LoadConfig.h>
+#include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/TLogging.h>
 
 #include <boost/noncopyable.hpp>
 #include <memory>

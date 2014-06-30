@@ -21,15 +21,15 @@
 #include <boost/test/unit_test.hpp>
 #include <memory>
 
-#include "thrift/lib/cpp/async/TAsyncChannel.h"
-#include "thrift/lib/cpp/async/TFramedAsyncChannel.h"
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/util/example/TSimpleServerCreator.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
+#include <thrift/lib/cpp/async/TAsyncChannel.h>
+#include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
 
 using namespace apache::thrift::async;
 using namespace apache::thrift;

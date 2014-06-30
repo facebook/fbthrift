@@ -20,11 +20,11 @@
 #ifndef THRIFT_SERVER_TTHREADEDSERVER_H
 #define THRIFT_SERVER_TTHREADEDSERVER_H 1
 
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/transport/TServerTransport.h"
-#include "thrift/lib/cpp/concurrency/Monitor.h"
-#include "thrift/lib/cpp/concurrency/Thread.h"
-#include "thrift/lib/cpp/concurrency/ThreadLocal.h"
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/transport/TServerTransport.h>
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/concurrency/ThreadLocal.h>
 
 #include <memory>
 

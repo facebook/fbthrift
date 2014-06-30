@@ -19,9 +19,9 @@
 #ifndef THRIFT_TEST_LOADGEN_LATENCYMONITOR_H_
 #define THRIFT_TEST_LOADGEN_LATENCYMONITOR_H_ 1
 
-#include "thrift/lib/cpp/test/loadgen/TerminalMonitor.h"
-#include "thrift/lib/cpp/test/loadgen/OpEnabledState.h"
-#include "thrift/lib/cpp/test/loadgen/LatencyScoreBoard.h"
+#include <thrift/lib/cpp/test/loadgen/TerminalMonitor.h>
+#include <thrift/lib/cpp/test/loadgen/OpEnabledState.h>
+#include <thrift/lib/cpp/test/loadgen/LatencyScoreBoard.h>
 
 namespace apache { namespace thrift { namespace loadgen {
 

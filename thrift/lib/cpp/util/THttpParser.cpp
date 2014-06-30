@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/util/THttpParser.h"
+#include <thrift/lib/cpp/util/THttpParser.h>
 
-#include "folly/io/IOBufQueue.h"
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 #include <cstdlib>
 #include <sstream>
 #include <cassert>

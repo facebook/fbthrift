@@ -17,20 +17,20 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/protocol/neutronium/test/gen-cpp/neutronium_test_types.h"
-#include "thrift/lib/cpp/protocol/neutronium/Schema.h"
-#include "thrift/lib/cpp/protocol/neutronium/Encoder.h"
-#include "thrift/lib/cpp/protocol/neutronium/Decoder.h"
+#include <thrift/lib/cpp/protocol/neutronium/test/gen-cpp/neutronium_test_types.h>
+#include <thrift/lib/cpp/protocol/neutronium/Schema.h>
+#include <thrift/lib/cpp/protocol/neutronium/Encoder.h>
+#include <thrift/lib/cpp/protocol/neutronium/Decoder.h>
 
 #include <limits>
 #include <random>
 #include <gtest/gtest.h>
 #include "external/gflags/gflags.h"
-#include "folly/Random.h"
+#include <folly/Random.h>
 #include "common/fbunit/OldFollyBenchmark.h"
 
-#include "thrift/lib/cpp/protocol/TNeutroniumProtocol.h"
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
+#include <thrift/lib/cpp/protocol/TNeutroniumProtocol.h>
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
 
 DECLARE_bool(benchmark);
 

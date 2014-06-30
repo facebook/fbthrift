@@ -19,9 +19,9 @@
 #ifndef THRIFT_ASYNC_STREAM_H_
 #define THRIFT_ASYNC_STREAM_H_ 1
 
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp2/async/InputStream.h"
-#include "thrift/lib/cpp2/async/OutputStream.h"
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp2/async/InputStream.h>
+#include <thrift/lib/cpp2/async/OutputStream.h>
 
 #include <memory>
 #include <exception>

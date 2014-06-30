@@ -16,16 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/test/TAsyncSSLSocketTest.h"
+#include <thrift/lib/cpp/test/TAsyncSSLSocketTest.h>
 
 #include <gtest/gtest.h>
 #include <pthread.h>
 
-#include "thrift/lib/cpp/async/TAsyncSSLServerSocket.h"
-#include "thrift/lib/cpp/async/TAsyncSSLSocket.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/transport/TSSLSocket.h"
+#include <thrift/lib/cpp/async/TAsyncSSLServerSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 using std::string;
 using std::vector;

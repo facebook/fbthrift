@@ -20,8 +20,8 @@
 #ifndef _THRIFT_TRANSPORT_TMEMPAGEDTRANSPORT_H_
 #define _THRIFT_TRANSPORT_TMEMPAGEDTRANSPORT_H_ 1
 
-#include "thrift/lib/cpp/transport/TVirtualTransport.h"
-#include "thrift/lib/cpp/transport/TMemPagedFactory.h"
+#include <thrift/lib/cpp/transport/TVirtualTransport.h>
+#include <thrift/lib/cpp/transport/TMemPagedFactory.h>
 #include <memory>
 
 namespace apache { namespace thrift { namespace transport {

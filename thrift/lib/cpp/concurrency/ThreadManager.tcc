@@ -17,19 +17,19 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
-#include "thrift/lib/cpp/concurrency/Exception.h"
-#include "thrift/lib/cpp/concurrency/Monitor.h"
-#include "thrift/lib/cpp/concurrency/Thread.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/Codel.h"
-#include "folly/Conv.h"
+#include <thrift/lib/cpp/concurrency/Exception.h>
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Codel.h>
+#include <folly/Conv.h>
 #include "ThreadManager.h"
 #include "PosixThreadFactory.h"
-#include "folly/MPMCQueue.h"
-#include "thrift/lib/cpp/async/Request.h"
-#include "folly/Logging.h"
+#include <folly/MPMCQueue.h>
+#include <thrift/lib/cpp/async/Request.h>
+#include <folly/Logging.h>
 
 #include <memory>
 
@@ -42,7 +42,7 @@
 #include <iostream>
 #endif //defined(DEBUG)
 
-#include "thrift/lib/cpp/concurrency/ThreadManager-impl.h"
+#include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

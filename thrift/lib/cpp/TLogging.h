@@ -20,8 +20,8 @@
 #ifndef THRIFT_TLOGGING_H
 #define THRIFT_TLOGGING_H 1
 
-#include "thrift/lib/cpp/thrift_config.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp/thrift_config.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <stdio.h>
 

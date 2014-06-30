@@ -18,7 +18,7 @@
  */
 
 
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 
 #include "thrift/test/gen-cpp2/SerializedFieldsTest_types.h"
 #include "thrift/test/gen-cpp2/SerializedFieldsTest_constants.h"

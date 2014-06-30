@@ -17,13 +17,13 @@
 #ifndef CPP2_WORKER_H_
 #define CPP2_WORKER_H_ 1
 
-#include "thrift/lib/cpp/async/TAsyncServerSocket.h"
-#include "thrift/lib/cpp/async/TAsyncSSLSocket.h"
-#include "thrift/lib/cpp/async/HHWheelTimer.h"
-#include "thrift/lib/cpp2/server/ThriftServer.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TEventHandler.h"
-#include "thrift/lib/cpp/server/TServer.h"
+#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/HHWheelTimer.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TEventHandler.h>
+#include <thrift/lib/cpp/server/TServer.h>
 #include <unordered_set>
 
 namespace apache { namespace thrift {

@@ -17,9 +17,9 @@
 #ifndef THRIFT_ASYNC_THTTPASYNCCHANNEL_H_
 #define THRIFT_ASYNC_THTTPASYNCCHANNEL_H_ 1
 
-#include "thrift/lib/cpp/async/TStreamAsyncChannel.h"
-#include "thrift/lib/cpp/util/THttpParser.h"
-#include "folly/io/IOBuf.h"
+#include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
+#include <thrift/lib/cpp/util/THttpParser.h>
+#include <folly/io/IOBuf.h>
 
 namespace apache { namespace thrift { namespace async {
 

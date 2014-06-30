@@ -19,14 +19,14 @@
 #ifndef THRIFT_TEST_STREAM_MOCKSERVER_H_
 #define THRIFT_TEST_STREAM_MOCKSERVER_H_ 1
 
-#include "thrift/lib/cpp2/async/Stream.h"
+#include <thrift/lib/cpp2/async/Stream.h>
 
-#include "thrift/lib/cpp2/server/ThriftServer.h"
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
 
-#include "thrift/lib/cpp2/async/StubSaslClient.h"
-#include "thrift/lib/cpp2/async/StubSaslServer.h"
+#include <thrift/lib/cpp2/async/StubSaslClient.h>
+#include <thrift/lib/cpp2/async/StubSaslServer.h>
 
 #include <string>
 #include <utility>

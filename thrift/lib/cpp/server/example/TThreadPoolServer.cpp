@@ -18,13 +18,13 @@
  */
 
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#include "thrift/lib/cpp/server/example/TThreadPoolServer.h"
+#include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
 
-#include "thrift/lib/cpp/concurrency/Thread.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/server/TRpcTransportContext.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/server/TRpcTransportContext.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 #include <string>
 #include <iostream>

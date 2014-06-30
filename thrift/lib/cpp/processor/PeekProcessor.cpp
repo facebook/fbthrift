@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/processor/PeekProcessor.h"
+#include <thrift/lib/cpp/processor/PeekProcessor.h>
 
 using namespace apache::thrift::transport;
 using namespace apache::thrift::protocol;

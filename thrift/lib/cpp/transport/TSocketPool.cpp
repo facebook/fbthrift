@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/TSocketPool.h"
+#include <thrift/lib/cpp/transport/TSocketPool.h>
 
 #include <algorithm>
 #include <iostream>

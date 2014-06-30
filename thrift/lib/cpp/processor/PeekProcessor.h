@@ -21,10 +21,10 @@
 #define PEEKPROCESSOR_H
 
 #include <string>
-#include "thrift/lib/cpp/TProcessor.h"
-#include "thrift/lib/cpp/transport/TTransport.h"
-#include "thrift/lib/cpp/transport/TTransportUtils.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
+#include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/transport/TTransport.h>
+#include <thrift/lib/cpp/transport/TTransportUtils.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <memory>
 
 namespace apache { namespace thrift { namespace processor {

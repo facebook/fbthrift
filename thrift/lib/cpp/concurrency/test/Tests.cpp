@@ -21,8 +21,8 @@
 #include <vector>
 #include <string>
 
-#include "thrift/lib/cpp/concurrency/test/ThreadFactoryTests.h"
-#include "thrift/lib/cpp/concurrency/test/TimerManagerTests.h"
+#include <thrift/lib/cpp/concurrency/test/ThreadFactoryTests.h>
+#include <thrift/lib/cpp/concurrency/test/TimerManagerTests.h>
 
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::concurrency::test;

@@ -20,14 +20,14 @@
 #ifndef THRIFT_CONCURRENCY_MUTEXIMPL_H_
 #define THRIFT_CONCURRENCY_MUTEXIMPL_H_ 1
 
-#include "thrift/lib/cpp/concurrency/Mutex.h"
+#include <thrift/lib/cpp/concurrency/Mutex.h>
 
 #include <errno.h>
 #include <pthread.h>
 #include <signal.h>
 #include <glog/logging.h>
 
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

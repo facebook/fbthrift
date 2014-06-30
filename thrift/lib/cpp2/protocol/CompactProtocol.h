@@ -20,10 +20,10 @@
 #ifndef CPP2_PROTOCOL_COMPACTPROTOCOL_H_
 #define CPP2_PROTOCOL_COMPACTPROTOCOL_H_ 1
 
-#include "folly/io/IOBuf.h"
-#include "folly/io/Cursor.h"
-#include "thrift/lib/cpp2/protocol/Protocol.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
+#include <folly/io/IOBuf.h>
+#include <folly/io/Cursor.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
 
 #include <stack>
 

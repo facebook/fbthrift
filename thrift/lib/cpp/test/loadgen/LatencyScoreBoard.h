@@ -19,11 +19,11 @@
 #ifndef THRIFT_TEST_LOADGEN_LATENCYSCOREBOARD_H_
 #define THRIFT_TEST_LOADGEN_LATENCYSCOREBOARD_H_ 1
 
-#include "thrift/lib/cpp/test/loadgen/ScoreBoard.h"
-#include "thrift/lib/cpp/test/loadgen/ScoreBoardOpVector.h"
+#include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
+#include <thrift/lib/cpp/test/loadgen/ScoreBoardOpVector.h>
 
-#include "folly/stats/Histogram.h"
-#include "folly/stats/Histogram-defs.h"
+#include <folly/stats/Histogram.h>
+#include <folly/stats/Histogram-defs.h>
 
 namespace apache { namespace thrift { namespace loadgen {
 

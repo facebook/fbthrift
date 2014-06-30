@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/test/SocketPair.h"
+#include <thrift/lib/cpp/test/SocketPair.h>
 
 #include <unistd.h>
 #include <fcntl.h>
@@ -24,7 +24,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 using apache::thrift::transport::TTransportException;
 

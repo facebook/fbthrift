@@ -19,22 +19,22 @@
 
 
 #include <gtest/gtest.h>
-#include "thrift/lib/cpp2/test/stream/gen-cpp2/StreamService.h"
-#include "thrift/lib/cpp2/test/stream/gen-cpp2/SimilarService.h"
-#include "thrift/lib/cpp2/server/ThriftServer.h"
-#include "thrift/lib/cpp2/async/HeaderClientChannel.h"
-#include "thrift/lib/cpp2/async/RequestChannel.h"
+#include <thrift/lib/cpp2/test/stream/gen-cpp2/StreamService.h>
+#include <thrift/lib/cpp2/test/stream/gen-cpp2/SimilarService.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 
-#include "thrift/lib/cpp2/async/StubSaslClient.h"
-#include "thrift/lib/cpp2/async/StubSaslServer.h"
+#include <thrift/lib/cpp2/async/StubSaslClient.h>
+#include <thrift/lib/cpp2/async/StubSaslServer.h>
 
-#include "thrift/lib/cpp2/test/stream/MockCallbacks.h"
+#include <thrift/lib/cpp2/test/stream/MockCallbacks.h>
 
-#include "thrift/lib/cpp2/test/TestUtils.h"
+#include <thrift/lib/cpp2/test/TestUtils.h>
 
 #include <memory>
 #include <boost/cast.hpp>

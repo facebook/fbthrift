@@ -19,7 +19,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "folly/json.h"
+#include <folly/json.h>
 #include "thrift/test/JsonToThriftTest/gen-cpp/myBinaryStruct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/myStringStruct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/mySetStruct_types.h"
@@ -34,14 +34,14 @@
 #include "thrift/test/JsonToThriftTest/gen-cpp/myEmptyStruct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/myKeyStruct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/myCombinedStructs_types.h"
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/Thrift.h>
 
 #include <boost/lexical_cast.hpp>
 #include <memory>
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/protocol/TJSONProtocol.h"
-#include "thrift/lib/cpp/protocol/TSimpleJSONProtocol.h"
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
+#include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <fstream>
 #include <iostream>
 #include <limits>

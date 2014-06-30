@@ -17,7 +17,7 @@
 #ifndef THREADMANAGERIMPL_H
 #define THREADMANAGERIMPL_H
 
-#include "folly/SmallLocks.h"
+#include <folly/SmallLocks.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

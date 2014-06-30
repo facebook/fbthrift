@@ -15,27 +15,27 @@
  */
 
 #include <gtest/gtest.h>
-#include "thrift/lib/cpp2/async/RequestChannel.h"
-#include "thrift/lib/cpp2/async/FutureRequest.h"
-#include "thrift/lib/cpp2/test/gen-cpp2/DuplexService.h"
-#include "thrift/lib/cpp2/test/gen-cpp2/DuplexClient.h"
-#include "thrift/lib/cpp2/server/ThriftServer.h"
-#include "thrift/lib/cpp2/async/HeaderClientChannel.h"
-#include "thrift/lib/cpp2/async/DuplexChannel.h"
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/async/FutureRequest.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/DuplexService.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/DuplexClient.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/DuplexChannel.h>
 
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 
-#include "thrift/lib/cpp2/async/StubSaslClient.h"
-#include "thrift/lib/cpp2/async/StubSaslServer.h"
+#include <thrift/lib/cpp2/async/StubSaslClient.h>
+#include <thrift/lib/cpp2/async/StubSaslServer.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
 #include <memory>
 #include <atomic>
 
-#include "thrift/lib/cpp2/test/TestUtils.h"
+#include <thrift/lib/cpp2/test/TestUtils.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;

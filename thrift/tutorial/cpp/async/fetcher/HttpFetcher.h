@@ -24,7 +24,7 @@
 
 #include <boost/utility.hpp>
 
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 
 namespace tutorial { namespace async { namespace fetcher {
 

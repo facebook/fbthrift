@@ -20,7 +20,7 @@
 #ifndef THRIFT_ASYNC_INPUTSTREAM_TCC_
 #define THRIFT_ASYNC_INPUTSTREAM_TCC_ 1
 
-#include "thrift/lib/cpp2/async/Stream.h"
+#include <thrift/lib/cpp2/async/Stream.h>
 #include <memory>
 
 namespace apache { namespace thrift {

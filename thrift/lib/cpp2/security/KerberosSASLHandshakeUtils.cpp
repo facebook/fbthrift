@@ -17,14 +17,14 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h"
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
 
 #include <gssapi/gssapi_generic.h>
 #include <gssapi/gssapi_krb5.h>
 #include <krb5.h>
 
-#include "folly/io/IOBuf.h"
-#include "folly/io/Cursor.h"
+#include <folly/io/IOBuf.h>
+#include <folly/io/Cursor.h>
 
 using namespace std;
 using namespace apache::thrift;

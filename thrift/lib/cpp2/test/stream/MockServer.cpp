@@ -22,7 +22,7 @@
 #include <memory>
 #include <utility>
 
-#include "thrift/lib/cpp2/test/stream/gen-cpp2/stream_types.h"
+#include <thrift/lib/cpp2/test/stream/gen-cpp2/stream_types.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::async;

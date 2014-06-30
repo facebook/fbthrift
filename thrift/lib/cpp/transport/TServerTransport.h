@@ -20,8 +20,8 @@
 #ifndef _THRIFT_TRANSPORT_TSERVERTRANSPORT_H_
 #define _THRIFT_TRANSPORT_TSERVERTRANSPORT_H_ 1
 
-#include "thrift/lib/cpp/transport/TRpcTransport.h"
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/transport/TRpcTransport.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 #include <memory>
 
 namespace apache { namespace thrift { namespace transport {

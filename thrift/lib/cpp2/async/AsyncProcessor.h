@@ -19,19 +19,19 @@
 #ifndef THRIFT_ASYNCPROCESSOR2_H
 #define THRIFT_ASYNCPROCESSOR2_H 1
 
-#include "thrift/lib/cpp/TProcessor.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/transport/THeader.h"
-#include "thrift/lib/cpp/concurrency/Thread.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/TApplicationException.h"
-#include "thrift/lib/cpp/protocol/TProtocolTypes.h"
-#include "thrift/lib/cpp2/async/ResponseChannel.h"
-#include "thrift/lib/cpp2/protocol/Protocol.h"
-#include "thrift/lib/cpp2/server/Cpp2ConnContext.h"
-#include "thrift/lib/cpp2/Thrift.h"
-#include "folly/String.h"
-#include "folly/MoveWrapper.h"
+#include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/Thrift.h>
+#include <folly/String.h>
+#include <folly/MoveWrapper.h>
 
 namespace apache { namespace thrift {
 

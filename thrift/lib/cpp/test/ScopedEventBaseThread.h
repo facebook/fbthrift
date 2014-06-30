@@ -20,7 +20,7 @@
 #define THRIFT_TEST_SCOPEDEVENTBASETHREAD_H_ 1
 
 #include <memory>
-#include "thrift/lib/cpp/async/TEventBase.h"
+#include <thrift/lib/cpp/async/TEventBase.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 class Thread;

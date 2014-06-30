@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "folly/io/Cursor.h"
+#include <folly/io/Cursor.h>
 
 namespace apache { namespace thrift {
 

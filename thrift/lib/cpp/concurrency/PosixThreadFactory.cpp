@@ -17,11 +17,11 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/Exception.h"
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/concurrency/SpinLock.h"
-#include "thrift/lib/cpp/config.h"
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Exception.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/SpinLock.h>
+#include <thrift/lib/cpp/config.h>
 
 #if GOOGLE_PERFTOOLS_REGISTER_THREAD
 #  include "base/Profiler.h"

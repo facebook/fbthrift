@@ -19,8 +19,8 @@
 #ifndef THRIFT_ASYNC_TZLIBASYNCCHANNEL_H_
 #define THRIFT_ASYNC_TZLIBASYNCCHANNEL_H_ 1
 
-#include "thrift/lib/cpp/async/TAsyncEventChannel.h"
-#include "thrift/lib/cpp/transport/TZlibTransport.h"
+#include <thrift/lib/cpp/async/TAsyncEventChannel.h>
+#include <thrift/lib/cpp/transport/TZlibTransport.h>
 
 namespace apache { namespace thrift { namespace async {
 

@@ -18,10 +18,10 @@
  */
 
 
-#include "thrift/lib/cpp2/protocol/DebugProtocol.h"
+#include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 
-#include "folly/Conv.h"
-#include "folly/String.h"
+#include <folly/Conv.h>
+#include <folly/String.h>
 
 namespace apache { namespace thrift {
 

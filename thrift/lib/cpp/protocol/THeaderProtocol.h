@@ -20,11 +20,11 @@
 #ifndef THRIFT_PROTOCOL_THEADERPROTOCOL_H_
 #define THRIFT_PROTOCOL_THEADERPROTOCOL_H_ 1
 
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "thrift/lib/cpp/protocol/TProtocolTypes.h"
-#include "thrift/lib/cpp/protocol/TVirtualProtocol.h"
-#include "thrift/lib/cpp/transport/THeaderTransport.h"
-#include "thrift/lib/cpp/util/shared_ptr_util.h"
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp/protocol/TVirtualProtocol.h>
+#include <thrift/lib/cpp/transport/THeaderTransport.h>
+#include <thrift/lib/cpp/util/shared_ptr_util.h>
 
 #include <memory>
 

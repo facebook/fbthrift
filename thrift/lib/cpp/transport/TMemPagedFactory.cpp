@@ -17,10 +17,10 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/TMemPagedFactory.h"
+#include <thrift/lib/cpp/transport/TMemPagedFactory.h>
 
 #include <cstdlib>
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace apache { namespace thrift { namespace transport {
 

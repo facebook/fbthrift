@@ -19,9 +19,9 @@
 #ifndef THRIFT_CLIENTUTIL_H_
 #define THRIFT_CLIENTUTIL_H_ 1
 
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 
 namespace apache { namespace thrift { namespace util {
 

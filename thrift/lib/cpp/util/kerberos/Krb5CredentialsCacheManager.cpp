@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
+#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
 
 #include <glog/logging.h>
 #include <memory>
 #include <set>
 #include <stdio.h>
 
-#include "folly/stats/BucketedTimeSeries-defs.h"
-#include "folly/Memory.h"
-#include "folly/ScopeGuard.h"
-#include "folly/String.h"
+#include <folly/stats/BucketedTimeSeries-defs.h>
+#include <folly/Memory.h>
+#include <folly/ScopeGuard.h>
+#include <folly/String.h>
 
 namespace apache { namespace thrift { namespace krb5 {
 using namespace std;

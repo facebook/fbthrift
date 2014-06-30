@@ -25,7 +25,7 @@
 
 #include <boost/noncopyable.hpp>
 
-#include "folly/File.h"
+#include <folly/File.h>
 
 namespace apache { namespace thrift {
 

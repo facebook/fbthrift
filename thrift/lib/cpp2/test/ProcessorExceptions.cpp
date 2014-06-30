@@ -25,21 +25,21 @@
 // that expects a required argument
 
 #include <gtest/gtest.h>
-#include "thrift/lib/cpp/TApplicationException.h"
-#include "thrift/lib/cpp2/test/gen-cpp2/SampleService.h"
-#include "thrift/lib/cpp2/test/gen-cpp2/SampleService2.h"
-#include "thrift/lib/cpp2/server/ThriftServer.h"
-#include "thrift/lib/cpp2/async/HeaderClientChannel.h"
-#include "thrift/lib/cpp2/async/RequestChannel.h"
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/SampleService.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/SampleService2.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 
-#include "thrift/lib/cpp/util/ScopedServerThread.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 
-#include "thrift/lib/cpp2/async/StubSaslClient.h"
-#include "thrift/lib/cpp2/async/StubSaslServer.h"
+#include <thrift/lib/cpp2/async/StubSaslClient.h>
+#include <thrift/lib/cpp2/async/StubSaslServer.h>
 
-#include "thrift/lib/cpp2/test/TestUtils.h"
+#include <thrift/lib/cpp2/test/TestUtils.h>
 
 #include <boost/cast.hpp>
 #include <memory>

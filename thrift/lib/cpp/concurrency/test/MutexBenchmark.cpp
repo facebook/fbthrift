@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "thrift/lib/cpp/concurrency/Mutex.h"
+#include <thrift/lib/cpp/concurrency/Mutex.h>
 
 #include <atomic>
 #include <chrono>
@@ -21,7 +21,7 @@
 #include <thread>
 #include <gflags/gflags.h>
 
-#include "folly/Benchmark.h"
+#include <folly/Benchmark.h>
 
 DEFINE_int32(num_threads, 32, "Number of threads to run concurrency "
                               "benchmarks");

@@ -18,17 +18,17 @@
  */
 #define __STDC_FORMAT_MACROS
 
-#include "thrift/lib/cpp/server/TNonblockingServer.h"
+#include <thrift/lib/cpp/server/TNonblockingServer.h>
 
-#include "thrift/lib/cpp/concurrency/Exception.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
-#include "thrift/lib/cpp/server/TConnectionContext.h"
-#include "thrift/lib/cpp/server/TServerObserver.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TSocket.h"
-#include "thrift/lib/cpp/transport/TTransport.h"
+#include <thrift/lib/cpp/concurrency/Exception.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/server/TConnectionContext.h>
+#include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/transport/TTransport.h>
 
 #include <iostream>
 #include <sys/socket.h>

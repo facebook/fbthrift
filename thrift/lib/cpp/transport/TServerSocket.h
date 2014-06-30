@@ -20,7 +20,7 @@
 #ifndef _THRIFT_TRANSPORT_TSERVERSOCKET_H_
 #define _THRIFT_TRANSPORT_TSERVERSOCKET_H_ 1
 
-#include "thrift/lib/cpp/transport/TServerTransport.h"
+#include <thrift/lib/cpp/transport/TServerTransport.h>
 #include <memory>
 
 namespace apache { namespace thrift { namespace transport {

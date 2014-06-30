@@ -18,7 +18,7 @@
  */
 #define __STDC_FORMAT_MACROS
 
-#include "thrift/lib/cpp/test/loadgen/LoadConfig.h"
+#include <thrift/lib/cpp/test/loadgen/LoadConfig.h>
 
 #include <stdio.h>
 

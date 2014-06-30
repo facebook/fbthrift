@@ -15,7 +15,7 @@
  */
 
 #include "thrift/test/gen-cpp/Recursive_types.h"
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <gtest/gtest.h>
 
 using namespace apache::thrift::util;

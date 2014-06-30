@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/test/loadgen/loadgen.h"
-#include "thrift/lib/cpp/test/loadgen/QpsMonitor.h"
-#include "thrift/lib/cpp/test/loadgen/RNG.h"
+#include <thrift/lib/cpp/test/loadgen/loadgen.h>
+#include <thrift/lib/cpp/test/loadgen/QpsMonitor.h>
+#include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include "thrift/perf/cpp/ClientLoadConfig.h"
 #include "thrift/perf/cpp/ClientWorker.h"
 #include "thrift/perf/cpp/ClientWorker2.h"

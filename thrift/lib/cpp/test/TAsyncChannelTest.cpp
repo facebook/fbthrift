@@ -21,14 +21,14 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/random.hpp>
 
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp/async/TAsyncTimeout.h"
-#include "thrift/lib/cpp/async/TBinaryAsyncChannel.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/async/TFramedAsyncChannel.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/test/SocketPair.h"
-#include "thrift/lib/cpp/test/TimeUtil.h"
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TAsyncTimeout.h>
+#include <thrift/lib/cpp/async/TBinaryAsyncChannel.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/test/SocketPair.h>
+#include <thrift/lib/cpp/test/TimeUtil.h>
 
 using std::string;
 using std::vector;

@@ -19,7 +19,7 @@
 #ifndef THRIFT_UTIL_TSIMPLESERVERCREATOR_H_
 #define THRIFT_UTIL_TSIMPLESERVERCREATOR_H_ 1
 
-#include "thrift/lib/cpp/util/SyncServerCreator.h"
+#include <thrift/lib/cpp/util/SyncServerCreator.h>
 
 namespace apache { namespace thrift {
 

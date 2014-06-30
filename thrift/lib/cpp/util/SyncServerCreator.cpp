@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/util/SyncServerCreator.h"
+#include <thrift/lib/cpp/util/SyncServerCreator.h>
 
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/transport/TServerSocket.h"
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TServerSocket.h>
 
 using std::shared_ptr;
 using namespace apache::thrift::protocol;

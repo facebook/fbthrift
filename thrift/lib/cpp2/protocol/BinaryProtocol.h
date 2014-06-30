@@ -20,11 +20,11 @@
 #ifndef CPP2_PROTOCOL_TBINARYPROTOCOL_H_
 #define CPP2_PROTOCOL_TBINARYPROTOCOL_H_ 1
 
-#include "folly/io/IOBuf.h"
-#include "folly/io/IOBufQueue.h"
-#include "folly/io/Cursor.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "thrift/lib/cpp2/protocol/Protocol.h"
+#include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
+#include <folly/io/Cursor.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
 namespace apache { namespace thrift {
 

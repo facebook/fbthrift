@@ -20,8 +20,8 @@
 #ifndef _THRIFT_TAPPLICATIONEXCEPTION_H_
 #define _THRIFT_TAPPLICATIONEXCEPTION_H_ 1
 
-#include "thrift/lib/cpp/Thrift.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
 
 namespace apache { namespace thrift {
 

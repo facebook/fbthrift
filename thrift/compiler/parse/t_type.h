@@ -27,7 +27,7 @@
 #include <sstream>
 #include "thrift/compiler/parse/t_doc.h"
 
-#include "folly/Bits.h"
+#include <folly/Bits.h>
 
 class t_program;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
 
 using namespace apache::thrift::transport;
 

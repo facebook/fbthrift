@@ -17,14 +17,14 @@
 #ifndef THRIFT_GSSSASLCLIENT_H_
 #define THRIFT_GSSSASLCLIENT_H_ 1
 
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp2/async/SaslClient.h"
-#include "thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h"
-#include "thrift/lib/cpp2/security/KerberosSASLThreadManager.h"
-#include "thrift/lib/cpp2/security/SecurityLogger.h"
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h"
-#include "folly/Memory.h"
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp2/async/SaslClient.h>
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h>
+#include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
+#include <thrift/lib/cpp2/security/SecurityLogger.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
+#include <folly/Memory.h>
 
 namespace apache { namespace thrift {
 

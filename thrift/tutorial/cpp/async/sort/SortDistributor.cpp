@@ -21,9 +21,9 @@
 #include <iostream>
 #include <memory>
 
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/async/TEventServer.h"
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/async/TEventServer.h>
 
 #include "thrift/tutorial/cpp/async/sort/SortDistributorHandler.h"
 

@@ -23,8 +23,8 @@
 #include "thrift/test/gen-cpp/DebugProtoTest_constants.h"
 #include "thrift/test/gen-cpp2/DebugProtoTest_types.h"
 #include "thrift/test/gen-cpp2/DebugProtoTest_constants.h"
-#include "thrift/lib/cpp/protocol/TDebugProtocol.h"
-#include "thrift/lib/cpp2/protocol/DebugProtocol.h"
+#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
+#include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 
 
 int main() {

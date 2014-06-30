@@ -18,15 +18,15 @@
  */
 
 
-#include "thrift/lib/cpp2/protocol/VirtualProtocol.h"
+#include <thrift/lib/cpp2/protocol/VirtualProtocol.h>
 
 #include <stdexcept>
 
-#include "folly/Conv.h"
-#include "folly/Memory.h"
+#include <folly/Conv.h>
+#include <folly/Memory.h>
 
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
-#include "thrift/lib/cpp2/protocol/CompactProtocol.h"
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 namespace apache { namespace thrift {
 

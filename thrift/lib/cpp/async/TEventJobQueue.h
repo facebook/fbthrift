@@ -20,10 +20,10 @@
 #ifndef THRIFT_ASYNC_TEVENTJOBQUEUE_H_
 #define THRIFT_ASYNC_TEVENTJOBQUEUE_H_ 1
 
-#include "thrift/lib/cpp/Thrift.h"
-#include "thrift/lib/cpp/concurrency/Thread.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/async/TNotificationQueue.h"
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/async/TNotificationQueue.h>
 
 namespace apache { namespace thrift { namespace async {
 

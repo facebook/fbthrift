@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h"
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h>
 
 #include <gssapi/gssapi_generic.h>
 #include <gssapi/gssapi_krb5.h>
 #include <krb5.h>
 #include <stdlib.h>
-#include "folly/io/IOBuf.h"
-#include "folly/io/Cursor.h"
-#include "folly/Memory.h"
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/transport/TSocketAddress.h"
-#include "thrift/lib/cpp/util/kerberos/Krb5Util.h"
-#include "thrift/lib/cpp/concurrency/Exception.h"
-#include "thrift/lib/cpp/concurrency/FunctionRunner.h"
+#include <folly/io/IOBuf.h>
+#include <folly/io/Cursor.h>
+#include <folly/Memory.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
+#include <thrift/lib/cpp/concurrency/Exception.h>
+#include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 
 extern "C" {
   #include <sys/types.h>

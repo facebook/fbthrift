@@ -23,9 +23,9 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
-#include "folly/Range.h"
-#include "folly/io/IOBuf.h"
-#include "folly/io/Cursor.h"
+#include <folly/Range.h>
+#include <folly/io/IOBuf.h>
+#include <folly/io/Cursor.h>
 
 namespace apache {
 namespace thrift {

@@ -19,7 +19,7 @@
 #ifndef _THRIFT_ASYNC_SIMPLECALLBACK_H_
 #define _THRIFT_ASYNC_SIMPLECALLBACK_H_ 1
 
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/Thrift.h>
 namespace apache { namespace thrift {
 
 /**

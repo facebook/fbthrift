@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/TZlibTransport.h"
+#include <thrift/lib/cpp/transport/TZlibTransport.h>
 
 #include <cassert>
 #include <cstring>

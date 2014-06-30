@@ -20,7 +20,7 @@
 #ifndef THRIFT_PROTOCOL_STREAMSERIALIZERS_TCC_
 #define THRIFT_PROTOCOL_STREAMSERIALIZERS_TCC_ 1
 
-#include "thrift/lib/cpp2/protocol/StreamSerializers.h"
+#include <thrift/lib/cpp2/protocol/StreamSerializers.h>
 
 namespace apache { namespace thrift {
 

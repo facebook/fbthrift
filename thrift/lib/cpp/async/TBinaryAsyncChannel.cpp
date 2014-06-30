@@ -16,13 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/async/TBinaryAsyncChannel.h"
+#include <thrift/lib/cpp/async/TBinaryAsyncChannel.h>
 
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 
-#include "thrift/lib/cpp/async/TStreamAsyncChannel.tcc"
-#include "thrift/lib/cpp/async/TUnframedAsyncChannel.tcc"
+#include <thrift/lib/cpp/async/TStreamAsyncChannel.tcc>
+#include <thrift/lib/cpp/async/TUnframedAsyncChannel.tcc>
 
 using apache::thrift::protocol::TBinaryProtocolT;
 using apache::thrift::transport::TBufferBase;

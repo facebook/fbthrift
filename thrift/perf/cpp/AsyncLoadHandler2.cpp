@@ -18,8 +18,8 @@
  */
 #include "thrift/perf/cpp/AsyncLoadHandler2.h"
 
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <unistd.h>
 

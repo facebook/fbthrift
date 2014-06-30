@@ -21,7 +21,7 @@
 
 #include "thrift/tutorial/cpp/async/fetcher/gen-cpp/Fetcher.h"
 
-#include "thrift/lib/cpp/async/TEventServer.h"
+#include <thrift/lib/cpp/async/TEventServer.h>
 
 namespace tutorial { namespace async { namespace fetcher {
 

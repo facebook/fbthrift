@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/TTransportUtils.h"
+#include <thrift/lib/cpp/transport/TTransportUtils.h>
 
 using std::string;
 

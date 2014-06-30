@@ -23,7 +23,7 @@
  * aggregate responses
  */
 
-#include "thrift/lib/cpp/server/test/AggregatorUtilTest.h"
+#include <thrift/lib/cpp/server/test/AggregatorUtilTest.h>
 
 #include "common/client_mgmt/TAsyncClientPool.h"
 #include "common/client_mgmt/ThriftAggregatorInterface.h"

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/protocol/neutronium/InternTable.h"
+#include <thrift/lib/cpp/protocol/neutronium/InternTable.h>
 
 #include <gtest/gtest.h>
 

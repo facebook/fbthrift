@@ -22,10 +22,10 @@
 #include <exception>
 #include <memory>
 
-#include "folly/io/IOBuf.h"
-#include "folly/io/IOBufQueue.h"
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
-#include "thrift/lib/cpp2/protocol/CompactProtocol.h"
+#include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 namespace apache { namespace thrift {
 
@@ -125,6 +125,6 @@ class StreamWriter {
 
 }} // apache::thrift
 
-#include "thrift/lib/cpp2/protocol/StreamSerializers.tcc"
+#include <thrift/lib/cpp2/protocol/StreamSerializers.tcc>
 
 #endif // THRIFT_PROTOCOL_STREAMSERIALIZERS_H_

@@ -19,8 +19,8 @@
 #ifndef THRIFT_TEST_LOADGEN_QPSSCOREBOARD_H_
 #define THRIFT_TEST_LOADGEN_QPSSCOREBOARD_H_ 1
 
-#include "thrift/lib/cpp/test/loadgen/ScoreBoard.h"
-#include "thrift/lib/cpp/test/loadgen/ScoreBoardOpVector.h"
+#include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
+#include <thrift/lib/cpp/test/loadgen/ScoreBoardOpVector.h>
 
 namespace apache { namespace thrift { namespace loadgen {
 

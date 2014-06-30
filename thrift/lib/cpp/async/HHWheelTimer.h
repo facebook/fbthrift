@@ -19,8 +19,8 @@
 #ifndef THRIFT_ASYNC_HHWHEELTIMER_H_
 #define THRIFT_ASYNC_HHWHEELTIMER_H_ 1
 
-#include "thrift/lib/cpp/async/TAsyncTimeout.h"
-#include "thrift/lib/cpp/async/TDelayedDestruction.h"
+#include <thrift/lib/cpp/async/TAsyncTimeout.h>
+#include <thrift/lib/cpp/async/TDelayedDestruction.h>
 
 #include <boost/intrusive/list.hpp>
 

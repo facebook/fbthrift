@@ -20,8 +20,8 @@
 #ifndef THRIFT_SERVER_TSIMPLESERVER_H
 #define THRIFT_SERVER_TSIMPLESERVER_H 1
 
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/transport/TServerTransport.h"
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/transport/TServerTransport.h>
 
 namespace apache { namespace thrift { namespace server {
 

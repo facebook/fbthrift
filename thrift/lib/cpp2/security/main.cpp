@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h"
-#include "thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h"
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h>
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h>
 #include "common/init/Init.h"
 
 using namespace apache::thrift;

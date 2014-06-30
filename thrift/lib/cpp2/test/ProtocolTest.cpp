@@ -24,11 +24,11 @@
 #include <glog/logging.h>
 #include <gtest/gtest.h>
 
-#include "folly/Benchmark.h"
+#include <folly/Benchmark.h>
 
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
-#include "thrift/lib/cpp2/protocol/CompactProtocol.h"
-#include "thrift/lib/cpp2/test/gen-cpp2/ProtocolBenchmark_types.h"
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/ProtocolBenchmark_types.h>
 
 namespace apache { namespace thrift { namespace test {
 

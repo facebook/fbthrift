@@ -22,7 +22,7 @@
 
 #include <sstream>
 #include "common/logging/logging.h"
-#include "thrift/lib/cpp/protocol/TDebugProtocol.h"
+#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
 
 
 namespace apache { namespace thrift { namespace test {

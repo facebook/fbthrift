@@ -17,9 +17,9 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
 
-#include "thrift/lib/cpp/config.h"
+#include <thrift/lib/cpp/config.h>
 
 #if defined(HAVE_CLOCK_GETTIME)
 #include <time.h>

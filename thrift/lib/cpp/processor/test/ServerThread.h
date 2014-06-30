@@ -19,12 +19,12 @@
 #ifndef _THRIFT_TEST_SERVERTHREAD_H_
 #define _THRIFT_TEST_SERVERTHREAD_H_ 1
 
-#include "thrift/lib/cpp/TProcessor.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/transport/TTransport.h"
+#include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/transport/TTransport.h>
 
-#include "thrift/lib/cpp/processor/test/EventLog.h"
+#include <thrift/lib/cpp/processor/test/EventLog.h>
 
 namespace apache { namespace thrift { namespace test {
 

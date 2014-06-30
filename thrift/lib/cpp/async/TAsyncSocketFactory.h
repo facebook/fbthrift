@@ -17,8 +17,8 @@
 #ifndef THRIFT_ASYNC_TASYNCSOCKETFACTORY_H_
 #define THRIFT_ASYNC_TASYNCSOCKETFACTORY_H_ 1
 
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
 
 namespace apache { namespace thrift { namespace async {
 

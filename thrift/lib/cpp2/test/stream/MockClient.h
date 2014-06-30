@@ -19,13 +19,13 @@
 #ifndef THRIFT_TEST_STREAM_MOCKCLIENTS_H_
 #define THRIFT_TEST_STREAM_MOCKCLIENTS_H_ 1
 
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/EventHandlerBase.h"
-#include "thrift/lib/cpp2/async/Stream.h"
-#include "thrift/lib/cpp2/async/HeaderClientChannel.h"
-#include "thrift/lib/cpp2/async/RequestChannel.h"
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp2/test/stream/MockCallbacks.h"
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/EventHandlerBase.h>
+#include <thrift/lib/cpp2/async/Stream.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/test/stream/MockCallbacks.h>
 
 #include <string>
 

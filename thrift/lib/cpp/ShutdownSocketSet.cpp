@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/ShutdownSocketSet.h"
+#include <thrift/lib/cpp/ShutdownSocketSet.h>
 
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -27,8 +27,8 @@
 
 #include <glog/logging.h>
 
-#include "folly/FileUtil.h"
-#include "folly/Malloc.h"
+#include <folly/FileUtil.h>
+#include <folly/Malloc.h>
 
 namespace apache { namespace thrift {
 

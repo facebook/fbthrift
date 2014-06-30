@@ -20,12 +20,12 @@
 #ifndef CPP2_PROTOCOL_VIRTUALPROTOCOL_H_
 #define CPP2_PROTOCOL_VIRTUALPROTOCOL_H_ 1
 
-#include "folly/FBString.h"
-#include "folly/io/Cursor.h"
+#include <folly/FBString.h>
+#include <folly/io/Cursor.h>
 
-#include "thrift/lib/cpp/Thrift.h"
-#include "thrift/lib/cpp2/protocol/Protocol.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
 
 #include <map>
 #include <memory>

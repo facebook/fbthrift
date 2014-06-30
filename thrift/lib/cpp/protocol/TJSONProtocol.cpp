@@ -17,12 +17,12 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/protocol/TJSONProtocol.h"
+#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 
 #include <math.h>
 #include <boost/lexical_cast.hpp>
-#include "thrift/lib/cpp/protocol/TBase64Utils.h"
-#include "thrift/lib/cpp/transport/TTransportException.h"
+#include <thrift/lib/cpp/protocol/TBase64Utils.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 using namespace apache::thrift::transport;
 

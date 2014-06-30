@@ -18,7 +18,7 @@
  */
 #include "thrift/perf/cpp/LoadHandler.h"
 
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <unistd.h>
 

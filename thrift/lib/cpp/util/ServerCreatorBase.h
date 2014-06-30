@@ -19,7 +19,7 @@
 #ifndef THRIFT_UTIL_SERVERCREATORBASE_H_
 #define THRIFT_UTIL_SERVERCREATORBASE_H_ 1
 
-#include "thrift/lib/cpp/util/ServerCreator.h"
+#include <thrift/lib/cpp/util/ServerCreator.h>
 
 namespace apache { namespace thrift {
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include "thrift/test/gen-cpp2/UnionTest2_types.h"
 
 #include <gtest/gtest.h>

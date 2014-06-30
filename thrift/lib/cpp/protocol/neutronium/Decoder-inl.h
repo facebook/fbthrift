@@ -24,8 +24,8 @@
 #error This file may only be included from Decoder.h
 #endif
 
-#include "folly/GroupVarint.h"
-#include "folly/Conv.h"
+#include <folly/GroupVarint.h>
+#include <folly/Conv.h>
 
 namespace apache {
 namespace thrift {

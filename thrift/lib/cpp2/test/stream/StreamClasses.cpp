@@ -25,10 +25,10 @@
 #include <utility>
 #include <functional>
 
-#include "thrift/lib/cpp2/async/Stream.h"
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
-#include "thrift/lib/cpp2/test/stream/gen-cpp2/stream_types.h"
-#include "thrift/lib/cpp2/test/stream/MockCallbacks.h"
+#include <thrift/lib/cpp2/async/Stream.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/test/stream/gen-cpp2/stream_types.h>
+#include <thrift/lib/cpp2/test/stream/MockCallbacks.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;

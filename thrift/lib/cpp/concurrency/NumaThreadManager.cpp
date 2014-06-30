@@ -22,8 +22,8 @@
 #include <numacompat1.h>
 #endif
 
-#include "folly/Memory.h"
-#include "folly/ScopeGuard.h"
+#include <folly/Memory.h>
+#include <folly/ScopeGuard.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

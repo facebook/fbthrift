@@ -23,10 +23,10 @@
 #include <memory>
 #include <limits>
 #include <chrono>
-#include "thrift/lib/cpp2/async/MessageChannel.h"
-#include "thrift/lib/cpp2/async/Stream.h"
-#include "thrift/lib/cpp/server/TServerObserver.h"
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/async/Stream.h>
+#include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp/Thrift.h>
 
 namespace folly {
 class IOBuf;

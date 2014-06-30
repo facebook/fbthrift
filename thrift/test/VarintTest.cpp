@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/util/VarintUtils.h"
+#include <thrift/lib/cpp/util/VarintUtils.h>
 #include <boost/test/unit_test.hpp>
 
 using namespace apache::thrift::util;

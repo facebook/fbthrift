@@ -19,7 +19,7 @@
 #ifndef THRIFT_TEST_LOADGEN_TERMINALMONITOR_H_
 #define THRIFT_TEST_LOADGEN_TERMINALMONITOR_H_ 1
 
-#include "thrift/lib/cpp/test/loadgen/Monitor.h"
+#include <thrift/lib/cpp/test/loadgen/Monitor.h>
 
 namespace apache { namespace thrift { namespace loadgen {
 

@@ -377,7 +377,7 @@ class CppOutputContext(OutputContext):
                 print >>self._output_tcc, '#include "{0}.h"\n'.format(
                             self._header_path)
                 print >>self._output_tcc, \
-                    '#include "thrift/lib/cpp/TApplicationException.h"\n'
+                    '#include <thrift/lib/cpp/TApplicationException.h>\n'
             return
 
         # set the output of the real scope's content according to the

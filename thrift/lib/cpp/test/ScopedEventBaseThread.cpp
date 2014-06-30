@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/test/ScopedEventBaseThread.h"
+#include <thrift/lib/cpp/test/ScopedEventBaseThread.h>
 
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 
 using apache::thrift::async::TEventBase;
 using apache::thrift::concurrency::PosixThreadFactory;

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 #pragma once
-#include "thrift/lib/cpp2/frozen/FrozenUtil.h"
-#include "folly/experimental/TestUtil.h"
+#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
+#include <folly/experimental/TestUtil.h>
 
 namespace apache { namespace thrift { namespace frozen {
 

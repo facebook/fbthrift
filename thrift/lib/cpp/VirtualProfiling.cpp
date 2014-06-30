@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/Thrift.h"
+#include <thrift/lib/cpp/Thrift.h>
 
 // Do nothing if virtual call profiling is not enabled
 #if T_GLOBAL_DEBUG_VIRTUAL > 1
@@ -36,7 +36,7 @@
 #endif // !__GLIBC__
 
 
-#include "thrift/lib/cpp/concurrency/Mutex.h"
+#include <thrift/lib/cpp/concurrency/Mutex.h>
 
 #include <ext/hash_map>
 #include <execinfo.h>

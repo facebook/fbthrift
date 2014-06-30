@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/test/loadgen/loadgen.h"
+#include <thrift/lib/cpp/test/loadgen/loadgen.h>
 
-#include "thrift/lib/cpp/test/loadgen/Controller.h"
-#include "thrift/lib/cpp/test/loadgen/LatencyMonitor.h"
+#include <thrift/lib/cpp/test/loadgen/Controller.h>
+#include <thrift/lib/cpp/test/loadgen/LatencyMonitor.h>
 #include <boost/scoped_ptr.hpp>
 
 using namespace boost;

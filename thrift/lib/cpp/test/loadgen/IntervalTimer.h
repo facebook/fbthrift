@@ -19,9 +19,9 @@
 #ifndef THRIFT_TEST_LOADGEN_INTERVALTIMER_H_
 #define THRIFT_TEST_LOADGEN_INTERVALTIMER_H_ 1
 
-#include "thrift/lib/cpp/concurrency/Util.h"
-#include "thrift/lib/cpp/concurrency/Mutex.h"
-#include "thrift/lib/cpp/TLogging.h"
+#include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/TLogging.h>
 
 #include <unistd.h>
 

@@ -17,11 +17,11 @@
 #ifndef THRIFT_GSSSASLSERVER_H_
 #define THRIFT_GSSSASLSERVER_H_ 1
 
-#include "thrift/lib/cpp2/async/SaslServer.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/concurrency/Mutex.h"
+#include <thrift/lib/cpp2/async/SaslServer.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
 
 namespace apache { namespace thrift {
 

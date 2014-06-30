@@ -21,9 +21,9 @@
 
 #include <boost/noncopyable.hpp>
 
-#include "thrift/lib/cpp/concurrency/Monitor.h"
-#include "thrift/lib/cpp/test/loadgen/LoadConfig.h"
-#include "thrift/lib/cpp/test/loadgen/IntervalTimer.h"
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/test/loadgen/LoadConfig.h>
+#include <thrift/lib/cpp/test/loadgen/IntervalTimer.h>
 
 namespace apache { namespace thrift {
 

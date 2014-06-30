@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/server/Cpp2Worker.h"
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
-#include "thrift/lib/cpp2/server/Cpp2Connection.h"
-#include "thrift/lib/cpp2/server/ThriftServer.h"
-#include "thrift/lib/cpp/async/TAsyncSocket.h"
-#include "thrift/lib/cpp/async/TAsyncSSLSocket.h"
-#include "thrift/lib/cpp/concurrency/Util.h"
+#include <thrift/lib/cpp2/server/Cpp2Connection.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
 
 
 #include <iostream>
@@ -35,7 +35,7 @@
 
 #include <glog/logging.h>
 
-#include "folly/String.h"
+#include <folly/String.h>
 
 DEFINE_int32(pending_interval, 10, "Pending count interval in ms");
 

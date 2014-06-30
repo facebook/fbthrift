@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/async/TEventTask.h"
+#include <thrift/lib/cpp/async/TEventTask.h>
 
-#include "thrift/lib/cpp/async/TEventServer.h"
-#include "thrift/lib/cpp/async/TEventWorker.h"
+#include <thrift/lib/cpp/async/TEventServer.h>
+#include <thrift/lib/cpp/async/TEventWorker.h>
 
 namespace apache { namespace thrift { namespace async {
 

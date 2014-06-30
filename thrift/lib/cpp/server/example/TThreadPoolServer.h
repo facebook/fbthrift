@@ -20,10 +20,10 @@
 #ifndef THRIFT_SERVER_TTHREADPOOLSERVER_H
 #define THRIFT_SERVER_TTHREADPOOLSERVER_H 1
 
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/server/TServer.h"
-#include "thrift/lib/cpp/transport/TServerTransport.h"
-#include "thrift/lib/cpp/concurrency/ThreadLocal.h"
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/server/TServer.h>
+#include <thrift/lib/cpp/transport/TServerTransport.h>
+#include <thrift/lib/cpp/concurrency/ThreadLocal.h>
 
 #include <memory>
 

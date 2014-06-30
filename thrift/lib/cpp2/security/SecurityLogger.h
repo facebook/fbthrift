@@ -20,7 +20,7 @@
 #include <glog/logging.h>
 #include <string>
 
-#include "folly/String.h"
+#include <folly/String.h>
 
 namespace apache { namespace thrift {
 

@@ -25,8 +25,8 @@
 #include <unordered_map>
 
 
-#include "thrift/lib/cpp2/protocol/StreamSerializers.h"
-#include "thrift/lib/cpp/protocol/TProtocol.h"
+#include <thrift/lib/cpp2/protocol/StreamSerializers.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
 
 namespace apache { namespace thrift {
 

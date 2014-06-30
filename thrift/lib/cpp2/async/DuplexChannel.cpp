@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/async/DuplexChannel.h"
+#include <thrift/lib/cpp2/async/DuplexChannel.h>
 
 using std::shared_ptr;
 using std::unique_ptr;

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 
 #include <cassert>
 #include <algorithm>

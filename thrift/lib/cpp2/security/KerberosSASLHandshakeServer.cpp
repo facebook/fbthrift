@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h"
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h>
 
 #include <gssapi/gssapi_generic.h>
 #include <gssapi/gssapi_krb5.h>
 #include <krb5.h>
 #include <stdlib.h>
-#include "folly/io/IOBuf.h"
-#include "folly/io/Cursor.h"
+#include <folly/io/IOBuf.h>
+#include <folly/io/Cursor.h>
 
 using namespace std;
 using namespace apache::thrift;

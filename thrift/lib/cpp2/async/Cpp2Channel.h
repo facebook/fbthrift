@@ -19,13 +19,13 @@
 #ifndef THRIFT_ASYNC_CPP2CHANNEL_H_
 #define THRIFT_ASYNC_CPP2CHANNEL_H_ 1
 
-#include "thrift/lib/cpp2/async/SaslEndpoint.h"
-#include "thrift/lib/cpp2/async/MessageChannel.h"
-#include "thrift/lib/cpp/async/TDelayedDestruction.h"
-#include "thrift/lib/cpp/async/TAsyncTransport.h"
-#include "thrift/lib/cpp/async/TEventBase.h"
-#include "thrift/lib/cpp/transport/THeader.h"
-#include "folly/io/IOBufQueue.h"
+#include <thrift/lib/cpp2/async/SaslEndpoint.h>
+#include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp/async/TDelayedDestruction.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/transport/THeader.h>
+#include <folly/io/IOBufQueue.h>
 #include <memory>
 
 #include <deque>

@@ -23,7 +23,7 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "thrift/lib/thrift/gen-cpp/reflection_types.h"
+#include <thrift/lib/thrift/gen-cpp/reflection_types.h>
 
 namespace apache {
 namespace thrift {

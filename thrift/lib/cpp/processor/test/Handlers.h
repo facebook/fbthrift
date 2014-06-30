@@ -19,10 +19,10 @@
 #ifndef _THRIFT_PROCESSOR_TEST_HANDLERS_H_
 #define _THRIFT_PROCESSOR_TEST_HANDLERS_H_ 1
 
-#include "thrift/lib/cpp/processor/test/EventLog.h"
-#include "thrift/lib/cpp/processor/test/gen-cpp/ChildService.h"
+#include <thrift/lib/cpp/processor/test/EventLog.h>
+#include <thrift/lib/cpp/processor/test/gen-cpp/ChildService.h>
 
-#include "thrift/lib/cpp/server/TConnectionContext.h"
+#include <thrift/lib/cpp/server/TConnectionContext.h>
 
 namespace apache { namespace thrift { namespace test {
 

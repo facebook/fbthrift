@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp2/async/AsyncProcessor.h"
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
 namespace apache { namespace thrift {
 

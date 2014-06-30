@@ -19,14 +19,14 @@
 #include "thrift/perf/cpp/AsyncLoadHandler2.h"
 #include "thrift/perf/cpp/LoadHandler.h"
 
-#include "thrift/lib/cpp2/server/ThriftServer.h"
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include "thrift/lib/cpp/async/TSyncToAsyncProcessor.h"
-#include "thrift/lib/cpp/concurrency/ThreadManager.h"
-#include "thrift/lib/cpp/concurrency/PosixThreadFactory.h"
-#include "thrift/lib/cpp/protocol/TBinaryProtocol.h"
-#include "thrift/lib/cpp/protocol/THeaderProtocol.h"
-#include "thrift/lib/cpp/transport/TSSLSocket.h"
+#include <thrift/lib/cpp/async/TSyncToAsyncProcessor.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 #include "common/init/Init.h"
 #include "common/services/cpp/ServiceFramework.h"

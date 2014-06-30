@@ -19,10 +19,10 @@
 
 #include <iostream>
 #include <cmath>
-#include "thrift/lib/cpp/transport/TBufferTransports.h"
-#include "thrift/lib/cpp/protocol/TJSONProtocol.h"
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 #include "thrift/test/gen-cpp/DebugProtoTest_types.h"
-#include "thrift/lib/cpp/util/ThriftSerializer.h"
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
 
 int main() {
   using std::cout;

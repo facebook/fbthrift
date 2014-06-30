@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/async/TAsyncSSLSocketFactory.h"
+#include <thrift/lib/cpp/async/TAsyncSSLSocketFactory.h>
 
-#include "thrift/lib/cpp/async/TAsyncSSLSocket.h"
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 
 using apache::thrift::transport::SSLContext;
 using apache::thrift::transport::SSLContextPtr;

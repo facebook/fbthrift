@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/lib/cpp/processor/test/EventLog.h"
+#include <thrift/lib/cpp/processor/test/EventLog.h>
 
 #include <stdarg.h>
 
