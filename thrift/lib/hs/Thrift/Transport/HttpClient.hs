@@ -22,30 +22,17 @@ module Thrift.Transport.HttpClient
     ( module Thrift.Transport
     , HttpClient (..)
     , openHttpClient
-    , WriteBuffer
-    , newWriteBuffer
-    , writeBuf
-    , flushBuf
-    , ReadBuffer
-    , newReadBuffer
-    , fillBuf
-    , readBuf
-    , peekBuf
 ) where
 
 import Thrift.Transport
+import Thrift.Transport.IOBuffer
 import Network.URI
 import Network.HTTP hiding (port, host)
 
-import Control.Monad (liftM, void)
 import Control.Monad.IO.Class
 import Data.Maybe (fromJust)
-import Data.Monoid (mappend, mempty)
-import Data.Tuple
-import Data.Word
+import Data.Monoid (mempty)
 import Control.Exception (throw)
-import Control.Concurrent.MVar
-import qualified Data.Binary.Builder as B
 import qualified Data.ByteString.Lazy as LBS
 
 
@@ -113,32 +100,3 @@ instance Transport HttpClient where
       return ()
 
     tIsOpen _ = return True
-
--- Mini IO buffers
-
-type WriteBuffer = MVar B.Builder
-
-newWriteBuffer :: IO WriteBuffer
-newWriteBuffer = newMVar mempty
-
-writeBuf :: WriteBuffer -> LBS.ByteString -> IO ()
-writeBuf w s = modifyMVar_ w $ return . (\builder ->
-                 builder `mappend` (B.fromLazyByteString s))
-
-flushBuf :: WriteBuffer -> IO LBS.ByteString
-flushBuf w = B.toLazyByteString `liftM` swapMVar w mempty
-
-type ReadBuffer = MVar LBS.ByteString
-
-newReadBuffer :: IO ReadBuffer
-newReadBuffer = newMVar mempty
-
-fillBuf :: ReadBuffer -> LBS.ByteString -> IO ()
-fillBuf r s = liftIO $ void $ swapMVar r s
-
-readBuf :: ReadBuffer -> Int -> IO LBS.ByteString
-readBuf r n = modifyMVar r $
-              return . swap . LBS.splitAt (fromIntegral n)
-
-peekBuf :: ReadBuffer -> IO Word8
-peekBuf r = LBS.head `liftM` readMVar r

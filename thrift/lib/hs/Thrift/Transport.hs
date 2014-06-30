@@ -39,7 +39,7 @@ class Transport a where
     tIsOpen :: (MonadIO m) => a -> m Bool
     tClose  :: (MonadIO m) => a -> m ()
     tRead   :: (MonadIO m) => a -> Int -> m LBS.ByteString
-    tPeek   :: (MonadIO m) => a -> m Word8
+    tPeek   :: (MonadIO m) => a -> m (Maybe Word8)
     tWrite  :: (MonadIO m) => a -> LBS.ByteString -> m ()
     tFlush  :: (MonadIO m) => a -> m ()
     tReadAll :: (MonadIO m) => a -> Int -> m LBS.ByteString

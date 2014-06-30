@@ -26,9 +26,8 @@ module Thrift.Transport.Framed
     ) where
 
 import Thrift.Transport
-import Thrift.Transport.HttpClient hiding (HttpClient(..))
+import Thrift.Transport.IOBuffer
 
-import Control.Monad (liftM)
 import Data.Int (Int32)
 import Control.Monad.IO.Class
 import qualified Data.Binary as B
@@ -62,18 +61,19 @@ instance Transport t => Transport (FramedTransport t) where
          -- underlying transport.
            do len <- readFrame trans
               if len > 0
-                 then tRead trans 1
+                 then tRead trans n
                  else return bs
          else return bs
     tPeek trans = do
-      bs <- liftIO $ readBuf (readBuffer trans) 1
-      if LBS.null bs
-        then do
+      mw <- liftIO $ peekBuf (readBuffer trans)
+      case mw of
+        Just _ -> return mw
+        Nothing -> do
           len <- readFrame trans
           if len > 0
-             then LBS.head `liftM` tRead trans 1
-             else return $ LBS.head bs
-          else return $ LBS.head bs
+             then tPeek trans
+             else return Nothing
+
     tWrite trans s = liftIO $ writeBuf (writeBuffer trans) s
 
     tFlush trans = do

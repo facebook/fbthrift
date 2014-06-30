@@ -8,6 +8,7 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Data.Functor
 import Data.IORef
+import Data.Monoid
 import Prelude
 import Test.QuickCheck
 import Test.QuickCheck.Property
@@ -16,6 +17,7 @@ import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Text.Lazy as LT
 
 import Thrift.Transport
+import Thrift.Transport.Framed
 import Thrift.Protocol.Binary
 
 data TestTransport = TestTransport (IORef LBS.ByteString)
@@ -23,26 +25,26 @@ data TestTransport = TestTransport (IORef LBS.ByteString)
 instance Transport TestTransport where
   tIsOpen _ = return True
   tClose _ = return ()
-  tPeek (TestTransport t) = liftIO $ LBS.head <$> readIORef t
+  tPeek (TestTransport t) = liftIO $ (fmap fst . LBS.uncons) <$> readIORef t
   tRead (TestTransport t) i = liftIO $ do
-    s <- readIORef t
-    let (hd, tl) = LBS.splitAt (fromIntegral i) s
+    (hd, tl) <- LBS.splitAt (fromIntegral i) <$> readIORef t
     writeIORef t tl
     return hd
-  tWrite (TestTransport t) bs = liftIO $
-    readIORef t >>= writeIORef t . (`LBS.append` bs)
+  tWrite (TestTransport t) bs = liftIO $ modifyIORef' t (<> bs)
   tFlush _ = return ()
 
 prop_roundtrip
   :: (Eq a, Show a)
-     => (BinaryProtocol TestTransport -> a -> IO ())
-     -> (BinaryProtocol TestTransport -> IO a)
+     => (BinaryProtocol (FramedTransport TestTransport) -> a -> IO ())
+     -> (BinaryProtocol (FramedTransport TestTransport) -> IO a)
      -> a
      -> Property
 prop_roundtrip write read a = morallyDubiousIOProperty $ do
   ref <- newIORef ""
-  let t = BinaryProtocol (TestTransport ref)
+  ft <- openFramedTransport (TestTransport ref)
+  let t = BinaryProtocol ft
   write t a
+  tFlush ft
   b <- read t
   return (a == b)
 
