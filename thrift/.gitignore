@@ -2,25 +2,17 @@
 
 # autoreconf artifacts
 Makefile.in
-/COPYING
-/INSTALL
 /aclocal.m4
 /autom4te.cache/
-/compile
+/build-aux/
 /config.guess
 /config.hin
-/config.sub
 /configure
-/depcomp
-/install-sh
-/ltmain.sh
-/missing
-/test-driver
-/ylwrap
 
 # Configure artifacts
 # Can't include all Makefiles, since some are non-autoconf
 .deps
+.dirstamp
 /Makefile
 /compiler/Makefile
 /compiler/py/Makefile
@@ -35,6 +27,8 @@ Makefile.in
 /lib/thrift/Makefile
 /libtool
 /stamp-h1
+/m4/libtool.m4
+/m4/lt*
 
 # Build artifacts
 .libs
@@ -44,6 +38,7 @@ Makefile.in
 *.la
 gen-cpp
 gen-cpp2
+/.python-local/
 
 /compiler/thrifty.hh
 /compiler/thrift1

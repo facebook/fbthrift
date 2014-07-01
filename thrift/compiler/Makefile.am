@@ -87,6 +87,7 @@ thrift1_SOURCES += generate/t_cpp_generator.cc \
 thrift1_LDFLAGS = -lfolly -lcrypto -lglog
 thrift1_LDADD = @LEXLIB@ libparse.la libthriftcompilerbase.la
 
+libparse_la_CPPFLAGS = $(AM_CPPFLAGS) -DTHRIFTY_HH=\"thrift/compiler/thrifty.hh\"
 libparse_la_SOURCES = thrifty.yy \
                      thriftl.ll
 

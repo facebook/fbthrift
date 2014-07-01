@@ -153,19 +153,24 @@ libthriftcpp2_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top
 
 THRIFT = $(top_builddir)/compiler/thrift1
 
-gen-cpp/Sasl_types.h: Sasl.thrift
-	$(THRIFT) --gen cpp:templates,cob_style -r $<
+BUILT_SOURCES = gen-cpp2/Sasl_constants.cpp \
+		gen-cpp2/Sasl_types.cpp \
+		gen-cpp2/SaslAuthService.cpp
 
 gen-cpp2/Sasl_types.h: Sasl.thrift
-	PYTHONPATH=$(PYPATH) python $(top_builddir)/compiler/main.py --gen cpp2 $<
+	PYTHONPATH=$(PY_LOCAL_PATH) python -mthrift_compiler.main --gen cpp2 $<
+
+gen-cpp2/Sasl_constants.cpp: gen-cpp2/Sasl_types.h
+
+gen-cpp2/Sasl_types.cpp: gen-cpp2/Sasl_types.h
+
+gen-cpp2/SaslAuthService.cpp: gen-cpp2/Sasl_types.h
 
 libsaslstubs_a_SOURCES = gen-cpp2/Sasl_constants.cpp \
 			 gen-cpp2/Sasl_types.cpp \
 			 gen-cpp2/SaslAuthService.cpp
 
 libsaslstubs_a_CPPFLAGS = -fPIC $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
-
-PYPATH = $(top_builddir)/compiler/py/build/lib.linux-x86_64-2.7:$(top_builddir)/compiler/py/build/lib
 
 clean:
 	rm -rf gen-cpp2 gen-cpp

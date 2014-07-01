@@ -35,8 +35,11 @@
 /**
  * Must be included AFTER parse/t_program.h, but I can't remember why anymore
  * because I wrote this a while ago.
+ * 
+ * Note macro expansion because this is different between OSS and internal
+ * build, sigh.
  */
-#include "thrift/compiler/thrifty.hh"
+#include THRIFTY_HH
 
 void thrift_reserved_keyword(char* keyword) {
   yyerror("Cannot use reserved language keyword: \"%s\"\n", keyword);

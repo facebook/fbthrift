@@ -17,7 +17,7 @@
 # under the License.
 #
 
-ACLOCAL_AMFLAGS = -I ./aclocal
+ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = compiler lib
 
@@ -39,3 +39,6 @@ EXTRA_DIST = \
 			CHANGES \
 			DISCLAIMER \
 			NOTICE
+
+clean-local:
+	rm -rf $(PY_LOCAL_ROOT)

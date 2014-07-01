@@ -21,14 +21,31 @@
 # Please see doc/old-thrift-license.txt in the Thrift distribution for
 # details.
 
-lib_LTLIBRARIES = libfrontend.la
+# We don't actually want "make install" to try to install our Python module in
+# /usr/local/lib. But we can't use noinst_, as that's special-cased and libtool
+# doesn't actually build the shared object (it builds a .a made up of PIC
+# object files instead). FUUUUUUUUUUUU.
+#
+# So we pretend it's a lib library, but *override* the install-exec target
+# so it doesn't actually install it. This will be problematic if you add
+# other libraries in this directory, so don't.
+lib_LTLIBRARIES = frontend.la
 
-libfrontend_la_SOURCES = compiler.cc
-libfrontend_la_LDFLAGS = -lpython2.7 -lboost_python
-libfrontend_la_LIBADD = ../libparse.la ../libthriftcompilerbase.la
+frontend_la_SOURCES = compiler.cc
+frontend_la_CPPFLAGS = $(AM_CPPFLAGS) $(PYTHON_CPPFLAGS)
+frontend_la_LDFLAGS = \
+        -module -avoid-version -no-undefined \
+        -l$(BOOST_PYTHON_LIB) $(PYTHON_LDFLAGS) 
+frontend_la_LIBADD = ../libparse.la ../libthriftcompilerbase.la
 
-all-local: libfrontend.la
+all-local: frontend.la
 	$(PYTHON) setup.py build
+	$(PYTHON) setup.py install --home=$(PY_LOCAL_ROOT)
 
-install:
-	PYTHONPATH=@prefix@ $(PYTHON) setup.py install --install-lib=@prefix@
+# Note, not install-exec-hook, see the comment above
+install-exec-am:
+	$(PYTHON) setup.py install $(PY_INSTALL_ARGS)
+
+clean-local:
+	rm -f frontend.so
+	-$(PYTHON) setup.py clean --all

@@ -8,8 +8,9 @@ except:
     from distutils.core import setup, Extension, Command
 
 def run_setup():
-    shutil.copy('.libs/libfrontend.so.0.0.0', 'frontend.so')
-    
+    if sys.argv[1] == 'build':
+        shutil.copy('.libs/frontend.so', 'frontend.so')
+
     setup(name = 'thrift-py',
         version = '0.9.0',
         description = 'Thrift python compiler',
@@ -18,7 +19,6 @@ def run_setup():
         url = 'http://thrift.apache.org',
         license = 'Apache License 2.0',
         packages = [
-            'thrift',
             'thrift_compiler',
             'thrift_compiler.generate',
         ],

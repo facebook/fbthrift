@@ -21,16 +21,29 @@ AC_PREREQ(2.65)
 
 AC_INIT([thrift], [0.9.0])
 
-AC_CONFIG_AUX_DIR([.])
+AC_CONFIG_AUX_DIR([build-aux])
 
-AM_INIT_AUTOMAKE([1.9 tar-ustar])
+AM_INIT_AUTOMAKE([1.9 foreign tar-ustar nostdinc subdir-objects])
+AC_CONFIG_MACRO_DIR([m4])
+
 PKG_PROG_PKG_CONFIG
 
 AC_ARG_VAR([PY_PREFIX], [Prefix for installing Python modules.
                          (Normal --prefix is ignored for Python because
                          Python has different conventions.)
-                         Default = "/usr"])
-AS_IF([test "x$PY_PREFIX" = x], [PY_PREFIX="/usr"])
+                         Default = Python sys.prefix])
+
+AC_ARG_VAR([PY_INSTALL_HOME], [Prefix for installing Python modules using
+                               home scheme. Usually unused.])
+
+AS_IF([test x"$PY_PREFIX" != x],
+          [PY_INSTALL_ARGS="--prefix '$PY_PREFIX'"],
+      [test x"$PY_INSTALL_HOME" != x],
+          [PY_INSTALL_ARGS="--home '$PY_INSTALL_HOME'"
+           PY_RUN_ENV="PYTHONPATH='$PY_INSTALL_HOME/lib/python'"])
+
+AC_SUBST([PY_INSTALL_ARGS])
+AC_SUBST([PY_RUN_ENV])
 
 AC_ARG_VAR([JAVA_PREFIX], [Prefix for installing the Java lib jar.
                            (Normal --prefix is ignored for Java because
@@ -110,7 +123,6 @@ AM_PROG_LEX
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
 AC_PROG_AWK
-AC_PROG_RANLIB
 
 AC_LANG([C++])
 
@@ -142,6 +154,9 @@ if test "$with_cpp" = "yes";  then
     AC_MSG_ERROR([Please install libboost-dev-all])
     have_cpp="no"
   fi
+
+  AX_PYTHON_DEVEL()
+  AX_BOOST_PYTHON
 
   if test "x$LEX" != xflex; then
     AC_MSG_ERROR([Please install flex])
@@ -591,7 +606,10 @@ fi
 # --- Coverage hooks ---
 
 
-AC_SUBST(AM_CPPFLAGS, '-I../$(top_srcdir)'" -lstdc++ $CXX_FLAGS $BOOST_CPPFLAGS -Ifolly -I/usr/include/python2.7")
+AC_SUBST(AM_CPPFLAGS, '-I$(top_srcdir)/..'" $CXX_FLAGS $BOOST_CPPFLAGS") 
+
+AC_SUBST(PY_LOCAL_ROOT, '$(top_builddir)/.python-local')
+AC_SUBST(PY_LOCAL_PATH, '$(PY_LOCAL_ROOT)/lib/python')
 
 AC_ARG_ENABLE(boostthreads,
               [  --enable-boostthreads      use boost threads, instead of POSIX pthread (experimental) ],
