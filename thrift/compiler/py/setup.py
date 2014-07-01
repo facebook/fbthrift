@@ -19,12 +19,11 @@ def run_setup():
         license = 'Apache License 2.0',
         packages = [
             'thrift',
-            'thrift.compiler',
-            'thrift.compiler.generate',
+            'thrift_compiler',
+            'thrift_compiler.generate',
         ],
-        package_dir = {'thrift.compiler' : '.',
-                       'thrift' : '..'},
-        package_data = {'thrift.compiler':['frontend.so']},
+        package_dir = {'thrift_compiler' : '.'},
+        package_data = {'thrift_compiler':['frontend.so']},
         classifiers = [
             'Development Status :: 5 - Production/Stable',
             'Environment :: Console',

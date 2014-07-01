@@ -26,20 +26,20 @@ import os
 import re
 import sys
 
-from thrift.compiler import frontend
+from thrift_compiler import frontend
 # Easy access to the enum of t_base_type::t_base
-from thrift.compiler.frontend import t_base
+from thrift_compiler.frontend import t_base
 # Easy access to the enum of t_field::e_req
-from thrift.compiler.frontend import e_req
+from thrift_compiler.frontend import e_req
 # Easy access to the enum of t_const_value::t_const_value_type
-from thrift.compiler.frontend import e_const_value_type as e_cv_type
+from thrift_compiler.frontend import e_const_value_type as e_cv_type
 
-from thrift.compiler.generate import t_generator
+from thrift_compiler.generate import t_generator
 
-from thrift.compiler.generate.t_cpp_context import *
-from thrift.compiler.generate.t_output_aggregator import get_global_scope
-from thrift.compiler.generate.t_output_aggregator import out
-from thrift.compiler.generate.t_output import IndentedOutput
+from thrift_compiler.generate.t_cpp_context import *
+from thrift_compiler.generate.t_output_aggregator import get_global_scope
+from thrift_compiler.generate.t_output_aggregator import out
+from thrift_compiler.generate.t_output import IndentedOutput
 
 # TODO move from here
 class OrderedDict(dict):

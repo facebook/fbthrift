@@ -141,8 +141,8 @@ bool generate(t_program* program, const vector<string>& generator_strings,
           auto dirname = path.substr(0, last + 1);
           std::string pycompiler;
           std::vector<std::string> pycompilers = {
-            "thrift-py.lpar",
-            "thrift-py.par",
+            "py/thrift-py.lpar",
+            "py/thrift-py.par",
           };
           for (const auto& comp : pycompilers) {
             pycompiler = dirname + comp;

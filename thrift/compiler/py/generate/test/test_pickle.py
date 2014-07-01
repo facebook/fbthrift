@@ -25,11 +25,11 @@ import unittest
 from cStringIO import StringIO
 from cPickle import loads, dumps
 
-from thrift.compiler.generate.t_output import IndentedOutput
-from thrift.compiler.generate.t_output_aggregator import get_global_scope
-from thrift.compiler.generate.t_output_aggregator import OutputContext
-from thrift.compiler.generate.t_cpp_context import CppOutputContext
-from thrift.compiler.generate.t_cpp_context import CppPrimitiveFactory
+from thrift_compiler.generate.t_output import IndentedOutput
+from thrift_compiler.generate.t_output_aggregator import get_global_scope
+from thrift_compiler.generate.t_output_aggregator import OutputContext
+from thrift_compiler.generate.t_cpp_context import CppOutputContext
+from thrift_compiler.generate.t_cpp_context import CppPrimitiveFactory
 
 def print_buffers(buffers):
     log = logging.getLogger("TestPickle.print_buffers")

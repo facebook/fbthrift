@@ -25,10 +25,10 @@ import itertools
 # this calls the __init__ of generate, and populates the registry with all the
 # generator_factories.
 # Then we grab the single instance of generator_registry
-from thrift.compiler.generate.t_generator \
+from thrift_compiler.generate.t_generator \
     import registry as generator_registry
 
-from thrift.compiler import frontend
+from thrift_compiler import frontend
 
 
 class ArgumentError(Exception):
@@ -202,7 +202,7 @@ class Configuration(object):
     def generate(self, program, languages):
         'Oooohh, recursively generate program, hot!!'
 
-        from thrift.compiler.frontend import t_program
+        from thrift_compiler.frontend import t_program
         assert isinstance(program, t_program)
         assert isinstance(languages, dict)
 
