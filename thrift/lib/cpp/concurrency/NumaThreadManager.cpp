@@ -59,52 +59,54 @@ class NumaRunnable : public Runnable {
 
 void NumaRunnable::run() {
 
-  static std::atomic<int> counter;
-  int node = counter++ % (numa_max_node() + 1);
+  if (numa_available() >= 0) {
+    static std::atomic<int> counter;
+    int node = counter++ % (numa_max_node() + 1);
 
-  // If a node is given, use the given node instead of interleaving.
-  // Used to make threadpools that are local to one node.
-  if (setNode_ != -1) {
-    node = setNode_;
+    // If a node is given, use the given node instead of interleaving.
+    // Used to make threadpools that are local to one node.
+    if (setNode_ != -1) {
+      node = setNode_;
+    }
+
+    // Bind both cpu and mem to node
+    nodemask_t nodes;
+    nodemask_zero(&nodes);
+    nodemask_set(&nodes, node);
+    numa_bind(&nodes);
+
+    // Bind pthread stack to node.
+    pthread_attr_t thread_attrs;
+    void *stack_addr;
+    size_t stack_size;
+    size_t guard_size;
+
+    SCOPE_EXIT{     pthread_attr_destroy(&thread_attrs); };
+
+    if (pthread_getattr_np(pthread_self(), &thread_attrs) != 0) {
+      LOG(ERROR) << "Failed to get attributes of the current thread.";
+    }
+
+    if (pthread_attr_getstack(&thread_attrs, &stack_addr, &stack_size) != 0) {
+      LOG(ERROR) << "Failed to get stack size for the current thread.";
+    }
+
+    if (pthread_attr_getguardsize(&thread_attrs, &guard_size) != 0) {
+      LOG(ERROR) << "Failed to get stack guard size for the current thread.";
+    }
+
+    static const size_t page_sz = sysconf(_SC_PAGESIZE);
+
+    if (((uint64_t)stack_addr) % page_sz == 0) {
+      numa_tonode_memory(stack_addr, stack_size, node);
+    } else {
+      LOG(ERROR) << "Thread stack is not page aligned. "
+        "Cannot bind to NUMA node.";
+    }
+
+    // Set the thread-local node to the node we are running on.
+    NumaThreadFactory::node_ = node;
   }
-
-  // Bind both cpu and mem to node
-  nodemask_t nodes;
-  nodemask_zero(&nodes);
-  nodemask_set(&nodes, node);
-  numa_bind(&nodes);
-
-  // Bind pthread stack to node.
-  pthread_attr_t thread_attrs;
-  void *stack_addr;
-  size_t stack_size;
-  size_t guard_size;
-
-  SCOPE_EXIT{     pthread_attr_destroy(&thread_attrs); };
-
-  if (pthread_getattr_np(pthread_self(), &thread_attrs) != 0) {
-    LOG(ERROR) << "Failed to get attributes of the current thread.";
-  }
-
-  if (pthread_attr_getstack(&thread_attrs, &stack_addr, &stack_size) != 0) {
-    LOG(ERROR) << "Failed to get stack size for the current thread.";
-  }
-
-  if (pthread_attr_getguardsize(&thread_attrs, &guard_size) != 0) {
-    LOG(ERROR) << "Failed to get stack guard size for the current thread.";
-  }
-
-  static const size_t page_sz = sysconf(_SC_PAGESIZE);
-
-  if (((uint64_t)stack_addr) % page_sz == 0) {
-    numa_tonode_memory(stack_addr, stack_size, node);
-  } else {
-    LOG(ERROR) << "Thread stack is not page aligned. "
-      "Cannot bind to NUMA node.";
-  }
-
-  // Set the thread-local node to the node we are running on.
-  NumaThreadFactory::node_ = node;
 
   runnable_->run();
 }
@@ -112,10 +114,11 @@ void NumaRunnable::run() {
 std::string NumaContextData::ContextDataVal = "numa";
 
 void NumaThreadFactory::setNumaNode() {
-  CHECK(node_ != -1);
-  RequestContext::get()->setContextData(
-    NumaContextData::ContextDataVal,
-    folly::make_unique<NumaContextData>(node_));
+  if (node_ != -1) {
+    RequestContext::get()->setContextData(
+      NumaContextData::ContextDataVal,
+      folly::make_unique<NumaContextData>(node_));
+  }
 }
 
 __thread int NumaThreadFactory::node_{-1};
@@ -184,7 +187,7 @@ void NumaThreadManager::add(PRIORITY priority,
                             int64_t expiration,
                             bool cancellable,
                             bool numa) {
-  if (numa) {
+  if (numa && managers_.size() > 1) {
     auto node = NumaThreadFactory::getNumaNode() % managers_.size();
     managers_[node]->add(
       priority, task, timeout, expiration, cancellable, false);
