@@ -133,14 +133,17 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_deserialize_set_element  (std::ofstream &out,
                                           t_set*      tset,
+                                          std::string size,
                                           std::string prefix="");
 
   void generate_deserialize_map_element  (std::ofstream &out,
                                           t_map*      tmap,
+                                          std::string size,
                                           std::string prefix="");
 
   void generate_deserialize_list_element (std::ofstream &out,
                                           t_list*     tlist,
+                                          std::string size,
                                           std::string prefix="");
 
   void generate_serialize_field          (std::ofstream &out,
@@ -1050,6 +1053,13 @@ void t_hack_generator::generate_php_struct_spec(ofstream& out,
 
   indent_down();
   indent(out) << "  );" << endl;
+
+  indent(out) << "public static Map<string, int> $_TFIELDMAP = Map {" << endl;
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    t_type* t = get_true_type((*m_iter)->get_type());
+    indent(out) << "  '" << (*m_iter)->get_name() << "' => " << (*m_iter)->get_key() << "," << endl;
+  }
+  indent(out) << "};" << endl;
 }
 
 /**
@@ -1274,8 +1284,8 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
     scope_up(out);
 
     // Read beginning field marker
-    indent(out) <<
-      "$xfer += $input->readFieldBegin($fname, $ftype, $fid);" << endl;
+    out <<
+      indent() << "$xfer += $input->readFieldBegin($fname, $ftype, $fid);" << endl;
     // Check for field STOP marker and break
     indent(out) <<
       "if ($ftype == TType::STOP) {" << endl;
@@ -1285,6 +1295,13 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
     indent_down();
     indent(out) <<
       "}" << endl;
+    out <<
+      indent() << "if (!$fid && $fname !== null) {" << endl <<
+      indent() << "  $fid = (int) self::$_TFIELDMAP->get($fname);" << endl <<
+      indent() << "  if ($fid !== 0) {" << endl <<
+      indent() << "    $ftype = self::$_TSPEC[$fid]['type'];" << endl <<
+      indent() << "  }" << endl <<
+      indent() << "}" << endl;
 
     // Switch statement on the field we are reading
     indent(out) <<
@@ -2814,16 +2831,16 @@ void t_hack_generator::generate_deserialize_container(ofstream &out,
   string i = tmp("_i");
   indent(out) <<
     "for ($" <<
-    i << " = 0; $" << i << " < $" << size << "; ++$" << i << ")" << endl;
+    i << " = 0; $" << size << " === null || $" << i << " < $" << size << "; ++$" << i << ")" << endl;
 
     scope_up(out);
 
     if (ttype->is_map()) {
-      generate_deserialize_map_element(out, (t_map*)ttype, val);
+      generate_deserialize_map_element(out, (t_map*)ttype, size, val);
     } else if (ttype->is_set()) {
-      generate_deserialize_set_element(out, (t_set*)ttype, val);
+      generate_deserialize_set_element(out, (t_set*)ttype, size, val);
     } else if (ttype->is_list()) {
-      generate_deserialize_list_element(out, (t_list*)ttype, val);
+      generate_deserialize_list_element(out, (t_list*)ttype, size, val);
     }
 
     scope_down(out);
@@ -2847,11 +2864,17 @@ void t_hack_generator::generate_deserialize_container(ofstream &out,
  */
 void t_hack_generator::generate_deserialize_map_element(ofstream &out,
                                                        t_map* tmap,
+                                                       string size,
                                                        string prefix) {
   string key = tmp("key");
   string val = tmp("val");
   t_field fkey(tmap->get_key_type(), key);
   t_field fval(tmap->get_val_type(), val);
+
+  out <<
+    indent() << "if ($" << size << " === null && !$input->readMapHasNext()) {" << endl <<
+    indent() << "  break;" << endl <<
+    indent() << "}" << endl;
 
   indent(out) <<
     declare_field(&fkey, true, true) << endl;
@@ -2873,9 +2896,15 @@ void t_hack_generator::generate_deserialize_map_element(ofstream &out,
 
 void t_hack_generator::generate_deserialize_set_element(ofstream &out,
                                                        t_set* tset,
+                                                       string size,
                                                        string prefix) {
   string elem = tmp("elem");
   t_field felem(tset->get_elem_type(), elem);
+
+  out <<
+    indent() << "if ($" << size << " === null && !$input->readSetHasNext()) {" << endl <<
+    indent() << "  break;" << endl <<
+    indent() << "}" << endl;
 
   indent(out) <<
     "$" << elem << " = null;" << endl;
@@ -2899,9 +2928,15 @@ void t_hack_generator::generate_deserialize_set_element(ofstream &out,
 
 void t_hack_generator::generate_deserialize_list_element(ofstream &out,
                                                         t_list* tlist,
+                                                        string size,
                                                         string prefix) {
   string elem = tmp("elem");
   t_field felem(tlist->get_elem_type(), elem);
+
+  out <<
+    indent() << "if ($" << size << " === null && !$input->readListHasNext()) {" << endl <<
+    indent() << "  break;" << endl <<
+    indent() << "}" << endl;
 
   indent(out) <<
     "$" << elem << " = null;" << endl;
