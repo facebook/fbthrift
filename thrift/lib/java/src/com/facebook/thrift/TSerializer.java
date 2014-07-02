@@ -74,7 +74,7 @@ public class TSerializer {
    * @param base The object to serialize
    * @return Serialized object in byte[] format
    */
-  public byte[] serialize(TBase base) throws TException {
+  public synchronized byte[] serialize(TBase base) throws TException {
     baos_.reset();
     base.write(protocol_);
     return baos_.toByteArray();
