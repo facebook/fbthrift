@@ -31,7 +31,7 @@ using namespace std;
 using namespace apache::thrift::util;
 
 FBUNIT_DASHBOARD_OWNER("karl")
-FBUNIT_DASHBOARD_EMAILS("admarket-dev@lists.facebook.com")
+FBUNIT_DASHBOARD_EMAILS("oncall+ad_units@xmail.facebook.com")
 
 const std::string randomString = "~!@#$%^&*()_+][/.,\\][/.,'abcde\t\n";
 

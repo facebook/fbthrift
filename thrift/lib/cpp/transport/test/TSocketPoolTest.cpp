@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp/transport/TSocketPool.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 
-FBUNIT_DASHBOARD_EMAILS("thrift@lists.facebook.com")
 
 using namespace std;
 using apache::thrift::transport::TSocketPool;
