@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include <python/Python.h>
+#include <Python.h>
 
 #if PY_MAJOR_VERSION >= 3
  #define PyInt_FromLong PyLong_FromLong
  #define PyInt_AsLong PyLong_AsLong
  #define PyString_FromStringAndSize PyBytes_FromStringAndSize
 #else
- #include <python/cStringIO.h>
+ #include <cStringIO.h>
 #endif
 
 #include <stdbool.h>
