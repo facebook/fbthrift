@@ -25,6 +25,8 @@
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 
+DEFINE_bool(thrift_numa_enabled, false, "Enable NumaThreadManager in thrift");
+
 namespace apache { namespace thrift { namespace concurrency {
 
 class NumaContextData : public folly::RequestData {
@@ -59,7 +61,7 @@ class NumaRunnable : public Runnable {
 
 void NumaRunnable::run() {
 
-  if (numa_available() >= 0) {
+  if (numa_available() >= 0 && FLAGS_thrift_numa_enabled) {
     static std::atomic<int> counter;
     int node = counter++ % (numa_max_node() + 1);
 
@@ -157,7 +159,7 @@ NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
                                      bool enableTaskStats,
                                      size_t maxQueueLen) {
   int nodes = 1;
-  if (numa_available() >= 0) {
+  if (numa_available() >= 0 && FLAGS_thrift_numa_enabled) {
     nodes = (numa_max_node() + 1);
   }
   for (int i = 0; i < nodes; i++) {
