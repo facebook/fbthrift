@@ -3949,8 +3949,8 @@ class CppGenerator(t_generator.Generator):
         with self._types_global.namespace('apache.thrift').scope:
             self._generate_cpp2ops(False, obj, self._types_scope)
 
-        gen_hash = self._has_cpp_annotation(obj, 'generate_hash')
-        gen_equal_to = self._has_cpp_annotation(obj, 'generate_equal_to')
+        gen_hash = self._has_cpp_annotation(obj, 'declare_hash')
+        gen_equal_to = self._has_cpp_annotation(obj, 'declare_equal_to')
         if gen_hash or gen_equal_to:
             full_name = self._namespace_prefix(
                     self._program.get_namespace('cpp')) + obj.name

@@ -291,6 +291,9 @@ class t_cpp_generator : public t_oop_generator {
                                           string target,
                                           string iface,
                                           string arg_prefix);
+
+  void generate_hash_and_equal_to(ofstream& out, t_type* ttype, const std::string& type_name);
+
   /*
    * Helper rendering functions
    */
@@ -754,8 +757,44 @@ void t_cpp_generator::generate_typedef(t_typedef* ttypedef) {
   f_types_ <<
     indent() << "typedef " << type_name(ttypedef->get_type(), IN_TYPEDEF) <<
     " " << ttypedef->get_symbolic() << ";" << endl << endl;
+
+
+  t_type* ttype = get_true_type(ttypedef);
+  generate_hash_and_equal_to(f_types_, ttype, ttypedef->get_symbolic());
 }
 
+/*
+ * Should generate template specialization for std::hash and std::equal_to
+ * which can be used by unordered container.
+ */
+void t_cpp_generator::generate_hash_and_equal_to(ofstream& out,
+                                                 t_type* ttype,
+                                                 const std::string& type_name) {
+  const bool genHash = ttype->annotations_.count("cpp.declare_hash") > 0;
+  const bool genEqualTo = ttype->annotations_.count("cpp.declare_equal_to") > 0;
+  if (genHash || genEqualTo) {
+    out << ns_close_ << endl << endl
+      << indent() << namespace_open("std") << endl;
+
+    const std::string fullName = ns_prefix_ + type_name;
+    if (genHash) {
+      out << indent() << "template<> struct hash<typename "
+        << fullName << "> {" << endl
+        << indent() << "size_t operator()(const " << fullName << "&) const;"
+        << endl << indent() << "};" << endl;
+    }
+    if (genEqualTo) {
+      out << indent() << "template<> struct equal_to<typename "
+        << fullName << "> {" << endl
+        << indent() << "bool operator()(const " << fullName << "&, " << endl
+        << indent() << "const " << fullName << "&) const;"
+        << endl << indent() << "};" << endl;
+    }
+
+    out << indent() << namespace_close("std") << endl << endl
+      << indent() << ns_open_ << endl << endl;
+  }
+}
 
 void t_cpp_generator::generate_enum_constant_list(std::ofstream& f,
                                                   const vector<t_enum_value*>& constants,
@@ -2117,34 +2156,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
       << tstruct->get_name() << "&& from, "
       << tstruct->get_name() << "& to);" << endl;
 
-  /*
-   * Should generate template specialization for std::hash and std::equal_to
-   * which can be used by unordered associative container.
-   */
-  const bool genHash = tstruct->annotations_.count("cpp.generate_hash") > 0;
-  const bool genEqualTo = tstruct->annotations_.count("cpp.generate_equal_to") > 0;
-  if (genHash || genEqualTo) {
-    out << indent() << ns_close_ << endl << endl
-      << indent() << namespace_open("std") << endl;
-
-    const auto fullName = (ns_prefix_ + tstruct->get_name());
-    if (genHash) {
-      out << indent() << "template<> struct hash<typename "
-        << fullName << "> {" << endl
-        << indent() << "size_t operator()(const " << fullName << "&) const;"
-        << endl << indent() << "};" << endl;
-    }
-    if (genEqualTo) {
-      out << indent() << "template<> struct equal_to<typename "
-        << fullName << "> {" << endl
-        << indent() << "bool operator()(const " << fullName << "&, " << endl
-        << indent() << "const " << fullName << "&) const;"
-        << endl << indent() << "};" << endl;
-    }
-
-    out << indent() << namespace_close("std") << endl << endl
-      << indent() << ns_open_ << endl << endl;
-  }
+  generate_hash_and_equal_to(out, tstruct, tstruct->get_name());
 }
 
 bool is_boolean_type(t_type* ttype) {
