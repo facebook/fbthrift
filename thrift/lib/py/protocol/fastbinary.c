@@ -342,12 +342,14 @@ parse_pyint(PyObject* o, int32_t* ret, int32_t min, int32_t max) {
 
 static bool
 parse_set_list_args(SetListTypeArgs* dest, PyObject* typeargs) {
+  long element_type;
+
   if (PyTuple_Size(typeargs) != 2) {
     PyErr_SetString(PyExc_TypeError, "expecting tuple of size 2 for list/set type args");
     return false;
   }
 
-  long element_type = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 0));
+  element_type = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 0));
   if (INT_CONV_ERROR_OCCURRED(element_type)) {
     return false;
   }
@@ -360,17 +362,19 @@ parse_set_list_args(SetListTypeArgs* dest, PyObject* typeargs) {
 
 static bool
 parse_map_args(MapTypeArgs* dest, PyObject* typeargs) {
+  long ktag, vtag;
+
   if (PyTuple_Size(typeargs) != 4) {
     PyErr_SetString(PyExc_TypeError, "expecting 4 arguments for typeargs to map");
     return false;
   }
 
-  long ktag = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 0));
+  ktag = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 0));
   if (INT_CONV_ERROR_OCCURRED(ktag)) {
     return false;
   }
 
-  long vtag = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 2));
+  vtag = PyInt_AsLong(PyTuple_GET_ITEM(typeargs, 2));
   if (INT_CONV_ERROR_OCCURRED(vtag)) {
     return false;
   }
@@ -398,18 +402,20 @@ parse_struct_args(StructTypeArgs* dest, PyObject* typeargs) {
 
 static int
 parse_struct_item_spec(StructItemSpec* dest, PyObject* spec_tuple) {
+  long tag, type;
+
   // i'd like to use ParseArgs here, but it seems to be a bottleneck.
   if (PyTuple_Size(spec_tuple) != 6) {
     PyErr_SetString(PyExc_TypeError, "expecting 6 arguments for spec tuple");
     return false;
   }
 
-  long tag = PyInt_AsLong(PyTuple_GET_ITEM(spec_tuple, 0));
+  tag = PyInt_AsLong(PyTuple_GET_ITEM(spec_tuple, 0));
   if (INT_CONV_ERROR_OCCURRED(tag)) {
     return false;
   }
 
-  long type = PyInt_AsLong(PyTuple_GET_ITEM(spec_tuple, 1));
+  type = PyInt_AsLong(PyTuple_GET_ITEM(spec_tuple, 1));
   if (INT_CONV_ERROR_OCCURRED(type)) {
     return false;
   }
@@ -582,6 +588,8 @@ output_val(PyObject* output, PyObject* value, TType type, PyObject* typeargs,
 
   case T_STRING: {
     bool encoded = false;
+    Py_ssize_t len;
+
 #if PY_MAJOR_VERSION >= 3
     if (!PyBytes_Check(value)) {
       // Assume can call encode and return a bytes
@@ -592,7 +600,7 @@ output_val(PyObject* output, PyObject* value, TType type, PyObject* typeargs,
       }
       encoded = true;
     }
-    Py_ssize_t len = PyBytes_Size(value);
+    len = PyBytes_Size(value);
 #else
     if (utf8strings && value->ob_type == &PyUnicode_Type) {
       value = PyUnicode_AsUTF8String(value);
@@ -602,7 +610,7 @@ output_val(PyObject* output, PyObject* value, TType type, PyObject* typeargs,
       }
       encoded = true;
     }
-    Py_ssize_t len = PyString_Size(value);
+    len = PyString_Size(value);
 #endif
     if (!check_ssize_t_32(len)) {
       return false;
@@ -1374,11 +1382,13 @@ decode_val(DecodeBuffer* input, TType type, PyObject* typeargs, int utf8strings)
 
   case T_STRUCT: {
     StructTypeArgs parsedargs;
+    PyObject *ret;
+
     if (!parse_struct_args(&parsedargs, typeargs)) {
       return NULL;
     }
 
-    PyObject* ret = PyObject_CallObject(parsedargs.klass, NULL);
+    ret = PyObject_CallObject(parsedargs.klass, NULL);
     if (!ret) {
       return NULL;
     }
@@ -1482,16 +1492,19 @@ static struct PyModuleDef ThriftFastBinaryModuleDef = {
 
 PyObject*
 PyInit_fastbinary(void) {
+  PyObject *bytesio, *module;
+  struct module_state *st;
+
   Python3IO = PyImport_ImportModule("io");
   if (Python3IO == NULL) {
     return NULL;
   }
 
   // I don't know a better way to get a type object in c
-  PyObject *bytesio = PyObject_CallMethod(Python3IO, "BytesIO", "()");
+  bytesio = PyObject_CallMethod(Python3IO, "BytesIO", "()");
   BytesIOType = (PyTypeObject*)PyObject_Type(bytesio);
 
-  PyObject *module = PyModule_Create(&ThriftFastBinaryModuleDef);
+  module = PyModule_Create(&ThriftFastBinaryModuleDef);
   if (module == NULL) {
     Py_DECREF(Python3IO);
     Py_DECREF(bytesio);
@@ -1499,8 +1512,7 @@ PyInit_fastbinary(void) {
     return NULL;
   }
 
-  struct module_state *st = GETSTATE(module);
-
+  st = GETSTATE(module);
   st->error = PyErr_NewException("fastbinary.Error", NULL, NULL);
   if (st->error == NULL) {
     Py_DECREF(Python3IO);
