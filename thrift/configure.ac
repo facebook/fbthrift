@@ -154,6 +154,7 @@ if test "$with_cpp" = "yes";  then
     AC_MSG_ERROR([Please install libboost-dev-all])
     have_cpp="no"
   fi
+  AX_BOOST_THREAD
 
   AX_PYTHON_DEVEL()
   AX_BOOST_PYTHON

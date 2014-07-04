@@ -148,7 +148,7 @@ libthriftcpp2_la_SOURCES = async/HeaderClientChannel.cpp \
          ../cpp/ssl/SSLUtils.cpp
 
 
-libthriftcpp2_la_LIBADD = ../cpp/libthrift.la libsaslstubs.a -lkrb5 -lgssapi_krb5 -lsnappy -lnuma
+libthriftcpp2_la_LIBADD = ../cpp/libthrift.la libsaslstubs.a -lkrb5 -lgssapi_krb5 -lsnappy -lnuma -lboost_thread
 libthriftcpp2_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
 
 THRIFT = $(top_builddir)/compiler/thrift1
@@ -172,6 +172,6 @@ libsaslstubs_a_SOURCES = gen-cpp2/Sasl_constants.cpp \
 
 libsaslstubs_a_CPPFLAGS = -fPIC $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
 
-clean:
+clean-local:
 	rm -rf gen-cpp2 gen-cpp
 
