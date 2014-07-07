@@ -71,11 +71,8 @@ void NumaRunnable::run() {
       node = setNode_;
     }
 
-    // Bind both cpu and mem to node
-    nodemask_t nodes;
-    nodemask_zero(&nodes);
-    nodemask_set(&nodes, node);
-    numa_bind(&nodes);
+    numa_run_on_node(node);
+    numa_set_preferred(node);
 
     // Bind pthread stack to node.
     pthread_attr_t thread_attrs;
