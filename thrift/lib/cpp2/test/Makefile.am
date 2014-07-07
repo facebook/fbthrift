@@ -27,8 +27,7 @@ ThriftServerTest_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_builddir)/../../gperftools-2.
 TESTS = ThriftServerTest
 
 clean-local:
-	rm -rf gen-cpp2
-	rm -rf gen-cpp
+	rm -rf gen-cpp2/Service*
 	rm -rf InstalledCheck
 
 gen-cpp2/InstalledCheck_types.cpp: InstalledCheck.thrift

@@ -78,7 +78,7 @@ thrift2include_security_HEADERS = \
 	security/KerberosSASLHandshakeUtils.h \
 	security/KerberosSASLThreadManager.h \
 	security/SecurityKillSwitch.h \
-	security/SecurityLogger.h 
+	security/SecurityLogger.h
 
 thrift2include_testdir = $(thrift2includedir)/test
 
@@ -173,5 +173,4 @@ libsaslstubs_a_SOURCES = gen-cpp2/Sasl_constants.cpp \
 libsaslstubs_a_CPPFLAGS = -fPIC $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
 
 clean-local:
-	rm -rf gen-cpp2 gen-cpp
-
+	rm -rf gen-cpp2/Sasl*
