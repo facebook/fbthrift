@@ -74,7 +74,7 @@ void AsyncLoadHandler2::async_tm_onewaySleep(
   });
 }
 
-void AsyncLoadHandler2::burn(int64_t microseconds) {
+void AsyncLoadHandler2::sync_burn(int64_t microseconds) {
   // Slightly different from thrift1, this happens in a
   // thread pool.
   int64_t start = Util::currentTimeUsec();
@@ -85,8 +85,30 @@ void AsyncLoadHandler2::burn(int64_t microseconds) {
   } while (now < end);
 }
 
-void AsyncLoadHandler2::onewayBurn(int64_t microseconds) {
-  burn(microseconds);
+folly::wangle::Future<void>
+AsyncLoadHandler2::future_burn(int64_t microseconds) {
+  folly::MoveWrapper<folly::wangle::Promise<void>> promise;
+  auto future = promise->getFuture();
+
+  sync_burn(microseconds);
+  promise->setValue();
+
+  return future;
+}
+
+void AsyncLoadHandler2::sync_onewayBurn(int64_t microseconds) {
+  sync_burn(microseconds);
+}
+
+folly::wangle::Future<void>
+AsyncLoadHandler2::future_onewayBurn(int64_t microseconds) {
+  folly::MoveWrapper<folly::wangle::Promise<void>> promise;
+  auto future = promise->getFuture();
+
+  sync_onewayBurn(microseconds);
+  promise->setValue();
+
+  return future;
 }
 
 void AsyncLoadHandler2::async_eb_badSleep(
@@ -100,7 +122,7 @@ void AsyncLoadHandler2::async_eb_badBurn(
   std::unique_ptr<HandlerCallback<void>> callback,
   int64_t microseconds) {
   // This is a true (bad) async call.
-  burn(microseconds);
+  sync_burn(microseconds);
   callback->done();
 }
 
@@ -159,12 +181,31 @@ void AsyncLoadHandler2::async_tm_sendrecv(
   callback.release()->resultInThread(std::move(ret));
 }
 
-void AsyncLoadHandler2::echo(
+void AsyncLoadHandler2::sync_echo(
   // Slightly different from thrift1, this happens in a
   // thread pool.
   std::string& output,
   std::unique_ptr<std::string> data) {
   output = std::move(*data);
+}
+
+folly::wangle::Future<std::unique_ptr<std::string>>
+AsyncLoadHandler2::future_echo(
+    std::unique_ptr<std::string> data) {
+  folly::MoveWrapper<
+    folly::wangle::Promise<std::unique_ptr<std::string>>> promise;
+  auto future = promise->getFuture();
+  auto wrapped_data =
+    folly::MoveWrapper<std::unique_ptr<std::string>>(std::move(data));
+
+  this->getEventBase()->runInEventBaseThread(
+      [this, promise, wrapped_data]() mutable {
+        std::string output;
+        sync_echo(output, std::move(*wrapped_data));
+        promise->setValue(folly::make_unique<std::string>(std::move(output)));
+      });
+
+  return future;
 }
 
 void AsyncLoadHandler2::async_tm_add(
