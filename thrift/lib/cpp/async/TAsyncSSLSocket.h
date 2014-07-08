@@ -22,6 +22,7 @@
 #include <openssl/ssl.h>
 
 #include <folly/Optional.h>
+#include <folly/String.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
@@ -568,6 +569,26 @@ class TAsyncSSLSocket : public TAsyncSocket {
 
     clientCiphers = ciphersStream.str();
     clientCiphers.erase(clientCiphers.end() - 1);
+  }
+
+  /**
+   * Get the list of compression methods sent by the client in TLS Hello.
+   */
+  std::string getSSLClientComprMethods() {
+    if (!parseClientHello_) {
+      return "";
+    }
+    return folly::join(":", clientHelloInfo_->clientHelloCompressionMethods_);
+  }
+
+  /**
+   * Get the list of TLS extensions sent by the client in the TLS Hello.
+   */
+  std::string getSSLClientExts() {
+    if (!parseClientHello_) {
+      return "";
+    }
+    return folly::join(":", clientHelloInfo_->clientHelloExtensions_);
   }
 
   /**
