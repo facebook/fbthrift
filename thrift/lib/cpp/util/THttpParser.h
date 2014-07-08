@@ -62,8 +62,11 @@ class THttpParser {
   bool hasPartialMessage() {
     return partialMessageSize_ > 0;
   }
-  virtual std::unique_ptr<folly::IOBuf>
-  constructHeader(std::unique_ptr<folly::IOBuf> buf) = 0;
+  virtual std::unique_ptr<folly::IOBuf> constructHeader(
+    std::unique_ptr<folly::IOBuf> buf) = 0;
+  virtual std::unique_ptr<folly::IOBuf> constructHeader(
+    std::unique_ptr<folly::IOBuf> buf,
+    std::map<std::string, std::string> &headers) = 0;
 
  protected:
   HttpParseResult parseStart();
@@ -119,8 +122,11 @@ class THttpClientParser : public THttpParser {
   void setUserAgent(std::string userAgent) {
     userAgent_ = userAgent;
   }
-  virtual std::unique_ptr<folly::IOBuf>
-  constructHeader(std::unique_ptr<folly::IOBuf> buf) override;
+  virtual std::unique_ptr<folly::IOBuf> constructHeader(
+    std::unique_ptr<folly::IOBuf> buf) override;
+  virtual std::unique_ptr<folly::IOBuf> constructHeader(
+    std::unique_ptr<folly::IOBuf> buf,
+    std::map<std::string, std::string> &headers) override;
 
  protected:
   virtual void parseHeaderLine(const char* header) override;

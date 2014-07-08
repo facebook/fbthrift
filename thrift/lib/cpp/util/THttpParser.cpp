@@ -335,6 +335,13 @@ bool THttpClientParser::isConnectClosedByServer() {
 }
 
 unique_ptr<IOBuf> THttpClientParser::constructHeader(unique_ptr<IOBuf> buf) {
+  std::map<std::string, std::string> empty;
+  return constructHeader(std::move(buf), empty);
+}
+
+unique_ptr<IOBuf> THttpClientParser::constructHeader(
+   unique_ptr<IOBuf> buf,
+   std::map<std::string, std::string> &headers) {
   IOBufQueue queue;
   queue.append("POST ");
   queue.append(path_);
@@ -354,6 +361,14 @@ unique_ptr<IOBuf> THttpClientParser::constructHeader(unique_ptr<IOBuf> buf) {
   string contentLen = std::to_string(buf->computeChainDataLength());
   queue.append(contentLen);
   queue.append(CRLF);
+  // write headers
+  map<string, string>::const_iterator it;
+  for (it = headers.begin(); it != headers.end(); ++it) {
+    queue.append(it->first);
+    queue.append(": ");
+    queue.append(it->second);
+    queue.append(CRLF);
+  }
   queue.append(CRLF);
   auto res = queue.move();
   res->appendChain(std::move(buf));
