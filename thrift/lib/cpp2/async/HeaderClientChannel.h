@@ -524,6 +524,7 @@ private:
    public:
     explicit SaslClientCallback(HeaderClientChannel& channel)
       : channel_(channel) {}
+    void saslStarted();
     void saslSendServer(std::unique_ptr<folly::IOBuf>&&);
     void saslError(folly::exception_wrapper&&);
     void saslComplete();

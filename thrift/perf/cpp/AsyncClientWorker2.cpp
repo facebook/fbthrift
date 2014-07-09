@@ -231,16 +231,17 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
 
     if (config->SASLPolicy() == "required" ||
         config->SASLPolicy() == "permitted") {
-      static auto saslThreadManager_ = std::make_shared<SaslThreadManager>();
-      static auto ccManagerLogger_ = std::make_shared<SecurityLogger>();
-      static auto credentialsCacheManager_ =
-        std::make_shared<krb5::Krb5CredentialsCacheManager>(ccManagerLogger_);
+      static auto securityLogger = std::make_shared<SecurityLogger>();
+      static auto saslThreadManager =
+        std::make_shared<SaslThreadManager>(securityLogger);
+      static auto credentialsCacheManager =
+        std::make_shared<krb5::Krb5CredentialsCacheManager>(securityLogger);
       channel->setSaslClient(std::unique_ptr<apache::thrift::SaslClient>(
         new apache::thrift::GssSaslClient(socket->getEventBase())
       ));
-      channel->getSaslClient()->setSaslThreadManager(saslThreadManager_);
+      channel->getSaslClient()->setSaslThreadManager(saslThreadManager);
       channel->getSaslClient()->setCredentialsCacheManager(
-        credentialsCacheManager_);
+        credentialsCacheManager);
       channel->getSaslClient()->setServiceIdentity(
         folly::format(
           "{}@{}",
