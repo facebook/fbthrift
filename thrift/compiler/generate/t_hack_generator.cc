@@ -1273,6 +1273,12 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
     indent() << "$ftype = 0;" << endl <<
     indent() << "$fid = 0;" << endl;
 
+  // create flags for required fields, we check then after reading
+  for (const auto& f : fields) {
+    if (f->get_req() == t_field::T_REQUIRED) {
+      indent(out) << "$" << f->get_name() << "__isset = false;" << endl;
+    }
+  }
   // Declare stack tmp variables
   indent(out) <<
     "$xfer += $input->readStructBegin($fname);" << endl;
@@ -1317,6 +1323,10 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
         indent(out) << "if ($ftype == " << type_to_enum((*f_iter)->get_type()) << ") {" << endl;
         indent_up();
         generate_deserialize_field(out, *f_iter, "this->" + (*f_iter)->get_name());
+        if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
+          indent(out) << "$" << (*f_iter)->get_name() << "__isset = true;"
+                      << endl;
+        }
         indent_down();
         out <<
           indent() << "} else {" << endl;
@@ -1373,7 +1383,7 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
   // The code that checks for the require field
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
-      indent(out) << "if ($this->" << (*f_iter)->get_name() << " === null) {"
+      indent(out) << "if (!$" << (*f_iter)->get_name() << "__isset) {"
         << endl;
       indent_up();
       indent(out) << "throw new TProtocolException(\"Required field '"
