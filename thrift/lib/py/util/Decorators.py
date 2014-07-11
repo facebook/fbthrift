@@ -111,7 +111,7 @@ def write_results_exception_callback(func):
         fn_name = func.__name__.split('_', 3)[-1]
 
         # Call the decorated function
-        reply_type, result = func(self, error, result)
+        reply_type, result = func(self, error, result, handler_ctx)
 
         self._event_handler.preWrite(handler_ctx, fn_name, result)
         oprot.writeMessageBegin(fn_name, reply_type, seqid)

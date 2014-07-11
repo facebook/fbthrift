@@ -2703,7 +2703,7 @@ void t_py_generator::generate_process_function(t_service* tservice,
     indent(f_service_) << "@write_results_exception_callback" << endl;
     f_service_
       << indent() << "def write_results_exception_" << fn_name <<
-      "(self, error, result):" << endl;
+      "(self, error, result, handler_ctx):" << endl;
     indent_up();
     f_service_ <<
       indent() << "try:" << endl;
