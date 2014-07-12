@@ -441,10 +441,13 @@ void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
       }
     }
 
-    try {
-      callback_->requestReceived(std::move(request));
-    } catch (const std::exception& e) {
-      LOG(WARNING) << "Could not parse request: " << e.what();
+    auto ew = folly::try_and_catch<std::exception>([&]() {
+        callback_->requestReceived(std::move(request));
+      });
+    if (ew) {
+      LOG(WARNING) << "Could not parse request: " << ew.get()->what();
+      messageReceiveErrorWrapped(std::move(ew));
+      return;
     }
 
     if (streamPtr != nullptr) {
