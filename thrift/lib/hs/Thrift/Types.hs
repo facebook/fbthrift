@@ -115,7 +115,7 @@ data MessageType
     = M_CALL
     | M_REPLY
     | M_EXCEPTION
-      deriving ( Eq )
+      deriving ( Eq, Show )
 
 instance Enum MessageType where
     fromEnum M_CALL      =  1

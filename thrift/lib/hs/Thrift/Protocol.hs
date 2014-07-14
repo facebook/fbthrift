@@ -1,5 +1,6 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE OverloadedStrings #-}
 --
 -- Licensed to the Apache Software Foundation (ASF) under one
 -- or more contributor license agreements. See the NOTICE file
@@ -23,9 +24,13 @@ module Thrift.Protocol
     ( Protocol(..)
     , ProtocolExn(..)
     , ProtocolExnType(..)
+    , runParser
     ) where
 
 import Control.Exception
+import Data.Attoparsec.ByteString
+import Data.ByteString.Lazy (toStrict)
+import Data.Functor ((<$>))
 import Data.Int
 import Data.Text.Lazy (Text)
 import Data.Typeable (Typeable)
@@ -55,3 +60,11 @@ data ProtocolExnType
 data ProtocolExn = ProtocolExn ProtocolExnType String
   deriving ( Show, Typeable )
 instance Exception ProtocolExn
+
+runParser :: (Protocol p, Transport t, Show a) => p t -> Parser a -> IO a
+runParser prot p = refill >>= getResult . parse p
+  where
+    refill = toStrict <$> tRead (getTransport prot) 128
+    getResult (Done _ a) = return a
+    getResult (Partial k) = refill >>= getResult . k
+    getResult f = error $ show f
