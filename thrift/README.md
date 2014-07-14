@@ -24,7 +24,7 @@ Dependencies
    14.04 require the following packages (feel free to cut and paste the apt-get
    command below):
 
-`
+```
   sudo apt-get install \
       flex \
       bison \
@@ -33,7 +33,7 @@ Dependencies
       libnuma-dev \
       pkg-config \
       libssl-dev
-`
+```
 
  - Ubuntu 12.10 64-bit requires the following packages:
 
