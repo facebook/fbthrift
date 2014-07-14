@@ -40,7 +40,7 @@ class Protocol a where
     readMessage :: Transport t => a t -> IO (Text, MessageType, Int32)
 
     writeVal :: Transport t => a t -> ThriftVal -> IO ()
-    readVal :: Transport t => a t -> IO ThriftVal
+    readVal :: Transport t => a t -> ThriftType -> IO ThriftVal
 
 data ProtocolExnType
     = PE_UNKNOWN

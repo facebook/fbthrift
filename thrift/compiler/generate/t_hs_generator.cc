@@ -96,6 +96,9 @@ class t_hs_generator : public t_oop_generator {
 
   void generate_hs_function_helpers  (t_function* tfunction);
 
+  void generate_hs_typemap           (ofstream& out,
+                                      t_struct* tstruct);
+
   /**
    * Service-level generation functions
    */
@@ -607,6 +610,7 @@ void t_hs_generator::generate_hs_struct_definition(ofstream& out,
   generate_hs_struct_arbitrary(out, tstruct);
   generate_hs_struct_writer(out, tstruct);
   generate_hs_struct_reader(out, tstruct);
+  generate_hs_typemap(out, tstruct);
 }
 
 void t_hs_generator::generate_hs_struct_arbitrary(ofstream& out, t_struct* tstruct) {
@@ -650,7 +654,7 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
   string val = tmp("_val");
 
   indent(out) << "to_" << sname << "_fields record [] = record" << nl;
-  indent(out) << "to_" << sname << "_fields record ((" << id << "," << str;
+  indent(out) << "to_" << sname << "_fields record ((" << id << ",_";
   out << "," << val << "):flds) = case " << id << " of" << nl;
   indent_up();
 
@@ -659,7 +663,6 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
     int32_t key = (*f_iter)->get_key();
     string etype = type_to_enum((*f_iter)->get_type());
     string fname = decapitalize((*f_iter)->get_name());
-
 
     // Match on ID or Key
     indent(out) << key << " -> ";
@@ -686,7 +689,7 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
   out << "}) fields" << nl;
   indent(out) << "to_" << sname << " _ = error \"not a struct\"" << nl;
   indent(out) << "read_" << sname << " iprot = to_" << sname;
-  out << " <$> readVal iprot" << nl;
+  out << " <$> readVal iprot (T_STRUCT typemap_" << sname << ")" << nl;
 }
 
 void t_hs_generator::generate_hs_struct_writer(ofstream& out,
@@ -797,6 +800,33 @@ void t_hs_generator::generate_hs_function_helpers(t_function* tfunction) {
     result.append(*f_iter);
 
   generate_hs_struct_definition(f_service_,&result, false);
+}
+
+/**
+ * Generate the map from field names to (type, id)
+ * @param tstruct the Struct
+ */
+void t_hs_generator::generate_hs_typemap(ofstream& out,
+                                         t_struct* tstruct) {
+  string name = type_name(tstruct);
+  const auto& fields = tstruct->get_sorted_members();
+  vector<t_field*>::const_iterator f_iter;
+
+  indent(out) << "typemap_" << name << " :: TypeMap" << nl;
+  indent(out) << "typemap_" << name << " = Map.fromList [";
+  bool first = true;
+  for (const auto& f_iter : fields) {
+    string mname = f_iter->get_name();
+    if (!first) {
+      out << ",";
+    }
+
+    t_type* type = get_true_type(f_iter->get_type());
+    int32_t key = f_iter->get_key();
+    out << "(\"" << mname << "\",(" << key << "," << type_to_enum(type) << "))";
+    first = false;
+  }
+  out << "]" << nl;
 }
 
 /**
@@ -1633,16 +1663,18 @@ string t_hs_generator::type_to_enum(t_type* type) {
     return "T_I32";
 
   } else if (type->is_struct() || type->is_xception()) {
-    return "T_STRUCT";
+    return "(T_STRUCT typemap_" + type_name((t_struct*)type) + ")";
 
   } else if (type->is_map()) {
-    return "T_MAP";
+    string ktype = type_to_enum(((t_map*)type)->get_key_type());
+    string vtype = type_to_enum(((t_map*)type)->get_val_type());
+    return "(T_MAP " + ktype + " " + vtype + ")";
 
   } else if (type->is_set()) {
-    return "T_SET";
+    return "(T_SET " + type_to_enum(((t_list*)type)->get_elem_type()) + ")";
 
   } else if (type->is_list()) {
-    return "T_LIST";
+    return "(T_LIST " + type_to_enum(((t_list*)type)->get_elem_type()) + ")";
   }
 
   throw "INVALID TYPE IN type_to_enum: " + type->get_name();

@@ -39,6 +39,8 @@ instance (Hashable a) => Hashable (Vector.Vector a) where
   hashWithSalt = Vector.foldl' hashWithSalt
 
 
+type TypeMap = Map.HashMap Text (Int16, ThriftType)
+
 data ThriftVal = TStruct [(Int16, Text, ThriftVal)]
                | TMap ThriftType ThriftType [(ThriftVal, ThriftVal)]
                | TList ThriftType [ThriftVal]
@@ -53,6 +55,10 @@ data ThriftVal = TStruct [(Int16, Text, ThriftVal)]
                | TDouble Double
                  deriving (Eq, Show)
 
+-- Information is needed here for collection types (ie T_STRUCT, T_MAP,
+-- T_LIST, and T_SET) so that we know what types those collections are
+-- parameterized by.  In most protocols, this cannot be discerned directly
+-- from the data being read.
 data ThriftType
     = T_STOP
     | T_VOID
@@ -63,28 +69,31 @@ data ThriftType
     | T_I32
     | T_I64
     | T_STRING
-    | T_STRUCT
-    | T_MAP
-    | T_SET
-    | T_LIST
+    | T_STRUCT TypeMap
+    | T_MAP ThriftType ThriftType
+    | T_SET ThriftType
+    | T_LIST ThriftType
     | T_FLOAT
       deriving ( Eq, Show )
 
+-- NOTE: when using toEnum information about parametized types is NOT preserved.
+-- This design choice is consistent woth the Thrift implementation in other
+-- languages
 instance Enum ThriftType where
-    fromEnum T_STOP   = 0
-    fromEnum T_VOID   = 1
-    fromEnum T_BOOL   = 2
-    fromEnum T_BYTE   = 3
-    fromEnum T_DOUBLE = 4
-    fromEnum T_I16    = 6
-    fromEnum T_I32    = 8
-    fromEnum T_I64    = 10
-    fromEnum T_STRING = 11
-    fromEnum T_STRUCT = 12
-    fromEnum T_MAP    = 13
-    fromEnum T_SET    = 14
-    fromEnum T_LIST   = 15
-    fromEnum T_FLOAT  = 19
+    fromEnum T_STOP       = 0
+    fromEnum T_VOID       = 1
+    fromEnum T_BOOL       = 2
+    fromEnum T_BYTE       = 3
+    fromEnum T_DOUBLE     = 4
+    fromEnum T_I16        = 6
+    fromEnum T_I32        = 8
+    fromEnum T_I64        = 10
+    fromEnum T_STRING     = 11
+    fromEnum (T_STRUCT _) = 12
+    fromEnum (T_MAP _ _)  = 13
+    fromEnum (T_SET _)    = 14
+    fromEnum (T_LIST _)   = 15
+    fromEnum T_FLOAT      = 19
 
     toEnum 0  = T_STOP
     toEnum 1  = T_VOID
@@ -95,10 +104,10 @@ instance Enum ThriftType where
     toEnum 8  = T_I32
     toEnum 10 = T_I64
     toEnum 11 = T_STRING
-    toEnum 12 = T_STRUCT
-    toEnum 13 = T_MAP
-    toEnum 14 = T_SET
-    toEnum 15 = T_LIST
+    toEnum 12 = T_STRUCT Map.empty
+    toEnum 13 = T_MAP T_VOID T_VOID
+    toEnum 14 = T_SET T_VOID
+    toEnum 15 = T_LIST T_VOID
     toEnum 19 = T_FLOAT
     toEnum t = error $ "Invalid ThriftType " ++ show t
 

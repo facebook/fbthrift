@@ -36,6 +36,7 @@ import Data.Int
 import Data.Text.Lazy ( Text, pack, unpack )
 import Data.Text.Lazy.Encoding
 import Data.Typeable ( Typeable )
+import qualified Data.HashMap.Strict as Map
 
 import Thrift.Protocol
 import Thrift.Transport
@@ -97,7 +98,8 @@ writeAppExn pt ae = writeVal pt $ TStruct
 
 readAppExn :: (Protocol p, Transport t) => p t -> IO AppExn
 readAppExn pt = do
-    TStruct fields <- readVal pt
+    let typemap = Map.fromList [("message",(1,T_STRING)),("type",(2,T_I32))]
+    TStruct fields <- readVal pt $ T_STRUCT typemap
     return $ readAppExnFields fields
       AppExn{ae_type = undefined, ae_message = undefined}
 

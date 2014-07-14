@@ -47,6 +47,7 @@ import Thrift.Types
 
 import qualified Data.Binary as Binary
 import qualified Data.ByteString.Lazy as LBS
+import qualified Data.HashMap.Strict as Map
 import qualified Data.Text.Lazy as LT
 import Data.ByteString.Unsafe
 
@@ -81,7 +82,7 @@ instance Protocol BinaryProtocol where
           return (decodeUtf8 s, toEnum $ fromIntegral $ ver .&. 0xFF, sz)
 
     writeVal = writeBinaryValue
-    readVal p = readBinaryValue p T_STRUCT
+    readVal  = readBinaryValue
 
 -- | Writing Functions
 writeBinaryValue :: Transport t => BinaryProtocol t -> ThriftVal -> IO ()
@@ -148,17 +149,17 @@ writeBinaryList _ [] = return ()
 
 -- | Reading Functions
 readBinaryValue :: Transport t => BinaryProtocol t -> ThriftType -> IO ThriftVal
-readBinaryValue p T_STRUCT = TStruct <$> readBinaryStruct p
-readBinaryValue p T_MAP = do
+readBinaryValue p (T_STRUCT _) = TStruct <$> readBinaryStruct p
+readBinaryValue p (T_MAP _ _) = do
   kt <- readType p
   vt <- readType p
   n <- Binary.decode <$> tReadAll (getTransport p) 4
   TMap kt vt <$> readBinaryMap p kt vt n
-readBinaryValue p T_LIST = do
+readBinaryValue p (T_LIST _) = do
   t <- readType p
   n <- Binary.decode <$> tReadAll (getTransport p) 4
   TList t <$> readBinaryList p t n
-readBinaryValue p T_SET = do
+readBinaryValue p (T_SET _) = do
   t <- readType p
   n <- Binary.decode <$> tReadAll (getTransport p) 4
   TSet t <$> readBinaryList p t n
@@ -230,10 +231,10 @@ writeType p t = tWrite (getTransport p) (Binary.encode w)
 -- | Write type of a ThriftVal as a byte
 writeTypeOf :: (Protocol p, MonadIO m, Transport t) => p t -> ThriftVal -> m ()
 writeTypeOf p v = writeType p $ case v of
-  TStruct{} -> T_STRUCT
-  TMap{} -> T_MAP
-  TList{} -> T_LIST
-  TSet{} -> T_SET
+  TStruct{} -> T_STRUCT Map.empty
+  TMap{} -> T_MAP T_VOID T_VOID
+  TList{} -> T_LIST T_VOID
+  TSet{} -> T_SET T_VOID
   TBool{} -> T_BOOL
   TByte{} -> T_BYTE
   TI16{} -> T_I16
