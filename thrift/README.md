@@ -20,6 +20,21 @@ Dependencies
 
  - Facebook's folly library: http://www.github.com/facebook/folly
 
+ - In addition to the packages required for building folly, Ubuntu 13.10 and 
+   14.04 require the following packages (feel free to cut and paste the apt-get
+   command below):
+
+`
+  sudo apt-get install \
+      flex \
+      bison \
+      libkrb5-dev \
+      libsasl2-dev \
+      libnuma-dev \
+      pkg-config \
+      libssl-dev
+`
+
  - Ubuntu 12.10 64-bit requires the following packages:
 
     - autoconf
