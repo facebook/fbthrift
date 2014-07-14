@@ -20,6 +20,7 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module Thrift.Protocol.Binary
     ( module Thrift.Protocol
@@ -27,12 +28,12 @@ module Thrift.Protocol.Binary
     ) where
 
 import Control.Exception ( throw )
-import Control.Monad ( liftM )
+import Control.Monad
 import Control.Monad.IO.Class
 
-import qualified Data.Binary
 import Data.Bits
 import Data.ByteString.Builder
+import Data.Functor
 import Data.Int
 import Data.Word
 import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
@@ -42,8 +43,11 @@ import Foreign.Storable
 
 import Thrift.Protocol
 import Thrift.Transport
+import Thrift.Types
 
+import qualified Data.Binary as Binary
 import qualified Data.ByteString.Lazy as LBS
+import qualified Data.Text.Lazy as LT
 import Data.ByteString.Unsafe
 
 version_mask :: Int32
@@ -62,109 +66,189 @@ data BinaryProtocol a = BinaryProtocol a
 instance Protocol BinaryProtocol where
     getTransport (BinaryProtocol t) = t
 
-    writeMessageBegin p (n, t, s) = do
-        writeI32 p (version_1 .|. (fromIntegral $ fromEnum t))
-        writeString p n
-        writeI32 p s
-    writeMessageEnd _ = return ()
+    writeMessage p (n, t, s) = do
+        writeBinaryValue p (TI32 (version_1 .|. fromIntegral (fromEnum t)))
+        writeBinaryValue p (TString $ encodeUtf8 n)
+        writeBinaryValue p (TI32 s)
 
-    writeStructBegin _ _ = return ()
-    writeStructEnd _ = return ()
-    writeFieldBegin p (_, t, i) = writeType p t >> writeI16 p i
-    writeFieldEnd _ = return ()
-    writeFieldStop p = writeType p T_STOP
-    writeMapBegin p (k, v, n) = writeType p k >> writeType p v >> writeI32 p n
-    writeMapEnd _ = return ()
-    writeListBegin p (t, n) = writeType p t >> writeI32 p n
-    writeListEnd _ = return ()
-    writeSetBegin p (t, n) = writeType p t >> writeI32 p n
-    writeSetEnd _ = return ()
+    readMessage p = do
+      TI32 ver <- readBinaryValue p T_I32
+      if ver .&. version_mask /= version_1
+        then throw $ ProtocolExn PE_BAD_VERSION "Missing version identifier"
+        else do
+          TString s <- readBinaryValue p T_STRING
+          TI32 sz <- readBinaryValue p T_I32
+          return (decodeUtf8 s, toEnum $ fromIntegral $ ver .&. 0xFF, sz)
 
-    writeBool p b = tWrite (getTransport p) $ LBS.singleton $ toEnum $ if b then 1 else 0
-    writeByte p b = tWrite (getTransport p) $ Data.Binary.encode b
-    writeI16 p b = tWrite (getTransport p) $ Data.Binary.encode b
-    writeI32 p b = tWrite (getTransport p) $ Data.Binary.encode b
-    writeI64 p b = tWrite (getTransport p) $ Data.Binary.encode b
-    writeFloat p  = tWrite (getTransport p) . toLazyByteString . floatBE
-    writeDouble p = tWrite (getTransport p) . toLazyByteString . doubleBE
-    writeString p s = writeI32 p (fromIntegral $ LBS.length s') >> tWrite (getTransport p) s'
-      where
-        s' = encodeUtf8 s
-    writeBinary p s = writeI32 p (fromIntegral $ LBS.length s) >> tWrite (getTransport p) s
+    writeVal = writeBinaryValue
+    readVal p = readBinaryValue p T_STRUCT
 
-    readMessageBegin p = do
-        ver <- readI32 p
-        if (ver .&. version_mask /= version_1)
-            then throw $ ProtocolExn PE_BAD_VERSION "Missing version identifier"
-            else do
-              s <- readString p
-              sz <- readI32 p
-              return (s, toEnum $ fromIntegral $ ver .&. 0xFF, sz)
-    readMessageEnd _ = return ()
-    readStructBegin _ = return ""
-    readStructEnd _ = return ()
-    readFieldBegin p = do
-        t <- readType p
-        n <- if t /= T_STOP then readI16 p else return 0
-        return ("", t, n)
-    readFieldEnd _ = return ()
-    readMapBegin p = do
-        kt <- readType p
-        vt <- readType p
-        n <- readI32 p
-        return (kt, vt, n)
-    readMapEnd _ = return ()
-    readListBegin p = do
-        t <- readType p
-        n <- readI32 p
-        return (t, n)
-    readListEnd _ = return ()
-    readSetBegin p = do
-        t <- readType p
-        n <- readI32 p
-        return (t, n)
-    readSetEnd _ = return ()
+-- | Writing Functions
+writeBinaryValue :: Transport t => BinaryProtocol t -> ThriftVal -> IO ()
+writeBinaryValue p (TStruct fields) = writeBinaryStruct p fields
+writeBinaryValue p (TMap ky vt entries) = do
+  writeType p ky
+  writeType p vt
+  let len :: Int32 = fromIntegral (length entries)
+  tWrite (getTransport p) (Binary.encode len)
+  writeBinaryMap p entries
+writeBinaryValue p (TList ty entries) = do
+  writeType p ty
+  let len :: Int32 = fromIntegral (length entries)
+  tWrite (getTransport p) (Binary.encode len)
+  writeBinaryList p entries
+writeBinaryValue p (TSet ty entries) = do
+  writeType p ty
+  let len :: Int32 = fromIntegral (length entries)
+  tWrite (getTransport p) (Binary.encode len)
+  writeBinaryList p entries
+writeBinaryValue p (TBool b) =
+  tWrite (getTransport p) $ LBS.singleton $ toEnum $ if b then 1 else 0
+writeBinaryValue p (TByte b) = tWrite (getTransport p) $ Binary.encode b
+writeBinaryValue p (TI16 i) = tWrite (getTransport p) $ Binary.encode i
+writeBinaryValue p (TI32 i) = tWrite (getTransport p) $ Binary.encode i
+writeBinaryValue p (TI64 i) = tWrite (getTransport p) $ Binary.encode i
+writeBinaryValue p (TFloat f) =
+  tWrite (getTransport p) $ toLazyByteString $ floatBE f
+writeBinaryValue p (TDouble d) =
+  tWrite (getTransport p) $ toLazyByteString $ doubleBE d
+writeBinaryValue p (TString s) = tWrite t (Binary.encode len) >> tWrite t s
+  where
+    t = getTransport p
+    len :: Int32 = fromIntegral (LBS.length s)
 
-    readBool p = (== 1) `liftM` readByte p
+writeBinaryStruct :: Transport t
+                     => BinaryProtocol t
+                     -> [(Int16, LT.Text, ThriftVal)]
+                     -> IO ()
+writeBinaryStruct p ((fid, _key, val):fields) = do
+  let t = getTransport p
+  writeTypeOf p val
+  tWrite t (Binary.encode fid)
+  writeBinaryValue p val
+  tFlush t
+  writeBinaryStruct p fields
+writeBinaryStruct p [] = writeType p T_STOP
 
-    readByte p = do
-        bs <- tReadAll (getTransport p) 1
-        return $ Data.Binary.decode bs
+writeBinaryMap :: Transport t
+                  => BinaryProtocol t
+                  -> [(ThriftVal, ThriftVal)]
+                  -> IO ()
+writeBinaryMap p ((key, val):entries) = do
+  writeBinaryValue p key
+  writeBinaryValue p val
+  writeBinaryMap p entries
+writeBinaryMap _ [] = return ()
 
-    readI16 p = do
-        bs <- tReadAll (getTransport p) 2
-        return $ Data.Binary.decode bs
+writeBinaryList :: Transport t => BinaryProtocol t -> [ThriftVal] -> IO ()
+writeBinaryList p (val:entries) = do
+  writeBinaryValue p val
+  writeBinaryList p entries
+writeBinaryList _ [] = return ()
 
-    readI32 p = do
-        bs <- tReadAll (getTransport p) 4
-        return $ Data.Binary.decode bs
+-- | Reading Functions
+readBinaryValue :: Transport t => BinaryProtocol t -> ThriftType -> IO ThriftVal
+readBinaryValue p T_STRUCT = TStruct <$> readBinaryStruct p
+readBinaryValue p T_MAP = do
+  kt <- readType p
+  vt <- readType p
+  n <- Binary.decode <$> tReadAll (getTransport p) 4
+  TMap kt vt <$> readBinaryMap p kt vt n
+readBinaryValue p T_LIST = do
+  t <- readType p
+  n <- Binary.decode <$> tReadAll (getTransport p) 4
+  TList t <$> readBinaryList p t n
+readBinaryValue p T_SET = do
+  t <- readType p
+  n <- Binary.decode <$> tReadAll (getTransport p) 4
+  TSet t <$> readBinaryList p t n
+readBinaryValue p T_BOOL = TBool . (/=0) . bsToI8 <$> tRead (getTransport p) 1
+  where
+    bsToI8 :: LBS.ByteString -> Int8
+    bsToI8 = Binary.decode
+readBinaryValue p T_BYTE =
+  TByte . Binary.decode <$> tReadAll (getTransport p) 1
+readBinaryValue p T_I16 =
+  TI16 . Binary.decode <$> tReadAll (getTransport p) 2
+readBinaryValue p T_I32 =
+  TI32 . Binary.decode <$> tReadAll (getTransport p) 4
+readBinaryValue p T_I64 =
+  TI64 . Binary.decode <$> tReadAll (getTransport p) 8
+readBinaryValue p T_FLOAT =
+  TFloat <$> (tRead (getTransport p) 4 >>= bsToFloating byteSwap32)
+readBinaryValue p T_DOUBLE =
+  TDouble <$> (tRead (getTransport p) 8 >>= bsToFloating byteSwap64)
+readBinaryValue p T_STRING = do
+  let t = getTransport p
+  i :: Int32  <- Binary.decode <$> tReadAll t 4
+  bs <- tReadAll t (fromIntegral i)
+  return $ TString bs
+readBinaryValue _ ty = error $ "Cannot read value of type " ++ show ty
 
-    readI64 p = do
-        bs <- tReadAll (getTransport p) 8
-        return $ Data.Binary.decode bs
+readBinaryStruct :: Transport t
+                    => BinaryProtocol t
+                    -> IO [(Int16, LT.Text, ThriftVal)]
+readBinaryStruct p = do
+  t <- readType p
+  case t of
+    T_STOP -> return []
+    _ -> do
+      n <- Binary.decode <$> tReadAll (getTransport p) 2
+      v <- readBinaryValue p t
+      ((n, "", v) :) <$> readBinaryStruct p
 
-    readFloat p = tRead (getTransport p) 4 >>= bsToFloating byteSwap32
+readBinaryMap :: Transport t
+                 => BinaryProtocol t
+                 -> ThriftType
+                 -> ThriftType
+                 -> Int32
+                 -> IO [(ThriftVal, ThriftVal)]
+readBinaryMap p kt vt n | n <= 0 = return []
+                        | otherwise = do
+  k <- readBinaryValue p kt
+  v <- readBinaryValue p vt
+  ((k,v) :) <$> readBinaryMap p kt vt (n-1)
 
-    readDouble p = tRead (getTransport p) 8 >>= bsToFloating byteSwap64
+readBinaryList :: Transport t
+                  => BinaryProtocol t
+                  -> ThriftType
+                  -> Int32
+                  -> IO [ThriftVal]
+readBinaryList p ty n | n <= 0 = return []
+                      | otherwise = liftM2 (:) (readBinaryValue p ty)
+                                    (readBinaryList p ty (n-1))
 
-    readString p = do
-        i <- readI32 p
-        decodeUtf8 `liftM` tReadAll (getTransport p) (fromIntegral i)
-
-    readBinary p = do
-        i <- readI32 p
-        tReadAll (getTransport p) (fromIntegral i)
 
 
 -- | Write a type as a byte
 writeType :: (Protocol p, MonadIO m, Transport t) => p t -> ThriftType -> m ()
-writeType p t = writeByte p (fromIntegral $ fromEnum t)
+writeType p t = tWrite (getTransport p) (Binary.encode w)
+  where
+    w :: Word8
+    w = fromIntegral $ fromEnum t
+
+-- | Write type of a ThriftVal as a byte
+writeTypeOf :: (Protocol p, MonadIO m, Transport t) => p t -> ThriftVal -> m ()
+writeTypeOf p v = writeType p $ case v of
+  TStruct{} -> T_STRUCT
+  TMap{} -> T_MAP
+  TList{} -> T_LIST
+  TSet{} -> T_SET
+  TBool{} -> T_BOOL
+  TByte{} -> T_BYTE
+  TI16{} -> T_I16
+  TI32{} -> T_I32
+  TI64{} -> T_I64
+  TString{} -> T_STRING
+  TFloat{} -> T_FLOAT
+  TDouble{} -> T_DOUBLE
 
 -- | Read a byte as though it were a ThriftType
 readType :: (Protocol p, MonadIO m, Transport t) => p t -> m ThriftType
 readType p = do
-    b <- readByte p
-    return $ toEnum $ fromIntegral b
+    b <- tReadAll (getTransport p) 1
+    let w :: Word8 = Binary.decode b
+    return $ toEnum $ fromIntegral w
 
 -- | Converts a ByteString to a Floating point number
 -- The ByteString is assumed to be encoded in network order (Big Endian)
