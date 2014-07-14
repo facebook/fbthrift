@@ -721,7 +721,11 @@ string name = type_name(tstruct);
   }
 
   // Write the struct map
-  indent(out) << "]" << nl;
+  if (isfirst) {
+    indent(out) << "[]" << nl;
+  } else {
+    indent(out) << "]" << nl;
+  }
 
   indent_down();
   indent(out) << "write_" << name << " oprot record = writeVal oprot $ from_";
