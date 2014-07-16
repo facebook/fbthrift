@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
@@ -150,15 +147,12 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::addWorker(size_t value) {
-  std::vector<shared_ptr<Thread> > newThreads;
-  newThreads.reserve(value);
   for (size_t ix = 0; ix < value; ix++) {
     auto worker = make_shared<Worker<SemType>>(this);
-    newThreads.push_back(threadFactory_->newThread(worker,
-                                                   ThreadFactory::ATTACHED));
-  }
+    auto thread = threadFactory_->newThread(worker,
+                                            ThreadFactory::ATTACHED);
+    thread->start();
 
-  {
     Guard g(mutex_);
 
     if (state_ != STARTED) {
@@ -166,16 +160,9 @@ void ThreadManager::ImplT<SemType>::addWorker(size_t value) {
                                   "ThreadManager not running");
     }
 
-    workerCount_ += value;
-    intendedWorkerCount_ += value;
-    idleCount_ += value;
-  }
-
-  // Start all of the threads.
-  for (std::vector<shared_ptr<Thread> >::iterator ix = newThreads.begin();
-       ix != newThreads.end();
-       ix++) {
-    (*ix)->start();
+    workerCount_++;
+    intendedWorkerCount_++;
+    idleCount_++;
   }
 }
 
