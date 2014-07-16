@@ -23,6 +23,8 @@ module Thrift.Types where
 import Data.Foldable (foldl')
 import Data.Hashable ( Hashable, hashWithSalt )
 import Data.Int
+import Test.QuickCheck.Arbitrary
+import Test.QuickCheck.Gen (elements)
 import Data.Text.Lazy (Text)
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as Map
@@ -126,3 +128,6 @@ instance Enum MessageType where
     toEnum 2 = M_REPLY
     toEnum 3 = M_EXCEPTION
     toEnum t = error $ "Invalid MessageType " ++ show t
+
+instance Arbitrary MessageType where
+  arbitrary = elements [M_CALL, M_REPLY, M_EXCEPTION]

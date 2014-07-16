@@ -53,14 +53,7 @@ import qualified Data.HashMap.Strict as Map
 import qualified Data.Text.Lazy as LT
 import Data.ByteString.Unsafe
 
-version_mask :: Int32
-version_mask = fromIntegral (0xffff0000 :: Word32)
-
-version_1 :: Int32
-version_1    = fromIntegral (0x80010000 :: Word32)
-
 data BinaryProtocol a = BinaryProtocol a
-
 
 -- NOTE: Reading and Writing functions rely on Builders and Data.Binary to
 -- encode and decode data.  Data.Binary assumes that the binary values it is
@@ -70,13 +63,13 @@ instance Protocol BinaryProtocol where
     getTransport (BinaryProtocol t) = t
 
     writeMessage p (n, t, s) = tWrite (getTransport p) $ toLazyByteString $
-        buildBinaryValue (TI32 (version_1 .|. fromIntegral (fromEnum t))) <>
+        buildBinaryValue (TI32 (version1 .|. fromIntegral (fromEnum t))) <>
         buildBinaryValue (TString $ encodeUtf8 n) <>
         buildBinaryValue (TI32 s)
 
     readMessage p = runParser p $ do
       TI32 ver <- parseBinaryValue T_I32
-      if ver .&. version_mask /= version_1
+      if ver .&. versionMask /= version1
         then throw $ ProtocolExn PE_BAD_VERSION "Missing version identifier"
         else do
           TString s <- parseBinaryValue T_STRING

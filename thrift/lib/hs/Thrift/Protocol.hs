@@ -25,18 +25,28 @@ module Thrift.Protocol
     , ProtocolExn(..)
     , ProtocolExnType(..)
     , runParser
+    , versionMask
+    , version1
     ) where
 
 import Control.Exception
 import Data.Attoparsec.ByteString
-import Data.ByteString.Lazy (toStrict)
+import Data.ByteString.Lazy (ByteString, toStrict)
 import Data.Functor ((<$>))
 import Data.Int
+import Data.Monoid (mempty)
 import Data.Text.Lazy (Text)
 import Data.Typeable (Typeable)
+import Data.Word
 
 import Thrift.Types
 import Thrift.Transport
+
+versionMask :: Int32
+versionMask = fromIntegral (0xffff0000 :: Word32)
+
+version1 :: Int32
+version1 = fromIntegral (0x80010000 :: Word32)
 
 class Protocol a where
     getTransport :: Transport t => a t -> t
@@ -64,7 +74,10 @@ instance Exception ProtocolExn
 runParser :: (Protocol p, Transport t, Show a) => p t -> Parser a -> IO a
 runParser prot p = refill >>= getResult . parse p
   where
-    refill = toStrict <$> tRead (getTransport prot) 128
+    refill = toStrict <$> tRead (getTransport prot) 128 `catch` handleEOF
     getResult (Done _ a) = return a
     getResult (Partial k) = refill >>= getResult . k
     getResult f = error $ show f
+
+handleEOF :: SomeException -> IO ByteString
+handleEOF = const $ return mempty
