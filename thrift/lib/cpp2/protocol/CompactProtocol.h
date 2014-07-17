@@ -20,6 +20,7 @@
 #ifndef CPP2_PROTOCOL_COMPACTPROTOCOL_H_
 #define CPP2_PROTOCOL_COMPACTPROTOCOL_H_ 1
 
+#include <folly/FBVector.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -183,7 +184,7 @@ class CompactProtocolWriter {
     int16_t fieldId;
   } booleanField_;
 
-  std::stack<int16_t> lastField_;
+  std::stack<int16_t, folly::fbvector<int16_t>> lastField_;
   int16_t lastFieldId_;
 
 };
@@ -299,7 +300,7 @@ class CompactProtocolReader {
 
   int32_t seqid_;
 
-  std::stack<int16_t> lastField_;
+  std::stack<int16_t, folly::fbvector<int16_t>> lastField_;
   int16_t lastFieldId_;
 
   struct {

@@ -24,6 +24,7 @@
 
 #include <stack>
 #include <memory>
+#include <folly/FBVector.h>
 
 namespace apache { namespace thrift { namespace protocol {
 
@@ -76,7 +77,7 @@ class TCompactProtocolT
    * so we can do the delta stuff.
    */
 
-  std::stack<int16_t> lastField_;
+  std::stack<int16_t, folly::fbvector<int16_t>> lastField_;
   int16_t lastFieldId_;
   int8_t version_;
 
