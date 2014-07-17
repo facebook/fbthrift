@@ -215,6 +215,17 @@ class ThreadManager::ImplT : public ThreadManager  {
 
   Codel codel_;
 
+  class NotificationWorker : public Runnable {
+   public:
+    NotificationWorker(
+      PosixSemaphore& sem, SemType& mon, std::atomic<bool>& stop);
+    void run();
+   private:
+    PosixSemaphore& sem_;
+    SemType& mon_;
+    std::atomic<bool>& stop_;
+  };
+
  private:
   void stopImpl(bool joinArg);
   void removeWorkerImpl(size_t value, bool afterTasks = false);
@@ -269,8 +280,6 @@ class ThreadManager::ImplT : public ThreadManager  {
   uint32_t namePrefixCounter_;
 
   bool codelEnabled_;
-
-  class NotificationWorker;
 };
 
 

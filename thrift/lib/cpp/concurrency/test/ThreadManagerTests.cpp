@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #include <deque>
 #include <iostream>
 #include <chrono>
@@ -748,6 +746,97 @@ BOOST_AUTO_TEST_CASE(NumaThreadManagerTest) {
   numa->join();
   BOOST_CHECK_EQUAL(numa_num_configured_nodes(), nodes->size());
   BOOST_CHECK_EQUAL(failed, false);
+}
+
+class FailThread : public PthreadThread {
+ public:
+  FailThread(int policy, int priority, int stackSize, bool detached,
+             std::shared_ptr<Runnable> runnable)
+    : PthreadThread(policy, priority, stackSize, detached, runnable) {
+  }
+
+  void start() {
+    throw 2;
+  }
+};
+
+class FailThreadFactory : public PosixThreadFactory {
+ public:
+  class FakeImpl : public Impl {
+   public:
+    FakeImpl(POLICY policy, PosixThreadFactory::PRIORITY priority,
+             int stackSize, DetachState detached)
+      : Impl(policy, priority, stackSize, detached) {
+    }
+
+    std::shared_ptr<Thread> newThread(
+        const std::shared_ptr<Runnable>& runnable,
+        DetachState detachState) const {
+      // We only want to simulate thread start failures for the worker
+      // threads, not the notification thread. This code starts up
+      // a regular thread for the notification worker, and a failing
+      // thread for the regular worker.
+      auto try_to_cast = std::dynamic_pointer_cast<
+        ThreadManager::Impl::NotificationWorker>(runnable);
+      if (try_to_cast) {
+        std::shared_ptr<PthreadThread> result =
+          std::shared_ptr<PthreadThread>(
+            new PthreadThread(
+              toPthreadPolicy(policy_),
+              toPthreadPriority(policy_, priority_), stackSize_,
+              detachState == DETACHED, runnable));
+        result->weakRef(result);
+        runnable->thread(result);
+        return result;
+      }
+      std::shared_ptr<FailThread> result =
+        std::shared_ptr<FailThread>(
+          new FailThread(
+            toPthreadPolicy(policy_),
+            toPthreadPriority(policy_, priority_), stackSize_,
+            detachState == DETACHED, runnable));
+      result->weakRef(result);
+      runnable->thread(result);
+      return result;
+    }
+  };
+
+  explicit FailThreadFactory(POLICY policy=kDefaultPolicy,
+                             PRIORITY priority=kDefaultPriority,
+                             int stackSize=kDefaultStackSizeMB,
+                             bool detached=true) {
+   impl_ = std::make_shared<FailThreadFactory::FakeImpl>(
+        kDefaultPolicy,
+        kDefaultPriority,
+        kDefaultStackSizeMB, detached ? DETACHED : ATTACHED);
+  }
+};
+
+class DummyFailureClass {
+ public:
+  DummyFailureClass() {
+    threadManager_ = ThreadManager::newSimpleThreadManager(20);
+    threadManager_->setNamePrefix("foo");
+    auto threadFactory = std::make_shared<FailThreadFactory>();
+    threadManager_->threadFactory(threadFactory);
+    threadManager_->start();
+  }
+ private:
+  std::shared_ptr<ThreadManager> threadManager_;
+};
+
+BOOST_AUTO_TEST_CASE(ThreadStartFailureTest) {
+  bool exceptionThrown = false;
+  for (int i = 0; i < 10; i++) {
+    try {
+      DummyFailureClass myClass;
+    } catch(int ex) {
+      exceptionThrown = true;
+      BOOST_CHECK_EQUAL(ex, 2);
+    }
+
+    BOOST_CHECK_EQUAL(exceptionThrown, true);
+  }
 }
 
 BOOST_AUTO_TEST_CASE(NumaThreadManagerBind) {

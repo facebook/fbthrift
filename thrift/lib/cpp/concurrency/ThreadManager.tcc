@@ -214,21 +214,18 @@ void ThreadManager::ImplT<SemType>::workerExiting(Worker<SemType>* worker) {
 }
 
 template <typename SemType>
-class ThreadManager::ImplT<SemType>::NotificationWorker : public Runnable {
-public:
-  NotificationWorker(PosixSemaphore& sem, SemType& mon, std::atomic<bool>& stop)
-    : sem_(sem), mon_(mon), stop_(stop) {}
-  void run() {
-    while (!stop_) {
-      sem_.wait();
-      mon_.post();
-    }
+ThreadManager::ImplT<SemType>::NotificationWorker::NotificationWorker(
+  PosixSemaphore& sem, SemType& mon, std::atomic<bool>& stop)
+  : sem_(sem), mon_(mon), stop_(stop) {
+}
+
+template <typename SemType>
+void ThreadManager::ImplT<SemType>::NotificationWorker::run() {
+  while (!stop_) {
+    sem_.wait();
+    mon_.post();
   }
-private:
-  PosixSemaphore& sem_;
-  SemType& mon_;
-  std::atomic<bool>& stop_;
-};
+}
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::start() {
