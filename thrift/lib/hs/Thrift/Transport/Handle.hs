@@ -28,7 +28,6 @@ module Thrift.Transport.Handle
     ) where
 
 import Control.Exception ( catch, throw )
-import Control.Monad.IO.Class
 import Data.ByteString.Internal (c2w)
 import Data.Functor
 
@@ -43,27 +42,27 @@ import qualified Data.ByteString.Lazy as LBS
 import Data.Monoid
 
 instance Transport Handle where
-    tIsOpen = liftIO . hIsOpen
-    tClose = liftIO . hClose
-    tRead h n = liftIO $ LBS.hGet h n `catch` handleEOF mempty
-    tPeek h = liftIO $ (Just . c2w <$> hLookAhead h) `catch` handleEOF Nothing
-    tWrite h n = liftIO $ LBS.hPut h n
-    tFlush = liftIO . hFlush
+    tIsOpen = hIsOpen
+    tClose = hClose
+    tRead h n = LBS.hGet h n `catch` handleEOF mempty
+    tPeek h = (Just . c2w <$> hLookAhead h) `catch` handleEOF Nothing
+    tWrite = LBS.hPut
+    tFlush = hFlush
 
 
 -- | Type class for all types that can open a Handle. This class is used to
 -- replace tOpen in the Transport type class.
 class HandleSource s where
-    hOpen :: MonadIO m => s -> m Handle
+    hOpen :: s -> IO Handle
 
 instance HandleSource FilePath where
-    hOpen s = liftIO $ openFile s ReadWriteMode
+    hOpen s = openFile s ReadWriteMode
 
 instance HandleSource (HostName, PortID) where
-    hOpen = liftIO . uncurry connectTo
+    hOpen = uncurry connectTo
 
 
-handleEOF :: (Monad m) => a -> IOError -> m a
+handleEOF :: a -> IOError -> IO a
 handleEOF a e = if isEOFError e
     then return a
     else throw $ TransportExn "TChannelTransport: Could not read" TE_UNKNOWN

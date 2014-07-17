@@ -4,9 +4,9 @@ module Util
        ) where
 
 import Control.Monad
-import Control.Monad.IO.Class
 import Data.Functor
 import Data.IORef
+import Data.Monoid
 import Data.Vector
 import Prelude
 import Test.QuickCheck
@@ -19,14 +19,13 @@ data TestTransport = TestTransport (IORef LBS.ByteString)
 instance Transport TestTransport where
   tIsOpen _ = return True
   tClose _ = return ()
-  tPeek (TestTransport t) = liftIO $ (fmap fst . LBS.uncons) <$> readIORef t
-  tRead (TestTransport t) i = liftIO $ do
+  tPeek (TestTransport t) = (fmap fst . LBS.uncons) <$> readIORef t
+  tRead (TestTransport t) i = do
     s <- readIORef t
     let (hd, tl) = LBS.splitAt (fromIntegral i) s
     writeIORef t tl
     return hd
-  tWrite (TestTransport t) bs = liftIO $
-    readIORef t >>= writeIORef t . (`LBS.append` bs)
+  tWrite (TestTransport t) bs = modifyIORef' t (<> bs)
   tFlush _ = return ()
 
 instance Arbitrary LBS.ByteString where

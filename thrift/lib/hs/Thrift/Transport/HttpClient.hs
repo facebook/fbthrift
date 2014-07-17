@@ -29,7 +29,6 @@ import Thrift.Transport.IOBuffer
 import Network.URI
 import Network.HTTP hiding (port, host)
 
-import Control.Monad.IO.Class
 import Data.Maybe (fromJust)
 import Data.Monoid (mempty)
 import Control.Exception (throw)
@@ -72,15 +71,15 @@ openHttpClient uri_ = do
 
 instance Transport HttpClient where
 
-    tClose  = liftIO . close . hstream
+    tClose = close . hstream
 
-    tPeek hclient = liftIO $ peekBuf (readBuffer hclient)
+    tPeek = peekBuf . readBuffer
 
-    tRead hclient n = liftIO $ readBuf (readBuffer hclient) n
+    tRead = readBuf . readBuffer
 
-    tWrite hclient s = liftIO $ writeBuf (writeBuffer hclient) s
+    tWrite = writeBuf . writeBuffer
 
-    tFlush hclient = liftIO $ do
+    tFlush hclient = do
       body <- flushBuf $ writeBuffer hclient
       let request = Request {
                       rqURI = uri hclient,

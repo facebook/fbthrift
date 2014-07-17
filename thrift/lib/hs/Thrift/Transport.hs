@@ -25,10 +25,9 @@ module Thrift.Transport
   , TransportExnType(..)
   ) where
 
-import Control.Monad ( liftM, when )
-import Control.Monad.IO.Class
+import Control.Monad ( when )
 import Control.Exception ( Exception, throw )
-
+import Data.Functor ( (<$>) )
 import Data.Typeable ( Typeable )
 import Data.Word
 
@@ -36,13 +35,13 @@ import qualified Data.ByteString.Lazy as LBS
 import Data.Monoid
 
 class Transport a where
-    tIsOpen :: (MonadIO m) => a -> m Bool
-    tClose  :: (MonadIO m) => a -> m ()
-    tRead   :: (MonadIO m) => a -> Int -> m LBS.ByteString
-    tPeek   :: (MonadIO m) => a -> m (Maybe Word8)
-    tWrite  :: (MonadIO m) => a -> LBS.ByteString -> m ()
-    tFlush  :: (MonadIO m) => a -> m ()
-    tReadAll :: (MonadIO m) => a -> Int -> m LBS.ByteString
+    tIsOpen :: a -> IO Bool
+    tClose  :: a -> IO ()
+    tRead   :: a -> Int -> IO LBS.ByteString
+    tPeek   :: a -> IO (Maybe Word8)
+    tWrite  :: a -> LBS.ByteString -> IO ()
+    tFlush  :: a -> IO ()
+    tReadAll :: a -> Int -> IO LBS.ByteString
 
     tReadAll _ 0 = return mempty
     tReadAll a len = do
@@ -51,7 +50,7 @@ class Transport a where
         when (rlen == 0) (throw $ TransportExn "Cannot read. Remote side has closed." TE_UNKNOWN)
         if len <= rlen
           then return result
-          else (result `mappend`) `liftM` tReadAll a (len - rlen)
+          else (result `mappend`) <$> tReadAll a (len - rlen)
 
 data TransportExn = TransportExn String TransportExnType
   deriving ( Show, Typeable )

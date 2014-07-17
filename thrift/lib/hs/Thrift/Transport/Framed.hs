@@ -29,7 +29,6 @@ import Thrift.Transport
 import Thrift.Transport.IOBuffer
 
 import Data.Int (Int32)
-import Control.Monad.IO.Class
 import qualified Data.Binary as B
 import qualified Data.ByteString.Lazy as LBS
 
@@ -42,8 +41,8 @@ data FramedTransport t = FramedTransport {
     }
 
 -- | Create a new framed transport which wraps the given transport.
-openFramedTransport :: (MonadIO m, Transport t) => t -> m (FramedTransport t)
-openFramedTransport trans = liftIO $ do
+openFramedTransport :: Transport t => t -> IO (FramedTransport t)
+openFramedTransport trans = do
   wbuf <- newWriteBuffer
   rbuf <- newReadBuffer
   return FramedTransport{ wrappedTrans = trans, writeBuffer = wbuf, readBuffer = rbuf }
@@ -54,7 +53,7 @@ instance Transport t => Transport (FramedTransport t) where
 
     tRead trans n = do
       -- First, check the read buffer for any data.
-      bs <- liftIO $ readBuf (readBuffer trans) n
+      bs <- readBuf (readBuffer trans) n
       if LBS.null bs
          then
          -- When the buffer is empty, read another frame from the
@@ -65,7 +64,7 @@ instance Transport t => Transport (FramedTransport t) where
                  else return bs
          else return bs
     tPeek trans = do
-      mw <- liftIO $ peekBuf (readBuffer trans)
+      mw <- peekBuf (readBuffer trans)
       case mw of
         Just _ -> return mw
         Nothing -> do
@@ -74,10 +73,10 @@ instance Transport t => Transport (FramedTransport t) where
              then tPeek trans
              else return Nothing
 
-    tWrite trans s = liftIO $ writeBuf (writeBuffer trans) s
+    tWrite = writeBuf . writeBuffer
 
     tFlush trans = do
-      bs <- liftIO $ flushBuf (writeBuffer trans)
+      bs <- flushBuf (writeBuffer trans)
       let szBs = B.encode $ (fromIntegral $ LBS.length bs :: Int32)
       tWrite (wrappedTrans trans) szBs
       tWrite (wrappedTrans trans) bs
@@ -85,15 +84,15 @@ instance Transport t => Transport (FramedTransport t) where
 
     tIsOpen = tIsOpen . wrappedTrans
 
-readFrame :: (MonadIO m, Transport t) => FramedTransport t -> m Int
+readFrame :: Transport t => FramedTransport t -> IO Int
 readFrame trans = do
   -- Read and decode the frame size.
   szBs <- tRead (wrappedTrans trans) 4
   let sz = fromIntegral (B.decode szBs :: Int32)
 
   -- Read the frame and stuff it into the read buffer.
-  bs   <- tRead (wrappedTrans trans) sz
-  liftIO $ fillBuf (readBuffer trans) bs
+  bs <- tRead (wrappedTrans trans) sz
+  fillBuf (readBuffer trans) bs
 
   -- Return the frame size so that the caller knows whether to expect
   -- something in the read buffer or not.
