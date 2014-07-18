@@ -2,6 +2,7 @@ package com.facebook.swift.exampleservice;
 
 import com.facebook.nifty.codec.ThriftFrameCodecFactory;
 import com.facebook.nifty.core.NiftyTimer;
+import com.facebook.nifty.core.NiftyNoOpSecurityFactory;
 import com.facebook.nifty.duplex.TDuplexProtocolFactory;
 import com.facebook.nifty.header.codec.HeaderThriftCodecFactory;
 import com.facebook.nifty.header.guice.HeaderServerModule;
@@ -37,6 +38,7 @@ import org.weakref.jmx.guice.MBeanModule;
 import javax.inject.Inject;
 import java.lang.management.ManagementFactory;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 import static com.facebook.swift.fb303.Fb303ServiceExporter.fb303SourceBinder;
 import static com.facebook.swift.service.guice.ThriftServiceExporter.thriftServerBinder;
@@ -111,7 +113,9 @@ public class App
                         config,
                         new NiftyTimer("thrift"),
                         ImmutableMap.<String, ThriftFrameCodecFactory>of("header", new HeaderThriftCodecFactory()),
-                        ImmutableMap.<String, TDuplexProtocolFactory>of("header", new TDuplexHeaderProtocolFactory()));
+                        ImmutableMap.<String, TDuplexProtocolFactory>of("header", new TDuplexHeaderProtocolFactory()),
+                        ImmutableMap.<String, ExecutorService>of(),
+                        new NiftyNoOpSecurityFactory());
 
         fb303Handler.setShutdownHandler(new ServerShutdownHandler(server));
         server.start();

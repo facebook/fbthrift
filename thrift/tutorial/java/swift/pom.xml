@@ -32,26 +32,34 @@
     </developer>
   </developers>
 
+  <properties>
+    <!-- replace these with the latest releases when building your project -->
+    <dep.nifty.version>0.13.1</version>
+    <dep.nifty-header-protocol.version>0.13.1</version>
+    <dep.swift.version>0.13.2</version>
+    <dep.swift-fb303.version>0.13.0</version>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>com.facebook.swift</groupId>
         <artifactId>swift-service</artifactId>
-        <version>0.10.0</version>
+        <version>${dep.swift.version}</version>
       </dependency>
 
-        <dependency>
-            <groupId>com.facebook.nifty</groupId>
-            <artifactId>nifty-header-protocol</artifactId>
-            <version>0.10.0</version>
-        </dependency>
+      <dependency>
+        <groupId>com.facebook.nifty</groupId>
+        <artifactId>nifty-header-protocol</artifactId>
+        <version>${dep.nifty.version}</version>
+      </dependency>
 
-        <dependency>
-            <groupId>com.facebook.swift</groupId>
-            <artifactId>swift-fb303</artifactId>
-            <version>0.10.0</version>
-        </dependency>
-        
+      <dependency>
+        <groupId>com.facebook.swift</groupId>
+        <artifactId>swift-fb303</artifactId>
+        <version>${dep.swift-fb303.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>com.mycila</groupId>
         <artifactId>mycila-guice</artifactId>
@@ -61,13 +69,13 @@
       <dependency>
         <groupId>io.airlift</groupId>
         <artifactId>bootstrap</artifactId>
-        <version>0.83</version>
+        <version>0.91</version>
       </dependency>
 
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>jmx</artifactId>
-            <version>0.83</version>
+            <version>0.91</version>
         </dependency>
 
         <dependency>

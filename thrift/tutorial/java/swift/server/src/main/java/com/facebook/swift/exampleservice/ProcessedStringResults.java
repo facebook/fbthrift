@@ -5,7 +5,7 @@ import com.facebook.swift.codec.ThriftField;
 import com.facebook.swift.codec.ThriftStruct;
 
 @ThriftStruct
-public class ProcessedStringResults
+public final class ProcessedStringResults
 {
     private final String reversedString;
     private final String uppercaseString;
