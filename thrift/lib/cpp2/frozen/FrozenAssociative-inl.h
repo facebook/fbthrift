@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace apache { namespace thrift { namespace frozen {
 
-namespace apache { namespace thrift { namespace frozen { namespace detail {
+namespace detail {
 
 template <class K, class V>
 struct KeyExtractor {
@@ -91,70 +92,33 @@ struct SetTableLayout : public Table<T, V, SelfKey<V>, V> {
 };
 }
 
-// assumed unique
-template <class K, class V>
-class VectorAsMap;
-
-template <class K, class V>
-struct Layout<VectorAsMap<K, V>> : public detail::MapTableLayout<
-                                       VectorAsMap<K, V>,
-                                       K,
-                                       V,
-                                       detail::SortedTableLayout> {};
-
-template <class K, class V, class A>
-struct Layout<std::map<K, V, A>> : public detail::MapTableLayout<
-                                       std::map<K, V, A>,
-                                       K,
-                                       V,
-                                       detail::SortedTableLayout> {};
-// assumed unique
-template <class V>
-class VectorAsSet;
-
-template <class V>
-struct Layout<VectorAsSet<V>> : public detail::SetTableLayout<
-                                    VectorAsSet<V>,
-                                    V,
+template <class T>
+struct Layout<T, typename std::enable_if<IsOrderedMap<T>::value>::type>
+    : public detail::MapTableLayout<T,
+                                    typename T::key_type,
+                                    typename T::mapped_type,
                                     detail::SortedTableLayout> {};
 
-template <class V, class A>
-struct Layout<std::set<V, A>> : public detail::SetTableLayout<
-                                    std::set<V, A>,
-                                    V,
+template <class T>
+struct Layout<T, typename std::enable_if<IsOrderedSet<T>::value>::type>
+    : public detail::SetTableLayout<T,
+                                    typename T::value_type,
                                     detail::SortedTableLayout> {};
+template <class T>
+struct Layout<T, typename std::enable_if<IsHashMap<T>::value>::type>
+    : public detail::MapTableLayout<T,
+                                    typename T::key_type,
+                                    typename T::mapped_type,
+                                    detail::HashTableLayout> {};
 
-template <class K, class V>
-class VectorAsHashMap;
+template <class T>
+struct Layout<T, typename std::enable_if<IsHashSet<T>::value>::type>
+    : public detail::SetTableLayout<T,
+                                    typename T::value_type,
+                                    detail::HashTableLayout> {};
+}}}
 
-template <class K, class V>
-struct Layout<VectorAsHashMap<K, V>> : public detail::MapTableLayout<
-                                           VectorAsHashMap<K, V>,
-                                           K,
-                                           V,
-                                           detail::HashTableLayout> {};
-
-template <class K, class V, class A>
-struct Layout<std::unordered_map<K, V, A>> : public detail::MapTableLayout<
-                                                 std::unordered_map<K, V, A>,
-                                                 K,
-                                                 V,
-                                                 detail::HashTableLayout> {};
-
-template <class V>
-class VectorAsHashSet;
-
-template <class V>
-struct Layout<VectorAsHashSet<V>> : public detail::SetTableLayout<
-                                        VectorAsHashSet<V>,
-                                        V,
-                                        detail::HashTableLayout> {};
-
-template <class V, class A>
-struct Layout<std::unordered_set<V, A>> : public detail::SetTableLayout<
-                                              std::unordered_set<V, A>,
-                                              V,
-                                              detail::HashTableLayout> {};
-}
-}
-}
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsHashMap, std::unordered_map)
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsHashSet, std::unordered_set)
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedMap, std::map)
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedSet, std::set)

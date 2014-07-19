@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-namespace apache {
-namespace thrift {
-namespace frozen {
+namespace apache { namespace thrift { namespace frozen {
 namespace detail {
 
 /**
@@ -113,6 +110,5 @@ struct OptionalLayout : public LayoutBase {
 
 template <class T>
 struct Layout<folly::Optional<T>> : public detail::OptionalLayout<T> {};
-}
-}
-}
+
+}}}

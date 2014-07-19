@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace apache { namespace thrift { namespace frozen {
 
-namespace apache {
-namespace thrift {
-namespace frozen {
 namespace detail {
 
 /**
@@ -100,21 +98,13 @@ struct StringLayout : public LayoutBase {
   }
 };
 
-template <class T>
-struct IsString {
-  enum {
-    value = std::is_same<typename std::decay<T>::type, std::string>::value ||
-            std::is_same<typename std::decay<T>::type, folly::fbstring>::value
-  };
-};
-
 } // detail
 
 template <class T>
-struct Layout<T,
-              typename std::enable_if<detail::IsString<T>::value>::
-                  type> : detail::StringLayout<typename std::decay<T>::type,
-                                               typename T::value_type> {};
-}
-}
-}
+struct Layout<T, typename std::enable_if<IsString<T>::value>::type>
+    : detail::StringLayout<typename std::decay<T>::type,
+                           typename T::value_type> {};
+
+}}}
+THRIFT_DECLARE_TRAIT(IsString, std::string)
+THRIFT_DECLARE_TRAIT(IsString, folly::fbstring)

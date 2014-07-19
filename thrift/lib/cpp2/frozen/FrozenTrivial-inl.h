@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace apache { namespace thrift { namespace frozen {
 
-namespace apache {
-namespace thrift {
-namespace frozen {
 namespace detail {
 
 /**
@@ -75,9 +73,7 @@ struct IsBlitType
 }
 
 template <class T>
-struct Layout<T,
-              typename std::enable_if<detail::IsBlitType<
-                  T>::value>::type> : detail::TrivialLayout<T> {};
-}
-}
-}
+struct Layout<T, typename std::enable_if<detail::IsBlitType<T>::value>::type>
+    : detail::TrivialLayout<T> {};
+
+}}}

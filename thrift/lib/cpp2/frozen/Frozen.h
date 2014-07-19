@@ -35,7 +35,9 @@
 #include <folly/Optional.h>
 #include <folly/Range.h>
 #include <folly/experimental/Bits.h>
+
 #include <thrift/lib/cpp2/frozen/FrozenMacros.h>
+#include <thrift/lib/cpp2/frozen/Traits.h>
 #include <thrift/lib/thrift/gen-cpp/frozen_types.h>
 
 namespace apache { namespace thrift { namespace frozen {
@@ -696,9 +698,8 @@ void thawField(ViewPosition self,
     isset = false;
   }
 }
-}
-}
-}
+
+}}}
 
 #include <thrift/lib/cpp2/frozen/FrozenTrivial-inl.h>
 #include <thrift/lib/cpp2/frozen/FrozenIntegral-inl.h>

@@ -18,10 +18,9 @@
 #include <vector>
 #include <utility>
 
-namespace apache {
-namespace thrift {
-namespace frozen {
+#include <thrift/lib/cpp2/frozen/Traits.h>
 
+namespace apache { namespace thrift { namespace frozen {
 /*
  * Vector-backed associative types without support for lookup, strictly for
  * building large maps and sets with minimal memory. Uniqueness assumed.
@@ -58,15 +57,29 @@ class VectorAsSet : public std::vector<V> {
     this->emplace_back(std::forward<T>(value));
   }
 };
+
 template <class V>
 class VectorAsHashSet : public VectorAsSet<V> {};
 
 template <class K, class V>
-class VectorAsMap : public VectorAsSet<std::pair<const K, V>> {};
+class VectorAsMap : public VectorAsSet<std::pair<const K, V>> {
+ public:
+  typedef K key_type;
+  typedef V mapped_type;
+};
 
 template <class K, class V>
-class VectorAsHashMap : public VectorAsMap<K, V> {};
+class VectorAsHashMap : public VectorAsMap<K, V> {
+ public:
+  typedef K key_type;
+  typedef V mapped_type;
+};
 
-}
-}
-}
+}}}
+
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsHashMap,
+                              apache::thrift::frozen::VectorAsHashMap)
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsHashSet,
+                              apache::thrift::frozen::VectorAsHashSet)
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedMap, apache::thrift::frozen::VectorAsMap)
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedSet, apache::thrift::frozen::VectorAsSet)

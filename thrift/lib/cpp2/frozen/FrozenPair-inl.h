@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-namespace apache {
-namespace thrift {
-namespace frozen {
+namespace apache { namespace thrift { namespace frozen {
+
+namespace detail {
 
 /**
  * Layout specialization a pair of values, layed out as simple fields.
@@ -85,8 +85,10 @@ struct PairLayout : public LayoutBase {
   }
 };
 
+}
+
 template <class First, class Second>
-struct Layout<std::pair<First, Second>> : public PairLayout<First, Second> {};
-}
-}
-}
+struct Layout<std::pair<First, Second>>
+    : public detail::PairLayout<First, Second> {};
+
+}}}

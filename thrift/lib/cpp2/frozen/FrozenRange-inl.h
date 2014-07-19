@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-namespace apache {
-namespace thrift {
-namespace frozen {
+namespace apache { namespace thrift { namespace frozen {
+
+namespace detail {
 
 /**
  * Layout specialization for range types, excluding those covered by 'string'
@@ -59,7 +59,7 @@ struct ArrayLayout : public LayoutBase {
                                     LayoutPosition write,
                                     FieldPosition writeStep) {
     FieldPosition noField; // not really used
-    for (auto& it : coll) {
+    for (const auto& it : coll) {
       root.layoutField(write, noField, this->item, it);
       write = write(writeStep);
     }
@@ -281,9 +281,11 @@ struct ArrayLayout : public LayoutBase {
   View view(ViewPosition self) const { return View(this, self); }
 };
 
-template <class T, class A>
-struct Layout<std::vector<T, A>, void> : public ArrayLayout<std::vector<T, A>,
-                                                            T> {};
 }
-}
-}
+
+template <class T>
+struct Layout<T, typename std::enable_if<IsList<T>::value>::type>
+    : public detail::ArrayLayout<T, typename T::value_type> {};
+}}}
+
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsList, std::vector);

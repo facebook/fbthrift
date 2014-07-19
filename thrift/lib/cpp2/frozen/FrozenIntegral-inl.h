@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-namespace apache {
-namespace thrift {
-namespace frozen {
+namespace apache { namespace thrift { namespace frozen {
+
+namespace detail {
 
 template <class T,
           class = typename std::enable_if<std::is_integral<T>::value>::type>
@@ -80,10 +80,11 @@ struct PackedIntegerLayout : public LayoutBase {
   }
 };
 
+}
+
 template <class T>
 struct Layout<T,
               typename std::enable_if<std::is_integral<
-                  T>::value>::type> : PackedIntegerLayout<T> {};
-}
-}
-}
+                  T>::value>::type> : detail::PackedIntegerLayout<T> {};
+
+}}}
