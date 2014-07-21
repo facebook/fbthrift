@@ -74,7 +74,7 @@ namespace frozen {
 typedef uint8_t byte;
 
 /**
- * Simple represents an indented line separator for use in debugging
+ * Simply represents an indented line separator for use in debugging
  */
 struct DebugLine {
   int level;

@@ -3916,7 +3916,8 @@ class CppGenerator(t_generator.Generator):
                     fieldFmt.format(
                         type=self._type_name(f.type),
                         name=f.name,
-                        _opt='_OPT' if f.req == e_req.optional else '',
+                        _opt='_OPT' if f.req == e_req.optional else
+                             '_REQ' if f.req == e_req.required else '',
                         id=f.key,
                         **kwargs) for f in fields]),
                 **kwargs)

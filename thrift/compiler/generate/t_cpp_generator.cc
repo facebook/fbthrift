@@ -2335,6 +2335,17 @@ void t_cpp_generator::generate_frozen_struct_definition(t_struct* tstruct) {
 void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
   string structName = type_name(tstruct,  ALWAYS_NAMESPACE);
   const auto& members = tstruct->get_members();
+  auto optSuffix = [](t_field::e_req req)->const char * {
+    switch (req) {
+    case t_field::T_OPTIONAL:
+      return "_OPT";
+    case t_field::T_REQUIRED:
+      return "_REQ";
+    default:
+      return "";
+    }
+  };
+
   auto emitFieldFormat = [&](
       ostream& os, const string& format, const t_field* f) {
     os << folly::vformat(
@@ -2343,7 +2354,7 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
                   {"name", f->get_name()},
                   {"type", type_name(f->get_type(), ALWAYS_NAMESPACE)},
                   {"id", folly::to<string>(f->get_key())},
-                  {"_opt", f->get_req() == t_field::T_OPTIONAL ? "_OPT" : ""}});
+                  {"_opt", optSuffix(f->get_req())}});
   };
 
   // Header

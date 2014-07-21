@@ -22,6 +22,7 @@
 #define FROZEN_FIELD(NAME, ID, /*TYPE*/...) Field<__VA_ARGS__> NAME##Field;
 #define FROZEN_FIELD_OPT(NAME, ID, /*TYPE*/...) \
   Field<folly::Optional<__VA_ARGS__>> NAME##Field;
+#define FROZEN_FIELD_REQ FROZEN_FIELD
 
 #define FROZEN_VIEW_FIELD(NAME, /*TYPE*/...)              \
   typename Layout<__VA_ARGS__>::View NAME() const {       \
@@ -33,6 +34,7 @@
     return this->layout_->NAME##Field.layout.view(                   \
         this->position_(this->layout_->NAME##Field.pos));            \
   }
+#define FROZEN_VIEW_FIELD_REQ FROZEN_VIEW_FIELD
 #define FROZEN_VIEW(...)                                     \
   struct View : public ViewBase<View, LayoutSelf, T> {       \
     View() {}                                                \
@@ -60,6 +62,7 @@
 
 #define FROZEN_CTOR_FIELD(NAME, ID) , NAME##Field(ID)
 #define FROZEN_CTOR_FIELD_OPT(NAME, ID) , NAME##Field(ID)
+#define FROZEN_CTOR_FIELD_REQ FROZEN_CTOR_FIELD
 #define FROZEN_CTOR(TYPE, ...) \
   Layout<TYPE>::Layout() : LayoutBase(typeid(TYPE)) __VA_ARGS__ {}
 
@@ -71,6 +74,8 @@
                          this->NAME##Field,                            \
                          x.__isset.NAME ? folly::make_optional(x.NAME) \
                                         : folly::none);
+#define FROZEN_LAYOUT_FIELD_REQ FROZEN_LAYOUT_FIELD
+
 #define FROZEN_LAYOUT(TYPE, ...)                           \
   FieldPosition Layout<TYPE>::layout(                      \
       LayoutRoot& root, const T& x, LayoutPosition self) { \
@@ -86,6 +91,7 @@
                    this->NAME##Field,                            \
                    x.__isset.NAME ? folly::make_optional(x.NAME) \
                                   : folly::none);
+#define FROZEN_FREEZE_FIELD_REQ FROZEN_FREEZE_FIELD
 
 #define FROZEN_FREEZE(TYPE, ...)                                 \
   void Layout<TYPE>::freeze(                                     \
@@ -98,6 +104,8 @@
   out.__isset.NAME = true;
 #define FROZEN_THAW_FIELD_OPT(NAME) \
   thawField(self, this->NAME##Field, out.NAME, out.__isset.NAME);
+#define FROZEN_THAW_FIELD_REQ(NAME) \
+  thawField(self, this->NAME##Field, out.NAME);
 #define FROZEN_THAW(TYPE, ...) \
   void Layout<TYPE>::thaw(ViewPosition self, T& out) const { __VA_ARGS__; }
 #define FROZEN_DEBUG_FIELD(NAME) this->NAME##Field.print(os, #NAME, level + 1);

@@ -28,7 +28,7 @@ struct Person2 {
 }
 
 struct Tiny {
-  1 : string a,
+  1 : required string a,
   2 : string b,
   3 : string c,
   4 : string d,
