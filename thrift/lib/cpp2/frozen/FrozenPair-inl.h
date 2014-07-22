@@ -30,7 +30,10 @@ struct PairLayout : public LayoutBase {
   Field<FirstDecayed> firstField;
   Field<SecondDecayed> secondField;
 
-  PairLayout() : LayoutBase(typeid(T)), firstField(1), secondField(2) {}
+  PairLayout()
+      : LayoutBase(typeid(T)),
+        firstField(1, "first"),
+        secondField(2, "second") {}
 
   FieldPosition layout(LayoutRoot& root,
                        const std::pair<First, Second>& o,
@@ -59,8 +62,8 @@ struct PairLayout : public LayoutBase {
   void print(std::ostream& os, int level) const final {
     LayoutBase::print(os, level);
     os << folly::demangle(type.name());
-    firstField.print(os, "first", level + 1);
-    secondField.print(os, "second", level + 1);
+    firstField.print(os, level + 1);
+    secondField.print(os, level + 1);
   }
 
   void clear() final {

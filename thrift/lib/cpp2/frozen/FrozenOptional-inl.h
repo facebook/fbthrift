@@ -28,7 +28,8 @@ struct OptionalLayout : public LayoutBase {
   Field<bool> isset;
   Field<T> value;
 
-  OptionalLayout() : LayoutBase(typeid(T)), isset(1), value(2) {}
+  OptionalLayout()
+      : LayoutBase(typeid(T)), isset(1, "isset"), value(2, "value") {}
 
   FieldPosition layout(LayoutRoot& root,
                        const folly::Optional<T>& o,
@@ -86,8 +87,8 @@ struct OptionalLayout : public LayoutBase {
   void print(std::ostream& os, int level) const final {
     LayoutBase::print(os, level);
     os << "optional " << folly::demangle(type.name());
-    isset.print(os, "isset", level + 1);
-    value.print(os, "value", level + 1);
+    isset.print(os, level + 1);
+    value.print(os, level + 1);
   }
 
   void clear() final {

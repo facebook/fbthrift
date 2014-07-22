@@ -117,8 +117,8 @@ void BlockLayout::freeze(FreezeRoot& root,
 void BlockLayout::print(std::ostream& os, int level) const {
   LayoutBase::print(os, level);
   os << folly::demangle(type.name());
-  maskField.print(os, "mask", level + 1);
-  offsetField.print(os, "offset", level + 1);
+  maskField.print(os, level + 1);
+  offsetField.print(os, level + 1);
 }
 
 void BlockLayout::clear() {

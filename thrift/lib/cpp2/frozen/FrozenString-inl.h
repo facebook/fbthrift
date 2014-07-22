@@ -27,7 +27,8 @@ struct StringLayout : public LayoutBase {
   Field<size_t> distance;
   Field<size_t> count;
 
-  StringLayout() : LayoutBase(typeid(T)), distance(1), count(2) {}
+  StringLayout()
+      : LayoutBase(typeid(T)), distance(1, "distance"), count(2, "count") {}
 
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
     size_t n = o.size();
@@ -71,8 +72,8 @@ struct StringLayout : public LayoutBase {
   void print(std::ostream& os, int level) const {
     LayoutBase::print(os, level);
     os << "string of " << folly::demangle(type.name());
-    distance.print(os, "distance", level + 1);
-    count.print(os, "count", level + 1);
+    distance.print(os, level + 1);
+    count.print(os, level + 1);
   }
 
   void clear() final {

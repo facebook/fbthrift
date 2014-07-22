@@ -30,7 +30,11 @@ struct ArrayLayout : public LayoutBase {
   Field<size_t> count;
   Field<Item> item;
 
-  ArrayLayout() : LayoutBase(typeid(T)), distance(1), count(2), item(3) {}
+  ArrayLayout()
+      : LayoutBase(typeid(T)),
+        distance(1, "distance"),
+        count(2, "count"),
+        item(3, "item") {}
 
   FieldPosition layout(LayoutRoot& root, const T& coll, LayoutPosition self) {
     size_t n = coll.size();
@@ -105,9 +109,9 @@ struct ArrayLayout : public LayoutBase {
   void print(std::ostream& os, int level) const override {
     LayoutBase::print(os, level);
     os << "range of " << folly::demangle(type.name());
-    distance.print(os, "distance", level + 1);
-    count.print(os, "count", level + 1);
-    item.print(os, "items", level + 1);
+    distance.print(os, level + 1);
+    count.print(os, level + 1);
+    item.print(os, level + 1);
   }
 
   void clear() override {

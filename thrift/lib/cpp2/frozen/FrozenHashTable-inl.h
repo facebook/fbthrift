@@ -28,7 +28,8 @@ struct BlockLayout : public LayoutBase {
   Field<uint64_t, TrivialLayout<uint64_t>> maskField;
   Field<uint64_t> offsetField;
 
-  BlockLayout() : LayoutBase(typeid(T)), maskField(1), offsetField(2) {}
+  BlockLayout()
+      : LayoutBase(typeid(T)), maskField(1, "mask"), offsetField(2, "offset") {}
 
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self);
   void freeze(FreezeRoot& root, const T& o, FreezePosition self) const;
@@ -74,7 +75,8 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
   typedef HashTableLayout LayoutSelf;
 
   HashTableLayout()
-      : sparseTableField(4) // continue field ids from ArrayLayout
+      : sparseTableField(4,
+                         "sparseTable") // continue field ids from ArrayLayout
   {}
 
   static size_t blockCount(size_t size) {
@@ -178,7 +180,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
 
   void print(std::ostream& os, int level) const override {
     Base::print(os, level);
-    sparseTableField.print(os, "sparseTable", level + 1);
+    sparseTableField.print(os,  level + 1);
   }
 
   void clear() final {

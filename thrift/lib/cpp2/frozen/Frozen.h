@@ -263,8 +263,9 @@ struct FieldBase {
    * Offset of this field within the parent struct
    */
   FieldPosition pos;
+  const char* name;
 
-  explicit FieldBase(int32_t key) : key(key) {}
+  explicit FieldBase(int32_t key, const char* name) : key(key), name(name) {}
   virtual ~FieldBase() {}
 
   virtual void clear() = 0;
@@ -276,12 +277,12 @@ template <class T, class Layout = Layout<typename std::decay<T>::type>>
 struct Field final : public FieldBase {
   Layout layout;
 
-  explicit Field(int32_t key) : FieldBase(key) {}
+  explicit Field(int32_t key, const char* name) : FieldBase(key, name) {}
 
   /**
    * Prints a description of this layout to the given stream, recursively.
    */
-  void print(std::ostream& os, const char* name, int level) const {
+  void print(std::ostream& os, int level) const {
     os << DebugLine(level) << name;
     if (pos.offset) {
       os << " @ offset " << pos.offset;

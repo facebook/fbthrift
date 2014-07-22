@@ -60,8 +60,8 @@
     __VA_ARGS__                                                              \
   };
 
-#define FROZEN_CTOR_FIELD(NAME, ID) , NAME##Field(ID)
-#define FROZEN_CTOR_FIELD_OPT(NAME, ID) , NAME##Field(ID)
+#define FROZEN_CTOR_FIELD(NAME, ID) , NAME##Field(ID, #NAME)
+#define FROZEN_CTOR_FIELD_OPT(NAME, ID) , NAME##Field(ID, #NAME)
 #define FROZEN_CTOR_FIELD_REQ FROZEN_CTOR_FIELD
 #define FROZEN_CTOR(TYPE, ...) \
   Layout<TYPE>::Layout() : LayoutBase(typeid(TYPE)) __VA_ARGS__ {}
@@ -102,7 +102,7 @@
   thawField(self, this->NAME##Field, out.NAME);
 #define FROZEN_THAW(TYPE, ...) \
   void Layout<TYPE>::thaw(ViewPosition self, T& out) const { __VA_ARGS__; }
-#define FROZEN_DEBUG_FIELD(NAME) this->NAME##Field.print(os, #NAME, level + 1);
+#define FROZEN_DEBUG_FIELD(NAME) this->NAME##Field.print(os, level + 1);
 #define FROZEN_DEBUG(TYPE, ...)                                 \
   void Layout<TYPE>::print(std::ostream& os, int level) const { \
     LayoutBase::print(os, level);                               \
