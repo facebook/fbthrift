@@ -22,6 +22,10 @@
 
 #include <thrift/lib/cpp/thrift_config.h>
 
+#ifdef THRIFT_PLATFORM_CONFIG
+# include THRIFT_PLATFORM_CONFIG
+#endif
+
 #include <assert.h>
 #include <sys/types.h>
 #ifdef THRIFT_HAVE_INTTYPES_H

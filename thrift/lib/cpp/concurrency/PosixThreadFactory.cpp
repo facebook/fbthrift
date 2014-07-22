@@ -18,7 +18,7 @@
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/SpinLock.h>
-#include <thrift/lib/cpp/config.h>
+#include <thrift/lib/cpp/thrift_config.h>
 
 #if GOOGLE_PERFTOOLS_REGISTER_THREAD
 #  include "base/Profiler.h"
@@ -241,10 +241,10 @@ int PosixThreadFactory::Impl::toPthreadPriority(
   int min_priority = 0;
   int max_priority = 0;
   if (pthread_policy == SCHED_FIFO || pthread_policy == SCHED_RR) {
-#ifdef HAVE_SCHED_GET_PRIORITY_MIN
+#ifdef THRIFT_HAVE_SCHED_GET_PRIORITY_MIN
     min_priority = sched_get_priority_min(pthread_policy);
 #endif
-#ifdef HAVE_SCHED_GET_PRIORITY_MAX
+#ifdef THRIFT_HAVE_SCHED_GET_PRIORITY_MAX
     max_priority = sched_get_priority_max(pthread_policy);
 #endif
   } else if (pthread_policy == SCHED_OTHER) {

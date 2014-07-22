@@ -23,7 +23,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 
 lib_LTLIBRARIES = libthrift.la
 pkgconfig_DATA = thrift.pc
-libthrift_la_LDFLAGS = -release $(VERSION) $(BOOST_LDFLAGS)
+libthrift_la_LDFLAGS = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
 
 ## We only build the extra libraries if we have the dependencies,
 ## but we install all of the headers unconditionally.
@@ -94,12 +94,11 @@ libthriftnb_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS)
 libthriftz_la_CPPFLAGS  = $(AM_CPPFLAGS) $(ZLIB_CPPFLAGS)
 libthriftnb_la_CXXFLAGS = $(AM_CXXFLAGS)
 libthriftz_la_CXXFLAGS  = $(AM_CXXFLAGS)
-libthriftnb_la_LDFLAGS  = -release $(VERSION) $(BOOST_LDFLAGS)
-libthriftz_la_LDFLAGS   = -release $(VERSION) $(BOOST_LDFLAGS)
+libthriftnb_la_LDFLAGS  = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
+libthriftz_la_LDFLAGS   = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
 
 include_thriftdir = $(includedir)/thrift/lib/cpp/
 include_thrift_HEADERS = \
-                         $(top_builddir)/config.h \
                          EventHandlerBase.h \
                          TDispatchProcessor.h \
                          Thrift.h \

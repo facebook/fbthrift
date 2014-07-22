@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include <thrift/lib/cpp/config.h>
+#include <thrift/lib/cpp/thrift_config.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>

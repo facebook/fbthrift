@@ -19,13 +19,13 @@
 
 #include <thrift/lib/cpp/concurrency/Util.h>
 
-#include <thrift/lib/cpp/config.h>
+#include <thrift/lib/cpp/thrift_config.h>
 
-#if defined(HAVE_CLOCK_GETTIME)
+#if defined(THRIFT_HAVE_CLOCK_GETTIME)
 #include <time.h>
-#elif defined(HAVE_GETTIMEOFDAY)
+#elif defined(THRIFT_HAVE_GETTIMEOFDAY)
 #include <sys/time.h>
-#endif // defined(HAVE_CLOCK_GETTIME)
+#endif // defined(THRIFT_HAVE_CLOCK_GETTIME)
 #include <errno.h>
 #include <assert.h>
 
@@ -34,25 +34,25 @@ namespace apache { namespace thrift { namespace concurrency {
 const int64_t Util::currentTimeTicks(int64_t ticksPerSec) {
   int64_t result;
 
-#if defined(HAVE_CLOCK_GETTIME)
+#if defined(THRIFT_HAVE_CLOCK_GETTIME)
   struct timespec now;
   int ret = clock_gettime(CLOCK_REALTIME, &now);
   assert(ret == 0);
   toTicks(result, now, ticksPerSec);
-#elif defined(HAVE_GETTIMEOFDAY)
+#elif defined(THRIFT_HAVE_GETTIMEOFDAY)
   struct timeval now;
   int ret = gettimeofday(&now, nullptr);
   assert(ret == 0);
   toTicks(result, now, ticksPerSec);
 #else
 #error "No high-precision clock is available."
-#endif // defined(HAVE_CLOCK_GETTIME)
+#endif // defined(THRIFT_HAVE_CLOCK_GETTIME)
 
   return result;
 }
 
 const int64_t Util::monotonicTimeTicks(int64_t ticksPerSec) {
-#if defined(HAVE_CLOCK_GETTIME)
+#if defined(THRIFT_HAVE_CLOCK_GETTIME)
   static bool useRealtime;
   if (useRealtime) {
     return currentTimeTicks(ticksPerSec);
@@ -72,7 +72,7 @@ const int64_t Util::monotonicTimeTicks(int64_t ticksPerSec) {
   return result;
 #else
   return currentTimeTicks(ticksPerSec);
-#endif // defined(HAVE_CLOCK_GETTIME)
+#endif // defined(THRIFT_HAVE_CLOCK_GETTIME)
 }
 
 }}} // apache::thrift::concurrency

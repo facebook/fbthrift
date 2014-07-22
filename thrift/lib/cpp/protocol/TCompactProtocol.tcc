@@ -29,10 +29,11 @@
  * If anyone encounters this error, we can try to figure out the best
  * way to implement an arithmetic right shift on their platform.
  */
-#if !defined(SIGNED_RIGHT_SHIFT_IS) || !defined(ARITHMETIC_RIGHT_SHIFT)
+#if !defined(THRIFT_SIGNED_RIGHT_SHIFT_IS) || \
+    !defined(THRIFT_ARITHMETIC_RIGHT_SHIFT)
 # error "Unable to determine the behavior of a signed right shift"
 #endif
-#if SIGNED_RIGHT_SHIFT_IS != ARITHMETIC_RIGHT_SHIFT
+#if THRIFT_SIGNED_RIGHT_SHIFT_IS != THRIFT_ARITHMETIC_RIGHT_SHIFT
 # error "TCompactProtocol currently only works if a signed right shift is arithmetic"
 #endif
 

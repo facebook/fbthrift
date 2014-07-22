@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <boost/lexical_cast.hpp>
 #include <cstring>
-#include <thrift/lib/cpp/config.h>
+#include <thrift/lib/cpp/thrift_config.h>
 
 using std::string;
 using boost::lexical_cast;

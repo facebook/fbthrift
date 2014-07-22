@@ -18,7 +18,6 @@
  */
 
 #include <thrift/lib/cpp/Thrift.h>
-#include <thrift/lib/cpp/config.h>
 #include <cstring>
 #include <boost/lexical_cast.hpp>
 #include <stdarg.h>
@@ -66,12 +65,12 @@ void TOutput::perror(const char *message, int errno_copy) {
 }
 
 std::string TOutput::strerror_s(int errno_copy) {
-#ifndef HAVE_STRERROR_R
+#ifndef THRIFT_HAVE_STRERROR_R
   return "errno = " + boost::lexical_cast<std::string>(errno_copy);
-#else  // HAVE_STRERROR_R
+#else  // THRIFT_HAVE_STRERROR_R
 
   char b_errbuf[1024] = { '\0' };
-#ifdef STRERROR_R_CHAR_P
+#ifdef THRIFT_STRERROR_R_CHAR_P
   char *b_error = strerror_r(errno_copy, b_errbuf, sizeof(b_errbuf));
 #else
   char *b_error = b_errbuf;
@@ -87,7 +86,7 @@ std::string TOutput::strerror_s(int errno_copy) {
   // b_error becomes invalid?
   return std::string(b_error);
 
-#endif  // HAVE_STRERROR_R
+#endif  // THRIFT_HAVE_STRERROR_R
 }
 
 TLibraryException::TLibraryException(const char* message, int errnoValue) {

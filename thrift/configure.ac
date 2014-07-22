@@ -19,7 +19,12 @@
 
 AC_PREREQ(2.65)
 
-AC_INIT([thrift], [0.9.0])
+m4_define([thrift_version_str], m4_esyscmd_s([cat VERSION]))
+
+AC_INIT([thrift], m4_translit(thrift_version_str, [:], [.]))
+
+LT_VERSION=thrift_version_str:0
+AC_SUBST([LT_VERSION])
 
 AC_CONFIG_AUX_DIR([build-aux])
 
@@ -631,6 +636,7 @@ fi
 AM_CONDITIONAL([WITH_BOOSTTHREADS], [test "x[$]ENABLE_BOOSTTHREADS" = "x1"])
 
 AC_CONFIG_HEADERS(config.h:config.hin)
+AX_PREFIX_CONFIG_H([lib/cpp/thrift_config.h], [thrift], [config.h])
 
 AC_CONFIG_FILES([
   Makefile

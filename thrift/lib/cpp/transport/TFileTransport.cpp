@@ -19,11 +19,11 @@
 
 #include <thrift/lib/cpp/transport/TFileTransport.h>
 
-#include <thrift/lib/cpp/config.h>
+#include <thrift/lib/cpp/thrift_config.h>
 #include <thrift/lib/cpp/transport/TTransportUtils.h>
 
 #include <pthread.h>
-#ifdef HAVE_SYS_TIME_H
+#ifdef THRIFT_HAVE_SYS_TIME_H
 #include <sys/time.h>
 #else
 #include <time.h>
@@ -31,7 +31,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
-#ifdef HAVE_STRINGS_H
+#ifdef THRIFT_HAVE_STRINGS_H
 #include <strings.h>
 #endif
 #include <cstdlib>
@@ -46,7 +46,7 @@ using std::shared_ptr;
 using namespace std;
 using namespace apache::thrift::protocol;
 
-#ifndef HAVE_CLOCK_GETTIME
+#ifndef THRIFT_HAVE_CLOCK_GETTIME
 
 /**
  * Fake clock_gettime for systems like darwin

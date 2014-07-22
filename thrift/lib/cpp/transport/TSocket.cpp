@@ -18,7 +18,7 @@
  */
 #include <thrift/lib/cpp/transport/TSocket.h>
 
-#include <thrift/lib/cpp/config.h>
+#include <thrift/lib/cpp/thrift_config.h>
 #include <thrift/lib/cpp/util/PausableTimer.h>
 #include <cstring>
 #include <sstream>
