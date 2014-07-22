@@ -711,4 +711,4 @@ void thawField(ViewPosition self,
 #include <thrift/lib/cpp2/frozen/FrozenOrderedTable-inl.h>
 #include <thrift/lib/cpp2/frozen/FrozenHashTable-inl.h>
 #include <thrift/lib/cpp2/frozen/FrozenAssociative-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenEnum-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenEnum-inl.h> // depends on Integral

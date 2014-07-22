@@ -13,15 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace folly {
+class IOBuf;
+}
+
 namespace apache { namespace thrift { namespace frozen {
 
 namespace detail {
 
+template <class T>
+struct BufferHelpers {
+  typedef typename T::value_type Item;
+  static size_t size(const T& src) { return src.size(); }
+  static void copyTo(const T& src, folly::Range<Item*> dst) {
+    std::copy(src.begin(), src.end(), reinterpret_cast<Item*>(dst.begin()));
+  }
+  static void thawTo(folly::Range<const Item*> src, T& dst) {
+    dst.assign(src.begin(), src.end());
+  }
+};
+
+template <>
+struct BufferHelpers<std::unique_ptr<folly::IOBuf>> {
+  typedef uint8_t Item;
+  static size_t size(const std::unique_ptr<folly::IOBuf>& src);
+
+  static void copyTo(const std::unique_ptr<folly::IOBuf>& src,
+                     folly::MutableByteRange dst);
+  static void thawTo(folly::ByteRange src, std::unique_ptr<folly::IOBuf>& dst);
+};
+
 /**
  * for contiguous, blittable ranges
  */
-template <class T, class Item>
+template <class T>
 struct StringLayout : public LayoutBase {
+  typedef BufferHelpers<T> Helper;
+  typedef typename Helper::Item Item;
   Field<size_t> distance;
   Field<size_t> count;
 
@@ -29,7 +57,7 @@ struct StringLayout : public LayoutBase {
       : LayoutBase(typeid(T)), distance(1, "distance"), count(2, "count") {}
 
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
-    size_t n = o.size();
+    size_t n = Helper::size(o);
     size_t dist = root.layoutBytesDistance(self.start, n * sizeof(Item));
     FieldPosition pos = startFieldPosition();
     pos = root.layoutField(self, pos, distance, dist);
@@ -38,19 +66,18 @@ struct StringLayout : public LayoutBase {
   }
 
   void freeze(FreezeRoot& root, const T& o, FreezePosition self) const {
-    size_t n = o.size();
+    size_t n = Helper::size(o);
     folly::MutableByteRange range;
     size_t dist;
     root.appendBytes(self.start, n * sizeof(Item), range, dist);
     root.freezeField(self, distance, dist);
     root.freezeField(self, count, n);
-    std::copy(o.begin(), o.end(), reinterpret_cast<Item*>(range.begin()));
+    folly::Range<Item*> target(reinterpret_cast<Item*>(range.begin()),n);
+    Helper::copyTo(o, target);
   }
 
   void thaw(ViewPosition self, T& out) const {
-    auto range = view(self);
-    out.resize(range.size());
-    std::copy(range.begin(), range.end(), out.begin());
+    Helper::thawTo(view(self), out);
   }
 
   typedef folly::Range<const Item*> View;
@@ -102,9 +129,10 @@ struct StringLayout : public LayoutBase {
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsString<T>::value>::type>
-    : detail::StringLayout<typename std::decay<T>::type,
-                           typename T::value_type> {};
+    : detail::StringLayout<typename std::decay<T>::type> {};
 
 }}}
+
 THRIFT_DECLARE_TRAIT(IsString, std::string)
 THRIFT_DECLARE_TRAIT(IsString, folly::fbstring)
+THRIFT_DECLARE_TRAIT(IsString, std::unique_ptr<folly::IOBuf>)

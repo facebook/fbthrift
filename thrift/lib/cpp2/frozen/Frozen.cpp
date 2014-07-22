@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp2/frozen/Frozen.h>
+
+#include <folly/io/Cursor.h>
+#include <folly/io/IOBuf.h>
 
 namespace apache { namespace thrift { namespace frozen {
 
@@ -137,6 +139,21 @@ void BlockLayout::load(const schema::Schema& schema,
   LayoutBase::load(schema, layout);
   maskField.load(schema, layout);
   offsetField.load(schema, layout);
+}
+
+size_t BufferHelpers<std::unique_ptr<folly::IOBuf>>::size(
+    const std::unique_ptr<folly::IOBuf>& src) {
+  return src->computeChainDataLength();
+}
+
+void BufferHelpers<std::unique_ptr<folly::IOBuf>>::copyTo(
+    const std::unique_ptr<folly::IOBuf>& src, folly::MutableByteRange dst) {
+  folly::io::Cursor(src.get()).pull(dst.begin(), dst.size());
+}
+
+void BufferHelpers<std::unique_ptr<folly::IOBuf>>::thawTo(
+    folly::ByteRange src, std::unique_ptr<folly::IOBuf>& dst) {
+  dst = folly::IOBuf::copyBuffer(src.begin(), src.size());
 }
 
 }}}}

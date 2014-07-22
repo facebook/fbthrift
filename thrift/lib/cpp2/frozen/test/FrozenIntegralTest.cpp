@@ -16,7 +16,6 @@
 
 #include <gtest/gtest.h>
 #include <folly/Benchmark.h>
-#include <folly/Optional.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
