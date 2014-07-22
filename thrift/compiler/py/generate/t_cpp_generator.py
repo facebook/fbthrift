@@ -4093,6 +4093,10 @@ class CppGenerator(t_generator.Generator):
         s('#include <thrift/lib/cpp2/frozen/Frozen.h>')
         s('#include "{0}"'.format(self._with_include_prefix(self._program,
             self._program.name + '_types.h')))
+        # Include other layouts
+        for inc in self._program.includes:
+            s('#include "{0}_layouts.h"'
+              .format(self._with_include_prefix(inc, inc.name)))
         with s.namespace('apache.thrift.frozen').scope:
             for obj in objects:
                 self._generate_frozen_layout(obj, out())

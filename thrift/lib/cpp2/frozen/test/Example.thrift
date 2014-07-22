@@ -1,3 +1,5 @@
+include "thrift/lib/cpp2/frozen/test/Helper.thrift"
+
 namespace cpp2 example2
 namespace cpp example1
 
@@ -7,6 +9,11 @@ enum Gender {
   Male = 0,
   Female = 1,
   Other = 2,
+}
+
+struct Nesting {
+  1 : Helper.Ratio a,
+  2 : Helper.Ratio b,
 }
 
 struct Pet1 {

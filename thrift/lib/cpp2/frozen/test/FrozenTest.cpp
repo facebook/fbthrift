@@ -15,16 +15,17 @@
  */
 
 #include <gtest/gtest.h>
+#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
+#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
+#include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_types.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_layouts.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <thrift/lib/cpp/protocol/TDebugProtocol.h>
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
-#include <thrift/lib/cpp/util/ThriftSerializer.h>
+
+#include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_layouts.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_types.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
 
 using namespace apache::thrift;
 using namespace frozen;

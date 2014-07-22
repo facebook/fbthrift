@@ -560,11 +560,15 @@ void t_cpp_generator::init_generator() {
   }
 
   if (frozen2_) {
+    f_types_layouts_ << get_include_guard("_LAYOUTS_H") << endl
+                     << "#include <thrift/lib/cpp2/frozen/Frozen.h>" << endl
+                     << "#include \"" << get_include_prefix(*get_program())
+                     << program_name_ << "_types.h\"" << endl;
+    for (auto* include : program_->get_includes()) {
+      f_types_layouts_ << "#include \"" << get_include_prefix(*include)
+                       << include->get_name() << "_layouts.h\"" << endl;
+    }
     f_types_layouts_
-        << get_include_guard("_LAYOUTS_H") << endl
-        << "#include \"" << get_include_prefix(*get_program())
-          << program_name_ << "_types.h\"" << endl
-        << "#include <thrift/lib/cpp2/frozen/Frozen.h>" << endl
         << endl << "namespace apache { namespace thrift { namespace frozen {"
         << endl;
 
@@ -599,17 +603,14 @@ void t_cpp_generator::init_generator() {
   }
 
   // Include other Thrift includes
-  const vector<t_program*>& includes = program_->get_includes();
-  for (size_t i = 0; i < includes.size(); ++i) {
-    f_types_ <<
-      "#include \"" << get_include_prefix(*(includes[i])) <<
-      includes[i]->get_name() << "_types.h\"" << endl;
+  for (auto* include : program_->get_includes()) {
+    f_types_ << "#include \"" << get_include_prefix(*include)
+             << include->get_name() << "_types.h\"" << endl;
 
     // XXX(simpkins): If gen_templates_ is enabled, we currently assume all
     // included files were also generated with templates enabled.
-    f_types_tcc_ <<
-      "#include \"" << get_include_prefix(*(includes[i])) <<
-      includes[i]->get_name() << "_types.tcc\"" << endl;
+    f_types_tcc_ << "#include \"" << get_include_prefix(*include)
+                 << include->get_name() << "_types.tcc\"" << endl;
   }
   f_types_ << endl;
 
