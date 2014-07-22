@@ -219,6 +219,9 @@ template<class T,
          class FrozenType = typename Freezer<T>::FrozenType>
 using FrozenTypeUPtr = std::unique_ptr<const FrozenType, FrozenTypeDeleter>;
 
+// Enables disambiguated calls to freeze(), which also exists in frozen2
+enum class Frozen1 { Marker };
+
 /**
  * freeze(...) - Freeze 'src' into a newly-allocated buffer owned by a
  * unique_ptr.
@@ -226,7 +229,7 @@ using FrozenTypeUPtr = std::unique_ptr<const FrozenType, FrozenTypeDeleter>;
 template<class T,
          class FrozenType = typename Freezer<T>::FrozenType>
 FrozenTypeUPtr<T, FrozenType>
-freeze(const T& src) {
+freeze(const T& src, Frozen1 = Frozen1::Marker) {
   // find how much space we need
   size_t size = frozenSize(src);
   // allocate it

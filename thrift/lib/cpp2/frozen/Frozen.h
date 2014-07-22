@@ -646,6 +646,9 @@ class Bundled : public Base {
   std::vector<std::unique_ptr<Holder>> holds_;
 };
 
+// Enables disambiguated calls to freeze(), which also exists in frozen1
+enum class Frozen2 { Marker };
+
 /**
  * Freezes an object, returning an View bundled with an owned layout and
  * storage.
@@ -654,7 +657,7 @@ template <class T,
           class = typename std::enable_if<
               !folly::IsTriviallyCopyable<T>::value>::type,
           class Return = Bundled<typename Layout<T>::View>>
-Return freeze(const T& x) {
+Return freeze(const T& x, Frozen2 = Frozen2::Marker) {
   std::unique_ptr<Layout<T>> layout(new Layout<T>);
   size_t size = LayoutRoot::layout(x, *layout);
   std::unique_ptr<byte[]> storage(new byte[size]);
