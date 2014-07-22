@@ -68,12 +68,9 @@
 
 #define FROZEN_LAYOUT_FIELD(NAME) \
   pos = root.layoutField(self, pos, this->NAME##Field, x.NAME);
-#define FROZEN_LAYOUT_FIELD_OPT(NAME)                                  \
-  pos = root.layoutField(self,                                         \
-                         pos,                                          \
-                         this->NAME##Field,                            \
-                         x.__isset.NAME ? folly::make_optional(x.NAME) \
-                                        : folly::none);
+#define FROZEN_LAYOUT_FIELD_OPT(NAME) \
+  pos = root.layoutOptionalField(     \
+      self, pos, this->NAME##Field, x.__isset.NAME, x.NAME);
 #define FROZEN_LAYOUT_FIELD_REQ FROZEN_LAYOUT_FIELD
 
 #define FROZEN_LAYOUT(TYPE, ...)                           \
@@ -86,11 +83,8 @@
 
 #define FROZEN_FREEZE_FIELD(NAME) \
   root.freezeField(self, this->NAME##Field, x.NAME);
-#define FROZEN_FREEZE_FIELD_OPT(NAME)                            \
-  root.freezeField(self,                                         \
-                   this->NAME##Field,                            \
-                   x.__isset.NAME ? folly::make_optional(x.NAME) \
-                                  : folly::none);
+#define FROZEN_FREEZE_FIELD_OPT(NAME) \
+  root.freezeOptionalField(self, this->NAME##Field, x.__isset.NAME, x.NAME);
 #define FROZEN_FREEZE_FIELD_REQ FROZEN_FREEZE_FIELD
 
 #define FROZEN_FREEZE(TYPE, ...)                                 \

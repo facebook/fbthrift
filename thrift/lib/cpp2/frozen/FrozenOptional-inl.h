@@ -41,6 +41,13 @@ struct OptionalLayout : public LayoutBase {
     return pos;
   }
 
+  FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
+    FieldPosition pos = startFieldPosition();
+    pos = root.layoutField(self, pos, isset, true);
+    pos = root.layoutField(self, pos, value, o);
+    return pos;
+  }
+
   void freeze(FreezeRoot& root,
               const folly::Optional<T>& o,
               FreezePosition self) const {
@@ -48,6 +55,11 @@ struct OptionalLayout : public LayoutBase {
     if (o) {
       root.freezeField(self, value, o.value());
     }
+  }
+
+  void freeze(FreezeRoot& root, const T& o, FreezePosition self) const {
+    root.freezeField(self, isset, true);
+    root.freezeField(self, value, o);
   }
 
   void thaw(ViewPosition self, folly::Optional<T>& out) const {

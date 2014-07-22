@@ -434,11 +434,11 @@ class LayoutRoot {
    * Lays out 'field' at position 'fieldPos', then recurse into the field value
    * to adjust 'field.layout'.
    */
-  template <class T, class Layout>
+  template <class T, class Layout, class Arg>
   FieldPosition layoutField(LayoutPosition self,
                             FieldPosition fieldPos,
                             Field<T, Layout>& field,
-                            const T& value) {
+                            const Arg& value) {
     auto& layout = field.layout;
     bool inlineBits = layout.size == 0;
     FieldPosition nextPos = fieldPos;
@@ -464,6 +464,19 @@ class LayoutRoot {
       nextPos.offset += layout.size;
     }
     return nextPos;
+  }
+
+  template <class T, class Layout>
+  FieldPosition layoutOptionalField(LayoutPosition self,
+                                    FieldPosition fieldPos,
+                                    Field<folly::Optional<T>, Layout>& field,
+                                    bool present,
+                                    const T& value) {
+    if (present) {
+      return layoutField(self, fieldPos, field, value);
+    } else {
+      return layoutField(self, fieldPos, field, folly::none);
+    }
   }
 
   /**
@@ -533,11 +546,23 @@ class FreezeRoot {
    *
    * Freezes 'value' into a 'field' of an object located at 'self'.
    */
-  template <class T, class Layout>
+  template <class T, class Layout, class Arg>
   void freezeField(FreezePosition self,
                    const Field<T, Layout>& field,
-                   const T& value) {
+                   const Arg& value) {
     field.layout.freeze(*this, value, self(field.pos));
+  }
+
+  template <class T, class Layout>
+  void freezeOptionalField(FreezePosition self,
+                           const Field<folly::Optional<T>, Layout>& field,
+                           bool present,
+                           const T& value) {
+    if (present) {
+      field.layout.freeze(*this, value, self(field.pos));
+    } else {
+      field.layout.freeze(*this, folly::none, self(field.pos));
+    }
   }
 
   /**
@@ -563,7 +588,7 @@ class FreezeRoot {
  */
 class ByteRangeFreezer final : public FreezeRoot {
  protected:
-  ByteRangeFreezer(folly::MutableByteRange write) : write_(write) {}
+  explicit ByteRangeFreezer(folly::MutableByteRange write) : write_(write) {}
 
  public:
   template <class T>
@@ -611,8 +636,8 @@ struct HolderImpl : public Holder {
 template <class Base>
 class Bundled : public Base {
  public:
-  Bundled(Base&& base) : Base(std::move(base)) {}
-  Bundled(const Base& base) : Base(base) {}
+  explicit Bundled(Base&& base) : Base(std::move(base)) {}
+  explicit Bundled(const Base& base) : Base(base) {}
 
   template <class T>
   void hold(T&& t) {
