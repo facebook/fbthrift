@@ -18,17 +18,12 @@
 #include <folly/Benchmark.h>
 #include <folly/Optional.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
+#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 
 using namespace apache::thrift::frozen;
-
-template <class T>
-size_t frozenSize(const T& v) {
-  Layout<T> layout;
-  return LayoutRoot::layout(v, layout);
-}
 
 TEST(FrozenIntegral, UIntBounds) {
   EXPECT_EQ(0, frozenSize(0UL));

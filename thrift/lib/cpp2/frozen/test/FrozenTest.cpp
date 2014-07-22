@@ -15,6 +15,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_types.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_layouts.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
@@ -45,12 +46,6 @@ example2::EveryLayout stressValue = [] {
   x.__isset.optMap = true;
   return x;
 }();
-
-template <class T>
-size_t frozenSize(const T& v) {
-  Layout<T> layout;
-  return LayoutRoot::layout(v, layout);
-}
 
 template <class T>
 Layout<T>&& layout(const T& x, Layout<T>&& layout = Layout<T>()) {

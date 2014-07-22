@@ -19,17 +19,12 @@
 #include <folly/Optional.h>
 #include <folly/Conv.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
+#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 
 using namespace apache::thrift::frozen;
-
-template <class T>
-size_t frozenSize(const T& v) {
-  Layout<T> layout;
-  return LayoutRoot::layout(v, layout);
-}
 
 std::map<int, int> osquares{{1, 1}, {2, 4}, {3, 9}, {4, 16}};
 std::unordered_map<int, int> usquares{{1, 1}, {2, 4}, {3, 9}, {4, 16}};

@@ -21,6 +21,12 @@
 
 namespace apache { namespace thrift { namespace frozen {
 
+template <class T>
+size_t frozenSize(const T& v) {
+  Layout<T> layout;
+  return LayoutRoot::layout(v, layout);
+}
+
 template <class T, class Return = Bundled<typename Layout<T>::View>>
 Return freezeToFile(const T& x, folly::File file) {
   auto layout = folly::make_unique<Layout<T>>();
