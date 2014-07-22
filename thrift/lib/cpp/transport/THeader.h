@@ -126,7 +126,7 @@ class THeader {
 
   void setClientType(CLIENT_TYPE ct);
 
-  uint16_t getClientType() {
+  CLIENT_TYPE getClientType() {
     return clientType;
   }
 
@@ -273,7 +273,7 @@ class THeader {
 
   /**
    * Callbacks to get and verify a mac transform.
-   *
+
    * If a mac callback is provided, it will be called with the outgoing packet,
    * with the returned string appended at the end of the data.
    *
@@ -377,7 +377,7 @@ class THeader {
 
   int16_t protoId_;
   int8_t protoVersion;
-  uint16_t clientType;
+  CLIENT_TYPE clientType;
   uint16_t prevClientType;
   uint32_t seqId;
   uint16_t flags_;
