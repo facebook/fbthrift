@@ -180,6 +180,7 @@ class TCompactProtocol(TProtocolBase):
         self.trans.write(pack(b'!b', byte))
 
     def __writeI16(self, i16):
+        i16 = int(i16)
         self.__writeVarint(makeZigZag(i16, 16))
 
     def __writeSize(self, i32):
@@ -234,10 +235,12 @@ class TCompactProtocol(TProtocolBase):
 
     @writer
     def writeI32(self, i32):
+        i32 = int(i32)
         self.__writeVarint(makeZigZag(i32, 32))
 
     @writer
     def writeI64(self, i64):
+        i64 = int(i64) if sys.version_info[0] >= 3 else long(i64)
         self.__writeVarint(makeZigZag(i64, 64))
 
     @writer
