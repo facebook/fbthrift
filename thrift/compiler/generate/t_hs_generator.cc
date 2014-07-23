@@ -401,6 +401,9 @@ void t_hs_generator::generate_const(t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
+  if (value == nullptr)
+    return type_to_default(type);
+
   type = get_true_type(type);
   ostringstream out;
 
@@ -417,34 +420,18 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
       break;
 
     case t_base_type::TYPE_BYTE:
-      out << "(" << value->get_integer() << " :: Int8)";
-      break;
-
     case t_base_type::TYPE_I16:
-      out << "(" << value->get_integer() << " :: Int16)";
-      break;
-
     case t_base_type::TYPE_I32:
-      out << "(" << value->get_integer() << " :: Int32)";
-      break;
-
     case t_base_type::TYPE_I64:
-      out << "(" << value->get_integer() << " :: Int64)";
+      out << value->get_integer();
       break;
 
     case t_base_type::TYPE_FLOAT:
-      if (value->get_type() == t_const_value::CV_INTEGER) {
-        out << "(" << value->get_integer() << " :: Float)";
-      } else {
-        out << "(" << value->get_double() << " :: Float)";
-      }
-      break;
-
     case t_base_type::TYPE_DOUBLE:
       if (value->get_type() == t_const_value::CV_INTEGER) {
-        out << "(" << value->get_integer() << " :: Double)";
+        out << value->get_integer();
       } else {
-        out << "(" << value->get_double() << " :: Double)";
+        out << value->get_double();
       }
       break;
 
@@ -466,7 +453,7 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
 
   } else if (type->is_struct() || type->is_xception()) {
     string cname = type_name(type);
-    indent(out) << cname << "{";
+    out << "default_" << cname << "{";
 
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;
@@ -475,25 +462,29 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
     map<t_const_value*, t_const_value*>::const_iterator v_iter;
 
     bool first = true;
-    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = nullptr;
+    for (auto& v_iter : val) {
+      t_field* field = nullptr;
 
-      for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter)
-        if ((*f_iter)->get_name() == v_iter->first->get_string())
-          field_type = (*f_iter)->get_type();
+      for (auto& f_iter : fields)
+        if (f_iter->get_name() == v_iter.first->get_string())
+          field = f_iter;
 
-      if (field_type == nullptr)
-        throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
+      if (field == nullptr)
+        throw "type error: " + cname + " has no field " + v_iter.first->get_string();
 
-      string fname = v_iter->first->get_string();
-      string const_value = render_const_value(field_type, v_iter->second);
+      string fname = v_iter.first->get_string();
+      string const_value = render_const_value(field->get_type(), v_iter.second);
 
-      out << (first ? "" : ",");
-      out << "f_" << cname << "_" << fname << " = Just (" << const_value << ")";
+      out << (first ? "" : ", ");
+      out << "f_" << cname << "_" << fname << " = ";
+      if (field->get_req() == t_field::T_OPTIONAL) {
+        out << "Just ";
+      }
+      out << const_value;
       first = false;
     }
 
-    indent(out) << "}";
+    out << "}";
 
   } else if (type->is_map()) {
     t_type* ktype = ((t_map*)type)->get_key_type();
@@ -688,23 +679,25 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
     // Fill in Field
     indent(out) << "f_" << sname << "_" << fname << " = ";
 
-    if (f_iter->get_req() != t_field::T_OPTIONAL) {
-      out << "maybe (";
-      if (f_iter->get_req() == t_field::T_REQUIRED) {
-        out << "error \"Missing required field: " << fname << "\"";
-      } else {
-        out << type_to_default(f_iter->get_type());
+    out << "maybe (";
+    if (f_iter->get_req() == t_field::T_REQUIRED) {
+      out << "error \"Missing required field: " << fname << "\"";
+    } else {
+      if (f_iter->get_req() == t_field::T_OPTIONAL &&
+          f_iter->get_value() == nullptr)
+        out << "Nothing";
+      else {
+        out << "f_" << sname << "_" << fname << " default_" << sname;
       }
-      out << ") ";
     }
+    out << ") ";
 
     out << "(\\(_," << val << ") -> ";
+    if (f_iter->get_req() == t_field::T_OPTIONAL)
+      out << "Just ";
     generate_deserialize_field(out, f_iter, val);
     out << ")";
 
-    if (f_iter->get_req() == t_field::T_OPTIONAL) {
-      out << " <$>";
-    }
     out << " (Map.lookup (" << key << ") fields)";
   }
 
@@ -892,11 +885,16 @@ void t_hs_generator::generate_hs_default(ofstream& out,
     }
 
     t_type* type = get_true_type(f_iter->get_type());
+    t_const_value* value = f_iter->get_value();
     indent(out) << "f_" << name << "_" << mname << " = ";
     if (f_iter->get_req() == t_field::T_OPTIONAL) {
-      out << "Nothing";
+      if (value == nullptr) {
+        out << "Nothing";
+      } else {
+        out << "Just " << render_const_value(type, value);
+      }
     } else {
-      out << type_to_default(type);
+      out << render_const_value(type, value);
     }
   }
   out << "}" << nl;
@@ -1509,8 +1507,7 @@ void t_hs_generator::generate_deserialize_type(ofstream &out,
     out << "toEnum $ fromIntegral " << val;
 
   } else {
-    printf("DO NOT KNOW HOW TO DESERIALIZE TYPE '%s'\n",
-           type->get_name().c_str());
+    throw "DO NOT KNOW HOW TO DESERIALIZE TYPE " + type->get_name();
   }
   out << "; _ -> error \"wrong type\"})";
 }
@@ -1567,6 +1564,7 @@ void t_hs_generator::generate_serialize_type(ofstream &out,
                                               t_type* type,
                                               string name) {
 
+  type = get_true_type(type);
   // Do nothing for void types
   if (type->is_void())
     throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE";
@@ -1592,8 +1590,7 @@ void t_hs_generator::generate_serialize_type(ofstream &out,
     }
 
   } else {
-    printf("DO NOT KNOW HOW TO SERIALIZE FIELD OF TYPE '%s'\n",
-           type->get_name().c_str());
+    throw "DO NOT KNOW HOW TO SERIALIZE FIELD OF TYPE " + type->get_name();
   }
 }
 
@@ -1606,7 +1603,8 @@ void t_hs_generator::generate_serialize_type(ofstream &out,
 void t_hs_generator::generate_serialize_struct(ofstream &out,
                                                t_struct* tstruct,
                                                string prefix) {
-  out << type_name(tstruct, "from_") << " " << prefix;
+  string tname = type_name(tstruct);
+  out << "from_" << tname << " " << prefix;
 }
 
 void t_hs_generator::generate_serialize_container(ofstream &out,
