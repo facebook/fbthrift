@@ -1,5 +1,5 @@
 struct TestStruct {
-  1: bool f_bool,
+  1: required bool f_bool,
   2: byte f_byte,
   3: double f_double,
   4: i16 f_i16,
@@ -10,4 +10,5 @@ struct TestStruct {
   9: map<i16,i32> f_map,
   10: string f_string,
   11: set<byte> f_set,
+  12: optional i32 o_i32,
 }

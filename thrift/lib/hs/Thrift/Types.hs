@@ -43,7 +43,7 @@ instance (Hashable a) => Hashable (Vector.Vector a) where
 
 type TypeMap = Map.HashMap Text (Int16, ThriftType)
 
-data ThriftVal = TStruct [(Int16, Text, ThriftVal)]
+data ThriftVal = TStruct (Map.HashMap Int16 (Text, ThriftVal))
                | TMap ThriftType ThriftType [(ThriftVal, ThriftVal)]
                | TList ThriftType [ThriftVal]
                | TSet ThriftType [ThriftVal]

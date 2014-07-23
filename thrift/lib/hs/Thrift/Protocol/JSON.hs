@@ -88,8 +88,8 @@ buildJSONValue (TFloat f) = floatDec f
 buildJSONValue (TDouble d) = doubleDec d
 buildJSONValue (TString s) = "\"" <> escape s <> "\""
 
-buildJSONStruct :: [(Int16, LT.Text, ThriftVal)] -> Builder
-buildJSONStruct = mconcat . intersperse "," . map (\(_,str,val) ->
+buildJSONStruct :: Map.HashMap Int16 (LT.Text, ThriftVal) -> Builder
+buildJSONStruct = mconcat . intersperse "," . Map.elems . Map.map (\(str,val) ->
   "\"" <> B.lazyByteString (encodeUtf8 str) <> "\":" <> buildJSONValue val)
 
 buildJSONMap :: [(ThriftVal, ThriftVal)] -> Builder
@@ -123,16 +123,18 @@ parseJSONValue T_STRING = TString <$> escapedString
 parseJSONValue T_STOP = fail "parseJSONValue: cannot parse type T_STOP"
 parseJSONValue T_VOID = fail "parseJSONValue: cannot parse type T_VOID"
 
-parseJSONStruct :: TypeMap -> Parser [(Int16, LT.Text, ThriftVal)]
-parseJSONStruct tmap = flip sepBy (lexeme $ PC.char8 ',') $ do
-  bs <- lexeme escapedString <* lexeme (PC.char8 ':')
-  case decodeUtf8' bs of
-    Left _ -> fail "parseJSONStruct: invalid key encoding"
-    Right str -> case Map.lookup str tmap of
-      Just (fid, ftype) -> do
-        val <- lexeme (parseJSONValue ftype)
-        return (fid, str, val)
-      Nothing -> fail "parseJSONStruct: invalid key"
+parseJSONStruct :: TypeMap -> Parser (Map.HashMap Int16 (LT.Text, ThriftVal))
+parseJSONStruct tmap = Map.fromList <$> parseField `sepBy` lexeme (PC.char8 ',')
+  where
+    parseField = do
+      bs <- lexeme escapedString <* lexeme (PC.char8 ':')
+      case decodeUtf8' bs of
+        Left _ -> fail "parseJSONStruct: invalid key encoding"
+        Right str -> case Map.lookup str tmap of
+          Just (fid, ftype) -> do
+            val <- lexeme (parseJSONValue ftype)
+            return (fid, (str, val))
+          Nothing -> fail "parseJSONStruct: invalid key"
 
 parseJSONMap :: ThriftType -> ThriftType -> Parser [(ThriftVal, ThriftVal)]
 parseJSONMap kt vt = liftA2 (,)

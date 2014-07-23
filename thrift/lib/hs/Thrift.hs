@@ -91,9 +91,9 @@ data AppExn = AppExn { ae_type :: AppExnType, ae_message :: String }
 instance Exception AppExn
 
 writeAppExn :: (Protocol p, Transport t) => p t -> AppExn -> IO ()
-writeAppExn pt ae = writeVal pt $ TStruct
-                    [ (1, "message", TString $ encodeUtf8 $ pack $ ae_message ae)
-                    , (2, "type", TI32 $ fromIntegral $ fromEnum (ae_type ae))
+writeAppExn pt ae = writeVal pt $ TStruct $ Map.fromList
+                    [ (1, ("message", TString $ encodeUtf8 $ pack $ ae_message ae))
+                    , (2, ("type", TI32 $ fromIntegral $ fromEnum (ae_type ae)))
                     ]
 
 readAppExn :: (Protocol p, Transport t) => p t -> IO AppExn
@@ -101,12 +101,14 @@ readAppExn pt = do
     let typemap = Map.fromList [("message",(1,T_STRING)),("type",(2,T_I32))]
     TStruct fields <- readVal pt $ T_STRUCT typemap
     return $ readAppExnFields fields
-      AppExn{ae_type = undefined, ae_message = undefined}
 
-readAppExnFields :: [(Int16, Text, ThriftVal)] -> AppExn -> AppExn
-readAppExnFields ((fid, _, val):fields) record = case (fid, val) of
-  (1, TString s) -> readAppExnFields fields record{ae_message = unpack $ decodeUtf8 s}
-  (2, TI32 i) ->
-    readAppExnFields fields record{ae_type = toEnum $ fromIntegral i}
-  _ -> readAppExnFields fields record
-readAppExnFields [] record = record
+readAppExnFields :: Map.HashMap Int16 (Text, ThriftVal) -> AppExn
+readAppExnFields fields = AppExn{
+  ae_message = maybe undefined unwrapMessage $ Map.lookup 1 fields,
+  ae_type    = maybe undefined unwrapType $ Map.lookup 2 fields
+  }
+  where
+    unwrapMessage (_, TString s) = unpack $ decodeUtf8 s
+    unwrapMessage _ = undefined
+    unwrapType (_, TI32 i) = toEnum $ fromIntegral i
+    unwrapType _ = undefined

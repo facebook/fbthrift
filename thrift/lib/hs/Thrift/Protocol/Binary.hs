@@ -107,11 +107,11 @@ buildBinaryValue (TString s) = int32BE len <> lazyByteString s
   where
     len :: Int32 = fromIntegral (LBS.length s)
 
-buildBinaryStruct :: [(Int16, LT.Text, ThriftVal)] -> Builder
-buildBinaryStruct = foldl combine mempty
+buildBinaryStruct :: Map.HashMap Int16 (LT.Text, ThriftVal) -> Builder
+buildBinaryStruct = Map.foldrWithKey combine mempty
   where
-    combine s (fid,_,val) =
-      s <> buildTypeOf val <> int16BE fid <> buildBinaryValue val
+    combine fid (_,val) s =
+      buildTypeOf val <> int16BE fid <> buildBinaryValue val <> s
 
 buildBinaryMap :: [(ThriftVal, ThriftVal)] -> Builder
 buildBinaryMap = foldl combine mempty
@@ -149,15 +149,14 @@ parseBinaryValue T_STRING = do
   TString . LBS.fromStrict <$> P.take (fromIntegral i)
 parseBinaryValue ty = error $ "Cannot read value of type " ++ show ty
 
-parseBinaryStruct :: P.Parser [(Int16, LT.Text, ThriftVal)]
-parseBinaryStruct = do
-  t <- parseType
-  case t of
-    T_STOP -> return []
-    _ -> do
+parseBinaryStruct :: P.Parser (Map.HashMap Int16 (LT.Text, ThriftVal))
+parseBinaryStruct = Map.fromList <$> P.manyTill parseField (matchType T_STOP)
+  where
+    parseField = do
+      t <- parseType
       n <- Binary.decode . LBS.fromStrict <$> P.take 2
       v <- parseBinaryValue t
-      ((n, "", v) :) <$> parseBinaryStruct
+      return (n, ("", v))
 
 parseBinaryMap :: ThriftType -> ThriftType -> Int32 -> P.Parser [(ThriftVal, ThriftVal)]
 parseBinaryMap kt vt n | n <= 0 = return []
@@ -196,6 +195,9 @@ buildTypeOf v = buildType $ case v of
 -- | Read a byte as though it were a ThriftType
 parseType :: P.Parser ThriftType
 parseType = toEnum . fromIntegral <$> P.anyWord8
+
+matchType :: ThriftType -> P.Parser ThriftType
+matchType t = t <$ P.word8 (fromIntegral $ fromEnum t)
 
 -- | Converts a ByteString to a Floating point number
 -- The ByteString is assumed to be encoded in network order (Big Endian)
