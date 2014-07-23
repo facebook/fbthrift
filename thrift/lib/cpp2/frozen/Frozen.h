@@ -38,10 +38,7 @@
 #include <thrift/lib/cpp2/frozen/FrozenMacros.h>
 #include <thrift/lib/thrift/gen-cpp/frozen_types.h>
 
-namespace apache {
-namespace thrift {
-namespace frozen {
-
+namespace apache { namespace thrift { namespace frozen {
 /**
  *          \__  __/             \__  __/             \__  __/
  *          /_/  \_\             /_/  \_\             /_/  \_\
@@ -709,3 +706,4 @@ void thawField(ViewPosition self,
 #include <thrift/lib/cpp2/frozen/FrozenOrderedTable-inl.h>
 #include <thrift/lib/cpp2/frozen/FrozenHashTable-inl.h>
 #include <thrift/lib/cpp2/frozen/FrozenAssociative-inl.h>
+#include <thrift/lib/cpp2/frozen/FrozenEnum-inl.h>

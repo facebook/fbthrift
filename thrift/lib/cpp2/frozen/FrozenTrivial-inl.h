@@ -71,7 +71,7 @@ struct IsBlitType
     : std::integral_constant<
           bool,
           (folly::IsTriviallyCopyable<T>::value && !std::is_pointer<T>::value &&
-           !std::is_integral<T>::value)> {};
+           !std::is_enum<T>::value && !std::is_integral<T>::value)> {};
 }
 
 template <class T>

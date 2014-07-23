@@ -3,6 +3,12 @@ namespace cpp example1
 
 cpp_include "<unordered_set>"
 
+enum Gender {
+  Male = 0,
+  Female = 1,
+  Other = 2,
+}
+
 struct Pet1 {
   1 : string name,
   2 : optional i32 age
@@ -13,6 +19,7 @@ struct Person1 {
   2 : float height, // different
   1 : string name,
   4 : list<Pet1> pets,
+  6 : Gender gender = Male,
 }
 
 struct Pet2 {

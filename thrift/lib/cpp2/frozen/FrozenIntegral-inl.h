@@ -31,6 +31,7 @@ size_t bitsNeeded(const T& x) {
 template <class T>
 struct PackedIntegerLayout : public LayoutBase {
   PackedIntegerLayout() : LayoutBase(typeid(T)) {}
+  explicit PackedIntegerLayout(const std::type_info& type) : LayoutBase(type) {}
 
   FieldPosition layout(LayoutRoot& root, const T& x, LayoutPosition self) {
     FieldPosition pos = startFieldPosition();

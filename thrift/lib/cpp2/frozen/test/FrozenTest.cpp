@@ -321,6 +321,14 @@ TEST(Frozen, SchemaSaving) {
   EXPECT_EQ(schemaSaved, schemaLoaded);
 }
 
+TEST(Frozen, Enum) {
+  example2::Person1 he, she;
+  he.gender = example2::Gender::Male;
+  she.gender = example2::Gender::Female;
+  EXPECT_EQ(he, freeze(he).thaw());
+  EXPECT_EQ(she, freeze(she).thaw());
+}
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   google::InitGoogleLogging(argv[0]);
