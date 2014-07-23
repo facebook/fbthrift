@@ -443,10 +443,13 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
     t_enum* tenum = (t_enum*)type;
     vector<t_enum_value*> constants = tenum->get_constants();
     vector<t_enum_value*>::iterator c_iter;
-    for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
-      int val = (*c_iter)->get_value();
+    for (auto& c_iter : constants) {
+      int val = c_iter->get_value();
       if (val == value->get_integer()) {
-        indent(out) << capitalize((*c_iter)->get_name());
+        t_program* prog = type->get_program();
+        if (prog != nullptr && prog != program_)
+          out << capitalize(prog->get_name()) << "_Types.";
+        out << capitalize(c_iter->get_name());
         break;
       }
     }
