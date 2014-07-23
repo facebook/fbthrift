@@ -10,16 +10,24 @@ from thrift.server.TServer import TConnectionContext
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TTransport import TMemoryBuffer
 
-from _cpp_server_wrapper import CppServerWrapper
+from _cpp_server_wrapper import CppServerWrapper, ContextData
 
 class TCppConnectionContext(TConnectionContext):
-    def __init__(self, client_principal):
-        self.client_principal = client_principal
+    def __init__(self, context_data):
+        self.context_data = context_data
 
     def getClientPrincipal(self):
-        return self.client_principal
+        return self.context_data.getClientIdentity()
 
-class _Adapter(object):
+    def getPeerName(self):
+        return self.context_data.getPeerAddress()
+
+    def getSockName(self):
+        return self.context_data.getLocalAddress()
+
+class _ProcessorAdapter(object):
+    CONTEXT_DATA = ContextData
+
     def __init__(self, processor):
         self.processor = processor
 
@@ -27,7 +35,7 @@ class _Adapter(object):
     # the constructed header buffer.  Also add endpoint addrs to the
     # context
     def call_processor(self, input, client_type, protocol_type,
-                       client_principal):
+                       context_data):
         try:
             # The input string has already had the header removed, but
             # the python processor will expect it to be there.  In
@@ -36,15 +44,16 @@ class _Adapter(object):
             # buffer, then pass that buffer to the python processor.
 
             write_buf = TMemoryBuffer()
-            trans = THeaderTransport(write_buf, client_types=[client_type])
+            trans = THeaderTransport(write_buf)
+            trans._THeaderTransport__client_type = client_type
             trans.set_protocol_id(protocol_type)
             trans.write(input)
             trans.flush()
 
             prot_buf = TMemoryBuffer(write_buf.getvalue())
-            prot = THeaderProtocol(prot_buf)
+            prot = THeaderProtocol(prot_buf, client_types=[client_type])
 
-            ctx = TCppConnectionContext(client_principal)
+            ctx = TCppConnectionContext(context_data)
 
             self.processor.process(prot, prot, ctx)
 
@@ -63,4 +72,4 @@ class _Adapter(object):
 class TCppServer(CppServerWrapper):
     def __init__(self, processor):
         CppServerWrapper.__init__(self)
-        self.setAdapter(_Adapter(processor))
+        self.setAdapter(_ProcessorAdapter(processor))

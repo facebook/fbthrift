@@ -6,39 +6,35 @@ from __future__ import print_function
 #from __future__ import unicode_literals
 
 import multiprocessing
+import sys
 import threading
 import time
 
 from fb303.ContextFacebookBase import FacebookBase
 from libfb.testutil import BaseFacebookTestCase
+from thrift.transport import TSocket, TTransport
+from thrift.protocol import TBinaryProtocol
 from thrift.Thrift import TProcessorEventHandler
 from thrift.server.TCppServer import TCppServer
 from tools.test.stubs import fbpyunit
-
-# @lint-avoid-servicerouter-import-warning
-from ServiceRouter import *
 
 from test.sleep import SleepService, ttypes
 
 TIMEOUT = 60 * 1000  # milliseconds
 
 def getClient(port):
-    options = ServiceOptions({
-        "single_host": ("127.0.0.1", str(port))
-        })
+    transport = TSocket.TSocket('127.0.0.1', port)
+    transport = TTransport.TFramedTransport(transport)
+    protocol = TBinaryProtocol.TBinaryProtocol(transport)
+    client = SleepService.Client(protocol)
+    transport.open()
+    return client
 
-    overrides = ConnConfigs({
-        # milliseconds
-        "sock_sendtimeout": str(TIMEOUT),
-        "sock_recvtimeout": str(TIMEOUT),
-        "thrift_transport": "header",
-        "thrift_security": "disabled",
-        })
 
-    return ServiceRouter().getClient2(
-        SleepService.Client,
-        "keychain.service",  # TODO mhorowitz: make a tier
-        options, overrides, False)
+class SleepProcessorEventHandler(TProcessorEventHandler):
+    def getHandlerContext(self, fn_name, server_context):
+        self.last_peer_name = server_context.getPeerName()
+        self.last_sock_name = server_context.getSockName()
 
 
 class SleepHandler(FacebookBase, SleepService.Iface):
@@ -56,16 +52,21 @@ class SleepHandler(FacebookBase, SleepService.Iface):
 
 class SpaceProcess(multiprocessing.Process):
     def __init__(self, port):
-        multiprocessing.Process.__init__(self)
+        self.queue = multiprocessing.Queue()
+        multiprocessing.Process.__init__(
+            self, target=self.target, args=(self.queue,))
         self.port = port
 
-    def run(self):
+    def target(self, queue):
         client = getClient(self.port)
 
         hw = "hello, world"
         hw_spaced = "h e l l o ,   w o r l d"
 
         assert client.space(hw) == hw_spaced
+
+        queue.put((client._iprot.trans.getTransport().getSocketName(),
+                   client._iprot.trans.getTransport().getPeerName()))
 
 
 class ParallelProcess(multiprocessing.Process):
@@ -90,6 +91,8 @@ class TestServer(BaseFacebookTestCase):
     def setUp(self):
         super(TestServer, self).setUp()
         processor = SleepService.Processor(SleepHandler())
+        self.event_handler = SleepProcessorEventHandler()
+        processor.setEventHandler(self.event_handler)
         self.server = TCppServer(processor)
         self.addCleanup(self.stopServer)
         # Let the kernel choose a port.
@@ -115,11 +118,14 @@ class TestServer(BaseFacebookTestCase):
     def testSpace(self):
         space = SpaceProcess(self.server_port)
         space.start()
+        client_sockname, client_peername = space.queue.get()
         space.join()
 
         self.stopServer()
 
         self.assertEquals(space.exitcode, 0)
+        self.assertEquals(self.event_handler.last_peer_name, client_sockname)
+        self.assertEquals(self.event_handler.last_sock_name, client_peername)
 
     def testParallel(self):
         parallel = ParallelProcess(self.server_port)
