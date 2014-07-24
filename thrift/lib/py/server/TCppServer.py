@@ -73,3 +73,29 @@ class TCppServer(CppServerWrapper):
     def __init__(self, processor):
         CppServerWrapper.__init__(self)
         self.setAdapter(_ProcessorAdapter(processor))
+        self._setup_done = False
+        self.server_event_handler = None
+
+    def setServerEventHandler(self, seh):
+        self.server_event_handler = seh
+
+    def setup(self):
+        if self._setup_done:
+            return
+        CppServerWrapper.setup(self)
+        if self.server_event_handler is not None:
+            self.server_event_handler.preServe(self.getAddress())
+        self._setup_done = True
+
+    def loop(self):
+        if not self._setup_done:
+            raise RuntimeError(
+                "setup() must be called before loop()")
+        CppServerWrapper.loop(self)
+
+    def serve(self):
+        self.setup()
+        try:
+            self.loop()
+        finally:
+            self.cleanUp()

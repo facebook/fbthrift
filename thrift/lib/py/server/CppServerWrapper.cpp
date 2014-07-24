@@ -181,15 +181,17 @@ public:
     return makePythonAddress(ThriftServer::getAddress());
   }
 
-  void serveNoGil() {
-    // So, normal order of operations:
-    // setup, drop GIL, loop, cleanup, acquire GIL.
+  void loop() {
+    PyThreadState* save_state = PyEval_SaveThread();
+    SCOPE_EXIT { PyEval_RestoreThread(save_state); };
 
-    // Hold the GIL while setup() is running.  This makes
-    // getPythonAddress thread-safe, since it will hold the GIL, too.
+    // Thrift main loop.  This will run indefinitely, until stop() is
+    // called.
 
-    setup();
+    getServeEventBase()->loop();
+  }
 
+  void cleanUp() {
     // Deadlock avoidance: consider a thrift worker thread is doing
     // something in C++-land having relinquished the GIL.  This thread
     // acquires the GIL, stops the workers, and waits for the worker
@@ -199,35 +201,10 @@ public:
     // complete.  So we do cleanUp() without the GIL, and reacquire it
     // only once thrift is all cleaned up.
 
-    // The first SCOPE_EXIT, and therefore the last to be executed,
-    // reacquires the GIL, if it was dropped.  (This code accounts for
-    // the possibility of PyEval_SaveThread() failing, which is
-    // admittedly unlikely.)
+    PyThreadState* save_state = PyEval_SaveThread();
+    SCOPE_EXIT { PyEval_RestoreThread(save_state); };
 
-    PyThreadState* save_state = nullptr;
-
-    SCOPE_EXIT {
-      // Now arrange to clean up thrift.
-
-      cleanUp();
-
-      // Acquire the GIL
-
-      if (save_state) {
-        PyEval_RestoreThread(save_state);
-      }
-    };
-
-    // Drop the GIL
-
-    save_state = PyEval_SaveThread();
-
-    // Thrift main loop.  This will run indefinitely, until stop() is
-    // called.  Then the cleanups will happen in reverse declared
-    // order above: cleanUp() will happen without the GIL, then the
-    // GIL will be reacquired.
-
-    getServeEventBase()->loop();
+    ThriftServer::cleanUp();
   }
 };
 
@@ -245,9 +222,12 @@ BOOST_PYTHON_MODULE(_cpp_server_wrapper) {
     // methods added or customized for the python implementation
     .def("setAdapter", &CppServerWrapper::setAdapter)
     .def("getAddress", &CppServerWrapper::getAddress)
-    .def("serve", &CppServerWrapper::serveNoGil)
+    .def("loop", &CppServerWrapper::loop)
+    .def("cleanUp", &CppServerWrapper::cleanUp)
 
     // methods directly passed to the C++ impl
+    .def("setup", &CppServerWrapper::setup)
+    .def("setNWorkerThreads", &CppServerWrapper::setNWorkerThreads)
     .def("setPort", &CppServerWrapper::setPort)
     .def("stop", &CppServerWrapper::stop)
     ;
