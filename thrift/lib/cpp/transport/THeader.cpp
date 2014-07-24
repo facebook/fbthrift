@@ -29,7 +29,7 @@
 
 #ifdef HAVE_QUICKLZ
 extern "C" {
-#include "external/quicklz-1.5b/quicklz.h"
+#include "external/quicklz-1.5b/quicklz.h" // nolint
 }
 #endif
 
@@ -1020,7 +1020,7 @@ void THeader::setCallPriority(
   setHeader(PRIORITY_HEADER, folly::to<std::string>(prio));
 }
 
-std::chrono::milliseconds THeader::getClientTimeout() {
+std::chrono::milliseconds THeader::getClientTimeout() const {
   const auto& map = getHeaders();
   auto iter = map.find(CLIENT_TIMEOUT_HEADER);
   if (iter != map.end()) {

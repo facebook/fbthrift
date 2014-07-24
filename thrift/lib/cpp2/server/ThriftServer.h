@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/transport/TSocketAddress.h>
 #include <thrift/lib/cpp/transport/TTransportUtils.h>
@@ -774,6 +775,10 @@ class ThriftServer : public apache::thrift::server::TServer {
   std::chrono::milliseconds getTaskExpireTime() const {
     return taskExpireTime_;
   }
+
+  std::chrono::milliseconds getTaskExpireTimeForRequest(
+    const apache::thrift::transport::THeader& header
+  ) const;
 
   /**
    * Set the listen backlog. Refer to the comment on listenBacklog_ member for

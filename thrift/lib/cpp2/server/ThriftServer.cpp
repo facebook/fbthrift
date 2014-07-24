@@ -543,5 +543,18 @@ bool ThriftServer::isOverloaded(uint32_t workerActiveRequests) {
   return false;
 }
 
+std::chrono::milliseconds ThriftServer::getTaskExpireTimeForRequest(
+  const apache::thrift::transport::THeader& requestHeader
+) const {
+  auto timeoutTime = getTaskExpireTime();
+  if (getUseClientTimeout()) {
+    auto clientTimeoutTime = requestHeader.getClientTimeout();
+    if (clientTimeoutTime > std::chrono::milliseconds(0) &&
+        clientTimeoutTime < timeoutTime) {
+      timeoutTime = clientTimeoutTime;
+    }
+  }
+  return timeoutTime;
+}
 
 }} // apache::thrift

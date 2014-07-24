@@ -309,14 +309,9 @@ void Cpp2Connection::requestReceived(
     observer->receivedRequest();
   }
 
-  auto timeoutTime = server->getTaskExpireTime();
-  if (server->useClientTimeout_) {
-    auto clientTimeoutTime = channel_->getHeader()->getClientTimeout();
-    if (clientTimeoutTime > std::chrono::milliseconds(0) &&
-        clientTimeoutTime < timeoutTime) {
-      timeoutTime = clientTimeoutTime;
-    }
-  }
+  auto timeoutTime = server->getTaskExpireTimeForRequest(
+    *(channel_->getHeader())
+  );
   if (timeoutTime > std::chrono::milliseconds(0)) {
     worker_->scheduleTimeout(t2r.get(), timeoutTime);
     t2r->setStreamTimeout(timeoutTime);

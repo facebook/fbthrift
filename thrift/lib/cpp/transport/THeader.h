@@ -29,7 +29,7 @@
 #include <folly/io/IOBufQueue.h>
 
 #include <bitset>
-#include "boost/scoped_array.hpp"
+#include "boost/scoped_array.hpp"  // nolint
 #include <pwd.h>
 #include <unistd.h>
 #include <chrono>
@@ -343,7 +343,7 @@ class THeader {
   void setCallPriority(
       apache::thrift::concurrency::PriorityThreadManager::PRIORITY prio);
 
-  std::chrono::milliseconds getClientTimeout();
+  std::chrono::milliseconds getClientTimeout() const;
 
   void setClientTimeout(std::chrono::milliseconds timeout);
 
