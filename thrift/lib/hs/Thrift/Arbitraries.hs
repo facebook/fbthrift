@@ -7,6 +7,7 @@ import Data.Bits()
 import Test.QuickCheck.Arbitrary
 
 import Control.Applicative ((<$>))
+import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import qualified Data.Vector as Vector
@@ -16,16 +17,16 @@ import qualified Data.HashMap.Strict as HMap
 import Data.Hashable (Hashable)
 
 import Data.ByteString.Lazy (ByteString)
-import qualified Data.ByteString.Lazy.Char8 as BS
+import qualified Data.ByteString.Lazy as BS
 
 -- String has an Arbitrary instance already
 -- Bool has an Arbitrary instance already
 -- A Thrift 'list' is a Vector.
 
 instance Arbitrary ByteString where
-  arbitrary = BS.pack <$> arbitrary
+  arbitrary = BS.pack . filter (/= 0) <$> arbitrary
 
-instance (Ord k, Arbitrary k, Arbitrary v) => Arbitrary (Map.Map k v) where
+instance (Ord k, Arbitrary k, Arbitrary v) => Arbitrary (Map k v) where
   arbitrary = Map.fromList <$> arbitrary
 
 instance (Ord k, Arbitrary k) => Arbitrary (Set.Set k) where
@@ -35,7 +36,7 @@ instance (Arbitrary k) => Arbitrary (Vector.Vector k) where
   arbitrary = Vector.fromList <$> arbitrary
 
 instance Arbitrary Text.Text where
-  arbitrary = Text.pack <$> arbitrary
+  arbitrary = Text.pack . filter (/= '\0') <$> arbitrary
 
 instance (Eq k, Hashable k, Arbitrary k) => Arbitrary (HSet.HashSet k) where
   arbitrary = HSet.fromList <$> arbitrary
@@ -58,4 +59,3 @@ Instead we'll generate an arbitrary instance along with the code.
     There might be some way to introspect on the Haskell structure of a
     Thrift 'struct' or 'exception' but generating the code directly is simpler.
 -}
-

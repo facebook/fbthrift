@@ -93,9 +93,12 @@ buildJSONStruct = mconcat . intersperse "," . Map.elems . Map.map (\(str,val) ->
   "\"" <> B.lazyByteString (encodeUtf8 str) <> "\":" <> buildJSONValue val)
 
 buildJSONMap :: [(ThriftVal, ThriftVal)] -> Builder
-buildJSONMap = mconcat . intersperse "," . map (\(key, val) ->
-  buildJSONValue key <> ":" <> buildJSONValue val)
-
+buildJSONMap = mconcat . intersperse "," . map buildKV
+  where
+    buildKV (key@(TString _), val) =
+      buildJSONValue key <> ":" <> buildJSONValue val
+    buildKV (key, val) =
+      "\"" <> buildJSONValue key <> "\":" <> buildJSONValue val
 buildJSONList :: [ThriftVal] -> Builder
 buildJSONList = mconcat . intersperse "," . map buildJSONValue
 
@@ -137,10 +140,10 @@ parseJSONStruct tmap = Map.fromList <$> parseField `sepBy` lexeme (PC.char8 ',')
           Nothing -> fail "parseJSONStruct: invalid key"
 
 parseJSONMap :: ThriftType -> ThriftType -> Parser [(ThriftVal, ThriftVal)]
-parseJSONMap kt vt = liftA2 (,)
-                     (lexeme (parseJSONValue kt) <* lexeme (PC.char8 ':'))
-                     (lexeme $ parseJSONValue vt) `sepBy`
-                     lexeme (PC.char8 ',')
+parseJSONMap kt vt =
+  ((,) <$> lexeme (PC.char8 '"' *> parseJSONValue kt <* PC.char8 '"') <*>
+   (lexeme (PC.char8 ':') *> lexeme (parseJSONValue vt))) `sepBy`
+  lexeme (PC.char8 ',')
 
 parseJSONList :: ThriftType -> Parser [ThriftVal]
 parseJSONList ty = lexeme (parseJSONValue ty) `sepBy` lexeme (PC.char8 ',')
@@ -152,7 +155,37 @@ escapedString = PC.char8 '"' *>
 
 escapedChar :: Parser Word8
 escapedChar = PC.char8 '\\' *> (c2w <$> choice
-                                [ '\0' <$ PC.char '0'
+                                [ '\SOH' <$ P.string "u0001"
+                                , '\STX' <$ P.string "u0002"
+                                , '\ETX' <$ P.string "u0003"
+                                , '\EOT' <$ P.string "u0004"
+                                , '\ENQ' <$ P.string "u0005"
+                                , '\ACK' <$ P.string "u0006"
+                                , '\BEL' <$ P.string "u0007"
+                                , '\BS'  <$ P.string "u0008"
+                                , '\VT'  <$ P.string "u000b"
+                                , '\FF'  <$ P.string "u000c"
+                                , '\CR'  <$ P.string "u000d"
+                                , '\SO'  <$ P.string "u000e"
+                                , '\SI'  <$ P.string "u000f"
+                                , '\DLE' <$ P.string "u0010"
+                                , '\DC1' <$ P.string "u0011"
+                                , '\DC2' <$ P.string "u0012"
+                                , '\DC3' <$ P.string "u0013"
+                                , '\DC4' <$ P.string "u0014"
+                                , '\NAK' <$ P.string "u0015"
+                                , '\SYN' <$ P.string "u0016"
+                                , '\ETB' <$ P.string "u0017"
+                                , '\CAN' <$ P.string "u0018"
+                                , '\EM'  <$ P.string "u0019"
+                                , '\SUB' <$ P.string "u001a"
+                                , '\ESC' <$ P.string "u001b"
+                                , '\FS'  <$ P.string "u001c"
+                                , '\GS'  <$ P.string "u001d"
+                                , '\RS'  <$ P.string "u001e"
+                                , '\US'  <$ P.string "u001f"
+                                , '\DEL' <$ P.string "u007f"
+                                , '\0' <$ PC.char '0'
                                 , '\a' <$ PC.char 'a'
                                 , '\b' <$ PC.char 'b'
                                 , '\f' <$ PC.char 'f'
@@ -170,16 +203,40 @@ escape = LBS.foldl' escapeChar mempty
   where
     escapeChar b w = b <> case w2c w of
       '\0' -> "\\0"
-      '\a' -> "\\a"
       '\b' -> "\\b"
       '\f' -> "\\f"
       '\n' -> "\\n"
       '\r' -> "\\r"
       '\t' -> "\\t"
-      '\v' -> "\\v"
       '\"' -> "\\\""
-      '\'' -> "\\'"
       '\\' -> "\\\\"
+      '\SOH' -> "\\u0001"
+      '\STX' -> "\\u0002"
+      '\ETX' -> "\\u0003"
+      '\EOT' -> "\\u0004"
+      '\ENQ' -> "\\u0005"
+      '\ACK' -> "\\u0006"
+      '\BEL' -> "\\u0007"
+      '\VT'  -> "\\u000b"
+      '\SO'  -> "\\u000e"
+      '\SI'  -> "\\u000f"
+      '\DLE' -> "\\u0010"
+      '\DC1' -> "\\u0011"
+      '\DC2' -> "\\u0012"
+      '\DC3' -> "\\u0013"
+      '\DC4' -> "\\u0014"
+      '\NAK' -> "\\u0015"
+      '\SYN' -> "\\u0016"
+      '\ETB' -> "\\u0017"
+      '\CAN' -> "\\u0018"
+      '\EM'  -> "\\u0019"
+      '\SUB' -> "\\u001a"
+      '\ESC' -> "\\u001b"
+      '\FS'  -> "\\u001c"
+      '\GS'  -> "\\u001d"
+      '\RS'  -> "\\u001e"
+      '\US'  -> "\\u001f"
+      '\DEL' -> "\\u007f"
       _ -> B.word8 w
 
 lexeme :: Parser a -> Parser a

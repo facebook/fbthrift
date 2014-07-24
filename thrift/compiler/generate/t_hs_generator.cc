@@ -268,8 +268,8 @@ string t_hs_generator::hs_imports() {
   string result = string(
       "import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),\n"
       "                 Eq, Show, Ord,\n"
-      "                 error, fromIntegral, fromEnum, length, map, maybe, otherwise,\n"
-      "                 return, show, toEnum,\n"
+      "                 concat, error, fromIntegral, fromEnum, length, map,\n"
+      "                  maybe, otherwise, return, show, toEnum,\n"
       "                 enumFromTo, Bounded, minBound, maxBound,\n"
       "                 (.), (&&), (||), (==), (++), ($), (-))\n"
       "\n"
@@ -645,6 +645,25 @@ void t_hs_generator::generate_hs_struct_arbitrary(ofstream& out, t_struct* tstru
       out << "arbitrary)" << nl;
     }
     indent_down(); indent_down(); indent_down(); indent_down();
+
+    // Shrink
+    indent(out) << "shrink obj | obj == default_" << tname << " = []" << nl;
+    indent(out) << "           | otherwise = concat" << nl;
+    indent_up();
+    first = true;
+    for (auto& m_iter : members) {
+      if (first) {
+        first = false;
+        indent(out) << "[ ";
+      } else {
+        indent(out) << ", ";
+      }
+      string fname = "f_" + tname + "_" + m_iter->get_name();
+      out << "[default_" << tname << "{" << fname << " = f} | ";
+      out << "f <- shrink (" << fname << " obj) ]" << nl;
+    }
+    indent(out) << "]" << nl;
+    indent_down();
   } else { /* 0 == members.size() */
      indent(out) << "arbitrary = elements [" <<tname<< "]" << nl;
   }

@@ -1,3 +1,8 @@
+struct Foo {
+  5: i32 bar,
+  1: i32 baz,
+}
+
 struct TestStruct {
   1: required bool f_bool,
   2: byte f_byte,
@@ -10,12 +15,6 @@ struct TestStruct {
   9: map<i16,i32> f_map = {1:2},
   10: string f_string,
   11: set<byte> f_set,
-  12: optional i32 o_i32 = 10,
-  13: Foo foo = {"bar":1,"baz":2},
-}
-
-struct Foo {
-  1: i32 bar,
-  2: i32 baz,
-  3: i32 x,
+  12: optional i32 o_i32,
+  99: Foo foo = {"bar":1,"baz":2},
 }
