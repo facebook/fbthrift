@@ -110,7 +110,8 @@ public:
                        Cpp2RequestContext* context,
                        apache::thrift::async::TEventBase* eb,
                        apache::thrift::concurrency::ThreadManager* tm) {
-    auto input = buf->moveToFbString().toStdString();
+    folly::ByteRange input_range = buf->coalesce();
+    auto input_data = const_cast<unsigned char*>(input_range.data());
     auto clientType = context->getHeader()->getClientType();
     if (clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
       // SASL processing is already done, and we're not going to put
@@ -124,6 +125,15 @@ public:
       PyGILState_STATE state = PyGILState_Ensure();
       SCOPE_EXIT { PyGILState_Release(state); };
 
+#if PY_MAJOR_VERSION == 2
+      auto input = handle<>(
+        PyBuffer_FromMemory(input_data, input_range.size()));
+#else
+      auto input = handle<>(
+        PyMemoryView_FromMemory(reinterpret_cast<char*>(input_data),
+                                input_range.size(), PyBUF_READ));
+#endif
+
       auto cd_ctor = adapter_->attr("CONTEXT_DATA");
       object contextData = cd_ctor();
       extract<ContextData&>(contextData)().copyContextContents(context);
@@ -132,11 +142,23 @@ public:
         adapter_->attr("call_processor")(
           input, int(clientType), int(protType), contextData);
       if (output.is_none()) {
-        return;
+        throw std::runtime_error("Unexpected error in processor method");
       }
-
-      outbuf = folly::IOBuf::copyBuffer(
-        extract<const char *>(output), extract<int>(output.attr("__len__")()));
+      PyObject* output_ptr = output.ptr();
+#if PY_MAJOR_VERSION == 2
+      if (PyString_Check(output_ptr)) {
+        outbuf = folly::IOBuf::copyBuffer(
+          extract<const char *>(output),
+          extract<int>(output.attr("__len__")()));
+      } else
+#endif
+        if (PyBytes_Check(output_ptr)) {
+          outbuf = folly::IOBuf::copyBuffer(
+            PyBytes_AsString(output_ptr), PyBytes_Size(output_ptr));
+        } else {
+          throw std::runtime_error(
+            "Return from processor method is not string or bytes");
+        }
     }
     req->sendReply(std::move(outbuf));
   }

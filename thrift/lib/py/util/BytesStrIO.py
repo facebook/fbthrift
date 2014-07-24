@@ -32,14 +32,14 @@ if sys.version_info[0] >= 3:
         def __init__(self, *args):
             args_new = []
             for arg in args:
-                if not isinstance(arg, bytes):
+                if not isinstance(arg, (bytes, memoryview)):
                     args_new.append(arg.encode())
                 else:
                     args_new.append(arg)
             BytesIO.__init__(self, *args_new)
 
         def write(self, data):
-            if isinstance(data, bytes):
+            if isinstance(data, (bytes, memoryview)):
                 BytesIO.write(self, data)
             else:
                 BytesIO.write(self, data.encode())

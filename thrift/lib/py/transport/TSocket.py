@@ -158,7 +158,7 @@ class TSocketBase(TTransportBase):
         if not self.handles:
             raise TTransportException(TTransportException.NOT_OPEN,
                 'Transport not open')
-        return self.handles.values()[0].getsockname()
+        return next(iter(self.handles.values())).getsockname()
 
     def fileno(self):
         if not self.handles:

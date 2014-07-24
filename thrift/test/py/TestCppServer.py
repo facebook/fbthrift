@@ -46,8 +46,11 @@ class SleepHandler(FacebookBase, SleepService.Iface):
         time.sleep(seconds)
         print("server sleeping... done")
 
-    def space(self, str):
-        return " ".join(str)
+    def space(self, s):
+        if isinstance(s, bytes):
+            s = s.decode('latin1')
+
+        return " ".join(s)
 
 
 class SpaceProcess(multiprocessing.Process):
@@ -63,7 +66,10 @@ class SpaceProcess(multiprocessing.Process):
         hw = "hello, world"
         hw_spaced = "h e l l o ,   w o r l d"
 
-        assert client.space(hw) == hw_spaced
+        result = client.space(hw)
+        if isinstance(result, bytes):
+            result = result.decode('latin1')
+        assert result == hw_spaced
 
         queue.put((client._iprot.trans.getTransport().getSocketName(),
                    client._iprot.trans.getTransport().getPeerName()))
@@ -77,7 +83,7 @@ class ParallelProcess(multiprocessing.Process):
     def run(self):
         clients = []
 
-        for i in xrange(0, 4):
+        for i in range(0, 4):
             clients.append(getClient(self.port))
 
         for c in clients:

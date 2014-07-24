@@ -272,7 +272,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
         if not self.__client_type in self.__supported_client_types:
             raise TTransportException(TTransportException.INVALID_CLIENT_TYPE,
-                                        "Client type not supported on server")
+                                        "Client type {} not supported on server"
+                                      .format(self.__client_type))
 
     def read_header_format(self, sz, header_size, data):
         # clear out any previous transforms
