@@ -32,7 +32,7 @@ class THeaderACProtocolTraits {
  public:
 
   THeaderACProtocolTraits()
-      : maxMessageSize_(0x7ffffff)
+      : maxMessageSize_(0x7fffffff)
       , strictRead_(true) {}
 
   // Methods required by TUnframedACReadState

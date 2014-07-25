@@ -25,7 +25,7 @@
 #include <thrift/lib/cpp/async/TBinaryAsyncChannel.h>
 #include <thrift/lib/cpp/async/TUnframedAsyncChannel.tcc>
 
-using apache::thrift::protocol::TBinaryProtocolT;
+using apache::thrift::protocol::TBinaryProtocol;
 using apache::thrift::protocol::THeaderProtocol;
 using apache::thrift::transport::TBufferBase;
 using apache::thrift::transport::TMemoryBuffer;
@@ -52,8 +52,15 @@ bool THeaderACProtocolTraits::getMessageLength(uint8_t* buffer,
     // Convert the frame size to host byte order
     memcpy(&frameSize, buffer, sizeof(frameSize));
     frameSize = ntohl(frameSize);
-    if (frameSize > maxMessageSize_ || frameSize < 0) {
-      return tryReadUnframed(buffer, bufferLength, messageLength, strictRead_);
+    if ((frameSize & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
+      bool foundCompleteMessage = tryReadUnframed(buffer, bufferLength, messageLength, strictRead_);
+      if (foundCompleteMessage && (*messageLength > maxMessageSize_)) {
+        throw TTransportException("Frame size exceeded maximum");
+      }
+      return foundCompleteMessage;
+    }
+    if (frameSize > maxMessageSize_) {
+      throw TTransportException("Frame size exceeded maximum");
     }
     *messageLength = frameSize + sizeof(frameSize); // frame size incl
     return (bufferLength >= *messageLength);
