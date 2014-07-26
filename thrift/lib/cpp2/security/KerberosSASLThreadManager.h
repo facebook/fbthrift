@@ -27,7 +27,7 @@ class SaslThreadManager {
     return threadManager_;
   }
 
-  SaslThreadManager();
+  explicit SaslThreadManager(int threadCount = 32, int stackSizeMb = 2);
   ~SaslThreadManager();
 
  private:

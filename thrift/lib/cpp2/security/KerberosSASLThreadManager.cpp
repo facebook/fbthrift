@@ -27,15 +27,15 @@ using namespace apache::thrift;
 using namespace folly;
 using namespace apache::thrift::concurrency;
 
-SaslThreadManager::SaslThreadManager() {
+SaslThreadManager::SaslThreadManager(int threadCount, int stackSizeMb) {
   threadManager_ = concurrency::ThreadManager::newSimpleThreadManager(
-    256 /* count */);
+    threadCount);
 
   threadManager_->threadFactory(
     std::make_shared<concurrency::PosixThreadFactory>(
     concurrency::PosixThreadFactory::kDefaultPolicy,
     concurrency::PosixThreadFactory::kDefaultPriority,
-    2 // 2MB stack size, necessary for allowing pthread creation in hphp.
+    stackSizeMb
   ));
   threadManager_->setNamePrefix("sasl-thread");
   threadManager_->start();
