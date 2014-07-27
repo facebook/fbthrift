@@ -261,14 +261,13 @@ class TSimpleJSONProtocol(TProtocolBase):
 
     def writeMessageBegin(self, name, messageType, seqId):
         self.writeJSONArrayStart()
-        self.pushContext(TJSONListContext(len(self.contexts)))
+        self.context.writeNewLine(self.trans)
         self.writeJSONInteger(THRIFT_VERSION_1)
         self.writeJSONString(name)
         self.writeJSONInteger(messageType)
         self.writeJSONInteger(seqId)
 
     def writeMessageEnd(self):
-        self.popContext()
         self.writeJSONArrayEnd()
 
     def writeStructBegin(self, name):
