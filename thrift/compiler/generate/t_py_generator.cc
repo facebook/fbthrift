@@ -2967,22 +2967,49 @@ void t_py_generator::generate_deserialize_container(ofstream &out,
                << ") = iprot.readListBegin()" << endl;
   }
 
+
   // For loop iterates over elements
   string i = tmp("_i");
   indent(out) <<
-    "for " << i << " in six.moves.range(" << size << "):" << endl;
+    "if " << size << " >= 0:" << endl << indent() <<
+    "  for " << i << " in six.moves.range(" << size << "):" << endl;
 
-    indent_up();
+  indent_up();
+  indent_up();
 
-    if (ttype->is_map()) {
-      generate_deserialize_map_element(out, (t_map*)ttype, prefix);
-    } else if (ttype->is_set()) {
-      generate_deserialize_set_element(out, (t_set*)ttype, prefix);
-    } else if (ttype->is_list()) {
-      generate_deserialize_list_element(out, (t_list*)ttype, prefix);
-    }
+  if (ttype->is_map()) {
+    generate_deserialize_map_element(out, (t_map*)ttype, prefix);
+  } else if (ttype->is_set()) {
+    generate_deserialize_set_element(out, (t_set*)ttype, prefix);
+  } else if (ttype->is_list()) {
+    generate_deserialize_list_element(out, (t_list*)ttype, prefix);
+  }
 
-    indent_down();
+  indent_down();
+  indent_down();
+
+  indent(out) << "else: " << endl;
+  if (ttype->is_map()) {
+    out << indent() << "  while iprot.peekMap():" << endl;
+  } else if (ttype->is_set()) {
+    out << indent() << "  while iprot.peekSet():" << endl;
+  } else if (ttype->is_list()) {
+    out << indent() << "  while iprot.peekList():" << endl;
+  }
+
+  indent_up();
+  indent_up();
+
+  if (ttype->is_map()) {
+    generate_deserialize_map_element(out, (t_map*)ttype, prefix);
+  } else if (ttype->is_set()) {
+    generate_deserialize_set_element(out, (t_set*)ttype, prefix);
+  } else if (ttype->is_list()) {
+    generate_deserialize_list_element(out, (t_list*)ttype, prefix);
+  }
+
+  indent_down();
+  indent_down();
 
   // Read container end
   if (ttype->is_map()) {

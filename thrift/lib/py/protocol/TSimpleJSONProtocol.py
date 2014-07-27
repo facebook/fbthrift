@@ -25,6 +25,7 @@ from __future__ import unicode_literals
 from base64 import b64encode, b64decode
 
 from .TProtocol import *
+from thrift.Thrift import TType
 
 JSON_OBJECT_START = b'{'
 JSON_OBJECT_END = b'}'
@@ -37,6 +38,9 @@ JSON_BACKSLASH = b'\\'
 JSON_STRING_DELIMITER = b'"'
 JSON_ZERO_CHAR = b'0'
 JSON_TAB = b"  "
+JSON_CARRIAGE_RETURN = b'\r'
+JSON_SPACE = b' '
+TAB = b'\t'
 
 JSON_ESCAPE_CHAR = b'u'
 JSON_ESCAPE_PREFIX = b"\\u00"
@@ -57,6 +61,7 @@ JSON_CHAR_TABLE = [ \
 ESCAPE_CHARS = b"\"\\bfnrt"
 ESCAPE_CHAR_VALS = [b'"', b'\\', b'\b', b'\f', b'\n', b'\r', b'\t']
 
+NUMERIC_CHAR = b'+-.0123456789Ee'
 
 def hexChar(x):
     x &= 0x0f
@@ -73,11 +78,14 @@ def hexVal(ch):
 
 
 class TJSONContext:
-    def __init__(self, indentLevel=0):
+    def __init__(self, protocol, indentLevel=0):
         self.indentLevel = indentLevel
-        return
+        self.protocol = protocol
 
     def write(self, trans):
+        return
+
+    def read(self, reader):
         return
 
     def escapeNum(self):
@@ -91,13 +99,13 @@ class TJSONContext:
         for i in range(self.indentLevel):
             trans.write(JSON_TAB)
 
-
 class TJSONPairContext(TJSONContext):
-    def __init__(self, indentLevel=0, isMapPair=False):
-        self.indentLevel = indentLevel
+    def __init__(self, protocol, indentLevel=0, isMapPair=False):
+        TJSONContext.__init__(self, protocol, indentLevel)
         self.first = True
         self.colon = True
         self.isMapPair = isMapPair
+        self.skipColon = False
 
     def write(self, trans):
         if self.first:
@@ -112,14 +120,35 @@ class TJSONPairContext(TJSONContext):
                     self.writeNewLine(trans)
             self.colon = not self.colon
 
+    def read(self, reader):
+        if self.first:
+            self.first = False
+            self.colon = True
+        else:
+            self.protocol.skipWhitespace()
+            if self.colon:
+                if self.skipColon:
+                    self.skipColon = False
+                else:
+                    self.protocol.readJSONSyntaxChar(JSON_PAIR_SEPARATOR)
+            else:
+                self.protocol.readJSONSyntaxChar(JSON_ELEM_SEPARATOR)
+            self.colon = not self.colon
+
     def escapeNum(self):
         return self.colon
 
-
 class TJSONListContext(TJSONContext):
-    def __init__(self, indentLevel=0):
-        self.indentLevel = indentLevel
+    def __init__(self, protocol, indentLevel=0):
+        TJSONContext.__init__(self, protocol, indentLevel)
         self.first = True
+
+    def read(self, reader):
+        if self.first:
+            self.first = False
+        else:
+            self.protocol.skipWhitespace()
+            self.protocol.readJSONSyntaxChar(JSON_ELEM_SEPARATOR)
 
     def write(self, trans):
         if self.first:
@@ -128,17 +157,143 @@ class TJSONListContext(TJSONContext):
             trans.write(JSON_ELEM_SEPARATOR)
             self.writeNewLine(trans)
 
+class LookaheadReader():
+    def __init__(self, protocol):
+        self.protocol = protocol
+        self.hasData = False
+        self.data = b''
 
-class TSimpleJSONProtocol(TProtocolBase):
-    """
-    JSON protocol implementation for Thrift. This protocol is write-only, and
-    produces a simple output format that conforms to the JSON standard.
-    """
+    def read(self):
+        if self.hasData is True:
+            self.hasData = False
+        else:
+            self.data = self.protocol.trans.read(1)
+        return self.data
 
-    def __init__(self, trans):
+    def peek(self):
+        if self.hasData is False:
+            self.data = self.protocol.trans.read(1)
+            self.hasData = True
+        return self.data
+
+class ThriftSpec():
+    def __init__(self, spec):
+        self.spec = spec
+        self.nextSpec = None
+
+class StructSpec(ThriftSpec):
+    '''
+    Wraps thrift_spec of a thrift struct.
+    '''
+    def readFieldBegin(self, fname, guess_func):
+        field_spec = None
+        self.nextSpec = None
+        for s in self.spec:
+            if s is not None and s[2] == fname:
+                field_spec = s
+                break
+
+        if field_spec is not None:
+            if field_spec[1] == TType.STRUCT:
+                self.nextSpec = StructSpec(field_spec[3][1])
+            elif field_spec[1] in (TType.SET, TType.LIST):
+                self.nextSpec = ListOrSetSpec(field_spec[3])
+            elif field_spec[1] == TType.MAP:
+                self.nextSpec = MapSpec(field_spec[3])
+            return (fname, field_spec[1], field_spec[0])
+        else:
+            return (fname, guess_func(), 0)
+
+    def getNextSpec(self):
+        return self.nextSpec
+
+class ListOrSetSpec(ThriftSpec):
+    '''Wraps a list or set's 2-tuple nested type spec.
+
+    getNextSpec is called in readListBegin to *prepare* the spec of
+    the list element which may/may not be used depending on whether
+    the list is empty.
+
+    For example, to read list<SomeStruct> the following methods will
+    be called:
+        readListBegin()
+            readStructBegin()
+            readStructEnd()
+            ...
+        readListEnd()
+    After readListBegin is called the current spec is still
+    ListOrSetSpec and its nextSpec is prepared for its element.
+    readStructBegin/End will push/pop the element's StructSpec
+    whenever a SomeStruct is read.
+
+    -1 tells the generated code that the size of this list is
+    undetermined so it needs to use peekList to detect the end of
+    the list.
+    '''
+    def readListBegin(self):
+        self.getNextSpec()
+        return (self.spec[0], -1)
+    readSetBegin = readListBegin
+
+    def getNextSpec(self):
+        if self.nextSpec is None:
+            if self.spec[0] == TType.STRUCT:
+                self.nextSpec = StructSpec(self.spec[1][1])
+            elif self.spec[0] in (TType.LIST, TType.SET):
+                self.nextSpec = ListOrSetSpec(self.spec[1])
+            elif self.spec[0] == TType.MAP:
+                self.nextSpec = MapSpec(self.spec[1])
+        return self.nextSpec
+
+class MapSpec(ThriftSpec):
+    '''Wraps a map's 4-tuple key/vale type spec.
+    '''
+    def __init__(self, spec):
+        ThriftSpec.__init__(self, spec)
+        self.key = True
+
+        self.keySpec = None
+        if self.spec[1] is not None:
+            if self.spec[0] == TType.STRUCT:
+                self.keySpec = StructSpec(self.spec[1][1])
+            elif self.spec[0] in (TType.LIST, TType.SET):
+                self.keySpec = ListOrSetSpec(self.spec[1])
+            elif self.spec[0] == TType.MAP:
+                self.keySpec = MapSpec(self.spec[1])
+
+        self.valueSpec = None
+        if self.spec[3] is not None:
+            if self.spec[2] == TType.STRUCT:
+                self.valueSpec = StructSpec(self.spec[3][1])
+            elif self.spec[2] in (TType.LIST, TType.SET):
+                self.valueSpec = ListOrSetSpec(self.spec[3])
+            elif self.spec[2] == TType.MAP:
+                self.valueSpec = MapSpec(self.spec[3])
+
+    def readMapBegin(self):
+        self.getNextSpec()
+        return (self.spec[0], self.spec[2], -1)
+
+    def getNextSpec(self):
+        if self.keySpec is not None and self.valueSpec is not None:
+            self.nextSpec = self.keySpec if self.key is True else \
+                    self.valueSpec
+            self.key = not self.key
+        else:
+            self.nextSpec = self.keySpec if self.keySpec is not None else \
+                    self.valueSpec
+
+        return self.nextSpec
+
+class TSimpleJSONProtocolBase(TProtocolBase):
+    def __init__(self, trans, spec=None):
         TProtocolBase.__init__(self, trans)
-        self.contexts = [TJSONContext()]  # Used as stack for contexts.
-        self.context = TJSONContext()
+        # Used as stack for contexts.
+        self.contexts = [TJSONContext(protocol=self)]
+        self.context = TJSONContext(protocol=self)
+        self.reader = LookaheadReader(self)
+        self.specs = []
+        self.spec = StructSpec(spec)
 
     def pushContext(self, newContext):
         self.contexts.append(self.context)
@@ -148,7 +303,49 @@ class TSimpleJSONProtocol(TProtocolBase):
         if len(self.contexts) > 0:
             self.context = self.contexts.pop()
 
-    # Writing functions.
+    def pushSpec(self, newSpec):
+        self.specs.append(self.spec)
+        self.spec = newSpec
+
+    def popSpec(self):
+        if len(self.specs) > 0:
+            self.spec = self.specs.pop()
+
+    def skipWhitespace(self):
+        skipped = 0
+        while True:
+            ch = self.reader.peek()
+            if not ch in (JSON_NEW_LINE,
+                          TAB,
+                          JSON_CARRIAGE_RETURN,
+                          JSON_SPACE):
+                break
+            self.reader.read()
+            skipped += 1
+        return skipped
+
+    def guessTypeIdFromFirstByte(self):
+        self.skipWhitespace()
+        self.readJSONSyntaxChar(JSON_PAIR_SEPARATOR)
+        self.context.skipColon = True
+        self.skipWhitespace()
+        byte = self.reader.peek()
+        if byte == JSON_OBJECT_END or byte == JSON_ARRAY_END:
+            return TType.STOP
+        elif byte == JSON_STRING_DELIMITER:
+            return TType.STRING
+        elif byte == JSON_OBJECT_START:
+            return TType.STRUCT
+        elif byte == JSON_ARRAY_START:
+            return TType.LIST
+        elif byte == b't' or byte == b'f':
+            return TType.BOOL
+        elif byte in (b'+', b'-', b'0', b'1', b'2', b'3', b'4', b'5',
+                b'6', b'7', b'8', b'9'):
+            return TType.DOUBLE
+        else:
+            raise TProtocolException(TProtocolException.INVALID_DATA,
+                    "Unrecognized byte: {}".format(byte))
 
     def writeJSONEscapeChar(self, ch):
         self.trans.write(JSON_ESCAPE_PREFIX)
@@ -232,7 +429,8 @@ class TSimpleJSONProtocol(TProtocolBase):
     def writeJSONObjectStart(self):
         self.context.write(self.trans)
         self.trans.write(JSON_OBJECT_START)
-        self.pushContext(TJSONPairContext(len(self.contexts)))
+        self.pushContext(TJSONPairContext(protocol=self,
+            indentLevel=len(self.contexts)))
 
     def writeJSONObjectEnd(self):
         self.popContext()
@@ -242,7 +440,8 @@ class TSimpleJSONProtocol(TProtocolBase):
     def writeJSONArrayStart(self):
         self.context.write(self.trans)
         self.trans.write(JSON_ARRAY_START)
-        self.pushContext(TJSONListContext(len(self.contexts)))
+        self.pushContext(TJSONListContext(protocol=self,
+            indentLevel=len(self.contexts)))
 
     def writeJSONArrayEnd(self):
         self.popContext()
@@ -252,12 +451,171 @@ class TSimpleJSONProtocol(TProtocolBase):
     def writeJSONMapStart(self):
         self.context.write(self.trans)
         self.trans.write(JSON_OBJECT_START)
-        self.pushContext(TJSONListContext(len(self.contexts)))
+        self.pushContext(TJSONListContext(protocol=self,
+            indentLevel=len(self.contexts)))
 
     def writeJSONMapEnd(self):
         self.popContext()
         self.context.writeNewLine(self.trans)
         self.trans.write(JSON_OBJECT_END)
+
+    def readJSONSyntaxChar(self, char):
+        ch = self.reader.read()
+        if ch != char:
+            raise TProtocolException(TProtocolException.INVALID_DATA,
+                                     "Unexpected character: %s" % ch)
+
+    def readJSONString(self, skipContext=False):
+        self.skipWhitespace()
+        if skipContext is False:
+            self.context.read(self.reader)
+        self.skipWhitespace()
+        self.readJSONSyntaxChar(JSON_STRING_DELIMITER)
+        string = []
+        while True:
+            ch = self.reader.read()
+            if ch == JSON_STRING_DELIMITER:
+                break
+            if ch == JSON_BACKSLASH:
+                ch = self.reader.read()
+                if ch == b'u':
+                    self.readJSONSyntaxChar(JSON_ZERO_CHAR)
+                    self.readJSONSyntaxChar(JSON_ZERO_CHAR)
+                    data = self.trans.read(2)
+                    if sys.version_info[0] >= 3 and isinstance(data, bytes):
+                        ch = json.JSONDecoder().decode(
+                                '"\\u00%s"' % str(data, 'utf-8'))
+                    else:
+                        ch = json.JSONDecoder().decode('"\\u00%s"' % data)
+                else:
+                    idx = ESCAPE_CHARS.find(ch)
+                    if idx == -1:
+                        raise TProtocolException(
+                                TProtocolException.INVALID_DATA,
+                                "Expected control char")
+                    ch = ESCAPE_CHAR_VALS[idx]
+            string.append(ch)
+        return b''.join(string)
+
+    def isJSONNumeric(self, ch):
+        return NUMERIC_CHAR.find(ch) >= 0
+
+    def readJSONNumericChars(self):
+        numeric = []
+        while True:
+            ch = self.reader.peek()
+            if self.isJSONNumeric(ch) is False:
+                break
+            numeric.append(self.reader.read())
+        return b''.join(numeric)
+
+    def readJSONInteger(self):
+        self.context.read(self.reader)
+        self.skipWhitespace()
+        if self.context.escapeNum():
+            self.readJSONSyntaxChar(JSON_STRING_DELIMITER)
+        numeric = self.readJSONNumericChars()
+        if self.context.escapeNum():
+            self.readJSONSyntaxChar(JSON_STRING_DELIMITER)
+        try:
+            return int(numeric)
+        except ValueError:
+            raise TProtocolException(TProtocolException.INVALID_DATA,
+                                     "Bad data encounted in numeric data")
+
+    def readJSONDouble(self):
+        self.context.read(self.reader)
+        self.skipWhitespace()
+        if self.reader.peek() == JSON_STRING_DELIMITER:
+            string = self.readJSONString(True)
+            try:
+                double = float(string)
+                if self.context.escapeNum is False and double != inf and \
+                        double != -inf and double != nan:
+                    raise TProtocolException(TProtocolException.INVALID_DATA,
+                            "Numeric data unexpectedly quoted")
+                return double
+            except ValueError:
+                raise TProtocolException(TProtocolException.INVALID_DATA,
+                        "Bad data encountered in numeric data")
+        else:
+            try:
+                return float(self.readJSONNumericChars())
+            except ValueError:
+                raise TProtocolException(TProtocolException.INVALID_DATA,
+                        "Bad data encountered in numeric data")
+
+    def readJSONBase64(self):
+        string = self.readJSONString()
+        return base64.b64decode(string)
+
+    def readJSONBool(self):
+        self.context.read(self.reader)
+        self.skipWhitespace()
+        if self.context.escapeNum():
+            self.readJSONSyntaxChar(JSON_STRING_DELIMITER)
+        if self.reader.peek() == b't':
+            true_string = b'true'
+            for i in range(4):
+                if self.reader.read() != true_string[i]:
+                    raise TProtocolException(TProtocolException.INVALID_DATA,
+                            "Bad data encountered in bool")
+            boolVal = True
+        elif self.reader.peek() == b'f':
+            false_string = b'false'
+            for i in range(5):
+                if self.reader.read() != false_string[i]:
+                    raise TProtocolException(TProtocolException.INVALID_DATA,
+                            "Bad data encountered in bool")
+            boolVal = False
+        else:
+            raise TProtocolException(TProtocolException.INVALID_DATA,
+                    "Bad data encountered in bool")
+        if self.context.escapeNum():
+            self.readJSONSyntaxChar(JSON_STRING_DELIMITER)
+        return boolVal
+
+    def readJSONArrayStart(self):
+        self.context.read(self.reader)
+        self.skipWhitespace()
+        self.readJSONSyntaxChar(JSON_ARRAY_START)
+        self.pushContext(TJSONListContext(protocol=self,
+            indentLevel=len(self.contexts)))
+
+    def readJSONArrayEnd(self):
+        self.popContext()
+        self.skipWhitespace()
+        self.readJSONSyntaxChar(JSON_ARRAY_END)
+
+    def readJSONMapStart(self):
+        self.context.read(self.reader)
+        self.skipWhitespace()
+        self.readJSONSyntaxChar(JSON_OBJECT_START)
+        self.pushContext(TJSONListContext(protocol=self,
+            indentLevel=len(self.contexts)))
+
+    def readJSONMapEnd(self):
+        self.popContext()
+        self.skipWhitespace()
+        self.readJSONSyntaxChar(JSON_OBJECT_END)
+
+    def readJSONObjectStart(self):
+        self.context.read(self.reader)
+        self.skipWhitespace()
+        self.readJSONSyntaxChar(JSON_OBJECT_START)
+        self.pushContext(TJSONPairContext(protocol=self,
+            indentLevel=len(self.contexts)))
+
+    def readJSONObjectEnd(self):
+        self.popContext()
+        self.skipWhitespace()
+        self.readJSONSyntaxChar(JSON_OBJECT_END)
+
+class TSimpleJSONProtocol(TSimpleJSONProtocolBase):
+    """
+    JSON protocol implementation for Thrift. This protocol is write-only, and
+    produces a simple output format that conforms to the JSON standard.
+    """
 
     def writeMessageBegin(self, name, messageType, seqId):
         self.writeJSONArrayStart()
@@ -279,7 +637,8 @@ class TSimpleJSONProtocol(TProtocolBase):
     def writeFieldBegin(self, name, fieldType, fieldId):
         self.context.write(self.trans)
         self.popContext()
-        self.pushContext(TJSONPairContext(len(self.contexts)))
+        self.pushContext(TJSONPairContext(protocol=self,
+            indentLevel=len(self.contexts)))
         self.context.writeNewLine(self.trans)
         self.writeJSONString(name)
 
@@ -292,7 +651,8 @@ class TSimpleJSONProtocol(TProtocolBase):
     def writeMapBegin(self, keyType, valType, size):
         self.writeJSONMapStart()
         self.context.writeNewLine(self.trans)
-        self.pushContext(TJSONPairContext(len(self.contexts) - 1, True))
+        self.pushContext(TJSONPairContext(protocol=self,
+            indentLevel=len(self.contexts) - 1, isMapPair=True))
 
     def writeMapEnd(self):
         self.popContext()
@@ -339,8 +699,112 @@ class TSimpleJSONProtocol(TProtocolBase):
     def writeBinary(self, outStr):
         self.writeJSONBase64(outStr)
 
+    def readMessageBegin(self):
+        self.readJSONArrayStart()
+        self.skipWhitespace()
+        if self.readJSONInteger() != THRIFT_VERSION_1:
+            raise TProtocolException(TProtocolException.BAD_VERSION,
+                                     "Message contained bad version.")
+        name = self.readJSONString()
+        mtype = self.readJSONInteger()
+        seqid = self.readJSONInteger()
+
+        return (name, mtype, seqid)
+
+    def readMessageEnd(self):
+        self.readJSONArrayEnd()
+
+    def readStructBegin(self):
+        self.readJSONObjectStart()
+        # This is needed because of the very first call
+        if self.spec.nextSpec is not None:
+            self.pushSpec(self.spec.getNextSpec())
+
+    def readStructEnd(self):
+        self.readJSONObjectEnd()
+        self.popSpec()
+
+    def readFieldBegin(self):
+        self.skipWhitespace()
+        ch = self.reader.peek()
+        if ch == JSON_OBJECT_END:
+            return (None, TType.STOP, 0)
+        self.context.read(self.reader)
+        self.popContext()
+        self.pushContext(TJSONPairContext(protocol=self,
+            indentLevel=len(self.contexts)))
+        self.skipWhitespace()
+        fname = self.readJSONString()
+
+        assert isinstance(self.spec, StructSpec)
+        return self.spec.readFieldBegin(
+                fname,
+                self.guessTypeIdFromFirstByte)
+
+    def readFieldEnd(self):
+        return
+
+    def readFieldStop(self):
+        return
+
+    def readNumber(self):
+        return self.readJSONInteger()
+    readByte = readNumber
+    readI16 = readNumber
+    readI32 = readNumber
+    readI64 = readNumber
+
+    def readDouble(self):
+        return self.readJSONDouble()
+
+    def readFloat(self):
+        return self.readJSONDouble()
+
+    def readString(self):
+        return self.readJSONString()
+
+    def readBinary(self):
+        return self.readJSONBase64()
+
+    def readBool(self):
+        return self.readJSONBool()
+
+    def readMapBegin(self):
+        self.readJSONMapStart()
+        self.skipWhitespace()
+        self.pushContext(TJSONPairContext(protocol=self,
+            indentLevel=len(self.contexts) - 1, isMapPair=True))
+        self.pushSpec(self.spec.getNextSpec())
+        return self.spec.readMapBegin()
+
+    def readMapEnd(self):
+        self.popContext()
+        self.readJSONMapEnd()
+        self.popSpec()
+
+    def peekMap(self):
+        self.skipWhitespace()
+        return self.reader.peek() != JSON_OBJECT_END
+
+    def peekList(self):
+        self.skipWhitespace()
+        return self.reader.peek() != JSON_ARRAY_END
+    peekSet = peekList
+
+    def readListBegin(self):
+        self.skipWhitespace()
+        self.readJSONArrayStart()
+        self.pushSpec(self.spec.getNextSpec())
+        return self.spec.readListBegin()
+    readSetBegin = readListBegin
+
+    def readListEnd(self):
+        self.skipWhitespace()
+        self.readJSONArrayEnd()
+        self.popSpec()
+    readSetEnd = readListEnd
 
 class TSimpleJSONProtocolFactory:
-    def getProtocol(self, trans):
-        prot = TSimpleJSONProtocol(trans)
+    def getProtocol(self, trans, spec=None):
+        prot = TSimpleJSONProtocol(trans, spec)
         return prot
