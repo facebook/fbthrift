@@ -26,6 +26,8 @@
 
 #include "common/fb303/cpp/FacebookBase.h"
 
+#include "common/services/cpp/ServiceFramework.h"
+
 #include "common/config/Flags.h"
 #include <iostream>
 #include <signal.h>
@@ -37,6 +39,8 @@ using namespace apache::thrift::server;
 using namespace apache::thrift::test;
 using namespace apache::thrift::transport;
 
+DEFINE_bool(enable_service_framework, false,
+    "Run ServiceFramework to track service stats");
 DEFINE_int32(port, 1234, "server port");
 DEFINE_bool(framed, true, "use framed transport");
 DEFINE_bool(header, false, "use THeaderProtocol");
@@ -157,7 +161,14 @@ int main(int argc, char* argv[]) {
   setTunables(serverSocket.get(), server.get());
 
   std::cout << "Serving requests on port " << FLAGS_port << "...\n";
-  server->serve();
 
+  std::unique_ptr<facebook::services::ServiceFramework> fwk;
+  if (FLAGS_enable_service_framework) {
+    fwk.reset(
+        new facebook::services::ServiceFramework("ThreadPoolServer Load Tester"));
+    fwk->go(false /* waitUntilStop */);
+  }
+
+  server->serve();
   return 0;
 }

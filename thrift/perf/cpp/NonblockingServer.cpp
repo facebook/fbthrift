@@ -24,6 +24,8 @@
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/server/TNonblockingServer.h>
 
+#include "common/services/cpp/ServiceFramework.h"
+
 #include "common/config/Flags.h"
 #include <iostream>
 #include <signal.h>
@@ -35,6 +37,8 @@ using namespace apache::thrift::server;
 using namespace apache::thrift::test;
 using namespace apache::thrift::transport;
 
+DEFINE_bool(enable_service_framework, false,
+    "Run ServiceFramework to track service stats");
 DEFINE_int32(port, 1234, "server port");
 DEFINE_bool(header, false, "use THeaderProtocol");
 
@@ -174,6 +178,13 @@ int main(int argc, char* argv[]) {
   // Set tunable server parameters
   if (!setTunables(server.get())) {
     return 1;
+  }
+
+  std::unique_ptr<facebook::services::ServiceFramework> fwk;
+  if (FLAGS_enable_service_framework) {
+    fwk.reset(
+        new facebook::services::ServiceFramework("NonblockingServer Load Tester"));
+    fwk->go(false /* waitUntilStop */);
   }
 
   std::cout << "Serving requests on port " << FLAGS_port << "...\n";
