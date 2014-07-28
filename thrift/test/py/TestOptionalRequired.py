@@ -4,7 +4,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import unittest
-import unittest2
 
 from OptionalRequiredTest import *
 from OptionalRequiredTest.ttypes import *

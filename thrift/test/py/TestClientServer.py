@@ -22,7 +22,6 @@ import sys
 from subprocess import Popen, PIPE, STDOUT
 import time
 import unittest
-import unittest2
 import string
 import socket
 import errno
