@@ -1,0 +1,15 @@
+java_library (
+  name = "thrift",
+  srcs = glob(['src/**/*.java'],
+    excludes = [
+      'src/**/TServlet.java',
+      '**/direct_server/**/*.java'
+    ]),
+  exported_deps = [
+        "//external/slf4j:api",
+  ],
+  deps = [
+        "//external/snappy-dain:snappy",
+        ],
+  visibility = ['PUBLIC'],
+),
