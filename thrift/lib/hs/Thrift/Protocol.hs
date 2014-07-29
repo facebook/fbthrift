@@ -27,17 +27,23 @@ module Thrift.Protocol
     , runParser
     , versionMask
     , version1
+    , bsToFloating
     ) where
 
 import Control.Exception
 import Data.Attoparsec.ByteString
 import Data.ByteString.Lazy (ByteString, toStrict)
+import Data.ByteString.Unsafe
 import Data.Functor ((<$>))
 import Data.Int
 import Data.Monoid (mempty)
 import Data.Text.Lazy (Text)
 import Data.Typeable (Typeable)
 import Data.Word
+import Foreign.Ptr (castPtr)
+import Foreign.Storable (Storable, peek, poke)
+import System.IO.Unsafe
+import qualified Data.ByteString as BS
 
 import Thrift.Types
 import Thrift.Transport
@@ -81,3 +87,20 @@ runParser prot p = refill >>= getResult . parse p
 
 handleEOF :: SomeException -> IO ByteString
 handleEOF = const $ return mempty
+
+-- | Converts a ByteString to a Floating point number
+-- The ByteString is assumed to be encoded in network order (Big Endian)
+-- therefore the behavior of this function varies based on whether the local
+-- machine is big endian or little endian.
+bsToFloating :: (Floating f, Storable f, Storable a)
+                => (a -> a) -> BS.ByteString -> f
+bsToFloating byteSwap bs = unsafeDupablePerformIO $ unsafeUseAsCString bs castBs
+  where
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+    castBs chrPtr = do
+      w <- peek (castPtr chrPtr)
+      poke (castPtr chrPtr) (byteSwap w)
+      peek (castPtr chrPtr)
+#else
+    castBs = peek . castPtr
+#endif

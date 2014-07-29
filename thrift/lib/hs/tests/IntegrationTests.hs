@@ -11,13 +11,13 @@ import Foreign.C.Types
 import Foreign.Marshal.Alloc
 import Foreign.Ptr
 import Foreign.Storable
-import System.Exit
 import Test.QuickCheck
 import Test.QuickCheck.Property
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as LBS
 
 import Thrift.Protocol.Binary
+import Thrift.Protocol.Compact
 import Thrift.Protocol.JSON
 import Interface
 import Util
@@ -63,17 +63,12 @@ propHsToC pCons hsToC struct@TestStruct{..} = morallyDubiousIOProperty $ do
     return $ struct == result
 
 main :: IO ()
-main = do
-  results <- sequence
-    [ quickCheckWithResult args (propCToHs BinaryProtocol c_serializeBinary)
-    , quickCheckWithResult args (propHsToC BinaryProtocol c_deserializeBinary)
-    , quickCheckWithResult args (propCToHs JSONProtocol c_serializeJSON)
-    , quickCheckWithResult args (propHsToC JSONProtocol c_deserializeJSON)
-    ]
-  if all successful results
-  then exitSuccess
-  else exitFailure
-  where
-    successful Success{} = True
-    successful _ = False
-    args = Args Nothing 100 10 100 True
+main = aggregateResults
+  [ quickCheckWithResult args (propCToHs BinaryProtocol c_serializeBinary)
+  , quickCheckWithResult args (propHsToC BinaryProtocol c_deserializeBinary)
+  , quickCheckWithResult args (propCToHs JSONProtocol c_serializeJSON)
+  , quickCheckWithResult args (propHsToC JSONProtocol c_deserializeJSON)
+  , quickCheckWithResult args (propCToHs CompactProtocol c_serializeCompact)
+  , quickCheckWithResult args (propHsToC CompactProtocol c_deserializeCompact)
+  ]
+  where args = Args Nothing 100 10 100 True

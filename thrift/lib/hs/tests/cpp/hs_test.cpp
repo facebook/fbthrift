@@ -21,8 +21,9 @@
 #include <vector>
 
 #include <thrift/lib/cpp/transport/TTransport.h>
-#include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
+#include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
 
 using namespace apache::thrift;
 using namespace std;
@@ -188,6 +189,22 @@ void serializeBinary(SerializedResult *sr, TestStruct *obj) {
 TestStruct* deserializeBinary(char *data, int len) {
   auto mockTrans = std::make_shared<MockTransport>();
   protocol::TBinaryProtocol oprot(mockTrans);
+
+  return deserializeStruct(data, len, oprot, *mockTrans);
+}
+
+// Serialize a TestStruct using TCompactProtocol
+void serializeCompact(SerializedResult *sr, TestStruct *obj) {
+  auto mockTrans = std::make_shared<MockTransport>();
+  protocol::TCompactProtocol oprot(mockTrans);
+
+  serializeStruct(oprot, *mockTrans, sr, obj);
+}
+
+// Deserialize a TestStruct using TCompactProtocol
+TestStruct* deserializeCompact(char *data, int len) {
+  auto mockTrans = std::make_shared<MockTransport>();
+  protocol::TCompactProtocol oprot(mockTrans);
 
   return deserializeStruct(data, len, oprot, *mockTrans);
 }

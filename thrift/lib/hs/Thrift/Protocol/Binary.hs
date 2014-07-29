@@ -37,21 +37,15 @@ import Data.Monoid
 import Data.Word
 import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
 
-import Foreign.Ptr
-import Foreign.Storable
-import System.IO.Unsafe
-
 import Thrift.Protocol
 import Thrift.Transport
 import Thrift.Types
 
 import qualified Data.Attoparsec.ByteString as P
 import qualified Data.Binary as Binary
-import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as Map
 import qualified Data.Text.Lazy as LT
-import Data.ByteString.Unsafe
 
 data BinaryProtocol a = BinaryProtocol a
 
@@ -198,20 +192,3 @@ parseType = toEnum . fromIntegral <$> P.anyWord8
 
 matchType :: ThriftType -> P.Parser ThriftType
 matchType t = t <$ P.word8 (fromIntegral $ fromEnum t)
-
--- | Converts a ByteString to a Floating point number
--- The ByteString is assumed to be encoded in network order (Big Endian)
--- therefore the behavior of this function varies based on whether the local
--- machine is big endian or little endian.
-bsToFloating :: (Floating f, Storable f, Storable a)
-                => (a -> a) -> BS.ByteString -> f
-bsToFloating byteSwap bs = unsafePerformIO $ unsafeUseAsCString bs castBs
-  where
-#if __BYTE_ORDER == __LITTLE_ENDIAN
-    castBs chrPtr = do
-      w <- peek (castPtr chrPtr)
-      poke (castPtr chrPtr) (byteSwap w)
-      peek (castPtr chrPtr)
-#else
-    castBs = peek . castPtr
-#endif

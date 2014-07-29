@@ -1,18 +1,31 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
+{-# LANGUAGE OverloadedStrings #-}
 module Util
        ( TestTransport(..)
+       , propRoundTrip
+       , propRoundTripMessage
+       , aggregateResults
        ) where
 
 import Control.Monad
 import Data.Functor
+import Data.Int
 import Data.IORef
 import Data.Monoid
-import Data.Vector
 import Prelude
-import Test.QuickCheck
+import System.Exit
+import Test.QuickCheck as QC
+import Test.QuickCheck.Property
 import qualified Data.ByteString.Lazy as LBS
+import qualified Data.Text.Lazy as LT
 
+import Thrift.Arbitraries ()
+import Thrift.Protocol
 import Thrift.Transport
+import Thrift.Transport.Framed
+import Thrift.Types
+
+import Hs_test_Types
 
 data TestTransport = TestTransport (IORef LBS.ByteString)
 
@@ -28,8 +41,35 @@ instance Transport TestTransport where
   tWrite (TestTransport t) bs = modifyIORef' t (<> bs)
   tFlush _ = return ()
 
-instance Arbitrary LBS.ByteString where
-  arbitrary = LBS.pack <$> arbitrary
+propRoundTrip :: Protocol p
+              => (FramedTransport TestTransport
+                  -> p (FramedTransport TestTransport))
+              -> TestStruct
+              -> Property
+propRoundTrip pcons cf = morallyDubiousIOProperty $ do
+  ref <- newIORef ""
+  t <- openFramedTransport (TestTransport ref)
+  let p = pcons t
+  write_TestStruct p cf
+  tFlush t
+  (==cf) <$> read_TestStruct p
 
-instance Arbitrary a => Arbitrary (Vector a) where
-  arbitrary = fromList <$> arbitrary
+propRoundTripMessage :: Protocol p
+                     => (TestTransport -> p TestTransport)
+                     -> (LT.Text, MessageType, Int32)
+                     -> Property
+propRoundTripMessage pcons args = morallyDubiousIOProperty $ do
+  ref <- newIORef ""
+  let p = pcons (TestTransport ref)
+  writeMessage p args
+  (==args) <$> readMessage p
+
+aggregateResults :: [IO QC.Result] -> IO ()
+aggregateResults qcs = do
+  results <- sequence qcs
+  if all successful results
+    then exitSuccess
+    else exitFailure
+  where
+    successful Success{} = True
+    successful _ = False

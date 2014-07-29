@@ -60,9 +60,12 @@ void freeBuffers(CTestStruct*);
 void readStruct(CTestStruct*, TestStruct*);
 
 void serializeBinary(SerializedResult*, TestStruct*);
-void serializeJSON(SerializedResult*, TestStruct*);
-
 TestStruct* deserializeBinary(char* data, int);
+
+void serializeCompact(SerializedResult*, TestStruct*);
+TestStruct* deserializeCompact(char* data, int);
+
+void serializeJSON(SerializedResult*, TestStruct*);
 TestStruct* deserializeJSON(char *data, int);
 
 

@@ -9,6 +9,8 @@ module Interface
        ( SerializedResult(..)
        , c_serializeBinary
        , c_deserializeBinary
+       , c_serializeCompact
+       , c_deserializeCompact
        , c_serializeJSON
        , c_deserializeJSON
        , c_deleteSResult
@@ -213,6 +215,14 @@ foreign import ccall
 foreign import ccall
   #{ mangled TestStruct* deserializeBinary(char*, int) }
   c_deserializeBinary :: CString -> CInt -> IO (Ptr TestStruct)
+
+foreign import ccall
+  #{ mangled void serializeCompact(SerializedResult*, TestStruct*) }
+  c_serializeCompact :: Ptr SerializedResult -> Ptr TestStruct -> IO ()
+
+foreign import ccall
+  #{ mangled TestStruct* deserializeCompact(char*, int) }
+  c_deserializeCompact :: CString -> CInt -> IO (Ptr TestStruct)
 
 foreign import ccall
   #{ mangled void serializeJSON(SerializedResult*, TestStruct*) }

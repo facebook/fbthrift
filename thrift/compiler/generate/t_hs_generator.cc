@@ -648,7 +648,7 @@ void t_hs_generator::generate_hs_struct_arbitrary(ofstream& out, t_struct* tstru
 
     // Shrink
     indent(out) << "shrink obj | obj == default_" << tname << " = []" << nl;
-    indent(out) << "           | otherwise = concat" << nl;
+    indent(out) << "           | otherwise = catMaybes" << nl;
     indent_up();
     first = true;
     for (auto& m_iter : members) {
@@ -659,8 +659,11 @@ void t_hs_generator::generate_hs_struct_arbitrary(ofstream& out, t_struct* tstru
         indent(out) << ", ";
       }
       string fname = "f_" + tname + "_" + m_iter->get_name();
-      out << "[default_" << tname << "{" << fname << " = f} | ";
-      out << "f <- shrink (" << fname << " obj) ]" << nl;
+      out << "if obj == default_" << tname;
+      out << "{" << fname << " = " << fname << " obj} ";
+      out << "then Nothing ";
+      out << "else Just $ default_" << tname;
+      out << "{" << fname << " = " << fname << " obj}" << nl;
     }
     indent(out) << "]" << nl;
     indent_down();
