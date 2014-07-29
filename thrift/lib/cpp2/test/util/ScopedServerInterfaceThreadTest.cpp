@@ -39,6 +39,11 @@ public:
   }
 };
 
+TEST(ScopedServerInterfaceThread, nada) {
+  ScopedServerInterfaceThread ssit(
+    make_shared<SimpleServiceImpl>());
+}
+
 TEST(ScopedServerInterfaceThread, example) {
   ScopedServerInterfaceThread ssit(
     make_shared<SimpleServiceImpl>());

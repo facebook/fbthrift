@@ -322,11 +322,6 @@ void ThriftServer::setup() {
         socket_->getAddress(&address_);
       }
 
-      // Notify handler of the preServe event
-      if (eventHandler_ != nullptr) {
-        eventHandler_->preServe(&address_);
-      }
-
       for (auto& worker: workers_) {
         worker.thread->start();
         ++threadsStarted;
@@ -336,6 +331,11 @@ void ThriftServer::setup() {
 
       // Wait for all workers to start
       b->wait();
+
+      // Notify handler of the preServe event
+      if (eventHandler_ != nullptr) {
+        eventHandler_->preServe(&address_);
+      }
 
       if (socket_) {
         socket_->attachEventBase(eventBaseManager_->getEventBase());
