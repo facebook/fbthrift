@@ -31,6 +31,7 @@ module Thrift.Protocol.JSON
 import Control.Applicative
 import Data.Attoparsec.ByteString as P
 import Data.Attoparsec.ByteString.Char8 as PC
+import Data.Attoparsec.ByteString.Lazy as LP
 import Data.ByteString.Builder as B
 import Data.ByteString.Internal (c2w, w2c)
 import Data.Int
@@ -68,7 +69,12 @@ instance Protocol JSONProtocol where
           seqNum <- between ',' ']' $ lexeme (signed decimal)
           return (str, ty, seqNum)
 
-    writeVal (JSONProtocol t) = tWrite t . toLazyByteString . buildJSONValue
+    serializeVal _ = toLazyByteString . buildJSONValue
+    deserializeVal _ ty bs =
+      case LP.eitherResult $ LP.parse (parseJSONValue ty) bs of
+        Left s -> error s
+        Right val -> val
+
     readVal p ty = runParser p $ skipSpace *> parseJSONValue ty
 
 

@@ -55,13 +55,17 @@ version1 :: Int32
 version1 = fromIntegral (0x80010000 :: Word32)
 
 class Protocol a where
-    getTransport :: Transport t => a t -> t
+  getTransport :: Transport t => a t -> t
 
-    writeMessage :: Transport t => a t -> (Text, MessageType, Int32) -> IO ()
-    readMessage :: Transport t => a t -> IO (Text, MessageType, Int32)
+  writeMessage :: Transport t => a t -> (Text, MessageType, Int32) -> IO ()
+  readMessage :: Transport t => a t -> IO (Text, MessageType, Int32)
 
-    writeVal :: Transport t => a t -> ThriftVal -> IO ()
-    readVal :: Transport t => a t -> ThriftType -> IO ThriftVal
+  serializeVal :: Transport t => a t -> ThriftVal -> ByteString
+  deserializeVal :: Transport t => a t -> ThriftType -> ByteString -> ThriftVal
+
+  writeVal :: Transport t => a t -> ThriftVal -> IO ()
+  writeVal p = tWrite (getTransport p) . serializeVal p
+  readVal :: Transport t => a t -> ThriftType -> IO ThriftVal
 
 data ProtocolExnType
     = PE_UNKNOWN

@@ -731,9 +731,12 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
   indent_down();
 
   // read
+  string tmap = type_name(tstruct, "typemap_");
   indent(out) << "to_" << sname << " _ = error \"not a struct\"" << nl;
   indent(out) << "read_" << sname << " iprot = to_" << sname;
-  out << " <$> readVal iprot (T_STRUCT " << type_name(tstruct, "typemap_") << ")" << nl;
+  out << " <$> readVal iprot (T_STRUCT " << tmap << ")" << nl;
+  indent(out) << "decode_" << sname << " iprot bs = to_" << sname << " $ ";
+  out << "deserializeVal iprot (T_STRUCT " << tmap << ") bs" << nl;
 }
 
 void t_hs_generator::generate_hs_struct_writer(ofstream& out,
@@ -785,6 +788,8 @@ string name = type_name(tstruct);
   indent_down();
   indent(out) << "write_" << name << " oprot record = writeVal oprot $ from_";
   out << name << " record" << nl;
+  indent(out) << "encode_" << name << " oprot record = serializeVal oprot $ ";
+  out << "from_" << name << " record" << nl;
 }
 
 /**

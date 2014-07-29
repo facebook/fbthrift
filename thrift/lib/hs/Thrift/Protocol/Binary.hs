@@ -42,6 +42,7 @@ import Thrift.Transport
 import Thrift.Types
 
 import qualified Data.Attoparsec.ByteString as P
+import qualified Data.Attoparsec.ByteString.Lazy as LP
 import qualified Data.Binary as Binary
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as Map
@@ -70,7 +71,12 @@ instance Protocol BinaryProtocol where
           TI32 sz <- parseBinaryValue T_I32
           return (decodeUtf8 s, toEnum $ fromIntegral $ ver .&. 0xFF, sz)
 
-    writeVal (BinaryProtocol t) = tWrite t . toLazyByteString . buildBinaryValue
+    serializeVal _ = toLazyByteString . buildBinaryValue
+    deserializeVal _ ty bs =
+      case LP.eitherResult $ LP.parse (parseBinaryValue ty) bs of
+        Left s -> error s
+        Right val -> val
+
     readVal p = runParser p . parseBinaryValue
 
 -- | Writing Functions

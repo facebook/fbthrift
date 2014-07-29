@@ -31,6 +31,7 @@ import Control.Applicative
 import Control.Exception ( throw )
 import Control.Monad
 import Data.Attoparsec.ByteString as P
+import Data.Attoparsec.ByteString.Lazy as LP
 import Data.Bits
 import Data.ByteString.Builder as B
 import Data.Int
@@ -67,9 +68,14 @@ instance Protocol CompactProtocol where
           TI32 sz <- parseCompactValue T_I32
           return (decodeUtf8 s, toEnum $ fromIntegral $ ver .&. 0xFF, sz)
 
-    writeVal (CompactProtocol t) =
-      tWrite t . toLazyByteString . buildCompactValue
-    readVal p = runParser p . parseCompactValue
+    serializeVal _ = toLazyByteString . buildCompactValue
+    deserializeVal _ ty bs =
+      case LP.eitherResult $ LP.parse (parseCompactValue ty) bs of
+        Left s -> error s
+        Right val -> val
+
+    readVal p ty = runParser p $ parseCompactValue ty
+
 
 -- | Writing Functions
 buildCompactValue :: ThriftVal -> Builder
