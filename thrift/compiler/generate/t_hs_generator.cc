@@ -1625,8 +1625,7 @@ void t_hs_generator::generate_serialize_type(ofstream &out,
 void t_hs_generator::generate_serialize_struct(ofstream &out,
                                                t_struct* tstruct,
                                                string prefix) {
-  string tname = type_name(tstruct);
-  out << "from_" << tname << " " << prefix;
+  out << type_name(tstruct, "from_") << " " << prefix;
 }
 
 void t_hs_generator::generate_serialize_container(ofstream &out,
