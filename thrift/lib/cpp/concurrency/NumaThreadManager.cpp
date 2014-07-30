@@ -156,8 +156,10 @@ NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
                                      bool enableTaskStats,
                                      size_t maxQueueLen) {
   int nodes = 1;
+  size_t pri_threads = 2;
   if (numa_available() >= 0 && FLAGS_thrift_numa_enabled) {
     nodes = (numa_max_node() + 1);
+    pri_threads = 1;
   }
   for (int i = 0; i < nodes; i++) {
     auto factory = std::make_shared<NumaThreadFactory>(i);
@@ -167,7 +169,8 @@ NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
       ((((double)normalThreadsCount) / (nodes - i)) + .5);
     normalThreadsCount -= threads;
     managers_.push_back(PriorityThreadManager::newPriorityThreadManager(
-                          {{0, 0, 1, threads, 0}},
+                          {{pri_threads, pri_threads,
+                                pri_threads, threads, pri_threads}},
                           enableTaskStats,
                           maxQueueLen));
     managers_[managers_.size() - 1]->threadFactory(factory);
