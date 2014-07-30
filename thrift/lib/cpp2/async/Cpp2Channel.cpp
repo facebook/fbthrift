@@ -93,8 +93,8 @@ TEventBase* Cpp2Channel::getEventBase() {
 void Cpp2Channel::getReadBuffer(void** bufReturn, size_t* lenReturn) {
   // If remaining_ > readBufferSize_, preallocate only allocates
   // readBufferSize_ chunks at a time.
-  pair<void*, uint32_t> data = queue_->preallocate(remaining_,
-                                                   readBufferSize_);
+  pair<void*, uint32_t> data = queue_->preallocate(readBufferSize_,
+                                                   remaining_);
 
   *lenReturn = data.second;
   *bufReturn = data.first;
@@ -127,7 +127,7 @@ void Cpp2Channel::readDataAvailable(size_t len) noexcept {
     unique_ptr<IOBuf> unframed;
 
     auto ex = folly::try_and_catch<std::exception>([&]() {
-      unique_ptr<IOBuf> decrypted;
+      IOBufQueue* decrypted;
       size_t rem = 0;
       std::tie(decrypted, rem) = protectionHandler_->decrypt(queue_.get());
 
@@ -139,9 +139,7 @@ void Cpp2Channel::readDataAvailable(size_t len) noexcept {
       }
 
       // message decrypted
-      IOBufQueue q;
-      q.append(std::move(decrypted));
-      std::tie(unframed, rem) = framingHandler_->removeFrame(&q);
+      std::tie(unframed, rem) = framingHandler_->removeFrame(decrypted);
 
       if (!unframed && remaining == 0) {
         // no full message available, update remaining but only if previous
@@ -307,7 +305,7 @@ void Cpp2Channel::setReceiveCallback(RecvCallback* callback) {
   }
 }
 
-std::pair<std::unique_ptr<folly::IOBuf>, size_t>
+std::pair<folly::IOBufQueue*, size_t>
 ProtectionChannelHandler::decrypt(folly::IOBufQueue* q) {
   if (protectionState_ == ProtectionState::INVALID) {
     throw TTransportException("protection state is invalid");
@@ -315,20 +313,25 @@ ProtectionChannelHandler::decrypt(folly::IOBufQueue* q) {
 
   if (protectionState_ != ProtectionState::VALID) {
     // not an encrypted message, so pass-through
-    return std::make_pair(q->move(), 0);
+    return std::make_pair(q, 0);
   }
 
   assert(saslEndpoint_ != nullptr);
   size_t remaining = 0;
 
   if (!q->front() || q->front()->empty()) {
-    return std::make_pair(unique_ptr<IOBuf>(), 0);
+    return std::make_pair(nullptr, 0);
   }
   // decrypt
   unique_ptr<IOBuf> unwrapped = saslEndpoint_->unwrap(q, &remaining);
   assert(bool(unwrapped) ^ (remaining > 0));   // 1 and only 1 should be true
+  if (unwrapped) {
+    queue_.append(std::move(unwrapped));
 
-  return std::make_pair(std::move(unwrapped), remaining);
+    return std::make_pair(&queue_, remaining);
+  } else {
+    return std::make_pair(nullptr, remaining);
+  }
 }
 
 std::unique_ptr<folly::IOBuf>

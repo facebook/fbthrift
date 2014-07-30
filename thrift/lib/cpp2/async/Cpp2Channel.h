@@ -66,7 +66,7 @@ public:
    * If q doesn't contain enough data, return an empty unique_ptr in
    * result.first and return the requested amount of bytes in result.second.
    */
-  std::pair<std::unique_ptr<folly::IOBuf>, size_t>
+  std::pair<folly::IOBufQueue*, size_t>
   decrypt(folly::IOBufQueue* q);
 
   /**
@@ -76,6 +76,7 @@ public:
 private:
   ProtectionState protectionState_;
   SaslEndpoint* saslEndpoint_;
+  folly::IOBufQueue queue_;
 };
 
 class FramingChannelHandler {

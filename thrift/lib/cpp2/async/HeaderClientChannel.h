@@ -207,7 +207,6 @@ class HeaderClientChannel : public RequestChannel,
     std::unique_ptr<IOBuf> addFrame(std::unique_ptr<IOBuf> buf) override;
   private:
     HeaderClientChannel& channel_;
-    IOBufQueue queue_;
   };
 
 private:

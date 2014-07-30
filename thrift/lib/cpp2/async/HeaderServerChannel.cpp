@@ -115,15 +115,14 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   // removeHeader will set seqid in header_.
   // For older clients with seqid in the protocol, header_
   // will dig in to the protocol to get the seqid correctly.
-  queue_.append(*q);
-  if (!queue_.front() || queue_.front()->empty()) {
+  if (!q || !q->front() || q->front()->empty()) {
     return make_pair(std::unique_ptr<IOBuf>(), 0);
   }
 
   std::unique_ptr<folly::IOBuf> buf;
   size_t remaining = 0;
   try {
-    buf = header->removeHeader(&queue_, remaining);
+    buf = header->removeHeader(q, remaining);
   } catch (const std::exception& e) {
     LOG(ERROR) << "Received invalid request from client: "
                << folly::exceptionStr(e) << " "

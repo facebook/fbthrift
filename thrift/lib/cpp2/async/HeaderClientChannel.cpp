@@ -449,13 +449,12 @@ HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<IOBuf> buf) {
 std::pair<std::unique_ptr<IOBuf>, size_t>
 HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
   THeader* header = channel_.getHeader();
-  queue_.append(*q);
-  if (!queue_.front() || queue_.front()->empty()) {
+  if (!q || !q->front() || q->front()->empty()) {
     return make_pair(std::unique_ptr<IOBuf>(), 0);
   }
 
   size_t remaining = 0;
-  std::unique_ptr<folly::IOBuf> buf = header->removeHeader(&queue_, remaining);
+  std::unique_ptr<folly::IOBuf> buf = header->removeHeader(q, remaining);
   if (!buf) {
     return make_pair(std::unique_ptr<folly::IOBuf>(), remaining);
   }

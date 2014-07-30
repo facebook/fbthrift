@@ -258,7 +258,6 @@ protected:
     std::unique_ptr<IOBuf> addFrame(std::unique_ptr<IOBuf> buf) override;
   private:
     HeaderServerChannel& channel_;
-    IOBufQueue queue_;
   };
 
 private:
