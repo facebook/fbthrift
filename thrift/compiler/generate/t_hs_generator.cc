@@ -56,6 +56,9 @@ class t_hs_generator : public t_oop_generator {
     // Set option flags based on parsed options
     gen_haddock_ = parsed_options.find("enable_haddock") !=
       parsed_options.end();
+    use_list_ = parsed_options.find("use_list") != parsed_options.end();
+    use_string_ = parsed_options.find("use_string") != parsed_options.end();
+
   }
 
   /**
@@ -63,6 +66,8 @@ class t_hs_generator : public t_oop_generator {
    */
 
   bool gen_haddock_;
+  bool use_list_;
+  bool use_string_;
 
   /**
    * Init and close methods
@@ -294,9 +299,8 @@ string t_hs_generator::hs_imports() {
       "import Data.Maybe (catMaybes)\n"
       "import Data.Text.Lazy ( Text )\n"
       "import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )\n"
-      "import qualified Data.Text.Lazy as TL\n"
+      "import qualified Data.Text.Lazy as T\n"
       "import Data.Typeable ( Typeable )\n"
-      "import qualified Data.ByteString.Lazy as LBS\n"
       "import qualified Data.HashMap.Strict as Map\n"
       "import qualified Data.HashSet as Set\n"
       "import qualified Data.Vector as Vector\n"
@@ -532,7 +536,7 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
     if (type->is_set())
       out << "(Set.fromList [";
     else
-      out << "(Vector.fromList ";
+      out << "(" << (use_list_ ? "" : "Vector.fromList ");
 
     bool first = true;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
@@ -1190,7 +1194,7 @@ void t_hs_generator::generate_service_server(t_service* tservice) {
     f_service_ << "do" << nl;
     indent_up();
     indent(f_service_) << "writeMessage oprot (name,M_EXCEPTION,seqid)" << nl;
-    indent(f_service_) << "writeAppExn oprot (AppExn AE_UNKNOWN_METHOD (\"Unknown function \" ++ TL.unpack name))" << nl;
+    indent(f_service_) << "writeAppExn oprot (AppExn AE_UNKNOWN_METHOD (\"Unknown function \" ++ T.unpack name))" << nl;
     indent(f_service_) << "tFlush (getTransport oprot)" << nl;
     indent_down();
   }
@@ -1593,6 +1597,8 @@ void t_hs_generator::generate_deserialize_type(ofstream &out,
   } else if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     if (tbase == t_base_type::TYPE_STRING && !((t_base_type*)type)->is_binary()) {
+      if (use_string_)
+        out << "T.unpack $ ";
       out << "decodeUtf8 ";
     }
     out << val;
@@ -1641,7 +1647,10 @@ void t_hs_generator::generate_deserialize_container(ofstream &out,
     out << ") " << arg << ")";
 
   } else if (ttype->is_list()) {
-    out << "(Vector.fromList $ map (\\" << val << " -> ";
+    out << "(";
+    if (!use_list_)
+      out << "Vector.fromList $ ";
+    out << "map (\\" << val << " -> ";
     generate_deserialize_type(out,((t_map*)ttype)->get_key_type(),val);
     out << ") " << arg << ")";
   }
@@ -1674,6 +1683,8 @@ void t_hs_generator::generate_serialize_type(ofstream &out,
       out << type_to_constructor(type) << " ";
       if (tbase == t_base_type::TYPE_STRING && !((t_base_type*)type)->is_binary()) {
         out << "$ encodeUtf8 ";
+        if (use_string_)
+          out << "$ T.pack ";
       }
       out << name;
 
@@ -1725,7 +1736,7 @@ void t_hs_generator::generate_serialize_container(ofstream &out,
     out << "TList " << type_to_enum(((t_list*)ttype)->get_elem_type());
     out <<" $ map (\\" << v << " -> ";
     generate_serialize_type(out, ((t_list*)ttype)->get_elem_type(), v);
-    out << ") $ Vector.toList " << prefix;
+    out << ") $ " << (use_list_ ? "" : "Vector.toList ") << prefix;
   }
 
 }
@@ -1840,6 +1851,8 @@ string t_hs_generator::type_to_default(t_type* type) {
   } else if (type->is_set()) {
     return "Set.empty";
 
+  } else if (type->is_list() && use_list_) {
+    return "[]";
   } else if (type->is_list()) {
     return "Vector.empty";
   }
@@ -1859,7 +1872,13 @@ string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
     case t_base_type::TYPE_VOID:   return "()";
-    case t_base_type::TYPE_STRING: return (((t_base_type*)type)->is_binary() ? "LBS.ByteString" : "Text");
+    case t_base_type::TYPE_STRING:
+      if (((t_base_type*)type)->is_binary())
+        return "ByteString";
+      else if (use_string_)
+        return "String";
+      else
+        return "Text";
     case t_base_type::TYPE_BOOL:   return "Bool";
     case t_base_type::TYPE_BYTE:   return "Int8";
     case t_base_type::TYPE_I16:    return "Int16";
@@ -1886,7 +1905,11 @@ string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
 
   } else if (type->is_list()) {
     t_type* etype = ((t_list*)type)->get_elem_type();
-    type_repr = "Vector.Vector " + render_hs_type(etype, true);
+    string inner_type = render_hs_type(etype, true);
+    if (use_list_)
+      type_repr = "[" + inner_type + "]";
+    else
+      type_repr = "Vector.Vector " + inner_type;
 
   } else {
     throw "INVALID TYPE IN type_to_enum: " + type->get_name();
