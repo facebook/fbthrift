@@ -52,7 +52,17 @@ class t_hs_generator : public t_oop_generator {
     (void) parsed_options;
     (void) option_string;
     out_dir_base_ = "gen-hs";
+
+    // Set option flags based on parsed options
+    gen_haddock_ = parsed_options.find("enable_haddock") !=
+      parsed_options.end();
   }
+
+  /**
+   * Option Flags
+   */
+
+  bool gen_haddock_;
 
   /**
    * Init and close methods
@@ -277,6 +287,7 @@ string t_hs_generator::hs_imports() {
       "\n"
       "import Control.Exception\n"
       "import Control.Monad ( liftM, ap )\n"
+      "import Data.ByteString.Lazy (ByteString)\n"
       "import Data.Functor ( (<$>) )\n"
       "import Data.Hashable\n"
       "import Data.Int\n"
@@ -580,22 +591,32 @@ void t_hs_generator::generate_hs_struct_definition(ofstream& out,
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
-  indent(out) << "data " << tname << " = " << tname;
-  if (members.size() > 0) {
-    out << "{";
+  if (gen_haddock_)
+    indent(out) << "-- | Definition of the " << tname << " struct" << nl;
+  indent(out) << "data " << tname << " = " << tname << nl;
 
+  if (members.size() > 0) {
+    indent_up();
     bool first = true;
     for (auto* m_iter : members) {
+      if (first) {
+        indent(out) << "{ ";
+        first = false;
+      } else {
+        indent(out) << ", ";
+      }
       string mname = m_iter->get_name();
-      out << (first ? "" : ",");
       out << field_name(tname, mname) << " :: ";
       if (m_iter->get_req() == t_field::T_OPTIONAL) {
         out << "Maybe ";
       }
-      out << render_hs_type(m_iter->get_type(), true);
-      first = false;
+      out << render_hs_type(m_iter->get_type(), true) << nl;
+      if (gen_haddock_)
+        indent(out) << "  -- ^ " << mname
+                    << " field of the " << tname << " struct" << nl;
     }
-    out << "}";
+    indent(out) << "}";
+    indent_down();
   }
 
   out << " deriving (Show,Eq,Typeable)" << nl;
@@ -686,6 +707,9 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
   string id = tmp("_id");
   string val = tmp("_val");
 
+  if (gen_haddock_)
+    indent(out) << "-- | Translate a 'ThriftVal' to a '" << sname << "'" << nl;
+  indent(out) << "to_" << sname << " :: ThriftVal -> " << sname << nl;
   indent(out) << "to_" << sname << " (TStruct fields) = " << sname << "{" << nl;
   indent_up();
 
@@ -735,8 +759,20 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
   // read
   string tmap = type_name(tstruct, "typemap_");
   indent(out) << "to_" << sname << " _ = error \"not a struct\"" << nl;
+
+  if (gen_haddock_)
+    indent(out) << "-- | Read a '" << sname
+                << "' struct with the given 'Protocol'" << nl;
+  indent(out) << "read_" << sname <<
+    " :: (Transport t, Protocol p) => p t -> IO " << sname << nl;
   indent(out) << "read_" << sname << " iprot = to_" << sname;
   out << " <$> readVal iprot (T_STRUCT " << tmap << ")" << nl;
+
+  // decode
+  if (gen_haddock_)
+    indent(out) << "-- | Deserialize a '" << sname << "' in pure code" << nl;
+  indent(out) << "decode_" << sname <<
+    " :: (Protocol p, Transport t) => p t -> ByteString -> " << sname << nl;
   indent(out) << "decode_" << sname << " iprot bs = to_" << sname << " $ ";
   out << "deserializeVal iprot (T_STRUCT " << tmap << ") bs" << nl;
 }
@@ -750,6 +786,9 @@ void t_hs_generator::generate_hs_struct_writer(ofstream& out,
   string f = tmp("_f");
   string v = tmp("_v");
 
+  if (gen_haddock_)
+    indent(out) << "-- | Translate a '" << name << "' to a 'ThriftVal'" << nl;
+  indent(out) << "from_" << name << " :: " << name << " -> ThriftVal" << nl;
   indent(out) << "from_" << name << " record = TStruct $ Map.fromList $ catMaybes" << nl;
   indent_up();
 
@@ -788,8 +827,21 @@ void t_hs_generator::generate_hs_struct_writer(ofstream& out,
   }
 
   indent_down();
+
+  // write
+  if (gen_haddock_)
+    indent(out) << "-- | Write a '"
+                << name << "' with the given 'Protocol'" << nl;
+  indent(out) << "write_" << name << " :: (Protocol p, Transport t) => p t -> "
+              << name << " -> IO ()" << nl;
   indent(out) << "write_" << name << " oprot record = writeVal oprot $ from_";
   out << name << " record" << nl;
+
+  // encode
+    if (gen_haddock_)
+      indent(out) << "-- | Serialize a '" << name << "' in pure code" << nl;
+  indent(out) << "encode_" << name << " :: (Protocol p, Transport t) => p t -> "
+              << name << " -> ByteString" << nl;
   indent(out) << "encode_" << name << " oprot record = serializeVal oprot $ ";
   out << "from_" << name << " record" << nl;
 }
@@ -878,6 +930,8 @@ void t_hs_generator::generate_hs_typemap(ofstream& out,
   const auto& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
+  if (gen_haddock_)
+    indent(out) << "-- | 'TypeMap' for the '" << name << "' struct" << nl;
   indent(out) << "typemap_" << name << " :: TypeMap" << nl;
   indent(out) << "typemap_" << name << " = Map.fromList [";
   bool first = true;
@@ -902,10 +956,14 @@ void t_hs_generator::generate_hs_typemap(ofstream& out,
 void t_hs_generator::generate_hs_default(ofstream& out,
                                          t_struct* tstruct) {
   string name = type_name(tstruct);
+  string fname = type_name(tstruct, "default_");
   const auto& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
-  indent(out) << type_name(tstruct, "default_") << " = " << name << "{" << nl;
+  if (gen_haddock_)
+    indent(out) << "-- | Default values for the '" << name << "' struct" << nl;
+  indent(out) << fname << " :: " << name << nl;
+  indent(out) << fname << " = " << name << "{" << nl;
   indent_up();
   bool first = true;
   for (const auto& f_iter : fields) {
