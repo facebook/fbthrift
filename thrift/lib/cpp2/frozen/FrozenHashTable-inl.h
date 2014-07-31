@@ -171,10 +171,9 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
 
   void thaw(ViewPosition self, T& out) const {
     out.clear();
-    auto outIt = std::inserter(out, out.begin());
     auto v = view(self);
     for (auto it = v.begin(); it != v.end(); ++it) {
-      *outIt++ = it.thaw();
+      out.insert(it.thaw());
     }
   }
 
