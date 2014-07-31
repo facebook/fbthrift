@@ -179,6 +179,8 @@ class t_hs_generator : public t_oop_generator {
   string type_name(t_type* ttype,
                    string function_prefix = "");
 
+  string field_name(string tname, string fname);
+
   string function_type(t_function* tfunc,
                        bool options = false,
                        bool io = false,
@@ -479,7 +481,7 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
       string const_value = render_const_value(field->get_type(), v_iter.second);
 
       out << (first ? "" : ", ");
-      out << "f_" << cname << "_" << fname << " = ";
+      out << field_name(cname, fname) << " = ";
       if (field->get_req() == t_field::T_OPTIONAL) {
         out << "Just ";
       }
@@ -586,7 +588,7 @@ void t_hs_generator::generate_hs_struct_definition(ofstream& out,
     for (auto* m_iter : members) {
       string mname = m_iter->get_name();
       out << (first ? "" : ",");
-      out << "f_" << tname << "_" << mname << " :: ";
+      out << field_name(tname, mname) << " :: ";
       if (m_iter->get_req() == t_field::T_OPTIONAL) {
         out << "Maybe ";
       }
@@ -606,7 +608,7 @@ void t_hs_generator::generate_hs_struct_definition(ofstream& out,
   indent(out) << "hashWithSalt salt record = salt";
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     string mname = (*m_iter)->get_name();
-    indent(out) << " `hashWithSalt` " << "f_" << tname << "_" << mname << " record";
+    indent(out) << " `hashWithSalt` " << field_name(tname, mname) << " record";
   }
   indent(out) << nl;
   indent_down();
@@ -658,7 +660,7 @@ void t_hs_generator::generate_hs_struct_arbitrary(ofstream& out, t_struct* tstru
       } else {
         indent(out) << ", ";
       }
-      string fname = "f_" + tname + "_" + m_iter->get_name();
+      string fname = field_name(tname, m_iter->get_name());
       out << "if obj == default_" << tname;
       out << "{" << fname << " = " << fname << " obj} ";
       out << "then Nothing ";
@@ -702,7 +704,7 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
     }
 
     // Fill in Field
-    indent(out) << "f_" << sname << "_" << fname << " = ";
+    indent(out) << field_name(sname, fname) << " = ";
 
     out << "maybe (";
     if (f_iter->get_req() == t_field::T_REQUIRED) {
@@ -712,7 +714,7 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
           f_iter->get_value() == nullptr)
         out << "Nothing";
       else {
-        out << "f_" << sname << "_" << fname << " default_" << sname;
+        out << field_name(sname, fname) << " default_" << sname;
       }
     }
     out << ") ";
@@ -741,7 +743,7 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
 
 void t_hs_generator::generate_hs_struct_writer(ofstream& out,
                                                t_struct* tstruct) {
-string name = type_name(tstruct);
+  string name = type_name(tstruct);
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
   string str = tmp("_str");
@@ -775,7 +777,7 @@ string name = type_name(tstruct);
     } else {
       out << "<$>";
     }
-    out << " f_" << name << "_" << mname << " record" << nl;
+    out << " " << field_name(name, mname) << " record" << nl;
   }
 
   // Write the struct map
@@ -850,7 +852,7 @@ void t_hs_generator::generate_service_helpers(t_service* tservice) {
  * @param tfunction The function
  */
 void t_hs_generator::generate_hs_function_helpers(t_function* tfunction) {
-  t_struct result(program_, decapitalize(tfunction->get_name()) + "_result");
+  t_struct result(program_, field_name(tfunction->get_name(), "result"));
   t_field success(tfunction->get_returntype(), "success", 0);
 
   if (!tfunction->get_returntype()->is_void())
@@ -916,7 +918,7 @@ void t_hs_generator::generate_hs_default(ofstream& out,
 
     t_type* type = get_true_type(f_iter->get_type());
     t_const_value* value = f_iter->get_value();
-    indent(out) << "f_" << name << "_" << mname << " = ";
+    indent(out) << field_name(name, mname) << " = ";
     if (f_iter->get_req() == t_field::T_OPTIONAL) {
       if (value == nullptr) {
         out << "Nothing";
@@ -1057,7 +1059,7 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
     for (auto& fld_iter : fields) {
       string fieldname = fld_iter->get_name();
       f_client_ << (first ? "" : ",");
-      f_client_ << "f_" << argsname << "_" << fieldname << "=";
+      f_client_ << field_name(argsname, fieldname) << "=";
       if (fld_iter->get_req() == t_field::T_OPTIONAL)
         f_client_ << "Just ";
       f_client_ << "arg_" << fieldname;
@@ -1450,11 +1452,13 @@ void t_hs_generator::generate_process_function(t_service* tservice,
 
   f_service_ << "Iface." << decapitalize(tfunction->get_name()) << " handler";
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter)
-    f_service_ << " (f_" << argsname <<  "_" << (*f_iter)->get_name() << " args)";
+    f_service_ << " (" <<
+      field_name(argsname, (*f_iter)->get_name()) << " args)";
 
   if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
     f_service_ << nl;
-    indent(f_service_) << "return default_" << resultname << "{f_" << resultname << "_success = res}";
+    indent(f_service_) << "return default_" << resultname << "{" <<
+      field_name(resultname, "success") << " = res}";
 
   } else if (!tfunction->is_oneway()) {
     f_service_ << nl;
@@ -1470,7 +1474,8 @@ void t_hs_generator::generate_process_function(t_service* tservice,
       indent_up();
 
       if (!tfunction->is_oneway()) {
-        indent(f_service_) << "return default_" << resultname << "{f_" << resultname << "_" << (*x_iter)->get_name() << " = e}";
+        indent(f_service_) << "return default_" << resultname << "{" <<
+          field_name(resultname, (*x_iter)->get_name()) << " = e}";
 
       } else {
         indent(f_service_) << "return ()";
@@ -1698,6 +1703,10 @@ string t_hs_generator::type_name(t_type* ttype, string function_prefix) {
       prefix = capitalize(program->get_name()) + "_Types.";
 
   return prefix + function_prefix + capitalize(ttype->get_name());
+}
+
+string t_hs_generator::field_name(string tname, string fname) {
+  return decapitalize(tname) + "_" + fname;
 }
 
 /**

@@ -108,47 +108,47 @@ instance Storable TestStruct where
     -- Pack Everything
     c_freeBuffers cStructPtr
     return TestStruct{
-      f_TestStruct_f_bool   = toEnum $ fromIntegral bool,
-      f_TestStruct_f_byte   = byte,
-      f_TestStruct_f_i16    = i16,
-      f_TestStruct_f_i32    = i32,
-      f_TestStruct_f_i64    = i64,
-      f_TestStruct_f_float  = float,
-      f_TestStruct_f_double = double,
-      f_TestStruct_f_string = decodeUtf8 string,
-      f_TestStruct_f_list   = Vector.fromList list,
-      f_TestStruct_f_map    = themap,
-      f_TestStruct_f_set    = Set.fromList set,
-      f_TestStruct_o_i32    = if toEnum $ fromIntegral o_isset
+      testStruct_f_bool   = toEnum $ fromIntegral bool,
+      testStruct_f_byte   = byte,
+      testStruct_f_i16    = i16,
+      testStruct_f_i32    = i32,
+      testStruct_f_i64    = i64,
+      testStruct_f_float  = float,
+      testStruct_f_double = double,
+      testStruct_f_string = decodeUtf8 string,
+      testStruct_f_list   = Vector.fromList list,
+      testStruct_f_map    = themap,
+      testStruct_f_set    = Set.fromList set,
+      testStruct_o_i32    = if toEnum $ fromIntegral o_isset
                               then Just o_i32
                               else Nothing,
-      f_TestStruct_foo      = foo
+      testStruct_foo      = foo
       }
 
   poke ptr TestStruct{..} =
     -- Allocate Temporary Struct
     alloca $ \cStructPtr ->
     -- Allocate CString
-    BS.useAsCString (LBS.toStrict $ encodeUtf8 f_TestStruct_f_string) $ \cStr ->
+    BS.useAsCString (LBS.toStrict $ encodeUtf8 testStruct_f_string) $ \cStr ->
     -- Allocate List
-    withArrayLen (map CShort $ Vector.toList f_TestStruct_f_list) $ \vLen vec ->
+    withArrayLen (map CShort $ Vector.toList testStruct_f_list) $ \vLen vec ->
     -- Allocate Map
-    let (keys, vals) = unzip (Map.toList f_TestStruct_f_map)
+    let (keys, vals) = unzip (Map.toList testStruct_f_map)
     in withArrayLen (map CShort keys) $ \mapLen mapKeys ->
     withArray (map CInt vals) $ \mapVals ->
     -- Allocate Set
-    withArrayLen (map CSChar $ Set.toList f_TestStruct_f_set) $ \sLen set -> do
+    withArrayLen (map CSChar $ Set.toList testStruct_f_set) $ \sLen set -> do
       -- Allocate Inner Struct
       fooPtr <- c_newFoo
-      poke fooPtr f_TestStruct_foo
+      poke fooPtr testStruct_foo
       (#poke CTestStruct, f_bool) cStructPtr
-        (CSChar $ fromIntegral $ fromEnum f_TestStruct_f_bool)
-      (#poke CTestStruct, f_byte)     cStructPtr (CSChar f_TestStruct_f_byte)
-      (#poke CTestStruct, f_i16)      cStructPtr (CShort f_TestStruct_f_i16)
-      (#poke CTestStruct, f_i32)      cStructPtr (CInt f_TestStruct_f_i32)
-      (#poke CTestStruct, f_i64)      cStructPtr (CLong f_TestStruct_f_i64)
-      (#poke CTestStruct, f_float)    cStructPtr (CFloat f_TestStruct_f_float)
-      (#poke CTestStruct, f_double)   cStructPtr (CDouble f_TestStruct_f_double)
+        (CSChar $ fromIntegral $ fromEnum testStruct_f_bool)
+      (#poke CTestStruct, f_byte)     cStructPtr (CSChar testStruct_f_byte)
+      (#poke CTestStruct, f_i16)      cStructPtr (CShort testStruct_f_i16)
+      (#poke CTestStruct, f_i32)      cStructPtr (CInt testStruct_f_i32)
+      (#poke CTestStruct, f_i64)      cStructPtr (CLong testStruct_f_i64)
+      (#poke CTestStruct, f_float)    cStructPtr (CFloat testStruct_f_float)
+      (#poke CTestStruct, f_double)   cStructPtr (CDouble testStruct_f_double)
       (#poke CTestStruct, f_string)   cStructPtr cStr
       (#poke CTestStruct, f_list)     cStructPtr vec
       (#poke CTestStruct, f_list_len) cStructPtr (CInt $ fromIntegral vLen)
@@ -158,9 +158,9 @@ instance Storable TestStruct where
       (#poke CTestStruct, f_set)      cStructPtr set
       (#poke CTestStruct, f_set_len)  cStructPtr (CInt $ fromIntegral sLen)
       (#poke CTestStruct, o_i32) cStructPtr
-        (CInt $ fromIntegral $ fromMaybe 0 f_TestStruct_o_i32)
+        (CInt $ fromIntegral $ fromMaybe 0 testStruct_o_i32)
       (#poke CTestStruct, o_isset) cStructPtr
-        (CSChar $ fromIntegral $ fromEnum $ isJust f_TestStruct_o_i32)
+        (CSChar $ fromIntegral $ fromEnum $ isJust testStruct_o_i32)
       (#poke CTestStruct, foo) cStructPtr fooPtr
       c_fillStruct ptr cStructPtr
 
