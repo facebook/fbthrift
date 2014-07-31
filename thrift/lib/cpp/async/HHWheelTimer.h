@@ -195,6 +195,7 @@ class HHWheelTimer : protected apache::thrift::async::TAsyncTimeout,
 
   using apache::thrift::async::TAsyncTimeout::attachEventBase;
   using apache::thrift::async::TAsyncTimeout::detachEventBase;
+  using apache::thrift::async::TAsyncTimeout::getTimeoutManager;
 
  protected:
   /**
