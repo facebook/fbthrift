@@ -54,12 +54,12 @@ class AsyncLoadHandler2 : public LoadTestSvIf
   explicit AsyncLoadHandler2(TEventServer* server = nullptr)
     : FacebookBase2("AsyncLoadHandler2") {}
 
-  void async_tm_noop(std::unique_ptr<HandlerCallback<void>> callback);
-  void async_tm_onewayNoop(std::unique_ptr<HandlerCallbackBase> callback);
-  void async_tm_asyncNoop(std::unique_ptr<HandlerCallback<void>> callback);
-  void async_tm_sleep(std::unique_ptr<HandlerCallback<void>> callback,
+  void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback);
+  void async_eb_onewayNoop(std::unique_ptr<HandlerCallbackBase> callback);
+  void async_eb_asyncNoop(std::unique_ptr<HandlerCallback<void>> callback);
+  void async_eb_sleep(std::unique_ptr<HandlerCallback<void>> callback,
                    int64_t microseconds);
-  void async_tm_onewaySleep(std::unique_ptr<HandlerCallbackBase> callback,
+  void async_eb_onewaySleep(std::unique_ptr<HandlerCallbackBase> callback,
                    int64_t microseconds);
   void sync_burn(int64_t microseconds);
   folly::wangle::Future<void> future_burn(int64_t microseconds);
@@ -69,20 +69,20 @@ class AsyncLoadHandler2 : public LoadTestSvIf
                       int64_t microseconds);
   void async_eb_badBurn(std::unique_ptr<HandlerCallback<void>> callback,
                      int64_t microseconds);
-  void async_tm_throwError(std::unique_ptr<HandlerCallback<void>> callback,
+  void async_eb_throwError(std::unique_ptr<HandlerCallback<void>> callback,
                         int32_t code);
-  void async_tm_throwUnexpected(std::unique_ptr<HandlerCallback<void>> callback,
+  void async_eb_throwUnexpected(std::unique_ptr<HandlerCallback<void>> callback,
                              int32_t code);
-  void async_tm_onewayThrow(std::unique_ptr<HandlerCallbackBase> callback,
+  void async_eb_onewayThrow(std::unique_ptr<HandlerCallbackBase> callback,
                          int32_t code);
-  void async_tm_send(std::unique_ptr<HandlerCallback<void>> callback,
+  void async_eb_send(std::unique_ptr<HandlerCallback<void>> callback,
                   std::unique_ptr<std::string> data);
-  void async_tm_onewaySend(std::unique_ptr<HandlerCallbackBase> callback,
+  void async_eb_onewaySend(std::unique_ptr<HandlerCallbackBase> callback,
                         std::unique_ptr<std::string> data);
-  void async_tm_recv(
+  void async_eb_recv(
     std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
     int64_t bytes);
-  void async_tm_sendrecv(
+  void async_eb_sendrecv(
     std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
     std::unique_ptr<std::string> data,
     int64_t recvBytes);
@@ -91,7 +91,7 @@ class AsyncLoadHandler2 : public LoadTestSvIf
     std::unique_ptr<std::string> data);
   folly::wangle::Future<std::unique_ptr<std::string>> future_echo(
     std::unique_ptr<std::string> data);
-  void async_tm_add(std::unique_ptr<HandlerCallback<int64_t>>,
+  void async_eb_add(std::unique_ptr<HandlerCallback<int64_t>>,
                  int64_t a, int64_t b);
 
  private:

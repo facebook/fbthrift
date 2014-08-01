@@ -28,7 +28,7 @@ using apache::thrift::concurrency::Util;
 
 namespace apache { namespace thrift {
 
-void AsyncLoadHandler2::async_tm_noop(
+void AsyncLoadHandler2::async_eb_noop(
   std::unique_ptr<HandlerCallback<void>> callback) {
   // Note that we could have done this with a sync function,
   // but an inline async op is faster, and we want to maintain
@@ -36,17 +36,17 @@ void AsyncLoadHandler2::async_tm_noop(
   callback.release()->doneInThread();
 }
 
-void AsyncLoadHandler2::async_tm_onewayNoop(
+void AsyncLoadHandler2::async_eb_onewayNoop(
   std::unique_ptr<HandlerCallbackBase> callback) {
   callback.release()->deleteInThread();
 }
 
-void AsyncLoadHandler2::async_tm_asyncNoop(
+void AsyncLoadHandler2::async_eb_asyncNoop(
   std::unique_ptr<HandlerCallback<void>> callback) {
   callback.release()->doneInThread();
 }
 
-void AsyncLoadHandler2::async_tm_sleep(
+void AsyncLoadHandler2::async_eb_sleep(
   std::unique_ptr<HandlerCallback<void>> callback,
   int64_t microseconds) {
   // May leak if task never finishes
@@ -60,7 +60,7 @@ void AsyncLoadHandler2::async_tm_sleep(
   });
 }
 
-void AsyncLoadHandler2::async_tm_onewaySleep(
+void AsyncLoadHandler2::async_eb_onewaySleep(
   std::unique_ptr<HandlerCallbackBase> callback,
   int64_t microseconds) {
   auto callbackp = callback.release();
@@ -126,7 +126,7 @@ void AsyncLoadHandler2::async_eb_badBurn(
   callback->done();
 }
 
-void AsyncLoadHandler2::async_tm_throwError(
+void AsyncLoadHandler2::async_eb_throwError(
   std::unique_ptr<HandlerCallback<void>> callback,
   int32_t code) {
 
@@ -135,7 +135,7 @@ void AsyncLoadHandler2::async_tm_throwError(
   callback.release()->exceptionInThread(error);
 }
 
-void AsyncLoadHandler2::async_tm_throwUnexpected(
+void AsyncLoadHandler2::async_eb_throwUnexpected(
   std::unique_ptr<HandlerCallback<void>> callback,
   int32_t code) {
 
@@ -146,7 +146,7 @@ void AsyncLoadHandler2::async_tm_throwUnexpected(
   callback.release()->doneInThread();
 }
 
-void AsyncLoadHandler2::async_tm_onewayThrow(
+void AsyncLoadHandler2::async_eb_onewayThrow(
   std::unique_ptr<HandlerCallbackBase> callback,
   int32_t code) {
 
@@ -155,26 +155,26 @@ void AsyncLoadHandler2::async_tm_onewayThrow(
   callback.release()->exceptionInThread(error);
 }
 
-void AsyncLoadHandler2::async_tm_send(
+void AsyncLoadHandler2::async_eb_send(
   std::unique_ptr<HandlerCallback<void>> callback,
   std::unique_ptr<std::string> data) {
   callback.release()->doneInThread();
 }
 
-void AsyncLoadHandler2::async_tm_onewaySend(
+void AsyncLoadHandler2::async_eb_onewaySend(
   std::unique_ptr<HandlerCallbackBase> callback,
   std::unique_ptr<std::string> data) {
   callback.release()->deleteInThread();
 }
 
-void AsyncLoadHandler2::async_tm_recv(
+void AsyncLoadHandler2::async_eb_recv(
   std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
   int64_t bytes) {
   std::unique_ptr<std::string> ret(new std::string(bytes, 'a'));
   callback.release()->resultInThread(std::move(ret));
 }
 
-void AsyncLoadHandler2::async_tm_sendrecv(
+void AsyncLoadHandler2::async_eb_sendrecv(
   std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
   std::unique_ptr<std::string> data, int64_t recvBytes) {
   std::unique_ptr<std::string> ret(new std::string(recvBytes, 'a'));
@@ -208,7 +208,7 @@ AsyncLoadHandler2::future_echo(
   return future;
 }
 
-void AsyncLoadHandler2::async_tm_add(
+void AsyncLoadHandler2::async_eb_add(
   std::unique_ptr<HandlerCallback<int64_t>> callback,
   int64_t a,
   int64_t b){
