@@ -83,13 +83,13 @@ class HeaderClientChannel : public RequestChannel,
 
   // Client interface from RequestChannel
   using RequestChannel::sendRequest;
-  void sendRequest(const RpcOptions&,
-                   std::unique_ptr<RequestCallback>,
-                   std::unique_ptr<apache::thrift::ContextStack>,
-                   std::unique_ptr<folly::IOBuf>);
+  uint32_t sendRequest(const RpcOptions&,
+                       std::unique_ptr<RequestCallback>,
+                       std::unique_ptr<apache::thrift::ContextStack>,
+                       std::unique_ptr<folly::IOBuf>);
 
   using RequestChannel::sendOnewayRequest;
-  void sendOnewayRequest(const RpcOptions&,
+  uint32_t sendOnewayRequest(const RpcOptions&,
                          std::unique_ptr<RequestCallback>,
                          std::unique_ptr<apache::thrift::ContextStack>,
                          std::unique_ptr<folly::IOBuf>);
@@ -157,6 +157,8 @@ class HeaderClientChannel : public RequestChannel,
   uint16_t getProtocolId() {
     return header_->getProtocolId();
   }
+
+  bool expireCallback(uint32_t seqId);
 
   // If security negotiation has not yet started, begin.  Depending on
   // the availability of keying material, etc., this may be a noop, or
@@ -362,6 +364,15 @@ private:
       }
       maybeDeleteThis();
     }
+    void expire() {
+      X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
+      channel_->eraseCallback(sendSeqId_, this);
+      recvState_ = QState::DONE;
+      cbCalled_ = true;
+
+      maybeDeleteThis();
+    }
+
    private:
     enum class QState {
       INIT, QUEUED, DONE
@@ -472,10 +483,11 @@ private:
   void maybeSetTimeoutHeader(const RpcOptions& rpcOptions);
 
   uint32_t sendSeqId_;
+  uint32_t sendSecurityPendingSeqId_;
 
   std::unique_ptr<SaslClient> saslClient_;
 
-  typedef void (HeaderClientChannel::*AfterSecurityMethod)(
+  typedef uint32_t (HeaderClientChannel::*AfterSecurityMethod)(
     const RpcOptions&,
     std::unique_ptr<RequestCallback>,
     std::unique_ptr<apache::thrift::ContextStack>,

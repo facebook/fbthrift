@@ -282,32 +282,36 @@ class RequestChannel : virtual public TDelayedDestruction {
    *
    * cb must not be null.
    */
-  virtual void sendRequest(const RpcOptions&,
-                           std::unique_ptr<RequestCallback>,
-                           std::unique_ptr<apache::thrift::ContextStack>,
-                           std::unique_ptr<folly::IOBuf>) = 0;
-  void sendRequest(std::unique_ptr<RequestCallback> cb,
-                   std::unique_ptr<apache::thrift::ContextStack> ctx,
-                   std::unique_ptr<folly::IOBuf> buf) {
-    sendRequest(RpcOptions(), std::move(cb), std::move(ctx), std::move(buf));
+  virtual uint32_t sendRequest(const RpcOptions&,
+                               std::unique_ptr<RequestCallback>,
+                               std::unique_ptr<apache::thrift::ContextStack>,
+                               std::unique_ptr<folly::IOBuf>) = 0;
+  uint32_t sendRequest(std::unique_ptr<RequestCallback> cb,
+                       std::unique_ptr<apache::thrift::ContextStack> ctx,
+                       std::unique_ptr<folly::IOBuf> buf) {
+    return sendRequest(RpcOptions(),
+                       std::move(cb),
+                       std::move(ctx),
+                       std::move(buf));
   }
 
   /* Similar to sendRequest, although replyReceived will never be called
    *
    * Null RequestCallback is allowed for oneway requests
    */
-  virtual void sendOnewayRequest(const RpcOptions&,
-                                 std::unique_ptr<RequestCallback>,
-                                 std::unique_ptr<apache::thrift::ContextStack>,
-                                 std::unique_ptr<folly::IOBuf>) = 0;
+  virtual uint32_t sendOnewayRequest(
+      const RpcOptions&,
+      std::unique_ptr<RequestCallback>,
+      std::unique_ptr<apache::thrift::ContextStack>,
+      std::unique_ptr<folly::IOBuf>) = 0;
 
-  void sendOnewayRequest(std::unique_ptr<RequestCallback> cb,
-                         std::unique_ptr<apache::thrift::ContextStack> ctx,
-                         std::unique_ptr<folly::IOBuf> buf) {
-    sendOnewayRequest(RpcOptions(),
-                      std::move(cb),
-                      std::move(ctx),
-                      std::move(buf));
+  uint32_t sendOnewayRequest(std::unique_ptr<RequestCallback> cb,
+                             std::unique_ptr<apache::thrift::ContextStack> ctx,
+                             std::unique_ptr<folly::IOBuf> buf) {
+    return sendOnewayRequest(RpcOptions(),
+                             std::move(cb),
+                             std::move(ctx),
+                             std::move(buf));
   }
 
   virtual void setCloseCallback(CloseCallback*) = 0;

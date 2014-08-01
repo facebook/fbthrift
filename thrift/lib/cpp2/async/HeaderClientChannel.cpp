@@ -46,6 +46,7 @@ HeaderClientChannel::HeaderClientChannel(
 HeaderClientChannel::HeaderClientChannel(
   const std::shared_ptr<Cpp2Channel>& cpp2Channel)
     : sendSeqId_(0)
+    , sendSecurityPendingSeqId_(0)
     , closeCallback_(nullptr)
     , timeout_(0)
     , timeoutSASL_(500)
@@ -302,7 +303,7 @@ bool HeaderClientChannel::clientSupportHeader() {
 }
 
 // Client Interface
-void HeaderClientChannel::sendOnewayRequest(
+uint32_t HeaderClientChannel::sendOnewayRequest(
     const RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
@@ -316,7 +317,7 @@ void HeaderClientChannel::sendOnewayRequest(
                       std::move(ctx),
                       std::move(buf),
                       header_->releaseWriteHeaders()));
-    return;
+    return ResponseChannel::ONEWAY_REQUEST_ID;
   }
 
   maybeSetPriorityHeader(rpcOptions);
@@ -334,6 +335,7 @@ void HeaderClientChannel::sendOnewayRequest(
     sendMessage(nullptr, std::move(buf));
   }
   sendSeqId_ = oldSeqId;
+  return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
 void HeaderClientChannel::setCloseCallback(CloseCallback* cb) {
@@ -341,7 +343,7 @@ void HeaderClientChannel::setCloseCallback(CloseCallback* cb) {
   setBaseReceivedCallback();
 }
 
-void HeaderClientChannel::sendRequest(
+uint32_t HeaderClientChannel::sendRequest(
     const RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
@@ -360,7 +362,13 @@ void HeaderClientChannel::sendRequest(
                       std::move(ctx),
                       std::move(buf),
                       header_->releaseWriteHeaders()));
-    return;
+
+    // Security always happens at the beginning of the channel, with seq id 0.
+    // Return sequence id expected to be generated when security is done.
+    if (++sendSecurityPendingSeqId_ == ResponseChannel::ONEWAY_REQUEST_ID) {
+      ++sendSecurityPendingSeqId_;
+    }
+    return sendSecurityPendingSeqId_;
   }
 
   DestructorGuard dg(this);
@@ -407,6 +415,7 @@ void HeaderClientChannel::sendRequest(
                          std::move(buf),
                          HEADER_FLAG_STREAM_BEGIN);
   }
+  return sendSeqId_;
 }
 
 void HeaderClientChannel::sendStreamingMessage(
@@ -581,6 +590,18 @@ void HeaderClientChannel::eraseCallback(uint32_t seqId, TwowayCallback* cb) {
   recvCallbacks_.erase(it);
 
   setBaseReceivedCallback();   // was this the last callback?
+}
+
+bool HeaderClientChannel::expireCallback(uint32_t seqId) {
+  VLOG(4) << "Expiring callback with sequence id " << seqId;
+  CHECK(getEventBase()->isInEventBaseThread());
+  auto it = recvCallbacks_.find(seqId);
+  if (it != recvCallbacks_.end()) {
+    it->second->expire();
+    return true;
+  }
+
+  return false;
 }
 
 void HeaderClientChannel::registerStream(uint32_t seqId, StreamCallback* cb) {
