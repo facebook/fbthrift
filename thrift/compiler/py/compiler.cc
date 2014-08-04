@@ -65,6 +65,7 @@ void process(const dict& params, const object& generate_callback) {
   out_path = extract<string> (opts.attr("outputDir"));
   g_allow_neg_field_keys = extract<bool> (opts.attr("allow_neg_keys"));
   g_allow_neg_enum_vals = extract<bool> (opts.attr("allow_neg_enum_vals"));
+  g_allow_64bit_consts = extract<bool> (opts.attr("allow_64bit_consts"));
 
   auto e = extract<list> (opts.attr("includeDirs"));
   if (e.check()) {
