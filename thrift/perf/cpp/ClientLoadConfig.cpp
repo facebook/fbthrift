@@ -24,7 +24,7 @@
 
 using namespace boost;
 
-DEFINE_string(server, "127.0.0.1", "IP address of the server to test");
+DEFINE_string(server, "127.0.0.1", "Name/IP address of the server to test");
 DEFINE_int32(port, 1234, "server port");
 DEFINE_bool(framed, true, "use TFramedTransport");
 DEFINE_bool(header, false, "use THeaderProtocol");
@@ -120,7 +120,7 @@ ClientLoadConfig::ClientLoadConfig()
   if (FLAGS_server == "127.0.0.1") {
     addressHostname_ = facebook::network::NetworkUtil::getLocalHost();
   } else {
-    addressHostname_ = facebook::network::NetworkUtil::getHostByAddrCached(
+    addressHostname_ = facebook::network::NetworkUtil::getHostByNameCached(
       FLAGS_server);
   }
 

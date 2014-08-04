@@ -33,7 +33,7 @@ from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport import TSocket, TSSLSocket
 from thrift.transport import TTransport
 from thrift.server import TServer, TNonblockingServer, \
-    TProcessPoolServer, THttpServer
+    TProcessPoolServer, THttpServer, TCppServer
 
 def main():
     op = optparse.OptionParser(usage='%prog [options]', add_help_option=False)
@@ -46,7 +46,7 @@ def main():
                   help='Type name of server')
     op.add_option('-w', '--num_workers',
                   action='store', type='int', dest='workers', default=4,
-                  help='Number of worker processes')
+                  help='Number of worker processes/threads')
     op.add_option('-Q', '--max_queue_size',
                   action='store', type='int', dest='max_queue_size', default=0,
                   help='Max queue size, passed to TNonblockingServer')
@@ -69,35 +69,47 @@ def main():
                                            THeaderTransport.FRAMED_DEPRECATED,
                                            THeaderTransport.UNFRAMED_DEPRECATED,
                                            THeaderTransport.HTTP_CLIENT_TYPE])
-        if options.servertype == 'TNonblockingServer':
+        if options.servertype == 'TCppServer':
+            print('C++ ThriftServer, Header transport, backwards compatible '
+                  'with all other types')
+        elif options.servertype == 'TNonblockingServer':
             print('Header transport, backwards compatible with framed')
         else:
             print('Header transport, backwards compatible with ' +
                 'unframed, framed, http')
     else:
-        if options.servertype == 'TNonblockingServer':
+        if options.servertype == 'TCppServer':
+            if not options.header:
+                op.error('TCppServer cannot be used without header')
+        elif options.servertype == 'TNonblockingServer':
             print('Framed transport')
         else:
             print('Unframed transport')
         pfactory = TBinaryProtocolAcceleratedFactory()
 
-    transport = TSocket.TServerSocket(options.port)
-    tfactory = TTransport.TBufferedTransportFactory()
-    if options.servertype == "TNonblockingServer":
-        server = TNonblockingServer.TNonblockingServer(processor, transport,
-                            pfactory, maxQueueSize=options.max_queue_size)
-    elif options.servertype == "TProcessPoolServer":
-        server = TProcessPoolServer.TProcessPoolServer(processor, transport,
-                                                       tfactory,
-                                                       pfactory)
-        print('Worker processes: ' + str(options.workers))
-        server.setNumWorkers(options.workers)
+    if options.servertype == 'TCppServer':
+        server = TCppServer.TCppServer(processor)
+        server.setPort(options.port)
+        print('Worker threads: ' + str(options.workers))
+        server.setNWorkerThreads(options.workers)
     else:
-        ServerClass = getattr(TServer, options.servertype)
-        server = ServerClass(processor, transport, tfactory, pfactory)
+        transport = TSocket.TServerSocket(options.port)
+        tfactory = TTransport.TBufferedTransportFactory()
+        if options.servertype == "TNonblockingServer":
+            server = TNonblockingServer.TNonblockingServer(processor, transport,
+                                pfactory, maxQueueSize=options.max_queue_size)
+        elif options.servertype == "TProcessPoolServer":
+            server = TProcessPoolServer.TProcessPoolServer(processor, transport,
+                                                           tfactory,
+                                                           pfactory)
+            print('Worker processes: ' + str(options.workers))
+            server.setNumWorkers(options.workers)
+        else:
+            ServerClass = getattr(TServer, options.servertype)
+            server = ServerClass(processor, transport, tfactory, pfactory)
 
     print('Serving ' + options.servertype +
-        ' requests on port %d...' % (options.port,))
+          ' requests on port %d...' % (options.port,))
     server.serve()
 
 if __name__ == '__main__':
