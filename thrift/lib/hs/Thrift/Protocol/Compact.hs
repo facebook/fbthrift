@@ -49,7 +49,11 @@ import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as Map
 import qualified Data.Text.Lazy as LT
 
+-- | the Compact Protocol implements the standard Thrift 'TCompactProcotol'
+-- which is similar to the 'TBinaryProtocol', but takes less space on the wire.
+-- Integral types are encoded using as varints.
 data CompactProtocol a = CompactProtocol a
+                         -- ^ Constuct a 'CompactProtocol' with a 'Transport'
 
 instance Protocol CompactProtocol where
     getTransport (CompactProtocol t) = t

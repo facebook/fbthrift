@@ -48,7 +48,10 @@ import Thrift.Types
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Text.Lazy as LT
 
+-- | The JSON Protocol data uses the standard 'TSimpleJSONProtocol'.  Data is
+-- encoded as a JSON 'ByteString'
 data JSONProtocol t = JSONProtocol t
+                      -- ^ Construct a 'JSONProtocol' with a 'Transport'
 
 instance Protocol JSONProtocol where
     getTransport (JSONProtocol t) = t
@@ -78,7 +81,7 @@ instance Protocol JSONProtocol where
     readVal p ty = runParser p $ skipSpace *> parseJSONValue ty
 
 
--- | Writing Functions
+-- Writing Functions
 
 buildJSONValue :: ThriftVal -> Builder
 buildJSONValue (TStruct fields) = "{" <> buildJSONStruct fields <> "}"
@@ -109,7 +112,7 @@ buildJSONList :: [ThriftVal] -> Builder
 buildJSONList = mconcat . intersperse "," . map buildJSONValue
 
 
--- | Reading Functions
+-- Reading Functions
 
 parseJSONValue :: ThriftType -> Parser ThriftVal
 parseJSONValue (T_STRUCT tmap) =

@@ -48,7 +48,9 @@ import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as Map
 import qualified Data.Text.Lazy as LT
 
+-- | The Binary Protocol uses the standard Thrift 'TBinaryProtocol'
 data BinaryProtocol a = BinaryProtocol a
+                        -- ^ Construct a 'BinaryProtocol' with a 'Transport'
 
 -- NOTE: Reading and Writing functions rely on Builders and Data.Binary to
 -- encode and decode data.  Data.Binary assumes that the binary values it is
