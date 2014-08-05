@@ -28,13 +28,12 @@
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 
-#include <thrift/lib/cpp2/test/TestUtils.h>
-
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
 using apache::thrift::protocol::TBinaryProtocolT;
@@ -116,7 +115,9 @@ std::shared_ptr<TestServiceClient> getThrift1Client(uint16_t port) {
 }
 
 void AsyncCpp2Test(bool enable_security) {
-  auto port = Server::get(getServer)->getAddress().getPort();
+
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -157,7 +158,8 @@ TEST(ThriftServer, SecureAsyncCpp2Test) {
 
 TEST(ThriftServer, SyncClientTest) {
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -187,7 +189,9 @@ TEST(ThriftServer, SyncClientTest) {
 }
 
 TEST(ThriftServer, SerializationInEventBaseTest) {
-  auto port = Server::get(getServer)->getAddress().getPort();
+
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -208,7 +212,9 @@ TEST(ThriftServer, SerializationInEventBaseTest) {
 }
 
 TEST(ThriftServer, HandlerInEventBaseTest) {
-  auto port = Server::get(getServer)->getAddress().getPort();
+
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -231,7 +237,8 @@ TEST(ThriftServer, HandlerInEventBaseTest) {
 
 TEST(ThriftServer, LargeSendTest) {
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -265,7 +272,8 @@ TEST(ThriftServer, LargeSendTest) {
 
 TEST(ThriftServer, OverloadTest) {
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -316,7 +324,8 @@ TEST(ThriftServer, OverloadTest) {
 
 TEST(ThriftServer, OnewaySyncClientTest) {
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -365,7 +374,8 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
 
 TEST(ThriftServer, CompactClientTest) {
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -389,7 +399,8 @@ TEST(ThriftServer, CompactClientTest) {
 
 TEST(ThriftServer, CompressionClientTest) {
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -424,7 +435,8 @@ TEST(ThriftServer, CompressionClientTest) {
 
 TEST(ThriftServer, ClientTimeoutTest) {
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -531,7 +543,8 @@ class Callback : public RequestCallback {
 };
 
 TEST(ThriftServer, BadSendTest) {
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -616,7 +629,8 @@ TEST(ThriftServer, FailureInjection) {
     const std::atomic<ExpectedFailure>* expected_;
   };
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
@@ -628,7 +642,8 @@ TEST(ThriftServer, FailureInjection) {
                       apache::thrift::async::TDelayedDestruction::Destructor>(
           new HeaderClientChannel(socket)));
 
-  auto server = Server::get(getServer);
+  auto server = std::dynamic_pointer_cast<ThriftServer>(
+      sst.getServer().lock());
   CHECK(server);
   SCOPE_EXIT {
     server->setFailureInjection(ThriftServer::FailureInjection());
@@ -703,7 +718,8 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
 
 TEST(ThriftServer, FreeCallbackTest) {
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 

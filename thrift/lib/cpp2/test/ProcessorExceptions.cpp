@@ -39,13 +39,12 @@
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 
-#include <thrift/lib/cpp2/test/TestUtils.h>
-
 #include <boost/cast.hpp>
 #include <memory>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using apache::thrift::TApplicationException;
 
@@ -73,9 +72,10 @@ std::shared_ptr<ThriftServer> getServer() {
 }
 
 int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
+  ScopedServerThread sst(getServer());
   TEventBase base;
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 

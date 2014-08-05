@@ -35,10 +35,9 @@
 #include <memory>
 #include <atomic>
 
-#include <thrift/lib/cpp2/test/TestUtils.h>
-
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace folly;
 using std::shared_ptr;
@@ -142,9 +141,10 @@ std::shared_ptr<ThriftServer> getServer() {
 
 TEST(Duplex, DuplexTest) {
   enum {START=1, COUNT=10, INTERVAL=5};
+  ScopedServerThread sst(getServer());
   TEventBase base;
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 

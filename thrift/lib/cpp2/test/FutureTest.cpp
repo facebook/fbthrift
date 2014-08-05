@@ -35,8 +35,6 @@
 #include <memory>
 #include <atomic>
 
-#include <thrift/lib/cpp2/test/TestUtils.h>
-
 #include <folly/wangle/Executor.h>
 #include <folly/wangle/ManualExecutor.h>
 #include "common/concurrency/Executor.h"
@@ -44,6 +42,7 @@
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace folly::wangle;
 using namespace folly;
@@ -113,9 +112,10 @@ std::shared_ptr<ThriftServer> getServer() {
 }
 
 void AsyncCpp2Test(bool enable_security) {
+  ScopedServerThread sst(getServer());
   TEventBase base;
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
@@ -144,9 +144,10 @@ void AsyncCpp2Test(bool enable_security) {
 }
 
 TEST(ThriftServer, FutureExceptions) {
+  ScopedServerThread sst(getServer());
   TEventBase base;
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
@@ -166,6 +167,7 @@ TEST(ThriftServer, FutureExceptions) {
 TEST(ThriftServer, FutureClientTest) {
   using std::chrono::steady_clock;
 
+  ScopedServerThread sst(getServer());
   TEventBase base;
   TEventBaseExecutor e(&base);
 
@@ -174,7 +176,7 @@ TEST(ThriftServer, FutureClientTest) {
     TEventBaseExecutor*>(
     nullptr, nullptr, &e);
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
@@ -233,6 +235,7 @@ TEST(ThriftServer, FutureClientTest) {
 TEST(ThriftServer, FutureGetOrderTest) {
   using std::chrono::steady_clock;
 
+  ScopedServerThread sst(getServer());
   TEventBase base;
   TEventBaseExecutor e(&base);
 
@@ -241,7 +244,7 @@ TEST(ThriftServer, FutureGetOrderTest) {
     TEventBaseExecutor*>(
     nullptr, nullptr, &e);
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
@@ -279,9 +282,10 @@ TEST(ThriftServer, FutureGetOrderTest) {
 TEST(ThriftServer, OnewayFutureClientTest) {
   using std::chrono::steady_clock;
 
+  ScopedServerThread sst(getServer());
   TEventBase base;
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
@@ -310,6 +314,7 @@ TEST(ThriftServer, OnewayFutureClientTest) {
 TEST(ThriftServer, ThreadGateTest) {
   using std::chrono::steady_clock;
 
+  ScopedServerThread sst(getServer());
   std::atomic<TEventBase*> atomicEventBasePtr(nullptr);
   std::atomic<FutureServiceAsyncClient*> atomicClientPtr(nullptr);
   std::atomic<bool> ready(false);
@@ -318,7 +323,7 @@ TEST(ThriftServer, ThreadGateTest) {
     TEventBase eventBase;
     atomicEventBasePtr = &eventBase;
 
-    auto port = Server::get(getServer)->getAddress().getPort();
+    auto port = sst.getAddress()->getPort();
     std::shared_ptr<TAsyncSocket> socket(
       TAsyncSocket::newSocket(&eventBase, "127.0.0.1", port));
 

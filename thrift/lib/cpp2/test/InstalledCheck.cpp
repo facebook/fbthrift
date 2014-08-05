@@ -26,13 +26,12 @@
 #include "thrift/lib/cpp2/async/StubSaslClient.h"
 #include "thrift/lib/cpp2/async/StubSaslServer.h"
 
-#include "thrift/lib/cpp2/test/TestUtils.h"
-
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
 using apache::thrift::test::cpp2::TestServiceAsyncClient;
@@ -100,7 +99,8 @@ std::shared_ptr<ThriftServer> getServer() {
 
 int SyncClientTest() {
 
-  auto port = Server::get(getServer)->getAddress().getPort();
+  ScopedServerThread sst(getServer());
+  auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
