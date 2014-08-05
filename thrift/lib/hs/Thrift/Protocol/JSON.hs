@@ -34,8 +34,10 @@ import Data.Attoparsec.ByteString.Char8 as PC
 import Data.Attoparsec.ByteString.Lazy as LP
 import Data.ByteString.Builder as B
 import Data.ByteString.Internal (c2w, w2c)
+import Data.Functor
 import Data.Int
 import Data.List
+import Data.Maybe (catMaybes)
 import Data.Monoid
 import Data.Text.Lazy.Encoding
 import Data.Word
@@ -135,8 +137,27 @@ parseJSONValue T_STRING = TString <$> escapedString
 parseJSONValue T_STOP = fail "parseJSONValue: cannot parse type T_STOP"
 parseJSONValue T_VOID = fail "parseJSONValue: cannot parse type T_VOID"
 
+parseAnyValue :: Parser ()
+parseAnyValue = choice $
+                skipBetween '{' '}' :
+                skipBetween '[' ']' :
+                map (void . parseJSONValue)
+                  [ T_BOOL
+                  , T_I16
+                  , T_I32
+                  , T_I64
+                  , T_FLOAT
+                  , T_DOUBLE
+                  , T_STRING
+                  ]
+  where
+    skipBetween :: Char -> Char -> Parser ()
+    skipBetween a b = between a b $ void (PC.satisfy (\c -> c /= a && c /= b))
+                                          <|> skipBetween a b
+
 parseJSONStruct :: TypeMap -> Parser (Map.HashMap Int16 (LT.Text, ThriftVal))
-parseJSONStruct tmap = Map.fromList <$> parseField `sepBy` lexeme (PC.char8 ',')
+parseJSONStruct tmap = Map.fromList . catMaybes <$> parseField
+                       `sepBy` lexeme (PC.char8 ',')
   where
     parseField = do
       bs <- lexeme escapedString <* lexeme (PC.char8 ':')
@@ -145,8 +166,8 @@ parseJSONStruct tmap = Map.fromList <$> parseField `sepBy` lexeme (PC.char8 ',')
         Right str -> case Map.lookup str tmap of
           Just (fid, ftype) -> do
             val <- lexeme (parseJSONValue ftype)
-            return (fid, (str, val))
-          Nothing -> fail "parseJSONStruct: invalid key"
+            return $ Just (fid, (str, val))
+          Nothing -> lexeme parseAnyValue *> return Nothing
 
 parseJSONMap :: ThriftType -> ThriftType -> Parser [(ThriftVal, ThriftVal)]
 parseJSONMap kt vt =
@@ -205,6 +226,7 @@ escapedChar = PC.char8 '\\' *> (c2w <$> choice
                                 , '\"' <$ PC.char '"'
                                 , '\'' <$ PC.char '\''
                                 , '\\' <$ PC.char '\\'
+                                , '/'  <$ PC.char '/'
                                 ])
 
 escape :: LBS.ByteString -> Builder
