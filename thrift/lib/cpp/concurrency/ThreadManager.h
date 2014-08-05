@@ -283,6 +283,8 @@ public:
   /**
    * Creates a priority-aware thread manager that uses counts[X]
    * worker threads for priority X.
+   * Atleast NORMAL_PRIORITY_MINIMUM_THREADS threads are created for
+   * priority NORMAL
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager>

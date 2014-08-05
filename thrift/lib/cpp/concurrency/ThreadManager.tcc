@@ -189,7 +189,7 @@ void ThreadManager::ImplT<SemType>::workerStarted(Worker<SemType>* worker) {
     idMap_.insert(std::make_pair(thread->getId(), thread));
     initCallback = initCallback_;
     if (!namePrefix_.empty()) {
-      thread->setName(folly::to<std::string>(namePrefix_,
+      thread->setName(folly::to<std::string>(namePrefix_, "-",
                                              ++namePrefixCounter_));
     }
   }
@@ -671,8 +671,8 @@ public:
   }
 
   void setNamePrefix(const std::string& name) {
-    for (auto& m : managers_) {
-      m->setNamePrefix(name);
+    for (int i = 0; i < N_PRIORITIES; i++) {
+      managers_[i]->setNamePrefix(folly::to<std::string>(name, "-pri", i));
     }
   }
 
@@ -824,6 +824,8 @@ static inline shared_ptr<ThreadFactory> Factory(PosixThreadFactory::PRIORITY pri
   return make_shared<PosixThreadFactory>(PosixThreadFactory::OTHER, prio);
 }
 
+static const size_t NORMAL_PRIORITY_MINIMUM_THREADS = 1;
+
 template <typename SemType>
 shared_ptr<PriorityThreadManager>
 PriorityThreadManager::newPriorityThreadManager(
@@ -835,13 +837,20 @@ PriorityThreadManager::newPriorityThreadManager(
   // Note that priorities for HIGH and IMPORTANT are the same, the difference
   // is in the number of threads
 
+  if (counts[3] < NORMAL_PRIORITY_MINIMUM_THREADS) {
+    LOG(INFO) << "Creating minimum threads of NORMAL priority: "
+      << NORMAL_PRIORITY_MINIMUM_THREADS;
+  }
   std::array<std::pair<shared_ptr<ThreadFactory>, size_t>,
              N_PRIORITIES> factories
   {{
       {Factory(PosixThreadFactory::HIGHER), counts[0]},   // HIGH_IMPORTANT
       {Factory(PosixThreadFactory::HIGH),   counts[1]},   // HIGH
       {Factory(PosixThreadFactory::HIGH),   counts[2]},   // IMPORTANT
-      {Factory(PosixThreadFactory::NORMAL), counts[3]},   // NORMAL
+      {Factory(PosixThreadFactory::NORMAL),
+        std::max(
+          NORMAL_PRIORITY_MINIMUM_THREADS,
+          counts[3])},   // NORMAL
       {Factory(PosixThreadFactory::LOW),    counts[4]}   // BEST_EFFORT
   }};
 
