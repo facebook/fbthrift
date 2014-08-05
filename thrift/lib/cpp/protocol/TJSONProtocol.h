@@ -117,6 +117,7 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
   static const uint32_t kThriftVersion1;
 
   static const std::string kThriftNan;
+  static const std::string kThriftNegativeNan;
   static const std::string kThriftInfinity;
   static const std::string kThriftNegativeInfinity;
 

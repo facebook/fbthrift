@@ -34,6 +34,8 @@
 #include "thrift/test/JsonToThriftTest/gen-cpp/myEmptyStruct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/myKeyStruct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/myCombinedStructs_types.h"
+#include "thrift/test/JsonToThriftTest/gen-cpp/myDoubleListStruct_types.h"
+
 #include <thrift/lib/cpp/Thrift.h>
 
 #include <boost/lexical_cast.hpp>
@@ -111,14 +113,6 @@ static void deserializeJSON(T& dataStruct,
     BOOST_CHECK(numRead == json.length());
 }
 
-static void testSimpleDoubleNanJSON(myDoubleStruct dataStruct){
-   std::string simpleJsonText = serializeJSON(dataStruct);
-   myDoubleStruct parsedStruct;
-   deserializeJSON(parsedStruct, simpleJsonText);
-   BOOST_CHECK(parsedStruct.a != parsedStruct.a &&
-               dataStruct.a != dataStruct.a);
-}
-
 BOOST_AUTO_TEST_CASE(SimpleJSON_ComplexSerialization) {
    myComplexStruct thriftComplexObj;
    myMixedStruct thriftMixedObj;
@@ -164,7 +158,6 @@ BOOST_AUTO_TEST_CASE(SimpleJSON_ComplexSerialization) {
 }
 
 BOOST_AUTO_TEST_CASE(SimpleJSON_BasicSerialization) {
-
    mySimpleStruct thriftSimpleObj;
    myDoubleStruct thriftDoubleObj;
    myBoolStruct thriftBoolObj1, thriftBoolObj2;
@@ -187,11 +180,6 @@ BOOST_AUTO_TEST_CASE(SimpleJSON_BasicSerialization) {
    testSimpleJSON(thriftDoubleObj);
    thriftDoubleObj.a = -numeric_limits<double>::infinity();
    testSimpleJSON(thriftDoubleObj);
-   // We need a special test for double since
-   // numeric_limits<double>::quiet_NaN() !=
-   // numeric_limits<double>::quiet_NaN()
-   thriftDoubleObj.a = numeric_limits<double>::quiet_NaN();
-   testSimpleDoubleNanJSON(thriftDoubleObj);
 
    thriftBoolObj1.a = true;
    thriftBoolObj2.a = false;
@@ -209,6 +197,29 @@ BOOST_AUTO_TEST_CASE(SimpleJSON_BasicSerialization) {
    testSimpleJSON(thriftStringObj);
    testSimpleJSON(thriftI16Obj);
    testSimpleJSON(thriftI32Obj);
+}
+
+BOOST_AUTO_TEST_CASE(SimpleJSON_BasicSerializationNan) {
+  myDoubleListStruct obj;
+  std::vector<double> array = {NAN, -NAN, 0.3333333333};
+  obj.l = array;
+
+  auto jsonString = serializeJSON(obj);
+  myDoubleListStruct parsedStruct;
+  deserializeJSON(parsedStruct, jsonString);
+
+  BOOST_CHECK_EQUAL(obj.l.size(), parsedStruct.l.size());
+  for (int i = 0; i < obj.l.size(); ++i) {
+    if (std::isnan(obj.l[i]) == std::isnan(parsedStruct.l[i])) {
+      continue;
+    }
+    BOOST_CHECK_EQUAL(obj.l[i], parsedStruct.l[i]);
+  }
+
+  auto jsonString2 = serializeJSON(parsedStruct);
+
+  // this checks that nan and -nan still have correct '-' information
+  BOOST_CHECK_EQUAL(jsonString, jsonString2);
 }
 
 BOOST_AUTO_TEST_CASE(SimpleStructMissingNonRequiredField) {

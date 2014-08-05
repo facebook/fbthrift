@@ -53,6 +53,7 @@ const std::string TJSONProtocol::kJSONFalse("false");
 const uint32_t TJSONProtocol::kThriftVersion1 = 1;
 
 const std::string TJSONProtocol::kThriftNan("NaN");
+const std::string TJSONProtocol::kThriftNegativeNan("-NaN");
 const std::string TJSONProtocol::kThriftInfinity("Infinity");
 const std::string TJSONProtocol::kThriftNegativeInfinity("-Infinity");
 
@@ -585,6 +586,9 @@ uint32_t TJSONProtocol::writeJSONDouble(NumberType num) {
     if ((val[1] == 'I') || (val[1] == 'i')) {
       val = kThriftNegativeInfinity;
       special = true;
+    } else if (val[1] == 'N' || val[1] == 'n') {
+      val = kThriftNegativeNan;
+      special = true;
     }
     break;
   }
@@ -920,6 +924,8 @@ uint32_t TJSONProtocol::readJSONDouble(NumberType &num) {
     // Check for NaN, Infinity and -Infinity
     if (str == kThriftNan) {
       num = HUGE_VAL/HUGE_VAL; // generates NaN
+    } else if (str == kThriftNegativeNan) {
+      num = -NAN;
     }
     else if (str == kThriftInfinity) {
       num = HUGE_VAL;
