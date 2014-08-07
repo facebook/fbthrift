@@ -219,6 +219,15 @@ ThriftSerializer<Dummy, P>::setVersion(int8_t version)
 
 template <typename Dummy, typename P>
 void
+ThriftSerializer<Dummy, P>::prepareProtocol(shared_ptr<P> protocol)
+{
+  if (setVersion_) {
+    protocol->setVersion(version_);
+  }
+}
+
+template <typename Dummy, typename P>
+void
 ThriftSerializer<Dummy, P>::prepare()
 {
   // create memory buffer to use as transport
@@ -238,9 +247,7 @@ ThriftSerializer<Dummy, P>::prepare()
 
   // create a protocol for the memory buffer transport
   protocol_.reset(new Protocol(buffer_));
-  if (setVersion_) {
-    protocol_->setVersion(version_);
-  }
+  prepareProtocol(protocol_);
 
   prepared_ = true;
 }

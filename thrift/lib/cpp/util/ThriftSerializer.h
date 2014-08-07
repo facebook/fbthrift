@@ -167,6 +167,9 @@ class ThriftSerializer {
 
   void setSerializeVersion(bool value);
 
+  virtual void prepareProtocol(shared_ptr<P> protocol);
+
+  virtual ~ThriftSerializer() {}
 
  private:
   void prepare();
@@ -217,7 +220,24 @@ struct ThriftSerializerJson
 template <typename Dummy = void>
 struct ThriftSerializerSimpleJson
   : public ThriftSerializer<Dummy, TSimpleJSONProtocol>
-{ };
+{
+  public:
+    ThriftSerializerSimpleJson()
+      : ThriftSerializer<Dummy, TSimpleJSONProtocol>()
+      , allowDecodeUTF8_(false) {}
+
+    void allowDecodeUTF8(bool allow) {
+      allowDecodeUTF8_ = allow;
+    }
+
+    void prepareProtocol(shared_ptr<TSimpleJSONProtocol> protocol) override {
+      ThriftSerializer<Dummy, TSimpleJSONProtocol>::prepareProtocol(protocol);
+      protocol->allowDecodeUTF8(allowDecodeUTF8_);
+    }
+
+  private:
+    bool allowDecodeUTF8_;
+};
 
 }}} // namespace apache::thrift:util
 

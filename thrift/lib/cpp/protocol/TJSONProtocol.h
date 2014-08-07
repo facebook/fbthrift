@@ -330,6 +330,10 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
 
   uint32_t readBinary(std::string& str);
 
+  void allowDecodeUTF8(bool allow) {
+    allowDecodeUTF8_ = allow;
+  }
+
   class LookaheadReader {
 
    public:
@@ -400,7 +404,7 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
 
   std::stack<std::shared_ptr<TJSONContext> > contexts_;
   std::shared_ptr<TJSONContext> context_;
-
+  bool allowDecodeUTF8_;
  protected:
   LookaheadReader reader_;
 

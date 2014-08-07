@@ -23,6 +23,8 @@
 #include <boost/lexical_cast.hpp>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <folly/json.h>
+#include <folly/dynamic.h>
 
 using namespace apache::thrift::transport;
 
@@ -173,12 +175,12 @@ static const uint8_t kJSONCharTable[0x30] = {
 // This string's characters must match up with the elements in kEscapeCharVals.
 // I don't have '/' on this list even though it appears on www.json.org --
 // it is not in the RFC
-const static std::string kEscapeChars("\"\\bfnrt");
+const static std::string kEscapeChars("\"\\/bfnrt");
 
 // The elements of this array must match up with the sequence of characters in
 // kEscapeChars
-const static uint8_t kEscapeCharVals[7] = {
-  '"', '\\', '\b', '\f', '\n', '\r', '\t',
+const static uint8_t kEscapeCharVals[8] = {
+  '"', '\\', '/', '\b', '\f', '\n', '\r', '\t',
 };
 
 
@@ -413,6 +415,7 @@ TJSONProtocol::TJSONProtocol(std::shared_ptr<TTransport> ptrans) :
   TVirtualProtocol<TJSONProtocol>(ptrans),
   trans_(ptrans.get()),
   context_(new TJSONContext()),
+  allowDecodeUTF8_(false),
   reader_(*ptrans) {
 }
 
@@ -787,6 +790,8 @@ uint32_t TJSONProtocol::readJSONEscapeChar(uint8_t *out) {
 uint32_t TJSONProtocol::readJSONString(std::string &str, bool skipContext) {
   uint32_t result = (skipContext ? 0 : context_->read(reader_));
   result += readJSONSyntaxChar(kJSONStringDelimiter);
+
+  std::string json("\"");
   uint8_t ch;
   str.clear();
   while (true) {
@@ -799,7 +804,12 @@ uint32_t TJSONProtocol::readJSONString(std::string &str, bool skipContext) {
       ch = reader_.read();
       ++result;
       if (ch == kJSONEscapeChar) {
-        result += readJSONEscapeChar(&ch);
+        if (allowDecodeUTF8_) {
+          json += "\\u";
+          continue;
+        } else {
+          result += readJSONEscapeChar(&ch);
+        }
       }
       else {
         size_t pos = kEscapeChars.find(ch);
@@ -808,11 +818,29 @@ uint32_t TJSONProtocol::readJSONString(std::string &str, bool skipContext) {
                                    "Expected control char, got '" +
                                    std::string((const char *)&ch, 1)  + "'.");
         }
-        ch = kEscapeCharVals[pos];
+        if (allowDecodeUTF8_) {
+          json += "\\";
+          json += kEscapeChars[pos];
+          continue;
+        } else {
+          ch = kEscapeCharVals[pos];
+        }
       }
     }
-    str += ch;
+
+    if (allowDecodeUTF8_) {
+      json += ch;
+    } else {
+      str += ch;
+    }
   }
+
+  if (allowDecodeUTF8_) {
+    json += "\"";
+    folly::dynamic parsed = folly::parseJson(json);
+    str += parsed.c_str();
+  }
+
   return result;
 }
 

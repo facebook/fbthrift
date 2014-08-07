@@ -232,6 +232,45 @@ FBUNIT_TEST(ThriftSerializerJson_Fail) {
                    apache::thrift::protocol::TProtocolException&);
 }
 
+FBUNIT_TEST(ThriftSerializerSimpleJson_Unicode) {
+  ThriftSerializerSimpleJson<> izer;
+  TestOtherValue result;
+
+  string s1(R"test({"color":"\u0026"})test");
+  string s2(R"test({"color":"\u00f1"})test");
+  string s3(R"test({"color":"\u1234"})test");
+  string s4(R"test({"color":"\ud834\udd1e"})test");
+  string s5(R"test({"color":"\"\/\b\n\f\t\r"})test");
+  string s6(R"test({"color":"\u1234\""})test");
+  string s7(R"test({"color":"\u1234\\"})test");
+  string s8(R"test({"color":"\u1234\\\""})test");
+
+  izer.deserialize(s1, &result);
+  EXPECT_EQ(result.color.length(), 1);
+  izer.deserialize(s2, &result);
+  EXPECT_EQ(result.color.length(), 1);
+  EXPECT_EXCEPTION(izer.deserialize(s3, &result),
+                   apache::thrift::protocol::TProtocolException&);
+
+  ThriftSerializerSimpleJson<> izer1;
+  izer1.allowDecodeUTF8(true);
+
+  izer1.deserialize(s2, &result);
+  EXPECT_EQ(result.color.length(), 2);
+  izer1.deserialize(s3, &result);
+  EXPECT_EQ(result.color.length(), 3);
+  izer1.deserialize(s4, &result);
+  EXPECT_EQ(result.color.length(), 4);
+  izer1.deserialize(s5, &result);
+  EXPECT_EQ(result.color.length(), 7);
+  izer1.deserialize(s6, &result);
+  EXPECT_EQ(result.color.length(), 4);
+  izer1.deserialize(s7, &result);
+  EXPECT_EQ(result.color.length(), 4);
+  izer1.deserialize(s8, &result);
+  EXPECT_EQ(result.color.length(), 5);
+}
+
 FBUNIT_TEST(ThriftSerializerBinaryVersionTest) {
   ThriftSerializerBinary<> izer;
   TestValue result;
