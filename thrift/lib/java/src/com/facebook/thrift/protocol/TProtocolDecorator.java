@@ -20,10 +20,8 @@
 package com.facebook.thrift.protocol;
 
 import com.facebook.thrift.TException;
-import com.facebook.thrift.TProcessorEventHandler;
 import com.facebook.thrift.meta_data.FieldMetaData;
 
-import java.nio.ByteBuffer;
 import java.util.Map;
 
 /**
