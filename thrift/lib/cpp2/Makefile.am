@@ -80,11 +80,6 @@ thrift2include_security_HEADERS = \
 	security/SecurityKillSwitch.h \
 	security/SecurityLogger.h
 
-thrift2include_testdir = $(thrift2includedir)/test
-
-thrift2include_test_HEADERS = \
-	test/TestUtils.h
-
 thrift2include_protocoldir = $(thrift2includedir)/protocol
 
 thrift2include_protocol_HEADERS = \
