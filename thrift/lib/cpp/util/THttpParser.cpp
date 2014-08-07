@@ -145,7 +145,7 @@ void THttpParser::checkMessageSize(uint32_t more, bool added) {
                               "rejected overly large  http message");
   }
   if (added) {
-    partialMessageSize_ += messageSize;
+    partialMessageSize_ = messageSize;
   }
 }
 
