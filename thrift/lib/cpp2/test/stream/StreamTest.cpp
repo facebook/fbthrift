@@ -34,8 +34,6 @@
 
 #include <thrift/lib/cpp2/test/stream/MockCallbacks.h>
 
-#include <thrift/lib/cpp2/test/TestUtils.h>
-
 #include <memory>
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
@@ -44,6 +42,7 @@
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace folly::wangle;
 
@@ -236,10 +235,11 @@ class ClientTester {
     Client client;
 };
 
-typedef ClientTester<StreamServiceAsyncClient> Tester;
+typedef Tester Tester;
 
 TEST(StreamTest, SyncClientTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   std::string response;
   tester.client.sync_sendResponse(response, 64);
@@ -247,7 +247,8 @@ TEST(StreamTest, SyncClientTest) {
 }
 
 TEST(StreamTest, SimpleTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   AsyncInputStream<int> ic(ICP(new InputCallback(10)));
   tester.client.returnStream(ic, "hello");
@@ -255,7 +256,8 @@ TEST(StreamTest, SimpleTest) {
 }
 
 TEST(StreamTest, SimpleTwoWayTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   AsyncInputStream<int> ic(ICP(new InputCallback(10)));
   AsyncOutputStream<int> oc(OCP(new OutputCallback(20)));
@@ -264,7 +266,8 @@ TEST(StreamTest, SimpleTwoWayTest) {
 }
 
 TEST(StreamTest, ExceptionTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   AsyncInputStream<int> ic(ICP(new InputReceiveException(10)));
   tester.client.throwException(ic, 10);
@@ -272,7 +275,8 @@ TEST(StreamTest, ExceptionTest) {
 }
 
 TEST(StreamTest, SyncTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   SyncInputStream<int32_t> is;
   SyncOutputStream<int32_t> os;
@@ -300,7 +304,8 @@ TEST(StreamTest, SyncTest) {
 }
 
 TEST(StreamTest, SyncOneWayTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   SyncOutputStream<int32_t> os;
   tester.client.sync_simpleOneWayStream(os);
@@ -314,7 +319,8 @@ TEST(StreamTest, SyncOneWayTest) {
 }
 
 TEST(StreamTest, AsyncComplexObjectTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   int numItems = 10;
   std::vector<std::string> words = {"one", "two", "three", "four", "five"};
@@ -330,7 +336,8 @@ TEST(StreamTest, AsyncComplexObjectTest) {
 }
 
 TEST(StreamTest, SyncComplexObjectTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   std::vector<std::vector<std::string>> randomStrings({
     {"Lorem", "ipsum", "dolor", "sit", "amet,", "consectetur", "adipiscing"},
@@ -398,7 +405,8 @@ TEST(StreamTest, SyncComplexObjectTest) {
 }
 
 TEST(StreamTest, AsyncInterleavedTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   AsyncInputStream<int> ic(ICP(new InputCallback(10)));
   AsyncOutputStream<int> oc(OCP(new OutputCallback(20)));
@@ -423,7 +431,8 @@ TEST(StreamTest, AsyncInterleavedTest) {
 }
 
 TEST(StreamTest, SyncInterleavedTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   std::string response;
 
@@ -477,8 +486,8 @@ TEST(StreamTest, SyncInterleavedTest) {
 }
 
 TEST(StreamTest, UnexpectedStreamTest) {
-  apache::thrift::util::ScopedServerThread server(getServer<SimilarService>());
-  ClientTester<StreamServiceAsyncClient> tester(server.getAddress()->getPort());
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   // we are calling a function on the sever that expects streams
   // but we are not providing any streams
@@ -502,7 +511,8 @@ TEST(StreamTest, UnexpectedStreamTest) {
 }
 
 TEST(StreamTest, SyncAsyncMixedTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   int numItems = 10;
   std::vector<std::string> words = {"one", "two", "three", "four", "five"};
@@ -532,7 +542,8 @@ TEST(StreamTest, SyncAsyncMixedTest) {
 }
 
 TEST(StreamTest, NotSetTest) {
-  Tester tester;
+  ScopedServerThread server(getServer<SimilarService>());
+  Tester tester(server.getAddress()->getPort());
 
   int num = 1729;
   std::vector<std::string> words = {
