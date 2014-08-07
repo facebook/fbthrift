@@ -531,6 +531,15 @@ std::string Krb5Keytab::getName() const {
   return name;
 }
 
+std::string Krb5Keytab::getDefaultKeytabName(krb5_context context) {
+  char name[256];
+  krb5_error_code code = krb5_kt_default_name(context,
+                                              name,
+                                              sizeof(name));
+  raiseIf(context, code, "getting default keytab name");
+  return name;
+}
+
 Krb5Credentials Krb5Keytab::getInitCreds(
   krb5_principal princ, krb5_get_init_creds_opt* opts) {
 

@@ -345,6 +345,7 @@ public:
   krb5_keytab get() const { return keytab_; }
   krb5_context getContext() const { return context_; }
   std::string getName() const;
+  static std::string getDefaultKeytabName(krb5_context context);
   Krb5Credentials getInitCreds(krb5_principal princ,
                                krb5_get_init_creds_opt* opts = nullptr);
 
