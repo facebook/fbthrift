@@ -43,6 +43,9 @@ struct MyStruct {
   1: MyEnum2 me2_2 = ME2_2
   2: MyEnum3 me3_n2 = ME3_N2
   3: MyEnum3 me3_d1 = ME3_D1
+  4: MyEnum1 me1_t1 = 1
+  5: MyEnum1 me1_t2 = ME1_1
+  6: MyEnum1 me1_t3 = MyEnum1.ME1_1
 }
 
 const MyEnum4 c_me4_a = ME4_A
