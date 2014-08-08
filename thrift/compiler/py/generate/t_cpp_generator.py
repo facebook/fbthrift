@@ -245,8 +245,11 @@ class CppGenerator(t_generator.Generator):
         else:
             return False
 
-    def _is_reference(self, tfield):
-        return self._has_cpp_annotation(tfield, "ref")
+    def _is_reference(self, f):
+        return self._has_cpp_annotation(f, "ref")
+
+    def _has_isset(self, f):
+        return not self._is_reference(f) and f.req != e_req.required
 
     # noncopyable is a hack to support gcc < 4.8, where declaring a constructor
     # as defaulted tries to generate it, even though it should be deleted.
@@ -2884,21 +2887,22 @@ class CppGenerator(t_generator.Generator):
                         if self._is_reference(member):
                             needs_copy_constructor = True
                     if needs_copy_constructor:
-                        tmpname = self.tmp('copy')
-                        with struct.defn(
-                                '{name}(const ' + obj.name +
-                                '& ' + tmpname + ')',
-                                name=obj.name):
+                        src = self.tmp('src')
+                        with struct.defn('{{name}}(const {0}& {1})'
+                                         .format(obj.name, src),
+                                         name=obj.name):
                             for member in members:
                                 if self._is_reference(member):
-                                    out(
-                                        ("{0} = std::unique_ptr<{1}>(" +
-                                        "new {1}(*{2}.{0}));").format(
+                                    out("if ({2}.{0}) {0}.reset("
+                                        "new {1}(*{2}.{0}));".format(
                                         member.name, self._type_name(
-                                            member.type), tmpname))
+                                            member.type), src))
                                 else:
                                     out("{0} = {1}.{0};".format(
-                                        member.name, tmpname))
+                                        member.name, src))
+                                if self._has_isset(member):
+                                    out('__isset.{0} = {1}.__isset.{0};'.format(
+                                        member.name, src))
                     else:
                         c = struct.defn(
                             '{name}(const {name}&)',
@@ -2906,8 +2910,20 @@ class CppGenerator(t_generator.Generator):
                 c = struct.defn('{name}& operator=({name}&&)',
                                 name=obj.name, in_header=True, default=True)
                 if is_copyable:
-                    c = struct.defn('{name}& operator=(const {name}&)',
+                    if needs_copy_constructor:
+                        src = self.tmp('src')
+                        tmp = self.tmp('tmp')
+                        with struct.defn('{0}& {{name}}(const {0}& {1})'
+                                         .format(obj.name, src),
+                                         name='operator='):
+                            out('{name} {tmp}({src});'.format(
+                                name=obj.name, tmp=tmp, src=src))
+                            out('swap(*this, {tmp});'.format(tmp=tmp))
+                            out('return *this;')
+                    else:
+                        c = struct.defn('{name}& operator=(const {name}&)',
                                     name=obj.name, in_header=True, default=True)
+
             else:
                 # unions need to define the above constructors because of the
                 # union member
@@ -2987,12 +3003,12 @@ class CppGenerator(t_generator.Generator):
                     out('__clear();')
                 with ist.defn('void __clear()', in_header=True):
                     for member in members:
-                        if member.req != e_req.required:
+                        if self._has_isset(member):
                             out("{0} = false;".format(member.name))
                 # Declare boolean fields
                 ist()
                 for member in members:
-                    if member.req != e_req.required:
+                    if self._has_isset(member):
                         ist('bool {0};'.format(member.name))
         if struct_options.has_serialized_fields:
             struct()
@@ -3001,13 +3017,11 @@ class CppGenerator(t_generator.Generator):
             struct('{0} {1};'.format(self._serialized_fields_type,
                                      self._serialized_fields_name))
         if not pointers and not struct_options.has_serialized_fields:
-            # Generate an equality testing operator. Make it inline since the
-            # compiler will do a better job than we would when deciding whether
-            # to inline it.
-
-            with struct.defn('bool operator == (const {0}& {1}) const' \
-              .format(obj.name, len(members) > 0 and 'rhs' or '/* rhs */'),
-              in_header=True):
+            # Generate an equality testing operator.
+            with struct.defn('bool {{name}}(const {0}& {1}) const'
+                             .format(obj.name,
+                                len(members) > 0 and 'rhs' or '/* rhs */'),
+                             name='operator=='):
                 if obj.is_union:
                     out('if (type_ != rhs.type_) { return false; }')
                     self._gen_union_switch(members,
@@ -3018,13 +3032,18 @@ class CppGenerator(t_generator.Generator):
                         # Most existing Thrift code does not use isset or
                         # optional/required, so we treat "default" fields as
                         # required.
-                        check = "({0} == rhs.{0})".format(m.name)
+                        if self._is_reference(m):
+                            check = ("(({0} && rhs.{0} && *{0} == *rhs.{0}) ||"
+                                     "(!{0} && !rhs.{0}))").format(m.name)
+                        else:
+                            check = "({0} == rhs.{0})".format(m.name)
+
                         ctype = self._get_true_type(m.type)
                         if ctype.is_base_type and ctype.as_base_type.is_binary:
                             check = "apache::thrift::StringTraits<{0}>::" \
                                 "isEqual({1}, rhs.{1})".format(
                                 self._type_name(ctype), m.name)
-                        if m.req != e_req.optional:
+                        if m.req != e_req.optional or not self._has_isset(m):
                             with out('if (!({0}))'.format(
                                     check)):
                                 out('return false;')
@@ -3266,10 +3285,10 @@ class CppGenerator(t_generator.Generator):
                 else:
                     self._generate_deserialize_field(s4, field, field_prefix,
                                                      field_suffix)
-                if has_isset:
-                    isset_prefix = (this + '->__isset.') if \
-                        field.req != e_req.required else 'isset_'
-                    s4('{0}{1} = true;'.format(isset_prefix, field.name))
+                if has_isset and self._has_isset(field):
+                    s4('{0}->__isset.{1} = true;'.format(this, field.name))
+                elif field.req == e_req.required:
+                    s4('isset_{1} = true;'.format(this, field.name))
             with s3.sameLine('else'):
                 out('xfer += iprot->skip(ftype);')
                 # TODO(dreiss): Make this an option when thrift structs have a
@@ -3394,12 +3413,15 @@ class CppGenerator(t_generator.Generator):
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
                   'iprot, {1}.get());'.format(
                       self._type_name(struct), prefix))
-            scope('bool wasSet = false;')
+            scope('if (false) {}')
             for member in struct.members:
-                with scope('if ({0}->__isset.{1})'.format(
-                        prefix, member.name)):
-                    out("wasSet = true;")
-            with scope('if (!wasSet)'):
+                if self._is_reference(member):
+                    scope('else if ({0}->{1}) {{}}'.format(
+                            prefix, member.name))
+                else:
+                    scope('else if ({0}->__isset.{1}) {{}}'.format(
+                            prefix, member.name))
+            with scope('else'):
                 out("{0} = nullptr;".format(prefix))
         else:
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
@@ -3530,17 +3552,16 @@ class CppGenerator(t_generator.Generator):
 
         first = True
         for field in filter(self._should_generate_field, obj.members):
+            isset_expr = ('{0}->{1}' if self._is_reference(field)
+                          else '{0}->__isset.{1}').format(this, field.name)
             if result == True:
                 if first:
                     first = False
-                    s1 = s('if (' + this + '->__isset.{0})'.format(
-                            field.name)).scope
+                    s1 = s('if ({0})'.format(isset_expr)).scope
                 else:
-                    s1 = s('else if (' + this + '->__isset.{0})'.format(
-                            field.name)).scope
+                    s1 = s('else if ({0})'.format(isset_expr)).scope
             elif field.req == e_req.optional:
-                s1 = s('if (' + this + '->__isset.{0})'.format(
-                        field.name)).scope
+                s1 = s('if ({0})'.format(isset_expr)).scope
 
             elif self.flag_terse_writes and not field.req == e_req.required:
                 s1 = self._try_terse_write(field, this, s, pointers)
@@ -3668,17 +3689,16 @@ class CppGenerator(t_generator.Generator):
 
         first = True
         for field in fields:
+            isset_expr = ('{0}->{1}' if self._is_reference(field)
+                          else '{0}->__isset.{1}').format(this, field.name)
             if result == True:
                 if first:
                     first = False
-                    s1 = s('if (' + this + '->__isset.{0})'.format(
-                            field.name)).scope
+                    s1 = s('if ({0})'.format(isset_expr)).scope
                 else:
-                    s1 = s('else if (' + this + '->__isset.{0})'.format(
-                            field.name)).scope
+                    s1 = s('else if ({0})'.format(isset_expr)).scope
             elif field.req == e_req.optional:
-                s1 = s('if (' + this + '->__isset.{0})'.format(
-                        field.name)).scope
+                s1 = s('if ({0})'.format(isset_expr)).scope
             elif self.flag_terse_writes and not field.req == e_req.required:
                 s1 = self._try_terse_write(field, this, s, pointers)
             elif obj.is_union:

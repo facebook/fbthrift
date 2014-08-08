@@ -1,3 +1,6 @@
+namespace cpp cpp1
+namespace cpp2 cpp2
+
 struct RecTree {
   1: list<RecTree> children
   2: i16 item
@@ -9,7 +12,7 @@ struct RecList {
 }
 
 struct CoRec {
-  1:  CoRec2  other (cpp.ref = "true")
+  1: optional CoRec2  other (cpp.ref = "true")
 }
 
 struct CoRec2 {

@@ -169,6 +169,7 @@ class t_cpp_generator : public t_oop_generator {
                                       bool swap=false,
                                       bool needs_copy_constructor=false);
   void generate_copy_constructor    (std::ofstream& out, t_struct* tstruct);
+  void generate_equal_operator      (std::ofstream& out, t_struct* tstruct);
   void generate_frozen_struct_definition(t_struct* tstruct);
   void generate_frozen2_struct_definition(t_struct* tstruct);
 
@@ -329,9 +330,22 @@ class t_cpp_generator : public t_oop_generator {
                                    bool include_values,
                                    const char* typed_name = nullptr);
 
-  bool is_reference(t_field* tfield) {
-    return tfield->annotations_.count("cpp.ref") != 0;
+  bool is_reference(const t_field* f) const {
+    return f->annotations_.count("cpp.ref") != 0;
   }
+
+  bool is_required(const t_field* f) const {
+    return f->get_req() == t_field::T_REQUIRED;
+  }
+
+  bool is_optional(const t_field* f) const {
+    return f->get_req() == t_field::T_OPTIONAL;
+  }
+
+  bool has_isset(const t_field* f) const {
+    return !is_required(f) && !is_reference(f);
+  }
+
 
   bool is_complex_type(t_type* ttype) {
     ttype = get_true_type(ttype);
@@ -1224,6 +1238,10 @@ void t_cpp_generator::generate_cpp_struct(t_struct* tstruct, bool is_exception) 
   if (!bootstrap_) {
     generate_struct_reflection(f_types_impl_, tstruct);
   }
+  if (needs_copy_constructor) {
+    generate_copy_constructor(f_types_impl_, tstruct);
+  }
+  generate_equal_operator(f_types_impl_, tstruct);
 
   generate_json_reader(f_types_impl_, tstruct);
   generate_struct_reader(out, tstruct);
@@ -1231,9 +1249,6 @@ void t_cpp_generator::generate_cpp_struct(t_struct* tstruct, bool is_exception) 
   generate_struct_writer(out, tstruct);
   generate_struct_swap(f_types_impl_, tstruct);
   generate_struct_merge(f_types_impl_, tstruct);
-  if (needs_copy_constructor) {
-    generate_copy_constructor(f_types_impl_, tstruct);
-  }
 }
 
 /**
@@ -1809,7 +1824,7 @@ void t_cpp_generator::generate_struct_isset(ofstream& out,
     indent(out) << "void __clear() {" << endl;
     indent_up();
     for (t_field* field : members) {
-      if (field->get_req() != t_field::T_REQUIRED) {
+      if (has_isset(field)) {
         indent(out) << field->get_name() << " = false;" << endl;
       }
     }
@@ -1817,7 +1832,7 @@ void t_cpp_generator::generate_struct_isset(ofstream& out,
     indent(out) << "}" << endl;
 
     for (t_field* field : members) {
-      if (field->get_req() != t_field::T_REQUIRED) {
+      if (has_isset(field)) {
         indent(out) <<
           "bool " << field->get_name();
         if (bitfields) {
@@ -1832,30 +1847,71 @@ void t_cpp_generator::generate_struct_isset(ofstream& out,
     "} __isset;" << endl;
 }
 
-void t_cpp_generator::generate_copy_constructor(
-  ofstream& out,
-  t_struct* tstruct) {
-  auto tmp_name = tmp("other");
+void t_cpp_generator::generate_copy_constructor(ofstream& out,
+                                                t_struct* tstruct) {
+  auto src = tmp("src");
 
-  indent(out) << tstruct->get_name() << "::" <<
-    tstruct->get_name() << "(const " << tstruct->get_name() <<
-    "& " << tmp_name << ") {" << endl;
+  indent(out) << tstruct->get_name() << "::" << tstruct->get_name() << "(const "
+              << tstruct->get_name() << "& " << src << ") {" << endl;
   indent_up();
 
   for (auto const& member : tstruct->get_members()) {
+    auto name = member->get_name();
     if (is_reference(member)) {
       auto type = type_name(member->get_type());
-      indent(out) << member->get_name() << " = std::unique_ptr<" << type <<
-        ">(new " << type << "(*" << tmp_name << "." <<
-        member->get_name() << "));" << endl;
+      indent(out) << "if (" << src << "." << name << ")" << endl;
+      indent_up();
+      indent(out) << name << ".reset(new " << type << "(*" << src << "." << name
+                  << "));" << endl;
+      indent_down();
     } else {
-      indent(out) << member->get_name() << " = " << tmp_name << "." <<
-        member->get_name() << ";" << endl;
+      indent(out) << name << " = " << src << "." << name << ";" << endl;
+    }
+    if (has_isset(member)) {
+      indent(out) << "__isset." << name << " = " << src << ".__isset." << name
+                  << ";" << endl;
     }
   }
 
   indent_down();
   indent(out) << "}" << endl;
+}
+
+void t_cpp_generator::generate_equal_operator(ofstream& out,
+                                              t_struct* tstruct) {
+  auto src_name = tmp("rhs");
+  indent(out) << "bool " << tstruct->get_name() << "::"
+              << "operator == (const " << tstruct->get_name()
+              << " & rhs) const {" << endl;
+  indent_up();
+  for (auto* member : tstruct->get_members()) {
+    // Most existing Thrift code does not use isset or optional/required,
+    // so we treat "default" fields as required.
+    auto ref = is_reference(member);
+    auto name = member->get_name();
+    if (ref) {
+      out << indent() << "if (bool(" << name << ") != bool(rhs." << name << "))"
+          << endl;
+      out << indent() << "  return false;" << endl;
+      out << indent() << "else if (bool(" << name << ") && !(*" << name
+          << " == *rhs." << name << "))" << endl;
+      out << indent() << "  return false;" << endl;
+    } else if (is_optional(member)) {
+      out << indent() << "if (__isset." << name << " != rhs.__isset." << name
+          << ")" << endl;
+      out << indent() << "  return false;" << endl;
+      out << indent() << "else if (__isset." << name << " && !(" << name
+          << " == rhs." << name << "))" << endl;
+      out << indent() << "  return false;" << endl;
+    } else {
+      out << indent() << "if (!(this->" << name << " == rhs." << name << "))"
+          << endl;
+      out << indent() << "  return false;" << endl;
+    }
+  }
+  indent(out) << "return true;" << endl;
+  indent_down();
+  indent(out) << "}" << endl << endl;
 }
 
 /**
@@ -1881,6 +1937,13 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
                 + tstruct->get_name() + ">";
   }
 
+  if (swap) {
+    // Generate a namespace-scope swap() function
+    out <<
+      indent() << "void swap(" << tstruct->get_name() << " &a, " <<
+      tstruct->get_name() << " &b);" << endl <<
+      endl;
+  }
   // Open struct def
   out <<
     indent() << "class " << tstruct->get_name() << extends << " {" << endl <<
@@ -1981,8 +2044,19 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
         "&) = default;" << endl;
     }
 
-    indent(out) << tstruct->get_name() << "& operator=(const " <<
-      tstruct->get_name() << "&) = default;" << endl;
+    indent(out) << tstruct->get_name() << "& operator=(const "
+                << tstruct->get_name() << "& src)";
+    if (needs_copy_constructor) {
+      out << " {" << endl;
+      indent_up();
+      indent(out) << tstruct->get_name() << " tmp(src);" << endl;
+      indent(out) << "swap(*this, tmp);" << endl;
+      indent(out) << "return *this;" << endl;
+      indent_down();
+      indent(out) << "}" << endl;
+    } else {
+      out << "= default;" << endl;
+    }
 
     if (tstruct->annotations_.find("cpp.noexcept_move_ctor") ==
           tstruct->annotations_.end()) {
@@ -2022,9 +2096,8 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
   }
 
   if (tstruct->annotations_.find("final") == tstruct->annotations_.end()) {
-    out <<
-      endl <<
-      indent() << "virtual ~" << tstruct->get_name() << "() throw() {}" << endl << endl;
+    out << endl << indent() << "virtual ~" << tstruct->get_name()
+        << "() throw() {}" << endl << endl;
   }
 
   // Declare all fields
@@ -2044,37 +2117,12 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
   out << endl;
 
   if (!pointers) {
-    // Generate an equality testing operator.  Make it inline since the compiler
-    // will do a better job than we would when deciding whether to inline it.
-    indent(out) << "bool operator == (const " << tstruct->get_name() << " & " <<
-      (members.size() > 0 ? "rhs" : "/* rhs */") << ") const {" << endl;
-    indent_up();
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      // Most existing Thrift code does not use isset or optional/required,
-      // so we treat "default" fields as required.
-      if ((*m_iter)->get_req() != t_field::T_OPTIONAL) {
-        out <<
-          indent() << "if (!(this->" << (*m_iter)->get_name()
-                   << " == rhs." << (*m_iter)->get_name() << "))" << endl <<
-          indent() << "  return false;" << endl;
-      } else {
-        out <<
-          indent() << "if (__isset." << (*m_iter)->get_name()
-                   << " != rhs.__isset." << (*m_iter)->get_name() << ")" << endl <<
-          indent() << "  return false;" << endl <<
-          indent() << "else if (__isset." << (*m_iter)->get_name() << " && !("
-                   << (*m_iter)->get_name() << " == rhs." << (*m_iter)->get_name()
-                   << "))" << endl <<
-          indent() << "  return false;" << endl;
-      }
-    }
-    indent(out) << "return true;" << endl;
-    indent_down();
+    indent(out) << "bool operator == (const " << tstruct->get_name()
+                << " &) const;" << endl;
+    indent(out) << "bool operator != (const " << tstruct->get_name()
+                << "& rhs) const {" << endl;
+    indent(out) << "  return !(*this == rhs);" << endl;
     indent(out) << "}" << endl << endl;
-    out <<
-      indent() << "bool operator != (const " << tstruct->get_name() << " &rhs) const {" << endl <<
-      indent() << "  return !(*this == rhs);" << endl <<
-      indent() << "}" << endl << endl;
 
     // Generate the declaration of a less-than operator.  This must be
     // implemented by the application developer if they wish to use it.  (They
@@ -2141,13 +2189,6 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
 
   out << indent() << "class " << tstruct->get_name() << ";" << endl;
 
-  if (swap) {
-    // Generate a namespace-scope swap() function
-    out <<
-      indent() << "void swap(" << tstruct->get_name() << " &a, " <<
-      tstruct->get_name() << " &b);" << endl <<
-      endl;
-  }
 
   // Generate a namespace-scope merge() function
   out << indent() << "void merge("
@@ -2287,7 +2328,7 @@ void t_cpp_generator::generate_frozen_struct_definition(t_struct* tstruct) {
                      "dst." << fname << ", " <<
                      "buffer);" << endl;
     }
-    if (field->get_req() != t_field::T_REQUIRED) {
+    if (has_isset(field)) {
       indent(f_types_impl_) <<
         "dst.__isset." << fname << " = src.__isset." << fname << ";" <<
         endl;
@@ -2316,7 +2357,7 @@ void t_cpp_generator::generate_frozen_struct_definition(t_struct* tstruct) {
       indent(f_types_impl_) <<
         "thaw(" << "src." << fname << ", " << "dst." << fname << ");" << endl;
     }
-    if (field->get_req() != t_field::T_REQUIRED) {
+    if (has_isset(field)) {
       indent(f_types_impl_) <<
         "dst.__isset." << fname << " = " << "src.__isset." << fname << ";" <<
         endl;
@@ -2698,7 +2739,7 @@ void t_cpp_generator::generate_json_reader(ofstream& out,
     generate_json_field(out, *f_iter, "this->", "",
                         "parsed[\"" + (*f_iter)->get_name() + "\"]");
 
-    if ((*f_iter)->get_req() != t_field::T_REQUIRED) {
+    if (has_isset(*f_iter)) {
       indent(out) << "this->__isset." << (*f_iter)->get_name() << " = true;"
         << endl;
     }
@@ -2712,7 +2753,7 @@ void t_cpp_generator::generate_json_reader(ofstream& out,
         << endl;
       indent_down();
       indent(out) << "}" << endl;
-    } else {
+    } else if (has_isset(*f_iter)) {
       out << " else {" << endl;
       indent_up();
       indent(out) << "this->__isset." << (*f_iter)->get_name() << " = false;"
@@ -2795,7 +2836,7 @@ void t_cpp_generator::generate_struct_clear(ofstream& out,
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       t_type* f_type = (*m_iter)->get_type();
       t_type* t = get_true_type(f_type);
-      const string& name = (*m_iter)->get_name() + get_type_access_suffix(f_type);
+      string name = (*m_iter)->get_name() + get_type_access_suffix(f_type);
       if (t->is_base_type() || t->is_enum()) {
         t_const_value* cv = (*m_iter)->get_value();
         string dval = render_const_value(out, t, cv, true);
@@ -2891,9 +2932,10 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
   out << endl;
 
   // Required variables aren't in __isset, so we need tmp vars to check them.
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED)
-      indent(out) << "bool isset_" << (*f_iter)->get_name() << " = false;" << endl;
+  for (auto* field : fields) {
+    if (is_required(field)) {
+      indent(out) << "bool isset_" << field->get_name() << " = false;" << endl;
+    }
   }
   out << endl;
 
@@ -2928,8 +2970,8 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
           "if (ftype == " << type_to_enum((*f_iter)->get_type()) << ") {" << endl;
         indent_up();
 
-        const char *isset_prefix =
-          ((*f_iter)->get_req() != t_field::T_REQUIRED) ? "this->__isset." : "isset_";
+        const char* isset_prefix =
+            has_isset(*f_iter) ? "this->__isset." : "isset_";
 
 #if 0
         // This code throws an exception if the same field is encountered twice.
@@ -2946,8 +2988,10 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
         } else {
           generate_deserialize_field(out, *f_iter, "this->");
         }
-        out <<
-          indent() << isset_prefix << (*f_iter)->get_name() << " = true;" << endl;
+        if (has_isset(*f_iter) || is_required(*f_iter)) {
+          out << indent() << isset_prefix << (*f_iter)->get_name() << " = true;"
+              << endl;
+        }
         indent_down();
         out <<
           indent() << "} else {" << endl <<
@@ -3102,7 +3146,7 @@ void t_cpp_generator::generate_struct_writer(ofstream& out,
     "xfer += oprot->writeStructBegin(\"" << name << "\");" << endl;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     bool needs_closing_brace = false;
-    if ((*f_iter)->get_req() == t_field::T_OPTIONAL) {
+    if (is_optional(*f_iter) && has_isset(*f_iter)) {
       indent(out) << "if (this->__isset." << (*f_iter)->get_name() << ") {" << endl;
       indent_up();
       needs_closing_brace = true;
@@ -3306,10 +3350,10 @@ void t_cpp_generator::generate_struct_merge(ofstream& out, t_struct* tstruct) {
     indent_up();
     indent(out) << "using apache::thrift::merge;" << endl;
     for (auto field : tstruct->get_members()) {
+      const bool isset = has_isset(field);
       code_map["field_name"] = field->get_name();
 
-      const bool has_isset = field->get_req() != t_field::T_REQUIRED;
-      if (has_isset) {
+      if (isset) {
         indent(out) << vformat("if (from.__isset.{field_name}) {{", code_map)
                     << endl;
         indent_up();
@@ -3319,7 +3363,7 @@ void t_cpp_generator::generate_struct_merge(ofstream& out, t_struct* tstruct) {
                          vformat(code_map["from_field_format"], code_map),
                          vformat(code_map["to_field_format"], code_map))
         << endl;
-      if (has_isset) {
+      if (isset) {
         indent(out) << vformat("to.__isset.{field_name} = true;", code_map)
                     << endl;
         indent_down();
@@ -6114,11 +6158,17 @@ void t_cpp_generator::generate_deserialize_struct(ofstream& out,
       ">(new " << type_name(tstruct) << ");" << endl;
     indent(out) <<
       "xfer += " << prefix << "->read(iprot);" << endl;
-    indent(out) << "bool wasSet = false;" << endl;
+    indent(out) << "if (false) {" << endl;
     for (auto& member : tstruct->get_members()) {
-      indent(out) << "if (" << prefix << "->__isset." << member->get_name() << ") { wasSet = true; }" << endl;
+      if (is_reference(member)){
+        indent(out) << "} else if (" << prefix << "->" << member->get_name()
+                    << ") {" << endl;
+      } else if (has_isset(member)) {
+        indent(out) << "} else if (" << prefix << "->__isset."
+                    << member->get_name() << ") {" << endl;
+      }
     }
-    indent(out) << "if (!wasSet) { " << prefix << " = nullptr; }" << endl;
+    indent(out) << "} else { " << prefix << " = nullptr; }" << endl;
   } else {
     indent(out) <<
       "xfer += " << prefix << ".read(iprot);" << endl;
