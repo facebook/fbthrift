@@ -66,7 +66,7 @@ class ConnectionEpoll:
         # poll() invokes a "long" syscall that will be interrupted by any signal
         # that comes in, causing an EINTR error.  If this happens, avoid dying
         # horribly by trying again with the appropriately shortened timout.
-        deadline = time.clock() + float(timeout)
+        deadline = time.clock() + float(timeout or 0)
         poll_timeout = float(timeout or -1)
         while True:
             if timeout > 0:
@@ -123,7 +123,7 @@ class ConnectionSelect:
         # signal that comes in, causing an EINTR error.  If this happens,
         # avoid dying horribly by trying again with the appropriately
         # shortened timout.
-        deadline = time.clock() + float(timeout)
+        deadline = time.clock() + float(timeout or 0)
         poll_timeout = timeout
         while True:
             if timeout > 0:
