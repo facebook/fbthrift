@@ -49,12 +49,16 @@ public:
     *channelCallbackUnavailable_ = true;
   }
 
+  void setProtocolId(uint16_t protocol) override {
+    protocol_ = protocol;
+  }
+
 private:
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   apache::thrift::async::TEventBase* evb_;
   std::shared_ptr<KerberosSASLHandshakeServer> serverHandshake_;
   std::shared_ptr<apache::thrift::concurrency::Mutex> mutex_;
-
+  uint16_t protocol_;
 };
 
 }} // apache::thrift

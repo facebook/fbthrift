@@ -50,7 +50,6 @@ class SaslClient : public SaslEndpoint {
           TTransportException::SASL_HANDSHAKE_TIMEOUT,
           "SASL handshake timed out"));
     }
-
   };
 
   explicit SaslClient(const std::shared_ptr<SecurityLogger>& logger = nullptr) :

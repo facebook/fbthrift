@@ -84,6 +84,10 @@ public:
     clientHandshake_ = clientHandshake;
   }
 
+  void setProtocolId(uint16_t protocol) override {
+    protocol_ = protocol;
+  }
+
 private:
   apache::thrift::async::TEventBase* evb_;
   std::shared_ptr<KerberosSASLHandshakeClient> clientHandshake_;
@@ -91,6 +95,7 @@ private:
   std::shared_ptr<apache::thrift::concurrency::Mutex> mutex_;
   std::shared_ptr<SaslThreadManager> saslThreadManager_;
   int seqId_;
+  uint16_t protocol_;
 };
 
 }} // apache::thrift

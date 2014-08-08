@@ -65,7 +65,8 @@ GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb,
     , clientHandshake_(new KerberosSASLHandshakeClient(logger))
     , mutex_(new Mutex)
     , saslThreadManager_(nullptr)
-    , seqId_(0) {
+    , seqId_(0)
+    , protocol_(0xFFFF) {
 }
 
 void GssSaslClient::start(Callback *cb) {
@@ -74,6 +75,7 @@ void GssSaslClient::start(Callback *cb) {
   auto clientHandshake = clientHandshake_;
   auto mutex = mutex_;
   auto logger = saslLogger_;
+  auto proto = protocol_;
 
   logger->logStart("prepare_first_request");
   auto ew_tm = folly::try_and_catch<TooManyPendingTasksException>([&]() {
@@ -111,8 +113,8 @@ void GssSaslClient::start(Callback *cb) {
         SaslAuthService_authFirstRequest_pargs argsp;
         argsp.saslStart = &start;
 
-        *iobuf = PargsPresultCompactSerialize(
-          argsp, "authFirstRequest", T_CALL, seqId_++);
+        *iobuf = PargsPresultProtoSerialize(
+          proto, argsp, "authFirstRequest", T_CALL, seqId_++);
       });
 
       Guard guard(*mutex);
@@ -153,6 +155,7 @@ void GssSaslClient::consumeFromServer(
   auto clientHandshake = clientHandshake_;
   auto mutex = mutex_;
   auto logger = saslLogger_;
+  auto proto = protocol_;
 
   auto ew_tm = folly::try_and_catch<TooManyPendingTasksException>([&]() {
     saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
@@ -185,8 +188,25 @@ void GssSaslClient::consumeFromServer(
         SaslReply reply;
         SaslAuthService_authFirstRequest_presult presult;
         presult.success = &reply;
-        string methodName =
-          PargsPresultCompactDeserialize(presult, smessage.get(), T_REPLY).first;
+        string methodName;
+        try {
+          methodName = PargsPresultProtoDeserialize(
+              proto, presult, smessage.get(), T_REPLY).first;
+        } catch (const TProtocolException& e) {
+          if (proto == protocol::T_BINARY_PROTOCOL &&
+              e.getType() == TProtocolException::BAD_VERSION) {
+            // We used to use compact always in security messages, even when
+            // the header said they should be binary. If we end up in this if,
+            // we're talking to an old version remote end, so try compact too.
+            methodName = PargsPresultProtoDeserialize(
+                protocol::T_COMPACT_PROTOCOL,
+                presult,
+                smessage.get(),
+                T_REPLY).first;
+          } else {
+            throw;
+          }
+        }
         if (methodName != "authFirstRequest" &&
             methodName != "authNextRequest") {
           throw TApplicationException("Bad return method name: " + methodName);
@@ -212,7 +232,7 @@ void GssSaslClient::consumeFromServer(
           req.__isset.response = true;
           SaslAuthService_authNextRequest_pargs argsp;
           argsp.saslRequest = &req;
-          *iobuf = PargsPresultCompactSerialize(argsp, "authNextRequest",
+          *iobuf = PargsPresultProtoSerialize(proto, argsp, "authNextRequest",
                                                 T_CALL, seqId_++);
         }
       });
@@ -313,5 +333,4 @@ std::string GssSaslClient::getServerIdentity() const {
     return "";
   }
 }
-
 }}

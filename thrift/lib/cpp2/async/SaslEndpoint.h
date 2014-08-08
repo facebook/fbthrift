@@ -63,6 +63,10 @@ public:
     *channelCallbackUnavailable_ = true;
   }
 
+  // Sets the protocol (e.g. binary/compact)
+  // to use for serialization/deserialization of auth messages
+  virtual void setProtocolId(uint16_t protocol) {}
+
 protected:
   std::shared_ptr<bool> channelCallbackUnavailable_;
 

@@ -25,6 +25,7 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/Conv.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 
 namespace apache { namespace thrift {
@@ -35,11 +36,11 @@ namespace apache { namespace thrift {
  * These are the types sent on the wire for a method invocation.
  */
 
-template <typename T>
-std::unique_ptr<folly::IOBuf> PargsPresultCompactSerialize(
+template <typename ProtocolWriter, typename T>
+std::unique_ptr<folly::IOBuf> PargsPresultSerialize(
     const T& value, const char *methodName, MessageType messageType, int seqId) {
   IOBufQueue q;
-  CompactProtocolWriter writer;
+  ProtocolWriter writer;
   writer.setOutput(&q);
   writer.writeMessageBegin(methodName, messageType, seqId);
   value.write(&writer);
@@ -47,10 +48,10 @@ std::unique_ptr<folly::IOBuf> PargsPresultCompactSerialize(
   return q.move();
 }
 
-template <typename T>
-std::pair<std::string, int> PargsPresultCompactDeserialize(
+template <typename ProtocolReader, typename T>
+std::pair<std::string, int> PargsPresultDeserialize(
     T& valuep, const folly::IOBuf* iobuf, MessageType messageType) {
-  CompactProtocolReader reader;
+  ProtocolReader reader;
   reader.setInput(iobuf);
   std::string methodName;
   MessageType msgType;
@@ -64,6 +65,49 @@ std::pair<std::string, int> PargsPresultCompactDeserialize(
   valuep.read(&reader);
   reader.readMessageEnd();
   return std::make_pair(methodName, privSeqId);
+}
+
+template <typename T>
+std::unique_ptr<folly::IOBuf> PargsPresultProtoSerialize(
+    uint16_t protocol,
+    const T& value,
+    const char *methodName,
+    MessageType messageType,
+    int seqId) {
+
+  switch (protocol) {
+  case protocol::T_BINARY_PROTOCOL:
+    return PargsPresultSerialize<BinaryProtocolWriter>(
+        value, methodName, messageType, seqId);
+  case protocol::T_COMPACT_PROTOCOL:
+    return PargsPresultSerialize<CompactProtocolWriter>(
+        value, methodName, messageType, seqId);
+  default:
+    throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
+        "PargsPresultProtoSerialize doesn't implement this protocol: " +
+        std::to_string(protocol));
+  }
+}
+
+template <typename T>
+std::pair<std::string, int> PargsPresultProtoDeserialize(
+    uint16_t protocol,
+    T& value,
+    const folly::IOBuf* iobuf,
+    MessageType messageType) {
+
+  switch (protocol) {
+  case protocol::T_BINARY_PROTOCOL:
+    return PargsPresultDeserialize<BinaryProtocolReader>(
+        value, iobuf, messageType);
+  case protocol::T_COMPACT_PROTOCOL:
+    return PargsPresultDeserialize<CompactProtocolReader>(
+        value, iobuf, messageType);
+  default:
+    throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
+        "PargsPresultProtoDeserialize doesn't implement this protocol: " +
+        std::to_string(protocol));
+  }
 }
 
 }}

@@ -59,7 +59,8 @@ GssSaslServer::GssSaslServer(
     : threadManager_(thread_manager)
     , evb_(evb)
     , serverHandshake_(new KerberosSASLHandshakeServer)
-    , mutex_(new Mutex) {
+    , mutex_(new Mutex)
+    , protocol_(0xFFFF) {
 }
 
 void GssSaslServer::consumeFromClient(
@@ -69,6 +70,8 @@ void GssSaslServer::consumeFromClient(
   auto channelCallbackUnavailable = channelCallbackUnavailable_;
   auto serverHandshake = serverHandshake_;
   auto mutex = mutex_;
+  auto proto = protocol_;
+
   auto exw = folly::try_and_catch<std::exception>([&]() {
     threadManager_->add(std::make_shared<FunctionRunner>([=] {
       std::string reply_data;
@@ -89,9 +92,27 @@ void GssSaslServer::consumeFromClient(
         pargs.saslStart = &start;
         ex = folly::try_and_catch<std::exception>([&]() {
           string methodName;
-          std::tie(methodName, requestSeqId) =
-            PargsPresultCompactDeserialize(pargs, smessage.get(), T_CALL);
-
+          try {
+            std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
+                proto,
+                pargs,
+                smessage.get(),
+                T_CALL);
+          } catch (const TProtocolException& e) {
+            if (proto == protocol::T_BINARY_PROTOCOL &&
+                e.getType() == TProtocolException::BAD_VERSION) {
+              // We used to use compact always in security messages, even when
+              // the header said they should be binary. If we end up in this if,
+              // we're talking to an old version remote end, so try compact too.
+              std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
+                  protocol::T_COMPACT_PROTOCOL,
+                  pargs,
+                  smessage.get(),
+                  T_CALL);
+            } else {
+              throw;
+            }
+          }
           if (methodName != "authFirstRequest") {
             throw TKerberosException("Bad Thrift first call: " + methodName);
           }
@@ -109,8 +130,31 @@ void GssSaslServer::consumeFromClient(
         pargs.saslRequest = &req;
         ex = folly::try_and_catch<std::exception>([&]() {
           string methodName;
-          std::tie(methodName, requestSeqId) =
-            PargsPresultCompactDeserialize(pargs, smessage.get(), T_CALL);
+          try {
+            std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
+                    proto,
+                    pargs,
+                    smessage.get(),
+                    T_CALL);
+          } catch (const TProtocolException& e) {
+            if (proto == protocol::T_BINARY_PROTOCOL &&
+                e.getType() == TProtocolException::BAD_VERSION) {
+              // We used to use compact always in security messages, even when
+              // the header said they should be binary. If we end up in this if,
+              // we're talking to an old version remote end, so try compact too.
+              std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
+                  protocol::T_COMPACT_PROTOCOL,
+                  pargs,
+                  smessage.get(),
+                  T_CALL);
+            } else {
+              throw;
+            }
+          }
+          catch (std::exception& e) {
+            LOG(ERROR) << e.what();
+            throw;
+          }
 
           if (methodName != "authNextRequest") {
             throw TKerberosException("Bad Thrift next call: " + methodName);
@@ -140,18 +184,20 @@ void GssSaslServer::consumeFromClient(
               SaslAuthService_authFirstRequest_presult resultp;
               resultp.success = &reply;
               resultp.__isset.success = true;
-              *outbuf = PargsPresultCompactSerialize(resultp,
-                                                     "authFirstRequest",
-                                                     T_REPLY,
-                                                     requestSeqId);
+              *outbuf = PargsPresultProtoSerialize(proto,
+                                                   resultp,
+                                                   "authFirstRequest",
+                                                   T_REPLY,
+                                                   requestSeqId);
             } else {
               SaslAuthService_authNextRequest_presult resultp;
               resultp.success = &reply;
               resultp.__isset.success = true;
-              *outbuf = PargsPresultCompactSerialize(resultp,
-                                                     "authNextRequest",
-                                                     T_REPLY,
-                                                     requestSeqId);
+              *outbuf = PargsPresultProtoSerialize(proto,
+                                                   resultp,
+                                                   "authNextRequest",
+                                                   T_REPLY,
+                                                   requestSeqId);
             }
           }
         });

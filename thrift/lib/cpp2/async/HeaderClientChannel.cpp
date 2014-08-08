@@ -124,6 +124,7 @@ void HeaderClientChannel::startSecurity() {
     timer_->scheduleTimeout(&saslClientCallback_,
                             std::chrono::milliseconds(timeoutSASL_));
   }
+  saslClient_->setProtocolId(getProtocolId());
   saslClient_->start(&saslClientCallback_);
 }
 

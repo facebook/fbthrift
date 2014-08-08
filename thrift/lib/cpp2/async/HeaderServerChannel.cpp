@@ -516,6 +516,7 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     } else if (protectionState_ == ProtectionState::UNKNOWN ||
         protectionState_ == ProtectionState::INPROGRESS) {
       setProtectionState(ProtectionState::INPROGRESS);
+      saslServer_->setProtocolId(header_->getProtocolId());
       saslServer_->consumeFromClient(&saslServerCallback_, std::move(buf));
       return nullptr;
     }
