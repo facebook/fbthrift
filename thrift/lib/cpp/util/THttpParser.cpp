@@ -336,12 +336,13 @@ bool THttpClientParser::isConnectClosedByServer() {
 
 unique_ptr<IOBuf> THttpClientParser::constructHeader(unique_ptr<IOBuf> buf) {
   std::map<std::string, std::string> empty;
-  return constructHeader(std::move(buf), empty);
+  return constructHeader(std::move(buf), empty, empty);
 }
 
 unique_ptr<IOBuf> THttpClientParser::constructHeader(
    unique_ptr<IOBuf> buf,
-   std::map<std::string, std::string> &headers) {
+   const std::map<std::string, std::string>& persistentWriteHeaders,
+   const std::map<std::string, std::string>& writeHeaders) {
   IOBufQueue queue;
   queue.append("POST ");
   queue.append(path_);
@@ -361,15 +362,23 @@ unique_ptr<IOBuf> THttpClientParser::constructHeader(
   string contentLen = std::to_string(buf->computeChainDataLength());
   queue.append(contentLen);
   queue.append(CRLF);
-  // write headers
-  map<string, string>::const_iterator it;
-  for (it = headers.begin(); it != headers.end(); ++it) {
-    queue.append(it->first);
+  // write persistent headers
+  for (const auto& persistentWriteHeader : persistentWriteHeaders) {
+    queue.append(persistentWriteHeader.first);
+
     queue.append(": ");
-    queue.append(it->second);
+    queue.append(persistentWriteHeader.second);
+    queue.append(CRLF);
+  }
+  // write non-persistent headers
+  for (const auto& writeHeader : writeHeaders) {
+    queue.append(writeHeader.first);
+    queue.append(": ");
+    queue.append(writeHeader.second);
     queue.append(CRLF);
   }
   queue.append(CRLF);
+
   auto res = queue.move();
   res->appendChain(std::move(buf));
   return std::move(res);

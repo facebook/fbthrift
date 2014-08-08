@@ -53,6 +53,20 @@ BOOST_AUTO_TEST_CASE(largetransform) {
   buf = header.removeHeader(queue2.get(), needed);
 }
 
+BOOST_AUTO_TEST_CASE(http_clear_header) {
+  THeader header;
+  header.useAsHttpClient("testhost", "testuri");
+  header.setHeader("WriteHeader", "foo");
+  header.setPersistentHeader("PersistentHeader", "bar");
+
+  size_t buf_size = 1000000;
+  std::unique_ptr<IOBuf> buf(IOBuf::create(buf_size));
+  buf = header.addHeader(std::move(buf));
+
+  BOOST_CHECK(header.getWriteHeaders().empty());
+  BOOST_CHECK(!header.getPersistentWriteHeaders().empty());
+}
+
 boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
   boost::unit_test::framework::master_test_suite().p_name.value =
     "THeaderTest";
@@ -64,4 +78,3 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
 
   return nullptr;
 }
-

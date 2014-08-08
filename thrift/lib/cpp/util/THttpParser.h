@@ -66,7 +66,8 @@ class THttpParser {
     std::unique_ptr<folly::IOBuf> buf) = 0;
   virtual std::unique_ptr<folly::IOBuf> constructHeader(
     std::unique_ptr<folly::IOBuf> buf,
-    std::map<std::string, std::string> &headers) = 0;
+    const std::map<std::string, std::string>& persistentWriteHeaders,
+    const std::map<std::string, std::string>& writeHeaders) = 0;
 
  protected:
   HttpParseResult parseStart();
@@ -126,7 +127,8 @@ class THttpClientParser : public THttpParser {
     std::unique_ptr<folly::IOBuf> buf) override;
   virtual std::unique_ptr<folly::IOBuf> constructHeader(
     std::unique_ptr<folly::IOBuf> buf,
-    std::map<std::string, std::string> &headers) override;
+    const std::map<std::string, std::string>& persistentWriteHeaders,
+    const std::map<std::string, std::string>& writeHeaders) override;
 
  protected:
   virtual void parseHeaderLine(const char* header) override;

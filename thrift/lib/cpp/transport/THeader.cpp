@@ -988,7 +988,9 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
   } else if (clientType == THRIFT_HTTP_CLIENT_TYPE) {
     CHECK(httpClientParser_.get() != nullptr);
     buf = std::move(httpClientParser_->constructHeader(std::move(buf),
+                                                       persisWriteHeaders_,
                                                        writeHeaders_));
+    writeHeaders_.clear();
   } else {
     throw TTransportException(TTransportException::BAD_ARGS,
                               "Unknown client type");
