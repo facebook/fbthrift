@@ -32,6 +32,7 @@ import select
 import socket
 import fcntl
 import warnings
+import time
 
 class ConnectionEpoll:
     """ epoll is preferred over select due to its efficiency and ability to
@@ -64,16 +65,20 @@ class ConnectionEpoll:
     def process(self, timeout):
         # poll() invokes a "long" syscall that will be interrupted by any signal
         # that comes in, causing an EINTR error.  If this happens, avoid dying
-        # horribly by pretending you timed out
-        try:
-            msgs = self.epoll.poll(timeout=(float(timeout or -1)))
-        except IOError as e:
-            if e.errno == errno.EINTR:
-                # Treat interrupted polls as if they had timed out
-                msgs = []
-            else:
-                raise
-
+        # horribly by trying again with the appropriately shortened timout.
+        deadline = time.clock() + float(timeout)
+        poll_timeout = float(timeout or -1)
+        while True:
+            if timeout > 0:
+                poll_timeout = max(0, deadline - time.clock())
+            try:
+                msgs = self.epoll.poll(timeout=poll_timeout)
+                break
+            except IOError as e:
+                if e.errno == errno.EINTR:
+                    continue
+                else:
+                    raise
 
         rset = []
         wset = []
@@ -116,16 +121,21 @@ class ConnectionSelect:
     def process(self, timeout):
         # select() invokes a "long" syscall that will be interrupted by any
         # signal that comes in, causing an EINTR error.  If this happens,
-        # avoid dying horribly by pretending you timed out
-        try:
-            return select.select(list(self.readable), list(self.writable),
-                    list(self.readable), timeout)
-        except OSError as e:
-            if e.errno == errno.EINTR:
-                # Treat interrupted polls as if they had timed out
-                return ([], [], [])
-            else:
-                raise
+        # avoid dying horribly by trying again with the appropriately
+        # shortened timout.
+        deadline = time.clock() + float(timeout)
+        poll_timeout = timeout
+        while True:
+            if timeout > 0:
+                poll_timeout = max(0, deadline - time.clock())
+            try:
+                return select.select(list(self.readable), list(self.writable),
+                        list(self.readable), poll_timeout)
+            except IOError as e:
+                if e.errno == errno.EINTR:
+                    continue
+                else:
+                    raise
 
 
 class TSocketBase(TTransportBase):
