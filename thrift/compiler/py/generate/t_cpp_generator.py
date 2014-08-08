@@ -4090,6 +4090,11 @@ class CppGenerator(t_generator.Generator):
             return
         context = self._make_context(self._program.name + '_layouts')
         s = get_global_scope(CppPrimitiveFactory, context)
+        if self.flag_compatibility:
+            # Delegate to cpp1 layouts
+            s('#include "{0}"'.format(self._with_compatibility_include_prefix(
+                self._program, self._program.name + '_layouts.h')))
+            return
         s('#include <thrift/lib/cpp2/frozen/Frozen.h>')
         s('#include "{0}"'.format(self._with_include_prefix(self._program,
             self._program.name + '_types.h')))
