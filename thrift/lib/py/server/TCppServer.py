@@ -57,10 +57,19 @@ class _ProcessorAdapter(object):
 
             self.processor.process(prot, prot, ctx)
 
+            # Check for empty result. If so, return an empty string
+            # here.  This is probably a oneway request, but we can't
+            # reliably tell.  The C++ code does basically the same
+            # thing.
+
+            response = prot_buf.getvalue()
+            if len(response) == 0:
+                return response
+
             # And on the way out, we need to strip off the header,
             # because the C++ code will expect to add it.
 
-            read_buf = TMemoryBuffer(prot_buf.getvalue())
+            read_buf = TMemoryBuffer(response)
             trans = THeaderTransport(read_buf, client_types=[client_type])
             trans.readFrame(0)
 

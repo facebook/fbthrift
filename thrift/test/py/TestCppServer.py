@@ -38,8 +38,9 @@ class SleepProcessorEventHandler(TProcessorEventHandler):
 
 
 class SleepHandler(FacebookBase, SleepService.Iface):
-    def __init__(self):
+    def __init__(self, noop_event):
         FacebookBase.__init__(self, "sleep")
+        self.noop_event = noop_event
 
     def sleep(self, seconds):
         print("server sleeping...")
@@ -51,6 +52,9 @@ class SleepHandler(FacebookBase, SleepService.Iface):
             s = s.decode('latin1')
 
         return " ".join(s)
+
+    def noop(self):
+        self.noop_event.set()
 
 
 class SpaceProcess(multiprocessing.Process):
@@ -92,11 +96,21 @@ class ParallelProcess(multiprocessing.Process):
         for c in clients:
             c.recv_sleep()
 
+class OnewayProcess(multiprocessing.Process):
+    def __init__(self, port):
+        multiprocessing.Process.__init__(self)
+        self.port = port
+
+    def run(self):
+        client = getClient(self.port)
+        client.noop()
+
 
 class TestServer(BaseFacebookTestCase):
     def setUp(self):
         super(TestServer, self).setUp()
-        processor = SleepService.Processor(SleepHandler())
+        self.noop_event = threading.Event()
+        processor = SleepService.Processor(SleepHandler(self.noop_event))
         self.event_handler = SleepProcessorEventHandler()
         processor.setEventHandler(self.event_handler)
         self.server = TCppServer(processor)
@@ -149,6 +163,14 @@ class TestServer(BaseFacebookTestCase):
         self.assertEqual(parallel.exitcode, 0)
         self.assertLess(duration, 5)
 
+    def testOneway(self):
+        oneway = OnewayProcess(self.server_port)
+        oneway.start()
+        oneway.join()
+
+        self.stopServer()
+
+        self.assertTrue(self.noop_event.wait(5))
 
 if __name__ == '__main__':
     rc = fbpyunit.MainProgram(sys.argv).run()

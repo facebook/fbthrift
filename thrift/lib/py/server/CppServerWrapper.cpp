@@ -147,14 +147,21 @@ public:
       PyObject* output_ptr = output.ptr();
 #if PY_MAJOR_VERSION == 2
       if (PyString_Check(output_ptr)) {
-        outbuf = folly::IOBuf::copyBuffer(
-          extract<const char *>(output),
-          extract<int>(output.attr("__len__")()));
+        int len = extract<int>(output.attr("__len__")());
+        if (len == 0) {
+          // assume oneway, don't call sendReply
+          return;
+        }
+        outbuf = folly::IOBuf::copyBuffer(extract<const char *>(output), len);
       } else
 #endif
         if (PyBytes_Check(output_ptr)) {
-          outbuf = folly::IOBuf::copyBuffer(
-            PyBytes_AsString(output_ptr), PyBytes_Size(output_ptr));
+          int len = PyBytes_Size(output_ptr);
+          if (len == 0) {
+            // assume oneway, don't call sendReply
+            return;
+          }
+          outbuf = folly::IOBuf::copyBuffer(PyBytes_AsString(output_ptr), len);
         } else {
           throw std::runtime_error(
             "Return from processor method is not string or bytes");
