@@ -63,7 +63,7 @@ class ClientReceiveState {
   }
 
   bool isException() const {
-    return excw_.get();
+    return excw_ ? true : false;
   }
 
   folly::exception_wrapper exceptionWrapper() {
@@ -71,7 +71,7 @@ class ClientReceiveState {
   }
 
   std::exception_ptr exception() {
-    if (!exc_ && excw_.get()) {
+    if (!exc_ && excw_) {
       exc_ = excw_.getExceptionPtr();
     }
     return exc_;

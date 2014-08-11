@@ -1016,7 +1016,7 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_app_ex(self, service, errorstr, functionname, seqid, is_in_eb,
                          s, static=True, err_code=None, err_header=True,
-                         ex_name='e'):
+                         ex_str='folly::exceptionStr(e).toStdString()'):
         with out('if (req)'):
             out('LOG(ERROR) << {0} << " in function {1}";'.format(
                     errorstr, functionname))
@@ -1028,9 +1028,7 @@ class CppGenerator(t_generator.Generator):
             if static:
                 ctx = 'ctx.get()'
                 if err_header:
-                    out('ctx->userException(' +
-                        'folly::demangle(typeid(' + ex_name +
-                        ')).toStdString());')
+                    out('ctx->userException(' + ex_str + ');')
             else:
                 ctx = 'nullptr'
             if is_in_eb:
@@ -1367,7 +1365,7 @@ class CppGenerator(t_generator.Generator):
                         with out('catch (const {0}& e)'.format(
                             self._type_name(xception.type))):
                             out('ctx->userException(' +
-                              'folly::demangle(typeid(e)).toStdString());')
+                              'folly::exceptionStr(e).toStdString());')
                             out('result.{0} = e;'.format(xception.name))
                             out('result.__isset.{0} = true;'.format(
                                 xception.name))
@@ -1429,27 +1427,26 @@ class CppGenerator(t_generator.Generator):
                                 with out('if (!cast)'):
                                     xception_type = self._type_name(
                                         xception.type)
-                                    wrapper_name = 'ew_' + xception.name
-                                    out('auto ' + wrapper_name + ' = dynamic_' +
-                                        'cast<' + xception_type +
-                                        '*>(ew.get());')
-                                    with out('if (' + wrapper_name + ')'):
+                                    with out('if (ew.is_compatible_with<' +
+                                             xception_type + '>())'):
                                         out('cast = true;')
-                                        out('ctx->userException(' +
-                                            'folly::demangle(typeid(*' +
-                                            wrapper_name +
-                                            ')).toStdString());')
-                                        out('result.{0} = *{1};'.format(
-                                            xception.name, wrapper_name))
+                                        out('ctx->userException(ew.what().' +
+                                            'toStdString());')
+                                        with out('ew.with_exception<{0}>'
+                                                 '([&]({0}& ex)'.format(
+                                                     xception_type)):
+                                            out('result.{0} = ex;'.format(
+                                                xception.name))
+                                        out(');')
                                         out('result.__isset.{0} = true;'.format(
                                             xception.name))
                             with out('if (!cast)'):
                                 self._generate_app_ex(
                                     service,
-                                    "folly::exceptionStr(*ew)." +
-                                    "toStdString()",
+                                    'ew.what().toStdString()',
                                     function.name, "protoSeqId", True,
-                                    out(), True, None, True, '*ew')
+                                    out(), True, None, True,
+                                    'ew.what().toStdString()')
                             if len(function.xceptions.members) > 0:
                                 out('auto queue = serializeResponse('
                                     '"{0}", &prot, protoSeqId, ctx.get(),'
@@ -3455,7 +3452,7 @@ class CppGenerator(t_generator.Generator):
             gen_func = self._generate_map[what.__class__]
             gen_func(self, what)
         except KeyError:
-            print "Warning: Did not generate " + str(what)
+            print("Warning: Did not generate {}".format(what))
 
     def _render_const_value(self, type_, value, explicit=False):
         ''' Returns an initializer list rval representing this const

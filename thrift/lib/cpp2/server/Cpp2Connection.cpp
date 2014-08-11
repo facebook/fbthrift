@@ -372,8 +372,7 @@ void Cpp2Connection::channelClosed(folly::exception_wrapper&& ex) {
   });
 
   VLOG(4) << "Channel " <<
-    context_.getPeerAddress()->describe() << " closed: " <<
-    folly::exceptionStr(*ex);
+    context_.getPeerAddress()->describe() << " closed: " << ex.what();
 }
 
 void Cpp2Connection::removeRequest(Cpp2Request *req) {

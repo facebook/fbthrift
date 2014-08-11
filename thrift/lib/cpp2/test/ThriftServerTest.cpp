@@ -642,9 +642,8 @@ TEST(ThriftServer, FailureInjection) {
       auto ew = TestServiceAsyncClient::recv_wrapped_sendResponse(response,
                                                                   state);
       if (ew) {
-        auto exc = ew.get();
-        auto appEx = dynamic_cast<apache::thrift::TApplicationException*>(exc);
-        EXPECT_TRUE(appEx);
+        EXPECT_TRUE(
+          ew.is_compatible_with<apache::thrift::TApplicationException>());
         EXPECT_EQ(ERROR, *expected_);
       } else {
         EXPECT_EQ(NONE, *expected_);

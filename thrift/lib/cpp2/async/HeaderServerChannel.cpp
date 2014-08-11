@@ -235,14 +235,15 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
     MessageChannel::SendCallback* cb,
     THeader::StringToStringMap&& headers) {
 
-  auto ex = dynamic_cast<TApplicationException*>(ew.get());
   // Other types are unimplemented.
-  DCHECK(ex);
+  DCHECK(ew.is_compatible_with<TApplicationException>());
 
   headers["ex"] = exCode;
-  std::unique_ptr<folly::IOBuf> exbuf(
-      serializeError(channel_->header_->getProtocolId(), *ex, getBuf()));
-  sendReply(std::move(exbuf), cb, std::move(headers));
+  ew.with_exception<TApplicationException>([&](TApplicationException& tae) {
+      std::unique_ptr<folly::IOBuf> exbuf(
+        serializeError(channel_->header_->getProtocolId(), tae, getBuf()));
+      sendReply(std::move(exbuf), cb, std::move(headers));
+    });
 }
 
 void HeaderServerChannel::sendCatchupRequests(
@@ -334,7 +335,7 @@ void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
         callback_->requestReceived(std::move(request));
       });
     if (ew) {
-      LOG(WARNING) << "Could not parse request: " << ew.get()->what();
+      LOG(WARNING) << "Could not parse request: " << ew.what();
       messageReceiveErrorWrapped(std::move(ew));
       return;
     }
@@ -356,7 +357,7 @@ void HeaderServerChannel::messageReceiveErrorWrapped(
     folly::exception_wrapper&& ex) {
   DestructorGuard dg(this);
 
-  VLOG(1) << "Receive error: " << folly::exceptionStr(*ex);
+  VLOG(1) << "Receive error: " << ex.what();
 
   if (callback_) {
     callback_->channelClosed(std::move(ex));
@@ -474,7 +475,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
     observer->saslFallBack();
   }
 
-  LOG(INFO) << "SASL server falling back to insecure: " << ex->what();
+  LOG(INFO) << "SASL server falling back to insecure: " << ex.what();
 
   // Send the client a null message so the client will try again.
   // TODO mhorowitz: generate a real message here.
