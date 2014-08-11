@@ -222,6 +222,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "native"             { thrift_reserved_keyword(yytext); }
 "new"                { thrift_reserved_keyword(yytext); }
 "not"                { thrift_reserved_keyword(yytext); }
+"operator"           { thrift_reserved_keyword(yytext); }
 "or"                 { thrift_reserved_keyword(yytext); }
 "pass"               { thrift_reserved_keyword(yytext); }
 "public"             { thrift_reserved_keyword(yytext); }
