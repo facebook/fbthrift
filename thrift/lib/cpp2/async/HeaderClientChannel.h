@@ -534,6 +534,8 @@ private:
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 
   apache::thrift::async::HHWheelTimer::UniquePtr timer_;
+
+  uint16_t userProtocolId_;
 };
 
 }} // apache::thrift

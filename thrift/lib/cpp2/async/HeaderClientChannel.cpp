@@ -115,6 +115,14 @@ void HeaderClientChannel::startSecurity() {
     throw TTransportException("Security requested, but SASL client not set");
   }
 
+  // Save the protocol (binary/compact) for later and set it to compact for
+  // compatibility with old servers that only accept compact security messages.
+  // We'll restore it in setSecurityComplete().
+  // TODO(alandau): Remove this code once all servers are upgraded to be able
+  // to handle both compact and binary.
+  userProtocolId_ = header_->getProtocolId();
+  header_->setProtocolId(T_COMPACT_PROTOCOL);
+
   // Let's get this party started.
   setProtectionState(ProtectionState::INPROGRESS);
   setBaseReceivedCallback();
@@ -265,6 +273,9 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
 
   setProtectionState(state);
   setBaseReceivedCallback();
+
+  // restore protocol to the one the user selected
+  header_->setProtocolId(userProtocolId_);
 
   // Replay any pending requests
   for (auto&& funcarg : afterSecurity_) {
