@@ -30,10 +30,10 @@
 #include "thrift/compiler/platform.h"
 #include "thrift/compiler/generate/t_oop_generator.h"
 
-#include "folly/Conv.h"
-#include "folly/Format.h"
-#include "folly/Hash.h"
-#include "folly/String.h"
+#include <folly/Conv.h>
+#include <folly/Format.h>
+#include <folly/Hash.h>
+#include <folly/String.h>
 
 using namespace std;
 
@@ -2376,7 +2376,7 @@ void t_cpp_generator::generate_frozen_struct_definition(t_struct* tstruct) {
  */
 void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
   string structName = type_name(tstruct,  ALWAYS_NAMESPACE);
-  const auto& members = tstruct->get_members();
+  auto members = tstruct->get_members();
   auto optSuffix = [](t_field::e_req req)->const char * {
     switch (req) {
     case t_field::T_OPTIONAL:
@@ -2387,6 +2387,13 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
       return "";
     }
   };
+
+  std::sort(members.begin(),
+            members.end(),
+            [](const t_field* a,
+               const t_field* b) {
+              return a->get_key() < b->get_key();
+            });
 
   auto emitFieldFormat = [&](
       ostream& os, const string& format, const t_field* f) {
@@ -2424,7 +2431,7 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
                     make_pair("DEBUG", "DEBUG_FIELD({name})"),
                     make_pair("CLEAR", "CLEAR_FIELD({name})"),
                     make_pair("SAVE", "SAVE_FIELD({name})"),
-                    make_pair("LOAD", "LOAD_FIELD({name})")}) {
+                    make_pair("LOAD", "LOAD_FIELD({name}, {id})")}) {
     f_types_layouts_impl_
         << folly::format("FROZEN_{}({},", step.first, structName);
     for (const t_field* field : members) {

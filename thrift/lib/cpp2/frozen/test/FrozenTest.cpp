@@ -119,45 +119,15 @@ TEST(Frozen, Comparison) {
   EXPECT_EQ(tom2, ttom2) << debugString(tom2) << debugString(ttom2);
 }
 
-TEST(Frozen, Versioning) {
-  schema::Schema schema;
-  Layout<example2::Person1> person1a;
-  Layout<example2::Person1> person1b;
-  Layout<example2::Person2> person2;
-
-  size_t size = LayoutRoot::layout(tom1, person1a);
-  person1a.saveRoot(schema);
-  person1b.loadRoot(schema);
-  EXPECT_THROW(person2.loadRoot(schema), LayoutTypeMismatchException);
-  schema.relaxTypeChecks = true;
-  person2.loadRoot(schema);
-
-  std::string storage(size, 'X');
-  folly::MutableStringPiece charRange(&storage.front(), size);
-  folly::MutableByteRange bytes(charRange);
-
-  ByteRangeFreezer::freeze(person1a, tom1, bytes);
-  auto view1a = person1a.view({bytes.begin(), 0});
-  auto view1b = person1b.view({bytes.begin(), 0});
-  auto view2 = person2.view({bytes.begin(), 0});
-  EXPECT_EQ(view1a.thaw(), view1b.thaw());
-  EXPECT_EQ(view1a.name(), view2.name());
-  EXPECT_EQ(view1a.age(), view2.age());
-  EXPECT_EQ(view1a.pets()[0].name(), view2.pets()[0].name());
-  EXPECT_EQ(view1a.pets()[1].name(), view2.pets()[1].name());
-}
-
 TEST(Frozen, Compatibility) {
   // Make sure Thrft2 Person1 works well with Thrift1 Person2
-  schema::Schema schema;
+  schema::MemorySchema schema;
   Layout<example2::Person1> person1cpp2;
   Layout<example1::Person2> person2cpp1;
 
   size_t size = LayoutRoot::layout(tom1, person1cpp2);
 
   person1cpp2.saveRoot(schema);
-  EXPECT_THROW(person2cpp1.loadRoot(schema), LayoutTypeMismatchException);
-  schema.relaxTypeChecks = true;
   person2cpp1.loadRoot(schema);
 
   std::string storage(size, 'X');
@@ -178,12 +148,15 @@ TEST(Frozen, EmbeddedSchema) {
   ThriftSerializerCompact<> serializer;
   {
     schema::Schema schema;
+    schema::MemorySchema memSchema;
 
     Layout<example2::Person1> person1a;
 
     size_t size;
     size = LayoutRoot::layout(tom1, person1a);
-    person1a.saveRoot(schema);
+    person1a.saveRoot(memSchema);
+
+    schema::convert(memSchema, schema);
 
     serializer.serialize(schema, &storage);
     size_t start = storage.size();
@@ -195,12 +168,14 @@ TEST(Frozen, EmbeddedSchema) {
   }
   {
     schema::Schema schema;
+    schema::MemorySchema memSchema;
     Layout<example2::Person2> person2;
 
     size_t start = serializer.deserialize(storage, &schema);
-    EXPECT_THROW(person2.loadRoot(schema), LayoutTypeMismatchException);
-    schema.relaxTypeChecks = true;
-    person2.loadRoot(schema);
+
+    schema::convert(std::move(schema), memSchema);
+
+    person2.loadRoot(memSchema);
 
     folly::StringPiece charRange(&storage[start], storage.size() - start);
     folly::ByteRange bytes(charRange);
@@ -301,7 +276,7 @@ TEST(Frozen, SchemaSaving) {
   CHECK(LayoutRoot::layout(stressValue, stressLayoutCalculated));
 
   // save it
-  schema::Schema schemaSaved;
+  schema::MemorySchema schemaSaved;
   stressLayoutCalculated.saveRoot(schemaSaved);
 
   // reload it
@@ -312,7 +287,7 @@ TEST(Frozen, SchemaSaving) {
   EXPECT_PRINTED_EQ(stressLayoutCalculated, stressLayoutLoaded);
 
   // make sure layouts round-trip
-  schema::Schema schemaLoaded;
+  schema::MemorySchema schemaLoaded;
   stressLayoutLoaded.saveRoot(schemaLoaded);
   EXPECT_EQ(schemaSaved, schemaLoaded);
 }
@@ -323,6 +298,22 @@ TEST(Frozen, Enum) {
   she.gender = example2::Gender::Female;
   EXPECT_EQ(he, freeze(he).thaw());
   EXPECT_EQ(she, freeze(she).thaw());
+}
+
+TEST(Frozen, SchemaConversion) {
+  schema::MemorySchema memSchema;
+  schema::Schema schema;
+
+  Layout<example2::EveryLayout> stressLayoutCalculated;
+  CHECK(LayoutRoot::layout(stressValue, stressLayoutCalculated));
+
+  schema::MemorySchema schemaSaved;
+  stressLayoutCalculated.saveRoot(schemaSaved);
+
+  schema::convert(schemaSaved, schema);
+  schema::convert(std::move(schema), memSchema);
+
+  EXPECT_EQ(memSchema, schemaSaved);
 }
 
 int main(int argc, char** argv) {

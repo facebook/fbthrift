@@ -22,50 +22,51 @@ namespace detail {
  */
 template <class T>
 struct OptionalLayout : public LayoutBase {
-  Field<bool> isset;
-  Field<T> value;
+  typedef LayoutBase Base;
+  Field<bool> issetField;
+  Field<T> valueField;
 
   OptionalLayout()
-      : LayoutBase(typeid(T)), isset(1, "isset"), value(2, "value") {}
+      : LayoutBase(typeid(T)), issetField(1, "isset"), valueField(2, "value") {}
 
   FieldPosition layout(LayoutRoot& root,
                        const folly::Optional<T>& o,
                        LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
-    pos = root.layoutField(self, pos, isset, o.hasValue());
+    pos = root.layoutField(self, pos, issetField, o.hasValue());
     if (o) {
-      pos = root.layoutField(self, pos, value, o.value());
+      pos = root.layoutField(self, pos, valueField, o.value());
     }
     return pos;
   }
 
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
-    pos = root.layoutField(self, pos, isset, true);
-    pos = root.layoutField(self, pos, value, o);
+    pos = root.layoutField(self, pos, issetField, true);
+    pos = root.layoutField(self, pos, valueField, o);
     return pos;
   }
 
   void freeze(FreezeRoot& root,
               const folly::Optional<T>& o,
               FreezePosition self) const {
-    root.freezeField(self, isset, o.hasValue());
+    root.freezeField(self, issetField, o.hasValue());
     if (o) {
-      root.freezeField(self, value, o.value());
+      root.freezeField(self, valueField, o.value());
     }
   }
 
   void freeze(FreezeRoot& root, const T& o, FreezePosition self) const {
-    root.freezeField(self, isset, true);
-    root.freezeField(self, value, o);
+    root.freezeField(self, issetField, true);
+    root.freezeField(self, valueField, o);
   }
 
   void thaw(ViewPosition self, folly::Optional<T>& out) const {
     bool set;
-    thawField(self, isset, set);
+    thawField(self, issetField, set);
     if (set) {
       out.emplace();
-      thawField(self, value, out.value());
+      thawField(self, valueField, out.value());
     }
   }
 
@@ -74,9 +75,9 @@ struct OptionalLayout : public LayoutBase {
   View view(ViewPosition self) const {
     View v;
     bool set;
-    thawField(self, isset, set);
+    thawField(self, issetField, set);
     if (set) {
-      v.assign(value.layout.view(self(value.pos)));
+      v.assign(valueField.layout.view(self(valueField.pos)));
     }
     return v;
   }
@@ -84,27 +85,22 @@ struct OptionalLayout : public LayoutBase {
   void print(std::ostream& os, int level) const final {
     LayoutBase::print(os, level);
     os << "optional " << folly::demangle(type.name());
-    isset.print(os, level + 1);
-    value.print(os, level + 1);
+    issetField.print(os, level + 1);
+    valueField.print(os, level + 1);
   }
 
   void clear() final {
-    isset.clear();
-    value.clear();
+    issetField.clear();
+    valueField.clear();
   }
 
-  void save(schema::Schema& schema, schema::Layout& layout) const final {
-    LayoutBase::save(schema, layout);
-    isset.save(schema, layout);
-    value.save(schema, layout);
-  }
+  FROZEN_SAVE_INLINE(
+    FROZEN_SAVE_FIELD(isset)
+    FROZEN_SAVE_FIELD(value))
 
-  void load(const schema::Schema& schema,
-            const schema::Layout& layout) final {
-    LayoutBase::load(schema, layout);
-    isset.load(schema, layout);
-    value.load(schema, layout);
-  }
+  FROZEN_LOAD_INLINE(
+    FROZEN_LOAD_FIELD(isset, 1)
+    FROZEN_LOAD_FIELD(value, 2))
 };
 }
 

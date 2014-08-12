@@ -48,20 +48,23 @@ struct BufferHelpers<std::unique_ptr<folly::IOBuf>> {
  */
 template <class T>
 struct StringLayout : public LayoutBase {
+  typedef LayoutBase Base;
   typedef BufferHelpers<T> Helper;
   typedef typename Helper::Item Item;
-  Field<size_t> distance;
-  Field<size_t> count;
+  Field<size_t> distanceField;
+  Field<size_t> countField;
 
   StringLayout()
-      : LayoutBase(typeid(T)), distance(1, "distance"), count(2, "count") {}
+      : LayoutBase(typeid(T)),
+        distanceField(1, "distance"),
+        countField(2, "count") {}
 
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
     size_t n = Helper::size(o);
     size_t dist = root.layoutBytesDistance(self.start, n * sizeof(Item));
     FieldPosition pos = startFieldPosition();
-    pos = root.layoutField(self, pos, distance, dist);
-    pos = root.layoutField(self, pos, count, n);
+    pos = root.layoutField(self, pos, distanceField, dist);
+    pos = root.layoutField(self, pos, countField, n);
     return pos;
   }
 
@@ -70,8 +73,8 @@ struct StringLayout : public LayoutBase {
     folly::MutableByteRange range;
     size_t dist;
     root.appendBytes(self.start, n * sizeof(Item), range, dist);
-    root.freezeField(self, distance, dist);
-    root.freezeField(self, count, n);
+    root.freezeField(self, distanceField, dist);
+    root.freezeField(self, countField, n);
     folly::Range<Item*> target(reinterpret_cast<Item*>(range.begin()),n);
     Helper::copyTo(o, target);
   }
@@ -85,9 +88,9 @@ struct StringLayout : public LayoutBase {
   View view(ViewPosition self) const {
     View range;
     size_t dist, n;
-    thawField(self, count, n);
+    thawField(self, countField, n);
     if (n) {
-      thawField(self, distance, dist);
+      thawField(self, distanceField, dist);
       const byte* read = self.start + dist;
       range.reset(reinterpret_cast<const Item*>(read), n);
     }
@@ -97,28 +100,23 @@ struct StringLayout : public LayoutBase {
   void print(std::ostream& os, int level) const {
     LayoutBase::print(os, level);
     os << "string of " << folly::demangle(type.name());
-    distance.print(os, level + 1);
-    count.print(os, level + 1);
+    distanceField.print(os, level + 1);
+    countField.print(os, level + 1);
   }
 
   void clear() final {
     LayoutBase::clear();
-    distance.clear();
-    count.clear();
+    distanceField.clear();
+    countField.clear();
   }
 
-  void save(schema::Schema& schema, schema::Layout& layout) const final {
-    LayoutBase::save(schema, layout);
-    distance.save(schema, layout);
-    count.save(schema, layout);
-  }
+  FROZEN_SAVE_INLINE(
+    FROZEN_SAVE_FIELD(distance)
+    FROZEN_SAVE_FIELD(count))
 
-  void load(const schema::Schema& schema,
-            const schema::Layout& layout) final {
-    LayoutBase::load(schema, layout);
-    distance.load(schema, layout);
-    count.load(schema, layout);
-  }
+  FROZEN_LOAD_INLINE(
+    FROZEN_LOAD_FIELD(distance, 1)
+    FROZEN_LOAD_FIELD(count, 2))
 
   static size_t hash(const View& v) {
     return folly::hash::fnv64_buf(v.begin(), sizeof(Item) * v.size());

@@ -3926,7 +3926,7 @@ class CppGenerator(t_generator.Generator):
                     out('return obj->{method}(proto);'.format(**locals()))
 
     def _generate_frozen_layout(self, obj, s):
-        fields = obj.as_struct.members
+        fields = sorted(obj.as_struct.members, key=lambda field: field.key)
         type_name = self._type_name(obj)
 
         def visitFields(fmt, fieldFmt, **kwargs):
@@ -3955,7 +3955,7 @@ class CppGenerator(t_generator.Generator):
                 ('DEBUG', 'DEBUG_FIELD({name})'),
                 ('CLEAR', 'CLEAR_FIELD({name})'),
                 ('SAVE', 'SAVE_FIELD({name})'),
-                ('LOAD', 'LOAD_FIELD({name})')]:
+                ('LOAD', 'LOAD_FIELD({name}, {id})')]:
             s.impl(visitFields('FROZEN_' + typeFmt + '({type},{fields})',
                                '\n  FROZEN_' + fieldFmt))
 

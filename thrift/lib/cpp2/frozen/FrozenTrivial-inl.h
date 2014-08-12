@@ -25,6 +25,7 @@ namespace detail {
  */
 template <class T>
 struct TrivialLayout : public LayoutBase {
+  typedef LayoutBase Base;
   TrivialLayout() : LayoutBase(typeid(T)) {}
 
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition start) {

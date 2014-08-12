@@ -70,32 +70,33 @@ void LayoutBase::clear() {
   inlined = false;
 }
 
-void LayoutBase::loadRoot(const schema::Schema& schema) {
+void LayoutBase::loadRoot(const schema::MemorySchema& schema) {
   this->clear();
   this->load(schema, schema.layouts.at(0));
 }
 
-void LayoutBase::saveRoot(schema::Schema& schema) const {
-  this->save(schema, schema.layouts[0]);
+void LayoutBase::saveRoot(schema::MemorySchema& schema) const {
+  // Bootstrap implicit ID mechanism
+  schema.layouts.push_back(schema::MemoryLayout());
+
+  schema::MemorySchemaHelper helper;
+  schema::MemoryLayout myLayout;
+  this->save(schema, myLayout, helper);
+  schema.layouts[0] = std::move(myLayout);
+  schema.layouts.shrink_to_fit();
 }
 
-void LayoutBase::load(const schema::Schema& schema,
-                      const schema::Layout& layout) {
+void LayoutBase::load(const schema::MemorySchema& schema,
+                      const schema::MemoryLayout& layout) {
   size = layout.size;
   bits = layout.bits;
-  if (!schema.relaxTypeChecks) {
-    auto expectedType = folly::demangle(type.name());
-    auto actualType = layout.typeName;
-    if (expectedType != actualType) {
-      throw LayoutTypeMismatchException(expectedType.toStdString(), actualType);
-    }
-  }
 }
 
-void LayoutBase::save(schema::Schema& schema, schema::Layout& layout) const {
+void LayoutBase::save(schema::MemorySchema& schema,
+                      schema::MemoryLayout& layout,
+                      schema::MemorySchemaHelper& helper) const {
   layout.size = size;
   layout.bits = bits;
-  layout.typeName = folly::demangle(type.name()).toStdString();
 }
 
 namespace detail {
@@ -126,19 +127,6 @@ void BlockLayout::print(std::ostream& os, int level) const {
 void BlockLayout::clear() {
   maskField.clear();
   offsetField.clear();
-}
-
-void BlockLayout::save(schema::Schema& schema, schema::Layout& layout) const {
-  LayoutBase::save(schema, layout);
-  maskField.save(schema, layout);
-  offsetField.save(schema, layout);
-}
-
-void BlockLayout::load(const schema::Schema& schema,
-                       const schema::Layout& layout) {
-  LayoutBase::load(schema, layout);
-  maskField.load(schema, layout);
-  offsetField.load(schema, layout);
 }
 
 size_t BufferHelpers<std::unique_ptr<folly::IOBuf>>::size(

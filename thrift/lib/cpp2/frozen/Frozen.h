@@ -39,6 +39,7 @@
 #include <thrift/lib/cpp2/frozen/FrozenMacros.h>
 #include <thrift/lib/cpp2/frozen/Traits.h>
 #include <thrift/lib/thrift/gen-cpp/frozen_types.h>
+#include <thrift/lib/cpp2/frozen/schema/MemorySchema.h>
 
 namespace apache { namespace thrift { namespace frozen {
 /**
@@ -215,18 +216,20 @@ struct LayoutBase {
 
   /**
    * Populates a 'layout' with a description of this layout in the context of
-   * 'schema'. Child classes must override. See comment on frozen.thrift.
+   * 'schema'. Child classes must override.
    */
-  virtual void save(schema::Schema& schema, schema::Layout& layout) const;
-  void saveRoot(schema::Schema& schema) const;
+  virtual void save(schema::MemorySchema& schema,
+                    schema::MemoryLayout& layout,
+                    schema::MemorySchemaHelper& helper) const;
+  void saveRoot(schema::MemorySchema& schema) const;
 
   /**
    * Populates this layout from the description stored in 'layout' in the
-   * context of 'schema'. Child classes must override. See comment on
-   * frozen.thrift.
+   * context of 'schema'. Child classes must override.
    */
-  virtual void load(const schema::Schema& schema, const schema::Layout& layout);
-  void loadRoot(const schema::Schema& schema);
+  virtual void load(const schema::MemorySchema& schema,
+                    const schema::MemoryLayout& layout);
+  void loadRoot(const schema::MemorySchema& schema);
 };
 
 template <class T, class = void>
@@ -271,8 +274,11 @@ struct FieldBase {
   virtual ~FieldBase() {}
 
   virtual void clear() = 0;
-  virtual void load(const schema::Schema&, const schema::Layout&) = 0;
-  virtual void save(schema::Schema&, schema::Layout&) const = 0;
+  virtual void load(const schema::MemorySchema&,
+                    const schema::MemoryField&) = 0;
+  virtual void save(schema::MemorySchema&,
+                    schema::MemoryLayout&,
+                    schema::MemorySchemaHelper&) const = 0;
 };
 
 template <class T, class Layout = Layout<typename std::decay<T>::type>>
@@ -305,33 +311,37 @@ struct Field final : public FieldBase {
    * Populates the layout information for this field from the description of
    * this field in the parent layout, identified by key.
    */
-  void load(const schema::Schema& schema, const schema::Layout& parent) final {
-    if (auto* field = folly::get_ptr(parent.fields, key)) {
-      if (field->offset < 0) {
-        pos.bitOffset = -field->offset;
-      } else {
-        pos.offset = field->offset;
-      }
-      this->layout.load(schema, schema.layouts.at(field->layoutId));
+  void load(const schema::MemorySchema& schema,
+            const schema::MemoryField& field) final {
+    if (field.offset < 0) {
+      pos.bitOffset = -field.offset;
     } else {
-      this->clear();
+      pos.offset = field.offset;
     }
+    this->layout.load(schema, schema.layouts.at(field.layoutId));
   }
 
   /**
    * Recursively stores the layout information for this field, including both
    * field offset information and the information for the contained layout.
    */
-  void save(schema::Schema& schema, schema::Layout& parent) const final {
-    auto& field = parent.fields[key];
+  void save(schema::MemorySchema& schema,
+            schema::MemoryLayout& parent,
+            schema::MemorySchemaHelper& helper) const final {
+    schema::MemoryField field;
+
+    field.id = key;
     if (pos.bitOffset) {
       field.offset = -pos.bitOffset;
     } else {
       field.offset = pos.offset;
     }
-    // append a new layout in the schema, recurse into it
+
+    schema::MemoryLayout myLayout;
+    this->layout.save(schema, myLayout, helper);
     field.layoutId = schema.layouts.size();
-    this->layout.save(schema, schema.layouts[field.layoutId]);
+    schema.layouts.push_back(std::move(myLayout));
+    parent.fields.push_back(std::move(field));
   }
 };
 

@@ -23,6 +23,7 @@ namespace detail {
  */
 template <class First, class Second>
 struct PairLayout : public LayoutBase {
+  typedef LayoutBase Base;
   typedef std::pair<First, Second> T;
   typedef PairLayout LayoutSelf;
   typedef typename std::decay<First>::type FirstDecayed;
@@ -71,18 +72,13 @@ struct PairLayout : public LayoutBase {
     secondField.clear();
   }
 
-  void save(schema::Schema& schema, schema::Layout& layout) const final {
-    LayoutBase::save(schema, layout);
-    firstField.save(schema, layout);
-    secondField.save(schema, layout);
-  }
+  FROZEN_SAVE_INLINE(
+    FROZEN_SAVE_FIELD(first)
+    FROZEN_SAVE_FIELD(second))
 
-  void load(const schema::Schema& schema,
-            const schema::Layout& layout) final {
-    LayoutBase::load(schema, layout);
-    firstField.load(schema, layout);
-    secondField.load(schema, layout);
-  }
+  FROZEN_LOAD_INLINE(
+    FROZEN_LOAD_FIELD(first, 1)
+    FROZEN_LOAD_FIELD(second, 2))
 };
 
 }

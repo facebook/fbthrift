@@ -30,6 +30,7 @@ size_t bitsNeeded(const T& x) {
  */
 template <class T>
 struct PackedIntegerLayout : public LayoutBase {
+  typedef LayoutBase Base;
   PackedIntegerLayout() : LayoutBase(typeid(T)) {}
   explicit PackedIntegerLayout(const std::type_info& type) : LayoutBase(type) {}
 

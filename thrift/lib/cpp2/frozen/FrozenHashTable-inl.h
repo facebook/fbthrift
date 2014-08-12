@@ -22,6 +22,7 @@ struct Block {
 };
 
 struct BlockLayout : public LayoutBase {
+  typedef LayoutBase Base;
   typedef Block T;
   typedef BlockLayout LayoutSelf;
 
@@ -35,8 +36,14 @@ struct BlockLayout : public LayoutBase {
   void freeze(FreezeRoot& root, const T& o, FreezePosition self) const;
   void print(std::ostream& os, int level) const final;
   void clear() final;
-  void save(schema::Schema&, schema::Layout&) const final;
-  void load(const schema::Schema&, const schema::Layout&) final;
+
+  FROZEN_SAVE_INLINE(
+    FROZEN_SAVE_FIELD(mask)
+    FROZEN_SAVE_FIELD(offset))
+
+  FROZEN_LOAD_INLINE(
+    FROZEN_LOAD_FIELD(mask, 1)
+    FROZEN_LOAD_FIELD(offset, 2))
 
   struct View : public ViewBase<View, LayoutSelf, T> {
     View() {}
@@ -140,7 +147,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     FieldPosition noField; // not really used
     for (auto& it : index) {
       if (it) {
-        root.layoutField(write, noField, this->item, *it);
+        root.layoutField(write, noField, this->itemField, *it);
         write = write(writeStep);
       }
     }
@@ -163,7 +170,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     FieldPosition noField; // not really used
     for (auto& it : index) {
       if (it) {
-        root.freezeField(write, this->item, *it);
+        root.freezeField(write, this->itemField, *it);
         write = write(writeStep);
       }
     }
@@ -187,16 +194,11 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     sparseTableField.clear();
   }
 
-  void save(schema::Schema& schema, schema::Layout& layout) const final {
-    Base::save(schema, layout);
-    sparseTableField.save(schema, layout);
-  }
+  FROZEN_SAVE_INLINE(
+    FROZEN_SAVE_FIELD(sparseTable))
 
-  void load(const schema::Schema& schema,
-            const schema::Layout& layout) final {
-    Base::load(schema, layout);
-    sparseTableField.load(schema, layout);
-  }
+  FROZEN_LOAD_INLINE(
+    FROZEN_LOAD_FIELD(sparseTable, 4))
 
   class View : public Base::View {
     typedef typename Layout<Key>::View KeyView;

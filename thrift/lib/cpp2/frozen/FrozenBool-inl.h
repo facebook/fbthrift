@@ -20,6 +20,7 @@ namespace apache { namespace thrift { namespace frozen { namespace detail {
  * bits may only be used if the value is always false.
  */
 struct BoolLayout : public LayoutBase {
+  typedef LayoutBase Base;
   typedef bool T;
 
   BoolLayout() : LayoutBase(typeid(T)) {}

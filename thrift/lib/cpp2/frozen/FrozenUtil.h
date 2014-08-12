@@ -34,8 +34,10 @@ Return freezeToFile(const T& x, folly::File file) {
 
   std::string schemaStr;
   {
+    schema::MemorySchema memSchema;
     schema::Schema schema;
-    layout->saveRoot(schema);
+    layout->saveRoot(memSchema);
+    schema::convert(memSchema, schema);
     util::ThriftSerializerCompact<>().serialize(schema, &schemaStr);
   }
 
@@ -64,7 +66,10 @@ Return mapFrozen(folly::MemoryMapping mapping) {
     schema::Schema schema;
     size_t schemaSize = util::ThriftSerializerCompact<>().deserialize(
         range.begin(), range.size(), &schema);
-    layout->loadRoot(schema);
+
+    schema::MemorySchema memSchema;
+    schema::convert(std::move(schema), memSchema);
+    layout->loadRoot(memSchema);
     range.advance(schemaSize);
   }
 

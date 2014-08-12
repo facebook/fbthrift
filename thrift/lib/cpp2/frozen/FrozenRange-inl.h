@@ -24,28 +24,29 @@ namespace detail {
  */
 template <class T, class Item>
 struct ArrayLayout : public LayoutBase {
+  typedef LayoutBase Base;
   typedef ArrayLayout LayoutSelf;
 
-  Field<size_t> distance;
-  Field<size_t> count;
-  Field<Item> item;
+  Field<size_t> distanceField;
+  Field<size_t> countField;
+  Field<Item> itemField;
 
   ArrayLayout()
       : LayoutBase(typeid(T)),
-        distance(1, "distance"),
-        count(2, "count"),
-        item(3, "item") {}
+        distanceField(1, "distance"),
+        countField(2, "count"),
+        itemField(3, "item") {}
 
   FieldPosition layout(LayoutRoot& root, const T& coll, LayoutPosition self) {
     size_t n = coll.size();
-    size_t itemBytes = item.layout.size;
-    size_t itemBits = itemBytes ? 0 : item.layout.bits;
+    size_t itemBytes = itemField.layout.size;
+    size_t itemBits = itemBytes ? 0 : itemField.layout.bits;
     size_t dist = root.layoutBytesDistance(
         self.start, itemBits ? (n * itemBits + 7) / 8 : n * itemBytes);
 
     FieldPosition pos = startFieldPosition();
-    pos = root.layoutField(self, pos, distance, dist);
-    pos = root.layoutField(self, pos, count, n);
+    pos = root.layoutField(self, pos, distanceField, dist);
+    pos = root.layoutField(self, pos, countField, n);
 
     LayoutPosition write{self.start + dist, 0};
     FieldPosition writeStep(itemBytes, itemBits);
@@ -60,7 +61,7 @@ struct ArrayLayout : public LayoutBase {
                                     FieldPosition writeStep) {
     FieldPosition noField; // not really used
     for (const auto& it : coll) {
-      root.layoutField(write, noField, this->item, it);
+      root.layoutField(write, noField, this->itemField, it);
       write = write(writeStep);
     }
 
@@ -69,8 +70,8 @@ struct ArrayLayout : public LayoutBase {
 
   void freeze(FreezeRoot& root, const T& coll, FreezePosition self) const {
     size_t n = coll.size();
-    size_t itemBytes = item.layout.size;
-    size_t itemBits = itemBytes ? 0 : item.layout.bits;
+    size_t itemBytes = itemField.layout.size;
+    size_t itemBits = itemBytes ? 0 : itemField.layout.bits;
     folly::MutableByteRange range;
     size_t dist;
     root.appendBytes(self.start,
@@ -78,8 +79,8 @@ struct ArrayLayout : public LayoutBase {
                      range,
                      dist);
 
-    root.freezeField(self, distance, dist);
-    root.freezeField(self, count, n);
+    root.freezeField(self, distanceField, dist);
+    root.freezeField(self, countField, n);
 
     FreezePosition write{self.start + dist, 0};
     FieldPosition writeStep(itemBytes, itemBits);
@@ -92,7 +93,7 @@ struct ArrayLayout : public LayoutBase {
                            FreezePosition write,
                            FieldPosition writeStep) const {
     for (const auto& it : coll) {
-      root.freezeField(write, item, it);
+      root.freezeField(write, itemField, it);
       write = write(writeStep);
     }
   }
@@ -109,32 +110,27 @@ struct ArrayLayout : public LayoutBase {
   void print(std::ostream& os, int level) const override {
     LayoutBase::print(os, level);
     os << "range of " << folly::demangle(type.name());
-    distance.print(os, level + 1);
-    count.print(os, level + 1);
-    item.print(os, level + 1);
+    distanceField.print(os, level + 1);
+    countField.print(os, level + 1);
+    itemField.print(os, level + 1);
   }
 
   void clear() override {
     LayoutBase::clear();
-    distance.clear();
-    count.clear();
-    item.clear();
+    distanceField.clear();
+    countField.clear();
+    itemField.clear();
   }
 
-  void save(schema::Schema& schema, schema::Layout& layout) const override {
-    LayoutBase::save(schema, layout);
-    distance.save(schema, layout);
-    count.save(schema, layout);
-    item.save(schema, layout);
-  }
+  FROZEN_SAVE_INLINE(
+    FROZEN_SAVE_FIELD(distance)
+    FROZEN_SAVE_FIELD(count)
+    FROZEN_SAVE_FIELD(item))
 
-  void load(const schema::Schema& schema,
-            const schema::Layout& layout) override {
-    LayoutBase::load(schema, layout);
-    distance.load(schema, layout);
-    count.load(schema, layout);
-    item.load(schema, layout);
-  }
+  FROZEN_LOAD_INLINE(
+    FROZEN_LOAD_FIELD(distance, 1)
+    FROZEN_LOAD_FIELD(count, 2)
+    FROZEN_LOAD_FIELD(item, 3))
 
   /**
    * A view of a range, which produces views of items upon indexing or iterator
@@ -167,11 +163,11 @@ struct ArrayLayout : public LayoutBase {
         : ViewBase<View, ArrayLayout, T>(layout, self),
           data_(nullptr),
           count_(0),
-          itemLayout_(&layout->item.layout) {
+          itemLayout_(&layout->itemField.layout) {
       size_t dist;
-      thawField(self, layout->count, count_);
+      thawField(self, layout->countField, count_);
       if (count_) {
-        thawField(self, layout->distance, dist);
+        thawField(self, layout->distanceField, dist);
         data_ = self.start + dist;
       }
     }
