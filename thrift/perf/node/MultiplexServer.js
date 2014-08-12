@@ -1,11 +1,11 @@
 var options = require('optimist')
   .demand(['port'])
+  .default("port", 1234)
   .argv;
 
-var JSService = require('load/LoadTest');
+var LoadTest = require('load/LoadTest');
 
 var fb303_types = require('fb303/fb303_types');
-var microtime = require('microtime');
 var thrift = require('thrift');
 var ttransport = require('thrift/lib/thrift/transport');
 var TException = thrift.Thrift.TException;
@@ -92,7 +92,7 @@ var methods = {
 };
 
 var app = thrift.createServer(
-  JSService,
+  LoadTest,
   methods,
   {transport: ttransport.TFramedTransport}
 );
