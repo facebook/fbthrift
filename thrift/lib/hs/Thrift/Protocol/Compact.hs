@@ -55,22 +55,41 @@ import qualified Data.Text.Lazy as LT
 data CompactProtocol a = CompactProtocol a
                          -- ^ Constuct a 'CompactProtocol' with a 'Transport'
 
+protocolID, version, versionMask, typeMask :: Word8
+protocolID  = 0x82 -- 1000 0010
+version     = 0x01
+versionMask = 0x1f -- 0001 1111
+typeMask    = 0xe0 -- 1110 0000
+typeShiftAmount :: Int
+typeShiftAmount = 5
+
 instance Protocol CompactProtocol where
     getTransport (CompactProtocol t) = t
 
-    writeMessage p (n, t, s) = tWrite (getTransport p) $ toLazyByteString $
-        buildCompactValue (TI32 (version1 .|. fromIntegral (fromEnum t))) <>
-        buildCompactValue (TString $ encodeUtf8 n) <>
-        buildCompactValue (TI32 s)
+    writeMessage p (n, t, s) = (writeMessageBegin >>)
+      where
+        writeMessageBegin = tWrite (getTransport p) $ toLazyByteString $
+          B.word8 protocolID <>
+          B.word8 ((version .&. versionMask) .|.
+                  ((fromIntegral (fromEnum t) `shiftL`
+                    typeShiftAmount) .&. typeMask)) <>
+          buildVarint (i32ToZigZag s) <>
+          buildCompactValue (TString $ encodeUtf8 n)
 
-    readMessage p = runParser p $ do
-      TI32 ver <- parseCompactValue T_I32
-      if ver .&. versionMask /= version1
-        then throw $ ProtocolExn PE_BAD_VERSION "Missing version identifier"
-        else do
-          TString s <- parseCompactValue T_STRING
-          TI32 sz <- parseCompactValue T_I32
-          return (decodeUtf8 s, toEnum $ fromIntegral $ ver .&. 0xFF, sz)
+    readMessage p = (readMessageBegin >>=)
+      where
+        readMessageBegin = runParser p $ do
+          pid <- P.anyWord8
+          when (pid /= protocolID) $
+            throw $ ProtocolExn PE_BAD_VERSION "Bad Protocol ID"
+          w <- P.anyWord8
+          let ver = w .&. versionMask
+          when (ver /= version) $
+            throw $ ProtocolExn PE_BAD_VERSION "Bad Protocol version"
+          let typ = (w `shiftR` typeShiftAmount) .&. 0x03
+          seqId <- parseVarint zigZagToI32
+          TString name <- parseCompactValue T_STRING
+          return (decodeUtf8 name, toEnum $ fromIntegral typ, seqId)
 
     serializeVal _ = toLazyByteString . buildCompactValue
     deserializeVal _ ty bs =

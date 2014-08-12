@@ -61,8 +61,8 @@ propRoundTripMessage :: Protocol p
 propRoundTripMessage pcons args = morallyDubiousIOProperty $ do
   ref <- newIORef ""
   let p = pcons (TestTransport ref)
-  writeMessage p args
-  (==args) <$> readMessage p
+  writeMessage p args (return ())
+  (==args) <$> readMessage p return
 
 aggregateResults :: [IO QC.Result] -> IO ()
 aggregateResults qcs = do

@@ -29,6 +29,7 @@ module Thrift.Protocol.JSON
     ) where
 
 import Control.Applicative
+import Control.Exception
 import Data.Attoparsec.ByteString as P
 import Data.Attoparsec.ByteString.Char8 as PC
 import Data.Attoparsec.ByteString.Lazy as LP
@@ -55,25 +56,35 @@ import qualified Data.Text.Lazy as LT
 data JSONProtocol t = JSONProtocol t
                       -- ^ Construct a 'JSONProtocol' with a 'Transport'
 
+version :: Int32
+version = 1
+
 instance Protocol JSONProtocol where
     getTransport (JSONProtocol t) = t
 
-    writeMessage (JSONProtocol t) (s, ty, sq) = tWrite t $ toLazyByteString $
-      "[" <> int32Dec version1 <>
-      ",\"" <> escape (encodeUtf8 s) <> "\"" <>
-      "," <> intDec (fromEnum ty) <>
-      "," <> int32Dec sq <>
-      "]"
-    readMessage p = runParser p $ skipSpace *> do
-      _ver :: Int32 <- lexeme (PC.char8 '[') *> lexeme (signed decimal)
-      bs <- lexeme (PC.char8 ',') *> lexeme escapedString
-      case decodeUtf8' bs of
-        Left _ -> fail "readMessage: invalid text encoding"
-        Right str -> do
-          ty <- toEnum <$> (lexeme (PC.char8 ',') *> lexeme (signed decimal))
-          seqNum <- lexeme (PC.char8 ',') *> lexeme (signed decimal)
-                    <* PC.char8 ']'
-          return (str, ty, seqNum)
+    writeMessage (JSONProtocol t) (s, ty, sq) =
+      bracket writeMessageBegin writeMessageEnd . const
+      where
+        writeMessageBegin = tWrite t $ toLazyByteString $
+          "[" <> int32Dec version <>
+          ",\"" <> escape (encodeUtf8 s) <> "\"" <>
+          "," <> intDec (fromEnum ty) <>
+          "," <> int32Dec sq <>
+          ","
+        writeMessageEnd _ = tWrite t "]"
+    readMessage p = bracket readMessageBegin readMessageEnd
+      where
+        readMessageBegin = runParser p $ skipSpace *> do
+          _ver :: Int32 <- lexeme (PC.char8 '[') *> lexeme (signed decimal)
+          bs <- lexeme (PC.char8 ',') *> lexeme escapedString
+          case decodeUtf8' bs of
+            Left _ -> fail "readMessage: invalid text encoding"
+            Right str -> do
+              ty <- toEnum <$> (lexeme (PC.char8 ',') *>
+                                lexeme (signed decimal))
+              seqNum <- lexeme (PC.char8 ',') *> signed decimal
+              return (str, ty, seqNum)
+        readMessageEnd _ = runParser p $ skipSpace *> PC.char8 ']'
 
     serializeVal _ = toLazyByteString . buildJSONValue
     deserializeVal _ ty bs =

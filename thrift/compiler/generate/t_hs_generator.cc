@@ -288,7 +288,7 @@ string t_hs_generator::hs_imports() {
       "                 concat, error, fromIntegral, fromEnum, length, map,\n"
       "                 maybe, not, null, otherwise, return, show, toEnum,\n"
       "                 enumFromTo, Bounded, minBound, maxBound,\n"
-      "                 (.), (&&), (||), (==), (++), ($), (-), (>>=))\n"
+      "                 (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))\n"
       "\n"
       "import Control.Exception\n"
       "import Control.Monad ( liftM, ap, when )\n"
@@ -1167,7 +1167,9 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
 
     // Serialize the request header
     string fname = (*f_iter)->get_name();
-    indent(f_client_) << "writeMessage op (\"" << fname << "\", M_CALL, seqn)" << nl;
+    indent(f_client_) << "writeMessage op (\"" << fname
+                      << "\", M_CALL, seqn) $" << nl;
+    indent_up();
     indent(f_client_) << "write_" << argsname << " op (" << argsname << "{";
 
     bool first = true;
@@ -1182,6 +1184,7 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
       first = false;
     }
     f_client_ << "})" << nl;
+    indent_down();
 
     // Write to the stream
     indent(f_client_) << "tFlush (getTransport op)" << nl;
@@ -1195,10 +1198,11 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
       t_function recv_function((*f_iter)->get_returntype(), funname, &noargs);
 
       // Open function
-      indent(f_client_) << funname << " ip = do" << nl;
+      indent(f_client_) << funname << " ip =" << nl;
       indent_up();
 
-      indent(f_client_) << "(fname, mtype, rseqid) <- readMessage ip" << nl;
+      indent(f_client_) << "readMessage ip $ \\(fname,mtype,rseqid) -> do" <<nl;
+      indent_up();
       indent(f_client_)
         << "when (mtype == M_EXCEPTION) $ readAppExn ip >>= throw" << nl;
 
@@ -1221,6 +1225,7 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
         indent(f_client_) << "return ()" << endl;
 
       // Close function
+      indent_down();
       indent_down();
     }
   }
@@ -1258,8 +1263,10 @@ void t_hs_generator::generate_service_server(t_service* tservice) {
     f_service_ << "do" << nl;
     indent_up();
     indent(f_service_) << "_ <- readVal iprot (T_STRUCT Map.empty)" << nl;
-    indent(f_service_) << "writeMessage oprot (name,M_EXCEPTION,seqid)" << nl;
+    indent(f_service_) << "writeMessage oprot (name,M_EXCEPTION,seqid) $" << nl;
+    indent_up();
     indent(f_service_) << "writeAppExn oprot (AppExn AE_UNKNOWN_METHOD (\"Unknown function \" ++ T.unpack name))" << nl;
+    indent_down();
     indent(f_service_) << "tFlush (getTransport oprot)" << nl;
     indent_down();
   }
@@ -1267,12 +1274,11 @@ void t_hs_generator::generate_service_server(t_service* tservice) {
   indent_down();
 
   // Generate the server implementation
-  indent(f_service_) << "process handler (iprot, oprot) = do" << nl;
+  indent(f_service_) << "process handler (iprot, oprot) =" << nl;
   indent_up();
 
-  indent(f_service_) << "(name, typ, seqid) <- readMessage iprot" << nl;
-  indent(f_service_) << "proc_ handler (iprot,oprot) (name,typ,seqid)" << nl;
-  indent(f_service_) << "return True" << nl;
+  indent(f_service_) << "readMessage iprot ";
+  f_service_ << "(proc_ handler (iprot,oprot)) >> return True" << nl;
   indent_down();
 }
 
@@ -1598,8 +1604,8 @@ void t_hs_generator::generate_process_function(t_service* tservice,
     indent(f_service_) << "return ()";
   } else {
     indent(f_service_ ) << "writeMessage oprot (\"" << tfunction->get_name()
-                        << "\", M_REPLY, seqid);" << nl;
-    indent(f_service_ ) << "write_" << resultname << " oprot res" << nl;
+                        << "\", M_REPLY, seqid) $" << nl;
+    indent(f_service_ ) << "  write_" << resultname << " oprot res" << nl;
     indent(f_service_ ) << "tFlush (getTransport oprot)";
   }
   if (n > 0) {
@@ -1618,8 +1624,8 @@ void t_hs_generator::generate_process_function(t_service* tservice,
                            << field_name(resultname, (*x_iter)->get_name())
                            << " = Just e}" << nl;
         indent(f_service_) << "writeMessage oprot (\"" << tfunction->get_name()
-                           << "\", M_REPLY, seqid)" << nl;
-        indent(f_service_) << "write_" << resultname << " oprot res" << nl;
+                           << "\", M_REPLY, seqid) $" << nl;
+        indent(f_service_) << "  write_" << resultname << " oprot res" << nl;
         indent(f_service_) << "tFlush (getTransport oprot)";
       } else {
         indent(f_service_) << "return ()";
@@ -1634,8 +1640,10 @@ void t_hs_generator::generate_process_function(t_service* tservice,
 
     if (!tfunction->is_oneway()) {
       indent(f_service_) << "writeMessage oprot (\"" << tfunction->get_name()
-                         << "\", M_EXCEPTION, seqid)" << nl;
+                         << "\", M_EXCEPTION, seqid) $" << nl;
+      indent_up();
       indent(f_service_) << "writeAppExn oprot (AppExn AE_UNKNOWN \"\")" << nl;
+      indent_down();
       indent(f_service_) << "tFlush (getTransport oprot)";
     } else {
       indent(f_service_) << "return ()";

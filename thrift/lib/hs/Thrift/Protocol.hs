@@ -25,8 +25,6 @@ module Thrift.Protocol
     , ProtocolExn(..)
     , ProtocolExnType(..)
     , runParser
-    , versionMask
-    , version1
     , bsToFloating
     ) where
 
@@ -39,7 +37,6 @@ import Data.Int
 import Data.Monoid (mempty)
 import Data.Text.Lazy (Text)
 import Data.Typeable (Typeable)
-import Data.Word
 import Foreign.Ptr (castPtr)
 import Foreign.Storable (Storable, peek, poke)
 import System.IO.Unsafe
@@ -47,12 +44,6 @@ import qualified Data.ByteString as BS
 
 import Thrift.Types
 import Thrift.Transport
-
-versionMask :: Int32
-versionMask = fromIntegral (0xffff0000 :: Word32)
-
-version1 :: Int32
-version1 = fromIntegral (0x80010000 :: Word32)
 
 -- | The Thrift Protocol type class.  A 'Protocol' defines a way in which a
 -- Thrift type should be serialized and deserialized (ie JSON, Binary, etc).
@@ -63,9 +54,16 @@ class Protocol a where
   getTransport :: Transport t => a t -> t
 
   -- | Write a message using this Protocol
-  writeMessage :: Transport t => a t -> (Text, MessageType, Int32) -> IO ()
+  writeMessage :: Transport t
+               => a t
+               -> (Text, MessageType, Int32) -- ^ The message parameters
+               -> IO () -- ^ IO action to perform inside message
+               -> IO ()
   -- | Read a message using this Protocol
-  readMessage :: Transport t => a t -> IO (Text, MessageType, Int32)
+  readMessage :: Transport t
+              => a t
+              -> ((Text, MessageType, Int32) -> IO b) -- ^ Read function
+              -> IO b
 
   -- | Serialize a 'ThriftVal' using this protocol without any monadic action.
   -- You should use 'Empty.EmptyTransport' when constructing a 'Protocol' if you
