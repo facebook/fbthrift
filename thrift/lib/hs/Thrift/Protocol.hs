@@ -104,7 +104,7 @@ instance Exception ProtocolExn
 runParser :: (Protocol p, Transport t, Show a) => p t -> Parser a -> IO a
 runParser prot p = refill >>= getResult . parse p
   where
-    refill = toStrict <$> tRead (getTransport prot) 128 `catch` handleEOF
+    refill = toStrict <$> tReadAll (getTransport prot) 1 `catch` handleEOF
     getResult (Done _ a) = return a
     getResult (Partial k) = refill >>= getResult . k
     getResult f = throw $ ProtocolExn PE_INVALID_DATA $ show f

@@ -71,7 +71,8 @@ instance Protocol JSONProtocol where
         Left _ -> fail "readMessage: invalid text encoding"
         Right str -> do
           ty <- toEnum <$> (lexeme (PC.char8 ',') *> lexeme (signed decimal))
-          seqNum <- between ',' ']' $ lexeme (signed decimal)
+          seqNum <- lexeme (PC.char8 ',') *> lexeme (signed decimal)
+                    <* PC.char8 ']'
           return (str, ty, seqNum)
 
     serializeVal _ = toLazyByteString . buildJSONValue
@@ -118,7 +119,7 @@ buildJSONList = mconcat . intersperse "," . map buildJSONValue
 
 parseJSONValue :: ThriftType -> Parser ThriftVal
 parseJSONValue (T_STRUCT tmap) =
-  TStruct <$> between '{' '}' (parseJSONStruct tmap)
+  TStruct <$> (lexeme (PC.char8 '{') *> parseJSONStruct tmap <* PC.char8 '}')
 parseJSONValue (T_MAP kt vt) =
   TMap kt vt <$> between '{' '}' (parseJSONMap kt vt)
 parseJSONValue (T_LIST ty) =
