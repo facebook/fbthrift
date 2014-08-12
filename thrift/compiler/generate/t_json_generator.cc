@@ -442,6 +442,8 @@ void t_json_generator::generate_struct(t_struct* tstruct) {
   indent_up();
   indent(f_out_) << "\"is_exception\" : "
     << (tstruct->is_xception() ? "true" : "false") << "," << endl;
+  indent(f_out_) << "\"is_union\" : "
+    << (tstruct->is_union() ? "true" : "false") << "," << endl;
 
   vector<t_field*> members = tstruct->get_members();
   vector<t_field*>::iterator mem_iter = members.begin();
