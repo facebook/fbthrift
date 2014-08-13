@@ -186,8 +186,6 @@ struct LayoutBase {
    * structure.
    */
   explicit LayoutBase(std::type_index type) : type(std::move(type)) {}
-  LayoutBase(const LayoutBase&) = delete;
-  LayoutBase(LayoutBase&&) = delete;
 
   /**
    * Internal: Updates the size of this structure according the the result of a
@@ -201,6 +199,12 @@ struct LayoutBase {
   FieldPosition startFieldPosition() const {
     return FieldPosition(inlined ? 0 : (bits + 7) / 8);
   }
+
+  /**
+   * Indicates that this layout requires no storage, so saving and freezing may
+   * be skipped
+   */
+  bool empty() const { return !size && !bits; }
 
   virtual ~LayoutBase() {}
 
@@ -230,6 +234,10 @@ struct LayoutBase {
   virtual void load(const schema::MemorySchema& schema,
                     const schema::MemoryLayout& layout);
   void loadRoot(const schema::MemorySchema& schema);
+
+ protected:
+  LayoutBase(const LayoutBase&) = default;
+  LayoutBase(LayoutBase&&) = default;
 };
 
 template <class T, class = void>
@@ -328,6 +336,10 @@ struct Field final : public FieldBase {
   void save(schema::MemorySchema& schema,
             schema::MemoryLayout& parent,
             schema::MemorySchemaHelper& helper) const final {
+    if (this->layout.empty()) {
+      return;
+    }
+
     schema::MemoryField field;
 
     field.id = key;
@@ -339,8 +351,8 @@ struct Field final : public FieldBase {
 
     schema::MemoryLayout myLayout;
     this->layout.save(schema, myLayout, helper);
-    field.layoutId = schema.layouts.size();
-    schema.layouts.push_back(std::move(myLayout));
+    myLayout.fields.shrink_to_fit();
+    field.layoutId = helper.add(std::move(myLayout));
     parent.fields.push_back(std::move(field));
   }
 };
@@ -560,7 +572,9 @@ class FreezeRoot {
   void freezeField(FreezePosition self,
                    const Field<T, Layout>& field,
                    const Arg& value) {
-    field.layout.freeze(*this, value, self(field.pos));
+    if (!field.layout.empty()) {
+      field.layout.freeze(*this, value, self(field.pos));
+    }
   }
 
   template <class T, class Layout>
@@ -569,9 +583,9 @@ class FreezeRoot {
                            bool present,
                            const T& value) {
     if (present) {
-      field.layout.freeze(*this, value, self(field.pos));
+      freezeField(self, field, value);
     } else {
-      field.layout.freeze(*this, folly::none, self(field.pos));
+      freezeField(self, field, folly::none);
     }
   }
 

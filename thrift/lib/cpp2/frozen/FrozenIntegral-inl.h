@@ -36,7 +36,9 @@ struct PackedIntegerLayout : public LayoutBase {
 
   FieldPosition layout(LayoutRoot& root, const T& x, LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
-    pos.bitOffset += bitsNeeded(x);
+    if (x) {
+      pos.bitOffset += bitsNeeded(x);
+    }
     return pos;
   }
 

@@ -20,4 +20,5 @@ struct Schema {
   // Field type names may not change unless relaxTypeChecks is set.
   1: bool relaxTypeChecks = 0;
   2: map<i16, Layout> layouts;
+  3: i16 rootLayout = 0;
 }

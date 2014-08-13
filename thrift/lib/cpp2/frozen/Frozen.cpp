@@ -71,19 +71,14 @@ void LayoutBase::clear() {
 }
 
 void LayoutBase::loadRoot(const schema::MemorySchema& schema) {
-  this->clear();
-  this->load(schema, schema.layouts.at(0));
+  this->load(schema, schema.layouts.at(schema.rootLayout));
 }
 
 void LayoutBase::saveRoot(schema::MemorySchema& schema) const {
-  // Bootstrap implicit ID mechanism
-  schema.layouts.push_back(schema::MemoryLayout());
-
-  schema::MemorySchemaHelper helper;
+  schema::MemorySchemaHelper helper(schema);
   schema::MemoryLayout myLayout;
   this->save(schema, myLayout, helper);
-  schema.layouts[0] = std::move(myLayout);
-  schema.layouts.shrink_to_fit();
+  schema.rootLayout = helper.add(std::move(myLayout));
 }
 
 void LayoutBase::load(const schema::MemorySchema& schema,

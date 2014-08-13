@@ -14,60 +14,91 @@
  * limitations under the License.
  */
 #include <thrift/lib/cpp2/frozen/schema/MemorySchema.h>
+
+#include <limits>
+
+#include <folly/Hash.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
+
+
+THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryField);
+THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryLayoutBase);
+THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryLayout);
+THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemorySchema);
 
 namespace apache { namespace thrift { namespace frozen { namespace schema {
 
+size_t MemoryField::hash() const {
+  return folly::hash::hash_combine(id, layoutId, offset);
+}
 bool MemoryField::operator==(const MemoryField& other) const {
   return id == other.id && layoutId == other.layoutId && offset == other.offset;
 }
 
-bool MemoryLayout::operator==(const MemoryLayout& other) const {
-  return bits == other.bits && size == other.size && fields == other.fields;
+size_t MemoryLayoutBase::hash() const {
+  return folly::hash::hash_combine(bits, size);
+}
+bool MemoryLayoutBase::operator==(const MemoryLayoutBase& other) const {
+  return bits == other.bits && size == other.size;
 }
 
+size_t MemoryLayout::hash() const {
+  return folly::hash::hash_combine(
+      MemoryLayoutBase::hash(),
+      folly::hash::hash_range(fields.begin(), fields.end()));
+}
+bool MemoryLayout::operator==(const MemoryLayout& other) const {
+  return MemoryLayoutBase::operator==(other) && fields == other.fields;
+}
+
+size_t MemorySchema::hash() const {
+  return folly::hash::hash_combine(
+      folly::hash::hash_range(layouts.begin(), layouts.end()), rootLayout);
+}
 bool MemorySchema::operator==(const MemorySchema& other) const {
   return layouts == other.layouts;
 }
 
+int16_t MemorySchemaHelper::add(MemoryLayout&& layout) {
+  // Add distinct layout, bounds check layoutId
+  size_t layoutId = layoutTable_.add(std::move(layout));
+  CHECK_LE(layoutId, std::numeric_limits<int16_t>::max()) << "Layout overflow";
+  return static_cast<int16_t>(layoutId);
+}
+
 void convert(Schema&& schema, MemorySchema& memSchema) {
-  if (schema.layouts.size() == 0) {
-    return;
-  }
+  if (!schema.layouts.empty()) {
+    memSchema.layouts.resize(schema.layouts.size());
 
-  memSchema.layouts.resize(schema.layouts.size());
+    for (const auto& layoutKvp : schema.layouts) {
+      const auto id = layoutKvp.first;
+      const auto& layout = layoutKvp.second;
 
-  for(const auto& layoutKvp : schema.layouts) {
-    const auto id = layoutKvp.first;
-    const auto& layout = layoutKvp.second;
+      // Note: This will throw if there are any id >=
+      // schema.layouts.size().
+      auto& memLayout = memSchema.layouts.at(id);
 
-    // Note: This will throw if there are any id >=
-    // schema.layouts.size().
-    auto& memLayout = memSchema.layouts.at(id);
+      memLayout.size = layout.size;
+      memLayout.bits = layout.bits;
 
-    memLayout.size = layout.size;
-    memLayout.bits = layout.bits;
+      memLayout.fields.reserve(layout.fields.size());
 
-    memLayout.fields.reserve(layout.fields.size());
+      for (const auto& fieldKvp : layout.fields) {
+        MemoryField memField;
+        const auto& fieldId = fieldKvp.first;
+        const auto& field = fieldKvp.second;
 
-    for(const auto& fieldKvp : layout.fields) {
-      MemoryField memField;
-      const auto& fieldId = fieldKvp.first;
-      const auto& field = fieldKvp.second;
-
-      memField.id = fieldId;
-      memField.layoutId = field.layoutId;
-      memField.offset = field.offset;
-      memLayout.fields.push_back(std::move(memField));
+        memField.id = fieldId;
+        memField.layoutId = field.layoutId;
+        memField.offset = field.offset;
+        memLayout.fields.push_back(std::move(memField));
+      }
     }
   }
+  memSchema.rootLayout = schema.rootLayout;
 }
 
 void convert(const MemorySchema& memSchema, Schema& schema) {
-  if (memSchema.layouts.size() == 0) {
-    return;
-  }
-
   for(int i = 0; i < memSchema.layouts.size(); ++i) {
     const auto& memLayout = memSchema.layouts.at(i);
     auto& newLayout = schema.layouts[i];
@@ -88,6 +119,7 @@ void convert(const MemorySchema& memSchema, Schema& schema) {
   // schema, so force this bit to true.
   //
   schema.relaxTypeChecks = true;
+  schema.rootLayout = memSchema.rootLayout;
 }
 
 }}}}

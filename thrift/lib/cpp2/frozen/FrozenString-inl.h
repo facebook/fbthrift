@@ -60,9 +60,12 @@ struct StringLayout : public LayoutBase {
         countField(2, "count") {}
 
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
-    size_t n = Helper::size(o);
-    size_t dist = root.layoutBytesDistance(self.start, n * sizeof(Item));
     FieldPosition pos = startFieldPosition();
+    size_t n = Helper::size(o);
+    if (!n) {
+      return pos;
+    }
+    size_t dist = root.layoutBytesDistance(self.start, n * sizeof(Item));
     pos = root.layoutField(self, pos, distanceField, dist);
     pos = root.layoutField(self, pos, countField, n);
     return pos;

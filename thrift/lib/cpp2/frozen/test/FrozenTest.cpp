@@ -214,7 +214,6 @@ TEST(Frozen, String) {
 
 TEST(Frozen, VectorString) {
   std::vector<std::string> strs{"hello", "sara"};
-  LOG(INFO) << layout(strs);
   auto fstrs = freeze(strs);
   EXPECT_EQ(strs[0], fstrs[0]);
   EXPECT_EQ(strs[1], fstrs[1]);
@@ -245,15 +244,29 @@ TEST(Frozen, BigMap) {
   EXPECT_EQ(t, freeze(t)->thaw());
   EXPECT_LT(frozenSize, compactSize * 0.7);
 }
-
-TEST(Frozen, Tiny) {
+example2::Tiny tiny1 = [] {
+  example2::Tiny obj;
+  obj.a = "just a";
+  return obj;
+}();
+example2::Tiny tiny2 = [] {
+  example2::Tiny obj;
+  obj.a = "two";
+  obj.b = "set";
+  return obj;
+}();
+example2::Tiny tiny4 = [] {
   example2::Tiny obj;
   obj.a = "four";
   obj.b = "itty";
   obj.c = "bitty";
   obj.d = "strings";
-  EXPECT_EQ(obj, freeze(obj).thaw());
-  EXPECT_EQ(24, frozenSize(obj));
+  return obj;
+}();
+
+TEST(Frozen, Tiny) {
+  EXPECT_EQ(tiny4, freeze(tiny4).thaw());
+  EXPECT_EQ(24, frozenSize(tiny4));
 }
 
 template <class T>
@@ -314,6 +327,36 @@ TEST(Frozen, SchemaConversion) {
   schema::convert(std::move(schema), memSchema);
 
   EXPECT_EQ(memSchema, schemaSaved);
+}
+
+TEST(Frozen, SparseSchema) {
+  {
+    auto l = layout(tiny1);
+    schema::MemorySchema schema;
+    l.saveRoot(schema);
+    EXPECT_LE(schema.layouts.size(), 4);
+  }
+  {
+    auto l = layout(tiny2);
+    schema::MemorySchema schema;
+    l.saveRoot(schema);
+    EXPECT_LE(schema.layouts.size(), 7);
+  }
+}
+
+TEST(Frozen, DedupedSchema) {
+  {
+    auto l = layout(tiny4);
+    schema::MemorySchema schema;
+    l.saveRoot(schema);
+    EXPECT_LE(schema.layouts.size(), 7); // 13 layouts originally
+  }
+  {
+    auto l = layout(stressValue);
+    schema::MemorySchema schema;
+    l.saveRoot(schema);
+    EXPECT_LE(schema.layouts.size(), 24); // 49 layouts originally
+  }
 }
 
 int main(int argc, char** argv) {

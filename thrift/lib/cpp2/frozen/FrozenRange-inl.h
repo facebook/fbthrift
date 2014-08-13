@@ -38,13 +38,16 @@ struct ArrayLayout : public LayoutBase {
         itemField(3, "item") {}
 
   FieldPosition layout(LayoutRoot& root, const T& coll, LayoutPosition self) {
+    FieldPosition pos = startFieldPosition();
     size_t n = coll.size();
+    if (!n) {
+      return pos;
+    }
     size_t itemBytes = itemField.layout.size;
     size_t itemBits = itemBytes ? 0 : itemField.layout.bits;
     size_t dist = root.layoutBytesDistance(
         self.start, itemBits ? (n * itemBits + 7) / 8 : n * itemBytes);
 
-    FieldPosition pos = startFieldPosition();
     pos = root.layoutField(self, pos, distanceField, dist);
     pos = root.layoutField(self, pos, countField, n);
 
