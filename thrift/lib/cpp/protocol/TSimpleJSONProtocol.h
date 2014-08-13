@@ -42,6 +42,8 @@ class TSimpleJSONProtocol : public TVirtualProtocol<TSimpleJSONProtocol,
 
   TSimpleJSONProtocol(std::shared_ptr<TTransport> ptrans);
 
+  explicit TSimpleJSONProtocol(TTransport *ptrans);
+
   ~TSimpleJSONProtocol();
 
 

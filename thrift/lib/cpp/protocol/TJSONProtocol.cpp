@@ -419,6 +419,14 @@ TJSONProtocol::TJSONProtocol(std::shared_ptr<TTransport> ptrans) :
   reader_(*ptrans) {
 }
 
+TJSONProtocol::TJSONProtocol(TTransport* ptrans) :
+  TVirtualProtocol<TJSONProtocol>(ptrans),
+  trans_(ptrans),
+  context_(new TJSONContext()),
+  allowDecodeUTF8_(false),
+  reader_(*ptrans) {
+}
+
 TJSONProtocol::~TJSONProtocol() {}
 
 void TJSONProtocol::pushContext(std::shared_ptr<TJSONContext> c) {

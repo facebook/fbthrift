@@ -31,6 +31,13 @@ TSimpleJSONProtocol::TSimpleJSONProtocol(std::shared_ptr<TTransport> ptrans):
                                                      numSkipped_(0) {
 }
 
+TSimpleJSONProtocol::TSimpleJSONProtocol(TTransport *ptrans):
+                            TVirtualProtocol<TSimpleJSONProtocol,
+                                             TJSONProtocol>(ptrans),
+                                                 nextType_(nullptr),
+                                                     numSkipped_(0) {
+}
+
 
 TSimpleJSONProtocol::~TSimpleJSONProtocol() {}
 
@@ -445,4 +452,3 @@ bool TSimpleJSONProtocol::isCompoundType(int64_t fieldType) {
 }
 
 }}} // apache::thrift::protocol
-

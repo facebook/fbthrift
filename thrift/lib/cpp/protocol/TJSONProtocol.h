@@ -142,6 +142,7 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
  public:
 
   TJSONProtocol(std::shared_ptr<TTransport> ptrans);
+  explicit TJSONProtocol(TTransport *ptrans);
 
   ~TJSONProtocol();
 
