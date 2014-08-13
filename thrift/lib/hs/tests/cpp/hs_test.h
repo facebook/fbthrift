@@ -19,10 +19,7 @@
 
 #include <thrift/lib/hs/tests/if/gen-cpp/hs_test_types.h>
 
-struct SerializedResult {
-  const char* str;
-  int len;
-};
+class MockTransport;
 
 struct CTestStruct {
   bool        f_bool;
@@ -45,10 +42,13 @@ struct CTestStruct {
   Foo*        foo;
 };
 
+MockTransport* newMT();
+uint32_t readMT(MockTransport*, uint8_t*, uint32_t);
+void writeMT(MockTransport*, const uint8_t*, uint32_t);
+void deleteMT(MockTransport*);
+
 TestStruct *getTestStruct();
 void freeTestStruct(TestStruct*);
-
-void deleteSResult(SerializedResult* ptr);
 
 Foo *getFooPtr();
 int  getFooBar(Foo*);
@@ -59,14 +59,14 @@ void fillStruct(TestStruct*, CTestStruct*);
 void freeBuffers(CTestStruct*);
 void readStruct(CTestStruct*, TestStruct*);
 
-void serializeBinary(SerializedResult*, TestStruct*);
-TestStruct* deserializeBinary(char* data, int);
+void serializeBinary(MockTransport*, TestStruct*);
+TestStruct* deserializeBinary(MockTransport*);
 
-void serializeCompact(SerializedResult*, TestStruct*);
-TestStruct* deserializeCompact(char* data, int);
+void serializeCompact(MockTransport*, TestStruct*);
+TestStruct* deserializeCompact(MockTransport*);
 
-void serializeJSON(SerializedResult*, TestStruct*);
-TestStruct* deserializeJSON(char *data, int);
+void serializeJSON(MockTransport*, TestStruct*);
+TestStruct* deserializeJSON(MockTransport*);
 
 
 #endif

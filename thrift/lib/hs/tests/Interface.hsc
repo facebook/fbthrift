@@ -4,16 +4,17 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module Interface
-       ( SerializedResult(..)
+       ( MockTransport
        , c_serializeBinary
        , c_deserializeBinary
        , c_serializeCompact
        , c_deserializeCompact
        , c_serializeJSON
        , c_deserializeJSON
-       , c_deleteSResult
+       , c_openMT
        , c_newStructPtr
        , c_freeTestStruct
        ) where
@@ -21,7 +22,6 @@ module Interface
 import Data.Functor
 import Data.Maybe
 import Data.Text.Lazy.Encoding
-import Foreign.C.String
 import Foreign.C.Types
 import Foreign.Marshal.Alloc
 import Foreign.Marshal.Array
@@ -34,20 +34,20 @@ import qualified Data.HashSet as Set
 import qualified Data.Vector as Vector
 
 import Hs_test_Types
+import Thrift.Transport
 
-data SerializedResult = SR CString Int
 data CTestStruct
+data MockTransport
 
-instance Storable SerializedResult where
-  sizeOf _ = (#size SerializedResult)
-  alignment = sizeOf
-  peek ptr = do
-    str <- (#peek SerializedResult, str) ptr
-    CInt len <- (#peek SerializedResult, len) ptr
-    return $ SR str (fromIntegral len)
-  poke ptr (SR str len) = do
-    (#poke SerializedResult, str) ptr str
-    (#poke SerializedResult, len) ptr len
+instance Transport (Ptr MockTransport) where
+  tIsOpen = return . (/= nullPtr)
+  tClose = c_deleteMT
+  tRead mt n = allocaArray n $ \str -> do
+    CUInt sz  <- c_readMT mt str (CUInt $ fromIntegral n)
+    LBS.fromStrict <$> BS.packCStringLen (str, fromIntegral sz)
+  tPeek _ = error "cannot peek a MockTransport"
+  tWrite mt bs = BS.useAsCStringLen (LBS.toStrict bs) $ \(str, len) ->
+    c_writeMT mt str (CUInt $ fromIntegral len)
 
 instance Storable Foo where
   sizeOf _ = (#size Foo)
@@ -169,12 +169,24 @@ instance Storable TestStruct where
 #include "thrift/lib/hs/tests/cpp/hs_test.h"
 
 foreign import ccall
-  #{ mangled TestStruct* getStructPtr() }
-  c_newStructPtr :: IO (Ptr TestStruct)
+  #{ mangled MockTransport* newMT() }
+  c_openMT :: IO (Ptr MockTransport)
 
 foreign import ccall
-  #{ mangled void deleteSResult(SerializedResult*) }
-  c_deleteSResult :: Ptr SerializedResult -> IO ()
+  #{ mangled uint32_t readMT(MockTransport*, uint8_t*, uint32_t) }
+  c_readMT :: Ptr MockTransport -> Ptr CChar -> CUInt -> IO CUInt
+
+foreign import ccall
+  #{ mangled void writeMT(MockTransport*, const uint8_t*, uint32_t) }
+  c_writeMT :: Ptr MockTransport -> Ptr CChar -> CUInt -> IO ()
+
+foreign import ccall
+  #{ mangled void deleteMT(MockTransport*) }
+  c_deleteMT :: Ptr MockTransport -> IO ()
+
+foreign import ccall
+  #{ mangled TestStruct* getStructPtr() }
+  c_newStructPtr :: IO (Ptr TestStruct)
 
 foreign import ccall
   #{ mangled Foo *getFooPtr() }
@@ -209,25 +221,25 @@ foreign import ccall
     c_readStruct :: Ptr CTestStruct -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled void serializeBinary(SerializedResult*, TestStruct*) }
-  c_serializeBinary :: Ptr SerializedResult -> Ptr TestStruct -> IO ()
+  #{ mangled void serializeBinary(MockTransport*, TestStruct*) }
+  c_serializeBinary :: Ptr MockTransport -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeBinary(char*, int) }
-  c_deserializeBinary :: CString -> CInt -> IO (Ptr TestStruct)
+  #{ mangled TestStruct* deserializeBinary(MockTransport*) }
+  c_deserializeBinary :: Ptr MockTransport -> IO (Ptr TestStruct)
 
 foreign import ccall
-  #{ mangled void serializeCompact(SerializedResult*, TestStruct*) }
-  c_serializeCompact :: Ptr SerializedResult -> Ptr TestStruct -> IO ()
+  #{ mangled void serializeCompact(MockTransport*, TestStruct*) }
+  c_serializeCompact :: Ptr MockTransport -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeCompact(char*, int) }
-  c_deserializeCompact :: CString -> CInt -> IO (Ptr TestStruct)
+  #{ mangled TestStruct* deserializeCompact(MockTransport*) }
+  c_deserializeCompact :: Ptr MockTransport -> IO (Ptr TestStruct)
 
 foreign import ccall
-  #{ mangled void serializeJSON(SerializedResult*, TestStruct*) }
-  c_serializeJSON :: Ptr SerializedResult -> Ptr TestStruct -> IO ()
+  #{ mangled void serializeJSON(MockTransport*, TestStruct*) }
+  c_serializeJSON :: Ptr MockTransport -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeJSON(char*, int) }
-  c_deserializeJSON :: CString -> CInt -> IO (Ptr TestStruct)
+  #{ mangled TestStruct* deserializeJSON(MockTransport*) }
+  c_deserializeJSON :: Ptr MockTransport -> IO (Ptr TestStruct)

@@ -60,6 +60,23 @@ class MockTransport : public apache::thrift::transport::TTransport {
   }
 };
 
+MockTransport* newMT() {
+  return new MockTransport();
+}
+
+uint32_t readMT(MockTransport* mt, uint8_t* buf, uint32_t n) {
+  return mt->read(buf, n);
+}
+
+void writeMT(MockTransport* mt, const uint8_t* buf, uint32_t len) {
+  mt->write(buf, len);
+}
+
+void deleteMT(MockTransport* mt) {
+  delete mt;
+}
+
+
 // Allocate a new TestStruct object from Haskell
 TestStruct* getStructPtr() {
   TestStruct *testStruct = new TestStruct();
@@ -69,11 +86,6 @@ TestStruct* getStructPtr() {
 // Free TestStruct from Haskell
 void freeTestStruct(TestStruct* ts) {
   delete ts;
-}
-
-// Free the string from Haskell
-void deleteSResult(SerializedResult* ptr) {
-  free((void*)ptr->str);
 }
 
 Foo *getFooPtr() {
@@ -155,73 +167,45 @@ void freeBuffers(CTestStruct* obj) {
   free(obj->f_set);
 }
 
-// Serialize a TestStruct using the given Protocol
-void serializeStruct(protocol::TProtocol &prot,
-                     MockTransport &mt,
-                     SerializedResult *sr,
-                     TestStruct *obj) {
-  obj->write(&prot);
-  sr->str = (char*)malloc(mt.buffer.size());
-  sr->len = mt.buffer.size();
-  memcpy((void*)sr->str, (void*)mt.buffer.data(), mt.buffer.size());
-}
-
 // Deserialize a TestStruct using the given Protocol
-TestStruct* deserializeStruct(char *data,
-                              int len,
-                              protocol::TProtocol &prot,
-                              MockTransport &mt) {
+TestStruct* deserializeStruct(protocol::TProtocol &prot) {
   TestStruct *ts = new TestStruct();
-  mt.buffer.insert(mt.buffer.end(), data, data + len);
   ts->read(&prot);
   return ts;
 }
 
 // Serialize a TestStruct using TBinaryProtocol
-void serializeBinary(SerializedResult *sr, TestStruct *obj) {
-  auto mockTrans = std::make_shared<MockTransport>();
-  protocol::TBinaryProtocol oprot(mockTrans);
-
-  serializeStruct(oprot, *mockTrans, sr, obj);
+void serializeBinary(MockTransport *mt, TestStruct *obj) {
+  protocol::TBinaryProtocol oprot(mt);
+  obj->write(&oprot);
 }
 
 // Deserialize a TestStruct using TBinaryProtocol
-TestStruct* deserializeBinary(char *data, int len) {
-  auto mockTrans = std::make_shared<MockTransport>();
-  protocol::TBinaryProtocol oprot(mockTrans);
-
-  return deserializeStruct(data, len, oprot, *mockTrans);
+TestStruct* deserializeBinary(MockTransport *mt) {
+  protocol::TBinaryProtocol oprot(mt);
+  return deserializeStruct(oprot);
 }
 
 // Serialize a TestStruct using TCompactProtocol
-void serializeCompact(SerializedResult *sr, TestStruct *obj) {
-  auto mockTrans = std::make_shared<MockTransport>();
-  protocol::TCompactProtocol oprot(mockTrans);
-
-  serializeStruct(oprot, *mockTrans, sr, obj);
+void serializeCompact(MockTransport *mt, TestStruct *obj) {
+  protocol::TCompactProtocol oprot(mt);
+  obj->write(&oprot);
 }
 
 // Deserialize a TestStruct using TCompactProtocol
-TestStruct* deserializeCompact(char *data, int len) {
-  auto mockTrans = std::make_shared<MockTransport>();
-  protocol::TCompactProtocol oprot(mockTrans);
-
-  return deserializeStruct(data, len, oprot, *mockTrans);
+TestStruct* deserializeCompact(MockTransport *mt) {
+  protocol::TCompactProtocol oprot(mt);
+  return deserializeStruct(oprot);
 }
 
 // Serialize a TestStruct using TSimpleJSONProtocol
-void serializeJSON(SerializedResult *sr, TestStruct *obj) {
-  auto mockTrans = std::make_shared<MockTransport>();
-  protocol::TSimpleJSONProtocol oprot(mockTrans);
-
-  serializeStruct(oprot, *mockTrans, sr, obj);
+void serializeJSON(MockTransport *mt, TestStruct *obj) {
+  protocol::TSimpleJSONProtocol oprot(mt);
+  obj->write(&oprot);
 }
 
 // Deserialize a TestStruct using TSimpleJSONProtocol
-TestStruct* deserializeJSON(char *data, int len) {
-  MockTransport mt;
-  auto mockTrans = std::make_shared<MockTransport>();
-  protocol::TSimpleJSONProtocol oprot(mockTrans);
-
-  return deserializeStruct(data, len, oprot, *mockTrans);
+TestStruct* deserializeJSON(MockTransport *mt) {
+  protocol::TSimpleJSONProtocol oprot(mt);
+  return deserializeStruct(oprot);
 }

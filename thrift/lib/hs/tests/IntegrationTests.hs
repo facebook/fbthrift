@@ -1,24 +1,18 @@
-{-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
 
 module IntegrationTests where
 
+import Control.Exception
 import Data.Functor
-import Data.IORef
-import Foreign.C.String
-import Foreign.C.Types
-import Foreign.Marshal.Alloc
 import Foreign.Ptr
 import Foreign.Storable
 import Test.QuickCheck
 import Test.QuickCheck.Property
-import qualified Data.ByteString as BS
-import qualified Data.ByteString.Lazy as LBS
 
 import Thrift.Protocol.Binary
 import Thrift.Protocol.Compact
 import Thrift.Protocol.JSON
+import Thrift.Transport
 import Interface
 import Util
 
@@ -27,40 +21,28 @@ import Hs_test_Types
 
 -- | Serialize a TestStruct from C++ and deserialize in Haskell
 propCToHs :: Protocol p
-             => (TestTransport -> p TestTransport)
-             -> (Ptr SerializedResult -> Ptr TestStruct -> IO ())
+             => (Ptr MockTransport -> p (Ptr MockTransport))
+             -> (Ptr MockTransport -> Ptr TestStruct -> IO ())
              -> TestStruct
              -> Property
-propCToHs pCons cToHS struct@TestStruct{..} = morallyDubiousIOProperty $ do
-  structPtr <- c_newStructPtr
-  poke structPtr struct
-  alloca $ \sr -> do
-    cToHS sr structPtr
-    SR chrPtr len <- peek sr
-    bs <- LBS.fromStrict <$> BS.packCStringLen (chrPtr, len)
-    ref <- newIORef bs
-    let p = pCons (TestTransport ref)
-    !result <- read_TestStruct p
-    c_deleteSResult sr
-    c_freeTestStruct structPtr
-    return $ result == struct
+propCToHs pCons cToHS struct = morallyDubiousIOProperty $
+  bracket c_newStructPtr c_freeTestStruct $ \structPtr ->
+  bracket c_openMT tClose $ \mt -> do
+    poke structPtr struct
+    cToHS mt structPtr
+    (== struct) <$> read_TestStruct (pCons mt)
 
 -- | Serialize a TestStruct in Haskell and deserialize in C++
 propHsToC :: Protocol p
-             => (TestTransport -> p TestTransport)
-             -> (CString -> CInt -> IO (Ptr TestStruct))
+             => (Ptr MockTransport -> p (Ptr MockTransport))
+             -> (Ptr MockTransport -> IO (Ptr TestStruct))
              -> TestStruct
              -> Property
-propHsToC pCons hsToC struct@TestStruct{..} = morallyDubiousIOProperty $ do
-  ref <- newIORef ""
-  let p = pCons (TestTransport ref)
-  write_TestStruct p struct
-  bs <- LBS.toStrict <$> readIORef ref
-  BS.useAsCStringLen bs $ \(cStr, len) -> do
-    structPtr <- hsToC cStr (CInt $ fromIntegral len)
-    !result <- peek structPtr
-    c_freeTestStruct structPtr
-    return $ struct == result
+propHsToC pCons hsToC struct = morallyDubiousIOProperty $
+  bracket c_openMT tClose $ \mt -> do
+    write_TestStruct (pCons mt) struct
+    bracket (hsToC mt) c_freeTestStruct $ \structPtr ->
+      (== struct) <$> peek structPtr
 
 main :: IO ()
 main = aggregateResults
