@@ -1743,13 +1743,6 @@ void t_cpp_generator::generate_union_reader(ofstream& out,
     indent_down();
     out << indent() << "}" << endl;
   }
-  for (const auto& mem : members) {
-    if (mem->get_req() == t_field::T_REQUIRED ||
-        mem->get_req() == t_field::T_OPTIONAL) {
-      throw "compiler error: Union field " + tstruct->get_name() + "." +
-            mem->get_name() + " cannot be required or optional";
-    }
-  }
 
   indent(out) << "return xfer;" << endl;
 

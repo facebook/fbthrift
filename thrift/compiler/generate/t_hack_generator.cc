@@ -1126,6 +1126,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     // success is whatever type the method returns, but must be nullable
     // regardless, since if there is an exception we expect it to be null
     bool nullable = (dval == "null")
+        || tstruct->is_union()
         || is_result
         || ((*m_iter)->get_req() == t_field::T_OPTIONAL
             && (*m_iter)->get_value() == nullptr);
@@ -1154,26 +1155,10 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
       indent() << "public function __construct(";
     bool first = true;
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = get_true_type((*m_iter)->get_type());
-      string dval = "";
-      if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
-        dval = render_const_value(t, (*m_iter)->get_value());
-      } else {
-        dval = render_default_value(t);
-      }
-
-      // result structs only contain fields: success and e.
-      // success is whatever type the method returns, but must be nullable
-      // regardless, since if there is an exception we expect it to be null
-      bool nullable = (dval == "null")
-          || is_result
-          || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-              && (*m_iter)->get_value() == nullptr);
-
       if (!first) {
         out << ", ";
       }
-
+      t_type* t = get_true_type((*m_iter)->get_type());
       out << "?" << type_to_typehint(t) << " $" << (*m_iter)->get_name() << " = null";
       first = false;
     }
@@ -1190,6 +1175,8 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     string dval = "";
     if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
       dval = render_const_value(t, (*m_iter)->get_value());
+    } else if (tstruct->is_union()) {
+      dval = "null";
     } else {
       dval = render_default_value(t);
     }
@@ -1220,6 +1207,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
       // success is whatever type the method returns, but must be nullable
       // regardless, since if there is an exception we expect it to be null
       bool nullable = (dval == "null")
+          || tstruct->is_union()
           || is_result
           || ((*m_iter)->get_req() == t_field::T_OPTIONAL
               && (*m_iter)->get_value() == nullptr);

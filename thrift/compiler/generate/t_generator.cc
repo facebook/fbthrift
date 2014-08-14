@@ -61,6 +61,9 @@ void t_generator::generate_program() {
     if ((*o_iter)->is_xception()) {
       generate_xception(*o_iter);
     } else {
+      if ((*o_iter)->is_union()) {
+        validate_union_members(*o_iter);
+      }
       generate_struct(*o_iter);
     }
   }
@@ -220,4 +223,14 @@ std::string t_generator::generate_structural_id(
   sprintf(structural_id, "%" PRIu64, h);
 
   return structural_id;
+}
+
+void t_generator::validate_union_members(const t_struct* tstruct) {
+  for (const auto& mem : tstruct->get_members()) {
+    if (mem->get_req() == t_field::T_REQUIRED ||
+        mem->get_req() == t_field::T_OPTIONAL) {
+      throw "compiler error: Union field " + tstruct->get_name() + "." +
+            mem->get_name() + " cannot be required or optional";
+    }
+  }
 }
