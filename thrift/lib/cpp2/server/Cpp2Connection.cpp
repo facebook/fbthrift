@@ -104,6 +104,11 @@ Cpp2Connection::Cpp2Connection(
 }
 
 Cpp2Connection::~Cpp2Connection() {
+  auto handler = worker_->getServer()->getEventHandler();
+  if (handler) {
+    handler->connectionDestroyed(&context_);
+  }
+
   cancelTimeout();
   channel_.reset();
 }
@@ -122,11 +127,6 @@ void Cpp2Connection::stop() {
 
   if (channel_) {
     channel_->setCallback(nullptr);
-  }
-
-  auto handler = worker_->getServer()->getEventHandler();
-  if (handler) {
-    handler->connectionDestroyed(&context_);
   }
 
   // Release the socket to avoid long CLOSE_WAIT times

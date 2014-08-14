@@ -784,6 +784,88 @@ TEST(ThriftServer, FreeCallbackTest) {
   ADD_FAILURE();
 }
 
+class TestServerEventHandler
+    : public server::TServerEventHandler
+    , public TProcessorEventHandler
+    , public TProcessorEventHandlerFactory
+    , public std::enable_shared_from_this<TestServerEventHandler> {
+ public:
+
+  std::shared_ptr<TProcessorEventHandler> getEventHandler() {
+    return shared_from_this();
+  }
+
+  void check() {
+    EXPECT_EQ(8, count);
+  }
+  void preServe(const TSocketAddress* addr) {
+    EXPECT_EQ(0, count++);
+  }
+  void newConnection(TConnectionContext* ctx) {
+    EXPECT_EQ(1, count++);
+  }
+  void connectionDestroyed(TConnectionContext* ctx) {
+    EXPECT_EQ(7, count++);
+  }
+
+  void* getContext(const char* fn_name,
+                   TConnectionContext* c) {
+    EXPECT_EQ(2, count++);
+    return nullptr;
+  }
+  void freeContext(void* ctx, const char* fn_name) {
+    EXPECT_EQ(6, count++);
+  }
+  void preRead(void* ctx, const char* fn_name) {
+    EXPECT_EQ(3, count++);
+
+  }
+  void onReadData(void* ctx, const char* fn_name,
+                          const SerializedMessage& msg) {
+    EXPECT_EQ(4, count++);
+  }
+
+  void postRead(void* ctx, const char* fn_name, uint32_t bytes) {
+    EXPECT_EQ(5, count++);
+  }
+
+
+ private:
+  std::atomic<int> count{0};
+};
+
+TEST(ThriftServer, CallbackOrderingTest) {
+  auto server = getServer();
+  auto serverHandler = std::make_shared<TestServerEventHandler>();
+
+
+  TProcessorBase::addProcessorEventHandlerFactory(serverHandler);
+  server->setServerEventHandler(serverHandler);
+
+  ScopedServerThread sst(server);
+  auto port = sst.getAddress()->getPort();
+
+  TEventBase base;
+
+  std::shared_ptr<TAsyncSocket> socket(
+    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+
+  TestServiceAsyncClient client(
+    std::unique_ptr<HeaderClientChannel,
+                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                      new HeaderClientChannel(socket)));
+
+  client.noResponse([](ClientReceiveState&& state){}, 10000);
+  base.runAfterDelay([&](){
+    socket->closeNow();
+  }, 1);
+  base.runAfterDelay([&](){
+    base.terminateLoopSoon();
+  }, 20);
+  base.loopForever();
+  serverHandler->check();
+}
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   google::InitGoogleLogging(argv[0]);
