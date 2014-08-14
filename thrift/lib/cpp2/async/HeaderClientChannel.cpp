@@ -192,7 +192,7 @@ void HeaderClientChannel::SaslClientCallback::saslError(
   if (tex &&
       tex->getType() == TTransportException::SASL_HANDSHAKE_TIMEOUT &&
       channel_.shouldSuppressSaslFallbackOnTransientFailure()) {
-    LOG(INFO) << "Not falling back to insecure because SASL fallback was"
+    VLOG(5) << "Not falling back to insecure because SASL fallback was"
       " suppressed";
     channel_.messageReceiveErrorWrapped(std::move(ex));
     channel_.cpp2Channel_->closeNow();
