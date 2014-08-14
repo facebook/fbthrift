@@ -77,6 +77,8 @@ void GssSaslServer::consumeFromClient(
       std::string reply_data;
       folly::exception_wrapper ex;
 
+      uint16_t replyWithProto = proto;
+
       // Get the input string. We deserialize differently depending on the
       // current state.
       std::string input;
@@ -109,6 +111,7 @@ void GssSaslServer::consumeFromClient(
                   pargs,
                   smessage.get(),
                   T_CALL);
+              replyWithProto = protocol::T_COMPACT_PROTOCOL;
             } else {
               throw;
             }
@@ -147,6 +150,7 @@ void GssSaslServer::consumeFromClient(
                   pargs,
                   smessage.get(),
                   T_CALL);
+              replyWithProto = protocol::T_COMPACT_PROTOCOL;
             } else {
               throw;
             }
@@ -184,7 +188,7 @@ void GssSaslServer::consumeFromClient(
               SaslAuthService_authFirstRequest_presult resultp;
               resultp.success = &reply;
               resultp.__isset.success = true;
-              *outbuf = PargsPresultProtoSerialize(proto,
+              *outbuf = PargsPresultProtoSerialize(replyWithProto,
                                                    resultp,
                                                    "authFirstRequest",
                                                    T_REPLY,
@@ -193,7 +197,7 @@ void GssSaslServer::consumeFromClient(
               SaslAuthService_authNextRequest_presult resultp;
               resultp.success = &reply;
               resultp.__isset.success = true;
-              *outbuf = PargsPresultProtoSerialize(proto,
+              *outbuf = PargsPresultProtoSerialize(replyWithProto,
                                                    resultp,
                                                    "authNextRequest",
                                                    T_REPLY,
