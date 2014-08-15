@@ -7,7 +7,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 
 module Interface
-       ( MockTransport
+       ( MemoryBuffer
        , c_serializeBinary
        , c_deserializeBinary
        , c_serializeCompact
@@ -16,7 +16,7 @@ module Interface
        , c_deserializeJSON
        , c_serializeSimpleJSON
        , c_deserializeSimpleJSON
-       , c_openMT
+       , c_openMB
        , c_newStructPtr
        , c_freeTestStruct
        ) where
@@ -39,17 +39,17 @@ import Hs_test_Types
 import Thrift.Transport
 
 data CTestStruct
-data MockTransport
+data MemoryBuffer
 
-instance Transport (Ptr MockTransport) where
+instance Transport (Ptr MemoryBuffer) where
   tIsOpen = return . (/= nullPtr)
-  tClose = c_deleteMT
+  tClose = c_deleteMB
   tRead mt n = allocaArray n $ \str -> do
-    CUInt sz  <- c_readMT mt str (CUInt $ fromIntegral n)
+    CUInt sz  <- c_readMB mt str (CUInt $ fromIntegral n)
     LBS.fromStrict <$> BS.packCStringLen (str, fromIntegral sz)
-  tPeek _ = error "cannot peek a MockTransport"
+  tPeek _ = error "cannot peek a Memory Buffer"
   tWrite mt bs = BS.useAsCStringLen (LBS.toStrict bs) $ \(str, len) ->
-    c_writeMT mt str (CUInt $ fromIntegral len)
+    c_writeMB mt str (CUInt $ fromIntegral len)
 
 instance Storable Foo where
   sizeOf _ = (#size Foo)
@@ -168,23 +168,26 @@ instance Storable TestStruct where
 
 --------------------------------------------------------------------------------
 #include <common/hs/hsc.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include "thrift/lib/hs/tests/cpp/hs_test.h"
 
 foreign import ccall
-  #{ mangled MockTransport* newMT() }
-  c_openMT :: IO (Ptr MockTransport)
+  #{ mangled apache::thrift::transport::TMemoryBuffer* newMB() }
+  c_openMB :: IO (Ptr MemoryBuffer)
 
 foreign import ccall
-  #{ mangled uint32_t readMT(MockTransport*, uint8_t*, uint32_t) }
-  c_readMT :: Ptr MockTransport -> Ptr CChar -> CUInt -> IO CUInt
+  #{ mangled uint32_t readMB(apache::thrift::transport::TMemoryBuffer*,
+                             uint8_t*, uint32_t) }
+  c_readMB :: Ptr MemoryBuffer -> Ptr CChar -> CUInt -> IO CUInt
 
 foreign import ccall
-  #{ mangled void writeMT(MockTransport*, const uint8_t*, uint32_t) }
-  c_writeMT :: Ptr MockTransport -> Ptr CChar -> CUInt -> IO ()
+  #{ mangled void writeMB(apache::thrift::transport::TMemoryBuffer*,
+                          const uint8_t*, uint32_t) }
+  c_writeMB :: Ptr MemoryBuffer -> Ptr CChar -> CUInt -> IO ()
 
 foreign import ccall
-  #{ mangled void deleteMT(MockTransport*) }
-  c_deleteMT :: Ptr MockTransport -> IO ()
+  #{ mangled void deleteMB(apache::thrift::transport::TMemoryBuffer*) }
+  c_deleteMB :: Ptr MemoryBuffer -> IO ()
 
 foreign import ccall
   #{ mangled TestStruct* getStructPtr() }
@@ -223,33 +226,41 @@ foreign import ccall
     c_readStruct :: Ptr CTestStruct -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled void serializeBinary(MockTransport*, TestStruct*) }
-  c_serializeBinary :: Ptr MockTransport -> Ptr TestStruct -> IO ()
+  #{ mangled void serializeBinary(apache::thrift::transport::TMemoryBuffer*,
+                                  TestStruct*) }
+  c_serializeBinary :: Ptr MemoryBuffer -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeBinary(MockTransport*) }
-  c_deserializeBinary :: Ptr MockTransport -> IO (Ptr TestStruct)
+  #{ mangled TestStruct* deserializeBinary(
+        apache::thrift::transport::TMemoryBuffer*) }
+  c_deserializeBinary :: Ptr MemoryBuffer -> IO (Ptr TestStruct)
 
 foreign import ccall
-  #{ mangled void serializeCompact(MockTransport*, TestStruct*) }
-  c_serializeCompact :: Ptr MockTransport -> Ptr TestStruct -> IO ()
+  #{ mangled void serializeCompact(apache::thrift::transport::TMemoryBuffer*,
+                                   TestStruct*) }
+  c_serializeCompact :: Ptr MemoryBuffer -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeCompact(MockTransport*) }
-  c_deserializeCompact :: Ptr MockTransport -> IO (Ptr TestStruct)
+  #{ mangled TestStruct* deserializeCompact(
+        apache::thrift::transport::TMemoryBuffer*) }
+  c_deserializeCompact :: Ptr MemoryBuffer -> IO (Ptr TestStruct)
 
 foreign import ccall
-  #{ mangled void serializeJSON(MockTransport*, TestStruct*) }
-  c_serializeJSON :: Ptr MockTransport -> Ptr TestStruct -> IO ()
+  #{ mangled void serializeJSON(apache::thrift::transport::TMemoryBuffer*,
+                                TestStruct*) }
+  c_serializeJSON :: Ptr MemoryBuffer -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeJSON(MockTransport*) }
-  c_deserializeJSON :: Ptr MockTransport -> IO (Ptr TestStruct)
+  #{ mangled TestStruct* deserializeJSON(
+        apache::thrift::transport::TMemoryBuffer*) }
+  c_deserializeJSON :: Ptr MemoryBuffer -> IO (Ptr TestStruct)
 
 foreign import ccall
-  #{ mangled void serializeSimpleJSON(MockTransport*, TestStruct*) }
-  c_serializeSimpleJSON :: Ptr MockTransport -> Ptr TestStruct -> IO ()
+  #{ mangled void serializeSimpleJSON(apache::thrift::transport::TMemoryBuffer*,
+                                      TestStruct*) }
+  c_serializeSimpleJSON :: Ptr MemoryBuffer -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeSimpleJSON(MockTransport*) }
-  c_deserializeSimpleJSON :: Ptr MockTransport -> IO (Ptr TestStruct)
+  #{ mangled TestStruct* deserializeSimpleJSON(
+        apache::thrift::transport::TMemoryBuffer*) }
+  c_deserializeSimpleJSON :: Ptr MemoryBuffer -> IO (Ptr TestStruct)

@@ -22,27 +22,27 @@ import Hs_test_Types
 
 -- | Serialize a TestStruct from C++ and deserialize in Haskell
 propCToHs :: Protocol p
-             => (Ptr MockTransport -> p (Ptr MockTransport))
-             -> (Ptr MockTransport -> Ptr TestStruct -> IO ())
+             => (Ptr MemoryBuffer -> p (Ptr MemoryBuffer))
+             -> (Ptr MemoryBuffer -> Ptr TestStruct -> IO ())
              -> TestStruct
              -> Property
 propCToHs pCons cToHS struct = morallyDubiousIOProperty $
   bracket c_newStructPtr c_freeTestStruct $ \structPtr ->
-  bracket c_openMT tClose $ \mt -> do
+  bracket c_openMB tClose $ \mb -> do
     poke structPtr struct
-    cToHS mt structPtr
-    (== struct) <$> read_TestStruct (pCons mt)
+    cToHS mb structPtr
+    (== struct) <$> read_TestStruct (pCons mb)
 
 -- | Serialize a TestStruct in Haskell and deserialize in C++
 propHsToC :: Protocol p
-             => (Ptr MockTransport -> p (Ptr MockTransport))
-             -> (Ptr MockTransport -> IO (Ptr TestStruct))
+             => (Ptr MemoryBuffer -> p (Ptr MemoryBuffer))
+             -> (Ptr MemoryBuffer -> IO (Ptr TestStruct))
              -> TestStruct
              -> Property
 propHsToC pCons hsToC struct = morallyDubiousIOProperty $
-  bracket c_openMT tClose $ \mt -> do
-    write_TestStruct (pCons mt) struct
-    bracket (hsToC mt) c_freeTestStruct $ \structPtr ->
+  bracket c_openMB tClose $ \mb -> do
+    write_TestStruct (pCons mb) struct
+    bracket (hsToC mb) c_freeTestStruct $ \structPtr ->
       (== struct) <$> peek structPtr
 
 main :: IO ()

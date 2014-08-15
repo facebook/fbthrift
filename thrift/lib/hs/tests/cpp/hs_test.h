@@ -17,9 +17,8 @@
 #ifndef HS_TEST
 #define HS_TEST
 
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/hs/tests/if/gen-cpp/hs_test_types.h>
-
-class MockTransport;
 
 struct CTestStruct {
   bool        f_bool;
@@ -42,10 +41,11 @@ struct CTestStruct {
   Foo*        foo;
 };
 
-MockTransport* newMT();
-uint32_t readMT(MockTransport*, uint8_t*, uint32_t);
-void writeMT(MockTransport*, const uint8_t*, uint32_t);
-void deleteMT(MockTransport*);
+apache::thrift::transport::TMemoryBuffer* newMB();
+uint32_t readMB(apache::thrift::transport::TMemoryBuffer*, uint8_t*, uint32_t);
+void writeMB(apache::thrift::transport::TMemoryBuffer*,
+               const uint8_t*, uint32_t);
+void deleteMB(apache::thrift::transport::TMemoryBuffer*);
 
 TestStruct *getTestStruct();
 void freeTestStruct(TestStruct*);
@@ -59,17 +59,18 @@ void fillStruct(TestStruct*, CTestStruct*);
 void freeBuffers(CTestStruct*);
 void readStruct(CTestStruct*, TestStruct*);
 
-void serializeBinary(MockTransport*, TestStruct*);
-TestStruct* deserializeBinary(MockTransport*);
+void serializeBinary(apache::thrift::transport::TMemoryBuffer*, TestStruct*);
+TestStruct* deserializeBinary(apache::thrift::transport::TMemoryBuffer*);
 
-void serializeCompact(MockTransport*, TestStruct*);
-TestStruct* deserializeCompact(MockTransport*);
+void serializeCompact(apache::thrift::transport::TMemoryBuffer*, TestStruct*);
+TestStruct* deserializeCompact(apache::thrift::transport::TMemoryBuffer*);
 
-void serializeJSON(MockTransport*, TestStruct*);
-TestStruct* deserializeJSON(MockTransport*);
+void serializeJSON(apache::thrift::transport::TMemoryBuffer*, TestStruct*);
+TestStruct* deserializeJSON(apache::thrift::transport::TMemoryBuffer*);
 
-void serializeSimpleJSON(MockTransport*, TestStruct*);
-TestStruct* deserializeSimpleJSON(MockTransport*);
+void serializeSimpleJSON(apache::thrift::transport::TMemoryBuffer*,
+                         TestStruct*);
+TestStruct* deserializeSimpleJSON(apache::thrift::transport::TMemoryBuffer*);
 
 
 #endif

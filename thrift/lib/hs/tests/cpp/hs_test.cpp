@@ -27,54 +27,23 @@
 #include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
 
 using namespace apache::thrift;
+using namespace apache::thrift::transport;
 using namespace std;
 
-/**
- * Mock Transport reads from and writes to a buffer
- */
-class MockTransport : public apache::thrift::transport::TTransport {
- public:
-  MockTransport() : buffer() {}
-
-  vector<uint8_t> buffer;
-
-
-  bool isOpen() { return true; }
-  void open() {}
-  void close() {}
-
-  uint32_t read_virt(uint8_t* buf, uint32_t n) {
-    int32_t len = buffer.size();
-    if (len >= n) {
-      memcpy(buf, buffer.data(), n);
-      buffer.erase(buffer.begin(), buffer.begin() + n);
-      return n;
-    } else {
-      memcpy(buf, buffer.data(), len);
-      buffer.erase(buffer.begin(), buffer.end());
-      return len;
-    }
-  }
-
-  void write_virt(const uint8_t* buf, uint32_t len) {
-    buffer.insert(buffer.end(), buf, buf+len);
-  }
-};
-
-MockTransport* newMT() {
-  return new MockTransport();
+TMemoryBuffer* newMB() {
+  return new TMemoryBuffer();
 }
 
-uint32_t readMT(MockTransport* mt, uint8_t* buf, uint32_t n) {
-  return mt->read(buf, n);
+uint32_t readMB(TMemoryBuffer* mb, uint8_t* buf, uint32_t n) {
+  return mb->read(buf, n);
 }
 
-void writeMT(MockTransport* mt, const uint8_t* buf, uint32_t len) {
-  mt->write(buf, len);
+void writeMB(TMemoryBuffer* mb, const uint8_t* buf, uint32_t len) {
+  mb->write(buf, len);
 }
 
-void deleteMT(MockTransport* mt) {
-  delete mt;
+void deleteMB(TMemoryBuffer* mb) {
+  delete mb;
 }
 
 
@@ -176,49 +145,49 @@ TestStruct* deserializeStruct(protocol::TProtocol &prot) {
 }
 
 // Serialize a TestStruct using TBinaryProtocol
-void serializeBinary(MockTransport *mt, TestStruct *obj) {
+void serializeBinary(TMemoryBuffer *mt, TestStruct *obj) {
   protocol::TBinaryProtocol oprot(mt);
   obj->write(&oprot);
 }
 
 // Deserialize a TestStruct using TBinaryProtocol
-TestStruct* deserializeBinary(MockTransport *mt) {
+TestStruct* deserializeBinary(TMemoryBuffer *mt) {
   protocol::TBinaryProtocol oprot(mt);
   return deserializeStruct(oprot);
 }
 
 // Serialize a TestStruct using TCompactProtocol
-void serializeCompact(MockTransport *mt, TestStruct *obj) {
+void serializeCompact(TMemoryBuffer *mt, TestStruct *obj) {
   protocol::TCompactProtocol oprot(mt);
   obj->write(&oprot);
 }
 
 // Deserialize a TestStruct using TCompactProtocol
-TestStruct* deserializeCompact(MockTransport *mt) {
+TestStruct* deserializeCompact(TMemoryBuffer *mt) {
   protocol::TCompactProtocol oprot(mt);
   return deserializeStruct(oprot);
 }
 
 // Serialize a TestStruct using TJSONProtocol
-void serializeJSON(MockTransport *mt, TestStruct *obj) {
-  protocol::TJSONProtocol oprot(mt);
+void serializeJSON(TMemoryBuffer *mb, TestStruct *obj) {
+  protocol::TJSONProtocol oprot(mb);
   obj->write(&oprot);
 }
 
 // Deserialize a TestStruct using TJSONProtocol
-TestStruct* deserializeJSON(MockTransport *mt) {
-  protocol::TJSONProtocol oprot(mt);
+TestStruct* deserializeJSON(TMemoryBuffer *mb) {
+  protocol::TJSONProtocol oprot(mb);
   return deserializeStruct(oprot);
 }
 
 // Serialize a TestStruct using TSimpleJSONProtocol
-void serializeSimpleJSON(MockTransport *mt, TestStruct *obj) {
-  protocol::TSimpleJSONProtocol oprot(mt);
+void serializeSimpleJSON(TMemoryBuffer *mb, TestStruct *obj) {
+  protocol::TSimpleJSONProtocol oprot(mb);
   obj->write(&oprot);
 }
 
 // Deserialize a TestStruct using TSimpleJSONProtocol
-TestStruct* deserializeSimpleJSON(MockTransport *mt) {
-  protocol::TSimpleJSONProtocol oprot(mt);
+TestStruct* deserializeSimpleJSON(TMemoryBuffer *mb) {
+  protocol::TSimpleJSONProtocol oprot(mb);
   return deserializeStruct(oprot);
 }
