@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
+#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 #include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
 
 using namespace apache::thrift;
@@ -195,6 +196,18 @@ void serializeCompact(MockTransport *mt, TestStruct *obj) {
 // Deserialize a TestStruct using TCompactProtocol
 TestStruct* deserializeCompact(MockTransport *mt) {
   protocol::TCompactProtocol oprot(mt);
+  return deserializeStruct(oprot);
+}
+
+// Serialize a TestStruct using TJSONProtocol
+void serializeJSON(MockTransport *mt, TestStruct *obj) {
+  protocol::TJSONProtocol oprot(mt);
+  obj->write(&oprot);
+}
+
+// Deserialize a TestStruct using TJSONProtocol
+TestStruct* deserializeJSON(MockTransport *mt) {
+  protocol::TJSONProtocol oprot(mt);
   return deserializeStruct(oprot);
 }
 

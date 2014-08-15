@@ -23,9 +23,9 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TupleSections #-}
 
-module Thrift.Protocol.SimpleJSON
+module Thrift.Protocol.JSON
     ( module Thrift.Protocol
-    , SimpleJSONProtocol(..)
+    , JSONProtocol(..)
     ) where
 
 import Control.Applicative
@@ -34,36 +34,33 @@ import Data.Attoparsec.ByteString as P
 import Data.Attoparsec.ByteString.Char8 as PC
 import Data.Attoparsec.ByteString.Lazy as LP
 import Data.ByteString.Builder as B
-import Data.Functor
 import Data.Int
 import Data.List
-import Data.Maybe (catMaybes)
 import Data.Monoid
 import Data.Text.Lazy.Encoding
 import qualified Data.HashMap.Strict as Map
-import qualified Data.Text.Lazy as LT
 
 import Thrift.Protocol
 import Thrift.Protocol.JSONUtils
 import Thrift.Transport
 import Thrift.Types
 
--- | The Simple JSON Protocol data uses the standard 'TSimpleJSONProtocol'.
--- Data is encoded as a JSON 'ByteString'
-data SimpleJSONProtocol t = SimpleJSONProtocol t
+import qualified Data.ByteString.Lazy as LBS
+import qualified Data.Text.Lazy as LT
+
+-- | The JSON Protocol data uses the standard 'TJSONProtocol'.  Data is
+-- encoded as a JSON 'ByteString'
+data JSONProtocol t = JSONProtocol t
                       -- ^ Construct a 'JSONProtocol' with a 'Transport'
 
-version :: Int32
-version = 1
+instance Protocol JSONProtocol where
+    getTransport (JSONProtocol t) = t
 
-instance Protocol SimpleJSONProtocol where
-    getTransport (SimpleJSONProtocol t) = t
-
-    writeMessage (SimpleJSONProtocol t) (s, ty, sq) =
+    writeMessage (JSONProtocol t) (s, ty, sq) =
       bracket writeMessageBegin writeMessageEnd . const
       where
         writeMessageBegin = tWrite t $ toLazyByteString $
-          "[" <> int32Dec version <>
+          "[" <> int32Dec 1 <>
           ",\"" <> escape (encodeUtf8 s) <> "\"" <>
           "," <> intDec (fromEnum ty) <>
           "," <> int32Dec sq <>
@@ -79,9 +76,10 @@ instance Protocol SimpleJSONProtocol where
             Right str -> do
               ty <- toEnum <$> (lexeme (PC.char8 ',') *>
                                 lexeme (signed decimal))
-              seqNum <- lexeme (PC.char8 ',') *> signed decimal
+              seqNum <- lexeme (PC.char8 ',') *> lexeme (signed decimal)
+              _ <- PC.char8 ','
               return (str, ty, seqNum)
-        readMessageEnd _ = runParser p $ skipSpace *> PC.char8 ']'
+        readMessageEnd _ = runParser p (PC.char8 ']')
 
     serializeVal _ = toLazyByteString . buildJSONValue
     deserializeVal _ ty bs =
@@ -96,10 +94,21 @@ instance Protocol SimpleJSONProtocol where
 
 buildJSONValue :: ThriftVal -> Builder
 buildJSONValue (TStruct fields) = "{" <> buildJSONStruct fields <> "}"
-buildJSONValue (TMap _ _ entries) = "{" <> buildJSONMap entries <> "}"
-buildJSONValue (TList _ entries) = "[" <> buildJSONList entries <> "]"
-buildJSONValue (TSet _ entries) = "[" <> buildJSONList entries <> "]"
-buildJSONValue (TBool b) = if b then "true" else "false"
+buildJSONValue (TMap kt vt entries) =
+  "[\"" <> getTypeName kt <> "\"" <>
+  ",\"" <> getTypeName vt <> "\"" <>
+  "," <> intDec (length entries) <>
+  ",{" <> buildJSONMap entries <> "}" <>
+  "]"
+buildJSONValue (TList ty entries) =
+  "[\"" <> getTypeName ty <> "\"" <>
+  "," <> intDec (length entries) <>
+  (if null entries
+   then mempty
+   else "," <> buildJSONList entries) <>
+  B.char8 ']'
+buildJSONValue (TSet ty entries) = buildJSONValue (TList ty entries)
+buildJSONValue (TBool b) = intDec $ fromEnum b
 buildJSONValue (TByte b) = int8Dec b
 buildJSONValue (TI16 i) = int16Dec i
 buildJSONValue (TI32 i) = int32Dec i
@@ -109,8 +118,13 @@ buildJSONValue (TDouble d) = doubleDec d
 buildJSONValue (TString s) = "\"" <> escape s <> "\""
 
 buildJSONStruct :: Map.HashMap Int16 (LT.Text, ThriftVal) -> Builder
-buildJSONStruct = mconcat . intersperse "," . Map.elems . Map.map (\(str,val) ->
-  "\"" <> B.lazyByteString (encodeUtf8 str) <> "\":" <> buildJSONValue val)
+buildJSONStruct = mconcat . intersperse "," . Map.foldrWithKey buildField []
+  where
+    buildField fid (_,val) = (:) $
+      "\"" <> int16Dec fid <> "\":" <>
+      "{\"" <> getTypeName (getTypeOf val) <> "\":" <>
+      buildJSONValue val <>
+      "}"
 
 buildJSONMap :: [(ThriftVal, ThriftVal)] -> Builder
 buildJSONMap = mconcat . intersperse "," . map buildKV
@@ -122,20 +136,29 @@ buildJSONMap = mconcat . intersperse "," . map buildKV
 buildJSONList :: [ThriftVal] -> Builder
 buildJSONList = mconcat . intersperse "," . map buildJSONValue
 
-
 -- Reading Functions
 
 parseJSONValue :: ThriftType -> Parser ThriftVal
 parseJSONValue (T_STRUCT tmap) =
   TStruct <$> (lexeme (PC.char8 '{') *> parseJSONStruct tmap <* PC.char8 '}')
-parseJSONValue (T_MAP kt vt) =
-  TMap kt vt <$> between '{' '}' (parseJSONMap kt vt)
-parseJSONValue (T_LIST ty) =
-  TList ty <$> between '[' ']' (parseJSONList ty)
-parseJSONValue (T_SET ty) =
-  TSet ty <$> between '[' ']' (parseJSONList ty)
-parseJSONValue T_BOOL =
-  (TBool True <$ string "true") <|> (TBool False <$ string "false")
+parseJSONValue (T_MAP _ _) = between '[' ']' $ do
+  kt <- fromTypeName <$> lexeme escapedString <* lexeme (PC.char8 ',')
+  vt <- fromTypeName <$> lexeme escapedString <* lexeme (PC.char8 ',')
+  TMap kt vt <$> ((lexeme decimal :: Parser Int) *> lexeme (PC.char8 ',') *>
+    between '{' '}' (parseJSONMap kt vt))
+parseJSONValue (T_LIST _) = between '[' ']' $ do
+  ty <- fromTypeName <$> lexeme escapedString <* lexeme (PC.char8 ',')
+  len :: Int <- lexeme decimal
+  TList ty <$> if len > 0
+               then lexeme (PC.char8 ',') *> parseJSONList ty
+               else return []
+parseJSONValue (T_SET _) = between '[' ']' $ do
+  ty <- fromTypeName <$> lexeme escapedString <* lexeme (PC.char8 ',')
+  len :: Int <- lexeme decimal
+  TSet ty <$> if len > 0
+              then lexeme (PC.char8 ',') *> parseJSONList ty
+              else return []
+parseJSONValue T_BOOL = TBool . toEnum <$> decimal
 parseJSONValue T_BYTE = TByte <$> signed decimal
 parseJSONValue T_I16 = TI16 <$> signed decimal
 parseJSONValue T_I32 = TI32 <$> signed decimal
@@ -146,37 +169,15 @@ parseJSONValue T_STRING = TString <$> escapedString
 parseJSONValue T_STOP = fail "parseJSONValue: cannot parse type T_STOP"
 parseJSONValue T_VOID = fail "parseJSONValue: cannot parse type T_VOID"
 
-parseAnyValue :: Parser ()
-parseAnyValue = choice $
-                skipBetween '{' '}' :
-                skipBetween '[' ']' :
-                map (void . parseJSONValue)
-                  [ T_BOOL
-                  , T_I16
-                  , T_I32
-                  , T_I64
-                  , T_FLOAT
-                  , T_DOUBLE
-                  , T_STRING
-                  ]
-  where
-    skipBetween :: Char -> Char -> Parser ()
-    skipBetween a b = between a b $ void (PC.satisfy (\c -> c /= a && c /= b))
-                                          <|> skipBetween a b
-
 parseJSONStruct :: TypeMap -> Parser (Map.HashMap Int16 (LT.Text, ThriftVal))
-parseJSONStruct tmap = Map.fromList . catMaybes <$> parseField
-                       `sepBy` lexeme (PC.char8 ',')
+parseJSONStruct _ = Map.fromList <$> parseField `sepBy` lexeme (PC.char8 ',')
   where
     parseField = do
-      bs <- lexeme escapedString <* lexeme (PC.char8 ':')
-      case decodeUtf8' bs of
-        Left _ -> fail "parseJSONStruct: invalid key encoding"
-        Right str -> case Map.lookup str tmap of
-          Just (fid, ftype) -> do
-            val <- lexeme (parseJSONValue ftype)
-            return $ Just (fid, (str, val))
-          Nothing -> lexeme parseAnyValue *> return Nothing
+      fid <- lexeme (between '"' '"' decimal) <* lexeme (PC.char8 ':')
+      between '{' '}' $ do
+        ty <- fromTypeName <$> lexeme escapedString <* lexeme (PC.char8 ':')
+        val <- lexeme (parseJSONValue ty)
+        return (fid, ("", val))
 
 parseJSONMap :: ThriftType -> ThriftType -> Parser [(ThriftVal, ThriftVal)]
 parseJSONMap kt vt =
@@ -186,3 +187,35 @@ parseJSONMap kt vt =
 
 parseJSONList :: ThriftType -> Parser [ThriftVal]
 parseJSONList ty = lexeme (parseJSONValue ty) `sepBy` lexeme (PC.char8 ',')
+
+getTypeName :: ThriftType -> Builder
+getTypeName ty = case ty of
+  T_STRUCT _ -> "rec"
+  T_MAP _ _  -> "map"
+  T_LIST _   -> "lst"
+  T_SET _    -> "set"
+  T_BOOL     -> "tf"
+  T_BYTE     -> "i8"
+  T_I16      -> "i16"
+  T_I32      -> "i32"
+  T_I64      -> "i64"
+  T_FLOAT    -> "flt"
+  T_DOUBLE   -> "dbl"
+  T_STRING   -> "str"
+  _ -> throw $ ProtocolExn PE_INVALID_DATA "Bad Type"
+
+fromTypeName :: LBS.ByteString -> ThriftType
+fromTypeName ty = case ty of
+  "rec" -> T_STRUCT Map.empty
+  "map" -> T_MAP T_VOID T_VOID
+  "lst" -> T_LIST T_VOID
+  "set" -> T_SET T_VOID
+  "tf"  -> T_BOOL
+  "i8"  -> T_BYTE
+  "i16" -> T_I16
+  "i32" -> T_I32
+  "i64" -> T_I64
+  "flt" -> T_FLOAT
+  "dbl" -> T_DOUBLE
+  "str" -> T_STRING
+  t -> throw $ ProtocolExn PE_INVALID_DATA ("Bad Type: " ++ show t)

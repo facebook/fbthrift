@@ -65,6 +65,9 @@ TestStruct* deserializeBinary(MockTransport*);
 void serializeCompact(MockTransport*, TestStruct*);
 TestStruct* deserializeCompact(MockTransport*);
 
+void serializeJSON(MockTransport*, TestStruct*);
+TestStruct* deserializeJSON(MockTransport*);
+
 void serializeSimpleJSON(MockTransport*, TestStruct*);
 TestStruct* deserializeSimpleJSON(MockTransport*);
 

@@ -24,6 +24,7 @@ module Thrift.Protocol
     ( Protocol(..)
     , ProtocolExn(..)
     , ProtocolExnType(..)
+    , getTypeOf
     , runParser
     , bsToFloating
     ) where
@@ -41,6 +42,7 @@ import Foreign.Ptr (castPtr)
 import Foreign.Storable (Storable, peek, poke)
 import System.IO.Unsafe
 import qualified Data.ByteString as BS
+import qualified Data.HashMap.Strict as Map
 
 import Thrift.Types
 import Thrift.Transport
@@ -96,6 +98,21 @@ data ProtocolExnType
 data ProtocolExn = ProtocolExn ProtocolExnType String
   deriving ( Show, Typeable )
 instance Exception ProtocolExn
+
+getTypeOf :: ThriftVal -> ThriftType
+getTypeOf v =  case v of
+  TStruct{} -> T_STRUCT Map.empty
+  TMap{} -> T_MAP T_VOID T_VOID
+  TList{} -> T_LIST T_VOID
+  TSet{} -> T_SET T_VOID
+  TBool{} -> T_BOOL
+  TByte{} -> T_BYTE
+  TI16{} -> T_I16
+  TI32{} -> T_I32
+  TI64{} -> T_I64
+  TString{} -> T_STRING
+  TFloat{} -> T_FLOAT
+  TDouble{} -> T_DOUBLE
 
 -- | Run an attoparsec Parser using the 'tRead' function of the underlying
 -- transport
