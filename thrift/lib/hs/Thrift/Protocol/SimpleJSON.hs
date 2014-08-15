@@ -23,9 +23,9 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TupleSections #-}
 
-module Thrift.Protocol.JSON
+module Thrift.Protocol.SimpleJSON
     ( module Thrift.Protocol
-    , JSONProtocol(..)
+    , SimpleJSONProtocol(..)
     ) where
 
 import Control.Applicative
@@ -51,18 +51,18 @@ import Thrift.Types
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Text.Lazy as LT
 
--- | The JSON Protocol data uses the standard 'TSimpleJSONProtocol'.  Data is
--- encoded as a JSON 'ByteString'
-data JSONProtocol t = JSONProtocol t
+-- | The Simple JSON Protocol data uses the standard 'TSimpleJSONProtocol'.
+-- Data is encoded as a JSON 'ByteString'
+data SimpleJSONProtocol t = SimpleJSONProtocol t
                       -- ^ Construct a 'JSONProtocol' with a 'Transport'
 
 version :: Int32
 version = 1
 
-instance Protocol JSONProtocol where
-    getTransport (JSONProtocol t) = t
+instance Protocol SimpleJSONProtocol where
+    getTransport (SimpleJSONProtocol t) = t
 
-    writeMessage (JSONProtocol t) (s, ty, sq) =
+    writeMessage (SimpleJSONProtocol t) (s, ty, sq) =
       bracket writeMessageBegin writeMessageEnd . const
       where
         writeMessageBegin = tWrite t $ toLazyByteString $

@@ -38,7 +38,7 @@ import Thrift.Transport.Handle
 import Thrift.Protocol
 import Thrift.Protocol.Binary
 import Thrift.Protocol.Compact
-import Thrift.Protocol.JSON
+import Thrift.Protocol.SimpleJSON
 
 import TestServer
 
@@ -135,7 +135,7 @@ main :: IO Counts
 main = do
   cs <- sequence [ runTest BinaryProtocol
                  , runTest CompactProtocol
-                 , runTest JSONProtocol
+                 , runTest SimpleJSONProtocol
                  ]
   return Counts{ cases    = total cases cs
                , tried    = total tried cs

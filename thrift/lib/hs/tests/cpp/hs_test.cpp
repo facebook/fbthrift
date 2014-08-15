@@ -199,13 +199,13 @@ TestStruct* deserializeCompact(MockTransport *mt) {
 }
 
 // Serialize a TestStruct using TSimpleJSONProtocol
-void serializeJSON(MockTransport *mt, TestStruct *obj) {
+void serializeSimpleJSON(MockTransport *mt, TestStruct *obj) {
   protocol::TSimpleJSONProtocol oprot(mt);
   obj->write(&oprot);
 }
 
 // Deserialize a TestStruct using TSimpleJSONProtocol
-TestStruct* deserializeJSON(MockTransport *mt) {
+TestStruct* deserializeSimpleJSON(MockTransport *mt) {
   protocol::TSimpleJSONProtocol oprot(mt);
   return deserializeStruct(oprot);
 }

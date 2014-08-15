@@ -12,8 +12,8 @@ module Interface
        , c_deserializeBinary
        , c_serializeCompact
        , c_deserializeCompact
-       , c_serializeJSON
-       , c_deserializeJSON
+       , c_serializeSimpleJSON
+       , c_deserializeSimpleJSON
        , c_openMT
        , c_newStructPtr
        , c_freeTestStruct
@@ -237,9 +237,9 @@ foreign import ccall
   c_deserializeCompact :: Ptr MockTransport -> IO (Ptr TestStruct)
 
 foreign import ccall
-  #{ mangled void serializeJSON(MockTransport*, TestStruct*) }
-  c_serializeJSON :: Ptr MockTransport -> Ptr TestStruct -> IO ()
+  #{ mangled void serializeSimpleJSON(MockTransport*, TestStruct*) }
+  c_serializeSimpleJSON :: Ptr MockTransport -> Ptr TestStruct -> IO ()
 
 foreign import ccall
-  #{ mangled TestStruct* deserializeJSON(MockTransport*) }
-  c_deserializeJSON :: Ptr MockTransport -> IO (Ptr TestStruct)
+  #{ mangled TestStruct* deserializeSimpleJSON(MockTransport*) }
+  c_deserializeSimpleJSON :: Ptr MockTransport -> IO (Ptr TestStruct)

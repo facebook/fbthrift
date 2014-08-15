@@ -11,7 +11,7 @@ import Test.QuickCheck.Property
 
 import Thrift.Protocol.Binary
 import Thrift.Protocol.Compact
-import Thrift.Protocol.JSON
+import Thrift.Protocol.SimpleJSON
 import Thrift.Transport
 import Interface
 import Util
@@ -48,8 +48,10 @@ main :: IO ()
 main = aggregateResults
   [ quickCheckWithResult args (propCToHs BinaryProtocol c_serializeBinary)
   , quickCheckWithResult args (propHsToC BinaryProtocol c_deserializeBinary)
-  , quickCheckWithResult args (propCToHs JSONProtocol c_serializeJSON)
-  , quickCheckWithResult args (propHsToC JSONProtocol c_deserializeJSON)
+  , quickCheckWithResult args $
+    propCToHs SimpleJSONProtocol c_serializeSimpleJSON
+  , quickCheckWithResult args $
+    propHsToC SimpleJSONProtocol c_deserializeSimpleJSON
   , quickCheckWithResult args (propCToHs CompactProtocol c_serializeCompact)
   , quickCheckWithResult args (propHsToC CompactProtocol c_deserializeCompact)
   ]
