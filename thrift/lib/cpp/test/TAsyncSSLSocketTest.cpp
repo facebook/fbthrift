@@ -36,6 +36,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/tcp.h>
+#include <folly/io/Cursor.h>
 
 using std::string;
 using std::vector;
@@ -711,6 +712,135 @@ TEST(TAsyncSSLSocketTest, SSLParseClientHelloSuccess) {
   EXPECT_TRUE(server.handshakeVerify_);
   EXPECT_TRUE(server.handshakeSuccess_);
   EXPECT_TRUE(!server.handshakeError_);
+}
+
+TEST(TAsyncSSLSocketTest, SSLParseClientHelloOnePacket) {
+  TEventBase eventBase;
+  auto ctx = std::make_shared<SSLContext>();
+
+  int fds[1];
+  getfds(fds);
+
+  int bufLen = 42;
+  uint8_t majorVersion = 18;
+  uint8_t minorVersion = 25;
+
+  // Create callback buf
+  auto buf = IOBuf::create(bufLen);
+  buf->append(bufLen);
+  folly::io::RWPrivateCursor cursor(buf.get());
+  cursor.write<uint8_t>(SSL3_MT_CLIENT_HELLO);
+  cursor.write<uint16_t>(0);
+  cursor.write<uint8_t>(38);
+  cursor.write<uint8_t>(majorVersion);
+  cursor.write<uint8_t>(minorVersion);
+  cursor.skip(32);
+  cursor.write<uint32_t>(0);
+
+  SSL* ssl = ctx->createSSL();
+  TAsyncSSLSocket::UniquePtr sock(
+      new TAsyncSSLSocket(ctx, &eventBase, fds[0], true));
+  sock->enableClientHelloParsing();
+
+  // Test client hello parsing in one packet
+  TAsyncSSLSocket::clientHelloParsingCallback(
+      0, 0, SSL3_RT_HANDSHAKE, buf->data(), buf->length(), ssl, sock.get());
+  buf.reset();
+
+  auto parsedClientHello = sock->getClientHelloInfo();
+  EXPECT_TRUE(parsedClientHello != nullptr);
+  EXPECT_EQ(parsedClientHello->clientHelloMajorVersion_, majorVersion);
+  EXPECT_EQ(parsedClientHello->clientHelloMinorVersion_, minorVersion);
+}
+
+TEST(TAsyncSSLSocketTest, SSLParseClientHelloTwoPackets) {
+  TEventBase eventBase;
+  auto ctx = std::make_shared<SSLContext>();
+
+  int fds[1];
+  getfds(fds);
+
+  int bufLen = 42;
+  uint8_t majorVersion = 18;
+  uint8_t minorVersion = 25;
+
+  // Create callback buf
+  auto buf = IOBuf::create(bufLen);
+  buf->append(bufLen);
+  folly::io::RWPrivateCursor cursor(buf.get());
+  cursor.write<uint8_t>(SSL3_MT_CLIENT_HELLO);
+  cursor.write<uint16_t>(0);
+  cursor.write<uint8_t>(38);
+  cursor.write<uint8_t>(majorVersion);
+  cursor.write<uint8_t>(minorVersion);
+  cursor.skip(32);
+  cursor.write<uint32_t>(0);
+
+  SSL* ssl = ctx->createSSL();
+  TAsyncSSLSocket::UniquePtr sock(
+      new TAsyncSSLSocket(ctx, &eventBase, fds[0], true));
+  sock->enableClientHelloParsing();
+
+  // Test parsing with two packets with first packet size < 3
+  auto bufCopy = folly::IOBuf::copyBuffer(buf->data(), 2);
+  TAsyncSSLSocket::clientHelloParsingCallback(
+      0, 0, SSL3_RT_HANDSHAKE, bufCopy->data(), bufCopy->length(),
+      ssl, sock.get());
+  bufCopy.reset();
+  bufCopy = folly::IOBuf::copyBuffer(buf->data() + 2, buf->length() - 2);
+  TAsyncSSLSocket::clientHelloParsingCallback(
+      0, 0, SSL3_RT_HANDSHAKE, bufCopy->data(), bufCopy->length(),
+      ssl, sock.get());
+  bufCopy.reset();
+
+  auto parsedClientHello = sock->getClientHelloInfo();
+  EXPECT_TRUE(parsedClientHello != nullptr);
+  EXPECT_EQ(parsedClientHello->clientHelloMajorVersion_, majorVersion);
+  EXPECT_EQ(parsedClientHello->clientHelloMinorVersion_, minorVersion);
+}
+
+TEST(TAsyncSSLSocketTest, SSLParseClientHelloMultiplePackets) {
+  TEventBase eventBase;
+  auto ctx = std::make_shared<SSLContext>();
+
+  int fds[1];
+  getfds(fds);
+
+  int bufLen = 42;
+  uint8_t majorVersion = 18;
+  uint8_t minorVersion = 25;
+
+  // Create callback buf
+  auto buf = IOBuf::create(bufLen);
+  buf->append(bufLen);
+  folly::io::RWPrivateCursor cursor(buf.get());
+  cursor.write<uint8_t>(SSL3_MT_CLIENT_HELLO);
+  cursor.write<uint16_t>(0);
+  cursor.write<uint8_t>(38);
+  cursor.write<uint8_t>(majorVersion);
+  cursor.write<uint8_t>(minorVersion);
+  cursor.skip(32);
+  cursor.write<uint32_t>(0);
+
+  SSL* ssl = ctx->createSSL();
+  TAsyncSSLSocket::UniquePtr sock(
+      new TAsyncSSLSocket(ctx, &eventBase, fds[0], true));
+  sock->enableClientHelloParsing();
+
+  // Test parsing with multiple small packets
+  for (int i = 0; i < buf->length(); i += 3) {
+    auto bufCopy = folly::IOBuf::copyBuffer(
+        buf->data() + i, std::min((uint64_t)3, buf->length() - i));
+    TAsyncSSLSocket::clientHelloParsingCallback(
+        0, 0, SSL3_RT_HANDSHAKE, bufCopy->data(), bufCopy->length(),
+        ssl, sock.get());
+    bufCopy.reset();
+  }
+
+  auto parsedClientHello = sock->getClientHelloInfo();
+  EXPECT_TRUE(parsedClientHello != nullptr);
+  EXPECT_EQ(parsedClientHello->clientHelloMajorVersion_, majorVersion);
+  EXPECT_EQ(parsedClientHello->clientHelloMinorVersion_, minorVersion);
 }
 
 /**

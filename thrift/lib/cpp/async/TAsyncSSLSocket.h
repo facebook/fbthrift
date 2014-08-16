@@ -624,6 +624,20 @@ class TAsyncSSLSocket : public TAsyncSocket {
   static void clientHelloParsingCallback(int write_p, int version,
       int content_type, const void *buf, size_t len, SSL *ssl, void *arg);
 
+  struct ClientHelloInfo {
+    folly::IOBufQueue clientHelloBuf_;
+    uint8_t clientHelloMajorVersion_;
+    uint8_t clientHelloMinorVersion_;
+    std::vector<uint16_t> clientHelloCipherSuites_;
+    std::vector<uint8_t> clientHelloCompressionMethods_;
+    std::vector<uint16_t> clientHelloExtensions_;
+  };
+
+  // For unit-tests
+  ClientHelloInfo* getClientHelloInfo() {
+    return clientHelloInfo_.get();
+  }
+
  protected:
 
   /**
@@ -727,14 +741,6 @@ class TAsyncSSLSocket : public TAsyncSocket {
   static int sslVerifyCallback(int preverifyOk, X509_STORE_CTX* ctx);
 
   bool parseClientHello_{false};
-  struct ClientHelloInfo {
-    folly::IOBufQueue clientHelloBuf_;
-    uint8_t clientHelloMajorVersion_;
-    uint8_t clientHelloMinorVersion_;
-    std::vector<uint16_t> clientHelloCipherSuites_;
-    std::vector<uint8_t> clientHelloCompressionMethods_;
-    std::vector<uint16_t> clientHelloExtensions_;
-  };
   unique_ptr<ClientHelloInfo> clientHelloInfo_;
 };
 

@@ -1396,23 +1396,29 @@ TAsyncSSLSocket::clientHelloParsingCallback(int written, int version,
     return;
   }
 
-  sock->clientHelloInfo_->clientHelloBuf_.append(IOBuf::copyBuffer(buf, len));
+  auto& clientHelloBuf = sock->clientHelloInfo_->clientHelloBuf_;
+  clientHelloBuf.append(IOBuf::wrapBuffer(buf, len));
   try {
-    Cursor cursor(sock->clientHelloInfo_->clientHelloBuf_.front());
+    Cursor cursor(clientHelloBuf.front());
     if (cursor.read<uint8_t>() != SSL3_MT_CLIENT_HELLO) {
       sock->resetClientHelloParsing(ssl);
       return;
     }
 
-    if (cursor.length() < 3) {
+    if (cursor.totalLength() < 3) {
+      clientHelloBuf.trimEnd(len);
+      clientHelloBuf.append(IOBuf::copyBuffer(buf, len));
       return;
     }
+
     uint32_t messageLength = cursor.read<uint8_t>();
     messageLength <<= 8;
     messageLength |= cursor.read<uint8_t>();
     messageLength <<= 8;
     messageLength |= cursor.read<uint8_t>();
-    if (cursor.length() < messageLength) {
+    if (cursor.totalLength() < messageLength) {
+      clientHelloBuf.trimEnd(len);
+      clientHelloBuf.append(IOBuf::copyBuffer(buf, len));
       return;
     }
 
@@ -1436,7 +1442,7 @@ TAsyncSSLSocket::clientHelloParsingCallback(int written, int version,
         clientHelloCompressionMethods_.push_back(cursor.readBE<uint8_t>());
     }
 
-    if (cursor.length() > 0) {
+    if (cursor.totalLength() > 0) {
       uint16_t extensionsLength = cursor.readBE<uint16_t>();
       while (extensionsLength) {
         sock->clientHelloInfo_->
