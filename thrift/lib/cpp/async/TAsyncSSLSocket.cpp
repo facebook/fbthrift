@@ -214,7 +214,7 @@ void setup_SSL_CTX(SSL_CTX *ctx) {
 
 BIO_METHOD eorAwareBioMethod;
 
-__attribute__((constructor))
+__attribute__((__constructor__))
 void initEorBioMethod(void) {
   memcpy(&eorAwareBioMethod, BIO_s_socket(), sizeof(eorAwareBioMethod));
   // override the bwrite method for MSG_EOR support

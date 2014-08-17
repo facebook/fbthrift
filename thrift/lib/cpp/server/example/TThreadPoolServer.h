@@ -34,7 +34,7 @@ using apache::thrift::protocol::TProtocolFactory;
 using apache::thrift::transport::TServerTransport;
 using apache::thrift::transport::TTransportFactory;
 
-class __attribute__((deprecated)) TThreadPoolServer : public TServer {
+class __attribute__((__deprecated__)) TThreadPoolServer : public TServer {
  public:
   template<typename ProcessorFactory>
   TThreadPoolServer(

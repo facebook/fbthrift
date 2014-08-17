@@ -32,7 +32,7 @@ namespace apache { namespace thrift { namespace server {
  * of how to extend the TServer interface.
  *
  */
-class __attribute__((deprecated)) TSimpleServer : public TServer {
+class __attribute__((__deprecated__)) TSimpleServer : public TServer {
  public:
   template<typename ProcessorFactory>
   TSimpleServer(

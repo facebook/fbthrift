@@ -29,7 +29,7 @@ class TSimpleServer;
 
 namespace util {
 
-class __attribute__((deprecated)) TSimpleServerCreator : public SyncServerCreator {
+class __attribute__((__deprecated__)) TSimpleServerCreator : public SyncServerCreator {
  public:
   // "Deprecated factory for TSimpleServer"
   #pragma GCC diagnostic push

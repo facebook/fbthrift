@@ -32,7 +32,7 @@ class TThreadPoolServer;
 
 namespace util {
 
-class __attribute__((deprecated)) TThreadPoolServerCreator
+class __attribute__((__deprecated__)) TThreadPoolServerCreator
     : public SyncServerCreator {
  public:
   // "Deprecated factory for TThreadPoolServer"

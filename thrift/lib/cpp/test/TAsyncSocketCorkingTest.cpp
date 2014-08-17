@@ -159,13 +159,13 @@ void createSSLSocketPair(TEventBase* eventBase,
   eventBase->loop();
 }
 
-struct __attribute__((packed)) EthernetHeader {
+struct __attribute__((__packed__)) EthernetHeader {
   uint8_t dst[6];
   uint8_t src[6];
   uint16_t type;
 };
 
-struct __attribute__((packed)) IPv4Header {
+struct __attribute__((__packed__)) IPv4Header {
   uint8_t versionAndHeader;
   uint8_t dscp;
   uint16_t totalLen;
@@ -178,7 +178,7 @@ struct __attribute__((packed)) IPv4Header {
   uint32_t dst;
 };
 
-struct __attribute__((packed)) TCPHeader {
+struct __attribute__((__packed__)) TCPHeader {
   uint16_t srcPort;
   uint16_t dstPort;
   uint32_t seq;

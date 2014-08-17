@@ -164,7 +164,7 @@ class ThreadLocal {
 template <typename T>
 class DefaultThreadLocalManager {
  public:
-  T* allocate() __attribute__((deprecated)) {
+  T* allocate() __attribute__((__deprecated__)) {
     return new T;
   }
 
@@ -182,7 +182,7 @@ class DefaultThreadLocalManager {
 template <typename T>
 class DestroyOnlyThreadLocalManager {
  public:
-  T* allocate() __attribute__((deprecated))  {
+  T* allocate() __attribute__((__deprecated__))  {
     return nullptr;
   }
 
