@@ -198,9 +198,6 @@ class CppGenerator(t_generator.Generator):
             else:
                 return cname
 
-        if ttype.is_stream:
-            raise TypeError('CANNOT DETERMINE C++ TYPE FOR stream TYPE')
-
         if in_typedef and (ttype.is_struct or ttype.is_xception) and \
                 ttype.program == self._program:
             if self.flag_compatibility:
@@ -454,8 +451,6 @@ class CppGenerator(t_generator.Generator):
             suffix = 'T_SET'
         elif t.is_list:
             suffix = 'T_LIST'
-        elif t.is_stream:
-            suffix = 'T_STREAM'
         if suffix is None:
             raise TypeError('INVALID TYPE IN type_to_enum: ' + t.name)
         return 'apache::thrift::protocol::' + suffix
@@ -518,9 +513,6 @@ class CppGenerator(t_generator.Generator):
         self._generate_processor(service, s)
         self._generate_service_client(service, s)
         self._generate_service_helpers(service, s)
-
-        if self._service_uses_streams(service):
-            self._generate_service_stream_serializer(service, s)
 
         # make sure that the main types namespace is closed
         s.release()
@@ -613,116 +605,6 @@ class CppGenerator(t_generator.Generator):
                                                swap=False,
                                                result=True)
 
-    def _service_uses_streams(self, service):
-        for function in service.functions:
-            if self._function_uses_streams(function):
-                return True
-        return False
-
-    def _generate_service_stream_serializer(self, service, s):
-        class_signature = 'class {0}StreamSerializer'.format(service.name)
-        with s.cls(class_signature):
-            out().label('public:')
-
-            generated_stream_types = set()
-            for function in service.functions:
-                for arg_type in [arg.type for arg in function.arglist.members]:
-                    if arg_type.is_stream:
-                        type = self._get_true_type(arg_type)
-                        type = type.as_stream.elem_type
-                        true_type = self._get_true_type(type)
-                        type_name = self._type_name(true_type)
-                        if type_name not in generated_stream_types:
-                            self._generate_stream_type_serializer(type)
-                            self._generate_stream_type_deserializer(type)
-                            generated_stream_types.add(type_name)
-                            out("")
-
-                if self._function_uses_streams(function):
-                    return_type = function.returntype
-                    if not return_type.is_void:
-                        type = return_type
-                        if type.is_stream:
-                            type = self._get_true_type(type)
-                            type = type.as_stream.elem_type
-                        true_type = self._get_true_type(type)
-                        type_name = self._type_name(true_type)
-                        if type_name not in generated_stream_types:
-                            self._generate_stream_type_serializer(type)
-                            self._generate_stream_type_deserializer(type)
-                            generated_stream_types.add(type_name)
-                            out("")
-
-                    self._generate_function_exception_serializer(function)
-                    self._generate_function_exception_deserializer(function)
-                    out("")
-
-    def _generate_stream_type_serializer(self, type):
-        type_name = self._type_name(type)
-        with out().defn('template<typename Writer>\n'
-                    'uint32_t {name}(Writer& writer, const ' + type_name +
-                    '& value)',
-                    name='serialize',
-                    modifiers='static',
-                    output=self._out_tcc):
-            out('Writer * prot_ = &writer;')
-            out('uint32_t xfer = 0;')
-            ttype = self._get_true_type(type)
-            self._generate_serialize_type(out(), ttype, 'value')
-            out('return xfer;')
-
-    def _generate_stream_type_deserializer(self, type):
-        type_name = self._type_name(type)
-        with out().defn('template<typename Reader>\n'
-                    'uint32_t {name}(Reader& reader, ' + type_name + '& value)',
-                    name='deserialize',
-                    modifiers='static',
-                    output=self._out_tcc):
-            out('Reader * iprot = &reader;')
-            out('uint32_t xfer = 0;')
-            ttype = self._get_true_type(type)
-            self._generate_deserialize_type(out(), ttype, 'value')
-            out('return xfer;')
-
-    def _generate_function_exception_serializer(self, function):
-        with out().defn('void {name}(apache::thrift::StreamWriter& writer, '
-                    'const std::exception_ptr& exception)',
-                    name=function.name + 'ExceptionSerializer',
-                    modifiers='static'):
-
-            with out('try'):
-                out('std::rethrow_exception(exception);')
-
-                for exception_field in function.xceptions.members:
-                    exception_type = self._type_name(exception_field.type)
-
-                    with out().catch('const ' + exception_type + '& e'):
-                        out('writer.writeExceptionItem({exception_id}, e);'
-                          .format(exception_id=exception_field.key))
-
-                with out().catch('...'):
-                    out('throw;')
-
-    def _generate_function_exception_deserializer(self, function):
-        with out().defn('std::exception_ptr {name}('
-                    'apache::thrift::StreamReader& reader)',
-                    name=function.name + 'ExceptionDeserializer',
-                    modifiers='static'):
-
-            out('int16_t exceptionId = reader.readExceptionId();')
-
-            with out('switch(exceptionId)'):
-                for exception_field in function.xceptions.members:
-                    exception_type = self._type_name(exception_field.type)
-                    with out().case(str(exception_field.key), nobreak=True):
-                        out('return reader.readExceptionItem<{exception_type}>();'
-                                .format(exception_type=exception_type))
-
-                with out().case('default', nobreak=True):
-                    out('reader.skipException();')
-                    out('return std::make_exception_ptr(apache::thrift::'
-                      'TApplicationException("Unknown exception received."));')
-
     def _generate_service_client(self, service, s):
         classname = service.name + "AsyncClient"
         if not service.extends:
@@ -782,14 +664,12 @@ class CppGenerator(t_generator.Generator):
                 self._generate_client_sync_function(service, function,
                                                     uses_rpc_options=True)
 
-                if not self._function_uses_streams(function):
-                    self._generate_client_std_function(function)
-                    self._generate_client_std_function(function,
-                                                       name_prefix="functor_")
+                self._generate_client_std_function(function)
+                self._generate_client_std_function(function,
+                                                   name_prefix="functor_")
 
                 if self.flag_future:
-                    if not self._function_uses_streams(function):
-                        self._generate_client_future_gate_function(function)
+                    self._generate_client_future_gate_function(function)
 
                     self._generate_client_future_function(service, function)
                     self._generate_client_future_function(service, function,
@@ -830,9 +710,8 @@ class CppGenerator(t_generator.Generator):
                    modifiers='virtual',
                    in_header=True).scope.empty()
             for function in service.functions:
-                if self._function_uses_streams(function) or \
-                  (not self.flag_future and
-                   not self._is_processed_in_eb(function)):
+                if not self.flag_future and \
+                   not self._is_processed_in_eb(function):
                     with out().defn(
                             self._get_process_function_signature(service,
                                                                  function),
@@ -840,7 +719,6 @@ class CppGenerator(t_generator.Generator):
                             modifiers='virtual'):
                         if not function.oneway and \
                           not function.returntype.is_void and \
-                          not self._function_uses_streams(function) and \
                           not self._is_complex_type(function.returntype):
                             out('return ' +
                               self._default_value(function.returntype) + ';')
@@ -867,9 +745,7 @@ class CppGenerator(t_generator.Generator):
                        name="async_" + function.name,
                        modifiers='virtual',
                        delete=True)
-                if self.flag_future and not self._function_uses_streams(
-                    function
-                ):
+                if self.flag_future:
                     out().defn(self._get_process_function_signature_future(
                             service, function),
                            name="future_" + function.name,
@@ -901,28 +777,26 @@ class CppGenerator(t_generator.Generator):
                   'new {0}AsyncProcessor(({0}SvIf*)this));'.format(
                           service.name))
             for function in service.functions:
-                if not self._function_uses_streams(function):
-                    with out().defn(self._get_prio_function_signature(service,
-                                                                  function),
-                                name="getprio_" + function.name):
-                        if function.annotations is not None and \
-                                'priority' in function.annotations.annotations:
-                            prio = function.annotations.annotations['priority']
-                        elif 'priority' in service.annotations:
-                            prio = service.annotations['priority']
-                        else:
-                            prio = 'NORMAL'
-                        PTM = 'apache::thrift::concurrency'
-                        priovar = self.tmp('prio')
-                        out('{0}::PRIORITY {1} = reqCtx->getHeader()->'
-                          'getCallPriority();'.format(PTM, priovar))
-                        with out('if ({0} != {1}::N_PRIORITIES)'.format(
-                               priovar, PTM)):
-                            out('return {0};'.format(priovar))
-                        out('return {0}::{1};'.format(PTM, prio))
-                if self._function_uses_streams(function) or \
-                  (not self.flag_future and
-                   not self._is_processed_in_eb(function)):
+                with out().defn(self._get_prio_function_signature(service,
+                                                              function),
+                            name="getprio_" + function.name):
+                    if function.annotations is not None and \
+                            'priority' in function.annotations.annotations:
+                        prio = function.annotations.annotations['priority']
+                    elif 'priority' in service.annotations:
+                        prio = service.annotations['priority']
+                    else:
+                        prio = 'NORMAL'
+                    PTM = 'apache::thrift::concurrency'
+                    priovar = self.tmp('prio')
+                    out('{0}::PRIORITY {1} = reqCtx->getHeader()->'
+                      'getCallPriority();'.format(PTM, priovar))
+                    with out('if ({0} != {1}::N_PRIORITIES)'.format(
+                           priovar, PTM)):
+                        out('return {0};'.format(priovar))
+                    out('return {0}::{1};'.format(PTM, prio))
+                if not self.flag_future and \
+                   not self._is_processed_in_eb(function):
                     with out().defn(self._get_process_function_signature(service,
                                                                      function),
                                 name=function.name,
@@ -932,7 +806,6 @@ class CppGenerator(t_generator.Generator):
                           .format(function.name))
                         if not function.oneway and \
                           not function.returntype.is_void and \
-                          not self._function_uses_streams(function) and \
                           not self._is_complex_type(function.returntype):
                             out('return ' +
                               self._default_value(function.returntype) + ';')
@@ -946,14 +819,10 @@ class CppGenerator(t_generator.Generator):
                            name=function.name,
                            modifiers='virtual',
                            delete=True)
-                if self._function_uses_streams(function):
-                    self._generate_server_async_stream_function(service,
+                if self.flag_future:
+                    self._generate_server_future_function(service, function)
+                self._generate_server_async_function(service,
                                                                 function)
-                else:
-                    if self.flag_future:
-                        self._generate_server_future_function(service, function)
-                    self._generate_server_async_non_stream_function(service,
-                                                                    function)
 
     def _generate_server_future_function(self, service, function):
         with out().defn(self._get_process_function_signature_future(service,
@@ -976,7 +845,7 @@ class CppGenerator(t_generator.Generator):
               .format(promise=promise_name))
             out("return {future};".format(future=future_name))
 
-    def _generate_server_async_non_stream_function(self, service, function):
+    def _generate_server_async_function(self, service, function):
         with out().defn(self._get_process_function_signature_async(service,
                                                                    function),
                     name=self._get_async_func_name(function),
@@ -1092,99 +961,13 @@ class CppGenerator(t_generator.Generator):
                             out("callbackp->deleteInThread();")
                 out('setConnectionContext(nullptr);')
 
-    def _generate_server_async_stream_function(self, service, function):
-        serializer = "{service}StreamSerializer".format(service=service.name)
-
-        with out().defn(self._get_process_function_signature_async(service,
-                                                               function),
-                    name=self._get_async_func_name(function),
-                    modifiers='virtual'):
-
-            args = []
-            for member in function.arglist.members:
-                if not member.type.is_stream and \
-                   self._is_complex_type(member.type) and \
-                   not self.flag_stack_arguments:
-                    args.append("std::move({0})".format(member.name))
-                else:
-                    args.append(member.name)
-
-            if not function.returntype.is_void:
-                template = ("apache::thrift::AsyncOutputStream<{type}> "
-                            "_return;")
-                out(self._format_stream_declaration(template,
-                                                  function.returntype))
-                args.insert(0, "_return")
-
-            for arg in function.arglist.members:
-                if arg.type.is_stream:
-                    template = ("apache::thrift::AsyncInputStream<{type}> "
-                                "{name};")
-                    out(self._format_stream_declaration(template,
-                                                      arg.type,
-                                                      arg.name))
-            with out("try"):
-                out("{name}({args});"
-                  .format(name=function.name, args=", ".join(args)))
-                out("")
-
-                out("apache::thrift::StreamSource::StreamMap sourceMap;")
-                for arg in function.arglist.members:
-                    if arg.type.is_stream:
-                        type_enum = self._stream_type_to_enum(arg.type)
-                        handler = "_{arg}Handler".format(arg=arg.name)
-
-                        out("auto {handler} = {arg}.makeHandler<{ser}>();"
-                          .format(handler=handler,
-                                  arg=arg.name,
-                                  ser=serializer))
-                        with out("if ({0})".format(handler)):
-                            out("{handler}->setType({enum});"
-                              .format(handler=handler, enum=type_enum))
-                            out("sourceMap[{key}] = std::move({handler});"
-                              .format(key=arg.key, handler=handler))
-                out("")
-
-                out("apache::thrift::StreamSink::StreamMap sinkMap;")
-                if not function.returntype.is_void:
-                    type_enum = self._stream_type_to_enum(
-                            function.returntype)
-
-                    out("auto _returnHandler = _return.makeHandler<{ser}>();"
-                      .format(ser=serializer))
-                    with out("if (_returnHandler)"):
-                        out("_returnHandler->setType({enum});"
-                          .format(enum=type_enum))
-                        out("sinkMap[0] = std::move(_returnHandler);")
-                out("")
-
-                prefix = ("{service}StreamSerializer::{func}Exception"
-                         .format(service=service.name, func=function.name))
-                out("apache::thrift::StreamManager * stream = ")
-                out("     new apache::thrift::StreamManager(")
-                out("         callback->getEventBase(),")
-                out("         std::move(sourceMap),")
-                out("         {prefix}Deserializer,".format(prefix=prefix))
-                out("         std::move(sinkMap),")
-                out("         {prefix}Serializer);".format(prefix=prefix))
-                out()
-
-                out("callback->result(stream);")
-
-                with out().catch("..."):
-                    out("callback->exception("
-                      "std::current_exception());")
-
-
     def _get_process_function_signature_async(self, service, function):
         sig = 'void {name}('
         if function.oneway:
             sig += 'std::unique_ptr<apache::thrift::HandlerCallbackBase>' + \
                 ' callback'
         else:
-            if self._function_uses_streams(function):
-                rettype = 'apache::thrift::StreamManager *'
-            elif self._is_complex_type(function.returntype) and \
+            if self._is_complex_type(function.returntype) and \
                  not self.flag_stack_arguments:
                 rettype = self._type_name(function.returntype)
                 rettype = 'std::unique_ptr<' + rettype + '>'
@@ -1211,18 +994,9 @@ class CppGenerator(t_generator.Generator):
         return sig
 
     def _get_process_function_signature(self, service, function):
-        stream_type = "apache::thrift::AsyncInputStream<{type}>&"
         addcomma = False
         if not function.oneway:
-            if self._function_uses_streams(function) and \
-                    not function.returntype.is_void:
-                template = "apache::thrift::AsyncOutputStream<{type}>& _return"
-                ret_arg = self._format_stream_declaration(template,
-                                                          function.returntype)
-                sig = ('void {name}(' + ret_arg)
-                addcomma = True
-
-            elif self._is_complex_type(function.returntype):
+            if self._is_complex_type(function.returntype):
                 sig = 'void {name}' + '({0}& _return'.format(
                     self._type_name(function.returntype))
                 addcomma = True
@@ -1231,8 +1005,7 @@ class CppGenerator(t_generator.Generator):
                 sig += ' {name}('
         else:
             sig = 'void {name}('
-        sig += self._argument_list(function.arglist, addcomma, unique=True,
-                                   stream_type=stream_type)
+        sig += self._argument_list(function.arglist, addcomma, unique=True)
         sig += ')'
         return sig
 
@@ -1300,8 +1073,6 @@ class CppGenerator(t_generator.Generator):
                 val = self._member_default_value(field)
             if self.flag_stack_arguments:
                 pass
-            elif t.is_stream:
-                pass
             elif self._is_complex_type(field.type):
                 out('std::unique_ptr<{0}> {1}(new {0}({2}));'.format(
                         self._type_name(field.type), aprefix + field.name, val))
@@ -1334,9 +1105,7 @@ class CppGenerator(t_generator.Generator):
                                       False, out, False, 'PROTOCOL_ERROR')
         args = []
         for member in function.arglist.members:
-            if member.type.is_stream:
-                pass
-            elif self.flag_stack_arguments:
+            if self.flag_stack_arguments:
                 args.append("args." + member.name)
             elif self._is_complex_type(member.type):
                 args.append("std::move({0})".format(
@@ -1348,9 +1117,7 @@ class CppGenerator(t_generator.Generator):
               'new apache::thrift::HandlerCallbackBase(std::move(req), ' +
               'std::move(c), nullptr, nullptr, eb, tm, ctx));')
         else:
-            if self._function_uses_streams(function):
-                rettype = ('apache::thrift::StreamManager *')
-            elif self._is_complex_type(function.returntype) and \
+            if self._is_complex_type(function.returntype) and \
                     not self.flag_stack_arguments:
                 rettype = self._type_name(function.returntype)
                 rettype = 'std::unique_ptr<' + rettype + '>'
@@ -1570,10 +1337,7 @@ class CppGenerator(t_generator.Generator):
                         'int32_t protoSeqId',
                         'std::unique_ptr<apache::thrift::ContextStack> ctx']
 
-                    if self._function_uses_streams(function):
-                        args.append("apache::thrift::StreamManager"
-                                    "* const& _return")
-                    elif not function.returntype.is_void:
+                    if not function.returntype.is_void:
                         args.append("{0} const& _return".format(
                                 self._type_name(function.returntype)))
 
@@ -1584,12 +1348,6 @@ class CppGenerator(t_generator.Generator):
                                 name="return_{0}".format(function.name),
                                 output=self._out_tcc,
                                 modifiers='static'):
-                        if self._function_uses_streams(function):
-                            out('_return->setInputProtocol('
-                              'ProtocolIn_::protocolType());')
-                            out('_return->setOutputProtocol('
-                             'ProtocolOut_::protocolType());')
-                            out("")
                         out('ProtocolOut_ prot;')
                         result_type = '{0}_{1}_presult'.format(
                                 service.name, function.name)
@@ -1734,8 +1492,7 @@ class CppGenerator(t_generator.Generator):
                     args_list = ", ".join(args)
                     out("sync_{name}({args_list});".format(name=function.name,
                                                          args_list=args_list))
-                elif self._function_uses_streams(function) or \
-                     not self._is_complex_type(function.returntype):
+                elif not self._is_complex_type(function.returntype):
                     args = ["::apache::thrift::RpcOptions()"]
                     args.extend(common_args)
                     args_list = ", ".join(args)
@@ -1749,44 +1506,6 @@ class CppGenerator(t_generator.Generator):
 
                     out("sync_{name}({args_list});"
                          .format(name=function.name, args_list=args_list))
-
-            elif self._function_uses_streams(function):
-                serializer = service.name + "StreamSerializer"
-                stream = self.tmp("stream")
-
-                args = ["rpcOptions"]
-                if function.returntype.is_stream:
-                    template = ("apache::thrift::SyncInputStream<{type}> "
-                                "{name};")
-                    out(self._format_stream_declaration(template,
-                                                      function.returntype,
-                                                      stream))
-                    args.append("{stream}.makeHandler<{serializer}>()"
-                        .format(stream=stream, serializer=serializer))
-                elif not function.returntype.is_void:
-                    template = ("apache::thrift::StreamSingleton<{type}> "
-                                "{name};")
-                    out(self._format_stream_declaration(template,
-                                                      function.returntype,
-                                                      stream))
-                    args.append("{stream}.makeHandler<{serializer}>()"
-                        .format(stream=stream, serializer=serializer))
-
-                for arg in function.arglist.members:
-                    if not arg.type.is_stream:
-                        args.append(arg.name)
-                    else:
-                        args.append("{name}.makeHandler<{serializer}>()"
-                            .format(name=arg.name, serializer=serializer))
-
-                args.append("nullptr")
-
-                args_list = ", ".join(args)
-
-                out("{name}({args});".format(name=function.name, args=args_list))
-
-                if not function.returntype.is_void:
-                    out("return std::move({stream});".format(stream=stream))
 
             else:
                 out('apache::thrift::ClientReceiveState _returnState;')
@@ -1834,26 +1553,16 @@ class CppGenerator(t_generator.Generator):
 
         if function.returntype.is_void:
             return_type = "void"
-        elif function.returntype.is_stream:
-            stream_type = self._get_true_type(function.returntype).as_stream
-            inner_type = self._type_name(stream_type.elem_type)
-            return_type = "apache::thrift::SyncInputStream<" + inner_type + ">"
-        elif self._function_uses_streams(function):
-            type_name = self._type_name(function.returntype)
-            return_type = "apache::thrift::StreamSingleton<" + type_name + ">"
         elif not self._is_complex_type(function.returntype):
             return_type = self._type_name(function.returntype)
         else:
             return_type = "void"
             params.append(self._type_name(function.returntype) + "& _return")
 
-        stream_type = "apache::thrift::SyncOutputStream<{type}>&"
-
         param_list = ", ".join(params)
         param_list += self._argument_list(function.arglist,
                                           add_comma=bool(params),
-                                          unique=False,
-                                          stream_type=stream_type)
+                                          unique=False)
 
         return return_type + " {name}(" + param_list + ")"
 
@@ -1862,14 +1571,9 @@ class CppGenerator(t_generator.Generator):
 
         with out().defn(signature, name="future_" + function.name,
                     modifiers='virtual'):
-            if function.returntype.is_stream:
-                return_type = "void"
-            else:
-                return_type = self._type_name(function.returntype)
+            return_type = self._type_name(function.returntype)
 
             args = ["::apache::thrift::RpcOptions()"]
-            if function.returntype.is_stream:
-                args.append("_return")
 
             args.extend([arg.name for arg in function.arglist.members])
             args_list = ", ".join(args)
@@ -1880,22 +1584,13 @@ class CppGenerator(t_generator.Generator):
     def _get_future_gate_function_signature(self, function):
         params = ["folly::wangle::ThreadGate* gate"]
 
-        if function.returntype.is_stream:
-            return_type = "folly::wangle::Future<void>"
-            template = "apache::thrift::AsyncInputStream<{type}>& _return"
-            params.append(self._format_stream_declaration(template,
-                                                          function.returntype))
-        else:
-            result_type = self._type_name(function.returntype)
-            return_type = "folly::wangle::Future<" + result_type + ">"
-
-        stream_type = "apache::thrift::AsyncOutputStream<{type}>&"
+        result_type = self._type_name(function.returntype)
+        return_type = "folly::wangle::Future<" + result_type + ">"
 
         param_list = ", ".join(params)
         param_list += self._argument_list(function.arglist,
                                           add_comma=bool(params),
-                                          unique=False,
-                                          stream_type=stream_type)
+                                          unique=False)
 
         return return_type + " {name}(" + param_list + ")"
 
@@ -1909,8 +1604,6 @@ class CppGenerator(t_generator.Generator):
                     modifiers='virtual'):
             if not uses_rpc_options:
                 args = ["::apache::thrift::RpcOptions()"]
-                if function.returntype.is_stream:
-                    args.append("_return")
 
                 args.extend([arg.name for arg in function.arglist.members])
                 args_list = ", ".join(args)
@@ -1918,23 +1611,13 @@ class CppGenerator(t_generator.Generator):
                 out("return {function}({args});"
                       .format(function=function_name, args=args_list))
             else:
-                serializer_name = service.name + "StreamSerializer"
-
                 common_args = []
                 for arg in function.arglist.members:
-                    if not arg.type.is_stream:
-                        common_args.append(arg.name)
-                    else:
-                        common_args.append("{name}.makeHandler<{serializer}>()"
-                                           .format(name=arg.name,
-                                                   serializer=serializer_name))
+                    common_args.append(arg.name)
 
                 promise_name = self.tmp("promise")
 
-                if function.returntype.is_stream:
-                    return_type = "void"
-                else:
-                    return_type = self._type_name(function.returntype)
+                return_type = self._type_name(function.returntype)
 
                 out("folly::wangle::Promise<{type}> {promise};"
                   .format(type=return_type, promise=promise_name))
@@ -1948,22 +1631,7 @@ class CppGenerator(t_generator.Generator):
 
                 callback = self.tmp("callback")
 
-                if (function.returntype.is_stream or
-                   (function.returntype.is_void and
-                   self._function_takes_stream_args(function))):
-
-                    if function.returntype.is_stream:
-                        args.append("_return.makeHandler<{serializer}>()"
-                                      .format(serializer=serializer_name))
-
-                    out("std::unique_ptr<apache::thrift::StreamEndCallback> "
-                      "{callback}(new apache::thrift::FutureStreamEndCallback("
-                      "std::move({promise})));"
-                      .format(callback=callback, promise=promise_name))
-
-                    end_args.append("std::move({0})".format(callback))
-
-                elif function.returntype.is_void:
+                if function.returntype.is_void:
                     out("std::unique_ptr<apache::thrift::RequestCallback> "
                       "{callback}("
                       "new apache::thrift::FutureCallback<void>("
@@ -1973,29 +1641,6 @@ class CppGenerator(t_generator.Generator):
                               isOneWay=str(function.oneway).lower()))
 
                     args.append("std::move({0})".format(callback))
-
-                elif self._function_takes_stream_args(function):
-                    stream = self.tmp("stream")
-                    type_name = self._type_name(function.returntype)
-
-                    out("apache::thrift::AsyncInputStream<{type}> {name};"
-                      .format(type=type_name, name=stream))
-
-                    out("std::unique_ptr<apache::thrift::InputStreamCallback"
-                      "<{type}>> {name}("
-                      "new apache::thrift::FutureStreamItemCallback<{type}>("
-                      "std::move({promise})));"
-                        .format(type=type_name,
-                                name=callback,
-                                promise=promise_name))
-
-                    out("{stream}.setCallback(std::move({callback}));"
-                        .format(stream=stream, callback=callback))
-
-                    args.append("{stream}.makeHandler<{serializer}>()"
-                        .format(stream=stream, serializer=serializer_name))
-
-                    end_args.append("nullptr")
 
                 else:
                     out("std::unique_ptr<apache::thrift::RequestCallback> "
@@ -2023,22 +1668,13 @@ class CppGenerator(t_generator.Generator):
         if uses_rpc_options:
             params.append("const apache::thrift::RpcOptions& rpcOptions")
 
-        if function.returntype.is_stream:
-            return_type = "folly::wangle::Future<void>"
-            template = "apache::thrift::AsyncInputStream<{type}>& _return"
-            params.append(self._format_stream_declaration(template,
-                                                          function.returntype))
-        else:
-            result_type = self._type_name(function.returntype)
-            return_type = "folly::wangle::Future<" + result_type + ">"
-
-        stream_type = "apache::thrift::AsyncOutputStream<{type}>&"
+        result_type = self._type_name(function.returntype)
+        return_type = "folly::wangle::Future<" + result_type + ">"
 
         param_list = ", ".join(params)
         param_list += self._argument_list(function.arglist,
                                           add_comma=bool(params),
-                                          unique=False,
-                                          stream_type=stream_type)
+                                          unique=False)
 
         return return_type + " {name}(" + param_list + ")"
 
@@ -2052,10 +1688,7 @@ class CppGenerator(t_generator.Generator):
                         modifiers='virtual'):
                 args = ["::apache::thrift::RpcOptions()"]
 
-                if not self._function_uses_streams(function):
-                    args.append("std::move(callback)")
-                elif not function.returntype.is_void:
-                    args.append("_return")
+                args.append("std::move(callback)")
 
                 args.extend([arg.name for arg in function.arglist.members])
                 args_list = ", ".join(args)
@@ -2063,53 +1696,16 @@ class CppGenerator(t_generator.Generator):
                 out("{name}({args});".format(name=function.name, args=args_list))
 
         else:
-            # we generate an extra function that accepts Async{In,Out}putStreams
-            if self._function_uses_streams(function):
-                signature = self._get_async_function_signature(
-                        function, uses_rpc_options=True)
-                with out().defn(signature, name=name_prefix + function.name,
-                            modifiers='virtual'):
-                    serializer = service.name + "StreamSerializer"
-
-                    args = ["rpcOptions"]
-                    if not function.returntype.is_void:
-                        args.append("_return.makeHandler<{serializer}>()"
-                                    .format(serializer=serializer))
-
-                    for arg in function.arglist.members:
-                        if not arg.type.is_stream:
-                            args.append(arg.name)
-                        else:
-                            args.append("{name}.makeHandler<{serializer}>()"
-                                .format(name=arg.name, serializer=serializer))
-
-                    if self._function_uses_streams(function):
-                        args.append("nullptr")
-
-                    args_list = ", ".join(args)
-
-                    out("{name}({args});".format(name=function.name,
-                                               args=args_list))
-
             signature = self._get_async_function_signature(
                     function, uses_rpc_options=True, uses_callback_ptr=True)
 
             with out().defn(signature, name=name_prefix + function.name,
                         modifiers='virtual'):
                 args = ["&writer", "rpcOptions"]
-                if not self._function_uses_streams(function):
-                    args.append("std::move(callback)")
-                elif not function.returntype.is_void:
-                    args.append("std::move(_return)")
+                args.append("std::move(callback)")
 
                 for arg in function.arglist.members:
-                    if not arg.type.is_stream:
-                        args.append(arg.name)
-                    else:
-                        args.append("std::move({name})".format(name=arg.name))
-
-                if self._function_uses_streams(function):
-                    args.append("std::move(_streamEndCallback)")
+                    args.append(arg.name)
 
                 args_list = ", ".join(args)
 
@@ -2134,62 +1730,6 @@ class CppGenerator(t_generator.Generator):
 
         with out().defn(signature, name=func_name, output=self._out_tcc):
             is_sync = self.tmp("isSync")
-            if self._function_uses_streams(function):
-                out("bool {sync} = false;".format(sync=is_sync))
-                out("")
-
-                out("apache::thrift::StreamSource::StreamMap sourceMap;")
-                if not function.returntype.is_void:
-                    type_enum = self._stream_type_to_enum(function.returntype)
-
-                    with out("if (_return)"):
-                        out("{sync} = {sync} || _return->isSync();"
-                          .format(sync=is_sync))
-                        out("_return->setType({enum});".format(enum=type_enum))
-                        out("sourceMap[0] = std::move(_return);")
-                out("")
-
-                out("apache::thrift::StreamSink::StreamMap sinkMap;")
-                for arg in function.arglist.members:
-                    if arg.type.is_stream:
-                        type_enum = self._stream_type_to_enum(arg.type)
-
-                        with out("if ({arg})".format(arg=arg.name)):
-                            out("{sync} = {sync} || {arg}->isSync();"
-                              .format(sync=is_sync, arg=arg.name))
-                            out("{arg}->setType({enum});"
-                              .format(arg=arg.name, enum=type_enum))
-                            out("sinkMap[{key}] = std::move({arg});"
-                              .format(key=arg.key, arg=arg.name))
-                out("")
-
-                prefix = "{service}StreamSerializer::{func}Exception".format(
-                            service=service.name, func=function.name)
-                out("std::unique_ptr<apache::thrift::StreamManager> stream(")
-                out("     new apache::thrift::StreamManager(")
-                out("         getChannel()->getEventBase(),")
-                out("         std::move(sourceMap),")
-                out("         {prefix}Deserializer,".format(prefix=prefix))
-                out("         std::move(sinkMap),")
-                out("         {prefix}Serializer,".format(prefix=prefix))
-                out("         std::move(_streamEndCallback)));")
-                out("")
-
-                out("stream->setOutputProtocol(")
-                out("    static_cast<apache::thrift::ProtocolType>(")
-                out("        getChannel()->getProtocolId()));")
-                out("")
-
-                out("apache::thrift::RpcOptions streamOptions(rpcOptions);")
-                out("streamOptions.setStreaming(true);")
-                out("")
-
-                out("std::unique_ptr<apache::thrift::StreamCallback> callback(")
-                out("    new apache::thrift::StreamCallback(std::move(stream),")
-                out("    getChannel()->getEventBase(), recv_{name}, {is_sync}));"
-                    .format(name=function.name, is_sync=is_sync))
-                out("")
-
             out("std::unique_ptr<apache::thrift::ContextStack> ctx = "
               "this->getContextStack(this->getServiceName(), "
               '"{0}.{1}", connectionContext_.get());'
@@ -2200,9 +1740,7 @@ class CppGenerator(t_generator.Generator):
             # Generate list of function args
             for field in function.arglist.members:
                 rtype = self._get_true_type(field.type)
-                if rtype.is_stream:
-                    pass
-                elif rtype.is_string or rtype.is_container \
+                if rtype.is_string or rtype.is_container \
                         or rtype.is_struct:
                     out("args.{1} = const_cast<{0}*>(&{2});".format(
                             self._type_name(rtype),
@@ -2248,9 +1786,6 @@ class CppGenerator(t_generator.Generator):
 
             if not function.oneway:
                 optionName = "rpcOptions"
-                if self._function_uses_streams(function):
-                    optionName = "streamOptions"
-
                 out("this->channel_->sendRequest(std::move(" + optionName + "), "
                                               "std::move(callback), "
                                               "std::move(ctx), "
@@ -2264,10 +1799,6 @@ class CppGenerator(t_generator.Generator):
                                                     "std::move(callback), "
                                                     "std::move(ctx), "
                                                     "queue.move());")
-
-            if self._function_uses_streams(function):
-                with out("if ({sync})".format(sync=is_sync)):
-                    out("this->channel_->getEventBase()->loopForever();")
 
     def _get_async_function_signature(self,
                                       function,
@@ -2285,38 +1816,14 @@ class CppGenerator(t_generator.Generator):
         if uses_rpc_options:
             params.append("const apache::thrift::RpcOptions& rpcOptions")
 
-        if not self._function_uses_streams(function):
-            params.append("std::unique_ptr<apache::thrift::RequestCallback> "
-                          "callback")
-        elif not function.returntype.is_void:
-            if uses_callback_ptr:
-                type = ("std::unique_ptr<apache::thrift::"
-                        "InputStreamCallbackBase>&&")
-            else:
-                template = "apache::thrift::AsyncInputStream<{type}>&"
-                type = self._format_stream_declaration(template,
-                                                       function.returntype)
-            params.append(type + " _return")
+        params.append("std::unique_ptr<apache::thrift::RequestCallback> "
+                      "callback")
 
         param_list = ", ".join(params)
 
-        if uses_callback_ptr:
-            stream_type = ("std::unique_ptr<apache::thrift::"
-                           "OutputStreamCallbackBase>&&")
-            is_template = False
-        else:
-            stream_type = "apache::thrift::AsyncOutputStream<{type}>&"
-            is_template = True
-
         param_list += self._argument_list(function.arglist,
                                           add_comma=bool(params),
-                                          unique=False,
-                                          stream_type=stream_type,
-                                          stream_type_is_template=is_template)
-
-        if self._function_uses_streams(function) and uses_callback_ptr:
-            param_list += (", std::unique_ptr<apache::thrift::"
-                           "StreamEndCallback>&& _streamEndCallback")
+                                          unique=False)
 
         return signature_prefix + "void {name}(" + param_list + ")"
 
@@ -2348,17 +1855,14 @@ class CppGenerator(t_generator.Generator):
                         modifiers='static',
                         output=output):
             simple_return = not function.returntype.is_void and \
-                not self._is_complex_type(function.returntype) and \
-                not self._function_uses_streams(function)
+                not self._is_complex_type(function.returntype)
             if simple_return:
                 out(self._type_name(function.returntype) + ' _return;')
 
             params = []
             if uses_template:
                 params.append('prot')
-            if self._function_uses_streams(function):
-                params.append('std::move(stream)')
-            elif not function.returntype.is_void:
+            if not function.returntype.is_void:
                 params.append('_return')
             params.append('state')
             func_name = 'recv_wrapped_' + function.name
@@ -2392,9 +1896,7 @@ class CppGenerator(t_generator.Generator):
 
                         args = ["&reader"]
 
-                        if self._function_uses_streams(function):
-                            args.append("std::move(stream)")
-                        elif not function.returntype.is_void:
+                        if not function.returntype.is_void:
                             args.append("_return")
 
                         args.append("state")
@@ -2421,14 +1923,11 @@ class CppGenerator(t_generator.Generator):
                     modifiers="virtual"):
 
             params = []
-            if self._function_uses_streams(function):
-                params.append('std::move(stream)')
-            elif self._is_complex_type(function.returntype):
+            if self._is_complex_type(function.returntype):
                 params.append('_return')
             params.append('state')
             if not function.oneway:
-                if not function.returntype.is_void and \
-                  not self._function_uses_streams(function):
+                if not function.returntype.is_void:
                     out("return recv_" + function.name +
                         "(" + ", ".join(params) + ");")
                 else:
@@ -2441,9 +1940,7 @@ class CppGenerator(t_generator.Generator):
                     modifiers="virtual"):
 
             params = []
-            if self._function_uses_streams(function):
-                params.append('std::move(stream)')
-            elif not function.returntype.is_void:
+            if not function.returntype.is_void:
                 params.append('_return')
             params.append('state')
             if not function.oneway:
@@ -2507,8 +2004,7 @@ class CppGenerator(t_generator.Generator):
 
                 out("{0}_{1}_presult result;".format(service.name, function.name))
 
-                if not function.returntype.is_void and \
-                  not self._function_uses_streams(function):
+                if not function.returntype.is_void:
                     out("result.success = &_return;")
 
                 if self.flag_compatibility:
@@ -2520,8 +2016,7 @@ class CppGenerator(t_generator.Generator):
                 out("prot->readMessageEnd();")
                 out('ctx->postRead(state.buf()->length());')
 
-                if not function.returntype.is_void and \
-                  not self._function_uses_streams(function):
+                if not function.returntype.is_void:
                     with out("if (result.__isset.success)"):
                         out("// _return pointer has been filled")
                         out("return; // from try_and_catch")
@@ -2532,8 +2027,7 @@ class CppGenerator(t_generator.Generator):
                                 self._type_name(xs.type), xs.name))
                         out("return; // from try_and_catch")
 
-                if not function.returntype.is_void and \
-                  not self._function_uses_streams(function):
+                if not function.returntype.is_void:
                     with out("else"):
                         # else throw, no success
                         out("interior_ew = folly::make_exception_wrapper<"
@@ -2546,12 +2040,6 @@ class CppGenerator(t_generator.Generator):
             with out("if (interior_ew || caught_ew)"):
                 out("ctx->handlerError();")
                 out("return interior_ew ? interior_ew : caught_ew;")
-            if self._function_uses_streams(function):
-                out("stream->setInputProtocol(")
-                out("    static_cast<apache::thrift::ProtocolType>(")
-                out("        state.protocolId()));")
-                out("")
-                out("state.setStreamManager(std::move(stream));")
             out("return folly::exception_wrapper();")
 
         self._generate_throwing_recv_function(function, True)
@@ -2566,8 +2054,7 @@ class CppGenerator(t_generator.Generator):
         if is_wrapped:
             signature_prefix += 'folly::exception_wrapper'
         elif function.returntype.is_void or \
-           self._is_complex_type(function.returntype) or \
-           self._function_uses_streams(function):
+           self._is_complex_type(function.returntype):
             signature_prefix += "void"
         else:
             signature_prefix += self._type_name(function.returntype)
@@ -2576,10 +2063,7 @@ class CppGenerator(t_generator.Generator):
         if uses_template:
             params.append("Protocol_* prot")
 
-        if self._function_uses_streams(function):
-            params.append("std::unique_ptr<apache::thrift::StreamManager>&& "
-                          "stream")
-        elif not function.returntype.is_void and (
+        if not function.returntype.is_void and (
             self._is_complex_type(function.returntype) or is_wrapped
         ):
             params.append(self._type_name(function.returntype) + "& _return")
@@ -2598,60 +2082,20 @@ class CppGenerator(t_generator.Generator):
 
     def _function_produces_result(self, function):
         return_type = function.returntype
-        return not return_type.is_void and \
-               not self._function_uses_streams(function)
+        return not return_type.is_void
 
-    def _argument_list(self, arglist, add_comma, unique, stream_type=None,
-                                                stream_type_is_template=True):
+    def _argument_list(self, arglist, add_comma, unique):
         out = ""
         for field in arglist.members:
-            if not field.type.is_stream or stream_type is not None:
-                if len(out) > 0 or add_comma:
-                    out += ", "
+            if len(out) > 0 or add_comma:
+                out += ", "
 
-                if field.type.is_stream:
-                    if stream_type_is_template:
-                        type_name = self._format_stream_declaration(stream_type,
-                                                                    field.type)
-                    else:
-                        type_name = stream_type
-                else:
-                    type_name = self._type_name(field.type,
-                                                arg=True, unique=unique)
+            type_name = self._type_name(field.type,
+                                        arg=True, unique=unique)
 
-                out += type_name + " " + field.name
+            out += type_name + " " + field.name
 
         return out
-
-    def _stream_type_to_enum(self, type):
-        if type.is_stream:
-            true_type = self._get_true_type(type)
-            type = true_type.as_stream.elem_type
-        return self._type_to_enum(type)
-
-    def _format_stream_declaration(self, name_template, type=None, name=None):
-        if not type:
-            return name_template
-
-        if type.is_stream:
-            true_type = self._get_true_type(type)
-            type = true_type.as_stream.elem_type
-        type_name = self._type_name(type)
-
-        if name:
-            return name_template.format(type=type_name, name=name)
-        else:
-            return name_template.format(type=type_name)
-
-    def _function_uses_streams(self, function):
-        return (function.returntype.is_stream or
-                self._function_takes_stream_args(function))
-
-    def _function_takes_stream_args(self, function):
-        for arg in function.arglist.members:
-            if self._get_true_type(arg.type).is_stream:
-                return True
-        return False
 
     # ======================================================================
     # STRUCT GENERATION CODE + following two sections
@@ -2672,9 +2116,8 @@ class CppGenerator(t_generator.Generator):
             return False
 
     def _should_generate_field(self, field):
-        return (not field.type.is_stream and
-               ('format' not in field.annotations or
-                field.annotations['format'] != 'serialized'))
+        return ('format' not in field.annotations or
+                field.annotations['format'] != 'serialized')
 
     def _member_default_value(self, member, explicit=False):
         t = self._get_true_type(member.type)
@@ -3259,8 +2702,6 @@ class CppGenerator(t_generator.Generator):
         s2 = s('switch (fid)').scope
         # Generate deserialization code for known cases
         for field in fields:
-            if field.type.is_stream:
-                continue
 
             s3 = s2.case(field.key).scope
             if ('format' in field.annotations and
@@ -3403,9 +2844,6 @@ class CppGenerator(t_generator.Generator):
             s('int32_t {0};'.format(t))
             s('xfer += iprot->readI32({0});'.format(t))
             s('{0} = ({1}){2};'.format(name, self._type_name(ttype), t))
-        elif ttype.is_stream:
-            raise TypeError('CANNOT GENERATE DESERIALIZE CODE FOR stream TYPE: '
-                            + name)
         else:
             raise TypeError(("DO NOT KNOW HOW TO DESERIALIZE '{0}' "
                              "TYPE {1}").format(name, self._type_name(ttype)))
@@ -3814,9 +3252,6 @@ class CppGenerator(t_generator.Generator):
             scope(txt)
         elif ttype.is_enum:
             scope('xfer += prot_->{0}I32((int32_t){1});'.format(method, name))
-        elif ttype.is_stream:
-            raise TypeError('CANNOT GENERATE SERIALIZE CODE FOR stream TYPE: '
-                            + name)
         else:
             raise TypeError(("DO NOT KNOW HOW TO SERIALIZE '{0}' "
                              "TYPE {1}").format(name, self._type_name(ttype)))
@@ -4305,7 +3740,7 @@ class CppGenerator(t_generator.Generator):
             raise NotImplementedError
 
     def _is_processed_in_eb(self, function):
-        if self.flag_future or self._function_uses_streams(function):
+        if self.flag_future:
             return True
         if function.annotations is not None and \
           'thread' in function.annotations.annotations:

@@ -20,7 +20,6 @@
 #include <functional>
 #include <memory>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/Request.h>
@@ -42,19 +41,16 @@ class ClientReceiveState {
  public:
   ClientReceiveState()
       : protocolId_(-1),
-        streamManager_(nullptr),
         isSecurityActive_(false) {
   }
 
   ClientReceiveState(uint16_t protocolId,
                      std::unique_ptr<folly::IOBuf> buf,
                      std::unique_ptr<apache::thrift::ContextStack> ctx,
-                     std::unique_ptr<StreamManager> * streamManager,
                      bool isSecurityActive)
     : protocolId_(protocolId),
       ctx_(std::move(ctx)),
       buf_(std::move(buf)),
-      streamManager_(streamManager),
       isSecurityActive_(isSecurityActive) {
   }
   ClientReceiveState(folly::exception_wrapper excw,
@@ -62,7 +58,6 @@ class ClientReceiveState {
                      bool isSecurityActive)
     : protocolId_(-1),
       ctx_(std::move(ctx)),
-      streamManager_(nullptr),
       excw_(std::move(excw)),
       isSecurityActive_(isSecurityActive) {
   }
@@ -115,16 +110,10 @@ class ClientReceiveState {
     return std::move(ctx_);
   }
 
-  void setStreamManager(std::unique_ptr<StreamManager>&& manager) {
-    assert(streamManager_ != nullptr);
-    *streamManager_ = std::move(manager);
-  }
-
  private:
   uint16_t protocolId_;
   std::unique_ptr<apache::thrift::ContextStack> ctx_;
   std::unique_ptr<folly::IOBuf> buf_;
-  std::unique_ptr<StreamManager> * streamManager_;
   std::exception_ptr exc_;
   folly::exception_wrapper excw_;
   bool isSecurityActive_;
@@ -138,50 +127,6 @@ class RequestCallback {
   virtual void requestError(ClientReceiveState&&) = 0;
 
   std::shared_ptr<apache::thrift::async::RequestContext> context_;
-};
-
-class StreamCallback : public RequestCallback {
-  private:
-    typedef void (*Processor)(std::unique_ptr<StreamManager>&&,
-                              ClientReceiveState&);
-
-  public:
-    StreamCallback(std::unique_ptr<StreamManager>&& manager,
-                   apache::thrift::async::TEventBase* eventBase,
-                   Processor processor,
-                   bool isSync)
-      : streamManager_(std::move(manager)),
-        eventBase_(eventBase),
-        processor_(processor),
-        isSync_(isSync) {
-    }
-
-    void replyReceived(ClientReceiveState&& state) {
-      processor_(std::move(streamManager_), state);
-      stopEventBaseIfIsSync();
-    }
-
-    void requestError(ClientReceiveState&& state) {
-      auto exception = state.exceptionWrapper();
-      CHECK(exception);
-      streamManager_->notifyError(exception);
-      stopEventBaseIfIsSync();
-    }
-
-    void requestSent() {
-    }
-
-  private:
-    std::unique_ptr<StreamManager> streamManager_;
-    apache::thrift::async::TEventBase* eventBase_;
-    Processor processor_;
-    bool isSync_;
-
-    void stopEventBaseIfIsSync() {
-      if (isSync_) {
-        eventBase_->terminateLoopSoon();
-      }
-    }
 };
 
 /* FunctionReplyCallback is meant to make RequestCallback easy to use
@@ -230,7 +175,6 @@ class RpcOptions {
   typedef apache::thrift::concurrency::PriorityThreadManager::PRIORITY PRIORITY;
   RpcOptions()
    : timeout_(0),
-     isStreaming_(false),
      priority_(apache::thrift::concurrency::N_PRIORITIES)
   { }
 
@@ -243,15 +187,6 @@ class RpcOptions {
     return timeout_;
   }
 
-  RpcOptions& setStreaming(bool streaming) {
-    isStreaming_ = streaming;
-    return *this;
-  }
-
-  bool isStreaming() const {
-    return isStreaming_;
-  }
-
   RpcOptions& setPriority(PRIORITY priority) {
     priority_ = priority;
     return *this;
@@ -262,7 +197,6 @@ class RpcOptions {
   }
  private:
   std::chrono::milliseconds timeout_;
-  bool isStreaming_;
   PRIORITY priority_;
 };
 

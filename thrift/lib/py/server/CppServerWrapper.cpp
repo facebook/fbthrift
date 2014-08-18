@@ -119,7 +119,7 @@ public:
       clientType = THRIFT_HEADER_CLIENT_TYPE;
     }
 
-    std::unique_ptr<IOBuf> outbuf;
+    std::unique_ptr<folly::IOBuf> outbuf;
 
     {
       PyGILState_STATE state = PyGILState_Ensure();

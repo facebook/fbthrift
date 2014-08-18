@@ -21,7 +21,6 @@
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/SaslClient.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <thrift/lib/cpp/async/TDelayedDestruction.h>
 #include <thrift/lib/cpp/async/Request.h>
@@ -93,11 +92,6 @@ class HeaderClientChannel : public RequestChannel,
                          std::unique_ptr<RequestCallback>,
                          std::unique_ptr<apache::thrift::ContextStack>,
                          std::unique_ptr<folly::IOBuf>);
-
-  void sendStreamingMessage(uint32_t streamSequenceId,
-                            Cpp2Channel::SendCallback* callback,
-                            std::unique_ptr<folly::IOBuf>&& buf,
-                            HEADER_FLAGS streamFlag);
 
   void setCloseCallback(CloseCallback*);
 
@@ -201,10 +195,10 @@ class HeaderClientChannel : public RequestChannel,
     explicit ClientFramingHandler(HeaderClientChannel& channel)
       : channel_(channel) {}
 
-    std::pair<std::unique_ptr<IOBuf>, size_t>
-    removeFrame(IOBufQueue* q) override;
+    std::pair<std::unique_ptr<folly::IOBuf>, size_t>
+    removeFrame(folly::IOBufQueue* q) override;
 
-    std::unique_ptr<IOBuf> addFrame(std::unique_ptr<IOBuf> buf) override;
+    std::unique_ptr<folly::IOBuf> addFrame(std::unique_ptr<folly::IOBuf> buf) override;
   private:
     HeaderClientChannel& channel_;
   };
@@ -239,13 +233,11 @@ private:
     TwowayCallback(HeaderClientChannel* channel,
                    uint32_t sendSeqId,
                    uint16_t protoId,
-                   std::chrono::milliseconds streamTimeout,
                    std::unique_ptr<RequestCallback> cb,
                    std::unique_ptr<apache::thrift::ContextStack> ctx)
         : channel_(channel)
         , sendSeqId_(sendSeqId)
         , protoId_(protoId)
-        , streamTimeout_(streamTimeout)
         , cb_(std::move(cb))
         , ctx_(std::move(ctx))
         , sendState_(QState::INIT)
@@ -289,8 +281,7 @@ private:
       }
       delete this;
     }
-    void replyReceived(std::unique_ptr<folly::IOBuf> buf,
-                       bool serverExpectsStreaming) {
+    void replyReceived(std::unique_ptr<folly::IOBuf> buf) {
       X_CHECK_STATE_NE(sendState_, QState::INIT);
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       recvState_ = QState::DONE;
@@ -300,28 +291,13 @@ private:
       CHECK(cb_);
       cbCalled_ = true;
 
-      std::unique_ptr<StreamManager> streamManager;
       auto old_ctx =
         apache::thrift::async::RequestContext::setContext(cb_->context_);
       cb_->replyReceived(ClientReceiveState(protoId_,
                                             std::move(buf),
                                             std::move(ctx_),
-                                            &streamManager,
                                             channel_->isSecurityActive()));
 
-      if (streamManager && !streamManager->isDone()) {
-        if (serverExpectsStreaming) {
-          StreamCallback* stream = new StreamCallback(channel_,
-                                                      sendSeqId_,
-                                                      streamTimeout_,
-                                                      std::move(streamManager));
-          channel_->registerStream(sendSeqId_, stream);
-          stream->messageSent();
-
-        } else {
-          streamManager->cancel();
-        }
-      }
       apache::thrift::async::RequestContext::setContext(old_ctx);
       maybeDeleteThis();
     }
@@ -384,7 +360,6 @@ private:
     HeaderClientChannel* channel_;
     uint32_t sendSeqId_;
     uint16_t protoId_;
-    std::chrono::milliseconds streamTimeout_;
     std::unique_ptr<RequestCallback> cb_;
     std::unique_ptr<apache::thrift::ContextStack> ctx_;
     QState sendState_;
@@ -432,43 +407,6 @@ private:
   // Set the base class callback based on current state.
   void setBaseReceivedCallback();
 
-  class StreamCallback : public MessageChannel::SendCallback,
-                         public StreamChannelCallback,
-                         public apache::thrift::async::HHWheelTimer::Callback {
-    public:
-      StreamCallback(HeaderClientChannel* channel,
-                     uint32_t sequenceId,
-                     std::chrono::milliseconds timeout,
-                     std::unique_ptr<StreamManager>&& manager);
-
-      void sendQueued();
-      void messageSent();
-      void messageSendError(folly::exception_wrapper&& ex);
-
-      void replyReceived(std::unique_ptr<folly::IOBuf> buf);
-      void requestError(folly::exception_wrapper ex);
-
-      void timeoutExpired() noexcept;
-
-      void onStreamSend(std::unique_ptr<folly::IOBuf>&& buf);
-      void onOutOfLoopStreamError(const folly::exception_wrapper& error);
-
-      ~StreamCallback();
-
-    private:
-      HeaderClientChannel* channel_;
-      uint32_t sequenceId_;
-      std::chrono::milliseconds timeout_;
-      std::unique_ptr<StreamManager> manager_;
-      bool hasOutstandingSend_;
-
-      void resetTimeout();
-      void deleteThisIfNecessary();
-  };
-
-  void registerStream(uint32_t seqId, StreamCallback* cb);
-  void unregisterStream(uint32_t seqId, StreamCallback* cb);
-
   std::unique_ptr<folly::IOBuf> handleSecurityMessage(
     std::unique_ptr<folly::IOBuf>&& buf);
 
@@ -498,7 +436,6 @@ private:
                         std::unique_ptr<folly::IOBuf>,
                         std::map<std::string, std::string>>> afterSecurity_;
   std::unordered_map<uint32_t, TwowayCallback*> recvCallbacks_;
-  std::unordered_map<uint32_t, StreamCallback*> streamCallbacks_;
   std::deque<uint32_t> recvCallbackOrder_;
   std::unique_ptr<apache::thrift::transport::THeader> header_;
   CloseCallback* closeCallback_;

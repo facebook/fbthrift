@@ -141,7 +141,6 @@ const int struct_is_union = 1;
 %token tok_hash_map
 %token tok_list
 %token tok_set
-%token tok_stream
 
 /**
  * Function modifiers
@@ -176,7 +175,6 @@ const int struct_is_union = 1;
 %type<ttype>     HashMapType
 %type<ttype>     SetType
 %type<ttype>     ListType
-%type<ttype>     StreamType
 
 %type<tdoc>      Definition
 %type<ttype>     TypeDefinition
@@ -227,7 +225,6 @@ const int struct_is_union = 1;
 
 %type<tstruct>   ParamList
 %type<tfield>    Param
-%type<tfield>    StreamParam
 
 %type<tstruct>   Throws
 %type<tservice>  Extends
@@ -1014,39 +1011,6 @@ Param:
       pdebug("Param -> Field");
       $$ = $1;
     }
-| StreamParam
-    {
-      pdebug("Param -> StreamParam");
-      $$ = $1;
-    }
-
-StreamParam:
-  CaptureDocText FieldIdentifier FieldRequiredness StreamType tok_identifier XsdOptional XsdNillable XsdAttributes TypeAnnotations CommaOrSemicolonOptional
-    {
-      pdebug("tok_int_constant : Param -> ParamType tok_identifier");
-      if ($2.auto_assigned) {
-        pwarning(1, "No field key specified for %s, resulting protocol may have conflicts or not be backwards compatible!", $5);
-        if (g_strict >= 192) {
-          yyerror("Implicit field keys are deprecated and not allowed with -strict");
-          exit(1);
-        }
-      }
-
-      $$ = new t_field($4, $5, $2.value);
-      $$->set_req($3);
-      $$->set_xsd_optional($6);
-      $$->set_xsd_nillable($7);
-      if ($1 != NULL) {
-        $$->set_doc($1);
-      }
-      if ($8 != NULL) {
-        $$->set_xsd_attrs($8);
-      }
-      if ($9 != NULL) {
-        $$->annotations_ = $9->annotations_;
-        delete $9;
-      }
-    }
 
 Oneway:
   tok_oneway
@@ -1261,11 +1225,6 @@ FunctionType:
       pdebug("FunctionType -> tok_void");
       $$ = g_type_void;
     }
-| StreamType
-    {
-      pdebug("FunctionType -> StreamType");
-      $$ = $1;
-    }
 
 FieldType:
   tok_identifier
@@ -1420,13 +1379,6 @@ ListType:
     {
       pdebug("ListType -> tok_list<FieldType>");
       $$ = new t_list($3);
-    }
-
-StreamType:
-  tok_stream '<' FieldType '>'
-    {
-      pdebug("StreamType -> tok_stream<FieldType>");
-      $$ = new t_stream($3);
     }
 
 TypeAnnotations:

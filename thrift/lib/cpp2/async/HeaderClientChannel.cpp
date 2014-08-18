@@ -392,8 +392,6 @@ uint32_t HeaderClientChannel::sendRequest(
     ++sendSeqId_;
   }
 
-  bool isStreaming = rpcOptions.isStreaming();
-
   std::chrono::milliseconds timeout(timeout_);
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     timeout = rpcOptions.getTimeout();
@@ -402,7 +400,6 @@ uint32_t HeaderClientChannel::sendRequest(
   auto twcb = new TwowayCallback(this,
                                  sendSeqId_,
                                  header_->getProtocolId(),
-                                 timeout,
                                  std::move(cb),
                                  std::move(ctx));
 
@@ -419,35 +416,8 @@ uint32_t HeaderClientChannel::sendRequest(
   recvCallbacks_[sendSeqId_] = twcb;
   setBaseReceivedCallback();
 
-  if (!isStreaming) {
-    sendMessage(twcb, std::move(buf));
-  } else {
-    sendStreamingMessage(sendSeqId_,
-                         twcb,
-                         std::move(buf),
-                         HEADER_FLAG_STREAM_BEGIN);
-  }
+  sendMessage(twcb, std::move(buf));
   return sendSeqId_;
-}
-
-void HeaderClientChannel::sendStreamingMessage(
-    uint32_t streamSequenceId,
-    Cpp2Channel::SendCallback* callback,
-    std::unique_ptr<folly::IOBuf>&& data,
-    HEADER_FLAGS streamFlag) {
-
-  CHECK((streamFlag == HEADER_FLAG_STREAM_BEGIN) ||
-        (streamFlag == HEADER_FLAG_STREAM_PIECE) ||
-        (streamFlag == HEADER_FLAG_STREAM_END));
-
-  uint32_t oldSeqId = sendSeqId_;
-  sendSeqId_ = streamSequenceId;
-
-  header_->setStreamFlag(streamFlag);
-  sendMessage(callback, std::move(data));
-  header_->clearStreamFlag();
-
-  sendSeqId_ = oldSeqId;
 }
 
 // Header framing
@@ -500,31 +470,6 @@ void HeaderClientChannel::messageReceived(
     recvSeqId = header_->getSequenceNumber();
   }
 
-  uint16_t streamFlag = header_->getStreamFlag();
-  header_->clearStreamFlag();
-
-  if ((streamFlag == HEADER_FLAG_STREAM_PIECE) ||
-      (streamFlag == HEADER_FLAG_STREAM_END)) {
-
-    auto ite = streamCallbacks_.find(recvSeqId);
-
-    // TODO: On some errors, some servers will return 0 for seqid.
-    // Could possibly try and deserialize the buf and throw a
-    // TApplicationException.
-    // BUT, we don't even know for sure what protocol to deserialize with.
-    if (ite == streamCallbacks_.end()) {
-      VLOG(5) << "Could not find message id in streamCallbacks, "
-              << "possibly because we have errored out or timed out.";
-      return;
-    }
-
-    auto streamCallback = ite->second;
-    CHECK_NOTNULL(streamCallback);
-
-    streamCallback->replyReceived(std::move(buf));
-    return;
-  }
-
   auto cb = recvCallbacks_.find(recvSeqId);
 
   // TODO: On some errors, some servers will return 0 for seqid.
@@ -544,8 +489,7 @@ void HeaderClientChannel::messageReceived(
   // we are the last callback?
   setBaseReceivedCallback();
 
-  bool serverExpectsStreaming = (streamFlag == HEADER_FLAG_STREAM_BEGIN);
-  f->replyReceived(std::move(buf), serverExpectsStreaming);
+  f->replyReceived(std::move(buf));
 }
 
 void HeaderClientChannel::messageChannelEOF() {
@@ -615,142 +559,14 @@ bool HeaderClientChannel::expireCallback(uint32_t seqId) {
   return false;
 }
 
-void HeaderClientChannel::registerStream(uint32_t seqId, StreamCallback* cb) {
-  CHECK_NOTNULL(cb);
-  auto inserted = streamCallbacks_.insert(std::make_pair(seqId, cb));
-  CHECK(inserted.second);
-
-  setBaseReceivedCallback();
-}
-
-void HeaderClientChannel::unregisterStream(uint32_t seqId, StreamCallback* cb) {
-  CHECK(getEventBase()->isInEventBaseThread());
-  auto ite = streamCallbacks_.find(seqId);
-  CHECK(ite != streamCallbacks_.end());
-  CHECK(ite->second == cb);
-  streamCallbacks_.erase(ite);
-
-  setBaseReceivedCallback();
-}
-
 void HeaderClientChannel::setBaseReceivedCallback() {
   if (protectionState_ == ProtectionState::INPROGRESS ||
-      streamCallbacks_.size() != 0 ||
       recvCallbacks_.size() != 0 ||
       (closeCallback_ && keepRegisteredForClose_)) {
     cpp2Channel_->setReceiveCallback(this);
   } else {
     cpp2Channel_->setReceiveCallback(nullptr);
   }
-}
-
-HeaderClientChannel::StreamCallback::StreamCallback(
-    HeaderClientChannel* channel,
-    uint32_t sequenceId,
-    std::chrono::milliseconds timeout,
-    std::unique_ptr<StreamManager>&& manager)
-  : channel_(channel),
-    sequenceId_(sequenceId),
-    timeout_(timeout),
-    manager_(std::move(manager)),
-    hasOutstandingSend_(true) {
-  CHECK(manager_);
-  manager_->setChannelCallback(this);
-  resetTimeout();
-}
-
-void HeaderClientChannel::StreamCallback::sendQueued() {
-  CHECK(hasOutstandingSend_);
-}
-
-void HeaderClientChannel::StreamCallback::messageSent() {
-  CHECK(hasOutstandingSend_);
-  hasOutstandingSend_ = false;
-
-  if (!manager_->isDone()) {
-    manager_->notifySend();
-  }
-
-  deleteThisIfNecessary();
-}
-
-void HeaderClientChannel::StreamCallback::messageSendError(
-    folly::exception_wrapper&& ex) {
-  CHECK(hasOutstandingSend_);
-  hasOutstandingSend_ = false;
-
-  if (!manager_->isDone()) {
-    manager_->notifyError(ex);
-  }
-
-  deleteThisIfNecessary();
-}
-
-
-void HeaderClientChannel::StreamCallback::replyReceived(
-    std::unique_ptr<folly::IOBuf> buf) {
-  if (!manager_->isDone()) {
-    manager_->notifyReceive(std::move(buf));
-  }
-
-  if (!manager_->isDone()) {
-    resetTimeout();
-  }
-
-  deleteThisIfNecessary();
-}
-
-void HeaderClientChannel::StreamCallback::requestError(
-    folly::exception_wrapper ex) {
-  if (!manager_->isDone()) {
-    manager_->notifyError(ex);
-  }
-  deleteThisIfNecessary();
-}
-
-void HeaderClientChannel::StreamCallback::timeoutExpired() noexcept {
-  if (!manager_->isDone()) {
-    auto ew = folly::make_exception_wrapper<TTransportException>(
-        TTransportException::TIMED_OUT, "Timed Out");
-    manager_->notifyError(ew);
-  }
-  deleteThisIfNecessary();
-}
-
-void HeaderClientChannel::StreamCallback::onStreamSend(
-    std::unique_ptr<folly::IOBuf>&& buf) {
-  CHECK(!hasOutstandingSend_);
-  CHECK(!buf->empty());
-  hasOutstandingSend_ = true;
-
-  HEADER_FLAGS streamFlag = manager_->isSendingEnd() ?
-                            HEADER_FLAG_STREAM_END : HEADER_FLAG_STREAM_PIECE;
-
-  channel_->sendStreamingMessage(sequenceId_, this, std::move(buf), streamFlag);
-}
-
-void HeaderClientChannel::StreamCallback::onOutOfLoopStreamError(
-    const folly::exception_wrapper& error) {
-  deleteThisIfNecessary();
-}
-
-void HeaderClientChannel::StreamCallback::resetTimeout() {
-  cancelTimeout();
-  if (timeout_ > std::chrono::milliseconds(0)) {
-    channel_->timer_->scheduleTimeout(this, timeout_);
-  }
-}
-
-void HeaderClientChannel::StreamCallback::deleteThisIfNecessary() {
-  if (manager_->isDone() && !hasOutstandingSend_) {
-    delete this;
-  }
-}
-
-HeaderClientChannel::StreamCallback::~StreamCallback() {
-  CHECK(!hasOutstandingSend_);
-  channel_->unregisterStream(sequenceId_, this);
-  // any timeout will be automatically cancelled on destruction
 }
 
 }} // apache::thrift

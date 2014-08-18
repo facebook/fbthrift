@@ -24,7 +24,6 @@
 #include <limits>
 #include <chrono>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/Thrift.h>
 
@@ -67,13 +66,6 @@ class ResponseChannel : virtual public TDelayedDestruction {
         folly::exception_wrapper ex,
         std::string exCode,
         MessageChannel::SendCallback* cb = nullptr) = 0;
-
-    virtual void sendReplyWithStreams(
-        std::unique_ptr<folly::IOBuf>&&,
-        std::unique_ptr<StreamManager>&&,
-        MessageChannel::SendCallback* cb = nullptr) = 0;
-
-    virtual void setStreamTimeout(const std::chrono::milliseconds& timeout) = 0;
 
     virtual ~Request() {}
 

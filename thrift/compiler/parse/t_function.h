@@ -52,9 +52,6 @@ class t_function : public t_doc {
 
       for (auto& arg : arglist_->get_members()) {
         t_type* type = arg->get_type();
-        if (type != nullptr && type->is_stream()) {
-          throw std::string("Oneway methods can't take stream arguments.");
-        }
       }
     }
   }
@@ -82,9 +79,6 @@ class t_function : public t_doc {
 
       for (auto& arg : arglist_->get_members()) {
         t_type* type = arg->get_type();
-        if (type != nullptr && type->is_stream()) {
-            throw std::string("Oneway methods can't take stream arguments.");
-        }
       }
     }
   }

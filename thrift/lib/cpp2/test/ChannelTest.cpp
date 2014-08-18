@@ -707,12 +707,10 @@ public:
     }
     std::map<std::string, std::string> headers;
     std::vector<uint16_t> transforms;
-    HeaderServerChannel::Stream * streamPtr;
     HeaderServerChannel::HeaderRequest r(
       -1 /* bad seqid */, channel1_.get(),
       req->extractBuf(), headers, transforms,
-      true /*out of order*/, false /*client expects streams*/,
-      &streamPtr,
+      true /*out of order*/,
       std::unique_ptr<MessageChannel::RecvCallback::sample>(nullptr));
     r.sendReply(r.extractBuf());
   }

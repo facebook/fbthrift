@@ -48,17 +48,12 @@ thrift2include_async_HEADERS = \
 	async/GssSaslServer.h \
 	async/HeaderClientChannel.h \
 	async/HeaderServerChannel.h \
-	async/InputStream.h \
-	async/InputStream.tcc \
 	async/MessageChannel.h \
-	async/OutputStream.h \
-	async/OutputStream.tcc \
 	async/RequestChannel.h \
 	async/ResponseChannel.h \
 	async/SaslClient.h \
 	async/SaslEndpoint.h \
 	async/SaslServer.h \
-	async/Stream.h \
 	async/StubSaslClient.h \
 	async/StubSaslServer.h
 
@@ -91,8 +86,6 @@ thrift2include_protocol_HEADERS = \
 	protocol/DebugProtocol.h \
 	protocol/MessageSerializer.h \
 	protocol/Serializer.h \
-	protocol/StreamSerializers.h \
-	protocol/StreamSerializers.tcc \
 	protocol/VirtualProtocol.h
 
 libthriftcpp2_la_SOURCES = Version.cpp \
@@ -104,10 +97,6 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   async/Cpp2Channel.cpp \
 			   async/AsyncProcessor.cpp \
 			   async/DuplexChannel.cpp \
-			   async/Stream.cpp \
-			   async/InputStream.cpp \
-			   async/OutputStream.cpp \
-			   protocol/StreamSerializers.cpp \
 			   protocol/Serializer.cpp \
 			   protocol/DebugProtocol.cpp \
 			   security/KerberosSASLHandshakeClient.cpp \

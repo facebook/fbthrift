@@ -337,7 +337,6 @@ void Cpp2Connection::requestReceived(
   );
   if (timeoutTime > std::chrono::milliseconds(0)) {
     worker_->scheduleTimeout(t2r.get(), timeoutTime);
-    t2r->setStreamTimeout(timeoutTime);
   }
   auto reqContext = t2r->getContext();
 
@@ -445,30 +444,6 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
                            prepareSendCallback(sendCallback, observer),
                            connection_->setErrorHeaders(recv_headers));
     cancelTimeout();
-  }
-}
-
-void Cpp2Connection::Cpp2Request::sendReplyWithStreams(
-    std::unique_ptr<folly::IOBuf>&& data,
-    std::unique_ptr<StreamManager>&& streams,
-    MessageChannel::SendCallback* sendCallback) {
-  if (req_->isActive()) {
-    auto observer = connection_->getWorker()->getServer()->getObserver().get();
-    req_->sendReplyWithStreams(
-        std::move(data),
-        std::move(streams),
-        prepareSendCallback(sendCallback, observer));
-    cancelTimeout();
-    if (observer) {
-      observer->sentReply();
-    }
-  }
-}
-
-void Cpp2Connection::Cpp2Request::setStreamTimeout(
-    const std::chrono::milliseconds& timeout) {
-  if (req_->isActive()) {
-    req_->setStreamTimeout(timeout);
   }
 }
 

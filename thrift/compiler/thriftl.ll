@@ -35,7 +35,7 @@
 /**
  * Must be included AFTER parse/t_program.h, but I can't remember why anymore
  * because I wrote this a while ago.
- * 
+ *
  * Note macro expansion because this is different between OSS and internal
  * build, sigh.
  */
@@ -148,7 +148,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "hash_map"           { return tok_hash_map;             }
 "list"               { return tok_list;                 }
 "set"                { return tok_set;                  }
-"stream"             { return tok_stream;               }
 "oneway"             { return tok_oneway;               }
 "typedef"            { return tok_typedef;              }
 "struct"             { return tok_struct;               }

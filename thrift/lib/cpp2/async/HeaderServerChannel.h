@@ -91,10 +91,6 @@ protected:
     cpp2Channel_->sendMessage(callback, std::move(buf));
   }
 
-  void sendStreamingMessage(Cpp2Channel::SendCallback* callback,
-                            std::unique_ptr<folly::IOBuf>&& buf,
-                            HEADER_FLAGS streamFlag);
-
   // Interface from MessageChannel::RecvCallback
   bool shouldSample();
   void messageReceived(std::unique_ptr<folly::IOBuf>&&,
@@ -112,52 +108,6 @@ protected:
     std::vector<uint16_t> transforms,
     apache::thrift::transport::THeader::StringToStringMap&&);
 
-  class Stream : public StreamChannelCallback,
-                 public MessageChannel::SendCallback,
-                 public apache::thrift::async::HHWheelTimer::Callback {
-    public:
-      Stream(HeaderServerChannel* channel,
-             uint32_t sequenceId,
-             const std::vector<uint16_t>& trans,
-             const std::map<std::string, std::string>& headers,
-             std::chrono::milliseconds timeout,
-             std::unique_ptr<folly::IOBuf>&& buffer,
-             std::unique_ptr<StreamManager>&& manager,
-             MessageChannel::SendCallback* sendCallback);
-
-      ~Stream();
-
-      void sendQueued();
-      void messageSent();
-      void messageSendError(folly::exception_wrapper&&);
-
-      void onStreamSend(std::unique_ptr<folly::IOBuf>&& data);
-      void onOutOfLoopStreamError(const folly::exception_wrapper& error);
-
-      void timeoutExpired() noexcept;
-      void onChannelDestroy();
-
-      void notifyError(const folly::exception_wrapper& error);
-      void notifyReceive(std::unique_ptr<folly::IOBuf>&& buf);
-
-    private:
-      HeaderServerChannel* channel_;
-      uint32_t sequenceId_;
-      std::vector<uint16_t> transforms_;
-      std::map<std::string, std::string> headers_;
-      std::chrono::milliseconds timeout_;
-      std::unique_ptr<folly::IOBuf> buffer_;
-      std::unique_ptr<StreamManager> manager_;
-      MessageChannel::SendCallback* sendCallback_;
-      bool hasOutstandingSend_;
-
-      bool hasSendCallback();
-      void resetTimeout();
-      void sendStreamingMessage(std::unique_ptr<folly::IOBuf>&& buf,
-                                SendCallback* callback);
-      void deleteThisIfNecessary();
-  };
-
   class HeaderRequest : public Request {
    public:
     HeaderRequest(uint32_t seqId,
@@ -166,8 +116,6 @@ protected:
                   const std::map<std::string, std::string>& headers,
                   const std::vector<uint16_t>& trans,
                   bool outOfOrder,
-                  bool clientExpectsStreams,
-                  Stream** streamPtrReturn,
                   std::unique_ptr<sample> sample);
 
     bool isActive() { return active_; }
@@ -195,23 +143,12 @@ protected:
       MessageChannel::SendCallback* cb,
       apache::thrift::transport::THeader::StringToStringMap&& headers);
 
-    // XXX this function should only be called in the async thread, which is
-    //     fine because we do not support sync versions of streams on the
-    //     server side
-    void sendReplyWithStreams(std::unique_ptr<folly::IOBuf>&&,
-                              std::unique_ptr<StreamManager>&&,
-                              MessageChannel::SendCallback* cb = nullptr);
-    void setStreamTimeout(const std::chrono::milliseconds& timeout);
-
    private:
     HeaderServerChannel* channel_;
     uint32_t seqId_;
     std::map<std::string, std::string> headers_;
     std::vector<uint16_t> transforms_;
     bool outOfOrder_;
-    bool clientExpectsStreams_;
-    std::chrono::milliseconds streamTimeout_;
-    Stream** streamPtrReturn_;
     std::atomic<bool> active_;
   };
 
@@ -244,9 +181,6 @@ protected:
     sampleRate_ = sampleRate;
   }
 
-  void unregisterStream(uint32_t sequenceId);
-  void destroyStreams();
-
   void setQueueSends(bool queueSends) {
     cpp2Channel_->setQueueSends(queueSends);
   }
@@ -260,10 +194,10 @@ protected:
     explicit ServerFramingHandler(HeaderServerChannel& channel)
       : channel_(channel) {}
 
-    std::pair<std::unique_ptr<IOBuf>, size_t>
-    removeFrame(IOBufQueue* q) override;
+    std::pair<std::unique_ptr<folly::IOBuf>, size_t>
+    removeFrame(folly::IOBufQueue* q) override;
 
-    std::unique_ptr<IOBuf> addFrame(std::unique_ptr<IOBuf> buf) override;
+    std::unique_ptr<folly::IOBuf> addFrame(std::unique_ptr<folly::IOBuf> buf) override;
   private:
     HeaderServerChannel& channel_;
   };
@@ -295,7 +229,6 @@ private:
       std::unique_ptr<folly::IOBuf>,
       std::vector<uint16_t>,
       apache::thrift::transport::THeader::StringToStringMap>> inOrderRequests_;
-  std::unordered_map<uint32_t, Stream*> streams_;
 
   uint32_t arrivalSeqId_;
   uint32_t lastWrittenSeqId_;

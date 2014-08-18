@@ -22,6 +22,8 @@ using std::make_shared;
 using folly::make_unique;
 using folly::io::RWPrivateCursor;
 using folly::io::Cursor;
+using folly::IOBuf;
+using folly::IOBufQueue;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::THeader;
 

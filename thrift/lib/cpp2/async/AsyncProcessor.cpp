@@ -23,21 +23,4 @@ namespace apache { namespace thrift {
 __thread Cpp2RequestContext* ServerInterface::reqCtx_;
 __thread async::TEventBase* ServerInterface::eb_;
 
-template <>
-void HandlerCallback<StreamManager*>::sendReply(folly::IOBufQueue queue,
-                                                StreamManager* const& r) {
-  std::unique_ptr<StreamManager> stream(r);
-  if (getEventBase()->isInEventBaseThread()) {
-    req_->sendReplyWithStreams(queue.move(), std::move(stream));
-  } else {
-    auto req_mw = folly::makeMoveWrapper(std::move(req_));
-    auto queue_mw = folly::makeMoveWrapper(std::move(queue));
-    auto stream_mw = folly::makeMoveWrapper(std::move(stream));
-    getEventBase()->runInEventBaseThread([=]() mutable {
-      std::unique_ptr<StreamManager> s(stream_mw->release());
-      (*req_mw)->sendReplyWithStreams(queue_mw->move(), std::move(s));
-    });
-  }
-}
-
 }} // apache::thrift

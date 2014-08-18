@@ -53,10 +53,6 @@ enum CLIENT_TYPE {
 // These appear on the wire.
 enum HEADER_FLAGS {
   HEADER_FLAG_SUPPORT_OUT_OF_ORDER = 0x01,
-  // stream flags use 2 bits: bits 2 and 3 (mask = 0x06)
-  HEADER_FLAG_STREAM_BEGIN = 0x02,
-  HEADER_FLAG_STREAM_PIECE = 0x06,
-  HEADER_FLAG_STREAM_END = 0x04,
   // Set for reverse messages (server->client requests, client->server replies)
   HEADER_FLAG_DUPLEX_REVERSE = 0x08,
 };
@@ -145,19 +141,6 @@ class THeader {
   uint16_t getFlags() const { return flags_; }
   void setFlags(uint16_t flags) {
     flags_ = flags;
-  }
-
-  uint16_t getStreamFlag() const {
-    return (getFlags() & STREAM_FLAG_MASK);
-  }
-
-  void setStreamFlag(uint16_t streamFlag) {
-    clearStreamFlag();
-    setFlags(getFlags() | streamFlag);
-  }
-
-  void clearStreamFlag() {
-    setFlags(getFlags() & ~STREAM_FLAG_MASK);
   }
 
   /**
@@ -356,7 +339,6 @@ class THeader {
   static const uint32_t HEADER_MAGIC = 0x0FFF0000;
   static const uint32_t HEADER_MASK = 0xFFFF0000;
   static const uint32_t FLAGS_MASK = 0x0000FFFF;
-  static const uint16_t STREAM_FLAG_MASK = 0x0006;
   static const uint32_t HTTP_SERVER_MAGIC = 0x504F5354; // POST
   static const uint32_t HTTP_CLIENT_MAGIC = 0x48545450; // HTTP
   static const uint32_t HTTP_GET_CLIENT_MAGIC = 0x47455420; // GET

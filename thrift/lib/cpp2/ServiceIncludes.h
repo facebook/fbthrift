@@ -5,12 +5,10 @@
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp2/protocol/StreamSerializers.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <folly/MoveWrapper.h>
 #include <thread>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp/async/TEventBaseManager.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>

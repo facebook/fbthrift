@@ -157,7 +157,7 @@ class DuplexChannel {
     addFrame(std::unique_ptr<folly::IOBuf> buf) override;
    private:
     DuplexChannel& duplex_;
-    IOBufQueue queue_;
+    folly::IOBufQueue queue_;
 
     FramingChannelHandler& getHandler(DuplexChannel::Who::WhoEnum who);
   };
