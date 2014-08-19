@@ -40,11 +40,10 @@ if sys.version_info[0] >= 3:
     xrange = range
 
 SERVER_TYPES = [
-    "TForkingServer",
     "TThreadPoolServer",
     "TThreadedServer",
-    "TSimpleServer",
     "TNonblockingServer",
+    "TCppServer",
     ]
 FRAMED_TYPES = ["TNonblockingServer"]
 _servers = []
@@ -175,6 +174,8 @@ class AbstractTest(object):
         self.transport.close()
 
     def testVoid(self):
+        if self.server_type == "TCppServer":
+            return
         self.client.testVoid()
 
     def testString(self):
@@ -240,6 +241,8 @@ class AbstractTest(object):
         self.assertGreaterEqual(count, 1)
 
     def testNewConnection(self):
+        if self.server_type == "TCppServer":
+            return
         count = self.client.testNewConnection()
         self.assertTrue(count > 0)
 
@@ -253,6 +256,9 @@ class AbstractTest(object):
         self.assertTrue(count >= 0)
 
     def testEventCountRelationships(self):
+        if self.server_type == "TCppServer":
+            return
+
         orig_num_pre_serve = self.client.testPreServe()
         orig_num_new = self.client.testNewConnection()
         orig_num_dest = self.client.testConnectionDestroyed()
@@ -418,9 +424,11 @@ def add_test_classes(module):
     classes = []
     for server_type in SERVER_TYPES:
         for ssl in (True, False):
-            if ssl and server_type in FRAMED_TYPES:
+            if ssl and (server_type in FRAMED_TYPES or server_type == "TCppServer"):
                 continue
             for server_header in (True, False):
+                if server_header is True and server_type == "TCppServer":
+                    continue
                 for server_context in (True, False):
                     for multiple in (True, False):
                         vars = {

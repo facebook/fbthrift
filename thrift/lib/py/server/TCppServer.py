@@ -71,7 +71,7 @@ class _ProcessorAdapter(object):
 
             read_buf = TMemoryBuffer(response)
             trans = THeaderTransport(read_buf, client_types=[client_type])
-            trans.readFrame(0)
+            trans.readFrame(len(response))
 
             return trans.cstringio_buf.read()
         except:

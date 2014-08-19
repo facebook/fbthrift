@@ -45,7 +45,7 @@ from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol import THeaderProtocol
 from thrift.server import TServer, TNonblockingServer, \
-    TProcessPoolServer, THttpServer
+    TProcessPoolServer, THttpServer, TCppServer
 
 class SecondHandler(SecondService.Iface):
     def blahBlah(self):
@@ -155,7 +155,8 @@ class TestContextHandler(ThriftTest.ContextIface):
         # This is here so we can check that handler_ctx is getting set,
         # without modifying the service definition which would require
         # modifying all the languages.
-        if not handler_ctx[0].endswith("127.0.0.1") or \
+        if not (handler_ctx[0].endswith("127.0.0.1") or \
+            handler_ctx[0].endswith("::1")) or \
                 handler_ctx[1] == self._server_port:
             raise ValueError("handler_ctx not set properly " +
                     str(handler_ctx))
@@ -336,6 +337,9 @@ if __name__ == "__main__":
         except:
             print("Could not load THttpServer")
             raise
+    elif args[0] == "TCppServer":
+        server = TCppServer.TCppServer(processor)
+        server.setPort(options.port)
     else:
         if options.ssl:
             cert_path = 'thrift/test/py/test_cert.pem'
@@ -358,10 +362,13 @@ if __name__ == "__main__":
             ServerClass = getattr(TServer, server_class_name)
             server = ServerClass(processor, transport, tfactory, pfactory)
 
-    if options.header:
-        server.processor.setEventHandler(HeaderEventHandler())
-    elif options.context:
-        server.processor.setEventHandler(ContextEventHandler())
-    server.serverEventHandler = event_handler
+    if args[0] == "TCppServer":
+        server.setServerEventHandler(event_handler)
+    else:
+        if options.header:
+            server.processor.setEventHandler(HeaderEventHandler())
+        elif options.context:
+            server.processor.setEventHandler(ContextEventHandler())
+        server.serverEventHandler = event_handler
 
     server.serve()
