@@ -36,7 +36,7 @@ using apache::thrift::transport::TTransportFactory;
 using apache::thrift::concurrency::Monitor;
 using apache::thrift::concurrency::ThreadFactory;
 
-class TThreadedServer : public TServer {
+class __attribute__((deprecated)) TThreadedServer : public TServer {
 
  public:
   class Task;

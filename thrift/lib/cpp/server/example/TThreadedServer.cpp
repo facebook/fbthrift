@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include <thrift/lib/cpp/server/TThreadedServer.h>
+#include <thrift/lib/cpp/server/example/TThreadedServer.h>
 
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/server/TRpcTransportContext.h>

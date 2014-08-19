@@ -18,7 +18,7 @@
  */
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 
-#include <thrift/lib/cpp/server/TThreadedServer.h>
+#include <thrift/lib/cpp/server/example/TThreadedServer.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 
 using std::shared_ptr;

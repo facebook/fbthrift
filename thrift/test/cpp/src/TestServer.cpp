@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/server/example/TSimpleServer.h>
-#include <thrift/lib/cpp/server/TThreadedServer.h>
+#include <thrift/lib/cpp/server/example/TThreadedServer.h>
 #include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
 #include <thrift/lib/cpp/server/example/TNonblockingServer.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>

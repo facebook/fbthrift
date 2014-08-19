@@ -29,7 +29,7 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/server/TThreadedServer.h>
+#include <thrift/lib/cpp/server/example/TThreadedServer.h>
 #include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
 #include <thrift/lib/cpp/server/example/TNonblockingServer.h>
 #include <thrift/lib/cpp/server/example/TSimpleServer.h>
