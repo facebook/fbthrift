@@ -2678,13 +2678,14 @@ class CppGenerator(t_generator.Generator):
             s('bool isset_{0.name} = false;'.format(field))
         s()
 
+        fields_scope = None
         if obj.is_union:
             # Unions only have one member set, so don't loop
             s('xfer += iprot->readFieldBegin(fname, ftype, fid);')
             s1 = s('if (ftype == apache::thrift::protocol::T_STOP)').scope
             s1(this + '->__clear();')
             s1.release()
-            s1 = s.sameLine('else').scope
+            fields_scope = s1 = s.sameLine('else').scope
         else:
             # Loop over reading in fields
             s1 = s('while (true)').scope
@@ -2697,9 +2698,10 @@ class CppGenerator(t_generator.Generator):
             # Check for field STOP marker
             with s1('if (ftype == apache::thrift::protocol::T_STOP)'):
                 out('break;')
+            fields_scope = s
 
         # Switch statement on the field we are reading
-        s2 = s('switch (fid)').scope
+        s2 = fields_scope('switch (fid)').scope
         # Generate deserialization code for known cases
         for field in fields:
 
