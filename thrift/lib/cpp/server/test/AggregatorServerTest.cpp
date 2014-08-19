@@ -54,7 +54,7 @@
 
 #include <thrift/lib/cpp/server/test/AggregatorUtilTest.h>
 
-#include <thrift/lib/cpp/server/TNonblockingServer.h>
+#include <thrift/lib/cpp/server/example/TNonblockingServer.h>
 
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>

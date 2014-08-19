@@ -22,7 +22,7 @@
 #include <thrift/lib/cpp/server/example/TSimpleServer.h>
 #include <thrift/lib/cpp/server/TThreadedServer.h>
 #include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
-#include <thrift/lib/cpp/server/TNonblockingServer.h>
+#include <thrift/lib/cpp/server/example/TNonblockingServer.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp/transport/TTransportUtils.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>

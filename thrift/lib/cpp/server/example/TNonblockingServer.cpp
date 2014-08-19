@@ -18,7 +18,8 @@
  */
 #define __STDC_FORMAT_MACROS
 
-#include <thrift/lib/cpp/server/TNonblockingServer.h>
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#include <thrift/lib/cpp/server/example/TNonblockingServer.h>
 
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>

@@ -29,7 +29,7 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
-#include <thrift/lib/cpp/server/TNonblockingServer.h>
+#include <thrift/lib/cpp/server/example/TNonblockingServer.h>
 #include <thrift/lib/cpp/server/TThreadedServer.h>
 #include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
 #include <thrift/lib/cpp/server/TServer.h>

@@ -27,10 +27,6 @@ libthrift_la_LDFLAGS = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
 
 ## We only build the extra libraries if we have the dependencies,
 ## but we install all of the headers unconditionally.
-if AMX_HAVE_LIBEVENT
-lib_LTLIBRARIES += libthriftnb.la
-pkgconfig_DATA += thrift-nb.pc
-endif
 if AMX_HAVE_ZLIB
 lib_LTLIBRARIES += libthriftz.la
 pkgconfig_DATA += thrift-z.pc
@@ -84,17 +80,12 @@ libthrift_la_SOURCES += concurrency/Mutex.cpp \
                         concurrency/Monitor.cpp \
                         concurrency/PosixThreadFactory.cpp
 
-libthriftnb_la_SOURCES = server/TNonblockingServer.cpp
-
 libthriftz_la_SOURCES = transport/TZlibTransport.cpp
 
 
 # Flags for the various libraries
-libthriftnb_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS)
 libthriftz_la_CPPFLAGS  = $(AM_CPPFLAGS) $(ZLIB_CPPFLAGS)
-libthriftnb_la_CXXFLAGS = $(AM_CXXFLAGS)
 libthriftz_la_CXXFLAGS  = $(AM_CXXFLAGS)
-libthriftnb_la_LDFLAGS  = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
 libthriftz_la_LDFLAGS   = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
 
 include_thriftdir = $(includedir)/thrift/lib/cpp/
@@ -174,7 +165,6 @@ include_transport_HEADERS = \
 include_serverdir = $(include_thriftdir)/server
 include_server_HEADERS = \
                          server/TServer.h \
-                         server/TNonblockingServer.h \
                          server/TConnectionContext.h \
                          server/TServerObserver.h
 
