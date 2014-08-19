@@ -1022,10 +1022,15 @@ class CppGenerator(t_generator.Generator):
                               function.name, future_name)
                               + ", ".join(args) + ");")
                             if not function.oneway:
-                                out(("{0}.then([=](folly::wangle" +
-                                   "::Try<void>&& t){{").format(future_name))
-                                out("  callbackp->doneInThread();")
-                                out("});")
+                                with out(("{0}.then([=](folly::wangle" +
+                                      "::Try<void>&& t)").format(future_name)):
+                                    with out("try"):
+                                        out("t.throwIfFailed();")
+                                        out("callbackp->doneInThread();")
+                                        with out().catch("..."):
+                                            out("callbackp->exceptionInThread("
+                                                "std::current_exception());")
+                                out(");")
                             else:
                                 out("delete callbackp;")
                         with out().catch("const std::exception& ex"):
