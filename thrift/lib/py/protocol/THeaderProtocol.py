@@ -24,7 +24,7 @@ from __future__ import unicode_literals
 
 from .TProtocol import TProtocolBase
 from thrift.Thrift import TApplicationException, TMessageType
-from .TBinaryProtocol import TBinaryProtocol
+from .TBinaryProtocol import TBinaryProtocolAccelerated
 from .TSimpleJSONProtocol import TSimpleJSONProtocol
 from .TCompactProtocol import TCompactProtocol
 from thrift.transport.THeaderTransport import THeaderTransport
@@ -49,7 +49,8 @@ class THeaderProtocol(TProtocolBase):
         proto_id = self.trans.get_protocol_id()
 
         if proto_id == self.T_BINARY_PROTOCOL:
-            self.__proto = TBinaryProtocol(self.trans, self.strictRead, True)
+            self.__proto = TBinaryProtocolAccelerated(self.trans,
+                    self.strictRead, True)
         elif proto_id == self.T_COMPACT_PROTOCOL:
             self.__proto = TCompactProtocol(self.trans)
         else:
