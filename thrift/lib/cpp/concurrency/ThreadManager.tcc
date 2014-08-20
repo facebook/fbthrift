@@ -96,10 +96,10 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
         startTime = SystemClock::now();
 
         // Codel auto-expire time algorithm
-        int64_t delay = std::chrono::duration_cast<std::chrono::milliseconds>(
-          startTime - task->getQueueBeginTime()).count();
+        auto delay = std::chrono::duration_cast<std::chrono::milliseconds>(
+          startTime - task->getQueueBeginTime());
 
-        if (manager_->codel_.overloaded(std::chrono::microseconds(delay))) {
+        if (manager_->codel_.overloaded(delay)) {
           if (manager_->codelCallback_) {
             manager_->codelCallback_(task->getRunnable());
           }

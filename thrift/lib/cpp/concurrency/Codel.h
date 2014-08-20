@@ -38,16 +38,24 @@ class Codel {
  public:
   Codel();
 
-  // Comment
+  // Given a delay, returns wether the codel algorithm would
+  // reject a queued request with this delay.
+  //
+  // Internally, it also keeps track of the interval
   bool overloaded(std::chrono::microseconds delay);
 
+  // Get the queue load, as seen by the codel algorithm
+  // Gives a rough guess at how bad the queue delay is.
+  //
+  // Return:  0 = no delay, 100 = At the queueing limit
   int getLoad();
 
  private:
   std::chrono::microseconds codelMinDelay_;
   std::chrono::time_point<std::chrono::steady_clock> codelIntervalTime_;
 
-  // Comment
+  // flag to make overloaded() thread-safe, since we only want
+  // to reset the delay once per time period
   std::atomic<bool> codelResetDelay_;
 
   bool overloaded_;

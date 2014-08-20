@@ -460,13 +460,18 @@ BOOST_AUTO_TEST_CASE(CodelTest) {
 
   apache::thrift::Codel c;
   usleep(110000);
+  // This interval is overloaded
   BOOST_CHECK_EQUAL(false, c.overloaded(std::chrono::milliseconds(100)));
   usleep(90000);
+  // At least two requests must happen in an interval before they will fail
+  BOOST_CHECK_EQUAL(false, c.overloaded(std::chrono::milliseconds(50)));
   BOOST_CHECK_EQUAL(true, c.overloaded(std::chrono::milliseconds(50)));
   usleep(110000);
+  // Previous interval is overloaded, but 2ms isn't enough to fail
   BOOST_CHECK_EQUAL(false, c.overloaded(std::chrono::milliseconds(2)));
   usleep(90000);
-  BOOST_CHECK_EQUAL(false, c.overloaded(std::chrono::milliseconds(20)));
+  // 20 ms > target interval * 2
+  BOOST_CHECK_EQUAL(true, c.overloaded(std::chrono::milliseconds(20)));
 }
 
 

@@ -49,12 +49,17 @@ bool Codel::overloaded(std::chrono::microseconds delay) {
     } else {
       overloaded_ = false;
     }
-  } else {
-    if ((codelResetDelay_.load(std::memory_order_acquire) &&
-         codelResetDelay_.exchange(false))
-        || delay < codelMinDelay_) {
-      codelMinDelay_ = delay;
-    }
+  }
+  // Care must be taken that only a single thread resets codelMinDelay_,
+  // and that it happens after the interval reset above
+  if (codelResetDelay_.load(std::memory_order_acquire) &&
+      codelResetDelay_.exchange(false)) {
+    codelMinDelay_ = delay;
+    // More than one request must come in during an interval before codel
+    // starts dropping requests
+    return false;
+  } else if(delay < codelMinDelay_) {
+    codelMinDelay_ = delay;
   }
 
   if (overloaded_ &&
@@ -67,7 +72,7 @@ bool Codel::overloaded(std::chrono::microseconds delay) {
 }
 
 int Codel::getLoad() {
-  return codelMinDelay_.count() / (FLAGS_codel_target_delay * 10.0);
+  return std::min(100, (int)codelMinDelay_.count() / FLAGS_codel_interval);
 }
 
 }} //namespace
