@@ -126,6 +126,12 @@ void HeaderClientChannel::startSecurity() {
   // Let's get this party started.
   setProtectionState(ProtectionState::INPROGRESS);
   setBaseReceivedCallback();
+  // Schedule timeout because in saslClient_->start() we may be talking
+  // to the KDC.
+  if (timeoutSASL_ > 0) {
+    timer_->scheduleTimeout(&saslClientCallback_,
+                            std::chrono::milliseconds(timeoutSASL_));
+  }
   saslClient_->setProtocolId(getProtocolId());
   saslClient_->start(&saslClientCallback_);
 }
@@ -153,13 +159,6 @@ unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
   }
 
   return std::move(buf);
-}
-
-void HeaderClientChannel::SaslClientCallback::saslStarted() {
-  if (channel_.timeoutSASL_ > 0) {
-    channel_.timer_->scheduleTimeout(
-      this, std::chrono::milliseconds(channel_.timeoutSASL_));
-  }
 }
 
 void HeaderClientChannel::SaslClientCallback::saslSendServer(

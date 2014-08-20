@@ -33,10 +33,6 @@ class SaslClient : public SaslEndpoint {
    public:
     virtual ~Callback() {}
 
-    // This will be called just before the kerberos operation starts.
-    // This allows the caller to implement more effective timeouts.
-    virtual void saslStarted() = 0;
-
     // Invoked when a new message should be sent to the server.
     virtual void saslSendServer(std::unique_ptr<folly::IOBuf>&&) = 0;
 

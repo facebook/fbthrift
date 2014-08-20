@@ -18,7 +18,6 @@
 
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <thrift/lib/cpp2/security/SecurityLogger.h>
 
 
 namespace apache { namespace thrift {
@@ -28,20 +27,7 @@ using namespace apache::thrift;
 using namespace folly;
 using namespace apache::thrift::concurrency;
 
-DEFINE_int32(max_connections_per_sasl_thread, 8,
-             "Cap on the number of simultaneous secure connection setups "
-             "per sasl thread");
-
-const int kPendingFailureRatio = 1000;
-
-SaslThreadManager::SaslThreadManager(std::shared_ptr<SecurityLogger> logger,
-                                     int threadCount, int stackSizeMb)
-  : logger_(logger) {
-  secureConnectionsInProgress_ = 0;
-  logger_->log("secure_connections_in_progress",
-               folly::to<std::string>(secureConnectionsInProgress_));
-  maxSimultaneousSecureConnections_ =
-    threadCount * FLAGS_max_connections_per_sasl_thread;
+SaslThreadManager::SaslThreadManager(int threadCount, int stackSizeMb) {
   threadManager_ = concurrency::ThreadManager::newSimpleThreadManager(
     threadCount);
 
@@ -57,39 +43,6 @@ SaslThreadManager::SaslThreadManager(std::shared_ptr<SecurityLogger> logger,
 
 SaslThreadManager::~SaslThreadManager() {
   threadManager_->stop();
-}
-
-void SaslThreadManager::start(
-  std::shared_ptr<concurrency::FunctionRunner>&& f) {
-  concurrency::Guard g(mutex_);
-  // This prevents pendingSecureStarts_ from growing entirely without
-  // bound. The bound is set extremely high, though, so it's unlikely
-  // it will ever be hit.
-  if (pendingSecureStarts_.size() >
-      maxSimultaneousSecureConnections_ * kPendingFailureRatio) {
-    throw concurrency::TooManyPendingTasksException("ouch");
-  }
-  if (secureConnectionsInProgress_ >= maxSimultaneousSecureConnections_) {
-    pendingSecureStarts_.push_back(f);
-    return;
-  }
-  ++secureConnectionsInProgress_;
-  logger_->log("secure_connections_in_progress",
-               folly::to<std::string>(secureConnectionsInProgress_));
-  threadManager_->add(f);
-}
-
-void SaslThreadManager::end() {
-  concurrency::Guard g(mutex_);
-  if (!pendingSecureStarts_.empty()) {
-    threadManager_->add(pendingSecureStarts_.front());
-    pendingSecureStarts_.pop_front();
-  } else {
-    DCHECK(secureConnectionsInProgress_ > 0);
-    --secureConnectionsInProgress_;
-    logger_->log("secure_connections_in_progress",
-                 folly::to<std::string>(secureConnectionsInProgress_));
-  }
 }
 
 }} // apache::thrift

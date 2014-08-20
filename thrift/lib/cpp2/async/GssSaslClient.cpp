@@ -76,7 +76,6 @@ void GssSaslClient::start(Callback *cb) {
   auto mutex = mutex_;
   auto logger = saslLogger_;
   auto proto = protocol_;
-  auto threadManager = saslThreadManager_;
 
   logger->logStart("prepare_first_request");
   auto ew_tm = folly::try_and_catch<TooManyPendingTasksException>([&]() {
@@ -86,25 +85,16 @@ void GssSaslClient::start(Callback *cb) {
     }
 
     logger->logStart("thread_manager_overhead");
-    threadManager->start(std::make_shared<FunctionRunner>([=] {
+    saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
       logger->logEnd("thread_manager_overhead");
       MoveWrapper<unique_ptr<IOBuf>> iobuf;
       folly::exception_wrapper ex;
 
-      {
-        Guard guard(*mutex);
-        if (*channelCallbackUnavailable) {
-          threadManager->end();
-          return;
-        }
-
-        evb_->runInEventBaseThread([=] () mutable {
-            if (*channelCallbackUnavailable) {
-              threadManager->end();
-              return;
-            }
-            cb->saslStarted();
-          });
+      // This is an optimization. If the channel is unavailable, we have no
+      // need to attempt to communicate to the KDC. Note that this is just
+      // checking a boolean, so thread safety is not an issue here.
+      if (*channelCallbackUnavailable) {
+        return;
       }
 
       ex = folly::try_and_catch<std::exception, TTransportException,
@@ -130,7 +120,6 @@ void GssSaslClient::start(Callback *cb) {
       Guard guard(*mutex);
       // Return if channel is unavailable. Ie. evb_ may not be good.
       if (*channelCallbackUnavailable) {
-        threadManager->end();
         return;
       }
 
@@ -140,12 +129,10 @@ void GssSaslClient::start(Callback *cb) {
       evb_->runInEventBaseThread([=]() mutable {
         logger->logEnd("evb_overhead");
         if (*channelCallbackUnavailable) {
-          threadManager->end();
           return;
         }
         if (ex) {
           cb->saslError(std::move(ex));
-          threadManager->end();
           return;
         } else {
           logger->logStart("first_rtt");
@@ -157,7 +144,6 @@ void GssSaslClient::start(Callback *cb) {
   if (ew_tm) {
     logger->log("too_many_pending_tasks_in_start");
     cb->saslError(std::move(ew_tm));
-    // no end() here.  If this happens, we never really started.
   }
 }
 
@@ -170,28 +156,18 @@ void GssSaslClient::consumeFromServer(
   auto mutex = mutex_;
   auto logger = saslLogger_;
   auto proto = protocol_;
-  auto threadManager = saslThreadManager_;
 
   auto ew_tm = folly::try_and_catch<TooManyPendingTasksException>([&]() {
-    threadManager->get()->add(std::make_shared<FunctionRunner>([=] {
+    saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
       std::string req_data;
       MoveWrapper<unique_ptr<IOBuf>> iobuf;
       folly::exception_wrapper ex;
 
-      {
-        Guard guard(*mutex);
-        if (*channelCallbackUnavailable) {
-          threadManager->end();
-          return;
-        }
-
-        evb_->runInEventBaseThread([=] () mutable {
-            if (*channelCallbackUnavailable) {
-              threadManager->end();
-              return;
-            }
-            cb->saslStarted();
-          });
+      // This is an optimization. If the channel is unavailable, we have no
+      // need to attempt to communicate to the KDC. Note that this is just
+      // checking a boolean, so thread safety is not an issue here.
+      if (*channelCallbackUnavailable) {
+        return;
       }
 
       // Get the input string or outcome status
@@ -264,19 +240,16 @@ void GssSaslClient::consumeFromServer(
       Guard guard(*mutex);
       // Return if channel is unavailable. Ie. evb_ may not be good.
       if (*channelCallbackUnavailable) {
-        threadManager->end();
         return;
       }
 
       auto phase = clientHandshake->getPhase();
       evb_->runInEventBaseThread([=]() mutable {
         if (*channelCallbackUnavailable) {
-          threadManager->end();
           return;
         }
         if (ex) {
           cb->saslError(std::move(ex));
-          threadManager->end();
           return;
         }
         if (*iobuf && !(*iobuf)->empty()) {
@@ -289,7 +262,6 @@ void GssSaslClient::consumeFromServer(
         }
         if (clientHandshake_->isContextEstablished()) {
           cb->saslComplete();
-          threadManager->end();
         }
       });
     }));
@@ -297,7 +269,6 @@ void GssSaslClient::consumeFromServer(
   if (ew_tm) {
     logger->log("too_many_pending_tasks_in_consume");
     cb->saslError(std::move(ew_tm));
-    threadManager->end();
   }
 }
 
