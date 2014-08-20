@@ -60,6 +60,10 @@ class SecurityLogger {
             << (data_str.empty() ? "" : ": ") << data_str;
   }
 
+  virtual void logValue(const std::string& key, int64_t value) {
+    SecurityLogger::log(key, {folly::to<std::string>(value)}, NONE);
+  }
+
   /**
    * Log function overloads.
    */

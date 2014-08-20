@@ -50,10 +50,7 @@ public:
   }
   virtual std::string getClientIdentity() const;
   virtual std::string getServerIdentity() const;
-  virtual void markChannelCallbackUnavailable() {
-    apache::thrift::concurrency::Guard guard(*mutex_);
-    *channelCallbackUnavailable_ = true;
-  }
+  virtual void markChannelCallbackUnavailable();
 
   virtual const std::string* getErrorString() const {
     return errorString_.get();
@@ -96,6 +93,7 @@ private:
   std::shared_ptr<SaslThreadManager> saslThreadManager_;
   std::shared_ptr<int> seqId_;
   uint16_t protocol_;
+  std::shared_ptr<bool> inProgress_;
 };
 
 }} // apache::thrift
