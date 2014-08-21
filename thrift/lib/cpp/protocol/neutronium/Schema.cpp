@@ -253,7 +253,7 @@ extern const TType typeToTType[] = {
   T_STRUCT,   // TYPE_STRUCT
   T_STOP,     // TYPE_SERVICE (invalid)
   T_STOP,     // TYPE_PROGRAM (invalid)
-  T_STOP,     // TYPE_STREAM (invalid)
+  T_FLOAT,     // TYPE_FLOAT
 };
 
 }  // namespace

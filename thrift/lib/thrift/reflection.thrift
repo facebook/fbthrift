@@ -28,7 +28,6 @@ enum Type {
   TYPE_STRUCT,
   TYPE_SERVICE,
   TYPE_PROGRAM,
-  TYPE_STREAM,
   TYPE_FLOAT,
 }
 
