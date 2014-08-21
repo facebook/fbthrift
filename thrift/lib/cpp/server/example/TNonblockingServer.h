@@ -76,7 +76,7 @@ enum TOverloadAction {
 class TNonblockingIOThread;
 class TServerObserver;
 
-class __attribute__((deprecated)) TNonblockingServer : public TServer {
+class __attribute__((__deprecated__)) TNonblockingServer : public TServer {
  private:
   class TConnection;
 
