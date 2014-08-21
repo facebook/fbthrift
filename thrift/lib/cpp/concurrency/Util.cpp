@@ -31,7 +31,7 @@
 
 namespace apache { namespace thrift { namespace concurrency {
 
-const int64_t Util::currentTimeTicks(int64_t ticksPerSec) {
+int64_t Util::currentTimeTicks(int64_t ticksPerSec) {
   int64_t result;
 
 #if defined(THRIFT_HAVE_CLOCK_GETTIME)
@@ -51,7 +51,7 @@ const int64_t Util::currentTimeTicks(int64_t ticksPerSec) {
   return result;
 }
 
-const int64_t Util::monotonicTimeTicks(int64_t ticksPerSec) {
+int64_t Util::monotonicTimeTicks(int64_t ticksPerSec) {
 #if defined(THRIFT_HAVE_CLOCK_GETTIME)
   static bool useRealtime;
   if (useRealtime) {
