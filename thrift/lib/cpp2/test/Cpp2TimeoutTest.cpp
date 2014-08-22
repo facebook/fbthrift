@@ -41,14 +41,14 @@ using namespace apache::thrift::async;
 class TestInterface : public TestServiceSvIf {
   void sendResponse(std::string& _return, int64_t size) {
     if (size >= 0) {
-      usleep(size);
+      usleep(size * 1000);
     }
 
     _return = "test";
   }
 
   void noResponse(int64_t size) {
-    usleep(size);
+    usleep(size * 1000);
   }
 };
 
@@ -90,6 +90,7 @@ TEST(ThriftServer, IdleTimeoutTest) {
     }, 100);
   base.loopForever();
   EXPECT_TRUE(checker.getClosed());
+  client_channel->setCloseCallback(nullptr);
 }
 
 TEST(ThriftServer, NoIdleTimeoutWhileWorkingTest) {
@@ -102,13 +103,46 @@ TEST(ThriftServer, NoIdleTimeoutWhileWorkingTest) {
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
   auto client_channel = HeaderClientChannel::newChannel(socket);
+  auto client_channelp = client_channel.get();
   CloseChecker checker;
 
   client_channel->setCloseCallback(&checker);
   TestServiceAsyncClient client(std::move(client_channel));
-  client.sync_noResponse(20);
+  std::string ret;
+  client.sync_sendResponse(ret, 20);
+
+  client.sync_sendResponse(ret, 20);
 
   EXPECT_FALSE(checker.getClosed());
+  client_channelp->setCloseCallback(nullptr);
+}
+
+TEST(ThriftServer, IdleTimeoutAfterTest) {
+  ScopedServerThread sst(getServer());
+
+  TEventBase base;
+
+  auto port = sst.getAddress()->getPort();
+  std::shared_ptr<TAsyncSocket> socket(
+    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+
+  auto client_channel = HeaderClientChannel::newChannel(socket);
+  auto client_channelp = client_channel.get();
+  CloseChecker checker;
+
+  client_channel->setCloseCallback(&checker);
+  TestServiceAsyncClient client(std::move(client_channel));
+  std::string ret;
+  client.sync_sendResponse(ret, 20);
+
+  EXPECT_FALSE(checker.getClosed());
+
+  base.runAfterDelay([&base](){
+      base.terminateLoopSoon();
+    }, 200);
+  base.loopForever();
+  EXPECT_TRUE(checker.getClosed());
+  client_channelp->setCloseCallback(nullptr);
 }
 
 int main(int argc, char** argv) {
