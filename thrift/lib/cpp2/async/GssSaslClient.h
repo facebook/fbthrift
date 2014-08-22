@@ -94,7 +94,7 @@ private:
   std::unique_ptr<std::string> errorString_;
   std::shared_ptr<apache::thrift::concurrency::Mutex> mutex_;
   std::shared_ptr<SaslThreadManager> saslThreadManager_;
-  int seqId_;
+  std::shared_ptr<int> seqId_;
   uint16_t protocol_;
 };
 

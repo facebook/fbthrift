@@ -65,7 +65,7 @@ GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb,
     , clientHandshake_(new KerberosSASLHandshakeClient(logger))
     , mutex_(new Mutex)
     , saslThreadManager_(nullptr)
-    , seqId_(0)
+    , seqId_(new int(0))
     , protocol_(0xFFFF) {
 }
 
@@ -76,6 +76,7 @@ void GssSaslClient::start(Callback *cb) {
   auto mutex = mutex_;
   auto logger = saslLogger_;
   auto proto = protocol_;
+  auto seqId = seqId_;
 
   logger->logStart("prepare_first_request");
   auto ew_tm = folly::try_and_catch<TooManyPendingTasksException>([&]() {
@@ -114,7 +115,7 @@ void GssSaslClient::start(Callback *cb) {
         argsp.saslStart = &start;
 
         *iobuf = PargsPresultProtoSerialize(
-          proto, argsp, "authFirstRequest", T_CALL, seqId_++);
+          proto, argsp, "authFirstRequest", T_CALL, (*seqId)++);
       });
 
       Guard guard(*mutex);
@@ -156,6 +157,7 @@ void GssSaslClient::consumeFromServer(
   auto mutex = mutex_;
   auto logger = saslLogger_;
   auto proto = protocol_;
+  auto seqId = seqId_;
 
   auto ew_tm = folly::try_and_catch<TooManyPendingTasksException>([&]() {
     saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
@@ -233,7 +235,7 @@ void GssSaslClient::consumeFromServer(
           SaslAuthService_authNextRequest_pargs argsp;
           argsp.saslRequest = &req;
           *iobuf = PargsPresultProtoSerialize(proto, argsp, "authNextRequest",
-                                                T_CALL, seqId_++);
+                                                T_CALL, (*seqId)++);
         }
       });
 
