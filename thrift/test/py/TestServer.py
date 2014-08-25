@@ -362,13 +362,10 @@ if __name__ == "__main__":
             ServerClass = getattr(TServer, server_class_name)
             server = ServerClass(processor, transport, tfactory, pfactory)
 
-    if args[0] == "TCppServer":
-        server.setServerEventHandler(event_handler)
-    else:
-        if options.header:
-            server.processor.setEventHandler(HeaderEventHandler())
-        elif options.context:
-            server.processor.setEventHandler(ContextEventHandler())
-        server.serverEventHandler = event_handler
+    if options.header:
+        server.processor.setEventHandler(HeaderEventHandler())
+    elif options.context:
+        server.processor.setEventHandler(ContextEventHandler())
+    server.setServerEventHandler(event_handler)
 
     server.serve()

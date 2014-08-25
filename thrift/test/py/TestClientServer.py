@@ -36,12 +36,7 @@ from thrift.transport import TSocket, TSSLSocket
 from thrift.protocol import TBinaryProtocol, THeaderProtocol, \
         TMultiplexedProtocol
 
-if sys.version_info[0] >= 3:
-    xrange = range
-
 SERVER_TYPES = [
-    "TThreadPoolServer",
-    "TThreadedServer",
     "TNonblockingServer",
     "TCppServer",
     ]
@@ -174,8 +169,6 @@ class AbstractTest(object):
         self.transport.close()
 
     def testVoid(self):
-        if self.server_type == "TCppServer":
-            return
         self.client.testVoid()
 
     def testString(self):
@@ -263,7 +256,7 @@ class AbstractTest(object):
         orig_num_new = self.client.testNewConnection()
         orig_num_dest = self.client.testConnectionDestroyed()
 
-        for i in xrange(5):
+        for i in range(5):
             # force new server connection
             self.transport.getTransport().close()
             self.transport.getTransport().open()

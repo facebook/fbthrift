@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import traceback
 
 from thrift.protocol.THeaderProtocol import THeaderProtocol
-from thrift.server.TServer import TConnectionContext
+from thrift.server.TServer import TServer, TConnectionContext
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TTransport import TMemoryBuffer
 
@@ -78,22 +78,20 @@ class _ProcessorAdapter(object):
             # Don't let exceptions escape back into C++
             traceback.print_exc()
 
-class TCppServer(CppServerWrapper):
+class TCppServer(CppServerWrapper, TServer):
     def __init__(self, processor):
         CppServerWrapper.__init__(self)
-        self.setAdapter(_ProcessorAdapter(processor))
+        self.processor = self._getProcessor(processor)
+        self.setAdapter(_ProcessorAdapter(self.processor))
         self._setup_done = False
-        self.server_event_handler = None
-
-    def setServerEventHandler(self, seh):
-        self.server_event_handler = seh
+        self.serverEventHandler = None
 
     def setup(self):
         if self._setup_done:
             return
         CppServerWrapper.setup(self)
-        if self.server_event_handler is not None:
-            self.server_event_handler.preServe(self.getAddress())
+        if self.serverEventHandler is not None:
+            self.serverEventHandler.preServe(self.getAddress())
         self._setup_done = True
 
     def loop(self):
