@@ -458,8 +458,6 @@ TEST(ThriftServer, CompressionClientTest) {
     client.getChannel())->getHeader();
   header->setTransform(
     apache::thrift::transport::THeader::ZLIB_TRANSFORM);
-  header->setTransform(
-    apache::thrift::transport::THeader::ZLIB_IF_MORE_THAN);
   header->setMinCompressBytes(1);
 
   std::string response;

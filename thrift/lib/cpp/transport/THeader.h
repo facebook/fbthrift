@@ -251,7 +251,6 @@ class THeader {
     HMAC_TRANSFORM = 0x02,
     SNAPPY_TRANSFORM = 0x03,
     QLZ_TRANSFORM = 0x04,
-    ZLIB_IF_MORE_THAN = 0x05,
   };
 
   /**

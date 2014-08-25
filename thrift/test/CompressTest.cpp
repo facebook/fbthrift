@@ -230,15 +230,14 @@ TEST(sdf, sdfsd) {
     protout->getTransport())->setTransforms(trans);
   // Tell _receiver_ to zlib the response only if response is
   // more than 100 bytes
-  protout->setTransform(THeader::ZLIB_IF_MORE_THAN);
+  protout->setTransform(THeader::ZLIB_TRANSFORM);
   std::dynamic_pointer_cast<THeaderTransport>(
     protout->getTransport())->setMinCompressBytes(100);
+  std::dynamic_pointer_cast<THeaderTransport>(
+    protin->getTransport())->setMinCompressBytes(100);
   bufout->resetBuffer();
   b.write(protout.get());
   protout->getTransport()->flush();
-
-  // +4 because ZLIB_IF_MORE_THAN has 4 bytes of data
-  EXPECT_EQ(bufout->available_read(), uncompressedSize + 4);
 
   // Uncompress
   uint8_t* data;
@@ -257,15 +256,16 @@ TEST(sdf, sdfsd) {
   // Reset Transforms
   std::dynamic_pointer_cast<THeaderTransport>(
     protout->getTransport())->setTransforms(trans);
-  protout->setTransform(THeader::ZLIB_IF_MORE_THAN);
+  protout->setTransform(THeader::ZLIB_TRANSFORM);
   std::dynamic_pointer_cast<THeaderTransport>(
     protout->getTransport())->setMinCompressBytes(20000);
+  std::dynamic_pointer_cast<THeaderTransport>(
+    protin->getTransport())->setMinCompressBytes(20000);
   bufout->resetBuffer();
   b.write(protout.get());
   protout->getTransport()->flush();
 
-  // +4 because ZLIB_IF_MORE_THAN has 4 bytes of data
-  EXPECT_EQ(bufout->available_read(), uncompressedSize + 4);
+  EXPECT_EQ(bufout->available_read(), uncompressedSize );
 
   // Uncompress
   bufout->getBuffer(&data, &datasize);
