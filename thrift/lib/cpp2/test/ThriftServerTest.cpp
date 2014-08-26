@@ -864,6 +864,7 @@ TEST(ThriftServer, CallbackOrderingTest) {
   }, 20);
   base.loopForever();
   serverHandler->check();
+  TProcessorBase::removeProcessorEventHandlerFactory(serverHandler);
 }
 
 int main(int argc, char** argv) {
