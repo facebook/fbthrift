@@ -25,8 +25,6 @@
 
 #include <boost/utility.hpp>
 
-#include <semaphore.h>
-
 namespace apache { namespace thrift { namespace concurrency {
 
 /**
@@ -117,17 +115,6 @@ class Synchronized {
 
  private:
   Guard g;
-};
-
-class PosixSemaphore : boost::noncopyable {
- public:
-  explicit PosixSemaphore(int value=0) {sem_init(&sem_, 0, value);}
-  ~PosixSemaphore() {sem_destroy(&sem_);}
-  void post() {sem_post(&sem_);}
-  void post(int value) {while (value--) sem_post(&sem_);}
-  void wait() {sem_wait(&sem_);}
- private:
-  sem_t sem_;
 };
 
 }}} // apache::thrift::concurrency

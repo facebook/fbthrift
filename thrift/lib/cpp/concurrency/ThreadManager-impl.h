@@ -113,7 +113,6 @@ class ThreadManager::ImplT : public ThreadManager  {
                   : ThreadManager::DEFAULT_MAX_QUEUE_SIZE)
              : maxQueueLen),
     monitor_(&mutex_),
-    stopNotificationThread_(false),
     maxMonitor_(&mutex_),
     deadWorkerMonitor_(&mutex_),
     deadWorkers_(),
@@ -216,17 +215,6 @@ class ThreadManager::ImplT : public ThreadManager  {
 
   Codel codel_;
 
-  class NotificationWorker : public Runnable {
-   public:
-    NotificationWorker(
-      PosixSemaphore& sem, SemType& mon, std::atomic<bool>& stop);
-    void run();
-   private:
-    PosixSemaphore& sem_;
-    SemType& mon_;
-    std::atomic<bool>& stop_;
-  };
-
  private:
   void stopImpl(bool joinArg);
   void removeWorkerImpl(size_t value, bool afterTasks = false);
@@ -266,9 +254,6 @@ class ThreadManager::ImplT : public ThreadManager  {
   // - state_ changes
   Monitor monitor_;
   SemType waitSem_;
-  PosixSemaphore notifySem_;
-  std::atomic<bool> stopNotificationThread_;
-  std::shared_ptr<Thread> notificationThread_;
   // maxMonitor_ is signalled when the number of pending tasks drops below
   // pendingTaskCountMax_
   Monitor maxMonitor_;

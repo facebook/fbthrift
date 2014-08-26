@@ -214,20 +214,6 @@ void ThreadManager::ImplT<SemType>::workerExiting(Worker<SemType>* worker) {
 }
 
 template <typename SemType>
-ThreadManager::ImplT<SemType>::NotificationWorker::NotificationWorker(
-  PosixSemaphore& sem, SemType& mon, std::atomic<bool>& stop)
-  : sem_(sem), mon_(mon), stop_(stop) {
-}
-
-template <typename SemType>
-void ThreadManager::ImplT<SemType>::NotificationWorker::run() {
-  while (!stop_) {
-    sem_.wait();
-    mon_.post();
-  }
-}
-
-template <typename SemType>
 void ThreadManager::ImplT<SemType>::start() {
   Guard g(mutex_);
 
@@ -239,12 +225,6 @@ void ThreadManager::ImplT<SemType>::start() {
     if (threadFactory_ == nullptr) {
       throw InvalidArgumentException();
     }
-    auto notificationWorker = make_shared<NotificationWorker>(
-        notifySem_, waitSem_, stopNotificationThread_);
-    notificationThread_ = threadFactory_->newThread(notificationWorker,
-                                                    ThreadFactory::ATTACHED);
-    notificationThread_->setName("threadmgr-notif");
-    notificationThread_->start();
     state_ = ThreadManager::STARTED;
     monitor_.notifyAll();
   }
@@ -274,12 +254,9 @@ void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
         delete task;
       }
     }
-    stopNotificationThread_ = true;
-    notifySem_.post();
     state_ = ThreadManager::STOPPED;
     monitor_.notifyAll();
     g.release();
-    notificationThread_->join();
   } else {
     // Another stopImpl() call is already in progress.
     // Just wait for the state to change to STOPPED
@@ -404,7 +381,7 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
   if (idleCount_ > 0) {
     // If an idle thread is available notify it, otherwise all worker threads
     // are running and will get around to this task in time.
-    notifySem_.post();
+    waitSem_.post();
   }
 }
 

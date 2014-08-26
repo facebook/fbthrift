@@ -777,23 +777,6 @@ class FailThreadFactory : public PosixThreadFactory {
     std::shared_ptr<Thread> newThread(
         const std::shared_ptr<Runnable>& runnable,
         DetachState detachState) const {
-      // We only want to simulate thread start failures for the worker
-      // threads, not the notification thread. This code starts up
-      // a regular thread for the notification worker, and a failing
-      // thread for the regular worker.
-      auto try_to_cast = std::dynamic_pointer_cast<
-        ThreadManager::Impl::NotificationWorker>(runnable);
-      if (try_to_cast) {
-        std::shared_ptr<PthreadThread> result =
-          std::shared_ptr<PthreadThread>(
-            new PthreadThread(
-              toPthreadPolicy(policy_),
-              toPthreadPriority(policy_, priority_), stackSize_,
-              detachState == DETACHED, runnable));
-        result->weakRef(result);
-        runnable->thread(result);
-        return result;
-      }
       std::shared_ptr<FailThread> result =
         std::shared_ptr<FailThread>(
           new FailThread(
