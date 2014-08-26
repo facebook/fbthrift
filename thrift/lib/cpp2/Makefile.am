@@ -117,7 +117,6 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   ../cpp/util/ScopedServerThread.cpp \
 			   ../cpp/util/SocketRetriever.cpp \
 			   ../cpp/async/TAsyncServerSocket.cpp \
-			   ../cpp/async/HHWheelTimer.cpp \
 			   ../cpp/util/VarintUtils.cpp \
 			   ../cpp/async/TAsyncTimeoutSet.cpp \
 			   ../cpp/async/TEventBaseManager.cpp \
