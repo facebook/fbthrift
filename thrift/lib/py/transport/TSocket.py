@@ -69,7 +69,7 @@ class ConnectionEpoll:
         deadline = time.clock() + float(timeout or 0)
         poll_timeout = float(timeout or -1)
         while True:
-            if timeout > 0:
+            if timeout is not None and timeout > 0:
                 poll_timeout = max(0, deadline - time.clock())
             try:
                 msgs = self.epoll.poll(timeout=poll_timeout)

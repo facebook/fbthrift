@@ -263,7 +263,6 @@ class t_py_generator : public t_generator {
   std::string argument_list(t_struct* tstruct);
   std::string type_to_enum(t_type* ttype);
   std::string type_to_spec_args(t_type* ttype);
-  std::string py2or3(const std::string& py2str, const std::string& py3str);
 
   static bool is_valid_namespace(const std::string& sub_namespace) {
     return sub_namespace == "twisted";
@@ -394,8 +393,8 @@ void t_py_generator::generate_json_field(ofstream& out,
         number_negative_limit = "-0x8000";
         break;
       case t_base_type::TYPE_I32:
-        number_limit = py2or3("0x7fffffffL", "0x7fffffff");
-        number_negative_limit = py2or3("-0x80000000L", "-0x80000000");
+        number_limit = "0x7fffffff";
+        number_negative_limit = "-0x80000000";
         break;
       case t_base_type::TYPE_I64:
         conversion_function = "long";
@@ -597,8 +596,8 @@ void t_py_generator::generate_json_map_key(ofstream& out,
         break;
       case t_base_type::TYPE_I32:
         conversion_function = "int";
-        number_limit = py2or3("0x7fffffffL", "0x7fffffff");
-        number_negative_limit = py2or3("-0x80000000L", "-0x80000000");
+        number_limit = "0x7fffffff";
+        number_negative_limit = "-0x80000000";
         break;
       case t_base_type::TYPE_I64:
         conversion_function = "long";
@@ -742,9 +741,7 @@ void t_py_generator::init_generator() {
 
   f_consts_ <<
     py_autogen_comment() << endl <<
-    py_imports() << endl <<
-    py2or3("from ttypes import *", "from .ttypes import *")
-    << endl << endl;
+    py_imports() << endl << "from .ttypes import *" << endl << endl;
 }
 
 /**
@@ -844,8 +841,10 @@ string t_py_generator::py_remote_warning() {
  * Prints standard thrift imports
  */
 string t_py_generator::py_imports() {
-  string imports = "from thrift.Thrift import *\n";
+  string imports = "from __future__ import absolute_import\n";
 
+  imports += "import six\n";
+  imports += "from thrift.Thrift import *\n";
   imports += "from thrift.protocol.TProtocol import TProtocolException\n\n";
 
   if (gen_json_) {
@@ -1171,8 +1170,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
   out <<
     indent() << "def __repr__(self):" << endl <<
     indent() << "  L = []" << endl <<
-    indent() << "  for key, value in self.__dict__."
-             << py2or3("iteritems", "items") << "():" << endl <<
+    indent() << "  for key, value in six.iteritems(self.__dict__):" << endl <<
     indent() << "    padding = ' ' * (len(key) + 1)" << endl <<
     indent() << "    value = pprint.pformat(value)" << endl <<
     indent() << "    value = padding.join(value.splitlines(True))" << endl <<
@@ -1481,8 +1479,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
     out <<
       indent() << "def __repr__(self):" << endl <<
       indent() << "  L = []" << endl <<
-      indent() << "  for key, value in self.__dict__."
-               << py2or3("iteritems", "items") << "():" << endl <<
+      indent() << "  for key, value in six.iteritems(self.__dict__):" << endl <<
       indent() << "    padding = ' ' * (len(key) + 1)" << endl <<
       indent() << "    value = pprint.pformat(value)" << endl <<
       indent() << "    value = padding.join(value.splitlines(True))" << endl <<
@@ -1769,7 +1766,7 @@ void t_py_generator::generate_service(t_service* tservice) {
   }
 
   f_service_ <<
-    py2or3("from ttypes import *", "from .ttypes import *") << endl <<
+    "from .ttypes import *" << endl <<
     "from thrift.Thrift import TProcessor" << endl <<
     render_fastbinary_includes() << endl;
 
@@ -2272,12 +2269,13 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
     "#!/usr/bin/env python\n" <<
     py_autogen_comment() << "\n"
     "from __future__ import print_function\n"
+    "from __future__ import absolute_import\n"
     "import optparse\n"
     "import os\n"
     "import pprint\n"
     "import sys\n"
     "import traceback\n"
-    "from " << py2or3("urlparse", "urllib.parse") << " import urlparse\n"
+    "from six.moves.urllib.parse import urlparse\n"
     "\n" <<
     // This has to be before thrift definitions
     // in case the environment is not correct.
@@ -2291,11 +2289,9 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
     "from thrift.protocol import TJSONProtocol\n"
     "from thrift.protocol import THeaderProtocol\n"
     "\n"
-    << py2or3("import ", "from . import ")
+    << "from . import "
     << rename_reserved_keywords(service_name_) << "\n"
-    << py2or3("from ttypes import *\n", "from .ttypes import *\n")
-    <<  "\n"
-    "\n";
+    << "from .ttypes import *\n\n\n";
 
   // Emit a list of objects describing the service functions.
   // The rest of the code will use this to print the usage message and
@@ -2980,7 +2976,7 @@ void t_py_generator::generate_deserialize_container(ofstream &out,
   // For loop iterates over elements
   string i = tmp("_i");
   indent(out) <<
-    "for " << i << py2or3(" in xrange(", " in range(") << size << "):" << endl;
+    "for " << i << " in six.moves.range(" << size << "):" << endl;
 
     indent_up();
 
@@ -3505,21 +3501,13 @@ string t_py_generator::type_to_spec_args(t_type* ttype) {
   throw "INVALID TYPE IN type_to_spec_args: " + ttype->get_name();
 }
 
-/**
- * Choose a py2 or py3 string.
- */
-std::string t_py_generator::py2or3(const std::string& py2str,
-                                   const std::string& py3str) {
-  return gen_python3_ ? py3str : py2str;
-}
-
 THRIFT_REGISTER_GENERATOR(py, "Python",
 "    json:            Generate function to parse entity from json\n"
 "    new_style:       Generate new-style classes.\n"
 "    slots:           Generate code using slots for instance members.\n"
 "    sort_keys:       Serialize maps in the ascending order of their keys.\n"
 "    thrift_port=NNN: Default port to use in remote client (default 9090).\n"
-"    python3:         Generate Python 3 code. Twisted not supported yet.\n"
+"    python3:         Generate Python 3 code(DEPRECATED). Twisted not supported yet.\n"
 "    twisted:         Generate Twisted-friendly RPC services.\n"
 "    utf8strings:     Encode/decode strings using utf8 in the generated code.\n"
 );
