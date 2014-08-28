@@ -235,6 +235,11 @@ public:
 
     ThriftServer::cleanUp();
   }
+
+  void setIdleTimeout(int timeout) {
+    std::chrono::milliseconds ms(timeout);
+    ThriftServer::setIdleTimeout(ms);
+  }
 };
 
 BOOST_PYTHON_MODULE(_cpp_server_wrapper) {
@@ -250,6 +255,7 @@ BOOST_PYTHON_MODULE(_cpp_server_wrapper) {
     "CppServerWrapper")
     // methods added or customized for the python implementation
     .def("setAdapter", &CppServerWrapper::setAdapter)
+    .def("setIdleTimeout", &CppServerWrapper::setIdleTimeout)
     .def("getAddress", &CppServerWrapper::getAddress)
     .def("loop", &CppServerWrapper::loop)
     .def("cleanUp", &CppServerWrapper::cleanUp)
