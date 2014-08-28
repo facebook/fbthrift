@@ -32,7 +32,9 @@ namespace apache { namespace thrift {
 DuplexChannel::DuplexChannel(Who::WhoEnum who,
                              const shared_ptr<TAsyncTransport>& transport)
   : cpp2Channel_(new DuplexCpp2Channel(
-                     *this, transport, make_unique<FramingHandler>(*this)),
+                     *this, transport,
+                     make_unique<FramingHandler>(*this),
+                     make_unique<ProtectionHandler>(*this)),
                  TDelayedDestruction::Destructor())
   , clientChannel_(new DuplexClientChannel(*this, cpp2Channel_),
                    async::TDelayedDestruction::Destructor())
@@ -63,7 +65,9 @@ FramingChannelHandler& DuplexChannel::FramingHandler::getHandler(
 
 std::pair<std::unique_ptr<folly::IOBuf>, size_t>
 DuplexChannel::FramingHandler::removeFrame(folly::IOBufQueue* q) {
-  queue_.append(*q);
+  if (q) {
+    queue_.append(*q);
+  }
   if (!queue_.front() || queue_.front()->empty()) {
     return make_pair(std::unique_ptr<IOBuf>(), 0);
   }

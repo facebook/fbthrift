@@ -170,7 +170,7 @@ protected:
   // Returns the identity of the remote peer.  Value will be empty if
   // security was not negotiated.
   std::string getSaslPeerIdentity() {
-    if (protectionState_ == ProtectionState::VALID) {
+    if (getProtectionState() == ProtectionState::VALID) {
       return saslServer_->getClientIdentity();
     } else {
       return "";
@@ -203,10 +203,11 @@ protected:
   };
 
 private:
-  ProtectionState protectionState_;
+  ProtectionState getProtectionState() {
+    return cpp2Channel_->getProtectionHandler()->getProtectionState();
+  }
 
   void setProtectionState(ProtectionState newState) {
-    protectionState_ = newState;
     cpp2Channel_->getProtectionHandler()->setProtectionState(newState,
                                                              saslServer_.get());
   }

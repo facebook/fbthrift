@@ -53,7 +53,6 @@ HeaderClientChannel::HeaderClientChannel(
     , suppressSaslFallbackOnTransientFailure_(false)
     , handshakeMessagesSent_(0)
     , keepRegisteredForClose_(true)
-    , protectionState_(ProtectionState::UNKNOWN)
     , saslClientCallback_(*this)
     , cpp2Channel_(cpp2Channel)
     , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
@@ -99,7 +98,7 @@ void HeaderClientChannel::detachEventBase() {
 }
 
 void HeaderClientChannel::startSecurity() {
-  if (protectionState_ != ProtectionState::UNKNOWN) {
+  if (getProtectionState() != ProtectionState::UNKNOWN) {
     return;
   }
 
@@ -133,13 +132,13 @@ void HeaderClientChannel::startSecurity() {
 unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
     unique_ptr<IOBuf>&& buf) {
   if (header_->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    if (protectionState_ == ProtectionState::INPROGRESS) {
+    if (getProtectionState() == ProtectionState::INPROGRESS) {
       saslClient_->consumeFromServer(&saslClientCallback_, std::move(buf));
       return nullptr;
     }
     // else, fall through to application message processing
-  } else if (protectionState_ == ProtectionState::INPROGRESS ||
-             protectionState_ == ProtectionState::VALID) {
+  } else if (getProtectionState() == ProtectionState::INPROGRESS ||
+             getProtectionState() == ProtectionState::VALID) {
     setProtectionState(ProtectionState::INVALID);
     // If the security negotiation has completed successfully, or is
     // in progress, we expect SASL to continue to be used.  If
@@ -248,7 +247,7 @@ void HeaderClientChannel::SaslClientCallback::saslComplete() {
 bool HeaderClientChannel::isSecurityPending() {
   startSecurity();
 
-  switch (protectionState_) {
+  switch (getProtectionState()) {
     case ProtectionState::UNKNOWN: {
       return true;
     }
@@ -562,7 +561,7 @@ bool HeaderClientChannel::expireCallback(uint32_t seqId) {
 }
 
 void HeaderClientChannel::setBaseReceivedCallback() {
-  if (protectionState_ == ProtectionState::INPROGRESS ||
+  if (getProtectionState() == ProtectionState::INPROGRESS ||
       recvCallbacks_.size() != 0 ||
       (closeCallback_ && keepRegisteredForClose_)) {
     cpp2Channel_->setReceiveCallback(this);

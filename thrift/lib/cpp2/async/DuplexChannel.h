@@ -93,8 +93,9 @@ class DuplexChannel {
    public:
     DuplexCpp2Channel(DuplexChannel& duplex,
         const std::shared_ptr<async::TAsyncTransport>& transport,
-        std::unique_ptr<FramingChannelHandler> framingHandler)
-      : Cpp2Channel(transport, std::move(framingHandler))
+        std::unique_ptr<FramingChannelHandler> framingHandler,
+        std::unique_ptr<ProtectionChannelHandler> protectionHandler)
+      : Cpp2Channel(transport, std::move(framingHandler), std::move(protectionHandler))
       , duplex_(duplex)
       , client_(nullptr)
       , server_(nullptr)
@@ -160,6 +161,45 @@ class DuplexChannel {
     folly::IOBufQueue queue_;
 
     FramingChannelHandler& getHandler(DuplexChannel::Who::WhoEnum who);
+  };
+
+  class ProtectionHandler : public ProtectionChannelHandler {
+   public:
+    explicit ProtectionHandler(DuplexChannel& duplex)
+        : duplex_(duplex)
+    {}
+
+    void protectionStateChanged() override {
+      if (getProtectionState() != ProtectionState::VALID) {
+        return;
+      }
+
+      apache::thrift::transport::THeader* src;
+      apache::thrift::transport::THeader* dst;
+
+      switch (duplex_.mainChannel_.get()) {
+      case Who::CLIENT:
+        src = duplex_.clientChannel_->getHeader();
+        dst = duplex_.serverChannel_->getHeader();
+        break;
+      case Who::SERVER:
+        src = duplex_.serverChannel_->getHeader();
+        dst = duplex_.clientChannel_->getHeader();
+        break;
+      case Who::UNKNOWN:
+        CHECK(false);
+      }
+
+      CLIENT_TYPE type = src->getClientType();
+
+      std::bitset<CLIENT_TYPES_LEN> supportedClients;
+      supportedClients[type] = true;
+
+      dst->setSupportedClients(&supportedClients);
+      dst->setClientType(type);
+    }
+   private:
+    DuplexChannel& duplex_;
   };
 };
 

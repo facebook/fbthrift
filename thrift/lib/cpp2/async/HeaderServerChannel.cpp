@@ -52,8 +52,7 @@ HeaderServerChannel::HeaderServerChannel(
 
 HeaderServerChannel::HeaderServerChannel(
     const std::shared_ptr<Cpp2Channel>& cpp2Channel)
-    : protectionState_(ProtectionState::UNKNOWN)
-    , callback_(nullptr)
+    : callback_(nullptr)
     , arrivalSeqId_(1)
     , lastWrittenSeqId_(0)
     , sampleRate_(0)
@@ -367,8 +366,9 @@ void HeaderServerChannel::messageReceiveErrorWrapped(
 unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
   unique_ptr<IOBuf>&& buf) {
   if (header_->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    if (!header_->isSupportedClient() || !saslServer_) {
-      if (protectionState_ == ProtectionState::UNKNOWN) {
+    if (!header_->isSupportedClient() || (!saslServer_ &&
+          !cpp2Channel_->getProtectionHandler()->getSaslEndpoint())) {
+      if (getProtectionState() == ProtectionState::UNKNOWN) {
         // The client tried to use SASL, but it's not supported by
         // policy.  Tell the client to fall back.
 
@@ -396,16 +396,16 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
         messageReceiveErrorWrapped(std::move(ex));
         return nullptr;
       }
-    } else if (protectionState_ == ProtectionState::UNKNOWN ||
-        protectionState_ == ProtectionState::INPROGRESS) {
+    } else if (getProtectionState() == ProtectionState::UNKNOWN ||
+        getProtectionState() == ProtectionState::INPROGRESS) {
       setProtectionState(ProtectionState::INPROGRESS);
       saslServer_->setProtocolId(header_->getProtocolId());
       saslServer_->consumeFromClient(&saslServerCallback_, std::move(buf));
       return nullptr;
     }
     // else, fall through to application message processing
-  } else if (protectionState_ == ProtectionState::VALID ||
-      (protectionState_ == ProtectionState::INPROGRESS &&
+  } else if (getProtectionState() == ProtectionState::VALID ||
+      (getProtectionState() == ProtectionState::INPROGRESS &&
           !header_->isSupportedClient())) {
     // Either negotiation has completed or negotiation is incomplete,
     // non-sasl was received, but is not permitted.
@@ -416,12 +416,12 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
         "non-SASL message received on SASL channel");
     messageReceiveErrorWrapped(std::move(ex));
     return nullptr;
-  } else if (protectionState_ == ProtectionState::UNKNOWN) {
+  } else if (getProtectionState() == ProtectionState::UNKNOWN) {
     // This is the path non-SASL-aware (or SASL-disabled) clients will
     // take.
     VLOG(5) << "non-SASL client connection received";
     setProtectionState(ProtectionState::NONE);
-  } else if (protectionState_ == ProtectionState::INPROGRESS &&
+  } else if (getProtectionState() == ProtectionState::INPROGRESS &&
       header_->isSupportedClient()) {
     // If a client  permits a non-secure connection, we allow falling back to
     // one even if a SASL handshake is in progress.

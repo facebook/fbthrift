@@ -178,7 +178,7 @@ class HeaderClientChannel : public RequestChannel,
   // Returns the identity of the remote peer.  Value will be empty if
   // security was not negotiated.
   std::string getSaslPeerIdentity() {
-    if (protectionState_ == ProtectionState::VALID) {
+    if (getProtectionState() == ProtectionState::VALID) {
       return saslClient_->getServerIdentity();
     } else {
       return "";
@@ -187,7 +187,7 @@ class HeaderClientChannel : public RequestChannel,
 
   // Returns true if security is negotiated and used
   bool isSecurityActive() {
-    return protectionState_ == ProtectionState::VALID;
+    return getProtectionState() == ProtectionState::VALID;
   }
 
   class ClientFramingHandler : public FramingChannelHandler {
@@ -449,10 +449,11 @@ private:
 
   bool keepRegisteredForClose_;
 
-  ProtectionState protectionState_;
+  ProtectionState getProtectionState() {
+    return cpp2Channel_->getProtectionHandler()->getProtectionState();
+  }
 
   void setProtectionState(ProtectionState newState) {
-    protectionState_ = newState;
     cpp2Channel_->getProtectionHandler()->setProtectionState(newState,
                                                              saslClient_.get());
   }

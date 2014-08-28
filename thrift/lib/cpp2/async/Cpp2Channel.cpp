@@ -43,7 +43,8 @@ const uint32_t Cpp2Channel::DEFAULT_BUFFER_SIZE;
 
 Cpp2Channel::Cpp2Channel(
   const std::shared_ptr<TAsyncTransport>& transport,
-  std::unique_ptr<FramingChannelHandler> framingHandler)
+  std::unique_ptr<FramingChannelHandler> framingHandler,
+  std::unique_ptr<ProtectionChannelHandler> protectionHandler)
     : transport_(transport)
     , queue_(new IOBufQueue)
     , readBufferSize_(DEFAULT_BUFFER_SIZE)
@@ -52,8 +53,11 @@ Cpp2Channel::Cpp2Channel(
     , closing_(false)
     , eofInvoked_(false)
     , queueSends_(true)
-    , protectionHandler_(folly::make_unique<ProtectionChannelHandler>())
+    , protectionHandler_(std::move(protectionHandler))
     , framingHandler_(std::move(framingHandler)) {
+  if (!protectionHandler_) {
+    protectionHandler_.reset(new ProtectionChannelHandler);
+  }
 }
 
 void Cpp2Channel::closeNow() {

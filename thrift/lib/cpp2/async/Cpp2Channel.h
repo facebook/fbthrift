@@ -52,11 +52,20 @@ public:
                           SaslEndpoint* saslEndpoint = nullptr) {
     protectionState_ = protectionState;
     saslEndpoint_ = saslEndpoint;
+    protectionStateChanged();
   }
 
   ProtectionState getProtectionState() {
     return protectionState_;
   }
+
+  SaslEndpoint* getSaslEndpoint() {
+    return saslEndpoint_;
+  }
+
+  virtual void protectionStateChanged() {}
+
+  virtual ~ProtectionChannelHandler() {}
 
   /**
    * If q contains enough data, read it (removing it from q, but retaining
@@ -113,7 +122,8 @@ class Cpp2Channel
 
   explicit Cpp2Channel(
     const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
-    std::unique_ptr<FramingChannelHandler> framingHandler);
+    std::unique_ptr<FramingChannelHandler> framingHandler,
+    std::unique_ptr<ProtectionChannelHandler> protectionHandler = nullptr);
 
   static std::unique_ptr<Cpp2Channel,
                          apache::thrift::async::TDelayedDestruction::Destructor>
