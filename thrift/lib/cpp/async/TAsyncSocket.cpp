@@ -45,6 +45,12 @@ namespace apache { namespace thrift { namespace async {
 const TAsyncSocket::OptionMap TAsyncSocket::emptyOptionMap;
 const transport::TSocketAddress TAsyncSocket::anyAddress =
   transport::TSocketAddress("0.0.0.0", 0);
+
+const TTransportException socketClosedLocallyEx(
+    TTransportException::END_OF_FILE, "socket closed locally");
+const TTransportException socketShutdownForWritesEx(
+    TTransportException::END_OF_FILE, "socket shutdown for writes");
+
 // TODO: It might help performance to provide a version of WriteRequest that
 // users could derive from, so we can avoid the extra allocation for each call
 // to write()/writev().  We could templatize TFramedAsyncChannel just like the
@@ -802,15 +808,13 @@ void TAsyncSocket::closeNow() {
         doClose();
       }
 
-      static const TTransportException ex(TTransportException::END_OF_FILE,
-                                          "socket closed locally");
       if (connectCallback_) {
         ConnectCallback* callback = connectCallback_;
         connectCallback_ = nullptr;
-        callback->connectError(ex);
+        callback->connectError(socketClosedLocallyEx);
       }
 
-      failAllWrites(ex);
+      failAllWrites(socketClosedLocallyEx);
 
       if (readCallback_) {
         ReadCallback* callback = readCallback_;
@@ -917,9 +921,7 @@ void TAsyncSocket::shutdownWriteNow() {
       ::shutdown(fd_, SHUT_WR);
 
       // Immediately fail all write requests
-      static const TTransportException ex(TTransportException::END_OF_FILE,
-                                          "socket shutdown for writes");
-      failAllWrites(ex);
+      failAllWrites(socketShutdownForWritesEx);
       return;
     }
     case StateEnum::CONNECTING:
@@ -930,9 +932,7 @@ void TAsyncSocket::shutdownWriteNow() {
       shutdownFlags_ |= SHUT_WRITE_PENDING;
 
       // Immediately fail all write requests
-      static const TTransportException ex(TTransportException::END_OF_FILE,
-                                          "socket shutdown for writes");
-      failAllWrites(ex);
+      failAllWrites(socketShutdownForWritesEx);
       return;
     }
     case StateEnum::UNINIT:
