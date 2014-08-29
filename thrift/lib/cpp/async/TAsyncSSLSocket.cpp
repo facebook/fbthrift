@@ -1240,11 +1240,14 @@ ssize_t TAsyncSSLSocket::performWrite(const iovec* vec,
         // to the callback, rather than relying on TAsyncSocket code which
         // can't handle SSL errors.
         long lastError = ERR_get_error();
-        T_ERROR("TAsyncSSLSocket(fd=%d, state=%d, sslState=%d, events=%#x): "
-                "SSL error: %d, errno: %d, func: %s, reason: %s",
-                fd_, int(state_), sslState_, eventFlags_, error, errno,
-                ERR_func_error_string(lastError),
-                ERR_reason_error_string(lastError));
+        T_DEBUG_L(
+          3,
+          "ERROR: TAsyncSSLSocket(fd=%d, state=%d, sslState=%d, events=%#x): "
+          "SSL error: %d, errno: %d, func: %s, reason: %s",
+          fd_, int(state_), sslState_, eventFlags_, error, errno,
+          ERR_func_error_string(lastError),
+          ERR_reason_error_string(lastError)
+        );
         if (error != SSL_ERROR_SYSCALL) {
           if ((unsigned long)lastError < 0x8000) {
             errno = ENOSYS;
