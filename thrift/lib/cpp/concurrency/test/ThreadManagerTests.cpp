@@ -862,7 +862,7 @@ BOOST_AUTO_TEST_CASE(ObserverTest) {
 
   auto task = std::make_shared<LoadTask>(&monitor, &tasks, 1000);
   threadManager->add(task);
-  threadManager->stop();
+  threadManager->join();
   BOOST_CHECK_EQUAL(observer->timesCalled, 1);
 }
 
