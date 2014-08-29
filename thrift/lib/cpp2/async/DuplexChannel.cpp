@@ -81,7 +81,7 @@ DuplexChannel::FramingHandler::removeFrame(folly::IOBufQueue* q) {
   if (msgLen > THeader::MAX_FRAME_SIZE) {
     // Not a framed or header message. Either unframed of HTTP, so
     // pass it to the main channel
-    return getHandler(duplex_.mainChannel_.get()).removeFrame(q);
+    return getHandler(duplex_.mainChannel_.get()).removeFrame(&queue_);
   }
 
   if (len - 4 < msgLen) {
@@ -95,7 +95,7 @@ DuplexChannel::FramingHandler::removeFrame(folly::IOBufQueue* q) {
   if (c.readBE<uint16_t>() != THeader::HEADER_MAGIC >> 16) {
     // Framed, not header
     // pass it to the main channel
-    return getHandler(duplex_.mainChannel_.get()).removeFrame(q);
+    return getHandler(duplex_.mainChannel_.get()).removeFrame(&queue_);
   }
 
   // Header, check if reverse

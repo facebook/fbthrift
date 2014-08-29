@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DuplexService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DuplexClient.h>
+#include <thrift/lib/cpp2/test/gen-cpp/DuplexService.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/DuplexChannel.h>
@@ -42,6 +43,7 @@ using namespace apache::thrift::async;
 using namespace folly;
 using std::shared_ptr;
 using std::unique_ptr;
+using std::make_shared;
 
 class DuplexClientInterface : public DuplexClientSvIf {
 public:
@@ -123,6 +125,11 @@ class DuplexServiceInterface : public DuplexServiceSvIf {
     };
     callbackp->resultInThread(true);
   }
+
+  void async_tm_regularMethod(unique_ptr<HandlerCallback<int32_t>> callback,
+                              int32_t val) override {
+    callback->resultInThread(val * 2);
+  }
 };
 
 std::shared_ptr<ThriftServer> getServer() {
@@ -139,9 +146,10 @@ std::shared_ptr<ThriftServer> getServer() {
   return server;
 }
 
+ScopedServerThread sst(getServer());
+
 TEST(Duplex, DuplexTest) {
   enum {START=1, COUNT=10, INTERVAL=5};
-  ScopedServerThread sst(getServer());
   TEventBase base;
 
   auto port = sst.getAddress()->getPort();
@@ -170,6 +178,31 @@ TEST(Duplex, DuplexTest) {
   base.loopForever();
 
   EXPECT_TRUE(success);
+}
+
+template <typename Transport>
+void testNonHeader() {
+  using apache::thrift::transport::TSocket;
+  using apache::thrift::protocol::TBinaryProtocol;
+
+  auto port = sst.getAddress()->getPort();
+  auto socket = make_shared<TSocket>("127.0.0.1", port);
+  auto transport = make_shared<Transport>(socket);
+  auto protocol = make_shared<TBinaryProtocol>(transport);
+
+  apache::thrift::test::DuplexServiceClient client(protocol);
+
+  socket->open();
+  int res = client.regularMethod(5);
+  EXPECT_EQ(res, 10);
+}
+
+TEST(Duplex, TestFramed) {
+  testNonHeader<apache::thrift::transport::TFramedTransport>();
+}
+
+TEST(Duplex, TestUnframed) {
+  testNonHeader<apache::thrift::transport::TBufferedTransport>();
 }
 
 
