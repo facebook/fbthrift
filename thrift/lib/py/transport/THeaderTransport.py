@@ -210,7 +210,6 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
     def readFrame(self, req_sz):
         word1 = self.__trans.readAll(4)
-
         # These two unpack statements must use signed integers.
         # See note about hex constants in TBinaryProtocol.py
         sz, = unpack(b'!i', word1)
