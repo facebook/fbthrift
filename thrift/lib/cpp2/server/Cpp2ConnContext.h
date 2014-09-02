@@ -177,6 +177,10 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return true;
   }
 
+  void setHeaders(std::map<std::string, std::string>&& headers) {
+    writeHeaders_ = std::move(headers);
+  }
+
   virtual std::vector<uint16_t>& getTransforms() {
     return transforms_;
   }
