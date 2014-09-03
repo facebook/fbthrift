@@ -488,11 +488,13 @@ unique_ptr<IOBuf> THeader::untransform(
       stream.opaque = (voidpf)0;
       err = inflateInit(&stream);
       if (err != Z_OK) {
+        inflateEnd(&stream);
         throw TApplicationException(TApplicationException::MISSING_RESULT,
                                     "Error while zlib inflate Init");
       }
       do {
         if (nullptr == buf) {
+          inflateEnd(&stream);
           throw TApplicationException(TApplicationException::MISSING_RESULT,
                                       "Not enough zlib data in message");
         }
@@ -507,6 +509,7 @@ unique_ptr<IOBuf> THeader::untransform(
           if (err == Z_STREAM_ERROR ||
              err == Z_DATA_ERROR ||
              err == Z_MEM_ERROR) {
+            inflateEnd(&stream);
             throw TApplicationException(TApplicationException::MISSING_RESULT,
                                         "Error while zlib inflate");
           }
