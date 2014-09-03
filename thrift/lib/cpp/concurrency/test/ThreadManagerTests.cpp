@@ -696,7 +696,14 @@ class TestObserver : public ThreadManager::Observer {
   std::string expectedName;
 };
 
+DECLARE_bool(thrift_numa_enabled);
 BOOST_AUTO_TEST_CASE(NumaThreadManagerTest) {
+  if (numa_available() == -1) {
+    BOOST_TEST_MESSAGE("numa is unavailable, skipping NumaThreadManagerTest");
+    return;
+  }
+
+  FLAGS_thrift_numa_enabled = true;
   auto numa = new NumaThreadManager(2);
   bool failed = false;
 

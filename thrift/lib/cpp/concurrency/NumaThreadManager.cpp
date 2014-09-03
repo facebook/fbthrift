@@ -29,6 +29,10 @@ DEFINE_bool(thrift_numa_enabled, false, "Enable NumaThreadManager in thrift");
 
 namespace apache { namespace thrift { namespace concurrency {
 
+static bool isNumaEnabled() {
+  return numa_available() >= 0 && FLAGS_thrift_numa_enabled;
+}
+
 class NumaContextData : public folly::RequestData {
  public:
   explicit NumaContextData(int n) : node(n) {}
@@ -61,7 +65,7 @@ class NumaRunnable : public Runnable {
 
 void NumaRunnable::run() {
 
-  if (numa_available() >= 0 && FLAGS_thrift_numa_enabled) {
+  if (isNumaEnabled()) {
     static std::atomic<int> counter;
     int node = counter++ % (numa_max_node() + 1);
 
@@ -130,7 +134,7 @@ int NumaThreadFactory::getNumaNode() {
     return static_cast<NumaContextData*>(data)->node;
   } else {
     auto node = node_;
-    if (node == -1) {
+    if (node == -1 && isNumaEnabled()) {
       node = workerNode_++ % (numa_max_node() + 1);
     }
 
@@ -157,7 +161,7 @@ NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
                                      size_t maxQueueLen) {
   int nodes = 1;
   size_t pri_threads = 2;
-  if (numa_available() >= 0 && FLAGS_thrift_numa_enabled) {
+  if (isNumaEnabled()) {
     nodes = (numa_max_node() + 1);
     pri_threads = 1;
   }
