@@ -580,7 +580,7 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
   queueload = threadManager_->getCodel()->getLoad();
 
   int load = std::max({reqload, connload, queueload});
-  FB_LOG_EVERY_MS(WARNING, 1000*10) << "Load is: " << reqload << "% requests "
+  FB_LOG_EVERY_MS(INFO, 1000*10) << "Load is: " << reqload << "% requests "
                   << connload << "% connections "
                   << queueload << "% queue time";
   return load;
