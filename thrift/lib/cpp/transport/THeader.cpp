@@ -298,11 +298,13 @@ unique_ptr<IOBuf> THeader::removeHeader(IOBufQueue* queue,
       buf = readHeaderFormat(queue->split(sz));
 
       // auth client?
+      clientType = THRIFT_HEADER_CLIENT_TYPE;
       auto auth_header = getHeaders().find("thrift_auth");
-      if (auth_header != getHeaders().end() && auth_header->second == "1") {
-        clientType = THRIFT_HEADER_SASL_CLIENT_TYPE;
-      } else {
-        clientType = THRIFT_HEADER_CLIENT_TYPE;
+      if (auth_header != getHeaders().end()) {
+        if (auth_header->second == "1") {
+          clientType = THRIFT_HEADER_SASL_CLIENT_TYPE;
+        }
+        readHeaders_.erase(auth_header);
       }
     } else {
       clientType = THRIFT_UNKNOWN_CLIENT_TYPE;
