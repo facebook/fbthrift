@@ -394,11 +394,9 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(unique_ptr<IOBuf> buf) {
       RWPrivateCursor macCursor(c);
       macSz = c.read<uint8_t>();
       macCursor.write<uint8_t>(0x00);
-    } else if(transId == ZLIB_IF_MORE_THAN) {
-      setTransform(ZLIB_TRANSFORM);
-      minCompressBytes_ = c.readBE<uint32_t>();
     } else {
       readTrans_.push_back(transId);
+      setTransform(transId);
     }
   }
 
@@ -597,9 +595,7 @@ uint32_t minCompressBytes) {
        it != writeTrans.end(); ) {
     const uint16_t transId = *it;
 
-    if (transId == ZLIB_IF_MORE_THAN) {
-      // Applies only to receiver, do nothing.
-    } else if (transId == ZLIB_TRANSFORM) {
+    if (transId == ZLIB_TRANSFORM) {
       if (dataSize < minCompressBytes) {
         it = writeTrans.erase(it);
         continue;
@@ -906,11 +902,6 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
 
     for (auto& transId : writeTrans) {
       pkt += writeVarint32(transId, pkt);
-      if (transId == ZLIB_IF_MORE_THAN) {
-        uint32_t minCompressN = htonl(minCompressBytes_);
-        memcpy(pkt, &minCompressN, sizeof(minCompressN));
-        pkt += sizeof(minCompressN);
-      }
     }
 
     uint8_t* mac_loc = nullptr;

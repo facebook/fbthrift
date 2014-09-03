@@ -374,7 +374,13 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
 
         // TODO mhorowitz: generate a real message here.
         try {
-          sendMessage(nullptr, IOBuf::create(0));
+          auto trans = header_->getWriteTransforms();
+          sendMessage(nullptr,
+                         header_->transform(
+                           IOBuf::create(0),
+                           trans,
+                           header_->getMinCompressBytes()
+                         ));
         } catch (const std::exception& e) {
           LOG(ERROR) << "Failed to send message: " << e.what();
         }
@@ -445,7 +451,13 @@ void HeaderServerChannel::SaslServerCallback::saslSendClient(
         std::chrono::milliseconds(channel_.timeoutSASL_));
   }
   try {
-    channel_.sendMessage(nullptr, std::move(response));
+    auto trans = channel_.header_->getWriteTransforms();
+    channel_.sendMessage(nullptr,
+                         channel_.header_->transform(
+                           std::move(response),
+                           trans,
+                           channel_.header_->getMinCompressBytes()
+                         ));
   } catch (const std::exception& e) {
     LOG(ERROR) << "Failed to send message: " << e.what();
   }
@@ -481,7 +493,13 @@ void HeaderServerChannel::SaslServerCallback::saslError(
   // TODO mhorowitz: generate a real message here.
   channel_.header_->setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
   try {
-    channel_.sendMessage(nullptr, IOBuf::create(0));
+    auto trans = channel_.header_->getWriteTransforms();
+    channel_.sendMessage(nullptr,
+                         channel_.header_->transform(
+                           IOBuf::create(0),
+                           trans,
+                           channel_.header_->getMinCompressBytes()
+                         ));
   } catch (const std::exception& e) {
     LOG(ERROR) << "Failed to send message: " << e.what();
   }
