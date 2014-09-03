@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#ifndef THRIFT_TRANSPORT_TSOCKETADDRESS_H_
-#define THRIFT_TRANSPORT_TSOCKETADDRESS_H_ 1
+#pragma once
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -29,12 +28,14 @@
 #include <iostream>
 #include <string>
 
+#include <folly/IPAddress.h>
+
 namespace apache { namespace thrift { namespace transport {
 
 class TSocketAddress {
  public:
   TSocketAddress() {
-    storage_.addr.sa_family = AF_UNSPEC;
+    storage_.addr = folly::IPAddress();
   }
 
   /**
@@ -56,7 +57,6 @@ class TSocketAddress {
                  bool allowNameLookup = false) {
     // Initialize the address family first,
     // since setFromHostPort() and setFromIpPort() will check it.
-    storage_.addr.sa_family = AF_UNSPEC;
 
     if (allowNameLookup) {
       setFromHostPort(host, port);
@@ -69,7 +69,6 @@ class TSocketAddress {
                  bool allowNameLookup = false) {
     // Initialize the address family first,
     // since setFromHostPort() and setFromIpPort() will check it.
-    storage_.addr.sa_family = AF_UNSPEC;
 
     if (allowNameLookup) {
       setFromHostPort(host.c_str(), port);
@@ -80,9 +79,11 @@ class TSocketAddress {
 
   TSocketAddress(const TSocketAddress& addr) {
     storage_ = addr.storage_;
+    port_ = addr.port_;
     if (addr.getFamily() == AF_UNIX) {
       storage_.un.init(addr.storage_.un);
     }
+    external_ = addr.external_;
   }
 
   TSocketAddress& operator=(const TSocketAddress& addr) {
@@ -101,31 +102,37 @@ class TSocketAddress {
         storage_ = addr.storage_;
       }
     }
+    port_ = addr.port_;
+    external_ = addr.external_;
     return *this;
   }
 
 #if __GXX_EXPERIMENTAL_CXX0X__
   TSocketAddress(TSocketAddress&& addr) {
     storage_ = addr.storage_;
-    addr.storage_.addr.sa_family = AF_UNSPEC;
+    port_ = addr.port_;
+    external_ = addr.external_;
+    addr.external_ = false;
   }
 
 #if __GNUC_PREREQ(4, 5)
   TSocketAddress& operator=(TSocketAddress&& addr) {
     std::swap(storage_, addr.storage_);
+    std::swap(port_, addr.port_);
+    std::swap(external_, addr.external_);
     return *this;
   }
 #endif
 #endif
 
   ~TSocketAddress() {
-    if (storage_.addr.sa_family == AF_UNIX) {
+    if (getFamily() == AF_UNIX) {
       storage_.un.free();
     }
   }
 
   bool isInitialized() const {
-    return (storage_.addr.sa_family != AF_UNSPEC);
+    return (getFamily() != AF_UNSPEC);
   }
 
   /**
@@ -150,7 +157,6 @@ class TSocketAddress {
 
   void reset() {
     prepFamilyChange(AF_UNSPEC);
-    storage_.addr.sa_family = AF_UNSPEC;
   }
 
   /**
@@ -342,84 +348,28 @@ class TSocketAddress {
   void setFromSockaddr(const struct sockaddr_un* address,
                        socklen_t addrlen);
 
-  /**
-   * Get a pointer to the struct sockaddr data that can be used for manually
-   * modifying the data.
-   *
-   * addressUpdated() must be called after you finish modifying the socket data
-   * before you perform any other operations on the TSocketAddress.
-   *
-   * For example, to use this to store the address returned by an accept()
-   * call:
-   *
-   *   socklen_t addrlen;
-   *   struct sockaddr *storage = addr.getMutableAddress(AF_INET, &addrlen);
-   *   int newSock = accept(sock, storage, &addrlen);
-   *   if (newSock < 0) {
-   *     // error handling
-   *   }
-   *   addr.addressUpdated(AF_INET, addrlen);
-   *
-   * @param family     The type of address data you plan to put in the
-   *                   sockaddr.  This is necessary since some address families
-   *                   require more storage than others.
-   * @param sizeReturn The length of the returned sockaddr will be returned via
-   *                   this argument.
-   */
-  struct sockaddr* getMutableAddress(sa_family_t family,
-                                     socklen_t *sizeReturn);
 
   /**
-   * Indicate that the address data was updated after a call to
-   * getMutableAddress().
+   * Fill in a given sockaddr_storage with the ip or unix address.
    *
-   * @param expectedFamily  This must be the same value that you passed to
-   *                        the getMutableAddress() call.  This is used to
-   *                        verify that the address data written into the
-   *                        sockaddr is actually of the same type that you
-   *                        specified when you called getMutableAddress().
-   * @param addrlen         The length of the new address data written into the
-   *                        sockaddr.
+   * Returns the actual size of the storage used.
    */
-  void addressUpdated(sa_family_t expectedFamily, socklen_t addrlen) {
-    if (getFamily() != expectedFamily) {
-      // This should pretty much never happen.
-      addressUpdateFailure(expectedFamily);
-    }
-    if (getFamily() == AF_UNIX) {
-      updateUnixAddressLength(addrlen);
-    }
-  }
-
-  const struct sockaddr* getAddress() const {
+  socklen_t getAddress(sockaddr_storage* addr) const {
     if (getFamily() != AF_UNIX) {
-      return &storage_.addr;
+      return storage_.addr.toSockaddrStorage(addr, htons(port_));
     } else {
-      return reinterpret_cast<const struct sockaddr*>(storage_.un.addr);
+      memcpy(addr, storage_.un.addr, sizeof(*storage_.un.addr));
+      return storage_.un.len;
     }
   }
 
-  /**
-   * Return the total number of bytes available for address storage.
-   */
-  socklen_t getStorageSize() const {
-    if (getFamily() != AF_UNIX) {
-      return sizeof(storage_);
-    } else {
-      return sizeof(*storage_.un.addr);
-    }
-  }
+  const folly::IPAddress& getIPAddress() const;
 
-  /**
-   * Return the number of bytes actually used for this address.
-   *
-   * For an uninitialized socket, this returns sizeof(struct sockaddr),
-   * even though some of those bytes may not be initialized.
-   */
+  // Deprecated: getAddress() above returns the same size as getActualSize()
   socklen_t getActualSize() const;
 
   sa_family_t getFamily() const {
-    return storage_.addr.sa_family;
+    return external_ ? AF_UNIX : storage_.addr.family();
   }
 
   bool empty() const {
@@ -443,6 +393,11 @@ class TSocketAddress {
   void getAddressStr(char* buf, size_t buflen) const;
 
   /**
+   * For v4 & v6 addresses, return the fully qualified address string
+   */
+  std::string getFullyQualified() const;
+
+  /**
    * Get the IPv4 or IPv6 port for this address.
    *
    * Raises TTransportException if this is not an IPv4 or IPv6 address.
@@ -462,8 +417,8 @@ class TSocketAddress {
    * Return true if this is an IPv4-mapped IPv6 address.
    */
   bool isIPv4Mapped() const {
-    return (storage_.addr.sa_family == AF_INET6 &&
-            IN6_IS_ADDR_V4MAPPED(&storage_.ipv6.sin6_addr));
+    return (getFamily() == AF_INET6 &&
+            storage_.addr.isIPv4Mapped());
   }
 
   /**
@@ -557,7 +512,6 @@ class TSocketAddress {
    * the heap.
    */
   struct ExternalUnixAddr {
-    sa_family_t family;
     struct sockaddr_un *addr;
     socklen_t len;
 
@@ -566,13 +520,11 @@ class TSocketAddress {
     }
 
     void init() {
-      family = AF_UNIX;
       addr = new sockaddr_un;
       addr->sun_family = AF_UNIX;
       len = 0;
     }
     void init(const ExternalUnixAddr &other) {
-      family = AF_UNIX;
       addr = new sockaddr_un;
       len = other.len;
       memcpy(addr, other.addr, len);
@@ -585,7 +537,6 @@ class TSocketAddress {
       memcpy(addr, other.addr, len);
     }
     void free() {
-      family = AF_UNSPEC;
       delete addr;
     }
   };
@@ -594,12 +545,10 @@ class TSocketAddress {
   struct addrinfo* getAddrInfo(const char* host, const char* port, int flags);
   void setFromAddrInfo(const struct addrinfo* results);
   void setFromLocalAddr(const struct addrinfo* results);
-  int setFromSocket(int socket, int (*fn)(int, struct sockaddr*, socklen_t*));
+  void setFromSocket(int socket, int (*fn)(int, struct sockaddr*, socklen_t*));
   std::string getIpString(int flags) const;
   void getIpString(char *buf, size_t buflen, int flags) const;
-  void getAddressStrIPv4Fast(char* buf, size_t buflen) const;
 
-  void addressUpdateFailure(sa_family_t expectedFamily);
   void updateUnixAddressLength(socklen_t addrlen);
 
   void prepFamilyChange(sa_family_t newFamily) {
@@ -607,10 +556,12 @@ class TSocketAddress {
       if (getFamily() == AF_UNIX) {
         storage_.un.free();
       }
+      external_ = false;
     } else {
       if (getFamily() != AF_UNIX) {
         storage_.un.init();
       }
+      external_ = true;
     }
   }
 
@@ -622,11 +573,13 @@ class TSocketAddress {
    * track a struct sockaddr_un allocated separately on the heap.
    */
   union {
-    sockaddr addr;
-    sockaddr_in ipv4;
-    sockaddr_in6 ipv6;
+    folly::IPAddress addr{};
     ExternalUnixAddr un;
   } storage_;
+  // IPAddress class does nto save zone or port, and must be saved here
+  uint16_t port_;
+
+  bool external_{false};
 };
 
 /**
@@ -653,5 +606,3 @@ struct hash<apache::thrift::transport::TSocketAddress> {
 };
 
 }
-
-#endif // THRIFT_TRANSPORT_TSOCKETADDRESS_H_

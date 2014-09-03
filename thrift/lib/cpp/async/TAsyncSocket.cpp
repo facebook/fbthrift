@@ -310,6 +310,9 @@ void TAsyncSocket::connect(ConnectCallback* callback,
   state_ = StateEnum::CONNECTING;
   connectCallback_ = callback;
 
+  sockaddr_storage addrStorage;
+  sockaddr* saddr = reinterpret_cast<sockaddr*>(&addrStorage);
+
   try {
     // Create the socket
     // Technically the first parameter should actually be a protocol family
@@ -381,7 +384,9 @@ void TAsyncSocket::connect(ConnectCallback* callback,
           errno);
       }
 
-      if (::bind(fd_, bindAddr.getAddress(), bindAddr.getActualSize()) != 0) {
+      bindAddr.getAddress(&addrStorage);
+
+      if (::bind(fd_, saddr, bindAddr.getActualSize()) != 0) {
         doClose();
         throw TTransportException(TTransportException::NOT_OPEN,
                                   "failed to bind to async socket: " +
@@ -401,7 +406,9 @@ void TAsyncSocket::connect(ConnectCallback* callback,
     }
 
     // Perform the connect()
-    rv = ::connect(fd_, address.getAddress(), address.getActualSize());
+    address.getAddress(&addrStorage);
+
+    rv = ::connect(fd_, saddr, address.getActualSize());
     if (rv < 0) {
       if (errno == EINPROGRESS) {
         // Connection in progress.

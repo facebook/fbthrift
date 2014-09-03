@@ -76,7 +76,9 @@ class ConnCtxHandler : public ConnCtxServiceIf {
     const TSocketAddress* peerAddr =
       server_->getConnectionContext()->getPeerAddress();
 
-    result.assign(reinterpret_cast<const char*>(peerAddr->getAddress()),
+    sockaddr_storage addrStorage;
+    peerAddr->getAddress(&addrStorage);
+    result.assign(reinterpret_cast<const char*>(&addrStorage),
                   peerAddr->getActualSize());
   }
 

@@ -106,63 +106,16 @@ struct HostAndPort {
   char* allocated;
 };
 
-bool isPrivateIPv4Address(uint32_t addr) {
-  // IPv4 private network prefix.
-  const static uint32_t prefixes[] = {0x0A000000,  // 10/8 prefix
-                                      0x7F000000,  // 127/8 prefix
-                                      0xAC100000,  // 172.16/12 prefix
-                                      0xC0A80000}; // 192.168/16 prefix
-  const static uint32_t masks[] =    {0xFF000000,  // 10/8 mask
-                                      0xFF000000,  // 127/8 mask
-                                      0xFFF00000,  // 172.16/12 mask
-                                      0xFFFF0000}; // 192.168/16 mask
-
-  uint32_t hostOrder = ntohl(addr);
-  for (int i = 0; i < sizeof masks / sizeof masks[0]; i++) {
-    if ((hostOrder & masks[i]) == prefixes[i])
-      return true;
-  }
-
-  return false;
-}
-
-inline bool isLoopbackIPv4Address(uint32_t addr) {
-  return (ntohl(addr) & 0xff000000) == 0x7f000000;
-}
-
-inline uint32_t getIPv4FromMapped(const sockaddr_in6* addr6) {
-  assert(IN6_IS_ADDR_V4MAPPED(&addr6->sin6_addr));
-  // With _GNU_SOURCE we could use sin6_addr.s6_addr32, but perform the
-  // cast ourselves so we don't have to rely on glibc-specific code.
-  const uint32_t* addr_u32 =
-    reinterpret_cast<const uint32_t*>(addr6->sin6_addr.s6_addr);
-  return addr_u32[3];
-}
-
 } // unnamed namespace
 
 namespace apache { namespace thrift { namespace transport {
 
 bool TSocketAddress::isPrivateAddress() const {
-  if (storage_.addr.sa_family == AF_INET) {
-    return isPrivateIPv4Address(storage_.ipv4.sin_addr.s_addr);
-  } else if (storage_.addr.sa_family == AF_INET6) {
-    // There is an IN6_IS_ADDR_SITELOCAL() macro for the deprecated
-    // "site local" prefix, but unfortunately no macro for unique local
-    // addresses.
-    if ((storage_.ipv6.sin6_addr.s6_addr[0] & 0xfe) == 0xfc) {
-      // fc00::/7 addresses are IPv6 Unique Local Addresses (RFC4193)
-      return true;
-    }
-    if (IN6_IS_ADDR_LINKLOCAL(&storage_.ipv6.sin6_addr)) {
-      // fe80::/10 addresses are link-local
-      return true;
-    }
-    // Check for IPv4-mapped addresses
-    if (IN6_IS_ADDR_V4MAPPED(&storage_.ipv6.sin6_addr)) {
-      return isPrivateIPv4Address(getIPv4FromMapped(&storage_.ipv6));
-    }
-  } else if (storage_.addr.sa_family == AF_UNIX) {
+  auto family = getFamily();
+  if (family == AF_INET || family == AF_INET6) {
+    return storage_.addr.isPrivate() ||
+      (storage_.addr.isV6() && storage_.addr.asV6().isLinkLocal());
+  } else if (family == AF_UNIX) {
     // Unix addresses are always local to a host.  Return true,
     // since this conforms to the semantics of returning true for IP loopback
     // addresses.
@@ -172,17 +125,10 @@ bool TSocketAddress::isPrivateAddress() const {
 }
 
 bool TSocketAddress::isLoopbackAddress() const {
-  if (storage_.addr.sa_family == AF_INET) {
-    return isLoopbackIPv4Address(storage_.ipv4.sin_addr.s_addr);
-  } else if (storage_.addr.sa_family == AF_INET6) {
-    if (IN6_IS_ADDR_LOOPBACK(&storage_.ipv6.sin6_addr)) {
-      return true;
-    }
-    // Check for IPv4-mapped addresses
-    if (IN6_IS_ADDR_V4MAPPED(&storage_.ipv6.sin6_addr)) {
-      return isLoopbackIPv4Address(getIPv4FromMapped(&storage_.ipv6));
-    }
-  } else if (storage_.addr.sa_family == AF_UNIX) {
+  auto family = getFamily();
+  if (family == AF_INET || family == AF_INET6) {
+    return storage_.addr.isLoopback();
+  } else if (family == AF_UNIX) {
     // Return true for UNIX addresses, since they are always local to a host.
     return true;
   }
@@ -229,8 +175,9 @@ void TSocketAddress::setFromHostPort(const char* hostAndPort) {
 }
 
 void TSocketAddress::setFromPath(const char* path, size_t len) {
-  if (storage_.addr.sa_family != AF_UNIX) {
+  if (getFamily() != AF_UNIX) {
     storage_.un.init();
+    external_ = true;
   }
 
   storage_.un.len = offsetof(struct sockaddr_un, sun_path) + len;
@@ -249,26 +196,20 @@ void TSocketAddress::setFromPath(const char* path, size_t len) {
 }
 
 void TSocketAddress::setFromPeerAddress(int socket) {
-  int errnum = setFromSocket(socket, getpeername);
-  if (errnum != 0) {
-    throw TTransportException(TTransportException::INTERNAL_ERROR,
-                              "getpeername() failed", errnum);
-  }
+  setFromSocket(socket, getpeername);
 }
 
 void TSocketAddress::setFromLocalAddress(int socket) {
-  int errnum = setFromSocket(socket, getsockname);
-  if (errnum != 0) {
-    throw TTransportException(TTransportException::INTERNAL_ERROR,
-                              "getsockname() failed", errnum);
-  }
+  setFromSocket(socket, getsockname);
 }
 
 void TSocketAddress::setFromSockaddr(const struct sockaddr* address) {
   if (address->sa_family == AF_INET) {
-    setFromSockaddr(reinterpret_cast<const struct sockaddr_in*>(address));
+    storage_.addr = folly::IPAddress(address);
+    port_ = ntohs(((sockaddr_in*)address)->sin_port);
   } else if (address->sa_family == AF_INET6) {
-    setFromSockaddr(reinterpret_cast<const struct sockaddr_in6*>(address));
+    storage_.addr = folly::IPAddress(address);
+    port_ = ntohs(((sockaddr_in6*)address)->sin6_port);
   } else if (address->sa_family == AF_UNIX) {
     // We need an explicitly specified length for AF_UNIX addresses,
     // to be able to distinguish anonymous addresses from addresses
@@ -282,6 +223,7 @@ void TSocketAddress::setFromSockaddr(const struct sockaddr* address) {
                               "TSocketAddress::setFromSockaddr() called "
                               "with unsupported address type");
   }
+  external_ = false;
 }
 
 void TSocketAddress::setFromSockaddr(const struct sockaddr* address,
@@ -320,14 +262,12 @@ void TSocketAddress::setFromSockaddr(const struct sockaddr* address,
 
 void TSocketAddress::setFromSockaddr(const struct sockaddr_in* address) {
   assert(address->sin_family == AF_INET);
-  prepFamilyChange(AF_INET);
-  storage_.ipv4 = *address;
+  setFromSockaddr((sockaddr*)address);
 }
 
 void TSocketAddress::setFromSockaddr(const struct sockaddr_in6* address) {
   assert(address->sin6_family == AF_INET6);
-  prepFamilyChange(AF_INET6);
-  storage_.ipv6 = *address;
+  setFromSockaddr((sockaddr*)address);
 }
 
 void TSocketAddress::setFromSockaddr(const struct sockaddr_un* address,
@@ -350,41 +290,23 @@ void TSocketAddress::setFromSockaddr(const struct sockaddr_un* address,
   }
 }
 
-struct sockaddr*
-TSocketAddress::getMutableAddress(sa_family_t family,
-                                  socklen_t *sizeReturn) {
-  if (family != AF_UNIX) {
-    if (getFamily() == AF_UNIX) {
-      storage_.un.free();
-    }
-    // Set sa_family to the expected new family already.
-    // This way if the caller calls addressUpdated() without modifying the
-    // address it won't fail due to an unexpected family.
-    // This can happen for example if the caller calls accept() and accept
-    // fails.  accept() won't modify the address in this case.
-    storage_.addr.sa_family = family;
-
-    *sizeReturn = sizeof(storage_);
-    return &storage_.addr;
-  } else {
-    if (getFamily() != AF_UNIX) {
-      storage_.un.init();
-    }
-    *sizeReturn = sizeof(*storage_.un.addr);
-    return reinterpret_cast<struct sockaddr*>(storage_.un.addr);
+const folly::IPAddress& TSocketAddress::getIPAddress() const {
+  auto family = getFamily();
+  if (family != AF_INET && family != AF_INET6) {
+    throw TTransportException(
+      TTransportException::BAD_ARGS,
+      "getIPAddress called on a non-ip address");
   }
+  return storage_.addr;
 }
 
 socklen_t TSocketAddress::getActualSize() const {
-  switch (storage_.addr.sa_family) {
+  switch (getFamily()) {
     case AF_UNSPEC:
-      // We return sizeof struct sockaddr here, though only sa_family
-      // is guaranteed to be initialized.
-      return sizeof(storage_.addr);
     case AF_INET:
-      return sizeof(storage_.ipv4);
+      return sizeof(struct sockaddr_in);
     case AF_INET6:
-      return sizeof(storage_.ipv6);
+      return sizeof(struct sockaddr_in6);
     case AF_UNIX:
       return storage_.un.len;
     default:
@@ -394,6 +316,14 @@ socklen_t TSocketAddress::getActualSize() const {
   }
 }
 
+std::string TSocketAddress::getFullyQualified() const {
+  auto family = getFamily();
+  if (family != AF_INET && family != AF_INET6) {
+    throw TTransportException("Can't get address str");
+  }
+  return storage_.addr.toFullyQualified();
+}
+
 std::string TSocketAddress::getAddressStr() const {
   char buf[INET6_ADDRSTRLEN];
   getAddressStr(buf, sizeof(buf));
@@ -401,52 +331,21 @@ std::string TSocketAddress::getAddressStr() const {
 }
 
 void TSocketAddress::getAddressStr(char* buf, size_t buflen) const {
-  if (storage_.addr.sa_family == AF_INET) {
-    // this is a hot path, so we use a hand-rolled conversion function
-    getAddressStrIPv4Fast(buf, buflen);
-  } else {
-    // IPv6 is a much more complicated case and also not very common yet
-    // so we just call the library function
-    getIpString(buf, buflen, NI_NUMERICHOST);
+  auto family = getFamily();
+  if (family != AF_INET && family != AF_INET6) {
+    throw TTransportException("Can't get address str");
   }
-}
-
-void TSocketAddress::getAddressStrIPv4Fast(char* buf, size_t buflen) const {
-  assert(buflen >= sizeof("255.255.255.255"));
-  const uint8_t* ip =
-      reinterpret_cast<const uint8_t*>(&storage_.ipv4.sin_addr);
-
-  int pos = 0;
-  for (int k = 0; k < 4; ++k) {
-    uint8_t num = ip[k];
-
-    if (num >= 200) {
-      buf[pos++] = '2';
-      num -= 200;
-    } else if (num >= 100) {
-      buf[pos++] = '1';
-      num -= 100;
-    }
-
-    // num < 100
-    if (ip[k] >= 10) {
-      buf[pos++] = '0' + num / 10;
-      buf[pos++] = '0' + num % 10;
-    } else {
-      buf[pos++] = '0' + num;
-    }
-
-    buf[pos++] = '.';
-  }
-  buf[pos-1] = '\0';
+  std::string ret = storage_.addr.str();
+  size_t len = std::min(buflen, ret.size());
+  memcpy(buf, ret.data(), len);
+  buf[len] = '\0';
 }
 
 uint16_t TSocketAddress::getPort() const {
-  switch (storage_.addr.sa_family) {
+  switch (getFamily()) {
     case AF_INET:
-      return ntohs(storage_.ipv4.sin_port);
     case AF_INET6:
-      return ntohs(storage_.ipv6.sin6_port);
+      return port_;
     default:
       throw TTransportException(TTransportException::INTERNAL_ERROR,
                                 "TSocketAddress::getPort() called on non-IP "
@@ -455,12 +354,10 @@ uint16_t TSocketAddress::getPort() const {
 }
 
 void TSocketAddress::setPort(uint16_t port) {
-  switch (storage_.addr.sa_family) {
+  switch (getFamily()) {
     case AF_INET:
-      storage_.ipv4.sin_port = htons(port);
-      return;
     case AF_INET6:
-      storage_.ipv6.sin6_port = htons(port);
+      port_ = port;
       return;
     default:
       throw TTransportException(TTransportException::INTERNAL_ERROR,
@@ -482,11 +379,7 @@ bool TSocketAddress::tryConvertToIPv4() {
     return false;
   }
 
-  uint16_t port = storage_.ipv6.sin6_port;
-  uint32_t addr = getIPv4FromMapped(&storage_.ipv6);
-  storage_.addr.sa_family = AF_INET;
-  storage_.ipv4.sin_port = port;
-  storage_.ipv4.sin_addr.s_addr = addr;
+  storage_.addr = folly::IPAddress::createIPv4(storage_.addr);
   return true;
 }
 
@@ -495,16 +388,7 @@ bool TSocketAddress::mapToIPv6() {
     return false;
   }
 
-  uint16_t port = storage_.ipv4.sin_port;
-  uint32_t addr = storage_.ipv4.sin_addr.s_addr;
-  storage_.addr.sa_family = AF_INET6;
-  storage_.ipv6.sin6_port = port;
-  uint32_t* addr_u32 =
-    reinterpret_cast<uint32_t*>(storage_.ipv6.sin6_addr.s6_addr);
-  addr_u32[3] = addr;
-  addr_u32[2] = htonl(0xffff);
-  addr_u32[1] = 0;
-  addr_u32[0] = 0;
+  storage_.addr = folly::IPAddress::createIPv6(storage_.addr);
   return true;
 }
 
@@ -534,7 +418,7 @@ std::string TSocketAddress::getPath() const {
 }
 
 std::string TSocketAddress::describe() const {
-  switch (storage_.addr.sa_family) {
+  switch (getFamily()) {
     case AF_UNSPEC:
       return "<uninitialized address>";
     case AF_INET:
@@ -573,33 +457,22 @@ std::string TSocketAddress::describe() const {
     {
       char buf[64];
       snprintf(buf, sizeof(buf), "<unknown address family %d>",
-               storage_.addr.sa_family);
+               getFamily());
       return buf;
     }
   }
 }
 
 bool TSocketAddress::operator==(const TSocketAddress& other) const {
-  if (other.storage_.addr.sa_family != storage_.addr.sa_family) {
+  if (other.getFamily() != getFamily()) {
     return false;
   }
 
-  switch (storage_.addr.sa_family) {
+  switch (getFamily()) {
     case AF_INET:
-      return ((other.storage_.ipv4.sin_addr.s_addr ==
-               storage_.ipv4.sin_addr.s_addr) &&
-              (other.storage_.ipv4.sin_port == storage_.ipv4.sin_port));
     case AF_INET6:
-      // We don't check sin6_flowinfo
-      if (other.storage_.ipv6.sin6_port != storage_.ipv6.sin6_port) {
-        return false;
-      }
-      if (other.storage_.ipv6.sin6_scope_id != storage_.ipv6.sin6_scope_id) {
-        return false;
-      }
-      return memcmp(other.storage_.ipv6.sin6_addr.s6_addr,
-                    storage_.ipv6.sin6_addr.s6_addr,
-                    sizeof(storage_.ipv6.sin6_addr.s6_addr)) == 0;
+      return (other.storage_.addr == storage_.addr) &&
+        (other.port_ == port_);
     case AF_UNIX:
     {
       // anonymous addresses are never equal to any other addresses
@@ -625,35 +498,20 @@ bool TSocketAddress::operator==(const TSocketAddress& other) const {
 
 bool TSocketAddress::prefixMatch(const TSocketAddress& other,
     unsigned prefixLength) const {
-  if (other.storage_.addr.sa_family != storage_.addr.sa_family) {
+  if (other.getFamily() != getFamily()) {
     return false;
   }
-  switch (storage_.addr.sa_family) {
+  int mask_length = 128;
+  switch (getFamily()) {
     case AF_INET:
-    {
-      uint64_t mask = ~(uint64_t(0)) << (32 - prefixLength);
-      uint32_t addr1 = storage_.ipv4.sin_addr.s_addr;
-      uint32_t addr2 = other.storage_.ipv4.sin_addr.s_addr;
-      return (ntohl(addr1 ^ addr2) & mask) == 0;
-    }
+      mask_length = 32;
+      // fallthrough
     case AF_INET6:
     {
-      const uint32_t* addr1 = storage_.ipv6.sin6_addr.s6_addr32;
-      const uint32_t* addr2 = other.storage_.ipv6.sin6_addr.s6_addr32;
-      for (unsigned i = 0; i < 4; i++, addr1++, addr2++) {
-        if (prefixLength >= 32) {
-          if (*addr1 != *addr2) {
-            return false;
-          }
-        } else if (prefixLength == 0) {
-          return true;
-        } else {
-          uint64_t mask = ~(uint64_t(0)) << (32 - prefixLength);
-          return (ntohl(*addr1 ^ *addr2) & mask) == 0;
-        }
-        prefixLength -= 32;
-      }
-      return true;
+      auto prefix = folly::IPAddress::longestCommonPrefix(
+        {storage_.addr, mask_length},
+        {other.storage_.addr, mask_length});
+      return prefix.second >= prefixLength;
     }
     default:
       return false;
@@ -662,30 +520,13 @@ bool TSocketAddress::prefixMatch(const TSocketAddress& other,
 
 
 size_t TSocketAddress::hash() const {
-  size_t seed = folly::hash::twang_mix64(storage_.addr.sa_family);
+  size_t seed = folly::hash::twang_mix64(getFamily());
 
-  switch (storage_.addr.sa_family) {
+  switch (getFamily()) {
     case AF_INET:
-      boost::hash_combine(seed,
-                          folly::hash::twang_mix64(storage_.ipv4.sin_port));
-      boost::hash_combine(
-          seed, folly::hash::twang_mix64(storage_.ipv4.sin_addr.s_addr));
-      break;
     case AF_INET6: {
-      boost::hash_combine(seed,
-                          folly::hash::twang_mix64(storage_.ipv6.sin6_port));
-      // The IPv6 address is 16 bytes long.
-      // Combine it in blocks of sizeof(size_t) bytes each.
-      BOOST_STATIC_ASSERT(sizeof(struct in6_addr) % sizeof(size_t) == 0);
-      const size_t* p =
-        reinterpret_cast<const size_t*>(storage_.ipv6.sin6_addr.s6_addr);
-      for (int amtHashed = 0;
-           amtHashed < sizeof(struct in6_addr);
-           amtHashed += sizeof(*p), ++p) {
-        boost::hash_combine(seed, folly::hash::twang_mix64(*p));
-      }
-      boost::hash_combine(
-          seed, folly::hash::twang_mix64(storage_.ipv6.sin6_scope_id));
+      boost::hash_combine(seed, port_);
+      boost::hash_combine(seed, storage_.addr.hash());
       break;
     }
     case AF_UNIX:
@@ -758,7 +599,7 @@ void TSocketAddress::setFromLocalAddr(const struct addrinfo* info) {
   setFromSockaddr(info->ai_addr, info->ai_addrlen);
 }
 
-int TSocketAddress::setFromSocket(int socket,
+void TSocketAddress::setFromSocket(int socket,
                                   int (*fn)(int, sockaddr*, socklen_t*)) {
   // If this was previously an AF_UNIX socket, free the external buffer.
   // TODO: It would be smarter to just remember the external buffer, and then
@@ -766,30 +607,18 @@ int TSocketAddress::setFromSocket(int socket,
   // socket.
   if (getFamily() == AF_UNIX) {
     storage_.un.free();
+    external_ = false;
   }
 
-  // Optimistically try to put the address into the local storage buffer.
-  socklen_t addrLen = sizeof(storage_);
-  if (fn(socket, &storage_.addr, &addrLen) != 0) {
-    return errno;
+  // Try to put the address into a local storage buffer.
+  sockaddr_storage tmp_sock;
+  socklen_t addrLen = sizeof(tmp_sock);
+  if (fn(socket, (sockaddr*)&tmp_sock, &addrLen) != 0) {
+    throw TTransportException(TTransportException::INTERNAL_ERROR,
+                              "setFromSocket() failed", errno);
   }
 
-  // If this was a unix domain socket, we need to store the address in an
-  // external buffer.  The first call to fn() used a buffer that was too small,
-  // so the path name returned may have been truncated.
-  if (storage_.addr.sa_family == AF_UNIX) {
-    storage_.un.init();
-    addrLen = sizeof(*storage_.un.addr);
-    if (fn(socket, reinterpret_cast<struct sockaddr*>(storage_.un.addr),
-           &addrLen) != 0) {
-      storage_.un.free();
-      return errno;
-    }
-    updateUnixAddressLength(addrLen);
-    assert(storage_.addr.sa_family == AF_UNIX);
-  }
-
-  return 0;
+  setFromSockaddr((sockaddr*)&tmp_sock, addrLen);
 }
 
 std::string TSocketAddress::getIpString(int flags) const {
@@ -799,14 +628,17 @@ std::string TSocketAddress::getIpString(int flags) const {
 }
 
 void TSocketAddress::getIpString(char *buf, size_t buflen, int flags) const {
-  if (storage_.addr.sa_family != AF_INET &&
-      storage_.addr.sa_family != AF_INET6) {
+  auto family = getFamily();
+  if (family != AF_INET &&
+      family != AF_INET6) {
     throw TTransportException(TTransportException::INTERNAL_ERROR,
                               "TSocketAddress: attempting to get IP address "
                               "for a non-IP address");
   }
 
-  int rc = getnameinfo(&storage_.addr, sizeof(storage_),
+  sockaddr_storage tmp_sock;
+  storage_.addr.toSockaddrStorage(&tmp_sock, port_);
+  int rc = getnameinfo((sockaddr*)&tmp_sock, sizeof(sockaddr_storage),
                        buf, buflen, nullptr, 0, flags);
   if (rc != 0) {
     std::ostringstream os;
@@ -814,22 +646,6 @@ void TSocketAddress::getIpString(char *buf, size_t buflen, int flags) const {
       gai_strerror(rc);
     throw TTransportException(TTransportException::INTERNAL_ERROR, os.str());
   }
-}
-
-void TSocketAddress::addressUpdateFailure(sa_family_t expectedFamily) {
-  if (expectedFamily == AF_UNIX) {
-    // Free the external address space allocated for this address
-    storage_.un.free();
-  }
-  if (storage_.addr.sa_family == AF_UNIX) {
-    // Set the family to AF_UNSPEC, since there is no external storage
-    // allocated for this address
-    storage_.addr.sa_family = AF_UNSPEC;
-  }
-
-  throw TTransportException(TTransportException::INVALID_STATE,
-                            "TSocketAddress update illegally changed "
-                            "address families");
 }
 
 void TSocketAddress::updateUnixAddressLength(socklen_t addrlen) {
@@ -856,29 +672,19 @@ void TSocketAddress::updateUnixAddressLength(socklen_t addrlen) {
 }
 
 bool TSocketAddress::operator<(const TSocketAddress& other) const {
-  if (storage_.addr.sa_family != other.storage_.addr.sa_family) {
-    return storage_.addr.sa_family < other.storage_.addr.sa_family;
+  if (getFamily() != other.getFamily()) {
+    return getFamily() < other.getFamily();
   }
 
-  switch (storage_.addr.sa_family) {
+  switch (getFamily()) {
     case AF_INET:
-      if (storage_.ipv4.sin_port != other.storage_.ipv4.sin_port) {
-        return storage_.ipv4.sin_port < other.storage_.ipv4.sin_port;
+    case AF_INET6: {
+      if (port_ != other.port_) {
+        return port_ < other.port_;
       }
 
       return
-        storage_.ipv4.sin_addr.s_addr < other.storage_.ipv4.sin_addr.s_addr;
-    case AF_INET6: {
-      if (storage_.ipv6.sin6_port != other.storage_.ipv6.sin6_port) {
-        return storage_.ipv6.sin6_port < other.storage_.ipv6.sin6_port;
-      }
-
-      const void *p1 = reinterpret_cast<const void*>(
-        storage_.ipv6.sin6_addr.s6_addr);
-      const void *p2 = reinterpret_cast<const void*>(
-        other.storage_.ipv6.sin6_addr.s6_addr);
-
-      return memcmp(p1, p2, sizeof(struct in6_addr)) < 0;
+        storage_.addr < other.storage_.addr;
     }
     case AF_UNIX: {
       // Anonymous addresses can't be compared to anything else.

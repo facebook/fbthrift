@@ -719,16 +719,14 @@ bool SSLContext::validatePeerName(TSSLSocket* sock, SSL* ssl) const {
             const TSocketAddress* remaddr = sock->getPeerAddress();
             if (remaddr->getFamily() == AF_INET &&
                 length == sizeof(in_addr)) {
-              if (!memcmp(&reinterpret_cast<const sockaddr_in*>(
-                            remaddr->getAddress())->sin_addr,
-                          data, length)) {
+              in_addr addr = remaddr->getIPAddress().asV4().toAddr();
+              if (!memcmp(&addr, data, length)) {
                 verified = true;
               }
             } else if (remaddr->getFamily() == AF_INET6 &&
                        length == sizeof(in6_addr)) {
-              if (!memcmp(&reinterpret_cast<const sockaddr_in6*>(
-                            remaddr->getAddress())->sin6_addr,
-                          data, length)) {
+              in6_addr addr = remaddr->getIPAddress().asV6().toAddr();
+              if (!memcmp(&addr, data, length)) {
                 verified = true;
               }
             }

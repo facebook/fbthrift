@@ -58,15 +58,21 @@ TEST(SSLUtilsTest, ValidatePeerCertNamesIPSanityTest) {
   TSocketAddress addr;
 
   addr.setFromIpPort("127.0.0.1", 1);
+  sockaddr_storage addrStorage;
+  sockaddr* addr_ptr = reinterpret_cast<sockaddr*>(&addrStorage);
+  addr.getAddress(&addrStorage);
   EXPECT_TRUE(OpenSSLUtils::validatePeerCertNames(
-                  cert.getX509(), addr.getAddress(), addr.getActualSize()));
+                  cert.getX509(), addr_ptr, addr.getActualSize()));
   addr.setFromIpPort("::1", 1);
+  addr.getAddress(&addrStorage);
   EXPECT_TRUE(OpenSSLUtils::validatePeerCertNames(
-                  cert.getX509(), addr.getAddress(), addr.getActualSize()));
+                  cert.getX509(), addr_ptr, addr.getActualSize()));
   addr.setFromIpPort("127.0.0.2", 1);
+  addr.getAddress(&addrStorage);
   EXPECT_FALSE(OpenSSLUtils::validatePeerCertNames(
-                   cert.getX509(), addr.getAddress(), addr.getActualSize()));
+                   cert.getX509(), addr_ptr, addr.getActualSize()));
   addr.setFromIpPort("::2", 1);
+  addr.getAddress(&addrStorage);
   EXPECT_FALSE(OpenSSLUtils::validatePeerCertNames(
-                   cert.getX509(), addr.getAddress(), addr.getActualSize()));
+                   cert.getX509(), addr_ptr, addr.getActualSize()));
 }

@@ -30,13 +30,19 @@ using std::endl;
 using apache::thrift::transport::TSocketAddress;
 using apache::thrift::transport::TTransportException;
 
+BOOST_AUTO_TEST_CASE(Size) {
+  TSocketAddress addr;
+  BOOST_CHECK_EQUAL(sizeof(addr), 32);
+}
+
 BOOST_AUTO_TEST_CASE(ConstructFromIpv4) {
   TSocketAddress addr("1.2.3.4", 4321);
   BOOST_CHECK_EQUAL(addr.getFamily(), AF_INET);
   BOOST_CHECK_EQUAL(addr.getAddressStr(), "1.2.3.4");
   BOOST_CHECK_EQUAL(addr.getPort(), 4321);
-  const struct sockaddr_in* inaddr =
-    reinterpret_cast<const sockaddr_in*>(addr.getAddress());
+  sockaddr_storage addrStorage;
+  addr.getAddress(&addrStorage);
+  const sockaddr_in* inaddr = reinterpret_cast<sockaddr_in*>(&addrStorage);
   BOOST_CHECK_EQUAL(inaddr->sin_addr.s_addr, htonl(0x01020304));
   BOOST_CHECK_EQUAL(inaddr->sin_port, htons(4321));
 }
@@ -64,8 +70,9 @@ BOOST_AUTO_TEST_CASE(SetFromIpv4) {
   BOOST_CHECK_EQUAL(addr.getFamily(), AF_INET);
   BOOST_CHECK_EQUAL(addr.getAddressStr(), "255.254.253.252");
   BOOST_CHECK_EQUAL(addr.getPort(), 8888);
-  const struct sockaddr_in* inaddr =
-    reinterpret_cast<const sockaddr_in*>(addr.getAddress());
+  sockaddr_storage addrStorage;
+  addr.getAddress(&addrStorage);
+  const sockaddr_in* inaddr = reinterpret_cast<sockaddr_in*>(&addrStorage);
   BOOST_CHECK_EQUAL(inaddr->sin_addr.s_addr, htonl(0xfffefdfc));
   BOOST_CHECK_EQUAL(inaddr->sin_port, htons(8888));
 }
@@ -87,8 +94,9 @@ BOOST_AUTO_TEST_CASE(SetFromInvalidIpv4) {
   BOOST_CHECK_EQUAL(addr.getFamily(), AF_INET);
   BOOST_CHECK_EQUAL(addr.getAddressStr(), "12.34.56.78");
   BOOST_CHECK_EQUAL(addr.getPort(), 80);
-  const struct sockaddr_in* inaddr =
-    reinterpret_cast<const sockaddr_in*>(addr.getAddress());
+  sockaddr_storage addrStorage;
+  addr.getAddress(&addrStorage);
+  const sockaddr_in* inaddr = reinterpret_cast<sockaddr_in*>(&addrStorage);
   BOOST_CHECK_EQUAL(inaddr->sin_addr.s_addr, htonl(0x0c22384e));
 }
 
@@ -619,9 +627,10 @@ void testSetFromSocket(const TSocketAddress *serverBindAddr,
                        TSocketAddress *clientPeerAddrRet) {
   int listenSock = socket(serverBindAddr->getFamily(), SOCK_STREAM, 0);
   REQUIRE_ERRNO(listenSock > 0, "failed to create listen socket");
-  const struct sockaddr* laddr = serverBindAddr->getAddress();
+  sockaddr_storage laddr;
+  serverBindAddr->getAddress(&laddr);
   socklen_t laddrLen = serverBindAddr->getActualSize();
-  int rc = bind(listenSock, laddr, laddrLen);
+  int rc = bind(listenSock, reinterpret_cast<sockaddr*>(&laddr), laddrLen);
   REQUIRE_ERRNO(rc == 0, "failed to bind to server socket");
   rc = listen(listenSock, 10);
   REQUIRE_ERRNO(rc == 0, "failed to listen");
@@ -637,21 +646,25 @@ void testSetFromSocket(const TSocketAddress *serverBindAddr,
   int clientSock = socket(serverBindAddr->getFamily(), SOCK_STREAM, 0);
   REQUIRE_ERRNO(clientSock > 0, "failed to create client socket");
   if (clientBindAddr != nullptr) {
-    rc = bind(clientSock, clientBindAddr->getAddress(),
+    sockaddr_storage clientAddr;
+    clientBindAddr->getAddress(&clientAddr);
+
+    rc = bind(clientSock, reinterpret_cast<sockaddr*>(&clientAddr),
               clientBindAddr->getActualSize());
     REQUIRE_ERRNO(rc == 0, "failed to bind to client socket");
   }
 
-  rc = connect(clientSock, listenAddrRet->getAddress(),
+  sockaddr_storage listenAddr;
+  listenAddrRet->getAddress(&listenAddr);
+  rc = connect(clientSock, reinterpret_cast<sockaddr*>(&listenAddr),
                listenAddrRet->getActualSize());
   REQUIRE_ERRNO(rc == 0, "failed to connect");
 
-  socklen_t acceptAddrLen;
-  struct sockaddr* acceptAddrStruct = acceptAddrRet->getMutableAddress(
-      listenAddrRet->getFamily(), &acceptAddrLen);
-  int serverSock = accept(listenSock, acceptAddrStruct, &acceptAddrLen);
+  sockaddr_storage acceptAddr;
+  socklen_t acceptAddrLen = sizeof(acceptAddr);
+  int serverSock = accept(listenSock, reinterpret_cast<sockaddr*>(&acceptAddr), &acceptAddrLen);
   REQUIRE_ERRNO(serverSock > 0, "failed to accept");
-  acceptAddrRet->addressUpdated(listenAddrRet->getFamily(), acceptAddrLen);
+  acceptAddrRet->setFromSockaddr(reinterpret_cast<sockaddr*>(&acceptAddr), acceptAddrLen);
 
   serverAddrRet->setFromLocalAddress(serverSock);
   serverPeerAddrRet->setFromPeerAddress(serverSock);
@@ -831,6 +844,11 @@ BOOST_AUTO_TEST_CASE(SetFromSocketUnixAnonymous) {
   BOOST_CHECK_EQUAL(serverPeerAddr.getPath(), "");
   BOOST_CHECK_EQUAL(clientAddr.getPath(), "");
   BOOST_CHECK_EQUAL(acceptAddr.getPath(), "");
+}
+
+BOOST_AUTO_TEST_CASE(getIPString) {
+  TSocketAddress addr("fe80::62eb:69ff:fe9b:ba60%eth0", 0);
+  BOOST_CHECK_EQUAL(addr.getAddressStr(), "fe80::62eb:69ff:fe9b:ba60%eth0");
 }
 
 unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {

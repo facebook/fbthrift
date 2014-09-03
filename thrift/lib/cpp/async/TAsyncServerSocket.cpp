@@ -282,7 +282,10 @@ void TAsyncServerSocket::bind(const transport::TSocketAddress& address) {
   }
 
   // Bind to the socket
-  if (::bind(fd, address.getAddress(), address.getActualSize()) != 0) {
+  sockaddr_storage addrStorage;
+  address.getAddress(&addrStorage);
+  sockaddr* saddr = reinterpret_cast<sockaddr*>(&addrStorage);
+  if (::bind(fd, saddr, address.getActualSize()) != 0) {
     if (sockets_.size() == 0) {
       ::close(fd);
     }
@@ -605,19 +608,25 @@ void TAsyncServerSocket::handlerReady(
   // to avoid starving other I/O handlers using this TEventBase.
   for (uint32_t n = 0; n < maxAcceptAtOnce_; ++n) {
     TSocketAddress address;
-    socklen_t addrLen;
 
-    struct sockaddr *addrStorage = address.getMutableAddress(
-        addressFamily, &addrLen);
+    sockaddr_storage addrStorage;
+    socklen_t addrLen = sizeof(addrStorage);
+    sockaddr* saddr = reinterpret_cast<sockaddr*>(&addrStorage);
+
+    // In some cases, accept() doesn't seem to update these correctly.
+    saddr->sa_family = addressFamily;
+    if (addressFamily == AF_UNIX) {
+      addrLen = sizeof(struct sockaddr_un);
+    }
 
     // Accept a new client socket
 #ifdef SOCK_NONBLOCK
-    int clientSocket = accept4(fd, addrStorage, &addrLen, SOCK_NONBLOCK);
+    int clientSocket = accept4(fd, saddr, &addrLen, SOCK_NONBLOCK);
 #else
-    int clientSocket = accept(fd, addrStorage, &addrLen);
+    int clientSocket = accept(fd, saddr, &addrLen);
 #endif
 
-    address.addressUpdated(addressFamily, addrLen);
+    address.setFromSockaddr(saddr, addrLen);
 
     int64_t nowMs = concurrency::Util::currentTime();
     int64_t timeSinceLastAccept = std::max(int64_t(0),

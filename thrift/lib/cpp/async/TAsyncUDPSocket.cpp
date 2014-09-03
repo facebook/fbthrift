@@ -72,7 +72,10 @@ void TAsyncUDPSocket::bind(const transport::TSocketAddress& address) {
   }
 
   // bind to the address
-  if (::bind(socket, address.getAddress(), address.getActualSize()) != 0) {
+  sockaddr_storage addrStorage;
+  address.getAddress(&addrStorage);
+  sockaddr* saddr = reinterpret_cast<sockaddr*>(&addrStorage);
+  if (::bind(socket, saddr, address.getActualSize()) != 0) {
     throw TTransportException(
         TTransportException::NOT_OPEN,
         "failed to bind the async udp socket for:" + address.describe(),
@@ -111,11 +114,15 @@ ssize_t TAsyncUDPSocket::write(const transport::TSocketAddress& address,
   // XXX: Use `sendmsg` instead of coalescing here
   buf->coalesce();
 
+  sockaddr_storage addrStorage;
+  address.getAddress(&addrStorage);
+  sockaddr* saddr = reinterpret_cast<sockaddr*>(&addrStorage);
+
   return ::sendto(fd_,
                   buf->data(),
                   buf->length(),
                   MSG_DONTWAIT,
-                  address.getAddress(),
+                  saddr,
                   address.getActualSize());
 }
 
@@ -187,12 +194,13 @@ void TAsyncUDPSocket::handleRead() noexcept {
   }
 
   socklen_t addrLen;
-  struct sockaddr* rawAddr =
-      clientAddress_.getMutableAddress(localAddress_.getFamily(), &addrLen);
+  sockaddr_storage addrStorage;
+  struct sockaddr* rawAddr = reinterpret_cast<sockaddr*>(&addrStorage);
+  rawAddr->sa_family = localAddress_.getFamily();
 
   ssize_t bytesRead = ::recvfrom(fd_, buf, len, MSG_TRUNC, rawAddr, &addrLen);
   if (bytesRead >= 0) {
-    clientAddress_.addressUpdated(localAddress_.getFamily(), addrLen);
+    clientAddress_.setFromSockaddr(rawAddr, addrLen);
 
     if (bytesRead > 0) {
       bool truncated = false;
