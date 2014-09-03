@@ -1422,23 +1422,21 @@ void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
     // Generate data generators for each data type used in any service method
     f_service_fuzzer_ << nl << "-- Random data generation" << nl;
 
-    // Generate the set of parameter types used in any function
-    // Use the t_type_fingerprint_less to to compare pointers to
-    // t_type objects using their fingerprints.
-    set<t_type*,t_type_fingerprint_less> used_types;
+    map<string, t_type*> used_types;
     for (f_iter = functions.begin(); f_iter != functions_end; ++f_iter) {
         const vector<t_field*>& fields = (*f_iter)->get_arglist()->get_members();
         vector<t_field*>::const_iterator fld_iter;
         for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-            used_types.insert((*fld_iter)->get_type());
+            auto type = (*fld_iter)->get_type();
+            used_types.emplace(render_hs_type(type, false), type);
         }
     }
 
     // all the data generators we need
-    set<t_type*>::const_iterator type_iter;
-    for (type_iter = used_types.begin(); type_iter != used_types.end(); ++type_iter) {
-        const string& inf_type = "inf_" + render_hs_type_for_function_name(*type_iter);
-        const string& hs_type = render_hs_type(*type_iter, true);
+    for (const auto& used_type : used_types) {
+        auto type_iter = used_type.second;
+        const string& inf_type = "inf_" + render_hs_type_for_function_name(type_iter);
+        const string& hs_type = render_hs_type(type_iter, true);
 
         f_service_fuzzer_
             << inf_type
