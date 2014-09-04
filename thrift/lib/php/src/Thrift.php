@@ -402,6 +402,17 @@ abstract class TBase {
 interface IThriftClient {
   public function getEventHandler(): TClientEventHandler;
   public function setEventHandler(TClientEventHandler $handler): this;
+  public function getAsyncHandler(): TClientAsyncHandler;
+  public function setAsyncHandler(TClientAsyncHandler $handler): this;
+}
+
+/**
+ * Base interface for Thrift processors
+ */
+interface IThriftProcessor {
+  public function getEventHandler(): TProcessorEventHandler;
+  public function setEventHandler(TProcessorEventHandler $handler): this;
+  public function process(TProtocol $input, TProtocol $output): bool;
 }
 
 /**

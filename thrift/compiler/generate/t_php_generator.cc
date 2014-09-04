@@ -1601,7 +1601,7 @@ void t_php_generator::generate_service_processor(t_service* tservice,
   string long_name = php_servicename_mangle(mangle, tservice);
   // Generate the header portion
   f_service_ <<
-    "class " << long_name << "Processor" << extends_processor << " {" << endl;
+    "class " << long_name << "Processor" << extends_processor << " implements IThriftProcessor {" << endl;
   indent_up();
 
   if (extends.empty()) {
