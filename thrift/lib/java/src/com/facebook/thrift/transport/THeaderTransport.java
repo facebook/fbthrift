@@ -152,6 +152,10 @@ public class THeaderTransport extends TFramedTransport {
     }
   }
 
+  public TTransport getUnderlyingTransport() {
+    return this.transport_;
+  }
+
   /**
    * Returns the protocol Id we are reading/writing
    *
