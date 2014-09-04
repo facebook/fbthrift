@@ -9,6 +9,7 @@ gen-cpp2/Service_constants.cpp: Service.thrift
 	PYTHONPATH=$(PY_LOCAL_PATH) python -mthrift_compiler.main --gen cpp2 $<
 	$(THRIFT) --gen cpp:templates,cob_style -r $<
 gen-cpp2/Service_types.cpp: gen-cpp2/Service_constants.cpp
+gen-cpp2/TestService.cpp: gen-cpp2/Service_constants.cpp
 
 libService_a_SOURCES = gen-cpp2/Service_constants.cpp \
 		       gen-cpp2/Service_types.cpp \
@@ -33,7 +34,7 @@ clean-local:
 gen-cpp2/InstalledCheck_types.cpp: InstalledCheck.thrift
 	$(PY_RUN_ENV) $(PYTHON) -mthrift_compiler.main --gen cpp2 InstalledCheck.thrift
 
-InstalledCheck:
+InstalledCheck: gen-cpp2/TestService.cpp
 	$(CXX) $(CXXFLAGS) -o InstalledCheck $(LDFLAGS) -L@prefix@/lib $(CPPFLAGS) -I@prefix@/include InstalledCheck.cpp gen-cpp2/InstalledCheck_types.cpp gen-cpp2/TestService.cpp -lthriftcpp2 -lthrift -lfolly -lglog -lboost_system -lboost_thread -lpthread -lm
 
 installcheck: gen-cpp2/InstalledCheck_types.cpp InstalledCheck
