@@ -1015,8 +1015,7 @@ class CppGenerator(t_generator.Generator):
         return sig
 
     def _generate_app_ex(self, service, errorstr, functionname, seqid, is_in_eb,
-                         s, static=True, err_code=None, err_header=True,
-                         ex_str='folly::exceptionStr(e).toStdString()'):
+                         s, static=True, err_code=None, err_header=True):
         with out('if (req)'):
             out('LOG(ERROR) << {0} << " in function {1}";'.format(
                     errorstr, functionname))
@@ -1028,7 +1027,8 @@ class CppGenerator(t_generator.Generator):
             if static:
                 ctx = 'ctx.get()'
                 if err_header:
-                    out('ctx->userException(' + ex_str + ');')
+                    out('ctx->userException('
+                        'folly::demangle(typeid(e)).toStdString());')
             else:
                 ctx = 'nullptr'
             if is_in_eb:
@@ -1365,7 +1365,7 @@ class CppGenerator(t_generator.Generator):
                         with out('catch (const {0}& e)'.format(
                             self._type_name(xception.type))):
                             out('ctx->userException(' +
-                              'folly::exceptionStr(e).toStdString());')
+                              'folly::demangle(typeid(e)).toStdString());')
                             out('result.{0} = e;'.format(xception.name))
                             out('result.__isset.{0} = true;'.format(
                                 xception.name))
@@ -1417,41 +1417,40 @@ class CppGenerator(t_generator.Generator):
                         modifiers='static',
                         output=self._out_tcc
                     ):
-                        with out('if (ew)'):
-                            out('ProtocolOut_ prot;')
-                            if len(function.xceptions.members) > 0:
-                                out('{0}_{1}_result result;'.format(
-                                    service.name, function.name))
-                            out('bool cast = false;')
-                            for xception in function.xceptions.members:
-                                with out('if (!cast)'):
-                                    xception_type = self._type_name(
-                                        xception.type)
-                                    with out('if (ew.is_compatible_with<' +
-                                             xception_type + '>())'):
-                                        out('cast = true;')
-                                        out('ctx->userException(ew.what().' +
-                                            'toStdString());')
-                                        with out('ew.with_exception<{0}>'
-                                                 '([&]({0}& ex)'.format(
-                                                     xception_type)):
-                                            out('result.{0} = ex;'.format(
-                                                xception.name))
-                                        out(');')
-                                        out('result.__isset.{0} = true;'.format(
-                                            xception.name))
-                            with out('if (!cast)'):
+                        with out('if (!ew)'):
+                            out('return;')
+
+                        out('ProtocolOut_ prot;')
+                        if len(function.xceptions.members) > 0:
+                            out('{0}_{1}_result result;'.format(
+                                service.name, function.name))
+                        for xception in function.xceptions.members:
+                            xception_type = self._type_name(
+                                xception.type)
+                            with out('if (ew.with_exception<{0}>([&]({0}& e)'.
+                                     format(xception_type)):
+                                out('ctx->userException('
+                                    'folly::demangle(typeid(e)).'
+                                    'toStdString());')
+                                out('result.{0} = e;'.format(
+                                    xception.name))
+                                out('result.__isset.{0} = true;'.format(
+                                    xception.name))
+                            out(')) {} else ')
+                        with out(' '):
+                            with out('ew.with_exception<std::exception>('
+                                     '[&](const std::exception& e)'):
                                 self._generate_app_ex(
                                     service,
                                     'ew.what().toStdString()',
                                     function.name, "protoSeqId", True,
-                                    out(), True, None, True,
-                                    'ew.what().toStdString()')
-                            if len(function.xceptions.members) > 0:
-                                out('auto queue = serializeResponse('
-                                    '"{0}", &prot, protoSeqId, ctx.get(),'
-                                    ' result);'.format(function.name))
-                                out('return req->sendReply(queue.move());')
+                                    out(), True, None, True)
+                            out(');')
+                        if len(function.xceptions.members) > 0:
+                            out('auto queue = serializeResponse('
+                                '"{0}", &prot, protoSeqId, ctx.get(),'
+                                ' result);'.format(function.name))
+                            out('return req->sendReply(queue.move());')
 
 
             out().label('public:')
