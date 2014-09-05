@@ -488,49 +488,46 @@ unique_ptr<IOBuf> THeader::untransform(
       stream.opaque = (voidpf)0;
       err = inflateInit(&stream);
       if (err != Z_OK) {
-        inflateEnd(&stream);
         throw TApplicationException(TApplicationException::MISSING_RESULT,
                                     "Error while zlib inflate Init");
       }
-      do {
-        if (nullptr == buf) {
-          inflateEnd(&stream);
-          throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                      "Not enough zlib data in message");
-        }
-        stream.next_in = buf->writableData();
-        stream.avail_in = buf->length();
+      {
+        SCOPE_EXIT { err = inflateEnd(&stream); };
         do {
-          unique_ptr<IOBuf> tmp(IOBuf::create(bufSize));
-
-          stream.next_out = tmp->writableData();
-          stream.avail_out = bufSize;
-          err = inflate(&stream, Z_NO_FLUSH);
-          if (err == Z_STREAM_ERROR ||
-             err == Z_DATA_ERROR ||
-             err == Z_MEM_ERROR) {
-            inflateEnd(&stream);
+          if (nullptr == buf) {
             throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                        "Error while zlib inflate");
+                "Not enough zlib data in message");
           }
-          tmp->append(bufSize - stream.avail_out);
-          if (out) {
-            // Add buffer to end (circular list, same as prepend)
-            out->prependChain(std::move(tmp));
-          } else {
-            out = std::move(tmp);
-          }
-        } while (stream.avail_out == 0);
-        // try the next buffer
-        buf = buf->pop();
-      } while (err != Z_STREAM_END);
+          stream.next_in = buf->writableData();
+          stream.avail_in = buf->length();
+          do {
+            unique_ptr<IOBuf> tmp(IOBuf::create(bufSize));
 
-      err = inflateEnd(&stream);
+            stream.next_out = tmp->writableData();
+            stream.avail_out = bufSize;
+            err = inflate(&stream, Z_NO_FLUSH);
+            if (err == Z_STREAM_ERROR ||
+                err == Z_DATA_ERROR ||
+                err == Z_MEM_ERROR) {
+              throw TApplicationException(TApplicationException::MISSING_RESULT,
+                  "Error while zlib inflate");
+            }
+            tmp->append(bufSize - stream.avail_out);
+            if (out) {
+              // Add buffer to end (circular list, same as prepend)
+              out->prependChain(std::move(tmp));
+            } else {
+              out = std::move(tmp);
+            }
+          } while (stream.avail_out == 0);
+          // try the next buffer
+          buf = buf->pop();
+        } while (err != Z_STREAM_END);
+      }
       if (err != Z_OK) {
         throw TApplicationException(TApplicationException::MISSING_RESULT,
                                     "Error while zlib inflateEnd");
       }
-
       buf = std::move(out);
     } else if (transId == SNAPPY_TRANSFORM) {
       buf->coalesce(); // required for snappy uncompression
