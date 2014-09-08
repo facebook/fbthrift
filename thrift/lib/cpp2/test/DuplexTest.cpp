@@ -128,7 +128,7 @@ class DuplexServiceInterface : public DuplexServiceSvIf {
 
   void async_tm_regularMethod(unique_ptr<HandlerCallback<int32_t>> callback,
                               int32_t val) override {
-    callback->resultInThread(val * 2);
+    callback.release()->resultInThread(val * 2);
   }
 };
 
