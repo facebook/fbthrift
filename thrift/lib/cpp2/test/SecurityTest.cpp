@@ -20,6 +20,9 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/DuplexService.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/DuplexClient.h>
+#include <thrift/lib/cpp2/async/DuplexChannel.h>
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
@@ -60,17 +63,15 @@ std::shared_ptr<ThriftServer> getServer() {
   return server;
 }
 
-HeaderClientChannel::Ptr getClientChannel(TEventBase* eb, uint16_t port) {
+void enableSecurity(HeaderClientChannel* channel) {
   char hostname[256];
   EXPECT_EQ(gethostname(hostname, 255), 0);
   std::string clientIdentity = std::string("host/") + hostname;
   std::string serviceIdentity = std::string("host@") + hostname;
 
-  auto socket = TAsyncSocket::newSocket(eb, "127.0.0.1", port);
-  auto channel = HeaderClientChannel::newChannel(socket);
   channel->getHeader()->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
 
-  auto saslClient = folly::make_unique<GssSaslClient>(eb);
+  auto saslClient = folly::make_unique<GssSaslClient>(channel->getEventBase());
   saslClient->setClientIdentity(clientIdentity);
   saslClient->setServiceIdentity(serviceIdentity);
   saslClient->setSaslThreadManager(make_shared<SaslThreadManager>(
@@ -78,6 +79,13 @@ HeaderClientChannel::Ptr getClientChannel(TEventBase* eb, uint16_t port) {
   saslClient->setCredentialsCacheManager(
       make_shared<krb5::Krb5CredentialsCacheManager>());
   channel->setSaslClient(std::move(saslClient));
+}
+
+HeaderClientChannel::Ptr getClientChannel(TEventBase* eb, uint16_t port) {
+  auto socket = TAsyncSocket::newSocket(eb, "127.0.0.1", port);
+  auto channel = HeaderClientChannel::newChannel(socket);
+
+  enableSecurity(channel.get());
 
   return std::move(channel);
 }
@@ -96,7 +104,11 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
     EXPECT_FALSE(state.isException());
     EXPECT_TRUE(state.isSecurityActive());
     std::string res;
-    TestServiceAsyncClient::recv_sendResponse(res, state);
+    try {
+      TestServiceAsyncClient::recv_sendResponse(res, state);
+    } catch(const std::exception&) {
+      EXPECT_TRUE(false);
+    }
     EXPECT_EQ(res, "10");
     base.terminateLoopSoon();
   }, 10);
@@ -131,6 +143,167 @@ TEST(Security, DISABLED_CompressionQlz) {
     auto header = channel->getHeader();
     header->setTransform(transport::THeader::QLZ_TRANSFORM);
   });
+}
+
+TEST(Security, ProtocolBinary) {
+  runTest([](HeaderClientChannel* channel) {
+    auto header = channel->getHeader();
+    header->setProtocolId(protocol::T_BINARY_PROTOCOL);
+  });
+}
+
+TEST(Security, ProtocolCompact) {
+  runTest([](HeaderClientChannel* channel) {
+    auto header = channel->getHeader();
+    header->setProtocolId(protocol::T_COMPACT_PROTOCOL);
+  });
+}
+
+
+class DuplexClientInterface : public DuplexClientSvIf {
+public:
+  DuplexClientInterface(int32_t first, int32_t count, bool& success)
+    : expectIndex_(first), lastIndex_(first + count), success_(success)
+  {}
+
+  void async_tm_update(unique_ptr<HandlerCallback<int32_t>> callback,
+                       int32_t currentIndex) override {
+    auto callbackp = callback.release();
+    EXPECT_EQ(currentIndex, expectIndex_);
+    expectIndex_++;
+    TEventBase *eb = callbackp->getEventBase();
+    callbackp->resultInThread(currentIndex);
+    if (expectIndex_ == lastIndex_) {
+      success_ = true;
+      eb->runInEventBaseThread([eb] { eb->terminateLoopSoon(); });
+    }
+  }
+private:
+  int32_t expectIndex_;
+  int32_t lastIndex_;
+  bool& success_;
+};
+
+class Updater {
+public:
+  Updater(DuplexClientAsyncClient* client,
+          TEventBase* eb,
+          int32_t startIndex,
+          int32_t numUpdates,
+          int32_t interval)
+    : client_(client)
+    , eb_(eb)
+    , startIndex_(startIndex)
+    , numUpdates_(numUpdates)
+    , interval_(interval)
+  {}
+
+  void update() {
+    int32_t si = startIndex_;
+    client_->update([si](ClientReceiveState&& state) {
+      EXPECT_FALSE(state.isException());
+      EXPECT_TRUE(state.isSecurityActive());
+      try {
+        int32_t res = DuplexClientAsyncClient::recv_update(state);
+        EXPECT_EQ(res, si);
+      } catch (const std::exception&) {
+        EXPECT_TRUE(false);
+      }
+    }, startIndex_);
+    startIndex_++;
+    numUpdates_--;
+    if (numUpdates_ > 0) {
+      Updater updater(*this);
+      eb_->runAfterDelay([updater]() mutable {
+        updater.update();
+      }, interval_);
+    }
+  }
+private:
+  DuplexClientAsyncClient* client_;
+  TEventBase* eb_;
+  int32_t startIndex_;
+  int32_t numUpdates_;
+  int32_t interval_;
+};
+
+class DuplexServiceInterface : public DuplexServiceSvIf {
+  void async_tm_registerForUpdates(unique_ptr<HandlerCallback<bool>> callback,
+                                   int32_t startIndex,
+                                   int32_t numUpdates,
+                                   int32_t interval) override {
+
+    EXPECT_NE(callback->getConnectionContext()->
+                getSaslServer()->getClientIdentity(), "");
+
+    auto callbackp = callback.release();
+    auto ctx = callbackp->getConnectionContext()->getConnectionContext();
+    CHECK(ctx != nullptr);
+    auto client = ctx->getDuplexClient<DuplexClientAsyncClient>();
+    auto eb = callbackp->getEventBase();
+    CHECK(eb != nullptr);
+    if (numUpdates > 0) {
+      Updater updater(client, eb, startIndex, numUpdates, interval);
+      eb->runInEventBaseThread([updater]() mutable {updater.update();});
+    };
+    callbackp->resultInThread(true);
+  }
+
+  void async_tm_regularMethod(unique_ptr<HandlerCallback<int32_t>> callback,
+                              int32_t val) override {
+    EXPECT_NE(callback->getConnectionContext()->
+                getSaslServer()->getClientIdentity(), "");
+    callback.release()->resultInThread(val * 2);
+  }
+};
+
+std::shared_ptr<ThriftServer> getDuplexServer() {
+  auto server = std::make_shared<ThriftServer>();
+  server->setPort(0);
+  server->setInterface(folly::make_unique<DuplexServiceInterface>());
+  server->setDuplex(true);
+  server->setSaslEnabled(true);
+  return server;
+}
+
+ScopedServerThread duplexsst(getDuplexServer());
+
+TEST(Security, Duplex) {
+  enum {START=1, COUNT=3, INTERVAL=1};
+  TEventBase base;
+
+  auto port = duplexsst.getAddress()->getPort();
+  std::shared_ptr<TAsyncSocket> socket(
+    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+
+  auto duplexChannel =
+      std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);
+  enableSecurity(duplexChannel->getClientChannel().get());
+  DuplexServiceAsyncClient client(duplexChannel->getClientChannel());
+
+  bool success = false;
+  ThriftServer clients_server(duplexChannel->getServerChannel());
+  clients_server.setInterface(std::make_shared<DuplexClientInterface>(
+      START, COUNT, success));
+  clients_server.serve();
+
+  client.registerForUpdates([](ClientReceiveState&& state) {
+    EXPECT_FALSE(state.isException());
+    EXPECT_TRUE(state.isSecurityActive());
+    try {
+      bool res = DuplexServiceAsyncClient::recv_registerForUpdates(state);
+      EXPECT_TRUE(res);
+    } catch (const std::exception&) {
+      EXPECT_TRUE(false);
+    }
+  }, START, COUNT, INTERVAL);
+
+  // fail on time out
+  base.runAfterDelay([] {EXPECT_TRUE(false);}, 5000);
+
+  base.loopForever();
+
+  EXPECT_TRUE(success);
 }
 
 int main(int argc, char** argv) {
