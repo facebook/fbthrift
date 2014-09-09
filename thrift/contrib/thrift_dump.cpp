@@ -19,12 +19,15 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <memory>
+#include <string>
 
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include <thrift/lib/cpp/transport/TFDTransport.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/protocol/TDebugProtocol.h>
 #include <thrift/lib/cpp/protocol/TProtocolTap.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TFDTransport.h>
 
 using std::shared_ptr;
 using std::cout;
@@ -34,7 +37,8 @@ using namespace apache::thrift::protocol;
 
 void usage() {
   fprintf(stderr,
-      "usage: thrift_dump {-b|-f|-s} < input > ouput\n"
+      "usage: thrift_dump [-c] {-b|-f|-s} < input > output\n"
+      "  -c use TCompactProtocol instead of TBinaryProtocol\n"
       "  -b TBufferedTransport messages\n"
       "  -f TFramedTransport messages\n"
       "  -s Raw structures\n");
@@ -42,31 +46,47 @@ void usage() {
 }
 
 int main(int argc, char *argv[]) {
-  if (argc != 2) {
+  if (argc <= 1) {
     usage();
   }
 
   shared_ptr<TTransport> stdin_trans(new TFDTransport(STDIN_FILENO));
   shared_ptr<TTransport> itrans;
 
-  if (argv[1] == std::string("-b") || argv[1] == std::string("-s")) {
-    itrans.reset(new TBufferedTransport(stdin_trans));
-  } else if (argv[1] == std::string("-f")) {
-    itrans.reset(new TFramedTransport(stdin_trans));
+  bool buffered = false;
+  bool rawStructures = false;
+  bool framed = false;
+  bool compact = false;
+  for (int i = 1; i < argc; i++) {
+    buffered |= argv[i] == std::string("-b");
+    rawStructures |= argv[i] == std::string("-s");
+    framed |= argv[i] == std::string("-f");
+    compact |= argv[i] == std::string("-c");
+  }
+
+  if (buffered || rawStructures) {
+    itrans = std::make_shared<TBufferedTransport>(stdin_trans);
+  } else if (framed) {
+    itrans = std::make_shared<TFramedTransport>(stdin_trans);
   } else {
     usage();
   }
 
-  shared_ptr<TProtocol> iprot(new TBinaryProtocol(itrans));
-  shared_ptr<TProtocol> oprot(
-      new TDebugProtocol(
-        shared_ptr<TTransport>(new TBufferedTransport(
-          shared_ptr<TTransport>(new TFDTransport(STDOUT_FILENO))))));
+  shared_ptr<TProtocol> iprot;
+  if (compact) {
+    iprot = std::make_shared<TCompactProtocol>(itrans);
+  } else {
+    iprot = std::make_shared<TBinaryProtocol>(itrans);
+  }
+
+  auto oprot = std::make_shared<TDebugProtocol>(
+    std::make_shared<TBufferedTransport>(
+      std::make_shared<TFDTransport>(STDOUT_FILENO)));
 
   TProtocolTap tap(iprot, oprot);
 
   try {
-    if (argv[1] == std::string("-s")) {
+    if (rawStructures) {
       for (;;) {
         tap.skip(T_STRUCT);
       }
