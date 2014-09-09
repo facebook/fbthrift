@@ -1227,7 +1227,7 @@ FunctionType:
     }
 
 FieldType:
-  tok_identifier
+  tok_identifier TypeAnnotations
     {
       pdebug("FieldType -> tok_identifier");
       if (g_parse_mode == INCLUDES) {
@@ -1236,13 +1236,17 @@ FieldType:
       } else {
         // Lookup the identifier in the current scope
         $$ = g_scope->get_type($1);
-        if ($$ == NULL) {
+        if ($$ == NULL || $2 != NULL) {
           /*
            * Either this type isn't yet declared, or it's never
              declared.  Either way allow it and we'll figure it out
              during generation.
            */
           $$ = new t_typedef(g_program, $1);
+          if ($2 != NULL) {
+            $$->annotations_ = $2->annotations_;
+            delete $2;          
+          }
         }
       }
     }

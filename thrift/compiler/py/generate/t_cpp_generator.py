@@ -207,18 +207,20 @@ class CppGenerator(t_generator.Generator):
             else:
                 scope('class ' + ttype.name + ';')
 
-        # Check if it needs to be namespaced
-        program = ttype.program
-        if program is not None:
-            pname = self._namespace_prefix(self._get_namespace(program)) + \
-                    ttype.name
-        else:
-            pname = ttype.name
+        tname = self._cpp_type_name(ttype)
+        if not tname:
+            # Check if it needs to be namespaced
+            program = ttype.program
+            if program is not None:
+                tname = self._namespace_prefix(self._get_namespace(program)) + \
+                        ttype.name
+            else:
+                tname = ttype.name
 
         if arg and self._is_complex_type(ttype):
-            return self._reference_name(pname, unique)
+            return self._reference_name(tname, unique)
         else:
-            return pname
+            return tname
 
     def _is_orderable_type(self, ttype):
         if ttype.is_base_type:
@@ -934,7 +936,6 @@ class CppGenerator(t_generator.Generator):
                           and not self.flag_stack_arguments:
                             out("std::unique_ptr<{0}> _return(new {0});"
                               .format(self._type_name(function.returntype)))
-
                             out("{0}({1});".format(function.name,
                                                  ", ".join(args)))
                             out("callbackp->resultInThread(std::move(_return));")
@@ -1739,7 +1740,7 @@ class CppGenerator(t_generator.Generator):
                 if rtype.is_string or rtype.is_container \
                         or rtype.is_struct:
                     out("args.{1} = const_cast<{0}*>(&{2});".format(
-                            self._type_name(rtype),
+                            self._type_name(field.type),
                             field.name, field.name))
                 else:
                     out("args.{0} = &{0};".format(field.name))
@@ -2396,10 +2397,16 @@ class CppGenerator(t_generator.Generator):
                                     member.type.as_struct)
                                 if len(stype.members) > 0:
                                     if self._is_reference(member):
-                                        out('if ({0}) {0}->__clear();'.format(
-                                            name))
+                                        out(('if ({1}) ' +
+                                             '::apache::thrift::Cpp2Ops< {0}>' +
+                                             '::clear({1}.get());').format(
+                                                 self._type_name(member.type),
+                                                                 name))
                                     else:
-                                        out('{0}.__clear();'.format(name))
+                                        out(('::apache::thrift::Cpp2Ops< {0}>' +
+                                             '::clear(&{1});').format(
+                                                 self._type_name(member.type),
+                                                                 name))
                             elif t.is_container:
                                 out('{0}.clear();'.format(name))
                             else:
@@ -2788,22 +2795,21 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_deserialize_field(self, scope, field, prefix='', suffix=''):
         'Deserializes a field of any type.'
-        ttype = self._get_true_type(field.type)
         name = prefix + field.name + self._type_access_suffix(field.type) + \
                 suffix
         self._generate_deserialize_type(
-            scope, ttype, name, self._is_reference(field))
+            scope, field.type, name, self._is_reference(field))
 
-    def _generate_deserialize_type(self, scope, ttype, name, pointer=False):
+    def _generate_deserialize_type(self, scope, otype, name, pointer=False):
         'Deserializes a variable of any type.'
-
+        ttype = self._get_true_type(otype)
         s = scope
         if ttype.is_void:
             raise TypeError('CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: '\
                             + name)
         if ttype.is_struct or ttype.is_xception:
             self._generate_deserialize_struct(
-                scope, ttype.as_struct, name, pointer)
+                scope, otype, ttype.as_struct, name, pointer)
         elif ttype.is_container:
             self._generate_deserialize_container(scope, ttype.as_container,
                                                  name)
@@ -2847,13 +2853,13 @@ class CppGenerator(t_generator.Generator):
                              "TYPE {1}").format(name, self._type_name(ttype)))
 
     def _generate_deserialize_struct(
-            self, scope, struct, prefix, pointer=False):
+            self, scope, otype, struct, prefix, pointer=False):
         if pointer:
             scope("{0} = std::unique_ptr<{1}>(new {1});".format(
-                prefix, self._type_name(struct)))
+                prefix, self._type_name(otype)))
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
                   'iprot, {1}.get());'.format(
-                      self._type_name(struct), prefix))
+                      self._type_name(otype), prefix))
             scope('if (false) {}')
             for member in struct.members:
                 if self._is_reference(member):
@@ -2867,7 +2873,7 @@ class CppGenerator(t_generator.Generator):
         else:
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
                   'iprot, &{1});'.format(
-                      self._type_name(struct), prefix))
+                      self._type_name(otype), prefix))
 
     def _generate_deserialize_container(self, scope, cont, prefix):
         s = scope
@@ -2923,9 +2929,8 @@ class CppGenerator(t_generator.Generator):
         fval = frontend.t_field(tmap.value_type, val)
         scope(self._declare_field(fkey))
         self._generate_deserialize_field(scope, fkey)
-        txt = '{0} = {1}[std::move({2})];'.format(
-            self._declare_field(fval, reference=True), prefix, key)
-        scope(txt)
+        scope('{0} = {1}[std::move({2})];'.format(
+            self._declare_field(fval, reference=True), prefix, key))
         self._generate_deserialize_field(scope, fval)
 
     def _generate_deserialize_set_element(self, scope, tset, prefix):
@@ -3187,19 +3192,19 @@ class CppGenerator(t_generator.Generator):
                                   struct_method=None,
                                   binary_method=None):
         'Serializes a field of any type.'
-        ttype = self._get_true_type(tfield.type)
         name = prefix + tfield.name + self._type_access_suffix(tfield.type) + \
                 suffix
         pointer = self._is_reference(tfield)
-        self._generate_serialize_type(scope, ttype, name, method,
+        self._generate_serialize_type(scope, tfield.type, name, method,
                                       struct_method, binary_method, pointer)
 
-    def _generate_serialize_type(self, scope, ttype, name,
+    def _generate_serialize_type(self, scope, otype, name,
                                  method='write',
                                  struct_method=None,
                                  binary_method=None,
                                  pointer=False):
         'Serializes a variable of any type.'
+        ttype = self._get_true_type(otype)
         if struct_method is None:
             struct_method = method
         if binary_method is None:
@@ -3210,7 +3215,7 @@ class CppGenerator(t_generator.Generator):
             raise TypeError('CANNOT GENERATE SERIALIZE CODE FOR void TYPE: '\
                             + name)
         if ttype.is_struct or ttype.is_xception:
-            self._generate_serialize_struct(scope, ttype.as_struct, name,
+            self._generate_serialize_struct(scope, otype, ttype.as_struct, name,
                                             struct_method, pointer)
         elif ttype.is_container:
             self._generate_serialize_container(scope, ttype.as_container,
@@ -3254,13 +3259,13 @@ class CppGenerator(t_generator.Generator):
             raise TypeError(("DO NOT KNOW HOW TO SERIALIZE '{0}' "
                              "TYPE {1}").format(name, self._type_name(ttype)))
 
-    def _generate_serialize_struct(self, scope, tstruct, prefix='',
+    def _generate_serialize_struct(self, scope, otype, tstruct, prefix='',
                                    method='write', pointer=False):
         if pointer:
             with scope('if ({0})'.format(prefix)):
                 out('xfer += ::apache::thrift::Cpp2Ops< {0}>::{1}('
                     'prot_, {2}.get());'.format(
-                        self._type_name(tstruct),
+                        self._type_name(otype),
                         method,
                         prefix))
             with scope('else'):
@@ -3270,7 +3275,7 @@ class CppGenerator(t_generator.Generator):
         else:
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::{1}('
                   'prot_, &{2});'.format(
-                      self._type_name(tstruct),
+                      self._type_name(otype),
                       method,
                       prefix))
 
@@ -3344,6 +3349,14 @@ class CppGenerator(t_generator.Generator):
             compat_ns = ns
         compat_full_name = compat_ns + obj.name
         full_name = ns + obj.name
+
+        if not compat and len(obj.members) > 0:
+            with scope.defn(
+                ('template <> inline '
+                 'void Cpp2Ops<{compat_full_name}>::clear('
+                 '{full_name}* obj)'.
+                 format(**locals())), in_header=True):
+                out('return obj->__clear();')
 
         ops = (('write', True),
                ('read', False),
