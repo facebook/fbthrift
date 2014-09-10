@@ -2720,6 +2720,9 @@ void t_py_generator::generate_process_function(t_service* tservice,
                  << " as exc" << exc_num << ":" << endl;
       indent_up();
       f_service_ <<
+        indent() << "self._event_handler.handlerException(handler_ctx, '"
+                 << fn_name << "', exc" << exc_num << ")" << endl;
+      f_service_ <<
         indent() << "reply_type = TMessageType.REPLY" << endl;
       f_service_ <<
         indent() << "result." <<
