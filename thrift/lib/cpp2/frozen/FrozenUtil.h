@@ -14,12 +14,29 @@
  * limitations under the License.
  */
 #pragma once
+
+#include <stdexcept>
+
 #include <folly/File.h>
 #include <folly/MemoryMapping.h>
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
+#include <thrift/lib/thrift/gen-cpp/frozen_constants.h>
 
 namespace apache { namespace thrift { namespace frozen {
+
+class FrozenFileForwardIncompatible : public std::runtime_error {
+ public:
+  explicit FrozenFileForwardIncompatible(int fileVersion);
+
+  int fileVersion() const { return fileVersion_; }
+  int supportedVersion() const {
+    return schema::g_frozen_constants.kCurrentFrozenFileVersion;
+  }
+
+ private:
+  int fileVersion_;
+};
 
 template <class T>
 size_t frozenSize(const T& v) {
@@ -38,6 +55,8 @@ Return freezeToFile(const T& x, folly::File file) {
     schema::Schema schema;
     layout->saveRoot(memSchema);
     schema::convert(memSchema, schema);
+
+    schema.fileVersion = schema::g_frozen_constants.kCurrentFrozenFileVersion;
     util::ThriftSerializerCompact<>().serialize(schema, &schemaStr);
   }
 
@@ -66,6 +85,11 @@ Return mapFrozen(folly::MemoryMapping mapping) {
     schema::Schema schema;
     size_t schemaSize = util::ThriftSerializerCompact<>().deserialize(
         range.begin(), range.size(), &schema);
+
+    if (schema.fileVersion >
+        schema::g_frozen_constants.kCurrentFrozenFileVersion) {
+      throw FrozenFileForwardIncompatible(schema.fileVersion);
+    }
 
     schema::MemorySchema memSchema;
     schema::convert(std::move(schema), memSchema);

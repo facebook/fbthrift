@@ -12,45 +12,45 @@ enum Gender {
 }
 
 struct Nesting {
-  1 : Helper.Ratio a,
-  2 : Helper.Ratio b,
+  1: Helper.Ratio a,
+  2: Helper.Ratio b,
 }
 
 struct Pet1 {
-  1 : string name,
-  2 : optional i32 age
+  1: string name,
+  2: optional i32 age
 }
 
 struct Person1 {
-  5 : optional i32 age,
-  2 : float height, // different
-  1 : string name,
-  4 : list<Pet1> pets,
-  6 : Gender gender = Male,
+  5: optional i32 age,
+  2: float height, // different
+  1: string name,
+  4: list<Pet1> pets,
+  6: Gender gender = Male,
 }
 
 struct Pet2 {
-  3 : optional float weight,
-  1 : string name,
+  3: optional float weight,
+  1: string name,
 }
 
 struct Person2 {
-  1 : string name,
-  3 : float weight, // different
-  4 : list<Pet2> pets,
-  5 : optional i32 age,
+  1: string name,
+  3: float weight, // different
+  4: list<Pet2> pets,
+  5: optional i32 age,
 }
 
 struct Tiny {
-  1 : required string a,
-  2 : string b,
-  3 : string c,
-  4 : string d,
+  1: required string a,
+  2: string b,
+  3: string c,
+  4: string d,
 }
 
 struct Place {
-1: string name,
-2: map<i32, i32> popularityByHour,
+  1: string name,
+  2: map<i32, i32> popularityByHour,
 }
 
 struct PlaceTest {

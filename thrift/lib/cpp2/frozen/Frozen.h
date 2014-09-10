@@ -20,6 +20,7 @@
 #include <iterator>
 #include <map>
 #include <set>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <typeindex>
@@ -38,8 +39,9 @@
 
 #include <thrift/lib/cpp2/frozen/FrozenMacros.h>
 #include <thrift/lib/cpp2/frozen/Traits.h>
-#include <thrift/lib/thrift/gen-cpp/frozen_types.h>
 #include <thrift/lib/cpp2/frozen/schema/MemorySchema.h>
+
+#include <thrift/lib/thrift/gen-cpp/frozen_types.h>
 
 namespace apache { namespace thrift { namespace frozen {
 /**

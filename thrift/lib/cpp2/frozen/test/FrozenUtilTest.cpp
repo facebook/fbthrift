@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <gtest/gtest.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/frozen/FrozenTestUtil.h>
@@ -40,6 +39,23 @@ TEST(FrozenUtil, FreezeAndMap) {
   EXPECT_EQ(original, thawed);
   original.push_back("different");
   EXPECT_NE(original, thawed);
+}
+
+TEST(FrozenUtil, FutureVersion) {
+  folly::test::TemporaryFile tmp;
+
+  {
+    schema::Schema schema;
+    schema.fileVersion = 1000;
+    schema.__isset.fileVersion = true;
+
+    std::string schemaStr;
+    util::ThriftSerializerCompact<>().serialize(schema, &schemaStr);
+    write(tmp.fd(), schemaStr.data(), schemaStr.size());
+  }
+
+  EXPECT_THROW(mapFrozen<std::string>(folly::File(tmp.fd())),
+               FrozenFileForwardIncompatible);
 }
 
 TEST(FrozenUtil, FileSize) {
