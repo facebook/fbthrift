@@ -147,7 +147,7 @@ if test "$with_cpp" = "yes";  then
              [Please install google-glog library])])
   AC_CHECK_LIB([gflags],[getenv],[],[AC_MSG_ERROR(
              [Please install google-gflags library])])
-  AC_CHECK_LIB([snappy], [_init], [], [AC_MSG_ERROR(
+  AC_CHECK_LIB([snappy], [main], [], [AC_MSG_ERROR(
              [Please install snappy library])])
   AC_CHECK_LIB([numa], [numa_available], [], [AC_MSG_ERROR(
              [Please install numa library])])
