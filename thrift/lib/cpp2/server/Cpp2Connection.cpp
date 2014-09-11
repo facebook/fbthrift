@@ -305,7 +305,7 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
-  server->incGlobalActiveRequests();
+  server->incActiveRequests();
   if (req->timestamps_.readBegin != 0) {
     // Expensive operations; this happens once every
     // TServerCounters.sampleRate
@@ -316,7 +316,7 @@ void Cpp2Connection::requestReceived(
         server->getThreadManager()->pendingTaskCount());
       if (server->getIsUnevenLoad()) {
         observer->activeRequests(
-          server->getGlobalActiveRequests() +
+          server->getActiveRequests() +
           server->getPendingCount());
       }
     }
@@ -463,7 +463,7 @@ Cpp2Connection::Cpp2Request::~Cpp2Request() {
   connection_->removeRequest(this);
   cancelTimeout();
   connection_->getWorker()->activeRequests_--;
-  connection_->getWorker()->getServer()->decGlobalActiveRequests();
+  connection_->getWorker()->getServer()->decActiveRequests();
 }
 
 // Cancel request is usually called from a different thread than sendReply.

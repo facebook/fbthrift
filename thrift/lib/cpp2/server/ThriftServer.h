@@ -73,6 +73,7 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
 
 class ThriftServer : public apache::thrift::server::TServer {
  public:
+
   struct FailureInjection {
     FailureInjection()
       : errorFraction(0),
@@ -229,8 +230,8 @@ class ThriftServer : public apache::thrift::server::TServer {
   // If it is set true, server will check and use client timeout header
   bool useClientTimeout_;
 
-  // Track # of global active requests
-  static std::atomic<int32_t> globalActiveRequests_;
+  // Track # of active requests for this server
+  std::atomic<int32_t> activeRequests_;
 
   // Minimum size of response before it might be compressed
   // Prevents small responses from being compressed,
@@ -399,20 +400,20 @@ class ThriftServer : public apache::thrift::server::TServer {
     useClientTimeout_ = useClientTimeout;
   }
 
-  void incGlobalActiveRequests(int32_t numRequests = 1) {
+  void incActiveRequests(int32_t numRequests = 1) {
     if (isUnevenLoad_) {
-      globalActiveRequests_ += numRequests;
+      activeRequests_ += numRequests;
     }
   }
 
-  void decGlobalActiveRequests(int32_t numRequests = 1) {
+  void decActiveRequests(int32_t numRequests = 1) {
     if (isUnevenLoad_) {
-      globalActiveRequests_ -= numRequests;
+      activeRequests_ -= numRequests;
     }
   }
 
-  int32_t getGlobalActiveRequests() const {
-    return globalActiveRequests_;
+  int32_t getActiveRequests() const {
+    return activeRequests_;
   }
 
   /**

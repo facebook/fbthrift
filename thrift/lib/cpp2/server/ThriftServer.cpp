@@ -71,8 +71,6 @@ const std::chrono::milliseconds ThriftServer::DEFAULT_TASK_EXPIRE_TIME =
 const std::chrono::milliseconds ThriftServer::DEFAULT_TIMEOUT =
     std::chrono::milliseconds(60000);
 
-std::atomic<int32_t> ThriftServer::globalActiveRequests_(0);
-
 ThriftServer::ThriftServer() :
   apache::thrift::server::TServer(
     std::shared_ptr<apache::thrift::server::TProcessor>()),
@@ -97,6 +95,7 @@ ThriftServer::ThriftServer() :
     apache::thrift::concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE),
   isUnevenLoad_(true),
   useClientTimeout_(true),
+  activeRequests_(0),
   minCompressBytes_(0),
   isOverloaded_([]() { return false; }),
   queueSends_(true),
@@ -534,7 +533,7 @@ bool ThriftServer::isOverloaded(uint32_t workerActiveRequests) {
 
   if (maxRequests_ > 0) {
     if (isUnevenLoad_) {
-      return globalActiveRequests_ + getPendingCount() >= maxRequests_;
+      return activeRequests_ + getPendingCount() >= maxRequests_;
     } else {
       return workerActiveRequests >= maxRequests_ / nWorkers_;
     }
@@ -566,7 +565,7 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
   int connload = 0;
   int queueload = 0;
   if (maxRequests_ > 0) {
-    reqload = (100*(globalActiveRequests_ + getPendingCount()))
+    reqload = (100*(activeRequests_ + getPendingCount()))
       / ((float)maxRequests_);
   }
   if (maxConnections_ > 0) {
