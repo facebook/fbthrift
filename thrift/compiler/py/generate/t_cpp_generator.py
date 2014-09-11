@@ -1016,7 +1016,7 @@ class CppGenerator(t_generator.Generator):
         return sig
 
     def _generate_app_ex(self, service, errorstr, functionname, seqid, is_in_eb,
-                         s, static=True, err_code=None, err_header=True):
+                         s, reqCtx, static=True, err_code=None, err_header=True):
         with out('if (req)'):
             out('LOG(ERROR) << {0} << " in function {1}";'.format(
                     errorstr, functionname))
@@ -1032,14 +1032,17 @@ class CppGenerator(t_generator.Generator):
                         'folly::demangle(typeid(e)).toStdString());')
             else:
                 ctx = 'nullptr'
+            out('folly::IOBufQueue queue = serializeException("{0}", &prot, {1}, {2}, '
+                'x);'.format(functionname, seqid, ctx))
+            out('queue.append(apache::thrift::transport::THeader::transform('
+                'queue.move(), '
+                '{0}->getTransforms(), '
+                '{0}->getMinCompressBytes()));'.format(reqCtx))
             if is_in_eb:
-                out('auto queue = serializeException("{0}", &prot, {1}, {2}, '
-                   'x);'.format(functionname, seqid, ctx))
                 out('req->sendReply(queue.move());')
             else:
                 out('auto queue_mw = '
-                    'folly::makeMoveWrapper(serializeException("{0}", '
-                    '&prot, {1}, {2}, x));'.format(functionname, seqid, ctx))
+                        'folly::makeMoveWrapper(std::move(queue));')
                 out('auto req_mw = folly::makeMoveWrapper(std::move(req));')
                 with out('eb->runInEventBaseThread([=]() mutable'):
                     out('(*req_mw)->sendReply(queue_mw->move());')
@@ -1101,7 +1104,8 @@ class CppGenerator(t_generator.Generator):
                 out('ProtocolOut_ prot;')
                 self._generate_app_ex(service, 'ex.what()',
                                       function.name, "iprot->getSeqId()",
-                                      False, out, False, 'PROTOCOL_ERROR')
+                                      False, out, 'ctx', False,
+                                      'PROTOCOL_ERROR')
         args = []
         for member in function.arglist.members:
             if self.flag_stack_arguments:
@@ -1185,7 +1189,8 @@ class CppGenerator(t_generator.Generator):
                                   .format(protname))
                                 self._generate_app_ex(
                                     service, '"invalid message from client"',
-                                    "process", "protoSeqId", False, out(), False)
+                                    "process", "protoSeqId", False, out(),
+                                    'context', False)
                                 out('return;')
                         with out('if (mtype != apache::thrift::T_CALL && ' +
                                'mtype != apache::thrift::T_ONEWAY)'):
@@ -1195,7 +1200,8 @@ class CppGenerator(t_generator.Generator):
                               .format(protname))
                             self._generate_app_ex(
                                 service, '"invalid message arguments"',
-                                "process", "protoSeqId", False, out(), False)
+                                "process", "protoSeqId", False, out(),
+                                'context', False)
                         out('auto pfn = {0}ProcessMap_.find(fname);'.format(
                                 shortprot))
                         with out('if (pfn == {0}ProcessMap_.end())'.format(
@@ -1209,7 +1215,8 @@ class CppGenerator(t_generator.Generator):
                                   .format(protname))
                                 self._generate_app_ex(
                                     service, 'exMsg',
-                                    "process", "protoSeqId", False, out(), False)
+                                    "process", "protoSeqId", False, out(),
+                                    'context', False)
                             else:
                                 out(self._type_name(service.extends) +
                                   'AsyncProcessor::process(std::move(req), ' +
@@ -1377,7 +1384,8 @@ class CppGenerator(t_generator.Generator):
                         '<apache::thrift::ResponseChannel::Request> req,' +
                         'int32_t protoSeqId,'
                         + 'std::unique_ptr<apache::thrift::ContextStack> ctx,' +
-                        'std::exception_ptr ep)',
+                        'std::exception_ptr ep,' +
+                        'apache::thrift::Cpp2RequestContext* reqCtx)',
                                 name="throw_{0}".format(function.name),
                                 modifiers='static',
                                 output=self._out_tcc):
@@ -1395,13 +1403,13 @@ class CppGenerator(t_generator.Generator):
                                 "folly::exceptionStr(e)." +
                                 "toStdString()",
                                 function.name, "protoSeqId", True,
-                                out())
+                                out(), 'reqCtx')
                         with out('catch (...)'):
                             self._generate_app_ex(
                                 service,
                                 "\"<unknown exception>\"",
                                 function.name, "protoSeqId", True,
-                                out(), False)
+                                out(), 'reqCtx', False)
                         if len(function.xceptions.members) > 0:
                             out('auto queue = serializeResponse('
                               '"{0}", &prot, protoSeqId, ctx.get(),'
@@ -1413,7 +1421,8 @@ class CppGenerator(t_generator.Generator):
                         '<apache::thrift::ResponseChannel::Request> req,' +
                         'int32_t protoSeqId,'
                         + 'std::unique_ptr<apache::thrift::ContextStack> ctx,' +
-                        'folly::exception_wrapper ew)',
+                        'folly::exception_wrapper ew,' +
+                        'apache::thrift::Cpp2RequestContext* reqCtx)',
                         name="throw_wrapped_{0}".format(function.name),
                         modifiers='static',
                         output=self._out_tcc
@@ -1445,7 +1454,7 @@ class CppGenerator(t_generator.Generator):
                                     service,
                                     'ew.what().toStdString()',
                                     function.name, "protoSeqId", True,
-                                    out(), True, None, True)
+                                    out(), 'reqCtx', True, None, True)
                             out(');')
                         if len(function.xceptions.members) > 0:
                             out('auto queue = serializeResponse('

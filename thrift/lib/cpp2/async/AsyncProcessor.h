@@ -272,11 +272,13 @@ class HandlerCallbackBase {
   typedef void(*exn_ptr)(std::unique_ptr<ResponseChannel::Request>,
                          int32_t protoSeqId,
                          std::unique_ptr<apache::thrift::ContextStack>,
-                         std::exception_ptr);
+                         std::exception_ptr,
+                         Cpp2RequestContext*);
   typedef void(*exnw_ptr)(std::unique_ptr<ResponseChannel::Request>,
                           int32_t protoSeqId,
                           std::unique_ptr<apache::thrift::ContextStack>,
-                          folly::exception_wrapper);
+                          folly::exception_wrapper,
+                          Cpp2RequestContext*);
  public:
 
   HandlerCallbackBase()
@@ -421,7 +423,7 @@ class HandlerCallbackBase {
       LOG(ERROR) << folly::exceptionStr(ex);
     } else {
       if (ep_) {
-        ep_(std::move(req_), protoSeqId_, std::move(ctx_), ex);
+        ep_(std::move(req_), protoSeqId_, std::move(ctx_), ex, reqCtx_);
       }
     }
   }
@@ -440,7 +442,7 @@ class HandlerCallbackBase {
       LOG(ERROR) << ew.what();
     } else {
       if (ewp_) {
-        ewp_(std::move(req_), protoSeqId_, std::move(ctx_), ew);
+        ewp_(std::move(req_), protoSeqId_, std::move(ctx_), ew, reqCtx_);
       }
     }
   }
