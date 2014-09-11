@@ -660,11 +660,15 @@ class ThriftServer : public apache::thrift::server::TServer {
   }
 
   /**
-   * Get workers
+   * Get workers.  Note: not threadsafe, because a call to clearWorkers
+   * running concurrently might clear the worker set.  However if this is
+   * not expected to be running alongside that call, this is safe enough
+   * to call without synchronization; the only other time the worker set
+   * is mutated is during setup().
    *
    * @return the workers
    */
-  WorkerVector getWorkers() {
+  const WorkerVector& getWorkers() const {
     return workers_;
   }
 
@@ -674,7 +678,13 @@ class ThriftServer : public apache::thrift::server::TServer {
    * NOTE: We keep a shared_ptr to Thread in the workers_ vector. Therefore
    *       this just removes that one particular reference to the thread.
    *       If you have separate reference to those thread object, they will
-   *       keep running
+   *       keep running.
+   *
+   * ALSO: This is not threadsafe, as a call to 'getWorkers() const' returns
+   *       a const reference to the workers_ set.  However if calls to this
+   *       method and to getWorkers() is not typical behavior for your program,
+   *       and most likely it's not, then this is safe enough to call without
+   *       synchronization.
    */
   void clearWorkers() {
     workers_.clear();
