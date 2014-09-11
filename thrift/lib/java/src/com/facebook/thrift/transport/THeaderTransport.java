@@ -65,7 +65,8 @@ public class THeaderTransport extends TFramedTransport {
 
   // Infos
   public enum Infos {
-    INFO_KEYVALUE(0x01);
+    INFO_KEYVALUE(0x01),
+    INFO_PKEYVALUE(0x02);
 
     private int value;
 
@@ -114,7 +115,9 @@ public class THeaderTransport extends TFramedTransport {
   private List<Integer> readTransforms;
 
   private final HashMap<String, String> readHeaders;
+  private final HashMap<String, String> readPersistentHeaders;
   private final HashMap<String, String> writeHeaders;
+  private final HashMap<String, String> writePersistentHeaders;
 
 
   private static final String IDENTITY_HEADER = "identity";
@@ -139,7 +142,9 @@ public class THeaderTransport extends TFramedTransport {
     supportedClients = new Boolean[numClientTypes];
     supportedClients[ClientTypes.HEADERS.getValue()] = true;
     writeHeaders = new HashMap<String, String>();
+    writePersistentHeaders = new HashMap<String, String>();
     readHeaders = new HashMap<String, String>();
+    readPersistentHeaders = new HashMap<String, String>();
   }
 
   public THeaderTransport(TTransport transport, List<ClientTypes> clientTypes) {
@@ -208,12 +213,28 @@ public class THeaderTransport extends TFramedTransport {
     return writeHeaders;
   }
 
+  public void setPersistentHeader(String key, String value) {
+    writePersistentHeaders.put(key, value);
+  }
+
+  public HashMap<String, String> getWritePersistentHeaders() {
+    return writePersistentHeaders;
+  }
+
+  public HashMap<String, String> getReadPersistentHeaders() {
+    return readPersistentHeaders;
+  }
+
   public HashMap<String, String> getHeaders() {
     return readHeaders;
   }
 
   public void clearHeaders() {
     writeHeaders.clear();
+  }
+
+  public void clearPersistentHeaders() {
+    writePersistentHeaders.clear();
   }
 
   public String getPeerIdentity() {
@@ -430,11 +451,19 @@ public class THeaderTransport extends TFramedTransport {
           String value = readString(frame);
           readHeaders.put(key, value);
         }
+      } else if (infoId == Infos.INFO_PKEYVALUE.getValue()) {
+        int numKeys = readVarint32Buf(frame);
+        for (int i = 0; i < numKeys; i++) {
+          String key = readString(frame);
+          String value = readString(frame);
+          readPersistentHeaders.put(key, value);
+        }
       } else {
         // Unknown info ID, continue on to reading data.
         break;
       }
     }
+    readHeaders.putAll(readPersistentHeaders);
 
     if (crypto != null) {
       // TODO(davejwatson): update isValidMac crypto interface to
@@ -549,20 +578,37 @@ public class THeaderTransport extends TFramedTransport {
     return data;
   }
 
-  private int getWriteHeadersSize() {
-    if (writeHeaders.size() == 0) {
+  private int getWriteHeadersSize(Map<String, String> headers) {
+    if (headers.size() == 0) {
       return 0;
     }
 
     int len = 10; // 5 bytes varint for info header type
                   // 5 bytes varint for info headers count
-    for (Map.Entry<String, String> header : writeHeaders.entrySet()) {
+    for (Map.Entry<String, String> header : headers.entrySet()) {
       len += 10; // 5 bytes varint for key size and
                  // 5 bytes varint for value size
       len += header.getKey().length();
       len += header.getValue().length();
     }
     return len;
+  }
+
+  private ByteBuffer flushInfoHeaders(Infos info, Map<String, String> headers) {
+    ByteBuffer infoData =
+        ByteBuffer.allocate(getWriteHeadersSize(headers));
+    if (!headers.isEmpty()) {
+      writeVarint(infoData, info.getValue());
+      writeVarint(infoData, headers.size());
+      for (Map.Entry<String, String> pairs : headers.entrySet()) {
+        writeString(infoData, pairs.getKey());
+        writeString(infoData, pairs.getValue());
+      }
+      headers.clear();
+    }
+    infoData.limit(infoData.position());
+    infoData.position(0);
+    return infoData;
   }
 
   /* Writes the output buffer in header format, or format
@@ -614,18 +660,11 @@ public class THeaderTransport extends TFramedTransport {
         writeHeaders.put(IDENTITY_HEADER, identity);
       }
 
-      ByteBuffer infoData =
-        ByteBuffer.allocate(getWriteHeadersSize());
-      if (writeHeaders.size() > 0) {
-        writeVarint(infoData, Infos.INFO_KEYVALUE.getValue());
-        writeVarint(infoData, writeHeaders.size());
-        for (Map.Entry<String, String> pairs : writeHeaders.entrySet()) {
-          writeString(infoData, pairs.getKey());
-          writeString(infoData, pairs.getValue());
-        }
-      }
-      infoData.limit(infoData.position());
-      infoData.position(0);
+      ByteBuffer infoData1 = flushInfoHeaders(
+              Infos.INFO_PKEYVALUE, writePersistentHeaders);
+      ByteBuffer infoData2 = flushInfoHeaders(
+              Infos.INFO_KEYVALUE, writeHeaders);
+
 
       ByteBuffer headerData = ByteBuffer.allocate(10);
       writeVarint(headerData, protoId);
@@ -633,8 +672,8 @@ public class THeaderTransport extends TFramedTransport {
       headerData.limit(headerData.position());
       headerData.position(0);
 
-      int headerSize = transformData.remaining() + infoData.remaining() +
-        headerData.remaining();
+      int headerSize = transformData.remaining() + infoData1.remaining() +
+          infoData2.remaining() + headerData.remaining();
       int paddingSize = 4 - headerSize % 4;
       headerSize += paddingSize;
 
@@ -652,7 +691,8 @@ public class THeaderTransport extends TFramedTransport {
       out.put(headerData);
       out.put(transformData);
       int macLoc = out.position() - 1;
-      out.put(infoData);
+      out.put(infoData1);
+      out.put(infoData2);
 
       // There are no info headers for this version
       // Pad out the header with 0x00
