@@ -27,13 +27,19 @@
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/Codel.h>
-#include <gflags/gflags.h>
 
 #include <thrift/lib/cpp/concurrency/Util.h>
 
-DECLARE_bool(codel_enabled);
+#ifndef NO_LIB_GFLAGS
+  #include <gflags/gflags.h>
+  DECLARE_bool(codel_enabled);
+#endif
 
 namespace apache { namespace thrift { namespace concurrency {
+
+#ifdef NO_LIB_GFLAGS
+  extern bool FLAGS_codel_enabled;
+#endif
 
 class Runnable;
 class ThreadFactory;

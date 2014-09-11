@@ -15,15 +15,23 @@
  */
 
 #include <thrift/lib/cpp/concurrency/Codel.h>
+#include <algorithm>
 #include <math.h>
-#include <gflags/gflags.h>
 
-DEFINE_int32(codel_interval, 100,
-             "Codel default interval time in ms");
-DEFINE_int32(codel_target_delay, 5,
-             "Target codel queueing delay in ms");
+#ifndef NO_LIB_GFLAGS
+  #include <gflags/gflags.h>
+  DEFINE_int32(codel_interval, 100,
+               "Codel default interval time in ms");
+  DEFINE_int32(codel_target_delay, 5,
+               "Target codel queueing delay in ms");
+#endif
 
 namespace apache { namespace thrift {
+
+#ifdef NO_LIB_GFLAGS
+  int32_t FLAGS_codel_interval = 100;
+  int32_t FLAGS_codel_target_delay = 5;
+#endif
 
 Codel::Codel()
     : codelMinDelay_(0),
