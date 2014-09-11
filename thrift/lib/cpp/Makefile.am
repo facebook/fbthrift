@@ -176,14 +176,17 @@ include_processor_HEADERS = \
 
 include_asyncdir = $(include_thriftdir)/async
 include_async_HEADERS = \
-		     async/HHWheelTimer.h \
-		     async/Request.h \
+                     async/HHWheelTimer.h \
+                     async/Request.h \
                      async/TAsyncChannel.h \
                      async/TAsyncDispatchProcessor.h \
                      async/TAsyncProcessor.h \
                      async/TAsyncSSLServerSocket.h \
                      async/TAsyncSSLSocket.h \
                      async/TAsyncSSLSocketFactory.h \
+                     async/TAsyncServerSocket.h \
+                     async/TAsyncSocket.h \
+                     async/TAsyncSocketFactory.h \
                      async/TAsyncTimeout.h \
                      async/TAsyncTimeoutSet.h \
                      async/TAsyncTransport.h \
@@ -197,9 +200,7 @@ include_async_HEADERS = \
                      async/TEventHandler.h \
                      async/TEventJobQueue.h \
                      async/TNotificationQueue.h \
-                     async/TimeoutManager.h \
-                     async/TAsyncSocket.h \
-                     async/TAsyncServerSocket.h 
+                     async/TimeoutManager.h
 
 include_utildir = $(include_thriftdir)/util
 include_util_HEADERS = \
@@ -217,6 +218,15 @@ include_utilkerberos_HEADERS = \
 	util/kerberos/Krb5OlderVersionStubs.h \
 	util/kerberos/Krb5Tgts.h \
 	util/kerberos/Krb5Util.h
+
+include_testdir = $(include_thriftdir)/test
+include_test_HEADERS = \
+	test/MockTAsyncServerSocket.h
+	test/MockTAsyncSocketFactory.h
+	test/MockTAsyncSocket.h
+	test/MockTAsyncSSLSocket.h
+	test/MockTAsyncTransport.h
+	test/MockTimeoutManager.h
 
 THRIFT = $(top_builddir)/compiler/cpp/thrift
 
