@@ -25,11 +25,11 @@
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 
-namespace apache { namespace thrift {
-
-namespace transport {
-class TSocketAddress;
+namespace folly {
+class SocketAddress;
 }
+
+namespace apache { namespace thrift {
 
 namespace protocol {
 class TProtocol;
@@ -53,7 +53,7 @@ class TConnectionContext {
 
   // expose getPeerAddress() defined in TRpcTransportContext
 
-  virtual const transport::TSocketAddress* getPeerAddress() const = 0;
+  virtual const folly::SocketAddress* getPeerAddress() const = 0;
 
   virtual std::shared_ptr<protocol::TProtocol> getInputProtocol() const = 0;
 

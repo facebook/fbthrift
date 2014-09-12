@@ -22,11 +22,11 @@
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
-namespace apache { namespace thrift {
-
-namespace transport {
-class TSocketAddress;
+namespace folly {
+class SocketAddress;
 }
+
+namespace apache { namespace thrift {
 
 namespace async {
 
@@ -90,13 +90,13 @@ class TAsyncSSLServerSocket : public TDelayedDestruction,
    */
   virtual void destroy();
 
-  virtual void bind(const transport::TSocketAddress& address) {
+  virtual void bind(const folly::SocketAddress& address) {
     serverSocket_->bind(address);
   }
   virtual void bind(uint16_t port) {
     serverSocket_->bind(port);
   }
-  void getAddress(transport::TSocketAddress* addressReturn) {
+  void getAddress(folly::SocketAddress* addressReturn) {
     serverSocket_->getAddress(addressReturn);
   }
   virtual void listen(int backlog) {
@@ -154,7 +154,7 @@ class TAsyncSSLServerSocket : public TDelayedDestruction,
 
  private:
   virtual void connectionAccepted(int fd,
-                                  const transport::TSocketAddress& clientAddr)
+                                  const folly::SocketAddress& clientAddr)
     noexcept;
   virtual void acceptError(const std::exception& ex) noexcept;
 

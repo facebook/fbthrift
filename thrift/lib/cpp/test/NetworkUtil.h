@@ -21,18 +21,18 @@
 
 #include <vector>
 
-namespace apache { namespace thrift {
-
-namespace transport {
-class TSocketAddress;
+namespace folly {
+class SocketAddress;
 }
+
+namespace apache { namespace thrift {
 
 namespace test {
 
 /**
  * Get a list of all configured local IP addresses.
  */
-void getLocalAddresses(std::vector<transport::TSocketAddress>* results);
+void getLocalAddresses(std::vector<folly::SocketAddress>* results);
 
 }}} // apache::thrift::test
 

@@ -25,11 +25,14 @@
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 
+namespace folly {
+class SocketAddress;
+}
+
 namespace apache { namespace thrift { namespace transport {
 
 class PasswordCollector;
 class SSLContext;
-class TSocketAddress;
 
 /**
  * OpenSSL implementation for SSL socket interface.
@@ -59,7 +62,7 @@ class TSSLSocket: public TVirtualTransport<TSSLSocket, TSocket> {
    * Constructor.
    */
   TSSLSocket(const std::shared_ptr<SSLContext>& ctx,
-             const TSocketAddress& address);
+             const folly::SocketAddress& address);
   /**
    * Destructor.
    */

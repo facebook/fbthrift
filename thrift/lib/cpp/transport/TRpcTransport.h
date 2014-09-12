@@ -21,9 +21,11 @@
 
 #include <thrift/lib/cpp/transport/TTransport.h>
 
-namespace apache { namespace thrift { namespace transport {
+namespace folly {
+class SocketAddress;
+}
 
-class TSocketAddress;
+namespace apache { namespace thrift { namespace transport {
 
 /**
  * A TRpcTransport adds a getPeerAddress() method to the base TTransport
@@ -39,7 +41,7 @@ class TRpcTransport : public TTransport {
    *         lifetime of the TRpcTransport.  It is guaranteed to return
    *         non-nullptr.  (On error, a TTransportException will be raised.)
    */
-  virtual const TSocketAddress* getPeerAddress() = 0;
+  virtual const folly::SocketAddress* getPeerAddress() = 0;
 };
 
 }}} // apache::thrift::transport

@@ -149,7 +149,7 @@ HeaderServerChannel::getTransportDebugString(TAsyncTransport* transport) {
     folly::toAppend(", address ", addr.getAddressStr(),
                     ", port ", addr.getPort(),
                     &ret);
-  } catch (const TTransportException& e) {
+  } catch (const std::exception& e) {
   }
 
   ret += ')';

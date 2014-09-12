@@ -41,7 +41,7 @@ void getLocalAddresses(std::vector<TSocketAddress>* results) {
       TSocketAddress addr;
       try {
         addr.setFromSockaddr(cur->ifa_addr);
-      } catch (const TTransportException& ex) {
+      } catch (const std::exception& ex) {
         // Most likely an unsupported address family.  Just skip this address.
         continue;
       }

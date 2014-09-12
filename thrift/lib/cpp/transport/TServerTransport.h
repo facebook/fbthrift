@@ -83,7 +83,7 @@ class TServerTransport {
    * @param address The server's address will be stored in the TSocketAddress
    *                pointed to by this argument.
    */
-  virtual void getAddress(TSocketAddress* address) = 0;
+  virtual void getAddress(folly::SocketAddress* address) = 0;
 
  protected:
   TServerTransport() {}

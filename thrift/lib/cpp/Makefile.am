@@ -62,7 +62,6 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
                        transport/THttpServer.cpp \
                        transport/TSocket.cpp \
                        transport/TSSLSocket.cpp \
-                       transport/TSocketAddress.cpp \
                        transport/TSocketPool.cpp \
                        transport/TServerSocket.cpp \
                        transport/TSSLServerSocket.cpp \
@@ -158,7 +157,6 @@ include_transport_HEADERS = \
                          transport/TTransportUtils.h \
                          transport/TBufferTransports.h \
                          transport/TShortReadTransport.h \
-                         transport/TSocketAddress.h \
                          transport/TZlibTransport.h
 
 include_serverdir = $(include_thriftdir)/server

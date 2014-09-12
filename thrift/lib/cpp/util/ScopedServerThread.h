@@ -22,6 +22,10 @@
 #include <boost/noncopyable.hpp>
 #include <memory>
 
+namespace folly {
+class SocketAddress;
+}
+
 namespace apache { namespace thrift {
 
 namespace concurrency {
@@ -30,10 +34,6 @@ class Thread;
 namespace server {
 class TServer;
 }
-namespace transport {
-class TSocketAddress;
-}
-
 namespace util {
 
 class ServerCreator;
@@ -89,7 +89,7 @@ class ScopedServerThread : public boost::noncopyable {
   /**
    * Get the address on which the server is listening.
    */
-  const transport::TSocketAddress* getAddress() const;
+  const folly::SocketAddress* getAddress() const;
 
   /**
    * Get the server.

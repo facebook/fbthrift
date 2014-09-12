@@ -18,6 +18,7 @@
 #define THRIFT_UTIL_SCOPEDSERVEREVENTBASETHREAD_H
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp/transport/TSocketAddress.h>
 
 namespace apache { namespace thrift {
 

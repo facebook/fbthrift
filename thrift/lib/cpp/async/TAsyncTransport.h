@@ -26,12 +26,12 @@
 
 namespace folly {
 class IOBuf;
+class SocketAddress;
 }
 
 namespace apache { namespace thrift {
 
 namespace transport {
-class TSocketAddress;
 class TTransportException;
 }
 
@@ -496,9 +496,9 @@ class TAsyncTransport: public TDelayedDestruction {
    * This function may throw TTransportException on error.
    *
    * @param address  The local address will be stored in the specified
-   *                 TSocketAddress.
+   *                 SocketAddress.
    */
-  virtual void getLocalAddress(transport::TSocketAddress* address) const = 0;
+  virtual void getLocalAddress(folly::SocketAddress* address) const = 0;
 
   /**
    * Get the address of the remote endpoint to which this transport is
@@ -507,9 +507,9 @@ class TAsyncTransport: public TDelayedDestruction {
    * This function may throw TTransportException on error.
    *
    * @param address  The remote endpoint's address will be stored in the
-   *                 specified TSocketAddress.
+   *                 specified SocketAddress.
    */
-  virtual void getPeerAddress(transport::TSocketAddress* address) const = 0;
+  virtual void getPeerAddress(folly::SocketAddress* address) const = 0;
 
   /**
    * @return True iff end of record tracking is enabled

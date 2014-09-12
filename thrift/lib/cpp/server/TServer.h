@@ -26,11 +26,11 @@
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/util/shared_ptr_util.h>
 
-namespace apache { namespace thrift {
-
-namespace transport {
-class TSocketAddress;
+namespace folly {
+class SocketAddress;
 }
+
+namespace apache { namespace thrift {
 
 namespace server {
 
@@ -67,7 +67,7 @@ class TServerEventHandler {
    *
    * @param address The address on which the server is listening.
    */
-  virtual void preServe(const transport::TSocketAddress* address) {}
+  virtual void preServe(const folly::SocketAddress* address) {}
 
   /**
    * Called when a new client has connected and is about to being processing.

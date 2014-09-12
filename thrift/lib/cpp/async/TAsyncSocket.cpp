@@ -472,8 +472,10 @@ void TAsyncSocket::connect(ConnectCallback* callback,
   try {
     connectCallback_ = callback;
     connect(callback, TSocketAddress(ip, port), timeout, options);
-  } catch (const TTransportException& ex) {
-    return failConnect(__func__, ex);
+  } catch (const std::exception& ex) {
+    TTransportException tex(TTransportException::INTERNAL_ERROR,
+                            ex.what());
+    return failConnect(__func__, tex);
   }
 }
 
@@ -1944,7 +1946,7 @@ std::string TAsyncSocket::withAddr(const std::string& s) {
   try {
     getPeerAddress(&peer);
     getLocalAddress(&local);
-  } catch (const TTransportException&) {
+  } catch (const std::exception&) {
     // ignore
   }
   return s + " (peer=" + peer.describe() + ", local=" + local.describe() + ")";

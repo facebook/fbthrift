@@ -59,7 +59,7 @@ class TServerSocket : public TServerTransport {
 
   void interrupt();
 
-  void getAddress(TSocketAddress* address);
+  void getAddress(folly::SocketAddress* address);
 
  protected:
   std::shared_ptr<TRpcTransport> acceptImpl();
