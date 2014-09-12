@@ -58,8 +58,6 @@ uint32_t readVarint64(uint8_t const* ptr, int64_t* i64,
   uint32_t rsize = 0;
   uint64_t val = 0;
   int shift = 0;
-  uint8_t buf[10];  // 64 bits / (7 bits/byte) = 10 bytes.
-  uint32_t buf_size = sizeof(buf);
 
   while (true) {
     if (ptr == boundary) {

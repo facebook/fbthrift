@@ -16,7 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#define __STDC_FORMAT_MACROS
+
+#ifndef __STDC_FORMAT_MACROS
+  #define __STDC_FORMAT_MACROS
+#endif
 
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <thrift/lib/cpp/server/example/TNonblockingServer.h>
@@ -633,8 +636,6 @@ void TNonblockingServer::TConnection::transition() {
   assert(ioThread_);
   assert(ioThread_->isInIOThread());
   assert(server_);
-
-  int sz = 0;
 
   // Switch upon the state that we are currently in and move to a new state
   switch (appState_) {

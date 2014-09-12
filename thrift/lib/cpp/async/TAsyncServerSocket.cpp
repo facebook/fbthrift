@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#define __STDC_FORMAT_MACROS
+#ifndef __STDC_FORMAT_MACROS
+  #define __STDC_FORMAT_MACROS
+#endif
 
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
 
@@ -325,6 +327,7 @@ void TAsyncServerSocket::bind(uint16_t port) {
   folly::ScopeGuard guard = folly::makeGuard([&]{
       freeaddrinfo(res0);
     });
+  DCHECK(&guard);
 
   for (res = res0; res; res = res->ai_next) {
     int s = socket(res->ai_family, res->ai_socktype, res->ai_protocol);

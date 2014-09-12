@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#define __STDC_FORMAT_MACROS
+#ifndef __STDC_FORMAT_MACROS
+  #define __STDC_FORMAT_MACROS
+#endif
 
 #include <thrift/lib/cpp/transport/TSocketAddress.h>
 
