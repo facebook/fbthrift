@@ -1,4 +1,4 @@
-sudo apt-get install git autoconf libtool g++ libboost-all-dev libevent-dev flex bison libgoogle-glog-dev scons libkrb5-dev libsnappy-dev libsasl2-dev
+sudo apt-get install -yq git autoconf libtool g++ libboost-all-dev libevent-dev flex bison libgoogle-glog-dev scons libkrb5-dev libsnappy-dev libsasl2-dev
 
 git clone https://github.com/facebook/folly
 cd folly/folly
