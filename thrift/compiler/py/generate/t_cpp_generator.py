@@ -1414,6 +1414,11 @@ class CppGenerator(t_generator.Generator):
                             out('auto queue = serializeResponse('
                               '"{0}", &prot, protoSeqId, ctx.get(),'
                               ' result);'.format(function.name))
+                            out('queue.append('
+                                'apache::thrift::transport::THeader::transform('
+                                'queue.move(), '
+                                '{0}->getTransforms(), '
+                                '{0}->getMinCompressBytes()));'.format('reqCtx'))
                             out('return req->sendReply(queue.move());')
                     with out().defn(
                         'template <class ProtocolIn_, class ProtocolOut_>\n' +
@@ -1460,6 +1465,11 @@ class CppGenerator(t_generator.Generator):
                             out('auto queue = serializeResponse('
                                 '"{0}", &prot, protoSeqId, ctx.get(),'
                                 ' result);'.format(function.name))
+                            out('queue.append('
+                                'apache::thrift::transport::THeader::transform('
+                                'queue.move(), '
+                                '{0}->getTransforms(), '
+                                '{0}->getMinCompressBytes()));'.format('reqCtx'))
                             out('return req->sendReply(queue.move());')
 
 
