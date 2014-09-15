@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
+#include <glog/logging.h>
 
 #include <boost/scoped_ptr.hpp>
 
@@ -143,7 +144,7 @@ class Monitor::Impl {
     assert(mutex_ && mutex_->isLocked());
 
     int iret = pthread_cond_signal(&pthread_cond_);
-    assert(iret == 0);
+    DCHECK(iret == 0);
   }
 
   void notifyAll() {
@@ -151,7 +152,7 @@ class Monitor::Impl {
     assert(mutex_ && mutex_->isLocked());
 
     int iret = pthread_cond_broadcast(&pthread_cond_);
-    assert(iret == 0);
+    DCHECK(iret == 0);
   }
 
  private:
@@ -173,7 +174,7 @@ class Monitor::Impl {
     if (condInitialized_) {
       condInitialized_ = false;
       int iret = pthread_cond_destroy(&pthread_cond_);
-      assert(iret == 0);
+      DCHECK(iret == 0);
     }
   }
 

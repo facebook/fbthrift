@@ -293,7 +293,7 @@ SSLContext::SSLContext(SSLVersion version) {
       break;
   }
   int newOpt = SSL_CTX_set_options(ctx_, opt);
-  assert((newOpt & opt) == opt);
+  DCHECK((newOpt & opt) == opt);
 
   SSL_CTX_set_mode(ctx_, SSL_MODE_AUTO_RETRY);
 

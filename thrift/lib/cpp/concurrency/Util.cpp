@@ -29,6 +29,8 @@
 #include <errno.h>
 #include <assert.h>
 
+#include <glog/logging.h>
+
 namespace apache { namespace thrift { namespace concurrency {
 
 int64_t Util::currentTimeTicks(int64_t ticksPerSec) {
@@ -37,7 +39,7 @@ int64_t Util::currentTimeTicks(int64_t ticksPerSec) {
 #if defined(THRIFT_HAVE_CLOCK_GETTIME)
   struct timespec now;
   int ret = clock_gettime(CLOCK_REALTIME, &now);
-  assert(ret == 0);
+  DCHECK(ret == 0);
   toTicks(result, now, ticksPerSec);
 #elif defined(THRIFT_HAVE_GETTIMEOFDAY)
   struct timeval now;
