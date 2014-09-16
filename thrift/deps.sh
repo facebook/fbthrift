@@ -18,6 +18,7 @@ cd ..
 autoreconf --install
 LDFLAGS=-L`pwd`/double-conversion/ CPPFLAGS=-I`pwd`/double-conversion/src/ ./configure
 make
+make install 
 cd ../..
 
 autoreconf --install
