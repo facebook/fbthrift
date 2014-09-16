@@ -1014,7 +1014,8 @@ class CppGenerator(t_generator.Generator):
         return sig
 
     def _generate_app_ex(self, service, errorstr, functionname, seqid, is_in_eb,
-                         s, reqCtx, static=True, err_code=None, err_header=True):
+                         s, reqCtx, static=True, err_code=None,
+                         uex_str='folly::demangle(typeid(e)).toStdString()'):
         with out('if (req)'):
             out('LOG(ERROR) << {0} << " in function {1}";'.format(
                     errorstr, functionname))
@@ -1025,9 +1026,7 @@ class CppGenerator(t_generator.Generator):
                 format(code, errorstr))
             if static:
                 ctx = 'ctx.get()'
-                if err_header:
-                    out('ctx->userException('
-                        'folly::demangle(typeid(e)).toStdString());')
+                out('ctx->userException({});'.format(uex_str))
             else:
                 ctx = 'nullptr'
             out('folly::IOBufQueue queue = serializeException("{0}", &prot, {1}, {2}, '
@@ -1451,14 +1450,12 @@ class CppGenerator(t_generator.Generator):
                                     xception.name))
                             out(')) {} else ')
                         with out(' '):
-                            with out('ew.with_exception<std::exception>('
-                                     '[&](const std::exception& e)'):
-                                self._generate_app_ex(
-                                    service,
-                                    'ew.what().toStdString()',
-                                    function.name, "protoSeqId", True,
-                                    out(), 'reqCtx', True, None, True)
-                            out(');')
+                            self._generate_app_ex(
+                                service,
+                                'ew.what().toStdString()',
+                                function.name, "protoSeqId", True,
+                                out(), 'reqCtx', True, None,
+                                'ew.class_name().toStdString()')
                         if len(function.xceptions.members) > 0:
                             out('auto queue = serializeResponse('
                                 '"{0}", &prot, protoSeqId, ctx.get(),'
