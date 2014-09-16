@@ -22,10 +22,9 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from .TProtocol import TProtocolBase
+from .TProtocol import TProtocolBase, TProtocolException
 from thrift.Thrift import TApplicationException, TMessageType
 from .TBinaryProtocol import TBinaryProtocolAccelerated
-from .TSimpleJSONProtocol import TSimpleJSONProtocol
 from .TCompactProtocol import TCompactProtocol
 from thrift.transport.THeaderTransport import THeaderTransport
 
@@ -68,7 +67,12 @@ class THeaderProtocol(TProtocolBase):
                    HEADERS_CLIENT_TYPE only.
         """
 
-        htrans = THeaderTransport(trans, client_types)
+        if isinstance(trans, THeaderTransport):
+            trans._THeaderTransport__supported_client_types = set(
+                    client_types or (THeaderTransport.HEADERS_CLIENT_TYPE,))
+            htrans = trans
+        else:
+            htrans = THeaderTransport(trans, client_types)
         TProtocolBase.__init__(self, htrans)
         self.strictRead = strictRead
         self.reset_protocol()
