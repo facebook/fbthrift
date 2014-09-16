@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.6 -tt
+#!/usr/bin/env python -tt
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements. See the NOTICE file
