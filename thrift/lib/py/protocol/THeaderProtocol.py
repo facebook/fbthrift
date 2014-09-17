@@ -67,12 +67,7 @@ class THeaderProtocol(TProtocolBase):
                    HEADERS_CLIENT_TYPE only.
         """
 
-        if isinstance(trans, THeaderTransport):
-            trans._THeaderTransport__supported_client_types = set(
-                    client_types or (THeaderTransport.HEADERS_CLIENT_TYPE,))
-            htrans = trans
-        else:
-            htrans = THeaderTransport(trans, client_types)
+        htrans = THeaderTransport(trans, client_types)
         TProtocolBase.__init__(self, htrans)
         self.strictRead = strictRead
         self.reset_protocol()
