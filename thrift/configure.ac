@@ -203,71 +203,10 @@ if test "$with_cpp" = "yes";  then
 
   AX_LIB_ZLIB([1.2.3])
   have_zlib=$success
-
-  AX_THRIFT_LIB(qt4, [Qt], yes)
-  have_qt=no
-  if test "$with_qt4" = "yes";  then
-    PKG_CHECK_MODULES([QT], [QtCore >= 4.3, QtNetwork >= 4.3], have_qt=yes, have_qt=no)
-  fi
-  if test "$have_qt" = "yes"; then
-    AC_PATH_PROGS([QT_MOC], [moc-qt4 moc])
-    have_qt=$success
-  fi
 fi
 AM_CONDITIONAL([WITH_CPP], [test "$have_cpp" = "yes"])
 AM_CONDITIONAL([AMX_HAVE_LIBEVENT], [test "$have_libevent" = "yes"])
 AM_CONDITIONAL([AMX_HAVE_ZLIB], [test "$have_zlib" = "yes"])
-AM_CONDITIONAL([AMX_HAVE_QT], [test "$have_qt" = "yes"])
-
-AX_THRIFT_LIB(c_glib, [C (GLib)], yes)
-if test "$with_c_glib" = "yes"; then
-  PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.0], have_glib2=yes, have_glib2=no)
-  PKG_CHECK_MODULES([GOBJECT], [gobject-2.0 >= 2.0], have_gobject2=yes, have_gobject2=no)
-  if test "$have_glib2" = "yes" -a "$have_gobject2" = "yes" ; then
-    have_c_glib="yes"
-  fi
-fi
-AM_CONDITIONAL(WITH_C_GLIB, [test "$have_glib2" = "yes" -a "$have_gobject2" = "yes"])
-
-AX_THRIFT_LIB(csharp, [C#], yes)
-if test "$with_csharp" = "yes";  then
-  PKG_CHECK_MODULES(MONO, mono >= 2.0.0, net_3_5=yes, net_3_5=no)
-  PKG_CHECK_MODULES(MONO, mono >= 1.2.4, have_mono=yes, have_mono=no)
-  if test "$have_mono" = "yes" ; then
-    have_csharp="yes"
-  fi
-fi
-AM_CONDITIONAL(WITH_MONO, [test "$have_csharp" = "yes"])
-AM_CONDITIONAL(NET_2_0, [test "$net_3_5" = "no"])
-
-AX_THRIFT_LIB(java, [Java], yes)
-if test "$with_java" = "yes";  then
-  AX_JAVAC_AND_JAVA
-  AC_PATH_PROG([ANT], [ant])
-  AX_CHECK_ANT_VERSION($ANT, 1.7)
-  AC_SUBST(CLASSPATH)
-  AC_SUBST(ANT_FLAGS)
-  if test "x$JAVAC" != "x" && test "x$JAVAC" != "x" && test "x$ANT" != "x" ; then
-    have_java="yes"
-  fi
-fi
-AM_CONDITIONAL([WITH_JAVA], [test "$have_java" = "yes"])
-
-AX_THRIFT_LIB(erlang, [Erlang], yes)
-if test "$with_erlang" = "yes";  then
-  AC_ERLANG_PATH_ERL
-  AC_ERLANG_PATH_ERLC
-  if test -n "$ERLC" ; then
-    AC_ERLANG_SUBST_LIB_DIR
-    # Install into the detected Erlang directory instead of $libdir/erlang/lib
-    ERLANG_INSTALL_LIB_DIR="$ERLANG_LIB_DIR"
-    AC_ERLANG_SUBST_INSTALL_LIB_SUBDIR(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
-  fi
-  if test -n "$ERL" -a -n "$ERLC" ; then
-    have_erlang="yes"
-  fi
-fi
-AM_CONDITIONAL(WITH_ERLANG, [test "$have_erlang" = "yes"])
 
 AX_THRIFT_LIB(python, [Python], yes)
 if test "$with_python" = "yes";  then
@@ -612,7 +551,7 @@ fi
 # --- Coverage hooks ---
 
 
-AC_SUBST(AM_CPPFLAGS, '-I$(top_srcdir)/..'" $CXX_FLAGS $BOOST_CPPFLAGS") 
+AC_SUBST(AM_CPPFLAGS, '-I$(top_srcdir)/..'" $CXX_FLAGS $BOOST_CPPFLAGS")
 
 AC_SUBST(PY_LOCAL_ROOT, '$(top_builddir)/.python-local')
 AC_SUBST(PY_LOCAL_PATH, '$(PY_LOCAL_ROOT)/lib/python')
