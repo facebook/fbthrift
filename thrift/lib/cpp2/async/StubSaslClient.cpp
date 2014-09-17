@@ -46,8 +46,8 @@ static const char RESPONSE1[] = "response1";
 static const char CHALLENGE2[] = "challenge2";
 
 StubSaslClient::StubSaslClient(apache::thrift::async::TEventBase* evb)
-    : threadManager_(ThreadManager::newSimpleThreadManager(1 /* count */))
-    , evb_(evb)
+    : SaslClient(evb)
+    , threadManager_(ThreadManager::newSimpleThreadManager(1 /* count */))
     , phase_(0)
     , forceFallback_(false) {
   threadManager_->threadFactory(std::make_shared<PosixThreadFactory>());
@@ -59,7 +59,7 @@ void StubSaslClient::start(Callback *cb) {
 
   // Double-dispatch, as the more complex implementation will.
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
-        evb_->runInEventBaseThread([=] () mutable {
+        (*evb_)->runInEventBaseThread([=] () mutable {
             cb->saslStarted();
           });
 
@@ -74,7 +74,7 @@ void StubSaslClient::start(Callback *cb) {
         serializer.serialize(start, &*q);
         phase_ = 1;
 
-        evb_->runInEventBaseThread([=] () mutable {
+        (*evb_)->runInEventBaseThread([=] () mutable {
             cb->saslSendServer(q->move());
           });}));
 }
@@ -168,7 +168,7 @@ void StubSaslClient::consumeFromServer(
           phase_ = -2;
         }
 
-        evb_->runInEventBaseThread([=] () mutable {
+        (*evb_)->runInEventBaseThread([=] () mutable {
             if (!req_data->empty()) {
               cb->saslSendServer(req_data->move());
             }

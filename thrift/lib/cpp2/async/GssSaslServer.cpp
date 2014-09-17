@@ -56,8 +56,8 @@ static const char MECH[] = "krb5";
 GssSaslServer::GssSaslServer(
     apache::thrift::async::TEventBase* evb,
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> thread_manager)
-    : threadManager_(thread_manager)
-    , evb_(evb)
+    : SaslServer(evb)
+    , threadManager_(thread_manager)
     , serverHandshake_(new KerberosSASLHandshakeServer)
     , mutex_(new Mutex)
     , protocol_(0xFFFF) {
@@ -67,7 +67,7 @@ void GssSaslServer::consumeFromClient(
   Callback *cb, std::unique_ptr<IOBuf>&& message) {
   std::shared_ptr<IOBuf> smessage(std::move(message));
 
-  auto channelCallbackUnavailable = channelCallbackUnavailable_;
+  auto evb = evb_;
   auto serverHandshake = serverHandshake_;
   auto mutex = mutex_;
   auto proto = protocol_;
@@ -209,14 +209,14 @@ void GssSaslServer::consumeFromClient(
 
       Guard guard(*mutex);
       // Return if channel is unavailable. Ie. evb_ may not be good.
-      if (*channelCallbackUnavailable) {
+      if (!*evb) {
         return;
       }
 
-      evb_->runInEventBaseThread([=]() mutable {
+      (*evb)->runInEventBaseThread([=]() mutable {
           // If the callback has already been destroyed, the request must
           // have terminated, so we don't need to do anything.
-          if (*channelCallbackUnavailable) {
+          if (!*evb) {
             return;
           }
           if (ex) {

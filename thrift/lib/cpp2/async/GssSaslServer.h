@@ -44,18 +44,20 @@ public:
   }
   virtual std::string getClientIdentity() const;
   virtual std::string getServerIdentity() const;
-  virtual void markChannelCallbackUnavailable() {
+  virtual void detachEventBase() {
     apache::thrift::concurrency::Guard guard(*mutex_);
-    *channelCallbackUnavailable_ = true;
+    *evb_ = nullptr;
   }
-
+  virtual void attachEventBase(apache::thrift::async::TEventBase* evb) {
+    apache::thrift::concurrency::Guard guard(*mutex_);
+    *evb_ = evb;
+  }
   void setProtocolId(uint16_t protocol) override {
     protocol_ = protocol;
   }
 
 private:
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
-  apache::thrift::async::TEventBase* evb_;
   std::shared_ptr<KerberosSASLHandshakeServer> serverHandshake_;
   std::shared_ptr<apache::thrift::concurrency::Mutex> mutex_;
   uint16_t protocol_;

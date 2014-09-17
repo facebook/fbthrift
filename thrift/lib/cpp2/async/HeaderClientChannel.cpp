@@ -73,7 +73,7 @@ void HeaderClientChannel::setSaslTimeout(uint32_t ms) {
 void HeaderClientChannel::destroy() {
   saslClientCallback_.cancelTimeout();
   if (saslClient_) {
-    saslClient_->markChannelCallbackUnavailable();
+    saslClient_->detachEventBase();
   }
 
   cpp2Channel_->closeNow();
@@ -85,12 +85,15 @@ void HeaderClientChannel::attachEventBase(
     TEventBase* eventBase) {
   cpp2Channel_->attachEventBase(eventBase);
   timer_->attachEventBase(eventBase);
+  if (saslClient_) {
+    saslClient_->attachEventBase(eventBase);
+  }
 }
 
 void HeaderClientChannel::detachEventBase() {
   saslClientCallback_.cancelTimeout();
   if (saslClient_) {
-    saslClient_->markChannelCallbackUnavailable();
+    saslClient_->detachEventBase();
   }
 
   cpp2Channel_->detachEventBase();
@@ -221,7 +224,7 @@ void HeaderClientChannel::SaslClientCallback::saslError(
   }
   // We need to tell saslClient that the security channel is no longer
   // available, so that it does not attempt to send messages to the server.
-  channel_.saslClient_->markChannelCallbackUnavailable();
+  channel_.saslClient_->detachEventBase();
   channel_.setSecurityComplete(ProtectionState::NONE);
 }
 

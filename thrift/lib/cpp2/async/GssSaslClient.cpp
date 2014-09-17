@@ -61,8 +61,7 @@ static const char MECH[] = "krb5";
 
 GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb,
       const std::shared_ptr<SecurityLogger>& logger)
-    : SaslClient(logger)
-    , evb_(evb)
+    : SaslClient(evb, logger)
     , clientHandshake_(new KerberosSASLHandshakeClient(logger))
     , mutex_(new Mutex)
     , saslThreadManager_(nullptr)
@@ -73,7 +72,7 @@ GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb,
 
 void GssSaslClient::start(Callback *cb) {
 
-  auto channelCallbackUnavailable = channelCallbackUnavailable_;
+  auto evb = evb_;
   auto clientHandshake = clientHandshake_;
   auto mutex = mutex_;
   auto logger = saslLogger_;
@@ -98,12 +97,12 @@ void GssSaslClient::start(Callback *cb) {
 
       {
         Guard guard(*mutex);
-        if (*channelCallbackUnavailable) {
+        if (!*evb) {
           return;
         }
 
-        evb_->runInEventBaseThread([=] () mutable {
-            if (*channelCallbackUnavailable) {
+        (*evb)->runInEventBaseThread([=] () mutable {
+            if (!*evb) {
               return;
             }
             cb->saslStarted();
@@ -132,16 +131,16 @@ void GssSaslClient::start(Callback *cb) {
 
       Guard guard(*mutex);
       // Return if channel is unavailable. Ie. evb_ may not be good.
-      if (*channelCallbackUnavailable) {
+      if (!*evb) {
         return;
       }
 
       // Log the overhead around rescheduling the remainder of the
       // handshake at the back of the evb queue.
       logger->logStart("evb_overhead");
-      evb_->runInEventBaseThread([=]() mutable {
+      (*evb)->runInEventBaseThread([=]() mutable {
         logger->logEnd("evb_overhead");
-        if (*channelCallbackUnavailable) {
+        if (!*evb) {
           return;
         }
         if (ex) {
@@ -169,7 +168,7 @@ void GssSaslClient::consumeFromServer(
   Callback *cb, std::unique_ptr<IOBuf>&& message) {
   std::shared_ptr<IOBuf> smessage(std::move(message));
 
-  auto channelCallbackUnavailable = channelCallbackUnavailable_;
+  auto evb = evb_;
   auto clientHandshake = clientHandshake_;
   auto mutex = mutex_;
   auto logger = saslLogger_;
@@ -186,12 +185,12 @@ void GssSaslClient::consumeFromServer(
 
       {
         Guard guard(*mutex);
-        if (*channelCallbackUnavailable) {
+        if (!*evb) {
           return;
         }
 
-        evb_->runInEventBaseThread([=] () mutable {
-            if (*channelCallbackUnavailable) {
+        (*evb)->runInEventBaseThread([=] () mutable {
+            if (!*evb) {
               return;
             }
             cb->saslStarted();
@@ -267,13 +266,13 @@ void GssSaslClient::consumeFromServer(
 
       Guard guard(*mutex);
       // Return if channel is unavailable. Ie. evb_ may not be good.
-      if (*channelCallbackUnavailable) {
+      if (!*evb) {
         return;
       }
 
       auto phase = clientHandshake->getPhase();
-      evb_->runInEventBaseThread([=]() mutable {
-        if (*channelCallbackUnavailable) {
+      (*evb)->runInEventBaseThread([=]() mutable {
+        if (!*evb) {
           return;
         }
         if (ex) {
@@ -374,13 +373,18 @@ std::string GssSaslClient::getServerIdentity() const {
   }
 }
 
-void GssSaslClient::markChannelCallbackUnavailable() {
+void GssSaslClient::detachEventBase() {
   apache::thrift::concurrency::Guard guard(*mutex_);
   if (*inProgress_) {
     saslThreadManager_->end();
     *inProgress_ = false;
   }
-  *channelCallbackUnavailable_ = true;
+  *evb_ = nullptr;
+}
+
+void GssSaslClient::attachEventBase(apache::thrift::async::TEventBase* evb) {
+  apache::thrift::concurrency::Guard guard(*mutex_);
+  *evb_ = evb;
 }
 
 }}

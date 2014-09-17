@@ -70,7 +70,7 @@ void HeaderServerChannel::destroy() {
 
   saslServerCallback_.cancelTimeout();
   if (saslServer_) {
-    saslServer_->markChannelCallbackUnavailable();
+    saslServer_->detachEventBase();
   }
 
   if (callback_) {
@@ -432,7 +432,7 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     if (saslServer_) {
       // Should be set here, but just in case check that saslServer_
       // exists
-      saslServer_->markChannelCallbackUnavailable();
+      saslServer_->detachEventBase();
     }
     const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
       getEventBase()->getObserver());
@@ -508,7 +508,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
   // available, so that it does not attempt to send messages to the server.
   // Since the server-side SASL code is virtually non-blocking, it should be
   // rare that this is actually necessary.
-  channel_.saslServer_->markChannelCallbackUnavailable();
+  channel_.saslServer_->detachEventBase();
 }
 
 void HeaderServerChannel::SaslServerCallback::saslComplete() {

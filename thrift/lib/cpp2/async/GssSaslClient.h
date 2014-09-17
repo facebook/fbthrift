@@ -50,7 +50,6 @@ public:
   }
   virtual std::string getClientIdentity() const;
   virtual std::string getServerIdentity() const;
-  virtual void markChannelCallbackUnavailable();
 
   virtual const std::string* getErrorString() const {
     return errorString_.get();
@@ -85,8 +84,10 @@ public:
     protocol_ = protocol;
   }
 
+  virtual void detachEventBase();
+  virtual void attachEventBase(apache::thrift::async::TEventBase* evb);
+
 private:
-  apache::thrift::async::TEventBase* evb_;
   std::shared_ptr<KerberosSASLHandshakeClient> clientHandshake_;
   std::unique_ptr<std::string> errorString_;
   std::shared_ptr<apache::thrift::concurrency::Mutex> mutex_;

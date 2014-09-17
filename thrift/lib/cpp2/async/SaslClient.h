@@ -17,6 +17,7 @@
 #ifndef THRIFT_SASLCLIENT_H_
 #define THRIFT_SASLCLIENT_H_ 1
 
+#include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
 #include <thrift/lib/cpp/async/HHWheelTimer.h>
@@ -56,8 +57,11 @@ class SaslClient : public SaslEndpoint {
     }
   };
 
-  explicit SaslClient(const std::shared_ptr<SecurityLogger>& logger = nullptr) :
-    saslLogger_(logger) {}
+  explicit SaslClient(
+      apache::thrift::async::TEventBase* evb = nullptr,
+      const std::shared_ptr<SecurityLogger>& logger = nullptr)
+    : SaslEndpoint(evb)
+    , saslLogger_(logger) {}
 
   virtual void setClientIdentity(const std::string& identity) = 0;
   virtual void setServiceIdentity(const std::string& identity) = 0;
