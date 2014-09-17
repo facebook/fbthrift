@@ -33,6 +33,7 @@ def run_setup():
             'Topic :: Software Development :: Libraries',
             'Topic :: System :: Networking'
         ],
+        zip_safe = False,
     )
 
 run_setup()
