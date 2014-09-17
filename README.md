@@ -8,12 +8,14 @@ Apache thrift is at http://thrift.apache.org/
 Building
 --------
 
+Note that under GCC, you probably need at least 2GB of memory to compile fbthrift.  If you see 'internal compiler error', this is probably because you ran out of memory during compilation.
+
 Dependencies
 ------------
 
  - Facebook's folly library: http://www.github.com/facebook/folly
 
- - In addition to the packages required for building folly, Ubuntu 13.10 and 
+ - In addition to the packages required for building folly, Ubuntu 13.10 and
    14.04 require the following packages (feel free to cut and paste the apt-get
    command below):
 
@@ -28,7 +30,7 @@ Dependencies
       libssl-dev
 ```
 
-For your convenience, a build script is provided for ubuntu 12.10 64-bit:
+For your convenience, a build script is provided for ubuntu 14.04 64-bit:
 
 ```sh
 cd fbthrift/thrift
@@ -37,8 +39,9 @@ cd fbthrift/thrift
 
 It will automatically pull down folly and build it, and then configure and build thrift.
 
- - Ubuntu 12.10 64-bit requires the following packages:
+ - Ubuntu 14.04 64-bit requires the following packages:
 
+    - make
     - autoconf
     - libtool
     - g++
@@ -47,6 +50,7 @@ It will automatically pull down folly and build it, and then configure and build
     - flex
     - bison
     - libgoogle-glog-dev
+    - libdouble-conversion-dev
     - scons
     - libkrb5-dev
     - libsnappy-dev
