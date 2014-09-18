@@ -1102,7 +1102,7 @@ void t_php_generator::_generate_php_struct_definition(ofstream& out,
     out << " extends TBase";
   }
   out <<
-    " {" << endl;
+    " implements IThriftStruct {" << endl;
   indent_up();
 
   generate_php_struct_spec(out, tstruct);

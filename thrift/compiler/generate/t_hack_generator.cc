@@ -1101,7 +1101,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     out << " extends TException";
   }
   out <<
-    " {" << endl;
+    " implements IThriftStruct {" << endl;
   indent_up();
 
   generate_php_struct_spec(out, tstruct);

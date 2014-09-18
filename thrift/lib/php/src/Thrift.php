@@ -416,6 +416,15 @@ interface IThriftProcessor {
 }
 
 /**
+ * Base interface for Thrift structs
+ */
+interface IThriftStruct {
+  public function getName(): string;
+  public function read(TProtocol $input): int;
+  public function write(TProtocol $input): int;
+}
+
+/**
  * Event handler for thrift processors
  */
 class TProcessorEventHandler {
