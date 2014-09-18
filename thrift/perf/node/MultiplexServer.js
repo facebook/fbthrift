@@ -1,6 +1,7 @@
 var options = require('optimist')
   .demand(['port'])
   .default("port", 1234)
+  .demand(['server'])
   .argv;
 
 var LoadTest = require('load/LoadTest');
@@ -9,6 +10,7 @@ var fb303_types = require('fb303/fb303_types');
 var thrift = require('thrift');
 var ttransport = require('thrift/lib/thrift/transport');
 var TException = thrift.Thrift.TException;
+var ThriftServer = require('./ThriftServer');
 
 var VERSION = '3';
 
@@ -91,12 +93,20 @@ var methods = {
   }
 };
 
-var app = thrift.createServer(
-  LoadTest,
-  methods,
-  {transport: ttransport.TFramedTransport}
-);
-app.on('error', function(error) {
-  console.warn(error);
-});
-app.listen(options.port, '::');
+if (options.server == "multiplex") {
+  var app = thrift.createServer(
+    LoadTest,
+    methods,
+    {transport: ttransport.TFramedTransport}
+  );
+  app.on('error', function(error) {
+    console.warn(error);
+  });
+  app.listen(options.port, '::');
+} else if (options.server == "cpp") {
+  var server = new ThriftServer.ThriftServer(LoadTest, methods);
+  server.listen(options.port);
+
+} else {
+  console.log("Server must be one of cpp or multiplex")
+}
