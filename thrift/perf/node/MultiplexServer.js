@@ -10,7 +10,7 @@ var fb303_types = require('fb303/fb303_types');
 var thrift = require('thrift');
 var ttransport = require('thrift/lib/thrift/transport');
 var TException = thrift.Thrift.TException;
-var ThriftServer = require('./ThriftServer');
+var ThriftServer = require('ThriftServer/ThriftServer');
 
 var VERSION = '3';
 
@@ -104,7 +104,7 @@ if (options.server == "multiplex") {
   });
   app.listen(options.port, '::');
 } else if (options.server == "cpp") {
-  var server = new ThriftServer.ThriftServer(LoadTest, methods);
+  var server = new ThriftServer(LoadTest, methods);
   server.listen(options.port);
 
 } else {

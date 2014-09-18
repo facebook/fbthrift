@@ -1,13 +1,13 @@
 var Thrift = require('thrift').Thrift;
-
-var addon = require('ThriftServer/ThriftServer');
-var server = new addon.ThriftServer();
-var ttransport = require('thrift/lib/thrift/transport');
-var TBufferedTransport = ttransport.TBufferedTransport;
+var CppThriftServer = require('CppThriftServer/CppThriftServer').CppThriftServer;
 var TBinaryProtocol = require('thrift/lib/thrift/protocol').TBinaryProtocol;
 
+var ttransport = require('thrift/lib/thrift/transport');
+
+var TBufferedTransport = ttransport.TBufferedTransport;
+
 function ThriftServer(service, methods) {
-  this.server = (new require('ThriftServer/ThriftServer')).ThriftServer();
+  this.server = new CppThriftServer();
   this.server.processor = new service.Processor(methods);
   this.server.setInterface(this.wrappedProcessor);
 }
@@ -19,7 +19,7 @@ ThriftServer.prototype.listen = function(port) {
 
 ThriftServer.prototype.wrappedProcessor = function(server, callback, datain) {
   var transin = new TBufferedTransport(datain);
-  var proc = server.processor
+  var processor = server.processor
   TBufferedTransport.receiver(function(transin) {
     var protin = new TBinaryProtocol(transin);
     var transout = new TBufferedTransport(undefined, function(buf) {
@@ -27,19 +27,19 @@ ThriftServer.prototype.wrappedProcessor = function(server, callback, datain) {
     });
     var protout = new TBinaryProtocol(transout);
     try {
-     proc.process(protin, protout);
+     processor.process(protin, protout);
     } catch (err) {
       console.log(err);
       var x = new Thrift.TApplicationException(
         Thrift.TApplicationExceptionType.UNKNOWN_METHOD,
-        "Unknown error");
-      protout.writeMessageBegin("", Thrift.MessageType.Exception, 0);
+        'Unknown error'
+      );
+      protout.writeMessageBegin('', Thrift.MessageType.Exception, 0);
       x.write(protout);
       protout.writeMessageEnd();
       protout.flush();
-
     }
   })(datain);
 }
 
-exports.ThriftServer = ThriftServer;
+module.exports = ThriftServer;

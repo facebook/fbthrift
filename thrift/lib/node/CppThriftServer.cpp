@@ -18,9 +18,9 @@
 #include <node_buffer.h>
 #include <v8.h>
 
-#include "thrift/lib/cpp2/server/ThriftServer.h"
-#include "thrift/lib/cpp2/async/AsyncProcessor.h"
-#include "thrift/lib/cpp/concurrency/FunctionRunner.h"
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 
 using namespace v8;
 apache::thrift::async::TEventBase integrated_uv_event_base;
@@ -185,18 +185,18 @@ class NodeServerInterface : public apache::thrift::ServerInterface {
 };
 
 // Wrapped NodeJS class
-class ThriftServer : public node::ObjectWrap {
+class CppThriftServer : public node::ObjectWrap {
  public:
 
   static Handle<Value> setPort(const Arguments& args) {
-    auto obj = ObjectWrap::Unwrap<ThriftServer>(args.This());
+    auto obj = ObjectWrap::Unwrap<CppThriftServer>(args.This());
     obj->server_.setPort(args[0]->NumberValue());
 
     return args.This();
   }
 
   static Handle<Value> setInterface(const Arguments& args) {
-    auto obj = ObjectWrap::Unwrap<ThriftServer>(args.This());
+    auto obj = ObjectWrap::Unwrap<CppThriftServer>(args.This());
     auto localproc = Local<Function>::Cast(args[0]);
     auto proc = Persistent<Function>::New(localproc);
     auto srv = Persistent<Object>::New(args.This());
@@ -207,7 +207,7 @@ class ThriftServer : public node::ObjectWrap {
   }
 
   static Handle<Value> serve(const Arguments& args) {
-    auto obj = ObjectWrap::Unwrap<ThriftServer>(args.This());
+    auto obj = ObjectWrap::Unwrap<CppThriftServer>(args.This());
     std::thread([=](){
         obj->server_.serve();
       }).detach();
@@ -217,31 +217,31 @@ class ThriftServer : public node::ObjectWrap {
 
   static void Init(v8::Handle<v8::Object> exports) {
     Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
-    tpl->SetClassName(String::NewSymbol("ThriftServer"));
+    tpl->SetClassName(String::NewSymbol("CppThriftServer"));
     tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     tpl->PrototypeTemplate()->Set(
       String::NewSymbol("setPort"),
-      FunctionTemplate::New(ThriftServer::setPort)->GetFunction());
+      FunctionTemplate::New(CppThriftServer::setPort)->GetFunction());
     tpl->PrototypeTemplate()->Set(
       String::NewSymbol("serve"),
-      FunctionTemplate::New(ThriftServer::serve)->GetFunction());
+      FunctionTemplate::New(CppThriftServer::serve)->GetFunction());
     tpl->PrototypeTemplate()->Set(
       String::NewSymbol("setInterface"),
-      FunctionTemplate::New(ThriftServer::setInterface)->GetFunction());
+      FunctionTemplate::New(CppThriftServer::setInterface)->GetFunction());
     constructor = Persistent<Function>::New(tpl->GetFunction());
-    exports->Set(String::NewSymbol("ThriftServer"), constructor);
+    exports->Set(String::NewSymbol("CppThriftServer"), constructor);
   }
 
  private:
-  explicit ThriftServer() {}
-  ~ThriftServer() {}
+  explicit CppThriftServer() {}
+  ~CppThriftServer() {}
 
   static v8::Handle<v8::Value> New(const v8::Arguments& args) {
     HandleScope scope;
 
     if (args.IsConstructCall()) {
-      auto s = new ThriftServer;
+      auto s = new CppThriftServer;
       s->Wrap(args.This());
       return args.This();
     } else {
@@ -255,13 +255,13 @@ class ThriftServer : public node::ObjectWrap {
   apache::thrift::ThriftServer server_;
 };
 
-Persistent<Function> ThriftServer::constructor;
+Persistent<Function> CppThriftServer::constructor;
 
 void init(Handle<Object> exports) {
-  ThriftServer::Init(exports);
+  CppThriftServer::Init(exports);
   ThriftServerCallback::Init(exports);
 
   uv_async_init(uv_default_loop(), &async, run_loop);
 }
 
-NODE_MODULE(ThriftServer, init)
+NODE_MODULE(CppThriftServer, init)
