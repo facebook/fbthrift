@@ -41,7 +41,10 @@ void raiseIf(krb5_context context, krb5_error_code code,
   }
 
   const char* err = krb5_get_error_message(context, code);
-  throw std::runtime_error(folly::to<std::string>(err, " while ", what));
+  auto msg = folly::to<std::string>(err, " while ", what);
+  krb5_free_error_message(context, err);
+
+  throw std::runtime_error(msg);
 }
 
 std::vector<std::string> getHostRealm(krb5_context context,

@@ -133,8 +133,9 @@ void KerberosSASLHandshakeClient::throwKrb5Exception(
     krb5_context ctx,
     krb5_error_code code) {
   const char* err = krb5_get_error_message(ctx, code);
-  string err_str(err);
-  throw TKerberosException(custom + " " + err_str);
+  auto msg = folly::to<std::string>(custom, ' ', err);
+  krb5_free_error_message(ctx, err);
+  throw TKerberosException(msg);
 }
 
 // copy-pasted from common/network/NetworkUtil to avoid dependency cycle
