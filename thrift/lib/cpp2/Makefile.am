@@ -114,7 +114,6 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   ../cpp/EventHandlerBase.cpp \
 			   ../cpp/transport/THeader.cpp \
 			   ../cpp/transport/THeaderTransport.cpp \
-			   ../cpp/transport/TSocketAddress.cpp \
 			   ../cpp/util/ScopedServerThread.cpp \
 			   ../cpp/util/SocketRetriever.cpp \
 			   ../cpp/async/TAsyncServerSocket.cpp \
