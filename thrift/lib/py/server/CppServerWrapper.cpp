@@ -167,7 +167,10 @@ public:
             "Return from processor method is not string or bytes");
         }
     }
-    req->sendReply(std::move(outbuf));
+    req->sendReply(THeader::transform(
+      std::move(outbuf),
+      context->getTransforms(),
+      context->getMinCompressBytes()));
   }
 
   virtual bool isOnewayMethod(const folly::IOBuf* buf,
