@@ -18,7 +18,10 @@
 #define KERBEROS_SASL_THREAD_MANAGER_H
 
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
+
+#include <deque>
 
 namespace apache { namespace thrift {
 

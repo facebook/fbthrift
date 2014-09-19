@@ -109,7 +109,6 @@ include_concurrency_HEADERS = \
                          concurrency/Thread.h \
                          concurrency/ThreadManager.h \
                          concurrency/ThreadManager-impl.h \
-                         concurrency/ThreadManager.tcc \
                          concurrency/Codel.h \
                          concurrency/TimerManager.h \
                          concurrency/FunctionRunner.h \

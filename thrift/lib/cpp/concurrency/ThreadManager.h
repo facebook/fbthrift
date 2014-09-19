@@ -17,18 +17,17 @@
 #ifndef _THRIFT_CONCURRENCY_THREADMANAGER_H_
 #define _THRIFT_CONCURRENCY_THREADMANAGER_H_ 1
 
-#include <memory>
-#include <functional>
-#include <sys/types.h>
-#include <array>
-#include <unistd.h>
-#include <folly/LifoSem.h>
 #include <folly/RWSpinLock.h>
-#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/Codel.h>
-
 #include <thrift/lib/cpp/concurrency/Util.h>
+
+#include <array>
+#include <functional>
+#include <memory>
+#include <sys/types.h>
+#include <unistd.h>
 
 #ifndef NO_LIB_GFLAGS
   #include <gflags/gflags.h>
@@ -213,7 +212,6 @@ class ThreadManager {
    * number of non-completed tasks ThreadManager can handle. 0 means a large
    * default.
    */
-  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager>
     newSimpleThreadManager(size_t count = 4,
                            size_t pendingTaskCountMax = 0,
@@ -249,10 +247,7 @@ class ThreadManager {
 
   virtual Codel* getCodel() = 0;
 
-  template <typename SemType>
-  class ImplT;
-
-  typedef ImplT<folly::LifoSem> Impl;
+  class Impl;
  protected:
   static folly::RWSpinLock observerLock_;
   static std::shared_ptr<Observer> observer_;
@@ -295,7 +290,6 @@ public:
    * Atleast NORMAL_PRIORITY_MINIMUM_THREADS threads are created for
    * priority NORMAL
    */
-  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager>
     newPriorityThreadManager(std::array<size_t, N_PRIORITIES> counts,
                              bool enableTaskStats = false,
@@ -310,21 +304,15 @@ public:
    * @param normalThreadsCount - number of threads of NORMAL priority, defaults
    *          to the number of CPUs on the system
    */
-  template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager>
     newPriorityThreadManager(size_t normalThreadsCount
                                       = sysconf(_SC_NPROCESSORS_ONLN),
                              bool enableTaskStats = false,
                              size_t maxQueueLen = 0);
 
-  template <typename SemType>
-  class PriorityImplT;
-
-  typedef PriorityImplT<folly::LifoSem> PriorityImpl;
+  class PriorityImpl;
 };
 
 }}} // apache::thrift::concurrency
-
-#include <thrift/lib/cpp/concurrency/ThreadManager.tcc>
 
 #endif // #ifndef _THRIFT_CONCURRENCY_THREADMANAGER_H_

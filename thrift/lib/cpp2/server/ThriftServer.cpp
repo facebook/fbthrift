@@ -18,6 +18,7 @@
 
 #include <folly/Conv.h>
 #include <folly/Memory.h>
+#include <folly/Logging.h>
 #include <folly/Random.h>
 #include <folly/ScopeGuard.h>
 #include <thrift/lib/cpp2/async/GssSaslServer.h>

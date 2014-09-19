@@ -20,7 +20,6 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
 
-
 namespace apache { namespace thrift {
 
 using namespace std;
