@@ -149,6 +149,7 @@ include_transport_HEADERS = \
                          transport/THttpClient.h \
                          transport/THttpServer.h \
                          transport/TSocket.h \
+                         transport/TSocketAddress.h \
                          transport/TSSLSocket.h \
                          transport/TSocketPool.h \
                          transport/TVirtualTransport.h \
