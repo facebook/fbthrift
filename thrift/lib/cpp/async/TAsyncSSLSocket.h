@@ -25,6 +25,7 @@
 #include <folly/String.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
+#include <thrift/lib/cpp/async/TimeoutManager.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
@@ -36,7 +37,6 @@
 using folly::IOBuf;
 using folly::io::Cursor;
 using std::unique_ptr;
-
 
 namespace apache { namespace thrift {
 
@@ -483,6 +483,14 @@ class TAsyncSSLSocket : public TAsyncSocket {
   virtual void detachEventBase() {
     TAsyncSocket::detachEventBase();
     handshakeTimeout_.detachEventBase();
+  }
+
+  virtual void attachTimeoutManager(TimeoutManager* manager) {
+    handshakeTimeout_.attachTimeoutManager(manager);
+  }
+
+  virtual void detachTimeoutManager() {
+    handshakeTimeout_.detachTimeoutManager();
   }
 
 #if OPENSSL_VERSION_NUMBER >= 0x009080bfL

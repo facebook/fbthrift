@@ -45,16 +45,32 @@ class MockTAsyncSSLSocket :
   MOCK_CONST_METHOD0(good, bool());
   MOCK_CONST_METHOD0(readable, bool());
   MOCK_CONST_METHOD0(hangup, bool());
-  MOCK_METHOD3(
-   sslConnect,
-   void(TAsyncSSLSocket::HandshakeCallback*, uint64_t,
-     const apache::thrift::transport::SSLContext::SSLVerifyPeerEnum&));
   MOCK_CONST_METHOD2(
    getSelectedNextProtocol,
    void(const unsigned char**, unsigned*));
   MOCK_CONST_METHOD2(
    getSelectedNextProtocolNoThrow,
    bool(const unsigned char**, unsigned*));
+
+  void sslConnect(
+    TAsyncSSLSocket::HandshakeCallback* cb,
+    uint64_t timeout,
+    const apache::thrift::transport::SSLContext::SSLVerifyPeerEnum& verify)
+      override {
+    if (timeout > 0) {
+      handshakeTimeout_.scheduleTimeout(timeout);
+    }
+
+    state_ = StateEnum::ESTABLISHED;
+    sslState_ = STATE_CONNECTING;
+    handshakeCallback_ = cb;
+
+    sslConnectMockable(cb, timeout, verify);
+  }
+  MOCK_METHOD3(
+   sslConnectMockable,
+   void(TAsyncSSLSocket::HandshakeCallback*, uint64_t,
+     const apache::thrift::transport::SSLContext::SSLVerifyPeerEnum&));
 };
 
 }}}
