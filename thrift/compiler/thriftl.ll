@@ -183,7 +183,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "case"               { thrift_reserved_keyword(yytext); }
 "char"               { thrift_reserved_keyword(yytext); }
 "class"              { thrift_reserved_keyword(yytext); }
-"const"              { thrift_reserved_keyword(yytext); }
 "continue"           { thrift_reserved_keyword(yytext); }
 "declare"            { thrift_reserved_keyword(yytext); }
 "def"                { thrift_reserved_keyword(yytext); }
@@ -191,8 +190,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "del"                { thrift_reserved_keyword(yytext); }
 "delete"             { thrift_reserved_keyword(yytext); }
 "do"                 { thrift_reserved_keyword(yytext); }
-"double"             { thrift_reserved_keyword(yytext); }
-"float"              { thrift_reserved_keyword(yytext); }
 "elif"               { thrift_reserved_keyword(yytext); }
 "else"               { thrift_reserved_keyword(yytext); }
 "elseif"             { thrift_reserved_keyword(yytext); }
@@ -201,7 +198,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "extern"             { thrift_reserved_keyword(yytext); }
 "false"              { thrift_reserved_keyword(yytext); }
 "finally"            { thrift_reserved_keyword(yytext); }
-"float"              { thrift_reserved_keyword(yytext); }
 "for"                { thrift_reserved_keyword(yytext); }
 "foreach"            { thrift_reserved_keyword(yytext); }
 "function"           { thrift_reserved_keyword(yytext); }
@@ -234,7 +230,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "signed"             { thrift_reserved_keyword(yytext); }
 "sizeof"             { thrift_reserved_keyword(yytext); }
 "static"             { thrift_reserved_keyword(yytext); }
-"struct"             { thrift_reserved_keyword(yytext); }
 "switch"             { thrift_reserved_keyword(yytext); }
 "synchronized"       { thrift_reserved_keyword(yytext); }
 "template"           { thrift_reserved_keyword(yytext); }
@@ -243,16 +238,12 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "transient"          { thrift_reserved_keyword(yytext); }
 "true"               { thrift_reserved_keyword(yytext); }
 "try"                { thrift_reserved_keyword(yytext); }
-"typedef"            { thrift_reserved_keyword(yytext); }
-"union"              { thrift_reserved_keyword(yytext); }
 "unsigned"           { thrift_reserved_keyword(yytext); }
 "var"                { thrift_reserved_keyword(yytext); }
 "virtual"            { thrift_reserved_keyword(yytext); }
-"void"               { thrift_reserved_keyword(yytext); }
 "volatile"           { thrift_reserved_keyword(yytext); }
 "while"              { thrift_reserved_keyword(yytext); }
 "with"               { thrift_reserved_keyword(yytext); }
-"union"              { thrift_reserved_keyword(yytext); }
 "yield"              { thrift_reserved_keyword(yytext); }
 "Object"             { thrift_reserved_keyword(yytext); }
 "Client"             { thrift_reserved_keyword(yytext); }
