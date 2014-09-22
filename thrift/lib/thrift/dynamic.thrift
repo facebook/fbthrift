@@ -4,11 +4,11 @@
 // See accompanying file LICENSE or visit the Thrift site at:
 // http://developers.facebook.com/thrift/
 
-namespace cpp2 apache.thrift.util
-namespace php apache.thrift.util
-namespace py apache.thrift.util.dynamic
+namespace cpp apache.thrift
+namespace php apache.thrift
+namespace py apache.thrift.dynamic
 
-cpp_include "thrift/lib/cpp2/util/SerializableDynamic.h"
+cpp_include "thrift/lib/thrift/SerializableDynamic.h"
 
 union Dynamic {
   1: bool boolean;
@@ -17,4 +17,4 @@ union Dynamic {
   4: string str;
   5: list<Dynamic> array;
   6: map<string, Dynamic> object;
-} (cpp.type = "::apache::thrift::util::SerializableDynamic")
+} (cpp.type = "::apache::thrift::SerializableDynamic")

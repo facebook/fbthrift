@@ -24,10 +24,10 @@
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/test/util/gen-cpp2/TestService.h>
-#include <thrift/lib/cpp2/util/gen-cpp2/dynamic_types.h>
+#include <thrift/lib/thrift/gen-cpp2/dynamic_types.h>
+#include <thrift/test/gen-cpp2/DynamicTestService.h>
 
-
+using namespace cpp2;
 using namespace std;
 using namespace folly;
 using namespace apache::thrift;
@@ -97,7 +97,7 @@ static dynamic kDynamics[] = {
 };
 
 
-class TestServiceHandler : public TestServiceSvIf {
+class TestServiceHandler : public DynamicTestServiceSvIf {
  public:
   void echo(SerializableDynamic& out, const SerializableDynamic& in) {
     out = in;
@@ -118,7 +118,7 @@ std::shared_ptr<ThriftServer> getServer() {
   threadManager->start();
   server->setThreadManager(threadManager);
   server->setPort(0);
-  server->setInterface(std::unique_ptr<TestServiceSvIf>(
+  server->setInterface(std::unique_ptr<DynamicTestServiceSvIf>(
       new TestServiceHandler));
   return server;
 }
@@ -176,7 +176,7 @@ TEST_P(RoundtripTestFixture, SerializeOverHandler) {
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
-  TestServiceAsyncClient client(
+  DynamicTestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
                     apache::thrift::async::TDelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));

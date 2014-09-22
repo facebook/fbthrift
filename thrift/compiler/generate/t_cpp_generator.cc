@@ -311,6 +311,7 @@ class t_cpp_generator : public t_oop_generator {
   };
   std::string type_name(t_type* ttype, int flags=0);
   std::string base_type_name(t_base_type::t_base tbase);
+  std::string cpp_type_name(t_type* ttype, std::string defaultName);
 
   std::string generate_reflection_initializer_name(t_type* ttype);
   std::string generate_reflection_datatype(t_type* ttype);
@@ -6623,6 +6624,21 @@ string t_cpp_generator::namespace_close(string ns) {
 }
 
 /**
+ * Returns annotated C++ type name or default
+ *
+ * @param ttype The type
+ * @para defaultName Value to return if type has no cpp.type annotation
+ * @return String of the type name, i.e. std::set<type>
+ */
+string t_cpp_generator::cpp_type_name(t_type* ttype, string defaultName) {
+  std::map<string, string>::iterator it = ttype->annotations_.find("cpp.type");
+  if (it != ttype->annotations_.end()) {
+    return it->second;
+  }
+  return defaultName;
+}
+
+/**
  * Returns a C++ type name
  *
  * @param ttype The type
@@ -6641,11 +6657,7 @@ string t_cpp_generator::type_name(t_type* ttype, int flags) {
   }
   if (ttype->is_base_type()) {
     t_base_type* btype = static_cast<t_base_type*>(ttype);
-    string bname = base_type_name(btype->get_base());
-    std::map<string, string>::iterator it = ttype->annotations_.find("cpp.type");
-    if (it != ttype->annotations_.end()) {
-      bname = it->second;
-    }
+    string bname = cpp_type_name(ttype, base_type_name(btype->get_base()));
 
     if (arg && (btype->get_base() == t_base_type::TYPE_STRING)) {
       return "const " + bname + "&";
@@ -6707,22 +6719,24 @@ string t_cpp_generator::type_name(t_type* ttype, int flags) {
     class_prefix = "class ";
   }
 
-  // Check if it needs to be namespaced
-  string pname;
-  t_program* program = ttype->get_program();
-  if (program != nullptr && (always_namespace || program != program_)) {
-    pname =
-      class_prefix +
-      namespace_prefix(program->get_namespace("cpp")) +
-      ttype->get_name();
-  } else {
-    pname = class_prefix + ttype->get_name();
+  string tname = cpp_type_name(ttype, "");
+  if (tname.empty()) {
+    // Check if it needs to be namespaced
+    t_program* program = ttype->get_program();
+    if (program != nullptr && (always_namespace || program != program_)) {
+      tname =
+        class_prefix +
+        namespace_prefix(program->get_namespace("cpp")) +
+        ttype->get_name();
+    } else {
+      tname = class_prefix + ttype->get_name();
+    }
   }
 
   if (arg && is_complex_type(ttype)) {
-    return "const " + pname + "&";
+    return "const " + tname + "&";
   } else {
-    return pname;
+    return tname;
   }
 }
 
