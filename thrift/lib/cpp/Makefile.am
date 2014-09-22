@@ -220,11 +220,11 @@ include_utilkerberos_HEADERS = \
 
 include_testdir = $(include_thriftdir)/test
 include_test_HEADERS = \
-	test/MockTAsyncServerSocket.h
-	test/MockTAsyncSocketFactory.h
-	test/MockTAsyncSocket.h
-	test/MockTAsyncSSLSocket.h
-	test/MockTAsyncTransport.h
+	test/MockTAsyncServerSocket.h \
+	test/MockTAsyncSocketFactory.h \
+	test/MockTAsyncSocket.h \
+	test/MockTAsyncSSLSocket.h \
+	test/MockTAsyncTransport.h \
 	test/MockTimeoutManager.h
 
 THRIFT = $(top_builddir)/compiler/cpp/thrift
