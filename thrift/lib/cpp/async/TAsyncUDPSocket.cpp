@@ -196,7 +196,7 @@ void TAsyncUDPSocket::handleRead() noexcept {
   sockaddr_storage addrStorage;
   struct sockaddr* rawAddr = reinterpret_cast<sockaddr*>(&addrStorage);
   rawAddr->sa_family = localAddress_.getFamily();
-  socklen_t addrLen = sizeof(rawAddr);
+  socklen_t addrLen = sizeof(*rawAddr);
 
   ssize_t bytesRead = ::recvfrom(fd_, buf, len, MSG_TRUNC, rawAddr, &addrLen);
   if (bytesRead >= 0) {
