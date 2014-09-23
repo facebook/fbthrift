@@ -17,7 +17,6 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
-#include <thrift/lib/cpp/concurrency/SpinLock.h>
 #include <thrift/lib/cpp/thrift_config.h>
 
 #if GOOGLE_PERFTOOLS_REGISTER_THREAD
