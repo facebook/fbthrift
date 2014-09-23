@@ -156,6 +156,25 @@ private:
   std::function<void (ClientReceiveState&&)> callback_;
 };
 
+/* Useful for oneway methods. */
+class FunctionSendCallback : public RequestCallback {
+ public:
+  explicit FunctionSendCallback(
+    std::function<void (ClientReceiveState&&)>&& callback)
+      : callback_(std::move(callback)) {}
+  void requestSent() override {
+    auto cb = std::move(callback_);
+    cb(ClientReceiveState(folly::exception_wrapper(), nullptr, false));
+  }
+  void requestError(ClientReceiveState&& state) override {
+    auto cb = std::move(callback_);
+    cb(std::move(state));
+  }
+  void replyReceived(ClientReceiveState&& state) override {}
+ private:
+  std::function<void (ClientReceiveState&&)> callback_;
+};
+
 class CloseCallback {
  public:
   /**
