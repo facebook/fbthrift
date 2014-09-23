@@ -883,8 +883,8 @@ static void callbackLocking(int mode, int n, const char*, int) {
   }
 }
 
-static ulong callbackThreadID() {
-  return static_cast<ulong>(pthread_self());
+static unsigned long callbackThreadID() {
+  return static_cast<unsigned long>(pthread_self());
 }
 
 static CRYPTO_dynlock_value* dyn_create(const char*, int) {
@@ -950,7 +950,7 @@ void SSLContext::setOptions(long options) {
 
 string SSLContext::getErrors(int errnoCopy) {
   string errors;
-  ulong  errorCode;
+  unsigned long  errorCode;
   char   message[256];
 
   errors.reserve(512);
