@@ -16,32 +16,29 @@
 
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
-#include <errno.h>
-#include <string>
-#include <vector>
 #include <arpa/inet.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_array.hpp>
+#include <errno.h>
+#include <folly/SmallLocks.h>
+#include <folly/String.h>
+#include <glog/logging.h>
 #include <openssl/err.h>
 #include <openssl/rand.h>
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
-#ifdef __x86_64__
-#include <folly/SmallLocks.h>
-#include <folly/String.h>
-#else
-#include <thrift/lib/cpp/concurrency/SpinLock.h>
-#endif
-#include <glog/logging.h>
+#include <string>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <vector>
 
-using std::list;
-using std::string;
-using std::exception;
-using std::vector;
+using apache::thrift::concurrency::ProfiledMutex;
 using boost::lexical_cast;
-using std::shared_ptr;
 using boost::scoped_array;
-using namespace apache::thrift::concurrency;
+using std::exception;
+using std::list;
+using std::shared_ptr;
+using std::string;
+using std::vector;
 
 struct CRYPTO_dynlock_value {
   ProfiledMutex<std::mutex> mutex;
@@ -255,11 +252,12 @@ shared_ptr<TSSLSocket> TSSLSocketFactory::createSocket(const string& host,
 // ---------------------------------------------------------------------
 
 uint64_t SSLContext::count_ = 0;
-ProfiledMutex<std::mutex>    SSLContext::mutex_;
+ProfiledMutex<std::mutex> SSLContext::mutex_;
+
 #ifdef OPENSSL_NPN_NEGOTIATED
 int SSLContext::sNextProtocolsExDataIndex_ = -1;
-
 #endif
+
 // SSLContext implementation
 SSLContext::SSLContext(SSLVersion version) {
   {
@@ -839,9 +837,6 @@ struct SSLLock {
   explicit SSLLock(
     SSLContext::SSLLockType inLockType = SSLContext::LOCK_MUTEX) :
       lockType(inLockType) {
-#if __x86_64__
-    memset(&spinLock, 0, sizeof(folly::MicroSpinLock));
-#endif
   }
 
   void lock() {
@@ -863,11 +858,7 @@ struct SSLLock {
   }
 
   SSLContext::SSLLockType lockType;
-#if __x86_64__
-  folly::MicroSpinLock spinLock;
-#else
-  SpinLock spinLock;
-#endif
+  folly::MicroSpinLock spinLock{};
   ProfiledMutex<std::mutex> mutex;
 };
 
@@ -955,8 +946,8 @@ void SSLContext::setOptions(long options) {
 
 string SSLContext::getErrors(int errnoCopy) {
   string errors;
-  unsigned long  errorCode;
-  char   message[256];
+  unsigned long errorCode;
+  char message[256];
 
   errors.reserve(512);
   while ((errorCode = ERR_get_error()) != 0) {

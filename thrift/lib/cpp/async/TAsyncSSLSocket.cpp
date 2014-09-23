@@ -20,7 +20,6 @@
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
-#include <thrift/lib/cpp/concurrency/SpinLock.h>
 
 #include <errno.h>
 #include <unistd.h>
@@ -53,8 +52,6 @@ namespace {
 using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncSSLSocket;
 using apache::thrift::concurrency::Util;
-using apache::thrift::concurrency::SpinLock;
-using apache::thrift::concurrency::SpinLockGuard;
 using folly::Optional;
 
 /** Try to avoid calling SSL_write() for buffers smaller than this: */
@@ -63,7 +60,7 @@ size_t MIN_WRITE_SIZE = 1500;
 // We have one single dummy SSL context so that we can implement attach
 // and detach methods in a thread safe fashion without modifying opnessl.
 static SSLContext *dummyCtx = nullptr;
-static SpinLock dummyCtxLock;
+static folly::MicroSpinLock dummyCtxLock;
 
 // Numbers chosen as to not collide with functions in ssl.h
 const uint8_t TASYNCSSLSOCKET_F_PERFORM_READ = 90;
@@ -484,7 +481,7 @@ void TAsyncSSLSocket::attachSSLContext(
   // In order to call attachSSLContext, detachSSLContext must have been
   // previously called which sets the socket's context to the dummy
   // context. Thus we must acquire this lock.
-  SpinLockGuard guard(dummyCtxLock);
+  folly::MSLGuard guard(dummyCtxLock);
   SSL_set_SSL_CTX(ssl_, ctx->getSSLCtx());
 }
 
@@ -499,7 +496,7 @@ void TAsyncSSLSocket::detachSSLContext() {
     ssl_->initial_ctx = nullptr;
   }
 #endif
-  SpinLockGuard guard(dummyCtxLock);
+  folly::MSLGuard guard(dummyCtxLock);
   if (nullptr == dummyCtx) {
     // We need to lazily initialize the dummy context so we don't
     // accidentally override any programmatic settings to openssl
