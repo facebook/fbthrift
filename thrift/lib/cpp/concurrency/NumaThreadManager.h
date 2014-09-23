@@ -193,7 +193,7 @@ class NumaThreadManager : public ThreadManager {
     }
   }
 
-  virtual Codel* getCodel() {
+  virtual folly::wangle::Codel* getCodel() {
     // They *should* be roughtly the same, just return one for now.
     return managers_[0]->getCodel();
   }

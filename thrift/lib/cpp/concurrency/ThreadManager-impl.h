@@ -30,6 +30,7 @@ namespace apache { namespace thrift { namespace concurrency {
 using std::shared_ptr;
 using std::make_shared;
 using async::RequestContext;
+using folly::wangle::Codel;
 
 class ThreadManager::Task {
  public:

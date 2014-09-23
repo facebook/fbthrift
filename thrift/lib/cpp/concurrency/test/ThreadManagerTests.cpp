@@ -30,8 +30,8 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
-#include <thrift/lib/cpp/concurrency/Codel.h>
 
+#include <folly/experimental/wangle/concurrent/Codel.h>
 #include <folly/Synchronized.h>
 
 using namespace boost;
@@ -453,29 +453,6 @@ BOOST_AUTO_TEST_CASE(ExpireTest) {
   int64_t expireTimeMs = 50;
   expireTest(numWorkers, expireTimeMs);
 }
-
-BOOST_AUTO_TEST_CASE(CodelTest) {
-  int64_t numTasks = 1000;
-  int64_t numWorkers = 2;
-  int64_t expireTimeMs = 5;
-  int64_t expectedDrops = 1;
-
-  apache::thrift::Codel c;
-  usleep(110000);
-  // This interval is overloaded
-  BOOST_CHECK_EQUAL(false, c.overloaded(std::chrono::milliseconds(100)));
-  usleep(90000);
-  // At least two requests must happen in an interval before they will fail
-  BOOST_CHECK_EQUAL(false, c.overloaded(std::chrono::milliseconds(50)));
-  BOOST_CHECK_EQUAL(true, c.overloaded(std::chrono::milliseconds(50)));
-  usleep(110000);
-  // Previous interval is overloaded, but 2ms isn't enough to fail
-  BOOST_CHECK_EQUAL(false, c.overloaded(std::chrono::milliseconds(2)));
-  usleep(90000);
-  // 20 ms > target interval * 2
-  BOOST_CHECK_EQUAL(true, c.overloaded(std::chrono::milliseconds(20)));
-}
-
 
 class AddRemoveTask : public Runnable,
                       public std::enable_shared_from_this<AddRemoveTask> {

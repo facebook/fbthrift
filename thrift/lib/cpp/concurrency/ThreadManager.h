@@ -18,9 +18,10 @@
 #define _THRIFT_CONCURRENCY_THREADMANAGER_H_ 1
 
 #include <folly/RWSpinLock.h>
+#include <folly/experimental/wangle/concurrent/Codel.h>
+
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
-#include <thrift/lib/cpp/concurrency/Codel.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <array>
@@ -245,7 +246,7 @@ class ThreadManager {
 
   virtual void enableCodel(bool) = 0;
 
-  virtual Codel* getCodel() = 0;
+  virtual folly::wangle::Codel* getCodel() = 0;
 
   class Impl;
  protected:

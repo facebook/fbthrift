@@ -46,7 +46,6 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
                        concurrency/ThreadManager.cpp \
                        concurrency/TimerManager.cpp \
                        concurrency/Util.cpp \
-                       concurrency/Codel.cpp \
                        protocol/TDebugProtocol.cpp \
                        protocol/TJSONProtocol.cpp \
                        protocol/TBase64Utils.cpp \
@@ -108,7 +107,6 @@ include_concurrency_HEADERS = \
                          concurrency/Thread.h \
                          concurrency/ThreadManager.h \
                          concurrency/ThreadManager-impl.h \
-                         concurrency/Codel.h \
                          concurrency/TimerManager.h \
                          concurrency/FunctionRunner.h \
                          concurrency/Util.h
