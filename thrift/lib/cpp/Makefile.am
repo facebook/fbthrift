@@ -71,6 +71,7 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
                        server/TServer.cpp \
                        processor/PeekProcessor.cpp \
                        util/FdUtils.cpp \
+                       util/PausableTimer.cpp \
                        util/THttpParser.cpp \
                        util/SocketRetriever.cpp \
                        util/VarintUtils.cpp
