@@ -101,14 +101,15 @@ include_thrift_HEADERS = \
 include_concurrencydir = $(include_thriftdir)/concurrency
 include_concurrency_HEADERS = \
                          concurrency/Exception.h \
-                         concurrency/Mutex.h \
-                         concurrency/Monitor.h \
-                         concurrency/PosixThreadFactory.h \
-                         concurrency/Thread.h \
-                         concurrency/ThreadManager.h \
-                         concurrency/ThreadManager-impl.h \
-                         concurrency/TimerManager.h \
                          concurrency/FunctionRunner.h \
+                         concurrency/Monitor.h \
+                         concurrency/Mutex.h \
+                         concurrency/PosixThreadFactory.h \
+                         concurrency/ProfiledMutex.h \
+                         concurrency/Thread.h \
+                         concurrency/ThreadManager-impl.h \
+                         concurrency/ThreadManager.h \
+                         concurrency/TimerManager.h \
                          concurrency/Util.h
 
 include_protocoldir = $(include_thriftdir)/protocol
