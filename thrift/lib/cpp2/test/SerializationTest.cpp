@@ -16,9 +16,13 @@
 
 #include <gtest/gtest.h>
 
+#include <memory>
+#include <folly/Format.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
+using namespace std;
+using namespace folly;
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
 
@@ -66,4 +70,77 @@ TEST(SerializationTest, MixedRoundtripFails) {
   } catch (...) {
     // Should underflow
   }
+}
+
+TestStructRecursive makeTestStructRecursive(size_t levels) {
+  unique_ptr<TestStructRecursive> s;
+  for (size_t i = levels; i > 0; --i) {
+    auto t = make_unique<TestStructRecursive>();
+    t->tag = sformat("level-{}", i);
+    t->cdr = std::move(s);
+    s = std::move(t);
+  }
+  TestStructRecursive ret;
+  ret.tag = "level-0";
+  ret.cdr = std::move(s);
+  return ret;
+}
+
+size_t getRecDepth(const TestStructRecursive& s) {
+  auto p = &s;
+  size_t depth = 0;
+  while ((p = p->cdr.get())) {
+    ++depth;
+  }
+  return depth;
+}
+
+TEST(SerializationTest, RecursiveNoDepthCompactSerializerRoundtripPasses) {
+  auto s = makeTestStructRecursive(0);
+
+  folly::IOBufQueue q;
+  CompactSerializer::serialize(s, &q);
+
+  TestStructRecursive out;
+  CompactSerializer::deserialize(q.front(), out);
+
+  EXPECT_EQ(s, out);
+}
+
+TEST(SerializationTest, RecursiveDeepCompactSerializerRoundtripPasses) {
+  auto s = makeTestStructRecursive(6);
+  EXPECT_EQ(6, getRecDepth(s));
+
+  folly::IOBufQueue q;
+  CompactSerializer::serialize(s, &q);
+
+  TestStructRecursive out;
+  CompactSerializer::deserialize(q.front(), out);
+
+  EXPECT_EQ(s, out);
+}
+
+TEST(SerializationTest, RecursiveNoDepthBinarySerializerRoundtripPasses) {
+  auto s = makeTestStructRecursive(0);
+
+  folly::IOBufQueue q;
+  BinarySerializer::serialize(s, &q);
+
+  TestStructRecursive out;
+  BinarySerializer::deserialize(q.front(), out);
+
+  EXPECT_EQ(s, out);
+}
+
+TEST(SerializationTest, RecursiveDeepBinarySerializerRoundtripPasses) {
+  auto s = makeTestStructRecursive(6);
+  EXPECT_EQ(6, getRecDepth(s));
+
+  folly::IOBufQueue q;
+  BinarySerializer::serialize(s, &q);
+
+  TestStructRecursive out;
+  BinarySerializer::deserialize(q.front(), out);
+
+  EXPECT_EQ(s, out);
 }
