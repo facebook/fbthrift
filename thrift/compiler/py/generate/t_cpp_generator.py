@@ -671,8 +671,6 @@ class CppGenerator(t_generator.Generator):
                                                    name_prefix="functor_")
 
                 if self.flag_future:
-                    self._generate_client_future_gate_function(function)
-
                     self._generate_client_future_function(service, function)
                     self._generate_client_future_function(service, function,
                                                           uses_rpc_options=True)
@@ -1579,21 +1577,6 @@ class CppGenerator(t_generator.Generator):
                                           unique=False)
 
         return return_type + " {name}(" + param_list + ")"
-
-    def _generate_client_future_gate_function(self, function):
-        signature = self._get_future_gate_function_signature(function)
-
-        with out().defn(signature, name="future_" + function.name,
-                    modifiers='virtual'):
-            return_type = self._type_name(function.returntype)
-
-            args = ["::apache::thrift::RpcOptions()"]
-
-            args.extend([arg.name for arg in function.arglist.members])
-            args_list = ", ".join(args)
-
-            out("return gate->gate<{2}>([=](){{return future_{0}({1});}});"
-              .format(function.name, args_list, return_type))
 
     def _get_future_gate_function_signature(self, function):
         params = ["folly::wangle::ThreadGate* gate"]

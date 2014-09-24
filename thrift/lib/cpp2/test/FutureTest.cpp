@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -309,76 +307,6 @@ TEST(ThriftServer, OnewayFutureClientTest) {
 
   int factor = 1;
   EXPECT_GE(waitTime, factor * gotTime);
-}
-
-TEST(ThriftServer, ThreadGateTest) {
-  using std::chrono::steady_clock;
-
-  ScopedServerThread sst(getServer());
-  std::atomic<TEventBase*> atomicEventBasePtr(nullptr);
-  std::atomic<FutureServiceAsyncClient*> atomicClientPtr(nullptr);
-  std::atomic<bool> ready(false);
-
-  std::thread([&](){
-    TEventBase eventBase;
-    atomicEventBasePtr = &eventBase;
-
-    auto port = sst.getAddress()->getPort();
-    std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&eventBase, "127.0.0.1", port));
-
-    FutureServiceAsyncClient client(
-      std::unique_ptr<HeaderClientChannel,
-                      apache::thrift::async::TDelayedDestruction::Destructor>(
-                        new HeaderClientChannel(socket)));
-    atomicClientPtr = &client;
-
-    boost::polymorphic_downcast<HeaderClientChannel*>(
-      client.getChannel())->setTimeout(10000);
-
-    ready = true;
-
-    EXPECT_NO_THROW(eventBase.loopForever());
-  }).detach();
-
-  // Wait for base to start
-  while (!ready) {
-  }
-
-  TEventBase* eventBase = atomicEventBasePtr.load();
-  FutureServiceAsyncClient* client = atomicClientPtr.load();
-
-  TEventBaseExecutor eastExecutor(eventBase);
-  ManualExecutor westExecutor;
-
-  auto gate = GenericThreadGate<
-    folly::wangle::Executor*, folly::wangle::Executor*, ManualExecutor*>(
-    &westExecutor, &eastExecutor, &westExecutor);
-
-  auto future0 = client->future_sendResponse(&gate, 0);
-  auto future1 = client->future_sendResponse(&gate, 10);
-  auto future2 = client->future_sendResponse(&gate, 20);
-  auto future3 = client->future_sendResponse(&gate, 30);
-  auto future4 = client->future_sendResponse(&gate, 40);
-
-  steady_clock::time_point start = steady_clock::now();
-
-  EXPECT_EQ(gate.value(future3), "test30");
-
-  steady_clock::time_point sent = steady_clock::now();
-
-  EXPECT_EQ(gate.value(future4), "test40");
-  EXPECT_EQ(gate.value(future0), "test0");
-  EXPECT_EQ(gate.value(future2), "test20");
-  EXPECT_EQ(gate.value(future1), "test10");
-
-  steady_clock::time_point gets = steady_clock::now();
-
-  steady_clock::duration sentTime = sent - start;
-  steady_clock::duration getsTime = gets - sent;
-
-  int factor = 2;
-  EXPECT_GE(sentTime, factor * getsTime);
 }
 
 int main(int argc, char** argv) {
