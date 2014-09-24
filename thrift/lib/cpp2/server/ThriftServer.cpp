@@ -572,7 +572,7 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
   if (maxConnections_ > 0) {
     int connections = 0;
     for (auto& worker: workers_) {
-      connections += worker.worker->activeConnections_.size();
+      connections += worker.worker->manager_->getNumConnections();
     }
     connload = (100*connections) / (float)maxConnections_;
   }

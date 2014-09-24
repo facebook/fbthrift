@@ -59,24 +59,11 @@ std::shared_ptr<Cpp2Connection> Cpp2Worker::createConnection(
 
   std::shared_ptr<Cpp2Connection> result(
     new Cpp2Connection(asyncSocket, addr, this));
-  activeConnections_.insert(result);
-
-  scheduleIdleConnectionTimeout(result.get());
+  manager_->addConnection(result.get(), true);
+  result->addConnection(result);
 
   VLOG(4) << "created connection for fd " << asyncSocket->getFd();
   return result;
-}
-
-void Cpp2Worker::scheduleTimeout(
-    apache::thrift::async::HHWheelTimer::Callback* callback,
-    std::chrono::milliseconds timeout) {
-  timer_->scheduleTimeout(callback, timeout);
-}
-
-void Cpp2Worker::scheduleIdleConnectionTimeout(Cpp2Connection* con) {
-  if (server_->getIdleTimeout() > std::chrono::milliseconds(0)) {
-    scheduleTimeout(con, server_->getIdleTimeout());
-  }
 }
 
 void Cpp2Worker::connectionAccepted(int fd, const TSocketAddress& clientAddr)
@@ -86,7 +73,7 @@ void Cpp2Worker::connectionAccepted(int fd, const TSocketAddress& clientAddr)
   auto observer = server_->getObserver();
 
   if (server_->maxConnections_ > 0 &&
-      (activeConnections_.size() >=
+      (manager_->getNumConnections() >=
        server_->maxConnections_ / server_->nWorkers_) ) {
     if (observer) {
       observer->connDropped();
@@ -161,16 +148,12 @@ void Cpp2Worker::useExistingChannel(
 
   auto conn = std::make_shared<Cpp2Connection>(
       nullptr, &address, this, serverChannel);
-  activeConnections_.insert(conn);
+  manager_->addConnection(conn.get());
+  conn->addConnection(conn);
 
   DCHECK(!eventBase_);
   // Use supplied event base and don't delete it when finished
   eventBase_.reset(serverChannel->getEventBase(), [](TEventBase*){});
-
-  // Set up HHWheelTimer. It manages connection idle timeout as well as
-  // request timeout.
-  DCHECK(!timer_);
-  timer_.reset(new HHWheelTimer(eventBase_.get()));
 
   conn->start();
 }
@@ -205,10 +188,6 @@ void Cpp2Worker::serve() {
     // TEventBaseManager to get an event base for this thread yet.
     server_->getEventBaseManager()->setEventBase(eventBase_.get(), false);
 
-    // Set up HHWheelTimer. It manages connection idle timeout as well as
-    // request timeout.
-    timer_.reset(new HHWheelTimer(eventBase_.get()));
-
     // No events are registered by default, loopForever.
     eventBase_->loopForever();
 
@@ -221,17 +200,8 @@ void Cpp2Worker::serve() {
   }
 }
 
-void Cpp2Worker::closeConnection(
-  std::shared_ptr<Cpp2Connection> connection) {
-  activeConnections_.erase(connection);
-  connection->stop();
-}
-
 void Cpp2Worker::closeConnections() {
-  for (auto& connection : activeConnections_) {
-    connection->stop();
-  }
-  activeConnections_.clear();
+  manager_->dropAllConnections();
 }
 
 Cpp2Worker::~Cpp2Worker() {
@@ -246,11 +216,11 @@ int Cpp2Worker::pendingCount() {
   if (pendingTime_ < now) {
     pendingTime_ = now + std::chrono::milliseconds(FLAGS_pending_interval);
     pendingCount_ = 0;
-    for (auto& connection : activeConnections_) {
-      if (connection->pending()) {
+    manager_->iterateConns([&](folly::wangle::ManagedConnection* connection) {
+      if ((static_cast<Cpp2Connection*>(connection))->pending()) {
         pendingCount_++;
       }
-    }
+    });
   }
 
   return pendingCount_;

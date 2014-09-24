@@ -26,6 +26,8 @@
 #include <thrift/lib/cpp/server/TServer.h>
 #include <unordered_set>
 
+#include <folly/experimental/wangle/ConnectionManager.h>
+
 namespace apache { namespace thrift {
 
 // Forward declaration of classes
@@ -84,6 +86,8 @@ class Cpp2Worker :
     if (observer) {
       eventBase_->setObserver(observer);
     }
+    manager_ = folly::wangle::ConnectionManager::makeUnique(
+      eventBase_.get(), server->getIdleTimeout());
   }
 
   /**
@@ -108,15 +112,6 @@ class Cpp2Worker :
    ThriftServer* getServer() const {
     return server_;
   }
-
-  void scheduleIdleConnectionTimeout(Cpp2Connection* con);
-  void scheduleTimeout(apache::thrift::async::HHWheelTimer::Callback* callback,
-                       std::chrono::milliseconds timeout);
-
-  /**
-   * Close a specific channel.
-   */
-  void closeConnection(std::shared_ptr<Cpp2Connection>);
 
   /**
    * Close all channels.
@@ -163,10 +158,6 @@ class Cpp2Worker :
    */
   int getPendingCount() const;
 
-
- protected:
-    apache::thrift::async::HHWheelTimer::UniquePtr timer_;
-
  private:
   /// The mother ship.
   ThriftServer* server_;
@@ -204,11 +195,6 @@ class Cpp2Worker :
   void useExistingChannel(
       const std::shared_ptr<HeaderServerChannel>& serverChannel);
 
-  /**
-   * The list of active connections
-   */
-  std::unordered_set<std::shared_ptr<Cpp2Connection>> activeConnections_;
-
   uint32_t activeRequests_;
 
   int pendingCount_;
@@ -216,6 +202,8 @@ class Cpp2Worker :
 
   friend class Cpp2Connection;
   friend class ThriftServer;
+
+  folly::wangle::ConnectionManager::UniquePtr manager_;
 };
 
 }} // apache::thrift

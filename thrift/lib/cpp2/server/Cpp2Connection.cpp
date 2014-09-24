@@ -109,12 +109,15 @@ Cpp2Connection::~Cpp2Connection() {
     handler->connectionDestroyed(&context_);
   }
 
-  cancelTimeout();
   channel_.reset();
 }
 
 void Cpp2Connection::stop() {
-  cancelTimeout();
+  if (!getConnectionManager()) {
+    return; // Could be a recursive call from channelClosed
+  }
+  getConnectionManager()->removeConnection(this);
+
   for (auto req : activeRequests_) {
     VLOG(1) << "Task killed due to channel close: " <<
       context_.getPeerAddress()->describe();
@@ -127,11 +130,14 @@ void Cpp2Connection::stop() {
 
   if (channel_) {
     channel_->setCallback(nullptr);
+
+    // Release the socket to avoid long CLOSE_WAIT times
+    channel_->closeNow();
   }
 
-  // Release the socket to avoid long CLOSE_WAIT times
-  channel_->closeNow();
   socket_.reset();
+
+  this_.reset();
 }
 
 void Cpp2Connection::timeoutExpired() noexcept {
@@ -146,7 +152,7 @@ void Cpp2Connection::timeoutExpired() noexcept {
 void Cpp2Connection::disconnect(const char* comment) noexcept {
   // This must be the last call, it may delete this.
   folly::ScopeGuard guard = folly::makeGuard([&]{
-    worker_->closeConnection(shared_from_this());
+    stop();
   });
 
   VLOG(1) << "ERROR: Disconnect: " << comment << " on channel: " <<
@@ -231,7 +237,6 @@ THeader::StringToStringMap Cpp2Connection::setErrorHeaders(
 // Response Channel callbacks
 void Cpp2Connection::requestReceived(
   unique_ptr<ResponseChannel::Request>&& req) {
-
   auto server = worker_->getServer();
   auto observer = server->getObserver();
 
@@ -291,7 +296,7 @@ void Cpp2Connection::requestReceived(
     // Close the channel, since the handler now owns the socket.
     channel_->setCallback(nullptr);
     channel_->setTransport(nullptr);
-    worker_->closeConnection(shared_from_this());
+    stop();
     return;
   }
 
@@ -324,7 +329,7 @@ void Cpp2Connection::requestReceived(
 
   unique_ptr<folly::IOBuf> buf = req->getBuf()->clone();
   unique_ptr<Cpp2Request> t2r(
-    new Cpp2Request(std::move(req), shared_from_this()));
+    new Cpp2Request(std::move(req), this_));
   activeRequests_.insert(t2r.get());
   ++worker_->activeRequests_;
 
@@ -336,7 +341,7 @@ void Cpp2Connection::requestReceived(
     *(channel_->getHeader())
   );
   if (timeoutTime > std::chrono::milliseconds(0)) {
-    worker_->scheduleTimeout(t2r.get(), timeoutTime);
+    scheduleTimeout(t2r.get(), timeoutTime);
   }
   auto reqContext = t2r->getContext();
 
@@ -368,7 +373,7 @@ void Cpp2Connection::requestReceived(
 void Cpp2Connection::channelClosed(folly::exception_wrapper&& ex) {
   // This must be the last call, it may delete this.
   folly::ScopeGuard guard = folly::makeGuard([&]{
-    worker_->closeConnection(shared_from_this());
+    stop();
   });
 
   VLOG(4) << "Channel " <<
@@ -378,7 +383,7 @@ void Cpp2Connection::channelClosed(folly::exception_wrapper&& ex) {
 void Cpp2Connection::removeRequest(Cpp2Request *req) {
   activeRequests_.erase(req);
   if (activeRequests_.empty()) {
-    worker_->scheduleIdleConnectionTimeout(this);
+    resetTimeout();
   }
 }
 

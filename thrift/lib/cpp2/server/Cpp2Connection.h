@@ -34,6 +34,8 @@
 #include <memory>
 #include <unordered_set>
 
+#include <folly/experimental/wangle/ManagedConnection.h>
+
 namespace apache { namespace thrift {
 /**
  * Represents a connection that is handled via libevent. This connection
@@ -41,8 +43,7 @@ namespace apache { namespace thrift {
  */
 class Cpp2Connection
     : public ResponseChannel::Callback
-    , public apache::thrift::async::HHWheelTimer::Callback
-    , public std::enable_shared_from_this<Cpp2Connection> {
+    , public folly::wangle::ManagedConnection {
  public:
 
   static const std::string loadHeader;
@@ -79,6 +80,21 @@ class Cpp2Connection
   void requestTimeoutExpired();
 
   bool pending();
+
+  // Managed Connection callbacks
+  void describe(std::ostream& os) const override{}
+  bool isBusy() const override {
+    return activeRequests_.empty();
+  }
+  void notifyPendingShutdown() override {}
+  void closeWhenIdle() override {}
+  void dropConnection() override {
+    stop();
+  }
+  void dumpConnectionState(uint8_t loglevel) override {}
+  void addConnection(std::shared_ptr<Cpp2Connection> conn) {
+    this_ = conn;
+  }
 
  protected:
   std::unique_ptr<apache::thrift::AsyncProcessor> processor_;
@@ -178,7 +194,7 @@ class Cpp2Connection
 
   friend class Cpp2Request;
 
-  std::weak_ptr<Cpp2Connection> weakptr_;
+  std::shared_ptr<Cpp2Connection> this_;
 };
 
 }} // apache::thrift
