@@ -5,7 +5,7 @@
 // http://developers.facebook.com/thrift/
 
 namespace cpp apache.thrift
-namespace php apache.thrift
+namespace php thrift
 namespace py apache.thrift.dynamic
 
 cpp_include "thrift/lib/thrift/SerializableDynamic.h"
