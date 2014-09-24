@@ -1542,8 +1542,6 @@ class CppGenerator(t_generator.Generator):
                 out("{name}({args_list});".format(name=function.name,
                                                 args_list=args_list))
 
-                with out("if (_returnState.exception())"):
-                    out("std::rethrow_exception(_returnState.exception());")
                 out("getChannel()->getEventBase()->loopForever();")
 
                 if not function.oneway:

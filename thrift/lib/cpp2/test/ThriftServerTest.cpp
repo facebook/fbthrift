@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
@@ -603,6 +604,42 @@ TEST(ThriftServer, BadSendTest) {
 
   std::string response;
   EXPECT_THROW(client.sync_sendResponse(response, 64), TTransportException);
+}
+
+TEST(ThriftServer, ResetStateTest) {
+  TEventBase base;
+
+  // Create a server socket and bind, don't listen.  This gets us a
+  // port to test with which is guaranteed to fail.
+  auto ssock = std::unique_ptr<
+    TAsyncServerSocket,
+    apache::thrift::async::TDelayedDestruction::Destructor>(
+      new TAsyncServerSocket);
+  ssock->bind(0);
+  EXPECT_FALSE(ssock->getAddresses().empty());
+  auto port = ssock->getAddresses()[0].getPort();
+
+  // We do this loop a bunch of times, because the bug which caused
+  // the assertion failure was a lost race, which doesn't happen
+  // reliably.
+  for (int i = 0; i < 1000; ++i) {
+    std::shared_ptr<TAsyncSocket> socket(
+      TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+
+    // Create a client.
+    TestServiceAsyncClient client(
+      std::unique_ptr<HeaderClientChannel,
+      apache::thrift::async::TDelayedDestruction::Destructor>(
+        new HeaderClientChannel(socket)));
+
+    std::string response;
+    // This will fail, because there's no server.
+    EXPECT_THROW(client.sync_sendResponse(response, 64), TTransportException);
+    // On a failed client object, this should also throw an exception.
+    // In the past, this would generate an assertion failure and
+    // crash.
+    EXPECT_THROW(client.sync_sendResponse(response, 64), TTransportException);
+  }
 }
 
 TEST(ThriftServer, FailureInjection) {
