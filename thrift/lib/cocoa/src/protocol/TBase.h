@@ -18,19 +18,28 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "TNSStreamTransport.h"
 
-@interface TSocketClient : TNSStreamTransport 
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
-<NSStreamDelegate>
-#endif
-{
-}
+#import "TProtocol.h"
 
-- (id) initWithHostname: (NSString *) hostname
-                   port: (int) port;
+@interface TRoot : NSObject
 
 @end
 
+@protocol TBase <NSObject>
 
+/**
+ * De-serialize object from the given input protocol
+ *
+ * @param input protocol used for reading 
+ */
+- (void) read: (id <TProtocol>) inProtocol;
+
+/**
+ * Serialize object to the given protocol
+ *
+ * @param buf output protocol used for writing
+ */
+- (void) write: (id <TProtocol>) outProtocol;
+
+@end
 

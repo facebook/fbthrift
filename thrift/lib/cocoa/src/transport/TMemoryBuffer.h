@@ -18,19 +18,12 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "TNSStreamTransport.h"
+#import "TTransport.h"
 
-@interface TSocketClient : TNSStreamTransport 
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
-<NSStreamDelegate>
-#endif
-{
+@interface TMemoryBuffer : NSObject <TTransport> {
+	NSMutableData *mBuffer;
+	NSUInteger mOffset;
 }
-
-- (id) initWithHostname: (NSString *) hostname
-                   port: (int) port;
-
+- (id)initWithData:(NSData *)data;
+- (NSData *)getBuffer;
 @end
-
-
-

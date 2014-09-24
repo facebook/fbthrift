@@ -17,20 +17,26 @@
  * under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import "TNSStreamTransport.h"
+#import "TSSLSocketException.h"
 
-@interface TSocketClient : TNSStreamTransport 
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
-<NSStreamDelegate>
-#endif
+@implementation TSSLSocketException
+
++ (id) exceptionWithReason: (NSString *) reason
+                     error: (NSError *) error
 {
+    NSDictionary * userInfo = nil;
+    if (error != nil) {
+        userInfo = [NSDictionary dictionaryWithObject: error forKey: @"error"];
+    }
+    
+    return [super exceptionWithName: @"TSSLSocketException"
+                             reason: reason
+                           userInfo: userInfo];
 }
 
-- (id) initWithHostname: (NSString *) hostname
-                   port: (int) port;
++ (id) exceptionWithReason: (NSString *) reason
+{
+    return [self exceptionWithReason: reason error: nil];
+}
 
 @end
-
-
-

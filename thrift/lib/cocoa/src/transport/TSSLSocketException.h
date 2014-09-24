@@ -17,20 +17,13 @@
  * under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import "TNSStreamTransport.h"
+#import "TTransportException.h"
 
-@interface TSocketClient : TNSStreamTransport 
-#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
-<NSStreamDelegate>
-#endif
-{
-}
+@interface TSSLSocketException : TTransportException
 
-- (id) initWithHostname: (NSString *) hostname
-                   port: (int) port;
++ (id) exceptionWithReason: (NSString *) reason
+                     error: (NSError *) error;
+
++ (id) exceptionWithReason: (NSString *) reason;
 
 @end
-
-
-

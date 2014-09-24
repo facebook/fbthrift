@@ -19,6 +19,7 @@
 
 #import "TBinaryProtocol.h"
 #import "TProtocolException.h"
+#import "TObjective-C.h"
 
 int32_t VERSION_1 = 0x80010000;
 int32_t VERSION_MASK = 0xffff0000;
@@ -37,7 +38,7 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
 }
 
 - (TBinaryProtocol *) newProtocolOnTransport: (id <TTransport>) transport {
-  return [[[TBinaryProtocol alloc] initWithTransport: transport] autorelease];
+  return [[TBinaryProtocol alloc] initWithTransport: transport];
 }
 
 @end
@@ -48,7 +49,7 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
 
 - (id) initWithTransport: (id <TTransport>) transport
 {
-  return [self initWithTransport: transport strictRead: NO strictWrite: NO];
+  return [self initWithTransport: transport strictRead: NO strictWrite: YES];
 }
 
 - (id) initWithTransport: (id <TTransport>) transport
@@ -56,7 +57,7 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
              strictWrite: (BOOL) strictWrite
 {
   self = [super init];
-  mTransport = [transport retain];
+  mTransport = [transport retain_stub];
   mStrictRead = strictRead;
   mStrictWrite = strictWrite;
   return self;
@@ -77,8 +78,8 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
 
 - (void) dealloc
 {
-  [mTransport release];
-  [super dealloc];
+  [mTransport release_stub];
+  [super dealloc_stub];
 }
 
 
@@ -117,7 +118,7 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
                                  reason: @"Bad version in readMessageBegin"];
     }
     if (type != NULL) {
-      *type = version & 0x00FF;
+      *type = size & 0x00FF;
     }
     NSString * messageName = [self readString];
     if (name != NULL) {

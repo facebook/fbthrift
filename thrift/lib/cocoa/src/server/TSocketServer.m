@@ -22,6 +22,7 @@
 #import "TNSFileHandleTransport.h"
 #import "TProtocol.h"
 #import "TTransportException.h"
+#import "TObjective-C.h"
 #import <sys/socket.h>
 #include <netinet/in.h>
 
@@ -40,14 +41,15 @@ NSString * const kTSockerServer_TransportKey = @"TSockerServer_Transport";
 {
   self = [super init];
 
-  mInputProtocolFactory = [protocolFactory retain];
-  mOutputProtocolFactory = [protocolFactory retain];
-  mProcessorFactory = [processorFactory retain];
+  mInputProtocolFactory = [protocolFactory retain_stub];
+  mOutputProtocolFactory = [protocolFactory retain_stub];
+  mProcessorFactory = [processorFactory retain_stub];
 
   // create a socket.
   int fd = -1;
   CFSocketRef socket = CFSocketCreate(kCFAllocatorDefault, PF_INET, SOCK_STREAM, IPPROTO_TCP, 0, NULL, NULL);
   if (socket) {
+    CFSocketSetSocketFlags(socket, CFSocketGetSocketFlags(socket) & ~kCFSocketCloseOnInvalidate);
     fd = CFSocketGetNative(socket);
     int yes = 1;
     setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void *)&yes, sizeof(yes));
@@ -59,7 +61,9 @@ NSString * const kTSockerServer_TransportKey = @"TSockerServer_Transport";
     addr.sin_port = htons(port);
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
     NSData *address = [NSData dataWithBytes:&addr length:sizeof(addr)];
-    if (CFSocketSetAddress(socket, (CFDataRef)address) != kCFSocketSuccess) {
+    if (CFSocketSetAddress(socket, (bridge_stub CFDataRef)address) != kCFSocketSuccess) {
+      CFSocketInvalidate(socket);
+      CFRelease(socket);
       NSLog(@"*** Could not bind to address");
       return nil;
     }
@@ -71,6 +75,10 @@ NSString * const kTSockerServer_TransportKey = @"TSockerServer_Transport";
   // wrap it in a file handle so we can get messages from it
   mSocketFileHandle = [[NSFileHandle alloc] initWithFileDescriptor: fd
                                                     closeOnDealloc: YES];
+  
+  // throw away our socket
+  CFSocketInvalidate(socket);
+  CFRelease(socket);
   
     // register for notifications of accepted incoming connections
   [[NSNotificationCenter defaultCenter] addObserver: self
@@ -88,12 +96,12 @@ NSString * const kTSockerServer_TransportKey = @"TSockerServer_Transport";
 
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObject: self];
-  [mInputProtocolFactory release];
-  [mOutputProtocolFactory release];
-  [mProcessorFactory release];
-  [mSocketFileHandle release];
-  [super dealloc];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [mInputProtocolFactory release_stub];
+  [mOutputProtocolFactory release_stub];
+  [mProcessorFactory release_stub];
+  [mSocketFileHandle release_stub];
+  [super dealloc_stub];
 }
 
 
@@ -112,13 +120,45 @@ NSString * const kTSockerServer_TransportKey = @"TSockerServer_Transport";
 
 - (void) handleClientConnection: (NSFileHandle *) clientSocket
 {
+#if __has_feature(objc_arc)
+    @autoreleasepool {
+        TNSFileHandleTransport * transport = [[TNSFileHandleTransport alloc] initWithFileHandle: clientSocket];
+        id<TProcessor> processor = [mProcessorFactory processorForTransport: transport];
+        
+        id <TProtocol> inProtocol = [mInputProtocolFactory newProtocolOnTransport: transport];
+        id <TProtocol> outProtocol = [mOutputProtocolFactory newProtocolOnTransport: transport];
+        
+        @try {
+            BOOL result = NO;
+            do {
+                @autoreleasepool {
+                    result = [processor processOnInputProtocol: inProtocol outputProtocol: outProtocol];
+                }
+            } while (result);
+        }
+        @catch (TTransportException * te) {
+            //NSLog(@"Caught transport exception, abandoning client connection: %@", te);
+        }
+        
+        NSNotification * n = [NSNotification notificationWithName: kTSocketServer_ClientConnectionFinishedForProcessorNotification
+                                                           object: self
+                                                         userInfo: [NSDictionary dictionaryWithObjectsAndKeys: 
+                                                                    processor,
+                                                                    kTSocketServer_ProcessorKey,
+                                                                    transport,
+                                                                    kTSockerServer_TransportKey,
+                                                                    nil]];
+        [[NSNotificationCenter defaultCenter] performSelectorOnMainThread: @selector(postNotification:) withObject: n waitUntilDone: YES];
+        
+    }
+#else
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
   
   TNSFileHandleTransport * transport = [[TNSFileHandleTransport alloc] initWithFileHandle: clientSocket];
   id<TProcessor> processor = [mProcessorFactory processorForTransport: transport];
   
-  id <TProtocol> inProtocol = [mInputProtocolFactory newProtocolOnTransport: transport];
-  id <TProtocol> outProtocol = [mOutputProtocolFactory newProtocolOnTransport: transport];
+  id <TProtocol> inProtocol = [[mInputProtocolFactory newProtocolOnTransport: transport] autorelease];
+  id <TProtocol> outProtocol = [[mOutputProtocolFactory newProtocolOnTransport: transport] autorelease];
 
   @try {
     BOOL result = NO;
@@ -143,6 +183,7 @@ NSString * const kTSockerServer_TransportKey = @"TSockerServer_Transport";
   [[NSNotificationCenter defaultCenter] performSelectorOnMainThread: @selector(postNotification:) withObject: n waitUntilDone: YES];
   
   [pool release];
+#endif
 }
 
 

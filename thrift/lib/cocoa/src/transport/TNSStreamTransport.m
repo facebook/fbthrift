@@ -19,6 +19,7 @@
 
 #import "TNSStreamTransport.h"
 #import "TTransportException.h"
+#import "TObjective-C.h"
 
 
 @implementation TNSStreamTransport
@@ -26,9 +27,9 @@
 - (id) initWithInputStream: (NSInputStream *) input
               outputStream: (NSOutputStream *) output
 {
-  [super init];
-  mInput = [input retain];
-  mOutput = [output retain];
+  self = [super init];
+  self.mInput = [input retain_stub];
+  self.mOutput = [output retain_stub];
   return self;
 }
 
@@ -44,9 +45,9 @@
 
 - (void) dealloc
 {
-  [mInput release];
-  [mOutput release];
-  [super dealloc];
+  [self.mInput release_stub];
+  [self.mOutput release_stub];
+  [super dealloc_stub];
 }
 
 
@@ -55,7 +56,7 @@
   int got = 0;
   int ret = 0;
   while (got < len) {
-    ret = [mInput read: buf+off+got maxLength: len-got];
+    ret = [self.mInput read: buf+off+got maxLength: len-got];
     if (ret <= 0) {
       @throw [TTransportException exceptionWithReason: @"Cannot read. Remote side has closed."];
     }
@@ -65,15 +66,15 @@
 }
 
 
-- (void) write: (uint8_t *) data offset: (unsigned int) offset length: (unsigned int) length
+- (void) write: (const uint8_t *) data offset: (unsigned int) offset length: (unsigned int) length
 {
   int got = 0;
   int result = 0;
   while (got < length) {
-    result = [mOutput write: data+offset+got maxLength: length-got];
+    result = [self.mOutput write: data+offset+got maxLength: length-got];
     if (result == -1) {
       @throw [TTransportException exceptionWithReason: @"Error writing to transport output stream."
-                                                error: [mOutput streamError]];
+                                                error: [self.mOutput streamError]];
     } else if (result == 0) {
       @throw [TTransportException exceptionWithReason: @"End of output stream."];
     }
