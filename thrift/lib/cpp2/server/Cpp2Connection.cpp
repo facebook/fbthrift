@@ -113,10 +113,9 @@ Cpp2Connection::~Cpp2Connection() {
 }
 
 void Cpp2Connection::stop() {
-  if (!getConnectionManager()) {
-    return; // Could be a recursive call from channelClosed
+  if (getConnectionManager()) {
+    getConnectionManager()->removeConnection(this);
   }
-  getConnectionManager()->removeConnection(this);
 
   for (auto req : activeRequests_) {
     VLOG(1) << "Task killed due to channel close: " <<
