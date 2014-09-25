@@ -116,7 +116,6 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   ../cpp/transport/THeaderTransport.cpp \
 			   ../cpp/util/ScopedServerThread.cpp \
 			   ../cpp/util/SocketRetriever.cpp \
-			   ../cpp/async/TAsyncServerSocket.cpp \
 			   ../cpp/util/VarintUtils.cpp \
 			   ../cpp/async/TAsyncTimeoutSet.cpp \
 			   ../cpp/util/FdUtils.cpp \

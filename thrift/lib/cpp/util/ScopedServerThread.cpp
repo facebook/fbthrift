@@ -155,6 +155,8 @@ void ScopedServerThread::Helper::run() {
     handleServeError(x);
   } catch (const TException& x) {
     handleServeError(x);
+  } catch (const std::system_error& x) {
+    handleServeError(x);
   } catch (const std::exception& x) {
     handleServeError(x);
   } catch (...) {

@@ -140,8 +140,9 @@ void testBindFailure() {
     BOOST_ERROR("we expected bind() to fail, but the server returned "
                 "successfully from serve()");
   } catch (const TTransportException& ex) {
-    // Serve should throw a TTransportException
     BOOST_CHECK_EQUAL(ex.getType(), TTransportException::COULD_NOT_BIND);
+  } catch (const std::system_error& ex) {
+    BOOST_CHECK_EQUAL(ex.code().value(), EADDRINUSE);
   }
 }
 
@@ -206,6 +207,8 @@ void testThreadedBindFailure() {
   } catch (const TTransportException& ex) {
     // Serve should throw a TTransportException
     BOOST_CHECK_EQUAL(ex.getType(), TTransportException::COULD_NOT_BIND);
+  } catch (const std::system_error& ex) {
+    BOOST_CHECK_EQUAL(ex.code().value(), EADDRINUSE);
   }
 }
 
