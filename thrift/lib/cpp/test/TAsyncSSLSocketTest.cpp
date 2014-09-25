@@ -24,7 +24,7 @@
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 
 #include <gtest/gtest.h>
 #include <iostream>
@@ -50,7 +50,7 @@ using apache::thrift::async::TAsyncSSLServerSocket;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::async::TEventBase;
 using apache::thrift::concurrency::Util;
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
 using apache::thrift::transport::SSLContext;
 using apache::thrift::transport::TSSLSocket;

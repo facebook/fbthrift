@@ -525,7 +525,7 @@ class TestSSLServer {
   std::shared_ptr<apache::thrift::transport::SSLContext> ctx_;
   apache::thrift::async::TAsyncSSLServerSocket::SSLAcceptCallback *acb_;
   apache::thrift::async::TAsyncSSLServerSocket *socket_;
-  apache::thrift::transport::TSocketAddress address_;
+  folly::SocketAddress address_;
   pthread_t thread_;
 
   static void *Main(void *ctx) {
@@ -550,7 +550,7 @@ class TestSSLServer {
 
   apache::thrift::async::TEventBase &getEventBase() { return evb_; }
 
-  const apache::thrift::transport::TSocketAddress& getAddress() const {
+  const folly::SocketAddress& getAddress() const {
     return address_;
   }
 };
@@ -1005,7 +1005,7 @@ class SSLClient : public apache::thrift::async::TAsyncSocket::ConnectCallback,
   SSL_SESSION *session_;
   std::shared_ptr<apache::thrift::transport::SSLContext> ctx_;
   uint32_t requests_;
-  apache::thrift::transport::TSocketAddress address_;
+  folly::SocketAddress address_;
   uint32_t timeout_;
   char buf_[128];
   char readbuf_[128];
@@ -1017,7 +1017,7 @@ class SSLClient : public apache::thrift::async::TAsyncSocket::ConnectCallback,
 
  public:
   SSLClient(apache::thrift::async::TEventBase *eventBase,
-            const apache::thrift::transport::TSocketAddress& address,
+            const folly::SocketAddress& address,
             uint32_t requests, uint32_t timeout = 0)
       : eventBase_(eventBase),
         session_(nullptr),

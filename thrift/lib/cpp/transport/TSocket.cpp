@@ -75,7 +75,7 @@ TSocket::TSocket(string host, int port) :
   maxRecvRetries_(5) {
 }
 
-TSocket::TSocket(const TSocketAddress* address) :
+TSocket::TSocket(const folly::SocketAddress* address) :
   host_(address->getAddressStr()),
   port_(address->getPort()),
   socket_(-1),
@@ -85,7 +85,7 @@ TSocket::TSocket(const TSocketAddress* address) :
   // an address in connect()
 }
 
-TSocket::TSocket(const TSocketAddress& address) :
+TSocket::TSocket(const folly::SocketAddress& address) :
   host_(address.getAddressStr()),
   port_(address.getPort()),
   socket_(-1),
@@ -869,7 +869,7 @@ string TSocket::getSocketInfo() {
   return oss.str();
 }
 
-const TSocketAddress* TSocket::getPeerAddress() {
+const folly::SocketAddress* TSocket::getPeerAddress() {
   if (socket_ < 0) {
     throw TTransportException(TTransportException::NOT_OPEN,
                               "attempted to get address of a non-open TSocket");

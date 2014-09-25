@@ -53,7 +53,7 @@ using apache::thrift::concurrency::Util;
  */
 std::shared_ptr<Cpp2Connection> Cpp2Worker::createConnection(
   std::shared_ptr<TAsyncSocket> asyncSocket,
-  const TSocketAddress* addr) {
+  const folly::SocketAddress* addr) {
   VLOG(4) << "Cpp2Worker: Creating connection for socket " <<
     asyncSocket->getFd();
 
@@ -66,7 +66,7 @@ std::shared_ptr<Cpp2Connection> Cpp2Worker::createConnection(
   return result;
 }
 
-void Cpp2Worker::connectionAccepted(int fd, const TSocketAddress& clientAddr)
+void Cpp2Worker::connectionAccepted(int fd, const folly::SocketAddress& clientAddr)
   noexcept {
   TAsyncSocket *asyncSock = nullptr;
   TAsyncSSLSocket *sslSock = nullptr;
@@ -127,7 +127,7 @@ void Cpp2Worker::finishConnectionAccepted(TAsyncSocket *asyncSocket) {
   std::shared_ptr<TAsyncSocket> asyncSocketPtr(
     asyncSocket, TDelayedDestruction::Destructor());
   try {
-    TSocketAddress clientAddr;
+    folly::SocketAddress clientAddr;
     asyncSocketPtr->getPeerAddress(&clientAddr);
     clientConnection = createConnection(asyncSocketPtr, &clientAddr);
   } catch (...) {
@@ -144,7 +144,7 @@ void Cpp2Worker::finishConnectionAccepted(TAsyncSocket *asyncSocket) {
 void Cpp2Worker::useExistingChannel(
     const std::shared_ptr<HeaderServerChannel>& serverChannel) {
 
-  TSocketAddress address;
+  folly::SocketAddress address;
 
   auto conn = std::make_shared<Cpp2Connection>(
       nullptr, &address, this, serverChannel);

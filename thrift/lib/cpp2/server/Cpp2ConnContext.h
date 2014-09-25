@@ -31,7 +31,7 @@ namespace apache { namespace thrift {
 class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
  public:
   explicit Cpp2ConnContext(
-    const apache::thrift::transport::TSocketAddress* address,
+    const folly::SocketAddress* address,
     const apache::thrift::async::TAsyncSocket* socket,
     apache::thrift::transport::THeader* header,
     const apache::thrift::SaslServer* sasl_server,
@@ -47,12 +47,12 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
   }
 
-  virtual const apache::thrift::transport::TSocketAddress*
+  virtual const folly::SocketAddress*
   getPeerAddress() const {
     return &peerAddress_;
   }
 
-  const apache::thrift::transport::TSocketAddress* getLocalAddress() const {
+  const folly::SocketAddress* getLocalAddress() const {
     return &localAddress_;
   }
 
@@ -104,8 +104,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return client;
   }
  private:
-  apache::thrift::transport::TSocketAddress peerAddress_;
-  apache::thrift::transport::TSocketAddress localAddress_;
+  folly::SocketAddress peerAddress_;
+  folly::SocketAddress localAddress_;
   apache::thrift::transport::THeader* header_;
   const apache::thrift::SaslServer* saslServer_;
   apache::thrift::async::TEventBaseManager* manager_;
@@ -134,12 +134,12 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   }
 
   // Forward all connection-specific information
-  virtual const apache::thrift::transport::TSocketAddress*
+  virtual const folly::SocketAddress*
   getPeerAddress() const {
     return ctx_->getPeerAddress();
   }
 
-  const apache::thrift::transport::TSocketAddress* getLocalAddress() const {
+  const folly::SocketAddress* getLocalAddress() const {
     return ctx_->getLocalAddress();
   }
 

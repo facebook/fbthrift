@@ -29,7 +29,7 @@
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 
@@ -1017,8 +1017,8 @@ class DestroyAsyncTransport : public apache::thrift::async::TAsyncTransport {
   TEventBase* getEventBase() const { return nullptr; }
   void setSendTimeout(uint32_t ms) { }
   uint32_t getSendTimeout() const { return 0; }
-  void getLocalAddress(TSocketAddress* a) const { }
-  void getPeerAddress(TSocketAddress* a) const { }
+  void getLocalAddress(folly::SocketAddress* a) const { }
+  void getPeerAddress(folly::SocketAddress* a) const { }
   size_t getAppBytesWritten() const { return 0; }
   size_t getRawBytesWritten() const { return 0; }
   size_t getAppBytesReceived() const { return 0; }

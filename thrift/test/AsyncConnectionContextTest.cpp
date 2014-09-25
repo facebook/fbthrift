@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #include "thrift/test/gen-cpp/Service.h"
@@ -77,7 +74,7 @@ class Client: public Runnable {
     std::shared_ptr<ServiceClient> testClient(new ServiceClient(protocol));
 
     // Get the ip for this client
-    std::shared_ptr<TSocketAddress> sa(new TSocketAddress());
+    std::shared_ptr<folly::SocketAddress> sa(new folly::SocketAddress());
     sa->setFromLocalAddress(socket->getSocketFD());
     // Update the countMap using the ipAddr port
     int port = sa->getPort();
@@ -165,7 +162,7 @@ class ServerEventHandler : public TProcessorEventHandler {
    * current connection.
    *
    * @returns current IP_address for this connection,
-   *          transport::TSocketAddress* casted into a void*.
+   *          folly::SocketAddress* casted into a void*.
    */
   void* getContext(const char* fn_name,
                    TConnectionContext* serverContext = nullptr) {
@@ -182,7 +179,7 @@ class ServerEventHandler : public TProcessorEventHandler {
    * Get the client ip port from the connection context
    */
   int getPort(void* ctx) {
-    return ((transport::TSocketAddress*)ctx)->getPort();
+    return ((folly::SocketAddress*)ctx)->getPort();
   }
 
   /**
@@ -263,7 +260,7 @@ BOOST_AUTO_TEST_CASE(asyncConnectionContextTest) {
   TEventServerCreator serverCreator(asyncProcessor, 0, 1);
   ScopedServerThread serverThread(&serverCreator);
 
-  const TSocketAddress* socketAddress = serverThread.getAddress();
+  const folly::SocketAddress* socketAddress = serverThread.getAddress();
   int port = socketAddress->getPort();
 
   std::cout << "Initializing server on port " << port << "\n";

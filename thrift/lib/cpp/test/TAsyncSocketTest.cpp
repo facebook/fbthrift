@@ -22,7 +22,7 @@
 #include <thrift/lib/cpp/test/TimeUtil.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 
 #include <folly/io/IOBuf.h>
 
@@ -55,7 +55,7 @@ using apache::thrift::async::WriteFlags;
 using apache::thrift::concurrency::Util;
 using apache::thrift::transport::TServerSocket;
 using apache::thrift::transport::TSocket;
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
 using folly::IOBuf;
 using boost::scoped_array;
@@ -243,7 +243,7 @@ class TestServer {
   }
 
   // Get the address for connecting to the server
-  const TSocketAddress& getAddress() const {
+  const folly::SocketAddress& getAddress() const {
     return address_;
   }
 
@@ -297,7 +297,7 @@ class TestServer {
 
  private:
   int fd_;
-  TSocketAddress address_;
+  folly::SocketAddress address_;
 };
 
 class DelayedWrite: public TAsyncTimeout {
@@ -359,7 +359,7 @@ BOOST_AUTO_TEST_CASE(ConnectRefused) {
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&evb);
 
   // Hopefully nothing is actually listening on this address
-  TSocketAddress addr("127.0.0.1", 65535);
+  folly::SocketAddress addr("127.0.0.1", 65535);
   ConnCallback cb;
   socket->connect(&cb, addr, 30);
 
@@ -383,7 +383,7 @@ BOOST_AUTO_TEST_CASE(ConnectTimeout) {
   // Hopefully this IP will be routable but unresponsive.
   // (Alternatively, we could try listening on a local raw socket, but that
   // normally requires root privileges.)
-  TSocketAddress addr("8.8.8.8", 65535);
+  folly::SocketAddress addr("8.8.8.8", 65535);
   ConnCallback cb;
   socket->connect(&cb, addr, 1); // also set a ridiculously small timeout
 
@@ -395,7 +395,7 @@ BOOST_AUTO_TEST_CASE(ConnectTimeout) {
   // Verify that we can still get the peer address after a timeout.
   // Use case is if the client was created from a client pool, and we want
   // to log which peer failed.
-  TSocketAddress peer;
+  folly::SocketAddress peer;
   socket->getPeerAddress(&peer);
   BOOST_CHECK_EQUAL(peer, addr);
 }
@@ -1546,7 +1546,7 @@ class TestAcceptCallback : public TAsyncServerSocket::AcceptCallback {
     TYPE_STOP
   };
   struct EventInfo {
-    EventInfo(int fd, const TSocketAddress& addr)
+    EventInfo(int fd, const folly::SocketAddress& addr)
       : type(TYPE_ACCEPT),
         fd(fd),
         address(addr),
@@ -1564,7 +1564,7 @@ class TestAcceptCallback : public TAsyncServerSocket::AcceptCallback {
 
     EventType type;
     int fd;  // valid for TYPE_ACCEPT
-    TSocketAddress address;  // valid for TYPE_ACCEPT
+    folly::SocketAddress address;  // valid for TYPE_ACCEPT
     string errorMsg;  // valid for TYPE_ERROR
   };
   typedef std::deque<EventInfo> EventList;
@@ -1580,7 +1580,7 @@ class TestAcceptCallback : public TAsyncServerSocket::AcceptCallback {
   }
 
   void setConnectionAcceptedFn(
-      const std::function<void(int, const TSocketAddress&)>& fn) {
+      const std::function<void(int, const folly::SocketAddress&)>& fn) {
     connectionAcceptedFn_ = fn;
   }
   void setAcceptErrorFn(const std::function<void(const std::exception&)>& fn) {
@@ -1593,7 +1593,7 @@ class TestAcceptCallback : public TAsyncServerSocket::AcceptCallback {
     acceptStoppedFn_ = fn;
   }
 
-  void connectionAccepted(int fd, const TSocketAddress& clientAddr)
+  void connectionAccepted(int fd, const folly::SocketAddress& clientAddr)
       noexcept {
     events_.push_back(EventInfo(fd, clientAddr));
 
@@ -1624,7 +1624,7 @@ class TestAcceptCallback : public TAsyncServerSocket::AcceptCallback {
   }
 
  private:
-  std::function<void(int, const TSocketAddress&)> connectionAcceptedFn_;
+  std::function<void(int, const folly::SocketAddress&)> connectionAcceptedFn_;
   std::function<void(const std::exception&)> acceptErrorFn_;
   std::function<void()> acceptStartedFn_;
   std::function<void()> acceptStoppedFn_;
@@ -1643,13 +1643,13 @@ BOOST_AUTO_TEST_CASE(ServerAcceptOptions) {
       TAsyncServerSocket::newSocket(&eventBase));
   serverSocket->bind(0);
   serverSocket->listen(16);
-  TSocketAddress serverAddress;
+  folly::SocketAddress serverAddress;
   serverSocket->getAddress(&serverAddress);
 
   // Add a callback to accept one connection then stop the loop
   TestAcceptCallback acceptCallback;
   acceptCallback.setConnectionAcceptedFn(
-    [&](int fd, const TSocketAddress& addr) {
+    [&](int fd, const folly::SocketAddress& addr) {
       serverSocket->removeAcceptCallback(&acceptCallback, nullptr);
     });
   acceptCallback.setAcceptErrorFn([&](const std::exception& ex) {
@@ -1698,7 +1698,7 @@ BOOST_AUTO_TEST_CASE(RemoveAcceptCallback) {
       TAsyncServerSocket::newSocket(&eventBase));
   serverSocket->bind(0);
   serverSocket->listen(16);
-  TSocketAddress serverAddress;
+  folly::SocketAddress serverAddress;
   serverSocket->getAddress(&serverAddress);
 
   // Add several accept callbacks
@@ -1716,23 +1716,23 @@ BOOST_AUTO_TEST_CASE(RemoveAcceptCallback) {
   // Have callback 2 remove callback 3 and callback 5 the first time it is
   // called.
   int cb2Count = 0;
-  cb1.setConnectionAcceptedFn([&](int fd, const TSocketAddress& addr){
+  cb1.setConnectionAcceptedFn([&](int fd, const folly::SocketAddress& addr){
       std::shared_ptr<TAsyncSocket> sock2(
         TAsyncSocket::newSocket(&eventBase, serverAddress)); // cb2: -cb3 -cb5
       });
-  cb3.setConnectionAcceptedFn([&](int fd, const TSocketAddress& addr){
+  cb3.setConnectionAcceptedFn([&](int fd, const folly::SocketAddress& addr){
     });
-  cb4.setConnectionAcceptedFn([&](int fd, const TSocketAddress& addr){
+  cb4.setConnectionAcceptedFn([&](int fd, const folly::SocketAddress& addr){
       std::shared_ptr<TAsyncSocket> sock3(
         TAsyncSocket::newSocket(&eventBase, serverAddress)); // cb4
     });
-  cb5.setConnectionAcceptedFn([&](int fd, const TSocketAddress& addr){
+  cb5.setConnectionAcceptedFn([&](int fd, const folly::SocketAddress& addr){
   std::shared_ptr<TAsyncSocket> sock5(
       TAsyncSocket::newSocket(&eventBase, serverAddress)); // cb7: -cb7
 
     });
   cb2.setConnectionAcceptedFn(
-    [&](int fd, const TSocketAddress& addr) {
+    [&](int fd, const folly::SocketAddress& addr) {
       if (cb2Count == 0) {
         serverSocket->removeAcceptCallback(&cb3, nullptr);
         serverSocket->removeAcceptCallback(&cb5, nullptr);
@@ -1743,7 +1743,7 @@ BOOST_AUTO_TEST_CASE(RemoveAcceptCallback) {
   // and destroy the server socket the second time it is called
   int cb6Count = 0;
   cb6.setConnectionAcceptedFn(
-    [&](int fd, const TSocketAddress& addr) {
+    [&](int fd, const folly::SocketAddress& addr) {
       if (cb6Count == 0) {
         serverSocket->removeAcceptCallback(&cb4, nullptr);
         std::shared_ptr<TAsyncSocket> sock6(
@@ -1760,7 +1760,7 @@ BOOST_AUTO_TEST_CASE(RemoveAcceptCallback) {
     });
   // Have callback 7 remove itself
   cb7.setConnectionAcceptedFn(
-    [&](int fd, const TSocketAddress& addr) {
+    [&](int fd, const folly::SocketAddress& addr) {
       serverSocket->removeAcceptCallback(&cb7, nullptr);
     });
 
@@ -1860,7 +1860,7 @@ BOOST_AUTO_TEST_CASE(OtherThreadAcceptCallback) {
       TAsyncServerSocket::newSocket(&eventBase));
   serverSocket->bind(0);
   serverSocket->listen(16);
-  TSocketAddress serverAddress;
+  folly::SocketAddress serverAddress;
   serverSocket->getAddress(&serverAddress);
 
   // Add several accept callbacks
@@ -1870,7 +1870,7 @@ BOOST_AUTO_TEST_CASE(OtherThreadAcceptCallback) {
     BOOST_CHECK_NE(thread_id, pthread_self());
     thread_id = pthread_self();
   });
-  cb1.setConnectionAcceptedFn([&](int fd, const TSocketAddress& addr){
+  cb1.setConnectionAcceptedFn([&](int fd, const folly::SocketAddress& addr){
     BOOST_CHECK_EQUAL(thread_id, pthread_self());
     serverSocket->removeAcceptCallback(&cb1, nullptr);
   });
@@ -1919,7 +1919,7 @@ void serverSocketSanityTest(TAsyncServerSocket* serverSocket) {
   // Add a callback to accept one connection then stop accepting
   TestAcceptCallback acceptCallback;
   acceptCallback.setConnectionAcceptedFn(
-    [&](int fd, const TSocketAddress& addr) {
+    [&](int fd, const folly::SocketAddress& addr) {
       serverSocket->removeAcceptCallback(&acceptCallback, nullptr);
     });
   acceptCallback.setAcceptErrorFn([&](const std::exception& ex) {
@@ -1930,7 +1930,7 @@ void serverSocketSanityTest(TAsyncServerSocket* serverSocket) {
 
   // Connect to the server socket
   TEventBase* eventBase = serverSocket->getEventBase();
-  TSocketAddress serverAddress;
+  folly::SocketAddress serverAddress;
   serverSocket->getAddress(&serverAddress);
   TAsyncSocket::UniquePtr socket(new TAsyncSocket(eventBase, serverAddress));
 
@@ -2005,7 +2005,7 @@ BOOST_AUTO_TEST_CASE(ServerExistingSocket) {
     TAsyncServerSocket::UniquePtr serverSocket(
         new TAsyncServerSocket(&eventBase));
     serverSocket->useExistingSocket(fd);
-    TSocketAddress address;
+    folly::SocketAddress address;
     serverSocket->getAddress(&address);
     address.setPort(0);
     serverSocket->bind(address);
@@ -2029,7 +2029,7 @@ BOOST_AUTO_TEST_CASE(ServerExistingSocket) {
     BOOST_REQUIRE_EQUAL(bind(fd, reinterpret_cast<struct sockaddr*>(&addr),
                              sizeof(addr)), 0);
     // Look up the address that we bound to
-    TSocketAddress boundAddress;
+    folly::SocketAddress boundAddress;
     boundAddress.setFromLocalAddress(fd);
 
     // Create a server socket
@@ -2039,7 +2039,7 @@ BOOST_AUTO_TEST_CASE(ServerExistingSocket) {
     serverSocket->listen(16);
 
     // Make sure TAsyncServerSocket reports the same address that we bound to
-    TSocketAddress serverSocketAddress;
+    folly::SocketAddress serverSocketAddress;
     serverSocket->getAddress(&serverSocketAddress);
     BOOST_CHECK_EQUAL(boundAddress, serverSocketAddress);
 
@@ -2061,7 +2061,7 @@ BOOST_AUTO_TEST_CASE(ServerExistingSocket) {
     BOOST_REQUIRE_EQUAL(bind(fd, reinterpret_cast<struct sockaddr*>(&addr),
                              sizeof(addr)), 0);
     // Look up the address that we bound to
-    TSocketAddress boundAddress;
+    folly::SocketAddress boundAddress;
     boundAddress.setFromLocalAddress(fd);
     // listen
     BOOST_REQUIRE_EQUAL(listen(fd, 16), 0);
@@ -2072,7 +2072,7 @@ BOOST_AUTO_TEST_CASE(ServerExistingSocket) {
     serverSocket->useExistingSocket(fd);
 
     // Make sure TAsyncServerSocket reports the same address that we bound to
-    TSocketAddress serverSocketAddress;
+    folly::SocketAddress serverSocketAddress;
     serverSocket->getAddress(&serverSocketAddress);
     BOOST_CHECK_EQUAL(boundAddress, serverSocketAddress);
 
@@ -2089,7 +2089,7 @@ BOOST_AUTO_TEST_CASE(UnixDomainSocketTest) {
       TAsyncServerSocket::newSocket(&eventBase));
   string path(1, 0);
   path.append("/anonymous");
-  TSocketAddress serverAddress;
+  folly::SocketAddress serverAddress;
   serverAddress.setFromPath(path);
   serverSocket->bind(serverAddress);
   serverSocket->listen(16);
@@ -2097,7 +2097,7 @@ BOOST_AUTO_TEST_CASE(UnixDomainSocketTest) {
   // Add a callback to accept one connection then stop the loop
   TestAcceptCallback acceptCallback;
   acceptCallback.setConnectionAcceptedFn(
-    [&](int fd, const TSocketAddress& addr) {
+    [&](int fd, const folly::SocketAddress& addr) {
       serverSocket->removeAcceptCallback(&acceptCallback, nullptr);
     });
   acceptCallback.setAcceptErrorFn([&](const std::exception& ex) {

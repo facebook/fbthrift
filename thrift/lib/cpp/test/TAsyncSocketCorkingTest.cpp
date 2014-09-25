@@ -31,7 +31,7 @@ using apache::thrift::async::TAsyncSSLSocket;
 using apache::thrift::async::TEventBase;
 using apache::thrift::async::WriteFlags;
 using apache::thrift::transport::SSLContext;
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
 using std::shared_ptr;
 using folly::IOBuf;
@@ -43,7 +43,7 @@ class AcceptCallback : public TAsyncServerSocket::AcceptCallback {
  public:
   explicit AcceptCallback(const std::function<void(int)>& fn) : fn_(fn) {}
 
-  void connectionAccepted(int fd, const TSocketAddress& addr) noexcept {
+  void connectionAccepted(int fd, const folly::SocketAddress& addr) noexcept {
     fn_(fd);
   }
   void acceptError(const std::exception& ex) noexcept {
@@ -102,7 +102,7 @@ void createTCPSocketPair(TEventBase* eventBase,
   });
 
   acceptSocket->addAcceptCallback(&acceptCallback, nullptr);
-  TSocketAddress serverAddr("127.0.0.1", 0);
+  folly::SocketAddress serverAddr("127.0.0.1", 0);
   acceptSocket->bind(serverAddr);
   acceptSocket->listen(10);
   acceptSocket->getAddress(&serverAddr);
@@ -144,7 +144,7 @@ void createSSLSocketPair(TEventBase* eventBase,
   });
 
   acceptSocket->addAcceptCallback(&acceptCallback, nullptr);
-  TSocketAddress serverAddr("127.0.0.1", 0);
+  folly::SocketAddress serverAddr("127.0.0.1", 0);
   acceptSocket->bind(serverAddr);
   acceptSocket->listen(10);
   acceptSocket->getAddress(&serverAddr);
@@ -209,10 +209,10 @@ class Packet {
   const TCPHeader* tcp() const {
     return tcp_;
   }
-  const TSocketAddress& src() const {
+  const folly::SocketAddress& src() const {
     return srcAddr_;
   }
-  const TSocketAddress& dst() const {
+  const folly::SocketAddress& dst() const {
     return dstAddr_;
   }
   const uint8_t* payload() const {
@@ -274,8 +274,8 @@ class Packet {
   EthernetHeader* ether_ = nullptr;
   IPv4Header* ip_ = nullptr;
   TCPHeader* tcp_ = nullptr;
-  TSocketAddress srcAddr_;
-  TSocketAddress dstAddr_;
+  folly::SocketAddress srcAddr_;
+  folly::SocketAddress dstAddr_;
   uint8_t* payload_ = nullptr;
   uint32_t payloadLength_ = 0;
 };
@@ -325,8 +325,8 @@ void ensureNPackets(const shared_ptr<TAsyncSocket>& sender,
                     const shared_ptr<TAsyncSocket>& receiver,
                     size_t expectedNumPackets,
                     const std::function<void()>& fn) {
-  TSocketAddress senderAddr;
-  TSocketAddress receiverAddr;
+  folly::SocketAddress senderAddr;
+  folly::SocketAddress receiverAddr;
   sender->getLocalAddress(&senderAddr);
   sender->getPeerAddress(&receiverAddr);
 

@@ -38,7 +38,7 @@ class ScopedServerInterfaceThread {
       const std::string& host = "::1",
       uint16_t port = 0);
 
-  const transport::TSocketAddress& getAddress() const;
+  const folly::SocketAddress& getAddress() const;
   uint16_t getPort() const;
 
  private:

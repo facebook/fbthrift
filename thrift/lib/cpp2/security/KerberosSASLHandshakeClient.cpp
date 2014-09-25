@@ -24,7 +24,7 @@
 #include <folly/io/Cursor.h>
 #include <folly/Memory.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
@@ -190,7 +190,7 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
 
   // If a valid IPAddr, convert it to a hostname first.
   try {
-    apache::thrift::transport::TSocketAddress ipaddr(addr, 0);
+    folly::SocketAddress ipaddr(addr, 0);
     if (ipaddr.getFamily() == AF_INET || ipaddr.getFamily() == AF_INET6) {
       logger_->logStart("hostname_lookup");
       string hostname = getHostByAddr(addr);

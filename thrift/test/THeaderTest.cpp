@@ -424,7 +424,7 @@ void runTestCase(ServerType sType, ClientType clientType) {
 
   server = serverCreator->createServer();
   ScopedServerThread serverThread(server);
-  const TSocketAddress* address = serverThread.getAddress();
+  const folly::SocketAddress* address = serverThread.getAddress();
   runClient(clientType, sType, address->getPort());
 }
 

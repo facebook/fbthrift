@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp/test/TimeUtil.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/transport/TSSLServerSocket.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TRpcTransport.h>
 #include <thrift/lib/cpp/TProcessor.h>
 
@@ -45,7 +45,7 @@ using std::cerr;
 using std::endl;
 using std::list;
 using apache::thrift::concurrency::Util;
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
 using apache::thrift::transport::SSLContext;
 using apache::thrift::transport::TSSLSocket;
@@ -94,7 +94,7 @@ TestSSLServer::TestSSLServer(SSLContext::SSLVersion version) :
 }
 
 void TestSSLServer::serve() {
-  TSocketAddress addr;
+  folly::SocketAddress addr;
   socket_->getAddress(&addr);
   getEventHandler()->preServe(&addr);
 
@@ -126,7 +126,7 @@ void testServerClient(SSLContext::SSLVersion serverVersion,
   sslContext->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
 
   // connect
-  const TSocketAddress *serverAddr = thread.getAddress();
+  const folly::SocketAddress *serverAddr = thread.getAddress();
   std::shared_ptr<TSSLSocket> socket(new TSSLSocket(
                                   sslContext,
                                   serverAddr->getHostStr().c_str(),

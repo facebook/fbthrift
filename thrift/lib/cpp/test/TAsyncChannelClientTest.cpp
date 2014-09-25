@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #include <boost/test/unit_test.hpp>
 #include <boost/random.hpp>
 
@@ -29,7 +27,7 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include "thrift/perf/cpp/LoadHandler.h"
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TZlibTransport.h>
 #include <thrift/lib/cpp/transport/THttpServer.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
@@ -141,7 +139,7 @@ BOOST_AUTO_TEST_CASE(TestZlibClient) {
 
   // Create an async client using TZlibAsyncChannel
   TEventBase evb;
-  const TSocketAddress* serverAddr = serverThread.getAddress();
+  const folly::SocketAddress* serverAddr = serverThread.getAddress();
   std::shared_ptr<TAsyncSocket> socket(TAsyncSocket::newSocket(
         &evb, serverAddr->getAddressStr(), serverAddr->getPort()));
   std::shared_ptr<TFramedAsyncChannel> framedChannel(
@@ -170,7 +168,7 @@ BOOST_AUTO_TEST_CASE(TestHttpClient) {
 
   // Create an async client using THttpAsyncChannel
   TEventBase evb;
-  const TSocketAddress* serverAddr = serverThread.getAddress();
+  const folly::SocketAddress* serverAddr = serverThread.getAddress();
   std::shared_ptr<TAsyncSocket> socket(TAsyncSocket::newSocket(
         &evb, serverAddr->getAddressStr(), serverAddr->getPort()));
   std::shared_ptr<THttpAsyncChannel> httpChannel(
@@ -210,7 +208,7 @@ BOOST_AUTO_TEST_CASE(TestDuplexHeaderClient) {
 
   // Create an async client using THeaderAsyncChannel
   TEventBase evb;
-  const TSocketAddress* serverAddr = serverThread.getAddress();
+  const folly::SocketAddress* serverAddr = serverThread.getAddress();
   std::shared_ptr<TAsyncSocket> socket(TAsyncSocket::newSocket(
         &evb, serverAddr->getAddressStr(), serverAddr->getPort()));
   std::shared_ptr<THeaderAsyncChannel> headerChannel(

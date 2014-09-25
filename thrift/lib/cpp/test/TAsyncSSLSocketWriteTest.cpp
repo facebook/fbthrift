@@ -28,7 +28,7 @@
 
 using apache::thrift::async::TEventBase;
 using apache::thrift::async::TAsyncSSLSocket;
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 using apache::thrift::transport::SSLContext;
 using std::string;
 using namespace testing;

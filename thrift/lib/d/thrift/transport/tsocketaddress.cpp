@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 
 using namespace apache::thrift::transport;
 
@@ -22,7 +22,7 @@ using namespace apache::thrift::transport;
 // members, to avoid mismatched virtual tables.
 extern "C" {
 
-uint16_t tsocketaddress_getPort(TSocketAddress* tsockAddr) {
+uint16_t tsocketaddress_getPort(folly::SocketAddress* tsockAddr) {
   return tsockAddr->getPort();
 }
 

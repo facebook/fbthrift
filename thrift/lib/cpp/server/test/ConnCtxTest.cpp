@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
@@ -50,7 +48,7 @@ using apache::thrift::server::TServer;
 using apache::thrift::transport::TBufferBase;
 using apache::thrift::transport::TFramedTransport;
 using apache::thrift::transport::TSocket;
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 using apache::thrift::util::ScopedServerThread;
 using apache::thrift::util::ServerCreator;
 using apache::thrift::util::TNonblockingServerCreator;
@@ -73,7 +71,7 @@ class ConnCtxHandler : public ConnCtxServiceIf {
       throw ex;
     }
 
-    const TSocketAddress* peerAddr =
+    const folly::SocketAddress* peerAddr =
       server_->getConnectionContext()->getPeerAddress();
 
     sockaddr_storage addrStorage;
@@ -89,16 +87,16 @@ class ConnCtxHandler : public ConnCtxServiceIf {
 class CtxClient : public Runnable {
  public:
   typedef TBinaryProtocolT<TBufferBase> Protocol;
-  typedef vector< pair<TSocketAddress, TSocketAddress> > ErrorVector;
+  typedef vector< pair<folly::SocketAddress, folly::SocketAddress> > ErrorVector;
 
-  CtxClient(const vector<TSocketAddress>* addresses,
+  CtxClient(const vector<folly::SocketAddress>* addresses,
             uint32_t numIterations)
     : numIterations_(numIterations),
       addresses_(addresses) {}
 
   virtual void run() {
     for (uint32_t n = 0; n < numIterations_; ++n) {
-      for (vector<TSocketAddress>::const_iterator it = addresses_->begin();
+      for (vector<folly::SocketAddress>::const_iterator it = addresses_->begin();
            it != addresses_->end();
            ++it) {
         // Connect to the server
@@ -106,7 +104,7 @@ class CtxClient : public Runnable {
         socket->open();
 
         // Get the local address that our client socket is using
-        TSocketAddress clientAddress;
+        folly::SocketAddress clientAddress;
         clientAddress.setFromLocalAddress(socket->getSocketFD());
 
         // Create a client, and call getAddress() to have the server tell
@@ -119,12 +117,12 @@ class CtxClient : public Runnable {
         try {
           client.getClientAddress(addressData);
         } catch (const std::exception& ex) {
-          TSocketAddress uninitAddress;
+          folly::SocketAddress uninitAddress;
           errors_.push_back(make_pair(uninitAddress, clientAddress));
           continue;
         }
 
-        TSocketAddress returnedAddress;
+        folly::SocketAddress returnedAddress;
         returnedAddress.setFromSockaddr(
             reinterpret_cast<const struct sockaddr*>(addressData.c_str()),
             addressData.size());
@@ -147,7 +145,7 @@ class CtxClient : public Runnable {
  private:
   int64_t duration_;
   uint64_t numIterations_;
-  const vector<TSocketAddress>* addresses_;
+  const vector<folly::SocketAddress>* addresses_;
   ErrorVector errors_;
 };
 
@@ -159,7 +157,7 @@ struct ClientInfo {
 void runTest(std::shared_ptr<ConnCtxHandler> handler,
              ServerCreator* serverCreator) {
   // Get the list of local IPs
-  vector<TSocketAddress> localAddresses;
+  vector<folly::SocketAddress> localAddresses;
   getLocalAddresses(&localAddresses);
 
   // Start the server
@@ -169,7 +167,7 @@ void runTest(std::shared_ptr<ConnCtxHandler> handler,
 
   // Update the localAddresses list to contain the server's port
   uint16_t serverPort = serverThread.getAddress()->getPort();
-  for (vector<TSocketAddress>::iterator it = localAddresses.begin();
+  for (vector<folly::SocketAddress>::iterator it = localAddresses.begin();
        it != localAddresses.end();
        ++it) {
     it->setPort(serverPort);

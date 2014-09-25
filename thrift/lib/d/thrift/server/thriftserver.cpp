@@ -85,7 +85,7 @@ TEventBaseManager* thriftserver_getEventBaseManager(ThriftServer* server) {
   return server->getEventBaseManager();
 }
 
-const TSocketAddress* thriftserver_getAddress(ThriftServer* server) {
+const folly::SocketAddress* thriftserver_getAddress(ThriftServer* server) {
   auto& tsockAddr = server->getAddress();
   return &tsockAddr;
 }

@@ -27,7 +27,6 @@ class MockTAsyncTransport: public apache::thrift::async::TAsyncTransport {
   using TEventBase = apache::thrift::async::TEventBase;
   using ReadCallback = apache::thrift::async::TAsyncTransport::ReadCallback;
   using WriteCallback = apache::thrift::async::TAsyncTransport::WriteCallback;
-  using TSocketAddress = apache::thrift::transport::TSocketAddress;
 
   MOCK_METHOD1(setReadCallback, void(ReadCallback*));
   MOCK_CONST_METHOD0(getReadCallback, ReadCallback*());
@@ -62,8 +61,8 @@ class MockTAsyncTransport: public apache::thrift::async::TAsyncTransport {
   MOCK_CONST_METHOD0(getEventBase, TEventBase*());
   MOCK_METHOD1(setSendTimeout, void(uint32_t));
   MOCK_CONST_METHOD0(getSendTimeout, uint32_t());
-  MOCK_CONST_METHOD1(getLocalAddress, void(TSocketAddress*));
-  MOCK_CONST_METHOD1(getPeerAddress, void(TSocketAddress*));
+  MOCK_CONST_METHOD1(getLocalAddress, void(folly::SocketAddress*));
+  MOCK_CONST_METHOD1(getPeerAddress, void(folly::SocketAddress*));
   MOCK_CONST_METHOD0(getAppBytesWritten, size_t());
   MOCK_CONST_METHOD0(getRawBytesWritten, size_t());
   MOCK_CONST_METHOD0(getAppBytesReceived, size_t());

@@ -25,12 +25,12 @@
 #include <string>
 
 #include <thrift/lib/cpp/ssl/SSLUtils.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 using apache::thrift::ssl::OpenSSLUtils;
 using apache::thrift::transport::SSLContext;
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 
 class X509Cert {
  public:
@@ -55,7 +55,7 @@ class X509Cert {
 
 TEST(SSLUtilsTest, ValidatePeerCertNamesIPSanityTest) {
   X509Cert cert("thrift/lib/cpp/test/ssl/tests-cert.pem");
-  TSocketAddress addr;
+  folly::SocketAddress addr;
 
   addr.setFromIpPort("127.0.0.1", 1);
   sockaddr_storage addrStorage;

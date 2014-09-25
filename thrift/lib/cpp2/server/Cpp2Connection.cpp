@@ -40,7 +40,7 @@ const std::string Cpp2Connection::loadHeader{"load"};
 
 Cpp2Connection::Cpp2Connection(
   const std::shared_ptr<TAsyncSocket>& asyncSocket,
-  const TSocketAddress* address,
+  const folly::SocketAddress* address,
   Cpp2Worker* worker,
   const std::shared_ptr<HeaderServerChannel>& serverChannel)
     : processor_(worker->getServer()->getCpp2Processor())

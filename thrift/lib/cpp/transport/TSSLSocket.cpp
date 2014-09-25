@@ -69,7 +69,7 @@ TSSLSocket::TSSLSocket(const shared_ptr<SSLContext>& ctx,
 }
 
 TSSLSocket::TSSLSocket(const shared_ptr<SSLContext>& ctx,
-                       const TSocketAddress& address) :
+                       const folly::SocketAddress& address) :
   TVirtualTransport<TSSLSocket, TSocket>(address),
   server_(false), ssl_(nullptr), ctx_(ctx) {
 }
@@ -716,7 +716,7 @@ bool SSLContext::validatePeerName(TSSLSocket* sock, SSL* ssl) const {
             }
             break;
           case GEN_IPADD: {
-            const TSocketAddress* remaddr = sock->getPeerAddress();
+            const folly::SocketAddress* remaddr = sock->getPeerAddress();
             if (remaddr->getFamily() == AF_INET &&
                 length == sizeof(in_addr)) {
               in_addr addr = remaddr->getIPAddress().asV4().toAddr();

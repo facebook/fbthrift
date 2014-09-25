@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #ifndef THRIFT_CLIENTUTIL_H_
 #define THRIFT_CLIENTUTIL_H_ 1
 
@@ -90,11 +88,11 @@ std::shared_ptr<ClientT> createClientPtr(const std::string& host,
 }
 
 /*
- * Versions that accept TSocketAddress
+ * Versions that accept folly::SocketAddress
  */
 
 template<typename ClientT, typename ProtocolT, typename TransportT>
-ClientT* createClient(const transport::TSocketAddress* address) {
+ClientT* createClient(const folly::SocketAddress* address) {
   std::shared_ptr<transport::TSocket> socket(
       new transport::TSocket(address));
   // We could specialize this to not create a wrapper transport when
@@ -110,13 +108,13 @@ ClientT* createClient(const transport::TSocketAddress* address) {
 
 template<typename ClientT, typename ProtocolT, typename TransportT>
 std::shared_ptr<ClientT> createClientPtr(
-    const transport::TSocketAddress* address) {
+    const folly::SocketAddress* address) {
   return std::shared_ptr<ClientT>(
       createClient<ClientT, ProtocolT, TransportT>(address));
 }
 
 template<typename ClientT, typename ProtocolT>
-ClientT* createClient(const transport::TSocketAddress* address,
+ClientT* createClient(const folly::SocketAddress* address,
                       bool useFramed = true) {
   if (useFramed) {
     return createClient<ClientT, ProtocolT, transport::TFramedTransport>(
@@ -128,7 +126,7 @@ ClientT* createClient(const transport::TSocketAddress* address,
 }
 
 template<typename ClientT>
-ClientT* createClient(const transport::TSocketAddress* address,
+ClientT* createClient(const folly::SocketAddress* address,
                       bool useFramed = true) {
   return createClient<ClientT,
                       protocol::TBinaryProtocolT<transport::TBufferBase> >(
@@ -137,7 +135,7 @@ ClientT* createClient(const transport::TSocketAddress* address,
 
 template<typename ClientT, typename ProtocolT>
 std::shared_ptr<ClientT> createClientPtr(
-    const transport::TSocketAddress* address,
+    const folly::SocketAddress* address,
     bool useFramed = true) {
   return std::shared_ptr<ClientT>(
       createClient<ClientT, ProtocolT>(address, useFramed));
@@ -145,18 +143,18 @@ std::shared_ptr<ClientT> createClientPtr(
 
 template<typename ClientT>
 std::shared_ptr<ClientT> createClientPtr(
-    const transport::TSocketAddress* address,
+    const folly::SocketAddress* address,
     bool useFramed = true) {
   return std::shared_ptr<ClientT>(
       createClient<ClientT>(address, useFramed));
 }
 
 /*
- * Versions that accept TSocketAddress and socket options
+ * Versions that accept folly::SocketAddress and socket options
  */
 
 template<typename ClientT, typename ProtocolT, typename TransportT>
-ClientT* createClient(const transport::TSocketAddress* address,
+ClientT* createClient(const folly::SocketAddress* address,
                       const transport::TSocket::Options& options) {
   std::shared_ptr<transport::TSocket> socket(
       new transport::TSocket(address));
@@ -175,7 +173,7 @@ ClientT* createClient(const transport::TSocketAddress* address,
 
 template<typename ClientT, typename ProtocolT, typename TransportT>
 std::shared_ptr<ClientT> createClientPtr(
-    const transport::TSocketAddress* address,
+    const folly::SocketAddress* address,
     const transport::TSocket::Options& options) {
 
   return std::shared_ptr<ClientT>(
@@ -183,7 +181,7 @@ std::shared_ptr<ClientT> createClientPtr(
 }
 
 template<typename ClientT, typename ProtocolT>
-ClientT* createClient(const transport::TSocketAddress* address,
+ClientT* createClient(const folly::SocketAddress* address,
                       const transport::TSocket::Options& options,
                       bool useFramed = true) {
   if (useFramed) {
@@ -196,7 +194,7 @@ ClientT* createClient(const transport::TSocketAddress* address,
 }
 
 template<typename ClientT>
-ClientT* createClient(const transport::TSocketAddress* address,
+ClientT* createClient(const folly::SocketAddress* address,
                       const transport::TSocket::Options& options,
                       bool useFramed = true
                       ) {
@@ -207,7 +205,7 @@ ClientT* createClient(const transport::TSocketAddress* address,
 
 template<typename ClientT, typename ProtocolT>
 std::shared_ptr<ClientT> createClientPtr(
-    const transport::TSocketAddress* address,
+    const folly::SocketAddress* address,
     const transport::TSocket::Options& options,
     bool useFramed = true) {
   return std::shared_ptr<ClientT>(
@@ -216,7 +214,7 @@ std::shared_ptr<ClientT> createClientPtr(
 
 template<typename ClientT>
 std::shared_ptr<ClientT> createClientPtr(
-    const transport::TSocketAddress* address,
+    const folly::SocketAddress* address,
     const transport::TSocket::Options& options,
     bool useFramed = true) {
   return std::shared_ptr<ClientT>(

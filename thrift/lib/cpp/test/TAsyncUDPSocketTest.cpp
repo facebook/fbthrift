@@ -1,26 +1,24 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #include <thrift/lib/cpp/async/TAsyncUDPSocket.h>
 #include <thrift/lib/cpp/async/TAsyncUDPServerSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/test/ScopedEventBaseThread.h>
 
 #include <folly/io/IOBuf.h>
@@ -34,7 +32,7 @@ using apache::thrift::async::TAsyncUDPSocket;
 using apache::thrift::async::TAsyncUDPServerSocket;
 using apache::thrift::async::TAsyncTimeout;
 using apache::thrift::async::TEventBase;
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
 using apache::thrift::test::ScopedEventBaseThread;
 using folly::IOBuf;
@@ -51,7 +49,7 @@ class UDPAcceptor
   void onListenStopped() noexcept {
   }
 
-  void onDataAvailable(const TSocketAddress& client,
+  void onDataAvailable(const folly::SocketAddress& client,
                        std::unique_ptr<folly::IOBuf> data,
                        bool truncated) noexcept {
 
@@ -69,7 +67,7 @@ class UDPAcceptor
   void sendPong() noexcept {
     try {
       TAsyncUDPSocket socket(evb_);
-      socket.bind(TSocketAddress("127.0.0.1", 0));
+      socket.bind(folly::SocketAddress("127.0.0.1", 0));
       socket.write(lastClient_, folly::IOBuf::copyBuffer(lastMsg_));
     } catch (const std::exception& ex) {
       VLOG(4) << "Failed to send PONG " << ex.what();
@@ -80,13 +78,13 @@ class UDPAcceptor
   TEventBase* const evb_{nullptr};
   const int n_{-1};
 
-  TSocketAddress lastClient_;
+  folly::SocketAddress lastClient_;
   std::string lastMsg_;
 };
 
 class UDPServer {
  public:
-  UDPServer(TEventBase* evb, TSocketAddress addr, int n)
+  UDPServer(TEventBase* evb, folly::SocketAddress addr, int n)
       : evb_(evb), addr_(addr), evbs_(n) {
   }
 
@@ -130,7 +128,7 @@ class UDPServer {
     socket_->listen();
   }
 
-  TSocketAddress address() const {
+  folly::SocketAddress address() const {
     return socket_->address();
   }
 
@@ -150,7 +148,7 @@ class UDPServer {
 
  private:
   TEventBase* const evb_{nullptr};
-  const TSocketAddress addr_;
+  const folly::SocketAddress addr_;
 
   std::unique_ptr<TAsyncUDPServerSocket> socket_;
   std::vector<std::thread> threads_;
@@ -167,14 +165,14 @@ class UDPClient
         evb_(evb) {
   }
 
-  void start(const TSocketAddress& server, int n) {
+  void start(const folly::SocketAddress& server, int n) {
     CHECK(evb_->isInEventBaseThread());
 
     server_ = server;
     socket_ = folly::make_unique<TAsyncUDPSocket>(evb_);
 
     try {
-      socket_->bind(TSocketAddress("127.0.0.1", 0));
+      socket_->bind(folly::SocketAddress("127.0.0.1", 0));
       VLOG(4) << "Client bound to " << socket_->address().describe();
     } catch (const std::exception& ex) {
       LOG(FATAL) << ex.what();
@@ -214,7 +212,7 @@ class UDPClient
     *len = 1024;
   }
 
-  void onDataAvailable(const TSocketAddress& client,
+  void onDataAvailable(const folly::SocketAddress& client,
                        size_t len,
                        bool truncated) noexcept {
     VLOG(4) << "Read " << len << " bytes (trun:" << truncated << ") from "
@@ -249,7 +247,7 @@ class UDPClient
  private:
   TEventBase* const evb_{nullptr};
 
-  TSocketAddress server_;
+  folly::SocketAddress server_;
   std::unique_ptr<TAsyncUDPSocket> socket_;
 
   int pongRecvd_{0};
@@ -260,7 +258,7 @@ class UDPClient
 
 BOOST_AUTO_TEST_CASE(PingPong) {
   apache::thrift::async::TEventBase sevb;
-  UDPServer server(&sevb, TSocketAddress("127.0.0.1", 0), 4);
+  UDPServer server(&sevb, folly::SocketAddress("127.0.0.1", 0), 4);
   boost::barrier barrier(2);
 
   // Start event loop in a separate thread

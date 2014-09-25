@@ -34,7 +34,7 @@ using namespace boost::python;
 
 namespace {
 
-object makePythonAddress(const transport::TSocketAddress& sa) {
+object makePythonAddress(const folly::SocketAddress& sa) {
   if (!sa.isInitialized()) {
     return object();  // None
   }
@@ -95,8 +95,8 @@ public:
 
 private:
   std::string clientIdentity_;
-  transport::TSocketAddress peerAddress_;
-  transport::TSocketAddress localAddress_;
+  folly::SocketAddress peerAddress_;
+  folly::SocketAddress localAddress_;
 };
 
 class PythonAsyncProcessor : public AsyncProcessor {

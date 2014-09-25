@@ -311,10 +311,10 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * Note timeout applies to TCP + SSL connection time
    */
   void connect(ConnectCallback* callback,
-               const transport::TSocketAddress& address,
+               const folly::SocketAddress& address,
                int timeout = 0,
                const OptionMap &options = emptyOptionMap,
-               const transport::TSocketAddress& bindAddr = anyAddress)
+               const folly::SocketAddress& bindAddr = anyAddress)
                noexcept;
 
   using TAsyncSocket::connect;

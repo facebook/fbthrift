@@ -74,12 +74,12 @@ class TAsyncServerSocket : public TDelayedDestruction {
      *                    for closing it when done.  The newly accepted file
      *                    descriptor will have already been put into
      *                    non-blocking mode.
-     * @param clientAddr  A reference to a TSocketAddress struct containing the
+     * @param clientAddr  A reference to a folly::SocketAddress struct containing the
      *                    client's address.  This struct is only guaranteed to
      *                    remain valid until connectionAccepted() returns.
      */
     virtual void connectionAccepted(int fd,
-                                    const transport::TSocketAddress& clientAddr)
+                                    const folly::SocketAddress& clientAddr)
       noexcept = 0;
 
     /**
@@ -251,7 +251,7 @@ class TAsyncServerSocket : public TDelayedDestruction {
    *
    * Throws TTransportException on error.
    */
-  virtual void bind(const transport::TSocketAddress& address);
+  virtual void bind(const folly::SocketAddress& address);
 
   /**
    * Bind to the specified port.
@@ -267,14 +267,14 @@ class TAsyncServerSocket : public TDelayedDestruction {
    *
    * Throws TTransportException on error.
    */
-  void getAddress(transport::TSocketAddress* addressReturn) const;
+  void getAddress(folly::SocketAddress* addressReturn) const;
 
   /**
    * Get all the local addresses to which the socket is bound.
    *
    * Throws TTransportException on error.
    */
-  std::vector<transport::TSocketAddress> getAddresses() const;
+  std::vector<folly::SocketAddress> getAddresses() const;
 
   /**
    * Begin listening for connections.
@@ -548,7 +548,7 @@ class TAsyncServerSocket : public TDelayedDestruction {
     MessageType type;
     int fd;
     int err;
-    transport::TSocketAddress address;
+    folly::SocketAddress address;
     std::string msg;
   };
 
@@ -607,7 +607,7 @@ class TAsyncServerSocket : public TDelayedDestruction {
 
   int createSocket(int family);
   void setupSocket(int fd);
-  void dispatchSocket(int socket, transport::TSocketAddress&& address);
+  void dispatchSocket(int socket, folly::SocketAddress&& address);
   void dispatchError(const char *msg, int errnoValue);
   void enterBackoff();
   void backoffTimeoutExpired();

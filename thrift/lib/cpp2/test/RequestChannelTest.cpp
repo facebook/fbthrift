@@ -53,8 +53,8 @@ class PortHolder {
     eb_.terminateLoopSoon();
     th_.join();
   }
-  TSocketAddress getAddress() {
-    TSocketAddress ret;
+  folly::SocketAddress getAddress() {
+    folly::SocketAddress ret;
     sock_->getAddress(&ret);
     return ret;
   }
@@ -72,12 +72,12 @@ class TestServiceServerMock : public TestServiceSvIf {
 class FunctionSendCallbackTest : public Test {
  public:
   unique_ptr<TestServiceAsyncClient> getClient(
-      const TSocketAddress& addr) {
+      const folly::SocketAddress& addr) {
     return make_unique<TestServiceAsyncClient>(
       HeaderClientChannel::newChannel(TAsyncSocket::newSocket(&eb, addr)));
   }
   void sendOnewayMessage(
-      const TSocketAddress& addr,
+      const folly::SocketAddress& addr,
       function<void(ClientReceiveState&&)> cb) {
     auto client = getClient(addr);
     client->noResponse(make_unique<FunctionSendCallback>(move(cb)),

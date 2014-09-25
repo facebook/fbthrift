@@ -129,7 +129,7 @@ class Cpp2Worker :
 
   void connectionAccepted(
     int fd,
-    const apache::thrift::transport::TSocketAddress& clientAddr) noexcept;
+    const folly::SocketAddress& clientAddr) noexcept;
   void acceptError(const std::exception& ex) noexcept;
   void acceptStopped() noexcept;
   void stopEventBase() noexcept;
@@ -182,7 +182,7 @@ class Cpp2Worker :
    */
   std::shared_ptr<Cpp2Connection> createConnection(
     std::shared_ptr<apache::thrift::async::TAsyncSocket> asyncSocket,
-      const apache::thrift::transport::TSocketAddress* address);
+      const folly::SocketAddress* address);
 
   /**
    * Handler called when a new connection may be available.

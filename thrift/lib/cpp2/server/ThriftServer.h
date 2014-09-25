@@ -126,7 +126,7 @@ class ThriftServer : public apache::thrift::server::TServer {
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
 
   //! The server's listening address
-  apache::thrift::transport::TSocketAddress address_;
+  folly::SocketAddress address_;
 
   //! The server's listening port
   int port_;
@@ -508,13 +508,13 @@ class ThriftServer : public apache::thrift::server::TServer {
   /**
    * Set the address to listen on.
    */
-  void setAddress(const apache::thrift::transport::TSocketAddress& address) {
+  void setAddress(const folly::SocketAddress& address) {
     DCHECK(socket_ == nullptr);
     port_ = -1;
     address_ = address;
   }
 
-  void setAddress(apache::thrift::transport::TSocketAddress&& address) {
+  void setAddress(folly::SocketAddress&& address) {
     DCHECK(socket_ == nullptr);
     port_ = -1;
     address_ = std::move(address);
@@ -540,7 +540,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * for providing their own synchronization to ensure that setup() is not
    * modifying the address while they are using it.)
    */
-  const apache::thrift::transport::TSocketAddress& getAddress() const {
+  const folly::SocketAddress& getAddress() const {
     return address_;
   }
 

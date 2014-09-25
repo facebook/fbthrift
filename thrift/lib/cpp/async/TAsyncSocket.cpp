@@ -18,7 +18,7 @@
 
 #include <thrift/lib/cpp/TLogging.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 #include <folly/io/IOBuf.h>
@@ -33,7 +33,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
 using folly::IOBuf;
 using std::string;
@@ -43,8 +43,8 @@ namespace apache { namespace thrift { namespace async {
 
 // static members initializers
 const TAsyncSocket::OptionMap TAsyncSocket::emptyOptionMap;
-const transport::TSocketAddress TAsyncSocket::anyAddress =
-  transport::TSocketAddress("0.0.0.0", 0);
+const folly::SocketAddress TAsyncSocket::anyAddress =
+  folly::SocketAddress("0.0.0.0", 0);
 
 const TTransportException socketClosedLocallyEx(
     TTransportException::END_OF_FILE, "socket closed locally");
@@ -190,7 +190,7 @@ TAsyncSocket::TAsyncSocket(TEventBase* evb)
 }
 
 TAsyncSocket::TAsyncSocket(TEventBase* evb,
-                           const transport::TSocketAddress& address,
+                           const folly::SocketAddress& address,
                            uint32_t connectTimeout)
   : eventBase_(evb)
   , writeTimeout_(this, evb)
@@ -292,10 +292,10 @@ void TAsyncSocket::setShutdownSocketSet(ShutdownSocketSet* newSS) {
 }
 
 void TAsyncSocket::connect(ConnectCallback* callback,
-                           const TSocketAddress& address,
+                           const folly::SocketAddress& address,
                            int timeout,
                            const OptionMap &options,
-                           const TSocketAddress& bindAddr) noexcept {
+                           const folly::SocketAddress& bindAddr) noexcept {
   DestructorGuard dg(this);
   assert(eventBase_->isInEventBaseThread());
 
@@ -471,7 +471,7 @@ void TAsyncSocket::connect(ConnectCallback* callback,
   DestructorGuard dg(this);
   try {
     connectCallback_ = callback;
-    connect(callback, TSocketAddress(ip, port), timeout, options);
+    connect(callback, folly::SocketAddress(ip, port), timeout, options);
   } catch (const std::exception& ex) {
     TTransportException tex(TTransportException::INTERNAL_ERROR,
                             ex.what());
@@ -1039,11 +1039,11 @@ bool TAsyncSocket::isDetachable() const {
   return !ioHandler_.isHandlerRegistered() && !writeTimeout_.isScheduled();
 }
 
-void TAsyncSocket::getLocalAddress(TSocketAddress* address) const {
+void TAsyncSocket::getLocalAddress(folly::SocketAddress* address) const {
   address->setFromLocalAddress(fd_);
 }
 
-void TAsyncSocket::getPeerAddress(TSocketAddress* address) const {
+void TAsyncSocket::getPeerAddress(folly::SocketAddress* address) const {
   if (!addr_.isInitialized()) {
     addr_.setFromPeerAddress(fd_);
   }
@@ -1942,7 +1942,7 @@ std::ostream& operator << (std::ostream& os,
 std::string TAsyncSocket::withAddr(const std::string& s) {
   // Don't use addr_ directly because it may not be initialized
   // e.g. if constructed from fd
-  TSocketAddress peer, local;
+  folly::SocketAddress peer, local;
   try {
     getPeerAddress(&peer);
     getLocalAddress(&local);

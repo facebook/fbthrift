@@ -44,7 +44,7 @@ using std::shared_ptr;
 
   // Constructor
 TEventConnection::TEventConnection(shared_ptr<TAsyncSocket> asyncSocket,
-                                   const TSocketAddress* address,
+                                   const folly::SocketAddress* address,
                                    TEventWorker* worker,
                                    TEventServer::TransportType transport)
   : worker_(nullptr),
@@ -76,7 +76,7 @@ TEventConnection::~TEventConnection() {
 }
 
 void TEventConnection::init(shared_ptr<TAsyncSocket> asyncSocket,
-                            const TSocketAddress* address,
+                            const folly::SocketAddress* address,
                             TEventWorker* worker,
                             TEventServer::TransportType transport) {
   T_DEBUG_T("fd=%d; TEventConnection::init()", asyncSocket->getFd());

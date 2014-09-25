@@ -36,13 +36,13 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
 
   GMOCK_METHOD5_(, noexcept, , connect,
       void(TAsyncSocket::ConnectCallback*,
-           const apache::thrift::transport::TSocketAddress&,
+           const folly::SocketAddress&,
            int,
            const OptionMap&,
-           const apache::thrift::transport::TSocketAddress&));
+           const folly::SocketAddress&));
 
   MOCK_CONST_METHOD1(getPeerAddress,
-                     void(apache::thrift::transport::TSocketAddress*));
+                     void(folly::SocketAddress*));
   MOCK_METHOD0(detachFd, int());
   MOCK_CONST_METHOD0(getFd, int());
   MOCK_METHOD0(closeNow, void());

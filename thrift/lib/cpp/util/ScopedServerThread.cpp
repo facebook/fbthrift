@@ -1,27 +1,25 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/server/TServer.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/util/ServerCreator.h>
 
 using std::shared_ptr;
@@ -59,7 +57,7 @@ class ScopedServerThread::Helper : public Runnable,
    *
    * This may be called from the main thread.
    */
-  const TSocketAddress* getAddress() const {
+  const folly::SocketAddress* getAddress() const {
     return &address_;
   }
 
@@ -70,7 +68,7 @@ class ScopedServerThread::Helper : public Runnable,
    */
   void waitUntilStarted();
 
-  void preServe(const TSocketAddress* address);
+  void preServe(const folly::SocketAddress* address);
 
   const std::shared_ptr<TServer>& getServer() const {
     return server_;
@@ -127,7 +125,7 @@ class ScopedServerThread::Helper : public Runnable,
   shared_ptr<TServer> server_;
   shared_ptr<TServerEventHandler> eventHandler_;
   shared_ptr<SavedException> savedError_;
-  TSocketAddress address_;
+  folly::SocketAddress address_;
 };
 
 void ScopedServerThread::Helper::init(const shared_ptr<TServer>& server,
@@ -183,7 +181,7 @@ void ScopedServerThread::Helper::waitUntilStarted() {
   }
 }
 
-void ScopedServerThread::Helper::preServe(const TSocketAddress* address) {
+void ScopedServerThread::Helper::preServe(const folly::SocketAddress* address) {
   // Save a copy of the address
   address_ = *address;
 
@@ -265,7 +263,7 @@ void ScopedServerThread::stop() {
   thread_.reset();
 }
 
-const TSocketAddress* ScopedServerThread::getAddress() const {
+const folly::SocketAddress* ScopedServerThread::getAddress() const {
   if (!helper_) {
     throw TTransportException(TTransportException::NOT_OPEN,
                               "attempted to get address of stopped "

@@ -22,7 +22,7 @@
 
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TNotificationQueue.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp/util/FdUtils.h>
 
@@ -37,7 +37,7 @@
 #include <sys/socket.h>
 #include <netinet/tcp.h>
 
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
 
 namespace apache { namespace thrift { namespace async {
@@ -247,7 +247,7 @@ void TAsyncServerSocket::useExistingSockets(const std::vector<int>& fds) {
     // Note that the socket may not have been bound yet, but
     // setFromLocalAddress() will still work and get the correct address family.
     // We will update addressFamily_ again anyway if bind() is called later.
-    TSocketAddress address;
+    folly::SocketAddress address;
     address.setFromLocalAddress(fd);
 
     setupSocket(fd);
@@ -261,7 +261,7 @@ void TAsyncServerSocket::useExistingSocket(int fd) {
   useExistingSockets({fd});
 }
 
-void TAsyncServerSocket::bind(const transport::TSocketAddress& address) {
+void TAsyncServerSocket::bind(const folly::SocketAddress& address) {
   assert(eventBase_ == nullptr || eventBase_->isInEventBaseThread());
 
   // useExistingSocket() may have been called to initialize socket_ already.
@@ -350,7 +350,7 @@ void TAsyncServerSocket::bind(uint16_t port) {
                             &v6only, sizeof(v6only)));
     }
 
-    TSocketAddress address;
+    folly::SocketAddress address;
     address.setFromLocalAddress(s);
 
     sockets_.push_back(
@@ -384,7 +384,7 @@ void TAsyncServerSocket::listen(int backlog) {
   }
 }
 
-void TAsyncServerSocket::getAddress(TSocketAddress* addressReturn) const {
+void TAsyncServerSocket::getAddress(folly::SocketAddress* addressReturn) const {
   CHECK(sockets_.size() >= 1);
   if (sockets_.size() > 1) {
     VLOG(2) << "Warning: getAddress can return multiple addresses, " <<
@@ -393,10 +393,10 @@ void TAsyncServerSocket::getAddress(TSocketAddress* addressReturn) const {
   addressReturn->setFromLocalAddress(sockets_[0].socket_);
 }
 
-std::vector<transport::TSocketAddress> TAsyncServerSocket::getAddresses()
+std::vector<folly::SocketAddress> TAsyncServerSocket::getAddresses()
     const {
   CHECK(sockets_.size() >= 1);
-  auto tsaVec = std::vector<transport::TSocketAddress>(sockets_.size());
+  auto tsaVec = std::vector<folly::SocketAddress>(sockets_.size());
   auto tsaIter = tsaVec.begin();
   for (const auto& socket : sockets_) {
     (tsaIter++)->setFromLocalAddress(socket.socket_);
@@ -551,7 +551,7 @@ int TAsyncServerSocket::createSocket(int family) {
 
 void TAsyncServerSocket::setupSocket(int fd) {
   // Get the address family
-  TSocketAddress address;
+  folly::SocketAddress address;
   address.setFromLocalAddress(fd);
   auto family = address.getFamily();
 
@@ -610,7 +610,7 @@ void TAsyncServerSocket::handlerReady(
   // Only accept up to maxAcceptAtOnce_ connections at a time,
   // to avoid starving other I/O handlers using this TEventBase.
   for (uint32_t n = 0; n < maxAcceptAtOnce_; ++n) {
-    TSocketAddress address;
+    folly::SocketAddress address;
 
     sockaddr_storage addrStorage;
     socklen_t addrLen = sizeof(addrStorage);
@@ -691,7 +691,7 @@ void TAsyncServerSocket::handlerReady(
 }
 
 void TAsyncServerSocket::dispatchSocket(int socket,
-                                        TSocketAddress&& address) {
+                                        folly::SocketAddress&& address) {
   uint32_t startingIndex = callbackIndex_;
 
   // Short circuit if the callback is in the primary TEventBase thread

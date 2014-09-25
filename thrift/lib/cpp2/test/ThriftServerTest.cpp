@@ -105,7 +105,7 @@ std::shared_ptr<ThriftServer> getServer() {
 
 std::shared_ptr<TestServiceClient> getThrift1Client(uint16_t port) {
   // Create Thrift1 clients
-  TSocketAddress address("127.0.0.1", port);
+  folly::SocketAddress address("127.0.0.1", port);
   std::shared_ptr<TSocket> socket = std::make_shared<TSocket>(address);
   socket->open();
   std::shared_ptr<TFramedTransport> transport =
@@ -832,7 +832,7 @@ class TestServerEventHandler
   void check() {
     EXPECT_EQ(8, count);
   }
-  void preServe(const TSocketAddress* addr) {
+  void preServe(const folly::SocketAddress* addr) {
     EXPECT_EQ(0, count++);
   }
   void newConnection(TConnectionContext* ctx) {

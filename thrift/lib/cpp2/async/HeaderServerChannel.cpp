@@ -144,7 +144,7 @@ HeaderServerChannel::getTransportDebugString(TAsyncTransport* transport) {
                                     folly::demangle(typeid(*transport)));
 
   try {
-    TSocketAddress addr;
+    folly::SocketAddress addr;
     transport->getPeerAddress(&addr);
     folly::toAppend(", address ", addr.getAddressStr(),
                     ", port ", addr.getPort(),

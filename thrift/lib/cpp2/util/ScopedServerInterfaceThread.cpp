@@ -16,11 +16,11 @@
 
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
 using namespace std;
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 
 namespace apache { namespace thrift {
 
@@ -34,7 +34,7 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   sst_.start(move(ts));
 }
 
-const TSocketAddress& ScopedServerInterfaceThread::getAddress() const {
+const folly::SocketAddress& ScopedServerInterfaceThread::getAddress() const {
   return *sst_.getAddress();
 }
 

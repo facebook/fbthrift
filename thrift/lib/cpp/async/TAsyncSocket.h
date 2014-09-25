@@ -97,7 +97,7 @@ class TAsyncSocket : public TAsyncTransport {
    *                        attempt.
    */
   TAsyncSocket(TEventBase* evb,
-               const transport::TSocketAddress& address,
+               const folly::SocketAddress& address,
                uint32_t connectTimeout = 0);
 
   /**
@@ -146,7 +146,7 @@ class TAsyncSocket : public TAsyncTransport {
    */
   static std::shared_ptr<TAsyncSocket> newSocket(
       TEventBase* evb,
-      const transport::TSocketAddress& address,
+      const folly::SocketAddress& address,
       uint32_t connectTimeout = 0) {
     return std::shared_ptr<TAsyncSocket>(
         new TAsyncSocket(evb, address, connectTimeout),
@@ -234,7 +234,7 @@ class TAsyncSocket : public TAsyncTransport {
   typedef std::map<OptionKey, int> OptionMap;
 
   static const OptionMap emptyOptionMap;
-  static const transport::TSocketAddress anyAddress;
+  static const folly::SocketAddress anyAddress;
 
   /**
    * Initiate a connection.
@@ -247,10 +247,10 @@ class TAsyncSocket : public TAsyncTransport {
    *                  callback->connectError() will be invoked.
    */
   virtual void connect(ConnectCallback* callback,
-               const transport::TSocketAddress& address,
+               const folly::SocketAddress& address,
                int timeout = 0,
                const OptionMap &options = emptyOptionMap,
-               const transport::TSocketAddress& bindAddr = anyAddress
+               const folly::SocketAddress& bindAddr = anyAddress
                ) noexcept;
   void connect(ConnectCallback* callback, const std::string& ip, uint16_t port,
                int timeout = 00,
@@ -338,9 +338,9 @@ class TAsyncSocket : public TAsyncTransport {
   bool isDetachable() const override;
 
   void getLocalAddress(
-    transport::TSocketAddress* address) const override;
+    folly::SocketAddress* address) const override;
   void getPeerAddress(
-    transport::TSocketAddress* address) const override;
+    folly::SocketAddress* address) const override;
 
   bool isEorTrackingEnabled() const override { return false; }
 
@@ -643,7 +643,7 @@ class TAsyncSocket : public TAsyncTransport {
   uint16_t eventFlags_;                 ///< TEventBase::HandlerFlags settings
   int fd_;                              ///< The socket file descriptor
   mutable
-    transport::TSocketAddress addr_;    ///< The address we tried to connect to
+    folly::SocketAddress addr_;    ///< The address we tried to connect to
   uint32_t sendTimeout_;                ///< The send timeout, in milliseconds
   uint16_t maxReadsPerEvent_;           ///< Max reads per event loop iteration
   TEventBase* eventBase_;               ///< The TEventBase

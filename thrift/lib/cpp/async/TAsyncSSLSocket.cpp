@@ -18,7 +18,7 @@
 
 #include <thrift/lib/cpp/TLogging.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp/concurrency/SpinLock.h>
 
@@ -37,7 +37,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
-using apache::thrift::transport::TSocketAddress;
+using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
 using apache::thrift::transport::SSLContext;
 using std::string;
@@ -619,10 +619,10 @@ void TAsyncSSLSocket::invokeHandshakeCallback() {
 }
 
 void TAsyncSSLSocket::connect(ConnectCallback* callback,
-                              const transport::TSocketAddress& address,
+                              const folly::SocketAddress& address,
                               int timeout,
                               const OptionMap &options,
-                              const transport::TSocketAddress& bindAddr)
+                              const folly::SocketAddress& bindAddr)
                               noexcept {
   assert(!server_);
   assert(state_ == StateEnum::UNINIT);

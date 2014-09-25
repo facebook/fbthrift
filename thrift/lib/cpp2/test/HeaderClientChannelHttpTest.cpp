@@ -83,7 +83,7 @@ TEST(HeaderClientChannelHttpTest, SimpleTest) {
   std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
 
   TEventBase eb;
-  const TSocketAddress* addr = serverThread->getAddress();
+  const folly::SocketAddress* addr = serverThread->getAddress();
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, *addr);
   std::unique_ptr<HeaderClientChannel, TDelayedDestruction::Destructor> channel(
       new HeaderClientChannel(socket));
@@ -120,7 +120,7 @@ TEST(HeaderClientChannel, LongResponse) {
   std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
 
   TEventBase eb;
-  const TSocketAddress* addr = serverThread->getAddress();
+  const folly::SocketAddress* addr = serverThread->getAddress();
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, *addr);
   std::unique_ptr<HeaderClientChannel, TDelayedDestruction::Destructor> channel(
       new HeaderClientChannel(socket));
