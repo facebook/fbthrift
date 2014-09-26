@@ -26,7 +26,6 @@
 #include <openssl/rand.h>
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
 #ifdef __x86_64__
 #include <folly/SmallLocks.h>
 #include <folly/String.h>
@@ -45,7 +44,7 @@ using boost::scoped_array;
 using namespace apache::thrift::concurrency;
 
 struct CRYPTO_dynlock_value {
-  Mutex mutex;
+  ProfiledMutex<std::mutex> mutex;
 };
 
 namespace apache { namespace thrift { namespace transport {
@@ -256,7 +255,7 @@ shared_ptr<TSSLSocket> TSSLSocketFactory::createSocket(const string& host,
 // ---------------------------------------------------------------------
 
 uint64_t SSLContext::count_ = 0;
-Mutex    SSLContext::mutex_;
+ProfiledMutex<std::mutex>    SSLContext::mutex_;
 #ifdef OPENSSL_NPN_NEGOTIATED
 int SSLContext::sNextProtocolsExDataIndex_ = -1;
 
@@ -264,7 +263,7 @@ int SSLContext::sNextProtocolsExDataIndex_ = -1;
 // SSLContext implementation
 SSLContext::SSLContext(SSLVersion version) {
   {
-    Guard g(mutex_);
+    std::lock_guard<ProfiledMutex<std::mutex>> g(mutex_);
     if (!count_++) {
       initializeOpenSSL();
       randomize();
@@ -315,7 +314,7 @@ SSLContext::~SSLContext() {
   deleteNextProtocolsStrings();
 #endif
 
-  Guard g(mutex_);
+  std::lock_guard<ProfiledMutex<std::mutex>> g(mutex_);
   if (!--count_) {
     cleanupOpenSSL();
   }
@@ -869,7 +868,7 @@ struct SSLLock {
 #else
   SpinLock spinLock;
 #endif
-  Mutex mutex;
+  ProfiledMutex<std::mutex> mutex;
 };
 
 static std::map<int, SSLContext::SSLLockType> lockTypes;

@@ -1,26 +1,24 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #ifndef THRIFT_ASYNC_TEVENTBASEMANAGER_H
 #define THRIFT_ASYNC_TEVENTBASEMANAGER_H 1
 
 #include <folly/ThreadLocal.h>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/ProfiledMutex.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <set>
@@ -109,7 +107,8 @@ class TEventBaseManager {
   template<typename FunctionType>
   void withEventBaseSet(const FunctionType& runnable) {
     // grab the mutex for the caller
-    apache::thrift::concurrency::Guard g(*&eventBaseSetMutex_);
+    std::lock_guard<concurrency::ProfiledMutex<std::mutex>> g(
+      *&eventBaseSetMutex_);
     // give them only a const set to work with
     const std::set<TEventBase *>& constSet = eventBaseSet_;
     runnable(constSet);
@@ -140,12 +139,14 @@ class TEventBaseManager {
   TEventBaseManager& operator=(TEventBaseManager const &);
 
   void trackEventBase(TEventBase *evb) {
-    apache::thrift::concurrency::Guard g(*&eventBaseSetMutex_);
+    std::lock_guard<concurrency::ProfiledMutex<std::mutex>> g(
+      *&eventBaseSetMutex_);
     eventBaseSet_.insert(evb);
   }
 
   void untrackEventBase(TEventBase *evb) {
-    apache::thrift::concurrency::Guard g(*&eventBaseSetMutex_);
+    std::lock_guard<concurrency::ProfiledMutex<std::mutex>> g(
+      *&eventBaseSetMutex_);
     eventBaseSet_.erase(evb);
   }
 
@@ -157,7 +158,7 @@ class TEventBaseManager {
   mutable std::set<TEventBase *> eventBaseSet_;
 
   // a mutex to use as a guard for the above set
-  apache::thrift::concurrency::Mutex eventBaseSetMutex_;
+  concurrency::ProfiledMutex<std::mutex> eventBaseSetMutex_;
 
   std::shared_ptr<apache::thrift::async::EventBaseObserver> observer_;
 };

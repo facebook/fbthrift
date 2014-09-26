@@ -28,17 +28,6 @@ using std::shared_ptr;
 
 namespace apache { namespace thrift { namespace concurrency {
 
-sig_atomic_t mutexProfilingSampleRate = 0;
-MutexWaitCallback mutexProfilingCallback = 0;
-
-sig_atomic_t mutexProfilingCounter = 0;
-
-void enableMutexProfiling(int32_t profilingSampleRate,
-                          MutexWaitCallback callback) {
-  mutexProfilingSampleRate = profilingSampleRate;
-  mutexProfilingCallback = callback;
-}
-
 int Mutex::DEFAULT_INITIALIZER = PTHREAD_MUTEX_NORMAL;
 int Mutex::RECURSIVE_INITIALIZER = PTHREAD_MUTEX_RECURSIVE;
 

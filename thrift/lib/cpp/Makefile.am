@@ -76,7 +76,8 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
 
 libthrift_la_SOURCES += concurrency/Mutex.cpp \
                         concurrency/Monitor.cpp \
-                        concurrency/PosixThreadFactory.cpp
+                        concurrency/PosixThreadFactory.cpp \
+                        concurrency/ProfiledMutex.cpp
 
 libthriftz_la_SOURCES = transport/TZlibTransport.cpp
 

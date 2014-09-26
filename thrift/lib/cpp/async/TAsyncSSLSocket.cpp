@@ -573,11 +573,11 @@ void TAsyncSSLSocket::timeoutExpired() noexcept {
 }
 
 int TAsyncSSLSocket::sslExDataIndex_ = -1;
-concurrency::Mutex TAsyncSSLSocket::mutex_;
+concurrency::ProfiledMutex<std::mutex> TAsyncSSLSocket::mutex_;
 
 int TAsyncSSLSocket::getSSLExDataIndex() {
   if (sslExDataIndex_ < 0) {
-    concurrency::Guard g(mutex_);
+    std::lock_guard<concurrency::ProfiledMutex<std::mutex>> g(mutex_);
     if (sslExDataIndex_ < 0) {
       sslExDataIndex_ = SSL_get_ex_new_index(0,
           (void*)"AsyncSSLSocket data index", nullptr, nullptr, nullptr);

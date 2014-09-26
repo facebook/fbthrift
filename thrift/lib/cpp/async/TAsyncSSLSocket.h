@@ -26,7 +26,7 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
 #include <thrift/lib/cpp/async/TimeoutManager.h>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/ProfiledMutex.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
@@ -709,7 +709,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
 
   static void sslInfoCallback(const SSL *ssl, int type, int val);
 
-  static concurrency::Mutex mutex_;
+  static concurrency::ProfiledMutex<std::mutex> mutex_;
   static int sslExDataIndex_;
   // Whether we've applied the TCP_CORK option to the socket
   bool corked_{false};

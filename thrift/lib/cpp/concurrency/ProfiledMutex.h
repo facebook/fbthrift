@@ -16,10 +16,38 @@
 
 #pragma once
 
+#include <mutex>
 #include <signal.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
+#include <utility>
 
 namespace apache { namespace thrift { namespace concurrency {
+
+#ifndef THRIFT_NO_CONTENTION_PROFILING
+
+/**
+ * Determines if the mutex class will attempt to
+ * profile their blocking acquire methods. If this value is set to non-zero,
+ * Thrift will attempt to invoke the callback once every profilingSampleRate
+ * times.  However, as the sampling is not synchronized the rate is not
+ * guaranteed, and could be subject to big bursts and swings.  Please ensure
+ * your sampling callback is as performant as your application requires.
+ *
+ * The callback will get called with the wait time taken to lock the mutex in
+ * usec and a (void*) that uniquely identifies the Mutex (or ReadWriteMutex)
+ * being locked.
+ *
+ * The enableMutexProfiling() function is unsynchronized; calling this function
+ * while profiling is already enabled may result in race conditions.  On
+ * architectures where a pointer assignment is atomic, this is safe but there
+ * is no guarantee threads will agree on a single callback within any
+ * particular time period.
+ */
+typedef void (*MutexWaitCallback)(const void* id, int64_t waitTimeMicros);
+void enableMutexProfiling(int32_t profilingSampleRate,
+                          MutexWaitCallback callback);
+
+#endif
 
 extern sig_atomic_t mutexProfilingSampleRate;
 extern MutexWaitCallback mutexProfilingCallback;

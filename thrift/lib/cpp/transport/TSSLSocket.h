@@ -22,7 +22,7 @@
 #include <memory>
 #include <openssl/ssl.h>
 #include <openssl/tls1.h>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/ProfiledMutex.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 
 namespace folly {
@@ -518,7 +518,7 @@ class SSLContext {
   std::vector<ClientHelloCallback> clientHelloCbs_;
 #endif
 
-  static concurrency::Mutex mutex_;
+  static concurrency::ProfiledMutex<std::mutex> mutex_;
   static uint64_t count_;
 
 #ifdef OPENSSL_NPN_NEGOTIATED
