@@ -16,8 +16,6 @@
 
 #include <folly/SocketAddress.h>
 
-using namespace apache::thrift::transport;
-
 // Interface for D code.  Note that we use C-style functions instead of C++
 // members, to avoid mismatched virtual tables.
 extern "C" {
