@@ -224,6 +224,7 @@ BOOST_AUTO_TEST_CASE(AtMostEveryN) {
   milliseconds interval(25);
   milliseconds atMostEveryN(6);
   StackWheelTimer t(&eventBase, atMostEveryN);
+  t.setCatchupEveryN(70);
 
   // Create 60 timeouts to be added to ts10 at 1ms intervals.
   uint32_t numTimeouts = 60;
