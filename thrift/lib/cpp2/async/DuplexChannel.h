@@ -69,6 +69,13 @@ class DuplexChannel {
       duplex_.lastSender_.set(Who::CLIENT);
       HeaderClientChannel::sendMessage(callback, std::move(buf));
     }
+    void messageChannelEOF() override {
+      if (duplex_.mainChannel_.get() == Who::CLIENT) {
+        HeaderClientChannel::messageChannelEOF();
+      } else {
+        duplex_.serverChannel_->messageChannelEOF();
+      }
+    }
    private:
     DuplexChannel& duplex_;
   };
@@ -84,6 +91,13 @@ class DuplexChannel {
                        std::unique_ptr<folly::IOBuf> buf) {
       duplex_.lastSender_.set(Who::SERVER);
       HeaderServerChannel::sendMessage(callback, std::move(buf));
+    }
+    void messageChannelEOF() override {
+      if (duplex_.mainChannel_.get() == Who::SERVER) {
+        HeaderServerChannel::messageChannelEOF();
+      } else {
+        duplex_.clientChannel_->messageChannelEOF();
+      }
     }
    private:
     DuplexChannel& duplex_;
