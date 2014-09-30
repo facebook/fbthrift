@@ -39,8 +39,6 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
     , logger_(logger)
     , ccacheTypeIsMemory_(false) {
 
-  // Override the location of the conf file if it doesn't already exist.
-  setenv("KRB5_CONFIG", "/etc/krb5-thrift.conf", 0);
   ctx_ = folly::make_unique<Krb5Context>();
   store_ = folly::make_unique<Krb5CCacheStore>(logger);
 

@@ -51,9 +51,6 @@ KerberosSASLHandshakeClient::KerberosSASLHandshakeClient(
     phase_(INIT),
     logger_(logger) {
 
-  // Override the location of the conf file if it doesn't already exist.
-  setenv("KRB5_CONFIG", "/etc/krb5-thrift.conf", 0);
-
   // Set required security properties, we can define setters for these if
   // they need to be modified later.
   requiredFlags_ =
