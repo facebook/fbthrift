@@ -36,7 +36,8 @@ const int Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE = 10000;
 Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
   const std::shared_ptr<SecurityLogger>& logger)
     : stopManageThread_(false)
-    , logger_(logger) {
+    , logger_(logger)
+    , ccacheTypeIsMemory_(false) {
 
   // Override the location of the conf file if it doesn't already exist.
   setenv("KRB5_CONFIG", "/etc/krb5-thrift.conf", 0);
@@ -162,10 +163,31 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
 }
 
 void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
+  if (ccacheTypeIsMemory_) {
+    // Don't write to file if type is MEMORY
+    return;
+  }
+
+  Krb5CCache default_cache = Krb5CCache::makeDefault();
+
+  // Get the default name
+  folly::StringPiece default_type, default_name;
+  string default_cache_name = default_cache.getName();
+  folly::split<false>(":", default_cache_name, default_type, default_name);
+  if (default_type == "MEMORY") {
+    LOG(INFO) << "Default cache is of type MEMORY and will not be persisted";
+    ccacheTypeIsMemory_ = true;
+    return;
+  }
+  if (default_type != "FILE") {
+    LOG(ERROR) << "Default cache is not of type FILE, the type is: " +
+      default_type.str();
+    logger_->log("persist_ccache_fail_default_name_invalid");
+    return;
+  }
   Krb5Principal client_principal = store_->getClientPrincipal();
 
   // Check if client matches.
-  Krb5CCache default_cache = Krb5CCache::makeDefault();
   try {
     Krb5Principal def_princ = default_cache.getClientPrincipal();
     // We still want to overwrite caches that are about to expire.
@@ -190,17 +212,6 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   if (!can_renew) {
     VLOG(4) << "CC manager can't renew creds, won't overwrite ccache";
     logger_->log("persist_ccache_fail_keytab_mismatch");
-    return;
-  }
-
-  // Get the default name
-  folly::StringPiece default_type, default_name;
-  string default_cache_name = default_cache.getName();
-  folly::split<false>(":", default_cache_name, default_type, default_name);
-  if (default_type != "FILE") {
-    LOG(ERROR) << "Default cache is not of type FILE, the type is: " +
-      default_type.str();
-    logger_->log("persist_ccache_fail_default_name_invalid");
     return;
   }
 

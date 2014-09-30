@@ -113,6 +113,8 @@ class Krb5CredentialsCacheManager {
   bool stopManageThread_;
   std::condition_variable manageThreadCondVar_;
   std::shared_ptr<SecurityLogger> logger_;
+
+  bool ccacheTypeIsMemory_;
 };
 
 }}}
