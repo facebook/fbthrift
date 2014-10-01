@@ -120,7 +120,7 @@ class ThriftServer : public apache::thrift::server::TServer {
   std::string poolThreadName_;
 
   //! SSL context
-  std::shared_ptr<apache::thrift::transport::SSLContext> sslContext_;
+  std::shared_ptr<folly::SSLContext> sslContext_;
 
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
@@ -447,12 +447,12 @@ class ThriftServer : public apache::thrift::server::TServer {
    *
    */
   void setSSLContext(
-    std::shared_ptr<apache::thrift::transport::SSLContext> context) {
+    std::shared_ptr<folly::SSLContext> context) {
     assert(workers_.size() == 0);
     sslContext_ = context;
   }
 
-  std::shared_ptr<apache::thrift::transport::SSLContext>
+  std::shared_ptr<folly::SSLContext>
   getSSLContext() const {
     return sslContext_;
   }

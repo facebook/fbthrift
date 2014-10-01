@@ -1,21 +1,19 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #ifndef THRIFT_ASYNC_TEVENTSERVER_H_
 #define THRIFT_ASYNC_TEVENTSERVER_H_ 1
 
@@ -139,7 +137,7 @@ class TEventServer : public apache::thrift::server::TServer {
   uint32_t maxConnectionPoolSize_;
 
   //! SSL context
-  std::shared_ptr<transport::SSLContext> sslContext_;
+  std::shared_ptr<folly::SSLContext> sslContext_;
 
   //! Factory that creates connection processor objects.
   std::shared_ptr<TAsyncProcessorFactory> asyncProcessorFactory_;
@@ -618,11 +616,11 @@ class TEventServer : public apache::thrift::server::TServer {
   /**
    *
    */
-  void setSSLContext(std::shared_ptr<transport::SSLContext> context) {
+  void setSSLContext(std::shared_ptr<folly::SSLContext> context) {
     sslContext_ = context;
   }
 
-  std::shared_ptr<transport::SSLContext> getSSLContext() const {
+  std::shared_ptr<folly::SSLContext> getSSLContext() const {
     return sslContext_;
   }
 

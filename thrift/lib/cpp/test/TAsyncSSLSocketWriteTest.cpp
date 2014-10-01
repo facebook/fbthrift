@@ -29,7 +29,7 @@
 using apache::thrift::async::TEventBase;
 using apache::thrift::async::TAsyncSSLSocket;
 using folly::SocketAddress;
-using apache::thrift::transport::SSLContext;
+using folly::SSLContext;
 using std::string;
 using namespace testing;
 
@@ -38,7 +38,7 @@ namespace apache { namespace thrift { namespace async {
 class MockTAsyncSSLSocket : public TAsyncSSLSocket{
  public:
   static std::shared_ptr<MockTAsyncSSLSocket> newSocket(
-    const std::shared_ptr<transport::SSLContext>& ctx,
+    const std::shared_ptr<SSLContext>& ctx,
     TEventBase* evb) {
     auto sock = std::shared_ptr<MockTAsyncSSLSocket>(
       new MockTAsyncSSLSocket(ctx, evb),
@@ -50,7 +50,7 @@ class MockTAsyncSSLSocket : public TAsyncSSLSocket{
 
   // Fake constructor sets the state to established without call to connect
   // or accept
-  MockTAsyncSSLSocket(const std::shared_ptr<transport::SSLContext>& ctx,
+  MockTAsyncSSLSocket(const std::shared_ptr<SSLContext>& ctx,
                       TEventBase* evb)
       : TAsyncSSLSocket(ctx, evb) {
     state_ = TAsyncSocket::StateEnum::ESTABLISHED;

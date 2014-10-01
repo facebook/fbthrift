@@ -167,7 +167,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
   /**
    * Create a client TAsyncSSLSocket
    */
-  TAsyncSSLSocket(const std::shared_ptr<transport::SSLContext> &ctx,
+  TAsyncSSLSocket(const std::shared_ptr<folly::SSLContext> &ctx,
                   TEventBase* evb);
 
   /**
@@ -185,7 +185,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * @param fd  File descriptor to take over (should be a connected socket).
    * @param server Is socket in server mode?
    */
-  TAsyncSSLSocket(const std::shared_ptr<transport::SSLContext>& ctx,
+  TAsyncSSLSocket(const std::shared_ptr<folly::SSLContext>& ctx,
                   TEventBase* evb, int fd, bool server = true);
 
 
@@ -193,7 +193,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * Helper function to create a server/client shared_ptr<TAsyncSSLSocket>.
    */
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
-    const std::shared_ptr<transport::SSLContext>& ctx,
+    const std::shared_ptr<folly::SSLContext>& ctx,
     TEventBase* evb, int fd, bool server=true) {
     return std::shared_ptr<TAsyncSSLSocket>(
       new TAsyncSSLSocket(ctx, evb, fd, server),
@@ -204,7 +204,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * Helper function to create a client shared_ptr<TAsyncSSLSocket>.
    */
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
-    const std::shared_ptr<transport::SSLContext>& ctx,
+    const std::shared_ptr<folly::SSLContext>& ctx,
     TEventBase* evb) {
     return std::shared_ptr<TAsyncSSLSocket>(
       new TAsyncSSLSocket(ctx, evb),
@@ -217,7 +217,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * Create a client TAsyncSSLSocket with tlsext_servername in
    * the Client Hello message.
    */
-  TAsyncSSLSocket(const std::shared_ptr<transport::SSLContext> &ctx,
+  TAsyncSSLSocket(const std::shared_ptr<folly::SSLContext> &ctx,
                   TEventBase* evb,
                   const std::string& serverName);
 
@@ -236,13 +236,13 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * @param fd   File descriptor to take over (should be a connected socket).
    * @param serverName tlsext_hostname that will be sent in ClientHello.
    */
-  TAsyncSSLSocket(const std::shared_ptr<transport::SSLContext>& ctx,
+  TAsyncSSLSocket(const std::shared_ptr<folly::SSLContext>& ctx,
                   TEventBase* evb,
                   int fd,
                   const std::string& serverName);
 
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
-    const std::shared_ptr<transport::SSLContext>& ctx,
+    const std::shared_ptr<folly::SSLContext>& ctx,
     TEventBase* evb,
     const std::string& serverName) {
     return std::shared_ptr<TAsyncSSLSocket>(
@@ -297,8 +297,8 @@ class TAsyncSSLSocket : public TAsyncSocket {
    *                method in the context
    */
   virtual void sslAccept(HandshakeCallback* callback, uint32_t timeout = 0,
-      const transport::SSLContext::SSLVerifyPeerEnum& verifyPeer =
-            transport::SSLContext::SSLVerifyPeerEnum::USE_CTX);
+      const folly::SSLContext::SSLVerifyPeerEnum& verifyPeer =
+            folly::SSLContext::SSLVerifyPeerEnum::USE_CTX);
 
   /**
    * Invoke SSL accept following an asynchronous session cache lookup
@@ -337,8 +337,8 @@ class TAsyncSSLSocket : public TAsyncSocket {
    *                HandshakeCallback::handshakeVerify().
    */
   virtual void sslConnect(HandshakeCallback *callback, uint64_t timeout = 0,
-            const transport::SSLContext::SSLVerifyPeerEnum& verifyPeer =
-                  transport::SSLContext::SSLVerifyPeerEnum::USE_CTX);
+            const folly::SSLContext::SSLVerifyPeerEnum& verifyPeer =
+                  folly::SSLContext::SSLVerifyPeerEnum::USE_CTX);
 
   enum SSLStateEnum {
     STATE_UNINIT,
@@ -499,7 +499,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * argument. This should only be used on client SSL Sockets that have
    * already called detachSSLContext();
    */
-  void attachSSLContext(const std::shared_ptr<transport::SSLContext>& ctx);
+  void attachSSLContext(const std::shared_ptr<folly::SSLContext>& ctx);
 
   /**
    * Detaches the SSL context for this socket.
@@ -513,7 +513,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
    * It can only be used in server mode.
    */
   void switchServerSSLContext(
-    const std::shared_ptr<transport::SSLContext>& handshakeCtx);
+    const std::shared_ptr<folly::SSLContext>& handshakeCtx);
 
   /**
    * Did server recognize/support the tlsext_hostname in Client Hello?
@@ -722,7 +722,7 @@ class TAsyncSSLSocket : public TAsyncSocket {
   bool handshakeComplete_{false};
   bool renegotiateAttempted_{false};
   SSLStateEnum sslState_{STATE_UNINIT};
-  std::shared_ptr<transport::SSLContext> ctx_;
+  std::shared_ptr<folly::SSLContext> ctx_;
   // Callback for SSL_accept() or SSL_connect()
   HandshakeCallback* handshakeCallback_{nullptr};
   SSL* ssl_{nullptr};
@@ -739,11 +739,11 @@ class TAsyncSSLSocket : public TAsyncSocket {
   // it will pass MSG_EOR to sendmsg().
   size_t minEorRawByteNo_{0};
 #if OPENSSL_VERSION_NUMBER >= 0x1000105fL && !defined(OPENSSL_NO_TLSEXT)
-  std::shared_ptr<transport::SSLContext> handshakeCtx_;
+  std::shared_ptr<folly::SSLContext> handshakeCtx_;
   std::string tlsextHostname_;
 #endif
-  transport::SSLContext::SSLVerifyPeerEnum
-    verifyPeer_{transport::SSLContext::SSLVerifyPeerEnum::USE_CTX};
+  folly::SSLContext::SSLVerifyPeerEnum
+    verifyPeer_{folly::SSLContext::SSLVerifyPeerEnum::USE_CTX};
 
   // Callback for SSL_CTX_set_verify()
   static int sslVerifyCallback(int preverifyOk, X509_STORE_CTX* ctx);

@@ -26,10 +26,11 @@
 
 #include <thrift/lib/cpp/ssl/SSLUtils.h>
 #include <folly/SocketAddress.h>
+#include <folly/io/SSLContext.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 using apache::thrift::ssl::OpenSSLUtils;
-using apache::thrift::transport::SSLContext;
+using folly::SSLContext;
 using folly::SocketAddress;
 
 class X509Cert {

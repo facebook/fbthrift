@@ -522,7 +522,7 @@ public:
 class TestSSLServer {
  protected:
   apache::thrift::async::TEventBase evb_;
-  std::shared_ptr<apache::thrift::transport::SSLContext> ctx_;
+  std::shared_ptr<folly::SSLContext> ctx_;
   apache::thrift::async::TAsyncSSLServerSocket::SSLAcceptCallback *acb_;
   apache::thrift::async::TAsyncSSLServerSocket *socket_;
   folly::SocketAddress address_;
@@ -557,7 +557,7 @@ class TestSSLServer {
 
 TestSSLServer::TestSSLServer(
   apache::thrift::async::TAsyncSSLServerSocket::SSLAcceptCallback *acb) :
-    ctx_(new apache::thrift::transport::SSLContext),
+ctx_(new folly::SSLContext),
     acb_(acb),
     socket_(new apache::thrift::async::TAsyncSSLServerSocket(ctx_, &evb_)) {
   // Set up the SSL context
@@ -654,8 +654,8 @@ void getfds(int fds[2]) {
 }
 
 void getctx(
-  std::shared_ptr<apache::thrift::transport::SSLContext> clientCtx,
-  std::shared_ptr<apache::thrift::transport::SSLContext> serverCtx) {
+  std::shared_ptr<folly::SSLContext> clientCtx,
+  std::shared_ptr<folly::SSLContext> serverCtx) {
   clientCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
 
   serverCtx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
@@ -669,10 +669,10 @@ void sslsocketpair(
   apache::thrift::async::TEventBase* eventBase,
   apache::thrift::async::TAsyncSSLSocket::UniquePtr* clientSock,
   apache::thrift::async::TAsyncSSLSocket::UniquePtr* serverSock) {
-  std::shared_ptr<apache::thrift::transport::SSLContext> clientCtx(
-    new apache::thrift::transport::SSLContext);
-  std::shared_ptr<apache::thrift::transport::SSLContext> serverCtx(
-    new apache::thrift::transport::SSLContext);
+  std::shared_ptr<folly::SSLContext> clientCtx(
+    new folly::SSLContext);
+  std::shared_ptr<folly::SSLContext> serverCtx(
+    new folly::SSLContext);
   int fds[2];
   getfds(fds);
   getctx(clientCtx, serverCtx);
@@ -938,8 +938,8 @@ class SNIServer :
  public:
   explicit SNIServer(
     apache::thrift::async::TAsyncSSLSocket::UniquePtr socket,
-    const std::shared_ptr<apache::thrift::transport::SSLContext>& ctx,
-    const std::shared_ptr<apache::thrift::transport::SSLContext>& sniCtx,
+    const std::shared_ptr<folly::SSLContext>& ctx,
+    const std::shared_ptr<folly::SSLContext>& sniCtx,
     const std::string& expectedServerName)
       : serverNameMatch(false), socket_(std::move(socket)), sniCtx_(sniCtx),
         expectedServerName_(expectedServerName) {
@@ -972,7 +972,7 @@ class SNIServer :
     ADD_FAILURE() << "server read error: " << ex.what();
   }
 
-  apache::thrift::transport::SSLContext::ServerNameCallbackResult
+  folly::SSLContext::ServerNameCallbackResult
     serverNameCallback(SSL *ssl) {
     const char *sn = SSL_get_servername(ssl, TLSEXT_NAMETYPE_host_name);
     if (sniCtx_ &&
@@ -982,15 +982,15 @@ class SNIServer :
           apache::thrift::async::TAsyncSSLSocket::getFromSSL(ssl);
       sslSocket->switchServerSSLContext(sniCtx_);
       serverNameMatch = true;
-      return apache::thrift::transport::SSLContext::SERVER_NAME_FOUND;
+      return folly::SSLContext::SERVER_NAME_FOUND;
     } else {
       serverNameMatch = false;
-      return apache::thrift::transport::SSLContext::SERVER_NAME_NOT_FOUND;
+      return folly::SSLContext::SERVER_NAME_NOT_FOUND;
     }
   }
 
   apache::thrift::async::TAsyncSSLSocket::UniquePtr socket_;
-  std::shared_ptr<apache::thrift::transport::SSLContext> sniCtx_;
+  std::shared_ptr<folly::SSLContext> sniCtx_;
   std::string expectedServerName_;
 };
 #endif
@@ -1003,7 +1003,7 @@ class SSLClient : public apache::thrift::async::TAsyncSocket::ConnectCallback,
   apache::thrift::async::TEventBase *eventBase_;
   std::shared_ptr<apache::thrift::async::TAsyncSSLSocket> sslSocket_;
   SSL_SESSION *session_;
-  std::shared_ptr<apache::thrift::transport::SSLContext> ctx_;
+  std::shared_ptr<folly::SSLContext> ctx_;
   uint32_t requests_;
   folly::SocketAddress address_;
   uint32_t timeout_;
@@ -1029,7 +1029,7 @@ class SSLClient : public apache::thrift::async::TAsyncSocket::ConnectCallback,
         miss_(0),
         errors_(0),
         writeAfterConnectErrors_(0) {
-    ctx_.reset(new apache::thrift::transport::SSLContext());
+    ctx_.reset(new folly::SSLContext());
     ctx_->setOptions(SSL_OP_NO_TICKET);
     ctx_->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
     memset(buf_, 'a', sizeof(buf_));
@@ -1216,7 +1216,7 @@ class SSLHandshakeClientNoVerify : public SSLHandshakeBase {
    bool verifyResult) :
     SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
     socket_->sslConnect(this, 0,
-      apache::thrift::transport::SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
+      folly::SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
   }
 };
 
@@ -1228,7 +1228,7 @@ class SSLHandshakeClientDoVerify : public SSLHandshakeBase {
    bool verifyResult) :
     SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
     socket_->sslConnect(this, 0,
-      apache::thrift::transport::SSLContext::SSLVerifyPeerEnum::VERIFY);
+      folly::SSLContext::SSLVerifyPeerEnum::VERIFY);
   }
 };
 
@@ -1275,7 +1275,7 @@ class SSLHandshakeServerNoVerify : public SSLHandshakeBase {
       bool verifyResult)
     : SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
     socket_->sslAccept(this, 0,
-      apache::thrift::transport::SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
+      folly::SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
   }
 };
 
@@ -1287,7 +1287,7 @@ class SSLHandshakeServerDoVerify : public SSLHandshakeBase {
       bool verifyResult)
     : SSLHandshakeBase(std::move(socket), preverifyResult, verifyResult) {
     socket_->sslAccept(this, 0,
-      apache::thrift::transport::SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT);
+      folly::SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT);
   }
 };
 

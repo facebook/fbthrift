@@ -1,26 +1,25 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 #ifndef THRIFT_ASYNC_TASYNCSSLSERVERSOCKET_H_
 #define THRIFT_ASYNC_TASYNCSSLSERVERSOCKET_H_ 1
 
+#include <folly/io/async/SSLContext.h>
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
-#include <thrift/lib/cpp/transport/TSSLSocket.h>
+
 
 namespace folly {
 class SocketAddress;
@@ -78,7 +77,7 @@ class TAsyncSSLServerSocket : public TDelayedDestruction,
    *                   when they are created.
    */
   explicit TAsyncSSLServerSocket(
-    const std::shared_ptr<apache::thrift::transport::SSLContext>& ctx,
+    const std::shared_ptr<folly::SSLContext>& ctx,
     TEventBase* eventBase = nullptr);
 
   /**
@@ -110,7 +109,7 @@ class TAsyncSSLServerSocket : public TDelayedDestruction,
    * destructor is protected and cannot be invoked directly.
    */
   static std::shared_ptr<TAsyncSSLServerSocket> newSocket(
-        const std::shared_ptr<apache::thrift::transport::SSLContext>& ctx,
+    const std::shared_ptr<folly::SSLContext>& ctx,
         TEventBase* evb) {
     return std::shared_ptr<TAsyncSSLServerSocket>(
       new TAsyncSSLServerSocket(ctx, evb),
@@ -161,7 +160,7 @@ class TAsyncSSLServerSocket : public TDelayedDestruction,
   TEventBase* eventBase_;
   TAsyncServerSocket* serverSocket_;
   // SSL context
-  std::shared_ptr<apache::thrift::transport::SSLContext> ctx_;
+  std::shared_ptr<folly::SSLContext> ctx_;
   // The accept callback
   SSLAcceptCallback* sslCallback_;
 };

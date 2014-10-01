@@ -18,8 +18,8 @@
 
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 
-using apache::thrift::transport::SSLContext;
-using apache::thrift::transport::SSLContextPtr;
+using folly::SSLContext;
+using folly::SSLContextPtr;
 
 namespace apache { namespace thrift { namespace async {
 

@@ -21,7 +21,7 @@
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 using folly::SocketAddress;
-using apache::thrift::transport::SSLContext;
+using folly::SSLContext;
 using apache::thrift::transport::TTransportException;
 using std::shared_ptr;
 

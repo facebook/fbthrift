@@ -40,7 +40,7 @@
 
 using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
-using apache::thrift::transport::SSLContext;
+using folly::SSLContext;
 using std::string;
 using std::shared_ptr;
 
@@ -245,7 +245,7 @@ TSSLException::TSSLException(int sslError, int errno_copy):
 /**
  * Create a client TAsyncSSLSocket
  */
-TAsyncSSLSocket::TAsyncSSLSocket(const shared_ptr<transport::SSLContext> &ctx,
+TAsyncSSLSocket::TAsyncSSLSocket(const shared_ptr<SSLContext> &ctx,
                                  TEventBase* evb) :
     TAsyncSocket(evb),
     ctx_(ctx),
@@ -274,7 +274,7 @@ TAsyncSSLSocket::TAsyncSSLSocket(const shared_ptr<SSLContext>& ctx,
  * Create a client TAsyncSSLSocket and allow tlsext_hostname
  * to be sent in Client Hello.
  */
-TAsyncSSLSocket::TAsyncSSLSocket(const shared_ptr<transport::SSLContext> &ctx,
+TAsyncSSLSocket::TAsyncSSLSocket(const shared_ptr<SSLContext> &ctx,
                                  TEventBase* evb,
                                  const std::string& serverName) :
     TAsyncSocket(evb),
@@ -453,7 +453,7 @@ void TAsyncSSLSocket::invalidState(HandshakeCallback* callback) {
 }
 
 void TAsyncSSLSocket::sslAccept(HandshakeCallback* callback, uint32_t timeout,
-      const transport::SSLContext::SSLVerifyPeerEnum& verifyPeer) {
+      const SSLContext::SSLVerifyPeerEnum& verifyPeer) {
   DestructorGuard dg(this);
   assert(eventBase_->isInEventBaseThread());
   verifyPeer_ = verifyPeer;
@@ -476,7 +476,7 @@ void TAsyncSSLSocket::sslAccept(HandshakeCallback* callback, uint32_t timeout,
 
 #if OPENSSL_VERSION_NUMBER >= 0x009080bfL
 void TAsyncSSLSocket::attachSSLContext(
-  const std::shared_ptr<transport::SSLContext>& ctx) {
+  const std::shared_ptr<SSLContext>& ctx) {
 
   // Check to ensure we are in client mode. Changing a server's ssl
   // context doesn't make sense since clients of that server would likely
@@ -521,7 +521,7 @@ void TAsyncSSLSocket::detachSSLContext() {
 
 #if OPENSSL_VERSION_NUMBER >= 0x1000105fL && !defined(OPENSSL_NO_TLSEXT)
 void TAsyncSSLSocket::switchServerSSLContext(
-  const std::shared_ptr<transport::SSLContext>& handshakeCtx) {
+  const std::shared_ptr<SSLContext>& handshakeCtx) {
   CHECK(server_);
   if (sslState_ != STATE_ACCEPTING) {
     // We log it here and allow the switch.
@@ -657,7 +657,7 @@ void TAsyncSSLSocket::applyVerificationOptions(SSL * ssl) {
 }
 
 void TAsyncSSLSocket::sslConnect(HandshakeCallback* callback, uint64_t timeout,
-        const transport::SSLContext::SSLVerifyPeerEnum& verifyPeer) {
+        const SSLContext::SSLVerifyPeerEnum& verifyPeer) {
   DestructorGuard dg(this);
   assert(eventBase_->isInEventBaseThread());
 

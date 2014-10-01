@@ -34,7 +34,7 @@ class TAsyncSSLSocketFactory :
   /**
    * Set the SSLContext to use when constructing sockets.
    */
-  void setSSLContext(transport::SSLContextPtr& context);
+  void setSSLContext(folly::SSLContextPtr& context);
 
   /**
    * Set whether or not we're constructing client or server sockets.
@@ -49,7 +49,7 @@ class TAsyncSSLSocketFactory :
 
  protected:
   TEventBase* eventBase_;
-  transport::SSLContextPtr context_;
+  folly::SSLContextPtr context_;
   bool serverMode_;
 };
 

@@ -52,7 +52,7 @@ using apache::thrift::async::TEventBase;
 using apache::thrift::concurrency::Util;
 using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
-using apache::thrift::transport::SSLContext;
+using folly::SSLContext;
 using apache::thrift::transport::TSSLSocket;
 using apache::thrift::transport::TSSLException;
 
