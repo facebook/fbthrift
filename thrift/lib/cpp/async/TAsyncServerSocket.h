@@ -17,7 +17,6 @@
 #ifndef THRIFT_ASYNC_TASYNCSERVERSOCKET_H_
 #define THRIFT_ASYNC_TASYNCSERVERSOCKET_H_ 1
 
-#include <thrift/lib/cpp/ShutdownSocketSet.h>
 #include <thrift/lib/cpp/thrift_config.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/async/TDelayedDestruction.h>
@@ -151,8 +150,6 @@ class TAsyncServerSocket : public TDelayedDestruction {
     return std::shared_ptr<TAsyncServerSocket>(new TAsyncServerSocket(evb),
                                                  Destructor());
   }
-
-  void setShutdownSocketSet(ShutdownSocketSet* newSS);
 
   /**
    * Destroy the socket.
@@ -409,8 +406,6 @@ class TAsyncServerSocket : public TDelayedDestruction {
    *
    * Only use this if you have reason to pass special flags to shutdown.
    * Otherwise just destroy the socket.
-   *
-   * This method has no effect when a ShutdownSocketSet option is used.
    *
    * Returns the result of shutdown on sockets_[n-1]
    */
@@ -681,7 +676,6 @@ class TAsyncServerSocket : public TDelayedDestruction {
   std::vector<CallbackInfo> callbacks_;
   bool keepAliveEnabled_;
   bool closeOnExec_;
-  ShutdownSocketSet* shutdownSocketSet_;
 };
 
 }}} // apache::thrift::async

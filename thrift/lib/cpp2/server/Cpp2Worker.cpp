@@ -92,7 +92,7 @@ void Cpp2Worker::connectionAccepted(int fd, const folly::SocketAddress& clientAd
   } else {
     asyncSock = new TAsyncSocket(eventBase_.get(), fd);
   }
-  asyncSock->setShutdownSocketSet(server_->shutdownSocketSet_.get());
+  server_->shutdownSocketSet_->add(fd);
 
   if (sslSock != nullptr) {
     // The connection may be deleted in sslAccept().
