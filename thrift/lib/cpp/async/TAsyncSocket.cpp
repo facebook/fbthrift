@@ -237,6 +237,7 @@ void TAsyncSocket::init() {
   readCallback_ = nullptr;
   writeReqHead_ = nullptr;
   writeReqTail_ = nullptr;
+  shutdownSocketSet_ = nullptr;
   appBytesWritten_ = 0;
   appBytesReceived_ = 0;
 }
@@ -264,6 +265,9 @@ int TAsyncSocket::detachFd() {
           << ", events=" << std::hex << eventFlags_ << ")";
   // Extract the fd, and set fd_ to -1 first, so closeNow() won't
   // actually close the descriptor.
+  if (shutdownSocketSet_) {
+    shutdownSocketSet_->remove(fd_);
+  }
   int fd = fd_;
   fd_ = -1;
   // Call closeNow() to invoke all pending callbacks with an error.
@@ -272,6 +276,19 @@ int TAsyncSocket::detachFd() {
   // This can only be done after closeNow() unregisters the handler.
   ioHandler_.changeHandlerFD(-1);
   return fd;
+}
+
+void TAsyncSocket::setShutdownSocketSet(ShutdownSocketSet* newSS) {
+  if (shutdownSocketSet_ == newSS) {
+    return;
+  }
+  if (shutdownSocketSet_ && fd_ != -1) {
+    shutdownSocketSet_->remove(fd_);
+  }
+  shutdownSocketSet_ = newSS;
+  if (shutdownSocketSet_ && fd_ != -1) {
+    shutdownSocketSet_->add(fd_);
+  }
 }
 
 void TAsyncSocket::connect(ConnectCallback* callback,
@@ -306,6 +323,9 @@ void TAsyncSocket::connect(ConnectCallback* callback,
     if (fd_ < 0) {
       throw TTransportException(TTransportException::INTERNAL_ERROR,
                                 withAddr("failed to create socket"), errno);
+    }
+    if (shutdownSocketSet_) {
+      shutdownSocketSet_->add(fd_);
     }
     ioHandler_.changeHandlerFD(fd_);
 
@@ -1905,7 +1925,11 @@ void TAsyncSocket::invalidState(WriteCallback* callback) {
 
 void TAsyncSocket::doClose() {
   if (fd_ == -1) return;
+  if (shutdownSocketSet_) {
+    shutdownSocketSet_->close(fd_);
+  } else {
     ::close(fd_);
+  }
   fd_ = -1;
 }
 

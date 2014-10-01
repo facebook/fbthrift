@@ -791,45 +791,6 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
   base.loop();
 }
 
-class ReadCallbackTest : public TAsyncTransport::ReadCallback {
- public:
-  virtual void getReadBuffer(void** bufReturn, size_t* lenReturn) {
-  }
-  virtual void readDataAvailable(size_t len) noexcept {
-  }
-  virtual void readEOF() noexcept {
-    eof = true;
-  }
-
-  virtual void readError(const transport::TTransportException& ex) noexcept {
-    eof = true;
-  }
-
- bool eof = false;
-};
-
-TEST(ThriftServer, ShutdownSocketSetTest) {
-  auto server = getServer();
-  ScopedServerThread sst(server);
-  auto port = sst.getAddress()->getPort();
-
-  TEventBase base;
-  ReadCallbackTest cb;
-
-  std::shared_ptr<TAsyncSocket> socket2(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
-  socket2->setReadCallback(&cb);
-
-  base.runAfterDelay([&](){
-    server->immediateShutdown(true);
-    }, 10);
-  base.runAfterDelay([&](){
-      base.terminateLoopSoon();
-    }, 30);
-  base.loopForever();
-  EXPECT_EQ(cb.eof, true);
-}
-
 TEST(ThriftServer, FreeCallbackTest) {
 
   ScopedServerThread sst(getServer());

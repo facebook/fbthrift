@@ -109,17 +109,10 @@ Cpp2Connection::~Cpp2Connection() {
     handler->connectionDestroyed(&context_);
   }
 
-  if (socket_ && socket_->getFd() >= 0) {
-    worker_->getServer()->shutdownSocketSet_->remove(socket_->getFd());
-  }
   channel_.reset();
 }
 
 void Cpp2Connection::stop() {
-  if (socket_ && socket_->getFd() >= 0) {
-    worker_->getServer()->shutdownSocketSet_->remove(socket_->getFd());
-  }
-
   if (getConnectionManager()) {
     getConnectionManager()->removeConnection(this);
   }

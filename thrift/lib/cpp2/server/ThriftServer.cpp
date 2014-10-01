@@ -141,6 +141,7 @@ ThriftServer::~ThriftServer() {
 void ThriftServer::useExistingSocket(TAsyncServerSocket::UniquePtr socket) {
   if (socket_ == nullptr) {
     socket_ = std::move(socket);
+    socket_->setShutdownSocketSet(shutdownSocketSet_.get());
     socket_->getAddress(&address_);
   }
 }
@@ -217,16 +218,13 @@ void ThriftServer::setup() {
     if (!serverChannel_) {
       if (socket_ == nullptr) {
         socket_.reset(new TAsyncServerSocket());
+        socket_->setShutdownSocketSet(shutdownSocketSet_.get());
         if (port_ != -1) {
           socket_->bind(port_);
         } else {
           DCHECK(address_.isInitialized());
           socket_->bind(address_);
         }
-      }
-
-      for (auto socket : getListenSockets()) {
-        shutdownSocketSet_->add(socket);
       }
 
       socket_->listen(listenBacklog_);
@@ -431,10 +429,6 @@ void ThriftServer::stop() {
 
 void ThriftServer::stopListening() {
   if (socket_ != nullptr) {
-    for (auto socket : getListenSockets()) {
-      shutdownSocketSet_->remove(socket);
-    }
-
     // Stop accepting new connections
     socket_->pauseAccepting();
     socket_->detachEventBase();

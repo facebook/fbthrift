@@ -132,7 +132,25 @@ TAsyncServerSocket::TAsyncServerSocket(TEventBase* eventBase)
     backoffTimeout_(nullptr),
     callbacks_(),
     keepAliveEnabled_(true),
-    closeOnExec_(true) {
+    closeOnExec_(true),
+    shutdownSocketSet_(nullptr) {
+}
+
+void TAsyncServerSocket::setShutdownSocketSet(ShutdownSocketSet* newSS) {
+  if (shutdownSocketSet_ == newSS) {
+    return;
+  }
+  if (shutdownSocketSet_) {
+    for (auto& h : sockets_) {
+      shutdownSocketSet_->remove(h.socket_);
+    }
+  }
+  shutdownSocketSet_ = newSS;
+  if (shutdownSocketSet_) {
+    for (auto& h : sockets_) {
+      shutdownSocketSet_->add(h.socket_);
+    }
+  }
 }
 
 TAsyncServerSocket::~TAsyncServerSocket() {
@@ -152,7 +170,9 @@ int TAsyncServerSocket::stopAccepting(int shutdownFlags) {
 
   for (auto& handler : sockets_) {
     handler.unregisterHandler();
-    if (shutdownFlags >= 0) {
+    if (shutdownSocketSet_) {
+      shutdownSocketSet_->close(handler.socket_);
+    } else if (shutdownFlags >= 0) {
       result = ::shutdown(handler.socket_, shutdownFlags);
       pendingCloseSockets_.push_back(handler.socket_);
     } else {
@@ -577,6 +597,9 @@ void TAsyncServerSocket::setupSocket(int fd) {
   }
 #endif
 
+  if (shutdownSocketSet_) {
+    shutdownSocketSet_->add(fd);
+  }
 }
 
 void TAsyncServerSocket::handlerReady(

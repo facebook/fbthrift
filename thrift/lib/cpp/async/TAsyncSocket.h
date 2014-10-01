@@ -20,6 +20,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <glog/logging.h>
+#include <thrift/lib/cpp/ShutdownSocketSet.h>
 #include <thrift/lib/cpp/transport/TSocketAddress.h>
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
@@ -126,6 +127,8 @@ class TAsyncSocket : public TAsyncTransport {
    * @param fd  File descriptor to take over (should be a connected socket).
    */
   TAsyncSocket(TEventBase* evb, int fd);
+
+  void setShutdownSocketSet(ShutdownSocketSet* ss);
 
   /**
    * Helper function to create a shared_ptr<TAsyncSocket>.
@@ -651,6 +654,7 @@ class TAsyncSocket : public TAsyncTransport {
   ReadCallback* readCallback_;          ///< ReadCallback
   WriteRequest* writeReqHead_;          ///< Chain of WriteRequests
   WriteRequest* writeReqTail_;          ///< End of WriteRequest chain
+  ShutdownSocketSet* shutdownSocketSet_;
   size_t appBytesReceived_;             ///< Num of bytes received from socket
   size_t appBytesWritten_;              ///< Num of bytes written to socket
 };
