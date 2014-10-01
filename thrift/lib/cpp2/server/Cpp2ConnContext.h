@@ -199,6 +199,10 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_->getHeader()->getClientType();
   }
 
+  std::map<std::string, std::string> releaseHeaders() {
+    return ctx_->getHeader()->releaseHeaders();
+  }
+
   virtual const apache::thrift::SaslServer* getSaslServer() const {
     return ctx_->getSaslServer();
   }
