@@ -1204,7 +1204,7 @@ void t_php_generator::generate_php_struct_reader(ofstream& out,
 
   if (oop_) {
     indent(out) <<
-      "public function read($input)" << endl;
+      "public function read(TProtocol $input)" << endl;
     scope_up(out);
     indent(out) << "return $this->_read('" << tstruct->get_name()
                 << "', self::$_TSPEC, $input);" << endl;
@@ -1382,9 +1382,9 @@ void t_php_generator::generate_php_struct_writer(ofstream& out,
 
   if (oop_) {
     if (binary_inline_) {
-      indent(out) << "public function write(&$output)" << endl;
+      indent(out) << "public function write(TProtocol &$output)" << endl;
     } else {
-      indent(out) << "public function write($output)" << endl;
+      indent(out) << "public function write(TProtocol $output)" << endl;
     }
     scope_up(out);
     indent(out) << "return $this->_write('" << tstruct->get_name() << "', self::$_TSPEC, $output);" << endl;

@@ -71,9 +71,9 @@ abstract class TBase {
                           TType::STRING => 'String',
                           TType::FLOAT  => 'Float');
 
-  public abstract function read($input);
+  public abstract function read(TProtocol $input);
 
-  public abstract function write($output);
+  public abstract function write(TProtocol $output);
 
   public function __construct($spec=null, $vals=null) {
     if (is_array($spec) && is_array($vals)) {
@@ -608,11 +608,11 @@ class TApplicationException extends TException {
     parent::__construct($message, $code);
   }
 
-  public function read($output) {
+  public function read(TProtocol $output) {
     return $this->_read('TApplicationException', self::$_TSPEC, $output);
   }
 
-  public function write($output) {
+  public function write(TProtocol $output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('TApplicationException');
     if ($message = $this->getMessage()) {
