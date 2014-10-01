@@ -789,8 +789,8 @@ class CppGenerator(t_generator.Generator):
                         prio = 'NORMAL'
                     PTM = 'apache::thrift::concurrency'
                     priovar = self.tmp('prio')
-                    out('{0}::PRIORITY {1} = reqCtx->getHeader()->'
-                      'getCallPriority();'.format(PTM, priovar))
+                    out('{0}::PRIORITY {1} = reqCtx->getCallPriority();'
+                            .format(PTM, priovar))
                     with out('if ({0} != {1}::N_PRIORITIES)'.format(
                            priovar, PTM)):
                         out('return {0};'.format(priovar))

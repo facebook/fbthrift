@@ -19,12 +19,15 @@
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TSocketAddress.h>
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
 #include <memory>
+
+using apache::thrift::concurrency::PriorityThreadManager;
 
 namespace apache { namespace thrift {
 
@@ -129,6 +132,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
         headers_ = header->getHeaders();
         transforms_ = header->getWriteTransforms();
         minCompressBytes_ = header->getMinCompressBytes();
+        callPriority_ = header->getCallPriority();
       }
     }
   }
@@ -157,19 +161,17 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_->getOutputProtocol();
   }
 
-  // Note:  Header is _not_ thread safe
-  virtual apache::thrift::transport::THeader* getHeader() {
-    return ctx_->getHeader();
-  }
-
   // The following two header functions _are_ thread safe
   virtual std::map<std::string, std::string> getHeaders() {
     return headers_;
   }
 
-
   virtual std::map<std::string, std::string> getWriteHeaders() {
     return std::move(writeHeaders_);
+  }
+
+  std::map<std::string, std::string>* getHeadersPtr() {
+    return &headers_;
   }
 
   virtual bool setHeader(const std::string& key, const std::string& value) {
@@ -187,7 +189,14 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
   virtual uint32_t getMinCompressBytes() {
     return minCompressBytes_;
+  }
 
+  PriorityThreadManager::PRIORITY getCallPriority() {
+    return callPriority_;
+  }
+
+  CLIENT_TYPE getClientType() {
+    return ctx_->getHeader()->getClientType();
   }
 
   virtual const apache::thrift::SaslServer* getSaslServer() const {
@@ -210,6 +219,12 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_;
   }
 
+ protected:
+  // Note:  Header is _not_ thread safe
+  virtual apache::thrift::transport::THeader* getHeader() {
+    return ctx_->getHeader();
+  }
+
  private:
   Cpp2ConnContext* ctx_;
 
@@ -218,6 +233,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   std::map<std::string, std::string> writeHeaders_;
   std::vector<uint16_t> transforms_;
   uint32_t minCompressBytes_;
+  PriorityThreadManager::PRIORITY callPriority_;
 };
 
 } }

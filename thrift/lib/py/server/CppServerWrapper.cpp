@@ -112,7 +112,7 @@ public:
                        apache::thrift::concurrency::ThreadManager* tm) {
     folly::ByteRange input_range = buf->coalesce();
     auto input_data = const_cast<unsigned char*>(input_range.data());
-    auto clientType = context->getHeader()->getClientType();
+    auto clientType = context->getClientType();
     if (clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
       // SASL processing is already done, and we're not going to put
       // it back.  So just use standard header here.
