@@ -1435,7 +1435,7 @@ void t_hack_generator::generate_php_struct_writer(ofstream& out,
       t_enum* tenum = (t_enum*) type;
       indent(out)<<
         "$" << val << " = " << php_namespace(tenum->get_program()) <<
-        tenum->get_name() << "::assertIsValid($this->" <<
+        tenum->get_name() << "::assert($this->" <<
         (*f_iter)->get_name() << ");" << endl;
     } else {
       indent(out) << "$" << val << " = $this->" << (*f_iter)->get_name() << ";" << endl;
