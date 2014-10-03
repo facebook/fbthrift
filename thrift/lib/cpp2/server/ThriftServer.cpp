@@ -80,7 +80,7 @@ ThriftServer::ThriftServer() :
   saslEnabled_(false),
   nonSaslEnabled_(true),
   shutdownSocketSet_(
-    folly::make_unique<apache::thrift::ShutdownSocketSet>()),
+    folly::make_unique<folly::ShutdownSocketSet>()),
   serveEventBase_(nullptr),
   nWorkers_(T_ASYNC_DEFAULT_WORKER_THREADS),
   nPoolThreads_(0),

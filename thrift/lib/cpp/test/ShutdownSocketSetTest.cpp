@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include <thrift/lib/cpp/ShutdownSocketSet.h>
+#include <folly/io/ShutdownSocketSet.h>
 
 #include <atomic>
 #include <chrono>
@@ -30,8 +30,10 @@
 #include <glog/logging.h>
 #include <gtest/gtest.h>
 
-namespace apache { namespace thrift { namespace test {
+using folly::ShutdownSocketSet;
 
+namespace apache { namespace thrift { namespace test {
+     
 ShutdownSocketSet shutdownSocketSet;
 
 class Server {

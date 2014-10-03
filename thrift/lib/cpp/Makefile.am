@@ -42,7 +42,6 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
                        Thrift.cpp \
                        TApplicationException.cpp \
                        VirtualProfiling.cpp \
-                       ShutdownSocketSet.cpp \
                        concurrency/ThreadManager.cpp \
                        concurrency/TimerManager.cpp \
                        concurrency/Util.cpp \
@@ -96,8 +95,7 @@ include_thrift_HEADERS = \
                          TReflectionLocal.h \
                          TProcessor.h \
                          TApplicationException.h \
-                         TLogging.h \
-			 ShutdownSocketSet.h
+                         TLogging.h
 
 include_concurrencydir = $(include_thriftdir)/concurrency
 include_concurrency_HEADERS = \

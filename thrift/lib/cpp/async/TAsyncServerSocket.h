@@ -17,7 +17,7 @@
 #ifndef THRIFT_ASYNC_TASYNCSERVERSOCKET_H_
 #define THRIFT_ASYNC_TASYNCSERVERSOCKET_H_ 1
 
-#include <thrift/lib/cpp/ShutdownSocketSet.h>
+#include <folly/io/ShutdownSocketSet.h>
 #include <thrift/lib/cpp/thrift_config.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/async/TDelayedDestruction.h>
@@ -152,7 +152,7 @@ class TAsyncServerSocket : public TDelayedDestruction {
                                                  Destructor());
   }
 
-  void setShutdownSocketSet(ShutdownSocketSet* newSS);
+  void setShutdownSocketSet(folly::ShutdownSocketSet* newSS);
 
   /**
    * Destroy the socket.
@@ -681,7 +681,7 @@ class TAsyncServerSocket : public TDelayedDestruction {
   std::vector<CallbackInfo> callbacks_;
   bool keepAliveEnabled_;
   bool closeOnExec_;
-  ShutdownSocketSet* shutdownSocketSet_;
+  folly::ShutdownSocketSet* shutdownSocketSet_;
 };
 
 }}} // apache::thrift::async

@@ -278,7 +278,7 @@ int TAsyncSocket::detachFd() {
   return fd;
 }
 
-void TAsyncSocket::setShutdownSocketSet(ShutdownSocketSet* newSS) {
+void TAsyncSocket::setShutdownSocketSet(folly::ShutdownSocketSet* newSS) {
   if (shutdownSocketSet_ == newSS) {
     return;
   }

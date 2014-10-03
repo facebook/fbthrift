@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <folly/Memory.h>
-#include <thrift/lib/cpp/ShutdownSocketSet.h>
+#include <folly/io/ShutdownSocketSet.h>
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TEventBaseManager.h>
@@ -139,7 +139,7 @@ class ThriftServer : public apache::thrift::server::TServer {
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
     saslThreadManager_;
 
-  std::unique_ptr<apache::thrift::ShutdownSocketSet> shutdownSocketSet_;
+  std::unique_ptr<folly::ShutdownSocketSet> shutdownSocketSet_;
 
   //! Listen socket
   apache::thrift::async::TAsyncServerSocket::UniquePtr socket_;

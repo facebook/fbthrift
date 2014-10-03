@@ -136,7 +136,7 @@ TAsyncServerSocket::TAsyncServerSocket(TEventBase* eventBase)
     shutdownSocketSet_(nullptr) {
 }
 
-void TAsyncServerSocket::setShutdownSocketSet(ShutdownSocketSet* newSS) {
+void TAsyncServerSocket::setShutdownSocketSet(folly::ShutdownSocketSet* newSS) {
   if (shutdownSocketSet_ == newSS) {
     return;
   }
