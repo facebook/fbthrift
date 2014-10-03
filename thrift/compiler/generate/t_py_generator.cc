@@ -58,24 +58,11 @@ class t_py_generator : public t_generator {
     iter = parsed_options.find("slots");
     gen_slots_ = (iter != parsed_options.end());
 
-    iter = parsed_options.find("python3");
-    gen_python3_ = (iter != parsed_options.end());
-
     iter = parsed_options.find("asyncio");
     gen_asyncio_ = (iter != parsed_options.end());
-    if (!gen_python3_ && gen_asyncio_) {
-      throw "Asyncio is only supported in Python 3";
-    }
 
     iter = parsed_options.find("twisted");
     gen_twisted_ = (iter != parsed_options.end());
-    if (gen_python3_ && gen_twisted_) {
-      throw "Twisted isn't supported in Python 3 yet";
-    }
-
-    if (gen_python3_ && gen_newstyle_) {
-      throw "Python 3 supports new style class by default";
-    }
 
     iter = parsed_options.find("utf8strings");
     gen_utf8strings_ = (iter != parsed_options.end());
@@ -300,11 +287,6 @@ class t_py_generator : public t_generator {
    * True iff we should generate __slots__ for thrift structs.
    */
   bool gen_slots_;
-
-  /**
-   * True iff we should generate Python 3 code.
-   */
-  bool gen_python3_;
 
   /**
    * True iff we should generate code for asyncio server in Python 3.
@@ -849,6 +831,9 @@ string t_py_generator::py_imports() {
 
   if (gen_json_) {
     imports += "from json import loads\n";
+    imports += "import sys\n";
+    imports += "if sys.version_info[0] >= 3:\n";
+    imports += "  long = int\n";
   }
 
   return imports;
@@ -1268,11 +1253,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
 
     for (auto& member: members) {
       auto n = member->get_name();
-      if (gen_python3_) {
-        indent(out) << "if '" << n << "' in obj:" << endl;
-      } else {
-        indent(out) << "if obj.has_key('" << n << "'):" << endl;
-      }
+      indent(out) << "if '" << n << "' in obj:" << endl;
       indent_up();
       generate_json_field(out, member, "", "", "obj['" + n + "']");
       indent(out) << "self.set_" << n << "(" << n << ")" << endl;
@@ -3510,7 +3491,6 @@ THRIFT_REGISTER_GENERATOR(py, "Python",
 "    slots:           Generate code using slots for instance members.\n"
 "    sort_keys:       Serialize maps in the ascending order of their keys.\n"
 "    thrift_port=NNN: Default port to use in remote client (default 9090).\n"
-"    python3:         Generate Python 3 code(DEPRECATED). Twisted not supported yet.\n"
 "    twisted:         Generate Twisted-friendly RPC services.\n"
 "    utf8strings:     Encode/decode strings using utf8 in the generated code.\n"
 );
