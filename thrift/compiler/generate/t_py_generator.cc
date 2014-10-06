@@ -719,6 +719,7 @@ void t_py_generator::init_generator() {
     py_imports() << endl <<
     render_includes() << endl <<
     render_fastbinary_includes() <<
+    "all_structs = []" << endl <<
     endl << endl;
 
   f_consts_ <<
@@ -826,6 +827,7 @@ string t_py_generator::py_imports() {
   string imports = "from __future__ import absolute_import\n";
 
   imports += "import six\n";
+  imports += "from thrift.util.Recursive import fix_spec\n";
   imports += "from thrift.Thrift import *\n";
   imports += "from thrift.protocol.TProtocol import TProtocolException\n\n";
 
@@ -844,6 +846,8 @@ string t_py_generator::py_imports() {
  */
 void t_py_generator::close_generator() {
   // Close types file
+  f_types_ << "fix_spec(all_structs)" << endl
+           << "del all_structs" << endl;
   f_types_.close();
   f_consts_.close();
 }
@@ -1292,7 +1296,10 @@ void t_py_generator::generate_py_thrift_spec(ofstream& out,
   const vector<t_field*>& sorted_members = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator m_iter;
 
-  indent(out) << rename_reserved_keywords(tstruct->get_name())
+  indent(out) << "all_structs.append("
+              << rename_reserved_keywords(tstruct->get_name())
+              << ")" << endl
+              << rename_reserved_keywords(tstruct->get_name())
               << ".thrift_spec = (" << endl;
 
   indent_up();
@@ -1411,7 +1418,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
                 | (type_enum, spec_args)  # Value type for list/set
                 | (type_enum, spec_args, type_enum, spec_args)
                   # Key and value for map
-                | (class_name, spec_args_ptr) # For struct/exception
+                | [class_name, spec_args_ptr] # For struct/exception
      class_name -> identifier  # Basically a pointer to the class
      spec_args_ptr -> expression  # just class_name.spec_args
   */
@@ -1562,7 +1569,7 @@ void t_py_generator::generate_py_struct_reader(ofstream& out,
 
   indent(out) <<
     "fastbinary.decode_binary(self, iprot.trans, " <<
-    "(self.__class__, self.thrift_spec), utf8strings=" <<
+    "[self.__class__, self.thrift_spec], utf8strings=" <<
     gen_utf8strings_ << ")" << endl;
 
   indent(out) <<
@@ -1673,7 +1680,7 @@ void t_py_generator::generate_py_struct_writer(ofstream& out,
 
   indent(out) <<
     "oprot.trans.write(fastbinary.encode_binary(self, " <<
-    "(self.__class__, self.thrift_spec), utf8strings=" <<
+    "[self.__class__, self.thrift_spec], utf8strings=" <<
     gen_utf8strings_ << "))" << endl;
   indent(out) <<
     "return" << endl;
@@ -1749,7 +1756,8 @@ void t_py_generator::generate_service(t_service* tservice) {
   f_service_ <<
     "from .ttypes import *" << endl <<
     "from thrift.Thrift import TProcessor" << endl <<
-    render_fastbinary_includes() << endl;
+    render_fastbinary_includes() << endl <<
+    "all_structs = []" << endl;
 
   if (gen_twisted_) {
     f_service_ <<
@@ -1779,7 +1787,8 @@ void t_py_generator::generate_service(t_service* tservice) {
   generate_service_remote(tservice);
 
   // Close service file
-  f_service_ << endl;
+  f_service_ << "fix_spec(all_structs)" << endl
+             << "del all_structs" << endl << endl;
   f_service_.close();
 }
 
@@ -3459,8 +3468,8 @@ string t_py_generator::type_to_spec_args(t_type* ttype) {
   if (ttype->is_base_type() || ttype->is_enum()) {
     return "None";
   } else if (ttype->is_struct() || ttype->is_xception()) {
-    return "(" + type_name(ttype) + ", " + type_name(ttype) +
-      ".thrift_spec)";
+    return "[" + type_name(ttype) + ", " + type_name(ttype) +
+      ".thrift_spec]";
   } else if (ttype->is_map()) {
     return "(" +
       type_to_enum(((t_map*)ttype)->get_key_type()) + "," +

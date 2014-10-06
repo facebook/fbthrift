@@ -7,29 +7,28 @@ import unittest
 
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
-from thrift.protocol.TBinaryProtocol import TBinaryProtocolFactory
+from thrift.protocol.TBinaryProtocol import TBinaryProtocolFactory, \
+        TBinaryProtocolAcceleratedFactory
 from thrift.util.Serializer import serialize, deserialize
 from Recursive.ttypes import *
 
-fac = TBinaryProtocolFactory()
-
-class TestRecursivePythonStructs(unittest.TestCase):
+class AbstractTestRecursivePythonStructs():
     def test_tree(self):
         tree = RecTree()
         child = RecTree()
         tree.children = [child]
-        ser = serialize(fac, tree)
+        ser = serialize(self.fac, tree)
         result = RecTree()
-        result = deserialize(fac, ser, result)
+        result = deserialize(self.fac, ser, result)
         self.assertEqual(result, tree)
 
     def test_list(self):
         l = RecList()
         l2 = RecList()
         l.next = l2
-        ser = serialize(fac, l)
+        ser = serialize(self.fac, l)
         result = RecList()
-        result = deserialize(fac, ser, result)
+        result = deserialize(self.fac, ser, result)
         self.assertIsNotNone(result.next)
         self.assertIsNone(result.next.next)
 
@@ -37,11 +36,20 @@ class TestRecursivePythonStructs(unittest.TestCase):
         c = CoRec()
         r = CoRec2()
         c.other = r
-        ser = serialize(fac, c)
+        ser = serialize(self.fac, c)
         result = CoRec()
-        result = deserialize(fac, ser, result)
+        result = deserialize(self.fac, ser, result)
         self.assertIsNotNone(c.other)
         self.assertIsNone(c.other.other)
+
+class TestBinary(AbstractTestRecursivePythonStructs, unittest.TestCase):
+    def setUp(self):
+        self.fac = TBinaryProtocolFactory()
+
+class TestBinaryAccelerated(AbstractTestRecursivePythonStructs,
+        unittest.TestCase):
+    def setUp(self):
+        self.fac = TBinaryProtocolAcceleratedFactory()
 
 if __name__ == '__main__':
     unittest.main()
