@@ -33,7 +33,6 @@ class IOBuf;
 
 namespace apache { namespace thrift { namespace async {
 class TAsyncChannel;
-class TEventBaseManager;
 }}}
 
 namespace apache { namespace thrift {

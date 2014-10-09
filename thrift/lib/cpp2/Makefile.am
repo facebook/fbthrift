@@ -119,7 +119,6 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   ../cpp/async/TAsyncServerSocket.cpp \
 			   ../cpp/util/VarintUtils.cpp \
 			   ../cpp/async/TAsyncTimeoutSet.cpp \
-			   ../cpp/async/TEventBaseManager.cpp \
 			   ../cpp/util/FdUtils.cpp \
 			   ../cpp/util/THttpParser.cpp \
 			   ../cpp/util/PausableTimer.cpp \
