@@ -45,8 +45,14 @@ final class TCompactProtocol(Transport = TTransport) if (
    */
   this(Transport trans, int containerSizeLimit = 0, int stringSizeLimit = 0) {
     trans_ = trans;
+    version_ = VERSION_N;
     this.containerSizeLimit = containerSizeLimit;
     this.stringSizeLimit = stringSizeLimit;
+  }
+
+  /** Set this if you need backwards compatibility with an old version */
+  void setVersion(byte ver) {
+    version_ = ver;
   }
 
   Transport transport() @property {
@@ -58,6 +64,7 @@ final class TCompactProtocol(Transport = TTransport) if (
     fieldIdStack_ = null;
     booleanField_ = TField.init;
     hasBoolValue_ = false;
+    version_ = VERSION_N;
   }
 
   /**
@@ -117,7 +124,11 @@ final class TCompactProtocol(Transport = TTransport) if (
   }
 
   void writeDouble(double dub) {
-    ulong bits = hostToLe(*cast(ulong*)(&dub));
+    ulong bits = *cast(ulong*)(&dub);
+    bits = (version_ >= VERSION_DOUBLE_BE)
+      ? hostToNet(bits)
+      : hostToLe(bits);
+
     trans_.write((cast(ubyte*)&bits)[0 .. 8]);
   }
 
@@ -133,8 +144,8 @@ final class TCompactProtocol(Transport = TTransport) if (
 
   void writeMessageBegin(TMessage msg) {
     writeByte(cast(byte)PROTOCOL_ID);
-    writeByte((VERSION_N & VERSION_MASK) |
-      ((cast(int)msg.type << TYPE_SHIFT_AMOUNT) & TYPE_MASK));
+    writeByte(cast(byte) ((version_ & VERSION_MASK) |
+      ((cast(int)msg.type << TYPE_SHIFT_AMOUNT) & TYPE_MASK)));
     writeVarint32(msg.seqid);
     writeString(msg.name);
   }
@@ -222,7 +233,9 @@ final class TCompactProtocol(Transport = TTransport) if (
   double readDouble() {
     IntBuf!long b = void;
     trans_.readAll(b.bytes);
-    b.value = leToHost(b.value);
+    b.value = (version_ >= VERSION_DOUBLE_BE)
+      ? netToHost(b.value)
+      : leToHost(b.value);
     return *cast(double*)(&b.value);
   }
 
@@ -253,8 +266,8 @@ final class TCompactProtocol(Transport = TTransport) if (
     }
 
     auto versionAndType = readByte();
-    auto ver = versionAndType & VERSION_MASK;
-    if (ver != VERSION_N) {
+    version_ = versionAndType & VERSION_MASK;
+    if (!(version_ <= VERSION_N && version_ >= VERSION_LOW)) {
       throw new TProtocolException("Bad protocol version",
         TProtocolException.Type.BAD_VERSION);
     }
@@ -304,7 +317,7 @@ final class TCompactProtocol(Transport = TTransport) if (
     f.type = getTType(type);
 
     if (type == CType.BOOLEAN_TRUE || type == CType.BOOLEAN_FALSE) {
-      // For boolean fields, the value is encoded in the type – keep it around
+      // For boolean fields, the value is encoded in the type - keep it around
       // for the readBool() call.
       hasBoolValue_ = true;
       boolValue_ = (type == CType.BOOLEAN_TRUE ? true : false);
@@ -391,7 +404,7 @@ private:
       writeByte(cast(byte)(size << 4 | toCType(elemType)));
     } else {
       assert(size <= int.max);
-      writeByte(0xf0 | toCType(elemType));
+      writeByte(cast(byte) (0xf0 | toCType(elemType)));
       writeVarint32(cast(int)size);
     }
   }
@@ -586,7 +599,9 @@ private:
   }
 
   enum PROTOCOL_ID = 0x82;
-  enum VERSION_N = 1;
+  enum VERSION_N = 2;
+  enum VERSION_LOW = 1;
+  enum VERSION_DOUBLE_BE = 2;
   enum VERSION_MASK = 0b0001_1111;
   enum TYPE_MASK = 0b1110_0000;
   enum TYPE_SHIFT_AMOUNT = 5;
@@ -599,6 +614,8 @@ private:
 
   bool hasBoolValue_;
   bool boolValue_;
+
+  byte version_ = VERSION_N;
 
   Transport trans_;
 }
