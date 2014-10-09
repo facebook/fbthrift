@@ -32,51 +32,11 @@ import thrift.transport.base;
  * Currently, the storage for written data is never reclaimed, even if the
  * buffer contents have already been read out again.
  */
-final class TMemoryBuffer : TBaseTransport {
+abstract class TMemoryBufferBase : TBaseTransport {
   /**
    * Constructs a new memory transport with an empty internal buffer.
    */
   this() {}
-
-  /**
-   * Constructs a new memory transport with an empty internal buffer,
-   * reserving space for capacity bytes in advance.
-   *
-   * If the amount of data which will be written to the buffer is already
-   * known on construction, this can better performance over the default
-   * constructor because reallocations can be avoided.
-   *
-   * If the preallocated buffer is exhausted, data can still be written to the
-   * transport, but reallocations will happen.
-   *
-   * Params:
-   *   capacity = Size of the initially reserved buffer (in bytes).
-   */
-  this(size_t capacity) {
-    reset(capacity);
-  }
-
-  /**
-   * Constructs a new memory transport initially containing the passed data.
-   *
-   * For now, the passed buffer is not intelligently used, the data is just
-   * copied to the internal buffer.
-   *
-   * Params:
-   *   buffer = Initial contents available to be read.
-   */
-  this(in ubyte[] contents) {
-    auto size = contents.length;
-    reset(size);
-    buffer_[0 .. size] = contents[];
-    writeOffset_ = size;
-  }
-
-  this(ubyte* data, size_t len) {
-    reset(len);
-    buffer_[0..len] = cast(ubyte[])data[0..len];
-    writeOffset_ = len;
-  }
 
   /**
    * Destructor, frees the internally allocated buffer.
@@ -90,7 +50,7 @@ final class TMemoryBuffer : TBaseTransport {
    *
    * Note: For performance reasons, the returned slice is only valid for the
    * life of this object, and may be invalidated on the next write() call at
-   * will – you might want to immediately .dup it if you intend to keep it
+   * will - you might want to immediately .dup it if you intend to keep it
    * around.
    */
   const(ubyte)[] getContents() {
@@ -126,7 +86,7 @@ final class TMemoryBuffer : TBaseTransport {
   }
 
   /**
-   * Shortcut version of readAll() – using this over TBaseTransport.readAll()
+   * Shortcut version of readAll() - using this over TBaseTransport.readAll()
    * can give us a nice speed increase because gives us a nice speed increase
    * because it is typically a very hot path during deserialization.
    */
@@ -200,6 +160,53 @@ private {
     auto result = realloc(data, newSize);
     if (result is null) onOutOfMemoryError();
     data = cast(ubyte*)result;
+  }
+}
+
+final class TMemoryBuffer : TMemoryBufferBase {
+  /**
+   * Constructs a new memory transport with an empty internal buffer.
+   */
+  this() {}
+
+  /**
+   * Constructs a new memory transport with an empty internal buffer,
+   * reserving space for capacity bytes in advance.
+   *
+   * If the amount of data which will be written to the buffer is already
+   * known on construction, this can better performance over the default
+   * constructor because reallocations can be avoided.
+   *
+   * If the preallocated buffer is exhausted, data can still be written to the
+   * transport, but reallocations will happen.
+   *
+   * Params:
+   *   capacity = Size of the initially reserved buffer (in bytes).
+   */
+  this(size_t capacity) {
+    reset(capacity);
+  }
+
+  /**
+   * Constructs a new memory transport initially containing the passed data.
+   *
+   * For now, the passed buffer is not intelligently used, the data is just
+   * copied to the internal buffer.
+   *
+   * Params:
+   *   buffer = Initial contents available to be read.
+   */
+  this(in ubyte[] contents) {
+    auto size = contents.length;
+    reset(size);
+    buffer_[0 .. size] = contents[];
+    writeOffset_ = size;
+  }
+
+  this(ubyte* data, size_t len) {
+    reset(len);
+    buffer_[0..len] = cast(ubyte[])data[0..len];
+    writeOffset_ = len;
   }
 }
 
