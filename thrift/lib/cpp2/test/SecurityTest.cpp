@@ -307,6 +307,7 @@ TEST(Security, Duplex) {
 }
 
 int main(int argc, char** argv) {
+  setenv("KRB5_CONFIG", "/etc/krb5-thrift.conf", 0);
   testing::InitGoogleTest(&argc, argv);
   google::InitGoogleLogging(argv[0]);
   google::ParseCommandLineFlags(&argc, &argv, true);
