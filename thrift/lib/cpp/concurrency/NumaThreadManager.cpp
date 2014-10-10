@@ -161,8 +161,7 @@ std::shared_ptr<Thread> NumaThreadFactory::newThread(
 
 NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
                                      bool enableTaskStats,
-                                     size_t maxQueueLen,
-                                     int threadStackSize) {
+                                     size_t maxQueueLen) {
   int nodes = 1;
   size_t pri_threads = 2;
   if (isNumaEnabled()) {
@@ -170,7 +169,7 @@ NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
     pri_threads = 1;
   }
   for (int i = 0; i < nodes; i++) {
-    auto factory = std::make_shared<NumaThreadFactory>(i, threadStackSize);
+    auto factory = std::make_shared<NumaThreadFactory>(i);
     // Choose the number of threads: Round up, so we don't end up
     // with any 0-thread managers.
     size_t threads = (size_t)

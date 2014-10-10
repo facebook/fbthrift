@@ -27,19 +27,11 @@ namespace apache { namespace thrift { namespace concurrency {
 // ThreadFactory that ties threads to NUMA nodes.
 class NumaThreadFactory : public PosixThreadFactory {
  public:
-  static const int kDefaultNodeId = -1;
-
   // if setNode is -1, threads will be round robin spread
   // over nodes.  Otherwise, all threads will be created on
   // setNode node.
-  explicit NumaThreadFactory(int setNode = kDefaultNodeId,
-                             int stackSize
-                             = PosixThreadFactory::kDefaultStackSizeMB)
-      : PosixThreadFactory(
-          PosixThreadFactory::kDefaultPolicy,
-          PosixThreadFactory::kDefaultPriority,
-          stackSize),
-        setNode_(setNode) {}
+  explicit NumaThreadFactory(int setNode = -1)
+      : setNode_(setNode) {}
 
   // Overridden methods to implement numa binding
   std::shared_ptr<Thread> newThread(
@@ -94,9 +86,7 @@ class NumaThreadManager : public ThreadManager {
   explicit NumaThreadManager(size_t normalThreadsCount
                              = sysconf(_SC_NPROCESSORS_ONLN),
                              bool enableTaskStats = false,
-                             size_t maxQueueLen = 0,
-                             int threadStackSizeMB
-                             = PosixThreadFactory::kDefaultStackSizeMB);
+                             size_t maxQueueLen = 0);
 
   void start() {
     for (auto& manager : managers_) {

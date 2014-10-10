@@ -84,7 +84,6 @@ ThriftServer::ThriftServer() :
   serveEventBase_(nullptr),
   nWorkers_(T_ASYNC_DEFAULT_WORKER_THREADS),
   nPoolThreads_(0),
-  threadStackSizeMB_(1),
   timeout_(DEFAULT_TIMEOUT),
   eventBaseManager_(nullptr),
   workerChoice_(0),
@@ -236,11 +235,7 @@ void ThriftServer::setup() {
     // We always need a threadmanager for cpp2.
     if (!threadFactory_) {
       setThreadFactory(
-        std::make_shared<apache::thrift::concurrency::NumaThreadFactory>(
-          apache::thrift::concurrency::NumaThreadFactory::kDefaultNodeId,
-          threadStackSizeMB_
-        )
-      );
+        std::make_shared<apache::thrift::concurrency::NumaThreadFactory>());
     }
 
     if (FLAGS_sasl_policy == "required" || FLAGS_sasl_policy == "permitted") {
@@ -285,8 +280,7 @@ void ThriftServer::setup() {
         threadManager(new apache::thrift::concurrency::NumaThreadManager(
                         nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_,
                         true /*stats*/,
-                        getMaxRequests() /*maxQueueLen*/,
-                        threadStackSizeMB_));
+                        getMaxRequests() /*maxQueueLen*/));
       threadManager->enableCodel(getEnableCodel());
       if (!poolThreadName_.empty()) {
         threadManager->setNamePrefix(poolThreadName_);

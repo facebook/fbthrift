@@ -154,9 +154,6 @@ class ThriftServer : public apache::thrift::server::TServer {
   //  sync load)
   int nPoolThreads_;
 
-  //! Thread stack size in MB
-  int threadStackSizeMB_;
-
   //! Milliseconds we'll wait for data to appear (0 = infinity)
   std::chrono::milliseconds timeout_;
 
@@ -714,27 +711,6 @@ class ThriftServer : public apache::thrift::server::TServer {
    */
   int getNPoolThreads() {
     return nPoolThreads_;
-  }
-
-  /**
-   * Set the thread stack size in MB
-   * Only valid if you do not also set a threadmanager.
-   *
-   * @param stack size in MB
-   */
-  void setThreadStackSizeMB(int stackSize) {
-    assert(!threadFactory_);
-
-    threadStackSizeMB_ = stackSize;
-  }
-
-  /**
-   * Get the thread stack size
-   *
-   * @return thread stack size
-   */
-  int getThreadStackSizeMB() {
-    return threadStackSizeMB_;
   }
 
   /**
