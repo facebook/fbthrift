@@ -1948,6 +1948,8 @@ std::string TAsyncSocket::withAddr(const std::string& s) {
     getLocalAddress(&local);
   } catch (const std::exception&) {
     // ignore
+  } catch (...) {
+    // ignore
   }
   return s + " (peer=" + peer.describe() + ", local=" + local.describe() + ")";
 }
