@@ -412,9 +412,10 @@ class HandlerCallbackBase {
   // callback wrappers that forward to another callback (and do some
   // pre- / post-processing).
   void forward(const HandlerCallbackBase& other) {
-    ep_ = other.ep_;
     eb_ = other.eb_;
     tm_ = other.tm_;
+    ep_ = other.ep_;
+    ewp_ = other.ewp_;
   }
 
   // Always called in IO thread
