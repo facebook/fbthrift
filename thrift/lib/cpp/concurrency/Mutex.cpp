@@ -23,6 +23,8 @@
 
 #include <assert.h>
 #include <pthread.h>
+#include <signal.h>
+#include <errno.h>
 
 using std::shared_ptr;
 
@@ -33,7 +35,8 @@ int Mutex::RECURSIVE_INITIALIZER = PTHREAD_MUTEX_RECURSIVE;
 
 class ProfiledPthreadMutex : public ProfiledTimedMutex<PthreadMutex> {
  public:
-  ProfiledPthreadMutex(int type) : ProfiledTimedMutex<PthreadMutex>(type) {}
+  explicit ProfiledPthreadMutex(int type)
+    : ProfiledTimedMutex<PthreadMutex>(type) {}
 };
 
 class ProfiledPthreadRWMutex : public ProfiledSharedTimedMutex<PthreadRWMutex> {

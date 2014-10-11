@@ -19,6 +19,7 @@
 
 #include <thrift/lib/cpp/thrift_config.h>
 #include <thrift/lib/cpp/util/VarintUtils.h>
+#include <folly/Conv.h>
 #include <folly/Likely.h>
 #include <limits>
 
@@ -835,7 +836,8 @@ TType TCompactProtocolT<Transport_>::getTType(int8_t type) {
     case detail::compact::CT_STRUCT:
       return T_STRUCT;
     default:
-      throw TLibraryException("don't know what type: " + std::to_string(type));
+      throw TLibraryException(
+        "don't know what type: " + folly::to<std::string>(type));
   }
   return T_STOP;
 }
