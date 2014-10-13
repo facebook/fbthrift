@@ -23,7 +23,6 @@
 #include <boost/test/unit_test.hpp>
 #include <numa.h>
 
-#include <thrift/lib/cpp/async/Request.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -36,7 +35,6 @@
 
 using namespace boost;
 using namespace apache::thrift::concurrency;
-using apache::thrift::async::RequestContext;
 
 // Loops until x==y for up to timeout ms.
 // The end result is the same as of BOOST_{CHECK,REQUIRE}_EQUAL(x,y)

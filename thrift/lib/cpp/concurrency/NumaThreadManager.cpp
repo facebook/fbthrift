@@ -26,11 +26,11 @@
 #include <folly/ScopeGuard.h>
 #include <thrift/lib/cpp/async/Request.h>
 
+using apache::thrift::async::RequestContext;
+
 DEFINE_bool(thrift_numa_enabled, false, "Enable NumaThreadManager in thrift");
 
 namespace apache { namespace thrift { namespace concurrency {
-
-using apache::thrift::async::RequestContext;
 
 static bool isNumaEnabled() {
   return numa_available() >= 0 && FLAGS_thrift_numa_enabled;

@@ -23,7 +23,6 @@
 #include <folly/MoveWrapper.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
-#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/protocol/MessageSerializer.h>
 #include <thrift/lib/cpp2/gen-cpp2/Sasl_types.h>
 #include <thrift/lib/cpp2/gen-cpp2/SaslAuthService.h>
@@ -32,6 +31,7 @@
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 
 #include <memory>
 

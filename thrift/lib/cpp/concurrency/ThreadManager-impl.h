@@ -17,20 +17,20 @@
 #ifndef THREADMANAGERIMPL_H
 #define THREADMANAGERIMPL_H
 
+#include <folly/SmallLocks.h>
 #include <folly/MPMCQueue.h>
 #include <folly/LifoSem.h>
-#include <folly/SmallLocks.h>
 #include <thrift/lib/cpp/async/Request.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
-
 #include <deque>
-
 namespace apache { namespace thrift { namespace concurrency {
 
 using std::shared_ptr;
 using std::make_shared;
-using async::RequestContext;
 using folly::wangle::Codel;
+using std::dynamic_pointer_cast;
+using std::unique_ptr;
+using async::RequestContext;
 
 class ThreadManager::Task {
  public:
@@ -52,7 +52,8 @@ class ThreadManager::Task {
   ~Task() {}
 
   void run() {
-    auto old_ctx = RequestContext::setContext(context_);
+    auto old_ctx =
+      RequestContext::setContext(context_);
     runnable_->run();
     RequestContext::setContext(old_ctx);
   }
@@ -84,12 +85,14 @@ class ThreadManager::Task {
   std::shared_ptr<RequestContext> context_;
 };
 
-class ThreadManager::Impl : public ThreadManager  {
+template <typename SemType>
+class ThreadManager::ImplT : public ThreadManager  {
 
+  template <typename SemTypeT>
   class Worker;
 
  public:
-  Impl(size_t pendingTaskCountMaxArg = 0,
+  ImplT(size_t pendingTaskCountMaxArg = 0,
        bool enableTaskStats = false,
        size_t maxQueueLen = 0) :
     workerCount_(0),
@@ -124,7 +127,7 @@ class ThreadManager::Impl : public ThreadManager  {
       RequestContext::getStaticContext();
   }
 
-  ~Impl() { stop(); }
+  ~ImplT() { stop(); }
 
   void start();
 
@@ -207,8 +210,8 @@ class ThreadManager::Impl : public ThreadManager  {
   Codel* getCodel();
 
   // Methods to be invoked by workers
-  void workerStarted(Worker* worker);
-  void workerExiting(Worker* worker);
+  void workerStarted(Worker<SemType>* worker);
+  void workerExiting(Worker<SemType>* worker);
   void reportTaskStats(const SystemClockTimePoint& queueBegin,
                        const SystemClockTimePoint& workBegin,
                        const SystemClockTimePoint& workEnd);
@@ -255,7 +258,7 @@ class ThreadManager::Impl : public ThreadManager  {
   // - a new task is added to the task queue
   // - state_ changes
   Monitor monitor_;
-  folly::LifoSem waitSem_;
+  SemType waitSem_;
   // maxMonitor_ is signalled when the number of pending tasks drops below
   // pendingTaskCountMax_
   Monitor maxMonitor_;
@@ -269,6 +272,7 @@ class ThreadManager::Impl : public ThreadManager  {
 
   bool codelEnabled_;
 };
+
 
 }}}
 
