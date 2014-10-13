@@ -1136,7 +1136,7 @@ void TAsyncSSLSocket::handleWrite() noexcept {
   }
 
   if (sslState_ == STATE_CONNECTING) {
-    assert(server_);
+    assert(!server_);
     handleConnect();
     return;
   }
