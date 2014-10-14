@@ -99,10 +99,6 @@ class ThriftServerCallback : public node::ObjectWrap {
 
 Persistent<Function> ThriftServerCallback::constructor;
 
-void unref_null_cb(char *data, void *hint) {
-  assert(0 && "NULL Buffer should never be garbage collected");
-}
-
 // Processor to forward to Node.js processor
 class NodeProcessor : public apache::thrift::AsyncProcessor {
  public:
@@ -123,6 +119,7 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
     auto reqd = folly::makeMoveWrapper(std::move(req));
     auto bufd = folly::makeMoveWrapper(std::move(buf));
     integrated_uv_event_base.runInEventBaseThread([=]() mutable {
+        HandleScope scope;
         (*bufd)->coalesce();
         uint64_t resp;
         char* data;
@@ -153,6 +150,10 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
         Local<Value> argv[argc] = {
           Local<Object>::New(server_), callback, bufin};
         iface_->Call(server_, argc, argv);
+
+        // Delete objects created since scope creation on stack (i.e. inBuffer)
+        scope.Close(Undefined());
+
       });
     uv_async_send(&async);
   }
