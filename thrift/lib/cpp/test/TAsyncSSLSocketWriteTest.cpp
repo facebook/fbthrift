@@ -18,6 +18,7 @@
 #include <folly/Foreach.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
@@ -52,7 +53,7 @@ class MockTAsyncSSLSocket : public TAsyncSSLSocket{
   // or accept
   MockTAsyncSSLSocket(const std::shared_ptr<SSLContext>& ctx,
                       TEventBase* evb)
-      : TAsyncSSLSocket(ctx, evb) {
+      : AsyncSocket(evb), TAsyncSSLSocket(ctx, evb) {
     state_ = TAsyncSocket::StateEnum::ESTABLISHED;
     sslState_ = TAsyncSSLSocket::SSLStateEnum::STATE_ESTABLISHED;
   }

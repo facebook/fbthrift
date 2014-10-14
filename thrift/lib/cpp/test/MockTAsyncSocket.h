@@ -32,7 +32,9 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
  public:
   typedef std::unique_ptr<MockTAsyncSocket, Destructor> UniquePtr;
 
-  explicit MockTAsyncSocket(async::TEventBase* base) : TAsyncSocket(base) {}
+  explicit MockTAsyncSocket(async::TEventBase* base) : TAsyncSocket(base) {
+    attachEventBase(base);
+  }
 
   GMOCK_METHOD5_(, noexcept, , connect,
       void(AsyncSocket::ConnectCallback*,

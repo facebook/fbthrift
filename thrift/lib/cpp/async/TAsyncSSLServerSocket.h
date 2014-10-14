@@ -14,157 +14,38 @@
  * limitations under the License.
  */
 
-#ifndef THRIFT_ASYNC_TASYNCSSLSERVERSOCKET_H_
-#define THRIFT_ASYNC_TASYNCSSLSERVERSOCKET_H_ 1
+#pragma once
 
-#include <folly/io/async/SSLContext.h>
-#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <folly/io/async/AsyncSSLServerSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 
+namespace apache { namespace thrift { namespace async {
 
-namespace folly {
-class SocketAddress;
-}
-
-namespace apache { namespace thrift {
-
-namespace async {
-
-class TAsyncSSLSocket;
-
-class TAsyncSSLServerSocket : public TDelayedDestruction,
-                              private TAsyncServerSocket::AcceptCallback {
+class TAsyncSSLServerSocket : public folly::AsyncSSLServerSocket {
  public:
-  class SSLAcceptCallback {
-   public:
-    virtual ~SSLAcceptCallback() {}
-
-    /**
-     * connectionAccepted() is called whenever a new client connection is
-     * received.
-     *
-     * The SSLAcceptCallback will remain installed after connectionAccepted()
-     * returns.
-     *
-     * @param sock        The newly accepted client socket.  The
-     *                    SSLAcceptCallback
-     *                    assumes ownership of this socket, and is responsible
-     *                    for closing it when done.
-     */
-    virtual void connectionAccepted(
-      const std::shared_ptr<TAsyncSSLSocket> &sock)
-      noexcept = 0;
-
-    /**
-     * acceptError() is called if an error occurs while accepting.
-     *
-     * The SSLAcceptCallback will remain installed even after an accept error.
-     * If the callback wants to uninstall itself and stop trying to accept new
-     * connections, it must explicit call setAcceptCallback(nullptr).
-     *
-     * @param ex  An exception representing the error.
-     */
-    virtual void acceptError(const std::exception& ex) noexcept = 0;
-  };
-
-  /**
-   * Create a new TAsyncSSLServerSocket with the specified TEventBase.
-   *
-   * @param eventBase  The TEventBase to use for driving the asynchronous I/O.
-   *                   If this parameter is nullptr, attachEventBase() must be
-   *                   called before this socket can begin accepting
-   *                   connections.  All TAsyncSSLSocket objects accepted by
-   *                   this server socket will be attached to this TEventBase
-   *                   when they are created.
-   */
   explicit TAsyncSSLServerSocket(
     const std::shared_ptr<folly::SSLContext>& ctx,
-    TEventBase* eventBase = nullptr);
+    folly::EventBase* eventBase = nullptr) :
+      AsyncSSLServerSocket(ctx, eventBase) {}
 
-  /**
-   * Destroy the socket.
-   *
-   * destroy() must be called to destroy the socket.  The normal destructor is
-   * private, and should not be invoked directly.  This prevents callers from
-   * deleting a TAsyncSSLServerSocket while it is invoking a callback.
-   */
-  virtual void destroy();
-
-  virtual void bind(const folly::SocketAddress& address) {
-    serverSocket_->bind(address);
-  }
-  virtual void bind(uint16_t port) {
-    serverSocket_->bind(port);
-  }
-  void getAddress(folly::SocketAddress* addressReturn) {
-    serverSocket_->getAddress(addressReturn);
-  }
-  virtual void listen(int backlog) {
-    serverSocket_->listen(backlog);
+void connectionAccepted(
+  int fd,
+  const folly::SocketAddress& clientAddr) noexcept override {
+  std::shared_ptr<TAsyncSSLSocket> sslSock;
+  try {
+    // Create a AsyncSSLSocket object with the fd. The socket should be
+    // added to the event base and in the state of accepting SSL connection.
+    sslSock = TAsyncSSLSocket::newSocket(ctx_, eventBase_, fd);
+  } catch (const std::exception &e) {
+    LOG(ERROR) << "Exception %s caught while creating a AsyncSSLSocket "
+      "object with socket " << e.what() << fd;
+    ::close(fd);
+    sslCallback_->acceptError(e);
+    return;
   }
 
-  /**
-   * Helper function to create a shared_ptr<TAsyncSSLServerSocket>.
-   *
-   * This passes in the correct destructor object, since TAsyncSSLServerSocket's
-   * destructor is protected and cannot be invoked directly.
-   */
-  static std::shared_ptr<TAsyncSSLServerSocket> newSocket(
-    const std::shared_ptr<folly::SSLContext>& ctx,
-        TEventBase* evb) {
-    return std::shared_ptr<TAsyncSSLServerSocket>(
-      new TAsyncSSLServerSocket(ctx, evb),
-      Destructor());
-  }
+  // TODO: Perform the SSL handshake before invoking the callback
+  sslCallback_->connectionAccepted(sslSock);
+}};
 
-  /**
-   * Set the accept callback.
-   *
-   * This method may only be invoked from the TEventBase's loop thread.
-   *
-   * @param callback The callback to invoke when a new socket
-   *                 connection is accepted and a new TAsyncSSLSocket is
-   *                 created.
-   *
-   * Throws TTransportException on error.
-   */
-  void setSSLAcceptCallback(SSLAcceptCallback* callback);
-
-  SSLAcceptCallback *getSSLAcceptCallback() const {
-    return sslCallback_;
-  }
-
-  void attachEventBase(TEventBase* eventBase);
-  void detachEventBase();
-
-  /**
-   * Returns the TEventBase that the handler is currently attached to.
-   */
-  TEventBase* getEventBase() const {
-    return eventBase_;
-  }
-
- protected:
-  /**
-   * Protected destructor.
-   *
-   * Invoke destroy() instead to destroy the TAsyncSSLServerSocket.
-   */
-  virtual ~TAsyncSSLServerSocket();
-
- private:
-  virtual void connectionAccepted(int fd,
-                                  const folly::SocketAddress& clientAddr)
-    noexcept;
-  virtual void acceptError(const std::exception& ex) noexcept;
-
-  TEventBase* eventBase_;
-  TAsyncServerSocket* serverSocket_;
-  // SSL context
-  std::shared_ptr<folly::SSLContext> ctx_;
-  // The accept callback
-  SSLAcceptCallback* sslCallback_;
-};
-
-}}} // apache::thrift::async
-
-#endif // THRIFT_ASYNC_TASYNCSSLSERVERSOCKET_H_
+}}}

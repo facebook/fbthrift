@@ -26,7 +26,7 @@ namespace apache { namespace thrift { namespace async {
 
 // Wrapper around folly's AsyncSocket to maintain backwards compatibility:
 // Converts exceptions to thrift's TTransportException type.
-class TAsyncSocket : public folly::AsyncSocket, public TAsyncTransport {
+class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
  public:
   typedef std::unique_ptr<TAsyncSocket, Destructor> UniquePtr;
 

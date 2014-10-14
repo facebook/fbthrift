@@ -23,6 +23,7 @@
 #include <folly/Conv.h>
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 
 using apache::thrift::async::TAsyncServerSocket;
@@ -30,7 +31,7 @@ using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncSSLSocket;
 using apache::thrift::async::TEventBase;
 using apache::thrift::async::WriteFlags;
-using apache::thrift::transport::SSLContext;
+using folly::SSLContext;
 using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
 using std::shared_ptr;

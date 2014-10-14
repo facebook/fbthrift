@@ -53,6 +53,7 @@ using apache::thrift::concurrency::Util;
 using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
 using folly::SSLContext;
+using folly::IOBuf;
 using apache::thrift::transport::TSSLSocket;
 using apache::thrift::transport::TSSLException;
 

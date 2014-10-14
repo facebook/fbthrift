@@ -21,6 +21,8 @@
 
 #include <thrift/lib/cpp/async/TAsyncSSLServerSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
@@ -377,8 +379,9 @@ public:
 
   // Functions inherited from TAsyncSSLServerSocket::SSLAcceptCallback
   virtual void connectionAccepted(
-    const std::shared_ptr<apache::thrift::async::TAsyncSSLSocket> &sock)
+    const std::shared_ptr<folly::AsyncSSLSocket> &s)
     noexcept {
+    auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
     std::cerr << "SSLServerAcceptCallback::connectionAccepted" << std::endl;
 
     hcb_->setSocket(sock);
@@ -397,8 +400,11 @@ public:
 
   // Functions inherited from TAsyncSSLServerSocket::SSLAcceptCallback
   virtual void connectionAccepted(
-    const std::shared_ptr<apache::thrift::async::TAsyncSSLSocket> &sock)
+    const std::shared_ptr<folly::AsyncSSLSocket> &s)
     noexcept {
+
+    auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
+
     std::cerr << "SSLServerAcceptCallbackDelay::connectionAccepted"
               << std::endl;
     int fd = sock->getFd();
@@ -436,8 +442,10 @@ public:
 
   // Functions inherited from TAsyncSSLServerSocket::SSLAcceptCallback
   virtual void connectionAccepted(
-    const std::shared_ptr<apache::thrift::async::TAsyncSSLSocket> &sock)
+    const std::shared_ptr<folly::AsyncSSLSocket> &s)
     noexcept {
+    auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
+
     std::cerr << "SSLServerAcceptCallback::connectionAccepted" << std::endl;
 
     hcb_->setSocket(sock);
@@ -459,8 +467,10 @@ public:
 
   // Functions inherited from TAsyncSSLServerSocket::SSLAcceptCallback
   virtual void connectionAccepted(
-    const std::shared_ptr<apache::thrift::async::TAsyncSSLSocket> &sock)
+    const std::shared_ptr<folly::AsyncSSLSocket> &s)
     noexcept {
+    auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
+
     std::cerr << "HandshakeErrorCallback::connectionAccepted" << std::endl;
 
     // The first call to sslAccept() should succeed.
@@ -495,9 +505,11 @@ public:
 
   // Functions inherited from TAsyncSSLServerSocket::SSLAcceptCallback
   virtual void connectionAccepted(
-    const std::shared_ptr<apache::thrift::async::TAsyncSSLSocket> &sock)
+    const std::shared_ptr<folly::AsyncSSLSocket> &s)
     noexcept {
     std::cerr << "HandshakeErrorCallback::connectionAccepted" << std::endl;
+
+    auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
 
     hcb_->setSocket(sock);
     sock->getEventBase()->runAfterDelay([=] {

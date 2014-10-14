@@ -26,7 +26,7 @@
 
 #include <thrift/lib/cpp/ssl/SSLUtils.h>
 #include <folly/SocketAddress.h>
-#include <folly/io/SSLContext.h>
+#include <folly/io/async/SSLContext.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 using apache::thrift::ssl::OpenSSLUtils;
