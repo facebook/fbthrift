@@ -241,6 +241,9 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
   ew.with_exception<TApplicationException>([&](TApplicationException& tae) {
       std::unique_ptr<folly::IOBuf> exbuf(
         serializeError(channel_->header_->getProtocolId(), tae, getBuf()));
+      exbuf = THeader::transform(std::move(exbuf),
+                                 transforms_,
+                                 channel_->header_->getMinCompressBytes());
       sendReply(std::move(exbuf), cb, std::move(headers));
     });
 }
