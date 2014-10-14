@@ -30,7 +30,7 @@ import sys
 import warnings
 
 if sys.version_info[0] >= 3:
-    from io import StringIO
+    from io import BytesIO as StringIO
     from urllib import parse
     from http import client
     urlparse = parse
@@ -83,9 +83,11 @@ class THttpClient(TTransportBase):
 
     def open(self):
         if self.scheme == 'http':
-            self.__http = httplib.HTTP(self.host, self.port)
+            self.__http = httplib.HTTPConnection(self.host, self.port,
+                                                 timeout=self.__timeout)
         else:
-            self.__http = httplib.HTTPS(self.host, self.port)
+            self.__http = httplib.HTTPSConnection(self.host, self.port,
+                                                  timeout=self.__timeout)
 
     def close(self):
         self.__http.close()
@@ -95,9 +97,6 @@ class THttpClient(TTransportBase):
         return self.__http is not None
 
     def setTimeout(self, ms):
-        if not hasattr(socket, 'getdefaulttimeout'):
-            raise NotImplementedError
-
         if ms is None:
             self.__timeout = None
         else:
@@ -112,19 +111,10 @@ class THttpClient(TTransportBase):
         self.__custom_headers[name] = value
 
     def read(self, sz):
-        return self.__http.file.read(sz)
+        return self.response.read(sz)
 
     def write(self, buf):
         self.__wbuf.write(buf)
-
-    def __withTimeout(f):
-        def _f(*args, **kwargs):
-            orig_timeout = socket.getdefaulttimeout()
-            socket.setdefaulttimeout(args[0].__timeout)
-            result = f(*args, **kwargs)
-            socket.setdefaulttimeout(orig_timeout)
-            return result
-        return _f
 
     def flush(self):
         if self.isOpen():
@@ -136,9 +126,8 @@ class THttpClient(TTransportBase):
         self.__wbuf = StringIO()
 
         # HTTP request
-        self.__http.putrequest('POST', self.path)
+        self.__http.putrequest('POST', self.path, skip_host=True)
 
-        # Write headers
         if not self.__custom_headers or 'Host' not in self.__custom_headers:
             self.__http.putheader('Host', self.host)
 
@@ -167,8 +156,6 @@ class THttpClient(TTransportBase):
         self.__http.send(data)
 
         # Get reply to flush the request
-        self.code, self.message, self.headers = self.__http.getreply()
-
-    # Decorate if we know how to timeout
-    if hasattr(socket, 'getdefaulttimeout'):
-        flush = __withTimeout(flush)
+        self.response = self.__http.getresponse()
+        self.code = self.response.status
+        self.headers = self.response.getheaders()
