@@ -29,8 +29,14 @@ class NumaThreadFactory : public PosixThreadFactory {
   // if setNode is -1, threads will be round robin spread
   // over nodes.  Otherwise, all threads will be created on
   // setNode node.
-  explicit NumaThreadFactory(int setNode = -1)
-      : setNode_(setNode) {}
+  explicit NumaThreadFactory(int setNode = -1,
+                             int stackSize
+                             = PosixThreadFactory::kDefaultStackSizeMB)
+      : PosixThreadFactory(
+          PosixThreadFactory::kDefaultPolicy,
+          PosixThreadFactory::kDefaultPriority,
+          stackSize),
+        setNode_(setNode) {}
 
   // Overridden methods to implement numa binding
   std::shared_ptr<Thread> newThread(
@@ -85,7 +91,9 @@ class NumaThreadManager : public ThreadManager {
   explicit NumaThreadManager(size_t normalThreadsCount
                              = sysconf(_SC_NPROCESSORS_ONLN),
                              bool enableTaskStats = false,
-                             size_t maxQueueLen = 0);
+                             size_t maxQueueLen = 0,
+                             int threadStackSizeMB
+                             = PosixThreadFactory::kDefaultStackSizeMB);
 
   void start() {
     for (auto& manager : managers_) {
