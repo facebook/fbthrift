@@ -261,7 +261,7 @@ service ThriftTest
    * @return Xtruct - an Xtruct with string_thing = arg1
    */
   Xtruct testMultiException(1: string arg0, 2: string arg1)
-    throws(1: Xception err1, 2: Xception2 err2)
+    throws(1: Xception err1, 2: Xception2 err2),
 
   /**
    * Print 'testOneway(%d): Sleeping...' with secondsToSleep as '%d'
@@ -269,5 +269,7 @@ service ThriftTest
    * Print 'testOneway(%d): done sleeping!' with secondsToSleep as '%d'
    * @param i32 secondsToSleep - the number of seconds to sleep
    */
-  oneway void testOneway(1:i32 secondsToSleep)
+  oneway void testOneway(1:i32 secondsToSleep),
+
+  void testTakesNestedGenerics(1: map<i64, list<i64>> param),
 }

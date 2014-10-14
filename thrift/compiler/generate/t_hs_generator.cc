@@ -1291,7 +1291,7 @@ string t_hs_generator::render_hs_type_for_function_name(t_type* type) {
     int found = -1;
 
     while (true) {
-        found = type_str.find_first_of("[]. ", found + 1);
+        found = type_str.find_first_of("[](). ", found + 1);
         if (string::npos == size_t(found)) {
             break;
         }

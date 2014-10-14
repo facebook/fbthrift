@@ -89,6 +89,8 @@ instance ThriftTest_Iface TestHandler where
 
   testOneway _ _ = return ()
 
+  testTakesNestedGenerics _ _ = return ()
+
 runServer :: Protocol p => (Handle -> p Handle) -> Socket -> IO ()
 runServer p = runThreadedServer (accepter p) TestHandler ThriftTest.process
   where
