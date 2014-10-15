@@ -66,8 +66,16 @@ std::shared_ptr<ThriftServer> getServer() {
 void enableSecurity(HeaderClientChannel* channel) {
   char hostname[256];
   EXPECT_EQ(gethostname(hostname, 255), 0);
+
+  // Construct the service identity prefix from hostname.
+  // Service identity should be sys.<hostname_scheme_prefix>@hostname.
+  std::string hostnameStr(hostname);
+  size_t end = hostnameStr.find_first_not_of("abcdefghijklmnopqrstuvwxyz");
+  std::string serviceIdentityPrefix = std::string("sys.") +
+    hostnameStr.substr(0, end) + std::string("@");
+
   std::string clientIdentity = std::string("host/") + hostname;
-  std::string serviceIdentity = std::string("host@") + hostname;
+  std::string serviceIdentity = serviceIdentityPrefix + hostname;
 
   channel->getHeader()->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
 
