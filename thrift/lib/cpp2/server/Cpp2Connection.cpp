@@ -451,9 +451,6 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
 }
 
 void Cpp2Connection::Cpp2Request::timeoutExpired() noexcept {
-  apache::thrift::TApplicationException x(
-      TApplicationException::TApplicationExceptionType::TIMEOUT,
-      "Task expired");
   sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
         TApplicationException::TApplicationExceptionType::TIMEOUT,

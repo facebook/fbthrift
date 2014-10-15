@@ -239,8 +239,33 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
 
   headers["ex"] = exCode;
   ew.with_exception<TApplicationException>([&](TApplicationException& tae) {
-      std::unique_ptr<folly::IOBuf> exbuf(
-        serializeError(channel_->header_->getProtocolId(), tae, getBuf()));
+      std::unique_ptr<folly::IOBuf> exbuf;
+      uint16_t proto = channel_->header_->getProtocolId();
+      try {
+        exbuf = serializeError(proto, tae, getBuf());
+      } catch (const TProtocolException& pe) {
+        if (pe.getType() == TProtocolException::BAD_VERSION) {
+          // Bad protocol, maybe because channel_->header_ contains the protocol
+          // for a later received message (because header is part of the channel
+          // and not of the request). Try with the other protocol.
+          uint16_t newproto = (proto == protocol::T_BINARY_PROTOCOL) ?
+                  protocol::T_COMPACT_PROTOCOL :
+                  protocol::T_BINARY_PROTOCOL;
+          try {
+            exbuf = serializeError(newproto, tae, getBuf());
+          } catch (const TProtocolException& pe2) {
+            LOG(ERROR) << "serializeError failed with both binary and compact."
+                << " Original proto=" << proto;
+            channel_->closeNow();
+            return;
+          }
+        } else {
+          LOG(ERROR) << "serializeError failed. type=" << pe.getType()
+              << " what()=" << pe.what();
+          channel_->closeNow();
+          return;
+        }
+      }
       exbuf = THeader::transform(std::move(exbuf),
                                  transforms_,
                                  channel_->header_->getMinCompressBytes());
