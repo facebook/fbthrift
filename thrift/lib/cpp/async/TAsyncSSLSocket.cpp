@@ -18,8 +18,9 @@
 
 #include <thrift/lib/cpp/TLogging.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
-#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+
+#include <boost/noncopyable.hpp>
 
 #include <errno.h>
 #include <unistd.h>
@@ -35,6 +36,7 @@
 #include <folly/Bits.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
+#include <folly/SocketAddress.h>
 
 using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
@@ -148,11 +150,13 @@ class TAsyncSSLSocketConnector: public TAsyncSocket::ConnectCallback,
   }
 };
 
+// XXX: implement an equivalent to corking for platforms with TCP_NOPUSH?
+#ifdef TCP_CORK // Linux-only
 /**
  * Utility class that corks a TCP socket upon construction or uncorks
  * the socket upon destruction
  */
-class CorkGuard {
+class CorkGuard : private boost::noncopyable {
  public:
   CorkGuard(int fd, bool multipleWrites, bool haveMore, bool* corked):
     fd_(fd), haveMore_(haveMore), corked_(corked) {
@@ -186,13 +190,16 @@ class CorkGuard {
   }
 
  private:
-  CorkGuard(const CorkGuard&) = delete;
-  CorkGuard& operator=(const CorkGuard&) = delete;
-
   int fd_;
   bool haveMore_;
   bool* corked_;
 };
+#else
+class CorkGuard : private boost::noncopyable {
+ public:
+  CorkGuard(int, bool, bool, bool*) {}
+};
+#endif
 
 void setup_SSL_CTX(SSL_CTX *ctx) {
 #ifdef SSL_MODE_RELEASE_BUFFERS

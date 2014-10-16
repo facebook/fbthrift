@@ -989,12 +989,16 @@ bool TAsyncSocket::hangup() const {
     assert(false);
     return false;
   }
+#ifdef POLLRDHUP // Linux-only
   struct pollfd fds[1];
   fds[0].fd = fd_;
   fds[0].events = POLLRDHUP|POLLHUP;
   fds[0].revents = 0;
   poll(fds, 1, 0);
   return (fds[0].revents & (POLLRDHUP|POLLHUP)) != 0;
+#else
+  return false;
+#endif
 }
 
 bool TAsyncSocket::good() const {
@@ -1103,6 +1107,7 @@ int TAsyncSocket::setQuickAck(bool quickack) {
 
   }
 
+#ifdef TCP_QUICKACK // Linux-only
   int value = quickack ? 1 : 0;
   if (setsockopt(fd_, IPPROTO_TCP, TCP_QUICKACK, &value, sizeof(value)) != 0) {
     int errnoCopy = errno;
@@ -1113,6 +1118,9 @@ int TAsyncSocket::setQuickAck(bool quickack) {
   }
 
   return 0;
+#else
+  return ENOSYS;
+#endif
 }
 
 int TAsyncSocket::setSendBufSize(size_t bufsize) {
@@ -1618,18 +1626,26 @@ ssize_t TAsyncSocket::performWrite(const iovec* vec,
   msg.msg_name = nullptr;
   msg.msg_namelen = 0;
   msg.msg_iov = const_cast<iovec *>(vec);
+#ifdef IOV_MAX // not defined on Android
   msg.msg_iovlen = std::min(count, (uint32_t)IOV_MAX);
+#else
+  msg.msg_iovlen = std::min(count, (uint32_t)UIO_MAXIOV);
+#endif
   msg.msg_control = nullptr;
   msg.msg_controllen = 0;
   msg.msg_flags = 0;
 
-  int msg_flags = MSG_DONTWAIT | MSG_NOSIGNAL;
+  int msg_flags = MSG_DONTWAIT;
+
+#ifdef MSG_NOSIGNAL // Linux-only
+  msg_flags |= MSG_NOSIGNAL;
   if (isSet(flags, WriteFlags::CORK)) {
     // MSG_MORE tells the kernel we have more data to send, so wait for us to
     // give it the rest of the data rather than immediately sending a partial
     // frame, even when TCP_NODELAY is enabled.
     msg_flags |= MSG_MORE;
   }
+#endif
   if (isSet(flags, WriteFlags::EOR)) {
     // marks that this is the last byte of a record (response)
     msg_flags |= MSG_EOR;

@@ -1,6 +1,22 @@
+/*
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #ifndef _LIB_CPP_THRIFT_CONFIG_H
 #define _LIB_CPP_THRIFT_CONFIG_H 1
- 
+
 /* lib/cpp/thrift_config.h. Generated automatically at end of configure. */
 /* config.h.  Generated from config.hin by configure.  */
 /* config.hin.  Generated from configure.ac by autoheader.  */
@@ -63,9 +79,11 @@
 #endif
 
 /* Define to 1 if you have the `clock_gettime' function. */
+#if defined(__linux__) || defined(__FreeBSD__)
 #ifndef THRIFT_HAVE_CLOCK_GETTIME
 #define THRIFT_HAVE_CLOCK_GETTIME 1
 #endif
+#endif // defined(__linux__) || defined(__FreeBSD__)
 
 /* Define to 1 if you have the declaration of `strerror_r', and to 0 if you
    don't. */
@@ -530,9 +548,9 @@
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
    automatically deduced at runtime.
-	STACK_DIRECTION > 0 => grows toward higher addresses
-	STACK_DIRECTION < 0 => grows toward lower addresses
-	STACK_DIRECTION = 0 => direction of growth unknown */
+   STACK_DIRECTION > 0 => grows toward higher addresses
+   STACK_DIRECTION < 0 => grows toward lower addresses
+   STACK_DIRECTION = 0 => direction of growth unknown */
 /* #undef STACK_DIRECTION */
 
 /* Define to 1 if you have the ANSI C header files. */
@@ -540,10 +558,14 @@
 #define THRIFT_STDC_HEADERS 1
 #endif
 
+// https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man3/strerror_r.3.html
+// http://www.kernel.org/doc/man-pages/online/pages/man3/strerror.3.html
+#if defined(__linux__) && !defined(__ANDROID__)
 /* Define to 1 if strerror_r returns char *. */
 #ifndef THRIFT_STRERROR_R_CHAR_P
 #define THRIFT_STRERROR_R_CHAR_P 1
 #endif
+#endif // defined(__linux__) && !defined(__ANDROID__)
 
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
 #ifndef THRIFT_TIME_WITH_SYS_TIME
@@ -656,6 +678,6 @@
 /* Define to empty if the keyword `volatile' does not work. Warning: valid
    code using `volatile' can become incorrect without. Disable with care. */
 /* #undef volatile */
- 
+
 /* once: _LIB_CPP_THRIFT_CONFIG_H */
 #endif
