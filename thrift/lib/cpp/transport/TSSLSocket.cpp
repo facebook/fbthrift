@@ -20,7 +20,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_array.hpp>
 #include <errno.h>
-#include <folly/SmallLocks.h>
+#include <folly/io/PortableSpinLock.h>
 #include <folly/String.h>
 #include <glog/logging.h>
 #include <openssl/err.h>
@@ -33,6 +33,7 @@
 using apache::thrift::concurrency::ProfiledMutex;
 using boost::lexical_cast;
 using boost::scoped_array;
+using folly::io::PortableSpinLock;
 using std::exception;
 using std::list;
 using std::shared_ptr;
@@ -857,7 +858,7 @@ struct SSLLock {
   }
 
   SSLContext::SSLLockType lockType;
-  folly::MicroSpinLock spinLock{};
+  PortableSpinLock spinLock{};
   ProfiledMutex<std::mutex> mutex;
 };
 

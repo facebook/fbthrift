@@ -21,22 +21,22 @@
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 #include <boost/noncopyable.hpp>
-
 #include <errno.h>
-#include <unistd.h>
 #include <fcntl.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <openssl/err.h>
 #include <openssl/asn1.h>
 #include <openssl/ssl.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
 #include <folly/Bits.h>
+#include <folly/SocketAddress.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <folly/SocketAddress.h>
+#include <folly/io/PortableSpinLock.h>
 
 using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
@@ -47,6 +47,8 @@ using std::shared_ptr;
 using folly::Endian;
 using folly::IOBuf;
 using folly::io::Cursor;
+using folly::io::PortableSpinLock;
+using folly::io::PortableSpinLockGuard;
 using std::unique_ptr;
 using std::bind;
 
@@ -62,7 +64,7 @@ size_t MIN_WRITE_SIZE = 1500;
 // We have one single dummy SSL context so that we can implement attach
 // and detach methods in a thread safe fashion without modifying opnessl.
 static SSLContext *dummyCtx = nullptr;
-static folly::MicroSpinLock dummyCtxLock;
+static PortableSpinLock dummyCtxLock;
 
 // Numbers chosen as to not collide with functions in ssl.h
 const uint8_t TASYNCSSLSOCKET_F_PERFORM_READ = 90;
@@ -488,7 +490,7 @@ void TAsyncSSLSocket::attachSSLContext(
   // In order to call attachSSLContext, detachSSLContext must have been
   // previously called which sets the socket's context to the dummy
   // context. Thus we must acquire this lock.
-  folly::MSLGuard guard(dummyCtxLock);
+  PortableSpinLockGuard guard(dummyCtxLock);
   SSL_set_SSL_CTX(ssl_, ctx->getSSLCtx());
 }
 
@@ -503,7 +505,7 @@ void TAsyncSSLSocket::detachSSLContext() {
     ssl_->initial_ctx = nullptr;
   }
 #endif
-  folly::MSLGuard guard(dummyCtxLock);
+  PortableSpinLockGuard guard(dummyCtxLock);
   if (nullptr == dummyCtx) {
     // We need to lazily initialize the dummy context so we don't
     // accidentally override any programmatic settings to openssl
