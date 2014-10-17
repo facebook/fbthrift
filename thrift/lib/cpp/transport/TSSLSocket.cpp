@@ -28,7 +28,6 @@
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
 #include <string>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <vector>
 
 using apache::thrift::concurrency::ProfiledMutex;
