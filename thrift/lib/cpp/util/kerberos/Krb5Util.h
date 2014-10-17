@@ -138,7 +138,10 @@ public:
     return std::string(d->data, d->length);
   }
   std::string getComponent(uint nth) const {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
     krb5_data* d = krb5_princ_component(context_, principal_, nth);
+#pragma GCC diagnostic pop
     if (!d) {
       return "";
     }
