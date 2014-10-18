@@ -24,7 +24,8 @@ using namespace frozen;
 using namespace util;
 
 TEST(FrozenUtil, FreezeAndUse) {
-  auto view = freezeToTempFile(std::string("hello"));
+  auto file = freezeToTempFile(std::string("hello"));
+  auto view = mapFrozen<std::string>(folly::File(file.fd()));
   EXPECT_EQ(folly::StringPiece(view), "hello");
 }
 

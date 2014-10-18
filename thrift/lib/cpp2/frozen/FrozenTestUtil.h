@@ -19,12 +19,11 @@
 
 namespace apache { namespace thrift { namespace frozen {
 
-template <class T, class Return = Bundled<typename Layout<T>::View>>
-Return freezeToTempFile(const T& value) {
-  auto tmpFile = folly::make_unique<folly::test::TemporaryFile>();
-  auto ret = freezeToFile(value, folly::File(tmpFile->fd()));
-  ret.hold(std::move(tmpFile));
-  return ret;
+template <class T>
+folly::test::TemporaryFile freezeToTempFile(const T& value) {
+  folly::test::TemporaryFile tmp;
+  freezeToFile(value, folly::File(tmp.fd()));
+  return tmp;
 }
 
 }}}
