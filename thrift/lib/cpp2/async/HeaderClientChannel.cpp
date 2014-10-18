@@ -176,6 +176,8 @@ void HeaderClientChannel::SaslClientCallback::saslSendServer(
 
 void HeaderClientChannel::SaslClientCallback::saslError(
     folly::exception_wrapper&& ex) {
+  DestructorGuard g(&channel_);
+
   apache::thrift::async::HHWheelTimer::Callback::cancelTimeout();
   auto logger = channel_.saslClient_->getSaslLogger();
 
@@ -192,6 +194,7 @@ void HeaderClientChannel::SaslClientCallback::saslError(
   // If saslError() was called due to a SASL Handshake Timeout, and fall back to
   // insecure is suppressed for transient failures, then don't fall back to
   // insecure
+  bool shouldReturn = false;
   ex.with_exception<TTransportException>([&](TTransportException& tex) {
       if (tex.getType() == TTransportException::SASL_HANDSHAKE_TIMEOUT &&
           channel_.shouldSuppressSaslFallbackOnTransientFailure()) {
@@ -199,9 +202,13 @@ void HeaderClientChannel::SaslClientCallback::saslError(
           " suppressed";
         channel_.messageReceiveErrorWrapped(std::move(ex));
         channel_.cpp2Channel_->closeNow();
-        return;
+        shouldReturn = true;
       }
     });
+
+  if (shouldReturn) {
+    return;
+  }
 
   auto ew = folly::try_and_catch<std::exception>([&]() {
     // Fall back to insecure.  This will throw an exception if the
