@@ -24,16 +24,9 @@
 #include <folly/io/Cursor.h>
 #include <folly/Memory.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
-#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
-
-extern "C" {
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netdb.h>
-}
 
 using namespace std;
 using namespace apache::thrift;
@@ -135,70 +128,32 @@ void KerberosSASLHandshakeClient::throwKrb5Exception(
   throw TKerberosException(msg);
 }
 
-// copy-pasted from common/network/NetworkUtil to avoid dependency cycle
-// between thrift and common/network
-static string getHostByAddr(const string& ip) {
-  struct addrinfo hints, *res, *res0;
-  char hostname[NI_MAXHOST];
-
-  memset(&hints, 0, sizeof(hints));
-  hints.ai_family = PF_UNSPEC;
-  hints.ai_flags = AI_NUMERICHOST;
-  if (getaddrinfo(ip.c_str(), nullptr, &hints, &res0)) {
-    return string();
-  }
-
-  for (res = res0; res; res = res->ai_next) {
-    if (getnameinfo(res->ai_addr, res->ai_addrlen,
-                    hostname, NI_MAXHOST, nullptr, 0, NI_NAMEREQD) < 0) {
-      continue;
-    }
-    freeaddrinfo(res0);
-    return string(hostname);
-  }
-  freeaddrinfo(res0);
-  return string();
-}
-
 void KerberosSASLHandshakeClient::startClientHandshake() {
   assert(phase_ == INIT);
 
   OM_uint32 maj_stat, min_stat;
   context_ = GSS_C_NO_CONTEXT;
 
-  // Convert ip to hostname if applicable. Also make sure the service
-  // principal is in a valid format. <service>@<host> where <host> is non-empty
-  // An empty <host> part may trigger a large buffer overflow and segfault
-  // in the glibc codebase. :(
   string service, addr;
-  size_t at = servicePrincipal_.find("@");
-  if (at == string::npos) {
-    throw TKerberosException(
-      "Service principal invalid: " + servicePrincipal_);
+  if (getRequiredServicePrincipal_) {
+    tie(service, addr) = (getRequiredServicePrincipal_)();
+  } else {
+    size_t at = servicePrincipal_.find("@");
+    if (at == string::npos) {
+      throw TKerberosException(
+        "Service principal invalid: " + servicePrincipal_);
+    }
+
+    addr = servicePrincipal_.substr(at + 1);
+    service = servicePrincipal_.substr(0, at);
   }
 
-  addr = servicePrincipal_.substr(at + 1);
-  service = servicePrincipal_.substr(0, at);
-
+  // Make sure <addr> is non-empty
+  // An empty <addr> part in the principal may trigger a large buffer
+  // overflow and segfault in the glibc codebase. :(
   if (addr.empty()) {
     throw TKerberosException(
-      "Service principal invalid: " + servicePrincipal_);
-  }
-
-  // If a valid IPAddr, convert it to a hostname first.
-  try {
-    folly::SocketAddress ipaddr(addr, 0);
-    if (ipaddr.getFamily() == AF_INET || ipaddr.getFamily() == AF_INET6) {
-      logger_->logStart("hostname_lookup");
-      string hostname = getHostByAddr(addr);
-      if (!hostname.empty()) {
-        addr = hostname;
-        servicePrincipal_ = service + "@" + addr;
-      }
-      logger_->logEnd("hostname_lookup");
-    }
-  } catch (...) {
-    // If invalid ip address, don't do anything and swallow this exception.
+      "Service principal invalid: " + service + "@" + addr);
   }
 
   logger_->logStart("import_sname");
@@ -455,6 +410,13 @@ void KerberosSASLHandshakeClient::setRequiredClientPrincipal(
 
   assert(phase_ == INIT);
   clientPrincipal_ = client;
+}
+
+void KerberosSASLHandshakeClient::setRequiredServicePrincipalFetcher(
+  std::function<std::pair<std::string, std::string>()>&& function) {
+
+  assert(phase_ == INIT);
+  getRequiredServicePrincipal_ = std::move(function);
 }
 
 const string& KerberosSASLHandshakeClient::getEstablishedServicePrincipal()

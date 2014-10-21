@@ -65,6 +65,8 @@ class SaslClient : public SaslEndpoint {
 
   virtual void setClientIdentity(const std::string& identity) = 0;
   virtual void setServiceIdentity(const std::string& identity) = 0;
+  virtual void setRequiredServicePrincipalFetcher(
+    std::function<std::pair<std::string, std::string>()> function) {}
 
   // This will create the initial message, and pass it to
   // cb->saslSendServer().  If there is an error, cb->saslError() will

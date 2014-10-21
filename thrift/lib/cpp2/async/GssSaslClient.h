@@ -48,6 +48,12 @@ public:
   void setServiceIdentity(const std::string& identity) {
     clientHandshake_->setRequiredServicePrincipal(identity);
   }
+  virtual void setRequiredServicePrincipalFetcher(
+    std::function<std::pair<std::string, std::string>()> function) {
+    clientHandshake_->setRequiredServicePrincipalFetcher(
+        std::move(function));
+  }
+
   virtual std::string getClientIdentity() const;
   virtual std::string getServerIdentity() const;
 
