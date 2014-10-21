@@ -68,8 +68,8 @@ enum MessageType {
  * Templatized to avoid having to make virtual function calls.
  */
 template <class Protocol_>
-uint32_t skip(Protocol_& prot, TType type) {
-  switch (type) {
+uint32_t skip(Protocol_& prot, TType arg_type) {
+  switch (arg_type) {
     case TType::T_BOOL:
     {
       bool boolv;
