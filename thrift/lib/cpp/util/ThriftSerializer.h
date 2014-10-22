@@ -171,6 +171,28 @@ class ThriftSerializer {
 
   virtual ~ThriftSerializer() {}
 
+  /**
+   * Set the container size limit to deserialize
+   * This function should be called after buffer_ is initialized
+   */
+  void setContainerSizeLimit(int32_t container_limit) {
+    if (!prepared_) {
+      prepare();
+    }
+    protocol_->setContainerSizeLimit(container_limit);
+  }
+
+  /**
+   * Set the string size limit to deserialize
+   * This function should be called after buffer_ is initialized
+   */
+  void setStringSizeLimit(int32_t string_limit) {
+    if (!prepared_) {
+      prepare();
+    }
+    protocol_->setStringSizeLimit(string_limit);
+  }
+
  private:
   void prepare();
 
