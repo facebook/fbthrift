@@ -88,7 +88,7 @@ class CppGenerator(t_generator.Generator):
         'compatibility': 'Use thrift1 structs instead of generating new ones',
         'terse_writes': 'Avoid emitting unspec fields whose values are default',
         'stack_arguments': 'Pass arguments on stack instead of heap',
-        'future': 'enable wangle futures',
+        'future': 'enable wangle futures in service interface',
         'process_in_event_base': 'Process request in event base thread',
         'frozen2': 'enable frozen structures',
     }
@@ -472,9 +472,8 @@ class CppGenerator(t_generator.Generator):
         s('#include <thrift/lib/cpp2/ServiceIncludes.h>')
         if not self.flag_bootstrap:
             s('#include <thrift/lib/cpp/TApplicationException.h>')
-        if self.flag_future:
-            s('#include <thrift/lib/cpp2/async/FutureRequest.h>')
-            s('#include <folly/wangle/Future.h>')
+        s('#include <thrift/lib/cpp2/async/FutureRequest.h>')
+        s('#include <folly/wangle/Future.h>')
         s('#include "{0}"'.format(self._with_include_prefix(self._program,
                                                              self._program.name
                                                              + '_types.h')))
@@ -670,10 +669,9 @@ class CppGenerator(t_generator.Generator):
                 self._generate_client_std_function(function,
                                                    name_prefix="functor_")
 
-                if self.flag_future:
-                    self._generate_client_future_function(service, function)
-                    self._generate_client_future_function(service, function,
-                                                          uses_rpc_options=True)
+                self._generate_client_future_function(service, function)
+                self._generate_client_future_function(service, function,
+                                                      uses_rpc_options=True)
                 if not function.oneway:
                     self._generate_recv_functions(function)
 
