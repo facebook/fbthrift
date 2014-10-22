@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.facebook</groupId>
     <artifactId>facebook-base-pom</artifactId>
-    <version>4</version>
+    <version>7</version>
   </parent>
 
   <groupId>com.facebook.swift</groupId>
@@ -14,34 +17,30 @@
   <version>0.11.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
-  <description>Tutorial for using swift in fbcode</description>
+  <description>Tutorial for using swift</description>
 
   <modules>
     <module>client</module>
     <module>server</module>
-      <module>header-usage-example</module>
+    <module>header-usage-example</module>
   </modules>
-
-  <inceptionYear>2013</inceptionYear>
-
-  <developers>
-    <developer>
-      <id>Andrew Cox</id>
-      <name>Andrew Cox</name>
-      <email>andrewcox@fb.com</email>
-    </developer>
-  </developers>
 
   <properties>
     <!-- replace these with the latest releases when building your project -->
-    <dep.nifty.version>0.13.1</version>
-    <dep.nifty-header-protocol.version>0.13.1</version>
-    <dep.swift.version>0.13.2</version>
-    <dep.swift-fb303.version>0.13.0</version>
+    <dep.nifty.version>0.13.1</dep.nifty.version>
+    <dep.swift.version>0.13.2</dep.swift.version>
+    <dep.swift-fb303.version>0.13.0</dep.swift-fb303.version>
+
+    <dep.airlift.version>0.91</dep.airlift.version>
+    <dep.libthrift.version>0.9.1</dep.libthrift.version>
+    <dep.jmxutils.version>1.18</dep.jmxutils.version>
+    <dep.mycila.version>2.10.ga</dep.mycila.version>
+    <dep.netty.version>3.9.5.Final</dep.netty.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+
       <dependency>
         <groupId>com.facebook.swift</groupId>
         <artifactId>swift-service</artifactId>
@@ -49,8 +48,32 @@
       </dependency>
 
       <dependency>
+        <groupId>com.facebook.swift</groupId>
+        <artifactId>swift-codec</artifactId>
+        <version>${dep.swift.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.facebook.swift</groupId>
+        <artifactId>swift-annotations</artifactId>
+         <version>${dep.swift.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>com.facebook.nifty</groupId>
         <artifactId>nifty-header-protocol</artifactId>
+        <version>${dep.nifty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.facebook.nifty</groupId>
+        <artifactId>nifty-core</artifactId>
+        <version>${dep.nifty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.facebook.nifty</groupId>
+        <artifactId>nifty-client</artifactId>
         <version>${dep.nifty.version}</version>
       </dependency>
 
@@ -61,28 +84,62 @@
       </dependency>
 
       <dependency>
-        <groupId>com.mycila</groupId>
-        <artifactId>mycila-guice</artifactId>
-        <version>2.10.ga</version>
+        <groupId>org.weakref</groupId>
+        <artifactId>jmxutils</artifactId>
+        <version>${dep.jmxutils.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>io.airlift</groupId>
-        <artifactId>bootstrap</artifactId>
-        <version>0.91</version>
+        <groupId>org.apache.thrift</groupId>
+        <artifactId>libthrift</artifactId>
+        <version>${dep.libthrift.version}</version>
       </dependency>
 
-        <dependency>
-            <groupId>io.airlift</groupId>
-            <artifactId>jmx</artifactId>
-            <version>0.91</version>
-        </dependency>
+      <dependency>
+        <groupId>com.mycila</groupId>
+        <artifactId>mycila-guice</artifactId>
+        <version>${dep.mycila.version}</version>
+      </dependency>
 
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>3.0</version>
-        </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty</artifactId>
+        <version>${dep.netty.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.ning.maven.plugins</groupId>
+        <artifactId>maven-duplicate-finder-plugin</artifactId>
+        <configuration>
+          <exceptions>
+            <exception>
+              <conflictingDependencies>
+                <dependency>
+                  <groupId>commons-logging</groupId>
+                  <artifactId>commons-logging</artifactId>
+                  <version>1.1.1</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>jcl-over-slf4j</artifactId>
+                  <version>1.7.6</version>
+                </dependency>
+              </conflictingDependencies>
+              <classes>
+                <class>org.apache.commons.logging.Log</class>
+                <class>org.apache.commons.logging.LogConfigurationException</class>
+                <class>org.apache.commons.logging.LogFactory</class>
+                <class>org.apache.commons.logging.impl.NoOpLog</class>
+                <class>org.apache.commons.logging.impl.SimpleLog</class>
+              </classes>
+            </exception>
+          </exceptions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -15,8 +15,7 @@ import io.airlift.bootstrap.LifeCycleManager;
 import io.airlift.bootstrap.LifeCycleModule;
 import io.airlift.configuration.ConfigurationFactory;
 import io.airlift.configuration.ConfigurationModule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.airlift.log.Logger;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -25,7 +24,7 @@ import static com.facebook.swift.service.guice.ThriftClientBinder.thriftClientBi
 
 public class App
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+    private static final Logger LOGGER = Logger.get(App.class);
 
     public static void main(String[] args)
             throws Exception

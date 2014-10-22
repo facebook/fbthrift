@@ -9,12 +9,10 @@
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>com.facebook.swift</groupId>
   <artifactId>swift-server-tutorial</artifactId>
-  <version>0.11.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>${project.artifactId}</name>
-  <description>Tutorial for writing swift servers in fbcode</description>
+  <name>Swift Server Tutorial</name>
+  <description>Tutorial for writing swift servers</description>
+  <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
@@ -22,19 +20,29 @@
       <artifactId>swift-service</artifactId>
     </dependency>
 
-      <dependency>
-          <groupId>com.facebook.nifty</groupId>
-          <artifactId>nifty-header-protocol</artifactId>
-      </dependency>
-
-      <dependency>
-          <groupId>com.facebook.swift</groupId>
-          <artifactId>swift-fb303</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>com.facebook.swift</groupId>
+      <artifactId>swift-codec</artifactId>
+    </dependency>
 
     <dependency>
-      <groupId>com.mycila</groupId>
-      <artifactId>mycila-guice</artifactId>
+      <groupId>com.facebook.swift</groupId>
+      <artifactId>swift-annotations</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.facebook.nifty</groupId>
+      <artifactId>nifty-header-protocol</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.facebook.nifty</groupId>
+      <artifactId>nifty-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.facebook.swift</groupId>
+      <artifactId>swift-fb303</artifactId>
     </dependency>
 
     <dependency>
@@ -42,9 +50,45 @@
       <artifactId>bootstrap</artifactId>
     </dependency>
 
-      <dependency>
-          <groupId>io.airlift</groupId>
-          <artifactId>jmx</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>io.airlift</groupId>
+      <artifactId>configuration</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.airlift</groupId>
+      <artifactId>jmx</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.airlift</groupId>
+      <artifactId>log</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.weakref</groupId>
+      <artifactId>jmxutils</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </dependency>
+
   </dependencies>
 </project>

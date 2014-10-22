@@ -6,13 +6,12 @@ import com.facebook.nifty.header.transport.THeaderTransport;
 import com.facebook.swift.service.ThriftMethod;
 import com.facebook.swift.service.ThriftService;
 import org.apache.thrift.transport.TTransport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.airlift.log.Logger;
 
 @ThriftService
 public class HeaderUsageExampleHandler
 {
-    private static final Logger LOG = LoggerFactory.getLogger(HeaderUsageExampleHandler.class);
+    private static final Logger LOG = Logger.get(HeaderUsageExampleHandler.class);
 
     @ThriftMethod
     public void headerUsageExampleMethod() {

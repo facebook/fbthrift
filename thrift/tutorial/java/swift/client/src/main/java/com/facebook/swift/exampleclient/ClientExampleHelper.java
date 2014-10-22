@@ -6,8 +6,7 @@ import com.facebook.nifty.client.NiftyClientConnector;
 import com.facebook.nifty.header.client.HeaderClientConnector;
 import com.facebook.swift.service.ThriftClient;
 import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.airlift.log.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
@@ -20,7 +19,7 @@ import static com.google.common.net.HostAndPort.fromParts;
  */
 public class ClientExampleHelper
 {
-    private static final Logger logger = LoggerFactory.getLogger(ClientExampleHelper.class);
+    private static final Logger logger = Logger.get(ClientExampleHelper.class);
 
     private final ThriftClient<ExampleService> thriftClient;
     private final String inputString;

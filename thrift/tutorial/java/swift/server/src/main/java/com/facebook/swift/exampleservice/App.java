@@ -29,10 +29,9 @@ import io.airlift.bootstrap.LifeCycleModule;
 import io.airlift.configuration.ConfigurationFactory;
 import io.airlift.configuration.ConfigurationModule;
 import io.airlift.jmx.JmxModule;
+import io.airlift.log.Logger;
 import org.jboss.netty.logging.InternalLoggerFactory;
 import org.jboss.netty.logging.Slf4JLoggerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.weakref.jmx.guice.MBeanModule;
 
 import javax.inject.Inject;
@@ -45,7 +44,7 @@ import static com.facebook.swift.service.guice.ThriftServiceExporter.thriftServe
 
 public class App
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+    private static final Logger LOGGER = Logger.get(App.class);
     private static final ImmutableMap<String,String> SERVER_CONFIGURATION = ImmutableMap.of(
             "thrift.port", "4567",
             "thrift.threads.max", "200",

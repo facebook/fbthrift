@@ -23,8 +23,7 @@ import io.airlift.configuration.ConfigurationModule;
 import io.airlift.jmx.JmxModule;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TTransport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.airlift.log.Logger;
 import org.weakref.jmx.guice.MBeanModule;
 
 import java.util.Map;
@@ -41,7 +40,7 @@ public class App
             "thrift.protocol", "header"
     );
     private static final Map<String, String> CLIENT_CONFIGURATION = ImmutableMap.<String, String>of();
-    private static final Logger LOG = LoggerFactory.getLogger(App.class);
+    private static final Logger LOG = Logger.get(App.class);
 
     public static void main(String[] args) throws Exception {
         Injector serverInjector = Guice.createInjector(
