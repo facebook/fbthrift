@@ -1,7 +1,5 @@
 namespace cpp apache.thrift.protocol.neutronium.test
 
-cpp_include "folly/FBString.h"
-
 struct TestFixedSizeStruct1 {
   1: bool a,
   2: bool b,

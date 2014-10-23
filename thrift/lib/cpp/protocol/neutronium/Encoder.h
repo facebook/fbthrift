@@ -24,7 +24,6 @@
 #include <thrift/lib/cpp/protocol/neutronium/Schema.h>
 #include <thrift/lib/cpp/protocol/neutronium/InternTable.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
-#include <folly/FBString.h>
 #include <folly/Range.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
