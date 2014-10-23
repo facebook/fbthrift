@@ -1150,6 +1150,8 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
       out <<
         indent() << "public function __construct(@Indexish<string, mixed> $vals = array()) {" << endl;
     }
+    out <<
+      indent() << "  // UNSAFE $vals is not type safe :(, and we don't cast (yet)" << endl;
   } else {
     out <<
       indent() << "public function __construct(";
