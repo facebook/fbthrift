@@ -93,6 +93,7 @@ std::vector<std::string> getHostRealm(krb5_context context,
  */
 class Krb5Context {
 public:
+  // Can throw if the context cannot be initialized for some reason.
   explicit Krb5Context(bool thread_local_ctx = false);
   ~Krb5Context();
 

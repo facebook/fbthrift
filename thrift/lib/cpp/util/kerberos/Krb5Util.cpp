@@ -82,8 +82,10 @@ Krb5Context::Krb5Context(bool thread_local_ctx)
     code = krb5_init_context(&context_);
   }
   if (code) {
-    LOG(FATAL) << "Error initializing kerberos library: "
-               << error_message(code);
+    std::string msg = folly::to<std::string>(
+      "Error while initialiing kerberos context: ",
+      error_message(code));
+    throw std::runtime_error(msg);
   }
 }
 

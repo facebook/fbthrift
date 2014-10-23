@@ -39,8 +39,16 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
     , logger_(logger)
     , ccacheTypeIsMemory_(false) {
 
-  ctx_ = folly::make_unique<Krb5Context>();
-  store_ = folly::make_unique<Krb5CCacheStore>(logger);
+  try {
+    // These calls can throw if the context cannot be initialized for some
+    // reason, e.g. bad config format, etc.
+    ctx_ = folly::make_unique<Krb5Context>();
+    store_ = folly::make_unique<Krb5CCacheStore>(logger);
+  } catch (const std::runtime_error& e) {
+    // Caught exception while trying to initialize the context / store.
+    // The ccache manager thread will detect this and attempt to initialize them
+    // again. Don't do anything now.
+  }
 
   // Client principal choice: principal
   // in current ccache, or first principal in keytab.  It's possible
@@ -58,6 +66,14 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
 
       // Catch all the exceptions. This thread should never die.
       try {
+        // If the context or store are not initialized, try to initialize them.
+        if (!ctx_) {
+          ctx_ = folly::make_unique<Krb5Context>();
+        }
+        if (!store_) {
+          store_ = folly::make_unique<Krb5CCacheStore>(logger);
+        }
+
         // Reinit or init the cache store if it expired or has never been
         // initialized
         if (!store_->isInitialized()) {
@@ -94,8 +110,11 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
                      " run \"kinit\" to get new kerberos tickets. If the" \
                      " application is authenticating as a service identity," \
                      " make sure the keytab is in the right place"
-                     " and is accessible.";
-        store_->notifyOfError(e.what() + credentialCacheErrorMessage);
+                     " and is accessible. Check for bad format in kerberos" \
+                     " config too.";
+        if (store_) {
+          store_->notifyOfError(e.what() + credentialCacheErrorMessage);
+        }
         static string oldError = "";
         if (oldError != e.what()) {
           oldError = e.what();
@@ -107,7 +126,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
       if (!stopManageThread_) {
         int wait_time =
           Krb5CredentialsCacheManager::MANAGE_THREAD_SLEEP_PERIOD;
-        if (!store_->isInitialized()) {
+        if (store_ && !store_->isInitialized()) {
           // Shorten loop time to 1 second if first iteration didn't initialize
           // the client successfully
           wait_time = 1000;
@@ -286,6 +305,9 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
 std::shared_ptr<Krb5CCache> Krb5CredentialsCacheManager::waitForCache(
     const Krb5Principal& service,
     SecurityLogger* logger) {
+  if (!store_) {
+    throw std::runtime_error("Kerberos ccache store could not be initialized");
+  }
   return store_->waitForCache(service, logger);
 }
 
