@@ -85,7 +85,12 @@ void HeaderClientChannel::attachEventBase(
     TEventBase* eventBase) {
   cpp2Channel_->attachEventBase(eventBase);
   timer_->attachEventBase(eventBase);
-  if (saslClient_) {
+  if (saslClient_ && getProtectionState() == ProtectionState::UNKNOWN) {
+    // Note that we only want to attach the event base here if
+    // the handshake never started. If it started then reattaching the
+    // event base would cause a lot of problems.
+    // It could cause the SASL threads to invoke callbacks on the
+    // channel that are unexpected.
     saslClient_->attachEventBase(eventBase);
   }
 }
