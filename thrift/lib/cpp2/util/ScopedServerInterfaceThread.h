@@ -23,6 +23,7 @@
 namespace apache { namespace thrift {
 
 class ServerInterface;
+class ThriftServer;
 
 /**
  * ScopedServerInterfaceThread spawns a thrift cpp2 server in a new thread.
@@ -38,11 +39,16 @@ class ScopedServerInterfaceThread {
       const std::string& host = "::1",
       uint16_t port = 0);
 
+  explicit ScopedServerInterfaceThread(
+      std::shared_ptr<ThriftServer> ts);
+
+  ThriftServer& getThriftServer() const;
   const folly::SocketAddress& getAddress() const;
   uint16_t getPort() const;
 
  private:
 
+  std::shared_ptr<ThriftServer> ts_;
   util::ScopedServerThread sst_;
 
 };

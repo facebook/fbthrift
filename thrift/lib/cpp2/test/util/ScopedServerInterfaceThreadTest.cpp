@@ -19,6 +19,7 @@
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/util/gen-cpp2/SimpleService.h>
 #include <gtest/gtest.h>
 
@@ -47,6 +48,32 @@ TEST(ScopedServerInterfaceThread, nada) {
 TEST(ScopedServerInterfaceThread, example) {
   ScopedServerInterfaceThread ssit(
     make_shared<SimpleServiceImpl>());
+
+  EventBase eb;
+  SimpleServiceAsyncClient cli(
+    HeaderClientChannel::newChannel(
+      TAsyncSocket::newSocket(
+        &eb, ssit.getAddress())));
+
+  EXPECT_EQ(6, cli.sync_add(-3, 9));
+}
+
+TEST(ScopedServerInterfaceThread, getThriftServer) {
+  ScopedServerInterfaceThread ssit(
+    make_shared<SimpleServiceImpl>());
+  auto& ts = ssit.getThriftServer();
+  EXPECT_EQ(0, ts.getNPoolThreads());
+  EXPECT_EQ(1, ts.getNWorkerThreads());
+}
+
+TEST(ScopedServerInterfaceThread, ctor_with_thriftserver) {
+  auto si = make_shared<SimpleServiceImpl>();
+  auto ts = make_shared<ThriftServer>();
+  ts->setInterface(si);
+  ts->setAddress("::1", 0);
+  ts->setNWorkerThreads(1);
+  ScopedServerInterfaceThread ssit(ts);
+  EXPECT_EQ(uintptr_t(ts.get()), uintptr_t(&ssit.getThriftServer())); // sanity
 
   EventBase eb;
   SimpleServiceAsyncClient cli(

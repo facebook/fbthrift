@@ -31,7 +31,19 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   auto ts = make_shared<ThriftServer>();
   ts->setAddress(host, port);
   ts->setInterface(move(si));
-  sst_.start(move(ts));
+  ts->setNWorkerThreads(1);
+  ts_ = move(ts);
+  sst_.start(ts_);
+}
+
+ScopedServerInterfaceThread::ScopedServerInterfaceThread(
+    shared_ptr<ThriftServer> ts) {
+  ts_ = move(ts);
+  sst_.start(ts_);
+}
+
+ThriftServer& ScopedServerInterfaceThread::getThriftServer() const {
+  return *ts_;
 }
 
 const folly::SocketAddress& ScopedServerInterfaceThread::getAddress() const {
