@@ -26,6 +26,8 @@
 
 #include <assert.h>
 
+DECLARE_string(sasl_policy);
+
 namespace apache { namespace thrift {
 
 using namespace apache::thrift::protocol;
@@ -70,10 +72,20 @@ Cpp2Connection::Cpp2Connection(
     channel_->setSampleRate(observer->getSampleRate());
   }
 
-  // If the security kill switch is present, make the security policy default
-  // to "permitted" or "disabled".
-  if (isSecurityKillSwitchEnabled()) {
+  // Process the security kill switch.
+  if (isSecurityKillSwitchEnabled() && FLAGS_sasl_policy == "required") {
+    // This means we downgrade only from "required" to "permitted, and don't
+    // end up upgrading from "disabled" to "permitted"
     worker_->getServer()->setNonSaslEnabled(true);
+  } else {
+    // This is necessary for the server to revert back to old behavior once
+    // kill switch has been removed after being turned on for some time.
+    if (FLAGS_sasl_policy == "permitted") {
+      worker_->getServer()->setNonSaslEnabled(true);
+    } else {
+      // sasl_policy is either "required" or "disabled"
+      worker_->getServer()->setNonSaslEnabled(false);
+    }
   }
 
   if (asyncSocket) {

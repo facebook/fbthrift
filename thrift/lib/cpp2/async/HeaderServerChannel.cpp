@@ -506,7 +506,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
       observer->saslError();
     }
     channel_.setProtectionState(ProtectionState::INVALID);
-    LOG(ERROR) << "SASL required by server but failed";
+    LOG(ERROR) << "SASL required by server but failed: " << ex.what();
     channel_.messageReceiveErrorWrapped(std::move(ex));
     return;
   }
