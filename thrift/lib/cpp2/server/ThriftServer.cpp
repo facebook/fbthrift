@@ -586,9 +586,13 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
   queueload = threadManager_->getCodel()->getLoad();
 
   int load = std::max({reqload, connload, queueload});
-  FB_LOG_EVERY_MS(INFO, 1000*10) << "Load is: " << reqload << "% requests "
-                  << connload << "% connections "
-                  << queueload << "% queue time";
+  FB_LOG_EVERY_MS(INFO, 1000*10)
+    << cpp2WorkerThreadName_
+    << ": Load is: " << reqload << "% requests "
+    << connload << "% connections "
+    << queueload << "% queue time"
+    << " active reqs " << activeRequests_
+    << " pending reqs  " << getPendingCount();
   return load;
 }
 
