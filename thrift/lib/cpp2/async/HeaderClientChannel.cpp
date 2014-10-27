@@ -188,6 +188,17 @@ void HeaderClientChannel::SaslClientCallback::saslError(
 
   auto logger = channel_.saslClient_->getSaslLogger();
 
+  bool ex_eof = false;
+  ex.with_exception<TTransportException>([&](TTransportException& tex) {
+      if (tex.getType() == TTransportException::END_OF_FILE) {
+        ex_eof = true;
+      }
+    });
+  if (ex_eof) {
+    ex = folly::make_exception_wrapper<TTransportException>(
+      "SASL required by client but server closed connection");
+  }
+
   // Record error string
   std::string errorMessage =
     "MsgNum: " + std::to_string(channel_.handshakeMessagesSent_);
@@ -223,7 +234,13 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     channel_.header_->setClientType(THRIFT_HEADER_CLIENT_TYPE);
   });
   if (ew) {
-    LOG(ERROR) << "SASL required by client but failed or rejected by server";
+    if (ex_eof) {
+      LOG(ERROR) << ex.what();
+    } else {
+      LOG(ERROR)
+        << "SASL required by client but failed or rejected by server: "
+        << ex.what();
+    }
     if (logger) {
       logger->log("sasl_failed_hard");
     }
