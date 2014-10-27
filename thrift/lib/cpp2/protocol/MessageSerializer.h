@@ -39,7 +39,7 @@ std::unique_ptr<folly::IOBuf> PargsPresultSerialize(
     const T& value, const char *methodName, MessageType messageType, int seqId) {
   IOBufQueue q;
   ProtocolWriter writer;
-  writer.setOutput(&q);
+  writer.setOutput(&q, value.serializedSizeZC(&writer));
   writer.writeMessageBegin(methodName, messageType, seqId);
   value.write(&writer);
   writer.writeMessageEnd();
