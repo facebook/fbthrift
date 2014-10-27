@@ -1151,7 +1151,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
         indent() << "public function __construct(@Indexish<string, mixed> $vals = array()) {" << endl;
     }
     out <<
-      indent() << "  // UNSAFE $vals is not type safe :(, and we don't cast (yet)" << endl;
+      indent() << "  // UNSAFE $vals is not type safe :(, and we don't cast structs (yet)" << endl;
   } else {
     out <<
       indent() << "public function __construct(";
@@ -2171,6 +2171,7 @@ void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
     indent(f_service_) <<
       "public function " << (*f_iter)->get_name() << "(Indexish<string, mixed> $request): " << type_to_typehint((*f_iter)->get_returntype()) << " {" << endl;
     indent_up();
+    indent(f_service_) << "// UNSAFE $request is not type safe :(, and we don't cast structs (yet)" << endl;
     const vector<t_field*>& args = (*f_iter)->get_arglist()->get_members();
     vector<t_field*>::const_iterator a_iter;
     for (a_iter = args.begin(); a_iter != args.end(); ++a_iter) {
