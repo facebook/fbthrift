@@ -36,7 +36,6 @@
 #include <folly/wangle/Executor.h>
 #include <folly/wangle/ManualExecutor.h>
 #include "common/concurrency/Executor.h"
-#include <folly/wangle/GenericThreadGate.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
@@ -45,6 +44,14 @@ using namespace apache::thrift::async;
 using namespace folly::wangle;
 using namespace folly;
 using facebook::concurrency::TEventBaseExecutor;
+
+template <class T, class W>
+T& waitFor(Future<T>& f, W& w) {
+  while (!f.isReady()) {
+    w.makeProgress();
+  }
+  return f.value();
+}
 
 class TestInterface : public FutureServiceSvIf {
   Future<std::unique_ptr<std::string>> future_sendResponse(int64_t size) {
@@ -169,11 +176,6 @@ TEST(ThriftServer, FutureClientTest) {
   TEventBase base;
   TEventBaseExecutor e(&base);
 
-  auto gate = GenericThreadGate<
-    folly::wangle::Executor*, folly::wangle::Executor*,
-    TEventBaseExecutor*>(
-    nullptr, nullptr, &e);
-
   auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
@@ -194,7 +196,7 @@ TEST(ThriftServer, FutureClientTest) {
   auto future = client.future_sendResponse(1000);
   steady_clock::time_point sent = steady_clock::now();
 
-  auto value = gate.value(future);
+  auto value = waitFor(future, e);
   steady_clock::time_point got = steady_clock::now();
 
   EXPECT_EQ(value, "test1000");
@@ -213,7 +215,7 @@ TEST(ThriftServer, FutureClientTest) {
     }
   );
 
-  EXPECT_EQ(gate.value(len), 6);
+  EXPECT_EQ(waitFor(len, e), 6);
 
   RpcOptions options;
   options.setTimeout(std::chrono::milliseconds(1));
@@ -222,7 +224,7 @@ TEST(ThriftServer, FutureClientTest) {
     auto f = client.future_sendResponse(options, 10000);
 
     // Wait for future to finish
-    gate.value(f);
+    waitFor(f, e);
     EXPECT_EQ(true, false);
   } catch (...) {
     return;
@@ -236,11 +238,6 @@ TEST(ThriftServer, FutureGetOrderTest) {
   ScopedServerThread sst(getServer());
   TEventBase base;
   TEventBaseExecutor e(&base);
-
-  auto gate = GenericThreadGate<
-    folly::wangle::Executor*, folly::wangle::Executor*,
-    TEventBaseExecutor*>(
-    nullptr, nullptr, &e);
 
   auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
@@ -262,12 +259,12 @@ TEST(ThriftServer, FutureGetOrderTest) {
 
   steady_clock::time_point start = steady_clock::now();
 
-  EXPECT_EQ(gate.value(future3), "test30");
+  EXPECT_EQ(waitFor(future3, e), "test30");
   steady_clock::time_point sent = steady_clock::now();
-  EXPECT_EQ(gate.value(future4), "test40");
-  EXPECT_EQ(gate.value(future0), "test0");
-  EXPECT_EQ(gate.value(future2), "test20");
-  EXPECT_EQ(gate.value(future1), "test10");
+  EXPECT_EQ(waitFor(future4, e), "test40");
+  EXPECT_EQ(waitFor(future0, e), "test0");
+  EXPECT_EQ(waitFor(future2, e), "test20");
+  EXPECT_EQ(waitFor(future1, e), "test10");
   steady_clock::time_point gets = steady_clock::now();
 
   steady_clock::duration sentTime = sent - start;

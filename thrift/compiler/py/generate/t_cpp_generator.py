@@ -1573,19 +1573,6 @@ class CppGenerator(t_generator.Generator):
 
         return return_type + " {name}(" + param_list + ")"
 
-    def _get_future_gate_function_signature(self, function):
-        params = ["folly::wangle::ThreadGate* gate"]
-
-        result_type = self._type_name(function.returntype)
-        return_type = "folly::wangle::Future<" + result_type + ">"
-
-        param_list = ", ".join(params)
-        param_list += self._argument_list(function.arglist,
-                                          add_comma=bool(params),
-                                          unique=False)
-
-        return return_type + " {name}(" + param_list + ")"
-
     def _generate_client_future_function(self, service, function,
                                          uses_rpc_options=False):
 

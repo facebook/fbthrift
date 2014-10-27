@@ -17,7 +17,6 @@
 #pragma once
 
 #include <folly/wangle/Future.h>
-#include <folly/wangle/ThreadGate.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 namespace apache { namespace thrift {
