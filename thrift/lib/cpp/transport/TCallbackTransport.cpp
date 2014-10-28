@@ -24,8 +24,8 @@ namespace apache { namespace thrift { namespace transport {
 
 uint32_t TCallbackTransport::read(uint8_t* buf, uint32_t len) {
     uint32_t rv = read_callback(userData, buf, len);
-    if (rv < 0) {
-      throw TTransportException(TTransportException::UNKNOWN,
+    if (rv == 0) {
+      throw TTransportException(TTransportException::END_OF_FILE,
                                 "TCallbackTransport::read()",
                                 rv);
     }
@@ -35,8 +35,8 @@ uint32_t TCallbackTransport::read(uint8_t* buf, uint32_t len) {
 void TCallbackTransport::write(const uint8_t* buf, uint32_t len) {
     uint32_t rv = write_callback(userData, buf, len);
 
-    if (rv < 0) {
-      throw TTransportException(TTransportException::UNKNOWN,
+    if (rv == 0) {
+      throw TTransportException(TTransportException::END_OF_FILE,
                                 "TCallbackTransport::write()",
                                 rv);
     }

@@ -388,7 +388,7 @@ cdef uint32_t read_callback(void* userdata, uint8_t* buf, uint32_t length):
         if rc == length:
             return length
         elif rc == -1:
-            return -1
+            return 0
         else:
             partial = (<char *>buf)[:rc]
             io_obj = (<object>readdata.refill)(partial, length)
@@ -403,7 +403,7 @@ cdef ProtocolID proto_type(py_proto):
     import thrift.protocol.TBinaryProtocol as pTBinaryProtocol
     import thrift.protocol.THeaderProtocol as pTHeaderProtocol
     import thrift.protocol.TCompactProtocol as pTCompactProtocol
-    
+
     if isinstance(py_proto, pTBinaryProtocol.TBinaryProtocol):
         return T_BINARY_PROTOCOL
     elif isinstance(py_proto, pTCompactProtocol.TCompactProtocol):
@@ -441,7 +441,7 @@ def encode(py_proto, py_struct, type_args):
     cdef TTransport *trans = <TTransport *>new TMemoryBuffer()
     cdef TProtocol *proto
     cdef ProtocolID protocol_id = proto_type(py_proto)
-    cdef bytes encoded 
+    cdef bytes encoded
     try:
         if protocol_id == T_BINARY_PROTOCOL:
             proto = <TProtocol *>new TBinaryProtocolT[TTransport](trans)
@@ -456,5 +456,5 @@ def encode(py_proto, py_struct, type_args):
         if proto != NULL:
             del proto
         del trans
-        
+
     return True
