@@ -33,7 +33,7 @@ class MockTAsyncSSLSocket :
 
   GMOCK_METHOD5_(, noexcept, ,
    connect,
-   void(TAsyncSocket::ConnectCallback*,
+   void(AsyncSocket::ConnectCallback*,
     const folly::SocketAddress&,
     int,
     const OptionMap&,

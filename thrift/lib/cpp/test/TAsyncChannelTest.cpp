@@ -20,6 +20,7 @@
 #include <boost/random.hpp>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
 #include <thrift/lib/cpp/async/TBinaryAsyncChannel.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
@@ -35,6 +36,7 @@ using std::endl;
 using namespace boost;
 
 using apache::thrift::async::TAsyncChannel;
+using apache::thrift::async::TAsyncTransport;
 using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncTimeout;
 using apache::thrift::async::TBinaryAsyncChannel;
@@ -257,7 +259,7 @@ class ChunkSchedule : public vector<ChunkInfo> {
   }
 };
 
-class ChunkSender : private TAsyncSocket::WriteCallback,
+class ChunkSender : private TAsyncTransport::WriteCallback,
                     private TAsyncTimeout {
  public:
   ChunkSender(TEventBase* evb, TAsyncSocket* socket,
@@ -385,7 +387,7 @@ class MultiMessageSize : public vector<int> {
     }
 };
 
-class MultiMessageSenderReceiver : private TAsyncSocket::WriteCallback,
+class MultiMessageSenderReceiver : private TAsyncTransport::WriteCallback,
                                    private TAsyncTimeout {
   public:
     MultiMessageSenderReceiver(TEventBase* evb,

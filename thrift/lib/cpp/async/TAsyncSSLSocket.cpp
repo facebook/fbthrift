@@ -624,7 +624,7 @@ void TAsyncSSLSocket::invokeHandshakeCallback() {
   }
 }
 
-void TAsyncSSLSocket::connect(ConnectCallback* callback,
+void TAsyncSSLSocket::connect(folly::AsyncSocket::ConnectCallback* callback,
                               const folly::SocketAddress& address,
                               int timeout,
                               const OptionMap &options,
@@ -633,8 +633,10 @@ void TAsyncSSLSocket::connect(ConnectCallback* callback,
   assert(!server_);
   assert(state_ == StateEnum::UNINIT);
   assert(sslState_ == STATE_UNINIT);
+  auto thrift_callback = dynamic_cast<TAsyncSocket::ConnectCallback*>(callback);
+  assert(thrift_callback);
   TAsyncSSLSocketConnector *connector =
-    new TAsyncSSLSocketConnector(this, callback, timeout);
+    new TAsyncSSLSocketConnector(this, thrift_callback, timeout);
   TAsyncSocket::connect(connector, address, timeout, options, bindAddr);
 }
 

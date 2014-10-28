@@ -310,12 +310,12 @@ class TAsyncSSLSocket : public TAsyncSocket {
    *
    * Note timeout applies to TCP + SSL connection time
    */
-  void connect(ConnectCallback* callback,
+  void connect(folly::AsyncSocket::ConnectCallback* callback,
                const folly::SocketAddress& address,
                int timeout = 0,
                const OptionMap &options = emptyOptionMap,
                const folly::SocketAddress& bindAddr = anyAddress)
-               noexcept;
+               noexcept override;
 
   using TAsyncSocket::connect;
 
