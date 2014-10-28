@@ -35,7 +35,7 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
   explicit MockTAsyncSocket(async::TEventBase* base) : TAsyncSocket(base) {}
 
   GMOCK_METHOD5_(, noexcept, , connect,
-      void(AsyncSocket::ConnectCallback*,
+      void(TAsyncSocket::ConnectCallback*,
            const folly::SocketAddress&,
            int,
            const OptionMap&,
