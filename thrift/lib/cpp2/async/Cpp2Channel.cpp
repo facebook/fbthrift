@@ -201,10 +201,11 @@ void Cpp2Channel::writeSuccess() noexcept {
   assert(sendCallbacks_.size() > 0);
 
   DestructorGuard dg(this);
-  for (auto& cb : sendCallbacks_.front()) {
+  auto sendCallbacks = std::move(sendCallbacks_.front());
+  sendCallbacks_.pop_front();
+  for (auto& cb : sendCallbacks) {
     cb->messageSent();
   }
-  sendCallbacks_.pop_front();
 }
 
 void Cpp2Channel::writeError(size_t bytesWritten,
@@ -215,11 +216,12 @@ void Cpp2Channel::writeError(size_t bytesWritten,
 
   DestructorGuard dg(this);
   VLOG(5) << "Got a write error: " << folly::exceptionStr(ex);
-  for (auto& cb : sendCallbacks_.front()) {
-    cb->messageSendError(
-        folly::make_exception_wrapper<TTransportException>(ex));
-  }
+  auto sendCallbacks = std::move(sendCallbacks_.front());
   sendCallbacks_.pop_front();
+  for (auto& cb : sendCallbacks) {
+      cb->messageSendError(
+          folly::make_exception_wrapper<TTransportException>(ex));
+  }
 }
 
 void Cpp2Channel::processReadEOF() noexcept {
