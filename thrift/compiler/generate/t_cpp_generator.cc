@@ -587,10 +587,14 @@ void t_cpp_generator::init_generator() {
         << endl << "namespace apache { namespace thrift { namespace frozen {"
         << endl;
 
+    // TODO(5484874): Separate Frozen2 build, un-inline layouts
+    // f_types_layouts_impl_
+    //     << "#include \"" << get_include_prefix(*get_program())
+    //     << program_name_ << "_layouts.h\"" << endl << endl
     f_types_layouts_impl_
-        << "#include \"" << get_include_prefix(*get_program()) << program_name_
-        << "_layouts.h\"" << endl << endl
         << "namespace apache { namespace thrift { namespace frozen {" << endl;
+    f_types_layouts_impl_
+        << "// all layouts inlined in layouts.h" << endl;
   }
 
   if (gen_json_) {
@@ -2417,7 +2421,8 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
   f_types_layouts_ << "));" << endl;
 
   // Implementation
-  f_types_layouts_impl_ << endl;
+  // TODO(5484874): Put these back in the .cpp after compilation is separated.
+  f_types_layouts_ << endl;
   for (auto step : {make_pair("CTOR", "CTOR_FIELD{_opt}({name}, {id})"),
                     make_pair("LAYOUT", "LAYOUT_FIELD{_opt}({name})"),
                     make_pair("FREEZE", "FREEZE_FIELD{_opt}({name})"),
@@ -2426,13 +2431,12 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
                     make_pair("CLEAR", "CLEAR_FIELD({name})"),
                     make_pair("SAVE", "SAVE_FIELD({name})"),
                     make_pair("LOAD", "LOAD_FIELD({name}, {id})")}) {
-    f_types_layouts_impl_
-        << folly::format("FROZEN_{}({},", step.first, structName);
+    f_types_layouts_ << folly::format("FROZEN_{}({},", step.first, structName);
     for (const t_field* field : members) {
       emitFieldFormat(
-          f_types_layouts_impl_, string("\n  FROZEN_") + step.second, field);
+          f_types_layouts_, string("\n  FROZEN_") + step.second, field);
     }
-    f_types_layouts_impl_ << ");\n";
+    f_types_layouts_ << ")\n";
   }
 }
 

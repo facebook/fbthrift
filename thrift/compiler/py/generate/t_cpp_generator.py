@@ -3389,7 +3389,8 @@ class CppGenerator(t_generator.Generator):
                 ('CLEAR', 'CLEAR_FIELD({name})'),
                 ('SAVE', 'SAVE_FIELD({name})'),
                 ('LOAD', 'LOAD_FIELD({name}, {id})')]:
-            s.impl(visitFields('FROZEN_' + typeFmt + '({type},{fields})',
+            # TODO(5484874): Put these back in the .cpp
+            s(visitFields('FROZEN_' + typeFmt + '({type},{fields})',
                                '\n  FROZEN_' + fieldFmt))
 
     def _generate_cpp_struct(self, obj, is_exception=False):
@@ -3542,22 +3543,26 @@ class CppGenerator(t_generator.Generator):
         if not self.flag_frozen2:
             return
         context = self._make_context(self._program.name + '_layouts')
+        # TODO(5484874): Remove this hack, which supresses the #include of
+        #                layouts.h
+        print >> context.impl, '#if 0 // all layouts inlined in layouts.h'
         s = get_global_scope(CppPrimitiveFactory, context)
         if self.flag_compatibility:
             # Delegate to cpp1 layouts
             s('#include "{0}"'.format(self._with_compatibility_include_prefix(
                 self._program, self._program.name + '_layouts.h')))
-            return
-        s('#include <thrift/lib/cpp2/frozen/Frozen.h>')
-        s('#include "{0}"'.format(self._with_include_prefix(self._program,
-            self._program.name + '_types.h')))
-        # Include other layouts
-        for inc in self._program.includes:
-            s('#include "{0}_layouts.h"'
-              .format(self._with_include_prefix(inc, inc.name)))
-        with s.namespace('apache.thrift.frozen').scope:
-            for obj in objects:
-                self._generate_frozen_layout(obj, out())
+        else:
+            s('#include <thrift/lib/cpp2/frozen/Frozen.h>')
+            s('#include "{0}"'.format(self._with_include_prefix(self._program,
+                self._program.name + '_types.h')))
+            # Include other layouts
+            for inc in self._program.includes:
+                s('#include  "{0}_layouts.h"'
+                 .format(self._with_include_prefix(inc, inc.name)))
+            with s.namespace('apache.thrift.frozen').scope:
+                for obj in objects:
+                    self._generate_frozen_layout(obj, out())
+        print >> context.impl, '\n#endif'
 
     def _generate_consts(self, constants):
         name = self._program.name
