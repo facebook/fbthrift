@@ -62,8 +62,8 @@ class BinaryProtocolWriter {
   inline void setOutput(
       IOBufQueue* queue,
       size_t maxGrowth = std::numeric_limits<size_t>::max()) {
-    // Allocate 1MB at a time; leave some room for the IOBuf overhead
-    constexpr size_t kDesiredGrowth = (1 << 20) - 64;
+    // Allocate 16KB at a time; leave some room for the IOBuf overhead
+    constexpr size_t kDesiredGrowth = (1 << 14) - 64;
     out_.reset(queue, std::min(maxGrowth, kDesiredGrowth));
   }
 

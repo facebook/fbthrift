@@ -39,6 +39,10 @@ struct BigBinary {
   1: IOBuf bin;
 }
 
+struct LargeBinary {
+  1: IOBuf bin;
+}
+
 struct Mixed {
   1: i32 int32;
   2: i64 int64;
@@ -55,5 +59,9 @@ struct BigListInt {
 }
 
 struct BigListMixed {
+  1: list<Mixed> lst;
+}
+
+struct LargeListMixed {
   1: list<Mixed> lst;
 }

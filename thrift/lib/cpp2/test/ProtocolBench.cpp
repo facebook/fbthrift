@@ -62,6 +62,12 @@ template <> BigBinary create<BigBinary>() {
   return BigBinary(FRAGILE, std::move(buf));
 }
 
+template <> LargeBinary create<LargeBinary>() {
+  auto buf = folly::IOBuf::create(10000000);
+  buf->append(10000000);
+  return LargeBinary(FRAGILE, std::move(buf));
+}
+
 template <> Mixed create<Mixed>() {
   return Mixed(FRAGILE, 5, 12345, true, "hello");
 }
@@ -76,6 +82,10 @@ template <> BigListInt create<BigListInt>() {
 
 template <> BigListMixed create<BigListMixed>() {
   return BigListMixed(FRAGILE, vector<Mixed>(10000, create<Mixed>()));
+}
+
+template <> LargeListMixed create<LargeListMixed>() {
+  return LargeListMixed(FRAGILE, vector<Mixed>(1000000, create<Mixed>()));
 }
 
 template <typename Serializer, typename Struct>
@@ -122,10 +132,12 @@ void readBench(size_t iters) {
   X2(proto, SmallString) \
   X2(proto, BigString) \
   X2(proto, BigBinary) \
+  X2(proto, LargeBinary) \
   X2(proto, Mixed) \
   X2(proto, SmallListInt) \
   X2(proto, BigListInt) \
   X2(proto, BigListMixed) \
+  X2(proto, LargeListMixed) \
 
 X(Binary)
 X(Compact)
