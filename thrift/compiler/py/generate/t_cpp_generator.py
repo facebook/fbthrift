@@ -21,6 +21,7 @@
 from cStringIO import StringIO
 from itertools import chain, ifilter
 from collections import namedtuple
+import copy
 import errno
 import os
 import re
@@ -91,6 +92,7 @@ class CppGenerator(t_generator.Generator):
         'future': 'enable wangle futures in service interface',
         'process_in_event_base': 'Process request in event base thread',
         'frozen2': 'enable frozen structures',
+        'json': 'enable simple json protocol',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -119,6 +121,10 @@ class CppGenerator(t_generator.Generator):
             self.program.include_prefix = prefix
         terse_writes = self._flags.get('terse_writes')
         self.safe_terse_writes = (terse_writes == 'safe')
+        if self.flag_json:
+            self.protocols = copy.deepcopy(CppGenerator.protocols)
+            self.protocols.append(
+                ("simple_json", "SimpleJSONProtocol", "T_SIMPLE_JSON_PROTOCOL"))
 
     def _base_type_name(self, tbase):
         if tbase in self._base_to_cpp_typename:
@@ -2685,6 +2691,14 @@ class CppGenerator(t_generator.Generator):
                 out('break;')
             fields_scope = s
 
+        with s1('if (fid == std::numeric_limits<int16_t>::min())'):
+            cond_type = 'if'
+            for field in fields:
+                with s1('{0} (fname == "{1}")'.format(cond_type, field.name)):
+                    s1('fid = {0};'.format(field.key))
+                    s1('ftype = {0};'.format(self._type_to_enum(field.type)))
+                    cond_type = 'else if'
+
         # Switch statement on the field we are reading
         s2 = fields_scope('switch (fid)').scope
         # Generate deserialization code for known cases
@@ -2873,8 +2887,6 @@ class CppGenerator(t_generator.Generator):
             s('apache::thrift::protocol::TType {0};'.format(vtype))
             s('xfer += iprot->readMapBegin({0}, {1}, {2});'.format(
                 ktype, vtype, size))
-            if cont.as_map.is_unordered:
-                s('{0}.reserve({1});'.format(prefix, size))
         elif cont.is_set:
             s('apache::thrift::protocol::TType {0};'.format(etype))
             s('xfer += iprot->readSetBegin({0}, {1});'.format(etype, size))
@@ -2882,19 +2894,47 @@ class CppGenerator(t_generator.Generator):
             s('apache::thrift::protocol::TType {0};'.format(etype))
             txt = 'xfer += iprot->readListBegin({0}, {1});'.format(etype, size)
             s(txt)
-            if not use_push:
-                s('{0}.resize({1});'.format(prefix, size))
         # For loop iterates over elements
         i = self.tmp('_i')
         s('uint32_t {0};'.format(i))
-        with s('for ({0} = 0; {0} < {1}; ++{0})'.format(i, size)):
+
+        with s('if ({0} == {1})'
+               .format(size, 'std::numeric_limits<uint32_t>::max()')):
+            peek = 'false'
             if cont.is_map:
-                self._generate_deserialize_map_element(out(), cont.as_map, prefix)
+                peek = 'iprot->peekMap()'
             elif cont.is_set:
-                self._generate_deserialize_set_element(out(), cont.as_set, prefix)
+                peek = 'iprot->peekSet()'
             elif cont.is_list:
-                self._generate_deserialize_list_element(out(), cont.as_list,
-                                                        prefix, use_push, i)
+                peek = 'iprot->peekList()'
+
+            with s('for ({0} = 0; {1}; {0}++)'.format(i, peek)):
+                if cont.is_map:
+                    self._generate_deserialize_map_element(
+                            out(), cont.as_map, prefix)
+                elif cont.is_set:
+                    self._generate_deserialize_set_element(
+                            out(), cont.as_set, prefix)
+                elif cont.is_list:
+                    if not use_push:
+                        s('{0}.resize({1} + 1);'.format(prefix, i))
+                    self._generate_deserialize_list_element(out(), cont.as_list,
+                                                            prefix, use_push, i)
+        with s('else'):
+            if cont.is_list and not use_push:
+                s('{0}.resize({1});'.format(prefix, size))
+            elif cont.is_map and cont.as_map.is_unordered:
+                s('{0}.reserve({1});'.format(prefix, size))
+            with s('for ({0} = 0; {0} < {1}; ++{0})'.format(i, size)):
+                if cont.is_map:
+                    self._generate_deserialize_map_element(
+                            out(), cont.as_map, prefix)
+                elif cont.is_set:
+                    self._generate_deserialize_set_element(
+                            out(), cont.as_set, prefix)
+                elif cont.is_list:
+                    self._generate_deserialize_list_element(out(), cont.as_list,
+                                                            prefix, use_push, i)
         # Read container end
         if cont.is_map:
             s('xfer += iprot->readMapEnd();')
