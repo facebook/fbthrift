@@ -332,3 +332,7 @@ union TestUnion {
 struct StructWithAUnion {
   1: TestUnion test_union;
 }
+
+struct Nested {
+  1: map<string, list<set<map<i32, i32>>>> foo;
+}

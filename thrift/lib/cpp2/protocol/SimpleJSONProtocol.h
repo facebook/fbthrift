@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef CPP2_PROTOCOL_COMPACTPROTOCOL_H_
-#define CPP2_PROTOCOL_COMPACTPROTOCOL_H_ 1
+#ifndef CPP2_PROTOCOL_TSIMPLEJSONPROTOCOL_H_
+#define CPP2_PROTOCOL_TSIMPLEJSONPROTOCOL_H_ 1
 
-#include <folly/FBVector.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
 #include <folly/io/Cursor.h>
-#include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <list>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
-
-#include <stack>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
 namespace apache { namespace thrift {
 
@@ -34,34 +33,22 @@ typedef folly::io::RWPrivateCursor RWCursor;
 using folly::io::Cursor;
 using folly::io::QueueAppender;
 
-namespace detail { namespace compact {
-
-static const int8_t COMPACT_PROTOCOL_VERSION = static_cast<int8_t>(0x02);
-static const int32_t VERSION_2 = 0x82020000;
-static const int8_t  PROTOCOL_ID = static_cast<int8_t>(0x82);
-static const int8_t  TYPE_MASK = static_cast<int8_t>(0xE0);
-static const int32_t TYPE_SHIFT_AMOUNT = 5;
-}}
-
-/**
- * C++ Implementation of the Compact Protocol as described in THRIFT-110
- */
-class CompactProtocolWriter {
+class SimpleJSONProtocolWriter {
 
  public:
+  static const int32_t VERSION_1 = 0x80010000;
 
-  CompactProtocolWriter()
-      : out_(nullptr, 0)
-      , booleanField_({nullptr, TType::T_BOOL, 0}) {}
+  SimpleJSONProtocolWriter()
+      : out_(nullptr, 0) {}
 
   static inline ProtocolType protocolType() {
-    return ProtocolType::T_COMPACT_PROTOCOL;
+    return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
   }
 
   /**
    * ...
    * The IOBuf itself is managed by the caller.
-   * It must exist for the life of the CompactProtocol as well,
+   * It must exist for the life of the SimpleJSONProtocol as well,
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
@@ -70,7 +57,7 @@ class CompactProtocolWriter {
       size_t maxGrowth = std::numeric_limits<size_t>::max()) {
     // Allocate 16KB at a time; leave some room for the IOBuf overhead
     constexpr size_t kDesiredGrowth = (1 << 14) - 64;
-    out_.reset(queue, std::min(kDesiredGrowth, maxGrowth));
+    out_.reset(queue, std::min(maxGrowth, kDesiredGrowth));
   }
 
   inline uint32_t writeMessageBegin(const std::string& name,
@@ -82,17 +69,12 @@ class CompactProtocolWriter {
   inline uint32_t writeFieldBegin(const char* name,
                                   TType fieldType,
                                   int16_t fieldId);
-  inline uint32_t writeFieldBeginInternal(const char* name,
-                                         const TType fieldType,
-                                         const int16_t fieldId,
-                                         int8_t typeOverride);
   inline uint32_t writeFieldEnd();
   inline uint32_t writeFieldStop();
   inline uint32_t writeMapBegin(TType keyType,
                                 TType valType,
                                 uint32_t size);
   inline uint32_t writeMapEnd();
-  inline uint32_t writeCollectionBegin(int8_t elemType, int32_t size);
   inline uint32_t writeListBegin(TType elemType, uint32_t size);
   inline uint32_t writeListEnd();
   inline uint32_t writeSetBegin(TType elemType, uint32_t size);
@@ -106,15 +88,13 @@ class CompactProtocolWriter {
   inline uint32_t writeFloat(float flt);
   template <typename StrType>
   inline uint32_t writeString(const StrType& str);
+  inline uint32_t writeString(const char* str);
   template <typename StrType>
   inline uint32_t writeBinary(const StrType& str);
-  inline uint32_t writeBinary(const std::unique_ptr<IOBuf>& str);
-  inline uint32_t writeBinary(const IOBuf& str);
+  inline uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
+  inline uint32_t writeBinary(const folly::IOBuf& str);
   inline uint32_t writeSerializedData(
-    const std::unique_ptr<folly::IOBuf>& data) {
-    // TODO
-    return 0;
-  }
+      const std::unique_ptr<folly::IOBuf>& data);
 
   /**
    * Functions that return the serialized size
@@ -149,81 +129,78 @@ class CompactProtocolWriter {
   uint32_t serializedSizeBinary(const StrType& v) {
     return serializedSizeString(v);
   }
-  inline uint32_t serializedSizeBinary(const std::unique_ptr<IOBuf>& v);
-  inline uint32_t serializedSizeBinary(const IOBuf& v);
+  inline uint32_t serializedSizeBinary(const std::unique_ptr<folly::IOBuf>& v);
+  inline uint32_t serializedSizeBinary(const folly::IOBuf& v);
   template <typename StrType>
   uint32_t serializedSizeZCBinary(const StrType& v) {
     return serializedSizeBinary(v);
   }
-  uint32_t serializedSizeZCBinary(const std::unique_ptr<IOBuf>& v) {
+  uint32_t serializedSizeZCBinary(const std::unique_ptr<folly::IOBuf>& v) {
     // size only
     return serializedSizeI32();
   }
-  uint32_t serializedSizeZCBinary(const IOBuf& v) {
+  uint32_t serializedSizeZCBinary(const folly::IOBuf& v) {
     // size only
     return serializedSizeI32();
   }
   inline uint32_t serializedSizeSerializedData(
-    const std::unique_ptr<folly::IOBuf>& data) {
-    // TODO
-    return 0;
-  }
+      const std::unique_ptr<folly::IOBuf>& data);
 
  protected:
+  enum class ContextType { MAP, ARRAY };
+  inline uint32_t beginContext(ContextType);
+  inline uint32_t endContext();
+  inline uint32_t writeContext();
+  inline uint32_t writeJSONEscapeChar(uint8_t ch);
+  inline uint32_t writeJSONChar(uint8_t ch);
+  template <typename StrType>
+  uint32_t writeJSONString(const StrType&);
+  inline uint32_t writeJSONString(const char* str, uint32_t);
+  inline uint32_t writeJSONBase64(const uint8_t*, uint32_t);
+  inline uint32_t writeJSONBool(bool val);
+  inline uint32_t writeJSONInt(int64_t num);
+  template<typename T>
+  uint32_t writeJSONDouble(T dbl);
+
   /**
    * Cursor to write the data out to.
    */
   QueueAppender out_;
 
-  struct {
-    const char* name;
-    TType fieldType;
-    int16_t fieldId;
-  } booleanField_;
+  struct Context {
+    ContextType type;
+    int meta;
+  };
 
-  std::stack<int16_t, folly::fbvector<int16_t>> lastField_;
-  int16_t lastFieldId_;
-
+  std::list<Context> context;
 };
 
-class CompactProtocolReader {
+class SimpleJSONProtocolReader {
 
  public:
-  static const int8_t  VERSION_MASK = 0x1f; // 0001 1111
+  static const int32_t VERSION_MASK = 0xffff0000;
+  static const int32_t VERSION_1 = 0x80010000;
 
-  CompactProtocolReader()
-    : string_limit_(0)
-    , container_limit_(0)
-    , in_(nullptr)
-    , boolValue_({false, false}) {}
-
-  CompactProtocolReader(int32_t string_limit,
-                  int32_t container_limit)
-    : string_limit_(string_limit)
-    , container_limit_(container_limit)
-    , in_(nullptr)
-    , boolValue_({false, false}) {}
+  SimpleJSONProtocolReader()
+    : in_(nullptr)
+    , allowDecodeUTF8_(true) {}
 
   static inline ProtocolType protocolType() {
-    return ProtocolType::T_COMPACT_PROTOCOL;
-  }
-
-  void setStringSizeLimit(int32_t string_limit) {
-    string_limit_ = string_limit;
-  }
-
-  void setContainerSizeLimit(int32_t container_limit) {
-    container_limit_ = container_limit;
+    return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
   }
 
   /**
    * The IOBuf itself is managed by the caller.
-   * It must exist for the life of the CompactProtocol as well,
+   * It must exist for the life of the SimpleJSONProtocol as well,
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
   inline void setInput(const IOBuf* buf) {
     in_.reset(buf);
+  }
+
+  inline void setAllowDecodeUTF8(bool val) {
+    allowDecodeUTF8_ = val;
   }
 
   /**
@@ -259,24 +236,22 @@ class CompactProtocolReader {
   inline uint32_t readString(StrType& str);
   template <typename StrType>
   inline uint32_t readBinary(StrType& str);
-  inline uint32_t readBinary(std::unique_ptr<IOBuf>& str);
-  inline uint32_t readBinary(IOBuf& str);
+  inline uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str);
+  inline uint32_t readBinary(folly::IOBuf& str);
+  inline bool peekMap();
+  inline bool peekList();
+  inline bool peekSet();
+
   uint32_t skip(TType type) {
+    DCHECK(false); // we don't really support skipping
     return apache::thrift::skip(*this, type);
   }
-  bool peekMap() { return false; }
-  bool peekSet() { return false; }
-  bool peekList() { return false; }
 
   Cursor getCurrentPosition() const {
     return in_;
   }
-  inline uint32_t readFromPositionAndAppend(
-    Cursor& cursor,
-    std::unique_ptr<folly::IOBuf>& ser) {
-    // TODO
-    return 0;
-  }
+  inline uint32_t readFromPositionAndAppend(Cursor& cursor,
+                                            std::unique_ptr<folly::IOBuf>& ser);
 
   // Returns the last read sequence ID.  Used in servers
   // for backwards compatibility with thrift1.
@@ -285,12 +260,39 @@ class CompactProtocolReader {
   }
 
  protected:
-  inline uint32_t readStringSize(int32_t& size);
+  enum class ContextType { MAP, ARRAY };
+  inline void skipWhitespace();
+  inline uint32_t readWhitespace();
+  inline uint32_t ensureChar(char expected);
+  inline uint32_t ensureCharNoWhitespace(char expected);
+  inline uint32_t beginContext(ContextType type);
+  inline uint32_t endContext();
+  inline uint32_t ensureAndSkipContext(bool& keyish);
+  template <typename T>
+  uint32_t readInContext(T& val);
+  inline uint32_t readJSONKey(std::string& key);
+  inline uint32_t readJSONKey(bool key);
+  template <typename T>
+  uint32_t readJSONKey(T& key);
+  template <typename T>
+  T castIntegral(const std::string& val);
+  template <typename T>
+  uint32_t readJSONIntegral(T& val);
+  inline uint32_t readNumericalChars(std::string& val);
+  inline uint32_t readJSONVal(int8_t& val);
+  inline uint32_t readJSONVal(int16_t& val);
+  inline uint32_t readJSONVal(int32_t& val);
+  inline uint32_t readJSONVal(int64_t& val);
+  inline uint32_t readJSONVal(double& val);
+  inline uint32_t readJSONVal(float& val);
+  inline uint32_t readJSONVal(std::string& val);
+  inline bool JSONtoBool(const std::string& s);
+  inline uint32_t readJSONVal(bool& val);
+  inline uint32_t readJSONEscapeChar(uint8_t& out);
+  inline uint32_t readJSONString(std::string& val);
+  template <typename StrType>
+  uint32_t readJSONBase64(StrType& s);
 
-  inline TType getType(int8_t type);
-
-  int32_t string_limit_;
-  int32_t container_limit_;
 
   /**
    * Cursor to manipulate the buffer to read from.  Throws an exception if
@@ -300,18 +302,18 @@ class CompactProtocolReader {
 
   int32_t seqid_;
 
-  std::stack<int16_t, folly::fbvector<int16_t>> lastField_;
-  int16_t lastFieldId_;
+  struct Context {
+    ContextType type;
+    int meta;
+  };
 
-  struct {
-    bool hasBoolValue;
-    bool boolValue;
-  } boolValue_;
-
+  std::list<Context> context;
+  bool allowDecodeUTF8_;
+  uint32_t skippedWhitespace_;  // we sometimes consume whitespace while peeking
 };
 
 }} // apache::thrift
 
-#include "CompactProtocol.tcc"
+#include "SimpleJSONProtocol.tcc"
 
-#endif // #ifndef CPP2_PROTOCOL_COMPACTPROTOCOL_H_
+#endif // #ifndef CPP2_PROTOCOL_TSIMPLEJSONPROTOCOL_H_

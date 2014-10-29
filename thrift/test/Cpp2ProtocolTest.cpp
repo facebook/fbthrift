@@ -1,26 +1,25 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
+#include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 
 #include "thrift/test/gen-cpp2/DebugProtoTest_types.h"
@@ -28,7 +27,7 @@
 
 #include <math.h>
 
-#include "external/gflags/gflags.h"
+#include <gflags/gflags.h>
 #include <gtest/gtest.h>
 
 using namespace thrift::test::debug;
@@ -47,7 +46,28 @@ bool Empty::operator<(Empty const& other) const {
 }}}
 
 cpp2::OneOfEach ooe;
-unique_ptr<IOBuf> buf;
+cpp2::Nested nested;
+
+map<string, vector<set<map<int, int>>>> nested_foo = {
+  {"foo",
+    {
+      {
+        { {3, 2}, {4, 5} },
+        { {2, 1}, {1, 6} }
+      }
+    }
+  },
+  {"bar",
+    {
+      {
+        { {1, 0}, {5, 0} }
+      },
+      {
+        { {0, 0}, {5, 5} }
+      }
+    }
+  }
+};
 
 template <typename Object>
 void testOoe(Object& ooe) {
@@ -67,38 +87,51 @@ void testOoe(Object& ooe) {
   ASSERT_EQ(ooe.rank_map[507959914], (float)0.080382);
 }
 
-template <typename Cpp2Writer, typename Cpp2Reader, typename CppProtocol>
-void runTest() {
-  cpp2::OneOfEach ooe2;
+
+template <typename Object>
+void testNested(Object& obj) {
+  ASSERT_EQ(nested_foo, obj.foo);
+}
+
+void testObj(cpp2::OneOfEach& obj) { testOoe(obj); }
+void testObj(OneOfEach& obj) { testOoe(obj); }
+void testObj(cpp2::Nested& obj) { testNested(obj); }
+void testObj(Nested& obj) { testNested(obj); }
+
+template <typename Cpp2Writer, typename Cpp2Reader, typename CppProtocol,
+          typename CppType, typename Cpp2Type>
+void runTest(Cpp2Type& obj) {
+  Cpp2Type obj2;
   Cpp2Writer prot;
   Cpp2Reader protReader;
 
   // Verify writing with cpp2
-  size_t bufSize = ooe.serializedSize(&prot);
+  size_t bufSize = obj.serializedSize(&prot);
   IOBufQueue queue(IOBufQueue::cacheChainLength());
 
   prot.setOutput(&queue, bufSize);
-  ooe.write(&prot);
+  obj.write(&prot);
 
   bufSize = queue.chainLength();
   auto buf = queue.move();
 
   // Try deserialize with cpp2
   protReader.setInput(buf.get());
-  ooe2.read(&protReader);
-  testOoe(ooe2);
+  obj2.read(&protReader);
+  testObj(obj2);
 
   // Try deserialize with cpp
   std::shared_ptr<TTransport> buf2(
     new TMemoryBuffer(buf->writableData(), bufSize));
   CppProtocol cppProt(buf2);
-  OneOfEach cppOoe;
-  cppOoe.read(&cppProt);
+  CppType cppObj;
+  cppObj.read(&cppProt);
+  testObj(cppObj);
 
   // Try to serialize with cpp
   buf2.reset(new TMemoryBuffer());
   CppProtocol cppProt2(buf2);
-  cppOoe.write(&cppProt2);
+  cppObj.write(&cppProt2);
 
   std::string buffer = dynamic_pointer_cast<TMemoryBuffer>(
     buf2)->getBufferAsString();
@@ -106,21 +139,34 @@ void runTest() {
     folly::IOBuf::wrapBuffer(buffer.data(), buffer.size()));
 
   protReader.setInput(buf3.get());
-  ooe2.read(&protReader);
-  testOoe(ooe2);
+  obj2.read(&protReader);
+  testObj(obj2);
 }
 
 TEST(protocol2, binary) {
-  runTest<BinaryProtocolWriter, BinaryProtocolReader, TBinaryProtocol>();
+  runTest<BinaryProtocolWriter, BinaryProtocolReader, TBinaryProtocol,
+          OneOfEach>(ooe);
+  runTest<BinaryProtocolWriter, BinaryProtocolReader, TBinaryProtocol,
+          Nested>(nested);
 }
 
 TEST(protocol2, compact) {
-  runTest<CompactProtocolWriter, CompactProtocolReader, TCompactProtocol>();
+  runTest<CompactProtocolWriter, CompactProtocolReader, TCompactProtocol,
+          OneOfEach>(ooe);
+  runTest<CompactProtocolWriter, CompactProtocolReader, TCompactProtocol,
+          Nested>(nested);
+}
+
+TEST(protocol2, simpleJson) {
+  runTest<SimpleJSONProtocolWriter,
+          SimpleJSONProtocolReader, TSimpleJSONProtocol, OneOfEach>(ooe);
+  runTest<SimpleJSONProtocolWriter,
+          SimpleJSONProtocolReader, TSimpleJSONProtocol, Nested>(nested);
 }
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
-  GFLAGS_INIT(argc, argv);
+  gflags::ParseCommandLineFlags(&argc, &argv, true);
 
   ooe.im_true   = true;
   ooe.im_false  = false;
@@ -137,6 +183,8 @@ int main(int argc, char** argv) {
   ooe.string_string_hash_map["three"] = "four";
   ooe.rank_map[567419810] = (float)0.211184;
   ooe.rank_map[507959914] = (float)0.080382;
+
+  nested.foo = nested_foo;
 
   return RUN_ALL_TESTS();
 }
