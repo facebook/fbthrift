@@ -353,7 +353,7 @@ void t_hack_generator::generate_json_enum(std::ofstream& out, t_enum* tenum,
                                          const string& prefix_thrift,
                                          const string& prefix_json) {
   indent(out) << prefix_thrift << " = " << php_namespace(tenum->get_program())
-              << tenum->get_name() << "::coerceOrThrow(" << prefix_json << ");";
+              << tenum->get_name() << "::assert(" << prefix_json << ");";
 }
 
 void t_hack_generator::generate_json_struct(ofstream& out, t_struct* tstruct,
@@ -2755,7 +2755,7 @@ void t_hack_generator::generate_deserialize_field(ofstream &out,
           "readI32($" << name << ");" << endl <<
           indent() << "if ($" << name << " !== null) {" << endl <<
           indent() << "  $" << name << " = " << php_namespace(tenum->get_program())
-                   << tenum->get_name() << "::coerceOrThrow($" << name << ");"
+                   << tenum->get_name() << "::assert($" << name << ");"
                    << endl <<
           indent() << "}";
       }
