@@ -25,6 +25,7 @@
 
 #include <folly/Memory.h>
 #include <folly/io/ShutdownSocketSet.h>
+#include <folly/experimental/wangle/concurrent/IOThreadPoolExecutor.h>
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TEventBaseManager.h>
@@ -108,14 +109,6 @@ class ThriftServer : public apache::thrift::server::TServer {
   static const int DEFAULT_LISTEN_BACKLOG = 1024;
 
  private:
-  struct WorkerInfo {
-    std::shared_ptr<Cpp2Worker> worker;
-    std::shared_ptr<apache::thrift::concurrency::Thread> thread;
-  };
-
-  //! Prefix for worker thread names
-  std::string cpp2WorkerThreadName_;
-
   //! Prefix for pool thread names
   std::string poolThreadName_;
 
@@ -166,12 +159,37 @@ class ThriftServer : public apache::thrift::server::TServer {
   apache::thrift::async::TEventBaseManager* eventBaseManager_;
   std::mutex ebmMutex_;
 
-  //! Last worker chosen -- used to select workers in round-robin sequence.
-  uint32_t workerChoice_;
+  //! Creates and manages Cpp2Workers for the IO thread pool
+  class Cpp2WorkerFactory : public folly::wangle::ThreadFactory {
+   public:
+    explicit Cpp2WorkerFactory(ThriftServer* server)
+      : internalFactory_(
+          std::make_shared<folly::wangle::NamedThreadFactory>(namePrefix_)),
+        server_(server) {}
 
-  //! List of workers.
-  typedef std::vector<WorkerInfo> WorkerVector;
-  WorkerVector workers_;
+    virtual std::thread newThread(folly::wangle::Func&& func) override;
+
+    void setInternalFactory(
+        std::shared_ptr<folly::wangle::NamedThreadFactory> internalFactory);
+    void setNamePrefix(folly::StringPiece prefix);
+    folly::StringPiece getNamePrefix();
+
+    template <typename F>
+    void forEachWorker(F&& f);
+
+   private:
+    folly::StringPiece namePrefix_{"Cpp2Worker"};
+    std::shared_ptr<folly::wangle::NamedThreadFactory> internalFactory_;
+    ThriftServer* server_;
+    folly::RWSpinLock workersLock_;
+    std::map<int32_t, std::shared_ptr<Cpp2Worker>> workers_;
+    int32_t nextWorkerId_{0};
+  };
+
+  std::shared_ptr<Cpp2WorkerFactory> workerFactory_;
+
+  //! IO thread pool. Drives Cpp2Workers.
+  std::shared_ptr<folly::wangle::IOThreadPoolExecutor> ioThreadPool_;
 
   /**
    * The thread manager used for sync calls.
@@ -251,9 +269,10 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   bool stopWorkersOnStopListening_;
 
-  // HeaderServerChannel to use for a duplex server (used by client).
-  // nullptr for a regular server.
+  // HeaderServerChannel and Cpp2Worker to use for a duplex server
+  // (used by client). Both are nullptr for a regular server.
   std::shared_ptr<HeaderServerChannel> serverChannel_;
+  std::unique_ptr<Cpp2Worker> duplexWorker_;
 
   bool isDuplex_;   // is server in duplex mode? (used by server)
 
@@ -290,6 +309,7 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   friend class Cpp2Connection;
   friend class Cpp2Worker;
+  friend class Cpp2WorkerFactory;
 
   InjectedFailure maybeInjectFailure() const {
     return failureInjection_.test();
@@ -311,14 +331,40 @@ class ThriftServer : public apache::thrift::server::TServer {
   virtual ~ThriftServer();
 
   /**
+   * Set the thread pool used to drive the server's IO threads. Note that the
+   * pool's thread factory will be overridden - if you'd like to use your own,
+   * set it afterwards via ThriftServer::setIOThreadFactory().
+   *
+   * @param the new thread pool
+   */
+  void setIOThreadPool(
+      std::shared_ptr<folly::wangle::IOThreadPoolExecutor> ioThreadPool) {
+    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(ioThreadPool->numThreads() == 0);
+    ioThreadPool_ = ioThreadPool;
+    ioThreadPool_->setThreadFactory(workerFactory_);
+  }
+
+  /**
+   * Set the thread factory that will be used to create the server's IO threads.
+   *
+   * @param the new thread factory
+   */
+  void setIOThreadFactory(
+      std::shared_ptr<folly::wangle::NamedThreadFactory> threadFactory) {
+    CHECK(ioThreadPool_->numThreads() == 0);
+    workerFactory_->setInternalFactory(threadFactory);
+  }
+
+  /**
    * Set the prefix for naming the worker threads. "Cpp2Worker" by default.
    * must be called before serve() for it to take effect
    *
    * @param cpp2WorkerThreadName net thread name prefix
    */
   void setCpp2WorkerThreadName(const std::string& cpp2WorkerThreadName) {
-    assert(workers_.size() == 0);
-    cpp2WorkerThreadName_ = cpp2WorkerThreadName;
+    CHECK(ioThreadPool_->numThreads() == 0);
+    workerFactory_->setNamePrefix(cpp2WorkerThreadName);
   }
 
   /**
@@ -448,7 +494,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    */
   void setSSLContext(
     std::shared_ptr<folly::SSLContext> context) {
-    assert(workers_.size() == 0);
+    CHECK(ioThreadPool_->numThreads() == 0);
     sslContext_ = context;
   }
 
@@ -500,13 +546,6 @@ class ThriftServer : public apache::thrift::server::TServer {
   const apache::thrift::async::TEventBaseManager* getEventBaseManager() const {
     return const_cast<ThriftServer*>(this)->getEventBaseManager();
   }
-
-  /**
-   * Set the TEventBaseManager used by this server.  Must be called before
-   * the first call to getEventBaseManager(), setup(), or serve().  The
-   * caller retains ownership of the EBM.
-   */
-  void setEventBaseManager(apache::thrift::async::TEventBaseManager* ebm);
 
   /**
    * Set the address to listen on.
@@ -602,7 +641,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * than such number of unprocessed messages in that queue.
    */
   void setMaxNumMessagesInQueue(uint32_t num) {
-    assert(workers_.size() == 0);
+    CHECK(ioThreadPool_->numThreads() == 0);
     maxNumMsgsInQueue_ = num;
   }
 
@@ -617,7 +656,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * Set the speed of adjusting connection accept rate.
    */
   void setAcceptRateAdjustSpeed(double speed) {
-    assert(workers_.size() == 0);
+    CHECK(ioThreadPool_->numThreads() == 0);
     acceptRateAdjustSpeed_ = speed;
   }
 
@@ -640,7 +679,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    *  @param timeout number of milliseconds, or 0 to disable timeouts.
    */
   void setIdleTimeout(std::chrono::milliseconds timeout) {
-    assert(workers_.size() == 0);
+    CHECK(ioThreadPool_->numThreads() == 0);
     timeout_ = timeout;
   }
 
@@ -650,7 +689,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * @param number of worker threads
    */
   void setNWorkerThreads(int nWorkers) {
-    assert(workers_.size() == 0);
+    CHECK(ioThreadPool_->numThreads() == 0);
     nWorkers_ = nWorkers;
   }
 
@@ -664,34 +703,10 @@ class ThriftServer : public apache::thrift::server::TServer {
   }
 
   /**
-   * Get workers.  Note: not threadsafe, because a call to clearWorkers
-   * running concurrently might clear the worker set.  However if this is
-   * not expected to be running alongside that call, this is safe enough
-   * to call without synchronization; the only other time the worker set
-   * is mutated is during setup().
-   *
-   * @return the workers
-   */
-  const WorkerVector& getWorkers() const {
-    return workers_;
-  }
-
-  /**
    * Clear all the workers.
-   *
-   * NOTE: We keep a shared_ptr to Thread in the workers_ vector. Therefore
-   *       this just removes that one particular reference to the thread.
-   *       If you have separate reference to those thread object, they will
-   *       keep running.
-   *
-   * ALSO: This is not threadsafe, as a call to 'getWorkers() const' returns
-   *       a const reference to the workers_ set.  However if calls to this
-   *       method and to getWorkers() is not typical behavior for your program,
-   *       and most likely it's not, then this is safe enough to call without
-   *       synchronization.
    */
   void clearWorkers() {
-    workers_.clear();
+    ioThreadPool_->join();
   }
 
   /**
@@ -701,8 +716,8 @@ class ThriftServer : public apache::thrift::server::TServer {
    * @param number of pool threads
    */
   void setNPoolThreads(int nPoolThreads) {
-    assert(workers_.size() == 0);
-    assert(!threadManager_);
+    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(!threadManager_);
 
     nPoolThreads_ = nPoolThreads;
   }
@@ -747,7 +762,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * @param handler interface shared_ptr
    */
   void setInterface(std::shared_ptr<ServerInterface> iface) {
-    assert(workers_.size() == 0);
+    CHECK(ioThreadPool_->numThreads() == 0);
     cpp2Pfac_ = iface;
   }
 
@@ -769,7 +784,7 @@ class ThriftServer : public apache::thrift::server::TServer {
   void setThreadManager(
     std::shared_ptr<apache::thrift::concurrency::ThreadManager>
     threadManager) {
-    assert(workers_.size() == 0);
+    CHECK(ioThreadPool_->numThreads() == 0);
     threadManager_ = threadManager;
   }
 
@@ -788,7 +803,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * them by default).
    */
   void setStopWorkersOnStopListening(bool stopWorkers) {
-    assert(workers_.size() == 0);
+    CHECK(ioThreadPool_->numThreads() == 0);
     stopWorkersOnStopListening_ = stopWorkers;
   }
 
@@ -842,7 +857,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    */
   void setThreadFactory(
       std::shared_ptr<apache::thrift::concurrency::ThreadFactory> tf) {
-    assert(workers_.size() == 0);
+    CHECK(ioThreadPool_->numThreads() == 0);
     threadFactory_ = tf;
   }
 
@@ -987,8 +1002,8 @@ class ThriftServer : public apache::thrift::server::TServer {
   void setDuplex(bool duplex) {
     // setDuplex may only be called on the server side.
     // serverChannel_ must be nullptr in this case
-    DCHECK(serverChannel_ == nullptr);
-    DCHECK(workers_.size() == 0);
+    CHECK(serverChannel_ == nullptr);
+    CHECK(ioThreadPool_->numThreads() == 0);
     isDuplex_ = duplex;
   }
 

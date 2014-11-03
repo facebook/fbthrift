@@ -52,13 +52,6 @@ class Cpp2Worker :
    * One or more of these should be created by ThriftServer (one per
    * CPU core is recommended).
    *
-   * @param processorFactory a TAsyncProcessorFactory object as
-   *        obtained from the generated Thrift code (the user service
-   *        is integrated through this).
-   * @param inputProtocolFactory the TProtocolFactory class supporting
-   *        inbound Thrift requests.
-   * @param outputProtocolFactory the TProtocolFactory class supporting
-   *        responses (if any) after processing completes.
    * @param server the ThriftServer which created us.
    * @param workerID the ID assigned to this worker
    * @param serverChannel existing server channel to use, only for duplex server

@@ -62,6 +62,8 @@ using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
 using apache::thrift::concurrency::PriorityThreadManager;
+using folly::wangle::IOThreadPoolExecutor;
+using folly::wangle::NamedThreadFactory;
 
 const int ThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
   sysconf(_SC_NPROCESSORS_ONLN);
@@ -75,7 +77,6 @@ const std::chrono::milliseconds ThriftServer::DEFAULT_TIMEOUT =
 ThriftServer::ThriftServer() :
   apache::thrift::server::TServer(
     std::shared_ptr<apache::thrift::server::TProcessor>()),
-  cpp2WorkerThreadName_("Cpp2Worker"),
   port_(-1),
   saslEnabled_(false),
   nonSaslEnabled_(true),
@@ -87,7 +88,8 @@ ThriftServer::ThriftServer() :
   threadStackSizeMB_(1),
   timeout_(DEFAULT_TIMEOUT),
   eventBaseManager_(nullptr),
-  workerChoice_(0),
+  workerFactory_(std::make_shared<Cpp2WorkerFactory>(this)),
+  ioThreadPool_(std::make_shared<IOThreadPoolExecutor>(0, workerFactory_)),
   taskExpireTime_(DEFAULT_TASK_EXPIRE_TIME),
   listenBacklog_(DEFAULT_LISTEN_BACKLOG),
   acceptRateAdjustSpeed_(0),
@@ -172,22 +174,10 @@ int ThriftServer::getListenSocket() const {
 }
 
 TEventBaseManager* ThriftServer::getEventBaseManager() {
-  // It is legal to call this before setup().  No atomics needed -- this
-  // transitions only once from NULL to non-NULL.
   if (!eventBaseManager_) {
-    std::lock_guard<std::mutex> lock(ebmMutex_);
-    if (!eventBaseManager_) {
-      eventBaseManagerHolder_.reset(new TEventBaseManager);
-      eventBaseManager_ = eventBaseManagerHolder_.get();
-    }
+    eventBaseManager_ = TEventBaseManager::get();
   }
   return eventBaseManager_;
-}
-
-void ThriftServer::setEventBaseManager(TEventBaseManager* ebm) {
-  std::lock_guard<std::mutex> lock(ebmMutex_);
-  assert(!eventBaseManager_);
-  eventBaseManager_ = ebm;
 }
 
 void ThriftServer::setup() {
@@ -308,18 +298,6 @@ void ThriftServer::setup() {
     });
 
     if (!serverChannel_) {
-      // regular server
-      auto b = std::make_shared<boost::barrier>(nWorkers_ + 1);
-
-      // Create the worker threads.
-      workers_.reserve(nWorkers_);
-      for (uint32_t n = 0; n < nWorkers_; ++n) {
-        addWorker();
-        workers_[n].worker->getEventBase()->runInLoop([b](){
-          b->wait();
-        });
-      }
-
       // Update address_ with the address that we are actually bound to.
       // (This is needed if we were supplied a pre-bound socket, or if
       // address_'s port was set to 0, so an ephemeral port was chosen by
@@ -327,16 +305,6 @@ void ThriftServer::setup() {
       if (socket_) {
         socket_->getAddress(&address_);
       }
-
-      for (auto& worker: workers_) {
-        worker.thread->start();
-        ++threadsStarted;
-        worker.thread->setName(folly::to<std::string>(cpp2WorkerThreadName_,
-                                                      threadsStarted));
-      }
-
-      // Wait for all workers to start
-      b->wait();
 
       // Notify handler of the preServe event
       if (eventHandler_ != nullptr) {
@@ -347,36 +315,21 @@ void ThriftServer::setup() {
         socket_->attachEventBase(eventBaseManager_->getEventBase());
       }
       eventBaseAttached = true;
+
+      // Resize the IO pool
+      ioThreadPool_->setNumThreads(nWorkers_);
+
       if (socket_) {
         socket_->startAccepting();
       }
     } else {
-      // duplex server
-      // Create the Cpp2Worker
-      DCHECK(workers_.empty());
-      WorkerInfo info;
-      uint32_t workerID = 0;
-      info.worker.reset(new Cpp2Worker(this, workerID, serverChannel_));
-      // no thread, use current one (shared with client)
-      info.thread = nullptr;
-
-      workers_.push_back(info);
+      CHECK(ioThreadPool_->numThreads() == 0);
+      duplexWorker_ = folly::make_unique<Cpp2Worker>(this, 0, serverChannel_);
     }
   } catch (...) {
-    // XXX: Cpp2Worker::acceptStopped() calls
-    //      eventBase_.terminateLoopSoon().  Normally this stops the
-    //      worker from processing more work and stops the event loop.
-    //      However, if startConsuming() and eventBase_.loop() haven't
-    //      run yet this won't do the right thing. The worker thread
-    //      will still continue to call startConsuming() later, and
-    //      will then start the event loop.
     if (!serverChannel_) {
-      for (uint32_t i = 0; i < threadsStarted; ++i) {
-        workers_[i].worker->acceptStopped();
-        workers_[i].thread->join();
-      }
+      ioThreadPool_->join();
     }
-    workers_.clear();
 
     if (socket_) {
       if (eventBaseAttached) {
@@ -454,32 +407,11 @@ void ThriftServer::stopListening() {
   }
 }
 
-void ThriftServer::addWorker() {
-  // Create the Cpp2Worker
-  WorkerInfo info;
-  uint32_t workerID = workers_.size();
-  info.worker.reset(new Cpp2Worker(this, workerID));
-
-  // Create the thread
-  info.thread = threadFactory_->newThread(info.worker, ThreadFactory::ATTACHED);
-
-  // Add the worker as an accept callback
-  if (socket_) {
-    socket_->addAcceptCallback(info.worker.get(), info.worker->getEventBase());
-  }
-
-  workers_.push_back(info);
-}
-
 void ThriftServer::stopWorkers() {
   if (serverChannel_) {
     return;
   }
-  for (auto& info : workers_) {
-    info.worker->stopEventBase();
-    info.thread->join();
-    info.worker->closeConnections();
-  }
+  ioThreadPool_->join();
 }
 
 void ThriftServer::immediateShutdown(bool abortConnections) {
@@ -526,11 +458,11 @@ ThriftServer::CumulativeFailureInjection::test() const {
 }
 
 int32_t ThriftServer::getPendingCount() const {
-  int pendingCount = 0;
-  for (const auto& worker : workers_) {
-    pendingCount += worker.worker->getPendingCount();
-  }
-  return pendingCount;
+  int32_t count = 0;
+  workerFactory_->forEachWorker([&](const Cpp2Worker& worker){
+    count += worker.getPendingCount();
+  });
+  return count;
 }
 
 bool ThriftServer::isOverloaded(uint32_t workerActiveRequests) {
@@ -576,10 +508,10 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
       / ((float)maxRequests_);
   }
   if (maxConnections_ > 0) {
-    int connections = 0;
-    for (auto& worker: workers_) {
-      connections += worker.worker->manager_->getNumConnections();
-    }
+    int32_t connections = 0;
+    workerFactory_->forEachWorker([&](const Cpp2Worker& worker){
+      connections += worker.getPendingCount();
+    });
     connload = (100*connections) / (float)maxConnections_;
   }
 
@@ -587,13 +519,62 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
 
   int load = std::max({reqload, connload, queueload});
   FB_LOG_EVERY_MS(INFO, 1000*10)
-    << cpp2WorkerThreadName_
+    << workerFactory_->getNamePrefix()
     << ": Load is: " << reqload << "% requests "
     << connload << "% connections "
     << queueload << "% queue time"
     << " active reqs " << activeRequests_
     << " pending reqs  " << getPendingCount();
   return load;
+}
+
+std::thread ThriftServer::Cpp2WorkerFactory::newThread(
+    folly::wangle::Func&& func) {
+  return internalFactory_->newThread([=](){
+    CHECK(!server_->serverChannel_);
+    auto id = nextWorkerId_++;
+    auto worker = std::make_shared<Cpp2Worker>(server_, id, nullptr);
+    {
+      folly::RWSpinLock::WriteHolder guard(workersLock_);
+      workers_.insert({id, worker});
+    }
+    server_->socket_->getEventBase()->runInEventBaseThread([this, worker](){
+      server_->socket_->addAcceptCallback(worker.get(), worker->getEventBase());
+    });
+
+    server_->getEventBaseManager()->setEventBase(worker->getEventBase(), false);
+    func();
+    server_->getEventBaseManager()->clearEventBase();
+
+    worker->closeConnections();
+    {
+      folly::RWSpinLock::WriteHolder guard(workersLock_);
+      workers_.erase(id);
+    }
+  });
+}
+
+void ThriftServer::Cpp2WorkerFactory::setInternalFactory(
+    std::shared_ptr<NamedThreadFactory> internalFactory) {
+  CHECK(workers_.empty());
+  internalFactory_ = internalFactory;
+}
+
+void ThriftServer::Cpp2WorkerFactory::setNamePrefix(folly::StringPiece prefix) {
+  CHECK(workers_.empty());
+  internalFactory_->setNamePrefix(prefix);
+}
+
+folly::StringPiece ThriftServer::Cpp2WorkerFactory::getNamePrefix() {
+  return namePrefix_;
+}
+
+template <typename F>
+void ThriftServer::Cpp2WorkerFactory::forEachWorker(F&& f) {
+  folly::RWSpinLock::ReadHolder guard(workersLock_);
+  for (const auto& kv : workers_) {
+    f(*kv.second);
+  }
 }
 
 }} // apache::thrift
