@@ -389,7 +389,7 @@ class ViewBase {
 
 
   explicit operator bool() const {
-    return position_.start;
+    return position_.start && !layout_->empty();
   }
 
   /**

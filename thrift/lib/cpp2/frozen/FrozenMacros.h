@@ -98,7 +98,7 @@
 
 #define FROZEN_THAW_FIELD(NAME)                 \
   thawField(self, this->NAME##Field, out.NAME); \
-  out.__isset.NAME = true;
+  out.__isset.NAME = !this->NAME##Field.layout.empty();
 #define FROZEN_THAW_FIELD_OPT(NAME) \
   thawField(self, this->NAME##Field, out.NAME, out.__isset.NAME);
 #define FROZEN_THAW_FIELD_REQ(NAME) \

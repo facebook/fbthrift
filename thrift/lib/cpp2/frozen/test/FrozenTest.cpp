@@ -139,6 +139,8 @@ TEST(Frozen, Compatibility) {
   auto view21 = person2cpp1.view({bytes.begin(), 0});
   EXPECT_EQ(view12.name(), view21.name());
   EXPECT_EQ(view12.age(), view21.age());
+  EXPECT_TRUE(view12.height());
+  EXPECT_FALSE(view21.weight());
   EXPECT_EQ(view12.pets()[0].name(), view21.pets()[0].name());
   EXPECT_EQ(view12.pets()[1].name(), view21.pets()[1].name());
 }

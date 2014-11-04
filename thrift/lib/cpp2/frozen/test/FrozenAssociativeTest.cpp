@@ -136,8 +136,8 @@ TEST(Frozen, Empty) {
   std::vector<std::pair<int, int>> noPairs;
   EXPECT_EQ(frozenSize(noPairs), 0);
 
-  // views of a zero-length field still evaluate to true
-  EXPECT_TRUE(bool(frozenPairs[0]));
+  // views of a zero-length fields evaluate to false due to terse layouts
+  EXPECT_FALSE(bool(frozenPairs[0]));
 
   // default-constructed views refer to nothing, evaluate to fales
   decltype(frozenPairs[0]) nothing;
