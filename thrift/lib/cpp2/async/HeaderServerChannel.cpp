@@ -113,7 +113,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
     LOG(ERROR) << "Received invalid request from client: "
                << folly::exceptionStr(e) << " "
                << getTransportDebugString(channel_.getTransport());
-    return make_pair(std::unique_ptr<IOBuf>(), remaining);
+    throw;
   }
   if (!buf) {
     return make_pair(std::unique_ptr<IOBuf>(), remaining);
