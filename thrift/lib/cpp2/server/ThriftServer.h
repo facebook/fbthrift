@@ -17,6 +17,7 @@
 #ifndef THRIFT_SERVER_H_
 #define THRIFT_SERVER_H_ 1
 
+#include <atomic>
 #include <chrono>
 #include <cstdlib>
 #include <map>
@@ -183,7 +184,7 @@ class ThriftServer : public apache::thrift::server::TServer {
     ThriftServer* server_;
     folly::RWSpinLock workersLock_;
     std::map<int32_t, std::shared_ptr<Cpp2Worker>> workers_;
-    int32_t nextWorkerId_{0};
+    std::atomic<int32_t> nextWorkerId_{0};
   };
 
   std::shared_ptr<Cpp2WorkerFactory> workerFactory_;
