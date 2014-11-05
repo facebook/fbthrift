@@ -37,7 +37,7 @@ const size_t kMultExp = 0;
 Shallow makeShallow() {
   Shallow data;
   data.one = 750;
-  data.two = 750 << 23;
+  data.two = 750 << 22;
   return data;
 }
 
