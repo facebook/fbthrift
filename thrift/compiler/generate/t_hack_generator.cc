@@ -353,7 +353,7 @@ void t_hack_generator::generate_json_enum(std::ofstream& out, t_enum* tenum,
                                          const string& prefix_thrift,
                                          const string& prefix_json) {
   indent(out) << prefix_thrift << " = " << php_namespace(tenum->get_program())
-              << tenum->get_name() << "::assert(" << prefix_json << ");";
+              << tenum->get_name() << "::coerce(" << prefix_json << ");";
 }
 
 void t_hack_generator::generate_json_struct(ofstream& out, t_struct* tstruct,
@@ -702,11 +702,6 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
       "const " << typehint << " " << (*c_iter)->get_name() << " = " << value << ";" << endl;
   }
 
-  // This is a static property to avoid confusing the real enum values
-  indent(f_types_) <<
-    "public static " << typehint <<
-      " $__UNSET_DEFAULT = 0;" << endl;
-
   if (oldenum_) {
     // names
     indent(f_types_) <<
@@ -923,7 +918,7 @@ string t_hack_generator::render_default_value(t_type* type) {
     }
   } else if (type->is_enum()) {
     t_enum* tenum = (t_enum*) type;
-    dval = php_namespace(tenum->get_program()) + tenum->get_name() + "::$__UNSET_DEFAULT";
+    dval = "null";
   } else if (type->is_struct() || type->is_xception()) {
     t_struct* tstruct = (t_struct*) type;
     if (no_nullables_) {
@@ -1116,7 +1111,12 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     }
 
     string dval = "";
-    if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
+    if ((*m_iter)->get_value() != nullptr
+        && !(t->is_struct()
+          || t->is_xception()
+          || t->is_enum()
+        )
+    ) {
       dval = render_const_value(t, (*m_iter)->get_value());
     } else {
       dval = render_default_value(t);
@@ -2052,7 +2052,7 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable) {
     if (is_bitmask_enum((t_enum*) ttype)) {
       return "int";
     } else {
-      return php_namespace(ttype->get_program()) + ttype->get_name() + "Type";
+      return (nullable ? "?" : "") + php_namespace(ttype->get_program()) + ttype->get_name() + "Type";
     }
   } else if (ttype->is_struct() || ttype->is_xception()) {
     return (nullable ? "?" : "") + php_namespace(ttype->get_program()) + ttype->get_name();
@@ -2712,10 +2712,10 @@ void t_hack_generator::generate_deserialize_field(ofstream &out,
       generate_deserialize_container(out, type, name);
     } else if (type->is_base_type() || type->is_enum()) {
 
-      indent(out) <<
-        "$xfer += $input->";
-
       if (type->is_base_type()) {
+        indent(out) <<
+          "$xfer += $input->";
+
         t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
         switch (tbase) {
         case t_base_type::TYPE_VOID:
@@ -2751,13 +2751,13 @@ void t_hack_generator::generate_deserialize_field(ofstream &out,
         }
       } else if (type->is_enum()) {
         t_enum* tenum = (t_enum*) type;
+
+        string val = tmp("_val");
         out <<
-          "readI32($" << name << ");" << endl <<
-          indent() << "if ($" << name << " !== null) {" << endl <<
-          indent() << "  $" << name << " = " << php_namespace(tenum->get_program())
-                   << tenum->get_name() << "::assert($" << name << ");"
-                   << endl <<
-          indent() << "}";
+          indent() << "$" << val << " = null;" << endl <<
+          indent() << "$xfer += $input->readI32($" << val << ");" << endl <<
+          indent() << "$" << name << " = " << php_namespace(tenum->get_program())
+                   << tenum->get_name() << "::coerce($" << val << ");" << endl;
       }
       out << endl;
     } else {
@@ -3192,8 +3192,7 @@ string t_hack_generator::declare_field(t_field* tfield, bool init,
               + t_base_type::t_base_name(tbase);
       }
     } else if (type->is_enum()) {
-      t_enum* tenum = (t_enum*) tfield->get_type();
-      result += " = " + php_namespace(tenum->get_program()) + tenum->get_name() + "::$__UNSET_DEFAULT";
+      result += " = null";
     } else if (type->is_map()) {
       result += " = Map {}";
     } else if (type->is_list()) {
