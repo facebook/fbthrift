@@ -1728,11 +1728,22 @@ void t_hack_generator::generate_process_function(t_service* tservice,
   f_service_ <<
     indent() << "$handler_ctx = $this->eventHandler_->getHandlerContext('"
              << fn_name << "');" << endl <<
-    indent() << "$args = new " << argsname << "();" << endl <<
-    indent() << "$reply_type = TMessageType::REPLY;" << endl <<
+    indent() << "$reply_type = TMessageType::REPLY;" << endl
+             << endl <<
     indent() << "$this->eventHandler_->preRead($handler_ctx, '"
-             << fn_name << "', $args);" << endl <<
-    indent() << "$args->read($input);" << endl;
+             << fn_name << "', array());" << endl
+             << endl <<
+    indent() << "if ($input instanceof TBinaryProtocolAccelerated) {" << endl <<
+    indent() << "  $args = thrift_protocol_read_binary_struct("
+             << "$input, '" << argsname << "');" << endl <<
+    indent() << "} else if ($input instanceof TCompactProtocolAccelerated) {"
+             << endl <<
+    indent() << "  $args = thrift_protocol_read_compact_struct($input, '"
+             << argsname << "');" << endl <<
+    indent() << "} else {" << endl <<
+    indent() << "  $args = new " << argsname << "();" << endl <<
+    indent() << "  $args->read($input);" << endl <<
+    indent() << "}" << endl;
   f_service_ <<
     indent() << "$input->readMessageEnd();" << endl;
   f_service_ <<

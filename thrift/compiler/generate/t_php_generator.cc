@@ -1717,11 +1717,28 @@ void t_php_generator::generate_process_function(t_service* tservice,
   f_service_ <<
     indent() << "$handler_ctx = $this->eventHandler_->getHandlerContext('"
              << fn_name << "');" << endl <<
-    indent() << "$args = new " << argsname << "();" << endl <<
-    indent() << "$reply_type = TMessageType::REPLY;" << endl <<
+    indent() << "$reply_type = TMessageType::REPLY;" << endl
+             << endl <<
     indent() << "$this->eventHandler_->preRead($handler_ctx, '"
-             << fn_name << "', $args);" << endl <<
-    indent() << "$args->read($input);" << endl;
+             << fn_name << "', array());" << endl
+             << endl <<
+    indent() << "$bin_accel = ($input instanceof "
+             << "TProtocol::$TBINARYPROTOCOLACCELERATED)"
+             << " && function_exists('thrift_protocol_read_binary_struct');" << endl <<
+    indent() << "$compact_accel = ($input instanceof "
+             << "TProtocol::$TCOMPACTPROTOCOLACCELERATED)"
+             << " && function_exists('thrift_protocol_read_compact_struct')"
+             << " && TCompactProtocolAccelerated::checkVersion(1);" << endl
+             << endl <<
+    indent() << "if ($bin_accel) $args = thrift_protocol_read_binary_struct("
+             << "$input, '" << argsname << "');" << endl <<
+    indent() << "else if ($compact_accel) "
+             << "$args = thrift_protocol_read_compact_struct($input, '"
+             << argsname << "');" << endl <<
+    indent() << "else {" << endl <<
+    indent() << "  $args = new " << argsname << "();" << endl <<
+    indent() << "  $args->read($input);" << endl <<
+    indent() << "}" << endl;
   if (!binary_inline_) {
     f_service_ <<
       indent() << "$input->readMessageEnd();" << endl;
