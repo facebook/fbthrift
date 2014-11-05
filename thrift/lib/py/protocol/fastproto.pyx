@@ -122,11 +122,10 @@ cdef inline overflow_check(int64_t value, int64_t min, int64_t max):
                             .format(value, min, max))
 
 
-cdef inline char* to_cstr(value):
-    cdef char* c_str
+cdef inline string to_string(value):
+    cdef string c_str
     if not isinstance(value, bytes):
-        byte_string = value.encode('UTF-8')
-        c_str = byte_string
+        c_str = value.encode('UTF-8')
     else:
         c_str = value
     return c_str
@@ -160,10 +159,14 @@ cdef inline encode_struct(TProtocol* proto, tuple type_args, value):
             continue
 
         #Unpack the tuple
-        (field_type, field_name, field_type_args, field_default) = field[1:-1]
+        (field_type, field_name, _field_type_args, field_default) = field[1:-1]
+        if field_type == T_STRUCT:
+            field_type_args = tuple(_field_type_args)
+        else:
+            field_type_args = _field_type_args
 
         field_value = getattr(value, field_name)
-        if not field_value or field_value == field_default:
+        if field_value is None or field_value == field_default:
             # Don't write empty fields
             continue
 
@@ -198,7 +201,12 @@ cdef inline decode_struct(TProtocol* proto, output, tuple type_args,
         if not field_spec:
             skip = True
         else:
-            (_, our_field_type, field_name, field_type_args, _, _) = field_spec
+            (_, our_field_type, field_name,
+             _field_type_args, _, _) = field_spec
+            if our_field_type == T_STRUCT:
+                field_type_args = tuple(_field_type_args)
+            else:
+                field_type_args = _field_type_args
             if field_type == our_field_type:
                 setattr(output, field_name,
                         decode_val(proto, field_type, field_type_args,
@@ -318,7 +326,7 @@ cdef encode_thing(TProtocol* proto, TType ttype, value,
         else:
             proto.writeFloat(value)
     elif ttype == T_STRING:
-        proto.writeString(string(to_cstr(value), len(value)))
+        proto.writeString(to_string(value))
     elif ttype == T_STRUCT:
         #No Cdefs in switch
         encode_struct(proto, type_args, value)
