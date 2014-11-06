@@ -37,7 +37,7 @@
 
 #include <folly/String.h>
 
-DEFINE_int32(pending_interval, 10, "Pending count interval in ms");
+DEFINE_int32(pending_interval, 0, "Pending count interval in ms");
 
 namespace apache { namespace thrift {
 
@@ -210,17 +210,18 @@ Cpp2Worker::~Cpp2Worker() {
 }
 
 int Cpp2Worker::pendingCount() {
-  auto now = std::chrono::steady_clock::now();
-
   // Only recalculate once every pending_interval
-  if (pendingTime_ < now) {
-    pendingTime_ = now + std::chrono::milliseconds(FLAGS_pending_interval);
-    pendingCount_ = 0;
-    manager_->iterateConns([&](folly::wangle::ManagedConnection* connection) {
-      if ((static_cast<Cpp2Connection*>(connection))->pending()) {
-        pendingCount_++;
-      }
-    });
+  if (FLAGS_pending_interval > 0) {
+    auto now = std::chrono::steady_clock::now();
+    if (pendingTime_ < now) {
+      pendingTime_ = now + std::chrono::milliseconds(FLAGS_pending_interval);
+      pendingCount_ = 0;
+      manager_->iterateConns([&](folly::wangle::ManagedConnection* connection) {
+        if ((static_cast<Cpp2Connection*>(connection))->pending()) {
+          pendingCount_++;
+        }
+      });
+    }
   }
 
   return pendingCount_;
