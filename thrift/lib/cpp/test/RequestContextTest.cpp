@@ -34,9 +34,17 @@ class TestData : public RequestData {
 TEST(RequestContext, SimpleTest) {
   TEventBase base;
 
-  EXPECT_FALSE(RequestContext::create());
-  EXPECT_TRUE(RequestContext::create());
+
+  // There should always be a default context with get()
   EXPECT_TRUE(RequestContext::get() != nullptr);
+
+
+  // but not with saveContext()
+  EXPECT_EQ(RequestContext::saveContext(), nullptr);
+  RequestContext::create();
+  EXPECT_NE(RequestContext::saveContext(), nullptr);
+  RequestContext::create();
+  EXPECT_NE(RequestContext::saveContext(), nullptr);
 
   EXPECT_EQ(nullptr, RequestContext::get()->getContextData("test"));
 
