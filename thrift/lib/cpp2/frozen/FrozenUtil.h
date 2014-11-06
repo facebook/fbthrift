@@ -53,7 +53,7 @@ Return freezeToFile(const T& x, folly::File file) {
   {
     schema::MemorySchema memSchema;
     schema::Schema schema;
-    layout->saveRoot(memSchema);
+    saveRoot<T>(*layout, memSchema);
     schema::convert(memSchema, schema);
 
     schema.fileVersion = schema::g_frozen_constants.kCurrentFrozenFileVersion;
@@ -93,7 +93,7 @@ Return mapFrozen(folly::MemoryMapping mapping) {
 
     schema::MemorySchema memSchema;
     schema::convert(std::move(schema), memSchema);
-    layout->loadRoot(memSchema);
+    loadRoot<T>(*layout, memSchema);
     range.advance(schemaSize);
   }
 

@@ -53,13 +53,9 @@
     typedef TYPE T;                                                          \
     FieldPosition layout(LayoutRoot& root, const T& x, LayoutPosition self); \
     void freeze(FreezeRoot& root, const T& x, FreezePosition self) const;    \
-    void thaw(ViewPosition self, T& out) const;                         \
-    void print(std::ostream& os, int level) const final;                \
-    void clear() final;                                                   \
-    void save(schema::MemorySchema&,                                    \
-              schema::MemoryLayout&,                                    \
-              schema::MemorySchemaHelper&) const final;                 \
-    void load(const schema::MemorySchema&, const schema::MemoryLayout&) final; \
+    void thaw(ViewPosition self, T& out) const;                              \
+    void print(std::ostream& os, int level) const final;                     \
+    void clear() final;                                                      \
     __VA_ARGS__                                                              \
   };
 
@@ -121,48 +117,35 @@
     __VA_ARGS__                 \
   }
 
-#define FROZEN_SAVE_FIELD(NAME)                         \
-    this->NAME##Field.save(schema, layout, helper);     \
+#define FROZEN_SAVE_FIELD(NAME) \
+  this->NAME##Field.template save<SchemaInfo>(schema, layout, helper);
 
-#define FROZEN_SAVE_BODY(...) \
-  Base::save(schema, layout, helper); \
+#define FROZEN_SAVE_BODY(...)                              \
+  Base::template save<SchemaInfo>(schema, layout, helper); \
   __VA_ARGS__
 
-#define FROZEN_SAVE_INLINE(...) \
-  void save(schema::MemorySchema& schema,                             \
-            schema::MemoryLayout& layout,                             \
-            schema::MemorySchemaHelper& helper) const {               \
-    FROZEN_SAVE_BODY(__VA_ARGS__)                                     \
+#define FROZEN_SAVE_INLINE(...)                                 \
+  template <typename SchemaInfo>                                \
+  inline void save(typename SchemaInfo::Schema& schema,         \
+                   typename SchemaInfo::Layout& layout,         \
+                   typename SchemaInfo::Helper& helper) const { \
+    FROZEN_SAVE_BODY(__VA_ARGS__)                               \
   }
 
-#define FROZEN_SAVE(TYPE, ...)                                        \
-  inline void Layout<TYPE>::save(schema::MemorySchema& schema,               \
-                          schema::MemoryLayout& layout,               \
-                          schema::MemorySchemaHelper& helper) const { \
-    FROZEN_SAVE_BODY(__VA_ARGS__)                                     \
+#define FROZEN_LOAD_FIELD(NAME, ID)                             \
+  case ID:                                                      \
+    this->NAME##Field.template load<SchemaInfo>(schema, field); \
+    break;
+
+#define FROZEN_LOAD_BODY(...)                      \
+  Base::template load<SchemaInfo>(schema, layout); \
+  for (const auto& field : layout.getFields()) {   \
+    switch (field.getId()) { __VA_ARGS__ }         \
   }
 
-#define FROZEN_LOAD_FIELD(NAME, ID)    \
-  case ID:                             \
-  this->NAME##Field.load(schema, key); \
-  break;
-
-#define FROZEN_LOAD_BODY(...)              \
-  Base::load(schema, layout);              \
-  for(const auto& key : layout.fields) {   \
-    switch(key.id) {                       \
-      __VA_ARGS__                          \
-    }                                      \
-  }
-
-#define FROZEN_LOAD_INLINE(...)                         \
-  void load(const schema::MemorySchema& schema,         \
-            const schema::MemoryLayout& layout) {       \
-    FROZEN_LOAD_BODY(__VA_ARGS__)                       \
-  }
-
-#define FROZEN_LOAD(TYPE, ...)                                  \
-  inline void Layout<TYPE>::load(const schema::MemorySchema& schema,   \
-                          const schema::MemoryLayout& layout) { \
+#define FROZEN_LOAD_INLINE(...)                                 \
+  template <typename SchemaInfo>                                \
+  inline void load(const typename SchemaInfo::Schema& schema,   \
+                   const typename SchemaInfo::Layout& layout) { \
     FROZEN_LOAD_BODY(__VA_ARGS__)                               \
   }

@@ -127,8 +127,8 @@ TEST(Frozen, Compatibility) {
 
   size_t size = LayoutRoot::layout(tom1, person1cpp2);
 
-  person1cpp2.saveRoot(schema);
-  person2cpp1.loadRoot(schema);
+  saveRoot(person1cpp2, schema);
+  loadRoot(person2cpp1, schema);
 
   std::string storage(size, 'X');
   folly::MutableStringPiece charRange(&storage.front(), size);
@@ -156,7 +156,7 @@ TEST(Frozen, EmbeddedSchema) {
 
     size_t size;
     size = LayoutRoot::layout(tom1, person1a);
-    person1a.saveRoot(memSchema);
+    saveRoot(person1a, memSchema);
 
     schema::convert(memSchema, schema);
 
@@ -177,7 +177,7 @@ TEST(Frozen, EmbeddedSchema) {
 
     schema::convert(std::move(schema), memSchema);
 
-    person2.loadRoot(memSchema);
+    loadRoot(person2, memSchema);
 
     folly::StringPiece charRange(&storage[start], storage.size() - start);
     folly::ByteRange bytes(charRange);
@@ -292,18 +292,18 @@ TEST(Frozen, SchemaSaving) {
 
   // save it
   schema::MemorySchema schemaSaved;
-  stressLayoutCalculated.saveRoot(schemaSaved);
+  saveRoot(stressLayoutCalculated, schemaSaved);
 
   // reload it
   Layout<example2::EveryLayout> stressLayoutLoaded;
-  stressLayoutLoaded.loadRoot(schemaSaved);
+  loadRoot(stressLayoutLoaded, schemaSaved);
 
   // make sure the two layouts are identical (via printing)
   EXPECT_PRINTED_EQ(stressLayoutCalculated, stressLayoutLoaded);
 
   // make sure layouts round-trip
   schema::MemorySchema schemaLoaded;
-  stressLayoutLoaded.saveRoot(schemaLoaded);
+  saveRoot(stressLayoutLoaded, schemaLoaded);
   EXPECT_EQ(schemaSaved, schemaLoaded);
 }
 
@@ -323,7 +323,7 @@ TEST(Frozen, SchemaConversion) {
   CHECK(LayoutRoot::layout(stressValue, stressLayoutCalculated));
 
   schema::MemorySchema schemaSaved;
-  stressLayoutCalculated.saveRoot(schemaSaved);
+  saveRoot(stressLayoutCalculated, schemaSaved);
 
   schema::convert(schemaSaved, schema);
   schema::convert(std::move(schema), memSchema);
@@ -335,14 +335,14 @@ TEST(Frozen, SparseSchema) {
   {
     auto l = layout(tiny1);
     schema::MemorySchema schema;
-    l.saveRoot(schema);
-    EXPECT_LE(schema.layouts.size(), 4);
+    saveRoot(l, schema);
+    EXPECT_LE(schema.getLayouts().size(), 4);
   }
   {
     auto l = layout(tiny2);
     schema::MemorySchema schema;
-    l.saveRoot(schema);
-    EXPECT_LE(schema.layouts.size(), 7);
+    saveRoot(l, schema);
+    EXPECT_LE(schema.getLayouts().size(), 7);
   }
 }
 
@@ -350,14 +350,14 @@ TEST(Frozen, DedupedSchema) {
   {
     auto l = layout(tiny4);
     schema::MemorySchema schema;
-    l.saveRoot(schema);
-    EXPECT_LE(schema.layouts.size(), 7); // 13 layouts originally
+    saveRoot(l, schema);
+    EXPECT_LE(schema.getLayouts().size(), 7); // 13 layouts originally
   }
   {
     auto l = layout(stressValue);
     schema::MemorySchema schema;
-    l.saveRoot(schema);
-    EXPECT_LE(schema.layouts.size(), 24); // 49 layouts originally
+    saveRoot(l, schema);
+    EXPECT_LE(schema.getLayouts().size(), 24); // 49 layouts originally
   }
 }
 

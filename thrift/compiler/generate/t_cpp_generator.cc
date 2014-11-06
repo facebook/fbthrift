@@ -2418,6 +2418,19 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
                     "\n    FROZEN_VIEW_FIELD{_opt}({name}, {type})",
                     field);
   }
+  f_types_layouts_ << ")";
+
+  f_types_layouts_ << "\n  FROZEN_SAVE_INLINE(";
+  for (const t_field* field : members) {
+    emitFieldFormat(f_types_layouts_, "\n    FROZEN_SAVE_FIELD({name})", field);
+  }
+  f_types_layouts_ << ")";
+
+  f_types_layouts_ << "\n  FROZEN_LOAD_INLINE(";
+  for (const t_field* field : members) {
+    emitFieldFormat(
+        f_types_layouts_, "\n    FROZEN_LOAD_FIELD({name}, {id})", field);
+  }
   f_types_layouts_ << "));" << endl;
 
   // Implementation
@@ -2428,9 +2441,7 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
                     make_pair("FREEZE", "FREEZE_FIELD{_opt}({name})"),
                     make_pair("THAW", "THAW_FIELD{_opt}({name})"),
                     make_pair("DEBUG", "DEBUG_FIELD({name})"),
-                    make_pair("CLEAR", "CLEAR_FIELD({name})"),
-                    make_pair("SAVE", "SAVE_FIELD({name})"),
-                    make_pair("LOAD", "LOAD_FIELD({name}, {id})")}) {
+                    make_pair("CLEAR", "CLEAR_FIELD({name})")}) {
     f_types_layouts_ << folly::format("FROZEN_{}({},", step.first, structName);
     for (const t_field* field : members) {
       emitFieldFormat(

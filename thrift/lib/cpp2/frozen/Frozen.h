@@ -222,20 +222,26 @@ struct LayoutBase {
 
   /**
    * Populates a 'layout' with a description of this layout in the context of
-   * 'schema'. Child classes must override.
+   * 'schema'. Child classes must implement.
    */
-  virtual void save(schema::MemorySchema& schema,
-                    schema::MemoryLayout& layout,
-                    schema::MemorySchemaHelper& helper) const;
-  void saveRoot(schema::MemorySchema& schema) const;
+  template <typename SchemaInfo>
+  void save(typename SchemaInfo::Schema& schema,
+            typename SchemaInfo::Layout& layout,
+            typename SchemaInfo::Helper& helper) const {
+    layout.setSize(size);
+    layout.setBits(bits);
+  }
 
   /**
    * Populates this layout from the description stored in 'layout' in the
-   * context of 'schema'. Child classes must override.
+   * context of 'schema'. Child classes must implement.
    */
-  virtual void load(const schema::MemorySchema& schema,
-                    const schema::MemoryLayout& layout);
-  void loadRoot(const schema::MemorySchema& schema);
+  template <typename SchemaInfo>
+  void load(const typename SchemaInfo::Schema& schema,
+            const typename SchemaInfo::Layout& layout) {
+    size = layout.getSize();
+    bits = layout.getBits();
+  }
 
  protected:
   LayoutBase(const LayoutBase&) = default;
@@ -246,6 +252,19 @@ template <class T, class = void>
 struct Layout : public LayoutBase {
   static_assert(sizeof(T) == 0, "Objects of this type cannot be frozen yet.");
 };
+
+template <typename T, typename SchemaInfo = schema::SchemaInfo>
+void saveRoot(const Layout<T>& layout, typename SchemaInfo::Schema& schema) {
+  typename SchemaInfo::Helper helper(schema);
+  typename SchemaInfo::Layout myLayout;
+  layout.template save<SchemaInfo>(schema, myLayout, helper);
+  schema.setRootLayoutId(std::move(helper.add(std::move(myLayout))));
+}
+
+template <typename T, typename SchemaInfo = schema::SchemaInfo>
+void loadRoot(Layout<T>& layout, const typename SchemaInfo::Schema& schema) {
+  layout.template load<SchemaInfo>(schema, schema.getRootLayout());
+}
 
 std::ostream& operator<<(std::ostream& os, const LayoutBase& layout);
 
@@ -284,11 +303,6 @@ struct FieldBase {
   virtual ~FieldBase() {}
 
   virtual void clear() = 0;
-  virtual void load(const schema::MemorySchema&,
-                    const schema::MemoryField&) = 0;
-  virtual void save(schema::MemorySchema&,
-                    schema::MemoryLayout&,
-                    schema::MemorySchemaHelper&) const = 0;
 };
 
 template <class T, class Layout = Layout<typename std::decay<T>::type>>
@@ -321,41 +335,43 @@ struct Field final : public FieldBase {
    * Populates the layout information for this field from the description of
    * this field in the parent layout, identified by key.
    */
-  void load(const schema::MemorySchema& schema,
-            const schema::MemoryField& field) final {
-    if (field.offset < 0) {
-      pos.bitOffset = -field.offset;
+  template <typename SchemaInfo>
+  void load(const typename SchemaInfo::Schema& schema,
+            const typename SchemaInfo::Field& field) {
+    auto offset = field.getOffset();
+    if (offset < 0) {
+      pos.bitOffset = -offset;
     } else {
-      pos.offset = field.offset;
+      pos.offset = offset;
     }
-    this->layout.load(schema, schema.layouts.at(field.layoutId));
+    this->layout.template load<SchemaInfo>(schema,
+                                           schema.getLayoutForField(field));
   }
 
   /**
    * Recursively stores the layout information for this field, including both
    * field offset information and the information for the contained layout.
    */
-  void save(schema::MemorySchema& schema,
-            schema::MemoryLayout& parent,
-            schema::MemorySchemaHelper& helper) const final {
+  template <typename SchemaInfo>
+  void save(typename SchemaInfo::Schema& schema,
+            typename SchemaInfo::Layout& parent,
+            typename SchemaInfo::Helper& helper) const {
     if (this->layout.empty()) {
       return;
     }
 
-    schema::MemoryField field;
-
-    field.id = key;
+    typename SchemaInfo::Field field;
+    field.setId(key);
     if (pos.bitOffset) {
-      field.offset = -pos.bitOffset;
+      field.setOffset(-pos.bitOffset);
     } else {
-      field.offset = pos.offset;
+      field.setOffset(pos.offset);
     }
 
-    schema::MemoryLayout myLayout;
-    this->layout.save(schema, myLayout, helper);
-    myLayout.fields.shrink_to_fit();
-    field.layoutId = helper.add(std::move(myLayout));
-    parent.fields.push_back(std::move(field));
+    typename SchemaInfo::Layout myLayout;
+    this->layout.template save<SchemaInfo>(schema, myLayout, helper);
+    field.setLayoutId(std::move(helper.add(std::move(myLayout))));
+    parent.addField(std::move(field));
   }
 };
 

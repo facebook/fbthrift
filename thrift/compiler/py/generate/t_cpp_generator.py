@@ -3375,23 +3375,28 @@ class CppGenerator(t_generator.Generator):
                         **kwargs) for f in fields]),
                 **kwargs)
         s(visitFields(
-            'FROZEN_TYPE({type},{fields}{view})',
+            'FROZEN_TYPE({type},{fields}{view}{save}{load});',
             '\n  FROZEN_FIELD{_opt}({name}, {id}, {type})',
             view=visitFields(
                 '\n  FROZEN_VIEW({fields})',
-                '\n    FROZEN_VIEW_FIELD{_opt}({name}, {type})')))
+                '\n    FROZEN_VIEW_FIELD{_opt}({name}, {type})'),
+            save=visitFields(
+                '\n  FROZEN_SAVE_INLINE({fields})',
+                '\n    FROZEN_SAVE_FIELD({name})'),
+            load=visitFields(
+                '\n  FROZEN_LOAD_INLINE({fields})',
+                '\n    FROZEN_LOAD_FIELD({name}, {id})')))
+
         for (typeFmt, fieldFmt) in [
                 ('CTOR', 'CTOR_FIELD{_opt}({name}, {id})'),
                 ('LAYOUT', 'LAYOUT_FIELD{_opt}({name})'),
                 ('FREEZE', 'FREEZE_FIELD{_opt}({name})'),
                 ('THAW', 'THAW_FIELD{_opt}({name})'),
                 ('DEBUG', 'DEBUG_FIELD({name})'),
-                ('CLEAR', 'CLEAR_FIELD({name})'),
-                ('SAVE', 'SAVE_FIELD({name})'),
-                ('LOAD', 'LOAD_FIELD({name}, {id})')]:
+                ('CLEAR', 'CLEAR_FIELD({name})')]:
             # TODO(5484874): Put these back in the .cpp
             s(visitFields('FROZEN_' + typeFmt + '({type},{fields})',
-                               '\n  FROZEN_' + fieldFmt))
+                          '\n  FROZEN_' + fieldFmt))
 
     def _generate_cpp_struct(self, obj, is_exception=False):
         # We write all of these to the types scope

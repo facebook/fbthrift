@@ -18,7 +18,8 @@
 #include <vector>
 #include <cstdint>
 #include <thrift/lib/cpp/DistinctTable.h>
-
+#include <glog/logging.h>
+#include <folly/Hash.h>
 
 #define THRIFT_DECLARE_HASH(T)           \
   namespace std {                        \
@@ -51,7 +52,33 @@ THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemorySchema);
 namespace apache { namespace thrift { namespace frozen { namespace schema {
 
 // Trivially copyable, hashed bytewise.
-struct MemoryField {
+class MemoryField {
+ public:
+  MemoryField() = default;
+  ~MemoryField() = default;
+
+  inline size_t hash() const {
+    return folly::hash::hash_combine(id, layoutId, offset);
+  }
+
+  inline bool operator==(const MemoryField& other) const {
+    return id == other.id && layoutId == other.layoutId &&
+           offset == other.offset;
+  }
+
+  inline void setId(int16_t i) { id = i; }
+
+  inline int16_t getId() const { return id; }
+
+  inline void setLayoutId(int16_t lid) { layoutId = lid; }
+
+  inline int16_t getLayoutId() const { return layoutId; }
+
+  inline void setOffset(int16_t o) { offset = o; }
+
+  inline int16_t getOffset() const { return offset; }
+
+ private:
   // Thrift field index
   int16_t id;
 
@@ -62,53 +89,118 @@ struct MemoryField {
   //  < 0: -(bit offset)
   //  >= 0: byte offset
   int16_t offset;
-
-  size_t hash() const;
-  bool operator==(const MemoryField& other) const;
 };
 
 static_assert(sizeof(MemoryField) == 3 * sizeof(int16_t),
               "Memory Field is not padded.");
 
-
-struct MemoryLayoutBase {
-  int32_t size;
-  int16_t bits;
-
-  size_t hash() const;
-  bool operator==(const MemoryLayoutBase& other) const;
-};
-
-struct MemoryLayout : MemoryLayoutBase {
-  std::vector<MemoryField> fields;
-
-  size_t hash() const;
-  bool operator==(const MemoryLayout& other) const;
-};
-
-struct MemorySchema {
-  std::vector<MemoryLayout> layouts;
-  // TODO(#4910107): Separate MemoryLayouts from MemoryLayoutBases
-  int16_t rootLayout;
-
-  size_t hash() const;
-  bool operator==(const MemorySchema& other) const;
-};
-
-class MemorySchemaHelper {
-  // Add helper structures here to help minimize size of schema during
-  // save() operations.
+class MemoryLayoutBase {
  public:
-  explicit MemorySchemaHelper(MemorySchema& schema)
-      : layoutTable_(&schema.layouts) {}
+  MemoryLayoutBase() = default;
+  virtual ~MemoryLayoutBase() = default;
 
-  int16_t add(MemoryLayout&& layout);
+  inline size_t hash() const { return folly::hash::hash_combine(bits, size); }
+
+  inline bool operator==(const MemoryLayoutBase& other) const {
+    return bits == other.bits && size == other.size;
+  }
+
+  inline void setSize(int32_t s) { size = s; }
+
+  inline int32_t getSize() const { return size; }
+
+  inline void setBits(int32_t b) { bits = b; }
+
+  inline int16_t getBits() const { return bits; }
 
  private:
-  DistinctTable<MemoryLayout> layoutTable_;
+  int32_t size;
+  int16_t bits;
+};
+
+class MemoryLayout : public MemoryLayoutBase {
+ public:
+  using MemoryLayoutBase::MemoryLayoutBase;
+
+  inline size_t hash() const {
+    return folly::hash::hash_combine(
+        MemoryLayoutBase::hash(),
+        folly::hash::hash_range(fields.begin(), fields.end()));
+  }
+
+  inline bool operator==(const MemoryLayout& other) const {
+    return MemoryLayoutBase::operator==(other) && fields == other.fields;
+  }
+
+  inline void addField(MemoryField&& field) {
+    fields.push_back(std::move(field));
+  }
+
+  inline const std::vector<MemoryField>& getFields() const { return fields; }
+
+ private:
+  std::vector<MemoryField> fields;
 };
 
 class Schema;
+class MemorySchema {
+ public:
+  MemorySchema() = default;
+  ~MemorySchema() = default;
+
+  inline size_t hash() const {
+    return folly::hash::hash_combine(
+        folly::hash::hash_range(layouts.begin(), layouts.end()), rootLayout);
+  }
+
+  inline bool operator==(const MemorySchema& other) const {
+    return layouts == other.layouts;
+  }
+
+  inline void setRootLayoutId(int16_t rootId) {
+    DCHECK(rootId < layouts.size());
+    rootLayout = rootId;
+  }
+
+  inline int16_t getRootLayoutId() const { return rootLayout; }
+
+  inline const MemoryLayout& getRootLayout() const {
+    return layouts.at(rootLayout);
+  }
+
+  inline const MemoryLayout& getLayoutForField(const MemoryField& field) const {
+    return layouts.at(field.getLayoutId());
+  }
+
+  inline const std::vector<MemoryLayout>& getLayouts() const { return layouts; }
+
+  class Helper {
+    // Add helper structures here to help minimize size of schema during
+    // save() operations.
+   public:
+    explicit Helper(MemorySchema& schema) : layoutTable_(&schema.layouts) {}
+
+    int16_t add(MemoryLayout&& layout);
+
+   private:
+    DistinctTable<MemoryLayout> layoutTable_;
+  };
+
+  void initFromSchema(Schema&& schema);
+
+ private:
+  std::vector<MemoryLayout> layouts;
+  // TODO(#4910107): Separate MemoryLayouts from MemoryLayoutBases
+  int16_t rootLayout;
+};
+
+struct SchemaInfo {
+  using Field = MemoryField;
+  using Layout = MemoryLayout;
+  using Schema = MemorySchema;
+  using Helper = MemorySchema::Helper;
+};
+
 void convert(Schema&& schema, MemorySchema& memSchema);
 void convert(const MemorySchema& memSchema, Schema& schema);
 

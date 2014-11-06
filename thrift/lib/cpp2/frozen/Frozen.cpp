@@ -70,30 +70,6 @@ void LayoutBase::clear() {
   inlined = false;
 }
 
-void LayoutBase::loadRoot(const schema::MemorySchema& schema) {
-  this->load(schema, schema.layouts.at(schema.rootLayout));
-}
-
-void LayoutBase::saveRoot(schema::MemorySchema& schema) const {
-  schema::MemorySchemaHelper helper(schema);
-  schema::MemoryLayout myLayout;
-  this->save(schema, myLayout, helper);
-  schema.rootLayout = helper.add(std::move(myLayout));
-}
-
-void LayoutBase::load(const schema::MemorySchema& schema,
-                      const schema::MemoryLayout& layout) {
-  size = layout.size;
-  bits = layout.bits;
-}
-
-void LayoutBase::save(schema::MemorySchema& schema,
-                      schema::MemoryLayout& layout,
-                      schema::MemorySchemaHelper& helper) const {
-  layout.size = size;
-  layout.bits = bits;
-}
-
 namespace detail {
 
 FieldPosition BlockLayout::layout(LayoutRoot& root,
