@@ -264,7 +264,7 @@ class Packet {
     VLOG(4) << "  Src: " << srcAddr_;
     VLOG(4) << "  Dst: " << dstAddr_;
 
-    size_t tcpHeaderLen = 4 * (tcp_->offset & 0x0f);
+    size_t tcpHeaderLen = 4 * (tcp_->offset >> 4);
     payload_ = tcpStart + tcpHeaderLen;
     const uint8_t* bufEnd = data_.get() + dataLength_;
     payloadLength_ = bufEnd - payload_;
