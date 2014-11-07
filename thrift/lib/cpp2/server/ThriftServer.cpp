@@ -530,22 +530,20 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
 
 std::thread ThriftServer::Cpp2WorkerFactory::newThread(
     folly::wangle::Func&& func) {
-  return internalFactory_->newThread([=](){
-    CHECK(!server_->serverChannel_);
-    auto id = nextWorkerId_++;
-    auto worker = std::make_shared<Cpp2Worker>(server_, id, nullptr);
-    {
-      folly::RWSpinLock::WriteHolder guard(workersLock_);
-      workers_.insert({id, worker});
-    }
-    server_->socket_->getEventBase()->runInEventBaseThread([this, worker](){
-      server_->socket_->addAcceptCallback(worker.get(), worker->getEventBase());
-    });
-
+  CHECK(!server_->serverChannel_);
+  auto id = nextWorkerId_++;
+  auto worker = std::make_shared<Cpp2Worker>(server_, id, nullptr);
+  {
+    folly::RWSpinLock::WriteHolder guard(workersLock_);
+    workers_.insert({id, worker});
+  }
+  if (server_->socket_) {
+    server_->socket_->addAcceptCallback(worker.get(), worker->getEventBase());
+  }
+  return internalFactory_->newThread([=] {
     server_->getEventBaseManager()->setEventBase(worker->getEventBase(), false);
     func();
     server_->getEventBaseManager()->clearEventBase();
-
     worker->closeConnections();
     {
       folly::RWSpinLock::WriteHolder guard(workersLock_);
