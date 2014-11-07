@@ -143,6 +143,7 @@ class HeaderClientChannel : public RequestChannel,
   // event base methods
   void attachEventBase(apache::thrift::async::TEventBase*);
   void detachEventBase();
+  bool isDetachable();
 
   apache::thrift::transport::THeader* getHeader() {
     return header_.get();

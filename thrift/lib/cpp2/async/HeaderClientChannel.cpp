@@ -105,6 +105,10 @@ void HeaderClientChannel::detachEventBase() {
   timer_->detachEventBase();
 }
 
+bool HeaderClientChannel::isDetachable() {
+  return getTransport()->isDetachable() && timer_->isDetachable();
+}
+
 void HeaderClientChannel::startSecurity() {
   if (getProtectionState() != ProtectionState::UNKNOWN) {
     return;
