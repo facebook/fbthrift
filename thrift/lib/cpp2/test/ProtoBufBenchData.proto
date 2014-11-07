@@ -1,0 +1,41 @@
+message Empty {
+}
+
+message SmallInt {
+  required int32 smallint = 1;
+}
+
+message BigInt {
+  required int64 bigint = 1;
+}
+
+message SmallString {
+  required string smallstr = 1;
+}
+
+message BigString {
+  required string bigstr = 1;
+}
+
+message Mixed {
+  required int32 i32 = 1;
+  required int64 i64 = 2;
+  required bool b = 3;
+  required string s = 4;
+}
+
+message SmallListInt {
+  repeated int32 lst = 1 [packed=true];
+}
+
+message BigListInt {
+  repeated int32 lst = 1 [packed=true];
+}
+
+message BigListMixed {
+  repeated Mixed lst = 1;
+}
+
+message LargeListMixed {
+  repeated Mixed lst = 1;
+}
