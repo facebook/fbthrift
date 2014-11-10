@@ -27,6 +27,7 @@
 #include <unordered_set>
 
 #include <folly/experimental/wangle/ConnectionManager.h>
+#include <folly/experimental/wangle/acceptor/Acceptor.h>
 
 namespace apache { namespace thrift {
 
@@ -43,8 +44,7 @@ class ThriftServer;
  */
 class Cpp2Worker :
       public apache::thrift::server::TServer,
-      public apache::thrift::async::TAsyncServerSocket::AcceptCallback,
-      public apache::thrift::async::TAsyncSSLSocket::HandshakeCallback {
+      public folly::Acceptor {
  public:
 
   /**
@@ -53,17 +53,15 @@ class Cpp2Worker :
    * CPU core is recommended).
    *
    * @param server the ThriftServer which created us.
-   * @param workerID the ID assigned to this worker
    * @param serverChannel existing server channel to use, only for duplex server
    */
   Cpp2Worker(ThriftServer* server,
-             uint32_t workerID,
              const std::shared_ptr<HeaderServerChannel>&
                  serverChannel = nullptr) :
     TServer(std::shared_ptr<apache::thrift::server::TProcessor>()),
+    Acceptor(server->getServerSocketConfig()),
     server_(server),
     eventBase_(),
-    workerID_(workerID),
     activeRequests_(0),
     pendingCount_(0),
     pendingTime_(std::chrono::steady_clock::now()) {
@@ -79,23 +77,13 @@ class Cpp2Worker :
     if (observer) {
       eventBase_->setObserver(observer);
     }
-    manager_ = folly::wangle::ConnectionManager::makeUnique(
-      eventBase_.get(), server->getIdleTimeout());
+    Acceptor::init(server_->socket_.get(), eventBase_.get());
   }
 
   /**
    * Destroy a Cpp2Worker. Clean up connection list.
    */
   virtual ~Cpp2Worker();
-
-  /**
-   * Get my TEventBase object.
-   *
-   * @returns pointer to my TEventBase object.
-   */
-  apache::thrift::async::TEventBase* getEventBase() {
-    return eventBase_.get();
-  }
 
   /**
    * Get underlying server.
@@ -106,34 +94,7 @@ class Cpp2Worker :
     return server_;
   }
 
-  /**
-   * Close all channels.
-   */
-  void closeConnections();
-
-  /**
-   * Get my numeric worker ID (for diagnostics).
-   *
-   * @return integer ID of this worker
-   */
-  int32_t getID() {
-    return workerID_;
-  }
-
-  void connectionAccepted(
-    int fd,
-    const folly::SocketAddress& clientAddr) noexcept;
-  void acceptError(const std::exception& ex) noexcept;
-  void acceptStopped() noexcept;
   void stopEventBase() noexcept;
-
-  /**
-   * TAsyncSSLSocket::HandshakeCallback interface
-   */
-  void handshakeSuccess(apache::thrift::async::TAsyncSSLSocket *sock) noexcept;
-  void handshakeError(
-    apache::thrift::async::TAsyncSSLSocket *sock,
-    const apache::thrift::transport::TTransportException& ex) noexcept;
 
   /**
    * Enter event loop and serve.
@@ -158,29 +119,21 @@ class Cpp2Worker :
   /// An instance's TEventBase for I/O.
   std::shared_ptr<apache::thrift::async::TEventBase> eventBase_;
 
-  /// Our ID in [0:nWorkers).
-  uint32_t workerID_;
+  void onNewConnection(
+    folly::AsyncSocket::UniquePtr,
+    const apache::thrift::transport::TSocketAddress*,
+    const std::string&, const folly::TransportInfo&);
 
-  /**
-   * Called when the connection is fully accepted (after SSL accept if needed)
-   */
-  void finishConnectionAccepted(apache::thrift::async::TAsyncSocket *asyncSock);
+  virtual folly::AsyncSocket::UniquePtr makeNewAsyncSocket(folly::EventBase* base, int fd) {
+    return folly::AsyncSocket::UniquePtr(new apache::thrift::async::TAsyncSocket(base, fd));
+  }
 
-  /**
-   * Create or reuse a Cpp2Connection initialized for the given  socket FD.
-   *
-   * @param socket the FD of a freshly-connected socket.
-   * @param address the peer address of the socket.
-   * @return pointer to a TConenction object for that socket.
-   */
-  std::shared_ptr<Cpp2Connection> createConnection(
-    std::shared_ptr<apache::thrift::async::TAsyncSocket> asyncSocket,
-      const folly::SocketAddress* address);
-
-  /**
-   * Handler called when a new connection may be available.
-   */
-  void acceptConnections();
+  virtual folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(
+    const std::shared_ptr<folly::SSLContext>& ctx,
+    folly::EventBase* base, int fd) {
+    return folly::AsyncSSLSocket::UniquePtr(
+      new apache::thrift::async::TAsyncSSLSocket(ctx, base, fd));
+  }
 
   /**
    * For a duplex Thrift server, use an existing channel
@@ -195,8 +148,6 @@ class Cpp2Worker :
 
   friend class Cpp2Connection;
   friend class ThriftServer;
-
-  folly::wangle::ConnectionManager::UniquePtr manager_;
 };
 
 }} // apache::thrift

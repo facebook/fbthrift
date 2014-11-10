@@ -108,10 +108,11 @@ int main(int argc, char* argv[]) {
   server->setQueueSends(FLAGS_queue_sends);
 
   if (FLAGS_cert.length() > 0 && FLAGS_key.length() > 0) {
-    std::shared_ptr<SSLContext> sslContext(new SSLContext());
-    sslContext->loadCertificate(FLAGS_cert.c_str());
-    sslContext->loadPrivateKey(FLAGS_key.c_str());
-    server->setSSLContext(sslContext);
+    std::shared_ptr<folly::SSLContextConfig> sslContext(new folly::SSLContextConfig());
+    sslContext->setCertificate(FLAGS_cert.c_str(),
+                               FLAGS_key.c_str(),
+                              "");
+    server->setSSLConfig(sslContext);
   }
 
   // Set tunable server parameters

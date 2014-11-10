@@ -43,6 +43,9 @@
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 
+#include <folly/experimental/wangle/ssl/SSLContextConfig.h>
+#include <folly/experimental/wangle/acceptor/ServerSocketConfig.h>
+
 namespace apache { namespace thrift {
 
 typedef std::function<void(
@@ -114,7 +117,7 @@ class ThriftServer : public apache::thrift::server::TServer {
   std::string poolThreadName_;
 
   //! SSL context
-  std::shared_ptr<folly::SSLContext> sslContext_;
+  std::shared_ptr<folly::SSLContextConfig> sslContext_;
 
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
@@ -493,15 +496,28 @@ class ThriftServer : public apache::thrift::server::TServer {
   /**
    *
    */
-  void setSSLContext(
-    std::shared_ptr<folly::SSLContext> context) {
+  void setSSLConfig(
+    std::shared_ptr<folly::SSLContextConfig> context) {
     CHECK(ioThreadPool_->numThreads() == 0);
+    if (context) {
+      context->isDefault = true;
+    }
     sslContext_ = context;
   }
 
-  std::shared_ptr<folly::SSLContext>
-  getSSLContext() const {
+  std::shared_ptr<folly::SSLContextConfig>
+  getSSLConfig() const {
     return sslContext_;
+  }
+
+  folly::ServerSocketConfig getServerSocketConfig() {
+    folly::ServerSocketConfig config;
+    if (getSSLConfig()) {
+      config.sslContextConfigs.push_back(*getSSLConfig());
+    }
+    config.connectionIdleTimeout = getIdleTimeout();
+    config.acceptBacklog = getListenBacklog();
+    return config;
   }
 
   /**

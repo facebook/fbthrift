@@ -324,7 +324,7 @@ void ThriftServer::setup() {
       }
     } else {
       CHECK(ioThreadPool_->numThreads() == 0);
-      duplexWorker_ = folly::make_unique<Cpp2Worker>(this, 0, serverChannel_);
+      duplexWorker_ = folly::make_unique<Cpp2Worker>(this, serverChannel_);
     }
   } catch (...) {
     if (!serverChannel_) {
@@ -532,19 +532,17 @@ std::thread ThriftServer::Cpp2WorkerFactory::newThread(
     folly::wangle::Func&& func) {
   CHECK(!server_->serverChannel_);
   auto id = nextWorkerId_++;
-  auto worker = std::make_shared<Cpp2Worker>(server_, id, nullptr);
+  auto worker = std::make_shared<Cpp2Worker>(server_, nullptr);
   {
     folly::RWSpinLock::WriteHolder guard(workersLock_);
     workers_.insert({id, worker});
-  }
-  if (server_->socket_) {
-    server_->socket_->addAcceptCallback(worker.get(), worker->getEventBase());
   }
   return internalFactory_->newThread([=] {
     server_->getEventBaseManager()->setEventBase(worker->getEventBase(), false);
     func();
     server_->getEventBaseManager()->clearEventBase();
-    worker->closeConnections();
+
+    worker->dropAllConnections();
     {
       folly::RWSpinLock::WriteHolder guard(workersLock_);
       workers_.erase(id);

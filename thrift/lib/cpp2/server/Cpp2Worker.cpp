@@ -47,98 +47,40 @@ using namespace apache::thrift::async;
 using std::shared_ptr;
 using apache::thrift::concurrency::Util;
 
-/**
- * Creates a new connection either by reusing an object off the stack or
- * by allocating a new one entirely
- */
-std::shared_ptr<Cpp2Connection> Cpp2Worker::createConnection(
-  std::shared_ptr<TAsyncSocket> asyncSocket,
-  const folly::SocketAddress* addr) {
-  VLOG(4) << "Cpp2Worker: Creating connection for socket " <<
-    asyncSocket->getFd();
+void Cpp2Worker::onNewConnection(
+  folly::AsyncSocket::UniquePtr sock,
+  const apache::thrift::transport::TSocketAddress* addr,
+  const std::string& nextProtocolName,
+  const folly::TransportInfo& tinfo) {
 
-  std::shared_ptr<Cpp2Connection> result(
-    new Cpp2Connection(asyncSocket, addr, this));
-  manager_->addConnection(result.get(), true);
-  result->addConnection(result);
-
-  VLOG(4) << "created connection for fd " << asyncSocket->getFd();
-  return result;
-}
-
-void Cpp2Worker::connectionAccepted(int fd, const folly::SocketAddress& clientAddr)
-  noexcept {
-  TAsyncSocket *asyncSock = nullptr;
-  TAsyncSSLSocket *sslSock = nullptr;
   auto observer = server_->getObserver();
-
   if (server_->maxConnections_ > 0 &&
-      (manager_->getNumConnections() >=
+      (getConnectionManager()->getNumConnections() >=
        server_->maxConnections_ / server_->nWorkers_) ) {
     if (observer) {
       observer->connDropped();
     }
-
-    close(fd);
     return;
   }
 
-  if (server_->getSSLContext()) {
-    sslSock = new TAsyncSSLSocket(server_->getSSLContext(),
-                                  eventBase_.get(),
-                                  fd,
-                                  true);
-    asyncSock = sslSock;
-  } else {
-    asyncSock = new TAsyncSocket(eventBase_.get(), fd);
-  }
-  asyncSock->setShutdownSocketSet(server_->shutdownSocketSet_.get());
+  TAsyncSocket* tsock = dynamic_cast<TAsyncSocket*>(sock.release());
+  CHECK(tsock);
+  auto asyncSocket = std::shared_ptr<TAsyncSocket>(tsock, TAsyncSocket::Destructor());
 
-  if (sslSock != nullptr) {
-    // The connection may be deleted in sslAccept().
-    sslSock->sslAccept(this, server_->getIdleTimeout().count());
-  } else {
-    finishConnectionAccepted(asyncSock);
-  }
+  VLOG(4) << "Cpp2Worker: Creating connection for socket " <<
+    asyncSocket->getFd();
 
+  asyncSocket->setShutdownSocketSet(server_->shutdownSocketSet_.get());
+  std::shared_ptr<Cpp2Connection> result(
+    new Cpp2Connection(asyncSocket, addr, this));
+  Acceptor::addConnection(result.get());
+  result->addConnection(result);
+  result->start();
+
+  VLOG(4) << "created connection for fd " << asyncSocket->getFd();
   if (observer) {
     observer->connAccepted();
   }
-  VLOG(4) << "accepted connection for fd " << fd;
-}
-
-void Cpp2Worker::handshakeSuccess(TAsyncSSLSocket *sock)
-  noexcept {
-  VLOG(4) << "Handshake succeeded";
-  finishConnectionAccepted(sock);
-}
-
-void Cpp2Worker::handshakeError(TAsyncSSLSocket *sock,
-                                  const TTransportException& ex)
-  noexcept {
-  VLOG(1) << "Cpp2Worker: SSL handshake failed: " << folly::exceptionStr(ex);
-  sock->destroy();
-}
-
-
-void Cpp2Worker::finishConnectionAccepted(TAsyncSocket *asyncSocket) {
-  // Create a new Cpp2Connection for this client socket.
-  std::shared_ptr<Cpp2Connection> clientConnection;
-  std::shared_ptr<TAsyncSocket> asyncSocketPtr(
-    asyncSocket, TDelayedDestruction::Destructor());
-  try {
-    folly::SocketAddress clientAddr;
-    asyncSocketPtr->getPeerAddress(&clientAddr);
-    clientConnection = createConnection(asyncSocketPtr, &clientAddr);
-  } catch (...) {
-    // Fail fast if we could not create a Cpp2Connection object
-    LOG(ERROR) << "Cpp2Worker: failed to create a new Cpp2Connection: "
-      << folly::exceptionStr(std::current_exception());
-    return;
-  }
-
-  // begin i/o on connection
-  clientConnection->start();
 }
 
 void Cpp2Worker::useExistingChannel(
@@ -148,7 +90,7 @@ void Cpp2Worker::useExistingChannel(
 
   auto conn = std::make_shared<Cpp2Connection>(
       nullptr, &address, this, serverChannel);
-  manager_->addConnection(conn.get());
+  Acceptor::getConnectionManager()->addConnection(conn.get(), false);
   conn->addConnection(conn);
 
   DCHECK(!eventBase_);
@@ -156,20 +98,6 @@ void Cpp2Worker::useExistingChannel(
   eventBase_.reset(serverChannel->getEventBase(), [](TEventBase*){});
 
   conn->start();
-}
-
-void Cpp2Worker::acceptError(const std::exception& ex) noexcept {
-  // We just log an error message if an accept error occurs.
-  // Most accept errors are transient (e.g., out of file descriptors), so we
-  // will continue trying to accept new connections.
-  LOG(WARNING) << "Cpp2Worker: error accepting connection: "
-    << folly::exceptionStr(ex);
-}
-
-void Cpp2Worker::acceptStopped() noexcept {
-  if (server_->getStopWorkersOnStopListening()) {
-    stopEventBase();
-  }
 }
 
 void Cpp2Worker::stopEventBase() noexcept {
@@ -200,12 +128,7 @@ void Cpp2Worker::serve() {
   }
 }
 
-void Cpp2Worker::closeConnections() {
-  manager_->dropAllConnections();
-}
-
 Cpp2Worker::~Cpp2Worker() {
-  closeConnections();
   eventBase_->terminateLoopSoon();
 }
 
@@ -216,7 +139,8 @@ int Cpp2Worker::pendingCount() {
     if (pendingTime_ < now) {
       pendingTime_ = now + std::chrono::milliseconds(FLAGS_pending_interval);
       pendingCount_ = 0;
-      manager_->iterateConns([&](folly::wangle::ManagedConnection* connection) {
+      Acceptor::getConnectionManager()->iterateConns(
+          [&](folly::wangle::ManagedConnection* connection) {
         if ((static_cast<Cpp2Connection*>(connection))->pending()) {
           pendingCount_++;
         }
