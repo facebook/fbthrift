@@ -216,6 +216,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "long"               { thrift_reserved_keyword(yytext); }
 "native"             { thrift_reserved_keyword(yytext); }
 "new"                { thrift_reserved_keyword(yytext); }
+"none"               { thrift_reserved_keyword(yytext); }
 "not"                { thrift_reserved_keyword(yytext); }
 "or"                 { thrift_reserved_keyword(yytext); }
 "pass"               { thrift_reserved_keyword(yytext); }
