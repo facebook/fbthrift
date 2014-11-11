@@ -300,7 +300,44 @@ class CompactProtocolReader {
 
   int32_t seqid_;
 
-  std::stack<int16_t, folly::fbvector<int16_t>> lastField_;
+  // Simple stack with an inline buffer for built-in types
+  // Emulates the interface of std::stack
+  template <typename T, size_t n>
+  class SimpleStack {
+  public:
+    SimpleStack() : top_(0) {}
+
+    void push(T v) {
+      if (LIKELY(top_ < n)) {
+        a_[top_++] = v;
+      } else {
+        heapStack_.push(v);
+        top_++;
+      }
+    }
+
+    T top() {
+      DCHECK(top_ > 0);
+      if (LIKELY(top_ <= n)) {
+        return a_[top_-1];
+      } else {
+        return heapStack_.top();
+      }
+    }
+
+    void pop() {
+      DCHECK(top_ > 0);
+      if (UNLIKELY(top_ > n)) {
+        heapStack_.pop();
+      }
+      --top_;
+    }
+  private:
+    T a_[n];
+    size_t top_;
+    std::stack<int16_t, folly::fbvector<int16_t>> heapStack_;
+  };
+  SimpleStack<int16_t, 10> lastField_;
   int16_t lastFieldId_;
 
   struct {
