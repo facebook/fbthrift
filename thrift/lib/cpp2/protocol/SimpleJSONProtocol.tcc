@@ -194,7 +194,7 @@ uint32_t SimpleJSONProtocolWriter::writeJSONString(
   uint32_t ret = 2;
 
   out_.write(TJSONProtocol::kJSONStringDelimiter);
-  for (int i = 0; i < len; i++, str++) {
+  for (uint32_t i = 0; i < len; i++, str++) {
     ret += writeJSONChar(*str);
   }
   out_.write(TJSONProtocol::kJSONStringDelimiter);
@@ -220,7 +220,7 @@ uint32_t SimpleJSONProtocolWriter::writeJSONBase64(const uint8_t* bytes,
   }
   if (len) { // Handle remainder
     base64_encode(bytes, len, b);
-    for (int i = 0; i < len + 1; i++) {
+    for (uint32_t i = 0; i < len + 1; i++) {
       out_.write(b[i]);
     }
     ret += len + 1;
