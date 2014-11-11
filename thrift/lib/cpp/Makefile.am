@@ -186,7 +186,6 @@ include_async_HEADERS = \
                      async/TAsyncServerSocket.h \
                      async/TAsyncSocketFactory.h \
                      async/TAsyncTimeout.h \
-                     async/TAsyncTimeoutSet.h \
                      async/TAsyncTransport.h \
                      async/TAsyncUDPServerSocket.h \
                      async/TAsyncUDPSocket.h \
