@@ -241,6 +241,20 @@ TEST(protocol2, simpleJsonDoubles) {
   runDoubleTest<SimpleJSONProtocolWriter, SimpleJSONProtocolReader>();
 }
 
+TEST(protocol2, simpleJsonNullField) {
+  string json = "{\"big\" :\t10.0,\n\"small\" :\nnull , \"zero\": 0.0}";
+  auto buf = folly::IOBuf::copyBuffer(json);
+  SimpleJSONProtocolReader protReader;
+  protReader.setInput(buf.get());
+  cpp2::Doubles dbls;
+  auto nchars = dbls.read(&protReader);
+
+  ASSERT_EQ(dbls.big, 10.0);
+  ASSERT_EQ(dbls.small, 0.0);
+  ASSERT_EQ(dbls.zero, 0.0);
+  ASSERT_EQ(nchars, json.length());
+}
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   gflags::ParseCommandLineFlags(&argc, &argv, true);

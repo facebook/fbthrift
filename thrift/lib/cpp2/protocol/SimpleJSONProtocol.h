@@ -183,7 +183,10 @@ class SimpleJSONProtocolReader {
 
   SimpleJSONProtocolReader()
     : in_(nullptr)
-    , allowDecodeUTF8_(true) {}
+    , allowDecodeUTF8_(true)
+    , skippedWhitespace_(0)
+    , skippedChars_(0)
+    , skippedIsUnread_(false) {}
 
   static inline ProtocolType protocolType() {
     return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
@@ -258,14 +261,28 @@ class SimpleJSONProtocolReader {
 
  protected:
   enum class ContextType { MAP, ARRAY };
+
+  // skip over whitespace so that we can peek, and store number of bytes
+  // skipped
   inline void skipWhitespace();
+
+  // skip over whitespace *and* return the number whitespace bytes skipped
   inline uint32_t readWhitespace();
+
   inline uint32_t ensureChar(char expected);
   inline uint32_t ensureCharNoWhitespace(char expected);
   inline uint32_t beginContext(ContextType type);
   inline uint32_t ensureAndBeginContext(ContextType type);
   inline uint32_t endContext();
-  inline uint32_t ensureAndSkipContext(bool& keyish);
+
+  // this is similar to skipWhitespace and readWhitespace.  The skip-version
+  // skips over context so that we can peek, and stores the number of bytes
+  // skipped.  The read-version calls the skip-version, and returns the number
+  // of bytes skipped.  Calling skip a second (or third...) time in a row
+  // without calling read has no effect.
+  inline void ensureAndSkipContext();
+  inline uint32_t ensureAndReadContext(bool& keyish);
+
   template <typename T>
   uint32_t readInContext(T& val);
   inline uint32_t readJSONKey(std::string& key);
@@ -286,6 +303,7 @@ class SimpleJSONProtocolReader {
   inline uint32_t readJSONVal(std::string& val);
   inline bool JSONtoBool(const std::string& s);
   inline uint32_t readJSONVal(bool& val);
+  inline uint32_t readJSONNull();
   inline uint32_t readJSONEscapeChar(uint8_t& out);
   inline uint32_t readJSONString(std::string& val);
   template <typename StrType>
@@ -307,6 +325,10 @@ class SimpleJSONProtocolReader {
   std::list<Context> context;
   bool allowDecodeUTF8_;
   uint32_t skippedWhitespace_;  // we sometimes consume whitespace while peeking
+
+  bool keyish_;
+  uint32_t skippedChars_; // we sometimes consume chars while peeking at context
+  bool skippedIsUnread_;
 };
 
 }} // apache::thrift

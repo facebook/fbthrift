@@ -576,7 +576,7 @@ uint32_t SimpleJSONProtocolReader::ensureCharNoWhitespace(char expected) {
 
 uint32_t SimpleJSONProtocolReader::ensureAndBeginContext(ContextType type) {
   bool keyish;
-  auto ret = ensureAndSkipContext(keyish);
+  auto ret = ensureAndReadContext(keyish);
   // perhaps handle keyish == true?  I think for backwards compat we want to
   // be able to handle non-string keys, even if it isn't valid JSON
   return ret + beginContext(type);
@@ -609,36 +609,47 @@ uint32_t SimpleJSONProtocolReader::endContext() {
   return 0;
 }
 
-uint32_t SimpleJSONProtocolReader::ensureAndSkipContext(bool& keyish) {
-  uint32_t ret = 0;
-  keyish = false;
+uint32_t SimpleJSONProtocolReader::ensureAndReadContext(bool& keyish) {
+  ensureAndSkipContext();
+  keyish = keyish_;
+  auto ret = skippedChars_;
+  skippedChars_ = 0;
+  skippedIsUnread_ = false;
+  return ret;
+}
+
+void SimpleJSONProtocolReader::ensureAndSkipContext() {
+  if (skippedIsUnread_) {
+    return;
+  }
+  skippedIsUnread_ = true;
+  keyish_ = false;
   if (!context.empty()) {
     auto meta = context.back().meta++;
     switch (context.back().type) {
       case ContextType::MAP:
         if (meta % 2 == 0) {
           if (meta != 0) {
-            ret += ensureChar(TJSONProtocol::kJSONElemSeparator);
+            skippedChars_ += ensureChar(TJSONProtocol::kJSONElemSeparator);
           }
-          keyish = true;
+          keyish_ = true;
         } else {
-          ret += ensureChar(TJSONProtocol::kJSONPairSeparator);
+          skippedChars_ += ensureChar(TJSONProtocol::kJSONPairSeparator);
         }
         break;
       case ContextType::ARRAY:
         if (meta != 0) {
-          ret += ensureChar(TJSONProtocol::kJSONElemSeparator);
+          skippedChars_ += ensureChar(TJSONProtocol::kJSONElemSeparator);
         }
         break;
     }
   }
-  return ret;
 }
 
 template <typename T>
 uint32_t SimpleJSONProtocolReader::readInContext(T& val) {
   bool keyish;
-  auto ret = ensureAndSkipContext(keyish);
+  auto ret = ensureAndReadContext(keyish);
   if (keyish) {
     return ret + readJSONKey(val);
   } else {
@@ -772,6 +783,21 @@ uint32_t SimpleJSONProtocolReader::readJSONVal(bool& val) {
   return ret;
 }
 
+uint32_t SimpleJSONProtocolReader::readJSONNull() {
+  auto ret = readWhitespace();
+  std::string s;
+  while (*in_.peek().first >= 'a' && *in_.peek().first <= 'z') {
+    s += in_.read<int8_t>();
+    ret++;
+  }
+  if (s != "null") {
+    throw TProtocolException(
+      TProtocolException::INVALID_DATA,
+      s + " is not valid JSON");
+  }
+  return ret;
+}
+
 uint32_t SimpleJSONProtocolReader::readJSONEscapeChar(uint8_t& out) {
   uint8_t b1, b2;
   ensureCharNoWhitespace(TJSONProtocol::kJSONZeroChar);
@@ -902,7 +928,18 @@ uint32_t SimpleJSONProtocolReader::readFieldBegin(std::string& name,
   }
   fieldId = std::numeric_limits<int16_t>::min();
   fieldType = TType::T_VOID;
-  return readString(name);
+  auto ret = readString(name);
+  ensureAndSkipContext();
+  skipWhitespace();
+  auto peek = *in_.peek().first;
+  if (peek == 'n') {
+    bool tmp;
+    ret += ensureAndReadContext(tmp);
+    ret += readWhitespace();
+    ret += readJSONNull();
+    ret += readFieldBegin(name, fieldType, fieldId);
+  }
+  return ret;
 }
 
 uint32_t SimpleJSONProtocolReader::readFieldEnd() {
@@ -984,7 +1021,7 @@ uint32_t SimpleJSONProtocolReader::readString(StrType& str) {
 template <typename StrType>
 uint32_t SimpleJSONProtocolReader::readBinary(StrType& str) {
   bool keyish;
-  auto ret = ensureAndSkipContext(keyish);
+  auto ret = ensureAndReadContext(keyish);
   return ret + readJSONBase64(str);
 }
 
@@ -992,7 +1029,7 @@ uint32_t SimpleJSONProtocolReader::readBinary(
     std::unique_ptr<folly::IOBuf>& str) {
   std::string tmp;
   bool keyish;
-  auto ret = ensureAndSkipContext(keyish);
+  auto ret = ensureAndReadContext(keyish);
   ret += readJSONBase64(tmp);
   str = folly::IOBuf::copyBuffer(tmp);
   return ret;
@@ -1001,7 +1038,7 @@ uint32_t SimpleJSONProtocolReader::readBinary(
 uint32_t SimpleJSONProtocolReader::readBinary(folly::IOBuf& str) {
   std::string tmp;
   bool keyish;
-  auto ret = ensureAndSkipContext(keyish);
+  auto ret = ensureAndReadContext(keyish);
   ret += readJSONBase64(tmp);
   str.appendChain(folly::IOBuf::copyBuffer(tmp));
   return ret;
@@ -1043,7 +1080,7 @@ uint32_t SimpleJSONProtocolReader::readFromPositionAndAppend(
 
 uint32_t SimpleJSONProtocolReader::skip(TType type) {
   bool keyish;
-  auto ret = ensureAndSkipContext(keyish);
+  auto ret = ensureAndReadContext(keyish);
   ret += readWhitespace();
   auto ch = *in_.peek().first;
   if (ch == TJSONProtocol::kJSONObjectStart) {
@@ -1068,6 +1105,8 @@ uint32_t SimpleJSONProtocolReader::skip(TType type) {
   } else if (ch == 't' || ch == 'f') {
     bool tmp;
     return ret + readJSONVal(tmp);
+  } else if (ch == 'n') {
+    return ret + readJSONNull();
   }
 
   throw TProtocolException(
