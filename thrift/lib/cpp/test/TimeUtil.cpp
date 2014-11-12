@@ -185,7 +185,7 @@ std::ostream& operator<<(std::ostream& os, const TimePoint& timePoint) {
   return os;
 }
 
-boost::test_tools::predicate_result
+::testing::AssertionResult
 checkTimeout(const TimePoint& start, const TimePoint& end,
              int64_t expectedMS, bool allowSmaller, int64_t tolerance) {
   int64_t elapsedMS = end.getTimeStart() - start.getTimeEnd();
@@ -193,10 +193,9 @@ checkTimeout(const TimePoint& start, const TimePoint& end,
   if (!allowSmaller) {
     // timeouts should never fire before the time was up
     if (elapsedMS < expectedMS) {
-      boost::test_tools::predicate_result res(false);
-      res.message() << "event occurred in only " << elapsedMS <<
-        "ms, before expected " << expectedMS << "ms had expired";
-      return res;
+      return ::testing::AssertionFailure()
+        << "event occurred in only " << elapsedMS << "ms, before expected "
+        << expectedMS << "ms had expired";
     }
   }
 
@@ -226,14 +225,12 @@ checkTimeout(const TimePoint& start, const TimePoint& end,
   // millisecond.  The tolerance parameter lets users allow a few ms of slop.
   int64_t overrun = effectiveElapsedMS - expectedMS;
   if (overrun > tolerance) {
-    boost::test_tools::predicate_result res(false);
-    res.message() << "event took too long: occurred after " <<
-      effectiveElapsedMS << "+" << excludedMS << " ms; expected " <<
-      expectedMS << "ms";
-    return res;
+    return ::testing::AssertionFailure()
+      << "event took too long: occurred after " << effectiveElapsedMS
+      << "+" << excludedMS << " ms; expected " << expectedMS << "ms";
   }
 
-  return true;
+  return ::testing::AssertionSuccess();
 }
 
 }}} // apache::thrift::test

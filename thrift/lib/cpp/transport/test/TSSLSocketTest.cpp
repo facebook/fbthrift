@@ -27,16 +27,14 @@
 #include <thrift/lib/cpp/transport/TRpcTransport.h>
 #include <thrift/lib/cpp/TProcessor.h>
 
-#include <boost/test/unit_test.hpp>
+#include <fcntl.h>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <list>
-#include <unistd.h>
-#include <fcntl.h>
 #include <poll.h>
-#include <sys/types.h>
 #include <sys/socket.h>
-
-using namespace boost;
+#include <sys/types.h>
+#include <unistd.h>
 
 using std::string;
 using std::vector;
@@ -101,12 +99,12 @@ void TestSSLServer::serve() {
   while (!stopped_) {
     std::shared_ptr<TRpcTransport> sock = socket_->accept();
     TSSLSocket *sslSock = dynamic_cast<TSSLSocket*>(sock.get());
-    BOOST_CHECK(sslSock);
+    CHECK_NOTNULL(sslSock);
 
     // read()
     uint8_t buf[128];
     uint32_t bytesRead = sslSock->readAll(buf, sizeof(buf));
-    BOOST_CHECK_EQUAL(bytesRead, 128);
+    ASSERT_EQ(bytesRead, 128);
 
     // write()
     sslSock->write(buf, sizeof(buf));
@@ -141,8 +139,8 @@ void testServerClient(SSLContext::SSLVersion serverVersion,
   // read()
   uint8_t readbuf[128];
   uint32_t bytesRead = socket->readAll(readbuf, sizeof(readbuf));
-  BOOST_CHECK_EQUAL(bytesRead, 128);
-  BOOST_CHECK_EQUAL(memcmp(buf, readbuf, bytesRead), 0);
+  ASSERT_EQ(bytesRead, 128);
+  ASSERT_EQ(memcmp(buf, readbuf, bytesRead), 0);
 
   // close()
   socket->close();
@@ -152,7 +150,7 @@ void testServerClient(SSLContext::SSLVersion serverVersion,
  * Test connecting to, writing to, reading from, and closing the
  * connection to the SSL server.
  */
-BOOST_AUTO_TEST_CASE(ConnectWriteReadClose) {
+TEST(TSSLSocketTest, ConnectWriteReadClose) {
   for (int serverVersion = SSLContext::SSLv2;
        serverVersion <= SSLContext::TLSv1; serverVersion++) {
     // Client version must be the same or higher than the server version.
@@ -162,24 +160,4 @@ BOOST_AUTO_TEST_CASE(ConnectWriteReadClose) {
                        (SSLContext::SSLVersion)clientVersion);
     }
   }
-}
-
-///////////////////////////////////////////////////////////////////////////
-// init_unit_test_suite
-///////////////////////////////////////////////////////////////////////////
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value =
-    "TSSLContextTest";
-
-  if (argc != 1) {
-    cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      cerr << " " << argv[n];
-    }
-    cerr << endl;
-    exit(1);
-  }
-
-  return nullptr;
 }

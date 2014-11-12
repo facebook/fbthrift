@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
@@ -31,7 +31,6 @@
 #include <unistd.h>
 #include <memory>
 
-using namespace boost;
 using namespace apache::thrift;
 using namespace apache::thrift::async;
 using namespace apache::thrift::concurrency;
@@ -54,7 +53,7 @@ ssize_t writeToFD(int fd, size_t length) {
   char buf[length];
   memset(buf, 'a', sizeof(buf));
   ssize_t rc = write(fd, buf, sizeof(buf));
-  BOOST_CHECK_EQUAL(rc, length);
+  CHECK_EQ(rc, length);
   return rc;
 }
 
@@ -66,7 +65,7 @@ size_t writeUntilFull(int fd) {
   while (true) {
     ssize_t rc = write(fd, buf, sizeof(buf));
     if (rc < 0) {
-      BOOST_REQUIRE_EQUAL(errno, EAGAIN);
+      CHECK_EQ(errno, EAGAIN);
       break;
     } else {
       bytesWritten += rc;
@@ -88,9 +87,9 @@ size_t readUntilEmpty(int fd) {
   while (true) {
     int rc = read(fd, buf, sizeof(buf));
     if (rc == 0) {
-      BOOST_FAIL("unexpected EOF");
+      CHECK(false) << "unexpected EOF";
     } else if (rc < 0) {
-      BOOST_REQUIRE_EQUAL(errno, EAGAIN);
+      CHECK_EQ(errno, EAGAIN);
       break;
     } else {
       bytesRead += rc;
@@ -100,7 +99,7 @@ size_t readUntilEmpty(int fd) {
 }
 
 void checkReadUntilEmpty(int fd, size_t expectedLength) {
-  BOOST_CHECK_EQUAL(readUntilEmpty(fd), expectedLength);
+  ASSERT_EQ(readUntilEmpty(fd), expectedLength);
 }
 
 struct ScheduledEvent {
@@ -178,7 +177,7 @@ class TestHandler : public TEventHandler {
 /**
  * Test a READ event
  */
-BOOST_AUTO_TEST_CASE(ReadEvent) {
+TEST(TEventBaseTest, ReadEvent) {
   TEventBase eb;
   SocketPair sp;
 
@@ -202,22 +201,22 @@ BOOST_AUTO_TEST_CASE(ReadEvent) {
   // Since we didn't use the TEventHandler::PERSIST flag, the handler should
   // have received the first read, then unregistered itself.  Check that only
   // the first chunk of data was received.
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 1);
-  BOOST_CHECK_EQUAL(handler.log[0].events, TEventHandler::READ);
+  ASSERT_EQ(handler.log.size(), 1);
+  ASSERT_EQ(handler.log[0].events, TEventHandler::READ);
   T_CHECK_TIMEOUT(start, handler.log[0].timestamp, events[0].milliseconds, 90);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesRead, events[0].length);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesWritten, 0);
+  ASSERT_EQ(handler.log[0].bytesRead, events[0].length);
+  ASSERT_EQ(handler.log[0].bytesWritten, 0);
   T_CHECK_TIMEOUT(start, end, events[1].milliseconds, 30);
 
   // Make sure the second chunk of data is still waiting to be read.
   size_t bytesRemaining = readUntilEmpty(sp[0]);
-  BOOST_CHECK_EQUAL(bytesRemaining, events[1].length);
+  ASSERT_EQ(bytesRemaining, events[1].length);
 }
 
 /**
  * Test (READ | PERSIST)
  */
-BOOST_AUTO_TEST_CASE(ReadPersist) {
+TEST(TEventBaseTest, ReadPersist) {
   TEventBase eb;
   SocketPair sp;
 
@@ -245,24 +244,24 @@ BOOST_AUTO_TEST_CASE(ReadPersist) {
 
   // The handler should have received the first 3 events,
   // then been unregistered after that.
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 3);
+  ASSERT_EQ(handler.log.size(), 3);
   for (int n = 0; n < 3; ++n) {
-    BOOST_CHECK_EQUAL(handler.log[n].events, TEventHandler::READ);
+    ASSERT_EQ(handler.log[n].events, TEventHandler::READ);
     T_CHECK_TIMEOUT(start, handler.log[n].timestamp, events[n].milliseconds);
-    BOOST_CHECK_EQUAL(handler.log[n].bytesRead, events[n].length);
-    BOOST_CHECK_EQUAL(handler.log[n].bytesWritten, 0);
+    ASSERT_EQ(handler.log[n].bytesRead, events[n].length);
+    ASSERT_EQ(handler.log[n].bytesWritten, 0);
   }
   T_CHECK_TIMEOUT(start, end, events[3].milliseconds);
 
   // Make sure the data from the last write is still waiting to be read
   size_t bytesRemaining = readUntilEmpty(sp[0]);
-  BOOST_CHECK_EQUAL(bytesRemaining, events[3].length);
+  ASSERT_EQ(bytesRemaining, events[3].length);
 }
 
 /**
  * Test registering for READ when the socket is immediately readable
  */
-BOOST_AUTO_TEST_CASE(ReadImmediate) {
+TEST(TEventBaseTest, ReadImmediate) {
   TEventBase eb;
   SocketPair sp;
 
@@ -290,19 +289,19 @@ BOOST_AUTO_TEST_CASE(ReadImmediate) {
   eb.loop();
   TimePoint end;
 
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 2);
+  ASSERT_EQ(handler.log.size(), 2);
 
   // There should have been 1 event for immediate readability
-  BOOST_CHECK_EQUAL(handler.log[0].events, TEventHandler::READ);
+  ASSERT_EQ(handler.log[0].events, TEventHandler::READ);
   T_CHECK_TIMEOUT(start, handler.log[0].timestamp, 0);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesRead, dataLength);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesWritten, 0);
+  ASSERT_EQ(handler.log[0].bytesRead, dataLength);
+  ASSERT_EQ(handler.log[0].bytesWritten, 0);
 
   // There should be another event after the timeout wrote more data
-  BOOST_CHECK_EQUAL(handler.log[1].events, TEventHandler::READ);
+  ASSERT_EQ(handler.log[1].events, TEventHandler::READ);
   T_CHECK_TIMEOUT(start, handler.log[1].timestamp, events[0].milliseconds);
-  BOOST_CHECK_EQUAL(handler.log[1].bytesRead, events[0].length);
-  BOOST_CHECK_EQUAL(handler.log[1].bytesWritten, 0);
+  ASSERT_EQ(handler.log[1].bytesRead, events[0].length);
+  ASSERT_EQ(handler.log[1].bytesWritten, 0);
 
   T_CHECK_TIMEOUT(start, end, 20);
 }
@@ -310,7 +309,7 @@ BOOST_AUTO_TEST_CASE(ReadImmediate) {
 /**
  * Test a WRITE event
  */
-BOOST_AUTO_TEST_CASE(WriteEvent) {
+TEST(TEventBaseTest, WriteEvent) {
   TEventBase eb;
   SocketPair sp;
 
@@ -336,21 +335,21 @@ BOOST_AUTO_TEST_CASE(WriteEvent) {
 
   // Since we didn't use the TEventHandler::PERSIST flag, the handler should
   // have only been able to write once, then unregistered itself.
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 1);
-  BOOST_CHECK_EQUAL(handler.log[0].events, TEventHandler::WRITE);
+  ASSERT_EQ(handler.log.size(), 1);
+  ASSERT_EQ(handler.log[0].events, TEventHandler::WRITE);
   T_CHECK_TIMEOUT(start, handler.log[0].timestamp, events[0].milliseconds);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesRead, 0);
-  BOOST_CHECK_GT(handler.log[0].bytesWritten, 0);
+  ASSERT_EQ(handler.log[0].bytesRead, 0);
+  ASSERT_GT(handler.log[0].bytesWritten, 0);
   T_CHECK_TIMEOUT(start, end, events[1].milliseconds);
 
-  BOOST_CHECK_EQUAL(events[0].result, initialBytesWritten);
-  BOOST_CHECK_EQUAL(events[1].result, handler.log[0].bytesWritten);
+  ASSERT_EQ(events[0].result, initialBytesWritten);
+  ASSERT_EQ(events[1].result, handler.log[0].bytesWritten);
 }
 
 /**
  * Test (WRITE | PERSIST)
  */
-BOOST_AUTO_TEST_CASE(WritePersist) {
+TEST(TEventBaseTest, WritePersist) {
   TEventBase eb;
   SocketPair sp;
 
@@ -381,14 +380,14 @@ BOOST_AUTO_TEST_CASE(WritePersist) {
 
   // The handler should have received the first 3 events,
   // then been unregistered after that.
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 3);
-  BOOST_CHECK_EQUAL(events[0].result, initialBytesWritten);
+  ASSERT_EQ(handler.log.size(), 3);
+  ASSERT_EQ(events[0].result, initialBytesWritten);
   for (int n = 0; n < 3; ++n) {
-    BOOST_CHECK_EQUAL(handler.log[n].events, TEventHandler::WRITE);
+    ASSERT_EQ(handler.log[n].events, TEventHandler::WRITE);
     T_CHECK_TIMEOUT(start, handler.log[n].timestamp, events[n].milliseconds);
-    BOOST_CHECK_EQUAL(handler.log[n].bytesRead, 0);
-    BOOST_CHECK_GT(handler.log[n].bytesWritten, 0);
-    BOOST_CHECK_EQUAL(handler.log[n].bytesWritten, events[n + 1].result);
+    ASSERT_EQ(handler.log[n].bytesRead, 0);
+    ASSERT_GT(handler.log[n].bytesWritten, 0);
+    ASSERT_EQ(handler.log[n].bytesWritten, events[n + 1].result);
   }
   T_CHECK_TIMEOUT(start, end, events[3].milliseconds);
 }
@@ -396,7 +395,7 @@ BOOST_AUTO_TEST_CASE(WritePersist) {
 /**
  * Test registering for WRITE when the socket is immediately writable
  */
-BOOST_AUTO_TEST_CASE(WriteImmediate) {
+TEST(TEventBaseTest, WriteImmediate) {
   TEventBase eb;
   SocketPair sp;
 
@@ -421,20 +420,20 @@ BOOST_AUTO_TEST_CASE(WriteImmediate) {
   eb.loop();
   TimePoint end;
 
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 2);
+  ASSERT_EQ(handler.log.size(), 2);
 
   // Since the socket buffer was initially empty,
   // there should have been 1 event for immediate writability
-  BOOST_CHECK_EQUAL(handler.log[0].events, TEventHandler::WRITE);
+  ASSERT_EQ(handler.log[0].events, TEventHandler::WRITE);
   T_CHECK_TIMEOUT(start, handler.log[0].timestamp, 0);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesRead, 0);
-  BOOST_CHECK_GT(handler.log[0].bytesWritten, 0);
+  ASSERT_EQ(handler.log[0].bytesRead, 0);
+  ASSERT_GT(handler.log[0].bytesWritten, 0);
 
   // There should be another event after the timeout wrote more data
-  BOOST_CHECK_EQUAL(handler.log[1].events, TEventHandler::WRITE);
+  ASSERT_EQ(handler.log[1].events, TEventHandler::WRITE);
   T_CHECK_TIMEOUT(start, handler.log[1].timestamp, events[0].milliseconds);
-  BOOST_CHECK_EQUAL(handler.log[1].bytesRead, 0);
-  BOOST_CHECK_GT(handler.log[1].bytesWritten, 0);
+  ASSERT_EQ(handler.log[1].bytesRead, 0);
+  ASSERT_GT(handler.log[1].bytesWritten, 0);
 
   T_CHECK_TIMEOUT(start, end, unregisterTimeout);
 }
@@ -442,7 +441,7 @@ BOOST_AUTO_TEST_CASE(WriteImmediate) {
 /**
  * Test (READ | WRITE) when the socket becomes readable first
  */
-BOOST_AUTO_TEST_CASE(ReadWrite) {
+TEST(TEventBaseTest, ReadWrite) {
   TEventBase eb;
   SocketPair sp;
 
@@ -469,19 +468,19 @@ BOOST_AUTO_TEST_CASE(ReadWrite) {
   // Since we didn't use the TEventHandler::PERSIST flag, the handler should
   // have only noticed readability, then unregistered itself.  Check that only
   // one event was logged.
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 1);
-  BOOST_CHECK_EQUAL(handler.log[0].events, TEventHandler::READ);
+  ASSERT_EQ(handler.log.size(), 1);
+  ASSERT_EQ(handler.log[0].events, TEventHandler::READ);
   T_CHECK_TIMEOUT(start, handler.log[0].timestamp, events[0].milliseconds);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesRead, events[0].length);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesWritten, 0);
-  BOOST_CHECK_EQUAL(events[1].result, sock0WriteLength);
+  ASSERT_EQ(handler.log[0].bytesRead, events[0].length);
+  ASSERT_EQ(handler.log[0].bytesWritten, 0);
+  ASSERT_EQ(events[1].result, sock0WriteLength);
   T_CHECK_TIMEOUT(start, end, events[1].milliseconds);
 }
 
 /**
  * Test (READ | WRITE) when the socket becomes writable first
  */
-BOOST_AUTO_TEST_CASE(WriteRead) {
+TEST(TEventBaseTest, WriteRead) {
   TEventBase eb;
   SocketPair sp;
 
@@ -509,25 +508,25 @@ BOOST_AUTO_TEST_CASE(WriteRead) {
   // Since we didn't use the TEventHandler::PERSIST flag, the handler should
   // have only noticed writability, then unregistered itself.  Check that only
   // one event was logged.
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 1);
-  BOOST_CHECK_EQUAL(handler.log[0].events, TEventHandler::WRITE);
+  ASSERT_EQ(handler.log.size(), 1);
+  ASSERT_EQ(handler.log[0].events, TEventHandler::WRITE);
   T_CHECK_TIMEOUT(start, handler.log[0].timestamp, events[0].milliseconds);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesRead, 0);
-  BOOST_CHECK_GT(handler.log[0].bytesWritten, 0);
-  BOOST_CHECK_EQUAL(events[0].result, sock0WriteLength);
-  BOOST_CHECK_EQUAL(events[1].result, sock1WriteLength);
+  ASSERT_EQ(handler.log[0].bytesRead, 0);
+  ASSERT_GT(handler.log[0].bytesWritten, 0);
+  ASSERT_EQ(events[0].result, sock0WriteLength);
+  ASSERT_EQ(events[1].result, sock1WriteLength);
   T_CHECK_TIMEOUT(start, end, events[1].milliseconds);
 
   // Make sure the written data is still waiting to be read.
   size_t bytesRemaining = readUntilEmpty(sp[0]);
-  BOOST_CHECK_EQUAL(bytesRemaining, events[1].length);
+  ASSERT_EQ(bytesRemaining, events[1].length);
 }
 
 /**
  * Test (READ | WRITE) when the socket becomes readable and writable
  * at the same time.
  */
-BOOST_AUTO_TEST_CASE(ReadWriteSimultaneous) {
+TEST(TEventBaseTest, ReadWriteSimultaneous) {
   TEventBase eb;
   SocketPair sp;
 
@@ -555,19 +554,19 @@ BOOST_AUTO_TEST_CASE(ReadWriteSimultaneous) {
   // implementation changes this test could start failing, and it wouldn't be
   // considered breaking the API.  However for now it's nice to exercise this
   // code path.
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 1);
-  BOOST_CHECK_EQUAL(handler.log[0].events,
+  ASSERT_EQ(handler.log.size(), 1);
+  ASSERT_EQ(handler.log[0].events,
                     TEventHandler::READ | TEventHandler::WRITE);
   T_CHECK_TIMEOUT(start, handler.log[0].timestamp, events[0].milliseconds);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesRead, sock0WriteLength);
-  BOOST_CHECK_GT(handler.log[0].bytesWritten, 0);
+  ASSERT_EQ(handler.log[0].bytesRead, sock0WriteLength);
+  ASSERT_GT(handler.log[0].bytesWritten, 0);
   T_CHECK_TIMEOUT(start, end, events[0].milliseconds);
 }
 
 /**
  * Test (READ | WRITE | PERSIST)
  */
-BOOST_AUTO_TEST_CASE(ReadWritePersist) {
+TEST(TEventBaseTest, ReadWritePersist) {
   TEventBase eb;
   SocketPair sp;
 
@@ -596,34 +595,34 @@ BOOST_AUTO_TEST_CASE(ReadWritePersist) {
   eb.loop();
   TimePoint end;
 
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 6);
+  ASSERT_EQ(handler.log.size(), 6);
 
   // Since we didn't fill up the write buffer immediately, there should
   // be an immediate event for writability.
-  BOOST_CHECK_EQUAL(handler.log[0].events, TEventHandler::WRITE);
+  ASSERT_EQ(handler.log[0].events, TEventHandler::WRITE);
   T_CHECK_TIMEOUT(start, handler.log[0].timestamp, 0);
-  BOOST_CHECK_EQUAL(handler.log[0].bytesRead, 0);
-  BOOST_CHECK_GT(handler.log[0].bytesWritten, 0);
+  ASSERT_EQ(handler.log[0].bytesRead, 0);
+  ASSERT_GT(handler.log[0].bytesWritten, 0);
 
   // Events 1 through 5 should correspond to the scheduled events
   for (int n = 1; n < 6; ++n) {
     ScheduledEvent* event = &events[n - 1];
     T_CHECK_TIMEOUT(start, handler.log[n].timestamp, event->milliseconds);
     if (event->events == TEventHandler::READ) {
-      BOOST_CHECK_EQUAL(handler.log[n].events, TEventHandler::WRITE);
-      BOOST_CHECK_EQUAL(handler.log[n].bytesRead, 0);
-      BOOST_CHECK_GT(handler.log[n].bytesWritten, 0);
+      ASSERT_EQ(handler.log[n].events, TEventHandler::WRITE);
+      ASSERT_EQ(handler.log[n].bytesRead, 0);
+      ASSERT_GT(handler.log[n].bytesWritten, 0);
     } else {
-      BOOST_CHECK_EQUAL(handler.log[n].events, TEventHandler::READ);
-      BOOST_CHECK_EQUAL(handler.log[n].bytesRead, event->length);
-      BOOST_CHECK_EQUAL(handler.log[n].bytesWritten, 0);
+      ASSERT_EQ(handler.log[n].events, TEventHandler::READ);
+      ASSERT_EQ(handler.log[n].bytesRead, event->length);
+      ASSERT_EQ(handler.log[n].bytesWritten, 0);
     }
   }
 
   // The timeout should have unregistered the handler before the last write.
   // Make sure that data is still waiting to be read
   size_t bytesRemaining = readUntilEmpty(sp[0]);
-  BOOST_CHECK_EQUAL(bytesRemaining, events[5].length);
+  ASSERT_EQ(bytesRemaining, events[5].length);
 }
 
 
@@ -648,7 +647,7 @@ class PartialReadHandler : public TestHandler {
  * When PERSIST is used, make sure the handler gets notified again the next
  * time around the loop.
  */
-BOOST_AUTO_TEST_CASE(ReadPartial) {
+TEST(TEventBaseTest, ReadPartial) {
   TEventBase eb;
   SocketPair sp;
 
@@ -673,20 +672,20 @@ BOOST_AUTO_TEST_CASE(ReadPartial) {
   eb.loop();
   TimePoint end;
 
-  BOOST_REQUIRE_EQUAL(handler.log.size(), 4);
+  ASSERT_EQ(handler.log.size(), 4);
 
   // The first 3 invocations should read readLength bytes each
   for (int n = 0; n < 3; ++n) {
-    BOOST_CHECK_EQUAL(handler.log[n].events, TEventHandler::READ);
+    ASSERT_EQ(handler.log[n].events, TEventHandler::READ);
     T_CHECK_TIMEOUT(start, handler.log[n].timestamp, events[0].milliseconds);
-    BOOST_CHECK_EQUAL(handler.log[n].bytesRead, readLength);
-    BOOST_CHECK_EQUAL(handler.log[n].bytesWritten, 0);
+    ASSERT_EQ(handler.log[n].bytesRead, readLength);
+    ASSERT_EQ(handler.log[n].bytesWritten, 0);
   }
   // The last read only has readLength/2 bytes
-  BOOST_CHECK_EQUAL(handler.log[3].events, TEventHandler::READ);
+  ASSERT_EQ(handler.log[3].events, TEventHandler::READ);
   T_CHECK_TIMEOUT(start, handler.log[3].timestamp, events[0].milliseconds);
-  BOOST_CHECK_EQUAL(handler.log[3].bytesRead, readLength / 2);
-  BOOST_CHECK_EQUAL(handler.log[3].bytesWritten, 0);
+  ASSERT_EQ(handler.log[3].bytesRead, readLength / 2);
+  ASSERT_EQ(handler.log[3].bytesWritten, 0);
 }
 
 
@@ -711,7 +710,7 @@ class PartialWriteHandler : public TestHandler {
  * becomes writable.  When PERSIST is used, make sure the handler gets
  * notified again the next time around the loop.
  */
-BOOST_AUTO_TEST_CASE(WritePartial) {
+TEST(TEventBaseTest, WritePartial) {
   TEventBase eb;
   SocketPair sp;
 
@@ -741,15 +740,15 @@ BOOST_AUTO_TEST_CASE(WritePartial) {
   // Depending on how big the socket buffer is, there will be multiple writes
   // Only check the first 5
   int numChecked = 5;
-  BOOST_REQUIRE_GE(handler.log.size(), numChecked);
-  BOOST_CHECK_EQUAL(events[0].result, initialBytesWritten);
+  ASSERT_GE(handler.log.size(), numChecked);
+  ASSERT_EQ(events[0].result, initialBytesWritten);
 
   // The first 3 invocations should read writeLength bytes each
   for (int n = 0; n < numChecked; ++n) {
-    BOOST_CHECK_EQUAL(handler.log[n].events, TEventHandler::WRITE);
+    ASSERT_EQ(handler.log[n].events, TEventHandler::WRITE);
     T_CHECK_TIMEOUT(start, handler.log[n].timestamp, events[0].milliseconds);
-    BOOST_CHECK_EQUAL(handler.log[n].bytesRead, 0);
-    BOOST_CHECK_EQUAL(handler.log[n].bytesWritten, writeLength);
+    ASSERT_EQ(handler.log[n].bytesRead, 0);
+    ASSERT_EQ(handler.log[n].bytesWritten, writeLength);
   }
 }
 
@@ -757,7 +756,7 @@ BOOST_AUTO_TEST_CASE(WritePartial) {
 /**
  * Test destroying a registered TEventHandler
  */
-BOOST_AUTO_TEST_CASE(DestroyHandler) {
+TEST(TEventBaseTest, DestroyHandler) {
   class DestroyHandler : public TAsyncTimeout {
    public:
     DestroyHandler(TEventBase* eb, TEventHandler* h)
@@ -803,7 +802,7 @@ BOOST_AUTO_TEST_CASE(DestroyHandler) {
   // Make sure that the handler wrote data to the socket
   // before it was destroyed
   size_t bytesRemaining = readUntilEmpty(sp[1]);
-  BOOST_CHECK_GT(bytesRemaining, 0);
+  ASSERT_GT(bytesRemaining, 0);
 }
 
 
@@ -811,7 +810,7 @@ BOOST_AUTO_TEST_CASE(DestroyHandler) {
 // Tests for timeout events
 ///////////////////////////////////////////////////////////////////////////
 
-BOOST_AUTO_TEST_CASE(RunAfterDelay) {
+TEST(TEventBaseTest, RunAfterDelay) {
   TEventBase eb;
 
   TimePoint timestamp1(false);
@@ -835,7 +834,7 @@ BOOST_AUTO_TEST_CASE(RunAfterDelay) {
  * Test the behavior of runAfterDelay() when some timeouts are
  * still scheduled when the TEventBase is destroyed.
  */
-BOOST_AUTO_TEST_CASE(RunAfterDelayDestruction) {
+TEST(TEventBaseTest, RunAfterDelayDestruction) {
   TimePoint timestamp1(false);
   TimePoint timestamp2(false);
   TimePoint timestamp3(false);
@@ -866,8 +865,8 @@ BOOST_AUTO_TEST_CASE(RunAfterDelayDestruction) {
   T_CHECK_TIMEOUT(start, timestamp2, 20);
   T_CHECK_TIMEOUT(start, end, 40);
 
-  BOOST_CHECK(timestamp3.isUnset());
-  BOOST_CHECK(timestamp4.isUnset());
+  ASSERT_TRUE(timestamp3.isUnset());
+  ASSERT_TRUE(timestamp4.isUnset());
 
   // Ideally this test should be run under valgrind to ensure that no
   // memory is leaked.
@@ -886,7 +885,7 @@ class TestTimeout : public TAsyncTimeout {
   TimePoint timestamp;
 };
 
-BOOST_AUTO_TEST_CASE(BasicTimeouts) {
+TEST(TEventBaseTest, BasicTimeouts) {
   TEventBase eb;
 
   TestTimeout t1(&eb);
@@ -940,7 +939,7 @@ class ReschedulingTimeout : public TAsyncTimeout {
 /**
  * Test rescheduling the same timeout multiple times
  */
-BOOST_AUTO_TEST_CASE(ReuseTimeout) {
+TEST(TEventBaseTest, ReuseTimeout) {
   TEventBase eb;
 
   vector<uint32_t> timeouts;
@@ -960,7 +959,7 @@ BOOST_AUTO_TEST_CASE(ReuseTimeout) {
   // milliseconds, and we're tripling this error by witing on 3 timeouts.
   int64_t tolerance = 6;
 
-  BOOST_REQUIRE_EQUAL(timeouts.size(), t.timestamps.size());
+  ASSERT_EQ(timeouts.size(), t.timestamps.size());
   uint32_t total = 0;
   for (int n = 0; n < timeouts.size(); ++n) {
     total += timeouts[n];
@@ -972,7 +971,7 @@ BOOST_AUTO_TEST_CASE(ReuseTimeout) {
 /**
  * Test rescheduling a timeout before it has fired
  */
-BOOST_AUTO_TEST_CASE(RescheduleTimeout) {
+TEST(TEventBaseTest, RescheduleTimeout) {
   TEventBase eb;
 
   TestTimeout t1(&eb);
@@ -1004,7 +1003,7 @@ BOOST_AUTO_TEST_CASE(RescheduleTimeout) {
 /**
  * Test cancelling a timeout
  */
-BOOST_AUTO_TEST_CASE(CancelTimeout) {
+TEST(TEventBaseTest, CancelTimeout) {
   TEventBase eb;
 
   vector<uint32_t> timeouts;
@@ -1020,7 +1019,7 @@ BOOST_AUTO_TEST_CASE(CancelTimeout) {
   eb.loop();
   TimePoint end;
 
-  BOOST_REQUIRE_EQUAL(t.timestamps.size(), 2);
+  ASSERT_EQ(t.timestamps.size(), 2);
   T_CHECK_TIMEOUT(start, t.timestamps[0], 10);
   T_CHECK_TIMEOUT(start, t.timestamps[1], 40);
   T_CHECK_TIMEOUT(start, end, 50);
@@ -1029,7 +1028,7 @@ BOOST_AUTO_TEST_CASE(CancelTimeout) {
 /**
  * Test destroying a scheduled timeout object
  */
-BOOST_AUTO_TEST_CASE(DestroyTimeout) {
+TEST(TEventBaseTest, DestroyTimeout) {
   class DestroyTimeout : public TAsyncTimeout {
    public:
     DestroyTimeout(TEventBase* eb, TAsyncTimeout* t)
@@ -1120,7 +1119,7 @@ class RunInThreadTester : public concurrency::Runnable {
   RunInThreadData* data_;
 };
 
-BOOST_AUTO_TEST_CASE(RunInThread) {
+TEST(TEventBaseTest, RunInThread) {
   uint32_t numThreads = 50;
   uint32_t opsPerThread = 100;
   RunInThreadData data(numThreads, opsPerThread);
@@ -1152,7 +1151,7 @@ BOOST_AUTO_TEST_CASE(RunInThread) {
   // Assert that it happens in under a second.  (This is still tons of extra
   // padding.)
   int64_t timeTaken = end.getTime() - start.getTime();
-  BOOST_CHECK_LT(timeTaken, 1000);
+  ASSERT_LT(timeTaken, 1000);
   VLOG(11) << "Time taken: " << timeTaken;
 
   // Verify that we have all of the events from every thread
@@ -1165,11 +1164,11 @@ BOOST_AUTO_TEST_CASE(RunInThread) {
        ++it) {
     int threadID = it->first;
     int value = it->second;
-    BOOST_CHECK_EQUAL(expectedValues[threadID], value);
+    ASSERT_EQ(expectedValues[threadID], value);
     ++expectedValues[threadID];
   }
   for (int n = 0; n < numThreads; ++n) {
-    BOOST_CHECK_EQUAL(expectedValues[n], opsPerThread);
+    ASSERT_EQ(expectedValues[n], opsPerThread);
   }
 
   // Wait on all of the threads.  Otherwise we can exit and clean up
@@ -1217,22 +1216,22 @@ class CountedLoopCallback : public TEventBase::LoopCallback {
 
 // Test that TEventBase::loop() doesn't exit while there are
 // still LoopCallbacks remaining to be invoked.
-BOOST_AUTO_TEST_CASE(RepeatedRunInLoop) {
+TEST(TEventBaseTest, RepeatedRunInLoop) {
   TEventBase eventBase;
 
   CountedLoopCallback c(&eventBase, 10);
   eventBase.runInLoop(&c);
   // The callback shouldn't have run immediately
-  BOOST_CHECK_EQUAL(c.getCount(), 10);
+  ASSERT_EQ(c.getCount(), 10);
   eventBase.loop();
 
   // loop() should loop until the CountedLoopCallback stops
   // re-installing itself.
-  BOOST_CHECK_EQUAL(c.getCount(), 0);
+  ASSERT_EQ(c.getCount(), 0);
 }
 
 // Test runInLoop() calls with terminateLoopSoon()
-BOOST_AUTO_TEST_CASE(RunInLoopStopLoop) {
+TEST(TEventBaseTest, RunInLoopStopLoop) {
   TEventBase eventBase;
 
   CountedLoopCallback c1(&eventBase, 20);
@@ -1241,13 +1240,13 @@ BOOST_AUTO_TEST_CASE(RunInLoopStopLoop) {
 
   eventBase.runInLoop(&c1);
   eventBase.runInLoop(&c2);
-  BOOST_CHECK_EQUAL(c1.getCount(), 20);
-  BOOST_CHECK_EQUAL(c2.getCount(), 10);
+  ASSERT_EQ(c1.getCount(), 20);
+  ASSERT_EQ(c2.getCount(), 10);
 
   eventBase.loopForever();
 
   // c2 should have stopped the loop after 10 iterations
-  BOOST_CHECK_EQUAL(c2.getCount(), 0);
+  ASSERT_EQ(c2.getCount(), 0);
 
   // We allow the TEventBase to run the loop callbacks in whatever order it
   // chooses.  We'll accept c1's count being either 10 (if the loop terminated
@@ -1256,12 +1255,12 @@ BOOST_AUTO_TEST_CASE(RunInLoopStopLoop) {
   //
   // (With the current code, c1 will always run 10 times, but we don't consider
   // this a hard API requirement.)
-  BOOST_CHECK_GE(c1.getCount(), 10);
-  BOOST_CHECK_LE(c1.getCount(), 11);
+  ASSERT_GE(c1.getCount(), 10);
+  ASSERT_LE(c1.getCount(), 11);
 }
 
 // Test cancelling runInLoop() callbacks
-BOOST_AUTO_TEST_CASE(CancelRunInLoop) {
+TEST(TEventBaseTest, CancelRunInLoop) {
   TEventBase eventBase;
 
   CountedLoopCallback c1(&eventBase, 20);
@@ -1287,21 +1286,21 @@ BOOST_AUTO_TEST_CASE(CancelRunInLoop) {
   // Install c3
   eventBase.runInLoop(&c3);
 
-  BOOST_CHECK_EQUAL(c1.getCount(), 20);
-  BOOST_CHECK_EQUAL(c2.getCount(), 20);
-  BOOST_CHECK_EQUAL(c3.getCount(), 20);
-  BOOST_CHECK_EQUAL(cancelC1.getCount(), 10);
-  BOOST_CHECK_EQUAL(cancelC2.getCount(), 10);
+  ASSERT_EQ(c1.getCount(), 20);
+  ASSERT_EQ(c2.getCount(), 20);
+  ASSERT_EQ(c3.getCount(), 20);
+  ASSERT_EQ(cancelC1.getCount(), 10);
+  ASSERT_EQ(cancelC2.getCount(), 10);
 
   // Run the loop
   eventBase.loop();
 
   // cancelC1 and cancelC3 should have both fired after 10 iterations and
   // stopped re-installing themselves
-  BOOST_CHECK_EQUAL(cancelC1.getCount(), 0);
-  BOOST_CHECK_EQUAL(cancelC2.getCount(), 0);
+  ASSERT_EQ(cancelC1.getCount(), 0);
+  ASSERT_EQ(cancelC2.getCount(), 0);
   // c3 should have continued on for the full 20 iterations
-  BOOST_CHECK_EQUAL(c3.getCount(), 0);
+  ASSERT_EQ(c3.getCount(), 0);
 
   // c1 and c2 should have both been cancelled on the 10th iteration.
   //
@@ -1310,8 +1309,8 @@ BOOST_AUTO_TEST_CASE(CancelRunInLoop) {
   // 10th iteration.  c2 should have only fired 9 times, because cancelC2 will
   // have run before it on the 10th iteration, and cancelled it before it
   // fired.
-  BOOST_CHECK_EQUAL(c1.getCount(), 10);
-  BOOST_CHECK_EQUAL(c2.getCount(), 11);
+  ASSERT_EQ(c1.getCount(), 10);
+  ASSERT_EQ(c2.getCount(), 11);
 }
 
 class TerminateTestCallback : public TEventBase::LoopCallback,
@@ -1338,7 +1337,7 @@ class TerminateTestCallback : public TEventBase::LoopCallback,
   virtual void handlerReady(uint16_t events) noexcept {
     // We didn't register with PERSIST, so we will have been automatically
     // unregistered already.
-    BOOST_REQUIRE(!isHandlerRegistered());
+    ASSERT_FALSE(isHandlerRegistered());
 
     ++eventInvocations_;
     if (eventInvocations_ >= maxEventInvocations_) {
@@ -1380,14 +1379,14 @@ class TerminateTestCallback : public TEventBase::LoopCallback,
  * TEventBase::loop() incorrectly exited if there were no more fd handlers
  * registered, but a loop callback installed a new fd handler.
  */
-BOOST_AUTO_TEST_CASE(LoopTermination) {
+TEST(TEventBaseTest, LoopTermination) {
   TEventBase eventBase;
 
   // Open a pipe and close the write end,
   // so the read endpoint will be readable
   int pipeFds[2];
   int rc = pipe(pipeFds);
-  BOOST_CHECK_EQUAL(rc, 0);
+  ASSERT_EQ(rc, 0);
   close(pipeFds[1]);
   TerminateTestCallback callback(&eventBase, pipeFds[0]);
 
@@ -1395,15 +1394,15 @@ BOOST_AUTO_TEST_CASE(LoopTermination) {
   callback.reset(10, 100);
   eventBase.runInLoop(&callback);
   eventBase.loop();
-  BOOST_CHECK_EQUAL(callback.getLoopInvocations(), 10);
-  BOOST_CHECK_EQUAL(callback.getEventInvocations(), 9);
+  ASSERT_EQ(callback.getLoopInvocations(), 10);
+  ASSERT_EQ(callback.getEventInvocations(), 9);
 
   // Test once where the callback will exit after an fd event callback
   callback.reset(100, 7);
   eventBase.runInLoop(&callback);
   eventBase.loop();
-  BOOST_CHECK_EQUAL(callback.getLoopInvocations(), 7);
-  BOOST_CHECK_EQUAL(callback.getEventInvocations(), 7);
+  ASSERT_EQ(callback.getLoopInvocations(), 7);
+  ASSERT_EQ(callback.getEventInvocations(), 7);
 
   close(pipeFds[0]);
 }
@@ -1459,7 +1458,7 @@ class IdleTimeTimeoutSeries : public TAsyncTimeout {
  * later timeout is far enough in the future that the idle time should have
  * caused the loop time to decay.
  */
-BOOST_AUTO_TEST_CASE(IdleTime) {
+TEST(TEventBaseTest, IdleTime) {
   TEventBase eventBase;
   eventBase.setLoadAvgMsec(1000);
   eventBase.resetLoadAvg(5900.0);
@@ -1476,13 +1475,14 @@ BOOST_AUTO_TEST_CASE(IdleTime) {
 
     switch (latencyCallbacks) {
     case 1:
-      BOOST_CHECK_EQUAL(6, tos0.getTimeouts());
-      BOOST_CHECK_CLOSE(6100, eventBase.getAvgLoopTime(), 2);
+      ASSERT_EQ(6, tos0.getTimeouts());
+      ASSERT_GE(6100, eventBase.getAvgLoopTime() - 1200);
+      ASSERT_LE(6100, eventBase.getAvgLoopTime() + 1200);
       tos.reset(new IdleTimeTimeoutSeries(&eventBase, timeouts));
       break;
 
     default:
-      BOOST_CHECK_MESSAGE(false, "Unexpected latency callback");
+      FAIL() << "Unexpected latency callback";
       break;
     }
   });
@@ -1492,16 +1492,17 @@ BOOST_AUTO_TEST_CASE(IdleTime) {
 
   eventBase.loop();
 
-  BOOST_CHECK_EQUAL(1, latencyCallbacks);
-  BOOST_CHECK_EQUAL(7, tos0.getTimeouts());
-  BOOST_CHECK_CLOSE(5900, eventBase.getAvgLoopTime(), 2);
-  BOOST_CHECK_EQUAL(21, tos->getTimeouts());
+  ASSERT_EQ(1, latencyCallbacks);
+  ASSERT_EQ(7, tos0.getTimeouts());
+  ASSERT_GE(5900, eventBase.getAvgLoopTime() - 1200);
+  ASSERT_LE(5900, eventBase.getAvgLoopTime() + 1200);
+  ASSERT_EQ(21, tos->getTimeouts());
 }
 
 /**
  * Test that thisLoop functionality works with terminateLoopSoon
  */
-BOOST_AUTO_TEST_CASE(ThisLoop) {
+TEST(TEventBaseTest, ThisLoop) {
   TEventBase eb;
   bool runInLoop = false;
   bool runThisLoop = false;
@@ -1518,12 +1519,12 @@ BOOST_AUTO_TEST_CASE(ThisLoop) {
   eb.loopForever();
 
   // Should not work
-  BOOST_CHECK_EQUAL(false, runInLoop);
+  ASSERT_FALSE(runInLoop);
   // Should work with thisLoop
-  BOOST_CHECK_EQUAL(true, runThisLoop);
+  ASSERT_TRUE(runThisLoop);
 }
 
-BOOST_AUTO_TEST_CASE(EventBaseThreadLoop) {
+TEST(TEventBaseTest, EventBaseThreadLoop) {
   TEventBase base;
   bool ran = false;
 
@@ -1532,10 +1533,10 @@ BOOST_AUTO_TEST_CASE(EventBaseThreadLoop) {
   });
   base.loop();
 
-  BOOST_CHECK_EQUAL(true, ran);
+  ASSERT_EQ(true, ran);
 }
 
-BOOST_AUTO_TEST_CASE(EventBaseThreadName) {
+TEST(TEventBaseTest, EventBaseThreadName) {
   TEventBase base;
   base.setName("foo");
   base.loop();
@@ -1543,25 +1544,6 @@ BOOST_AUTO_TEST_CASE(EventBaseThreadName) {
 #if (__GLIBC__ >= 2) && (__GLIBC_MINOR__ >= 12)
   char name[16];
   pthread_getname_np(pthread_self(), name, 16);
-  BOOST_CHECK_EQUAL(0, strcmp("foo", name));
+  ASSERT_EQ(0, strcmp("foo", name));
 #endif
-}
-
-///////////////////////////////////////////////////////////////////////////
-// init_unit_test_suite()
-///////////////////////////////////////////////////////////////////////////
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value = "TEventBaseTest";
-
-  if (argc != 1) {
-    cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      cerr << " " << argv[n];
-    }
-    cerr << endl;
-    exit(1);
-  }
-
-  return nullptr;
 }

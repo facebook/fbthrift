@@ -16,8 +16,8 @@
 
 #include <signal.h>
 
-#include <boost/test/unit_test.hpp>
 #include <boost/random.hpp>
+#include <gtest/gtest.h>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
@@ -174,14 +174,14 @@ class Message {
       myBuf += sizeof(uint32_t);
     }
 
-    BOOST_CHECK_EQUAL(membuf->available_read(), length);
+    CHECK_EQ(membuf->available_read(), length);
 
     uint32_t borrowLen = length;
     const uint8_t* otherBuf = membuf->borrow(nullptr, &borrowLen);
-    BOOST_REQUIRE(otherBuf != nullptr);
-    BOOST_REQUIRE_EQUAL(borrowLen, length);
+    CHECK(otherBuf != nullptr);
+    CHECK_EQ(borrowLen, length);
 
-    BOOST_CHECK_EQUAL(memcmp(otherBuf, myBuf, length), 0);
+    CHECK_EQ(memcmp(otherBuf, myBuf, length), 0);
   }
 
   uint32_t getLength() const {
@@ -320,7 +320,7 @@ class ChunkSender : private TAsyncTransport::WriteCallback,
       len = info.bytes;
       if (len + bufOffset_ > message_->getLength()) {
         // bug in the test code: ChunkSchedule lists more data than available
-        BOOST_FAIL("bad ChunkSchedule");
+        FAIL() << "bad ChunkSchedule";
 
         len = message_->getLength() - bufOffset_;
         if (len == 0) {
@@ -535,7 +535,7 @@ class EventBaseAborter : public TAsyncTimeout {
   }
 
   virtual void timeoutExpired() noexcept {
-    BOOST_FAIL("test timed out");
+    FAIL() << "test timed out";
     eventBase_->terminateLoopSoon();
   }
 
@@ -625,10 +625,10 @@ class SendRecvTest : public SocketPairTest<ChannelT> {
   }
 
   void postLoop() {
-    BOOST_CHECK_EQUAL(sendCallback_.getSendError(), 0);
-    BOOST_CHECK_EQUAL(sendCallback_.getSendDone(), 1);
-    BOOST_CHECK_EQUAL(recvCallback_.getRecvError(), 0);
-    BOOST_CHECK_EQUAL(recvCallback_.getRecvDone(), 1);
+    CHECK_EQ(sendCallback_.getSendError(), 0);
+    CHECK_EQ(sendCallback_.getSendDone(), 1);
+    CHECK_EQ(recvCallback_.getRecvError(), 0);
+    CHECK_EQ(recvCallback_.getRecvDone(), 1);
     msg_.checkEqual(&recvBuf_);
   }
 
@@ -640,13 +640,13 @@ class SendRecvTest : public SocketPairTest<ChannelT> {
   ChannelCallback recvCallback_;
 };
 
-BOOST_AUTO_TEST_CASE(TestSendRecvFramed) {
+TEST(TAsyncChannelTest, TestSendRecvFramed) {
   SendRecvTest<TFramedAsyncChannel>(1).run();
   SendRecvTest<TFramedAsyncChannel>(100).run();
   SendRecvTest<TFramedAsyncChannel>(1024*1024).run();
 }
 
-BOOST_AUTO_TEST_CASE(TestSendRecvBinary) {
+TEST(TAsyncChannelTest, TestSendRecvBinary) {
   SendRecvTest<TBinaryAsyncChannel>(1).run();
   SendRecvTest<TBinaryAsyncChannel>(100).run();
   SendRecvTest<TBinaryAsyncChannel>(1024*1024).run();
@@ -673,14 +673,14 @@ class MultiSendRecvTest : public SocketPairTest<ChannelT> {
   }
 
   void postLoop() {
-    BOOST_CHECK_EQUAL(multiMessageSenderReceiver_.getReadError(), false);
-    BOOST_CHECK_EQUAL(multiMessageSenderReceiver_.getWriteError(), false);
+    CHECK_EQ(multiMessageSenderReceiver_.getReadError(), false);
+    CHECK_EQ(multiMessageSenderReceiver_.getWriteError(), false);
 
     vector<std::shared_ptr<TMemoryBuffer> >& readBuffers
                       = multiMessageSenderReceiver_.getReadBuffers();
     vector<Message>& writeMessages
                       = multiMessageSenderReceiver_.getWriteMessages();
-    BOOST_CHECK_EQUAL(readBuffers.size(), writeMessages.size());
+    CHECK_EQ(readBuffers.size(), writeMessages.size());
     for (int i = 0; i < writeMessages.size(); i++) {
       writeMessages[i].checkEqual(readBuffers[i].get());
     }
@@ -690,7 +690,7 @@ class MultiSendRecvTest : public SocketPairTest<ChannelT> {
     MultiMessageSenderReceiver multiMessageSenderReceiver_;
 };
 
-BOOST_AUTO_TEST_CASE(TestMultiSendRecvBinary) {
+TEST(TAsyncChannelTest, TestMultiSendRecvBinary) {
   typedef MultiSendRecvTest<TBinaryAsyncChannel> MultiSendRecvBinaryTest;
 
   //size below 1024 for each message
@@ -725,7 +725,7 @@ BOOST_AUTO_TEST_CASE(TestMultiSendRecvBinary) {
   MultiSendRecvBinaryTest(bigSizes, 2, 2).run();
 }
 
-BOOST_AUTO_TEST_CASE(TestMultiSendRecvBinaryQueued) {
+TEST(TAsyncChannelTest, TestMultiSendRecvBinaryQueued) {
   typedef MultiSendRecvTest<TBinaryAsyncChannel> MultiSendRecvBinaryTest;
 
   //size below 1024 for each message
@@ -760,7 +760,7 @@ BOOST_AUTO_TEST_CASE(TestMultiSendRecvBinaryQueued) {
   MultiSendRecvBinaryTest(bigSizes, 2, true, 2).run();
 }
 
-BOOST_AUTO_TEST_CASE(TestMultiSendRecvFramed) {
+TEST(TAsyncChannelTest, TestMultiSendRecvFramed) {
   typedef MultiSendRecvTest<TFramedAsyncChannel> MultiSendRecvFramedTest;
 
   //size below 1024 for each message
@@ -796,7 +796,7 @@ BOOST_AUTO_TEST_CASE(TestMultiSendRecvFramed) {
 }
 
 
-BOOST_AUTO_TEST_CASE(TestMultiSendRecvFramedQueued) {
+TEST(TAsyncChannelTest, TestMultiSendRecvFramedQueued) {
   typedef MultiSendRecvTest<TFramedAsyncChannel> MultiSendRecvBinaryTest;
 
   //size below 1024 for each message
@@ -875,8 +875,8 @@ class TimeoutQueuedTest : public SocketPairTest<ChannelT> {
   }
 
   void postLoop() {
-    BOOST_CHECK_EQUAL(recvCallback_.getRecvError(), 2);
-    BOOST_CHECK_EQUAL(recvCallback_.getRecvDone(), 1);
+    CHECK_EQ(recvCallback_.getRecvError(), 2);
+    CHECK_EQ(recvCallback_.getRecvDone(), 1);
 
     T_CHECK_TIMEOUT(start_, recvCallback_.getTimestamp(),
                     n_msgs_ * kRecvDelay + kTimeout);
@@ -893,7 +893,7 @@ class TimeoutQueuedTest : public SocketPairTest<ChannelT> {
 };
 
 
-BOOST_AUTO_TEST_CASE(TestTimeoutQueued) {
+TEST(TAsyncChannelTest, TestTimeoutQueued) {
   TimeoutQueuedTest<TFramedAsyncChannel>().run();
   TimeoutQueuedTest<TBinaryAsyncChannel>().run();
 }
@@ -962,13 +962,13 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
 
     if (expectTimeout) {
       // We should time out after expectedMS
-      BOOST_TEST_MESSAGE("RecvChunksTest: testing for timeout");
-      BOOST_CHECK_EQUAL(sender_.error(), true);
-      BOOST_CHECK_EQUAL(recvCallback_.getRecvError(), 1);
-      BOOST_CHECK_EQUAL(recvCallback_.getRecvDone(), 0);
-      BOOST_CHECK_EQUAL(this->channel1_->timedOut(), true);
-      BOOST_CHECK_EQUAL(this->channel1_->error(), true);
-      BOOST_CHECK_EQUAL(this->channel1_->good(), false);
+      LOG(INFO) << "RecvChunksTest: testing for timeout";
+      CHECK_EQ(sender_.error(), true);
+      CHECK_EQ(recvCallback_.getRecvError(), 1);
+      CHECK_EQ(recvCallback_.getRecvDone(), 0);
+      CHECK_EQ(this->channel1_->timedOut(), true);
+      CHECK_EQ(this->channel1_->error(), true);
+      CHECK_EQ(this->channel1_->good(), false);
 
       T_CHECK_TIMEOUT(start_, recvCallback_.getTimestamp(), expectedMS,
                       tolerance);
@@ -978,38 +978,38 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
       // This seems like a weird special case.  TAsyncChannel calls the normal
       // callback in this case, even though no message was received.  Maybe we
       // should consider changing this TAsyncChannel behavior?
-      BOOST_TEST_MESSAGE("RecvChunksTest: testing for EOF with no data");
-      BOOST_CHECK_EQUAL(sender_.error(), false);
-      BOOST_CHECK_EQUAL(recvCallback_.getRecvError(), 0);
-      BOOST_CHECK_EQUAL(recvCallback_.getRecvDone(), 1);
-      BOOST_CHECK_EQUAL(this->channel1_->timedOut(), false);
-      BOOST_CHECK_EQUAL(this->channel1_->error(), false);
-      BOOST_CHECK_EQUAL(this->channel1_->good(), false);
-      BOOST_CHECK_EQUAL(recvBuf_.available_read(), 0);
+      LOG(INFO) << "RecvChunksTest: testing for EOF with no data";
+      CHECK_EQ(sender_.error(), false);
+      CHECK_EQ(recvCallback_.getRecvError(), 0);
+      CHECK_EQ(recvCallback_.getRecvDone(), 1);
+      CHECK_EQ(this->channel1_->timedOut(), false);
+      CHECK_EQ(this->channel1_->error(), false);
+      CHECK_EQ(this->channel1_->good(), false);
+      CHECK_EQ(recvBuf_.available_read(), 0);
 
       T_CHECK_TIMEOUT(start_, recvCallback_.getTimestamp(), expectedMS,
                       tolerance);
     } else if (expectedBytes < msg_.getLength()) {
       // We should get EOF after expectedMS
-      BOOST_TEST_MESSAGE("RecvChunksTest: testing for EOF");
-      BOOST_CHECK_EQUAL(sender_.error(), false);
-      BOOST_CHECK_EQUAL(recvCallback_.getRecvError(), 1);
-      BOOST_CHECK_EQUAL(recvCallback_.getRecvDone(), 0);
-      BOOST_CHECK_EQUAL(this->channel1_->timedOut(), false);
-      BOOST_CHECK_EQUAL(this->channel1_->error(), false);
-      BOOST_CHECK_EQUAL(this->channel1_->good(), false);
+      LOG(INFO) << "RecvChunksTest: testing for EOF";
+      CHECK_EQ(sender_.error(), false);
+      CHECK_EQ(recvCallback_.getRecvError(), 1);
+      CHECK_EQ(recvCallback_.getRecvDone(), 0);
+      CHECK_EQ(this->channel1_->timedOut(), false);
+      CHECK_EQ(this->channel1_->error(), false);
+      CHECK_EQ(this->channel1_->good(), false);
 
       T_CHECK_TIMEOUT(start_, recvCallback_.getTimestamp(), expectedMS,
                       tolerance);
     } else {
       // We expect success after expectedMS
-      BOOST_TEST_MESSAGE("RecvChunksTest: testing for success");
-      BOOST_CHECK_EQUAL(sender_.error(), false);
-      BOOST_CHECK_EQUAL(recvCallback_.getRecvError(), 0);
-      BOOST_CHECK_EQUAL(recvCallback_.getRecvDone(), 1);
-      BOOST_CHECK_EQUAL(this->channel1_->timedOut(), false);
-      BOOST_CHECK_EQUAL(this->channel1_->error(), false);
-      BOOST_CHECK_EQUAL(this->channel1_->good(), true);
+      LOG(INFO) << "RecvChunksTest: testing for success";
+      CHECK_EQ(sender_.error(), false);
+      CHECK_EQ(recvCallback_.getRecvError(), 0);
+      CHECK_EQ(recvCallback_.getRecvDone(), 1);
+      CHECK_EQ(this->channel1_->timedOut(), false);
+      CHECK_EQ(this->channel1_->error(), false);
+      CHECK_EQ(this->channel1_->good(), true);
       msg_.checkEqual(&recvBuf_);
 
       T_CHECK_TIMEOUT(start_, recvCallback_.getTimestamp(), expectedMS,
@@ -1027,7 +1027,7 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
 };
 
 
-BOOST_AUTO_TEST_CASE(TestRecvFrameChunks) {
+TEST(TAsyncChannelTest, TestRecvFrameChunks) {
   typedef RecvChunksTest<TFramedAsyncChannel> RecvFrameTest;
 
   // The frame header is 4 bytes.  Test sending each byte separately,
@@ -1080,7 +1080,7 @@ BOOST_AUTO_TEST_CASE(TestRecvFrameChunks) {
                               -1, 5)).run();
 }
 
-BOOST_AUTO_TEST_CASE(TestRecvBinaryChunks) {
+TEST(TAsyncChannelTest, TestRecvBinaryChunks) {
   typedef RecvChunksTest<TBinaryAsyncChannel> RecvBinaryTest;
 
   // Test sending the first four bytes byte separately,
@@ -1149,8 +1149,8 @@ class SendTimeoutTest : public SocketPairTest<ChannelT> {
   }
 
   void postLoop() {
-    BOOST_CHECK_EQUAL(sendCallback_.getSendError(), 1);
-    BOOST_CHECK_EQUAL(sendCallback_.getSendDone(), 0);
+    CHECK_EQ(sendCallback_.getSendError(), 1);
+    CHECK_EQ(sendCallback_.getSendDone(), 0);
     T_CHECK_TIMEOUT(start_, sendCallback_.getTimestamp(), timeout_);
   }
 
@@ -1162,13 +1162,13 @@ class SendTimeoutTest : public SocketPairTest<ChannelT> {
   ChannelCallback sendCallback_;
 };
 
-BOOST_AUTO_TEST_CASE(TestSendTimeoutFramed) {
+TEST(TAsyncChannelTest, TestSendTimeoutFramed) {
   SendTimeoutTest<TFramedAsyncChannel>(25).run();
   SendTimeoutTest<TFramedAsyncChannel>(100).run();
   SendTimeoutTest<TFramedAsyncChannel>(250).run();
 }
 
-BOOST_AUTO_TEST_CASE(TestSendTimeoutBinary) {
+TEST(TAsyncChannelTest, TestSendTimeoutBinary) {
   SendTimeoutTest<TBinaryAsyncChannel>(25).run();
   SendTimeoutTest<TBinaryAsyncChannel>(100).run();
   SendTimeoutTest<TBinaryAsyncChannel>(250).run();
@@ -1196,8 +1196,8 @@ class SendClosedTest : public SocketPairTest<ChannelT> {
   }
 
   void postLoop() {
-    BOOST_CHECK_EQUAL(sendCallback_.getSendError(), 1);
-    BOOST_CHECK_EQUAL(sendCallback_.getSendDone(), 0);
+    CHECK_EQ(sendCallback_.getSendError(), 1);
+    CHECK_EQ(sendCallback_.getSendDone(), 0);
     T_CHECK_TIMEOUT(start_, sendCallback_.getTimestamp(), closeTimeout_);
   }
 
@@ -1209,26 +1209,7 @@ class SendClosedTest : public SocketPairTest<ChannelT> {
   ChannelCallback sendCallback_;
 };
 
-BOOST_AUTO_TEST_CASE(TestSendClosed) {
+TEST(TAsyncChannelTest, TestSendClosed) {
   SendClosedTest<TFramedAsyncChannel>().run();
   SendClosedTest<TBinaryAsyncChannel>().run();
-}
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value = "TAsyncChannelTest";
-
-  // Ignore SIGPIPE.  This just makes it easier to debug in gdb and valgrind,
-  // so they won't stop on the signal.
-  signal(SIGPIPE, SIG_IGN);
-
-  if (argc != 1) {
-    cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      cerr << " " << argv[n];
-    }
-    cerr << endl;
-    exit(1);
-  }
-
-  return nullptr;
 }

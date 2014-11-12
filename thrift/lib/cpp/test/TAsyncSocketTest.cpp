@@ -26,7 +26,7 @@
 
 #include <folly/io/IOBuf.h>
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 #include <boost/thread/barrier.hpp>
 #include <boost/scoped_array.hpp>
 #include <iostream>
@@ -174,11 +174,11 @@ class ReadCallback : public TAsyncTransport::ReadCallback {
     for (size_t idx = 0; idx < buffers.size(); ++idx) {
       const auto& buf = buffers[idx];
       size_t cmpLen = std::min(buf.length, expectedLen - offset);
-      BOOST_CHECK_EQUAL(memcmp(buf.buffer, expected + offset, cmpLen), 0);
-      BOOST_CHECK_EQUAL(cmpLen, buf.length);
+      CHECK_EQ(memcmp(buf.buffer, expected + offset, cmpLen), 0);
+      CHECK_EQ(cmpLen, buf.length);
       offset += cmpLen;
     }
-    BOOST_CHECK_EQUAL(offset, expectedLen);
+    CHECK_EQ(offset, expectedLen);
   }
 
   class Buffer {
@@ -289,10 +289,10 @@ class TestServer {
     // read the data and compare it to the specified buffer
     scoped_array<uint8_t> readbuf(new uint8_t[len]);
     acceptedSocket->readAll(readbuf.get(), len);
-    BOOST_CHECK_EQUAL(memcmp(buf, readbuf.get(), len), 0);
+    CHECK_EQ(memcmp(buf, readbuf.get(), len), 0);
     // make sure we get EOF next
     uint32_t bytesRead = acceptedSocket->read(readbuf.get(), len);
-    BOOST_CHECK_EQUAL(bytesRead, 0);
+    CHECK_EQ(bytesRead, 0);
   }
 
  private:
@@ -335,7 +335,7 @@ class DelayedWrite: public TAsyncTimeout {
 /**
  * Test connecting to a server
  */
-BOOST_AUTO_TEST_CASE(Connect) {
+TEST(TAsyncSocketTest, Connect) {
   // Start listening on a local port
   TestServer server;
 
@@ -347,13 +347,13 @@ BOOST_AUTO_TEST_CASE(Connect) {
 
   evb.loop();
 
-  BOOST_CHECK_EQUAL(cb.state, STATE_SUCCEEDED);
+  CHECK_EQ(cb.state, STATE_SUCCEEDED);
 }
 
 /**
  * Test connecting to a server that isn't listening
  */
-BOOST_AUTO_TEST_CASE(ConnectRefused) {
+TEST(TAsyncSocketTest, ConnectRefused) {
   TEventBase evb;
 
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&evb);
@@ -365,14 +365,14 @@ BOOST_AUTO_TEST_CASE(ConnectRefused) {
 
   evb.loop();
 
-  BOOST_CHECK_EQUAL(cb.state, STATE_FAILED);
-  BOOST_CHECK_EQUAL(cb.exception.getType(), TTransportException::NOT_OPEN);
+  CHECK_EQ(cb.state, STATE_FAILED);
+  CHECK_EQ(cb.exception.getType(), TTransportException::NOT_OPEN);
 }
 
 /**
  * Test connection timeout
  */
-BOOST_AUTO_TEST_CASE(ConnectTimeout) {
+TEST(TAsyncSocketTest, ConnectTimeout) {
   TEventBase evb;
 
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&evb);
@@ -389,22 +389,22 @@ BOOST_AUTO_TEST_CASE(ConnectTimeout) {
 
   evb.loop();
 
-  BOOST_CHECK_EQUAL(cb.state, STATE_FAILED);
-  BOOST_CHECK_EQUAL(cb.exception.getType(), TTransportException::TIMED_OUT);
+  CHECK_EQ(cb.state, STATE_FAILED);
+  CHECK_EQ(cb.exception.getType(), TTransportException::TIMED_OUT);
 
   // Verify that we can still get the peer address after a timeout.
   // Use case is if the client was created from a client pool, and we want
   // to log which peer failed.
   folly::SocketAddress peer;
   socket->getPeerAddress(&peer);
-  BOOST_CHECK_EQUAL(peer, addr);
+  CHECK_EQ(peer, addr);
 }
 
 /**
  * Test writing immediately after connecting, without waiting for connect
  * to finish.
  */
-BOOST_AUTO_TEST_CASE(ConnectAndWrite) {
+TEST(TAsyncSocketTest, ConnectAndWrite) {
   TestServer server;
 
   // connect()
@@ -423,8 +423,8 @@ BOOST_AUTO_TEST_CASE(ConnectAndWrite) {
   // The kernel should be able to buffer the write request so it can succeed.
   evb.loop();
 
-  BOOST_CHECK_EQUAL(ccb.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(wcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(ccb.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb.state, STATE_SUCCEEDED);
 
   // Make sure the server got a connection and received the data
   socket->close();
@@ -434,7 +434,7 @@ BOOST_AUTO_TEST_CASE(ConnectAndWrite) {
 /**
  * Test connecting using a nullptr connect callback.
  */
-BOOST_AUTO_TEST_CASE(ConnectNullCallback) {
+TEST(TAsyncSocketTest, ConnectNullCallback) {
   TestServer server;
 
   // connect()
@@ -451,7 +451,7 @@ BOOST_AUTO_TEST_CASE(ConnectNullCallback) {
 
   evb.loop();
 
-  BOOST_CHECK_EQUAL(wcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb.state, STATE_SUCCEEDED);
 
   // Make sure the server got a connection and received the data
   socket->close();
@@ -464,7 +464,7 @@ BOOST_AUTO_TEST_CASE(ConnectNullCallback) {
  *
  * This exercises the STATE_CONNECTING_CLOSING code.
  */
-BOOST_AUTO_TEST_CASE(ConnectWriteAndClose) {
+TEST(TAsyncSocketTest, ConnectWriteAndClose) {
   TestServer server;
 
   // connect()
@@ -486,8 +486,8 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndClose) {
   // The kernel should be able to buffer the write request so it can succeed.
   evb.loop();
 
-  BOOST_CHECK_EQUAL(ccb.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(wcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(ccb.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb.state, STATE_SUCCEEDED);
 
   // Make sure the server got a connection and received the data
   server.verifyConnection(buf, sizeof(buf));
@@ -496,7 +496,7 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndClose) {
 /**
  * Test calling close() immediately after connect()
  */
-BOOST_AUTO_TEST_CASE(ConnectAndClose) {
+TEST(TAsyncSocketTest, ConnectAndClose) {
   TestServer server;
 
   // Connect using a TAsyncSocket
@@ -508,8 +508,8 @@ BOOST_AUTO_TEST_CASE(ConnectAndClose) {
   // Hopefully the connect didn't succeed immediately.
   // If it did, we can't exercise the close-while-connecting code path.
   if (ccb.state == STATE_SUCCEEDED) {
-    BOOST_TEST_MESSAGE("connect() succeeded immediately; aborting test "
-                       "of close-during-connect behavior");
+    LOG(INFO) << "connect() succeeded immediately; aborting test "
+                       "of close-during-connect behavior";
     return;
   }
 
@@ -519,7 +519,7 @@ BOOST_AUTO_TEST_CASE(ConnectAndClose) {
   evb.loop();
 
   // Make sure the connection was aborted
-  BOOST_CHECK_EQUAL(ccb.state, STATE_FAILED);
+  CHECK_EQ(ccb.state, STATE_FAILED);
 }
 
 /**
@@ -527,7 +527,7 @@ BOOST_AUTO_TEST_CASE(ConnectAndClose) {
  *
  * This should be identical to the normal close behavior.
  */
-BOOST_AUTO_TEST_CASE(ConnectAndCloseNow) {
+TEST(TAsyncSocketTest, ConnectAndCloseNow) {
   TestServer server;
 
   // Connect using a TAsyncSocket
@@ -539,8 +539,8 @@ BOOST_AUTO_TEST_CASE(ConnectAndCloseNow) {
   // Hopefully the connect didn't succeed immediately.
   // If it did, we can't exercise the close-while-connecting code path.
   if (ccb.state == STATE_SUCCEEDED) {
-    BOOST_TEST_MESSAGE("connect() succeeded immediately; aborting test "
-                       "of closeNow()-during-connect behavior");
+    LOG(INFO) << "connect() succeeded immediately; aborting test "
+                       "of closeNow()-during-connect behavior";
     return;
   }
 
@@ -550,7 +550,7 @@ BOOST_AUTO_TEST_CASE(ConnectAndCloseNow) {
   evb.loop();
 
   // Make sure the connection was aborted
-  BOOST_CHECK_EQUAL(ccb.state, STATE_FAILED);
+  CHECK_EQ(ccb.state, STATE_FAILED);
 }
 
 /**
@@ -559,7 +559,7 @@ BOOST_AUTO_TEST_CASE(ConnectAndCloseNow) {
  *
  * This should abort the pending write.
  */
-BOOST_AUTO_TEST_CASE(ConnectWriteAndCloseNow) {
+TEST(TAsyncSocketTest, ConnectWriteAndCloseNow) {
   TestServer server;
 
   // connect()
@@ -571,8 +571,8 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndCloseNow) {
   // Hopefully the connect didn't succeed immediately.
   // If it did, we can't exercise the close-while-connecting code path.
   if (ccb.state == STATE_SUCCEEDED) {
-    BOOST_TEST_MESSAGE("connect() succeeded immediately; aborting test "
-                       "of write-during-connect behavior");
+    LOG(INFO) << "connect() succeeded immediately; aborting test "
+                       "of write-during-connect behavior";
     return;
   }
 
@@ -588,14 +588,14 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndCloseNow) {
   // Loop, although there shouldn't be anything to do.
   evb.loop();
 
-  BOOST_CHECK_EQUAL(ccb.state, STATE_FAILED);
-  BOOST_CHECK_EQUAL(wcb.state, STATE_FAILED);
+  CHECK_EQ(ccb.state, STATE_FAILED);
+  CHECK_EQ(wcb.state, STATE_FAILED);
 }
 
 /**
  * Test installing a read callback immediately, before connect() finishes.
  */
-BOOST_AUTO_TEST_CASE(ConnectAndRead) {
+TEST(TAsyncSocketTest, ConnectAndRead) {
   TestServer server;
 
   // connect()
@@ -619,18 +619,18 @@ BOOST_AUTO_TEST_CASE(ConnectAndRead) {
   // Loop, although there shouldn't be anything to do.
   evb.loop();
 
-  BOOST_CHECK_EQUAL(ccb.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(rcb.state, STATE_SUCCEEDED);
-  BOOST_REQUIRE_EQUAL(rcb.buffers.size(), 1);
-  BOOST_REQUIRE_EQUAL(rcb.buffers[0].length, sizeof(buf));
-  BOOST_CHECK_EQUAL(memcmp(rcb.buffers[0].buffer, buf, sizeof(buf)), 0);
+  CHECK_EQ(ccb.state, STATE_SUCCEEDED);
+  CHECK_EQ(rcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(rcb.buffers.size(), 1);
+  CHECK_EQ(rcb.buffers[0].length, sizeof(buf));
+  CHECK_EQ(memcmp(rcb.buffers[0].buffer, buf, sizeof(buf)), 0);
 }
 
 /**
  * Test installing a read callback and then closing immediately before the
  * connect attempt finishes.
  */
-BOOST_AUTO_TEST_CASE(ConnectReadAndClose) {
+TEST(TAsyncSocketTest, ConnectReadAndClose) {
   TestServer server;
 
   // connect()
@@ -642,8 +642,8 @@ BOOST_AUTO_TEST_CASE(ConnectReadAndClose) {
   // Hopefully the connect didn't succeed immediately.
   // If it did, we can't exercise the close-while-connecting code path.
   if (ccb.state == STATE_SUCCEEDED) {
-    BOOST_TEST_MESSAGE("connect() succeeded immediately; aborting test "
-                       "of read-during-connect behavior");
+    LOG(INFO) << "connect() succeeded immediately; aborting test "
+                       "of read-during-connect behavior";
     return;
   }
 
@@ -656,16 +656,16 @@ BOOST_AUTO_TEST_CASE(ConnectReadAndClose) {
   // Loop, although there shouldn't be anything to do.
   evb.loop();
 
-  BOOST_CHECK_EQUAL(ccb.state, STATE_FAILED); // we aborted the close attempt
-  BOOST_CHECK_EQUAL(rcb.buffers.size(), 0);
-  BOOST_CHECK_EQUAL(rcb.state, STATE_SUCCEEDED); // this indicates EOF
+  CHECK_EQ(ccb.state, STATE_FAILED); // we aborted the close attempt
+  CHECK_EQ(rcb.buffers.size(), 0);
+  CHECK_EQ(rcb.state, STATE_SUCCEEDED); // this indicates EOF
 }
 
 /**
  * Test both writing and installing a read callback immediately,
  * before connect() finishes.
  */
-BOOST_AUTO_TEST_CASE(ConnectWriteAndRead) {
+TEST(TAsyncSocketTest, ConnectWriteAndRead) {
   TestServer server;
 
   // connect()
@@ -700,13 +700,13 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndRead) {
   evb.loop();
 
   // Make sure the connect succeeded
-  BOOST_CHECK_EQUAL(ccb.state, STATE_SUCCEEDED);
+  CHECK_EQ(ccb.state, STATE_SUCCEEDED);
 
   // Make sure the TAsyncSocket read the data written by the accepted socket
-  BOOST_CHECK_EQUAL(rcb.state, STATE_SUCCEEDED);
-  BOOST_REQUIRE_EQUAL(rcb.buffers.size(), 1);
-  BOOST_REQUIRE_EQUAL(rcb.buffers[0].length, sizeof(buf2));
-  BOOST_CHECK_EQUAL(memcmp(rcb.buffers[0].buffer, buf2, sizeof(buf2)), 0);
+  CHECK_EQ(rcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(rcb.buffers.size(), 1);
+  CHECK_EQ(rcb.buffers[0].length, sizeof(buf2));
+  CHECK_EQ(memcmp(rcb.buffers[0].buffer, buf2, sizeof(buf2)), 0);
 
   // Close the TAsyncSocket so we'll see EOF on acceptedSocket
   socket->close();
@@ -714,16 +714,16 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndRead) {
   // Make sure the accepted socket saw the data written by the TAsyncSocket
   uint8_t readbuf[sizeof(buf1)];
   acceptedSocket->readAll(readbuf, sizeof(readbuf));
-  BOOST_CHECK_EQUAL(memcmp(buf1, readbuf, sizeof(buf1)), 0);
+  CHECK_EQ(memcmp(buf1, readbuf, sizeof(buf1)), 0);
   uint32_t bytesRead = acceptedSocket->read(readbuf, sizeof(readbuf));
-  BOOST_CHECK_EQUAL(bytesRead, 0);
+  CHECK_EQ(bytesRead, 0);
 }
 
 /**
  * Test writing to the socket then shutting down writes before the connect
  * attempt finishes.
  */
-BOOST_AUTO_TEST_CASE(ConnectWriteAndShutdownWrite) {
+TEST(TAsyncSocketTest, ConnectWriteAndShutdownWrite) {
   TestServer server;
 
   // connect()
@@ -735,7 +735,7 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndShutdownWrite) {
   // Hopefully the connect didn't succeed immediately.
   // If it did, we can't exercise the write-while-connecting code path.
   if (ccb.state == STATE_SUCCEEDED) {
-    BOOST_TEST_MESSAGE("connect() succeeded immediately; skipping test");
+    LOG(INFO) << "connect() succeeded immediately; skipping test";
     return;
   }
 
@@ -760,7 +760,7 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndShutdownWrite) {
   fds[0].events = POLLIN;
   fds[0].revents = 0;
   int rc = poll(fds, 1, 0);
-  BOOST_CHECK_EQUAL(rc, 0);
+  CHECK_EQ(rc, 0);
 
   // Write data to the accepted socket
   uint8_t acceptedWbuf[192];
@@ -776,16 +776,16 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndShutdownWrite) {
   //
   // Check that the connection was completed successfully and that the write
   // callback succeeded.
-  BOOST_CHECK_EQUAL(ccb.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(wcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(ccb.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb.state, STATE_SUCCEEDED);
 
   // Check that we can read the data that was written to the socket, and that
   // we see an EOF, since its socket was half-shutdown.
   uint8_t readbuf[sizeof(wbuf)];
   acceptedSocket->readAll(readbuf, sizeof(readbuf));
-  BOOST_CHECK_EQUAL(memcmp(wbuf, readbuf, sizeof(wbuf)), 0);
+  CHECK_EQ(memcmp(wbuf, readbuf, sizeof(wbuf)), 0);
   uint32_t bytesRead = acceptedSocket->read(readbuf, sizeof(readbuf));
-  BOOST_CHECK_EQUAL(bytesRead, 0);
+  CHECK_EQ(bytesRead, 0);
 
   // Close the accepted socket.  This will cause it to see EOF
   // and uninstall the read callback when we loop next.
@@ -797,10 +797,10 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndShutdownWrite) {
   evb.loop();
 
   // This loop should have read the data and seen the EOF
-  BOOST_CHECK_EQUAL(rcb.state, STATE_SUCCEEDED);
-  BOOST_REQUIRE_EQUAL(rcb.buffers.size(), 1);
-  BOOST_REQUIRE_EQUAL(rcb.buffers[0].length, sizeof(acceptedWbuf));
-  BOOST_CHECK_EQUAL(memcmp(rcb.buffers[0].buffer,
+  CHECK_EQ(rcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(rcb.buffers.size(), 1);
+  CHECK_EQ(rcb.buffers[0].length, sizeof(acceptedWbuf));
+  CHECK_EQ(memcmp(rcb.buffers[0].buffer,
                            acceptedWbuf, sizeof(acceptedWbuf)), 0);
 }
 
@@ -808,7 +808,7 @@ BOOST_AUTO_TEST_CASE(ConnectWriteAndShutdownWrite) {
  * Test reading, writing, and shutting down writes before the connect attempt
  * finishes.
  */
-BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWrite) {
+TEST(TAsyncSocketTest, ConnectReadWriteAndShutdownWrite) {
   TestServer server;
 
   // connect()
@@ -820,7 +820,7 @@ BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWrite) {
   // Hopefully the connect didn't succeed immediately.
   // If it did, we can't exercise the write-while-connecting code path.
   if (ccb.state == STATE_SUCCEEDED) {
-    BOOST_TEST_MESSAGE("connect() succeeded immediately; skipping test");
+    LOG(INFO) << "connect() succeeded immediately; skipping test";
     return;
   }
 
@@ -848,7 +848,7 @@ BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWrite) {
   fds[0].events = POLLIN;
   fds[0].revents = 0;
   int rc = poll(fds, 1, 0);
-  BOOST_CHECK_EQUAL(rc, 0);
+  CHECK_EQ(rc, 0);
 
   // Write data to the accepted socket
   uint8_t acceptedWbuf[192];
@@ -868,21 +868,21 @@ BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWrite) {
   //
   // Check that the connection was completed successfully and that the read
   // and write callbacks were invoked as expected.
-  BOOST_CHECK_EQUAL(ccb.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(rcb.state, STATE_SUCCEEDED);
-  BOOST_REQUIRE_EQUAL(rcb.buffers.size(), 1);
-  BOOST_REQUIRE_EQUAL(rcb.buffers[0].length, sizeof(acceptedWbuf));
-  BOOST_CHECK_EQUAL(memcmp(rcb.buffers[0].buffer,
+  CHECK_EQ(ccb.state, STATE_SUCCEEDED);
+  CHECK_EQ(rcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(rcb.buffers.size(), 1);
+  CHECK_EQ(rcb.buffers[0].length, sizeof(acceptedWbuf));
+  CHECK_EQ(memcmp(rcb.buffers[0].buffer,
                            acceptedWbuf, sizeof(acceptedWbuf)), 0);
-  BOOST_CHECK_EQUAL(wcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb.state, STATE_SUCCEEDED);
 
   // Check that we can read the data that was written to the socket, and that
   // we see an EOF, since its socket was half-shutdown.
   uint8_t readbuf[sizeof(wbuf)];
   acceptedSocket->readAll(readbuf, sizeof(readbuf));
-  BOOST_CHECK_EQUAL(memcmp(wbuf, readbuf, sizeof(wbuf)), 0);
+  CHECK_EQ(memcmp(wbuf, readbuf, sizeof(wbuf)), 0);
   uint32_t bytesRead = acceptedSocket->read(readbuf, sizeof(readbuf));
-  BOOST_CHECK_EQUAL(bytesRead, 0);
+  CHECK_EQ(bytesRead, 0);
 
   // Fully close both sockets
   acceptedSocket->close();
@@ -893,7 +893,7 @@ BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWrite) {
  * Test reading, writing, and calling shutdownWriteNow() before the
  * connect attempt finishes.
  */
-BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWriteNow) {
+TEST(TAsyncSocketTest, ConnectReadWriteAndShutdownWriteNow) {
   TestServer server;
 
   // connect()
@@ -905,7 +905,7 @@ BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWriteNow) {
   // Hopefully the connect didn't succeed immediately.
   // If it did, we can't exercise the write-while-connecting code path.
   if (ccb.state == STATE_SUCCEEDED) {
-    BOOST_TEST_MESSAGE("connect() succeeded immediately; skipping test");
+    LOG(INFO) << "connect() succeeded immediately; skipping test";
     return;
   }
 
@@ -924,8 +924,8 @@ BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWriteNow) {
   socket->shutdownWriteNow();
 
   // Verify that writeError() was invoked on the write callback.
-  BOOST_CHECK_EQUAL(wcb.state, STATE_FAILED);
-  BOOST_CHECK_EQUAL(wcb.bytesWritten, 0);
+  CHECK_EQ(wcb.state, STATE_FAILED);
+  CHECK_EQ(wcb.bytesWritten, 0);
 
   // Even though we haven't looped yet, we should be able to accept
   // the connection.
@@ -938,7 +938,7 @@ BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWriteNow) {
   fds[0].events = POLLIN;
   fds[0].revents = 0;
   int rc = poll(fds, 1, 0);
-  BOOST_CHECK_EQUAL(rc, 0);
+  CHECK_EQ(rc, 0);
 
   // Write data to the accepted socket
   uint8_t acceptedWbuf[192];
@@ -958,11 +958,11 @@ BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWriteNow) {
   //
   // Check that the connection was completed successfully and that the read
   // callback was invoked as expected.
-  BOOST_CHECK_EQUAL(ccb.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(rcb.state, STATE_SUCCEEDED);
-  BOOST_REQUIRE_EQUAL(rcb.buffers.size(), 1);
-  BOOST_REQUIRE_EQUAL(rcb.buffers[0].length, sizeof(acceptedWbuf));
-  BOOST_CHECK_EQUAL(memcmp(rcb.buffers[0].buffer,
+  CHECK_EQ(ccb.state, STATE_SUCCEEDED);
+  CHECK_EQ(rcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(rcb.buffers.size(), 1);
+  CHECK_EQ(rcb.buffers[0].length, sizeof(acceptedWbuf));
+  CHECK_EQ(memcmp(rcb.buffers[0].buffer,
                            acceptedWbuf, sizeof(acceptedWbuf)), 0);
 
   // Since we used shutdownWriteNow(), it should have discarded all pending
@@ -970,7 +970,7 @@ BOOST_AUTO_TEST_CASE(ConnectReadWriteAndShutdownWriteNow) {
   // socket.
   uint8_t readbuf[sizeof(wbuf)];
   uint32_t bytesRead = acceptedSocket->read(readbuf, sizeof(readbuf));
-  BOOST_CHECK_EQUAL(bytesRead, 0);
+  CHECK_EQ(bytesRead, 0);
 
   // Fully close both sockets
   acceptedSocket->close();
@@ -1005,8 +1005,8 @@ void testConnectOptWrite(size_t size1, size_t size2, bool close = false) {
   // Hopefully the connect didn't succeed immediately.
   // If it did, we can't exercise the optimistic write code path.
   if (ccb.state == STATE_SUCCEEDED) {
-    BOOST_TEST_MESSAGE("connect() succeeded immediately; aborting test "
-                       "of optimistic write behavior");
+    LOG(INFO) << "connect() succeeded immediately; aborting test "
+                       "of optimistic write behavior";
     return;
   }
 
@@ -1048,12 +1048,12 @@ void testConnectOptWrite(size_t size1, size_t size2, bool close = false) {
   // The kernel should be able to buffer the write request so it can succeed.
   evb.loop();
 
-  BOOST_CHECK_EQUAL(ccb.state, STATE_SUCCEEDED);
+  CHECK_EQ(ccb.state, STATE_SUCCEEDED);
   if (size1 > 0) {
-    BOOST_CHECK_EQUAL(wcb1.state, STATE_SUCCEEDED);
+    CHECK_EQ(wcb1.state, STATE_SUCCEEDED);
   }
   if (size2 > 0) {
-    BOOST_CHECK_EQUAL(wcb2.state, STATE_SUCCEEDED);
+    CHECK_EQ(wcb2.state, STATE_SUCCEEDED);
   }
 
   socket->close();
@@ -1068,7 +1068,7 @@ void testConnectOptWrite(size_t size1, size_t size2, bool close = false) {
     size_t end = bytesRead;
     if (start < size1) {
       size_t cmpLen = min(size1, end) - start;
-      BOOST_CHECK_EQUAL(memcmp(it->buffer, buf1.get() + start, cmpLen), 0);
+      CHECK_EQ(memcmp(it->buffer, buf1.get() + start, cmpLen), 0);
     }
     if (end > size1 && end <= size1 + size2) {
       size_t itOffset;
@@ -1083,50 +1083,42 @@ void testConnectOptWrite(size_t size1, size_t size2, bool close = false) {
         buf2Offset = 0;
         cmpLen = end - size1;
       }
-      BOOST_CHECK_EQUAL(memcmp(it->buffer + itOffset, buf2.get() + buf2Offset,
+      CHECK_EQ(memcmp(it->buffer + itOffset, buf2.get() + buf2Offset,
                                cmpLen),
                         0);
     }
   }
-  BOOST_CHECK_EQUAL(bytesRead, size1 + size2);
+  CHECK_EQ(bytesRead, size1 + size2);
 }
 
-BOOST_AUTO_TEST_CASE(ConnectCallbackWrite) {
+TEST(TAsyncSocketTest, ConnectCallbackWrite) {
   // Test using small writes that should both succeed immediately
-  BOOST_TEST_CHECKPOINT("SmallBuffers");
   testConnectOptWrite(100, 200);
 
   // Test using a large buffer in the connect callback, that should block
   const size_t largeSize = 8*1024*1024;
-  BOOST_TEST_CHECKPOINT("LargeAfterConnect");
   testConnectOptWrite(100, largeSize);
 
   // Test using a large initial write
-  BOOST_TEST_CHECKPOINT("LargeAfterConnect");
   testConnectOptWrite(largeSize, 100);
 
   // Test using two large buffers
-  BOOST_TEST_CHECKPOINT("BothLarge");
   testConnectOptWrite(largeSize, largeSize);
 
   // Test a small write in the connect callback,
   // but no immediate write before connect completes
-  BOOST_TEST_CHECKPOINT("NoneSmall");
   testConnectOptWrite(0, 64);
 
   // Test a large write in the connect callback,
   // but no immediate write before connect completes
-  BOOST_TEST_CHECKPOINT("NoneLarge");
   testConnectOptWrite(0, largeSize);
 
   // Test connect, a small write, then immediately call close() before connect
   // completes
-  BOOST_TEST_CHECKPOINT("LargeClose");
   testConnectOptWrite(211, 0, true);
 
   // Test connect, a large immediate write (that will block), then immediately
   // call close() before connect completes
-  BOOST_TEST_CHECKPOINT("LargeClose");
   testConnectOptWrite(largeSize, 0, true);
 }
 
@@ -1137,7 +1129,7 @@ BOOST_AUTO_TEST_CASE(ConnectCallbackWrite) {
 /**
  * Test writing using a nullptr callback
  */
-BOOST_AUTO_TEST_CASE(WriteNullCallback) {
+TEST(TAsyncSocketTest, WriteNullCallback) {
   TestServer server;
 
   // connect()
@@ -1161,7 +1153,7 @@ BOOST_AUTO_TEST_CASE(WriteNullCallback) {
 /**
  * Test writing with a send timeout
  */
-BOOST_AUTO_TEST_CASE(WriteTimeout) {
+TEST(TAsyncSocketTest, WriteTimeout) {
   TestServer server;
 
   // connect()
@@ -1184,8 +1176,8 @@ BOOST_AUTO_TEST_CASE(WriteTimeout) {
   int64_t end = Util::currentTime();
 
   // Make sure the write attempt timed out as requested
-  BOOST_CHECK_EQUAL(wcb.state, STATE_FAILED);
-  BOOST_CHECK_EQUAL(wcb.exception.getType(), TTransportException::TIMED_OUT);
+  CHECK_EQ(wcb.state, STATE_FAILED);
+  CHECK_EQ(wcb.exception.getType(), TTransportException::TIMED_OUT);
 
   // Check that the write timed out within a reasonable period of time.
   // We don't check for exactly the specified timeout, since TAsyncSocket only
@@ -1207,13 +1199,13 @@ BOOST_AUTO_TEST_CASE(WriteTimeout) {
   //
   // For now, we simply check that the timeout occurred within 160ms of
   // the requested value.
-  BOOST_CHECK_LT(end - start, timeout + 160);
+  CHECK_LT(end - start, timeout + 160);
 }
 
 /**
  * Test writing to a socket that the remote endpoint has closed
  */
-BOOST_AUTO_TEST_CASE(WritePipeError) {
+TEST(TAsyncSocketTest, WritePipeError) {
   TestServer server;
 
   // connect()
@@ -1239,15 +1231,15 @@ BOOST_AUTO_TEST_CASE(WritePipeError) {
   // Make sure the write failed.
   // It would be nice if TTransportException could convey the errno value,
   // so that we could check for EPIPE
-  BOOST_CHECK_EQUAL(wcb.state, STATE_FAILED);
-  BOOST_CHECK_EQUAL(wcb.exception.getType(),
+  CHECK_EQ(wcb.state, STATE_FAILED);
+  CHECK_EQ(wcb.exception.getType(),
                     TTransportException::INTERNAL_ERROR);
 }
 
 /**
  * Test writing a mix of simple buffers and IOBufs
  */
-BOOST_AUTO_TEST_CASE(WriteIOBuf) {
+TEST(TAsyncSocketTest, WriteIOBuf) {
   TestServer server;
 
   // connect()
@@ -1296,21 +1288,21 @@ BOOST_AUTO_TEST_CASE(WriteIOBuf) {
   // Let the reads and writes run to completion
   evb.loop();
 
-  BOOST_CHECK_EQUAL(wcb.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(wcb2.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(wcb3.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb2.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb3.state, STATE_SUCCEEDED);
 
   // Make sure the reader got the right data in the right order
-  BOOST_CHECK_EQUAL(rcb.state, STATE_SUCCEEDED);
-  BOOST_REQUIRE_EQUAL(rcb.buffers.size(), 1);
-  BOOST_REQUIRE_EQUAL(rcb.buffers[0].length,
+  CHECK_EQ(rcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(rcb.buffers.size(), 1);
+  CHECK_EQ(rcb.buffers[0].length,
       simpleBufLength + buf1Length + buf2Length + buf3Length);
-  BOOST_CHECK_EQUAL(
+  CHECK_EQ(
       memcmp(rcb.buffers[0].buffer, simpleBuf, simpleBufLength), 0);
-  BOOST_CHECK_EQUAL(
+  CHECK_EQ(
       memcmp(rcb.buffers[0].buffer + simpleBufLength,
           buf1Copy->data(), buf1Copy->length()), 0);
-  BOOST_CHECK_EQUAL(
+  CHECK_EQ(
       memcmp(rcb.buffers[0].buffer + simpleBufLength + buf1Length,
           buf2Copy->data(), buf2Copy->length()), 0);
 
@@ -1318,7 +1310,7 @@ BOOST_AUTO_TEST_CASE(WriteIOBuf) {
   socket->close();
 }
 
-BOOST_AUTO_TEST_CASE(WriteIOBufCorked) {
+TEST(TAsyncSocketTest, WriteIOBufCorked) {
   TestServer server;
 
   // connect()
@@ -1358,19 +1350,19 @@ BOOST_AUTO_TEST_CASE(WriteIOBufCorked) {
   write3.scheduleTimeout(200);
 
   evb.loop();
-  BOOST_CHECK_EQUAL(ccb.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(wcb1.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(wcb2.state, STATE_SUCCEEDED);
+  CHECK_EQ(ccb.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb1.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb2.state, STATE_SUCCEEDED);
   if (wcb3.state != STATE_SUCCEEDED) {
     throw(wcb3.exception);
   }
-  BOOST_CHECK_EQUAL(wcb3.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb3.state, STATE_SUCCEEDED);
 
   // Make sure the reader got the data with the right grouping
-  BOOST_CHECK_EQUAL(rcb.state, STATE_SUCCEEDED);
-  BOOST_REQUIRE_EQUAL(rcb.buffers.size(), 2);
-  BOOST_REQUIRE_EQUAL(rcb.buffers[0].length, buf1Length);
-  BOOST_REQUIRE_EQUAL(rcb.buffers[1].length, buf2Length + buf3Length);
+  CHECK_EQ(rcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(rcb.buffers.size(), 2);
+  CHECK_EQ(rcb.buffers[0].length, buf1Length);
+  CHECK_EQ(rcb.buffers[1].length, buf2Length + buf3Length);
 
   acceptedSocket->close();
   socket->close();
@@ -1379,7 +1371,7 @@ BOOST_AUTO_TEST_CASE(WriteIOBufCorked) {
 /**
  * Test performing a zero-length write
  */
-BOOST_AUTO_TEST_CASE(ZeroLengthWrite) {
+TEST(TAsyncSocketTest, ZeroLengthWrite) {
   TestServer server;
 
   // connect()
@@ -1410,14 +1402,14 @@ BOOST_AUTO_TEST_CASE(ZeroLengthWrite) {
 
   evb.loop(); // loop until the data is sent
 
-  BOOST_CHECK_EQUAL(wcb1.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(wcb2.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(wcb3.state, STATE_SUCCEEDED);
-  BOOST_CHECK_EQUAL(wcb4.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb1.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb2.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb3.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb4.state, STATE_SUCCEEDED);
   rcb.verifyData(buf.get(), len1 + len2);
 }
 
-BOOST_AUTO_TEST_CASE(ZeroLengthWritev) {
+TEST(TAsyncSocketTest, ZeroLengthWritev) {
   TestServer server;
 
   // connect()
@@ -1452,7 +1444,7 @@ BOOST_AUTO_TEST_CASE(ZeroLengthWritev) {
   socket->close();
   evb.loop(); // loop until the data is sent
 
-  BOOST_CHECK_EQUAL(wcb.state, STATE_SUCCEEDED);
+  CHECK_EQ(wcb.state, STATE_SUCCEEDED);
   rcb.verifyData(buf.get(), len1 + len2);
 }
 
@@ -1463,7 +1455,7 @@ BOOST_AUTO_TEST_CASE(ZeroLengthWritev) {
 /**
  * Test calling close() with pending writes when the socket is already closing.
  */
-BOOST_AUTO_TEST_CASE(ClosePendingWritesWhileClosing) {
+TEST(TAsyncSocketTest, ClosePendingWritesWhileClosing) {
   TestServer server;
 
   // connect()
@@ -1479,7 +1471,7 @@ BOOST_AUTO_TEST_CASE(ClosePendingWritesWhileClosing) {
   evb.loop();
 
   // Make sure we are connected
-  BOOST_CHECK_EQUAL(ccb.state, STATE_SUCCEEDED);
+  CHECK_EQ(ccb.state, STATE_SUCCEEDED);
 
   // Schedule pending writes, until several write attempts have blocked
   char buf[128];
@@ -1510,7 +1502,7 @@ BOOST_AUTO_TEST_CASE(ClosePendingWritesWhileClosing) {
   for (WriteCallbackVector::const_iterator it = writeCallbacks.begin();
        it != writeCallbacks.end();
        ++it) {
-    BOOST_CHECK_EQUAL((*it)->state, STATE_FAILED);
+    CHECK_EQ((*it)->state, STATE_FAILED);
   }
 }
 
@@ -1635,7 +1627,7 @@ class TestAcceptCallback : public TAsyncServerSocket::AcceptCallback {
 /**
  * Make sure accepted sockets have O_NONBLOCK and TCP_NODELAY set
  */
-BOOST_AUTO_TEST_CASE(ServerAcceptOptions) {
+TEST(TAsyncSocketTest, ServerAcceptOptions) {
   TEventBase eventBase;
 
   // Create a server socket
@@ -1665,33 +1657,33 @@ BOOST_AUTO_TEST_CASE(ServerAcceptOptions) {
   eventBase.loop();
 
   // Verify that the server accepted a connection
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->size(), 3);
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->at(0).type,
+  CHECK_EQ(acceptCallback.getEvents()->size(), 3);
+  CHECK_EQ(acceptCallback.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->at(1).type,
+  CHECK_EQ(acceptCallback.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->at(2).type,
+  CHECK_EQ(acceptCallback.getEvents()->at(2).type,
                     TestAcceptCallback::TYPE_STOP);
   int fd = acceptCallback.getEvents()->at(1).fd;
 
   // The accepted connection should already be in non-blocking mode
   int flags = fcntl(fd, F_GETFL, 0);
-  BOOST_CHECK_EQUAL(flags & O_NONBLOCK, O_NONBLOCK);
+  CHECK_EQ(flags & O_NONBLOCK, O_NONBLOCK);
 
 #ifndef TCP_NOPUSH
   // The accepted connection should already have TCP_NODELAY set
   int value;
   socklen_t valueLength = sizeof(value);
   int rc = getsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &value, &valueLength);
-  BOOST_CHECK_EQUAL(rc, 0);
-  BOOST_CHECK_EQUAL(value, 1);
+  CHECK_EQ(rc, 0);
+  CHECK_EQ(value, 1);
 #endif
 }
 
 /**
  * Test TAsyncServerSocket::removeAcceptCallback()
  */
-BOOST_AUTO_TEST_CASE(RemoveAcceptCallback) {
+TEST(TAsyncSocketTest, RemoveAcceptCallback) {
   // Create a new TAsyncServerSocket
   TEventBase eventBase;
   std::shared_ptr<TAsyncServerSocket> serverSocket(
@@ -1791,69 +1783,69 @@ BOOST_AUTO_TEST_CASE(RemoveAcceptCallback) {
   // exactly round robin in the future, we can simplify the test checks here.
   // (We'll also need to update the termination code, since we expect cb6 to
   // get called twice to terminate the loop.)
-  BOOST_CHECK_EQUAL(cb1.getEvents()->size(), 4);
-  BOOST_CHECK_EQUAL(cb1.getEvents()->at(0).type,
+  CHECK_EQ(cb1.getEvents()->size(), 4);
+  CHECK_EQ(cb1.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(cb1.getEvents()->at(1).type,
+  CHECK_EQ(cb1.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(cb1.getEvents()->at(2).type,
+  CHECK_EQ(cb1.getEvents()->at(2).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(cb1.getEvents()->at(3).type,
+  CHECK_EQ(cb1.getEvents()->at(3).type,
                     TestAcceptCallback::TYPE_STOP);
 
-  BOOST_CHECK_EQUAL(cb2.getEvents()->size(), 4);
-  BOOST_CHECK_EQUAL(cb2.getEvents()->at(0).type,
+  CHECK_EQ(cb2.getEvents()->size(), 4);
+  CHECK_EQ(cb2.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(cb2.getEvents()->at(1).type,
+  CHECK_EQ(cb2.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(cb2.getEvents()->at(2).type,
+  CHECK_EQ(cb2.getEvents()->at(2).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(cb2.getEvents()->at(3).type,
+  CHECK_EQ(cb2.getEvents()->at(3).type,
                     TestAcceptCallback::TYPE_STOP);
 
-  BOOST_CHECK_EQUAL(cb3.getEvents()->size(), 2);
-  BOOST_CHECK_EQUAL(cb3.getEvents()->at(0).type,
+  CHECK_EQ(cb3.getEvents()->size(), 2);
+  CHECK_EQ(cb3.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(cb3.getEvents()->at(1).type,
+  CHECK_EQ(cb3.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_STOP);
 
-  BOOST_CHECK_EQUAL(cb4.getEvents()->size(), 3);
-  BOOST_CHECK_EQUAL(cb4.getEvents()->at(0).type,
+  CHECK_EQ(cb4.getEvents()->size(), 3);
+  CHECK_EQ(cb4.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(cb4.getEvents()->at(1).type,
+  CHECK_EQ(cb4.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(cb4.getEvents()->at(2).type,
+  CHECK_EQ(cb4.getEvents()->at(2).type,
                     TestAcceptCallback::TYPE_STOP);
 
-  BOOST_CHECK_EQUAL(cb5.getEvents()->size(), 2);
-  BOOST_CHECK_EQUAL(cb5.getEvents()->at(0).type,
+  CHECK_EQ(cb5.getEvents()->size(), 2);
+  CHECK_EQ(cb5.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(cb5.getEvents()->at(1).type,
+  CHECK_EQ(cb5.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_STOP);
 
-  BOOST_CHECK_EQUAL(cb6.getEvents()->size(), 4);
-  BOOST_CHECK_EQUAL(cb6.getEvents()->at(0).type,
+  CHECK_EQ(cb6.getEvents()->size(), 4);
+  CHECK_EQ(cb6.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(cb6.getEvents()->at(1).type,
+  CHECK_EQ(cb6.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(cb6.getEvents()->at(2).type,
+  CHECK_EQ(cb6.getEvents()->at(2).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(cb6.getEvents()->at(3).type,
+  CHECK_EQ(cb6.getEvents()->at(3).type,
                     TestAcceptCallback::TYPE_STOP);
 
-  BOOST_CHECK_EQUAL(cb7.getEvents()->size(), 3);
-  BOOST_CHECK_EQUAL(cb7.getEvents()->at(0).type,
+  CHECK_EQ(cb7.getEvents()->size(), 3);
+  CHECK_EQ(cb7.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(cb7.getEvents()->at(1).type,
+  CHECK_EQ(cb7.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(cb7.getEvents()->at(2).type,
+  CHECK_EQ(cb7.getEvents()->at(2).type,
                     TestAcceptCallback::TYPE_STOP);
 }
 
 /**
  * Test TAsyncServerSocket::removeAcceptCallback()
  */
-BOOST_AUTO_TEST_CASE(OtherThreadAcceptCallback) {
+TEST(TAsyncSocketTest, OtherThreadAcceptCallback) {
   // Create a new TAsyncServerSocket
   TEventBase eventBase;
   std::shared_ptr<TAsyncServerSocket> serverSocket(
@@ -1867,15 +1859,15 @@ BOOST_AUTO_TEST_CASE(OtherThreadAcceptCallback) {
   TestAcceptCallback cb1;
   auto thread_id = pthread_self();
   cb1.setAcceptStartedFn([&](){
-    BOOST_CHECK_NE(thread_id, pthread_self());
+    CHECK_NE(thread_id, pthread_self());
     thread_id = pthread_self();
   });
   cb1.setConnectionAcceptedFn([&](int fd, const folly::SocketAddress& addr){
-    BOOST_CHECK_EQUAL(thread_id, pthread_self());
+    CHECK_EQ(thread_id, pthread_self());
     serverSocket->removeAcceptCallback(&cb1, nullptr);
   });
   cb1.setAcceptStoppedFn([&](){
-    BOOST_CHECK_EQUAL(thread_id, pthread_self());
+    CHECK_EQ(thread_id, pthread_self());
   });
 
   // Test having callbacks remove other callbacks before them on the list,
@@ -1905,12 +1897,12 @@ BOOST_AUTO_TEST_CASE(OtherThreadAcceptCallback) {
   // exactly round robin in the future, we can simplify the test checks here.
   // (We'll also need to update the termination code, since we expect cb6 to
   // get called twice to terminate the loop.)
-  BOOST_CHECK_EQUAL(cb1.getEvents()->size(), 3);
-  BOOST_CHECK_EQUAL(cb1.getEvents()->at(0).type,
+  CHECK_EQ(cb1.getEvents()->size(), 3);
+  CHECK_EQ(cb1.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(cb1.getEvents()->at(1).type,
+  CHECK_EQ(cb1.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(cb1.getEvents()->at(2).type,
+  CHECK_EQ(cb1.getEvents()->at(2).type,
                     TestAcceptCallback::TYPE_STOP);
 
 }
@@ -1938,12 +1930,12 @@ void serverSocketSanityTest(TAsyncServerSocket* serverSocket) {
   eventBase->loop();
 
   // Verify that the server accepted a connection
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->size(), 3);
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->at(0).type,
+  CHECK_EQ(acceptCallback.getEvents()->size(), 3);
+  CHECK_EQ(acceptCallback.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->at(1).type,
+  CHECK_EQ(acceptCallback.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->at(2).type,
+  CHECK_EQ(acceptCallback.getEvents()->at(2).type,
                     TestAcceptCallback::TYPE_STOP);
 }
 
@@ -1954,7 +1946,7 @@ void serverSocketSanityTest(TAsyncServerSocket* serverSocket) {
  * it would shutdown(writes) on the socket, but it would
  * never be close()'d, and the socket would leak
  */
-BOOST_AUTO_TEST_CASE(DestroyCloseTest) {
+TEST(TAsyncSocketTest, DestroyCloseTest) {
   TestServer server;
 
   // connect()
@@ -1984,22 +1976,22 @@ BOOST_AUTO_TEST_CASE(DestroyCloseTest) {
 
   // Test that server socket was closed
   ssize_t sz = read(fd, simpleBuf, simpleBufLength);
-  BOOST_CHECK_EQUAL(sz, -1);
-  BOOST_CHECK_EQUAL(errno, 9);
+  CHECK_EQ(sz, -1);
+  CHECK_EQ(errno, 9);
   delete[] simpleBuf;
 }
 
 /**
  * Test TAsyncServerSocket::useExistingSocket()
  */
-BOOST_AUTO_TEST_CASE(ServerExistingSocket) {
+TEST(TAsyncSocketTest, ServerExistingSocket) {
   TEventBase eventBase;
 
   // Test creating a socket, and letting TAsyncServerSocket bind and listen
   {
     // Manually create a socket
     int fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    BOOST_REQUIRE_GE(fd, 0);
+    ASSERT_GE(fd, 0);
 
     // Create a server socket
     TAsyncServerSocket::UniquePtr serverSocket(
@@ -2020,13 +2012,13 @@ BOOST_AUTO_TEST_CASE(ServerExistingSocket) {
   {
     // Manually create a socket
     int fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    BOOST_REQUIRE_GE(fd, 0);
+    ASSERT_GE(fd, 0);
     // bind
     struct sockaddr_in addr;
     addr.sin_family = AF_INET;
     addr.sin_port = 0;
     addr.sin_addr.s_addr = INADDR_ANY;
-    BOOST_REQUIRE_EQUAL(bind(fd, reinterpret_cast<struct sockaddr*>(&addr),
+    CHECK_EQ(bind(fd, reinterpret_cast<struct sockaddr*>(&addr),
                              sizeof(addr)), 0);
     // Look up the address that we bound to
     folly::SocketAddress boundAddress;
@@ -2041,7 +2033,7 @@ BOOST_AUTO_TEST_CASE(ServerExistingSocket) {
     // Make sure TAsyncServerSocket reports the same address that we bound to
     folly::SocketAddress serverSocketAddress;
     serverSocket->getAddress(&serverSocketAddress);
-    BOOST_CHECK_EQUAL(boundAddress, serverSocketAddress);
+    CHECK_EQ(boundAddress, serverSocketAddress);
 
     // Make sure the socket works
     serverSocketSanityTest(serverSocket.get());
@@ -2052,19 +2044,19 @@ BOOST_AUTO_TEST_CASE(ServerExistingSocket) {
   {
     // Manually create a socket
     int fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    BOOST_REQUIRE_GE(fd, 0);
+    ASSERT_GE(fd, 0);
     // bind
     struct sockaddr_in addr;
     addr.sin_family = AF_INET;
     addr.sin_port = 0;
     addr.sin_addr.s_addr = INADDR_ANY;
-    BOOST_REQUIRE_EQUAL(bind(fd, reinterpret_cast<struct sockaddr*>(&addr),
+    CHECK_EQ(bind(fd, reinterpret_cast<struct sockaddr*>(&addr),
                              sizeof(addr)), 0);
     // Look up the address that we bound to
     folly::SocketAddress boundAddress;
     boundAddress.setFromLocalAddress(fd);
     // listen
-    BOOST_REQUIRE_EQUAL(listen(fd, 16), 0);
+    CHECK_EQ(listen(fd, 16), 0);
 
     // Create a server socket
     TAsyncServerSocket::UniquePtr serverSocket(
@@ -2074,14 +2066,14 @@ BOOST_AUTO_TEST_CASE(ServerExistingSocket) {
     // Make sure TAsyncServerSocket reports the same address that we bound to
     folly::SocketAddress serverSocketAddress;
     serverSocket->getAddress(&serverSocketAddress);
-    BOOST_CHECK_EQUAL(boundAddress, serverSocketAddress);
+    CHECK_EQ(boundAddress, serverSocketAddress);
 
     // Make sure the socket works
     serverSocketSanityTest(serverSocket.get());
   }
 }
 
-BOOST_AUTO_TEST_CASE(UnixDomainSocketTest) {
+TEST(TAsyncSocketTest, UnixDomainSocketTest) {
   TEventBase eventBase;
 
   // Create a server socket
@@ -2113,35 +2105,16 @@ BOOST_AUTO_TEST_CASE(UnixDomainSocketTest) {
   eventBase.loop();
 
   // Verify that the server accepted a connection
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->size(), 3);
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->at(0).type,
+  CHECK_EQ(acceptCallback.getEvents()->size(), 3);
+  CHECK_EQ(acceptCallback.getEvents()->at(0).type,
                     TestAcceptCallback::TYPE_START);
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->at(1).type,
+  CHECK_EQ(acceptCallback.getEvents()->at(1).type,
                     TestAcceptCallback::TYPE_ACCEPT);
-  BOOST_CHECK_EQUAL(acceptCallback.getEvents()->at(2).type,
+  CHECK_EQ(acceptCallback.getEvents()->at(2).type,
                     TestAcceptCallback::TYPE_STOP);
   int fd = acceptCallback.getEvents()->at(1).fd;
 
   // The accepted connection should already be in non-blocking mode
   int flags = fcntl(fd, F_GETFL, 0);
-  BOOST_CHECK_EQUAL(flags & O_NONBLOCK, O_NONBLOCK);
-}
-
-///////////////////////////////////////////////////////////////////////////
-// init_unit_test_suite
-///////////////////////////////////////////////////////////////////////////
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value = "TAsyncSocketTest";
-
-  if (argc != 1) {
-    cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      cerr << " " << argv[n];
-    }
-    cerr << endl;
-    exit(1);
-  }
-
-  return nullptr;
+  CHECK_EQ(flags & O_NONBLOCK, O_NONBLOCK);
 }

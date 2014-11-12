@@ -20,11 +20,10 @@
 #define _GNU_SOURCE // needed for getopt_long
 #endif
 
-#include <sys/time.h>
-#include <getopt.h>
-#include <boost/test/unit_test.hpp>
-#include <boost/scoped_ptr.hpp>
 #include <deque>
+#include <getopt.h>
+#include <gtest/gtest.h>
+#include <sys/time.h>
 
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -36,8 +35,7 @@ using apache::thrift::concurrency::Mutex;
 using apache::thrift::concurrency::Util;
 using apache::thrift::transport::TFileTransport;
 using apache::thrift::test::TimePoint;
-using boost::scoped_ptr;
-using boost::test_tools::predicate_result;
+using std::unique_ptr;
 using std::deque;
 
 /**************************************************************************
@@ -223,7 +221,7 @@ int fsync(int fd) {
  * wall-clock time.  This could result in false failures on slower systems, or
  * on heavily loaded machines.
  */
-BOOST_AUTO_TEST_CASE(test_destructor) {
+TEST(TFileTransportTest, test_destructor) {
   TempFile f(tmp_dir, "thrift.TFileTransportTest.");
 
   unsigned int const NUM_ITERATIONS = 1000;
@@ -231,7 +229,7 @@ BOOST_AUTO_TEST_CASE(test_destructor) {
   for (unsigned int n = 0; n < NUM_ITERATIONS; ++n) {
     ftruncate(f.getFD(), 0);
 
-    scoped_ptr<TFileTransport> transport(new TFileTransport(f.getPath()));
+    unique_ptr<TFileTransport> transport(new TFileTransport(f.getPath()));
 
     // write something so that the writer thread gets started
     transport->write(reinterpret_cast<const uint8_t*>("foo"), 3);
@@ -280,7 +278,7 @@ void test_flush_max_us_impl(uint32_t flush_us, uint32_t write_us,
   FsyncTimer fsyncTimer(flush_us);
   fsyncHandler = &fsyncTimer;
 
-  scoped_ptr<TFileTransport> transport(new TFileTransport(f.getPath()));
+  unique_ptr<TFileTransport> transport(new TFileTransport(f.getPath()));
   // Don't flush because of # of bytes written
   transport->setFlushMaxBytes(0xffffffff);
   uint8_t buf[] = "a";
@@ -319,22 +317,22 @@ void test_flush_max_us_impl(uint32_t flush_us, uint32_t write_us,
   fsyncTimer.checkResults();
 }
 
-BOOST_AUTO_TEST_CASE(test_flush_max_10_4) {
+TEST(TFileTransportTest, test_flush_max_10_4) {
   // fsync every 10ms, write every 4ms, for 200ms
   test_flush_max_us_impl(10000, 4000, 200000);
 }
 
-BOOST_AUTO_TEST_CASE(test_flush_max_10_14) {
+TEST(TFileTransportTest, test_flush_max_10_14) {
   // fsync every 10ms, write every 14ms, for 200ms
   test_flush_max_us_impl(10000, 14000, 200000);
 }
 
-BOOST_AUTO_TEST_CASE(test_flush_max_50_21) {
+TEST(TFileTransportTest, test_flush_max_50_21) {
   // fsync every 50ms, write every 21ms, for 300ms
   test_flush_max_us_impl(50000, 21000, 300000);
 }
 
-BOOST_AUTO_TEST_CASE(test_flush_max_50_68) {
+TEST(TFileTransportTest, test_flush_max_50_68) {
   // fsync every 50ms, write every 68ms, for 300ms
   test_flush_max_us_impl(50000, 68000, 300000);
 }
@@ -345,7 +343,7 @@ BOOST_AUTO_TEST_CASE(test_flush_max_50_68) {
  * TFileTransport used to have a bug where flush() would wait for the fsync
  * timeout to expire.
  */
-BOOST_AUTO_TEST_CASE(test_noop_flush) {
+TEST(TFileTransportTest, test_noop_flush) {
   TempFile f(tmp_dir, "thrift.TFileTransportTest.");
   TFileTransport transport(f.getPath());
 
@@ -371,62 +369,18 @@ BOOST_AUTO_TEST_CASE(test_noop_flush) {
  * General Initialization
  **************************************************************************/
 
-void print_usage(FILE* f, const char* argv0) {
-  fprintf(f, "Usage: %s [boost_options] [options]\n", argv0);
-  fprintf(f, "Options:\n");
-  fprintf(f, "  --tmp-dir=DIR, -t DIR\n");
-  fprintf(f, "  --help\n");
-}
-
-void parse_args(int argc, char* argv[]) {
-  int seed;
-  int *seedptr = nullptr;
-
-  struct option long_opts[] = {
-    { "help", false, nullptr, 'h' },
-    { "tmp-dir", true, nullptr, 't' },
-    { nullptr, 0, nullptr, 0 }
-  };
-
-  while (true) {
-    optopt = 1;
-    int optchar = getopt_long(argc, argv, "ht:", long_opts, nullptr);
-    if (optchar == -1) {
-      break;
-    }
-
-    switch (optchar) {
-      case 't':
-        tmp_dir = optarg;
-        break;
-      case 'h':
-        print_usage(stdout, argv[0]);
-        exit(0);
-      case '?':
-        exit(1);
-      default:
-        // Only happens if someone adds another option to the optarg string,
-        // but doesn't update the switch statement to handle it.
-        fprintf(stderr, "unknown option \"-%c\"\n", optchar);
-        exit(1);
+class MyEnvironment: public ::testing::Environment {
+ public:
+  void SetUp() override {
+    // If this machine has a writable /dev/shm directory, write temporary files
+    // to /dev/shm instead of /tmp.  /dev/shm is a memory filesystem, and should
+    // be faster than /tmp.  Using /tmp can cause the timing check in
+    // test_destructor to fail if the disk is very busy.
+    if (access(shm_dir, W_OK) == 0) {
+      tmp_dir = shm_dir;
     }
   }
-}
+};
 
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  boost::unit_test::framework::master_test_suite().p_name.value =
-    "TFileTransportTest";
-
-  // Parse arguments
-  parse_args(argc, argv);
-
-  // If this machine has a writable /dev/shm directory, write temporary files
-  // to /dev/shm instead of /tmp.  /dev/shm is a memory filesystem, and should
-  // be faster than /tmp.  Using /tmp can cause the timing check in
-  // test_destructor to fail if the disk is very busy.
-  if (access(shm_dir, W_OK) == 0) {
-    tmp_dir = shm_dir;
-  }
-
-  return nullptr;
-}
+:testing::Environment* const globalEnv =
+   ::testing::AddGlobalTestEnvironment(new MyEnvironment);

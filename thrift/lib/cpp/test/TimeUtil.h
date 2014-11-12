@@ -19,7 +19,7 @@
 #ifndef THRIFT_TEST_TIMEUTIL_H_
 #define THRIFT_TEST_TIMEUTIL_H_ 1
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 #include <iostream>
 
 namespace apache { namespace thrift { namespace test {
@@ -71,11 +71,11 @@ class TimePoint {
 
 std::ostream& operator<<(std::ostream& os, const TimePoint& timePoint);
 
-boost::test_tools::predicate_result checkTimeout(const TimePoint& start,
-                                                 const TimePoint& end,
-                                                 int64_t expectedMS,
-                                                 bool allowSmaller,
-                                                 int64_t tolerance = 5);
+::testing::AssertionResult checkTimeout(const TimePoint& start,
+                                        const TimePoint& end,
+                                        int64_t expectedMS,
+                                        bool allowSmaller,
+                                        int64_t tolerance = 5);
 
 /**
  * Check how long a timeout took to fire.
@@ -93,7 +93,7 @@ boost::test_tools::predicate_result checkTimeout(const TimePoint& start,
  * @param tolerance             The tolerance, in milliseconds.
  */
 #define T_CHECK_TIMEOUT(start, end, expectedMS, ...) \
-  BOOST_CHECK(apache::thrift::test::checkTimeout((start), (end), \
+  EXPECT_TRUE(apache::thrift::test::checkTimeout((start), (end), \
                                                  (expectedMS), false, \
                                                  ##__VA_ARGS__))
 
@@ -104,7 +104,7 @@ boost::test_tools::predicate_result checkTimeout(const TimePoint& start,
  * than the allowed time.
  */
 #define T_CHECK_TIME_LT(start, end, expectedMS, ...) \
-  BOOST_CHECK(apache::thrift::test::checkTimeout((start), (end), \
+  EXPECT_TRUE(apache::thrift::test::checkTimeout((start), (end), \
                                                  (expectedMS), true, \
                                                  ##__VA_ARGS__))
 

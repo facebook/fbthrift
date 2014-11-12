@@ -21,10 +21,9 @@
 #include <thrift/lib/cpp/async/TUndelayedDestruction.h>
 #include <thrift/lib/cpp/test/TimeUtil.h>
 
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 #include <vector>
 
-namespace unit_test = boost::unit_test;
 using namespace apache::thrift::async;
 using namespace apache::thrift::test;
 using std::chrono::milliseconds;
@@ -51,7 +50,7 @@ class TestTimeout : public HHWheelTimer::Callback {
 /*
  * Test firing some simple timeouts that are fired once and never rescheduled
  */
-BOOST_AUTO_TEST_CASE(FireOnce) {
+TEST(HHWheelTimerTest, FireOnce) {
   TEventBase eventBase;
   StackWheelTimer t(&eventBase, milliseconds(1));
 
@@ -61,7 +60,7 @@ BOOST_AUTO_TEST_CASE(FireOnce) {
   TestTimeout t2;
   TestTimeout t3;
 
-  BOOST_REQUIRE_EQUAL(t.count(), 0);
+  ASSERT_EQ(t.count(), 0);
 
   t.scheduleTimeout(&t1, milliseconds(5));
   t.scheduleTimeout(&t2, milliseconds(5));
@@ -70,17 +69,17 @@ BOOST_AUTO_TEST_CASE(FireOnce) {
   t.scheduleTimeout(&t2, milliseconds(5));
   t.scheduleTimeout(&t3, milliseconds(10));
 
-  BOOST_REQUIRE_EQUAL(t.count(), 3);
+  ASSERT_EQ(t.count(), 3);
 
   TimePoint start;
   eventBase.loop();
   TimePoint end;
 
-  BOOST_REQUIRE_EQUAL(t1.timestamps.size(), 1);
-  BOOST_REQUIRE_EQUAL(t2.timestamps.size(), 1);
-  BOOST_REQUIRE_EQUAL(t3.timestamps.size(), 1);
+  ASSERT_EQ(t1.timestamps.size(), 1);
+  ASSERT_EQ(t2.timestamps.size(), 1);
+  ASSERT_EQ(t3.timestamps.size(), 1);
 
-  BOOST_REQUIRE_EQUAL(t.count(), 0);
+  ASSERT_EQ(t.count(), 0);
 
   T_CHECK_TIMEOUT(start, t1.timestamps[0], 5);
   T_CHECK_TIMEOUT(start, t2.timestamps[0], 5);
@@ -92,7 +91,7 @@ BOOST_AUTO_TEST_CASE(FireOnce) {
  * Test cancelling a timeout when it is scheduled to be fired right away.
  */
 
-BOOST_AUTO_TEST_CASE(CancelTimeout) {
+TEST(HHWheelTimerTest, CancelTimeout) {
   TEventBase eventBase;
   StackWheelTimer t(&eventBase, milliseconds(1));
 
@@ -147,25 +146,25 @@ BOOST_AUTO_TEST_CASE(CancelTimeout) {
   eventBase.loop();
   TimePoint end;
 
-  BOOST_REQUIRE_EQUAL(t5_1.timestamps.size(), 1);
+  ASSERT_EQ(t5_1.timestamps.size(), 1);
   T_CHECK_TIMEOUT(start, t5_1.timestamps[0], 5);
 
-  BOOST_REQUIRE_EQUAL(t5_3.timestamps.size(), 2);
+  ASSERT_EQ(t5_3.timestamps.size(), 2);
   T_CHECK_TIMEOUT(start, t5_3.timestamps[0], 5);
   T_CHECK_TIMEOUT(t5_3.timestamps[0], t5_3.timestamps[1], 5);
 
-  BOOST_REQUIRE_EQUAL(t10_1.timestamps.size(), 1);
+  ASSERT_EQ(t10_1.timestamps.size(), 1);
   T_CHECK_TIMEOUT(start, t10_1.timestamps[0], 10);
-  BOOST_REQUIRE_EQUAL(t10_3.timestamps.size(), 1);
+  ASSERT_EQ(t10_3.timestamps.size(), 1);
   T_CHECK_TIMEOUT(start, t10_3.timestamps[0], 10);
 
   // Cancelled timeouts
-  BOOST_CHECK_EQUAL(t5_2.timestamps.size(), 0);
-  BOOST_CHECK_EQUAL(t5_4.timestamps.size(), 0);
-  BOOST_CHECK_EQUAL(t5_5.timestamps.size(), 0);
-  BOOST_CHECK_EQUAL(t10_2.timestamps.size(), 0);
-  BOOST_CHECK_EQUAL(t20_1.timestamps.size(), 0);
-  BOOST_CHECK_EQUAL(t20_2.timestamps.size(), 0);
+  ASSERT_EQ(t5_2.timestamps.size(), 0);
+  ASSERT_EQ(t5_4.timestamps.size(), 0);
+  ASSERT_EQ(t5_5.timestamps.size(), 0);
+  ASSERT_EQ(t10_2.timestamps.size(), 0);
+  ASSERT_EQ(t20_1.timestamps.size(), 0);
+  ASSERT_EQ(t20_2.timestamps.size(), 0);
 
   T_CHECK_TIMEOUT(start, end, 10);
 }
@@ -174,7 +173,7 @@ BOOST_AUTO_TEST_CASE(CancelTimeout) {
  * Test destroying a HHWheelTimer with timeouts outstanding
  */
 
-BOOST_AUTO_TEST_CASE(DestroyTimeoutSet) {
+TEST(HHWheelTimerTest, DestroyTimeoutSet) {
   TEventBase eventBase;
 
   HHWheelTimer::UniquePtr t(
@@ -201,14 +200,14 @@ BOOST_AUTO_TEST_CASE(DestroyTimeoutSet) {
   eventBase.loop();
   TimePoint end;
 
-  BOOST_REQUIRE_EQUAL(t5_1.timestamps.size(), 1);
+  ASSERT_EQ(t5_1.timestamps.size(), 1);
   T_CHECK_TIMEOUT(start, t5_1.timestamps[0], 5);
-  BOOST_REQUIRE_EQUAL(t5_2.timestamps.size(), 1);
+  ASSERT_EQ(t5_2.timestamps.size(), 1);
   T_CHECK_TIMEOUT(start, t5_2.timestamps[0], 5);
 
-  BOOST_CHECK_EQUAL(t5_3.timestamps.size(), 0);
-  BOOST_CHECK_EQUAL(t10_1.timestamps.size(), 0);
-  BOOST_CHECK_EQUAL(t10_2.timestamps.size(), 0);
+  ASSERT_EQ(t5_3.timestamps.size(), 0);
+  ASSERT_EQ(t10_1.timestamps.size(), 0);
+  ASSERT_EQ(t10_2.timestamps.size(), 0);
 
   T_CHECK_TIMEOUT(start, end, 5);
 }
@@ -216,7 +215,7 @@ BOOST_AUTO_TEST_CASE(DestroyTimeoutSet) {
 /*
  * Test the tick interval parameter
  */
-BOOST_AUTO_TEST_CASE(AtMostEveryN) {
+TEST(HHWheelTimerTest, AtMostEveryN) {
   TEventBase eventBase;
 
   // Create a timeout set with a 10ms interval, to fire no more than once
@@ -271,7 +270,7 @@ BOOST_AUTO_TEST_CASE(AtMostEveryN) {
   // one interval, etc.  T_CHECK_TIMEOUT normally allows a few milliseconds of
   // tolerance.  We have to add the same into our checking algorithm here.
   for (uint32_t idx = 0; idx < numTimeouts; ++idx) {
-    BOOST_REQUIRE_EQUAL(timeouts[idx].timestamps.size(), 2);
+    ASSERT_EQ(timeouts[idx].timestamps.size(), 2);
 
     TimePoint scheduledTime(timeouts[idx].timestamps[0]);
     TimePoint firedTime(timeouts[idx].timestamps[1]);
@@ -303,26 +302,26 @@ BOOST_AUTO_TEST_CASE(AtMostEveryN) {
  * Test an event loop that is blocking
  */
 
-BOOST_AUTO_TEST_CASE(SlowLoop) {
+TEST(HHWheelTimerTest, SlowLoop) {
   TEventBase eventBase;
   StackWheelTimer t(&eventBase, milliseconds(1));
 
   TestTimeout t1;
   TestTimeout t2;
 
-  BOOST_REQUIRE_EQUAL(t.count(), 0);
+  ASSERT_EQ(t.count(), 0);
 
   eventBase.runInLoop([](){usleep(10000);});
   t.scheduleTimeout(&t1, milliseconds(5));
 
-  BOOST_REQUIRE_EQUAL(t.count(), 1);
+  ASSERT_EQ(t.count(), 1);
 
   TimePoint start;
   eventBase.loop();
   TimePoint end;
 
-  BOOST_REQUIRE_EQUAL(t1.timestamps.size(), 1);
-  BOOST_REQUIRE_EQUAL(t.count(), 0);
+  ASSERT_EQ(t1.timestamps.size(), 1);
+  ASSERT_EQ(t.count(), 0);
 
   // Check that the timeout was delayed by sleep
   T_CHECK_TIMEOUT(start, t1.timestamps[0], 15, 1);
@@ -334,35 +333,16 @@ BOOST_AUTO_TEST_CASE(SlowLoop) {
   eventBase.runInLoop([](){usleep(10000);});
   t.scheduleTimeout(&t2, milliseconds(5));
 
-  BOOST_REQUIRE_EQUAL(t.count(), 1);
+  ASSERT_EQ(t.count(), 1);
 
   TimePoint start2;
   eventBase.loop();
   TimePoint end2;
 
-  BOOST_REQUIRE_EQUAL(t2.timestamps.size(), 1);
-  BOOST_REQUIRE_EQUAL(t.count(), 0);
+  ASSERT_EQ(t2.timestamps.size(), 1);
+  ASSERT_EQ(t.count(), 0);
 
   // Check that the timeout was NOT delayed by sleep
   T_CHECK_TIMEOUT(start2, t2.timestamps[0], 10, 1);
   T_CHECK_TIMEOUT(start2, end2, 10, 1);
-}
-
-///////////////////////////////////////////////////////////////////////////
-// init_unit_test_suite
-///////////////////////////////////////////////////////////////////////////
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value = "TAsyncTimeoutTest";
-
-  if (argc != 1) {
-    std::cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      std::cerr << " " << argv[n];
-    }
-    std::cerr << std::endl;
-    exit(1);
-  }
-
-  return nullptr;
 }
