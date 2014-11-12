@@ -70,6 +70,23 @@ const int8_t TTypeToCType[20] = {
   CT_FLOAT, // T_FLOAT
 };
 
+const TType CTypeToTType[14] = {
+    TType::T_STOP,    // CT_STOP
+    TType::T_BOOL,    // CT_BOOLEAN_TRUE
+    TType::T_BOOL,    // CT_BOOLEAN_FASLE
+    TType::T_BYTE,    // CT_BYTE
+    TType::T_I16,     // CT_I16
+    TType::T_I32,     // CT_I32
+    TType::T_I64,     // CT_I64
+    TType::T_DOUBLE,  // CT_DOUBLE
+    TType::T_STRING,  // CT_BINARY
+    TType::T_LIST,    // CT_LIST
+    TType::T_SET,     // CT_SET
+    TType::T_MAP,     // CT_MAP
+    TType::T_STRUCT,  // CT_STRUCT
+    TType::T_FLOAT,   // CT_FLOAT
+};
+
 }} // end detail::compact namespace
 
 
@@ -434,7 +451,9 @@ uint32_t CompactProtocolReader::readMessageEnd() {
 }
 
 uint32_t CompactProtocolReader::readStructBegin(std::string& name) {
-  name.clear();
+  if (!name.empty()) {
+    name.clear();
+  }
   lastField_.push(lastFieldId_);
   lastFieldId_ = 0;
   return 0;
@@ -680,38 +699,12 @@ uint32_t CompactProtocolReader::readBinary(folly::IOBuf& str) {
 }
 
 TType CompactProtocolReader::getType(int8_t type) {
-  switch (type) {
-    case TType::T_STOP:
-      return TType::T_STOP;
-    case detail::compact::CT_BOOLEAN_FALSE:
-    case detail::compact::CT_BOOLEAN_TRUE:
-      return TType::T_BOOL;
-    case detail::compact::CT_BYTE:
-      return TType::T_BYTE;
-    case detail::compact::CT_I16:
-      return TType::T_I16;
-    case detail::compact::CT_I32:
-      return TType::T_I32;
-    case detail::compact::CT_I64:
-      return TType::T_I64;
-    case detail::compact::CT_DOUBLE:
-      return TType::T_DOUBLE;
-    case detail::compact::CT_FLOAT:
-      return TType::T_FLOAT;
-    case detail::compact::CT_BINARY:
-      return TType::T_STRING;
-    case detail::compact::CT_LIST:
-      return TType::T_LIST;
-    case detail::compact::CT_SET:
-      return TType::T_SET;
-    case detail::compact::CT_MAP:
-      return TType::T_MAP;
-    case detail::compact::CT_STRUCT:
-      return TType::T_STRUCT;
-    default:
-      throw TProtocolException("don't know what type: " + std::to_string(type));
+  using detail::compact::CTypeToTType;
+  if (LIKELY(static_cast<uint8_t>(type) <
+             sizeof(CTypeToTType)/sizeof(*CTypeToTType))) {
+    return CTypeToTType[type];
   }
-  return TType::T_STOP;
+  throw TProtocolException("don't know what type: " + std::to_string(type));
 }
 
 }} // apache2::thrift
