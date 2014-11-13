@@ -597,7 +597,7 @@ uint32_t CompactProtocolReader::readBool(std::vector<bool>::reference value) {
 }
 
 uint32_t CompactProtocolReader::readByte(int8_t& byte) {
-  byte = in_.read<int8_t>();
+  byte = in_.pullByte();
   return 1;
 }
 

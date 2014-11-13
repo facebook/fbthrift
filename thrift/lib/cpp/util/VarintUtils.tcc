@@ -34,8 +34,7 @@ uint8_t readVarint(CursorT& c, T& value) {
   uint8_t shift = 0;
   uint8_t rsize = 0;
   while (true) {
-    uint8_t byte;
-    c.pull(&byte, sizeof(byte));
+    uint8_t byte = c.pullByte();
     rsize++;
     retVal |= (uint64_t)(byte & 0x7f) << shift;
     shift += 7;
