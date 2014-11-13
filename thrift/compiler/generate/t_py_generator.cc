@@ -720,7 +720,8 @@ void t_py_generator::init_generator() {
     render_includes() << endl <<
     render_fastbinary_includes() <<
     "all_structs = []" << endl <<
-    endl << endl;
+    "UTF8STRINGS = bool(" << gen_utf8strings_ << ") or " <<
+    "sys.version_info.major >= 3" << endl << endl;
 
   f_consts_ <<
     py_autogen_comment() << endl <<
@@ -1415,6 +1416,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
      name -> string_literal
      default -> None  # Handled by __init__
      spec_args -> None  # For simple types
+                | True/False for Text/Binary Strings
                 | (type_enum, spec_args)  # Value type for list/set
                 | (type_enum, spec_args, type_enum, spec_args)
                   # Key and value for map
@@ -1569,8 +1571,7 @@ void t_py_generator::generate_py_struct_reader(ofstream& out,
 
   indent(out) <<
     "fastbinary.decode_binary(self, iprot.trans, " <<
-    "[self.__class__, self.thrift_spec], utf8strings=" <<
-    gen_utf8strings_ << ")" << endl;
+    "[self.__class__, self.thrift_spec], utf8strings=UTF8STRINGS)" << endl;
 
   indent(out) <<
     "return" << endl;
@@ -1680,8 +1681,7 @@ void t_py_generator::generate_py_struct_writer(ofstream& out,
 
   indent(out) <<
     "oprot.trans.write(fastbinary.encode_binary(self, " <<
-    "[self.__class__, self.thrift_spec], utf8strings=" <<
-    gen_utf8strings_ << "))" << endl;
+    "[self.__class__, self.thrift_spec], utf8strings=UTF8STRINGS))" << endl;
   indent(out) <<
     "return" << endl;
   indent_down();
@@ -1757,7 +1757,9 @@ void t_py_generator::generate_service(t_service* tservice) {
     "from .ttypes import *" << endl <<
     "from thrift.Thrift import TProcessor" << endl <<
     render_fastbinary_includes() << endl <<
-    "all_structs = []" << endl;
+    "all_structs = []" << endl <<
+    "UTF8STRINGS = bool(" << gen_utf8strings_ << ") or " <<
+    "sys.version_info.major >= 3" << endl;
 
   if (gen_twisted_) {
     f_service_ <<
@@ -2878,39 +2880,40 @@ void t_py_generator::generate_deserialize_field(ofstream &out,
           name;
         break;
       case t_base_type::TYPE_STRING:
-        if (((t_base_type*)type)->is_binary() || !gen_utf8strings_) {
-          out << "readString();";
+        if (((t_base_type*)type)->is_binary()) {
+          out << "readString()";
         } else {
-          out << "readString().decode('utf-8')";
+          out << "readString().decode('utf-8') " <<
+              "if UTF8STRINGS else iprot.readString()";
         }
         break;
       case t_base_type::TYPE_BOOL:
-        out << "readBool();";
+        out << "readBool()";
         break;
       case t_base_type::TYPE_BYTE:
-        out << "readByte();";
+        out << "readByte()";
         break;
       case t_base_type::TYPE_I16:
-        out << "readI16();";
+        out << "readI16()";
         break;
       case t_base_type::TYPE_I32:
-        out << "readI32();";
+        out << "readI32()";
         break;
       case t_base_type::TYPE_I64:
-        out << "readI64();";
+        out << "readI64()";
         break;
       case t_base_type::TYPE_DOUBLE:
-        out << "readDouble();";
+        out << "readDouble()";
         break;
       case t_base_type::TYPE_FLOAT:
-        out << "readFloat();";
+        out << "readFloat()";
         break;
       default:
-        throw "compiler error: no PHP name for base type " +
+        throw "compiler error: no Python name for base type " +
           t_base_type::t_base_name(tbase);
       }
     } else if (type->is_enum()) {
-      out << "readI32();";
+      out << "readI32()";
     }
     out << endl;
 
@@ -3085,10 +3088,12 @@ void t_py_generator::generate_serialize_field(ofstream &out,
           "compiler error: cannot serialize void field in a struct: " + name;
         break;
       case t_base_type::TYPE_STRING:
-        if (((t_base_type*)type)->is_binary() || !gen_utf8strings_) {
+        if (((t_base_type*)type)->is_binary()) {
           out << "writeString(" << name << ")";
         } else {
-          out << "writeString(" << name << ".encode('utf-8'))";
+          out << "writeString(" << name << ".encode('utf-8')) " <<
+              "if UTF8STRINGS and not isinstance(" << name << ", bytes) " <<
+              "else oprot.writeString(" << name << ")";
         }
         break;
       case t_base_type::TYPE_BOOL:
@@ -3113,7 +3118,7 @@ void t_py_generator::generate_serialize_field(ofstream &out,
         out << "writeFloat(" << name << ")";
           break;
       default:
-        throw "compiler error: no PHP name for base type " +
+        throw "compiler error: no Python name for base type " +
           t_base_type::t_base_name(tbase);
       }
     } else if (type->is_enum()) {
@@ -3466,6 +3471,13 @@ string t_py_generator::type_to_spec_args(t_type* ttype) {
   ttype = get_true_type(ttype);
 
   if (ttype->is_base_type() || ttype->is_enum()) {
+    t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();
+    if (tbase == t_base_type::TYPE_STRING) {
+      if (((t_base_type*)ttype)->is_binary()) {
+        return "False";
+      }
+      return "True";
+    }
     return "None";
   } else if (ttype->is_struct() || ttype->is_xception()) {
     return "[" + type_name(ttype) + ", " + type_name(ttype) +

@@ -152,7 +152,7 @@ cdef inline encode_struct(TProtocol* proto, tuple type_args, value):
     cdef tuple field
     cdef int16_t field_id
     cdef TType field_type
-    cdef tuple field_type_args
+    cdef object field_type_args
     for field_id in range(len(thrift_spec)):  # Loop through the struct
         field = thrift_spec[field_id]
         if not field:
@@ -183,7 +183,7 @@ cdef inline decode_struct(TProtocol* proto, output, tuple type_args,
     cdef string name
     cdef TType field_type = T_STOP
     cdef TType our_field_type = T_STOP
-    cdef tuple field_type_args
+    cdef object field_type_args
     cdef tuple field_spec
     cdef int16_t field_id = 0
     cdef bint skip = False
@@ -220,7 +220,7 @@ cdef inline decode_struct(TProtocol* proto, output, tuple type_args,
     proto.readStructEnd()
 
 
-cdef decode_val(TProtocol* proto, TType ttype, tuple type_args,
+cdef decode_val(TProtocol* proto, TType ttype, object type_args,
                 bint decodeutf8=False):
     #We assign default values here because we want to suppress cython warnings
     cdef bool v_bool = False
@@ -233,8 +233,8 @@ cdef decode_val(TProtocol* proto, TType ttype, tuple type_args,
     cdef uint32_t i, size = 0
     cdef TType sub_ttype = T_STOP
     cdef TType val_ttype = T_STOP
-    cdef tuple sub_typeargs
-    cdef tuple val_typeargs
+    cdef object sub_typeargs
+    cdef object val_typeargs
     cdef string v_string
     cdef object klass
     if ttype == T_BOOL:
@@ -260,7 +260,7 @@ cdef decode_val(TProtocol* proto, TType ttype, tuple type_args,
         return v_float
     elif ttype == T_STRING:
         proto.readString(v_string)
-        if decodeutf8:
+        if decodeutf8 and type_args:
             try:
                 return v_string.decode('UTF-8')
             except UnicodeDecodeError:
@@ -304,7 +304,7 @@ cdef decode_val(TProtocol* proto, TType ttype, tuple type_args,
 
 
 cdef encode_thing(TProtocol* proto, TType ttype, value,
-                  tuple type_args):
+                  object type_args):
     #Switch Statement (after translation that is)
     if ttype == T_BOOL:
         proto.writeBool(value)

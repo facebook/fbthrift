@@ -1261,7 +1261,7 @@ decode_val(DecodeBuffer* input, TType type, PyObject* typeargs, int utf8strings)
       return NULL;
     }
 
-    if (utf8strings) {
+    if (utf8strings && PyObject_IsTrue(typeargs)) {
       return PyUnicode_FromStringAndSize(buf, len);
     } else {
       return PyString_FromStringAndSize(buf, len);
