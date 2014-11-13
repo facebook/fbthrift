@@ -24,7 +24,7 @@
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <thrift/lib/cpp/test/SocketPair.h>
+#include <folly/io/async/test/SocketPair.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>

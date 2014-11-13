@@ -61,6 +61,17 @@ FsyncHandler* fsyncHandler;
  **************************************************************************/
 
 /**
+ * Verify that an event took less than a specified amount of time.
+ *
+ * This is similar to T_CHECK_TIMEOUT, but does not fail if the event took less
+ * than the allowed time.
+ */
+#define T_CHECK_TIME_LT(start, end, expectedMS, ...) \
+  EXPECT_TRUE(::folly::checkTimeout((start), (end),  \
+                                    (expectedMS), true, \
+                                    ##__VA_ARGS__))
+
+/**
  * Class to check fsync calls in test_flush_max_us_impl()
  *
  * This makes sure that every call to write() if followed by a call to fsync()

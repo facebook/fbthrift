@@ -16,19 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+#include <folly/io/async/test/UndelayedDestruction.h>
+#include <folly/io/async/test/Util.h>
 #include <thrift/lib/cpp/async/TAsyncTimeoutSet.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/async/TUndelayedDestruction.h>
-#include <thrift/lib/cpp/test/TimeUtil.h>
 
 #include <gtest/gtest.h>
 #include <vector>
 
 using namespace apache::thrift::async;
-using namespace apache::thrift::test;
+using namespace folly;
 using std::chrono::milliseconds;
 
-typedef TUndelayedDestruction<TAsyncTimeoutSet> StackTimeoutSet;
+typedef UndelayedDestruction<TAsyncTimeoutSet> StackTimeoutSet;
 
 class TestTimeout : public TAsyncTimeoutSet::Callback {
  public:
@@ -107,10 +107,10 @@ TEST(TAsyncTimeoutSetTest, FireOnce) {
   ASSERT_EQ(ts10.front(), nullCallback);
   ASSERT_EQ(ts5.front(), nullCallback);
 
-  T_CHECK_TIMEOUT(start, t1.timestamps[0], 5);
-  T_CHECK_TIMEOUT(start, t2.timestamps[0], 5);
-  T_CHECK_TIMEOUT(start, t3.timestamps[0], 10);
-  T_CHECK_TIMEOUT(start, end, 10);
+  T_CHECK_TIMEOUT(start, t1.timestamps[0], milliseconds(5));
+  T_CHECK_TIMEOUT(start, t2.timestamps[0], milliseconds(5));
+  T_CHECK_TIMEOUT(start, t3.timestamps[0], milliseconds(10));
+  T_CHECK_TIMEOUT(start, end, milliseconds(10));
 }
 
 /*
@@ -136,21 +136,21 @@ TEST(TAsyncTimeoutSetTest, SwitchTimeoutSet) {
   ASSERT_EQ(t2.timestamps.size(), 3);
   ASSERT_EQ(t3.timestamps.size(), 4);
 
-  T_CHECK_TIMEOUT(start, t1.timestamps[0], 5);
-  T_CHECK_TIMEOUT(t1.timestamps[0], t1.timestamps[1], 10);
-  T_CHECK_TIMEOUT(t1.timestamps[1], t1.timestamps[2], 5);
+  T_CHECK_TIMEOUT(start, t1.timestamps[0], milliseconds(5));
+  T_CHECK_TIMEOUT(t1.timestamps[0], t1.timestamps[1], milliseconds(10));
+  T_CHECK_TIMEOUT(t1.timestamps[1], t1.timestamps[2], milliseconds(5));
 
-  T_CHECK_TIMEOUT(start, t2.timestamps[0], 10);
-  T_CHECK_TIMEOUT(t2.timestamps[0], t2.timestamps[1], 10);
-  T_CHECK_TIMEOUT(t2.timestamps[1], t2.timestamps[2], 5);
+  T_CHECK_TIMEOUT(start, t2.timestamps[0], milliseconds(10));
+  T_CHECK_TIMEOUT(t2.timestamps[0], t2.timestamps[1], milliseconds(10));
+  T_CHECK_TIMEOUT(t2.timestamps[1], t2.timestamps[2], milliseconds(5));
 
-  T_CHECK_TIMEOUT(start, t3.timestamps[0], 5);
-  T_CHECK_TIMEOUT(t3.timestamps[0], t3.timestamps[1], 5);
-  T_CHECK_TIMEOUT(t3.timestamps[1], t3.timestamps[2], 10);
-  T_CHECK_TIMEOUT(t3.timestamps[2], t3.timestamps[3], 5);
+  T_CHECK_TIMEOUT(start, t3.timestamps[0], milliseconds(5));
+  T_CHECK_TIMEOUT(t3.timestamps[0], t3.timestamps[1], milliseconds(5));
+  T_CHECK_TIMEOUT(t3.timestamps[1], t3.timestamps[2], milliseconds(10));
+  T_CHECK_TIMEOUT(t3.timestamps[2], t3.timestamps[3], milliseconds(5));
 
   // 10ms fudge factor to account for loaded machines
-  T_CHECK_TIMEOUT(start, end, 25, 10);
+  T_CHECK_TIMEOUT(start, end, milliseconds(25), milliseconds(10));
 }
 
 /*
@@ -213,16 +213,16 @@ TEST(TAsyncTimeoutSetTest, CancelTimeout) {
   TimePoint end;
 
   ASSERT_EQ(t5_1.timestamps.size(), 1);
-  T_CHECK_TIMEOUT(start, t5_1.timestamps[0], 5);
+  T_CHECK_TIMEOUT(start, t5_1.timestamps[0], milliseconds(5));
 
   ASSERT_EQ(t5_3.timestamps.size(), 2);
-  T_CHECK_TIMEOUT(start, t5_3.timestamps[0], 5);
-  T_CHECK_TIMEOUT(t5_3.timestamps[0], t5_3.timestamps[1], 5);
+  T_CHECK_TIMEOUT(start, t5_3.timestamps[0], milliseconds(5));
+  T_CHECK_TIMEOUT(t5_3.timestamps[0], t5_3.timestamps[1], milliseconds(5));
 
   ASSERT_EQ(t10_1.timestamps.size(), 1);
-  T_CHECK_TIMEOUT(start, t10_1.timestamps[0], 10);
+  T_CHECK_TIMEOUT(start, t10_1.timestamps[0], milliseconds(10));
   ASSERT_EQ(t10_3.timestamps.size(), 1);
-  T_CHECK_TIMEOUT(start, t10_3.timestamps[0], 10);
+  T_CHECK_TIMEOUT(start, t10_3.timestamps[0], milliseconds(10));
 
   // Cancelled timeouts
   ASSERT_EQ(t5_2.timestamps.size(), 0);
@@ -232,7 +232,7 @@ TEST(TAsyncTimeoutSetTest, CancelTimeout) {
   ASSERT_EQ(t20_1.timestamps.size(), 0);
   ASSERT_EQ(t20_2.timestamps.size(), 0);
 
-  T_CHECK_TIMEOUT(start, end, 10);
+  T_CHECK_TIMEOUT(start, end, milliseconds(10));
 }
 
 /*
@@ -265,15 +265,15 @@ TEST(TAsyncTimeoutSetTest, DestroyTimeoutSet) {
   TimePoint end;
 
   ASSERT_EQ(t5_1.timestamps.size(), 1);
-  T_CHECK_TIMEOUT(start, t5_1.timestamps[0], 5);
+  T_CHECK_TIMEOUT(start, t5_1.timestamps[0], milliseconds(5));
   ASSERT_EQ(t5_2.timestamps.size(), 1);
-  T_CHECK_TIMEOUT(start, t5_2.timestamps[0], 5);
+  T_CHECK_TIMEOUT(start, t5_2.timestamps[0], milliseconds(5));
 
   ASSERT_EQ(t5_3.timestamps.size(), 0);
   ASSERT_EQ(t10_1.timestamps.size(), 0);
   ASSERT_EQ(t10_2.timestamps.size(), 0);
 
-  T_CHECK_TIMEOUT(start, end, 5);
+  T_CHECK_TIMEOUT(start, end, milliseconds(5));
 }
 
 /*
@@ -343,8 +343,7 @@ TEST(TAsyncTimeoutSetTest, AtMostEveryN) {
     // T_CHECK_TIMEOUT() normally has a tolerance of 5ms.  Allow an additional
     // atMostEveryN.
     milliseconds tolerance = milliseconds(5) + atMostEveryN;
-    T_CHECK_TIMEOUT(scheduledTime, firedTime, interval.count(),
-                    tolerance.count());
+    T_CHECK_TIMEOUT(scheduledTime, firedTime, interval, tolerance);
 
     // Assert that the difference between the previous timeout and now was
     // either very small (fired in the same event loop), or larger than
@@ -355,9 +354,10 @@ TEST(TAsyncTimeoutSetTest, AtMostEveryN) {
     }
     TimePoint prev(timeouts[idx - 1].timestamps[1]);
 
-    milliseconds delta((firedTime.getTimeStart() - prev.getTimeEnd()) -
-                       (firedTime.getTimeWaiting() - prev.getTimeWaiting()));
+    auto delta = (firedTime.getTimeStart() - prev.getTimeEnd()) -
+      (firedTime.getTimeWaiting() - prev.getTimeWaiting());
     if (delta > milliseconds(1)) {
-      T_CHECK_TIMEOUT(prev, firedTime, atMostEveryN.count()); }
+      T_CHECK_TIMEOUT(prev, firedTime, atMostEveryN);
+    }
   }
 }

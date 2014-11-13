@@ -19,7 +19,7 @@
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
-#include <thrift/lib/cpp/test/TimeUtil.h>
+#include <folly/io/async/test/TimeUtil.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <folly/SocketAddress.h>

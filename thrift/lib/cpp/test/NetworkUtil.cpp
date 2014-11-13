@@ -24,7 +24,6 @@
 #include <ifaddrs.h>
 
 using folly::SocketAddress;
-using apache::thrift::transport::TTransportException;
 
 namespace apache { namespace thrift { namespace test {
 
