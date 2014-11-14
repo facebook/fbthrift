@@ -82,12 +82,12 @@ class TestEof(unittest.TestCase):
 
         x = Xtruct()
         x.read(prot)
-        self.assertEqual(x.string_thing, b"Zero")
+        self.assertEqual(x.string_thing, "Zero")
         self.assertEqual(x.byte_thing, 0)
 
         x = Xtruct()
         x.read(prot)
-        self.assertEqual(x.string_thing, b"One")
+        self.assertEqual(x.string_thing, "One")
         self.assertEqual(x.byte_thing, 1)
 
         try:

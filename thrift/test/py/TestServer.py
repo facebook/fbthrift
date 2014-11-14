@@ -97,8 +97,6 @@ class TestHandler(ThriftTest.Iface):
         return thing
 
     def testException(self, str):
-        if sys.version_info[0] >= 3:
-            str = str.decode()
         print('testException(%s)' % str)
         if str == 'Xception':
             x = Xception()

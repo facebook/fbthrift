@@ -163,6 +163,9 @@ class TJSONProtocolBase(TProtocolBase):
         self.contextStack.pop()
 
     def writeJSONString(self, string):
+        # Python 3 JSON will not serialize bytes
+        if isinstance(string, bytes) and sys.version_info.major >= 3:
+            string = string.decode()
         self.context.write()
         self.trans.write(json.dumps(string))
 
@@ -386,7 +389,11 @@ class TJSONProtocol(TJSONProtocolBase):
         return self.readJSONDouble()
 
     def readString(self):
-        return self.readJSONString(False)
+        string = self.readJSONString(False)
+        if sys.version_info.major >= 3:
+            # Generated code expects that protocols deal in bytes in Py3
+            return string.encode('utf-8')
+        return string
 
     def readBinary(self):
         return self.readJSONBase64()

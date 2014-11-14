@@ -176,7 +176,14 @@ class TApplicationException(TException):
                 break
             if fid == 1:
                 if ftype == TType.STRING:
-                    self.message = iprot.readString()
+                    message = iprot.readString()
+                    if sys.version_info.major >= 3 and isinstance(message,
+                                                                  bytes):
+                        try:
+                            message = message.decode('utf-8')
+                        except UnicodeDecodeError:
+                            pass
+                    self.message = message
                 else:
                     iprot.skip(ftype)
             elif fid == 2:
@@ -193,7 +200,9 @@ class TApplicationException(TException):
         oprot.writeStructBegin(b'TApplicationException')
         if self.message is not None:
             oprot.writeFieldBegin(b'message', TType.STRING, 1)
-            oprot.writeString(self.message)
+            oprot.writeString(self.message.encode('utf-8')
+                              if not isinstance(self.message, bytes)
+                              else self.message)
             oprot.writeFieldEnd()
         if self.type is not None:
             oprot.writeFieldBegin(b'type', TType.I32, 2)
