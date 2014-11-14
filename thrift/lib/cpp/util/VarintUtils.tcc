@@ -23,11 +23,13 @@ namespace apache { namespace thrift {
 
 namespace util {
 
+namespace detail {
+
 template <class T, class CursorT,
           typename std::enable_if<
             std::is_constructible<folly::io::Cursor, const CursorT&>::value,
             bool>::type = false>
-uint8_t readVarint(CursorT& c, T& value) {
+uint8_t readVarintSlow(CursorT& c, T& value) {
   // ceil(sizeof(T) * 8) / 7
   static const size_t maxSize = (8 * sizeof(T) + 6) / 7;
   T retVal = 0;
@@ -46,6 +48,57 @@ uint8_t readVarint(CursorT& c, T& value) {
       // Too big for return type
       throw std::out_of_range("invalid varint read");
     }
+  }
+}
+
+// This is a simple function that just throws an exception. It is defined out
+// line to make the caller (readVarint) smaller and simpler (assembly-wise),
+// which gives us 5% perf win (even when the exception is not actually thrown).
+void throwInvalidVarint();
+
+} // namespace detail
+
+template <class T, class CursorT,
+          typename std::enable_if<
+            std::is_constructible<folly::io::Cursor, const CursorT&>::value,
+            bool>::type = false>
+uint8_t readVarint(CursorT& c, T& value) {
+  enum { maxSize = (8 * sizeof(T) + 6) / 7 };
+
+  const uint8_t* p = c.data();
+  size_t len = c.length();
+  if (LIKELY(len > 0 && !(*p & 0x80))) {
+    value = static_cast<T>(*p);
+    c.skip(1);
+    return 1;
+  }
+
+  // check that the available data is more than the longest possible varint or
+  // that the last available byte ends a varint
+  if (LIKELY(len >= maxSize || (len > 0 && !(p[len - 1] & 0x80)))) {
+    uint64_t result;
+    const uint8_t* start = p;
+    do {
+      uint64_t byte; // byte is uint64_t so that all shifts are 64-bit
+      byte = *p++; result  = (byte & 0x7f);       if (!(byte & 0x80)) break;
+      byte = *p++; result |= (byte & 0x7f) <<  7; if (!(byte & 0x80)) break;
+      byte = *p++; result |= (byte & 0x7f) << 14; if (!(byte & 0x80)) break;
+      if (sizeof(T) <= 2) detail::throwInvalidVarint();
+      byte = *p++; result |= (byte & 0x7f) << 21; if (!(byte & 0x80)) break;
+      byte = *p++; result |= (byte & 0x7f) << 28; if (!(byte & 0x80)) break;
+      if (sizeof(T) <= 4) detail::throwInvalidVarint();
+      byte = *p++; result |= (byte & 0x7f) << 35; if (!(byte & 0x80)) break;
+      byte = *p++; result |= (byte & 0x7f) << 42; if (!(byte & 0x80)) break;
+      byte = *p++; result |= (byte & 0x7f) << 49; if (!(byte & 0x80)) break;
+      byte = *p++; result |= (byte & 0x7f) << 56; if (!(byte & 0x80)) break;
+      byte = *p++; result |= (byte & 0x7f) << 63; if (!(byte & 0x80)) break;
+      detail::throwInvalidVarint();
+    } while (false);
+    value = static_cast<T>(result);
+    c.skip(p - start);
+    return p - start;
+  } else {
+    return detail::readVarintSlow<T, CursorT>(c, value);
   }
 }
 

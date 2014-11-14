@@ -121,4 +121,10 @@ int64_t zigzagToI64(uint64_t n) {
   return (n >> 1) ^ -(n & 1);
 }
 
+namespace detail {
+  void throwInvalidVarint() {
+    throw std::out_of_range("invalid varint read");
+  }
+}
+
 }}} // apache::thrift::util
