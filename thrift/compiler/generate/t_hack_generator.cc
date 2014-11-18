@@ -51,6 +51,7 @@ class t_hack_generator : public t_oop_generator {
     arraysets_ = option_is_specified(parsed_options, "arraysets");
     no_nullables_ = option_is_specified(parsed_options, "nonullables");
     map_construct_ = option_is_specified(parsed_options, "mapconstruct");
+    struct_trait_ = option_is_specified(parsed_options, "structtrait");
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
 
@@ -95,6 +96,7 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_php_type_spec(std::ofstream &out, t_type* t);
   void generate_php_struct_spec(std::ofstream &out, t_struct* tstruct);
+  void generate_php_struct_struct_trait(std::ofstream &out, t_struct* tstruct);
   void generate_php_structural_id(std::ofstream &out, t_struct* tstruct);
 
   /**
@@ -346,6 +348,11 @@ class t_hack_generator : public t_oop_generator {
    * True if struct constructors should accept arrays/Maps rather than their fields
    */
   bool map_construct_;
+
+  /**
+   * True if we should add a "use StructNameTrait" to the generated class
+   */
+  bool struct_trait_;
 };
 
 
@@ -1057,6 +1064,27 @@ void t_hack_generator::generate_php_struct_spec(ofstream& out,
   indent(out) << "};" << endl;
 }
 
+void t_hack_generator::generate_php_struct_struct_trait(std::ofstream& out,
+                                                     t_struct* tstruct) {
+
+  string traitName;
+  auto it = tstruct->annotations_.find("php.structtrait");
+  if (it != tstruct->annotations_.end()) {
+    if (it->second.empty() || it->second == "1") {
+      traitName = tstruct->get_name() + "Trait";
+    } else {
+      traitName = it->second;
+    }
+  } else if (struct_trait_) {
+    traitName = tstruct->get_name() + "Trait";
+  }
+
+  if (!traitName.empty()) {
+    indent(out) << "use " << php_namespace(tstruct->get_program())
+                << traitName << ";" << endl << endl;
+  }
+}
+
 /**
  * Generates the structural ID definition, see generate_structural_id()
  * for information about the structural ID.
@@ -1098,6 +1126,8 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
   out <<
     " implements IThriftStruct {" << endl;
   indent_up();
+
+  generate_php_struct_struct_trait(out, tstruct);
 
   generate_php_struct_spec(out, tstruct);
 
@@ -3361,4 +3391,5 @@ THRIFT_REGISTER_GENERATOR(hack, "HACK",
 "    arraysets        Use legacy arrays for sets rather than objects.\n"
 "    nonullables      Instantiate struct fields within structs, rather than nullable\n"
 "    mapconstruct     Struct constructors accept arrays/Maps rather than their fields\n"
+"    structtrait         Add 'use [StructName]Trait;' to generated classes\n"
 );
