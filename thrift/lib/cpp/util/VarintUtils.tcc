@@ -56,22 +56,12 @@ uint8_t readVarintSlow(CursorT& c, T& value) {
 // which gives us 5% perf win (even when the exception is not actually thrown).
 void throwInvalidVarint();
 
-} // namespace detail
-
 template <class T, class CursorT,
           typename std::enable_if<
             std::is_constructible<folly::io::Cursor, const CursorT&>::value,
             bool>::type = false>
-uint8_t readVarint(CursorT& c, T& value) {
+uint8_t readVarintMediumSlow(CursorT& c, T& value, const uint8_t* p, size_t len) {
   enum { maxSize = (8 * sizeof(T) + 6) / 7 };
-
-  const uint8_t* p = c.data();
-  size_t len = c.length();
-  if (LIKELY(len > 0 && !(*p & 0x80))) {
-    value = static_cast<T>(*p);
-    c.skip(1);
-    return 1;
-  }
 
   // check that the available data is more than the longest possible varint or
   // that the last available byte ends a varint
@@ -83,23 +73,41 @@ uint8_t readVarint(CursorT& c, T& value) {
       byte = *p++; result  = (byte & 0x7f);       if (!(byte & 0x80)) break;
       byte = *p++; result |= (byte & 0x7f) <<  7; if (!(byte & 0x80)) break;
       byte = *p++; result |= (byte & 0x7f) << 14; if (!(byte & 0x80)) break;
-      if (sizeof(T) <= 2) detail::throwInvalidVarint();
+      if (sizeof(T) <= 2) throwInvalidVarint();
       byte = *p++; result |= (byte & 0x7f) << 21; if (!(byte & 0x80)) break;
       byte = *p++; result |= (byte & 0x7f) << 28; if (!(byte & 0x80)) break;
-      if (sizeof(T) <= 4) detail::throwInvalidVarint();
+      if (sizeof(T) <= 4) throwInvalidVarint();
       byte = *p++; result |= (byte & 0x7f) << 35; if (!(byte & 0x80)) break;
       byte = *p++; result |= (byte & 0x7f) << 42; if (!(byte & 0x80)) break;
       byte = *p++; result |= (byte & 0x7f) << 49; if (!(byte & 0x80)) break;
       byte = *p++; result |= (byte & 0x7f) << 56; if (!(byte & 0x80)) break;
       byte = *p++; result |= (byte & 0x7f) << 63; if (!(byte & 0x80)) break;
-      detail::throwInvalidVarint();
+      throwInvalidVarint();
     } while (false);
     value = static_cast<T>(result);
     c.skip(p - start);
     return p - start;
   } else {
-    return detail::readVarintSlow<T, CursorT>(c, value);
+    return readVarintSlow<T, CursorT>(c, value);
   }
+}
+
+} // namespace detail
+
+template <class T, class CursorT,
+          typename std::enable_if<
+            std::is_constructible<folly::io::Cursor, const CursorT&>::value,
+            bool>::type = false>
+uint8_t readVarint(CursorT& c, T& value) {
+  const uint8_t* p = c.data();
+  size_t len = c.length();
+  if (LIKELY(len > 0 && !(*p & 0x80))) {
+    value = static_cast<T>(*p);
+    c.skip(1);
+    return 1;
+  }
+
+  return detail::readVarintMediumSlow<T, CursorT>(c, value, p, len);
 }
 
 template <class T, class CursorT,
@@ -129,6 +137,14 @@ uint8_t writeVarint(Cursor& c, T value) {
   }
 
   return sz;
+}
+
+inline int32_t zigzagToI32(uint32_t n) {
+  return (n >> 1) ^ -(n & 1);
+}
+
+inline int64_t zigzagToI64(uint64_t n) {
+  return (n >> 1) ^ -(n & 1);
 }
 
 }}} // apache::thrift::util

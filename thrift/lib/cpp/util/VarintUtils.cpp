@@ -113,14 +113,6 @@ uint64_t i64ToZigzag(const int64_t l) {
   return (l << 1) ^ (l >> 63);
 }
 
-int32_t zigzagToI32(uint32_t n) {
-  return (n >> 1) ^ -(n & 1);
-}
-
-int64_t zigzagToI64(uint64_t n) {
-  return (n >> 1) ^ -(n & 1);
-}
-
 namespace detail {
   void throwInvalidVarint() {
     throw std::out_of_range("invalid varint read");
