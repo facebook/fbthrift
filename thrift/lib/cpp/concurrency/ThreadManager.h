@@ -289,6 +289,9 @@ public:
                    bool cancellable = false,
                    bool numa = false) = 0;
 
+  using ThreadManager::getCodel;
+  virtual folly::wangle::Codel* getCodel(PRIORITY priority) = 0;
+
   /**
    * Creates a priority-aware thread manager that uses counts[X]
    * worker threads for priority X.

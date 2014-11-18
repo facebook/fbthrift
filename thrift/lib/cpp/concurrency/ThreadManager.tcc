@@ -797,7 +797,11 @@ public:
   }
 
   Codel* getCodel() {
-    return managers_[NORMAL]->getCodel();
+    return getCodel(NORMAL);
+  }
+
+  Codel* getCodel(PRIORITY priority) {
+    return managers_[priority]->getCodel();
   }
 
 private:
