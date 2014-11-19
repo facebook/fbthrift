@@ -35,7 +35,6 @@
 
 using namespace apache::thrift;
 using namespace apache::thrift::async;
-using namespace apache::thrift::test;
 using namespace apache::thrift::transport;
 using apache::thrift::ContextStack;
 using std::unique_ptr;
@@ -134,7 +133,7 @@ class SocketPairTest {
  public:
   SocketPairTest()
     : eventBase_() {
-    SocketPair socketPair;
+    folly::SocketPair socketPair;
 
     socket0_ = TAsyncSocket::newSocket(&eventBase_, socketPair.extractFD0());
     socket1_ = TAsyncSocket::newSocket(&eventBase_, socketPair.extractFD1());

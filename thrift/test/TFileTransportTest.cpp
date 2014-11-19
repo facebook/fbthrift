@@ -28,13 +28,13 @@
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/transport/TFileTransport.h>
-#include <thrift/lib/cpp/test/TimeUtil.h>
+#include <folly/io/async/test/Util.h>
 
 using apache::thrift::concurrency::Guard;
 using apache::thrift::concurrency::Mutex;
 using apache::thrift::concurrency::Util;
 using apache::thrift::transport::TFileTransport;
-using apache::thrift::test::TimePoint;
+using folly::TimePoint;
 using std::unique_ptr;
 using std::deque;
 
@@ -61,17 +61,6 @@ FsyncHandler* fsyncHandler;
  **************************************************************************/
 
 /**
- * Verify that an event took less than a specified amount of time.
- *
- * This is similar to T_CHECK_TIMEOUT, but does not fail if the event took less
- * than the allowed time.
- */
-#define T_CHECK_TIME_LT(start, end, expectedMS, ...) \
-  EXPECT_TRUE(::folly::checkTimeout((start), (end),  \
-                                    (expectedMS), true, \
-                                    ##__VA_ARGS__))
-
-/**
  * Class to check fsync calls in test_flush_max_us_impl()
  *
  * This makes sure that every call to write() if followed by a call to fsync()
@@ -79,7 +68,7 @@ FsyncHandler* fsyncHandler;
  */
 class FsyncTimer : public FsyncHandler {
  public:
-  typedef deque<predicate_result> ResultList;
+  typedef deque<bool> ResultList;
 
   explicit FsyncTimer(uint32_t maxFlushTime)
     : maxFlushTime_(maxFlushTime),
@@ -117,13 +106,12 @@ class FsyncTimer : public FsyncHandler {
     // Check how long we've had new data that hasn't been flushed yet,
     // and make sure it's less than maxFlushTime_.
     //
-    // Note that we don't call BOOST_CHECK() directly here, since fsync is
+    // Note that we don't call CHECK() directly here, since fsync is
     // invoked from other threads.  Instead, just store the check results, then
     // evaluate them later in the main thread.
-    bool allowSmaller = true;
-    predicate_result checkResult = checkTimeout(bufferedSince_, now,
-                                                maxFlushTime_, allowSmaller);
-    results_.push_back(checkResult);
+    results_.push_back(checkTimeout(bufferedSince_, now,
+                                    std::chrono::milliseconds(maxFlushTime_),
+                                    true));
 
     flushed_ = true;
     return 0;
@@ -136,14 +124,11 @@ class FsyncTimer : public FsyncHandler {
   void checkResults() const {
     Guard g(mutex_);
 
-    BOOST_CHECK(!results_.empty());
-    for (ResultList::const_iterator it = results_.begin();
-         it != results_.end();
-         ++it) {
-      // The stuff inside BOOST_CHECK(...) is shown in the error message,
-      // so name the variable here instead of just using BOOST_CHECK(*it)
-      const predicate_result& result = *it;
-      BOOST_CHECK(result);
+    CHECK(!results_.empty());
+    for (const auto& result: results_) {
+      // The stuff inside CHECK(...) is shown in the error message,
+      // so name the variable here instead of just using CHECK(*it)
+      CHECK(result);
     }
   }
 
@@ -274,7 +259,7 @@ TEST(TFileTransportTest, test_destructor) {
     // heavily loaded systems.  Allow up to 500ms to be safe.  (The regression
     // that this bug is testing for would cause the destructor to take the full
     // 3000ms timeout interval, so we'll still catch that bug.)
-    T_CHECK_TIME_LT(start, end, 500);
+    T_CHECK_TIME_LT(start, end, std::chrono::milliseconds(500));
   }
 }
 
@@ -318,7 +303,7 @@ void test_flush_max_us_impl(uint32_t flush_us, uint32_t write_us,
 
   transport.reset();
   // Make sure the transport called fsync() on the FD before exiting
-  BOOST_CHECK(fsyncTimer.isFlushed());
+  CHECK(fsyncTimer.isFlushed());
 
   // Stop logging new fsync() calls
   fsyncHandler = nullptr;
@@ -372,7 +357,7 @@ TEST(TFileTransportTest, test_noop_flush) {
     // Use a fatal fail so we break out early, rather than continuing to make
     // many more slow flush() calls.
     TimePoint now;
-    T_CHECK_TIME_LT(start, now, 500);
+    T_CHECK_TIME_LT(start, now, std::chrono::milliseconds(500));
   }
 }
 
@@ -393,5 +378,5 @@ class MyEnvironment: public ::testing::Environment {
   }
 };
 
-:testing::Environment* const globalEnv =
+::testing::Environment* const globalEnv =
    ::testing::AddGlobalTestEnvironment(new MyEnvironment);
