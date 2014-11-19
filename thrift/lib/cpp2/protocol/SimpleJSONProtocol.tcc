@@ -679,8 +679,13 @@ uint32_t SimpleJSONProtocolReader::readJSONKey(T& key) {
 
 template <typename T>
 T SimpleJSONProtocolReader::castIntegral(const std::string& val) {
-  auto deserialized = folly::to<int64_t>(val);
-  return (T)deserialized;
+  try {
+    return folly::to<T>(val);
+  } catch (const std::exception& e) {
+    throw TProtocolException(
+      TProtocolException::INVALID_DATA,
+      val + " is not a valid " + typeid(T).name());
+  }
 }
 
 template <typename T>
@@ -743,7 +748,13 @@ uint32_t SimpleJSONProtocolReader::readJSONVal(double& val) {
   }
   std::string s;
   ret += readNumericalChars(s);
-  val = folly::to<double>(s);
+  try {
+    val = folly::to<double>(s);
+  } catch (const std::exception& e) {
+    throw TProtocolException(
+      TProtocolException::INVALID_DATA,
+      s + " is not a valid float/double");
+  }
   return ret;
 }
 
@@ -855,8 +866,14 @@ uint32_t SimpleJSONProtocolReader::readJSONString(std::string& val) {
 
   if (allowDecodeUTF8_) {
     json += "\"";
-    folly::dynamic parsed = folly::parseJson(json);
-    val += parsed.c_str();
+    try {
+      folly::dynamic parsed = folly::parseJson(json);
+      val += parsed.c_str();
+    } catch (const std::exception& e) {
+      throw TProtocolException(
+        TProtocolException::INVALID_DATA,
+        json + " is not a valid JSON string");
+    }
   }
 
   return ret;

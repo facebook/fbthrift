@@ -255,6 +255,37 @@ TEST(protocol2, simpleJsonNullField) {
   ASSERT_EQ(nchars, json.length());
 }
 
+TEST(protocol2, simpleJsonExceptions) {
+  auto doDecode = [] (const string& json) {
+    auto buf = folly::IOBuf::copyBuffer(json);
+    SimpleJSONProtocolReader protReader;
+    protReader.setInput(buf.get());
+    cpp2::OneOfEach ooe;
+    auto nchars = ooe.read(&protReader);
+  };
+
+  ASSERT_THROW(doDecode("}"), TProtocolException);
+  ASSERT_THROW(doDecode("{\"a_bite\": 128}"), TProtocolException);
+  ASSERT_THROW(doDecode("{\"a_bite\": 3e-2}"), TProtocolException);
+  ASSERT_THROW(doDecode("{\"a_bite\": \"foo\"}"), TProtocolException);
+  ASSERT_THROW(doDecode("{\"float_precision\": 3e4e5}"), TProtocolException);
+  ASSERT_THROW(doDecode("{\"im_true\": falsetrue}"), TProtocolException);
+  ASSERT_THROW(doDecode("{\"some_characters\": \"\\u-1\"}"), TProtocolException);
+  ASSERT_THROW(doDecode("{\"some_characters\": \"\\x00\"}"), TProtocolException);
+  ASSERT_THROW(doDecode("{\"some_characters\": \"\\u111\"}"), TProtocolException);
+  ASSERT_THROW(doDecode("{\"barfoo\": hello}"), TProtocolException);
+  ASSERT_THROW(doDecode("{\"barfoo\": trueo}"), TProtocolException);
+
+  // make sure the "normal" versions of these work
+  ASSERT_NO_THROW(doDecode("{}"));
+  ASSERT_NO_THROW(doDecode("{\"a_bite\": 127}"));
+  ASSERT_NO_THROW(doDecode("{\"a_bite\": 3}"));
+  ASSERT_NO_THROW(doDecode("{\"float_precision\": 3e4}"));
+  ASSERT_NO_THROW(doDecode("{\"im_true\": false}"));
+  ASSERT_NO_THROW(doDecode("{\"some_characters\": \"\\u1111\"}"));
+  ASSERT_NO_THROW(doDecode("{\"barfoo\": []}"));
+}
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
