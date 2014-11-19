@@ -100,6 +100,21 @@ HeaderClientChannel::Ptr getClientChannel(TEventBase* eb, uint16_t port) {
 
 ScopedServerThread sst(getServer());
 
+class Countdown {
+public:
+  Countdown(int count, std::function<void()> f)
+    : count_(count), f_(f)
+  {}
+  void down() {
+    if (--count_ == 0) {
+      f_();
+    }
+  }
+private:
+  int count_;
+  std::function<void()> f_;
+};
+
 void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   TEventBase base;
 
@@ -107,8 +122,9 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   auto channel = getClientChannel(&base, port);
   setup(channel.get());
   TestServiceAsyncClient client(std::move(channel));
+  Countdown c(3, [&base](){base.terminateLoopSoon();});
 
-  client.sendResponse([&base](ClientReceiveState&& state) {
+  client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
     EXPECT_FALSE(state.isException());
     EXPECT_TRUE(state.isSecurityActive());
     std::string res;
@@ -118,11 +134,39 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
       EXPECT_TRUE(false);
     }
     EXPECT_EQ(res, "10");
-    base.terminateLoopSoon();
+    c.down();
   }, 10);
+
 
   // fail on time out
   base.runAfterDelay([] {EXPECT_TRUE(false);}, 5000);
+
+  base.runAfterDelay([&client,&base,&c] {
+    client.sendResponse([&base,&c](ClientReceiveState&& state) {
+      EXPECT_FALSE(state.isException());
+      EXPECT_TRUE(state.isSecurityActive());
+      std::string res;
+      try {
+        TestServiceAsyncClient::recv_sendResponse(res, state);
+      } catch(const std::exception&) {
+        EXPECT_TRUE(false);
+      }
+      EXPECT_EQ(res, "10");
+      c.down();
+    }, 10);
+    client.sendResponse([&base,&c](ClientReceiveState&& state) {
+      EXPECT_FALSE(state.isException());
+      EXPECT_TRUE(state.isSecurityActive());
+      std::string res;
+      try {
+        TestServiceAsyncClient::recv_sendResponse(res, state);
+      } catch(const std::exception&) {
+        EXPECT_TRUE(false);
+      }
+      EXPECT_EQ(res, "10");
+      c.down();
+    }, 10);
+  }, 1);
 
   base.loopForever();
 }

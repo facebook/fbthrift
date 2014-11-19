@@ -132,12 +132,11 @@ void HeaderClientChannel::startSecurity() {
   // TODO(alandau): Remove this code once all servers are upgraded to be able
   // to handle both compact and binary.
   userProtocolId_ = header_->getProtocolId();
-  header_->setProtocolId(T_COMPACT_PROTOCOL);
 
   // Let's get this party started.
   setProtectionState(ProtectionState::INPROGRESS);
   setBaseReceivedCallback();
-  saslClient_->setProtocolId(getProtocolId());
+  saslClient_->setProtocolId(T_COMPACT_PROTOCOL);
   saslClient_->start(&saslClientCallback_);
 }
 
@@ -180,7 +179,10 @@ void HeaderClientChannel::SaslClientCallback::saslSendServer(
         std::chrono::milliseconds(channel_.timeoutSASL_));
   }
   channel_.handshakeMessagesSent_++;
+
+  channel_.header_->setProtocolId(T_COMPACT_PROTOCOL);
   channel_.sendMessage(nullptr, std::move(message));
+  channel_.header_->setProtocolId(channel_.userProtocolId_);
 }
 
 void HeaderClientChannel::SaslClientCallback::saslError(
