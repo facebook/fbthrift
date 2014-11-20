@@ -38,14 +38,14 @@ import thrift.codegen.client;
 import thrift.codegen.client_pool;
 import thrift.codegen.processor;
 import thrift.protocol.binary;
-import thrift.server.simple;
+import thrift.server.nonblocking;
 import thrift.server.transport.socket;
 import thrift.transport.buffered;
 import thrift.transport.socket;
 import thrift.util.cancellation;
 import thrift.util.future;
 
-// We use this as our RPC-layer exception here to make sure socket/… problems
+// We use this as our RPC-layer exception here to make sure socket/... problems
 // (that would usually considered to be RPC layer faults) cause the tests to
 // fail, even though we are testing the RPC exception handling.
 class TestServiceException : TException {
@@ -119,12 +119,10 @@ private:
     try {
       auto protocolFactory = new TBinaryProtocolFactory!();
       auto processor = new TServiceProcessor!ExTestService(handler_);
-      auto serverTransport = new TServerSocket(handler_.port);
-      serverTransport.recvTimeout = dur!"seconds"(3);
       auto transportFactory = new TBufferedTransportFactory;
 
-      auto server = new TSimpleServer(
-        processor, serverTransport, transportFactory, protocolFactory);
+      auto server = new TNonblockingServer(
+        processor, handler_.port, transportFactory, protocolFactory);
       server.serve(cancellation_);
     } catch (Exception e) {
       writefln("Server thread on port %s failed: %s", handler_.port, e);
@@ -147,10 +145,10 @@ void main(string[] args) {
 
 version (none) {
   // Cannot use this due to multiple DMD @@BUG@@s:
-  // 1. »function D main is a nested function and cannot be accessed from array«
-  //    when calling array() on the result of the outer map() – would have to
+  // 1. function D main is a nested function and cannot be accessed from array
+  //    when calling array() on the result of the outer map() - would have to
   //    manually do the eager evaluation/array conversion.
-  // 2. »Zip.opSlice cannot get frame pointer to map« for the delay argument,
+  // 2. Zip.opSlice cannot get frame pointer to map for the delay argument,
   //    can be worked around by calling array() on the map result first.
   // 3. Even when using the workarounds for the last two points, the DMD-built
   //    executable crashes when building without (sic!) inlining enabled,
@@ -297,9 +295,10 @@ auto makeAsyncPool(TAsyncClientBase!ExTestService[] clients) {
 }
 
 auto makeAsyncClients(TLibeventAsyncManager manager, in ushort[] ports) {
-  // DMD @@BUG@@ workaround: Using array on the lazyHandlers map result leads
-  // to »function D main is a nested function and cannot be accessed from array«.
-  // Thus, we manually do the array conversion.
+  // DMD @@BUG@@ workaround: Using array on the lazyHandlers map
+  // result leads to "function D main is a nested function and cannot
+  // be accessed from array".  Thus, we manually do the array
+  // conversion.
   auto lazyClients = map!((a){
     return new TAsyncClient!ExTestService(
       new TAsyncSocket(manager, "127.0.0.1", a),
@@ -402,8 +401,8 @@ void asyncAggregatorTest(const(ushort)[] ports, ExTestHandler[] handlers) {
     auto partialResult = aggregator.getPort().accumulate!(
       function(int[] results, Exception[] exceptions) {
         // Return a tuple of the parameters so we can check them outside of
-        // this function (to verify the values, we need access to »ports«, but
-        // due to DMD @@BUG5710@@, we can't use a delegate literal).f
+        // this function (to verify the values, we need access to "ports", but
+        // due to DMD @@BUG5710@@, we can't use a delegate literal).
         return tuple(results, exceptions);
       }
     )();

@@ -34,7 +34,6 @@ import thrift.base;
 import thrift.async.base;
 import thrift.async.libevent;
 import thrift.async.socket;
-import thrift.async.ssl;
 import thrift.codegen.async_client;
 import thrift.codegen.async_client_pool;
 import thrift.codegen.base;
@@ -42,12 +41,11 @@ import thrift.codegen.processor;
 import thrift.protocol.base;
 import thrift.protocol.binary;
 import thrift.server.base;
-import thrift.server.simple;
+import thrift.server.nonblocking;
 import thrift.server.transport.socket;
-import thrift.server.transport.ssl;
 import thrift.transport.base;
 import thrift.transport.buffered;
-import thrift.transport.ssl;
+import thrift.transport.framed;
 import thrift.util.cancellation;
 
 version (Posix) {
@@ -70,7 +68,8 @@ interface AsyncTest {
 
   enum methodMeta = [
     TMethodMeta("fail", [], [TExceptionMeta("ate", 1, "AsyncTestException")]),
-    TMethodMeta("delayedFail", [], [TExceptionMeta("ate", 1, "AsyncTestException")])
+    TMethodMeta("delayedFail", [],
+        [TExceptionMeta("ate", 1, "AsyncTestException")])
   ];
   alias .AsyncTestException AsyncTestException;
 }
@@ -86,7 +85,6 @@ void main(string[] args) {
   ushort serversPerManager = 5;
   ushort threadsPerServer = 10;
   uint iterations = 10;
-  bool ssl;
   bool trace;
 
   getopt(args,
@@ -94,33 +92,11 @@ void main(string[] args) {
     "managers", &managerCount,
     "port", &port,
     "servers-per-manager", &serversPerManager,
-    "ssl", &ssl,
     "threads-per-server", &threadsPerServer,
     "trace", &trace,
   );
 
-  TTransportFactory clientTransportFactory;
-  TSSLContext serverSSLContext;
-  if (ssl) {
-    auto clientSSLContext = new TSSLContext();
-    with (clientSSLContext) {
-      ciphers = "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH";
-      authenticate = true;
-      loadTrustedCertificates("./trusted-ca-certificate.pem");
-    }
-    clientTransportFactory = new TAsyncSSLSocketFactory(clientSSLContext);
-
-    serverSSLContext = new TSSLContext();
-    with (serverSSLContext) {
-      serverSide = true;
-      loadCertificate("./server-certificate.pem");
-      loadPrivateKey("./server-private-key.pem");
-      ciphers = "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH";
-    }
-  } else {
-    clientTransportFactory = new TBufferedTransportFactory;
-  }
-
+  TTransportFactory clientTransportFactory = new TFramedTransportFactory;
 
   auto serverCancel = new TCancellationOrigin;
   scope(exit) {
@@ -144,7 +120,7 @@ void main(string[] args) {
       auto servingCondition = new Condition(servingMutex);
       auto handler = new PreServeNotifyHandler(servingMutex, servingCondition);
       synchronized (servingMutex) {
-        (new ServerThread!TSimpleServer(currentPort, serverSSLContext, trace,
+        (new ServerThread!TNonblockingServer(currentPort, trace,
           serverCancel, handler)).start();
         servingCondition.wait();
       }
@@ -214,8 +190,11 @@ class PreServeNotifyHandler : TServerEventHandler {
       servingCondition_.notifyAll();
     }
   }
-  Variant createContext(TProtocol input, TProtocol output) { return Variant.init; }
-  void deleteContext(Variant serverContext, TProtocol input, TProtocol output) {}
+  Variant createContext(TProtocol input, TProtocol output) {
+    return Variant.init;
+  }
+  void deleteContext(Variant serverContext, TProtocol input, TProtocol output) {
+  }
   void preProcess(Variant serverContext, TTransport transport) {}
 
 private:
@@ -224,11 +203,10 @@ private:
 }
 
 class ServerThread(ServerType) : Thread {
-  this(ushort port, TSSLContext sslContext, bool trace,
+  this(ushort port, bool trace,
     TCancellation cancellation, TServerEventHandler eventHandler
   ) {
     port_ = port;
-    sslContext_ = sslContext;
     trace_ = trace;
     cancellation_ = cancellation;
     eventHandler_ = eventHandler;
@@ -238,16 +216,13 @@ class ServerThread(ServerType) : Thread {
 
   void run() {
     TServerSocket serverSocket;
-    if (sslContext_) {
-      serverSocket = new TSSLServerSocket(port_, sslContext_);
-    } else {
-      serverSocket = new TServerSocket(port_);
-    }
+    serverSocket = new TServerSocket(port_);
     auto transportFactory = new TBufferedTransportFactory;
     auto protocolFactory = new TBinaryProtocolFactory!();
-    auto processor = new TServiceProcessor!AsyncTest(new AsyncTestHandler(trace_));
+    auto processor = new TServiceProcessor!AsyncTest(
+      new AsyncTestHandler(trace_));
 
-    auto server = new ServerType(processor, serverSocket, transportFactory,
+    auto server = new ServerType(processor, port_, transportFactory,
       protocolFactory);
     server.eventHandler = eventHandler_;
 
@@ -260,7 +235,6 @@ private:
   ushort port_;
   bool trace_;
   TCancellation cancellation_;
-  TSSLContext sslContext_;
   TServerEventHandler eventHandler_;
 }
 
@@ -305,7 +279,8 @@ class ClientsThread : Thread {
 
               {
                 if (trace_) writefln(`Calling fail("%s")... `, id);
-                auto a = cast(AsyncTestException)collectException(client.fail(id).waitGet());
+                auto a = cast(AsyncTestException)
+                  collectException(client.fail(id).waitGet());
                 enforce(a && a.reason == id);
                 if (trace_) writefln(`fail("%s") done.`, id);
               }
@@ -353,9 +328,11 @@ class ClientsThread : Thread {
           if (trace_) writefln(`Calling delayedFail("%s", 100 ms)... `, id);
           auto a = client.delayedFail(id, 100);
           enforce(!a.completion.wait(dur!"usecs"(1)),
-            text("wait() succeded early (", id, ", ", collectException(a.get()), ")."));
+            text("wait() succeded early (", id, ", ",
+                collectException(a.get()), ")."));
           enforce(!a.completion.wait(dur!"usecs"(1)),
-            text("wait() succeded early (", id, ", ", collectException(a.get()), ")."));
+            text("wait() succeded early (", id, ", ",
+                collectException(a.get()), ")."));
           enforce(a.completion.wait(dur!"msecs"(200)),
             text("wait() didn't succeed as expected (", id, ")."));
           auto e = cast(AsyncTestException)collectException(a.get());

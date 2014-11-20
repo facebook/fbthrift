@@ -27,7 +27,6 @@ import thrift.protocol.base;
 import thrift.protocol.processor;
 import thrift.server.base;
 import thrift.server.nonblocking;
-import thrift.server.simple;
 import thrift.server.taskpool;
 import thrift.server.threaded;
 import thrift.server.transport.socket;
@@ -39,7 +38,6 @@ import thrift.transport.http;
 // This is a likely victim of @@BUG4744@@ when used with command argument
 // parsing.
 enum ServerType {
-  simple,
   nonblocking,
   pooledNonblocking,
   taskpool,
@@ -51,9 +49,6 @@ TServer createServer(ServerType type, size_t taskPoolSize, size_t numIOThreads,
   TTransportFactory transportFactory, TProtocolFactory protocolFactory)
 {
   final switch (type) {
-    case ServerType.simple:
-      return new TSimpleServer(processor, serverTransport,
-        transportFactory, protocolFactory);
     case ServerType.nonblocking:
       auto nb = new TNonblockingServer(processor, serverTransport.port,
         transportFactory, protocolFactory);

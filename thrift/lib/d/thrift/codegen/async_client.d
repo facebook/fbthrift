@@ -57,7 +57,7 @@ import thrift.util.future;
  * access the associated TAsyncManager. To set up any wrapper transports
  * (e.g. buffered, framed) on top of it and to instanciate the protocols to use,
  * TTransportFactory and TProtocolFactory instances are passed to the
- * constructors – the three argument constructor is a shortcut if the same
+ * constructors - the three argument constructor is a shortcut if the same
  * transport and protocol are to be used for both input and output, which is
  * the most common case.
  *
@@ -78,7 +78,7 @@ import thrift.util.future;
  * // A simple Thrift service.
  * interface Foo { int foo(); }
  *
- * // Create a TAsyncSocketManager – thrift.async.libevent is used for this
+ * // Create a TAsyncSocketManager - thrift.async.libevent is used for this
  * // example.
  * auto manager = new TLibeventAsyncManager;
  *
@@ -208,7 +208,7 @@ template TAsyncClient(Interface, InputProtocol = TProtocol, OutputProtocol = voi
 
       immutable returnTypeCode = "ReturnType!(Interface." ~ methodName ~ ")";
       code ~= "TFuture!(" ~ returnTypeCode ~ ") " ~ methodName ~ "(" ~
-        join(paramList) ~ ") {\n";
+        join(paramList, ",") ~ ") {\n";
 
       // Create the future instance that will repesent the result.
       code ~= "auto promise = new TPromise!(" ~ returnTypeCode ~ ");\n";
@@ -218,11 +218,11 @@ template TAsyncClient(Interface, InputProtocol = TProtocol, OutputProtocol = voi
       code ~= "try {\n";
       code ~= "static if (is(ReturnType!(Interface." ~ methodName ~
         ") == void)) {\n";
-      code ~= "client_." ~ methodName ~ "(" ~ join(paramNames) ~ ");\n";
+      code ~= "client_." ~ methodName ~ "(" ~ join(paramNames, ",") ~ ");\n";
       code ~= "promise.succeed();\n";
       code ~= "} else {\n";
       code ~= "auto result = client_." ~ methodName ~ "(" ~
-        join(paramNames) ~ ");\n";
+        join(paramNames, ",") ~ ");\n";
       code ~= "promise.succeed(result);\n";
       code ~= "}\n";
       code ~= "} catch (Exception e) {\n";
