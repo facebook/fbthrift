@@ -41,7 +41,7 @@ void TEventTask::run() {
     server->clearCurrentConnection();
   } catch (std::bad_alloc&) {
     T_ERROR("TEventServer task queue caught bad_alloc. Exiting.");
-    exit(-1);
+    exit(EXIT_FAILURE);
   } catch (std::exception const& x) {
     T_ERROR("TEventTask: a %s exception occured during call processing: %s",
             typeid(x).name(), x.what());

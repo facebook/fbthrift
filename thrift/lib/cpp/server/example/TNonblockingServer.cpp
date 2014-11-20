@@ -378,7 +378,7 @@ class TNonblockingServer::TConnection::Task: public Runnable {
       return;
     } catch (const bad_alloc&) {
       GlobalOutput("TNonblockingServer: caught bad_alloc exception.");
-      exit(-1);
+      exit(EXIT_FAILURE);
     } catch (const std::exception& x) {
       GlobalOutput.printf("TNonblockingServer: process() exception: %s: %s",
                           typeid(x).name(), x.what());
