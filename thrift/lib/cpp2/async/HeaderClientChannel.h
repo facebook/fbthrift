@@ -116,14 +116,6 @@ class HeaderClientChannel : public RequestChannel,
     return timeoutSASL_;
   }
 
-  void setSuppressSaslFallbackOnTransientFailure(bool sfb) {
-    suppressSaslFallbackOnTransientFailure_ = sfb;
-  }
-
-  bool shouldSuppressSaslFallbackOnTransientFailure() {
-    return suppressSaslFallbackOnTransientFailure_;
-  }
-
   // If a Close Callback is set, should we reregister callbacks for it
   // alone?  Basically, this means that loop() will return if the only thing
   // outstanding is close callbacks.
@@ -443,9 +435,6 @@ private:
 
   uint32_t timeout_;
   uint32_t timeoutSASL_;
-  // This will be used by saslError() function to determine if it should fall
-  // back to insecure thrift or not.
-  bool suppressSaslFallbackOnTransientFailure_;
   uint32_t handshakeMessagesSent_;
 
   bool keepRegisteredForClose_;
