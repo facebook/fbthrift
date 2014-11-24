@@ -18,7 +18,7 @@
 #
 """Implementation of non-blocking server.
 
-The main idea of the server is reciving and sending requests
+The main idea of the server is receiving and sending requests
 only from main thread.
 
 It also makes thread pool server in tasks terms, not connections.

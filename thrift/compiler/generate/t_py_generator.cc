@@ -250,26 +250,7 @@ class t_py_generator : public t_generator {
   std::string argument_list(t_struct* tstruct);
   std::string type_to_enum(t_type* ttype);
   std::string type_to_spec_args(t_type* ttype);
-
-  static bool is_valid_namespace(const std::string& sub_namespace) {
-    return sub_namespace == "twisted";
-  }
-
-  static std::string get_real_py_module(const t_program* program,
-                                        bool gen_twisted) {
-    if (gen_twisted) {
-      std::string twisted_module = program->get_namespace("py.twisted");
-      if (!twisted_module.empty()){
-        return twisted_module;
-      }
-    }
-
-    std::string real_module = program->get_namespace("py");
-    if (real_module.empty()) {
-      return program->get_name();
-    }
-    return real_module;
-  }
+  std::string get_real_py_module(const t_program* program);
 
  private:
 
@@ -325,6 +306,28 @@ class t_py_generator : public t_generator {
 
   set<string> reserved_keywords_;
 };
+
+std::string t_py_generator::get_real_py_module(const t_program* program) {
+  if (gen_asyncio_) {
+    std::string asyncio_module = program->get_namespace("py.asyncio");
+    if (!asyncio_module.empty()){
+      return asyncio_module;
+    }
+  }
+
+  if (gen_twisted_) {
+    std::string twisted_module = program->get_namespace("py.twisted");
+    if (!twisted_module.empty()){
+      return twisted_module;
+    }
+  }
+
+  std::string real_module = program->get_namespace("py");
+  if (real_module.empty()) {
+    return program->get_name();
+  }
+  return real_module;
+}
 
 void t_py_generator::generate_json_field(ofstream& out,
                                           t_field* tfield,
@@ -667,7 +670,7 @@ void t_py_generator::generate_json_reader(ofstream& out,
  */
 void t_py_generator::init_generator() {
   // Make output directory
-  string module = get_real_py_module(program_, gen_twisted_);
+  string module = get_real_py_module(program_);
   package_dir_ = get_out_dir();
   while (true) {
     // TODO: Do better error checking here.
@@ -746,7 +749,7 @@ string t_py_generator::render_includes() {
   const vector<t_program*>& includes = program_->get_includes();
   string result = "";
   for (size_t i = 0; i < includes.size(); ++i) {
-    result += "import " + get_real_py_module(includes[i], gen_twisted_) +
+    result += "import " + get_real_py_module(includes[i]) +
       ".ttypes\n";
   }
   if (includes.size() > 0) {
@@ -1747,8 +1750,8 @@ void t_py_generator::generate_service(t_service* tservice) {
 
   if (tservice->get_extends() != nullptr) {
     f_service_ <<
-      "import " << get_real_py_module(tservice->get_extends()->get_program(),
-                                      gen_twisted_) << "."
+      "import " << get_real_py_module(tservice->get_extends()->get_program())
+                << "."
                 << rename_reserved_keywords(tservice->get_extends()->get_name())
                 << endl;
   }
@@ -3413,11 +3416,11 @@ string t_py_generator::argument_list(t_struct* tstruct) {
 string t_py_generator::type_name(t_type* ttype) {
   t_program* program = ttype->get_program();
   if (ttype->is_service()) {
-    return get_real_py_module(program, gen_twisted_) + "." +
+    return get_real_py_module(program) + "." +
       rename_reserved_keywords(ttype->get_name());
   }
   if (program != nullptr && program != program_) {
-    return get_real_py_module(program, gen_twisted_) + ".ttypes." +
+    return get_real_py_module(program) + ".ttypes." +
       rename_reserved_keywords(ttype->get_name());
   }
   return rename_reserved_keywords(ttype->get_name());
@@ -3513,5 +3516,6 @@ THRIFT_REGISTER_GENERATOR(py, "Python",
 "    sort_keys:       Serialize maps in the ascending order of their keys.\n"
 "    thrift_port=NNN: Default port to use in remote client (default 9090).\n"
 "    twisted:         Generate Twisted-friendly RPC services.\n"
+"    asyncio:         Generate asyncio-friendly RPC services.\n"
 "    utf8strings:     Encode/decode strings using utf8 in the generated code.\n"
 );
