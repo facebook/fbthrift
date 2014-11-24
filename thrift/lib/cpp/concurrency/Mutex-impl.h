@@ -20,6 +20,7 @@
 #include <glog/logging.h>
 #include <pthread.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/concurrency/Mutex-portability.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 
