@@ -105,14 +105,6 @@ uint32_t writeVarint16(uint16_t n, uint8_t* pkt) {
   return writeVarint32(n, pkt);
 }
 
-uint32_t i32ToZigzag(const int32_t n) {
-  return (n << 1) ^ (n >> 31);
-}
-
-uint64_t i64ToZigzag(const int64_t l) {
-  return (l << 1) ^ (l >> 63);
-}
-
 namespace detail {
   void throwInvalidVarint() {
     throw std::out_of_range("invalid varint read");

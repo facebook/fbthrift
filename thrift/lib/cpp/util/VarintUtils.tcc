@@ -72,6 +72,7 @@ uint8_t readVarintMediumSlow(CursorT& c, T& value, const uint8_t* p, size_t len)
       uint64_t byte; // byte is uint64_t so that all shifts are 64-bit
       byte = *p++; result  = (byte & 0x7f);       if (!(byte & 0x80)) break;
       byte = *p++; result |= (byte & 0x7f) <<  7; if (!(byte & 0x80)) break;
+      if (sizeof(T) <= 1) throwInvalidVarint();
       byte = *p++; result |= (byte & 0x7f) << 14; if (!(byte & 0x80)) break;
       if (sizeof(T) <= 2) throwInvalidVarint();
       byte = *p++; result |= (byte & 0x7f) << 21; if (!(byte & 0x80)) break;
@@ -120,8 +121,20 @@ T readVarint(CursorT& c) {
   return value;
 }
 
+namespace detail {
+
+template <typename T>
+class has_ensure_and_append {
+  template <typename U> static char f(typeof(&U::ensure), typeof(&U::append));
+  template <typename U> static long f(...);
+public:
+  enum {value = sizeof(f<T>(nullptr, nullptr)) == sizeof(char)};
+};
+
+// Slow path if cursor class does not have ensure() and append() (e.g. RWCursor)
 template <class Cursor, class T>
-uint8_t writeVarint(Cursor& c, T value) {
+typename std::enable_if<!has_ensure_and_append<Cursor>::value, uint8_t>::type
+writeVarintSlow(Cursor& c, T value) {
   uint8_t sz = 0;
   while (true) {
     if ((value & ~0x7F) == 0) {
@@ -139,12 +152,62 @@ uint8_t writeVarint(Cursor& c, T value) {
   return sz;
 }
 
+// Slow path if cursor class has ensure() and append() (e.g. QueueAppender)
+template <class Cursor, class T>
+typename std::enable_if<has_ensure_and_append<Cursor>::value, uint8_t>::type
+writeVarintSlow(Cursor& c, T value) {
+  enum { maxSize = (8 * sizeof(T) + 6) / 7 };
+  typedef typename std::make_unsigned<T>::type un_type;
+  un_type unval = static_cast<un_type>(value);
+
+  c.ensure(maxSize);
+
+  uint8_t* p = c.writableData();
+  uint8_t* orig_p = p;
+  // precondition: (value & ~0x7f) != 0
+  do {
+    *p++ = ((unval & 0x7f) | 0x80); unval = unval >> 7; if ((unval & ~0x7f) == 0) break;
+    *p++ = ((unval & 0x7f) | 0x80); unval = unval >> 7; if ((unval & ~0x7f) == 0) break;
+    *p++ = ((unval & 0x7f) | 0x80); unval = unval >> 7; if ((unval & ~0x7f) == 0) break;
+    *p++ = ((unval & 0x7f) | 0x80); unval = unval >> 7; if ((unval & ~0x7f) == 0) break;
+    *p++ = ((unval & 0x7f) | 0x80); unval = unval >> 7; if ((unval & ~0x7f) == 0) break;
+    *p++ = ((unval & 0x7f) | 0x80); unval = unval >> 7; if ((unval & ~0x7f) == 0) break;
+    *p++ = ((unval & 0x7f) | 0x80); unval = unval >> 7; if ((unval & ~0x7f) == 0) break;
+    *p++ = ((unval & 0x7f) | 0x80); unval = unval >> 7; if ((unval & ~0x7f) == 0) break;
+    *p++ = ((unval & 0x7f) | 0x80); unval = unval >> 7;
+  } while (false);
+
+  *p++ = unval;
+  c.append(p - orig_p);
+  return p - orig_p;
+}
+
+} // namespace detail
+
+template <class Cursor, class T>
+uint8_t writeVarint(Cursor& c, T value) {
+  if (LIKELY((value & ~0x7f) == 0)) {
+    c.template write<uint8_t>((int8_t)value);
+    return 1;
+  }
+
+  return detail::writeVarintSlow<Cursor, T>(c, value);
+}
+
 inline int32_t zigzagToI32(uint32_t n) {
   return (n >> 1) ^ -(n & 1);
 }
 
 inline int64_t zigzagToI64(uint64_t n) {
   return (n >> 1) ^ -(n & 1);
+}
+
+inline uint32_t i32ToZigzag(const int32_t n) {
+  return (n << 1) ^ (n >> 31);
+}
+
+inline uint64_t i64ToZigzag(const int64_t l) {
+  return (l << 1) ^ (l >> 63);
 }
 
 }}} // apache::thrift::util
