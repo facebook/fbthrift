@@ -201,7 +201,9 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     });
   if (ex_eof) {
     ex = folly::make_exception_wrapper<TTransportException>(
-      "SASL required by client but server closed connection");
+      folly::to<std::string>(
+          ex.what(),
+          " during SASL handshake (likely keytab entry error on server)"));
   }
 
   // Record error string
@@ -220,13 +222,9 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     channel_.header_->setClientType(THRIFT_HEADER_CLIENT_TYPE);
   });
   if (ew) {
-    if (ex_eof) {
-      LOG(ERROR) << ex.what();
-    } else {
-      LOG(ERROR)
-        << "SASL required by client but failed or rejected by server: "
-        << ex.what();
-    }
+    LOG(ERROR)
+      << "SASL required by client but failed or rejected by server: "
+      << ex.what();
     if (logger) {
       logger->log("sasl_failed_hard");
     }
