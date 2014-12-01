@@ -2748,6 +2748,9 @@ void t_py_generator::generate_process_function(t_service* tservice,
     const std::vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator f_iter;
 
+    string handler = "self._handler." +
+      rename_reserved_keywords(tfunction->get_name());
+
     f_service_ << indent();
 
     if (gen_asyncio_) {
@@ -2767,22 +2770,16 @@ void t_py_generator::generate_process_function(t_service* tservice,
         args_list += rename_reserved_keywords((*f_iter)->get_name());
       }
 
-      f_service_ << "if is_run_in_loop(self._handler." <<
-        rename_reserved_keywords(tfunction->get_name()) << "):" << endl <<
-        indent() << "  ret = self._handler." <<
-        rename_reserved_keywords(tfunction->get_name()) << "(" <<
-        args_list << ")" << endl <<
-        indent() << "elif asyncio.iscoroutinefunction(self._handler." <<
-        rename_reserved_keywords(tfunction->get_name()) << "):" << endl <<
-        indent() << "  ret = yield from self._handler." <<
-        rename_reserved_keywords(tfunction->get_name()) << "(" <<
-        args_list << ")" << endl <<
-        indent() << "else: " << endl <<
+      f_service_ << "if asyncio.iscoroutinefunction(" << handler << "):" <<
+        endl <<
+        indent() << "  ret = yield from " << handler << "(" << args_list <<
+        ")" << endl <<
+        indent() << "elif should_run_on_thread(" << handler << "):" << endl <<
         indent() << "  loop = asyncio.get_event_loop()" << endl <<
-        indent() <<
-        "  ret = yield from loop.run_in_executor(None, self._handler." <<
-        rename_reserved_keywords(tfunction->get_name()) << ", " <<
-        args_list << ")" << endl;
+        indent() << "  ret = yield from loop.run_in_executor(None, " <<
+        handler << ", " << args_list << ")" << endl <<
+        indent() << "else: " << endl <<
+        indent() << "  ret = " << handler << "(" << args_list << ")" << endl;
 
       if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
         f_service_ << indent() << "result.success = ret" << endl;
@@ -2791,9 +2788,7 @@ void t_py_generator::generate_process_function(t_service* tservice,
       if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
         f_service_ << "result.success = ";
       }
-      f_service_ <<
-        "self._handler." << rename_reserved_keywords(tfunction->get_name())
-                         << "(";
+      f_service_ << handler << "(";
       bool  first = true;
       if (with_context) {
         f_service_ << "handler_ctx";

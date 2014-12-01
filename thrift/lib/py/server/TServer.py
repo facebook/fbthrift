@@ -25,7 +25,6 @@ from __future__ import unicode_literals
 import logging
 import sys
 import os
-import traceback
 import threading
 if sys.version_info[0] >= 3:
     import queue
@@ -211,6 +210,7 @@ class TServer:
 
     def serve(self):
         pass
+
 
 class TSimpleServer(TServer):
 

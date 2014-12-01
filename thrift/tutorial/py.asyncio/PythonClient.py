@@ -1,12 +1,14 @@
+# @lint-avoid-pyflakes2
 # @lint-avoid-python-3-compatibility-imports
 
+import asyncio
 import time
 
-from tutorial import Calculator
-from tutorial.ttypes import *
 from thrift.server.TAsyncioServer import ThriftClientProtocolFactory
 
-import asyncio
+from tutorial import Calculator
+from tutorial.ttypes import Work, Operation, InvalidOperation
+
 
 @asyncio.coroutine
 def main(loop):
@@ -23,7 +25,7 @@ def main(loop):
     # Try divide by zero.
     try:
         work = Work(num1=2, num2=0, op=Operation.DIVIDE)
-        div = yield from asyncio.wait_for(client.calculate(1, work), None)
+        yield from asyncio.wait_for(client.calculate(1, work), None)
     except InvalidOperation as e:
         print("InvalidOperation: {}".format(e))
 
