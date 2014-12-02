@@ -6,20 +6,9 @@ var ttransport = require('thrift/lib/thrift/transport');
 
 var TBufferedTransport = ttransport.TBufferedTransport;
 
-function ThriftServer(service, methods) {
-  this.server = new CppThriftServer();
-  this.server.processor = new service.Processor(methods);
-  this.server.setInterface(this.wrappedProcessor);
-}
-
-ThriftServer.prototype.listen = function(port) {
-  this.server.setPort(port);
-  this.server.serve();
-}
-
-ThriftServer.prototype.wrappedProcessor = function(server, callback, datain) {
+function wrappedProcessor(server, callback, datain) {
   var transin = new TBufferedTransport(datain);
-  var processor = server.processor
+  var processor = server.processor;
   TBufferedTransport.receiver(function(transin) {
     var protin = new TBinaryProtocol(transin);
     var transout = new TBufferedTransport(undefined, function(buf) {
@@ -40,6 +29,23 @@ ThriftServer.prototype.wrappedProcessor = function(server, callback, datain) {
       protout.flush();
     }
   })(datain);
+}
+
+function ThriftServer(service, methods) {
+  this.server = new CppThriftServer();
+  this.server.processor = new service.Processor(methods);
+  this.server.setInterface(wrappedProcessor);
+}
+
+ThriftServer.prototype.listen = function(port) {
+  this.server.setPort(port);
+  this.server.serve();
+  return this;
+}
+
+ThriftServer.prototype.setTimeout = function(timeout) {
+  this.server.setTimeout(timeout);
+  return this;
 }
 
 module.exports = ThriftServer;

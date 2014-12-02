@@ -196,6 +196,15 @@ class CppThriftServer : public node::ObjectWrap {
     return args.This();
   }
 
+  static Handle<Value> setTimeout(const Arguments& args) {
+    auto obj = ObjectWrap::Unwrap<CppThriftServer>(args.This());
+    obj->server_.setTaskExpireTime(
+      std::chrono::milliseconds(args[0]->ToNumber()->ToInt32()->Value())
+    );
+
+    return args.This();
+  }
+
   static Handle<Value> setInterface(const Arguments& args) {
     auto obj = ObjectWrap::Unwrap<CppThriftServer>(args.This());
     auto localproc = Local<Function>::Cast(args[0]);
@@ -224,6 +233,9 @@ class CppThriftServer : public node::ObjectWrap {
     tpl->PrototypeTemplate()->Set(
       String::NewSymbol("setPort"),
       FunctionTemplate::New(CppThriftServer::setPort)->GetFunction());
+    tpl->PrototypeTemplate()->Set(
+      String::NewSymbol("setTimeout"),
+      FunctionTemplate::New(CppThriftServer::setTimeout)->GetFunction());
     tpl->PrototypeTemplate()->Set(
       String::NewSymbol("serve"),
       FunctionTemplate::New(CppThriftServer::serve)->GetFunction());
