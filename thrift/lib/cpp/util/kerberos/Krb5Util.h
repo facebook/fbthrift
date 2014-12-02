@@ -259,6 +259,8 @@ public:
 
   krb5_ccache release();
   krb5_ccache get() const { return ccache_; }
+  void getCacheTypeAndName(std::string& cacheType,
+                           std::string& cacheName) const;
 
   Iterator begin(bool include_config_entries=false) const {
     return Iterator(this, include_config_entries);
@@ -276,7 +278,7 @@ public:
    */
   std::pair<uint64_t, uint64_t> getLifetime(
     krb5_principal principal = nullptr) const;
-  std::string getName();
+  std::string getName() const;
   Krb5Principal getClientPrincipal() const;
   void initialize(krb5_principal cprinc);
   void storeCred(const krb5_creds& creds);

@@ -289,6 +289,13 @@ std::vector<Krb5Principal> Krb5CCache::getServicePrincipalList(
   return ret;
 }
 
+void Krb5CCache::getCacheTypeAndName(std::string& cacheType,
+                                     std::string& cacheName) const {
+  krb5_context ctx = context_.get();
+  cacheType = std::string(krb5_cc_get_type(ctx, ccache_));
+  cacheName = std::string(krb5_cc_get_name(ctx, ccache_));
+}
+
 std::pair<uint64_t, uint64_t> Krb5CCache::getLifetime(
     krb5_principal principal) const {
   const std::string client_realm = getClientPrincipal().getRealm();
@@ -322,10 +329,11 @@ Krb5Principal Krb5CCache::getClientPrincipal() const {
   return Krb5Principal(ctx, std::move(client));
 }
 
-std::string Krb5CCache::getName() {
-  krb5_context ctx = context_.get();
-  return std::string(krb5_cc_get_type(ctx, ccache_)) + ":" +
-         std::string(krb5_cc_get_name(ctx, ccache_));
+std::string Krb5CCache::getName() const {
+  std::string type;
+  std::string name;
+  getCacheTypeAndName(type, name);
+  return folly::to<std::string>(type, ":", name);
 }
 
 void Krb5CCache::initialize(krb5_principal cprinc) {

@@ -154,26 +154,84 @@ void Krb5CredentialsCacheManager::stopThread() {
 }
 
 std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
-  Krb5CCache file_cache = Krb5CCache::makeDefault();
-  Krb5Principal client = file_cache.getClientPrincipal();
+  auto default_cache =
+      folly::make_unique<Krb5CCache>(Krb5CCache::makeDefault());
+  std::unique_ptr<Krb5CCache> file_cache;
+  std::unique_ptr<Krb5Principal> client;
 
-  // If a client principal has already been set, make sure the ccache
-  // matches.  If it doesn't, bail out. This is so we make sure that
-  // we don't accidentally read in a ccache for a different client.
-  if (store_->isInitialized() && store_->getClientPrincipal() != client) {
+  std::string default_type, default_path;
+  default_cache->getCacheTypeAndName(default_type, default_path);
+
+  if (default_type != "FILE" && default_type != "DIR") {
     throw std::runtime_error(
-      folly::to<string>("ccache contains client principal ", client,
-                        " but ", store_->getClientPrincipal(),
-                        " was required"));
+        folly::to<string>("ccache is if a type ", default_type,
+                          " but expect DIR or FILE"));
+
+  }
+  if (store_->isInitialized()) {
+    client = folly::make_unique<Krb5Principal>(store_->getClientPrincipal());
   }
 
+  if (default_type == "FILE") {
+    // If a client principal has already been set, make sure the ccache
+    // matches.  If it doesn't, bail out. This is so we make sure that
+    // we don't accidentally read in a ccache for a different client.
+    if (client && default_cache->getClientPrincipal() != *client) {
+      throw std::runtime_error(
+        folly::to<string>("ccache contains client principal ",
+                          default_cache->getClientPrincipal(),
+                          " but ", *client, " was required"));
+    }
+    file_cache.swap(default_cache);
+    client =
+        folly::make_unique<Krb5Principal>(file_cache->getClientPrincipal());
+  }
+  else if (default_type == "DIR") {
+    if(default_path[0] == ':') {
+      default_path.erase(0, 1);
+    }
+    else { // Should not ever happen
+      throw std::runtime_error(
+          folly::to<string>("Wrong DIR ccache path: ", default_path));
+    }
+    if (!client) {
+      // If client is not set, use first principal from keytab
+      client = getFirstPrincipalInKeytab();
+    }
+
+    // Get default ccache dir.
+    std::string default_dir;
+    std::vector<folly::StringPiece> path_tokens;
+    folly::split("/", default_path, path_tokens);
+    folly::join(
+      "/",
+      path_tokens.begin(),
+      path_tokens.begin() + path_tokens.size() - 1,
+      default_dir);
+    std::string client_princ_str = folly::to<string>(*client);
+    client_princ_str.erase(std::remove(client_princ_str.begin(),
+                                       client_princ_str.end(),
+                                       '/'),
+                           client_princ_str.end());
+    const std::string ccache_path =
+        folly::to<string>(default_dir, "/tkt_", client_princ_str);
+
+    file_cache = folly::make_unique<Krb5CCache>(Krb5CCache::makeResolve(
+          folly::to<string>("DIR::", ccache_path)));
+    if (*client != file_cache->getClientPrincipal()) {
+      throw std::runtime_error(
+        folly::to<string>("ccache contains client principal ",
+                          file_cache->getClientPrincipal(),
+                          " but ", *client, " was required"));
+    }
+  }
   auto mem = folly::make_unique<Krb5CCache>(
     Krb5CCache::makeNewUnique("MEMORY"));
   mem->setDestroyOnClose();
-  mem->initialize(client.get());
+  mem->initialize(client->get());
   // Copy the file cache into memory
-  krb5_error_code code = krb5_cc_copy_creds(
-    ctx_->get(), file_cache.get(), mem->get());
+  const krb5_error_code code = krb5_cc_copy_creds(
+    ctx_->get(), file_cache->get(), mem->get());
   raiseIf(code, "copying to memory cache");
 
   return mem;
@@ -185,31 +243,65 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     return;
   }
 
-  Krb5CCache default_cache = Krb5CCache::makeDefault();
-
-  // Get the default name
-  folly::StringPiece default_type, default_name;
-  string default_cache_name = default_cache.getName();
-  folly::split<false>(":", default_cache_name, default_type, default_name);
+  auto default_cache =
+      folly::make_unique<Krb5CCache>(Krb5CCache::makeDefault());
+  std::string default_type, default_path;
+  default_cache->getCacheTypeAndName(default_type, default_path);
   if (default_type == "MEMORY") {
     LOG(INFO) << "Default cache is of type MEMORY and will not be persisted";
     ccacheTypeIsMemory_ = true;
     return;
   }
-  if (default_type != "FILE") {
-    LOG(ERROR) << "Default cache is not of type FILE, the type is: " +
-      default_type.str();
+  if (default_type != "FILE" && default_type != "DIR") {
+    LOG(ERROR) << "Default cache is not of type FILE or DIR, the type is: "
+               << default_type;
     logger_->log("persist_ccache_fail_default_name_invalid");
     return;
   }
-  Krb5Principal client_principal = store_->getClientPrincipal();
 
+  if (default_type == "DIR") {
+    if (default_path[0] == ':') {
+      default_path.erase(0, 1);
+    }
+    else { // Should not ever happen
+      throw std::runtime_error(
+          folly::to<string>("Wrong DIR ccache path: ", default_path));
+    }
+  }
+
+  std::unique_ptr<Krb5CCache> file_cache;
+  std::string file_path;
+  // Get default ccache dir.
+  std::string default_dir;
+  std::vector<folly::StringPiece> path_tokens;
+  folly::split("/", default_path, path_tokens);
+  folly::join(
+    "/",
+    path_tokens.begin(),
+    path_tokens.begin() + path_tokens.size() - 1,
+    default_dir);
+  Krb5Principal client = store_->getClientPrincipal();
+  if (default_type == "FILE") {
+    file_path = default_path;
+    file_cache.swap(default_cache);
+  }
+  else if (default_type == "DIR") {
+    std::string client_princ_str = folly::to<string>(client);
+    client_princ_str.erase(std::remove(client_princ_str.begin(),
+                                       client_princ_str.end(),
+                                       '/'),
+                           client_princ_str.end());
+    file_path =
+        folly::to<string>(default_dir, "/tkt_", client_princ_str);
+    file_cache = folly::make_unique<Krb5CCache>(Krb5CCache::makeResolve(
+        folly::to<string>("DIR::", file_path)));
+  }
   // Check if client matches.
   try {
-    Krb5Principal def_princ = default_cache.getClientPrincipal();
+    Krb5Principal file_princ = file_cache->getClientPrincipal();
     // We still want to overwrite caches that are about to expire.
-    bool about_to_expire = aboutToExpire(default_cache.getLifetime());
-    if (!about_to_expire && client_principal != def_princ) {
+    const bool about_to_expire = aboutToExpire(file_cache->getLifetime());
+    if (!about_to_expire && client != file_princ) {
       VLOG(4) << "File cache principal does not match client, not overwriting";
       logger_->log("persist_ccache_fail_client_mismatch");
       return;
@@ -222,7 +314,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   // file cache.
   bool can_renew = false;
   try {
-    can_renew = isPrincipalInKeytab(client_principal);
+    can_renew = isPrincipalInKeytab(client);
   } catch (...) {
     VLOG(4) << "Error reading from keytab";
   }
@@ -233,15 +325,8 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   }
 
   // Create a temporary file in the same directory as the default cache
-  std::vector<folly::StringPiece> path_tokens;
-  folly::split("/", default_name, path_tokens);
-  std::string tmp_template;
-  folly::join(
-    "/",
-    path_tokens.begin(),
-    path_tokens.begin() + path_tokens.size() - 1,
-    tmp_template);
-  tmp_template += "/tmpcache_XXXXXX";
+  const std::string tmp_template =
+      folly::to<string>(default_dir, "/tmpcache_XXXXXX");
 
   char str_buf[4096];
   int ret = snprintf(str_buf, 4096, "%s", tmp_template.c_str());
@@ -251,7 +336,7 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     return;
   }
 
-  int fd = mkstemp(str_buf);
+  const int fd = mkstemp(str_buf);
   if (fd == -1) {
     LOG(ERROR) << "Could not open a temporary cache file with template: "
                << tmp_template << " error: " << strerror(errno);
@@ -270,31 +355,34 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   temp_cache->setDestroyOnClose();
 
   // Move the in-memory temp_cache to a temporary file
-  auto file_cache = Krb5CCache::makeResolve(str_buf);
-  file_cache.initialize(client_principal.get());
+  auto tmp_file_cache =
+      folly::make_unique<Krb5CCache>(Krb5CCache::makeResolve(str_buf));
+  tmp_file_cache->initialize(client.get());
   krb5_error_code code = krb5_cc_copy_creds(
-    ctx_->get(), temp_cache->get(), file_cache.get());
+    ctx_->get(), temp_cache->get(), tmp_file_cache->get());
   raiseIf(code, "copying to file cache");
 
-  folly::StringPiece tmp_type, tmp_name;
-  string file_cache_name = file_cache.getName();
-  folly::split<false>(":", file_cache_name, tmp_type, tmp_name);
-  if (tmp_type != "FILE") {
-    LOG(ERROR) << "Tmp cache is not of type FILE, the type is: " +
-      tmp_type.str();
+  std::string tmp_type, tmp_path;
+  tmp_file_cache->getCacheTypeAndName(tmp_type, tmp_path);
+  if (tmp_path[0] == ':') {
+    tmp_path.erase(0, 1);
+  }
+  if (tmp_type != "FILE" && tmp_type != "DIR") {
+    LOG(ERROR) << "Tmp cache is not of type FILE or DIR, the type is: "
+               << tmp_type;
     logger_->log("persist_ccache_fail_file_not_of_type_file");
     return;
   }
-  int result = rename(tmp_name.str().c_str(), default_name.str().c_str());
+  const int result = rename(tmp_path.c_str(), file_path.c_str());
   if (result != 0) {
     logger_->log("persist_ccache_fail_rename", strerror(errno));
     LOG(ERROR) << "Failed modifying the default credentials cache: "
                << strerror(errno);
     // Attempt to delete tmp file. We shouldn't leave it around. If delete
     // fails for some reason, not much we can do.
-    ret = unlink(tmp_name.str().c_str());
+    ret = unlink(tmp_path.c_str());
     if (ret == -1) {
-      LOG(ERROR) << "Error deleting temp file: " << tmp_name.str().c_str()
+      LOG(ERROR) << "Error deleting temp file: " << tmp_path.c_str()
                  << " because of error: " << strerror(errno);
     }
     return;
