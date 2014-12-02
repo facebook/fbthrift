@@ -99,7 +99,6 @@ class ThriftTestCase(unittest.TestCase):
         global loop
         self.host = '127.0.0.1'
         self.handler = TestHandler()
-        # self.processor = ThriftTest.Processor(self.handler)
         self.server = yield from ThriftAsyncServerFactory(
             self.handler, interface=self.host, port=0, loop=loop,
         )
@@ -145,9 +144,8 @@ class ThriftTestCase(unittest.TestCase):
 
     @async_test
     def testDouble(self):
-        # FIXME: assertEqual with floats is likely unportable
         result = yield from self.client.testDouble(-5.235098235)
-        self.assertEqual(result, -5.235098235)
+        self.assertAlmostEqual(result, -5.235098235)
 
     @async_test
     def testStruct(self):

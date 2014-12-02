@@ -2,6 +2,7 @@
 # @lint-avoid-python-3-compatibility-imports
 
 import asyncio
+import functools
 import logging
 from io import BytesIO
 import struct
@@ -75,10 +76,10 @@ def ThriftAsyncServerFactory(
     """
 
     if not isinstance(processor, TProcessor):
-        if hasattr(processor, "_processor_type"):
+        try:
             processor = processor._processor_type(processor)
-        else:
-            raise ValueError(
+        except AttributeError:
+            raise TypeError(
                 "Unsupported processor type: {}".format(type(processor)),
             )
 
@@ -90,28 +91,32 @@ def ThriftAsyncServerFactory(
             ThreadPoolExecutor(max_workers=nthreads),
         )
     event_handler = TServerEventHandler()
+    pfactory = ThriftServerProtocolFactory(processor, event_handler)
     try:
-        protocol_factory = ThriftServerProtocolFactory(
-            processor,
-            event_handler,
-        )
-        server = yield from loop.create_server(
-            protocol_factory, interface, port,
-        )
+        server = yield from loop.create_server(pfactory, interface, port)
     except Exception:
-        if not interface:
-            interface = '0.0.0.0'
         logger.exception(
-            "Could not start server at %s:%d", interface, port,
+            "Could not start server at %s:%d", interface or '*', port,
         )
         raise
 
-    if hasattr(server, "sockets"):   # FIXME: this should be always true
-                                     # according to asyncio docs?
+    if server.sockets:
         for socket in server.sockets:
             event_handler.preServe(socket.getsockname())
 
     return server
+
+
+def ThriftClientProtocolFactory(client_class):
+    return functools.partial(
+        ThriftHeaderClientProtocol, client_class,
+    )
+
+
+def ThriftServerProtocolFactory(processor, server_event_handler):
+    return functools.partial(
+        ThriftHeaderServerProtocol, processor, server_event_handler,
+    )
 
 
 class AsyncioRpcConnectionContext(TConnectionContext):
@@ -157,7 +162,7 @@ class FramedProtocol(asyncio.Protocol):
 
 
 class SenderTransport:
-    MAX_QUEUE_SIZE = 1 << 10
+    MAX_QUEUE_SIZE = 1024
 
     def __init__(self, trans):
         self._queue = asyncio.Queue(maxsize=self.MAX_QUEUE_SIZE)
@@ -226,22 +231,12 @@ class ThriftHeaderClientProtocol(FramedProtocol):
             method(iprot, mtype, rseqid)
 
 
-class ThriftClientProtocolFactory:
-
-    def __init__(self, client_class):
-        self.client_class = client_class
-
-    def __call__(self,):
-        return ThriftHeaderClientProtocol(self.client_class)
-
-
 class ThriftHeaderServerProtocol(FramedProtocol):
-    MAX_LENGTH = 1 << 24
 
-    def __init__(self, processor, serverEventHandler):
+    def __init__(self, processor, server_event_handler):
         super().__init__()
         self.processor = processor
-        self.serverEventHandler = serverEventHandler
+        self.server_event_handler = server_event_handler
         self.server_context = None
 
     @asyncio.coroutine
@@ -268,21 +263,10 @@ class ThriftHeaderServerProtocol(FramedProtocol):
         socket = self.transport.get_extra_info("socket")
         if socket is not None:
             self.server_context = AsyncioRpcConnectionContext(socket)
-        self.serverEventHandler.newConnection(self.server_context)
+        self.server_event_handler.newConnection(self.server_context)
 
     def connection_lost(self, exc):
-        self.serverEventHandler.connectionDestroyed(self.server_context)
-
-
-class ThriftServerProtocolFactory:
-
-    def __init__(self, processor, serverEventHandler):
-        self.processor = processor
-        self.serverEventHandler = serverEventHandler
-
-    def __call__(self,):
-        return ThriftHeaderServerProtocol(self.processor,
-                                          self.serverEventHandler)
+        self.server_event_handler.connectionDestroyed(self.server_context)
 
 
 class TAsyncioServer(TServer):
@@ -315,18 +299,16 @@ class TAsyncioServer(TServer):
             self.loop.close()
 
     def _start_server(self):
+        self.loop = asyncio.get_event_loop()
+        if self.nthreads is not None:
+            from concurrent.futures import ThreadPoolExecutor
+            self.loop.set_default_executor(ThreadPoolExecutor(
+                max_workers=int(self.nthreads)))
+        pfactory = ThriftServerProtocolFactory(
+            self.processor, self.server_event_handler,
+        )
         try:
-            protocol_factory = ThriftServerProtocolFactory(
-                self.processor,
-                self.server_event_handler,
-            )
-            self.loop = asyncio.get_event_loop()
-            if self.nthreads is not None:
-                from concurrent.futures import ThreadPoolExecutor
-                self.loop.set_default_executor(ThreadPoolExecutor(
-                    max_workers=int(self.nthreads)))
-            coro = self.loop.create_server(protocol_factory,
-                                           self.host, self.port)
+            coro = self.loop.create_server(pfactory, self.host, self.port)
             self.server = self.loop.run_until_complete(coro)
         except Exception as e:
             logging.error("Could not start server at port {}"
