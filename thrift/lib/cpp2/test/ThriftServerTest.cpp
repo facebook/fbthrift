@@ -475,38 +475,112 @@ TEST(ThriftServer, CompressionClientTest) {
 
 TEST(ThriftServer, ClientTimeoutTest) {
 
-  ScopedServerThread sst(getServer());
+  auto server = getServer();
+  ScopedServerThread sst(server);
   auto port = sst.getAddress()->getPort();
 
   TEventBase base;
 
-  std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+  auto getClient = [&base, port] () {
+    std::shared_ptr<TAsyncSocket> socket(
+      TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
-  TestServiceAsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
+    return std::make_shared<TestServiceAsyncClient>(
+      std::unique_ptr<HeaderClientChannel,
+                      apache::thrift::async::TDelayedDestruction::Destructor>(
+                        new HeaderClientChannel(socket)));
+  };
 
-  RpcOptions options;
-  options.setTimeout(std::chrono::milliseconds(1));
-  std::unique_ptr<RequestCallback> callback(
+  int cbCtor = 0;
+  int cbCall = 0;
+
+  auto callback = [&cbCall, &cbCtor] (
+      std::shared_ptr<TestServiceAsyncClient> client,
+      bool& timeout) {
+    cbCtor++;
+    return std::unique_ptr<RequestCallback>(
       new FunctionReplyCallback(
-          [](ClientReceiveState&& state) {
-             std::string response;
-             if (state.exception()) {
-               try {
-                 std::rethrow_exception(state.exception());
-               } catch (const TTransportException& e) {
-                 EXPECT_EQ(int(TTransportException::TIMED_OUT),
-                           int(e.getType()));
-                 return;
-               }
-             }
-             ADD_FAILURE();
-           }));
-  client.sendResponse(options, std::move(callback), 10000);
+        [&cbCall, client, &timeout] (ClientReceiveState&& state) {
+          cbCall++;
+          if (state.exception()) {
+            timeout = true;
+            try {
+              std::rethrow_exception(state.exception());
+            } catch (const TTransportException& e) {
+              EXPECT_EQ(int(TTransportException::TIMED_OUT),
+                        int(e.getType()));
+
+            }
+            return;
+          }
+          try {
+            std::string resp;
+            client->recv_sendResponse(resp, state);
+          } catch (const TApplicationException& e) {
+            timeout = true;
+            EXPECT_EQ(int(TApplicationException::TIMEOUT),
+                      int(e.getType()));
+            return;
+          }
+          timeout = false;
+        }));
+  };
+
+  // Set the timeout to be 9 milliseconds, but the call will take 10 ms.
+  // The server should send a timeout after 9 milliseconds
+  RpcOptions options;
+  options.setTimeout(std::chrono::milliseconds(9));
+  auto client1 = getClient();
+  bool timeout1;
+  client1->sendResponse(options, callback(client1, timeout1), 10000);
   base.loop();
+  EXPECT_TRUE(timeout1);
+  usleep(10000);
+
+  // This time we set the timeout to be 11 millseconds.  The server
+  // should not time out
+  options.setTimeout(std::chrono::milliseconds(11));
+  client1->sendResponse(options, callback(client1, timeout1), 10000);
+  base.loop();
+  EXPECT_FALSE(timeout1);
+  usleep(10000);
+
+  // This time we set server timeout to be 1 millsecond.  However, the
+  // task should start processing within that millisecond, so we should
+  // not see an exception because the client timeout should be used after
+  // processing is started
+  server->setTaskExpireTime(std::chrono::milliseconds(1));
+  client1->sendResponse(options, callback(client1, timeout1), 10000);
+  base.loop();
+  usleep(10000);
+
+  // The server timeout stays at 1 ms, but we put the client timeout at
+  // 9 ms.  We should timeout even though the server starts processing within
+  // 1ms.
+  options.setTimeout(std::chrono::milliseconds(9));
+  client1->sendResponse(options, callback(client1, timeout1), 10000);
+  base.loop();
+  EXPECT_TRUE(timeout1);
+  usleep(50000);
+
+  // And finally, with the server timeout at 50 ms, we send 2 requests at
+  // once.  Because the first request will take more than 50 ms to finish
+  // processing (the server only has 1 worker thread), the second request
+  // won't start processing until after 50ms, and will timeout, despite the
+  // very high client timeout.
+  // We don't know which one will timeout (race conditions) so we just check
+  // the xor
+  auto client2 = getClient();
+  bool timeout2;
+  server->setTaskExpireTime(std::chrono::milliseconds(50));
+  options.setTimeout(std::chrono::milliseconds(110));
+  client1->sendResponse(options, callback(client1, timeout1), 100000);
+  client2->sendResponse(options, callback(client2, timeout2), 100000);
+  base.loop();
+  EXPECT_TRUE(timeout1 || timeout2);
+  EXPECT_FALSE(timeout1 && timeout2);
+
+  EXPECT_EQ(cbCall, cbCtor);
 }
 
 TEST(ThriftServer, ConnectionIdleTimeoutTest) {

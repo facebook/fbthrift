@@ -848,8 +848,26 @@ class ThriftServer : public apache::thrift::server::TServer {
     return taskExpireTime_;
   }
 
-  std::chrono::milliseconds getTaskExpireTimeForRequest(
-    const apache::thrift::transport::THeader& header
+  /**
+   * A task has two timeouts:
+   *
+   * If the task hasn't started processing the request by the time the soft
+   * timeout has expired, we should throw the task away.
+   *
+   * However, if the task has started processing the request by the time the
+   * soft timeout has expired, we shouldn't expire the task until the hard
+   * timeout has expired.
+   *
+   * The soft timeout protects the server from starting to process too many
+   * requests.  The hard timeout protects us from sending responses that
+   * are never read.
+   *
+   * @returns whether or not the soft and hard timeouts are different
+   */
+  bool getTaskExpireTimeForRequest(
+    const apache::thrift::transport::THeader& header,
+    std::chrono::milliseconds& softTimeout,
+    std::chrono::milliseconds& hardTimeout
   ) const;
 
   /**

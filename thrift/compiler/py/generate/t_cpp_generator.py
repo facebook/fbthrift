@@ -1136,6 +1136,7 @@ class CppGenerator(t_generator.Generator):
                 out('callback.release()->deleteInThread();')
                 out('return;')
         args.insert(0, 'std::move(callback)')
+        out('ctx->setStartedProcessing();')
         out('iface_->{0}({1});'.format(self._get_async_func_name(function),
                                      ", ".join(args)))
 

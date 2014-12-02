@@ -111,10 +111,24 @@ class Cpp2Connection
    * b) To ensure the channel is not destroyed before callback is called
    */
   class Cpp2Request
-      : public ResponseChannel::Request
-      , public apache::thrift::async::HHWheelTimer::Callback {
+      : public ResponseChannel::Request {
    public:
     friend class Cpp2Connection;
+
+    class SoftTimeout
+      : public apache::thrift::async::HHWheelTimer::Callback {
+      Cpp2Request* request_;
+      virtual void timeoutExpired() noexcept;
+      friend class Cpp2Request;
+    };
+    class HardTimeout
+      : public apache::thrift::async::HHWheelTimer::Callback {
+      Cpp2Request* request_;
+      virtual void timeoutExpired() noexcept;
+      friend class Cpp2Request;
+    };
+    friend class SoftTimeout;
+    friend class HardTimeout;
 
     Cpp2Request(std::unique_ptr<ResponseChannel::Request> req,
                    std::shared_ptr<Cpp2Connection> con);
@@ -131,7 +145,6 @@ class Cpp2Connection
         folly::exception_wrapper ew,
         std::string exCode,
         MessageChannel::SendCallback* notUsed = nullptr);
-    virtual void timeoutExpired() noexcept;
 
     virtual ~Cpp2Request();
 
@@ -155,6 +168,13 @@ class Cpp2Connection
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req_;
     std::shared_ptr<Cpp2Connection> connection_;
     Cpp2RequestContext reqContext_;
+    SoftTimeout softTimeout_;
+    HardTimeout hardTimeout_;
+
+    void cancelTimeout() {
+      softTimeout_.cancelTimeout();
+      hardTimeout_.cancelTimeout();
+    }
   };
 
   class Cpp2Sample

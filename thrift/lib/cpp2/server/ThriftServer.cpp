@@ -481,18 +481,30 @@ bool ThriftServer::isOverloaded(uint32_t workerActiveRequests) {
   return false;
 }
 
-std::chrono::milliseconds ThriftServer::getTaskExpireTimeForRequest(
-  const apache::thrift::transport::THeader& requestHeader
+bool ThriftServer::getTaskExpireTimeForRequest(
+  const apache::thrift::transport::THeader& requestHeader,
+  std::chrono::milliseconds& softTimeout,
+  std::chrono::milliseconds& hardTimeout
 ) const {
-  auto timeoutTime = getTaskExpireTime();
+  softTimeout = getTaskExpireTime();
   if (getUseClientTimeout()) {
-    auto clientTimeoutTime = requestHeader.getClientTimeout();
-    if (clientTimeoutTime > std::chrono::milliseconds(0) &&
-        clientTimeoutTime < timeoutTime) {
-      timeoutTime = clientTimeoutTime;
+    // we add 10% to the client timeout so that the request is much more likely
+    // to timeout on the client side than to read the timeout from the server
+    // as a TApplicationException (which can be confusing)
+    hardTimeout = std::chrono::milliseconds(
+      (uint32_t)(requestHeader.getClientTimeout().count() * 1.1));
+    if (hardTimeout > std::chrono::milliseconds(0)) {
+      if (hardTimeout < softTimeout ||
+          softTimeout == std::chrono::milliseconds(0)) {
+        softTimeout = hardTimeout;
+        return false;
+      } else {
+        return true;
+      }
     }
   }
-  return timeoutTime;
+  hardTimeout = softTimeout;
+  return false;
 }
 
 int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {

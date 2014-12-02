@@ -348,12 +348,22 @@ void Cpp2Connection::requestReceived(
     observer->receivedRequest();
   }
 
-  auto timeoutTime = server->getTaskExpireTimeForRequest(
-    *(channel_->getHeader())
+  std::chrono::milliseconds softTimeout;
+  std::chrono::milliseconds hardTimeout;
+  auto differentTimeouts = server->getTaskExpireTimeForRequest(
+    *(channel_->getHeader()),
+    softTimeout,
+    hardTimeout
   );
-  if (timeoutTime > std::chrono::milliseconds(0)) {
-    scheduleTimeout(t2r.get(), timeoutTime);
+  if (differentTimeouts) {
+    DCHECK(softTimeout > std::chrono::milliseconds(0));
+    DCHECK(hardTimeout > std::chrono::milliseconds(0));
+    scheduleTimeout(&t2r->softTimeout_, softTimeout);
+    scheduleTimeout(&t2r->hardTimeout_, hardTimeout);
+  } else if (hardTimeout > std::chrono::milliseconds(0)) {
+    scheduleTimeout(&t2r->hardTimeout_, hardTimeout);
   }
+
   auto reqContext = t2r->getContext();
 
   auto headers = reqContext->getHeaders();
@@ -407,6 +417,8 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
   RequestContext::create();
 
   NumaThreadFactory::setNumaNode();
+  softTimeout_.request_ = this;
+  hardTimeout_.request_ = this;
 }
 
 MessageChannel::SendCallback*
@@ -462,14 +474,20 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
   }
 }
 
-void Cpp2Connection::Cpp2Request::timeoutExpired() noexcept {
-  sendErrorWrapped(
+void Cpp2Connection::Cpp2Request::HardTimeout::timeoutExpired() noexcept {
+  request_->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
         TApplicationException::TApplicationExceptionType::TIMEOUT,
         "Task expired"),
       kTaskExpiredErrorCode);
-  req_->cancel();
-  connection_->requestTimeoutExpired();
+  request_->req_->cancel();
+  request_->connection_->requestTimeoutExpired();
+}
+
+void Cpp2Connection::Cpp2Request::SoftTimeout::timeoutExpired() noexcept {
+  if (!request_->reqContext_.getStartedProcessing()) {
+    request_->hardTimeout_.timeoutExpired();
+  }
 }
 
 Cpp2Connection::Cpp2Request::~Cpp2Request() {

@@ -223,6 +223,14 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_;
   }
 
+  bool getStartedProcessing() const {
+    return startedProcessing_;
+  }
+
+  void setStartedProcessing() {
+    startedProcessing_ = true;
+  }
+
  protected:
   // Note:  Header is _not_ thread safe
   virtual apache::thrift::transport::THeader* getHeader() {
@@ -238,6 +246,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   std::vector<uint16_t> transforms_;
   uint32_t minCompressBytes_;
   PriorityThreadManager::PRIORITY callPriority_;
+  bool startedProcessing_ = false;
 };
 
 } }
