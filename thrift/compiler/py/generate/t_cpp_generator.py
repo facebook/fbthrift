@@ -918,12 +918,6 @@ class CppGenerator(t_generator.Generator):
                     out('callback->exception(std::make_exception_ptr(ex));')
             else:
                 out('auto callbackp = callback.release();')
-                # Oneway request won't be canceled if expired. see D1006482 for
-                # further details. TODO: fix this
-                if not function.oneway:
-                    with out('if (!callbackp->isRequestActive())'):
-                        out('callbackp->deleteInThread();')
-                        out('return;')
                 out('setConnectionContext(callbackp->getConnectionContext());')
                 if not function.oneway and self._is_complex_type(
                     function.returntype
@@ -1135,6 +1129,12 @@ class CppGenerator(t_generator.Generator):
                ' ProtocolOut_>, throw_wrapped_{1}<ProtocolIn_,' +
                ' ProtocolOut_>, iprot->getSeqId(),' +
                ' eb, tm, ctx));').format(rettype, function.name))
+        # Oneway request won't be canceled if expired. see D1006482 for
+        # further details. TODO: fix this
+        if not self._is_processed_in_eb(function) and not function.oneway:
+            with out('if (!callback->isRequestActive())'):
+                out('callback.release()->deleteInThread();')
+                out('return;')
         args.insert(0, 'std::move(callback)')
         out('iface_->{0}({1});'.format(self._get_async_func_name(function),
                                      ", ".join(args)))
