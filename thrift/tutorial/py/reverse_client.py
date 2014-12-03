@@ -35,7 +35,7 @@ def getClient():
 
     return ServiceRouter().getClient2(
         ReverseService.Client,
-        "keychain.service",  # TODO mhorowitz: make a tier
+        "",  # tier name; not needed since we're using single_host
         options, overrides, False)
 
 req = reverse.Request(str="hello, world")
