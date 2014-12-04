@@ -1144,7 +1144,6 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     if ((*m_iter)->get_value() != nullptr
         && !(t->is_struct()
           || t->is_xception()
-          || t->is_enum()
         )
     ) {
       dval = render_const_value(t, (*m_iter)->get_value());
@@ -1159,7 +1158,9 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
         || tstruct->is_union()
         || is_result
         || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-            && (*m_iter)->get_value() == nullptr);
+            && (*m_iter)->get_value() == nullptr)
+        || (t->is_enum()
+            && (*m_iter)->get_req() != t_field::T_REQUIRED);
     string typehint = nullable ? "?" : "";
 
     typehint += type_to_typehint(t);
@@ -2798,7 +2799,13 @@ void t_hack_generator::generate_deserialize_field(ofstream &out,
           indent() << "$" << val << " = null;" << endl <<
           indent() << "$xfer += $input->readI32($" << val << ");" << endl <<
           indent() << "$" << name << " = " << php_namespace(tenum->get_program())
-                   << tenum->get_name() << "::coerce($" << val << ");" << endl;
+                   << tenum->get_name();
+        if (tfield->get_req() == t_field::T_REQUIRED) {
+          out << "::assert(";
+        } else {
+          out << "::coerce(";
+        }
+        out << "$" << val << ");" << endl;
       }
       out << endl;
     } else {
