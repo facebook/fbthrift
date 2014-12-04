@@ -19,10 +19,12 @@
 #include <thrift/lib/cpp/test/ScopedEventBaseThread.h>
 
 #include <boost/test/unit_test.hpp>
+#include <folly/Baton.h>
 #include <list>
 #include <iostream>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <thread>
 
 using apache::thrift::async::TEventBase;
 using apache::thrift::async::TNotificationQueue;
@@ -406,6 +408,49 @@ void QueueTest::destroyCallback() {
   int result = 1;
   BOOST_CHECK(queue.tryConsume(result));
   BOOST_CHECK_EQUAL(result, 2);
+}
+
+BOOST_AUTO_TEST_CASE(ConsumeUntilDrained) {
+  // Basic tests: make sure we
+  // - drain all the messages
+  // - ignore any maxReadAtOnce
+  // - can't add messages during draining
+  TEventBase eventBase;
+  IntQueue queue;
+  QueueConsumer consumer;
+  consumer.fn = [&](int i) {
+    BOOST_CHECK_THROW(queue.tryPutMessage(i), std::runtime_error);
+    BOOST_CHECK_EQUAL(queue.tryPutMessageNoThrow(i), false);
+    BOOST_CHECK_THROW(queue.putMessage(i), std::runtime_error);
+    std::vector<int> ints{1, 2, 3};
+    BOOST_CHECK_THROW(
+        queue.putMessages(ints.begin(), ints.end()),
+        std::runtime_error);
+  };
+  consumer.setMaxReadAtOnce(10); // We should ignore this
+  consumer.startConsuming(&eventBase, &queue);
+  for (int i = 0; i < 20; i++) {
+    queue.putMessage(i);
+  }
+  BOOST_CHECK(consumer.consumeUntilDrained());
+  BOOST_CHECK_EQUAL(consumer.messages.size(), 20);
+
+  // Make sure there can only be one drainer at once
+  folly::Baton<> callbackBaton, threadStartBaton;
+  consumer.fn = [&](int i) {
+    callbackBaton.wait();
+  };
+  QueueConsumer competingConsumer;
+  competingConsumer.startConsuming(&eventBase, &queue);
+  queue.putMessage(1);
+  auto thread = std::thread([&]{
+    threadStartBaton.post();
+    BOOST_CHECK(consumer.consumeUntilDrained());
+  });
+  threadStartBaton.wait();
+  BOOST_CHECK_EQUAL(competingConsumer.consumeUntilDrained(), false);
+  callbackBaton.post();
+  thread.join();
 }
 
 BOOST_AUTO_TEST_CASE(SendOne) {
