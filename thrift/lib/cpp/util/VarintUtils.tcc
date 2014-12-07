@@ -36,7 +36,7 @@ uint8_t readVarintSlow(CursorT& c, T& value) {
   uint8_t shift = 0;
   uint8_t rsize = 0;
   while (true) {
-    uint8_t byte = c.pullByte();
+    uint8_t byte = c.template read<uint8_t>();
     rsize++;
     retVal |= (uint64_t)(byte & 0x7f) << shift;
     shift += 7;
