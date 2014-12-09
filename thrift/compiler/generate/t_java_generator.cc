@@ -2294,7 +2294,7 @@ void t_java_generator::generate_service_client(t_service* tservice) {
   }
 
   indent(f_service_) <<
-    "public static class Client" << extends_client << " implements Iface {" << endl;
+    "public static class Client" << extends_client << " implements Iface, TClientIf {" << endl;
   indent_up();
 
   indent(f_service_) <<
@@ -2327,16 +2327,18 @@ void t_java_generator::generate_service_client(t_service* tservice) {
       indent() << "protected int seqid_;" << endl <<
       endl;
 
-    indent(f_service_) <<
-      "public TProtocol getInputProtocol()" << endl;
+    f_service_ <<
+      indent() << "@Override" << endl <<
+      indent() << "public TProtocol getInputProtocol()" << endl;
     scope_up(f_service_);
     indent(f_service_) <<
       "return this.iprot_;" << endl;
     scope_down(f_service_);
     f_service_ << endl;
 
-    indent(f_service_) <<
-      "public TProtocol getOutputProtocol()" << endl;
+    f_service_ <<
+      indent() << "@Override" << endl <<
+      indent() << "public TProtocol getOutputProtocol()" << endl;
     scope_up(f_service_);
     indent(f_service_) <<
       "return this.oprot_;" << endl;
