@@ -453,7 +453,7 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
       header_->isSupportedClient()) {
     // If a client  permits a non-secure connection, we allow falling back to
     // one even if a SASL handshake is in progress.
-    LOG(INFO) << "Client initiated a fallback during a SASL handshake";
+    VLOG(5) << "Client initiated a fallback during a SASL handshake";
     // Cancel any SASL-related state, and log
     setProtectionState(ProtectionState::NONE);
     saslServerCallback_.cancelTimeout();
