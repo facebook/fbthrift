@@ -2356,11 +2356,11 @@ void t_java_generator::generate_service_client(t_service* tservice) {
       "public " << function_signature(*f_iter) << endl;
     scope_up(f_service_);
 
-    indent(f_service_) << "ContextStack ctx"
-                << " = getContextStack("
-                << service_func_name << ", null);" << endl
-                << "this.setContextStack(ctx);" << endl
-                << indent() << "send_" << funname << "(";
+    f_service_ <<
+      indent() << "ContextStack ctx = getContextStack(" <<
+                      service_func_name << ", null);" << endl <<
+      indent() << "this.setContextStack(ctx);" << endl <<
+      indent() << "send_" << funname << "(";
 
     // Get the struct of function call params
     t_struct* arg_struct = (*f_iter)->get_arglist();
