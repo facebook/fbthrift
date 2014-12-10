@@ -30,6 +30,17 @@ using namespace std;
 using namespace apache::thrift;
 using namespace folly;
 
+void KerberosSASLHandshakeUtils::GSSBufferFreeFunction(
+  void *buf, void *arg) {
+
+  OM_uint32 min_stat;
+  gss_buffer_desc* ptr = static_cast<gss_buffer_desc*>(arg);
+  if (ptr->length) {
+    gss_release_buffer(&min_stat, ptr);
+  }
+  delete ptr;
+}
+
 /**
  * Some utility functions.
  */
@@ -60,10 +71,13 @@ unique_ptr<folly::IOBuf> KerberosSASLHandshakeUtils::wrapMessage(
       "Error wrapping message", maj_stat, min_stat);
   }
 
-  unique_ptr<folly::IOBuf> wrapped = folly::IOBuf::copyBuffer(
-    out_buf->value,
-    out_buf->length
-  );
+  // Give ownership to an IOBuf
+  auto out_raw = out_buf.release();
+  unique_ptr<folly::IOBuf> wrapped = folly::IOBuf::takeOwnership(
+    out_raw->value,
+    out_raw->length,
+    &GSSBufferFreeFunction,
+    out_raw);
 
   return wrapped;
 }
@@ -94,10 +108,13 @@ unique_ptr<folly::IOBuf> KerberosSASLHandshakeUtils::unwrapMessage(
       "Error unwrapping message", maj_stat, min_stat);
 
   }
-  unique_ptr<folly::IOBuf> unwrapped = folly::IOBuf::copyBuffer(
-    out_buf->value,
-    out_buf->length
-  );
+  // Give ownership to an IOBuf
+  auto out_raw = out_buf.release();
+  unique_ptr<folly::IOBuf> unwrapped = folly::IOBuf::takeOwnership(
+    out_raw->value,
+    out_raw->length,
+    &GSSBufferFreeFunction,
+    out_raw);
 
   return unwrapped;
 }

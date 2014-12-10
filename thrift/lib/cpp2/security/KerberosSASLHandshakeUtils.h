@@ -106,6 +106,10 @@ class KerberosSASLHandshakeUtils {
       OM_uint32& context_security_flags,
       std::string& service_principal,
       std::string& client_principal);
+    /**
+     * Helper function to be used with folly::IOBuf::takeOwnership.
+     */
+    static void GSSBufferFreeFunction(void *buf, void *arg);
 
 };
 
