@@ -831,7 +831,7 @@ uint32_t SimpleJSONProtocolReader::readJSONString(std::string& val) {
       break;
     }
     if (ch == TJSONProtocol::kJSONBackslash) {
-      auto ch = in_.read<uint8_t>();
+      ch = in_.read<uint8_t>();
       ret++;
       if (ch == TJSONProtocol::kJSONEscapeChar) {
         if (allowDecodeUTF8_) {
