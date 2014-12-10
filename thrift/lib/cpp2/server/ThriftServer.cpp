@@ -45,9 +45,19 @@ DEFINE_string(sasl_policy, "permitted",
              "SASL handshake required / permitted / disabled");
 
 DEFINE_string(
+  service_identity,
+  "",
+  "The name of the service. Associates the service with ACLs and keys");
+DEFINE_bool(
+  pin_service_identity,
+  false,
+  "Force the service to use keys associated with the service_identity");
+
+// TODO (andreib): Remove this. Using service_identity is preferred.
+DEFINE_string(
   kerberos_service_name,
   "",
-  "The service part of the principal name for the service");
+  "DEPRECATED: The service part of the principal name for the service");
 
 namespace apache { namespace thrift {
 
@@ -248,7 +258,8 @@ void ThriftServer::setup() {
 
       if (getSaslServerFactory()) {
         // If the factory is already set, don't override it with the default
-      } else if (FLAGS_kerberos_service_name.empty()) {
+      } else if (FLAGS_kerberos_service_name.empty() &&
+                 !FLAGS_pin_service_identity) {
         // If the service name is not specified, not need to pin the principal.
         // Allow the server to accept anything in the keytab.
         setSaslServerFactory([=] (TEventBase* evb) {
@@ -260,11 +271,15 @@ void ThriftServer::setup() {
         if (gethostname(hostname, 255)) {
           LOG(FATAL) << "Failed getting hostname";
         }
+        string service_identity = FLAGS_kerberos_service_name;
+        if (service_identity.empty()) {
+          service_identity = FLAGS_service_identity;
+        }
         setSaslServerFactory([=] (TEventBase* evb) {
           auto saslServer = std::unique_ptr<SaslServer>(
             new GssSaslServer(evb, saslThreadManager));
           saslServer->setServiceIdentity(
-            FLAGS_kerberos_service_name + "/" + hostname);
+            service_identity + "/" + hostname);
           return std::move(saslServer);
         });
       }
