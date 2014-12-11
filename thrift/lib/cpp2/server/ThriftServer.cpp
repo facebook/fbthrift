@@ -115,6 +115,7 @@ ThriftServer::ThriftServer() :
   queueSends_(true),
   enableCodel_(false),
   stopWorkersOnStopListening_(true),
+  reusePortEnabled_(false),
   isDuplex_(false) {
 
   // SASL setup
@@ -220,6 +221,9 @@ void ThriftServer::setup() {
       if (socket_ == nullptr) {
         socket_.reset(new TAsyncServerSocket());
         socket_->setShutdownSocketSet(shutdownSocketSet_.get());
+        if (reusePortEnabled_) {
+          socket_->setReusePortEnabled(reusePortEnabled_);
+        }
         if (port_ != -1) {
           socket_->bind(port_);
         } else {

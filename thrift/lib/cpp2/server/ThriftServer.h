@@ -273,6 +273,8 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   bool stopWorkersOnStopListening_;
 
+  bool reusePortEnabled_;
+
   // HeaderServerChannel and Cpp2Worker to use for a duplex server
   // (used by client). Both are nullptr for a regular server.
   std::shared_ptr<HeaderServerChannel> serverChannel_;
@@ -491,6 +493,22 @@ class ThriftServer : public apache::thrift::server::TServer {
   const std::shared_ptr<apache::thrift::server::TServerObserver>&
   getObserver() const {
     return observer_;
+  }
+
+  /**
+   * Set whether or not SO_REUSEPORT should be enabled on the server socket,
+   * allowing multiple binds to the same port.
+   * Will only be effective if called before setup()
+   */
+  void setReusePortEnabled(bool enabled) {
+    reusePortEnabled_ = enabled;
+  }
+
+  /**
+   * Get whether or not SO_REUSEPORT is enabled on the server socket.
+   */
+  bool getReusePortEnabled_() const {
+    return reusePortEnabled_;
   }
 
   /**
