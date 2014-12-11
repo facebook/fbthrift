@@ -198,12 +198,12 @@ AsyncLoadHandler2::future_echo(
   auto wrapped_data =
     folly::MoveWrapper<std::unique_ptr<std::string>>(std::move(data));
 
-  this->getEventBase()->runInEventBaseThread(
-      [this, promise, wrapped_data]() mutable {
-        std::string output;
-        sync_echo(output, std::move(*wrapped_data));
-        promise->setValue(folly::make_unique<std::string>(std::move(output)));
-      });
+  via(folly::RequestEventBase::get()).then(
+    [this, promise, wrapped_data]() mutable {
+      std::string output;
+      sync_echo(output, std::move(*wrapped_data));
+      promise->setValue(folly::make_unique<std::string>(std::move(output)));
+    });
 
   return future;
 }

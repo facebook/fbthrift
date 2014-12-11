@@ -849,6 +849,74 @@ class CppGenerator(t_generator.Generator):
               .format(promise=promise_name))
             out("return {future};".format(future=future_name))
 
+    def _generate_server_async_function_future(self, function):
+        out('auto callbackp = callback.release();')
+        out('setEventBase(callbackp->getEventBase());')
+        out('setThreadManager(callbackp->getThreadManager());')
+        future_name = self.tmp('future')
+        rettype = "folly::wangle::Try<{0}>".format(
+            self._type_name(function.returntype))
+        if self._is_complex_type(function.returntype) and \
+          not self.flag_stack_arguments:
+            rettype = "folly::wangle::Try<std::unique_ptr" \
+              "<{0}>>".format(self._type_name(function.returntype))
+        captureArgs = []
+        callArgs = []
+        for member in function.arglist.members:
+            if self._is_complex_type(member.type):
+                moveArg = self.tmp("move_{0}".format(member.name))
+                out("auto {0} = folly::makeMoveWrapper(std::move({1}));"
+                        .format(moveArg, member.name))
+                captureArgs.append(moveArg)
+                callArgs.append("std::move(*{0})".format(moveArg))
+            else:
+                captureArgs.append(member.name)
+                callArgs.append(member.name)
+
+        captures = "this, callbackp"
+        if captureArgs:
+            captures = "{0}, {1}".format(captures, ", ".join(captureArgs))
+        with out("callbackp->runFuncInQueue([{0}]() mutable".format(captures)):
+            out('setConnectionContext(callbackp->getConnectionContext());')
+            with out("try"):
+                if not function.oneway and \
+                  not function.returntype.is_void:
+                    out("auto {2} = future_{0}({1});".format(
+                        function.name, ", ".join(callArgs), future_name))
+                    with out("{0}.then([=]({1}&& _return)".format(
+                            future_name, rettype)):
+                        with out("try"):
+                            out("callbackp->resultInThread("
+                              "std::move(_return.value()));")
+                            with out().catch("..."):
+                                out("callbackp->exceptionInThread("
+                                    "std::current_exception());")
+                    out(");")
+                else:
+                    out("auto {1} = future_{0}(".format(
+                        function.name, future_name)
+                        + ", ".join(callArgs) + ");")
+                    if not function.oneway:
+                        with out(("{0}.then([=](folly::wangle" +
+                              "::Try<void>&& t)").format(future_name)):
+                            with out("try"):
+                                out("t.throwIfFailed();")
+                                out("callbackp->doneInThread();")
+                                with out().catch("..."):
+                                    out("callbackp->exceptionInThread("
+                                        "std::current_exception());")
+                        out(");")
+                    else:
+                        out("delete callbackp;")
+                with out().catch("const std::exception& ex"):
+                    if not function.oneway:
+                        out("callbackp->exceptionInThread(std::"
+                            "current_exception());")
+                    else:
+                        out("delete callbackp;")
+        out(");")
+
+
     def _generate_server_async_function(self, service, function):
         with out().defn(self._get_process_function_signature_async(service,
                                                                    function),
@@ -864,54 +932,7 @@ class CppGenerator(t_generator.Generator):
 
             if self._is_processed_in_eb(function):
                 if (self.flag_future):
-                    out('auto callbackp = callback.release();')
-                    out('setConnectionContext(callbackp->getConnectionContext()'
-                      ');')
-                    out('setThreadManager(callbackp->getThreadManager());')
-                    out('setEventBase(callbackp->getEventBase());')
-                    future_name = self.tmp('future')
-                    rettype = "folly::wangle::Try<{0}>".format(
-                        self._type_name(function.returntype))
-                    if self._is_complex_type(function.returntype) and \
-                      not self.flag_stack_arguments:
-                        rettype = "folly::wangle::Try<std::unique_ptr" \
-                          "<{0}>>".format(self._type_name(function.returntype))
-                    with out("try"):
-                        if not function.oneway and \
-                          not function.returntype.is_void:
-                            out("auto {2} = future_{0}({1});".format(
-                                function.name, ", ".join(args), future_name))
-                            with out("{0}.then([=]({1}&& _return)".format(
-                                   future_name, rettype)):
-                                with out("try"):
-                                    out("callbackp->resultInThread("
-                                      "std::move(_return.value()));")
-                                    with out().catch("..."):
-                                        out("callbackp->exceptionInThread("
-                                            "std::current_exception());")
-                            out(");")
-                        else:
-                            out("auto {1} = future_{0}(".format(
-                              function.name, future_name)
-                              + ", ".join(args) + ");")
-                            if not function.oneway:
-                                with out(("{0}.then([=](folly::wangle" +
-                                      "::Try<void>&& t)").format(future_name)):
-                                    with out("try"):
-                                        out("t.throwIfFailed();")
-                                        out("callbackp->doneInThread();")
-                                        with out().catch("..."):
-                                            out("callbackp->exceptionInThread("
-                                                "std::current_exception());")
-                                out(");")
-                            else:
-                                out("delete callbackp;")
-                        with out().catch("const std::exception& ex"):
-                            if not function.oneway:
-                                out("callbackp->exceptionInThread(std::"
-                                    "current_exception());")
-                            else:
-                                out("delete callbackp;")
+                    self._generate_server_async_function_future(function)
                 else:
                     out('apache::thrift::TApplicationException ex("Function {0} '
                       'is unimplemented");'.format(function.name))
@@ -1770,21 +1791,36 @@ class CppGenerator(t_generator.Generator):
                     out("throw;")
             out("")
 
-            if not function.oneway:
-                optionName = "rpcOptions"
-                out("this->channel_->sendRequest(std::move(" + optionName + "), "
-                                              "std::move(callback), "
-                                              "std::move(ctx), "
-                                              "queue.move());")
+            def sendRequest(ctx, args):
+                argsStr = ", ".join(args)
+                if not function.oneway:
+                    out("this->channel_->sendRequest(" + argsStr + ");")
+                else:
+                    # Calling asyncComplete before sending because
+                    # sendOnewayRequest moves from ctx and clears it.
+                    out(ctx + "->asyncComplete();")
+                    out("this->channel_->sendOnewayRequest(" + argsStr + ");")
 
-            else:
-                # Calling asyncComplete before sending because
-                # sendOnewayRequest moves from ctx and clears it.
-                out("ctx->asyncComplete();")
-                out("this->channel_->sendOnewayRequest(std::move(rpcOptions), "
-                                                    "std::move(callback), "
-                                                    "std::move(ctx), "
-                                                    "queue.move());")
+            # Switch to the event base thread if we're not already in it
+            eb = "this->channel_->getEventBase()"
+            with out("if({}->isInEventBaseThread())".format(eb)):
+                sendRequest("ctx", [
+                    "rpcOptions",
+                    "std::move(callback)",
+                    "std::move(ctx)",
+                    "queue.move()"])
+            with out("else"):
+                out("auto mvCb = folly::makeMoveWrapper(std::move(callback));")
+                out("auto mvCtx = folly::makeMoveWrapper(std::move(ctx));")
+                out("auto mvBuf = folly::makeMoveWrapper(queue.move());")
+                with out("{}->runInEventBaseThread(".format(eb) +
+                        "[this, rpcOptions, mvCb, mvCtx, mvBuf] () mutable"):
+                    sendRequest("(*mvCtx)", [
+                        "rpcOptions",
+                        "std::move(*mvCb)",
+                        "std::move(*mvCtx)",
+                        "std::move(*mvBuf)"])
+                out(");")
 
     def _get_async_function_signature(self,
                                       function,

@@ -406,6 +406,11 @@ class HandlerCallbackBase {
     }
   }
 
+  template <class F>
+  void runFuncInQueue(F&& func) {
+    runInQueue(concurrency::FunctionRunner::create(std::move(func)));
+  }
+
  protected:
   // HACK(tudorb): Call this to set up forwarding to the event base and
   // thread manager of the other callback.  Use when you want to create
@@ -731,12 +736,10 @@ class ServerInterface : public AsyncProcessorFactory {
     return tm_;
   }
 
-  virtual void setThreadEventBase(apache::thrift::async::TEventBase* eb) {}
-
   void setEventBase(apache::thrift::async::TEventBase* eb) {
+    folly::RequestEventBase::set(eb);
     if (!eb_) {
       eb_ = eb;
-      setThreadEventBase(eb_);
     } else {
       DCHECK(eb_ == eb);
     }
