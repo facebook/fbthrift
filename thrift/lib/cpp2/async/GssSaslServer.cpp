@@ -238,50 +238,14 @@ void GssSaslServer::consumeFromClient(
   }
 }
 
-std::unique_ptr<IOBuf> GssSaslServer::wrap(std::unique_ptr<IOBuf>&& buf) {
-  buf->coalesce();
-
-  std::unique_ptr<IOBuf> wrapped = serverHandshake_->wrapMessage(
-    std::move(buf));
-  uint32_t wraplen = wrapped->length();
-
-  std::unique_ptr<IOBuf> framing = IOBuf::create(sizeof(wraplen));
-  framing->append(sizeof(wraplen));
-  framing->appendChain(std::move(wrapped));
-
-  folly::io::RWPrivateCursor c(framing.get());
-  c.writeBE<uint32_t>(wraplen);
-  return framing;
+std::unique_ptr<IOBuf> GssSaslServer::encrypt(
+    std::unique_ptr<IOBuf>&& buf) {
+  return serverHandshake_->wrapMessage(std::move(buf));
 }
 
-std::unique_ptr<IOBuf> GssSaslServer::unwrap(
-  IOBufQueue* q,
-  size_t* remaining) {
-
-  folly::io::Cursor c(q->front());
-  size_t chainSize = q->front()->computeChainDataLength();
-  uint32_t wraplen = 0;
-
-  if (chainSize < sizeof(wraplen)) {
-    *remaining = sizeof(wraplen) - chainSize;
-    return nullptr;
-  }
-
-  wraplen = c.readBE<uint32_t>();
-
-  if (chainSize < sizeof(wraplen) + wraplen) {
-    *remaining = sizeof(wraplen) + wraplen - chainSize;
-    return nullptr;
-  }
-
-  // unwrap the data
-  q->trimStart(sizeof(wraplen));
-  std::unique_ptr<IOBuf> input = q->split(wraplen);
-  input->coalesce();
-  std::unique_ptr<IOBuf> output = serverHandshake_->unwrapMessage(
-    std::move(input));
-  *remaining = 0;
-  return output;
+std::unique_ptr<IOBuf> GssSaslServer::decrypt(
+    std::unique_ptr<IOBuf>&& buf) {
+  return serverHandshake_->unwrapMessage(std::move(buf));
 }
 
 std::string GssSaslServer::getClientIdentity() const {

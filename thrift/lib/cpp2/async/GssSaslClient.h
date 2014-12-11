@@ -39,9 +39,10 @@ public:
   virtual void start(Callback *cb);
   virtual void consumeFromServer(
     Callback *cb, std::unique_ptr<folly::IOBuf>&& message);
-  virtual std::unique_ptr<folly::IOBuf> wrap(std::unique_ptr<folly::IOBuf>&&);
-  virtual std::unique_ptr<folly::IOBuf> unwrap(
-    folly::IOBufQueue* q, size_t* remaining);
+  virtual std::unique_ptr<folly::IOBuf> encrypt(
+    std::unique_ptr<folly::IOBuf>&&);
+  virtual std::unique_ptr<folly::IOBuf> decrypt(
+    std::unique_ptr<folly::IOBuf>&&);
   void setClientIdentity(const std::string& identity) {
     clientHandshake_->setRequiredClientPrincipal(identity);
   }

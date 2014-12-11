@@ -39,7 +39,14 @@ public:
   virtual void setServiceIdentity(const std::string& identity) {}
   virtual std::string getClientIdentity() const;
   virtual std::string getServerIdentity() const;
-
+  virtual std::unique_ptr<folly::IOBuf> encrypt(
+    std::unique_ptr<folly::IOBuf>&& buf) {
+    return std::move(buf);
+  }
+  virtual std::unique_ptr<folly::IOBuf> decrypt(
+    std::unique_ptr<folly::IOBuf>&& buf) {
+    return std::move(buf);
+  }
   // This is for testing.
   void setForceFallback() { forceFallback_ = true; }
 

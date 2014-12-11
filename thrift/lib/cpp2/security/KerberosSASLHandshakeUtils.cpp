@@ -32,13 +32,8 @@ using namespace folly;
 
 void KerberosSASLHandshakeUtils::GSSBufferFreeFunction(
   void *buf, void *arg) {
-
-  OM_uint32 min_stat;
   gss_buffer_desc* ptr = static_cast<gss_buffer_desc*>(arg);
-  if (ptr->length) {
-    gss_release_buffer(&min_stat, ptr);
-  }
-  delete ptr;
+  GSSBufferDeleter()(ptr);
 }
 
 /**
