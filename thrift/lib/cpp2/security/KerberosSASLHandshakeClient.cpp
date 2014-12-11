@@ -328,6 +328,7 @@ std::unique_ptr<std::string> KerberosSASLHandshakeClient::getTokenToSend() {
         IOBuf::copyBuffer(
           securityLayerBitmaskBuffer_->data(),
           securityLayerBitmaskBuffer_->length()));
+      wrapped_sec_layer_message->coalesce();
       auto ptr = unique_ptr<string>(new string(
         (char *)wrapped_sec_layer_message->data(),
         wrapped_sec_layer_message->length()

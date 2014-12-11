@@ -33,12 +33,20 @@ using namespace std;
 namespace apache { namespace thrift {
 
 std::unique_ptr<IOBuf> SaslEndpoint::wrap(std::unique_ptr<IOBuf>&& buf) {
-  buf->coalesce();
-
+  // Note that this forced copy is necessary because we need to make sure
+  // the original buffer is not modified. Code higher-up in the stack
+  // assumes the buffer contents don't change. (The 'buf' wrapper doesn't
+  // actually own the underlying data).
+  if (buf->isChained()) {
+    buf->coalesce();
+  } else {
+    buf = IOBuf::copyBuffer(buf->data(), buf->length());
+  }
   std::unique_ptr<IOBuf> wrapped = encrypt(std::move(buf));
-  uint32_t wraplen = wrapped->length();
 
+  uint32_t wraplen = wrapped->computeChainDataLength();
   std::unique_ptr<IOBuf> framing = IOBuf::create(sizeof(wraplen));
+
   framing->append(sizeof(wraplen));
   framing->appendChain(std::move(wrapped));
 

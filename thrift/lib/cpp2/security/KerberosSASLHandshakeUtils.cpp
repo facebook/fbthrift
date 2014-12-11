@@ -26,6 +26,8 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
+#include <vector>
+
 using namespace std;
 using namespace apache::thrift;
 using namespace folly;
@@ -43,38 +45,87 @@ unique_ptr<folly::IOBuf> KerberosSASLHandshakeUtils::wrapMessage(
   gss_ctx_id_t context,
   unique_ptr<folly::IOBuf>&& buf) {
 
+#ifdef GSSAPI_EXT_H_
+  uint64_t numElements = buf->countChainElements();
+
+  // Allocate iov vector with header | data blocks ... | padding | trailer
+  std::vector<gss_iov_buffer_desc> iov(numElements + 3);
+  uint64_t headerIdx = 0;
+  uint64_t paddingIdx = numElements + 1;
+  uint64_t trailerIdx = numElements + 2;
+  iov[headerIdx].type = GSS_IOV_BUFFER_TYPE_HEADER;
+
+  uint64_t count = 1;
+  IOBuf *current = buf.get();
+  do {
+    iov[count].type = GSS_IOV_BUFFER_TYPE_DATA;
+    iov[count].buffer.value = (void *)current->writableData();
+    iov[count].buffer.length = current->length();
+    count++;
+    current = current->next();
+  } while (current != buf.get());
+
+  iov[paddingIdx].type = GSS_IOV_BUFFER_TYPE_PADDING;
+  iov[trailerIdx].type = GSS_IOV_BUFFER_TYPE_TRAILER;
+
+  // Compute required header / padding / trailer lengths
   OM_uint32 maj_stat, min_stat;
-  gss_buffer_desc in_buf;
-  int state;
-  in_buf.value = (void *)buf->data();
-  in_buf.length = buf->length();
+  maj_stat = gss_wrap_iov_length(
+    &min_stat,
+    context,
+    1,
+    GSS_C_QOP_DEFAULT,
+    nullptr,
+    &iov[0],
+    iov.size());
+  if (maj_stat != GSS_S_COMPLETE) {
+    KerberosSASLHandshakeUtils::throwGSSException(
+      "Error constructing iov chain", maj_stat, min_stat);
+  }
 
-  unique_ptr<gss_buffer_desc, GSSBufferDeleter> out_buf(new gss_buffer_desc);
-  *out_buf = GSS_C_EMPTY_BUFFER;
+  // Allocate the additional buffers
+  std::unique_ptr<IOBuf> header = IOBuf::create(
+    iov[headerIdx].buffer.length);
+  header->append(iov[headerIdx].buffer.length);
+  std::unique_ptr<IOBuf> padding = IOBuf::create(
+    iov[paddingIdx].buffer.length);
+  padding->append(iov[paddingIdx].buffer.length);
+  std::unique_ptr<IOBuf> trailer = IOBuf::create(
+    iov[trailerIdx].buffer.length);
+  trailer->append(iov[trailerIdx].buffer.length);
+  iov[headerIdx].buffer.value = (void *)header->writableData();
+  iov[paddingIdx].buffer.value = (void *)padding->writableData();
+  iov[trailerIdx].buffer.value = (void *)trailer->writableData();
 
-  maj_stat = gss_wrap(
+  // Link all the buffers in a chain
+  header->prependChain(std::move(buf));
+  header->prependChain(std::move(padding));
+  header->prependChain(std::move(trailer));
+
+  // Encrypt in place
+  maj_stat = gss_wrap_iov(
     &min_stat,
     context,
     1, // conf and integrity requested
     GSS_C_QOP_DEFAULT,
-    &in_buf,
-    &state,
-    out_buf.get()
+    nullptr,
+    &iov[0],
+    iov.size()
   );
   if (maj_stat != GSS_S_COMPLETE) {
     KerberosSASLHandshakeUtils::throwGSSException(
       "Error wrapping message", maj_stat, min_stat);
   }
 
-  // Give ownership to an IOBuf
-  auto out_raw = out_buf.release();
-  unique_ptr<folly::IOBuf> wrapped = folly::IOBuf::takeOwnership(
-    out_raw->value,
-    out_raw->length,
-    &GSSBufferFreeFunction,
-    out_raw);
-
-  return wrapped;
+  return header;
+#else
+  // Don't bother with getting things working on an older platform.
+  // Things should never reach this point anyway, because security will
+  // be disabled at a higher level.
+  LOG(FATAL) << "Linking against older version of krb5 which does not"
+             << " support security.";
+  return std::move(buf);
+#endif
 }
 
 unique_ptr<folly::IOBuf> KerberosSASLHandshakeUtils::unwrapMessage(
