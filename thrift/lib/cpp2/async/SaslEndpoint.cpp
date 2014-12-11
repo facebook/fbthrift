@@ -33,12 +33,11 @@ using namespace std;
 namespace apache { namespace thrift {
 
 std::unique_ptr<IOBuf> SaslEndpoint::wrap(std::unique_ptr<IOBuf>&& buf) {
-  buf->coalesce();
-
   std::unique_ptr<IOBuf> wrapped = encrypt(std::move(buf));
-  uint32_t wraplen = wrapped->length();
 
+  uint32_t wraplen = wrapped->computeChainDataLength();
   std::unique_ptr<IOBuf> framing = IOBuf::create(sizeof(wraplen));
+
   framing->append(sizeof(wraplen));
   framing->appendChain(std::move(wrapped));
 
