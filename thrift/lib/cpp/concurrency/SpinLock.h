@@ -16,11 +16,11 @@
 
 #pragma once
 
-#include <folly/io/PortableSpinLock.h>
+#include <folly/SpinLock.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 
-typedef folly::io::PortableSpinLock SpinLock;
-typedef folly::io::PortableSpinLockGuard SpinLockGuard;
+typedef folly::SpinLock SpinLock;
+typedef folly::SpinLockGuard SpinLockGuard;
 
 }}}
