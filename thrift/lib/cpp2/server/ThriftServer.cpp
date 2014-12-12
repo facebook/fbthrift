@@ -506,6 +506,10 @@ bool ThriftServer::getTaskExpireTimeForRequest(
   std::chrono::milliseconds& hardTimeout
 ) const {
   softTimeout = getTaskExpireTime();
+  if (softTimeout == std::chrono::milliseconds(0)) {
+    hardTimeout = softTimeout;
+    return false;
+  }
   if (getUseClientTimeout()) {
     // we add 10% to the client timeout so that the request is much more likely
     // to timeout on the client side than to read the timeout from the server
