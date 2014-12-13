@@ -70,7 +70,6 @@ std::unique_ptr<IOBuf> SaslEndpoint::unwrap(
   // unwrap the data
   q->trimStart(sizeof(wraplen));
   std::unique_ptr<IOBuf> input = q->split(wraplen);
-  input->coalesce();
   std::unique_ptr<IOBuf> output = decrypt(std::move(input));
   *remaining = 0;
   return output;

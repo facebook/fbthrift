@@ -81,37 +81,50 @@ unique_ptr<folly::IOBuf> KerberosSASLHandshakeUtils::unwrapMessage(
   gss_ctx_id_t context,
   unique_ptr<folly::IOBuf>&& buf) {
 
+#ifdef GSSAPI_EXT_H_
+  // Unfortunately we have to coalesce here. We can probably use the
+  // alternate iov api, but that requires knowing the details of the
+  // token's boxing.
+  buf->coalesce();
+
+  gss_iov_buffer_desc iov[2];
+  iov[0].type = GSS_IOV_BUFFER_TYPE_STREAM;
+  iov[0].buffer.value = (void *) buf->writableData();
+  iov[0].buffer.length = buf->length();
+  iov[1].type = GSS_IOV_BUFFER_TYPE_DATA;
+
   OM_uint32 maj_stat, min_stat;
-  gss_buffer_desc in_buf;
   int state;
-  in_buf.value = (void *)buf->data();
-  in_buf.length = buf->length();
-
-  unique_ptr<gss_buffer_desc, GSSBufferDeleter> out_buf(new gss_buffer_desc);
-  *out_buf = GSS_C_EMPTY_BUFFER;
-
-  maj_stat = gss_unwrap(
+  maj_stat = gss_unwrap_iov(
     &min_stat,
     context,
-    &in_buf,
-    out_buf.get(),
     &state,
-    (gss_qop_t *) nullptr // quality of protection output... we don't need it
+    (gss_qop_t *) nullptr, // quality of protection output...
+    iov,
+    2
   );
   if (maj_stat != GSS_S_COMPLETE) {
     KerberosSASLHandshakeUtils::throwGSSException(
       "Error unwrapping message", maj_stat, min_stat);
 
   }
-  // Give ownership to an IOBuf
-  auto out_raw = out_buf.release();
-  unique_ptr<folly::IOBuf> unwrapped = folly::IOBuf::takeOwnership(
-    out_raw->value,
-    out_raw->length,
-    &GSSBufferFreeFunction,
-    out_raw);
 
-  return unwrapped;
+  // The buffer was decrypted in-place. There is still some junk around
+  // the plaintext though. Let's trim it.
+  uint64_t headerSize =
+    (uint64_t) iov[1].buffer.value - (uint64_t) buf->data();
+  uint64_t trailerSize = buf->length() - headerSize - iov[1].buffer.length;
+  buf->trimStart(headerSize);
+  buf->trimEnd(trailerSize);
+#else
+  // Don't bother with getting things working on an older platform.
+  // Things should never reach this point anyway, because security will
+  // be disabled at a higher level.
+  LOG(FATAL) << "Linking against older version of krb5 which does not"
+             << " support security.";
+#endif
+
+  return std::move(buf);
 }
 
 string KerberosSASLHandshakeUtils::getStatusHelper(
