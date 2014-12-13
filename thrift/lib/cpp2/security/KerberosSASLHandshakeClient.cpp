@@ -325,7 +325,9 @@ std::unique_ptr<std::string> KerberosSASLHandshakeClient::getTokenToSend() {
     case SELECT_SECURITY_LAYER:
     {
       unique_ptr<IOBuf> wrapped_sec_layer_message = wrapMessage(
-        std::move(securityLayerBitmaskBuffer_));
+        IOBuf::copyBuffer(
+          securityLayerBitmaskBuffer_->data(),
+          securityLayerBitmaskBuffer_->length()));
       auto ptr = unique_ptr<string>(new string(
         (char *)wrapped_sec_layer_message->data(),
         wrapped_sec_layer_message->length()
@@ -361,8 +363,8 @@ void KerberosSASLHandshakeClient::handleResponse(const string& msg) {
     {
       logger_->logEnd("second_rtt");
       logger_->logStart("prepare_third_request");
-      unique_ptr<IOBuf> unwrapped_security_layer_msg = unwrapMessage(std::move(
-        IOBuf::wrapBuffer(msg.c_str(), msg.length())));
+      unique_ptr<IOBuf> unwrapped_security_layer_msg = unwrapMessage(
+        IOBuf::copyBuffer(msg));
       io::Cursor c = io::Cursor(unwrapped_security_layer_msg.get());
       uint32_t security_layers = c.readBE<uint32_t>();
       if ((security_layers & securityLayerBitmask_) >> 24 == 0 ||
