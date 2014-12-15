@@ -564,7 +564,7 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
 }
 
 std::thread ThriftServer::Cpp2WorkerFactory::newThread(
-    folly::wangle::Func&& func) {
+    folly::Func&& func) {
   CHECK(!server_->serverChannel_);
   auto id = nextWorkerId_++;
   auto worker = std::make_shared<Cpp2Worker>(server_, nullptr);

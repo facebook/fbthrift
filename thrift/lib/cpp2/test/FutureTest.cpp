@@ -33,7 +33,7 @@
 #include <memory>
 #include <atomic>
 
-#include <folly/wangle/Executor.h>
+#include <folly/Executor.h>
 #include <folly/wangle/ManualExecutor.h>
 #include "common/concurrency/Executor.h"
 

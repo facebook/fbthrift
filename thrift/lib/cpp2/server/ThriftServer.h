@@ -171,7 +171,7 @@ class ThriftServer : public apache::thrift::server::TServer {
           std::make_shared<folly::wangle::NamedThreadFactory>(namePrefix_)),
         server_(server) {}
 
-    virtual std::thread newThread(folly::wangle::Func&& func) override;
+    virtual std::thread newThread(folly::Func&& func) override;
 
     void setInternalFactory(
         std::shared_ptr<folly::wangle::NamedThreadFactory> internalFactory);

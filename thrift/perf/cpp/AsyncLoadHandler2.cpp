@@ -198,7 +198,7 @@ AsyncLoadHandler2::future_echo(
   auto wrapped_data =
     folly::MoveWrapper<std::unique_ptr<std::string>>(std::move(data));
 
-  via(folly::RequestEventBase::get()).then(
+  folly::wangle::via(folly::RequestEventBase::get()).then(
     [this, promise, wrapped_data]() mutable {
       std::string output;
       sync_echo(output, std::move(*wrapped_data));
