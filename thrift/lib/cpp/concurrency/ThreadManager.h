@@ -22,10 +22,12 @@
 #include <sys/types.h>
 #include <array>
 #include <unistd.h>
+#include <folly/Executor.h>
 #include <folly/LifoSem.h>
 #include <folly/RWSpinLock.h>
 #include <folly/experimental/wangle/concurrent/Codel.h>
 
+#include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
@@ -62,7 +64,7 @@ class ThreadManagerObserver;
  * policy issues. The simplest policy, StaticPolicy, does nothing other than
  * create a fixed number of threads.
  */
-class ThreadManager {
+class ThreadManager : public folly::Executor {
 
  protected:
   ThreadManager() {}
@@ -177,6 +179,11 @@ class ThreadManager {
                    int64_t expiration=0LL,
                    bool cancellable = false,
                    bool numa = false) = 0;
+
+  /**
+   * Implements folly::Executor::add()
+   */
+  virtual void add(folly::Func f) override = 0;
 
   /**
    * Removes a pending task

@@ -88,6 +88,13 @@ class NumaThreadManager : public ThreadManager {
                    bool cancellable = false,
                    bool numa = false);
 
+  /**
+   * Implements folly::Executor::add()
+   */
+  void add(folly::Func f) override {
+    add(FunctionRunner::create(std::move(f)), 0LL, 0LL, false, true);
+  }
+
   explicit NumaThreadManager(size_t normalThreadsCount
                              = sysconf(_SC_NPROCESSORS_ONLN),
                              bool enableTaskStats = false,

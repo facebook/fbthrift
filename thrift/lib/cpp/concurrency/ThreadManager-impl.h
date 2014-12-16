@@ -195,6 +195,13 @@ class ThreadManager::ImplT : public ThreadManager  {
   void add(shared_ptr<Runnable> value, int64_t timeout, int64_t expiration,
            bool cancellable, bool numa);
 
+  /**
+   * Implements folly::Executor::add()
+   */
+  void add(folly::Func f) override {
+    add(FunctionRunner::create(std::move(f)), 0LL, 0LL, false, false);
+  }
+
   void remove(shared_ptr<Runnable> task);
 
   shared_ptr<Runnable> removeNextPending();

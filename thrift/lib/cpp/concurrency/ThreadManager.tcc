@@ -731,6 +731,13 @@ public:
     managers_[priority]->add(task, timeout, expiration, cancellable, numa);
   }
 
+  /**
+   * Implements folly::Executor::add()
+   */
+  void add(folly::Func f) override {
+    add(FunctionRunner::create(std::move(f)));
+  }
+
   template <typename T>
   size_t sum(T method) const {
     size_t count = 0;
