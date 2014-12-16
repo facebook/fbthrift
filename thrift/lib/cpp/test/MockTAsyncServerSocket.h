@@ -38,6 +38,9 @@ public:
   //             void());
   MOCK_METHOD1(bind,
                void(const folly::SocketAddress& address));
+  MOCK_METHOD2(bind,
+               void(const std::vector<folly::IPAddress>& ipAddresses,
+                    uint16_t port));
   MOCK_METHOD1(bind,
                void(uint16_t port));
   MOCK_METHOD1(listen,
