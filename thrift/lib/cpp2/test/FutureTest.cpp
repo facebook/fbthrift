@@ -34,7 +34,7 @@
 #include <atomic>
 
 #include <folly/Executor.h>
-#include <folly/wangle/ManualExecutor.h>
+#include <folly/wangle/futures/ManualExecutor.h>
 #include "common/concurrency/Executor.h"
 
 using namespace apache::thrift;
