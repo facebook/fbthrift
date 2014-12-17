@@ -92,6 +92,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   async/HeaderClientChannel.cpp \
 			   async/StubSaslClient.cpp \
 			   async/StubSaslServer.cpp \
+			   async/SaslEndpoint.cpp \
 			   async/GssSaslClient.cpp \
 			   async/GssSaslServer.cpp \
 			   async/Cpp2Channel.cpp \
