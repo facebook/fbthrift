@@ -1802,8 +1802,8 @@ class CppGenerator(t_generator.Generator):
                     out("this->channel_->sendOnewayRequest(" + argsStr + ");")
 
             # Switch to the event base thread if we're not already in it
-            eb = "this->channel_->getEventBase()"
-            with out("if({}->isInEventBaseThread())".format(eb)):
+            out("auto eb = this->channel_->getEventBase();")
+            with out("if(!eb || eb->isInEventBaseThread())"):
                 sendRequest("ctx", [
                     "rpcOptions",
                     "std::move(callback)",
@@ -1813,7 +1813,7 @@ class CppGenerator(t_generator.Generator):
                 out("auto mvCb = folly::makeMoveWrapper(std::move(callback));")
                 out("auto mvCtx = folly::makeMoveWrapper(std::move(ctx));")
                 out("auto mvBuf = folly::makeMoveWrapper(queue.move());")
-                with out("{}->runInEventBaseThread(".format(eb) +
+                with out("eb->runInEventBaseThread(" +
                         "[this, rpcOptions, mvCb, mvCtx, mvBuf] () mutable"):
                     sendRequest("(*mvCtx)", [
                         "rpcOptions",
