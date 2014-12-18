@@ -26,7 +26,7 @@
 
 #include <folly/Memory.h>
 #include <folly/io/ShutdownSocketSet.h>
-#include <folly/experimental/wangle/concurrent/IOThreadPoolExecutor.h>
+#include <folly/wangle/concurrent/IOThreadPoolExecutor.h>
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TEventBaseManager.h>
@@ -43,8 +43,8 @@
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 
-#include <folly/experimental/wangle/ssl/SSLContextConfig.h>
-#include <folly/experimental/wangle/acceptor/ServerSocketConfig.h>
+#include <folly/wangle/ssl/SSLContextConfig.h>
+#include <folly/wangle/acceptor/ServerSocketConfig.h>
 
 namespace apache { namespace thrift {
 

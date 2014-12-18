@@ -31,7 +31,7 @@
 #include <memory>
 #include <unordered_set>
 
-#include <folly/experimental/wangle/ManagedConnection.h>
+#include <folly/wangle/acceptor/ManagedConnection.h>
 
 namespace apache { namespace thrift {
 /**

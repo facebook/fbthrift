@@ -26,8 +26,8 @@
 #include <thrift/lib/cpp/server/TServer.h>
 #include <unordered_set>
 
-#include <folly/experimental/wangle/ConnectionManager.h>
-#include <folly/experimental/wangle/acceptor/Acceptor.h>
+#include <folly/wangle/acceptor/ConnectionManager.h>
+#include <folly/wangle/acceptor/Acceptor.h>
 
 namespace apache { namespace thrift {
 

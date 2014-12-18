@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <folly/experimental/wangle/concurrent/Codel.h>
+#include <folly/wangle/concurrent/Codel.h>
 #include <folly/Conv.h>
 #include "ThreadManager.h"
 #include "PosixThreadFactory.h"
