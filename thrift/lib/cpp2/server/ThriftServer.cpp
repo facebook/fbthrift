@@ -98,8 +98,7 @@ ThriftServer::ThriftServer() :
   threadStackSizeMB_(1),
   timeout_(DEFAULT_TIMEOUT),
   eventBaseManager_(nullptr),
-  workerFactory_(std::make_shared<Cpp2WorkerFactory>(this)),
-  ioThreadPool_(std::make_shared<IOThreadPoolExecutor>(0, workerFactory_)),
+  ioThreadPool_(std::make_shared<IOThreadPoolExecutor>(0)),
   taskExpireTime_(DEFAULT_TASK_EXPIRE_TIME),
   listenBacklog_(DEFAULT_LISTEN_BACKLOG),
   acceptRateAdjustSpeed_(0),
@@ -337,6 +336,8 @@ void ThriftServer::setup() {
 
       // Resize the IO pool
       ioThreadPool_->setNumThreads(nWorkers_);
+      workerPool_ = std::make_shared<Cpp2WorkerPool>(
+        this, ioThreadPool_.get());
 
       if (socket_) {
         socket_->startAccepting();
@@ -430,6 +431,7 @@ void ThriftServer::stopWorkers() {
   if (serverChannel_) {
     return;
   }
+  workerPool_->stop();
   ioThreadPool_->join();
 }
 
@@ -478,8 +480,11 @@ ThriftServer::CumulativeFailureInjection::test() const {
 
 int32_t ThriftServer::getPendingCount() const {
   int32_t count = 0;
-  workerFactory_->forEachWorker([&](const Cpp2Worker& worker){
-    count += worker.getPendingCount();
+  if (!workerPool_) {
+    return 0;
+  }
+  workerPool_->forEachWorker([&](std::shared_ptr<Cpp2Worker> worker){
+    count += worker->getPendingCount();
   });
   return count;
 }
@@ -544,8 +549,8 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
   }
   if (maxConnections_ > 0) {
     int32_t connections = 0;
-    workerFactory_->forEachWorker([&](const Cpp2Worker& worker){
-      connections += worker.getPendingCount();
+    workerPool_->forEachWorker([&](std::shared_ptr<Cpp2Worker> worker){
+      connections += worker->getPendingCount();
     });
     connload = (100*connections) / (float)maxConnections_;
   }
@@ -554,7 +559,7 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
 
   int load = std::max({reqload, connload, queueload});
   FB_LOG_EVERY_MS(INFO, 1000*10)
-    << workerFactory_->getNamePrefix()
+    << getIOThreadFactory()->getNamePrefix()
     << ": Load is: " << reqload << "% requests "
     << connload << "% connections "
     << queueload << "% queue time"
@@ -563,49 +568,35 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
   return load;
 }
 
-std::thread ThriftServer::Cpp2WorkerFactory::newThread(
-    folly::Func&& func) {
-  CHECK(!server_->serverChannel_);
-  auto id = nextWorkerId_++;
-  auto worker = std::make_shared<Cpp2Worker>(server_, nullptr);
-  {
-    folly::RWSpinLock::WriteHolder guard(workersLock_);
-    workers_.insert({id, worker});
-  }
-  return internalFactory_->newThread([=] {
-    server_->getEventBaseManager()->setEventBase(worker->getEventBase(), false);
-    func();
-    server_->getEventBaseManager()->clearEventBase();
-
-    worker->dropAllConnections();
-    {
-      folly::RWSpinLock::WriteHolder guard(workersLock_);
-      workers_.erase(id);
-    }
-  });
-}
-
-void ThriftServer::Cpp2WorkerFactory::setInternalFactory(
-    std::shared_ptr<NamedThreadFactory> internalFactory) {
-  CHECK(workers_.empty());
-  internalFactory_ = internalFactory;
-}
-
-void ThriftServer::Cpp2WorkerFactory::setNamePrefix(folly::StringPiece prefix) {
-  CHECK(workers_.empty());
-  internalFactory_->setNamePrefix(prefix);
-}
-
-folly::StringPiece ThriftServer::Cpp2WorkerFactory::getNamePrefix() {
-  return namePrefix_;
-}
-
 template <typename F>
-void ThriftServer::Cpp2WorkerFactory::forEachWorker(F&& f) {
-  folly::RWSpinLock::ReadHolder guard(workersLock_);
+void ThriftServer::Cpp2WorkerPool::forEachWorker(F&& f) {
   for (const auto& kv : workers_) {
-    f(*kv.second);
+    f(kv);
   }
+}
+
+ThriftServer::Cpp2WorkerPool::Cpp2WorkerPool(
+  ThriftServer* server,
+  folly::wangle::IOThreadPoolExecutor* exec)
+    : server_(server) {
+  CHECK(!server_->serverChannel_);
+
+  for (auto& base : exec->getEventBases()) {
+    auto worker = std::make_shared<Cpp2Worker>(server_, nullptr, base);
+    workers_.insert(worker);
+  }
+}
+
+void ThriftServer::Cpp2WorkerPool::stop() {
+  auto barrier = std::make_shared<boost::barrier>(workers_.size() + 1);
+  forEachWorker([barrier,this](std::shared_ptr<Cpp2Worker> worker){
+    worker->getEventBase()->runInEventBaseThread([=]() {
+      worker->dropAllConnections();
+      barrier->wait();
+    });
+  });
+  barrier->wait();
+  workers_.clear();
 }
 
 }} // apache::thrift

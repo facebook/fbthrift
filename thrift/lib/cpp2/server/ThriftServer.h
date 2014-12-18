@@ -164,33 +164,22 @@ class ThriftServer : public apache::thrift::server::TServer {
   std::mutex ebmMutex_;
 
   //! Creates and manages Cpp2Workers for the IO thread pool
-  class Cpp2WorkerFactory : public folly::wangle::ThreadFactory {
+  class Cpp2WorkerPool {
    public:
-    explicit Cpp2WorkerFactory(ThriftServer* server)
-      : internalFactory_(
-          std::make_shared<folly::wangle::NamedThreadFactory>(namePrefix_)),
-        server_(server) {}
-
-    virtual std::thread newThread(folly::Func&& func) override;
-
-    void setInternalFactory(
-        std::shared_ptr<folly::wangle::NamedThreadFactory> internalFactory);
-    void setNamePrefix(folly::StringPiece prefix);
-    folly::StringPiece getNamePrefix();
+    explicit Cpp2WorkerPool(ThriftServer* server,
+                            folly::wangle::IOThreadPoolExecutor* exec);
 
     template <typename F>
     void forEachWorker(F&& f);
 
+    void stop();
+
    private:
-    folly::StringPiece namePrefix_{"Cpp2Worker"};
-    std::shared_ptr<folly::wangle::NamedThreadFactory> internalFactory_;
     ThriftServer* server_;
-    folly::RWSpinLock workersLock_;
-    std::map<int32_t, std::shared_ptr<Cpp2Worker>> workers_;
-    std::atomic<int32_t> nextWorkerId_{0};
+    std::set<std::shared_ptr<Cpp2Worker>> workers_;
   };
 
-  std::shared_ptr<Cpp2WorkerFactory> workerFactory_;
+  std::shared_ptr<Cpp2WorkerPool> workerPool_;
 
   //! IO thread pool. Drives Cpp2Workers.
   std::shared_ptr<folly::wangle::IOThreadPoolExecutor> ioThreadPool_;
@@ -315,7 +304,7 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   friend class Cpp2Connection;
   friend class Cpp2Worker;
-  friend class Cpp2WorkerFactory;
+  friend class Cpp2WorkerPool;
 
   InjectedFailure maybeInjectFailure() const {
     return failureInjection_.test();
@@ -348,18 +337,6 @@ class ThriftServer : public apache::thrift::server::TServer {
     CHECK(ioThreadPool_->numThreads() == 0);
     CHECK(ioThreadPool->numThreads() == 0);
     ioThreadPool_ = ioThreadPool;
-    ioThreadPool_->setThreadFactory(workerFactory_);
-  }
-
-  /**
-   * Set the thread factory that will be used to create the server's IO threads.
-   *
-   * @param the new thread factory
-   */
-  void setIOThreadFactory(
-      std::shared_ptr<folly::wangle::NamedThreadFactory> threadFactory) {
-    CHECK(ioThreadPool_->numThreads() == 0);
-    workerFactory_->setInternalFactory(threadFactory);
   }
 
   /**
@@ -370,7 +347,16 @@ class ThriftServer : public apache::thrift::server::TServer {
    */
   void setCpp2WorkerThreadName(const std::string& cpp2WorkerThreadName) {
     CHECK(ioThreadPool_->numThreads() == 0);
-    workerFactory_->setNamePrefix(cpp2WorkerThreadName);
+    getIOThreadFactory()->setNamePrefix(cpp2WorkerThreadName);
+  }
+
+  std::shared_ptr<folly::wangle::NamedThreadFactory> getIOThreadFactory() {
+    auto factory = ioThreadPool_->getThreadFactory();
+    CHECK(factory);
+    auto namedFactory =
+      std::dynamic_pointer_cast<folly::wangle::NamedThreadFactory>(factory);
+    CHECK(namedFactory);
+    return namedFactory;
   }
 
   /**

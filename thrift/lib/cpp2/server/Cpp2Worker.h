@@ -55,13 +55,14 @@ class Cpp2Worker :
    * @param server the ThriftServer which created us.
    * @param serverChannel existing server channel to use, only for duplex server
    */
-  Cpp2Worker(ThriftServer* server,
+  explicit Cpp2Worker(ThriftServer* server,
              const std::shared_ptr<HeaderServerChannel>&
-                 serverChannel = nullptr) :
+             serverChannel = nullptr,
+             folly::EventBase* eventBase = nullptr) :
     TServer(std::shared_ptr<apache::thrift::server::TProcessor>()),
     Acceptor(server->getServerSocketConfig()),
     server_(server),
-    eventBase_(),
+    eventBase_(eventBase),
     activeRequests_(0),
     pendingCount_(0),
     pendingTime_(std::chrono::steady_clock::now()) {
@@ -71,13 +72,13 @@ class Cpp2Worker :
     if (serverChannel) {
       // duplex
       useExistingChannel(serverChannel);
-    } else {
-      eventBase_.reset(new async::TEventBase);
+    } else if (!eventBase_) {
+      eventBase_ = folly::EventBaseManager::get()->getEventBase();
     }
     if (observer) {
       eventBase_->setObserver(observer);
     }
-    Acceptor::init(server_->socket_.get(), eventBase_.get());
+    Acceptor::init(server_->socket_.get(), eventBase_);
   }
 
   /**
@@ -117,7 +118,7 @@ class Cpp2Worker :
   ThriftServer* server_;
 
   /// An instance's TEventBase for I/O.
-  std::shared_ptr<apache::thrift::async::TEventBase> eventBase_;
+  apache::thrift::async::TEventBase* eventBase_;
 
   void onNewConnection(
     folly::AsyncSocket::UniquePtr,

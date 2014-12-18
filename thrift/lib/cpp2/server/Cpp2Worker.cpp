@@ -95,7 +95,7 @@ void Cpp2Worker::useExistingChannel(
 
   DCHECK(!eventBase_);
   // Use supplied event base and don't delete it when finished
-  eventBase_.reset(serverChannel->getEventBase(), [](TEventBase*){});
+  eventBase_ = serverChannel->getEventBase();
 
   conn->start();
 }
@@ -110,12 +110,6 @@ void Cpp2Worker::stopEventBase() noexcept {
  */
 void Cpp2Worker::serve() {
   try {
-    // Inform the TEventBaseManager that our TEventBase will be used
-    // for this thread.  This relies on the fact that Cpp2Worker always
-    // starts in a brand new thread, so nothing else has tried to use the
-    // TEventBaseManager to get an event base for this thread yet.
-    server_->getEventBaseManager()->setEventBase(eventBase_.get(), false);
-
     // No events are registered by default, loopForever.
     eventBase_->loopForever();
 
