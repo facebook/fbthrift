@@ -452,11 +452,7 @@ unique_ptr<Krb5Principal>
   Krb5Keytab keytab(ctx_->get());
   // No client has been chosen.  Try the first principal in the
   // keytab.
-  for (auto& ktentry : keytab) {
-    return folly::make_unique<Krb5Principal>(
-      ctx_->get(), std::move(ktentry.principal));
-  }
-  return nullptr;
+  return keytab.getFirstPrincipalInKeytab();
 }
 
 bool Krb5CredentialsCacheManager::isPrincipalInKeytab(

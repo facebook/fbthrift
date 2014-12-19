@@ -354,6 +354,7 @@ public:
   static std::string getDefaultKeytabName(krb5_context context);
   Krb5Credentials getInitCreds(krb5_principal princ,
                                krb5_get_init_creds_opt* opts = nullptr);
+  std::unique_ptr<Krb5Principal> getFirstPrincipalInKeytab();
 
   Iterator begin() { return Iterator(this); }
   Iterator end() { return Iterator(nullptr); }

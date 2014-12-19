@@ -564,6 +564,14 @@ Krb5Credentials Krb5Keytab::getInitCreds(
   return Krb5Credentials(std::move(creds));
 }
 
+std::unique_ptr<Krb5Principal> Krb5Keytab::getFirstPrincipalInKeytab() {
+  for (auto& ktentry : *this) {
+    return folly::make_unique<Krb5Principal>(
+       context_, std::move(ktentry.principal));
+  }
+  return nullptr;
+}
+
 struct Krb5Keytab::Iterator::State {
   State(Krb5Keytab* kt)
     : kt_(kt) {
