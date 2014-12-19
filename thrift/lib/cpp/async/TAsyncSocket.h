@@ -115,21 +115,6 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
       AsyncSocket::getReadCallback());
   }
 
-  virtual void write(
-    TAsyncTransport::WriteCallback* callback, const void* buf, size_t bytes,
-    WriteFlags flags = WriteFlags::NONE) {
-    AsyncSocket::write(callback, buf, bytes, flags);
-  }
-  virtual void writev(
-    TAsyncTransport::WriteCallback* callback, const iovec* vec, size_t count,
-    WriteFlags flags = WriteFlags::NONE) {
-    AsyncSocket::writev(callback, vec, count, flags);
-  }
-  virtual void writeChain(TAsyncTransport::WriteCallback* callback,
-                          std::unique_ptr<folly::IOBuf>&& buf,
-                          WriteFlags flags = WriteFlags::NONE) {
-    AsyncSocket::writeChain(callback, std::move(buf), flags);
-  }
 };
 
 typedef folly::WriteFlags WriteFlags;

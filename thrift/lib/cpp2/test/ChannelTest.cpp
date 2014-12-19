@@ -995,11 +995,13 @@ TEST(Channel, ServerCloseTest) {
 class DestroyAsyncTransport : public apache::thrift::async::TAsyncTransport {
  public:
   DestroyAsyncTransport() : cb_(nullptr) { }
-  void setReadCallback(ReadCallback* callback) { cb_ = callback; }
-  ReadCallback* getReadCallback() const { return cb_; }
-  void write(WriteCallback* c, const void* v, size_t s, WriteFlags flags) { }
-  void writev(WriteCallback* c, const iovec* v, size_t s, WriteFlags flags) { }
-  void writeChain(WriteCallback* c,
+  void setReadCB(folly::AsyncTransportWrapper::ReadCallback* callback) { cb_ = callback; }
+  ReadCallback* getReadCallback() const {
+    return dynamic_cast<ReadCallback*>(cb_);
+  }
+  void write(folly::AsyncTransportWrapper::WriteCallback* c, const void* v, size_t s, WriteFlags flags) { }
+  void writev(folly::AsyncTransportWrapper::WriteCallback* c, const iovec* v, size_t s, WriteFlags flags) { }
+  void writeChain(folly::AsyncTransportWrapper::WriteCallback* c,
                   std::unique_ptr<folly::IOBuf>&& i,
                   WriteFlags flags) { }
   void close() { }
@@ -1029,7 +1031,7 @@ class DestroyAsyncTransport : public apache::thrift::async::TAsyncTransport {
     cb_->readEOF();
   }
  private:
-  ReadCallback* cb_;
+  folly::AsyncTransportWrapper::ReadCallback* cb_;
 };
 
 class DestroyRecvCallback : public MessageChannel::RecvCallback {

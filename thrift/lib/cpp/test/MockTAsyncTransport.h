@@ -28,18 +28,19 @@ class MockTAsyncTransport: public apache::thrift::async::TAsyncTransport {
   using ReadCallback = apache::thrift::async::TAsyncTransport::ReadCallback;
   using WriteCallback = apache::thrift::async::TAsyncTransport::WriteCallback;
 
-  MOCK_METHOD1(setReadCallback, void(ReadCallback*));
+  MOCK_METHOD1(setReadCB, void(AsyncTransportWrapper::ReadCallback*));
   MOCK_CONST_METHOD0(getReadCallback, ReadCallback*());
-  MOCK_METHOD4(write, void(WriteCallback*, const void*, size_t,
+  MOCK_CONST_METHOD0(getReadCB, AsyncTransportWrapper::ReadCallback*());
+  MOCK_METHOD4(write, void(AsyncTransportWrapper::WriteCallback*, const void*, size_t,
                            apache::thrift::async::WriteFlags));
-  MOCK_METHOD4(writev, void(WriteCallback*, const iovec*, size_t,
+  MOCK_METHOD4(writev, void(AsyncTransportWrapper::WriteCallback*, const iovec*, size_t,
                             apache::thrift::async::WriteFlags));
   MOCK_METHOD3(writeChain,
-               void(WriteCallback*, std::shared_ptr<folly::IOBuf>,
+               void(AsyncTransportWrapper::WriteCallback*, std::shared_ptr<folly::IOBuf>,
                     apache::thrift::async::WriteFlags));
 
 
-  void writeChain(WriteCallback* callback,
+  void writeChain(AsyncTransportWrapper::WriteCallback* callback,
                   std::unique_ptr<folly::IOBuf>&& iob,
                   apache::thrift::async::WriteFlags flags =
                   apache::thrift::async::WriteFlags::NONE) override {

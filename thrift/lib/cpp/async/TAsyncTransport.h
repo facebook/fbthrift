@@ -39,7 +39,7 @@ typedef folly::WriteFlags WriteFlags;
 
 // Wrapper around folly::AsyncTransport, that converts read/write
 // exceptions to TTransportExceptions
-class TAsyncTransport : virtual public folly::AsyncTransport {
+class TAsyncTransport : virtual public folly::AsyncTransportWrapper {
  public:
   typedef std::unique_ptr<TAsyncTransport, Destructor> UniquePtr;
 
@@ -76,19 +76,10 @@ class TAsyncTransport : virtual public folly::AsyncTransport {
   };
 
   // Read/write methods that aren't part of folly::AsyncTransport
-  virtual void setReadCallback(TAsyncTransport::ReadCallback* callback) = 0;
+  virtual void setReadCallback(TAsyncTransport::ReadCallback* callback) {
+    setReadCB(callback);
+  }
   virtual TAsyncTransport::ReadCallback* getReadCallback() const = 0;
-
-  virtual void write(
-    TAsyncTransport::WriteCallback* callback, const void* buf, size_t bytes,
-    WriteFlags flags = WriteFlags::NONE) = 0;
-  virtual void writev(
-    TAsyncTransport::WriteCallback* callback, const iovec* vec, size_t count,
-    WriteFlags flags = WriteFlags::NONE) = 0;
-  virtual void writeChain(
-    TAsyncTransport::WriteCallback* callback,
-    std::unique_ptr<folly::IOBuf>&& buf,
-    WriteFlags flags = WriteFlags::NONE) = 0;
 };
 
 }}} // apache::thrift::async
