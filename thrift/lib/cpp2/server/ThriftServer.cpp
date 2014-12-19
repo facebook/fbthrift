@@ -324,11 +324,6 @@ void ThriftServer::setup() {
         socket_->getAddress(&address_);
       }
 
-      // Notify handler of the preServe event
-      if (eventHandler_ != nullptr) {
-        eventHandler_->preServe(&address_);
-      }
-
       if (socket_) {
         socket_->attachEventBase(eventBaseManager_->getEventBase());
       }
@@ -339,9 +334,15 @@ void ThriftServer::setup() {
       workerPool_ = std::make_shared<Cpp2WorkerPool>(
         this, ioThreadPool_.get());
 
+      // Notify handler of the preServe event
+      if (eventHandler_ != nullptr) {
+        eventHandler_->preServe(&address_);
+      }
+
       if (socket_) {
         socket_->startAccepting();
       }
+
     } else {
       CHECK(ioThreadPool_->numThreads() == 0);
       duplexWorker_ = folly::make_unique<Cpp2Worker>(this, serverChannel_);
