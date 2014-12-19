@@ -122,8 +122,8 @@ unique_ptr<folly::IOBuf> KerberosSASLHandshakeUtils::wrapMessage(
   // Don't bother with getting things working on an older platform.
   // Things should never reach this point anyway, because security will
   // be disabled at a higher level.
-  LOG(FATAL) << "Linking against older version of krb5 which does not"
-             << " support security.";
+  throw TKerberosException(
+    "Linking against older version of krb5 without support for security.");
   return std::move(buf);
 #endif
 }
@@ -171,8 +171,8 @@ unique_ptr<folly::IOBuf> KerberosSASLHandshakeUtils::unwrapMessage(
   // Don't bother with getting things working on an older platform.
   // Things should never reach this point anyway, because security will
   // be disabled at a higher level.
-  LOG(FATAL) << "Linking against older version of krb5 which does not"
-             << " support security.";
+  throw TKerberosException(
+    "Linking against older version of krb5 without support for security.");
 #endif
 
   return std::move(buf);
