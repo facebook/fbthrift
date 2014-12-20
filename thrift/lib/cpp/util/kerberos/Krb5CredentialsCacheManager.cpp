@@ -355,8 +355,8 @@ void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   temp_cache->setDestroyOnClose();
 
   // Move the in-memory temp_cache to a temporary file
-  auto tmp_file_cache =
-      folly::make_unique<Krb5CCache>(Krb5CCache::makeResolve(str_buf));
+  auto tmp_file_cache = folly::make_unique<Krb5CCache>(Krb5CCache::makeResolve(
+      folly::to<string>("FILE:", str_buf)));
   tmp_file_cache->initialize(client.get());
   krb5_error_code code = krb5_cc_copy_creds(
     ctx_->get(), temp_cache->get(), tmp_file_cache->get());
