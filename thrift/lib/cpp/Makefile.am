@@ -220,8 +220,7 @@ include_test_HEADERS = \
 	test/MockTAsyncSocketFactory.h \
 	test/MockTAsyncSocket.h \
 	test/MockTAsyncSSLSocket.h \
-	test/MockTAsyncTransport.h \
-	test/MockTimeoutManager.h
+	test/MockTAsyncTransport.h
 
 THRIFT = $(top_builddir)/compiler/cpp/thrift
 
