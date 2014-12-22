@@ -16,10 +16,13 @@
 
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
 
+#include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
 
+#include <chrono>
+#include <thread>
 
 namespace apache { namespace thrift {
 
@@ -31,12 +34,17 @@ using namespace apache::thrift::concurrency;
 DEFINE_int32(max_connections_per_sasl_thread, -1,
              "Cap on the number of simultaneous secure connection setups "
              "per sasl thread. -1 is no cap.");
+DEFINE_int32(sasl_health_check_thread_period_ms, 1000,
+             "Number of ms between SASL thread health checks");
 
 const int kPendingFailureRatio = 1000;
 
 SaslThreadManager::SaslThreadManager(std::shared_ptr<SecurityLogger> logger,
                                      int threadCount, int stackSizeMb)
-  : logger_(logger) {
+  : logger_(logger)
+  , lastActivity_(0)
+  , healthy_(true) {
+
   secureConnectionsInProgress_ = 0;
   if (FLAGS_max_connections_per_sasl_thread > 0) {
     maxSimultaneousSecureConnections_ =
@@ -55,9 +63,72 @@ SaslThreadManager::SaslThreadManager(std::shared_ptr<SecurityLogger> logger,
   ));
   threadManager_->setNamePrefix("sasl-thread");
   threadManager_->start();
+
+  healthCheckThread_  = std::thread([this] {
+      folly::setThreadName("sasl-thread-health");
+      healthCheckEvb_.loopForever();
+  });
+  scheduleThreadManagerHealthCheck();
+}
+
+void SaslThreadManager::threadManagerHealthCheck() {
+  std::deque<std::shared_ptr<apache::thrift::concurrency::Runnable>>
+    queueToDrain;
+  {
+    concurrency::Guard g(mutex_);
+    auto cur = std::chrono::duration_cast<std::chrono::milliseconds>(
+      std::chrono::steady_clock::now().time_since_epoch());
+    auto diff = cur.count() - lastActivity_.count();
+    auto idleWorkers = threadManager_->idleWorkerCount();
+    if (idleWorkers == 0 &&
+        diff > FLAGS_sasl_health_check_thread_period_ms) {
+      healthy_ = false;
+      while (auto el = threadManager_->removeNextPending()) {
+        queueToDrain.push_back(el);
+      };
+      while(!pendingSecureStarts_.empty()) {
+        queueToDrain.push_back(pendingSecureStarts_.front());
+        pendingSecureStarts_.pop_front();
+      }
+      secureConnectionsInProgress_ = 0;
+    } else {
+      healthy_ = true;
+    }
+  }
+
+  // Run queued work. Note that while draining, these runnables will
+  // basically be noops since we've marked the SASL thread pool state as
+  // unhealthy.
+  while (!queueToDrain.empty()) {
+    auto& el = queueToDrain.front();
+    el->run();
+    queueToDrain.pop_front();
+  }
+}
+
+bool SaslThreadManager::isHealthy() {
+  return healthy_;
+}
+
+void SaslThreadManager::recordActivity() {
+  concurrency::Guard g(mutex_);
+  lastActivity_ = std::chrono::duration_cast<std::chrono::milliseconds>(
+    std::chrono::steady_clock::now().time_since_epoch());
+}
+
+void SaslThreadManager::scheduleThreadManagerHealthCheck() {
+  healthCheckEvb_.runAfterDelay([this]() {
+    threadManagerHealthCheck();
+    scheduleThreadManagerHealthCheck();
+  }, FLAGS_sasl_health_check_thread_period_ms);
 }
 
 SaslThreadManager::~SaslThreadManager() {
+  healthCheckEvb_.terminateLoopSoon();
+  healthCheckThread_.join();
+  // We should run the health check one last time to make sure
+  // we drain all the queues before shutdown
+  threadManagerHealthCheck();
   threadManager_->stop();
 }
 

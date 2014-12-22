@@ -82,83 +82,102 @@ void GssSaslClient::start(Callback *cb) {
   auto inProgress = inProgress_;
 
   logger->logStart("prepare_first_request");
-  auto ew_tm = folly::try_and_catch<TooManyPendingTasksException>([&]() {
-    if (!saslThreadManager_) {
-      throw TApplicationException(
-        "saslThreadManager is not set in GssSaslClient");
-    }
 
-    logger->logStart("thread_manager_overhead");
-    *inProgress = true;
-    threadManager->start(std::make_shared<FunctionRunner>([=] {
-      logger->logEnd("thread_manager_overhead");
-      MoveWrapper<unique_ptr<IOBuf>> iobuf;
-      folly::exception_wrapper ex;
+  folly::exception_wrapper ew_tm;
+  if (!threadManager) {
+    ew_tm = folly::make_exception_wrapper<TApplicationException>(
+      "saslThreadManager is not set in GssSaslClient");
+  } else if (!threadManager->isHealthy()) {
+    ew_tm = folly::make_exception_wrapper<TKerberosException>(
+      "SASL thread pool is not healthy.");
+  } else {
+    ew_tm = folly::try_and_catch<
+        TooManyPendingTasksException, TKerberosException>([&]() {
+      logger->logStart("thread_manager_overhead");
+      *inProgress = true;
+      threadManager->start(std::make_shared<FunctionRunner>([=] {
+        logger->logEnd("thread_manager_overhead");
 
-      {
-        Guard guard(*mutex);
-        if (!*evb) {
-          return;
-        }
+        MoveWrapper<unique_ptr<IOBuf>> iobuf;
+        folly::exception_wrapper ex;
 
-        (*evb)->runInEventBaseThread([=] () mutable {
-            if (!*evb) {
-              return;
-            }
-            cb->saslStarted();
-          });
-      }
+        threadManager->recordActivity();
 
-      ex = folly::try_and_catch<std::exception, TTransportException,
-          TProtocolException, TApplicationException, TKerberosException>(
-          [&]() {
-        clientHandshake->startClientHandshake();
-        auto token = clientHandshake->getTokenToSend();
-
-        SaslStart start;
-        start.mechanism = MECH;
-        if (token != nullptr) {
-          start.request.response = *token;
-          start.request.__isset.response = true;
-        }
-        start.__isset.request = true;
-        SaslAuthService_authFirstRequest_pargs argsp;
-        argsp.saslStart = &start;
-
-        *iobuf = PargsPresultProtoSerialize(
-          proto, argsp, "authFirstRequest", T_CALL, (*seqId)++);
-      });
-
-      Guard guard(*mutex);
-      // Return if channel is unavailable. Ie. evb_ may not be good.
-      if (!*evb) {
-        return;
-      }
-
-      // Log the overhead around rescheduling the remainder of the
-      // handshake at the back of the evb queue.
-      logger->logStart("evb_overhead");
-      (*evb)->runInEventBaseThread([=]() mutable {
-        logger->logEnd("evb_overhead");
-        if (!*evb) {
-          return;
-        }
-        if (ex) {
-          cb->saslError(std::move(ex));
-          if (*inProgress) {
-            threadManager->end();
-            *inProgress = false;
+        bool isHealthy = threadManager->isHealthy();
+        if (isHealthy) {
+          Guard guard(*mutex);
+          if (!*evb) {
+            return;
           }
-          return;
-        } else {
-          logger->logStart("first_rtt");
-          cb->saslSendServer(std::move(*iobuf));
+
+          (*evb)->runInEventBaseThread([=] () mutable {
+              if (!*evb) {
+                return;
+              }
+              cb->saslStarted();
+            });
         }
-      });
-    }));
-  });
+
+        if (isHealthy) {
+          ex = folly::try_and_catch<std::exception, TTransportException,
+              TProtocolException, TApplicationException,
+              TKerberosException>([&]() {
+            clientHandshake->startClientHandshake();
+            auto token = clientHandshake->getTokenToSend();
+
+            SaslStart start;
+            start.mechanism = MECH;
+            if (token != nullptr) {
+              start.request.response = *token;
+              start.request.__isset.response = true;
+            }
+            start.__isset.request = true;
+            SaslAuthService_authFirstRequest_pargs argsp;
+            argsp.saslStart = &start;
+
+            *iobuf = PargsPresultProtoSerialize(
+              proto, argsp, "authFirstRequest", T_CALL, (*seqId)++);
+          });
+        } else {
+          ex = folly::make_exception_wrapper<TKerberosException>(
+            "Draining SASL thread pool");
+        }
+
+        Guard guard(*mutex);
+        // Return if channel is unavailable. Ie. evb_ may not be good.
+        if (!*evb) {
+          return;
+        }
+
+        // Log the overhead around rescheduling the remainder of the
+        // handshake at the back of the evb queue.
+        logger->logStart("evb_overhead");
+        (*evb)->runInEventBaseThread([=]() mutable {
+          logger->logEnd("evb_overhead");
+          if (!*evb) {
+            return;
+          }
+          if (ex) {
+            cb->saslError(std::move(ex));
+            if (*inProgress) {
+              threadManager->end();
+              *inProgress = false;
+            }
+            return;
+          } else {
+            logger->logStart("first_rtt");
+            cb->saslSendServer(std::move(*iobuf));
+          }
+        });
+      }));
+    });
+  }
   if (ew_tm) {
-    logger->log("too_many_pending_tasks_in_start");
+    if (ew_tm.is_compatible_with<TooManyPendingTasksException>()) {
+      logger->log("too_many_pending_tasks_in_start");
+    } else if (ew_tm.is_compatible_with<TKerberosException>()){
+      logger->log("sasl_thread_pool_unhealthy");
+    }
     // Since we haven't started, we need to make sure we unset the
     // inProgress indicator.
     *inProgress = false;
@@ -180,132 +199,156 @@ void GssSaslClient::consumeFromServer(
   auto threadManager = saslThreadManager_;
   auto inProgress = inProgress_;
 
-  auto ew_tm = folly::try_and_catch<TooManyPendingTasksException>([&]() {
-    threadManager->get()->add(std::make_shared<FunctionRunner>([=] {
-      std::string req_data;
-      MoveWrapper<unique_ptr<IOBuf>> iobuf;
-      folly::exception_wrapper ex;
+  folly::exception_wrapper ew_tm;
+  if (!threadManager->isHealthy()) {
+    ew_tm = folly::make_exception_wrapper<TKerberosException>(
+      "SASL thread pool is not healthy.");
+  } else {
+    ew_tm = folly::try_and_catch<
+        TooManyPendingTasksException, TKerberosException>([&]() {
+      threadManager->get()->add(std::make_shared<FunctionRunner>([=] {
+        std::string req_data;
+        MoveWrapper<unique_ptr<IOBuf>> iobuf;
+        folly::exception_wrapper ex;
 
-      {
-        Guard guard(*mutex);
-        if (!*evb) {
-          return;
+        threadManager->recordActivity();
+
+        bool isHealthy = threadManager->isHealthy();
+        if (isHealthy) {
+          Guard guard(*mutex);
+          if (!*evb) {
+            return;
+          }
+
+          (*evb)->runInEventBaseThread([=] () mutable {
+              if (!*evb) {
+                return;
+              }
+              cb->saslStarted();
+            });
         }
 
-        (*evb)->runInEventBaseThread([=] () mutable {
-            if (!*evb) {
-              return;
+        // Get the input string or outcome status
+        std::string input = "";
+        bool finished = false;
+        // SaslAuthService_authFirstRequest_presult should be structurally
+        // identical to SaslAuthService_authNextRequest_presult
+        static_assert(sizeof(SaslAuthService_authFirstRequest_presult) ==
+                      sizeof(SaslAuthService_authNextRequest_presult),
+                      "Types should be structurally identical");
+        static_assert(std::is_same<
+            decltype(SaslAuthService_authFirstRequest_presult::success),
+            decltype(
+              SaslAuthService_authNextRequest_presult::success)>::value,
+          "Types should be structurally identical");
+
+        if (isHealthy) {
+          ex = folly::try_and_catch<std::exception, TTransportException,
+              TProtocolException, TApplicationException,
+              TKerberosException>([&]() {
+            SaslReply reply;
+            SaslAuthService_authFirstRequest_presult presult;
+            presult.success = &reply;
+            string methodName;
+            try {
+              methodName = PargsPresultProtoDeserialize(
+                  proto, presult, smessage.get(), T_REPLY).first;
+            } catch (const TProtocolException& e) {
+              if (proto == protocol::T_BINARY_PROTOCOL &&
+                  e.getType() == TProtocolException::BAD_VERSION) {
+                // We used to use compact always in security messages,
+                // even when the header said they should be binary. If we
+                // end up in this if, we're talking to an old version
+                // remote end, so try compact too.
+                methodName = PargsPresultProtoDeserialize(
+                    protocol::T_COMPACT_PROTOCOL,
+                    presult,
+                    smessage.get(),
+                    T_REPLY).first;
+              } else {
+                throw;
+              }
             }
-            cb->saslStarted();
+            if (methodName != "authFirstRequest" &&
+                methodName != "authNextRequest") {
+              throw TApplicationException(
+                "Bad return method name: " + methodName);
+            }
+            if (reply.__isset.challenge) {
+              input = reply.challenge;
+            }
+            if (reply.__isset.outcome) {
+              finished = reply.outcome.success;
+            }
+
+            clientHandshake->handleResponse(input);
+            auto token = clientHandshake->getTokenToSend();
+            if (clientHandshake->getPhase() == COMPLETE) {
+              assert(token == nullptr);
+              if (finished != true) {
+                throw TKerberosException(
+                  "Outcome of false returned from server");
+              }
+            }
+            if (token != nullptr) {
+              SaslRequest req;
+              req.response = *token;
+              req.__isset.response = true;
+              SaslAuthService_authNextRequest_pargs argsp;
+              argsp.saslRequest = &req;
+              *iobuf = PargsPresultProtoSerialize(
+                proto, argsp, "authNextRequest", T_CALL, (*seqId)++);
+            }
           });
-      }
-
-      // Get the input string or outcome status
-      std::string input = "";
-      bool finished = false;
-      // SaslAuthService_authFirstRequest_presult should be structurally
-      // identical to SaslAuthService_authNextRequest_presult
-      static_assert(sizeof(SaslAuthService_authFirstRequest_presult) ==
-                    sizeof(SaslAuthService_authNextRequest_presult),
-                    "Types should be structurally identical");
-      static_assert(std::is_same<
-          decltype(SaslAuthService_authFirstRequest_presult::success),
-          decltype(SaslAuthService_authNextRequest_presult::success)>::value,
-        "Types should be structurally identical");
-      ex = folly::try_and_catch<std::exception, TTransportException,
-          TProtocolException, TApplicationException, TKerberosException>(
-          [&]() {
-        SaslReply reply;
-        SaslAuthService_authFirstRequest_presult presult;
-        presult.success = &reply;
-        string methodName;
-        try {
-          methodName = PargsPresultProtoDeserialize(
-              proto, presult, smessage.get(), T_REPLY).first;
-        } catch (const TProtocolException& e) {
-          if (proto == protocol::T_BINARY_PROTOCOL &&
-              e.getType() == TProtocolException::BAD_VERSION) {
-            // We used to use compact always in security messages, even when
-            // the header said they should be binary. If we end up in this if,
-            // we're talking to an old version remote end, so try compact too.
-            methodName = PargsPresultProtoDeserialize(
-                protocol::T_COMPACT_PROTOCOL,
-                presult,
-                smessage.get(),
-                T_REPLY).first;
-          } else {
-            throw;
-          }
-        }
-        if (methodName != "authFirstRequest" &&
-            methodName != "authNextRequest") {
-          throw TApplicationException("Bad return method name: " + methodName);
-        }
-        if (reply.__isset.challenge) {
-          input = reply.challenge;
-        }
-        if (reply.__isset.outcome) {
-          finished = reply.outcome.success;
+        } else {
+          ex = folly::make_exception_wrapper<TKerberosException>(
+            "Draining SASL thread pool");
         }
 
-        clientHandshake->handleResponse(input);
-        auto token = clientHandshake->getTokenToSend();
-        if (clientHandshake->getPhase() == COMPLETE) {
-          assert(token == nullptr);
-          if (finished != true) {
-            throw TKerberosException("Outcome of false returned from server");
-          }
-        }
-        if (token != nullptr) {
-          SaslRequest req;
-          req.response = *token;
-          req.__isset.response = true;
-          SaslAuthService_authNextRequest_pargs argsp;
-          argsp.saslRequest = &req;
-          *iobuf = PargsPresultProtoSerialize(proto, argsp, "authNextRequest",
-                                                T_CALL, (*seqId)++);
-        }
-      });
-
-      Guard guard(*mutex);
-      // Return if channel is unavailable. Ie. evb_ may not be good.
-      if (!*evb) {
-        return;
-      }
-
-      auto phase = clientHandshake->getPhase();
-      (*evb)->runInEventBaseThread([=]() mutable {
+        Guard guard(*mutex);
+        // Return if channel is unavailable. Ie. evb_ may not be good.
         if (!*evb) {
           return;
         }
-        if (ex) {
-          cb->saslError(std::move(ex));
-          if (*inProgress) {
-            threadManager->end();
-            *inProgress = false;
+
+        auto phase = clientHandshake->getPhase();
+        (*evb)->runInEventBaseThread([=]() mutable {
+          if (!*evb) {
+            return;
           }
-          return;
-        }
-        if (*iobuf && !(*iobuf)->empty()) {
-          if (phase == SELECT_SECURITY_LAYER) {
-            logger->logStart("third_rtt");
-          } else {
-            logger->logStart("second_rtt");
+          if (ex) {
+            cb->saslError(std::move(ex));
+            if (*inProgress) {
+              threadManager->end();
+              *inProgress = false;
+            }
+            return;
           }
-          cb->saslSendServer(std::move(*iobuf));
-        }
-        if (clientHandshake_->isContextEstablished()) {
-          cb->saslComplete();
-          if (*inProgress) {
-            threadManager->end();
-            *inProgress = false;
+          if (*iobuf && !(*iobuf)->empty()) {
+            if (phase == SELECT_SECURITY_LAYER) {
+              logger->logStart("third_rtt");
+            } else {
+              logger->logStart("second_rtt");
+            }
+            cb->saslSendServer(std::move(*iobuf));
           }
-        }
-      });
-    }));
-  });
+          if (clientHandshake_->isContextEstablished()) {
+            cb->saslComplete();
+            if (*inProgress) {
+              threadManager->end();
+              *inProgress = false;
+            }
+          }
+        });
+      }));
+    });
+  }
   if (ew_tm) {
-    logger->log("too_many_pending_tasks_in_consume");
+    if (ew_tm.is_compatible_with<TooManyPendingTasksException>()) {
+      logger->log("too_many_pending_tasks_in_consume");
+    } else if (ew_tm.is_compatible_with<TKerberosException>()){
+      logger->log("sasl_thread_pool_unhealthy");
+    }
     cb->saslError(std::move(ew_tm));
     if (*inProgress) {
       threadManager->end();
@@ -349,7 +392,8 @@ void GssSaslClient::detachEventBase() {
   *evb_ = nullptr;
 }
 
-void GssSaslClient::attachEventBase(apache::thrift::async::TEventBase* evb) {
+void GssSaslClient::attachEventBase(
+    apache::thrift::async::TEventBase* evb) {
   apache::thrift::concurrency::Guard guard(*mutex_);
   *evb_ = evb;
 }

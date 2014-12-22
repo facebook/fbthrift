@@ -17,10 +17,14 @@
 #ifndef KERBEROS_SASL_THREAD_MANAGER_H
 #define KERBEROS_SASL_THREAD_MANAGER_H
 
+#include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
+#include <atomic>
+#include <chrono>
 #include <deque>
+#include <thread>
 
 namespace apache { namespace thrift {
 
@@ -41,12 +45,18 @@ class SaslThreadManager {
   // setups already in progress.
   void start(std::shared_ptr<concurrency::FunctionRunner>&& f);
 
+  void recordActivity();
+  bool isHealthy();
+
   // end() calls should be paired with start() calls.  When a SASL
   // connection setup completes (success or failure), this will start
   // another if any have been queued.
   void end();
 
  private:
+  void scheduleThreadManagerHealthCheck();
+  void threadManagerHealthCheck();
+
   std::shared_ptr<SecurityLogger> logger_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   apache::thrift::concurrency::Mutex mutex_;
@@ -54,6 +64,10 @@ class SaslThreadManager {
   unsigned int maxSimultaneousSecureConnections_;
   std::deque<std::shared_ptr<apache::thrift::concurrency::FunctionRunner>>
     pendingSecureStarts_;
+  apache::thrift::async::TEventBase healthCheckEvb_;
+  std::thread healthCheckThread_;
+  std::chrono::milliseconds lastActivity_;
+  std::atomic<bool> healthy_;
 };
 
 }}  // apache::thrift
