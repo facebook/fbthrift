@@ -22,8 +22,8 @@ from test.sleep import SleepService, ttypes
 
 TIMEOUT = 60 * 1000  # milliseconds
 
-def getClient(port):
-    transport = TSocket.TSocket('127.0.0.1', port)
+def getClient(addr):
+    transport = TSocket.TSocket(addr[0], addr[1])
     transport = TTransport.TFramedTransport(transport)
     protocol = TBinaryProtocol.TBinaryProtocol(transport)
     client = SleepService.Client(protocol)
@@ -58,14 +58,14 @@ class SleepHandler(FacebookBase, SleepService.Iface):
 
 
 class SpaceProcess(multiprocessing.Process):
-    def __init__(self, port):
+    def __init__(self, addr):
         self.queue = multiprocessing.Queue()
         multiprocessing.Process.__init__(
             self, target=self.target, args=(self.queue,))
-        self.port = port
+        self.addr = addr
 
     def target(self, queue):
-        client = getClient(self.port)
+        client = getClient(self.addr)
 
         hw = "hello, world"
         hw_spaced = "h e l l o ,   w o r l d"
@@ -80,15 +80,15 @@ class SpaceProcess(multiprocessing.Process):
 
 
 class ParallelProcess(multiprocessing.Process):
-    def __init__(self, port):
+    def __init__(self, addr):
         multiprocessing.Process.__init__(self)
-        self.port = port
+        self.addr = addr
 
     def run(self):
         clients = []
 
         for i in range(0, 4):
-            clients.append(getClient(self.port))
+            clients.append(getClient(self.addr))
 
         for c in clients:
             c.send_sleep(3)
@@ -97,12 +97,12 @@ class ParallelProcess(multiprocessing.Process):
             c.recv_sleep()
 
 class OnewayProcess(multiprocessing.Process):
-    def __init__(self, port):
+    def __init__(self, addr):
         multiprocessing.Process.__init__(self)
-        self.port = port
+        self.addr = addr
 
     def run(self):
-        client = getClient(self.port)
+        client = getClient(self.addr)
         client.noop()
 
 
@@ -128,7 +128,7 @@ class TestServer(BaseFacebookTestCase):
 
         self.assertTrue(addr)
 
-        self.server_port = addr[1]
+        self.server_addr = addr
 
     def stopServer(self):
         if self.server:
@@ -136,7 +136,7 @@ class TestServer(BaseFacebookTestCase):
             self.server = None
 
     def testSpace(self):
-        space = SpaceProcess(self.server_port)
+        space = SpaceProcess(self.server_addr)
         space.start()
         client_sockname, client_peername = space.queue.get()
         space.join()
@@ -148,7 +148,7 @@ class TestServer(BaseFacebookTestCase):
         self.assertEquals(self.event_handler.last_sock_name, client_peername)
 
     def testParallel(self):
-        parallel = ParallelProcess(self.server_port)
+        parallel = ParallelProcess(self.server_addr)
         parallel.start()
         start_time = time.time()
         # this should take about 3 seconds.  In practice on an unloaded
@@ -164,7 +164,7 @@ class TestServer(BaseFacebookTestCase):
         self.assertLess(duration, 5)
 
     def testOneway(self):
-        oneway = OnewayProcess(self.server_port)
+        oneway = OnewayProcess(self.server_addr)
         oneway.start()
         oneway.join()
 
