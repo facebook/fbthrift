@@ -125,7 +125,7 @@ namespace detail {
 
 template <typename T>
 class has_ensure_and_append {
-  template <typename U> static char f(typeof(&U::ensure), typeof(&U::append));
+  template <typename U> static char f(decltype(&U::ensure), decltype(&U::append));
   template <typename U> static long f(...);
 public:
   enum {value = sizeof(f<T>(nullptr, nullptr)) == sizeof(char)};
