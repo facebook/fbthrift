@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include "thrift/test/gen-cpp2/UnionTest2_types.h"
+#include "thrift/test/gen-cpp2/UnionTest3_types.h"
 
 #include <gtest/gtest.h>
 
@@ -24,26 +25,40 @@ using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace testing;
 
+template <class UnionType>
+void testSerializeDeserialize(UnionType &val) {
+  BinaryProtocolWriter prot;
+  size_t bufSize = val.serializedSize(&prot);
+  IOBufQueue queue(IOBufQueue::cacheChainLength());
+
+  prot.setOutput(&queue, bufSize);
+  val.write(&prot);
+
+  bufSize = queue.chainLength();
+  auto buf = queue.move();
+
+  UnionType out;
+  BinaryProtocolReader protReader;
+  protReader.setInput(buf.get());
+  out.read(&protReader);
+  EXPECT_EQ(val, out);
+}
+
+
 class UnionTestFixture: public Test {
  public:
   void serializeDeserialize(TestUnion &val) {
-    BinaryProtocolWriter prot;
-    size_t bufSize = val.serializedSize(&prot);
-    IOBufQueue queue(IOBufQueue::cacheChainLength());
-
-    prot.setOutput(&queue, bufSize);
-    val.write(&prot);
-
-    bufSize = queue.chainLength();
-    auto buf = queue.move();
-
-    TestUnion out;
-    BinaryProtocolReader protReader;
-    protReader.setInput(buf.get());
-    out.read(&protReader);
-    EXPECT_EQ(val, out);
+    testSerializeDeserialize(val);
   }
 };
+
+class TerseUnionTestFixture: public Test {
+ public:
+  void serializeDeserialize(TerseTestUnion &val) {
+    testSerializeDeserialize(val);
+  }
+};
+
 
 TEST_F(UnionTestFixture, Constructors) {
   auto f = [] (const TestUnion& u) {
@@ -104,3 +119,17 @@ TEST_F(UnionTestFixture, SerdeTest) {
   serializeDeserialize(u);
 }
 
+TEST_F(TerseUnionTestFixture, SerializeDeserializeTest) {
+  TerseTestUnion u;
+  serializeDeserialize(u);
+
+  I32Stuff i32St;
+  i32St.a = 100;
+  u.set_i32_field(i32St);
+  serializeDeserialize(u);
+
+  StringStuff stringSt;
+  stringSt.a = "str";
+  u.set_string_field(stringSt);
+  serializeDeserialize(u);
+}

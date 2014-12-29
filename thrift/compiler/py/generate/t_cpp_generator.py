@@ -3087,10 +3087,10 @@ class CppGenerator(t_generator.Generator):
             elif field.req == e_req.optional:
                 s1 = s('if ({0})'.format(isset_expr)).scope
 
-            elif self.flag_terse_writes and not field.req == e_req.required:
-                s1 = self._try_terse_write(field, this, s, pointers)
             elif obj.is_union:
                 s1 = s.case(obj.name + '::Type::' + field.name).scope
+            elif self.flag_terse_writes and not field.req == e_req.required:
+                s1 = self._try_terse_write(field, this, s, pointers)
             else:
                 s1 = s
             # Add the size of field header + footer
@@ -3223,10 +3223,10 @@ class CppGenerator(t_generator.Generator):
                     s1 = s('else if ({0})'.format(isset_expr)).scope
             elif field.req == e_req.optional:
                 s1 = s('if ({0})'.format(isset_expr)).scope
-            elif self.flag_terse_writes and not field.req == e_req.required:
-                s1 = self._try_terse_write(field, this, s, pointers)
             elif obj.is_union:
                 s1 = s.case(obj.name + '::Type::' + field.name).scope
+            elif self.flag_terse_writes and not field.req == e_req.required:
+                s1 = self._try_terse_write(field, this, s, pointers)
             else:
                 s1 = s
             # Write field header
