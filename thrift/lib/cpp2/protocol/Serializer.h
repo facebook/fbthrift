@@ -39,6 +39,18 @@ struct Serializer {
     // if you don't need to support thrift1-compatibility types
     apache::thrift::Cpp2Ops<T>::read(&reader, &obj);
   }
+
+  template <class T>
+  static void deserialize(folly::ByteRange range, T& obj) {
+    folly::IOBuf buf(folly::IOBuf::WRAP_BUFFER, range);
+    deserialize(&buf, obj);
+  }
+
+  template <class T>
+  static void deserialize(folly::StringPiece range, T& obj) {
+    deserialize(folly::ByteRange(range), obj);
+  }
+
   template <class T>
   static void serialize(const T& obj, folly::IOBufQueue* out) {
     Writer writer;
@@ -47,6 +59,13 @@ struct Serializer {
     // This can be obj.write(&writer);
     // if you don't need to support thrift1-compatibility types
     apache::thrift::Cpp2Ops<T>::write(&writer, &obj);
+  }
+
+  template <class T>
+  static void serialize(const T& obj, std::string* out) {
+    folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+    serialize(obj, &queue);
+    queue.appendToString(*out);
   }
 };
 

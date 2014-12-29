@@ -144,3 +144,16 @@ TEST(SerializationTest, RecursiveDeepBinarySerializerRoundtripPasses) {
 
   EXPECT_EQ(s, out);
 }
+
+TEST(SerializationTest, StringOverloads) {
+  auto s = makeTestStruct();
+
+  std::string str;
+  CompactSerializer::serialize(s, &str);
+
+  {
+    TestStruct out;
+    CompactSerializer::deserialize(str, out);
+    EXPECT_EQ(out, s);
+  }
+}
