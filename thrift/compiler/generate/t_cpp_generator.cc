@@ -1341,9 +1341,6 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   auto& out = f_types_;
   const vector<t_field*>& members = tstruct->get_members();
 
-  string extends = " : public apache::thrift::TStructType<"
-                   + tstruct->get_name() + ">";
-
   // Open struct def
   indent(out) << "class " << tstruct->get_name()
               << " : public apache::thrift::TStructType<" << tstruct->get_name()
