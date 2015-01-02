@@ -564,7 +564,7 @@ void t_php_generator::generate_json_reader(ofstream &out,
   indent_up();
   indent(out) << "$parsed = json_decode($jsonText, true);" << endl << endl;
 
-  indent(out) << "if ($parsed === NULL || !is_array($parsed)) {" << endl;
+  indent(out) << "if ($parsed === null || !is_array($parsed)) {" << endl;
   indent_up();
   indent(out) << "throw new TProtocolException(\"Cannot parse the given json"
               << " string.\");" << endl;
