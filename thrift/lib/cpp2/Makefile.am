@@ -111,7 +111,6 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   server/ThriftServer.cpp \
 			   ../cpp/async/TAsyncSignalHandler.cpp \
 			   ../cpp/EventHandlerBase.cpp \
-			   ../cpp/transport/THeader.cpp \
 			   ../cpp/transport/THeaderTransport.cpp \
 			   ../cpp/util/ScopedServerThread.cpp \
 			   ../cpp/util/SocketRetriever.cpp \
