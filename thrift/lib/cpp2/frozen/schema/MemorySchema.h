@@ -190,7 +190,6 @@ class MemorySchema {
 
  private:
   std::vector<MemoryLayout> layouts;
-  // TODO(#4910107): Separate MemoryLayouts from MemoryLayoutBases
   int16_t rootLayout;
 };
 
