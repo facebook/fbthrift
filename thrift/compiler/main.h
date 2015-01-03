@@ -24,6 +24,8 @@
 #include "thrift/compiler/parse/t_const.h"
 #include "thrift/compiler/parse/t_field.h"
 
+extern "C" {
+
 /**
  * Defined in the flex library
  */
@@ -36,6 +38,8 @@ int yyparse(void);
  * Expected to be defined by Flex/Bison
  */
 void yyerror(const char* fmt, ...);
+
+}
 
 /**
  * Parse debugging output, used to print helpful info
