@@ -3428,6 +3428,7 @@ void t_cpp_generator::generate_service(t_service* tservice) {
   }
   f_header_ <<
     "#include <thrift/lib/cpp/TDispatchProcessor.h>" << endl;
+  f_header_ << "#include <folly/ExceptionWrapper.h>" << endl;
   if (gen_cob_style_) {
     f_header_ <<
       "#include <thrift/lib/cpp/async/TAsyncDispatchProcessor.h>" << endl;
@@ -3490,6 +3491,7 @@ void t_cpp_generator::generate_service(t_service* tservice) {
 
     f_service_tcc_
       << "#include <folly/ScopeGuard.h>" << endl;
+    f_service_tcc_ << "#include <folly/ExceptionWrapper.h>" << endl;
     if (gen_cob_style_) {
       f_service_tcc_
         << "#include <thrift/lib/cpp/async/TAsyncChannel.h>" << endl;
@@ -4387,6 +4389,12 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
           &noargs);
       indent(f_header_) << "virtual " <<
         function_signature(&recv_function, "") << ";" << endl;
+
+      t_function recv_wrapped_function((*f_iter)->get_returntype(),
+          string("recv_wrapped_") + (*f_iter)->get_name(),
+          &noargs);
+      indent(f_header_) << "virtual " <<
+        function_signature(&recv_wrapped_function, "wrapped") << ";" << endl;
     }
   }
   indent_down();
@@ -4577,7 +4585,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
     indent_down();
     out <<
       indent() <<
-      "} catch(apache::thrift::transport::TTransportException& ex) {" << endl;
+      "} catch (apache::thrift::transport::TTransportException& ex) {" << endl;
     indent(out) << "  ::apache::thrift::ContextStack* c = "
                    "this->getClientContextStack();" << endl <<
        indent() << "  if (c) c->handlerError();" << endl;
@@ -4585,7 +4593,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
                 << endl <<
       indent() << "  " << _this << "oprot_->getTransport()->close();" << endl <<
       indent() << "  throw;" << endl <<
-      indent() << "} catch(apache::thrift::TApplicationException& ex) {"
+      indent() << "} catch (apache::thrift::TApplicationException& ex) {"
                << endl <<
       // NOTE: bad sequence id is an unrecoverable exception, so we close
       // the connection here.
@@ -4676,13 +4684,15 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
         t_function recv_function((*f_iter)->get_returntype(),
                                  string("recv_") + (*f_iter)->get_name(),
                                  &noargs);
-        // Open the recv function
+        t_function recv_wrapped_function((*f_iter)->get_returntype(),
+            string("recv_wrapped_") + (*f_iter)->get_name(),
+            &noargs);
+        // Open the recv_wrapped function
         if (gen_templates_) {
           indent(out) << template_header;
         }
-
         indent(out) <<
-          function_signature(&recv_function, "", scope) << endl;
+          function_signature(&recv_wrapped_function, "wrapped", scope) << endl;
         scope_up(out);
 
         if (style == "Cob") {
@@ -4693,7 +4703,6 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
         indent(out) << "apache::thrift::ContextStack* ctx = "
                     << "this->getClientContextStack();" << endl;
 
-        indent(out) << "uint32_t bytes;" << endl;
         out <<
           indent() << "int32_t rseqid = 0;" << endl <<
           indent() << "int32_t eseqid = " << _this
@@ -4701,13 +4710,14 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
           indent() << "std::string fname;" << endl <<
           indent() << "apache::thrift::protocol::TMessageType mtype;" << endl <<
           indent() << "if (ctx) ctx->preRead();" << endl;
-        if (style == "Cob" && !gen_no_client_completion_) {
-          out <<
-            indent() << "bool completed = false;" << endl << endl <<
-            indent() << "try {";
-          indent_up();
-        }
-        out << endl <<
+
+        out <<
+          indent() << "folly::exception_wrapper interior_ew;" << endl <<
+          indent() << "auto caught_ew = folly::try_and_catch<"
+                    << "apache::thrift::TException, apache::"
+                    << "thrift::protocol::TProtocolException>([&]() {" << endl;
+        indent_up();
+        out <<
           indent() << _this << "iprot_->readMessageBegin(" <<
           "fname, mtype, rseqid);" << endl <<
           indent() << "if (this->checkSeqid_ && " <<
@@ -4716,10 +4726,17 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
           "iprot_->skip(apache::thrift::protocol::T_STRUCT);" << endl <<
           indent() << "  " << _this << "iprot_->readMessageEnd();" << endl <<
           indent() << "  " << _this <<
-          "iprot_->getTransport()->readEnd();" << endl <<
+          "iprot_->getTransport()->readEnd();" << endl;
+        if (style == "Cob" && !gen_no_client_completion_) {
+          out <<
+            indent() << "  completed__(false);" << endl;
+        }
+        out <<
           indent() <<
-          "  throw apache::thrift::TApplicationException(apache::thrift::"
+          "  interior_ew = folly::make_exception_wrapper<"
+          "apache::thrift::TApplicationException>(apache::thrift::"
           "TApplicationException::BAD_SEQUENCE_ID);" << endl <<
+          indent() << "  return; // from try_and_catch" << endl <<
           indent() << "}" << endl <<
           indent() << "if (mtype == apache::thrift::protocol::T_EXCEPTION) {" << endl <<
           indent() << "  apache::thrift::TApplicationException x;" << endl <<
@@ -4729,11 +4746,11 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
           endl;
         if (style == "Cob" && !gen_no_client_completion_) {
           out <<
-            indent() << "  completed = true;" << endl <<
             indent() << "  completed__(true);" << endl;
         }
         out <<
-          indent() << "  throw x;" << endl <<
+          indent() << "  interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);" << endl <<
+          indent() << "  return; // from try_and_catch" << endl <<
           indent() << "}" << endl <<
           indent() << "if (mtype != apache::thrift::protocol::T_REPLY) {" << endl <<
           indent() << "  " << _this << "iprot_->skip(" <<
@@ -4743,11 +4760,11 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
           endl;
         if (style == "Cob" && !gen_no_client_completion_) {
           out <<
-            indent() << "  completed = true;" << endl <<
             indent() << "  completed__(false);" << endl;
         }
         out <<
-          indent() << "  throw apache::thrift::TApplicationException(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);" << endl <<
+          indent() << "  interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);" << endl <<
+          indent() << "  return; // from try_and_catch" << endl <<
           indent() << "}" << endl <<
           indent() << "if (fname.compare(\"" << (*f_iter)->get_name() << "\") != 0) {" << endl <<
           indent() << "  " << _this << "iprot_->skip(" <<
@@ -4757,19 +4774,12 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
           endl;
         if (style == "Cob" && !gen_no_client_completion_) {
           out <<
-            indent() << "  completed = true;" << endl <<
             indent() << "  completed__(false);" << endl;
         }
         out <<
-          indent() << "  throw apache::thrift::TApplicationException(apache::thrift::TApplicationException::WRONG_METHOD_NAME);" << endl <<
+          indent() << "  interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::WRONG_METHOD_NAME);" << endl <<
+          indent() << "  return; // from try_and_catch" << endl <<
           indent() << "}" << endl;
-
-        if (!(*f_iter)->get_returntype()->is_void() &&
-            !is_complex_type((*f_iter)->get_returntype())) {
-          t_field returnfield((*f_iter)->get_returntype(), "_return");
-          out <<
-            indent() << declare_field(&returnfield) << endl;
-        }
 
         out <<
           indent() << resultname << " result;" << endl;
@@ -4782,7 +4792,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
         out <<
           indent() << "result.read(" << _this << "iprot_);" << endl <<
           indent() << _this << "iprot_->readMessageEnd();" << endl <<
-          indent() << "bytes = " << _this
+          indent() << "uint32_t bytes = " << _this
                    << "iprot_->getTransport()->readEnd();" << endl <<
           indent() << "if (ctx) ctx->postRead(bytes);" << endl;
 
@@ -4794,22 +4804,20 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
               indent() << "  // _return pointer has now been filled" << endl;
             if (style == "Cob" && !gen_no_client_completion_) {
               out <<
-                indent() << "  completed = true;" << endl <<
                 indent() << "  completed__(true);" << endl;
             }
             out <<
-              indent() << "  return;" << endl <<
+              indent() << "  return; // from try_and_catch" << endl <<
               indent() << "}" << endl;
           } else {
             out <<
               indent() << "if (result.__isset.success) {" << endl;
             if (style == "Cob" && !gen_no_client_completion_) {
               out <<
-                indent() << "  completed = true;" << endl <<
                 indent() << "  completed__(true);" << endl;
             }
             out <<
-              indent() << "  return _return;" << endl <<
+              indent() << "  return; // from try_and_catch" << endl <<
               indent() << "}" << endl;
           }
         }
@@ -4822,11 +4830,11 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
             indent() << "if (result.__isset." << (*x_iter)->get_name() << ") {" << endl;
           if (style == "Cob" && !gen_no_client_completion_) {
             out <<
-              indent() << "  completed = true;" << endl <<
               indent() << "  completed__(true);" << endl;
           }
           out  <<
-            indent() << "  throw result." << (*x_iter)->get_name() << ";" << endl <<
+            indent() << "  interior_ew = folly::make_exception_wrapper<" << type_name((*x_iter)->get_type()) << ">(result." << (*x_iter)->get_name() << ");" <<endl <<
+            indent() << "  return; // from try_and_catch" << endl <<
             indent() << "}" << endl;
         }
 
@@ -4834,31 +4842,72 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
         if ((*f_iter)->get_returntype()->is_void()) {
           if (style == "Cob" && !gen_no_client_completion_) {
             out <<
-              indent() << "completed = true;" << endl <<
               indent() << "completed__(true);" << endl;
           }
-          indent(out) <<
-            "return;" << endl;
+          indent(out) << "return; // from try_and_catch" << endl;
         } else {
           if (style == "Cob" && !gen_no_client_completion_) {
             out <<
-              indent() << "completed = true;" << endl <<
               indent() << "completed__(true);" << endl;
           }
           out <<
-            indent() << "throw apache::thrift::TApplicationException(apache::thrift::TApplicationException::MISSING_RESULT, \"" << (*f_iter)->get_name() << " failed: unknown result\");" << endl;
+            indent() << "interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::MISSING_RESULT, \"" << (*f_iter)->get_name() << " failed: unknown result\");" << endl <<
+            indent() << "return; // from try_and_catch" << endl;
         }
+        indent_down();
+        out << indent() << "});" << endl;
+        out << indent() << "if (interior_ew || caught_ew) {" << endl;
+
+        indent_up();
         if (style == "Cob" && !gen_no_client_completion_) {
-          indent_down();
           out <<
-            indent() << "} catch (...) {" << endl <<
-            indent() << "  if (!completed) {" << endl <<
-            indent() << "    completed__(false);" << endl <<
-            indent() << "  }" << endl <<
-            indent() << "  throw;" << endl <<
+            indent() << "if (interior_ew) {" << endl <<
+            indent() << "  return interior_ew;" << endl <<
+            indent() << "} else {" << endl <<
+            indent() << "  completed__(false);" << endl <<
+            indent() << "  return caught_ew;" << endl <<
             indent() << "}" << endl;
+        } else {
+          out <<
+            indent() << "return interior_ew ? interior_ew : caught_ew;" << endl;
         }
-        // Close function
+        indent_down();
+        out <<
+          indent() << "}" << endl <<
+          indent() << "return folly::exception_wrapper();" << endl;
+        // Close the recv wrapped function
+        scope_down(out);
+        out << endl;
+
+        // Open the recv function
+        if (gen_templates_) {
+          indent(out) << template_header;
+        }
+
+        indent(out) <<
+          function_signature(&recv_function, "", scope) << endl;
+        scope_up(out);
+
+        auto return_type = (*f_iter)->get_returntype();
+        auto args = (*f_iter)->get_arglist()->get_members();
+        if (!is_complex_type(return_type) && !return_type->is_void()) {
+          out << indent() << type_name(return_type, IN_ARG) <<
+            " _return;" << endl;
+        }
+        out <<
+          indent() << "auto ew = recv_wrapped_" << (*f_iter)->get_name() << "(";
+        if (!return_type->is_void()) {
+          out << "_return";
+        }
+        out << ");" << endl;
+        out <<
+          indent() << "if (ew) {" << endl <<
+          indent() << "  ew.throwException();" << endl <<
+          indent() << "}" << endl;
+        if (!is_complex_type(return_type) && !return_type->is_void()) {
+          out << indent() << "return _return;" << endl;
+        }
+        // Close recv function
         scope_down(out);
         out << endl;
       }
@@ -7076,6 +7125,17 @@ string t_cpp_generator::function_signature(t_function* tfunction,
       return
         type_name(ttype) + " " + prefix + tfunction->get_name() +
         "(" + argument_list(arglist, name_params) + ")";
+    }
+  } else if (style == "wrapped") {
+    if (ttype->is_void()) {
+      return
+        "folly::exception_wrapper " + prefix + tfunction->get_name() +
+        "(" + argument_list(arglist, name_params, true) + ")";
+    } else {
+      return
+        "folly::exception_wrapper " + prefix + tfunction->get_name() +
+        "(" + type_name(ttype) + (name_params ? "& _return" : "& /* _return */")
+        + argument_list(arglist, name_params, true) + ")";
     }
   } else if (style.substr(0,3) == "Cob") {
     string cob_type;
