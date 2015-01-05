@@ -77,10 +77,8 @@ TEST(ThriftServer, IdleTimeoutTest) {
   ScopedServerThread sst(getServer());
 
   TEventBase base;
-
-  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto client_channel = HeaderClientChannel::newChannel(socket);
   CloseChecker checker;
@@ -97,10 +95,8 @@ TEST(ThriftServer, NoIdleTimeoutWhileWorkingTest) {
   ScopedServerThread sst(getServer());
 
   TEventBase base;
-
-  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto client_channel = HeaderClientChannel::newChannel(socket);
   auto client_channelp = client_channel.get();
@@ -122,9 +118,8 @@ TEST(ThriftServer, IdleTimeoutAfterTest) {
 
   TEventBase base;
 
-  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto client_channel = HeaderClientChannel::newChannel(socket);
   auto client_channelp = client_channel.get();

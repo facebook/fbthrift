@@ -123,12 +123,9 @@ TEST(CustomStructs, RoundTripEmptyContainer) {
 
 TEST(CustomStructs, SerializeOverHandler) {
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   CustomStructAsyncClient client(
     std::unique_ptr<HeaderClientChannel,

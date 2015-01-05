@@ -152,12 +152,11 @@ TEST(Duplex, DuplexTest) {
   enum {START=1, COUNT=10, INTERVAL=5};
   TEventBase base;
 
-  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto duplexChannel =
-      std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);
+     std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);
   DuplexServiceAsyncClient client(duplexChannel->getClientChannel());
 
   bool success = false;
@@ -185,8 +184,7 @@ void testNonHeader() {
   using apache::thrift::transport::TSocket;
   using apache::thrift::protocol::TBinaryProtocol;
 
-  auto port = sst.getAddress()->getPort();
-  auto socket = make_shared<TSocket>("127.0.0.1", port);
+  auto socket = make_shared<TSocket>(*sst.getAddress());
   auto transport = make_shared<Transport>(socket);
   auto protocol = make_shared<TBinaryProtocol>(transport);
 

@@ -149,10 +149,8 @@ TEST_P(RoundtripTestFixture, RoundtripContainer) {
 
 TEST_P(RoundtripTestFixture, SerializeOverHandler) {
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   shared_ptr<DynamicTestServiceClient> client =
-      createClientPtr<DynamicTestServiceClient>("127.0.0.1", port);
+      createClientPtr<DynamicTestServiceClient>(sst.getAddress());
 
   const SerializableDynamic expected = GetParam();
   SerializableDynamic actual;

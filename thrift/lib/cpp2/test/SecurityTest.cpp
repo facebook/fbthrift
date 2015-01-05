@@ -89,8 +89,9 @@ void enableSecurity(HeaderClientChannel* channel) {
   channel->setSaslClient(std::move(saslClient));
 }
 
-HeaderClientChannel::Ptr getClientChannel(TEventBase* eb, uint16_t port) {
-  auto socket = TAsyncSocket::newSocket(eb, "127.0.0.1", port);
+HeaderClientChannel::Ptr getClientChannel(
+    TEventBase* eb, const folly::SocketAddress& address) {
+  auto socket = TAsyncSocket::newSocket(eb, address);
   auto channel = HeaderClientChannel::newChannel(socket);
 
   enableSecurity(channel.get());
@@ -117,9 +118,7 @@ private:
 
 void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   TEventBase base;
-
-  auto port = sst.getAddress()->getPort();
-  auto channel = getClientChannel(&base, port);
+  auto channel = getClientChannel(&base, *sst.getAddress());
   setup(channel.get());
   TestServiceAsyncClient client(std::move(channel));
   Countdown c(3, [&base](){base.terminateLoopSoon();});
@@ -323,10 +322,8 @@ ScopedServerThread duplexsst(getDuplexServer());
 TEST(Security, Duplex) {
   enum {START=1, COUNT=3, INTERVAL=1};
   TEventBase base;
-
-  auto port = duplexsst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *duplexsst.getAddress()));
 
   auto duplexChannel =
       std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);

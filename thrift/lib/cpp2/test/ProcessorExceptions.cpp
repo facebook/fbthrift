@@ -74,10 +74,8 @@ std::shared_ptr<ThriftServer> getServer() {
 int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
   ScopedServerThread sst(getServer());
   TEventBase base;
-
-  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   SampleService2AsyncClient client(
     std::unique_ptr<HeaderClientChannel,

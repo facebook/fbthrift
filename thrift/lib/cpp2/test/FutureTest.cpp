@@ -123,10 +123,8 @@ std::shared_ptr<ThriftServer> getServer() {
 void AsyncCpp2Test(bool enable_security) {
   ScopedServerThread sst(getServer());
   TEventBase base;
-
-  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto client_channel = HeaderClientChannel::newChannel(socket);
   if (enable_security) {
@@ -155,10 +153,8 @@ void AsyncCpp2Test(bool enable_security) {
 TEST(ThriftServer, FutureExceptions) {
   ScopedServerThread sst(getServer());
   TEventBase base;
-
-  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   FutureServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -179,10 +175,8 @@ TEST(ThriftServer, FutureClientTest) {
   ScopedServerThread sst(getServer());
   TEventBase base;
   TEventBaseExecutor e(&base);
-
-  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   FutureServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -242,10 +236,8 @@ TEST(ThriftServer, FutureGetOrderTest) {
   ScopedServerThread sst(getServer());
   TEventBase base;
   TEventBaseExecutor e(&base);
-
-  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   FutureServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -283,10 +275,8 @@ TEST(ThriftServer, OnewayFutureClientTest) {
 
   ScopedServerThread sst(getServer());
   TEventBase base;
-
-  auto port = sst.getAddress()->getPort();
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   FutureServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,

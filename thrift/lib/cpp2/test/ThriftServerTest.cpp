@@ -103,9 +103,9 @@ std::shared_ptr<ThriftServer> getServer() {
   return server;
 }
 
-std::shared_ptr<TestServiceClient> getThrift1Client(uint16_t port) {
+std::shared_ptr<TestServiceClient> getThrift1Client(
+    const folly::SocketAddress& address) {
   // Create Thrift1 clients
-  folly::SocketAddress address("127.0.0.1", port);
   std::shared_ptr<TSocket> socket = std::make_shared<TSocket>(address);
   socket->open();
   std::shared_ptr<TFramedTransport> transport =
@@ -118,12 +118,9 @@ std::shared_ptr<TestServiceClient> getThrift1Client(uint16_t port) {
 void AsyncCpp2Test(bool enable_security) {
 
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto client_channel = HeaderClientChannel::newChannel(socket);
   if (enable_security) {
@@ -158,14 +155,10 @@ TEST(ThriftServer, SecureAsyncCpp2Test) {
 }
 
 TEST(ThriftServer, SyncClientTest) {
-
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -190,15 +183,11 @@ TEST(ThriftServer, SyncClientTest) {
 }
 
 TEST(ThriftServer, GetLoadTest) {
-
   auto serv = getServer();
   ScopedServerThread sst(serv);
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -231,14 +220,10 @@ TEST(ThriftServer, GetLoadTest) {
 }
 
 TEST(ThriftServer, SerializationInEventBaseTest) {
-
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel =
       std::unique_ptr<HeaderClientChannel,
@@ -254,14 +239,10 @@ TEST(ThriftServer, SerializationInEventBaseTest) {
 }
 
 TEST(ThriftServer, HandlerInEventBaseTest) {
-
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel =
     std::unique_ptr<HeaderClientChannel,
@@ -278,14 +259,10 @@ TEST(ThriftServer, HandlerInEventBaseTest) {
 }
 
 TEST(ThriftServer, LargeSendTest) {
-
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -313,14 +290,10 @@ TEST(ThriftServer, LargeSendTest) {
 }
 
 TEST(ThriftServer, OverloadTest) {
-
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -365,14 +338,10 @@ TEST(ThriftServer, OverloadTest) {
 }
 
 TEST(ThriftServer, OnewaySyncClientTest) {
-
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -400,8 +369,7 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
   {
     TEventBase base;
     std::shared_ptr<TAsyncSocket> socket(
-          TAsyncSocket::newSocket(&base, "127.0.0.1",
-              st.getAddress()->getPort()));
+      TAsyncSocket::newSocket(&base, *st.getAddress()));
     TestServiceAsyncClient client(
         std::unique_ptr<HeaderClientChannel,
             apache::thrift::async::TDelayedDestruction::Destructor>(
@@ -415,14 +383,10 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
 }
 
 TEST(ThriftServer, CompactClientTest) {
-
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -440,14 +404,10 @@ TEST(ThriftServer, CompactClientTest) {
 }
 
 TEST(ThriftServer, CompressionClientTest) {
-
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -474,16 +434,13 @@ TEST(ThriftServer, CompressionClientTest) {
 }
 
 TEST(ThriftServer, ClientTimeoutTest) {
-
   auto server = getServer();
   ScopedServerThread sst(server);
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
 
-  auto getClient = [&base, port] () {
+  auto getClient = [&base, &sst] () {
     std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
     return std::make_shared<TestServiceAsyncClient>(
       std::unique_ptr<HeaderClientChannel,
@@ -589,9 +546,8 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
   apache::thrift::util::ScopedServerThread st(server);
 
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", st.getAddress()->getPort()));
+    TAsyncSocket::newSocket(&base, *st.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -613,7 +569,7 @@ TEST(ThriftServer, Thrift1OnewayRequestTest) {
   apache::thrift::util::ScopedServerThread st(cpp2Server);
 
   std::shared_ptr<TestServiceClient> client = getThrift1Client(
-      st.getAddress()->getPort());
+    *st.getAddress());
   std::string response;
   // Send a oneway request. Server doesn't send error back
   client->noResponse(1);
@@ -658,12 +614,9 @@ class Callback : public RequestCallback {
 
 TEST(ThriftServer, BadSendTest) {
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -691,14 +644,13 @@ TEST(ThriftServer, ResetStateTest) {
       new TAsyncServerSocket);
   ssock->bind(0);
   EXPECT_FALSE(ssock->getAddresses().empty());
-  auto port = ssock->getAddresses()[0].getPort();
 
   // We do this loop a bunch of times, because the bug which caused
   // the assertion failure was a lost race, which doesn't happen
   // reliably.
   for (int i = 0; i < 1000; ++i) {
     std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+      TAsyncSocket::newSocket(&base, ssock->getAddresses()[0]));
 
     // Create a client.
     TestServiceAsyncClient client(
@@ -779,12 +731,9 @@ TEST(ThriftServer, FailureInjection) {
   };
 
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-      TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
       std::unique_ptr<HeaderClientChannel,
@@ -850,9 +799,8 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
   apache::thrift::util::ScopedServerThread st(server);
 
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", st.getAddress()->getPort()));
+    TAsyncSocket::newSocket(&base, *st.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -866,14 +814,10 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
 }
 
 TEST(ThriftServer, FreeCallbackTest) {
-
   ScopedServerThread sst(getServer());
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -951,12 +895,9 @@ TEST(ThriftServer, CallbackOrderingTest) {
   server->setServerEventHandler(serverHandler);
 
   ScopedServerThread sst(server);
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
-
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -995,13 +936,11 @@ class ReadCallbackTest : public TAsyncTransport::ReadCallback {
 TEST(ThriftServer, ShutdownSocketSetTest) {
   auto server = getServer();
   ScopedServerThread sst(server);
-  auto port = sst.getAddress()->getPort();
-
   TEventBase base;
   ReadCallbackTest cb;
 
   std::shared_ptr<TAsyncSocket> socket2(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
   socket2->setReadCallback(&cb);
 
   base.runAfterDelay([&](){
