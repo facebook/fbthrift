@@ -164,7 +164,7 @@ class ThriftServer : public apache::thrift::server::TServer {
   std::mutex ebmMutex_;
 
   //! Creates and manages Cpp2Workers for the IO thread pool
-  class Cpp2WorkerPool {
+  class Cpp2WorkerPool : public folly::wangle::ThreadPoolExecutor::Observer {
    public:
     explicit Cpp2WorkerPool(ThriftServer* server,
                             folly::wangle::IOThreadPoolExecutor* exec);
@@ -172,11 +172,25 @@ class ThriftServer : public apache::thrift::server::TServer {
     template <typename F>
     void forEachWorker(F&& f);
 
-    void stop();
+    void threadStarted(
+      folly::wangle::ThreadPoolExecutor::ThreadHandle*);
+    void threadStopped(
+      folly::wangle::ThreadPoolExecutor::ThreadHandle*);
+    void threadPreviouslyStarted(
+      folly::wangle::ThreadPoolExecutor::ThreadHandle* thread) {
+      threadStarted(thread);
+    }
+    void threadNotYetStopped(
+      folly::wangle::ThreadPoolExecutor::ThreadHandle* thread) {
+      threadStopped(thread);
+    }
 
    private:
     ThriftServer* server_;
-    std::set<std::shared_ptr<Cpp2Worker>> workers_;
+    std::map<
+      folly::wangle::ThreadPoolExecutor::ThreadHandle*,
+      std::shared_ptr<Cpp2Worker>> workers_;
+    folly::wangle::IOThreadPoolExecutor* exec_;
   };
 
   std::shared_ptr<Cpp2WorkerPool> workerPool_;

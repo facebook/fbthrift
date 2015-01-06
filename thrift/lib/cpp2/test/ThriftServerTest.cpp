@@ -953,6 +953,62 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
   EXPECT_EQ(cb.eof, true);
 }
 
+TEST(ThriftServer, ModifyingIOThreadCountLive) {
+  auto server = getServer();
+  auto iothreadpool = std::make_shared<folly::wangle::IOThreadPoolExecutor>(0);
+  server->setIOThreadPool(iothreadpool);
+
+  ScopedServerThread sst(server);
+  // If there are no worker threads, generally the server event base
+  // will stop loop()ing.  Create a timeout event to make sure
+  // it continues to loop for the duration of the test.
+  server->getServeEventBase()->runInEventBaseThread([&](){
+    server->getServeEventBase()->runAfterDelay([](){}, 5000);
+  });
+  auto port = sst.getAddress()->getPort();
+
+  server->getServeEventBase()->runInEventBaseThread([&](){
+    iothreadpool->setNumThreads(0);
+  });
+
+  TEventBase base;
+
+  std::shared_ptr<TAsyncSocket> socket(
+    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+
+  TestServiceAsyncClient client(
+    std::unique_ptr<HeaderClientChannel,
+                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                      new HeaderClientChannel(socket)));
+
+  std::string response;
+
+  boost::polymorphic_downcast<HeaderClientChannel*>(
+    client.getChannel())->setTimeout(100);
+
+  // This should fail as soon as it connects:
+  // since AsyncServerSocket has no accept callbacks installed,
+  // it should close the connection right away.
+  ASSERT_ANY_THROW(
+    client.sync_sendResponse(response, 64));
+
+  server->getServeEventBase()->runInEventBaseThread([&](){
+    iothreadpool->setNumThreads(30);
+  });
+
+  std::shared_ptr<TAsyncSocket> socket2(
+    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+
+  // Can't reuse client since the channel has gone bad
+  TestServiceAsyncClient client2(
+    std::unique_ptr<HeaderClientChannel,
+                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                      new HeaderClientChannel(socket2)));
+
+  client2.sync_sendResponse(response, 64);
+}
+
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   google::InitGoogleLogging(argv[0]);

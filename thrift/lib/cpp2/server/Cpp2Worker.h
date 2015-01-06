@@ -42,9 +42,8 @@ class ThriftServer;
  * connection to a Cpp2Worker running in another thread.  There should
  * typically be around one Cpp2Worker thread per core.
  */
-class Cpp2Worker :
-      public apache::thrift::server::TServer,
-      public folly::Acceptor {
+class Cpp2Worker
+    : public folly::Acceptor {
  public:
 
   /**
@@ -59,7 +58,6 @@ class Cpp2Worker :
              const std::shared_ptr<HeaderServerChannel>&
              serverChannel = nullptr,
              folly::EventBase* eventBase = nullptr) :
-    TServer(std::shared_ptr<apache::thrift::server::TProcessor>()),
     Acceptor(server->getServerSocketConfig()),
     server_(server),
     eventBase_(eventBase),
@@ -82,11 +80,6 @@ class Cpp2Worker :
   }
 
   /**
-   * Destroy a Cpp2Worker. Clean up connection list.
-   */
-  virtual ~Cpp2Worker();
-
-  /**
    * Get underlying server.
    *
    * @returns pointer to ThriftServer
@@ -94,13 +87,6 @@ class Cpp2Worker :
    ThriftServer* getServer() const {
     return server_;
   }
-
-  void stopEventBase() noexcept;
-
-  /**
-   * Enter event loop and serve.
-   */
-  void serve();
 
   /**
    * Count the number of pending fds. Used for overload detection.

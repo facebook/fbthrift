@@ -100,32 +100,6 @@ void Cpp2Worker::useExistingChannel(
   conn->start();
 }
 
-void Cpp2Worker::stopEventBase() noexcept {
-  eventBase_->terminateLoopSoon();
-}
-
-/**
- * All the work gets done here via callbacks to acceptConnections() and
- * to the handler functions in TAsyncSocket
- */
-void Cpp2Worker::serve() {
-  try {
-    // No events are registered by default, loopForever.
-    eventBase_->loopForever();
-
-    // Inform the TEventBaseManager that our TEventBase is no longer valid.
-    // This prevents iterations over the manager's TEventBases from
-    // including this one, which will soon be destructed.
-    server_->getEventBaseManager()->clearEventBase();
-  } catch (TException& tx) {
-    LOG(ERROR) << "Cpp2Worker::serve: " << folly::exceptionStr(tx);
-  }
-}
-
-Cpp2Worker::~Cpp2Worker() {
-  eventBase_->terminateLoopSoon();
-}
-
 int Cpp2Worker::pendingCount() {
   // Only recalculate once every pending_interval
   if (FLAGS_pending_interval > 0) {

@@ -333,6 +333,7 @@ void ThriftServer::setup() {
       ioThreadPool_->setNumThreads(nWorkers_);
       workerPool_ = std::make_shared<Cpp2WorkerPool>(
         this, ioThreadPool_.get());
+      ioThreadPool_->addObserver(workerPool_);
 
       // Notify handler of the preServe event
       if (eventHandler_ != nullptr) {
@@ -432,7 +433,7 @@ void ThriftServer::stopWorkers() {
   if (serverChannel_) {
     return;
   }
-  workerPool_->stop();
+
   ioThreadPool_->join();
 }
 
@@ -572,32 +573,42 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
 template <typename F>
 void ThriftServer::Cpp2WorkerPool::forEachWorker(F&& f) {
   for (const auto& kv : workers_) {
-    f(kv);
+    f(kv.second);
   }
 }
 
 ThriftServer::Cpp2WorkerPool::Cpp2WorkerPool(
   ThriftServer* server,
   folly::wangle::IOThreadPoolExecutor* exec)
-    : server_(server) {
+    : server_(server)
+    , exec_(exec) {
   CHECK(!server_->serverChannel_);
-
-  for (auto& base : exec->getEventBases()) {
-    auto worker = std::make_shared<Cpp2Worker>(server_, nullptr, base);
-    workers_.insert(worker);
-  }
 }
 
-void ThriftServer::Cpp2WorkerPool::stop() {
-  auto barrier = std::make_shared<boost::barrier>(workers_.size() + 1);
-  forEachWorker([barrier,this](std::shared_ptr<Cpp2Worker> worker){
-    worker->getEventBase()->runInEventBaseThread([=]() {
-      worker->dropAllConnections();
-      barrier->wait();
-    });
+void ThriftServer::Cpp2WorkerPool::threadStarted(
+    folly::wangle::ThreadPoolExecutor::ThreadHandle* h) {
+  auto worker = std::make_shared<Cpp2Worker>(server_, nullptr,
+                                             exec_->getEventBase(h));
+  workers_.insert({h, worker});
+}
+
+void ThriftServer::Cpp2WorkerPool::threadStopped(
+    folly::wangle::ThreadPoolExecutor::ThreadHandle* h) {
+  auto worker = workers_.find(h);
+  CHECK(worker != workers_.end());
+
+  if (server_->socket_) {
+    server_->socket_->removeAcceptCallback(worker->second.get(), nullptr);
+  }
+
+  auto barrier = std::make_shared<boost::barrier>(2);
+  worker->second->getEventBase()->runInEventBaseThread([=]() {
+    worker->second->dropAllConnections();
+    barrier->wait();
   });
+
   barrier->wait();
-  workers_.clear();
+  workers_.erase(worker);
 }
 
 }} // apache::thrift
