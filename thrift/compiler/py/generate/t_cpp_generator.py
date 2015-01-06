@@ -95,6 +95,7 @@ class CppGenerator(t_generator.Generator):
         'json': 'enable simple json protocol',
         'implicit_templates' : 'templates are instantiated implicitly' +
                                'instead of explicitly',
+        'separate_processmap' : 'Put the serice processmap in a separate cpp',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -471,8 +472,9 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_service(self, service):
         # open files and instantiate outputs
-        context = self._make_context(service.name, True)
+        context = self._make_context(service.name, True, True)
         self._out_tcc = context.tcc
+        self._additional_outputs = context.additional_outputs
         s = self._service_global = get_global_scope(CppPrimitiveFactory,
                                                     context)
         # Enter the scope (prints guard)
@@ -1327,6 +1329,8 @@ class CppGenerator(t_generator.Generator):
                 process_map = out().defn(map_type + ' {name}',
                                          name=map_name,
                                          modifiers='static')
+                if self.flag_separate_processmap:
+                    process_map.output = self._additional_outputs[0]
                 process_map.epilogue = ';'
 
                 with process_map:
@@ -3704,16 +3708,21 @@ class CppGenerator(t_generator.Generator):
         sns.release()  # namespace
         sg.release()   # global scope
 
-    def _make_context(self, filename, tcc=False):
+    def _make_context(self, filename, tcc=False, processmap = False):
         'Convenience method to get the context and outputs for some file pair'
         # open files and instantiate outputs
         output_h = self._write_to(filename + '.h')
         output_impl = self._write_to(filename + '.cpp')
         output_tcc = self._write_to(filename + '.tcc') if tcc else None
+        additional_outputs = []
+        if processmap:
+            output_processmap_cpp = self._write_to(filename + "_processmap.cpp")
+            additional_outputs.append(output_processmap_cpp)
+
         header_path = self._with_include_prefix(self._program, filename)
 
         context = CppOutputContext(output_impl, output_h, output_tcc,
-                                   header_path)
+                                   header_path, additional_outputs)
 
         print >>context.outputs, self._autogen_comment
         return context

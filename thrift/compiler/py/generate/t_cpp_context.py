@@ -317,12 +317,13 @@ class CppPrimitiveFactory(PrimitiveFactory):
 
 class CppOutputContext(OutputContext):
 
-    def __init__(self, output_cpp, output_h, output_tcc, header_path):
+    def __init__(self, output_cpp, output_h, output_tcc, header_path, additional_outputs = []):
         self._output_cpp = output_cpp
         self._output_h = output_h
         self._output_tcc = output_tcc
+        self._additional_outputs = additional_outputs
         self._header_path = header_path
-        outputs = [output_cpp, output_h]
+        outputs = [output_cpp, output_h] + additional_outputs
 
         if output_tcc:
             outputs.append(output_tcc)
@@ -338,6 +339,10 @@ class CppOutputContext(OutputContext):
     @property
     def h(self):
         return self._output_h
+
+    @property
+    def additional_outputs(self):
+        return self._additional_outputs
 
     @property
     def impl(self):
@@ -368,9 +373,15 @@ class CppOutputContext(OutputContext):
             # include h in cpp
             print >>self._output_cpp, '#include "{0}.h"\n'.format(
                         self._header_path)
+            for output in self._additional_outputs:
+                print >>output, '#include "{0}.h"\n'.format(
+                    self._header_path)
             if self._output_tcc:
                 print >>self._output_cpp, '#include "{0}.tcc"\n'.format(
                     self._header_path)
+                for output in self._additional_outputs:
+                    print >>output, '#include "{0}.tcc"\n'.format(
+                        self._header_path)
                 # start guard in tcc
                 print >>self._output_tcc, '#pragma once\n'
                 # include h in tcc
