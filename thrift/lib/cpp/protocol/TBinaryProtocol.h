@@ -96,6 +96,14 @@ class TBinaryProtocolT
     container_limit_ = container_limit;
   }
 
+  int32_t getStringSizeLimit() {
+    return string_limit_;
+  }
+
+  int32_t getContainerSizeLimit() {
+    return container_limit_;
+  }
+
   void setStrict(bool strict_read, bool strict_write) {
     strict_read_ = strict_read;
     strict_write_ = strict_write;

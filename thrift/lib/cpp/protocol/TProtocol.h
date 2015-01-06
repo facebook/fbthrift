@@ -693,6 +693,14 @@ class TProtocol {
     return ret;
   }
 
+  int32_t getStringSizeLimit() {
+    return 0; // No limit
+  }
+
+  int32_t getContainerSizeLimit() {
+    return 0; // No limit
+  }
+
   /*
    * std::vector is specialized for bool, and its elements are individual bits
    * rather than bools.   We need to define a different version of readBool()

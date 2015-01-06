@@ -27,6 +27,7 @@
 #include <stdexcept>
 #include <string>
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
 
 namespace apache { namespace thrift { namespace util {
 
@@ -193,6 +194,12 @@ ThriftSerializer<Dummy, P>::deserialize(const uint8_t* serializedBuffer,
 
   // deserialize buffer into fields
   uint32_t len = fields->read(protocol_.get());
+
+  uint32_t string_limit = protocol_->getStringSizeLimit();
+  if (string_limit > 0 && len > string_limit) {
+    throw apache::thrift::protocol::TProtocolException(
+        apache::thrift::protocol::TProtocolException::SIZE_LIMIT);
+  }
 
   // read the end of message
   if (serializeVersion_) {

@@ -143,6 +143,14 @@ class TCompactProtocolT
     container_limit_ = container_limit;
   }
 
+  int32_t getStringSizeLimit() {
+    return string_limit_;
+  }
+
+  int32_t getContainerSizeLimit() {
+    return container_limit_;
+  }
+
   /** Set this if you need backwards compatibility with an old version */
   void setVersion(const int8_t version) {
     version_ = version;
