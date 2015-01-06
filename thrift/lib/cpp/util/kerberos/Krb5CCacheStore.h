@@ -22,6 +22,7 @@
 #include <condition_variable>
 #include <iostream>
 #include <krb5.h>
+#include <queue>
 #include <string>
 #include <thread>
 #include <unordered_map>
@@ -35,8 +36,15 @@ namespace apache { namespace thrift { namespace krb5 {
 
 class Krb5CCacheStore {
  public:
-  explicit Krb5CCacheStore(const std::shared_ptr<SecurityLogger>& logger)
-    : logger_(logger) {}
+  /**
+   * maxCacheSize specifies the max size of the in-memory cache. If
+   * it is 0, then no cache is used, if it is < 0, then there is no limit.
+   */
+  explicit Krb5CCacheStore(
+      const std::shared_ptr<SecurityLogger>& logger,
+      int maxCacheSize)
+    : maxCacheSize_(maxCacheSize)
+    , logger_(logger) {}
   virtual ~Krb5CCacheStore() {}
 
   typedef boost::shared_mutex Lock;
@@ -110,6 +118,9 @@ class Krb5CCacheStore {
    */
   typedef std::unordered_map<std::string, std::shared_ptr<ServiceData>>
     DataMapType;
+  std::queue<std::string> cacheItemQueue_;
+  int maxCacheSize_;
+
   Lock serviceDataMapLock_;
   DataMapType serviceDataMap_;
 

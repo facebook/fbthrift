@@ -34,7 +34,8 @@ const int Krb5CredentialsCacheManager::ABOUT_TO_EXPIRE_THRESHOLD = 600;
 const int Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE = 10000;
 
 Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
-  const std::shared_ptr<SecurityLogger>& logger)
+  const std::shared_ptr<SecurityLogger>& logger,
+  int maxCacheSize)
     : stopManageThread_(false)
     , logger_(logger)
     , ccacheTypeIsMemory_(false) {
@@ -43,7 +44,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
     // These calls can throw if the context cannot be initialized for some
     // reason, e.g. bad config format, etc.
     ctx_ = folly::make_unique<Krb5Context>();
-    store_ = folly::make_unique<Krb5CCacheStore>(logger);
+    store_ = folly::make_unique<Krb5CCacheStore>(logger, maxCacheSize);
   } catch (const std::runtime_error& e) {
     // Caught exception while trying to initialize the context / store.
     // The ccache manager thread will detect this and attempt to initialize them
@@ -71,7 +72,8 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
           ctx_ = folly::make_unique<Krb5Context>();
         }
         if (!store_) {
-          store_ = folly::make_unique<Krb5CCacheStore>(logger);
+          store_ = folly::make_unique<Krb5CCacheStore>(
+            logger, maxCacheSize);
         }
 
         // Reinit or init the cache store if it expired or has never been

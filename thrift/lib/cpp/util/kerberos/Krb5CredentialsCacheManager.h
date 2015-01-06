@@ -44,7 +44,8 @@ class Krb5CredentialsCacheManager {
    */
   explicit Krb5CredentialsCacheManager(
     const std::shared_ptr<SecurityLogger>& logger =
-      std::make_shared<SecurityLogger>());
+      std::make_shared<SecurityLogger>(),
+    int maxCacheSize = -1);
 
   virtual ~Krb5CredentialsCacheManager();
 

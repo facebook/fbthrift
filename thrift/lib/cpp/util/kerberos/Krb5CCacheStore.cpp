@@ -110,8 +110,13 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
 
 std::shared_ptr<Krb5CCacheStore::ServiceData>
     Krb5CCacheStore::getServiceDataPtr(const Krb5Principal& service) {
-  string service_name = folly::to<string>(service);
 
+  // If ccache is disabled, just return a fresh ServiceData obj
+  if (maxCacheSize_ == 0) {
+    return std::make_shared<ServiceData>();
+  }
+
+  string service_name = folly::to<string>(service);
   {
     ReadLock readLock(serviceDataMapLock_);
     auto found = serviceDataMap_.find(service_name);
@@ -123,8 +128,15 @@ std::shared_ptr<Krb5CCacheStore::ServiceData>
 
   // Not found, we need to create it
   WriteLock writeLock(serviceDataMapLock_);
-  if (!serviceDataMap_.count(service_name)) {
+  auto found = serviceDataMap_.find(service_name);
+  if (found == serviceDataMap_.end()) {
+    // If we reached the limit, then we need to free some room
+    if (maxCacheSize_ > 0 && cacheItemQueue_.size() >= maxCacheSize_) {
+      serviceDataMap_.erase(cacheItemQueue_.front());
+      cacheItemQueue_.pop();
+    }
     serviceDataMap_[service_name] = std::make_shared<ServiceData>();
+    cacheItemQueue_.push(service_name);
   }
   return serviceDataMap_[service_name];
 }
