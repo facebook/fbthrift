@@ -37,9 +37,10 @@ from thrift.protocol import TBinaryProtocol, THeaderProtocol, \
         TMultiplexedProtocol
 
 SERVER_TYPES = [
-    "TNonblockingServer",
     "TCppServer",
     ]
+if sys.version_info[0] < 3:
+    SERVER_TYPES.append("TNonblockingServer")
 FRAMED_TYPES = ["TNonblockingServer"]
 _servers = []
 _ports = {}
@@ -94,7 +95,6 @@ def wait_for_server(port, timeout, ssl=False):
             time.sleep(0.1)
             continue
     return False
-
 
 class AbstractTest(object):
 
@@ -282,12 +282,7 @@ class AbstractTest(object):
             #    event on the top of the next handle() iteration, so
             #    the count could be off by 2 in this case rather than 1.
             # 3) THeaderProtocol on the server breaks this for some reason
-            # 4) Using epoll in TNonblockingServer breaks this in python 3
-            if sys.version_info[0] >= 3 and self.server_type == \
-                    "TNonblockingServer":
-                raise unittest.SkipTest("testEventCountRelationships " \
-                    "fails for TNonblockingServer (#3656903)")
-            elif num_dest and not self.server_header:
+            if num_dest and not self.server_header:
                 self.assert_(num_new - num_dest <= 2)
 
     def testNonblockingTimeout(self):
