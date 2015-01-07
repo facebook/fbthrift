@@ -26,8 +26,6 @@
 
 #include <assert.h>
 
-DECLARE_string(sasl_policy);
-
 namespace apache { namespace thrift {
 
 using namespace apache::thrift::protocol;
@@ -73,14 +71,15 @@ Cpp2Connection::Cpp2Connection(
   }
 
   // Process the security kill switch.
-  if (isSecurityKillSwitchEnabled() && FLAGS_sasl_policy == "required") {
+  if (isSecurityKillSwitchEnabled() &&
+      worker_->getServer()->getSaslPolicy() == "required") {
     // This means we downgrade only from "required" to "permitted, and don't
     // end up upgrading from "disabled" to "permitted"
     worker_->getServer()->setNonSaslEnabled(true);
   } else {
     // This is necessary for the server to revert back to old behavior once
     // kill switch has been removed after being turned on for some time.
-    if (FLAGS_sasl_policy == "permitted") {
+    if (worker_->getServer()->getSaslPolicy() == "permitted") {
       worker_->getServer()->setNonSaslEnabled(true);
     } else {
       // sasl_policy is either "required" or "disabled"
@@ -99,8 +98,11 @@ Cpp2Connection::Cpp2Connection(
     }
   }
 
+  const bool downgradeSaslPolicy = address->isLoopbackAddress() &&
+      worker_->getServer()->getAllowInsecureLoopback();
+
   if (worker_->getServer()->getSaslEnabled() &&
-      worker_->getServer()->getNonSaslEnabled()) {
+      (worker_->getServer()->getNonSaslEnabled() || downgradeSaslPolicy)) {
     channel_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
   } else if (worker_->getServer()->getSaslEnabled()) {
     channel_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);

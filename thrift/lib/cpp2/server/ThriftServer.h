@@ -79,7 +79,7 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
 class ThriftServer : public apache::thrift::server::TServer {
  public:
 
-  struct FailureInjection {
+    struct FailureInjection {
     FailureInjection()
       : errorFraction(0),
         dropFraction(0),
@@ -131,6 +131,8 @@ class ThriftServer : public apache::thrift::server::TServer {
   // Security negotiation settings
   bool saslEnabled_;
   bool nonSaslEnabled_;
+  const std::string saslPolicy_;
+  const bool allowInsecureLoopback_;
   std::function<std::unique_ptr<SaslServer> (
     apache::thrift::async::TEventBase*)> saslServerFactory_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
@@ -328,6 +330,9 @@ class ThriftServer : public apache::thrift::server::TServer {
 
  public:
   ThriftServer();
+  ThriftServer(const std::string& sasl_policy,
+               bool allow_insecure_loopback);
+
 
   // NOTE: Don't use this constructor to create a regular Thrift server. This
   // constructor is used by the client to create a duplex server on an existing
@@ -638,6 +643,12 @@ class ThriftServer : public apache::thrift::server::TServer {
   }
   bool getSaslEnabled() {
     return saslEnabled_;
+  }
+  bool getAllowInsecureLoopback() const {
+    return allowInsecureLoopback_;
+  }
+  std::string getSaslPolicy() const {
+    return saslPolicy_;
   }
 
   // The default SASL implementation can be overridden for testing or

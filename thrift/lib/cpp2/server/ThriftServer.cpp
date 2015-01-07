@@ -85,11 +85,17 @@ const std::chrono::milliseconds ThriftServer::DEFAULT_TIMEOUT =
     std::chrono::milliseconds(60000);
 
 ThriftServer::ThriftServer() :
+  ThriftServer("", false) {}
+
+ThriftServer::ThriftServer(const std::string& saslPolicy,
+                           bool allowInsecureLoopback) :
   apache::thrift::server::TServer(
     std::shared_ptr<apache::thrift::server::TProcessor>()),
   port_(-1),
   saslEnabled_(false),
   nonSaslEnabled_(true),
+  saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy),
+  allowInsecureLoopback_(allowInsecureLoopback),
   shutdownSocketSet_(
     folly::make_unique<folly::ShutdownSocketSet>()),
   serveEventBase_(nullptr),
@@ -118,10 +124,10 @@ ThriftServer::ThriftServer() :
   isDuplex_(false) {
 
   // SASL setup
-  if (FLAGS_sasl_policy == "required") {
+  if (saslPolicy_ == "required") {
     setSaslEnabled(true);
     setNonSaslEnabled(false);
-  } else if (FLAGS_sasl_policy == "permitted") {
+  } else if (saslPolicy_ == "permitted") {
     setSaslEnabled(true);
     setNonSaslEnabled(true);
   }
@@ -246,7 +252,7 @@ void ThriftServer::setup() {
       );
     }
 
-    if (FLAGS_sasl_policy == "required" || FLAGS_sasl_policy == "permitted") {
+    if (saslPolicy_ == "required" || saslPolicy_ == "permitted") {
       if (!saslThreadManager_) {
         saslThreadManager_ = ThreadManager::newSimpleThreadManager(
           nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_, /* count */
