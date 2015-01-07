@@ -2,9 +2,10 @@
 # @lint-avoid-python-3-compatibility-imports
 
 import sys
+import asyncio
 
 from thrift.Thrift import TMessageType, TApplicationException, TType
-
+import thrift.server.TAsyncioServer as TAsyncioServer
 
 def process_main(func):
     """Decorator for process method."""
@@ -67,3 +68,21 @@ def run_on_thread(func):
 
 def should_run_on_thread(func):
     return getattr(func, "_run_on_thread", False)
+
+
+@asyncio.coroutine
+def create_client(client_klass, *, host=None, port=None, loop=None):
+    """
+    create a asyncio thrift client and return it
+    This is a coroutine
+    :param client_klass: thrift Client class
+    :param host: hostname/ip, None = loopback
+    :param port: port number
+    :param loop: asyncio event loop
+    """
+    if not loop:
+        loop = asyncio.get_event_loop()
+    transport, protocol = yield from loop.create_connection(
+        TAsyncioServer.ThriftClientProtocolFactory(client_klass),
+        host=host, port=port)
+    return protocol.client

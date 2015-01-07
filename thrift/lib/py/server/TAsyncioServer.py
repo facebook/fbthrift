@@ -14,6 +14,7 @@ from thrift.transport.TTransport import TMemoryBuffer, TTransportException
 from thrift.protocol.THeaderProtocol import (
     THeaderProtocol,
     THeaderProtocolFactory,
+    THeaderTransport
 )
 
 
@@ -129,7 +130,7 @@ class AsyncioRpcConnectionContext(TConnectionContext):
 
 
 class FramedProtocol(asyncio.Protocol):
-    MAX_LENGTH = 1 << 24
+    MAX_LENGTH = THeaderTransport.MAX_FRAME_SIZE
 
     def __init__(self):
         self.recvd = b""
