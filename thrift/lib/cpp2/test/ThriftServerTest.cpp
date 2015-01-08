@@ -965,7 +965,6 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   server->getServeEventBase()->runInEventBaseThread([&](){
     server->getServeEventBase()->runAfterDelay([](){}, 5000);
   });
-  auto port = sst.getAddress()->getPort();
 
   server->getServeEventBase()->runInEventBaseThread([&](){
     iothreadpool->setNumThreads(0);
@@ -974,7 +973,7 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   TEventBase base;
 
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
@@ -997,7 +996,7 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   });
 
   std::shared_ptr<TAsyncSocket> socket2(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   // Can't reuse client since the channel has gone bad
   TestServiceAsyncClient client2(
