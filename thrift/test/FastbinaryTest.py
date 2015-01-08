@@ -49,6 +49,9 @@ class TDevNullTransport(TTransport.TTransportBase):
     def isOpen(self):
         return True
 
+reserved = Reserved()
+reserved.from_PY_RESERVED_KEYWORD = "reserved"
+
 ooe1 = OneOfEach()
 ooe1.im_true   = True
 ooe1.im_false  = False
@@ -160,6 +163,8 @@ def doTest():
     no_set = deepcopy(hm)
     no_set.contain = set()
     checkRead(no_set)
+    checkRead(reserved)
+    checkWrite(reserved)
     checkWrite(rs)
     checkRead(rs)
     checkWrite(rshuge)

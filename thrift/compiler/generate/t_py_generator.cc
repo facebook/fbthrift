@@ -1096,7 +1096,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
 
     indent(out) << "(" << member->get_key() << ", "
           << type_to_enum(member->get_type()) << ", "
-          << "'" << member->get_name() << "'" << ", "
+          << "'" << rename_reserved_keywords(member->get_name()) << "'" << ", "
           << type_to_spec_args(member->get_type()) << ", "
           << render_field_default_value(member) << ", "
           << member->get_req() << ", "
@@ -1119,7 +1119,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
 
   indent(out) << "def __init__(self, ";
   for (auto& member: sorted_members) {
-    out << member->get_name() << "=None, ";
+    out << rename_reserved_keywords(member->get_name()) << "=None, ";
   }
   out << "):" << endl;
   indent_up();
@@ -1127,10 +1127,12 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
     indent(out) << "self.value = None" << endl;
 
     for (auto& member: sorted_members) {
-      indent(out) << "if " << member->get_name() << " is not None:" << endl;
+      indent(out) << "if " << rename_reserved_keywords(member->get_name())
+                  << " is not None:" << endl;
       indent(out) << "  assert self.field == 0 and self.value is None" << endl;
       indent(out) << "  self.field = " << member->get_key() << endl;
-      indent(out) << "  self.value = " << member->get_name() << endl;
+      indent(out) << "  self.value = "
+                  << rename_reserved_keywords(member->get_name()) << endl;
     }
 
   indent_down();
@@ -1197,7 +1199,8 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
     indent_up();
     generate_deserialize_field(out, member, "");
     indent(out) << "assert self.field == 0 and self.value is None" << endl;
-    indent(out) << "self.set_" << n << "(" << n << ")" << endl;
+    indent(out) << "self.set_" << n << "(" << rename_reserved_keywords(n)
+                << ")" << endl;
     indent_down();
     indent(out) << "else:" << endl;
     indent(out) << "  iprot.skip(ftype)" << endl;
@@ -1233,7 +1236,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
     indent(out) << "oprot.writeFieldBegin('" << n << "', " << t << ", " << k
                 << ")" << endl;
 
-    indent(out) << n << " = self.value" << endl;
+    indent(out) << rename_reserved_keywords(n) << " = self.value" << endl;
     generate_serialize_field(out, member, "");
     indent(out) << "oprot.writeFieldEnd()" << endl;
     indent_down();
@@ -1264,7 +1267,8 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
       indent(out) << "if '" << n << "' in obj:" << endl;
       indent_up();
       generate_json_field(out, member, "", "", "obj['" + n + "']");
-      indent(out) << "self.set_" << n << "(" << n << ")" << endl;
+      indent(out) << "self.set_" << n << "(" << rename_reserved_keywords(n)
+                  << ")" << endl;
       indent_down();
     }
     indent_down();
@@ -1322,7 +1326,8 @@ void t_py_generator::generate_py_thrift_spec(ofstream& out,
 
     indent(out) << "(" << (*m_iter)->get_key() << ", "
           << type_to_enum((*m_iter)->get_type()) << ", "
-          << "'" << (*m_iter)->get_name() << "'" << ", "
+          << "'" << rename_reserved_keywords((*m_iter)->get_name()) << "'"
+          << ", "
           << type_to_spec_args((*m_iter)->get_type()) << ", "
           << render_field_default_value(*m_iter) << ", "
           << (*m_iter)->get_req() << ", "

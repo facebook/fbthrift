@@ -20,6 +20,10 @@
 namespace cpp thrift.test.debug
 namespace java thrift.test
 
+struct Reserved {
+ 1: string from,
+}
+
 struct Doubles {
  1: double nan,
  2: double inf,
