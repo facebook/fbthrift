@@ -30,8 +30,8 @@ class FutureCallbackBase : public RequestCallback {
     void requestSent() {};
 
     void requestError(ClientReceiveState&& state) {
-      CHECK(state.exception());
-      promise_.setException(state.exception());
+      CHECK(state.isException());
+      promise_.setException(state.moveExceptionWrapper());
     }
 
   protected:
@@ -50,22 +50,20 @@ class FutureCallback : public FutureCallbackBase<Result> {
             processor_(processor) {}
 
     void replyReceived(ClientReceiveState&& state) {
-      CHECK(!state.exception());
+      CHECK(!state.isException());
       CHECK(state.buf());
 
-      try {
+      this->promise_.fulfil([&]{
         Result result;
         processor_(result, state);
-        this->promise_.setValue(std::move(result));
-      } catch (...) {
-        this->promise_.setException(std::current_exception());
-      }
+        return result;
+      });
     }
 
     void requestError(ClientReceiveState&& state) {
-      CHECK(state.exception());
+      CHECK(state.isException());
       CHECK(!state.buf());
-      this->promise_.setException(state.exception());
+      this->promise_.setException(state.moveExceptionWrapper());
     }
   private:
     Processor processor_;
@@ -85,14 +83,12 @@ class FutureCallback<Result,
             processor_(processor) {}
 
     void replyReceived(ClientReceiveState&& state) {
-      CHECK(!state.exception());
+      CHECK(!state.isException());
       CHECK(state.buf());
 
-      try {
-        this->promise_.setValue(processor_(state));
-      } catch (...) {
-        this->promise_.setException(std::current_exception());
-      }
+      this->promise_.fulfil([&]{
+        return processor_(state);
+      });
     }
 
   private:
@@ -113,7 +109,7 @@ class FutureCallback<void> : public FutureCallbackBase<void> {
     };
 
     void replyReceived(ClientReceiveState&& state) {
-      CHECK(!state.exception());
+      CHECK(!state.isException());
       CHECK(!isOneWay_);
 
       promise_.setValue();

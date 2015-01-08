@@ -70,6 +70,10 @@ class ClientReceiveState {
     return excw_;
   }
 
+  folly::exception_wrapper&& moveExceptionWrapper() {
+    return std::move(excw_);
+  }
+
   std::exception_ptr exception() {
     if (!exc_ && excw_) {
       exc_ = excw_.getExceptionPtr();
