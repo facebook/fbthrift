@@ -159,6 +159,9 @@ void GssSaslClient::start(Callback *cb) {
   });
   if (ew_tm) {
     logger->log("too_many_pending_tasks_in_start");
+    // Since we haven't started, we need to make sure we unset the
+    // inProgress indicator.
+    *inProgress = false;
     cb->saslError(std::move(ew_tm));
     // no end() here.  If this happens, we never really started.
   }
