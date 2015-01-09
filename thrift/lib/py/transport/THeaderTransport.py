@@ -108,6 +108,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
     def __init__(self, trans, client_types=None):
         self.__trans = trans
         self.__rbuf = StringIO()
+        self.__rbuf_frame = False
         self.__wbuf = StringIO()
         # 2^32 - 3, to test the rollover code. The start value doesn't matter.
         self.__seq_id = 4294967293
@@ -209,6 +210,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         return ret + self.__rbuf.read(sz - len(ret))
 
     def readFrame(self, req_sz):
+        self.__rbuf_frame = True
         word1 = self.__trans.readAll(4)
         # These two unpack statements must use signed integers.
         # See note about hex constants in TBinaryProtocol.py
@@ -349,7 +351,6 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__wbuf.write(buf)
 
     def transform(self, buf):
-
         for trans_id in self.__write_transforms:
             if trans_id == self.ZLIB_TRANSFORM:
                 buf = zlib.compress(buf)
@@ -484,6 +485,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
     # Implement the CReadableTransport interface.
     @property
     def cstringio_buf(self):
+        if not self.__rbuf_frame:
+            self.readFrame(0)
         return self.__rbuf
 
     def cstringio_refill(self, prefix, reqlen):
