@@ -483,7 +483,7 @@ class CppGenerator(t_generator.Generator):
         if not self.flag_bootstrap:
             s('#include <thrift/lib/cpp/TApplicationException.h>')
         s('#include <thrift/lib/cpp2/async/FutureRequest.h>')
-        s('#include <folly/wangle/futures/Future.h>')
+        s('#include <folly/futures/Future.h>')
         s('#include "{0}"'.format(self._with_include_prefix(self._program,
                                                              self._program.name
                                                              + '_types.h')))
