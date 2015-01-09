@@ -29,7 +29,7 @@
 namespace apache { namespace thrift { namespace krb5 {
 using namespace std;
 
-const int Krb5CredentialsCacheManager::MANAGE_THREAD_SLEEP_PERIOD = 60*1000;
+const int Krb5CredentialsCacheManager::MANAGE_THREAD_SLEEP_PERIOD = 10*60*1000;
 const int Krb5CredentialsCacheManager::ABOUT_TO_EXPIRE_THRESHOLD = 600;
 const int Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE = 10000;
 
