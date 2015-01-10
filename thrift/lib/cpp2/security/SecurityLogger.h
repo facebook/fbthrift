@@ -87,6 +87,9 @@ class SecurityLogger {
   void logEnd(const std::string& key) {
     log(key, {}, END);
   }
+  void logEnd(const std::string& key, const std::string& data) {
+    log(key, {data}, END);
+  }
 };
 
 }}  // apache::thrift
