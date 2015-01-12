@@ -213,6 +213,15 @@ class TSocket(TSocketBase):
         self._timeout = None
         self.close_on_exec = True
 
+    def __enter__(self):
+        if not self.isOpen():
+            self.open()
+        return self
+
+    def __exit__(self, type, value, traceback):
+        if self.isOpen():
+            self.close()
+
     def setHandle(self, h):
         self.handle = h
         self.handles[h.fileno()] = h
@@ -312,6 +321,16 @@ class TServerSocket(TSocketBase, TServerTransportBase):
         # we need to keep track of the accept backlog.
         self._queue = []
 
+    def __enter__(self):
+        if not self.isListening():
+            self.listen()
+        return self
+
+    def __exit__(self, type, value, traceback):
+        if self.isListening():
+            self.close()
+        return self
+
     def getSocketName(self):
         warnings.warn('getSocketName() is deprecated for TServerSocket.  '
                       'Please use getSocketNames() instead.')
@@ -336,6 +355,9 @@ class TServerSocket(TSocketBase, TServerTransportBase):
             eno, message = err.args
             if eno == errno.ECONNREFUSED:
                 os.unlink(addrinfo[4])
+
+    def isListening(self):
+        return bool(self.handles)
 
     def listen(self):
         res0 = self._resolveAddr(self.family)
