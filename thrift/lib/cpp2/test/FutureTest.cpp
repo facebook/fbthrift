@@ -41,7 +41,6 @@ using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
-using namespace folly::wangle;
 using namespace folly;
 using facebook::concurrency::TEventBaseExecutor;
 
@@ -206,7 +205,7 @@ TEST(ThriftServer, FutureClientTest) {
   EXPECT_GE(waitTime, factor * sentTime);
 
   auto len = client.future_sendResponse(64).then(
-    [](folly::wangle::Try<std::string>&& response) {
+    [](folly::Try<std::string>&& response) {
       EXPECT_TRUE(response.hasValue());
       EXPECT_EQ(response.value(), "test64");
       return response.value().size();

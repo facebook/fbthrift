@@ -24,7 +24,7 @@ namespace apache { namespace thrift {
 template <typename Result>
 class FutureCallbackBase : public RequestCallback {
   public:
-    explicit FutureCallbackBase(folly::wangle::Promise<Result>&& promise)
+    explicit FutureCallbackBase(folly::Promise<Result>&& promise)
           : promise_(std::move(promise)) {}
 
     void requestSent() {};
@@ -35,7 +35,7 @@ class FutureCallbackBase : public RequestCallback {
     }
 
   protected:
-    folly::wangle::Promise<Result> promise_;
+    folly::Promise<Result> promise_;
 };
 
 template <typename Result, typename IsScalar = void>
@@ -44,7 +44,7 @@ class FutureCallback : public FutureCallbackBase<Result> {
     typedef void (*Processor)(Result&,ClientReceiveState&);
 
   public:
-    FutureCallback(folly::wangle::Promise<Result>&& promise,
+    FutureCallback(folly::Promise<Result>&& promise,
                    Processor processor)
           : FutureCallbackBase<Result>(std::move(promise)),
             processor_(processor) {}
@@ -77,7 +77,7 @@ class FutureCallback<Result,
     typedef Result (*Processor)(ClientReceiveState&);
 
   public:
-    FutureCallback(folly::wangle::Promise<Result>&& promise,
+    FutureCallback(folly::Promise<Result>&& promise,
                    Processor processor)
           : FutureCallbackBase<Result>(std::move(promise)),
             processor_(processor) {}
@@ -98,7 +98,7 @@ class FutureCallback<Result,
 template <>
 class FutureCallback<void> : public FutureCallbackBase<void> {
   public:
-    FutureCallback(folly::wangle::Promise<void>&& promise, bool isOneWay)
+    FutureCallback(folly::Promise<void>&& promise, bool isOneWay)
         : FutureCallbackBase<void>(std::move(promise)),
           isOneWay_(isOneWay) {}
 

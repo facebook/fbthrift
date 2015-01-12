@@ -62,9 +62,9 @@ class AsyncLoadHandler2 : public LoadTestSvIf
   void async_eb_onewaySleep(std::unique_ptr<HandlerCallbackBase> callback,
                    int64_t microseconds);
   void sync_burn(int64_t microseconds);
-  folly::wangle::Future<void> future_burn(int64_t microseconds);
+  folly::Future<void> future_burn(int64_t microseconds);
   void sync_onewayBurn(int64_t microseconds);
-  folly::wangle::Future<void> future_onewayBurn(int64_t microseconds);
+  folly::Future<void> future_onewayBurn(int64_t microseconds);
   void async_eb_badSleep(std::unique_ptr<HandlerCallback<void>> callback,
                       int64_t microseconds);
   void async_eb_badBurn(std::unique_ptr<HandlerCallback<void>> callback,
@@ -89,7 +89,7 @@ class AsyncLoadHandler2 : public LoadTestSvIf
   void sync_echo(
     std::string& output,
     std::unique_ptr<std::string> data);
-  folly::wangle::Future<std::unique_ptr<std::string>> future_echo(
+  folly::Future<std::unique_ptr<std::string>> future_echo(
     std::unique_ptr<std::string> data);
   void async_eb_add(std::unique_ptr<HandlerCallback<int64_t>>,
                  int64_t a, int64_t b);

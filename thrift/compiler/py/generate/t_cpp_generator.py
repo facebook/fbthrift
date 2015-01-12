@@ -854,7 +854,7 @@ class CppGenerator(t_generator.Generator):
                 rettype = "std::unique_ptr<{0}>".format(
                     self._type_name(function.returntype))
             promise_name = self.tmp("promise")
-            out("folly::wangle::Promise<{type}> {promise};"
+            out("folly::Promise<{type}> {promise};"
               .format(type=rettype, promise=promise_name))
             future_name = self.tmp("future")
             out(("auto {future} = {promise}.getFuture();")
@@ -870,11 +870,11 @@ class CppGenerator(t_generator.Generator):
         out('setEventBase(callbackp->getEventBase());')
         out('setThreadManager(callbackp->getThreadManager());')
         future_name = self.tmp('future')
-        rettype = "folly::wangle::Try<{0}>".format(
+        rettype = "folly::Try<{0}>".format(
             self._type_name(function.returntype))
         if self._is_complex_type(function.returntype) and \
           not self.flag_stack_arguments:
-            rettype = "folly::wangle::Try<std::unique_ptr" \
+            rettype = "folly::Try<std::unique_ptr" \
               "<{0}>>".format(self._type_name(function.returntype))
         captureArgs = []
         callArgs = []
@@ -913,7 +913,7 @@ class CppGenerator(t_generator.Generator):
                         function.name, future_name)
                         + ", ".join(callArgs) + ");")
                     if not function.oneway:
-                        with out(("{0}.then([=](folly::wangle" +
+                        with out(("{0}.then([=](folly" +
                               "::Try<void>&& t)").format(future_name)):
                             with out("try"):
                                 out("t.throwIfFailed();")
@@ -1020,7 +1020,7 @@ class CppGenerator(t_generator.Generator):
         if self._is_complex_type(function.returntype) and \
                 not self.flag_stack_arguments:
             rettype = 'std::unique_ptr<' + rettype + '>'
-        sig = 'folly::wangle::Future<' + \
+        sig = 'folly::Future<' + \
             rettype + '> {name}('
 
         sig += self._argument_list(function.arglist, False, unique=True)
@@ -1644,7 +1644,7 @@ class CppGenerator(t_generator.Generator):
 
                 return_type = self._type_name(function.returntype)
 
-                out("folly::wangle::Promise<{type}> {promise};"
+                out("folly::Promise<{type}> {promise};"
                   .format(type=return_type, promise=promise_name))
 
                 future_name = self.tmp("future")
@@ -1694,7 +1694,7 @@ class CppGenerator(t_generator.Generator):
             params.append("const apache::thrift::RpcOptions& rpcOptions")
 
         result_type = self._type_name(function.returntype)
-        return_type = "folly::wangle::Future<" + result_type + ">"
+        return_type = "folly::Future<" + result_type + ">"
 
         param_list = ", ".join(params)
         param_list += self._argument_list(function.arglist,

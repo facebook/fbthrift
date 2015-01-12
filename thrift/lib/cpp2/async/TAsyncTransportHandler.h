@@ -70,16 +70,16 @@ class TAsyncTransportHandler
     ctx_ = ctx;
   }
 
-  folly::wangle::Future<void> write(
+  folly::Future<void> write(
       Context* ctx,
       std::unique_ptr<folly::IOBuf> buf) override {
     if (UNLIKELY(!buf)) {
-      return folly::wangle::makeFuture();
+      return folly::makeFuture();
     }
 
     if (!transport_->good()) {
       VLOG(5) << "transport is closed in write()";
-      return folly::wangle::makeFuture<void>(
+      return folly::makeFuture<void>(
           transport::TTransportException("transport is closed in write()"));
     }
 
@@ -89,12 +89,12 @@ class TAsyncTransportHandler
     return future;
   };
 
-  folly::wangle::Future<void> close(Context* ctx) {
+  folly::Future<void> close(Context* ctx) {
     if (transport_) {
       detachReadCallback();
       transport_->closeNow();
     }
-    return folly::wangle::makeFuture();
+    return folly::makeFuture();
   }
 
   // Must override to avoid warnings about hidden overloaded virtual due to
@@ -144,7 +144,7 @@ class TAsyncTransportHandler
 
    private:
     friend class TAsyncTransportHandler;
-    folly::wangle::Promise<void> promise_;
+    folly::Promise<void> promise_;
   };
 
   Context* ctx_{nullptr};
