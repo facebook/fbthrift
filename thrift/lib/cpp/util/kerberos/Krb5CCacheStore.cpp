@@ -228,19 +228,28 @@ void Krb5CCacheStore::importCache(
 
   // Import service creds
   DataMapType new_data_map;
+  std::queue<std::string> new_data_queue;
   logger_->logStart("import_service_creds");
+  uint64_t princ_count = 0;
   for (auto& service : services) {
+    if (maxCacheSize_ >= 0 && princ_count >= maxCacheSize_) {
+      break;
+    }
     Krb5Principal princ = Krb5Principal::copyPrincipal(
       ctx_.get(), service.get().server);
     auto mem = initCacheForService(princ, &service.get());
 
     auto data = std::make_shared<ServiceData>();
-    new_data_map[folly::to<string>(princ)] = data;
+    std::string name = folly::to<string>(princ);
+    new_data_map[name] = data;
+    new_data_queue.push(name);
     data->cache = std::move(mem);
     data->bumpCount();
+    princ_count++;
   }
   WriteLock service_data_lock(serviceDataMapLock_);
   serviceDataMap_ = std::move(new_data_map);
+  cacheItemQueue_ = std::move(new_data_queue);
   logger_->logEnd("import_service_creds");
 }
 
@@ -387,6 +396,8 @@ void Krb5CCacheStore::kInit(const Krb5Principal& client) {
   tgts_.kInit(client);
   WriteLock service_data_lock(serviceDataMapLock_);
   serviceDataMap_.clear();
+  std::queue<std::string> emptyQueue;
+  cacheItemQueue_ = std::move(emptyQueue);
 }
 
 void Krb5CCacheStore::notifyOfError(const std::string& error) {
