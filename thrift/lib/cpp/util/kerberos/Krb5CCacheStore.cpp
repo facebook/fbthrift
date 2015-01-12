@@ -197,12 +197,14 @@ void Krb5CCacheStore::importCache(
   // Split out tgts and service principals
   std::vector<Krb5Credentials> tgts;
   std::vector<Krb5Credentials> services;
+  uint64_t count = 0;
   for (auto& tmp_cred : file_cache) {
     Krb5Credentials cred(std::move(tmp_cred));
     Krb5Principal server = Krb5Principal::copyPrincipal(
       ctx_.get(), cred.get().server);
     if (server.isTgt()) {
       tgts.push_back(std::move(cred));
+      count++;
     } else {
       services.push_back(std::move(cred));
     }
@@ -224,15 +226,15 @@ void Krb5CCacheStore::importCache(
     }
   }
   tgts_ = std::move(tgts_obj);
-  logger_->logEnd("import_tgts");
+  logger_->logEnd("import_tgts", folly::to<std::string>(count));
 
   // Import service creds
   DataMapType new_data_map;
   std::queue<std::string> new_data_queue;
   logger_->logStart("import_service_creds");
-  uint64_t princ_count = 0;
+  count = 0;
   for (auto& service : services) {
-    if (maxCacheSize_ >= 0 && princ_count >= maxCacheSize_) {
+    if (maxCacheSize_ >= 0 && count >= maxCacheSize_) {
       break;
     }
     Krb5Principal princ = Krb5Principal::copyPrincipal(
@@ -245,12 +247,13 @@ void Krb5CCacheStore::importCache(
     new_data_queue.push(name);
     data->cache = std::move(mem);
     data->bumpCount();
-    princ_count++;
+    count++;
   }
+
   WriteLock service_data_lock(serviceDataMapLock_);
   serviceDataMap_ = std::move(new_data_map);
   cacheItemQueue_ = std::move(new_data_queue);
-  logger_->logEnd("import_service_creds");
+  logger_->logEnd("import_service_creds", folly::to<std::string>(count));
 }
 
 std::vector<Krb5Principal> Krb5CCacheStore::getServicePrincipalList() {
@@ -271,10 +274,11 @@ std::vector<Krb5Principal> Krb5CCacheStore::getServicePrincipalList() {
   return services;
 }
 
-void Krb5CCacheStore::renewCreds() {
+uint64_t Krb5CCacheStore::renewCreds() {
   auto curTgt = tgts_.getTgt();
   auto client_princ = tgts_.getClientPrincipal();
   auto realms = tgts_.getValidRealms();
+  uint64_t renewCount = 0;
 
   // Renew TGTs
   Krb5Tgts tgts;
@@ -290,6 +294,7 @@ void Krb5CCacheStore::renewCreds() {
     try {
       auto mem = initCacheForService(service);
       renewed_map[folly::to<string>(service)] = std::move(mem);
+      renewCount++;
     } catch (const std::runtime_error& e) {
       VLOG(4) << "Failed to renew cred for service: "
               << folly::to<string>(service) << " "
@@ -319,6 +324,7 @@ void Krb5CCacheStore::renewCreds() {
     // data map that hasn't yet obtained a ccache. In this case, just leave
     // it alone. It will get the correct ccache.
   }
+  return renewCount;
 }
 
 std::unique_ptr<Krb5CCache> Krb5CCacheStore::exportCache(size_t limit) {
