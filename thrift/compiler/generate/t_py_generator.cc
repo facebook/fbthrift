@@ -1032,7 +1032,9 @@ string t_py_generator::render_const_value(t_type* type, t_const_value* value) {
 }
 
 void t_py_generator::generate_forward_declaration(t_struct* tstruct) {
-  generate_py_struct(tstruct, tstruct->is_xception());
+  if (!tstruct->is_union()) {
+    generate_py_struct(tstruct, tstruct->is_xception());
+  }
 }
 
 /**
@@ -1041,9 +1043,9 @@ void t_py_generator::generate_forward_declaration(t_struct* tstruct) {
 void t_py_generator::generate_struct(t_struct* tstruct) {
   if (tstruct->is_union()) {
     generate_py_union(f_types_, tstruct);
-  } else {
-    generate_py_thrift_spec(f_types_, tstruct, false);
   }
+
+  generate_py_thrift_spec(f_types_, tstruct, false);
 }
 
 /**
@@ -1081,34 +1083,10 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
   out << endl;
 
   // TODO: make union work with fastbinary
-  indent(out) << "thrift_spec = (" << endl;
-  indent_up();
-
-  int sorted_keys_pos = 0;
-  for (auto& member: sorted_members) {
-    if (sorted_keys_pos >= 0 && member->get_key() < 0) {
-      sorted_keys_pos = member->get_key();
-    }
-
-    for (; sorted_keys_pos != member->get_key(); sorted_keys_pos++) {
-      indent(out) << "None, # " << sorted_keys_pos << endl;
-    }
-
-    indent(out) << "(" << member->get_key() << ", "
-          << type_to_enum(member->get_type()) << ", "
-          << "'" << rename_reserved_keywords(member->get_name()) << "'" << ", "
-          << type_to_spec_args(member->get_type()) << ", "
-          << render_field_default_value(member) << ", "
-          << member->get_req() << ", "
-          << "),"
-          << " # " << sorted_keys_pos
-          << endl;
-
-    sorted_keys_pos ++;
+  indent(out) << "thrift_spec = None" << endl;
+  if (members.size() != 0) {
+    indent(out) << "__init__ = None" << endl << endl;
   }
-
-  indent_down();
-  indent(out) << ")" << endl << endl;
 
   // Generate some class level identifiers (similar to enum)
   indent(out) << "__EMPTY__ = 0" << endl;
@@ -1116,27 +1094,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
     indent(out) << uppercase(member->get_name()) << " = "
                 << member->get_key() << endl;
   }
-
-  indent(out) << "def __init__(self, ";
-  for (auto& member: sorted_members) {
-    out << rename_reserved_keywords(member->get_name()) << "=None, ";
-  }
-  out << "):" << endl;
-  indent_up();
-    indent(out) << "self.field = 0" << endl;
-    indent(out) << "self.value = None" << endl;
-
-    for (auto& member: sorted_members) {
-      indent(out) << "if " << rename_reserved_keywords(member->get_name())
-                  << " is not None:" << endl;
-      indent(out) << "  assert self.field == 0 and self.value is None" << endl;
-      indent(out) << "  self.field = " << member->get_key() << endl;
-      indent(out) << "  self.value = "
-                  << rename_reserved_keywords(member->get_name()) << endl;
-    }
-
-  indent_down();
-  indent(out) << endl << endl;
+  indent(out) << endl;
 
   // Generate `isUnion` method
   indent(out) << "def isUnion(self):" << endl;
@@ -1345,35 +1303,47 @@ void t_py_generator::generate_py_thrift_spec(ofstream& out,
     out <<
       indent() << "def " << rename_reserved_keywords(tstruct->get_name())
                << "__init__(self,";
-
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       // This fills in default values, as opposed to nulls
-      out << " " << declare_argument(rename_reserved_keywords(tstruct->get_name()),
-                                     *m_iter) << ",";
+      out << " " << declare_argument(
+          rename_reserved_keywords(tstruct->get_name()), *m_iter) << ",";
     }
-
     out << "):" << endl;
 
     indent_up();
+    if (tstruct->is_union()) {
+      indent(out) << "self.field = 0" << endl;
+      indent(out) << "self.value = None" << endl;
 
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      // Initialize fields
-      t_type* type = (*m_iter)->get_type();
-      if (!type->is_base_type() && !type->is_enum() &&
-          (*m_iter)->get_value() != nullptr) {
-        indent(out) <<
-          "if " << rename_reserved_keywords((*m_iter)->get_name()) << " is " <<
-          "self.thrift_spec[" <<
-            (*m_iter)->get_key() << "][4]:" << endl;
-        indent(out) << "  " << rename_reserved_keywords((*m_iter)->get_name())
-                    << " = " <<
-          render_field_default_value(*m_iter) << endl;
+      for (auto& member: sorted_members) {
+        indent(out) << "if " << rename_reserved_keywords(member->get_name())
+                    << " is not None:" << endl;
+        indent(out) << "  assert self.field == 0 and self.value is None"
+                    << endl;
+        indent(out) << "  self.field = " << member->get_key() << endl;
+        indent(out) << "  self.value = "
+                    << rename_reserved_keywords(member->get_name()) << endl;
       }
-      indent(out) <<
-        "self." << rename_reserved_keywords((*m_iter)->get_name()) << " = " <<
-        rename_reserved_keywords((*m_iter)->get_name()) << endl;
+    } else {
+      for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+        // Initialize fields
+        t_type* type = (*m_iter)->get_type();
+        if (!type->is_base_type() && !type->is_enum() &&
+            (*m_iter)->get_value() != nullptr) {
+          indent(out)
+            << "if " << rename_reserved_keywords((*m_iter)->get_name())
+            << " is self.thrift_spec[" << (*m_iter)->get_key() << "][4]:"
+            << endl;
+          indent(out)
+            << "  " << rename_reserved_keywords((*m_iter)->get_name())
+            << " = " << render_field_default_value(*m_iter) << endl;
+        }
+        indent(out)
+          << "self." << rename_reserved_keywords((*m_iter)->get_name())
+          << " = " << rename_reserved_keywords((*m_iter)->get_name())
+          << endl;
+      }
     }
-
     indent_down();
 
     out << endl;
