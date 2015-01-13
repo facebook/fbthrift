@@ -719,7 +719,7 @@ TEST(TAsyncSSLSocketTest, SSLParseClientHelloOnePacket) {
   TEventBase eventBase;
   auto ctx = std::make_shared<SSLContext>();
 
-  int fds[1];
+  int fds[2];
   getfds(fds);
 
   int bufLen = 42;
@@ -758,7 +758,7 @@ TEST(TAsyncSSLSocketTest, SSLParseClientHelloTwoPackets) {
   TEventBase eventBase;
   auto ctx = std::make_shared<SSLContext>();
 
-  int fds[1];
+  int fds[2];
   getfds(fds);
 
   int bufLen = 42;
@@ -804,7 +804,7 @@ TEST(TAsyncSSLSocketTest, SSLParseClientHelloMultiplePackets) {
   TEventBase eventBase;
   auto ctx = std::make_shared<SSLContext>();
 
-  int fds[1];
+  int fds[2];
   getfds(fds);
 
   int bufLen = 42;
