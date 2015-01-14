@@ -59,7 +59,6 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
 
   manageThread_ = std::thread([=] {
     logger->log("manager_started");
-    logger->logValue("max_cache_size", maxCacheSize);
     while(true) {
       MutexGuard l(manageThreadMutex_);
       if (stopManageThread_) {
@@ -84,9 +83,9 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
           initCacheStore();
           logger->logEnd("init_cache_store");
         } else if (aboutToExpire(store_->getLifetime())) {
-          logger->logStart("init_cache_store", "expired");
+          logger->logStart("init_cache_store_after_expiration");
           initCacheStore();
-          logger->logEnd("init_cache_store");
+          logger->logEnd("init_cache_store_after_expiration");
         }
 
         // If the cache store needs to be renewed, renew it
@@ -95,17 +94,15 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
           lifetime, folly::to<string>(store_->getClientPrincipal()));
         if (reached_renew_time) {
           logger->logStart("build_renewed_cache");
-          uint64_t renewCount = store_->renewCreds();
-          logger->logEnd(
-            "build_renewed_cache", folly::to<std::string>(renewCount));
+          store_->renewCreds();
+          logger->logEnd("build_renewed_cache");
         }
 
         // Persist cache store to a file
         logger->logStart("persist_ccache");
-        int outSize = writeOutCache(
+        writeOutCache(
           Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE);
-        logger->logEnd(
-          "persist_ccache", folly::to<std::string>(outSize));
+        logger->logEnd("persist_ccache");
       } catch (const std::runtime_error& e) {
         // Notify the waitForCache functions that an error happened.
         // We should propagate this error up.
@@ -242,10 +239,10 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
   return mem;
 }
 
-int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
+void Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   if (ccacheTypeIsMemory_) {
     // Don't write to file if type is MEMORY
-    return -1;
+    return;
   }
 
   auto default_cache =
@@ -255,14 +252,13 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   if (default_type == "MEMORY") {
     LOG(INFO) << "Default cache is of type MEMORY and will not be persisted";
     ccacheTypeIsMemory_ = true;
-    logger_->log("persist_ccache_fail_memory_type");
-    return -1;
+    return;
   }
   if (default_type != "FILE" && default_type != "DIR") {
     LOG(ERROR) << "Default cache is not of type FILE or DIR, the type is: "
                << default_type;
     logger_->log("persist_ccache_fail_default_name_invalid");
-    return -1;
+    return;
   }
 
   if (default_type == "DIR") {
@@ -310,7 +306,7 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     if (!about_to_expire && client != file_princ) {
       VLOG(4) << "File cache principal does not match client, not overwriting";
       logger_->log("persist_ccache_fail_client_mismatch");
-      return -1;
+      return;
     }
   } catch (...) {
     VLOG(4) << "Error happend reading the default credentials cache";
@@ -327,7 +323,7 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   if (!can_renew) {
     VLOG(4) << "CC manager can't renew creds, won't overwrite ccache";
     logger_->log("persist_ccache_fail_keytab_mismatch");
-    return -1;
+    return;
   }
 
   // Create a temporary file in the same directory as the default cache
@@ -339,18 +335,15 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   if (ret < 0 || ret >= 4096) {
     LOG(ERROR) << "Temp file template name too long: " << tmp_template;
     logger_->log("persist_ccache_fail_tmp_file_too_long", tmp_template);
-    return -1;
+    return;
   }
 
   const int fd = mkstemp(str_buf);
   if (fd == -1) {
     LOG(ERROR) << "Could not open a temporary cache file with template: "
                << tmp_template << " error: " << strerror(errno);
-    logger_->log(
-      "persist_ccache_fail_tmp_file_create_fail",
-      {tmp_template, strerror(errno)},
-      SecurityLogger::TracingOptions::NONE);
-    return -1;
+    logger_->log("persist_ccache_fail_tmp_file_create_fail", tmp_template);
+    return;
   }
   ret = close(fd);
   if (ret == -1) {
@@ -361,11 +354,6 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   }
 
   std::unique_ptr<Krb5CCache> temp_cache = store_->exportCache(limit);
-  // Count the elements:
-  uint64_t persistCount = 0;
-  for (auto it = temp_cache->begin(); it != temp_cache->end(); ++it) {
-    persistCount++;
-  }
   temp_cache->setDestroyOnClose();
 
   // Move the in-memory temp_cache to a temporary file
@@ -385,7 +373,7 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     LOG(ERROR) << "Tmp cache is not of type FILE or DIR, the type is: "
                << tmp_type;
     logger_->log("persist_ccache_fail_file_not_of_type_file");
-    return -1;
+    return;
   }
   const int result = rename(tmp_path.c_str(), file_path.c_str());
   if (result != 0) {
@@ -399,9 +387,9 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
       LOG(ERROR) << "Error deleting temp file: " << tmp_path.c_str()
                  << " because of error: " << strerror(errno);
     }
-    return -1;
+    return;
   }
-  return persistCount;
+  logger_->log("persist_ccache_success");
 }
 
 std::shared_ptr<Krb5CCache> Krb5CredentialsCacheManager::waitForCache(
@@ -440,8 +428,7 @@ void Krb5CredentialsCacheManager::initCacheStore() {
   // If file cache is not present or expired, we want to do a kinit
   auto first_principal = getFirstPrincipalInKeytab();
   if (first_principal) {
-    logger_->logStart(
-      "kinit_ccache", folly::to<std::string>(*first_principal));
+    logger_->logStart("kinit_ccache");
     store_->kInit(*first_principal);
     logger_->logEnd("kinit_ccache");
   } else {
@@ -455,13 +442,10 @@ void Krb5CredentialsCacheManager::initCacheStore() {
   if (file_cache) {
     vector<Krb5Principal> princ_list = file_cache->getServicePrincipalList();
     logger_->logStart("renew_expired_princ");
-    uint64_t renewCount = 0;
     for (const auto& princ : princ_list) {
       store_->waitForCache(princ);
-      renewCount++;
     }
-    logger_->logEnd(
-      "renew_expired_princ", folly::to<std::string>(renewCount));
+    logger_->logEnd("renew_expired_princ");
   }
 }
 

@@ -82,7 +82,7 @@ class Krb5CredentialsCacheManager {
    * This will persist the most frequently accessed credentials
    * (up to `limit`).
    */
-  int writeOutCache(size_t limit);
+  void writeOutCache(size_t limit);
 
   void raiseIf(krb5_error_code code, const std::string& what) {
     apache::thrift::krb5::raiseIf(ctx_->get(), code, what);

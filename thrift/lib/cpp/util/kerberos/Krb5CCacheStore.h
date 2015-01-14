@@ -63,7 +63,7 @@ class Krb5CCacheStore {
    * Start using the credentials in the provided cache object.
    */
   void importCache(Krb5CCache& cache);
-  uint64_t renewCreds();
+  void renewCreds();
   std::unique_ptr<Krb5CCache> exportCache(size_t limit);
 
   Krb5Principal getClientPrincipal();
