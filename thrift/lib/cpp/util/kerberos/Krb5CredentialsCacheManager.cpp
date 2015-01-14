@@ -59,6 +59,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
 
   manageThread_ = std::thread([=] {
     logger->log("manager_started");
+    string oldError = "";
     while(true) {
       MutexGuard l(manageThreadMutex_);
       if (stopManageThread_) {
@@ -117,7 +118,6 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
         if (store_) {
           store_->notifyOfError(e.what() + credentialCacheErrorMessage);
         }
-        static string oldError = "";
         if (oldError != e.what()) {
           oldError = e.what();
           LOG(ERROR) << "Failure in credential cache thread: " << e.what()
