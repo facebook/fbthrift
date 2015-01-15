@@ -85,11 +85,11 @@ class TestUnionStructs(unittest.TestCase):
     def test_read_write(self):
         l = [
             (TestUnion(string_field='test'),
-                TestUnion(string_field=b'test')),
+                TestUnion(string_field='test')),
             (TestUnion(), TestUnion()),
             (TestUnion(i32_field=100), TestUnion(i32_field=100)),
             (StructWithUnionAndOther(TestUnion(i32_field=100), 'test'),
-                StructWithUnionAndOther(TestUnion(i32_field=100), b'test')),
+                StructWithUnionAndOther(TestUnion(i32_field=100), 'test')),
         ]
 
         for i, j in l:

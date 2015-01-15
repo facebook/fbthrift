@@ -353,21 +353,23 @@ class TSimpleJSONProtocolBase(TProtocolBase):
         self.trans.write(hexChar(ch))
 
     def writeJSONChar(self, ch):
-        if ord(ch) >= 0x30:
+        charValue = ord(ch) if not isinstance(ch, int) else ch
+        ch = chr(ch) if isinstance(ch, int) else ch
+        if charValue >= 0x30:
             if ch == JSON_BACKSLASH:  # Only special character >= 0x30 is '\'.
                 self.trans.write(JSON_BACKSLASH)
                 self.trans.write(JSON_BACKSLASH)
             else:
                 self.trans.write(ch)
         else:
-            outCh = JSON_CHAR_TABLE[ord(ch)]
+            outCh = JSON_CHAR_TABLE[charValue]
             if outCh == 1:
                 self.trans.write(ch)
             elif outCh > 1:
                 self.trans.write(JSON_BACKSLASH)
                 self.trans.write(outCh)
             else:
-                self.writeJSONEscapeChar(ord(ch))
+                self.writeJSONEscapeChar(charValue)
 
     def writeJSONString(self, outStr):
         self.context.write(self.trans)
