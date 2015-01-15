@@ -69,14 +69,17 @@ void HeaderClientChannel::setSaslTimeout(uint32_t ms) {
   timeoutSASL_ = ms;
 }
 
-void HeaderClientChannel::destroy() {
+void HeaderClientChannel::closeNow() {
   saslClientCallback_.cancelTimeout();
   if (saslClient_) {
     saslClient_->detachEventBase();
   }
 
   cpp2Channel_->closeNow();
+}
 
+void HeaderClientChannel::destroy() {
+  closeNow();
   TDelayedDestruction::destroy();
 }
 
@@ -222,9 +225,8 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     channel_.header_->setClientType(THRIFT_HEADER_CLIENT_TYPE);
   });
   if (ew) {
-    LOG(ERROR)
-      << "SASL required by client but failed or rejected by server: "
-      << ex.what();
+    LOG(ERROR) << "SASL required by client but failed or rejected by server: "
+               << ex.what();
     if (logger) {
       logger->log("sasl_failed_hard");
     }

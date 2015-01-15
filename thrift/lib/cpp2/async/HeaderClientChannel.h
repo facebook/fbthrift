@@ -69,6 +69,8 @@ class HeaderClientChannel : public RequestChannel,
     cpp2Channel_->sendMessage(callback, std::move(buf));
   }
 
+  void closeNow();
+
   // TDelayedDestruction methods
   void destroy();
 
@@ -159,7 +161,9 @@ class HeaderClientChannel : public RequestChannel,
 
   // The default SASL implementation can be overridden for testing or
   // other purposes.  Most users will never need to call this.
+  // Can be set only once.
   void setSaslClient(std::unique_ptr<SaslClient> client) {
+    DCHECK(!saslClient_);
     saslClient_ = std::move(client);
   }
 
