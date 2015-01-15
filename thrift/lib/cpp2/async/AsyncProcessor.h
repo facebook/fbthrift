@@ -423,17 +423,6 @@ class HandlerCallbackBase {
     ewp_ = other.ewp_;
   }
 
-  // Always called in IO thread
-  virtual void doException(std::exception_ptr ex) {
-    if (req_ == nullptr) {
-      LOG(ERROR) << folly::exceptionStr(ex);
-    } else {
-      if (ep_) {
-        ep_(std::move(req_), protoSeqId_, std::move(ctx_), ex, reqCtx_);
-      }
-    }
-  }
-
   virtual void transform(folly::IOBufQueue& queue) {
     // Do any compression or other transforms in this thread, the same thread
     // that serialization happens on.
@@ -443,16 +432,38 @@ class HandlerCallbackBase {
                                     reqCtx_->getMinCompressBytes()));
   }
 
+  // Can be called from IO or TM thread
+  virtual void doException(std::exception_ptr ex) {
+    if (req_ == nullptr) {
+      LOG(ERROR) << folly::exceptionStr(ex);
+    } else {
+      callExceptionInEventBaseThread(ep_, ex);
+    }
+  }
+
   virtual void doExceptionWrapped(folly::exception_wrapper ew) {
     if (req_ == nullptr) {
       LOG(ERROR) << ew.what();
     } else {
-      if (ewp_) {
-        ewp_(std::move(req_), protoSeqId_, std::move(ctx_), ew, reqCtx_);
-      }
+      callExceptionInEventBaseThread(ewp_, ew);
     }
   }
 
+  template <typename F, typename T>
+  void callExceptionInEventBaseThread(F&& f, T&& ex) {
+    if (!f) {
+      return;
+    }
+    if (getEventBase()->isInEventBaseThread()) {
+      f(std::move(req_), protoSeqId_, std::move(ctx_), ex, reqCtx_);
+    } else {
+      auto req = folly::makeMoveWrapper(std::move(req_));
+      auto ctx = folly::makeMoveWrapper(std::move(ctx_));
+      getEventBase()->runInEventBaseThread([=]() mutable {
+        f(std::move(*req), protoSeqId_, std::move(*ctx), ex, reqCtx_);
+      });
+    }
+  }
   // Required for this call
   std::unique_ptr<ResponseChannel::Request> req_;
   std::unique_ptr<apache::thrift::ContextStack> ctx_;
