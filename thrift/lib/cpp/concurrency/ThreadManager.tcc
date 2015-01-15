@@ -299,7 +299,7 @@ void ThreadManager::ImplT<SemType>::removeWorkerImpl(size_t value, bool afterTas
       ++totalTaskCount_;
     }
     monitor_.notifyAll();
-    for (int n = 0; n < value; ++n) {
+    for (size_t n = 0; n < value; ++n) {
       waitSem_.post();
     }
     intendedWorkerCount_ += bad;
@@ -308,7 +308,7 @@ void ThreadManager::ImplT<SemType>::removeWorkerImpl(size_t value, bool afterTas
     // Ask threads to exit ASAP
     workersToStop_ += value;
     monitor_.notifyAll();
-    for (int n = 0; n < value; ++n) {
+    for (size_t n = 0; n < value; ++n) {
       waitSem_.post();
     }
   }
@@ -349,7 +349,8 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
                                 "not started");
   }
 
-  if (pendingTaskCountMax_ > 0 && (tasks_.size() >= pendingTaskCountMax_)) {
+  if (pendingTaskCountMax_ > 0
+      && tasks_.size() >= folly::to<ssize_t>(pendingTaskCountMax_)) {
     Guard g(mutex_, timeout);
 
     if (!g) {
@@ -357,7 +358,7 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
     }
     if (canSleep() && timeout >= 0) {
       while (pendingTaskCountMax_ > 0
-             && tasks_.size() >= pendingTaskCountMax_) {
+             && tasks_.size() >= folly::to<ssize_t>(pendingTaskCountMax_)) {
         // This is thread safe because the mutex is shared between monitors.
         maxMonitor_.wait(timeout);
       }
@@ -475,7 +476,8 @@ ThreadManager::Task* ThreadManager::ImplT<SemType>::waitOnTask() {
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::maybeNotifyMaxMonitor(bool shouldLock) {
-  if (pendingTaskCountMax_ != 0 && tasks_.size() < pendingTaskCountMax_) {
+  if (pendingTaskCountMax_ != 0
+      && tasks_.size() < folly::to<ssize_t>(pendingTaskCountMax_)) {
     if (shouldLock) {
       Guard g(mutex_);
       maxMonitor_.notify();
