@@ -89,7 +89,7 @@ class CppGenerator(t_generator.Generator):
         'compatibility': 'Use thrift1 structs instead of generating new ones',
         'terse_writes': 'Avoid emitting unspec fields whose values are default',
         'stack_arguments': 'Pass arguments on stack instead of heap',
-        'future': 'enable wangle futures in service interface',
+        'future': 'enable folly::Futures in service interface',
         'process_in_event_base': 'Process request in event base thread',
         'frozen2': 'enable frozen structures',
         'json': 'enable simple json protocol',

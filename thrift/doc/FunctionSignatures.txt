@@ -10,7 +10,7 @@ sync_input = apache::thrift2::AsyncInputStream
 async_output = apache::thrift2:AsyncOutputStream
 
 functor = std::function<void (::apache::thrift2::ClientReceiveState&&)>
-future = facebook::wangle::future<T>
+future = folly::Future<T>
 stream_singleton = apache::thrift2::StreamSingleton
 
 std::function functions

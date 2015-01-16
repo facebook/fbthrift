@@ -107,7 +107,7 @@ Will generate an interface similar to
       ...
       virtual void sendResponse(std::string& _return, int64_t size);
       virtual void async_sendResponse(std::unique_ptr<apache::thrift2::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t size) = 0;
-      virtual facebook::wangle::Future<std::unique_ptr<std::string>> future_sendResponse(int64_t size);
+      virtual folly::Future<std::unique_ptr<std::string>> future_sendResponse(int64_t size);
       ...
     }
 
