@@ -16,6 +16,7 @@
 
 #include <fstream>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <sstream>
 
 #include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
@@ -133,7 +134,6 @@ TEST_F(Krb5UtilTest, TestPrincipalParseUnparse) {
 TEST_F(Krb5UtilTest, TestGetHostRealm) {
   // Test a valid hostname which belongs to a single realm
   string hostName = "dev1169.prn2.facebook.com";
-  string expectedRealm = "DEV.FACEBOOK.COM";
   vector<string> realms;
   try {
     realms = getHostRealm(context_.get(), hostName);
@@ -141,11 +141,12 @@ TEST_F(Krb5UtilTest, TestGetHostRealm) {
     FAIL();
   }
   EXPECT_EQ(1, realms.size());
-  EXPECT_EQ(expectedRealm, realms[0]);
+  EXPECT_THAT(realms[0],
+      testing::AnyOf("DEV.FACEBOOK.COM", "PRN2.PROD.FACEBOOK.COM"));
 
   // For bogus hostnames, we get an empty string as the realm
   string bogusHostName = "bogus.host.name.com";
-  expectedRealm = "";
+  string expectedRealm = "";
   try {
     realms = getHostRealm(context_.get(), bogusHostName);
   } catch (...) {
