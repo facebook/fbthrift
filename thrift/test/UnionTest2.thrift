@@ -56,6 +56,7 @@ union TestUnion {
   3: OneOfEach struct_field;
   4: list<RandomStuff> struct_list;
   5: i32 other_i32_field;
+  6: OneOfEach ref_field (cpp.ref = "true");
 }
 
 struct StructWithAUnion {

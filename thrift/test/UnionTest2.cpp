@@ -100,6 +100,10 @@ TEST_F(UnionTestFixture, ChangeType) {
   u.set_struct_list(std::vector<RandomStuff>());
   EXPECT_EQ(TestUnion::Type::struct_list, u.getType());
   EXPECT_EQ(std::vector<RandomStuff>(), u.get_struct_list());
+
+  u.set_ref_field(OneOfEach());
+  EXPECT_EQ(TestUnion::Type::ref_field, u.getType());
+  EXPECT_EQ(OneOfEach(), *u.get_ref_field());
 }
 
 TEST_F(UnionTestFixture, SerdeTest) {

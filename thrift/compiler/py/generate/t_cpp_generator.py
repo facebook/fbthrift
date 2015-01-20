@@ -2195,16 +2195,28 @@ class CppGenerator(t_generator.Generator):
                 sig = '{name}(const {name}& rhs)'
 
         with s.defn(sig, name=obj.name, in_header=True, init_dict=i):
-            if is_move or is_operator:
+            out('if (this == &rhs) {{return{0}; }}'.format(
+                ' *this' if is_operator else ''))
+            if is_operator:
                 out('__clear();')
             out('if (rhs.type_ == Type::__EMPTY__) {{ return{0}; }}'.format(
                 ' *this' if is_operator else ''))
 
-            if is_move:
-                fmt = 'set_{field}(std::move(rhs.value_.{field}));'
-            else:
-                fmt = 'set_{field}(rhs.value_.{field});'
-            self._gen_union_switch(obj.members, fmt, val='rhs.type_')
+            with out('switch(rhs.type_)'):
+                for member in obj.members:
+                    with out().case('Type::' + member.name):
+                        if is_move:
+                            if self._is_reference(member):
+                                fmt = 'set_{field}(std::move(*rhs.value_.{field}));'
+                            else:
+                                fmt = 'set_{field}(std::move(rhs.value_.{field}));'
+                        elif self._is_reference(member):
+                            fmt = 'set_{field}(*rhs.value_.{field});'
+                        else:
+                            fmt = 'set_{field}(rhs.value_.{field});'
+                        out(fmt.format(field=member.name))
+                with out().case('default'):
+                    out('assert(false);')
 
             if is_move:
                 out('rhs.__clear();')
@@ -2585,11 +2597,18 @@ class CppGenerator(t_generator.Generator):
                                  in_header=True, name=member.name):
                     out('__clear();')
                     out('type_ = Type::{0};'.format(member.name))
-                    out('new (&value_.{0}) {1}(std::forward<T>(t)...);'.format(
-                        member.name, t))
+                    if self._is_reference(member):
+                        out('new (&value_.{0}) std::unique_ptr<{1}>('
+                                'new {1}(std::forward<T>(t)...));'.format(
+                                    member.name, t))
+                    else:
+                        out('new (&value_.{0}) {1}(std::forward<T>(t)...);'
+                                .format(member.name, t))
 
             for member in members:
                 t = self._type_name(self._get_true_type(member.type))
+                if self._is_reference(member):
+                    t = "std::unique_ptr<" + t + ">"
                 with struct.defn('get_{name}() const', in_header=True,
                         name=member.name,
                         modifiers='const {0}&'.format(t)):
@@ -2598,6 +2617,8 @@ class CppGenerator(t_generator.Generator):
 
             for member in members:
                 t = self._type_name(self._get_true_type(member.type))
+                if self._is_reference(member):
+                    t = "std::unique_ptr<" + t + ">"
                 with struct.defn('mutable_{name}()', in_header=True,
                         name=member.name,
                         modifiers='{0}&'.format(t)):
@@ -2606,6 +2627,8 @@ class CppGenerator(t_generator.Generator):
 
             for member in members:
                 t = self._type_name(self._get_true_type(member.type))
+                if self._is_reference(member):
+                    t = "std::unique_ptr<" + t + ">"
                 with struct.defn('move_{name}()', in_header=True,
                         name=member.name, modifiers=t):
                     out('assert(type_ == Type::{0});'.format(member.name))
