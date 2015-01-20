@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2015 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@
 #ifndef THRIFT_UTIL_SCOPEDSERVEREVENTBASETHREAD_H
 #define THRIFT_UTIL_SCOPEDSERVEREVENTBASETHREAD_H
 
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <memory>
+#include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
 
 namespace apache { namespace thrift {
 
@@ -46,6 +48,9 @@ class ScopedServerInterfaceThread {
   const folly::SocketAddress& getAddress() const;
   uint16_t getPort() const;
 
+  template <class AsyncClientT>
+  std::unique_ptr<AsyncClientT> newClient(async::TEventBase& eb);
+
  private:
 
   std::shared_ptr<ThriftServer> ts_;
@@ -54,5 +59,7 @@ class ScopedServerInterfaceThread {
 };
 
 }}
+
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread-inl.h>
 
 #endif

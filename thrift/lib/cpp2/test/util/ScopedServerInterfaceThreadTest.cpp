@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2015 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,16 @@ TEST(ScopedServerInterfaceThread, example) {
         &eb, ssit.getAddress())));
 
   EXPECT_EQ(6, cli.sync_add(-3, 9));
+}
+
+TEST(ScopedServerInterfaceThread, newClient) {
+  ScopedServerInterfaceThread ssit(
+    make_shared<SimpleServiceImpl>());
+
+  EventBase eb;
+  auto cli = ssit.newClient<SimpleServiceAsyncClient>(eb);
+
+  EXPECT_EQ(6, cli->sync_add(-3, 9));
 }
 
 TEST(ScopedServerInterfaceThread, getThriftServer) {
