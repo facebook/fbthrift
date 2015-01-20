@@ -252,6 +252,10 @@ class AbstractTest(object):
         if self.server_type == "TCppServer":
             return
 
+        if self.server_type == 'TNonblockingServer':
+            raise unittest.SkipTest(
+                "testEventCountRelationships flaky for TNonblockingServer (#6023505)")
+
         orig_num_pre_serve = self.client.testPreServe()
         orig_num_new = self.client.testNewConnection()
         orig_num_dest = self.client.testConnectionDestroyed()
