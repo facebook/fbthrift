@@ -57,6 +57,18 @@ TEST(SerializationTest, BinarySerializerRoundtripPasses) {
   EXPECT_EQ(out, s);
 }
 
+TEST(SerializationTest, SimpleJSONSerializerRoundtripPasses) {
+  auto s = makeTestStruct();
+
+  folly::IOBufQueue q;
+  SimpleJSONSerializer::serialize(s, &q);
+
+  TestStruct out;
+  SimpleJSONSerializer::deserialize(q.front(), out);
+
+  EXPECT_EQ(out, s);
+}
+
 TEST(SerializationTest, MixedRoundtripFails) {
   auto s = makeTestStruct();
 
@@ -141,6 +153,31 @@ TEST(SerializationTest, RecursiveDeepBinarySerializerRoundtripPasses) {
 
   TestStructRecursive out;
   BinarySerializer::deserialize(q.front(), out);
+
+  EXPECT_EQ(s, out);
+}
+
+TEST(SerializationTest, RecursiveNoDepthSimpleJSONSerializerRoundtripPasses) {
+  auto s = makeTestStructRecursive(0);
+
+  folly::IOBufQueue q;
+  SimpleJSONSerializer::serialize(s, &q);
+
+  TestStructRecursive out;
+  SimpleJSONSerializer::deserialize(q.front(), out);
+
+  EXPECT_EQ(s, out);
+}
+
+TEST(SerializationTest, RecursiveDeepSimpleJSONSerializerRoundtripPasses) {
+  auto s = makeTestStructRecursive(6);
+  EXPECT_EQ(6, getRecDepth(s));
+
+  folly::IOBufQueue q;
+  SimpleJSONSerializer::serialize(s, &q);
+
+  TestStructRecursive out;
+  SimpleJSONSerializer::deserialize(q.front(), out);
 
   EXPECT_EQ(s, out);
 }

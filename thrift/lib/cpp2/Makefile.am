@@ -83,6 +83,8 @@ thrift2include_protocol_HEADERS = \
 	protocol/BinaryProtocol.tcc \
 	protocol/CompactProtocol.h \
 	protocol/CompactProtocol.tcc \
+	protocol/SimpleJSONProtocol.h \
+	protocol/SimpleJSONProtocol.tcc \
 	protocol/DebugProtocol.h \
 	protocol/MessageSerializer.h \
 	protocol/Serializer.h \
@@ -90,6 +92,7 @@ thrift2include_protocol_HEADERS = \
 
 libthriftcpp2_la_SOURCES = Version.cpp \
 			   async/HeaderClientChannel.cpp \
+			   async/HeaderServerChannel.cpp \
 			   async/StubSaslClient.cpp \
 			   async/StubSaslServer.cpp \
 			   async/SaslEndpoint.cpp \
@@ -99,13 +102,13 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   async/AsyncProcessor.cpp \
 			   async/DuplexChannel.cpp \
 			   protocol/Serializer.cpp \
+			   protocol/SimpleJSONProtocol.cpp \
 			   protocol/DebugProtocol.cpp \
 			   security/KerberosSASLHandshakeClient.cpp \
 			   security/KerberosSASLHandshakeServer.cpp \
 			   security/KerberosSASLHandshakeUtils.cpp \
 			   security/KerberosSASLThreadManager.cpp \
 			   security/SecurityKillSwitch.cpp \
-			   async/HeaderServerChannel.cpp \
 			   server/Cpp2Connection.cpp \
 			   server/Cpp2Worker.cpp \
 			   server/ThriftServer.cpp \

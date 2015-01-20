@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 
@@ -73,6 +74,8 @@ typedef Serializer<CompactProtocolReader, CompactProtocolWriter>
   CompactSerializer;
 typedef Serializer<BinaryProtocolReader, BinaryProtocolWriter>
   BinarySerializer;
+typedef Serializer<SimpleJSONProtocolReader, SimpleJSONProtocolWriter>
+  SimpleJSONSerializer;
 
 // Serialization code specific to handling errors
 template<typename ProtIn, typename ProtOut>

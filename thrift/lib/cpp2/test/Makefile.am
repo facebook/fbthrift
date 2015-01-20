@@ -6,7 +6,7 @@ THRIFT = $(top_builddir)/compiler/thrift1
 check_LIBRARIES = libService.a
 
 gen-cpp2/Service_constants.cpp: Service.thrift
-	PYTHONPATH=$(PY_LOCAL_PATH) python -mthrift_compiler.main --gen cpp2 $<
+	PYTHONPATH=$(PY_LOCAL_PATH) python -mthrift_compiler.main --gen cpp2:json $<
 	$(THRIFT) --gen cpp:templates,cob_style -r $<
 gen-cpp2/Service_types.cpp: gen-cpp2/Service_constants.cpp
 gen-cpp2/TestService.cpp: gen-cpp2/Service_constants.cpp
