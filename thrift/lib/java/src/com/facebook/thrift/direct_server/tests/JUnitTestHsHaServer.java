@@ -7,6 +7,7 @@ import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.transport.TFramedTransport;
 import com.facebook.thrift.transport.TSocket;
 import com.facebook.thrift.transport.TTransportException;
+import java.util.concurrent.CountDownLatch;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import com.facebook.fbcode.fb303.fb_status;
 public class JUnitTestHsHaServer {
 
   private static final String HOST = "localhost";
-  private static final int PORT = 19191;
+  private static int PORT;
   private static final int NUM_THREADS = 1;
   private static final int MAX_PENDING = 1;
 
@@ -25,18 +26,47 @@ public class JUnitTestHsHaServer {
     return new JavaSimpleService.Client(new TBinaryProtocol(trans));
   }
 
+  private static class PortGetter implements Runnable {
+    private CountDownLatch latch_;
+    private TDirectServer server_;
+    private int port_;
+
+    public PortGetter(CountDownLatch latch) {
+      latch_ = latch;
+    }
+
+    public void setServer(TDirectServer server) {
+      server_ = server;
+    }
+
+    public int getPort() {
+      return port_;
+    }
+
+    @Override
+    public void run() {
+      port_ = server_.directServer().getLocalPort();
+      latch_.countDown();
+    }
+  }
+
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
     JavaSimpleService.Processor proc =
         new JavaSimpleService.Processor(new SimpleServiceHandler());
+    CountDownLatch latch = new CountDownLatch(1);
+    PortGetter portGetter = new PortGetter(latch);
     final TDirectServer server =
-        TDirectServer.asHsHaServer(PORT, NUM_THREADS, MAX_PENDING, proc);
+        TDirectServer.asHsHaServer(0, NUM_THREADS, MAX_PENDING, proc, portGetter);
+    portGetter.setServer(server);
     new Thread() {
       @Override
       public void run() {
         server.serve();
       }
     }.start();
+    latch.await();
+    PORT = portGetter.getPort();
     final int NUM_ITERS = 20, MS_PER_ITER = 100;
     for (int i = 0; i < NUM_ITERS; i++) {
       try {
