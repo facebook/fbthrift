@@ -2940,7 +2940,7 @@ class CppGenerator(t_generator.Generator):
                 if self._is_reference(member):
                     scope('else if ({0}->{1}) {{}}'.format(
                             prefix, member.name))
-                else:
+                elif self._has_isset(member):
                     scope('else if ({0}->__isset.{1}) {{}}'.format(
                             prefix, member.name))
             with scope('else'):
