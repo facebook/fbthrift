@@ -1387,10 +1387,16 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent(out) << tstruct->get_name() << "(const " << tstruct->get_name()
               << "& rhs) : type_(Type::__EMPTY__) {" << endl;
   indent_up();
+    indent(out) << "if (this == &rhs) { return; }" << endl;
     indent(out) << "if (rhs.type_ == Type::__EMPTY__) { return; }" << endl;
-    writeSwitchCase("rhs.type_", [] (t_field* f) {
+    writeSwitchCase("rhs.type_", [this] (t_field* f) {
       auto name = f->get_name();
-      return "set_" + name + "(rhs.value_." + name + ");";
+      if (is_reference(f)) {
+        return "set_" + name + "(std::move(" + type_name(f->get_type())
+          + "(*rhs.value_." + name + ")));";
+      } else {
+        return "set_" + name + "(rhs.value_." + name + ");";
+      }
     });
   indent_down();
   indent(out) << "}" << endl << endl;
@@ -1398,13 +1404,19 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent(out) << tstruct->get_name() << "& operator=(const "
               << tstruct->get_name() << "& rhs) {" << endl;
   indent_up();
+    indent(out) << "if (this == &rhs) { return *this; }" << endl;
     indent(out) << "__clear();" << endl;
     indent(out) << "if (rhs.type_ == Type::__EMPTY__) { return *this; }"
                 << endl;
 
-    writeSwitchCase("rhs.type_", [] (t_field* f) {
+    writeSwitchCase("rhs.type_", [this] (t_field* f) {
       auto name = f->get_name();
-      return "set_" + name + "(rhs.value_." + name + ");";
+      if (is_reference(f)) {
+        return "set_" + name + "(std::move(" + type_name(f->get_type())
+          + "(*rhs.value_." + name + ")));";
+      } else {
+        return "set_" + name + "(rhs.value_." + name + ");";
+      }
     });
     indent(out) << "return *this;" << endl;
   indent_down();
@@ -1413,11 +1425,15 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent(out) << tstruct->get_name() << "(" << tstruct->get_name()
               << "&& rhs) : type_(Type::__EMPTY__) {" << endl;
   indent_up();
-    indent(out) << "__clear();" << endl;
+    indent(out) << "if (this == &rhs) { return; }" << endl;
     indent(out) << "if (rhs.type_ == Type::__EMPTY__) { return; }" << endl;
-    writeSwitchCase("rhs.type_", [] (t_field* f) {
+    writeSwitchCase("rhs.type_", [this] (t_field* f) {
       auto name = f->get_name();
-      return "set_" + name + "(std::move(rhs.value_." + name + "));";
+      if (is_reference(f)) {
+        return "set_" + name + "(std::move(*rhs.value_." + name + "));";
+      } else {
+        return "set_" + name + "(std::move(rhs.value_." + name + "));";
+      }
     });
     indent(out) << "rhs.__clear();" << endl;
   indent_down();
@@ -1426,12 +1442,17 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent(out) << tstruct->get_name() << "& operator=("
               << tstruct->get_name() << "&& rhs) {" << endl;
   indent_up();
+    indent(out) << "if (this == &rhs) { return *this; }" << endl;
     indent(out) << "__clear();" << endl;
     indent(out) << "if (rhs.type_ == Type::__EMPTY__) { return *this; }"
                 << endl;
-    writeSwitchCase("rhs.type_", [] (t_field* f) {
+    writeSwitchCase("rhs.type_", [this] (t_field* f) {
       auto name = f->get_name();
-      return "set_" + name + "(std::move(rhs.value_." + name + "));";
+      if (is_reference(f)) {
+        return "set_" + name + "(std::move(*rhs.value_." + name + "));";
+      } else {
+        return "set_" + name + "(std::move(rhs.value_." + name + "));";
+      }
     });
     indent(out) << "rhs.__clear();" << endl;
     indent(out) << "return *this;" << endl;
@@ -1468,10 +1489,15 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
       }
 
       if (!nspace.empty()) {
-        ret = "using namespace " + nspace + ";\n";
+        ret = "using namespace " + nspace + "; ";
       }
 
-      ret += "value_." + f->get_name() + ".~" + tname + "();\n";
+      if (is_reference(f)) {
+        ret += "using std::unique_ptr; ";
+        ret += "value_." + f->get_name() + ".~unique_ptr<" + tname + ">();";
+      } else {
+        ret += "value_." + f->get_name() + ".~" + tname + "();";
+      }
       return ret;
     });
     indent(out) << "type_ = Type::__EMPTY__;" << endl;
@@ -1490,8 +1516,13 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent(out) << "union storage_type {" << endl;
   indent_up();
   for (auto& member: members) {
-    indent(out) << type_name(member->get_type()) << " "
-                << member->get_name() << ";" << endl;
+    if (is_reference(member)) {
+      indent(out) << "std::unique_ptr<" << type_name(member->get_type())
+                  << "> " << member->get_name() << ";" << endl;
+    } else {
+      indent(out) << type_name(member->get_type()) << " "
+                  << member->get_name() << ";" << endl;
+    }
   }
   indent(out) << endl;
 
@@ -1539,9 +1570,16 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
     indent(out) << "void set_" << member->get_name() << "(T&&... t) {" << endl;
     indent(out) << "  __clear();" << endl;
     indent(out) << "  type_ = Type::" << member->get_name() << ";" << endl;
-    indent(out) << "  new (&value_." << member->get_name() << ")"
-                << " " << type_name(member->get_type())
-                << "(std::forward<T>(t)...);" << endl;
+    if (is_reference(member)) {
+      indent(out) << "  new (&value_." << member->get_name() << ")"
+                  << " std::unique_ptr<" << type_name(member->get_type())
+                  << ">(new " << type_name(member->get_type())
+                  << "(std::forward<T>(t)...));" << endl;
+    } else {
+      indent(out) << "  new (&value_." << member->get_name() << ")"
+                  << " " << type_name(member->get_type())
+                  << "(std::forward<T>(t)...);" << endl;
+    }
     indent(out) << "}" << endl << endl;
   }
 
@@ -1549,7 +1587,13 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   for (auto& member: members) {
     auto type = type_name(member->get_type());
     auto name = member->get_name();
-    indent(out) << "const " << type << "& get_" << name << "() const {" << endl;
+    if (is_reference(member)) {
+      indent(out) << "const std::unique_ptr<" << type << ">& get_" << name
+                  << "() const {" << endl;
+    } else {
+      indent(out) << "const " << type << "& get_" << name << "() const {"
+                  << endl;
+    }
     indent(out) << "  assert(type_ == Type::" << member->get_name() << ");"
                 << endl;
     indent(out) << "  return value_." << name << ";" << endl;
@@ -1560,7 +1604,12 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   for (auto& member: members) {
     auto type = type_name(member->get_type());
     auto name = member->get_name();
-    indent(out) << type << "& mutable_" << name << "() {" << endl;
+    if (is_reference(member)) {
+      indent(out) << "std::unique_ptr<" << type << ">& mutable_"
+                  << name << "() {" << endl;
+    } else {
+      indent(out) << type << "& mutable_" << name << "() {" << endl;
+    }
     indent(out) << "  assert(type_ == Type::" << member->get_name() << ");"
                 << endl;
     indent(out) << "  return value_." << name << ";" << endl;
@@ -1571,7 +1620,12 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   for (auto& member: members) {
     auto type = type_name(member->get_type());
     auto name = member->get_name();
-    indent(out) << type << " move_" << name << "() {" << endl;
+    if (is_reference(member)) {
+      indent(out) << "std::unique_ptr<" << type << "> move_" << name
+                  << "() {" << endl;
+    } else {
+      indent(out) << type << " move_" << name << "() {" << endl;
+    }
     indent(out) << "  assert(type_ == Type::" << member->get_name() << ");"
                 << endl;
     indent(out) << "  return std::move(value_." << name << ");" << endl;
