@@ -81,7 +81,7 @@ void process(const dict& params, const object& generate_callback) {
   // Instance of the global parse tree
   unique_ptr<t_program> program(new t_program(input_file));
   if (out_path.size()) {
-    program->set_out_path(out_path);
+    program->set_out_path(out_path, false);
   }
 
   // Compute the cpp include prefix.

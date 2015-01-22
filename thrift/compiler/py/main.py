@@ -77,6 +77,7 @@ def init_parser():
             dest="outputDir", default='.',
             help='Set the output directory for gen-* packages (default:'
             'current directory)')),
+        (['--out'], {}),
         (['-I'], dict(metavar='dir', dest="includeDirs", action="append",
             help='Add a directory to the list of directories searched for'
             'include directives')),
