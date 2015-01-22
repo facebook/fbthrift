@@ -3039,7 +3039,7 @@ class CppGenerator(t_generator.Generator):
         felem = frontend.t_field(tset.elem_type, elem)
         scope(self._declare_field(felem))
         self._generate_deserialize_field(scope, felem)
-        scope('{0}.insert({1});'.format(prefix, elem))
+        scope('{0}.insert(std::move({1}));'.format(prefix, elem))
 
     def _generate_deserialize_list_element(self, scope, tlist, prefix,
                                            use_push, index):
@@ -3048,7 +3048,7 @@ class CppGenerator(t_generator.Generator):
             felem = frontend.t_field(tlist.elem_type, elem)
             scope(self._declare_field(felem))
             self._generate_deserialize_field(scope, felem)
-            scope('{0}.push_back({1});'.format(prefix, elem))
+            scope('{0}.push_back(std::move({1}));'.format(prefix, elem))
         else:
             felem = frontend.t_field(tlist.elem_type, '{0}[{1}]'.format(prefix,
                                                                         index))
