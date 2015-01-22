@@ -661,7 +661,7 @@ void readStruct(T, Protocol, alias fieldMetaData = cast(TFieldMeta[])null,
           auto result = v ~ " = new typeof(" ~ v ~ ")();\n";
         }
 
-        static if (__traits(compiles, F.init.read(TProtocol.init))) {
+        static if (__traits(compiles, F.init.read(TProtocol()))) {
           result ~= v ~ ".read(p);";
         } else {
           result ~= "readStruct(" ~ v ~ ", p);";
