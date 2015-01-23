@@ -513,7 +513,19 @@ void t_py_generator::generate_json_collection_element(ofstream& out,
   string to_parse = prefix_json;
   type = get_true_type(type);
 
-  if (type->is_enum()) {
+  if (type->is_base_type()) {
+    t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+    switch(tbase) {
+      // Explicitly cast into float because there is an asymetry
+      // between serializing and deserializing NaN.
+      case t_base_type::TYPE_DOUBLE:
+      case t_base_type::TYPE_FLOAT:
+        to_act_on = "float(" + to_act_on + ")";
+        break;
+      default:
+        break;
+    }
+  } else if (type->is_enum()) {
     to_parse = elem;
     to_act_on = tmp("_enum");
   } else if (type->is_list()) {

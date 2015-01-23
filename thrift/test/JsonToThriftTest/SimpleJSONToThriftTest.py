@@ -20,6 +20,7 @@
 #
 
 import glob
+import math
 import json
 import sys
 sys.path.insert(0, './gen-py')
@@ -40,6 +41,8 @@ from myMapStruct.ttypes import *
 from myNestedMapStruct.ttypes import *
 from mySimpleStruct.ttypes import *
 from myStringStruct.ttypes import *
+from myDoubleListStruct.ttypes import *
+from myCollectionStruct.ttypes import *
 
 from thrift.protocol.TSimpleJSONProtocol import TSimpleJSONProtocolFactory
 from thrift.protocol.TProtocol import TProtocolException
@@ -123,6 +126,19 @@ class SimpleJSONToThriftTest(unittest.TestCase):
         self.stringStruct2 = myStringStruct()
         self.stringStruct3 = myStringStruct(a="foobar")
 
+        self.collectionStruct1 = myCollectionStruct(
+            l=[1.11, 2.22],
+            s=set([1.11, 2.22]),
+            m={1.11: 1.11, 2.22: 2.22},
+            ll=[myTestStruct(d=3.33)],
+        )
+        self.collectionStruct2 = myCollectionStruct(
+            l=[float("nan")],
+            s=set([float("nan")]),
+            m={float("nan"): float("nan")},
+            ll=[myTestStruct(d=float("nan"))],
+        )
+
     def _serialize(self, obj):
         trans = TTransport.TMemoryBuffer()
         prot = TSimpleJSONProtocolFactory().getProtocol(trans)
@@ -198,6 +214,17 @@ class SimpleJSONToThriftTest(unittest.TestCase):
         self._testStruct(self.stringStruct1)
         self._testStruct(self.stringStruct2, True)
         self._testStruct(self.stringStruct3)
+
+    def testCollectionStruct(self):
+        self._testStruct(self.collectionStruct1)
+
+        # Have to test manually because nan != nan
+        gen = self.collectionStruct2.__class__()
+        gen.readFromJson(self._serialize(self.collectionStruct2))
+        self.assertTrue(math.isnan(gen.l[0]))
+        self.assertTrue(math.isnan(list(gen.s)[0]))
+        self.assertTrue(math.isnan(gen.m.values()[0]))
+        self.assertTrue(math.isnan(gen.ll[0].d))
 
 def suite():
     suite = unittest.TestSuite()
