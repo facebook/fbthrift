@@ -2956,7 +2956,8 @@ class CppGenerator(t_generator.Generator):
         ktype = self.tmp('_ktype')
         vtype = self.tmp('_vtype')
         etype = self.tmp('_etype')
-        use_push = bool(self._cpp_type_name(cont)) \
+        cpptype = self._cpp_type_name(cont)
+        use_push = (cpptype is not None and 'list' in cpptype) \
             or self._has_cpp_annotation(cont, 'template')
         s(prefix + '.clear();')
         s('uint32_t {0};'.format(size))
