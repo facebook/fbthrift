@@ -64,11 +64,12 @@ SaslThreadManager::SaslThreadManager(std::shared_ptr<SecurityLogger> logger,
   threadManager_->setNamePrefix("sasl-thread");
   threadManager_->start();
 
+  // We have to schedule it before we start looping evb
+  scheduleThreadManagerHealthCheck();
   healthCheckThread_  = std::thread([this] {
       folly::setThreadName("sasl-thread-health");
       healthCheckEvb_.loopForever();
   });
-  scheduleThreadManagerHealthCheck();
 }
 
 void SaslThreadManager::threadManagerHealthCheck() {
