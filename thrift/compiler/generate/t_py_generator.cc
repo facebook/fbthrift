@@ -1109,7 +1109,8 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
   indent(out) << endl;
 
   // Generate `isUnion` method
-  indent(out) << "def isUnion(self):" << endl;
+  indent(out) << "@staticmethod" << endl;
+  indent(out) << "def isUnion():" << endl;
   indent(out) << "  return True" << endl << endl;
 
   // Generate `get_` methods
@@ -1436,7 +1437,8 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
   }
 
   // Generate `isUnion` method to distinguish union
-  indent(out) << "def isUnion(self):" << endl;
+  indent(out) << "@staticmethod" << endl;
+  indent(out) << "def isUnion():" << endl;
   indent(out) << "  return False" << endl << endl;
 
   generate_py_struct_reader(out, tstruct);

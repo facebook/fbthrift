@@ -115,6 +115,9 @@ class TestUnionStructs(unittest.TestCase):
         for i, j in l:
             self._test_json_output(i, j)
 
+    def testIsUnion(self):
+        self.assertFalse(OneOfEach.isUnion())
+        self.assertTrue(TestUnion.isUnion())
 
 if __name__ == '__main__':
     unittest.main()
