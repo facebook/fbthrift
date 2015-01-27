@@ -22,6 +22,8 @@
 #include <stdint.h>
 #include <memory>
 
+#include <thrift/lib/cpp/server/TConnectionContext.h>
+
 namespace apache { namespace thrift { namespace server {
 
 class TServerObserver {
@@ -54,9 +56,11 @@ class TServerObserver {
   };
 
   // Notifications for various events on the TNonblockingServer
-  virtual void connAccepted() {}
+  virtual void connAccepted(TConnectionContext *ctx) {}
 
-  virtual void connDropped() {}
+  // ctx can be null if the server drops the connection because
+  // it is overloaded.
+  virtual void connDropped(TConnectionContext *ctx) {}
 
   virtual void saslError() {}
 

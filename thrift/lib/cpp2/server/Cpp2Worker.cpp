@@ -58,7 +58,7 @@ void Cpp2Worker::onNewConnection(
       (getConnectionManager()->getNumConnections() >=
        server_->maxConnections_ / server_->nWorkers_) ) {
     if (observer) {
-      observer->connDropped();
+      observer->connDropped(nullptr);
     }
     return;
   }
@@ -79,7 +79,7 @@ void Cpp2Worker::onNewConnection(
 
   VLOG(4) << "created connection for fd " << asyncSocket->getFd();
   if (observer) {
-    observer->connAccepted();
+    observer->connAccepted(result->getConnectionContext());
   }
 }
 

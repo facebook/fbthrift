@@ -172,7 +172,7 @@ void Cpp2Connection::disconnect(const char* comment) noexcept {
     context_.getPeerAddress()->describe();
   auto observer = worker_->getServer()->getObserver();
   if (observer) {
-    observer->connDropped();
+    observer->connDropped(getConnectionContext());
   }
 }
 

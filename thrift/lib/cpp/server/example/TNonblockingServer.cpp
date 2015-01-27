@@ -1129,7 +1129,7 @@ void TNonblockingServer::handleEvent(int fd, short which) {
     }
 
     if (observer_) {
-      observer_->connAccepted();
+      observer_->connAccepted(getConnectionContext());
     }
   }
 
@@ -1309,7 +1309,7 @@ bool TNonblockingServer::checkForOverload(TConnection* conn) {
   }
 
   if (observer_) {
-    observer_->connDropped();
+    observer_->connDropped(getConnectionContext());
   }
 
   if (closedCurrentConn) {

@@ -93,6 +93,10 @@ class Cpp2Connection
     this_ = conn;
   }
 
+  TConnectionContext* getConnectionContext() {
+    return &context_;
+  }
+
  protected:
   std::unique_ptr<apache::thrift::AsyncProcessor> processor_;
   std::unique_ptr<DuplexChannel> duplexChannel_;
