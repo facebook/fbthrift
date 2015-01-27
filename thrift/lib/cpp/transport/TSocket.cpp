@@ -43,7 +43,7 @@ uint32_t g_socket_syscalls = 0;
 // Global helper functions
 
 int msTimeFromTimeval(struct timeval s) {
-  return s.tv_sec*1000 + s.tv_usec/1000;
+  return folly::to<int>(s.tv_sec*1000 + s.tv_usec/1000);
 }
 
 ostream& operator<<(ostream& os, const TSocket::Options& o) {
@@ -119,7 +119,7 @@ bool TSocket::peek() {
     return false;
   }
   uint8_t buf;
-  int r = recv(socket_, &buf, 1, MSG_PEEK);
+  ssize_t r = recv(socket_, &buf, 1, MSG_PEEK);
   if (r == -1) {
     int errno_copy = errno;
     #if defined __FreeBSD__ || defined __MACH__
@@ -380,7 +380,7 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
   // we stop retrying on EINTR.  Note that we might still exceed the
   // timeout, but by at most a factor of 2.
   pausableTimer.start();
-  int got = recv(socket_, buf, len, 0);
+  int got = folly::to<int>(recv(socket_, buf, len, 0));
   int errno_after_recv = errno; // gettimeofday, used by PausableTimer, can change errno
   pausableTimer.stop();
   ++g_socket_syscalls;
@@ -509,7 +509,7 @@ uint32_t TSocket::write_partial(const uint8_t* buf, uint32_t len) {
   flags |= MSG_NOSIGNAL;
 #endif // ifdef MSG_NOSIGNAL
 
-  int b = send(socket_, buf + sent, len - sent, flags);
+  int b = folly::to<int>(send(socket_, buf + sent, len - sent, flags));
   ++g_socket_syscalls;
 
   if (b < 0) {
