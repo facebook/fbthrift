@@ -93,9 +93,6 @@ class AsyncLoadHandler2 : public LoadTestSvIf
     std::unique_ptr<std::string> data);
   void async_eb_add(std::unique_ptr<HandlerCallback<int64_t>>,
                  int64_t a, int64_t b);
-
- private:
-  TEventServer* server_;
 };
 
 }} // apache::thrift
