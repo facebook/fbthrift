@@ -78,7 +78,5 @@ int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   google::ParseCommandLineFlags(&argc, &argv, true);
 
-  FLAGS_enable_request_context = true;
-
   return RUN_ALL_TESTS();
 }
