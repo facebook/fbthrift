@@ -19,11 +19,11 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include "thrift/test/gen-cpp2/DebugProtoTest_types.h"
-#include "common/fbunit/OldFollyBenchmark.h"
 
 #include <math.h>
 
-#include "external/gflags/gflags.h"
+#include <folly/Benchmark.h>
+#include <gflags/gflags.h>
 #include <gtest/gtest.h>
 
 using namespace thrift::test::debug;
@@ -46,6 +46,10 @@ void runTestRead(int iters) {
   }
 }
 
+BENCHMARK(runTestRead_BinaryProtocolReader, iters) {
+  runTestRead<BinaryProtocolReader>(iters);
+}
+
 template <typename TBufferType_>
 void runTestWrite(int iters)
 {
@@ -62,12 +66,9 @@ void runTestWrite(int iters)
   buf = queue.move();
 }
 
-static ::folly::BenchmarkRegisterer
-bm_runBinaryWrite ("runTestWrite<BinaryProtocolWriter>",
-                   &runTestWrite<BinaryProtocolWriter>);
-static ::folly::BenchmarkRegisterer
-bm_runBinaryRead ("runTestRead<BinaryProtocolReader>",
-                   &runTestRead<BinaryProtocolReader>);
+BENCHMARK(runTestWrite_BinaryProtocolWriter, iters) {
+  runTestWrite<BinaryProtocolWriter>(iters);
+}
 
 TEST(protocol2, readwrite) {
   runTestWrite<BinaryProtocolWriter>(1);
@@ -76,7 +77,6 @@ TEST(protocol2, readwrite) {
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
-  GFLAGS_INIT(argc, argv);
 
   ooe.im_true   = true;
   ooe.im_false  = false;
@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
 
   auto ret = RUN_ALL_TESTS();
   if (!ret) {
-    folly::MaybeRunAllBenchmarks();
+    folly::runBenchmarksOnFlag();
   }
 
   return 0;

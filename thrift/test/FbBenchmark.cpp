@@ -17,14 +17,15 @@
  * under the License.
  */
 
-#include "external/gflags/gflags.h"
-#include "common/fbunit/OldFollyBenchmark.h"
+#include <folly/Benchmark.h>
 
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 
 #include "thrift/test/gen-cpp/DebugProtoTest_types.h"
+
+#include <gflags/gflags.h>
 
 using namespace boost;
 using namespace apache::thrift::transport;
@@ -129,86 +130,75 @@ void ReadOneOfEach(TProtocolFactory& prot_factory, int iters) {
   }
 }
 
-void BM_WriteFullyTemplatized(int iters) {
+BENCHMARK(BM_WriteFullyTemplatized, iters) {
   // Test with TBinaryProtocolT<TBufferBase>,
   // and OneOfEach.write< TBinaryProtocolT<TBufferBase> >
   TBinaryProtocolFactoryT<TBufferBase> prot_factory;
   WriteOneOfEach< TBinaryProtocolT<TBufferBase> >(prot_factory, iters);
 }
-BM_REGISTER(BM_WriteFullyTemplatized);
 
-void BM_WriteTransportTemplatized(int iters) {
+BENCHMARK(BM_WriteTransportTemplatized, iters) {
   // Test with TBinaryProtocolT<TBufferBase>,
   // but OneOfEach.write<TProtocol>
   TBinaryProtocolFactoryT<TBufferBase> prot_factory;
   WriteOneOfEach<TProtocol>(prot_factory, iters);
 }
-BM_REGISTER(BM_WriteTransportTemplatized);
 
-void BM_WriteProtocolTemplatized(int iters) {
+BENCHMARK(BM_WriteProtocolTemplatized, iters) {
   // Test with TBinaryProtocol and OneOfEach.write<TBinaryProtocol>
   TBinaryProtocolFactory prot_factory;
   WriteOneOfEach<TBinaryProtocol>(prot_factory, iters);
 }
-BM_REGISTER(BM_WriteProtocolTemplatized);
 
-void BM_WriteGeneric(int iters) {
+BENCHMARK(BM_WriteGeneric, iters) {
   // Test with TBinaryProtocol and OneOfEach.write<TProtocol>
   TBinaryProtocolFactory prot_factory;
   WriteOneOfEach<TProtocol>(prot_factory, iters);
 }
-BM_REGISTER(BM_WriteGeneric);
 
-void BM_WriteHeaderGeneric(int iters) {
+BENCHMARK(BM_WriteHeaderGeneric, iters) {
   // Test with TBinaryProtocol and OneOfEach.write<TProtocol>
   TSingleHeaderProtocolFactory prot_factory;
   WriteOneOfEach<THeaderProtocol>(prot_factory, iters);
 }
-BM_REGISTER(BM_WriteHeaderGeneric);
 
-void BM_ReadFullyTemplatized(int iters) {
+BENCHMARK(BM_ReadFullyTemplatized, iters) {
   // Test with TBinaryProtocolT<TBufferBase>,
   // and OneOfEach.write< TBinaryProtocolT<TBufferBase> >
   TBinaryProtocolFactoryT<TBufferBase> prot_factory;
   ReadOneOfEach< TBinaryProtocolT<TBufferBase> >(prot_factory, iters);
 }
-BM_REGISTER(BM_ReadFullyTemplatized);
 
-void BM_ReadTransportTemplatized(int iters) {
+BENCHMARK(BM_ReadTransportTemplatized, iters) {
   // Test with TBinaryProtocolT<TBufferBase>,
   // but OneOfEach.write<TProtocol>
   TBinaryProtocolFactoryT<TBufferBase> prot_factory;
   ReadOneOfEach<TProtocol>(prot_factory, iters);
 }
-BM_REGISTER(BM_ReadTransportTemplatized);
 
-void BM_ReadProtocolTemplatized(int iters) {
+BENCHMARK(BM_ReadProtocolTemplatized, iters) {
   // Test with TBinaryProtocol and OneOfEach.write<TBinaryProtocol>
   TBinaryProtocolFactory prot_factory;
   ReadOneOfEach<TBinaryProtocol>(prot_factory, iters);
 }
-BM_REGISTER(BM_ReadProtocolTemplatized);
 
-void BM_ReadGeneric(int iters) {
+BENCHMARK(BM_ReadGeneric, iters) {
   // Test with TBinaryProtocolT<TTransport> and OneOfEach.write<TProtocol>
   TBinaryProtocolFactory prot_factory;
   ReadOneOfEach<TProtocol>(prot_factory, iters);
 }
-BM_REGISTER(BM_ReadGeneric);
 
-void BM_ReadHeaderGeneric(int iters) {
+BENCHMARK(BM_ReadHeaderGeneric, iters) {
   // Test with TBinaryProtocolT<TTransport> and OneOfEach.write<TProtocol>
   TSingleHeaderProtocolFactory prot_factory;
   ReadOneOfEach<THeaderProtocol>(prot_factory, iters);
 }
-BM_REGISTER(BM_ReadHeaderGeneric);
-
 
 int main(int argc, char** argv) {
-  GFLAGS_INIT(argc, argv);
+  google::ParseCommandLineFlags(&argc, &argv, true);
 
   // Run the benchmarks
-  folly::RunAllBenchmarks();
+  folly::runBenchmarksOnFlag();
 
   return 0;
 }

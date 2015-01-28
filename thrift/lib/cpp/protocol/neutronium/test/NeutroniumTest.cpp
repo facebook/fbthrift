@@ -25,12 +25,13 @@
 #include <limits>
 #include <random>
 #include <gtest/gtest.h>
-#include "external/gflags/gflags.h"
 #include <folly/Random.h>
-#include "common/fbunit/OldFollyBenchmark.h"
+#include <folly/Benchmark.h>
 
 #include <thrift/lib/cpp/protocol/TNeutroniumProtocol.h>
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
+
+#include <gflags/gflags.h>
 
 DECLARE_bool(benchmark);
 
@@ -847,30 +848,24 @@ void initBenchmarks() {
 }  // namespace
 
 #define B(bench, proto) \
-  namespace { \
-  void bench##proto(int iters) { \
+  BENCHMARK(bench##proto, iters) { \
     bench.proto.decode(iters, bench.data.size(), bench.out); \
-  } \
-  } \
-  BM_REGISTER(bench##proto);
+  }
 
 B(bench1, binary);
 B(bench1, compact);
 B(bench1, neutronium);
-BM_REGISTER_SUMMARY();
 
-BM_REGISTER_LINEBREAK();
+BENCHMARK_DRAW_LINE();
 
 B(bench2, binary);
 B(bench2, compact);
 B(bench2, neutronium);
-BM_REGISTER_SUMMARY();
 
 #undef B
 
 int main(int argc, char *argv[]) {
   testing::InitGoogleTest(&argc, argv);
-  GFLAGS_INIT(argc, argv);
 
 #define R(s) s::_reflection_register(reflectionSchema)
   R(TestFixedSizeStruct1);
@@ -889,7 +884,7 @@ int main(int argc, char *argv[]) {
   auto r = RUN_ALL_TESTS();
   if (FLAGS_benchmark && r == 0) {
     initBenchmarks();
-    folly::RunAllBenchmarks();
+    folly::runBenchmarks();
   }
 
   return r;

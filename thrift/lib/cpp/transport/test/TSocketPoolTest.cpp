@@ -17,11 +17,10 @@
  * under the License.
  */
 
-#include "common/fbunit/fbunit.h"
-
 #include <thrift/lib/cpp/transport/TSocketPool.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 
+#include <gtest/gtest.h>
 
 using namespace std;
 using apache::thrift::transport::TSocketPool;
@@ -31,7 +30,7 @@ using apache::thrift::transport::TServerSocket;
  * Test whether TSocketPool returns the port and host for the service
  * that it connects to.
  */
-FBUNIT_TEST(TestGetPortAndHost) {
+TEST(Main, TestGetPortAndHost) {
 
     int listeningPort = 3002;
     TServerSocket serverSocket(listeningPort);
@@ -51,11 +50,3 @@ FBUNIT_TEST(TestGetPortAndHost) {
     EXPECT_EQ(socketPool.getCurrentServerHost(), loopback);
 
 };
-
-int main(int argc, char** argv) {
-  GFLAGS_INIT(argc, argv);
-
-  // Run the unittests
-  RUN_ALL_TESTS_AND_EXIT();
-  return 0;
-}

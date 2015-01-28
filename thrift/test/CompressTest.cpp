@@ -17,8 +17,8 @@
  * under the License.
  */
 
-#include "external/gflags/gflags.h"
-#include "common/fbunit/OldFollyBenchmark.h"
+#include <gflags/gflags.h>
+#include <folly/Benchmark.h>
 
 #include <cstdlib>
 #include <ctime>
@@ -114,67 +114,47 @@ void testChainedCompression(uint8_t flag, int iters) {
   EXPECT_EQ(0, memcmp(cloned->data(), uncompressed->data(), cloned->length()));
 }
 
-void BM_UncompressedBinary(int iters) {
+BENCHMARK(BM_UncompressedBinary, iters) {
   testMessage(0, iters, true, true);
 }
 
-BM_REGISTER(BM_UncompressedBinary);
-
-void BM_Uncompressed(int iters) {
+BENCHMARK(BM_Uncompressed, iters) {
   testMessage(0, iters, true);
 }
 
-BM_REGISTER(BM_Uncompressed);
-
-void BM_Zlib(int iters) {
+BENCHMARK(BM_Zlib, iters) {
   testMessage(0x01, iters, true);
 }
 
-BM_REGISTER(BM_Zlib);
-
-void BM_Snappy(int iters) {
+BENCHMARK(BM_Snappy, iters) {
   testMessage(3, iters, true);
 }
 
-BM_REGISTER(BM_Snappy);
-
-void BM_Qlz(int iters) {
+BENCHMARK(BM_Qlz, iters) {
   testMessage(4, iters, true);
 }
 
-BM_REGISTER(BM_Qlz);
-
 // Test a 'hard' to compress message, more random.
 
-void BM_UncompressedBinaryHard(int iters) {
+BENCHMARK(BM_UncompressedBinaryHard, iters) {
   testMessage(0, iters, false, true);
 }
 
-BM_REGISTER(BM_UncompressedBinaryHard);
-
-void BM_UncompressedHard(int iters) {
+BENCHMARK(BM_UncompressedHard, iters) {
   testMessage(0, iters, false);
 }
 
-BM_REGISTER(BM_UncompressedHard);
-
-void BM_ZlibHard(int iters) {
+BENCHMARK(BM_ZlibHard, iters) {
   testMessage(0x01, iters, false);
 }
 
-BM_REGISTER(BM_ZlibHard);
-
-void BM_SnappyHard(int iters) {
+BENCHMARK(BM_SnappyHard, iters) {
   testMessage(3, iters, false);
 }
 
-BM_REGISTER(BM_SnappyHard);
-
-void BM_QlzHard(int iters) {
+BENCHMARK(BM_QlzHard, iters) {
   testMessage(4, iters, false);
 }
-
-BM_REGISTER(BM_QlzHard);
 
 TEST(chained, none) {
   testChainedCompression(0, 1000);
@@ -298,7 +278,7 @@ TEST(sdf, sdfsd) {
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
-  GFLAGS_INIT(argc, argv);
+  google::ParseCommandLineFlags(&argc, &argv, true);
 
   srand(time(0));
 
@@ -306,7 +286,7 @@ int main(int argc, char** argv) {
 
   // Run the benchmarks
   if (!ret) {
-    folly::MaybeRunAllBenchmarks();
+    folly::runBenchmarksOnFlag();
   }
 
   return 0;

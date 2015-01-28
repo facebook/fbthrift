@@ -19,19 +19,18 @@
 
 #include <time.h>
 
-#include "common/fbunit/benchmark.h"
-#include "common/fbunit/fbunit.h"
-#include "common/init/Init.h"
+#include <folly/Benchmark.h>
 #include <thrift/lib/cpp/util/gen-cpp/ThriftSerializerTest_types.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
 
+#include <gtest/gtest.h>
+
+#include "common/init/Init.h"
+
 using namespace facebook;
 using namespace std;
 using namespace apache::thrift::util;
-
-FBUNIT_DASHBOARD_OWNER("karl")
-FBUNIT_DASHBOARD_EMAILS("oncall+ad_units@xmail.facebook.com")
 
 const std::string randomString = "~!@#$%^&*()_+][/.,\\][/.,'abcde\t\n";
 
@@ -84,7 +83,7 @@ void expectEqualValues(const TestValue& a, const TestValue& b) {
   EXPECT_EQ(a.text, b.text);
 }
 
-FBUNIT_TEST(ThriftSerializerBinaryTest) {
+TEST(Main, ThriftSerializerBinaryTest) {
   ThriftSerializerBinary<> izer;
   TestValue result;
   string serialized;
@@ -111,7 +110,7 @@ FBUNIT_TEST(ThriftSerializerBinaryTest) {
   expectEqualValues(original, result);
 }
 
-FBUNIT_TEST(ThriftSerializerCompactTest) {
+TEST(Main, ThriftSerializerCompactTest) {
   ThriftSerializerCompactDeprecated<> izerDeprecated;
   ThriftSerializerCompact<> izer;
   TestValue result;
@@ -134,7 +133,7 @@ FBUNIT_TEST(ThriftSerializerCompactTest) {
   EXPECT_NE(result.throttle, 7.77777);
 }
 
-FBUNIT_TEST(ThriftOneSerializerTwoTypesTest) {
+TEST(Main, ThriftOneSerializerTwoTypesTest) {
   ThriftSerializerCompact<> izer;
   TestValue value;
   TestOtherValue other;
@@ -148,8 +147,8 @@ FBUNIT_TEST(ThriftOneSerializerTwoTypesTest) {
   // This should compile, but fail at runtime, since the types are
   // incompatible.
 
-  EXPECT_EXCEPTION(izer.deserialize(result, &other),
-                   apache::thrift::protocol::TProtocolException&);
+  EXPECT_THROW(izer.deserialize(result, &other),
+               apache::thrift::protocol::TProtocolException);
 
   other.color = "blue";
 
@@ -157,7 +156,7 @@ FBUNIT_TEST(ThriftOneSerializerTwoTypesTest) {
   izer.deserialize(result, &other);
 }
 
-FBUNIT_TEST(ThriftSerializerBinaryIgnoreTypesTest) {
+TEST(Main, ThriftSerializerBinaryIgnoreTypesTest) {
   // Explicit types on the serializer are ignored.  Not only are these
   // types different, they aren't even thrift types!
   ThriftSerializerBinary<int> izer1;
@@ -174,7 +173,7 @@ FBUNIT_TEST(ThriftSerializerBinaryIgnoreTypesTest) {
   expectEqualValues(original, result);
 }
 
-FBUNIT_TEST(ThriftSerializerBinaryTest_Fail) {
+TEST(Main, ThriftSerializerBinaryTest_Fail) {
   ThriftSerializerBinary<> izer;
   TestValue result;
   string serialized;
@@ -189,7 +188,7 @@ FBUNIT_TEST(ThriftSerializerBinaryTest_Fail) {
   EXPECT_GT(serialized.length(), izer.deserialize(serialized, &result));
 }
 
-FBUNIT_TEST(ThriftSerializerJson) {
+TEST(Main, ThriftSerializerJson) {
   ThriftSerializerJson<> izer;
   TestValue result;
   string serialized;
@@ -216,7 +215,7 @@ FBUNIT_TEST(ThriftSerializerJson) {
   expectEqualValues(original, result);
 }
 
-FBUNIT_TEST(ThriftSerializerJson_Fail) {
+TEST(Main, ThriftSerializerJson_Fail) {
   ThriftSerializerJson<> izer;
   TestValue result;
   string serialized;
@@ -228,11 +227,11 @@ FBUNIT_TEST(ThriftSerializerJson_Fail) {
   izer.serialize(original, &serialized);
   serialized = "Garbage" + serialized;
 
-  EXPECT_EXCEPTION(izer.deserialize(serialized, &result),
-                   apache::thrift::protocol::TProtocolException&);
+  EXPECT_THROW(izer.deserialize(serialized, &result),
+               apache::thrift::protocol::TProtocolException);
 }
 
-FBUNIT_TEST(ThriftSerializerSimpleJson_Unicode) {
+TEST(Main, ThriftSerializerSimpleJson_Unicode) {
   ThriftSerializerSimpleJson<> izer;
   TestOtherValue result;
 
@@ -249,8 +248,8 @@ FBUNIT_TEST(ThriftSerializerSimpleJson_Unicode) {
   EXPECT_EQ(result.color.length(), 1);
   izer.deserialize(s2, &result);
   EXPECT_EQ(result.color.length(), 1);
-  EXPECT_EXCEPTION(izer.deserialize(s3, &result),
-                   apache::thrift::protocol::TProtocolException&);
+  EXPECT_THROW(izer.deserialize(s3, &result),
+               apache::thrift::protocol::TProtocolException);
 
   ThriftSerializerSimpleJson<> izer1;
   izer1.allowDecodeUTF8(true);
@@ -271,7 +270,7 @@ FBUNIT_TEST(ThriftSerializerSimpleJson_Unicode) {
   EXPECT_EQ(result.color.length(), 5);
 }
 
-FBUNIT_TEST(ThriftSerializerBinaryVersionTest) {
+TEST(Main, ThriftSerializerBinaryVersionTest) {
   ThriftSerializerBinary<> izer;
   TestValue result;
   string serialized;
@@ -299,7 +298,7 @@ FBUNIT_TEST(ThriftSerializerBinaryVersionTest) {
   expectEqualValues(original, result);
 }
 
-FBUNIT_TEST(ThriftSerializerCompactVersionTest) {
+TEST(Main, ThriftSerializerCompactVersionTest) {
   ThriftSerializerCompactDeprecated<> izerDeprecated;
   ThriftSerializerCompact<> izer;
   TestValue result;
@@ -323,7 +322,7 @@ FBUNIT_TEST(ThriftSerializerCompactVersionTest) {
   EXPECT_NE(result.throttle, 7.77777);
 }
 
-FBUNIT_TEST(ThriftOneSerializerTwoTypesVersionTest) {
+TEST(Main, ThriftOneSerializerTwoTypesVersionTest) {
   ThriftSerializerCompact<> izer;
   TestValue value;
   TestOtherValue other;
@@ -337,8 +336,8 @@ FBUNIT_TEST(ThriftOneSerializerTwoTypesVersionTest) {
   // This should compile, but fail at runtime, since the types are
   // incompatible.
 
-  EXPECT_EXCEPTION(izer.deserialize(result, &other),
-                   apache::thrift::protocol::TProtocolException&);
+  EXPECT_THROW(izer.deserialize(result, &other),
+               apache::thrift::protocol::TProtocolException);
 
   other.color = "blue";
 
@@ -346,7 +345,7 @@ FBUNIT_TEST(ThriftOneSerializerTwoTypesVersionTest) {
   izer.deserialize(result, &other);
 }
 
-FBUNIT_TEST(ThriftSerializerBinaryIgnoreTypesVersionTest) {
+TEST(Main, ThriftSerializerBinaryIgnoreTypesVersionTest) {
   // Explicit types on the serializer are ignored.  Not only are these
   // types different, they aren't even thrift types!
   ThriftSerializerBinary<int> izer1;
@@ -365,7 +364,7 @@ FBUNIT_TEST(ThriftSerializerBinaryIgnoreTypesVersionTest) {
   expectEqualValues(original, result);
 }
 
-FBUNIT_TEST(ThriftSerializerBinaryVersionTest_Fail) {
+TEST(Main, ThriftSerializerBinaryVersionTest_Fail) {
   ThriftSerializerBinary<> izer;
   TestValue result;
   string serialized;
@@ -381,7 +380,7 @@ FBUNIT_TEST(ThriftSerializerBinaryVersionTest_Fail) {
   EXPECT_GT(serialized.length(), izer.deserialize(serialized, &result));
 }
 
-FBUNIT_TEST(ThriftSerializerJsonVersion) {
+TEST(Main, ThriftSerializerJsonVersion) {
   ThriftSerializerJson<> izer;
   TestValue result;
   string serialized;
@@ -409,7 +408,7 @@ FBUNIT_TEST(ThriftSerializerJsonVersion) {
   expectEqualValues(original, result);
 }
 
-FBUNIT_TEST(ThriftSerializerJsonVersion_Fail) {
+TEST(Main, ThriftSerializerJsonVersion_Fail) {
   ThriftSerializerJson<> izer;
   TestValue result;
   string serialized;
@@ -422,11 +421,11 @@ FBUNIT_TEST(ThriftSerializerJsonVersion_Fail) {
   izer.serialize(original, &serialized);
   serialized = "Garbage" + serialized;
 
-  EXPECT_EXCEPTION(izer.deserialize(serialized, &result),
-                   apache::thrift::protocol::TProtocolException&);
+  EXPECT_THROW(izer.deserialize(serialized, &result),
+               apache::thrift::protocol::TProtocolException);
 }
 
-void BM_ThriftSerializerBinary(int count) {
+BENCHMARK(BM_ThriftSerializerBinary, count) {
   // devrs003.sctm 9/2008: 100K in 413 ms
   // devrs003.snc1 12/2008: 100K in 292 ms
 
@@ -444,10 +443,8 @@ void BM_ThriftSerializerBinary(int count) {
     izer.deserialize(serialized, &result);
   }
 }
-BM_REGISTER(BM_ThriftSerializerBinary);
 
-
-void BM_ThriftSerializerBinary_NoReuse(int count) {
+BENCHMARK(ThriftSerializerBinary_NoReuse, count) {
   // devrs003.snc1 12/2008: 100K in 444 ms
 
   TestValue result;
@@ -465,9 +462,8 @@ void BM_ThriftSerializerBinary_NoReuse(int count) {
     izer.deserialize(serialized, &result);
   }
 }
-BM_REGISTER(BM_ThriftSerializerBinary_NoReuse);
 
-FBUNIT_TEST(ThriftSerializerBinaryExt) {
+TEST(Main, ThriftSerializerBinaryExt) {
   // devrs003.sctm 9/2008: 100K in 413 ms
   // devrs003.snc1 12/2008: 100K in 292 ms
 
@@ -482,10 +478,4 @@ FBUNIT_TEST(ThriftSerializerBinaryExt) {
   string serialized((const char*)serializedBuffer, serializedLen);
   izer.deserialize(serialized, &result);
   expectEqualValues(original, result);
-}
-
-int main(int argc, char** argv) {
-  initFacebook(&argc, &argv);
-  RUN_ALL_TESTS_AND_EXIT();
-  return 0;
 }
