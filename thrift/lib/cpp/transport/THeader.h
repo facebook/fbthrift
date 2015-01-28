@@ -22,7 +22,7 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 
 #include <folly/io/IOBuf.h>
@@ -319,11 +319,11 @@ class THeader {
     return minCompressBytes_;
   }
 
-  apache::thrift::concurrency::PriorityThreadManager::PRIORITY
+  apache::thrift::concurrency::PRIORITY
   getCallPriority();
 
   void setCallPriority(
-      apache::thrift::concurrency::PriorityThreadManager::PRIORITY prio);
+      apache::thrift::concurrency::PRIORITY prio);
 
   std::chrono::milliseconds getClientTimeout() const;
 

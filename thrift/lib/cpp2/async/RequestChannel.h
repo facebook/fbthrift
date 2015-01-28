@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/Request.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/String.h>
@@ -195,7 +196,7 @@ class CloseCallback {
  */
 class RpcOptions {
  public:
-  typedef apache::thrift::concurrency::PriorityThreadManager::PRIORITY PRIORITY;
+  typedef apache::thrift::concurrency::PRIORITY PRIORITY;
   RpcOptions()
    : timeout_(0),
      priority_(apache::thrift::concurrency::N_PRIORITIES)

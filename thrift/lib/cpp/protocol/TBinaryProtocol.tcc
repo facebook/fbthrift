@@ -24,8 +24,6 @@
 
 #include <limits>
 #include <string>
-#include <boost/static_assert.hpp>
-
 
 namespace apache { namespace thrift { namespace protocol {
 

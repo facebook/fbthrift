@@ -20,7 +20,7 @@
 #ifndef THRIFT_PROTOCOL_TJSONPROTOCOL_H_
 #define THRIFT_PROTOCOL_TJSONPROTOCOL_H_ 1
 
-#include "TVirtualProtocol.h"
+#include <thrift/lib/cpp/protocol/TVirtualProtocol.h>
 
 #include <stack>
 
@@ -141,7 +141,7 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
 
  public:
 
-  TJSONProtocol(std::shared_ptr<TTransport> ptrans);
+  explicit TJSONProtocol(std::shared_ptr<TTransport> ptrans);
   explicit TJSONProtocol(TTransport *ptrans);
 
   ~TJSONProtocol();

@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/transport/TFileTransport.h>
 
 #include <thrift/lib/cpp/thrift_config.h>
-#include <thrift/lib/cpp/transport/TTransportUtils.h>
+#include <thrift/lib/cpp/transport/TNullTransport.h>
 
 #include <pthread.h>
 #ifdef THRIFT_HAVE_SYS_TIME_H

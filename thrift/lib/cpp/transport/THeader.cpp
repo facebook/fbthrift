@@ -1007,7 +1007,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
   return buf;
 }
 
-apache::thrift::concurrency::PriorityThreadManager::PRIORITY
+apache::thrift::concurrency::PRIORITY
 THeader::getCallPriority() {
   const auto& map = getHeaders();
   auto iter = map.find(PRIORITY_HEADER);
@@ -1026,7 +1026,7 @@ THeader::getCallPriority() {
 }
 
 void THeader::setCallPriority(
-    apache::thrift::concurrency::PriorityThreadManager::PRIORITY prio) {
+    apache::thrift::concurrency::PRIORITY prio) {
   setHeader(PRIORITY_HEADER, folly::to<std::string>(prio));
 }
 

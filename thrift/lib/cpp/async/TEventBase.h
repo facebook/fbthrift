@@ -18,7 +18,6 @@
 #define TEVENTBASE_H
 
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncTimeout.h>
 
 namespace apache { namespace thrift { namespace async {
 

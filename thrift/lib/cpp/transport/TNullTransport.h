@@ -17,57 +17,40 @@
  * under the License.
  */
 
-#ifndef _THRIFT_TRANSPORT_TFDTRANSPORT_H_
-#define _THRIFT_TRANSPORT_TFDTRANSPORT_H_ 1
+#ifndef THRIFT_TRANSPORT_TNULLTRANSPORT_H_
+#define THRIFT_TRANSPORT_TNULLTRANSPORT_H_ 1
 
-#include <string>
-#include <sys/time.h>
+#include <stdint.h>
 
-#include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/transport/TVirtualTransport.h>
 
 namespace apache { namespace thrift { namespace transport {
 
 /**
- * Dead-simple wrapper around a file descriptor.
+ * The null transport is a dummy transport that doesn't actually do anything.
+ * It's sort of an analogy to /dev/null, you can never read anything from it
+ * and it will let you write anything you want to it, though it won't actually
+ * go anywhere.
  *
  */
-class TFDTransport : public TVirtualTransport<TFDTransport> {
+class TNullTransport : public TVirtualTransport<TNullTransport> {
  public:
-  enum ClosePolicy
-  { NO_CLOSE_ON_DESTROY = 0
-  , CLOSE_ON_DESTROY = 1
-  };
+  TNullTransport() {}
 
-  explicit TFDTransport(int fd, ClosePolicy close_policy = NO_CLOSE_ON_DESTROY)
-    : fd_(fd)
-    , close_policy_(close_policy)
-  {}
+  ~TNullTransport() {}
 
-  ~TFDTransport() {
-    if (close_policy_ == CLOSE_ON_DESTROY) {
-      close();
-    }
+  bool isOpen() {
+    return true;
   }
-
-  bool isOpen() { return fd_ >= 0; }
 
   void open() {}
 
-  void close();
+  void write(const uint8_t* /* buf */, uint32_t /* len */) {
+    return;
+  }
 
-  uint32_t read(uint8_t* buf, uint32_t len);
-
-  void write(const uint8_t* buf, uint32_t len);
-
-  void setFD(int fd) { fd_ = fd; }
-  int getFD() { return fd_; }
-
- protected:
-  int fd_;
-  ClosePolicy close_policy_;
 };
 
 }}} // apache::thrift::transport
 
-#endif // #ifndef _THRIFT_TRANSPORT_TFDTRANSPORT_H_
+#endif // #ifndef _THRIFT_TRANSPORT_TNULLTRANSPORT_H_

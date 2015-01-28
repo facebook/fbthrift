@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp/server/example/TNonblockingServer.h>
 #include <thrift/lib/cpp/server/example/TSimpleServer.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
+#include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp/ClientUtil.h>
 
 #include <thrift/lib/cpp/processor/test/EventLog.h>

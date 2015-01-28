@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <folly/io/async/test/SocketPair.h>
 #include <folly/io/async/test/Util.h>
 

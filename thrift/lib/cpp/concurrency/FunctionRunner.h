@@ -17,6 +17,7 @@
 #ifndef _THRIFT_CONCURRENCY_FUNCTION_RUNNER_H
 #define _THRIFT_CONCURRENCY_FUNCTION_RUNNER_H 1
 
+#include <unistd.h>
 #include <functional>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
@@ -86,7 +87,7 @@ class FunctionRunner : public Runnable {
    * Given a generic callback, this FunctionRunner will execute it.
    */
   template <class F>
-  FunctionRunner(F&& cob)
+  explicit FunctionRunner(F&& cob)
    : func_(std::forward<F>(cob)), repFunc_(0), initFunc_(0)
   { }
 

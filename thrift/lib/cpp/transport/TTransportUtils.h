@@ -26,36 +26,11 @@
 #include <algorithm>
 #include <thrift/lib/cpp/transport/TTransport.h>
 // Include the buffered transports that used to be defined here.
+#include <thrift/lib/cpp/transport/TNullTransport.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/TFileTransport.h>
 
 namespace apache { namespace thrift { namespace transport {
-
-/**
- * The null transport is a dummy transport that doesn't actually do anything.
- * It's sort of an analogy to /dev/null, you can never read anything from it
- * and it will let you write anything you want to it, though it won't actually
- * go anywhere.
- *
- */
-class TNullTransport : public TVirtualTransport<TNullTransport> {
- public:
-  TNullTransport() {}
-
-  ~TNullTransport() {}
-
-  bool isOpen() {
-    return true;
-  }
-
-  void open() {}
-
-  void write(const uint8_t* /* buf */, uint32_t /* len */) {
-    return;
-  }
-
-};
-
 
 /**
  * TPipedTransport. This transport allows piping of a request from one

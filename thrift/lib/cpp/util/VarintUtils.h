@@ -74,6 +74,6 @@ int32_t zigzagToI32(uint32_t n);
 
 }}} // apache::thrift::util
 
-#include "VarintUtils.tcc"
+#include <thrift/lib/cpp/util/VarintUtils.tcc>
 
 #endif // THRIFT_UTIL_VARINTUTILS_H_

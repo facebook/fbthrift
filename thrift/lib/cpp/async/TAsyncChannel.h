@@ -22,8 +22,8 @@
 
 #include <functional>
 #include <thrift/lib/cpp/Thrift.h>
-#include <thrift/lib/cpp/transport/TTransportUtils.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 
 namespace apache { namespace thrift { namespace async {
 

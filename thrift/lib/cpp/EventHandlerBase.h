@@ -22,10 +22,10 @@
 #include <memory>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <folly/SocketAddress.h>
 
 namespace folly {
 class IOBuf;

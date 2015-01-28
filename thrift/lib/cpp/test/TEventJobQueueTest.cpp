@@ -22,6 +22,7 @@
 
 #include <thrift/lib/cpp/async/TEventJobQueue.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TAsyncTimeout.h>
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>

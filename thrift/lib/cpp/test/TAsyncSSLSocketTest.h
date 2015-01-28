@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TAsyncTimeout.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/transport/TSocketAddress.h>

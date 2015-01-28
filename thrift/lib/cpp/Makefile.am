@@ -149,6 +149,7 @@ include_transport_HEADERS = \
                          transport/TTransport.h \
                          transport/TTransportException.h \
                          transport/TTransportUtils.h \
+                         transport/TNullTransport.h \
                          transport/TBufferTransports.h \
                          transport/TShortReadTransport.h \
                          transport/TZlibTransport.h

@@ -19,8 +19,6 @@
 
 #include <stdint.h>
 #include <memory>
-#include <boost/weak_ptr.hpp>
-
 
 namespace apache { namespace thrift { namespace concurrency {
 
@@ -39,7 +37,7 @@ class Runnable {
 
   /**
    * Gets the thread object that is hosting this runnable object  - can return
-   * an empty boost::shared pointer if no references remain on the thread object
+   * an empty std::shared pointer if no references remain on the thread object
    */
   virtual std::shared_ptr<Thread> thread() { return thread_.lock(); }
 
