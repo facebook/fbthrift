@@ -20,7 +20,7 @@
 #ifndef _THRIFT_TRANSPORT_TMEMPAGEDFACTORY_H_
 #define _THRIFT_TRANSPORT_TMEMPAGEDFACTORY_H_ 1
 
-#include "external/google_base/spinlock.h"
+#include <google/base/spinlock.h>
 
 namespace apache { namespace thrift { namespace transport {
 
@@ -76,7 +76,7 @@ class FixedSizeMemoryPageFactory {
   size_t numAllocatedPages_;
   size_t numCachedPages_;
   FixedSizeMemoryPage* cachedPages_;
-  mutable facebook::SpinLock lock_;
+  mutable SpinLock lock_;
 };
 
 

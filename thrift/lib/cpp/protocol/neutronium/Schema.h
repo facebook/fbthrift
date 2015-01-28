@@ -25,7 +25,7 @@
 #include "boost/interprocess/containers/flat_set.hpp"
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/Reflection.h>
-#include "external/glog/logging.h"
+#include <glog/logging.h>
 #include <folly/Bits.h>
 #include <thrift/lib/cpp/protocol/neutronium/Utils.h>
 

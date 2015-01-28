@@ -50,7 +50,7 @@ FixedSizeMemoryPageFactory::~FixedSizeMemoryPageFactory() {
  * release all unused memory
  */
 void FixedSizeMemoryPageFactory::releaseMemory() {
-  facebook::SpinLockHolder guard(&lock_);
+  SpinLockHolder guard(&lock_);
   while (cachedPages_) { // release all cached pages
     FixedSizeMemoryPage* page = cachedPages_;
     cachedPages_ = cachedPages_->next_;
@@ -70,7 +70,7 @@ FixedSizeMemoryPage* FixedSizeMemoryPageFactory::getPage(bool throwOnError) {
   FixedSizeMemoryPage* page = nullptr;
   // lock
   {
-    facebook::SpinLockHolder guard(&lock_);
+    SpinLockHolder guard(&lock_);
     if ((page = cachedPages_) != nullptr) { // cache is available
       cachedPages_ = cachedPages_->next_;
       --numCachedPages_; // get from cache
@@ -107,7 +107,7 @@ size_t FixedSizeMemoryPageFactory::getPageSize() const {
 
 void FixedSizeMemoryPageFactory::returnPage(FixedSizeMemoryPage* page) {
   // lock
-  facebook::SpinLockHolder guard(&lock_);
+  SpinLockHolder guard(&lock_);
   // put page back to cache if not exceed cache
   if (numCachedPages_ * pageSize_ < cacheMemorySize_) {
     page->next_ = cachedPages_;

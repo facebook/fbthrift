@@ -29,7 +29,7 @@
 
 #ifdef HAVE_QUICKLZ
 extern "C" {
-#include "external/quicklz-1.5b/quicklz.h" // nolint
+#include <quicklz.h> // nolint
 }
 #endif
 
