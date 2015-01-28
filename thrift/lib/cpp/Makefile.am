@@ -40,7 +40,6 @@ AM_LDFLAGS = $(BOOST_LDFLAGS)
 
 libthrift_la_SOURCES = EventHandlerBase.cpp \
                        Thrift.cpp \
-                       TApplicationException.cpp \
                        VirtualProfiling.cpp \
                        concurrency/ThreadManager.cpp \
                        concurrency/TimerManager.cpp \
