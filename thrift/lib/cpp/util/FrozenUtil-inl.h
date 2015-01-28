@@ -75,6 +75,12 @@ void freezeToSparseFile(const T& value,
 
 template<class T,
          class Frozen>
+const Frozen* mapFrozen(folly::ByteRange mapping) {
+  return reinterpret_cast<const Frozen*>(mapping.data());
+}
+
+template<class T,
+         class Frozen>
 const Frozen* mapFrozen(const folly::MemoryMapping& mapping) {
   return mapping.asRange<Frozen>().data();
 }

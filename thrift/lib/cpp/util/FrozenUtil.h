@@ -41,6 +41,10 @@ void freezeToSparseFile(const T& value,
 
 template<class T,
          class Frozen = typename Freezer<T>::FrozenType>
+const Frozen* mapFrozen(folly::ByteRange mapping);
+
+template<class T,
+         class Frozen = typename Freezer<T>::FrozenType>
 const Frozen* mapFrozen(const folly::MemoryMapping& mapping);
 
 }}} // apache::thrift

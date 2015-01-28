@@ -77,9 +77,8 @@ Return freezeToFile(const T& x, folly::File file) {
 }
 
 template <class T, class Return = Bundled<typename Layout<T>::View>>
-Return mapFrozen(folly::MemoryMapping mapping) {
+Return mapFrozen(folly::ByteRange range) {
   auto layout = folly::make_unique<Layout<T>>();
-  auto range = mapping.range();
 
   {
     schema::Schema schema;
@@ -99,6 +98,12 @@ Return mapFrozen(folly::MemoryMapping mapping) {
 
   Return ret(layout->view({range.begin(), 0}));
   ret.hold(std::move(layout));
+  return ret;
+}
+
+template <class T, class Return = Bundled<typename Layout<T>::View>>
+Return mapFrozen(folly::MemoryMapping mapping) {
+  auto ret = mapFrozen<T, Return>(mapping.range());
   ret.hold(std::move(mapping));
   return ret;
 }
