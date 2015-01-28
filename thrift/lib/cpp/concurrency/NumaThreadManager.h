@@ -132,7 +132,7 @@ class NumaThreadManager : public ThreadManager {
     return nullptr;
   }
 
-  const STATE state() const {
+  STATE state() const {
     // States *should* all be the same
     return managers_[0]->state();
   }

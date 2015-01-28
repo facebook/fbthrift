@@ -108,7 +108,7 @@ class ThreadManager : public folly::Executor {
     STOPPED
   };
 
-  virtual const STATE state() const = 0;
+  virtual STATE state() const = 0;
 
   virtual std::shared_ptr<ThreadFactory> threadFactory() const = 0;
 

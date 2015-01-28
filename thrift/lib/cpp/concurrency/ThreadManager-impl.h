@@ -135,7 +135,7 @@ class ThreadManager::ImplT : public ThreadManager  {
 
   void join() { stopImpl(true); }
 
-  const ThreadManager::STATE state() const {
+  ThreadManager::STATE state() const {
     return state_;
   }
 

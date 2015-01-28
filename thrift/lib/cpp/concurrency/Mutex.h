@@ -155,7 +155,7 @@ class Guard : boost::noncopyable {
    * addition to simple testing. To avoid that, we return a pointer to
    * member which can only be used for testing.
    */
-  typedef const Mutex*const Guard::*const pBoolMember;
+  typedef const Mutex*const Guard::* pBoolMember;
   inline operator pBoolMember() const {
     return mutex_ != nullptr ? &Guard::mutex_ : nullptr;
   }
@@ -214,7 +214,7 @@ class RWGuard : boost::noncopyable {
       }
     }
 
-  typedef const bool RWGuard::*const pBoolMember;
+  typedef const bool RWGuard::* pBoolMember;
   operator pBoolMember() const {
     return locked_ ? &RWGuard::locked_ : nullptr;
     }

@@ -676,7 +676,7 @@ public:
     managers_[priority]->removeWorker(value);
   }
 
-  virtual const STATE state() const {
+  virtual STATE state() const {
     size_t started = 0;
     Guard g(mutex_);
     for (auto& m : managers_) {
