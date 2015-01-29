@@ -31,9 +31,15 @@ import thrift.transport.base;
  * All writes go into an in-memory buffer until flush is called, at which point
  * the transport writes the length of the entire binary chunk followed by the
  * data payload. The receiver on the other end then performs a single
- * »fixed-length« read to get the whole message off the wire.
+ * "fixed-length" read to get the whole message off the wire.
  */
-final class TFramedTransport : TBaseTransport {
+final class TFramedTransport : TBaseFramedTransport {
+  this(TTransport transport) {
+    super(transport);
+  }
+}
+
+abstract class TBaseFramedTransport : TBaseTransport {
   /**
    * Constructs a new framed transport.
    *
@@ -41,31 +47,24 @@ final class TFramedTransport : TBaseTransport {
    *   transport = The underlying transport to wrap.
    */
   this(TTransport transport) {
-    transport_ = transport;
-  }
-
-  /**
-   * Returns the wrapped transport.
-   */
-  TTransport underlyingTransport() @property {
-    return transport_;
+    this.transport = transport;
   }
 
   override bool isOpen() @property {
-    return transport_.isOpen;
+    return transport.isOpen;
   }
 
   override bool peek() {
-    return rBuf_.length > 0 || transport_.peek();
+    return rBuf_.length > 0 || transport.peek();
   }
 
   override void open() {
-    transport_.open();
+    transport.open();
   }
 
   override void close() {
     flush();
-    transport_.close();
+    transport.close();
   }
 
   /**
@@ -73,7 +72,7 @@ final class TFramedTransport : TBaseTransport {
    * exhausted or the frame end is reached.
    *
    * TODO: Contrary to the C++ implementation, this never does cross-frame
-   * reads – is there actually a valid use case for that?
+   * reads - is there actually a valid use case for that?
    *
    * Params:
    *   buf = Slice to use as buffer.
@@ -110,9 +109,9 @@ final class TFramedTransport : TBaseTransport {
     }
 
     int len = bswap(cast(int)wBuf_.length);
-    transport_.write(cast(ubyte[])(&len)[0..1]);
-    transport_.write(wBuf_);
-    transport_.flush();
+    transport.write(cast(ubyte[])(&len)[0..1]);
+    transport.write(wBuf_);
+    transport.flush();
   }
 
   override const(ubyte)[] borrow(ubyte* buf, size_t len) {
@@ -131,7 +130,7 @@ final class TFramedTransport : TBaseTransport {
     rBuf_ = rBuf_[len .. $];
   }
 
-private:
+protected:
   bool readFrame() {
     // Read the size of the next frame. We can't use readAll() since that
     // always throws an exception on EOF, but want to throw an exception only
@@ -140,13 +139,13 @@ private:
     size_t size_read;
     while (size_read < size.sizeof) {
       auto data = (cast(ubyte*)&size)[size_read..size.sizeof];
-      auto read = transport_.read(data);
+      auto read = transport.read(data);
       if (read == 0) {
         if (size_read == 0) {
           // EOF before any data was read.
           return false;
         } else {
-          // EOF after a partial frame header – illegal.
+          // EOF after a partial frame header - illegal.
           throw new TTransportException(
             "No more data to read after partial frame header",
             TTransportException.Type.END_OF_FILE
@@ -164,11 +163,11 @@ private:
     rBuf_.length = size;
     rBuf_.assumeSafeAppend();
 
-    transport_.readAll(rBuf_);
+    transport.readAll(rBuf_);
     return true;
   }
 
-  TTransport transport_;
+  TTransport transport;
   ubyte[] rBuf_;
   ubyte[] wBuf_;
 }
@@ -184,7 +183,7 @@ version (unittest) {
 }
 
 // Some basic random testing, always starting with the same seed for
-// deterministic unit test results – more tests in transport_test.
+// deterministic unit test results - more tests in transport_test.
 unittest {
   auto randGen = Mt19937(42);
 
