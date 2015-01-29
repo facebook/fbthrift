@@ -2035,8 +2035,10 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
 
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       t_type* t = get_true_type((*m_iter)->get_type());
-      if ((t->is_base_type() && !t->is_string()) || t->is_enum()) {
-        t_const_value* cv = (*m_iter)->get_value();
+      t_const_value* cv = (*m_iter)->get_value();
+      if ((t->is_base_type() &&
+           !(t->is_string() && (cv == nullptr || cv->get_string().empty()))) ||
+          t->is_enum()) {
         string dval = render_const_value(out, t, cv, true);
         if (!init_ctor) {
           init_ctor = true;
