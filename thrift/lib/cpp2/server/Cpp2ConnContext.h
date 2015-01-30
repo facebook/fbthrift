@@ -21,9 +21,10 @@
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+
+#include <folly/SocketAddress.h>
 
 #include <memory>
 
