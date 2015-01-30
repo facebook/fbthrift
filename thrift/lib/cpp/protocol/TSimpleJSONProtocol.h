@@ -21,7 +21,7 @@
 #define THRIFT_PROTOCOL_TSIMPLEJSONPROTOCOL_H_ 1
 
 #include <thrift/lib/cpp/Reflection.h>
-#include "TJSONProtocol.h"
+#include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 
 #include <stack>
 
