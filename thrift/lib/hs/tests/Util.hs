@@ -15,7 +15,6 @@ import Data.Monoid
 import Prelude
 import System.Exit
 import Test.QuickCheck as QC
-import Test.QuickCheck.Property
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Text.Lazy as LT
 
@@ -46,7 +45,7 @@ propRoundTrip :: Protocol p
                   -> p (FramedTransport TestTransport))
               -> TestStruct
               -> Property
-propRoundTrip pcons cf = morallyDubiousIOProperty $ do
+propRoundTrip pcons cf = ioProperty $ do
   ref <- newIORef ""
   t <- openFramedTransport (TestTransport ref)
   let p = pcons t
@@ -58,7 +57,7 @@ propRoundTripMessage :: Protocol p
                      => (TestTransport -> p TestTransport)
                      -> (LT.Text, MessageType, Int32)
                      -> Property
-propRoundTripMessage pcons args = morallyDubiousIOProperty $ do
+propRoundTripMessage pcons args = ioProperty $ do
   ref <- newIORef ""
   let p = pcons (TestTransport ref)
   writeMessage p args (return ())

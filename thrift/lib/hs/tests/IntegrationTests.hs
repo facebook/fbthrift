@@ -7,7 +7,6 @@ import Data.Functor
 import Foreign.Ptr
 import Foreign.Storable
 import Test.QuickCheck
-import Test.QuickCheck.Property
 
 import Thrift.Protocol.Binary
 import Thrift.Protocol.Compact
@@ -26,7 +25,7 @@ propCToHs :: Protocol p
              -> (Ptr MemoryBuffer -> Ptr TestStruct -> IO ())
              -> TestStruct
              -> Property
-propCToHs pCons cToHS struct = morallyDubiousIOProperty $
+propCToHs pCons cToHS struct = ioProperty $
   bracket c_newStructPtr c_freeTestStruct $ \structPtr ->
   bracket c_openMB tClose $ \mb -> do
     poke structPtr struct
@@ -39,7 +38,7 @@ propHsToC :: Protocol p
              -> (Ptr MemoryBuffer -> IO (Ptr TestStruct))
              -> TestStruct
              -> Property
-propHsToC pCons hsToC struct = morallyDubiousIOProperty $
+propHsToC pCons hsToC struct = ioProperty $
   bracket c_openMB tClose $ \mb -> do
     write_TestStruct (pCons mb) struct
     bracket (hsToC mb) c_freeTestStruct $ \structPtr ->

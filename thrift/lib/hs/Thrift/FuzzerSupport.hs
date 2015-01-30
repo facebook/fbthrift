@@ -8,9 +8,10 @@ import Data.Typeable (Typeable)
 import Network (PortNumber, PortID(PortNumber))
 import System.Console.GetOpt (getOpt, usageInfo, ArgOrder(..), OptDescr(..), ArgDescr(..))
 import System.IO (Handle, hFlush, stdout)
-import System.Random (newStdGen, split)
+import System.Random (split)
 import System.Timeout (timeout)
 import Test.QuickCheck.Gen (Gen(..))
+import Test.QuickCheck.Random (newQCGen)
 import Thrift (AppExn)
 import Thrift.Protocol.Binary (BinaryProtocol(..))
 import Thrift.Transport (Transport, TransportExn, tClose)
@@ -68,7 +69,7 @@ instance Exception Timeout
 -- Generic random data generation
 infexamples :: Gen a -> IO [a]
 infexamples (MkGen m) =
-  do rand <- newStdGen
+  do rand <- newQCGen
      let rnds rnd = rnd1 : rnds rnd2 where (rnd1, rnd2) = split rnd
      return [(m r n) | (r, n) <- rnds rand `zip` [0,2..] ]
 
