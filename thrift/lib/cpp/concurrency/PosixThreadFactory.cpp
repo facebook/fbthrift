@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/thrift_config.h>
 
 #if GOOGLE_PERFTOOLS_REGISTER_THREAD
-#  include "base/Profiler.h"
+#  include <google/base/Profiler.h>
 #endif
 
 #include <assert.h>
@@ -28,8 +28,6 @@
 #include <sys/resource.h>
 
 #include <iostream>
-
-#include <boost/weak_ptr.hpp>
 
 #include <glog/logging.h>
 

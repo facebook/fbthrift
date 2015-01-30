@@ -22,8 +22,6 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <folly/wangle/concurrent/Codel.h>
 #include <folly/Conv.h>
-#include "ThreadManager.h"
-#include "PosixThreadFactory.h"
 #include <folly/MPMCQueue.h>
 #include <thrift/lib/cpp/async/Request.h>
 #include <folly/Logging.h>
