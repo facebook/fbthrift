@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp/DistinctTable.h>
 #include <glog/logging.h>
 #include <folly/Hash.h>
+#include <thrift/lib/thrift/gen-cpp/frozen_types.h>
 
 #define THRIFT_DECLARE_HASH(T)           \
   namespace std {                        \

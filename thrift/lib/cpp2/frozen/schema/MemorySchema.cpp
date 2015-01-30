@@ -17,9 +17,6 @@
 
 #include <limits>
 
-#include <thrift/lib/cpp2/frozen/Frozen.h>
-
-
 THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryField);
 THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryLayoutBase);
 THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryLayout);
