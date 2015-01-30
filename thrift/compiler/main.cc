@@ -136,15 +136,16 @@ bool generate(t_program* program, const vector<string>& generator_strings,
 
       if (generator == nullptr) {
         // Attempt to call the new python compiler if we can find it
-        string path = getenv("_");
+        string path = argv[0];
         size_t last = path.find_last_of("/");
         if (last != string::npos) {
           ifstream ifile;
           auto dirname = path.substr(0, last + 1);
           std::string pycompiler;
           std::vector<std::string> pycompilers = {
-            "py/thrift-py.lpar",
-            "py/thrift-py.par",
+            "py/thrift.lpar",
+            "py/thrift.par",
+            "../py/thrift.pex",
           };
           for (const auto& comp : pycompilers) {
             pycompiler = dirname + comp;
