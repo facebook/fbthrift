@@ -139,7 +139,7 @@ final class THeaderTransport : TBaseFramedTransport {
 
   // crypto
   override size_t read(ubyte[] buf) {
-    if (peek()) {
+    if (!rBuf_.empty) {
       return super.read(buf);
     }
 
