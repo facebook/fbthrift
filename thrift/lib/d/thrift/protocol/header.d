@@ -29,8 +29,8 @@ final class THeaderProtocol : TProtocol {
 
   alias Protocol = THeaderTransport.Protocol;
 
-  this(THeaderTransport trans) {
-    trans_ = trans;
+  this(TTransport trans) {
+    trans_ = new THeaderTransport(trans);
     resetProtocol();
   }
 
@@ -215,21 +215,6 @@ final class THeaderProtocol : TProtocol {
     void reset() {}
   }
 
-private:
-
-  /**
-   * Helper method to throw an error back to the endpoint
-   */
-  void notifyEndpoint(string msg) {
-    if (proto !is null) {
-      writeMessageBegin(TMessage("", TMessageType.EXCEPTION, 0));
-      TApplicationException ex = new TApplicationException(msg);
-      ex.write(this);
-      writeMessageEnd();
-      trans_.flush();
-    }
-  }
-
   void resetProtocol() {
     // We guarantee trans_ to be of type THeaderTransport, parent class does not
     if (proto !is null && trans_.getProtocol() == protoId) {
@@ -252,6 +237,23 @@ private:
         import std.conv;
         throw new TProtocolException("Unknown protocol id: " ~ (cast(uint) protoId).to!string());
     }
+  }
+
+private:
+
+  /**
+   * Helper method to throw an error back to the endpoint
+   */
+  void notifyEndpoint(string msg) {
+    if (proto is null) {
+      return;
+    }
+
+    writeMessageBegin(TMessage("", TMessageType.EXCEPTION, 0));
+    TApplicationException ex = new TApplicationException(msg);
+    ex.write(this);
+    writeMessageEnd();
+    trans_.flush();
   }
 
   THeaderTransport trans_;

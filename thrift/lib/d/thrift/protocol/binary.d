@@ -24,9 +24,9 @@ import thrift.protocol.base;
 import thrift.transport.base;
 import thrift.internal.endian;
 
-enum MESSAGE_TYPE_MASK = 0x000000ff;
-enum VERSION_MASK = 0xffff0000;
-enum VERSION_1 = 0x80010000;
+enum uint MESSAGE_TYPE_MASK = 0x000000ff;
+enum uint VERSION_MASK = 0xffff0000;
+enum uint VERSION_1 = 0x80010000;
 
 /**
  * TProtocol implementation of the Binary Thrift protocol.

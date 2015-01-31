@@ -628,8 +628,7 @@ private:
  */
 TCompactProtocol!Transport tCompactProtocol(Transport)(Transport trans,
   int containerSizeLimit = 0, int stringSizeLimit = 0
-) if (isTTransport!Transport)
-{
+) if (isTTransport!Transport) {
   return new TCompactProtocol!Transport(trans,
     containerSizeLimit, stringSizeLimit);
 }
