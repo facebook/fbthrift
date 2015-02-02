@@ -282,4 +282,13 @@ std::weak_ptr<TServer> ScopedServerThread::getServer() const {
   return helper_->getServer();
 }
 
+ServerStartHelper::ServerStartHelper(const shared_ptr<TServer>& server) {
+  helper_ = std::make_shared<ScopedServerThread::Helper>();
+  helper_->init(server, helper_);
+}
+
+void ServerStartHelper::waitUntilStarted() {
+  helper_->waitUntilStarted();
+}
+
 }}} // apache::thrift::util

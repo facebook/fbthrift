@@ -54,12 +54,12 @@ class ScopedServerThread : public boost::noncopyable {
   /**
    * Create a ScopedServerThread object and automatically start it.
    */
-  ScopedServerThread(ServerCreator* serverCreator);
+  explicit ScopedServerThread(ServerCreator* serverCreator);
 
   /**
    * Create a ScopedServerThread object and automatically start it.
    */
-  ScopedServerThread(const std::shared_ptr<server::TServer>& server);
+  explicit ScopedServerThread(const std::shared_ptr<server::TServer>& server);
 
   virtual ~ScopedServerThread();
 
@@ -98,9 +98,33 @@ class ScopedServerThread : public boost::noncopyable {
 
  private:
   class Helper;
+  friend class ServerStartHelper;
 
   std::shared_ptr<Helper> helper_;
   std::shared_ptr<concurrency::Thread> thread_;
+};
+
+/*
+ * Encapsulates the synchronous start functionality of ScopedServerThread.
+ * Used to wait for server to get up in those case when server is started
+ * by a method other than ScopedServerThread.
+ */
+class ServerStartHelper {
+ public:
+  /*
+   * Constructor. Should be called prior to starting the server
+   */
+  explicit ServerStartHelper(const std::shared_ptr<server::TServer>& server);
+
+  /**
+   * Wait until the server has started.
+   *
+   * Raises TException if the server failed to start.
+   */
+  void waitUntilStarted();
+
+ private:
+  std::shared_ptr<ScopedServerThread::Helper> helper_;
 };
 
 }}} // apache::thrift::util
