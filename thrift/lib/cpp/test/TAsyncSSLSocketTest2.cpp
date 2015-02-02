@@ -19,7 +19,6 @@
 #include <gtest/gtest.h>
 #include <pthread.h>
 
-#include <thrift/lib/cpp/async/TAsyncSSLServerSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -32,7 +31,6 @@ using std::cerr;
 using std::endl;
 using std::list;
 using apache::thrift::async::TAsyncSSLSocket;
-using apache::thrift::async::TAsyncSSLServerSocket;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::async::TEventBase;
 using apache::thrift::concurrency::Util;

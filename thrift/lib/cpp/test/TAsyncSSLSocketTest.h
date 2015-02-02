@@ -19,7 +19,7 @@
 #include <signal.h>
 #include <pthread.h>
 
-#include <thrift/lib/cpp/async/TAsyncSSLServerSocket.h>
+#include <folly/io/async/AsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
@@ -342,10 +342,10 @@ public:
 };
 
 class SSLServerAcceptCallbackBase:
-public apache::thrift::async::TAsyncSSLServerSocket::SSLAcceptCallback {
+public folly::AsyncServerSocket::AcceptCallback {
 public:
   explicit SSLServerAcceptCallbackBase(::HandshakeCallback *hcb):
-      state(STATE_WAITING), hcb_(hcb) {}
+  state(STATE_WAITING), hcb_(hcb) {}
 
   ~SSLServerAcceptCallbackBase() {
     EXPECT_EQ(state, STATE_SUCCEEDED);
@@ -357,8 +357,32 @@ public:
     state = STATE_FAILED;
   }
 
+  virtual void connectionAccepted(int fd,
+                                  const folly::SocketAddress& clientAddr) noexcept {
+    printf("Connection accepted\n");
+    std::shared_ptr<apache::thrift::async::TAsyncSSLSocket> sslSock;
+    try {
+      // Create a AsyncSSLSocket object with the fd. The socket should be
+      // added to the event base and in the state of accepting SSL connection.
+      sslSock = apache::thrift::async::TAsyncSSLSocket::newSocket(ctx_, base_, fd);
+    } catch (const std::exception &e) {
+      LOG(ERROR) << "Exception %s caught while creating a AsyncSSLSocket "
+        "object with socket " << e.what() << fd;
+      ::close(fd);
+      acceptError(e);
+      return;
+    }
+
+    connAccepted(sslSock);
+  }
+
+  virtual void connAccepted(
+    const std::shared_ptr<folly::AsyncSSLSocket> &s) = 0;
+
   StateEnum state;
   ::HandshakeCallback *hcb_;
+  std::shared_ptr<folly::SSLContext> ctx_;
+  folly::EventBase* base_;
 };
 
 class SSLServerAcceptCallback: public SSLServerAcceptCallbackBase {
@@ -379,11 +403,11 @@ public:
   }
 
   // Functions inherited from TAsyncSSLServerSocket::SSLAcceptCallback
-  virtual void connectionAccepted(
+  virtual void connAccepted(
     const std::shared_ptr<folly::AsyncSSLSocket> &s)
     noexcept {
     auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
-    std::cerr << "SSLServerAcceptCallback::connectionAccepted" << std::endl;
+    std::cerr << "SSLServerAcceptCallback::connAccepted" << std::endl;
 
     hcb_->setSocket(sock);
     sock->sslAccept(hcb_, timeout_);
@@ -400,13 +424,13 @@ public:
       SSLServerAcceptCallback(hcb) {}
 
   // Functions inherited from TAsyncSSLServerSocket::SSLAcceptCallback
-  virtual void connectionAccepted(
+  virtual void connAccepted(
     const std::shared_ptr<folly::AsyncSSLSocket> &s)
     noexcept {
 
     auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
 
-    std::cerr << "SSLServerAcceptCallbackDelay::connectionAccepted"
+    std::cerr << "SSLServerAcceptCallbackDelay::connAccepted"
               << std::endl;
     int fd = sock->getFd();
 
@@ -431,7 +455,7 @@ public:
     EXPECT_EQ(rc, 0);
     EXPECT_EQ(value, 0);
 
-    SSLServerAcceptCallback::connectionAccepted(sock);
+    SSLServerAcceptCallback::connAccepted(sock);
   }
 };
 
@@ -439,15 +463,15 @@ class SSLServerAsyncCacheAcceptCallback: public SSLServerAcceptCallback {
 public:
   explicit SSLServerAsyncCacheAcceptCallback(::HandshakeCallback *hcb,
                                              uint32_t timeout = 0):
-      SSLServerAcceptCallback(hcb, timeout) {}
+    SSLServerAcceptCallback(hcb, timeout) {}
 
   // Functions inherited from TAsyncSSLServerSocket::SSLAcceptCallback
-  virtual void connectionAccepted(
+  virtual void connAccepted(
     const std::shared_ptr<folly::AsyncSSLSocket> &s)
     noexcept {
     auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
 
-    std::cerr << "SSLServerAcceptCallback::connectionAccepted" << std::endl;
+    std::cerr << "SSLServerAcceptCallback::connAccepted" << std::endl;
 
     hcb_->setSocket(sock);
     sock->sslAccept(hcb_, timeout_);
@@ -464,15 +488,15 @@ public:
 class HandshakeErrorCallback: public SSLServerAcceptCallbackBase {
 public:
   explicit HandshakeErrorCallback(::HandshakeCallback *hcb):
-     SSLServerAcceptCallbackBase(hcb)  {}
+  SSLServerAcceptCallbackBase(hcb)  {}
 
   // Functions inherited from TAsyncSSLServerSocket::SSLAcceptCallback
-  virtual void connectionAccepted(
+  virtual void connAccepted(
     const std::shared_ptr<folly::AsyncSSLSocket> &s)
     noexcept {
     auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
 
-    std::cerr << "HandshakeErrorCallback::connectionAccepted" << std::endl;
+    std::cerr << "HandshakeErrorCallback::connAccepted" << std::endl;
 
     // The first call to sslAccept() should succeed.
     hcb_->setSocket(sock);
@@ -502,13 +526,13 @@ public:
 class HandshakeTimeoutCallback: public SSLServerAcceptCallbackBase {
 public:
   explicit HandshakeTimeoutCallback(::HandshakeCallback *hcb):
-     SSLServerAcceptCallbackBase(hcb)  {}
+  SSLServerAcceptCallbackBase(hcb)  {}
 
   // Functions inherited from TAsyncSSLServerSocket::SSLAcceptCallback
-  virtual void connectionAccepted(
+  virtual void connAccepted(
     const std::shared_ptr<folly::AsyncSSLSocket> &s)
     noexcept {
-    std::cerr << "HandshakeErrorCallback::connectionAccepted" << std::endl;
+    std::cerr << "HandshakeErrorCallback::connAccepted" << std::endl;
 
     auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
 
@@ -536,8 +560,8 @@ class TestSSLServer {
  protected:
   apache::thrift::async::TEventBase evb_;
   std::shared_ptr<folly::SSLContext> ctx_;
-  apache::thrift::async::TAsyncSSLServerSocket::SSLAcceptCallback *acb_;
-  apache::thrift::async::TAsyncSSLServerSocket *socket_;
+  SSLServerAcceptCallbackBase *acb_;
+  folly::AsyncServerSocket *socket_;
   folly::SocketAddress address_;
   pthread_t thread_;
 
@@ -551,12 +575,13 @@ class TestSSLServer {
  public:
   // Create a TestSSLServer.
   // This immediately starts listening on the given port.
-  explicit TestSSLServer(
-    apache::thrift::async::TAsyncSSLServerSocket::SSLAcceptCallback *acb);
+  explicit TestSSLServer(SSLServerAcceptCallbackBase *acb);
 
   // Kill the thread.
   ~TestSSLServer() {
-    evb_.runInEventBaseThread([&](){socket_->setSSLAcceptCallback(nullptr);});
+    evb_.runInEventBaseThread([&](){
+      socket_->stopAccepting();
+    });
     std::cerr << "Waiting for server thread to exit" << std::endl;
     pthread_join(thread_, nullptr);
   }
@@ -568,21 +593,24 @@ class TestSSLServer {
   }
 };
 
-TestSSLServer::TestSSLServer(
-  apache::thrift::async::TAsyncSSLServerSocket::SSLAcceptCallback *acb) :
+TestSSLServer::TestSSLServer(SSLServerAcceptCallbackBase *acb) :
 ctx_(new folly::SSLContext),
     acb_(acb),
-    socket_(new apache::thrift::async::TAsyncSSLServerSocket(ctx_, &evb_)) {
+  socket_(new folly::AsyncServerSocket(&evb_)) {
   // Set up the SSL context
   ctx_->loadCertificate("thrift/lib/cpp/test/ssl/tests-cert.pem");
   ctx_->loadPrivateKey("thrift/lib/cpp/test/ssl/tests-key.pem");
   ctx_->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
 
+  acb_->ctx_ = ctx_;
+  acb_->base_ = &evb_;
+
   //set up the listening socket
   socket_->bind(0);
   socket_->getAddress(&address_);
   socket_->listen(100);
-  socket_->setSSLAcceptCallback(acb_);
+  socket_->addAcceptCallback(acb_, &evb_);
+  socket_->startAccepting();
 
   int ret = pthread_create(&thread_, nullptr, Main, this);
   assert(ret == 0);
@@ -593,8 +621,7 @@ ctx_(new folly::SSLContext),
 
 class TestSSLAsyncCacheServer : public TestSSLServer {
  public:
-  explicit TestSSLAsyncCacheServer(
-        apache::thrift::async::TAsyncSSLServerSocket::SSLAcceptCallback *acb,
+  explicit TestSSLAsyncCacheServer(SSLServerAcceptCallbackBase *acb,
         int lookupDelay = 100) :
       TestSSLServer(acb) {
     SSL_CTX *sslCtx = ctx_->getSSLCtx();

@@ -174,7 +174,6 @@ include_async_HEADERS = \
                      async/TAsyncSignalHandler.h \
                      async/TAsyncDispatchProcessor.h \
                      async/TAsyncProcessor.h \
-                     async/TAsyncSSLServerSocket.h \
                      async/TAsyncSSLSocket.h \
                      async/TAsyncSSLSocketFactory.h \
                      async/TAsyncSocket.h \
