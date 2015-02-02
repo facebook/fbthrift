@@ -79,19 +79,18 @@ class TestInterface : public TestServiceSvIf {
   }
 };
 
-std::shared_ptr<ThriftServer> getServer() {
+std::shared_ptr<ThriftServer> getServer(bool useSimpleThreadManager = true) {
   std::shared_ptr<ThriftServer> server(new ThriftServer);
-  std::shared_ptr<apache::thrift::concurrency::ThreadFactory> threadFactory(
-      new apache::thrift::concurrency::PosixThreadFactory);
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-    threadManager(
-        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(1,
-          5,
-          false,
-          2));
-  threadManager->threadFactory(threadFactory);
-  threadManager->start();
-  server->setThreadManager(threadManager);
+  if (useSimpleThreadManager) {
+    std::shared_ptr<apache::thrift::concurrency::ThreadFactory> threadFactory(
+        new apache::thrift::concurrency::PosixThreadFactory);
+    std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
+        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
+            1, 5, false, 2));
+    threadManager->threadFactory(threadFactory);
+    threadManager->start();
+    server->setThreadManager(threadManager);
+  }
   server->setPort(0);
   server->setSaslEnabled(true);
   server->setSaslServerFactory(
@@ -951,6 +950,13 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
     }, 30);
   base.loopForever();
   EXPECT_EQ(cb.eof, true);
+}
+
+TEST(ThriftServer, ShutdownDegenarateServer) {
+  auto server = getServer(false);
+  server->setMaxRequests(1);
+  server->setNWorkerThreads(1);
+  ScopedServerThread sst(server);
 }
 
 TEST(ThriftServer, ModifyingIOThreadCountLive) {

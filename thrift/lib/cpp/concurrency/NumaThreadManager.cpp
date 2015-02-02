@@ -176,6 +176,7 @@ NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
     size_t threads = (size_t)
       ((((double)normalThreadsCount) / (nodes - i)) + .5);
     normalThreadsCount -= threads;
+    pri_threads = std::min(threads, pri_threads);
     managers_.push_back(PriorityThreadManager::newPriorityThreadManager(
                           {{pri_threads, pri_threads,
                                 pri_threads, threads, pri_threads}},
