@@ -16,6 +16,7 @@ from thrift.transport import TSocket, TTransport
 from thrift.protocol import TBinaryProtocol
 from thrift.Thrift import TProcessorEventHandler
 from thrift.server.TCppServer import TCppServer
+from thrift.server.TServer import TServerEventHandler
 from tools.test.stubs import fbpyunit
 
 from test.sleep import SleepService, ttypes
@@ -105,6 +106,16 @@ class OnewayProcess(multiprocessing.Process):
         client = getClient(self.addr)
         client.noop()
 
+class TestServerEventHandler(TServerEventHandler):
+    def __init__(self):
+        self.connCreated = 0
+        self.connDestroyed = 0
+
+    def newConnection(self, context):
+        self.connCreated += 1
+
+    def connectionDestroyed(self, context):
+        self.connDestroyed += 1
 
 class TestServer(BaseFacebookTestCase):
     def setUp(self):
@@ -113,7 +124,9 @@ class TestServer(BaseFacebookTestCase):
         processor = SleepService.Processor(SleepHandler(self.noop_event))
         self.event_handler = SleepProcessorEventHandler()
         processor.setEventHandler(self.event_handler)
+        self.serverEventHandler = TestServerEventHandler()
         self.server = TCppServer(processor)
+        self.server.setServerEventHandler(self.serverEventHandler)
         self.addCleanup(self.stopServer)
         # Let the kernel choose a port.
         self.server.setPort(0)
@@ -146,6 +159,8 @@ class TestServer(BaseFacebookTestCase):
         self.assertEquals(space.exitcode, 0)
         self.assertEquals(self.event_handler.last_peer_name, client_sockname)
         self.assertEquals(self.event_handler.last_sock_name, client_peername)
+        self.assertEquals(self.serverEventHandler.connCreated, 1)
+        self.assertEquals(self.serverEventHandler.connDestroyed, 1)
 
     def testParallel(self):
         parallel = ParallelProcess(self.server_addr)

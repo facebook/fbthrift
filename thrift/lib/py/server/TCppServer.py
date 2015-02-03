@@ -86,6 +86,12 @@ class TCppServer(CppServerWrapper, TServer):
         self._setup_done = False
         self.serverEventHandler = None
 
+    def setServerEventHandler(self, handler):
+        TServer.setServerEventHandler(self, handler)
+        handler.CONTEXT_DATA = ContextData
+        handler.CPP_CONNECTION_CONTEXT = TCppConnectionContext
+        self.setCppServerEventHandler(handler)
+
     def setup(self):
         if self._setup_done:
             return

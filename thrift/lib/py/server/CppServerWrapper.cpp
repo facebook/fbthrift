@@ -30,6 +30,8 @@
 
 using namespace apache::thrift;
 using apache::thrift::transport::THeader;
+using apache::thrift::server::TServerEventHandler;
+using apache::thrift::server::TConnectionContext;
 using namespace boost::python;
 
 namespace {
@@ -54,7 +56,10 @@ object makePythonAddress(const folly::SocketAddress& sa) {
 
 class ContextData {
 public:
-  void copyContextContents(Cpp2RequestContext* ctx) {
+  void copyContextContents(Cpp2ConnContext* ctx) {
+    if (!ctx) {
+      return;
+    }
     auto ss = ctx->getSaslServer();
     if (ss) {
       clientIdentity_ = ss->getClientIdentity();
@@ -99,6 +104,37 @@ private:
   folly::SocketAddress localAddress_;
 };
 
+class CppServerEventHandler : public TServerEventHandler {
+public:
+  explicit CppServerEventHandler(object serverEventHandler)
+    : handler_(std::make_shared<object>(serverEventHandler)) {}
+
+  virtual void newConnection(TConnectionContext *ctx) {
+    callPythonHandler(ctx, "newConnection");
+  }
+
+  virtual void connectionDestroyed(TConnectionContext *ctx) {
+    callPythonHandler(ctx, "connectionDestroyed");
+  }
+
+private:
+  void callPythonHandler(TConnectionContext *ctx, const char* method) {
+    PyGILState_STATE state = PyGILState_Ensure();
+    SCOPE_EXIT { PyGILState_Release(state); };
+
+    // This cast always succeeds because it is called from Cpp2Connection.
+    Cpp2ConnContext *cpp2Ctx = dynamic_cast<Cpp2ConnContext*>(ctx);
+    auto cd_cls = handler_->attr("CONTEXT_DATA");
+    object contextData = cd_cls();
+    extract<ContextData&>(contextData)().copyContextContents(cpp2Ctx);
+    auto ctx_cls = handler_->attr("CPP_CONNECTION_CONTEXT");
+    object cppConnContext = ctx_cls(contextData);
+    handler_->attr(method)(cppConnContext);
+  }
+
+  std::shared_ptr<object> handler_;
+};
+
 class PythonAsyncProcessor : public AsyncProcessor {
 public:
   explicit PythonAsyncProcessor(std::shared_ptr<object> adapter)
@@ -136,7 +172,8 @@ public:
 
       auto cd_ctor = adapter_->attr("CONTEXT_DATA");
       object contextData = cd_ctor();
-      extract<ContextData&>(contextData)().copyContextContents(context);
+      extract<ContextData&>(contextData)().copyContextContents(
+          context->getConnectionContext());
 
       object output =
         adapter_->attr("call_processor")(
@@ -243,6 +280,11 @@ public:
     std::chrono::milliseconds ms(timeout);
     ThriftServer::setIdleTimeout(ms);
   }
+
+  void setCppServerEventHandler(object serverEventHandler) {
+    setServerEventHandler(std::make_shared<CppServerEventHandler>(
+          serverEventHandler));
+  }
 };
 
 BOOST_PYTHON_MODULE(_cpp_server_wrapper) {
@@ -262,6 +304,8 @@ BOOST_PYTHON_MODULE(_cpp_server_wrapper) {
     .def("getAddress", &CppServerWrapper::getAddress)
     .def("loop", &CppServerWrapper::loop)
     .def("cleanUp", &CppServerWrapper::cleanUp)
+    .def("setCppServerEventHandler",
+         &CppServerWrapper::setCppServerEventHandler)
 
     // methods directly passed to the C++ impl
     .def("setup", &CppServerWrapper::setup)
