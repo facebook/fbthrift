@@ -138,10 +138,10 @@ bool NoStarveReadWriteMutex::timedWrite(int64_t milliseconds) const
     return false;
   }
   writerWaiting_ = true;
-  int ret = ReadWriteMutex::timedWrite(milliseconds);
+  bool ret = ReadWriteMutex::timedWrite(milliseconds);
   writerWaiting_ = false;
   mutex_.unlock();
-  return ret == 0;
+  return ret;
 }
 
 }}} // apache::thrift::concurrency

@@ -205,3 +205,162 @@ TEST(MutexTest, Recursive_Holders) {
   }
   Guard g2(mutex);
 }
+
+TEST(NoStarveRWMutexTest, Max_Readers ) {
+  NoStarveReadWriteMutex l;
+
+  for (int i = 0; i < kMaxReaders; ++i) {
+    EXPECT_TRUE(l.timedRead(kTimeoutMs));
+  }
+
+  EXPECT_TRUE(l.timedRead(kTimeoutMs));
+}
+
+TEST(NoStarveRWMutexTest, Writer_Wait_Readers ) {
+  NoStarveReadWriteMutex l;
+
+  for (int i = 0; i < kMaxReaders; ++i) {
+    EXPECT_TRUE(l.timedRead(kTimeoutMs));
+    EXPECT_FALSE(l.timedWrite(kTimeoutMs));
+  }
+
+  for (int i = 0; i < kMaxReaders; ++i) {
+    EXPECT_FALSE(l.timedWrite(kTimeoutMs));
+    l.release();
+  }
+
+  EXPECT_TRUE(l.timedWrite(kTimeoutMs));
+  l.release();
+
+  // Testing timeout
+  vector<std::thread> threads_;
+  for (int i = 0; i < kMaxReaders; ++i) {
+    threads_.push_back(std::thread([this, &l] {
+      EXPECT_TRUE(l.timedRead(kTimeoutMs));
+      usleep(kOpTimeInMs * kMicroSecInMilliSec);
+      l.release();
+    }));
+  }
+  // make sure reader lock the lock first
+  usleep(1000);
+
+  // wait shorter than the operation time will timeout
+  std::thread thread1 = std::thread([this, &l] {
+      EXPECT_FALSE(l.timedWrite(0.5 * kOpTimeInMs));
+    });
+
+  // wait longer than the operation time will success
+  std::thread thread2 = std::thread([this, &l] {
+      EXPECT_TRUE(l.timedWrite(1.5 * kOpTimeInMs));
+      l.release();
+    });
+
+  for (auto& t : threads_) {
+    t.join();
+  }
+  thread1.join();
+  thread2.join();
+}
+
+TEST(NoStarveRWMutexTest, Readers_Wait_Writer) {
+  NoStarveReadWriteMutex l;
+
+  EXPECT_TRUE(l.timedWrite(kTimeoutMs));
+
+  for (int i = 0; i < kMaxReaders; ++i) {
+    EXPECT_FALSE(l.timedRead(kTimeoutMs));
+  }
+
+  l.release();
+
+  for (int i = 0; i < kMaxReaders; ++i) {
+    EXPECT_TRUE(l.timedRead(kTimeoutMs));
+  }
+
+  for (int i = 0; i < kMaxReaders; ++i) {
+    l.release();
+  }
+
+  // Testing Timeout
+  std::thread wrThread = std::thread([&l] {
+      EXPECT_TRUE(l.timedWrite(kTimeoutMs));
+      usleep(kOpTimeInMs * kMicroSecInMilliSec);
+      l.release();
+    });
+
+  // make sure wrThread lock the lock first
+  usleep(1000);
+
+  vector<std::thread> threads_;
+  for (int i = 0; i < kMaxReaders; ++i) {
+    // wait shorter than the operation time will timeout
+    threads_.push_back(std::thread([&l] {
+      EXPECT_FALSE(l.timedRead(0.5 * kOpTimeInMs));
+    }));
+
+    // wait longer than the operation time will success
+    threads_.push_back(std::thread([&l] {
+      EXPECT_TRUE(l.timedRead(1.5 * kOpTimeInMs));
+      l.release();
+    }));
+  }
+
+  for (auto& t : threads_) {
+    t.join();
+  }
+  wrThread.join();
+}
+
+TEST(NoStarveRWMutexTest, Writer_Wait_Writer) {
+  NoStarveReadWriteMutex l;
+
+  EXPECT_TRUE(l.timedWrite(kTimeoutMs));
+  EXPECT_FALSE(l.timedWrite(kTimeoutMs));
+  l.release();
+  EXPECT_TRUE(l.timedWrite(kTimeoutMs));
+  EXPECT_FALSE(l.timedWrite(kTimeoutMs));
+  l.release();
+
+  // Testing Timeout
+  std::thread wrThread1 = std::thread([this, &l] {
+      EXPECT_TRUE(l.timedWrite(kTimeoutMs));
+      usleep(kOpTimeInMs * kMicroSecInMilliSec);
+      l.release();
+    });
+
+  // make sure wrThread lock the lock first
+  usleep(1000);
+
+  // wait shorter than the operation time will timeout
+  std::thread wrThread2 = std::thread([this, &l] {
+      EXPECT_FALSE(l.timedWrite(0.5 * kOpTimeInMs));
+    });
+
+  // wait longer than the operation time will success
+  std::thread wrThread3 = std::thread([this, &l] {
+      EXPECT_TRUE(l.timedWrite(1.5 * kOpTimeInMs));
+      l.release();
+    });
+
+  wrThread1.join();
+  wrThread2.join();
+  wrThread3.join();
+}
+
+TEST(NoStarveRWMutexTest, Read_Holders) {
+  NoStarveReadWriteMutex l;
+
+  RWGuard guard(l, false);
+  EXPECT_FALSE(l.timedWrite(kTimeoutMs));
+  EXPECT_TRUE(l.timedRead(kTimeoutMs));
+  l.release();
+  EXPECT_FALSE(l.timedWrite(kTimeoutMs));
+}
+
+TEST(NoStarveRWMutexTest, Write_Holders) {
+  NoStarveReadWriteMutex l;
+
+  RWGuard guard(l, true);
+  EXPECT_FALSE(l.timedWrite(kTimeoutMs));
+  EXPECT_FALSE(l.timedRead(kTimeoutMs));
+}
