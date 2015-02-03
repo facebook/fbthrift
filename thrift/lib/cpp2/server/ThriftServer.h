@@ -203,6 +203,7 @@ class ThriftServer : public apache::thrift::server::TServer {
   /**
    * The thread manager used for sync calls.
    */
+  std::mutex threadManagerMutex_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
 
   /**
@@ -831,6 +832,7 @@ class ThriftServer : public apache::thrift::server::TServer {
     std::shared_ptr<apache::thrift::concurrency::ThreadManager>
     threadManager) {
     CHECK(ioThreadPool_->numThreads() == 0);
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
     threadManager_ = threadManager;
   }
 
@@ -841,6 +843,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    */
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
   getThreadManager() {
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
     return threadManager_;
   }
 
