@@ -556,9 +556,6 @@ class CppGenerator(t_generator.Generator):
             if not function.oneway:
                 result = self._get_presult_object(service, function)
                 self._generate_cpp2ops(True, result, s)
-                result.name = "{0}_{1}_result".format(
-                    service.name, function.name)
-                self._generate_cpp2ops(True, result, s)
         s.release()
 
     def _get_presult_object(self, service, function):
@@ -613,18 +610,6 @@ class CppGenerator(t_generator.Generator):
                 self._generate_struct_complete(s, result,
                                                is_exception=False,
                                                pointers=True,
-                                               read=True,
-                                               write=True,
-                                               swap=False,
-                                               result=True)
-
-                # Also generate _result version for exceptions
-                result.name = "{0}_{1}_result".format(
-                    service.name, function.name)
-
-                self._generate_struct_complete(s, result,
-                                               is_exception=False,
-                                               pointers=False,
                                                read=True,
                                                write=True,
                                                swap=False,
@@ -1434,7 +1419,7 @@ class CppGenerator(t_generator.Generator):
                                 output=self._out_tcc):
                         out('ProtocolOut_ prot;')
                         if len(function.xceptions.members) > 0:
-                            out('{0}_{1}_result result;'.format(
+                            out('{0}_{1}_presult result;'.format(
                                     service.name, function.name))
                         with out('try'):
                             out('std::rethrow_exception(ep);')
@@ -1480,7 +1465,7 @@ class CppGenerator(t_generator.Generator):
 
                         out('ProtocolOut_ prot;')
                         if len(function.xceptions.members) > 0:
-                            out('{0}_{1}_result result;'.format(
+                            out('{0}_{1}_presult result;'.format(
                                 service.name, function.name))
                         for xception in function.xceptions.members:
                             xception_type = self._type_name(
