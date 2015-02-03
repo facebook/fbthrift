@@ -547,8 +547,9 @@ class CppGenerator(t_generator.Generator):
         s.acquire()
         for function in service.functions:
             arglist = function.arglist
-            arglist.name = "{0}_{1}_args".format(service.name, function.name)
-            self._generate_cpp2ops(True, arglist, s)
+            if self.flag_stack_arguments:
+                arglist.name = "{0}_{1}_args".format(service.name, function.name)
+                self._generate_cpp2ops(True, arglist, s)
             arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
             self._generate_cpp2ops(True, arglist, s)
 
@@ -578,14 +579,15 @@ class CppGenerator(t_generator.Generator):
         for function in service.functions:
             arglist = function.arglist
             name_orig = arglist.name
-            arglist.name = "{0}_{1}_args".format(service.name, function.name)
-            self._generate_struct_complete(s, arglist,
-                                           is_exception=False,
-                                           pointers=False,
-                                           read=True,
-                                           write=True,
-                                           swap=False,
-                                           result=False)
+            if self.flag_stack_arguments:
+                arglist.name = "{0}_{1}_args".format(service.name, function.name)
+                self._generate_struct_complete(s, arglist,
+                                               is_exception=False,
+                                               pointers=False,
+                                               read=True,
+                                               write=True,
+                                               swap=False,
+                                               result=False)
             arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
             self._generate_struct_complete(s, arglist,
                                            is_exception=False,
