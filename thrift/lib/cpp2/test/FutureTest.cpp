@@ -58,7 +58,7 @@ class TestInterface : public FutureServiceSvIf {
     });
 
     RequestEventBase::get()->runInEventBaseThread([this, func, size](){
-      RequestEventBase::get()->runAfterDelay(func, size);
+      RequestEventBase::get()->tryRunAfterDelay(func, size);
     });
 
     return std::move(f);
@@ -72,7 +72,7 @@ class TestInterface : public FutureServiceSvIf {
       p->setValue();
     });
     RequestEventBase::get()->runInEventBaseThread([this, func, size](){
-      RequestEventBase::get()->runAfterDelay(func, size);
+      RequestEventBase::get()->tryRunAfterDelay(func, size);
     });
     return std::move(f);
   }

@@ -795,7 +795,7 @@ public:
     requestBytes_ += req->getBuf()->computeChainDataLength();
     // Don't respond, let it time out
     // TestRequestCallback::replyReceived(std::move(buf));
-    channel1_->getEventBase()->runAfterDelay(
+    channel1_->getEventBase()->tryRunAfterDelay(
       [&](){
         channel1_->setCallback(nullptr);
         channel0_->setCloseCallback(nullptr);
@@ -837,11 +837,11 @@ public:
         std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
         makeTestBuf(len_));
     // Verify the timeout worked within 10ms
-    channel0_->getEventBase()->runAfterDelay([&](){
+    channel0_->getEventBase()->tryRunAfterDelay([&](){
         EXPECT_EQ(replyError_, 1);
       }, 35);
     // Verify that subsequent successful requests don't delay timeout
-    channel0_->getEventBase()->runAfterDelay([&](){
+    channel0_->getEventBase()->tryRunAfterDelay([&](){
         channel0_->sendRequest(
           std::unique_ptr<RequestCallback>(new TestRequestCallback),
           // Fake method name for creating a ContextStatck
@@ -893,22 +893,22 @@ public:
     channel1_->setCallback(this);
     channel0_->setCloseCallback(this);
     if (halfClose_) {
-      channel1_->getEventBase()->runAfterDelay(
+      channel1_->getEventBase()->tryRunAfterDelay(
         [&](){channel1_->getTransport()->shutdownWrite();
 
         },
         10);
     } else {
-      channel1_->getEventBase()->runAfterDelay(
+      channel1_->getEventBase()->tryRunAfterDelay(
         [&](){channel1_->getTransport()->close();},
         10);
     }
-    channel1_->getEventBase()->runAfterDelay(
+    channel1_->getEventBase()->tryRunAfterDelay(
       [&](){
         channel1_->setCallback(nullptr);
       },
     20);
-    channel0_->getEventBase()->runAfterDelay(
+    channel0_->getEventBase()->tryRunAfterDelay(
       [&](){
         channel0_->setCloseCallback(nullptr);
       },
@@ -949,22 +949,22 @@ public:
     channel1_->setCallback(this);
     channel0_->setCloseCallback(this);
     if (halfClose_) {
-      channel0_->getEventBase()->runAfterDelay(
+      channel0_->getEventBase()->tryRunAfterDelay(
         [&](){channel0_->getTransport()->shutdownWrite();
 
         },
         10);
     } else {
-      channel0_->getEventBase()->runAfterDelay(
+      channel0_->getEventBase()->tryRunAfterDelay(
         [&](){channel0_->getTransport()->close();},
         10);
     }
-    channel1_->getEventBase()->runAfterDelay(
+    channel1_->getEventBase()->tryRunAfterDelay(
       [&](){
         channel1_->setCallback(nullptr);
       },
     20);
-    channel0_->getEventBase()->runAfterDelay(
+    channel0_->getEventBase()->tryRunAfterDelay(
       [&](){
         channel0_->setCloseCallback(nullptr);
       },

@@ -537,7 +537,7 @@ public:
     auto sock = std::static_pointer_cast<apache::thrift::async::TAsyncSSLSocket>(s);
 
     hcb_->setSocket(sock);
-    sock->getEventBase()->runAfterDelay([=] {
+    sock->getEventBase()->tryRunAfterDelay([=] {
         std::cerr << "Delayed SSL accept, client will have close by now"
                   << std::endl;
         // SSL accept will fail
@@ -665,7 +665,7 @@ class TestSSLAsyncCacheServer : public TestSSLServer {
     } else {
       // fresh meat - block it
       std::cerr << "async lookup" << std::endl;
-      sslSocket->getEventBase()->runAfterDelay(
+      sslSocket->getEventBase()->tryRunAfterDelay(
         std::bind(&apache::thrift::async::TAsyncSSLSocket::restartSSLAccept,
                   sslSocket), lookupDelay_);
       *copyflag = SSL_SESSION_CB_WOULD_BLOCK;
@@ -830,7 +830,7 @@ class BlockingWriteServer :
   virtual void handshakeSuccess(apache::thrift::async::TAsyncSSLSocket*)
     noexcept {
     // Wait 10ms before reading, so the client's writes will initially block.
-    socket_->getEventBase()->runAfterDelay(
+    socket_->getEventBase()->tryRunAfterDelay(
         [this] { socket_->setReadCallback(this); }, 10);
   }
   virtual void handshakeError(
@@ -845,7 +845,7 @@ class BlockingWriteServer :
   virtual void readDataAvailable(size_t len) noexcept {
     bytesRead_ += len;
     socket_->setReadCallback(nullptr);
-    socket_->getEventBase()->runAfterDelay(
+    socket_->getEventBase()->tryRunAfterDelay(
         [this] { socket_->setReadCallback(this); }, 2);
   }
   virtual void readEOF() noexcept {

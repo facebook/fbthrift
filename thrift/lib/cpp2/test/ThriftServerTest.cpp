@@ -905,10 +905,10 @@ TEST(ThriftServer, CallbackOrderingTest) {
                       new HeaderClientChannel(socket)));
 
   client.noResponse([](ClientReceiveState&& state){}, 10000);
-  base.runAfterDelay([&](){
+  base.tryRunAfterDelay([&](){
     socket->closeNow();
   }, 1);
-  base.runAfterDelay([&](){
+  base.tryRunAfterDelay([&](){
     base.terminateLoopSoon();
   }, 20);
   base.loopForever();
@@ -943,10 +943,10 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
   socket2->setReadCallback(&cb);
 
-  base.runAfterDelay([&](){
+  base.tryRunAfterDelay([&](){
       server->immediateShutdown(true);
     }, 10);
-  base.runAfterDelay([&](){
+  base.tryRunAfterDelay([&](){
       base.terminateLoopSoon();
     }, 30);
   base.loopForever();
@@ -970,7 +970,7 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   // will stop loop()ing.  Create a timeout event to make sure
   // it continues to loop for the duration of the test.
   server->getServeEventBase()->runInEventBaseThread([&](){
-    server->getServeEventBase()->runAfterDelay([](){}, 5000);
+    server->getServeEventBase()->tryRunAfterDelay([](){}, 5000);
   });
 
   server->getServeEventBase()->runInEventBaseThreadAndWait([=](){

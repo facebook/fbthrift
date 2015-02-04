@@ -849,12 +849,12 @@ class TimeoutQueuedTest : public SocketPairTest<ChannelT> {
 
     for (int i = 0; i < n_msgs_; i++ ) {
       // queue some reads 200ms apart
-      this->eventBase_.runAfterDelay(
+      this->eventBase_.tryRunAfterDelay(
         std::bind(&TimeoutQueuedTest<ChannelT>::recvMe, this),
         kRecvDelay * i);
     }
 
-    this->eventBase_.runAfterDelay(
+    this->eventBase_.tryRunAfterDelay(
       std::bind(&TimeoutQueuedTest<ChannelT>::sendMe, this),
       kRecvDelay * n_msgs_);
 
@@ -1187,7 +1187,7 @@ class SendClosedTest : public SocketPairTest<ChannelT> {
     sendCallback_.send(this->channel0_, &sendBuf_);
 
     // Close the other socket after 25ms
-    this->eventBase_.runAfterDelay(
+    this->eventBase_.tryRunAfterDelay(
         std::bind(&TAsyncSocket::close, this->socket1_.get()),
         closeTimeout_.count());
 

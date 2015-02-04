@@ -1039,7 +1039,7 @@ void testConnectOptWrite(size_t size1, size_t size2, bool close = false) {
   ReadCallback rcb;
   rcb.dataAvailableCallback = std::bind(tmpDisableReads,
                                         acceptedSocket.get(), &rcb);
-  socket->getEventBase()->runAfterDelay(
+  socket->getEventBase()->tryRunAfterDelay(
       std::bind(&TAsyncSocket::setReadCallback, acceptedSocket.get(), &rcb),
       10);
 

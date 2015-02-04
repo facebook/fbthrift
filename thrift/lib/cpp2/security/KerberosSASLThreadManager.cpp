@@ -122,7 +122,7 @@ void SaslThreadManager::recordActivity() {
 }
 
 void SaslThreadManager::scheduleThreadManagerHealthCheck() {
-  healthCheckEvb_.runAfterDelay([this]() {
+  healthCheckEvb_.tryRunAfterDelay([this]() {
     threadManagerHealthCheck();
     scheduleThreadManagerHealthCheck();
   }, FLAGS_sasl_health_check_thread_period_ms);
