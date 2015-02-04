@@ -337,9 +337,12 @@ void ThriftServer::setup() {
 
       // Resize the IO pool
       ioThreadPool_->setNumThreads(nWorkers_);
-      workerPool_ = std::make_shared<Cpp2WorkerPool>(
-        this, ioThreadPool_.get());
-      ioThreadPool_->addObserver(workerPool_);
+      {
+        std::lock_guard<std::mutex> lock(workerPoolMutex_);
+        workerPool_ = std::make_shared<Cpp2WorkerPool>(
+          this, ioThreadPool_.get());
+        ioThreadPool_->addObserver(workerPool_);
+      }
 
       // Notify handler of the preServe event
       if (eventHandler_ != nullptr) {
@@ -488,10 +491,11 @@ ThriftServer::CumulativeFailureInjection::test() const {
 
 int32_t ThriftServer::getPendingCount() const {
   int32_t count = 0;
-  if (!workerPool_) {
+  auto workerPool = getWorkerPool();
+  if (!workerPool) {
     return 0;
   }
-  workerPool_->forEachWorker([&](std::shared_ptr<Cpp2Worker> worker){
+  workerPool->forEachWorker([&](std::shared_ptr<Cpp2Worker> worker){
     count += worker->getPendingCount();
   });
   return count;
@@ -555,15 +559,19 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
     reqload = (100*(activeRequests_ + getPendingCount()))
       / ((float)maxRequests_);
   }
-  if (maxConnections_ > 0) {
+  auto workerPool = getWorkerPool();
+  if (maxConnections_ > 0 && workerPool) {
     int32_t connections = 0;
-    workerPool_->forEachWorker([&](std::shared_ptr<Cpp2Worker> worker){
+    workerPool->forEachWorker([&](std::shared_ptr<Cpp2Worker> worker){
       connections += worker->getPendingCount();
     });
     connload = (100*connections) / (float)maxConnections_;
   }
 
-  queueload = threadManager_->getCodel()->getLoad();
+  auto tm = getThreadManager();
+  if (tm) {
+    queueload = tm->getCodel()->getLoad();
+  }
 
   int load = std::max({reqload, connload, queueload});
   FB_LOG_EVERY_MS(INFO, 1000*10)

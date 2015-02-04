@@ -195,6 +195,7 @@ class ThriftServer : public apache::thrift::server::TServer {
     folly::wangle::IOThreadPoolExecutor* exec_;
   };
 
+  mutable std::mutex workerPoolMutex_;
   std::shared_ptr<Cpp2WorkerPool> workerPool_;
 
   //! IO thread pool. Drives Cpp2Workers.
@@ -325,6 +326,11 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   InjectedFailure maybeInjectFailure() const {
     return failureInjection_.test();
+  }
+
+  std::shared_ptr<Cpp2WorkerPool> getWorkerPool() const {
+    std::lock_guard<std::mutex> lock(workerPoolMutex_);
+    return workerPool_;
   }
 
   getHandlerFunc getHandler_;
