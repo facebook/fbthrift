@@ -104,6 +104,9 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   protocol/Serializer.cpp \
 			   protocol/SimpleJSONProtocol.cpp \
 			   protocol/DebugProtocol.cpp \
+			   protocol/BinaryProtocol.cpp \
+			   protocol/VirtualProtocol.cpp \
+			   protocol/CompactProtocol.cpp \
 			   security/KerberosSASLHandshakeClient.cpp \
 			   security/KerberosSASLHandshakeServer.cpp \
 			   security/KerberosSASLHandshakeUtils.cpp \
