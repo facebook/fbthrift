@@ -25,6 +25,9 @@
 
 #include <stack>
 
+DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
+DECLARE_int32(thrift_cpp2_protocol_reader_container_limit);
+
 namespace apache { namespace thrift {
 
 using folly::IOBuf;
@@ -231,8 +234,8 @@ class CompactProtocolReader {
   static const int8_t  VERSION_MASK = 0x1f; // 0001 1111
 
   CompactProtocolReader()
-    : string_limit_(0)
-    , container_limit_(0)
+    : string_limit_(FLAGS_thrift_cpp2_protocol_reader_string_limit)
+    , container_limit_(FLAGS_thrift_cpp2_protocol_reader_container_limit)
     , in_(nullptr)
     , boolValue_({false, false}) {}
 

@@ -1013,6 +1013,33 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   client2.sync_sendResponse(response, 64);
 }
 
+TEST(ThriftServer, ThriftServerSizeLimits) {
+  google::FlagSaver flagSaver;
+  FLAGS_thrift_cpp2_protocol_reader_string_limit = 1024 * 1024;
+
+  ScopedServerThread sst(getServer());
+  TEventBase eb;
+
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(
+        TAsyncSocket::newSocket(
+          &eb, *sst.getAddress())));
+
+  std::string response;
+
+  try {
+    // make a largest possible input which should not throw an exception
+    std::string smallInput(1 << 19, '1');
+    client.sync_echoRequest(response, smallInput);
+    SUCCEED();
+  } catch(const std::exception& ex) {
+    ADD_FAILURE();
+  }
+
+  // make an input that is too large by 1 byte
+  std::string largeInput(1 << 21, '1');
+  EXPECT_THROW(client.sync_echoRequest(response, largeInput), std::exception);
+}
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);

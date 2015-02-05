@@ -23,6 +23,9 @@
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
+DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
+DECLARE_int32(thrift_cpp2_protocol_reader_container_limit);
+
 namespace apache { namespace thrift {
 
 using folly::IOBuf;
@@ -163,8 +166,8 @@ class BinaryProtocolReader {
   static const int32_t VERSION_1 = 0x80010000;
 
   BinaryProtocolReader()
-    : string_limit_(0)
-    , container_limit_(0)
+    : string_limit_(FLAGS_thrift_cpp2_protocol_reader_string_limit)
+    , container_limit_(FLAGS_thrift_cpp2_protocol_reader_container_limit)
     , strict_read_(true)
     , in_(nullptr) {}
 
