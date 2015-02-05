@@ -94,6 +94,9 @@ class t_hack_generator : public t_oop_generator {
   void generate_php_struct_writer(std::ofstream& out, t_struct* tstruct);
   void generate_php_function_helpers(t_function* tfunction);
 
+  void generate_php_union_enum(std::ofstream& out, t_struct* tstruct);
+  void generate_php_union_methods(std::ofstream& out, t_struct* tstruct);
+
   void generate_php_type_spec(std::ofstream &out, t_type* t);
   void generate_php_struct_spec(std::ofstream &out, t_struct* tstruct);
   void generate_php_struct_struct_trait(std::ofstream &out, t_struct* tstruct);
@@ -236,6 +239,21 @@ class t_hack_generator : public t_oop_generator {
   std::string type_to_typehint(t_type* ttype, bool nullable=false);
   std::string type_to_param_typehint(t_type* ttype, bool nullable=false);
 
+  std::string union_enum_name(t_struct* tstruct) {
+    // <StructName>Type
+    return php_namespace(tstruct->get_program()) +
+      tstruct->get_name() + "Enum";
+  }
+
+  std::string union_field_to_enum(t_struct* tstruct, t_field* tfield) {
+    // If null is passed,  it refer to empty;
+    if (tfield) {
+      return union_enum_name(tstruct) + "::" + tfield->get_name();
+    } else {
+      return union_enum_name(tstruct) + "::" + UNION_EMPTY;
+    }
+  }
+
   bool is_bitmask_enum(t_enum* tenum) {
     return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
   }
@@ -268,6 +286,8 @@ class t_hack_generator : public t_oop_generator {
   std::string php_path(t_service* s) {
     return php_path(s->get_program());
   }
+
+  const char* UNION_EMPTY = "_EMPTY_";
 
  private:
 
@@ -1100,7 +1120,49 @@ void t_hack_generator::generate_php_struct_definition(ofstream& out,
                                                      t_struct* tstruct,
                                                      bool is_exception,
                                                      bool is_result) {
+  if (tstruct->is_union()) {
+    // Generate enum for union before the actual class
+    generate_php_union_enum(out, tstruct);
+  }
   _generate_php_struct_definition(out, tstruct, is_exception, is_result);
+}
+
+void t_hack_generator::generate_php_union_methods(ofstream& out,
+                                                  t_struct* tstruct) {
+  vector<t_field*>::const_iterator m_iter;
+
+  // getType() : <UnionName>Enum {}
+  indent(out) << "public function getType(): "
+      << union_enum_name(tstruct) << " {" << endl;
+  indent(out) << indent() << "return $this->_type;"<< endl;
+  indent(out) << "}" << endl << endl;
+
+  // TODO: Generate missing methods such as {set|get}_<field_name>(), clear()
+}
+
+
+void t_hack_generator::generate_php_union_enum(ofstream& out,
+                                               t_struct* tstruct) {
+  // Generate enum class with this pattern
+  // enum <UnionName>Enum: int {
+  //   __EMPTY__ = 0;
+  //   field1 = 1;
+  // }
+  const vector<t_field*>& members = tstruct->get_members();
+  vector<t_field*>::const_iterator m_iter;
+  int enum_index = 1;
+
+  out << "enum " << union_enum_name(tstruct) << ": int {"<< endl;
+
+  indent_up();
+  // If no member is set
+  indent(out) <<  UNION_EMPTY << " = 0;" << endl;
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    indent(out)
+        << (*m_iter)->get_name() << " = "<< enum_index++ << ";" << endl;
+  }
+  indent_down();
+  out << "}" << endl << endl;
 }
 
 /**
@@ -1169,6 +1231,13 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
       "public " << typehint << " $" << (*m_iter)->get_name() << ";" << endl;
   }
 
+  if (tstruct->is_union()) {
+    // Generate _type to store which field is set and initialize it to _EMPTY_
+    indent(out) <<
+      "private " << union_enum_name(tstruct) << " $_type = "
+      << union_field_to_enum(tstruct, nullptr) << ";" << endl;
+  }
+
   out << endl;
 
   if (map_construct_) {
@@ -1202,6 +1271,10 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
 
   if (is_exception) {
     out << indent() << "parent::__construct();" << endl;
+  }
+  if (tstruct->is_union()) {
+    out << indent() << "$this->_type = "
+        << union_field_to_enum(tstruct, nullptr) << ";" << endl;
   }
   for (m_iter = members.begin(); !is_result && m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
@@ -1240,12 +1313,18 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
       // success is whatever type the method returns, but must be nullable
       // regardless, since if there is an exception we expect it to be null
       bool nullable = (dval == "null")
-          || tstruct->is_union()
           || is_result
           || ((*m_iter)->get_req() == t_field::T_OPTIONAL
               && (*m_iter)->get_value() == nullptr);
 
-      if (nullable) {
+      if (tstruct->is_union()) {
+        // Capture value from constructor and update _type field
+        out <<
+          indent() << "if ($" << (*m_iter)->get_name() << " !== null) {" << endl <<
+          indent() << "  $this->" << (*m_iter)->get_name() << " = $" << (*m_iter)->get_name() << ";" << endl <<
+          indent() << "  $this->_type = " << union_field_to_enum(tstruct, *m_iter) << ";" << endl <<
+          indent() << "}" << endl;
+      } else if (nullable) {
         indent(out) << "$this->" << (*m_iter)->get_name() << " = $" << (*m_iter)->get_name() << ";" << endl;
       } else {
         out <<
@@ -1266,7 +1345,9 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     indent() << "  return '" << tstruct->get_name() << "';" << endl <<
     indent() << "}" << endl <<
     endl;
-
+  if (tstruct->is_union()) {
+    generate_php_union_methods(out, tstruct);
+  }
   generate_php_struct_reader(out, tstruct);
   generate_php_struct_writer(out, tstruct);
   generate_json_reader(out, tstruct);
@@ -1293,6 +1374,12 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
     indent() << "$fname = '';" << endl <<
     indent() << "$ftype = 0;" << endl <<
     indent() << "$fid = 0;" << endl;
+
+  if (tstruct->is_union()) {
+    // init _type field
+    out << indent() << "$this->_type = "
+        << union_field_to_enum(tstruct, nullptr) << ";" << endl;
+  }
 
   // create flags for required fields, we check then after reading
   for (const auto& f : fields) {
@@ -1344,6 +1431,11 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
         indent(out) << "if ($ftype == " << type_to_enum((*f_iter)->get_type()) << ") {" << endl;
         indent_up();
         generate_deserialize_field(out, *f_iter, "this->" + (*f_iter)->get_name());
+        if (tstruct->is_union()) {
+          // Update _type for union
+          indent(out) << "$this->_type = "
+                      << union_field_to_enum(tstruct, *f_iter) << ";" << endl;
+        }
         if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
           indent(out) << "$" << (*f_iter)->get_name() << "__isset = true;"
                       << endl;
