@@ -337,6 +337,8 @@ class ThriftServer : public apache::thrift::server::TServer {
 
  public:
   ThriftServer();
+
+  // If sasl_policy is set. FLAGS_sasl_policy will be ignored for this server
   ThriftServer(const std::string& sasl_policy,
                bool allow_insecure_loopback);
 
