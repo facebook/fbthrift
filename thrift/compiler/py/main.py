@@ -247,7 +247,7 @@ def main():
     try:
         params = parseParameters(parser, sys.argv[1:])
     except ArgumentError as e:
-        print 'Argument Error:', e
+        print('Argument Error:', e)
         # print usage
         # parser.print_help()
         return
