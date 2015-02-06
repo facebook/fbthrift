@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
 
+#include <folly/ExceptionWrapper.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -87,11 +88,14 @@ void SaslThreadManager::threadManagerHealthCheck() {
       while (auto el = threadManager_->removeNextPending()) {
         queueToDrain.push_back(el);
       };
+      // We are activating all queued up tasks (for draining),
+      // lets update the counter tracking how many we have.
+      secureConnectionsInProgress_ += pendingSecureStarts_.size();
+      // Add the pending tasks to the draining queue
       while(!pendingSecureStarts_.empty()) {
         queueToDrain.push_back(pendingSecureStarts_.front());
         pendingSecureStarts_.pop_front();
       }
-      secureConnectionsInProgress_ = 0;
     } else {
       healthy_ = true;
     }
@@ -153,10 +157,12 @@ void SaslThreadManager::start(
       return;
     }
   }
-  ++secureConnectionsInProgress_;
   logger_->logValue("secure_connections_in_progress",
                     secureConnectionsInProgress_);
-  threadManager_->add(f);
+  auto ew = folly::try_and_catch<TooManyPendingTasksException>([&]() {
+    threadManager_->add(f);
+    ++secureConnectionsInProgress_;
+  });
 }
 
 void SaslThreadManager::end() {
