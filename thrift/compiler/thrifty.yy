@@ -550,7 +550,10 @@ EnumDefList:
     {
       pdebug("EnumDefList -> EnumDefList EnumDef");
       $$ = $1;
-      $$->append($2);
+      if (!$$->append($2)) {
+        pwarning(1, "Duplicate enum constant %s = %d",
+            $2->get_name().c_str(), $2->get_value());
+      }
     }
 |
     {

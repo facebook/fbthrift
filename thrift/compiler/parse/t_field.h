@@ -129,7 +129,8 @@ class t_field : public t_doc {
    * The arguments are (const) references to const pointers to const t_fields.
    */
   struct key_compare {
-    bool operator()(t_field const * const & a, t_field const * const & b) {
+    bool operator()(t_field const * const & a,
+                    t_field const * const & b) const {
       return a->get_key() < b->get_key();
     }
   };

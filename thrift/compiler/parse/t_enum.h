@@ -20,8 +20,10 @@
 #ifndef T_ENUM_H
 #define T_ENUM_H
 
-#include "thrift/compiler/parse/t_enum_value.h"
+#include <set>
 #include <vector>
+
+#include "thrift/compiler/parse/t_enum_value.h"
 
 /**
  * An enumerated type. A list of constant objects with a name for the type.
@@ -36,8 +38,12 @@ class t_enum : public t_type {
     name_ = name;
   }
 
-  void append(t_enum_value* constant) {
+  bool append(t_enum_value* constant) {
     constants_.push_back(constant);
+    constants_by_name_.insert(constant);
+    constants_by_value_.insert(constant);
+    return constants_by_name_.count(constant) == 1
+        && constants_by_value_.count(constant) == 1;
   }
 
   const std::vector<t_enum_value*>& get_constants() {
@@ -70,7 +76,10 @@ class t_enum : public t_type {
   }
 
  private:
+
   std::vector<t_enum_value*> constants_;
+  std::multiset<t_enum_value*, t_enum_value::name_compare> constants_by_name_;
+  std::multiset<t_enum_value*, t_enum_value::value_compare> constants_by_value_;
 };
 
 #endif

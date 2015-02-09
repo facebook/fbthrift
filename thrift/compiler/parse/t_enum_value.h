@@ -51,6 +51,26 @@ class t_enum_value : public t_doc {
     return value_;
   }
 
+  /**
+   * Comparator to sort constants in ascending order by name.
+   */
+  struct name_compare {
+    bool operator()(t_enum_value const * const & a,
+                    t_enum_value const * const & b) const {
+      return a->get_name() < b->get_name();
+    }
+  };
+
+  /**
+   * Comparator to sort constants in ascending order by value.
+   */
+  struct value_compare {
+    bool operator()(t_enum_value const * const & a,
+                    t_enum_value const * const & b) const {
+      return a->get_value() < b->get_value();
+    }
+  };
+
  private:
   std::string name_;
   int32_t value_;
