@@ -131,6 +131,10 @@ ThriftServer::ThriftServer(const std::string& saslPolicy,
     setSaslEnabled(true);
     setNonSaslEnabled(true);
   }
+  // Disable replay caching since we're doing mutual auth. Enabling
+  // this will significantly degrade perf. Force this to overwrite
+  // existing env variables to avoid performance regressions.
+  setenv("KRB5RCACHETYPE", "none", 1);
 }
 
 ThriftServer::ThriftServer(
