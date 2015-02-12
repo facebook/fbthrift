@@ -106,6 +106,35 @@ class TServerEventHandler {
 class TServer : public concurrency::Runnable {
  public:
 
+  struct FailureInjection {
+    FailureInjection()
+        : errorFraction(0),
+          dropFraction(0),
+          disconnectFraction(0) {
+    }
+
+    // Cause a fraction of requests to fail
+    float errorFraction;
+
+    // Cause a fraction of requests to be dropped (and presumably time out
+    // on the client)
+    float dropFraction;
+
+    // Cause a fraction of requests to cause the channel to be disconnected,
+    // possibly failing other requests as well.
+    float disconnectFraction;
+
+    bool operator==(const FailureInjection& other) const {
+      return errorFraction == other.errorFraction &&
+        dropFraction == other.dropFraction &&
+        disconnectFraction == other.disconnectFraction;
+    }
+
+    bool operator!=(const FailureInjection& other) const {
+      return !(*this == other);
+    }
+  };
+
   virtual ~TServer() {}
 
   virtual void serve() = 0;
@@ -162,6 +191,11 @@ class TServer : public concurrency::Runnable {
    */
   virtual TConnectionContext* getConnectionContext() const {
     return nullptr;
+  }
+
+  virtual void setFailureInjection(FailureInjection fi) {
+    throw std::runtime_error(
+      "setFailureInjection not supported by this implementation.");
   }
 
 protected:

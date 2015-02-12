@@ -77,27 +77,6 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
  */
 
 class ThriftServer : public apache::thrift::server::TServer {
- public:
-
-    struct FailureInjection {
-    FailureInjection()
-      : errorFraction(0),
-        dropFraction(0),
-        disconnectFraction(0) {
-    }
-
-    // Cause a fraction of requests to fail
-    float errorFraction;
-
-    // Cause a fraction of requests to be dropped (and presumably time out
-    // on the client)
-    float dropFraction;
-
-    // Cause a fraction of requests to cause the channel to be disconnected,
-    // possibly failing other requests as well.
-    float disconnectFraction;
-  };
-
  protected:
 
   //! Default number of worker threads (should be # of processor cores).
@@ -1053,7 +1032,9 @@ class ThriftServer : public apache::thrift::server::TServer {
   /**
    * Set failure injection parameters.
    */
-  void setFailureInjection(FailureInjection fi) { failureInjection_.set(fi); }
+  void setFailureInjection(FailureInjection fi) override {
+    failureInjection_.set(fi);
+  }
 
   void setGetHandler(getHandlerFunc func) {
     getHandler_ = func;
