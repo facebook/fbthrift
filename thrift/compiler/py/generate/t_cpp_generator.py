@@ -867,9 +867,12 @@ class CppGenerator(t_generator.Generator):
         callArgs = []
         for member in function.arglist.members:
             if self._is_complex_type(member.type):
+                tmpMovedArg = self.tmp("tmp_move_{0}".format(member.name))
+                out("auto {0} = std::move({1});"
+                        .format(tmpMovedArg, member.name))
                 moveArg = self.tmp("move_{0}".format(member.name))
                 out("auto {0} = folly::makeMoveWrapper(std::move({1}));"
-                        .format(moveArg, member.name))
+                        .format(moveArg, tmpMovedArg))
                 captureArgs.append(moveArg)
                 callArgs.append("std::move(*{0})".format(moveArg))
             else:
