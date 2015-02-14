@@ -33,7 +33,6 @@ else:
     import BaseHTTPServer
     from cStringIO import StringIO
 
-import getpass
 import os
 from struct import pack, unpack
 import sys
