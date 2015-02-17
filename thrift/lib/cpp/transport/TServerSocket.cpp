@@ -20,6 +20,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/poll.h>
+#include <sys/un.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
@@ -65,6 +66,22 @@ TServerSocket::TServerSocket(int port, int sendTimeout, int recvTimeout) :
   intSock1_(-1),
   intSock2_(-1),
   closeOnExec_(true) {}
+
+TServerSocket::TServerSocket(string path)
+  : port_(0),
+    path_(path),
+    serverSocket_(-1),
+    acceptBacklog_(1024),
+    sendTimeout_(0),
+    recvTimeout_(0),
+    accTimeout_(-1),
+    retryLimit_(0),
+    retryDelay_(0),
+    tcpSendBuffer_(0),
+    tcpRecvBuffer_(0),
+    intSock1_(-1),
+    intSock2_(-1) {
+}
 
 TServerSocket::~TServerSocket() {
   close();
@@ -137,7 +154,12 @@ void TServerSocket::listen() {
       break;
   }
 
-  serverSocket_ = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+  if (!path_.empty()) {
+    serverSocket_ = socket(PF_UNIX, SOCK_STREAM, IPPROTO_IP);
+  } else {
+    serverSocket_ = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+  }
+
   if (serverSocket_ == -1) {
     int errno_copy = errno;
     GlobalOutput.perror("TServerSocket::listen() socket() ", errno_copy);
@@ -243,37 +265,63 @@ void TServerSocket::listen() {
   // we may want to try to bind more than once, since SO_REUSEADDR doesn't
   // always seem to work. The client can configure the retry variables.
   int retries = 0;
-  do {
-    if (0 == ::bind(serverSocket_, res->ai_addr, res->ai_addrlen)) {
-      break;
+
+  if (!path_.empty()) {
+    // Unix Domain Socket
+    size_t len = path_.size() + 1;
+    if (len > sizeof(((sockaddr_un*)nullptr)->sun_path)) {
+      int errno_copy = errno;
+      GlobalOutput.perror("TSocket::listen() Unix Domain socket path too long",
+                          errno_copy);
+      throw TTransportException(TTransportException::NOT_OPEN,
+                                " Unix Domain socket path too long");
     }
 
-    // use short circuit evaluation here to only sleep if we need to
-  } while ((retries++ < retryLimit_) && (sleep(retryDelay_) == 0));
+    struct sockaddr_un address;
+    address.sun_family = AF_UNIX;
+    memcpy(address.sun_path, path_.c_str(), len);
+    socklen_t structlen = static_cast<socklen_t>(sizeof(address));
 
-  // free addrinfo
-  freeaddrinfo(res0);
+    do {
+      if (0 == ::bind(serverSocket_, (struct sockaddr*)&address, structlen)) {
+        break;
+      }
+      // use short circuit evaluation here to only sleep if we need to
+    } while ((retries++ < retryLimit_) && (sleep(retryDelay_) == 0));
+  } else {
+    do {
+      if (0 == ::bind(serverSocket_, res->ai_addr, res->ai_addrlen)) {
+        break;
+      }
 
-  // throw an error if we failed to bind properly
-  if (retries > retryLimit_) {
-    char errbuf[1024];
-    sprintf(errbuf, "TServerSocket::listen() BIND %d", port_);
-    GlobalOutput(errbuf);
-    int errno_copy = errno;
-    close();
-    throw TTransportException(TTransportException::COULD_NOT_BIND,
-                              "Could not bind", errno_copy);
+      // use short circuit evaluation here to only sleep if we need to
+    } while ((retries++ < retryLimit_) && (sleep(retryDelay_) == 0));
+
+    // free addrinfo
+    freeaddrinfo(res0);
+
+    // throw an error if we failed to bind properly
+    if (retries > retryLimit_) {
+      char errbuf[1024];
+      sprintf(errbuf, "TServerSocket::listen() BIND %d", port_);
+      GlobalOutput(errbuf);
+      int errno_copy = errno;
+      close();
+      throw TTransportException(TTransportException::COULD_NOT_BIND,
+                                "Could not bind", errno_copy);
+    }
+
+    // Call listen
+    if (-1 == ::listen(serverSocket_, acceptBacklog_)) {
+      int errno_copy = errno;
+      GlobalOutput.perror("TServerSocket::listen() listen() ", errno_copy);
+      close();
+      throw TTransportException(TTransportException::NOT_OPEN,
+                                "Could not listen", errno_copy);
+    }
+
+    // The socket is now listening!
   }
-
-  // Call listen
-  if (-1 == ::listen(serverSocket_, acceptBacklog_)) {
-    int errno_copy = errno;
-    GlobalOutput.perror("TServerSocket::listen() listen() ", errno_copy);
-    close();
-    throw TTransportException(TTransportException::NOT_OPEN, "Could not listen", errno_copy);
-  }
-
-  // The socket is now listening!
 }
 
 shared_ptr<TRpcTransport> TServerSocket::acceptImpl() {

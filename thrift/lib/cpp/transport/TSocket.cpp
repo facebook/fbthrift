@@ -92,6 +92,14 @@ TSocket::TSocket(const folly::SocketAddress& address) :
   // an address in connect()
 }
 
+TSocket::TSocket(string path)
+  : host_(""),
+    port_(0),
+    path_(path),
+    socket_(-1),
+    maxRecvRetries_(5) {
+}
+
 TSocket::TSocket() :
   host_(""),
   port_(0),
@@ -147,7 +155,11 @@ void TSocket::openConnection(struct addrinfo *res) {
     throw TTransportException(TTransportException::ALREADY_OPEN);
   }
 
-  socket_ = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+  if (!path_.empty()) {
+    socket_ = socket(PF_UNIX, SOCK_STREAM, IPPROTO_IP);
+  } else {
+    socket_ = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+  }
   if (socket_ == -1) {
     int errno_copy = errno;
     GlobalOutput.perror("TSocket::open() socket() " + getSocketInfo(), errno_copy);
@@ -193,7 +205,25 @@ void TSocket::openConnection(struct addrinfo *res) {
   }
 
   // Connect the socket
-  int ret = connect(socket_, res->ai_addr, res->ai_addrlen);
+  int ret;
+  if (!path_.empty()) {
+    size_t len = path_.size() + 1;
+    if (len > sizeof(((sockaddr_un*)nullptr)->sun_path)) {
+      int errno_copy = errno;
+      GlobalOutput.perror("TSocket::open() Unix Domain socket path too long",
+                          errno_copy);
+      throw TTransportException(TTransportException::NOT_OPEN,
+                                " Unix Domain socket path too long");
+    }
+
+    struct sockaddr_un address;
+    address.sun_family = AF_UNIX;
+    memcpy(address.sun_path, path_.c_str(), len);
+    socklen_t structlen = static_cast<socklen_t>(sizeof(address));
+    ret = connect(socket_, (struct sockaddr*)&address, structlen);
+  } else {
+    ret = connect(socket_, res->ai_addr, static_cast<int>(res->ai_addrlen));
+  }
 
   // success case
   if (ret == 0) {
@@ -284,7 +314,21 @@ void TSocket::open() {
   if (isOpen()) {
     throw TTransportException(TTransportException::ALREADY_OPEN);
   }
+  if (!path_.empty()) {
+    unix_open();
+  } else {
+    local_open();
+  }
+}
 
+void TSocket::unix_open() {
+  if (!path_.empty()) {
+    // Unix Domain Socket does not need addrinfo struct, so we pass nullptr
+    openConnection(nullptr);
+  }
+}
+
+void TSocket::local_open(){
   // Validate port number
   if (port_ < 0 || port_ > 0xFFFF) {
     throw TTransportException(TTransportException::NOT_OPEN, "Specified port is invalid");
