@@ -63,8 +63,8 @@ class Cpp2Connection
   ~Cpp2Connection();
 
   // ResponseChannel callbacks
-  void requestReceived(std::unique_ptr<ResponseChannel::Request>&&);
-  void channelClosed(folly::exception_wrapper&&);
+  void requestReceived(std::unique_ptr<ResponseChannel::Request>&&) override;
+  void channelClosed(folly::exception_wrapper&&) override;
 
   void start() {
     channel_->setCallback(this);
@@ -72,7 +72,7 @@ class Cpp2Connection
 
   void stop();
 
-  void timeoutExpired() noexcept;
+  void timeoutExpired() noexcept override;
 
   void requestTimeoutExpired();
 

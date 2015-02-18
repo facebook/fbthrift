@@ -948,7 +948,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * starts worker threads, enters accept loop; when
    * the accept loop exits, shuts down and joins workers.
    */
-  void serve();
+  void serve() override;
 
   /**
    * Call this to stop the server, if started by serve()
@@ -957,7 +957,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * connections, close existing connections, shut down the worker threads,
    * and then return.
    */
-  void stop();
+  void stop() override;
 
   /**
    * Call this to stop listening on the server port.
@@ -967,7 +967,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * existing connections. stop() still needs to be called to clear
    * up the worker threads.
    */
-  void stopListening();
+  void stopListening() override;
 
   /**
    * Set a function which determines whether we are currently overloaded. If
