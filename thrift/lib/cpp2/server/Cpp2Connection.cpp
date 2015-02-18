@@ -468,10 +468,14 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
     auto recv_headers = connection_->channel_->getHeader()->getHeaders();
 
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
+    auto headers = connection_->setErrorHeaders(recv_headers);
+    FOR_EACH_KV(header, value, reqContext_.getWriteHeaders()) {
+      headers[header] = value;
+    }
     req_->sendErrorWrapped(std::move(ew),
                            std::move(exCode),
                            prepareSendCallback(sendCallback, observer),
-                           connection_->setErrorHeaders(recv_headers));
+                           std::move(headers));
     cancelTimeout();
   }
 }
