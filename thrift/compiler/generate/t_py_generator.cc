@@ -1411,7 +1411,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
                 | (type_enum, spec_args)  # Value type for list/set
                 | (type_enum, spec_args, type_enum, spec_args)
                   # Key and value for map
-                | [class_name, spec_args_ptr] # For struct/exception
+                | [class_name, spec_args_ptr, is_union] # For struct/exception
      class_name -> identifier  # Basically a pointer to the class
      spec_args_ptr -> expression  # just class_name.spec_args
   */
@@ -1563,7 +1563,8 @@ void t_py_generator::generate_py_struct_reader(ofstream& out,
 
   indent(out) <<
     "fastbinary.decode_binary(self, iprot.trans, " <<
-    "[self.__class__, self.thrift_spec], utf8strings=UTF8STRINGS)" << endl;
+    "[self.__class__, self.thrift_spec, False], " <<
+    "utf8strings=UTF8STRINGS)" << endl;
 
   indent(out) <<
     "return" << endl;
@@ -1673,7 +1674,8 @@ void t_py_generator::generate_py_struct_writer(ofstream& out,
 
   indent(out) <<
     "oprot.trans.write(fastbinary.encode_binary(self, " <<
-    "[self.__class__, self.thrift_spec], utf8strings=UTF8STRINGS))" << endl;
+    "[self.__class__, self.thrift_spec, False], "
+    "utf8strings=UTF8STRINGS))" << endl;
   indent(out) <<
     "return" << endl;
   indent_down();
@@ -3493,9 +3495,12 @@ string t_py_generator::type_to_spec_args(t_type* ttype) {
       return "True";
     }
     return "None";
-  } else if (ttype->is_struct() || ttype->is_xception()) {
+  } else if (ttype->is_struct()){
+    return "[" + type_name(ttype) + ", " + type_name(ttype) + ".thrift_spec, " +
+      (((t_struct*)ttype)->is_union() ? "True]" : "False]");
+  } else if (ttype->is_xception()) {
     return "[" + type_name(ttype) + ", " + type_name(ttype) +
-      ".thrift_spec]";
+      ".thrift_spec, False]";
   } else if (ttype->is_map()) {
     return "(" +
       type_to_enum(((t_map*)ttype)->get_key_type()) + "," +

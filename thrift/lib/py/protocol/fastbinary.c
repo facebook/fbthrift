@@ -389,8 +389,8 @@ parse_map_args(MapTypeArgs* dest, PyObject* typeargs) {
 
 static bool
 parse_struct_args(StructTypeArgs* dest, PyObject* typeargs) {
-  if (PyList_Size(typeargs) != 2) {
-    PyErr_SetString(PyExc_TypeError, "expecting list of size 2 for struct args");
+  if (PyList_Size(typeargs) != 3) {
+    PyErr_SetString(PyExc_TypeError, "expecting list of size 3 for struct args");
     return false;
   }
 
