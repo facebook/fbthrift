@@ -773,6 +773,10 @@ void THeader::setPersistentHeader(const string& key,
   persisWriteHeaders_[key] = value;
 }
 
+void THeader::setPersistentHeaders(THeader::StringToStringMap&& headers) {
+  persisWriteHeaders_ = std::move(headers);
+}
+
 size_t getInfoHeaderSize(const THeader::StringToStringMap &headers) {
   if (headers.empty()) {
     return 0;
