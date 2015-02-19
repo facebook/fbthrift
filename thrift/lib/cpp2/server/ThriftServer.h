@@ -26,6 +26,7 @@
 
 #include <folly/Memory.h>
 #include <folly/io/ShutdownSocketSet.h>
+#include <folly/wangle/bootstrap/ServerBootstrap.h>
 #include <folly/wangle/concurrent/IOThreadPoolExecutor.h>
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
@@ -71,12 +72,16 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
     std::shared_ptr<T> svIf_;
 };
 
+typedef folly::wangle::ChannelPipeline<
+  folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>> Pipeline;
+
 /**
  *   This is yet another thrift server.
  *   Uses cpp2 style generated code.
  */
 
-class ThriftServer : public apache::thrift::server::TServer {
+class ThriftServer : public apache::thrift::server::TServer
+                   , public folly::ServerBootstrap<Pipeline> {
  protected:
 
   //! Default number of worker threads (should be # of processor cores).
@@ -143,39 +148,6 @@ class ThriftServer : public apache::thrift::server::TServer {
     eventBaseManagerHolder_;
   apache::thrift::async::TEventBaseManager* eventBaseManager_;
   std::mutex ebmMutex_;
-
-  //! Creates and manages Cpp2Workers for the IO thread pool
-  class Cpp2WorkerPool : public folly::wangle::ThreadPoolExecutor::Observer {
-   public:
-    explicit Cpp2WorkerPool(ThriftServer* server,
-                            folly::wangle::IOThreadPoolExecutor* exec);
-
-    template <typename F>
-    void forEachWorker(F&& f);
-
-    void threadStarted(
-      folly::wangle::ThreadPoolExecutor::ThreadHandle*);
-    void threadStopped(
-      folly::wangle::ThreadPoolExecutor::ThreadHandle*);
-    void threadPreviouslyStarted(
-      folly::wangle::ThreadPoolExecutor::ThreadHandle* thread) {
-      threadStarted(thread);
-    }
-    void threadNotYetStopped(
-      folly::wangle::ThreadPoolExecutor::ThreadHandle* thread) {
-      threadStopped(thread);
-    }
-
-   private:
-    ThriftServer* server_;
-    std::map<
-      folly::wangle::ThreadPoolExecutor::ThreadHandle*,
-      std::shared_ptr<Cpp2Worker>> workers_;
-    folly::wangle::IOThreadPoolExecutor* exec_;
-  };
-
-  mutable std::mutex workerPoolMutex_;
-  std::shared_ptr<Cpp2WorkerPool> workerPool_;
 
   //! IO thread pool. Drives Cpp2Workers.
   std::shared_ptr<folly::wangle::IOThreadPoolExecutor> ioThreadPool_;
@@ -301,15 +273,9 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   friend class Cpp2Connection;
   friend class Cpp2Worker;
-  friend class Cpp2WorkerPool;
 
   InjectedFailure maybeInjectFailure() const {
     return failureInjection_.test();
-  }
-
-  std::shared_ptr<Cpp2WorkerPool> getWorkerPool() const {
-    std::lock_guard<std::mutex> lock(workerPoolMutex_);
-    return workerPool_;
   }
 
   getHandlerFunc getHandler_;
@@ -347,6 +313,17 @@ class ThriftServer : public apache::thrift::server::TServer {
   }
 
   /**
+   * Set the thread factory that will be used to create the server's IO threads.
+   *
+   * @param the new thread factory
+   */
+  void setIOThreadFactory(
+      std::shared_ptr<folly::wangle::NamedThreadFactory> threadFactory) {
+    CHECK(ioThreadPool_->numThreads() == 0);
+    ioThreadPool_->setThreadFactory(threadFactory);
+  }
+
+  /**
    * Set the prefix for naming the worker threads. "Cpp2Worker" by default.
    * must be called before serve() for it to take effect
    *
@@ -354,16 +331,12 @@ class ThriftServer : public apache::thrift::server::TServer {
    */
   void setCpp2WorkerThreadName(const std::string& cpp2WorkerThreadName) {
     CHECK(ioThreadPool_->numThreads() == 0);
-    getIOThreadFactory()->setNamePrefix(cpp2WorkerThreadName);
-  }
-
-  std::shared_ptr<folly::wangle::NamedThreadFactory> getIOThreadFactory() {
     auto factory = ioThreadPool_->getThreadFactory();
     CHECK(factory);
     auto namedFactory =
       std::dynamic_pointer_cast<folly::wangle::NamedThreadFactory>(factory);
     CHECK(namedFactory);
-    return namedFactory;
+    namedFactory->setNamePrefix(cpp2WorkerThreadName);
   }
 
   /**
@@ -579,23 +552,24 @@ class ThriftServer : public apache::thrift::server::TServer {
    * Set the address to listen on.
    */
   void setAddress(const folly::SocketAddress& address) {
-    DCHECK(socket_ == nullptr);
+    CHECK(ioThreadPool_->numThreads() == 0);
     port_ = -1;
     address_ = address;
   }
 
   void setAddress(folly::SocketAddress&& address) {
-    DCHECK(socket_ == nullptr);
+    CHECK(ioThreadPool_->numThreads() == 0);
     port_ = -1;
     address_ = std::move(address);
   }
 
   void setAddress(const char* ip, uint16_t port) {
-    DCHECK(socket_ == nullptr);
+    CHECK(ioThreadPool_->numThreads() == 0);
     port_ = -1;
     address_.setFromIpPort(ip, port);
   }
   void setAddress(const std::string& ip, uint16_t port) {
+    CHECK(ioThreadPool_->numThreads() == 0);
     port_ = -1;
     setAddress(ip.c_str(), port);
   }
@@ -618,7 +592,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * Set the port to listen on.
    */
   void setPort(uint16_t port) {
-    DCHECK(socket_ == nullptr);
+    CHECK(ioThreadPool_->numThreads() == 0);
     port_ = port;
   }
 

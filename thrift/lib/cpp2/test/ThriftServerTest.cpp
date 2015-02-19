@@ -31,6 +31,7 @@
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/thread.hpp>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
@@ -972,9 +973,12 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
     server->getServeEventBase()->runAfterDelay([](){}, 5000);
   });
 
-  server->getServeEventBase()->runInEventBaseThread([&](){
+  auto barrier = std::make_shared<boost::barrier>(2);
+  server->getServeEventBase()->runInEventBaseThread([=](){
     iothreadpool->setNumThreads(0);
+    barrier->wait();
   });
+  barrier->wait();
 
   TEventBase base;
 
@@ -995,9 +999,9 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   // since AsyncServerSocket has no accept callbacks installed,
   // it should close the connection right away.
   ASSERT_ANY_THROW(
-    client.sync_sendResponse(response, 64));
+  client.sync_sendResponse(response, 64));
 
-  server->getServeEventBase()->runInEventBaseThread([&](){
+  server->getServeEventBase()->runInEventBaseThreadAndWait([=](){
     iothreadpool->setNumThreads(30);
   });
 

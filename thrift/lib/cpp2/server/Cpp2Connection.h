@@ -84,7 +84,9 @@ class Cpp2Connection
     return activeRequests_.empty();
   }
   void notifyPendingShutdown() override {}
-  void closeWhenIdle() override {}
+  void closeWhenIdle() override {
+    stop();
+  }
   void dropConnection() override {
     stop();
   }
