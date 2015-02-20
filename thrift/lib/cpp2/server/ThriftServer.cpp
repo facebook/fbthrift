@@ -570,14 +570,17 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
     queueload = tm->getCodel()->getLoad();
   }
 
+  if (VLOG_IS_ON(1)) {
+    FB_LOG_EVERY_MS(INFO, 1000 * 10)
+      << workerFactory->getNamePrefix() << " load is: "
+      << reqload << "% requests, "
+      << connload << "% connections, "
+      << queueload << "% queue time, "
+      << activeRequests_ << " active reqs, "
+      << getPendingCount() << " pending reqs";
+  }
+
   int load = std::max({reqload, connload, queueload});
-  FB_LOG_EVERY_MS(INFO, 1000*10)
-    << workerFactory->getNamePrefix()
-    << ": Load is: " << reqload << "% requests "
-    << connload << "% connections "
-    << queueload << "% queue time"
-    << " active reqs " << activeRequests_
-    << " pending reqs  " << getPendingCount();
   return load;
 }
 
