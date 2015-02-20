@@ -235,6 +235,11 @@ unique_ptr<IOBuf> THeader::removeHeader(IOBufQueue* queue,
       return nullptr;
     }
     buf = std::move(memBuffer.cloneBufferAsIOBuf());
+
+    readHeaders_.clear();
+    const THeader::StringToStringMap& httpHeaders = parser.getReadHeaders();
+    readHeaders_.insert(httpHeaders.begin(), httpHeaders.end());
+
     // Empty the queue
     queue->move();
   } else {
