@@ -264,6 +264,7 @@ class BinaryProtocolReader {
   inline uint32_t readStringBody(StrType& str, int32_t sz);
 
   inline void checkStringSize(int32_t size);
+  inline void checkContainerSize(int32_t size);
 
   int32_t string_limit_;
   int32_t container_limit_;
@@ -273,11 +274,14 @@ class BinaryProtocolReader {
 
   /**
    * Cursor to manipulate the buffer to read from.  Throws an exception if
-   * there is not enough data tor ead the whole struct.
+   * there is not enough data to read the whole struct.
    */
   Cursor in_;
 
   int32_t seqid_;
+
+  template<typename T> friend class ProtocolReaderWithRefill;
+  friend class BinaryProtocolReaderWithRefill;
 };
 
 }} // apache::thrift

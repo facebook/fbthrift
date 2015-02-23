@@ -390,11 +390,7 @@ uint32_t BinaryProtocolReader::readMapBegin(TType& keyType,
   result += readByte(v);
   valType = (TType)v;
   result += readI32(sizei);
-  if (sizei < 0) {
-    throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
-  } else if (this->container_limit_ && sizei > this->container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
-  }
+  checkContainerSize(sizei);
   size = (uint32_t)sizei;
   return result;
 }
@@ -411,11 +407,7 @@ uint32_t BinaryProtocolReader::readListBegin(TType& elemType,
   result += readByte(e);
   elemType = (TType)e;
   result += readI32(sizei);
-  if (sizei < 0) {
-    throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
-  } else if (this->container_limit_ && sizei > this->container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
-  }
+  checkContainerSize(sizei);
   size = (uint32_t)sizei;
   return result;
 }
@@ -432,11 +424,7 @@ uint32_t BinaryProtocolReader::readSetBegin(TType& elemType,
   result += readByte(e);
   elemType = (TType)e;
   result += readI32(sizei);
-  if (sizei < 0) {
-    throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
-  } else if (this->container_limit_ && sizei > this->container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
-  }
+  checkContainerSize(sizei);
   size = (uint32_t)sizei;
   return result;
 }
@@ -501,6 +489,14 @@ void BinaryProtocolReader::checkStringSize(int32_t size) {
     throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
   }
   if (string_limit_ > 0 && size > string_limit_) {
+    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+  }
+}
+
+void BinaryProtocolReader::checkContainerSize(int32_t size) {
+  if (size < 0) {
+    throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
+  } else if (this->container_limit_ && size > this->container_limit_) {
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
   }
 }

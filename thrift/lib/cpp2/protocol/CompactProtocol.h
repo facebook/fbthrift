@@ -329,6 +329,9 @@ class CompactProtocolReader {
  protected:
   inline uint32_t readStringSize(int32_t& size);
 
+  template<typename StrType>
+  inline uint32_t readStringBody(StrType& str, int32_t size);
+
   inline TType getType(int8_t type);
 
   int32_t string_limit_;
@@ -350,6 +353,8 @@ class CompactProtocolReader {
     bool boolValue;
   } boolValue_;
 
+  template<typename T> friend class ProtocolReaderWithRefill;
+  friend class CompactProtocolReaderWithRefill;
 };
 
 }} // apache::thrift
