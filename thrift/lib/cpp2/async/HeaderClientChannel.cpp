@@ -216,6 +216,8 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     folly::to<std::string>(errorMessage, " ", ex.what()));
 
   if (logger) {
+    // Overall latency incurred for doing security ends here.
+    logger->logEnd("security_latency");
     logger->log("sasl_error", ex.what().toStdString());
   }
 
@@ -253,6 +255,8 @@ void HeaderClientChannel::SaslClientCallback::saslComplete() {
           << channel_.saslClient_->getServerIdentity();
   auto logger = channel_.saslClient_->getSaslLogger();
   if (logger) {
+    // Overall latency incurred for doing security ends here.
+    logger->logEnd("security_latency");
     logger->log(
       "sasl_complete",
       {

@@ -81,6 +81,8 @@ void GssSaslClient::start(Callback *cb) {
   auto threadManager = saslThreadManager_;
   auto inProgress = inProgress_;
 
+  // Log the overall latency incurred for doing security.
+  logger->logStart("security_latency");
   logger->logStart("prepare_first_request");
 
   folly::exception_wrapper ew_tm;

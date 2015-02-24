@@ -45,8 +45,9 @@ static const char CHALLENGE1[] = "challenge1";
 static const char RESPONSE1[] = "response1";
 static const char CHALLENGE2[] = "challenge2";
 
-StubSaslClient::StubSaslClient(apache::thrift::async::TEventBase* evb)
-    : SaslClient(evb)
+StubSaslClient::StubSaslClient(apache::thrift::async::TEventBase* evb,
+      const std::shared_ptr<SecurityLogger>& logger)
+    : SaslClient(evb, logger)
     , threadManager_(ThreadManager::newSimpleThreadManager(1 /* count */))
     , phase_(0)
     , forceFallback_(false) {
@@ -56,6 +57,10 @@ StubSaslClient::StubSaslClient(apache::thrift::async::TEventBase* evb)
 void StubSaslClient::start(Callback *cb) {
   CHECK(phase_ == 0);
   threadManager_->start();
+
+  if (saslLogger_) {
+    saslLogger_->logStart("security_latency");
+  }
 
   // Double-dispatch, as the more complex implementation will.
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
@@ -82,6 +87,10 @@ void StubSaslClient::start(Callback *cb) {
 void StubSaslClient::consumeFromServer(
   Callback *cb, std::unique_ptr<IOBuf>&& message) {
   std::shared_ptr<IOBuf> smessage(std::move(message));
+
+  if (saslLogger_) {
+    saslLogger_->moveMockTime();
+  }
 
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
         folly::MoveWrapper<IOBufQueue> req_data;
