@@ -207,12 +207,18 @@ void TServerSocket::listen() {
 
   // Defer accept
   #ifdef TCP_DEFER_ACCEPT
-  if (-1 == setsockopt(serverSocket_, SOL_SOCKET, TCP_DEFER_ACCEPT,
-                       &one, sizeof(one))) {
-    int errno_copy = errno;
-    GlobalOutput.perror("TServerSocket::listen() setsockopt() TCP_DEFER_ACCEPT ", errno_copy);
-    close();
-    throw TTransportException(TTransportException::NOT_OPEN, "Could not set TCP_DEFER_ACCEPT", errno_copy);
+  if (path_.empty()) {
+    if (-1 == setsockopt(serverSocket_, SOL_SOCKET, TCP_DEFER_ACCEPT,
+                         &one, sizeof(one))) {
+      int errno_copy = errno;
+      GlobalOutput.perror(
+          "TServerSocket::listen() setsockopt() TCP_DEFER_ACCEPT ",
+          errno_copy);
+      close();
+      throw TTransportException(TTransportException::NOT_OPEN,
+                                "Could not set TCP_DEFER_ACCEPT",
+                                errno_copy);
+    }
   }
   #endif // #ifdef TCP_DEFER_ACCEPT
 
@@ -239,12 +245,17 @@ void TServerSocket::listen() {
   }
 
   // TCP Nodelay, speed over bandwidth
-  if (-1 == setsockopt(serverSocket_, IPPROTO_TCP, TCP_NODELAY,
-                       &one, sizeof(one))) {
-    int errno_copy = errno;
-    GlobalOutput.perror("TServerSocket::listen() setsockopt() TCP_NODELAY ", errno_copy);
-    close();
-    throw TTransportException(TTransportException::NOT_OPEN, "Could not set TCP_NODELAY", errno_copy);
+  if (path_.empty()) {
+    if (-1 == setsockopt(serverSocket_, IPPROTO_TCP, TCP_NODELAY,
+                         &one, sizeof(one))) {
+      int errno_copy = errno;
+      GlobalOutput.perror("TServerSocket::listen() setsockopt() TCP_NODELAY ",
+                          errno_copy);
+      close();
+      throw TTransportException(TTransportException::NOT_OPEN,
+                                "Could not set TCP_NODELAY",
+                                errno_copy);
+    }
   }
 
   // Set NONBLOCK on the accept socket
@@ -299,29 +310,33 @@ void TServerSocket::listen() {
 
     // free addrinfo
     freeaddrinfo(res0);
-
-    // throw an error if we failed to bind properly
-    if (retries > retryLimit_) {
-      char errbuf[1024];
-      sprintf(errbuf, "TServerSocket::listen() BIND %d", port_);
-      GlobalOutput(errbuf);
-      int errno_copy = errno;
-      close();
-      throw TTransportException(TTransportException::COULD_NOT_BIND,
-                                "Could not bind", errno_copy);
-    }
-
-    // Call listen
-    if (-1 == ::listen(serverSocket_, acceptBacklog_)) {
-      int errno_copy = errno;
-      GlobalOutput.perror("TServerSocket::listen() listen() ", errno_copy);
-      close();
-      throw TTransportException(TTransportException::NOT_OPEN,
-                                "Could not listen", errno_copy);
-    }
-
-    // The socket is now listening!
   }
+
+  // throw an error if we failed to bind properly
+  if (retries > retryLimit_) {
+    char errbuf[1024];
+    if (!path_.empty()) {
+      sprintf(errbuf, "TServerSocket::listen() PATH %s", path_.c_str());
+    } else {
+      sprintf(errbuf, "TServerSocket::listen() BIND %d", port_);
+    }
+    GlobalOutput(errbuf);
+    int errno_copy = errno;
+    close();
+    throw TTransportException(TTransportException::COULD_NOT_BIND,
+                              "Could not bind", errno_copy);
+  }
+
+  // Call listen
+  if (-1 == ::listen(serverSocket_, acceptBacklog_)) {
+    int errno_copy = errno;
+    GlobalOutput.perror("TServerSocket::listen() listen() ", errno_copy);
+    close();
+    throw TTransportException(TTransportException::NOT_OPEN,
+                              "Could not listen", errno_copy);
+  }
+
+  // The socket is now listening!
 }
 
 shared_ptr<TRpcTransport> TServerSocket::acceptImpl() {

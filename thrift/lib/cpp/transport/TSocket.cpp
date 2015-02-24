@@ -307,7 +307,9 @@ try_again:
   // Set socket back to normal mode (blocking)
   fcntl(socket_, F_SETFL, flags);
 
-  setCachedAddress(res->ai_addr, res->ai_addrlen);
+  if (path_.empty()) {
+    setCachedAddress(res->ai_addr, res->ai_addrlen);
+  }
 }
 
 void TSocket::open() {
@@ -760,7 +762,7 @@ void TSocket::setLinger(bool on, int linger) {
 }
 
 void TSocket::setNoDelay(bool noDelay) {
-  if (socket_ >= 0) {
+  if (socket_ >= 0 && path_.empty()) {
     // Set socket to NODELAY
     int v = noDelay ? 1 : 0;
     int ret = setsockopt(socket_, IPPROTO_TCP, TCP_NODELAY, &v, sizeof(v));
@@ -924,14 +926,14 @@ const folly::SocketAddress* TSocket::getPeerAddress() {
 }
 
 std::string TSocket::getPeerHost() {
-  if (peerHost_.empty()) {
+  if (peerHost_.empty() && path_.empty()) {
     peerHost_ = getPeerAddress()->getHostStr();
   }
   return peerHost_;
 }
 
 std::string TSocket::getPeerAddressStr() {
-  if (peerAddressStr_.empty()) {
+  if (peerAddressStr_.empty() && path_.empty()) {
     peerAddressStr_ = getPeerAddress()->getAddressStr();
   }
   return peerAddressStr_;
@@ -942,7 +944,9 @@ uint16_t TSocket::getPeerPort() {
 }
 
 void TSocket::setCachedAddress(const sockaddr* addr, socklen_t len) {
-  cachedPeerAddr_.setFromSockaddr(addr, len);
+  if (path_.empty()) {
+    cachedPeerAddr_.setFromSockaddr(addr, len);
+  }
 }
 
 bool TSocket::useLowMinRto_ = false;
