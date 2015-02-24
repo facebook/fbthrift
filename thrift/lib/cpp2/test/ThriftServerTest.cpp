@@ -973,12 +973,9 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
     server->getServeEventBase()->runAfterDelay([](){}, 5000);
   });
 
-  auto barrier = std::make_shared<boost::barrier>(2);
-  server->getServeEventBase()->runInEventBaseThread([=](){
+  server->getServeEventBase()->runInEventBaseThreadAndWait([=](){
     iothreadpool->setNumThreads(0);
-    barrier->wait();
   });
-  barrier->wait();
 
   TEventBase base;
 

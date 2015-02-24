@@ -28,8 +28,6 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 
-#include <boost/thread/barrier.hpp>
-
 #include <iostream>
 #include <random>
 #include <sys/socket.h>
@@ -408,17 +406,13 @@ void ThriftServer::stop() {
 
 void ThriftServer::stopListening() {
   for (auto& socket : getSockets()) {
-    auto barrier = std::make_shared<boost::barrier>(2);
-
     // Stop accepting new connections
-    socket->getEventBase()->runInEventBaseThread([&](){
+    socket->getEventBase()->runInEventBaseThreadAndWait([&](){
       socket->pauseAccepting();
 
       // Close the listening socket. This will also cause the workers to stop.
       socket->stopAccepting();
-      barrier->wait();
     });
-    barrier->wait();
   }
 
   if (stopWorkersOnStopListening_) {
