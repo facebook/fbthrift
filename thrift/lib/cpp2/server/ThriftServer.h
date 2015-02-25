@@ -231,7 +231,7 @@ class ThriftServer : public apache::thrift::server::TServer
 
   bool stopWorkersOnStopListening_;
 
-  bool reusePortEnabled_;
+  std::shared_ptr<folly::wangle::IOThreadPoolExecutor> acceptPool_;
 
   // HeaderServerChannel and Cpp2Worker to use for a duplex server
   // (used by client). Both are nullptr for a regular server.
@@ -466,15 +466,17 @@ class ThriftServer : public apache::thrift::server::TServer
    * allowing multiple binds to the same port.
    * Will only be effective if called before setup()
    */
-  void setReusePortEnabled(bool enabled) {
-    reusePortEnabled_ = enabled;
+  void setIOThreadPoolExecutor(
+    std::shared_ptr<folly::wangle::IOThreadPoolExecutor> pool) {
+    acceptPool_ = pool;
   }
 
   /**
    * Get whether or not SO_REUSEPORT is enabled on the server socket.
    */
-  bool getReusePortEnabled_() const {
-    return reusePortEnabled_;
+  std::shared_ptr<folly::wangle::IOThreadPoolExecutor>
+  getIOThreadPoolExecutor_() const {
+    return acceptPool_;
   }
 
   /**

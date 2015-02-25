@@ -130,7 +130,6 @@ ThriftServer::ThriftServer(const std::string& saslPolicy,
   queueSends_(true),
   enableCodel_(false),
   stopWorkersOnStopListening_(true),
-  reusePortEnabled_(false),
   isDuplex_(false) {
 
   // SASL setup
@@ -324,7 +323,7 @@ void ThriftServer::setup() {
 
       ServerBootstrap::childHandler(
         std::make_shared<ThriftAcceptorFactory>(this));
-      ServerBootstrap::group(nullptr, ioThreadPool_);
+      ServerBootstrap::group(acceptPool_, ioThreadPool_);
       if (socket_) {
         ServerBootstrap::bind(std::move(socket_));
       } else if (port_ != -1) {
