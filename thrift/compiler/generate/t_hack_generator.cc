@@ -3394,7 +3394,14 @@ string t_hack_generator::argument_list(t_struct* tstruct,
     }
     if (typehints) {
       // If a field is not sent to a thrift server, the value is null :(
-      result += type_to_param_typehint((*f_iter)->get_type(), !no_nullables_) + " ";
+      t_type* ftype = (*f_iter)->get_type();
+      bool nullable = !no_nullables_
+        || (ftype->is_enum() && (
+              (*f_iter)->get_value() == nullptr
+           || (*f_iter)->get_req() != t_field::T_REQUIRED
+          )
+        );
+      result += type_to_param_typehint((*f_iter)->get_type(), nullable) + " ";
     }
     result += "$" + (*f_iter)->get_name();
   }
