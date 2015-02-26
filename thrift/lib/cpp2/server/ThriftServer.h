@@ -461,19 +461,11 @@ class ThriftServer : public apache::thrift::server::TServer
     return observer_;
   }
 
-  /**
-   * Set whether or not SO_REUSEPORT should be enabled on the server socket,
-   * allowing multiple binds to the same port.
-   * Will only be effective if called before setup()
-   */
   void setIOThreadPoolExecutor(
     std::shared_ptr<folly::wangle::IOThreadPoolExecutor> pool) {
     acceptPool_ = pool;
   }
 
-  /**
-   * Get whether or not SO_REUSEPORT is enabled on the server socket.
-   */
   std::shared_ptr<folly::wangle::IOThreadPoolExecutor>
   getIOThreadPoolExecutor_() const {
     return acceptPool_;
