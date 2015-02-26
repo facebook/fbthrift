@@ -624,12 +624,12 @@ decode_struct(Reader *reader, PyObject *value, StructTypeArgs *args,
     }
 
     if (parsedspec.type != ftype) {
-      if (ftype == TType::T_BOOL &&
-          std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
-        // readBool may return 0 in compact.
-        continue;
-      }
       if (!reader->skip(ftype)) {
+        if (ftype == TType::T_BOOL &&
+            std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
+          // readBool may return 0 in compact.
+          continue;
+        }
         PyErr_SetString(PyExc_TypeError,
             "struct field had wrong type while reading and can't be skipped");
         return false;
