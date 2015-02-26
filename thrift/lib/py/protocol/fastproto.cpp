@@ -16,6 +16,7 @@
 #include <Python.h>
 
 #include <stdint.h>
+#include <type_traits>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -605,6 +606,13 @@ decode_struct(Reader *reader, PyObject *value, StructTypeArgs *args,
 
     if (itemspec == Py_None) {
       if (!reader->skip(ftype)) {
+        if (ftype == TType::T_BOOL &&
+            std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
+          // readBool may return 0 in compact.
+          continue;
+        }
+        PyErr_SetString(PyExc_TypeError,
+            "Can't skip nonexistent struct field");
         return false;
       } else {
         continue;
@@ -616,6 +624,11 @@ decode_struct(Reader *reader, PyObject *value, StructTypeArgs *args,
     }
 
     if (parsedspec.type != ftype) {
+      if (ftype == TType::T_BOOL &&
+          std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
+        // readBool may return 0 in compact.
+        continue;
+      }
       if (!reader->skip(ftype)) {
         PyErr_SetString(PyExc_TypeError,
             "struct field had wrong type while reading and can't be skipped");
