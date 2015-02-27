@@ -44,18 +44,21 @@ thrift2include_async_HEADERS = \
 	async/Cpp2Channel.h \
 	async/DuplexChannel.h \
 	async/FutureRequest.h \
+	async/FramingHandler.h \
 	async/GssSaslClient.h \
 	async/GssSaslServer.h \
 	async/HeaderClientChannel.h \
 	async/HeaderServerChannel.h \
 	async/MessageChannel.h \
+	async/ProtectionHandler.h \
 	async/RequestChannel.h \
 	async/ResponseChannel.h \
 	async/SaslClient.h \
 	async/SaslEndpoint.h \
 	async/SaslServer.h \
 	async/StubSaslClient.h \
-	async/StubSaslServer.h
+	async/StubSaslServer.h \
+	async/TAsyncTransportHandler.h
 
 thrift2include_serverdir = $(thrift2includedir)/server
 

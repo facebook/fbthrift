@@ -44,25 +44,25 @@ std::atomic<uint32_t> HeaderServerChannel::sample_(0);
 
 HeaderServerChannel::HeaderServerChannel(
   const std::shared_ptr<TAsyncTransport>& transport)
-    : HeaderServerChannel(
-        std::shared_ptr<Cpp2Channel>(
-            Cpp2Channel::newChannel(transport,
-                make_unique<ServerFramingHandler>(*this))))
-{}
+    : HeaderServerChannel(nullptr, transport) {}
 
 HeaderServerChannel::HeaderServerChannel(
-    const std::shared_ptr<Cpp2Channel>& cpp2Channel)
-    : callback_(nullptr)
+    const std::shared_ptr<Cpp2Channel>& cpp2Channel,
+    std::shared_ptr<TAsyncTransport> transport)
+    : header_(new THeader)
+    , callback_(nullptr)
     , arrivalSeqId_(1)
     , lastWrittenSeqId_(0)
     , sampleRate_(0)
     , timeoutSASL_(5000)
-    , saslServerCallback_(*this)
-    , cpp2Channel_(cpp2Channel)
-    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
-  header_.reset(new THeader);
+    , saslServerCallback_(*this) {
+  cpp2Channel_ = cpp2Channel ? cpp2Channel :
+        Cpp2Channel::newChannel(
+            transport,
+            make_unique<ServerFramingHandler>(header_));
   header_->setSupportedClients(nullptr);
   header_->setProtocolId(0);
+  timer_.reset(new apache::thrift::async::HHWheelTimer(getEventBase()));
 }
 
 void HeaderServerChannel::destroy() {
@@ -90,14 +90,13 @@ HeaderServerChannel::ServerFramingHandler::addFrame(unique_ptr<IOBuf> buf) {
   // Note: This THeader function may throw.  However, we don't want to catch
   // it here, because this would send an empty message out on the wire.
   // Instead we have to catch it at sendMessage
-  return channel_.getHeader()->addHeader(
+  return header_->addHeader(
     std::move(buf),
     false /* Data already transformed in AsyncProcessor.h */);
 }
 
 std::pair<unique_ptr<IOBuf>, size_t>
 HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
-  THeader* header = channel_.getHeader();
   // removeHeader will set seqid in header_.
   // For older clients with seqid in the protocol, header_
   // will dig in to the protocol to get the seqid correctly.
@@ -108,21 +107,20 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   std::unique_ptr<folly::IOBuf> buf;
   size_t remaining = 0;
   try {
-    buf = header->removeHeader(q, remaining);
+    buf = header_->removeHeader(q, remaining);
   } catch (const std::exception& e) {
     LOG(ERROR) << "Received invalid request from client: "
-               << folly::exceptionStr(e) << " "
-               << getTransportDebugString(channel_.getTransport());
+               << folly::exceptionStr(e);
     throw;
   }
   if (!buf) {
     return make_pair(std::unique_ptr<IOBuf>(), remaining);
   }
-  if (!header->isSupportedClient() &&
-      header->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (!header_->isSupportedClient() &&
+      header_->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
     LOG(ERROR) << "Server rejecting unsupported client type "
-               << header->getClientType();
-    header->checkSupportedClient();
+               << header_->getClientType();
+    header_->checkSupportedClient();
   }
 
   // In order to allow negotiation to happen when the client requests
