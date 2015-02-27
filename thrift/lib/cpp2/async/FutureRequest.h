@@ -38,10 +38,10 @@ class FutureCallbackBase : public RequestCallback {
     folly::Promise<Result> promise_;
 };
 
-template <typename Result, typename IsScalar = void>
+template <typename Result>
 class FutureCallback : public FutureCallbackBase<Result> {
   private:
-    typedef void (*Processor)(Result&,ClientReceiveState&);
+    typedef folly::exception_wrapper (*Processor)(Result&,ClientReceiveState&);
 
   public:
     FutureCallback(folly::Promise<Result>&& promise,
@@ -53,11 +53,13 @@ class FutureCallback : public FutureCallbackBase<Result> {
       CHECK(!state.isException());
       CHECK(state.buf());
 
-      this->promise_.fulfil([&]{
-        Result result;
-        processor_(result, state);
-        return result;
-      });
+      Result result;
+      auto ew = processor_(result, state);
+      if (ew) {
+        this->promise_.setException(ew);
+      } else {
+        this->promise_.setValue(std::move(result));
+      }
     }
 
     void requestError(ClientReceiveState&& state) {
@@ -65,32 +67,6 @@ class FutureCallback : public FutureCallbackBase<Result> {
       CHECK(!state.buf());
       this->promise_.setException(state.moveExceptionWrapper());
     }
-  private:
-    Processor processor_;
-};
-
-template <typename Result>
-class FutureCallback<Result,
-              typename std::enable_if<std::is_scalar<Result>::value>::type>
-      : public FutureCallbackBase<Result> {
-  private:
-    typedef Result (*Processor)(ClientReceiveState&);
-
-  public:
-    FutureCallback(folly::Promise<Result>&& promise,
-                   Processor processor)
-          : FutureCallbackBase<Result>(std::move(promise)),
-            processor_(processor) {}
-
-    void replyReceived(ClientReceiveState&& state) {
-      CHECK(!state.isException());
-      CHECK(state.buf());
-
-      this->promise_.fulfil([&]{
-        return processor_(state);
-      });
-    }
-
   private:
     Processor processor_;
 };

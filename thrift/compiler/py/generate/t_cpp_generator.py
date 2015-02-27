@@ -1628,7 +1628,7 @@ class CppGenerator(t_generator.Generator):
                     out("std::unique_ptr<apache::thrift::RequestCallback> "
                       "{callback}("
                       "new apache::thrift::FutureCallback<{type}>("
-                      "std::move({promise}), recv_{name}));"
+                      "std::move({promise}), recv_wrapped_{name}));"
                       .format(callback=callback,
                               type=return_type,
                               promise=promise_name,
