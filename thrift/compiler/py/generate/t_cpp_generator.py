@@ -3475,16 +3475,11 @@ class CppGenerator(t_generator.Generator):
             s(visitFields('FROZEN_' + typeFmt + '({type},{fields})',
                           '\n  FROZEN_' + fieldFmt))
 
-    def _generate_cpp_struct(self, obj, is_exception=False):
-        # We write all of these to the types scope
-        scope = self._types_scope
-        self._generate_struct_complete(scope, obj, is_exception,
-                                       False, True, True, True, False)
-
-        # We're at types scope now
-        scope.release()
-        with self._types_global.namespace('apache.thrift').scope:
-            self._generate_cpp2ops(False, obj, self._types_scope)
+    def _generate_hash_equal_to(self, obj):
+        # Don't generate these declarations if in compatibility mode since
+        # they're already declared for cpp.
+        if self.flag_compatibility:
+            return
 
         gen_hash = self._has_cpp_annotation(obj, 'declare_hash')
         gen_equal_to = self._has_cpp_annotation(obj, 'declare_equal_to')
@@ -3502,6 +3497,20 @@ class CppGenerator(t_generator.Generator):
                     out('bool operator()(const ' + full_name + '&,')
                     out('const ' + full_name + '&) const;')
                     out("};")
+
+    def _generate_cpp_struct(self, obj, is_exception=False):
+        # We write all of these to the types scope
+        scope = self._types_scope
+        self._generate_struct_complete(scope, obj, is_exception,
+                                       False, True, True, True, False)
+
+        # We're at types scope now
+        scope.release()
+        with self._types_global.namespace('apache.thrift').scope:
+            self._generate_cpp2ops(False, obj, self._types_scope)
+
+        # std::hash and std::equal_to declarations
+        self._generate_hash_equal_to(obj)
 
         # Re-enter types scope, but we can't actually re-enter a scope,
         # so let's recreate it
