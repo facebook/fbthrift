@@ -38,9 +38,8 @@ class MockTAsyncSSLSocket :
     int,
     const OptionMap&,
     const folly::SocketAddress&));
-  MOCK_CONST_METHOD1(
-   getPeerAddress,
-   void(folly::SocketAddress*));
+  MOCK_CONST_METHOD1(getLocalAddress, void(folly::SocketAddress*));
+  MOCK_CONST_METHOD1(getPeerAddress, void(folly::SocketAddress*));
   MOCK_METHOD0(closeNow, void());
   MOCK_CONST_METHOD0(good, bool());
   MOCK_CONST_METHOD0(readable, bool());
@@ -58,7 +57,7 @@ class MockTAsyncSSLSocket :
     const apache::thrift::transport::SSLContext::SSLVerifyPeerEnum& verify)
       override {
     if (timeout > 0) {
-      handshakeTimeout_.scheduleTimeout(timeout);
+      handshakeTimeout_.scheduleTimeout((uint32_t)timeout);
     }
 
     state_ = StateEnum::ESTABLISHED;
