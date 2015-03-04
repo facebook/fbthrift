@@ -1123,16 +1123,6 @@ decode_struct(DecodeBuffer* input, PyObject* output, PyObject* spec_seq,
     return false;
   }
 
-  int first_tag = 0;
-  PyObject* first_item_spec = PyTuple_GET_ITEM(spec_seq, 0);
-  if (first_item_spec != Py_None) {
-    StructItemSpec first_parsed_spec;
-    if (!parse_struct_item_spec(&first_parsed_spec, first_item_spec)) {
-      return false;
-    }
-    first_tag = first_parsed_spec.tag;
-  }
-
   while (true) {
     int8_t type;
     int16_t tag;
@@ -1151,7 +1141,9 @@ decode_struct(DecodeBuffer* input, PyObject* output, PyObject* spec_seq,
     if (INT_CONV_ERROR_OCCURRED(tag)) {
       return false;
     }
-    tag -= first_tag;
+    if (tag < 0) {
+      tag += spec_seq_len;
+    }
     if (tag >= 0 && tag < spec_seq_len) {
       item_spec = PyTuple_GET_ITEM(spec_seq, tag);
     } else {
