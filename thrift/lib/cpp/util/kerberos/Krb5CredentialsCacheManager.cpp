@@ -20,11 +20,25 @@
 #include <memory>
 #include <set>
 #include <stdio.h>
+#include <sys/stat.h>
 
 #include <folly/stats/BucketedTimeSeries-defs.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 #include <folly/String.h>
+
+// DO NOT modify this flag from your application
+DEFINE_string(
+  thrift_cc_manager_kill_switch_file,
+  "/var/thrift_security/disable_cc_manager",
+  "A file, which when present, acts as a kill switch for and disables the cc "
+  " manager thread running on the host.");
+
+// Time in seconds after which cc manager kill switch expires
+static const time_t kCcManagerKillSwitchExpired = 86400;
+
+// Don't log more than once about cc manager kill switch in this time (seconds)
+static const time_t kCcManagerKillSwitchLoggingTimeout = 300;
 
 namespace apache { namespace thrift { namespace krb5 {
 using namespace std;
@@ -66,6 +80,22 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
       MutexGuard l(manageThreadMutex_);
       if (stopManageThread_) {
         break;
+      }
+
+      // If ccache manager kill switch is enabled, then sleep for a second
+      // and continue
+      if (fetchIsKillSwitchEnabled()) {
+        // Log only once in kCcManagerKillSwitchLoggingTimeout seconds if the
+        // kill switch is active
+        auto now = std::chrono::system_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(
+          now - lastLoggedKillSwitch_);
+        if (elapsed.count() >= kCcManagerKillSwitchLoggingTimeout) {
+          logger->log("manager_kill_switch_enabled");
+          lastLoggedKillSwitch_ = now;
+        }
+        manageThreadCondVar_.wait_for(l, std::chrono::seconds(1));
+        continue;
       }
 
       // Catch all the exceptions. This thread should never die.
@@ -146,6 +176,27 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
 Krb5CredentialsCacheManager::~Krb5CredentialsCacheManager() {
   stopThread();
   logger_->log("manager_destroyed");
+}
+
+bool Krb5CredentialsCacheManager::fetchIsKillSwitchEnabled() {
+  struct stat info;
+  return (stat(FLAGS_thrift_cc_manager_kill_switch_file.c_str(), &info) == 0 &&
+          time(nullptr) - info.st_mtime < kCcManagerKillSwitchExpired);
+}
+
+bool Krb5CredentialsCacheManager::waitUntilCacheStoreInitialized(
+    std::chrono::milliseconds timeoutMS) {
+  auto start = std::chrono::high_resolution_clock::now();
+  while (!store_->isInitialized()) {
+    auto now = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+                     now - start);
+    if (elapsed > timeoutMS) {
+      return false;
+    }
+    sched_yield();
+  }
+  return true;
 }
 
 void Krb5CredentialsCacheManager::stopThread() {

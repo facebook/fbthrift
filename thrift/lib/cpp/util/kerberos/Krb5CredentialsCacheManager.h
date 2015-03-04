@@ -23,6 +23,7 @@
 #include <string>
 #include <thread>
 #include <unordered_map>
+#include <chrono>
 
 #include <folly/stats/BucketedTimeSeries.h>
 #include <folly/RWSpinLock.h>
@@ -65,6 +66,11 @@ class Krb5CredentialsCacheManager {
   std::shared_ptr<Krb5CCache> waitForCache(
     const Krb5Principal& service,
     SecurityLogger* logger = nullptr);
+
+  bool fetchIsKillSwitchEnabled();
+
+  bool waitUntilCacheStoreInitialized(std::chrono::milliseconds timeoutMS
+    = std::chrono::milliseconds(500));
 
  protected:
   static const int MANAGE_THREAD_SLEEP_PERIOD;
@@ -116,6 +122,11 @@ class Krb5CredentialsCacheManager {
   std::shared_ptr<SecurityLogger> logger_;
 
   bool ccacheTypeIsMemory_;
+
+  // Rate limit kill switch logging. Since we have only one thread in
+  // credentials cache manager, we don't need to protect access to this using
+  // a mutex.
+  std::chrono::time_point<std::chrono::system_clock> lastLoggedKillSwitch_;
 };
 
 }}}
