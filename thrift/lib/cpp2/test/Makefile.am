@@ -14,6 +14,8 @@ gen-cpp2/TestService.cpp: gen-cpp2/Service_constants.cpp
 libService_a_SOURCES = gen-cpp2/Service_constants.cpp \
 		       gen-cpp2/Service_types.cpp \
 		       gen-cpp2/TestService.cpp \
+		       gen-cpp2/TestService_processmap_binary.cpp \
+		       gen-cpp2/TestService_processmap_compact.cpp \
                        gen-cpp/Service_reflection.cpp
 
 libService_a_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
@@ -35,6 +37,6 @@ gen-cpp2/InstalledCheck_types.cpp: InstalledCheck.thrift
 	$(PY_RUN_ENV) $(PYTHON) -mthrift_compiler.main --gen cpp2 InstalledCheck.thrift
 
 InstalledCheck: gen-cpp2/TestService.cpp
-	$(CXX) $(CXXFLAGS) -o InstalledCheck $(LDFLAGS) -L@prefix@/lib $(CPPFLAGS) -I@prefix@/include InstalledCheck.cpp gen-cpp2/InstalledCheck_types.cpp gen-cpp2/TestService.cpp -lthriftcpp2 -lthrift -lfolly -lglog -lboost_system -lboost_thread -lpthread -lm -ldouble-conversion
+	$(CXX) $(CXXFLAGS) -o InstalledCheck $(LDFLAGS) -L@prefix@/lib $(CPPFLAGS) -I@prefix@/include InstalledCheck.cpp gen-cpp2/InstalledCheck_types.cpp gen-cpp2/TestService.cpp gen-cpp2/TestService_processmap_binary.cpp gen-cpp2/TestService_processmap_compact.cpp -lthriftcpp2 -lthrift -lfolly -lglog -lboost_system -lboost_thread -lpthread -lm -ldouble-conversion
 
 installcheck: gen-cpp2/InstalledCheck_types.cpp InstalledCheck
