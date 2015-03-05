@@ -464,6 +464,19 @@ class HandlerCallbackBase {
       });
     }
   }
+
+  void sendReply(folly::IOBufQueue queue) {
+    if (getEventBase()->isInEventBaseThread()) {
+      req_->sendReply(queue.move());
+    } else {
+      auto req_mw = folly::makeMoveWrapper(std::move(req_));
+      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
+      getEventBase()->runInEventBaseThread([=]() mutable {
+        (*req_mw)->sendReply(queue_mw->move());
+      });
+    }
+  }
+
   // Required for this call
   std::unique_ptr<ResponseChannel::Request> req_;
   std::unique_ptr<apache::thrift::ContextStack> ctx_;
@@ -534,28 +547,11 @@ class HandlerCallback : public HandlerCallbackBase {
                      std::move(this->ctx_),
                      r);
     transform(queue);
-    sendReply(std::move(queue), r);
+    sendReply(std::move(queue));
   }
-
-  void sendReply(folly::IOBufQueue queue,
-                 const T& r);
 
   cob_ptr cp_;
 };
-
-template <typename T>
-void HandlerCallback<T>::sendReply(folly::IOBufQueue queue,
-                                   const T& r) {
-  if (getEventBase()->isInEventBaseThread()) {
-    req_->sendReply(queue.move());
-  } else {
-    auto req_mw = folly::makeMoveWrapper(std::move(req_));
-    auto queue_mw = folly::makeMoveWrapper(std::move(queue));
-    getEventBase()->runInEventBaseThread([=]() mutable {
-      (*req_mw)->sendReply(queue_mw->move());
-    });
-  }
-}
 
 template <typename T>
 class HandlerCallback<std::unique_ptr<T>> : public HandlerCallbackBase {
@@ -639,18 +635,8 @@ class HandlerCallback<std::unique_ptr<T>> : public HandlerCallbackBase {
     auto queue = cp_(this->protoSeqId_,
                      std::move(this->ctx_),
                      r);
-
     transform(queue);
-
-    if (getEventBase()->isInEventBaseThread()) {
-      req_->sendReply(queue.move());
-    } else {
-      auto req_mw = folly::makeMoveWrapper(std::move(req_));
-      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
-      getEventBase()->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(queue_mw->move());
-      });
-    }
+    sendReply(std::move(queue));
   }
 
   cob_ptr cp_;
@@ -706,16 +692,7 @@ class HandlerCallback<void> : public HandlerCallbackBase {
     auto queue = cp_(this->protoSeqId_,
                      std::move(this->ctx_));
     transform(queue);
-
-    if (getEventBase()->isInEventBaseThread()) {
-      req_->sendReply(queue.move());
-    } else {
-      auto req_mw = folly::makeMoveWrapper(std::move(req_));
-      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
-      getEventBase()->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(queue_mw->move());
-      });
-    }
+    sendReply(std::move(queue));
   }
 
   cob_ptr cp_;
