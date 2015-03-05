@@ -87,9 +87,10 @@ libthriftz_la_LDFLAGS   = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
 include_thriftdir = $(includedir)/thrift/lib/cpp/
 include_thrift_HEADERS = \
                          EventHandlerBase.h \
+                         Reflection.h \
                          TDispatchProcessor.h \
                          Thrift.h \
-			 thrift_config.h \
+                         thrift_config.h \
                          TReflectionLocal.h \
                          TProcessor.h \
                          TApplicationException.h \
@@ -122,6 +123,7 @@ include_protocol_HEADERS = \
                          protocol/TMultiplexedProtocol.h \
                          protocol/TProtocolDecorator.h \
                          protocol/TJSONProtocol.h \
+                         protocol/TSimpleJSONProtocol.h \
                          protocol/TProtocolTap.h \
                          protocol/TProtocolException.h \
                          protocol/TVirtualProtocol.h \
@@ -195,6 +197,8 @@ include_utildir = $(include_thriftdir)/util
 include_util_HEADERS = \
 		util/BitwiseCast.h \
 		util/shared_ptr_util.h \
+		util/ThriftSerializer.h \
+		util/ThriftSerializer-inl.h \
 		util/THttpParser.h \
 		util/VarintUtils.h \
 		util/VarintUtils.tcc \
