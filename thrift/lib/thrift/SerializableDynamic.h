@@ -196,7 +196,7 @@ class SerializableDynamic {
         break;
 
       case folly::dynamic::Type::ARRAY:
-        xfer += p->writeFieldBegin("array", protocol::T_LIST, 5);
+        xfer += p->writeFieldBegin("arr", protocol::T_LIST, 5);
         xfer += p->writeListBegin(protocol::T_STRUCT, value_.size());
         for (const auto& item : value_) {
           SerializableDynamic wrappedItem(item);
@@ -287,7 +287,7 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::serializedSize(
       break;
 
     case folly::dynamic::Type::ARRAY:
-      xfer += p->serializedFieldSize("array", protocol::T_LIST, 5);
+      xfer += p->serializedFieldSize("arr", protocol::T_LIST, 5);
       xfer += p->serializedSizeListBegin(protocol::T_STRUCT,
                                          obj->value_.size());
       for (const auto& item : obj->value_) {
