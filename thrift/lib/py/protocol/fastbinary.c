@@ -1123,6 +1123,11 @@ decode_struct(DecodeBuffer* input, PyObject* output, PyObject* spec_seq,
     return false;
   }
 
+  int first_tag = 0;
+  bool first_tag_read = false;
+  PyObject* first_item_spec;
+  StructItemSpec first_parsed_spec;
+
   while (true) {
     int8_t type;
     int16_t tag;
@@ -1137,15 +1142,30 @@ decode_struct(DecodeBuffer* input, PyObject* output, PyObject* spec_seq,
     if (type == T_STOP) {
       break;
     }
+    if (!first_tag_read) {
+      first_tag_read = true;
+      if (spec_seq_len == 0) { // Empty struct and all fields will be skipped
+        first_item_spec = Py_None;
+      } else {
+        first_item_spec = PyTuple_GET_ITEM(spec_seq, 0);
+        if (first_item_spec != Py_None) {
+          if (!parse_struct_item_spec(&first_parsed_spec, first_item_spec)) {
+            return false;
+          }
+          first_tag = first_parsed_spec.tag;
+        }
+      }
+    }
     tag = readI16(input);
     if (INT_CONV_ERROR_OCCURRED(tag)) {
       return false;
     }
-    if (tag < 0) {
-      tag += spec_seq_len;
-    }
-    if (tag >= 0 && tag < spec_seq_len) {
+
+    tag -= first_tag;
+    if (tag > 0 && tag < spec_seq_len) {
       item_spec = PyTuple_GET_ITEM(spec_seq, tag);
+    } else if (tag == 0) {
+      item_spec = first_item_spec;
     } else {
       item_spec = Py_None;
     }
@@ -1158,7 +1178,9 @@ decode_struct(DecodeBuffer* input, PyObject* output, PyObject* spec_seq,
       }
     }
 
-    if (!parse_struct_item_spec(&parsedspec, item_spec)) {
+    if (tag == 0) {
+      parsedspec = first_parsed_spec;
+    } else if (!parse_struct_item_spec(&parsedspec, item_spec)) {
       return false;
     }
     if (parsedspec.type != type) {
