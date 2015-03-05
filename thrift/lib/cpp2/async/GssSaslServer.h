@@ -35,21 +35,22 @@ public:
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> thread_manager
   );
   virtual void consumeFromClient(
-    Callback *cb, std::unique_ptr<folly::IOBuf>&& message);
+    Callback *cb, std::unique_ptr<folly::IOBuf>&& message) override;
   virtual std::unique_ptr<folly::IOBuf> encrypt(
-    std::unique_ptr<folly::IOBuf>&&);
+    std::unique_ptr<folly::IOBuf>&&) override;
   virtual std::unique_ptr<folly::IOBuf> decrypt(
-    std::unique_ptr<folly::IOBuf>&&);
-  void setServiceIdentity(const std::string& identity) {
+    std::unique_ptr<folly::IOBuf>&&) override;
+  void setServiceIdentity(const std::string& identity) override {
     serverHandshake_->setRequiredServicePrincipal(identity);
   }
-  virtual std::string getClientIdentity() const;
-  virtual std::string getServerIdentity() const;
-  virtual void detachEventBase() {
+  virtual std::string getClientIdentity() const override;
+  virtual std::string getServerIdentity() const override;
+  virtual void detachEventBase() override {
     apache::thrift::concurrency::Guard guard(*mutex_);
     *evb_ = nullptr;
   }
-  virtual void attachEventBase(apache::thrift::async::TEventBase* evb) {
+  virtual void attachEventBase(
+      apache::thrift::async::TEventBase* evb) override {
     apache::thrift::concurrency::Guard guard(*mutex_);
     *evb_ = evb;
   }

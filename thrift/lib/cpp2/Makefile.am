@@ -29,6 +29,8 @@ noinst_LIBRARIES = libsaslstubs.a
 gen-cpp2/Sasl_constants.cpp: gen-cpp2/Sasl_types.h
 gen-cpp2/Sasl_types.cpp: gen-cpp2/Sasl_types.h
 gen-cpp2/SaslAuthService.cpp: gen-cpp2/Sasl_types.h
+gen-cpp2/SaslAuthService_processmap_binary.cpp: gen-cpp2/Sasl_types.h
+gen-cpp2/SaslAuthService_processmap_compact.cpp: gen-cpp2/Sasl_types.h
 
 thrift2includedir = $(includedir)/thrift/lib/cpp2
 
@@ -44,18 +46,21 @@ thrift2include_async_HEADERS = \
 	async/Cpp2Channel.h \
 	async/DuplexChannel.h \
 	async/FutureRequest.h \
+	async/FramingHandler.h \
 	async/GssSaslClient.h \
 	async/GssSaslServer.h \
 	async/HeaderClientChannel.h \
 	async/HeaderServerChannel.h \
 	async/MessageChannel.h \
+	async/ProtectionHandler.h \
 	async/RequestChannel.h \
 	async/ResponseChannel.h \
 	async/SaslClient.h \
 	async/SaslEndpoint.h \
 	async/SaslServer.h \
 	async/StubSaslClient.h \
-	async/StubSaslServer.h
+	async/StubSaslServer.h \
+	async/TAsyncTransportHandler.h
 
 thrift2include_serverdir = $(thrift2includedir)/server
 
@@ -104,6 +109,9 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   protocol/Serializer.cpp \
 			   protocol/SimpleJSONProtocol.cpp \
 			   protocol/DebugProtocol.cpp \
+			   protocol/BinaryProtocol.cpp \
+			   protocol/VirtualProtocol.cpp \
+			   protocol/CompactProtocol.cpp \
 			   security/KerberosSASLHandshakeClient.cpp \
 			   security/KerberosSASLHandshakeServer.cpp \
 			   security/KerberosSASLHandshakeUtils.cpp \
@@ -137,7 +145,9 @@ THRIFT = $(top_builddir)/compiler/thrift1
 
 BUILT_SOURCES = gen-cpp2/Sasl_constants.cpp \
 		gen-cpp2/Sasl_types.cpp \
-		gen-cpp2/SaslAuthService.cpp
+		gen-cpp2/SaslAuthService.cpp \
+		gen-cpp2/SaslAuthService_processmap_binary.cpp \
+		gen-cpp2/SaslAuthService_processmap_compact.cpp
 
 gen-cpp2/Sasl_types.h: Sasl.thrift
 	PYTHONPATH=$(PY_LOCAL_PATH) python -mthrift_compiler.main --gen cpp2 $<
@@ -150,7 +160,9 @@ gen-cpp2/SaslAuthService.cpp: gen-cpp2/Sasl_types.h
 
 libsaslstubs_a_SOURCES = gen-cpp2/Sasl_constants.cpp \
 			 gen-cpp2/Sasl_types.cpp \
-			 gen-cpp2/SaslAuthService.cpp
+			 gen-cpp2/SaslAuthService.cpp \
+			 gen-cpp2/SaslAuthService_processmap_binary.cpp \
+			 gen-cpp2/SaslAuthService_processmap_compact.cpp
 
 libsaslstubs_a_CPPFLAGS = -fPIC $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
 

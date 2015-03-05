@@ -27,7 +27,6 @@
 #include <folly/io/IOBuf.h>
 
 #include <gtest/gtest.h>
-#include <boost/thread/barrier.hpp>
 #include <boost/scoped_array.hpp>
 #include <iostream>
 #include <unistd.h>
@@ -1040,7 +1039,7 @@ void testConnectOptWrite(size_t size1, size_t size2, bool close = false) {
   ReadCallback rcb;
   rcb.dataAvailableCallback = std::bind(tmpDisableReads,
                                         acceptedSocket.get(), &rcb);
-  socket->getEventBase()->runAfterDelay(
+  socket->getEventBase()->tryRunAfterDelay(
       std::bind(&TAsyncSocket::setReadCallback, acceptedSocket.get(), &rcb),
       10);
 
@@ -1878,15 +1877,11 @@ TEST(TAsyncSocketTest, OtherThreadAcceptCallback) {
   std::shared_ptr<TAsyncSocket> sock1(
       TAsyncSocket::newSocket(&eventBase, serverAddress)); // cb1
 
-  auto barrier = std::make_shared<boost::barrier>(2);
   // Loop in another thread
-  auto other = std::thread([&, barrier](){
+  auto other = std::thread([&](){
     eventBase.loop();
-    barrier->wait();
   });
-
-  other.detach();
-  barrier->wait();
+  other.join();
 
   // Check to make sure that the expected callbacks were invoked.
   //

@@ -32,7 +32,7 @@
 #include <folly/io/IOBufQueue.h>
 
 #include <bitset>
-#include "boost/scoped_array.hpp"
+#include <boost/scoped_array.hpp>
 #include <pwd.h>
 #include <unistd.h>
 
@@ -178,17 +178,17 @@ class THeaderTransportFactory : public TTransportFactory {
   virtual std::shared_ptr<TTransport>
   getTransport(std::shared_ptr<TTransport> trans) {
     return std::shared_ptr<TTransport>(
-      new THeaderTransport(trans, &clientTypes));
+      new THeaderTransport(trans, &clientTypes_));
   }
 
   void setClientTypes(const std::bitset<CLIENT_TYPES_LEN>& clientTypes) {
     for (int i = 0; i < CLIENT_TYPES_LEN; ++i) {
-      this->clientTypes[i] = clientTypes[i];
+      clientTypes_[i] = clientTypes[i];
     }
   }
 
 private:
-  std::bitset<CLIENT_TYPES_LEN> clientTypes;
+  std::bitset<CLIENT_TYPES_LEN> clientTypes_;
 };
 
 }}} // apache::thrift::transport

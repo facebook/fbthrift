@@ -749,11 +749,7 @@ class ServerInterface : public AsyncProcessorFactory {
 
   void setEventBase(apache::thrift::async::TEventBase* eb) {
     folly::RequestEventBase::set(eb);
-    if (!eb_) {
-      eb_ = eb;
-    } else {
-      DCHECK(eb_ == eb);
-    }
+    eb_ = eb;
   }
 
   apache::thrift::async::TEventBase* getEventBase() {

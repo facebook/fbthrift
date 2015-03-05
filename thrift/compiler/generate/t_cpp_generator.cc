@@ -5555,7 +5555,7 @@ void t_cpp_generator::generate_function_helpers(t_service* tservice,
 
   std::ofstream& out = (gen_templates_ ? f_service_tcc_ : f_service_);
 
-  t_struct result(program_, tservice->get_name() + "_" + tfunction->get_name() + "_result");
+  t_struct result(program_, tservice->get_name() + "_" + tfunction->get_name() + "_presult");
   t_field success(tfunction->get_returntype(), "success", 0);
   if (!tfunction->get_returntype()->is_void()) {
     result.append(&success);
@@ -5568,22 +5568,12 @@ void t_cpp_generator::generate_function_helpers(t_service* tservice,
     result.append(*f_iter);
   }
 
-  generate_struct_definition(f_header_, &result, false);
-  if (!bootstrap_) {
-    generate_struct_reflection(f_service_, &result);
-  }
-  generate_struct_reader(out, &result);
-  generate_struct_result_writer(out, &result);
-
-  result.set_name(tservice->get_name() + "_" + tfunction->get_name() + "_presult");
-  generate_struct_definition(f_header_, &result, false, true, true, gen_cob_style_);
+  generate_struct_definition(f_header_, &result, false, true, true, true);
   if (!bootstrap_) {
     generate_struct_reflection(f_service_, &result);
   }
   generate_struct_reader(out, &result, true);
-  if (gen_cob_style_) {
-    generate_struct_result_writer(out, &result, true);
-  }
+  generate_struct_result_writer(out, &result, true);
 
 }
 
@@ -5633,7 +5623,7 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
     string argsname = tservice->get_name() + "_" + tfunction->get_name() +
       "_args";
     string resultname = tservice->get_name() + "_" + tfunction->get_name() +
-      "_result";
+      "_presult";
 
     out <<
       indent() << "std::unique_ptr<apache::thrift::ContextStack> ctx("
@@ -5674,6 +5664,12 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
     if (!tfunction->is_oneway()) {
       out <<
         indent() << resultname << " result;" << endl;
+      if (!tfunction->get_returntype()->is_void()) {
+        out <<
+          indent() << type_name(tfunction->get_returntype()) << " success;"
+                   << endl <<
+          indent() << "result.success = &success;" << endl;
+      }
     }
 
     // Try block for functions with exceptions
@@ -5687,9 +5683,9 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
     if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
       if (is_complex_type(tfunction->get_returntype())) {
         first = false;
-        out << "iface_->" << tfunction->get_name() << "(result.success";
+        out << "iface_->" << tfunction->get_name() << "(*result.success";
       } else {
-        out << "result.success = iface_->" << tfunction->get_name() << "(";
+        out << "*result.success = iface_->" << tfunction->get_name() << "(";
       }
     } else {
       out <<
@@ -6021,7 +6017,7 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
       // thrown by dynamic_cast.
       out <<
         indent() << tservice->get_name() << "_" << tfunction->get_name() <<
-        "_result result;" << endl;
+        "_presult result;" << endl;
       for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
         out << indent();
         if (x_iter != xceptions.begin()) {

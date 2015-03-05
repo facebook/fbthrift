@@ -36,6 +36,7 @@ class TServerSocket : public TServerTransport {
  public:
   explicit TServerSocket(int port);
   TServerSocket(int port, int sendTimeout, int recvTimeout);
+  explicit TServerSocket(std::string path);
 
   ~TServerSocket();
 
@@ -67,6 +68,7 @@ class TServerSocket : public TServerTransport {
 
  private:
   int port_;
+  std::string path_;
   int serverSocket_;
   int acceptBacklog_;
   int sendTimeout_;

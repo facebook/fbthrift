@@ -655,10 +655,7 @@ uint32_t CompactProtocolReader::readStringSize(int32_t& size) {
 }
 
 template<typename StrType>
-uint32_t CompactProtocolReader::readString(StrType& str) {
-  int32_t size = 0;
-  uint32_t rsize = readStringSize(size);
-
+uint32_t CompactProtocolReader::readStringBody(StrType& str, int32_t size) {
   str.reserve(size);
   str.clear();
   size_t size_left = size;
@@ -673,8 +670,15 @@ uint32_t CompactProtocolReader::readString(StrType& str) {
     size_left -= data_avail;
     in_.skip(data_avail);
   }
+  return (uint32_t)size;
+}
 
-  return rsize + (uint32_t)size;
+template<typename StrType>
+uint32_t CompactProtocolReader::readString(StrType& str) {
+  int32_t size = 0;
+  uint32_t rsize = readStringSize(size);
+
+  return rsize + readStringBody(str, size);
 }
 
 template <class StrType>

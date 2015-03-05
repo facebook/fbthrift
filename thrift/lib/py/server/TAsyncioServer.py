@@ -11,10 +11,10 @@ import warnings
 from .TServer import TServer, TServerEventHandler, TConnectionContext
 from thrift.Thrift import TProcessor
 from thrift.transport.TTransport import TMemoryBuffer, TTransportException
+from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.protocol.THeaderProtocol import (
     THeaderProtocol,
     THeaderProtocolFactory,
-    THeaderTransport
 )
 
 
@@ -242,17 +242,21 @@ class ThriftHeaderServerProtocol(FramedProtocol):
 
     @asyncio.coroutine
     def message_received(self, frame):
-        tmi = TMemoryBuffer(frame)
-        tmo = TMemoryBuffer()
+        # We support the deprecated FRAMED transport for old fb303
+        # clients that were otherwise failing miserably.
+        client_types = {
+            THeaderTransport.HEADERS_CLIENT_TYPE,
+            THeaderTransport.FRAMED_DEPRECATED,
+        }
 
-        iprot = THeaderProtocol(tmi)
-        oprot = THeaderProtocol(tmo)
+        tm = TMemoryBuffer(frame)
+        prot = THeaderProtocol(tm, client_types=client_types)
 
         try:
             yield from self.processor.process(
-                iprot, oprot, self.server_context,
+                prot, prot, self.server_context,
             )
-            msg = tmo.getvalue()
+            msg = tm.getvalue()
             if len(msg) > 0:
                 self.transport.write(msg)
         except Exception:

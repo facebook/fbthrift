@@ -89,13 +89,11 @@ class CppGenerator(t_generator.Generator):
         'compatibility': 'Use thrift1 structs instead of generating new ones',
         'terse_writes': 'Avoid emitting unspec fields whose values are default',
         'stack_arguments': 'Pass arguments on stack instead of heap',
-        'future': 'enable folly::Futures in service interface',
         'process_in_event_base': 'Process request in event base thread',
         'frozen2': 'enable frozen structures',
         'json': 'enable simple json protocol',
         'implicit_templates' : 'templates are instantiated implicitly' +
                                'instead of explicitly',
-        'separate_processmap' : 'Put the serice processmap in a separate cpp',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -547,8 +545,9 @@ class CppGenerator(t_generator.Generator):
         s.acquire()
         for function in service.functions:
             arglist = function.arglist
-            arglist.name = "{0}_{1}_args".format(service.name, function.name)
-            self._generate_cpp2ops(True, arglist, s)
+            if self.flag_stack_arguments:
+                arglist.name = "{0}_{1}_args".format(service.name, function.name)
+                self._generate_cpp2ops(True, arglist, s)
             arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
             self._generate_cpp2ops(True, arglist, s)
 
@@ -575,14 +574,15 @@ class CppGenerator(t_generator.Generator):
         for function in service.functions:
             arglist = function.arglist
             name_orig = arglist.name
-            arglist.name = "{0}_{1}_args".format(service.name, function.name)
-            self._generate_struct_complete(s, arglist,
-                                           is_exception=False,
-                                           pointers=False,
-                                           read=True,
-                                           write=True,
-                                           swap=False,
-                                           result=False)
+            if self.flag_stack_arguments:
+                arglist.name = "{0}_{1}_args".format(service.name, function.name)
+                self._generate_struct_complete(s, arglist,
+                                               is_exception=False,
+                                               pointers=False,
+                                               read=True,
+                                               write=True,
+                                               swap=False,
+                                               result=False)
             arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
             self._generate_struct_complete(s, arglist,
                                            is_exception=False,
@@ -715,8 +715,7 @@ class CppGenerator(t_generator.Generator):
                    modifiers='virtual',
                    in_header=True).scope.empty()
             for function in service.functions:
-                if not self.flag_future and \
-                   not self._is_processed_in_eb(function):
+                if not self._is_processed_in_eb(function):
                     with out().defn(
                             self._get_process_function_signature(service,
                                                                  function),
@@ -750,12 +749,11 @@ class CppGenerator(t_generator.Generator):
                        name="async_" + function.name,
                        modifiers='virtual',
                        delete=True)
-                if self.flag_future:
-                    out().defn(self._get_process_function_signature_future(
-                            service, function),
-                           name="future_" + function.name,
-                           modifiers='virtual',
-                           pure_virtual=True)
+                out().defn(self._get_process_function_signature_future(
+                        service, function),
+                       name="future_" + function.name,
+                       modifiers='virtual',
+                       pure_virtual=True)
 
     def _generate_service_server_interface(self, service, s):
         classname = service.name + "SvIf"
@@ -800,34 +798,20 @@ class CppGenerator(t_generator.Generator):
                            priovar, PTM)):
                         out('return {0};'.format(priovar))
                     out('return {0}::{1};'.format(PTM, prio))
-                if not self.flag_future and \
-                   not self._is_processed_in_eb(function):
-                    with out().defn(self._get_process_function_signature(service,
-                                                                     function),
-                                name=function.name,
-                                modifiers='virtual'):
-                        out('throw apache::thrift::TApplicationException('
-                          '"Function {0} is unimplemented");'
-                          .format(function.name))
-                        if not function.oneway and \
-                          not function.returntype.is_void and \
-                          not self._is_complex_type(function.returntype):
-                            out('return ' +
-                              self._default_value(function.returntype) + ';')
-                else:
-                    # TODO: Remove this once everything is moved over to
-                    # async_tm and async_eb. This is to ensure that if we
-                    # switch to async_eb with a flag, we do not accidentally
-                    # unimplement a sync function.
-                    out().defn(self._get_process_function_signature(service,
-                                                                function),
-                           name=function.name,
-                           modifiers='virtual',
-                           delete=True)
-                if self.flag_future:
-                    self._generate_server_future_function(service, function)
-                self._generate_server_async_function(service,
-                                                                function)
+                with out().defn(self._get_process_function_signature(service,
+                                                                 function),
+                            name=function.name,
+                            modifiers='virtual'):
+                    out('throw apache::thrift::TApplicationException('
+                      '"Function {0} is unimplemented");'
+                      .format(function.name))
+                    if not function.oneway and \
+                      not function.returntype.is_void and \
+                      not self._is_complex_type(function.returntype):
+                        out('return ' +
+                          self._default_value(function.returntype) + ';')
+                self._generate_server_future_function(service, function)
+                self._generate_server_async_function(service, function)
 
     def _generate_server_future_function(self, service, function):
         with out().defn(self._get_process_function_signature_future(service,
@@ -835,94 +819,11 @@ class CppGenerator(t_generator.Generator):
                     name="future_" + function.name):
             rettype = self._type_name(function.returntype)
             if self._is_complex_type(function.returntype) and \
-              not self.flag_stack_arguments:
-                rettype = "std::unique_ptr<{0}>".format(
-                    self._type_name(function.returntype))
+                    not self.flag_stack_arguments:
+                rettype = 'std::unique_ptr<' + rettype + '>'
+
             promise_name = self.tmp("promise")
-            out("folly::Promise<{type}> {promise};"
-              .format(type=rettype, promise=promise_name))
-            future_name = self.tmp("future")
-            out(("auto {future} = {promise}.getFuture();")
-              .format(future=future_name, promise=promise_name))
-            out('apache::thrift::TApplicationException ex("Function {0} is '
-              'unimplemented");'.format(function.name))
-            out("{promise}.setException(ex);"
-              .format(promise=promise_name))
-            out("return {future};".format(future=future_name))
-
-    def _generate_server_async_function_future(self, function):
-        out('auto callbackp = callback.release();')
-        out('setEventBase(callbackp->getEventBase());')
-        out('setThreadManager(callbackp->getThreadManager());')
-        future_name = self.tmp('future')
-        rettype = "folly::Try<{0}>".format(
-            self._type_name(function.returntype))
-        if self._is_complex_type(function.returntype) and \
-          not self.flag_stack_arguments:
-            rettype = "folly::Try<std::unique_ptr" \
-              "<{0}>>".format(self._type_name(function.returntype))
-        captureArgs = []
-        callArgs = []
-        for member in function.arglist.members:
-            if self._is_complex_type(member.type):
-                moveArg = self.tmp("move_{0}".format(member.name))
-                out("auto {0} = folly::makeMoveWrapper(std::move({1}));"
-                        .format(moveArg, member.name))
-                captureArgs.append(moveArg)
-                callArgs.append("std::move(*{0})".format(moveArg))
-            else:
-                captureArgs.append(member.name)
-                callArgs.append(member.name)
-
-        captures = "this, callbackp"
-        if captureArgs:
-            captures = "{0}, {1}".format(captures, ", ".join(captureArgs))
-        with out("callbackp->runFuncInQueue([{0}]() mutable".format(captures)):
-            out('setConnectionContext(callbackp->getConnectionContext());')
-            with out("try"):
-                if not function.oneway and \
-                  not function.returntype.is_void:
-                    out("auto {2} = future_{0}({1});".format(
-                        function.name, ", ".join(callArgs), future_name))
-                    with out("{0}.then([=]({1}&& _return)".format(
-                            future_name, rettype)):
-                        with out("try"):
-                            out("callbackp->resultInThread("
-                              "std::move(_return.value()));")
-                            with out().catch("..."):
-                                out("callbackp->exceptionInThread("
-                                    "std::current_exception());")
-                    out(");")
-                else:
-                    out("auto {1} = future_{0}(".format(
-                        function.name, future_name)
-                        + ", ".join(callArgs) + ");")
-                    if not function.oneway:
-                        with out(("{0}.then([=](folly" +
-                              "::Try<void>&& t)").format(future_name)):
-                            with out("try"):
-                                out("t.throwIfFailed();")
-                                out("callbackp->doneInThread();")
-                                with out().catch("..."):
-                                    out("callbackp->exceptionInThread("
-                                        "std::current_exception());")
-                        out(");")
-                    else:
-                        out("delete callbackp;")
-                with out().catch("const std::exception& ex"):
-                    if not function.oneway:
-                        out("callbackp->exceptionInThread(std::"
-                            "current_exception());")
-                    else:
-                        out("delete callbackp;")
-        out(");")
-
-
-    def _generate_server_async_function(self, service, function):
-        with out().defn(self._get_process_function_signature_async(service,
-                                                                   function),
-                    name=self._get_async_func_name(function),
-                    modifiers='virtual'):
+            out("folly::Promise<{0}> {1};".format(rettype, promise_name))
             args = []
             for member in function.arglist.members:
                 if self._is_complex_type(member.type) \
@@ -931,54 +832,124 @@ class CppGenerator(t_generator.Generator):
                 else:
                     args.append(member.name)
 
-            if self._is_processed_in_eb(function):
-                if (self.flag_future):
-                    self._generate_server_async_function_future(function)
+            if not function.oneway and self._is_complex_type(
+                function.returntype
+            ):
+                if self.flag_stack_arguments:
+                    args.insert(0, "_return")
                 else:
-                    out('apache::thrift::TApplicationException ex("Function {0} '
-                      'is unimplemented");'.format(function.name))
-                    out('callback->exception(std::make_exception_ptr(ex));')
+                    args.insert(0, "*_return")
+            with out("try"):
+                if not function.oneway and not function.returntype.is_void:
+                    if self._is_complex_type(function.returntype) \
+                      and not self.flag_stack_arguments:
+                        out("std::unique_ptr<{0}> _return(new {0});"
+                          .format(self._type_name(function.returntype)))
+                        out("{0}({1});".format(function.name,
+                                             ", ".join(args)))
+                        out("{0}.setValue(std::move(_return));".format(
+                            promise_name))
+                    elif self._is_complex_type(function.returntype):
+                        out("{0} _return;".format(self._type_name(
+                            function.returntype)))
+                        out("{0}({1});".format(function.name,
+                                             ", ".join(args)))
+                        out("{0}.setValue(_return);".format(promise_name))
+                    else:
+                        out("{0}.setValue({1}({2}));"
+                          .format(promise_name, function.name, ", ".join(args)))
+                else:
+                    out("{0}(".format(function.name) + ", ".join(args) + ");")
+                    out("{0}.setValue();".format(promise_name))
+                with out().catch("const std::exception& ex"):
+                    out("{0}.setException(folly::exception_wrapper"
+                        "(std::current_exception()));".format(
+                            promise_name))
+            out("return {0}.getFuture();".format(promise_name))
+
+    def _generate_server_async_function_future(self, function):
+        out('auto callbackp = callback.release();')
+        out('setEventBase(callbackp->getEventBase());')
+        out('setThreadManager(callbackp->getThreadManager());')
+        captureArgs = []
+        callArgs = []
+        for member in function.arglist.members:
+            if self._is_complex_type(member.type):
+                tmpMovedArg = self.tmp("tmp_move_{0}".format(member.name))
+                out("auto {0} = std::move({1});"
+                        .format(tmpMovedArg, member.name))
+                moveArg = self.tmp("move_{0}".format(member.name))
+                out("auto {0} = folly::makeMoveWrapper(std::move({1}));"
+                        .format(moveArg, tmpMovedArg))
+                captureArgs.append(moveArg)
+                callArgs.append("std::move(*{0})".format(moveArg))
             else:
-                out('auto callbackp = callback.release();')
-                out('setConnectionContext(callbackp->getConnectionContext());')
-                if not function.oneway and self._is_complex_type(
-                    function.returntype
-                ):
-                    if self.flag_stack_arguments:
-                        args.insert(0, "_return")
-                    else:
-                        args.insert(0, "*_return")
-                with out("try"):
-                    if not function.oneway and not function.returntype.is_void:
-                        if self._is_complex_type(function.returntype) \
-                          and not self.flag_stack_arguments:
-                            out("std::unique_ptr<{0}> _return(new {0});"
-                              .format(self._type_name(function.returntype)))
-                            out("{0}({1});".format(function.name,
-                                                 ", ".join(args)))
-                            out("callbackp->resultInThread(std::move(_return));")
-                        elif self._is_complex_type(function.returntype):
-                            out("{0} _return;".format(self._type_name(
-                                function.returntype)))
-                            out("{0}({1});".format(function.name,
-                                                 ", ".join(args)))
-                            out("callbackp->resultInThread(_return);")
-                        else:
-                            out("callbackp->resultInThread({0}({1}));"
-                              .format(function.name, ", ".join(args)))
-                    else:
-                        out("{0}(".format(function.name) + ", ".join(args) + ");")
-                        if not function.oneway:
+                captureArgs.append(member.name)
+                callArgs.append(member.name)
+
+        if self._is_processed_in_eb(function):
+            captures = "this, callbackp"
+            if captureArgs:
+                captures = "{0}, {1}".format(captures, ", ".join(captureArgs))
+            with out("callbackp->runFuncInQueue([{0}]() mutable".format(captures)):
+                self._generate_server_async_future_stuff(function, callArgs)
+            out(");")
+        else:
+            self._generate_server_async_future_stuff(function, callArgs)
+
+    def _generate_server_async_future_stuff(self, function, callArgs):
+        rettype = "folly::Try<{0}>".format(
+            self._type_name(function.returntype))
+        if self._is_complex_type(function.returntype) and \
+          not self.flag_stack_arguments:
+            rettype = "folly::Try<std::unique_ptr" \
+              "<{0}>>".format(self._type_name(function.returntype))
+        future_name = self.tmp('future')
+        out('setConnectionContext(callbackp->getConnectionContext());')
+        with out("try"):
+            if not function.oneway and \
+              not function.returntype.is_void:
+                out("auto {2} = future_{0}({1});".format(
+                    function.name, ", ".join(callArgs), future_name))
+                with out("{0}.then([=]({1}&& _return)".format(
+                        future_name, rettype)):
+                    with out("try"):
+                        out("callbackp->resultInThread("
+                          "std::move(_return.value()));")
+                        with out().catch("..."):
+                            out("callbackp->exceptionInThread("
+                                "std::current_exception());")
+                out(");")
+            else:
+                out("auto {1} = future_{0}(".format(
+                    function.name, future_name)
+                    + ", ".join(callArgs) + ");")
+                if not function.oneway:
+                    with out(("{0}.then([=](folly" +
+                          "::Try<void>&& t)").format(future_name)):
+                        with out("try"):
+                            out("t.throwIfFailed();")
                             out("callbackp->doneInThread();")
-                        else:
-                            out("callbackp->deleteInThread();")
-                    with out().catch("const std::exception& ex"):
-                        if not function.oneway:
-                            out("callbackp->exceptionInThread(std::"
-                                "current_exception());")
-                        else:
-                            out("callbackp->deleteInThread();")
-                out('setConnectionContext(nullptr);')
+                            with out().catch("..."):
+                                out("callbackp->exceptionInThread("
+                                    "std::current_exception());")
+                    out(");")
+                else:
+                    out("delete callbackp;")
+            with out().catch("const std::exception& ex"):
+                if not function.oneway:
+                    out("callbackp->exceptionInThread(std::"
+                        "current_exception());")
+                else:
+                    out("delete callbackp;")
+
+
+    def _generate_server_async_function(self, service, function):
+        with out().defn(self._get_process_function_signature_async(service,
+                                                                   function),
+                    name=self._get_async_func_name(function),
+                    modifiers='virtual'):
+            self._generate_server_async_function_future(function)
 
     def _get_process_function_signature_async(self, service, function):
         sig = 'void {name}('
@@ -1294,6 +1265,7 @@ class CppGenerator(t_generator.Generator):
             with oneways:
                 out(',\n'.join('"' + function.name + '"'
                         for function in service.functions if function.oneway))
+            prot = 0
             for shortprot, protname, prottype in self.protocols:
                 out(('typedef void ({0}::*{1}ProcessFunction)(std::unique_ptr' +
                    '<apache::thrift::ResponseChannel::Request> req, ').format(
@@ -1314,8 +1286,9 @@ class CppGenerator(t_generator.Generator):
                 process_map = out().defn(map_type + ' {name}',
                                          name=map_name,
                                          modifiers='static')
-                if self.flag_separate_processmap:
-                    process_map.output = self._additional_outputs[0]
+                process_map.output = self._additional_outputs[prot]
+                if prot < 1:  # TODO: fix build tool to use more than 2 outputs
+                    prot = prot + 1
                 process_map.epilogue = ';'
 
                 with process_map:
@@ -1656,7 +1629,7 @@ class CppGenerator(t_generator.Generator):
                     out("std::unique_ptr<apache::thrift::RequestCallback> "
                       "{callback}("
                       "new apache::thrift::FutureCallback<{type}>("
-                      "std::move({promise}), recv_{name}));"
+                      "std::move({promise}), recv_wrapped_{name}));"
                       .format(callback=callback,
                               type=return_type,
                               promise=promise_name,
@@ -3503,16 +3476,11 @@ class CppGenerator(t_generator.Generator):
             s(visitFields('FROZEN_' + typeFmt + '({type},{fields})',
                           '\n  FROZEN_' + fieldFmt))
 
-    def _generate_cpp_struct(self, obj, is_exception=False):
-        # We write all of these to the types scope
-        scope = self._types_scope
-        self._generate_struct_complete(scope, obj, is_exception,
-                                       False, True, True, True, False)
-
-        # We're at types scope now
-        scope.release()
-        with self._types_global.namespace('apache.thrift').scope:
-            self._generate_cpp2ops(False, obj, self._types_scope)
+    def _generate_hash_equal_to(self, obj):
+        # Don't generate these declarations if in compatibility mode since
+        # they're already declared for cpp.
+        if self.flag_compatibility:
+            return
 
         gen_hash = self._has_cpp_annotation(obj, 'declare_hash')
         gen_equal_to = self._has_cpp_annotation(obj, 'declare_equal_to')
@@ -3530,6 +3498,20 @@ class CppGenerator(t_generator.Generator):
                     out('bool operator()(const ' + full_name + '&,')
                     out('const ' + full_name + '&) const;')
                     out("};")
+
+    def _generate_cpp_struct(self, obj, is_exception=False):
+        # We write all of these to the types scope
+        scope = self._types_scope
+        self._generate_struct_complete(scope, obj, is_exception,
+                                       False, True, True, True, False)
+
+        # We're at types scope now
+        scope.release()
+        with self._types_global.namespace('apache.thrift').scope:
+            self._generate_cpp2ops(False, obj, self._types_scope)
+
+        # std::hash and std::equal_to declarations
+        self._generate_hash_equal_to(obj)
 
         # Re-enter types scope, but we can't actually re-enter a scope,
         # so let's recreate it
@@ -3725,8 +3707,8 @@ class CppGenerator(t_generator.Generator):
         output_tcc = self._write_to(filename + '.tcc') if tcc else None
         additional_outputs = []
         if processmap:
-            output_processmap_cpp = self._write_to(filename + "_processmap.cpp")
-            additional_outputs.append(output_processmap_cpp)
+            for a, b, c in self.protocols:
+                additional_outputs.append(self._write_to(filename + "_processmap_" + a + ".cpp"))
 
         header_path = self._with_include_prefix(self._program, filename)
 
@@ -3861,8 +3843,6 @@ class CppGenerator(t_generator.Generator):
             raise NotImplementedError
 
     def _is_processed_in_eb(self, function):
-        if self.flag_future:
-            return True
         if function.annotations is not None and \
           'thread' in function.annotations.annotations:
             return function.annotations.annotations['thread'] == 'eb'

@@ -138,9 +138,9 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
 
 
   // fail on time out
-  base.runAfterDelay([] {EXPECT_TRUE(false);}, 5000);
+  base.tryRunAfterDelay([] {EXPECT_TRUE(false);}, 5000);
 
-  base.runAfterDelay([&client,&base,&c] {
+  base.tryRunAfterDelay([&client,&base,&c] {
     client.sendResponse([&base,&c](ClientReceiveState&& state) {
       EXPECT_FALSE(state.isException());
       EXPECT_TRUE(state.isSecurityActive());
@@ -265,7 +265,7 @@ public:
     numUpdates_--;
     if (numUpdates_ > 0) {
       Updater updater(*this);
-      eb_->runAfterDelay([updater]() mutable {
+      eb_->tryRunAfterDelay([updater]() mutable {
         updater.update();
       }, interval_);
     }
@@ -348,7 +348,7 @@ TEST(Security, Duplex) {
   }, START, COUNT, INTERVAL);
 
   // fail on time out
-  base.runAfterDelay([] {EXPECT_TRUE(false);}, 5000);
+  base.tryRunAfterDelay([] {EXPECT_TRUE(false);}, 5000);
 
   base.loopForever();
 

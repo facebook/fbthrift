@@ -36,34 +36,34 @@ public:
   explicit GssSaslClient(apache::thrift::async::TEventBase*,
     const std::shared_ptr<SecurityLogger>& logger =
       std::make_shared<SecurityLogger>());
-  virtual void start(Callback *cb);
+  virtual void start(Callback *cb) override;
   virtual void consumeFromServer(
-    Callback *cb, std::unique_ptr<folly::IOBuf>&& message);
+    Callback *cb, std::unique_ptr<folly::IOBuf>&& message) override;
   virtual std::unique_ptr<folly::IOBuf> encrypt(
-    std::unique_ptr<folly::IOBuf>&&);
+    std::unique_ptr<folly::IOBuf>&&) override;
   virtual std::unique_ptr<folly::IOBuf> decrypt(
-    std::unique_ptr<folly::IOBuf>&&);
-  void setClientIdentity(const std::string& identity) {
+    std::unique_ptr<folly::IOBuf>&&) override;
+  void setClientIdentity(const std::string& identity) override {
     clientHandshake_->setRequiredClientPrincipal(identity);
   }
-  void setServiceIdentity(const std::string& identity) {
+  void setServiceIdentity(const std::string& identity) override {
     clientHandshake_->setRequiredServicePrincipal(identity);
   }
   virtual void setRequiredServicePrincipalFetcher(
-    std::function<std::pair<std::string, std::string>()> function) {
+    std::function<std::pair<std::string, std::string>()> function) override {
     clientHandshake_->setRequiredServicePrincipalFetcher(
         std::move(function));
   }
 
-  virtual std::string getClientIdentity() const;
-  virtual std::string getServerIdentity() const;
+  virtual std::string getClientIdentity() const override;
+  virtual std::string getServerIdentity() const override;
 
-  virtual const std::string* getErrorString() const {
+  virtual const std::string* getErrorString() const override {
     return errorString_.get();
   }
 
   // Set error string, prepend phase at which this error happened.
-  virtual void setErrorString(const std::string& str) {
+  virtual void setErrorString(const std::string& str) override {
     std::string err =
       std::string("Phase: ") +
       std::to_string((int)clientHandshake_->getPhase()) +
@@ -72,13 +72,14 @@ public:
   }
 
   virtual void setSaslThreadManager(
-      const std::shared_ptr<SaslThreadManager>& thread_manager) {
+      const std::shared_ptr<SaslThreadManager>& thread_manager) override {
     saslThreadManager_ = thread_manager;
     clientHandshake_->setSaslThreadManager(thread_manager);
   }
 
   virtual void setCredentialsCacheManager(
-      const std::shared_ptr<krb5::Krb5CredentialsCacheManager>& cc_manager) {
+      const std::shared_ptr<krb5::Krb5CredentialsCacheManager>&
+        cc_manager) override {
     clientHandshake_->setCredentialsCacheManager(cc_manager);
   }
 
@@ -91,8 +92,8 @@ public:
     protocol_ = protocol;
   }
 
-  virtual void detachEventBase();
-  virtual void attachEventBase(apache::thrift::async::TEventBase* evb);
+  virtual void detachEventBase() override;
+  virtual void attachEventBase(apache::thrift::async::TEventBase* evb) override;
 
 private:
   std::shared_ptr<KerberosSASLHandshakeClient> clientHandshake_;

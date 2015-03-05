@@ -278,7 +278,7 @@ class VirtualReader : public VirtualReaderBase {
     return protocol_.readFromPositionAndAppend(cursor, ser);
   }
 
- private:
+ protected:
   ProtocolT protocol_;
 };
 

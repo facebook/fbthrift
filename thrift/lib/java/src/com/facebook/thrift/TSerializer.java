@@ -35,19 +35,9 @@ import com.facebook.thrift.transport.TIOStreamTransport;
 public class TSerializer {
 
   /**
-   * This is the byte array that data is actually serialized into
-   */
-  private final ByteArrayOutputStream baos_ = new ByteArrayOutputStream();
-
-  /**
-   * This transport wraps that byte array
-   */
-  private final TIOStreamTransport transport_ = new TIOStreamTransport(baos_);
-
-  /**
    * Internal protocol used for serializing objects.
    */
-  private TProtocol protocol_;
+  private final TProtocolFactory protocolFactory;
 
   /**
    * Create a new TSerializer that uses the TBinaryProtocol by default.
@@ -63,7 +53,7 @@ public class TSerializer {
    * @param protocolFactory Factory to create a protocol
    */
   public TSerializer(TProtocolFactory protocolFactory) {
-    protocol_ = protocolFactory.getProtocol(transport_);
+    this.protocolFactory = protocolFactory;
   }
 
   /**
@@ -74,10 +64,14 @@ public class TSerializer {
    * @param base The object to serialize
    * @return Serialized object in byte[] format
    */
-  public synchronized byte[] serialize(TBase base) throws TException {
-    baos_.reset();
-    base.write(protocol_);
-    return baos_.toByteArray();
+  public byte[] serialize(TBase base) throws TException {
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    TIOStreamTransport transport = new TIOStreamTransport(byteArrayOutputStream);
+    TProtocol protocol = protocolFactory.getProtocol(transport);
+
+    base.write(protocol);
+
+    return byteArrayOutputStream.toByteArray();
   }
 
   /**

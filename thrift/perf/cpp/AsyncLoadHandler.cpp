@@ -88,12 +88,12 @@ void AsyncLoadHandler::asyncNoop(VoidCob cob) {
 
 void AsyncLoadHandler::sleep(VoidCob cob, const int64_t microseconds) {
   // We only have millisecond resolution for TEventBase timeouts
-  server_->getEventBase()->runAfterDelay(cob, microseconds / Util::US_PER_MS);
+  server_->getEventBase()->tryRunAfterDelay(cob, microseconds / Util::US_PER_MS);
 }
 
 void AsyncLoadHandler::onewaySleep(VoidCob cob, const int64_t microseconds) {
   // We only have millisecond resolution for TEventBase timeouts
-  server_->getEventBase()->runAfterDelay(cob, microseconds / Util::US_PER_MS);
+  server_->getEventBase()->tryRunAfterDelay(cob, microseconds / Util::US_PER_MS);
 }
 
 void AsyncLoadHandler::burn(VoidCob cob, const int64_t microseconds) {

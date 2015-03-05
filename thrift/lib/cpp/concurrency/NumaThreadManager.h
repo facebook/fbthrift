@@ -86,7 +86,7 @@ class NumaThreadManager : public ThreadManager {
                    int64_t timeout=0LL,
                    int64_t expiration=0LL,
                    bool cancellable = false,
-                   bool numa = false);
+                   bool numa = false) override;
 
   /**
    * Implements folly::Executor::add()
@@ -102,112 +102,112 @@ class NumaThreadManager : public ThreadManager {
                              int threadStackSizeMB
                              = PosixThreadFactory::kDefaultStackSizeMB);
 
-  void start() {
+  void start() override {
     for (auto& manager : managers_) {
       manager->start();
     }
   }
 
-  void stop() {
+  void stop() override {
     for (auto& manager : managers_) {
       manager->stop();
     }
   }
 
-  void join() {
+  void join() override {
     for (auto& manager : managers_) {
       manager->join();
     }
   }
 
-  void threadFactory(std::shared_ptr<ThreadFactory>) {
+  void threadFactory(std::shared_ptr<ThreadFactory>) override {
     // The thread factories must be node-specific.
     throw IllegalStateException("Setting threadFactory not implemented");
   }
 
-  std::shared_ptr<ThreadFactory> threadFactory() const {
+  std::shared_ptr<ThreadFactory> threadFactory() const override {
     // Since each manager has its own node-local thread factory,
     // there is no reasonable factory to return.
     throw IllegalStateException("Getting threadFactory not implemented");
     return nullptr;
   }
 
-  STATE state() const {
+  STATE state() const override {
     // States *should* all be the same
     return managers_[0]->state();
   }
 
-  std::string getNamePrefix() const {
+  std::string getNamePrefix() const override {
     return managers_[0]->getNamePrefix();
   }
 
-  void setNamePrefix(const std::string& prefix) {
+  void setNamePrefix(const std::string& prefix) override {
     for (auto& manager : managers_) {
       manager->setNamePrefix(prefix);
     }
   }
 
-  void addWorker(size_t t);
+  void addWorker(size_t t) override;
 
-  void removeWorker(size_t t);
+  void removeWorker(size_t t) override;
 
-  virtual size_t idleWorkerCount() const {
+  virtual size_t idleWorkerCount() const override {
     return sum(&ThreadManager::idleWorkerCount);
   }
 
-  virtual size_t workerCount() const {
+  virtual size_t workerCount() const override {
     return sum(&ThreadManager::workerCount);
   }
 
-  virtual size_t pendingTaskCount() const {
+  virtual size_t pendingTaskCount() const override {
     return sum(&ThreadManager::pendingTaskCount);
   }
 
-  virtual size_t totalTaskCount() const {
+  virtual size_t totalTaskCount() const override {
     return sum(&ThreadManager::totalTaskCount);
   }
 
-  virtual size_t pendingTaskCountMax() const {
+  virtual size_t pendingTaskCountMax() const override {
     throw IllegalStateException("Not implemented");
     return 0;
   }
 
-  virtual size_t expiredTaskCount() {
+  virtual size_t expiredTaskCount() override {
     return sum(&ThreadManager::expiredTaskCount);
   }
 
-  virtual void remove(std::shared_ptr<Runnable> task) {
+  virtual void remove(std::shared_ptr<Runnable> task) override {
     throw IllegalStateException("Not implemented");
   }
 
-  virtual std::shared_ptr<Runnable> removeNextPending() {
+  virtual std::shared_ptr<Runnable> removeNextPending() override {
     throw IllegalStateException("Not implemented");
     return std::shared_ptr<Runnable>();
   }
 
-  virtual void setExpireCallback(ExpireCallback expireCallback) {
+  virtual void setExpireCallback(ExpireCallback expireCallback) override {
     for (const auto& m : managers_) {
       m->setExpireCallback(expireCallback);
     }
   }
 
-  virtual void setCodelCallback(ExpireCallback expireCallback) {
+  virtual void setCodelCallback(ExpireCallback expireCallback) override {
     for (const auto& m : managers_) {
       m->setCodelCallback(expireCallback);
     }
   }
 
-  virtual void setThreadInitCallback(InitCallback initCallback) {
+  virtual void setThreadInitCallback(InitCallback initCallback) override {
     throw IllegalStateException("Not implemented");
   }
 
-  void enableCodel(bool codel) {
+  void enableCodel(bool codel) override {
     for (auto& manager : managers_) {
       manager->enableCodel(codel);
     }
   }
 
-  virtual folly::wangle::Codel* getCodel() {
+  virtual folly::wangle::Codel* getCodel() override {
     // They *should* be roughtly the same, just return one for now.
     return managers_[0]->getCodel();
   }

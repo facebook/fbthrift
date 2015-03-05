@@ -94,7 +94,7 @@ public:
     numUpdates_--;
     if (numUpdates_ > 0) {
       Updater updater(*this);
-      eb_->runAfterDelay([updater]() mutable {
+      eb_->tryRunAfterDelay([updater]() mutable {
         updater.update();
       }, interval_);
     }
@@ -172,7 +172,7 @@ TEST(Duplex, DuplexTest) {
   }, START, COUNT, INTERVAL);
 
   // fail on time out
-  base.runAfterDelay([] {EXPECT_TRUE(false);}, 5000);
+  base.tryRunAfterDelay([] {EXPECT_TRUE(false);}, 5000);
 
   base.loopForever();
 

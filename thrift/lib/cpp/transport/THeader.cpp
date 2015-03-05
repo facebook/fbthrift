@@ -235,6 +235,11 @@ unique_ptr<IOBuf> THeader::removeHeader(IOBufQueue* queue,
       return nullptr;
     }
     buf = std::move(memBuffer.cloneBufferAsIOBuf());
+
+    readHeaders_.clear();
+    const THeader::StringToStringMap& httpHeaders = parser.getReadHeaders();
+    readHeaders_.insert(httpHeaders.begin(), httpHeaders.end());
+
     // Empty the queue
     queue->move();
   } else {
@@ -771,6 +776,10 @@ void THeader::setHeaders(THeader::StringToStringMap&& headers) {
 void THeader::setPersistentHeader(const string& key,
                                   const string& value) {
   persisWriteHeaders_[key] = value;
+}
+
+void THeader::setPersistentHeaders(THeader::StringToStringMap&& headers) {
+  persisWriteHeaders_ = std::move(headers);
 }
 
 size_t getInfoHeaderSize(const THeader::StringToStringMap &headers) {

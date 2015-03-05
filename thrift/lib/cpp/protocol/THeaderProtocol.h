@@ -337,7 +337,7 @@ class THeaderProtocolFactory : public TDuplexProtocolFactory {
 
   void setClientTypes(std::bitset<CLIENT_TYPES_LEN>& clientTypes) {
     for (int i = 0; i < CLIENT_TYPES_LEN; i++) {
-      this->clientTypes[i] = clientTypes[i];
+      clientTypes_[i] = clientTypes[i];
     }
   }
 
@@ -353,7 +353,7 @@ class THeaderProtocolFactory : public TDuplexProtocolFactory {
   virtual TProtocolPair getProtocol(
       std::shared_ptr<transport::TTransport> trans) {
     THeaderProtocol* prot = new THeaderProtocol(trans,
-                                                &clientTypes,
+                                                &clientTypes_,
                                                 protoId_,
                                                 protoVersion_);
 
@@ -372,7 +372,7 @@ class THeaderProtocolFactory : public TDuplexProtocolFactory {
   virtual TProtocolPair getProtocol(transport::TTransportPair transports) {
     THeaderProtocol* prot = new THeaderProtocol(transports.first,
                                                 transports.second,
-                                                &clientTypes,
+                                                &clientTypes_,
                                                 protoId_,
                                                 protoVersion_);
 
@@ -392,7 +392,7 @@ class THeaderProtocolFactory : public TDuplexProtocolFactory {
   // Using base class implementation which return nullptr.
 
  private:
-  std::bitset<CLIENT_TYPES_LEN> clientTypes;
+  std::bitset<CLIENT_TYPES_LEN> clientTypes_;
   uint16_t protoId_;
   int8_t protoVersion_;
   bool setIdentity_;

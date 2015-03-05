@@ -23,6 +23,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from thrift.transport import TTransport
+from thrift.protocol import THeaderProtocol
 
 def serialize(protocol_factory, thr):
     """Convenience method for serializing objects using the given
@@ -30,6 +31,8 @@ def serialize(protocol_factory, thr):
     transport = TTransport.TMemoryBuffer()
     protocol = protocol_factory.getProtocol(transport)
     thr.write(protocol)
+    if isinstance(protocol, THeaderProtocol.THeaderProtocol):
+        protocol.trans.flush()
     return transport.getvalue()
 
 def deserialize(protocol_factory, data, thr_out):
@@ -38,5 +41,10 @@ def deserialize(protocol_factory, data, thr_out):
     argument."""
     transport = TTransport.TMemoryBuffer(data)
     protocol = protocol_factory.getProtocol(transport)
+    if isinstance(protocol, THeaderProtocol.THeaderProtocol):
+        # this reads the THeader headers to detect what the underlying
+        # protocol is, as well as looking at transforms, etc.
+        protocol.trans.readFrame(0)
+        protocol.reset_protocol()
     thr_out.read(protocol)
     return thr_out

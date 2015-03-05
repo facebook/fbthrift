@@ -52,7 +52,7 @@ void AsyncLoadHandler2::async_eb_sleep(
   // May leak if task never finishes
   HandlerCallback<void>* callbackp = callback.release();
   callbackp->getEventBase()->runInEventBaseThread([=]() {
-    callbackp->getEventBase()->runAfterDelay([=](){
+    callbackp->getEventBase()->tryRunAfterDelay([=](){
       std::unique_ptr<HandlerCallback<void>> cb(callbackp);
       cb->done();
     },
@@ -67,7 +67,7 @@ void AsyncLoadHandler2::async_eb_onewaySleep(
   // May leak if task never finishes
   auto eb = callbackp->getEventBase();
   eb->runInEventBaseThread([=]() {
-    eb->runAfterDelay([=](){
+    eb->tryRunAfterDelay([=](){
       delete callbackp;
     },
     microseconds / Util::US_PER_MS);

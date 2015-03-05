@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/SaslClient.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
-
+#include <thrift/lib/cpp2/security/SecurityLogger.h>
 
 namespace apache { namespace thrift {
 
@@ -31,7 +31,8 @@ namespace apache { namespace thrift {
 
 class StubSaslClient : public SaslClient {
 public:
-  explicit StubSaslClient(apache::thrift::async::TEventBase*);
+  explicit StubSaslClient(apache::thrift::async::TEventBase*,
+    const std::shared_ptr<SecurityLogger>& logger = nullptr);
   virtual void start(Callback *cb);
   virtual void consumeFromServer(
     Callback *cb, std::unique_ptr<folly::IOBuf>&& message);

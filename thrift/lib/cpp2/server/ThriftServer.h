@@ -26,6 +26,7 @@
 
 #include <folly/Memory.h>
 #include <folly/io/ShutdownSocketSet.h>
+#include <folly/wangle/bootstrap/ServerBootstrap.h>
 #include <folly/wangle/concurrent/IOThreadPoolExecutor.h>
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
@@ -71,33 +72,16 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
     std::shared_ptr<T> svIf_;
 };
 
+typedef folly::wangle::ChannelPipeline<
+  folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>> Pipeline;
+
 /**
  *   This is yet another thrift server.
  *   Uses cpp2 style generated code.
  */
 
-class ThriftServer : public apache::thrift::server::TServer {
- public:
-
-    struct FailureInjection {
-    FailureInjection()
-      : errorFraction(0),
-        dropFraction(0),
-        disconnectFraction(0) {
-    }
-
-    // Cause a fraction of requests to fail
-    float errorFraction;
-
-    // Cause a fraction of requests to be dropped (and presumably time out
-    // on the client)
-    float dropFraction;
-
-    // Cause a fraction of requests to cause the channel to be disconnected,
-    // possibly failing other requests as well.
-    float disconnectFraction;
-  };
-
+class ThriftServer : public apache::thrift::server::TServer
+                   , public folly::ServerBootstrap<Pipeline> {
  protected:
 
   //! Default number of worker threads (should be # of processor cores).
@@ -164,39 +148,6 @@ class ThriftServer : public apache::thrift::server::TServer {
     eventBaseManagerHolder_;
   apache::thrift::async::TEventBaseManager* eventBaseManager_;
   std::mutex ebmMutex_;
-
-  //! Creates and manages Cpp2Workers for the IO thread pool
-  class Cpp2WorkerPool : public folly::wangle::ThreadPoolExecutor::Observer {
-   public:
-    explicit Cpp2WorkerPool(ThriftServer* server,
-                            folly::wangle::IOThreadPoolExecutor* exec);
-
-    template <typename F>
-    void forEachWorker(F&& f);
-
-    void threadStarted(
-      folly::wangle::ThreadPoolExecutor::ThreadHandle*);
-    void threadStopped(
-      folly::wangle::ThreadPoolExecutor::ThreadHandle*);
-    void threadPreviouslyStarted(
-      folly::wangle::ThreadPoolExecutor::ThreadHandle* thread) {
-      threadStarted(thread);
-    }
-    void threadNotYetStopped(
-      folly::wangle::ThreadPoolExecutor::ThreadHandle* thread) {
-      threadStopped(thread);
-    }
-
-   private:
-    ThriftServer* server_;
-    std::map<
-      folly::wangle::ThreadPoolExecutor::ThreadHandle*,
-      std::shared_ptr<Cpp2Worker>> workers_;
-    folly::wangle::IOThreadPoolExecutor* exec_;
-  };
-
-  mutable std::mutex workerPoolMutex_;
-  std::shared_ptr<Cpp2WorkerPool> workerPool_;
 
   //! IO thread pool. Drives Cpp2Workers.
   std::shared_ptr<folly::wangle::IOThreadPoolExecutor> ioThreadPool_;
@@ -280,7 +231,7 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   bool stopWorkersOnStopListening_;
 
-  bool reusePortEnabled_;
+  std::shared_ptr<folly::wangle::IOThreadPoolExecutor> acceptPool_;
 
   // HeaderServerChannel and Cpp2Worker to use for a duplex server
   // (used by client). Both are nullptr for a regular server.
@@ -322,21 +273,17 @@ class ThriftServer : public apache::thrift::server::TServer {
 
   friend class Cpp2Connection;
   friend class Cpp2Worker;
-  friend class Cpp2WorkerPool;
 
   InjectedFailure maybeInjectFailure() const {
     return failureInjection_.test();
-  }
-
-  std::shared_ptr<Cpp2WorkerPool> getWorkerPool() const {
-    std::lock_guard<std::mutex> lock(workerPoolMutex_);
-    return workerPool_;
   }
 
   getHandlerFunc getHandler_;
 
  public:
   ThriftServer();
+
+  // If sasl_policy is set. FLAGS_sasl_policy will be ignored for this server
   ThriftServer(const std::string& sasl_policy,
                bool allow_insecure_loopback);
 
@@ -366,6 +313,17 @@ class ThriftServer : public apache::thrift::server::TServer {
   }
 
   /**
+   * Set the thread factory that will be used to create the server's IO threads.
+   *
+   * @param the new thread factory
+   */
+  void setIOThreadFactory(
+      std::shared_ptr<folly::wangle::NamedThreadFactory> threadFactory) {
+    CHECK(ioThreadPool_->numThreads() == 0);
+    ioThreadPool_->setThreadFactory(threadFactory);
+  }
+
+  /**
    * Set the prefix for naming the worker threads. "Cpp2Worker" by default.
    * must be called before serve() for it to take effect
    *
@@ -373,16 +331,12 @@ class ThriftServer : public apache::thrift::server::TServer {
    */
   void setCpp2WorkerThreadName(const std::string& cpp2WorkerThreadName) {
     CHECK(ioThreadPool_->numThreads() == 0);
-    getIOThreadFactory()->setNamePrefix(cpp2WorkerThreadName);
-  }
-
-  std::shared_ptr<folly::wangle::NamedThreadFactory> getIOThreadFactory() {
     auto factory = ioThreadPool_->getThreadFactory();
     CHECK(factory);
     auto namedFactory =
       std::dynamic_pointer_cast<folly::wangle::NamedThreadFactory>(factory);
     CHECK(namedFactory);
-    return namedFactory;
+    namedFactory->setNamePrefix(cpp2WorkerThreadName);
   }
 
   /**
@@ -507,20 +461,14 @@ class ThriftServer : public apache::thrift::server::TServer {
     return observer_;
   }
 
-  /**
-   * Set whether or not SO_REUSEPORT should be enabled on the server socket,
-   * allowing multiple binds to the same port.
-   * Will only be effective if called before setup()
-   */
-  void setReusePortEnabled(bool enabled) {
-    reusePortEnabled_ = enabled;
+  void setIOThreadPoolExecutor(
+    std::shared_ptr<folly::wangle::IOThreadPoolExecutor> pool) {
+    acceptPool_ = pool;
   }
 
-  /**
-   * Get whether or not SO_REUSEPORT is enabled on the server socket.
-   */
-  bool getReusePortEnabled_() const {
-    return reusePortEnabled_;
+  std::shared_ptr<folly::wangle::IOThreadPoolExecutor>
+  getIOThreadPoolExecutor_() const {
+    return acceptPool_;
   }
 
   /**
@@ -598,23 +546,24 @@ class ThriftServer : public apache::thrift::server::TServer {
    * Set the address to listen on.
    */
   void setAddress(const folly::SocketAddress& address) {
-    DCHECK(socket_ == nullptr);
+    CHECK(ioThreadPool_->numThreads() == 0);
     port_ = -1;
     address_ = address;
   }
 
   void setAddress(folly::SocketAddress&& address) {
-    DCHECK(socket_ == nullptr);
+    CHECK(ioThreadPool_->numThreads() == 0);
     port_ = -1;
     address_ = std::move(address);
   }
 
   void setAddress(const char* ip, uint16_t port) {
-    DCHECK(socket_ == nullptr);
+    CHECK(ioThreadPool_->numThreads() == 0);
     port_ = -1;
     address_.setFromIpPort(ip, port);
   }
   void setAddress(const std::string& ip, uint16_t port) {
+    CHECK(ioThreadPool_->numThreads() == 0);
     port_ = -1;
     setAddress(ip.c_str(), port);
   }
@@ -637,7 +586,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * Set the port to listen on.
    */
   void setPort(uint16_t port) {
-    DCHECK(socket_ == nullptr);
+    CHECK(ioThreadPool_->numThreads() == 0);
     port_ = port;
   }
 
@@ -967,7 +916,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * starts worker threads, enters accept loop; when
    * the accept loop exits, shuts down and joins workers.
    */
-  void serve();
+  void serve() override;
 
   /**
    * Call this to stop the server, if started by serve()
@@ -976,7 +925,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * connections, close existing connections, shut down the worker threads,
    * and then return.
    */
-  void stop();
+  void stop() override;
 
   /**
    * Call this to stop listening on the server port.
@@ -986,7 +935,7 @@ class ThriftServer : public apache::thrift::server::TServer {
    * existing connections. stop() still needs to be called to clear
    * up the worker threads.
    */
-  void stopListening();
+  void stopListening() override;
 
   /**
    * Set a function which determines whether we are currently overloaded. If
@@ -1051,7 +1000,9 @@ class ThriftServer : public apache::thrift::server::TServer {
   /**
    * Set failure injection parameters.
    */
-  void setFailureInjection(FailureInjection fi) { failureInjection_.set(fi); }
+  void setFailureInjection(FailureInjection fi) override {
+    failureInjection_.set(fi);
+  }
 
   void setGetHandler(getHandlerFunc func) {
     getHandler_ = func;

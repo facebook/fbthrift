@@ -73,6 +73,7 @@ bool THttpParser::readDataAvailable(size_t len) {
   assert(httpBufLen_ + len <= httpBufSize_);
   httpBufLen_ += len;
   httpBuf_[httpBufLen_] = '\0';
+
   while (true) {
     THttpParser::HttpParseResult result;
     switch (state_) {
@@ -169,6 +170,7 @@ THttpParser::HttpParseResult THttpParser::parseStart() {
 
   statusLine_ = true;
   finished_ = false;
+  readHeaders_.clear();
 
   partialMessageSize_ = 0;
 
@@ -285,6 +287,14 @@ void THttpClientParser::parseHeaderLine(const char* header) {
     return;
   }
   const char* value = colon + 1;
+  while (*value && *value == ' ') {
+    value++;
+  }
+
+  readHeaders_.insert(std::make_pair(
+    std::string(header, colon - header),
+    std::string(value)
+  ));
 
   if (boost::istarts_with(header, "Transfer-Encoding")) {
     if (boost::iends_with(value, "chunked")) {

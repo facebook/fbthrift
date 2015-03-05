@@ -18,3 +18,8 @@
  */
 
 #include "BinaryProtocol.h"
+
+DEFINE_int32(thrift_cpp2_protocol_reader_string_limit, 0,
+    "Limit on string size when deserializing thrift, 0 is no limit");
+DEFINE_int32(thrift_cpp2_protocol_reader_container_limit, 0,
+    "Limit on container size when deserializing thrift, 0 is no limit");

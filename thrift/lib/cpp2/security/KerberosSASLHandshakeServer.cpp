@@ -31,11 +31,6 @@ using namespace folly;
  * Server functions.
  */
 KerberosSASLHandshakeServer::KerberosSASLHandshakeServer() : phase_(INIT) {
-  // Disable replay caching since we're doing mutual auth. Enabling this will
-  // significantly degrade perf. Force this to overwrite existing env
-  // variables to avoid performance regressions.
-  setenv("KRB5RCACHETYPE", "none", 1);
-
   // Set required security properties, we can define setters for these if
   // they need to be modified later.
   minimumRequiredSecContextFlags_ =

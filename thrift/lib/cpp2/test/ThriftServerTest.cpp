@@ -31,6 +31,7 @@
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/thread.hpp>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
@@ -132,16 +133,15 @@ void AsyncCpp2Test(bool enable_security) {
 
   boost::polymorphic_downcast<HeaderClientChannel*>(
     client.getChannel())->setTimeout(10000);
-  client.sendResponse([](ClientReceiveState&& state) {
-                        std::string response;
-                        try {
-                          TestServiceAsyncClient::recv_sendResponse(
-                              response, state);
-                        } catch(const std::exception& ex) {
-                        }
-                        EXPECT_EQ(response, "test64");
-                      },
-                      64);
+  client.sendResponse([&](ClientReceiveState&& state) {
+    std::string response;
+    try {
+      TestServiceAsyncClient::recv_sendResponse(
+          response, state);
+    } catch(const std::exception& ex) {
+    }
+    EXPECT_EQ(response, "test64");
+  }, 64);
   base.loop();
 }
 
@@ -602,7 +602,7 @@ class Callback : public RequestCallback {
     } catch(const apache::thrift::transport::TTransportException& ex) {
       // Verify we got a write and not a read error
       // Comparing substring because the rest contains ips and ports
-      std::string expected = "write() called with socket in invalid state";
+      std::string expected = "transport is closed in write()";
       std::string actual = std::string(ex.what()).substr(0, expected.size());
       EXPECT_EQ(expected, actual);
     } catch (...) {
@@ -904,10 +904,10 @@ TEST(ThriftServer, CallbackOrderingTest) {
                       new HeaderClientChannel(socket)));
 
   client.noResponse([](ClientReceiveState&& state){}, 10000);
-  base.runAfterDelay([&](){
+  base.tryRunAfterDelay([&](){
     socket->closeNow();
   }, 1);
-  base.runAfterDelay([&](){
+  base.tryRunAfterDelay([&](){
     base.terminateLoopSoon();
   }, 20);
   base.loopForever();
@@ -942,10 +942,10 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
   socket2->setReadCallback(&cb);
 
-  base.runAfterDelay([&](){
+  base.tryRunAfterDelay([&](){
       server->immediateShutdown(true);
     }, 10);
-  base.runAfterDelay([&](){
+  base.tryRunAfterDelay([&](){
       base.terminateLoopSoon();
     }, 30);
   base.loopForever();
@@ -969,10 +969,10 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   // will stop loop()ing.  Create a timeout event to make sure
   // it continues to loop for the duration of the test.
   server->getServeEventBase()->runInEventBaseThread([&](){
-    server->getServeEventBase()->runAfterDelay([](){}, 5000);
+    server->getServeEventBase()->tryRunAfterDelay([](){}, 5000);
   });
 
-  server->getServeEventBase()->runInEventBaseThread([&](){
+  server->getServeEventBase()->runInEventBaseThreadAndWait([=](){
     iothreadpool->setNumThreads(0);
   });
 
@@ -995,9 +995,9 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   // since AsyncServerSocket has no accept callbacks installed,
   // it should close the connection right away.
   ASSERT_ANY_THROW(
-    client.sync_sendResponse(response, 64));
+  client.sync_sendResponse(response, 64));
 
-  server->getServeEventBase()->runInEventBaseThread([&](){
+  server->getServeEventBase()->runInEventBaseThreadAndWait([=](){
     iothreadpool->setNumThreads(30);
   });
 
@@ -1013,6 +1013,33 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   client2.sync_sendResponse(response, 64);
 }
 
+TEST(ThriftServer, ThriftServerSizeLimits) {
+  google::FlagSaver flagSaver;
+  FLAGS_thrift_cpp2_protocol_reader_string_limit = 1024 * 1024;
+
+  ScopedServerThread sst(getServer());
+  TEventBase eb;
+
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(
+        TAsyncSocket::newSocket(
+          &eb, *sst.getAddress())));
+
+  std::string response;
+
+  try {
+    // make a largest possible input which should not throw an exception
+    std::string smallInput(1 << 19, '1');
+    client.sync_echoRequest(response, smallInput);
+    SUCCEED();
+  } catch(const std::exception& ex) {
+    ADD_FAILURE();
+  }
+
+  // make an input that is too large by 1 byte
+  std::string largeInput(1 << 21, '1');
+  EXPECT_THROW(client.sync_echoRequest(response, largeInput), std::exception);
+}
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);

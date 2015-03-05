@@ -257,7 +257,7 @@ public:
     // Thrift main loop.  This will run indefinitely, until stop() is
     // called.
 
-    getServeEventBase()->loop();
+    getServeEventBase()->loopForever();
   }
 
   void cleanUp() {

@@ -129,22 +129,22 @@ class ThreadManager::ImplT : public ThreadManager  {
 
   ~ImplT() { stop(); }
 
-  void start();
+  void start() override;
 
-  void stop() { stopImpl(false); }
+  void stop() override { stopImpl(false); }
 
-  void join() { stopImpl(true); }
+  void join() override { stopImpl(true); }
 
-  ThreadManager::STATE state() const {
+  ThreadManager::STATE state() const override {
     return state_;
   }
 
-  shared_ptr<ThreadFactory> threadFactory() const {
+  shared_ptr<ThreadFactory> threadFactory() const override {
     Guard g(mutex_);
     return threadFactory_;
   }
 
-  void threadFactory(shared_ptr<ThreadFactory> value) {
+  void threadFactory(shared_ptr<ThreadFactory> value) override {
     Guard g(mutex_);
     threadFactory_ = value;
   }
@@ -154,36 +154,36 @@ class ThreadManager::ImplT : public ThreadManager  {
     return namePrefix_;
   }
 
-  void setNamePrefix(const std::string& name) {
+  void setNamePrefix(const std::string& name) override {
     Guard g(mutex_);
     namePrefix_ = name;
   }
 
-  void addWorker(size_t value);
+  void addWorker(size_t value) override;
 
-  void removeWorker(size_t value);
+  void removeWorker(size_t value) override;
 
-  size_t idleWorkerCount() const {
+  size_t idleWorkerCount() const override {
     return idleCount_;
   }
 
-  size_t workerCount() const {
+  size_t workerCount() const override {
     return workerCount_;
   }
 
-  size_t pendingTaskCount() const {
+  size_t pendingTaskCount() const override {
     return tasks_.size();
   }
 
-  size_t totalTaskCount() const {
+  size_t totalTaskCount() const override {
     return totalTaskCount_;
   }
 
-  size_t pendingTaskCountMax() const {
+  size_t pendingTaskCountMax() const override {
     return pendingTaskCountMax_;
   }
 
-  size_t expiredTaskCount() {
+  size_t expiredTaskCount() override {
     Guard g(mutex_);
     size_t result = expiredCount_;
     expiredCount_ = 0;
@@ -193,7 +193,7 @@ class ThreadManager::ImplT : public ThreadManager  {
   bool canSleep();
 
   void add(shared_ptr<Runnable> value, int64_t timeout, int64_t expiration,
-           bool cancellable, bool numa);
+           bool cancellable, bool numa) override;
 
   /**
    * Implements folly::Executor::add()
@@ -202,19 +202,20 @@ class ThreadManager::ImplT : public ThreadManager  {
     add(FunctionRunner::create(std::move(f)), 0LL, 0LL, false, false);
   }
 
-  void remove(shared_ptr<Runnable> task);
+  void remove(shared_ptr<Runnable> task) override;
 
-  shared_ptr<Runnable> removeNextPending();
+  shared_ptr<Runnable> removeNextPending() override;
 
-  void setExpireCallback(ExpireCallback expireCallback);
-  void setCodelCallback(ExpireCallback expireCallback);
-  void setThreadInitCallback(InitCallback initCallback) {
+  void setExpireCallback(ExpireCallback expireCallback) override;
+  void setCodelCallback(ExpireCallback expireCallback) override;
+  void setThreadInitCallback(InitCallback initCallback) override {
     initCallback_ = initCallback;
   }
 
-  void getStats(int64_t& waitTimeUs, int64_t& runTimeUs, int64_t maxItems);
-  void enableCodel(bool);
-  Codel* getCodel();
+  void getStats(int64_t& waitTimeUs, int64_t& runTimeUs, int64_t maxItems)
+    override;
+  void enableCodel(bool) override;
+  Codel* getCodel() override;
 
   // Methods to be invoked by workers
   void workerStarted(Worker<SemType>* worker);

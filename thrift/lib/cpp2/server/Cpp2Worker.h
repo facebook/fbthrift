@@ -76,7 +76,8 @@ class Cpp2Worker
     if (observer) {
       eventBase_->setObserver(observer);
     }
-    Acceptor::init(server_->socket_.get(), eventBase_);
+
+    Acceptor::init(nullptr, eventBase_);
   }
 
   /**

@@ -90,6 +90,9 @@ class SecurityLogger {
   void logEnd(const std::string& key, const std::string& data) {
     log(key, {data}, END);
   }
+
+  // Only to be used for testing
+  virtual void moveMockTime() {}
 };
 
 }}  // apache::thrift

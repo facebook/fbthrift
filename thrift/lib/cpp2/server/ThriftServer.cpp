@@ -28,8 +28,6 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 
-#include <boost/thread/barrier.hpp>
-
 #include <iostream>
 #include <random>
 #include <sys/socket.h>
@@ -84,6 +82,18 @@ const std::chrono::milliseconds ThriftServer::DEFAULT_TASK_EXPIRE_TIME =
 const std::chrono::milliseconds ThriftServer::DEFAULT_TIMEOUT =
     std::chrono::milliseconds(60000);
 
+class ThriftAcceptorFactory : public folly::AcceptorFactory {
+ public:
+  explicit ThriftAcceptorFactory(ThriftServer* server)
+      : server_(server) {}
+
+  virtual std::shared_ptr<folly::Acceptor> newAcceptor(folly::EventBase* eventBase) {
+    return std::make_shared<Cpp2Worker>(server_, nullptr, eventBase);
+  }
+ private:
+  ThriftServer* server_;
+};
+
 ThriftServer::ThriftServer() :
   ThriftServer("", false) {}
 
@@ -120,7 +130,6 @@ ThriftServer::ThriftServer(const std::string& saslPolicy,
   queueSends_(true),
   enableCodel_(false),
   stopWorkersOnStopListening_(true),
-  reusePortEnabled_(false),
   isDuplex_(false) {
 
   // SASL setup
@@ -131,6 +140,10 @@ ThriftServer::ThriftServer(const std::string& saslPolicy,
     setSaslEnabled(true);
     setNonSaslEnabled(true);
   }
+  // Disable replay caching since we're doing mutual auth. Enabling
+  // this will significantly degrade perf. Force this to overwrite
+  // existing env variables to avoid performance regressions.
+  setenv("KRB5RCACHETYPE", "none", 1);
 }
 
 ThriftServer::ThriftServer(
@@ -157,12 +170,9 @@ ThriftServer::~ThriftServer() {
   stopWorkers();
 }
 
-void ThriftServer::useExistingSocket(TAsyncServerSocket::UniquePtr socket) {
-  if (socket_ == nullptr) {
-    socket_ = std::move(socket);
-    socket_->setShutdownSocketSet(shutdownSocketSet_.get());
-    socket_->getAddress(&address_);
-  }
+void ThriftServer::useExistingSocket(TAsyncServerSocket::UniquePtr socket)
+{
+  socket_ = std::move(socket);
 }
 
 void ThriftServer::useExistingSockets(const std::vector<int>& sockets) {
@@ -176,17 +186,22 @@ void ThriftServer::useExistingSocket(int socket) {
 }
 
 std::vector<int> ThriftServer::getListenSockets() const {
-  return (socket_ != nullptr) ? socket_->getSockets() : std::vector<int>{};
+  std::vector<int> sockets;
+  for (const auto  & socket : getSockets()) {
+    auto newsockets = socket->getSockets();
+    sockets.insert(sockets.end(), newsockets.begin(), newsockets.end());
+  }
+  return sockets;
 }
 
 int ThriftServer::getListenSocket() const {
-  if (socket_ != nullptr) {
-    std::vector<int> sockets = socket_->getSockets();
-    CHECK(sockets.size() == 1);
-    return sockets[0];
+  std::vector<int> sockets = getListenSockets();
+  if (sockets.size() == 0) {
+    return -1;
   }
 
-  return -1;
+  CHECK(sockets.size() == 1);
+  return sockets[0];
 }
 
 TEventBaseManager* ThriftServer::getEventBaseManager() {
@@ -201,7 +216,6 @@ void ThriftServer::setup() {
   DCHECK_GT(nWorkers_, 0);
 
   uint32_t threadsStarted = 0;
-  bool eventBaseAttached = false;
 
   // Make sure EBM exists if we haven't set one explicitly
   getEventBaseManager();
@@ -219,27 +233,6 @@ void ThriftServer::setup() {
 
     if (!observer_ && apache::thrift::observerFactory_) {
       observer_ = apache::thrift::observerFactory_->getObserver();
-    }
-
-    // bind to the socket
-    if (!serverChannel_) {
-      if (socket_ == nullptr) {
-        socket_.reset(new TAsyncServerSocket());
-        socket_->setShutdownSocketSet(shutdownSocketSet_.get());
-        if (reusePortEnabled_) {
-          socket_->setReusePortEnabled(reusePortEnabled_);
-        }
-        if (port_ != -1) {
-          socket_->bind(port_);
-        } else {
-          DCHECK(address_.isInitialized());
-          socket_->bind(address_);
-        }
-      }
-
-      socket_->listen(listenBacklog_);
-      socket_->setMaxNumMessagesInQueue(maxNumMsgsInQueue_);
-      socket_->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
     }
 
     // We always need a threadmanager for cpp2.
@@ -322,26 +315,32 @@ void ThriftServer::setup() {
     });
 
     if (!serverChannel_) {
+
+      ServerBootstrap::socketConfig.acceptBacklog = listenBacklog_;
+
+      // Resize the IO pool
+      ioThreadPool_->setNumThreads(nWorkers_);
+
+      ServerBootstrap::childHandler(
+        std::make_shared<ThriftAcceptorFactory>(this));
+      ServerBootstrap::group(acceptPool_, ioThreadPool_);
+      if (socket_) {
+        ServerBootstrap::bind(std::move(socket_));
+      } else if (port_ != -1) {
+        ServerBootstrap::bind(port_);
+      } else {
+        ServerBootstrap::bind(address_);
+      }
       // Update address_ with the address that we are actually bound to.
       // (This is needed if we were supplied a pre-bound socket, or if
       // address_'s port was set to 0, so an ephemeral port was chosen by
       // the kernel.)
-      if (socket_) {
-        socket_->getAddress(&address_);
-      }
+      ServerBootstrap::getSockets()[0]->getAddress(&address_);
 
-      if (socket_) {
-        socket_->attachEventBase(eventBaseManager_->getEventBase());
-      }
-      eventBaseAttached = true;
-
-      // Resize the IO pool
-      ioThreadPool_->setNumThreads(nWorkers_);
-      {
-        std::lock_guard<std::mutex> lock(workerPoolMutex_);
-        workerPool_ = std::make_shared<Cpp2WorkerPool>(
-          this, ioThreadPool_.get());
-        ioThreadPool_->addObserver(workerPool_);
+      for (auto& socket : ServerBootstrap::getSockets()) {
+        socket->setShutdownSocketSet(shutdownSocketSet_.get());
+        socket->setMaxNumMessagesInQueue(maxNumMsgsInQueue_);
+        socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
       }
 
       // Notify handler of the preServe event
@@ -349,26 +348,12 @@ void ThriftServer::setup() {
         eventHandler_->preServe(&address_);
       }
 
-      if (socket_) {
-        socket_->startAccepting();
-      }
-
     } else {
       CHECK(ioThreadPool_->numThreads() == 0);
       duplexWorker_ = folly::make_unique<Cpp2Worker>(this, serverChannel_);
     }
   } catch (...) {
-    if (!serverChannel_) {
-      ioThreadPool_->join();
-    }
-
-    if (socket_) {
-      if (eventBaseAttached) {
-        socket_->detachEventBase();
-      }
-
-      socket_.reset();
-    }
+    ServerBootstrap::stop();
 
     // avoid crash on stop()
     serveEventBase_ = nullptr;
@@ -388,7 +373,7 @@ void ThriftServer::serve() {
     return;
   }
   SCOPE_EXIT { this->cleanUp(); };
-  eventBaseManager_->getEventBase()->loop();
+  eventBaseManager_->getEventBase()->loopForever();
 }
 
 void ThriftServer::cleanUp() {
@@ -404,10 +389,11 @@ void ThriftServer::cleanUp() {
 }
 
 uint64_t ThriftServer::getNumDroppedConnections() const {
-  if (!socket_) {
-    return 0;
+  uint64_t droppedConns = 0;
+  for (auto& socket : getSockets()) {
+    droppedConns += socket->getNumDroppedConnections();
   }
-  return socket_->getNumDroppedConnections();
+  return droppedConns;
 }
 
 void ThriftServer::stop() {
@@ -418,23 +404,22 @@ void ThriftServer::stop() {
 }
 
 void ThriftServer::stopListening() {
-  if (socket_ != nullptr) {
+  for (auto& socket : getSockets()) {
     // Stop accepting new connections
-    socket_->pauseAccepting();
-    socket_->detachEventBase();
+    socket->getEventBase()->runInEventBaseThreadAndWait([&](){
+      socket->pauseAccepting();
 
-    if (stopWorkersOnStopListening_) {
-      // Wait for any tasks currently running on the task queue workers to
-      // finish, then stop the task queue workers. Have to do this now, so
-      // there aren't tasks completing and trying to write to i/o thread
-      // workers after we've stopped the i/o workers.
-      threadManager_->join();
-    }
+      // Close the listening socket. This will also cause the workers to stop.
+      socket->stopAccepting();
+    });
+  }
 
-    // Close the listening socket. This will also cause the workers to stop.
-    socket_.reset();
-
-    // Return now and don't wait for worker threads to stop
+  if (stopWorkersOnStopListening_) {
+    // Wait for any tasks currently running on the task queue workers to
+    // finish, then stop the task queue workers. Have to do this now, so
+    // there aren't tasks completing and trying to write to i/o thread
+    // workers after we've stopped the i/o workers.
+    threadManager_->join();
   }
 }
 
@@ -442,8 +427,7 @@ void ThriftServer::stopWorkers() {
   if (serverChannel_) {
     return;
   }
-
-  ioThreadPool_->join();
+  ServerBootstrap::stop();
 }
 
 void ThriftServer::immediateShutdown(bool abortConnections) {
@@ -491,13 +475,14 @@ ThriftServer::CumulativeFailureInjection::test() const {
 
 int32_t ThriftServer::getPendingCount() const {
   int32_t count = 0;
-  auto workerPool = getWorkerPool();
-  if (!workerPool) {
+  if (!getIOGroup()) { // Not enabled in duplex mode
     return 0;
   }
-  workerPool->forEachWorker([&](std::shared_ptr<Cpp2Worker> worker){
+  forEachWorker([&](folly::Acceptor* acceptor) {
+    auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
     count += worker->getPendingCount();
   });
+
   return count;
 }
 
@@ -559,12 +544,17 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
     reqload = (100*(activeRequests_ + getPendingCount()))
       / ((float)maxRequests_);
   }
-  auto workerPool = getWorkerPool();
-  if (maxConnections_ > 0 && workerPool) {
+  auto workerFactory =
+    std::dynamic_pointer_cast<folly::wangle::NamedThreadFactory>(
+      getIOGroup()->getThreadFactory());
+
+  if (maxConnections_ > 0) {
     int32_t connections = 0;
-    workerPool->forEachWorker([&](std::shared_ptr<Cpp2Worker> worker){
+    forEachWorker([&](folly::Acceptor* acceptor) mutable {
+      auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
       connections += worker->getPendingCount();
     });
+
     connload = (100*connections) / (float)maxConnections_;
   }
 
@@ -573,56 +563,18 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
     queueload = tm->getCodel()->getLoad();
   }
 
+  if (VLOG_IS_ON(1)) {
+    FB_LOG_EVERY_MS(INFO, 1000 * 10)
+      << workerFactory->getNamePrefix() << " load is: "
+      << reqload << "% requests, "
+      << connload << "% connections, "
+      << queueload << "% queue time, "
+      << activeRequests_ << " active reqs, "
+      << getPendingCount() << " pending reqs";
+  }
+
   int load = std::max({reqload, connload, queueload});
-  FB_LOG_EVERY_MS(INFO, 1000*10)
-    << getIOThreadFactory()->getNamePrefix()
-    << ": Load is: " << reqload << "% requests "
-    << connload << "% connections "
-    << queueload << "% queue time"
-    << " active reqs " << activeRequests_
-    << " pending reqs  " << getPendingCount();
   return load;
-}
-
-template <typename F>
-void ThriftServer::Cpp2WorkerPool::forEachWorker(F&& f) {
-  for (const auto& kv : workers_) {
-    f(kv.second);
-  }
-}
-
-ThriftServer::Cpp2WorkerPool::Cpp2WorkerPool(
-  ThriftServer* server,
-  folly::wangle::IOThreadPoolExecutor* exec)
-    : server_(server)
-    , exec_(exec) {
-  CHECK(!server_->serverChannel_);
-}
-
-void ThriftServer::Cpp2WorkerPool::threadStarted(
-    folly::wangle::ThreadPoolExecutor::ThreadHandle* h) {
-  auto worker = std::make_shared<Cpp2Worker>(server_, nullptr,
-                                             exec_->getEventBase(h));
-  workers_.insert({h, worker});
-}
-
-void ThriftServer::Cpp2WorkerPool::threadStopped(
-    folly::wangle::ThreadPoolExecutor::ThreadHandle* h) {
-  auto worker = workers_.find(h);
-  CHECK(worker != workers_.end());
-
-  if (server_->socket_) {
-    server_->socket_->removeAcceptCallback(worker->second.get(), nullptr);
-  }
-
-  auto barrier = std::make_shared<boost::barrier>(2);
-  worker->second->getEventBase()->runInEventBaseThread([=]() {
-    worker->second->dropAllConnections();
-    barrier->wait();
-  });
-
-  barrier->wait();
-  workers_.erase(worker);
 }
 
 }} // apache::thrift

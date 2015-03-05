@@ -207,6 +207,7 @@ class THeader {
   void setHeader(const std::string& key, const std::string& value);
   void setHeaders(StringToStringMap&&);
   void setPersistentHeader(const std::string& key, const std::string& value);
+  void setPersistentHeaders(StringToStringMap&&);
   void clearHeaders();
   /**
    * this function only clears the local persistent
@@ -228,9 +229,19 @@ class THeader {
     return readHeaders_;
   }
 
+  StringToStringMap& getPersistentHeaders() {
+    return persisReadHeaders_;
+  }
+
   StringToStringMap releaseHeaders() {
     StringToStringMap headers;
     readHeaders_.swap(headers);
+    return headers;
+  }
+
+  StringToStringMap releasePersistentHeaders() {
+    StringToStringMap headers;
+    persisReadHeaders_.swap(headers);
     return headers;
   }
 

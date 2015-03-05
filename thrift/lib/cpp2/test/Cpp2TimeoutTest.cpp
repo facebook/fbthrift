@@ -83,7 +83,7 @@ TEST(ThriftServer, IdleTimeoutTest) {
   auto client_channel = HeaderClientChannel::newChannel(socket);
   CloseChecker checker;
   client_channel->setCloseCallback(&checker);
-  base.runAfterDelay([&base](){
+  base.tryRunAfterDelay([&base](){
       base.terminateLoopSoon();
     }, 100);
   base.loopForever();
@@ -132,7 +132,7 @@ TEST(ThriftServer, IdleTimeoutAfterTest) {
 
   EXPECT_FALSE(checker.getClosed());
 
-  base.runAfterDelay([&base](){
+  base.tryRunAfterDelay([&base](){
       base.terminateLoopSoon();
     }, 200);
   base.loopForever();

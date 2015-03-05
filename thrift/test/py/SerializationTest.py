@@ -35,6 +35,7 @@ from thrift.transport import TTransport
 from thrift.transport import TSocket
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol import TCompactProtocol
+from thrift.protocol import THeaderProtocol
 from thrift.protocol import TJSONProtocol
 from thrift.protocol import TSimpleJSONProtocol
 from thrift.util import Serializer
@@ -167,16 +168,81 @@ class SimpleJSONTest(AbstractTest):
 class JSONProtocolTest(AbstractTest, unittest.TestCase):
     protocol_factory = TJSONProtocol.TJSONProtocolFactory()
 
+class HeaderDefaultFactory(THeaderProtocol.THeaderProtocolFactory):
+
+    def __init__(self, default_protocol):
+        super(HeaderDefaultFactory, self).__init__()
+        self.defaultProtocol = default_protocol
+
+    def getProtocol(self, trans):
+        proto = super(HeaderDefaultFactory, self).getProtocol(trans)
+        proto.trans.set_protocol_id(self.defaultProtocol)
+        proto.reset_protocol()
+        return proto
+
+class HeaderTest(AbstractTest):
+
+    def _serialize(self, obj):
+        return Serializer.serialize(self.serialize_factory, obj)
+
+    def _deserialize(self, objtype, data):
+        return Serializer.deserialize(self.deserialize_factory, data, objtype())
+
+class HeaderCompactToCompactTest(HeaderTest, unittest.TestCase):
+    serialize_factory = deserialize_factory = HeaderDefaultFactory(
+        THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL
+    )
+
+class HeaderBinaryToBinaryTest(HeaderTest, unittest.TestCase):
+    serialize_factory = deserialize_factory = HeaderDefaultFactory(
+        THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL
+    )
+
+class HeaderCompactToBinaryTest(HeaderTest, unittest.TestCase):
+    serialize_factory = HeaderDefaultFactory(
+        THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL
+    )
+    deserialize_factory = HeaderDefaultFactory(
+        THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL
+    )
+class HeaderBinaryToCompactTest(HeaderTest, unittest.TestCase):
+    serialize_factory = HeaderDefaultFactory(
+        THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL
+    )
+    deserialize_factory = HeaderDefaultFactory(
+        THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL
+    )
+class HeaderBinaryToDefault(HeaderTest, unittest.TestCase):
+    serialize_factory = HeaderDefaultFactory(
+        THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL
+    )
+    deserialize_factory = THeaderProtocol.THeaderProtocolFactory()
+class HeaderCompactToDefault(HeaderTest, unittest.TestCase):
+    serialize_factory = HeaderDefaultFactory(
+        THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL
+    )
+    deserialize_factory = THeaderProtocol.THeaderProtocolFactory()
+
+
 def suite():
     suite = unittest.TestSuite()
     loader = unittest.TestLoader()
 
-    suite.addTest(loader.loadTestsFromTestCase(NormalBinaryTest))
-    suite.addTest(loader.loadTestsFromTestCase(AcceleratedBinaryTest))
-    suite.addTest(loader.loadTestsFromTestCase(AcceleratedFramedTest))
-    suite.addTest(loader.loadTestsFromTestCase(CompactTest))
-    suite.addTest(loader.loadTestsFromTestCase(SimpleJSONTest))
-    suite.addTest(loader.loadTestsFromTestCase(JSONProtocolTest))
+    test_classes = (
+        NormalBinaryTest,
+        AcceleratedBinaryTest,
+        AcceleratedFramedTest,
+        CompactTest,
+        SimpleJSONTest,
+        JSONProtocolTest,
+        HeaderCompactToCompactTest,
+        HeaderBinaryToBinaryTest,
+        HeaderBinaryToCompactTest,
+        HeaderCompactToBinaryTest,
+    )
+    for clazz in test_classes:
+        suite.addTest(loader.loadTestsFromTestCase(clazz))
+
     return suite
 
 if __name__ == "__main__":
