@@ -107,8 +107,8 @@ class DuplexChannel {
    public:
     DuplexCpp2Channel(DuplexChannel& duplex,
         const std::shared_ptr<async::TAsyncTransport>& transport,
-        std::unique_ptr<FramingHandler> framingHandler,
-        std::unique_ptr<ProtectionHandler> protectionHandler)
+        std::unique_ptr<FramingChannelHandler> framingHandler,
+        std::unique_ptr<ProtectionChannelHandler> protectionHandler)
       : Cpp2Channel(transport, std::move(framingHandler), std::move(protectionHandler))
       , duplex_(duplex)
       , client_(nullptr)
@@ -159,9 +159,9 @@ class DuplexChannel {
   Who mainChannel_;
   Who lastSender_;
 
-  class DuplexFramingHandler : public FramingHandler {
+  class FramingHandler : public FramingChannelHandler {
    public:
-    explicit DuplexFramingHandler(DuplexChannel& duplex)
+    explicit FramingHandler(DuplexChannel& duplex)
         : duplex_(duplex)
     {}
 
@@ -174,12 +174,12 @@ class DuplexChannel {
     DuplexChannel& duplex_;
     folly::IOBufQueue queue_;
 
-    FramingHandler& getHandler(DuplexChannel::Who::WhoEnum who);
+    FramingChannelHandler& getHandler(DuplexChannel::Who::WhoEnum who);
   };
 
-  class DuplexProtectionHandler : public ProtectionHandler {
+  class ProtectionHandler : public ProtectionChannelHandler {
    public:
-    explicit DuplexProtectionHandler(DuplexChannel& duplex)
+    explicit ProtectionHandler(DuplexChannel& duplex)
         : duplex_(duplex)
     {}
 

@@ -68,7 +68,7 @@ class EventBaseAborter : public TAsyncTimeout {
 };
 
 // Creates/unwraps a framed message (LEN(MSG) | MSG)
-class TestFramingHandler : public FramingHandler {
+class FramingHandler : public FramingChannelHandler {
 public:
   std::pair<unique_ptr<IOBuf>, size_t> removeFrame(IOBufQueue* q) override {
     assert(q);
@@ -125,7 +125,7 @@ unique_ptr<Channel, TDelayedDestruction::Destructor> createChannel(
 template <>
 unique_ptr<Cpp2Channel, TDelayedDestruction::Destructor> createChannel(
     const shared_ptr<TAsyncTransport>& transport) {
-  return Cpp2Channel::newChannel(transport, make_unique<TestFramingHandler>());
+  return Cpp2Channel::newChannel(transport, make_unique<FramingHandler>());
 }
 
 template<typename Channel1, typename Channel2>

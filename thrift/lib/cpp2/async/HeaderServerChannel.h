@@ -1,19 +1,21 @@
 /*
- * Copyright 2015 Facebook, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
-
 #ifndef THRIFT_ASYNC_THEADERSERVERCHANNEL_H_
 #define THRIFT_ASYNC_THEADERSERVERCHANNEL_H_ 1
 
@@ -25,7 +27,6 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TDelayedDestruction.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <memory>
 
 #include <unordered_map>
@@ -41,7 +42,7 @@ namespace apache { namespace thrift {
 class HeaderServerChannel : public ResponseChannel,
                             public MessageChannel::RecvCallback,
                             virtual public async::TDelayedDestruction {
-  typedef ProtectionHandler::ProtectionState ProtectionState;
+  typedef ProtectionChannelHandler::ProtectionState ProtectionState;
 protected:
   virtual ~HeaderServerChannel(){}
 
@@ -50,9 +51,7 @@ protected:
     const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport);
 
   explicit HeaderServerChannel(
-    const std::shared_ptr<Cpp2Channel>& cpp2Channel,
-    std::shared_ptr<apache::thrift::async::TAsyncTransport> transport =
-      nullptr);
+    const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
   static std::unique_ptr<HeaderServerChannel,
                          apache::thrift::async::TDelayedDestruction::Destructor>
@@ -67,7 +66,7 @@ protected:
   // TDelayedDestruction methods
   void destroy();
 
-  folly::AsyncTransport* getTransport() {
+  apache::thrift::async::TAsyncTransport* getTransport() {
     return cpp2Channel_->getTransport();
   }
 
@@ -157,10 +156,6 @@ protected:
     return header_.get();
   }
 
-  std::shared_ptr<apache::thrift::transport::THeader> getHeaderShared() {
-    return header_;
-  }
-
   // The default SASL implementation can be overridden for testing or
   // other purposes.  Most users will never need to call this.
   void setSaslServer(std::unique_ptr<SaslServer> server) {
@@ -194,18 +189,17 @@ protected:
     cpp2Channel_->closeNow();
   }
 
-  class ServerFramingHandler : public FramingHandler {
+  class ServerFramingHandler : public FramingChannelHandler {
   public:
-    explicit ServerFramingHandler(
-        std::shared_ptr<apache::thrift::transport::THeader> header)
-      : header_(header) {}
+    explicit ServerFramingHandler(HeaderServerChannel& channel)
+      : channel_(channel) {}
 
     std::pair<std::unique_ptr<folly::IOBuf>, size_t>
     removeFrame(folly::IOBufQueue* q) override;
 
     std::unique_ptr<folly::IOBuf> addFrame(std::unique_ptr<folly::IOBuf> buf) override;
   private:
-    std::shared_ptr<apache::thrift::transport::THeader> header_;
+    HeaderServerChannel& channel_;
   };
 
 private:
@@ -224,7 +218,7 @@ private:
   static std::string getTransportDebugString(
       apache::thrift::async::TAsyncTransport *transport);
 
-  std::shared_ptr<apache::thrift::transport::THeader> header_;
+  std::unique_ptr<apache::thrift::transport::THeader> header_;
   ResponseChannel::Callback* callback_;
   std::unique_ptr<SaslServer> saslServer_;
 

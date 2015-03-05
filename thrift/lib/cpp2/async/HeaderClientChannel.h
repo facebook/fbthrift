@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp/async/Request.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <memory>
 
 #include <unordered_map>
@@ -43,7 +42,7 @@ namespace apache { namespace thrift {
 class HeaderClientChannel : public RequestChannel,
                             public MessageChannel::RecvCallback,
                             virtual public async::TDelayedDestruction {
-  typedef ProtectionHandler::ProtectionState ProtectionState;
+  typedef ProtectionChannelHandler::ProtectionState ProtectionState;
  protected:
   virtual ~HeaderClientChannel(){}
 
@@ -75,7 +74,7 @@ class HeaderClientChannel : public RequestChannel,
   // TDelayedDestruction methods
   void destroy();
 
-  folly::AsyncTransport* getTransport() {
+  apache::thrift::async::TAsyncTransport* getTransport() {
     return cpp2Channel_->getTransport();
   }
 
@@ -188,7 +187,7 @@ class HeaderClientChannel : public RequestChannel,
     return getProtectionState() == ProtectionState::VALID;
   }
 
-  class ClientFramingHandler : public FramingHandler {
+  class ClientFramingHandler : public FramingChannelHandler {
   public:
     explicit ClientFramingHandler(HeaderClientChannel& channel)
       : channel_(channel) {}

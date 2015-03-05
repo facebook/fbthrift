@@ -33,15 +33,15 @@ DuplexChannel::DuplexChannel(Who::WhoEnum who,
                              const shared_ptr<TAsyncTransport>& transport)
   : cpp2Channel_(new DuplexCpp2Channel(
                      *this, transport,
-                     make_unique<DuplexFramingHandler>(*this),
-                     make_unique<DuplexProtectionHandler>(*this)),
+                     make_unique<FramingHandler>(*this),
+                     make_unique<ProtectionHandler>(*this)),
                  TDelayedDestruction::Destructor())
   , clientChannel_(new DuplexClientChannel(*this, cpp2Channel_),
                    async::TDelayedDestruction::Destructor())
   , clientFramingHandler_(*clientChannel_.get())
   , serverChannel_(new DuplexServerChannel(*this, cpp2Channel_),
                    async::TDelayedDestruction::Destructor())
-  , serverFramingHandler_(serverChannel_->getHeaderShared())
+  , serverFramingHandler_(*serverChannel_.get())
   , mainChannel_(who)
 {
   mainChannel_.get(); // check that it's not UNKNOWN
@@ -50,7 +50,7 @@ DuplexChannel::DuplexChannel(Who::WhoEnum who,
   cpp2Channel_->primeCallbacks(clientChannel_.get(), serverChannel_.get());
 }
 
-FramingHandler& DuplexChannel::DuplexFramingHandler::getHandler(
+FramingChannelHandler& DuplexChannel::FramingHandler::getHandler(
     Who::WhoEnum who) {
   switch (who) {
   case Who::CLIENT:
@@ -59,12 +59,12 @@ FramingHandler& DuplexChannel::DuplexFramingHandler::getHandler(
     return duplex_.serverFramingHandler_;
   default:
     CHECK(false);
-    return *static_cast<FramingHandler*>(nullptr);
+    return *static_cast<FramingChannelHandler*>(nullptr);
   }
 }
 
 std::pair<std::unique_ptr<folly::IOBuf>, size_t>
-DuplexChannel::DuplexFramingHandler::removeFrame(folly::IOBufQueue* q) {
+DuplexChannel::FramingHandler::removeFrame(folly::IOBufQueue* q) {
   if (q) {
     queue_.append(*q);
   }
@@ -118,8 +118,7 @@ DuplexChannel::DuplexFramingHandler::removeFrame(folly::IOBufQueue* q) {
 }
 
 std::unique_ptr<folly::IOBuf>
-DuplexChannel::DuplexFramingHandler::addFrame(
-    std::unique_ptr<folly::IOBuf> buf) {
+DuplexChannel::FramingHandler::addFrame(std::unique_ptr<folly::IOBuf> buf) {
   buf = getHandler(duplex_.lastSender_.get()).addFrame(std::move(buf));
 
   if (duplex_.lastSender_.get() != duplex_.mainChannel_.get()) {

@@ -133,15 +133,16 @@ void AsyncCpp2Test(bool enable_security) {
 
   boost::polymorphic_downcast<HeaderClientChannel*>(
     client.getChannel())->setTimeout(10000);
-  client.sendResponse([&](ClientReceiveState&& state) {
-    std::string response;
-    try {
-      TestServiceAsyncClient::recv_sendResponse(
-          response, state);
-    } catch(const std::exception& ex) {
-    }
-    EXPECT_EQ(response, "test64");
-  }, 64);
+  client.sendResponse([](ClientReceiveState&& state) {
+                        std::string response;
+                        try {
+                          TestServiceAsyncClient::recv_sendResponse(
+                              response, state);
+                        } catch(const std::exception& ex) {
+                        }
+                        EXPECT_EQ(response, "test64");
+                      },
+                      64);
   base.loop();
 }
 
@@ -602,7 +603,7 @@ class Callback : public RequestCallback {
     } catch(const apache::thrift::transport::TTransportException& ex) {
       // Verify we got a write and not a read error
       // Comparing substring because the rest contains ips and ports
-      std::string expected = "transport is closed in write()";
+      std::string expected = "write() called with socket in invalid state";
       std::string actual = std::string(ex.what()).substr(0, expected.size());
       EXPECT_EQ(expected, actual);
     } catch (...) {
