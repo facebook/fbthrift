@@ -28,11 +28,19 @@
 #include <folly/String.h>
 
 // DO NOT modify this flag from your application
+#ifndef NO_LIB_GFLAGS
 DEFINE_string(
   thrift_cc_manager_kill_switch_file,
   "/var/thrift_security/disable_cc_manager",
   "A file, which when present, acts as a kill switch for and disables the cc "
   " manager thread running on the host.");
+#else
+namespace apache { namespace thrift { namespace krb5 {
+const std::string FLAGS_thrift_cc_manager_kill_switch_file(
+  "/var/thrift_security/disable_cc_manager");
+}}} // namespace apache::thrift::krb5
+#endif
+
 
 // Time in seconds after which cc manager kill switch expires
 static const time_t kCcManagerKillSwitchExpired = 86400;
