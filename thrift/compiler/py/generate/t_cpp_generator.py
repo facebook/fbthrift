@@ -94,6 +94,7 @@ class CppGenerator(t_generator.Generator):
         'json': 'enable simple json protocol',
         'implicit_templates' : 'templates are instantiated implicitly' +
                                'instead of explicitly',
+        'separate_processmap' : 'Put the serice processmap in a separate cpp',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -1265,7 +1266,6 @@ class CppGenerator(t_generator.Generator):
             with oneways:
                 out(',\n'.join('"' + function.name + '"'
                         for function in service.functions if function.oneway))
-            prot = 0
             for shortprot, protname, prottype in self.protocols:
                 out(('typedef void ({0}::*{1}ProcessFunction)(std::unique_ptr' +
                    '<apache::thrift::ResponseChannel::Request> req, ').format(
@@ -1286,9 +1286,8 @@ class CppGenerator(t_generator.Generator):
                 process_map = out().defn(map_type + ' {name}',
                                          name=map_name,
                                          modifiers='static')
-                process_map.output = self._additional_outputs[prot]
-                if prot < 1:  # TODO: fix build tool to use more than 2 outputs
-                    prot = prot + 1
+                if self.flag_separate_processmap:
+                    process_map.output = self._additional_outputs[0]
                 process_map.epilogue = ';'
 
                 with process_map:
@@ -3707,8 +3706,8 @@ class CppGenerator(t_generator.Generator):
         output_tcc = self._write_to(filename + '.tcc') if tcc else None
         additional_outputs = []
         if processmap:
-            for a, b, c in self.protocols:
-                additional_outputs.append(self._write_to(filename + "_processmap_" + a + ".cpp"))
+            output_processmap_cpp = self._write_to(filename + "_processmap.cpp")
+            additional_outputs.append(output_processmap_cpp)
 
         header_path = self._with_include_prefix(self._program, filename)
 

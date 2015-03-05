@@ -29,8 +29,6 @@ noinst_LIBRARIES = libsaslstubs.a
 gen-cpp2/Sasl_constants.cpp: gen-cpp2/Sasl_types.h
 gen-cpp2/Sasl_types.cpp: gen-cpp2/Sasl_types.h
 gen-cpp2/SaslAuthService.cpp: gen-cpp2/Sasl_types.h
-gen-cpp2/SaslAuthService_processmap_binary.cpp: gen-cpp2/Sasl_types.h
-gen-cpp2/SaslAuthService_processmap_compact.cpp: gen-cpp2/Sasl_types.h
 
 thrift2includedir = $(includedir)/thrift/lib/cpp2
 
@@ -145,9 +143,7 @@ THRIFT = $(top_builddir)/compiler/thrift1
 
 BUILT_SOURCES = gen-cpp2/Sasl_constants.cpp \
 		gen-cpp2/Sasl_types.cpp \
-		gen-cpp2/SaslAuthService.cpp \
-		gen-cpp2/SaslAuthService_processmap_binary.cpp \
-		gen-cpp2/SaslAuthService_processmap_compact.cpp
+		gen-cpp2/SaslAuthService.cpp
 
 gen-cpp2/Sasl_types.h: Sasl.thrift
 	PYTHONPATH=$(PY_LOCAL_PATH) python -mthrift_compiler.main --gen cpp2 $<
@@ -160,9 +156,7 @@ gen-cpp2/SaslAuthService.cpp: gen-cpp2/Sasl_types.h
 
 libsaslstubs_a_SOURCES = gen-cpp2/Sasl_constants.cpp \
 			 gen-cpp2/Sasl_types.cpp \
-			 gen-cpp2/SaslAuthService.cpp \
-			 gen-cpp2/SaslAuthService_processmap_binary.cpp \
-			 gen-cpp2/SaslAuthService_processmap_compact.cpp
+			 gen-cpp2/SaslAuthService.cpp
 
 libsaslstubs_a_CPPFLAGS = -fPIC $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
 
