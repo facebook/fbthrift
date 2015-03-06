@@ -58,8 +58,6 @@ class TestInterface : public TestServiceSvIf {
   void async_tm_serializationTest(std::unique_ptr<StringCob> callback,
                                   bool inEventBase) {
     std::unique_ptr<std::string> sp(new std::string("hello world"));
-    auto st = inEventBase ? SerializationThread::EVENT_BASE :
-                            SerializationThread::CURRENT;
     callback->result(std::move(sp));
   }
 

@@ -33,11 +33,6 @@
 
 namespace apache { namespace thrift {
 
-enum class SerializationThread {
-  CURRENT,
-  EVENT_BASE
-};
-
 class EventTask : public virtual apache::thrift::concurrency::Runnable {
  public:
   EventTask(std::function<void()>&& taskFunc,
@@ -466,6 +461,7 @@ class HandlerCallbackBase {
   }
 
   void sendReply(folly::IOBufQueue queue) {
+    transform(queue);
     if (getEventBase()->isInEventBaseThread()) {
       req_->sendReply(queue.move());
     } else {
@@ -495,13 +491,22 @@ class HandlerCallbackBase {
 
 template <typename T>
 class HandlerCallback : public HandlerCallbackBase {
+  // template that typedefs type to its argument, unless the argument is a
+  // unique_ptr<S>, in which case it typedefs type to S.
+  template <class S>
+  struct inner_type {typedef S type;};
+  template <class S>
+  struct inner_type<std::unique_ptr<S>> {typedef S type;};
+
+ public:
+  typedef typename inner_type<T>::type ResultType;
+
+ private:
   typedef folly::IOBufQueue(*cob_ptr)(
       int32_t protoSeqId,
       std::unique_ptr<apache::thrift::ContextStack>,
-      const T&);
+      const ResultType&);
  public:
-
-  typedef T ResultType;
 
   HandlerCallback()
       : cp_(nullptr) {}
@@ -522,120 +527,31 @@ class HandlerCallback : public HandlerCallbackBase {
     this->protoSeqId_ = protoSeqId;
   }
 
-  void result(const T& r) {
+  void result(const ResultType& r) {
     doResult(r);
   }
-  void resultInThread(
-      const T& r,
-      SerializationThread st = SerializationThread::CURRENT) {
-    if (st == SerializationThread::CURRENT) {
-      result(r);
-      delete this;
-    } else {
-      getEventBase()->runInEventBaseThread([=](){
-          this->result(r);
-          delete this;
-      });
-    }
-  }
- protected:
-
-  // Always called in IO thread
-  virtual void doResult(const T& r) {
-    assert(cp_);
-    auto queue = cp_(this->protoSeqId_,
-                     std::move(this->ctx_),
-                     r);
-    transform(queue);
-    sendReply(std::move(queue));
-  }
-
-  cob_ptr cp_;
-};
-
-template <typename T>
-class HandlerCallback<std::unique_ptr<T>> : public HandlerCallbackBase {
-  typedef folly::IOBufQueue(*cob_ptr)(
-      int32_t protoSeqId,
-      std::unique_ptr<apache::thrift::ContextStack>,
-      const T&);
- public:
-
-  typedef T ResultType;
-
-  HandlerCallback()
-      : cp_(nullptr) {}
-
-  HandlerCallback(
-    std::unique_ptr<ResponseChannel::Request> req,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
-    cob_ptr cp,
-    exn_ptr ep,
-    exnw_ptr ewp,
-    int32_t protoSeqId,
-    apache::thrift::async::TEventBase* eb,
-    apache::thrift::concurrency::ThreadManager* tm,
-    Cpp2RequestContext* reqCtx):
-      HandlerCallbackBase(std::move(req), std::move(ctx), ep, ewp,
-                          eb, tm, reqCtx),
-      cp_(cp) {
-    this->protoSeqId_ = protoSeqId;
-  }
-
-  void result(const T& r) {
-    doResult(r);
-  }
-  void result(std::unique_ptr<T> r) {
+  void result(std::unique_ptr<ResultType> r) {
     doResult(*r);
   }
-  void resultInThread(
-      T r,
-      SerializationThread st = SerializationThread::CURRENT) {
-    if (st == SerializationThread::CURRENT) {
-      result(r);
-      delete this;
-    } else {
-      auto r_mw = folly::makeMoveWrapper(std::move(r));
-      getEventBase()->runInEventBaseThread([=](){
-        this->result(*r_mw);
-        delete this;
-      });
-    }
+  void resultInThread(const ResultType& r) {
+    result(r);
+    delete this;
   }
-  void resultInThread(
-      std::unique_ptr<T> r,
-      SerializationThread st = SerializationThread::CURRENT) {
-    if (st == SerializationThread::CURRENT) {
-      result(*r);
-      delete this;
-    } else {
-      auto r_mw = folly::makeMoveWrapper(std::move(r));
-      getEventBase()->runInEventBaseThread([=](){
-        this->result(**r_mw);
-        delete this;
-      });
-    }
+  void resultInThread(std::unique_ptr<ResultType> r) {
+    result(*r);
+    delete this;
   }
-  void resultInThread(
-      const std::shared_ptr<T>& r,
-      SerializationThread st = SerializationThread::CURRENT) {
-    if (st == SerializationThread::CURRENT) {
-      result(*r);
-      delete this;
-    } else {
-      getEventBase()->runInEventBaseThread([=](){
-        this->result(*r);
-        delete this;
-      });
-    }
+  void resultInThread(const std::shared_ptr<ResultType>& r) {
+    result(*r);
+    delete this;
   }
  protected:
-  virtual void doResult(const T& r) {
+
+  virtual void doResult(const ResultType& r) {
     assert(cp_);
     auto queue = cp_(this->protoSeqId_,
                      std::move(this->ctx_),
                      r);
-    transform(queue);
     sendReply(std::move(queue));
   }
 
@@ -674,24 +590,15 @@ class HandlerCallback<void> : public HandlerCallbackBase {
   void done() {
     doDone();
   }
-  void doneInThread(SerializationThread st = SerializationThread::CURRENT) {
-    if (st == SerializationThread::CURRENT) {
-      done();
-      delete this;
-    } else {
-      assert(eb_);
-      this->eb_->runInEventBaseThread([=](){
-        this->done();
-        delete this;
-      });
-    }
+  void doneInThread() {
+    done();
+    delete this;
   }
  protected:
   virtual void doDone() {
     assert(cp_);
     auto queue = cp_(this->protoSeqId_,
                      std::move(this->ctx_));
-    transform(queue);
     sendReply(std::move(queue));
   }
 
