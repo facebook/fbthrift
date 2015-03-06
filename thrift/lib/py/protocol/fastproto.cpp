@@ -589,17 +589,38 @@ decode_struct(Reader *reader, PyObject *value, StructTypeArgs *args,
   PyObject *itemspec;
   StructItemSpec parsedspec;
 
+  int first_tag = 0;
+  bool first_tag_read = false;
+  PyObject *first_item_spec;
+  StructItemSpec first_parsed_spec;
+
   while (true) {
     PyObject *fieldval = nullptr;
     reader->readFieldBegin(fname, ftype, fid);
     if (ftype == TType::T_STOP) {
       break;
     }
-    if (fid < 0) {
-      fid += speclen;
+
+    if (!first_tag_read) {
+      first_tag_read = true;
+      if (speclen == 0) { // Empty struct and all fields will be skipped
+        first_item_spec = Py_None;
+      } else {
+        first_item_spec = PyTuple_GET_ITEM(args->spec, 0);
+        if (first_item_spec != Py_None) {
+          if (!parse_struct_item_spec(&first_parsed_spec, first_item_spec)) {
+            return false;
+          }
+          first_tag = first_parsed_spec.tag;
+        }
+      }
     }
-    if (fid >= 0 && fid < speclen) {
+
+    fid -= first_tag;
+    if (fid > 0 && fid < speclen) {
       itemspec = PyTuple_GET_ITEM(args->spec, fid);
+    } else if (fid == 0) {
+      itemspec = first_item_spec;
     } else {
       itemspec = Py_None;
     }
@@ -619,7 +640,9 @@ decode_struct(Reader *reader, PyObject *value, StructTypeArgs *args,
       }
     }
 
-    if (!parse_struct_item_spec(&parsedspec, itemspec)) {
+    if (fid == 0) {
+      parsedspec = first_parsed_spec;
+    } else if (!parse_struct_item_spec(&parsedspec, itemspec)) {
       return false;
     }
 

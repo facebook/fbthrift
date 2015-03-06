@@ -15,7 +15,8 @@ else:
 from thrift.protocol import fastproto, TBinaryProtocol, TCompactProtocol
 from thrift.transport.TTransport import TMemoryBuffer
 
-from FastProto.ttypes import AStruct, OneOfEach, TestUnion, StructWithUnion
+from FastProto.ttypes import AStruct, OneOfEach, TestUnion, StructWithUnion, \
+        NegativeFieldId
 
 class ReadOnlyBufferWithRefill(TMemoryBuffer):
     def __init__(self, index, value=None):
@@ -127,6 +128,12 @@ class AbstractTest():
     def test_refill(self):
         for idx in range(1, 10):
             self.decode_helper(self.buildOneOfEachB(), split=0.1*idx)
+
+    def test_negative_fid(self):
+        self.encode_helper(NegativeFieldId(anInteger=20,
+            aString='hello', aDouble=1.2))
+        self.decode_helper(NegativeFieldId(anInteger=344444,
+            aString=b'hello again', aDouble=1.34566))
 
 class FastBinaryTest(AbstractTest, unittest.TestCase):
     PROTO = 0

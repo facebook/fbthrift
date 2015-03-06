@@ -30,3 +30,9 @@ struct StructWithUnion {
   1: TestUnion aUnion,
   2: string aString,
 }
+
+struct NegativeFieldId {
+  -1: i32 anInteger,
+  0: string aString,
+  5: double aDouble,
+}
