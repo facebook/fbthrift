@@ -286,6 +286,7 @@ class SimpleJSONProtocolReader {
   template <typename T>
   uint32_t readInContext(T& val);
   inline uint32_t readJSONKey(std::string& key);
+  inline uint32_t readJSONKey(folly::fbstring& key);
   inline uint32_t readJSONKey(bool key);
   template <typename T>
   uint32_t readJSONKey(T& key);
@@ -305,7 +306,8 @@ class SimpleJSONProtocolReader {
   inline uint32_t readJSONVal(bool& val);
   inline uint32_t readJSONNull();
   inline uint32_t readJSONEscapeChar(uint8_t& out);
-  inline uint32_t readJSONString(std::string& val);
+  template <typename StrType>
+  uint32_t readJSONString(StrType& val);
   template <typename StrType>
   uint32_t readJSONBase64(StrType& s);
 

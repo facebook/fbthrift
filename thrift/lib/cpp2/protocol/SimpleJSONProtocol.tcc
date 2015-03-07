@@ -662,6 +662,10 @@ uint32_t SimpleJSONProtocolReader::readJSONKey(std::string& key) {
   return readJSONString(key);
 }
 
+uint32_t SimpleJSONProtocolReader::readJSONKey(folly::fbstring& key) {
+  return readJSONString(key);
+}
+
 uint32_t SimpleJSONProtocolReader::readJSONKey(bool key) {
   std::string s;
   auto ret = readJSONString(s);
@@ -819,7 +823,8 @@ uint32_t SimpleJSONProtocolReader::readJSONEscapeChar(uint8_t& out) {
   return 4;
 }
 
-uint32_t SimpleJSONProtocolReader::readJSONString(std::string& val) {
+template <typename StrType>
+uint32_t SimpleJSONProtocolReader::readJSONString(StrType& val) {
   auto ret = ensureChar(TJSONProtocol::kJSONStringDelimiter);
 
   std::string json = "\"";
@@ -1032,7 +1037,7 @@ uint32_t SimpleJSONProtocolReader::readFloat(float& flt) {
 
 template<typename StrType>
 uint32_t SimpleJSONProtocolReader::readString(StrType& str) {
-  return readInContext<std::string>(str);
+  return readInContext<StrType>(str);
 }
 
 template <typename StrType>
