@@ -937,10 +937,13 @@ static std::unique_ptr<folly::IOBuf> refill(DecodeBuffer *input,
   if (!newiobuf) {
     return nullptr;
   }
+  IOobject *ioobj = IOOOBJECT(input->stringiobuf);
+  // Mark the python stringio object as completely read
+  ioobj->pos = ioobj->string_size;
   Py_CLEAR(input->stringiobuf);
   input->stringiobuf = newiobuf;
 
-  IOobject *ioobj = IOOOBJECT(newiobuf);
+  ioobj = IOOOBJECT(newiobuf);
   // This IOBuf is returned to the protocol reader and it doesn't own
   // the underlying buffer. The protocol reader should only call refill
   // when it no longer needs its current IOBuf because the underlying
@@ -962,7 +965,10 @@ decodeT(DecodeBuffer *input, PyObject *dec_obj, StructTypeArgs *args,
         ioobj->string_size - ioobj->pos);
   reader.setInput(buf.get());
 
-  return decode_struct(&reader, dec_obj, args, utf8strings);
+  bool ret = decode_struct(&reader, dec_obj, args, utf8strings);
+  ioobj = IOOOBJECT(input->stringiobuf);
+  ioobj->pos += reader.totalBytesRead();
+  return ret;
 }
 
 static PyObject*

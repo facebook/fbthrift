@@ -37,7 +37,17 @@ class ProtocolReaderWithRefill : public VirtualReader<ProtocolT> {
   public:
     explicit ProtocolReaderWithRefill(Refiller refiller)
       : refiller_(refiller)
-      , buffer_(nullptr) {}
+      , buffer_(nullptr)
+      , bufferLength_(0) {}
+
+    uint32_t totalBytesRead() {
+      return bufferLength_ - this->protocol_.in_.length();
+    }
+
+    void setInput(const folly::IOBuf* buf) override {
+      VirtualReader<ProtocolT>::setInput(buf);
+      bufferLength_ = buf->length();
+    }
 
   protected:
     void ensureBuffer(uint32_t size) {
@@ -47,11 +57,12 @@ class ProtocolReaderWithRefill : public VirtualReader<ProtocolT> {
 
       auto avail = this->protocol_.in_.peek();
       buffer_ = refiller_(avail.first, avail.second, size);
-      this->protocol_.setInput(buffer_.get());
+      setInput(buffer_.get());
     }
 
     Refiller refiller_;
     std::unique_ptr<folly::IOBuf> buffer_;
+    uint32_t bufferLength_;
 };
 
 class CompactProtocolReaderWithRefill : public VirtualCompactReader {

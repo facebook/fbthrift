@@ -25,7 +25,7 @@ class ReadOnlyBufferWithRefill(TMemoryBuffer):
         self.refill_called = 0
         if value is None:
             self._readBuffer = StringIO(b"")
-        elif index < 0 or index >= len(value):
+        elif index < 0 or index > len(value):
             raise RuntimeError("index overflow")
         else:
             self._readBuffer = StringIO(value[:index])
@@ -59,13 +59,13 @@ class AbstractTest():
 
         obj.write(proto)
         index = int(split * len(trans.getvalue()))
-        if index == len(trans.getvalue()):
-            index -= 1
         trans = ReadOnlyBufferWithRefill(index, trans.getvalue())
         obj_new = obj.__class__()
         fastproto.decode(obj_new, trans, [obj.__class__, obj.thrift_spec,
             obj.isUnion()], utf8strings=0, protoid=self.PROTO)
         self.assertEqual(obj, obj_new)
+        # Verify the entire buffer is read
+        self.assertEqual(len(trans._readBuffer.read()), 0)
         if split != 1.0:
             self.assertEqual(1, trans.refill_called)
 
