@@ -237,7 +237,7 @@ private:
 
 class Updater {
 public:
-  Updater(DuplexClientAsyncClient* client,
+  Updater(shared_ptr<DuplexClientAsyncClient> client,
           TEventBase* eb,
           int32_t startIndex,
           int32_t numUpdates,
@@ -271,7 +271,7 @@ public:
     }
   }
 private:
-  DuplexClientAsyncClient* client_;
+  shared_ptr<DuplexClientAsyncClient> client_;
   TEventBase* eb_;
   int32_t startIndex_;
   int32_t numUpdates_;

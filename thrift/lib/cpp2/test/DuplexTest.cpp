@@ -71,7 +71,7 @@ private:
 
 class Updater {
 public:
-  Updater(DuplexClientAsyncClient* client,
+  Updater(shared_ptr<DuplexClientAsyncClient> client,
           TEventBase* eb,
           int32_t startIndex,
           int32_t numUpdates,
@@ -100,7 +100,7 @@ public:
     }
   }
 private:
-  DuplexClientAsyncClient* client_;
+  shared_ptr<DuplexClientAsyncClient> client_;
   TEventBase* eb_;
   int32_t startIndex_;
   int32_t numUpdates_;
@@ -121,7 +121,7 @@ class DuplexServiceInterface : public DuplexServiceSvIf {
     CHECK(eb != nullptr);
     if (numUpdates > 0) {
       Updater updater(client, eb, startIndex, numUpdates, interval);
-      eb->runInEventBaseThread([updater]() mutable {updater.update();});
+      eb->runInEventBaseThread([updater]() mutable { updater.update(); });
     };
     callbackp->resultInThread(true);
   }

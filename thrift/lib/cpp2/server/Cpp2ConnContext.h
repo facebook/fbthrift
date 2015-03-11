@@ -98,12 +98,12 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   }
 
   template <typename Client>
-  Client* getDuplexClient() {
+  std::shared_ptr<Client> getDuplexClient() {
     DCHECK(duplexChannel_);
-    Client* client = dynamic_cast<Client*>(duplexClient_.get());
+    auto client = std::dynamic_pointer_cast<Client>(duplexClient_);
     if (!client) {
-      client = new Client(duplexChannel_);
-      duplexClient_.reset(client);
+      duplexClient_.reset(new Client(duplexChannel_));
+      client = std::dynamic_pointer_cast<Client>(duplexClient_);
     }
     return client;
   }
@@ -114,7 +114,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   const apache::thrift::SaslServer* saslServer_;
   apache::thrift::async::TEventBaseManager* manager_;
   std::shared_ptr<HeaderClientChannel> duplexChannel_;
-  std::unique_ptr<TClientBase> duplexClient_;
+  std::shared_ptr<TClientBase> duplexClient_;
 };
 
 // Request-specific context
