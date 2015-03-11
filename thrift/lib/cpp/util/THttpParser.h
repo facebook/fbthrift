@@ -65,6 +65,9 @@ class THttpParser {
   const std::map<std::string, std::string>& getReadHeaders() {
     return readHeaders_;
   }
+  std::map<std::string, std::string> moveReadHeaders() {
+    return std::move(readHeaders_);
+  }
   virtual std::unique_ptr<folly::IOBuf> constructHeader(
     std::unique_ptr<folly::IOBuf> buf) = 0;
   virtual std::unique_ptr<folly::IOBuf> constructHeader(
