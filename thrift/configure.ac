@@ -151,8 +151,6 @@ if test "$with_cpp" = "yes";  then
              [Please install snappy library])])
   AC_CHECK_LIB([numa], [numa_available], [], [AC_MSG_ERROR(
              [Please install numa library])])
-  AC_CHECK_LIB([folly], [getenv], [], [AC_MSG_ERROR(
-             [Please install folly library])])
 
   AX_BOOST_BASE([1.40.0])
   if test "x$succeeded" != "xyes" ; then
@@ -160,6 +158,11 @@ if test "$with_cpp" = "yes";  then
     have_cpp="no"
   fi
   AX_BOOST_THREAD
+
+  AX_CHECK_FOLLY([], [AC_MSG_ERROR(
+             [Please install the folly library])])
+  LDFLAGS="$LDFLAGS $FOLLY_LDFLAGS"
+  CPPFLAGS="$FOLLY_INCLUDES $CPPFLAGS"
 
   AX_PYTHON_DEVEL()
   AX_BOOST_PYTHON
@@ -172,11 +175,6 @@ if test "$with_cpp" = "yes";  then
     *) AC_MSG_ERROR([Please install bison])
        have_cpp="no" ;;
   esac
-
-  AC_CHECK_HEADER([folly/String.h], [], [
-    AC_MSG_ERROR([Please install folly])
-    have_cpp="no"
-  ], [])
 
   AX_LIB_EVENT([1.0])
   have_libevent=$success
