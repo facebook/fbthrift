@@ -702,6 +702,7 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
 
   std::string typehint;
   generate_php_docstring(f_types_, tenum);
+  bool hack_enum = false;
   if (is_bitmask_enum(tenum)) {
     typehint = "int";
     f_types_ <<
@@ -709,7 +710,7 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
         php_namespace(tenum->get_program()) <<
         tenum->get_name() << " extends Flags {" <<
         endl;
-  } else {
+  } else if (oldenum_) {
     typehint = php_namespace(tenum->get_program()) + tenum->get_name() + "Type";
     f_types_ <<
       "newtype " << typehint << " = int;" << endl <<
@@ -717,6 +718,13 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
         php_namespace(tenum->get_program()) <<
         tenum->get_name() << " extends Enum<" <<
         typehint << "> {" << endl;
+  } else {
+    hack_enum = true;
+    typehint = php_namespace(tenum->get_program()) + tenum->get_name();
+    f_types_ <<
+      "enum " <<
+        php_namespace(tenum->get_program()) <<
+        tenum->get_name() << ": int {" << endl;
   }
 
   indent_up();
@@ -725,8 +733,12 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
     int32_t value = (*c_iter)->get_value();
 
     generate_php_docstring(f_types_, *c_iter);
+    if (!hack_enum) {
+      indent(f_types_) <<
+        "const " << typehint << " ";
+    }
     indent(f_types_) <<
-      "const " << typehint << " " << (*c_iter)->get_name() << " = " << value << ";" << endl;
+      (*c_iter)->get_name() << " = " << value << ";" << endl;
   }
 
   if (oldenum_) {
@@ -755,7 +767,12 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
   }
 
   indent_down();
-  f_types_ << "}" << endl << endl;
+  f_types_ << "}" << endl;
+  if (hack_enum) {
+    f_types_ <<
+      "type " << typehint << "Type = " << typehint << ";" << endl;
+  }
+  f_types_ << endl;
 }
 
 /**
@@ -2186,7 +2203,7 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable) {
     if (is_bitmask_enum((t_enum*) ttype)) {
       return "int";
     } else {
-      return (nullable ? "?" : "") + php_namespace(ttype->get_program()) + ttype->get_name() + "Type";
+      return (nullable ? "?" : "") + php_namespace(ttype->get_program()) + ttype->get_name();
     }
   } else if (ttype->is_struct() || ttype->is_xception()) {
     return (nullable ? "?" : "") + php_namespace(ttype->get_program()) + ttype->get_name();
