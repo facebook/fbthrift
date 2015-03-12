@@ -49,10 +49,6 @@ class t_function : public t_doc {
       if (returntype_ == nullptr || !returntype_->is_void()) {
           throw std::string("Oneway methods must have void return type.");
       }
-
-      for (auto& arg : arglist_->get_members()) {
-        t_type* type = arg->get_type();
-      }
     }
   }
 
@@ -75,10 +71,6 @@ class t_function : public t_doc {
 
       if (returntype_ == nullptr || !returntype_->is_void()) {
           throw std::string("Oneway methods must have void return type.");
-      }
-
-      for (auto& arg : arglist_->get_members()) {
-        t_type* type = arg->get_type();
       }
     }
   }

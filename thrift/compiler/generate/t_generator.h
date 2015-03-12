@@ -136,7 +136,6 @@ class t_generator {
     }
 
     if (ttype->is_container()) {
-      t_container* tcontainer = (t_container*) ttype;
       if (ttype->is_map()) {
         t_map* tmap = (t_map*) ttype;
         return "map<" +
