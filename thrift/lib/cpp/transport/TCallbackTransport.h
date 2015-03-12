@@ -17,8 +17,8 @@
 #ifndef _THRIFT_TRANSPORT_TCALLBACKTRANSPORT_H_
 #define _THRIFT_TRANSPORT_TCALLBACKTRANSPORT_H_ 1
 
-#include "TTransport.h"
-#include "TVirtualTransport.h"
+#include <thrift/lib/cpp/transport/TTransport.h>
+#include <thrift/lib/cpp/transport/TVirtualTransport.h>
 
 namespace apache { namespace thrift { namespace transport {
 
