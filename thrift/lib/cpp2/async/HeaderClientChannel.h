@@ -233,7 +233,10 @@ private:
                    uint32_t sendSeqId,
                    uint16_t protoId,
                    std::unique_ptr<RequestCallback> cb,
-                   std::unique_ptr<apache::thrift::ContextStack> ctx)
+                   std::unique_ptr<apache::thrift::ContextStack> ctx,
+                   apache::thrift::async::HHWheelTimer* timer,
+                   std::chrono::milliseconds timeout,
+                   std::chrono::milliseconds chunkTimeout)
         : channel_(channel)
         , sendSeqId_(sendSeqId)
         , protoId_(protoId)
@@ -241,7 +244,13 @@ private:
         , ctx_(std::move(ctx))
         , sendState_(QState::INIT)
         , recvState_(QState::QUEUED)
-        , cbCalled_(false) { }
+        , cbCalled_(false)
+        , chunkTimeoutCallback_(this, timer, chunkTimeout)
+   {
+      if (timeout > std::chrono::milliseconds(0)) {
+        timer->scheduleTimeout(this, timeout);
+      }
+   }
     ~TwowayCallback() {
       X_CHECK_STATE_EQ(sendState_, QState::DONE);
       X_CHECK_STATE_EQ(recvState_, QState::DONE);
@@ -295,10 +304,27 @@ private:
       cb_->replyReceived(ClientReceiveState(protoId_,
                                             std::move(buf),
                                             std::move(ctx_),
-                                            channel_->isSecurityActive()));
+                                            channel_->isSecurityActive(),
+                                            true));
 
       apache::thrift::async::RequestContext::setContext(old_ctx);
       maybeDeleteThis();
+    }
+    void partialReplyReceived(std::unique_ptr<folly::IOBuf> buf) {
+      X_CHECK_STATE_NE(sendState_, QState::INIT);
+      X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
+      chunkTimeoutCallback_.resetTimeout();
+
+      CHECK(cb_);
+
+      auto old_ctx =
+        apache::thrift::async::RequestContext::setContext(cb_->context_);
+      cb_->replyReceived(ClientReceiveState(protoId_,
+                                            std::move(buf),
+                                            ctx_,
+                                            channel_->isSecurityActive()));
+
+      apache::thrift::async::RequestContext::setContext(old_ctx);
     }
     void requestError(folly::exception_wrapper ex) {
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
@@ -360,10 +386,35 @@ private:
     uint32_t sendSeqId_;
     uint16_t protoId_;
     std::unique_ptr<RequestCallback> cb_;
-    std::unique_ptr<apache::thrift::ContextStack> ctx_;
+    std::shared_ptr<apache::thrift::ContextStack> ctx_;
     QState sendState_;
     QState recvState_;
     bool cbCalled_;
+    class TimerCallback : public apache::thrift::async::HHWheelTimer::Callback {
+     public:
+      TimerCallback(TwowayCallback* cb,
+                    apache::thrift::async::HHWheelTimer* timer,
+                    std::chrono::milliseconds chunkTimeout)
+        : cb_(cb)
+        , timer_(timer)
+        , chunkTimeout_(chunkTimeout)
+      {
+        resetTimeout();
+      }
+      void timeoutExpired() noexcept override {
+        cb_->timeoutExpired();
+      }
+      void resetTimeout() {
+        cancelTimeout();
+        if (chunkTimeout_.count() > 0) {
+          timer_->scheduleTimeout(this, chunkTimeout_);
+        }
+      }
+     private:
+      TwowayCallback* cb_;
+      apache::thrift::async::HHWheelTimer* timer_;
+      std::chrono::milliseconds chunkTimeout_;
+    } chunkTimeoutCallback_;
 #undef X_CHECK_STATE_NE
 #undef X_CHECK_STATE_EQ
   };

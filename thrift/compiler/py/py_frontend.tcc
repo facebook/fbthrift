@@ -65,6 +65,7 @@ BOOST_PYTHON_MODULE(frontend) {
       .add_property("is_list", &t_type::is_list)
       .add_property("is_set", &t_type::is_set)
       .add_property("is_map", &t_type::is_map)
+      .add_property("is_stream", &t_type::is_stream)
       .add_property("is_service", &t_type::is_service)
       .add_property("is_typedef", &t_type::is_typedef)
       .def_readonly("annotations", &t_type::annotations_)
@@ -82,6 +83,8 @@ BOOST_PYTHON_MODULE(frontend) {
             make_function(TO<t_set, t_type>, policy_rir()))
       .add_property("as_list",
             make_function(TO<t_list, t_type>, policy_rir()))
+      .add_property("as_stream",
+            make_function(TO<t_stream, t_type>, policy_rir()))
       ;
   indexVec<uint8_t>("uint8_t_vec");
 
@@ -130,6 +133,12 @@ BOOST_PYTHON_MODULE(frontend) {
   class_<t_list, noncopyable, bases<t_container>> ("t_list", no_init)
       .add_property("elem_type",
           make_function(&t_list::get_elem_type, policy_reo()))
+      ;
+
+  // t_stream
+  class_<t_stream, noncopyable, bases<t_type>> ("t_stream", no_init)
+      .add_property("elem_type",
+          make_function(&t_stream::get_elem_type, policy_reo()))
       ;
 
   // t_field::e_req

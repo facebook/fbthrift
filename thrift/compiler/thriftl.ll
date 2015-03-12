@@ -148,6 +148,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "hash_map"           { return tok_hash_map;             }
 "list"               { return tok_list;                 }
 "set"                { return tok_set;                  }
+"stream"             { return tok_stream;               }
 "oneway"             { return tok_oneway;               }
 "typedef"            { return tok_typedef;              }
 "struct"             { return tok_struct;               }

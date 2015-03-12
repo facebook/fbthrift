@@ -141,6 +141,7 @@ const int struct_is_union = 1;
 %token tok_hash_map
 %token tok_list
 %token tok_set
+%token tok_stream
 
 /**
  * Function modifiers
@@ -175,6 +176,7 @@ const int struct_is_union = 1;
 %type<ttype>     HashMapType
 %type<ttype>     SetType
 %type<ttype>     ListType
+%type<ttype>     StreamType
 
 %type<tdoc>      Definition
 %type<ttype>     TypeDefinition
@@ -1010,6 +1012,11 @@ Param:
     {
       pdebug("Param -> Field");
       $$ = $1;
+      t_type* t = $1->get_type();
+      if (t && t->is_stream()) {
+        yyerror("Arguments of type stream<> are not supported: \"%s %s\"", t->get_full_name().c_str(), $1->get_name().c_str());
+        exit(1);
+      }
     }
 
 Oneway:
@@ -1356,6 +1363,11 @@ SimpleContainerType:
       pdebug("SimpleContainerType -> ListType");
       $$ = $1;
     }
+| StreamType
+    {
+      pdebug("SimpleContainerType -> StreamType");
+      $$ = $1;
+    }
 
 MapType:
   tok_map '<' FieldType ',' FieldType '>'
@@ -1383,6 +1395,13 @@ ListType:
     {
       pdebug("ListType -> tok_list<FieldType>");
       $$ = new t_list($3);
+    }
+
+StreamType:
+  tok_stream '<' FieldType '>'
+    {
+      pdebug("StreamType -> tok_stream<FieldType>");
+      $$ = new t_stream($3);
     }
 
 TypeAnnotations:

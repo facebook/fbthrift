@@ -55,6 +55,7 @@ thrift1_SOURCES = main.cc \
                  parse/t_list.h \
                  parse/t_set.h \
                  parse/t_map.h \
+                 parse/t_stream.h \
                  parse/t_struct.h \
                  parse/t_field.h \
                  parse/t_service.h \

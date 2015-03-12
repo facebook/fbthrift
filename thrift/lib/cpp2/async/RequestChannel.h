@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/String.h>
+#include <folly/wangle/rx/Subject.h>
 
 #include <glog/logging.h>
 
@@ -42,25 +43,29 @@ class ClientReceiveState {
  public:
   ClientReceiveState()
       : protocolId_(-1),
-        isSecurityActive_(false) {
+        isSecurityActive_(false),
+        isStreamEnd_(false) {
   }
 
   ClientReceiveState(uint16_t protocolId,
                      std::unique_ptr<folly::IOBuf> buf,
-                     std::unique_ptr<apache::thrift::ContextStack> ctx,
-                     bool isSecurityActive)
+                     std::shared_ptr<apache::thrift::ContextStack> ctx,
+                     bool isSecurityActive,
+                     bool isStreamEnd = false)
     : protocolId_(protocolId),
       ctx_(std::move(ctx)),
       buf_(std::move(buf)),
-      isSecurityActive_(isSecurityActive) {
+      isSecurityActive_(isSecurityActive),
+      isStreamEnd_(isStreamEnd) {
   }
   ClientReceiveState(folly::exception_wrapper excw,
-                     std::unique_ptr<apache::thrift::ContextStack> ctx,
+                     std::shared_ptr<apache::thrift::ContextStack> ctx,
                      bool isSecurityActive)
     : protocolId_(-1),
       ctx_(std::move(ctx)),
       excw_(std::move(excw)),
-      isSecurityActive_(isSecurityActive) {
+      isSecurityActive_(isSecurityActive),
+      isStreamEnd_(false) {
   }
 
   bool isException() const {
@@ -106,22 +111,22 @@ class ClientReceiveState {
     return isSecurityActive_;
   }
 
-  void resetCtx(std::unique_ptr<apache::thrift::ContextStack> ctx) {
+  void resetCtx(std::shared_ptr<apache::thrift::ContextStack> ctx) {
     ctx_ = std::move(ctx);
   }
 
-  // Used by servicerouter to steal the context back for retrying a request
-  std::unique_ptr<apache::thrift::ContextStack> releaseCtx() {
-    return std::move(ctx_);
+  bool isStreamEnd() const {
+    return isStreamEnd_;
   }
 
  private:
   uint16_t protocolId_;
-  std::unique_ptr<apache::thrift::ContextStack> ctx_;
+  std::shared_ptr<apache::thrift::ContextStack> ctx_;
   std::unique_ptr<folly::IOBuf> buf_;
   std::exception_ptr exc_;
   folly::exception_wrapper excw_;
   bool isSecurityActive_;
+  bool isStreamEnd_;
 };
 
 class RequestCallback {
@@ -199,7 +204,8 @@ class RpcOptions {
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
   RpcOptions()
    : timeout_(0),
-     priority_(apache::thrift::concurrency::N_PRIORITIES)
+     priority_(apache::thrift::concurrency::N_PRIORITIES),
+     chunkTimeout_(0)
   { }
 
   RpcOptions& setTimeout(std::chrono::milliseconds timeout) {
@@ -219,9 +225,19 @@ class RpcOptions {
   PRIORITY getPriority() const {
     return priority_;
   }
+
+  RpcOptions& setChunkTimeout(std::chrono::milliseconds chunkTimeout) {
+    chunkTimeout_ = chunkTimeout;
+    return *this;
+  }
+
+  std::chrono::milliseconds getChunkTimeout() const {
+    return chunkTimeout_;
+  }
  private:
   std::chrono::milliseconds timeout_;
   PRIORITY priority_;
+  std::chrono::milliseconds chunkTimeout_;
 };
 
 /**
@@ -316,6 +332,26 @@ class ClientSyncCallback : public RequestCallback {
   apache::thrift::async::TEventBase* eb_;
   bool oneway_;
 };
+
+template <typename T>
+void clientCallbackToObservable(ClientReceiveState& state,
+    folly::exception_wrapper (*recv_wrapped)(T&, ClientReceiveState&),
+    folly::wangle::SubjectPtr<T>& subj) {
+  if (auto ew = state.exceptionWrapper()) {
+    subj->onError(ew);
+    return;
+  }
+  T value;
+  if (auto ew = recv_wrapped(value, state)) {
+    subj->onError(ew);
+    return;
+  }
+  if (state.isStreamEnd()) {
+    subj->onCompleted();
+    return;
+  }
+  subj->onNext(value);
+}
 
 }} // apache::thrift
 

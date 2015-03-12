@@ -427,11 +427,11 @@ uint32_t HeaderClientChannel::sendRequest(
                                  sendSeqId_,
                                  header_->getProtocolId(),
                                  std::move(cb),
-                                 std::move(ctx));
+                                 std::move(ctx),
+                                 timer_.get(),
+                                 timeout,
+                                 rpcOptions.getChunkTimeout());
 
-  if (timeout > std::chrono::milliseconds(0)) {
-    timer_->scheduleTimeout(twcb, timeout);
-  }
   maybeSetPriorityHeader(rpcOptions);
   maybeSetTimeoutHeader(rpcOptions);
 
@@ -512,12 +512,19 @@ void HeaderClientChannel::messageReceived(
 
   auto f(cb->second);
 
-  recvCallbacks_.erase(recvSeqId);
+  auto it = header_->getHeaders().find("thrift_stream");
+  bool isChunk = (it != header_->getHeaders().end() && it->second == "chunk");
 
-  // we are the last callback?
-  setBaseReceivedCallback();
+  if (isChunk) {
+    f->partialReplyReceived(std::move(buf));
+  } else {
+    // non-stream message or end of stream
+    recvCallbacks_.erase(recvSeqId);
+    // we are the last callback?
+    setBaseReceivedCallback();
 
-  f->replyReceived(std::move(buf));
+    f->replyReceived(std::move(buf));
+  }
 }
 
 void HeaderClientChannel::messageChannelEOF() {
