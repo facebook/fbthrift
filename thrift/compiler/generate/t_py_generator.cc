@@ -3486,7 +3486,7 @@ string t_py_generator::type_to_enum(t_type* type) {
 string t_py_generator::type_to_spec_args(t_type* ttype) {
   ttype = get_true_type(ttype);
 
-  if (ttype->is_base_type() || ttype->is_enum()) {
+  if (ttype->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();
     if (tbase == t_base_type::TYPE_STRING) {
       if (((t_base_type*)ttype)->is_binary()) {
@@ -3495,6 +3495,8 @@ string t_py_generator::type_to_spec_args(t_type* ttype) {
       return "True";
     }
     return "None";
+  } else if (ttype->is_enum()) {
+    return type_name(ttype);
   } else if (ttype->is_struct()){
     return "[" + type_name(ttype) + ", " + type_name(ttype) + ".thrift_spec, " +
       (((t_struct*)ttype)->is_union() ? "True]" : "False]");
