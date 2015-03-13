@@ -392,5 +392,12 @@ std::ostream& operator<<(std::ostream& os,
 
 }} // apache::thrift
 
+template <class T,
+          class Enable = typename std::enable_if<
+              std::is_base_of<apache::thrift::TStructType<T>, T>::value>::type>
+std::ostream& operator<<(std::ostream& os, const T& value) {
+  os << apache::thrift::ThriftDebugString(value);
+  return os;
+}
 
 #endif // #ifndef _THRIFT_PROTOCOL_TDEBUGPROTOCOL_H_
