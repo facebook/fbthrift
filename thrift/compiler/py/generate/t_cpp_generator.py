@@ -2308,6 +2308,22 @@ class CppGenerator(t_generator.Generator):
             c = struct.defn('{name}()', name=obj.name,
                                     in_header=True, init_dict=i).scope.empty()
 
+            # generate from-string ctors for exceptions with message annotation
+            if is_exception and 'message' in obj.annotations:
+                i = OrderedDict()
+                i[obj.annotations['message']] = '__message'
+                c = struct.defn('explicit {name}(const std::string& __message)',
+                                name=obj.name,
+                                in_header=True,
+                                init_dict=i).scope.empty()
+
+                i = OrderedDict()
+                i[obj.annotations['message']] = 'std::move(__message)'
+                c = struct.defn('explicit {name}(std::string&& __message)',
+                                name=obj.name,
+                                in_header=True,
+                                init_dict=i).scope.empty()
+
             if not obj.is_union:
                 # Generate a initializer_list type constructor
                 init_vars = []

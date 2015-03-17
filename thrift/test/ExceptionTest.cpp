@@ -19,6 +19,7 @@
 #define BOOST_TEST_MODULE ExceptionTest
 #include <boost/test/unit_test.hpp>
 #include "thrift/test/gen-cpp/ExceptionTest_types.h"
+#include "thrift/test/gen-cpp2/ExceptionTest_types.h"
 
 BOOST_AUTO_TEST_SUITE( ExceptionTest )
 
@@ -35,6 +36,14 @@ BOOST_AUTO_TEST_CASE( test_default_constructor ) {
 BOOST_AUTO_TEST_CASE( test_constructor_with_param ) {
   try {
     throw MyException("what!!!");
+  } catch (const std::exception& ex) {
+    BOOST_CHECK_EQUAL(ex.what(), "what!!!");
+  }
+}
+
+BOOST_AUTO_TEST_CASE( test_cpp2_constructor_with_param ) {
+  try {
+    throw cpp2::MyException("what!!!");
   } catch (const std::exception& ex) {
     BOOST_CHECK_EQUAL(ex.what(), "what!!!");
   }
