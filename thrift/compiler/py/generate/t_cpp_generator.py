@@ -488,6 +488,12 @@ class CppGenerator(t_generator.Generator):
                                                              + '_types.h')))
         for shortprot, protname, prottype in self.protocols:
             s('#include <thrift/lib/cpp2/protocol/{0}.h>'.format(protname))
+        print >>context.impl, '#include <thrift/lib/cpp2/protocol/Protocol.h>'
+        for _, b, _ in self.protocols:
+            print >>context.impl, \
+                    '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
+        print >>context.impl, '#include <thrift/lib/cpp2/protocol/DebugProtocol.h>'
+        print >>context.impl, '#include <thrift/lib/cpp2/protocol/VirtualProtocol.h>\n'
         s()
         if self.flag_compatibility:
             # Transform the cpp2 include prefix path into a cpp prefix path.
@@ -3666,6 +3672,7 @@ class CppGenerator(t_generator.Generator):
         # Include the types header
         sg('#include "{0}"'.format(self._with_include_prefix(self._program,
             self._program.name + '_types.h')))
+        sg('#include <thrift/lib/cpp2/protocol/Protocol.h>')
         # Include the thrift1 constants for compatibility mode
         if self.flag_compatibility:
             sg('#include "{0}_constants.h"'
@@ -3778,11 +3785,6 @@ class CppGenerator(t_generator.Generator):
         # Include base types
         s('#include <thrift/lib/cpp2/Thrift.h>')
         s('#include <thrift/lib/cpp2/protocol/Protocol.h>')
-        for a, b, c in self.protocols:
-            s('#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b))
-        s('#include <thrift/lib/cpp2/protocol/DebugProtocol.h>')
-        s('#include <thrift/lib/cpp2/protocol/VirtualProtocol.h>')
-        s('#include <thrift/lib/cpp/protocol/TProtocol.h>')
         if not self.flag_bootstrap:
             s('#include <thrift/lib/cpp/TApplicationException.h>')
         s('#include <folly/io/IOBuf.h>')
@@ -3798,7 +3800,11 @@ class CppGenerator(t_generator.Generator):
         for inc in self._program.includes:
             s('#include "{0}_types.h"' \
               .format(self._with_include_prefix(inc, inc.name)))
-        print >>types_out_tcc
+        for _, b, _ in self.protocols:
+            print >>types_out_tcc, \
+                    '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
+        print >>types_out_tcc, '#include <thrift/lib/cpp2/protocol/DebugProtocol.h>'
+        print >>types_out_tcc, '#include <thrift/lib/cpp2/protocol/VirtualProtocol.h>\n'
         s()
         # Include custom headers
         for inc in self._program.cpp_includes:
