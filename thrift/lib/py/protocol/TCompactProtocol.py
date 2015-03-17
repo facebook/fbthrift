@@ -7,7 +7,12 @@ import sys
 from .TProtocol import *
 from struct import pack, unpack
 
-__all__ = ['TCompactProtocol', 'TCompactProtocolFactory']
+__all__ = [
+    'TCompactProtocol',
+    'TCompactProtocolFactory',
+    'TCompactProtocolAccelerated',
+    'TCompactProtocolAcceleratedFactory',
+]
 
 CLEAR = 0
 FIELD_WRITE = 1
@@ -421,3 +426,10 @@ class TCompactProtocolFactory:
 
     def getProtocol(self, trans):
         return TCompactProtocol(trans)
+
+class TCompactProtocolAccelerated(TCompactProtocol):
+    pass
+
+class TCompactProtocolAcceleratedFactory(TCompactProtocolFactory):
+    def getProtocol(self, trans):
+        return TCompactProtocolAccelerated(trans)

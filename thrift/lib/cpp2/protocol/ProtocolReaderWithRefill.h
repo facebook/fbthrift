@@ -26,7 +26,7 @@ template<typename ProtocolT> class ProtocolReaderWithRefill;
 using VirtualBinaryReader = ProtocolReaderWithRefill<BinaryProtocolReader>;
 using VirtualCompactReader = ProtocolReaderWithRefill<CompactProtocolReader>;
 using Refiller = std::function<std::unique_ptr<folly::IOBuf>(
-    const uint8_t*, int, int)>;
+    const uint8_t*, int, int, int)>;
 
 /**
  * Used by python fastproto module. Read methods must check if there are
@@ -56,7 +56,7 @@ class ProtocolReaderWithRefill : public VirtualReader<ProtocolT> {
       }
 
       auto avail = this->protocol_.in_.peek();
-      buffer_ = refiller_(avail.first, avail.second, size);
+      buffer_ = refiller_(avail.first, avail.second, totalBytesRead(), size);
       setInput(buffer_.get());
     }
 

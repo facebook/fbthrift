@@ -58,8 +58,11 @@ class NormalBinaryTest(AbstractTest, unittest.TestCase):
 class AcceleratedBinaryTest(AbstractTest, unittest.TestCase):
     protocol_factory = TBinaryProtocol.TBinaryProtocolAcceleratedFactory()
 
-class CompactTest(AbstractTest, unittest.TestCase):
+class NormalCompactTest(AbstractTest, unittest.TestCase):
     protocol_factory = TCompactProtocol.TCompactProtocolFactory()
+
+class AcceleratedCompactTest(AbstractTest, unittest.TestCase):
+    protocol_factory = TCompactProtocol.TCompactProtocolAcceleratedFactory()
 
 def suite():
     suite = unittest.TestSuite()
@@ -67,7 +70,8 @@ def suite():
 
     suite.addTest(loader.loadTestsFromTestCase(NormalBinaryTest))
     suite.addTest(loader.loadTestsFromTestCase(AcceleratedBinaryTest))
-    suite.addTest(loader.loadTestsFromTestCase(CompactTest))
+    suite.addTest(loader.loadTestsFromTestCase(NormalCompactTest))
+    suite.addTest(loader.loadTestsFromTestCase(AcceleratedCompactTest))
 
     return suite
 

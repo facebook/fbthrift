@@ -45,13 +45,19 @@ FRAMED_TYPES = ["TNonblockingServer"]
 _servers = []
 _ports = {}
 
+try:
+    from thrift.protocol import fastproto
+except:
+    fastproto = None
 
 def start_server(server_type, ssl, server_header, server_context,
         multiple, port):
     if sys.version_info[0] >= 3:
         server_path = '_bin/thrift/test/py/py3_test_server.par'
-    else:
+    elif fastproto is None:
         server_path = '_bin/thrift/test/py/python_test_server.par'
+    else:
+        server_path = '_bin/thrift/test/py/python_fastproto_test_server.par'
     args = [server_path, '--port', str(port)]
     if ssl:
         args.append('--ssl')
@@ -151,6 +157,10 @@ class AbstractTest(object):
             self.transport = TTransport.TBufferedTransport(self.socket)
 
         self.protocol = self.protocol_factory.getProtocol(self.transport)
+        if isinstance(self, HeaderAcceleratedCompactTest):
+            self.protocol.trans.set_protocol_id(
+                    THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)
+            self.protocol.reset_protocol()
         self.transport.open()
         self.client = ThriftTest.Client(self.protocol)
         if self.multiple:
@@ -377,6 +387,12 @@ class HeaderTest(AbstractTest):
             self.assertTrue(b"transient3" in headers)
             self.assertEquals(headers[b"transient3"], b"true")
 
+class HeaderAcceleratedCompactTest(AbstractTest):
+    protocol_factory = THeaderProtocol.THeaderProtocolFactory(True,
+        [THeaderTransport.HEADERS_CLIENT_TYPE,
+         THeaderTransport.FRAMED_DEPRECATED,
+         THeaderTransport.UNFRAMED_DEPRECATED,
+         THeaderTransport.HTTP_CLIENT_TYPE])
 
 def camelcase(s):
     if not s[0].isupper():
@@ -437,8 +453,15 @@ def add_test_classes(module):
                         if server_header:
                             classes.append(new_test_class(HeaderTest, vars))
 
+    if fastproto is not None:
+        classes.append(new_test_class(HeaderAcceleratedCompactTest, {
+            'server_type': "TCppServer",
+            'ssl': False,
+            'server_header': False,
+            'server_context': False,
+            'multiple': False}))
+
     for cls in classes:
         setattr(module, cls.__name__, cls)
-
 
 add_test_classes(sys.modules[__name__])

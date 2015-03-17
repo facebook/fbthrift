@@ -127,6 +127,9 @@ class AcceleratedBinaryTest(AbstractTest, unittest.TestCase):
 class CompactTest(AbstractTest, unittest.TestCase):
     protocol_factory = TCompactProtocol.TCompactProtocolFactory()
 
+class AcceleratedCompactTest(AbstractTest, unittest.TestCase):
+    protocol_factory = TCompactProtocol.TCompactProtocolAcceleratedFactory()
+
 class AcceleratedFramedTest(unittest.TestCase):
     def testSplit(self):
         """Test FramedTransport and BinaryProtocolAccelerated

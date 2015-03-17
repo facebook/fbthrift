@@ -923,8 +923,11 @@ encodeT(PyObject *enc_obj, PyObject *spec, int utf8strings) {
 }
 
 static std::unique_ptr<folly::IOBuf> refill(DecodeBuffer *input,
-    const uint8_t *remaining, int rlen, int len) {
+    const uint8_t *remaining, int rlen, int read, int len) {
   PyObject *newiobuf;
+
+  IOobject *ioobj = IOOOBJECT(input->stringiobuf);
+  ioobj->pos += read;
 
 #if PY_MAJOR_VERSION >= 3
   newiobuf = PyObject_CallFunction(input->refill_callable, (char*)"y#i",
@@ -937,9 +940,6 @@ static std::unique_ptr<folly::IOBuf> refill(DecodeBuffer *input,
   if (!newiobuf) {
     return nullptr;
   }
-  IOobject *ioobj = IOOOBJECT(input->stringiobuf);
-  // Mark the python stringio object as completely read
-  ioobj->pos = ioobj->string_size;
   Py_CLEAR(input->stringiobuf);
   input->stringiobuf = newiobuf;
 
@@ -956,8 +956,11 @@ template<typename Reader>
 static bool
 decodeT(DecodeBuffer *input, PyObject *dec_obj, StructTypeArgs *args,
     int utf8strings) {
-  auto refiller = [input] (const uint8_t* remaining, int rlen, int len) {
-    return refill(input, remaining, rlen, len);
+  auto refiller = [input] (const uint8_t* remaining,
+                           int rlen,
+                           int read,
+                           int len) {
+    return refill(input, remaining, rlen, read, len);
   };
   Reader reader(refiller);
   IOobject *ioobj = IOOOBJECT(input->stringiobuf);

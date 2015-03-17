@@ -25,7 +25,7 @@ from __future__ import unicode_literals
 from .TProtocol import TProtocolBase, TProtocolException
 from thrift.Thrift import TApplicationException, TMessageType
 from .TBinaryProtocol import TBinaryProtocolAccelerated
-from .TCompactProtocol import TCompactProtocol
+from .TCompactProtocol import TCompactProtocolAccelerated
 from thrift.transport.THeaderTransport import THeaderTransport
 
 class THeaderProtocol(TProtocolBase):
@@ -51,7 +51,7 @@ class THeaderProtocol(TProtocolBase):
             self.__proto = TBinaryProtocolAccelerated(self.trans,
                     self.strictRead, True)
         elif proto_id == self.T_COMPACT_PROTOCOL:
-            self.__proto = TCompactProtocol(self.trans)
+            self.__proto = TCompactProtocolAccelerated(self.trans)
         else:
             raise TApplicationException(TProtocolException.INVALID_PROTOCOL,
                                         "Unknown protocol requested")
