@@ -17,6 +17,7 @@
 #ifndef THRIFT_GSSSASLCLIENT_H_
 #define THRIFT_GSSSASLCLIENT_H_ 1
 
+#include <chrono>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp2/async/SaslClient.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h>
@@ -94,6 +95,8 @@ public:
 
   virtual void detachEventBase() override;
   virtual void attachEventBase(apache::thrift::async::TEventBase* evb) override;
+
+  static std::chrono::milliseconds getCurTime();
 
 private:
   std::shared_ptr<KerberosSASLHandshakeClient> clientHandshake_;

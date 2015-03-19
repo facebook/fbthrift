@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 
+#include <chrono>
 #include <memory>
 
 using folly::IOBuf;
@@ -55,6 +56,9 @@ using apache::thrift::sasl::SaslAuthService_authFirstRequest_presult;
 using apache::thrift::sasl::SaslAuthService_authNextRequest_pargs;
 using apache::thrift::sasl::SaslAuthService_authNextRequest_presult;
 
+DEFINE_int32(sasl_thread_manager_timeout_ms, 1000,
+  "Max number of ms for sasl tasks to wait in the thread manager queue");
+
 namespace apache { namespace thrift {
 
 static const char MECH[] = "krb5";
@@ -70,6 +74,11 @@ GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb,
     , inProgress_(std::make_shared<bool>(false)) {
 }
 
+std::chrono::milliseconds GssSaslClient::getCurTime() {
+  return std::chrono::duration_cast<std::chrono::milliseconds>(
+    std::chrono::steady_clock::now().time_since_epoch());
+}
+
 void GssSaslClient::start(Callback *cb) {
 
   auto evb = evb_;
@@ -80,6 +89,7 @@ void GssSaslClient::start(Callback *cb) {
   auto seqId = seqId_;
   auto threadManager = saslThreadManager_;
   auto inProgress = inProgress_;
+  auto threadManagerTimeout = FLAGS_sasl_thread_manager_timeout_ms;
 
   // Log the overall latency incurred for doing security.
   logger->logStart("security_latency");
@@ -96,9 +106,11 @@ void GssSaslClient::start(Callback *cb) {
     ew_tm = folly::try_and_catch<
         TooManyPendingTasksException, TKerberosException>([&]() {
       logger->logStart("thread_manager_overhead");
+      uint64_t before = getCurTime().count();
       *inProgress = true;
       threadManager->start(std::make_shared<FunctionRunner>([=] {
         logger->logEnd("thread_manager_overhead");
+        uint64_t after = getCurTime().count();
 
         MoveWrapper<unique_ptr<IOBuf>> iobuf;
         folly::exception_wrapper ex;
@@ -106,7 +118,9 @@ void GssSaslClient::start(Callback *cb) {
         threadManager->recordActivity();
 
         bool isHealthy = threadManager->isHealthy();
-        if (isHealthy) {
+        bool tmTimeout = (after - before) > threadManagerTimeout;
+
+        if (isHealthy && !tmTimeout) {
           Guard guard(*mutex);
           if (!*evb) {
             return;
@@ -120,7 +134,13 @@ void GssSaslClient::start(Callback *cb) {
             });
         }
 
-        if (isHealthy) {
+        if (!isHealthy) {
+          ex = folly::make_exception_wrapper<TKerberosException>(
+            "Draining SASL thread pool");
+        } else if (tmTimeout) {
+          ex = folly::make_exception_wrapper<TKerberosException>(
+            "Timed out due to thread manager lag");
+        } else {
           ex = folly::try_and_catch<std::exception, TTransportException,
               TProtocolException, TApplicationException,
               TKerberosException>([&]() {
@@ -140,9 +160,6 @@ void GssSaslClient::start(Callback *cb) {
             *iobuf = PargsPresultProtoSerialize(
               proto, argsp, "authFirstRequest", T_CALL, (*seqId)++);
           });
-        } else {
-          ex = folly::make_exception_wrapper<TKerberosException>(
-            "Draining SASL thread pool");
         }
 
         Guard guard(*mutex);
@@ -200,6 +217,7 @@ void GssSaslClient::consumeFromServer(
   auto seqId = seqId_;
   auto threadManager = saslThreadManager_;
   auto inProgress = inProgress_;
+  auto threadManagerTimeout = FLAGS_sasl_thread_manager_timeout_ms;
 
   folly::exception_wrapper ew_tm;
   if (!threadManager->isHealthy()) {
@@ -208,7 +226,9 @@ void GssSaslClient::consumeFromServer(
   } else {
     ew_tm = folly::try_and_catch<
         TooManyPendingTasksException, TKerberosException>([&]() {
+      uint64_t before = getCurTime().count();
       threadManager->get()->add(std::make_shared<FunctionRunner>([=] {
+        uint64_t after = getCurTime().count();
         std::string req_data;
         MoveWrapper<unique_ptr<IOBuf>> iobuf;
         folly::exception_wrapper ex;
@@ -216,7 +236,8 @@ void GssSaslClient::consumeFromServer(
         threadManager->recordActivity();
 
         bool isHealthy = threadManager->isHealthy();
-        if (isHealthy) {
+        bool tmTimeout = (after - before) > threadManagerTimeout;
+        if (isHealthy && !tmTimeout) {
           Guard guard(*mutex);
           if (!*evb) {
             return;
@@ -244,7 +265,13 @@ void GssSaslClient::consumeFromServer(
               SaslAuthService_authNextRequest_presult::success)>::value,
           "Types should be structurally identical");
 
-        if (isHealthy) {
+        if (!isHealthy) {
+          ex = folly::make_exception_wrapper<TKerberosException>(
+            "Draining SASL thread pool");
+        } else if (tmTimeout) {
+          ex = folly::make_exception_wrapper<TKerberosException>(
+            "Timed out due to thread manager lag");
+        } else {
           ex = folly::try_and_catch<std::exception, TTransportException,
               TProtocolException, TApplicationException,
               TKerberosException>([&]() {
@@ -302,9 +329,6 @@ void GssSaslClient::consumeFromServer(
                 proto, argsp, "authNextRequest", T_CALL, (*seqId)++);
             }
           });
-        } else {
-          ex = folly::make_exception_wrapper<TKerberosException>(
-            "Draining SASL thread pool");
         }
 
         Guard guard(*mutex);
