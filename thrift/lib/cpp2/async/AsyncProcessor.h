@@ -350,6 +350,18 @@ class HandlerCallbackBase {
       });
   }
 
+  static void exceptionInThread(std::unique_ptr<HandlerCallbackBase> thisPtr,
+                                std::exception_ptr ex) {
+    DCHECK(thisPtr);
+    thisPtr.release()->exceptionInThread(std::move(ex));
+  }
+
+  static void exceptionInThread(std::unique_ptr<HandlerCallbackBase> thisPtr,
+                                folly::exception_wrapper ew) {
+    DCHECK(thisPtr);
+    thisPtr.release()->exceptionInThread(std::move(ew));
+  }
+
   template <class Exception>
   void exceptionInThread(const Exception& ex) {
     exceptionInThread(folly::make_exception_wrapper<Exception>(ex));
@@ -545,6 +557,26 @@ class HandlerCallback : public HandlerCallbackBase {
     result(*r);
     delete this;
   }
+
+  static void resultInThread(
+      std::unique_ptr<HandlerCallback> thisPtr,
+      const ResultType& r) {
+    DCHECK(thisPtr);
+    thisPtr.release()->resultInThread(r);
+  }
+  static void resultInThread(
+      std::unique_ptr<HandlerCallback> thisPtr,
+      std::unique_ptr<ResultType> r) {
+    DCHECK(thisPtr);
+    thisPtr.release()->resultInThread(std::move(r));
+  }
+  static void resultInThread(
+      std::unique_ptr<HandlerCallback> thisPtr,
+      const std::shared_ptr<ResultType>& r) {
+    DCHECK(thisPtr);
+    thisPtr.release()->resultInThread(r);
+  }
+
  protected:
 
   virtual void doResult(const ResultType& r) {
@@ -594,6 +626,12 @@ class HandlerCallback<void> : public HandlerCallbackBase {
     done();
     delete this;
   }
+  static void doneInThread(
+      std::unique_ptr<HandlerCallback> thisPtr) {
+    DCHECK(thisPtr);
+    thisPtr.release()->doneInThread();
+  }
+
  protected:
   virtual void doDone() {
     assert(cp_);

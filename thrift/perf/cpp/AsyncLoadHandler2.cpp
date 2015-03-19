@@ -33,7 +33,7 @@ void AsyncLoadHandler2::async_eb_noop(
   // Note that we could have done this with a sync function,
   // but an inline async op is faster, and we want to maintain
   // parity with the old loadgen for comparison testing
-  callback.release()->doneInThread();
+  decltype(callback)::element_type::doneInThread(std::move(callback));
 }
 
 void AsyncLoadHandler2::async_eb_onewayNoop(
@@ -43,7 +43,7 @@ void AsyncLoadHandler2::async_eb_onewayNoop(
 
 void AsyncLoadHandler2::async_eb_asyncNoop(
   std::unique_ptr<HandlerCallback<void>> callback) {
-  callback.release()->doneInThread();
+  decltype(callback)::element_type::doneInThread(std::move(callback));
 }
 
 void AsyncLoadHandler2::async_eb_sleep(
@@ -132,7 +132,8 @@ void AsyncLoadHandler2::async_eb_throwError(
 
   LoadError error;
   error.code = code;
-  callback.release()->exceptionInThread(error);
+  decltype(callback)::element_type::exceptionInThread(std::move(callback),
+                                                      error);
 }
 
 void AsyncLoadHandler2::async_eb_throwUnexpected(
@@ -143,7 +144,7 @@ void AsyncLoadHandler2::async_eb_throwUnexpected(
   //
   // Actually throwing an exception from the handler is bad, and TEventBase
   // should probably be changed to fatal the entire program if that happens.
-  callback.release()->doneInThread();
+  decltype(callback)::element_type::doneInThread(std::move(callback));
 }
 
 void AsyncLoadHandler2::async_eb_onewayThrow(
@@ -152,13 +153,14 @@ void AsyncLoadHandler2::async_eb_onewayThrow(
 
   LoadError error;
   error.code = code;
-  callback.release()->exceptionInThread(error);
+  decltype(callback)::element_type::exceptionInThread(std::move(callback),
+                                                      error);
 }
 
 void AsyncLoadHandler2::async_eb_send(
   std::unique_ptr<HandlerCallback<void>> callback,
   std::unique_ptr<std::string> data) {
-  callback.release()->doneInThread();
+  decltype(callback)::element_type::doneInThread(std::move(callback));
 }
 
 void AsyncLoadHandler2::async_eb_onewaySend(
@@ -171,14 +173,16 @@ void AsyncLoadHandler2::async_eb_recv(
   std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
   int64_t bytes) {
   std::unique_ptr<std::string> ret(new std::string(bytes, 'a'));
-  callback.release()->resultInThread(std::move(ret));
+  decltype(callback)::element_type::resultInThread(std::move(callback),
+                                                   std::move(ret));
 }
 
 void AsyncLoadHandler2::async_eb_sendrecv(
   std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
   std::unique_ptr<std::string> data, int64_t recvBytes) {
   std::unique_ptr<std::string> ret(new std::string(recvBytes, 'a'));
-  callback.release()->resultInThread(std::move(ret));
+  decltype(callback)::element_type::resultInThread(std::move(callback),
+                                                   std::move(ret));
 }
 
 void AsyncLoadHandler2::sync_echo(
@@ -212,7 +216,7 @@ void AsyncLoadHandler2::async_eb_add(
   std::unique_ptr<HandlerCallback<int64_t>> callback,
   int64_t a,
   int64_t b){
-  callback.release()->resultInThread(a+b);
+  decltype(callback)::element_type::resultInThread(std::move(callback), a+b);
 }
 
 }} // apache::thrift
