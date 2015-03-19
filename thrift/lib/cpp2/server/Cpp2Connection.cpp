@@ -368,9 +368,9 @@ void Cpp2Connection::requestReceived(
 
   auto reqContext = t2r->getContext();
 
-  auto headers = reqContext->getHeaders();
-  auto load_header = headers.find(Cpp2Connection::loadHeader);
-  if (load_header != headers.end()) {
+  auto headers = reqContext->getHeadersPtr();
+  auto load_header = headers->find(Cpp2Connection::loadHeader);
+  if (load_header != headers->end()) {
     reqContext->setHeader(Cpp2Connection::loadHeader,
                           folly::to<std::string>(
                             getWorker()->getServer()->getLoad(
