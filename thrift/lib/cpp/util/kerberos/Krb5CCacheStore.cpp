@@ -88,22 +88,22 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
     }
   }
 
-  // If we didn't find a cache, upgrade to a write lock, and initialize
-  // the cache.
-  WriteLock writeLock(dataPtr->lockCache);
-  if (dataPtr->cache) {
-    if (logger) {
-      logger->logEnd("get_prepared_cache");
-    }
-    return dataPtr->cache;
-  }
-
+  // If we didn't find a cache, initialize a local, temporary cache for the
+  // service. We might throw this away if some other thread initialized the
+  // cache meanwhile.
   if (logger) {
     logger->logStart("init_cache_for_service", folly::to<string>(service));
   }
-  dataPtr->cache = initCacheForService(service, nullptr, logger);
+  auto tempCache = initCacheForService(service, nullptr, logger);
   if (logger) {
     logger->logEnd("init_cache_for_service");
+  }
+
+  // Upgrade to a write lock, and initialize the cache only if it is not already
+  // initialized by some other thread meanwhile.
+  WriteLock writeLock(dataPtr->lockCache);
+  if (!dataPtr->cache) {
+    dataPtr->cache = std::move(tempCache);
   }
   return dataPtr->cache;
 }
