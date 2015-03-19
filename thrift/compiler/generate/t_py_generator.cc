@@ -672,7 +672,8 @@ void t_py_generator::generate_json_reader(ofstream& out,
     if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
       indent(out) << "else:" << endl;
       indent_up();
-      indent(out) << "raise TProtocolException('Required field "
+      indent(out) << "raise TProtocolException("
+        << "TProtocolException.MISSING_REQUIRED_FIELD, 'Required field "
         << (*f_iter)->get_name()
         << " was not found!')"
         << endl;
@@ -1252,7 +1253,8 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
     indent_down();
 
     indent(out) << "if not isinstance(obj, dict) or len(obj) > 1:" << endl;
-    indent(out) << "  raise TProtocolException('Can not parse')" << endl;
+    indent(out) << "  raise TProtocolException("
+                << "TProtocolException.INVALID_DATA, 'Can not parse')" << endl;
     indent(out) << endl;
 
     for (auto& member: members) {
