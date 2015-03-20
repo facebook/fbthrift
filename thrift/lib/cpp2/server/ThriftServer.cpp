@@ -337,7 +337,7 @@ void ThriftServer::setup() {
       // the kernel.)
       ServerBootstrap::getSockets()[0]->getAddress(&address_);
 
-      for (auto& socket : ServerBootstrap::getSockets()) {
+      for (auto& socket : getSockets()) {
         socket->setShutdownSocketSet(shutdownSocketSet_.get());
         socket->setMaxNumMessagesInQueue(maxNumMsgsInQueue_);
         socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);

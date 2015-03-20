@@ -1031,6 +1031,17 @@ class ThriftServer : public apache::thrift::server::TServer
     isDuplex_ = duplex;
   }
 
+  const std::vector<std::shared_ptr<folly::AsyncServerSocket>> getSockets()
+    const {
+    std::vector<std::shared_ptr<folly::AsyncServerSocket>> serverSockets;
+    auto sockets = ServerBootstrap::getSockets();
+    for (auto& socket : sockets) {
+      serverSockets.push_back(
+        std::dynamic_pointer_cast<folly::AsyncServerSocket>(socket));
+    }
+    return serverSockets;
+  }
+
 };
 
 }} // apache::thrift
