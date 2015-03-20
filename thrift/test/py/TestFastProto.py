@@ -135,6 +135,10 @@ class AbstractTest():
         self.decode_helper(NegativeFieldId(anInteger=344444,
             aString=b'hello again', aDouble=1.34566))
 
+    def test_empty_container(self):
+        self.encode_helper(OneOfEach(aSet=set(), aList=[], aMap={}))
+        self.decode_helper(OneOfEach(aSet=set(), aList=[], aMap={}))
+
 class FastBinaryTest(AbstractTest, unittest.TestCase):
     PROTO = 0
 

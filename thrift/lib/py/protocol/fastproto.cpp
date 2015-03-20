@@ -836,6 +836,11 @@ decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings) {
 
       reader->readMapBegin(ktype, vtype, len);
       if (ktype != parsedargs.ktype || vtype != parsedargs.vtype) {
+        if (len == 0 &&
+            std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
+          reader->readMapEnd();
+          return PyDict_New();
+        }
         PyErr_SetString(PyExc_TypeError,
             "got wrong ttype while reading map field");
         return nullptr;
