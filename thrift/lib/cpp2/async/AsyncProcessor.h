@@ -350,6 +350,11 @@ class HandlerCallbackBase {
       });
   }
 
+  template <class Exception>
+  void exceptionInThread(const Exception& ex) {
+    exceptionInThread(folly::make_exception_wrapper<Exception>(ex));
+  }
+
   static void exceptionInThread(std::unique_ptr<HandlerCallbackBase> thisPtr,
                                 std::exception_ptr ex) {
     DCHECK(thisPtr);
@@ -363,8 +368,10 @@ class HandlerCallbackBase {
   }
 
   template <class Exception>
-  void exceptionInThread(const Exception& ex) {
-    exceptionInThread(folly::make_exception_wrapper<Exception>(ex));
+  static void exceptionInThread(std::unique_ptr<HandlerCallbackBase> thisPtr,
+                                const Exception& ex) {
+    DCHECK(thisPtr);
+    thisPtr.release()->exceptionInThread(ex);
   }
 
   apache::thrift::async::TEventBase* getEventBase() {
