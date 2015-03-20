@@ -42,7 +42,8 @@ using apache::thrift::concurrency::TooManyPendingTasksException;
 KerberosSASLHandshakeClient::KerberosSASLHandshakeClient(
     const std::shared_ptr<SecurityLogger>& logger) :
     phase_(INIT),
-    logger_(logger) {
+    logger_(logger),
+    gssOnly_(false) {
 
   // Set required security properties, we can define setters for these if
   // they need to be modified later.
@@ -97,6 +98,10 @@ KerberosSASLHandshakeClient::~KerberosSASLHandshakeClient() {
     logger->log("too_many_pending_tasks_in_cleanup");
     cleanUpState(context, target_name, client_creds, logger);
   }
+}
+
+void KerberosSASLHandshakeClient::setGssOnly(bool val) {
+  gssOnly_ = val;
 }
 
 void KerberosSASLHandshakeClient::cleanUpState(
@@ -301,7 +306,7 @@ void KerberosSASLHandshakeClient::initSecurityContext() {
       throw TKerberosException("Not all security properties established");
     }
 
-    phase_ = CONTEXT_NEGOTIATION_COMPLETE;
+    phase_ = gssOnly_ ? COMPLETE : CONTEXT_NEGOTIATION_COMPLETE;
   }
 }
 

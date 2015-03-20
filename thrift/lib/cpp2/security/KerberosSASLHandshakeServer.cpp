@@ -30,7 +30,10 @@ using namespace folly;
 /**
  * Server functions.
  */
-KerberosSASLHandshakeServer::KerberosSASLHandshakeServer() : phase_(INIT) {
+KerberosSASLHandshakeServer::KerberosSASLHandshakeServer() :
+    phase_(INIT),
+    gssOnly_(false) {
+
   // Set required security properties, we can define setters for these if
   // they need to be modified later.
   minimumRequiredSecContextFlags_ =
@@ -69,6 +72,14 @@ KerberosSASLHandshakeServer::~KerberosSASLHandshakeServer() {
   if (client_ != GSS_C_NO_NAME) {
     gss_release_name(&min_stat, &client_);
   }
+}
+
+void KerberosSASLHandshakeServer::setGssOnly(bool val) {
+  gssOnly_ = val;
+}
+
+bool KerberosSASLHandshakeServer::getGssOnly() {
+  return gssOnly_;
 }
 
 void KerberosSASLHandshakeServer::initServer() {
@@ -155,7 +166,7 @@ void KerberosSASLHandshakeServer::acceptSecurityContext() {
           minimumRequiredSecContextFlags_) {
       throw TKerberosException("Not all security properties established");
     }
-    phase_ = CONTEXT_NEGOTIATION_COMPLETE;
+    phase_ = gssOnly_ ? COMPLETE : CONTEXT_NEGOTIATION_COMPLETE;
   }
 }
 
@@ -186,9 +197,18 @@ std::unique_ptr<std::string> KerberosSASLHandshakeServer::getTokenToSend() {
       break;
     }
     case COMPLETE:
-      // Send empty token back
-      return unique_ptr<string>(new string(""));
+    {
+      // In the gss only case, we still want to send the token to the client,
+      // even if the server handshake completed.
+      if (gssOnly_) {
+        return unique_ptr<string>(
+          new string((const char*) outputToken_->value, outputToken_->length));
+      } else {
+        // Send empty token back
+        return unique_ptr<string>(new string(""));
+      }
       break;
+    }
     default:
       break;
   }

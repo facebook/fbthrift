@@ -82,6 +82,11 @@ class KerberosSASLHandshakeClient {
     void setRequiredClientPrincipal(const std::string& client);
 
     /**
+     * Complete after performing the gss portion of the handshake only.
+     */
+    void setGssOnly(bool val);
+
+    /**
      * Set the the function that grabs the required service principal.
      */
     void setRequiredServicePrincipalFetcher(
@@ -158,6 +163,9 @@ class KerberosSASLHandshakeClient {
     std::shared_ptr<krb5::Krb5CredentialsCacheManager>
       credentialsCacheManager_;
     std::shared_ptr<SecurityLogger> logger_;
+
+    // Do the gssapi portion of the handshake only.
+    bool gssOnly_;
 };
 
 }}  // apache::thrift

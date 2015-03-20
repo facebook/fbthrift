@@ -80,6 +80,12 @@ class KerberosSASLHandshakeServer {
     const std::string& getEstablishedServicePrincipal() const;
     const std::string& getEstablishedClientPrincipal() const;
 
+    /**
+     * Complete after performing the gss portion of the handshake only.
+     */
+    void setGssOnly(bool val);
+    bool getGssOnly();
+
     std::unique_ptr<folly::IOBuf> wrapMessage(
       std::unique_ptr<folly::IOBuf>&& buf);
     std::unique_ptr<folly::IOBuf> unwrapMessage(
@@ -113,6 +119,9 @@ class KerberosSASLHandshakeServer {
     gss_OID doid_;
 
     OM_uint32 minimumRequiredSecContextFlags_;
+
+    // Do the gssapi portion of the handshake only.
+    bool gssOnly_;
 
     void acceptSecurityContext();
 };

@@ -51,7 +51,8 @@ using apache::thrift::sasl::SaslAuthService_authNextRequest_presult;
 
 namespace apache { namespace thrift {
 
-static const char MECH[] = "krb5";
+static const char KRB5_SASL[] = "krb5";
+static const char KRB5_GSS[] = "gss";
 
 GssSaslServer::GssSaslServer(
     apache::thrift::async::TEventBase* evb,
@@ -86,6 +87,7 @@ void GssSaslServer::consumeFromClient(
       int requestSeqId;
 
       bool isFirstRequest;
+      string selectedMech;
       if (serverHandshake->getPhase() == INIT) {
         isFirstRequest = true;
 
@@ -119,8 +121,29 @@ void GssSaslServer::consumeFromClient(
           if (methodName != "authFirstRequest") {
             throw TKerberosException("Bad Thrift first call: " + methodName);
           }
-          if (start.mechanism != MECH) {
-            throw TKerberosException("Unknown mechanism: " + start.mechanism);
+          if (start.__isset.mechanisms) {
+            for (const auto& mech : start.mechanisms) {
+              if (mech == KRB5_SASL) {
+                selectedMech = KRB5_SASL;
+                break;
+              }
+              if (mech == KRB5_GSS) {
+                serverHandshake->setGssOnly(true);
+                selectedMech = KRB5_GSS;
+                break;
+              }
+            }
+          }
+
+          if (selectedMech.empty()) {
+            if (start.mechanism == KRB5_GSS) {
+              selectedMech = KRB5_GSS;
+              serverHandshake->setGssOnly(true);
+            } else if (start.mechanism == KRB5_SASL) {
+              selectedMech = KRB5_SASL;
+            } else {
+              throw TKerberosException("Unknown mechanism: " + start.mechanism);
+            }
           }
 
           input = start.request.response;
@@ -183,6 +206,15 @@ void GssSaslServer::consumeFromClient(
             } else {
               reply.outcome.success = true;
               reply.__isset.outcome = true;
+              // We still need to send the token even when completed.
+              if (serverHandshake->getGssOnly()) {
+                reply.challenge = *token;
+                reply.__isset.challenge = true;
+              }
+            }
+            if (!selectedMech.empty()) {
+              reply.mechanism = selectedMech;
+              reply.__isset.mechanism = true;
             }
             if (isFirstRequest) {
               SaslAuthService_authFirstRequest_presult resultp;

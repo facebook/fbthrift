@@ -21,6 +21,7 @@ struct SaslRequest {
 struct SaslReply {
   1: optional string challenge;
   2: optional SaslOutcome outcome;
+  3: optional string mechanism;
 }
 
 struct SaslStart {
@@ -31,6 +32,9 @@ struct SaslStart {
 
   1: string mechanism;
   2: optional SaslRequest request;
+  // Send a list of additional supported mechanisms. Sorted by preference.
+  // If mechanism in 1: is not included, give it lowest preference.
+  3: optional list<string> mechanisms;
 }
 
 service SaslAuthService {

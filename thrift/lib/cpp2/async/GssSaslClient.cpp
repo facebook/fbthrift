@@ -61,7 +61,8 @@ DEFINE_int32(sasl_thread_manager_timeout_ms, 1000,
 
 namespace apache { namespace thrift {
 
-static const char MECH[] = "krb5";
+static const char KRB5_SASL[] = "krb5";
+static const char KRB5_GSS[] = "gss";
 
 GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb,
       const std::shared_ptr<SecurityLogger>& logger)
@@ -148,7 +149,10 @@ void GssSaslClient::start(Callback *cb) {
             auto token = clientHandshake->getTokenToSend();
 
             SaslStart start;
-            start.mechanism = MECH;
+            start.mechanism = KRB5_SASL;
+            // Prefer GSS mech
+            start.__isset.mechanisms = true;
+            start.mechanisms.push_back(KRB5_GSS);
             if (token != nullptr) {
               start.request.response = *token;
               start.request.__isset.response = true;
@@ -308,6 +312,12 @@ void GssSaslClient::consumeFromServer(
             }
             if (reply.__isset.outcome) {
               finished = reply.outcome.success;
+            }
+
+            // If the mechanism is gss, then set the clientHandshake class to
+            // only do gss.
+            if (reply.__isset.mechanism && reply.mechanism == KRB5_GSS) {
+              clientHandshake->setGssOnly(true);
             }
 
             clientHandshake->handleResponse(input);
