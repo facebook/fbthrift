@@ -82,6 +82,15 @@ class TConnectionContext {
     }
   }
 
+  virtual const std::map<std::string, std::string>* getHeadersPtr() {
+    auto header = getHeader();
+    if (header) {
+      return &header->getHeaders();
+    } else {
+      return nullptr;
+    }
+  }
+
   virtual apache::thrift::async::TEventBaseManager* getEventBaseManager() {
     return nullptr;
   }

@@ -51,8 +51,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
   }
 
-  virtual const folly::SocketAddress*
-  getPeerAddress() const {
+  const folly::SocketAddress* getPeerAddress() const override {
     return &peerAddress_;
   }
 
@@ -72,16 +71,16 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
    * Cpp2Request below, and protocol itself is not instantiated
    * until we are in the generated code.
    */
-  virtual std::shared_ptr<apache::thrift::protocol::TProtocol>
-  getInputProtocol() const {
+  std::shared_ptr<apache::thrift::protocol::TProtocol>
+  getInputProtocol() const override {
     return std::shared_ptr<apache::thrift::protocol::TProtocol>();
   }
-  virtual std::shared_ptr<apache::thrift::protocol::TProtocol>
-  getOutputProtocol() const {
+  std::shared_ptr<apache::thrift::protocol::TProtocol>
+  getOutputProtocol() const override {
     return std::shared_ptr<apache::thrift::protocol::TProtocol>();
   }
 
-  virtual apache::thrift::transport::THeader* getHeader() {
+  apache::thrift::transport::THeader* getHeader() override {
     return header_;
   }
 
@@ -93,7 +92,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return saslServer_;
   }
 
-  virtual apache::thrift::async::TEventBaseManager* getEventBaseManager() {
+  apache::thrift::async::TEventBaseManager* getEventBaseManager() override {
     return manager_;
   }
 
@@ -139,8 +138,8 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   }
 
   // Forward all connection-specific information
-  virtual const folly::SocketAddress*
-  getPeerAddress() const {
+  const folly::SocketAddress*
+  getPeerAddress() const override {
     return ctx_->getPeerAddress();
   }
 
@@ -152,18 +151,18 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     ctx_->reset();
   }
 
-  virtual std::shared_ptr<apache::thrift::protocol::TProtocol>
-  getInputProtocol() const {
+  std::shared_ptr<apache::thrift::protocol::TProtocol>
+  getInputProtocol() const override {
     return ctx_->getInputProtocol();
   }
 
-  virtual std::shared_ptr<apache::thrift::protocol::TProtocol>
-  getOutputProtocol() const {
+  std::shared_ptr<apache::thrift::protocol::TProtocol>
+  getOutputProtocol() const override {
     return ctx_->getOutputProtocol();
   }
 
   // The following two header functions _are_ thread safe
-  virtual std::map<std::string, std::string> getHeaders() {
+  std::map<std::string, std::string> getHeaders() override {
     return headers_;
   }
 
@@ -171,11 +170,11 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return std::move(writeHeaders_);
   }
 
-  std::map<std::string, std::string>* getHeadersPtr() {
+  std::map<std::string, std::string>* getHeadersPtr() override {
     return &headers_;
   }
 
-  virtual bool setHeader(const std::string& key, const std::string& value) {
+  bool setHeader(const std::string& key, const std::string& value) override {
     writeHeaders_[key] = value;
     return true;
   }
@@ -208,15 +207,15 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_->getSaslServer();
   }
 
-  virtual apache::thrift::async::TEventBaseManager* getEventBaseManager() {
+  apache::thrift::async::TEventBaseManager* getEventBaseManager() override {
     return ctx_->getEventBaseManager();
   }
 
-  virtual void* getUserData() const {
+  void* getUserData() const override {
     return ctx_->getUserData();
   }
 
-  virtual void* setUserData(void* data, void (*destructor)(void*) = nullptr) {
+  void* setUserData(void* data, void (*destructor)(void*) = nullptr) override {
     return ctx_->setUserData(data, destructor);
   }
 
@@ -234,7 +233,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
  protected:
   // Note:  Header is _not_ thread safe
-  virtual apache::thrift::transport::THeader* getHeader() {
+  apache::thrift::transport::THeader* getHeader() override {
     return ctx_->getHeader();
   }
 
