@@ -179,6 +179,10 @@ parseJSONStruct tmap = Map.fromList . catMaybes <$> parseField
           Nothing -> lexeme parseAnyValue *> return Nothing
 
 parseJSONMap :: ThriftType -> ThriftType -> Parser [(ThriftVal, ThriftVal)]
+parseJSONMap kt@T_STRING vt =
+  ((,) <$> lexeme (parseJSONValue kt) <*>
+   (lexeme (PC.char8 ':') *> lexeme (parseJSONValue vt))) `sepBy`
+  lexeme (PC.char8 ',')
 parseJSONMap kt vt =
   ((,) <$> lexeme (PC.char8 '"' *> parseJSONValue kt <* PC.char8 '"') <*>
    (lexeme (PC.char8 ':') *> lexeme (parseJSONValue vt))) `sepBy`
