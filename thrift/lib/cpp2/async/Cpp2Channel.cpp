@@ -43,7 +43,7 @@ Cpp2Channel::Cpp2Channel(
   std::unique_ptr<FramingChannelHandler> framingHandler,
   std::unique_ptr<ProtectionChannelHandler> protectionHandler)
     : transport_(transport)
-    , queue_(new IOBufQueue(IOBufQueue::cacheChainLength()))
+    , queue_(new IOBufQueue)
     , readBufferSize_(DEFAULT_BUFFER_SIZE)
     , remaining_(readBufferSize_)
     , recvCallback_(nullptr)
@@ -51,38 +51,19 @@ Cpp2Channel::Cpp2Channel(
     , eofInvoked_(false)
     , queueSends_(true)
     , protectionHandler_(std::move(protectionHandler))
-    , framingHandler_(std::move(framingHandler))
-    , pipeline_(new Pipeline(transport, this)) {
-  transportHandler_ = pipeline_->getHandler<TAsyncTransportHandler>(0);
-
+    , framingHandler_(std::move(framingHandler)) {
   if (!protectionHandler_) {
     protectionHandler_.reset(new ProtectionChannelHandler);
   }
 }
 
-folly::Future<void> Cpp2Channel::close(Context* ctx) {
-  DestructorGuard dg(this);
-  closing_ = true;
-  processReadEOF();
-  return ctx->fireClose();
-}
-
 void Cpp2Channel::closeNow() {
   // closeNow can invoke callbacks
   DestructorGuard dg(this);
-
-  // If there are sends queued, cancel them
-  if (isLoopCallbackScheduled()) {
-    cancelLoopCallback();
-  }
-
   closing_ = true;
-  if (pipeline_) {
-    pipeline_->close();
-    // We must remove the circular reference to this, or descrution order
-    // issues ensue
-    pipeline_->getHandler<folly::wangle::ChannelHandlerPtr<Cpp2Channel, false>>(1)->setHandler(nullptr);
-    pipeline_.reset();
+  if (transport_) {
+    transport_->setReadCallback(nullptr);
+    transport_->closeNow();
 
     processReadEOF(); // Call failure callbacks
   }
@@ -95,21 +76,38 @@ void Cpp2Channel::destroy() {
 
 void Cpp2Channel::attachEventBase(
   TEventBase* eventBase) {
-  transportHandler_->attachEventBase(eventBase);
+  transport_->attachEventBase(eventBase);
 }
 
 void Cpp2Channel::detachEventBase() {
-  transportHandler_->detachEventBase();
+  if (transport_->getReadCallback() == this) {
+    transport_->setReadCallback(nullptr);
+  }
+
+  transport_->detachEventBase();
 }
 
 TEventBase* Cpp2Channel::getEventBase() {
   return transport_->getEventBase();
 }
 
-void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
+void Cpp2Channel::getReadBuffer(void** bufReturn, size_t* lenReturn) {
+  // If remaining_ > readBufferSize_, preallocate only allocates
+  // readBufferSize_ chunks at a time.
+  pair<void*, uint32_t> data = queue_->preallocate(readBufferSize_,
+                                                   remaining_);
+
+  *lenReturn = data.second;
+  *bufReturn = data.first;
+}
+
+void Cpp2Channel::readDataAvailable(size_t len) noexcept {
   assert(recvCallback_);
+  assert(len > 0);
 
   DestructorGuard dg(this);
+
+  queue_->postallocate(len);
 
   if (recvCallback_ && recvCallback_->shouldSample() && !sample_) {
     sample_.reset(new RecvCallback::sample);
@@ -132,7 +130,7 @@ void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
     auto ex = folly::try_and_catch<std::exception>([&]() {
       IOBufQueue* decrypted;
       size_t rem = 0;
-      std::tie(decrypted, rem) = protectionHandler_->decrypt(&q);
+      std::tie(decrypted, rem) = protectionHandler_->decrypt(queue_.get());
 
       if (!decrypted) {
         // no full message available, remember how many more bytes we need
@@ -164,7 +162,6 @@ void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
     if (!unframed) {
       // no more data
       remaining_ = remaining > 0 ? remaining : readBufferSize_;
-      pipeline_->setReadBufferSettings(readBufferSize_, remaining_);
       return;
     }
 
@@ -183,15 +180,16 @@ void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
   }
 }
 
-void Cpp2Channel::readEOF(Context* ctx) {
+void Cpp2Channel::readEOF() noexcept {
   processReadEOF();
 }
 
-void Cpp2Channel::readException(Context* ctx, folly::exception_wrapper e)  {
+void Cpp2Channel::readError(const TTransportException & ex) noexcept {
   DestructorGuard dg(this);
-  VLOG(5) << "Got a read error: " << folly::exceptionStr(e);
+  VLOG(5) << "Got a read error: " << folly::exceptionStr(ex);
   if (recvCallback_) {
-    recvCallback_->messageReceiveErrorWrapped(std::move(e));
+    recvCallback_->messageReceiveErrorWrapped(
+        folly::make_exception_wrapper<TTransportException>(ex));
   }
   processReadEOF();
 }
@@ -258,22 +256,7 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
       cbs.push_back(callback);
     }
     sendCallbacks_.push_back(std::move(cbs));
-
-    auto future = pipeline_->write(std::move(buf));
-    future.then([=](folly::Try<void>&& t) {
-      try {
-        t.throwIfFailed();
-        writeSuccess();
-      } catch (const TTransportException& ex) {
-        VLOG(5) << "Got a write error: " <<
-          folly::exceptionStr(ex);
-        writeError(0, ex);
-      } catch (const std::exception& ex) {
-        VLOG(5) << "Got a write error: " <<
-          folly::exceptionStr(ex);
-        writeError(0, TTransportException(ex.what()));
-      }
-    });
+    transport_->writeChain(this, std::move(buf));
   } else {
     // Delay sends to optimize for fewer syscalls
     if (!sends_) {
@@ -301,20 +284,7 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
 
 void Cpp2Channel::runLoopCallback() noexcept {
   assert(sends_);
-
-  auto future = pipeline_->write(std::move(sends_));
-  future.then([=](folly::Try<void>&& t) {
-    if (t.withException<TTransportException>([&](const TTransportException& ex) {
-          writeError(0, ex);
-        }) ||
-      t.withException<std::exception>([&](const std::exception& ex) {
-          writeError(0, TTransportException(ex.what()));
-        })) {
-      return;
-    } else {
-      writeSuccess();
-    }
-  });
+  transport_->writeChain(this, std::move(sends_));
 }
 
 void Cpp2Channel::setReceiveCallback(RecvCallback* callback) {
@@ -329,11 +299,10 @@ void Cpp2Channel::setReceiveCallback(RecvCallback* callback) {
     transport_->setReadCallback(nullptr);
     return;
   }
-
   if (callback) {
-    transportHandler_->attachReadCallback();
+    transport_->setReadCallback(this);
   } else {
-    transportHandler_->detachReadCallback();
+    transport_->setReadCallback(nullptr);
   }
 }
 

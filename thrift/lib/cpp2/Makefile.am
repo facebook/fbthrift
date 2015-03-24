@@ -55,8 +55,7 @@ thrift2include_async_HEADERS = \
 	async/SaslEndpoint.h \
 	async/SaslServer.h \
 	async/StubSaslClient.h \
-	async/StubSaslServer.h \
-	async/TAsyncTransportHandler.h
+	async/StubSaslServer.h
 
 thrift2include_serverdir = $(thrift2includedir)/server
 

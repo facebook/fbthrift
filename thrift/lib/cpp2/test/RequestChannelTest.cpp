@@ -94,7 +94,7 @@ TEST_F(FunctionSendCallbackTest, with_missing_server_fails) {
       exn = state.exceptionWrapper();
   });
   EXPECT_TRUE(bool(exn));
-  auto err = "transport is closed in write()";
+  auto err = "write() called with socket in invalid state";
   EXPECT_NE(string::npos, exn.what().find(err));
 }
 
