@@ -428,6 +428,7 @@ void ThriftServer::stopWorkers() {
     return;
   }
   ServerBootstrap::stop();
+  ServerBootstrap::join();
 }
 
 void ThriftServer::immediateShutdown(bool abortConnections) {
