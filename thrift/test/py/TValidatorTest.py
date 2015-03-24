@@ -161,5 +161,9 @@ class ValidationTest(unittest.TestCase):
             "2": {"2": mySimpleStruct(a=0, c=2)}}
             ))
 
+    def testEnumSpec(self):
+        self.assertTrue(
+            hasattr(myComplexStruct.thrift_spec[4][3], '_NAMES_TO_VALUES'))
+
 if __name__ == "__main__":
     unittest.main()

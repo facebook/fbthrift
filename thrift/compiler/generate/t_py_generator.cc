@@ -1423,7 +1423,8 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
 
   /*
      Here we generate the structure specification for the fastbinary/fastproto
-     codec.
+     codec. This spec is also used by Configerator and other tools to extract
+     the schema and perform validations.
      These specifications have the following structure:
      thrift_spec -> tuple of item_spec
      item_spec -> None | (tag, type_enum, name, spec_args, default)
@@ -1437,6 +1438,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
                 | (type_enum, spec_args, type_enum, spec_args)
                   # Key and value for map
                 | [class_name, spec_args_ptr, is_union] # For struct/exception
+                | class_name for Enums
      class_name -> identifier  # Basically a pointer to the class
      spec_args_ptr -> expression  # just class_name.spec_args
   */
@@ -3602,7 +3604,7 @@ string t_py_generator::type_to_enum(t_type* type) {
 string t_py_generator::type_to_spec_args(t_type* ttype) {
   ttype = get_true_type(ttype);
 
-if (ttype->is_base_type() || ttype->is_enum()) {
+if (ttype->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();
     if (tbase == t_base_type::TYPE_STRING) {
       if (((t_base_type*)ttype)->is_binary()) {
@@ -3611,6 +3613,8 @@ if (ttype->is_base_type() || ttype->is_enum()) {
       return "True";
     }
     return "None";
+  } else if (ttype->is_enum()) {
+    return type_name(ttype);
   } else if (ttype->is_struct()){
     return "[" + type_name(ttype) + ", " + type_name(ttype) + ".thrift_spec, " +
       (((t_struct*)ttype)->is_union() ? "True]" : "False]");
