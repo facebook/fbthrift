@@ -7,7 +7,7 @@ cd "$(dirname ${0})"
 git clone https://github.com/facebook/folly
 cd folly/folly
 git fetch
-git checkout v0.24.0
+git checkout v0.31.0
 
 autoreconf --install
 ./configure
