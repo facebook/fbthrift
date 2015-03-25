@@ -471,7 +471,7 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_service(self, service):
         # open files and instantiate outputs
-        context = self._make_context(service.name, True, True)
+        context = self._make_context(service.name, True, True, True)
         self._out_tcc = context.tcc
         self._additional_outputs = context.additional_outputs
         s = self._service_global = get_global_scope(CppPrimitiveFactory,
@@ -492,8 +492,8 @@ class CppGenerator(t_generator.Generator):
         for _, b, _ in self.protocols:
             print >>context.impl, \
                     '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
-        print >>context.impl, '#include <thrift/lib/cpp2/protocol/DebugProtocol.h>'
-        print >>context.impl, '#include <thrift/lib/cpp2/protocol/VirtualProtocol.h>\n'
+        print >>context.additional_outputs[-1], '#include <thrift/lib/cpp2/protocol/DebugProtocol.h>'
+        print >>context.additional_outputs[-1], '#include <thrift/lib/cpp2/protocol/VirtualProtocol.h>\n'
         s()
         if self.flag_compatibility:
             # Transform the cpp2 include prefix path into a cpp prefix path.
@@ -546,7 +546,6 @@ class CppGenerator(t_generator.Generator):
                 self._with_include_prefix(self._program, service.name)))
             self._service_global.release()
 
-
     def _generate_service_helpers_serializers(self, service, s):
         s = s.namespace('apache.thrift').scope
         s.acquire()
@@ -589,7 +588,8 @@ class CppGenerator(t_generator.Generator):
                                                read=True,
                                                write=True,
                                                swap=False,
-                                               result=False)
+                                               result=False,
+                                               to_additional=True)
             arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
             self._generate_struct_complete(s, arglist,
                                            is_exception=False,
@@ -598,7 +598,8 @@ class CppGenerator(t_generator.Generator):
                                            write=True,
                                            swap=False,
                                            result=False,
-                                           has_isset=False)
+                                           has_isset=False,
+                                           to_additional=True)
             arglist.name = name_orig
 
             if not function.oneway:
@@ -618,7 +619,8 @@ class CppGenerator(t_generator.Generator):
                                                read=True,
                                                write=True,
                                                swap=False,
-                                               result=True)
+                                               result=True,
+                                               to_additional=True)
 
     def _generate_service_client(self, service, s):
         classname = service.name + "AsyncClient"
@@ -632,8 +634,10 @@ class CppGenerator(t_generator.Generator):
         with s.cls(class_signature):
             out().label('public:')
 
-            with out().defn('std::string {name}()', name='getServiceName',
-                        modifiers='virtual'):
+            with out().defn('std::string {name}()',
+                    name='getServiceName',
+                    modifiers='virtual',
+                    output=self._additional_outputs[-1]):
                 out("return \"{0}\";".format(service.name))
 
             out("typedef std::unique_ptr<apache::thrift::RequestChannel"
@@ -1502,8 +1506,11 @@ class CppGenerator(t_generator.Generator):
 
         signature = self._get_sync_function_signature(function,
                                                       uses_rpc_options)
-        with out().defn(signature, name="sync_" + function.name,
-                    modifiers='virtual'):
+
+        with out().defn(signature,
+                name="sync_" + function.name,
+                modifiers='virtual',
+                output=self._additional_outputs[-1]):
             common_args = [arg.name for arg in function.arglist.members]
 
             if not uses_rpc_options:
@@ -1591,8 +1598,10 @@ class CppGenerator(t_generator.Generator):
         function_name = "future_" + function.name
         signature = self._get_future_function_signature(function,
                                                         uses_rpc_options)
-        with out().defn(signature, name=function_name,
-                    modifiers='virtual'):
+        with out().defn(signature,
+                name=function_name,
+                modifiers='virtual',
+                output=self._additional_outputs[-1]):
             if not uses_rpc_options:
                 args = ["::apache::thrift::RpcOptions()"]
 
@@ -1675,8 +1684,10 @@ class CppGenerator(t_generator.Generator):
         if not uses_rpc_options:
             signature = self._get_async_function_signature(function,
                                                            uses_rpc_options)
-            with out().defn(signature, name=name_prefix + function.name,
-                        modifiers='virtual'):
+            with out().defn(signature,
+                    name=name_prefix + function.name,
+                    modifiers='virtual',
+                    output=self._additional_outputs[-1]):
                 args = ["::apache::thrift::RpcOptions()"]
 
                 args.append("std::move(callback)")
@@ -1690,8 +1701,10 @@ class CppGenerator(t_generator.Generator):
             signature = self._get_async_function_signature(
                     function, uses_rpc_options=True, uses_callback_ptr=True)
 
-            with out().defn(signature, name=name_prefix + function.name,
-                        modifiers='virtual'):
+            with out().defn(signature,
+                    name=name_prefix + function.name,
+                    modifiers='virtual',
+                    output=self._additional_outputs[-1]):
                 args = ["&writer", "rpcOptions"]
                 args.append("std::move(callback)")
 
@@ -1845,7 +1858,11 @@ class CppGenerator(t_generator.Generator):
         args_list = ",".join(args)
 
         name = name_prefix + function.name
-        with out().defn(sig, name=name, modifiers="virtual"):
+
+        with out().defn(sig,
+                        name=name,
+                        modifiers="virtual",
+                        output=self._additional_outputs[-1]):
             out("{name}({args});".format(name=function.name, args=args_list))
 
     def _generate_throwing_recv_function(self, function, uses_template):
@@ -1855,6 +1872,8 @@ class CppGenerator(t_generator.Generator):
         output = None
         if uses_template:
             output = self._out_tcc
+        else:
+            output = self._additional_outputs[-1]
         with out().defn(self._get_recv_function_signature(function,
                                                           uses_template),
                         name='recv_' + callee_name,
@@ -1884,7 +1903,8 @@ class CppGenerator(t_generator.Generator):
         with out().defn(self._get_recv_function_signature(function,
                                                           is_wrapped=True),
                         name="recv_wrapped_" + function.name,
-                        modifiers="static"):
+                        modifiers="static",
+                        output=self._additional_outputs[-1]):
             out('auto ew = state.exceptionWrapper();')
             with out('if (ew)'):
                 out('return ew;')
@@ -1926,8 +1946,8 @@ class CppGenerator(t_generator.Generator):
         out("// Mock friendly virtual instance method")
         with out().defn(self._get_recv_function_signature(function),
                     name="recv_" + "instance_" + function.name,
-                    modifiers="virtual"):
-
+                    modifiers="virtual",
+                    output=self._additional_outputs[-1]):
             params = []
             if self._is_complex_type(function.returntype):
                 params.append('_return')
@@ -1943,8 +1963,8 @@ class CppGenerator(t_generator.Generator):
         with out().defn(self._get_recv_function_signature(function,
                                                           is_wrapped=True),
                     name="recv_instance_wrapped_" + function.name,
-                    modifiers="virtual"):
-
+                    modifiers="virtual",
+                    output=self._additional_outputs[-1]):
             params = []
             if not function.returntype.is_void:
                 params.append('_return')
@@ -2200,56 +2220,63 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_struct_complete(self, s, obj, is_exception,
                                   pointers, read, write, swap,
-                                  result, has_isset=True):
+                                  result, has_isset=True, to_additional=False):
+        def output(data):
+            if to_additional:
+                print >>self._additional_outputs[-1], data
+            else:
+                s.impl(data)
+
         if not self.flag_implicit_templates:
             for a,b,c in self.protocols:
                 if not self.flag_compatibility:
-                    s.impl(("template uint32_t {1}::read<apache::thrift::{0}Reader>"
+                    output(("template uint32_t {1}::read<apache::thrift::{0}Reader>"
                            "(apache::thrift::{0}Reader*);").format(b,obj.name))
-                    s.impl(("template uint32_t {1}::write<"
+
+                    output(("template uint32_t {1}::write<"
                             "apache::thrift::{0}Writer"">("
                             "apache::thrift::{0}Writer*) const;").format(
                                     b,obj.name))
-                    s.impl(("template uint32_t {1}::serializedSize"
+                    output(("template uint32_t {1}::serializedSize"
                            "<apache::thrift::{0}Writer>(apache::thrift::{0}Writer*)"
                             " const;").format(b,obj.name))
-                    s.impl(("template uint32_t {1}::serializedSizeZC"
+                    output(("template uint32_t {1}::serializedSizeZC"
                             "<apache::thrift::{0}Writer>("
                             "apache::thrift::{0}Writer*) const;").format(
                                         b,obj.name))
                 else:
-                    s.impl(("template uint32_t {1}_read<"
+                    output(("template uint32_t {1}_read<"
                             "apache::thrift::{0}Reader>("
                             "apache::thrift::{0}Reader*, {1}*);").format(
                                         b,obj.name))
-                    s.impl(("template uint32_t {1}_write<"
+                    output(("template uint32_t {1}_write<"
                             "apache::thrift::{0}Writer>("
                             "apache::thrift::{0}Writer*, const {1}*);").format(
                                     b,obj.name))
-                    s.impl(("template uint32_t {1}_serializedSize<"
+                    output(("template uint32_t {1}_serializedSize<"
                             "apache::thrift::{0}Writer>("
                             "apache::thrift::{0}Writer*, const {1}*);").format(
                                     b,obj.name))
-                    s.impl(("template uint32_t {1}_serializedSizeZC<"
+                    output(("template uint32_t {1}_serializedSizeZC<"
                             "apache::thrift::{0}Writer>("
                             "apache::thrift::{0}Writer*, const {1}*);").format(
                                         b,obj.name))
             # Special case a few protocols
             if not self.flag_compatibility:
-                s.impl(("template uint32_t {0}::write<"
+                output(("template uint32_t {0}::write<"
                        "apache::thrift::DebugProtocolWriter>("
                         "apache::thrift::DebugProtocolWriter*) const;").format(
                                 obj.name))
-                s.impl(("template uint32_t {0}::read<"
+                output(("template uint32_t {0}::read<"
                         "apache::thrift::VirtualReaderBase>("
                         "apache::thrift::VirtualReaderBase*);").format(obj.name))
             else:
-                s.impl(
+                output(
                     ("template uint32_t {0}_write<"
                      "apache::thrift::DebugProtocolWriter>("
                      "apache::thrift::DebugProtocolWriter*, const {0}*);").format(
                              obj.name))
-                s.impl(("template uint32_t {0}_read<"
+                output(("template uint32_t {0}_read<"
                         "apache::thrift::VirtualReaderBase>("
                         "apache::thrift::VirtualReaderBase*, {0}*);").format(
                                 obj.name))
@@ -3724,7 +3751,7 @@ class CppGenerator(t_generator.Generator):
         sns.release()  # namespace
         sg.release()   # global scope
 
-    def _make_context(self, filename, tcc=False, processmap = False):
+    def _make_context(self, filename, tcc=False, processmap=False, separateclient=False):
         'Convenience method to get the context and outputs for some file pair'
         # open files and instantiate outputs
         output_h = self._write_to(filename + '.h')
@@ -3734,6 +3761,8 @@ class CppGenerator(t_generator.Generator):
         if processmap:
             for a, b, c in self.protocols:
                 additional_outputs.append(self._write_to(filename + "_processmap_" + a + ".cpp"))
+        if separateclient:
+            additional_outputs.append(self._write_to(filename + "_client.cpp"))
 
         header_path = self._with_include_prefix(self._program, filename)
 
