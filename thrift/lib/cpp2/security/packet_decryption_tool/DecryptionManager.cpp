@@ -351,7 +351,8 @@ DecryptionManager::PacketHandler::removeThriftHeader(Packet* packet) {
   unique_ptr<IOBuf> msg;
   size_t remaining;
   try {
-    msg = header_->removeHeader(queue.get(), remaining);
+    std::map<std::string, std::string> persistentHeaders;
+    msg = header_->removeHeader(queue.get(), remaining, persistentHeaders);
     if (remaining != 0) {
       // Assume security message can always live in one packet
       onError("Corrupted security message");

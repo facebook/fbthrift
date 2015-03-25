@@ -102,7 +102,7 @@ bool THeaderTransport::readFrame(uint32_t minFrameSize) {
   readBuf_ = nullptr;
 
   while (true) {
-    readBuf_ = removeHeader(queue_.get(), needed);
+    readBuf_ = removeHeader(queue_.get(), needed, persistentReadHeaders_);
     checkSupportedClient();
     if (!readBuf_) {
       pair<void*, uint32_t> data = queue_->preallocate(needed,
@@ -181,7 +181,7 @@ void THeaderTransport::flushImpl(bool oneway)  {
   // if the underlying write throws up an exception
   wBase_ = wBuf_.get();
 
-  buf = addHeader(std::move(buf));
+  buf = addHeader(std::move(buf), persistentWriteHeaders_);
 
   // And then write back to underlying transport.
 

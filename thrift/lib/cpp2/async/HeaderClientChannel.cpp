@@ -451,7 +451,8 @@ std::unique_ptr<folly::IOBuf>
 HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<IOBuf> buf) {
   THeader* header = channel_.getHeader();
   header->setSequenceNumber(channel_.sendSeqId_);
-  return header->addHeader(std::move(buf));
+  return header->addHeader(std::move(buf),
+      channel_.getPersistentWriteHeaders());
 }
 
 std::pair<std::unique_ptr<IOBuf>, size_t>
@@ -462,7 +463,8 @@ HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
   }
 
   size_t remaining = 0;
-  std::unique_ptr<folly::IOBuf> buf = header->removeHeader(q, remaining);
+  std::unique_ptr<folly::IOBuf> buf = header->removeHeader(q, remaining,
+      channel_.getPersistentReadHeaders());
   if (!buf) {
     return make_pair(std::unique_ptr<folly::IOBuf>(), remaining);
   }

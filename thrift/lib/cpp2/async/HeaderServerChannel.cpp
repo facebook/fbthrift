@@ -92,6 +92,7 @@ HeaderServerChannel::ServerFramingHandler::addFrame(unique_ptr<IOBuf> buf) {
   // Instead we have to catch it at sendMessage
   return channel_.getHeader()->addHeader(
     std::move(buf),
+    channel_.getPersistentWriteHeaders(),
     false /* Data already transformed in AsyncProcessor.h */);
 }
 
@@ -108,7 +109,8 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   std::unique_ptr<folly::IOBuf> buf;
   size_t remaining = 0;
   try {
-    buf = header->removeHeader(q, remaining);
+    buf = header->removeHeader(q, remaining,
+        channel_.getPersistentReadHeaders());
   } catch (const std::exception& e) {
     LOG(ERROR) << "Received invalid request from client: "
                << folly::exceptionStr(e) << " "

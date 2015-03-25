@@ -127,6 +127,18 @@ class THeaderTransport
     return readBuf_->length() + sizeof(uint32_t);
   }
 
+  StringToStringMap& getPersistentWriteHeaders() {
+    return persistentWriteHeaders_;
+  }
+
+  void clearPersistentHeaders() {
+    persistentWriteHeaders_.clear();
+  }
+
+  void setPersistentHeader(const std::string& key, const std::string& value) {
+    persistentWriteHeaders_[key] = value;
+  }
+
   /*
    * TVirtualTransport provides a default implementation of readAll().
    * We want to use the TBufferBase version instead.
@@ -160,6 +172,10 @@ class THeaderTransport
 
   // Buffer to use for readFrame/flush processing
   std::unique_ptr<folly::IOBuf> readBuf_;
+
+  // Map to use for persistent headers
+  StringToStringMap persistentReadHeaders_;
+  StringToStringMap persistentWriteHeaders_;
 };
 
 /**

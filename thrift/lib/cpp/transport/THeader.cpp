@@ -153,8 +153,10 @@ bool THeader::compactFramed(uint32_t magic) {
 
 }
 
-unique_ptr<IOBuf> THeader::removeHeader(IOBufQueue* queue,
-                                                 size_t& needed) {
+unique_ptr<IOBuf> THeader::removeHeader(
+  IOBufQueue* queue,
+  size_t& needed,
+  StringToStringMap& persistentReadHeaders) {
   Cursor c(queue->front());
   size_t chainSize = queue->front()->computeChainDataLength();
   unique_ptr<IOBuf> buf;
@@ -298,7 +300,7 @@ unique_ptr<IOBuf> THeader::removeHeader(IOBufQueue* queue,
 
       // Trim off the frame size.
       queue->trimStart(4);
-      buf = readHeaderFormat(queue->split(sz));
+      buf = readHeaderFormat(queue->split(sz), persistentReadHeaders);
 
       // auth client?
       clientType = THRIFT_HEADER_CLIENT_TYPE;
@@ -365,7 +367,9 @@ void readInfoHeaders(RWPrivateCursor& c,
   }
 }
 
-unique_ptr<IOBuf> THeader::readHeaderFormat(unique_ptr<IOBuf> buf) {
+unique_ptr<IOBuf> THeader::readHeaderFormat(
+  unique_ptr<IOBuf> buf,
+  StringToStringMap& persistentReadHeaders) {
   readTrans_.clear(); // Clear out any previous transforms.
   readHeaders_.clear(); // Clear out any previous headers.
 
@@ -420,14 +424,16 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(unique_ptr<IOBuf> buf) {
         readInfoHeaders(c, readHeaders_);
         break;
       case infoIdType::PKEYVALUE:
-        readInfoHeaders(c, persisReadHeaders_);
+        readInfoHeaders(c, persistentReadHeaders);
         break;
     }
   }
 
   // if persistent headers are not empty, merge together.
-  if (!persisReadHeaders_.empty())
-    readHeaders_.insert(persisReadHeaders_.begin(), persisReadHeaders_.end());
+  if (!persistentReadHeaders.empty()) {
+    readHeaders_.insert(persistentReadHeaders.begin(),
+                        persistentReadHeaders.end());
+  }
 
   if (verifyCallback_) {
     uint32_t bufLength = buf->computeChainDataLength();
@@ -771,15 +777,6 @@ void THeader::setHeaders(THeader::StringToStringMap&& headers) {
   writeHeaders_ = std::move(headers);
 }
 
-void THeader::setPersistentHeader(const string& key,
-                                  const string& value) {
-  persisWriteHeaders_[key] = value;
-}
-
-void THeader::setPersistentHeaders(THeader::StringToStringMap&& headers) {
-  persisWriteHeaders_ = std::move(headers);
-}
-
 size_t getInfoHeaderSize(const THeader::StringToStringMap &headers) {
   if (headers.empty()) {
     return 0;
@@ -794,19 +791,16 @@ size_t getInfoHeaderSize(const THeader::StringToStringMap &headers) {
   return maxWriteHeadersSize;
 }
 
-size_t THeader::getMaxWriteHeadersSize() const {
+size_t THeader::getMaxWriteHeadersSize(
+  const StringToStringMap& persistentWriteHeaders) const {
   size_t maxWriteHeadersSize = 0;
-  maxWriteHeadersSize += getInfoHeaderSize(persisWriteHeaders_);
+  maxWriteHeadersSize += getInfoHeaderSize(persistentWriteHeaders);
   maxWriteHeadersSize += getInfoHeaderSize(writeHeaders_);
   return maxWriteHeadersSize;
 }
 
 void THeader::clearHeaders() {
   writeHeaders_.clear();
-}
-
-void THeader::clearPersistentHeaders() {
-  persisWriteHeaders_.clear();
 }
 
 string THeader::getPeerIdentity() {
@@ -823,6 +817,7 @@ void THeader::setIdentity(const string& identity) {
 }
 
 unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
+                                    StringToStringMap& persistentWriteHeaders,
                                     bool transform) {
   // We may need to modify some transforms before send.  Make
   // a copy here
@@ -876,9 +871,9 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     // replace the header.
     if (prevClientType != clientType) {
       if (clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-        setPersistentHeader("thrift_auth", "1");
+        persistentWriteHeaders["thrift_auth"] = "1";
       } else {
-        setPersistentHeader("thrift_auth", "0");
+        persistentWriteHeaders["thrift_auth"] = "0";
       }
       prevClientType = clientType;
     }
@@ -887,7 +882,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     int headerSize = (2 + getNumTransforms(writeTrans) * 2 /* transform data */)
       * 5 + 4;
     // add approximate size of info headers
-    headerSize += getMaxWriteHeadersSize();
+    headerSize += getMaxWriteHeadersSize(persistentWriteHeaders);
 
     // Pkt size
     unique_ptr<IOBuf> header = IOBuf::create(14 + headerSize);
@@ -934,7 +929,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     // write info headers
 
     // write persistent kv-headers
-    flushInfoHeaders(pkt, persisWriteHeaders_, infoIdType::PKEYVALUE);
+    flushInfoHeaders(pkt, persistentWriteHeaders, infoIdType::PKEYVALUE);
 
     // write non-persistent kv-headers
     flushInfoHeaders(pkt, writeHeaders_, infoIdType::KEYVALUE);
@@ -1003,7 +998,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
   } else if (clientType == THRIFT_HTTP_CLIENT_TYPE) {
     CHECK(httpClientParser_.get() != nullptr);
     buf = std::move(httpClientParser_->constructHeader(std::move(buf),
-                                                       persisWriteHeaders_,
+                                                       persistentWriteHeaders,
                                                        writeHeaders_));
     writeHeaders_.clear();
   } else {

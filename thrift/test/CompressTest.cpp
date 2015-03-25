@@ -79,6 +79,7 @@ void testMessage(uint8_t flag,
 
 void testChainedCompression(uint8_t flag, int iters) {
   THeader header;
+  std::map<std::string, std::string> persistentHeaders;
   if (flag) {
     header.setTransform(flag);
   }
@@ -94,7 +95,7 @@ void testChainedCompression(uint8_t flag, int iters) {
 
   auto cloned = head->clone();
 
-  auto compressed = header.addHeader(std::move(head));
+  auto compressed = header.addHeader(std::move(head), persistentHeaders);
   EXPECT_NE(compressed, nullptr);
   printf("%i\n", (int)compressed->length());
 
@@ -102,7 +103,7 @@ void testChainedCompression(uint8_t flag, int iters) {
   folly::IOBufQueue q;
   q.append(std::move(compressed));
 
-  auto uncompressed = header.removeHeader(&q, needed);
+  auto uncompressed = header.removeHeader(&q, needed, persistentHeaders);
   EXPECT_NE(uncompressed, nullptr);
   EXPECT_EQ(needed, 0);
   EXPECT_TRUE(q.empty());

@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp/async/HHWheelTimer.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
@@ -40,6 +41,7 @@ namespace apache { namespace thrift {
  * manages requests / responses via seqId.
  */
 class HeaderServerChannel : public ResponseChannel,
+                            public HeaderChannel,
                             public MessageChannel::RecvCallback,
                             virtual public async::TDelayedDestruction {
   typedef ProtectionChannelHandler::ProtectionState ProtectionState;

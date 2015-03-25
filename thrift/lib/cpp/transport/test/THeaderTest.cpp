@@ -37,7 +37,8 @@ BOOST_AUTO_TEST_CASE(largetransform) {
   std::unique_ptr<IOBuf> buf(IOBuf::create(buf_size));
   buf->append(buf_size);
 
-  buf = header.addHeader(std::move(buf));
+  std::map<std::string, std::string> persistentHeaders;
+  buf = header.addHeader(std::move(buf), persistentHeaders);
   buf_size = buf->computeChainDataLength();
   std::unique_ptr<IOBufQueue> queue(new IOBufQueue);
   std::unique_ptr<IOBufQueue> queue2(new IOBufQueue);
@@ -50,21 +51,20 @@ BOOST_AUTO_TEST_CASE(largetransform) {
 
   size_t needed;
 
-  buf = header.removeHeader(queue2.get(), needed);
+  buf = header.removeHeader(queue2.get(), needed, persistentHeaders);
 }
 
 BOOST_AUTO_TEST_CASE(http_clear_header) {
   THeader header;
   header.useAsHttpClient("testhost", "testuri");
   header.setHeader("WriteHeader", "foo");
-  header.setPersistentHeader("PersistentHeader", "bar");
 
   size_t buf_size = 1000000;
   std::unique_ptr<IOBuf> buf(IOBuf::create(buf_size));
-  buf = header.addHeader(std::move(buf));
+  std::map<std::string, std::string> persistentHeaders;
+  buf = header.addHeader(std::move(buf), persistentHeaders);
 
   BOOST_CHECK(header.getWriteHeaders().empty());
-  BOOST_CHECK(!header.getPersistentWriteHeaders().empty());
 }
 
 boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {

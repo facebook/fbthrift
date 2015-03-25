@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp/async/HHWheelTimer.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp2/async/SaslClient.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <thrift/lib/cpp/async/TDelayedDestruction.h>
@@ -40,6 +41,7 @@ namespace apache { namespace thrift {
  * messages encoded using THeaderProtocol.
  */
 class HeaderClientChannel : public RequestChannel,
+                            public HeaderChannel,
                             public MessageChannel::RecvCallback,
                             virtual public async::TDelayedDestruction {
   typedef ProtectionChannelHandler::ProtectionState ProtectionState;

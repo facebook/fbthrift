@@ -143,13 +143,18 @@ class THeader {
     flags_ = flags;
   }
 
+  // Info headers
+  typedef std::map<std::string, std::string> StringToStringMap;
+
   /**
    * We know we got a packet in header format here, try to parse the header
    *
    * @param IObuf of the header + data.  Untransforms the data as appropriate.
    * @return Just the data section in an IOBuf
    */
-  std::unique_ptr<folly::IOBuf> readHeaderFormat(std::unique_ptr<folly::IOBuf>);
+  std::unique_ptr<folly::IOBuf> readHeaderFormat(
+    std::unique_ptr<folly::IOBuf>,
+    StringToStringMap& persistentReadHeaders);
 
   /**
    * Untransform the data based on the received header flags
@@ -200,28 +205,13 @@ class THeader {
   const std::vector<uint16_t>& getWriteTransforms() const {
     return writeTrans_; }
 
-  // Info headers
-  typedef std::map<std::string, std::string> StringToStringMap;
-
   // these work with write headers
   void setHeader(const std::string& key, const std::string& value);
   void setHeaders(StringToStringMap&&);
-  void setPersistentHeader(const std::string& key, const std::string& value);
-  void setPersistentHeaders(StringToStringMap&&);
   void clearHeaders();
-  /**
-   * this function only clears the local persistent
-   * header. does not affect the persistent header
-   * that already set
-   */
-  void clearPersistentHeaders();
 
   StringToStringMap& getWriteHeaders() {
     return writeHeaders_;
-  }
-
-  StringToStringMap& getPersistentWriteHeaders() {
-    return persisWriteHeaders_;
   }
 
   // these work with read headers
@@ -229,19 +219,9 @@ class THeader {
     return readHeaders_;
   }
 
-  StringToStringMap& getPersistentHeaders() {
-    return persisReadHeaders_;
-  }
-
   StringToStringMap releaseHeaders() {
     StringToStringMap headers;
     readHeaders_.swap(headers);
-    return headers;
-  }
-
-  StringToStringMap releasePersistentHeaders() {
-    StringToStringMap headers;
-    persisReadHeaders_.swap(headers);
     return headers;
   }
 
@@ -299,8 +279,10 @@ class THeader {
    *
    * @return IOBuf chain with header _and_ data.  Data is not copied
    */
-  std::unique_ptr<folly::IOBuf> addHeader(std::unique_ptr<folly::IOBuf>,
-                                         bool transform=true);
+  std::unique_ptr<folly::IOBuf> addHeader(
+    std::unique_ptr<folly::IOBuf>,
+    StringToStringMap& persistentWriteHeaders,
+    bool transform=true);
   /**
    * Given an IOBuf Chain, remove the header.  Supports unframed (sync
    * only), framed, header, and http (sync case only).  This doesn't
@@ -318,8 +300,10 @@ class THeader {
    *                 If nullptr, we didn't get enough data for a whole message,
    *                 call removeHeader again after reading needed more bytes.
    */
-  std::unique_ptr<folly::IOBuf> removeHeader(folly::IOBufQueue*,
-                                             size_t& needed);
+  std::unique_ptr<folly::IOBuf> removeHeader(
+    folly::IOBufQueue*,
+    size_t& needed,
+    StringToStringMap& persistentReadHeaders);
 
 
   void setMinCompressBytes(uint32_t bytes) {
@@ -383,10 +367,6 @@ class THeader {
   StringToStringMap readHeaders_;
   StringToStringMap writeHeaders_;
 
-  // Map to use for persistent headers
-  StringToStringMap persisReadHeaders_;
-  StringToStringMap persisWriteHeaders_;
-
   static const std::string IDENTITY_HEADER;
   static const std::string ID_VERSION_HEADER;
   static const std::string ID_VERSION;
@@ -403,7 +383,8 @@ class THeader {
   /**
    * Returns the maximum number of bytes that write k/v headers can take
    */
-  size_t getMaxWriteHeadersSize() const;
+  size_t getMaxWriteHeadersSize(
+    const StringToStringMap& persistentWriteHeaders) const;
 
   /**
    * Returns whether the 1st byte of the protocol payload should be hadled

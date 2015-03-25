@@ -43,6 +43,7 @@ thrift2include_asyncdir = $(thrift2includedir)/async
 thrift2include_async_HEADERS = \
 	async/AsyncProcessor.h \
 	async/Cpp2Channel.h \
+	async/HeaderChannel.h \
 	async/DuplexChannel.h \
 	async/FutureRequest.h \
 	async/GssSaslClient.h \
