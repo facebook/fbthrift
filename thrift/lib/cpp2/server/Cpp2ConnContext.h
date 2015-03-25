@@ -118,9 +118,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 
 // Request-specific context
 class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
+
  public:
   explicit Cpp2RequestContext(Cpp2ConnContext* ctx)
-      : ctx_(ctx) {
+      : ctx_(ctx), requestData_(nullptr, no_op_destructor) {
     setConnectionContext(ctx);
   }
 
@@ -219,6 +220,23 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_->setUserData(data, destructor);
   }
 
+  typedef void (*void_ptr_destructor)(void*);
+  typedef std::unique_ptr<void, void_ptr_destructor> RequestData;
+
+  // This data is set on a per request basis.
+  void* getRequestData() const {
+    return requestData_.get();
+  }
+
+  // Returns the old request data context so the caller can clean up
+  RequestData setRequestData(
+      void* data, void_ptr_destructor destructor = no_op_destructor) {
+
+    RequestData oldData(data, destructor);
+    requestData_.swap(oldData);
+    return oldData;
+  }
+
   virtual Cpp2ConnContext* getConnectionContext() const {
     return ctx_;
   }
@@ -237,8 +255,12 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_->getHeader();
   }
 
+  static void no_op_destructor(void* ptr) {}
+
  private:
   Cpp2ConnContext* ctx_;
+
+  RequestData requestData_;
 
   // Headers are per-request, not per-connection
   std::map<std::string, std::string> headers_;
