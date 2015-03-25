@@ -1423,8 +1423,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
 
   /*
      Here we generate the structure specification for the fastbinary/fastproto
-     codec. This spec is also used by Configerator and other tools to extract
-     the schema and perform validations.
+     codec.
      These specifications have the following structure:
      thrift_spec -> tuple of item_spec
      item_spec -> None | (tag, type_enum, name, spec_args, default)
