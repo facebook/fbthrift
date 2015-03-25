@@ -21,11 +21,13 @@
 
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/async/TAsyncTransportHandler.h>
 #include <thrift/lib/cpp/async/TDelayedDestruction.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/wangle/channel/ChannelHandler.h>
 #include <memory>
 
 #include <deque>
@@ -113,8 +115,8 @@ public:
 class Cpp2Channel
   : public MessageChannel
   , protected apache::thrift::async::TEventBase::LoopCallback
-  , protected apache::thrift::async::TAsyncTransport::ReadCallback
-  , protected apache::thrift::async::TAsyncTransport::WriteCallback {
+  , public folly::wangle::BytesToBytesHandler
+ {
  protected:
   virtual ~Cpp2Channel() {}
 
@@ -146,14 +148,13 @@ class Cpp2Channel
   }
 
   // TDelayedDestruction methods
-  void destroy();
+  void destroy() override;
 
-  // callbacks from apache::thrift::async::TAsyncTransport
-  void getReadBuffer(void** bufReturn, size_t* lenReturn);
-  void readDataAvailable(size_t len) noexcept;
-  void readEOF() noexcept;
-  void readError(const apache::thrift::transport::TTransportException& ex)
-    noexcept;
+  // BytesToBytesHandler methods
+  void read(Context* ctx, folly::IOBufQueue& q) override;
+  void readEOF(Context* ctx) override;
+  void readException(Context* ctx, folly::exception_wrapper e) override;
+  folly::Future<void> close(Context* ctx) override;
 
   void writeSuccess() noexcept;
   void writeError(size_t bytesWritten,
@@ -164,8 +165,8 @@ class Cpp2Channel
 
   // Interface from MessageChannel
   void sendMessage(SendCallback* callback,
-                   std::unique_ptr<folly::IOBuf>&& buf);
-  void setReceiveCallback(RecvCallback* callback);
+                   std::unique_ptr<folly::IOBuf>&& buf) override;
+  void setReceiveCallback(RecvCallback* callback) override;
 
   // event base methods
   virtual void attachEventBase(apache::thrift::async::TEventBase*);
@@ -173,7 +174,7 @@ class Cpp2Channel
   apache::thrift::async::TEventBase* getEventBase();
 
   // callback from TEventBase::LoopCallback.  Used for sends
-  virtual void runLoopCallback() noexcept;
+  virtual void runLoopCallback() noexcept override;
 
   // Setter for queued sends mode.
   // Can only be set in quiescent state, otherwise
@@ -195,6 +196,7 @@ class Cpp2Channel
     CHECK(remaining_ == readBufferSize_); // channel has not been used
     remaining_ = readBufferSize_ = std::max(readBufferSize,
                                             DEFAULT_BUFFER_SIZE);
+    pipeline_->setReadBufferSettings(readBufferSize_, remaining_);
   }
 
 private:
@@ -221,6 +223,14 @@ private:
 
   std::unique_ptr<ProtectionChannelHandler> protectionHandler_;
   std::unique_ptr<FramingChannelHandler> framingHandler_;
+
+  typedef folly::wangle::ChannelPipeline<
+    folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>,
+    TAsyncTransportHandler,
+    folly::wangle::ChannelHandlerPtr<Cpp2Channel, false>>
+  Pipeline;
+  std::unique_ptr<Pipeline, folly::DelayedDestruction::Destructor> pipeline_;
+  TAsyncTransportHandler* transportHandler_;
 };
 
 }} // apache::thrift

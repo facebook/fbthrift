@@ -89,7 +89,7 @@ class TAsyncTransportHandler
     return future;
   };
 
-  folly::Future<void> close(Context* ctx) {
+  folly::Future<void> close(Context* ctx) override {
     if (transport_) {
       detachReadCallback();
       transport_->closeNow();
@@ -138,7 +138,7 @@ class TAsyncTransportHandler
     void writeError(size_t bytesWritten,
                     const transport::TTransportException& ex)
       noexcept override {
-      promise_.setException(std::make_exception_ptr(ex));
+      promise_.setException(ex);
       delete this;
     }
 
@@ -148,7 +148,7 @@ class TAsyncTransportHandler
   };
 
   Context* ctx_{nullptr};
-  folly::IOBufQueue bufQueue_;
+  folly::IOBufQueue bufQueue_{folly::IOBufQueue::cacheChainLength()};
   std::shared_ptr<async::TAsyncTransport> transport_;
 };
 
