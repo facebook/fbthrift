@@ -142,8 +142,10 @@ class TProcessorEventHandler {
    *
    * Only called for Cpp2
    */
-  virtual void userException(void* ctx, const char* fn_name,
-                             const std::string& ex) {}
+  virtual void userException(void* ctx,
+                             const char* fn_name,
+                             const std::string& ex,
+                             const std::string& ex_what) {}
 
  protected:
   TProcessorEventHandler() {}
@@ -274,10 +276,10 @@ class ContextStack {
     }
   }
 
-  void userException(const std::string& ex) {
+  void userException(const std::string& ex, const std::string& ex_what) {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->userException(ctxs_[i], method_, ex);
+        (*handlers_)[i]->userException(ctxs_[i], method_, ex, ex_what);
       }
     }
   }

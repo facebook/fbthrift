@@ -1075,7 +1075,8 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_app_ex(self, service, errorstr, functionname, seqid, is_in_eb,
                          s, reqCtx, static=True, err_code=None,
-                         uex_str='folly::demangle(typeid(e)).toStdString()'):
+                         uex_str='folly::demangle(typeid(e)).toStdString()',
+                         uexw_str='e.what()'):
         with out('if (req)'):
             out('LOG(ERROR) << {0} << " in function {1}";'.format(
                     errorstr, functionname))
@@ -1086,7 +1087,7 @@ class CppGenerator(t_generator.Generator):
                 format(code, errorstr))
             if static:
                 ctx = 'ctx'
-                out('ctx->userException({});'.format(uex_str))
+                out('ctx->userException({}, {});'.format(uex_str, uexw_str))
             else:
                 ctx = 'nullptr'
             out('folly::IOBufQueue queue = serializeException("{0}", &prot, {1}, {2}, '
@@ -1526,7 +1527,8 @@ class CppGenerator(t_generator.Generator):
                         with out('catch (const {0}& e)'.format(
                             self._type_name(xception.type))):
                             out('ctx->userException(' +
-                              'folly::demangle(typeid(e)).toStdString());')
+                              'folly::demangle(typeid(e)).toStdString(), ' +
+                              'e.what());')
                             out('result.{0} = e;'.format(xception.name))
                             out('result.__isset.{0} = true;'.format(
                                 xception.name))
@@ -1599,7 +1601,7 @@ class CppGenerator(t_generator.Generator):
                                      format(xception_type)):
                                 out('ctx->userException('
                                     'folly::demangle(typeid(e)).'
-                                    'toStdString());')
+                                    'toStdString(), e.what());')
                                 out('result.{0} = e;'.format(
                                     xception.name))
                                 out('result.__isset.{0} = true;'.format(
@@ -1611,7 +1613,8 @@ class CppGenerator(t_generator.Generator):
                                 'ew.what().toStdString()',
                                 function.name, "protoSeqId", True,
                                 out(), 'reqCtx', True, None,
-                                'ew.class_name().toStdString()')
+                                'ew.class_name().toStdString()',
+                                'ew.what().toStdString()')
                         if len(function.xceptions.members) > 0:
                             out('auto queue = serializeResponse('
                                 '"{0}", &prot, protoSeqId, ctx,'
