@@ -32,6 +32,10 @@ function wrappedProcessor(server, callback, datain) {
 }
 
 function ThriftServer(service, methods) {
+  // Setup environment variable for secure thrift.
+  process.env['KRB5_CONFIG'] = '/etc/krb5-thrift.conf';
+  process.env['KRB5RCACHETYPE'] = 'none';
+
   this.server = new CppThriftServer();
   this.server.processor = new service.Processor(methods);
   this.server.setInterface(wrappedProcessor);
