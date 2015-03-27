@@ -172,7 +172,6 @@ class DuplexChannel {
     addFrame(std::unique_ptr<folly::IOBuf> buf) override;
    private:
     DuplexChannel& duplex_;
-    folly::IOBufQueue queue_;
 
     FramingChannelHandler& getHandler(DuplexChannel::Who::WhoEnum who);
   };
@@ -180,7 +179,8 @@ class DuplexChannel {
   class ProtectionHandler : public ProtectionChannelHandler {
    public:
     explicit ProtectionHandler(DuplexChannel& duplex)
-        : duplex_(duplex)
+        : ProtectionChannelHandler(nullptr)
+        , duplex_(duplex)
     {}
 
     void protectionStateChanged() override {
@@ -211,6 +211,10 @@ class DuplexChannel {
 
       dst->setSupportedClients(&supportedClients);
       dst->setClientType(type);
+
+      if (duplex_.cpp2Channel_ && !inputQueue_.empty()) {
+        duplex_.cpp2Channel_->read(nullptr, inputQueue_);
+      }
     }
    private:
     DuplexChannel& duplex_;

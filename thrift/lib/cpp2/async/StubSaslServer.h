@@ -49,11 +49,13 @@ public:
   }
   // This is for testing.
   void setForceFallback() { forceFallback_ = true; }
+  void setForceSendGarbage() { forceSendGarbage_ = true; }
 
 private:
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   int phase_;
   bool forceFallback_;
+  bool forceSendGarbage_;
 };
 
 }} // apache::thrift

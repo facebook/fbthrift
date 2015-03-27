@@ -50,7 +50,8 @@ StubSaslClient::StubSaslClient(apache::thrift::async::TEventBase* evb,
     : SaslClient(evb, logger)
     , threadManager_(ThreadManager::newSimpleThreadManager(1 /* count */))
     , phase_(0)
-    , forceFallback_(false) {
+    , forceFallback_(false)
+    , forceTimeout_(false) {
   threadManager_->threadFactory(std::make_shared<PosixThreadFactory>());
 }
 
@@ -92,7 +93,14 @@ void StubSaslClient::consumeFromServer(
     saslLogger_->moveMockTime();
   }
 
+  auto forceTimeout = forceTimeout_;
+  cb->saslStarted();
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
+        if (forceTimeout) {
+          sleep(1);
+          return;
+        }
+
         folly::MoveWrapper<IOBufQueue> req_data;
         folly::exception_wrapper ex;
         bool complete = false;

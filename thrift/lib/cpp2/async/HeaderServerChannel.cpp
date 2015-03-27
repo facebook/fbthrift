@@ -427,7 +427,11 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
         return nullptr;
       }
     } else if (getProtectionState() == ProtectionState::UNKNOWN ||
-        getProtectionState() == ProtectionState::INPROGRESS) {
+        getProtectionState() == ProtectionState::INPROGRESS ||
+        getProtectionState() == ProtectionState::WAITING) {
+      // Technically we shouldn't get any new messages while in the INPROGRESS
+      // state, but we'll allow it to fall through here and let the saslServer_
+      // state machine throw an error.
       setProtectionState(ProtectionState::INPROGRESS);
       saslServer_->setProtocolId(header_->getProtocolId());
       saslServer_->consumeFromClient(&saslServerCallback_, std::move(buf));
@@ -435,7 +439,8 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     }
     // else, fall through to application message processing
   } else if (getProtectionState() == ProtectionState::VALID ||
-      (getProtectionState() == ProtectionState::INPROGRESS &&
+      ((getProtectionState() == ProtectionState::INPROGRESS ||
+        getProtectionState() == ProtectionState::WAITING) &&
           !header_->isSupportedClient())) {
     // Either negotiation has completed or negotiation is incomplete,
     // non-sasl was received, but is not permitted.
@@ -451,7 +456,8 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     // take.
     VLOG(5) << "non-SASL client connection received";
     setProtectionState(ProtectionState::NONE);
-  } else if (getProtectionState() == ProtectionState::INPROGRESS &&
+  } else if ((getProtectionState() == ProtectionState::INPROGRESS ||
+              getProtectionState() == ProtectionState::WAITING) &&
       header_->isSupportedClient()) {
     // If a client  permits a non-secure connection, we allow falling back to
     // one even if a SASL handshake is in progress.
@@ -482,6 +488,7 @@ void HeaderServerChannel::SaslServerCallback::saslSendClient(
   }
   try {
     auto trans = channel_.header_->getWriteTransforms();
+    channel_.setProtectionState(ProtectionState::WAITING);
     channel_.sendMessage(nullptr,
                          channel_.header_->transform(
                            std::move(response),

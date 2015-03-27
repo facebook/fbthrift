@@ -65,27 +65,24 @@ FramingChannelHandler& DuplexChannel::FramingHandler::getHandler(
 
 std::pair<std::unique_ptr<folly::IOBuf>, size_t>
 DuplexChannel::FramingHandler::removeFrame(folly::IOBufQueue* q) {
-  if (q) {
-    queue_.append(*q);
-  }
-  if (!queue_.front() || queue_.front()->empty()) {
+  if (!q || !q->front() || q->front()->empty()) {
     return make_pair(std::unique_ptr<IOBuf>(), 0);
   }
 
-  uint32_t len = queue_.front()->computeChainDataLength();
+  uint32_t len = q->front()->computeChainDataLength();
 
   if (len < 4) {
     size_t remaining = 4 - len;
     return make_pair(unique_ptr<IOBuf>(), remaining);
   }
 
-  Cursor c(queue_.front());
+  Cursor c(q->front());
   uint32_t msgLen = c.readBE<uint32_t>();
 
   if (msgLen > THeader::MAX_FRAME_SIZE) {
     // Not a framed or header message. Either unframed of HTTP, so
     // pass it to the main channel
-    return getHandler(duplex_.mainChannel_.get()).removeFrame(&queue_);
+    return getHandler(duplex_.mainChannel_.get()).removeFrame(q);
   }
 
   if (len - 4 < msgLen) {
@@ -99,7 +96,7 @@ DuplexChannel::FramingHandler::removeFrame(folly::IOBufQueue* q) {
   if (c.readBE<uint16_t>() != THeader::HEADER_MAGIC >> 16) {
     // Framed, not header
     // pass it to the main channel
-    return getHandler(duplex_.mainChannel_.get()).removeFrame(&queue_);
+    return getHandler(duplex_.mainChannel_.get()).removeFrame(q);
   }
 
   // Header, check if reverse
@@ -110,9 +107,9 @@ DuplexChannel::FramingHandler::removeFrame(folly::IOBufQueue* q) {
 
   // Next message in queue_ might have a different reverse bit, so split
   // the current message, pass it to the correct framing handler
-  // and retain the rest of queue_ for the next invocation
+  // and retain the rest of q for the next invocation
   IOBufQueue thisMessageQueue;
-  thisMessageQueue.append(queue_.split(4 + msgLen));
+  thisMessageQueue.append(q->split(4 + msgLen));
 
   return getHandler(msgWho).removeFrame(&thisMessageQueue);
 }

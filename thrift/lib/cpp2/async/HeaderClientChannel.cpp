@@ -145,12 +145,15 @@ void HeaderClientChannel::startSecurity() {
 unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
     unique_ptr<IOBuf>&& buf) {
   if (header_->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    if (getProtectionState() == ProtectionState::INPROGRESS) {
+    if (getProtectionState() == ProtectionState::INPROGRESS ||
+        getProtectionState() == ProtectionState::WAITING) {
+      setProtectionState(ProtectionState::INPROGRESS);
       saslClient_->consumeFromServer(&saslClientCallback_, std::move(buf));
       return nullptr;
     }
     // else, fall through to application message processing
   } else if (getProtectionState() == ProtectionState::INPROGRESS ||
+             getProtectionState() == ProtectionState::WAITING ||
              getProtectionState() == ProtectionState::VALID) {
     setProtectionState(ProtectionState::INVALID);
     // If the security negotiation has completed successfully, or is
@@ -183,6 +186,7 @@ void HeaderClientChannel::SaslClientCallback::saslSendServer(
   channel_.handshakeMessagesSent_++;
 
   channel_.header_->setProtocolId(T_COMPACT_PROTOCOL);
+  channel_.setProtectionState(ProtectionState::WAITING);
   channel_.sendMessage(nullptr, std::move(message));
   channel_.header_->setProtocolId(channel_.userProtocolId_);
 }
@@ -287,6 +291,9 @@ bool HeaderClientChannel::isSecurityPending() {
     }
     case ProtectionState::INVALID: {
       return false;
+    }
+    case ProtectionState::WAITING: {
+      return true;
     }
   }
 
@@ -596,6 +603,7 @@ bool HeaderClientChannel::expireCallback(uint32_t seqId) {
 
 void HeaderClientChannel::setBaseReceivedCallback() {
   if (getProtectionState() == ProtectionState::INPROGRESS ||
+      getProtectionState() == ProtectionState::WAITING ||
       recvCallbacks_.size() != 0 ||
       (closeCallback_ && keepRegisteredForClose_)) {
     cpp2Channel_->setReceiveCallback(this);

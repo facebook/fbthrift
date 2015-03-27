@@ -54,6 +54,7 @@ public:
 
   // This is for testing.
   void setForceFallback() { forceFallback_ = true; }
+  void setForceTimeout() { forceTimeout_ = true; }
 
   const std::string* getErrorString() const {
     return nullptr;
@@ -65,6 +66,7 @@ private:
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   int phase_;
   bool forceFallback_;
+  bool forceTimeout_;
 };
 
 }} // apache::thrift

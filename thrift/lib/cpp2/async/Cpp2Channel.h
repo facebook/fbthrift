@@ -36,6 +36,8 @@
 
 namespace apache { namespace thrift {
 
+class Cpp2Channel;
+
 class ProtectionChannelHandler {
 public:
   enum class ProtectionState {
@@ -44,11 +46,14 @@ public:
     INPROGRESS,
     VALID,
     INVALID,
+    WAITING,
   };
 
-  ProtectionChannelHandler()
+  explicit ProtectionChannelHandler(Cpp2Channel* channel)
     : protectionState_(ProtectionState::UNKNOWN)
     , saslEndpoint_(nullptr)
+    , channel_(channel)
+    , inputQueue_(folly::IOBufQueue::cacheChainLength())
   {}
 
   void setProtectionState(ProtectionState protectionState,
@@ -66,7 +71,7 @@ public:
     return saslEndpoint_;
   }
 
-  virtual void protectionStateChanged() {}
+  virtual void protectionStateChanged();
 
   virtual ~ProtectionChannelHandler() {}
 
@@ -85,10 +90,13 @@ public:
    * Encrypt an IOBuf
    */
   std::unique_ptr<folly::IOBuf> encrypt(std::unique_ptr<folly::IOBuf> buf);
-private:
+
+protected:
   ProtectionState protectionState_;
   SaslEndpoint* saslEndpoint_;
   folly::IOBufQueue queue_;
+  Cpp2Channel* channel_;
+  folly::IOBufQueue inputQueue_;
 };
 
 class FramingChannelHandler {

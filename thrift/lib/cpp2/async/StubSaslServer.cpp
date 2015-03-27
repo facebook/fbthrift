@@ -49,7 +49,8 @@ StubSaslServer::StubSaslServer(apache::thrift::async::TEventBase* evb)
     : SaslServer(evb)
     , threadManager_(ThreadManager::newSimpleThreadManager(1 /* count */))
     , phase_(0)
-    , forceFallback_(false) {
+    , forceFallback_(false)
+    , forceSendGarbage_(false) {
   threadManager_->threadFactory(std::make_shared<PosixThreadFactory>());
 }
 
@@ -57,6 +58,8 @@ void StubSaslServer::consumeFromClient(
   Callback *cb, std::unique_ptr<IOBuf>&& message) {
   std::shared_ptr<IOBuf> smessage(std::move(message));
   threadManager_->start();
+
+  auto forceSendGarbage = forceSendGarbage_;
 
   // Double-dispatch, as the more complex implementation will.
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
@@ -151,6 +154,11 @@ void StubSaslServer::consumeFromClient(
         (*evb_)->runInEventBaseThread([=] () mutable {
             if (!reply_data->empty()) {
               cb->saslSendClient(reply_data->move());
+              // Send some extra garbage on this channel
+              if (forceSendGarbage) {
+                auto str = IOBuf::copyBuffer("garbage", 7);
+                cb->saslSendClient(std::move(str));
+              }
             }
             if (ex) {
               threadManager_->stop();

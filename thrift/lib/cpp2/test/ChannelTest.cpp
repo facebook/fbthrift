@@ -569,6 +569,17 @@ public:
   }
 };
 
+class SecurityNegotiationClientTimeoutGarbageTest :
+  public SecurityNegotiationTest {
+public:
+  template <typename... Args>
+  explicit SecurityNegotiationClientTimeoutGarbageTest(Args&&... args)
+      : SecurityNegotiationTest(std::forward<Args>(args)...) {
+    stubSaslClient_->setForceTimeout();
+    stubSaslServer_->setForceSendGarbage();
+  }
+};
+
 TEST(Channel, SecurityNegotiationTest) {
   //clientSasl clientNonSasl serverSasl serverNonSasl expectConn expectSecurity
   SecurityNegotiationTest(false, false, false, false, true, false).run();
@@ -599,6 +610,11 @@ TEST(Channel, SecurityNegotiationFailTest) {
 
   SecurityNegotiationClientFailTest(true, true, true, true, true, false).run();
   SecurityNegotiationServerFailTest(true, true, true, true, true, false).run();
+}
+
+TEST(Channel, SecurityNegotiationTimeoutGarbageTest) {
+  SecurityNegotiationClientTimeoutGarbageTest(
+    true, false, true, true, false, false).run();
 }
 
 class InOrderTest
