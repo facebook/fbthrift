@@ -259,8 +259,9 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
     }
     sendCallbacks_.push_back(std::move(cbs));
 
+    DestructorGuard dg(this);
     auto future = pipeline_->write(std::move(buf));
-    future.then([=](folly::Try<void>&& t) {
+    future.then([this,dg](folly::Try<void>&& t) {
       try {
         t.throwIfFailed();
         writeSuccess();
@@ -301,9 +302,10 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
 
 void Cpp2Channel::runLoopCallback() noexcept {
   assert(sends_);
+  DestructorGuard dg(this);
 
   auto future = pipeline_->write(std::move(sends_));
-  future.then([=](folly::Try<void>&& t) {
+  future.then([this,dg](folly::Try<void>&& t) {
     if (t.withException<TTransportException>([&](const TTransportException& ex) {
           writeError(0, ex);
         }) ||
