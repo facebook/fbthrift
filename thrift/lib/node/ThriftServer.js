@@ -33,6 +33,8 @@ function wrappedProcessor(server, callback, datain) {
 
 function ThriftServer(service, methods) {
   // Setup environment variable for secure thrift.
+  // Also see libfb/py/controller/base.py:makeThriftService
+  // and common/config/KerberosConfig.h:setupSecureThrift
   process.env['KRB5_CONFIG'] = '/etc/krb5-thrift.conf';
   process.env['KRB5RCACHETYPE'] = 'none';
 
