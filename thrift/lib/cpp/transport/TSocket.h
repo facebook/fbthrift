@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2015 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -332,6 +332,13 @@ public:
    * @param fd the descriptor for an already-connected socket
    */
   void setSocketFD(int fd);
+
+  /**
+   * Steals the underlying socket file descriptor.
+   *
+   * After calling this, the TSocket will no longer be open.
+   */
+  int stealSocketFD();
 
   /**
    * Sets whether to use a low minimum TCP retransmission timeout.
