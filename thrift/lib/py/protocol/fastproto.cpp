@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/protocol/ProtocolReaderWithRefill.h>
 
 #include <folly/Range.h>
+#include <folly/ScopeGuard.h>
 
 using apache::thrift::protocol::TType;
 using apache::thrift::BinaryProtocolReaderWithRefill;
@@ -867,7 +868,15 @@ decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings) {
           Py_DECREF(k);
           return nullptr;
         }
-        PyDict_SetItem(ret, k, v);
+        if (PyDict_SetItem(ret, k, v) == -1) {
+          Py_DECREF(ret);
+          Py_DECREF(k);
+          Py_DECREF(v);
+          return nullptr;
+        }
+
+        Py_DECREF(k);
+        Py_DECREF(v);
       }
 
       reader->readMapEnd();
@@ -1042,25 +1051,25 @@ decode(PyObject *self, PyObject *args, PyObject *kws) {
     return nullptr;
   }
 
+  SCOPE_EXIT {
+    free_decodebuf(&input);
+  };
+
   if (protoid == 0) {
     if (!decodeT<BinaryProtocolReaderWithRefill>(&input, dec_obj,
           &parsedargs, utf8strings)) {
-      free_decodebuf(&input);
       return nullptr;
     }
   } else if (protoid == 2) {
     if (!decodeT<CompactProtocolReaderWithRefill>(&input, dec_obj,
           &parsedargs, utf8strings)) {
-      free_decodebuf(&input);
       return nullptr;
     }
   } else {
     PyErr_SetString(PyExc_TypeError, "Unexpected proto id");
-    free_decodebuf(&input);
     return nullptr;
   }
 
-  free_decodebuf(&input);
   Py_RETURN_NONE;
 }
 
