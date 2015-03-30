@@ -147,7 +147,7 @@ BUILT_SOURCES = gen-cpp2/Sasl_constants.cpp \
 		gen-cpp2/SaslAuthService_client.cpp
 
 gen-cpp2/Sasl_types.h: Sasl.thrift
-	PYTHONPATH=$(PY_LOCAL_PATH) python -mthrift_compiler.main --gen cpp2 $<
+	PYTHONPATH=$(PY_LOCAL_PATH) $(PYTHON) -mthrift_compiler.main --gen cpp2 $<
 
 gen-cpp2/Sasl_constants.cpp: gen-cpp2/Sasl_types.h
 
