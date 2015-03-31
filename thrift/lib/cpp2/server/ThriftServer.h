@@ -240,6 +240,13 @@ class ThriftServer : public apache::thrift::server::TServer
 
   bool isDuplex_;   // is server in duplex mode? (used by server)
 
+  mutable std::mutex ioGroupMutex_;
+
+  std::shared_ptr<folly::wangle::IOThreadPoolExecutor> getIOGroupSafe() const {
+    std::lock_guard<std::mutex> lock(ioGroupMutex_);
+    return getIOGroup();
+  }
+
   enum class InjectedFailure {
     NONE,
     ERROR,

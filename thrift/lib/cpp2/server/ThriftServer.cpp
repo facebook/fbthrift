@@ -323,7 +323,10 @@ void ThriftServer::setup() {
 
       ServerBootstrap::childHandler(
         std::make_shared<ThriftAcceptorFactory>(this));
-      ServerBootstrap::group(acceptPool_, ioThreadPool_);
+      {
+        std::lock_guard<std::mutex> lock(ioGroupMutex_);
+        ServerBootstrap::group(acceptPool_, ioThreadPool_);
+      }
       if (socket_) {
         ServerBootstrap::bind(std::move(socket_));
       } else if (port_ != -1) {
@@ -476,7 +479,7 @@ ThriftServer::CumulativeFailureInjection::test() const {
 
 int32_t ThriftServer::getPendingCount() const {
   int32_t count = 0;
-  if (!getIOGroup()) { // Not enabled in duplex mode
+  if (!getIOGroupSafe()) { // Not enabled in duplex mode
     return 0;
   }
   forEachWorker([&](folly::Acceptor* acceptor) {
@@ -545,9 +548,10 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
     reqload = (100*(activeRequests_ + getPendingCount()))
       / ((float)maxRequests_);
   }
-  auto workerFactory =
+  auto ioGroup = getIOGroupSafe();
+  auto workerFactory = ioGroup != nullptr ?
     std::dynamic_pointer_cast<folly::wangle::NamedThreadFactory>(
-      getIOGroup()->getThreadFactory());
+      ioGroup->getThreadFactory()) : nullptr;
 
   if (maxConnections_ > 0) {
     int32_t connections = 0;
@@ -564,7 +568,7 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
     queueload = tm->getCodel()->getLoad();
   }
 
-  if (VLOG_IS_ON(1)) {
+  if (VLOG_IS_ON(1) && workerFactory) {
     FB_LOG_EVERY_MS(INFO, 1000 * 10)
       << workerFactory->getNamePrefix() << " load is: "
       << reqload << "% requests, "
