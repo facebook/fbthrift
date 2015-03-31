@@ -1144,20 +1144,31 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
 
   // Method to get the stored type
   indent(out) << "def getType(self):" << endl;
-  indent(out) << "  return self.field" << endl;
+  indent(out) << "  return self.field" << endl << endl;
 
-  // Printing utilities so that on the command line thrift
-  // structs look somewhat human readable
+  // According to Python doc, __repr__() "should" return a valid expression
+  // such that `object == eval(object.__repr__())` is true. Otherwise
+  // just print some useful description
   out <<
     indent() << "def __repr__(self):" << endl <<
-    indent() << "  L = []" << endl <<
-    indent() << "  for key, value in six.iteritems(self.__dict__):" << endl <<
-    indent() << "    padding = ' ' * (len(key) + 1)" << endl <<
-    indent() << "    value = pprint.pformat(value)" << endl <<
-    indent() << "    value = padding.join(value.splitlines(True))" << endl <<
-    indent() << "    L.append('    %s=%s' % (key, value))" << endl <<
-    indent() << "  return \"%s(\\n%s)\" % (self.__class__.__name__, "
-             << "\",\\n\".join(L))" << endl << endl;
+    indent() << "  value = pprint.pformat(self.value)" << endl <<
+    indent() << "  member = ''" << endl;
+  for (auto& member: sorted_members) {
+    auto key = rename_reserved_keywords(member->get_name());
+    out <<
+      indent() << "  if self.field == " << member->get_key() << ":" << endl <<
+      indent() << "    padding = ' ' * "<< key.size() + 1 << endl <<
+      indent() << "    value = padding.join(value.splitlines(True))" << endl <<
+      indent() << "    member = '\\n    %s=%s' % ('" << key
+               << "', value)" << endl;
+  }
+  // This will generate
+  //   UnionClass()  or
+  //   UnionClass(
+  //       key=value)
+  out <<
+    indent() << "  return \"%s(%s)\" % (self.__class__.__name__, member)"
+             << endl << endl;
 
   // Generate `read` method
   indent(out) << "def read(self, iprot):" << endl;

@@ -70,6 +70,18 @@ class TestUnionStructs(unittest.TestCase):
         j = {'string_field': 'test'}
         self._test_json(j, v)
 
+    def test_repr(self):
+        """ Ensure that __repr__() return a valid expression that can be
+        used to construct the original object
+        """
+        v = TestUnion(i32_field=123)
+        self.assertEquals(v, eval(v.__repr__()))
+
+        v = TestUnion()
+        self.assertEquals(v, eval(v.__repr__()))
+
+        v = TestUnion(string_field='test')
+        self.assertEquals(v, eval(v.__repr__()))
     def _test_read_write(self, u, j):
         protocol_factory = TBinaryProtocol.TBinaryProtocolAcceleratedFactory()
         databuf = TTransport.TMemoryBuffer()
