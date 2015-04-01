@@ -65,12 +65,9 @@ def ThriftAsyncServerFactory(
             ThriftAsyncServerFactory(handler1, port=9090, loop=loop),
             ThriftAsyncServerFactory(handler2, port=9091, loop=loop),
         ]
-        for server in servers:
-            asyncio.async(server)
+        loop.run_until_complete(asyncio.wait(servers))
         try:
-            loop.run_forever()   # Servers are initialized now, might be that
-                                 # one will start serving requests before
-                                 # others are ready to accept them.
+            loop.run_forever()   # Servers are initialized now
         finally:
             for server in servers:
                 server.close()
@@ -92,7 +89,7 @@ def ThriftAsyncServerFactory(
             ThreadPoolExecutor(max_workers=nthreads),
         )
     event_handler = TServerEventHandler()
-    pfactory = ThriftServerProtocolFactory(processor, event_handler)
+    pfactory = ThriftServerProtocolFactory(processor, event_handler, loop)
     try:
         server = yield from loop.create_server(pfactory, interface, port)
     except Exception:
@@ -108,15 +105,15 @@ def ThriftAsyncServerFactory(
     return server
 
 
-def ThriftClientProtocolFactory(client_class):
+def ThriftClientProtocolFactory(client_class, loop=None):
     return functools.partial(
-        ThriftHeaderClientProtocol, client_class,
+        ThriftHeaderClientProtocol, client_class, loop,
     )
 
 
-def ThriftServerProtocolFactory(processor, server_event_handler):
+def ThriftServerProtocolFactory(processor, server_event_handler, loop=None):
     return functools.partial(
-        ThriftHeaderServerProtocol, processor, server_event_handler,
+        ThriftHeaderServerProtocol, processor, server_event_handler, loop,
     )
 
 
@@ -132,8 +129,9 @@ class AsyncioRpcConnectionContext(TConnectionContext):
 class FramedProtocol(asyncio.Protocol):
     MAX_LENGTH = THeaderTransport.MAX_FRAME_SIZE
 
-    def __init__(self):
+    def __init__(self, loop=None):
         self.recvd = b""
+        self.loop = loop or asyncio.get_event_loop()
 
     def data_received(self, data):
         self.recvd = self.recvd + data
@@ -156,7 +154,7 @@ class FramedProtocol(asyncio.Protocol):
 
             frame = self.recvd[0:4 + length]
             self.recvd = self.recvd[4 + length:]
-            asyncio.async(self.message_received(frame))
+            self.loop.create_task(self.message_received(frame))
 
     def message_received(self, frame):
         raise NotImplementedError
@@ -165,19 +163,35 @@ class FramedProtocol(asyncio.Protocol):
 class SenderTransport:
     MAX_QUEUE_SIZE = 1024
 
-    def __init__(self, trans):
+    def __init__(self, trans, loop=None):
         self._queue = asyncio.Queue(maxsize=self.MAX_QUEUE_SIZE)
         self._trans = trans
-        asyncio.async(self._send())
-
-    @asyncio.coroutine
-    def _send(self,):
-        while True:
-            msg = yield from self._queue.get()
-            self._trans.write(msg)
+        self._loop = loop or asyncio.get_event_loop()
+        self._consumer = self._loop.create_task(self._send())
+        self._producers = []
 
     def send_message(self, msg):
-        asyncio.async(self._queue.put(msg))
+        self._producers.append(
+            self._loop.create_task(self._queue.put(msg)),
+        )
+
+    def _clean_producers(self):
+        self._producers = [
+            p for p in self._producers if not p.done() and not p.cancelled()
+        ]
+
+    @asyncio.coroutine
+    def _send(self):
+        while True:
+            msg = yield from self._queue.get()
+            self._clean_producers()
+            self._trans.write(msg)
+
+    def close(self):
+        self._consumer.cancel()
+        for producer in self._producers:
+            if not producer.done() and not producer.cancelled():
+                producer.cancel()
 
 
 class WrappedTransport(TMemoryBuffer):
@@ -199,14 +213,21 @@ class WrappedTransportFactory:
 
 class ThriftHeaderClientProtocol(FramedProtocol):
 
-    def __init__(self, client_class):
-        super().__init__()
+    def __init__(self, client_class, loop=None):
+        super().__init__(loop=loop)
         self._client_class = client_class
+        self.client = None
+        self.transport = None
 
     def connection_made(self, transport):
+        assert self.transport is None, "Transport already instantiated here."
+        assert self.client is None, "Client already instantiated here."
+        # asyncio.Transport
         self.transport = transport
+        # Thrift transport
+        self.thrift_transport = SenderTransport(self.transport, self.loop)
         self.client = self._client_class(
-            SenderTransport(self.transport),
+            self.thrift_transport,
             WrappedTransportFactory(),
             THeaderProtocolFactory())
 
@@ -231,11 +252,17 @@ class ThriftHeaderClientProtocol(FramedProtocol):
         else:
             method(iprot, mtype, rseqid)
 
+    def close(self):
+        # This is sadly necessary now because of the async tasks scheduled
+        # by SenderTransport.
+        self.transport.close()
+        self.thrift_transport.close()
+
 
 class ThriftHeaderServerProtocol(FramedProtocol):
 
-    def __init__(self, processor, server_event_handler):
-        super().__init__()
+    def __init__(self, processor, server_event_handler, loop=None):
+        super().__init__(loop=loop)
         self.processor = processor
         self.server_event_handler = server_event_handler
         self.server_context = None
@@ -310,7 +337,7 @@ class TAsyncioServer(TServer):
             self.loop.set_default_executor(ThreadPoolExecutor(
                 max_workers=int(self.nthreads)))
         pfactory = ThriftServerProtocolFactory(
-            self.processor, self.server_event_handler,
+            self.processor, self.server_event_handler, self.loop,
         )
         try:
             coro = self.loop.create_server(pfactory, self.host, self.port)
