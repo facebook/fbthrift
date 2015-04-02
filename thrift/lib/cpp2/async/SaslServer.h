@@ -19,8 +19,9 @@
 
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
 #include <thrift/lib/cpp/async/HHWheelTimer.h>
-#include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+
+#include <folly/ExceptionWrapper.h>
 
 namespace apache { namespace thrift {
 
