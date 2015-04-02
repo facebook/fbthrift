@@ -175,7 +175,6 @@ include_async_HEADERS = \
                      async/HHWheelTimer.h \
                      async/Request.h \
                      async/TAsyncChannel.h \
-                     async/TAsyncSignalHandler.h \
                      async/TAsyncDispatchProcessor.h \
                      async/TAsyncProcessor.h \
                      async/TAsyncSSLSocket.h \
