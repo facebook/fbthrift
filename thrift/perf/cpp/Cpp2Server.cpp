@@ -85,16 +85,6 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  // Optionally run under ServiceFramework to enable testing stats handlers
-  // Once ServiceFramework is running, it will hook any new thrift services that
-  // get created, and attach a collect/report their fb303 stats.
-  std::unique_ptr<facebook::services::ServiceFramework> fwk;
-  if (FLAGS_enable_service_framework) {
-    fwk.reset(
-        new facebook::services::ServiceFramework("ThriftServer Load Tester"));
-    fwk->go(false /* waitUntilStop */);
-  }
-
   auto handler = std::make_shared<AsyncLoadHandler2>();
 
   std::shared_ptr<ThriftServer> server;
@@ -122,6 +112,10 @@ int main(int argc, char* argv[]) {
   signal(SIGINT, sigHandler);
 
   cout << "Serving requests on port " << FLAGS_port << "...\n";
+  // Optionally run under ServiceFramework to enable testing stats handlers
+  // Once ServiceFramework is running, it will hook any new thrift services that
+  // get created, and attach a collect/report their fb303 stats.
+  std::unique_ptr<facebook::services::ServiceFramework> fwk;
   if (FLAGS_enable_service_framework) {
     fwk.reset(
         new facebook::services::ServiceFramework("ThriftServer Load Tester"));
