@@ -1061,6 +1061,8 @@ string t_py_generator::render_const_value(t_type* type, t_const_value* value) {
 void t_py_generator::generate_forward_declaration(t_struct* tstruct) {
   if (!tstruct->is_union()) {
     generate_py_struct(tstruct, tstruct->is_xception());
+  } else {
+    generate_py_union(f_types_, tstruct);
   }
 }
 
@@ -1068,10 +1070,6 @@ void t_py_generator::generate_forward_declaration(t_struct* tstruct) {
  * Generates a python struct
  */
 void t_py_generator::generate_struct(t_struct* tstruct) {
-  if (tstruct->is_union()) {
-    generate_py_union(f_types_, tstruct);
-  }
-
   generate_py_thrift_spec(f_types_, tstruct, false);
 }
 
