@@ -99,8 +99,6 @@ HeaderClientChannel::Ptr getClientChannel(
   return std::move(channel);
 }
 
-ScopedServerThread sst(getServer());
-
 class Countdown {
 public:
   Countdown(int count, std::function<void()> f)
@@ -117,6 +115,7 @@ private:
 };
 
 void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
+  ScopedServerThread sst(getServer());
   TEventBase base;
   auto channel = getClientChannel(&base, *sst.getAddress());
   setup(channel.get());
@@ -317,10 +316,9 @@ std::shared_ptr<ThriftServer> getDuplexServer() {
   return server;
 }
 
-ScopedServerThread duplexsst(getDuplexServer());
-
 TEST(Security, Duplex) {
   enum {START=1, COUNT=3, INTERVAL=1};
+  ScopedServerThread duplexsst(getDuplexServer());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *duplexsst.getAddress()));

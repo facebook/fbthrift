@@ -146,10 +146,9 @@ std::shared_ptr<ThriftServer> getServer() {
   return server;
 }
 
-ScopedServerThread sst(getServer());
-
 TEST(Duplex, DuplexTest) {
   enum {START=1, COUNT=10, INTERVAL=5};
+  ScopedServerThread sst(getServer());
   TEventBase base;
 
   std::shared_ptr<TAsyncSocket> socket(
@@ -184,6 +183,7 @@ void testNonHeader() {
   using apache::thrift::transport::TSocket;
   using apache::thrift::protocol::TBinaryProtocol;
 
+  ScopedServerThread sst(getServer());
   auto socket = make_shared<TSocket>(*sst.getAddress());
   auto transport = make_shared<Transport>(socket);
   auto protocol = make_shared<TBinaryProtocol>(transport);
