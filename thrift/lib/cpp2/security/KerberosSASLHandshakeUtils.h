@@ -79,6 +79,12 @@ enum PhaseType {
   COMPLETE
 };
 
+enum class SecurityMech {
+  KRB5_SASL,
+  KRB5_GSS,
+  KRB5_GSS_NO_MUTUAL,
+};
+
 /**
  * Utility methods for the SASL protocol
  */

@@ -53,6 +53,7 @@ namespace apache { namespace thrift {
 
 static const char KRB5_SASL[] = "krb5";
 static const char KRB5_GSS[] = "gss";
+static const char KRB5_GSS_NO_MUTUAL[] = "gssnm";
 
 GssSaslServer::GssSaslServer(
     apache::thrift::async::TEventBase* evb,
@@ -121,29 +122,33 @@ void GssSaslServer::consumeFromClient(
           if (methodName != "authFirstRequest") {
             throw TKerberosException("Bad Thrift first call: " + methodName);
           }
+          vector<string> mechs;
           if (start.__isset.mechanisms) {
-            for (const auto& mech : start.mechanisms) {
-              if (mech == KRB5_SASL) {
-                selectedMech = KRB5_SASL;
-                break;
-              }
-              if (mech == KRB5_GSS) {
-                serverHandshake->setGssOnly(true);
-                selectedMech = KRB5_GSS;
-                break;
-              }
+            mechs = start.mechanisms;
+          }
+          mechs.push_back(start.mechanism);
+
+          for (const auto& mech : mechs) {
+            if (mech == KRB5_SASL) {
+              selectedMech = KRB5_SASL;
+              serverHandshake->setSecurityMech(SecurityMech::KRB5_SASL);
+              break;
+            } else if (mech == KRB5_GSS) {
+              selectedMech = KRB5_GSS;
+              serverHandshake->setSecurityMech(SecurityMech::KRB5_GSS);
+              break;
+            } else if (mech == KRB5_GSS_NO_MUTUAL) {
+              selectedMech = KRB5_GSS_NO_MUTUAL;
+              serverHandshake->setSecurityMech(
+                SecurityMech::KRB5_GSS_NO_MUTUAL);
+              break;
             }
           }
 
+          // Fall back to SASL if no known mechanisms were passed.
           if (selectedMech.empty()) {
-            if (start.mechanism == KRB5_GSS) {
-              selectedMech = KRB5_GSS;
-              serverHandshake->setGssOnly(true);
-            } else if (start.mechanism == KRB5_SASL) {
-              selectedMech = KRB5_SASL;
-            } else {
-              throw TKerberosException("Unknown mechanism: " + start.mechanism);
-            }
+            selectedMech = KRB5_SASL;
+            serverHandshake->setSecurityMech(SecurityMech::KRB5_SASL);
           }
 
           input = start.request.response;
@@ -207,7 +212,8 @@ void GssSaslServer::consumeFromClient(
               reply.outcome.success = true;
               reply.__isset.outcome = true;
               // We still need to send the token even when completed.
-              if (serverHandshake->getGssOnly()) {
+              if (serverHandshake->getSecurityMech() ==
+                  SecurityMech::KRB5_GSS) {
                 reply.challenge = *token;
                 reply.__isset.challenge = true;
               }

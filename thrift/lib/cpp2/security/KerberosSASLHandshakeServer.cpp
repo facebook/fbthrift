@@ -32,7 +32,7 @@ using namespace folly;
  */
 KerberosSASLHandshakeServer::KerberosSASLHandshakeServer() :
     phase_(INIT),
-    gssOnly_(false) {
+    securityMech_(SecurityMech::KRB5_SASL) {
 
   // Set required security properties, we can define setters for these if
   // they need to be modified later.
@@ -74,12 +74,17 @@ KerberosSASLHandshakeServer::~KerberosSASLHandshakeServer() {
   }
 }
 
-void KerberosSASLHandshakeServer::setGssOnly(bool val) {
-  gssOnly_ = val;
+void KerberosSASLHandshakeServer::setSecurityMech(const SecurityMech mech) {
+  securityMech_ = mech;
+  if (mech == SecurityMech::KRB5_GSS_NO_MUTUAL) {
+    minimumRequiredSecContextFlags_ &= ~GSS_C_MUTUAL_FLAG;
+  } else {
+    minimumRequiredSecContextFlags_ |= GSS_C_MUTUAL_FLAG;
+  }
 }
 
-bool KerberosSASLHandshakeServer::getGssOnly() {
-  return gssOnly_;
+SecurityMech KerberosSASLHandshakeServer::getSecurityMech() {
+  return securityMech_;
 }
 
 void KerberosSASLHandshakeServer::initServer() {
@@ -166,7 +171,9 @@ void KerberosSASLHandshakeServer::acceptSecurityContext() {
           minimumRequiredSecContextFlags_) {
       throw TKerberosException("Not all security properties established");
     }
-    phase_ = gssOnly_ ? COMPLETE : CONTEXT_NEGOTIATION_COMPLETE;
+    phase_ = (securityMech_ == SecurityMech::KRB5_GSS_NO_MUTUAL ||
+              securityMech_ == SecurityMech::KRB5_GSS)
+             ? COMPLETE : CONTEXT_NEGOTIATION_COMPLETE;
   }
 }
 
@@ -198,9 +205,13 @@ std::unique_ptr<std::string> KerberosSASLHandshakeServer::getTokenToSend() {
     }
     case COMPLETE:
     {
+      if (securityMech_ == SecurityMech::KRB5_GSS_NO_MUTUAL) {
+        // Don't send anything back to the client if we're not doing mutual auth
+        break;
+      }
       // In the gss only case, we still want to send the token to the client,
       // even if the server handshake completed.
-      if (gssOnly_) {
+      if (securityMech_ == SecurityMech::KRB5_GSS) {
         return unique_ptr<string>(
           new string((const char*) outputToken_->value, outputToken_->length));
       } else {

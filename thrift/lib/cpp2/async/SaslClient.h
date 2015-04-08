@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
 #include <thrift/lib/cpp/async/HHWheelTimer.h>
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
+#include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
 #include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
 
 #include <folly/ExceptionWrapper.h>
@@ -62,12 +63,19 @@ class SaslClient : public SaslEndpoint {
       apache::thrift::async::TEventBase* evb = nullptr,
       const std::shared_ptr<SecurityLogger>& logger = nullptr)
     : SaslEndpoint(evb)
-    , saslLogger_(logger) {}
+    , saslLogger_(logger)
+    , securityMech_(std::make_shared<SecurityMech>(SecurityMech::KRB5_GSS)) {}
 
   virtual void setClientIdentity(const std::string& identity) = 0;
   virtual void setServiceIdentity(const std::string& identity) = 0;
   virtual void setRequiredServicePrincipalFetcher(
     std::function<std::pair<std::string, std::string>()> function) {}
+  virtual void setSecurityMech(const SecurityMech& mech) {
+    securityMech_ = std::make_shared<SecurityMech>(mech);
+  }
+  virtual SecurityMech getSecurityMech() const {
+    return *securityMech_;
+  }
 
   // This will create the initial message, and pass it to
   // cb->saslSendServer().  If there is an error, cb->saslError() will
@@ -98,6 +106,7 @@ class SaslClient : public SaslEndpoint {
 
  protected:
   std::shared_ptr<SecurityLogger> saslLogger_;
+  std::shared_ptr<SecurityMech> securityMech_;
 };
 
 }} // apache::thrift

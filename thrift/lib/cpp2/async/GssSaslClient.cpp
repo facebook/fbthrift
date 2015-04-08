@@ -63,6 +63,7 @@ namespace apache { namespace thrift {
 
 static const char KRB5_SASL[] = "krb5";
 static const char KRB5_GSS[] = "gss";
+static const char KRB5_GSS_NO_MUTUAL[] = "gssnm";
 
 GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb,
       const std::shared_ptr<SecurityLogger>& logger)
@@ -91,6 +92,7 @@ void GssSaslClient::start(Callback *cb) {
   auto threadManager = saslThreadManager_;
   auto inProgress = inProgress_;
   auto threadManagerTimeout = FLAGS_sasl_thread_manager_timeout_ms;
+  auto securityMech = securityMech_;
 
   // Log the overall latency incurred for doing security.
   logger->logStart("security_latency");
@@ -145,14 +147,19 @@ void GssSaslClient::start(Callback *cb) {
           ex = folly::try_and_catch<std::exception, TTransportException,
               TProtocolException, TApplicationException,
               TKerberosException>([&]() {
+            clientHandshake->setSecurityMech(*securityMech);
             clientHandshake->startClientHandshake();
             auto token = clientHandshake->getTokenToSend();
 
             SaslStart start;
             start.mechanism = KRB5_SASL;
             // Prefer GSS mech
-            start.__isset.mechanisms = true;
-            start.mechanisms.push_back(KRB5_GSS);
+            if (*securityMech == SecurityMech::KRB5_GSS) {
+              start.__isset.mechanisms = true;
+              start.mechanisms.push_back(KRB5_GSS);
+            } else if (*securityMech == SecurityMech::KRB5_GSS_NO_MUTUAL) {
+              start.mechanism = KRB5_GSS_NO_MUTUAL;
+            }
             if (token != nullptr) {
               start.request.response = *token;
               start.request.__isset.response = true;
@@ -190,6 +197,15 @@ void GssSaslClient::start(Callback *cb) {
           } else {
             logger->logStart("first_rtt");
             cb->saslSendServer(std::move(*iobuf));
+            // If the context was already established, we're free to send
+            // the actual request.
+            if (clientHandshake_->isContextEstablished()) {
+              cb->saslComplete();
+              if (*inProgress) {
+                threadManager->end();
+                *inProgress = false;
+              }
+            }
           }
         });
       }));
@@ -222,6 +238,7 @@ void GssSaslClient::consumeFromServer(
   auto threadManager = saslThreadManager_;
   auto inProgress = inProgress_;
   auto threadManagerTimeout = FLAGS_sasl_thread_manager_timeout_ms;
+  auto securityMech = securityMech_;
 
   folly::exception_wrapper ew_tm;
   if (!threadManager->isHealthy()) {
@@ -317,8 +334,15 @@ void GssSaslClient::consumeFromServer(
             // If the mechanism is gss, then set the clientHandshake class to
             // only do gss.
             if (reply.__isset.mechanism && reply.mechanism == KRB5_GSS) {
-              clientHandshake->setGssOnly(true);
+              *securityMech = SecurityMech::KRB5_GSS;
+            } else if (reply.__isset.mechanism &&
+                       reply.mechanism == KRB5_GSS_NO_MUTUAL) {
+              throw TKerberosException(
+                "Should never get a reply from a server with NO_MUTUAL mech");
+            } else {
+              *securityMech = SecurityMech::KRB5_SASL;
             }
+            clientHandshake->setSecurityMech(*securityMech);
 
             clientHandshake->handleResponse(input);
             auto token = clientHandshake->getTokenToSend();

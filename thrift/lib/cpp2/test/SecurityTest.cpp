@@ -63,7 +63,8 @@ std::shared_ptr<ThriftServer> getServer() {
   return server;
 }
 
-void enableSecurity(HeaderClientChannel* channel) {
+void enableSecurity(HeaderClientChannel* channel,
+                    const apache::thrift::SecurityMech mech) {
   char hostname[256];
   EXPECT_EQ(gethostname(hostname, 255), 0);
 
@@ -86,6 +87,7 @@ void enableSecurity(HeaderClientChannel* channel) {
       make_shared<SecurityLogger>()));
   saslClient->setCredentialsCacheManager(
       make_shared<krb5::Krb5CredentialsCacheManager>());
+  saslClient->setSecurityMech(mech);
   channel->setSaslClient(std::move(saslClient));
 }
 
@@ -94,7 +96,9 @@ HeaderClientChannel::Ptr getClientChannel(
   auto socket = TAsyncSocket::newSocket(eb, address);
   auto channel = HeaderClientChannel::newChannel(socket);
 
-  enableSecurity(channel.get());
+  enableSecurity(
+    channel.get(),
+    apache::thrift::SecurityMech::KRB5_GSS);
 
   return std::move(channel);
 }
@@ -209,6 +213,26 @@ TEST(Security, ProtocolCompact) {
   });
 }
 
+TEST(Security, SASL) {
+  runTest([](HeaderClientChannel* channel) {
+    channel->getSaslClient()->setSecurityMech(
+      apache::thrift::SecurityMech::KRB5_SASL);
+  });
+}
+
+TEST(Security, GSS_NO_MUTUAL) {
+  runTest([](HeaderClientChannel* channel) {
+    channel->getSaslClient()->setSecurityMech(
+      apache::thrift::SecurityMech::KRB5_GSS_NO_MUTUAL);
+  });
+}
+
+TEST(Security, GSS) {
+  runTest([](HeaderClientChannel* channel) {
+    channel->getSaslClient()->setSecurityMech(
+      apache::thrift::SecurityMech::KRB5_GSS);
+  });
+}
 
 class DuplexClientInterface : public DuplexClientSvIf {
 public:
@@ -316,7 +340,7 @@ std::shared_ptr<ThriftServer> getDuplexServer() {
   return server;
 }
 
-TEST(Security, Duplex) {
+void duplexTest(const apache::thrift::SecurityMech mech) {
   enum {START=1, COUNT=3, INTERVAL=1};
   ScopedServerThread duplexsst(getDuplexServer());
   TEventBase base;
@@ -325,7 +349,7 @@ TEST(Security, Duplex) {
 
   auto duplexChannel =
       std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);
-  enableSecurity(duplexChannel->getClientChannel().get());
+  enableSecurity(duplexChannel->getClientChannel().get(), mech);
   DuplexServiceAsyncClient client(duplexChannel->getClientChannel());
 
   bool success = false;
@@ -351,6 +375,18 @@ TEST(Security, Duplex) {
   base.loopForever();
 
   EXPECT_TRUE(success);
+}
+
+TEST(Security, DuplexSASL) {
+  duplexTest(apache::thrift::SecurityMech::KRB5_SASL);
+}
+
+TEST(Security, DuplexGSS) {
+  duplexTest(apache::thrift::SecurityMech::KRB5_GSS);
+}
+
+TEST(Security, DuplexGSSNoMutual) {
+ duplexTest(apache::thrift::SecurityMech::KRB5_GSS_NO_MUTUAL);
 }
 
 int main(int argc, char** argv) {
