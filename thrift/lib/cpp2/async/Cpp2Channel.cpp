@@ -49,10 +49,11 @@ Cpp2Channel::Cpp2Channel(
     , recvCallback_(nullptr)
     , closing_(false)
     , eofInvoked_(false)
-    , queueSends_(true)
     , protectionHandler_(std::move(protectionHandler))
     , framingHandler_(std::move(framingHandler))
-    , pipeline_(new Pipeline(transport, this)) {
+    , pipeline_(new Pipeline(
+                  transport, folly::wangle::OutputBufferingHandler{}, this)) {
+  pipeline_->attachTransport(transport);
   transportHandler_ = pipeline_->getHandler<TAsyncTransportHandler>(0);
 
   if (!protectionHandler_) {
@@ -71,10 +72,6 @@ void Cpp2Channel::closeNow() {
   // closeNow can invoke callbacks
   DestructorGuard dg(this);
 
-  // If there are sends queued, cancel them
-  if (isLoopCallbackScheduled()) {
-    cancelLoopCallback();
-  }
 
   closing_ = true;
   if (pipeline_) {
@@ -83,7 +80,7 @@ void Cpp2Channel::closeNow() {
     }
     // We must remove the circular reference to this, or descrution order
     // issues ensue
-    pipeline_->getHandler<folly::wangle::ChannelHandlerPtr<Cpp2Channel, false>>(1)->setHandler(nullptr);
+    pipeline_->getHandler<folly::wangle::ChannelHandlerPtr<Cpp2Channel, false>>(2)->setHandler(nullptr);
     pipeline_.reset();
   }
 }
@@ -251,67 +248,25 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
   buf = framingHandler_->addFrame(std::move(buf));
   buf = protectionHandler_->encrypt(std::move(buf));
 
-  if (!queueSends_) {
-    // Send immediately.
-    std::vector<SendCallback*> cbs;
-    if (callback) {
-      cbs.push_back(callback);
-    }
-    sendCallbacks_.push_back(std::move(cbs));
-
-    DestructorGuard dg(this);
-    auto future = pipeline_->write(std::move(buf));
-    future.then([this,dg](folly::Try<void>&& t) {
-      try {
-        t.throwIfFailed();
-        writeSuccess();
-      } catch (const TTransportException& ex) {
-        VLOG(5) << "Got a write error: " <<
-          folly::exceptionStr(ex);
-        writeError(0, ex);
-      } catch (const std::exception& ex) {
-        VLOG(5) << "Got a write error: " <<
-          folly::exceptionStr(ex);
-        writeError(0, TTransportException(ex.what()));
-      }
-    });
-  } else {
-    // Delay sends to optimize for fewer syscalls
-    if (!sends_) {
-      DCHECK(!isLoopCallbackScheduled());
-      // Buffer all the sends, and call writev once per event loop.
-      sends_ = std::move(buf);
-      getEventBase()->runInLoop(this);
-      std::vector<SendCallback*> cbs;
-      if (callback) {
-        cbs.push_back(callback);
-      }
-      sendCallbacks_.push_back(std::move(cbs));
-    } else {
-      DCHECK(isLoopCallbackScheduled());
-      sends_->prependChain(std::move(buf));
-      if (callback) {
-        sendCallbacks_.back().push_back(callback);
-      }
-    }
-    if (callback) {
-      callback->sendQueued();
-    }
+  std::vector<SendCallback*> cbs;
+  if (callback) {
+    callback->sendQueued();
+    cbs.push_back(callback);
   }
-}
+  sendCallbacks_.push_back(std::move(cbs));
 
-void Cpp2Channel::runLoopCallback() noexcept {
-  assert(sends_);
   DestructorGuard dg(this);
 
-  auto future = pipeline_->write(std::move(sends_));
+  auto future = pipeline_->write(std::move(buf));
   future.then([this,dg](folly::Try<void>&& t) {
-    if (t.withException<TTransportException>([&](const TTransportException& ex) {
-          writeError(0, ex);
-        }) ||
-      t.withException<std::exception>([&](const std::exception& ex) {
-          writeError(0, TTransportException(ex.what()));
-        })) {
+    if (t.withException<TTransportException>(
+          [&](const TTransportException& ex) {
+            writeError(0, ex);
+          }) ||
+        t.withException<std::exception>(
+          [&](const std::exception& ex) {
+            writeError(0, TTransportException(ex.what()));
+          })) {
       return;
     } else {
       writeSuccess();

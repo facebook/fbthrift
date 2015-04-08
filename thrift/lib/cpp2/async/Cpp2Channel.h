@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/wangle/channel/ChannelHandler.h>
+#include <folly/wangle/channel/OutputBufferingHandler.h>
 #include <memory>
 
 #include <deque>
@@ -114,7 +115,6 @@ public:
 
 class Cpp2Channel
   : public MessageChannel
-  , protected apache::thrift::async::TEventBase::LoopCallback
   , public folly::wangle::BytesToBytesHandler
  {
  protected:
@@ -173,15 +173,13 @@ class Cpp2Channel
   virtual void detachEventBase();
   apache::thrift::async::TEventBase* getEventBase();
 
-  // callback from TEventBase::LoopCallback.  Used for sends
-  virtual void runLoopCallback() noexcept override;
-
-  // Setter for queued sends mode.
-  // Can only be set in quiescent state, otherwise
-  // sendCallbacks_ would be called incorrectly.
+  // Queued sends feature - optimizes by minimizing syscalls in high-QPS
+  // loads for greater throughput, but at the expense of some
+  // minor latency increase.
   void setQueueSends(bool queueSends) {
-    CHECK(sends_ == nullptr);
-    queueSends_ = queueSends;
+    if (pipeline_) {
+      pipeline_->getHandler<folly::wangle::OutputBufferingHandler>(1)->queueSends_ = queueSends;
+    }
   }
 
   ProtectionChannelHandler* getProtectionHandler() const {
@@ -212,14 +210,8 @@ private:
   bool closing_;
   bool eofInvoked_;
 
-  std::unique_ptr<folly::IOBuf> sends_; // buffer of data to send.
-
   std::unique_ptr<RecvCallback::sample> sample_;
 
-  // Queued sends feature - optimizes by minimizing syscalls in high-QPS
-  // loads for greater throughput, but at the expense of some
-  // minor latency increase.
-  bool queueSends_;
 
   std::unique_ptr<ProtectionChannelHandler> protectionHandler_;
   std::unique_ptr<FramingChannelHandler> framingHandler_;
@@ -227,6 +219,7 @@ private:
   typedef folly::wangle::ChannelPipeline<
     folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>,
     TAsyncTransportHandler,
+    folly::wangle::OutputBufferingHandler,
     folly::wangle::ChannelHandlerPtr<Cpp2Channel, false>>
   Pipeline;
   std::unique_ptr<Pipeline, folly::DelayedDestruction::Destructor> pipeline_;
