@@ -121,6 +121,7 @@ class ThriftServer : public apache::thrift::server::TServer
     apache::thrift::async::TEventBase*)> saslServerFactory_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
     saslThreadManager_;
+  int nSaslPoolThreads_;
 
   std::unique_ptr<folly::ShutdownSocketSet> shutdownSocketSet_;
 
@@ -635,6 +636,23 @@ class ThriftServer : public apache::thrift::server::TServer
   }
   bool getNonSaslEnabled() {
     return nonSaslEnabled_;
+  }
+
+  /**
+   * Sets the number of threads to use for SASL negotiation if it has been
+   * enabled.
+   */
+  void setNSaslPoolThreads(int nSaslPoolThreads) {
+    CHECK(ioThreadPool_->numThreads() == 0);
+    nSaslPoolThreads_ = nSaslPoolThreads;
+  }
+
+  /**
+   * Sets the number of threads to use for SASL negotiation if it has been
+   * enabled.
+   */
+  int getNSaslPoolThreads() {
+    return nSaslPoolThreads_;
   }
 
   /**

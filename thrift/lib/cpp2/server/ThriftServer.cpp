@@ -101,6 +101,7 @@ ThriftServer::ThriftServer(const std::string& saslPolicy,
   nonSaslEnabled_(true),
   saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy),
   allowInsecureLoopback_(allowInsecureLoopback),
+  nSaslPoolThreads_(0),
   shutdownSocketSet_(
     folly::make_unique<folly::ShutdownSocketSet>()),
   serveEventBase_(nullptr),
@@ -242,11 +243,14 @@ void ThriftServer::setup() {
 
     if (saslPolicy_ == "required" || saslPolicy_ == "permitted") {
       if (!saslThreadManager_) {
+        auto numThreads = nSaslPoolThreads_ > 0
+                              ? nSaslPoolThreads_
+                              : (nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_);
         saslThreadManager_ = ThreadManager::newSimpleThreadManager(
-          nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_, /* count */
-          0, /* pendingTaskCountMax -- no limit */
-          false, /* enableTaskStats */
-          0 /* maxQueueLen -- large default */);
+            numThreads,
+            0, /* pendingTaskCountMax -- no limit */
+            false, /* enableTaskStats */
+            0 /* maxQueueLen -- large default */);
         saslThreadManager_->setNamePrefix("thrift-sasl");
         saslThreadManager_->threadFactory(threadFactory_);
         saslThreadManager_->start();
