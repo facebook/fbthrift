@@ -132,3 +132,8 @@ TEST(Recursive, CoRecJson) {
   EXPECT_TRUE(c.other != nullptr);
   EXPECT_TRUE(c.other->other.other == nullptr);
 }
+
+TEST(Recursive, ReadFromJson) {
+  cpp1::CoRec c;
+  c.readFromJson("{\"other\": { \"other\": {} } }");
+}
