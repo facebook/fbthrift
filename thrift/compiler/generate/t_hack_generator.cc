@@ -853,8 +853,12 @@ string t_hack_generator::render_const_value(t_type* type, t_const_value* value) 
     out << php_namespace(tenum->get_program()) << tenum->get_name()
       << "::" << val->get_name();
   } else if (type->is_struct() || type->is_xception()) {
-    out << "new " << php_namespace(type->get_program()) << type->get_name() << "(Map {" << endl;
+    out << "new " << php_namespace(type->get_program()) << type->get_name() << "(" << endl;
     indent_up();
+    if (map_construct_) {
+      out << indent() << "Map {" << endl;
+      indent_up();
+    }
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;
     const map<t_const_value*, t_const_value*>& val = value->get_map();
@@ -869,14 +873,39 @@ string t_hack_generator::render_const_value(t_type* type, t_const_value* value) 
       if (field_type == nullptr) {
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
+    }
+    for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
+      t_const_value* k = nullptr;
+      t_const_value* v = nullptr;
+      for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
+        if ((*f_iter)->get_name() == v_iter->first->get_string()) {
+          k = v_iter->first;
+          v = v_iter->second;
+        }
+      }
       out << indent();
-      out << render_const_value(g_type_string, v_iter->first);
-      out << " => ";
-      out << render_const_value(field_type, v_iter->second);
-      out << "," << endl;
+      if (map_construct_) {
+        if (v != nullptr) {
+          out << render_const_value(g_type_string, k);
+          out << " => ";
+          out << render_const_value((*f_iter)->get_type(), v);
+          out << "," << endl;
+        }
+      } else {
+        if (v == nullptr) {
+          out << "null," << endl;
+        } else {
+          out << render_const_value((*f_iter)->get_type(), v);
+          out << "," << endl;
+        }
+      }
+    }
+    if (map_construct_) {
+      indent_down();
+      out << indent() << "}" << endl;
     }
     indent_down();
-    indent(out) << "})";
+    indent(out) << ")";
   } else if (type->is_map()) {
     t_type* ktype = ((t_map*)type)->get_key_type();
     t_type* vtype = ((t_map*)type)->get_val_type();
