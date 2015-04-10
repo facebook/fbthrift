@@ -93,6 +93,7 @@ void GssSaslClient::start(Callback *cb) {
   auto inProgress = inProgress_;
   auto threadManagerTimeout = FLAGS_sasl_thread_manager_timeout_ms;
   auto securityMech = securityMech_;
+  logger->logValue("security_mech", (int64_t)*securityMech);
 
   // Log the overall latency incurred for doing security.
   logger->logStart("security_latency");
@@ -343,6 +344,8 @@ void GssSaslClient::consumeFromServer(
               *securityMech = SecurityMech::KRB5_SASL;
             }
             clientHandshake->setSecurityMech(*securityMech);
+
+            logger->logValue("security_mech", (int64_t)*securityMech);
 
             clientHandshake->handleResponse(input);
             auto token = clientHandshake->getTokenToSend();
