@@ -2240,7 +2240,7 @@ void t_php_generator::_generate_service_client(
 
   // Constructor function
   indent(out) << "public function __construct("
-      << "TProtocol $input, TProtocol $output=null) {" << endl;
+      << "TProtocol $input, /*?TProtocol*/ $output=null) {" << endl;
   indent_up();
   if (!extends.empty()) {
     out <<
