@@ -113,6 +113,9 @@ class t_py_generator : public t_generator {
 
   void generate_py_struct(t_struct* tstruct, bool is_exception);
   void generate_py_thrift_spec(std::ofstream& out, t_struct* tstruct, bool is_exception);
+  void generate_py_string_dict(std::ofstream& out,
+                               const std::map<string, string>& fields);
+  void generate_py_annotations(std::ofstream& out, t_struct* tstruct);
   void generate_py_union(std::ofstream& out, t_struct* tstruct);
   void generate_py_struct_definition(std::ofstream& out, t_struct* tstruct,
       bool is_xception=false, bool is_result=false);
@@ -1345,6 +1348,8 @@ void t_py_generator::generate_py_thrift_spec(ofstream& out,
   indent_down();
   indent(out) << ")" << endl << endl;
 
+  generate_py_annotations(out, tstruct);
+
   if (members.size() > 0) {
     out <<
       indent() << "def " << rename_reserved_keywords(tstruct->get_name())
@@ -1399,8 +1404,50 @@ void t_py_generator::generate_py_thrift_spec(ofstream& out,
                << rename_reserved_keywords(tstruct->get_name())
                << "__init__" << endl << endl;
   }
-
 }
+
+void t_py_generator::generate_py_string_dict(
+                                      std::ofstream& out,
+                                      const map<string, string>& fields) {
+  map<string, string>::const_iterator a_iter;
+  indent_up();
+  for (a_iter = fields.begin(); a_iter != fields.end(); ++a_iter) {
+    indent(out) << "'" << a_iter->first << "': \"\"\""
+                << a_iter->second << "\"\"\"," << endl;
+  }
+  indent_down();
+}
+
+void t_py_generator::generate_py_annotations(std::ofstream& out,
+                                             t_struct* tstruct) {
+  const vector<t_field*>& members = tstruct->get_members();
+  const vector<t_field*>& sorted_members = tstruct->get_sorted_members();
+  vector<t_field*>::const_iterator m_iter;
+
+  indent(out) << rename_reserved_keywords(tstruct->get_name())
+              << ".thrift_struct_annotations = {" << endl;
+  generate_py_string_dict(out, tstruct->annotations_);
+  indent(out) << "}" << endl;
+
+  indent(out) << rename_reserved_keywords(tstruct->get_name())
+              << ".thrift_field_annotations = {" << endl;
+  indent_up();
+
+  int sorted_keys_pos = 0;
+  for (m_iter = sorted_members.begin(); m_iter != sorted_members.end();
+      ++m_iter) {
+    const t_field* field = *m_iter;
+    if (field->annotations_.empty()) {
+      continue;
+    }
+    indent(out) << field->get_key() << ": {" << endl;
+    generate_py_string_dict(out, field->annotations_);
+    indent(out) << "}," << endl;
+  }
+  indent_down();
+  indent(out) << "}" << endl << endl;
+}
+
 
 /**
  * Generates a struct definition for a thrift data type.
@@ -1467,6 +1514,8 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
   // TODO(dreiss): Test encoding of structs where some inner structs
   // don't have thrift_spec.
   indent(out) << "thrift_spec = None" << endl;
+  indent(out) << "thrift_field_annotations = None" << endl;
+  indent(out) << "thrift_struct_annotations = None" << endl;
   if (members.size() != 0) {
     indent(out) << "__init__ = None" << endl;
   }
@@ -3612,7 +3661,7 @@ string t_py_generator::type_to_enum(t_type* type) {
 string t_py_generator::type_to_spec_args(t_type* ttype) {
   ttype = get_true_type(ttype);
 
-if (ttype->is_base_type()) {
+  if (ttype->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();
     if (tbase == t_base_type::TYPE_STRING) {
       if (((t_base_type*)ttype)->is_binary()) {

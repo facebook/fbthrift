@@ -188,3 +188,21 @@ struct Maps {
   3: map<string, map<string, string>> str2map;
   4: map<string, Insanity> str2struct;
 }
+
+struct WithAnnotations {
+  1: map<string, string> m1 (test.annotation = "none", test.hidden),
+  2: i32 m2,
+  3: string s1 (test.hidden = 3),
+} (
+  test.struct_annotation = "ok",
+  test.partial,
+  test.complex = "
+   public:
+
+    bool empty() const {
+      return !(__isset.m1 ||
+               __isset.m2 ||
+               __isset.s1);
+    }
+  ",
+)
