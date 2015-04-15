@@ -492,9 +492,10 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_service(self, service):
         # open files and instantiate outputs
-        context = self._make_context(service.name, True, True, True)
+        context = self._make_context(service.name, True, True, True, True)
         self._out_tcc = context.tcc
         self._additional_outputs = context.additional_outputs
+        self._custom_protocol_h = context.custom_protocol_h
         s = self._service_global = get_global_scope(CppPrimitiveFactory,
                                                     context)
         # Enter the scope (prints guard)
@@ -507,14 +508,16 @@ class CppGenerator(t_generator.Generator):
         s('#include "{0}"'.format(self._with_include_prefix(self._program,
                                                              self._program.name
                                                              + '_types.h')))
+        print >>self._custom_protocol_h, \
+                '#include "{0}"'.format(self._with_include_prefix(
+                    self._program,
+                    self._program.name + '_types_custom_protocol.h'))
         for shortprot, protname, prottype in self.protocols:
             s('#include <thrift/lib/cpp2/protocol/{0}.h>'.format(protname))
         print >>context.impl, '#include <thrift/lib/cpp2/protocol/Protocol.h>'
         for _, b, _ in self.protocols:
             print >>context.impl, \
                     '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
-        print >>context.additional_outputs[-1], '#include <thrift/lib/cpp2/protocol/DebugProtocol.h>'
-        print >>context.additional_outputs[-1], '#include <thrift/lib/cpp2/protocol/VirtualProtocol.h>\n'
         s()
         if self.flag_compatibility:
             # Transform the cpp2 include prefix path into a cpp prefix path.
@@ -525,6 +528,9 @@ class CppGenerator(t_generator.Generator):
         for inc in self._program.includes:
             s('#include "{0}_types.h"' \
               .format(self._with_include_prefix(inc, inc.name)))
+            print >>self._custom_protocol_h, \
+                    '#include "{0}_types_custom_protocol.h"'.format(
+                            self._with_include_prefix(inc, inc.name))
             if self.flag_implicit_templates:
                 print >>self._out_tcc, '#include "{0}_types.tcc"'.format(
                     self._with_include_prefix(inc, inc.name))
@@ -540,6 +546,10 @@ class CppGenerator(t_generator.Generator):
             s('#include "{0}.h"'.format(
                     self._with_include_prefix(service.extends.program,
                                               service.extends.name)))
+            print >>self._custom_protocol_h, \
+                    '#include "{0}_custom_protocol.h"'.format(
+                            self._with_include_prefix(service.extends.program,
+                                                      service.extends.name))
         s()
 
         # Open namespace
@@ -610,7 +620,8 @@ class CppGenerator(t_generator.Generator):
                                                write=True,
                                                swap=False,
                                                result=False,
-                                               to_additional=True)
+                                               to_additional=True,
+                                               simplejson=False)
             arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
             self._generate_struct_complete(s, arglist,
                                            is_exception=False,
@@ -620,7 +631,8 @@ class CppGenerator(t_generator.Generator):
                                            swap=False,
                                            result=False,
                                            has_isset=False,
-                                           to_additional=True)
+                                           to_additional=True,
+                                           simplejson=False)
             arglist.name = name_orig
 
             if not function.oneway:
@@ -641,7 +653,8 @@ class CppGenerator(t_generator.Generator):
                                                write=True,
                                                swap=False,
                                                result=True,
-                                               to_additional=True)
+                                               to_additional=True,
+                                               simplejson=False)
 
     def _generate_service_client(self, service, s):
         classname = service.name + "AsyncClient"
@@ -1201,6 +1214,8 @@ class CppGenerator(t_generator.Generator):
                 out('int32_t protoSeqId = 0;')
                 switch = out('switch(protType)').scope
                 for shortprot, protname, prottype in self.protocols:
+                    if shortprot == 'simple_json':
+                        continue
                     with switch.case('apache::thrift::protocol::' +
                                      prottype, nobreak=True):
                         out(('std::unique_ptr<apache::thrift::' +
@@ -1272,6 +1287,8 @@ class CppGenerator(t_generator.Generator):
                   '(header->getProtocolId());')
                 switch = out('switch(protType)').scope
                 for shortprot, protname, prottype in self.protocols:
+                    if shortprot == 'simple_json':
+                        continue
                     with switch.case('apache::thrift::protocol::' +
                                      prottype, nobreak=True):
                         out(('apache::thrift::{0}Reader iprot;')
@@ -1302,6 +1319,8 @@ class CppGenerator(t_generator.Generator):
                         for function in service.functions if function.oneway))
             prot = 0
             for shortprot, protname, prottype in self.protocols:
+                if shortprot == 'simple_json':
+                    continue
                 out(('typedef void ({0}::*{1}ProcessFunction)(std::unique_ptr' +
                    '<apache::thrift::ResponseChannel::Request> req, ').format(
                            service.name + "AsyncProcessor", shortprot) +
@@ -1781,6 +1800,8 @@ class CppGenerator(t_generator.Generator):
 
                 with out("switch(getChannel()->getProtocolId())"):
                     for key, val, prot in self.protocols:
+                        if key == 'simple_json':
+                            continue
                         with out().case("apache::thrift::protocol::" + prot):
                             out("apache::thrift::{0}Writer writer;".format(val))
                             out("{name}T({args});".
@@ -1980,6 +2001,8 @@ class CppGenerator(t_generator.Generator):
                     '"recv_ called without result");')
             with out("switch(state.protocolId())"):
                 for key, value, prottype in self.protocols:
+                    if key == 'simple_json':
+                        continue
                     with out().case('apache::thrift::protocol::' + prottype,
                                     nobreak=True):
                         out("apache::thrift::{0}Reader reader;".format(value))
@@ -2286,7 +2309,8 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_struct_complete(self, s, obj, is_exception,
                                   pointers, read, write, swap,
-                                  result, has_isset=True, to_additional=False):
+                                  result, has_isset=True,
+                                  to_additional=False, simplejson=True):
         def output(data):
             if to_additional:
                 print >>self._additional_outputs[-1], data
@@ -2295,6 +2319,8 @@ class CppGenerator(t_generator.Generator):
 
         if not self.flag_implicit_templates:
             for a,b,c in self.protocols:
+                if a == 'simple_json' and not simplejson:
+                    continue
                 if not self.flag_compatibility:
                     output(("template uint32_t {1}::read<apache::thrift::{0}Reader>"
                            "(apache::thrift::{0}Reader*);").format(b,obj.name))
@@ -2327,25 +2353,6 @@ class CppGenerator(t_generator.Generator):
                             "apache::thrift::{0}Writer>("
                             "apache::thrift::{0}Writer*, const {1}*);").format(
                                         b,obj.name))
-            # Special case a few protocols
-            if not self.flag_compatibility:
-                output(("template uint32_t {0}::write<"
-                       "apache::thrift::DebugProtocolWriter>("
-                        "apache::thrift::DebugProtocolWriter*) const;").format(
-                                obj.name))
-                output(("template uint32_t {0}::read<"
-                        "apache::thrift::VirtualReaderBase>("
-                        "apache::thrift::VirtualReaderBase*);").format(obj.name))
-            else:
-                output(
-                    ("template uint32_t {0}_write<"
-                     "apache::thrift::DebugProtocolWriter>("
-                     "apache::thrift::DebugProtocolWriter*, const {0}*);").format(
-                             obj.name))
-                output(("template uint32_t {0}_read<"
-                        "apache::thrift::VirtualReaderBase>("
-                        "apache::thrift::VirtualReaderBase*, {0}*);").format(
-                                obj.name))
 
         if self.flag_compatibility:
             base = self._namespace_prefix(
@@ -3620,7 +3627,13 @@ class CppGenerator(t_generator.Generator):
         # We write all of these to the types scope
         scope = self._types_scope
         self._generate_struct_complete(scope, obj, is_exception,
-                                       False, True, True, True, False)
+                                       pointers=False,
+                                       read=True,
+                                       write=True,
+                                       swap=True,
+                                       result=False,
+                                       to_additional=False,
+                                       simplejson=True)
 
         # We're at types scope now
         scope.release()
@@ -3817,25 +3830,34 @@ class CppGenerator(t_generator.Generator):
         sns.release()  # namespace
         sg.release()   # global scope
 
-    def _make_context(self, filename, tcc=False, processmap=False, separateclient=False):
+    def _make_context(self, filename,
+                      tcc=False,
+                      processmap=False,
+                      separateclient=False,
+                      custom_protocol=False):
         'Convenience method to get the context and outputs for some file pair'
         # open files and instantiate outputs
         output_h = self._write_to(filename + '.h')
         output_impl = self._write_to(filename + '.cpp')
         output_tcc = self._write_to(filename + '.tcc') if tcc else None
         additional_outputs = []
+        custom_protocol_h = self._write_to(filename + "_custom_protocol.h") \
+                if custom_protocol else None
+
         if processmap:
             for a, b, c in self.protocols:
                 additional_outputs.append(self._write_to(filename + "_processmap_" + a + ".cpp"))
         if separateclient:
             additional_outputs.append(self._write_to(filename + "_client.cpp"))
-
         header_path = self._with_include_prefix(self._program, filename)
 
         context = CppOutputContext(output_impl, output_h, output_tcc,
-                                   header_path, additional_outputs)
+                                   header_path, additional_outputs,
+                                   custom_protocol_h)
 
         print >>context.outputs, self._autogen_comment
+        if context.custom_protocol_h is not None:
+            print >>context.custom_protocol_h, self._autogen_comment
         return context
 
     @property
@@ -3886,7 +3908,8 @@ class CppGenerator(t_generator.Generator):
         self._const_scope = None
 
         # open files and instantiate outputs for types
-        context = self._make_context(name + '_types', True)
+        context = self._make_context(name + '_types', tcc=True,
+                                     custom_protocol=True)
         s = self._types_global = get_global_scope(CppPrimitiveFactory, context)
         self._types_out_impl = types_out_impl = context.impl
         self._types_out_h = types_out_h = context.h
@@ -3911,11 +3934,12 @@ class CppGenerator(t_generator.Generator):
         for inc in self._program.includes:
             s('#include "{0}_types.h"' \
               .format(self._with_include_prefix(inc, inc.name)))
+            print >>context.custom_protocol_h, \
+                    '#include "{0}_types_custom_protocol.h"'.format(
+                            self._with_include_prefix(inc, inc.name))
         for _, b, _ in self.protocols:
             print >>types_out_tcc, \
                     '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
-        print >>types_out_tcc, '#include <thrift/lib/cpp2/protocol/DebugProtocol.h>'
-        print >>types_out_tcc, '#include <thrift/lib/cpp2/protocol/VirtualProtocol.h>\n'
         s()
         # Include custom headers
         for inc in self._program.cpp_includes:

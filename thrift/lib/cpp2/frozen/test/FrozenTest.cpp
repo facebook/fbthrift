@@ -25,7 +25,7 @@
 #include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_layouts.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp/Example_types.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types_custom_protocol.h>
 
 using namespace apache::thrift;
 using namespace frozen;

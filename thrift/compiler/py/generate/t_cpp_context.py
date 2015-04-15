@@ -317,11 +317,13 @@ class CppPrimitiveFactory(PrimitiveFactory):
 
 class CppOutputContext(OutputContext):
 
-    def __init__(self, output_cpp, output_h, output_tcc, header_path, additional_outputs = []):
+    def __init__(self, output_cpp, output_h, output_tcc, header_path,
+            additional_outputs=[], custom_protocol_h=None):
         self._output_cpp = output_cpp
         self._output_h = output_h
         self._output_tcc = output_tcc
         self._additional_outputs = additional_outputs
+        self._custom_protocol_h = custom_protocol_h
         self._header_path = header_path
         outputs = [output_cpp, output_h] + additional_outputs
 
@@ -343,6 +345,10 @@ class CppOutputContext(OutputContext):
     @property
     def additional_outputs(self):
         return self._additional_outputs
+
+    @property
+    def custom_protocol_h(self):
+        return self._custom_protocol_h
 
     @property
     def impl(self):
@@ -370,6 +376,19 @@ class CppOutputContext(OutputContext):
             scope.opts.output = self.output
             # start guard in h
             print >>self._output_h, '#pragma once\n'
+            if self._custom_protocol_h is not None:
+                custom_protocol_comment = '''
+/**
+ * This header file includes the tcc files of the corresponding header file
+ * and the header files of its dependent types. Include this header file
+ * only when you need to use custom protocols (e.g. DebugProtocol,
+ * VirtualProtocol) to read/write thrift structs.
+ */
+'''
+                print >>self._custom_protocol_h, '#pragma once\n'
+                print >>self._custom_protocol_h, custom_protocol_comment
+                print >>self._custom_protocol_h, '#include "{0}.tcc"\n'.format(
+                        self._header_path)
             # include h in cpp
             print >>self._output_cpp, '#include "{0}.h"\n'.format(
                         self._header_path)

@@ -21,7 +21,7 @@
 #include <cmath>
 #include "thrift/test/gen-cpp/DebugProtoTest_types.h"
 #include "thrift/test/gen-cpp/DebugProtoTest_constants.h"
-#include "thrift/test/gen-cpp2/DebugProtoTest_types.h"
+#include "thrift/test/gen-cpp2/DebugProtoTest_types_custom_protocol.h"
 #include "thrift/test/gen-cpp2/DebugProtoTest_constants.h"
 #include <thrift/lib/cpp/protocol/TDebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
