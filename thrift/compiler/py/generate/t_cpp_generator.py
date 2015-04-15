@@ -655,7 +655,7 @@ class CppGenerator(t_generator.Generator):
         with s.cls(class_signature):
             out().label('public:')
 
-            with out().defn('std::string {name}()',
+            with out().defn('const char* {name}()',
                     name='getServiceName',
                     modifiers='virtual',
                     output=self._additional_outputs[-1]):
@@ -1180,7 +1180,7 @@ class CppGenerator(t_generator.Generator):
                 'AsyncProcessor'
         with s.cls(class_signature):
             out().label('public:')
-            with out().defn('std::string {name}()', name='getServiceName',
+            with out().defn('const char* {name}()', name='getServiceName',
                         modifiers='virtual'):
                 out("return \"{0}\";".format(service.name))
 

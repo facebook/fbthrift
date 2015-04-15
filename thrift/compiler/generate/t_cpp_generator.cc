@@ -4519,7 +4519,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
   }
 
   indent_up();
-  f_header_ << indent() << "virtual std::string getServiceName();" << endl;
+  f_header_ << indent() << "virtual const char* getServiceName();" << endl;
   indent_down();
 
   f_header_ <<
@@ -4563,7 +4563,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
   if (gen_templates_) {
     indent(out) << template_header;
   }
-  indent(out) << "std::string " << scope << "getServiceName() {" << endl;
+  indent(out) << "const char* " << scope << "getServiceName() {" << endl;
   scope_up(out);
   indent(out) << "return \"" << tservice->get_name() << "\";" << endl;
   scope_down(out);
@@ -5122,7 +5122,7 @@ void ProcessorGenerator::generate_class_definition() {
   f_header_ <<
     " public:" << endl;
   indent_up();
-  f_header_ << indent() << "virtual std::string getServiceName() {" << endl;
+  f_header_ << indent() << "virtual const char* getServiceName() {" << endl;
   indent_up();
   f_header_ << indent()
             << "return \"" << service_name_ << "\";" << endl;

@@ -68,7 +68,7 @@ class TProcessorEventHandler {
    * The return value is passed to all other callbacks
    * for that function invocation.
    */
-  virtual void* getServiceContext(const std::string& service_name,
+  virtual void* getServiceContext(const char* service_name,
                            const char* fn_name,
                            TConnectionContext* connectionContext) {
     return getContext(fn_name, connectionContext);
@@ -184,7 +184,7 @@ class ContextStack {
     const std::shared_ptr<
       std::vector<std::shared_ptr<TProcessorEventHandler>>
       >& handlers,
-    const std::string& serviceName,
+    const char* serviceName,
     const char* method,
     TConnectionContext* connectionContext)
       : ctxs_()
@@ -341,7 +341,7 @@ class EventHandlerBase {
 
  protected:
   std::unique_ptr<ContextStack> getContextStack(
-      const std::string& service_name,
+      const char* service_name,
       const char* fn_name,
       TConnectionContext* connectionContext) {
     std::unique_ptr<ContextStack> ctx(
@@ -427,7 +427,7 @@ class TClientBase : public EventHandlerBase {
     auto s = getContextStack("", fn_name, connectionContext);
     s_ = std::move(s);
   }
-  void generateClientContextStack(const std::string& service_name,
+  void generateClientContextStack(const char* service_name,
                                   const char* fn_name,
                                   TConnectionContext* connectionContext) {
     auto s = getContextStack(service_name, fn_name, connectionContext);
