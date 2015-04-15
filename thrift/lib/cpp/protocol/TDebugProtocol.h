@@ -361,12 +361,16 @@ public:
 };
 
 template<typename T>
-std::string ThriftDebugString(const T& ts) {
+std::string ThriftDebugString(const T& ts, int32_t string_limit=0) {
   using namespace apache::thrift::transport;
   using namespace apache::thrift::protocol;
   TMemoryBuffer* buffer = new TMemoryBuffer;
   std::shared_ptr<TTransport> trans(buffer);
   TDebugProtocolEx protocol(trans);
+  if (string_limit > 0) {
+    // override the default
+    protocol.setStringSizeLimit(string_limit);
+  }
 
   protocol.write(ts);
 
