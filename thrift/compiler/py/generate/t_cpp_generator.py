@@ -973,14 +973,14 @@ class CppGenerator(t_generator.Generator):
               not function.returntype.is_void:
                 out("auto {2} = future_{0}({1});".format(
                     function.name, ", ".join(callArgs), future_name))
-                with out("{0}.then([=]({1} _return)".format(
+                with out("{0}.then([=]({1}&& _return)".format(
                         future_name, rettype)):
-                    with out("if (_return.hasValue())"):
+                    with out("try"):
                         out("callbackp->resultInThread("
-                            "std::move(_return.value()));")
-                    with out("else"):
-                        out("callbackp->exceptionInThread("
-                            "std::move(_return.exception()));")
+                          "std::move(_return.value()));")
+                        with out().catch("..."):
+                            out("callbackp->exceptionInThread("
+                                "std::current_exception());")
                 out(");")
             else:
                 out("auto {1} = future_{0}(".format(
@@ -988,12 +988,13 @@ class CppGenerator(t_generator.Generator):
                     + ", ".join(callArgs) + ");")
                 if not function.oneway:
                     with out(("{0}.then([=](folly" +
-                          "::Try<void> t)").format(future_name)):
-                        with out("if (t.hasValue())"):
+                          "::Try<void>&& t)").format(future_name)):
+                        with out("try"):
+                            out("t.throwIfFailed();")
                             out("callbackp->doneInThread();")
-                        with out("else"):
-                            out("callbackp->exceptionInThread("
-                                "std::move(t.exception()));")
+                            with out().catch("..."):
+                                out("callbackp->exceptionInThread("
+                                    "std::current_exception());")
                     out(");")
                 else:
                     out("delete callbackp;")
