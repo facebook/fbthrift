@@ -69,18 +69,16 @@ class TTransportBase:
         pass
 
     def readAll(self, sz):
-        buff = b''
-        have = 0
-        while (have < sz):
-            chunk = self.read(sz - have)
-            have += len(chunk)
-            buff += chunk
-
-            if len(chunk) == 0:
+        buff = bytearray(0)
+        need = sz
+        while need:
+            chunk = self.read(need)
+            if not chunk:
                 raise TTransportException(TTransportException.END_OF_FILE,
                                           "End of file reading from transport")
-
-        return buff
+            buff += chunk
+            need -= len(chunk)
+        return bytes(buff)
 
     def write(self, buf):
         pass
