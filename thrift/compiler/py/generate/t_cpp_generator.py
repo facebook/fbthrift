@@ -1738,7 +1738,7 @@ class CppGenerator(t_generator.Generator):
                 out("{name}(rpcOptions, "
                         "std::unique_ptr<apache::thrift::RequestCallback>("
                             "new apache::thrift::FunctionReplyCallback("
-                            "[{subj}](ClientReceiveState&& state) mutable {{ "
+                            "[{subj}](apache::thrift::ClientReceiveState&& state) mutable {{ "
                         "apache::thrift::clientCallbackToObservable("
                             "state, recv_wrapped_{name}, {subj}); "
                         "}})), {args});".format(
