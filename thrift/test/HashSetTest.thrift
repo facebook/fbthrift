@@ -17,27 +17,7 @@
  * under the License.
  */
 
-#define BOOST_TEST_MODULE HashMapTest
-#include <boost/test/unit_test.hpp>
-#include "thrift/test/gen-cpp/HashMapTest_types.h"
-
-BOOST_AUTO_TEST_SUITE( HashMapTest )
-
-BOOST_AUTO_TEST_CASE( test_hashmap ) {
-  foo f;
-  f.bar[5] = 6;
-  BOOST_CHECK_EQUAL(f.bar[5], 6);
-  f.bar[6] = 7;
-  BOOST_CHECK_EQUAL(f.bar[6], 7);
-
-  f.bar[5] = 7;
-  BOOST_CHECK_EQUAL(f.bar[5], 7);
-
-  f.baz["cool"] = 50;
-  BOOST_CHECK_EQUAL(f.baz["cool"], 50);
-
-  f.baz["cool"] = 30;
-  BOOST_CHECK_EQUAL(f.baz["cool"], 30);
+struct foo {
+  1: hash_set<i32> bar;
+  2: hash_set<string> baz;
 }
-
-BOOST_AUTO_TEST_SUITE_END()

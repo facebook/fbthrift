@@ -32,6 +32,8 @@
   ooe.zomg_unicode     = "\xd7\n\a\t";
   ooe.string_string_map["one"] = "two";
   ooe.string_string_hash_map["three"] = "four";
+  ooe.string_set.insert("five");
+  ooe.string_hash_set.insert("six");
   ooe.float_precision = (float)12.345;
   ooe.rank_map[567419810] = (float)0.211184;
   ooe.rank_map[507959914] = (float)0.080382;

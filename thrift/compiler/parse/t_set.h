@@ -28,8 +28,9 @@
  */
 class t_set : public t_container {
  public:
-  explicit t_set(t_type* elem_type) :
-    elem_type_(elem_type) {}
+  t_set(t_type* elem_type, bool unordered) :
+    elem_type_(elem_type),
+    is_unordered_(unordered) {}
 
   t_type* get_elem_type() const {
     return elem_type_;
@@ -37,6 +38,10 @@ class t_set : public t_container {
 
   bool is_set() const {
     return true;
+  }
+
+  bool is_unordered() const {
+    return is_unordered_;
   }
 
   virtual std::string get_full_name() const {
@@ -53,6 +58,7 @@ class t_set : public t_container {
 
  private:
   t_type* elem_type_;
+  bool is_unordered_;
 };
 
 #endif

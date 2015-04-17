@@ -186,10 +186,13 @@ class CppGenerator(t_generator.Generator):
                                                scope=scope)]
                 cname = cname + '<{0}, {1}>'
             elif ttype.is_set:
-                cname = 'std::set'
+                tset = ttype.as_set
                 if template:
                     cname = template
-                tset = ttype.as_set
+                elif tset.is_unordered:
+                    cname = 'std::unordered_set'
+                else:
+                    cname = 'std::set'
                 inner_types = [self._type_name(tset.elem_type, in_typedef,
                                                scope=scope)]
                 cname = cname + "<{0}>"
@@ -247,7 +250,7 @@ class CppGenerator(t_generator.Generator):
         elif ttype.is_map and not ttype.as_map.is_unordered:
             return self._is_orderable_type(ttype.as_map.key_type) \
                     and self._is_orderable_type(ttype.as_map.value_type)
-        elif ttype.is_set:
+        elif ttype.is_set and not ttype.as_set.is_unordered:
             return self._is_orderable_type(ttype.as_set.elem_type)
         elif ttype.is_list:
             return self._is_orderable_type(ttype.as_list.elem_type)
@@ -3085,7 +3088,8 @@ class CppGenerator(t_generator.Generator):
         with s('else'):
             if cont.is_list and not use_push:
                 s('{0}.resize({1});'.format(prefix, size))
-            elif cont.is_map and cont.as_map.is_unordered:
+            elif ((cont.is_map and cont.as_map.is_unordered) or
+                  (cont.is_set and cont.as_set.is_unordered)):
                 s('{0}.reserve({1});'.format(prefix, size))
             with s('for ({0} = 0; {0} < {1}; ++{0})'.format(i, size)):
                 if cont.is_map:

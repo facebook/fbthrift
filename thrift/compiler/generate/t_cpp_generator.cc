@@ -2648,23 +2648,17 @@ void t_cpp_generator::generate_json_container(ofstream& out,
 
   t_container* tcontainer = (t_container*)ttype;
   // One of them at least is != annotations_.end()
-  bool use_push = tcontainer->annotations_.find("cpp.type")
-    != tcontainer->annotations_.find("cpp.template");
+  bool use_push = tcontainer->annotations_.find("cpp.type") !=
+                  tcontainer->annotations_.find("cpp.template");
 
   if (ttype->is_list()) {
-
-    indent(out) << "folly::dynamic " << json << " = " << prefix_json <<
-      ";" << endl;
-    indent(out) <<
-      prefix_thrift << ".clear();" << endl <<
-      indent() << "uint32_t " << size << " = " << json << ".size();" << endl;
-
-    if (ttype->is_list() && !use_push) {
+    indent(out) << "folly::dynamic " << json << " = " << prefix_json << ";"
+                << endl;
+    indent(out) << prefix_thrift << ".clear();" << endl;
+    indent(out) << "uint32_t " << size << " = " << json << ".size();" << endl;
+    if (!use_push) {
       indent(out) << prefix_thrift << ".resize(" << size << ");" << endl;
-    } else if (ttype->is_map() && ((t_map*)ttype)->is_unordered()) {
-      indent(out) << prefix_thrift << ".reserve(" << size << ");" << endl;
     }
-
     out << indent() << "for (uint32_t " << i << " = 0; " << i << " < " << size
       << "; ++" << i << ")" << endl;
     scope_up(out);
@@ -2673,15 +2667,15 @@ void t_cpp_generator::generate_json_container(ofstream& out,
     scope_down(out);
 
   } else if (ttype->is_set()) {
-
     indent(out) << "folly::dynamic " << json << " = " << prefix_json << ";"
-      << endl;
-    indent(out) <<
-      prefix_thrift << ".clear();" << endl;
+                << endl;
+    indent(out) << prefix_thrift << ".clear();" << endl;
     indent(out) << "uint32_t " << size << " = " << json << ".size();" << endl;
-
-    out << indent() << "for (uint32_t " << i << " = 0; " << i << " < " << size
-      << "; ++" << i << ")" << endl;
+    if (((t_set*)ttype)->is_unordered()) {
+      indent(out) << prefix_thrift << ".reserve(" << size << ");" << endl;
+    }
+    indent(out) << "for (uint32_t " << i << " = 0; " << i << " < " << size
+                << "; ++" << i << ")" << endl;
     scope_up(out);
     generate_json_set_element(out, (t_set*)ttype,
                               prefix_thrift, json + "[" + i + "]");
@@ -2692,9 +2686,13 @@ void t_cpp_generator::generate_json_container(ofstream& out,
     if (!(key_type->is_base_type() || key_type->is_enum())) {
       return;
     }
-    indent(out) << "folly::dynamic " << json << " = " << prefix_json  <<
-      ";" << endl;
+    indent(out) << "folly::dynamic " << json << " = " << prefix_json << ";"
+                << endl;
     indent(out) << prefix_thrift << ".clear();" << endl;
+    if (((t_map*)ttype)->is_unordered()) {
+      indent(out) << prefix_thrift << ".reserve(" << json << ".size());"
+                  << endl;
+    }
     string iter = tmp("_iter");
     indent(out) << "for (folly::dynamic::const_item_iterator " << iter << " = "
       << json << ".items().begin(); " << iter << " != "
@@ -6355,6 +6353,9 @@ void t_cpp_generator::generate_deserialize_container(ofstream& out,
 
     if (ttype->is_list() && !use_push) {
       out << indent() << prefix << ".resize(" << size << ");" << endl;
+    } else if ((ttype->is_map() && ((t_map*)ttype)->is_unordered()) ||
+               (ttype->is_set() && ((t_set*)ttype)->is_unordered())) {
+      out << indent() << prefix << ".reserve(" << size << ");" << endl;
     }
 
     // For loop iterates over elements
@@ -6809,17 +6810,21 @@ string t_cpp_generator::type_name(t_type* ttype, int flags) {
           type_name(tmap->get_val_type(), flags) + "> ";
       } else if (ttype->is_set()) {
         t_set* tset = (t_set*) ttype;
-        if (it != tcontainer->annotations_.end())
+        if (it != tcontainer->annotations_.end()) {
           cname = it->second;
-        else
+        } else if (tset->is_unordered()) {
+          cname = "std::unordered_set";
+        } else {
           cname = "std::set";
+        }
         cname = cname + "<" + type_name(tset->get_elem_type(), flags) + "> ";
       } else if (ttype->is_list()) {
         t_list* tlist = (t_list*) ttype;
-        if (it != tcontainer->annotations_.end())
+        if (it != tcontainer->annotations_.end()) {
           cname = it->second;
-        else
+        } else {
           cname = "std::vector";
+        }
         cname = cname + "<" + type_name(tlist->get_elem_type(), flags) + "> ";
       }
     }

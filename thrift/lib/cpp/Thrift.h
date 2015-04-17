@@ -37,11 +37,12 @@
 #include <iterator>
 #include <list>
 #include <map>
-#include <unordered_map>
 #include <memory>
 #include <set>
 #include <string>
 #include <typeinfo>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include <thrift/lib/cpp/TLogging.h>

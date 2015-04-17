@@ -127,6 +127,7 @@ BOOST_PYTHON_MODULE(frontend) {
   class_<t_set, noncopyable, bases<t_container>> ("t_set", no_init)
       .add_property("elem_type",
           make_function(&t_set::get_elem_type, policy_reo()))
+      .add_property("is_unordered", &t_set::is_unordered)
       ;
 
   // t_list

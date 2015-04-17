@@ -75,6 +75,8 @@ struct OneOfEach {
   21: list<TwoInts> list_two_ints_uninit,
   22: list<TwoInts> list_two_ints_init_default = [{}, {}],
   23: list<TwoInts> list_two_ints_init_explicit = [{a: 1, b: 2}, {a: 3, b: 4}],
+  24: set<string> string_set,
+  25: hash_set<string> string_hash_set,
 }
 
 struct Constant1 {
@@ -173,15 +175,23 @@ struct CompactProtoTestStruct {
   19: list<Empty>   struct_list;
 
   // primitives in sets
-  20: set<byte>     byte_set;
-  21: set<i16>      i16_set;
-  22: set<i32>      i32_set;
-  23: set<i64>      i64_set;
-  24: set<double>   double_set;
-  25: set<string>   string_set;
-  26: set<binary>   binary_set;
-  27: set<bool>     boolean_set;
-  28: set<Empty>    struct_set;
+  20: set<byte>          byte_set;
+  21: set<i16>           i16_set;
+  22: set<i32>           i32_set;
+  23: set<i64>           i64_set;
+  24: set<double>        double_set;
+  25: set<string>        string_set;
+  26: set<binary>        binary_set;
+  27: set<bool>          boolean_set;
+  28: set<Empty>         struct_set;
+  60: hash_set<byte>     byte_hash_set;
+  61: hash_set<i16>      i16_hash_set;
+  62: hash_set<i32>      i32_hash_set;
+  63: hash_set<i64>      i64_hash_set;
+  64: hash_set<double>   double_hash_set;
+  65: hash_set<string>   string_hash_set;
+  66: hash_set<binary>   binary_hash_set;
+  67: hash_set<bool>     boolean_hash_set;
 
   // maps
   // primitives as keys
@@ -253,6 +263,14 @@ const CompactProtoTestStruct COMPACT_TEST = {
 //'binary_set,'
   'boolean_set'        : [1, 0],
   'struct_set'         : [{}],
+  'byte_hash_set'      : [-127, -1, 0, 1, 127],
+  'i16_hash_set'       : [-1, 0, 1, 0x7fff],
+  'i32_hash_set'       : [1, 2, 3],
+  'i64_hash_set'       : [-1, 0, 0xff, 0xffff, 0xffffff, 0xffffffff, 0xffffffffff, 0xffffffffffff, 0xffffffffffffff, 0x7fffffffffffffff],
+  'double_hash_set'    : [0.1, 0.2, 0.3],
+  'string_hash_set'    : ["first", "second", "third"],
+//'binary_hash_set,
+  'boolean_hash_set'   : [1, 0],
   'byte_byte_map'      : {1 : 2},
   'i16_byte_map'       : {1 : 1, -1 : 1, 0x7fff : 1},
   'i32_byte_map'       : {1 : 1, -1 : 1, 0x7fffffff : 1},

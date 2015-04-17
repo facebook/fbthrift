@@ -141,6 +141,7 @@ const int struct_is_union = 1;
 %token tok_hash_map
 %token tok_list
 %token tok_set
+%token tok_hash_set
 %token tok_stream
 
 /**
@@ -175,6 +176,7 @@ const int struct_is_union = 1;
 %type<ttype>     MapType
 %type<ttype>     HashMapType
 %type<ttype>     SetType
+%type<ttype>     HashSetType
 %type<ttype>     ListType
 %type<ttype>     StreamType
 
@@ -1358,6 +1360,11 @@ SimpleContainerType:
       pdebug("SimpleContainerType -> SetType");
       $$ = $1;
     }
+| HashSetType
+    {
+      pdebug("SimpleContainerType -> HashSetType");
+      $$ = $1;
+    }
 | ListType
     {
       pdebug("SimpleContainerType -> ListType");
@@ -1372,14 +1379,14 @@ SimpleContainerType:
 MapType:
   tok_map '<' FieldType ',' FieldType '>'
     {
-      pdebug("MapType -> tok_map <FieldType, FieldType>");
+      pdebug("MapType -> tok_map<FieldType, FieldType>");
       $$ = new t_map($3, $5, false);
     }
 
 HashMapType:
   tok_hash_map '<' FieldType ',' FieldType '>'
     {
-      pdebug("HashMapType -> tok_hash_map <FieldType, FieldType>");
+      pdebug("HashMapType -> tok_hash_map<FieldType, FieldType>");
       $$ = new t_map($3, $5, true);
     }
 
@@ -1387,7 +1394,14 @@ SetType:
   tok_set '<' FieldType '>'
     {
       pdebug("SetType -> tok_set<FieldType>");
-      $$ = new t_set($3);
+      $$ = new t_set($3, false);
+    }
+
+HashSetType:
+  tok_hash_set '<' FieldType '>'
+    {
+      pdebug("HashSetType -> tok_hash_set<FieldType>");
+      $$ = new t_set($3, true);
     }
 
 ListType:
