@@ -371,6 +371,12 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         return buf
 
     def flush(self):
+        self.flushImpl(False)
+
+    def onewayFlush(self):
+        self.flushImpl(True)
+
+    def flushImpl(self, oneway):
         wout = self.__wbuf.getvalue()
         wout = self.transform(wout)
         wsz = len(wout)
@@ -479,7 +485,10 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
                     "Attempting to send frame that is too large")
         self.__trans.write(buf.getvalue())
-        self.__trans.flush()
+        if oneway:
+            self.__trans.onewayFlush()
+        else:
+            self.__trans.flush()
 
     # Implement the CReadableTransport interface.
     @property
