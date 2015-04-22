@@ -389,6 +389,57 @@ TEST(Security, DuplexGSSNoMutual) {
  duplexTest(apache::thrift::SecurityMech::KRB5_GSS_NO_MUTUAL);
 }
 
+// Test if multiple requests are pending in a queue, for security to establish,
+// then we flow RequestContext correctly with each request.
+void runRequestContextTest() {
+  ScopedServerThread sst(getServer());
+  TEventBase base;
+  auto channel = getClientChannel(&base, *sst.getAddress());
+  TestServiceAsyncClient client(std::move(channel));
+  Countdown c(2, [&base](){base.terminateLoopSoon();});
+
+  // Send first request with a unique RequestContext. This would trigger
+  // security. Rest of the request would queue behind it.
+  folly::RequestContext::create();
+  folly::RequestContext::get()->setContextData("first", nullptr);
+  client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
+    std::string res;
+    try {
+      TestServiceAsyncClient::recv_sendResponse(res, state);
+    } catch(const std::exception&) {
+      EXPECT_TRUE(false);
+    }
+    EXPECT_EQ(res, "10");
+    EXPECT_TRUE(folly::RequestContext::get()->hasContextData("first"));
+    c.down();
+  }, 10);
+
+  // Send another request with a unique RequestContext. This request would
+  // queue behind the first one inside HeaderClientChannel.
+  folly::RequestContext::create();
+  folly::RequestContext::get()->setContextData("second", nullptr);
+  client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
+    std::string res;
+    try {
+      TestServiceAsyncClient::recv_sendResponse(res, state);
+    } catch(const std::exception&) {
+      EXPECT_TRUE(false);
+    }
+    EXPECT_EQ(res, "10");
+    EXPECT_FALSE(folly::RequestContext::get()->hasContextData("first"));
+    EXPECT_TRUE(folly::RequestContext::get()->hasContextData("second"));
+    c.down();
+  }, 10);
+
+  // Now start looping the eventbase to guarantee that all the above requests
+  // would always queue.
+  base.loopForever();
+}
+
+TEST(SecurityRequestContext, Basic) {
+  runRequestContextTest();
+}
+
 int main(int argc, char** argv) {
   setenv("KRB5_CONFIG", "/etc/krb5-thrift.conf", 0);
   testing::InitGoogleTest(&argc, argv);

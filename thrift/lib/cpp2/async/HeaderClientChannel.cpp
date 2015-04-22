@@ -312,6 +312,7 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
 
   // Replay any pending requests
   for (auto&& funcarg : afterSecurity_) {
+    folly::RequestContext::setContext((std::get<2>(funcarg))->context_);
     header_->setHeaders(std::move(std::get<5>(funcarg)));
     (this->*(std::get<0>(funcarg)))(std::get<1>(funcarg),
                                     std::move(std::get<2>(funcarg)),
@@ -353,6 +354,8 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     unique_ptr<IOBuf> buf) {
+  cb->context_ = RequestContext::saveContext();
+
   if (isSecurityPending()) {
     afterSecurity_.push_back(
       std::make_tuple(static_cast<AfterSecurityMethod>(
