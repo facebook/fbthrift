@@ -45,7 +45,6 @@ thrift2include_async_HEADERS = \
 	async/Cpp2Channel.h \
 	async/HeaderChannel.h \
 	async/DuplexChannel.h \
-	async/FiberRequest.h \
 	async/FutureRequest.h \
 	async/GssSaslClient.h \
 	async/GssSaslServer.h \
