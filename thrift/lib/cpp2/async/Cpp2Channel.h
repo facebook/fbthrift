@@ -29,75 +29,13 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/wangle/channel/ChannelHandler.h>
 #include <folly/wangle/channel/OutputBufferingHandler.h>
+#include <thrift/lib/cpp2/async/ProtectionChannelHandler.h>
 #include <memory>
 
 #include <deque>
 #include <vector>
 
 namespace apache { namespace thrift {
-
-class Cpp2Channel;
-
-class ProtectionChannelHandler {
-public:
-  enum class ProtectionState {
-    UNKNOWN,
-    NONE,
-    INPROGRESS,
-    VALID,
-    INVALID,
-    WAITING,
-  };
-
-  explicit ProtectionChannelHandler(Cpp2Channel* channel)
-    : protectionState_(ProtectionState::UNKNOWN)
-    , saslEndpoint_(nullptr)
-    , channel_(channel)
-    , inputQueue_(folly::IOBufQueue::cacheChainLength())
-  {}
-
-  void setProtectionState(ProtectionState protectionState,
-                          SaslEndpoint* saslEndpoint = nullptr) {
-    protectionState_ = protectionState;
-    saslEndpoint_ = saslEndpoint;
-    protectionStateChanged();
-  }
-
-  ProtectionState getProtectionState() {
-    return protectionState_;
-  }
-
-  SaslEndpoint* getSaslEndpoint() {
-    return saslEndpoint_;
-  }
-
-  virtual void protectionStateChanged();
-
-  virtual ~ProtectionChannelHandler() {}
-
-  /**
-   * If q contains enough data, read it (removing it from q, but retaining
-   * following data), decrypt it and return as result.first.
-   * result.second is set to 0.
-   *
-   * If q doesn't contain enough data, return an empty unique_ptr in
-   * result.first and return the requested amount of bytes in result.second.
-   */
-  std::pair<folly::IOBufQueue*, size_t>
-  decrypt(folly::IOBufQueue* q);
-
-  /**
-   * Encrypt an IOBuf
-   */
-  std::unique_ptr<folly::IOBuf> encrypt(std::unique_ptr<folly::IOBuf> buf);
-
-protected:
-  ProtectionState protectionState_;
-  SaslEndpoint* saslEndpoint_;
-  folly::IOBufQueue queue_;
-  Cpp2Channel* channel_;
-  folly::IOBufQueue inputQueue_;
-};
 
 class FramingChannelHandler {
 public:
@@ -220,14 +158,14 @@ private:
 
   std::unique_ptr<RecvCallback::sample> sample_;
 
-
-  std::unique_ptr<ProtectionChannelHandler> protectionHandler_;
+  std::shared_ptr<ProtectionChannelHandler> protectionHandler_;
   std::unique_ptr<FramingChannelHandler> framingHandler_;
 
   typedef folly::wangle::ChannelPipeline<
     folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>,
     TAsyncTransportHandler,
     folly::wangle::OutputBufferingHandler,
+    folly::wangle::ChannelHandlerPtr<ProtectionChannelHandler>,
     folly::wangle::ChannelHandlerPtr<Cpp2Channel, false>>
   Pipeline;
   std::unique_ptr<Pipeline, folly::DelayedDestruction::Destructor> pipeline_;

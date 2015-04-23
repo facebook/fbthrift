@@ -179,7 +179,7 @@ class DuplexChannel {
   class ProtectionHandler : public ProtectionChannelHandler {
    public:
     explicit ProtectionHandler(DuplexChannel& duplex)
-        : ProtectionChannelHandler(nullptr)
+        : ProtectionChannelHandler()
         , duplex_(duplex)
     {}
 
@@ -212,8 +212,8 @@ class DuplexChannel {
       dst->setSupportedClients(&supportedClients);
       dst->setClientType(type);
 
-      if (duplex_.cpp2Channel_ && !inputQueue_.empty()) {
-        duplex_.cpp2Channel_->read(nullptr, inputQueue_);
+      if (ctx_ && !inputQueue_.empty()) {
+        read(ctx_, inputQueue_);
       }
     }
    private:

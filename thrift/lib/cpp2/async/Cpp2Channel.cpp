@@ -52,13 +52,18 @@ Cpp2Channel::Cpp2Channel(
     , protectionHandler_(std::move(protectionHandler))
     , framingHandler_(std::move(framingHandler))
     , pipeline_(new Pipeline(
-                  transport, folly::wangle::OutputBufferingHandler{}, this)) {
-  pipeline_->attachTransport(transport);
+                  transport,
+                  folly::wangle::OutputBufferingHandler{},
+                  protectionHandler_,
+                  this)) {
   transportHandler_ = pipeline_->getHandler<TAsyncTransportHandler>(0);
 
   if (!protectionHandler_) {
-    protectionHandler_.reset(new ProtectionChannelHandler(this));
+    protectionHandler_.reset(new ProtectionChannelHandler);
+    pipeline_->getHandler<folly::wangle::ChannelHandlerPtr<ProtectionChannelHandler>>(2)->setHandler(
+      protectionHandler_);
   }
+  pipeline_->attachTransport(transport);
 }
 
 folly::Future<void> Cpp2Channel::close(Context* ctx) {
@@ -84,7 +89,7 @@ void Cpp2Channel::closeNow() {
   if (pipeline_) {
     // We must remove the circular reference to this, or descrution order
     // issues ensue
-    pipeline_->getHandler<folly::wangle::ChannelHandlerPtr<Cpp2Channel, false>>(2)->setHandler(nullptr);
+    pipeline_->getHandler<folly::wangle::ChannelHandlerPtr<Cpp2Channel, false>>(3)->setHandler(nullptr);
     pipeline_.reset();
   }
 }
@@ -130,20 +135,16 @@ void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
   while (true) {
     unique_ptr<IOBuf> unframed;
 
+    if (protectionHandler_->getProtectionState() ==
+        ProtectionChannelHandler::ProtectionState::INPROGRESS) {
+      return;
+    }
+
     auto ex = folly::try_and_catch<std::exception>([&]() {
-      IOBufQueue* decrypted;
       size_t rem = 0;
-      std::tie(decrypted, rem) = protectionHandler_->decrypt(&q);
 
-      if (!decrypted) {
-        // no full message available, remember how many more bytes we need
-        // and continue to frame decoding (because frame decoder might have
-        // cached messages)
-        remaining = rem;
-      }
-
-      // message decrypted
-      std::tie(unframed, rem) = framingHandler_->removeFrame(decrypted);
+      // got a decrypted message
+      std::tie(unframed, rem) = framingHandler_->removeFrame(&q);
 
       if (!unframed && remaining == 0) {
         // no full message available, update remaining but only if previous
@@ -250,7 +251,6 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
   }
 
   buf = framingHandler_->addFrame(std::move(buf));
-  buf = protectionHandler_->encrypt(std::move(buf));
 
   std::vector<SendCallback*> cbs;
   if (callback) {
@@ -295,62 +295,6 @@ void Cpp2Channel::setReceiveCallback(RecvCallback* callback) {
     transportHandler_->attachReadCallback();
   } else {
     transportHandler_->detachReadCallback();
-  }
-}
-
-std::pair<folly::IOBufQueue*, size_t>
-ProtectionChannelHandler::decrypt(folly::IOBufQueue* q) {
-  if (&inputQueue_ != q) {
-    // If not the same queue
-    inputQueue_.append(*q);
-  }
-
-  if (protectionState_ == ProtectionState::INVALID) {
-    throw TTransportException("protection state is invalid");
-  }
-
-  if (protectionState_ == ProtectionState::INPROGRESS) {
-    // security is still doing stuff, let's return blank.
-    return std::make_pair(nullptr, 0);
-  }
-
-  if (protectionState_ != ProtectionState::VALID) {
-    // not an encrypted message, so pass-through
-    return std::make_pair(&inputQueue_, 0);
-  }
-
-  assert(saslEndpoint_ != nullptr);
-  size_t remaining = 0;
-
-  if (!inputQueue_.front() || inputQueue_.front()->empty()) {
-    return std::make_pair(nullptr, 0);
-  }
-  // decrypt
-  unique_ptr<IOBuf> unwrapped = saslEndpoint_->unwrap(&inputQueue_, &remaining);
-  assert(bool(unwrapped) ^ (remaining > 0));   // 1 and only 1 should be true
-  if (unwrapped) {
-    queue_.append(std::move(unwrapped));
-    return std::make_pair(&queue_, remaining);
-  } else {
-    return std::make_pair(nullptr, remaining);
-  }
-}
-
-std::unique_ptr<folly::IOBuf>
-ProtectionChannelHandler::encrypt(std::unique_ptr<folly::IOBuf> buf) {
-  if (protectionState_ == ProtectionState::VALID) {
-    assert(saslEndpoint_);
-    return saslEndpoint_->wrap(std::move(buf));
-  }
-  return std::move(buf);
-}
-
-void ProtectionChannelHandler::protectionStateChanged() {
-  // We only want to do this callback in the case where we're switching
-  // to a valid protection state.
-  if (channel_ && !inputQueue_.empty() &&
-      protectionState_ == ProtectionState::VALID) {
-    channel_->read(nullptr, inputQueue_);
   }
 }
 
