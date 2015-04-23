@@ -29,6 +29,9 @@
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 
+#include <folly/experimental/fibers/FiberManagerMap.h>
+#include <folly/wangle/concurrent/GlobalExecutor.h>
+
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
@@ -78,7 +81,10 @@ class TestInterface : public TestServiceSvIf {
   }
 };
 
-std::shared_ptr<ThriftServer> getServer(bool useSimpleThreadManager = true) {
+std::shared_ptr<ThriftServer> getServer(
+  bool useSimpleThreadManager = true,
+  std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe = nullptr) {
+
   std::shared_ptr<ThriftServer> server(new ThriftServer);
   if (useSimpleThreadManager) {
     std::shared_ptr<apache::thrift::concurrency::ThreadFactory> threadFactory(
@@ -89,6 +95,8 @@ std::shared_ptr<ThriftServer> getServer(bool useSimpleThreadManager = true) {
     threadManager->threadFactory(threadFactory);
     threadManager->start();
     server->setThreadManager(threadManager);
+  } else if (exe) {
+    server->setThreadManager(exe);
   }
   server->setPort(0);
   server->setSaslEnabled(true);
@@ -1037,6 +1045,64 @@ TEST(ThriftServer, ThriftServerSizeLimits) {
   // make an input that is too large by 1 byte
   std::string largeInput(1 << 21, '1');
   EXPECT_THROW(client.sync_echoRequest(response, largeInput), std::exception);
+}
+
+class MyExecutor : public folly::Executor {
+ public:
+  virtual void add(std::function<void()> f) {
+    calls++;
+    f();
+  }
+
+  std::atomic<int> calls{0};
+};
+
+TEST(ThriftServer, poolExecutorTest) {
+  auto exe = std::make_shared<MyExecutor>();
+  ScopedServerThread sst(
+    getServer(
+      false,
+      std::make_shared<apache::thrift::concurrency::ThreadManagerExecutorAdapter>(
+        exe)));
+  TEventBase eb;
+
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(
+        TAsyncSocket::newSocket(
+          &eb, *sst.getAddress())));
+
+  std::string response;
+
+  client.sync_echoRequest(response, "test");
+  eb.loop();
+  EXPECT_EQ(1, exe->calls);
+}
+
+class FiberExecutor : public folly::Executor {
+ public:
+  virtual void add(std::function<void()> f) {
+    folly::fibers::getFiberManager(
+      *folly::wangle::getIOExecutor()->getEventBase()).add(f);
+  }
+};
+
+TEST(ThriftServer, fiberExecutorTest) {
+  auto exe =
+    std::make_shared<apache::thrift::concurrency::ThreadManagerExecutorAdapter>(
+      std::make_shared<FiberExecutor>());
+  ScopedServerThread sst(getServer(false, exe));
+  TEventBase eb;
+
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(
+        TAsyncSocket::newSocket(
+          &eb, *sst.getAddress())));
+
+  std::string response;
+
+  client.sync_sendResponse(response, 1);
+  eb.loop();
+  EXPECT_EQ("test1", response);
 }
 
 int main(int argc, char** argv) {

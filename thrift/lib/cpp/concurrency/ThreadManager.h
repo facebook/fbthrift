@@ -333,6 +333,66 @@ public:
   typedef PriorityImplT<folly::LifoSem> PriorityImpl;
 };
 
+// Adapter class that converts a folly::Executor to a ThreadManager interface
+class ThreadManagerExecutorAdapter : public ThreadManager {
+ public:
+  /* implicit */
+  ThreadManagerExecutorAdapter(std::shared_ptr<folly::Executor> exe)
+      : exe_(std::move(exe)) {}
+
+  virtual void join() {}
+  virtual void start() {}
+  virtual void stop() {}
+  virtual STATE state() const {
+    return STARTED;
+  }
+  virtual std::shared_ptr<ThreadFactory> threadFactory() const {
+    return nullptr;
+  }
+  virtual void threadFactory(std::shared_ptr<ThreadFactory> value) {}
+  virtual std::string getNamePrefix() const {
+    return "";
+  }
+  virtual void setNamePrefix(const std::string& name) {}
+  virtual void addWorker(size_t value=1) {}
+  virtual void removeWorker(size_t value=1) {}
+
+
+  virtual size_t idleWorkerCount() const { return 0; }
+  virtual size_t workerCount() const { return 0; }
+  virtual size_t pendingTaskCount() const { return 0; }
+  virtual size_t totalTaskCount() const { return 0; }
+  virtual size_t pendingTaskCountMax() const { return 0; }
+  virtual size_t expiredTaskCount() { return 0; }
+
+  virtual void add(std::shared_ptr<Runnable>task,
+                   int64_t timeout=0LL,
+                   int64_t expiration=0LL,
+                   bool cancellable = false,
+                   bool numa = false) {
+    exe_->add([=]() {
+      task->run();
+    });
+  }
+  virtual void add(folly::Func f) override {
+    exe_->add(std::move(f));
+  }
+
+  virtual void remove(std::shared_ptr<Runnable> task) {}
+  virtual std::shared_ptr<Runnable> removeNextPending() {
+    return nullptr;
+  }
+
+  virtual void setExpireCallback(ExpireCallback expireCallback) {}
+  virtual void setCodelCallback(ExpireCallback expireCallback) {}
+  virtual void setThreadInitCallback(InitCallback initCallback) {}
+  virtual void enableCodel(bool) {}
+  virtual folly::wangle::Codel* getCodel() { return nullptr; }
+
+ private:
+  std::shared_ptr<folly::Executor> exe_;
+};
+
 }}} // apache::thrift::concurrency
 
 #include <thrift/lib/cpp/concurrency/ThreadManager.tcc>
