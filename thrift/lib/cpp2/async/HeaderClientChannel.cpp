@@ -575,8 +575,10 @@ void HeaderClientChannel::messageReceiveErrorWrapped(
     auto& cb = std::get<2>(funcarg);
     auto& ctx = std::get<3>(funcarg);
     if (cb) {
+      auto old_ctx = folly::RequestContext::setContext(cb->context_);
       cb->requestError(
           ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
+      folly::RequestContext::setContext(old_ctx);
     }
   }
   setBaseReceivedCallback();

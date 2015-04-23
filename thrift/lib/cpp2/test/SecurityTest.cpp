@@ -64,7 +64,8 @@ std::shared_ptr<ThriftServer> getServer() {
 }
 
 void enableSecurity(HeaderClientChannel* channel,
-                    const apache::thrift::SecurityMech mech) {
+                    const apache::thrift::SecurityMech mech,
+                    bool failSecurity = false) {
   char hostname[256];
   EXPECT_EQ(gethostname(hostname, 255), 0);
 
@@ -77,6 +78,9 @@ void enableSecurity(HeaderClientChannel* channel,
 
   std::string clientIdentity = std::string("host/") + hostname;
   std::string serviceIdentity = serviceIdentityPrefix + hostname;
+  if (failSecurity) {
+    serviceIdentity = "bogus";
+  }
 
   channel->getHeader()->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
 
@@ -91,14 +95,14 @@ void enableSecurity(HeaderClientChannel* channel,
   channel->setSaslClient(std::move(saslClient));
 }
 
-HeaderClientChannel::Ptr getClientChannel(
-    TEventBase* eb, const folly::SocketAddress& address) {
+HeaderClientChannel::Ptr getClientChannel(TEventBase* eb,
+                                          const folly::SocketAddress& address,
+                                          bool failSecurity = false) {
   auto socket = TAsyncSocket::newSocket(eb, address);
   auto channel = HeaderClientChannel::newChannel(socket);
 
-  enableSecurity(
-    channel.get(),
-    apache::thrift::SecurityMech::KRB5_GSS);
+  enableSecurity(channel.get(), apache::thrift::SecurityMech::KRB5_GSS,
+                 failSecurity);
 
   return std::move(channel);
 }
@@ -391,10 +395,10 @@ TEST(Security, DuplexGSSNoMutual) {
 
 // Test if multiple requests are pending in a queue, for security to establish,
 // then we flow RequestContext correctly with each request.
-void runRequestContextTest() {
+void runRequestContextTest(bool failSecurity) {
   ScopedServerThread sst(getServer());
   TEventBase base;
-  auto channel = getClientChannel(&base, *sst.getAddress());
+  auto channel = getClientChannel(&base, *sst.getAddress(), failSecurity);
   TestServiceAsyncClient client(std::move(channel));
   Countdown c(2, [&base](){base.terminateLoopSoon();});
 
@@ -403,13 +407,6 @@ void runRequestContextTest() {
   folly::RequestContext::create();
   folly::RequestContext::get()->setContextData("first", nullptr);
   client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
-    std::string res;
-    try {
-      TestServiceAsyncClient::recv_sendResponse(res, state);
-    } catch(const std::exception&) {
-      EXPECT_TRUE(false);
-    }
-    EXPECT_EQ(res, "10");
     EXPECT_TRUE(folly::RequestContext::get()->hasContextData("first"));
     c.down();
   }, 10);
@@ -419,13 +416,6 @@ void runRequestContextTest() {
   folly::RequestContext::create();
   folly::RequestContext::get()->setContextData("second", nullptr);
   client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
-    std::string res;
-    try {
-      TestServiceAsyncClient::recv_sendResponse(res, state);
-    } catch(const std::exception&) {
-      EXPECT_TRUE(false);
-    }
-    EXPECT_EQ(res, "10");
     EXPECT_FALSE(folly::RequestContext::get()->hasContextData("first"));
     EXPECT_TRUE(folly::RequestContext::get()->hasContextData("second"));
     c.down();
@@ -436,8 +426,12 @@ void runRequestContextTest() {
   base.loopForever();
 }
 
-TEST(SecurityRequestContext, Basic) {
-  runRequestContextTest();
+TEST(SecurityRequestContext, Success) {
+  runRequestContextTest(false);
+}
+
+TEST(SecurityRequestContext, Fail) {
+  runRequestContextTest(true);
 }
 
 int main(int argc, char** argv) {
