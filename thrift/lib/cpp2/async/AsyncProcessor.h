@@ -399,11 +399,11 @@ class HandlerCallbackBase {
     return req_.get();
   }
 
-  void runInQueue(
-    std::shared_ptr<apache::thrift::concurrency::Runnable> task) {
+  template <class F>
+  void runFuncInQueue(F&& func) {
     assert(tm_);
     try {
-      tm_->add(task,
+      tm_->add(concurrency::FunctionRunner::create(std::move(func)),
         0, // timeout
         0, // expiration
         true, // cancellable
@@ -418,12 +418,11 @@ class HandlerCallbackBase {
       } else {
         LOG(ERROR) << folly::exceptionStr(ex);
       }
-    }
-  }
 
-  template <class F>
-  void runFuncInQueue(F&& func) {
-    runInQueue(concurrency::FunctionRunner::create(std::move(func)));
+      // Delete the callback if exception is thrown since error response
+      // is already sent.
+      deleteInThread();
+    }
   }
 
  protected:
