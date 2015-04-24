@@ -257,6 +257,17 @@ class CppGenerator(t_generator.Generator):
         else:
             return False
 
+    def _get_cache_key(self, f):
+        foundMember = None
+        for member in f.arglist.members:
+            if self._has_cpp_annotation(member, "cache"):
+                if foundMember is not None:
+                    raise CompilerError('Multiple cache \
+                            annotations are not allowed')
+                else:
+                    foundMember = member
+        return foundMember
+
     def _is_reference(self, f):
         return self._has_cpp_annotation(f, "ref")
 
@@ -1203,6 +1214,73 @@ class CppGenerator(t_generator.Generator):
             out().label('protected:')
 
             out('{0}SvIf* iface_;'.format(service.name))
+            with out().defn('folly::Optional<std::string> {name}(' +
+                        'folly::IOBuf* buf, ' +
+                        'apache::thrift::protocol::PROTOCOL_TYPES protType)',
+                        name='getCacheKey',
+                        modifiers='virtual'):
+                out('std::string fname;')
+                out('apache::thrift::MessageType mtype;')
+                out('int32_t protoSeqId = 0;')
+                out('std::string pname;')
+                out('apache::thrift::protocol::TType ftype;')
+                out('int16_t fid;')
+                with out('try'):
+                    switch = out('switch(protType)').scope
+                    for shortprot, protname, prottype in self.protocols:
+                        with switch.case('apache::thrift::protocol::' +
+                                prottype, nobreak=True):
+                            out(('std::unique_ptr<apache::thrift::' +
+                                '{0}Reader> ' +
+                                'iprot(new apache::thrift::' +
+                                '{0}Reader());').format(protname))
+                            out('iprot->setInput(buf);')
+                            out('iprot->readMessageBegin(fname, mtype,' +
+                                  ' protoSeqId);')
+                            out('auto pfn = CacheKeyMap.find(fname);')
+                            with out('if (pfn == CacheKeyMap.end())'):
+                                out('return folly::none;')
+                            out('auto cacheKeyParamId = pfn->second;')
+
+                            out('uint32_t xfer = 0;')
+                            out('xfer += iprot->readStructBegin(pname);')
+
+                            whileLoop = out('while(true)').scope
+                            with whileLoop:
+                                out('xfer += iprot->readFieldBegin(pname, ' +
+                                        'ftype, fid);')
+                                stop = out('if (ftype == apache::thrift::' +
+                                        'protocol::T_STOP)').scope
+                                with stop:
+                                    out('break;')
+                                stop.release()
+
+                                isMatch = out('if (fid == ' +
+                                        'cacheKeyParamId)').scope
+                                with isMatch:
+                                    out('std::string cacheKey;')
+                                    out('iprot->readString(cacheKey);')
+                                    out('return folly::Optional<std::' +
+                                            'string>(std::move(cacheKey));')
+
+                                isMatch.release()
+                                out('xfer += iprot->skip(ftype);')
+                                out('xfer += iprot->readFieldEnd();')
+                            whileLoop.release()
+                            out('return folly::none;')
+
+                    with switch.case('default'):
+                        out('return folly::none;')
+                    switch.release()
+
+                    with out().catch('const std::exception& e'):
+                        out('LOG(ERROR) << \"Caught an exception ' +
+                                'parsing buffer:\" << e.what();')
+                        out('return folly::none;')
+
+                out('return folly::none;')
+                # end of getCacheKey
+
             with out().defn('void {name}(std::unique_ptr<' +
                         'apache::thrift::ResponseChannel::Request> req, ' +
                         'std::unique_ptr<folly::IOBuf> buf, ' +
@@ -1320,6 +1398,24 @@ class CppGenerator(t_generator.Generator):
             with oneways:
                 out(',\n'.join('"' + function.name + '"'
                         for function in service.functions if function.oneway))
+            cache_map_type = 'std::unordered_map<std::string, int16_t>'
+            cache_map = out().defn(cache_map_type + ' {name}',
+                    name='CacheKeyMap',
+                    modifiers='static')
+            cache_map.epilogue = ';'
+
+            cache_member_map = {}
+            for function in service.functions:
+                cache_key = self._get_cache_key(function)
+                if cache_key is not None:
+                    if not cache_key.type.is_string:
+                        raise CompilerError('Cache annotation is only \
+                                allowed on string types')
+                    cache_member_map[function.name] = cache_key.key
+            with cache_map:
+                out(',\n'.join("{{\"{}\", {}}}".format(function, cache_key)
+                        for function, cache_key in
+                        cache_member_map.iteritems()))
             prot = 0
             for shortprot, protname, prottype in self.protocols:
                 if shortprot == 'simple_json':

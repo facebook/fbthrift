@@ -1105,6 +1105,25 @@ TEST(ThriftServer, fiberExecutorTest) {
   EXPECT_EQ("test1", response);
 }
 
+class ExtendedTestServiceAsyncProcessor : public TestServiceAsyncProcessor {
+  public:
+   explicit ExtendedTestServiceAsyncProcessor(TestServiceSvIf* serviceInterface)
+       : TestServiceAsyncProcessor(serviceInterface) {}
+
+      folly::Optional<std::string> getCacheKeyTest() {
+        folly::IOBuf emptyBuffer;
+        return getCacheKey(
+            &emptyBuffer,
+            apache::thrift::protocol::PROTOCOL_TYPES::T_BINARY_PROTOCOL);
+      }
+};
+TEST(ThriftServer, CacheAnnotation) {
+  // We aren't parsing anything just want this to compile
+  auto testInterface = std::unique_ptr<TestInterface>(new TestInterface);
+  ExtendedTestServiceAsyncProcessor processor(testInterface.get());
+  EXPECT_FALSE(processor.getCacheKeyTest().hasValue());
+}
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   google::InitGoogleLogging(argv[0]);
