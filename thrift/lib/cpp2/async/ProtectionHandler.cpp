@@ -32,37 +32,44 @@ void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
 
         if (protectionState_ == ProtectionState::INPROGRESS) {
           // security is still doing stuff, let's return blank.
-          return;
+          break;
         }
 
         if (protectionState_ != ProtectionState::VALID) {
           // not an encrypted message, so pass-through
           ctx->fireRead(inputQueue_);
-          return;
+          break;
         }
 
         assert(saslEndpoint_ != nullptr);
         size_t remaining = 0;
 
         if (!inputQueue_.front() || inputQueue_.front()->empty()) {
-          return;
+          break;
         }
 
         // decrypt
-        std::unique_ptr<folly::IOBuf> unwrapped = saslEndpoint_->unwrap(&inputQueue_, &remaining);
+        std::unique_ptr<folly::IOBuf> unwrapped =
+          saslEndpoint_->unwrap(&inputQueue_, &remaining);
         assert(bool(unwrapped) ^ (remaining > 0));   // 1 and only 1 should be true
         if (unwrapped) {
           queue_.append(std::move(unwrapped));
 
           ctx->fireRead(queue_);
         } else {
-          return;
+          break;
         }
       }
     });
   if (e) {
     VLOG(5) << "Exception in ProtectionHandler::read(): " << e.what();
     ctx->fireReadException(std::move(e));
+  }
+  // Give ownership back to the main queue if we're not in the inprogress
+  // state
+  if (&inputQueue_ != &q &&
+      protectionState_ != ProtectionState::INPROGRESS) {
+    q.append(inputQueue_);
   }
 }
 
