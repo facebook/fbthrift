@@ -212,8 +212,8 @@ class DuplexChannel {
       dst->setSupportedClients(&supportedClients);
       dst->setClientType(type);
 
-      if (ctx_ && !inputQueue_.empty()) {
-        read(ctx_, inputQueue_);
+      if (getContext() && !inputQueue_.empty()) {
+        read(getContext(), inputQueue_);
       }
     }
    private:

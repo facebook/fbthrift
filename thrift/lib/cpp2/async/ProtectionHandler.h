@@ -22,6 +22,7 @@
 
 namespace apache { namespace thrift {
 
+// This handler may only be used in a single Pipeline
 class ProtectionHandler : public folly::wangle::BytesToBytesHandler {
  public:
   enum class ProtectionState {
@@ -81,7 +82,6 @@ class ProtectionHandler : public folly::wangle::BytesToBytesHandler {
 
  protected:
   folly::IOBufQueue inputQueue_{folly::IOBufQueue::cacheChainLength()};
-  Context* ctx_{nullptr};
 };
 
 }} // namespace

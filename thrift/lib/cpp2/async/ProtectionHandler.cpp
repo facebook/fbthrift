@@ -19,8 +19,6 @@
 namespace apache { namespace thrift {
 
 void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
-  ctx_ = ctx;
-
   if (&inputQueue_ != &q) {
     // If not the same queue
     inputQueue_.append(q);
@@ -82,9 +80,9 @@ folly::Future<void> ProtectionHandler::write(
 void ProtectionHandler::protectionStateChanged() {
   // We only want to do this callback in the case where we're switching
   // to a valid protection state.
-  if (ctx_ && !inputQueue_.empty() &&
+  if (getContext() && !inputQueue_.empty() &&
       protectionState_ == ProtectionState::VALID) {
-    read(ctx_, inputQueue_);
+    read(getContext(), inputQueue_);
   }
 }
 
