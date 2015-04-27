@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/wangle/channel/Handler.h>
+#include <folly/wangle/channel/StaticPipeline.h>
 #include <folly/wangle/channel/OutputBufferingHandler.h>
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <memory>
@@ -63,15 +64,16 @@ class Cpp2Channel
   : public MessageChannel
   , public folly::wangle::BytesToBytesHandler
  {
- protected:
-  virtual ~Cpp2Channel() {}
-
  public:
-
   explicit Cpp2Channel(
     const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
     std::unique_ptr<FramingHandler> framingHandler,
     std::unique_ptr<ProtectionHandler> protectionHandler = nullptr);
+
+  // TODO(jsedgwick) This should be protected, but folly::wangle::StaticPipeline
+  // will encase this in a folly::Optional, which requires a public destructor.
+  // Need to add a static_assert to Optional to make that prereq clearer
+  virtual ~Cpp2Channel() {}
 
   static std::unique_ptr<Cpp2Channel,
                          apache::thrift::async::TDelayedDestruction::Destructor>
@@ -161,12 +163,12 @@ private:
   std::shared_ptr<ProtectionHandler> protectionHandler_;
   std::unique_ptr<FramingHandler> framingHandler_;
 
-  typedef folly::wangle::Pipeline<
+  typedef folly::wangle::StaticPipeline<
     folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>,
     TAsyncTransportHandler,
     folly::wangle::OutputBufferingHandler,
-    folly::wangle::HandlerPtr<ProtectionHandler>,
-    folly::wangle::HandlerPtr<Cpp2Channel, false>>
+    ProtectionHandler,
+    Cpp2Channel>
   Pipeline;
   std::unique_ptr<Pipeline, folly::DelayedDestruction::Destructor> pipeline_;
   TAsyncTransportHandler* transportHandler_;

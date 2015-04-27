@@ -50,19 +50,21 @@ Cpp2Channel::Cpp2Channel(
     , closing_(false)
     , eofInvoked_(false)
     , protectionHandler_(std::move(protectionHandler))
-    , framingHandler_(std::move(framingHandler))
-    , pipeline_(new Pipeline(
-                  transport,
-                  folly::wangle::OutputBufferingHandler{},
-                  protectionHandler_,
-                  this)) {
-  transportHandler_ = pipeline_->getHandler<TAsyncTransportHandler>(0);
-
+    , framingHandler_(std::move(framingHandler)) {
   if (!protectionHandler_) {
     protectionHandler_.reset(new ProtectionHandler);
-    pipeline_->getHandler<folly::wangle::HandlerPtr<ProtectionHandler>>(2)->setHandler(
-      protectionHandler_);
   }
+  pipeline_.reset(new Pipeline(
+      TAsyncTransportHandler(transport),
+      folly::wangle::OutputBufferingHandler(),
+      protectionHandler_,
+      this));
+  // Let the pipeline know that this handler owns the pipeline itself.
+  // The pipeline will then avoid destruction order issues.
+  // CHECK that this operation is successful.
+  CHECK(pipeline_->setOwner(this));
+  // TODO getHandler() with no index should return first valid handler?
+  transportHandler_ = pipeline_->getHandler<TAsyncTransportHandler>(0);
   pipeline_->attachTransport(transport);
 }
 
@@ -87,9 +89,6 @@ void Cpp2Channel::closeNow() {
 
   // Note that close() above might kill the pipeline_, so let's check again.
   if (pipeline_) {
-    // We must remove the circular reference to this, or descrution order
-    // issues ensue
-    pipeline_->getHandler<folly::wangle::HandlerPtr<Cpp2Channel, false>>(3)->setHandler(nullptr);
     pipeline_.reset();
   }
 }
