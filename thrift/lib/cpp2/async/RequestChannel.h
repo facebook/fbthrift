@@ -137,6 +137,9 @@ class RequestCallback {
   virtual void requestError(ClientReceiveState&&) = 0;
 
   std::shared_ptr<apache::thrift::async::RequestContext> context_;
+  // To log latency incurred for doing thrift security
+  int64_t securityStart_;
+  int64_t securityEnd_;
 };
 
 /* FunctionReplyCallback is meant to make RequestCallback easy to use

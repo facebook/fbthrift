@@ -95,8 +95,6 @@ void GssSaslClient::start(Callback *cb) {
   auto securityMech = securityMech_;
   logger->logValue("security_mech", (int64_t)*securityMech);
 
-  // Log the overall latency incurred for doing security.
-  logger->logStart("security_latency");
   logger->logStart("prepare_first_request");
 
   folly::exception_wrapper ew_tm;

@@ -32,6 +32,8 @@ using namespace apache::thrift::transport;
 using apache::thrift::async::TEventBase;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::async::RequestContext;
+using HResClock = std::chrono::high_resolution_clock;
+using Us = std::chrono::microseconds;
 
 namespace apache { namespace thrift {
 
@@ -220,8 +222,6 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     folly::to<std::string>(errorMessage, " ", ex.what()));
 
   if (logger) {
-    // Overall latency incurred for doing security ends here.
-    logger->logEnd("security_latency");
     logger->log("sasl_error", ex.what().toStdString());
   }
 
@@ -259,8 +259,6 @@ void HeaderClientChannel::SaslClientCallback::saslComplete() {
           << channel_.saslClient_->getServerIdentity();
   auto logger = channel_.saslClient_->getSaslLogger();
   if (logger) {
-    // Overall latency incurred for doing security ends here.
-    logger->logEnd("security_latency");
     logger->log(
       "sasl_complete",
       {
@@ -312,7 +310,10 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
 
   // Replay any pending requests
   for (auto&& funcarg : afterSecurity_) {
-    folly::RequestContext::setContext((std::get<2>(funcarg))->context_);
+    auto& cb = std::get<2>(funcarg);
+    folly::RequestContext::setContext(cb->context_);
+    cb->securityEnd_ = std::chrono::duration_cast<Us>(
+        HResClock::now().time_since_epoch()).count();
     header_->setHeaders(std::move(std::get<5>(funcarg)));
     (this->*(std::get<0>(funcarg)))(std::get<1>(funcarg),
                                     std::move(std::get<2>(funcarg)),
@@ -357,6 +358,8 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
   cb->context_ = RequestContext::saveContext();
 
   if (isSecurityPending()) {
+    cb->securityStart_ = std::chrono::duration_cast<Us>(
+        HResClock::now().time_since_epoch()).count();
     afterSecurity_.push_back(
       std::make_tuple(static_cast<AfterSecurityMethod>(
                         &HeaderClientChannel::sendOnewayRequest),
@@ -402,6 +405,8 @@ uint32_t HeaderClientChannel::sendRequest(
   cb->context_ = RequestContext::saveContext();
 
   if (isSecurityPending()) {
+    cb->securityStart_ = std::chrono::duration_cast<Us>(
+        HResClock::now().time_since_epoch()).count();
     afterSecurity_.push_back(
       std::make_tuple(static_cast<AfterSecurityMethod>(
                         &HeaderClientChannel::sendRequest),
@@ -576,6 +581,8 @@ void HeaderClientChannel::messageReceiveErrorWrapped(
     auto& ctx = std::get<3>(funcarg);
     if (cb) {
       auto old_ctx = folly::RequestContext::setContext(cb->context_);
+      cb->securityEnd_ = std::chrono::duration_cast<Us>(
+        HResClock::now().time_since_epoch()).count();
       cb->requestError(
           ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
       folly::RequestContext::setContext(old_ctx);

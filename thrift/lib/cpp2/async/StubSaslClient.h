@@ -32,7 +32,8 @@ namespace apache { namespace thrift {
 class StubSaslClient : public SaslClient {
 public:
   explicit StubSaslClient(apache::thrift::async::TEventBase*,
-    const std::shared_ptr<SecurityLogger>& logger = nullptr);
+    const std::shared_ptr<SecurityLogger>& logger = nullptr,
+    int forceMsSpentPerRTT = 0);
   virtual void start(Callback *cb);
   virtual void consumeFromServer(
     Callback *cb, std::unique_ptr<folly::IOBuf>&& message);
@@ -55,6 +56,7 @@ public:
   // This is for testing.
   void setForceFallback() { forceFallback_ = true; }
   void setForceTimeout() { forceTimeout_ = true; }
+  void setForceMsSpentPerRTT(int t) { forceMsSpentPerRTT_ = t; }
 
   const std::string* getErrorString() const {
     return nullptr;
@@ -67,6 +69,7 @@ private:
   int phase_;
   bool forceFallback_;
   bool forceTimeout_;
+  int forceMsSpentPerRTT_;  // milliseconds
 };
 
 }} // apache::thrift
