@@ -15,14 +15,14 @@
  */
 #pragma once
 
-#include <folly/wangle/channel/ChannelHandler.h>
+#include <folly/wangle/channel/Handler.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
 
 namespace apache { namespace thrift {
 
-class ProtectionChannelHandler : public folly::wangle::BytesToBytesHandler {
+class ProtectionHandler : public folly::wangle::BytesToBytesHandler {
  public:
   enum class ProtectionState {
     UNKNOWN,
@@ -33,7 +33,7 @@ class ProtectionChannelHandler : public folly::wangle::BytesToBytesHandler {
     WAITING,
   };
 
-  ProtectionChannelHandler()
+  ProtectionHandler()
     : protectionState_(ProtectionState::UNKNOWN)
     , saslEndpoint_(nullptr)
   {}
@@ -55,7 +55,7 @@ class ProtectionChannelHandler : public folly::wangle::BytesToBytesHandler {
 
   virtual void protectionStateChanged();
 
-  virtual ~ProtectionChannelHandler() {}
+  virtual ~ProtectionHandler() {}
 
   /**
    * If q contains enough data, read it (removing it from q, but retaining

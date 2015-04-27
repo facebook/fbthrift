@@ -33,8 +33,8 @@ DuplexChannel::DuplexChannel(Who::WhoEnum who,
                              const shared_ptr<TAsyncTransport>& transport)
   : cpp2Channel_(new DuplexCpp2Channel(
                      *this, transport,
-                     make_unique<FramingHandler>(*this),
-                     make_unique<ProtectionHandler>(*this)),
+                     make_unique<DuplexFramingHandler>(*this),
+                     make_unique<DuplexProtectionHandler>(*this)),
                  TDelayedDestruction::Destructor())
   , clientChannel_(new DuplexClientChannel(*this, cpp2Channel_),
                    async::TDelayedDestruction::Destructor())
@@ -50,7 +50,7 @@ DuplexChannel::DuplexChannel(Who::WhoEnum who,
   cpp2Channel_->primeCallbacks(clientChannel_.get(), serverChannel_.get());
 }
 
-FramingChannelHandler& DuplexChannel::FramingHandler::getHandler(
+FramingHandler& DuplexChannel::DuplexFramingHandler::getHandler(
     Who::WhoEnum who) {
   switch (who) {
   case Who::CLIENT:
@@ -59,12 +59,12 @@ FramingChannelHandler& DuplexChannel::FramingHandler::getHandler(
     return duplex_.serverFramingHandler_;
   default:
     CHECK(false);
-    return *static_cast<FramingChannelHandler*>(nullptr);
+    return *static_cast<FramingHandler*>(nullptr);
   }
 }
 
 std::pair<std::unique_ptr<folly::IOBuf>, size_t>
-DuplexChannel::FramingHandler::removeFrame(folly::IOBufQueue* q) {
+DuplexChannel::DuplexFramingHandler::removeFrame(folly::IOBufQueue* q) {
   if (!q || !q->front() || q->front()->empty()) {
     return make_pair(std::unique_ptr<IOBuf>(), 0);
   }
@@ -115,7 +115,8 @@ DuplexChannel::FramingHandler::removeFrame(folly::IOBufQueue* q) {
 }
 
 std::unique_ptr<folly::IOBuf>
-DuplexChannel::FramingHandler::addFrame(std::unique_ptr<folly::IOBuf> buf) {
+DuplexChannel::DuplexFramingHandler::addFrame(
+    std::unique_ptr<folly::IOBuf> buf) {
   buf = getHandler(duplex_.lastSender_.get()).addFrame(std::move(buf));
 
   if (duplex_.lastSender_.get() != duplex_.mainChannel_.get()) {

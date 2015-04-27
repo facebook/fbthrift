@@ -72,7 +72,7 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
     std::shared_ptr<T> svIf_;
 };
 
-typedef folly::wangle::ChannelPipeline<
+typedef folly::wangle::Pipeline<
   folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>> Pipeline;
 
 /**

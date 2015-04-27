@@ -44,7 +44,7 @@ class HeaderServerChannel : public ResponseChannel,
                             public HeaderChannel,
                             public MessageChannel::RecvCallback,
                             virtual public async::TDelayedDestruction {
-  typedef ProtectionChannelHandler::ProtectionState ProtectionState;
+  typedef ProtectionHandler::ProtectionState ProtectionState;
 protected:
   virtual ~HeaderServerChannel(){}
 
@@ -191,7 +191,7 @@ protected:
     cpp2Channel_->closeNow();
   }
 
-  class ServerFramingHandler : public FramingChannelHandler {
+  class ServerFramingHandler : public FramingHandler {
   public:
     explicit ServerFramingHandler(HeaderServerChannel& channel)
       : channel_(channel) {}

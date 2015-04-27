@@ -44,7 +44,7 @@ class HeaderClientChannel : public RequestChannel,
                             public HeaderChannel,
                             public MessageChannel::RecvCallback,
                             virtual public async::TDelayedDestruction {
-  typedef ProtectionChannelHandler::ProtectionState ProtectionState;
+  typedef ProtectionHandler::ProtectionState ProtectionState;
  protected:
   virtual ~HeaderClientChannel(){}
 
@@ -189,7 +189,7 @@ class HeaderClientChannel : public RequestChannel,
     return getProtectionState() == ProtectionState::VALID;
   }
 
-  class ClientFramingHandler : public FramingChannelHandler {
+  class ClientFramingHandler : public FramingHandler {
   public:
     explicit ClientFramingHandler(HeaderClientChannel& channel)
       : channel_(channel) {}

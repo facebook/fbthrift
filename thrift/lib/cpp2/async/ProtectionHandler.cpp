@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <thrift/lib/cpp2/async/ProtectionChannelHandler.h>
+#include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace apache { namespace thrift {
 
-void ProtectionChannelHandler::read(Context* ctx, folly::IOBufQueue& q) {
+void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
   ctx_ = ctx;
 
   if (&inputQueue_ != &q) {
@@ -68,7 +68,7 @@ void ProtectionChannelHandler::read(Context* ctx, folly::IOBufQueue& q) {
   }
 }
 
-folly::Future<void> ProtectionChannelHandler::write(
+folly::Future<void> ProtectionHandler::write(
   Context* ctx,
   std::unique_ptr<folly::IOBuf> buf) {
   if (protectionState_ == ProtectionState::VALID) {
@@ -79,7 +79,7 @@ folly::Future<void> ProtectionChannelHandler::write(
 }
 
 
-void ProtectionChannelHandler::protectionStateChanged() {
+void ProtectionHandler::protectionStateChanged() {
   // We only want to do this callback in the case where we're switching
   // to a valid protection state.
   if (ctx_ && !inputQueue_.empty() &&

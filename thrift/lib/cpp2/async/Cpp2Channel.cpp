@@ -40,8 +40,8 @@ const uint32_t Cpp2Channel::DEFAULT_BUFFER_SIZE;
 
 Cpp2Channel::Cpp2Channel(
   const std::shared_ptr<TAsyncTransport>& transport,
-  std::unique_ptr<FramingChannelHandler> framingHandler,
-  std::unique_ptr<ProtectionChannelHandler> protectionHandler)
+  std::unique_ptr<FramingHandler> framingHandler,
+  std::unique_ptr<ProtectionHandler> protectionHandler)
     : transport_(transport)
     , queue_(new IOBufQueue(IOBufQueue::cacheChainLength()))
     , readBufferSize_(DEFAULT_BUFFER_SIZE)
@@ -59,8 +59,8 @@ Cpp2Channel::Cpp2Channel(
   transportHandler_ = pipeline_->getHandler<TAsyncTransportHandler>(0);
 
   if (!protectionHandler_) {
-    protectionHandler_.reset(new ProtectionChannelHandler);
-    pipeline_->getHandler<folly::wangle::ChannelHandlerPtr<ProtectionChannelHandler>>(2)->setHandler(
+    protectionHandler_.reset(new ProtectionHandler);
+    pipeline_->getHandler<folly::wangle::HandlerPtr<ProtectionHandler>>(2)->setHandler(
       protectionHandler_);
   }
   pipeline_->attachTransport(transport);
@@ -89,7 +89,7 @@ void Cpp2Channel::closeNow() {
   if (pipeline_) {
     // We must remove the circular reference to this, or descrution order
     // issues ensue
-    pipeline_->getHandler<folly::wangle::ChannelHandlerPtr<Cpp2Channel, false>>(3)->setHandler(nullptr);
+    pipeline_->getHandler<folly::wangle::HandlerPtr<Cpp2Channel, false>>(3)->setHandler(nullptr);
     pipeline_.reset();
   }
 }
@@ -136,7 +136,7 @@ void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
     unique_ptr<IOBuf> unframed;
 
     if (protectionHandler_->getProtectionState() ==
-        ProtectionChannelHandler::ProtectionState::INPROGRESS) {
+        ProtectionHandler::ProtectionState::INPROGRESS) {
       return;
     }
 

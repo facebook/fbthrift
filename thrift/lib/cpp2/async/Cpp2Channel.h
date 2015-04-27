@@ -27,9 +27,9 @@
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <folly/io/IOBufQueue.h>
-#include <folly/wangle/channel/ChannelHandler.h>
+#include <folly/wangle/channel/Handler.h>
 #include <folly/wangle/channel/OutputBufferingHandler.h>
-#include <thrift/lib/cpp2/async/ProtectionChannelHandler.h>
+#include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <memory>
 
 #include <deque>
@@ -37,9 +37,9 @@
 
 namespace apache { namespace thrift {
 
-class FramingChannelHandler {
-public:
-  virtual ~FramingChannelHandler() {}
+class FramingHandler {
+ public:
+  virtual ~FramingHandler() {}
 
   /**
    * If q contains enough data, read it (removing it from q, but retaining
@@ -70,14 +70,14 @@ class Cpp2Channel
 
   explicit Cpp2Channel(
     const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
-    std::unique_ptr<FramingChannelHandler> framingHandler,
-    std::unique_ptr<ProtectionChannelHandler> protectionHandler = nullptr);
+    std::unique_ptr<FramingHandler> framingHandler,
+    std::unique_ptr<ProtectionHandler> protectionHandler = nullptr);
 
   static std::unique_ptr<Cpp2Channel,
                          apache::thrift::async::TDelayedDestruction::Destructor>
   newChannel(
       const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
-      std::unique_ptr<FramingChannelHandler> framingHandler) {
+      std::unique_ptr<FramingHandler> framingHandler) {
     return std::unique_ptr<Cpp2Channel,
       apache::thrift::async::TDelayedDestruction::Destructor>(
       new Cpp2Channel(transport, std::move(framingHandler)));
@@ -128,11 +128,11 @@ class Cpp2Channel
     }
   }
 
-  ProtectionChannelHandler* getProtectionHandler() const {
+  ProtectionHandler* getProtectionHandler() const {
     return protectionHandler_.get();
   }
 
-  FramingChannelHandler* getChannelHandler() const {
+  FramingHandler* getChannelHandler() const {
     return framingHandler_.get();
   }
 
@@ -158,15 +158,15 @@ private:
 
   std::unique_ptr<RecvCallback::sample> sample_;
 
-  std::shared_ptr<ProtectionChannelHandler> protectionHandler_;
-  std::unique_ptr<FramingChannelHandler> framingHandler_;
+  std::shared_ptr<ProtectionHandler> protectionHandler_;
+  std::unique_ptr<FramingHandler> framingHandler_;
 
-  typedef folly::wangle::ChannelPipeline<
+  typedef folly::wangle::Pipeline<
     folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>,
     TAsyncTransportHandler,
     folly::wangle::OutputBufferingHandler,
-    folly::wangle::ChannelHandlerPtr<ProtectionChannelHandler>,
-    folly::wangle::ChannelHandlerPtr<Cpp2Channel, false>>
+    folly::wangle::HandlerPtr<ProtectionHandler>,
+    folly::wangle::HandlerPtr<Cpp2Channel, false>>
   Pipeline;
   std::unique_ptr<Pipeline, folly::DelayedDestruction::Destructor> pipeline_;
   TAsyncTransportHandler* transportHandler_;

@@ -43,7 +43,7 @@ thrift2include_asyncdir = $(thrift2includedir)/async
 thrift2include_async_HEADERS = \
 	async/AsyncProcessor.h \
 	async/Cpp2Channel.h \
-	async/ProtectionChannelHandler.h \
+	async/ProtectionHandler.h \
 	async/HeaderChannel.h \
 	async/DuplexChannel.h \
 	async/FutureRequest.h \
@@ -103,7 +103,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   async/GssSaslClient.cpp \
 			   async/GssSaslServer.cpp \
 			   async/Cpp2Channel.cpp \
-			   async/ProtectionChannelHandler.cpp \
+			   async/ProtectionHandler.cpp \
 			   async/AsyncProcessor.cpp \
 			   async/DuplexChannel.cpp \
 			   protocol/Serializer.cpp \
