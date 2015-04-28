@@ -9,7 +9,6 @@
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <folly/MoveWrapper.h>
 #include <thread>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp/async/TEventBaseManager.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <folly/ScopeGuard.h>

@@ -26,6 +26,9 @@
 #include <thrift/lib/cpp/util/VarintUtils.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include "snappy.h"
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
+#include <thrift/lib/cpp/util/THttpParser.h>
 
 #ifdef HAVE_QUICKLZ
 extern "C" {
@@ -61,6 +64,36 @@ const string THeader::PRIORITY_HEADER = "thrift_priority";
 const string THeader::CLIENT_TIMEOUT_HEADER = "client_timeout";
 
 string THeader::s_identity = "";
+
+THeader::THeader()
+  : queue_(new folly::IOBufQueue)
+  , protoId_(T_COMPACT_PROTOCOL)
+  , protoVersion(-1)
+  , clientType(THRIFT_UNKNOWN_CLIENT_TYPE)
+  , prevClientType(THRIFT_HEADER_CLIENT_TYPE)
+  , seqId(0)
+  , flags_(0)
+  , identity(s_identity)
+  , minCompressBytes_(0)
+{
+  setSupportedClients(nullptr);
+}
+
+THeader::THeader(std::bitset<CLIENT_TYPES_LEN> const* clientTypes)
+  : queue_(new folly::IOBufQueue)
+  , protoId_(T_COMPACT_PROTOCOL)
+  , protoVersion(-1)
+  , clientType(THRIFT_UNKNOWN_CLIENT_TYPE)
+  , prevClientType(THRIFT_HEADER_CLIENT_TYPE)
+  , seqId(0)
+  , flags_(0)
+  , identity(s_identity)
+  , minCompressBytes_(0)
+{
+  setSupportedClients(clientTypes);
+}
+
+THeader::~THeader() {}
 
 void THeader::setSupportedClients(std::bitset<CLIENT_TYPES_LEN>
                                   const* clients) {

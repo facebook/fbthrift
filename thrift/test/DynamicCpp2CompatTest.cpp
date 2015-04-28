@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/test/gen-cpp2/DynamicTestCompatService.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
 using namespace cpp2;
 using namespace std;

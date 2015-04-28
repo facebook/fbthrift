@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
 #include "thrift/test/gen-cpp2/CustomStruct.h"
 

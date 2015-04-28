@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/async/DuplexChannel.h>
+#include <folly/io/Cursor.h>
 
 using std::shared_ptr;
 using std::unique_ptr;

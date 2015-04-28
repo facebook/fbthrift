@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/SaslServer.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
 #include <folly/SocketAddress.h>
 
@@ -32,6 +31,9 @@ using apache::thrift::concurrency::PriorityThreadManager;
 
 namespace apache { namespace thrift {
 
+class RequestChannel;
+class TClientBase;
+
 class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
  public:
   explicit Cpp2ConnContext(
@@ -40,7 +42,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     apache::thrift::transport::THeader* header,
     const apache::thrift::SaslServer* sasl_server,
     apache::thrift::async::TEventBaseManager* manager,
-    const std::shared_ptr<HeaderClientChannel>& duplexChannel = nullptr)
+    const std::shared_ptr<RequestChannel>& duplexChannel = nullptr)
     : peerAddress_(*address),
       header_(header),
       saslServer_(sasl_server),
@@ -112,7 +114,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   apache::thrift::transport::THeader* header_;
   const apache::thrift::SaslServer* saslServer_;
   apache::thrift::async::TEventBaseManager* manager_;
-  std::shared_ptr<HeaderClientChannel> duplexChannel_;
+  std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
 };
 

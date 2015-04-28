@@ -25,7 +25,8 @@
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include "thrift/test/gen-cpp2/IOBufPtrTestService.h"
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/test/gen-cpp2/IOBufPtrTestService.h>
 
 namespace thrift { namespace test { namespace iobufptr {
 

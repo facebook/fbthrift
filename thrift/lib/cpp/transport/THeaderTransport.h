@@ -27,6 +27,8 @@
 #include <thrift/lib/cpp/transport/THttpServer.h>
 #include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/transport/TVirtualTransport.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

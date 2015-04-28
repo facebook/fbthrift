@@ -18,6 +18,7 @@
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;

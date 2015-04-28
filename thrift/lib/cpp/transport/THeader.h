@@ -18,18 +18,13 @@
 #define THRIFT_TRANSPORT_THEADER_H_ 1
 
 #include <functional>
+#include <map>
+#include <vector>
 
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
-#include <thrift/lib/cpp/util/THttpParser.h>
-
-#include <folly/io/IOBuf.h>
-#include <folly/io/IOBufQueue.h>
 
 #include <bitset>
-#include "boost/scoped_array.hpp"  // nolint
 #include <pwd.h>
 #include <unistd.h>
 #include <chrono>
@@ -63,6 +58,15 @@ enum THRIFT_SECURITY_POLICY {
   THRIFT_SECURITY_REQUIRED = 3,
 };
 
+namespace folly {
+class IOBuf;
+class IOBufQueue;
+}
+
+namespace apache { namespace thrift { namespace util {
+class THttpClientParser;
+}}}
+
 namespace apache { namespace thrift { namespace transport {
 
 using apache::thrift::protocol::T_COMPACT_PROTOCOL;
@@ -82,35 +86,11 @@ using apache::thrift::protocol::T_COMPACT_PROTOCOL;
 class THeader {
  public:
 
-  virtual ~THeader() {}
+  virtual ~THeader();
 
-  explicit THeader()
-    : queue_(new folly::IOBufQueue)
-    , protoId_(T_COMPACT_PROTOCOL)
-    , protoVersion(-1)
-    , clientType(THRIFT_UNKNOWN_CLIENT_TYPE)
-    , prevClientType(THRIFT_HEADER_CLIENT_TYPE)
-    , seqId(0)
-    , flags_(0)
-    , identity(s_identity)
-    , minCompressBytes_(0)
-  {
-    setSupportedClients(nullptr);
-  }
+  explicit THeader();
 
-  explicit THeader(std::bitset<CLIENT_TYPES_LEN> const* clientTypes)
-    : queue_(new folly::IOBufQueue)
-    , protoId_(T_COMPACT_PROTOCOL)
-    , protoVersion(-1)
-    , clientType(THRIFT_UNKNOWN_CLIENT_TYPE)
-    , prevClientType(THRIFT_HEADER_CLIENT_TYPE)
-    , seqId(0)
-    , flags_(0)
-    , identity(s_identity)
-    , minCompressBytes_(0)
-  {
-    setSupportedClients(clientTypes);
-  }
+  explicit THeader(std::bitset<CLIENT_TYPES_LEN> const* clientTypes);
 
   // If clients is nullptr, a security policy of THRIFT_SECURITY_DISABLED
   // will be used.
