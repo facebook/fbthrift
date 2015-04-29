@@ -92,7 +92,7 @@ buildJSONMap :: Int -> Int -> [(ThriftVal, ThriftVal)] -> Builder
 buildJSONMap i l = mconcat . intersperse ("," <> indented l) . map buildKV
   where
     buildKV (key@(TString _), val) =
-      buildJSONValue i l key <> ":" <> buildJSONValue i l val
+      buildJSONValue i l key <> ": " <> buildJSONValue i l val
     buildKV (key, val) =
       "\"" <> buildJSONValue i l key <> "\": " <> buildJSONValue i l val
 buildJSONList :: Int -> Int -> [ThriftVal] -> Builder
