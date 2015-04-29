@@ -112,8 +112,6 @@ TEventBase* Cpp2Channel::getEventBase() {
 }
 
 void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
-  assert(recvCallback_);
-
   DestructorGuard dg(this);
 
   if (recvCallback_ && recvCallback_->shouldSample() && !sample_) {
@@ -170,7 +168,7 @@ void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
     }
 
     if (!recvCallback_) {
-      LOG(ERROR) << "Received a message, but no recvCallback_ installed!";
+      LOG(INFO) << "Received a message, but no recvCallback_ installed!";
       continue;
     }
 
