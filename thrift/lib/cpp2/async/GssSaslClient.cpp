@@ -25,7 +25,7 @@
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp2/protocol/MessageSerializer.h>
 #include <thrift/lib/cpp2/gen-cpp2/Sasl_types.h>
-#include <thrift/lib/cpp2/gen-cpp2/SaslAuthService.h>
+#include <thrift/lib/cpp2/gen-cpp2/SaslAuthService.tcc>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
@@ -280,9 +280,8 @@ void GssSaslClient::consumeFromServer(
                       sizeof(SaslAuthService_authNextRequest_presult),
                       "Types should be structurally identical");
         static_assert(std::is_same<
-            decltype(SaslAuthService_authFirstRequest_presult::success),
-            decltype(
-              SaslAuthService_authNextRequest_presult::success)>::value,
+            SaslAuthService_authFirstRequest_presult,
+            SaslAuthService_authNextRequest_presult>::value,
           "Types should be structurally identical");
 
         if (!isHealthy) {
@@ -297,7 +296,7 @@ void GssSaslClient::consumeFromServer(
               TKerberosException>([&]() {
             SaslReply reply;
             SaslAuthService_authFirstRequest_presult presult;
-            presult.success = &reply;
+            std::get<0>(presult.fields).value = &reply;
             string methodName;
             try {
               methodName = PargsPresultProtoDeserialize(

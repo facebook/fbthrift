@@ -19,7 +19,7 @@
 #include <thrift/lib/cpp2/security/packet_decryption_tool/krb5_internal.h>
 #include <thrift/lib/cpp2/protocol/MessageSerializer.h>
 #include <thrift/lib/cpp2/gen-cpp2/Sasl_types.h>
-#include <thrift/lib/cpp2/gen-cpp2/SaslAuthService.h>
+#include <thrift/lib/cpp2/gen-cpp2/SaslAuthService.tcc>
 
 namespace apache { namespace thrift {
 
@@ -235,7 +235,7 @@ void DecryptionManager::PacketHandler::parseSecondMessage(Packet* packet) {
 
   apache::thrift::sasl::SaslReply saslReply;
   apache::thrift::sasl::SaslAuthService_authFirstRequest_presult presult;
-  presult.success = &saslReply;
+  std::get<0>(presult.fields).value = &saslReply;
 
   std::string methodName;
   try {

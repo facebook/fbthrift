@@ -414,7 +414,10 @@ class CppOutputContext(OutputContext):
                 print >>self._output_tcc, \
                         '#include <thrift/lib/cpp/transport/THeader.h>'
                 print >>self._output_tcc, \
-                        '#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>\n'
+                        '#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>'
+                print >>self._output_tcc, \
+                        '#include <thrift/lib/cpp2/GeneratedCodeHelper.h>'
+                print >>self._output_tcc, ''
             return
 
         # set the output of the real scope's content according to the

@@ -141,6 +141,7 @@ include_protocol_HEADERS = \
                          protocol/TProtocolTap.h \
                          protocol/TProtocolException.h \
                          protocol/TVirtualProtocol.h \
+                         protocol/TType.h \
                          protocol/TProtocol.h
 
 

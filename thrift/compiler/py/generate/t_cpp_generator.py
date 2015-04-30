@@ -354,6 +354,27 @@ class CppGenerator(t_generator.Generator):
                 else 'HandlerCallback'
         return 'apache::thrift::{0}<{1}>'.format(cb, rettype)
 
+    def _get_presult_success(self):
+        if self.flag_compatibility:
+            return 'result.success'
+        else:
+            return 'std::get<0>(result.fields).value'
+    def _get_presult_success_isset(self):
+        if self.flag_compatibility:
+            return 'result.__isset.success'
+        else:
+            return 'result.isset[0]'
+    def _get_presult_exception(self, ex_idx, e):
+        if self.flag_compatibility:
+            return 'result.{0}'.format(e.name)
+        else:
+            return 'std::get<{0}>(result.fields).ref()'.format(ex_idx)
+    def _get_presult_exception_isset(self, ex_idx, e):
+        if self.flag_compatibility:
+            return 'result.__isset.{0}'.format(e.name)
+        else:
+            return 'result.isset[{0}]'.format(ex_idx)
+
     def _generate_enum_constant_list(self, enum, constants, quote_names,
                                       include_values):
         if include_values:
@@ -586,13 +607,13 @@ class CppGenerator(t_generator.Generator):
         s = s.namespace(self._get_namespace()).scope
         s.acquire()
 
+        self._generate_service_helpers(service, s)
         self._generate_service_server_interface_async(service, s)
         s('class ' + service.name + 'AsyncProcessor;')
         self._generate_service_server_interface(service, s)
         self._generate_service_server_null(service, s)
         self._generate_processor(service, s)
         self._generate_service_client(service, s)
-        self._generate_service_helpers(service, s)
 
         # make sure that the main types namespace is closed
         s.release()
@@ -618,7 +639,7 @@ class CppGenerator(t_generator.Generator):
             arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
             self._generate_cpp2ops(True, arglist, s)
 
-            if not function.oneway:
+            if self.flag_compatibility and not function.oneway:
                 result = self._get_presult_object(service, function)
                 self._generate_cpp2ops(True, result, s)
         s.release()
@@ -666,25 +687,43 @@ class CppGenerator(t_generator.Generator):
             arglist.name = name_orig
 
             if not function.oneway:
-                # WTF Using _get_presult_object causes a segmentation fault?
-                result = frontend.t_struct(
-                    self.program,
-                    "{0}_{1}_presult".format(service.name, function.name))
-                success = frontend.t_field(function.returntype, "success", 0)
-                if not function.returntype.is_void:
-                    result.append(success)
-                xs = function.xceptions
-                for field in xs.members:
-                    result.append(field)
-                self._generate_struct_complete(s, result,
-                                               is_exception=False,
-                                               pointers=True,
-                                               read=True,
-                                               write=True,
-                                               swap=False,
-                                               result=True,
-                                               to_additional=True,
-                                               simplejson=False)
+                if self.flag_compatibility:
+                    # WTF Using _get_presult_object causes a segmentation fault?
+                    result = frontend.t_struct(
+                         self.program,
+                         "{0}_{1}_presult".format(service.name, function.name))
+                    success = frontend.t_field(function.returntype, "success", 0)
+                    if not function.returntype.is_void:
+                        result.append(success)
+                    xs = function.xceptions
+                    for field in xs.members:
+                        result.append(field)
+                    self._generate_struct_complete(s, result,
+                                                   is_exception=False,
+                                                   pointers=True,
+                                                   read=True,
+                                                   write=True,
+                                                   swap=False,
+                                                   result=True,
+                                                   to_additional=True,
+                                                   simplejson=False)
+                else:
+                    flist = ['apache::thrift::FieldData<{0}, '
+                             'apache::thrift::protocol::T_STRUCT, {1}>'.format(
+                                field.key, self._type_name(field.type))
+                                    for field in function.xceptions.members]
+                    if not function.returntype.is_void:
+                        type = self._type_name(function.returntype)
+                        ttype = self._type_to_enum(function.returntype)
+                        flist.insert(0, 'apache::thrift::FieldData<0, {0}, {1}*>'
+                            .format(ttype, type))
+
+                    presult = "{0}_{1}_presult".format(service.name, function.name)
+                    fstr = ", ".join(flist)
+
+                    print >>self._out_tcc, \
+                        'typedef apache::thrift::ThriftPresult<{0}> {1};'.format(
+                            fstr, presult)
 
     def _generate_service_client(self, service, s):
         classname = service.name + "AsyncClient"
@@ -1507,29 +1546,30 @@ class CppGenerator(t_generator.Generator):
                                 output=self._out_tcc,
                                 modifiers='static'):
                         out('ProtocolOut_ prot;')
-                        result_type = '{0}_{1}_presult'.format(
-                                service.name, function.name)
-                        out('{0} result;'.format(result_type))
+                        out('{0}_{1}_presult result;'.format(
+                                service.name, function.name))
                         if self._function_produces_result(function):
-                            out('result.success = const_cast' +
-                              '<{0}*>(&_return);'.format(
-                                      self._type_name(
-                                           function.returntype)))
-                            out('result.__isset.success = true;')
+                            out('{0} = const_cast<{1}*>(&_return);'.format(
+                                self._get_presult_success(),
+                                self._type_name(function.returntype)))
+                            out('{0} = true;'.format(
+                                self._get_presult_success_isset()))
                         out('return serializeResponse("{0}", '
                           '&prot, protoSeqId, ctx, result);'
                           .format(function.name))
 
                 def cast_xceptions(xceptions):
-                    for xception in xceptions:
+                    for idx, xception in enumerate(xceptions):
                         with out('catch (const {0}& e)'.format(
                             self._type_name(xception.type))):
                             out('ctx->userException(' +
                               'folly::demangle(typeid(e)).toStdString(), ' +
                               'e.what());')
-                            out('result.{0} = e;'.format(xception.name))
-                            out('result.__isset.{0} = true;'.format(
-                                xception.name))
+                            ex_idx = self._exception_idx(function, idx)
+                            out('{0} = e;'.format(
+                                self._get_presult_exception(ex_idx, xception)))
+                            out('{0} = true;'.format(
+                                self._get_presult_exception_isset(ex_idx, xception)))
                 if not function.oneway:
                     with out().defn(
                         'template <class ProtocolIn_, class ProtocolOut_>\n' +
@@ -1592,7 +1632,7 @@ class CppGenerator(t_generator.Generator):
                         if len(function.xceptions.members) > 0:
                             out('{0}_{1}_presult result;'.format(
                                 service.name, function.name))
-                        for xception in function.xceptions.members:
+                        for idx, xception in enumerate(function.xceptions.members):
                             xception_type = self._type_name(
                                 xception.type)
                             with out('if (ew.with_exception<{0}>([&]({0}& e)'.
@@ -1600,10 +1640,11 @@ class CppGenerator(t_generator.Generator):
                                 out('ctx->userException('
                                     'folly::demangle(typeid(e)).'
                                     'toStdString(), e.what());')
-                                out('result.{0} = e;'.format(
-                                    xception.name))
-                                out('result.__isset.{0} = true;'.format(
-                                    xception.name))
+                                ex_idx = self._exception_idx(function, idx)
+                                out('{0} = e;'.format(
+                                    self._get_presult_exception(ex_idx, xception)))
+                                out('{0} = true;'.format(
+                                    self._get_presult_exception_isset(ex_idx, xception)))
                             out(')) {} else ')
                         with out(' '):
                             self._generate_app_ex(
@@ -2174,7 +2215,8 @@ class CppGenerator(t_generator.Generator):
                 out("{0}_{1}_presult result;".format(service.name, function.name))
 
                 if not function.returntype.is_void:
-                    out("result.success = &_return;")
+                    out("{0} = &_return;".format(
+                        self._get_presult_success()))
 
                 if self.flag_compatibility:
                     out("{0}_{1}_presult_read(prot, &result);".format(
@@ -2186,14 +2228,17 @@ class CppGenerator(t_generator.Generator):
                 out('ctx->postRead(state.buf()->length());')
 
                 if not function.returntype.is_void:
-                    with out("if (result.__isset.success)"):
+                    with out("if ({0})".format(self._get_presult_success_isset())):
                         out("// _return pointer has been filled")
                         out("return; // from try_and_catch")
-                for xs in function.xceptions.members:
-                    with out("if (result.__isset.{0})".format(xs.name)):
+                for idx, xs in enumerate(function.xceptions.members):
+                    ex_idx = self._exception_idx(function, idx)
+                    with out("if ({0})".format(
+                            self._get_presult_exception_isset(ex_idx, xs))):
                         out("interior_ew = folly::make_exception_wrapper<"
-                            "{0}>(result.{1});".format(
-                                self._type_name(xs.type), xs.name))
+                                "{0}>({1});".format(
+                                self._type_name(xs.type),
+                                self._get_presult_exception(ex_idx, xs)))
                         out("return; // from try_and_catch")
 
                 if not function.returntype.is_void:
@@ -2252,6 +2297,9 @@ class CppGenerator(t_generator.Generator):
     def _function_produces_result(self, function):
         return_type = function.returntype
         return not return_type.is_void
+
+    def _exception_idx(self, function, idx):
+        return idx + (1 if self._function_produces_result(function) else 0)
 
     def _argument_list(self, arglist, add_comma, unique):
         out = ""
@@ -3605,6 +3653,12 @@ class CppGenerator(t_generator.Generator):
                ('read', False),
                ('serializedSize', True),
                ('serializedSizeZC', True))
+
+        with scope.defn('template <> inline constexpr '
+                'apache::thrift::protocol::TType '
+                'Cpp2Ops<{compat_full_name}>::thriftType()'
+                .format(**locals()), in_header=True):
+            out('return apache::thrift::protocol::T_STRUCT;')
 
         for method, is_const in ops:
             const = 'const' if is_const else ''

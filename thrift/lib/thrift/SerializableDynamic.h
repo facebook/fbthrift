@@ -248,6 +248,11 @@ inline void Cpp2Ops< SerializableDynamic>::clear(
 }
 
 template <>
+inline constexpr protocol::TType Cpp2Ops< SerializableDynamic>::thriftType() {
+  return protocol::T_STRUCT;
+}
+
+template <>
 template <class Protocol_>
 inline uint32_t Cpp2Ops< SerializableDynamic>::write(
     Protocol_* p,

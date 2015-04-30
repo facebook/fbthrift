@@ -35,6 +35,7 @@ thrift2includedir = $(includedir)/thrift/lib/cpp2
 
 thrift2include_HEADERS = \
 	Thrift.h \
+	GeneratedCodeHelper.h \
 	ServiceIncludes.h \
 	CloneableIOBuf.h
 

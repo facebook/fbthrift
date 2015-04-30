@@ -18,6 +18,7 @@
 #define THRIFT_CPP2_H_
 
 #include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/protocol/TType.h>
 
 namespace apache { namespace thrift {
 
@@ -39,7 +40,7 @@ enum FragileConstructor {
  * Cpp2Ops bridges to either struct methods (for native Cpp2 structs)
  * or the corresponding free functions (for structs in compatibility mode).
  */
-template <class T>
+template <class T, class = void>
 class Cpp2Ops {
  public:
   static void clear(T* );
@@ -55,6 +56,8 @@ class Cpp2Ops {
 
   template <class P>
   static uint32_t serializedSizeZC(P*, const T*);
+
+  static constexpr apache::thrift::protocol::TType thriftType();
 };
 
 }} // apache::thrift
