@@ -199,6 +199,8 @@ class ThriftServer : public apache::thrift::server::TServer
 
   void stopWorkers();
 
+  void handleSetupFailure(void);
+
   // Notification of various server events
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
 

@@ -351,12 +351,14 @@ void ThriftServer::setup() {
       CHECK(ioThreadPool_->numThreads() == 0);
       duplexWorker_ = folly::make_unique<Cpp2Worker>(this, serverChannel_);
     }
+  } catch (std::exception& ex) {
+    // This block allows us to investigate the exception using gdb
+    LOG(FATAL) << "Got an exception while setting up the server: "
+      << ex.what();
+    handleSetupFailure();
+    throw;
   } catch (...) {
-    ServerBootstrap::stop();
-
-    // avoid crash on stop()
-    serveEventBase_ = nullptr;
-
+    handleSetupFailure();
     throw;
   }
 }
@@ -429,6 +431,14 @@ void ThriftServer::stopWorkers() {
   ServerBootstrap::stop();
   ServerBootstrap::join();
 }
+
+void ThriftServer::handleSetupFailure(void) {
+  ServerBootstrap::stop();
+
+  // avoid crash on stop()
+  serveEventBase_ = nullptr;
+}
+
 
 void ThriftServer::immediateShutdown(bool abortConnections) {
   shutdownSocketSet_->shutdownAll(abortConnections);
