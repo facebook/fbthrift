@@ -20,11 +20,11 @@
 #include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 
 #include <math.h>
-#include <boost/lexical_cast.hpp>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
-#include <folly/json.h>
+#include <folly/Conv.h>
 #include <folly/dynamic.h>
+#include <folly/json.h>
 
 using namespace apache::thrift::transport;
 
@@ -527,7 +527,7 @@ uint32_t TJSONProtocol::writeJSONBase64(const std::string &str) {
 template <typename NumberType>
 uint32_t TJSONProtocol::writeJSONInteger(NumberType num) {
   uint32_t result = context_->write(*trans_);
-  std::string val(boost::lexical_cast<std::string>(num));
+  auto val = folly::to<std::string>(num);
   bool escapeNum = context_->escapeNum();
   if (escapeNum) {
     trans_->write(&kJSONStringDelimiter, 1);
@@ -578,30 +578,18 @@ uint32_t TJSONProtocol::writeJSONBool(const bool value) {
 template <typename NumberType>
 uint32_t TJSONProtocol::writeJSONDouble(NumberType num) {
   uint32_t result = context_->write(*trans_);
-  std::string val(boost::lexical_cast<std::string>(num));
 
-  // Normalize output of boost::lexical_cast for NaNs and Infinities
-  bool special = false;
-  switch (val[0]) {
-  case 'N':
-  case 'n':
-    val = kThriftNan;
-    special = true;
-    break;
-  case 'I':
-  case 'i':
+  std::string val;
+  bool special = true;
+  if (num == std::numeric_limits<NumberType>::infinity()) {
     val = kThriftInfinity;
-    special = true;
-    break;
-  case '-':
-    if ((val[1] == 'I') || (val[1] == 'i')) {
-      val = kThriftNegativeInfinity;
-      special = true;
-    } else if (val[1] == 'N' || val[1] == 'n') {
-      val = kThriftNegativeNan;
-      special = true;
-    }
-    break;
+  } else if (num == -std::numeric_limits<NumberType>::infinity()) {
+    val = kThriftNegativeInfinity;
+  } else if (std::isnan(num)) {
+    val = kThriftNan;
+  } else {
+    special = false;
+    val = folly::to<std::string>(num);
   }
 
   bool escapeNum = special || context_->escapeNum();
@@ -729,7 +717,7 @@ uint32_t TJSONProtocol::writeBool(const bool value) {
 }
 
 uint32_t TJSONProtocol::writeByte(const int8_t byte) {
-  // writeByte() must be handled specially because boost::lexical cast sees
+  // writeByte() must be handled specially because folly::to sees
   // int8_t as a text type instead of an integer type
   return writeJSONInteger((int16_t)byte);
 }
@@ -937,9 +925,8 @@ uint32_t TJSONProtocol::readJSONInteger(NumberType &num) {
   std::string str;
   result += readJSONNumericChars(str);
   try {
-    num = boost::lexical_cast<NumberType>(str);
-  }
-  catch (const boost::bad_lexical_cast& e) {
+    num = folly::to<NumberType>(str);
+  } catch (const std::exception& e) {
     throw TProtocolException(TProtocolException::INVALID_DATA,
                                  "Expected numeric value; got \"" + str +
                                   "\"");
@@ -976,9 +963,8 @@ uint32_t TJSONProtocol::readJSONDouble(NumberType &num) {
                                      "Numeric data unexpectedly quoted");
       }
       try {
-        num = boost::lexical_cast<NumberType>(str);
-      }
-      catch (const boost::bad_lexical_cast&  e) {
+        num = folly::to<NumberType>(str);
+      } catch (const std::exception& e) {
         throw TProtocolException(TProtocolException::INVALID_DATA,
                                      "Expected numeric value; got \"" + str +
                                      "\"");
@@ -992,9 +978,8 @@ uint32_t TJSONProtocol::readJSONDouble(NumberType &num) {
     }
     result += readJSONNumericChars(str);
     try {
-      num = boost::lexical_cast<NumberType>(str);
-    }
-    catch (const boost::bad_lexical_cast& e) {
+      num = folly::to<NumberType>(str);
+    } catch (const std::exception& e) {
       throw TProtocolException(TProtocolException::INVALID_DATA,
                                    "Expected numeric value; got \"" + str +
                                    "\"");
@@ -1147,7 +1132,7 @@ uint32_t TJSONProtocol::readBool(bool& value) {
   return readJSONInteger(value);
 }
 
-// readByte() must be handled properly because boost::lexical cast sees int8_t
+// readByte() must be handled properly because folly::to sees int8_t
 // as a text type instead of an integer type
 uint32_t TJSONProtocol::readByte(int8_t& byte) {
   int16_t tmp = (int16_t) byte;
@@ -1155,9 +1140,7 @@ uint32_t TJSONProtocol::readByte(int8_t& byte) {
 
   if (tmp < -128 || tmp > 127) {
     throw TProtocolException(TProtocolException::INVALID_DATA,
-                                 "Expected numeric value; got \"" +
-                                  boost::lexical_cast<std::string>(tmp) +
-                                  "\"");
+        folly::to<std::string>("Expected numeric value; got \"", tmp, "\""));
   }
 
   byte = (int8_t)tmp;

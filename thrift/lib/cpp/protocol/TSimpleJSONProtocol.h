@@ -23,14 +23,14 @@
 #include <thrift/lib/cpp/Reflection.h>
 #include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 
+#include <memory>
 #include <stack>
-
-#include "boost/container/flat_map.hpp"
+#include <string>
 
 namespace apache { namespace thrift { namespace protocol {
 
 /*
- * TsimpleJSONProtocol overrides parts of the regular JSON serialization to
+ * TSimpleJSONProtocol overrides parts of the regular JSON serialization to
  * comply with the Simple JSON format.
  * Namely, spitting only field names without verbose field type output
  */
@@ -40,7 +40,7 @@ class TSimpleJSONProtocol : public TVirtualProtocol<TSimpleJSONProtocol,
 
  public:
 
-  TSimpleJSONProtocol(std::shared_ptr<TTransport> ptrans);
+  explicit TSimpleJSONProtocol(std::shared_ptr<TTransport> ptrans);
 
   explicit TSimpleJSONProtocol(TTransport *ptrans);
 
