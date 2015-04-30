@@ -41,6 +41,17 @@ AM_LDFLAGS = $(BOOST_LDFLAGS)
 libthrift_la_SOURCES = EventHandlerBase.cpp \
                        Thrift.cpp \
                        VirtualProfiling.cpp \
+                       async/TAsyncSocketFactory.cpp \
+                       async/TAsyncSSLSocketFactory.cpp \
+                       async/TBinaryAsyncChannel.cpp \
+                       async/TEventConnection.cpp \
+                       async/TEventServer.cpp \
+                       async/TEventTask.cpp \
+                       async/TEventWorker.cpp \
+                       async/TFramedAsyncChannel.cpp \
+                       async/THeaderAsyncChannel.cpp \
+                       async/THttpAsyncChannel.cpp \
+                       async/TUnframedAsyncChannel.cpp \
                        concurrency/ThreadManager.cpp \
                        concurrency/TimerManager.cpp \
                        concurrency/Util.cpp \
@@ -77,7 +88,9 @@ libthrift_la_SOURCES += concurrency/Mutex.cpp \
                         concurrency/PosixThreadFactory.cpp \
                         concurrency/ProfiledMutex.cpp
 
-libthriftz_la_SOURCES = transport/TZlibTransport.cpp
+libthriftz_la_SOURCES = \
+                       async/TZlibAsyncChannel.cpp \
+                       transport/TZlibTransport.cpp
 
 
 # Flags for the various libraries
@@ -174,16 +187,19 @@ include_asyncdir = $(include_thriftdir)/async
 include_async_HEADERS = \
                      async/HHWheelTimer.h \
                      async/Request.h \
+                     async/SimpleCallback.h \
                      async/TAsyncChannel.h \
                      async/TAsyncDispatchProcessor.h \
+                     async/TAsyncEventChannel.h \
                      async/TAsyncProcessor.h \
-                     async/TAsyncSSLSocket.h \
-                     async/TAsyncSSLSocketFactory.h \
-                     async/TAsyncSocket.h \
                      async/TAsyncServerSocket.h \
                      async/TAsyncSocketFactory.h \
+                     async/TAsyncSocket.h \
+                     async/TAsyncSSLSocketFactory.h \
+                     async/TAsyncSSLSocket.h \
                      async/TAsyncTimeout.h \
                      async/TAsyncTransport.h \
+                     async/TBinaryAsyncChannel.h \
                      async/TDelayedDestruction.h \
                      async/TEventBase.h \
                      async/TEventBaseManager.h \
@@ -191,8 +207,19 @@ include_async_HEADERS = \
                      async/TEventFDWrapper.h \
                      async/TEventHandler.h \
                      async/TEventJobQueue.h \
+                     async/TEventServer.h \
+                     async/TEventTask.h \
+                     async/TEventWorker.h \
+                     async/TFramedAsyncChannel.h \
+                     async/THeaderAsyncChannel.h \
+                     async/THttpAsyncChannel.h \
+                     async/TimeoutManager.h \
                      async/TNotificationQueue.h \
-                     async/TimeoutManager.h
+                     async/TQueuingAsyncProcessor.h \
+                     async/TStreamAsyncChannel.h \
+                     async/TSyncToAsyncProcessor.h \
+                     async/TUnframedAsyncChannel.h \
+                     async/TZlibAsyncChannel.h
 
 include_utildir = $(include_thriftdir)/util
 include_util_HEADERS = \
