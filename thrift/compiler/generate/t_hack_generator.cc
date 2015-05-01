@@ -1988,7 +1988,7 @@ void t_hack_generator::generate_process_function(t_service* tservice,
     indent() << "  $reply_type = TMessageType::EXCEPTION;" << endl <<
     indent() << "  $this->eventHandler_->handlerError($handler_ctx, '"
              << fn_name << "', $ex);" << endl <<
-    indent() << "  $result = new TApplicationException($ex->getMessage());"
+    indent() << "  $result = new TApplicationException($ex->getMessage().\"\\n\".$ex->getTraceAsString());"
              << endl <<
     indent() << "}" << endl;
 
