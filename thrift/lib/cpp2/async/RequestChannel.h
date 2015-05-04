@@ -25,9 +25,12 @@
 #include <thrift/lib/cpp/async/Request.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/String.h>
 #include <folly/wangle/rx/Subject.h>
+#include <folly/io/IOBufQueue.h>
+#include <folly/MoveWrapper.h>
 
 #include <glog/logging.h>
 
@@ -354,6 +357,66 @@ void clientCallbackToObservable(ClientReceiveState& state,
     return;
   }
   subj->onNext(value);
+}
+
+template <bool oneway, class Protocol, class Pargs, class WriteFunc, class SizeFunc>
+static void clientSendT(
+    Protocol* prot,
+    const apache::thrift::RpcOptions& rpcOptions,
+    std::unique_ptr<apache::thrift::RequestCallback> callback,
+    std::unique_ptr<apache::thrift::ContextStack> ctx,
+    RequestChannel* channel,
+    Pargs& pargs,
+    const char* methodName,
+    WriteFunc&& writefunc,
+    SizeFunc&& sizefunc) {
+  size_t bufSize = sizefunc(prot, pargs);
+  bufSize += prot->serializedMessageSize(methodName);
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  prot->setOutput(&queue, bufSize);
+  auto guard = folly::makeGuard([&]{prot->setOutput(nullptr);});
+  try {
+    ctx->preWrite();
+    prot->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
+    writefunc(prot, pargs);
+    prot->writeMessageEnd();
+    ::apache::thrift::SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.buffer = queue.front();
+    ctx->onWriteData(smsg);
+    ctx->postWrite(queue.chainLength());
+  }
+  catch (const apache::thrift::TException &ex) {
+    ctx->handlerError();
+    throw;
+  }
+
+  auto eb = channel->getEventBase();
+  if(!eb || eb->isInEventBaseThread()) {
+    if (oneway) {
+      // Calling asyncComplete before sending because
+      // sendOnewayRequest moves from ctx and clears it.
+      ctx->asyncComplete();
+      channel->sendOnewayRequest(rpcOptions, std::move(callback), std::move(ctx), queue.move());
+    } else {
+      channel->sendRequest(rpcOptions, std::move(callback), std::move(ctx), queue.move());
+    }
+  }
+  else {
+    auto mvCb = folly::makeMoveWrapper(std::move(callback));
+    auto mvCtx = folly::makeMoveWrapper(std::move(ctx));
+    auto mvBuf = folly::makeMoveWrapper(queue.move());
+    eb->runInEventBaseThread([channel, rpcOptions, mvCb, mvCtx, mvBuf] () mutable {
+      if (oneway) {
+        // Calling asyncComplete before sending because
+        // sendOnewayRequest moves from ctx and clears it.
+        (*mvCtx)->asyncComplete();
+        channel->sendOnewayRequest(rpcOptions, std::move(*mvCb), std::move(*mvCtx), std::move(*mvBuf));
+      } else {
+        channel->sendRequest(rpcOptions, std::move(*mvCb), std::move(*mvCtx), std::move(*mvBuf));
+      }
+    });
+  }
 }
 
 }} // apache::thrift

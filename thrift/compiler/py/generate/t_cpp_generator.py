@@ -1922,13 +1922,13 @@ class CppGenerator(t_generator.Generator):
         func_name = function.name + "T"
 
         with out().defn(signature, name=func_name, output=self._out_tcc):
-            is_sync = self.tmp("isSync")
             out("std::unique_ptr<apache::thrift::ContextStack> ctx = "
               "this->getContextStack(this->getServiceName(), "
               '"{0}.{1}", connectionContext_.get());'
               .format(service.name, function.name))
 
-            out("{0}_{1}_pargs args;".format(service.name, function.name))
+            pargs_class = "{0}_{1}_pargs".format(service.name, function.name)
+            out("{0} args;".format(pargs_class))
 
             # Generate list of function args
             for field in function.arglist.members:
@@ -1942,71 +1942,22 @@ class CppGenerator(t_generator.Generator):
                     out("args.{0} = &{0};".format(field.name))
 
             if self.flag_compatibility:
-                out("size_t bufSize = "
-                  "{0}_{1}_pargs_serializedSizeZC(prot, &args);".
-                  format(service.name, function.name))
+                sizer = '[](Protocol_* prot, {0}& args) ' \
+                        '{{ return {0}_serializedSizeZC(prot, &args); }}'
+                writer = '[](Protocol_* prot, {0}& args) ' \
+                         '{{ {0}_write(prot, &args); }}'
             else:
-                out("size_t bufSize = args.serializedSizeZC(prot);")
+                sizer = '[](Protocol_* prot, {0}& args) ' \
+                        '{{ return args.serializedSizeZC(prot); }}'
+                writer = '[](Protocol_* prot, {0}& args) ' \
+                         '{{ args.write(prot); }}'
+            sizer = sizer.format(pargs_class)
+            writer = writer.format(pargs_class)
 
-            out('bufSize += prot->serializedMessageSize("{name}");'
-                .format(name=function.name))
-            out("folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());")
-            out("prot->setOutput(&queue, bufSize);")
-            out("auto guard = folly::makeGuard([&]{prot->setOutput(nullptr);});")
-            out("")
-
-            with out("try"):
-                out('ctx->preWrite();')
-                out("prot->writeMessageBegin"
-                  "(\"{0}\", apache::thrift::T_CALL, 0);".format(
-                              function.name))
-                if self.flag_compatibility:
-                    out("{0}_{1}_pargs_write(prot, &args);".format(
-                            service.name, function.name))
-                else:
-                    out("args.write(prot);")
-                out("prot->writeMessageEnd();")
-                out("::apache::thrift::SerializedMessage smsg;")
-                out("smsg.protocolType = prot->protocolType();")
-                out("smsg.buffer = queue.front();")
-                out("ctx->onWriteData(smsg);")
-                out("ctx->postWrite(queue.chainLength());")
-
-                with out().catch("apache::thrift::TException &ex"):
-                    out("ctx->handlerError();")
-                    out("throw;")
-            out("")
-
-            def sendRequest(ctx, args):
-                argsStr = ", ".join(args)
-                if not function.oneway:
-                    out("this->channel_->sendRequest(" + argsStr + ");")
-                else:
-                    # Calling asyncComplete before sending because
-                    # sendOnewayRequest moves from ctx and clears it.
-                    out(ctx + "->asyncComplete();")
-                    out("this->channel_->sendOnewayRequest(" + argsStr + ");")
-
-            # Switch to the event base thread if we're not already in it
-            out("auto eb = this->channel_->getEventBase();")
-            with out("if(!eb || eb->isInEventBaseThread())"):
-                sendRequest("ctx", [
-                    "rpcOptions",
-                    "std::move(callback)",
-                    "std::move(ctx)",
-                    "queue.move()"])
-            with out("else"):
-                out("auto mvCb = folly::makeMoveWrapper(std::move(callback));")
-                out("auto mvCtx = folly::makeMoveWrapper(std::move(ctx));")
-                out("auto mvBuf = folly::makeMoveWrapper(queue.move());")
-                with out("eb->runInEventBaseThread(" +
-                        "[this, rpcOptions, mvCb, mvCtx, mvBuf] () mutable"):
-                    sendRequest("(*mvCtx)", [
-                        "rpcOptions",
-                        "std::move(*mvCb)",
-                        "std::move(*mvCtx)",
-                        "std::move(*mvBuf)"])
-                out(");")
+            out('apache::thrift::clientSendT<{}>(prot, rpcOptions, '
+              'std::move(callback), std::move(ctx), channel_.get(), args, '
+              '"{}", {}, {});'.format(["false", "true"][function.oneway],
+                                      function.name, writer, sizer))
 
     def _get_async_function_signature(self,
                                       function,
