@@ -25,7 +25,6 @@
 namespace cpp shared
 namespace java shared
 namespace perl shared
-namespace lua shared
 
 struct SharedStruct {
   1: i32 key

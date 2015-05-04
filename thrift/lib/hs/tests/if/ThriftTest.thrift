@@ -35,7 +35,6 @@ namespace go thrifttest
 namespace php ThriftTest
 namespace delphi Thrift.Test
 namespace cocoa ThriftTest
-namespace lua ThriftTest
 
 // Presence of namespaces and sub-namespaces for which there is
 // no generator should compile with warnings only

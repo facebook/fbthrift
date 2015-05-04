@@ -66,7 +66,6 @@ namespace cpp tutorial
 namespace java tutorial
 namespace php tutorial
 namespace perl tutorial
-namespace lua tutorial
 namespace smalltalk.category Thrift.Tutorial
 
 /**
