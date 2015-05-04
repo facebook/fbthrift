@@ -414,6 +414,8 @@ public:
     EXPECT_EQ(requestBytes_, len_*2);
     EXPECT_EQ(oneway_, 1);
     channel1_->setCallback(nullptr);
+    EXPECT_EQ(securityStartTime_, 0);
+    EXPECT_EQ(securityEndTime_, 0);
   }
 
  private:
@@ -796,6 +798,8 @@ class InOrderTest
     EXPECT_EQ(request_, 2);
     EXPECT_EQ(requestBytes_, 2*len_ + 1);
     EXPECT_EQ(oneway_, 0);
+    EXPECT_EQ(securityStartTime_, 0);
+    EXPECT_EQ(securityEndTime_, 0);
   }
 
  private:
@@ -872,6 +876,8 @@ public:
     EXPECT_EQ(request_, 2);
     EXPECT_EQ(requestBytes_, len_*2);
     EXPECT_EQ(oneway_, 1);
+    EXPECT_EQ(securityStartTime_, 0);
+    EXPECT_EQ(securityEndTime_, 0);
   }
 
  private:
@@ -921,6 +927,8 @@ public:
     EXPECT_EQ(oneway_, 0);
     channel0_->setCloseCallback(nullptr);
     channel1_->setCallback(nullptr);
+    EXPECT_EQ(securityStartTime_, 0);
+    EXPECT_EQ(securityEndTime_, 0);
   }
 
   void requestReceived(unique_ptr<ResponseChannel::Request>&& req) {
@@ -992,6 +1000,8 @@ public:
     EXPECT_EQ(request_, 2);
     EXPECT_EQ(requestBytes_, len_ * 2);
     EXPECT_EQ(oneway_, 0);
+    EXPECT_EQ(securityStartTime_, 0);
+    EXPECT_EQ(securityEndTime_, 0);
   }
 
   void requestReceived(unique_ptr<ResponseChannel::Request>&& req) {
@@ -1057,6 +1067,8 @@ public:
     EXPECT_EQ(request_, 0);
     EXPECT_EQ(requestBytes_, 0);
     EXPECT_EQ(oneway_, 0);
+    EXPECT_EQ(securityStartTime_, 0);
+    EXPECT_EQ(securityEndTime_, 0);
   }
 
  private:
@@ -1113,6 +1125,8 @@ public:
     EXPECT_EQ(request_, 0);
     EXPECT_EQ(requestBytes_, 0);
     EXPECT_EQ(oneway_, 0);
+    EXPECT_EQ(securityStartTime_, 0);
+    EXPECT_EQ(securityEndTime_, 0);
   }
 
  private:

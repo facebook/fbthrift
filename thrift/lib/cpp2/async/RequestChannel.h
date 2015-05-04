@@ -138,8 +138,8 @@ class RequestCallback {
 
   std::shared_ptr<apache::thrift::async::RequestContext> context_;
   // To log latency incurred for doing thrift security
-  int64_t securityStart_;
-  int64_t securityEnd_;
+  int64_t securityStart_ = 0;
+  int64_t securityEnd_ = 0;
 };
 
 /* FunctionReplyCallback is meant to make RequestCallback easy to use
