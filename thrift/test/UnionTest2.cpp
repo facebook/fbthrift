@@ -26,7 +26,7 @@ using namespace apache::thrift::protocol;
 using namespace testing;
 
 template <class UnionType>
-void testSerializeDeserialize(UnionType &val) {
+UnionType serializeDeserialize(const UnionType& val) {
   BinaryProtocolWriter prot;
   size_t bufSize = val.serializedSize(&prot);
   IOBufQueue queue(IOBufQueue::cacheChainLength());
@@ -41,9 +41,14 @@ void testSerializeDeserialize(UnionType &val) {
   BinaryProtocolReader protReader;
   protReader.setInput(buf.get());
   out.read(&protReader);
-  EXPECT_EQ(val, out);
+
+  return out;
 }
 
+template <class UnionType>
+void testSerializeDeserialize(const UnionType &val) {
+  EXPECT_EQ(val, serializeDeserialize(val));
+}
 
 class UnionTestFixture: public Test {
  public:
@@ -136,4 +141,20 @@ TEST_F(TerseUnionTestFixture, SerializeDeserializeTest) {
   stringSt.a = "str";
   u.set_string_field(stringSt);
   serializeDeserialize(u);
+}
+
+TEST(NonCopyableUnion, Simple) {
+  NonCopyableUnion a;
+  a.set_a(42);
+  auto b = serializeDeserialize(a);
+  EXPECT_TRUE(b.getType() == NonCopyableUnion::Type::a);
+  EXPECT_EQ(42, b.get_a());
+
+  const char buf[] = "hello world";
+  a.set_buf(folly::IOBuf(folly::IOBuf::COPY_BUFFER, buf, sizeof(buf)));
+  b = serializeDeserialize(a);
+  EXPECT_TRUE(b.getType() == NonCopyableUnion::Type::buf);
+  auto& iob = b.get_buf();
+  EXPECT_EQ(sizeof(buf), iob.length());
+  EXPECT_EQ(0, memcmp(buf, iob.data(), sizeof(buf)));
 }

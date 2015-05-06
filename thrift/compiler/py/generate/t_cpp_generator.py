@@ -277,8 +277,12 @@ class CppGenerator(t_generator.Generator):
     # noncopyable is a hack to support gcc < 4.8, where declaring a constructor
     # as defaulted tries to generate it, even though it should be deleted.
     def _is_copyable_struct(self, ttype):
-        assert ttype.is_struct or ttype.is_xception
+        assert ttype.is_struct or ttype.is_xception or ttype.is_union
         return not self._has_cpp_annotation(ttype, "noncopyable")
+
+    def _is_comparable_struct(self, ttype):
+        assert ttype.is_struct or ttype.is_xception or ttype.is_union
+        return not self._has_cpp_annotation(ttype, "noncomparable")
 
     def _is_noex_move_ctor_struct(self, ttype):
         return ttype.is_struct and \
@@ -2477,6 +2481,8 @@ class CppGenerator(t_generator.Generator):
                                 in_header=True,
                                 init_dict=i).scope.empty()
 
+            is_copyable = self._is_copyable_struct(obj)
+            is_comparable = self._is_comparable_struct(obj)
             if not obj.is_union:
                 # Generate a initializer_list type constructor
                 init_vars = []
@@ -2499,7 +2505,6 @@ class CppGenerator(t_generator.Generator):
                                 in_header=True,
                                 init_dict=i).scope.empty()
 
-                is_copyable = self._is_copyable_struct(obj)
                 # move constructor, move assignment, defaulted
                 # (not implicitly declared because we have a destructor)
                 if self._is_noex_move_ctor_struct(obj):
@@ -2564,8 +2569,9 @@ class CppGenerator(t_generator.Generator):
                 # unions need to define the above constructors because of the
                 # union member
                 for op in False, True:
-                    for mv in False, True:
-                        self._gen_union_constructor(struct, obj, op, mv)
+                    self._gen_union_constructor(struct, obj, op, True)
+                    if is_copyable:
+                        self._gen_union_constructor(struct, obj, op, False)
 
             if len(members) > 0:
                 with struct.defn('void {name}()', name="__clear"):
@@ -2658,7 +2664,9 @@ class CppGenerator(t_generator.Generator):
                        self._serialized_fields_protocol_name))
             struct('{0} {1};'.format(self._serialized_fields_type,
                                      self._serialized_fields_name))
-        if not pointers and not struct_options.has_serialized_fields:
+        if ((not pointers and
+             is_comparable and
+             not struct_options.has_serialized_fields)):
             # Generate an equality testing operator.
             with struct.defn('bool {{name}}(const {0}& {1}) const'
                              .format(obj.name,
@@ -2810,9 +2818,9 @@ class CppGenerator(t_generator.Generator):
                         name='swap'):
                 if obj.is_union:
                     # For unions, the members cannot be swapped individually
-                    # so instead we use the logic in the copy constructors to
+                    # so instead we use the logic in the move constructors to
                     # swap the object wholesale
-                    out('{0} temp = a;'.format(obj.name))
+                    out('{0} temp(std::move(a));'.format(obj.name))
                     out('a = std::move(b);')
                     out('b = std::move(temp);')
                 else:
@@ -3663,8 +3671,7 @@ class CppGenerator(t_generator.Generator):
         gen_hash = self._has_cpp_annotation(obj, 'declare_hash')
         gen_equal_to = self._has_cpp_annotation(obj, 'declare_equal_to')
         if gen_hash or gen_equal_to:
-            full_name = self._namespace_prefix(
-                    self._program.get_namespace('cpp')) + obj.name
+            full_name = self._namespace_prefix(self._get_namespace()) + obj.name
             with self._types_global.namespace('std').scope:
                 if gen_hash:
                     out('template<> struct hash<typename ' + full_name + '> {')

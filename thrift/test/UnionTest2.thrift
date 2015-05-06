@@ -62,3 +62,10 @@ union TestUnion {
 struct StructWithAUnion {
   1: TestUnion test_union;
 }
+
+typedef binary (cpp.type = "folly::IOBuf") IOBuf
+
+union NonCopyableUnion {
+  1: i32 a,
+  2: IOBuf buf,
+} (cpp2.noncopyable, cpp2.noncomparable)
