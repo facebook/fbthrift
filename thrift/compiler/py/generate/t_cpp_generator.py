@@ -726,9 +726,6 @@ class CppGenerator(t_generator.Generator):
             for function in service.functions:
                 self._generate_client_async_function(service, function)
                 self._generate_client_async_function(service, function,
-                                                     name_prefix="callback_")
-
-                self._generate_client_async_function(service, function,
                                                      uses_rpc_options=True)
 
                 if not self._is_stream_type(function.returntype):
@@ -740,8 +737,6 @@ class CppGenerator(t_generator.Generator):
                                                           uses_rpc_options=True)
 
                 self._generate_client_std_function(function)
-                self._generate_client_std_function(function,
-                                                   name_prefix="functor_")
 
                 if self._is_stream_type(function.returntype):
                     self._generate_client_streaming_function(service, function)
