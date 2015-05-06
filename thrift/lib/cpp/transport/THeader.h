@@ -190,6 +190,8 @@ class THeader {
   void setHeaders(StringToStringMap&&);
   void clearHeaders();
 
+  void setReadHeaders(StringToStringMap&&);
+
   StringToStringMap& getWriteHeaders() {
     return writeHeaders_;
   }
