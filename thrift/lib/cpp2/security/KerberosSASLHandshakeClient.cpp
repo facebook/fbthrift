@@ -144,9 +144,9 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
   OM_uint32 maj_stat, min_stat;
   context_ = GSS_C_NO_CONTEXT;
 
-  string service, addr;
+  string service, addr, ip;
   if (getRequiredServicePrincipal_) {
-    tie(service, addr) = (getRequiredServicePrincipal_)();
+    tie(service, addr, ip) = (getRequiredServicePrincipal_)();
   } else {
     size_t at = servicePrincipal_.find("@");
     if (at == string::npos) {
@@ -174,6 +174,12 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
     addr,
     service);
   string princ_name = folly::to<string>(princ);
+
+  if (princ.getRealm().empty()) {
+    throw TKerberosException(
+      "Service principal invalid (empty realm). "
+      "princ_name=" + princ_name + " addr=" + addr + " ip=" + ip);
+  }
 
   gss_buffer_desc service_name_token;
   service_name_token.value = (void *)princ_name.c_str();
@@ -435,7 +441,8 @@ void KerberosSASLHandshakeClient::setRequiredClientPrincipal(
 }
 
 void KerberosSASLHandshakeClient::setRequiredServicePrincipalFetcher(
-  std::function<std::pair<std::string, std::string>()>&& function) {
+  std::function<std::tuple<std::string, std::string, std::string>()>&&
+    function) {
 
   assert(phase_ == INIT);
   getRequiredServicePrincipal_ = std::move(function);

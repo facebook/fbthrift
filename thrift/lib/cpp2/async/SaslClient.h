@@ -69,7 +69,8 @@ class SaslClient : public SaslEndpoint {
   virtual void setClientIdentity(const std::string& identity) = 0;
   virtual void setServiceIdentity(const std::string& identity) = 0;
   virtual void setRequiredServicePrincipalFetcher(
-    std::function<std::pair<std::string, std::string>()> function) {}
+    std::function<std::tuple<std::string, std::string, std::string>()>
+      function) {}
   virtual void setSecurityMech(const SecurityMech& mech) {
     securityMech_ = std::make_shared<SecurityMech>(mech);
   }

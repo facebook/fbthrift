@@ -51,7 +51,8 @@ public:
     clientHandshake_->setRequiredServicePrincipal(identity);
   }
   virtual void setRequiredServicePrincipalFetcher(
-    std::function<std::pair<std::string, std::string>()> function) override {
+    std::function<std::tuple<std::string, std::string, std::string>()>
+        function) override {
     clientHandshake_->setRequiredServicePrincipalFetcher(
         std::move(function));
   }
