@@ -363,9 +363,9 @@ static bool encode_impl(Writer *writer, PyObject *value, PyObject *typeargs,
       }
 
 #if PY_MAJOR_VERSION >= 3
-      folly::StringPiece str(PyBytes_AsString(value));
+      folly::StringPiece str(PyBytes_AsString(value), len);
 #else
-      folly::StringPiece str(PyString_AsString(value));
+      folly::StringPiece str(PyString_AsString(value), len);
 #endif
       writer->writeString(str);
       if (encoded) {
