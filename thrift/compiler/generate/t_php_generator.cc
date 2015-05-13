@@ -51,6 +51,7 @@ class t_php_generator : public t_oop_generator {
     oop_ = option_is_specified(parsed_options, "oop");
     ducktyping_ = option_is_specified(parsed_options, "ducktyping");
     hphpenum_ = option_is_specified(parsed_options, "hphpenum");
+    async_ = option_is_specified(parsed_options, "async");
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
     unmangled_services_ = option_is_set(parsed_options, "unmangledsvcs", true);
@@ -340,6 +341,11 @@ class t_php_generator : public t_oop_generator {
    * * Whether to enable HPHP Enum generation
    */
   bool hphpenum_;
+
+  /**
+   * * Whether to enable Hack async method generation
+   */
+  bool async_;
 
   /**
    * memory of the values of the constants in array initialisation form
@@ -2229,11 +2235,13 @@ void t_php_generator::_generate_service_client(
   if (extends.empty()) {
     out <<
       indent() << "protected $input_ = null;" << endl <<
-      indent() << "protected $output_ = null;" << endl <<
-      indent() << "protected $asyncHandler_ = null;" << endl <<
-      indent() << "protected $eventHandler_ = null;" << endl <<
-      endl;
-    out <<
+      indent() << "protected $output_ = null;" << endl;
+    if (async_) {
+      out <<
+        indent() << "protected $asyncHandler_ = null;" << endl <<
+        indent() << "protected $eventHandler_ = null;" << endl;
+    }
+    out << endl <<
       indent() << "protected $seqid_ = 0;" << endl <<
       endl;
   }
@@ -2248,8 +2256,12 @@ void t_php_generator::_generate_service_client(
   } else {
     out <<
       indent() << "$this->input_ = $input;" << endl <<
-      indent() << "$this->output_ = $output ? $output : $input;" << endl <<
-      indent() << "$this->asyncHandler_ = new TClientAsyncHandler();" << endl <<
+      indent() << "$this->output_ = $output ? $output : $input;" << endl;
+    if (async_) {
+      out <<
+        indent() << "$this->asyncHandler_ = new TClientAsyncHandler();" << endl;
+    }
+    out <<
       indent() << "$this->eventHandler_ = new TClientEventHandler();" << endl <<
       indent() << "$this->eventHandler_->setClient($this);" << endl;
   }
@@ -2259,18 +2271,20 @@ void t_php_generator::_generate_service_client(
 
   generate_client_event_handler_functions(out);
 
-  out <<
-    indent() << "public function setAsyncHandler(TClientAsyncHandler $async_handler) {" << endl <<
-    indent() << "  $this->asyncHandler_ = $async_handler;" << endl <<
-    indent() << "  return $this;" << endl <<
-    indent() << "}" << endl <<
-    endl;
+  if (async_) {
+    out <<
+      indent() << "public function setAsyncHandler(TClientAsyncHandler $async_handler) {" << endl <<
+      indent() << "  $this->asyncHandler_ = $async_handler;" << endl <<
+      indent() << "  return $this;" << endl <<
+      indent() << "}" << endl <<
+      endl;
 
-  out <<
-    indent() << "public function getAsyncHandler() {" << endl <<
-    indent() << "  return $this->asyncHandler_;" << endl <<
-    indent() << "}" << endl <<
-    endl;
+    out <<
+      indent() << "public function getAsyncHandler() {" << endl <<
+      indent() << "  return $this->asyncHandler_;" << endl <<
+      indent() << "}" << endl <<
+      endl;
+  }
 
   // Generate the function to get the next sequence number
   out <<
@@ -2323,35 +2337,37 @@ void t_php_generator::_generate_service_client(
     scope_down(out);
     out << endl;
 
-    // Gen function
-    indent(out) <<
-      "public async function " << function_signature(*f_iter, "gen_") << endl;
-    scope_up(out);
+    if (async_) {
+      // Gen function
       indent(out) <<
-        "$currentseqid = $this->send_" << funname << "(";
+        "public async function " << function_signature(*f_iter, "gen_") << endl;
+      scope_up(out);
+        indent(out) <<
+          "$currentseqid = $this->send_" << funname << "(";
 
-      first = true;
-      for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-        if (first) {
-          first = false;
-        } else {
-          out << ", ";
+        first = true;
+        for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+          if (first) {
+            first = false;
+          } else {
+            out << ", ";
+          }
+          out << "$" << (*fld_iter)->get_name();
         }
-        out << "$" << (*fld_iter)->get_name();
-      }
-      out << ");" << endl;
+        out << ");" << endl;
 
-      if (!(*f_iter)->is_oneway()) {
-        indent(out) << "await $this->asyncHandler_->genWait($currentseqid);" << endl;
-        out << indent();
-        if (!(*f_iter)->get_returntype()->is_void()) {
-          out << "return ";
+        if (!(*f_iter)->is_oneway()) {
+          indent(out) << "await $this->asyncHandler_->genWait($currentseqid);" << endl;
+          out << indent();
+          if (!(*f_iter)->get_returntype()->is_void()) {
+            out << "return ";
+          }
+          out <<
+            "$this->recv_" << funname << "($currentseqid);" << endl;
         }
-        out <<
-          "$this->recv_" << funname << "($currentseqid);" << endl;
-      }
-    scope_down(out);
-    out << endl;
+      scope_down(out);
+      out << endl;
+    }
 
     indent(out) <<
       "public function send_" << function_signature(*f_iter) << endl;
@@ -3432,6 +3448,7 @@ THRIFT_REGISTER_GENERATOR(php, "PHP",
 "    rest:            Generate PHP REST processors.\n"
 "    ducktyping:      Generate processor constructors without explicit types.\n"
 "    hphpenum:        Generate enums that extend HPHP Enum.\n"
+"    async:           Generate async methods for Hack.\n"
 "    json:            Generate functions to parse JSON into thrift struct.\n"
 "    mangledsvcs      Generate services with namespace mangling.\n"
 "    unmangledsvcs    Generate services without namespace mangling.\n"
