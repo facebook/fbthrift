@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2015 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1003,13 +1003,94 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     ns_open_ << endl <<
     endl;
 
+  // DECLARATIONS
+  f_consts << "struct " << program_name_ << "_constants {" << endl;
+  vector<t_const*>::iterator c_iter;
+  indent_up();
+  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
+    string name = (*c_iter)->get_name();
+    t_type* type = (*c_iter)->get_type();
+    t_const_value *value = (*c_iter)->get_value();
+    bool const inlined = type->is_base_type() || type->is_enum();
+
+    if (type->is_string()) {
+      f_consts << indent() << "// consider using folly::StringPiece instead of"
+        << " std::string whenever possible" << endl;
+      f_consts << indent() << "// to referencing this statically allocated"
+        << " string constant, in order to " << endl;
+      f_consts << indent() << "// prevent unnecessary allocations" << endl;
+    }
+    f_consts << indent() << "static ";
+    if (inlined) {
+      f_consts << "constexpr ";
+    }
+    if (type->is_string()) {
+      f_consts << "char const *";
+    } else {
+      f_consts << type_name(type) << ' ';
+    }
+    f_consts << "const ";
+    if (inlined) {
+      f_consts << name << " = " << render_const_value(f_consts, type, value)
+        << ';' << endl;
+    } else {
+      f_consts << '&' << name << "();" << endl;
+    }
+  }
+  indent_down();
+  f_consts << "};" << endl << endl;
+
+  // DEFINITIONS
+  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
+    string name = (*c_iter)->get_name();
+    t_type* type = (*c_iter)->get_type();
+    t_const_value *value = (*c_iter)->get_value();
+    bool const inlined = type->is_base_type() || type->is_enum();
+
+    f_consts_impl << indent();
+    if (inlined) {
+      f_consts_impl << "constexpr ";
+    }
+    if (type->is_string()) {
+      f_consts_impl << "char const *";
+    } else {
+      f_consts_impl << type_name(type) << ' ';
+    }
+    f_consts_impl << "const ";
+    if (!inlined) {
+      f_consts_impl << "&";
+    }
+    f_consts_impl << program_name_ << "_constants::" << name;
+    if (inlined) {
+      f_consts_impl << ';' << endl;
+    } else {
+      f_consts_impl << "() {" << endl;
+      indent_up();
+      f_consts_impl << indent() << "static auto const instance([]() {" << endl;
+      indent_up();
+      f_consts_impl << indent() << type_name(type) << " value;" << endl << endl;
+      print_const_value(f_consts_impl, "value", type, value);
+      f_consts_impl << indent() << "return value;" << endl;
+      indent_down();
+      f_consts_impl << indent() << "}());" << endl;
+      f_consts_impl << indent() << "return instance;" << endl;
+      indent_down();
+      f_consts_impl << indent() << '}' << endl;
+    }
+  }
+  f_consts_impl << endl;
+
   f_consts <<
-    "class " << program_name_ << "Constants {" << endl <<
-    " public:" << endl <<
+    "class __attribute__((__deprecated__(\""
+      << program_name_ << "Constants suffers from the 'static initialization "
+      "order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and "
+      "may CRASH you program. Instead, use " << program_name_ <<
+      "_constants::CONSTANT_NAME\"))) " <<
+      program_name_ << "Constants {" << endl <<
+    "public:" << endl <<
     "  " << program_name_ << "Constants();" << endl <<
     endl;
   indent_up();
-  vector<t_const*>::iterator c_iter;
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
     string name = (*c_iter)->get_name();
     t_type* type = (*c_iter)->get_type();
@@ -1020,9 +1101,13 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
   f_consts <<
     "};" << endl;
 
+  f_consts_impl << "#pragma GCC diagnostic push" << endl;
+  f_consts_impl << "#pragma GCC diagnostic ignored "
+    "\"-Wdeprecated-declarations\"" << endl << endl;
+
   f_consts_impl <<
-    "const " << program_name_ << "Constants g_" << program_name_ << "_constants;" << endl <<
-    endl <<
+    "const " << program_name_ << "Constants g_" << program_name_ <<
+    "_constants;" << endl << endl <<
     program_name_ << "Constants::" << program_name_ << "Constants() {" << endl;
   indent_up();
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
@@ -1033,12 +1118,23 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
   }
   indent_down();
   indent(f_consts_impl) <<
-    "}" << endl;
+    "}" << endl << endl;
+  f_consts_impl << "#pragma GCC diagnostic pop" << endl;
 
+  f_consts << endl << "#pragma GCC diagnostic push" << endl;
+  f_consts << "#pragma GCC diagnostic ignored \"-Wdeprecated-declarations\""
+    << endl;
   f_consts <<
     endl <<
-    "extern const " << program_name_ << "Constants g_" << program_name_ << "_constants;" << endl <<
-    endl <<
+    "extern const " << program_name_ << "Constants __attribute__(("
+      "__deprecated__(\"g_" << program_name_ << "_constants suffers from the "
+      "'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors"
+      "#static-init-order) and may CRASH you program. Instead, use " <<
+      program_name_ << "_constants::CONSTANT_NAME\"))) g_" <<
+      program_name_ << "_constants;" << endl << endl;
+  f_consts << "#pragma GCC diagnostic pop" << endl;
+
+  f_consts << endl <<
     ns_close_ << endl <<
     endl <<
     "#endif" << endl;
@@ -1094,6 +1190,9 @@ void t_cpp_generator::print_const_value(ofstream& out, string name, t_type* type
   } else if (type->is_list()) {
     t_type* etype = ((t_list*)type)->get_elem_type();
     const vector<t_const_value*>& val = value->get_list();
+    if (!val.empty()) {
+      indent(out) << name << ".reserve(" << val.size() << ");" << endl;
+    }
     vector<t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       string val = render_const_value(out, etype, *v_iter);
