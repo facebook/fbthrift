@@ -242,7 +242,7 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
       const uint8_t *b = avail.first;
       int bytes = 1;
       while (bytes <= avail.second) {
-        if (*b++ == 0)
+        if (!(*b++ & 0x80))
           break;
         bytes++;
       }

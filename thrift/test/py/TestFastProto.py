@@ -116,6 +116,9 @@ class AbstractTest():
 
     def test_decode(self):
         self.decode_helper(self.buildOneOfEachB())
+        # Test when ensureMapBegin needs to verify the buffer has
+        # at least a varint and 1 more byte.
+        self.decode_helper(OneOfEach(aMap={b"h": 1}), split=0.1)
 
     def test_decode_union(self):
         u = TestUnion(i32_field=123)
