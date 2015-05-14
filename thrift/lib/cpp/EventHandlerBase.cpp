@@ -28,22 +28,11 @@ namespace apache { namespace thrift {
 
 using apache::thrift::util::SocketRetriever;
 
-vector<shared_ptr<TProcessorEventHandlerFactory>>*
-  TClientBase::registeredHandlerFactoriesPtr_ =
-          new vector<shared_ptr<TProcessorEventHandlerFactory>>();
-vector<shared_ptr<TProcessorEventHandlerFactory>>*
-  TProcessorBase::registeredHandlerFactoriesPtr_ =
-          new vector<shared_ptr<TProcessorEventHandlerFactory>>();
 std::shared_ptr<server::TServerObserverFactory> observerFactory_(nullptr);
 
-concurrency::ReadWriteMutex* TClientBase::handlerFactoriesMutexPtr_ =
-        new concurrency::ReadWriteMutex();
-concurrency::ReadWriteMutex* TProcessorBase::handlerFactoriesMutexPtr_ =
-        new concurrency::ReadWriteMutex();
-
 TProcessorBase::TProcessorBase() {
-  concurrency::RWGuard lock(*handlerFactoriesMutexPtr_, concurrency::RW_READ);
-  for (auto factory: *registeredHandlerFactoriesPtr_) {
+  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_READ);
+  for (auto factory: getFactories()) {
     auto handler = factory->getEventHandler();
     if (handler) {
       addEventHandler(handler);
@@ -53,34 +42,46 @@ TProcessorBase::TProcessorBase() {
 
 void TProcessorBase::addProcessorEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
-  concurrency::RWGuard lock(*handlerFactoriesMutexPtr_, concurrency::RW_WRITE);
-  assert(find(registeredHandlerFactoriesPtr_->begin(),
-              registeredHandlerFactoriesPtr_->end(),
+  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_WRITE);
+  assert(find(getFactories().begin(),
+              getFactories().end(),
               factory) ==
-         registeredHandlerFactoriesPtr_->end());
-  registeredHandlerFactoriesPtr_->push_back(factory);
+         getFactories().end());
+  getFactories().push_back(factory);
 }
 
 void TProcessorBase::removeProcessorEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
-  concurrency::RWGuard lock(*handlerFactoriesMutexPtr_, concurrency::RW_WRITE);
-  assert(find(registeredHandlerFactoriesPtr_->begin(),
-              registeredHandlerFactoriesPtr_->end(),
+  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_WRITE);
+  assert(find(getFactories().begin(),
+              getFactories().end(),
               factory) !=
-         registeredHandlerFactoriesPtr_->end());
-  registeredHandlerFactoriesPtr_->erase(
-      remove(registeredHandlerFactoriesPtr_->begin(),
-             registeredHandlerFactoriesPtr_->end(),
+         getFactories().end());
+  getFactories().erase(
+      remove(getFactories().begin(),
+             getFactories().end(),
              factory),
-      registeredHandlerFactoriesPtr_->end());
+      getFactories().end());
+}
+
+concurrency::ReadWriteMutex& TProcessorBase::getRWMutex() {
+  static concurrency::ReadWriteMutex* mutex = new concurrency::ReadWriteMutex();
+  return *mutex;
+}
+
+vector<shared_ptr<TProcessorEventHandlerFactory>>&
+TProcessorBase::getFactories() {
+  static vector<shared_ptr<TProcessorEventHandlerFactory>>* factories =
+    new vector<shared_ptr<TProcessorEventHandlerFactory>>();
+  return *factories;
 }
 
 TClientBase::TClientBase()
     : s_() {
   // Automatically ask all registered factories to produce an event
   // handler, and attach the handlers
-  concurrency::RWGuard lock(*handlerFactoriesMutexPtr_, concurrency::RW_READ);
-  for (auto factory: *registeredHandlerFactoriesPtr_) {
+  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_READ);
+  for (auto factory: getFactories()) {
     auto handler = factory->getEventHandler();
     if (handler) {
       addEventHandler(handler);
@@ -90,26 +91,37 @@ TClientBase::TClientBase()
 
 void TClientBase::addClientEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
-  concurrency::RWGuard lock(*handlerFactoriesMutexPtr_, concurrency::RW_WRITE);
-  assert(find(registeredHandlerFactoriesPtr_->begin(),
-              registeredHandlerFactoriesPtr_->end(),
+  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_WRITE);
+  assert(find(getFactories().begin(),
+              getFactories().end(),
               factory) ==
-         registeredHandlerFactoriesPtr_->end());
-  registeredHandlerFactoriesPtr_->push_back(factory);
+         getFactories().end());
+  getFactories().push_back(factory);
 }
 
 void TClientBase::removeClientEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
-  concurrency::RWGuard lock(*handlerFactoriesMutexPtr_, concurrency::RW_WRITE);
-  assert(find(registeredHandlerFactoriesPtr_->begin(),
-              registeredHandlerFactoriesPtr_->end(),
+  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_WRITE);
+  assert(find(getFactories().begin(),
+              getFactories().end(),
               factory) !=
-         registeredHandlerFactoriesPtr_->end());
-  registeredHandlerFactoriesPtr_->erase(
-      remove(registeredHandlerFactoriesPtr_->begin(),
-             registeredHandlerFactoriesPtr_->end(),
+         getFactories().end());
+  getFactories().erase(
+      remove(getFactories().begin(),
+             getFactories().end(),
              factory),
-      registeredHandlerFactoriesPtr_->end());
+      getFactories().end());
+}
+
+concurrency::ReadWriteMutex& TClientBase::getRWMutex() {
+  static concurrency::ReadWriteMutex* mutex = new concurrency::ReadWriteMutex();
+  return *mutex;
+}
+vector<shared_ptr<TProcessorEventHandlerFactory>>&
+TClientBase::getFactories() {
+  static vector<shared_ptr<TProcessorEventHandlerFactory>>* factories =
+    new vector<shared_ptr<TProcessorEventHandlerFactory>>();
+  return *factories;
 }
 
 TClientBase::ConnContext::ConnContext(

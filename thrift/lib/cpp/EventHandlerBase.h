@@ -383,9 +383,10 @@ class TProcessorBase : public EventHandlerBase {
     std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
  private:
-  static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>*
-    registeredHandlerFactoriesPtr_;
-  static concurrency::ReadWriteMutex* handlerFactoriesMutexPtr_;
+  static concurrency::ReadWriteMutex& getRWMutex();
+
+  static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
+    getFactories();
 };
 
 /**
@@ -505,9 +506,11 @@ class TClientBase : public EventHandlerBase {
   };
 
  private:
-  static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>*
-    registeredHandlerFactoriesPtr_;
-  static concurrency::ReadWriteMutex* handlerFactoriesMutexPtr_;
+  static concurrency::ReadWriteMutex& getRWMutex();
+
+  static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
+    getFactories();
+
   std::unique_ptr<ContextStack> s_;
 };
 
