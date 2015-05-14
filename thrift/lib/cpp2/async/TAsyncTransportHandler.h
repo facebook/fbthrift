@@ -66,6 +66,10 @@ class TAsyncTransportHandler
     }
   }
 
+  void attachPipeline(Context* ctx) override {
+    ctx->getPipeline()->setTransport(transport_);
+  }
+
   folly::Future<void> write(
       Context* ctx,
       std::unique_ptr<folly::IOBuf> buf) override {

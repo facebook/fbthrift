@@ -63,9 +63,9 @@ Cpp2Channel::Cpp2Channel(
   // The pipeline will then avoid destruction order issues.
   // CHECK that this operation is successful.
   CHECK(pipeline_->setOwner(this));
+  pipeline_->transportActive();
   // TODO getHandler() with no index should return first valid handler?
   transportHandler_ = pipeline_->getHandler<TAsyncTransportHandler>(0);
-  pipeline_->attachTransport(transport);
 }
 
 folly::Future<void> Cpp2Channel::close(Context* ctx) {
