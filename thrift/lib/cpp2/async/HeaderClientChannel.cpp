@@ -331,24 +331,30 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
   afterSecurity_.clear();
 }
 
-void HeaderClientChannel::maybeSetPriorityHeader(const RpcOptions& rpcOptions) {
+void HeaderClientChannel::addRpcOptionHeaders(RpcOptions& rpcOptions) {
   if (!clientSupportHeader()) {
     return;
   }
-  // continue only for header
-  if (rpcOptions.getPriority() !=
-      apache::thrift::concurrency::N_PRIORITIES) {
-    header_->setCallPriority(rpcOptions.getPriority());
-  }
-}
 
-void HeaderClientChannel::maybeSetTimeoutHeader(const RpcOptions& rpcOptions) {
-  if (!clientSupportHeader()) {
-    return;
+  auto headers = rpcOptions.releaseWriteHeaders();
+  if (!headers.empty()) {
+    if (header_->getHeaders().empty()) {
+      header_->setHeaders(std::move(headers));
+    } else {
+      header_->getWriteHeaders().insert(headers.begin(), headers.end());
+    }
   }
-  // continue only for header
+
+  if (rpcOptions.getPriority() != apache::thrift::concurrency::N_PRIORITIES) {
+    header_->setHeader(
+        transport::THeader::PRIORITY_HEADER,
+        folly::to<std::string>(rpcOptions.getPriority()));
+  }
+
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    header_->setClientTimeout(rpcOptions.getTimeout());
+    header_->setHeader(
+        transport::THeader::CLIENT_TIMEOUT_HEADER,
+        folly::to<std::string>(rpcOptions.getTimeout().count()));
   }
 }
 
@@ -359,7 +365,7 @@ bool HeaderClientChannel::clientSupportHeader() {
 
 // Client Interface
 uint32_t HeaderClientChannel::sendOnewayRequest(
-    const RpcOptions& rpcOptions,
+    RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     unique_ptr<IOBuf> buf) {
@@ -380,10 +386,9 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
   }
 
   header_->setClientTypeNoCheck(getClientType());
-  maybeSetPriorityHeader(rpcOptions);
-  maybeSetTimeoutHeader(rpcOptions);
-  // Both cb and buf are allowed to be null.
+  addRpcOptionHeaders(rpcOptions);
 
+  // Both cb and buf are allowed to be null.
   uint32_t oldSeqId = sendSeqId_;
   sendSeqId_ = ResponseChannel::ONEWAY_REQUEST_ID;
 
@@ -404,7 +409,7 @@ void HeaderClientChannel::setCloseCallback(CloseCallback* cb) {
 }
 
 uint32_t HeaderClientChannel::sendRequest(
-    const RpcOptions& rpcOptions,
+    RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     unique_ptr<IOBuf> buf) {
@@ -457,8 +462,7 @@ uint32_t HeaderClientChannel::sendRequest(
                                  rpcOptions.getChunkTimeout());
 
   header_->setClientTypeNoCheck(getClientType());
-  maybeSetPriorityHeader(rpcOptions);
-  maybeSetTimeoutHeader(rpcOptions);
+  addRpcOptionHeaders(rpcOptions);
 
   if (getClientType() != THRIFT_HEADER_CLIENT_TYPE &&
       getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {

@@ -240,10 +240,23 @@ class RpcOptions {
   std::chrono::milliseconds getChunkTimeout() const {
     return chunkTimeout_;
   }
+
+  void setWriteHeader(const std::string& key, const std::string& value) {
+    writeHeaders_[key] = value;
+  }
+
+  std::map<std::string, std::string> releaseWriteHeaders() {
+    std::map<std::string, std::string> headers;
+    writeHeaders_.swap(headers);
+    return headers;
+  }
  private:
   std::chrono::milliseconds timeout_;
   PRIORITY priority_;
   std::chrono::milliseconds chunkTimeout_;
+
+  // For sending headers.
+  std::map<std::string, std::string> writeHeaders_;
 };
 
 /**
@@ -262,14 +275,15 @@ class RequestChannel : virtual public TDelayedDestruction {
    *
    * cb must not be null.
    */
-  virtual uint32_t sendRequest(const RpcOptions&,
+  virtual uint32_t sendRequest(RpcOptions&,
                                std::unique_ptr<RequestCallback>,
                                std::unique_ptr<apache::thrift::ContextStack>,
                                std::unique_ptr<folly::IOBuf>) = 0;
   uint32_t sendRequest(std::unique_ptr<RequestCallback> cb,
                        std::unique_ptr<apache::thrift::ContextStack> ctx,
                        std::unique_ptr<folly::IOBuf> buf) {
-    return sendRequest(RpcOptions(),
+    RpcOptions rpcOptions;
+    return sendRequest(rpcOptions,
                        std::move(cb),
                        std::move(ctx),
                        std::move(buf));
@@ -280,7 +294,7 @@ class RequestChannel : virtual public TDelayedDestruction {
    * Null RequestCallback is allowed for oneway requests
    */
   virtual uint32_t sendOnewayRequest(
-      const RpcOptions&,
+      RpcOptions&,
       std::unique_ptr<RequestCallback>,
       std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>) = 0;
@@ -288,7 +302,8 @@ class RequestChannel : virtual public TDelayedDestruction {
   uint32_t sendOnewayRequest(std::unique_ptr<RequestCallback> cb,
                              std::unique_ptr<apache::thrift::ContextStack> ctx,
                              std::unique_ptr<folly::IOBuf> buf) {
-    return sendOnewayRequest(RpcOptions(),
+    RpcOptions rpcOptions;
+    return sendOnewayRequest(rpcOptions,
                              std::move(cb),
                              std::move(ctx),
                              std::move(buf));
@@ -362,7 +377,7 @@ void clientCallbackToObservable(ClientReceiveState& state,
 template <bool oneway, class Protocol, class Pargs, class WriteFunc, class SizeFunc>
 static void clientSendT(
     Protocol* prot,
-    const apache::thrift::RpcOptions& rpcOptions,
+    apache::thrift::RpcOptions& rpcOptions,
     std::unique_ptr<apache::thrift::RequestCallback> callback,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     RequestChannel* channel,

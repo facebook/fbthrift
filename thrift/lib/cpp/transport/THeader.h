@@ -274,15 +274,9 @@ class THeader {
     return minCompressBytes_;
   }
 
-  apache::thrift::concurrency::PRIORITY
-  getCallPriority();
-
-  void setCallPriority(
-      apache::thrift::concurrency::PRIORITY prio);
+  apache::thrift::concurrency::PRIORITY getCallPriority();
 
   std::chrono::milliseconds getClientTimeout() const;
-
-  void setClientTimeout(std::chrono::milliseconds timeout);
 
   void setHttpClientParser(
       std::shared_ptr<apache::thrift::util::THttpClientParser>);
@@ -297,6 +291,8 @@ class THeader {
   static const uint32_t HTTP_HEAD_CLIENT_MAGIC = 0x48454144; // HEAD
 
   static const uint32_t MAX_FRAME_SIZE = 0x3FFFFFFF;
+  static const std::string PRIORITY_HEADER;
+  static const std::string CLIENT_TIMEOUT_HEADER;
 
  protected:
 
@@ -324,8 +320,6 @@ class THeader {
   static const std::string IDENTITY_HEADER;
   static const std::string ID_VERSION_HEADER;
   static const std::string ID_VERSION;
-  static const std::string PRIORITY_HEADER;
-  static const std::string CLIENT_TIMEOUT_HEADER;
 
   static std::string s_identity;
 

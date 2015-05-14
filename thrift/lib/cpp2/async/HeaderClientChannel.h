@@ -87,13 +87,13 @@ class HeaderClientChannel : public RequestChannel,
 
   // Client interface from RequestChannel
   using RequestChannel::sendRequest;
-  uint32_t sendRequest(const RpcOptions&,
+  uint32_t sendRequest(RpcOptions&,
                        std::unique_ptr<RequestCallback>,
                        std::unique_ptr<apache::thrift::ContextStack>,
                        std::unique_ptr<folly::IOBuf>);
 
   using RequestChannel::sendOnewayRequest;
-  uint32_t sendOnewayRequest(const RpcOptions&,
+  uint32_t sendOnewayRequest(RpcOptions&,
                          std::unique_ptr<RequestCallback>,
                          std::unique_ptr<apache::thrift::ContextStack>,
                          std::unique_ptr<folly::IOBuf>);
@@ -474,8 +474,7 @@ private:
   bool isSecurityPending();
   void setSecurityComplete(ProtectionState state);
 
-  void maybeSetPriorityHeader(const RpcOptions& rpcOptions);
-  void maybeSetTimeoutHeader(const RpcOptions& rpcOptions);
+  void addRpcOptionHeaders(RpcOptions& rpcOptions);
 
   uint32_t sendSeqId_;
   uint32_t sendSecurityPendingSeqId_;
@@ -483,7 +482,7 @@ private:
   std::unique_ptr<SaslClient> saslClient_;
 
   typedef uint32_t (HeaderClientChannel::*AfterSecurityMethod)(
-    const RpcOptions&,
+    RpcOptions&,
     std::unique_ptr<RequestCallback>,
     std::unique_ptr<apache::thrift::ContextStack>,
     std::unique_ptr<folly::IOBuf>);

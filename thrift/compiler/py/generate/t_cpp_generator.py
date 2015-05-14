@@ -1658,21 +1658,22 @@ class CppGenerator(t_generator.Generator):
             common_args = [arg.name for arg in function.arglist.members]
 
             if not uses_rpc_options:
+                out('::apache::thrift::RpcOptions rpcOptions;')
                 if function.returntype.is_void:
-                    args = ["::apache::thrift::RpcOptions()"]
+                    args = ["rpcOptions"]
                     args.extend(common_args)
                     args_list = ", ".join(args)
                     out("sync_{name}({args_list});".format(name=function.name,
                                                          args_list=args_list))
                 elif not self._is_complex_type(function.returntype):
-                    args = ["::apache::thrift::RpcOptions()"]
+                    args = ["rpcOptions"]
                     args.extend(common_args)
                     args_list = ", ".join(args)
 
                     out("return sync_{name}({args_list});"
                          .format(name=function.name, args_list=args_list))
                 else:
-                    args = ["::apache::thrift::RpcOptions()", "_return"]
+                    args = ["rpcOptions", "_return"]
                     args.extend(common_args)
                     args_list = ", ".join(args)
 
@@ -1719,7 +1720,7 @@ class CppGenerator(t_generator.Generator):
         params = []
 
         if uses_rpc_options:
-            params.append("const apache::thrift::RpcOptions& rpcOptions")
+            params.append("apache::thrift::RpcOptions& rpcOptions")
 
         if function.returntype.is_void:
             return_type = "void"
@@ -1738,7 +1739,8 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_client_nonrpcoptions_function(self, service, function,
                                                 function_name):
-        args = ["::apache::thrift::RpcOptions()"]
+        out("::apache::thrift::RpcOptions rpcOptions;")
+        args = ["rpcOptions"]
 
         args.extend([arg.name for arg in function.arglist.members])
         args_list = ", ".join(args)
@@ -1852,7 +1854,7 @@ class CppGenerator(t_generator.Generator):
     def _get_noncallback_function_signature(self, function, uses_rpc_options, ret_template):
         params = []
         if uses_rpc_options:
-            params.append("const apache::thrift::RpcOptions& rpcOptions")
+            params.append("apache::thrift::RpcOptions& rpcOptions")
 
         result_type = self._type_name(function.returntype)
         return_type = "{0}<{1}>".format(ret_template, result_type)
@@ -1874,7 +1876,8 @@ class CppGenerator(t_generator.Generator):
                     name=name_prefix + function.name,
                     modifiers='virtual',
                     output=self._additional_outputs[-1]):
-                args = ["::apache::thrift::RpcOptions()"]
+                out('::apache::thrift::RpcOptions rpcOptions;')
+                args = ["rpcOptions"]
 
                 args.append("std::move(callback)")
 
@@ -1972,7 +1975,7 @@ class CppGenerator(t_generator.Generator):
             params.append("Protocol_* prot")
 
         if uses_rpc_options:
-            params.append("const apache::thrift::RpcOptions& rpcOptions")
+            params.append("apache::thrift::RpcOptions& rpcOptions")
 
         params.append("std::unique_ptr<apache::thrift::RequestCallback> "
                       "callback")

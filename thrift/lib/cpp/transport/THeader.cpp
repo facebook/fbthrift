@@ -957,11 +957,6 @@ THeader::getCallPriority() {
   return apache::thrift::concurrency::N_PRIORITIES;
 }
 
-void THeader::setCallPriority(
-    apache::thrift::concurrency::PRIORITY prio) {
-  setHeader(PRIORITY_HEADER, folly::to<std::string>(prio));
-}
-
 std::chrono::milliseconds THeader::getClientTimeout() const {
   const auto& map = getHeaders();
   auto iter = map.find(CLIENT_TIMEOUT_HEADER);
@@ -974,10 +969,6 @@ std::chrono::milliseconds THeader::getClientTimeout() const {
   }
 
   return std::chrono::milliseconds(0);
-}
-
-void THeader::setClientTimeout(std::chrono::milliseconds timeout) {
-  setHeader(CLIENT_TIMEOUT_HEADER, folly::to<std::string>(timeout.count()));
 }
 
 void THeader::setHttpClientParser(shared_ptr<THttpClientParser> parser) {
