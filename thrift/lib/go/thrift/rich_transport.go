@@ -19,32 +19,46 @@
 
 package thrift
 
-import (
-	"testing"
-)
+import "io"
 
-func TestHttpClient(t *testing.T) {
-	l, addr := HttpClientSetupForTest(t)
-	if l != nil {
-		defer l.Close()
-	}
-	trans, err := NewTHttpPostClient("http://" + addr.String())
-	if err != nil {
-		l.Close()
-		t.Fatalf("Unable to connect to %s: %s", addr.String(), err)
-	}
-	TransportTest(t, trans, trans)
+type RichTransport struct {
+	TTransport
 }
 
-func TestHttpClientHeaders(t *testing.T) {
-	l, addr := HttpClientSetupForTest(t)
-	if l != nil {
-		defer l.Close()
+// Wraps Transport to provide TRichTransport interface
+func NewTRichTransport(trans TTransport) *RichTransport {
+	return &RichTransport{trans}
+}
+
+func (r *RichTransport) ReadByte() (c byte, err error) {
+	return readByte(r.TTransport)
+}
+
+func (r *RichTransport) WriteByte(c byte) error {
+	return writeByte(r.TTransport, c)
+}
+
+func (r *RichTransport) WriteString(s string) (n int, err error) {
+	return r.Write([]byte(s))
+}
+
+func readByte(r io.Reader) (c byte, err error) {
+	v := [1]byte{0}
+	n, err := r.Read(v[0:1])
+	if n > 0 && (err == nil || err == io.EOF) {
+		return v[0], nil
 	}
-	trans, err := NewTHttpPostClient("http://" + addr.String())
+	if n > 0 && err != nil {
+		return v[0], err
+	}
 	if err != nil {
-		l.Close()
-		t.Fatalf("Unable to connect to %s: %s", addr.String(), err)
+		return 0, err
 	}
-	TransportHeaderTest(t, trans, trans)
+	return v[0], nil
+}
+
+func writeByte(w io.Writer, c byte) error {
+	v := [1]byte{c}
+	_, err := w.Write(v[0:1])
+	return err
 }

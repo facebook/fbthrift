@@ -26,9 +26,10 @@ import (
 
 // StreamTransport is a Transport made of an io.Reader and/or an io.Writer
 type StreamTransport struct {
-	Reader       io.Reader
-	Writer       io.Writer
+	io.Reader
+	io.Writer
 	isReadWriter bool
+	closed       bool
 }
 
 type StreamTransportFactory struct {
@@ -92,23 +93,25 @@ func NewStreamTransportRW(rw io.ReadWriter) *StreamTransport {
 	return &StreamTransport{Reader: bufrw, Writer: bufrw, isReadWriter: true}
 }
 
-// (The streams must already be open at construction time, so this should
-// always return true.)
 func (p *StreamTransport) IsOpen() bool {
-	return true
+	return !p.closed
 }
 
-// (The streams must already be open. This method does nothing.)
+// implicitly opened on creation, can't be reopened once closed
 func (p *StreamTransport) Open() error {
-	return nil
-}
-
-func (p *StreamTransport) Peek() bool {
-	return p.IsOpen()
+	if !p.closed {
+		return NewTTransportException(ALREADY_OPEN, "StreamTransport already open.")
+	} else {
+		return NewTTransportException(NOT_OPEN, "cannot reopen StreamTransport.")
+	}
 }
 
 // Closes both the input and output streams.
 func (p *StreamTransport) Close() error {
+	if p.closed {
+		return NewTTransportException(NOT_OPEN, "StreamTransport already closed.")
+	}
+	p.closed = true
 	closedReader := false
 	if p.Reader != nil {
 		c, ok := p.Reader.(io.Closer)
@@ -134,24 +137,6 @@ func (p *StreamTransport) Close() error {
 	return nil
 }
 
-// Reads from the underlying input stream if not null.
-func (p *StreamTransport) Read(buf []byte) (int, error) {
-	if p.Reader == nil {
-		return 0, NewTTransportException(NOT_OPEN, "Cannot read from null inputStream")
-	}
-	n, err := p.Reader.Read(buf)
-	return n, NewTTransportExceptionFromError(err)
-}
-
-// Writes to the underlying output stream if not null.
-func (p *StreamTransport) Write(buf []byte) (int, error) {
-	if p.Writer == nil {
-		return 0, NewTTransportException(NOT_OPEN, "Cannot write to null outputStream")
-	}
-	n, err := p.Writer.Write(buf)
-	return n, NewTTransportExceptionFromError(err)
-}
-
 // Flushes the underlying output stream if not null.
 func (p *StreamTransport) Flush() error {
 	if p.Writer == nil {
@@ -165,4 +150,59 @@ func (p *StreamTransport) Flush() error {
 		}
 	}
 	return nil
+}
+
+func (p *StreamTransport) Read(c []byte) (n int, err error) {
+	n, err = p.Reader.Read(c)
+	if err != nil {
+		err = NewTTransportExceptionFromError(err)
+	}
+	return
+}
+
+func (p *StreamTransport) ReadByte() (c byte, err error) {
+	f, ok := p.Reader.(io.ByteReader)
+	if ok {
+		c, err = f.ReadByte()
+	} else {
+		c, err = readByte(p.Reader)
+	}
+	if err != nil {
+		err = NewTTransportExceptionFromError(err)
+	}
+	return
+}
+
+func (p *StreamTransport) Write(c []byte) (n int, err error) {
+	n, err = p.Writer.Write(c)
+	if err != nil {
+		err = NewTTransportExceptionFromError(err)
+	}
+	return
+}
+
+func (p *StreamTransport) WriteByte(c byte) (err error) {
+	f, ok := p.Writer.(io.ByteWriter)
+	if ok {
+		err = f.WriteByte(c)
+	} else {
+		err = writeByte(p.Writer, c)
+	}
+	if err != nil {
+		err = NewTTransportExceptionFromError(err)
+	}
+	return
+}
+
+func (p *StreamTransport) WriteString(s string) (n int, err error) {
+	f, ok := p.Writer.(stringWriter)
+	if ok {
+		n, err = f.WriteString(s)
+	} else {
+		n, err = p.Writer.Write([]byte(s))
+	}
+	if err != nil {
+		err = NewTTransportExceptionFromError(err)
+	}
+	return
 }

@@ -100,7 +100,11 @@ func (p *TJSONProtocol) WriteFieldBegin(name string, typeId TType, id int16) err
 	if e := p.OutputObjectBegin(); e != nil {
 		return e
 	}
-	if e := p.WriteString(p.TypeIdToString(typeId)); e != nil {
+	s, e1 := p.TypeIdToString(typeId)
+	if e1 != nil {
+		return e1
+	}
+	if e := p.WriteString(s); e != nil {
 		return e
 	}
 	return nil
@@ -116,16 +120,30 @@ func (p *TJSONProtocol) WriteMapBegin(keyType TType, valueType TType, size int) 
 	if e := p.OutputListBegin(); e != nil {
 		return e
 	}
-	if e := p.WriteString(p.TypeIdToString(keyType)); e != nil {
+	s, e1 := p.TypeIdToString(keyType)
+	if e1 != nil {
+		return e1
+	}
+	if e := p.WriteString(s); e != nil {
 		return e
 	}
-	if e := p.WriteString(p.TypeIdToString(valueType)); e != nil {
+	s, e1 = p.TypeIdToString(valueType)
+	if e1 != nil {
+		return e1
+	}
+	if e := p.WriteString(s); e != nil {
 		return e
 	}
-	return p.WriteI64(int64(size))
+	if e := p.WriteI64(int64(size)); e != nil {
+		return e
+	}
+	return p.OutputObjectBegin()
 }
 
 func (p *TJSONProtocol) WriteMapEnd() error {
+	if e := p.OutputObjectEnd(); e != nil {
+		return e
+	}
 	return p.OutputListEnd()
 }
 
@@ -146,7 +164,10 @@ func (p *TJSONProtocol) WriteSetEnd() error {
 }
 
 func (p *TJSONProtocol) WriteBool(b bool) error {
-	return p.OutputBool(b)
+	if b {
+		return p.WriteI32(1)
+	}
+	return p.WriteI32(0)
 }
 
 func (p *TJSONProtocol) WriteByte(b byte) error {
@@ -181,18 +202,23 @@ func (p *TJSONProtocol) WriteBinary(v []byte) error {
 	if e := p.OutputPreValue(); e != nil {
 		return e
 	}
-	p.writer.Write(JSON_QUOTE_BYTES)
+	if _, e := p.writer.Write(JSON_QUOTE_BYTES); e != nil {
+		return NewTProtocolException(e)
+	}
 	writer := base64.NewEncoder(base64.StdEncoding, p.writer)
 	if _, e := writer.Write(v); e != nil {
 		return NewTProtocolException(e)
 	}
-	writer.Close()
-	p.writer.Write(JSON_QUOTE_BYTES)
+	if e := writer.Close(); e != nil {
+		return NewTProtocolException(e)
+	}
+	if _, e := p.writer.Write(JSON_QUOTE_BYTES); e != nil {
+		return NewTProtocolException(e)
+	}
 	return p.OutputPostValue()
 }
 
 // Reading methods.
-
 func (p *TJSONProtocol) ReadMessageBegin() (name string, typeId TMessageType, seqId int32, err error) {
 	if isNull, err := p.ParseListBegin(); isNull || err != nil {
 		return name, typeId, seqId, err
@@ -235,9 +261,6 @@ func (p *TJSONProtocol) ReadStructEnd() error {
 }
 
 func (p *TJSONProtocol) ReadFieldBegin() (string, TType, int16, error) {
-	if p.reader.Buffered() < 1 {
-		return "", STOP, -1, nil
-	}
 	b, _ := p.reader.Peek(1)
 	if len(b) < 1 || b[0] == JSON_RBRACE[0] || b[0] == JSON_RBRACKET[0] {
 		return "", STOP, -1, nil
@@ -250,7 +273,10 @@ func (p *TJSONProtocol) ReadFieldBegin() (string, TType, int16, error) {
 		return "", STOP, fieldId, err
 	}
 	sType, err := p.ReadString()
-	fType := p.StringToTypeId(sType)
+	if err != nil {
+		return "", STOP, fieldId, err
+	}
+	fType, err := p.StringToTypeId(sType)
 	return "", fType, fieldId, err
 }
 
@@ -265,25 +291,40 @@ func (p *TJSONProtocol) ReadMapBegin() (keyType TType, valueType TType, size int
 
 	// read keyType
 	sKeyType, e := p.ReadString()
-	keyType = p.StringToTypeId(sKeyType)
+	if e != nil {
+		return keyType, valueType, size, e
+	}
+	keyType, e = p.StringToTypeId(sKeyType)
 	if e != nil {
 		return keyType, valueType, size, e
 	}
 
 	// read valueType
 	sValueType, e := p.ReadString()
-	valueType = p.StringToTypeId(sValueType)
+	if e != nil {
+		return keyType, valueType, size, e
+	}
+	valueType, e = p.StringToTypeId(sValueType)
 	if e != nil {
 		return keyType, valueType, size, e
 	}
 
 	// read size
-	iSize, err := p.ReadI64()
+	iSize, e := p.ReadI64()
+	if e != nil {
+		return keyType, valueType, size, e
+	}
 	size = int(iSize)
-	return keyType, valueType, size, err
+
+	_, e = p.ParseObjectStart()
+	return keyType, valueType, size, e
 }
 
 func (p *TJSONProtocol) ReadMapEnd() error {
+	e := p.ParseObjectEnd()
+	if e != nil {
+		return e
+	}
 	return p.ParseListEnd()
 }
 
@@ -304,45 +345,8 @@ func (p *TJSONProtocol) ReadSetEnd() error {
 }
 
 func (p *TJSONProtocol) ReadBool() (bool, error) {
-	var value bool
-	if err := p.ParsePreValue(); err != nil {
-		return value, err
-	}
-	b, _ := p.reader.Peek(len(JSON_FALSE))
-	if len(b) > 0 {
-		switch b[0] {
-		case JSON_TRUE[0]:
-			if string(b[0:len(JSON_TRUE)]) == string(JSON_TRUE) {
-				p.reader.Read(b[0:len(JSON_TRUE)])
-				value = true
-			} else {
-				e := fmt.Errorf("Expected \"true\" but found: %s", string(b))
-				return value, NewTProtocolExceptionWithType(INVALID_DATA, e)
-			}
-			break
-		case JSON_FALSE[0]:
-			if string(b[0:len(JSON_FALSE)]) == string(JSON_FALSE) {
-				p.reader.Read(b[0:len(JSON_FALSE)])
-				value = false
-			} else {
-				e := fmt.Errorf("Expected \"false\" but found: %s", string(b))
-				return value, NewTProtocolExceptionWithType(INVALID_DATA, e)
-			}
-			break
-		case JSON_NULL[0]:
-			if string(b[0:len(JSON_NULL)]) == string(JSON_NULL) {
-				p.reader.Read(b[0:len(JSON_NULL)])
-				value = false
-			} else {
-				e := fmt.Errorf("Expected \"null\" but found: %s", string(b))
-				return value, NewTProtocolExceptionWithType(INVALID_DATA, e)
-			}
-		default:
-			e := fmt.Errorf("Expected \"true\", \"false\", or \"null\" but found: %s", string(b))
-			return value, NewTProtocolExceptionWithType(INVALID_DATA, e)
-		}
-	}
-	return value, p.ParsePostValue()
+	value, err := p.ReadI32()
+	return (value != 0), err
 }
 
 func (p *TJSONProtocol) ReadByte() (byte, error) {
@@ -375,21 +379,26 @@ func (p *TJSONProtocol) ReadString() (string, error) {
 	if err := p.ParsePreValue(); err != nil {
 		return v, err
 	}
-	b, _ := p.reader.Peek(len(JSON_NULL))
-	if len(b) > 0 && b[0] == JSON_QUOTE {
+	f, _ := p.reader.Peek(1)
+	if len(f) > 0 && f[0] == JSON_QUOTE {
 		p.reader.ReadByte()
 		value, err := p.ParseStringBody()
 		v = value
 		if err != nil {
 			return v, err
 		}
-	} else if len(b) >= len(JSON_NULL) && string(b[0:len(JSON_NULL)]) == string(JSON_NULL) {
-		_, err := p.reader.Read(b[0:len(JSON_NULL)])
+	} else if len(f) >= 0 && f[0] == JSON_NULL[0] {
+		b := make([]byte, len(JSON_NULL))
+		_, err := p.reader.Read(b)
 		if err != nil {
 			return v, NewTProtocolException(err)
 		}
+		if string(b) != string(JSON_NULL) {
+			e := fmt.Errorf("Expected a JSON string, found unquoted data started with %s", string(b))
+			return v, NewTProtocolExceptionWithType(INVALID_DATA, e)
+		}
 	} else {
-		e := fmt.Errorf("Expected a JSON string, found %s", string(b))
+		e := fmt.Errorf("Expected a JSON string, found unquoted data started with %s", string(f))
 		return v, NewTProtocolExceptionWithType(INVALID_DATA, e)
 	}
 	return v, p.ParsePostValue()
@@ -400,28 +409,38 @@ func (p *TJSONProtocol) ReadBinary() ([]byte, error) {
 	if err := p.ParsePreValue(); err != nil {
 		return nil, err
 	}
-	b, _ := p.reader.Peek(len(JSON_NULL))
-	if len(b) > 0 && b[0] == JSON_QUOTE {
+	f, _ := p.reader.Peek(1)
+	if len(f) > 0 && f[0] == JSON_QUOTE {
 		p.reader.ReadByte()
 		value, err := p.ParseBase64EncodedBody()
 		v = value
 		if err != nil {
 			return v, err
 		}
-	} else if len(b) >= len(JSON_NULL) && string(b[0:len(JSON_NULL)]) == string(JSON_NULL) {
-		_, err := p.reader.Read(b[0:len(JSON_NULL)])
+	} else if len(f) >= 0 && f[0] == JSON_NULL[0] {
+		b := make([]byte, len(JSON_NULL))
+		_, err := p.reader.Read(b)
 		if err != nil {
 			return v, NewTProtocolException(err)
 		}
+		if string(b) != string(JSON_NULL) {
+			e := fmt.Errorf("Expected a JSON string, found unquoted data started with %s", string(b))
+			return v, NewTProtocolExceptionWithType(INVALID_DATA, e)
+		}
 	} else {
-		e := fmt.Errorf("Expected a JSON string, found %s", string(b))
+		e := fmt.Errorf("Expected a JSON string, found unquoted data started with %s", string(f))
 		return v, NewTProtocolExceptionWithType(INVALID_DATA, e)
 	}
+
 	return v, p.ParsePostValue()
 }
 
 func (p *TJSONProtocol) Flush() (err error) {
-	return NewTProtocolException(p.writer.Flush())
+	err = p.writer.Flush()
+	if err == nil {
+		err = p.trans.Flush()
+	}
+	return NewTProtocolException(err)
 }
 
 func (p *TJSONProtocol) Skip(fieldType TType) (err error) {
@@ -436,7 +455,11 @@ func (p *TJSONProtocol) OutputElemListBegin(elemType TType, size int) error {
 	if e := p.OutputListBegin(); e != nil {
 		return e
 	}
-	if e := p.WriteString(p.TypeIdToString(elemType)); e != nil {
+	s, e1 := p.TypeIdToString(elemType)
+	if e1 != nil {
+		return e1
+	}
+	if e := p.WriteString(s); e != nil {
 		return e
 	}
 	if e := p.WriteI64(int64(size)); e != nil {
@@ -445,13 +468,15 @@ func (p *TJSONProtocol) OutputElemListBegin(elemType TType, size int) error {
 	return nil
 }
 
-
 func (p *TJSONProtocol) ParseElemListBegin() (elemType TType, size int, e error) {
 	if isNull, e := p.ParseListBegin(); isNull || e != nil {
 		return VOID, 0, e
 	}
 	sElemType, err := p.ReadString()
-	elemType = p.StringToTypeId(sElemType)
+	if err != nil {
+		return VOID, size, err
+	}
+	elemType, err = p.StringToTypeId(sElemType)
 	if err != nil {
 		return elemType, size, err
 	}
@@ -465,7 +490,10 @@ func (p *TJSONProtocol) readElemListBegin() (elemType TType, size int, e error) 
 		return VOID, 0, e
 	}
 	sElemType, err := p.ReadString()
-	elemType = p.StringToTypeId(sElemType)
+	if err != nil {
+		return VOID, size, err
+	}
+	elemType, err = p.StringToTypeId(sElemType)
 	if err != nil {
 		return elemType, size, err
 	}
@@ -478,7 +506,11 @@ func (p *TJSONProtocol) writeElemListBegin(elemType TType, size int) error {
 	if e := p.OutputListBegin(); e != nil {
 		return e
 	}
-	if e := p.OutputString(p.TypeIdToString(elemType)); e != nil {
+	s, e1 := p.TypeIdToString(elemType)
+	if e1 != nil {
+		return e1
+	}
+	if e := p.OutputString(s); e != nil {
 		return e
 	}
 	if e := p.OutputI64(int64(size)); e != nil {
@@ -487,70 +519,62 @@ func (p *TJSONProtocol) writeElemListBegin(elemType TType, size int) error {
 	return nil
 }
 
-func (p *TJSONProtocol) TypeIdToString(fieldType TType) string {
+func (p *TJSONProtocol) TypeIdToString(fieldType TType) (string, error) {
 	switch byte(fieldType) {
-	case STOP:
-		return "stp"
-	case VOID:
-		return "v"
 	case BOOL:
-		return "tf"
+		return "tf", nil
 	case BYTE:
-		return "i8"
-	case DOUBLE:
-		return "dbl"
+		return "i8", nil
 	case I16:
-		return "i16"
+		return "i16", nil
 	case I32:
-		return "i32"
+		return "i32", nil
 	case I64:
-		return "i64"
+		return "i64", nil
+	case DOUBLE:
+		return "dbl", nil
 	case STRING:
-		return "str"
+		return "str", nil
 	case STRUCT:
-		return "rec"
+		return "rec", nil
 	case MAP:
-		return "map"
+		return "map", nil
 	case SET:
-		return "set"
+		return "set", nil
 	case LIST:
-		return "lst"
-	case UTF16:
-		return "str"
+		return "lst", nil
 	}
-	return ""
+
+	e := fmt.Errorf("Unknown fieldType: %d", int(fieldType))
+	return "", NewTProtocolExceptionWithType(INVALID_DATA, e)
 }
 
-func (p *TJSONProtocol) StringToTypeId(fieldType string) TType {
+func (p *TJSONProtocol) StringToTypeId(fieldType string) (TType, error) {
 	switch fieldType {
-	case "stp":
-		return TType(STOP)
-	case "v":
-		return TType(VOID)
 	case "tf":
-		return TType(BOOL)
+		return TType(BOOL), nil
 	case "i8":
-		return TType(BYTE)
-	case "dbl":
-		return TType(DOUBLE)
-	case "16":
-		return TType(I16)
+		return TType(BYTE), nil
+	case "i16":
+		return TType(I16), nil
 	case "i32":
-		return TType(I32)
+		return TType(I32), nil
 	case "i64":
-		return TType(I64)
+		return TType(I64), nil
+	case "dbl":
+		return TType(DOUBLE), nil
 	case "str":
-		return TType(STRING)
+		return TType(STRING), nil
 	case "rec":
-		return TType(STRUCT)
+		return TType(STRUCT), nil
 	case "map":
-		return TType(MAP)
+		return TType(MAP), nil
 	case "set":
-		return TType(SET)
+		return TType(SET), nil
 	case "lst":
-		return TType(LIST)
-	case "u16":
-		return TType(UTF16)
+		return TType(LIST), nil
 	}
-	return TType(STOP)
+
+	e := fmt.Errorf("Unknown type identifier: %s", fieldType)
+	return TType(STOP), NewTProtocolExceptionWithType(INVALID_DATA, e)
 }

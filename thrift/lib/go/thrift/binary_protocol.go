@@ -21,18 +21,20 @@ package thrift
 
 import (
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"io"
 	"math"
 )
 
 type TBinaryProtocol struct {
-	trans           TTransport
-	strictRead      bool
-	strictWrite     bool
-	readLength      int
-	checkReadLength bool
-	buffer          [8]byte
+	trans         TRichTransport
+	origTransport TTransport
+	reader        io.Reader
+	writer        io.Writer
+	strictRead    bool
+	strictWrite   bool
+	buffer        [64]byte
 }
 
 type TBinaryProtocolFactory struct {
@@ -45,8 +47,15 @@ func NewTBinaryProtocolTransport(t TTransport) *TBinaryProtocol {
 }
 
 func NewTBinaryProtocol(t TTransport, strictRead, strictWrite bool) *TBinaryProtocol {
-	//return &TBinaryProtocol{TProtocolBase:TProtocolBase{trans:t}, strictRead:strictRead, strictWrite:strictWrite, readLength:0, checkReadLength:false};
-	return &TBinaryProtocol{trans: t, strictRead: strictRead, strictWrite: strictWrite, readLength: 0, checkReadLength: false}
+	p := &TBinaryProtocol{origTransport: t, strictRead: strictRead, strictWrite: strictWrite}
+	if et, ok := t.(TRichTransport); ok {
+		p.trans = et
+	} else {
+		p.trans = NewTRichTransport(t)
+	}
+	p.reader = p.trans
+	p.writer = p.trans
+	return p
 }
 
 func NewTBinaryProtocolFactoryDefault() *TBinaryProtocolFactory {
@@ -174,29 +183,28 @@ func (p *TBinaryProtocol) WriteBool(value bool) error {
 }
 
 func (p *TBinaryProtocol) WriteByte(value byte) error {
-	v := []byte{value}
-	_, e := p.trans.Write(v)
+	e := p.trans.WriteByte(value)
 	return NewTProtocolException(e)
 }
 
 func (p *TBinaryProtocol) WriteI16(value int16) error {
 	v := p.buffer[0:2]
 	binary.BigEndian.PutUint16(v, uint16(value))
-	_, e := p.trans.Write(v)
+	_, e := p.writer.Write(v)
 	return NewTProtocolException(e)
 }
 
 func (p *TBinaryProtocol) WriteI32(value int32) error {
 	v := p.buffer[0:4]
 	binary.BigEndian.PutUint32(v, uint32(value))
-	_, e := p.trans.Write(v)
+	_, e := p.writer.Write(v)
 	return NewTProtocolException(e)
 }
 
 func (p *TBinaryProtocol) WriteI64(value int64) error {
-	v := p.buffer[:]
+	v := p.buffer[0:8]
 	binary.BigEndian.PutUint64(v, uint64(value))
-	_, err := p.trans.Write(v)
+	_, err := p.writer.Write(v)
 	return NewTProtocolException(err)
 }
 
@@ -205,7 +213,12 @@ func (p *TBinaryProtocol) WriteDouble(value float64) error {
 }
 
 func (p *TBinaryProtocol) WriteString(value string) error {
-	return p.WriteBinary([]byte(value))
+	e := p.WriteI32(int32(len(value)))
+	if e != nil {
+		return e
+	}
+	_, err := p.trans.WriteString(value)
+	return NewTProtocolException(err)
 }
 
 func (p *TBinaryProtocol) WriteBinary(value []byte) error {
@@ -213,7 +226,7 @@ func (p *TBinaryProtocol) WriteBinary(value []byte) error {
 	if e != nil {
 		return e
 	}
-	_, err := p.trans.Write(value)
+	_, err := p.writer.Write(value)
 	return NewTProtocolException(err)
 }
 
@@ -289,6 +302,8 @@ func (p *TBinaryProtocol) ReadFieldEnd() error {
 	return nil
 }
 
+var invalidDataLength = NewTProtocolExceptionWithType(INVALID_DATA, errors.New("Invalid data length"))
+
 func (p *TBinaryProtocol) ReadMapBegin() (kType, vType TType, size int, err error) {
 	k, e := p.ReadByte()
 	if e != nil {
@@ -303,11 +318,15 @@ func (p *TBinaryProtocol) ReadMapBegin() (kType, vType TType, size int, err erro
 	}
 	vType = TType(v)
 	size32, e := p.ReadI32()
-	size = int(size32)
 	if e != nil {
 		err = NewTProtocolException(e)
 		return
 	}
+	if size32 < 0 {
+		err = invalidDataLength
+		return
+	}
+	size = int(size32)
 	return kType, vType, size, nil
 }
 
@@ -323,12 +342,17 @@ func (p *TBinaryProtocol) ReadListBegin() (elemType TType, size int, err error) 
 	}
 	elemType = TType(b)
 	size32, e := p.ReadI32()
-	size = int(size32)
 	if e != nil {
 		err = NewTProtocolException(e)
 		return
 	}
-	return elemType, size, nil
+	if size32 < 0 {
+		err = invalidDataLength
+		return
+	}
+	size = int(size32)
+
+	return
 }
 
 func (p *TBinaryProtocol) ReadListEnd() error {
@@ -343,11 +367,15 @@ func (p *TBinaryProtocol) ReadSetBegin() (elemType TType, size int, err error) {
 	}
 	elemType = TType(b)
 	size32, e := p.ReadI32()
-	size = int(size32)
 	if e != nil {
 		err = NewTProtocolException(e)
 		return
 	}
+	if size32 < 0 {
+		err = invalidDataLength
+		return
+	}
+	size = int(size32)
 	return elemType, size, nil
 }
 
@@ -365,9 +393,7 @@ func (p *TBinaryProtocol) ReadBool() (bool, error) {
 }
 
 func (p *TBinaryProtocol) ReadByte() (value byte, err error) {
-	buf := p.buffer[0:1]
-	err = p.readAll(buf)
-	return buf[0], err
+	return p.trans.ReadByte()
 }
 
 func (p *TBinaryProtocol) ReadI16() (value int16, err error) {
@@ -403,6 +429,11 @@ func (p *TBinaryProtocol) ReadString() (value string, err error) {
 	if e != nil {
 		return "", e
 	}
+	if size < 0 {
+		err = invalidDataLength
+		return
+	}
+
 	return p.readStringBody(int(size))
 }
 
@@ -411,10 +442,11 @@ func (p *TBinaryProtocol) ReadBinary() ([]byte, error) {
 	if e != nil {
 		return nil, e
 	}
-	isize := int(size)
-	if e = p.readLengthOk(isize); e != nil {
-		return nil, e
+	if size < 0 {
+		return nil, invalidDataLength
 	}
+
+	isize := int(size)
 	buf := make([]byte, isize)
 	_, err := io.ReadFull(p.trans, buf)
 	return buf, NewTProtocolException(err)
@@ -429,41 +461,24 @@ func (p *TBinaryProtocol) Skip(fieldType TType) (err error) {
 }
 
 func (p *TBinaryProtocol) Transport() TTransport {
-	return p.trans
+	return p.origTransport
 }
 
 func (p *TBinaryProtocol) readAll(buf []byte) error {
-	if e := p.readLengthOk(len(buf)); e != nil {
-		return e
-	}
-	_, err := io.ReadFull(p.trans, buf)
+	_, err := io.ReadFull(p.reader, buf)
 	return NewTProtocolException(err)
-}
-
-func (p *TBinaryProtocol) setReadLength(readLength int) {
-	p.readLength = readLength
-	p.checkReadLength = true
-}
-
-func (p *TBinaryProtocol) readLengthOk(length int) error {
-	if p.checkReadLength {
-		p.readLength = p.readLength - length
-		if p.readLength < 0 {
-			return NewTProtocolExceptionWithType(UNKNOWN_PROTOCOL_EXCEPTION, fmt.Errorf("Message length exceeded: %d", length))
-		}
-	}
-	return nil
 }
 
 func (p *TBinaryProtocol) readStringBody(size int) (value string, err error) {
 	if size < 0 {
 		return "", nil
 	}
-	if err := p.readLengthOk(size); err != nil {
-		return "", err
+	var buf []byte
+	if size <= len(p.buffer) {
+		buf = p.buffer[0:size]
+	} else {
+		buf = make([]byte, size)
 	}
-	isize := int(size)
-	buf := make([]byte, isize)
 	_, e := io.ReadFull(p.trans, buf)
 	return string(buf), NewTProtocolException(e)
 }

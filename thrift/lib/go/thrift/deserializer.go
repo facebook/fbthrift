@@ -19,32 +19,40 @@
 
 package thrift
 
-import (
-	"testing"
-)
-
-func TestHttpClient(t *testing.T) {
-	l, addr := HttpClientSetupForTest(t)
-	if l != nil {
-		defer l.Close()
-	}
-	trans, err := NewTHttpPostClient("http://" + addr.String())
-	if err != nil {
-		l.Close()
-		t.Fatalf("Unable to connect to %s: %s", addr.String(), err)
-	}
-	TransportTest(t, trans, trans)
+type TDeserializer struct {
+	Transport TTransport
+	Protocol  TProtocol
 }
 
-func TestHttpClientHeaders(t *testing.T) {
-	l, addr := HttpClientSetupForTest(t)
-	if l != nil {
-		defer l.Close()
+func NewTDeserializer() *TDeserializer {
+	var transport TTransport
+	transport = NewTMemoryBufferLen(1024)
+
+	protocol := NewTBinaryProtocolFactoryDefault().GetProtocol(transport)
+
+	return &TDeserializer{
+		transport,
+		protocol}
+}
+
+func (t *TDeserializer) ReadString(msg TStruct, s string) (err error) {
+	err = nil
+	if _, err = t.Transport.Write([]byte(s)); err != nil {
+		return
 	}
-	trans, err := NewTHttpPostClient("http://" + addr.String())
-	if err != nil {
-		l.Close()
-		t.Fatalf("Unable to connect to %s: %s", addr.String(), err)
+	if err = msg.Read(t.Protocol); err != nil {
+		return
 	}
-	TransportHeaderTest(t, trans, trans)
+	return
+}
+
+func (t *TDeserializer) Read(msg TStruct, b []byte) (err error) {
+	err = nil
+	if _, err = t.Transport.Write(b); err != nil {
+		return
+	}
+	if err = msg.Read(t.Protocol); err != nil {
+		return
+	}
+	return
 }

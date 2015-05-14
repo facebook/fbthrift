@@ -20,38 +20,36 @@
 package thrift
 
 import (
+	"crypto/tls"
 	"net"
-	"sync"
 	"time"
 )
 
-type TServerSocket struct {
+type TSSLServerSocket struct {
 	listener      net.Listener
 	addr          net.Addr
 	clientTimeout time.Duration
-
-	// Protects the interrupted value to make it thread safe.
-	mu          sync.RWMutex
-	interrupted bool
+	interrupted   bool
+	cfg           *tls.Config
 }
 
-func NewTServerSocket(listenAddr string) (*TServerSocket, error) {
-	return NewTServerSocketTimeout(listenAddr, 0)
+func NewTSSLServerSocket(listenAddr string, cfg *tls.Config) (*TSSLServerSocket, error) {
+	return NewTSSLServerSocketTimeout(listenAddr, cfg, 0)
 }
 
-func NewTServerSocketTimeout(listenAddr string, clientTimeout time.Duration) (*TServerSocket, error) {
+func NewTSSLServerSocketTimeout(listenAddr string, cfg *tls.Config, clientTimeout time.Duration) (*TSSLServerSocket, error) {
 	addr, err := net.ResolveTCPAddr("tcp", listenAddr)
 	if err != nil {
 		return nil, err
 	}
-	return &TServerSocket{addr: addr, clientTimeout: clientTimeout}, nil
+	return &TSSLServerSocket{addr: addr, clientTimeout: clientTimeout, cfg: cfg}, nil
 }
 
-func (p *TServerSocket) Listen() error {
+func (p *TSSLServerSocket) Listen() error {
 	if p.IsListening() {
 		return nil
 	}
-	l, err := net.Listen(p.addr.Network(), p.addr.String())
+	l, err := tls.Listen(p.addr.Network(), p.addr.String(), p.cfg)
 	if err != nil {
 		return err
 	}
@@ -59,12 +57,8 @@ func (p *TServerSocket) Listen() error {
 	return nil
 }
 
-func (p *TServerSocket) Accept() (TTransport, error) {
-	p.mu.RLock()
-	interrupted := p.interrupted
-	p.mu.RUnlock()
-
-	if interrupted {
+func (p *TSSLServerSocket) Accept() (TTransport, error) {
+	if p.interrupted {
 		return nil, errTransportInterrupted
 	}
 	if p.listener == nil {
@@ -74,20 +68,20 @@ func (p *TServerSocket) Accept() (TTransport, error) {
 	if err != nil {
 		return nil, NewTTransportExceptionFromError(err)
 	}
-	return NewTSocketFromConnTimeout(conn, p.clientTimeout), nil
+	return NewTSSLSocketFromConnTimeout(conn, p.cfg, p.clientTimeout), nil
 }
 
 // Checks whether the socket is listening.
-func (p *TServerSocket) IsListening() bool {
+func (p *TSSLServerSocket) IsListening() bool {
 	return p.listener != nil
 }
 
 // Connects the socket, creating a new socket object if necessary.
-func (p *TServerSocket) Open() error {
+func (p *TSSLServerSocket) Open() error {
 	if p.IsListening() {
 		return NewTTransportException(ALREADY_OPEN, "Server socket already open")
 	}
-	if l, err := net.Listen(p.addr.Network(), p.addr.String()); err != nil {
+	if l, err := tls.Listen(p.addr.Network(), p.addr.String(), p.cfg); err != nil {
 		return err
 	} else {
 		p.listener = l
@@ -95,14 +89,11 @@ func (p *TServerSocket) Open() error {
 	return nil
 }
 
-func (p *TServerSocket) Addr() net.Addr {
-	if p.listener != nil {
-		return p.listener.Addr()
-	}
+func (p *TSSLServerSocket) Addr() net.Addr {
 	return p.addr
 }
 
-func (p *TServerSocket) Close() error {
+func (p *TSSLServerSocket) Close() error {
 	defer func() {
 		p.listener = nil
 	}()
@@ -112,10 +103,7 @@ func (p *TServerSocket) Close() error {
 	return nil
 }
 
-func (p *TServerSocket) Interrupt() error {
-	p.mu.Lock()
+func (p *TSSLServerSocket) Interrupt() error {
 	p.interrupted = true
-	p.mu.Unlock()
-
 	return nil
 }
