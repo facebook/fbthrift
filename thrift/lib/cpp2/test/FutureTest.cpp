@@ -119,7 +119,7 @@ void AsyncCpp2Test(bool enable_security) {
 
   auto client_channel = HeaderClientChannel::newChannel(socket);
   if (enable_security) {
-    client_channel->getHeader()->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
+    client_channel->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
     client_channel->setSaslClient(std::unique_ptr<SaslClient>(
       new StubSaslClient(socket->getEventBase())
     ));

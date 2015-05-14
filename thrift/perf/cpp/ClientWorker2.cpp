@@ -85,13 +85,13 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
       headerChannel->getHeader()->setTransform(THeader::ZLIB_TRANSFORM);
     }
     if (!config->useHeaderProtocol()) {
-      headerChannel->getHeader()->setClientType(THRIFT_FRAMED_DEPRECATED);
+      headerChannel->setClientType(THRIFT_FRAMED_DEPRECATED);
     }
     headerChannel->setTimeout(kTimeout);
     if (config->SASLPolicy() == "permitted") {
-      headerChannel->getHeader()->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
+      headerChannel->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
     } else if (config->SASLPolicy() == "required") {
-      headerChannel->getHeader()->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
+      headerChannel->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
     }
 
     if (config->SASLPolicy() == "required" ||

@@ -103,12 +103,12 @@ Cpp2Connection::Cpp2Connection(
 
   if (worker_->getServer()->getSaslEnabled() &&
       (worker_->getServer()->getNonSaslEnabled() || downgradeSaslPolicy)) {
-    channel_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
+    channel_->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
   } else if (worker_->getServer()->getSaslEnabled()) {
-    channel_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
+    channel_->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
   } else {
     // If neither is set, act as if non-sasl was specified.
-    channel_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_DISABLED);
+    channel_->setSecurityPolicy(THRIFT_SECURITY_DISABLED);
   }
 
   auto handler = worker->getServer()->getEventHandler();

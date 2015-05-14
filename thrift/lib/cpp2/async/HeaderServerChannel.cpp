@@ -60,8 +60,6 @@ HeaderServerChannel::HeaderServerChannel(
     , saslServerCallback_(*this)
     , cpp2Channel_(cpp2Channel)
     , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
-  header_.reset(new THeader);
-  header_->setSupportedClients(nullptr);
   header_->setProtocolId(0);
 }
 
@@ -87,6 +85,7 @@ void HeaderServerChannel::destroy() {
 // Header framing
 unique_ptr<IOBuf>
 HeaderServerChannel::ServerFramingHandler::addFrame(unique_ptr<IOBuf> buf) {
+  channel_.updateClientType(channel_.getHeader()->getClientType());
   // Note: This THeader function may throw.  However, we don't want to catch
   // it here, because this would send an empty message out on the wire.
   // Instead we have to catch it at sendMessage
@@ -120,11 +119,12 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   if (!buf) {
     return make_pair(std::unique_ptr<IOBuf>(), remaining);
   }
-  if (!header->isSupportedClient() &&
-      header->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    LOG(ERROR) << "Server rejecting unsupported client type "
-               << header->getClientType();
-    header->checkSupportedClient();
+
+  CLIENT_TYPE ct = header->getClientType();
+  if (!channel_.isSupportedClient(ct) &&
+      ct != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+    LOG(ERROR) << "Server rejecting unsupported client type " << ct;
+    channel_.checkSupportedClient(ct);
   }
 
   // In order to allow negotiation to happen when the client requests
@@ -395,8 +395,9 @@ void HeaderServerChannel::messageReceiveErrorWrapped(
 
 unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
   unique_ptr<IOBuf>&& buf) {
-  if (header_->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    if (!header_->isSupportedClient() || (!saslServer_ &&
+  CLIENT_TYPE ct = header_->getClientType();
+  if (ct == THRIFT_HEADER_SASL_CLIENT_TYPE) {
+    if (!isSupportedClient(ct) || (!saslServer_ &&
           !cpp2Channel_->getProtectionHandler()->getSaslEndpoint())) {
       if (getProtectionState() == ProtectionState::UNKNOWN) {
         // The client tried to use SASL, but it's not supported by
@@ -441,7 +442,7 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
   } else if (getProtectionState() == ProtectionState::VALID ||
       ((getProtectionState() == ProtectionState::INPROGRESS ||
         getProtectionState() == ProtectionState::WAITING) &&
-          !header_->isSupportedClient())) {
+          !isSupportedClient(ct))) {
     // Either negotiation has completed or negotiation is incomplete,
     // non-sasl was received, but is not permitted.
     // We should fail hard in this case.
@@ -458,7 +459,7 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     setProtectionState(ProtectionState::NONE);
   } else if ((getProtectionState() == ProtectionState::INPROGRESS ||
               getProtectionState() == ProtectionState::WAITING) &&
-      header_->isSupportedClient()) {
+              !isSupportedClient(ct)) {
     // If a client  permits a non-secure connection, we allow falling back to
     // one even if a SASL handshake is in progress.
     VLOG(5) << "Client initiated a fallback during a SASL handshake";
@@ -509,7 +510,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
   try {
     // Fall back to insecure.  This will throw an exception if the
     // insecure client type is not supported.
-    channel_.header_->setClientType(THRIFT_HEADER_CLIENT_TYPE);
+    channel_.setClientType(THRIFT_HEADER_CLIENT_TYPE);
   } catch (const std::exception& e) {
     if (observer) {
       observer->saslError();
@@ -528,7 +529,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
 
   // Send the client a null message so the client will try again.
   // TODO mhorowitz: generate a real message here.
-  channel_.header_->setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
+  channel_.header_->setClientTypeNoCheck(THRIFT_HEADER_SASL_CLIENT_TYPE);
   try {
     auto trans = channel_.header_->getWriteTransforms();
     channel_.sendMessage(nullptr,
@@ -562,6 +563,7 @@ void HeaderServerChannel::SaslServerCallback::saslComplete() {
              << saslServer->getServerIdentity() << " <= "
              << saslServer->getClientIdentity();
   channel_.setProtectionState(ProtectionState::VALID);
+  channel_.setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
 }
 
 }} // apache::thrift

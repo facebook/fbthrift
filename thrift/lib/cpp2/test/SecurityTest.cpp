@@ -82,7 +82,7 @@ void enableSecurity(HeaderClientChannel* channel,
     serviceIdentity = "bogus";
   }
 
-  channel->getHeader()->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
+  channel->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
 
   auto saslClient = folly::make_unique<GssSaslClient>(channel->getEventBase());
   saslClient->setClientIdentity(clientIdentity);

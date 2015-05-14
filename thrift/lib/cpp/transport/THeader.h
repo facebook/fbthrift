@@ -52,12 +52,6 @@ enum HEADER_FLAGS {
   HEADER_FLAG_DUPLEX_REVERSE = 0x08,
 };
 
-enum THRIFT_SECURITY_POLICY {
-  THRIFT_SECURITY_DISABLED = 1,
-  THRIFT_SECURITY_PERMITTED = 2,
-  THRIFT_SECURITY_REQUIRED = 3,
-};
-
 namespace folly {
 class IOBuf;
 class IOBufQueue;
@@ -88,26 +82,10 @@ class THeader {
 
   virtual ~THeader();
 
-  explicit THeader();
+  THeader();
 
-  explicit THeader(std::bitset<CLIENT_TYPES_LEN> const* clientTypes);
-
-  // If clients is nullptr, a security policy of THRIFT_SECURITY_DISABLED
-  // will be used.
-  void setSupportedClients(std::bitset<CLIENT_TYPES_LEN> const* clients);
-  void setSecurityPolicy(THRIFT_SECURITY_POLICY policy);
-  THRIFT_SECURITY_POLICY getSecurityPolicy() {
-    return securityPolicy_;
-  }
-
-  void setClientType(CLIENT_TYPE ct);
-
-  CLIENT_TYPE getClientType() {
-    return clientType;
-  }
-
-  bool isSupportedClient();
-  void checkSupportedClient();
+  void setClientTypeNoCheck(CLIENT_TYPE ct) { clientType = ct; }
+  CLIENT_TYPE getClientType() { return clientType; }
 
   uint16_t getProtocolId() const;
   void setProtocolId(uint16_t protoId) { this->protoId_ = protoId; }
@@ -306,10 +284,8 @@ class THeader {
 
   void setClientTimeout(std::chrono::milliseconds timeout);
 
-  /**
-   * Sets the THeader up in HTTP CLIENT mode. host can be an empty string
-   */
-  void useAsHttpClient(const std::string& host, const std::string& uri);
+  void setHttpClientParser(
+      std::shared_ptr<apache::thrift::util::THttpClientParser>);
 
   // 0 and 16th bits must be 0 to differentiate from framed & unframed
   static const uint32_t HEADER_MAGIC = 0x0FFF0000;
@@ -326,21 +302,17 @@ class THeader {
 
   void setBestClientType();
 
-  std::bitset<CLIENT_TYPES_LEN> supported_clients;
-
   std::unique_ptr<folly::IOBufQueue> queue_;
 
   // Http client parser
-  std::unique_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
+  std::shared_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
 
   int16_t protoId_;
   int8_t protoVersion;
   CLIENT_TYPE clientType;
-  uint16_t prevClientType;
   uint32_t seqId;
   uint16_t flags_;
   std::string identity;
-  THRIFT_SECURITY_POLICY securityPolicy_;
 
   std::vector<uint16_t> readTrans_;
   std::vector<uint16_t> writeTrans_;

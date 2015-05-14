@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp/async/Request.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/util/THttpParser.h>
 #include <memory>
 
 #include <unordered_map>
@@ -136,6 +137,11 @@ class HeaderClientChannel : public RequestChannel,
       return cpp2Channel_->getEventBase();
   }
 
+  /**
+   * Set the channel up in HTTP CLIENT mode. host can be an empty string
+   */
+  void useAsHttpClient(const std::string& host, const std::string& uri);
+
   // event base methods
   void attachEventBase(apache::thrift::async::TEventBase*);
   void detachEventBase();
@@ -204,6 +210,8 @@ class HeaderClientChannel : public RequestChannel,
 
 private:
   bool clientSupportHeader();
+
+  std::shared_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
   /**
    * Callback to manage the lifetime of a two-way call.
    * Deletes itself when it receives both a send and recv callback.
@@ -487,7 +495,6 @@ private:
                         std::map<std::string, std::string>>> afterSecurity_;
   std::unordered_map<uint32_t, TwowayCallback*> recvCallbacks_;
   std::deque<uint32_t> recvCallbackOrder_;
-  std::unique_ptr<apache::thrift::transport::THeader> header_;
   CloseCallback* closeCallback_;
 
   uint32_t timeout_;

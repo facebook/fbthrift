@@ -57,8 +57,6 @@ HeaderClientChannel::HeaderClientChannel(
     , saslClientCallback_(*this)
     , cpp2Channel_(cpp2Channel)
     , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
-  header_.reset(new THeader);
-  header_->setSupportedClients(nullptr);
   header_->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
 }
 
@@ -83,6 +81,15 @@ void HeaderClientChannel::closeNow() {
 void HeaderClientChannel::destroy() {
   closeNow();
   TDelayedDestruction::destroy();
+}
+
+void HeaderClientChannel::useAsHttpClient(const std::string& host,
+                                          const std::string& uri) {
+  setClientType(THRIFT_HTTP_CLIENT_TYPE);
+  httpClientParser_ = std::make_shared<util::THttpClientParser>(host, uri);
+
+  header_->setClientTypeNoCheck(THRIFT_HTTP_CLIENT_TYPE);
+  header_->setHttpClientParser(httpClientParser_);
 }
 
 void HeaderClientChannel::attachEventBase(
@@ -121,7 +128,7 @@ void HeaderClientChannel::startSecurity() {
   // It might be possible to short-circuit this to happen earlier,
   // but since it's internal state, it's not clear there's any
   // value.
-  if (header_->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
     setProtectionState(ProtectionState::NONE);
     return;
   }
@@ -188,6 +195,7 @@ void HeaderClientChannel::SaslClientCallback::saslSendServer(
   channel_.handshakeMessagesSent_++;
 
   channel_.header_->setProtocolId(T_COMPACT_PROTOCOL);
+  channel_.header_->setClientTypeNoCheck(THRIFT_HEADER_SASL_CLIENT_TYPE);
   channel_.setProtectionState(ProtectionState::WAITING);
   channel_.sendMessage(nullptr, std::move(message));
   channel_.header_->setProtocolId(channel_.userProtocolId_);
@@ -228,7 +236,7 @@ void HeaderClientChannel::SaslClientCallback::saslError(
   auto ew = folly::try_and_catch<std::exception>([&]() {
     // Fall back to insecure.  This will throw an exception if the
     // insecure client type is not supported.
-    channel_.header_->setClientType(THRIFT_HEADER_CLIENT_TYPE);
+    channel_.setClientType(THRIFT_HEADER_CLIENT_TYPE);
   });
   if (ew) {
     LOG(ERROR) << "SASL required by client but failed or rejected by server: "
@@ -345,8 +353,8 @@ void HeaderClientChannel::maybeSetTimeoutHeader(const RpcOptions& rpcOptions) {
 }
 
 bool HeaderClientChannel::clientSupportHeader() {
-  return header_->getClientType() == THRIFT_HEADER_CLIENT_TYPE ||
-         header_->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE;
+  return getClientType() == THRIFT_HEADER_CLIENT_TYPE ||
+         getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE;
 }
 
 // Client Interface
@@ -371,6 +379,7 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
     return ResponseChannel::ONEWAY_REQUEST_ID;
   }
 
+  header_->setClientTypeNoCheck(getClientType());
   maybeSetPriorityHeader(rpcOptions);
   maybeSetTimeoutHeader(rpcOptions);
   // Both cb and buf are allowed to be null.
@@ -447,11 +456,12 @@ uint32_t HeaderClientChannel::sendRequest(
                                  timeout,
                                  rpcOptions.getChunkTimeout());
 
+  header_->setClientTypeNoCheck(getClientType());
   maybeSetPriorityHeader(rpcOptions);
   maybeSetTimeoutHeader(rpcOptions);
 
-  if (header_->getClientType() != THRIFT_HEADER_CLIENT_TYPE &&
-      header_->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (getClientType() != THRIFT_HEADER_CLIENT_TYPE &&
+      getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
     recvCallbackOrder_.push_back(sendSeqId_);
   }
   recvCallbacks_[sendSeqId_] = twcb;
@@ -465,6 +475,7 @@ uint32_t HeaderClientChannel::sendRequest(
 std::unique_ptr<folly::IOBuf>
 HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<IOBuf> buf) {
   THeader* header = channel_.getHeader();
+  channel_.updateClientType(header->getClientType());
   header->setSequenceNumber(channel_.sendSeqId_);
   return header->addHeader(std::move(buf),
       channel_.getPersistentWriteHeaders());
@@ -483,7 +494,7 @@ HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
   if (!buf) {
     return make_pair(std::unique_ptr<folly::IOBuf>(), remaining);
   }
-  header->checkSupportedClient();
+  channel_.checkSupportedClient(header->getClientType());
   return make_pair(std::move(buf), 0);
 }
 

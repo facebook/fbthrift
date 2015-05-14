@@ -220,7 +220,6 @@ private:
   static std::string getTransportDebugString(
       apache::thrift::async::TAsyncTransport *transport);
 
-  std::unique_ptr<apache::thrift::transport::THeader> header_;
   ResponseChannel::Callback* callback_;
   std::unique_ptr<SaslServer> saslServer_;
 

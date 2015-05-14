@@ -18,6 +18,7 @@
  */
 
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp/util/THttpParser.h>
 
 #include <boost/test/unit_test.hpp>
 #include <memory>
@@ -56,7 +57,10 @@ BOOST_AUTO_TEST_CASE(largetransform) {
 
 BOOST_AUTO_TEST_CASE(http_clear_header) {
   THeader header;
-  header.useAsHttpClient("testhost", "testuri");
+  header.setClientTypeNoCheck(THRIFT_HTTP_CLIENT_TYPE);
+  auto parser = std::make_shared<apache::thrift::util::THttpClientParser>(
+      "testhost", "testuri");
+  header.setHttpClientParser(parser);
   header.setHeader("WriteHeader", "foo");
 
   size_t buf_size = 1000000;

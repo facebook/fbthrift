@@ -15,7 +15,7 @@
  */
 
 #include <thrift/lib/cpp/transport/THeaderTransport.h>
-
+#include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 
 #include <algorithm>
@@ -41,6 +41,41 @@ void THeaderTransport::resetProtocol() {
 
   // Read the header and decide which protocol to go with
   readFrame(0);
+}
+
+void THeaderTransport::checkSupportedClient(CLIENT_TYPE ct) {
+  if (!isSupportedClient(ct)) {
+    throw TApplicationException(
+        TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+        "Transport does not support this client type");
+  }
+}
+
+void THeaderTransport::setClientType(CLIENT_TYPE ct) {
+  checkSupportedClient(ct);
+  setClientTypeNoCheck(ct);
+}
+
+void THeaderTransport::setSupportedClients(
+    const std::bitset<CLIENT_TYPES_LEN>* ct) {
+  if (!ct || ct->none()) {
+    std::bitset<CLIENT_TYPES_LEN> clients;
+
+    clients[THRIFT_UNFRAMED_DEPRECATED] = true;
+    clients[THRIFT_FRAMED_DEPRECATED] = true;
+    clients[THRIFT_HTTP_SERVER_TYPE] = true;
+    clients[THRIFT_HTTP_CLIENT_TYPE] = true;
+    clients[THRIFT_HEADER_CLIENT_TYPE] = true;
+    clients[THRIFT_FRAMED_COMPACT] = true;
+
+    supported_clients = clients;
+  } else if (ct->test(THRIFT_HEADER_SASL_CLIENT_TYPE)) {
+    throw TApplicationException(
+        TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+        "Thrift 1 does not support SASL client type");
+  } else {
+    supported_clients = *ct;
+  }
 }
 
 uint32_t THeaderTransport::readAll(uint8_t* buf, uint32_t len) {
@@ -103,7 +138,7 @@ bool THeaderTransport::readFrame(uint32_t minFrameSize) {
 
   while (true) {
     readBuf_ = removeHeader(queue_.get(), needed, persistentReadHeaders_);
-    checkSupportedClient();
+    checkSupportedClient(getClientType());
     if (!readBuf_) {
       pair<void*, uint32_t> data = queue_->preallocate(needed,
                                                       needed);

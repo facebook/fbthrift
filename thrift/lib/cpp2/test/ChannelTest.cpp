@@ -509,19 +509,19 @@ public:
   void preLoop() {
     TestRequestCallback::reset();
     if (clientSasl_ && clientNonSasl_) {
-      channel0_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
+      channel0_->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
     } else if (clientSasl_) {
-      channel0_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
+      channel0_->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
     } else {
-      channel0_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_DISABLED);
+      channel0_->setSecurityPolicy(THRIFT_SECURITY_DISABLED);
     }
 
     if (serverSasl_ && serverNonSasl_) {
-      channel1_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
+      channel1_->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
     } else if (serverSasl_) {
-      channel1_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
+      channel1_->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
     } else {
-      channel1_->getHeader()->setSecurityPolicy(THRIFT_SECURITY_DISABLED);
+      channel1_->setSecurityPolicy(THRIFT_SECURITY_DISABLED);
     }
 
     channel1_->setCallback(this);
