@@ -1190,9 +1190,12 @@ void t_cpp_generator::print_const_value(ofstream& out, string name, t_type* type
   } else if (type->is_list()) {
     t_type* etype = ((t_list*)type)->get_elem_type();
     const vector<t_const_value*>& val = value->get_list();
+    // Below will fail for certain list types in cpp (eg. dequeue).
+    /*
     if (!val.empty()) {
       indent(out) << name << ".reserve(" << val.size() << ");" << endl;
     }
+    */
     vector<t_const_value*>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       string val = render_const_value(out, etype, *v_iter);
