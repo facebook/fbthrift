@@ -2421,7 +2421,10 @@ void t_hack_generator::_generate_service_client(
   generate_php_docstring(out, tservice);
   string extends = "";
   string extends_client = "";
-  if (tservice->get_extends() != nullptr) {
+  bool root = tservice->get_extends() == nullptr;
+  if (root) {
+    out << "<<__ConsistentConstruct>>" << endl;
+  } else {
     extends = php_servicename_mangle(mangle, tservice->get_extends());
     extends_client = " extends " + extends + "Client";
   }
@@ -2445,15 +2448,17 @@ void t_hack_generator::_generate_service_client(
   }
 
   // Factory
-  indent(out) << "public static function factory(): Pair<string, (function (TProtocol, ?TProtocol): " << long_name << "Client)> {" << endl;
-  indent_up();
-  indent(out) << "return Pair {__CLASS__, function(TProtocol $input, ?TProtocol $output) {" << endl;
-  indent_up();
-  indent(out) << "return new self($input, $output);" << endl;
-  indent_down();
-  indent(out) << "}};" << endl;
-  indent_down();
-  indent(out) << "}" << endl << endl;
+  if (root) {
+    indent(out) << "final public static function factory(): (string, (function (TProtocol, ?TProtocol): this)) {" << endl;
+    indent_up();
+    indent(out) << "return tuple(get_called_class(), function(TProtocol $input, ?TProtocol $output) {" << endl;
+    indent_up();
+    indent(out) << "return new static($input, $output);" << endl;
+    indent_down();
+    indent(out) << "});" << endl;
+    indent_down();
+    indent(out) << "}" << endl << endl;
+  }
 
   // Constructor function
   out << indent() << "public function __construct("
