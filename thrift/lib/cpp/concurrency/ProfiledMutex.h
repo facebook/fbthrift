@@ -129,7 +129,13 @@ class ProfiledMutex {
   }
 
   bool try_lock() {
-    return impl_.try_lock();
+    PROFILE_MUTEX_START_LOCK();
+    if (impl_.try_lock()) {
+      PROFILE_MUTEX_LOCKED();
+      return true;
+    }
+    PROFILE_MUTEX_NOT_LOCKED();
+    return false;
   }
 
   void unlock() {
