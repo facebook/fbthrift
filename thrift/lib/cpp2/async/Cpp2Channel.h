@@ -30,6 +30,7 @@
 #include <folly/wangle/channel/Handler.h>
 #include <folly/wangle/channel/StaticPipeline.h>
 #include <folly/wangle/channel/OutputBufferingHandler.h>
+#include <thrift/lib/cpp2/async/FramingHandler.h>
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <memory>
 
@@ -37,28 +38,6 @@
 #include <vector>
 
 namespace apache { namespace thrift {
-
-class FramingHandler {
- public:
-  virtual ~FramingHandler() {}
-
-  /**
-   * If q contains enough data, read it (removing it from q, but retaining
-   * following data), unframe it and return as result.first.
-   * result.second is set to 0.
-   *
-   * If q doesn't contain enough data, return an empty unique_ptr in
-   * result.first and return the requested amount of bytes in result.second.
-   */
-  virtual std::pair<std::unique_ptr<folly::IOBuf>, size_t>
-  removeFrame(folly::IOBufQueue* q) = 0;
-
-  /**
-   * Wrap and IOBuf in any headers/footers
-   */
-  virtual std::unique_ptr<folly::IOBuf>
-  addFrame(std::unique_ptr<folly::IOBuf> buf) = 0;
-};
 
 class Cpp2Channel
   : public MessageChannel
@@ -134,15 +113,8 @@ class Cpp2Channel
     return protectionHandler_.get();
   }
 
-  FramingHandler* getChannelHandler() const {
-    return framingHandler_.get();
-  }
-
   void setReadBufferSize(uint32_t readBufferSize) {
-    CHECK(remaining_ == readBufferSize_); // channel has not been used
-    remaining_ = readBufferSize_ = std::max(readBufferSize,
-                                            DEFAULT_BUFFER_SIZE);
-    pipeline_->setReadBufferSettings(readBufferSize_, remaining_);
+    framingHandler_->setReadBufferSize(readBufferSize);
   }
 
 private:
@@ -150,24 +122,20 @@ private:
   std::unique_ptr<folly::IOBufQueue> queue_;
   std::deque<std::vector<SendCallback*>> sendCallbacks_;
 
-  static const uint32_t DEFAULT_BUFFER_SIZE = 2048;
-  uint32_t readBufferSize_;
-  uint32_t remaining_; // Used to attempt to allocate 'perfect' sized IOBufs
-
   RecvCallback* recvCallback_;
-  bool closing_;
   bool eofInvoked_;
 
   std::unique_ptr<RecvCallback::sample> sample_;
 
   std::shared_ptr<ProtectionHandler> protectionHandler_;
-  std::unique_ptr<FramingHandler> framingHandler_;
+  std::shared_ptr<FramingHandler> framingHandler_;
 
   typedef folly::wangle::StaticPipeline<
     folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>,
     TAsyncTransportHandler,
     folly::wangle::OutputBufferingHandler,
     ProtectionHandler,
+    FramingHandler,
     Cpp2Channel>
   Pipeline;
   std::unique_ptr<Pipeline, folly::DelayedDestruction::Destructor> pipeline_;

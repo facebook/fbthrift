@@ -36,28 +36,25 @@ using apache::thrift::async::TAsyncTransport;
 
 namespace apache { namespace thrift {
 
-const uint32_t Cpp2Channel::DEFAULT_BUFFER_SIZE;
-
 Cpp2Channel::Cpp2Channel(
   const std::shared_ptr<TAsyncTransport>& transport,
   std::unique_ptr<FramingHandler> framingHandler,
   std::unique_ptr<ProtectionHandler> protectionHandler)
     : transport_(transport)
     , queue_(new IOBufQueue(IOBufQueue::cacheChainLength()))
-    , readBufferSize_(DEFAULT_BUFFER_SIZE)
-    , remaining_(readBufferSize_)
     , recvCallback_(nullptr)
-    , closing_(false)
     , eofInvoked_(false)
     , protectionHandler_(std::move(protectionHandler))
     , framingHandler_(std::move(framingHandler)) {
   if (!protectionHandler_) {
     protectionHandler_.reset(new ProtectionHandler);
   }
+  framingHandler_->setProtectionHandler(protectionHandler_.get());
   pipeline_.reset(new Pipeline(
       TAsyncTransportHandler(transport),
       folly::wangle::OutputBufferingHandler(),
       protectionHandler_,
+      framingHandler_,
       this));
   // Let the pipeline know that this handler owns the pipeline itself.
   // The pipeline will then avoid destruction order issues.
@@ -70,7 +67,6 @@ Cpp2Channel::Cpp2Channel(
 
 folly::Future<void> Cpp2Channel::close(Context* ctx) {
   DestructorGuard dg(this);
-  closing_ = true;
   processReadEOF();
   return ctx->fireClose();
 }
@@ -79,8 +75,6 @@ void Cpp2Channel::closeNow() {
   // closeNow can invoke callbacks
   DestructorGuard dg(this);
 
-
-  closing_ = true;
   if (pipeline_) {
     if (transport_) {
       pipeline_->close();
@@ -119,67 +113,16 @@ void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
     sample_->readBegin = Util::currentTimeUsec();
   }
 
-  // Remaining for this packet.  Will update the class member
-  // variable below for the next call to getReadBuffer
-  size_t remaining = 0;
-
-  // Loop as long as there are complete (decrypted and deframed) frames.
-  // Partial frames are stored inside the handlers between calls to
-  // readDataAvailable.
-  // On the last iteration, remaining_ is updated to the anticipated remaining
-  // frame length (if we're in the middle of a frame) or to readBufferSize_
-  // (if we are exactly between frames)
-  while (true) {
-    unique_ptr<IOBuf> unframed;
-
-    if (protectionHandler_->getProtectionState() ==
-        ProtectionHandler::ProtectionState::INPROGRESS) {
-      return;
-    }
-
-    auto ex = folly::try_and_catch<std::exception>([&]() {
-      size_t rem = 0;
-
-      // got a decrypted message
-      std::tie(unframed, rem) = framingHandler_->removeFrame(&q);
-
-      if (!unframed && remaining == 0) {
-        // no full message available, update remaining but only if previous
-        // handler (encryption) hasn't already provided a value
-        remaining = rem;
-      }
-    });
-    if (ex) {
-      if (recvCallback_) {
-        VLOG(5) << "Failed to read a message header";
-        recvCallback_->messageReceiveErrorWrapped(std::move(ex));
-      } else {
-        LOG(ERROR) << "Failed to read a message header";
-      }
-      closeNow();
-      return;
-    }
-
-    if (!unframed) {
-      // no more data
-      remaining_ = remaining > 0 ? remaining : readBufferSize_;
-      pipeline_->setReadBufferSettings(readBufferSize_, remaining_);
-      return;
-    }
-
-    if (!recvCallback_) {
-      LOG(INFO) << "Received a message, but no recvCallback_ installed!";
-      continue;
-    }
-
-    if (sample_) {
-      sample_->readEnd = Util::currentTimeUsec();
-    }
-    recvCallback_->messageReceived(std::move(unframed), std::move(sample_));
-    if (closing_) {
-      return; // don't call more callbacks if we are going to be destroyed
-    }
+  if (!recvCallback_) {
+    LOG(INFO) << "Received a message, but no recvCallback_ installed!";
+    return;
   }
+
+  if (sample_) {
+    sample_->readEnd = Util::currentTimeUsec();
+  }
+
+  recvCallback_->messageReceived(q.move(), std::move(sample_));
 }
 
 void Cpp2Channel::readEOF(Context* ctx) {
@@ -246,8 +189,6 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
     }
     return;
   }
-
-  buf = framingHandler_->addFrame(std::move(buf));
 
   std::vector<SendCallback*> cbs;
   if (callback) {
