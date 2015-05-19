@@ -1149,7 +1149,7 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     "class __attribute__((__deprecated__(\""
       << program_name_ << "Constants suffers from the 'static initialization "
       "order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and "
-      "may CRASH you program. Instead, use " << program_name_ <<
+      "may CRASH your program. Instead, use " << program_name_ <<
       "_constants::CONSTANT_NAME\"))) " <<
       program_name_ << "Constants {" << endl <<
     "public:" << endl <<
@@ -1194,7 +1194,7 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     "extern const " << program_name_ << "Constants __attribute__(("
       "__deprecated__(\"g_" << program_name_ << "_constants suffers from the "
       "'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors"
-      "#static-init-order) and may CRASH you program. Instead, use " <<
+      "#static-init-order) and may CRASH your program. Instead, use " <<
       program_name_ << "_constants::CONSTANT_NAME\"))) g_" <<
       program_name_ << "_constants;" << endl << endl;
   f_consts << "#pragma GCC diagnostic pop" << endl;
