@@ -75,10 +75,15 @@ class ProtectionHandler : public folly::wangle::BytesToBytesHandler {
     Context* ctx,
     std::unique_ptr<folly::IOBuf> buf) override;
 
+
+  folly::Future<void> close(Context* ctx) override;
+
  private:
   ProtectionState protectionState_;
   SaslEndpoint* saslEndpoint_;
   folly::IOBufQueue queue_{folly::IOBufQueue::cacheChainLength()};
+
+  bool closing_{false};
 
  protected:
   folly::IOBufQueue inputQueue_{folly::IOBufQueue::cacheChainLength()};

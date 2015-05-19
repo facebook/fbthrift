@@ -25,7 +25,7 @@ void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
   }
 
   auto e = folly::try_and_catch<std::exception>([&]() {
-      while (true) {
+      while (!closing_) {
         if (protectionState_ == ProtectionState::INVALID) {
           throw transport::TTransportException("protection state is invalid");
         }
@@ -91,6 +91,11 @@ void ProtectionHandler::protectionStateChanged() {
       protectionState_ == ProtectionState::VALID) {
     read(getContext(), inputQueue_);
   }
+}
+
+folly::Future<void> ProtectionHandler::close(Context* ctx) {
+  closing_ = true;
+  return ctx->fireClose();
 }
 
 }}
