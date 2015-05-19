@@ -29,7 +29,7 @@ void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
   // On the last iteration, remaining_ is updated to the anticipated remaining
   // frame length (if we're in the middle of a frame) or to readBufferSize_
   // (if we are exactly between frames)
-  while (true) {
+  while (!closing_) {
     DCHECK(protectionHandler_);
     if (protectionHandler_->getProtectionState() ==
         ProtectionHandler::ProtectionState::INPROGRESS) {
@@ -65,6 +65,11 @@ folly::Future<void> FramingHandler::write(
   Context* ctx,
   std::unique_ptr<folly::IOBuf> buf) {
   return ctx->fireWrite(addFrame(std::move(buf)));
+}
+
+folly::Future<void> FramingHandler::close(Context* ctx) {
+  closing_ = true;
+  return ctx->fireClose();
 }
 
 

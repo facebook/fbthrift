@@ -57,12 +57,16 @@ class FramingHandler : public folly::wangle::BytesToBytesHandler {
       readBufferSize, static_cast<size_t>(DEFAULT_BUFFER_SIZE));
   }
 
+  folly::Future<void> close(Context* ctx) override;
+
  private:
   enum BUFFER_SIZE { DEFAULT_BUFFER_SIZE = 2048, };
 
   ProtectionHandler* protectionHandler_{nullptr};
 
   size_t readBufferSize_{DEFAULT_BUFFER_SIZE};
+
+  bool closing_{false};
 };
 
 }} // namespace
