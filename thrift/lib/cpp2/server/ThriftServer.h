@@ -245,6 +245,10 @@ class ThriftServer : public apache::thrift::server::TServer
 
   mutable std::mutex ioGroupMutex_;
 
+  // Flag indicating whether it is safe to mutate the server config through its
+  // setters.
+  std::atomic<bool> configMutable_{true};
+
   std::shared_ptr<folly::wangle::IOThreadPoolExecutor> getIOGroupSafe() const {
     std::lock_guard<std::mutex> lock(ioGroupMutex_);
     return getIOGroup();
@@ -309,17 +313,34 @@ class ThriftServer : public apache::thrift::server::TServer
   virtual ~ThriftServer();
 
   /**
+   * Indicate whether it is safe to modify the server config through setters.
+   * This roughly corresponds to whether the IO thread pool could be servicing
+   * requests.
+   *
+   * @return true if the configuration can be modified, false otherwise
+   */
+  bool configMutable() {
+    return configMutable_;
+  }
+
+  /**
    * Set the thread pool used to drive the server's IO threads. Note that the
    * pool's thread factory will be overridden - if you'd like to use your own,
-   * set it afterwards via ThriftServer::setIOThreadFactory().
+   * set it afterwards via ThriftServer::setIOThreadFactory(). If the given
+   * thread pool has one or more allocated threads, the number of workers will
+   * be set to this number. Use ThreadServer::setNWorkerThreads() to set
+   * it afterwards if you want to change the number of works.
    *
    * @param the new thread pool
    */
   void setIOThreadPool(
       std::shared_ptr<folly::wangle::IOThreadPoolExecutor> ioThreadPool) {
-    CHECK(ioThreadPool_->numThreads() == 0);
-    CHECK(ioThreadPool->numThreads() == 0);
+    CHECK(configMutable());
     ioThreadPool_ = ioThreadPool;
+
+    if (ioThreadPool_->numThreads() > 0) {
+      nWorkers_ = ioThreadPool_->numThreads();
+    }
   }
 
   /**
@@ -329,7 +350,7 @@ class ThriftServer : public apache::thrift::server::TServer
    */
   void setIOThreadFactory(
       std::shared_ptr<folly::wangle::NamedThreadFactory> threadFactory) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     ioThreadPool_->setThreadFactory(threadFactory);
   }
 
@@ -340,7 +361,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * @param cpp2WorkerThreadName net thread name prefix
    */
   void setCpp2WorkerThreadName(const std::string& cpp2WorkerThreadName) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     auto factory = ioThreadPool_->getThreadFactory();
     CHECK(factory);
     auto namedFactory =
@@ -486,7 +507,7 @@ class ThriftServer : public apache::thrift::server::TServer
    */
   void setSSLConfig(
     std::shared_ptr<folly::SSLContextConfig> context) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     if (context) {
       context->isDefault = true;
     }
@@ -556,24 +577,24 @@ class ThriftServer : public apache::thrift::server::TServer
    * Set the address to listen on.
    */
   void setAddress(const folly::SocketAddress& address) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     port_ = -1;
     address_ = address;
   }
 
   void setAddress(folly::SocketAddress&& address) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     port_ = -1;
     address_ = std::move(address);
   }
 
   void setAddress(const char* ip, uint16_t port) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     port_ = -1;
     address_.setFromIpPort(ip, port);
   }
   void setAddress(const std::string& ip, uint16_t port) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     port_ = -1;
     setAddress(ip.c_str(), port);
   }
@@ -596,7 +617,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * Set the port to listen on.
    */
   void setPort(uint16_t port) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     port_ = port;
   }
 
@@ -645,7 +666,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * enabled.
    */
   void setNSaslPoolThreads(int nSaslPoolThreads) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     nSaslPoolThreads_ = nSaslPoolThreads;
   }
 
@@ -670,7 +691,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * than such number of unprocessed messages in that queue.
    */
   void setMaxNumMessagesInQueue(uint32_t num) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     maxNumMsgsInQueue_ = num;
   }
 
@@ -685,7 +706,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * Set the speed of adjusting connection accept rate.
    */
   void setAcceptRateAdjustSpeed(double speed) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     acceptRateAdjustSpeed_ = speed;
   }
 
@@ -708,7 +729,7 @@ class ThriftServer : public apache::thrift::server::TServer
    *  @param timeout number of milliseconds, or 0 to disable timeouts.
    */
   void setIdleTimeout(std::chrono::milliseconds timeout) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     timeout_ = timeout;
   }
 
@@ -718,7 +739,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * @param number of worker threads
    */
   void setNWorkerThreads(int nWorkers) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     nWorkers_ = nWorkers;
   }
 
@@ -745,7 +766,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * @param number of pool threads
    */
   void setNPoolThreads(int nPoolThreads) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     CHECK(!threadManager_);
 
     nPoolThreads_ = nPoolThreads;
@@ -791,7 +812,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * @param handler interface shared_ptr
    */
   void setInterface(std::shared_ptr<ServerInterface> iface) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     cpp2Pfac_ = iface;
   }
 
@@ -813,7 +834,7 @@ class ThriftServer : public apache::thrift::server::TServer
   void setThreadManager(
     std::shared_ptr<apache::thrift::concurrency::ThreadManager>
     threadManager) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     threadManager_ = threadManager;
   }
@@ -834,7 +855,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * them by default).
    */
   void setStopWorkersOnStopListening(bool stopWorkers) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     stopWorkersOnStopListening_ = stopWorkers;
   }
 
@@ -906,7 +927,7 @@ class ThriftServer : public apache::thrift::server::TServer
    */
   void setThreadFactory(
       std::shared_ptr<apache::thrift::concurrency::ThreadFactory> tf) {
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     threadFactory_ = tf;
   }
 
@@ -1054,7 +1075,7 @@ class ThriftServer : public apache::thrift::server::TServer
     // setDuplex may only be called on the server side.
     // serverChannel_ must be nullptr in this case
     CHECK(serverChannel_ == nullptr);
-    CHECK(ioThreadPool_->numThreads() == 0);
+    CHECK(configMutable());
     isDuplex_ = duplex;
   }
 
@@ -1068,7 +1089,6 @@ class ThriftServer : public apache::thrift::server::TServer
     }
     return serverSockets;
   }
-
 };
 
 }} // apache::thrift

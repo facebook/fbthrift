@@ -348,9 +348,13 @@ void ThriftServer::setup() {
       }
 
     } else {
-      CHECK(ioThreadPool_->numThreads() == 0);
+      CHECK(configMutable());
       duplexWorker_ = folly::make_unique<Cpp2Worker>(this, serverChannel_);
     }
+
+    // Do not allow setters to be called past this point until the IO worker
+    // threads have been joined in stopWorkers().
+    configMutable_ = false;
   } catch (std::exception& ex) {
     // This block allows us to investigate the exception using gdb
     LOG(FATAL) << "Got an exception while setting up the server: "
@@ -430,6 +434,7 @@ void ThriftServer::stopWorkers() {
   }
   ServerBootstrap::stop();
   ServerBootstrap::join();
+  configMutable_ = true;
 }
 
 void ThriftServer::handleSetupFailure(void) {

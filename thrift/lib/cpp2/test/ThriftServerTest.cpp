@@ -1105,6 +1105,16 @@ TEST(ThriftServer, fiberExecutorTest) {
   EXPECT_EQ("test1", response);
 }
 
+TEST(ThriftServer, setIOThreadPool) {
+  auto exe = std::make_shared<folly::wangle::IOThreadPoolExecutor>(1);
+  auto server = getServer(false);
+
+  // Set the exe, this used to trip various calls like
+  // CHECK(ioThreadPool->numThreads() == 0).
+  server->setIOThreadPool(exe);
+  EXPECT_EQ(1, server->getNWorkerThreads());
+}
+
 class ExtendedTestServiceAsyncProcessor : public TestServiceAsyncProcessor {
   public:
    explicit ExtendedTestServiceAsyncProcessor(TestServiceSvIf* serviceInterface)
