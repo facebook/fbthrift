@@ -776,6 +776,16 @@ class ServerInterface : public AsyncProcessorFactory {
     return eb_;
   }
 
+  apache::thrift::concurrency::PRIORITY getRequestPriority(
+      apache::thrift::Cpp2RequestContext* ctx,
+      apache::thrift::concurrency::PRIORITY prio=apache::thrift::concurrency::NORMAL) {
+    apache::thrift::concurrency::PRIORITY callPriority = ctx->getCallPriority();
+    if (callPriority != apache::thrift::concurrency::N_PRIORITIES) {
+      return callPriority;
+    }
+    return prio;
+  }
+
  private:
   /**
    * TODO(davejwatson): c++11 thread_local in gcc 4.8

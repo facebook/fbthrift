@@ -833,6 +833,15 @@ class CppGenerator(t_generator.Generator):
                            modifiers='virtual',
                            pure_virtual=True)
 
+    def _get_function_priority(self, service, function):
+        if function.annotations is not None and \
+                'priority' in function.annotations.annotations:
+            return function.annotations.annotations['priority']
+        elif 'priority' in service.annotations:
+            return service.annotations['priority']
+        else:
+            return 'NORMAL'
+
     def _generate_service_server_interface(self, service, s):
         classname = service.name + "SvIf"
         if not service.extends:
@@ -858,24 +867,6 @@ class CppGenerator(t_generator.Generator):
                   'new {0}AsyncProcessor(({0}SvIf*)this));'.format(
                           service.name))
             for function in service.functions:
-                with out().defn(self._get_prio_function_signature(service,
-                                                              function),
-                            name="getprio_" + function.name):
-                    if function.annotations is not None and \
-                            'priority' in function.annotations.annotations:
-                        prio = function.annotations.annotations['priority']
-                    elif 'priority' in service.annotations:
-                        prio = service.annotations['priority']
-                    else:
-                        prio = 'NORMAL'
-                    PTM = 'apache::thrift::concurrency'
-                    priovar = self.tmp('prio')
-                    out('{0}::PRIORITY {1} = reqCtx->getCallPriority();'
-                            .format(PTM, priovar))
-                    with out('if ({0} != {1}::N_PRIORITIES)'.format(
-                           priovar, PTM)):
-                        out('return {0};'.format(priovar))
-                    out('return {0}::{1};'.format(PTM, prio))
                 if not self._is_stream_type(function.returntype):
                     with out().defn(self._get_process_function_signature(service,
                                                                      function),
@@ -1077,11 +1068,6 @@ class CppGenerator(t_generator.Generator):
             sig = 'void {name}('
         sig += self._argument_list(function.arglist, addcomma, unique=True)
         sig += ')'
-        return sig
-
-    def _get_prio_function_signature(self, service, function):
-        sig = 'apache::thrift::concurrency::PriorityThreadManager::PRIORITY ' \
-              '{name}(apache::thrift::Cpp2RequestContext* reqCtx)'
         return sig
 
     def _generate_app_ex(self, service, errorstr, functionname, seqid, is_in_eb,
@@ -1480,8 +1466,9 @@ class CppGenerator(t_generator.Generator):
                                 name="_processInThread_{0}"
                                 .format(function.name),
                                 output=self._out_tcc):
-                        out('auto pri = iface_->getprio_{0}(ctx);'.format(
-                                function.name))
+                        out('auto pri = iface_->getRequestPriority(ctx, '
+                            'apache::thrift::concurrency::{0});'.format(
+                                self._get_function_priority(service, function)))
                         out('processInThread<ProtocolIn_, ProtocolOut_>' +
                           '(std::move(req), std::move(buf),' +
                           'std::move(iprot), ctx, eb, tm, pri, '
