@@ -3729,7 +3729,7 @@ class CppGenerator(t_generator.Generator):
         except KeyError:
             print("Warning: Did not generate {}".format(what))
 
-    def _render_const_value(self, type_, value, explicit=False):
+    def _render_const_value(self, type_, value, explicit=False, literal=False):
         ''' Returns an initializer list rval representing this const
         '''
         t = self._get_true_type(type_)
@@ -3739,7 +3739,7 @@ class CppGenerator(t_generator.Generator):
 
             bt = t.as_base_type
             mapping = {
-                t_base.string: lambda x:
+                t_base.string: lambda x: x.string if literal else
                 ('apache::thrift::StringTraits< {0}>::fromStringLiteral(' +
                  '"{1}")').format(self._type_name(t), x.string),
                 t_base.bool: lambda x: (x.integer > 0 and 'true' or 'false'),
@@ -3860,6 +3860,7 @@ class CppGenerator(t_generator.Generator):
                                                                 name)))
         # Open namespace
         sns = sg.namespace(self._get_namespace()).scope
+
         if self.flag_compatibility:
             instance_name = 'g_' + self._program.name + '_constants'
             cpp1_namespace = self._namespace_prefix(
@@ -3868,24 +3869,107 @@ class CppGenerator(t_generator.Generator):
             sns.release()
             sg.release()
             return
-        s = sns.cls('class {0}Constants'.format(name)).scope
-        s.label('public:')
-        # Default constructor
-        init_dict = OrderedDict()
-        for c in constants:
-            value = self._render_const_value(c.type, c.value)
-            if value:
-                init_dict[c.name] = value
-        s.defn('{name}()', name=name + 'Constants', init_dict=init_dict,
-               in_header=True).scope.empty()
-        # Define the fields that hold the constants
-        for c in constants:
-            s()
-            s('{0} {1};'.format(self._type_name(c.type), c.name))
+
+        # DECLARATION
+        s1 = sns.cls('struct {0}_constants'.format(name)).scope
+        with s1:
+            # Default constructor
+            for c in constants:
+                inlined = c.type.is_base_type or c.type.is_enum
+                value = self._render_const_value(c.type, c.value,
+                    literal=inlined)
+                if value:
+                    if inlined:
+                        s1('// consider using folly::StringPiece instead of '
+                            + 'std::string whenever possible')
+                        s1('// to referencing this statically allocated string'
+                            + ' constant, in order to ')
+                        s1('// prevent unnecessary allocations')
+                        s1.defn(('static constexpr {0} const {{name}}_ = {2}{1}'
+                            + '{2};').format('char const *' if c.type.is_string
+                            else self._type_name(c.type), value, '"' if
+                            c.type.is_string else ''), name=c.name,
+                            in_header=True)
+                        sns.impl('constexpr {0} const {1}_constants::{2}_;'
+                          .format('char const *' if c.type.is_string else
+                            self._type_name(c.type), name, c.name))
+
+                    b = s1.defn('static {0}{1} const {2}{{name}}()'.format(
+                        'constexpr ' if inlined else '', 'char const *' if
+                        c.type.is_string else self._type_name(c.type), '' if
+                        inlined else '&'), name=c.name, in_header=True).scope
+                    with b:
+
+                        if inlined:
+                            b('return {0}_;'.format(c.name))
+                        else:
+                            b('static {0} const instance({1});'.format(
+                                self._type_name(c.type), value))
+                            b('return instance;')
+
+        # CODEMOD TRANSITIONAL
+        s2 = sns.cls(('struct __attribute__((__deprecated__("{1}"))) '
+            + '{0}_constants_codemod').format(name, ('{0}_constants_codemod is '
+                + 'a transitional class only intended for codemods from the '
+                + 'deprecated {0}Constants to {0}_constants. Consider switching'
+                + ' to the latter as soon as possible.').format(name))).scope
+
+        with s2:
+            # Default constructor
+            for c in constants:
+                value = self._render_const_value(c.type, c.value)
+                if value:
+                    inlined = (c.type.is_base_type
+                        and not c.type.is_string) or c.type.is_enum
+                    b = s2.defn('static {0}{1} const {2}{{name}}()'.format(
+                        'constexpr ' if inlined else '', self._type_name(
+                        c.type), '' if inlined else '&'), name=c.name,
+                        in_header=True).scope
+                    with b:
+                        if inlined:
+                            b('return {0};'.format(value))
+                        else:
+                            b('static {0} const instance({1});'.format(
+                                self._type_name(c.type), value))
+                            b('return instance;')
+
+        # DEPRECATED
+        s = sns.cls('class __attribute__((__deprecated__("{1}"))) {0}Constants'
+            .format(name, ("{0}Constants suffers from the 'static "
+                + "initialization order fiasco' (https://isocpp.org/wiki/faq/"
+                + "ctors#static-init-order) and may CRASH you program. Instead,"
+                + " use {0}_constants::CONSTANT_NAME").format(name))).scope
+        with s:
+            s.label('public:')
+            # Default constructor
+            init_dict = OrderedDict()
+            for c in constants:
+                value = self._render_const_value(c.type, c.value)
+                if value:
+                    init_dict[c.name] = value
+            s.defn('{name}()', name=name + 'Constants', init_dict=init_dict,
+                   in_header=True).scope.empty()
+            # Define the fields that hold the constants
+            for c in constants:
+                s()
+                s('{0} {1};'.format(self._type_name(c.type), c.name))
+
         # define global constants singleton
-        s.release()
-        sns.extern('const {0}Constants g_{0}_constants'.format(name))
+        sns('#pragma GCC diagnostic push')
+        sns('#pragma GCC diagnostic ignored "-Wdeprecated-declarations"')
+        sns()
+
+        sns.extern(('const {0}Constants __attribute__((__deprecated__("{1}"))) '
+            + 'g_{0}_constants').format(name, ("g_{0}_constants suffers from "
+                + "the 'static initialization order fiasco' (https://isocpp.org"
+                + "/wiki/faq/ctors#static-init-order) and may CRASH you program"
+                + ". Instead, use {0}_constants::CONSTANT_NAME").format(name)))
+
+        sns()
+        sns('#pragma GCC diagnostic pop')
+
         sns.release()  # namespace
+
         sg.release()   # global scope
 
     def _make_context(self, filename,

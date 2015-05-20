@@ -15,6 +15,7 @@
  */
 
 #include <thrift/test/gen-cpp/test_constants.h>
+#include <thrift/test/gen-cpp2/test_constants.h>
 
 #include <gtest/gtest.h>
 
@@ -69,6 +70,57 @@ TEST(constants, cpp) {
   EXPECT_EQ(pod2, test_cpp::test_constants::pod_2());
 }
 
+TEST(constants, cpp2) {
+  EXPECT_EQ(test_cpp2::enum1::field0, test_cpp2::test_constants::e_1());
+  EXPECT_EQ(test_cpp2::enum1::field2, test_cpp2::test_constants::e_2());
+
+  EXPECT_EQ(72, test_cpp2::test_constants::i_1());
+  EXPECT_EQ(99, test_cpp2::test_constants::i_2());
+
+  EXPECT_EQ(std::string("hello"), test_cpp2::test_constants::str_1());
+  EXPECT_EQ(std::string("world"), test_cpp2::test_constants::str_2());
+
+  EXPECT_EQ(
+    (std::vector<std::int32_t>{23, 42, 56}),
+    test_cpp2::test_constants::l_1()
+  );
+  EXPECT_EQ(
+    (std::vector<std::string>{"foo", "bar", "baz"}),
+    test_cpp2::test_constants::l_2()
+  );
+
+  EXPECT_EQ(
+    (std::set<std::int32_t>{23, 42, 56}),
+    test_cpp2::test_constants::s_1()
+  );
+  EXPECT_EQ(
+    (std::set<std::string>{"foo", "bar", "baz"}),
+    test_cpp2::test_constants::s_2()
+  );
+
+  EXPECT_EQ(
+    (std::map<std::int32_t, std::int32_t>{{23, 97}, {42, 37}, {56, 11}}),
+    test_cpp2::test_constants::m_1()
+  );
+  EXPECT_EQ(
+    (std::map<std::string, std::string>{{"foo", "bar"}, {"baz", "gaz"}}),
+    test_cpp2::test_constants::m_2()
+  );
+
+  test_cpp2::struct1 pod1;
+  pod1.a = 10;
+  pod1.b = "foo";
+
+  EXPECT_EQ(pod1, test_cpp2::test_constants::pod_1());
+
+  test_cpp2::struct2 pod2;
+  pod2.c.a = 12;
+  pod2.c.b = "bar";
+  pod2.d = {11, 22, 33};
+
+  EXPECT_EQ(pod2, test_cpp2::test_constants::pod_2());
+}
+
 TEST(constants, cpp_codemod) {
   EXPECT_EQ(test_cpp::enum1::field0, test_cpp::test_constants_codemod::e_1());
   EXPECT_EQ(test_cpp::enum1::field2, test_cpp::test_constants_codemod::e_2());
@@ -118,4 +170,55 @@ TEST(constants, cpp_codemod) {
   pod2.d = {11, 22, 33};
 
   EXPECT_EQ(pod2, test_cpp::test_constants_codemod::pod_2());
+}
+
+TEST(constants, cpp2_codemod) {
+  EXPECT_EQ(test_cpp2::enum1::field0, test_cpp2::test_constants_codemod::e_1());
+  EXPECT_EQ(test_cpp2::enum1::field2, test_cpp2::test_constants_codemod::e_2());
+
+  EXPECT_EQ(72, test_cpp2::test_constants_codemod::i_1());
+  EXPECT_EQ(99, test_cpp2::test_constants_codemod::i_2());
+
+  EXPECT_EQ(std::string("hello"), test_cpp2::test_constants_codemod::str_1());
+  EXPECT_EQ(std::string("world"), test_cpp2::test_constants_codemod::str_2());
+
+  EXPECT_EQ(
+    (std::vector<std::int32_t>{23, 42, 56}),
+    test_cpp2::test_constants_codemod::l_1()
+  );
+  EXPECT_EQ(
+    (std::vector<std::string>{"foo", "bar", "baz"}),
+    test_cpp2::test_constants_codemod::l_2()
+  );
+
+  EXPECT_EQ(
+    (std::set<std::int32_t>{23, 42, 56}),
+    test_cpp2::test_constants_codemod::s_1()
+  );
+  EXPECT_EQ(
+    (std::set<std::string>{"foo", "bar", "baz"}),
+    test_cpp2::test_constants_codemod::s_2()
+  );
+
+  EXPECT_EQ(
+    (std::map<std::int32_t, std::int32_t>{{23, 97}, {42, 37}, {56, 11}}),
+    test_cpp2::test_constants_codemod::m_1()
+  );
+  EXPECT_EQ(
+    (std::map<std::string, std::string>{{"foo", "bar"}, {"baz", "gaz"}}),
+    test_cpp2::test_constants_codemod::m_2()
+  );
+
+  test_cpp2::struct1 pod1;
+  pod1.a = 10;
+  pod1.b = "foo";
+
+  EXPECT_EQ(pod1, test_cpp2::test_constants_codemod::pod_1());
+
+  test_cpp2::struct2 pod2;
+  pod2.c.a = 12;
+  pod2.c.b = "bar";
+  pod2.d = {11, 22, 33};
+
+  EXPECT_EQ(pod2, test_cpp2::test_constants_codemod::pod_2());
 }
