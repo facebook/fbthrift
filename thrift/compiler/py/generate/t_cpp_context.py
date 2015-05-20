@@ -404,10 +404,17 @@ class CppOutputContext(OutputContext):
                 # start guard in tcc
                 print >>self._output_tcc, '#pragma once\n'
                 # include h in tcc
-                print >>self._output_tcc, '#include "{0}.h"\n'.format(
+                print >>self._output_tcc, '#include "{0}.h"'.format(
                             self._header_path)
                 print >>self._output_tcc, \
-                    '#include <thrift/lib/cpp/TApplicationException.h>\n'
+                        '#include <thrift/lib/cpp/TApplicationException.h>'
+                print >>self._output_tcc, '#include <folly/MoveWrapper.h>'
+                print >>self._output_tcc, '#include <folly/io/IOBuf.h>'
+                print >>self._output_tcc, '#include <folly/io/IOBufQueue.h>'
+                print >>self._output_tcc, \
+                        '#include <thrift/lib/cpp/transport/THeader.h>'
+                print >>self._output_tcc, \
+                        '#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>\n'
             return
 
         # set the output of the real scope's content according to the

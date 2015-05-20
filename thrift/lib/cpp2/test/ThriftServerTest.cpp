@@ -44,6 +44,8 @@ using namespace apache::thrift::transport;
 using apache::thrift::protocol::TBinaryProtocolT;
 using apache::thrift::test::TestServiceClient;
 
+DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
+
 class TestInterface : public TestServiceSvIf {
   void sendResponse(std::string& _return, int64_t size) {
     if (size >= 0) {

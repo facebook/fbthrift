@@ -530,8 +530,9 @@ class CppGenerator(t_generator.Generator):
                 '#include "{0}"'.format(self._with_include_prefix(
                     self._program,
                     self._program.name + '_types_custom_protocol.h'))
-        for shortprot, protname, prottype in self.protocols:
-            s('#include <thrift/lib/cpp2/protocol/{0}.h>'.format(protname))
+        for _, b, _ in self.protocols:
+            print >>context.additional_outputs[-1], \
+                    '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
         print >>context.impl, '#include <thrift/lib/cpp2/protocol/Protocol.h>'
         for _, b, _ in self.protocols:
             print >>context.impl, \
@@ -568,6 +569,17 @@ class CppGenerator(t_generator.Generator):
                     '#include "{0}_custom_protocol.h"'.format(
                             self._with_include_prefix(service.extends.program,
                                                       service.extends.name))
+        s()
+        s('namespace folly { ')
+        s('  class IOBuf;')
+        s('  class IOBufQueue;')
+        s('}')
+        s('namespace apache { namespace thrift {')
+        s('  class Cpp2RequestContext;')
+        s('  class BinaryProtocolReader;')
+        s('  class CompactProtocolReader;')
+        s('  namespace transport { class THeader; }')
+        s('}}')
         s()
 
         # Open namespace
