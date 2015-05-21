@@ -2472,8 +2472,7 @@ void t_hack_generator::_generate_service_client(
       indent() << "$this->input_ = $input;" << endl <<
       indent() << "$this->output_ = $output ?: $input;" << endl <<
       indent() << "$this->asyncHandler_ = new TClientAsyncHandler();" << endl <<
-      indent() << "$this->eventHandler_ = new TClientEventHandler();" << endl <<
-      indent() << "$this->eventHandler_->setClient($this);" << endl;
+      indent() << "$this->eventHandler_ = new TClientEventHandler();" << endl;
     indent_down();
   }
   out <<

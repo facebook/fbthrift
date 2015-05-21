@@ -2262,8 +2262,7 @@ void t_php_generator::_generate_service_client(
         indent() << "$this->asyncHandler_ = new TClientAsyncHandler();" << endl;
     }
     out <<
-      indent() << "$this->eventHandler_ = new TClientEventHandler();" << endl <<
-      indent() << "$this->eventHandler_->setClient($this);" << endl;
+      indent() << "$this->eventHandler_ = new TClientEventHandler();" << endl;
   }
   indent_down();
   out <<
