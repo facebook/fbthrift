@@ -43,11 +43,13 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     const apache::thrift::SaslServer* sasl_server,
     apache::thrift::async::TEventBaseManager* manager,
     const std::shared_ptr<RequestChannel>& duplexChannel = nullptr)
-    : peerAddress_(*address),
-      header_(header),
+    : header_(header),
       saslServer_(sasl_server),
       manager_(manager),
       duplexChannel_(duplexChannel) {
+    if (address) {
+      peerAddress_ = *address;
+    }
     if (socket) {
       socket->getLocalAddress(&localAddress_);
     }
@@ -66,20 +68,6 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     localAddress_.reset();
     header_ = nullptr;
     cleanupUserData();
-  }
-
-  /**
-   * These are not useful in Cpp2: Header data is contained in
-   * Cpp2Request below, and protocol itself is not instantiated
-   * until we are in the generated code.
-   */
-  std::shared_ptr<apache::thrift::protocol::TProtocol>
-  getInputProtocol() const override {
-    return std::shared_ptr<apache::thrift::protocol::TProtocol>();
-  }
-  std::shared_ptr<apache::thrift::protocol::TProtocol>
-  getOutputProtocol() const override {
-    return std::shared_ptr<apache::thrift::protocol::TProtocol>();
   }
 
   apache::thrift::transport::THeader* getHeader() override {
@@ -152,16 +140,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
   void reset() {
     ctx_->reset();
-  }
-
-  std::shared_ptr<apache::thrift::protocol::TProtocol>
-  getInputProtocol() const override {
-    return ctx_->getInputProtocol();
-  }
-
-  std::shared_ptr<apache::thrift::protocol::TProtocol>
-  getOutputProtocol() const override {
-    return ctx_->getOutputProtocol();
   }
 
   // The following two header functions _are_ thread safe

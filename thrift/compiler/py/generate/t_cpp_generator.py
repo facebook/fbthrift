@@ -723,10 +723,10 @@ class CppGenerator(t_generator.Generator):
                         name=classname,
                         init_dict=init,
                         in_header=True):
-                out('connectionContext_ = '
-                  'std::unique_ptr<TClientBase::ConnContext>('
-                  'new TClientBase::ConnContext(channel_->getHeader(),'
-                     'nullptr));')
+                if not service.extends:
+                    out('connectionContext_.reset('
+                            'new apache::thrift::Cpp2ConnContext(nullptr, '
+                            'nullptr, channel_->getHeader(), nullptr, nullptr));')
 
             if not service.extends:
                 with out().defn('apache::thrift::RequestChannel* '

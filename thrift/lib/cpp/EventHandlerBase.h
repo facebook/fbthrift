@@ -457,25 +457,12 @@ class TClientBase : public EventHandlerBase {
         std::shared_ptr<protocol::TProtocol> inputProtocol,
         std::shared_ptr<protocol::TProtocol> outputProtocol);
 
-    ConnContext(transport::THeader* header,
-                apache::thrift::async::TEventBaseManager* manager)
-        : header_(header),
-          manager_(manager) {}
-
     void init(const folly::SocketAddress* address,
               std::shared_ptr<protocol::TProtocol> inputProtocol,
               std::shared_ptr<protocol::TProtocol> outputProtocol);
 
     const folly::SocketAddress* getPeerAddress() const override {
       return &internalAddress_;
-    }
-
-    transport::THeader* getHeader() override {
-      if (header_) {
-        return header_;
-      } else {
-        return TConnectionContext::getHeader();
-      }
     }
 
     void reset() {
@@ -492,17 +479,11 @@ class TClientBase : public EventHandlerBase {
       return outputProtocol_;
     }
 
-    apache::thrift::async::TEventBaseManager* getEventBaseManager() override {
-      return manager_;
-    }
-
    private:
     folly::SocketAddress* address_;
     folly::SocketAddress internalAddress_;
     std::shared_ptr<protocol::TProtocol> inputProtocol_;
     std::shared_ptr<protocol::TProtocol> outputProtocol_;
-    transport::THeader* header_;
-    apache::thrift::async::TEventBaseManager* manager_;
   };
 
  private:

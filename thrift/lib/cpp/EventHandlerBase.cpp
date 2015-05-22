@@ -126,9 +126,7 @@ TClientBase::getFactories() {
 
 TClientBase::ConnContext::ConnContext(
     std::shared_ptr<protocol::TProtocol> inputProtocol,
-    std::shared_ptr<protocol::TProtocol> outputProtocol)
-    : header_(nullptr)
-    , manager_(nullptr) {
+    std::shared_ptr<protocol::TProtocol> outputProtocol) {
   const folly::SocketAddress* address = nullptr;
 
   if (outputProtocol) {
@@ -144,10 +142,7 @@ TClientBase::ConnContext::ConnContext(
 TClientBase::ConnContext::ConnContext(
     std::shared_ptr<apache::thrift::async::TAsyncChannel> channel,
     std::shared_ptr<protocol::TProtocol> inputProtocol,
-    std::shared_ptr<protocol::TProtocol> outputProtocol)
-    : header_(nullptr)
-    , manager_(nullptr) {
-
+    std::shared_ptr<protocol::TProtocol> outputProtocol) {
   if (channel) {
     auto transport = channel->getTransport();
     if (transport) {
@@ -159,7 +154,6 @@ TClientBase::ConnContext::ConnContext(
   }
 
   init(nullptr, inputProtocol, outputProtocol);
-
 }
 
 void TClientBase::ConnContext::init(

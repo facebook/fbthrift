@@ -48,11 +48,17 @@ class TConnectionContext {
 
   // expose getPeerAddress() defined in TRpcTransportContext
 
-  virtual const folly::SocketAddress* getPeerAddress() const = 0;
+  virtual const folly::SocketAddress* getPeerAddress() const {
+    return nullptr;
+  }
 
-  virtual std::shared_ptr<protocol::TProtocol> getInputProtocol() const = 0;
+  virtual std::shared_ptr<protocol::TProtocol> getInputProtocol() const {
+    return nullptr;
+  }
 
-  virtual std::shared_ptr<protocol::TProtocol> getOutputProtocol() const = 0;
+  virtual std::shared_ptr<protocol::TProtocol> getOutputProtocol() const {
+    return nullptr;
+  }
 
   // Expose the THeader to read headers or other flags
   virtual transport::THeader* getHeader() {
