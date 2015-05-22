@@ -38,12 +38,12 @@ class DProcessor : public AsyncProcessor {
  public:
   explicit DProcessor(ThriftServerInterface* iface) : iface_(iface) {}
 
-  virtual void process(std::unique_ptr<ResponseChannel::Request> req,
-                       std::unique_ptr<folly::IOBuf> buf,
-                       protocol::PROTOCOL_TYPES protType,
-                       Cpp2RequestContext* context,
-                       async::TEventBase* eb,
-                       concurrency::ThreadManager* tm) {
+  void process(std::unique_ptr<ResponseChannel::Request> req,
+               std::unique_ptr<folly::IOBuf> buf,
+               protocol::PROTOCOL_TYPES protType,
+               Cpp2RequestContext* context,
+               async::TEventBase* eb,
+               concurrency::ThreadManager* tm) override {
     assert(iface_);
     auto reqd = makeMoveWrapper(std::move(req));
     auto bufd = makeMoveWrapper(std::move(buf));
@@ -57,8 +57,7 @@ class DProcessor : public AsyncProcessor {
     }));
   }
 
-  virtual bool isOnewayMethod(const folly::IOBuf* buf,
-                              const THeader* header) {
+  bool isOnewayMethod(const folly::IOBuf* buf, const THeader* header) override {
     return false;
   }
  private:
@@ -70,7 +69,7 @@ class DServerInterface : public ServerInterface {
  public:
   explicit DServerInterface(ThriftServerInterface* iface) : iface_(iface) {}
 
-  virtual std::unique_ptr<AsyncProcessor> getProcessor() {
+  std::unique_ptr<AsyncProcessor> getProcessor() override {
     return std::unique_ptr<AsyncProcessor>(new DProcessor(iface_));
   }
  private:

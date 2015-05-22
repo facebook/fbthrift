@@ -100,7 +100,7 @@ static dynamic kDynamics[] = {
 
 class TestServiceHandler : public DynamicTestServiceIf {
  public:
-  void echo(SerializableDynamic& out, const SerializableDynamic& in) {
+  void echo(SerializableDynamic& out, const SerializableDynamic& in) override {
     out = in;
   }
 };

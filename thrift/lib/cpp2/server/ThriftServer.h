@@ -64,7 +64,7 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
     explicit ThriftServerAsyncProcessorFactory(std::shared_ptr<T> t) {
       svIf_ = t;
     }
-    std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() {
+    std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
       return std::unique_ptr<apache::thrift::AsyncProcessor> (
         new typename T::ProcessorType(svIf_.get()));
     }
@@ -310,7 +310,7 @@ class ThriftServer : public apache::thrift::server::TServer
   explicit ThriftServer(
       const std::shared_ptr<HeaderServerChannel>& serverChannel);
 
-  virtual ~ThriftServer();
+  ~ThriftServer() override;
 
   /**
    * Indicate whether it is safe to modify the server config through setters.

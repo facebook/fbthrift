@@ -82,7 +82,8 @@ class TAsyncSingletonProcessorFactory : public TAsyncProcessorFactory {
     const std::shared_ptr<TAsyncProcessor>& processor) :
       processor_(processor) {}
 
-  std::shared_ptr<TAsyncProcessor> getProcessor(server::TConnectionContext*) {
+  std::shared_ptr<TAsyncProcessor> getProcessor(
+      server::TConnectionContext*) override {
     return processor_;
   }
 

@@ -28,7 +28,7 @@ class t_container : public t_type {
     cpp_name_(),
     has_cpp_name_(false) {}
 
-  virtual ~t_container() {}
+  ~t_container() override {}
 
   void set_cpp_name(std::string cpp_name) {
     cpp_name_ = cpp_name;
@@ -43,9 +43,7 @@ class t_container : public t_type {
     return cpp_name_;
   }
 
-  bool is_container() const {
-    return true;
-  }
+  bool is_container() const override { return true; }
 
  private:
   std::string cpp_name_;

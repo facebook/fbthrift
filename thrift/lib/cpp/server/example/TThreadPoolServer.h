@@ -91,20 +91,20 @@ class __attribute__((__deprecated__)) TThreadPoolServer : public TServer {
     stop_(false),
     timeout_(0) {}
 
-  virtual ~TThreadPoolServer();
+  ~TThreadPoolServer() override;
 
-  virtual void serve();
+  void serve() override;
 
   virtual int64_t getTimeout() const;
 
   virtual void setTimeout(int64_t value);
 
-  virtual void stop() {
+  void stop() override {
     stop_ = true;
     serverTransport_->interrupt();
   }
 
-  virtual TConnectionContext* getConnectionContext() const;
+  TConnectionContext* getConnectionContext() const override;
 
  protected:
   class Task;

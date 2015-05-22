@@ -35,7 +35,7 @@ class FastNoopCallback
  public:
   FastNoopCallback(std::unique_ptr<HandlerCallback<void>> callback)
       : callback_(std::move(callback)) {}
-  virtual void runLoopCallback() noexcept {
+  void runLoopCallback() noexcept override {
     callback_->done();
     delete this;
   }
@@ -46,53 +46,55 @@ class AsyncLoadHandler2 : public LoadTestSvIf
                         , public facebook::fb303::FacebookBase2 {
 
  public:
-
-  facebook::fb303::cpp2::fb_status getStatus() {
+  facebook::fb303::cpp2::fb_status getStatus() override {
     return facebook::fb303::cpp2::fb_status::ALIVE;
   }
 
   explicit AsyncLoadHandler2(TEventServer* server = nullptr)
     : FacebookBase2("AsyncLoadHandler2") {}
 
-  void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback);
-  void async_eb_onewayNoop(std::unique_ptr<HandlerCallbackBase> callback);
-  void async_eb_asyncNoop(std::unique_ptr<HandlerCallback<void>> callback);
+  void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback) override;
+  void async_eb_onewayNoop(
+      std::unique_ptr<HandlerCallbackBase> callback) override;
+  void async_eb_asyncNoop(
+      std::unique_ptr<HandlerCallback<void>> callback) override;
   void async_eb_sleep(std::unique_ptr<HandlerCallback<void>> callback,
-                   int64_t microseconds);
+                      int64_t microseconds) override;
   void async_eb_onewaySleep(std::unique_ptr<HandlerCallbackBase> callback,
-                   int64_t microseconds);
+                            int64_t microseconds) override;
   void sync_burn(int64_t microseconds);
-  folly::Future<void> future_burn(int64_t microseconds);
+  folly::Future<void> future_burn(int64_t microseconds) override;
   void sync_onewayBurn(int64_t microseconds);
-  folly::Future<void> future_onewayBurn(int64_t microseconds);
+  folly::Future<void> future_onewayBurn(int64_t microseconds) override;
   void async_eb_badSleep(std::unique_ptr<HandlerCallback<void>> callback,
-                      int64_t microseconds);
+                         int64_t microseconds) override;
   void async_eb_badBurn(std::unique_ptr<HandlerCallback<void>> callback,
-                     int64_t microseconds);
+                        int64_t microseconds) override;
   void async_eb_throwError(std::unique_ptr<HandlerCallback<void>> callback,
-                        int32_t code);
+                           int32_t code) override;
   void async_eb_throwUnexpected(std::unique_ptr<HandlerCallback<void>> callback,
-                             int32_t code);
+                                int32_t code) override;
   void async_eb_onewayThrow(std::unique_ptr<HandlerCallbackBase> callback,
-                         int32_t code);
+                            int32_t code) override;
   void async_eb_send(std::unique_ptr<HandlerCallback<void>> callback,
-                  std::unique_ptr<std::string> data);
+                     std::unique_ptr<std::string> data) override;
   void async_eb_onewaySend(std::unique_ptr<HandlerCallbackBase> callback,
-                        std::unique_ptr<std::string> data);
+                           std::unique_ptr<std::string> data) override;
   void async_eb_recv(
-    std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
-    int64_t bytes);
+      std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
+      int64_t bytes) override;
   void async_eb_sendrecv(
-    std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
-    std::unique_ptr<std::string> data,
-    int64_t recvBytes);
+      std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
+      std::unique_ptr<std::string> data,
+      int64_t recvBytes) override;
   void sync_echo(
     std::string& output,
     std::unique_ptr<std::string> data);
   folly::Future<std::unique_ptr<std::string>> future_echo(
-    std::unique_ptr<std::string> data);
+      std::unique_ptr<std::string> data) override;
   void async_eb_add(std::unique_ptr<HandlerCallback<int64_t>>,
-                 int64_t a, int64_t b);
+                    int64_t a,
+                    int64_t b) override;
 };
 
 }} // apache::thrift

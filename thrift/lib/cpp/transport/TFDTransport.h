@@ -44,17 +44,17 @@ class TFDTransport : public TVirtualTransport<TFDTransport> {
     , close_policy_(close_policy)
   {}
 
-  ~TFDTransport() {
+  ~TFDTransport() override {
     if (close_policy_ == CLOSE_ON_DESTROY) {
       close();
     }
   }
 
-  bool isOpen() { return fd_ >= 0; }
+  bool isOpen() override { return fd_ >= 0; }
 
-  void open() {}
+  void open() override {}
 
-  void close();
+  void close() override;
 
   uint32_t read(uint8_t* buf, uint32_t len);
 

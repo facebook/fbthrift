@@ -57,17 +57,11 @@ class t_base_type : public t_type {
     return base_;
   }
 
-  bool is_void() const {
-    return base_ == TYPE_VOID;
-  }
+  bool is_void() const override { return base_ == TYPE_VOID; }
 
-  bool is_string() const {
-    return base_ == TYPE_STRING;
-  }
+  bool is_string() const override { return base_ == TYPE_STRING; }
 
-  bool is_bool() const {
-    return base_ == TYPE_BOOL;
-  }
+  bool is_bool() const override { return base_ == TYPE_BOOL; }
 
   void set_string_list(bool val) {
     string_list_ = val;
@@ -101,9 +95,7 @@ class t_base_type : public t_type {
     return string_enum_vals_;
   }
 
-  bool is_base_type() const {
-    return true;
-  }
+  bool is_base_type() const override { return true; }
 
   static std::string t_base_name(t_base tbase) {
     switch (tbase) {
@@ -120,21 +112,15 @@ class t_base_type : public t_type {
     }
   }
 
-  virtual std::string get_full_name() const {
-    return t_base_name(base_);
-  }
+  std::string get_full_name() const override { return t_base_name(base_); }
 
-  virtual std::string get_impl_full_name() const {
-    return t_base_name(base_);
-  }
+  std::string get_impl_full_name() const override { return t_base_name(base_); }
 
-  virtual TypeValue get_type_value() const {
+  TypeValue get_type_value() const override {
     return static_cast<TypeValue>(base_);
   }
 
-  virtual uint64_t get_type_id() const {
-    return base_;
-  }
+  uint64_t get_type_id() const override { return base_; }
 
  private:
   t_base base_;

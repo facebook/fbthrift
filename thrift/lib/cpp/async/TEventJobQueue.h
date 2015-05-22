@@ -91,7 +91,7 @@ class TEventJobQueue {
     explicit JobThread(TEventJobQueue *parent) :
         parent_(parent) {
     }
-    virtual ~JobThread() {}
+    ~JobThread() override {}
 
     TEventBase *getEventBase() { return &eventBase_; }
 
@@ -106,7 +106,7 @@ class TEventJobQueue {
     /**
      * Thread main loop
      */
-    void run() {
+    void run() override {
       // Listen for new work
       startConsuming(&eventBase_, &jobQueue_);
       try {
@@ -144,7 +144,7 @@ class TEventJobQueue {
     /**
      * A new runnable arrived - run it!
      */
-    void messageAvailable(TEventRunnable*&& runnable) {
+    void messageAvailable(TEventRunnable*&& runnable) override {
       runnable->setEventBase(&eventBase_);
       runnable->run();
     }

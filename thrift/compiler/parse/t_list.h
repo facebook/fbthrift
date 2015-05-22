@@ -35,21 +35,17 @@ class t_list : public t_container {
     return elem_type_;
   }
 
-  bool is_list() const {
-    return true;
-  }
+  bool is_list() const override { return true; }
 
-  virtual std::string get_full_name() const {
+  std::string get_full_name() const override {
     return "list<" + elem_type_->get_full_name() + ">";
   }
 
-  virtual std::string get_impl_full_name() const {
+  std::string get_impl_full_name() const override {
     return "list<" + elem_type_->get_impl_full_name() + ">";
   }
 
-  virtual TypeValue get_type_value() const {
-    return t_types::TYPE_LIST;
-  }
+  TypeValue get_type_value() const override { return t_types::TYPE_LIST; }
 
  private:
   t_type* elem_type_;

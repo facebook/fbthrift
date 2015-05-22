@@ -40,8 +40,7 @@ protected:
     started_(false), gotLock_(false), signaled_(false) { }
 
 public:
-  virtual void run()
-  {
+ void run() override {
     started_ = true;
     if (writer_) {
       rwlock_->acquireWrite();

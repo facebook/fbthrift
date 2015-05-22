@@ -108,11 +108,9 @@ class ServerThread {
     Helper(ServerThread* serverThread)
       : serverThread_(serverThread) {}
 
-    void run() {
-      serverThread_->run();
-    }
+    void run() override { serverThread_->run(); }
 
-    void preServe(const folly::SocketAddress* address) {
+    void preServe(const folly::SocketAddress* address) override {
       serverThread_->preServe(address);
     }
 

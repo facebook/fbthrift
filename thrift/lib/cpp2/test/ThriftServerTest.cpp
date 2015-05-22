@@ -47,7 +47,7 @@ using apache::thrift::test::TestServiceClient;
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 
 class TestInterface : public TestServiceSvIf {
-  void sendResponse(std::string& _return, int64_t size) {
+  void sendResponse(std::string& _return, int64_t size) override {
     if (size >= 0) {
       usleep(size);
     }
@@ -57,30 +57,28 @@ class TestInterface : public TestServiceSvIf {
     _return = "test" + boost::lexical_cast<std::string>(size);
   }
 
-  void noResponse(int64_t size) {
-    usleep(size);
-  }
+  void noResponse(int64_t size) override { usleep(size); }
 
-  void echoRequest(std::string& _return, std::unique_ptr<std::string> req) {
+  void echoRequest(std::string& _return,
+                   std::unique_ptr<std::string> req) override {
     _return = *req + "ccccccccccccccccccccccccccccccccccccccccccccc";
   }
 
   typedef apache::thrift::HandlerCallback<std::unique_ptr<std::string>>
       StringCob;
   void async_tm_serializationTest(std::unique_ptr<StringCob> callback,
-                                  bool inEventBase) {
+                                  bool inEventBase) override {
     std::unique_ptr<std::string> sp(new std::string("hello world"));
     callback->result(std::move(sp));
   }
 
-  void async_eb_eventBaseAsync(std::unique_ptr<StringCob> callback) {
+  void async_eb_eventBaseAsync(std::unique_ptr<StringCob> callback) override {
     std::unique_ptr<std::string> hello(new std::string("hello world"));
     callback->result(std::move(hello));
   }
 
-  void async_tm_notCalledBack(std::unique_ptr<
-                              apache::thrift::HandlerCallback<void>> cb) {
-  }
+  void async_tm_notCalledBack(
+      std::unique_ptr<apache::thrift::HandlerCallback<void>> cb) override {}
 };
 
 std::shared_ptr<ThriftServer> getServer(
@@ -362,7 +360,7 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
   static std::atomic<bool> done(false);
 
   class OnewayTestInterface: public TestServiceSvIf {
-    void noResponse(int64_t size) {
+    void noResponse(int64_t size) override {
         usleep(size);
         done = true;
     }
@@ -598,13 +596,9 @@ TEST(ThriftServer, Thrift1OnewayRequestTest) {
 }
 
 class Callback : public RequestCallback {
-  void requestSent() {
-    ADD_FAILURE();
-  }
-  void replyReceived(ClientReceiveState&& state) {
-    ADD_FAILURE();
-  }
-  void requestError(ClientReceiveState&& state) {
+  void requestSent() override { ADD_FAILURE(); }
+  void replyReceived(ClientReceiveState&& state) override { ADD_FAILURE(); }
+  void requestError(ClientReceiveState&& state) override {
     try {
       std::rethrow_exception(state.exception());
     } catch(const apache::thrift::transport::TTransportException& ex) {
@@ -694,10 +688,9 @@ TEST(ThriftServer, FailureInjection) {
       : expected_(expected) { }
 
    private:
-    void requestSent() {
-    }
+    void requestSent() override {}
 
-    void replyReceived(ClientReceiveState&& state) {
+    void replyReceived(ClientReceiveState&& state) override {
       std::string response;
       try {
         TestServiceAsyncClient::recv_sendResponse(response, state);
@@ -720,7 +713,7 @@ TEST(ThriftServer, FailureInjection) {
       }
     }
 
-    void requestError(ClientReceiveState&& state) {
+    void requestError(ClientReceiveState&& state) override {
       try {
         std::rethrow_exception(state.exception());
       } catch (const TTransportException& ex) {
@@ -849,42 +842,41 @@ class TestServerEventHandler
     , public TProcessorEventHandlerFactory
     , public std::enable_shared_from_this<TestServerEventHandler> {
  public:
-
-  std::shared_ptr<TProcessorEventHandler> getEventHandler() {
+  std::shared_ptr<TProcessorEventHandler> getEventHandler() override {
     return shared_from_this();
   }
 
   void check() {
     EXPECT_EQ(8, count);
   }
-  void preServe(const folly::SocketAddress* addr) {
+  void preServe(const folly::SocketAddress* addr) override {
     EXPECT_EQ(0, count++);
   }
-  void newConnection(TConnectionContext* ctx) {
+  void newConnection(TConnectionContext* ctx) override {
     EXPECT_EQ(1, count++);
   }
-  void connectionDestroyed(TConnectionContext* ctx) {
+  void connectionDestroyed(TConnectionContext* ctx) override {
     EXPECT_EQ(7, count++);
   }
 
-  void* getContext(const char* fn_name,
-                   TConnectionContext* c) {
+  void* getContext(const char* fn_name, TConnectionContext* c) override {
     EXPECT_EQ(2, count++);
     return nullptr;
   }
-  void freeContext(void* ctx, const char* fn_name) {
+  void freeContext(void* ctx, const char* fn_name) override {
     EXPECT_EQ(6, count++);
   }
-  void preRead(void* ctx, const char* fn_name) {
+  void preRead(void* ctx, const char* fn_name) override {
     EXPECT_EQ(3, count++);
 
   }
-  void onReadData(void* ctx, const char* fn_name,
-                          const SerializedMessage& msg) {
+  void onReadData(void* ctx,
+                  const char* fn_name,
+                  const SerializedMessage& msg) override {
     EXPECT_EQ(4, count++);
   }
 
-  void postRead(void* ctx, const char* fn_name, uint32_t bytes) {
+  void postRead(void* ctx, const char* fn_name, uint32_t bytes) override {
     EXPECT_EQ(5, count++);
   }
 
@@ -925,15 +917,11 @@ TEST(ThriftServer, CallbackOrderingTest) {
 
 class ReadCallbackTest : public TAsyncTransport::ReadCallback {
  public:
-  virtual void getReadBuffer(void** bufReturn, size_t* lenReturn) {
-  }
-  virtual void readDataAvailable(size_t len) noexcept {
-  }
-  virtual void readEOF() noexcept {
-    eof = true;
-  }
+  void getReadBuffer(void** bufReturn, size_t* lenReturn) override {}
+  void readDataAvailable(size_t len) noexcept override {}
+  void readEOF() noexcept override { eof = true; }
 
-  virtual void readError(const transport::TTransportException& ex) noexcept {
+  void readError(const transport::TTransportException& ex) noexcept override {
     eof = true;
   }
 
@@ -1051,7 +1039,7 @@ TEST(ThriftServer, ThriftServerSizeLimits) {
 
 class MyExecutor : public folly::Executor {
  public:
-  virtual void add(std::function<void()> f) {
+  void add(std::function<void()> f) override {
     calls++;
     f();
   }
@@ -1082,7 +1070,7 @@ TEST(ThriftServer, poolExecutorTest) {
 
 class FiberExecutor : public folly::Executor {
  public:
-  virtual void add(std::function<void()> f) {
+  void add(std::function<void()> f) override {
     folly::fibers::getFiberManager(
       *folly::wangle::getIOExecutor()->getEventBase()).add(f);
   }

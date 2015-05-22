@@ -72,99 +72,99 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
 
     inline uint32_t readMessageBegin(std::string& name,
                                      MessageType& messageType,
-                                     int32_t& seqid) {
+                                     int32_t& seqid) override {
       // Only called in python so leave it unimplemented.
       throw std::runtime_error("not implemented");
     }
 
     inline uint32_t readFieldBegin(std::string& name,
                                    TType& fieldType,
-                                   int16_t& fieldId) {
+                                   int16_t& fieldId) override {
       ensureFieldBegin();
       return protocol_.readFieldBegin(name, fieldType, fieldId);
     }
 
     inline uint32_t readMapBegin(TType& keyType,
                                  TType& valType,
-                                 uint32_t& size) {
+                                 uint32_t& size) override {
       ensureMapBegin();
       return protocol_.readMapBegin(keyType, valType, size);
     }
 
-    inline uint32_t readListBegin(TType& elemType, uint32_t& size) {
+    inline uint32_t readListBegin(TType& elemType, uint32_t& size) override {
       ensureListBegin();
       return protocol_.readListBegin(elemType, size);
     }
 
-    inline uint32_t readBool(bool& value) {
+    inline uint32_t readBool(bool& value) override {
       if (!protocol_.boolValue_.hasBoolValue) {
         ensureBuffer(1);
       }
       return protocol_.readBool(value);
     }
 
-    inline uint32_t readBool(std::vector<bool>::reference value) {
+    inline uint32_t readBool(std::vector<bool>::reference value) override {
       bool ret = false;
       uint32_t sz = readBool(ret);
       value = ret;
       return sz;
     }
 
-    inline uint32_t readByte(int8_t& byte) {
+    inline uint32_t readByte(int8_t& byte) override {
       ensureBuffer(1);
       return protocol_.readByte(byte);
     }
 
-    inline uint32_t readI16(int16_t& i16) {
+    inline uint32_t readI16(int16_t& i16) override {
       ensureInteger();
       return protocol_.readI16(i16);
     }
 
-    inline uint32_t readI32(int32_t& i32) {
+    inline uint32_t readI32(int32_t& i32) override {
       ensureInteger();
       return protocol_.readI32(i32);
     }
 
-    inline uint32_t readI64(int64_t& i64) {
+    inline uint32_t readI64(int64_t& i64) override {
       ensureInteger();
       return protocol_.readI64(i64);
     }
 
-    inline uint32_t readDouble(double& dub) {
+    inline uint32_t readDouble(double& dub) override {
       ensureBuffer(8);
       return protocol_.readDouble(dub);
     }
 
-    inline uint32_t readFloat(float& flt) {
+    inline uint32_t readFloat(float& flt) override {
       ensureBuffer(4);
       return protocol_.readFloat(flt);
     }
 
-    inline uint32_t readString(std::string& str) {
+    inline uint32_t readString(std::string& str) override {
       return readStringImpl(str);
     }
 
-    inline uint32_t readString(folly::fbstring& str) {
+    inline uint32_t readString(folly::fbstring& str) override {
       return readStringImpl(str);
     }
 
-    inline uint32_t readBinary(std::string& str) {
+    inline uint32_t readBinary(std::string& str) override {
       return readStringImpl(str);
     }
 
-    inline uint32_t readBinary(folly::fbstring& str) {
+    inline uint32_t readBinary(folly::fbstring& str) override {
       return readStringImpl(str);
     }
 
-    inline uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str) {
+    inline uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str) override {
       return readBinaryIOBufImpl(str);
     }
 
-    inline uint32_t readBinary(folly::IOBuf& str) {
+    inline uint32_t readBinary(folly::IOBuf& str) override {
       return readBinaryIOBufImpl(str);
     }
 
-    inline uint32_t skip(TType type) {
+    inline uint32_t skip(TType type) override {
       return apache::thrift::skip(*this, type);
     }
 
@@ -296,14 +296,14 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
 
     inline uint32_t readMessageBegin(std::string& name,
                                      MessageType& messageType,
-                                     int32_t& seqid) {
+                                     int32_t& seqid) override {
       // This is only called in python so leave it unimplemented.
       throw std::runtime_error("not implemented");
     }
 
     inline uint32_t readFieldBegin(std::string& name,
                                    TType& fieldType,
-                                   int16_t& fieldId) {
+                                   int16_t& fieldId) override {
       uint32_t result = 0;
       int8_t type;
       result += readByte(type);
@@ -318,85 +318,85 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
 
     inline uint32_t readMapBegin(TType& keyType,
                                  TType& valType,
-                                 uint32_t& size) {
+                                 uint32_t& size) override {
       ensureBuffer(6);
       return protocol_.readMapBegin(keyType, valType, size);
     }
 
-    inline uint32_t readListBegin(TType& elemType, uint32_t& size) {
+    inline uint32_t readListBegin(TType& elemType, uint32_t& size) override {
       ensureBuffer(5);
       return protocol_.readListBegin(elemType, size);
     }
 
-    inline uint32_t readSetBegin(TType& elemType, uint32_t& size) {
+    inline uint32_t readSetBegin(TType& elemType, uint32_t& size) override {
       return readListBegin(elemType, size);
     }
 
-    inline uint32_t readBool(bool& value) {
+    inline uint32_t readBool(bool& value) override {
       ensureBuffer(1);
       return protocol_.readBool(value);
     }
 
-    inline uint32_t readBool(std::vector<bool>::reference value) {
+    inline uint32_t readBool(std::vector<bool>::reference value) override {
       ensureBuffer(1);
       return protocol_.readBool(value);
     }
 
-    inline uint32_t readByte(int8_t& byte) {
+    inline uint32_t readByte(int8_t& byte) override {
       ensureBuffer(1);
       return protocol_.readByte(byte);
     }
 
-    inline uint32_t readI16(int16_t& i16) {
+    inline uint32_t readI16(int16_t& i16) override {
       ensureBuffer(2);
       return protocol_.readI16(i16);
     }
 
-    inline uint32_t readI32(int32_t& i32) {
+    inline uint32_t readI32(int32_t& i32) override {
       ensureBuffer(4);
       return protocol_.readI32(i32);
     }
 
-    inline uint32_t readI64(int64_t& i64) {
+    inline uint32_t readI64(int64_t& i64) override {
       ensureBuffer(8);
       return protocol_.readI64(i64);
     }
 
-    inline uint32_t readDouble(double& dub) {
+    inline uint32_t readDouble(double& dub) override {
       ensureBuffer(8);
       return protocol_.readDouble(dub);
     }
 
-    inline uint32_t readFloat(float& flt) {
+    inline uint32_t readFloat(float& flt) override {
       ensureBuffer(4);
       return protocol_.readFloat(flt);
     }
 
-    inline uint32_t readString(std::string& str) {
+    inline uint32_t readString(std::string& str) override {
       return readStringImpl(str);
     }
 
-    inline uint32_t readString(folly::fbstring& str) {
+    inline uint32_t readString(folly::fbstring& str) override {
       return readStringImpl(str);
     }
 
-    inline uint32_t readBinary(std::string& str) {
+    inline uint32_t readBinary(std::string& str) override {
       return readStringImpl(str);
     }
 
-    inline uint32_t readBinary(folly::fbstring& str) {
+    inline uint32_t readBinary(folly::fbstring& str) override {
       return readStringImpl(str);
     }
 
-    inline uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str) {
+    inline uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str) override {
       return readBinaryIOBufImpl(str);
     }
 
-    inline uint32_t readBinary(folly::IOBuf& str) {
+    inline uint32_t readBinary(folly::IOBuf& str) override {
       return readBinaryIOBufImpl(str);
     }
 
-    inline uint32_t skip(TType type) {
+    inline uint32_t skip(TType type) override {
       return apache::thrift::skip(*this, type);
     }
 

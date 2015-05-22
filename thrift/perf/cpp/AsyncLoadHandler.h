@@ -34,9 +34,8 @@ namespace test {
 class AsyncLoadHandler : public LoadTestCobSvIf
                        , public facebook::fb303::AsyncFacebookBase {
  public:
-
-  void getStatus(
-    std::function<void(facebook::fb303::fb_status const& _return)> cob) {
+  void getStatus(std::function<void(facebook::fb303::fb_status const& _return)>
+                     cob) override {
     cob(facebook::fb303::ALIVE);
   }
 
@@ -71,26 +70,26 @@ class AsyncLoadHandler : public LoadTestCobSvIf
     return burnIntervalUsec_;
   }
 
-  virtual void noop(VoidCob cob);
-  virtual void onewayNoop(VoidCob cob);
-  virtual void asyncNoop(VoidCob cob);
-  virtual void sleep(VoidCob cob, const int64_t microseconds);
-  virtual void onewaySleep(VoidCob cob, const int64_t microseconds);
-  virtual void burn(VoidCob cob, const int64_t microseconds);
-  virtual void onewayBurn(VoidCob cob, const int64_t microseconds);
-  virtual void badSleep(VoidCob cob, const int64_t microseconds);
-  virtual void badBurn(VoidCob cob, const int64_t microseconds);
-  virtual void throwError(VoidCob cob, ErrorCob exn_cob, const int32_t code);
-  virtual void throwUnexpected(VoidCob cob, const int32_t code);
-  virtual void onewayThrow(VoidCob cob, const int32_t code);
-  virtual void send(VoidCob cob, const std::string& data);
-  virtual void onewaySend(VoidCob cob, const std::string& data);
-  virtual void recv(StringCob cob, const int64_t bytes);
-  virtual void sendrecv(StringCob cob,
-                        const std::string& data,
-                        const int64_t recvBytes);
-  virtual void echo(StringCob cob, const std::string& data);
-  virtual void add(I64Cob cob, const int64_t a, const int64_t b);
+  void noop(VoidCob cob) override;
+  void onewayNoop(VoidCob cob) override;
+  void asyncNoop(VoidCob cob) override;
+  void sleep(VoidCob cob, const int64_t microseconds) override;
+  void onewaySleep(VoidCob cob, const int64_t microseconds) override;
+  void burn(VoidCob cob, const int64_t microseconds) override;
+  void onewayBurn(VoidCob cob, const int64_t microseconds) override;
+  void badSleep(VoidCob cob, const int64_t microseconds) override;
+  void badBurn(VoidCob cob, const int64_t microseconds) override;
+  void throwError(VoidCob cob, ErrorCob exn_cob, const int32_t code) override;
+  void throwUnexpected(VoidCob cob, const int32_t code) override;
+  void onewayThrow(VoidCob cob, const int32_t code) override;
+  void send(VoidCob cob, const std::string& data) override;
+  void onewaySend(VoidCob cob, const std::string& data) override;
+  void recv(StringCob cob, const int64_t bytes) override;
+  void sendrecv(StringCob cob,
+                const std::string& data,
+                const int64_t recvBytes) override;
+  void echo(StringCob cob, const std::string& data) override;
+  void add(I64Cob cob, const int64_t a, const int64_t b) override;
 
  private:
   class Burner;

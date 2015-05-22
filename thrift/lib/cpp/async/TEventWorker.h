@@ -188,7 +188,7 @@ class TEventWorker :
    * of freeing up memory, so nothing to be done here but release the
    * connection stack.
    */
-  virtual ~TEventWorker();
+  ~TEventWorker() override;
 
   /**
    * Get my TAsyncProcessorFactory object.
@@ -254,26 +254,25 @@ class TEventWorker :
   /**
    * Task completed (called in this worker's thread)
    */
-  void messageAvailable(TaskCompletionMessage &&msg);
+  void messageAvailable(TaskCompletionMessage&& msg) override;
 
-  virtual void connectionAccepted(int fd,
-                                  const folly::SocketAddress& clientAddr)
-    noexcept;
-  virtual void acceptError(const std::exception& ex) noexcept;
-  virtual void acceptStopped() noexcept;
+  void connectionAccepted(
+      int fd, const folly::SocketAddress& clientAddr) noexcept override;
+  void acceptError(const std::exception& ex) noexcept override;
+  void acceptStopped() noexcept override;
 
   /**
    * TAsyncSSLSocket::HandshakeCallback interface
    */
-  void handshakeSuccess(TAsyncSSLSocket *sock) noexcept;
-  void handshakeError(TAsyncSSLSocket *sock,
-                      const transport::TTransportException& ex) noexcept;
-
+  void handshakeSuccess(TAsyncSSLSocket* sock) noexcept override;
+  void handshakeError(
+      TAsyncSSLSocket* sock,
+      const transport::TTransportException& ex) noexcept override;
 
   /**
    * Enter event loop and serve.
    */
-  void serve();
+  void serve() override;
 
   /**
    * Exit event loop.

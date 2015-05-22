@@ -23,7 +23,7 @@ namespace apache { namespace thrift {
 
 class FramingHandler : public folly::wangle::BytesToBytesHandler {
  public:
-  virtual ~FramingHandler() {}
+  ~FramingHandler() override {}
 
   /**
    * If q contains enough data, read it (removing it from q, but retaining

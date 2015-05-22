@@ -81,7 +81,7 @@ class TBinaryProtocolT
     string_buf_(nullptr),
     string_buf_size_(0) {}
 
-  ~TBinaryProtocolT() {
+  ~TBinaryProtocolT() override {
     if (string_buf_ != nullptr) {
       std::free(string_buf_);
       string_buf_size_ = 0;
@@ -268,7 +268,7 @@ class TBinaryProtocolFactoryT : public TBinaryProtocolFactoryBase {
     strict_read_(strict_read),
     strict_write_(strict_write) {}
 
-  virtual ~TBinaryProtocolFactoryT() {}
+  ~TBinaryProtocolFactoryT() override {}
 
   void setStringSizeLimit(int32_t string_limit) {
     string_limit_ = string_limit;
@@ -284,7 +284,7 @@ class TBinaryProtocolFactoryT : public TBinaryProtocolFactoryBase {
   }
 
   std::shared_ptr<TProtocol> getProtocol(
-      std::shared_ptr<transport::TTransport> trans) {
+      std::shared_ptr<transport::TTransport> trans) override {
     std::shared_ptr<Transport_> specific_trans =
       std::dynamic_pointer_cast<Transport_>(trans);
     TProtocol* prot;

@@ -46,7 +46,7 @@ class HeaderServerChannel : public ResponseChannel,
                             virtual public async::TDelayedDestruction {
   typedef ProtectionHandler::ProtectionState ProtectionState;
 protected:
-  virtual ~HeaderServerChannel(){}
+ ~HeaderServerChannel() override {}
 
  public:
   explicit HeaderServerChannel(
@@ -66,7 +66,7 @@ protected:
   }
 
   // TDelayedDestruction methods
-  void destroy();
+  void destroy() override;
 
   apache::thrift::async::TAsyncTransport* getTransport() {
     return cpp2Channel_->getTransport();
@@ -78,7 +78,7 @@ protected:
   }
 
   // Server interface from ResponseChannel
-  void setCallback(ResponseChannel::Callback* callback) {
+  void setCallback(ResponseChannel::Callback* callback) override {
     callback_ = callback;
 
     if (callback) {
@@ -94,11 +94,11 @@ protected:
   }
 
   // Interface from MessageChannel::RecvCallback
-  bool shouldSample();
+  bool shouldSample() override;
   void messageReceived(std::unique_ptr<folly::IOBuf>&&,
-                       std::unique_ptr<sample>);
-  void messageChannelEOF();
-  void messageReceiveErrorWrapped(folly::exception_wrapper&&);
+                       std::unique_ptr<sample>) override;
+  void messageChannelEOF() override;
+  void messageReceiveErrorWrapped(folly::exception_wrapper&&) override;
 
   apache::thrift::async::TEventBase* getEventBase() {
       return cpp2Channel_->getEventBase();
@@ -120,13 +120,13 @@ protected:
                   bool outOfOrder,
                   std::unique_ptr<sample> sample);
 
-    bool isActive() { return active_; }
-    void cancel() { active_ = false; }
+    bool isActive() override { return active_; }
+    void cancel() override { active_ = false; }
 
-    bool isOneway() {return seqId_ == ONEWAY_REQUEST_ID; }
+    bool isOneway() override { return seqId_ == ONEWAY_REQUEST_ID; }
 
     void sendReply(std::unique_ptr<folly::IOBuf>&& buf,
-                   MessageChannel::SendCallback* cb = nullptr) {
+                   MessageChannel::SendCallback* cb = nullptr) override {
       apache::thrift::transport::THeader::StringToStringMap headers;
       sendReply(std::move(buf), cb, std::move(headers));
     }
@@ -135,7 +135,7 @@ protected:
                    apache::thrift::transport::THeader::StringToStringMap&&);
     void sendErrorWrapped(folly::exception_wrapper ex,
                           std::string exCode,
-                          MessageChannel::SendCallback* cb = nullptr) {
+                          MessageChannel::SendCallback* cb = nullptr) override {
       apache::thrift::transport::THeader::StringToStringMap headers;
       sendErrorWrapped(ex, exCode, cb, std::move(headers));
     }
@@ -247,9 +247,10 @@ private:
    public:
     explicit SaslServerCallback(HeaderServerChannel& channel)
       : channel_(channel) {}
-    virtual void saslSendClient(std::unique_ptr<folly::IOBuf>&&);
-    virtual void saslError(folly::exception_wrapper&&);
-    virtual void saslComplete();
+    void saslSendClient(std::unique_ptr<folly::IOBuf>&&) override;
+    void saslError(folly::exception_wrapper&&) override;
+    void saslComplete() override;
+
    private:
     HeaderServerChannel& channel_;
   } saslServerCallback_;

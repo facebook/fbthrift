@@ -32,7 +32,7 @@ class SaslServer : public SaslEndpoint {
 
   class Callback : public apache::thrift::async::HHWheelTimer::Callback {
    public:
-    virtual ~Callback() {}
+    ~Callback() override {}
 
     // Invoked when a new message should be sent to the client.
     virtual void saslSendClient(std::unique_ptr<folly::IOBuf>&&) = 0;
@@ -47,7 +47,7 @@ class SaslServer : public SaslEndpoint {
     // SASL exchange successfully.
     virtual void saslComplete() = 0;
 
-    void timeoutExpired() noexcept {
+    void timeoutExpired() noexcept override {
       using apache::thrift::transport::TTransportException;
       auto ex = folly::make_exception_wrapper<TTransportException>(
           TTransportException::TIMED_OUT,

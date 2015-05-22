@@ -33,21 +33,17 @@ class t_stream : public t_type {
     return elem_type_;
   }
 
-  bool is_stream() const {
-    return true;
-  }
+  bool is_stream() const override { return true; }
 
-  virtual std::string get_full_name() const {
+  std::string get_full_name() const override {
     return "stream<" + elem_type_->get_full_name() + ">";
   }
 
-  virtual std::string get_impl_full_name() const {
+  std::string get_impl_full_name() const override {
     return "stream<" + elem_type_->get_impl_full_name() + ">";
   }
 
-  virtual TypeValue get_type_value() const {
-    return t_types::TYPE_STREAM;
-  }
+  TypeValue get_type_value() const override { return t_types::TYPE_STREAM; }
 
  private:
   t_type* elem_type_;

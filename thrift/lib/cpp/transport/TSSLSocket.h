@@ -64,18 +64,18 @@ class TSSLSocket: public TVirtualTransport<TSSLSocket, TSocket> {
   /**
    * Destructor.
    */
-  ~TSSLSocket();
+  ~TSSLSocket() override;
 
   /**
    * TTransport interface.
    */
-  bool     isOpen();
-  bool     peek();
-  void     open();
-  void     close();
+  bool isOpen() override;
+  bool peek() override;
+  void open() override;
+  void close() override;
   uint32_t read(uint8_t* buf, uint32_t len);
   void     write(const uint8_t* buf, uint32_t len);
-  void     flush();
+  void flush() override;
 
   /**
    * Set whether to use client or server side SSL handshake protocol.
@@ -167,7 +167,7 @@ class TSSLException: public TTransportException {
   explicit TSSLException(const std::string& message):
     TTransportException(TTransportException::INTERNAL_ERROR, message) {}
 
-  virtual const char* what() const throw() {
+  const char* what() const throw() override {
     if (message_.empty()) {
       return "TSSLException";
     } else {

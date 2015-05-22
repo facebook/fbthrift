@@ -76,7 +76,7 @@ class ThreadManager : public folly::Executor {
   typedef std::function<void(std::shared_ptr<Runnable>)> ExpireCallback;
   typedef std::function<void()> InitCallback;
 
-  virtual ~ThreadManager() {}
+  ~ThreadManager() override {}
 
   /**
    * Starts the thread manager. Verifies all attributes have been properly
@@ -183,7 +183,7 @@ class ThreadManager : public folly::Executor {
   /**
    * Implements folly::Executor::add()
    */
-  virtual void add(folly::Func f) override = 0;
+  void add(folly::Func f) override = 0;
 
   /**
    * Removes a pending task
@@ -340,54 +340,45 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   ThreadManagerExecutorAdapter(std::shared_ptr<folly::Executor> exe)
       : exe_(std::move(exe)) {}
 
-  virtual void join() override {}
-  virtual void start() override {}
-  virtual void stop() override {}
-  virtual STATE state() const override {
-    return STARTED;
-  }
-  virtual std::shared_ptr<ThreadFactory> threadFactory() const override {
+  void join() override {}
+  void start() override {}
+  void stop() override {}
+  STATE state() const override { return STARTED; }
+  std::shared_ptr<ThreadFactory> threadFactory() const override {
     return nullptr;
   }
-  virtual void threadFactory(std::shared_ptr<ThreadFactory> value) override {}
-  virtual std::string getNamePrefix() const override {
-    return "";
-  }
-  virtual void setNamePrefix(const std::string& name) override {}
-  virtual void addWorker(size_t value=1) override {}
-  virtual void removeWorker(size_t value=1) override {}
+  void threadFactory(std::shared_ptr<ThreadFactory> value) override {}
+  std::string getNamePrefix() const override { return ""; }
+  void setNamePrefix(const std::string& name) override {}
+  void addWorker(size_t value = 1) override {}
+  void removeWorker(size_t value = 1) override {}
 
+  size_t idleWorkerCount() const override { return 0; }
+  size_t workerCount() const override { return 0; }
+  size_t pendingTaskCount() const override { return 0; }
+  size_t totalTaskCount() const override { return 0; }
+  size_t pendingTaskCountMax() const override { return 0; }
+  size_t expiredTaskCount() override { return 0; }
 
-  virtual size_t idleWorkerCount() const override { return 0; }
-  virtual size_t workerCount() const override { return 0; }
-  virtual size_t pendingTaskCount() const override { return 0; }
-  virtual size_t totalTaskCount() const override { return 0; }
-  virtual size_t pendingTaskCountMax() const override { return 0; }
-  virtual size_t expiredTaskCount() override { return 0; }
-
-  virtual void add(std::shared_ptr<Runnable>task,
-                   int64_t timeout=0LL,
-                   int64_t expiration=0LL,
-                   bool cancellable = false,
-                   bool numa = false) override {
+  void add(std::shared_ptr<Runnable> task,
+           int64_t timeout = 0LL,
+           int64_t expiration = 0LL,
+           bool cancellable = false,
+           bool numa = false) override {
     exe_->add([=]() {
       task->run();
     });
   }
-  virtual void add(folly::Func f) override {
-    exe_->add(std::move(f));
-  }
+  void add(folly::Func f) override { exe_->add(std::move(f)); }
 
-  virtual void remove(std::shared_ptr<Runnable> task) override {}
-  virtual std::shared_ptr<Runnable> removeNextPending() override {
-    return nullptr;
-  }
+  void remove(std::shared_ptr<Runnable> task) override {}
+  std::shared_ptr<Runnable> removeNextPending() override { return nullptr; }
 
-  virtual void setExpireCallback(ExpireCallback expireCallback) override {}
-  virtual void setCodelCallback(ExpireCallback expireCallback) override {}
-  virtual void setThreadInitCallback(InitCallback initCallback) override {}
-  virtual void enableCodel(bool) override {}
-  virtual folly::wangle::Codel* getCodel() override { return nullptr; }
+  void setExpireCallback(ExpireCallback expireCallback) override {}
+  void setCodelCallback(ExpireCallback expireCallback) override {}
+  void setThreadInitCallback(InitCallback initCallback) override {}
+  void enableCodel(bool) override {}
+  folly::wangle::Codel* getCodel() override { return nullptr; }
 
  private:
   std::shared_ptr<folly::Executor> exe_;

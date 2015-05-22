@@ -32,31 +32,31 @@ class ParentHandler : virtual public ParentServiceIf {
       wait_(false),
       log_(log) { }
 
-  int32_t incrementGeneration() {
+  int32_t incrementGeneration() override {
     concurrency::Guard g(mutex_);
     log_->append(EventLog::ET_CALL_INCREMENT_GENERATION, 0, 0);
     return ++generation_;
   }
 
-  int32_t getGeneration() {
+  int32_t getGeneration() override {
     concurrency::Guard g(mutex_);
     log_->append(EventLog::ET_CALL_GET_GENERATION, 0, 0);
     return generation_;
   }
 
-  void addString(const std::string& s) {
+  void addString(const std::string& s) override {
     concurrency::Guard g(mutex_);
     log_->append(EventLog::ET_CALL_ADD_STRING, 0, 0);
     strings_.push_back(s);
   }
 
-  void getStrings(std::vector<std::string>& _return) {
+  void getStrings(std::vector<std::string>& _return) override {
     concurrency::Guard g(mutex_);
     log_->append(EventLog::ET_CALL_GET_STRINGS, 0, 0);
     _return = strings_;
   }
 
-  void getDataWait(std::string& _return, int32_t length) {
+  void getDataWait(std::string& _return, int32_t length) override {
     concurrency::Guard g(mutex_);
     log_->append(EventLog::ET_CALL_GET_DATA_WAIT, 0, 0);
 
@@ -65,14 +65,14 @@ class ParentHandler : virtual public ParentServiceIf {
     _return.append(length, 'a');
   }
 
-  void onewayWait() {
+  void onewayWait() override {
     concurrency::Guard g(mutex_);
     log_->append(EventLog::ET_CALL_ONEWAY_WAIT, 0, 0);
 
     blockUntilTriggered();
   }
 
-  void exceptionWait(const std::string& message) {
+  void exceptionWait(const std::string& message) override {
     concurrency::Guard g(mutex_);
     log_->append(EventLog::ET_CALL_EXCEPTION_WAIT, 0, 0);
 
@@ -83,7 +83,7 @@ class ParentHandler : virtual public ParentServiceIf {
     throw e;
   }
 
-  void unexpectedExceptionWait(const std::string& message) {
+  void unexpectedExceptionWait(const std::string& message) override {
     concurrency::Guard g(mutex_);
     log_->append(EventLog::ET_CALL_UNEXPECTED_EXCEPTION_WAIT, 0, 0);
 
@@ -145,7 +145,7 @@ class ChildHandler : public ParentHandler, virtual public ChildServiceIf {
       ParentHandler(log),
       value_(0) {}
 
-  int32_t setValue(int32_t value) {
+  int32_t setValue(int32_t value) override {
     concurrency::Guard g(mutex_);
     log_->append(EventLog::ET_CALL_SET_VALUE, 0, 0);
 
@@ -154,7 +154,7 @@ class ChildHandler : public ParentHandler, virtual public ChildServiceIf {
     return oldValue;
   }
 
-  int32_t getValue() {
+  int32_t getValue() override {
     concurrency::Guard g(mutex_);
     log_->append(EventLog::ET_CALL_GET_VALUE, 0, 0);
 
@@ -193,16 +193,16 @@ class ServerEventHandler : public server::TServerEventHandler {
       nextId_(1),
       log_(log) {}
 
-  virtual void preServe(const folly::SocketAddress*) {}
+  void preServe(const folly::SocketAddress*) override {}
 
-  virtual void newConnection(server::TConnectionContext* ctx) {
+  void newConnection(server::TConnectionContext* ctx) override {
     ConnContext* context = new ConnContext(ctx, nextId_);
     ++nextId_;
     ctx->setUserData(context);
     log_->append(EventLog::ET_CONN_CREATED, context->id, 0);
   }
 
-  virtual void connectionDestroyed(server::TConnectionContext* ctx) {
+  void connectionDestroyed(server::TConnectionContext* ctx) override {
     ConnContext* context = static_cast<ConnContext*>(ctx->getUserData());
 
     if (ctx != context->ctx) {
@@ -225,7 +225,8 @@ class ProcessorEventHandler : public TProcessorEventHandler {
       nextId_(1),
       log_(log) {}
 
-  void* getContext(const char* fnName, TConnectionContext* serverContext) {
+  void* getContext(const char* fnName,
+                   TConnectionContext* serverContext) override {
     ConnContext* connContext =
       reinterpret_cast<ConnContext*>(serverContext->getUserData());
 
@@ -237,7 +238,7 @@ class ProcessorEventHandler : public TProcessorEventHandler {
     return context;
   }
 
-  void freeContext(void* ctx, const char* fnName) {
+  void freeContext(void* ctx, const char* fnName) override {
     CallContext* context = reinterpret_cast<CallContext*>(ctx);
     checkName(context, fnName);
     log_->append(EventLog::ET_CALL_FINISHED, context->connContext->id,
@@ -245,42 +246,42 @@ class ProcessorEventHandler : public TProcessorEventHandler {
     delete context;
   }
 
-  void preRead(void* ctx, const char* fnName) {
+  void preRead(void* ctx, const char* fnName) override {
     CallContext* context = reinterpret_cast<CallContext*>(ctx);
     checkName(context, fnName);
     log_->append(EventLog::ET_PRE_READ, context->connContext->id, context->id,
                  fnName);
   }
 
-  void postRead(void* ctx, const char* fnName, uint32_t bytes) {
+  void postRead(void* ctx, const char* fnName, uint32_t bytes) override {
     CallContext* context = reinterpret_cast<CallContext*>(ctx);
     checkName(context, fnName);
     log_->append(EventLog::ET_POST_READ, context->connContext->id, context->id,
                  fnName);
   }
 
-  void preWrite(void* ctx, const char* fnName) {
+  void preWrite(void* ctx, const char* fnName) override {
     CallContext* context = reinterpret_cast<CallContext*>(ctx);
     checkName(context, fnName);
     log_->append(EventLog::ET_PRE_WRITE, context->connContext->id, context->id,
                  fnName);
   }
 
-  void postWrite(void* ctx, const char* fnName, uint32_t bytes) {
+  void postWrite(void* ctx, const char* fnName, uint32_t bytes) override {
     CallContext* context = reinterpret_cast<CallContext*>(ctx);
     checkName(context, fnName);
     log_->append(EventLog::ET_POST_WRITE, context->connContext->id,
                  context->id, fnName);
   }
 
-  void asyncComplete(void* ctx, const char* fnName) {
+  void asyncComplete(void* ctx, const char* fnName) override {
     CallContext* context = reinterpret_cast<CallContext*>(ctx);
     checkName(context, fnName);
     log_->append(EventLog::ET_ASYNC_COMPLETE, context->connContext->id,
                  context->id, fnName);
   }
 
-  void handlerError(void* ctx, const char* fnName) {
+  void handlerError(void* ctx, const char* fnName) override {
     CallContext* context = reinterpret_cast<CallContext*>(ctx);
     checkName(context, fnName);
     log_->append(EventLog::ET_HANDLER_ERROR, context->connContext->id,

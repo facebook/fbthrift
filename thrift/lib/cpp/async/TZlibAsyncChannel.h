@@ -40,53 +40,41 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
     return std::shared_ptr<TZlibAsyncChannel>(
         new TZlibAsyncChannel(channel), Destructor());
   }
-  virtual bool readable() const {
-    return channel_->readable();
-  }
-  virtual bool good() const {
-    return channel_->good();
-  }
-  virtual bool error() const {
-    return channel_->error();
-  }
-  virtual bool timedOut() const {
-    return channel_->timedOut();
-  }
-  virtual bool isIdle() const {
-    return channel_->isIdle();
-  }
+  bool readable() const override { return channel_->readable(); }
+  bool good() const override { return channel_->good(); }
+  bool error() const override { return channel_->error(); }
+  bool timedOut() const override { return channel_->timedOut(); }
+  bool isIdle() const override { return channel_->isIdle(); }
 
-  virtual void sendMessage(const VoidCallback& cob,
-                           const VoidCallback& errorCob,
-                           transport::TMemoryBuffer* message);
-  virtual void recvMessage(const VoidCallback& cob,
-                           const VoidCallback& errorCob,
-                           transport::TMemoryBuffer* message);
-  virtual void sendAndRecvMessage(const VoidCallback& cob,
-                                  const VoidCallback& errorCob,
-                                  transport::TMemoryBuffer* sendBuf,
-                                  transport::TMemoryBuffer* recvBuf);
+  void sendMessage(const VoidCallback& cob,
+                   const VoidCallback& errorCob,
+                   transport::TMemoryBuffer* message) override;
+  void recvMessage(const VoidCallback& cob,
+                   const VoidCallback& errorCob,
+                   transport::TMemoryBuffer* message) override;
+  void sendAndRecvMessage(const VoidCallback& cob,
+                          const VoidCallback& errorCob,
+                          transport::TMemoryBuffer* sendBuf,
+                          transport::TMemoryBuffer* recvBuf) override;
 
-  virtual std::shared_ptr<TAsyncTransport> getTransport() {
+  std::shared_ptr<TAsyncTransport> getTransport() override {
     return channel_->getTransport();
   }
 
-  virtual void attachEventBase(TEventBase* eventBase) {
+  void attachEventBase(TEventBase* eventBase) override {
     channel_->attachEventBase(eventBase);
   }
-  virtual void detachEventBase() {
-    channel_->detachEventBase();
-  }
+  void detachEventBase() override { channel_->detachEventBase(); }
 
-  virtual uint32_t getRecvTimeout() const {
+  uint32_t getRecvTimeout() const override {
     return channel_->getRecvTimeout();
   }
 
-  virtual void setRecvTimeout(uint32_t milliseconds) {
+  void setRecvTimeout(uint32_t milliseconds) override {
     channel_->setRecvTimeout(milliseconds);
   }
 
-  virtual void cancelCallbacks() {
+  void cancelCallbacks() override {
     sendRequest_.cancelCallbacks();
     recvRequest_.cancelCallbacks();
   }
@@ -98,7 +86,7 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
    * Users of TZlibAsyncChannel must never delete it directly.  Instead,
    * invoke destroy().
    */
-  virtual ~TZlibAsyncChannel() { }
+  ~TZlibAsyncChannel() override {}
 
  private:
   class SendRequest {

@@ -35,9 +35,7 @@ class t_service : public t_type {
     t_type(program),
     extends_(nullptr) {}
 
-  bool is_service() const {
-    return true;
-  }
+  bool is_service() const override { return true; }
 
   void set_extends(t_service* extends) {
     extends_ = extends;
@@ -55,15 +53,13 @@ class t_service : public t_type {
     return extends_;
   }
 
-  virtual TypeValue get_type_value() const {
-    return t_types::TYPE_SERVICE;
-  }
+  TypeValue get_type_value() const override { return t_types::TYPE_SERVICE; }
 
-  virtual std::string get_full_name() const {
+  std::string get_full_name() const override {
     return make_full_name("service");
   }
 
-  virtual std::string get_impl_full_name() const {
+  std::string get_impl_full_name() const override {
     return make_full_name("service");
   }
 

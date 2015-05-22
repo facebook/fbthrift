@@ -43,24 +43,24 @@ class t_xsd_generator : public t_generator {
     out_dir_base_ = "gen-xsd";
   }
 
-  virtual ~t_xsd_generator() {}
+  ~t_xsd_generator() override {}
 
   /**
    * Init and close methods
    */
 
-  void init_generator();
-  void close_generator();
+  void init_generator() override;
+  void close_generator() override;
 
   /**
    * Program-level generation functions
    */
 
-  void generate_typedef(t_typedef* ttypedef);
-  void generate_enum(t_enum* tenum) {}
+  void generate_typedef(t_typedef* ttypedef) override;
+  void generate_enum(t_enum* tenum) override {}
 
-  void generate_service(t_service* tservice);
-  void generate_struct(t_struct* tstruct);
+  void generate_service(t_service* tservice) override;
+  void generate_struct(t_struct* tstruct) override;
 
  private:
 

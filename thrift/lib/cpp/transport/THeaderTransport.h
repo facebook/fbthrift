@@ -98,29 +98,25 @@ class THeaderTransport
     setSupportedClients(clientTypes);
   }
 
-  void resetProtocol();
+  void resetProtocol() override;
 
-  void open() {
-    transport_->open();
-  }
+  void open() override { transport_->open(); }
 
-  bool isOpen() {
-    return transport_->isOpen();
-  }
+  bool isOpen() override { return transport_->isOpen(); }
 
-  bool peek() {
+  bool peek() override {
     return (this->rBase_ < this->rBound_) || transport_->peek();
   }
 
-  void close() {
+  void close() override {
     flush();
     transport_->close();
   }
 
-  virtual uint32_t readSlow(uint8_t* buf, uint32_t len);
+  uint32_t readSlow(uint8_t* buf, uint32_t len) override;
   virtual uint32_t readAll(uint8_t* buf, uint32_t len);
-  virtual void flush();
-  virtual void onewayFlush();
+  void flush() override;
+  void onewayFlush() override;
 
   std::shared_ptr<TTransport> getUnderlyingTransport() {
     return getUnderlyingInputTransport();
@@ -129,9 +125,7 @@ class THeaderTransport
   std::shared_ptr<TTransport> getUnderlyingInputTransport();
   std::shared_ptr<TTransport> getUnderlyingOutputTransport();
 
-  virtual uint32_t readEnd() {
-    return readBuf_->length() + sizeof(uint32_t);
-  }
+  uint32_t readEnd() override { return readBuf_->length() + sizeof(uint32_t); }
 
   StringToStringMap& getPersistentWriteHeaders() {
     return persistentWriteHeaders_;
@@ -165,7 +159,7 @@ class THeaderTransport
    * Returns true if a frame was read successfully, or false on EOF.
    * (Raises a TTransportException if EOF occurs after a partial frame.)
    */
-  bool readFrame(uint32_t minFrameSize);
+  bool readFrame(uint32_t minFrameSize) override;
 
   void allocateReadBuffer(uint32_t sz);
   uint32_t getWriteBytes();
@@ -204,13 +198,13 @@ class THeaderTransportFactory : public TTransportFactory {
  public:
   THeaderTransportFactory() {}
 
-  virtual ~THeaderTransportFactory() {}
+  ~THeaderTransportFactory() override {}
 
   /**
    * Wraps the transport into a header one.
    */
-  virtual std::shared_ptr<TTransport>
-  getTransport(std::shared_ptr<TTransport> trans) {
+  std::shared_ptr<TTransport> getTransport(
+      std::shared_ptr<TTransport> trans) override {
     return std::shared_ptr<TTransport>(
       new THeaderTransport(trans, &clientTypes_));
   }

@@ -35,7 +35,8 @@ class FetcherHandler : public FetcherCobSvIf,
 
   void fetchHttp(std::function<void(std::string const&)> cob,
                  std::function<void(std::exception const&)>,
-                 const std::string& host, const std::string& path);
+                 const std::string& host,
+                 const std::string& path) override;
 
   /**
    * Set the TEventServer that will be used.

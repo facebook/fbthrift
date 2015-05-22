@@ -54,11 +54,10 @@ class TEventServerServiceHandler :
       eventBase_(eventBase) {
   }
 
-  virtual ~TEventServerServiceHandler() {
-  }
+  ~TEventServerServiceHandler() override {}
 
   void sendResponse(std::function<void(std::string const& _return)> cob,
-                    int64_t size) {
+                    int64_t size) override {
     string s(size, 'a');
 
     // Stop the client event loop so he won't read the whole thing
@@ -68,9 +67,7 @@ class TEventServerServiceHandler :
     cob(s);
   }
 
-  void noop(std::function<void(void)> cob) {
-    cob();
-  }
+  void noop(std::function<void(void)> cob) override { cob(); }
 
  private:
 

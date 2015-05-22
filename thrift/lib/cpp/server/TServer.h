@@ -135,7 +135,7 @@ class TServer : public concurrency::Runnable {
     }
   };
 
-  virtual ~TServer() {}
+  ~TServer() override {}
 
   virtual void serve() = 0;
 
@@ -148,9 +148,7 @@ class TServer : public concurrency::Runnable {
   virtual void stopListening() {}
 
   // Allows running the server as a Runnable thread
-  virtual void run() {
-    serve();
-  }
+  void run() override { serve(); }
 
   std::shared_ptr<TProcessorFactory> getProcessorFactory() {
     return processorFactory_;

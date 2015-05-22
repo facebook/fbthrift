@@ -45,19 +45,19 @@ class t_json_generator : public t_generator {
     out_dir_base_ = "gen-json";
   }
 
-  void generate_program();
+  void generate_program() override;
 
   /**
    * Program-level generation functions
    */
 
-  void generate_typedef (t_typedef*  ttypedef);
-  void generate_enum    (t_enum*     tenum);
-  void generate_const   (t_const*    tconst);
-  void generate_consts  (vector<t_const*> consts);
-  void generate_struct  (t_struct*   tstruct);
-  void generate_service (t_service*  tservice);
-  void generate_xception(t_struct*   txception);
+  void generate_typedef(t_typedef* ttypedef) override;
+  void generate_enum(t_enum* tenum) override;
+  void generate_const(t_const* tconst) override;
+  void generate_consts(vector<t_const*> consts) override;
+  void generate_struct(t_struct* tstruct) override;
+  void generate_service(t_service* tservice) override;
+  void generate_xception(t_struct* txception) override;
 
   void   print_type       (t_type* ttype);
   void   print_const_value(t_const_value* tvalue);

@@ -43,7 +43,7 @@ class ScopedServerThread::Helper : public Runnable,
   void init(const shared_ptr<TServer>& server,
             const shared_ptr<Helper>& self);
 
-  void run();
+  void run() override;
 
   /**
    * Stop the server.
@@ -68,7 +68,7 @@ class ScopedServerThread::Helper : public Runnable,
    */
   void waitUntilStarted();
 
-  void preServe(const folly::SocketAddress* address);
+  void preServe(const folly::SocketAddress* address) override;
 
   const std::shared_ptr<TServer>& getServer() const {
     return server_;
@@ -93,9 +93,7 @@ class ScopedServerThread::Helper : public Runnable,
    public:
     explicit SavedExceptionImpl(const ExceptionT& x) : exception_(x) {}
 
-    virtual void rethrow() {
-      throw exception_;
-    }
+    void rethrow() override { throw exception_; }
 
    private:
     ExceptionT exception_;

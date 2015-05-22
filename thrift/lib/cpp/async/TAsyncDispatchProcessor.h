@@ -32,10 +32,10 @@ namespace apache { namespace thrift { namespace async {
 template <class Protocol_>
 class TAsyncDispatchProcessorT : public TAsyncProcessor {
  public:
-  virtual void process(std::function<void(bool success)> _return,
-                       std::shared_ptr<protocol::TProtocol> in,
-                       std::shared_ptr<protocol::TProtocol> out,
-                       TConnectionContext* context) {
+  void process(std::function<void(bool success)> _return,
+               std::shared_ptr<protocol::TProtocol> in,
+               std::shared_ptr<protocol::TProtocol> out,
+               TConnectionContext* context) override {
     protocol::TProtocol* inRaw = in.get();
     protocol::TProtocol* outRaw = out.get();
 
@@ -120,10 +120,10 @@ class TAsyncDispatchProcessorT : public TAsyncProcessor {
  */
 class TAsyncDispatchProcessor : public TAsyncProcessor {
  public:
-  virtual void process(std::function<void(bool success)> _return,
-                       std::shared_ptr<protocol::TProtocol> in,
-                       std::shared_ptr<protocol::TProtocol> out,
-                       TConnectionContext* context) {
+  void process(std::function<void(bool success)> _return,
+               std::shared_ptr<protocol::TProtocol> in,
+               std::shared_ptr<protocol::TProtocol> out,
+               TConnectionContext* context) override {
     protocol::TProtocol* inRaw = in.get();
     protocol::TProtocol* outRaw = out.get();
 

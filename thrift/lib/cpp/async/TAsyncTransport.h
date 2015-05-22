@@ -48,7 +48,7 @@ class TAsyncTransport : virtual public folly::AsyncTransportWrapper {
     virtual void readError(
       const transport::TTransportException& ex) noexcept = 0;
    private:
-    virtual void readErr(const folly::AsyncSocketException& ex) noexcept {
+    void readErr(const folly::AsyncSocketException& ex) noexcept override {
       transport::TTransportException tex(
         transport::TTransportException::TTransportExceptionType(ex.getType()),
         ex.what(), ex.getErrno());
@@ -64,8 +64,8 @@ class TAsyncTransport : virtual public folly::AsyncTransportWrapper {
       size_t bytes, const transport::TTransportException& ex) noexcept = 0;
 
    private:
-    virtual void writeErr(
-      size_t bytes, const folly::AsyncSocketException& ex) noexcept {
+    void writeErr(size_t bytes,
+                  const folly::AsyncSocketException& ex) noexcept override {
       transport::TTransportException tex(
         transport::TTransportException::TTransportExceptionType(ex.getType()),
         ex.what(), ex.getErrno());
@@ -79,7 +79,7 @@ class TAsyncTransport : virtual public folly::AsyncTransportWrapper {
   virtual void setReadCallback(TAsyncTransport::ReadCallback* callback) {
     setReadCB(callback);
   }
-  virtual TAsyncTransport::ReadCallback* getReadCallback() const = 0;
+  TAsyncTransport::ReadCallback* getReadCallback() const override = 0;
 };
 
 }}} // apache::thrift::async

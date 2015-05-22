@@ -77,13 +77,13 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
 
   class ConnectCallback : public folly::AsyncSocket::ConnectCallback {
    public:
-    virtual ~ConnectCallback() {}
+    ~ConnectCallback() override {}
 
     /**
      * connectSuccess() will be invoked when the connection has been
      * successfully established.
      */
-    virtual void connectSuccess() noexcept = 0;
+    void connectSuccess() noexcept override = 0;
 
     /**
      * connectError() will be invoked if the connection attempt fails.
@@ -94,8 +94,7 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
       noexcept = 0;
 
    private:
-    void connectErr(const folly::AsyncSocketException& ex)
-      noexcept {
+    void connectErr(const folly::AsyncSocketException& ex) noexcept override {
       transport::TTransportException tex(
         transport::TTransportException::TTransportExceptionType(ex.getType()),
         ex.what(), ex.getErrno());
@@ -105,12 +104,11 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
   };
 
   // Read and write methods that aren't part of folly::AsyncTransport
-  virtual void setReadCallback(
-    TAsyncTransport::ReadCallback* callback) override {
+  void setReadCallback(TAsyncTransport::ReadCallback* callback) override {
     AsyncSocket::setReadCB(callback);
   }
 
-  virtual TAsyncTransport::ReadCallback* getReadCallback() const override {
+  TAsyncTransport::ReadCallback* getReadCallback() const override {
     return dynamic_cast<TAsyncTransport::ReadCallback*>(
       AsyncSocket::getReadCallback());
   }

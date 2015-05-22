@@ -160,7 +160,7 @@ class TUnframedAsyncChannel :
    * Users of TUnframedAsyncChannel must never delete it directly.  Instead,
    * invoke destroy().
    */
-  virtual ~TUnframedAsyncChannel() { }
+  ~TUnframedAsyncChannel() override {}
 };
 
 }}} // apache::thrift::async

@@ -69,15 +69,15 @@ class PthreadThread : public Thread {
 
   PthreadThread(int policy, int priority, int stackSize, bool detached,
                 std::shared_ptr<Runnable> runnable);
-  ~PthreadThread();
+  ~PthreadThread() override;
 
-  virtual void start();
-  void join();
-  Thread::id_t getId();
-  std::shared_ptr<Runnable> runnable() const;
-  void runnable(std::shared_ptr<Runnable> value);
+  void start() override;
+  void join() override;
+  Thread::id_t getId() override;
+  std::shared_ptr<Runnable> runnable() const override;
+  void runnable(std::shared_ptr<Runnable> value) override;
   void weakRef(std::shared_ptr<PthreadThread> self);
-  bool setName(const std::string& name);
+  bool setName(const std::string& name) override;
 };
 
 /**
@@ -145,13 +145,12 @@ class PosixThreadFactory : public ThreadFactory {
 
   // From ThreadFactory;
   std::shared_ptr<Thread> newThread(
-      const std::shared_ptr<Runnable>& runnable) const;
-  std::shared_ptr<Thread> newThread(
-      const std::shared_ptr<Runnable>& runnable,
-      DetachState detachState) const;
+      const std::shared_ptr<Runnable>& runnable) const override;
+  std::shared_ptr<Thread> newThread(const std::shared_ptr<Runnable>& runnable,
+                                    DetachState detachState) const override;
 
   // From ThreadFactory;
-  Thread::id_t getCurrentThreadId() const;
+  Thread::id_t getCurrentThreadId() const override;
 
   /**
    * Gets stack size for created threads

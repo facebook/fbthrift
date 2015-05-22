@@ -34,22 +34,22 @@ public:
   explicit StubSaslClient(apache::thrift::async::TEventBase*,
     const std::shared_ptr<SecurityLogger>& logger = nullptr,
     int forceMsSpentPerRTT = 0);
-  virtual void start(Callback *cb);
-  virtual void consumeFromServer(
-    Callback *cb, std::unique_ptr<folly::IOBuf>&& message);
+  void start(Callback* cb) override;
+  void consumeFromServer(Callback* cb,
+                         std::unique_ptr<folly::IOBuf>&& message) override;
   virtual std::unique_ptr<folly::IOBuf> wrap(std::unique_ptr<folly::IOBuf>&&);
   virtual std::unique_ptr<folly::IOBuf> unwrap(
     folly::IOBufQueue* q, size_t* remaining);
-  virtual void setClientIdentity(const std::string& identity) {}
-  virtual void setServiceIdentity(const std::string& identity) {}
-  virtual std::string getClientIdentity() const;
-  virtual std::string getServerIdentity() const;
-  virtual std::unique_ptr<folly::IOBuf> encrypt(
-    std::unique_ptr<folly::IOBuf>&& buf) {
+  void setClientIdentity(const std::string& identity) override {}
+  void setServiceIdentity(const std::string& identity) override {}
+  std::string getClientIdentity() const override;
+  std::string getServerIdentity() const override;
+  std::unique_ptr<folly::IOBuf> encrypt(
+      std::unique_ptr<folly::IOBuf>&& buf) override {
     return std::move(buf);
   }
-  virtual std::unique_ptr<folly::IOBuf> decrypt(
-    std::unique_ptr<folly::IOBuf>&& buf) {
+  std::unique_ptr<folly::IOBuf> decrypt(
+      std::unique_ptr<folly::IOBuf>&& buf) override {
     return std::move(buf);
   }
 
@@ -58,11 +58,9 @@ public:
   void setForceTimeout() { forceTimeout_ = true; }
   void setForceMsSpentPerRTT(int t) { forceMsSpentPerRTT_ = t; }
 
-  const std::string* getErrorString() const {
-    return nullptr;
-  }
+  const std::string* getErrorString() const override { return nullptr; }
 
-  void setErrorString(const std::string& str) {}
+  void setErrorString(const std::string& str) override {}
 
 private:
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;

@@ -100,7 +100,7 @@ class ResponseChannel : virtual public TDelayedDestruction {
   virtual void setCallback(Callback*) = 0;
 
  protected:
-  virtual ~ResponseChannel() {}
+  ~ResponseChannel() override {}
 };
 
 }} // apache::thrift

@@ -37,13 +37,11 @@ class TNullTransport : public TVirtualTransport<TNullTransport> {
  public:
   TNullTransport() {}
 
-  ~TNullTransport() {}
+  ~TNullTransport() override {}
 
-  bool isOpen() {
-    return true;
-  }
+  bool isOpen() override { return true; }
 
-  void open() {}
+  void open() override {}
 
   void write(const uint8_t* /* buf */, uint32_t /* len */) {
     return;

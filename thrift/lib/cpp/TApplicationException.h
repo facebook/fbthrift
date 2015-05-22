@@ -74,7 +74,7 @@ class TApplicationException : public TException {
     message_(message),
     type_(type) {}
 
-  virtual ~TApplicationException() throw() {}
+  ~TApplicationException() throw() override {}
 
   /**
    * Returns an error code that provides information about the type of error
@@ -86,7 +86,7 @@ class TApplicationException : public TException {
     return type_;
   }
 
-  virtual const char* what() const throw() {
+  const char* what() const throw() override {
     if (message_.empty()) {
       switch (type_) {
         case UNKNOWN:

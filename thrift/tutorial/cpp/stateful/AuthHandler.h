@@ -26,10 +26,10 @@ class AuthHandler : virtual public AuthenticatedServiceIf {
  public:
   AuthHandler(const std::shared_ptr<ServiceAuthState>& serviceState,
               apache::thrift::server::TConnectionContext* ctx);
-  ~AuthHandler();
+  ~AuthHandler() override;
 
-  virtual void authenticate(const std::string& username);
-  virtual void listSessions(std::vector<SessionInfo> &_return);
+  void authenticate(const std::string& username) override;
+  void listSessions(std::vector<SessionInfo>& _return) override;
 
   const SessionInfo* getSessionInfo() const {
     return &sessionInfo_;

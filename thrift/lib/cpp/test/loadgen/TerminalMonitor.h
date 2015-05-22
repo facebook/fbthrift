@@ -33,7 +33,7 @@ class TerminalMonitor : public Monitor {
  public:
   TerminalMonitor();
 
-  virtual void redisplay(uint64_t intervalUsec);
+  void redisplay(uint64_t intervalUsec) override;
 
   /**
    * Initialize monitoring information.
@@ -46,7 +46,7 @@ class TerminalMonitor : public Monitor {
    * If subclasses override initializeInfo(), they should make sure to call
    * TerminalMonitor::initializeInfo() in their method.
    */
-  virtual void initializeInfo();
+  void initializeInfo() override;
 
   /**
    * Print header lines.

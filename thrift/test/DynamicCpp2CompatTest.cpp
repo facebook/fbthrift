@@ -99,7 +99,7 @@ static dynamic kDynamics[] = {
 
 class TestServiceHandler : public DynamicTestCompatServiceSvIf {
  public:
-  void echo(SerializableDynamic& out, const SerializableDynamic& in) {
+  void echo(SerializableDynamic& out, const SerializableDynamic& in) override {
     out = in;
   }
 };

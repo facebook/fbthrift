@@ -134,31 +134,31 @@ public:
   /**
    * Destroyes the socket object, closing it if necessary.
    */
-  virtual ~TSocket();
+  ~TSocket() override;
 
   /**
    * Whether the socket is alive.
    *
    * @return Is the socket alive?
    */
-  bool isOpen();
+  bool isOpen() override;
 
   /**
    * Calls select on the socket to see if there is more data available.
    */
-  bool peek();
+  bool peek() override;
 
   /**
    * Creates and opens the UNIX socket.
    *
    * @throws TTransportException If the socket could not connect
    */
-  virtual void open();
+  void open() override;
 
   /**
    * Shuts down communications on the socket.
    */
-  virtual void close();
+  void close() override;
 
   /**
    * Reads from the underlying socket.
@@ -299,7 +299,7 @@ public:
   /*
    * Returns the address of the host to which the socket is connected
    */
-  const folly::SocketAddress* getPeerAddress();
+  const folly::SocketAddress* getPeerAddress() override;
 
   /**
    * Returns the DNS name of the host to which the socket is connected

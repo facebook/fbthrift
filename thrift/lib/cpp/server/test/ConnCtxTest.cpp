@@ -63,7 +63,7 @@ class ConnCtxHandler : public ConnCtxServiceIf {
     server_ = server;
   }
 
-  virtual void getClientAddress(string& result) {
+  void getClientAddress(string& result) override {
     TConnectionContext* ctx = server_->getConnectionContext();
     if (ctx == nullptr) {
       CtxError ex;
@@ -94,7 +94,7 @@ class CtxClient : public Runnable {
     : numIterations_(numIterations),
       addresses_(addresses) {}
 
-  virtual void run() {
+  void run() override {
     for (uint32_t n = 0; n < numIterations_; ++n) {
       for (vector<folly::SocketAddress>::const_iterator it = addresses_->begin();
            it != addresses_->end();

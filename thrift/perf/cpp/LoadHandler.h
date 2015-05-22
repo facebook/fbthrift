@@ -29,28 +29,28 @@ class LoadHandler : public LoadTestIf
                   , public facebook::fb303::FacebookBase {
  public:
   LoadHandler() : FacebookBase("LoadHandler") {}
-  virtual void noop();
-  virtual void onewayNoop();
-  virtual void asyncNoop();
-  virtual void sleep(const int64_t microseconds);
-  virtual void onewaySleep(const int64_t microseconds);
-  virtual void burn(const int64_t microseconds);
-  virtual void onewayBurn(const int64_t microseconds);
-  virtual void badSleep(const int64_t microseconds);
-  virtual void badBurn(const int64_t microseconds);
-  virtual void throwError(const int32_t code);
-  virtual void throwUnexpected(const int32_t code);
-  virtual void onewayThrow(const int32_t code);
-  virtual void send(const std::string& data);
-  virtual void onewaySend(const std::string& data);
-  virtual void recv(std::string& _return, const int64_t bytes);
-  virtual void sendrecv(std::string& _return,
-                        const std::string& data,
-                        const int64_t recvBytes);
-  virtual void echo(std::string& _return, const std::string& data);
-  virtual int64_t add(int64_t a, int64_t b);
+  void noop() override;
+  void onewayNoop() override;
+  void asyncNoop() override;
+  void sleep(const int64_t microseconds) override;
+  void onewaySleep(const int64_t microseconds) override;
+  void burn(const int64_t microseconds) override;
+  void onewayBurn(const int64_t microseconds) override;
+  void badSleep(const int64_t microseconds) override;
+  void badBurn(const int64_t microseconds) override;
+  void throwError(const int32_t code) override;
+  void throwUnexpected(const int32_t code) override;
+  void onewayThrow(const int32_t code) override;
+  void send(const std::string& data) override;
+  void onewaySend(const std::string& data) override;
+  void recv(std::string& _return, const int64_t bytes) override;
+  void sendrecv(std::string& _return,
+                const std::string& data,
+                const int64_t recvBytes) override;
+  void echo(std::string& _return, const std::string& data) override;
+  int64_t add(int64_t a, int64_t b) override;
 
-  facebook::fb303::fb_status getStatus() {
+  facebook::fb303::fb_status getStatus() override {
     return facebook::fb303::ALIVE;
   }
 

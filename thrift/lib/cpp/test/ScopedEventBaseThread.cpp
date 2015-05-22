@@ -31,9 +31,7 @@ class EventBaseRunner : public Runnable {
  public:
   explicit EventBaseRunner(TEventBase *eventBase) : eventBase_(eventBase) {}
 
-  virtual void run() {
-    eventBase_->loopForever();
-  }
+  void run() override { eventBase_->loopForever(); }
  private:
   TEventBase *eventBase_;
 };

@@ -78,7 +78,7 @@ class t_d_generator : public t_oop_generator {
   }
 
  protected:
-  virtual void init_generator() {
+  void init_generator() override {
     // Make output directory
     MKDIR(get_out_dir().c_str());
 
@@ -119,12 +119,12 @@ class t_d_generator : public t_oop_generator {
     if (!includes.empty()) f_types_ << endl;
   }
 
-  virtual void close_generator() {
+  void close_generator() override {
     // Close output file
     f_types_.close();
   }
 
-  virtual void generate_consts(std::vector<t_const*> consts) {
+  void generate_consts(std::vector<t_const*> consts) override {
     string f_consts_name = package_dir_+program_name_+"_constants.d";
     ofstream f_consts;
     f_consts.open(f_consts_name.c_str());
@@ -173,13 +173,13 @@ class t_d_generator : public t_oop_generator {
       "}" << endl;
   }
 
-  virtual void generate_typedef(t_typedef* ttypedef) {
+  void generate_typedef(t_typedef* ttypedef) override {
     f_types_ <<
       indent() << "alias " << render_type_name(ttypedef->get_type()) << " " <<
       ttypedef->get_symbolic() << ";" << endl << endl;
   }
 
-  virtual void generate_enum(t_enum* tenum) {
+  void generate_enum(t_enum* tenum) override {
     vector<t_enum_value*> constants = tenum->get_constants();
 
     string enum_name = tenum->get_name();
@@ -209,15 +209,15 @@ class t_d_generator : public t_oop_generator {
     f_types_ << endl;
   }
 
-  virtual void generate_struct(t_struct* tstruct) {
+  void generate_struct(t_struct* tstruct) override {
     print_struct_definition(f_types_, tstruct, false);
   }
 
-  virtual void generate_xception(t_struct* txception) {
+  void generate_xception(t_struct* txception) override {
     print_struct_definition(f_types_, txception, true);
   }
 
-  virtual void generate_service(t_service* tservice) {
+  void generate_service(t_service* tservice) override {
     string svc_name = tservice->get_name();
 
     // Service implementation file includes

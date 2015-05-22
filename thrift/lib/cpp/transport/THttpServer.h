@@ -28,15 +28,15 @@ class THttpServer : public THttpTransport {
  public:
   explicit THttpServer(std::shared_ptr<TTransport> transport);
 
-  virtual ~THttpServer();
+  ~THttpServer() override;
 
-  virtual void flush();
+  void flush() override;
 
  protected:
 
   void readHeaders();
-  virtual void parseHeader(char* header);
-  virtual bool parseStatusLine(char* status);
+  void parseHeader(char* header) override;
+  bool parseStatusLine(char* status) override;
   std::string getTimeRFC1123();
 
 };
@@ -48,12 +48,13 @@ class THttpServerTransportFactory : public TTransportFactory {
  public:
   THttpServerTransportFactory() {}
 
-  virtual ~THttpServerTransportFactory() {}
+  ~THttpServerTransportFactory() override {}
 
   /**
    * Wraps the transport into a buffered one.
    */
-  virtual std::shared_ptr<TTransport> getTransport(std::shared_ptr<TTransport> trans) {
+  std::shared_ptr<TTransport> getTransport(
+      std::shared_ptr<TTransport> trans) override {
     return std::shared_ptr<TTransport>(new THttpServer(trans));
   }
 

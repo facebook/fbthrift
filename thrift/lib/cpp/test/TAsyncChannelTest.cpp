@@ -337,7 +337,7 @@ class ChunkSender : private TAsyncTransport::WriteCallback,
     socket_->write(this, buf, len);
   }
 
-  void writeSuccess() noexcept {
+  void writeSuccess() noexcept override {
     bufOffset_ += currentChunkLen_;
 
     ++scheduleIndex_;
@@ -347,13 +347,11 @@ class ChunkSender : private TAsyncTransport::WriteCallback,
   }
 
   void writeError(size_t bytesWritten,
-                  const TTransportException& ex) noexcept {
+                  const TTransportException& ex) noexcept override {
     error_ = true;
   }
 
-  virtual void timeoutExpired() noexcept {
-    sendNow();
-  }
+  void timeoutExpired() noexcept override { sendNow(); }
 
   uint32_t bufOffset_;
   uint32_t scheduleIndex_;
@@ -473,7 +471,7 @@ class MultiMessageSenderReceiver : private TAsyncTransport::WriteCallback,
       readError_ = true;
     }
 
-    void writeSuccess() noexcept {
+    void writeSuccess() noexcept override {
       uint32_t sentSize = std::min(writeSize_,
                                    writeMemoryBuffer_.available_read());
       writeMemoryBuffer_.consume(sentSize);
@@ -483,7 +481,7 @@ class MultiMessageSenderReceiver : private TAsyncTransport::WriteCallback,
     }
 
     void writeError(size_t bytesWritten,
-                  const TTransportException& ex) noexcept {
+                    const TTransportException& ex) noexcept override {
       writeError_ = true;
     }
 
@@ -496,9 +494,7 @@ class MultiMessageSenderReceiver : private TAsyncTransport::WriteCallback,
      }
    }
 
-   virtual void timeoutExpired() noexcept {
-     send();
-   }
+   void timeoutExpired() noexcept override { send(); }
 
   void send() {
     uint32_t availableSize = writeMemoryBuffer_.available_read();
@@ -533,7 +529,7 @@ class EventBaseAborter : public TAsyncTimeout {
     scheduleTimeout(timeoutMS);
   }
 
-  virtual void timeoutExpired() noexcept {
+  void timeoutExpired() noexcept override {
     FAIL() << "test timed out";
     eventBase_->terminateLoopSoon();
   }
@@ -617,13 +613,13 @@ class SendRecvTest : public SocketPairTest<ChannelT> {
     : msg_(msgLen) {
   }
 
-  void preLoop() {
+  void preLoop() override {
     msg_.copyTo(&sendBuf_);
     sendCallback_.send(this->channel0_, &sendBuf_);
     recvCallback_.recv(this->channel1_, &recvBuf_);
   }
 
-  void postLoop() {
+  void postLoop() override {
     CHECK_EQ(sendCallback_.getSendError(), 0);
     CHECK_EQ(sendCallback_.getSendDone(), 1);
     CHECK_EQ(recvCallback_.getRecvError(), 0);
@@ -667,11 +663,11 @@ class MultiSendRecvTest : public SocketPairTest<ChannelT> {
                                   delayMS) {
   }
 
-  void preLoop() {
+    void preLoop() override {
     multiMessageSenderReceiver_.initialize(this->channel1_);
   }
 
-  void postLoop() {
+  void postLoop() override {
     CHECK_EQ(multiMessageSenderReceiver_.getReadError(), false);
     CHECK_EQ(multiMessageSenderReceiver_.getWriteError(), false);
 
@@ -843,7 +839,7 @@ class TimeoutQueuedTest : public SocketPairTest<ChannelT> {
       , msg_(911) {
   }
 
-  void preLoop() {
+  void preLoop() override {
 
     this->channel1_->setRecvTimeout(kRecvDelay * n_msgs_ + kTimeout);
 
@@ -873,7 +869,7 @@ class TimeoutQueuedTest : public SocketPairTest<ChannelT> {
     recvCallback_.recv(this->channel1_, &readMemoryBuffer_);
   }
 
-  void postLoop() {
+  void postLoop() override {
     CHECK_EQ(recvCallback_.getRecvError(), 2);
     CHECK_EQ(recvCallback_.getRecvDone(), 1);
 
@@ -910,7 +906,7 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
     , sender_(&this->eventBase_, this->socket0_.get(), &msg_, schedule) {
   }
 
-  void preLoop() {
+  void preLoop() override {
     if (timeout_ > milliseconds(0)) {
       this->channel1_->setRecvTimeout(timeout_.count());
     }
@@ -919,7 +915,7 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
     sender_.start();
   }
 
-  void postLoop() {
+  void postLoop() override {
     bool expectTimeout = false;
     milliseconds expectedMS = milliseconds(0);
     milliseconds tolerance = milliseconds(0);
@@ -1138,7 +1134,7 @@ class SendTimeoutTest : public SocketPairTest<ChannelT> {
     , msg_(1024*1024) {
   }
 
-  void preLoop() {
+  void preLoop() override {
     this->socket0_->setSendTimeout(timeout_.count());
     msg_.copyTo(&sendBuf_);
     sendCallback_.send(this->channel0_, &sendBuf_);
@@ -1147,7 +1143,7 @@ class SendTimeoutTest : public SocketPairTest<ChannelT> {
     start_.reset();
   }
 
-  void postLoop() {
+  void postLoop() override {
     CHECK_EQ(sendCallback_.getSendError(), 1);
     CHECK_EQ(sendCallback_.getSendDone(), 0);
     T_CHECK_TIMEOUT(start_, sendCallback_.getTimestamp(), timeout_);
@@ -1182,7 +1178,7 @@ class SendClosedTest : public SocketPairTest<ChannelT> {
     , msg_(1024*1024) {
   }
 
-  void preLoop() {
+  void preLoop() override {
     msg_.copyTo(&sendBuf_);
     sendCallback_.send(this->channel0_, &sendBuf_);
 
@@ -1194,7 +1190,7 @@ class SendClosedTest : public SocketPairTest<ChannelT> {
     start_.reset();
   }
 
-  void postLoop() {
+  void postLoop() override {
     CHECK_EQ(sendCallback_.getSendError(), 1);
     CHECK_EQ(sendCallback_.getSendDone(), 0);
     T_CHECK_TIMEOUT(start_, sendCallback_.getTimestamp(), closeTimeout_);

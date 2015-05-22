@@ -44,10 +44,11 @@ class AcceptCallback : public TAsyncServerSocket::AcceptCallback {
  public:
   explicit AcceptCallback(const std::function<void(int)>& fn) : fn_(fn) {}
 
-  void connectionAccepted(int fd, const folly::SocketAddress& addr) noexcept {
+  void connectionAccepted(int fd,
+                          const folly::SocketAddress& addr) noexcept override {
     fn_(fd);
   }
-  void acceptError(const std::exception& ex) noexcept {
+  void acceptError(const std::exception& ex) noexcept override {
     LOG(FATAL) << "acceptError(): " << ex.what();
   }
 
@@ -59,10 +60,8 @@ class ConnectCallback : public TAsyncSocket::ConnectCallback {
  public:
   explicit ConnectCallback(const std::function<void()>& fn) : fn_(fn) {}
 
-  void connectSuccess() noexcept {
-    fn_();
-  }
-  void connectError(const TTransportException& ex) noexcept {
+  void connectSuccess() noexcept override { fn_(); }
+  void connectError(const TTransportException& ex) noexcept override {
     LOG(FATAL) << "connectError(): " << ex.what();
   }
 
@@ -74,11 +73,9 @@ class HandshakeCallback : public TAsyncSSLSocket::HandshakeCallback {
  public:
   explicit HandshakeCallback(const std::function<void()>& fn) : fn_(fn) {}
 
-  void handshakeSuccess(TAsyncSSLSocket *sock) noexcept {
-    fn_();
-  }
-  void handshakeError(TAsyncSSLSocket *sock,
-                      const TTransportException& ex) noexcept {
+  void handshakeSuccess(TAsyncSSLSocket* sock) noexcept override { fn_(); }
+  void handshakeError(TAsyncSSLSocket* sock,
+                      const TTransportException& ex) noexcept override {
     LOG(FATAL) << "handshakeError(): " << ex.what();
   }
 

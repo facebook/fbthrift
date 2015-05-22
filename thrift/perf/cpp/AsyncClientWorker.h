@@ -68,7 +68,7 @@ class AsyncClientWorker : public loadgen::Worker<
 
   std::shared_ptr<apache::thrift::async::TAsyncSocket> createSocket();
 
-  virtual std::shared_ptr<Client> createConnection() {
+  std::shared_ptr<Client> createConnection() override {
     return std::shared_ptr<Client>() ;
   }
   std::shared_ptr<Client> createConnection(
@@ -78,9 +78,9 @@ class AsyncClientWorker : public loadgen::Worker<
 
   // this is now a no-op, AsyncClientWorker::run works differently
   // from Worker::run
-  virtual void performOperation(const std::shared_ptr<Client>& client,
-                                uint32_t opType) {} ;
-  virtual void run();
+  void performOperation(const std::shared_ptr<Client>& client,
+                        uint32_t opType) override{};
+  void run() override;
 
  private:
 

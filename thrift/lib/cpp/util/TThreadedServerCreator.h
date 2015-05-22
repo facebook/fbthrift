@@ -58,7 +58,7 @@ class TThreadedServerCreator : public SyncServerCreator {
    */
   void setThreadFactory(const std::shared_ptr<concurrency::ThreadFactory>&);
 
-  virtual std::shared_ptr<server::TServer> createServer();
+  std::shared_ptr<server::TServer> createServer() override;
 
   std::shared_ptr<server::TThreadedServer> createThreadedServer();
 

@@ -295,9 +295,9 @@ class TLibraryException : public TException {
 
   TLibraryException(const char* message, int errnoValue);
 
-  virtual ~TLibraryException() throw() {}
+  ~TLibraryException() throw() override {}
 
-  virtual const char* what() const throw() {
+  const char* what() const throw() override {
     if (message_.empty()) {
       return "Default TLibraryException.";
     } else {

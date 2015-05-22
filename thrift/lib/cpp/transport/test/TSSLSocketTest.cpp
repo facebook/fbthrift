@@ -66,9 +66,9 @@ class TestSSLServer: public TServer {
   // This immediately starts listening on the port 0.
   explicit TestSSLServer(SSLContext::SSLVersion version);
 
-  void serve();
+  void serve() override;
 
-  void stop() {
+  void stop() override {
     stopped_ = true;
     socket_->interrupt();
     cerr << "Waiting for server thread to exit" << endl;

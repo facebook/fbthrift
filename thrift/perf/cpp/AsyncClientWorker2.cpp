@@ -149,17 +149,17 @@ class LoadCallback :
     oneway_ = true;
   }
 
-  void requestSent() {
+  void requestSent() override {
     if (oneway_) {
       r_->genericCob(client_, ClientReceiveState(), &data_);
     }
   }
 
-  void replyReceived(ClientReceiveState&& rstate) {
+  void replyReceived(ClientReceiveState&& rstate) override {
     r_->genericCob(client_, std::move(rstate), &data_);
   }
 
-  void requestError(ClientReceiveState&& rstate) {
+  void requestError(ClientReceiveState&& rstate) override {
     r_->terminator_.decr();
     r_->scoreboard_->opFailed(data_.opType_);
   }

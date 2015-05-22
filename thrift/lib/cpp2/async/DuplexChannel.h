@@ -64,7 +64,7 @@ class DuplexChannel {
       : HeaderClientChannel(cpp2Channel)
       , duplex_(duplex)
     {}
-    virtual void sendMessage(Cpp2Channel::SendCallback* callback,
+    void sendMessage(Cpp2Channel::SendCallback* callback,
                      std::unique_ptr<folly::IOBuf> buf) override {
       duplex_.lastSender_.set(Who::CLIENT);
       HeaderClientChannel::sendMessage(callback, std::move(buf));
@@ -87,8 +87,8 @@ class DuplexChannel {
       : HeaderServerChannel(cpp2Channel)
       , duplex_(duplex)
     {}
-    virtual void sendMessage(Cpp2Channel::SendCallback* callback,
-                       std::unique_ptr<folly::IOBuf> buf) override {
+    void sendMessage(Cpp2Channel::SendCallback* callback,
+                     std::unique_ptr<folly::IOBuf> buf) override {
       duplex_.lastSender_.set(Who::SERVER);
       HeaderServerChannel::sendMessage(callback, std::move(buf));
     }

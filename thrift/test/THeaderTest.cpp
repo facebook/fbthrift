@@ -75,9 +75,9 @@ class TProcessorWrapper : public TProcessor {
       std::shared_ptr<apache::thrift::TDispatchProcessor> wrappedProcessor
   ) : wrappedProcessor_(wrappedProcessor) {}
 
-  virtual bool process(std::shared_ptr<protocol::TProtocol> in,
-                       std::shared_ptr<protocol::TProtocol> out,
-                       TConnectionContext* connectionContext) {
+  bool process(std::shared_ptr<protocol::TProtocol> in,
+               std::shared_ptr<protocol::TProtocol> out,
+               TConnectionContext* connectionContext) override {
     bool result;
     try {
       result = wrappedProcessor_->process(in, out, connectionContext);
@@ -96,34 +96,24 @@ class TestHandler : public ServiceIf {
 public:
   TestHandler() {}
 
-  void echoVoid() {
-  }
+  void echoVoid() override {}
 
-  int8_t echoByte(int8_t byte) {
-    return byte;
-  }
+  int8_t echoByte(int8_t byte) override { return byte; }
 
-  int32_t echoI32(int32_t e) {
-    return e;
-  }
+  int32_t echoI32(int32_t e) override { return e; }
 
-  int64_t echoI64(int64_t e) {
-    return e;
-  }
+  int64_t echoI64(int64_t e) override { return e; }
 
-  void echoString(string& out, const string& e) {
+  void echoString(string& out, const string& e) override { out = e; }
+
+  void echoList(vector<int8_t>& out, const vector<int8_t>& e) override {
     out = e;
   }
 
-  void echoList(vector<int8_t>& out, const vector<int8_t>& e) {
-    out = e;
-  }
+  void echoSet(set<int8_t>& out, const set<int8_t>& e) override { out = e; }
 
-  void echoSet(set<int8_t>& out, const set<int8_t>& e) {
-    out = e;
-  }
-
-  void echoMap(map<int8_t, int8_t>& out, const map<int8_t, int8_t>& e) {
+  void echoMap(map<int8_t, int8_t>& out,
+               const map<int8_t, int8_t>& e) override {
     out = e;
   }
 };
@@ -135,7 +125,7 @@ public:
       oprot_() {}
 
   void* getContext(const char* fn_name,
-                   TConnectionContext* connectionContext) {
+                   TConnectionContext* connectionContext) override {
     iprot_ = std::dynamic_pointer_cast<THeaderProtocol>
       (connectionContext->getInputProtocol());
     oprot_ = std::dynamic_pointer_cast<THeaderProtocol>
@@ -148,7 +138,7 @@ public:
    * Before writing, get the input headers and replay them to the output
    * headers
    */
-  void preWrite(void* ctx, const char* fn_name) {
+  void preWrite(void* ctx, const char* fn_name) override {
     if (iprot_.get() != nullptr && oprot_.get() != nullptr) {
       auto headers = iprot_->getHeaders();
       oprot_->getWriteHeaders() = headers;

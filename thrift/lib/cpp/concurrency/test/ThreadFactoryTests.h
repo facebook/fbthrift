@@ -50,9 +50,7 @@ public:
 
     Task() {}
 
-    void run() {
-      std::cout << "\t\t\tHello World" << std::endl;
-    }
+    void run() override { std::cout << "\t\t\tHello World" << std::endl; }
 
   };
 
@@ -82,9 +80,7 @@ public:
 
     explicit RecordIdTask(ThreadFactory* factory): factory_(factory) {}
 
-    void run() {
-      id = factory_->getCurrentThreadId();
-    }
+    void run() override { id = factory_->getCurrentThreadId(); }
 
     Thread::id_t id;
     ThreadFactory* factory_;
@@ -128,7 +124,7 @@ public:
       _monitor(monitor),
       _count(activeCount) {}
 
-    void run() {
+    void run() override {
       Synchronized s(_monitor);
 
       _count--;
@@ -210,7 +206,7 @@ public:
       _monitor(monitor),
       _state(state) {}
 
-    void run() {
+    void run() override {
       {
         Synchronized s(_monitor);
         if (_state == SynchStartTask::STARTING) {
@@ -333,13 +329,13 @@ public:
   public:
 
     FloodTask(const size_t id) :_id(id) {}
-    ~FloodTask(){
+    ~FloodTask() override {
       if(_id % 1000 == 0) {
         std::cout << "\t\tthread " << _id << " done" << std::endl;
       }
     }
 
-    void run(){
+    void run() override {
       if(_id % 1000 == 0) {
         std::cout << "\t\tthread " << _id << " started" << std::endl;
       }

@@ -38,7 +38,7 @@ class TServerSocket : public TServerTransport {
   TServerSocket(int port, int sendTimeout, int recvTimeout);
   explicit TServerSocket(std::string path);
 
-  ~TServerSocket();
+  ~TServerSocket() override;
 
   int getPort() const { return port_; }
 
@@ -55,15 +55,15 @@ class TServerSocket : public TServerTransport {
 
   void setCloseOnExec(bool closeOnExec);
 
-  void listen();
-  void close();
+  void listen() override;
+  void close() override;
 
-  void interrupt();
+  void interrupt() override;
 
-  void getAddress(folly::SocketAddress* address);
+  void getAddress(folly::SocketAddress* address) override;
 
  protected:
-  std::shared_ptr<TRpcTransport> acceptImpl();
+  std::shared_ptr<TRpcTransport> acceptImpl() override;
   virtual std::shared_ptr<TSocket> createSocket(int client);
 
  private:

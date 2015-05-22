@@ -75,7 +75,7 @@ class TTransportException : public apache::thrift::TLibraryException {
     apache::thrift::TLibraryException(getMessage(message, errno_copy)),
       type_(type), errno_(errno_copy), options_(0) {}
 
-  virtual ~TTransportException() throw() {}
+  ~TTransportException() throw() override {}
 
   /**
    * Returns an error code that provides information about the type of error
@@ -96,7 +96,7 @@ class TTransportException : public apache::thrift::TLibraryException {
   int getOptions() const { return options_; }
   void setOptions(int options) { options_ = options; }
 
-  virtual const char* what() const throw() {
+  const char* what() const throw() override {
     if (message_.empty()) {
       switch (type_) {
         case UNKNOWN        : return "TTransportException: Unknown transport exception";

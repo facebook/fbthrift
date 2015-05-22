@@ -51,8 +51,9 @@ namespace apache
                 {
                 }
 
-                uint32_t readMessageBegin_virt(std::string& _name, TMessageType& _type, int32_t& _seqid)
-                {
+                uint32_t readMessageBegin_virt(std::string& _name,
+                                               TMessageType& _type,
+                                               int32_t& _seqid) override {
 
                     _name  = name;
                     _type  = type;
@@ -130,10 +131,10 @@ namespace apache
              * the service name was not found in the message, or if the service
              * name was not found in the service map.
              */
-            bool process( shared_ptr<protocol::TProtocol> in,
-                          shared_ptr<protocol::TProtocol> out,
-                          apache::thrift::server::TConnectionContext *connectionContext)
-            {
+            bool process(shared_ptr<protocol::TProtocol> in,
+                         shared_ptr<protocol::TProtocol> out,
+                         apache::thrift::server::TConnectionContext*
+                             connectionContext) override {
                 std::string name;
                 protocol::TMessageType type;
                 int32_t seqid;

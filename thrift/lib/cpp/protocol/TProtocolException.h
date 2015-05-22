@@ -66,7 +66,7 @@ class TProtocolException : public apache::thrift::TLibraryException {
     apache::thrift::TLibraryException(message),
     type_(type) {}
 
-  virtual ~TProtocolException() throw() {}
+  ~TProtocolException() throw() override {}
 
   /**
    * Returns an error code that provides information about the type of error
@@ -78,7 +78,7 @@ class TProtocolException : public apache::thrift::TLibraryException {
     return type_;
   }
 
-  virtual const char* what() const throw() {
+  const char* what() const throw() override {
     if (message_.empty()) {
       switch (type_) {
         case UNKNOWN         : return "TProtocolException: Unknown protocol exception";

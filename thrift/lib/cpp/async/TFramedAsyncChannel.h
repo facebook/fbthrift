@@ -161,7 +161,7 @@ class TFramedAsyncChannel :
    * Users of TFramedAsyncChannel must never delete it directly.  Instead,
    * invoke destroy().
    */
-  virtual ~TFramedAsyncChannel() { }
+  ~TFramedAsyncChannel() override {}
 };
 
 class TFramedAsyncChannelFactory : public TStreamAsyncChannelFactory {
@@ -183,8 +183,8 @@ class TFramedAsyncChannelFactory : public TStreamAsyncChannelFactory {
     sendTimeout_ = milliseconds;
   }
 
-  virtual std::shared_ptr<TAsyncEventChannel> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) {
+  std::shared_ptr<TAsyncEventChannel> newChannel(
+      const std::shared_ptr<TAsyncTransport>& transport) override {
     std::shared_ptr<TFramedAsyncChannel> channel(
         TFramedAsyncChannel::newChannel(transport));
     transport->setSendTimeout(sendTimeout_);

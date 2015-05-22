@@ -62,7 +62,7 @@ class TKerberosException: public
   explicit TKerberosException(const std::string& message):
     TTransportException(TTransportException::INTERNAL_ERROR, message) {}
 
-  virtual const char* what() const throw() {
+  const char* what() const throw() override {
     if (message_.empty()) {
       return "TKerberosException";
     } else {

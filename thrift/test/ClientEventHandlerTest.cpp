@@ -46,34 +46,24 @@ class TestHandler : public ServiceIf {
 public:
   TestHandler() {}
 
-  void echoVoid() {
-  }
+  void echoVoid() override {}
 
-  int8_t echoByte(int8_t byte) {
-    return byte;
-  }
+  int8_t echoByte(int8_t byte) override { return byte; }
 
-  int32_t echoI32(int32_t e) {
-    return e;
-  }
+  int32_t echoI32(int32_t e) override { return e; }
 
-  int64_t echoI64(int64_t e) {
-    return e;
-  }
+  int64_t echoI64(int64_t e) override { return e; }
 
-  void echoString(string& out, const string& e) {
+  void echoString(string& out, const string& e) override { out = e; }
+
+  void echoList(vector<int8_t>& out, const vector<int8_t>& e) override {
     out = e;
   }
 
-  void echoList(vector<int8_t>& out, const vector<int8_t>& e) {
-    out = e;
-  }
+  void echoSet(set<int8_t>& out, const set<int8_t>& e) override { out = e; }
 
-  void echoSet(set<int8_t>& out, const set<int8_t>& e) {
-    out = e;
-  }
-
-  void echoMap(map<int8_t, int8_t>& out, const map<int8_t, int8_t>& e) {
+  void echoMap(map<int8_t, int8_t>& out,
+               const map<int8_t, int8_t>& e) override {
     out = e;
   }
 };
@@ -84,33 +74,33 @@ class ClientEventHandler : public TProcessorEventHandler {
  public:
   ClientEventHandler() : contextCalls(0) {}
 
-  void preRead(void* ctx, const char* fn_name) {
+  void preRead(void* ctx, const char* fn_name) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
     BOOST_CHECK_EQUAL(contextCalls, 3);
   }
 
-  void postRead(void* ctx, const char* fn_name, uint32_t bytes) {
+  void postRead(void* ctx, const char* fn_name, uint32_t bytes) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
     BOOST_CHECK(bytes > 20); // check we read something
     BOOST_CHECK_EQUAL(contextCalls, 4);
    }
 
-  void preWrite(void *ctx, const char* fn_name) {
+   void preWrite(void* ctx, const char* fn_name) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
     BOOST_CHECK_EQUAL(contextCalls, 1);
   }
 
-  void postWrite(void *ctx, const char* fn_name, uint32_t bytes) {
+  void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
     BOOST_CHECK(bytes > 20); // check we wrote something
     BOOST_CHECK_EQUAL(contextCalls, 2);
   }
 
-  virtual void handlerError(void* ctx, const char* fn_name) {
+  void handlerError(void* ctx, const char* fn_name) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
   }
@@ -126,33 +116,33 @@ class ServerEventHandler : public TProcessorEventHandler {
  public:
   ServerEventHandler() : contextCalls(0) {}
 
-  void preRead(void* ctx, const char* fn_name) {
+  void preRead(void* ctx, const char* fn_name) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
     BOOST_CHECK_EQUAL(contextCalls, 1);
   }
 
-  void postRead(void* ctx, const char* fn_name, uint32_t bytes) {
+  void postRead(void* ctx, const char* fn_name, uint32_t bytes) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
     BOOST_CHECK(bytes > 20); // check we read something
     BOOST_CHECK_EQUAL(contextCalls, 2);
    }
 
-  void preWrite(void *ctx, const char* fn_name) {
+   void preWrite(void* ctx, const char* fn_name) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
     BOOST_CHECK_EQUAL(contextCalls, 3);
   }
 
-  void postWrite(void *ctx, const char* fn_name, uint32_t bytes) {
+  void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
     BOOST_CHECK(bytes > 20); // check we wrote something
     BOOST_CHECK_EQUAL(contextCalls, 4);
   }
 
-  virtual void handlerError(void* ctx, const char* fn_name) {
+  void handlerError(void* ctx, const char* fn_name) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
   }

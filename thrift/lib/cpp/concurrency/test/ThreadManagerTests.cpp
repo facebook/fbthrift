@@ -68,7 +68,7 @@ class LoadTask: public Runnable {
       startTime_(0),
       endTime_(0) {}
 
-  void run() {
+  void run() override {
     startTime_ = Util::currentTime();
     usleep(timeout_ * Util::US_PER_MS);
     endTime_ = Util::currentTime();
@@ -221,7 +221,7 @@ class BlockTask: public Runnable {
       count_(count),
       started_(false) {}
 
-  void run() {
+  void run() override {
     started_ = true;
     {
       Synchronized s(*bmonitor_);
@@ -469,12 +469,12 @@ class AddRemoveTask : public Runnable,
     ++*objectCount_;
   }
 
-  ~AddRemoveTask() {
+  ~AddRemoveTask() override {
     Synchronized s(monitor_);
     --*objectCount_;
   }
 
-  void run() {
+  void run() override {
     usleep(timeoutUs_);
 
     {
@@ -517,7 +517,7 @@ class WorkerCountChanger : public Runnable {
       count_(count),
       addAndRemoveCount_(addAndRemoveCount) {}
 
-  void run() {
+  void run() override {
     // Continue adding and removing threads until the tasks are all done
     while (true) {
       {
@@ -658,7 +658,7 @@ class TestObserver : public ThreadManager::Observer {
   void addStats(const std::string& threadPoolName,
                 const SystemClockTimePoint& queueBegin,
                 const SystemClockTimePoint& workBegin,
-                const SystemClockTimePoint& workEnd) {
+                const SystemClockTimePoint& workEnd) override {
     BOOST_CHECK_EQUAL(threadPoolName, expectedName);
 
     // Note: Technically could fail if system clock changes.
@@ -744,9 +744,7 @@ class FailThread : public PthreadThread {
     : PthreadThread(policy, priority, stackSize, detached, runnable) {
   }
 
-  void start() {
-    throw 2;
-  }
+  void start() override { throw 2; }
 };
 
 class FailThreadFactory : public PosixThreadFactory {
@@ -758,9 +756,8 @@ class FailThreadFactory : public PosixThreadFactory {
       : Impl(policy, priority, stackSize, detached) {
     }
 
-    std::shared_ptr<Thread> newThread(
-        const std::shared_ptr<Runnable>& runnable,
-        DetachState detachState) const {
+    std::shared_ptr<Thread> newThread(const std::shared_ptr<Runnable>& runnable,
+                                      DetachState detachState) const override {
       std::shared_ptr<FailThread> result =
         std::shared_ptr<FailThread>(
           new FailThread(

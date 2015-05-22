@@ -54,9 +54,7 @@ class t_struct : public t_type {
     view_parent_(nullptr),
     xsd_all_(false) {}
 
-  void set_name(const std::string& name) {
-    name_ = name;
-  }
+  void set_name(const std::string& name) override { name_ = name; }
 
   void set_xception(bool is_xception) {
     is_xception_ = is_xception;
@@ -115,13 +113,9 @@ class t_struct : public t_type {
     return nullptr;
   }
 
-  bool is_struct() const {
-    return !is_xception_;
-  }
+  bool is_struct() const override { return !is_xception_; }
 
-  bool is_xception() const {
-    return is_xception_;
-  }
+  bool is_xception() const override { return is_xception_; }
 
   void set_view_parent(const t_struct* p) {
     view_parent_ = p;
@@ -161,17 +155,15 @@ class t_struct : public t_type {
     return true;
   }
 
-  virtual std::string get_full_name() const {
+  std::string get_full_name() const override {
     return make_full_name("struct");
   }
 
-  virtual std::string get_impl_full_name() const {
+  std::string get_impl_full_name() const override {
     return get_view_parent()->get_full_name();
   }
 
-  virtual TypeValue get_type_value() const {
-    return t_types::TYPE_STRUCT;
-  }
+  TypeValue get_type_value() const override { return t_types::TYPE_STRUCT; }
 
  private:
 

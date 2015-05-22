@@ -72,12 +72,12 @@ public:
         : worker_(worker),
           socket_(socket) {}
 
-    virtual void connectSuccess() noexcept  {
+    void connectSuccess() noexcept override {
       worker_->createRunner(socket_);
       delete this;
     }
-    virtual void connectError(const transport::TTransportException& ex)
-      noexcept {
+    void connectError(
+        const transport::TTransportException& ex) noexcept override {
       delete this;
     }
    private:

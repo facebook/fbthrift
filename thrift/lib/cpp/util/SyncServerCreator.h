@@ -148,7 +148,7 @@ class SyncServerCreator : public ServerCreatorBase {
   /**
    * Create a new server.
    */
-  virtual std::shared_ptr<server::TServer> createServer() = 0;
+  std::shared_ptr<server::TServer> createServer() override = 0;
 
  protected:
   void init(const std::shared_ptr<TProcessor>& processor, uint16_t port);

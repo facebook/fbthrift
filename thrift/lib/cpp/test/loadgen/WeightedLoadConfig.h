@@ -37,11 +37,11 @@ class WeightedLoadConfig : public LoadConfig {
                  uint32_t weight);
   uint32_t getOpWeight(uint32_t opType);
 
-  virtual uint32_t getNumOpTypes() const;
-  virtual uint32_t pickOpType();
-  virtual uint32_t pickOpsPerConnection() = 0;
+  uint32_t getNumOpTypes() const override;
+  uint32_t pickOpType() override;
+  uint32_t pickOpsPerConnection() override = 0;
 
-  virtual std::string getOpName(uint32_t opType);
+  std::string getOpName(uint32_t opType) override;
 
   /**
    * Update an OpEnabledState object to enable only operations that have a

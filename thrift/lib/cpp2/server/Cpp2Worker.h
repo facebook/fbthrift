@@ -107,18 +107,20 @@ class Cpp2Worker
   /// An instance's TEventBase for I/O.
   apache::thrift::async::TEventBase* eventBase_;
 
-  void onNewConnection(
-    folly::AsyncSocket::UniquePtr,
-    const apache::thrift::transport::TSocketAddress*,
-    const std::string&, const folly::TransportInfo&);
+  void onNewConnection(folly::AsyncSocket::UniquePtr,
+                       const apache::thrift::transport::TSocketAddress*,
+                       const std::string&,
+                       const folly::TransportInfo&) override;
 
-  virtual folly::AsyncSocket::UniquePtr makeNewAsyncSocket(folly::EventBase* base, int fd) {
+  folly::AsyncSocket::UniquePtr makeNewAsyncSocket(folly::EventBase* base,
+                                                   int fd) override {
     return folly::AsyncSocket::UniquePtr(new apache::thrift::async::TAsyncSocket(base, fd));
   }
 
-  virtual folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(
-    const std::shared_ptr<folly::SSLContext>& ctx,
-    folly::EventBase* base, int fd) {
+  folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(
+      const std::shared_ptr<folly::SSLContext>& ctx,
+      folly::EventBase* base,
+      int fd) override {
     return folly::AsyncSSLSocket::UniquePtr(
       new apache::thrift::async::TAsyncSSLSocket(ctx, base, fd));
   }

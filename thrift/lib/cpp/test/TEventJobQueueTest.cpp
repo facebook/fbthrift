@@ -44,9 +44,9 @@ class SimpleRunnable : public TEventRunnable {
       : origEventBase_(origEventBase),
         x_(x),
         sum_(sum) {}
-  ~SimpleRunnable() {}
+  ~SimpleRunnable() override {}
 
-  void run() {
+  void run() override {
     int result = x_ * x_;
     origEventBase_->runInEventBaseThread([this, result] {
         (*sum_) += result;
@@ -72,7 +72,7 @@ class EventBaseAborter : public TAsyncTimeout {
     scheduleTimeout(timeoutMS);
   }
 
-  virtual void timeoutExpired() noexcept {
+  void timeoutExpired() noexcept override {
     BOOST_FAIL("test timed out");
     eventBase_->terminateLoopSoon();
   }

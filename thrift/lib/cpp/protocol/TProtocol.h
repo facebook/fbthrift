@@ -809,16 +809,16 @@ class TSingleProtocolFactory : public TDuplexProtocolFactory {
   explicit TSingleProtocolFactory(std::shared_ptr<Factory_> factory) :
       factory_(factory) {}
 
-  virtual TProtocolPair getProtocol(transport::TTransportPair transports) {
+  TProtocolPair getProtocol(transport::TTransportPair transports) override {
     return std::make_pair(factory_->getProtocol(transports.first),
                           factory_->getProtocol(transports.second));
   }
 
-  virtual std::shared_ptr<TProtocolFactory> getInputProtocolFactory() {
+  std::shared_ptr<TProtocolFactory> getInputProtocolFactory() override {
     return factory_;
   }
 
-  virtual std::shared_ptr<TProtocolFactory> getOutputProtocolFactory() {
+  std::shared_ptr<TProtocolFactory> getOutputProtocolFactory() override {
     return factory_;
   }
 
@@ -839,16 +839,16 @@ class TDualProtocolFactory : public TDuplexProtocolFactory {
       inputFactory_(inputFactory),
       outputFactory_(outputFactory) {}
 
-  virtual TProtocolPair getProtocol(transport::TTransportPair transports) {
+  TProtocolPair getProtocol(transport::TTransportPair transports) override {
     return std::make_pair(inputFactory_->getProtocol(transports.first),
                           outputFactory_->getProtocol(transports.second));
   }
 
-  virtual std::shared_ptr<TProtocolFactory> getInputProtocolFactory() {
+  std::shared_ptr<TProtocolFactory> getInputProtocolFactory() override {
     return inputFactory_;
   }
 
-  virtual std::shared_ptr<TProtocolFactory> getOutputProtocolFactory() {
+  std::shared_ptr<TProtocolFactory> getOutputProtocolFactory() override {
     return outputFactory_;
   }
 

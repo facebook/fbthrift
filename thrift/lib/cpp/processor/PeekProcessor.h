@@ -42,7 +42,7 @@ class PeekProcessor : public apache::thrift::TProcessor {
 
  public:
   PeekProcessor();
-  virtual ~PeekProcessor();
+  ~PeekProcessor() override;
 
   // Input here: actualProcessor  - the underlying processor
   //             protocolFactory  - the protocol factory used to wrap the memory buffer
@@ -56,9 +56,9 @@ class PeekProcessor : public apache::thrift::TProcessor {
 
   void setTargetTransport(std::shared_ptr<apache::thrift::transport::TTransport> targetTransport);
 
-  virtual bool process(std::shared_ptr<apache::thrift::protocol::TProtocol> in,
-                       std::shared_ptr<apache::thrift::protocol::TProtocol> out,
-                       TConnectionContext* connectionContext);
+  bool process(std::shared_ptr<apache::thrift::protocol::TProtocol> in,
+               std::shared_ptr<apache::thrift::protocol::TProtocol> out,
+               TConnectionContext* connectionContext) override;
 
   // The following three functions can be overloaded by child classes to
   // achieve desired peeking behavior

@@ -56,7 +56,7 @@ class ProtectionHandler : public folly::wangle::BytesToBytesHandler {
 
   virtual void protectionStateChanged();
 
-  virtual ~ProtectionHandler() {}
+  ~ProtectionHandler() override {}
 
   /**
    * If q contains enough data, read it (removing it from q, but retaining

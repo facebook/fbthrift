@@ -107,14 +107,12 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
       : server_(server)
       , iface_(iface) {}
 
-  virtual void process(
-      std::unique_ptr<apache::thrift::ResponseChannel::Request> req,
-      std::unique_ptr<folly::IOBuf> buf,
-      apache::thrift::protocol::PROTOCOL_TYPES protType,
-      apache::thrift::Cpp2RequestContext* context,
-      apache::thrift::async::TEventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm) {
-
+  void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,
+               std::unique_ptr<folly::IOBuf> buf,
+               apache::thrift::protocol::PROTOCOL_TYPES protType,
+               apache::thrift::Cpp2RequestContext* context,
+               apache::thrift::async::TEventBase* eb,
+               apache::thrift::concurrency::ThreadManager* tm) override {
 
     auto reqd = folly::makeMoveWrapper(std::move(req));
     auto bufd = folly::makeMoveWrapper(std::move(buf));
@@ -158,9 +156,9 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
     uv_async_send(&async);
   }
 
-  virtual bool isOnewayMethod(
+  bool isOnewayMethod(
       const folly::IOBuf* buf,
-      const apache::thrift::transport::THeader* header) {
+      const apache::thrift::transport::THeader* header) override {
     return false;
   }
  private:
@@ -176,7 +174,7 @@ class NodeServerInterface : public apache::thrift::ServerInterface {
       : server_(server)
       , iface_(iface) {}
 
-  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() {
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     return std::unique_ptr<apache::thrift::AsyncProcessor>(
       new NodeProcessor(server_, iface_));
   }
@@ -248,7 +246,7 @@ class CppThriftServer : public node::ObjectWrap {
 
  private:
   explicit CppThriftServer() {}
-  ~CppThriftServer() {}
+  ~CppThriftServer() override {}
 
   static v8::Handle<v8::Value> New(const v8::Arguments& args) {
     HandleScope scope;

@@ -218,7 +218,7 @@ class TEventServerCreator : public ServerCreatorBase {
     listenBacklog_ = listenBacklog;
   }
 
-  virtual std::shared_ptr<server::TServer> createServer();
+  std::shared_ptr<server::TServer> createServer() override;
 
   std::shared_ptr<async::TEventServer> createEventServer();
 

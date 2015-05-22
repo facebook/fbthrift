@@ -158,16 +158,17 @@ class FunctionReplyCallback : public RequestCallback {
   explicit FunctionReplyCallback(
     std::function<void (ClientReceiveState&&)> callback)
       : callback_(callback) {}
-  void replyReceived(ClientReceiveState&& state) {
+  void replyReceived(ClientReceiveState&& state) override {
     callback_(std::move(state));
   }
-  void requestError(ClientReceiveState&& state) {
+  void requestError(ClientReceiveState&& state) override {
     VLOG(1)
       << "Got an exception in FunctionReplyCallback replyReceiveError: "
       << folly::exceptionStr(state.exception());
     callback_(std::move(state));
   }
-  void requestSent() {}
+  void requestSent() override {}
+
 private:
   std::function<void (ClientReceiveState&&)> callback_;
 };
@@ -264,7 +265,7 @@ class RpcOptions {
  */
 class RequestChannel : virtual public TDelayedDestruction {
  protected:
-  virtual ~RequestChannel() {}
+  ~RequestChannel() override {}
 
  public:
   /**
@@ -329,20 +330,20 @@ class ClientSyncCallback : public RequestCallback {
       , eb_(eb)
       , oneway_(oneway) {}
 
-  void requestSent(){
+  void requestSent() override {
     if (oneway_) {
       assert(eb_);
       eb_->terminateLoopSoon();
     }
   }
-  void replyReceived(ClientReceiveState&& rs) {
+  void replyReceived(ClientReceiveState&& rs) override {
     assert(rs.buf());
     assert(eb_);
     assert(!oneway_);
     *rs_ = std::move(rs);
     eb_->terminateLoopSoon();
   }
-  void requestError(ClientReceiveState&& rs) {
+  void requestError(ClientReceiveState&& rs) override {
     assert(rs.exception());
     assert(eb_);
     *rs_ = std::move(rs);

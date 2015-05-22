@@ -39,10 +39,10 @@ class TSingleHeaderProtocolFactory : public TProtocolFactory {
  public:
   TSingleHeaderProtocolFactory() {}
 
-  virtual ~TSingleHeaderProtocolFactory() {}
+  ~TSingleHeaderProtocolFactory() override {}
 
-  virtual std::shared_ptr<TProtocol> getProtocol(
-      std::shared_ptr<TTransport> trans) {
+  std::shared_ptr<TProtocol> getProtocol(
+      std::shared_ptr<TTransport> trans) override {
     TProtocolPair protocols = factory_.getProtocol(trans);
     return protocols.first;
   }

@@ -34,9 +34,9 @@ using server::TConnectionContext;
 template <class Protocol_>
 class TDispatchProcessorT : public TProcessor {
  public:
-  virtual bool process(std::shared_ptr<protocol::TProtocol> in,
-                       std::shared_ptr<protocol::TProtocol> out,
-                       TConnectionContext* connectionContext) {
+  bool process(std::shared_ptr<protocol::TProtocol> in,
+               std::shared_ptr<protocol::TProtocol> out,
+               TConnectionContext* connectionContext) override {
     protocol::TProtocol* inRaw = in.get();
     protocol::TProtocol* outRaw = out.get();
 
@@ -107,9 +107,9 @@ class TDispatchProcessorT : public TProcessor {
  */
 class TDispatchProcessor : public TProcessor {
  public:
-  virtual bool process(std::shared_ptr<protocol::TProtocol> in,
-                       std::shared_ptr<protocol::TProtocol> out,
-                       TConnectionContext* connectionContext) {
+  bool process(std::shared_ptr<protocol::TProtocol> in,
+               std::shared_ptr<protocol::TProtocol> out,
+               TConnectionContext* connectionContext) override {
     std::string fname;
     protocol::TMessageType mtype;
     int32_t seqid;

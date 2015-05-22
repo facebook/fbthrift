@@ -100,7 +100,7 @@ struct StringLayout : public LayoutBase {
     return range;
   }
 
-  void print(std::ostream& os, int level) const {
+  void print(std::ostream& os, int level) const override {
     LayoutBase::print(os, level);
     os << "string of " << folly::demangle(type.name());
     distanceField.print(os, level + 1);

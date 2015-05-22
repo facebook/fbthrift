@@ -37,7 +37,7 @@ class TAsyncTransportHandler
 
   TAsyncTransportHandler(TAsyncTransportHandler&&) = default;
 
-  ~TAsyncTransportHandler() {
+  ~TAsyncTransportHandler() override {
     if (transport_) {
       detachReadCallback();
     }

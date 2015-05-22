@@ -43,17 +43,17 @@ class TRpcTransportContext : public TConnectionContext {
       iprot_(iprot),
       oprot_(oprot) {}
 
-  virtual const folly::SocketAddress* getPeerAddress() const;
+  const folly::SocketAddress* getPeerAddress() const override;
 
   const std::shared_ptr<transport::TRpcTransport>& getTransport() const {
     return transport_;
   }
 
-  virtual std::shared_ptr<protocol::TProtocol> getInputProtocol() const {
+  std::shared_ptr<protocol::TProtocol> getInputProtocol() const override {
     return iprot_;
   }
 
-  virtual std::shared_ptr<protocol::TProtocol> getOutputProtocol() const {
+  std::shared_ptr<protocol::TProtocol> getOutputProtocol() const override {
     return oprot_;
   }
 

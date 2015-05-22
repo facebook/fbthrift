@@ -82,7 +82,8 @@ class ThriftAcceptorFactory : public folly::AcceptorFactory {
   explicit ThriftAcceptorFactory(ThriftServer* server)
       : server_(server) {}
 
-  virtual std::shared_ptr<folly::Acceptor> newAcceptor(folly::EventBase* eventBase) {
+  std::shared_ptr<folly::Acceptor> newAcceptor(
+      folly::EventBase* eventBase) override {
     return std::make_shared<Cpp2Worker>(server_, nullptr, eventBase);
   }
  private:

@@ -86,7 +86,7 @@ class TAsyncEventChannel : public TAsyncChannel,
    * more details.)
    */
 
-  virtual ~TAsyncEventChannel() { }
+  ~TAsyncEventChannel() override {}
 };
 
 }}} // apache::thrift::async

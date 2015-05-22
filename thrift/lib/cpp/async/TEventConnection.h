@@ -95,7 +95,7 @@ class TEventConnection : private boost::noncopyable,
   bool notifyCompletion(TaskCompletionMessage &&msg);
 
   /// Run scheduled read when there are too many reads on the stack
-  void runLoopCallback() noexcept;
+  void runLoopCallback() noexcept override;
 
   std::shared_ptr<apache::thrift::TProcessor> getProcessor() const {
     return processor_;
@@ -123,7 +123,7 @@ class TEventConnection : private boost::noncopyable,
   }
 
   /// Destructor -- close down the connection.
-  ~TEventConnection();
+  ~TEventConnection() override;
 
   /**
    * Check the size of our memory buffers and resize if needed.  Do not call
@@ -142,7 +142,7 @@ class TEventConnection : private boost::noncopyable,
       outputProtocol_ = outputProtocol;
     }
 
-    virtual const folly::SocketAddress* getPeerAddress() const {
+    const folly::SocketAddress* getPeerAddress() const override {
       return &address_;
     }
 
@@ -153,12 +153,12 @@ class TEventConnection : private boost::noncopyable,
 
     // TODO(dsanduleac): implement the virtual getInputProtocol() & such
 
-    virtual std::shared_ptr<protocol::TProtocol> getInputProtocol() const {
+    std::shared_ptr<protocol::TProtocol> getInputProtocol() const override {
       // from TEventConnection
       return inputProtocol_;
     }
 
-    virtual std::shared_ptr<protocol::TProtocol> getOutputProtocol() const {
+    std::shared_ptr<protocol::TProtocol> getOutputProtocol() const override {
       return outputProtocol_;
     }
 

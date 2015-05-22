@@ -89,26 +89,26 @@ public:
   AggregatorTestHandler()
     : FacebookBase("NonAsyncTest") {
   }
-  facebook::fb303::fb_status getStatus() { return status_; }
+  facebook::fb303::fb_status getStatus() override { return status_; }
 
-  virtual void sendStructRecvStruct(StructResponse& _return,
-                                    const StructRequest& request) {
+  void sendStructRecvStruct(StructResponse& _return,
+                            const StructRequest& request) override {
     _return.request = request;
     _return.errorCode = 0;
     _return.answerString = "";
     toAnswerString(&_return.answerString, request);
   }
-  virtual void sendStructNoRecv(const StructRequest& request) {
+  void sendStructNoRecv(const StructRequest& request) override {
     string answerString;
     toAnswerString(&answerString, request);
     T_DEBUG_T("got oneway query %s; calling cob\n", answerString.c_str());
   }
-  virtual void sendMultiParamsRecvStruct(StructResponse& _return,
-                                          const int32_t i32Val,
-                                          const int64_t i64Val,
-                                          const double doubleVal,
-                                          const string& stringVal,
-                                          const StructRequest& structVal) {
+  void sendMultiParamsRecvStruct(StructResponse& _return,
+                                 const int32_t i32Val,
+                                 const int64_t i64Val,
+                                 const double doubleVal,
+                                 const string& stringVal,
+                                 const StructRequest& structVal) override {
     _return.request = structVal;
     _return.errorCode = 0;
     _return.answerString = "";
@@ -116,25 +116,25 @@ public:
                     structVal);
   }
 
-  virtual void sendMultiParamsNoRecv( const int32_t i32Val,
-                                      const int64_t i64Val,
-                                      const double doubleVal,
-                                      const string& stringVal,
-                                      const StructRequest& structVal) {
+  void sendMultiParamsNoRecv(const int32_t i32Val,
+                             const int64_t i64Val,
+                             const double doubleVal,
+                             const string& stringVal,
+                             const StructRequest& structVal) override {
     string answerString;
     toAnswerString(&answerString, i32Val, i64Val, doubleVal, stringVal,
                     structVal);
     T_DEBUG_T("got oneway query %s; calling cob\n", answerString.c_str());
   }
 
-  virtual void noSendRecvStruct(StructResponse& _return) {
+  void noSendRecvStruct(StructResponse& _return) override {
     defaultData(&_return.request);
     _return.errorCode = 0;
     _return.answerString = "";
     toAnswerString(&_return.answerString, _return.request);
   }
 
-  virtual void noSendNoRecv() {
+  void noSendNoRecv() override {
      T_DEBUG_T("got oneway query without params; calling cob\n");
   }
 };

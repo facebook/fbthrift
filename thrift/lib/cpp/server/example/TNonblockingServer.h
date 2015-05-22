@@ -936,14 +936,14 @@ class __attribute__((__deprecated__)) TNonblockingServer : public TServer {
    * Main workhorse function, starts up the server listening on a port and
    * loops over the libevent handler.
    */
-  void serve();
+  void serve() override;
 
   /**
    * Causes the server to terminate gracefully (can be called from any thread).
    */
-  void stop();
+  void stop() override;
 
-  TConnectionContext* getConnectionContext() const;
+  TConnectionContext* getConnectionContext() const override;
 
  private:
   void addTask(std::shared_ptr<Runnable> task) {
@@ -1013,7 +1013,7 @@ class TNonblockingIOThread : public Runnable {
                        int listenSocket,
                        bool useHighPriority);
 
-  ~TNonblockingIOThread();
+  ~TNonblockingIOThread() override;
 
   // Returns the event-base for this thread.
   event_base* getEventBase() const { return eventBase_; }
@@ -1044,7 +1044,7 @@ class TNonblockingIOThread : public Runnable {
   bool notify(TNonblockingServer::TConnection* conn);
 
   // Enters the event loop and does not return until a call to stop().
-  virtual void run();
+  void run() override;
 
   // Exits the event loop as soon as possible.
   void stop();

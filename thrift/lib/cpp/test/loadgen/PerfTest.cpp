@@ -41,35 +41,23 @@ namespace loadgen = apache::thrift::loadgen;
 
 class PerfLoadConfig : public loadgen::LoadConfig {
  public:
-  virtual uint32_t getNumOpTypes() const {
-    return 1;
-  }
+  uint32_t getNumOpTypes() const override { return 1; }
 
-  virtual uint32_t pickOpType() {
-    return 0;
-  }
+  uint32_t pickOpType() override { return 0; }
 
-  virtual uint32_t pickOpsPerConnection() {
-    return FLAGS_ops_per_conn;
-  }
+  uint32_t pickOpsPerConnection() override { return FLAGS_ops_per_conn; }
 
-  virtual uint32_t getNumWorkerThreads() const {
-    return FLAGS_num_threads;
-  }
+  uint32_t getNumWorkerThreads() const override { return FLAGS_num_threads; }
 
-  virtual std::string getOpName(uint32_t opType) {
-    return "noop";
-  }
+  std::string getOpName(uint32_t opType) override { return "noop"; }
 };
 
 
 class PerfWorker : public loadgen::Worker<void, PerfLoadConfig> {
  public:
-  virtual shared_ptr<void> createConnection() {
-    return shared_ptr<void>();
-  }
+  shared_ptr<void> createConnection() override { return shared_ptr<void>(); }
 
-  virtual void performOperation(const shared_ptr<void>& client, uint32_t op) {
+  void performOperation(const shared_ptr<void>& client, uint32_t op) override {
     return;
   }
 };

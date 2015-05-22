@@ -27,7 +27,7 @@ using namespace apache::thrift::async;
 class TestData : public RequestData {
  public:
   explicit TestData(int data) : data_(data) {}
-  virtual ~TestData() {}
+  ~TestData() override {}
   int data_;
 };
 

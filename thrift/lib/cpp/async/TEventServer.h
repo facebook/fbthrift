@@ -610,8 +610,7 @@ class TEventServer : public apache::thrift::server::TServer {
     setThreadManager(threadManager);
   }
 
-  virtual ~TEventServer() {
-  }
+  ~TEventServer() override {}
 
   /**
    *
@@ -1053,7 +1052,7 @@ class TEventServer : public apache::thrift::server::TServer {
    * starts worker threads, enters accept loop; when
    * the accept loop exits, shuts down and joins workers.
    */
-  void serve();
+  void serve() override;
 
   /**
    * Call this to stop the server, if started by serve()
@@ -1062,7 +1061,7 @@ class TEventServer : public apache::thrift::server::TServer {
    * connections, closes existing connections, shut down the worker threads,
    * and then return.
    */
-  void stop();
+  void stop() override;
 
   /**
    * Call this to stop listening on the server port.
@@ -1072,7 +1071,7 @@ class TEventServer : public apache::thrift::server::TServer {
    * existing connections. stop() still needs to be called to clear
    * up the worker threads.
    */
-  void stopListening();
+  void stopListening() override;
 
   /**
    * Terminate a given pending task.  Callable by the thread manager or
@@ -1107,7 +1106,7 @@ class TEventServer : public apache::thrift::server::TServer {
    *         inside the call to process() and cache it for later use if
    *         they need it later.
    */
-  virtual server::TConnectionContext* getConnectionContext() const;
+  server::TConnectionContext* getConnectionContext() const override;
 
   // We use this to get the processor when in task queue mode
   using TServer::getProcessor;

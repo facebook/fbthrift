@@ -51,9 +51,9 @@ public:
     processor_ = server_.getProcessorFactory()->getProcessor(&context_);
   }
 
-  ~Task() {}
+  ~Task() override {}
 
-  void run() {
+  void run() override {
     server_.setCurrentTask(this);
     std::shared_ptr<TServerEventHandler> eventHandler =
       server_.getEventHandler();

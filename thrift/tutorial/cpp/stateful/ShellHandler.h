@@ -26,12 +26,13 @@ class ShellHandler : virtual public ShellServiceIf, public AuthHandler {
  public:
   ShellHandler(const std::shared_ptr<ServiceAuthState>& serviceAuthState,
                apache::thrift::server::TConnectionContext* ctx);
-  ~ShellHandler();
+  ~ShellHandler() override;
 
-  void pwd(std::string& _return);
-  void chdir(const std::string& dir);
-  void listDirectory(std::vector<StatInfo> & _return, const std::string& dir);
-  void cat(std::string& _return, const std::string& file);
+  void pwd(std::string& _return) override;
+  void chdir(const std::string& dir) override;
+  void listDirectory(std::vector<StatInfo>& _return,
+                     const std::string& dir) override;
+  void cat(std::string& _return, const std::string& file) override;
 
  protected:
   void validateState();
@@ -45,11 +46,12 @@ class ShellHandlerFactory : public ShellServiceIfFactory {
   ShellHandlerFactory(const std::shared_ptr<ServiceAuthState>& authState) :
       authState_(authState) {}
 
-  ShellHandler* getHandler(apache::thrift::server::TConnectionContext* ctx) {
+  ShellHandler* getHandler(
+      apache::thrift::server::TConnectionContext* ctx) override {
     return new ShellHandler(authState_, ctx);
   }
 
-  void releaseHandler(AuthenticatedServiceIf* handler) {
+  void releaseHandler(AuthenticatedServiceIf* handler) override {
     delete handler;
   }
 

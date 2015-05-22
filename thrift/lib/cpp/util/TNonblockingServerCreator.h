@@ -244,7 +244,7 @@ class TNonblockingServerCreator : public ServerCreatorBase {
     listenBacklog_ = listenBacklog;
   }
 
-  virtual std::shared_ptr<server::TServer> createServer();
+  std::shared_ptr<server::TServer> createServer() override;
 
   std::shared_ptr<server::TNonblockingServer> createNonblockingServer();
 

@@ -130,16 +130,16 @@ class THttpClientParser : public THttpParser {
   void setUserAgent(std::string userAgent) {
     userAgent_ = userAgent;
   }
-  virtual std::unique_ptr<folly::IOBuf> constructHeader(
-    std::unique_ptr<folly::IOBuf> buf) override;
-  virtual std::unique_ptr<folly::IOBuf> constructHeader(
-    std::unique_ptr<folly::IOBuf> buf,
-    const std::map<std::string, std::string>& persistentWriteHeaders,
-    const std::map<std::string, std::string>& writeHeaders) override;
+  std::unique_ptr<folly::IOBuf> constructHeader(
+      std::unique_ptr<folly::IOBuf> buf) override;
+  std::unique_ptr<folly::IOBuf> constructHeader(
+      std::unique_ptr<folly::IOBuf> buf,
+      const std::map<std::string, std::string>& persistentWriteHeaders,
+      const std::map<std::string, std::string>& writeHeaders) override;
 
  protected:
-  virtual void parseHeaderLine(const char* header) override;
-  virtual bool parseStatusLine(const char* status) override;
+  void parseHeaderLine(const char* header) override;
+  bool parseStatusLine(const char* status) override;
 
  private:
   bool connectionClosedByServer_;

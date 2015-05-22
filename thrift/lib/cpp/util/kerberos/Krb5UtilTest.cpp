@@ -26,12 +26,9 @@ using namespace apache::thrift::krb5;
 
 class Krb5UtilTest : public ::testing::Test {
 protected:
-  virtual void SetUp() {
-    name_ = "comp1/comp2@REALM_NAME";
-  }
+ void SetUp() override { name_ = "comp1/comp2@REALM_NAME"; }
 
-  virtual void TearDown() {
-  }
+ void TearDown() override {}
 
   static uint count_creds(Krb5CCache& cc) {
     uint count = 0;

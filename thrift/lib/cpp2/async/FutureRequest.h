@@ -27,9 +27,9 @@ class FutureCallbackBase : public RequestCallback {
     explicit FutureCallbackBase(folly::Promise<Result>&& promise)
           : promise_(std::move(promise)) {}
 
-    void requestSent() {};
+    void requestSent() override{};
 
-    void requestError(ClientReceiveState&& state) {
+    void requestError(ClientReceiveState&& state) override {
       CHECK(state.isException());
       promise_.setException(state.moveExceptionWrapper());
     }
@@ -78,13 +78,13 @@ class FutureCallback<void> : public FutureCallbackBase<void> {
         : FutureCallbackBase<void>(std::move(promise)),
           isOneWay_(isOneWay) {}
 
-    void requestSent() {
+    void requestSent() override {
       if (isOneWay_) {
         promise_.setValue();
       }
     };
 
-    void replyReceived(ClientReceiveState&& state) {
+    void replyReceived(ClientReceiveState&& state) override {
       CHECK(!state.isException());
       CHECK(!isOneWay_);
 

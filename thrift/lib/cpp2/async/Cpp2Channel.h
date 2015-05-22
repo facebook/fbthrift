@@ -52,7 +52,7 @@ class Cpp2Channel
   // TODO(jsedgwick) This should be protected, but folly::wangle::StaticPipeline
   // will encase this in a folly::Optional, which requires a public destructor.
   // Need to add a static_assert to Optional to make that prereq clearer
-  virtual ~Cpp2Channel() {}
+  ~Cpp2Channel() override {}
 
   static std::unique_ptr<Cpp2Channel,
                          apache::thrift::async::TDelayedDestruction::Destructor>

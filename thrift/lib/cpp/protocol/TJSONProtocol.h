@@ -144,7 +144,7 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
   explicit TJSONProtocol(std::shared_ptr<TTransport> ptrans);
   explicit TJSONProtocol(TTransport *ptrans);
 
-  ~TJSONProtocol();
+  ~TJSONProtocol() override;
 
  private:
 
@@ -418,9 +418,10 @@ class TJSONProtocolFactory : public TProtocolFactory {
  public:
   TJSONProtocolFactory() {}
 
-  virtual ~TJSONProtocolFactory() {}
+  ~TJSONProtocolFactory() override {}
 
-  std::shared_ptr<TProtocol> getProtocol(std::shared_ptr<TTransport> trans) {
+  std::shared_ptr<TProtocol> getProtocol(
+      std::shared_ptr<TTransport> trans) override {
     return std::shared_ptr<TProtocol>(new TJSONProtocol(trans));
   }
 };

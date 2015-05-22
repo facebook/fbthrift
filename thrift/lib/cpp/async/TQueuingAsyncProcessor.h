@@ -50,11 +50,10 @@ class TQueuingAsyncProcessor : public TAsyncProcessor {
     , connection_(connection)
   {}
 
-  virtual void process(
-                std::function<void(bool success)> cob,
-                std::shared_ptr<apache::thrift::protocol::TProtocol> in,
-                std::shared_ptr<apache::thrift::protocol::TProtocol> out,
-                TConnectionContext* context) {
+  void process(std::function<void(bool success)> cob,
+               std::shared_ptr<apache::thrift::protocol::TProtocol> in,
+               std::shared_ptr<apache::thrift::protocol::TProtocol> out,
+               TConnectionContext* context) override {
 
     std::shared_ptr<apache::thrift::concurrency::Runnable> task =
       std::shared_ptr<apache::thrift::concurrency::Runnable>(

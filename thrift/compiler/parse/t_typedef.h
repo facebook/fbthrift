@@ -47,7 +47,7 @@ class t_typedef : public t_type {
     type_(nullptr),
     symbolic_(symbolic) {}
 
-  ~t_typedef() {}
+  ~t_typedef() override {}
 
   t_type* get_type() const;
 
@@ -55,25 +55,21 @@ class t_typedef : public t_type {
     return symbolic_;
   }
 
-  bool is_typedef() const {
-    return true;
-  }
+  bool is_typedef() const override { return true; }
 
-  virtual std::string get_full_name() const {
+  std::string get_full_name() const override {
     return get_type()->get_full_name();
   }
 
-  virtual std::string get_impl_full_name() const {
+  std::string get_impl_full_name() const override {
     return get_type()->get_impl_full_name();
   }
 
-  virtual TypeValue get_type_value() const {
+  TypeValue get_type_value() const override {
     return get_type()->get_type_value();
   }
 
-  virtual uint64_t get_type_id() const {
-    return get_type()->get_type_id();
-  }
+  uint64_t get_type_id() const override { return get_type()->get_type_id(); }
 
  private:
   mutable t_type* type_;

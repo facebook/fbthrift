@@ -39,10 +39,10 @@ class TSyncToAsyncProcessor : public TAsyncProcessor {
     : processor_(processor)
   {}
 
-  virtual void process(std::function<void(bool success)> _return,
-                       std::shared_ptr<protocol::TProtocol> in,
-                       std::shared_ptr<protocol::TProtocol> out,
-                       TConnectionContext* context) {
+  void process(std::function<void(bool success)> _return,
+               std::shared_ptr<protocol::TProtocol> in,
+               std::shared_ptr<protocol::TProtocol> out,
+               TConnectionContext* context) override {
     return _return(processor_->process(in, out, context));
   }
 

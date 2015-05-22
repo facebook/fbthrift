@@ -35,7 +35,7 @@ class Controller::WorkerRunner : public concurrency::Runnable {
  public:
   WorkerRunner(Controller* controller) : controller_(controller) {}
 
-  virtual void run() {
+  void run() override {
     shared_ptr<WorkerIf> worker = controller_->createWorker();
     worker->run();
   }

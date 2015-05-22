@@ -27,7 +27,7 @@ using namespace apache::thrift::krb5;
 
 class Krb5CredentialsCacheManagerTest : public ::testing::Test {
 protected:
-  virtual void SetUp() {
+ void SetUp() override {
     // Set up a temporary directory for the test
     tmpDir_ = folly::make_unique<folly::test::TemporaryDirectory>(
       "krb5ccmanagertest");
@@ -41,8 +41,7 @@ protected:
     ctx_ = folly::make_unique<Krb5Context>();
   }
 
-  virtual void TearDown() {
-  }
+  void TearDown() override {}
 
   virtual void enableCCManagaerKillSwitch(){
     // Enable kill switch (by touching the file) before starting the cc manager

@@ -148,7 +148,7 @@ class ServerCreatorBase : public ServerCreator {
   /**
    * Create a new server.
    */
-  virtual std::shared_ptr<server::TServer> createServer() = 0;
+  std::shared_ptr<server::TServer> createServer() override = 0;
 
  protected:
   ServerCreatorBase();

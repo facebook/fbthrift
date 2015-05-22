@@ -127,7 +127,7 @@ class ThreadManager::ImplT : public ThreadManager  {
       RequestContext::getStaticContext();
   }
 
-  ~ImplT() { stop(); }
+  ~ImplT() override { stop(); }
 
   void start() override;
 

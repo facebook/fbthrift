@@ -68,9 +68,9 @@ class LatencyScoreBoard : public ScoreBoard {
     : startTime_(0)
     , opData_(numOpsHint) {}
 
-  virtual void opStarted(uint32_t opType);
-  virtual void opSucceeded(uint32_t opType);
-  virtual void opFailed(uint32_t opType);
+  void opStarted(uint32_t opType) override;
+  void opSucceeded(uint32_t opType) override;
+  void opFailed(uint32_t opType) override;
 
   /**
    * Get the OpData for a particular operation type

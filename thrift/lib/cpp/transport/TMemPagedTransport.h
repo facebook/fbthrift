@@ -40,22 +40,22 @@ class TMemPagedTransport : public TVirtualTransport<TMemPagedTransport> {
   /**
    * Destructor
    */
-  ~TMemPagedTransport();
+  ~TMemPagedTransport() override;
 
   /**
    * Whether this transport is open.
    */
-  virtual bool isOpen();
+  bool isOpen() override;
 
   /**
    * Opens the transport.
    */
-  virtual void open();
+  void open() override;
 
   /**
    * Closes the transport.
    */
-  virtual void close();
+  void close() override;
 
   /**
    * Called when read is completed.
@@ -64,7 +64,7 @@ class TMemPagedTransport : public TVirtualTransport<TMemPagedTransport> {
    *
    * @return number of bytes read if available, 0 otherwise.
    */
-  virtual uint32_t readEnd();
+  uint32_t readEnd() override;
 
   /**
    * Called when write is completed.
@@ -73,7 +73,7 @@ class TMemPagedTransport : public TVirtualTransport<TMemPagedTransport> {
    *
    * @return number of bytes written if available, 0 otherwise
    */
-  virtual uint32_t writeEnd();
+  uint32_t writeEnd() override;
 
   /**
    * Implementations of the base functions

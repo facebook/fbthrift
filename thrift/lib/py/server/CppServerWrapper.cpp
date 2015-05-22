@@ -109,11 +109,11 @@ public:
   explicit CppServerEventHandler(object serverEventHandler)
     : handler_(std::make_shared<object>(serverEventHandler)) {}
 
-  virtual void newConnection(TConnectionContext *ctx) {
+  void newConnection(TConnectionContext* ctx) override {
     callPythonHandler(ctx, "newConnection");
   }
 
-  virtual void connectionDestroyed(TConnectionContext *ctx) {
+  void connectionDestroyed(TConnectionContext* ctx) override {
     callPythonHandler(ctx, "connectionDestroyed");
   }
 
@@ -140,12 +140,12 @@ public:
   explicit PythonAsyncProcessor(std::shared_ptr<object> adapter)
     : adapter_(adapter) {}
 
-  virtual void process(std::unique_ptr<ResponseChannel::Request> req,
-                       std::unique_ptr<folly::IOBuf> buf,
-                       apache::thrift::protocol::PROTOCOL_TYPES protType,
-                       Cpp2RequestContext* context,
-                       apache::thrift::async::TEventBase* eb,
-                       apache::thrift::concurrency::ThreadManager* tm) {
+  void process(std::unique_ptr<ResponseChannel::Request> req,
+               std::unique_ptr<folly::IOBuf> buf,
+               apache::thrift::protocol::PROTOCOL_TYPES protType,
+               Cpp2RequestContext* context,
+               apache::thrift::async::TEventBase* eb,
+               apache::thrift::concurrency::ThreadManager* tm) override {
     folly::ByteRange input_range = buf->coalesce();
     auto input_data = const_cast<unsigned char*>(input_range.data());
     auto clientType = context->getClientType();
@@ -210,8 +210,7 @@ public:
       context->getMinCompressBytes()));
   }
 
-  virtual bool isOnewayMethod(const folly::IOBuf* buf,
-                              const THeader* header) {
+  bool isOnewayMethod(const folly::IOBuf* buf, const THeader* header) override {
     // TODO mhorowitz: I have no idea how to make this work.  I'm not
     // sure python understands oneway.  I'm not even sure C++
     // meaningfully does.
@@ -227,7 +226,7 @@ public:
   explicit PythonAsyncProcessorFactory(std::shared_ptr<object> adapter)
     : adapter_(adapter) {}
 
-  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() {
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     return folly::make_unique<PythonAsyncProcessor>(adapter_);
   }
 

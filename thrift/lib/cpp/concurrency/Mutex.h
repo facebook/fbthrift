@@ -106,13 +106,13 @@ class NoStarveReadWriteMutex : public ReadWriteMutex {
 public:
   NoStarveReadWriteMutex();
 
-  virtual void acquireRead() const;
-  virtual void acquireWrite() const;
+  void acquireRead() const override;
+  void acquireWrite() const override;
 
   // these get the lock and block until it is done successfully
   // or run out of time
-  virtual bool timedRead(int64_t milliseconds) const;
-  virtual bool timedWrite(int64_t milliseconds) const;
+  bool timedRead(int64_t milliseconds) const override;
+  bool timedWrite(int64_t milliseconds) const override;
 
 private:
   Mutex mutex_;

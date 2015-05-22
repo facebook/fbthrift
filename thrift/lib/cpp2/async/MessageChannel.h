@@ -41,7 +41,7 @@ namespace apache { namespace thrift {
 class MessageChannel :
       virtual public apache::thrift::async::TDelayedDestruction {
  protected:
-  virtual ~MessageChannel() {}
+  ~MessageChannel() override {}
 
  public:
   class SendCallback {

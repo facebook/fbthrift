@@ -90,7 +90,7 @@ class Worker : public WorkerIf, public boost::noncopyable {
     alive_ = true;
   }
 
-  virtual ~Worker() {}
+  ~Worker() override {}
 
   int getID() const {
     return id_;
@@ -155,7 +155,7 @@ class Worker : public WorkerIf, public boost::noncopyable {
    * (May return if an error occurs and the error handler returns
    * EA_DROP_THREAD.)
    */
-  virtual void run() {
+  void run() override {
     while (true) {
       // Create a new connection
       std::shared_ptr<ClientT> client;
@@ -224,9 +224,7 @@ class Worker : public WorkerIf, public boost::noncopyable {
     alive_ = false;
   }
 
-  bool isAlive() const {
-    return alive_;
-  }
+  bool isAlive() const override { return alive_; }
 
  protected:
   // Methods needed for overriding ::run
@@ -259,9 +257,9 @@ class SimpleWorkerFactory : public WorkerFactory {
   explicit SimpleWorkerFactory(const std::shared_ptr<ConfigT>& config)
     : config_(config) {}
 
-  virtual WorkerT* newWorker(int id,
-                             const std::shared_ptr<ScoreBoard>& scoreboard,
-                             IntervalTimer* itimer) {
+  WorkerT* newWorker(int id,
+                     const std::shared_ptr<ScoreBoard>& scoreboard,
+                     IntervalTimer* itimer) override {
     std::auto_ptr<WorkerT> worker(new WorkerT);
     worker->init(id, config_, scoreboard, itimer);
     return worker.release();

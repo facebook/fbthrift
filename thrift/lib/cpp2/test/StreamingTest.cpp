@@ -33,7 +33,7 @@ class StreamingServiceInterface : public StreamingServiceSvIf {
  public:
   void async_tm_streamingMethod(
       std::unique_ptr<StreamingHandlerCallback<int32_t>> callback,
-      int32_t count) {
+      int32_t count) override {
     for (int i = 0; i < count; i++) {
       callback->write(i);
       /* sleep override */ usleep((i+1) * 5*1000);
@@ -43,7 +43,7 @@ class StreamingServiceInterface : public StreamingServiceSvIf {
   }
   void async_tm_streamingException(
       std::unique_ptr<StreamingHandlerCallback<int32_t>> callback,
-      int32_t count) {
+      int32_t count) override {
     for (int i = 0; i < count; i++) {
       callback->write(i);
       /* sleep override */ usleep((i+1) * 5*1000);

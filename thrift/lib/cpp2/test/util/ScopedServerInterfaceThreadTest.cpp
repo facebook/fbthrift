@@ -31,11 +31,10 @@ using namespace apache::thrift::util::cpp2;
 
 class SimpleServiceImpl : public virtual SimpleServiceSvIf {
 public:
-  ~SimpleServiceImpl() {}
-  virtual void async_tm_add(
-      unique_ptr<HandlerCallback<int64_t>> cb,
-      int64_t a,
-      int64_t b) override {
+ ~SimpleServiceImpl() override {}
+ void async_tm_add(unique_ptr<HandlerCallback<int64_t>> cb,
+                   int64_t a,
+                   int64_t b) override {
     cb->result(a + b);
   }
 };

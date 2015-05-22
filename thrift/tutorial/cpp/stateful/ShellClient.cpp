@@ -32,19 +32,15 @@ using namespace boost;
 
 class LineTooLongError : public std::exception {
  public:
-  const char* what() const throw() {
-    return "input line is too long";
-  }
+  const char* what() const throw() override { return "input line is too long"; }
 };
 
 class CommandError : public std::exception {
  public:
   CommandError(const string& msg) : msg_(msg) {}
-  ~CommandError() throw() {}
+  ~CommandError() throw() override {}
 
-  const char* what() const throw() {
-    return msg_.c_str();
-  }
+  const char* what() const throw() override { return msg_.c_str(); }
 
  protected:
   string msg_;
@@ -55,7 +51,7 @@ class UnknownCommandError : public CommandError {
   UnknownCommandError(const string& cmd) :
       CommandError("unknown command \"" + cmd + "\""),
       cmd_(cmd) {}
-  ~UnknownCommandError() throw() {}
+  ~UnknownCommandError() throw() override {}
 
  protected:
   string cmd_;

@@ -60,8 +60,8 @@ class SizeGenerator {
 class ConstantSizeGenerator : public SizeGenerator {
  public:
   ConstantSizeGenerator(uint32_t value) : value_(value) {}
-  uint32_t nextSize() { return value_; }
-  std::string describe() const {
+  uint32_t nextSize() override { return value_; }
+  std::string describe() const override {
     std::ostringstream desc;
     desc << value_;
     return desc.str();
@@ -76,9 +76,9 @@ class RandomSizeGenerator : public SizeGenerator {
   RandomSizeGenerator(uint32_t min, uint32_t max) :
     generator_(rng, boost::uniform_int<int>(min, max)) {}
 
-  uint32_t nextSize() { return generator_(); }
+  uint32_t nextSize() override { return generator_(); }
 
-  std::string describe() const {
+  std::string describe() const override {
     std::ostringstream desc;
     desc << "rand(" << getMin() << ", " << getMax() << ")";
     return desc.str();
@@ -106,8 +106,8 @@ class GenericSizeGenerator : public SizeGenerator {
   GenericSizeGenerator(uint32_t min, uint32_t max) :
     generator_(new RandomSizeGenerator(min, max)) {}
 
-  uint32_t nextSize() { return generator_->nextSize(); }
-  std::string describe() const { return generator_->describe(); }
+  uint32_t nextSize() override { return generator_->nextSize(); }
+  std::string describe() const override { return generator_->describe(); }
 
  private:
   std::shared_ptr<SizeGenerator> generator_;

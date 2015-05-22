@@ -40,7 +40,7 @@ class THttpClient : public THttpTransport {
               const std::string& path);
   THttpClient(const std::string& host, int port, const std::string& path);
 
-  virtual ~THttpClient();
+  ~THttpClient() override;
 
   void setUserAgent(const std::string&);
 
@@ -54,14 +54,14 @@ class THttpClient : public THttpTransport {
     return responseHeaders_;
   }
 
-  virtual void flush();
+  void flush() override;
 
-  virtual void close() {
+  void close() override {
     connectionClosedByServer_ = false;
     THttpTransport::close();
   }
 
-  virtual void init() {
+  void init() override {
     /*
      * HTTP requires that the `abs_path' component of a POST message start
      * with '/' (see rfc2616 and rfc2396).
@@ -100,10 +100,10 @@ class THttpClient : public THttpTransport {
   StringToStringMap requestHeaders_;
   StringToStringMap responseHeaders_;
 
-  virtual void beginParsingHeaders();
-  virtual void parseHeader(char* header);
-  virtual bool parseStatusLine(char* status);
-  virtual void endParsingHeaders();
+  void beginParsingHeaders() override;
+  void parseHeader(char* header) override;
+  bool parseStatusLine(char* status) override;
+  void endParsingHeaders() override;
 };
 
 }}} // apache::thrift::transport

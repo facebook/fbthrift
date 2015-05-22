@@ -40,11 +40,10 @@ class NumaThreadFactory : public PosixThreadFactory {
 
   // Overridden methods to implement numa binding
   std::shared_ptr<Thread> newThread(
-    const std::shared_ptr<Runnable>& runnable) const ;
+      const std::shared_ptr<Runnable>& runnable) const override;
 
-  std::shared_ptr<Thread> newThread(
-      const std::shared_ptr<Runnable>& runnable,
-      DetachState detachState) const;
+  std::shared_ptr<Thread> newThread(const std::shared_ptr<Runnable>& runnable,
+                                    DetachState detachState) const override;
 
   // Get the threadlocal describing which node
   // this thread is bound to.
@@ -82,11 +81,11 @@ class NumaThreadManager : public ThreadManager {
                    bool cancellable = false,
                    bool numa = false);
 
-  virtual void add(std::shared_ptr<Runnable>task,
-                   int64_t timeout=0LL,
-                   int64_t expiration=0LL,
-                   bool cancellable = false,
-                   bool numa = false) override;
+  void add(std::shared_ptr<Runnable> task,
+           int64_t timeout = 0LL,
+           int64_t expiration = 0LL,
+           bool cancellable = false,
+           bool numa = false) override;
 
   /**
    * Implements folly::Executor::add()
@@ -151,53 +150,53 @@ class NumaThreadManager : public ThreadManager {
 
   void removeWorker(size_t t) override;
 
-  virtual size_t idleWorkerCount() const override {
+  size_t idleWorkerCount() const override {
     return sum(&ThreadManager::idleWorkerCount);
   }
 
-  virtual size_t workerCount() const override {
+  size_t workerCount() const override {
     return sum(&ThreadManager::workerCount);
   }
 
-  virtual size_t pendingTaskCount() const override {
+  size_t pendingTaskCount() const override {
     return sum(&ThreadManager::pendingTaskCount);
   }
 
-  virtual size_t totalTaskCount() const override {
+  size_t totalTaskCount() const override {
     return sum(&ThreadManager::totalTaskCount);
   }
 
-  virtual size_t pendingTaskCountMax() const override {
+  size_t pendingTaskCountMax() const override {
     throw IllegalStateException("Not implemented");
     return 0;
   }
 
-  virtual size_t expiredTaskCount() override {
+  size_t expiredTaskCount() override {
     return sum(&ThreadManager::expiredTaskCount);
   }
 
-  virtual void remove(std::shared_ptr<Runnable> task) override {
+  void remove(std::shared_ptr<Runnable> task) override {
     throw IllegalStateException("Not implemented");
   }
 
-  virtual std::shared_ptr<Runnable> removeNextPending() override {
+  std::shared_ptr<Runnable> removeNextPending() override {
     throw IllegalStateException("Not implemented");
     return std::shared_ptr<Runnable>();
   }
 
-  virtual void setExpireCallback(ExpireCallback expireCallback) override {
+  void setExpireCallback(ExpireCallback expireCallback) override {
     for (const auto& m : managers_) {
       m->setExpireCallback(expireCallback);
     }
   }
 
-  virtual void setCodelCallback(ExpireCallback expireCallback) override {
+  void setCodelCallback(ExpireCallback expireCallback) override {
     for (const auto& m : managers_) {
       m->setCodelCallback(expireCallback);
     }
   }
 
-  virtual void setThreadInitCallback(InitCallback initCallback) override {
+  void setThreadInitCallback(InitCallback initCallback) override {
     throw IllegalStateException("Not implemented");
   }
 
@@ -207,7 +206,7 @@ class NumaThreadManager : public ThreadManager {
     }
   }
 
-  virtual folly::wangle::Codel* getCodel() override {
+  folly::wangle::Codel* getCodel() override {
     // They *should* be roughtly the same, just return one for now.
     return managers_[0]->getCodel();
   }

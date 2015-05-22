@@ -337,7 +337,7 @@ public:
     colon_(true) {
   }
 
-  uint32_t write(TTransport &trans) {
+  uint32_t write(TTransport& trans) override {
     if (first_) {
       first_ = false;
       colon_ = true;
@@ -351,7 +351,7 @@ public:
     }
   }
 
-  uint32_t read(TJSONProtocol::LookaheadReader &reader) {
+  uint32_t read(TJSONProtocol::LookaheadReader& reader) override {
     if (first_) {
       first_ = false;
       colon_ = true;
@@ -366,9 +366,7 @@ public:
   }
 
   // Numbers must be turned into strings if they are the key part of a pair
-  virtual bool escapeNum() {
-    return colon_;
-  }
+  bool escapeNum() override { return colon_; }
 
   private:
 
@@ -385,7 +383,7 @@ public:
     first_(true) {
   }
 
-  uint32_t write(TTransport &trans) {
+  uint32_t write(TTransport& trans) override {
     if (first_) {
       first_ = false;
       return 0;
@@ -396,7 +394,7 @@ public:
     }
   }
 
-  uint32_t read(TJSONProtocol::LookaheadReader &reader) {
+  uint32_t read(TJSONProtocol::LookaheadReader& reader) override {
     if (first_) {
       first_ = false;
       return 0;

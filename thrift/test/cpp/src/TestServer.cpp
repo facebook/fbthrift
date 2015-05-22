@@ -58,48 +58,46 @@ class TestHandler : public ThriftTestIf {
  public:
   TestHandler() {}
 
-  void testVoid() {
-    printf("testVoid()\n");
-  }
+  void testVoid() override { printf("testVoid()\n"); }
 
-  void testString(string& out, const string &thing) {
+  void testString(string& out, const string& thing) override {
     printf("testString(\"%s\")\n", thing.c_str());
     out = thing;
   }
 
-  int8_t testByte(const int8_t thing) {
+  int8_t testByte(const int8_t thing) override {
     printf("testByte(%d)\n", (int)thing);
     return thing;
   }
 
-  int32_t testI32(const int32_t thing) {
+  int32_t testI32(const int32_t thing) override {
     printf("testI32(%d)\n", thing);
     return thing;
   }
 
-  int64_t testI64(const int64_t thing) {
+  int64_t testI64(const int64_t thing) override {
     printf("testI64(%" PRId64 ")\n", thing);
     return thing;
   }
 
-  double testDouble(const double thing) {
+  double testDouble(const double thing) override {
     printf("testDouble(%lf)\n", thing);
     return thing;
   }
 
-  float testFloat(const float thing) {
+  float testFloat(const float thing) override {
     printf("testFloat(%f)\n", thing);
     return thing;
   }
 
-  void testStruct(Xtruct& out, const Xtruct &thing) {
+  void testStruct(Xtruct& out, const Xtruct& thing) override {
     printf("testStruct({\"%s\", %d, %d, %" PRId64 "})\n",
            thing.string_thing.c_str(), (int)thing.byte_thing,
            thing.i32_thing, thing.i64_thing);
     out = thing;
   }
 
-  void testNest(Xtruct2& out, const Xtruct2& nest) {
+  void testNest(Xtruct2& out, const Xtruct2& nest) override {
     const Xtruct &thing = nest.struct_thing;
     printf("testNest({%d, {\"%s\", %d, %d, %" PRId64 "}, %d})\n",
            (int)nest.byte_thing, thing.string_thing.c_str(),
@@ -108,7 +106,8 @@ class TestHandler : public ThriftTestIf {
     out = nest;
   }
 
-  void testMap(map<int32_t, int32_t> &out, const map<int32_t, int32_t> &thing) {
+  void testMap(map<int32_t, int32_t>& out,
+               const map<int32_t, int32_t>& thing) override {
     printf("testMap({");
     map<int32_t, int32_t>::const_iterator m_iter;
     bool first = true;
@@ -124,7 +123,7 @@ class TestHandler : public ThriftTestIf {
     out = thing;
   }
 
-  void testSet(set<int32_t> &out, const set<int32_t> &thing) {
+  void testSet(set<int32_t>& out, const set<int32_t>& thing) override {
     printf("testSet({");
     set<int32_t>::const_iterator s_iter;
     bool first = true;
@@ -140,7 +139,7 @@ class TestHandler : public ThriftTestIf {
     out = thing;
   }
 
-  void testList(vector<int32_t> &out, const vector<int32_t> &thing) {
+  void testList(vector<int32_t>& out, const vector<int32_t>& thing) override {
     printf("testList({");
     vector<int32_t>::const_iterator l_iter;
     bool first = true;
@@ -156,38 +155,38 @@ class TestHandler : public ThriftTestIf {
     out = thing;
   }
 
-  Numberz testEnum(const Numberz thing) {
+  Numberz testEnum(const Numberz thing) override {
     printf("testEnum(%d)\n", thing);
     return thing;
   }
 
-  UserId testTypedef(const UserId thing) {
+  UserId testTypedef(const UserId thing) override {
     printf("testTypedef(%" PRId64 ")\n", thing);
     return thing;
   }
 
-  int32_t testRequestCount() {
+  int32_t testRequestCount() override {
     printf("testRequestCount not implemented\n");
     return 0;
   }
 
-  int32_t testPreServe() {
+  int32_t testPreServe() override {
     printf("testPreServe not implemented\n");
     return 0;
   }
 
-  int32_t testNewConnection() {
+  int32_t testNewConnection() override {
     printf("testNewConnection not implemented\n");
     return 0;
   }
 
-  int32_t testConnectionDestroyed() {
+  int32_t testConnectionDestroyed() override {
     printf("testConnectionDestroyed not implemented\n");
     return 0;
   }
 
-  void testMapMap(map<int32_t, map<int32_t,int32_t> > &mapmap,
-                  const int32_t hello) {
+  void testMapMap(map<int32_t, map<int32_t, int32_t>>& mapmap,
+                  const int32_t hello) override {
     printf("testMapMap(%d)\n", hello);
 
     map<int32_t,int32_t> pos;
@@ -202,8 +201,8 @@ class TestHandler : public ThriftTestIf {
 
   }
 
-  void testInsanity(map<UserId, map<Numberz,Insanity> > &insane,
-                    const Insanity &argument) {
+  void testInsanity(map<UserId, map<Numberz, Insanity>>& insane,
+                    const Insanity& argument) override {
     printf("testInsanity()\n");
 
     Xtruct hello;
@@ -273,10 +272,13 @@ class TestHandler : public ThriftTestIf {
 
   }
 
-  void testMulti(Xtruct &hello, const int8_t arg0, const int32_t arg1,
+  void testMulti(Xtruct& hello,
+                 const int8_t arg0,
+                 const int32_t arg1,
                  const int64_t arg2,
-                 const std::map<int16_t, std::string>  &arg3,
-                 const Numberz arg4, const UserId arg5) {
+                 const std::map<int16_t, std::string>& arg3,
+                 const Numberz arg4,
+                 const UserId arg5) override {
     printf("testMulti()\n");
 
     hello.string_thing = "Hello2";
@@ -285,7 +287,7 @@ class TestHandler : public ThriftTestIf {
     hello.i64_thing = (int64_t)arg2;
   }
 
-  void testException(const std::string &arg) {
+  void testException(const std::string& arg) override {
     printf("testException(%s)\n", arg.c_str());
     if (arg.compare("Xception") == 0) {
       Xception e;
@@ -302,9 +304,9 @@ class TestHandler : public ThriftTestIf {
     }
   }
 
-  void testMultiException(Xtruct &result,
-                          const std::string &arg0,
-                          const std::string &arg1) {
+  void testMultiException(Xtruct& result,
+                          const std::string& arg0,
+                          const std::string& arg1) override {
 
     printf("testMultiException(%s, %s)\n", arg0.c_str(), arg1.c_str());
 
@@ -324,7 +326,7 @@ class TestHandler : public ThriftTestIf {
     }
   }
 
-  void testOneway(int sleepFor) {
+  void testOneway(int sleepFor) override {
     printf("testOneway(%d): Sleeping...\n", sleepFor);
     sleep(sleepFor);
     printf("testOneway(%d): done sleeping!\n", sleepFor);
@@ -333,29 +335,29 @@ class TestHandler : public ThriftTestIf {
 
 
 class TestProcessorEventHandler : public TProcessorEventHandler {
-  virtual void* getContext(const char* fn_name,
-                           TConnectionContext* serverContext) {
+  void* getContext(const char* fn_name,
+                   TConnectionContext* serverContext) override {
     return new std::string(fn_name);
   }
-  virtual void freeContext(void* ctx, const char* fn_name) {
+  void freeContext(void* ctx, const char* fn_name) override {
     delete static_cast<std::string*>(ctx);
   }
-  virtual void preRead(void* ctx, const char* fn_name) {
+  void preRead(void* ctx, const char* fn_name) override {
     communicate("preRead", ctx, fn_name);
   }
-  virtual void postRead(void* ctx, const char* fn_name, uint32_t bytes) {
+  void postRead(void* ctx, const char* fn_name, uint32_t bytes) override {
     communicate("postRead", ctx, fn_name);
   }
-  virtual void preWrite(void* ctx, const char* fn_name) {
+  void preWrite(void* ctx, const char* fn_name) override {
     communicate("preWrite", ctx, fn_name);
   }
-  virtual void postWrite(void* ctx, const char* fn_name, uint32_t bytes) {
+  void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override {
     communicate("postWrite", ctx, fn_name);
   }
-  virtual void asyncComplete(void* ctx, const char* fn_name) {
+  void asyncComplete(void* ctx, const char* fn_name) override {
     communicate("asyncComplete", ctx, fn_name);
   }
-  virtual void handlerError(void* ctx, const char* fn_name) {
+  void handlerError(void* ctx, const char* fn_name) override {
     communicate("handlerError", ctx, fn_name);
   }
 

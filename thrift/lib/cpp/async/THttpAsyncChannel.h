@@ -157,7 +157,7 @@ class THttpAsyncChannel :
    * Users of THttpAsyncChannel must never delete it directly.  Instead,
    * invoke destroy().
    */
-  virtual ~THttpAsyncChannel() { }
+  ~THttpAsyncChannel() override {}
 };
 
 class THttpAsyncChannelFactory : public TStreamAsyncChannelFactory {
@@ -179,8 +179,8 @@ class THttpAsyncChannelFactory : public TStreamAsyncChannelFactory {
     sendTimeout_ = milliseconds;
   }
 
-  virtual std::shared_ptr<TAsyncEventChannel> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) {
+  std::shared_ptr<TAsyncEventChannel> newChannel(
+      const std::shared_ptr<TAsyncTransport>& transport) override {
     std::shared_ptr<THttpAsyncChannel> channel(
         THttpAsyncChannel::newChannel(transport));
     transport->setSendTimeout(sendTimeout_);

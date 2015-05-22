@@ -320,12 +320,12 @@ class TSingleTransportFactory : public TDuplexTransportFactory {
     std::shared_ptr<Factory_> factory) :
       factory_(factory) {}
 
-  virtual TTransportPair getTransport(std::shared_ptr<TTransport> trans) {
+  TTransportPair getTransport(std::shared_ptr<TTransport> trans) override {
     return std::make_pair(factory_->getTransport(trans),
                           factory_->getTransport(trans));
   }
 
-  virtual TTransportPair getTransport(TTransportPair transports) {
+  TTransportPair getTransport(TTransportPair transports) override {
     return std::make_pair(factory_->getTransport(transports.first),
                           factory_->getTransport(transports.second));
   }
@@ -346,12 +346,12 @@ class TDualTransportFactory : public TDuplexTransportFactory {
       inputFactory_(inputFactory),
       outputFactory_(outputFactory) {}
 
-  virtual TTransportPair getTransport(std::shared_ptr<TTransport> trans) {
+  TTransportPair getTransport(std::shared_ptr<TTransport> trans) override {
     return std::make_pair(inputFactory_->getTransport(trans),
                           outputFactory_->getTransport(trans));
   }
 
-  virtual TTransportPair getTransport(TTransportPair transports) {
+  TTransportPair getTransport(TTransportPair transports) override {
     return std::make_pair(inputFactory_->getTransport(transports.first),
                           outputFactory_->getTransport(transports.second));
   }

@@ -65,7 +65,7 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
   Worker(ThreadManager::ImplT<SemTypeT>* manager) :
     manager_(manager) {}
 
-  ~Worker() {}
+  ~Worker() override {}
 
   /**
    * Worker entry point
@@ -73,7 +73,7 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
    * As long as worker thread is running, pull tasks off the task queue and
    * execute.
    */
-  void run() {
+  void run() override {
     // Inform our manager that we are starting
     manager_->workerStarted(this);
 
@@ -583,7 +583,7 @@ class SimpleThreadManager : public ThreadManager::ImplT<SemType> {
     , workerCount_(workerCount) {
   }
 
-  void start() {
+  void start() override {
     if (this->state() == this->STARTED) {
       return;
     }
@@ -623,7 +623,7 @@ public:
     }
   }
 
-  virtual void start() override {
+  void start() override {
     Guard g(mutex_);
     for (int i = 0; i < N_PRIORITIES; i++) {
       if (managers_[i]->state() == STARTED) {
@@ -634,14 +634,14 @@ public:
     }
   }
 
-  virtual void stop() override {
+  void stop() override {
     Guard g(mutex_);
     for (auto& m : managers_) {
       m->stop();
     }
   }
 
-  virtual void join() override {
+  void join() override {
     Guard g(mutex_);
     for (auto& m : managers_) {
       m->join();
@@ -658,23 +658,23 @@ public:
     }
   }
 
-  virtual void addWorker(size_t value) override {
+  void addWorker(size_t value) override {
     addWorker(NORMAL, value);
   }
 
-  virtual void removeWorker(size_t value) override {
+  void removeWorker(size_t value) override {
     removeWorker(NORMAL, value);
   }
 
-  virtual void addWorker(PRIORITY priority, size_t value) override {
+  void addWorker(PRIORITY priority, size_t value) override {
     managers_[priority]->addWorker(value);
   }
 
-  virtual void removeWorker(PRIORITY priority, size_t value) override {
+  void removeWorker(PRIORITY priority, size_t value) override {
     managers_[priority]->removeWorker(value);
   }
 
-  virtual STATE state() const override {
+  STATE state() const override {
     size_t started = 0;
     Guard g(mutex_);
     for (auto& m : managers_) {
@@ -698,20 +698,20 @@ public:
     return STARTED;
   }
 
-  virtual std::shared_ptr<ThreadFactory> threadFactory() const override {
+  std::shared_ptr<ThreadFactory> threadFactory() const override {
 
     throw IllegalStateException("Not implemented");
     return std::shared_ptr<ThreadFactory>();
   }
 
-  virtual void threadFactory(std::shared_ptr<ThreadFactory> value) override {
+  void threadFactory(std::shared_ptr<ThreadFactory> value) override {
     Guard g(mutex_);
     for (auto& m : managers_) {
       m->threadFactory(value);
     }
   }
 
-  virtual void add(std::shared_ptr<Runnable>task,
+  void add(std::shared_ptr<Runnable>task,
                    int64_t timeout=0LL,
                    int64_t expiration=0LL,
                    bool cancellable = false,
@@ -721,7 +721,7 @@ public:
     add(prio, task, timeout, expiration, cancellable, numa);
   }
 
-  virtual void add(PRIORITY priority,
+  void add(PRIORITY priority,
                    std::shared_ptr<Runnable>task,
                    int64_t timeout=0LL,
                    int64_t expiration=0LL,
@@ -747,53 +747,53 @@ public:
     return count;
   }
 
-  virtual size_t idleWorkerCount() const override {
+  size_t idleWorkerCount() const override {
     return sum(&ThreadManager::idleWorkerCount);
   }
 
-  virtual size_t workerCount() const override {
+  size_t workerCount() const override {
     return sum(&ThreadManager::workerCount);
   }
 
-  virtual size_t pendingTaskCount() const override {
+  size_t pendingTaskCount() const override {
     return sum(&ThreadManager::pendingTaskCount);
   }
 
-  virtual size_t totalTaskCount() const override {
+  size_t totalTaskCount() const override {
     return sum(&ThreadManager::totalTaskCount);
   }
 
-  virtual size_t pendingTaskCountMax() const override {
+  size_t pendingTaskCountMax() const override {
     throw IllegalStateException("Not implemented");
     return 0;
   }
 
-  virtual size_t expiredTaskCount() override {
+  size_t expiredTaskCount() override {
       return sum(&ThreadManager::expiredTaskCount);
   }
 
-  virtual void remove(std::shared_ptr<Runnable> task) override {
+  void remove(std::shared_ptr<Runnable> task) override {
     throw IllegalStateException("Not implemented");
   }
 
-  virtual std::shared_ptr<Runnable> removeNextPending() override {
+  std::shared_ptr<Runnable> removeNextPending() override {
     throw IllegalStateException("Not implemented");
     return std::shared_ptr<Runnable>();
   }
 
-  virtual void setExpireCallback(ExpireCallback expireCallback) override {
+  void setExpireCallback(ExpireCallback expireCallback) override {
     for (const auto& m : managers_) {
       m->setExpireCallback(expireCallback);
     }
   }
 
-  virtual void setCodelCallback(ExpireCallback expireCallback) override {
+  void setCodelCallback(ExpireCallback expireCallback) override {
     for (const auto& m : managers_) {
       m->setCodelCallback(expireCallback);
     }
   }
 
-  virtual void setThreadInitCallback(InitCallback initCallback) override {
+  void setThreadInitCallback(InitCallback initCallback) override {
     throw IllegalStateException("Not implemented");
   }
 

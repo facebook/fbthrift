@@ -99,7 +99,7 @@ class THeaderProtocol
     resetProtocol();
   }
 
-  ~THeaderProtocol() {}
+  ~THeaderProtocol() override {}
 
   /**
    * Functions to work with headers by calling into THeaderTransport
@@ -333,7 +333,7 @@ class THeaderProtocolFactory : public TDuplexProtocolFactory {
     setIdentity_ = disableIdentity;
   }
 
-  virtual ~THeaderProtocolFactory() {}
+  ~THeaderProtocolFactory() override {}
 
   void setClientTypes(std::bitset<CLIENT_TYPES_LEN>& clientTypes) {
     for (int i = 0; i < CLIENT_TYPES_LEN; i++) {
@@ -369,7 +369,7 @@ class THeaderProtocolFactory : public TDuplexProtocolFactory {
     return TProtocolPair(pprot, pprot);
   }
 
-  virtual TProtocolPair getProtocol(transport::TTransportPair transports) {
+  TProtocolPair getProtocol(transport::TTransportPair transports) override {
     THeaderProtocol* prot = new THeaderProtocol(transports.first,
                                                 transports.second,
                                                 &clientTypes_,

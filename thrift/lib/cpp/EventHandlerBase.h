@@ -466,11 +466,11 @@ class TClientBase : public EventHandlerBase {
               std::shared_ptr<protocol::TProtocol> inputProtocol,
               std::shared_ptr<protocol::TProtocol> outputProtocol);
 
-    virtual const folly::SocketAddress* getPeerAddress() const {
+    const folly::SocketAddress* getPeerAddress() const override {
       return &internalAddress_;
     }
 
-    virtual transport::THeader* getHeader() {
+    transport::THeader* getHeader() override {
       if (header_) {
         return header_;
       } else {
@@ -484,15 +484,15 @@ class TClientBase : public EventHandlerBase {
       cleanupUserData();
     }
 
-    virtual std::shared_ptr<protocol::TProtocol> getInputProtocol() const {
+    std::shared_ptr<protocol::TProtocol> getInputProtocol() const override {
       return inputProtocol_;
     }
 
-    virtual std::shared_ptr<protocol::TProtocol> getOutputProtocol() const {
+    std::shared_ptr<protocol::TProtocol> getOutputProtocol() const override {
       return outputProtocol_;
     }
 
-    virtual apache::thrift::async::TEventBaseManager* getEventBaseManager() {
+    apache::thrift::async::TEventBaseManager* getEventBaseManager() override {
       return manager_;
     }
 

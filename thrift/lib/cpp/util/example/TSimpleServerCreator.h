@@ -54,7 +54,7 @@ class __attribute__((__deprecated__)) TSimpleServerCreator : public SyncServerCr
                        std::shared_ptr<protocol::TProtocolFactory>& pf)
     : SyncServerCreator(processor, port, tf, pf) {}
 
-  virtual std::shared_ptr<server::TServer> createServer();
+  std::shared_ptr<server::TServer> createServer() override;
 
   // "Deprecated factory for TSimpleServer"
   #pragma GCC diagnostic push

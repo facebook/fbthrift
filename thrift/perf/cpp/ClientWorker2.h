@@ -43,9 +43,9 @@ class ClientWorker2 : public loadgen::Worker<
     Client;
   typedef loadgen::Worker<Client, ClientLoadConfig> Parent;
 
-  virtual std::shared_ptr<Client> createConnection();
-  virtual void performOperation(const std::shared_ptr<Client>& client,
-                                uint32_t opType);
+  std::shared_ptr<Client> createConnection() override;
+  void performOperation(const std::shared_ptr<Client>& client,
+                        uint32_t opType) override;
 
  private:
   void performNoop(const std::shared_ptr<Client>& client);

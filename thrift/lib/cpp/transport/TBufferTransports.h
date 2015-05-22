@@ -166,7 +166,7 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
     wBound_ = buf+len;
   }
 
-  virtual ~TBufferBase() {}
+  ~TBufferBase() override {}
 
   /// Reads begin here.
   uint8_t* rBase_;
@@ -248,31 +248,27 @@ class TBufferedTransport
   // Tries to put some data back in the beginning of the read buffer.
   void putBack(uint8_t* buf, uint32_t len);
 
-  void open() {
-    transport_->open();
-  }
+  void open() override { transport_->open(); }
 
-  bool isOpen() {
-    return transport_->isOpen();
-  }
+  bool isOpen() override { return transport_->isOpen(); }
 
-  bool peek() {
+  bool peek() override {
     if (rBase_ == rBound_) {
       setReadBuffer(rBuf_.get(), transport_->read(rBuf_.get(), rBufSize_));
     }
     return (rBound_ > rBase_);
   }
 
-  void close() {
+  void close() override {
     flush();
     transport_->close();
   }
 
-  virtual uint32_t readSlow(uint8_t* buf, uint32_t len);
+  uint32_t readSlow(uint8_t* buf, uint32_t len) override;
 
-  virtual void writeSlow(const uint8_t* buf, uint32_t len);
+  void writeSlow(const uint8_t* buf, uint32_t len) override;
 
-  virtual void flush();
+  void flush() override;
 
   /**
    * The following behavior is currently implemented by TBufferedTransport,
@@ -285,7 +281,7 @@ class TBufferedTransport
    *    will ever have to be copied again.  For optimal performance,
    *    stay under this limit.
    */
-  virtual const uint8_t* borrowSlow(uint8_t* buf, uint32_t* len);
+  const uint8_t* borrowSlow(uint8_t* buf, uint32_t* len) override;
 
   std::shared_ptr<TTransport> getUnderlyingTransport() {
     return transport_;
@@ -326,12 +322,13 @@ class TBufferedTransportFactory : public TTransportFactory {
  public:
   TBufferedTransportFactory() {}
 
-  virtual ~TBufferedTransportFactory() {}
+  ~TBufferedTransportFactory() override {}
 
   /**
    * Wraps the transport into a buffered one.
    */
-  virtual std::shared_ptr<TTransport> getTransport(std::shared_ptr<TTransport> trans) {
+  std::shared_ptr<TTransport> getTransport(
+      std::shared_ptr<TTransport> trans) override {
     return std::shared_ptr<TTransport>(new TBufferedTransport(trans));
   }
 
@@ -394,34 +391,28 @@ class TFramedTransport
     initPointers();
   }
 
-  void open() {
-    transport_->open();
-  }
+  void open() override { transport_->open(); }
 
-  bool isOpen() {
-    return transport_->isOpen();
-  }
+  bool isOpen() override { return transport_->isOpen(); }
 
-  bool peek() {
-    return (rBase_ < rBound_) || transport_->peek();
-  }
+  bool peek() override { return (rBase_ < rBound_) || transport_->peek(); }
 
-  void close() {
+  void close() override {
     flush();
     transport_->close();
   }
 
-  virtual uint32_t readSlow(uint8_t* buf, uint32_t len);
+  uint32_t readSlow(uint8_t* buf, uint32_t len) override;
 
-  virtual void writeSlow(const uint8_t* buf, uint32_t len);
+  void writeSlow(const uint8_t* buf, uint32_t len) override;
 
-  virtual void flush();
+  void flush() override;
 
-  uint32_t readEnd();
+  uint32_t readEnd() override;
 
-  uint32_t writeEnd();
+  uint32_t writeEnd() override;
 
-  const uint8_t* borrowSlow(uint8_t* buf, uint32_t* len);
+  const uint8_t* borrowSlow(uint8_t* buf, uint32_t* len) override;
 
   std::shared_ptr<TTransport> getUnderlyingTransport() {
     return transport_;
@@ -490,12 +481,13 @@ class TFramedTransportFactory : public TTransportFactory {
  public:
   TFramedTransportFactory() {}
 
-  virtual ~TFramedTransportFactory() {}
+  ~TFramedTransportFactory() override {}
 
   /**
    * Wraps the transport into a framed one.
    */
-  virtual std::shared_ptr<TTransport> getTransport(std::shared_ptr<TTransport> trans) {
+  std::shared_ptr<TTransport> getTransport(
+      std::shared_ptr<TTransport> trans) override {
     return std::shared_ptr<TTransport>(new TFramedTransport(trans));
   }
 
@@ -632,9 +624,7 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
     linkedBuffer_->observe(this);
   }
 
-  ~TMemoryBuffer() {
-    cleanup();
-  }
+  ~TMemoryBuffer() override { cleanup(); }
 
   // Set this buffer to observe the next length bytes of buffer.
   void link(TMemoryBuffer *buffer, uint32_t length) {
@@ -646,17 +636,13 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
     linkedBuffer_->observe(this);
   }
 
-  bool isOpen() {
-    return true;
-  }
+  bool isOpen() override { return true; }
 
-  bool peek() {
-    return (rBase_ < wBase_);
-  }
+  bool peek() override { return (rBase_ < wBase_); }
 
-  void open() {}
+  void open() override {}
 
-  void close() {}
+  void close() override {}
 
   uint32_t getBufferSize() const { return bufferSize_; }
 
@@ -810,7 +796,7 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
   uint32_t readAppendToString(std::string& str, uint32_t len);
 
   // return number of bytes read
-  uint32_t readEnd() {
+  uint32_t readEnd() override {
     uint32_t bytes = rBase_ - buffer_;
     if (rBase_ == wBase_) {
       resetBuffer();
@@ -819,9 +805,7 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
   }
 
   // Return number of bytes written
-  uint32_t writeEnd() {
-    return wBase_ - buffer_;
-  }
+  uint32_t writeEnd() override { return wBase_ - buffer_; }
 
   uint32_t available_read() const {
     // Remember, wBase_ is the real rBound_.
@@ -956,7 +940,7 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
     }
   }
 
-  void consumeEnd() {
+  void consumeEnd() override {
     if (observerCount_ == 0) {
       resetBuffer();
     }
@@ -968,11 +952,11 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
   // Compute the position and available data for reading.
   void computeRead(uint32_t len, uint8_t** out_start, uint32_t* out_give);
 
-  uint32_t readSlow(uint8_t* buf, uint32_t len);
+  uint32_t readSlow(uint8_t* buf, uint32_t len) override;
 
-  void writeSlow(const uint8_t* buf, uint32_t len);
+  void writeSlow(const uint8_t* buf, uint32_t len) override;
 
-  const uint8_t* borrowSlow(uint8_t* buf, uint32_t* len);
+  const uint8_t* borrowSlow(uint8_t* buf, uint32_t* len) override;
 
   // Data buffer
   uint8_t* buffer_;

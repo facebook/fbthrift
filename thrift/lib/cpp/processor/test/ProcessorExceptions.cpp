@@ -44,9 +44,7 @@ using apache::thrift::TApplicationException;
 
 class SampleServiceHandler : public SampleServiceIf {
 public:
-  int32_t return42(const MyArgs& unused, int32_t i) {
-    return 42;
-  }
+ int32_t return42(const MyArgs& unused, int32_t i) override { return 42; }
 };
 
 bool Inner::operator <(const Inner& r) const {

@@ -60,7 +60,7 @@ class Cpp2Connection
       const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr);
 
   /// Destructor -- close down the connection.
-  ~Cpp2Connection();
+  ~Cpp2Connection() override;
 
   // ResponseChannel callbacks
   void requestReceived(std::unique_ptr<ResponseChannel::Request>&&) override;
@@ -120,13 +120,13 @@ class Cpp2Connection
     class SoftTimeout
       : public apache::thrift::async::HHWheelTimer::Callback {
       Cpp2Request* request_;
-      virtual void timeoutExpired() noexcept;
+      void timeoutExpired() noexcept override;
       friend class Cpp2Request;
     };
     class HardTimeout
       : public apache::thrift::async::HHWheelTimer::Callback {
       Cpp2Request* request_;
-      virtual void timeoutExpired() noexcept;
+      void timeoutExpired() noexcept override;
       friend class Cpp2Request;
     };
     friend class SoftTimeout;
@@ -136,19 +136,19 @@ class Cpp2Connection
                    std::shared_ptr<Cpp2Connection> con);
 
     // Delegates to wrapped request.
-    virtual bool isActive() { return req_->isActive(); }
-    virtual void cancel() { req_->cancel(); }
+    bool isActive() override { return req_->isActive(); }
+    void cancel() override { req_->cancel(); }
 
-    virtual bool isOneway() { return req_->isOneway(); }
+    bool isOneway() override { return req_->isOneway(); }
 
-    virtual void sendReply(std::unique_ptr<folly::IOBuf>&& buf,
-                   MessageChannel::SendCallback* notUsed = nullptr);
-    virtual void sendErrorWrapped(
+    void sendReply(std::unique_ptr<folly::IOBuf>&& buf,
+                   MessageChannel::SendCallback* notUsed = nullptr) override;
+    void sendErrorWrapped(
         folly::exception_wrapper ew,
         std::string exCode,
-        MessageChannel::SendCallback* notUsed = nullptr);
+        MessageChannel::SendCallback* notUsed = nullptr) override;
 
-    virtual ~Cpp2Request();
+    ~Cpp2Request() override;
 
     // Cancel request is ususally called from a different thread than sendReply.
     virtual void cancelRequest();
@@ -157,8 +157,8 @@ class Cpp2Connection
       return &reqContext_;
     }
 
-    virtual apache::thrift::server::TServerObserver::CallTimestamps&
-    getTimestamps() {
+    apache::thrift::server::TServerObserver::CallTimestamps& getTimestamps()
+        override {
       return req_->getTimestamps();
     }
 
@@ -187,10 +187,10 @@ class Cpp2Connection
       apache::thrift::server::TServerObserver* observer,
       MessageChannel::SendCallback* chainedCallback = nullptr);
 
-    void sendQueued();
-    void messageSent();
-    void messageSendError(folly::exception_wrapper&& e);
-    ~Cpp2Sample();
+    void sendQueued() override;
+    void messageSent() override;
+    void messageSendError(folly::exception_wrapper&& e) override;
+    ~Cpp2Sample() override;
 
    private:
     apache::thrift::server::TServerObserver::CallTimestamps timestamps_;

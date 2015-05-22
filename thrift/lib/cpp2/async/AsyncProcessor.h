@@ -46,7 +46,7 @@ class EventTask : public virtual apache::thrift::concurrency::Runnable {
       , oneway_(oneway) {
 }
 
-  void run() {
+  void run() override {
     if (!oneway_) {
       if (req_ && !req_->isActive()) {
         auto req = req_;
@@ -94,8 +94,8 @@ class PriorityEventTask : public apache::thrift::concurrency::PriorityRunnable,
       : EventTask(std::move(taskFunc), req, base, oneway)
       , priority_(priority) {}
 
-  apache::thrift::concurrency::PriorityThreadManager::PRIORITY
-  getPriority() const {
+  apache::thrift::concurrency::PriorityThreadManager::PRIORITY getPriority()
+      const override {
     return priority_;
   }
   using EventTask::run;
@@ -121,7 +121,7 @@ class AsyncProcessor : public TProcessorBase {
 
 class GeneratedAsyncProcessor : public AsyncProcessor {
  public:
-  virtual ~GeneratedAsyncProcessor() {}
+  ~GeneratedAsyncProcessor() override {}
 
  protected:
   template <typename ProtocolIn, typename Args>
@@ -630,7 +630,7 @@ class HandlerCallback<void> : public HandlerCallbackBase {
     this->protoSeqId_ = protoSeqId;
   }
 
-  ~HandlerCallback(){}
+  ~HandlerCallback() override {}
 
   void done() {
     doDone();
@@ -749,7 +749,7 @@ class AsyncProcessorFactory {
 
 class ServerInterface : public AsyncProcessorFactory {
  public:
-  virtual ~ServerInterface() {};
+  ~ServerInterface() override{};
 
   Cpp2RequestContext* getConnectionContext() {
     return reqCtx_;

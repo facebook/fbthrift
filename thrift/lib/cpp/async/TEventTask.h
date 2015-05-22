@@ -35,7 +35,7 @@ class TEventTask : public apache::thrift::concurrency::Runnable {
  public:
   explicit TEventTask(TEventConnection* connection);
 
-  void run();
+  void run() override;
 
   TEventConnection* getConnection() const {
     return connection_;

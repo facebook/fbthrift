@@ -122,16 +122,16 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
       noexcept = 0;
 
    private:
-    virtual bool handshakeVer(AsyncSSLSocket* sock,
-                                 bool preverifyOk,
-                                 X509_STORE_CTX* ctx) noexcept {
+    bool handshakeVer(AsyncSSLSocket* sock,
+                      bool preverifyOk,
+                      X509_STORE_CTX* ctx) noexcept override {
       return handshakeVerify(static_cast<TAsyncSSLSocket*>(sock), preverifyOk, ctx);
     }
-    virtual void handshakeSuc(folly::AsyncSSLSocket* sock) noexcept {
+    void handshakeSuc(folly::AsyncSSLSocket* sock) noexcept override {
       handshakeSuccess(static_cast<TAsyncSSLSocket*>(sock));
     }
-    virtual void handshakeErr(
-      folly::AsyncSSLSocket* sock, const folly::AsyncSocketException& ex) noexcept {
+    void handshakeErr(folly::AsyncSSLSocket* sock,
+                      const folly::AsyncSocketException& ex) noexcept override {
       transport::TTransportException tex(
         transport::TTransportException::TTransportExceptionType(ex.getType()),
         ex.what(), ex.getErrno());

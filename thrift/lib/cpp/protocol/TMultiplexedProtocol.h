@@ -76,7 +76,7 @@ namespace apache
                       serviceName(_serviceName),
                       separator(":")
                 { }
-                virtual ~TMultiplexedProtocol() {}
+                 ~TMultiplexedProtocol() override {}
 
                 /**
                  * Prepends the service name to the function name, separated by TMultiplexedProtocol::SEPARATOR.
@@ -87,10 +87,10 @@ namespace apache
                  *
                  * \throws TException  Passed through from wrapped <code>TProtocol</code> instance.
                  */
-                uint32_t writeMessageBegin_virt(
-                    const std::string& _name,
-                    const TMessageType _type,
-                    const int32_t _seqid);
+                 uint32_t writeMessageBegin_virt(const std::string& _name,
+                                                 const TMessageType _type,
+                                                 const int32_t _seqid) override;
+
             private:
                 const std::string serviceName;
                 const std::string separator;

@@ -57,7 +57,7 @@ void IOBufPtrTestService::async_tm_combine(
 class IOBufPtrTest : public ::testing::Test {
  protected:
   IOBufPtrTest();
-  ~IOBufPtrTest();
+  ~IOBufPtrTest() override;
 
   const folly::SocketAddress& getServerAddress() const {
     return server_.getAddress();

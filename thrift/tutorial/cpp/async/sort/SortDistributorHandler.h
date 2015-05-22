@@ -39,7 +39,9 @@ class SortDistributorHandler : public SorterCobSvIf, public boost::noncopyable {
 
   SortDistributorHandler() : server_(nullptr) { }
 
-  void sort(SortReturnCob cob, SortErrorCob errcob, const IntVector &values);
+  void sort(SortReturnCob cob,
+            SortErrorCob errcob,
+            const IntVector& values) override;
 
   /**
    * Set the TEventServer that will be used.

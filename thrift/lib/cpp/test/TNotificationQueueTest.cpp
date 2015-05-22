@@ -39,7 +39,7 @@ class QueueConsumer : public IntQueue::Consumer {
  public:
   QueueConsumer() {}
 
-  virtual void messageAvailable(int&& value) {
+  void messageAvailable(int&& value) override {
     messages.push_back(value);
     if (fn) {
       fn(value);
@@ -366,7 +366,7 @@ void QueueTest::destroyCallback() {
    public:
     DestroyTestConsumer() {}
 
-    virtual void messageAvailable(int&& value) {
+    void messageAvailable(int&& value) override {
       if (fn && *fn) {
         (*fn)(value);
       }

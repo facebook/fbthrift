@@ -107,7 +107,7 @@ class THeaderAsyncChannel :
    * Users of THeaderAsyncChannel must never delete it directly.  Instead,
    * invoke destroy().
    */
-  virtual ~THeaderAsyncChannel() { }
+  ~THeaderAsyncChannel() override {}
 };
 
 class THeaderAsyncChannelFactory : public TStreamAsyncChannelFactory {
@@ -134,8 +134,8 @@ class THeaderAsyncChannelFactory : public TStreamAsyncChannelFactory {
     strictRead_ = strict;
   }
 
-  virtual std::shared_ptr<TAsyncEventChannel> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) {
+  std::shared_ptr<TAsyncEventChannel> newChannel(
+      const std::shared_ptr<TAsyncTransport>& transport) override {
     std::shared_ptr<THeaderAsyncChannel> channel(
         THeaderAsyncChannel::newChannel(transport));
     transport->setSendTimeout(sendTimeout_);

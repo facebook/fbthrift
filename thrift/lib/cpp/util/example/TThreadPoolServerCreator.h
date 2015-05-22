@@ -123,7 +123,7 @@ class __attribute__((__deprecated__)) TThreadPoolServerCreator
    */
   void setThreadFactory(const std::shared_ptr<concurrency::ThreadFactory>&);
 
-  virtual std::shared_ptr<server::TServer> createServer();
+  std::shared_ptr<server::TServer> createServer() override;
 
   // "Deprecated factory for TThreadPoolServer"
   #pragma GCC diagnostic push

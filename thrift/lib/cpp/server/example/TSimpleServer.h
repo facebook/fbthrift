@@ -81,13 +81,13 @@ class __attribute__((__deprecated__)) TSimpleServer : public TServer {
     stop_(false),
     connectionCtx_(nullptr) {}
 
-  ~TSimpleServer() {}
+  ~TSimpleServer() override {}
 
-  void serve();
+  void serve() override;
 
-  void stop();
+  void stop() override;
 
-  TConnectionContext* getConnectionContext() const;
+  TConnectionContext* getConnectionContext() const override;
 
  protected:
   bool stop_;

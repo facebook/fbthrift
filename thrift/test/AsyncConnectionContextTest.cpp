@@ -66,7 +66,7 @@ class Client: public Runnable {
     count_ = count;
   }
 
-  void run() {
+  void run() override {
     std::shared_ptr<TSocket> socket(new TSocket("localhost", port_));
     socket->open();
     std::shared_ptr<TTransport> transport(new TFramedTransport(socket));
@@ -120,34 +120,24 @@ class TestHandler :public ServiceIf {
 public:
   TestHandler() {}
 
-  void echoVoid() {
-  }
+  void echoVoid() override {}
 
-  int8_t echoByte(int8_t byte) {
-    return byte;
-  }
+  int8_t echoByte(int8_t byte) override { return byte; }
 
-  int32_t echoI32(int32_t e) {
-    return e;
-  }
+  int32_t echoI32(int32_t e) override { return e; }
 
-  int64_t echoI64(int64_t e) {
-    return e;
-  }
+  int64_t echoI64(int64_t e) override { return e; }
 
-  void echoString(string& out, const string& e) {
+  void echoString(string& out, const string& e) override { out = e; }
+
+  void echoList(vector<int8_t>& out, const vector<int8_t>& e) override {
     out = e;
   }
 
-  void echoList(vector<int8_t>& out, const vector<int8_t>& e) {
-    out = e;
-  }
+  void echoSet(set<int8_t>& out, const set<int8_t>& e) override { out = e; }
 
-  void echoSet(set<int8_t>& out, const set<int8_t>& e) {
-    out = e;
-  }
-
-  void echoMap(map<int8_t, int8_t>& out, const map<int8_t, int8_t>& e) {
+  void echoMap(map<int8_t, int8_t>& out,
+               const map<int8_t, int8_t>& e) override {
     out = e;
   }
 };
@@ -165,7 +155,7 @@ class ServerEventHandler : public TProcessorEventHandler {
    *          folly::SocketAddress* casted into a void*.
    */
   void* getContext(const char* fn_name,
-                   TConnectionContext* serverContext = nullptr) {
+                   TConnectionContext* serverContext = nullptr) override {
     if (serverContext != nullptr) {
       return (void *)serverContext->getPeerAddress();
     }
@@ -214,7 +204,7 @@ class ServerEventHandler : public TProcessorEventHandler {
     }
   }
 
-  void preRead(void* ctx, const char* fn_name) {
+  void preRead(void* ctx, const char* fn_name) override {
     addToCountMap(getPort(ctx), getEchoType(fn_name));
   }
 

@@ -36,7 +36,7 @@ class TZlibTransportException : public TTransportException {
     zlib_status_(status),
     zlib_msg_(msg == nullptr ? "(null)" : msg) {}
 
-  virtual ~TZlibTransportException() throw() {}
+  ~TZlibTransportException() throw() override {}
 
   int getZlibStatus() { return zlib_status_; }
   std::string getZlibMessage() { return zlib_msg_; }
@@ -141,24 +141,20 @@ class TZlibTransport : public TVirtualTransport<TZlibTransport> {
    * unflushed data.  You must explicitly call flush() or finish() to ensure
    * that data is actually written and flushed to the underlying transport.
    */
-  ~TZlibTransport();
+  ~TZlibTransport() override;
 
-  bool isOpen();
-  bool peek();
+  bool isOpen() override;
+  bool peek() override;
 
-  void open() {
-    transport_->open();
-  }
+  void open() override { transport_->open(); }
 
-  void close() {
-    transport_->close();
-  }
+  void close() override { transport_->close(); }
 
   uint32_t read(uint8_t* buf, uint32_t len);
 
   void write(const uint8_t* buf, uint32_t len);
 
-  void flush();
+  void flush() override;
 
   /**
    * Finalize the zlib stream.
@@ -262,10 +258,10 @@ class TZlibTransportFactory : public TTransportFactory {
  public:
   TZlibTransportFactory() {}
 
-  virtual ~TZlibTransportFactory() {}
+  ~TZlibTransportFactory() override {}
 
-  virtual std::shared_ptr<TTransport> getTransport(
-                                         std::shared_ptr<TTransport> trans) {
+  std::shared_ptr<TTransport> getTransport(
+      std::shared_ptr<TTransport> trans) override {
     return std::shared_ptr<TTransport>(new TZlibTransport(trans));
   }
 };
@@ -277,10 +273,10 @@ class TFramedZlibTransportFactory : public TTransportFactory {
  public:
   TFramedZlibTransportFactory() {}
 
-  virtual ~TFramedZlibTransportFactory() {}
+  ~TFramedZlibTransportFactory() override {}
 
-  virtual std::shared_ptr<TTransport> getTransport(
-                                         std::shared_ptr<TTransport> trans) {
+  std::shared_ptr<TTransport> getTransport(
+      std::shared_ptr<TTransport> trans) override {
     std::shared_ptr<TTransport> framedTransport(new TFramedTransport(trans));
     return std::shared_ptr<TTransport>(new TZlibTransport(framedTransport));
   }

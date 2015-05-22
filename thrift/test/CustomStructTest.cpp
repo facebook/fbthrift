@@ -58,10 +58,10 @@ Container createContainer() {
 
 class CustomStructHandler : public CustomStructSvIf {
  public:
-  void echoStruct(MyCustomStruct& out, const MyCustomStruct& in) {
+  void echoStruct(MyCustomStruct& out, const MyCustomStruct& in) override {
     out = in;
   }
-  void echoUnion(MyCustomUnion& out, const MyCustomUnion& in) {
+  void echoUnion(MyCustomUnion& out, const MyCustomUnion& in) override {
     out = in;
   }
 };

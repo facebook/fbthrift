@@ -51,13 +51,11 @@ class NumaRunnable : public Runnable {
       : setNode_(setNode)
       , runnable_(runnable) {}
 
-  void run();
+  void run() override;
 
-  virtual std::shared_ptr<Thread> thread() {
-    return runnable_->thread();
-  }
+  std::shared_ptr<Thread> thread() override { return runnable_->thread(); }
 
-  virtual void thread(std::shared_ptr<Thread> value) {
+  void thread(std::shared_ptr<Thread> value) override {
     runnable_->thread(value);
   }
 

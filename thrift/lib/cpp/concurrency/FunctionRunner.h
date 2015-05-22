@@ -115,7 +115,7 @@ class FunctionRunner : public Runnable {
     initFunc_ = initFunc;
   }
 
-  void run() {
+  void run() override {
     apache::thrift::concurrency::Synchronized s(monitor_);
     if (initFunc_) {
       initFunc_();
@@ -141,9 +141,7 @@ class FunctionRunner : public Runnable {
     }
   }
 
-  ~FunctionRunner() {
-    stop();
-  }
+  ~FunctionRunner() override { stop(); }
 
  private:
   VoidFunc func_;

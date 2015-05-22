@@ -97,16 +97,16 @@ class __attribute__((__deprecated__)) TThreadedServer : public TServer {
     const std::shared_ptr<ThreadFactory>& threadFactory,
     THRIFT_OVERLOAD_IF(Processor, TProcessor));
 
-  virtual ~TThreadedServer();
+  ~TThreadedServer() override;
 
-  virtual void serve();
+  void serve() override;
 
-  void stop() {
+  void stop() override {
     stop_ = true;
     serverTransport_->interrupt();
   }
 
-  virtual TConnectionContext* getConnectionContext() const;
+  TConnectionContext* getConnectionContext() const override;
 
  protected:
   typedef concurrency::ThreadLocal<Task,

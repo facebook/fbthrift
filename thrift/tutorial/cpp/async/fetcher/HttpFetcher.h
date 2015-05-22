@@ -92,15 +92,15 @@ class HttpFetcher :
 
  private:
    // TAsyncTransport callback methods
-   void writeSuccess() noexcept;
-   void writeError(size_t bytesWritten,
-                   const apache::thrift::transport::TTransportException& ex)
-     noexcept;
-   void getReadBuffer(void** bufReturn, size_t* lenReturn);
-   void readDataAvailable(size_t len) noexcept;
-   void readEOF() noexcept;
-   void readError(const apache::thrift::transport::TTransportException& ex)
-     noexcept;
+  void writeSuccess() noexcept override;
+  void writeError(size_t bytesWritten,
+                  const apache::thrift::transport::TTransportException&
+                      ex) noexcept override;
+  void getReadBuffer(void** bufReturn, size_t* lenReturn) override;
+  void readDataAvailable(size_t len) noexcept override;
+  void readEOF() noexcept override;
+  void readError(const apache::thrift::transport::TTransportException&
+                     ex) noexcept override;
 
    void fail(std::string const& msg);
 

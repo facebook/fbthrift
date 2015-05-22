@@ -93,7 +93,7 @@ class FsyncTimer : public FsyncHandler {
     }
   }
 
-  virtual int fsync(int fd) {
+  int fsync(int fd) override {
     TimePoint now;
     Guard g(mutex_);
 

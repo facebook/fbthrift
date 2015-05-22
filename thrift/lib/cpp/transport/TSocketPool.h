@@ -109,7 +109,7 @@ class TSocketPool : public TSocket {
    /**
     * Destroys the socket object, closing it if necessary.
     */
-   virtual ~TSocketPool();
+   ~TSocketPool() override;
 
    /**
     * Add a server to the pool
@@ -174,12 +174,12 @@ class TSocketPool : public TSocket {
    /**
     * Creates and opens the UNIX socket.
     */
-   void open();
+   void open() override;
 
    /*
     * Closes the UNIX socket
     */
-   void close();
+   void close() override;
 
  protected:
 

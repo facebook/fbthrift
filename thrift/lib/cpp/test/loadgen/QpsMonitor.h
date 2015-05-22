@@ -34,12 +34,12 @@ class QpsMonitor : public TerminalMonitor {
  public:
   explicit QpsMonitor(const std::shared_ptr<LoadConfig>& config);
 
-  virtual std::shared_ptr<ScoreBoard> newScoreBoard(int id);
+  std::shared_ptr<ScoreBoard> newScoreBoard(int id) override;
 
-  virtual void initializeInfo();
-  virtual uint32_t printHeader();
-  virtual uint32_t printInfo(uint64_t intervalUsec);
-  virtual uint64_t getCurrentQps();
+  void initializeInfo() override;
+  uint32_t printHeader() override;
+  uint32_t printInfo(uint64_t intervalUsec) override;
+  uint64_t getCurrentQps() override;
 
   OpEnabledState* getEnabledState() {
     return &enabledState_;

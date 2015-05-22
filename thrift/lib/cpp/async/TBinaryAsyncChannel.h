@@ -109,7 +109,7 @@ class TBinaryAsyncChannel :
    * Users of TBinaryAsyncChannel must never delete it directly.  Instead,
    * invoke destroy().
    */
-  virtual ~TBinaryAsyncChannel() { }
+  ~TBinaryAsyncChannel() override {}
 };
 
 class TBinaryAsyncChannelFactory : public TStreamAsyncChannelFactory {
@@ -136,8 +136,8 @@ class TBinaryAsyncChannelFactory : public TStreamAsyncChannelFactory {
     strictRead_ = strict;
   }
 
-  virtual std::shared_ptr<TAsyncEventChannel> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) {
+  std::shared_ptr<TAsyncEventChannel> newChannel(
+      const std::shared_ptr<TAsyncTransport>& transport) override {
     std::shared_ptr<TBinaryAsyncChannel> channel(
         TBinaryAsyncChannel::newChannel(transport));
     transport->setSendTimeout(sendTimeout_);

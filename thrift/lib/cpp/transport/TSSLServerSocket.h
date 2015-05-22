@@ -50,7 +50,7 @@ class TSSLServerSocket: public TServerSocket {
   TSSLServerSocket(int port, int sendTimeout, int recvTimeout,
                    std::shared_ptr<TSSLSocketFactory> factory);
  protected:
-  std::shared_ptr<TSocket> createSocket(int socket);
+  std::shared_ptr<TSocket> createSocket(int socket) override;
   std::shared_ptr<TSSLSocketFactory> factory_;
 };
 

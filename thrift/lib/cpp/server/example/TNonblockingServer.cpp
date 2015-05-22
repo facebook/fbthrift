@@ -190,14 +190,14 @@ class TNonblockingServer::TConnection : private TConnectionContext {
   void workSocket();
 
   // Inherited from TConnectionContext
-  const folly::SocketAddress* getPeerAddress() const {
+  const folly::SocketAddress* getPeerAddress() const override {
     return tSocket_->getPeerAddress();
   }
 
   // Expose the protocols
-  virtual std::shared_ptr<protocol::TProtocol> getInputProtocol() const;
+  std::shared_ptr<protocol::TProtocol> getInputProtocol() const override;
 
-  virtual std::shared_ptr<protocol::TProtocol> getOutputProtocol() const;
+  std::shared_ptr<protocol::TProtocol> getOutputProtocol() const override;
 
   void resetCallTimestamps() {
     if (!server_->getObserver()) {
@@ -239,7 +239,7 @@ class TNonblockingServer::TConnection : private TConnectionContext {
     init(socket, ioThread, addr, addrLen, to);
   }
 
-  ~TConnection() {
+  ~TConnection() override {
     if (eventFlags_) {
       event_del(&event_);
     }
@@ -358,7 +358,7 @@ class TNonblockingServer::TConnection::Task: public Runnable {
     output_(output),
     connection_(connection) {}
 
-  void run() {
+  void run() override {
     if (connection_->callTimestamps_) {
       connection_->callTimestamps_->processBegin = Util::currentTimeUsec();
     }
