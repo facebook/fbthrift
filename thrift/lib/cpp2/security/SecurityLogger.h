@@ -19,6 +19,7 @@
 
 #include <glog/logging.h>
 #include <string>
+#include <vector>
 
 #include <folly/String.h>
 
@@ -42,7 +43,7 @@ class SecurityLogger {
    * Log key, optional data.
    */
   virtual void log(const std::string& key,
-      const std::initializer_list<std::string>& data,
+      const std::vector<std::string>& data,
       TracingOptions tracing) {
     if (!VLOG_IS_ON(9)) {
       return;
