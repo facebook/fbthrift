@@ -550,7 +550,7 @@ private:
     }
 
     // Read the info section.
-    readHeaders.clear();
+    readHeaders.destroy();
     while ((frame.ptr - buff.ptr) < endHeader) {
       int infoId = readVarint32Buf(frame);
       switch(infoId) with(Info) {
