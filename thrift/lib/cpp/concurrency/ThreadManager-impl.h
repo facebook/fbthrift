@@ -124,7 +124,7 @@ class ThreadManager::ImplT : public ThreadManager  {
     namePrefix_(""),
     namePrefixCounter_(0),
     codelEnabled_(false || FLAGS_codel_enabled) {
-      RequestContext::getStaticContext();
+      RequestContext::saveContext();
   }
 
   ~ImplT() override { stop(); }
