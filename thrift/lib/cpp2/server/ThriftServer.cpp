@@ -577,7 +577,10 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
 
   auto tm = getThreadManager();
   if (tm) {
-    queueload = tm->getCodel()->getLoad();
+    auto codel = tm->getCodel();
+    if (codel) {
+      queueload = codel->getLoad();
+    }
   }
 
   if (VLOG_IS_ON(1) && workerFactory) {
