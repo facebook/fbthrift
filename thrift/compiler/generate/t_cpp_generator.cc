@@ -1020,6 +1020,19 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
         << " string constant, in order to " << endl;
       f_consts << indent() << "// prevent unnecessary allocations" << endl;
     }
+
+    if (inlined) {
+      f_consts << indent() << "static ";
+      f_consts << "constexpr ";
+      if (type->is_string()) {
+        f_consts << "char const *";
+      } else {
+        f_consts << type_name(type) << ' ';
+      }
+      f_consts << "const " << name << "_ = "
+        << render_const_value(f_consts, type, value) << ';' << endl;
+    }
+
     f_consts << indent() << "static ";
     if (inlined) {
       f_consts << "constexpr ";
@@ -1046,6 +1059,17 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     t_type* type = (*c_iter)->get_type();
     t_const_value *value = (*c_iter)->get_value();
     bool const inlined = type->is_base_type() || type->is_enum();
+
+    if (inlined) {
+      f_consts_impl << indent() << "constexpr ";
+      if (type->is_string()) {
+        f_consts_impl << "char const *";
+      } else {
+        f_consts_impl << type_name(type) << ' ';
+      }
+      f_consts_impl << "const " << program_name_ << "_constants::" << name
+        << "_;" << endl;
+    }
 
     f_consts_impl << indent();
     if (inlined) {
