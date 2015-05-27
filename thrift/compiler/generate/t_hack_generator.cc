@@ -1851,9 +1851,13 @@ void t_hack_generator::generate_service_processor(t_service* tservice,
     indent() << "$methodname = 'process_'.$fname;" << endl <<
     indent() << "if (!method_exists($this, $methodname)) {" << endl;
   f_service_ <<
+    indent() << "  $handler_ctx = $this->eventHandler_->getHandlerContext($methodname);" << endl <<
+    indent() << "  $this->eventHandler_->preRead($handler_ctx, $methodname, array());" << endl <<
     indent() << "  $input->skip(TType::STRUCT);" << endl <<
     indent() << "  $input->readMessageEnd();" << endl <<
+    indent() << "  $this->eventHandler_->postRead($handler_ctx, $methodname, array());" << endl <<
     indent() << "  $x = new TApplicationException('Function '.$fname.' not implemented.', TApplicationException::UNKNOWN_METHOD);" << endl <<
+    indent() << "  $this->eventHandler_->handlerError($handler_ctx, $methodname, $x);" << endl <<
     indent() << "  $output->writeMessageBegin($fname, TMessageType::EXCEPTION, $rseqid);" << endl <<
     indent() << "  $x->write($output);" << endl <<
     indent() << "  $output->writeMessageEnd();" << endl <<
