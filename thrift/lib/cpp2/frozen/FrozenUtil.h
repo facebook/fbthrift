@@ -31,7 +31,7 @@ class FrozenFileForwardIncompatible : public std::runtime_error {
 
   int fileVersion() const { return fileVersion_; }
   int supportedVersion() const {
-    return schema::frozen_constants::kCurrentFrozenFileVersion;
+    return schema::frozen_constants::kCurrentFrozenFileVersion_;
   }
 
  private:
@@ -56,7 +56,7 @@ Return freezeToFile(const T& x, folly::File file) {
     saveRoot<T>(*layout, memSchema);
     schema::convert(memSchema, schema);
 
-    schema.fileVersion = schema::frozen_constants::kCurrentFrozenFileVersion;
+    schema.fileVersion = schema::frozen_constants::kCurrentFrozenFileVersion_;
     util::ThriftSerializerCompact<>().serialize(schema, &schemaStr);
   }
 
@@ -86,7 +86,7 @@ Return mapFrozen(folly::ByteRange range) {
         range.begin(), range.size(), &schema);
 
     if (schema.fileVersion >
-        schema::frozen_constants::kCurrentFrozenFileVersion) {
+        schema::frozen_constants::kCurrentFrozenFileVersion_) {
       throw FrozenFileForwardIncompatible(schema.fileVersion);
     }
 
