@@ -92,7 +92,7 @@ class AbstractTest():
                 anInteger16=234,
                 anInteger32=12345,
                 anInteger64=12345678910,
-                aString=u'\x00hello',
+                aString=b'\x00hello',
                 aBinary=b'\x00\x01\x00',
                 aDouble=1234567.901,
                 aFloat=12345.0,
