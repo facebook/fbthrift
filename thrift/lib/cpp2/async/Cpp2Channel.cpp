@@ -65,7 +65,7 @@ Cpp2Channel::Cpp2Channel(
   CHECK(pipeline_->setOwner(this));
   // TODO getHandler() with no index should return first valid handler?
   transportHandler_ = pipeline_->getHandler<TAsyncTransportHandler>(0);
-  pipeline_->attachTransport(transport);
+  pipeline_->setTransport(transport);
 }
 
 folly::Future<void> Cpp2Channel::close(Context* ctx) {
