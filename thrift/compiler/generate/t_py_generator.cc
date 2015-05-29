@@ -825,12 +825,11 @@ string t_py_generator::py_autogen_comment() {
     "#\n";
 }
 
-/**
+/*
  * Print out warning message in the case that *-remote.py is ran instead of
  * running *-remote.par
  */
-
-string t_py_generator::py_remote_warning() {
+ string t_py_generator::py_remote_warning() {
   return
     "if (not sys.argv[0].endswith(\"par\") and\n"
     "    os.getenv('PAR_UNPACK_TMP') == None):\n"
@@ -852,7 +851,7 @@ string t_py_generator::py_remote_warning() {
     "        For more information, please read\n"
     "        http://fburl.com/python-remotes\"\"\")\n"
     "        exit()\n";
-}
+ }
 
 /**
  * Prints standard thrift imports
@@ -2431,40 +2430,26 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
     py_autogen_comment() << "\n"
     "from __future__ import print_function\n"
     "from __future__ import absolute_import\n"
-    "import optparse\n"
+    "\n"
     "import os\n"
-    "import pprint\n"
     "import sys\n"
-    "import traceback\n"
-    "from six.moves.urllib.parse import urlparse\n"
     "\n" <<
     // This has to be before thrift definitions
     // in case the environment is not correct.
     py_remote_warning() <<
-    "\n"
-    "from thrift.transport import TTransport\n"
-    "from thrift.transport import TSocket\n"
-    "from thrift.transport import TSSLSocket\n"
-    "from thrift.transport import THttpClient\n"
-    "from thrift.protocol import TBinaryProtocol\n"
-    "from thrift.protocol import TJSONProtocol\n"
-    "from thrift.protocol import THeaderProtocol\n"
+    // Import the service module and types
     "\n"
     << "from . import "
     << rename_reserved_keywords(service_name_) << "\n"
-    << "from .ttypes import *\n\n\n";
+    << "from . import ttypes\n"
+    "\n"
+    "from thrift.util.remote import Function, RemoteClient\n"
+    "\n";
 
   // Emit a list of objects describing the service functions.
-  // The rest of the code will use this to print the usage message and
+  // The library code will use this to print the usage message and
   // perform function argument processing
   f_remote <<
-    "class Function(object):\n"
-    "    def __init__(self, name, return_type, args):\n"
-    "        self.name = name\n"
-    "        self.return_type = return_type\n"
-    "        self.args = args\n"
-    "\n"
-    "\n"
     "FUNCTIONS = {\n";
 
   set<string> processed_fns;
@@ -2513,157 +2498,11 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
   }
   f_remote <<
     "}\n"
-    "\n";
-
-  f_remote <<
-    "def print_functions(out=sys.stdout):\n"
-    "    out.write('Functions:\\n')\n"
-    "    for fn_name in sorted(FUNCTIONS):\n"
-    "        fn = FUNCTIONS[fn_name]\n"
-    "        if fn.return_type is None:\n"
-    "            out.write('  oneway void ')\n"
-    "        else:\n"
-    "            out.write('  %s ' % (fn.return_type,))\n"
-    "        out.write(fn_name + '(')\n"
-    "        out.write(', '.join('%s %s' % (type, name)\n"
-    "                            for type, name, true_type in fn.args))\n"
-    "        out.write(')\\n')\n"
-    "\n"
-    "\n"
-    "def parse_host_port(value, default_port):\n"
-    "    parts = value.rsplit(':', 1)\n"
-    "    if len(parts) == 1:\n"
-    "        return (parts[0], default_port)\n"
-    "    try:\n"
-    "        port = int(parts[1])\n"
-    "    except ValueError:\n"
-    "        raise ValueError('invalid port: ' + parts[1])\n"
-    "    return (parts[0], port)\n"
-    "\n"
-    "\n";
-
-  // We emit optparse code for now.
-  // In the future it would be nice to emit argparse code for python 2.7 and
-  // above.
-  f_remote <<
-    "def main(argv):\n"
-    "    usage = '%prog [OPTIONS] FUNCTION [ARGS ...]'\n"
-    "    op = optparse.OptionParser(usage=usage, add_help_option=False)\n"
-    "    op.disable_interspersed_args()\n"
-    "    op.add_option('-h', '--host',\n"
-    "                  action='store', metavar='HOST[:PORT]',\n"
-    "                  help='The host and port to connect to')\n"
-    "    op.add_option('-u', '--url',\n"
-    "                  action='store',\n"
-    "                  help='The URL to connect to, for HTTP transport')\n"
-    "    op.add_option('-f', '--framed',\n"
-    "                  action='store_true', default=False,\n"
-    "                  help='Use framed transport')\n"
-    "    op.add_option('-s', '--ssl',\n"
-    "                  action='store_true', default=False,\n"
-    "                  help='Use SSL socket')\n"
-    "    op.add_option('-U', '--unframed',\n"
-    "                  action='store_true', default=False,\n"
-    "                  help='Use unframed transport')\n"
-    "    op.add_option('-j', '--json',\n"
-    "                  action='store_true', default=False,\n"
-    "                  help='Use TJSONProtocol')\n"
-    "    op.add_option('-c', '--compact',\n"
-    "                  action='store_true', default=False,\n"
-    "                  help='Use TCompactProtocol')\n"
-    "    op.add_option('-?', '--help',\n"
-    "                  action='help',\n"
-    "                  help='Show this help message and exit')\n"
-    "\n"
-    "    (options, args) = op.parse_args(argv[1:])\n"
-    "\n"
-    "    if not args:\n"
-    "        op.print_help(sys.stderr)\n"
-    "        print_functions(sys.stderr)\n"
-    "        return os.EX_USAGE\n"
-    "\n"
-    "    # Before we try to connect, make sure\n"
-    "    # the function and arguments are valid\n"
-    "    fn_name = args[0]\n"
-    "    try:\n"
-    "        fn = FUNCTIONS[fn_name]\n"
-    "    except KeyError:\n"
-    "        print_functions(sys.stderr)\n"
-    "        print('\\nerror: unknown function \"%s\"' % fn_name, \n"
-    "                 file=sys.stderr)\n"
-    "        return os.EX_USAGE\n"
-    "\n"
-    "    if len(args) != len(fn.args) + 1:\n"
-    "        print('error: %s requires exactly %d arguments'% \n"
-    "                 (fn_name, len(fn.args)), file=sys.stderr)\n"
-    "        return os.EX_USAGE\n"
-    "    fn_args = []\n"
-    "    for arg, arg_info in zip(args[1:], fn.args):\n"
-    "        if arg_info[2] == 'string':\n"
-    "            # For ease-of-use, we don't eval string arguments, simply so\n"
-    "            # users don't have to wrap the arguments in quotes\n"
-    "            fn_args.append(arg)\n"
-    "            continue\n"
-    "\n"
-    "        try:\n"
-    "            value = eval(arg)\n"
-    "        except:\n"
-    "            traceback.print_exc(file=sys.stderr)\n"
-    "            print('\\nerror parsing argument \"%s\"' % (arg,), \n"
-    "                     file=sys.stderr)\n"
-    "            return os.EX_DATAERR\n"
-    "        fn_args.append(value)\n"
-    "\n"
-    "    # Create the transport\n"
-    "    if options.framed and options.unframed:\n"
-    "        op.error('cannot specify both --framed and --unframed')\n"
-    "    if options.url is not None:\n"
-    "        if options.host is not None:\n"
-    "            op.error('cannot specify both --url and --host')\n"
-    "        if not any([options.unframed, options.json]):\n"
-    "            op.error('can only specify --url with --unframed or --json')\n"
-    "        url = urlparse(options.url)\n"
-    "        parse_host_port(url[1], 80)\n"
-    "        transport = THttpClient.THttpClient(options.url)\n"
-    "    elif options.host is not None:\n"
-    "        host, port = parse_host_port(options.host, "
-           << default_port_ << ")\n"
-    "        socket = TSSLSocket.TSSLSocket(host, port) if options.ssl \\\n"
-    "                else TSocket.TSocket(host, port)\n"
-    "        if options.framed:\n"
-    "            transport = TTransport.TFramedTransport(socket)\n"
-    "        else:\n"
-    "            transport = TTransport.TBufferedTransport(socket)\n"
-    "    else:\n"
-    "        print('error: no --host or --url specified', file=sys.stderr)\n"
-    "        return os.EX_USAGE\n"
-    "\n"
-    "    # Create the protocol and client\n"
-    "    if options.json:\n"
-    "        protocol = TJSONProtocol.TJSONProtocol(transport)\n"
-    "    elif options.compact:\n"
-    "        protocol = TCompactProtocol.TCompactProtocol(transport)\n"
-    "    # No explicit option about protocol is specified. Try to infer.\n"
-    "    elif options.framed or options.unframed:\n"
-    "        protocol = TBinaryProtocol.TBinaryProtocolAccelerated(transport)\n"
-    "    else:\n"
-    "        protocol = THeaderProtocol.THeaderProtocol(socket)\n"
-    "        transport = protocol.trans\n"
-    "    transport.open()\n"
-    "    client = " << rename_reserved_keywords(service_name_) <<
-    ".Client(protocol)\n"
-    "\n"
-    "    # Call the function\n"
-    "    method = getattr(client, fn_name)\n"
-    "    ret = method(*fn_args)\n"
-    "\n"
-    "    # Print the result\n"
-    "    pprint.pprint(ret, indent=2)\n"
-    "\n"
     "\n"
     "if __name__ == '__main__':\n"
-    "    rc = main(sys.argv)\n"
-    "    sys.exit(rc)\n";
+    "    RemoteClient(FUNCTIONS, "
+           << rename_reserved_keywords(service_name_)
+           << ", ttypes).run(sys.argv)\n";
 
   // Close the remote file
   f_remote.close();
