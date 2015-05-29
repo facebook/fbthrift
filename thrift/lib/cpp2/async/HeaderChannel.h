@@ -65,7 +65,7 @@ class HeaderChannel {
     void setSecurityPolicy(THRIFT_SECURITY_POLICY policy);
 
   protected:
-    std::unique_ptr<apache::thrift::transport::THeader> header_;
+    std::shared_ptr<apache::thrift::transport::THeader> header_;
 
   private:
     // Map to use for persistent headers
