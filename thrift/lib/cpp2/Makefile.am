@@ -84,6 +84,7 @@ thrift2include_protocoldir = $(thrift2includedir)/protocol
 
 thrift2include_protocol_HEADERS = \
 	protocol/Protocol.h \
+	protocol/ProtocolReaderWithRefill.h \
 	protocol/BinaryProtocol.h \
 	protocol/BinaryProtocol.tcc \
 	protocol/CompactProtocol.h \
