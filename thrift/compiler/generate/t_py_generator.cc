@@ -2500,9 +2500,12 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
     "}\n"
     "\n"
     "if __name__ == '__main__':\n"
-    "    RemoteClient(FUNCTIONS, "
+    "    client = RemoteClient(FUNCTIONS, "
            << rename_reserved_keywords(service_name_)
-           << ", ttypes).run(sys.argv)\n";
+           << ", ttypes, default_port="
+           << default_port_
+           << ")\n"
+    "    client.run(sys.argv)\n";
 
   // Close the remote file
   f_remote.close();

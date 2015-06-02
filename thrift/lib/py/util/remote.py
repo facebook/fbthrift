@@ -55,11 +55,13 @@ class RemoteClient(object):
 
     usage = '%prog [OPTIONS] FUNCTION [ARGS ...]'
 
-    def __init__(self, functions, client_class, ttypes):
+    def __init__(self, functions, client_class, ttypes,
+                 default_port=9090):
         self.op = None  # OptionParser
         self.functions = functions
         self.client_class = client_class
         self.ttypes = ttypes
+        self.default_port = default_port
 
     def _print_functions(self, out):
         """ Print all the functions available from this service """
@@ -210,7 +212,8 @@ class RemoteClient(object):
             host, port = self._parse_host_port(url[1], 80)
             transport = THttpClient.THttpClient(self.options.url)
         elif self.options.host is not None:
-            host, port = self._parse_host_port(self.options.host, 9090)
+            host, port = self._parse_host_port(self.options.host,
+                                               self.default_port)
             socket = TSSLSocket.TSSLSocket(host, port) if self.options.ssl \
                      else TSocket.TSocket(host, port)
             if self.options.framed:
