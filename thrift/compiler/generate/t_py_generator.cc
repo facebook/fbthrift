@@ -2443,8 +2443,8 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
     << rename_reserved_keywords(service_name_) << "\n"
     << "from . import ttypes\n"
     "\n"
-    "from thrift.util.remote import Function, RemoteClient\n"
-    "\n";
+    "from thrift.util.remote import Function\n"
+    "from thrift.remote import Remote\n";
 
   // Emit a list of objects describing the service functions.
   // The library code will use this to print the usage message and
@@ -2500,12 +2500,11 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
     "}\n"
     "\n"
     "if __name__ == '__main__':\n"
-    "    client = RemoteClient(FUNCTIONS, "
+    "    Remote.run(FUNCTIONS, "
            << rename_reserved_keywords(service_name_)
-           << ", ttypes, default_port="
+           << ", ttypes, sys.argv, default_port="
            << default_port_
-           << ")\n"
-    "    client.run(sys.argv)\n";
+           << ")\n";
 
   // Close the remote file
   f_remote.close();
