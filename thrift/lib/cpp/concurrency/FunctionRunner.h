@@ -81,7 +81,7 @@ class FunctionRunner : public Runnable {
    * execute the given callback.  Note that the 'void*' return value is ignored.
    */
   FunctionRunner(PthreadFuncPtr func, void* arg)
-   : func_(std::bind(func, arg)), repFunc_(0), initFunc_(0)
+   : func_([=]{ func(arg); }), repFunc_(0), initFunc_(0)
   { }
 
   /**

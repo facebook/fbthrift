@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
+#include <thrift/lib/cpp/async/TEventTask.h>
 #include <thrift/lib/cpp/async/TEventHandler.h>
 #include <thrift/lib/cpp/async/TNotificationQueue.h>
 #include <thrift/lib/cpp/server/TServer.h>
@@ -34,7 +35,6 @@ namespace apache { namespace thrift { namespace async {
 class TAsyncProcessorFactory;
 class TEventConnection;
 class TEventServer;
-class TaskCompletionMessage;
 /**
  * TEventWorker drives the actual I/O for TEventServer connections.
  *
