@@ -46,10 +46,10 @@ uint32_t forEach(Tuple&& tuple, F&& f) {
 
 template <typename Protocol>
 struct Writer {
-  Writer(Protocol* prot, const bool* isset) : prot(prot), isset(isset) {}
+  Writer(Protocol* prot, const bool* isset) : prot_(prot), isset_(isset) {}
   template <typename FieldData>
   uint32_t operator()(const FieldData& fieldData, int index) {
-    if (!isset[index]) {
+    if (!isset_[index]) {
       return 0;
     }
 
@@ -57,22 +57,22 @@ struct Writer {
     const auto& ex = fieldData.ref();
 
     uint32_t xfer = 0;
-    xfer += prot->writeFieldBegin("", Cpp2Ops<typename FieldData::ref_type>::thriftType(), fid);
-    xfer += Cpp2Ops<typename FieldData::ref_type>::write(prot, &ex);
-    xfer += prot->writeFieldEnd();
+    xfer += prot_->writeFieldBegin("", Cpp2Ops<typename FieldData::ref_type>::thriftType(), fid);
+    xfer += Cpp2Ops<typename FieldData::ref_type>::write(prot_, &ex);
+    xfer += prot_->writeFieldEnd();
     return xfer;
   }
  private:
-  Protocol* prot;
-  const bool* isset;
+  Protocol* prot_;
+  const bool* isset_;
 };
 
 template <typename Protocol>
 struct Sizer {
-  Sizer(Protocol* prot, const bool* isset) : prot(prot), isset(isset) {}
+  Sizer(Protocol* prot, const bool* isset) : prot_(prot), isset_(isset) {}
   template <typename FieldData>
   uint32_t operator()(const FieldData& fieldData, int index) {
-    if (!isset[index]) {
+    if (!isset_[index]) {
       return 0;
     }
 
@@ -80,21 +80,21 @@ struct Sizer {
     const auto& ex = fieldData.ref();
 
     uint32_t xfer = 0;
-    xfer += prot->serializedFieldSize("", Cpp2Ops<typename FieldData::ref_type>::thriftType(), fid);
-    xfer += Cpp2Ops<typename FieldData::ref_type>::serializedSize(prot, &ex);
+    xfer += prot_->serializedFieldSize("", Cpp2Ops<typename FieldData::ref_type>::thriftType(), fid);
+    xfer += Cpp2Ops<typename FieldData::ref_type>::serializedSize(prot_, &ex);
     return xfer;
   }
  private:
-  Protocol* prot;
-  const bool* isset;
+  Protocol* prot_;
+  const bool* isset_;
 };
 
 template <typename Protocol>
 struct SizerZC {
-  SizerZC(Protocol* prot, const bool* isset) : prot(prot), isset(isset) {}
+  SizerZC(Protocol* prot, const bool* isset) : prot_(prot), isset_(isset) {}
   template <typename FieldData>
   uint32_t operator()(const FieldData& fieldData, int index) {
-    if (!isset[index]) {
+    if (!isset_[index]) {
       return 0;
     }
 
@@ -102,42 +102,42 @@ struct SizerZC {
     const auto& ex = fieldData.ref();
 
     uint32_t xfer = 0;
-    xfer += prot->serializedFieldSize("", Cpp2Ops<typename FieldData::ref_type>::thriftType(), fid);
-    xfer += Cpp2Ops<typename FieldData::ref_type>::serializedSizeZC(prot, &ex);
+    xfer += prot_->serializedFieldSize("", Cpp2Ops<typename FieldData::ref_type>::thriftType(), fid);
+    xfer += Cpp2Ops<typename FieldData::ref_type>::serializedSizeZC(prot_, &ex);
     return xfer;
   }
  private:
-  Protocol* prot;
-  const bool* isset;
+  Protocol* prot_;
+  const bool* isset_;
 };
 
 template <typename Protocol>
 struct Reader {
   Reader(Protocol* prot, bool* isset, int16_t fid, protocol::TType ftype, bool& success)
-    : prot(prot), isset(isset), fid(fid), ftype(ftype), success(success)
+    : prot_(prot), isset_(isset), fid_(fid), ftype_(ftype), success_(success)
   {}
   template <typename FieldData>
   uint32_t operator()(FieldData& fieldData, int index) {
-    if (ftype != Cpp2Ops<typename FieldData::ref_type>::thriftType()) {
+    if (ftype_ != Cpp2Ops<typename FieldData::ref_type>::thriftType()) {
       return 0;
     }
 
     int16_t myfid = FieldData::fid;
     auto& ex = fieldData.ref();
-    if (myfid != fid) {
+    if (myfid != fid_) {
       return 0;
     }
 
-    success = true;
-    isset[index] = true;
-    return Cpp2Ops<typename FieldData::ref_type>::read(prot, &ex);
+    success_ = true;
+    isset_[index] = true;
+    return Cpp2Ops<typename FieldData::ref_type>::read(prot_, &ex);
   }
  private:
-  Protocol* prot;
-  bool* isset;
-  int16_t fid;
-  protocol::TType ftype;
-  bool& success;
+  Protocol* prot_;
+  bool* isset_;
+  int16_t fid_;
+  protocol::TType ftype_;
+  bool& success_;
 };
 
 template <typename T>
