@@ -549,7 +549,7 @@ fi
 # --- Coverage hooks ---
 
 
-AC_SUBST(AM_CPPFLAGS, '-I$(top_srcdir)/..'" $CXX_FLAGS $BOOST_CPPFLAGS")
+AC_SUBST(AM_CPPFLAGS, '-I$(top_srcdir)/.. -I$(top_srcdir)/folly'" $CXX_FLAGS $BOOST_CPPFLAGS")
 
 AC_SUBST(PY_LOCAL_ROOT, '$(top_builddir)/.python-local')
 AC_SUBST(PY_LOCAL_PATH, '$(PY_LOCAL_ROOT)/lib/python')
