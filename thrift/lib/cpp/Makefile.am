@@ -59,6 +59,7 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
                        protocol/TJSONProtocol.cpp \
                        protocol/TBase64Utils.cpp \
                        protocol/TMultiplexedProtocol.cpp \
+                       protocol/TSimpleJSONProtocol.cpp \
                        transport/TTransportException.cpp \
                        transport/TFDTransport.cpp \
                        transport/TFileTransport.cpp \
