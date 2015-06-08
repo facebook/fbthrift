@@ -1325,6 +1325,12 @@ string t_cpp_generator::render_const_value(
                           t_const_value* value,
                           bool           allow_null_val) {
   std::ostringstream render;
+
+  // Resolve typedefs.
+  while (type->is_typedef()) {
+    type = ((t_typedef*)type)->get_type();
+  }
+
   if (value == nullptr) {
     if (allow_null_val) {
       if (type->is_enum()) {
