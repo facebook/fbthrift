@@ -39,6 +39,15 @@ DEFINE_string(sasl_policy_test, "disabled",
               "SASL policy required / permitted / disabled");
 DEFINE_string(sasl_service_tier, "",
               "Tier name encoded in service keytab");
+DEFINE_string(key, "", "client SSL private key file");
+DEFINE_string(cert, "", "client SSL certificate file");
+DEFINE_string(trusted_ca_list, "", "file pointing to a trusted CA or list");
+/*
+ * Please refer to the online OpenSSL manual for the format of the string of
+ * ciphers. The default cipher list is "ALL:!aNULL:!eNULL", which means all
+ * ciphers except ones with no authentication (aNULL) or no encryption (eNULL).
+ */
+DEFINE_string(ciphers, "", "cipher suites supported by the client");
 
 DEFINE_int32(num_threads, 5, "number of threads");
 DEFINE_int64(qps, 0,
@@ -210,6 +219,22 @@ std::string ClientLoadConfig::SASLPolicy() const {
 
 std::string ClientLoadConfig::SASLServiceTier() const {
   return FLAGS_sasl_service_tier;
+}
+
+std::string ClientLoadConfig::key() const {
+  return FLAGS_key;
+}
+
+std::string ClientLoadConfig::cert() const {
+  return FLAGS_cert;
+}
+
+std::string ClientLoadConfig::trustedCAList() const {
+  return FLAGS_trusted_ca_list;
+}
+
+std::string ClientLoadConfig::ciphers() const {
+  return FLAGS_ciphers;
 }
 
 uint32_t ClientLoadConfig::pickLogNormal(double mean, double sigma) {

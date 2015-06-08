@@ -65,6 +65,21 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   } else {
     if (config->useSSL()) {
       std::shared_ptr<SSLContext> context = std::make_shared<SSLContext>();
+      if (!config->trustedCAList().empty()) {
+        context->loadTrustedCertificates(config->trustedCAList().c_str());
+        context->setVerificationOption(
+                    SSLContext::SSLVerifyPeerEnum::VERIFY);
+      }
+
+      if (!config->ciphers().empty()) {
+        context->ciphers(config->ciphers());
+      }
+
+      if (!config->key().empty() && !config->cert().empty()) {
+        context->loadCertificate(config->cert().c_str());
+        context->loadPrivateKey(config->key().c_str());
+      }
+
       socket = TAsyncSSLSocket::newSocket(context, ebm_.getEventBase());
       socket->connect(nullptr, *config->getAddress());
       // Loop once to connect

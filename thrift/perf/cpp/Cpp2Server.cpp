@@ -53,8 +53,9 @@ DEFINE_int32(idle_timeout, 0, "idle timeout (in milliseconds)");
 DEFINE_int32(task_timeout, 0, "task timeout (in milliseconds)");
 DEFINE_int32(max_connections, 0, "max active connections");
 DEFINE_int32(max_requests, 0, "max active requests");
-DEFINE_string(cert, "", "SSL certificate file");
-DEFINE_string(key, "", "SSL private key file");
+DEFINE_string(cert, "", "server SSL certificate file");
+DEFINE_string(key, "", "server SSL private key file");
+DEFINE_string(client_ca_list, "", "file pointing to a client CA or list");
 DEFINE_bool(queue_sends, true, "Queue sends for better throughput");
 
 void setTunables(ThriftServer* server) {
@@ -99,9 +100,8 @@ int main(int argc, char* argv[]) {
 
   if (FLAGS_cert.length() > 0 && FLAGS_key.length() > 0) {
     std::shared_ptr<folly::SSLContextConfig> sslContext(new folly::SSLContextConfig());
-    sslContext->setCertificate(FLAGS_cert.c_str(),
-                               FLAGS_key.c_str(),
-                              "");
+    sslContext->setCertificate(FLAGS_cert, FLAGS_key, "");
+    sslContext->clientCAFile = FLAGS_client_ca_list;
     server->setSSLConfig(sslContext);
   }
 

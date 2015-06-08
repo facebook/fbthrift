@@ -104,6 +104,10 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
 
   std::string SASLPolicy() const;
   std::string SASLServiceTier() const;
+  std::string key() const;
+  std::string cert() const;
+  std::string trustedCAList() const;
+  std::string ciphers() const;
 
  private:
   uint32_t pickLogNormal(double mean, double sigma);
