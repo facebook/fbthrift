@@ -983,10 +983,15 @@ decodeT(DecodeBuffer *input, PyObject *dec_obj, StructTypeArgs *args,
         ioobj->string_size - ioobj->pos);
   reader.setInput(buf.get());
 
-  bool ret = decode_struct(&reader, dec_obj, args, utf8strings);
-  ioobj = IOOOBJECT(input->stringiobuf);
-  ioobj->pos += reader.totalBytesRead();
-  return ret;
+  try {
+    bool ret = decode_struct(&reader, dec_obj, args, utf8strings);
+    ioobj = IOOOBJECT(input->stringiobuf);
+    ioobj->pos += reader.totalBytesRead();
+    return ret;
+  } catch (const std::runtime_error& e) {
+    PyErr_SetString(PyExc_RuntimeError, e.what());
+    return false;
+  }
 }
 
 static PyObject*

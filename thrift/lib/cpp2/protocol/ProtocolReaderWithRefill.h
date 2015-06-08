@@ -57,6 +57,9 @@ class ProtocolReaderWithRefill : public VirtualReader<ProtocolT> {
 
       auto avail = this->protocol_.in_.peek();
       buffer_ = refiller_(avail.first, avail.second, totalBytesRead(), size);
+      if (!buffer_) {
+        throw std::runtime_error("Empty buffer returned when refilling");
+      }
       setInput(buffer_.get());
     }
 
