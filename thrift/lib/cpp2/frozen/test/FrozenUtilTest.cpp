@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <gtest/gtest.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/frozen/FrozenTestUtil.h>
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
@@ -66,6 +65,20 @@ TEST(FrozenUtil, FileSize) {
   struct stat stats;
   fstat(tmp.fd(), &stats);
   EXPECT_LT(stats.st_size, 500); // most of this is the schema
+}
+
+TEST(FrozenUtil, FreezeToString) {
+  // multiplication tables for first three primes
+  std::map<int, std::map<int, int>> m{
+      {2, {{2, 4}, {3, 6}, {5, 10}}},
+      {3, {{2, 6}, {3, 9}, {5, 15}}},
+      {5, {{2, 10}, {3, 15}, {5, 25}}},
+  };
+  // In this example, the schema is 101 bytes and the data is only 17 bytes!
+  std::string store;
+  freezeToString(m, store);
+  auto frozen = mapFrozen<std::map<int, std::map<int, int>>>(store);
+  EXPECT_EQ(frozen.at(3).at(5), 15);
 }
 
 int main(int argc, char** argv) {

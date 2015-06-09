@@ -44,61 +44,78 @@ size_t frozenSize(const T& v) {
   return LayoutRoot::layout(v, layout);
 }
 
-template <class T, class Return = Bundled<typename Layout<T>::View>>
-Return freezeToFile(const T& x, folly::File file) {
-  auto layout = folly::make_unique<Layout<T>>();
-  auto size = LayoutRoot::layout(x, *layout);
+template <class T>
+void serializeRootLayout(const Layout<T>& layout, std::string& out) {
+  schema::MemorySchema memSchema;
+  schema::Schema schema;
+  saveRoot(layout, memSchema);
+  schema::convert(memSchema, schema);
 
-  std::string schemaStr;
-  {
-    schema::MemorySchema memSchema;
-    schema::Schema schema;
-    saveRoot<T>(*layout, memSchema);
-    schema::convert(memSchema, schema);
+  schema.fileVersion = schema::frozen_constants::kCurrentFrozenFileVersion_;
+  util::ThriftSerializerCompact<>().serialize(schema, &out);
+}
 
-    schema.fileVersion = schema::frozen_constants::kCurrentFrozenFileVersion_;
-    util::ThriftSerializerCompact<>().serialize(schema, &schemaStr);
+template <class T>
+void deserializeRootLayout(folly::ByteRange& range, Layout<T>& layoutOut) {
+  schema::Schema schema;
+  size_t schemaSize = util::ThriftSerializerCompact<>().deserialize(
+      range.begin(), range.size(), &schema);
+
+  if (schema.fileVersion >
+      schema::frozen_constants::kCurrentFrozenFileVersion_) {
+    throw FrozenFileForwardIncompatible(schema.fileVersion);
   }
+
+  schema::MemorySchema memSchema;
+  schema::convert(std::move(schema), memSchema);
+  loadRoot(layoutOut, memSchema);
+  range.advance(schemaSize);
+}
+
+template <class T, class Return = Bundled<typename Layout<T>::View>>
+void freezeToFile(const T& x, folly::File file) {
+  std::string schemaStr;
+  auto layout = folly::make_unique<Layout<T>>();
+  auto contentSize = LayoutRoot::layout(x, *layout);
+
+  serializeRootLayout(*layout, schemaStr);
 
   folly::MemoryMapping mapping(std::move(file),
                                0,
-                               size + schemaStr.size(),
+                               contentSize + schemaStr.size(),
                                folly::MemoryMapping::writable());
-
   auto writeRange = mapping.writableRange();
-
   std::copy(schemaStr.begin(), schemaStr.end(), writeRange.begin());
   writeRange.advance(schemaStr.size());
+  ByteRangeFreezer::freeze(*layout, x, writeRange);
+}
 
-  Return ret(ByteRangeFreezer::freeze(*layout, x, writeRange));
-  ret.hold(std::move(layout));
-  ret.hold(std::move(mapping));
-  return ret;
+template <class T, class Return = Bundled<typename Layout<T>::View>>
+void freezeToString(const T& x, std::string& out) {
+  out.clear();
+  auto layout = folly::make_unique<Layout<T>>();
+  size_t contentSize = LayoutRoot::layout(x, *layout);
+  serializeRootLayout(*layout, out);
+
+  size_t schemaSize = out.size();
+  out.resize(schemaSize + contentSize);
+  folly::MutableByteRange writeRange(reinterpret_cast<byte*>(&out[schemaSize]),
+                                     contentSize);
+  ByteRangeFreezer::freeze(*layout, x, writeRange);
 }
 
 template <class T, class Return = Bundled<typename Layout<T>::View>>
 Return mapFrozen(folly::ByteRange range) {
   auto layout = folly::make_unique<Layout<T>>();
-
-  {
-    schema::Schema schema;
-    size_t schemaSize = util::ThriftSerializerCompact<>().deserialize(
-        range.begin(), range.size(), &schema);
-
-    if (schema.fileVersion >
-        schema::frozen_constants::kCurrentFrozenFileVersion_) {
-      throw FrozenFileForwardIncompatible(schema.fileVersion);
-    }
-
-    schema::MemorySchema memSchema;
-    schema::convert(std::move(schema), memSchema);
-    loadRoot<T>(*layout, memSchema);
-    range.advance(schemaSize);
-  }
-
+  deserializeRootLayout(range, *layout);
   Return ret(layout->view({range.begin(), 0}));
   ret.hold(std::move(layout));
   return ret;
+}
+
+template <class T, class Return = Bundled<typename Layout<T>::View>>
+Return mapFrozen(folly::StringPiece range) {
+  return mapFrozen<T, Return>(folly::ByteRange(range));
 }
 
 template <class T, class Return = Bundled<typename Layout<T>::View>>
