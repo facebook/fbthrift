@@ -176,6 +176,12 @@ unique_ptr<IOBuf> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
   return std::move(memBuffer.cloneBufferAsIOBuf());
 }
 
+unique_ptr<IOBuf> THeader::removeFramed(uint32_t sz, IOBufQueue* queue) {
+  // Trim off the frame size.
+  queue->trimStart(4);
+  return queue->split(sz);
+}
+
 unique_ptr<IOBuf> THeader::removeHeader(
   IOBufQueue* queue,
   size_t& needed,
@@ -264,15 +270,10 @@ unique_ptr<IOBuf> THeader::removeHeader(
     if ((magic & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
       // framed
       clientType = THRIFT_FRAMED_DEPRECATED;
-
-      // Trim off the frame size.
-      queue->trimStart(4);
-      buf = queue->split(sz);
+      buf = removeFramed(sz, queue);
     } else if (compactFramed(magic)) {
       clientType = THRIFT_FRAMED_COMPACT;
-      // Trim off the frame size.
-      queue->trimStart(4);
-      buf = queue->split(sz);
+      buf = removeFramed(sz, queue);
     } else if (HEADER_MAGIC == (magic & HEADER_MASK)) {
       if (sz < 10) {
         throw TTransportException(
