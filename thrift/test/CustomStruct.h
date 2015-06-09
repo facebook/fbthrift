@@ -167,6 +167,12 @@ inline uint32_t Cpp2Ops< ::thrift::test::MyCustomStruct>::read(
   return xfer;
 }
 
+template <>
+inline constexpr apache::thrift::protocol::TType
+Cpp2Ops< ::thrift::test::MyCustomStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 template <>
@@ -267,6 +273,12 @@ inline uint32_t Cpp2Ops< ::thrift::test::MyCustomUnion>::read(
 
   xfer += iprot->readStructEnd();
   return xfer;
+}
+
+template <>
+inline constexpr apache::thrift::protocol::TType
+Cpp2Ops< ::thrift::test::MyCustomUnion>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
 }
 
 }}
