@@ -27,6 +27,7 @@
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
+#include <thrift/lib/cpp2/TestServer.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
@@ -99,21 +100,9 @@ class TestInterface : public FutureServiceSvIf {
   }
 };
 
-std::shared_ptr<ThriftServer> getServer() {
-  auto server = std::make_shared<ThriftServer>();
-  server->setPort(0);
-  server->setInterface(std::unique_ptr<TestInterface>(new TestInterface));
-  server->setSaslEnabled(true);
-  server->setSaslServerFactory(
-    [] (apache::thrift::async::TEventBase* evb) {
-      return std::unique_ptr<SaslServer>(new StubSaslServer(evb));
-    }
-  );
-  return server;
-}
-
 void AsyncCpp2Test(bool enable_security) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -143,7 +132,8 @@ void AsyncCpp2Test(bool enable_security) {
 }
 
 TEST(ThriftServer, FutureExceptions) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -160,7 +150,8 @@ TEST(ThriftServer, FutureExceptions) {
 TEST(ThriftServer, FutureClientTest) {
   using std::chrono::steady_clock;
 
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   TEventBaseExecutor e(&base);
   std::shared_ptr<TAsyncSocket> socket(
@@ -221,7 +212,8 @@ TEST(ThriftServer, FutureClientTest) {
 TEST(ThriftServer, FutureGetOrderTest) {
   using std::chrono::steady_clock;
 
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   TEventBaseExecutor e(&base);
   std::shared_ptr<TAsyncSocket> socket(
@@ -261,7 +253,8 @@ TEST(ThriftServer, FutureGetOrderTest) {
 TEST(ThriftServer, OnewayFutureClientTest) {
   using std::chrono::steady_clock;
 
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));

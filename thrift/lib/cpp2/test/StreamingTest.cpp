@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/TestServer.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
@@ -52,15 +53,8 @@ class StreamingServiceInterface : public StreamingServiceSvIf {
   }
 };
 
-
-std::shared_ptr<ThriftServer> getServer() {
-  auto server = std::make_shared<ThriftServer>();
-  server->setPort(0);
-  server->setInterface(folly::make_unique<StreamingServiceInterface>());
-  return server;
-}
-
-ScopedServerThread sst(getServer());
+apache::thrift::TestThriftServerFactory<StreamingServiceInterface> factory;
+ScopedServerThread sst(factory.create());
 
 std::shared_ptr<StreamingServiceAsyncClient> getClient(folly::EventBase& eb) {
   auto socket = TAsyncSocket::newSocket(&eb, *sst.getAddress());

@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/DuplexService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DuplexClient.h>
 #include <thrift/lib/cpp2/async/DuplexChannel.h>
+#include <thrift/lib/cpp2/TestServer.h>
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
@@ -54,14 +55,6 @@ public:
     callback.release()->resultInThread(folly::to<std::string>(size));
   }
 };
-
-std::shared_ptr<ThriftServer> getServer() {
-  auto server = std::make_shared<ThriftServer>();
-  server->setPort(0);
-  server->setInterface(folly::make_unique<TestServiceInterface>());
-  server->setSaslEnabled(true);
-  return server;
-}
 
 void enableSecurity(HeaderClientChannel* channel,
                     const apache::thrift::SecurityMech mech,
@@ -123,7 +116,10 @@ private:
 };
 
 void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestServiceInterface> factory;
+  factory.useStubSaslServer(false);
+  ScopedServerThread sst(factory.create());
+
   TEventBase base;
   auto channel = getClientChannel(&base, *sst.getAddress());
   setup(channel.get());
@@ -335,18 +331,11 @@ class DuplexServiceInterface : public DuplexServiceSvIf {
   }
 };
 
-std::shared_ptr<ThriftServer> getDuplexServer() {
-  auto server = std::make_shared<ThriftServer>();
-  server->setPort(0);
-  server->setInterface(folly::make_unique<DuplexServiceInterface>());
-  server->setDuplex(true);
-  server->setSaslEnabled(true);
-  return server;
-}
-
 void duplexTest(const apache::thrift::SecurityMech mech) {
   enum {START=1, COUNT=3, INTERVAL=1};
-  ScopedServerThread duplexsst(getDuplexServer());
+  apache::thrift::TestThriftServerFactory<DuplexServiceInterface> factory;
+  factory.useStubSaslServer(false).duplex(true);
+  ScopedServerThread duplexsst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *duplexsst.getAddress()));
@@ -396,7 +385,9 @@ TEST(Security, DuplexGSSNoMutual) {
 // Test if multiple requests are pending in a queue, for security to establish,
 // then we flow RequestContext correctly with each request.
 void runRequestContextTest(bool failSecurity) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestServiceInterface> factory;
+  factory.useStubSaslServer(false);
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   auto channel = getClientChannel(&base, *sst.getAddress(), failSecurity);
   TestServiceAsyncClient client(std::move(channel));

@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/TestServer.h>
 
 using namespace cpp2;
 using namespace apache::thrift;
@@ -91,13 +92,6 @@ class PresultServiceInterface : public PresultServiceSvIf {
 
 bool Noncopyable::operator<(const Noncopyable&) const { return false; }
 
-std::shared_ptr<ThriftServer> getServer() {
-  auto server = std::make_shared<ThriftServer>();
-  server->setPort(0);
-  server->setInterface(folly::make_unique<PresultServiceInterface>());
-  return server;
-}
-
 std::shared_ptr<PresultServiceAsyncClient> getClient(const ScopedServerThread& sst, folly::EventBase& eb) {
   auto socket = TAsyncSocket::newSocket(&eb, *sst.getAddress());
   auto channel = HeaderClientChannel::newChannel(socket);
@@ -127,7 +121,9 @@ void run(int& count, F&& f) {
 
 TEST(Presult, Presult) {
   folly::EventBase eb;
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<PresultServiceInterface> factory;
+  factory.useSimpleThreadManager(false);
+  ScopedServerThread sst(factory.create());
   auto client = getClient(sst, eb);
 
   int count = 0;

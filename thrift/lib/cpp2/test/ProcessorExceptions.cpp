@@ -38,6 +38,7 @@
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
+#include <thrift/lib/cpp2/TestServer.h>
 
 #include <boost/cast.hpp>
 #include <memory>
@@ -70,7 +71,8 @@ std::shared_ptr<ThriftServer> getServer() {
 }
 
 int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<SampleServiceHandler> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));

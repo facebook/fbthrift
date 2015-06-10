@@ -25,6 +25,7 @@
 
 #include "thrift/lib/cpp2/async/StubSaslClient.h"
 #include "thrift/lib/cpp2/async/StubSaslServer.h"
+#include <thrift/lib/cpp2/TestServer.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
@@ -71,33 +72,9 @@ class TestInterface : public TestServiceSvIf {
   }
 };
 
-std::shared_ptr<ThriftServer> getServer() {
-  std::shared_ptr<ThriftServer> server(new ThriftServer);
-  std::shared_ptr<apache::thrift::concurrency::ThreadFactory> threadFactory(
-      new apache::thrift::concurrency::PosixThreadFactory);
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-    threadManager(
-        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(1,
-          5,
-          false,
-          2));
-  threadManager->threadFactory(threadFactory);
-  threadManager->start();
-  server->setThreadManager(threadManager);
-  server->setPort(0);
-  server->setSaslEnabled(true);
-  server->setSaslServerFactory(
-      [] (apache::thrift::async::TEventBase* evb) {
-        return std::unique_ptr<SaslServer>(new StubSaslServer(evb));
-      }
-  );
-  server->setInterface(std::unique_ptr<TestInterface>(new TestInterface));
-  return server;
-}
-
 int SyncClientTest() {
-
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   auto port = sst.getAddress()->getPort();
 
   TEventBase base;

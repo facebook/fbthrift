@@ -28,6 +28,7 @@
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
+#include <thrift/lib/cpp2/TestServer.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
@@ -50,14 +51,6 @@ class TestInterface : public TestServiceSvIf {
   void noResponse(int64_t size) override { usleep(size * 1000); }
 };
 
-std::shared_ptr<ThriftServer> getServer() {
-  std::shared_ptr<ThriftServer> server = std::make_shared<ThriftServer>();
-  server->setPort(0);
-  server->setInterface(std::unique_ptr<TestInterface>(new TestInterface));
-  server->setIdleTimeout(std::chrono::milliseconds(10));
-  return server;
-}
-
 class CloseChecker : public CloseCallback {
  public:
   CloseChecker() : closed_(false) {}
@@ -70,7 +63,9 @@ class CloseChecker : public CloseCallback {
 };
 
 TEST(ThriftServer, IdleTimeoutTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  factory.idleTimeoutMs(10);
+  ScopedServerThread sst(factory.create());
 
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
@@ -88,7 +83,9 @@ TEST(ThriftServer, IdleTimeoutTest) {
 }
 
 TEST(ThriftServer, NoIdleTimeoutWhileWorkingTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  factory.idleTimeoutMs(10);
+  ScopedServerThread sst(factory.create());
 
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
@@ -110,7 +107,9 @@ TEST(ThriftServer, NoIdleTimeoutWhileWorkingTest) {
 }
 
 TEST(ThriftServer, IdleTimeoutAfterTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  factory.idleTimeoutMs(10);
+  ScopedServerThread sst(factory.create());
 
   TEventBase base;
 

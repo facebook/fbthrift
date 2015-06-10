@@ -28,6 +28,7 @@
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
+#include <thrift/lib/cpp2/TestServer.h>
 
 #include <folly/experimental/fibers/FiberManagerMap.h>
 #include <folly/wangle/concurrent/GlobalExecutor.h>
@@ -81,34 +82,6 @@ class TestInterface : public TestServiceSvIf {
       std::unique_ptr<apache::thrift::HandlerCallback<void>> cb) override {}
 };
 
-std::shared_ptr<ThriftServer> getServer(
-  bool useSimpleThreadManager = true,
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe = nullptr) {
-
-  std::shared_ptr<ThriftServer> server(new ThriftServer);
-  if (useSimpleThreadManager) {
-    std::shared_ptr<apache::thrift::concurrency::ThreadFactory> threadFactory(
-        new apache::thrift::concurrency::PosixThreadFactory);
-    std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
-        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
-            1, 5, false, 2));
-    threadManager->threadFactory(threadFactory);
-    threadManager->start();
-    server->setThreadManager(threadManager);
-  } else if (exe) {
-    server->setThreadManager(exe);
-  }
-  server->setPort(0);
-  server->setSaslEnabled(true);
-  server->setSaslServerFactory(
-      [] (apache::thrift::async::TEventBase* evb) {
-        return std::unique_ptr<SaslServer>(new StubSaslServer(evb));
-      }
-  );
-  server->setInterface(std::unique_ptr<TestInterface>(new TestInterface));
-  return server;
-}
-
 std::shared_ptr<TestServiceClient> getThrift1Client(
     const folly::SocketAddress& address) {
   // Create Thrift1 clients
@@ -122,8 +95,8 @@ std::shared_ptr<TestServiceClient> getThrift1Client(
 }
 
 void AsyncCpp2Test(bool enable_security) {
-
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -160,7 +133,8 @@ TEST(ThriftServer, SecureAsyncCpp2Test) {
 }
 
 TEST(ThriftServer, SyncClientTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -188,7 +162,8 @@ TEST(ThriftServer, SyncClientTest) {
 }
 
 TEST(ThriftServer, GetLoadTest) {
-  auto serv = getServer();
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  auto serv = factory.create();
   ScopedServerThread sst(serv);
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
@@ -225,7 +200,8 @@ TEST(ThriftServer, GetLoadTest) {
 }
 
 TEST(ThriftServer, SerializationInEventBaseTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -244,7 +220,8 @@ TEST(ThriftServer, SerializationInEventBaseTest) {
 }
 
 TEST(ThriftServer, HandlerInEventBaseTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -264,7 +241,8 @@ TEST(ThriftServer, HandlerInEventBaseTest) {
 }
 
 TEST(ThriftServer, LargeSendTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -295,7 +273,8 @@ TEST(ThriftServer, LargeSendTest) {
 }
 
 TEST(ThriftServer, OverloadTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -343,7 +322,8 @@ TEST(ThriftServer, OverloadTest) {
 }
 
 TEST(ThriftServer, OnewaySyncClientTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -366,10 +346,8 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
     }
   };
 
-  std::shared_ptr<ThriftServer> cpp2Server = getServer();
-  cpp2Server->setInterface(std::unique_ptr<OnewayTestInterface>(
-      new OnewayTestInterface));
-  apache::thrift::util::ScopedServerThread st(cpp2Server);
+  apache::thrift::TestThriftServerFactory<OnewayTestInterface> factory2;
+  ScopedServerThread st(factory2.create());
 
   {
     TEventBase base;
@@ -388,7 +366,8 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
 }
 
 TEST(ThriftServer, CompactClientTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -409,7 +388,8 @@ TEST(ThriftServer, CompactClientTest) {
 }
 
 TEST(ThriftServer, CompressionClientTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -439,7 +419,8 @@ TEST(ThriftServer, CompressionClientTest) {
 }
 
 TEST(ThriftServer, ClientTimeoutTest) {
-  auto server = getServer();
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  auto server = factory.create();
   ScopedServerThread sst(server);
   TEventBase base;
 
@@ -546,7 +527,8 @@ TEST(ThriftServer, ClientTimeoutTest) {
 }
 
 TEST(ThriftServer, ConnectionIdleTimeoutTest) {
-  std::shared_ptr<ThriftServer> server = getServer();
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  auto server = factory.create();
   server->setIdleTimeout(std::chrono::milliseconds(20));
   apache::thrift::util::ScopedServerThread st(server);
 
@@ -566,7 +548,8 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
 }
 
 TEST(ThriftServer, Thrift1OnewayRequestTest) {
-  std::shared_ptr<ThriftServer> cpp2Server = getServer();
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  auto cpp2Server = factory.create();
   cpp2Server->setNWorkerThreads(1);
   cpp2Server->setIsOverloaded([]() {
     return true;
@@ -614,7 +597,8 @@ class Callback : public RequestCallback {
 };
 
 TEST(ThriftServer, BadSendTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -730,7 +714,8 @@ TEST(ThriftServer, FailureInjection) {
     const std::atomic<ExpectedFailure>* expected_;
   };
 
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -781,7 +766,8 @@ TEST(ThriftServer, FailureInjection) {
 }
 
 TEST(ThriftServer, useExistingSocketAndExit) {
-  auto server = getServer();
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  auto server = factory.create();
   TAsyncServerSocket::UniquePtr serverSocket(new TAsyncServerSocket);
   serverSocket->bind(0);
   server->useExistingSocket(std::move(serverSocket));
@@ -790,7 +776,8 @@ TEST(ThriftServer, useExistingSocketAndExit) {
 
 TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
   // This is ConnectionIdleTimeoutTest, but with an existing socket
-  auto server = getServer();
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  auto server = factory.create();
   TAsyncServerSocket::UniquePtr serverSocket(new TAsyncServerSocket);
   serverSocket->bind(0);
   server->useExistingSocket(std::move(serverSocket));
@@ -814,7 +801,8 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
 }
 
 TEST(ThriftServer, FreeCallbackTest) {
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
@@ -886,7 +874,8 @@ class TestServerEventHandler
 };
 
 TEST(ThriftServer, CallbackOrderingTest) {
-  auto server = getServer();
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  auto server = factory.create();
   auto serverHandler = std::make_shared<TestServerEventHandler>();
 
 
@@ -929,7 +918,8 @@ class ReadCallbackTest : public TAsyncTransport::ReadCallback {
 };
 
 TEST(ThriftServer, ShutdownSocketSetTest) {
-  auto server = getServer();
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  auto server = factory.create();
   ScopedServerThread sst(server);
   TEventBase base;
   ReadCallbackTest cb;
@@ -949,14 +939,16 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
 }
 
 TEST(ThriftServer, ShutdownDegenarateServer) {
-  auto server = getServer(false);
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  auto server = factory.create();
   server->setMaxRequests(1);
   server->setNWorkerThreads(1);
   ScopedServerThread sst(server);
 }
 
 TEST(ThriftServer, ModifyingIOThreadCountLive) {
-  auto server = getServer();
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  auto server = factory.create();
   auto iothreadpool = std::make_shared<folly::wangle::IOThreadPoolExecutor>(0);
   server->setIOThreadPool(iothreadpool);
 
@@ -1013,7 +1005,8 @@ TEST(ThriftServer, ThriftServerSizeLimits) {
   google::FlagSaver flagSaver;
   FLAGS_thrift_cpp2_protocol_reader_string_limit = 1024 * 1024;
 
-  ScopedServerThread sst(getServer());
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
   TEventBase eb;
 
   TestServiceAsyncClient client(
@@ -1049,11 +1042,12 @@ class MyExecutor : public folly::Executor {
 
 TEST(ThriftServer, poolExecutorTest) {
   auto exe = std::make_shared<MyExecutor>();
-  ScopedServerThread sst(
-    getServer(
-      false,
-      std::make_shared<apache::thrift::concurrency::ThreadManagerExecutorAdapter>(
-        exe)));
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  factory
+    .useSimpleThreadManager(false)
+    .useThreadManager(std::make_shared<
+        apache::thrift::concurrency::ThreadManagerExecutorAdapter>(exe));
+  ScopedServerThread sst(factory.create());
   TEventBase eb;
 
   TestServiceAsyncClient client(
@@ -1080,7 +1074,11 @@ TEST(ThriftServer, fiberExecutorTest) {
   auto exe =
     std::make_shared<apache::thrift::concurrency::ThreadManagerExecutorAdapter>(
       std::make_shared<FiberExecutor>());
-  ScopedServerThread sst(getServer(false, exe));
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  factory
+    .useSimpleThreadManager(false)
+    .useThreadManager(exe);
+  ScopedServerThread sst(factory.create());
   TEventBase eb;
 
   TestServiceAsyncClient client(
@@ -1097,7 +1095,9 @@ TEST(ThriftServer, fiberExecutorTest) {
 
 TEST(ThriftServer, setIOThreadPool) {
   auto exe = std::make_shared<folly::wangle::IOThreadPoolExecutor>(1);
-  auto server = getServer(false);
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  factory.useSimpleThreadManager(false);
+  auto server = factory.create();
 
   // Set the exe, this used to trip various calls like
   // CHECK(ioThreadPool->numThreads() == 0).
