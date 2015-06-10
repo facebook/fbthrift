@@ -17,6 +17,7 @@
 #include "thrift/test/gen-cpp/Recursive_types.h"
 #include "thrift/test/gen-cpp2/Recursive_types.h"
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <gtest/gtest.h>
 
 using namespace apache::thrift::util;
@@ -88,7 +89,7 @@ TEST(Recursive, Tree) {
   EXPECT_EQ(tree, result);
 }
 
-TEST(Recursive, list) {
+TEST(Recursive, list1) {
   cpp1::RecList l;
   std::unique_ptr<cpp1::RecList> l2(new cpp1::RecList);
   l.next = std::move(l2);
@@ -99,11 +100,30 @@ TEST(Recursive, list) {
 
   cpp1::RecList result;
   serializer.deserialize(serialized, &result);
+  EXPECT_TRUE(l.next != nullptr);
   EXPECT_TRUE(result.next != nullptr);
+  EXPECT_TRUE(l.next->next == nullptr);
   EXPECT_TRUE(result.next->next == nullptr);
 }
 
-TEST(Recursive, CoRec) {
+TEST(Recursive, list2) {
+  cpp2::RecList l;
+  std::unique_ptr<cpp2::RecList> l2(new cpp2::RecList);
+  l.next = std::move(l2);
+
+  auto serializer = apache::thrift::CompactSerializer();
+  folly::IOBufQueue bufq;
+  serializer.serialize(l, &bufq);
+
+  cpp2::RecList result;
+  serializer.deserialize(bufq.front(), result);
+  EXPECT_TRUE(l.next != nullptr);
+  EXPECT_TRUE(result.next != nullptr);
+  EXPECT_TRUE(l.next->next == nullptr);
+  EXPECT_TRUE(result.next->next == nullptr);
+}
+
+TEST(Recursive, CoRec1) {
   cpp1::CoRec c;
   std::unique_ptr<cpp1::CoRec2> r(new cpp1::CoRec2);
   c.other = std::move(r);
@@ -112,10 +132,55 @@ TEST(Recursive, CoRec) {
   std::string serialized;
   serializer.serialize(c, &serialized);
 
-  cpp1::RecList result;
+  cpp1::CoRec result;
   serializer.deserialize(serialized, &result);
-  EXPECT_TRUE(c.other != nullptr);
-  EXPECT_TRUE(c.other->other.other == nullptr);
+  EXPECT_TRUE(result.other != nullptr);
+  EXPECT_TRUE(result.other->other.other == nullptr);
+}
+
+TEST(Recursive, CoRec2) {
+  cpp2::CoRec c;
+  std::unique_ptr<cpp2::CoRec2> r(new cpp2::CoRec2);
+  c.other = std::move(r);
+
+  auto serializer = apache::thrift::CompactSerializer();
+  folly::IOBufQueue bufq;
+  serializer.serialize(c, &bufq);
+
+  cpp2::CoRec result;
+  serializer.deserialize(bufq.front(), result);
+  EXPECT_TRUE(result.other != nullptr);
+  EXPECT_TRUE(result.other->other.other == nullptr);
+}
+
+/** TODO(7372649): Fails due to cpp.ref = "true" roundtrip bug
+TEST(Recursive, Roundtrip1) {
+  cpp1::MyStruct strct;
+  std::unique_ptr<cpp1::MyField> field(new cpp1::MyField);
+  strct.field = std::move(field);
+
+  ThriftSerializerBinary<void> serializer;
+  std::string serialized;
+  serializer.serialize(strct, &serialized);
+
+  cpp1::MyStruct result;
+  serializer.deserialize(serialized, &result);
+  EXPECT_TRUE(result.field != nullptr);
+}
+*/
+
+TEST(Recursive, Roundtrip2) {
+  cpp2::MyStruct strct;
+  std::unique_ptr<cpp2::MyField> field(new cpp2::MyField);
+  strct.field = std::move(field);
+
+  auto serializer = apache::thrift::CompactSerializer();
+  folly::IOBufQueue bufq;
+  serializer.serialize(strct, &bufq);
+
+  cpp2::MyStruct result;
+  serializer.deserialize(bufq.front(), result);
+  EXPECT_TRUE(result.field != nullptr);
 }
 
 TEST(Recursive, CoRecJson) {

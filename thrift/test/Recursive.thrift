@@ -7,12 +7,12 @@ struct RecTree {
 }
 
 struct RecList {
-  1: RecList next (cpp.ref = "true")
+  1: optional RecList next (cpp.ref = "true", cpp2.ref = "true")
   3: i16 item
 }
 
 struct CoRec {
-  1: optional CoRec2  other (cpp.ref = "true")
+  1: optional CoRec2 other (cpp.ref = "true", cpp2.ref = "true")
 }
 
 struct CoRec2 {
@@ -21,6 +21,14 @@ struct CoRec2 {
 
 struct VectorTest {
   1: list<RecList> lister;
+}
+
+struct MyField {
+  1: optional i64 some_val
+}
+
+struct MyStruct {
+  1: optional MyField field (cpp.ref = "true", cpp2.ref = "true")
 }
 
 service TestService

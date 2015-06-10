@@ -3123,16 +3123,6 @@ class CppGenerator(t_generator.Generator):
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
                   'iprot, {1}.get());'.format(
                       self._type_name(otype), prefix))
-            scope('if (false) {}')
-            for member in struct.members:
-                if self._is_reference(member):
-                    scope('else if ({0}->{1}) {{}}'.format(
-                            prefix, member.name))
-                elif self._has_isset(member):
-                    scope('else if ({0}->__isset.{1}) {{}}'.format(
-                            prefix, member.name))
-            with scope('else'):
-                out("{0} = nullptr;".format(prefix))
         else:
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
                   'iprot, &{1});'.format(

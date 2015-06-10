@@ -194,12 +194,6 @@ uint32_t MyStruct::read(Protocol_* iprot) {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           this->opt_ref = std::unique_ptr< ::cpp2::MyField>(new  ::cpp2::MyField);
           xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, this->opt_ref.get());
-          if (false) {}
-          else if (this->opt_ref->__isset.opt_value) {}
-          else if (this->opt_ref->__isset.value) {}
-          else {
-            this->opt_ref = nullptr;
-          }
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -210,12 +204,6 @@ uint32_t MyStruct::read(Protocol_* iprot) {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           this->ref = std::unique_ptr< ::cpp2::MyField>(new  ::cpp2::MyField);
           xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, this->ref.get());
-          if (false) {}
-          else if (this->ref->__isset.opt_value) {}
-          else if (this->ref->__isset.value) {}
-          else {
-            this->ref = nullptr;
-          }
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -226,12 +214,6 @@ uint32_t MyStruct::read(Protocol_* iprot) {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           this->req_ref = std::unique_ptr< ::cpp2::MyField>(new  ::cpp2::MyField);
           xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, this->req_ref.get());
-          if (false) {}
-          else if (this->req_ref->__isset.opt_value) {}
-          else if (this->req_ref->__isset.value) {}
-          else {
-            this->req_ref = nullptr;
-          }
           isset_req_ref = true;
         } else {
           xfer += iprot->skip(ftype);
