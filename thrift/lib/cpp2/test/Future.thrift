@@ -13,6 +13,7 @@ service FutureService {
   oneway void noResponse(1:i64 size)
   string echoRequest(1:string req)
   i32 throwing() throws (1: Xception err1)
+  void voidThrowing() throws (1: Xception err1)
 
   void buftest(1: IOBufPtr data)
 }

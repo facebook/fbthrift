@@ -98,6 +98,19 @@ class TestInterface : public FutureServiceSvIf {
 
     return std::move(f);
   }
+
+  Future<void> future_voidThrowing() override {
+    Promise<void> p;
+    auto f = p.getFuture();
+
+    Xception x;
+    x.errorCode = 42;
+    x.message = "test2";
+
+    p.setException(x);
+
+    return std::move(f);
+  }
 };
 
 void AsyncCpp2Test(bool enable_security) {
@@ -145,6 +158,10 @@ TEST(ThriftServer, FutureExceptions) {
   auto f = client.future_throwing().waitVia(&base);
 
   EXPECT_THROW(f.value(), Xception);
+
+  auto vf = client.future_voidThrowing().waitVia(&base);
+
+  EXPECT_THROW(vf.value(), Xception);
 }
 
 TEST(ThriftServer, FutureClientTest) {

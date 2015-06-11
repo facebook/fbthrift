@@ -1822,14 +1822,13 @@ class CppGenerator(t_generator.Generator):
 
                 callback = self.tmp("callback")
 
-                if function.returntype.is_void:
+                if function.oneway:
                     out("std::unique_ptr<apache::thrift::RequestCallback> "
                       "{callback}("
-                      "new apache::thrift::FutureCallback<void>("
-                      "std::move({promise}), {isOneWay}));"
+                      "new apache::thrift::OneWayFutureCallback("
+                      "std::move({promise})));"
                       .format(callback=callback,
-                              promise=promise_name,
-                              isOneWay=str(function.oneway).lower()))
+                              promise=promise_name))
 
                     args.append("std::move({0})".format(callback))
 
