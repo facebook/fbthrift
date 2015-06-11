@@ -1066,7 +1066,7 @@ class FiberExecutor : public folly::Executor {
  public:
   void add(std::function<void()> f) override {
     folly::fibers::getFiberManager(
-      *folly::wangle::getIOExecutor()->getEventBase()).add(f);
+      *folly::wangle::getEventBase()).add(f);
   }
 };
 
