@@ -94,7 +94,7 @@ void GssSaslServer::consumeFromClient(
 
         SaslStart start;
         SaslAuthService_authFirstRequest_pargs pargs;
-        pargs.saslStart = &start;
+        pargs.get<0>().value = &start;
         ex = folly::try_and_catch<std::exception>([&]() {
           string methodName;
           try {
@@ -158,7 +158,7 @@ void GssSaslServer::consumeFromClient(
 
         SaslRequest req;
         SaslAuthService_authNextRequest_pargs pargs;
-        pargs.saslRequest = &req;
+        pargs.get<0>().value = &req;
         ex = folly::try_and_catch<std::exception>([&]() {
           string methodName;
           try {
@@ -224,8 +224,8 @@ void GssSaslServer::consumeFromClient(
             }
             if (isFirstRequest) {
               SaslAuthService_authFirstRequest_presult resultp;
-              std::get<0>(resultp.fields).value = &reply;
-              resultp.isset[0] = true;
+              resultp.get<0>().value = &reply;
+              resultp.setIsSet(0);
               *outbuf = PargsPresultProtoSerialize(replyWithProto,
                                                    resultp,
                                                    "authFirstRequest",
@@ -233,8 +233,8 @@ void GssSaslServer::consumeFromClient(
                                                    requestSeqId);
             } else {
               SaslAuthService_authNextRequest_presult resultp;
-              std::get<0>(resultp.fields).value = &reply;
-              resultp.isset[0] = true;
+              resultp.get<0>().value = &reply;
+              resultp.setIsSet(0);
               *outbuf = PargsPresultProtoSerialize(replyWithProto,
                                                    resultp,
                                                    "authNextRequest",

@@ -358,22 +358,40 @@ class CppGenerator(t_generator.Generator):
         if self.flag_compatibility:
             return 'result.success'
         else:
-            return 'std::get<0>(result.fields).value'
-    def _get_presult_success_isset(self):
+            return 'result.get<0>().value'
+    def _get_presult_success_isset(self, value_if_set=None):
         if self.flag_compatibility:
-            return 'result.__isset.success'
+            if value_if_set is None:
+                return 'result.__isset.success'
+            else:
+                return 'result.__isset.success = {0}'.format(value_if_set)
         else:
-            return 'result.isset[0]'
+            if value_if_set is None:
+                return 'result.getIsSet(0)'
+            else:
+                return 'result.setIsSet(0, {0})'.format(value_if_set)
     def _get_presult_exception(self, ex_idx, e):
         if self.flag_compatibility:
             return 'result.{0}'.format(e.name)
         else:
-            return 'std::get<{0}>(result.fields).ref()'.format(ex_idx)
-    def _get_presult_exception_isset(self, ex_idx, e):
+            return 'result.get<{0}>().ref()'.format(ex_idx)
+    def _get_presult_exception_isset(self, ex_idx, e, value_if_set=None):
         if self.flag_compatibility:
-            return 'result.__isset.{0}'.format(e.name)
+            if value_if_set is None:
+                return 'result.__isset.{0}'.format(e.name)
+            else:
+                return 'result.__isset.{0} = {1}'.format(e.name, value_if_set)
         else:
-            return 'result.isset[{0}]'.format(ex_idx)
+            if value_if_set is None:
+                return 'result.getIsSet({0})'.format(ex_idx)
+            else:
+                return 'result.setIsSet({0}, {1})'.format(ex_idx, value_if_set)
+    def _get_pargs_field(self, idx, f, pointer=True):
+        if self.flag_compatibility:
+            return '{0}args.{1}'.format('' if pointer else '*', f.name)
+        else:
+            return 'args.get<{0}>().{1}'.format(idx,
+                    'value' if pointer else 'ref()')
 
     def _generate_enum_constant_list(self, enum, constants, quote_names,
                                       include_values):
@@ -633,15 +651,16 @@ class CppGenerator(t_generator.Generator):
         s.acquire()
         for function in service.functions:
             arglist = function.arglist
-            if self.flag_stack_arguments:
-                arglist.name = "{0}_{1}_args".format(service.name, function.name)
+            if self.flag_compatibility:
+                if self.flag_stack_arguments:
+                    arglist.name = "{0}_{1}_args".format(service.name, function.name)
+                    self._generate_cpp2ops(True, arglist, s)
+                arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
                 self._generate_cpp2ops(True, arglist, s)
-            arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
-            self._generate_cpp2ops(True, arglist, s)
 
-            if self.flag_compatibility and not function.oneway:
-                result = self._get_presult_object(service, function)
-                self._generate_cpp2ops(True, result, s)
+                if not function.oneway:
+                    result = self._get_presult_object(service, function)
+                    self._generate_cpp2ops(True, result, s)
         s.release()
 
     def _get_presult_object(self, service, function):
@@ -661,30 +680,49 @@ class CppGenerator(t_generator.Generator):
     def _generate_service_helpers(self, service, s):
         for function in service.functions:
             arglist = function.arglist
-            name_orig = arglist.name
-            if self.flag_stack_arguments:
-                arglist.name = "{0}_{1}_args".format(service.name, function.name)
+            if self.flag_compatibility:
+                name_orig = arglist.name
+                if self.flag_stack_arguments:
+                    arglist.name = "{0}_{1}_args".format(service.name, function.name)
+                    self._generate_struct_complete(s, arglist,
+                                                   is_exception=False,
+                                                   pointers=False,
+                                                   read=True,
+                                                   write=True,
+                                                   swap=False,
+                                                   result=False,
+                                                   to_additional=True,
+                                                   simplejson=False)
+                arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
                 self._generate_struct_complete(s, arglist,
                                                is_exception=False,
-                                               pointers=False,
+                                               pointers=True,
                                                read=True,
                                                write=True,
                                                swap=False,
                                                result=False,
+                                               has_isset=False,
                                                to_additional=True,
                                                simplejson=False)
-            arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
-            self._generate_struct_complete(s, arglist,
-                                           is_exception=False,
-                                           pointers=True,
-                                           read=True,
-                                           write=True,
-                                           swap=False,
-                                           result=False,
-                                           has_isset=False,
-                                           to_additional=True,
-                                           simplejson=False)
-            arglist.name = name_orig
+                arglist.name = name_orig
+            else:
+                def generate_pargs(suffix, pargs):
+                    flist = ['apache::thrift::FieldData<{0}, {1}, {2}{3}>'.format(
+                                arg.key,
+                                self._type_to_enum(arg.type),
+                                self._type_name(arg.type),
+                                suffix)
+                                    for arg in arglist.members]
+                    pargs = "{0}_{1}_{2}".format(service.name, function.name, pargs)
+                    flist.insert(0, 'false')
+                    fstr = ", ".join(flist)
+                    print >>self._out_tcc, \
+                        'typedef apache::thrift::ThriftPresult<{0}> {1};'.format(
+                            fstr, pargs)
+                if self.flag_stack_arguments:
+                    generate_pargs('', 'args')
+                generate_pargs('*', 'pargs')
+
 
             if not function.oneway:
                 if self.flag_compatibility:
@@ -719,6 +757,7 @@ class CppGenerator(t_generator.Generator):
                             .format(ttype, type))
 
                     presult = "{0}_{1}_presult".format(service.name, function.name)
+                    flist.insert(0, 'true')
                     fstr = ", ".join(flist)
 
                     print >>self._out_tcc, \
@@ -1162,7 +1201,7 @@ class CppGenerator(t_generator.Generator):
             out('{0}_{1}_args args;'.format(service.name, function.name))
         else:
             out('{0}_{1}_pargs args;'.format(service.name, function.name))
-        for field in function.arglist.members:
+        for idx, field in enumerate(function.arglist.members):
             val = ""
             t = self._get_true_type(field.type)
             if t.is_base_type or t.is_enum:
@@ -1172,17 +1211,16 @@ class CppGenerator(t_generator.Generator):
             elif self._is_complex_type(field.type):
                 out('std::unique_ptr<{0}> {1}(new {0}({2}));'.format(
                         self._type_name(field.type), aprefix + field.name, val))
-                out('args.{0} = {1}.get();'.format(
-                        field.name, aprefix + field.name))
+                out('{0} = {1}.get();'.format(
+                        self._get_pargs_field(idx, field),
+                        aprefix + field.name))
             else:
                 # use uniform initialization syntax to avoid most vexing parse
                 out('{0} {1}{{{2}}};'.format(
                         self._type_name(field.type), aprefix + field.name, val))
-                ref_prefix = "&"
-                if self.flag_stack_arguments:
-                    ref_prefix = ""
-                out('args.{0} = {2}{1};'.format(
-                        field.name, aprefix + field.name, ref_prefix))
+                out('{0} = &{1};'.format(
+                        self._get_pargs_field(idx, field),
+                        aprefix + field.name))
         out(('std::unique_ptr<apache::thrift::' +
            'ContextStack> c(this->getContextStack' +
            '(this->getServiceName(), "{0}.{1}", ctx));'
@@ -1201,14 +1239,14 @@ class CppGenerator(t_generator.Generator):
                                       False, out, 'ctx', False,
                                       'PROTOCOL_ERROR')
         args = []
-        for member in function.arglist.members:
+        for idx, member in enumerate(function.arglist.members):
             if self.flag_stack_arguments:
-                args.append("args." + member.name)
+                args.append(self._get_pargs_field(idx, member))
             elif self._is_complex_type(member.type):
                 args.append("std::move({0})".format(
                         aprefix + member.name))
             else:
-                args.append("*args." + member.name)
+                args.append(self._get_pargs_field(idx, member, False))
         if function.oneway:
             out('std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(' +
               'new apache::thrift::HandlerCallbackBase(std::move(req), ' +
@@ -1552,8 +1590,8 @@ class CppGenerator(t_generator.Generator):
                             out('{0} = const_cast<{1}*>(&_return);'.format(
                                 self._get_presult_success(),
                                 self._type_name(function.returntype)))
-                            out('{0} = true;'.format(
-                                self._get_presult_success_isset()))
+                            out('{0};'.format(
+                                self._get_presult_success_isset('true')))
                         out('return serializeResponse("{0}", '
                           '&prot, protoSeqId, ctx, result);'
                           .format(function.name))
@@ -1568,8 +1606,8 @@ class CppGenerator(t_generator.Generator):
                             ex_idx = self._exception_idx(function, idx)
                             out('{0} = e;'.format(
                                 self._get_presult_exception(ex_idx, xception)))
-                            out('{0} = true;'.format(
-                                self._get_presult_exception_isset(ex_idx, xception)))
+                            out('{0};'.format(
+                                self._get_presult_exception_isset(ex_idx, xception, 'true')))
                 if not function.oneway:
                     with out().defn(
                         'template <class ProtocolIn_, class ProtocolOut_>\n' +
@@ -1643,8 +1681,8 @@ class CppGenerator(t_generator.Generator):
                                 ex_idx = self._exception_idx(function, idx)
                                 out('{0} = e;'.format(
                                     self._get_presult_exception(ex_idx, xception)))
-                                out('{0} = true;'.format(
-                                    self._get_presult_exception_isset(ex_idx, xception)))
+                                out('{0};'.format(
+                                    self._get_presult_exception_isset(ex_idx, xception, 'true')))
                             out(')) {} else ')
                         with out(' '):
                             self._generate_app_ex(
@@ -1972,15 +2010,18 @@ class CppGenerator(t_generator.Generator):
             out("{0} args;".format(pargs_class))
 
             # Generate list of function args
-            for field in function.arglist.members:
+            for idx, field in enumerate(function.arglist.members):
                 rtype = self._get_true_type(field.type)
                 if rtype.is_string or rtype.is_container \
                         or rtype.is_struct:
-                    out("args.{1} = const_cast<{0}*>(&{2});".format(
+                    out("{0} = const_cast<{1}*>(&{2});".format(
+                            self._get_pargs_field(idx, field),
                             self._type_name(field.type),
-                            field.name, field.name))
+                            field.name))
                 else:
-                    out("args.{0} = &{0};".format(field.name))
+                    out("{0} = &{1};".format(
+                        self._get_pargs_field(idx, field),
+                        field.name))
 
             if self.flag_compatibility:
                 sizer = '[](Protocol_* prot, {0}& args) ' \

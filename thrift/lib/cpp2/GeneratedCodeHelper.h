@@ -44,12 +44,12 @@ uint32_t forEach(Tuple&& tuple, F&& f) {
       forEach(std::forward<Tuple>(tuple), std::forward<F>(f));
 }
 
-template <typename Protocol>
+template <typename Protocol, typename IsSet>
 struct Writer {
-  Writer(Protocol* prot, const bool* isset) : prot_(prot), isset_(isset) {}
+  Writer(Protocol* prot, const IsSet& isset) : prot_(prot), isset_(isset) {}
   template <typename FieldData>
   uint32_t operator()(const FieldData& fieldData, int index) {
-    if (!isset_[index]) {
+    if (!isset_.getIsSet(index)) {
       return 0;
     }
 
@@ -64,15 +64,15 @@ struct Writer {
   }
  private:
   Protocol* prot_;
-  const bool* isset_;
+  const IsSet& isset_;
 };
 
-template <typename Protocol>
+template <typename Protocol, typename IsSet>
 struct Sizer {
-  Sizer(Protocol* prot, const bool* isset) : prot_(prot), isset_(isset) {}
+  Sizer(Protocol* prot, const IsSet& isset) : prot_(prot), isset_(isset) {}
   template <typename FieldData>
   uint32_t operator()(const FieldData& fieldData, int index) {
-    if (!isset_[index]) {
+    if (!isset_.getIsSet(index)) {
       return 0;
     }
 
@@ -86,15 +86,15 @@ struct Sizer {
   }
  private:
   Protocol* prot_;
-  const bool* isset_;
+  const IsSet& isset_;
 };
 
-template <typename Protocol>
+template <typename Protocol, typename IsSet>
 struct SizerZC {
-  SizerZC(Protocol* prot, const bool* isset) : prot_(prot), isset_(isset) {}
+  SizerZC(Protocol* prot, const IsSet& isset) : prot_(prot), isset_(isset) {}
   template <typename FieldData>
   uint32_t operator()(const FieldData& fieldData, int index) {
-    if (!isset_[index]) {
+    if (!isset_.getIsSet(index)) {
       return 0;
     }
 
@@ -108,12 +108,12 @@ struct SizerZC {
   }
  private:
   Protocol* prot_;
-  const bool* isset_;
+  const IsSet& isset_;
 };
 
-template <typename Protocol>
+template <typename Protocol, typename IsSet>
 struct Reader {
-  Reader(Protocol* prot, bool* isset, int16_t fid, protocol::TType ftype, bool& success)
+  Reader(Protocol* prot, IsSet& isset, int16_t fid, protocol::TType ftype, bool& success)
     : prot_(prot), isset_(isset), fid_(fid), ftype_(ftype), success_(success)
   {}
   template <typename FieldData>
@@ -129,12 +129,12 @@ struct Reader {
     }
 
     success_ = true;
-    isset_[index] = true;
+    isset_.setIsSet(index);
     return Cpp2Ops<typename FieldData::ref_type>::read(prot_, &ex);
   }
  private:
   Protocol* prot_;
-  bool* isset_;
+  IsSet& isset_;
   int16_t fid_;
   protocol::TType ftype_;
   bool& success_;
@@ -210,6 +210,20 @@ struct Reserver<T, typename std::enable_if<has_member<T, reserve_checker>::value
   }
 };
 
+template <bool hasIsSet, size_t count>
+struct IsSetHelper {
+  void setIsSet(size_t index, bool value = true) { }
+  bool getIsSet(size_t index) const { return true; }
+};
+
+template <size_t count>
+struct IsSetHelper<true, count> {
+  void setIsSet(size_t index, bool value = true) { isset_[index] = value; }
+  bool getIsSet(size_t index) const { return isset_[index]; }
+ private:
+  std::array<bool, count> isset_ = {};
+};
+
 }
 
 template <int16_t Fid, protocol::TType Ttype, typename T>
@@ -223,11 +237,28 @@ struct FieldData {
   const ref_type& ref() const { return detail::maybe_remove_pointer(value); }
 };
 
-template <typename... Field>
-class ThriftPresult {
+template <bool hasIsSet, typename... Field>
+class ThriftPresult : private std::tuple<Field...>,
+                      public detail::IsSetHelper<hasIsSet, sizeof...(Field)> {
+  // The fields tuple and IsSetHelper are base classes (rather than members)
+  // to employ the empty base class optimization when they are empty
+  typedef std::tuple<Field...> Fields;
+  typedef detail::IsSetHelper<hasIsSet, sizeof...(Field)> CurIsSetHelper;
  public:
-  std::tuple<Field...> fields;
-  bool isset[sizeof...(Field)] = {};
+
+  CurIsSetHelper& isSet() { return *this; }
+  const CurIsSetHelper& isSet() const { return *this; }
+  Fields& fields() { return *this; }
+  const Fields& fields() const { return *this; }
+
+  // returns lvalue ref to the appropriate FieldData
+  template <size_t index>
+  auto get() -> decltype(std::get<index>(this->fields()))
+  { return std::get<index>(this->fields()); }
+
+  template <size_t index>
+  auto get() const -> decltype(std::get<index>(this->fields()))
+  { return std::get<index>(this->fields()); }
 
   template <class Protocol>
   uint32_t read(Protocol* prot) {
@@ -244,8 +275,8 @@ class ThriftPresult {
         break;
       }
       bool readSomething = false;
-      xfer += detail::forEach(fields, detail::Reader<Protocol>(
-          prot, isset, fid, ftype, readSomething));
+      xfer += detail::forEach(fields(), detail::Reader<Protocol, CurIsSetHelper>(
+          prot, isSet(), fid, ftype, readSomething));
       if (!readSomething) {
         xfer += prot->skip(ftype);
       }
@@ -260,7 +291,8 @@ class ThriftPresult {
   uint32_t serializedSize(Protocol* prot) const {
     uint32_t xfer = 0;
     xfer += prot->serializedStructSize("");
-    xfer += detail::forEach(fields, detail::Sizer<Protocol>(prot, isset));
+    xfer += detail::forEach(fields(),
+        detail::Sizer<Protocol, CurIsSetHelper>(prot, isSet()));
     xfer += prot->serializedSizeStop();
     return xfer;
   }
@@ -269,7 +301,8 @@ class ThriftPresult {
   uint32_t serializedSizeZC(Protocol* prot) const {
     uint32_t xfer = 0;
     xfer += prot->serializedStructSize("");
-    xfer += detail::forEach(fields, detail::SizerZC<Protocol>(prot, isset));
+    xfer += detail::forEach(fields(),
+        detail::SizerZC<Protocol, CurIsSetHelper>(prot, isSet()));
     xfer += prot->serializedSizeStop();
     return xfer;
   }
@@ -278,17 +311,18 @@ class ThriftPresult {
   uint32_t write(Protocol* prot) const {
     uint32_t xfer = 0;
     xfer += prot->writeStructBegin("");
-    xfer += detail::forEach(fields, detail::Writer<Protocol>(prot, isset));
+    xfer += detail::forEach(fields(),
+        detail::Writer<Protocol, CurIsSetHelper>(prot, isSet()));
     xfer += prot->writeFieldStop();
     xfer += prot->writeStructEnd();
     return xfer;
   }
 };
 
-template <class... Args>
-class Cpp2Ops<ThriftPresult<Args...>> {
+template <bool hasIsSet, class... Args>
+class Cpp2Ops<ThriftPresult<hasIsSet, Args...>> {
  public:
-  typedef ThriftPresult<Args...> Presult;
+  typedef ThriftPresult<hasIsSet, Args...> Presult;
   static constexpr protocol::TType thriftType() {
     return protocol::T_STRUCT;
   }

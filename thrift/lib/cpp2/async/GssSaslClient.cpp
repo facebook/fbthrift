@@ -165,7 +165,7 @@ void GssSaslClient::start(Callback *cb) {
             }
             start.__isset.request = true;
             SaslAuthService_authFirstRequest_pargs argsp;
-            argsp.saslStart = &start;
+            argsp.get<0>().value = &start;
 
             *iobuf = PargsPresultProtoSerialize(
               proto, argsp, "authFirstRequest", T_CALL, (*seqId)++);
@@ -296,7 +296,7 @@ void GssSaslClient::consumeFromServer(
               TKerberosException>([&]() {
             SaslReply reply;
             SaslAuthService_authFirstRequest_presult presult;
-            std::get<0>(presult.fields).value = &reply;
+            presult.get<0>().value = &reply;
             string methodName;
             try {
               methodName = PargsPresultProtoDeserialize(
@@ -358,7 +358,7 @@ void GssSaslClient::consumeFromServer(
               req.response = *token;
               req.__isset.response = true;
               SaslAuthService_authNextRequest_pargs argsp;
-              argsp.saslRequest = &req;
+              argsp.get<0>().value = &req;
               *iobuf = PargsPresultProtoSerialize(
                 proto, argsp, "authNextRequest", T_CALL, (*seqId)++);
             }

@@ -17,86 +17,8 @@
 
 namespace cpp2 {
 
-template <class Protocol_>
-uint32_t MyService_getDataById_pargs::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using apache::thrift::TProtocolException;
-
-
-  while (true) {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    if (fid == std::numeric_limits<int16_t>::min()) {
-      if (fname == "id") {
-        fid = 1;
-        ftype = apache::thrift::protocol::T_I64;
-      }
-    }
-    switch (fid) {
-      case 1:
-      {
-        if (ftype == apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64((*const_cast<int64_t*>(this->id)));
-          this->__isset.id = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      }
-      default:
-      {
-        xfer += iprot->skip(ftype);
-        break;
-      }
-    }
-    xfer += iprot->readFieldEnd();
-  }
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-template <class Protocol_>
-uint32_t MyService_getDataById_pargs::serializedSize(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("MyService_getDataById_pargs");
-  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64((*const_cast<int64_t*>(this->id)));
-  xfer += prot_->serializedSizeStop();
-  return xfer;
-}
-
-template <class Protocol_>
-uint32_t MyService_getDataById_pargs::serializedSizeZC(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("MyService_getDataById_pargs");
-  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64((*const_cast<int64_t*>(this->id)));
-  xfer += prot_->serializedSizeStop();
-  return xfer;
-}
-
-template <class Protocol_>
-uint32_t MyService_getDataById_pargs::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("MyService_getDataById_pargs");
-  xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->writeI64((*const_cast<int64_t*>(this->id)));
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
-}
-
-typedef apache::thrift::ThriftPresult<apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>> MyService_getDataById_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>> MyService_getDataById_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>> MyService_getDataById_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::_processInThread_getDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
@@ -110,7 +32,7 @@ void MyServiceAsyncProcessor::process_getDataById(std::unique_ptr<apache::thrift
   iface_->setConnectionContext(nullptr);
   MyService_getDataById_pargs args;
   int64_t uarg_id{0};
-  args.id = &uarg_id;
+  args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "MyService.getDataById", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), c.get());
@@ -140,15 +62,15 @@ void MyServiceAsyncProcessor::process_getDataById(std::unique_ptr<apache::thrift
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_getDataById(std::move(callback), *args.id);
+  iface_->async_tm_getDataById(std::move(callback), args.get<0>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
 folly::IOBufQueue MyServiceAsyncProcessor::return_getDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return) {
   ProtocolOut_ prot;
   MyService_getDataById_presult result;
-  std::get<0>(result.fields).value = const_cast<std::string*>(&_return);
-  result.isset[0] = true;
+  result.get<0>().value = const_cast<std::string*>(&_return);
+  result.setIsSet(0, true);
   return serializeResponse("getDataById", &prot, protoSeqId, ctx, result);
 }
 
@@ -213,7 +135,7 @@ template <typename Protocol_>
 void MyServiceAsyncClient::getDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.getDataById", connectionContext_.get());
   MyService_getDataById_pargs args;
-  args.id = &id;
+  args.get<0>().value = &id;
   apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), channel_.get(), args, "getDataById", [](Protocol_* prot, MyService_getDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyService_getDataById_pargs& args) { return args.serializedSizeZC(prot); });
 }
 
@@ -256,11 +178,11 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getDataByIdT(Protoco
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     MyService_getDataById_presult result;
-    std::get<0>(result.fields).value = &_return;
+    result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
     ctx->postRead(state.buf()->length());
-    if (result.isset[0]) {
+    if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch
     }

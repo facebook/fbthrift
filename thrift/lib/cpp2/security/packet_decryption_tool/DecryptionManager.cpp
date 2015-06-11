@@ -235,7 +235,7 @@ void DecryptionManager::PacketHandler::parseSecondMessage(Packet* packet) {
 
   apache::thrift::sasl::SaslReply saslReply;
   apache::thrift::sasl::SaslAuthService_authFirstRequest_presult presult;
-  std::get<0>(presult.fields).value = &saslReply;
+  presult.get<0>().value = &saslReply;
 
   std::string methodName;
   try {
@@ -375,7 +375,7 @@ void DecryptionManager::PacketHandler::parseFirstMessage(Packet* packet) {
 
   apache::thrift::sasl::SaslStart saslStart;
   apache::thrift::sasl::SaslAuthService_authFirstRequest_pargs pargs;
-  pargs.saslStart = &saslStart;
+  pargs.get<0>().value = &saslStart;
 
   try {
     std::string methodName;

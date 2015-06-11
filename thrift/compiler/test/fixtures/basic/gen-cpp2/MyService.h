@@ -27,34 +27,6 @@ namespace apache { namespace thrift {
 
 namespace cpp2 {
 
-class MyService_getDataById_pargs : private boost::totally_ordered<MyService_getDataById_pargs> {
- public:
-  virtual ~MyService_getDataById_pargs() throw() {}
-
-  int64_t* id;
-
-  struct __isset {
-    __isset() {
-      __clear();
-    }
-
-    void __clear() {
-      id = false;
-    }
-
-    bool id;
-  } __isset;
-
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-};
-
 class MyServiceSvAsyncIf {
  public:
   virtual ~MyServiceSvAsyncIf() {}
@@ -156,25 +128,5 @@ class MyServiceAsyncClient : public apache::thrift::TClientBase {
 
 } // cpp2
 namespace apache { namespace thrift {
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::MyService_getDataById_pargs>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyService_getDataById_pargs>::write(Protocol* proto, const  ::cpp2::MyService_getDataById_pargs* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyService_getDataById_pargs>::read(Protocol* proto,   ::cpp2::MyService_getDataById_pargs* obj) {
-  return obj->read(proto);
-}
-
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyService_getDataById_pargs>::serializedSize(Protocol* proto, const  ::cpp2::MyService_getDataById_pargs* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyService_getDataById_pargs>::serializedSizeZC(Protocol* proto, const  ::cpp2::MyService_getDataById_pargs* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift
