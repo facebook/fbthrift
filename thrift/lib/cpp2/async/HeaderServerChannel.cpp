@@ -550,6 +550,9 @@ void HeaderServerChannel::SaslServerCallback::saslError(
 }
 
 void HeaderServerChannel::SaslServerCallback::saslComplete() {
+  // setProtectionState could eventually destroy the channel
+  DestructorGuard dg(&channel_);
+
   const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
     channel_.getEventBase()->getObserver());
 
