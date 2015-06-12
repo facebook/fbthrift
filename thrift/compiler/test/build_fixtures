@@ -43,9 +43,9 @@ def ascend_find_dir(path, target):
             return None
         path = parent
 
-def read_file(path):
+def read_lines(path):
     with open(path, 'r') as f:
-        return f.read()
+        return f.readlines()
 
 exe = os.path.join(os.getcwd(), sys.argv[0])
 buildDir = sys.argv[1]
@@ -64,9 +64,10 @@ for name in fixtureNames:
         if fn.startswith('.'):
             continue
         shutil.rmtree(os.path.join(cwd, fn))
-    cmd = read_file(os.path.join(cwd, 'cmd'))
-    subprocess.check_call(
-        [thrift, "--gen"] + shlex.split(cmd.strip()),
-        cwd=cwd,
-        close_fds=True,
-    )
+    cmds = read_lines(os.path.join(cwd, 'cmd'))
+    for cmd in cmds:
+        subprocess.check_call(
+            [thrift, "--gen"] + shlex.split(cmd.strip()),
+            cwd=cwd,
+            close_fds=True,
+        )
