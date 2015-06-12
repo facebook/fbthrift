@@ -297,6 +297,9 @@ class THeader {
  protected:
   std::unique_ptr<folly::IOBuf> removeUnframed(folly::IOBufQueue* queue,
                                                size_t& needed);
+  std::unique_ptr<folly::IOBuf> removeHttpServer(folly::IOBufQueue* queue);
+  std::unique_ptr<folly::IOBuf> removeHttpClient(folly::IOBufQueue* queue,
+                                                 size_t& needed);
 
   void setBestClientType();
 
