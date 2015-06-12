@@ -42,6 +42,7 @@ def process_main(twisted=False):
                 oprot.writeMessageEnd()
                 oprot.trans.flush()
                 if twisted is True:
+                    from twisted.internet import defer
                     return defer.succeed(None)
             else:
                 ret = self._processMap[name](self, seqid, iprot, oprot,
