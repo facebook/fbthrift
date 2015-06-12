@@ -38,6 +38,10 @@ void HeaderChannel::setClientType(CLIENT_TYPE ct) {
   clientType_ = ct;
 }
 
+void HeaderChannel::forceClientType(bool enable) {
+  header_->forceClientType(enable);
+}
+
 void HeaderChannel::setSupportedClients(std::bitset<CLIENT_TYPES_LEN>
                                   const* clients) {
   if (clients) {

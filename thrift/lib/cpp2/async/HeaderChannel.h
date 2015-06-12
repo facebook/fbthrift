@@ -59,6 +59,8 @@ class HeaderChannel {
     void checkSupportedClient(CLIENT_TYPE ct);
 
     void setClientType(CLIENT_TYPE ct);
+    // Force using specified client type when using legacy client types
+    void forceClientType(bool enable);
     CLIENT_TYPE getClientType() { return clientType_; }
     void updateClientType(CLIENT_TYPE ct);
 

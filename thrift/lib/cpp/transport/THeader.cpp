@@ -72,6 +72,7 @@ THeader::THeader()
   , protoId_(T_COMPACT_PROTOCOL)
   , protoVersion(-1)
   , clientType(THRIFT_HEADER_CLIENT_TYPE)
+  , forceClientType_(false)
   , seqId(0)
   , flags_(0)
   , identity(s_identity)
@@ -191,6 +192,28 @@ unique_ptr<IOBuf> THeader::removeHeader(
 
   // Use first word to check type.
   uint32_t sz = c.readBE<uint32_t>();
+
+  if (forceClientType_) {
+    switch (clientType) {
+    case THRIFT_FRAMED_DEPRECATED:
+    case THRIFT_FRAMED_COMPACT:
+      // Make sure we have read the whole frame in.
+      if (4 + sz > chainSize) {
+        needed = sz - chainSize + 4;
+        return nullptr;
+      }
+      return removeFramed(sz, queue);
+    case THRIFT_UNFRAMED_DEPRECATED:
+      return removeUnframed(queue, needed);
+    case THRIFT_HTTP_SERVER_TYPE:
+      removeHttpServer(queue);
+    case THRIFT_HTTP_CLIENT_TYPE:
+      return removeHttpClient(queue, needed);
+    default:
+      // Fallback to sniffing out the magic for Header
+      break;
+    };
+  }
 
   if ((sz & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
     // unframed

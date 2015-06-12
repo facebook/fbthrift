@@ -85,6 +85,9 @@ class THeader {
   THeader();
 
   void setClientTypeNoCheck(CLIENT_TYPE ct) { clientType = ct; }
+  // Force using specified client type when using legacy client types
+  // i.e. sniffing out client type is disabled.
+  void forceClientType(bool enable) { forceClientType_ = enable; }
   CLIENT_TYPE getClientType() { return clientType; }
 
   uint16_t getProtocolId() const;
@@ -311,6 +314,7 @@ class THeader {
   int16_t protoId_;
   int8_t protoVersion;
   CLIENT_TYPE clientType;
+  bool forceClientType_;
   uint32_t seqId;
   uint16_t flags_;
   std::string identity;
