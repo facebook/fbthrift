@@ -295,6 +295,8 @@ class THeader {
   static const std::string CLIENT_TIMEOUT_HEADER;
 
  protected:
+  std::unique_ptr<folly::IOBuf> removeUnframed(folly::IOBufQueue* queue,
+                                               size_t& needed);
 
   void setBestClientType();
 

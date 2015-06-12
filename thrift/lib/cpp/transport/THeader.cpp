@@ -102,6 +102,35 @@ bool THeader::compactFramed(uint32_t magic) {
 
 }
 
+unique_ptr<IOBuf> THeader::removeUnframed(
+    IOBufQueue* queue,
+    size_t& needed) {
+  const_cast<IOBuf*>(queue->front())->coalesce();
+
+  // Test skip using the protocol to detect the end of the message
+  TMemoryBuffer memBuffer(const_cast<uint8_t*>(queue->front()->data()),
+                          queue->front()->length(), TMemoryBuffer::OBSERVE);
+  TBinaryProtocolT<TBufferBase> proto(&memBuffer);
+  uint32_t msgSize = 0;
+  try {
+    std::string name;
+    protocol::TMessageType messageType;
+    int32_t seqid;
+    msgSize += proto.readMessageBegin(name, messageType, seqid);
+    msgSize += protocol::skip(proto, protocol::T_STRUCT);
+    msgSize += proto.readMessageEnd();
+  } catch (const TTransportException& ex) {
+    if (ex.getType() == TTransportException::END_OF_FILE) {
+      // We don't have the full data yet.  We can't tell exactly
+      // how many bytes we need, but it is at least one.
+      needed = 1;
+      return nullptr;
+    }
+  }
+
+  return std::move(queue->split(msgSize));
+}
+
 unique_ptr<IOBuf> THeader::removeHeader(
   IOBufQueue* queue,
   size_t& needed,
@@ -122,30 +151,7 @@ unique_ptr<IOBuf> THeader::removeHeader(
   if ((sz & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
     // unframed
     clientType = THRIFT_UNFRAMED_DEPRECATED;
-    const_cast<IOBuf*>(queue->front())->coalesce();
-
-    // Test skip using the protocol to detect the end of the message
-    TMemoryBuffer memBuffer(const_cast<uint8_t*>(queue->front()->data()),
-                            queue->front()->length(), TMemoryBuffer::OBSERVE);
-    TBinaryProtocolT<TBufferBase> proto(&memBuffer);
-    uint32_t msgSize = 0;
-    try {
-      std::string name;
-      protocol::TMessageType messageType;
-      int32_t seqid;
-      msgSize += proto.readMessageBegin(name, messageType, seqid);
-      msgSize += protocol::skip(proto, protocol::T_STRUCT);
-      msgSize += proto.readMessageEnd();
-    } catch (const TTransportException& ex) {
-      if (ex.getType() == TTransportException::END_OF_FILE) {
-        // We don't have the full data yet.  We can't tell exactly
-        // how many bytes we need, but it is at least one.
-        needed = 1;
-        return nullptr;
-      }
-    }
-
-    buf = std::move(queue->split(msgSize));
+    buf = removeUnframed(queue, needed);
   } else if (sz == HTTP_SERVER_MAGIC ||
             sz == HTTP_GET_CLIENT_MAGIC ||
             sz == HTTP_HEAD_CLIENT_MAGIC) {
