@@ -358,7 +358,7 @@ void ThriftServer::setup() {
     configMutable_ = false;
   } catch (std::exception& ex) {
     // This block allows us to investigate the exception using gdb
-    LOG(FATAL) << "Got an exception while setting up the server: "
+    LOG(ERROR) << "Got an exception while setting up the server: "
       << ex.what();
     handleSetupFailure();
     throw;
