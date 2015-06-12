@@ -65,6 +65,8 @@ const string THeader::CLIENT_TIMEOUT_HEADER = "client_timeout";
 
 string THeader::s_identity = "";
 
+static const string THRIFT_AUTH_HEADER = "thrift_auth";
+
 THeader::THeader()
   : queue_(new folly::IOBufQueue)
   , protoId_(T_COMPACT_PROTOCOL)
@@ -264,7 +266,7 @@ unique_ptr<IOBuf> THeader::removeHeader(
 
       // auth client?
       clientType = THRIFT_HEADER_CLIENT_TYPE;
-      auto auth_header = getHeaders().find("thrift_auth");
+      auto auth_header = getHeaders().find(THRIFT_AUTH_HEADER);
       if (auth_header != getHeaders().end()) {
         if (auth_header->second == "1") {
           clientType = THRIFT_HEADER_SASL_CLIENT_TYPE;
