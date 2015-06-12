@@ -194,14 +194,21 @@ bool Krb5CredentialsCacheManager::fetchIsKillSwitchEnabled() {
 
 bool Krb5CredentialsCacheManager::waitUntilCacheStoreInitialized(
     std::chrono::milliseconds timeoutMS) {
+  bool initialized = false;
+  Krb5CCacheStore* store = nullptr;
   auto start = std::chrono::high_resolution_clock::now();
-  while (!store_->isInitialized()) {
+  while (!initialized) {
     auto now = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
                      now - start);
     if (elapsed > timeoutMS) {
       return false;
     }
+    if (!store) {
+      MutexGuard l(manageThreadMutex_);
+      store = store_.get();
+    }
+    initialized = store && store->isInitialized();
     sched_yield();
   }
   return true;

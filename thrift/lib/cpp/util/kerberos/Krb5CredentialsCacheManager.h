@@ -69,6 +69,10 @@ class Krb5CredentialsCacheManager {
 
   bool fetchIsKillSwitchEnabled();
 
+  /**
+   * Test-only method. Does a busy-wait. If you need something like this in
+   * production, you should consider a better implementation.
+   */
   bool waitUntilCacheStoreInitialized(std::chrono::milliseconds timeoutMS
     = std::chrono::milliseconds(500));
 
