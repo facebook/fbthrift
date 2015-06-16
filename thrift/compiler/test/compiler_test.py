@@ -28,6 +28,10 @@ def read_file(path):
     with open(path, 'r') as f:
         return f.read()
 
+def read_lines(path):
+    with open(path, 'r') as f:
+        return f.readlines()
+
 def mkdir_p(path, mode):
     try:
         os.makedirs(path, mode)
@@ -65,12 +69,13 @@ class MyTest(unittest.TestCase):
                 dn = os.path.dirname(os.path.join(self.tmp, fn))
                 mkdir_p(dn, 0o700)
                 shutil.copy2(os.path.join(fixtureChildDir, fn), dn)
-        cmd = read_file(os.path.join(self.tmp, 'cmd'))
-        subprocess.check_call(
-            [thrift, '--gen'] + shlex.split(cmd.strip()),
-            cwd=self.tmp,
-            close_fds=True,
-        )
+        cmds = read_lines(os.path.join(self.tmp, 'cmd'))
+        for cmd in cmds:
+            subprocess.check_call(
+                [thrift, '--gen'] + shlex.split(cmd.strip()),
+                cwd=self.tmp,
+                close_fds=True,
+            )
         gens = subprocess.check_output(
             ["find", ".", "-type", "f"],
             cwd=self.tmp,
