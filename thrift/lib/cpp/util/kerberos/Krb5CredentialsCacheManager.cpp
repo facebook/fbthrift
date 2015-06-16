@@ -60,7 +60,8 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
   int maxCacheSize)
     : stopManageThread_(false)
     , logger_(logger)
-    , ccacheTypeIsMemory_(false) {
+    , ccacheTypeIsMemory_(false)
+    , updateFileCacheEnabled_(true) {
 
   try {
     // These calls can throw if the context cannot be initialized for some
@@ -140,12 +141,14 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
             "build_renewed_cache", folly::to<std::string>(renewCount));
         }
 
-        // Persist cache store to a file
-        logger->logStart("persist_ccache");
-        int outSize = writeOutCache(
-          Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE);
-        logger->logEnd(
-          "persist_ccache", folly::to<std::string>(outSize));
+        if (updateFileCacheEnabled_) {
+          // Persist cache store to a file
+          logger->logStart("persist_ccache");
+          int outSize = writeOutCache(
+            Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE);
+          logger->logEnd(
+            "persist_ccache", folly::to<std::string>(outSize));
+        }
       } catch (const std::runtime_error& e) {
         // Notify the waitForCache functions that an error happened.
         // We should propagate this error up.
@@ -493,6 +496,11 @@ void Krb5CredentialsCacheManager::initCacheStore() {
     err_string += (string(e.what()) + ". ");
   }
   logger_->logEnd("read_in_cache_attempt");
+
+  if (file_cache && !isPrincipalInKeytab(file_cache->getClientPrincipal())) {
+    logger_->log("file cache principal is not in the key tab, disable renewal");
+    updateFileCacheEnabled_ = false;
+  }
 
   // If the file cache is usable (ie. not expired), then just import it
   if (file_cache && !aboutToExpire(file_cache->getLifetime())) {

@@ -126,6 +126,7 @@ class Krb5CredentialsCacheManager {
   std::shared_ptr<SecurityLogger> logger_;
 
   bool ccacheTypeIsMemory_;
+  bool updateFileCacheEnabled_;
 
   // Rate limit kill switch logging. Since we have only one thread in
   // credentials cache manager, we don't need to protect access to this using
