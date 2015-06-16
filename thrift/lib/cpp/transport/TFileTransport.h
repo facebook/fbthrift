@@ -22,7 +22,6 @@
 
 #include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/Thrift.h>
-#include <thrift/lib/cpp/TProcessor.h>
 
 #include <string>
 #include <stdio.h>
@@ -31,10 +30,14 @@
 #include <boost/scoped_ptr.hpp>
 #include <memory>
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache { namespace thrift {
+  class TProcessor;
+  namespace protocol {
+    class TProtocolFactory;
+  }
+}}
 
-using apache::thrift::TProcessor;
-using apache::thrift::protocol::TProtocolFactory;
+namespace apache { namespace thrift { namespace transport {
 
 // Data pertaining to a single event
 typedef struct eventInfo {
@@ -403,13 +406,13 @@ class TFileProcessor {
    * @param protocolFactory protocol factory
    * @param inputTransport file transport
    */
-  TFileProcessor(std::shared_ptr<TProcessor> processor,
-                 std::shared_ptr<TProtocolFactory> protocolFactory,
+  TFileProcessor(std::shared_ptr<apache::thrift::TProcessor> processor,
+                 std::shared_ptr<apache::thrift::protocol::TProtocolFactory> protocolFactory,
                  std::shared_ptr<TFileReaderTransport> inputTransport);
 
-  TFileProcessor(std::shared_ptr<TProcessor> processor,
-                 std::shared_ptr<TProtocolFactory> inputProtocolFactory,
-                 std::shared_ptr<TProtocolFactory> outputProtocolFactory,
+  TFileProcessor(std::shared_ptr<apache::thrift::TProcessor> processor,
+                 std::shared_ptr<apache::thrift::protocol::TProtocolFactory> inputProtocolFactory,
+                 std::shared_ptr<apache::thrift::protocol::TProtocolFactory> outputProtocolFactory,
                  std::shared_ptr<TFileReaderTransport> inputTransport);
 
   /**
@@ -420,8 +423,8 @@ class TFileProcessor {
    * @param inputTransport input file transport
    * @param output output transport
    */
-  TFileProcessor(std::shared_ptr<TProcessor> processor,
-                 std::shared_ptr<TProtocolFactory> protocolFactory,
+  TFileProcessor(std::shared_ptr<apache::thrift::TProcessor> processor,
+                 std::shared_ptr<apache::thrift::protocol::TProtocolFactory> protocolFactory,
                  std::shared_ptr<TFileReaderTransport> inputTransport,
                  std::shared_ptr<TTransport> outputTransport);
 
@@ -440,9 +443,9 @@ class TFileProcessor {
   void processChunk();
 
  private:
-  std::shared_ptr<TProcessor> processor_;
-  std::shared_ptr<TProtocolFactory> inputProtocolFactory_;
-  std::shared_ptr<TProtocolFactory> outputProtocolFactory_;
+  std::shared_ptr<apache::thrift::TProcessor> processor_;
+  std::shared_ptr<apache::thrift::protocol::TProtocolFactory> inputProtocolFactory_;
+  std::shared_ptr<apache::thrift::protocol::TProtocolFactory> outputProtocolFactory_;
   std::shared_ptr<TFileReaderTransport> inputTransport_;
   std::shared_ptr<TTransport> outputTransport_;
 };

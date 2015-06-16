@@ -21,6 +21,7 @@
 
 #include <thrift/lib/cpp/thrift_config.h>
 #include <thrift/lib/cpp/transport/TNullTransport.h>
+#include <thrift/lib/cpp/TProcessor.h>
 
 #include <pthread.h>
 #ifdef THRIFT_HAVE_SYS_TIME_H
