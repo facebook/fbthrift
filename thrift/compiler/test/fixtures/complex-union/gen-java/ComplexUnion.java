@@ -23,7 +23,7 @@ import com.facebook.thrift.server.*;
 import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
-@SuppressWarnings({ "unused", "serial" })
+@SuppressWarnings({ "unused", "serial", "unchecked" })
 public class ComplexUnion extends TUnion {
   public static boolean DEFAULT_PRETTY_PRINT = true;
   private static final TStruct STRUCT_DESC = new TStruct("ComplexUnion");

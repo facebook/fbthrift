@@ -364,7 +364,7 @@ string t_java_generator::java_suppress_warnings_consts() {
 string t_java_generator::java_suppress_warnings_union() {
   return
     string() +
-    "@SuppressWarnings({ \"unused\", \"serial\" })\n";
+    "@SuppressWarnings({ \"unused\", \"serial\", \"unchecked\" })\n";
 }
 
 string t_java_generator::java_suppress_warnings_struct() {
