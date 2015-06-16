@@ -15,6 +15,7 @@
  */
 #pragma once
 
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <type_traits>
 
@@ -146,66 +147,38 @@ T& maybe_remove_pointer(T& x) { return x; }
 template <typename T>
 T& maybe_remove_pointer(T* x) { return *x; }
 
-template <class T, class NameGetter>
-class has_member_impl {
-    template <class U> static char test(typename NameGetter::template get<U>*);
-    template <class U> static long test(...);
-public:
-    enum { value = sizeof(test<T>(nullptr)) == sizeof(char) };
-};
-
-template <class T, class NameGetter>
-struct has_member : std::integral_constant<bool,
-                        has_member_impl<T, NameGetter>::value> {};
-
-struct push_back_checker {
-  template <class T, void (T::*)(typename T::value_type&&) = &T::push_back>
-  struct get {};
-};
-
-struct insert_checker {
-  template <class T, std::pair<typename T::iterator,bool>
-                     (T::*)(typename T::value_type&&) = &T::insert>
-  struct get {};
-};
+FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(push_back_checker, push_back);
+FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(insert_checker, insert);
+FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(reserve_checker, reserve);
 
 template <class C>
-using is_vector_like = has_member<C, push_back_checker>;
+using is_vector_like = push_back_checker<C, void(typename C::value_type&&)>;
+
+template <class C>
+using has_insert = insert_checker<C,
+      std::pair<typename C::iterator, bool>(typename C::value_type&&)>;
 
 template <class C>
 using is_set_like = std::integral_constant<bool,
-      has_member<C, insert_checker>::value &&
+      has_insert<C>::value &&
       std::is_same<typename C::key_type, typename C::value_type>::value>;
 
 template <class C>
 using is_map_like = std::integral_constant<bool,
-      has_member<C, insert_checker>::value &&
+      has_insert<C>::value &&
       !std::is_same<typename C::key_type, typename C::value_type>::value>;
-
-struct resize_checker {
-  template <class T, void (T::*)(typename T::size_type) = &T::resize>
-  struct get {};
-};
-
-struct op_index_checker {
-  template <class T, typename T::reference
-                     (T::*)(typename T::size_type) = &T::operator[]>
-  struct get {};
-};
 
 template <class T, class = void>
 struct Reserver {
-  static void reserve(T& container, uint32_t size) {}
+  static void reserve(T& container, typename T::size_type size) {}
 };
 
-struct reserve_checker {
-  template <class T, void (T::*)(typename T::size_type) = &T::reserve>
-  struct get {};
-};
+template <class C>
+using has_reserve = reserve_checker<C, void(typename C::size_type)>;
 
 template <class T>
-struct Reserver<T, typename std::enable_if<has_member<T, reserve_checker>::value>::type> {
-  static void reserve(T& container, uint32_t size) {
+struct Reserver<T, typename std::enable_if<has_reserve<T>::value>::type> {
+  static void reserve(T& container, typename T::size_type size) {
     container.reserve(size);
   }
 };
