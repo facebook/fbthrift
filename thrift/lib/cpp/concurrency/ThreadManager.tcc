@@ -738,6 +738,31 @@ public:
     add(FunctionRunner::create(std::move(f)));
   }
 
+  /**
+   * Implements folly::Executor::addWithPriority()
+   * Maps executor priority task to respective PriorityThreadManager threads:
+   *  >= 3 pri tasks to 'HIGH_IMPORTANT' threads,
+   *  2 pri tasks to 'HIGH' threads,
+   *  1 pri tasks to 'IMPORTANT' threads,
+   *  0 pri tasks to 'NORMAL' threads,
+   *  <= -1 pri tasks to 'BEST_EFFORT' threads,
+   */
+  void addWithPriority(folly::Func f, int8_t priority) override {
+    PRIORITY prio = PRIORITY::NORMAL;
+    if (priority >= 3) {
+      prio = PRIORITY::HIGH_IMPORTANT;
+    } else if (priority == 2) {
+      prio = PRIORITY::HIGH;
+    } else if (priority == 1) {
+      prio = PRIORITY::IMPORTANT;
+    } else if (priority == 0) {
+      prio = PRIORITY::NORMAL;
+    } else if (priority <= -1) {
+      prio = PRIORITY::BEST_EFFORT;
+    }
+    add(prio, FunctionRunner::create(std::move(f)));
+  }
+
   template <typename T>
   size_t sum(T method) const {
     size_t count = 0;

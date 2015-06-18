@@ -296,6 +296,10 @@ public:
                    bool cancellable = false,
                    bool numa = false) = 0;
 
+  virtual uint8_t getNumPriorities() const override {
+    return N_PRIORITIES;
+  }
+
   using ThreadManager::getCodel;
   virtual folly::wangle::Codel* getCodel(PRIORITY priority) = 0;
 
