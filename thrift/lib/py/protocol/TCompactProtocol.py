@@ -257,10 +257,7 @@ class TCompactProtocol(TProtocolBase):
 
     @writer
     def writeFloat(self, flt):
-        if self.__version >= self.VERSION_DOUBLE_BE:
-            self.trans.write(pack(b'!f', flt))
-        else:
-            self.trans.write(pack(b'f', flt))
+        self.trans.write(pack(b'!f', flt))
 
     def __writeString(self, s):
         if sys.version_info[0] >= 3 and not isinstance(s, bytes):
@@ -405,10 +402,7 @@ class TCompactProtocol(TProtocolBase):
     @reader
     def readFloat(self):
         buff = self.trans.readAll(4)
-        if self.__version >= self.VERSION_DOUBLE_BE:
-            val, = unpack(b'!f', buff)
-        else:
-            val, = unpack(b'f', buff)
+        val, = unpack(b'!f', buff)
         return val
 
     def __readString(self):
