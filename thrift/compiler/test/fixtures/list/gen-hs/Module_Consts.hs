@@ -21,6 +21,7 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  enumFromTo, Bounded, minBound, maxBound,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
+import Control.Applicative (ZipList(..), (<*>))
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
@@ -38,12 +39,13 @@ import qualified Data.Vector as Vector
 import Test.QuickCheck.Arbitrary ( Arbitrary(..) )
 import Test.QuickCheck ( elements )
 
-import Thrift
+import Thrift hiding (ProtocolExnType(..))
+import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
 import Thrift.Arbitraries
 
 
 import Module_Types
 tEST_MAP :: Map.HashMap Int64 (Vector.Vector Text)
-tEST_MAP = (Map.fromList [(0,(Vector.fromList "foo","bar"])),(1,(Vector.fromList "baz"]))])
+tEST_MAP = (Map.fromList [(0,(Vector.fromList ["foo","bar"])),(1,(Vector.fromList ["baz"]))])
 

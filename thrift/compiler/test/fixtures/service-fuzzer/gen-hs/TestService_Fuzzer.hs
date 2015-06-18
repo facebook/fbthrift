@@ -24,6 +24,7 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  enumFromTo, Bounded, minBound, maxBound,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
+import Control.Applicative (ZipList(..), (<*>))
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
@@ -41,7 +42,8 @@ import qualified Data.Vector as Vector
 import Test.QuickCheck.Arbitrary ( Arbitrary(..) )
 import Test.QuickCheck ( elements )
 
-import Thrift
+import Thrift hiding (ProtocolExnType(..))
+import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
 import Thrift.Arbitraries
 
@@ -98,21 +100,24 @@ inf_Int64 = infexamples (arbitrary :: Gen Int64)
 -- Fuzzers and exception handlers
 init_fuzzer :: Options -> IO ()
 init_fuzzer opts = do
-  a <- inf_Int64
-  b <- inf_Int64
-  c <- inf_Int64
-  d <- inf_Int64
-  e <- inf_Int64
-  f <- inf_Int64
-  g <- inf_Int64
-  h <- inf_Int64
-  i <- inf_Int64
-  j <- inf_Int64
-  k <- inf_Int64
-  _ <- forM (L.zip; a b c d e f g h i j k) $ \param -> if opt_framed opts
+  a <- ZipList <$> inf_Int64
+  b <- ZipList <$> inf_Int64
+  c <- ZipList <$> inf_Int64
+  d <- ZipList <$> inf_Int64
+  e <- ZipList <$> inf_Int64
+  f <- ZipList <$> inf_Int64
+  g <- ZipList <$> inf_Int64
+  h <- ZipList <$> inf_Int64
+  i <- ZipList <$> inf_Int64
+  j <- ZipList <$> inf_Int64
+  k <- ZipList <$> inf_Int64
+  _ <- P.sequence . getZipList $ init_fuzzFunc <$> a <*> b <*> c <*> d <*> e <*> f <*> g <*> h <*> i <*> j <*> k
+  return ()
+  where
+  init_fuzzFunc a b c d e f g h i j k = let param = (a, b, c, d, e, f, g, h, i, j, k) in
+    if opt_framed opts
     then withThriftDo opts (withFramedTransport opts) (init_fuzzOnce param) (init_exceptionHandler param)
     else withThriftDo opts (withHandle opts) (init_fuzzOnce param) (init_exceptionHandler param)
-  return ()
 
 init_exceptionHandler :: Show a => a -> IO ()
 init_exceptionHandler a = do

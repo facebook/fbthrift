@@ -290,6 +290,7 @@ string t_hs_generator::hs_imports() {
       "                 enumFromTo, Bounded, minBound, maxBound,\n"
       "                 (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))\n"
       "\n"
+      "import Control.Applicative (ZipList(..), (<*>))\n"
       "import Control.Exception\n"
       "import Control.Monad ( liftM, ap, when )\n"
       "import Data.ByteString.Lazy (ByteString)\n"
@@ -307,7 +308,8 @@ string t_hs_generator::hs_imports() {
       "import Test.QuickCheck.Arbitrary ( Arbitrary(..) )\n"
       "import Test.QuickCheck ( elements )\n"
       "\n"
-      "import Thrift\n"
+      "import Thrift hiding (ProtocolExnType(..))\n"
+      "import qualified Thrift (ProtocolExnType(..))\n"
       "import Thrift.Types\n"
       "import Thrift.Arbitraries\n"
       "\n");
@@ -537,7 +539,7 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
     if (type->is_set())
       out << "(Set.fromList [";
     else
-      out << "(" << (use_list_ ? "" : "Vector.fromList ");
+      out << "(" << (use_list_ ? "" : "Vector.fromList [");
 
     bool first = true;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
@@ -1466,36 +1468,53 @@ void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
            indent(f_service_fuzzer_)
                << var
                << " <- "
+               << "ZipList <$> "
                << "inf_"
                << render_hs_type_for_function_name((*fld_iter)->get_type())
                << nl;
            var++;
        }
        // fuzzer invocation
-       indent(f_service_fuzzer_) << "_ <- forM ";
+       indent(f_service_fuzzer_) << "_ <- ";
        int argCount = fields.size();
 //       assert (1 <= argCount);
        if (argCount == 1) {
-           f_service_fuzzer_ << "a ";
+           f_service_fuzzer_
+               << "forM (getZipList a) "
+               << funname << "_fuzzFunc";
        } else {
-           f_service_fuzzer_ << "(L.zip";
-           if(argCount != 2) {
-               f_service_fuzzer_ << char('0' + argCount);
+           f_service_fuzzer_
+               << "P.sequence . getZipList $ "
+               << funname << "_fuzzFunc <$> a";
+           for (var = 'b'; var < 'a' + argCount; var++) {
+               f_service_fuzzer_ << " <*> " << var;
            }
-           for (var = 'a'; var < 'a' + argCount; var++) {
-               f_service_fuzzer_ << " " << var;
-           }
-           f_service_fuzzer_ << ") ";
        }
        f_service_fuzzer_
-           << "$ \\param -> if opt_framed opts" << nl << indent() << indent()
+           << nl << indent()
+           << "return ()" << nl << indent();
+
+       f_service_fuzzer_
+           << "where" << nl << indent()
+           << funname << "_fuzzFunc";
+       for (var = 'a'; var < 'a' + argCount; var++) {
+           f_service_fuzzer_ << " " << var;
+       }
+       f_service_fuzzer_
+           << " = let param = (a";
+       for (var = 'b'; var < 'a' + argCount; var++) {
+           f_service_fuzzer_ << ", " << var;
+       }
+       f_service_fuzzer_ << ") in" << nl << indent() << indent()
+           << "if opt_framed opts"
+           << nl << indent() << indent()
            << "then withThriftDo opts (withFramedTransport opts) ("
              << funname << "_fuzzOnce param) ("
              << funname << "_exceptionHandler param)" << nl << indent() << indent()
            << "else withThriftDo opts (withHandle opts) ("
              << funname << "_fuzzOnce param) ("
-             << funname << "_exceptionHandler param)" << nl << indent()
-           << "return ()" << nl;
+             << funname << "_exceptionHandler param)" << nl;
+
        indent_down();
 
        // exception handler
