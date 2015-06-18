@@ -24,7 +24,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import itertools
-import optparse
 import os
 import pprint
 from six.moves.urllib.parse import urlparse
@@ -45,13 +44,12 @@ class Function(object):
         self.args = args
 
 class RemoteClient(object):
-    usage = '%prog [OPTIONS] FUNCTION [ARGS ...]'
-
-    def __init__(self, functions, service_class, ttypes, op, default_port):
+    def __init__(self, functions, service_class,
+                 ttypes, print_usage, default_port):
         self.functions = functions
         self.service_class = service_class
         self.ttypes = ttypes
-        self.op = op  # OptionParser
+        self.print_usage = print_usage
         self.default_port = default_port
 
     def _print_functions(self, out):
@@ -68,19 +66,18 @@ class RemoteClient(object):
                                 for type, name, true_type in fn.args))
             out.write(')\n')
 
+
     def _exit(self, error_message=None, status=os.EX_USAGE, err_out=sys.stderr):
         """ Report an error, show help information, and exit the program """
         if error_message is not None:
             print("Error: %s" % error_message, file=err_out)
 
         if status is os.EX_USAGE:
-            # Print usage info
-            if self.op is not None:
-                self.op.print_help(err_out)
+            self.print_usage(err_out)
 
-        elif status is os.EX_CONFIG:
-            if self.functions is not None:
-                self._print_functions(err_out)
+        if (self.functions is not None and
+                status in {os.EX_USAGE, os.EX_CONFIG}):
+            self._print_functions(err_out)
 
         sys.exit(status)
 
@@ -130,27 +127,25 @@ class RemoteClient(object):
 
         return fn_args
 
-    def _process_args(self, args, options):
+    def _process_args(self, args):
         """Populate instance data using commandline arguments"""
-        if len(args) < 1:
-            self._exit()
-        fn_name = args[0]
+        fn_name = args.function_name
         if fn_name not in self.functions:
             self._exit(error_message='Unknown function "%s"' % fn_name,
                        status=os.EX_CONFIG)
         else:
             function = self.functions[fn_name]
 
-        function_args = self._process_fn_args(function, args[1:])
+        function_args = self._process_fn_args(function, args.function_args)
 
-        self._validate_options(options)
+        self._validate_options(args)
         return function.name, function_args
 
-    def _execute(self, fn_name, fn_args, options):
+    def _execute(self, fn_name, fn_args, args):
         """Make the requested call.
         Assumes _parse_args() and _process_args() have already been called.
         """
-        client = self._get_client(options)
+        client = self._get_client(args)
 
         # Call the function
         method = getattr(client, fn_name)
@@ -166,9 +161,9 @@ class RemoteClient(object):
 
         self._close_client()
 
-    def run(self, args, options):
-        fn_name, fn_args = self._process_args(args, options)
-        self._execute(fn_name, fn_args, options)
+    def run(self, args):
+        fn_name, fn_args = self._process_args(args)
+        self._execute(fn_name, fn_args, args)
         self._exit(status=0)
 
 class RemoteTransportClient(RemoteClient):
@@ -280,6 +275,7 @@ class RemoteHostClient(RemoteTransportClient):
 class RemoteHttpClient(RemoteTransportClient):
     selector_option = 'url'
     options = list(RemoteTransportClient.options)
+
     options.append((
         ['u', 'url'],
         {
@@ -300,6 +296,17 @@ class RemoteHttpClient(RemoteTransportClient):
         if not any([options.unframed, options.json]):
             self._exit(error_message='can only specify --url with '
                        '--unframed or --json')
+
+class Namespace(object):
+    def __init__(self, attrs=None):
+        if attrs is not None:
+            self.__dict__.update(attrs)
+
+    def __getitem__(self, key):
+        return self.__dict__[key]
+
+    def __setitem__(self, key, value):
+        self.__dict__[key] = value
 
 class Remote(object):
     _client_types = []
@@ -339,30 +346,108 @@ class Remote(object):
         return all_options.values()
 
     @classmethod
-    def _parse_options(cls, all_options, argv):
-        op = optparse.OptionParser(usage=RemoteClient.usage,
-                                   add_help_option=False)
-        op.disable_interspersed_args()
+    def _print_usage(cls, all_options, argv, out, help=False):
+        options = []
+        for (flag, name), kwargs in all_options:
+            action = kwargs.get('action', 'store')
+            if action in {'store_true', 'store_const'}:
+                options.append('[-%s]' % flag)
+            else:
+                options.append('[-%s %s]' % (
+                    flag, kwargs.get('metavar', name.upper())))
+        options.append('[--arbitraryKey value ...]')
+        options.append('function')
+        options.append('[arg1 ...]')
+        usage = 'usage: %s %s' % (argv[0], ' '.join(options))
+        print(usage, file=out)
 
-        op.add_option('-?', '--help',
-                      action='help',
-                      help='Show this help message and exit')
-
-        for (short_flag, long_flag), kwargs in all_options:
-            op.add_option('-%s' % short_flag, '--%s' % long_flag, **kwargs)
-
-        options, args = op.parse_args(argv[1:])
-        return (op, options, args)
+        if help:
+            print('Options:', file=out)
+            for (short_flag, long_flag), kwargs in all_options:
+                if 'metavar' in kwargs:
+                    specifier = '-%s %s, --%s %s' % (
+                        short_flag, kwargs['metavar'],
+                        long_flag, kwargs['metavar'])
+                else:
+                    specifier = '-%s --%s' % (
+                        short_flag, long_flag)
+                print('%-20s %s' % (specifier, kwargs.get('help', '')),
+                      file=out)
 
     @classmethod
-    def _get_client_type(cls, options, op):
+    def _parse_options(cls, all_options, argv):
+        short_flag_args = {}
+        long_flag_args = {}
+
+        args = Namespace({'unknown': {}})
+
+        for (short_flag, long_flag), kwargs in all_options:
+            short_flag_args[short_flag] = (long_flag, kwargs)
+            long_flag_args[long_flag] = kwargs
+            args[long_flag] = kwargs.get('default', None)
+
+        def print_usage(out, help=False):  # Usage closure
+            cls._print_usage(all_options, argv, out, help=help)
+
+        # Parse arguments manually. Assume any unrecognized --flag
+        # is an argument name and the immediately following
+        # argument is a corresponding string-type value.
+        i = 0
+        while i < len(argv) - 1:
+            i += 1
+            arg_name = argv[i]
+            if arg_name in {'-?', '--help'}:
+                print_usage(sys.stdout, help=True)
+                sys.exit(0)
+            if arg_name.startswith('--'):
+                identifier = arg_name[2:]
+                if identifier in long_flag_args:
+                    kwargs = long_flag_args[identifier]
+                else:
+                    # Unrecognized arg name - insert into unknown dict
+                    args['unknown'][identifier] = argv[i + 1]
+                    i += 1
+                    continue
+            elif arg_name.startswith('-'):
+                short_id = arg_name[1:]
+                if short_id in short_flag_args:
+                    identifier, kwargs = short_flag_args[short_id]
+                else:
+                    raise KeyError("Unrecognized flag: %s" % arg_name)
+            else:
+                # Remaining positional arguments are function name and args
+                args.function_name = arg_name
+                args.function_args = argv[i + 1:]
+                break
+            action = kwargs.get('action', 'store')
+            if action == 'store_true':
+                args[identifier] = True
+            elif action == 'store_const':
+                args[identifier] = kwargs['const']
+            else:
+                nargs = kwargs.get('nargs', 1)
+                arg_list = argv[i + 1:i + 1 + nargs]
+                if nargs == 1:
+                    args[identifier] = arg_list[0]
+                else:
+                    args[identifier] = arg_list
+                i += nargs
+        else:
+            print('No function specified.', file=sys.stderr)
+            print_usage(sys.stderr, help=True)
+            sys.exit(os.EX_USAGE)
+
+        return args, print_usage
+
+    @classmethod
+    def _get_client_type(cls, options, print_usage):
         matching_types = [ct for ct in cls._client_types if
                           getattr(options, ct.selector_option) is not None]
         if len(matching_types) != 1:
             sys.stderr.write('Must specify exactly one of [%s]\n' % (
                 ', '.join('--%s' % ct.selector_option
                           for ct in cls._client_types)))
-            op.print_help(sys.stderr)
+            print_usage(sys.stderr)
             sys.exit(os.EX_USAGE)
         else:
             return matching_types[0]
@@ -370,10 +455,11 @@ class Remote(object):
     @classmethod
     def run(cls, functions, service_class, ttypes, argv, default_port=9090):
         all_options = cls._get_all_options()
-        op, options, args = cls._parse_options(all_options, argv)
-        client_type = cls._get_client_type(options, op)
-        client = client_type(functions, service_class, ttypes, op, default_port)
-        client.run(args, options)
+        args, print_usage = cls._parse_options(all_options, argv)
+        client_type = cls._get_client_type(args, print_usage)
+        client = client_type(functions, service_class, ttypes,
+                             print_usage, default_port)
+        client.run(args)
 
 Remote.register_client_type(RemoteHostClient)
 Remote.register_client_type(RemoteHttpClient)
