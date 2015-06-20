@@ -226,7 +226,7 @@ public class MyService {
 
   }
 
-  public static class getDataById_args implements TBase, java.io.Serializable, Cloneable   {
+  public static class getDataById_args implements TBase, java.io.Serializable, Cloneable, Comparable<getDataById_args>   {
     private static final TStruct STRUCT_DESC = new TStruct("getDataById_args");
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
 
@@ -267,7 +267,7 @@ public class MyService {
     public getDataById_args(getDataById_args other) {
       __isset_bit_vector.clear();
       __isset_bit_vector.or(other.__isset_bit_vector);
-      this.id = other.id;
+      this.id = TBaseHelper.deepCopy(other.id);
     }
 
     public getDataById_args deepCopy() {
@@ -349,13 +349,15 @@ public class MyService {
     public boolean equals(getDataById_args that) {
       if (that == null)
         return false;
+      if (this == that)
+        return true;
 
       boolean this_present_id = true;
       boolean that_present_id = true;
       if (this_present_id || that_present_id) {
         if (!(this_present_id && that_present_id))
           return false;
-        if (this.id != that.id)
+        if (!TBaseHelper.equalsNobinary(this.id, that.id))
           return false;
       }
 
@@ -364,6 +366,29 @@ public class MyService {
 
     @Override
     public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(getDataById_args other) {
+      if (other == null) {
+        // See java.lang.Comparable docs
+        throw new NullPointerException();
+      }
+
+      if (other == this) {
+        return 0;
+      }
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetId()).compareTo(other.isSetId());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      lastComparison = TBaseHelper.compareTo(id, other.id);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
       return 0;
     }
 
@@ -449,7 +474,7 @@ String space = prettyPrint ? " " : "";
 
   }
 
-  public static class getDataById_result implements TBase, java.io.Serializable, Cloneable   {
+  public static class getDataById_result implements TBase, java.io.Serializable, Cloneable, Comparable<getDataById_result>   {
     private static final TStruct STRUCT_DESC = new TStruct("getDataById_result");
     private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRING, (short)0);
 
@@ -486,7 +511,7 @@ String space = prettyPrint ? " " : "";
      */
     public getDataById_result(getDataById_result other) {
       if (other.isSetSuccess()) {
-        this.success = other.success;
+        this.success = TBaseHelper.deepCopy(other.success);
       }
     }
 
@@ -570,13 +595,15 @@ String space = prettyPrint ? " " : "";
     public boolean equals(getDataById_result that) {
       if (that == null)
         return false;
+      if (this == that)
+        return true;
 
       boolean this_present_success = true && this.isSetSuccess();
       boolean that_present_success = true && that.isSetSuccess();
       if (this_present_success || that_present_success) {
         if (!(this_present_success && that_present_success))
           return false;
-        if (!this.success.equals(that.success))
+        if (!TBaseHelper.equalsNobinary(this.success, that.success))
           return false;
       }
 
@@ -585,6 +612,29 @@ String space = prettyPrint ? " " : "";
 
     @Override
     public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(getDataById_result other) {
+      if (other == null) {
+        // See java.lang.Comparable docs
+        throw new NullPointerException();
+      }
+
+      if (other == this) {
+        return 0;
+      }
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      lastComparison = TBaseHelper.compareTo(success, other.success);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
       return 0;
     }
 

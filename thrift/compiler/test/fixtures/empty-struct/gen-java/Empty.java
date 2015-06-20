@@ -90,6 +90,8 @@ public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable
   public boolean equals(Empty that) {
     if (that == null)
       return false;
+    if (this == that)
+      return true;
 
     return true;
   }
@@ -99,13 +101,17 @@ public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable
     return 0;
   }
 
+  @Override
   public int compareTo(Empty other) {
-    if (!getClass().equals(other.getClass())) {
-      return getClass().getName().compareTo(other.getClass().getName());
+    if (other == null) {
+      // See java.lang.Comparable docs
+      throw new NullPointerException();
     }
 
+    if (other == this) {
+      return 0;
+    }
     int lastComparison = 0;
-    Empty typedOther = (Empty)other;
 
     return 0;
   }

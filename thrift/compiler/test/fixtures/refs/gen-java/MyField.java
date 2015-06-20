@@ -24,7 +24,7 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class MyField implements TBase, java.io.Serializable, Cloneable {
+public class MyField implements TBase, java.io.Serializable, Cloneable, Comparable<MyField> {
   private static final TStruct STRUCT_DESC = new TStruct("MyField");
   private static final TField OPT_VALUE_FIELD_DESC = new TField("opt_value", TType.I64, (short)1);
   private static final TField VALUE_FIELD_DESC = new TField("value", TType.I64, (short)2);
@@ -102,9 +102,9 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
   public MyField(MyField other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.opt_value = other.opt_value;
-    this.value = other.value;
-    this.req_value = other.req_value;
+    this.opt_value = TBaseHelper.deepCopy(other.opt_value);
+    this.value = TBaseHelper.deepCopy(other.value);
+    this.req_value = TBaseHelper.deepCopy(other.req_value);
   }
 
   public MyField deepCopy() {
@@ -258,13 +258,15 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
   public boolean equals(MyField that) {
     if (that == null)
       return false;
+    if (this == that)
+      return true;
 
     boolean this_present_opt_value = true && this.isSetOpt_value();
     boolean that_present_opt_value = true && that.isSetOpt_value();
     if (this_present_opt_value || that_present_opt_value) {
       if (!(this_present_opt_value && that_present_opt_value))
         return false;
-      if (this.opt_value != that.opt_value)
+      if (!TBaseHelper.equalsNobinary(this.opt_value, that.opt_value))
         return false;
     }
 
@@ -273,7 +275,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
     if (this_present_value || that_present_value) {
       if (!(this_present_value && that_present_value))
         return false;
-      if (this.value != that.value)
+      if (!TBaseHelper.equalsNobinary(this.value, that.value))
         return false;
     }
 
@@ -282,7 +284,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
     if (this_present_req_value || that_present_req_value) {
       if (!(this_present_req_value && that_present_req_value))
         return false;
-      if (this.req_value != that.req_value)
+      if (!TBaseHelper.equalsNobinary(this.req_value, that.req_value))
         return false;
     }
 
@@ -291,6 +293,45 @@ public class MyField implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public int hashCode() {
+    return 0;
+  }
+
+  @Override
+  public int compareTo(MyField other) {
+    if (other == null) {
+      // See java.lang.Comparable docs
+      throw new NullPointerException();
+    }
+
+    if (other == this) {
+      return 0;
+    }
+    int lastComparison = 0;
+
+    lastComparison = Boolean.valueOf(isSetOpt_value()).compareTo(other.isSetOpt_value());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(opt_value, other.opt_value);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetValue()).compareTo(other.isSetValue());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(value, other.value);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetReq_value()).compareTo(other.isSetReq_value());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(req_value, other.req_value);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
     return 0;
   }
 

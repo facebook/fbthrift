@@ -24,7 +24,7 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class MyStruct implements TBase, java.io.Serializable, Cloneable {
+public class MyStruct implements TBase, java.io.Serializable, Cloneable, Comparable<MyStruct> {
   private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
   private static final TField OPT_REF_FIELD_DESC = new TField("opt_ref", TType.STRUCT, (short)1);
   private static final TField REF_FIELD_DESC = new TField("ref", TType.STRUCT, (short)2);
@@ -91,13 +91,13 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
    */
   public MyStruct(MyStruct other) {
     if (other.isSetOpt_ref()) {
-      this.opt_ref = new MyField(other.opt_ref);
+      this.opt_ref = TBaseHelper.deepCopy(other.opt_ref);
     }
     if (other.isSetRef()) {
-      this.ref = new MyField(other.ref);
+      this.ref = TBaseHelper.deepCopy(other.ref);
     }
     if (other.isSetReq_ref()) {
-      this.req_ref = new MyField(other.req_ref);
+      this.req_ref = TBaseHelper.deepCopy(other.req_ref);
     }
   }
 
@@ -255,13 +255,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public boolean equals(MyStruct that) {
     if (that == null)
       return false;
+    if (this == that)
+      return true;
 
     boolean this_present_opt_ref = true && this.isSetOpt_ref();
     boolean that_present_opt_ref = true && that.isSetOpt_ref();
     if (this_present_opt_ref || that_present_opt_ref) {
       if (!(this_present_opt_ref && that_present_opt_ref))
         return false;
-      if (!this.opt_ref.equals(that.opt_ref))
+      if (!TBaseHelper.equalsNobinary(this.opt_ref, that.opt_ref))
         return false;
     }
 
@@ -270,7 +272,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     if (this_present_ref || that_present_ref) {
       if (!(this_present_ref && that_present_ref))
         return false;
-      if (!this.ref.equals(that.ref))
+      if (!TBaseHelper.equalsNobinary(this.ref, that.ref))
         return false;
     }
 
@@ -279,7 +281,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     if (this_present_req_ref || that_present_req_ref) {
       if (!(this_present_req_ref && that_present_req_ref))
         return false;
-      if (!this.req_ref.equals(that.req_ref))
+      if (!TBaseHelper.equalsNobinary(this.req_ref, that.req_ref))
         return false;
     }
 
@@ -288,6 +290,45 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public int hashCode() {
+    return 0;
+  }
+
+  @Override
+  public int compareTo(MyStruct other) {
+    if (other == null) {
+      // See java.lang.Comparable docs
+      throw new NullPointerException();
+    }
+
+    if (other == this) {
+      return 0;
+    }
+    int lastComparison = 0;
+
+    lastComparison = Boolean.valueOf(isSetOpt_ref()).compareTo(other.isSetOpt_ref());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(opt_ref, other.opt_ref);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetRef()).compareTo(other.isSetRef());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(ref, other.ref);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetReq_ref()).compareTo(other.isSetReq_ref());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(req_ref, other.req_ref);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
     return 0;
   }
 

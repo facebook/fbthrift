@@ -24,7 +24,7 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class MyStruct implements TBase, java.io.Serializable, Cloneable {
+public class MyStruct implements TBase, java.io.Serializable, Cloneable, Comparable<MyStruct> {
   private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
   private static final TField MY_INT_FIELD_FIELD_DESC = new TField("MyIntField", TType.I64, (short)1);
   private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("MyStringField", TType.STRING, (short)2);
@@ -72,9 +72,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public MyStruct(MyStruct other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
-    this.MyIntField = other.MyIntField;
+    this.MyIntField = TBaseHelper.deepCopy(other.MyIntField);
     if (other.isSetMyStringField()) {
-      this.MyStringField = other.MyStringField;
+      this.MyStringField = TBaseHelper.deepCopy(other.MyStringField);
     }
   }
 
@@ -194,13 +194,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public boolean equals(MyStruct that) {
     if (that == null)
       return false;
+    if (this == that)
+      return true;
 
     boolean this_present_MyIntField = true;
     boolean that_present_MyIntField = true;
     if (this_present_MyIntField || that_present_MyIntField) {
       if (!(this_present_MyIntField && that_present_MyIntField))
         return false;
-      if (this.MyIntField != that.MyIntField)
+      if (!TBaseHelper.equalsNobinary(this.MyIntField, that.MyIntField))
         return false;
     }
 
@@ -209,7 +211,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     if (this_present_MyStringField || that_present_MyStringField) {
       if (!(this_present_MyStringField && that_present_MyStringField))
         return false;
-      if (!this.MyStringField.equals(that.MyStringField))
+      if (!TBaseHelper.equalsNobinary(this.MyStringField, that.MyStringField))
         return false;
     }
 
@@ -218,6 +220,37 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public int hashCode() {
+    return 0;
+  }
+
+  @Override
+  public int compareTo(MyStruct other) {
+    if (other == null) {
+      // See java.lang.Comparable docs
+      throw new NullPointerException();
+    }
+
+    if (other == this) {
+      return 0;
+    }
+    int lastComparison = 0;
+
+    lastComparison = Boolean.valueOf(isSetMyIntField()).compareTo(other.isSetMyIntField());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(MyIntField, other.MyIntField);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetMyStringField()).compareTo(other.isSetMyStringField());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(MyStringField, other.MyStringField);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
     return 0;
   }
 

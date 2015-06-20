@@ -24,7 +24,7 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial", "unchecked" })
-public class ComplexUnion extends TUnion {
+public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<ComplexUnion> {
   public static boolean DEFAULT_PRETTY_PRINT = true;
   private static final TStruct STRUCT_DESC = new TStruct("ComplexUnion");
   private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I64, (short)1);
@@ -311,8 +311,12 @@ public class ComplexUnion extends TUnion {
   }
 
   public boolean equals(ComplexUnion other) {
-    return getSetField() == other.getSetField() && ((value_ instanceof byte[]) ? 
-      Arrays.equals((byte[])getFieldValue(), (byte[])other.getFieldValue()) : getFieldValue().equals(other.getFieldValue()));
+    return equalsNobinaryImpl(other);
+  }
+
+  @Override
+  public int compareTo(ComplexUnion other) {
+    return compareToImpl(other);
   }
 
 

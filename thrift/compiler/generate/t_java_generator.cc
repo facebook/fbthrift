@@ -204,11 +204,11 @@ class t_java_generator : public t_oop_generator {
   void generate_java_docstring_comment   (std::ofstream &out,
                                           string contents);
 
-  void generate_deep_copy_container(std::ofstream& out, std::string source_name_p1, std::string source_name_p2, std::string result_name, t_type* type);
-  void generate_deep_copy_non_container(std::ofstream& out, std::string source_name, std::string dest_name, t_type* type);
-
-  bool is_comparable(t_struct* tstruct);
   bool is_comparable(t_type* type);
+  bool struct_has_all_comparable_fields(t_struct* tstruct);
+
+  bool type_has_naked_binary(t_type* type);
+  bool struct_has_naked_binary_fields(t_struct* tstruct);
 
   bool has_bit_vector(t_struct* tstruct);
 
@@ -730,7 +730,7 @@ void t_java_generator::generate_java_union(t_struct* tstruct) {
   indent(f_struct) <<
     java_suppress_warnings_union() <<
     "public " << (is_final ? "final " : "") << "class " << tstruct->get_name()
-    << " extends TUnion ";
+    << " extends TUnion<" + tstruct->get_name() + "> ";
 
   if (is_comparable(tstruct)) {
     f_struct << "implements Comparable<" << type_name(tstruct) << "> ";
@@ -1018,19 +1018,18 @@ void t_java_generator::generate_union_comparisons(ofstream& out, t_struct* tstru
   out << endl;
 
   indent(out) << "public boolean equals(" << tstruct->get_name() << " other) {" << endl;
-  indent(out) << "  return getSetField() == other.getSetField() && ((value_ instanceof byte[]) ? " << endl;
-  indent(out) << "    Arrays.equals((byte[])getFieldValue(), (byte[])other.getFieldValue()) : getFieldValue().equals(other.getFieldValue()));" << endl;
+  if (struct_has_naked_binary_fields(tstruct)) {
+    indent(out)<<"  return equalsSlowImpl(other);" << endl;
+  } else {
+    indent(out)<<"  return equalsNobinaryImpl(other);" << endl;
+  }
   indent(out) << "}" << endl;
   out << endl;
 
   if (is_comparable(tstruct)) {
     indent(out) << "@Override" << endl;
     indent(out) << "public int compareTo(" << type_name(tstruct) << " other) {" << endl;
-    indent(out) << "  int lastComparison = TBaseHelper.compareTo(getSetField(), other.getSetField());" << endl;
-    indent(out) << "  if (lastComparison != 0) {" << endl;
-    indent(out) << "    return TBaseHelper.compareTo((Comparable)getFieldValue(), (Comparable)other.getFieldValue());" << endl;
-    indent(out) << "  }" << endl;
-    indent(out) << "  return lastComparison;" << endl;
+    indent(out) << "  return compareToImpl(other);" << endl;
     indent(out) << "}" << endl;
     out << endl;
   }
@@ -1240,14 +1239,8 @@ void t_java_generator::generate_java_struct_definition(ofstream &out,
       indent_up();
     }
 
-    if (type->is_container()) {
-      generate_deep_copy_container(out, "other", field_name, "__this__" + field_name, type);
-      indent(out) << "this." << field_name << " = __this__" << field_name << ";" << endl;
-    } else {
-      indent(out) << "this." << field_name << " = ";
-      generate_deep_copy_non_container(out, "other." + field_name, field_name, type);
-      out << ";" << endl;
-    }
+    indent(out) << "this." << field_name
+        << " = TBaseHelper.deepCopy(other." << field_name << ");" << endl;
 
     if (can_be_null) {
       indent_down();
@@ -1313,7 +1306,9 @@ void t_java_generator::generate_java_struct_equality(ofstream& out,
   indent_up();
   out <<
     indent() << "if (that == null)" << endl <<
-    indent() << "  return false;" << endl;
+    indent() << "  return false;" << endl <<
+    indent() << "if (this == that)" << endl <<  // to make up for an otherwise
+    indent() << "  return true;" << endl;       // slow equals and a bad hashCode
 
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
@@ -1349,12 +1344,11 @@ void t_java_generator::generate_java_struct_equality(ofstream& out,
                << " && that_present_" << name << "))" << endl <<
       indent() << "  return false;" << endl;
 
-    if (t->is_base_type() && ((t_base_type*)t)->is_binary()) {
-      unequal = "!java.util.Arrays.equals(this." + name + ", that." + name + ")";
-    } else if (can_be_null) {
-      unequal = "!this." + name + ".equals(that." + name + ")";
+    if (type_has_naked_binary(t)) {
+      unequal = "!TBaseHelper.equalsSlow(this." + name + ", that." + name + ")";
     } else {
-      unequal = "this." + name + " != that." + name;
+      // No need to switch on the type here; we can let javac figure it out
+      unequal = "!TBaseHelper.equalsNobinary(this." + name + ", that." + name + ")";
     }
 
     out <<
@@ -1406,28 +1400,33 @@ void t_java_generator::generate_java_struct_equality(ofstream& out,
 }
 
 void t_java_generator::generate_java_struct_compare_to(ofstream& out, t_struct* tstruct) {
+  indent(out) << "@Override" << endl;
   indent(out) << "public int compareTo(" << type_name(tstruct) << " other) {" << endl;
   indent_up();
 
-  indent(out) << "if (!getClass().equals(other.getClass())) {" << endl;
-  indent(out) << "  return getClass().getName().compareTo(other.getClass().getName());" << endl;
+  indent(out) << "if (other == null) {" << endl;
+  indent(out) << "  // See java.lang.Comparable docs" << endl;
+  indent(out) << "  throw new NullPointerException();" << endl;
   indent(out) << "}" << endl;
   out << endl;
 
+  indent(out) << "if (other == this) {" << endl;
+  indent(out) << "  return 0;" << endl;
+  indent(out) << "}" << endl;
+
   indent(out) << "int lastComparison = 0;" << endl;
-  indent(out) << type_name(tstruct) << " typedOther = (" << type_name(tstruct) << ")other;" << endl;
   out << endl;
 
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_field* field = *m_iter;
-    indent(out) << "lastComparison = Boolean.valueOf(" << generate_isset_check(field) << ").compareTo(" << generate_isset_check(field) << ");" << endl;
+    indent(out) << "lastComparison = Boolean.valueOf(" << generate_isset_check(field) << ").compareTo(other." << generate_isset_check(field) << ");" << endl;
     indent(out) << "if (lastComparison != 0) {" << endl;
     indent(out) << "  return lastComparison;" << endl;
     indent(out) << "}" << endl;
 
-    indent(out) << "lastComparison = TBaseHelper.compareTo(" << field->get_name() << ", typedOther." << field->get_name() << ");" << endl;
+    indent(out) << "lastComparison = TBaseHelper.compareTo(" << field->get_name() << ", other." << field->get_name() << ");" << endl;
     indent(out) << "if (lastComparison != 0) {" << endl;
     indent(out) << "  return lastComparison;" << endl;
     indent(out) << "}" << endl;
@@ -1777,7 +1776,6 @@ void t_java_generator::generate_generic_field_getters_setters(std::ofstream& out
 
 
   // create the setter
-  // TODO: fix this code
   if (needs_suppress_warnings)
     indent(out) << "@SuppressWarnings(\"unchecked\")" << endl;
   indent(out) << "public void setFieldValue(int fieldID, Object value) {" << endl;
@@ -1984,29 +1982,32 @@ void t_java_generator::generate_java_struct_tostring(ofstream& out,
   vector<t_field*>::const_iterator f_iter;
   bool first = true;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
+    t_field* field = (*f_iter);
+    string fname = field->get_name();
+    t_type* ftype = get_true_type(field->get_type());
+
     if (tstruct->is_union()) {
       indent(out) << "// Only print this field if it is the set field" << endl;
-      indent(out) << "if (" << generate_setfield_check(*f_iter) << ")" << endl;
+      indent(out) << "if (" << generate_setfield_check(field) << ")" << endl;
       scope_up(out);
     }
 
-    bool could_be_unset = (*f_iter)->get_req() == t_field::T_OPTIONAL;
+    bool could_be_unset = field->get_req() == t_field::T_OPTIONAL;
     if (could_be_unset) {
-      indent(out) << "if (" << generate_isset_check(*f_iter) << ")" << endl;
+      indent(out) << "if (" << generate_isset_check(field) << ")" << endl;
       scope_up(out);
     }
 
-    t_field* field = (*f_iter);
 
     if (!first) {
       indent(out) << "if (!first) sb.append(\",\" + newLine);" << endl;
     }
     indent(out) << "sb.append(indentStr);" << endl;
-    indent(out) << "sb.append(\"" << (*f_iter)->get_name() << "\");" << endl;
+    indent(out) << "sb.append(\"" << fname << "\");" << endl;
     indent(out) << "sb.append(space);" << endl;
     indent(out) << "sb.append(\":\").append(space);" << endl;
     bool can_be_null = type_can_be_null(field->get_type());
-    std::string field_getter = "this." + get_simple_getter_name(*f_iter) + "()";
+    std::string field_getter = "this." + get_simple_getter_name(field) + "()";
     if (can_be_null) {
       indent(out) << "if (" << field_getter << " == null) {" << endl;
       indent(out) << "  sb.append(\"null\");" << endl;
@@ -2014,21 +2015,21 @@ void t_java_generator::generate_java_struct_tostring(ofstream& out,
       indent_up();
     }
 
-    if (field->get_type()->is_base_type() && ((t_base_type*)(field->get_type()))->is_binary()) {
-      indent(out) << "  int __" << field->get_name() << "_size = Math.min(" << field_getter << ".length, 128);" << endl;
-      indent(out) << "  for (int i = 0; i < __" << field->get_name() << "_size; i++) {" << endl;
+    if (ftype->is_base_type() && ((t_base_type*)ftype)->is_binary()) {
+      indent(out) << "  int __" << fname << "_size = Math.min(" << field_getter << ".length, 128);" << endl;
+      indent(out) << "  for (int i = 0; i < __" << fname << "_size; i++) {" << endl;
       indent(out) << "    if (i != 0) sb.append(\" \");" << endl;
       indent(out) << "    sb.append(Integer.toHexString(" << field_getter << "[i]).length() > 1 ? Integer.toHexString(" << field_getter << "[i]).substring(Integer.toHexString(" << field_getter << "[i]).length() - 2).toUpperCase() : \"0\" + Integer.toHexString(" << field_getter << "[i]).toUpperCase());" <<endl;
       indent(out) << "  }" << endl;
       indent(out) << "  if (" << field_getter << ".length > 128) sb.append(\" ...\");" << endl;
-    } else if(field->get_type()->is_enum()) {
-      indent(out) << "String " << field->get_name() << "_name = " << get_enum_class_name(field->get_type()) << ".VALUES_TO_NAMES.get(this." << (*f_iter)->get_name() << ");"<< endl;
-      indent(out) << "if (" << field->get_name() << "_name != null) {" << endl;
-      indent(out) << "  sb.append(" << field->get_name() << "_name);" << endl;
+    } else if(ftype->is_enum()) {
+      indent(out) << "String " << fname << "_name = " << get_enum_class_name(ftype) << ".VALUES_TO_NAMES.get(this." << fname << ");"<< endl;
+      indent(out) << "if (" << fname << "_name != null) {" << endl;
+      indent(out) << "  sb.append(" << fname << "_name);" << endl;
       indent(out) << "  sb.append(\" (\");" << endl;
       indent(out) << "}" << endl;
       indent(out) << "sb.append(" << field_getter << ");" << endl;
-      indent(out) << "if (" << field->get_name() << "_name != null) {" << endl;
+      indent(out) << "if (" << fname << "_name != null) {" << endl;
       indent(out) << "  sb.append(\")\");" << endl;
       indent(out) << "}" << endl;
     } else {
@@ -2144,6 +2145,7 @@ std::string t_java_generator::get_java_type_string(t_type* type) {
 }
 
 void t_java_generator::generate_field_value_meta_data(std::ofstream& out, t_type* type){
+  type = get_true_type(type);
   out << endl;
   indent_up();
   indent_up();
@@ -3026,6 +3028,7 @@ void t_java_generator::generate_deserialize_field(ofstream& out,
   } else {
     printf("DO NOT KNOW HOW TO DESERIALIZE FIELD '%s' TYPE '%s'\n",
            tfield->get_name().c_str(), type_name(type).c_str());
+    throw "compiler error";
   }
 }
 
@@ -3263,6 +3266,7 @@ void t_java_generator::generate_serialize_field(ofstream& out,
            prefix.c_str(),
            tfield->get_name().c_str(),
            type_name(type).c_str());
+    throw "compiler error";
   }
 }
 
@@ -3756,116 +3760,6 @@ void t_java_generator::generate_java_doc(ofstream &out,
   }
 }
 
-void t_java_generator::generate_deep_copy_container(ofstream &out, std::string source_name_p1, std::string source_name_p2,
-                                                    std::string result_name, t_type* type) {
-
-  t_container* container = (t_container*)type;
-  std::string source_name;
-  if (source_name_p2 == "")
-      source_name = source_name_p1;
-  else
-      source_name = source_name_p1 + "." + source_name_p2;
-
-  indent(out) << type_name(type, true, false) << " " << result_name << " = new " << type_name(container, false, true) << "();" << endl;
-
-  std::string iterator_element_name = source_name_p1 + "_element";
-  std::string result_element_name = result_name + "_copy";
-
-  if(container->is_map()) {
-    t_type* key_type = ((t_map*)container)->get_key_type();
-    t_type* val_type = ((t_map*)container)->get_val_type();
-
-    indent(out) <<
-      "for (Map.Entry<" << type_name(key_type, true, false) << ", " << type_name(val_type, true, false) << "> " << iterator_element_name << " : " << source_name << ".entrySet()) {" << endl;
-    indent_up();
-
-    out << endl;
-
-    indent(out) << type_name(key_type, true, false) << " " << iterator_element_name << "_key = " << iterator_element_name << ".getKey();" << endl;
-    indent(out) << type_name(val_type, true, false) << " " << iterator_element_name << "_value = " << iterator_element_name << ".getValue();" << endl;
-
-    out << endl;
-
-    if (key_type->is_container()) {
-      generate_deep_copy_container(out, iterator_element_name + "_key", "", result_element_name + "_key", key_type);
-    } else {
-      indent(out) << type_name(key_type, true, false) << " " << result_element_name << "_key = ";
-      generate_deep_copy_non_container(out, iterator_element_name + "_key", result_element_name + "_key", key_type);
-      out << ";" << endl;
-    }
-
-    out << endl;
-
-    if (val_type->is_container()) {
-      generate_deep_copy_container(out, iterator_element_name + "_value", "", result_element_name + "_value", val_type);
-    } else {
-      indent(out) << type_name(val_type, true, false) << " " << result_element_name << "_value = ";
-      generate_deep_copy_non_container(out, iterator_element_name + "_value", result_element_name + "_value", val_type);
-      out << ";" << endl;
-    }
-
-    out << endl;
-
-    indent(out) << result_name << ".put(" << result_element_name << "_key, " << result_element_name << "_value);" << endl;
-
-    indent_down();
-    indent(out) << "}" << endl;
-
-  } else {
-    t_type* elem_type;
-
-    if (container->is_set()) {
-      elem_type = ((t_set*)container)->get_elem_type();
-    } else {
-      elem_type = ((t_list*)container)->get_elem_type();
-    }
-
-    indent(out)
-      << "for (" << type_name(elem_type, true, false) << " " << iterator_element_name << " : " << source_name << ") {" << endl;
-
-    indent_up();
-
-    if (elem_type->is_container()) {
-      // recursive deep copy
-      generate_deep_copy_container(out, iterator_element_name, "", result_element_name, elem_type);
-      indent(out) << result_name << ".add(" << result_element_name << ");" << endl;
-    } else {
-      // iterative copy
-      if(((t_base_type*)elem_type)->is_binary()){
-        indent(out) << "byte[] temp_binary_element = ";
-        generate_deep_copy_non_container(out, iterator_element_name, "temp_binary_element", elem_type);
-        out << ";" << endl;
-        indent(out) << result_name << ".add(temp_binary_element);" << endl;
-      }
-      else{
-        indent(out) << result_name << ".add(";
-        generate_deep_copy_non_container(out, iterator_element_name, result_name, elem_type);
-        out << ");" << endl;
-      }
-    }
-
-    indent_down();
-
-    indent(out) << "}" << endl;
-
-  }
-}
-
-void t_java_generator::generate_deep_copy_non_container(ofstream& out, std::string source_name, std::string dest_name, t_type* type) {
-  if (type->is_base_type() || type->is_enum() || type->is_typedef()) {
-    // binary fields need to be copied with System.arraycopy
-    if (((t_base_type*)type)->is_binary()){
-      out << "new byte[" << source_name << ".length];" << endl;
-      indent(out) << "System.arraycopy(" << source_name << ", 0, " << dest_name << ", 0, " << source_name << ".length)";
-    }
-    // everything else can be copied directly
-    else
-      out << source_name;
-  } else {
-    out << "new " << type_name(type, true, true) << "(" << source_name << ")";
-  }
-}
-
 std::string t_java_generator::isset_field_id(t_field* field) {
   return "__" + upcase_string(field->get_name() + "_isset_id");
 }
@@ -3929,7 +3823,37 @@ void t_java_generator::generate_field_name_constants(ofstream& out, t_struct* ts
   }
 }
 
-bool t_java_generator::is_comparable(t_struct* tstruct) {
+bool t_java_generator::is_comparable(t_type* type) {
+  type = get_true_type(type);
+
+  if (type->is_base_type()) {
+    return true;
+  } else if (type->is_enum()) {
+    return true;
+  } else if (type->is_struct()) {
+    return struct_has_all_comparable_fields((t_struct*)type);
+  } else if (type->is_xception()) {
+    // There's no particular reason this wouldn't work exactly the same
+    // as it does for structs. I'm not sure we actually want exceptions
+    // to be Comparable though: in addition to the fields we have, which
+    // we know how to compare, they also have stack trace info etc.
+    // inherited from Throwable, which we'd be ignoring. (OTOH, I suppose
+    // we already ignore it for equals.) Let's leave it off for now; we
+    // can always change this to `true` later if somebody has a use case.
+    return false;
+  } else if (type->is_map()) {
+    return is_comparable(((t_map*)type)->get_key_type())
+        && is_comparable(((t_map*)type)->get_val_type());
+  } else if (type->is_set()) {
+    return is_comparable(((t_set*)type)->get_elem_type());
+  } else if (type->is_list()) {
+    return is_comparable(((t_list*)type)->get_elem_type());
+  } else {
+    throw "Don't know how to handle this ttype";
+  }
+}
+
+bool t_java_generator::struct_has_all_comparable_fields(t_struct* tstruct) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
@@ -3941,19 +3865,37 @@ bool t_java_generator::is_comparable(t_struct* tstruct) {
   return true;
 }
 
-bool t_java_generator::is_comparable(t_type* type) {
-  return false;
-  if (type->is_container()) {
-    if (type->is_list()) {
-      return is_comparable(((t_list*)type)->get_elem_type());
-    } else {
-      return false;
-    }
-  } else if (type->is_struct()) {
-    return is_comparable((t_struct*)type);
+bool t_java_generator::type_has_naked_binary(t_type* type) {
+  type = get_true_type(type);
+
+  if (type->is_base_type()) {
+    return ((t_base_type*)type)->is_binary();
+  } else if (type->is_enum()) {
+    return false;
+  } else if (type->is_struct() || type->is_xception()) {
+    return false;
+  } else if (type->is_map()) {
+    return type_has_naked_binary(((t_map*)type)->get_key_type())
+        || type_has_naked_binary(((t_map*)type)->get_val_type());
+  } else if (type->is_set()) {
+    return type_has_naked_binary(((t_set*)type)->get_elem_type());
+  } else if (type->is_list()) {
+    return type_has_naked_binary(((t_list*)type)->get_elem_type());
   } else {
-    return true;
+    throw "Don't know how to handle this ttype";
   }
+}
+
+bool t_java_generator::struct_has_naked_binary_fields(t_struct* tstruct) {
+  const vector<t_field*>& members = tstruct->get_members();
+  vector<t_field*>::const_iterator m_iter;
+
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    if (type_has_naked_binary((*m_iter)->get_type()))
+      return true;
+  }
+
+  return false;
 }
 
 bool t_java_generator::has_bit_vector(t_struct* tstruct) {
