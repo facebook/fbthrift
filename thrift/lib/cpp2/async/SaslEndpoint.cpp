@@ -60,7 +60,7 @@ std::unique_ptr<IOBuf> SaslEndpoint::unwrap(
   size_t* remaining) {
 
   folly::io::Cursor c(q->front());
-  size_t chainSize = q->front()->computeChainDataLength();
+  size_t chainSize = q->chainLength();
   uint32_t wraplen = 0;
 
   if (chainSize < sizeof(wraplen)) {
