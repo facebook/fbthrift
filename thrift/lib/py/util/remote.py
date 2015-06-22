@@ -347,22 +347,13 @@ class Remote(object):
 
     @classmethod
     def _print_usage(cls, all_options, argv, out, help=False):
-        options = []
-        for (flag, name), kwargs in all_options:
-            action = kwargs.get('action', 'store')
-            if action in {'store_true', 'store_const'}:
-                options.append('[-%s]' % flag)
-            else:
-                options.append('[-%s %s]' % (
-                    flag, kwargs.get('metavar', name.upper())))
-        options.append('[--arbitraryKey value ...]')
-        options.append('function')
-        options.append('[arg1 ...]')
-        usage = 'usage: %s %s' % (argv[0], ' '.join(options))
+        file_ = os.path.basename(argv[0])
+        usage_string = '[OPTIONS] FUNCTION [ARGS ...]'
+        usage = 'Usage: %s %s' % (file_, usage_string)
         print(usage, file=out)
 
         if help:
-            print('Options:', file=out)
+            print('\nOptions:\n', file=out)
             for (short_flag, long_flag), kwargs in all_options:
                 if 'metavar' in kwargs:
                     specifier = '-%s %s, --%s %s' % (
@@ -433,7 +424,6 @@ class Remote(object):
                     args[identifier] = arg_list
                 i += nargs
         else:
-            print('No function specified.', file=sys.stderr)
             print_usage(sys.stderr, help=True)
             sys.exit(os.EX_USAGE)
 
