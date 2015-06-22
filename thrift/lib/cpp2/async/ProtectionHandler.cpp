@@ -62,7 +62,7 @@ void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
       }
     });
   if (e) {
-    VLOG(5) << "Exception in ProtectionHandler::read(): " << e.what();
+    LOG(ERROR) << "Exception in ProtectionHandler::read(): " << e.what();
     ctx->fireReadException(std::move(e));
   }
   // Give ownership back to the main queue if we're not in the inprogress
