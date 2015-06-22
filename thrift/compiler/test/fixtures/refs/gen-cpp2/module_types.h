@@ -18,8 +18,248 @@
 
 namespace cpp2 {
 
+class MyUnion;
 class MyField;
 class MyStruct;
+class StructWithUnion;
+
+class MyUnion : private boost::totally_ordered<MyUnion> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    anInteger = 1,
+    aString = 2,
+  } ;
+
+  MyUnion() :
+      type_(Type::__EMPTY__) {}
+
+  MyUnion(MyUnion&& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::anInteger:
+      {
+        set_anInteger(std::move(rhs.value_.anInteger));
+        break;
+      }
+      case Type::aString:
+      {
+        set_aString(std::move(rhs.value_.aString));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  MyUnion(const MyUnion& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::anInteger:
+      {
+        set_anInteger(rhs.value_.anInteger);
+        break;
+      }
+      case Type::aString:
+      {
+        set_aString(rhs.value_.aString);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  MyUnion& operator=(MyUnion&& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::anInteger:
+      {
+        set_anInteger(std::move(rhs.value_.anInteger));
+        break;
+      }
+      case Type::aString:
+      {
+        set_aString(std::move(rhs.value_.aString));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  MyUnion& operator=(const MyUnion& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::anInteger:
+      {
+        set_anInteger(rhs.value_.anInteger);
+        break;
+      }
+      case Type::aString:
+      {
+        set_aString(rhs.value_.aString);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  void __clear();
+
+  virtual ~MyUnion() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int32_t anInteger;
+    std::string aString;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const MyUnion& rhs) const;
+
+  bool operator < (const MyUnion& rhs) const {
+    if (type_ != rhs.type_) { return type_ < rhs.type_; }
+    switch(type_) {
+      case Type::anInteger:
+      {
+        return value_.anInteger < rhs.value_.anInteger;
+        break;
+      }
+      case Type::aString:
+      {
+        return value_.aString < rhs.value_.aString;
+        break;
+      }
+      default:
+      {
+        return false;
+        break;
+      }
+    }
+  }
+
+  template<typename... T>
+  void set_anInteger(T&&... t) {
+    __clear();
+    type_ = Type::anInteger;
+    new (&value_.anInteger) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_aString(T&&... t) {
+    __clear();
+    type_ = Type::aString;
+    new (&value_.aString) std::string(std::forward<T>(t)...);
+  }
+
+  const int32_t& get_anInteger() const {
+    assert(type_ == Type::anInteger);
+    return value_.anInteger;
+  }
+
+  const std::string& get_aString() const {
+    assert(type_ == Type::aString);
+    return value_.aString;
+  }
+
+  int32_t& mutable_anInteger() {
+    assert(type_ == Type::anInteger);
+    return value_.anInteger;
+  }
+
+  std::string& mutable_aString() {
+    assert(type_ == Type::aString);
+    return value_.aString;
+  }
+
+  int32_t move_anInteger() {
+    assert(type_ == Type::anInteger);
+    return std::move(value_.anInteger);
+  }
+
+  std::string move_aString() {
+    assert(type_ == Type::aString);
+    return std::move(value_.aString);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+};
+
+void swap(MyUnion& a, MyUnion& b);
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::MyUnion>::clear( ::cpp2::MyUnion* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::MyUnion>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyUnion>::write(Protocol* proto, const  ::cpp2::MyUnion* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyUnion>::read(Protocol* proto,   ::cpp2::MyUnion* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyUnion>::serializedSize(Protocol* proto, const  ::cpp2::MyUnion* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyUnion>::serializedSizeZC(Protocol* proto, const  ::cpp2::MyUnion* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
 
 class MyField : private boost::totally_ordered<MyField> {
  public:
@@ -179,6 +419,89 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyStruct>
 }
 
 template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyStruct>::serializedSizeZC(Protocol* proto, const  ::cpp2::MyStruct* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
+class StructWithUnion : private boost::totally_ordered<StructWithUnion> {
+ public:
+
+  StructWithUnion() :
+      aDouble(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg) :
+      u(std::move(u__arg)),
+      aDouble(std::move(aDouble__arg)),
+      f(std::move(f__arg)) {}
+
+  StructWithUnion(StructWithUnion&&) = default;
+  StructWithUnion(const StructWithUnion& src3);
+
+  StructWithUnion& operator=(StructWithUnion&&) = default;
+  StructWithUnion& operator=(const StructWithUnion& src4);
+  void __clear();
+
+  virtual ~StructWithUnion() throw() {}
+
+  std::unique_ptr< ::cpp2::MyUnion> u;
+  double aDouble;
+   ::cpp2::MyField f;
+
+  struct __isset {
+    __isset() {
+      __clear();
+    }
+
+    void __clear() {
+      aDouble = false;
+      f = false;
+    }
+
+    bool aDouble;
+    bool f;
+  } __isset;
+  bool operator==(const StructWithUnion& rhs) const;
+  bool operator < (const StructWithUnion& rhs) const;
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(StructWithUnion& a, StructWithUnion& b);
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::StructWithUnion>::clear( ::cpp2::StructWithUnion* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::StructWithUnion>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithUnion>::write(Protocol* proto, const  ::cpp2::StructWithUnion* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithUnion>::read(Protocol* proto,   ::cpp2::StructWithUnion* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithUnion>::serializedSize(Protocol* proto, const  ::cpp2::StructWithUnion* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithUnion>::serializedSizeZC(Protocol* proto, const  ::cpp2::StructWithUnion* obj) {
   return obj->serializedSizeZC(proto);
 }
 

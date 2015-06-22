@@ -20,6 +20,146 @@
 namespace cpp2 {
 
 template <class Protocol_>
+uint32_t MyUnion::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  xfer += iprot->readFieldBegin(fname, ftype, fid);
+  if (ftype == apache::thrift::protocol::T_STOP) {
+    this->__clear();
+  } else {
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "anInteger") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "aString") {
+        fid = 2;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          this->set_anInteger();
+          xfer += iprot->readI32(this->mutable_anInteger());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 2:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          this->set_aString();
+          xfer += iprot->readString(this->mutable_aString());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyUnion::serializedSize(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyUnion");
+  switch(this->getType()) {
+    case MyUnion::Type::anInteger:
+    {
+      xfer += prot_->serializedFieldSize("anInteger", apache::thrift::protocol::T_I32, 1);
+      xfer += prot_->serializedSizeI32(this->get_anInteger());
+      break;
+    }
+    case MyUnion::Type::aString:
+    {
+      xfer += prot_->serializedFieldSize("aString", apache::thrift::protocol::T_STRING, 2);
+      xfer += prot_->serializedSizeString(this->get_aString());
+      break;
+    }
+    case MyUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyUnion::serializedSizeZC(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyUnion");
+  switch(this->getType()) {
+    case MyUnion::Type::anInteger:
+    {
+      xfer += prot_->serializedFieldSize("anInteger", apache::thrift::protocol::T_I32, 1);
+      xfer += prot_->serializedSizeI32(this->get_anInteger());
+      break;
+    }
+    case MyUnion::Type::aString:
+    {
+      xfer += prot_->serializedFieldSize("aString", apache::thrift::protocol::T_STRING, 2);
+      xfer += prot_->serializedSizeString(this->get_aString());
+      break;
+    }
+    case MyUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyUnion::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyUnion");
+  switch(this->getType()) {
+    case MyUnion::Type::anInteger:
+    {
+      xfer += prot_->writeFieldBegin("anInteger", apache::thrift::protocol::T_I32, 1);
+      xfer += prot_->writeI32(this->get_anInteger());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case MyUnion::Type::aString:
+    {
+      xfer += prot_->writeFieldBegin("aString", apache::thrift::protocol::T_STRING, 2);
+      xfer += prot_->writeString(this->get_aString());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case MyUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+template <class Protocol_>
 uint32_t MyField::read(Protocol_* iprot) {
   uint32_t xfer = 0;
   std::string fname;
@@ -345,6 +485,154 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     prot_->writeStructEnd();
     prot_->writeFieldStop();
   }
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+template <class Protocol_>
+uint32_t StructWithUnion::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  while (true) {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "u") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_STRUCT;
+      }
+      else if (fname == "aDouble") {
+        fid = 2;
+        ftype = apache::thrift::protocol::T_DOUBLE;
+      }
+      else if (fname == "f") {
+        fid = 3;
+        ftype = apache::thrift::protocol::T_STRUCT;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_STRUCT) {
+          this->u = std::unique_ptr< ::cpp2::MyUnion>(new  ::cpp2::MyUnion);
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::read(iprot, this->u.get());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 2:
+      {
+        if (ftype == apache::thrift::protocol::T_DOUBLE) {
+          xfer += iprot->readDouble(this->aDouble);
+          this->__isset.aDouble = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 3:
+      {
+        if (ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, &this->f);
+          this->__isset.f = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t StructWithUnion::serializedSize(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("StructWithUnion");
+  xfer += prot_->serializedFieldSize("u", apache::thrift::protocol::T_STRUCT, 1);
+  if (this->u) {
+    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::serializedSize(prot_, this->u.get());
+  }
+  else {
+    prot_->writeStructBegin("MyUnion");
+    prot_->writeStructEnd();
+    prot_->writeFieldStop();
+  }
+  xfer += prot_->serializedFieldSize("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
+  xfer += prot_->serializedSizeDouble(this->aDouble);
+  xfer += prot_->serializedFieldSize("f", apache::thrift::protocol::T_STRUCT, 3);
+  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::serializedSize(prot_, &this->f);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t StructWithUnion::serializedSizeZC(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("StructWithUnion");
+  xfer += prot_->serializedFieldSize("u", apache::thrift::protocol::T_STRUCT, 1);
+  if (this->u) {
+    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::serializedSizeZC(prot_, this->u.get());
+  }
+  else {
+    prot_->writeStructBegin("MyUnion");
+    prot_->writeStructEnd();
+    prot_->writeFieldStop();
+  }
+  xfer += prot_->serializedFieldSize("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
+  xfer += prot_->serializedSizeDouble(this->aDouble);
+  xfer += prot_->serializedFieldSize("f", apache::thrift::protocol::T_STRUCT, 3);
+  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::serializedSizeZC(prot_, &this->f);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t StructWithUnion::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("StructWithUnion");
+  xfer += prot_->writeFieldBegin("u", apache::thrift::protocol::T_STRUCT, 1);
+  if (this->u) {
+    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::write(prot_, this->u.get());
+  }
+  else {
+    prot_->writeStructBegin("MyUnion");
+    prot_->writeStructEnd();
+    prot_->writeFieldStop();
+  }
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
+  xfer += prot_->writeDouble(this->aDouble);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("f", apache::thrift::protocol::T_STRUCT, 3);
+  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::write(prot_, &this->f);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

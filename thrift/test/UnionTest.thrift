@@ -62,6 +62,7 @@ union TestUnion {
 
 struct StructWithAUnion {
   1: TestUnion test_union;
+  2: TestUnion test_union_ref (cpp.ref = "true"),
 }
 
 struct StructWithUnionAndOther {

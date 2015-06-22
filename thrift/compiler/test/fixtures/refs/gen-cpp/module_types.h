@@ -19,9 +19,213 @@ class Schema;
 
 
 
+class MyUnion;
+
 class MyField;
 
 class MyStruct;
+
+class StructWithUnion;
+
+class MyUnion : public apache::thrift::TStructType<MyUnion> {
+ public:
+  enum class Type {
+    __EMPTY__ = 0,
+    anInteger = 1,
+    aString = 2,
+  };
+
+  MyUnion() : type_(Type::__EMPTY__) {}
+  MyUnion(const MyUnion& rhs) : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::anInteger: {
+        set_anInteger(rhs.value_.anInteger);
+        break;
+      }
+      case Type::aString: {
+        set_aString(rhs.value_.aString);
+        break;
+      }
+      default: assert(false);
+    }
+  }
+
+  MyUnion& operator=(const MyUnion& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::anInteger: {
+        set_anInteger(rhs.value_.anInteger);
+        break;
+      }
+      case Type::aString: {
+        set_aString(rhs.value_.aString);
+        break;
+      }
+      default: assert(false);
+    }
+    return *this;
+  }
+
+  MyUnion(MyUnion&& rhs) : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::anInteger: {
+        set_anInteger(std::move(rhs.value_.anInteger));
+        break;
+      }
+      case Type::aString: {
+        set_aString(std::move(rhs.value_.aString));
+        break;
+      }
+      default: assert(false);
+    }
+    rhs.__clear();
+  }
+
+  MyUnion& operator=(MyUnion&& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::anInteger: {
+        set_anInteger(std::move(rhs.value_.anInteger));
+        break;
+      }
+      case Type::aString: {
+        set_aString(std::move(rhs.value_.aString));
+        break;
+      }
+      default: assert(false);
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+
+  void __clear() {
+    if (type_ == Type::__EMPTY__) { return; }
+    switch (type_) {
+      case Type::anInteger: {
+        
+        break;
+      }
+      case Type::aString: {
+        using namespace std; value_.aString.~string();
+        break;
+      }
+      default: assert(false);
+    }
+    type_ = Type::__EMPTY__;
+  }
+  virtual ~MyUnion() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int32_t anInteger;
+    std::string aString;
+    
+    storage_type() {}
+    ~storage_type() {}
+  };
+
+  bool operator==(const MyUnion& rhs) const {
+    if (type_ != rhs.type_) { return false; }
+    switch (type_) {
+      case Type::anInteger: {
+        return value_.anInteger == rhs.value_.anInteger;
+
+        break;
+      }
+      case Type::aString: {
+        return value_.aString == rhs.value_.aString;
+
+        break;
+      }
+      default: return true;
+    }
+  }
+
+  bool operator!=(const MyUnion& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator<(const MyUnion& rhs) const {
+    if (type_ != rhs.type_) return type_ < rhs.type_;
+    switch (type_) {
+      case Type::anInteger: {
+        return value_.anInteger < rhs.value_.anInteger;
+
+        break;
+      }
+      case Type::aString: {
+        return value_.aString < rhs.value_.aString;
+
+        break;
+      }
+      default: return false;
+    }
+    return false;
+  }
+
+  template<typename... T>
+  void set_anInteger(T&&... t) {
+    __clear();
+    type_ = Type::anInteger;
+    new (&value_.anInteger) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_aString(T&&... t) {
+    __clear();
+    type_ = Type::aString;
+    new (&value_.aString) std::string(std::forward<T>(t)...);
+  }
+
+  const int32_t& get_anInteger() const {
+    assert(type_ == Type::anInteger);
+    return value_.anInteger;
+  }
+
+  const std::string& get_aString() const {
+    assert(type_ == Type::aString);
+    return value_.aString;
+  }
+
+  int32_t& mutable_anInteger() {
+    assert(type_ == Type::anInteger);
+    return value_.anInteger;
+  }
+
+  std::string& mutable_aString() {
+    assert(type_ == Type::aString);
+    return value_.aString;
+  }
+
+  int32_t move_anInteger() {
+    assert(type_ == Type::anInteger);
+    return std::move(value_.anInteger);
+  }
+
+  std::string move_aString() {
+    assert(type_ == Type::aString);
+    return std::move(value_.aString);
+  }
+
+  Type getType() const { return type_; }
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+ private:
+  Type type_;
+  storage_type value_;
+
+};
 
 void swap(MyField &a, MyField &b);
 
@@ -119,6 +323,58 @@ class MyStruct : public apache::thrift::TStructType<MyStruct> {
 class MyStruct;
 void merge(const MyStruct& from, MyStruct& to);
 void merge(MyStruct&& from, MyStruct& to);
+void swap(StructWithUnion &a, StructWithUnion &b);
+
+class StructWithUnion : public apache::thrift::TStructType<StructWithUnion> {
+ public:
+
+  static const uint64_t _reflection_id = 11295191354176986988U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  StructWithUnion() : aDouble(0) {
+  }
+
+  StructWithUnion(const StructWithUnion&);
+  StructWithUnion& operator=(const StructWithUnion& src) {
+    StructWithUnion tmp(src);
+    swap(*this, tmp);
+    return *this;
+  }
+  StructWithUnion(StructWithUnion&&) = default;
+  StructWithUnion& operator=(StructWithUnion&&) = default;
+
+  void __clear();
+
+  virtual ~StructWithUnion() throw() {}
+
+  std::unique_ptr<MyUnion> u;
+  double aDouble;
+  MyField f;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      aDouble = false;
+      f = false;
+    }
+    bool aDouble;
+    bool f;
+  } __isset;
+
+  bool operator == (const StructWithUnion &) const;
+  bool operator != (const StructWithUnion& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const StructWithUnion & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class StructWithUnion;
+void merge(const StructWithUnion& from, StructWithUnion& to);
+void merge(StructWithUnion&& from, StructWithUnion& to);
 
 
 #endif

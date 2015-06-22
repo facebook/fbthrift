@@ -82,5 +82,66 @@ void reflectionInitializer_7958971832214294220(::apache::thrift::reflection::Sch
   reflectionInitializer_16778989117799402412(schema);  // struct module.MyField
 }
 
+// Reflection initializer for struct module.MyUnion
+void reflectionInitializer_15877789207728179884(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 15877789207728179884U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.MyUnion";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "anInteger";
+    f.order = 0;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = true;
+    f.type = 1U;
+    f.name = "aString";
+    f.order = 1;
+  }
+}
+
+void  reflectionInitializer_15877789207728179884(::apache::thrift::reflection::Schema&);  // struct module.MyUnion
+void  reflectionInitializer_16778989117799402412(::apache::thrift::reflection::Schema&);  // struct module.MyField
+// Reflection initializer for struct module.StructWithUnion
+void reflectionInitializer_11295191354176986988(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11295191354176986988U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.StructWithUnion";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 15877789207728179884U;
+    f.name = "u";
+    f.order = 0;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref"] = "true";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = true;
+    f.type = 7U;
+    f.name = "aDouble";
+    f.order = 1;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 16778989117799402412U;
+    f.name = "f";
+    f.order = 2;
+  }
+  reflectionInitializer_15877789207728179884(schema);  // struct module.MyUnion
+  reflectionInitializer_16778989117799402412(schema);  // struct module.MyField
+}
+
 }
 

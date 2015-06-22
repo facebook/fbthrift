@@ -6471,17 +6471,26 @@ void t_cpp_generator::generate_deserialize_struct(ofstream& out,
       ">(new " << type_name(tstruct) << ");" << endl;
     indent(out) <<
       "xfer += " << prefix << "->read(iprot);" << endl;
-    indent(out) << "if (false) {" << endl;
-    for (auto& member : tstruct->get_members()) {
-      if (is_reference(member)){
-        indent(out) << "} else if (" << prefix << "->" << member->get_name()
-                    << ") {" << endl;
-      } else if (has_isset(member)) {
-        indent(out) << "} else if (" << prefix << "->__isset."
-                    << member->get_name() << ") {" << endl;
+    if (tstruct->is_union()) {
+      indent(out) << "if (" << prefix << "->getType() == "
+                  << type_name(tstruct) << "::Type::__EMPTY__) {" << endl;
+      indent_up();
+      indent(out) << prefix << " = nullptr; " << endl;
+      indent_down();
+      indent(out) << "}" << endl;
+    } else {
+      indent(out) << "if (false) {" << endl;
+      for (auto& member : tstruct->get_members()) {
+        if (is_reference(member)){
+          indent(out) << "} else if (" << prefix << "->" << member->get_name()
+                      << ") {" << endl;
+        } else if (has_isset(member)) {
+          indent(out) << "} else if (" << prefix << "->__isset."
+                      << member->get_name() << ") {" << endl;
+        }
       }
+      indent(out) << "} else { " << prefix << " = nullptr; }" << endl;
     }
-    indent(out) << "} else { " << prefix << " = nullptr; }" << endl;
   } else {
     indent(out) <<
       "xfer += " << prefix << ".read(iprot);" << endl;

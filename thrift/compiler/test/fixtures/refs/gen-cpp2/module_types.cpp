@@ -12,6 +12,70 @@
 
 namespace cpp2 {
 
+template uint32_t MyUnion::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyUnion::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyUnion::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyUnion::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyUnion::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyUnion::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyUnion::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyUnion::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+
+void MyUnion::__clear() {
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::anInteger:
+    {
+      destruct(value_.anInteger);
+      break;
+    }
+    case Type::aString:
+    {
+      destruct(value_.aString);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool MyUnion::operator==(const MyUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::anInteger:
+    {
+      return value_.anInteger == rhs.value_.anInteger;
+      break;
+    }
+    case Type::aString:
+    {
+      return value_.aString == rhs.value_.aString;
+      break;
+    }
+    default:
+    {
+      return true;
+      break;
+    }
+  }
+}
+
+void swap(MyUnion& a, MyUnion& b) {
+  MyUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 template uint32_t MyField::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t MyField::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t MyField::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
@@ -104,6 +168,63 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.opt_ref, b.opt_ref);
   swap(a.ref, b.ref);
   swap(a.req_ref, b.req_ref);
+  swap(a.__isset, b.__isset);
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+template uint32_t StructWithUnion::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithUnion::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithUnion::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithUnion::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithUnion::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithUnion::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithUnion::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithUnion::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+
+StructWithUnion::StructWithUnion(const StructWithUnion& src3) {
+  if (src3.u) u.reset(new  ::cpp2::MyUnion(*src3.u));
+  aDouble = src3.aDouble;
+  __isset.aDouble = src3.__isset.aDouble;
+  f = src3.f;
+  __isset.f = src3.__isset.f;
+}
+
+StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src4) {
+  StructWithUnion tmp5(src4);
+  swap(*this, tmp5);
+  return *this;
+}
+
+void StructWithUnion::__clear() {
+  if (u) ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::clear(u.get());
+  aDouble = 0;
+  ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(&f);
+  __isset.__clear();
+}
+
+bool StructWithUnion::operator==(const StructWithUnion& rhs) const {
+  if (!(((u && rhs.u && *u == *rhs.u) ||(!u && !rhs.u)))) {
+    return false;
+  }
+  if (!((aDouble == rhs.aDouble))) {
+    return false;
+  }
+  if (!((f == rhs.f))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(StructWithUnion& a, StructWithUnion& b) {
+  using ::std::swap;
+  swap(a.u, b.u);
+  swap(a.aDouble, b.aDouble);
+  swap(a.f, b.f);
   swap(a.__isset, b.__isset);
 }
 

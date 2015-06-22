@@ -13,6 +13,69 @@
 
 
 
+uint32_t MyUnion::read(apache::thrift::protocol::TProtocol* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readFieldBegin(fname, ftype, fid);
+  if (ftype == apache::thrift::protocol::T_STOP) {
+    __clear();
+  } else {
+    switch (fid) {
+      case 1: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_anInteger();
+          xfer += iprot->readI32(this->value_.anInteger);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 2: {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          set_aString();
+          xfer += iprot->readString(this->value_.aString);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default: xfer += iprot->skip(ftype); break;
+    }
+    xfer += iprot->readFieldEnd();
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t MyUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("MyUnion");
+  switch (type_) {
+    case Type::anInteger: {
+      xfer += oprot->writeFieldBegin("anInteger", apache::thrift::protocol::T_I32, 1);
+      xfer += oprot->writeI32(this->value_.anInteger);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::aString: {
+      xfer += oprot->writeFieldBegin("aString", apache::thrift::protocol::T_STRING, 2);
+      xfer += oprot->writeString(this->value_.aString);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::__EMPTY__:;
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
 const uint64_t MyField::_reflection_id;
 void MyField::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_16778989117799402412(schema);
@@ -336,6 +399,167 @@ void merge(MyStruct&& from, MyStruct& to) {
   merge(std::move(from.opt_ref), to.opt_ref);
   merge(std::move(from.ref), to.ref);
   merge(std::move(from.req_ref), to.req_ref);
+}
+
+const uint64_t StructWithUnion::_reflection_id;
+void StructWithUnion::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::module_reflection_::reflectionInitializer_11295191354176986988(schema);
+}
+
+StructWithUnion::StructWithUnion(const StructWithUnion& src3) {
+  if (src3.u)
+    u.reset(new MyUnion(*src3.u));
+  aDouble = src3.aDouble;
+  __isset.aDouble = src3.__isset.aDouble;
+  f = src3.f;
+  __isset.f = src3.__isset.f;
+}
+bool StructWithUnion::operator == (const StructWithUnion & rhs) const {
+  if (bool(u) != bool(rhs.u))
+    return false;
+  else if (bool(u) && !(*u == *rhs.u))
+    return false;
+  if (!(this->aDouble == rhs.aDouble))
+    return false;
+  if (!(this->f == rhs.f))
+    return false;
+  return true;
+}
+
+uint32_t StructWithUnion::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::module_reflection_::reflectionInitializer_11295191354176986988(*schema);
+    iprot->setNextStructType(StructWithUnion::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+  std::exception_ptr exception;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_STRUCT) {
+          this->u = std::unique_ptr< MyUnion>(new MyUnion);
+          xfer += this->u->read(iprot);
+          if (this->u->getType() == MyUnion::Type::__EMPTY__) {
+            this->u = nullptr; 
+          }
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == apache::thrift::protocol::T_DOUBLE) {
+          xfer += iprot->readDouble(this->aDouble);
+          this->__isset.aDouble = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == apache::thrift::protocol::T_STRUCT) {
+          try {
+            xfer += this->f.read(iprot);
+          } catch (const TProtocolException& e) {
+            if (e.getType() != TProtocolException::MISSING_REQUIRED_FIELD) {
+              throw;
+            }
+            exception = std::current_exception();
+          }
+          this->__isset.f = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (exception != std::exception_ptr()) {
+    std::rethrow_exception(exception);
+  }
+  return xfer;
+}
+
+void StructWithUnion::__clear() {
+  if (u) u->__clear();
+  aDouble = 0;
+  f.__clear();
+  __isset.__clear();
+}
+uint32_t StructWithUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("StructWithUnion");
+  xfer += oprot->writeFieldBegin("u", apache::thrift::protocol::T_STRUCT, 1);
+  if (this->u) {xfer += this->u->write(oprot); 
+} else {oprot->writeStructBegin("MyUnion"); oprot->writeStructEnd(); oprot->writeFieldStop();}
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
+  xfer += oprot->writeDouble(this->aDouble);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("f", apache::thrift::protocol::T_STRUCT, 3);
+  xfer += this->f.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(StructWithUnion &a, StructWithUnion &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.u, b.u);
+  swap(a.aDouble, b.aDouble);
+  swap(a.f, b.f);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const StructWithUnion& from, StructWithUnion& to) {
+  using apache::thrift::merge;
+  merge(from.u, to.u);
+  if (from.__isset.aDouble) {
+    merge(from.aDouble, to.aDouble);
+    to.__isset.aDouble = true;
+  }
+  if (from.__isset.f) {
+    merge(from.f, to.f);
+    to.__isset.f = true;
+  }
+}
+
+void merge(StructWithUnion&& from, StructWithUnion& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.u), to.u);
+  if (from.__isset.aDouble) {
+    merge(std::move(from.aDouble), to.aDouble);
+    to.__isset.aDouble = true;
+  }
+  if (from.__isset.f) {
+    merge(std::move(from.f), to.f);
+    to.__isset.f = true;
+  }
 }
 
 
