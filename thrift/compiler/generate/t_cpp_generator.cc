@@ -1044,8 +1044,11 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     }
     f_consts << "const ";
     if (inlined) {
-      f_consts << name << " = " << render_const_value(f_consts, type, value)
-        << ';' << endl;
+      f_consts << "__attribute__(("
+      "__deprecated__(\"`" << name << "` is being replaced by `" << name
+        << "()` to conform with cpp2. For now, use `" << name
+        << "_` instead\")))" << name << " = "
+        << render_const_value(f_consts, type, value) << ';' << endl;
     } else {
       f_consts << '&' << name << "();" << endl;
     }
@@ -1073,6 +1076,9 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
 
     f_consts_impl << indent();
     if (inlined) {
+      f_consts_impl << "#pragma GCC diagnostic push" << endl;
+      f_consts_impl << "#pragma GCC diagnostic ignored "
+        "\"-Wdeprecated-declarations\"" << endl << indent();
       f_consts_impl << "constexpr ";
     }
     if (type->is_string()) {
@@ -1087,6 +1093,7 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     f_consts_impl << program_name_ << "_constants::" << name;
     if (inlined) {
       f_consts_impl << ';' << endl;
+      f_consts_impl << indent() << "#pragma GCC diagnostic pop" << endl;
     } else {
       f_consts_impl << "() {" << endl;
       indent_up();
