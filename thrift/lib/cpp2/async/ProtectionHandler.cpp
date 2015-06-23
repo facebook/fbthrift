@@ -15,6 +15,7 @@
  */
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <folly/Logging.h>
 
 namespace apache { namespace thrift {
 
@@ -62,7 +63,8 @@ void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
       }
     });
   if (e) {
-    LOG(ERROR) << "Exception in ProtectionHandler::read(): " << e.what();
+    FB_LOG_EVERY_MS(ERROR, 1000)
+        << "Exception in ProtectionHandler::read(): " << e.what();
     ctx->fireReadException(std::move(e));
   }
   // Give ownership back to the main queue if we're not in the inprogress
