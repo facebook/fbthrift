@@ -34,7 +34,7 @@ class _ProcessorAdapter(object):
     # TODO mhorowitz: add read headers here, so they can be added to
     # the constructed header buffer.  Also add endpoint addrs to the
     # context
-    def call_processor(self, input, client_type, protocol_type,
+    def call_processor(self, input, headers, client_type, protocol_type,
                        context_data):
         try:
             # The input string has already had the header removed, but
@@ -46,6 +46,7 @@ class _ProcessorAdapter(object):
             write_buf = TMemoryBuffer()
             trans = THeaderTransport(write_buf)
             trans._THeaderTransport__client_type = client_type
+            trans._THeaderTransport__write_headers = headers
             trans.set_protocol_id(protocol_type)
             trans.write(input)
             trans.flush()

@@ -12,9 +12,9 @@ import time
 
 from fb303.ContextFacebookBase import FacebookBase
 from libfb.testutil import BaseFacebookTestCase
-from thrift.transport import TSocket, TTransport
-from thrift.protocol import TBinaryProtocol
-from thrift.Thrift import TProcessorEventHandler
+from thrift.transport import TSocket, TTransport, THeaderTransport
+from thrift.protocol import TBinaryProtocol, THeaderProtocol
+from thrift.Thrift import TProcessorEventHandler, TProcessor, TMessageType
 from thrift.server.TCppServer import TCppServer
 from thrift.server.TServer import TServerEventHandler
 from tools.test.stubs import fbpyunit
@@ -106,6 +106,17 @@ class OnewayProcess(multiprocessing.Process):
         client = getClient(self.addr)
         client.noop()
 
+class TestHeaderProcessor(TProcessor, BaseFacebookTestCase):
+    def process(self, iprot, oprot, server_context=None):
+        fname, type, seqid = iprot.readMessageBegin()
+        self.assertTrue(iprot.trans.get_headers().get(b"hello") == b"world")
+        result = SleepService.space_result()
+        result.success = "h i"
+        oprot.writeMessageBegin(fname, TMessageType.REPLY, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
 class TestServerEventHandler(TServerEventHandler):
     def __init__(self):
         self.connCreated = 0
@@ -118,14 +129,17 @@ class TestServerEventHandler(TServerEventHandler):
         self.connDestroyed += 1
 
 class TestServer(BaseFacebookTestCase):
-    def setUp(self):
-        super(TestServer, self).setUp()
-        self.noop_event = threading.Event()
+    def getProcessor(self):
         processor = SleepService.Processor(SleepHandler(self.noop_event))
         self.event_handler = SleepProcessorEventHandler()
         processor.setEventHandler(self.event_handler)
+        return processor
+
+    def setUp(self):
+        super(TestServer, self).setUp()
+        self.noop_event = threading.Event()
         self.serverEventHandler = TestServerEventHandler()
-        self.server = TCppServer(processor)
+        self.server = TCppServer(self.getProcessor())
         self.server.setServerEventHandler(self.serverEventHandler)
         self.addCleanup(self.stopServer)
         # Let the kernel choose a port.
@@ -148,6 +162,7 @@ class TestServer(BaseFacebookTestCase):
             self.server.stop()
             self.server = None
 
+class BaseTestServer(TestServer):
     def testSpace(self):
         space = SpaceProcess(self.server_addr)
         space.start()
@@ -186,6 +201,21 @@ class TestServer(BaseFacebookTestCase):
         self.stopServer()
 
         self.assertTrue(self.noop_event.wait(5))
+
+class HeaderTestServer(TestServer):
+    def getProcessor(self):
+        return TestHeaderProcessor()
+
+    def testHeader(self):
+        transport = TSocket.TSocket(self.server_addr[0], self.server_addr[1])
+        transport = THeaderTransport.THeaderTransport(transport)
+        transport.set_header("hello", "world")
+        protocol = THeaderProtocol.THeaderProtocol(transport)
+        client = SleepService.Client(protocol)
+        transport.open()
+
+        self.assertEquals(client.space("hi"), "h i")
+        self.stopServer()
 
 if __name__ == '__main__':
     rc = fbpyunit.MainProgram(sys.argv).run()

@@ -22,6 +22,7 @@
 #include <boost/python/import.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/tuple.hpp>
+#include <boost/python/dict.hpp>
 
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -50,6 +51,14 @@ object makePythonAddress(const folly::SocketAddress& sa) {
     LOG(FATAL) << "CppServerWrapper can't create a non-inet thrift endpoint";
     abort();
   }
+}
+
+object makePythonHeaders(std::map<std::string, std::string>* cppheaders) {
+  object headers = dict();
+  for (const auto& it : *cppheaders) {
+    headers[it.first] = it.second;
+  }
+  return headers;
 }
 
 }
@@ -175,9 +184,12 @@ public:
       extract<ContextData&>(contextData)().copyContextContents(
           context->getConnectionContext());
 
-      object output =
-        adapter_->attr("call_processor")(
-          input, int(clientType), int(protType), contextData);
+      object output = adapter_->attr("call_processor")(
+          input,
+          makePythonHeaders(context->getHeadersPtr()),
+          int(clientType),
+          int(protType),
+          contextData);
       if (output.is_none()) {
         throw std::runtime_error("Unexpected error in processor method");
       }
