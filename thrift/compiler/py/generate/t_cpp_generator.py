@@ -3955,67 +3955,72 @@ class CppGenerator(t_generator.Generator):
             return
 
         # DECLARATION
-        s1 = sns.cls('struct {0}_constants'.format(name)).scope
-        with s1:
+        s = sns.cls('struct {0}_constants'.format(name)).scope
+        with s:
             # Default constructor
             for c in constants:
                 inlined = c.type.is_base_type or c.type.is_enum
                 value = self._render_const_value(c.type, c.value,
                     literal=inlined)
-                if value:
-                    if inlined:
-                        s1('// consider using folly::StringPiece instead of '
+                if inlined:
+                    if c.type.is_string:
+                        s('// consider using folly::StringPiece instead of '
                             + 'std::string whenever possible')
-                        s1('// to referencing this statically allocated string'
+                        s('// to referencing this statically allocated string'
                             + ' constant, in order to ')
-                        s1('// prevent unnecessary allocations')
-                        s1.defn(('static constexpr {0} const {{name}}_ = {2}{1}'
-                            + '{2};').format('char const *' if c.type.is_string
-                            else self._type_name(c.type), value, '"' if
-                            c.type.is_string else ''), name=c.name,
-                            in_header=True)
-                        sns.impl('constexpr {0} const {1}_constants::{2}_;'
-                          .format('char const *' if c.type.is_string else
-                            self._type_name(c.type), name, c.name))
+                        s('// prevent unnecessary allocations')
+                    s.defn(('static constexpr {0} const {{name}}_ = {1}{2}'
+                        + '{1};').format(
+                            'char const *' if c.type.is_string
+                                else self._type_name(c.type),
+                            '"' if c.type.is_string else '',
+                            value if value is not None else "{}"
+                        ), name=c.name, in_header=True)
+                    sns.impl('constexpr {0} const {1}_constants::{2}_;'
+                      .format('char const *' if c.type.is_string else
+                        self._type_name(c.type), name, c.name))
 
-                    b = s1.defn('static {0}{1} const {2}{{name}}()'.format(
-                        'constexpr ' if inlined else '', 'char const *' if
-                        c.type.is_string else self._type_name(c.type), '' if
-                        inlined else '&'), name=c.name, in_header=True).scope
-                    with b:
+                b = s.defn('static {0}{1} const {2}{{name}}()'.format(
+                    'constexpr ' if inlined else '', 'char const *' if
+                    c.type.is_string else self._type_name(c.type), '' if
+                    inlined else '&'), name=c.name, in_header=True).scope
+                with b:
 
-                        if inlined:
-                            b('return {0}_;'.format(c.name))
-                        else:
-                            b('static {0} const instance({1});'.format(
-                                self._type_name(c.type), value))
-                            b('return instance;')
+                    if inlined:
+                        b('return {0}_;'.format(c.name))
+                    else:
+                        b('static {0} const instance{1};'.format(
+                            self._type_name(c.type),
+                            '({0})'.format(value) if value is not None else ''
+                        ))
+                        b('return instance;')
 
         # CODEMOD TRANSITIONAL
-        s2 = sns.cls(('struct __attribute__((__deprecated__("{1}"))) '
+        s = sns.cls(('struct __attribute__((__deprecated__("{1}"))) '
             + '{0}_constants_codemod').format(name, ('{0}_constants_codemod is '
                 + 'a transitional class only intended for codemods from the '
                 + 'deprecated {0}Constants to {0}_constants. Consider switching'
                 + ' to the latter as soon as possible.').format(name))).scope
 
-        with s2:
+        with s:
             # Default constructor
             for c in constants:
                 value = self._render_const_value(c.type, c.value)
-                if value:
-                    inlined = (c.type.is_base_type
-                        and not c.type.is_string) or c.type.is_enum
-                    b = s2.defn('static {0}{1} const {2}{{name}}()'.format(
-                        'constexpr ' if inlined else '', self._type_name(
-                        c.type), '' if inlined else '&'), name=c.name,
-                        in_header=True).scope
-                    with b:
-                        if inlined:
-                            b('return {0};'.format(value))
-                        else:
-                            b('static {0} const instance({1});'.format(
-                                self._type_name(c.type), value))
-                            b('return instance;')
+                inlined = (c.type.is_base_type
+                    and not c.type.is_string) or c.type.is_enum
+                b = s.defn('static {0}{1} const {2}{{name}}()'.format(
+                    'constexpr ' if inlined else '', self._type_name(
+                    c.type), '' if inlined else '&'), name=c.name,
+                    in_header=True).scope
+                with b:
+                    if inlined:
+                        b('return {0};'.format(
+                          value if value is not None else '{}'))
+                    else:
+                        b('static {0} const instance{1};'.format(
+                            self._type_name(c.type),
+                            '({0})'.format(value) if value is not None else ''))
+                        b('return instance;')
 
         # DEPRECATED
         s = sns.cls('class __attribute__((__deprecated__("{1}"))) {0}Constants'
