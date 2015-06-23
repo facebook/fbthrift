@@ -21,19 +21,19 @@
 
 TEST(constants, cpp) {
   EXPECT_EQ(test_cpp::enum1::field0, test_cpp::test_constants::e_1_);
-  EXPECT_EQ(test_cpp::enum1::field0, test_cpp::test_constants::e_1);
+  EXPECT_EQ(test_cpp::enum1::field0, test_cpp::test_constants::e_1());
   EXPECT_EQ(test_cpp::enum1::field2, test_cpp::test_constants::e_2_);
-  EXPECT_EQ(test_cpp::enum1::field2, test_cpp::test_constants::e_2);
+  EXPECT_EQ(test_cpp::enum1::field2, test_cpp::test_constants::e_2());
 
   EXPECT_EQ(72, test_cpp::test_constants::i_1_);
-  EXPECT_EQ(72, test_cpp::test_constants::i_1);
+  EXPECT_EQ(72, test_cpp::test_constants::i_1());
   EXPECT_EQ(99, test_cpp::test_constants::i_2_);
-  EXPECT_EQ(99, test_cpp::test_constants::i_2);
+  EXPECT_EQ(99, test_cpp::test_constants::i_2());
 
   EXPECT_EQ(std::string("hello"), test_cpp::test_constants::str_1_);
-  EXPECT_EQ(std::string("hello"), test_cpp::test_constants::str_1);
+  EXPECT_EQ(std::string("hello"), test_cpp::test_constants::str_1());
   EXPECT_EQ(std::string("world"), test_cpp::test_constants::str_2_);
-  EXPECT_EQ(std::string("world"), test_cpp::test_constants::str_2);
+  EXPECT_EQ(std::string("world"), test_cpp::test_constants::str_2());
 
   EXPECT_EQ(
     (std::vector<std::int32_t>{23, 42, 56}),

@@ -4027,7 +4027,7 @@ class CppGenerator(t_generator.Generator):
             .format(name, ("{0}Constants suffers from the 'static "
                 + "initialization order fiasco' (https://isocpp.org/wiki/faq/"
                 + "ctors#static-init-order) and may CRASH you program. Instead,"
-                + " use {0}_constants::CONSTANT_NAME").format(name))).scope
+                + " use {0}_constants::CONSTANT_NAME()").format(name))).scope
         with s:
             s.label('public:')
             # Default constructor
@@ -4052,7 +4052,8 @@ class CppGenerator(t_generator.Generator):
             + 'g_{0}_constants').format(name, ("g_{0}_constants suffers from "
                 + "the 'static initialization order fiasco' (https://isocpp.org"
                 + "/wiki/faq/ctors#static-init-order) and may CRASH you program"
-                + ". Instead, use {0}_constants::CONSTANT_NAME").format(name)))
+                + ". Instead, use {0}_constants::CONSTANT_NAME()")
+                .format(name)))
 
         sns()
         sns('#pragma GCC diagnostic pop')
