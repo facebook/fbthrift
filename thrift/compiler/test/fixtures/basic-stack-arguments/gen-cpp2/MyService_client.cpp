@@ -16,208 +16,6 @@ const char* MyServiceAsyncClient::getServiceName() {
   return "MyService";
 }
 
-void MyServiceAsyncClient::ping(std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  ping(rpcOptions, std::move(callback));
-}
-
-void MyServiceAsyncClient::ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  switch(getChannel()->getProtocolId()) {
-    case apache::thrift::protocol::T_BINARY_PROTOCOL:
-    {
-      apache::thrift::BinaryProtocolWriter writer;
-      pingT(&writer, rpcOptions, std::move(callback));
-      break;
-    }
-    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
-    {
-      apache::thrift::CompactProtocolWriter writer;
-      pingT(&writer, rpcOptions, std::move(callback));
-      break;
-    }
-    default:
-    {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
-    }
-  }
-}
-
-void MyServiceAsyncClient::sync_ping() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  sync_ping(rpcOptions);
-}
-
-void MyServiceAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
-  apache::thrift::ClientReceiveState _returnState;
-  std::unique_ptr<apache::thrift::RequestCallback> callback16(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
-  ping(rpcOptions, std::move(callback16));
-  getChannel()->getEventBase()->loopForever();
-  if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
-  }
-  recv_ping(_returnState);
-}
-
-folly::Future<void> MyServiceAsyncClient::future_ping() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return future_ping(rpcOptions);
-}
-
-folly::Future<void> MyServiceAsyncClient::future_ping(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<void> promise17;
-  auto future18 = promise17.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback19(new apache::thrift::FutureCallback<void>(std::move(promise17), recv_wrapped_ping));
-  ping(rpcOptions, std::move(callback19));
-  return std::move(future18);
-}
-
-void MyServiceAsyncClient::ping(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
-  ping(std::unique_ptr<apache::thrift::RequestCallback>(new apache::thrift::FunctionReplyCallback(std::move(callback))));
-}
-
-folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_ping(::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
-  }
-  if (!state.buf()) {
-    return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
-  }
-  switch(state.protocolId()) {
-    case apache::thrift::protocol::T_BINARY_PROTOCOL:
-    {
-      apache::thrift::BinaryProtocolReader reader;
-      return recv_wrapped_pingT(&reader, state);
-    }
-    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
-    {
-      apache::thrift::CompactProtocolReader reader;
-      return recv_wrapped_pingT(&reader, state);
-    }
-    default:
-    {
-    }
-  }
-  return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
-}
-
-void MyServiceAsyncClient::recv_ping(::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_ping(state);
-  if (ew) {
-    ew.throwException();
-  }
-}
-
-void MyServiceAsyncClient::recv_instance_ping(::apache::thrift::ClientReceiveState& state) {
-  recv_ping(state);
-}
-
-folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_ping(::apache::thrift::ClientReceiveState& state) {
-  return recv_wrapped_ping(state);
-}
-
-void MyServiceAsyncClient::getRandomData(std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  getRandomData(rpcOptions, std::move(callback));
-}
-
-void MyServiceAsyncClient::getRandomData(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  switch(getChannel()->getProtocolId()) {
-    case apache::thrift::protocol::T_BINARY_PROTOCOL:
-    {
-      apache::thrift::BinaryProtocolWriter writer;
-      getRandomDataT(&writer, rpcOptions, std::move(callback));
-      break;
-    }
-    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
-    {
-      apache::thrift::CompactProtocolWriter writer;
-      getRandomDataT(&writer, rpcOptions, std::move(callback));
-      break;
-    }
-    default:
-    {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
-    }
-  }
-}
-
-void MyServiceAsyncClient::sync_getRandomData(std::string& _return) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  sync_getRandomData(rpcOptions, _return);
-}
-
-void MyServiceAsyncClient::sync_getRandomData(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
-  apache::thrift::ClientReceiveState _returnState;
-  std::unique_ptr<apache::thrift::RequestCallback> callback20(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
-  getRandomData(rpcOptions, std::move(callback20));
-  getChannel()->getEventBase()->loopForever();
-  if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
-  }
-  recv_getRandomData(_return, _returnState);
-}
-
-folly::Future<std::string> MyServiceAsyncClient::future_getRandomData() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return future_getRandomData(rpcOptions);
-}
-
-folly::Future<std::string> MyServiceAsyncClient::future_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::string> promise21;
-  auto future22 = promise21.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback23(new apache::thrift::FutureCallback<std::string>(std::move(promise21), recv_wrapped_getRandomData));
-  getRandomData(rpcOptions, std::move(callback23));
-  return std::move(future22);
-}
-
-void MyServiceAsyncClient::getRandomData(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
-  getRandomData(std::unique_ptr<apache::thrift::RequestCallback>(new apache::thrift::FunctionReplyCallback(std::move(callback))));
-}
-
-folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getRandomData(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
-  }
-  if (!state.buf()) {
-    return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
-  }
-  switch(state.protocolId()) {
-    case apache::thrift::protocol::T_BINARY_PROTOCOL:
-    {
-      apache::thrift::BinaryProtocolReader reader;
-      return recv_wrapped_getRandomDataT(&reader, _return, state);
-    }
-    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
-    {
-      apache::thrift::CompactProtocolReader reader;
-      return recv_wrapped_getRandomDataT(&reader, _return, state);
-    }
-    default:
-    {
-    }
-  }
-  return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
-}
-
-void MyServiceAsyncClient::recv_getRandomData(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_getRandomData(_return, state);
-  if (ew) {
-    ew.throwException();
-  }
-}
-
-void MyServiceAsyncClient::recv_instance_getRandomData(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  return recv_getRandomData(_return, state);
-}
-
-folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_getRandomData(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  return recv_wrapped_getRandomData(_return, state);
-}
-
 void MyServiceAsyncClient::hasDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
   ::apache::thrift::RpcOptions rpcOptions;
   hasDataById(rpcOptions, std::move(callback), id);
@@ -251,8 +49,8 @@ bool MyServiceAsyncClient::sync_hasDataById(int64_t id) {
 
 bool MyServiceAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
-  std::unique_ptr<apache::thrift::RequestCallback> callback24(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
-  hasDataById(rpcOptions, std::move(callback24), id);
+  std::unique_ptr<apache::thrift::RequestCallback> callback12(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
+  hasDataById(rpcOptions, std::move(callback12), id);
   getChannel()->getEventBase()->loopForever();
   if (!_returnState.buf()) {
     assert(_returnState.exception());
@@ -267,11 +65,11 @@ folly::Future<bool> MyServiceAsyncClient::future_hasDataById(int64_t id) {
 }
 
 folly::Future<bool> MyServiceAsyncClient::future_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
-  folly::Promise<bool> promise25;
-  auto future26 = promise25.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback27(new apache::thrift::FutureCallback<bool>(std::move(promise25), recv_wrapped_hasDataById));
-  hasDataById(rpcOptions, std::move(callback27), id);
-  return std::move(future26);
+  folly::Promise<bool> promise13;
+  auto future14 = promise13.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback15(new apache::thrift::FutureCallback<bool>(std::move(promise13), recv_wrapped_hasDataById));
+  hasDataById(rpcOptions, std::move(callback15), id);
+  return std::move(future14);
 }
 
 void MyServiceAsyncClient::hasDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
@@ -354,8 +152,8 @@ void MyServiceAsyncClient::sync_getDataById(std::string& _return, int64_t id) {
 
 void MyServiceAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptions, std::string& _return, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
-  std::unique_ptr<apache::thrift::RequestCallback> callback28(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
-  getDataById(rpcOptions, std::move(callback28), id);
+  std::unique_ptr<apache::thrift::RequestCallback> callback16(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
+  getDataById(rpcOptions, std::move(callback16), id);
   getChannel()->getEventBase()->loopForever();
   if (!_returnState.buf()) {
     assert(_returnState.exception());
@@ -370,11 +168,11 @@ folly::Future<std::string> MyServiceAsyncClient::future_getDataById(int64_t id) 
 }
 
 folly::Future<std::string> MyServiceAsyncClient::future_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
-  folly::Promise<std::string> promise29;
-  auto future30 = promise29.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback31(new apache::thrift::FutureCallback<std::string>(std::move(promise29), recv_wrapped_getDataById));
-  getDataById(rpcOptions, std::move(callback31), id);
-  return std::move(future30);
+  folly::Promise<std::string> promise17;
+  auto future18 = promise17.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback19(new apache::thrift::FutureCallback<std::string>(std::move(promise17), recv_wrapped_getDataById));
+  getDataById(rpcOptions, std::move(callback19), id);
+  return std::move(future18);
 }
 
 void MyServiceAsyncClient::getDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
@@ -455,8 +253,8 @@ void MyServiceAsyncClient::sync_putDataById(int64_t id, const std::string& data)
 
 void MyServiceAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
-  std::unique_ptr<apache::thrift::RequestCallback> callback32(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
-  putDataById(rpcOptions, std::move(callback32), id, data);
+  std::unique_ptr<apache::thrift::RequestCallback> callback20(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
+  putDataById(rpcOptions, std::move(callback20), id, data);
   getChannel()->getEventBase()->loopForever();
   if (!_returnState.buf()) {
     assert(_returnState.exception());
@@ -471,11 +269,11 @@ folly::Future<void> MyServiceAsyncClient::future_putDataById(int64_t id, const s
 }
 
 folly::Future<void> MyServiceAsyncClient::future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
-  folly::Promise<void> promise33;
-  auto future34 = promise33.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback35(new apache::thrift::FutureCallback<void>(std::move(promise33), recv_wrapped_putDataById));
-  putDataById(rpcOptions, std::move(callback35), id, data);
-  return std::move(future34);
+  folly::Promise<void> promise21;
+  auto future22 = promise21.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback23(new apache::thrift::FutureCallback<void>(std::move(promise21), recv_wrapped_putDataById));
+  putDataById(rpcOptions, std::move(callback23), id, data);
+  return std::move(future22);
 }
 
 void MyServiceAsyncClient::putDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
@@ -556,8 +354,8 @@ void MyServiceAsyncClient::sync_lobDataById(int64_t id, const std::string& data)
 
 void MyServiceAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
-  std::unique_ptr<apache::thrift::RequestCallback> callback36(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), true));
-  lobDataById(rpcOptions, std::move(callback36), id, data);
+  std::unique_ptr<apache::thrift::RequestCallback> callback24(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), true));
+  lobDataById(rpcOptions, std::move(callback24), id, data);
   getChannel()->getEventBase()->loopForever();
 }
 
@@ -567,11 +365,11 @@ folly::Future<void> MyServiceAsyncClient::future_lobDataById(int64_t id, const s
 }
 
 folly::Future<void> MyServiceAsyncClient::future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
-  folly::Promise<void> promise37;
-  auto future38 = promise37.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback39(new apache::thrift::OneWayFutureCallback(std::move(promise37)));
-  lobDataById(rpcOptions, std::move(callback39), id, data);
-  return std::move(future38);
+  folly::Promise<void> promise25;
+  auto future26 = promise25.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback27(new apache::thrift::OneWayFutureCallback(std::move(promise25)));
+  lobDataById(rpcOptions, std::move(callback27), id, data);
+  return std::move(future26);
 }
 
 void MyServiceAsyncClient::lobDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {

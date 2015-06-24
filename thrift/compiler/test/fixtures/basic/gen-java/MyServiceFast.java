@@ -24,7 +24,7 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class MyService {
+public class MyServiceFast {
 
   public interface Iface {
 
@@ -89,7 +89,7 @@ public class MyService {
 
     public void ping() throws TException
     {
-      ContextStack ctx = getContextStack("MyService.ping", null);
+      ContextStack ctx = getContextStack("MyServiceFast.ping", null);
       this.setContextStack(ctx);
       send_ping();
       recv_ping();
@@ -98,13 +98,13 @@ public class MyService {
     public void send_ping() throws TException
     {
       ContextStack ctx = this.getContextStack();
-      super.preWrite(ctx, "MyService.ping", null);
+      super.preWrite(ctx, "MyServiceFast.ping", null);
       oprot_.writeMessageBegin(new TMessage("ping", TMessageType.CALL, seqid_));
       ping_args args = new ping_args();
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
-      super.postWrite(ctx, "MyService.ping", args);
+      super.postWrite(ctx, "MyServiceFast.ping", args);
       return;
     }
 
@@ -113,7 +113,7 @@ public class MyService {
       ContextStack ctx = super.getContextStack();
       long bytes;
       TMessageType mtype;
-      super.preRead(ctx, "MyService.ping");
+      super.preRead(ctx, "MyServiceFast.ping");
       TMessage msg = iprot_.readMessageBegin();
       if (msg.type == TMessageType.EXCEPTION) {
         TApplicationException x = TApplicationException.read(iprot_);
@@ -123,14 +123,14 @@ public class MyService {
       ping_result result = new ping_result();
       result.read(iprot_);
       iprot_.readMessageEnd();
-      super.postRead(ctx, "MyService.ping", result);
+      super.postRead(ctx, "MyServiceFast.ping", result);
 
       return;
     }
 
     public String getRandomData() throws TException
     {
-      ContextStack ctx = getContextStack("MyService.getRandomData", null);
+      ContextStack ctx = getContextStack("MyServiceFast.getRandomData", null);
       this.setContextStack(ctx);
       send_getRandomData();
       return recv_getRandomData();
@@ -139,13 +139,13 @@ public class MyService {
     public void send_getRandomData() throws TException
     {
       ContextStack ctx = this.getContextStack();
-      super.preWrite(ctx, "MyService.getRandomData", null);
+      super.preWrite(ctx, "MyServiceFast.getRandomData", null);
       oprot_.writeMessageBegin(new TMessage("getRandomData", TMessageType.CALL, seqid_));
       getRandomData_args args = new getRandomData_args();
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
-      super.postWrite(ctx, "MyService.getRandomData", args);
+      super.postWrite(ctx, "MyServiceFast.getRandomData", args);
       return;
     }
 
@@ -154,7 +154,7 @@ public class MyService {
       ContextStack ctx = super.getContextStack();
       long bytes;
       TMessageType mtype;
-      super.preRead(ctx, "MyService.getRandomData");
+      super.preRead(ctx, "MyServiceFast.getRandomData");
       TMessage msg = iprot_.readMessageBegin();
       if (msg.type == TMessageType.EXCEPTION) {
         TApplicationException x = TApplicationException.read(iprot_);
@@ -164,7 +164,7 @@ public class MyService {
       getRandomData_result result = new getRandomData_result();
       result.read(iprot_);
       iprot_.readMessageEnd();
-      super.postRead(ctx, "MyService.getRandomData", result);
+      super.postRead(ctx, "MyServiceFast.getRandomData", result);
 
       if (result.isSetSuccess()) {
         return result.success;
@@ -174,7 +174,7 @@ public class MyService {
 
     public boolean hasDataById(long id) throws TException
     {
-      ContextStack ctx = getContextStack("MyService.hasDataById", null);
+      ContextStack ctx = getContextStack("MyServiceFast.hasDataById", null);
       this.setContextStack(ctx);
       send_hasDataById(id);
       return recv_hasDataById();
@@ -183,14 +183,14 @@ public class MyService {
     public void send_hasDataById(long id) throws TException
     {
       ContextStack ctx = this.getContextStack();
-      super.preWrite(ctx, "MyService.hasDataById", null);
+      super.preWrite(ctx, "MyServiceFast.hasDataById", null);
       oprot_.writeMessageBegin(new TMessage("hasDataById", TMessageType.CALL, seqid_));
       hasDataById_args args = new hasDataById_args();
       args.id = id;
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
-      super.postWrite(ctx, "MyService.hasDataById", args);
+      super.postWrite(ctx, "MyServiceFast.hasDataById", args);
       return;
     }
 
@@ -199,7 +199,7 @@ public class MyService {
       ContextStack ctx = super.getContextStack();
       long bytes;
       TMessageType mtype;
-      super.preRead(ctx, "MyService.hasDataById");
+      super.preRead(ctx, "MyServiceFast.hasDataById");
       TMessage msg = iprot_.readMessageBegin();
       if (msg.type == TMessageType.EXCEPTION) {
         TApplicationException x = TApplicationException.read(iprot_);
@@ -209,7 +209,7 @@ public class MyService {
       hasDataById_result result = new hasDataById_result();
       result.read(iprot_);
       iprot_.readMessageEnd();
-      super.postRead(ctx, "MyService.hasDataById", result);
+      super.postRead(ctx, "MyServiceFast.hasDataById", result);
 
       if (result.isSetSuccess()) {
         return result.success;
@@ -219,7 +219,7 @@ public class MyService {
 
     public String getDataById(long id) throws TException
     {
-      ContextStack ctx = getContextStack("MyService.getDataById", null);
+      ContextStack ctx = getContextStack("MyServiceFast.getDataById", null);
       this.setContextStack(ctx);
       send_getDataById(id);
       return recv_getDataById();
@@ -228,14 +228,14 @@ public class MyService {
     public void send_getDataById(long id) throws TException
     {
       ContextStack ctx = this.getContextStack();
-      super.preWrite(ctx, "MyService.getDataById", null);
+      super.preWrite(ctx, "MyServiceFast.getDataById", null);
       oprot_.writeMessageBegin(new TMessage("getDataById", TMessageType.CALL, seqid_));
       getDataById_args args = new getDataById_args();
       args.id = id;
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
-      super.postWrite(ctx, "MyService.getDataById", args);
+      super.postWrite(ctx, "MyServiceFast.getDataById", args);
       return;
     }
 
@@ -244,7 +244,7 @@ public class MyService {
       ContextStack ctx = super.getContextStack();
       long bytes;
       TMessageType mtype;
-      super.preRead(ctx, "MyService.getDataById");
+      super.preRead(ctx, "MyServiceFast.getDataById");
       TMessage msg = iprot_.readMessageBegin();
       if (msg.type == TMessageType.EXCEPTION) {
         TApplicationException x = TApplicationException.read(iprot_);
@@ -254,7 +254,7 @@ public class MyService {
       getDataById_result result = new getDataById_result();
       result.read(iprot_);
       iprot_.readMessageEnd();
-      super.postRead(ctx, "MyService.getDataById", result);
+      super.postRead(ctx, "MyServiceFast.getDataById", result);
 
       if (result.isSetSuccess()) {
         return result.success;
@@ -264,7 +264,7 @@ public class MyService {
 
     public void putDataById(long id, String data) throws TException
     {
-      ContextStack ctx = getContextStack("MyService.putDataById", null);
+      ContextStack ctx = getContextStack("MyServiceFast.putDataById", null);
       this.setContextStack(ctx);
       send_putDataById(id, data);
       recv_putDataById();
@@ -273,7 +273,7 @@ public class MyService {
     public void send_putDataById(long id, String data) throws TException
     {
       ContextStack ctx = this.getContextStack();
-      super.preWrite(ctx, "MyService.putDataById", null);
+      super.preWrite(ctx, "MyServiceFast.putDataById", null);
       oprot_.writeMessageBegin(new TMessage("putDataById", TMessageType.CALL, seqid_));
       putDataById_args args = new putDataById_args();
       args.id = id;
@@ -281,7 +281,7 @@ public class MyService {
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
-      super.postWrite(ctx, "MyService.putDataById", args);
+      super.postWrite(ctx, "MyServiceFast.putDataById", args);
       return;
     }
 
@@ -290,7 +290,7 @@ public class MyService {
       ContextStack ctx = super.getContextStack();
       long bytes;
       TMessageType mtype;
-      super.preRead(ctx, "MyService.putDataById");
+      super.preRead(ctx, "MyServiceFast.putDataById");
       TMessage msg = iprot_.readMessageBegin();
       if (msg.type == TMessageType.EXCEPTION) {
         TApplicationException x = TApplicationException.read(iprot_);
@@ -300,14 +300,14 @@ public class MyService {
       putDataById_result result = new putDataById_result();
       result.read(iprot_);
       iprot_.readMessageEnd();
-      super.postRead(ctx, "MyService.putDataById", result);
+      super.postRead(ctx, "MyServiceFast.putDataById", result);
 
       return;
     }
 
     public void lobDataById(long id, String data) throws TException
     {
-      ContextStack ctx = getContextStack("MyService.lobDataById", null);
+      ContextStack ctx = getContextStack("MyServiceFast.lobDataById", null);
       this.setContextStack(ctx);
       send_lobDataById(id, data);
     }
@@ -315,7 +315,7 @@ public class MyService {
     public void send_lobDataById(long id, String data) throws TException
     {
       ContextStack ctx = this.getContextStack();
-      super.preWrite(ctx, "MyService.lobDataById", null);
+      super.preWrite(ctx, "MyServiceFast.lobDataById", null);
       oprot_.writeMessageBegin(new TMessage("lobDataById", TMessageType.CALL, seqid_));
       lobDataById_args args = new lobDataById_args();
       args.id = id;
@@ -323,7 +323,7 @@ public class MyService {
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().onewayFlush();
-      super.postWrite(ctx, "MyService.lobDataById", args);
+      super.postWrite(ctx, "MyServiceFast.lobDataById", args);
       return;
     }
 
@@ -345,16 +345,16 @@ public class MyService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void ping(AsyncMethodCallback resultHandler9) throws TException {
+    public void ping(AsyncMethodCallback resultHandler45) throws TException {
       checkReady();
-      ping_call method_call = new ping_call(resultHandler9, this, ___protocolFactory, ___transport);
+      ping_call method_call = new ping_call(resultHandler45, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class ping_call extends TAsyncMethodCall {
-      public ping_call(AsyncMethodCallback resultHandler10, TAsyncClient client6, TProtocolFactory protocolFactory7, TNonblockingTransport transport8) throws TException {
-        super(client6, protocolFactory7, transport8, resultHandler10, false);
+      public ping_call(AsyncMethodCallback resultHandler46, TAsyncClient client42, TProtocolFactory protocolFactory43, TNonblockingTransport transport44) throws TException {
+        super(client42, protocolFactory43, transport44, resultHandler46, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -374,16 +374,16 @@ public class MyService {
       }
     }
 
-    public void getRandomData(AsyncMethodCallback resultHandler14) throws TException {
+    public void getRandomData(AsyncMethodCallback resultHandler50) throws TException {
       checkReady();
-      getRandomData_call method_call = new getRandomData_call(resultHandler14, this, ___protocolFactory, ___transport);
+      getRandomData_call method_call = new getRandomData_call(resultHandler50, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getRandomData_call extends TAsyncMethodCall {
-      public getRandomData_call(AsyncMethodCallback resultHandler15, TAsyncClient client11, TProtocolFactory protocolFactory12, TNonblockingTransport transport13) throws TException {
-        super(client11, protocolFactory12, transport13, resultHandler15, false);
+      public getRandomData_call(AsyncMethodCallback resultHandler51, TAsyncClient client47, TProtocolFactory protocolFactory48, TNonblockingTransport transport49) throws TException {
+        super(client47, protocolFactory48, transport49, resultHandler51, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -403,17 +403,17 @@ public class MyService {
       }
     }
 
-    public void hasDataById(long id, AsyncMethodCallback resultHandler19) throws TException {
+    public void hasDataById(long id, AsyncMethodCallback resultHandler55) throws TException {
       checkReady();
-      hasDataById_call method_call = new hasDataById_call(id, resultHandler19, this, ___protocolFactory, ___transport);
+      hasDataById_call method_call = new hasDataById_call(id, resultHandler55, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class hasDataById_call extends TAsyncMethodCall {
       private long id;
-      public hasDataById_call(long id, AsyncMethodCallback resultHandler20, TAsyncClient client16, TProtocolFactory protocolFactory17, TNonblockingTransport transport18) throws TException {
-        super(client16, protocolFactory17, transport18, resultHandler20, false);
+      public hasDataById_call(long id, AsyncMethodCallback resultHandler56, TAsyncClient client52, TProtocolFactory protocolFactory53, TNonblockingTransport transport54) throws TException {
+        super(client52, protocolFactory53, transport54, resultHandler56, false);
         this.id = id;
       }
 
@@ -435,17 +435,17 @@ public class MyService {
       }
     }
 
-    public void getDataById(long id, AsyncMethodCallback resultHandler24) throws TException {
+    public void getDataById(long id, AsyncMethodCallback resultHandler60) throws TException {
       checkReady();
-      getDataById_call method_call = new getDataById_call(id, resultHandler24, this, ___protocolFactory, ___transport);
+      getDataById_call method_call = new getDataById_call(id, resultHandler60, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getDataById_call extends TAsyncMethodCall {
       private long id;
-      public getDataById_call(long id, AsyncMethodCallback resultHandler25, TAsyncClient client21, TProtocolFactory protocolFactory22, TNonblockingTransport transport23) throws TException {
-        super(client21, protocolFactory22, transport23, resultHandler25, false);
+      public getDataById_call(long id, AsyncMethodCallback resultHandler61, TAsyncClient client57, TProtocolFactory protocolFactory58, TNonblockingTransport transport59) throws TException {
+        super(client57, protocolFactory58, transport59, resultHandler61, false);
         this.id = id;
       }
 
@@ -467,9 +467,9 @@ public class MyService {
       }
     }
 
-    public void putDataById(long id, String data, AsyncMethodCallback resultHandler29) throws TException {
+    public void putDataById(long id, String data, AsyncMethodCallback resultHandler65) throws TException {
       checkReady();
-      putDataById_call method_call = new putDataById_call(id, data, resultHandler29, this, ___protocolFactory, ___transport);
+      putDataById_call method_call = new putDataById_call(id, data, resultHandler65, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -477,8 +477,8 @@ public class MyService {
     public static class putDataById_call extends TAsyncMethodCall {
       private long id;
       private String data;
-      public putDataById_call(long id, String data, AsyncMethodCallback resultHandler30, TAsyncClient client26, TProtocolFactory protocolFactory27, TNonblockingTransport transport28) throws TException {
-        super(client26, protocolFactory27, transport28, resultHandler30, false);
+      public putDataById_call(long id, String data, AsyncMethodCallback resultHandler66, TAsyncClient client62, TProtocolFactory protocolFactory63, TNonblockingTransport transport64) throws TException {
+        super(client62, protocolFactory63, transport64, resultHandler66, false);
         this.id = id;
         this.data = data;
       }
@@ -502,9 +502,9 @@ public class MyService {
       }
     }
 
-    public void lobDataById(long id, String data, AsyncMethodCallback resultHandler34) throws TException {
+    public void lobDataById(long id, String data, AsyncMethodCallback resultHandler70) throws TException {
       checkReady();
-      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler34, this, ___protocolFactory, ___transport);
+      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler70, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -512,8 +512,8 @@ public class MyService {
     public static class lobDataById_call extends TAsyncMethodCall {
       private long id;
       private String data;
-      public lobDataById_call(long id, String data, AsyncMethodCallback resultHandler35, TAsyncClient client31, TProtocolFactory protocolFactory32, TNonblockingTransport transport33) throws TException {
-        super(client31, protocolFactory32, transport33, resultHandler35, true);
+      public lobDataById_call(long id, String data, AsyncMethodCallback resultHandler71, TAsyncClient client67, TProtocolFactory protocolFactory68, TNonblockingTransport transport69) throws TException {
+        super(client67, protocolFactory68, transport69, resultHandler71, true);
         this.id = id;
         this.data = data;
       }
@@ -585,20 +585,20 @@ public class MyService {
     private class ping implements ProcessFunction {
       public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
       {
-        Object handler_ctx = event_handler_.getContext("MyService.ping", server_ctx);
+        Object handler_ctx = event_handler_.getContext("MyServiceFast.ping", server_ctx);
         ping_args args = new ping_args();
-        event_handler_.preRead(handler_ctx, "MyService.ping");
+        event_handler_.preRead(handler_ctx, "MyServiceFast.ping");
         args.read(iprot);
         iprot.readMessageEnd();
-        event_handler_.postRead(handler_ctx, "MyService.ping", args);
+        event_handler_.postRead(handler_ctx, "MyServiceFast.ping", args);
         ping_result result = new ping_result();
         iface_.ping();
-        event_handler_.preWrite(handler_ctx, "MyService.ping", result);
+        event_handler_.preWrite(handler_ctx, "MyServiceFast.ping", result);
         oprot.writeMessageBegin(new TMessage("ping", TMessageType.REPLY, seqid));
         result.write(oprot);
         oprot.writeMessageEnd();
         oprot.getTransport().flush();
-        event_handler_.postWrite(handler_ctx, "MyService.ping", result);
+        event_handler_.postWrite(handler_ctx, "MyServiceFast.ping", result);
       }
 
     }
@@ -606,20 +606,20 @@ public class MyService {
     private class getRandomData implements ProcessFunction {
       public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
       {
-        Object handler_ctx = event_handler_.getContext("MyService.getRandomData", server_ctx);
+        Object handler_ctx = event_handler_.getContext("MyServiceFast.getRandomData", server_ctx);
         getRandomData_args args = new getRandomData_args();
-        event_handler_.preRead(handler_ctx, "MyService.getRandomData");
+        event_handler_.preRead(handler_ctx, "MyServiceFast.getRandomData");
         args.read(iprot);
         iprot.readMessageEnd();
-        event_handler_.postRead(handler_ctx, "MyService.getRandomData", args);
+        event_handler_.postRead(handler_ctx, "MyServiceFast.getRandomData", args);
         getRandomData_result result = new getRandomData_result();
         result.success = iface_.getRandomData();
-        event_handler_.preWrite(handler_ctx, "MyService.getRandomData", result);
+        event_handler_.preWrite(handler_ctx, "MyServiceFast.getRandomData", result);
         oprot.writeMessageBegin(new TMessage("getRandomData", TMessageType.REPLY, seqid));
         result.write(oprot);
         oprot.writeMessageEnd();
         oprot.getTransport().flush();
-        event_handler_.postWrite(handler_ctx, "MyService.getRandomData", result);
+        event_handler_.postWrite(handler_ctx, "MyServiceFast.getRandomData", result);
       }
 
     }
@@ -627,21 +627,21 @@ public class MyService {
     private class hasDataById implements ProcessFunction {
       public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
       {
-        Object handler_ctx = event_handler_.getContext("MyService.hasDataById", server_ctx);
+        Object handler_ctx = event_handler_.getContext("MyServiceFast.hasDataById", server_ctx);
         hasDataById_args args = new hasDataById_args();
-        event_handler_.preRead(handler_ctx, "MyService.hasDataById");
+        event_handler_.preRead(handler_ctx, "MyServiceFast.hasDataById");
         args.read(iprot);
         iprot.readMessageEnd();
-        event_handler_.postRead(handler_ctx, "MyService.hasDataById", args);
+        event_handler_.postRead(handler_ctx, "MyServiceFast.hasDataById", args);
         hasDataById_result result = new hasDataById_result();
         result.success = iface_.hasDataById(args.id);
         result.setSuccessIsSet(true);
-        event_handler_.preWrite(handler_ctx, "MyService.hasDataById", result);
+        event_handler_.preWrite(handler_ctx, "MyServiceFast.hasDataById", result);
         oprot.writeMessageBegin(new TMessage("hasDataById", TMessageType.REPLY, seqid));
         result.write(oprot);
         oprot.writeMessageEnd();
         oprot.getTransport().flush();
-        event_handler_.postWrite(handler_ctx, "MyService.hasDataById", result);
+        event_handler_.postWrite(handler_ctx, "MyServiceFast.hasDataById", result);
       }
 
     }
@@ -649,20 +649,20 @@ public class MyService {
     private class getDataById implements ProcessFunction {
       public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
       {
-        Object handler_ctx = event_handler_.getContext("MyService.getDataById", server_ctx);
+        Object handler_ctx = event_handler_.getContext("MyServiceFast.getDataById", server_ctx);
         getDataById_args args = new getDataById_args();
-        event_handler_.preRead(handler_ctx, "MyService.getDataById");
+        event_handler_.preRead(handler_ctx, "MyServiceFast.getDataById");
         args.read(iprot);
         iprot.readMessageEnd();
-        event_handler_.postRead(handler_ctx, "MyService.getDataById", args);
+        event_handler_.postRead(handler_ctx, "MyServiceFast.getDataById", args);
         getDataById_result result = new getDataById_result();
         result.success = iface_.getDataById(args.id);
-        event_handler_.preWrite(handler_ctx, "MyService.getDataById", result);
+        event_handler_.preWrite(handler_ctx, "MyServiceFast.getDataById", result);
         oprot.writeMessageBegin(new TMessage("getDataById", TMessageType.REPLY, seqid));
         result.write(oprot);
         oprot.writeMessageEnd();
         oprot.getTransport().flush();
-        event_handler_.postWrite(handler_ctx, "MyService.getDataById", result);
+        event_handler_.postWrite(handler_ctx, "MyServiceFast.getDataById", result);
       }
 
     }
@@ -670,20 +670,20 @@ public class MyService {
     private class putDataById implements ProcessFunction {
       public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
       {
-        Object handler_ctx = event_handler_.getContext("MyService.putDataById", server_ctx);
+        Object handler_ctx = event_handler_.getContext("MyServiceFast.putDataById", server_ctx);
         putDataById_args args = new putDataById_args();
-        event_handler_.preRead(handler_ctx, "MyService.putDataById");
+        event_handler_.preRead(handler_ctx, "MyServiceFast.putDataById");
         args.read(iprot);
         iprot.readMessageEnd();
-        event_handler_.postRead(handler_ctx, "MyService.putDataById", args);
+        event_handler_.postRead(handler_ctx, "MyServiceFast.putDataById", args);
         putDataById_result result = new putDataById_result();
         iface_.putDataById(args.id, args.data);
-        event_handler_.preWrite(handler_ctx, "MyService.putDataById", result);
+        event_handler_.preWrite(handler_ctx, "MyServiceFast.putDataById", result);
         oprot.writeMessageBegin(new TMessage("putDataById", TMessageType.REPLY, seqid));
         result.write(oprot);
         oprot.writeMessageEnd();
         oprot.getTransport().flush();
-        event_handler_.postWrite(handler_ctx, "MyService.putDataById", result);
+        event_handler_.postWrite(handler_ctx, "MyServiceFast.putDataById", result);
       }
 
     }
@@ -691,12 +691,12 @@ public class MyService {
     private class lobDataById implements ProcessFunction {
       public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
       {
-        Object handler_ctx = event_handler_.getContext("MyService.lobDataById", server_ctx);
+        Object handler_ctx = event_handler_.getContext("MyServiceFast.lobDataById", server_ctx);
         lobDataById_args args = new lobDataById_args();
-        event_handler_.preRead(handler_ctx, "MyService.lobDataById");
+        event_handler_.preRead(handler_ctx, "MyServiceFast.lobDataById");
         args.read(iprot);
         iprot.readMessageEnd();
-        event_handler_.postRead(handler_ctx, "MyService.lobDataById", args);
+        event_handler_.postRead(handler_ctx, "MyServiceFast.lobDataById", args);
         iface_.lobDataById(args.id, args.data);
         return;
       }

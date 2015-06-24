@@ -4,249 +4,253 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "MyService.h"
+#include "MyServiceFast.h"
 
-#include "MyService.tcc"
+#include "MyServiceFast.tcc"
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace cpp2 {
 
-std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
-  return std::unique_ptr<apache::thrift::AsyncProcessor>(new MyServiceAsyncProcessor((MyServiceSvIf*)this));
+std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceFastSvIf::getProcessor() {
+  return std::unique_ptr<apache::thrift::AsyncProcessor>(new MyServiceFastAsyncProcessor((MyServiceFastSvIf*)this));
 }
 
-void MyServiceSvIf::ping() {
+void MyServiceFastSvIf::ping() {
   throw apache::thrift::TApplicationException("Function ping is unimplemented");
 }
 
-folly::Future<void> MyServiceSvIf::future_ping() {
-  folly::Promise<void> promise0;
+folly::Future<void> MyServiceFastSvIf::future_ping() {
+  folly::Promise<void> promise40;
   try {
     ping();
-    promise0.setValue();
+    promise40.setValue();
   } catch(const std::exception& ex) {
-    promise0.setException(folly::exception_wrapper(std::current_exception()));
+    promise40.setException(folly::exception_wrapper(std::current_exception()));
   }
-  return promise0.getFuture();
+  return promise40.getFuture();
 }
 
-void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void MyServiceFastSvIf::async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   auto callbackp = callback.release();
   setEventBase(callbackp->getEventBase());
   setThreadManager(callbackp->getThreadManager());
-  setConnectionContext(callbackp->getConnectionContext());
-  try {
-    auto future1 = future_ping();
-    future1.then([=](folly::Try<void>&& t) {
-      try {
-        t.throwIfFailed();
-        callbackp->doneInThread();
-      } catch(...) {
-        callbackp->exceptionInThread(std::current_exception());
+  callbackp->runFuncInQueue([this, callbackp]() mutable {
+    setConnectionContext(callbackp->getConnectionContext());
+    try {
+      auto future41 = future_ping();
+      future41.then([=](folly::Try<void>&& t) {
+        try {
+          t.throwIfFailed();
+          callbackp->doneInThread();
+        } catch(...) {
+          callbackp->exceptionInThread(std::current_exception());
+        }
       }
+      );
+    } catch(const std::exception& ex) {
+      callbackp->exceptionInThread(std::current_exception());
     }
-    );
-  } catch(const std::exception& ex) {
-    callbackp->exceptionInThread(std::current_exception());
   }
+  );
 }
 
-void MyServiceSvIf::getRandomData(std::string& _return) {
+void MyServiceFastSvIf::getRandomData(std::string& _return) {
   throw apache::thrift::TApplicationException("Function getRandomData is unimplemented");
 }
 
-folly::Future<std::unique_ptr<std::string>> MyServiceSvIf::future_getRandomData() {
-  folly::Promise<std::unique_ptr<std::string>> promise2;
+folly::Future<std::unique_ptr<std::string>> MyServiceFastSvIf::future_getRandomData() {
+  folly::Promise<std::unique_ptr<std::string>> promise42;
   try {
     std::unique_ptr<std::string> _return(new std::string);
     getRandomData(*_return);
-    promise2.setValue(std::move(_return));
+    promise42.setValue(std::move(_return));
   } catch(const std::exception& ex) {
-    promise2.setException(folly::exception_wrapper(std::current_exception()));
+    promise42.setException(folly::exception_wrapper(std::current_exception()));
   }
-  return promise2.getFuture();
+  return promise42.getFuture();
 }
 
-void MyServiceSvIf::async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
+void MyServiceFastSvIf::async_eb_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
   auto callbackp = callback.release();
   setEventBase(callbackp->getEventBase());
   setThreadManager(callbackp->getThreadManager());
-  setConnectionContext(callbackp->getConnectionContext());
-  try {
-    auto future3 = future_getRandomData();
-    future3.then([=](folly::Try<std::unique_ptr<std::string>>&& _return) {
-      try {
-        callbackp->resultInThread(std::move(_return.value()));
-      } catch(...) {
-        callbackp->exceptionInThread(std::current_exception());
+  callbackp->runFuncInQueue([this, callbackp]() mutable {
+    setConnectionContext(callbackp->getConnectionContext());
+    try {
+      auto future43 = future_getRandomData();
+      future43.then([=](folly::Try<std::unique_ptr<std::string>>&& _return) {
+        try {
+          callbackp->resultInThread(std::move(_return.value()));
+        } catch(...) {
+          callbackp->exceptionInThread(std::current_exception());
+        }
       }
+      );
+    } catch(const std::exception& ex) {
+      callbackp->exceptionInThread(std::current_exception());
     }
-    );
-  } catch(const std::exception& ex) {
-    callbackp->exceptionInThread(std::current_exception());
   }
+  );
 }
 
-bool MyServiceSvIf::hasDataById(int64_t id) {
+bool MyServiceFastSvIf::hasDataById(int64_t id) {
   throw apache::thrift::TApplicationException("Function hasDataById is unimplemented");
   return 0;
 }
 
-folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {
-  folly::Promise<bool> promise4;
+folly::Future<bool> MyServiceFastSvIf::future_hasDataById(int64_t id) {
+  folly::Promise<bool> promise44;
   try {
-    promise4.setValue(hasDataById(id));
+    promise44.setValue(hasDataById(id));
   } catch(const std::exception& ex) {
-    promise4.setException(folly::exception_wrapper(std::current_exception()));
+    promise44.setException(folly::exception_wrapper(std::current_exception()));
   }
-  return promise4.getFuture();
+  return promise44.getFuture();
 }
 
-void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) {
+void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) {
   auto callbackp = callback.release();
   setEventBase(callbackp->getEventBase());
   setThreadManager(callbackp->getThreadManager());
-  setConnectionContext(callbackp->getConnectionContext());
-  try {
-    auto future5 = future_hasDataById(id);
-    future5.then([=](folly::Try<bool>&& _return) {
-      try {
-        callbackp->resultInThread(std::move(_return.value()));
-      } catch(...) {
-        callbackp->exceptionInThread(std::current_exception());
+  callbackp->runFuncInQueue([this, callbackp, id]() mutable {
+    setConnectionContext(callbackp->getConnectionContext());
+    try {
+      auto future45 = future_hasDataById(id);
+      future45.then([=](folly::Try<bool>&& _return) {
+        try {
+          callbackp->resultInThread(std::move(_return.value()));
+        } catch(...) {
+          callbackp->exceptionInThread(std::current_exception());
+        }
       }
+      );
+    } catch(const std::exception& ex) {
+      callbackp->exceptionInThread(std::current_exception());
     }
-    );
-  } catch(const std::exception& ex) {
-    callbackp->exceptionInThread(std::current_exception());
   }
+  );
 }
 
-void MyServiceSvIf::getDataById(std::string& _return, int64_t id) {
+void MyServiceFastSvIf::getDataById(std::string& _return, int64_t id) {
   throw apache::thrift::TApplicationException("Function getDataById is unimplemented");
 }
 
-folly::Future<std::unique_ptr<std::string>> MyServiceSvIf::future_getDataById(int64_t id) {
-  folly::Promise<std::unique_ptr<std::string>> promise6;
+folly::Future<std::unique_ptr<std::string>> MyServiceFastSvIf::future_getDataById(int64_t id) {
+  folly::Promise<std::unique_ptr<std::string>> promise46;
   try {
     std::unique_ptr<std::string> _return(new std::string);
     getDataById(*_return, id);
-    promise6.setValue(std::move(_return));
+    promise46.setValue(std::move(_return));
   } catch(const std::exception& ex) {
-    promise6.setException(folly::exception_wrapper(std::current_exception()));
+    promise46.setException(folly::exception_wrapper(std::current_exception()));
   }
-  return promise6.getFuture();
+  return promise46.getFuture();
 }
 
-void MyServiceSvIf::async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id) {
+void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id) {
   auto callbackp = callback.release();
   setEventBase(callbackp->getEventBase());
   setThreadManager(callbackp->getThreadManager());
-  setConnectionContext(callbackp->getConnectionContext());
-  try {
-    auto future7 = future_getDataById(id);
-    future7.then([=](folly::Try<std::unique_ptr<std::string>>&& _return) {
-      try {
-        callbackp->resultInThread(std::move(_return.value()));
-      } catch(...) {
-        callbackp->exceptionInThread(std::current_exception());
+  callbackp->runFuncInQueue([this, callbackp, id]() mutable {
+    setConnectionContext(callbackp->getConnectionContext());
+    try {
+      auto future47 = future_getDataById(id);
+      future47.then([=](folly::Try<std::unique_ptr<std::string>>&& _return) {
+        try {
+          callbackp->resultInThread(std::move(_return.value()));
+        } catch(...) {
+          callbackp->exceptionInThread(std::current_exception());
+        }
       }
+      );
+    } catch(const std::exception& ex) {
+      callbackp->exceptionInThread(std::current_exception());
     }
-    );
-  } catch(const std::exception& ex) {
-    callbackp->exceptionInThread(std::current_exception());
   }
+  );
 }
 
-void MyServiceSvIf::putDataById(int64_t id, std::unique_ptr<std::string> data) {
+void MyServiceFastSvIf::putDataById(int64_t id, std::unique_ptr<std::string> data) {
   throw apache::thrift::TApplicationException("Function putDataById is unimplemented");
 }
 
-folly::Future<void> MyServiceSvIf::future_putDataById(int64_t id, std::unique_ptr<std::string> data) {
-  folly::Promise<void> promise8;
+folly::Future<void> MyServiceFastSvIf::future_putDataById(int64_t id, std::unique_ptr<std::string> data) {
+  folly::Promise<void> promise48;
   try {
     putDataById(id, std::move(data));
-    promise8.setValue();
+    promise48.setValue();
   } catch(const std::exception& ex) {
-    promise8.setException(folly::exception_wrapper(std::current_exception()));
+    promise48.setException(folly::exception_wrapper(std::current_exception()));
   }
-  return promise8.getFuture();
+  return promise48.getFuture();
 }
 
-void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data) {
+void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data) {
   auto callbackp = callback.release();
   setEventBase(callbackp->getEventBase());
   setThreadManager(callbackp->getThreadManager());
-  auto tmp_move_data9 = std::move(data);
-  auto move_data10 = folly::makeMoveWrapper(std::move(tmp_move_data9));
-  setConnectionContext(callbackp->getConnectionContext());
-  try {
-    auto future11 = future_putDataById(id, std::move(*move_data10));
-    future11.then([=](folly::Try<void>&& t) {
-      try {
-        t.throwIfFailed();
-        callbackp->doneInThread();
-      } catch(...) {
-        callbackp->exceptionInThread(std::current_exception());
+  auto tmp_move_data49 = std::move(data);
+  auto move_data50 = folly::makeMoveWrapper(std::move(tmp_move_data49));
+  callbackp->runFuncInQueue([this, callbackp, id, move_data50]() mutable {
+    setConnectionContext(callbackp->getConnectionContext());
+    try {
+      auto future51 = future_putDataById(id, std::move(*move_data50));
+      future51.then([=](folly::Try<void>&& t) {
+        try {
+          t.throwIfFailed();
+          callbackp->doneInThread();
+        } catch(...) {
+          callbackp->exceptionInThread(std::current_exception());
+        }
       }
+      );
+    } catch(const std::exception& ex) {
+      callbackp->exceptionInThread(std::current_exception());
     }
-    );
-  } catch(const std::exception& ex) {
-    callbackp->exceptionInThread(std::current_exception());
   }
+  );
 }
 
-void MyServiceSvIf::lobDataById(int64_t id, std::unique_ptr<std::string> data) {
+void MyServiceFastSvIf::lobDataById(int64_t id, std::unique_ptr<std::string> data) {
   throw apache::thrift::TApplicationException("Function lobDataById is unimplemented");
 }
 
-folly::Future<void> MyServiceSvIf::future_lobDataById(int64_t id, std::unique_ptr<std::string> data) {
-  folly::Promise<void> promise12;
+folly::Future<void> MyServiceFastSvIf::future_lobDataById(int64_t id, std::unique_ptr<std::string> data) {
+  folly::Promise<void> promise52;
   try {
     lobDataById(id, std::move(data));
-    promise12.setValue();
+    promise52.setValue();
   } catch(const std::exception& ex) {
-    promise12.setException(folly::exception_wrapper(std::current_exception()));
+    promise52.setException(folly::exception_wrapper(std::current_exception()));
   }
-  return promise12.getFuture();
+  return promise52.getFuture();
 }
 
-void MyServiceSvIf::async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data) {
+void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data) {
   auto callbackp = callback.release();
   setEventBase(callbackp->getEventBase());
   setThreadManager(callbackp->getThreadManager());
-  auto tmp_move_data13 = std::move(data);
-  auto move_data14 = folly::makeMoveWrapper(std::move(tmp_move_data13));
-  setConnectionContext(callbackp->getConnectionContext());
-  try {
-    auto future15 = future_lobDataById(id, std::move(*move_data14));
-    delete callbackp;
-  } catch(const std::exception& ex) {
-    delete callbackp;
+  auto tmp_move_data53 = std::move(data);
+  auto move_data54 = folly::makeMoveWrapper(std::move(tmp_move_data53));
+  callbackp->runFuncInQueue([this, callbackp, id, move_data54]() mutable {
+    setConnectionContext(callbackp->getConnectionContext());
+    try {
+      auto future55 = future_lobDataById(id, std::move(*move_data54));
+      delete callbackp;
+    } catch(const std::exception& ex) {
+      delete callbackp;
+    }
   }
+  );
 }
 
-void MyServiceSvNull::ping() {}
-
-void MyServiceSvNull::getRandomData(std::string& _return) {}
-
-bool MyServiceSvNull::hasDataById(int64_t id) {
-  return 0;
+const char* MyServiceFastAsyncProcessor::getServiceName() {
+  return "MyServiceFast";
 }
 
-void MyServiceSvNull::getDataById(std::string& _return, int64_t id) {}
-
-void MyServiceSvNull::putDataById(int64_t id, std::unique_ptr<std::string> data) {}
-
-void MyServiceSvNull::lobDataById(int64_t id, std::unique_ptr<std::string> data) {}
-
-const char* MyServiceAsyncProcessor::getServiceName() {
-  return "MyService";
-}
-
-folly::Optional<std::string> MyServiceAsyncProcessor::getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) {
+folly::Optional<std::string> MyServiceFastAsyncProcessor::getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) {
   std::string fname;
   apache::thrift::MessageType mtype;
   int32_t protoSeqId = 0;
@@ -322,7 +326,7 @@ folly::Optional<std::string> MyServiceAsyncProcessor::getCacheKey(folly::IOBuf* 
   return folly::none;
 }
 
-void MyServiceAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType,apache::thrift::Cpp2RequestContext* context,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void MyServiceFastAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType,apache::thrift::Cpp2RequestContext* context,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   std::string fname;
   apache::thrift::MessageType mtype;
   int32_t protoSeqId = 0;
@@ -480,7 +484,7 @@ void MyServiceAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseCh
   }
 }
 
-bool MyServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) {
+bool MyServiceFastAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) {
   std::string fname;
   apache::thrift::MessageType mtype;
   int32_t protoSeqId = 0;
@@ -521,25 +525,25 @@ bool MyServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apac
   return false;
 }
 
-std::unordered_set<std::string> MyServiceAsyncProcessor::onewayMethods {
+std::unordered_set<std::string> MyServiceFastAsyncProcessor::onewayMethods {
   "lobDataById"
 };
-std::unordered_map<std::string, int16_t> MyServiceAsyncProcessor::CacheKeyMap {};
-MyServiceAsyncProcessor::binaryProcessMap MyServiceAsyncProcessor::binaryProcessMap_ {
-  {"ping", &MyServiceAsyncProcessor::_processInThread_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"getRandomData", &MyServiceAsyncProcessor::_processInThread_getRandomData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"hasDataById", &MyServiceAsyncProcessor::_processInThread_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"getDataById", &MyServiceAsyncProcessor::_processInThread_getDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"putDataById", &MyServiceAsyncProcessor::_processInThread_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"lobDataById", &MyServiceAsyncProcessor::_processInThread_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}
+std::unordered_map<std::string, int16_t> MyServiceFastAsyncProcessor::CacheKeyMap {};
+MyServiceFastAsyncProcessor::binaryProcessMap MyServiceFastAsyncProcessor::binaryProcessMap_ {
+  {"ping", &MyServiceFastAsyncProcessor::process_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"getRandomData", &MyServiceFastAsyncProcessor::process_getRandomData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"hasDataById", &MyServiceFastAsyncProcessor::process_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"getDataById", &MyServiceFastAsyncProcessor::process_getDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"putDataById", &MyServiceFastAsyncProcessor::process_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"lobDataById", &MyServiceFastAsyncProcessor::process_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}
 };
-MyServiceAsyncProcessor::compactProcessMap MyServiceAsyncProcessor::compactProcessMap_ {
-  {"ping", &MyServiceAsyncProcessor::_processInThread_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"getRandomData", &MyServiceAsyncProcessor::_processInThread_getRandomData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"hasDataById", &MyServiceAsyncProcessor::_processInThread_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"getDataById", &MyServiceAsyncProcessor::_processInThread_getDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"putDataById", &MyServiceAsyncProcessor::_processInThread_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"lobDataById", &MyServiceAsyncProcessor::_processInThread_lobDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>}
+MyServiceFastAsyncProcessor::compactProcessMap MyServiceFastAsyncProcessor::compactProcessMap_ {
+  {"ping", &MyServiceFastAsyncProcessor::process_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"getRandomData", &MyServiceFastAsyncProcessor::process_getRandomData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"hasDataById", &MyServiceFastAsyncProcessor::process_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"getDataById", &MyServiceFastAsyncProcessor::process_getDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"putDataById", &MyServiceFastAsyncProcessor::process_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"lobDataById", &MyServiceFastAsyncProcessor::process_lobDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>}
 };
 
 } // cpp2

@@ -27,87 +27,79 @@ namespace apache { namespace thrift {
 
 namespace cpp2 {
 
-class MyServiceSvAsyncIf {
+class MyServiceFastSvAsyncIf {
  public:
-  virtual ~MyServiceSvAsyncIf() {}
-  virtual void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
+  virtual ~MyServiceFastSvAsyncIf() {}
+  virtual void async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual void async_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<void> future_ping() = 0;
-  virtual void async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
+  virtual void async_eb_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
   virtual void async_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::string>> future_getRandomData() = 0;
-  virtual void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) = 0;
+  virtual void async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) = 0;
   virtual void async_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) = delete;
   virtual folly::Future<bool> future_hasDataById(int64_t id) = 0;
-  virtual void async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id) = 0;
+  virtual void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id) = 0;
   virtual void async_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id) = delete;
   virtual folly::Future<std::unique_ptr<std::string>> future_getDataById(int64_t id) = 0;
-  virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data) = 0;
+  virtual void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data) = 0;
   virtual void async_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data) = delete;
   virtual folly::Future<void> future_putDataById(int64_t id, std::unique_ptr<std::string> data) = 0;
-  virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data) = 0;
+  virtual void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data) = 0;
   virtual void async_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data) = delete;
   virtual folly::Future<void> future_lobDataById(int64_t id, std::unique_ptr<std::string> data) = 0;
 };
 
-class MyServiceAsyncProcessor;
+class MyServiceFastAsyncProcessor;
 
-class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerInterface {
+class MyServiceFastSvIf : public MyServiceFastSvAsyncIf, public apache::thrift::ServerInterface {
  public:
-  typedef MyServiceAsyncProcessor ProcessorType;
+  typedef MyServiceFastAsyncProcessor ProcessorType;
 
-  virtual ~MyServiceSvIf() {}
+  virtual ~MyServiceFastSvIf() {}
   virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor();
   virtual void ping();
   folly::Future<void> future_ping();
-  virtual void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
+  virtual void async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
   virtual void getRandomData(std::string& _return);
   folly::Future<std::unique_ptr<std::string>> future_getRandomData();
-  virtual void async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback);
+  virtual void async_eb_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback);
   virtual bool hasDataById(int64_t id);
   folly::Future<bool> future_hasDataById(int64_t id);
-  virtual void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id);
+  virtual void async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id);
   virtual void getDataById(std::string& _return, int64_t id);
   folly::Future<std::unique_ptr<std::string>> future_getDataById(int64_t id);
-  virtual void async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id);
+  virtual void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id);
   virtual void putDataById(int64_t id, std::unique_ptr<std::string> data);
   folly::Future<void> future_putDataById(int64_t id, std::unique_ptr<std::string> data);
-  virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data);
+  virtual void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data);
   virtual void lobDataById(int64_t id, std::unique_ptr<std::string> data);
   folly::Future<void> future_lobDataById(int64_t id, std::unique_ptr<std::string> data);
-  virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data);
+  virtual void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data);
 };
 
-class MyServiceSvNull : public MyServiceSvIf {
+class MyServiceFastSvNull : public MyServiceFastSvIf {
  public:
-  virtual ~MyServiceSvNull() {}
-  virtual void ping();
-  virtual void getRandomData(std::string& _return);
-  virtual bool hasDataById(int64_t id);
-  virtual void getDataById(std::string& _return, int64_t id);
-  virtual void putDataById(int64_t id, std::unique_ptr<std::string> data);
-  virtual void lobDataById(int64_t id, std::unique_ptr<std::string> data);
+  virtual ~MyServiceFastSvNull() {}
 };
 
-class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
+class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
   virtual const char* getServiceName();
  protected:
-  MyServiceSvIf* iface_;
+  MyServiceFastSvIf* iface_;
   virtual folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType);
   virtual void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType,apache::thrift::Cpp2RequestContext* context,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   virtual bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header);
  private:
   static std::unordered_set<std::string> onewayMethods;
   static std::unordered_map<std::string, int16_t> CacheKeyMap;
-  typedef void (MyServiceAsyncProcessor::*binaryProcessFunction)(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::BinaryProtocolReader> iprot, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  typedef void (MyServiceFastAsyncProcessor::*binaryProcessFunction)(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::BinaryProtocolReader> iprot, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   typedef std::unordered_map<std::string, binaryProcessFunction> binaryProcessMap;
-  static MyServiceAsyncProcessor::binaryProcessMap binaryProcessMap_;
-  typedef void (MyServiceAsyncProcessor::*compactProcessFunction)(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::CompactProtocolReader> iprot, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  static MyServiceFastAsyncProcessor::binaryProcessMap binaryProcessMap_;
+  typedef void (MyServiceFastAsyncProcessor::*compactProcessFunction)(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::CompactProtocolReader> iprot, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   typedef std::unordered_map<std::string, compactProcessFunction> compactProcessMap;
-  static MyServiceAsyncProcessor::compactProcessMap compactProcessMap_;
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_ping(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  static MyServiceFastAsyncProcessor::compactProcessMap compactProcessMap_;
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_ping(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -117,8 +109,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_ping(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_getRandomData(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <typename ProtocolIn_, typename ProtocolOut_>
   void process_getRandomData(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_getRandomData(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return);
@@ -126,8 +116,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   static void throw_getRandomData(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_getRandomData(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_hasDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_hasDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -137,8 +125,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_hasDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_getDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <typename ProtocolIn_, typename ProtocolOut_>
   void process_getDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_getDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return);
@@ -146,8 +132,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   static void throw_getDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_getDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_putDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_putDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -157,24 +141,22 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_putDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_lobDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <typename ProtocolIn_, typename ProtocolOut_>
   void process_lobDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
  public:
-  MyServiceAsyncProcessor(MyServiceSvIf* iface) :
+  MyServiceFastAsyncProcessor(MyServiceFastSvIf* iface) :
       iface_(iface) {}
 
-  virtual ~MyServiceAsyncProcessor() {}
+  virtual ~MyServiceFastAsyncProcessor() {}
 };
 
-class MyServiceAsyncClient : public apache::thrift::TClientBase {
+class MyServiceFastAsyncClient : public apache::thrift::TClientBase {
  public:
   virtual const char* getServiceName();
   typedef std::unique_ptr<apache::thrift::RequestChannel, apache::thrift::async::TDelayedDestruction::Destructor> channel_ptr;
 
-  virtual ~MyServiceAsyncClient() {}
+  virtual ~MyServiceFastAsyncClient() {}
 
-  MyServiceAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
+  MyServiceFastAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
       channel_(channel) {
     connectionContext_.reset(new apache::thrift::Cpp2ConnContext(nullptr, nullptr, channel_->getHeader(), nullptr, nullptr));
   }
