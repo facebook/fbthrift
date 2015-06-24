@@ -131,6 +131,7 @@ class t_py_generator : public t_generator {
   void generate_service_interface (t_service* tservice, bool with_context);
   void generate_service_client    (t_service* tservice);
   void generate_service_remote    (t_service* tservice);
+  void generate_service_fuzzer    (t_service* tservice);
   void generate_service_server    (t_service* tservice, bool with_context);
   void generate_process_function  (t_service* tservice, t_function* tfunction,
                                    bool with_context);
@@ -249,7 +250,7 @@ class t_py_generator : public t_generator {
    */
 
   std::string py_autogen_comment();
-  std::string py_remote_warning();
+  std::string py_par_warning(string service_tool_name);
   std::string py_imports();
   std::string rename_reserved_keywords(const std::string& value);
   std::string render_includes();
@@ -825,11 +826,10 @@ string t_py_generator::py_autogen_comment() {
     "#\n";
 }
 
-/*
- * Print out warning message in the case that *-remote.py is ran instead of
- * running *-remote.par
+/**
+ * Print out warning message in the case a *.py is running instead of *.par
  */
- string t_py_generator::py_remote_warning() {
+string t_py_generator::py_par_warning(string service_tool_name) {
   return
     "if (not sys.argv[0].endswith(\"par\") and\n"
     "    os.getenv('PAR_UNPACK_TMP') == None):\n"
@@ -844,10 +844,11 @@ string t_py_generator::py_autogen_comment() {
     "    # second line. See fbcode/tools/make_par/make_par.py\n"
     "    if (not line.startswith('# This par was made')):\n"
     "        print(\"\"\"WARNING\n"
-    "        You are trying to run *-remote.py which is incorrect as the\n"
-    "        paths are not set up correctly. Instead, you should generate\n"
-    "        your thrift files with thrift_library and then run the\n"
-    "        resulting *-remote.par.\n"
+    "        You are trying to run *-"+service_tool_name+".py which is\n"
+    "        incorrect as the paths are not set up correctly.\n"
+    "        Instead, you should generate your thrift file with\n"
+    "        thrift_library and then run the resulting\n"
+    "        *-"+service_tool_name+".par.\n"
     "        For more information, please read\n"
     "        http://fburl.com/python-remotes\"\"\")\n"
     "        exit()\n";
@@ -1955,6 +1956,7 @@ void t_py_generator::generate_service(t_service* tservice) {
   generate_service_server(tservice, true);
   generate_service_helpers(tservice);
   generate_service_remote(tservice);
+  generate_service_fuzzer(tservice);
 
   // Close service file
   f_service_ << "fix_spec(all_structs)" << endl
@@ -2436,7 +2438,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
     "\n" <<
     // This has to be before thrift definitions
     // in case the environment is not correct.
-    py_remote_warning() <<
+    py_par_warning("remote") <<
     // Import the service module and types
     "\n"
     << "from . import "
@@ -2522,6 +2524,55 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
 #endif
   );
 }
+
+/**
+ * Generates a commandline tool for fuzz testing
+ *
+ * @param tservice The service to generate a fuzzer for.
+ */
+void t_py_generator::generate_service_fuzzer(t_service* tservice) {
+  string f_fuzzer_name = package_dir_+"/"+service_name_+"-fuzzer";
+  ofstream f_fuzzer;
+  f_fuzzer.open(f_fuzzer_name.c_str());
+  record_genfile(f_fuzzer_name);
+
+  f_fuzzer <<
+    "#!/usr/bin/env python\n" <<
+    py_autogen_comment() << "\n"
+    "from __future__ import absolute_import\n"
+    "from __future__ import division\n"
+    "from __future__ import print_function\n"
+    "from __future__ import unicode_literals\n"
+    "\n"
+    "import os\n"
+    "import sys\n"
+    "\n" <<
+    py_par_warning("fuzzer") <<
+    "\n" <<
+    "from . import " <<
+    rename_reserved_keywords(service_name_) << "\n" <<
+    "from . import ttypes\n" <<
+    "from . import constants\n" <<
+    "\n"
+    "import thrift.util.fuzzer"
+    "\n"
+    "thrift.util.fuzzer.fuzz_service(" <<
+    rename_reserved_keywords(service_name_) <<
+    ", ttypes, constants)";
+  f_fuzzer.close();
+  chmod(f_fuzzer_name.c_str(),
+        S_IRUSR
+        | S_IWUSR
+        | S_IXUSR
+#ifndef MINGW
+        | S_IRGRP
+        | S_IXGRP
+        | S_IROTH
+        | S_IXOTH
+#endif
+  );
+}
+
 
 /**
  * Generates a service server definition.
