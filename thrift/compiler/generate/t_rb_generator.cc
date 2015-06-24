@@ -312,7 +312,11 @@ void t_rb_generator::generate_enum(t_enum* tenum) {
     //Populate the hash
     int32_t value = (*c_iter)->get_value();
 
-    first ? first = false : f_types_ << ", ";
+    if (first) {
+      first = false;
+    } else {
+      f_service_ << ", ";
+    }
     f_types_ << value << " => \"" << capitalize((*c_iter)->get_name()) << "\"";
 
   }
@@ -323,7 +327,11 @@ void t_rb_generator::generate_enum(t_enum* tenum) {
   first = true;
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
     // Populate the set
-    first ? first = false: f_types_ << ", ";
+    if (first) {
+      first = false;
+    } else {
+      f_service_ << ", ";
+    }
     f_types_ << capitalize((*c_iter)->get_name());
   }
   f_types_ << "]).freeze" << endl;
