@@ -23,6 +23,7 @@
 #include <deque>
 #include <getopt.h>
 #include <gtest/gtest.h>
+#include <glog/logging.h>
 #include <sys/time.h>
 
 #include <thrift/lib/cpp/concurrency/Mutex.h>
