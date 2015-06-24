@@ -41,9 +41,9 @@
   cout << X_PRINT(ooe) << endl << endl;
 
   cout << "--- const1" << endl;
-  cout << X_PRINT(X_NS g_DebugProtoTest_constants.const1) << endl << endl;
+  cout << X_PRINT(X_NS DebugProtoTest_constants_codemod::const1()) << endl << endl;
   cout << "--- const2" << endl;
-  cout << X_PRINT(X_NS g_DebugProtoTest_constants.const2) << endl << endl;
+  cout << X_PRINT(X_NS DebugProtoTest_constants_codemod::const2()) << endl << endl;
 
   X_NS Nesting n;
   n.my_ooe = ooe;

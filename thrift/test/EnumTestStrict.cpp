@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE( test_enum_strict ) {
   BOOST_CHECK_EQUAL((int)MyEnum4::ME4_C, 0x7fffffff);
 
   BOOST_CHECK_EQUAL(
-    (int)g_EnumTestStrict_constants.c_me4_a,
+    (int)EnumTestStrict_constants::c_me4_a(),
     (int)MyEnum4::ME4_A);
 }
 
