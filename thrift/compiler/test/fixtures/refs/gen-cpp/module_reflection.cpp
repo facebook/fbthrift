@@ -143,5 +143,37 @@ void reflectionInitializer_11295191354176986988(::apache::thrift::reflection::Sc
   reflectionInitializer_16778989117799402412(schema);  // struct module.MyField
 }
 
+void  reflectionInitializer_2826922994162023308(::apache::thrift::reflection::Schema&);  // struct module.RecursiveStruct
+// Reflection initializer for list<struct module.RecursiveStruct>
+void reflectionInitializer_1481110219371736233(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 1481110219371736233U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "list<struct module.RecursiveStruct>";
+  schema.names[dt.name] = id;
+  dt.__isset.valueType = true;
+  dt.valueType = 2826922994162023308U;
+  reflectionInitializer_2826922994162023308(schema);  // struct module.RecursiveStruct
+}
+
+void  reflectionInitializer_1481110219371736233(::apache::thrift::reflection::Schema&);  // list<struct module.RecursiveStruct>
+// Reflection initializer for struct module.RecursiveStruct
+void reflectionInitializer_2826922994162023308(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 2826922994162023308U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.RecursiveStruct";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = false;
+    f.type = 1481110219371736233U;
+    f.name = "mes";
+    f.order = 0;
+  }
+  reflectionInitializer_1481110219371736233(schema);  // list<struct module.RecursiveStruct>
+}
+
 }
 

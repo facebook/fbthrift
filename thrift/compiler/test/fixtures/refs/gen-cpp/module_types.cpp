@@ -562,4 +562,134 @@ void merge(StructWithUnion&& from, StructWithUnion& to) {
   }
 }
 
+const uint64_t RecursiveStruct::_reflection_id;
+void RecursiveStruct::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::module_reflection_::reflectionInitializer_2826922994162023308(schema);
+}
+
+bool RecursiveStruct::operator == (const RecursiveStruct & rhs) const {
+  if (__isset.mes != rhs.__isset.mes)
+    return false;
+  else if (__isset.mes && !(mes == rhs.mes))
+    return false;
+  return true;
+}
+
+uint32_t RecursiveStruct::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::module_reflection_::reflectionInitializer_2826922994162023308(*schema);
+    iprot->setNextStructType(RecursiveStruct::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          {
+            this->mes.clear();
+            uint32_t _size6;
+            bool _sizeUnknown7;
+            apache::thrift::protocol::TType _etype10;
+            xfer += iprot->readListBegin(_etype10, _size6, _sizeUnknown7);
+            if (!_sizeUnknown7) {
+              this->mes.resize(_size6);
+              uint32_t _i11;
+              for (_i11 = 0; _i11 < _size6; ++_i11)
+              {
+                xfer += this->mes[_i11].read(iprot);
+              }
+            } else {
+              while (iprot->peekList())
+              {
+                RecursiveStruct _elem12;
+                xfer += _elem12.read(iprot);
+                this->mes.push_back(_elem12);
+              }
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.mes = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void RecursiveStruct::__clear() {
+  mes.clear();
+  __isset.__clear();
+}
+uint32_t RecursiveStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("RecursiveStruct");
+  if (this->__isset.mes) {
+    xfer += oprot->writeFieldBegin("mes", apache::thrift::protocol::T_LIST, 1);
+    {
+      xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRUCT, this->mes.size());
+      std::vector<RecursiveStruct> ::const_iterator _iter13;
+      for (_iter13 = this->mes.begin(); _iter13 != this->mes.end(); ++_iter13)
+      {
+        xfer += (*_iter13).write(oprot);
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(RecursiveStruct &a, RecursiveStruct &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.mes, b.mes);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const RecursiveStruct& from, RecursiveStruct& to) {
+  using apache::thrift::merge;
+  if (from.__isset.mes) {
+    merge(from.mes, to.mes);
+    to.__isset.mes = true;
+  }
+}
+
+void merge(RecursiveStruct&& from, RecursiveStruct& to) {
+  using apache::thrift::merge;
+  if (from.__isset.mes) {
+    merge(std::move(from.mes), to.mes);
+    to.__isset.mes = true;
+  }
+}
+
 

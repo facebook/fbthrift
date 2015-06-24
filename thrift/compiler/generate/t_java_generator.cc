@@ -204,8 +204,8 @@ class t_java_generator : public t_oop_generator {
   void generate_java_docstring_comment   (std::ofstream &out,
                                           string contents);
 
-  bool is_comparable(t_type* type);
-  bool struct_has_all_comparable_fields(t_struct* tstruct);
+  bool is_comparable(t_type* type, vector<t_type*>* enclosing=nullptr);
+  bool struct_has_all_comparable_fields(t_struct* tstruct, vector<t_type*>* enclosing);
 
   bool type_has_naked_binary(t_type* type);
   bool struct_has_naked_binary_fields(t_struct* tstruct);
@@ -3823,7 +3823,7 @@ void t_java_generator::generate_field_name_constants(ofstream& out, t_struct* ts
   }
 }
 
-bool t_java_generator::is_comparable(t_type* type) {
+bool t_java_generator::is_comparable(t_type* type, vector<t_type*> *enclosing) {
   type = get_true_type(type);
 
   if (type->is_base_type()) {
@@ -3831,7 +3831,17 @@ bool t_java_generator::is_comparable(t_type* type) {
   } else if (type->is_enum()) {
     return true;
   } else if (type->is_struct()) {
-    return struct_has_all_comparable_fields((t_struct*)type);
+    vector<t_type*> enclosing2;
+    enclosing = enclosing ? enclosing : &enclosing2;
+    for (auto iter = enclosing->begin(); iter != enclosing->end(); iter++) {
+      if (*iter == type) {
+        return false;
+      }
+    }
+    enclosing->push_back(type);
+    bool ret = struct_has_all_comparable_fields((t_struct*)type, enclosing);
+    enclosing->pop_back();
+    return ret;
   } else if (type->is_xception()) {
     // There's no particular reason this wouldn't work exactly the same
     // as it does for structs. I'm not sure we actually want exceptions
@@ -3842,23 +3852,23 @@ bool t_java_generator::is_comparable(t_type* type) {
     // can always change this to `true` later if somebody has a use case.
     return false;
   } else if (type->is_map()) {
-    return is_comparable(((t_map*)type)->get_key_type())
-        && is_comparable(((t_map*)type)->get_val_type());
+    return is_comparable(((t_map*)type)->get_key_type(), enclosing)
+        && is_comparable(((t_map*)type)->get_val_type(), enclosing);
   } else if (type->is_set()) {
-    return is_comparable(((t_set*)type)->get_elem_type());
+    return is_comparable(((t_set*)type)->get_elem_type(), enclosing);
   } else if (type->is_list()) {
-    return is_comparable(((t_list*)type)->get_elem_type());
+    return is_comparable(((t_list*)type)->get_elem_type(), enclosing);
   } else {
     throw "Don't know how to handle this ttype";
   }
 }
 
-bool t_java_generator::struct_has_all_comparable_fields(t_struct* tstruct) {
+bool t_java_generator::struct_has_all_comparable_fields(t_struct* tstruct, vector<t_type*>* enclosing) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    if (!is_comparable((*m_iter)->get_type())) {
+    if (!is_comparable((*m_iter)->get_type(), enclosing)) {
       return false;
     }
   }

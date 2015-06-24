@@ -27,6 +27,8 @@ class MyStruct;
 
 class StructWithUnion;
 
+class RecursiveStruct;
+
 class MyUnion : public apache::thrift::TStructType<MyUnion> {
  public:
   enum class Type {
@@ -375,6 +377,50 @@ class StructWithUnion : public apache::thrift::TStructType<StructWithUnion> {
 class StructWithUnion;
 void merge(const StructWithUnion& from, StructWithUnion& to);
 void merge(StructWithUnion&& from, StructWithUnion& to);
+void swap(RecursiveStruct &a, RecursiveStruct &b);
+
+class RecursiveStruct : public apache::thrift::TStructType<RecursiveStruct> {
+ public:
+
+  static const uint64_t _reflection_id = 2826922994162023308U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  RecursiveStruct() {
+  }
+
+  RecursiveStruct(const RecursiveStruct&) = default;
+  RecursiveStruct& operator=(const RecursiveStruct& src)= default;
+  RecursiveStruct(RecursiveStruct&&) = default;
+  RecursiveStruct& operator=(RecursiveStruct&&) = default;
+
+  void __clear();
+
+  virtual ~RecursiveStruct() throw() {}
+
+  std::vector<RecursiveStruct>  mes;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      mes = false;
+    }
+    bool mes;
+  } __isset;
+
+  bool operator == (const RecursiveStruct &) const;
+  bool operator != (const RecursiveStruct& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const RecursiveStruct & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class RecursiveStruct;
+void merge(const RecursiveStruct& from, RecursiveStruct& to);
+void merge(RecursiveStruct&& from, RecursiveStruct& to);
 
 
 #endif

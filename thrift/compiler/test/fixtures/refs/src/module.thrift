@@ -20,3 +20,7 @@ struct StructWithUnion {
   2: double aDouble,
   3: MyField f,
 }
+
+struct RecursiveStruct {
+  1: optional list<RecursiveStruct> mes,
+}

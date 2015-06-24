@@ -22,6 +22,7 @@ class MyUnion;
 class MyField;
 class MyStruct;
 class StructWithUnion;
+class RecursiveStruct;
 
 class MyUnion : private boost::totally_ordered<MyUnion> {
  public:
@@ -502,6 +503,84 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWit
 }
 
 template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithUnion>::serializedSizeZC(Protocol* proto, const  ::cpp2::StructWithUnion* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
+class RecursiveStruct : private boost::totally_ordered<RecursiveStruct> {
+ public:
+
+  RecursiveStruct() {}
+  // FragileConstructor for use in initialization lists only
+
+  RecursiveStruct(apache::thrift::FragileConstructor, std::vector< ::cpp2::RecursiveStruct> mes__arg) :
+      mes(std::move(mes__arg)) {}
+
+  RecursiveStruct(RecursiveStruct&&) = default;
+
+  RecursiveStruct(const RecursiveStruct&) = default;
+
+  RecursiveStruct& operator=(RecursiveStruct&&) = default;
+
+  RecursiveStruct& operator=(const RecursiveStruct&) = default;
+  void __clear();
+
+  virtual ~RecursiveStruct() throw() {}
+
+  std::vector< ::cpp2::RecursiveStruct> mes;
+
+  struct __isset {
+    __isset() {
+      __clear();
+    }
+
+    void __clear() {
+      mes = false;
+    }
+
+    bool mes;
+  } __isset;
+  bool operator==(const RecursiveStruct& rhs) const;
+  bool operator < (const RecursiveStruct& rhs) const;
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(RecursiveStruct& a, RecursiveStruct& b);
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::RecursiveStruct>::clear( ::cpp2::RecursiveStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::RecursiveStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::RecursiveStruct>::write(Protocol* proto, const  ::cpp2::RecursiveStruct* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::RecursiveStruct>::read(Protocol* proto,   ::cpp2::RecursiveStruct* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::RecursiveStruct>::serializedSize(Protocol* proto, const  ::cpp2::RecursiveStruct* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::RecursiveStruct>::serializedSizeZC(Protocol* proto, const  ::cpp2::RecursiveStruct* obj) {
   return obj->serializedSizeZC(proto);
 }
 

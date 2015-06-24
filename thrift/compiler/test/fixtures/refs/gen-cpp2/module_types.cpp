@@ -234,4 +234,40 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+template uint32_t RecursiveStruct::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t RecursiveStruct::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t RecursiveStruct::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t RecursiveStruct::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t RecursiveStruct::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t RecursiveStruct::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t RecursiveStruct::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t RecursiveStruct::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+
+void RecursiveStruct::__clear() {
+  mes.clear();
+  __isset.__clear();
+}
+
+bool RecursiveStruct::operator==(const RecursiveStruct& rhs) const {
+  if (__isset.mes != rhs.__isset.mes) {
+    return false;
+  }
+  else if (__isset.mes && !((mes == rhs.mes))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(RecursiveStruct& a, RecursiveStruct& b) {
+  using ::std::swap;
+  swap(a.mes, b.mes);
+  swap(a.__isset, b.__isset);
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 } // cpp2

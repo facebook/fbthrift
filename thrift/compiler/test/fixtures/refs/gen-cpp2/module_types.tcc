@@ -645,4 +645,124 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+template <class Protocol_>
+uint32_t RecursiveStruct::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  while (true) {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "mes") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_LIST;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->mes.clear();
+          uint32_t _size6;
+          apache::thrift::protocol::TType _etype9;
+          xfer += iprot->readListBegin(_etype9, _size6);
+          uint32_t _i10;
+          if (_size6 == std::numeric_limits<uint32_t>::max()) {
+            for (_i10 = 0; iprot->peekList(); _i10++) {
+              this->mes.resize(_i10 + 1);
+              xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::read(iprot, &this->mes[_i10]);
+            }
+          }
+          else {
+            this->mes.resize(_size6);
+            for (_i10 = 0; _i10 < _size6; ++_i10) {
+              xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::read(iprot, &this->mes[_i10]);
+            }
+          }
+          xfer += iprot->readListEnd();
+          this->__isset.mes = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t RecursiveStruct::serializedSize(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("RecursiveStruct");
+  if (this->__isset.mes) {
+    xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
+    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_STRUCT, this->mes.size());
+    for (auto _iter11 = this->mes.begin(); _iter11 != this->mes.end(); ++_iter11) {
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::serializedSize(prot_, &(*_iter11));
+    }
+    xfer += prot_->serializedSizeListEnd();
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t RecursiveStruct::serializedSizeZC(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("RecursiveStruct");
+  if (this->__isset.mes) {
+    xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
+    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_STRUCT, this->mes.size());
+    for (auto _iter12 = this->mes.begin(); _iter12 != this->mes.end(); ++_iter12) {
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::serializedSizeZC(prot_, &(*_iter12));
+    }
+    xfer += prot_->serializedSizeListEnd();
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t RecursiveStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("RecursiveStruct");
+  if (this->__isset.mes) {
+    xfer += prot_->writeFieldBegin("mes", apache::thrift::protocol::T_LIST, 1);
+    xfer += prot_->writeListBegin(apache::thrift::protocol::T_STRUCT, this->mes.size());
+    for (auto _iter13 = this->mes.begin(); _iter13 != this->mes.end(); ++_iter13) {
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::write(prot_, &(*_iter13));
+    }
+    xfer += prot_->writeListEnd();
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 } // cpp2
