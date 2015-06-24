@@ -55,7 +55,7 @@ fixtureDir = ascend_find_dir(exe, 'thrift/compiler/test/fixtures')
 fixtureNames = [
     f
     for f in os.listdir(fixtureDir)
-    if os.path.isdir(os.path.join(fixtureDir, f))
+    if os.path.isfile(os.path.join(fixtureDir, f, 'cmd'))
 ]
 
 for name in fixtureNames:
