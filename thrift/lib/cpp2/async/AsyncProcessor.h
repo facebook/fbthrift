@@ -801,7 +801,7 @@ class ServerInterface : public AsyncProcessorFactory {
    * will be NULL for async calls.
    */
   static __thread Cpp2RequestContext* reqCtx_;
-  apache::thrift::concurrency::ThreadManager* tm_;
+  static __thread apache::thrift::concurrency::ThreadManager* tm_;
   static __thread apache::thrift::async::TEventBase* eb_;
 };
 
