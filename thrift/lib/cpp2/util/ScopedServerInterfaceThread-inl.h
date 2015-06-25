@@ -22,11 +22,16 @@ namespace apache { namespace thrift {
 
 template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
-    async::TEventBase& eb) const {
+    async::TEventBase* eb) const {
   return folly::make_unique<AsyncClientT>(
       HeaderClientChannel::newChannel(
         async::TAsyncSocket::newSocket(
-          &eb, getAddress())));
+          eb, getAddress())));
+}
+template <class AsyncClientT>
+std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
+    async::TEventBase& eb) const {
+  return newClient<AsyncClientT>(&eb);
 }
 
 }}

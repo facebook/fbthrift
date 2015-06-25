@@ -62,7 +62,17 @@ TEST(ScopedServerInterfaceThread, newClient) {
     make_shared<SimpleServiceImpl>());
 
   EventBase eb;
-  auto cli = ssit.newClient<SimpleServiceAsyncClient>(eb);
+  auto cli = ssit.newClient<SimpleServiceAsyncClient>(&eb);
+
+  EXPECT_EQ(6, cli->sync_add(-3, 9));
+}
+
+TEST(ScopedServerInterfaceThread, newClient_ref) {
+  ScopedServerInterfaceThread ssit(
+    make_shared<SimpleServiceImpl>());
+
+  EventBase eb;
+  auto cli = ssit.newClient<SimpleServiceAsyncClient>(eb);  // ref
 
   EXPECT_EQ(6, cli->sync_add(-3, 9));
 }
