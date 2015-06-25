@@ -7,7 +7,7 @@ struct TestStruct {
 
 struct TestStructRecursive {
   6: string tag,
-  99: TestStructRecursive cdr (cpp.ref = 'true'),
+  99: optional TestStructRecursive cdr (cpp.ref = 'true'),
 }
 
 service TestService {

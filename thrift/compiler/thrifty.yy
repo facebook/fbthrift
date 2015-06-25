@@ -1089,6 +1089,14 @@ Field:
         $$->set_xsd_attrs($9);
       }
       if ($10 != NULL) {
+        for (const auto& it : $10->annotations_) {
+          if (it.first == "cpp.ref" || it.first == "cpp2.ref") {
+            if ($3 != t_field::T_OPTIONAL) {
+              pwarning(1, "cpp.ref field must be optional");
+            }
+            break;
+          }
+        }
         $$->annotations_ = $10->annotations_;
         delete $10;
       }
