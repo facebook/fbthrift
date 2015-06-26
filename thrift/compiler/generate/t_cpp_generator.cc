@@ -7075,7 +7075,8 @@ string t_cpp_generator::base_type_name(t_base_type::t_base tbase) {
 
 std::string t_cpp_generator::generate_reflection_initializer_name(t_type* type){
   char buf[21];
-  sprintf(buf, "%" PRIu64, type->get_type_id());
+  int n = snprintf(buf, sizeof buf, "%" PRIu64, type->get_type_id());
+  assert(0 < n && n < sizeof buf);
   return std::string("reflectionInitializer_") + buf;
 }
 
