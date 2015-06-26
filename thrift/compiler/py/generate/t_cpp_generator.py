@@ -3942,17 +3942,12 @@ class CppGenerator(t_generator.Generator):
             sg('#include "{0}_constants.h"'
                 .format(self._with_compatibility_include_prefix(self._program,
                                                                 name)))
-        # Open namespace
-        sns = sg.namespace(self._get_namespace()).scope
-
         if self.flag_compatibility:
-            instance_name = 'g_' + self._program.name + '_constants'
-            cpp1_namespace = self._namespace_prefix(
-                self._program.get_namespace('cpp')).lstrip()
-            sns('using ' + cpp1_namespace + instance_name + ';')
-            sns.release()
             sg.release()
             return
+
+        # Open namespace
+        sns = sg.namespace(self._get_namespace()).scope
 
         # DECLARATION
         s = sns.cls('struct {0}_constants'.format(name)).scope
@@ -4042,21 +4037,6 @@ class CppGenerator(t_generator.Generator):
             for c in constants:
                 s()
                 s('{0} {1};'.format(self._type_name(c.type), c.name))
-
-        # define global constants singleton
-        sns('#pragma GCC diagnostic push')
-        sns('#pragma GCC diagnostic ignored "-Wdeprecated-declarations"')
-        sns()
-
-        sns.extern(('const {0}Constants __attribute__((__deprecated__("{1}"))) '
-            + 'g_{0}_constants').format(name, ("g_{0}_constants suffers from "
-                + "the 'static initialization order fiasco' (https://isocpp.org"
-                + "/wiki/faq/ctors#static-init-order) and may CRASH you program"
-                + ". Instead, use {0}_constants::CONSTANT_NAME()")
-                .format(name)))
-
-        sns()
-        sns('#pragma GCC diagnostic pop')
 
         sns.release()  # namespace
 

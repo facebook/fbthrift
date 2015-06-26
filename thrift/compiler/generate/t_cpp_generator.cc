@@ -1183,8 +1183,6 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     "\"-Wdeprecated-declarations\"" << endl << endl;
 
   f_consts_impl <<
-    "const " << program_name_ << "Constants g_" << program_name_ <<
-    "_constants;" << endl << endl <<
     program_name_ << "Constants::" << program_name_ << "Constants() {" << endl;
   indent_up();
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
@@ -1197,19 +1195,6 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
   indent(f_consts_impl) <<
     "}" << endl << endl;
   f_consts_impl << "#pragma GCC diagnostic pop" << endl;
-
-  f_consts << endl << "#pragma GCC diagnostic push" << endl;
-  f_consts << "#pragma GCC diagnostic ignored \"-Wdeprecated-declarations\""
-    << endl;
-  f_consts <<
-    endl <<
-    "extern const " << program_name_ << "Constants __attribute__(("
-      "__deprecated__(\"g_" << program_name_ << "_constants suffers from the "
-      "'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors"
-      "#static-init-order) and may CRASH your program. Instead, use " <<
-      program_name_ << "_constants::CONSTANT_NAME()\"))) g_" <<
-      program_name_ << "_constants;" << endl << endl;
-  f_consts << "#pragma GCC diagnostic pop" << endl;
 
   f_consts << endl <<
     ns_close_ << endl <<

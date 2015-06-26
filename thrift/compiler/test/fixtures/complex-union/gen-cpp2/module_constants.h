@@ -19,11 +19,4 @@ class __attribute__((__deprecated__("moduleConstants suffers from the 'static in
   moduleConstants() {}
 };
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-extern const moduleConstants __attribute__((__deprecated__("g_module_constants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH you program. Instead, use module_constants::CONSTANT_NAME()"))) g_module_constants;
-
-#pragma GCC diagnostic pop
-
 } // cpp2

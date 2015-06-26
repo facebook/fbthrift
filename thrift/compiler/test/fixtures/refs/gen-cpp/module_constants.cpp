@@ -13,8 +13,6 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
-const moduleConstants g_module_constants;
-
 moduleConstants::moduleConstants() {
 }
 
