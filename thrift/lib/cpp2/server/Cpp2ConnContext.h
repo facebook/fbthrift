@@ -229,6 +229,14 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     startedProcessing_ = true;
   }
 
+  std::chrono::milliseconds getRequestTimeout() const {
+    return requestTimeout_;
+  }
+
+  void setRequestTimeout(std::chrono::milliseconds requestTimeout) {
+    requestTimeout_ = requestTimeout;
+  }
+
  protected:
   // Note:  Header is _not_ thread safe
   apache::thrift::transport::THeader* getHeader() override {
@@ -249,6 +257,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   uint32_t minCompressBytes_;
   PriorityThreadManager::PRIORITY callPriority_;
   bool startedProcessing_ = false;
+  std::chrono::milliseconds requestTimeout_{0};
 };
 
 } }

@@ -367,6 +367,7 @@ void Cpp2Connection::requestReceived(
   }
 
   auto reqContext = t2r->getContext();
+  reqContext->setRequestTimeout(hardTimeout);
 
   auto headers = reqContext->getHeadersPtr();
   auto load_header = headers->find(Cpp2Connection::loadHeader);
