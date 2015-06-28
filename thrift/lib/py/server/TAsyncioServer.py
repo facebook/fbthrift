@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 @asyncio.coroutine
 def ThriftAsyncServerFactory(
-    processor, *, interface=None, port=0, loop=None, nthreads=None
+    processor, *, interface=None, port=0, loop=None, nthreads=None, sock=None
 ):
     """
     ThriftAsyncServerFactory(processor) -> asyncio.Server
@@ -91,7 +91,12 @@ def ThriftAsyncServerFactory(
     event_handler = TServerEventHandler()
     pfactory = ThriftServerProtocolFactory(processor, event_handler, loop)
     try:
-        server = yield from loop.create_server(pfactory, interface, port)
+        server = yield from loop.create_server(
+            pfactory,
+            interface,
+            port,
+            sock=sock,
+        )
     except Exception:
         logger.exception(
             "Could not start server at %s:%d", interface or '*', port,
