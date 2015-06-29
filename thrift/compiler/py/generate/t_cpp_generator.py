@@ -3942,12 +3942,19 @@ class CppGenerator(t_generator.Generator):
             sg('#include "{0}_constants.h"'
                 .format(self._with_compatibility_include_prefix(self._program,
                                                                 name)))
-        if self.flag_compatibility:
-            sg.release()
-            return
-
         # Open namespace
         sns = sg.namespace(self._get_namespace()).scope
+
+        # COMPATIBILITY MODE
+        if self.flag_compatibility:
+            cpp1_namespace = self._namespace_prefix(
+                self._program.get_namespace('cpp')).lstrip()
+            sns('using ' + cpp1_namespace + self._program.name + '_constants;')
+            sns('using ' + cpp1_namespace + self._program.name
+                + '_constants_codemod;')
+            sns.release()
+            sg.release()
+            return
 
         # DECLARATION
         s = sns.cls('struct {0}_constants'.format(name)).scope

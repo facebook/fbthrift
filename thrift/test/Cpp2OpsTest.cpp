@@ -42,8 +42,8 @@ TYPED_TEST_P(Cpp2OpsTest, Simple) {
     apache::thrift::CompactProtocolWriter writer;
 
     TypeParam obj;
-    obj.num = cpp2::Cpp2OpsCompat_constants_codemod::num_test_value();
-    obj.str = cpp2::Cpp2OpsCompat_constants_codemod::str_test_value();
+    obj.num = cpp2::Cpp2OpsCompat_constants::num_test_value();
+    obj.str = cpp2::Cpp2OpsCompat_constants::str_test_value();
 
     // This is mainly to test that it compiles...
     EXPECT_NE(
@@ -70,8 +70,8 @@ TYPED_TEST_P(Cpp2OpsTest, Simple) {
     EXPECT_EQ(size,
               apache::thrift::Cpp2Ops<TypeParam>::read(&reader, &obj));
 
-    EXPECT_EQ(cpp2::Cpp2OpsCompat_constants_codemod::num_test_value(), obj.num);
-    EXPECT_EQ(cpp2::Cpp2OpsCompat_constants_codemod::str_test_value(), obj.str);
+    EXPECT_EQ(cpp2::Cpp2OpsCompat_constants::num_test_value(), obj.num);
+    EXPECT_EQ(cpp2::Cpp2OpsCompat_constants::str_test_value(), obj.str);
   }
 }
 
