@@ -11,6 +11,7 @@ async_output = apache::thrift2:AsyncOutputStream
 
 functor = std::function<void (::apache::thrift2::ClientReceiveState&&)>
 future = folly::Future<T>
+unit = folly::Unit
 stream_singleton = apache::thrift2::StreamSingleton
 
 std::function functions
@@ -82,14 +83,14 @@ future_
 thrift return |    no stream parameters                with stream parameters
     type      |
 ---------------------------------------------------------------------------
-void          |    future<void> f(...)                  future<void> f(...)
+void          |    future<unit> f(...)                  future<unit> f(...)
               |
 simple        |     future<T> f(...)                      future<T> f(...)
               |
-complex       |     futrue<T> f(...)                      future<T> f(...)
+complex       |     future<T> f(...)                      future<T> f(...)
               |
-stream        |future<void> f(async_input<T>&, ...)
-              |                            future<void> f(async_input<T>&, ...)
+stream        |future<unit> f(async_input<T>&, ...)
+              |                            future<unit> f(async_input<T>&, ...)
 
 ## parameter type
 

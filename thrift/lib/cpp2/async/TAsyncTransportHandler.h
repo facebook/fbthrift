@@ -70,7 +70,7 @@ class TAsyncTransportHandler
     ctx->getPipeline()->setTransport(transport_);
   }
 
-  folly::Future<void> write(
+  folly::Future<folly::Unit> write(
       Context* ctx,
       std::unique_ptr<folly::IOBuf> buf) override {
     if (UNLIKELY(!buf)) {
@@ -79,7 +79,7 @@ class TAsyncTransportHandler
 
     if (!transport_->good()) {
       VLOG(5) << "transport is closed in write()";
-      return folly::makeFuture<void>(
+      return folly::makeFuture<folly::Unit>(
           transport::TTransportException("transport is closed in write()"));
     }
 

@@ -65,10 +65,10 @@ class FutureCallback : public FutureCallbackBase<Result> {
     Processor processor_;
 };
 
-class OneWayFutureCallback : public FutureCallbackBase<void> {
+class OneWayFutureCallback : public FutureCallbackBase<folly::Unit> {
   public:
-    explicit OneWayFutureCallback(folly::Promise<void>&& promise)
-        : FutureCallbackBase<void>(std::move(promise)) {}
+    explicit OneWayFutureCallback(folly::Promise<folly::Unit>&& promise)
+        : FutureCallbackBase<folly::Unit>(std::move(promise)) {}
 
     void requestSent() override {
       promise_.setValue();
@@ -80,31 +80,29 @@ class OneWayFutureCallback : public FutureCallbackBase<void> {
 };
 
 template <>
-class FutureCallback<void> : public FutureCallbackBase<void> {
-  private:
-    typedef folly::exception_wrapper (*Processor)(ClientReceiveState&);
-  public:
-    FutureCallback(folly::Promise<void>&& promise,
-                   Processor processor)
-        : FutureCallbackBase<void>(std::move(promise)),
-          processor_(processor) {}
+class FutureCallback<folly::Unit> : public FutureCallbackBase<folly::Unit> {
+ private:
+  typedef folly::exception_wrapper (*Processor)(ClientReceiveState&);
 
-    void replyReceived(ClientReceiveState&& state) override {
-      CHECK(!state.isException());
-      CHECK(state.buf());
+ public:
+  FutureCallback(folly::Promise<folly::Unit>&& promise, Processor processor)
+      : FutureCallbackBase<folly::Unit>(std::move(promise)),
+        processor_(processor) {}
 
-      auto ew = processor_(state);
-      if (ew) {
-        promise_.setException(ew);
-      } else {
-        promise_.setValue();
-      }
+  void replyReceived(ClientReceiveState&& state) override {
+    CHECK(!state.isException());
+    CHECK(state.buf());
+
+    auto ew = processor_(state);
+    if (ew) {
+      promise_.setException(ew);
+    } else {
+      promise_.setValue();
     }
+  }
 
-  private:
-    Processor processor_;
+ private:
+  Processor processor_;
 };
-
-
 
 }} // Namespace

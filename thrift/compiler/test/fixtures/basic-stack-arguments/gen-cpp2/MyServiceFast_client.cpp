@@ -271,7 +271,7 @@ folly::Future<void> MyServiceFastAsyncClient::future_putDataById(int64_t id, con
 folly::Future<void> MyServiceFastAsyncClient::future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   folly::Promise<void> promise49;
   auto future50 = promise49.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback51(new apache::thrift::FutureCallback<void>(std::move(promise49), recv_wrapped_putDataById));
+  std::unique_ptr<apache::thrift::RequestCallback> callback51(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise49), recv_wrapped_putDataById));
   putDataById(rpcOptions, std::move(callback51), id, data);
   return std::move(future50);
 }

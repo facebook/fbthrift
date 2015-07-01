@@ -60,6 +60,11 @@ class OrderedDict(dict):
 def _map_get(map, key, default=None):
     return map[key] if key in map else default
 
+def _lift_unit(typ):
+    if typ == 'void':
+        return 'folly::Unit'
+    return typ
+
 # ---------------------------------------------------------------
 # Generator
 # ---------------------------------------------------------------
@@ -971,7 +976,8 @@ class CppGenerator(t_generator.Generator):
                 rettype = 'std::unique_ptr<' + rettype + '>'
 
             promise_name = self.tmp("promise")
-            out("folly::Promise<{0}> {1};".format(rettype, promise_name))
+            out("folly::Promise<{0}> {1};"
+                    .format(_lift_unit(rettype), promise_name))
             args = []
             for member in function.arglist.members:
                 if self._is_complex_type(member.type) \
@@ -1081,8 +1087,8 @@ class CppGenerator(t_generator.Generator):
                     function.name, future_name)
                     + ", ".join(callArgs) + ");")
                 if not function.oneway:
-                    with out(("{0}.then([=](folly" +
-                          "::Try<void>&& t)").format(future_name)):
+                    with out(("{0}.then([=](folly::Try<folly::Unit>&& t)"
+                            ).format(future_name)):
                         with out("try"):
                             out("t.throwIfFailed();")
                             out("callbackp->doneInThread();")
@@ -1126,7 +1132,7 @@ class CppGenerator(t_generator.Generator):
                 not self.flag_stack_arguments:
             rettype = 'std::unique_ptr<' + rettype + '>'
         sig = 'folly::Future<' + \
-            rettype + '> {name}('
+            _lift_unit(rettype) + '> {name}('
 
         sig += self._argument_list(function.arglist, False, unique=True)
         sig += ')'
@@ -1849,7 +1855,7 @@ class CppGenerator(t_generator.Generator):
                 return_type = self._type_name(function.returntype)
 
                 out("folly::Promise<{type}> {promise};"
-                  .format(type=return_type, promise=promise_name))
+                  .format(type=_lift_unit(return_type), promise=promise_name))
 
                 future_name = self.tmp("future")
                 out("auto {future} = {promise}.getFuture();"
@@ -1876,7 +1882,7 @@ class CppGenerator(t_generator.Generator):
                       "new apache::thrift::FutureCallback<{type}>("
                       "std::move({promise}), recv_wrapped_{name}));"
                       .format(callback=callback,
-                              type=return_type,
+                              type=_lift_unit(return_type),
                               promise=promise_name,
                               name=function.name))
 
@@ -1923,17 +1929,24 @@ class CppGenerator(t_generator.Generator):
                 out("return {subj};".format(subj=subj))
 
     def _get_streaming_function_signature(self, function, uses_rpc_options):
-        return self._get_noncallback_function_signature(function, uses_rpc_options, "folly::wangle::ObservablePtr")
+        result_type = self._type_name(function.returntype)
+        return self._get_noncallback_function_signature(
+                function,
+                uses_rpc_options,
+                "folly::wangle::ObservablePtr",
+                result_type)
 
     def _get_future_function_signature(self, function, uses_rpc_options):
-        return self._get_noncallback_function_signature(function, uses_rpc_options, "folly::Future")
+        result_type = _lift_unit(self._type_name(function.returntype))
+        return self._get_noncallback_function_signature(
+                function, uses_rpc_options, "folly::Future", result_type)
 
-    def _get_noncallback_function_signature(self, function, uses_rpc_options, ret_template):
+    def _get_noncallback_function_signature(
+            self, function, uses_rpc_options, ret_template, result_type):
         params = []
         if uses_rpc_options:
             params.append("apache::thrift::RpcOptions& rpcOptions")
 
-        result_type = self._type_name(function.returntype)
         return_type = "{0}<{1}>".format(ret_template, result_type)
 
         param_list = ", ".join(params)
