@@ -30,7 +30,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <folly/String.h>
 #include <folly/MoveWrapper.h>
-#include <folly/wangle/rx/Observer.h>
+#include <folly/wangle/deprecated/rx/Observer.h>
 
 namespace apache { namespace thrift {
 

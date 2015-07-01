@@ -28,7 +28,7 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/String.h>
-#include <folly/wangle/rx/Subject.h>
+#include <folly/wangle/deprecated/rx/Subject.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/MoveWrapper.h>
 
