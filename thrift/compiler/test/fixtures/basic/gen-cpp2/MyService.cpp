@@ -21,8 +21,8 @@ void MyServiceSvIf::ping() {
   throw apache::thrift::TApplicationException("Function ping is unimplemented");
 }
 
-folly::Future<void> MyServiceSvIf::future_ping() {
-  folly::Promise<void> promise0;
+folly::Future<folly::Unit> MyServiceSvIf::future_ping() {
+  folly::Promise<folly::Unit> promise0;
   try {
     ping();
     promise0.setValue();
@@ -39,7 +39,7 @@ void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbac
   setConnectionContext(callbackp->getConnectionContext());
   try {
     auto future1 = future_ping();
-    future1.then([=](folly::Try<void>&& t) {
+    future1.then([=](folly::Try<folly::Unit>&& t) {
       try {
         t.throwIfFailed();
         callbackp->doneInThread();
@@ -164,8 +164,8 @@ void MyServiceSvIf::putDataById(int64_t id, std::unique_ptr<std::string> data) {
   throw apache::thrift::TApplicationException("Function putDataById is unimplemented");
 }
 
-folly::Future<void> MyServiceSvIf::future_putDataById(int64_t id, std::unique_ptr<std::string> data) {
-  folly::Promise<void> promise8;
+folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, std::unique_ptr<std::string> data) {
+  folly::Promise<folly::Unit> promise8;
   try {
     putDataById(id, std::move(data));
     promise8.setValue();
@@ -184,7 +184,7 @@ void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::Handler
   setConnectionContext(callbackp->getConnectionContext());
   try {
     auto future11 = future_putDataById(id, std::move(*move_data10));
-    future11.then([=](folly::Try<void>&& t) {
+    future11.then([=](folly::Try<folly::Unit>&& t) {
       try {
         t.throwIfFailed();
         callbackp->doneInThread();
@@ -202,8 +202,8 @@ void MyServiceSvIf::lobDataById(int64_t id, std::unique_ptr<std::string> data) {
   throw apache::thrift::TApplicationException("Function lobDataById is unimplemented");
 }
 
-folly::Future<void> MyServiceSvIf::future_lobDataById(int64_t id, std::unique_ptr<std::string> data) {
-  folly::Promise<void> promise12;
+folly::Future<folly::Unit> MyServiceSvIf::future_lobDataById(int64_t id, std::unique_ptr<std::string> data) {
+  folly::Promise<folly::Unit> promise12;
   try {
     lobDataById(id, std::move(data));
     promise12.setValue();

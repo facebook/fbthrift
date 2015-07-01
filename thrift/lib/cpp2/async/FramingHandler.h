@@ -35,7 +35,7 @@ class FramingHandler : public folly::wangle::BytesToBytesHandler {
    */
   void read(Context* ctx, folly::IOBufQueue& q) override;
 
-  folly::Future<void> write(
+  folly::Future<folly::Unit> write(
     Context* ctx,
     std::unique_ptr<folly::IOBuf> buf) override;
 
@@ -57,7 +57,7 @@ class FramingHandler : public folly::wangle::BytesToBytesHandler {
       readBufferSize, static_cast<size_t>(DEFAULT_BUFFER_SIZE));
   }
 
-  folly::Future<void> close(Context* ctx) override;
+  folly::Future<folly::Unit> close(Context* ctx) override;
 
  private:
   enum BUFFER_SIZE { DEFAULT_BUFFER_SIZE = 2048, };

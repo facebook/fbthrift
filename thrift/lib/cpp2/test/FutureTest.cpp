@@ -66,8 +66,8 @@ class TestInterface : public FutureServiceSvIf {
     return std::move(f);
   }
 
-  Future<void> future_noResponse(int64_t size) override {
-    MoveWrapper<Promise<void>> p;
+  Future<Unit> future_noResponse(int64_t size) override {
+    MoveWrapper<Promise<Unit>> p;
     auto f = p->getFuture();
 
     auto func = std::function<void()>([=]() mutable {
@@ -99,8 +99,8 @@ class TestInterface : public FutureServiceSvIf {
     return std::move(f);
   }
 
-  Future<void> future_voidThrowing() override {
-    Promise<void> p;
+  Future<Unit> future_voidThrowing() override {
+    Promise<Unit> p;
     auto f = p.getFuture();
 
     Xception x;

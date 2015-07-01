@@ -38,10 +38,10 @@ class MyServiceSvAsyncIf {
   virtual folly::Future<std::string> future_getDataById(int64_t id) = 0;
   virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const std::string& data) = 0;
   virtual void async_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const std::string& data) = delete;
-  virtual folly::Future<void> future_putDataById(int64_t id, const std::string& data) = 0;
+  virtual folly::Future<folly::Unit> future_putDataById(int64_t id, const std::string& data) = 0;
   virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const std::string& data) = 0;
   virtual void async_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const std::string& data) = delete;
-  virtual folly::Future<void> future_lobDataById(int64_t id, const std::string& data) = 0;
+  virtual folly::Future<folly::Unit> future_lobDataById(int64_t id, const std::string& data) = 0;
 };
 
 class MyServiceAsyncProcessor;
@@ -59,10 +59,10 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   folly::Future<std::string> future_getDataById(int64_t id);
   virtual void async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback, int64_t id);
   virtual void putDataById(int64_t id, const std::string& data);
-  folly::Future<void> future_putDataById(int64_t id, const std::string& data);
+  folly::Future<folly::Unit> future_putDataById(int64_t id, const std::string& data);
   virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const std::string& data);
   virtual void lobDataById(int64_t id, const std::string& data);
-  folly::Future<void> future_lobDataById(int64_t id, const std::string& data);
+  folly::Future<folly::Unit> future_lobDataById(int64_t id, const std::string& data);
   virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const std::string& data);
 };
 
@@ -188,8 +188,8 @@ class MyServiceAsyncClient : public apache::thrift::TClientBase {
   virtual void putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data);
   virtual void sync_putDataById(int64_t id, const std::string& data);
   virtual void sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data);
-  virtual folly::Future<void> future_putDataById(int64_t id, const std::string& data);
-  virtual folly::Future<void> future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data);
+  virtual folly::Future<folly::Unit> future_putDataById(int64_t id, const std::string& data);
+  virtual folly::Future<folly::Unit> future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data);
   virtual void putDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data);
   static folly::exception_wrapper recv_wrapped_putDataById(::apache::thrift::ClientReceiveState& state);
   static void recv_putDataById(::apache::thrift::ClientReceiveState& state);
@@ -206,8 +206,8 @@ class MyServiceAsyncClient : public apache::thrift::TClientBase {
   virtual void lobDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data);
   virtual void sync_lobDataById(int64_t id, const std::string& data);
   virtual void sync_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data);
-  virtual folly::Future<void> future_lobDataById(int64_t id, const std::string& data);
-  virtual folly::Future<void> future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data);
+  virtual folly::Future<folly::Unit> future_lobDataById(int64_t id, const std::string& data);
+  virtual folly::Future<folly::Unit> future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data);
   virtual void lobDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data);
   template <typename Protocol_>
   void lobDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data);

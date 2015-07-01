@@ -71,12 +71,12 @@ class ProtectionHandler : public folly::wangle::BytesToBytesHandler {
   /**
    * Encrypt an IOBuf
    */
-  folly::Future<void> write(
+  folly::Future<folly::Unit> write(
     Context* ctx,
     std::unique_ptr<folly::IOBuf> buf) override;
 
 
-  folly::Future<void> close(Context* ctx) override;
+  folly::Future<folly::Unit> close(Context* ctx) override;
 
  private:
   ProtectionState protectionState_;

@@ -81,7 +81,7 @@ class Cpp2Channel
   void read(Context* ctx, folly::IOBufQueue& q) override;
   void readEOF(Context* ctx) override;
   void readException(Context* ctx, folly::exception_wrapper e) override;
-  folly::Future<void> close(Context* ctx) override;
+  folly::Future<folly::Unit> close(Context* ctx) override;
 
   void writeSuccess() noexcept;
   void writeError(size_t bytesWritten,

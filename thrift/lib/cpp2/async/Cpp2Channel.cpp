@@ -65,7 +65,7 @@ Cpp2Channel::Cpp2Channel(
   transportHandler_ = pipeline_->getHandler<TAsyncTransportHandler>(0);
 }
 
-folly::Future<void> Cpp2Channel::close(Context* ctx) {
+folly::Future<folly::Unit> Cpp2Channel::close(Context* ctx) {
   DestructorGuard dg(this);
   processReadEOF();
   return ctx->fireClose();
@@ -200,7 +200,7 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
   DestructorGuard dg(this);
 
   auto future = pipeline_->write(std::move(buf));
-  future.then([this,dg](folly::Try<void>&& t) {
+  future.then([this,dg](folly::Try<folly::Unit>&& t) {
     if (t.withException<TTransportException>(
           [&](const TTransportException& ex) {
             writeError(0, ex);

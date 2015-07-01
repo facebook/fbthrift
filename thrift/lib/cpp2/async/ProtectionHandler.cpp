@@ -75,7 +75,7 @@ void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
   }
 }
 
-folly::Future<void> ProtectionHandler::write(
+folly::Future<folly::Unit> ProtectionHandler::write(
   Context* ctx,
   std::unique_ptr<folly::IOBuf> buf) {
   if (protectionState_ == ProtectionState::VALID) {
@@ -95,7 +95,7 @@ void ProtectionHandler::protectionStateChanged() {
   }
 }
 
-folly::Future<void> ProtectionHandler::close(Context* ctx) {
+folly::Future<folly::Unit> ProtectionHandler::close(Context* ctx) {
   closing_ = true;
   return ctx->fireClose();
 }

@@ -21,8 +21,8 @@ void MyServiceFastSvIf::ping() {
   throw apache::thrift::TApplicationException("Function ping is unimplemented");
 }
 
-folly::Future<void> MyServiceFastSvIf::future_ping() {
-  folly::Promise<void> promise40;
+folly::Future<folly::Unit> MyServiceFastSvIf::future_ping() {
+  folly::Promise<folly::Unit> promise40;
   try {
     ping();
     promise40.setValue();
@@ -40,7 +40,7 @@ void MyServiceFastSvIf::async_eb_ping(std::unique_ptr<apache::thrift::HandlerCal
     setConnectionContext(callbackp->getConnectionContext());
     try {
       auto future41 = future_ping();
-      future41.then([=](folly::Try<void>&& t) {
+      future41.then([=](folly::Try<folly::Unit>&& t) {
         try {
           t.throwIfFailed();
           callbackp->doneInThread();
@@ -176,8 +176,8 @@ void MyServiceFastSvIf::putDataById(int64_t id, std::unique_ptr<std::string> dat
   throw apache::thrift::TApplicationException("Function putDataById is unimplemented");
 }
 
-folly::Future<void> MyServiceFastSvIf::future_putDataById(int64_t id, std::unique_ptr<std::string> data) {
-  folly::Promise<void> promise48;
+folly::Future<folly::Unit> MyServiceFastSvIf::future_putDataById(int64_t id, std::unique_ptr<std::string> data) {
+  folly::Promise<folly::Unit> promise48;
   try {
     putDataById(id, std::move(data));
     promise48.setValue();
@@ -197,7 +197,7 @@ void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::Han
     setConnectionContext(callbackp->getConnectionContext());
     try {
       auto future51 = future_putDataById(id, std::move(*move_data50));
-      future51.then([=](folly::Try<void>&& t) {
+      future51.then([=](folly::Try<folly::Unit>&& t) {
         try {
           t.throwIfFailed();
           callbackp->doneInThread();
@@ -217,8 +217,8 @@ void MyServiceFastSvIf::lobDataById(int64_t id, std::unique_ptr<std::string> dat
   throw apache::thrift::TApplicationException("Function lobDataById is unimplemented");
 }
 
-folly::Future<void> MyServiceFastSvIf::future_lobDataById(int64_t id, std::unique_ptr<std::string> data) {
-  folly::Promise<void> promise52;
+folly::Future<folly::Unit> MyServiceFastSvIf::future_lobDataById(int64_t id, std::unique_ptr<std::string> data) {
+  folly::Promise<folly::Unit> promise52;
   try {
     lobDataById(id, std::move(data));
     promise52.setValue();

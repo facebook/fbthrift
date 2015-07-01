@@ -59,13 +59,13 @@ void MyServiceAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
   recv_ping(_returnState);
 }
 
-folly::Future<void> MyServiceAsyncClient::future_ping() {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_ping(rpcOptions);
 }
 
-folly::Future<void> MyServiceAsyncClient::future_ping(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<void> promise17;
+folly::Future<folly::Unit> MyServiceAsyncClient::future_ping(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<folly::Unit> promise17;
   auto future18 = promise17.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback19(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise17), recv_wrapped_ping));
   ping(rpcOptions, std::move(callback19));
@@ -465,13 +465,13 @@ void MyServiceAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptio
   recv_putDataById(_returnState);
 }
 
-folly::Future<void> MyServiceAsyncClient::future_putDataById(int64_t id, const std::string& data) {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_putDataById(int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_putDataById(rpcOptions, id, data);
 }
 
-folly::Future<void> MyServiceAsyncClient::future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
-  folly::Promise<void> promise33;
+folly::Future<folly::Unit> MyServiceAsyncClient::future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
+  folly::Promise<folly::Unit> promise33;
   auto future34 = promise33.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback35(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise33), recv_wrapped_putDataById));
   putDataById(rpcOptions, std::move(callback35), id, data);
@@ -561,13 +561,13 @@ void MyServiceAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcOptio
   getChannel()->getEventBase()->loopForever();
 }
 
-folly::Future<void> MyServiceAsyncClient::future_lobDataById(int64_t id, const std::string& data) {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_lobDataById(int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_lobDataById(rpcOptions, id, data);
 }
 
-folly::Future<void> MyServiceAsyncClient::future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
-  folly::Promise<void> promise37;
+folly::Future<folly::Unit> MyServiceAsyncClient::future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
+  folly::Promise<folly::Unit> promise37;
   auto future38 = promise37.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback39(new apache::thrift::OneWayFutureCallback(std::move(promise37)));
   lobDataById(rpcOptions, std::move(callback39), id, data);

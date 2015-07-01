@@ -89,7 +89,7 @@ class TAsyncTransportHandler
     return future;
   };
 
-  folly::Future<void> close(Context* ctx) override {
+  folly::Future<folly::Unit> close(Context* ctx) override {
     if (transport_) {
       detachReadCallback();
       transport_->closeNow();
@@ -144,7 +144,7 @@ class TAsyncTransportHandler
 
    private:
     friend class TAsyncTransportHandler;
-    folly::Promise<void> promise_;
+    folly::Promise<folly::Unit> promise_;
   };
 
   folly::IOBufQueue bufQueue_{folly::IOBufQueue::cacheChainLength()};

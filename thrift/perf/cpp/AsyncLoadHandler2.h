@@ -63,9 +63,9 @@ class AsyncLoadHandler2 : public LoadTestSvIf
   void async_eb_onewaySleep(std::unique_ptr<HandlerCallbackBase> callback,
                             int64_t microseconds) override;
   void sync_burn(int64_t microseconds);
-  folly::Future<void> future_burn(int64_t microseconds) override;
+  folly::Future<folly::Unit> future_burn(int64_t microseconds) override;
   void sync_onewayBurn(int64_t microseconds);
-  folly::Future<void> future_onewayBurn(int64_t microseconds) override;
+  folly::Future<folly::Unit> future_onewayBurn(int64_t microseconds) override;
   void async_eb_badSleep(std::unique_ptr<HandlerCallback<void>> callback,
                          int64_t microseconds) override;
   void async_eb_badBurn(std::unique_ptr<HandlerCallback<void>> callback,

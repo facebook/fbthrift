@@ -85,9 +85,9 @@ void AsyncLoadHandler2::sync_burn(int64_t microseconds) {
   } while (now < end);
 }
 
-folly::Future<void>
+folly::Future<folly::Unit>
 AsyncLoadHandler2::future_burn(int64_t microseconds) {
-  folly::MoveWrapper<folly::Promise<void>> promise;
+  folly::MoveWrapper<folly::Promise<folly::Unit>> promise;
   auto future = promise->getFuture();
 
   sync_burn(microseconds);
@@ -100,9 +100,9 @@ void AsyncLoadHandler2::sync_onewayBurn(int64_t microseconds) {
   sync_burn(microseconds);
 }
 
-folly::Future<void>
+folly::Future<folly::Unit>
 AsyncLoadHandler2::future_onewayBurn(int64_t microseconds) {
-  folly::MoveWrapper<folly::Promise<void>> promise;
+  folly::MoveWrapper<folly::Promise<folly::Unit>> promise;
   auto future = promise->getFuture();
 
   sync_onewayBurn(microseconds);

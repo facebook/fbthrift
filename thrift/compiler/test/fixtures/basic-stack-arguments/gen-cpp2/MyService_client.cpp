@@ -263,13 +263,13 @@ void MyServiceAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptio
   recv_putDataById(_returnState);
 }
 
-folly::Future<void> MyServiceAsyncClient::future_putDataById(int64_t id, const std::string& data) {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_putDataById(int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_putDataById(rpcOptions, id, data);
 }
 
-folly::Future<void> MyServiceAsyncClient::future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
-  folly::Promise<void> promise21;
+folly::Future<folly::Unit> MyServiceAsyncClient::future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
+  folly::Promise<folly::Unit> promise21;
   auto future22 = promise21.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback23(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise21), recv_wrapped_putDataById));
   putDataById(rpcOptions, std::move(callback23), id, data);
@@ -359,13 +359,13 @@ void MyServiceAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcOptio
   getChannel()->getEventBase()->loopForever();
 }
 
-folly::Future<void> MyServiceAsyncClient::future_lobDataById(int64_t id, const std::string& data) {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_lobDataById(int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_lobDataById(rpcOptions, id, data);
 }
 
-folly::Future<void> MyServiceAsyncClient::future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
-  folly::Promise<void> promise25;
+folly::Future<folly::Unit> MyServiceAsyncClient::future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
+  folly::Promise<folly::Unit> promise25;
   auto future26 = promise25.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback27(new apache::thrift::OneWayFutureCallback(std::move(promise25)));
   lobDataById(rpcOptions, std::move(callback27), id, data);

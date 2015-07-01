@@ -61,13 +61,13 @@ void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
   }
 }
 
-folly::Future<void> FramingHandler::write(
+folly::Future<folly::Unit> FramingHandler::write(
   Context* ctx,
   std::unique_ptr<folly::IOBuf> buf) {
   return ctx->fireWrite(addFrame(std::move(buf)));
 }
 
-folly::Future<void> FramingHandler::close(Context* ctx) {
+folly::Future<folly::Unit> FramingHandler::close(Context* ctx) {
   closing_ = true;
   return ctx->fireClose();
 }

@@ -92,8 +92,8 @@ void MyServiceSvIf::putDataById(int64_t id, const std::string& data) {
   throw apache::thrift::TApplicationException("Function putDataById is unimplemented");
 }
 
-folly::Future<void> MyServiceSvIf::future_putDataById(int64_t id, const std::string& data) {
-  folly::Promise<void> promise4;
+folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, const std::string& data) {
+  folly::Promise<folly::Unit> promise4;
   try {
     putDataById(id, data);
     promise4.setValue();
@@ -112,7 +112,7 @@ void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::Handler
   setConnectionContext(callbackp->getConnectionContext());
   try {
     auto future7 = future_putDataById(id, std::move(*move_data6));
-    future7.then([=](folly::Try<void>&& t) {
+    future7.then([=](folly::Try<folly::Unit>&& t) {
       try {
         t.throwIfFailed();
         callbackp->doneInThread();
@@ -130,8 +130,8 @@ void MyServiceSvIf::lobDataById(int64_t id, const std::string& data) {
   throw apache::thrift::TApplicationException("Function lobDataById is unimplemented");
 }
 
-folly::Future<void> MyServiceSvIf::future_lobDataById(int64_t id, const std::string& data) {
-  folly::Promise<void> promise8;
+folly::Future<folly::Unit> MyServiceSvIf::future_lobDataById(int64_t id, const std::string& data) {
+  folly::Promise<folly::Unit> promise8;
   try {
     lobDataById(id, data);
     promise8.setValue();
