@@ -41,6 +41,7 @@ service PresultService {
   IOBufPtr methodIOBufPtr(1: IOBufPtr x);
   Enum methodEnum(1: Enum x);
   list<i32> methodList(1: list<i32> x);
+  list<bool> methodListBool(1: list<bool> x);
   deque methodDeque(1: deque x);
   map<i32, i64> methodMap(1: map<i32, i64> x);
   unordered_map methodUnorderedMap(1: unordered_map x);

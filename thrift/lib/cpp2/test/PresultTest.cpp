@@ -58,6 +58,10 @@ class PresultServiceInterface : public PresultServiceSvIf {
       std::unique_ptr<std::vector<int32_t>> x) override
   { ret = *x; }
 
+  void methodListBool(std::vector<bool>& ret,
+      std::unique_ptr<std::vector<bool>> x) override
+  { ret = *x; }
+
   void methodDeque(std::deque<int32_t>& ret,
       std::unique_ptr<std::deque<int32_t>> x) override
   { ret = *x; }
@@ -139,6 +143,7 @@ TEST(Presult, Presult) {
   run(count, F(methodString, std::string("hello")));
   run(count, F(methodBinary, std::string("binary")));
   run(count, F(methodList, std::vector<int32_t>({1,2,3})));
+  run(count, F(methodListBool, std::vector<bool>({true, false, true})));
   run(count, F(methodDeque, std::deque<int32_t>({1,2,3})));
   run(count, F(methodMap, std::map<int32_t, int64_t>({{1,11}, {2,22}, {3,33}})));
   run(count, F(methodUnorderedMap, std::unordered_map<int32_t, int64_t>({{1,11}, {2,22}, {3,33}})));

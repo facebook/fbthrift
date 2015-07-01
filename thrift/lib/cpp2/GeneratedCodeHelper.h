@@ -151,8 +151,12 @@ FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(push_back_checker, push_back);
 FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(insert_checker, insert);
 FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(reserve_checker, reserve);
 
+// The std::vector<bool> specialization in gcc provides a push_back(bool)
+// method, rather than a push_back(bool&&) like the generic std::vector<T>
 template <class C>
-using is_vector_like = push_back_checker<C, void(typename C::value_type&&)>;
+using is_vector_like = std::integral_constant<bool,
+    push_back_checker<C, void(typename C::value_type&&)>::value ||
+    push_back_checker<C, void(typename C::value_type)>::value>;
 
 template <class C>
 using has_insert = insert_checker<C,
@@ -568,6 +572,36 @@ class Cpp2Ops<float> {
 };
 
 
+namespace detail {
+
+template <class Protocol, class V>
+uint32_t readIntoVector(Protocol* prot, V& vec) {
+  typedef typename V::value_type ElemType;
+  uint32_t xfer = 0;
+  for (auto& e : vec) {
+    xfer += Cpp2Ops<ElemType>::read(prot, &e);
+  }
+  return xfer;
+}
+
+template <class Protocol>
+uint32_t readIntoVector(Protocol* prot, std::vector<bool>& vec) {
+  uint32_t xfer = 0;
+  for (auto e : vec) {
+    // e is a proxy object because the elements don't have distinct addresses
+    // (packed into a bitvector). We actually copy the proxy during iteration
+    // (can't use non-const reference because iteration returns by value, can't
+    // use const reference because we modify it), but it still points to the
+    // actual element.
+    bool b;
+    xfer += Cpp2Ops<bool>::read(prot, &b);
+    e = b;
+  }
+  return xfer;
+}
+
+}
+
 template <class L>
 class Cpp2Ops<L, typename std::enable_if<detail::is_vector_like<L>::value>::type> {
  public:
@@ -588,16 +622,13 @@ class Cpp2Ops<L, typename std::enable_if<detail::is_vector_like<L>::value>::type
   }
   template <class Protocol>
   static uint32_t read(Protocol* prot, Type* value) {
-    typedef typename Type::value_type ElemType;
     value->clear();
     uint32_t xfer = 0;
     uint32_t size;
     protocol::TType etype;
     xfer += prot->readListBegin(etype, size);
     value->resize(size);
-    for (auto& e : *value) {
-      xfer += Cpp2Ops<ElemType>::read(prot, &e);
-    }
+    xfer += detail::readIntoVector(prot, *value);
     xfer += prot->readListEnd();
     return xfer;
   }
