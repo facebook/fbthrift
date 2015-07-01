@@ -285,11 +285,12 @@ void ThriftServer::setup() {
     }
 
     if (!threadManager_) {
+      int numThreads = nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_;
       std::shared_ptr<apache::thrift::concurrency::ThreadManager>
         threadManager(new apache::thrift::concurrency::NumaThreadManager(
-                        nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_,
+                        numThreads,
                         true /*stats*/,
-                        getMaxRequests() /*maxQueueLen*/,
+                        getMaxRequests() + numThreads /*maxQueueLen*/,
                         threadStackSizeMB_));
       threadManager->enableCodel(getEnableCodel());
       if (!poolThreadName_.empty()) {
