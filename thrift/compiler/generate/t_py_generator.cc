@@ -77,6 +77,9 @@ class t_py_generator : public t_generator {
       default_port_ = "9090";
     }
 
+    iter = parsed_options.find("compare_t_fields_only");
+    compare_t_fields_only_ = (iter != parsed_options.end());
+
     out_dir_base_ = "gen-py";
 
     for (size_t i = 0;
@@ -301,6 +304,11 @@ class t_py_generator : public t_generator {
    * True iff we serialize maps in the ascending order of ther keys
    */
   bool sort_keys_;
+
+  /**
+   * True iff we compare thrift classes using their spec fields only
+   */
+  bool compare_t_fields_only_;
 
   /**
    * Default port to use.
@@ -863,7 +871,12 @@ string t_py_generator::py_imports() {
   imports += "import six\n";
   imports += "from thrift.util.Recursive import fix_spec\n";
   imports += "from thrift.Thrift import *\n";
-  imports += "from thrift.protocol.TProtocol import TProtocolException\n\n";
+  imports += "from thrift.protocol.TProtocol import TProtocolException\n";
+  if (compare_t_fields_only_) {
+    imports += "from thrift.util import parse_struct_spec\n\n";
+  } else {
+    imports += "\n";
+  }
 
   if (gen_json_) {
     imports += "from json import loads\n";
@@ -1287,8 +1300,23 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
     indent() << "def __eq__(self, other):" << endl;
   indent_up();
   out <<
-    indent() << "return isinstance(other, self.__class__) and "
-                "self.__dict__ == other.__dict__" << endl;
+    indent() << "if not isinstance(other, self.__class__):" << endl;
+  indent_up();
+  out <<
+    indent() << "return False" << endl;
+  indent_down();
+  out << endl;
+  if (compare_t_fields_only_) {
+    out <<
+      indent() << "return "
+        << "self.field == other.field and "
+        << "self.value == other.value" << endl;
+  } else {
+    out <<
+      indent() << "return "
+        << "self.__dict__ == other.__dict__" << endl;
+  }
+
   indent_down();
   out << endl;
 
@@ -1572,9 +1600,21 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
     out <<
       indent() << "def __eq__(self, other):" << endl;
     indent_up();
-    out <<
-      indent() << "return isinstance(other, self.__class__) and "
-      "self.__dict__ == other.__dict__" << endl;
+    out << indent() << "if not isinstance(other, self.__class__):" << endl;
+    indent_up();
+    out << indent() << "return False" << endl;
+    indent_down();
+    out << endl;
+    if (compare_t_fields_only_) {
+      out << indent() << "spec_t_fields = parse_struct_spec(self)" << endl;
+      out << indent() << "return "
+          << "all(getattr(self, field.name, field.default) "
+          << "== getattr(other, field.name, field.default)"
+          << " for field in spec_t_fields)" << endl;
+    } else {
+      out << indent() << "return "
+          << "self.__dict__ == other.__dict__ " << endl;
+    }
     indent_down();
     out << endl;
 

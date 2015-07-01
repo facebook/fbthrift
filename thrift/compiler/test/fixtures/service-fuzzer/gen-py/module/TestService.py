@@ -348,7 +348,10 @@ class init_args:
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
-    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
 
   def __ne__(self, other):
     return not (self == other)
@@ -456,7 +459,10 @@ class init_result:
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
-    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
 
   def __ne__(self, other):
     return not (self == other)
