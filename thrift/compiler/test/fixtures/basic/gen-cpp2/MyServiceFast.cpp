@@ -22,38 +22,11 @@ void MyServiceFastSvIf::ping() {
 }
 
 folly::Future<folly::Unit> MyServiceFastSvIf::future_ping() {
-  folly::Promise<folly::Unit> promise40;
-  try {
-    ping();
-    promise40.setValue();
-  } catch(const std::exception& ex) {
-    promise40.setException(folly::exception_wrapper(std::current_exception()));
-  }
-  return promise40.getFuture();
+  return apache::thrift::detail::si::future([&] { return ping(); });
 }
 
 void MyServiceFastSvIf::async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  auto callbackp = callback.release();
-  setEventBase(callbackp->getEventBase());
-  setThreadManager(callbackp->getThreadManager());
-  callbackp->runFuncInQueue([this, callbackp]() mutable {
-    setConnectionContext(callbackp->getConnectionContext());
-    try {
-      auto future41 = future_ping();
-      future41.then([=](folly::Try<folly::Unit>&& t) {
-        try {
-          t.throwIfFailed();
-          callbackp->doneInThread();
-        } catch(...) {
-          callbackp->exceptionInThread(std::current_exception());
-        }
-      }
-      );
-    } catch(const std::exception& ex) {
-      callbackp->exceptionInThread(std::current_exception());
-    }
-  }
-  );
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_ping(); });
 }
 
 void MyServiceFastSvIf::getRandomData(std::string& _return) {
@@ -61,38 +34,11 @@ void MyServiceFastSvIf::getRandomData(std::string& _return) {
 }
 
 folly::Future<std::unique_ptr<std::string>> MyServiceFastSvIf::future_getRandomData() {
-  folly::Promise<std::unique_ptr<std::string>> promise42;
-  try {
-    std::unique_ptr<std::string> _return(new std::string);
-    getRandomData(*_return);
-    promise42.setValue(std::move(_return));
-  } catch(const std::exception& ex) {
-    promise42.setException(folly::exception_wrapper(std::current_exception()));
-  }
-  return promise42.getFuture();
+  return apache::thrift::detail::si::future_returning_uptr([&](std::string& _return) { getRandomData(_return); });
 }
 
 void MyServiceFastSvIf::async_eb_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
-  auto callbackp = callback.release();
-  setEventBase(callbackp->getEventBase());
-  setThreadManager(callbackp->getThreadManager());
-  callbackp->runFuncInQueue([this, callbackp]() mutable {
-    setConnectionContext(callbackp->getConnectionContext());
-    try {
-      auto future43 = future_getRandomData();
-      future43.then([=](folly::Try<std::unique_ptr<std::string>>&& _return) {
-        try {
-          callbackp->resultInThread(std::move(_return.value()));
-        } catch(...) {
-          callbackp->exceptionInThread(std::current_exception());
-        }
-      }
-      );
-    } catch(const std::exception& ex) {
-      callbackp->exceptionInThread(std::current_exception());
-    }
-  }
-  );
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_getRandomData(); });
 }
 
 bool MyServiceFastSvIf::hasDataById(int64_t id) {
@@ -101,36 +47,11 @@ bool MyServiceFastSvIf::hasDataById(int64_t id) {
 }
 
 folly::Future<bool> MyServiceFastSvIf::future_hasDataById(int64_t id) {
-  folly::Promise<bool> promise44;
-  try {
-    promise44.setValue(hasDataById(id));
-  } catch(const std::exception& ex) {
-    promise44.setException(folly::exception_wrapper(std::current_exception()));
-  }
-  return promise44.getFuture();
+  return apache::thrift::detail::si::future([&] { return hasDataById(id); });
 }
 
 void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) {
-  auto callbackp = callback.release();
-  setEventBase(callbackp->getEventBase());
-  setThreadManager(callbackp->getThreadManager());
-  callbackp->runFuncInQueue([this, callbackp, id]() mutable {
-    setConnectionContext(callbackp->getConnectionContext());
-    try {
-      auto future45 = future_hasDataById(id);
-      future45.then([=](folly::Try<bool>&& _return) {
-        try {
-          callbackp->resultInThread(std::move(_return.value()));
-        } catch(...) {
-          callbackp->exceptionInThread(std::current_exception());
-        }
-      }
-      );
-    } catch(const std::exception& ex) {
-      callbackp->exceptionInThread(std::current_exception());
-    }
-  }
-  );
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_hasDataById(id); });
 }
 
 void MyServiceFastSvIf::getDataById(std::string& _return, int64_t id) {
@@ -138,38 +59,11 @@ void MyServiceFastSvIf::getDataById(std::string& _return, int64_t id) {
 }
 
 folly::Future<std::unique_ptr<std::string>> MyServiceFastSvIf::future_getDataById(int64_t id) {
-  folly::Promise<std::unique_ptr<std::string>> promise46;
-  try {
-    std::unique_ptr<std::string> _return(new std::string);
-    getDataById(*_return, id);
-    promise46.setValue(std::move(_return));
-  } catch(const std::exception& ex) {
-    promise46.setException(folly::exception_wrapper(std::current_exception()));
-  }
-  return promise46.getFuture();
+  return apache::thrift::detail::si::future_returning_uptr([&](std::string& _return) { getDataById(_return, id); });
 }
 
 void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id) {
-  auto callbackp = callback.release();
-  setEventBase(callbackp->getEventBase());
-  setThreadManager(callbackp->getThreadManager());
-  callbackp->runFuncInQueue([this, callbackp, id]() mutable {
-    setConnectionContext(callbackp->getConnectionContext());
-    try {
-      auto future47 = future_getDataById(id);
-      future47.then([=](folly::Try<std::unique_ptr<std::string>>&& _return) {
-        try {
-          callbackp->resultInThread(std::move(_return.value()));
-        } catch(...) {
-          callbackp->exceptionInThread(std::current_exception());
-        }
-      }
-      );
-    } catch(const std::exception& ex) {
-      callbackp->exceptionInThread(std::current_exception());
-    }
-  }
-  );
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_getDataById(id); });
 }
 
 void MyServiceFastSvIf::putDataById(int64_t id, std::unique_ptr<std::string> data) {
@@ -177,40 +71,12 @@ void MyServiceFastSvIf::putDataById(int64_t id, std::unique_ptr<std::string> dat
 }
 
 folly::Future<folly::Unit> MyServiceFastSvIf::future_putDataById(int64_t id, std::unique_ptr<std::string> data) {
-  folly::Promise<folly::Unit> promise48;
-  try {
-    putDataById(id, std::move(data));
-    promise48.setValue();
-  } catch(const std::exception& ex) {
-    promise48.setException(folly::exception_wrapper(std::current_exception()));
-  }
-  return promise48.getFuture();
+  return apache::thrift::detail::si::future([&] { return putDataById(id, std::move(data)); });
 }
 
 void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data) {
-  auto callbackp = callback.release();
-  setEventBase(callbackp->getEventBase());
-  setThreadManager(callbackp->getThreadManager());
-  auto tmp_move_data49 = std::move(data);
-  auto move_data50 = folly::makeMoveWrapper(std::move(tmp_move_data49));
-  callbackp->runFuncInQueue([this, callbackp, id, move_data50]() mutable {
-    setConnectionContext(callbackp->getConnectionContext());
-    try {
-      auto future51 = future_putDataById(id, std::move(*move_data50));
-      future51.then([=](folly::Try<folly::Unit>&& t) {
-        try {
-          t.throwIfFailed();
-          callbackp->doneInThread();
-        } catch(...) {
-          callbackp->exceptionInThread(std::current_exception());
-        }
-      }
-      );
-    } catch(const std::exception& ex) {
-      callbackp->exceptionInThread(std::current_exception());
-    }
-  }
-  );
+  auto data_ = folly::makeMoveWrapper(data);
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_putDataById(id, data_.move()); });
 }
 
 void MyServiceFastSvIf::lobDataById(int64_t id, std::unique_ptr<std::string> data) {
@@ -218,32 +84,12 @@ void MyServiceFastSvIf::lobDataById(int64_t id, std::unique_ptr<std::string> dat
 }
 
 folly::Future<folly::Unit> MyServiceFastSvIf::future_lobDataById(int64_t id, std::unique_ptr<std::string> data) {
-  folly::Promise<folly::Unit> promise52;
-  try {
-    lobDataById(id, std::move(data));
-    promise52.setValue();
-  } catch(const std::exception& ex) {
-    promise52.setException(folly::exception_wrapper(std::current_exception()));
-  }
-  return promise52.getFuture();
+  return apache::thrift::detail::si::future([&] { return lobDataById(id, std::move(data)); });
 }
 
 void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data) {
-  auto callbackp = callback.release();
-  setEventBase(callbackp->getEventBase());
-  setThreadManager(callbackp->getThreadManager());
-  auto tmp_move_data53 = std::move(data);
-  auto move_data54 = folly::makeMoveWrapper(std::move(tmp_move_data53));
-  callbackp->runFuncInQueue([this, callbackp, id, move_data54]() mutable {
-    setConnectionContext(callbackp->getConnectionContext());
-    try {
-      auto future55 = future_lobDataById(id, std::move(*move_data54));
-      delete callbackp;
-    } catch(const std::exception& ex) {
-      delete callbackp;
-    }
-  }
-  );
+  auto data_ = folly::makeMoveWrapper(data);
+  apache::thrift::detail::si::async_eb_oneway(this, std::move(callback), [=]() mutable { return future_lobDataById(id, data_.move()); });
 }
 
 const char* MyServiceFastAsyncProcessor::getServiceName() {

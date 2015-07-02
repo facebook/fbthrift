@@ -967,59 +967,36 @@ class CppGenerator(t_generator.Generator):
                 self._generate_server_async_function(service, function)
 
     def _generate_server_future_function(self, service, function):
-        with out().defn(self._get_process_function_signature_future(service,
-                                                                    function),
-                    name="future_" + function.name):
+        name = "future_" + function.name
+        sig = self._get_process_function_signature_future(service, function)
+        with out().defn(sig, name=name):
             rettype = self._type_name(function.returntype)
-            if self._is_complex_type(function.returntype) and \
-                    not self.flag_stack_arguments:
-                rettype = 'std::unique_ptr<' + rettype + '>'
-
-            promise_name = self.tmp("promise")
-            out("folly::Promise<{0}> {1};"
-                    .format(_lift_unit(rettype), promise_name))
-            args = []
-            for member in function.arglist.members:
-                if self._is_complex_type(member.type) \
-                  and not self.flag_stack_arguments:
-                    args.append("std::move({0})".format(member.name))
+            if self.flag_stack_arguments:
+                args = [m.name for m in function.arglist.members]
+                if not self._is_complex_type(function.returntype):
+                    f = "future"
+                    c = "[&] {{ return {n}({a}); }}"
                 else:
-                    args.append(member.name)
-
-            if not function.oneway and self._is_complex_type(
-                function.returntype
-            ):
-                if self.flag_stack_arguments:
-                    args.insert(0, "_return")
+                    f = "future_returning"
+                    args = ["_return"] + args
+                    c = "[&]({r}& _return) {{ {n}({a}); }}"
+            else:
+                mv = lambda n: "std::move({n})".format(n=n)
+                args = [
+                    mv(m.name) if self._is_complex_type(m.type) else m.name
+                    for m in function.arglist.members
+                ]
+                if not self._is_complex_type(function.returntype):
+                    f = "future"
+                    c = "[&] {{ return {n}({a}); }}"
                 else:
-                    args.insert(0, "*_return")
-            with out("try"):
-                if not function.oneway and not function.returntype.is_void:
-                    if self._is_complex_type(function.returntype) \
-                      and not self.flag_stack_arguments:
-                        out("std::unique_ptr<{0}> _return(new {0});"
-                          .format(self._type_name(function.returntype)))
-                        out("{0}({1});".format(function.name,
-                                             ", ".join(args)))
-                        out("{0}.setValue(std::move(_return));".format(
-                            promise_name))
-                    elif self._is_complex_type(function.returntype):
-                        out("{0} _return;".format(self._type_name(
-                            function.returntype)))
-                        out("{0}({1});".format(function.name,
-                                             ", ".join(args)))
-                        out("{0}.setValue(_return);".format(promise_name))
-                    else:
-                        out("{0}.setValue({1}({2}));"
-                          .format(promise_name, function.name, ", ".join(args)))
-                else:
-                    out("{0}(".format(function.name) + ", ".join(args) + ");")
-                    out("{0}.setValue();".format(promise_name))
-                with out().catch("const std::exception& ex"):
-                    out("{0}.setException(folly::exception_wrapper"
-                        "(std::current_exception()));".format(
-                            promise_name))
-            out("return {0}.getFuture();".format(promise_name))
+                    f = "future_returning_uptr"
+                    args = ["_return"] + args
+                    c = "[&]({r}& _return) {{ {n}({a}); }}"
+            s = "return {ns}::{f}(" + c + ");"
+            ns = "apache::thrift::detail::si"
+            r = self._type_name(function.returntype)
+            out(s.format(ns=ns, f=f, n=function.name, r=r, a=", ".join(args)))
 
     def _generate_server_async_function_streaming(self, function):
         out('callback->exception(folly::make_exception_wrapper<'
@@ -1028,83 +1005,28 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_server_async_function_future(self, function):
         if self._is_stream_type(function.returntype):
-            self._generate_server_async_function_streaming(function)
-            return
-        out('auto callbackp = callback.release();')
-        out('setEventBase(callbackp->getEventBase());')
-        out('setThreadManager(callbackp->getThreadManager());')
-        captureArgs = []
-        callArgs = []
-        for member in function.arglist.members:
-            if self._is_complex_type(member.type):
-                tmpMovedArg = self.tmp("tmp_move_{0}".format(member.name))
-                out("auto {0} = std::move({1});"
-                        .format(tmpMovedArg, member.name))
-                moveArg = self.tmp("move_{0}".format(member.name))
-                out("auto {0} = folly::makeMoveWrapper(std::move({1}));"
-                        .format(moveArg, tmpMovedArg))
-                captureArgs.append(moveArg)
-                callArgs.append("std::move(*{0})".format(moveArg))
-            else:
-                captureArgs.append(member.name)
-                callArgs.append(member.name)
-
+            return self._generate_server_async_function_streaming(function)
+        stack_args = self.flag_stack_arguments
+        is_complex_type = lambda t: self._is_complex_type(t) and not stack_args
         if self._is_processed_in_eb(function):
-            captures = "this, callbackp"
-            if captureArgs:
-                captures = "{0}, {1}".format(captures, ", ".join(captureArgs))
-            with out("callbackp->runFuncInQueue([{0}]() mutable".format(captures)):
-                self._generate_server_async_future_stuff(function, callArgs)
-            out(");")
+            for arg in function.arglist.members:
+                if is_complex_type(arg.type):
+                    out("auto {n}_ = folly::makeMoveWrapper({n});"
+                        .format(n=arg.name))
+            f = "async_eb_oneway" if function.oneway else "async_eb"
+            mv = lambda n: "{n}_.move()".format(n=n)
+            c = "[=]() mutable {{ return future_{n}({a}); }}"
         else:
-            self._generate_server_async_future_stuff(function, callArgs)
-
-    def _generate_server_async_future_stuff(self, function, callArgs):
-        rettype = "folly::Try<{0}>".format(
-            self._type_name(function.returntype))
-        if self._is_complex_type(function.returntype) and \
-          not self.flag_stack_arguments:
-            rettype = "folly::Try<std::unique_ptr" \
-              "<{0}>>".format(self._type_name(function.returntype))
-        future_name = self.tmp('future')
-        out('setConnectionContext(callbackp->getConnectionContext());')
-        with out("try"):
-            if not function.oneway and \
-              not function.returntype.is_void:
-                out("auto {2} = future_{0}({1});".format(
-                    function.name, ", ".join(callArgs), future_name))
-                with out("{0}.then([=]({1}&& _return)".format(
-                        future_name, rettype)):
-                    with out("try"):
-                        out("callbackp->resultInThread("
-                          "std::move(_return.value()));")
-                        with out().catch("..."):
-                            out("callbackp->exceptionInThread("
-                                "std::current_exception());")
-                out(");")
-            else:
-                out("auto {1} = future_{0}(".format(
-                    function.name, future_name)
-                    + ", ".join(callArgs) + ");")
-                if not function.oneway:
-                    with out(("{0}.then([=](folly::Try<folly::Unit>&& t)"
-                            ).format(future_name)):
-                        with out("try"):
-                            out("t.throwIfFailed();")
-                            out("callbackp->doneInThread();")
-                            with out().catch("..."):
-                                out("callbackp->exceptionInThread("
-                                    "std::current_exception());")
-                    out(");")
-                else:
-                    out("delete callbackp;")
-            with out().catch("const std::exception& ex"):
-                if not function.oneway:
-                    out("callbackp->exceptionInThread(std::"
-                        "current_exception());")
-                else:
-                    out("delete callbackp;")
-
+            f = "async_tm_oneway" if function.oneway else "async_tm"
+            mv = lambda n: "std::move({n})".format(n=n)
+            c = "[&] {{ return future_{n}({a}); }}"
+        s = "{ns}::{f}(this, std::move(callback), " + c + ");"
+        args = [
+            mv(m.name) if is_complex_type(m.type) else m.name
+            for m in function.arglist.members
+        ]
+        ns = "apache::thrift::detail::si"
+        out(s.format(ns=ns, f=f, n=function.name, a=", ".join(args)))
 
     def _generate_server_async_function(self, service, function):
         with out().defn(self._get_process_function_signature_async(service,
