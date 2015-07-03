@@ -459,7 +459,7 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     setProtectionState(ProtectionState::NONE);
   } else if ((getProtectionState() == ProtectionState::INPROGRESS ||
               getProtectionState() == ProtectionState::WAITING) &&
-              !isSupportedClient(ct)) {
+              isSupportedClient(ct)) {
     // If a client  permits a non-secure connection, we allow falling back to
     // one even if a SASL handshake is in progress.
     VLOG(5) << "Client initiated a fallback during a SASL handshake";
