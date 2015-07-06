@@ -464,6 +464,8 @@ class CppGenerator(t_generator.Generator):
             minName = sortedConstants[0].name
             maxName = sortedConstants[-1].name
 
+        self._generate_hash_equal_to(tenum)
+
         with self._types_global.namespace('apache.thrift').scope:
 
             with out().defn('template <> const char* TEnumTraitsBase<{fullName}>::'
@@ -3771,12 +3773,25 @@ class CppGenerator(t_generator.Generator):
                     out('template<> struct hash<typename ' + full_name + '> {')
                     out('size_t operator()(const ' + full_name + '&) const;')
                     out("};")
+                    if frontend.t_enum == obj.__class__:
+                        out('inline size_t '
+                            + 'hash<typename ' + full_name + '>::operator()'
+                            +    '(const ' + full_name + '& e) const {')
+                        out('  return std::hash<int64_t>()(static_cast<int64_t>(e));')
+                        out('}')
 
                 if gen_equal_to:
                     out('template<> struct equal_to<typename ' + full_name + '> {')
                     out('bool operator()(const ' + full_name + '&,')
                     out('const ' + full_name + '&) const;')
                     out("};")
+                    if frontend.t_enum == obj.__class__:
+                        out('inline bool '
+                            + 'equal_to<typename ' + full_name + '>::operator()'
+                            +    '(const ' + full_name + '& e1,'
+                            +    ' const ' + full_name + '& e2) const {')
+                        out('  return e1 == e2;')
+                        out('}')
 
     def _generate_cpp_struct(self, obj, is_exception=False):
         # We write all of these to the types scope
