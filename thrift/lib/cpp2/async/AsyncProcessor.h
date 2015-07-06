@@ -590,27 +590,6 @@ class HandlerCallback : public HandlerCallbackBase {
     thisPtr.release()->resultInThread(r);
   }
 
-  void complete(folly::Try<T>&& r) {
-    if (r.hasException()) {
-      exception(std::move(r.exception()));
-    } else {
-      result(std::move(r.value()));
-    }
-  }
-  void completeInThread(folly::Try<T>&& r) {
-    if (r.hasException()) {
-      exceptionInThread(std::move(r.exception()));
-    } else {
-      resultInThread(std::move(r.value()));
-    }
-  }
-  static void completeInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      folly::Try<T>&& r) {
-    DCHECK(thisPtr);
-    thisPtr.release()->completeInThread(std::forward<folly::Try<T>>(r));
-  }
-
  protected:
 
   virtual void doResult(const ResultType& r) {
@@ -665,28 +644,6 @@ class HandlerCallback<void> : public HandlerCallbackBase {
       std::unique_ptr<HandlerCallback> thisPtr) {
     DCHECK(thisPtr);
     thisPtr.release()->doneInThread();
-  }
-
-  void complete(folly::Try<folly::Unit>&& r) {
-    if (r.hasException()) {
-      exception(std::move(r.exception()));
-    } else {
-      done();
-    }
-  }
-  void completeInThread(folly::Try<folly::Unit>&& r) {
-    if (r.hasException()) {
-      exceptionInThread(std::move(r.exception()));
-    } else {
-      doneInThread();
-    }
-  }
-  static void completeInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      folly::Try<folly::Unit>&& r) {
-    DCHECK(thisPtr);
-    thisPtr.release()->completeInThread(
-        std::forward<folly::Try<folly::Unit>>(r));
   }
 
  protected:
