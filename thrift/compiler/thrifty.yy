@@ -1092,7 +1092,7 @@ Field:
         for (const auto& it : $10->annotations_) {
           if (it.first == "cpp.ref" || it.first == "cpp2.ref") {
             if ($3 != t_field::T_OPTIONAL) {
-              pwarning(1, "cpp.ref field must be optional");
+              pwarning(1, "cpp.ref field must be optional if it is recursive");
             }
             break;
           }
