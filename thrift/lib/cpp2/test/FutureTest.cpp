@@ -36,14 +36,13 @@
 
 #include <folly/Executor.h>
 #include <folly/futures/ManualExecutor.h>
-#include "common/concurrency/Executor.h"
 
 using namespace apache::thrift;
+using namespace apache::thrift::concurrency;
 using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace folly;
-using facebook::concurrency::TEventBaseExecutor;
 
 class TestInterface : public FutureServiceSvIf {
   Future<std::unique_ptr<std::string>> future_sendResponse(
@@ -170,7 +169,6 @@ TEST(ThriftServer, FutureClientTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   TEventBase base;
-  TEventBaseExecutor e(&base);
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
@@ -190,7 +188,7 @@ TEST(ThriftServer, FutureClientTest) {
   auto future = client.future_sendResponse(1000);
   steady_clock::time_point sent = steady_clock::now();
 
-  auto value = future.getVia(&e);
+  auto value = future.getVia(&base);
   steady_clock::time_point got = steady_clock::now();
 
   EXPECT_EQ(value, "test1000");
@@ -209,7 +207,7 @@ TEST(ThriftServer, FutureClientTest) {
     }
   );
 
-  EXPECT_EQ(len.getVia(&e), 6);
+  EXPECT_EQ(len.getVia(&base), 6);
 
   RpcOptions options;
   options.setTimeout(std::chrono::milliseconds(1));
@@ -218,7 +216,7 @@ TEST(ThriftServer, FutureClientTest) {
     auto f = client.future_sendResponse(options, 10000);
 
     // Wait for future to finish
-    f.getVia(&e);
+    f.getVia(&base);
     EXPECT_EQ(true, false);
   } catch (...) {
     return;
@@ -229,10 +227,15 @@ TEST(ThriftServer, FutureClientTest) {
 TEST(ThriftServer, FutureGetOrderTest) {
   using std::chrono::steady_clock;
 
+  auto thf = std::make_shared<PosixThreadFactory>();
+  auto thm = ThreadManager::newSimpleThreadManager(1, 5, false, 5);
+  thm->threadFactory(thf);
+  thm->start();
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  factory.useSimpleThreadManager(false);
+  factory.useThreadManager(thm);
   ScopedServerThread sst(factory.create());
   TEventBase base;
-  TEventBaseExecutor e(&base);
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
@@ -252,12 +255,12 @@ TEST(ThriftServer, FutureGetOrderTest) {
 
   steady_clock::time_point start = steady_clock::now();
 
-  EXPECT_EQ(future3.getVia(&e), "test30");
+  EXPECT_EQ(future3.getVia(&base), "test30");
   steady_clock::time_point sent = steady_clock::now();
-  EXPECT_EQ(future4.getVia(&e), "test40");
-  EXPECT_EQ(future0.getVia(&e), "test0");
-  EXPECT_EQ(future2.getVia(&e), "test20");
-  EXPECT_EQ(future1.getVia(&e), "test10");
+  EXPECT_EQ(future4.getVia(&base), "test40");
+  EXPECT_EQ(future0.getVia(&base), "test0");
+  EXPECT_EQ(future2.getVia(&base), "test20");
+  EXPECT_EQ(future1.getVia(&base), "test10");
   steady_clock::time_point gets = steady_clock::now();
 
   steady_clock::duration sentTime = sent - start;
