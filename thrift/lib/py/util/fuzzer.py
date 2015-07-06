@@ -28,7 +28,7 @@ try:
     from ServiceRouter import ConnConfigs, ServiceOptions, ServiceRouter
     SR_AVAILABLE = True
 except ImportError:
-    SR_AVAILABLE = False  # ServiceRouter not available
+    SR_AVAILABLE = False
 
 from thrift import Thrift
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
@@ -238,6 +238,20 @@ class FuzzerConfiguration(object):
             'type': str,
             'flag': '-t',
             'default': None
+        }
+        argspec['conn_configs'] = {
+            'description': 'ConnConfigs to use for ServiceRouter connection',
+            'type': str,
+            'flag': '-Conn',
+            'default': {},
+            'is_json': True
+        }
+        argspec['service_options'] = {
+            'description': 'ServiceOptions to use for ServiceRouter connection',
+            'type': str,
+            'flag': '-SO',
+            'default': {},
+            'is_json': True
         }
 
     def __init__(self, service=None):
@@ -613,10 +627,19 @@ class FuzzerClient(object):
         serviceRouter = ServiceRouter()
 
         overrides = ConnConfigs()
-        overrides[b"sock_recvtimeout"] = b"1000"  # recv timeout in millisec
+        for key, val in six.iteritems(config.conn_configs):
+            key = six.binary_type(key)
+            val = six.binary_type(val)
+            overrides[key] = val
 
         sr_options = ServiceOptions()
-        sr_options[b"svc_select_count"] = [b"3"]  # select 3 services
+        for key, val in six.iteritems(config.service_options):
+            key = six.binary_type(key)
+            if not isinstance(val, list):
+                raise TypeError("Service option %s expected list; got %s (%s)"
+                                % (key, val, type(val)))
+            val = [six.binary_type(elem) for elem in val]
+            sr_options[key] = val
 
         service_name = config.tier
 
