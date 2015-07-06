@@ -14,6 +14,7 @@ import itertools
 import json
 import logging
 import os
+import pprint
 import random
 import sys
 import time
@@ -369,9 +370,7 @@ class FuzzerConfiguration(object):
         return settings
 
     def __str__(self):
-        pairs = ['  %s=%s' % (key, str(val))
-                 for key, val in six.iteritems(self.__dict__)]
-        return 'Configuration(\n%s\n)' % ('\n'.join(pairs))
+        return 'Configuration(\n%s\n)' % pprint.pformat(self.__dict__)
 
     def load_service(self):
         if self.service is not None:
