@@ -27,9 +27,9 @@
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <folly/io/IOBufQueue.h>
-#include <folly/wangle/channel/Handler.h>
-#include <folly/wangle/channel/StaticPipeline.h>
-#include <folly/wangle/channel/OutputBufferingHandler.h>
+#include <wangle/channel/Handler.h>
+#include <wangle/channel/StaticPipeline.h>
+#include <wangle/channel/OutputBufferingHandler.h>
 #include <thrift/lib/cpp2/async/FramingHandler.h>
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <memory>

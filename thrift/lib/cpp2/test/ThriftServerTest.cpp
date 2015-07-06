@@ -31,7 +31,7 @@
 #include <thrift/lib/cpp2/TestServer.h>
 
 #include <folly/experimental/fibers/FiberManagerMap.h>
-#include <folly/wangle/concurrent/GlobalExecutor.h>
+#include <wangle/concurrent/GlobalExecutor.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>

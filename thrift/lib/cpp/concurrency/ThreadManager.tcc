@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <folly/wangle/concurrent/Codel.h>
+#include <wangle/concurrent/Codel.h>
 #include <folly/Conv.h>
 #include <folly/MPMCQueue.h>
 #include <thrift/lib/cpp/async/Request.h>

@@ -15,7 +15,7 @@
  */
 #pragma once
 
-#include <folly/wangle/channel/Handler.h>
+#include <wangle/channel/Handler.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>

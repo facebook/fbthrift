@@ -151,6 +151,8 @@ if test "$with_cpp" = "yes";  then
              [Please install snappy library])])
   AC_CHECK_LIB([numa], [numa_available], [], [AC_MSG_ERROR(
              [Please install numa library])])
+  AC_CHECK_LIB([wangle], [getenv], [], [AC_MSG_ERROR(
+             [Please install the wangle library from https://github.com/facebook/wangle])])
 
   AX_BOOST_BASE([1.40.0])
   if test "x$succeeded" != "xyes" ; then

@@ -30,7 +30,7 @@
 #include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
-#include <folly/wangle/concurrent/Codel.h>
+#include <wangle/concurrent/Codel.h>
 #include <folly/Synchronized.h>
 
 using namespace boost;

@@ -31,7 +31,7 @@
 #include <folly/String.h>
 #include <folly/MoveWrapper.h>
 #include <folly/futures/Future.h>
-#include <folly/wangle/deprecated/rx/Observer.h>
+#include <wangle/deprecated/rx/Observer.h>
 
 namespace apache { namespace thrift {
 

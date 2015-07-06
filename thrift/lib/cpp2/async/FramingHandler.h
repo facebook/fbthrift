@@ -16,8 +16,8 @@
 #pragma once
 
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
-#include <folly/wangle/channel/Handler.h>
-#include <folly/wangle/channel/StaticPipeline.h>
+#include <wangle/channel/Handler.h>
+#include <wangle/channel/StaticPipeline.h>
 
 namespace apache { namespace thrift {
 

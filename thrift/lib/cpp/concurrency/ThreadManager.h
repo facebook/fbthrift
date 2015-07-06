@@ -25,7 +25,7 @@
 #include <folly/Executor.h>
 #include <folly/LifoSem.h>
 #include <folly/RWSpinLock.h>
-#include <folly/wangle/concurrent/Codel.h>
+#include <wangle/concurrent/Codel.h>
 
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
