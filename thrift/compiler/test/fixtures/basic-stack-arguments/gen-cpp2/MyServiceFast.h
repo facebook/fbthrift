@@ -80,14 +80,14 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   virtual void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   virtual bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header);
  private:
-  static std::unordered_set<std::string> onewayMethods;
-  static std::unordered_map<std::string, int16_t> CacheKeyMap;
-  typedef void (MyServiceFastAsyncProcessor::*binaryProcessFunction)(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::BinaryProtocolReader> iprot, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  typedef std::unordered_map<std::string, binaryProcessFunction> binaryProcessMap;
-  static MyServiceFastAsyncProcessor::binaryProcessMap binaryProcessMap_;
-  typedef void (MyServiceFastAsyncProcessor::*compactProcessFunction)(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::CompactProtocolReader> iprot, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  typedef std::unordered_map<std::string, compactProcessFunction> compactProcessMap;
-  static MyServiceFastAsyncProcessor::compactProcessMap compactProcessMap_;
+  static std::unordered_set<std::string> onewayMethods_;
+  static std::unordered_map<std::string, int16_t> cacheKeyMap_;
+  using BinaryProtocolProcessFunction = void(MyServiceFastAsyncProcessor::*)(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::BinaryProtocolReader> iprot, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  using BinaryProtocolProcessMap = std::unordered_map<std::string, BinaryProtocolProcessFunction>;
+  static MyServiceFastAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
+  using CompactProtocolProcessFunction = void(MyServiceFastAsyncProcessor::*)(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::CompactProtocolReader> iprot, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  using CompactProtocolProcessMap = std::unordered_map<std::string, CompactProtocolProcessFunction>;
+  static MyServiceFastAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_hasDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>

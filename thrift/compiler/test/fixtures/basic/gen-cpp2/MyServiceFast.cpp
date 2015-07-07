@@ -109,8 +109,8 @@ folly::Optional<std::string> MyServiceFastAsyncProcessor::getCacheKey(folly::IOB
         std::unique_ptr<apache::thrift::BinaryProtocolReader> iprot(new apache::thrift::BinaryProtocolReader());
         iprot->setInput(buf);
         iprot->readMessageBegin(fname, mtype, protoSeqId);
-        auto pfn = CacheKeyMap.find(fname);
-        if (pfn == CacheKeyMap.end()) {
+        auto pfn = cacheKeyMap_.find(fname);
+        if (pfn == cacheKeyMap_.end()) {
           return folly::none;
         }
         auto cacheKeyParamId = pfn->second;
@@ -136,8 +136,8 @@ folly::Optional<std::string> MyServiceFastAsyncProcessor::getCacheKey(folly::IOB
         std::unique_ptr<apache::thrift::CompactProtocolReader> iprot(new apache::thrift::CompactProtocolReader());
         iprot->setInput(buf);
         iprot->readMessageBegin(fname, mtype, protoSeqId);
-        auto pfn = CacheKeyMap.find(fname);
-        if (pfn == CacheKeyMap.end()) {
+        auto pfn = cacheKeyMap_.find(fname);
+        if (pfn == cacheKeyMap_.end()) {
           return folly::none;
         }
         auto cacheKeyParamId = pfn->second;
@@ -341,8 +341,8 @@ bool MyServiceFastAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const 
       iprot.setInput(buf);
       try {
         iprot.readMessageBegin(fname, mtype, protoSeqId);
-        auto it = onewayMethods.find(fname);
-        return it != onewayMethods.end();
+        auto it = onewayMethods_.find(fname);
+        return it != onewayMethods_.end();
       } catch(const apache::thrift::TException& ex) {
         LOG(ERROR) << "received invalid message from client: " << ex.what();
         return false;
@@ -354,8 +354,8 @@ bool MyServiceFastAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const 
       iprot.setInput(buf);
       try {
         iprot.readMessageBegin(fname, mtype, protoSeqId);
-        auto it = onewayMethods.find(fname);
-        return it != onewayMethods.end();
+        auto it = onewayMethods_.find(fname);
+        return it != onewayMethods_.end();
       } catch(const apache::thrift::TException& ex) {
         LOG(ERROR) << "received invalid message from client: " << ex.what();
         return false;
@@ -370,11 +370,11 @@ bool MyServiceFastAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const 
   return false;
 }
 
-std::unordered_set<std::string> MyServiceFastAsyncProcessor::onewayMethods {
+std::unordered_set<std::string> MyServiceFastAsyncProcessor::onewayMethods_ {
   "lobDataById"
 };
-std::unordered_map<std::string, int16_t> MyServiceFastAsyncProcessor::CacheKeyMap {};
-MyServiceFastAsyncProcessor::binaryProcessMap MyServiceFastAsyncProcessor::binaryProcessMap_ {
+std::unordered_map<std::string, int16_t> MyServiceFastAsyncProcessor::cacheKeyMap_ {};
+MyServiceFastAsyncProcessor::BinaryProtocolProcessMap MyServiceFastAsyncProcessor::binaryProcessMap_ {
   {"ping", &MyServiceFastAsyncProcessor::process_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"getRandomData", &MyServiceFastAsyncProcessor::process_getRandomData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"hasDataById", &MyServiceFastAsyncProcessor::process_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -382,7 +382,7 @@ MyServiceFastAsyncProcessor::binaryProcessMap MyServiceFastAsyncProcessor::binar
   {"putDataById", &MyServiceFastAsyncProcessor::process_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"lobDataById", &MyServiceFastAsyncProcessor::process_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}
 };
-MyServiceFastAsyncProcessor::compactProcessMap MyServiceFastAsyncProcessor::compactProcessMap_ {
+MyServiceFastAsyncProcessor::CompactProtocolProcessMap MyServiceFastAsyncProcessor::compactProcessMap_ {
   {"ping", &MyServiceFastAsyncProcessor::process_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"getRandomData", &MyServiceFastAsyncProcessor::process_getRandomData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"hasDataById", &MyServiceFastAsyncProcessor::process_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

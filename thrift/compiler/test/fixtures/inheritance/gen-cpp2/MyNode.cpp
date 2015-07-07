@@ -49,8 +49,8 @@ folly::Optional<std::string> MyNodeAsyncProcessor::getCacheKey(folly::IOBuf* buf
         std::unique_ptr<apache::thrift::BinaryProtocolReader> iprot(new apache::thrift::BinaryProtocolReader());
         iprot->setInput(buf);
         iprot->readMessageBegin(fname, mtype, protoSeqId);
-        auto pfn = CacheKeyMap.find(fname);
-        if (pfn == CacheKeyMap.end()) {
+        auto pfn = cacheKeyMap_.find(fname);
+        if (pfn == cacheKeyMap_.end()) {
           return folly::none;
         }
         auto cacheKeyParamId = pfn->second;
@@ -76,8 +76,8 @@ folly::Optional<std::string> MyNodeAsyncProcessor::getCacheKey(folly::IOBuf* buf
         std::unique_ptr<apache::thrift::CompactProtocolReader> iprot(new apache::thrift::CompactProtocolReader());
         iprot->setInput(buf);
         iprot->readMessageBegin(fname, mtype, protoSeqId);
-        auto pfn = CacheKeyMap.find(fname);
-        if (pfn == CacheKeyMap.end()) {
+        auto pfn = cacheKeyMap_.find(fname);
+        if (pfn == cacheKeyMap_.end()) {
           return folly::none;
         }
         auto cacheKeyParamId = pfn->second;
@@ -247,8 +247,8 @@ bool MyNodeAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache:
       iprot.setInput(buf);
       try {
         iprot.readMessageBegin(fname, mtype, protoSeqId);
-        auto it = onewayMethods.find(fname);
-        return it != onewayMethods.end();
+        auto it = onewayMethods_.find(fname);
+        return it != onewayMethods_.end();
       } catch(const apache::thrift::TException& ex) {
         LOG(ERROR) << "received invalid message from client: " << ex.what();
         return false;
@@ -260,8 +260,8 @@ bool MyNodeAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache:
       iprot.setInput(buf);
       try {
         iprot.readMessageBegin(fname, mtype, protoSeqId);
-        auto it = onewayMethods.find(fname);
-        return it != onewayMethods.end();
+        auto it = onewayMethods_.find(fname);
+        return it != onewayMethods_.end();
       } catch(const apache::thrift::TException& ex) {
         LOG(ERROR) << "received invalid message from client: " << ex.what();
         return false;
@@ -276,12 +276,12 @@ bool MyNodeAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache:
   return false;
 }
 
-std::unordered_set<std::string> MyNodeAsyncProcessor::onewayMethods {};
-std::unordered_map<std::string, int16_t> MyNodeAsyncProcessor::CacheKeyMap {};
-MyNodeAsyncProcessor::binaryProcessMap MyNodeAsyncProcessor::binaryProcessMap_ {
+std::unordered_set<std::string> MyNodeAsyncProcessor::onewayMethods_ {};
+std::unordered_map<std::string, int16_t> MyNodeAsyncProcessor::cacheKeyMap_ {};
+MyNodeAsyncProcessor::BinaryProtocolProcessMap MyNodeAsyncProcessor::binaryProcessMap_ {
   {"do_mid", &MyNodeAsyncProcessor::_processInThread_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}
 };
-MyNodeAsyncProcessor::compactProcessMap MyNodeAsyncProcessor::compactProcessMap_ {
+MyNodeAsyncProcessor::CompactProtocolProcessMap MyNodeAsyncProcessor::compactProcessMap_ {
   {"do_mid", &MyNodeAsyncProcessor::_processInThread_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>}
 };
 

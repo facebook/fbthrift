@@ -1235,8 +1235,8 @@ class CppGenerator(t_generator.Generator):
                             out('iprot->setInput(buf);')
                             out('iprot->readMessageBegin(fname, mtype,' +
                                   ' protoSeqId);')
-                            out('auto pfn = CacheKeyMap.find(fname);')
-                            with out('if (pfn == CacheKeyMap.end())'):
+                            out('auto pfn = cacheKeyMap_.find(fname);')
+                            with out('if (pfn == cacheKeyMap_.end())'):
                                 out('return folly::none;')
                             out('auto cacheKeyParamId = pfn->second;')
 
@@ -1376,8 +1376,8 @@ class CppGenerator(t_generator.Generator):
                         with out('try'):
                             out('iprot.readMessageBegin(fname, mtype,' +
                                   ' protoSeqId);')
-                            out('auto it = onewayMethods.find(fname);')
-                            out('return it != onewayMethods.end();')
+                            out('auto it = onewayMethods_.find(fname);')
+                            out('return it != onewayMethods_.end();')
                             with out().catch('const apache::thrift::'
                                              'TException& ex'):
                                 out('LOG(ERROR) << "received invalid message' +
@@ -1390,7 +1390,7 @@ class CppGenerator(t_generator.Generator):
 
             out().label('private:')
             oneways = out().defn('std::unordered_set<std::string> {name}',
-                                 name='onewayMethods',
+                                 name='onewayMethods_',
                                  modifiers='static')
             oneways.epilogue = ';\n'
             with oneways:
@@ -1398,7 +1398,7 @@ class CppGenerator(t_generator.Generator):
                         for function in service.functions if function.oneway))
             cache_map_type = 'std::unordered_map<std::string, int16_t>'
             cache_map = out().defn(cache_map_type + ' {name}',
-                    name='CacheKeyMap',
+                    name='cacheKeyMap_',
                     modifiers='static')
             cache_map.epilogue = ';'
 
@@ -1418,21 +1418,22 @@ class CppGenerator(t_generator.Generator):
             for shortprot, protname, prottype in self.protocols:
                 if shortprot == 'simple_json':
                     continue
-                out(('typedef void ({0}::*{1}ProcessFunction)(std::unique_ptr' +
+                out(('using {1}ProcessFunction = void({0}::*)(std::unique_ptr' +
                    '<apache::thrift::ResponseChannel::Request> req, ').format(
-                           service.name + "AsyncProcessor", shortprot) +
+                           service.name + "AsyncProcessor", protname) +
                   'std::unique_ptr<folly::IOBuf> buf, ' +
                   'std::unique_ptr<apache::thrift::{0}Reader> iprot, '.format(
                           protname) +
                   'apache::thrift::Cpp2RequestContext* context, ' +
                   'apache::thrift::async::TEventBase* eb, ' +
                   'apache::thrift::concurrency::ThreadManager* tm' + ');')
-                out('typedef std::unordered_map<std::string, ' +
-                  '{0}ProcessFunction>'.format(shortprot) +
-                  ' {0}ProcessMap;'.format(shortprot))
+                out('using {0}ProcessMap = '
+                    .format(protname) +
+                    'std::unordered_map<std::string, {0}ProcessFunction>;'
+                    .format(protname))
                 map_type = '{0}::{1}ProcessMap'.format(
                     service.name + "AsyncProcessor",
-                    shortprot)
+                    protname)
                 map_name = '{0}ProcessMap_'.format(shortprot)
                 process_map = out().defn(map_type + ' {name}',
                                          name=map_name,
