@@ -273,7 +273,16 @@ TEST(ThriftServer, LargeSendTest) {
 }
 
 TEST(ThriftServer, OverloadTest) {
+  const int numThreads = 1;
+  const int queueSize = 10;
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  {
+    auto tm = concurrency::ThreadManager::newSimpleThreadManager(
+        numThreads, 0, false, queueSize);
+    tm->threadFactory(std::make_shared<concurrency::PosixThreadFactory>());
+    tm->start();
+    factory.useSimpleThreadManager(false).useThreadManager(tm);
+  }
   ScopedServerThread sst(factory.create());
   TEventBase base;
   std::shared_ptr<TAsyncSocket> socket(
@@ -310,9 +319,9 @@ TEST(ThriftServer, OverloadTest) {
 
   // Fill up the server's request buffer
   client.sendResponse(lambda, tval);
-  client.sendResponse(lambda, 0);
-  client.sendResponse(lambda, 0);
-  client.sendResponse(lambda, 0);
+  for (int i = 0; i < numThreads + queueSize; i++) {
+    client.sendResponse(lambda, 0);
+  }
   base.loop();
 
   // We expect one 'too full' exception (queue size is 2, one being worked on)

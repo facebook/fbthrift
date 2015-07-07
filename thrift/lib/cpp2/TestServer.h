@@ -30,17 +30,17 @@ struct TestThriftServerFactory {
       auto server = std::make_shared<apache::thrift::ThriftServer>();
       server->setNWorkerThreads(1);
       if (useSimpleThreadManager_) {
-          auto threadFactory =
+        auto threadFactory =
             std::make_shared<apache::thrift::concurrency::PosixThreadFactory>();
-          auto threadManager =
+        auto threadManager =
             apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
-                1, 5, false, 2);
-      threadManager->threadFactory(threadFactory);
-      threadManager->start();
-      server->setThreadManager(threadManager);
-    } else if (exe_) {
-      server->setThreadManager(exe_);
-    }
+                1, 5, false, 50);
+        threadManager->threadFactory(threadFactory);
+        threadManager->start();
+        server->setThreadManager(threadManager);
+      } else if (exe_) {
+        server->setThreadManager(exe_);
+      }
 
     server->setPort(0);
     server->setSaslEnabled(true);
