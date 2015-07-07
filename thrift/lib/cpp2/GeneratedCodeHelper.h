@@ -15,7 +15,9 @@
  */
 #pragma once
 
+#include <folly/futures/Future.h>
 #include <folly/Traits.h>
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <type_traits>
 
@@ -838,5 +840,143 @@ class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
     return prot->serializedSizeZCBinary(*value);
   }
 };
+
+//  ServerInterface helpers
+namespace detail { namespace si {
+
+template <typename F>
+using ret = typename std::result_of<F()>::type;
+template <typename F>
+using ret_lift = typename folly::Unit::Lift<ret<F>>::type;
+template <typename F>
+using fut_ret = typename ret<F>::value_type;
+template <typename F>
+using fut_ret_drop = typename folly::Unit::Drop<fut_ret<F>>::type;
+template <typename T>
+struct action_traits_impl;
+template <typename C, typename A>
+struct action_traits_impl<void(C::*)(A&) const> { using arg_type = A; };
+template <typename C, typename A>
+struct action_traits_impl<void(C::*)(A&)> { using arg_type = A; };
+template <typename F>
+using action_traits = action_traits_impl<decltype(&F::operator())>;
+template <typename F>
+using arg = typename action_traits<F>::arg_type;
+
+template <class F>
+folly::Future<ret_lift<F>>
+future(F&& f) {
+  return folly::makeFutureWith(std::forward<F>(f));
+}
+
+template <class F>
+arg<F>
+returning(F&& f) {
+  arg<F> ret;
+  f(ret);
+  return ret;
+}
+
+template <class F>
+folly::Future<arg<F>>
+future_returning(F&& f) {
+  return future([&]() {
+      return returning(std::forward<F>(f));
+  });
+}
+
+template <class F>
+std::unique_ptr<arg<F>>
+returning_uptr(F&& f) {
+  auto ret = folly::make_unique<arg<F>>();
+  f(*ret);
+  return ret;
+}
+
+template <class F>
+folly::Future<std::unique_ptr<arg<F>>>
+future_returning_uptr(F&& f) {
+  return future([&]() {
+      return returning_uptr(std::forward<F>(f));
+  });
+}
+
+template <class F>
+void
+swallowing(F&& f) {
+  try { f(); }
+  catch(...) { }
+}
+
+template <class R>
+folly::Future<R>
+future_exn(std::exception_ptr ex) {
+  return folly::makeFuture<R>(folly::exception_wrapper(std::move(ex)));
+}
+
+template <class F>
+ret<F>
+future_catching(F&& f) {
+  try { return f(); }
+  catch(...) { return future_exn<fut_ret<F>>(std::current_exception()); }
+}
+
+using CallbackBase = HandlerCallbackBase;
+using CallbackBasePtr = std::unique_ptr<CallbackBase>;
+template <class R> using Callback = HandlerCallback<fut_ret_drop<R>>;
+template <class R> using CallbackPtr = std::unique_ptr<Callback<R>>;
+
+template <class T>
+std::unique_ptr<T> to_unique_ptr(T* t) {
+  return std::unique_ptr<T>(t);
+}
+
+inline
+void
+async_tm_prep(ServerInterface* si, CallbackBase* callback) {
+  si->setEventBase(callback->getEventBase());
+  si->setThreadManager(callback->getThreadManager());
+  si->setConnectionContext(callback->getConnectionContext());
+}
+
+template <class F>
+void
+async_tm_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
+  async_tm_prep(si, callback.get());
+  swallowing(std::forward<F>(f));
+}
+
+template <class F>
+void
+async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
+  async_tm_prep(si, callback.get());
+  auto fut = future_catching(std::forward<F>(f));
+  auto callbackp = callback.release();
+  fut.then([=](folly::Try<fut_ret<F>>&& _return) {
+      callbackp->completeInThread(std::move(_return));
+  });
+}
+
+template <class F>
+void
+async_eb_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
+  auto callbackp = callback.release();
+  auto fm = folly::makeMoveWrapper(std::move(f));
+  callbackp->runFuncInQueue([=]() mutable {
+      async_tm_oneway(si, to_unique_ptr(callbackp), fm.move());
+  });
+}
+
+template <class F>
+void
+async_eb(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
+  auto callbackp = callback.release();
+  auto fm = folly::makeMoveWrapper(std::move(f));
+  callbackp->runFuncInQueue([=]() mutable {
+      async_tm(si, to_unique_ptr(callbackp), fm.move());
+  });
+}
+
+}} // detail::si
 
 }} // apache::thrift
