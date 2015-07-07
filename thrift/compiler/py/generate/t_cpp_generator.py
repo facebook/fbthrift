@@ -1289,8 +1289,8 @@ class CppGenerator(t_generator.Generator):
             with out().defn('void {name}(std::unique_ptr<' +
                         'apache::thrift::ResponseChannel::Request> req, ' +
                         'std::unique_ptr<folly::IOBuf> buf, ' +
-                        'apache::thrift::protocol::PROTOCOL_TYPES protType,' +
-                        'apache::thrift::Cpp2RequestContext* context,' +
+                        'apache::thrift::protocol::PROTOCOL_TYPES protType, ' +
+                        'apache::thrift::Cpp2RequestContext* context, ' +
                         'apache::thrift::async::TEventBase* eb, ' +
                         'apache::thrift::concurrency::ThreadManager* tm)',
                         name='process',

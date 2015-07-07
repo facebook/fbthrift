@@ -111,7 +111,7 @@ folly::Optional<std::string> MyLeafAsyncProcessor::getCacheKey(folly::IOBuf* buf
   return folly::none;
 }
 
-void MyLeafAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType,apache::thrift::Cpp2RequestContext* context,apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void MyLeafAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   std::string fname;
   apache::thrift::MessageType mtype;
   int32_t protoSeqId = 0;
