@@ -576,7 +576,7 @@ public:
         EXPECT_GT(securityEndTime_ - securityStartTime_,
                   expectedSecurityLatency_);
         EXPECT_LT(securityEndTime_ - securityStartTime_,
-                  expectedSecurityLatency_ + 10*1000);
+                  static_cast<int64_t>(expectedSecurityLatency_ * 1.2));
       }
     }
   }
