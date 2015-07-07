@@ -43,7 +43,6 @@ void MyServiceSvIf::async_tm_getRandomData(std::unique_ptr<apache::thrift::Handl
 
 bool MyServiceSvIf::hasDataById(int64_t id) {
   throw apache::thrift::TApplicationException("Function hasDataById is unimplemented");
-  return 0;
 }
 
 folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {

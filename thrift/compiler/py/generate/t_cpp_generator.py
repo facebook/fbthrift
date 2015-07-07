@@ -960,11 +960,6 @@ class CppGenerator(t_generator.Generator):
                         out('throw apache::thrift::TApplicationException('
                           '"Function {0} is unimplemented");'
                           .format(function.name))
-                        if not function.oneway and \
-                          not function.returntype.is_void and \
-                          not self._is_complex_type(function.returntype):
-                            out('return ' +
-                              self._default_value(function.returntype) + ';')
                     self._generate_server_future_function(service, function)
                 self._generate_server_async_function(service, function)
 
