@@ -14,7 +14,7 @@
 namespace cpp2 {
 
 std::unique_ptr<apache::thrift::AsyncProcessor> MyRootSvIf::getProcessor() {
-  return std::unique_ptr<apache::thrift::AsyncProcessor>(new MyRootAsyncProcessor((MyRootSvIf*)this));
+  return folly::make_unique<MyRootAsyncProcessor>(this);
 }
 
 void MyRootSvIf::do_root() {

@@ -14,7 +14,7 @@
 namespace cpp2 {
 
 std::unique_ptr<apache::thrift::AsyncProcessor> MyLeafSvIf::getProcessor() {
-  return std::unique_ptr<apache::thrift::AsyncProcessor>(new MyLeafAsyncProcessor((MyLeafSvIf*)this));
+  return folly::make_unique<MyLeafAsyncProcessor>(this);
 }
 
 void MyLeafSvIf::do_leaf() {

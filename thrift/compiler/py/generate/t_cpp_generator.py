@@ -947,10 +947,8 @@ class CppGenerator(t_generator.Generator):
                         ' {name}()',
                         name='getProcessor',
                         modifiers='virtual'):
-                out('return std::unique_ptr<' +
-                  'apache::thrift::AsyncProcessor>(' +
-                  'new {0}AsyncProcessor(({0}SvIf*)this));'.format(
-                          service.name))
+                out('return folly::make_unique<{klass}AsyncProcessor>(this);'
+                    .format(klass=service.name))
             for function in service.functions:
                 if not self._is_stream_type(function.returntype):
                     with out().defn(self._get_process_function_signature(service,
