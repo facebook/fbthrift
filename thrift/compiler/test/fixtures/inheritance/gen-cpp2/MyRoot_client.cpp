@@ -67,7 +67,7 @@ folly::Future<folly::Unit> MyRootAsyncClient::future_do_root() {
 folly::Future<folly::Unit> MyRootAsyncClient::future_do_root(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> promise1;
   auto future2 = promise1.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback3(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise1), recv_wrapped_do_root));
+  std::unique_ptr<apache::thrift::RequestCallback> callback3(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise1), recv_wrapped_do_root, channel_));
   do_root(rpcOptions, std::move(callback3));
   return std::move(future2);
 }
