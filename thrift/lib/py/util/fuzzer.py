@@ -84,19 +84,12 @@ class FuzzerConfiguration(object):
             },
             'default': False
         },
-        'exclude_field_probability': {
-            'description': 'Probability of excluding a non-required field.',
-            'type': prob_float,
-            'flag': '-e',
-            'default': 0.15,
-            'attr_name': 'p_exclude_field'
-        },
-        'exclude_arg_probability': {
-            'description': 'Probability of excluding an argument.',
-            'type': prob_float,
-            'flag': '-E',
-            'default': 0.01,
-            'attr_name': 'p_exclude_arg'
+        'constraints': {
+            'description': 'JSON Constraint dictionary',
+            'type': str,
+            'flag': '-Con',
+            'default': {},
+            'is_json': True
         },
         'framed': {
             'description': 'Use framed transport.',
@@ -133,13 +126,6 @@ class FuzzerConfiguration(object):
             'attr_name': 'n_iterations',
             'default': 1000
         },
-        'invalid_enum_probability': {
-            'description': 'Probability of invalid enum.',
-            'type': prob_float,
-            'flag': '-i',
-            'attr_name': 'p_invalid_enum',
-            'default': 0.01
-        },
         'logfile': {
             'description': 'File to write output logs.',
             'type': str,
@@ -154,12 +140,6 @@ class FuzzerConfiguration(object):
                 'choices': ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
             },
             'default': 'INFO'
-        },
-        'recursion_depth': {
-            'description': 'Maximum struct recursion depth. Default 4.',
-            'type': positive_int,
-            'flag': '-r',
-            'default': 4
         },
         'service': {
             'description': 'Path to file of Python service module.',
@@ -187,23 +167,6 @@ class FuzzerConfiguration(object):
                 'const': True
             },
             'default': False
-        },
-        'unicode_ranges': {
-            'description': ('JSON Array of arrays indicating ranges of '
-                            'characters to include in unicode strings. '
-                            'Default includes ASCII characters.'),
-            'type': str,
-            'flag': '-ur',
-            'default': "[[0, 127]]",
-            'is_json': True
-        },
-        'unicode_out_of_range_probability': {
-            'description': ('Probability a unicode string will include '
-                            'characters outside `unicode_ranges`.'),
-            'type': prob_float,
-            'flag': '-up',
-            'default': 0.05,
-            'attr_name': 'p_unicode_oor'
         },
         'url': {
             'description': 'The URL to connect to for HTTP transport',
@@ -580,7 +543,7 @@ class FuzzerClient(object):
         if len(parts) == 1:
             return (parts[0], default_port)
         else:
-            # FuzzerConstraints ensures parts[1] is an int
+            # FuzzerConfiguration ensures parts[1] is an int
             return (parts[0], int(parts[1]))
 
     def _get_client_by_host(self):
@@ -827,11 +790,13 @@ class FuzzTester(object):
                 kwargs = args_struct.__dict__  # Get members of args struct
                 yield kwargs
 
-    def get_method_randomizers(self, methods):
+    def get_method_randomizers(self, methods, constraints):
+        """Create a StructRandomizer for each method"""
         state = randomizer.RandomizerState()
         method_randomizers = {}
 
         for method_name in methods:
+            method_constraints = constraints.get(method_name, {})
             args_class = methods[method_name]['args_class']
 
             # Create a spec_args tuple for the method args struct type
@@ -843,11 +808,86 @@ class FuzzTester(object):
 
             method_randomizer = state.get_randomizer(
                 Thrift.TType.STRUCT,
-                randomizer_spec_args
+                randomizer_spec_args,
+                method_constraints
             )
             method_randomizers[method_name] = method_randomizer
 
         return method_randomizers
+
+    def _split_key(self, key):
+        """Split a constraint rule key such as a.b|c into ['a', 'b', '|c']
+        Dots separate hierarchical field names and property names
+
+        Pipes indicate a type name and hashes indicate a field name,
+        though these rules are not yet supported.
+        """
+        components = []
+        start_idx = 0
+        cur_idx = 0
+        while cur_idx < len(key):
+            if (cur_idx != start_idx and
+                    key[cur_idx] in {'.', '|', '#'}):
+                components.append(key[start_idx:cur_idx])
+                start_idx = cur_idx
+                if key[cur_idx] == '.':
+                    start_idx += 1
+                cur_idx = start_idx
+            else:
+                cur_idx += 1
+        components.append(key[start_idx:])
+        return components
+
+    def preprocess_constraints(self, source_constraints):
+        """
+        The constraints dictionary can have any key
+        that follows the following format:
+
+        method_name[.arg_name][.field_name ...].property_name
+
+        The values in the dictionary can be nested such that inner field
+        names are subfields of the outer scope, and inner type rules are
+        applied only to subvalues of the out scope.
+
+        After preprocessing, each dictionary level should have exactly one
+        method name, field name, or property name as its key.
+
+        Any strings of identifiers are converted into the nested dictionary
+        structure. For example, the constraint set:
+
+        {'my_method.my_field.distribution': 'uniform(0,100)'}
+
+        Will be preprocessed to:
+
+        {'my_method':
+          {'my_field':
+             {'distribution': 'uniform(0, 100)'}
+          }
+        }
+        """
+        constraints = {}
+        scope_path = []
+
+        def add_constraint(rule):
+            walk_scope = constraints
+            for key in scope_path[:-1]:
+                if key not in walk_scope:
+                    walk_scope[key] = {}
+                walk_scope = walk_scope[key]
+            walk_scope[scope_path[-1]] = rule
+
+        def add_constraints_from_dict(d):
+            for key, rule in six.iteritems(d):
+                key_components = self._split_key(key)
+                scope_path.extend(key_components)
+                if isinstance(rule, dict):
+                    add_constraints_from_dict(rule)
+                else:
+                    add_constraint(rule)
+                scope_path[-len(key_components):] = []
+
+        add_constraints_from_dict(source_constraints)
+        return constraints
 
     def run(self):
         self.start_logging()
@@ -861,7 +901,9 @@ class FuzzTester(object):
         client_class = self.service.client_class
 
         methods = self.service.get_methods(self.config.functions)
-        self.method_randomizers = self.get_method_randomizers(methods)
+        constraints = self.preprocess_constraints(self.config.constraints)
+        self.method_randomizers = self.get_method_randomizers(
+            methods, constraints)
 
         logging.info("Fuzzing methods: %s" % methods.keys())
 
@@ -904,8 +946,6 @@ def fuzz_service(service, ttypes, constants):
     service = Service(ttypes, constants, service)
     config = FuzzerConfiguration(service)
     run_fuzzer(config)
-
-
 
 if __name__ == '__main__':
     config = FuzzerConfiguration()

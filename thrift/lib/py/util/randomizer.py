@@ -17,12 +17,26 @@ from thrift import Thrift
 
 INFINITY = float('inf')
 
+def deep_dict_update(base, update):
+    """Similar to dict.update(base, update), but if any values in base are
+    dictionaries, they are updated too instead of replaced.
+
+    Destructive on base, but non-destructive on base's values.
+    """
+    for key, val in six.iteritems(update):
+        if (key in base and
+                isinstance(base[key], dict) and isinstance(val, dict)):
+            # Copy base[key] (non-destructive on base's values)
+            updated = dict(base[key])
+            deep_dict_update(updated, val)
+            val = updated
+        base[key] = val
+
 class BaseRandomizer(object):
     """
-    The BaseRandomizer class is an abstract class representing a randomizer for
-    a specific Thrift Type. Instances of a class may have different spec_args.
-    If the class represents a generic type, instances may also have different
-    ttypes.
+    The BaseRandomizer class is an abstract class whose subclasses implement
+    a randomizer for a specific Thrift Type. Instances of a class may have
+    different spec_args and constraints.
 
     Class Attributes:
 
@@ -30,26 +44,70 @@ class BaseRandomizer(object):
 
     ttype (int (enum)): The attribute of Thrift.TTypes corresponding to the type
 
+    default_constraints (dict): Default values for randomizers' constraint
+    dictionary. Constraints affect the behavior of the randomize() method.
+
     Instance Attributes:
 
-    spec_args (tuple): The Thrift spec_args tuple for an instance of a generic
-    type. If this is not a generic type, spec_args is None.
+    spec_args (tuple): The Thrift spec_args tuple. Provides additional
+    information about the field beyond thrift type.
 
     state (RandomizerState): State attributes to be preserved across randomizer
     components in recursive and nested randomizer structures. Includes
     initialization cache and recursion depth trace.
+
+    constraints (dict): Map of constraint names to constraint values. This
+    is equivalent to cls.default_constraints if an empty constraint dictionary
+    is passed to __init__. Otherwise, it is equal to cls.default_constraints
+    recursively updated with the key/value pairs in the constraint dict passed
+    to __init__.
     """
     name = None
     ttype = None
 
-    def __init__(self, spec_args, state):
-        """spec_args are the thrift arguments for this field.
-
-        State is an instance of RandomizerState.
+    def __init__(self, spec_args, state, constraints):
+        """
+        spec_args: thrift arguments for this field
+        state: RandomizerState instance
+        constraints: dict of constraints specific to this randomizer
         """
         self.spec_args = spec_args
         self.state = state
-        self.state.register_randomizer(self)
+        self.constraints = self.flatten_constraints(constraints)
+        self.preprocessing_done = False
+
+    def _preprocess_constraints(self):
+        pass
+
+    def _init_subrandomizers(self):
+        pass
+
+    def preprocess(self):
+        if self.preprocessing_done:
+            return
+
+        self._preprocess_constraints()
+        self._init_subrandomizers()
+
+        self.preprocessing_done = True
+
+    def flatten_constraints(self, constraints):
+        """Return a single constraint dictionary by combining default
+        constraints with overriding constraints."""
+        cls = self.__class__
+
+        flattened = {}
+        deep_dict_update(flattened, cls.default_constraints)
+        deep_dict_update(flattened, constraints)
+
+        return flattened
+
+    def __eq__(self, other):
+        """Check if this randomizer is equal to `other` randomizer. If two
+        randomizers are equal, they have the same type and constraints and
+        are expected to behave identically (up to random number generation.)"""
+        return ((self.spec_args == other.spec_args) and
+                (self.constraints == other.constraints))
 
     @property
     def universe_size(self):
@@ -71,14 +129,16 @@ class BoolRandomizer(BaseRandomizer):
     name = "bool"
     ttype = Thrift.TType.BOOL
 
-    p_true = 0.5
+    default_constraints = {
+        'p_true': 1 / 2
+    }
 
     @property
     def universe_size(self):
         return 2
 
     def randomize(self):
-        return (random.random() < self.__class__.p_true)
+        return (random.random() < self.constraints['p_true'])
 
 def _random_int_factory(k):
     """Return a function that generates a random k-bit signed int"""
@@ -91,15 +151,17 @@ def _random_int_factory(k):
 
 class EnumRandomizer(BaseRandomizer):
     name = "enum"
+    ttype = Thrift.TType.I32
 
     random_int_32 = staticmethod(_random_int_factory(32))
 
-    # Probability of generating an invalid i32
-    p_invalid = 0.01
+    default_constraints = {
+        # Probability of generating an i32 with no corresponding Enum name
+        'p_invalid': 0.01,
+    }
 
-    def __init__(self, spec_args, state):
-        super(EnumRandomizer, self).__init__(spec_args, state)
-        self.ttype = spec_args
+    def _preprocess_constraints(self):
+        self.ttype = self.spec_args
 
         self._whiteset = set()
         for name, val in six.iteritems(self.ttype._NAMES_TO_VALUES):
@@ -110,7 +172,7 @@ class EnumRandomizer(BaseRandomizer):
     def randomize(self):
         cls = self.__class__
 
-        if random.random() < cls.p_invalid:
+        if random.random() < self.constraints['p_invalid']:
             # Generate an i32 value that does not correspond to an enum member
             n = None
             while (n in self._whiteset) or (n is None):
@@ -134,6 +196,8 @@ def _integer_randomizer_factory(name, ttype, n_bits):
         name = _name
         ttype = _ttype
 
+        default_constraints = {}
+
         randomize = staticmethod(_random_int_factory(_n_bits))
 
         @property
@@ -153,13 +217,14 @@ del _integer_randomizer_factory
 
 class FloatingPointRandomizer(BaseRandomizer):
     """Abstract class for floating point types"""
-    p_zero = 0.01
-
     unreals = [float('nan'), float('inf'), float('-inf')]
-    p_unreal = 0.01
 
-    mean = 0
-    std_deviation = 1e8
+    default_constraints = {
+        'p_zero': 0.01,
+        'p_unreal': 0.01,
+        'mean': 0.0,
+        'std_deviation': 1e8
+    }
 
     @property
     def universe_size(self):
@@ -168,13 +233,14 @@ class FloatingPointRandomizer(BaseRandomizer):
     def randomize(self):
         cls = self.__class__
 
-        if random.random() < cls.p_unreal:
+        if random.random() < self.constraints['p_unreal']:
             return random.choice(cls.unreals)
 
-        if random.random() < cls.p_zero:
+        if random.random() < self.constraints['p_zero']:
             return 0.
 
-        return random.normalvariate(cls.mean, cls.std_deviation)
+        return random.normalvariate(self.constraints['mean'],
+                                    self.constraints['std_deviation'])
 
 class SinglePrecisionFloatRandomizer(FloatingPointRandomizer):
     name = "float"
@@ -191,21 +257,26 @@ class DoublePrecisionFloatRandomizer(FloatingPointRandomizer):
 class CollectionTypeRandomizer(BaseRandomizer):
     """Superclass for ttypes with lengths"""
 
-    mean_length = 12
-
     @property
     def universe_size(self):
         return INFINITY
 
     def _get_length(self):
-        cls = self.__class__
-        return int(random.expovariate(1 / cls.mean_length))
+        mean = self.constraints['mean_length']
+        if mean == 0:
+            return 0
+        else:
+            return int(random.expovariate(1 / mean))
 
 class StringRandomizer(CollectionTypeRandomizer):
     name = "string"
     ttype = Thrift.TType.STRING
 
     ascii_range = (0, 127)
+
+    default_constraints = {
+        'mean_length': 12
+    }
 
     def randomize(self):
         cls = self.__class__
@@ -221,21 +292,21 @@ class StringRandomizer(CollectionTypeRandomizer):
 class NonAssociativeContainerRandomizer(CollectionTypeRandomizer):
     """Randomizer class for lists and sets"""
 
-    def __init__(self, spec_args, state):
-        super(NonAssociativeContainerRandomizer, self).__init__(
-            spec_args, state)
-
-        if self.spec_args is None:
-            return
-
+    def _init_subrandomizers(self):
         elem_ttype, elem_spec_args = self.spec_args
+        elem_constraints = self.constraints['element']
 
         self._element_randomizer = self.state.get_randomizer(
-            elem_ttype, elem_spec_args)
+            elem_ttype, elem_spec_args, elem_constraints)
 
 class ListRandomizer(NonAssociativeContainerRandomizer):
     name = "list"
     ttype = Thrift.TType.LIST
+
+    default_constraints = {
+        'mean_length': 12,
+        'element': {}
+    }
 
     def randomize(self):
         length = self._get_length()
@@ -251,6 +322,11 @@ class ListRandomizer(NonAssociativeContainerRandomizer):
 class SetRandomizer(NonAssociativeContainerRandomizer):
     name = "set"
     ttype = Thrift.TType.SET
+
+    default_constraints = {
+        'mean_length': 12,
+        'element': {}
+    }
 
     def randomize(self):
         element_randomizer = self._element_randomizer
@@ -278,15 +354,22 @@ class MapRandomizer(CollectionTypeRandomizer):
     name = "map"
     ttype = Thrift.TType.MAP
 
-    def __init__(self, spec_args, state):
-        super(MapRandomizer, self).__init__(spec_args, state)
+    default_constraints = {
+        'mean_length': 12,
+        'key': {},
+        'value': {}
+    }
 
+    def _init_subrandomizers(self):
         key_ttype, key_spec_args, val_ttype, val_spec_args = self.spec_args
 
+        key_constraints = self.constraints['key']
+        val_constraints = self.constraints['value']
+
         self._key_randomizer = self.state.get_randomizer(
-            key_ttype, key_spec_args)
+            key_ttype, key_spec_args, key_constraints)
         self._val_randomizer = self.state.get_randomizer(
-            val_ttype, val_spec_args)
+            val_ttype, val_spec_args, val_constraints)
 
     def randomize(self):
         key_randomizer = self._key_randomizer
@@ -314,21 +397,14 @@ class StructRandomizer(BaseRandomizer):
     name = "struct"
     ttype = Thrift.TType.STRUCT
 
-    p_include = 0.99
-    max_recursion_depth = 3
+    default_constraints = {
+        'p_include': 0.99,
+        'max_recursion_depth': 3
+    }
 
     @property
     def universe_size(self):
         return INFINITY
-
-    def __init__(self, spec_args, state):
-        super(StructRandomizer, self).__init__(spec_args, state)
-
-        ttype, specs, is_union = self.spec_args
-
-        self.type_name = ttype.__name__
-
-        self._init_field_rules(ttype, specs, is_union)
 
     def _field_is_required(self, required_value):
         """Enum defined in /thrift/compiler/parse/t_field.h:
@@ -341,7 +417,11 @@ class StructRandomizer(BaseRandomizer):
         """
         return required_value == 0
 
-    def _init_field_rules(self, ttype, specs, is_union):
+    def _init_subrandomizers(self):
+        ttype, specs, is_union = self.spec_args
+
+        self.type_name = ttype.__name__
+
         field_rules = {}
         for spec in specs:
             if spec is None:
@@ -349,8 +429,10 @@ class StructRandomizer(BaseRandomizer):
             (key, field_ttype, name, field_spec_args, default_value, req) = spec
 
             field_required = self._field_is_required(req)
+            field_constraints = self.constraints.get(name, {})
+
             field_randomizer = self.state.get_randomizer(
-                field_ttype, field_spec_args)
+                field_ttype, field_spec_args, field_constraints)
 
             field_rules[name] = {
                 'required': field_required,
@@ -361,13 +443,59 @@ class StructRandomizer(BaseRandomizer):
         self._is_union = is_union
         self._ttype = ttype
 
-    @property
-    def recursion_depth(self):
-        return self.state.recursion_trace[self.type_name]
+    def _increase_recursion_depth(self):
+        """Increase the depth in the recursion trace for this struct type.
 
-    @recursion_depth.setter
-    def recursion_depth(self, value):
-        self.state.recursion_trace[self.type_name] = value
+        Returns:
+        (is_top_level, max_depth_reached)
+
+        If is_top_level is True, when decrease_recursion_depth is called
+        the entry in the trace dictionary will be removed to indicate
+        that this struct type is no longer being recursively generated.
+
+        If max_depth_reached is True, the call to increase_recursion_depth
+        has "failed" indicating that this randomizer is trying to generate
+        a value that is too deep in the recursive tree and should return None.
+        In this case, the recursion trace dictionary is not modified.
+        """
+        trace = self.state.recursion_trace
+        name = self.type_name
+
+        if name in trace:
+            # There is another struct of this type higher up in
+            # the generation tree
+            is_top_level = False
+        else:
+            is_top_level = True
+            trace[name] = self.constraints['max_recursion_depth']
+
+        depth = trace[name]
+
+        if depth == 0:
+            # Reached maximum depth
+            if is_top_level:
+                del trace[name]
+            max_depth_reached = True
+        else:
+            depth -= 1
+            trace[name] = depth
+            max_depth_reached = False
+
+        return (is_top_level, max_depth_reached)
+
+    def _decrease_recursion_depth(self, is_top_level):
+        """Decrease the depth in the recursion trace for this struct type.
+
+        If is_top_level is True, the entry in the recursion trace is deleted.
+        Otherwise, the entry is incremented.
+        """
+        trace = self.state.recursion_trace
+        name = self.type_name
+
+        if is_top_level:
+            del trace[name]
+        else:
+            trace[name] += 1
 
     def randomize(self):
         """Return a random instance of the struct. If it is impossible
@@ -376,20 +504,15 @@ class StructRandomizer(BaseRandomizer):
         """
         cls = self.__class__
 
-        # Check if we have reached the maximum recursion depth for this type.
-        depth = self.recursion_depth
-        max_depth = cls.max_recursion_depth
-        if depth >= max_depth:
+        (is_top_level, max_depth_reached) = self._increase_recursion_depth()
+        if max_depth_reached:
             return None
-
-        # Haven't reached the maximum depth yet - increment depth and continue
-        self.recursion_depth = depth + 1
 
         # Generate the individual fields within the struct
         fields = self._randomize_fields()
 
         # Done with any recursive calls - revert depth
-        self.recursion_depth = depth
+        self._decrease_recursion_depth(is_top_level)
 
         if fields is None:
             # Unable to generate fields for this struct
@@ -410,7 +533,7 @@ class StructRandomizer(BaseRandomizer):
 
         fields = {}
         fields_to_randomize = list(self._field_rules)
-        p_include = cls.p_include
+        p_include = self.constraints['p_include']
 
         if self._is_union:
             if random.random() < p_include:
@@ -469,40 +592,59 @@ class RandomizerState(object):
     randomizers, they should pass on their state object in order to share
     memoization and recursion trace information.
 
-    randomizer_map maps (ttype, spec_args) combinations to already-constructed
-    randomizer instances. This allows for memoization: calls to get_randomizer
-    with identical arguments will always return the same randomizer instance.
+    --
 
-    Randomizer instances must call state.register_randomizer BEFORE creating
-    any sub-randomizers. Otherwise, randomizer_map will have duplicates and
-    if there is a recursive structure it will never finish initializing.
+    `randomizers` maps ttype to a list of already-constructed randomizer
+    instances. This allows for memoization: calls to get_randomizer with
+    identical arguments and state will always return the same randomizer
+    instance.
 
-    recursion_trace maps a struct name to an int indicating the current
-    depth of recursion for the struct with that name. Struct randomizers
-    use this information to bound the recursion depth of generated structs.
+    --
+
+    `recursion_trace` maps a struct name to an int indicating the current
+    remaining depth of recursion for the struct with that name.
+    Struct randomizers use this information to bound the recursion depth
+    of generated structs.
+    If a struct name has no entry in the recursion trace, that struct
+    is not currently being generated at any depth in the generation tree.
+
+    When the top level randomizer for a struct type is entered, that
+    randomizer's constraints are used to determine the maximum recursion
+    depth and the maximum depth is inserted into the trace dictionary.
+    At each level of recursion, the entry in the trace dictionary is
+    decremented. When it reaches zero, the maximum depth has been reached
+    and no more structs of that type are generated.
     """
+
     def __init__(self):
-        self.randomizer_map = collections.defaultdict(list)
-        self.recursion_trace = collections.defaultdict(int)
+        self.randomizers = collections.defaultdict(list)
+        self.recursion_trace = {}
 
-    def get_randomizer(self, ttype, spec_args):
-        """Check the randomizer_map for a cached randomizer.
-        Return an already-initialized randomizer if available and create a new
-        one otherwise"""
-        for (identifier, randomizer) in self.randomizer_map[ttype]:
-            if identifier == spec_args:
-                return randomizer
+    def _get_randomizer_class(self, ttype, spec_args):
+        # Special case: i32 and enum have separate classes but the same ttype
+        if ttype == Thrift.TType.I32:
+            if spec_args is None:
+                return I32Randomizer
+            else:
+                return EnumRandomizer
 
-        randomizer_class = _ttype_to_randomizer[ttype]
+        return _ttype_to_randomizer[ttype]
 
-        # i32 and enum have separate classes but the same ttype
-        if ttype == Thrift.TType.I32 and spec_args is not None:
-            randomizer_class = EnumRandomizer
+    def get_randomizer(self, ttype, spec_args, constraints):
+        """Get a randomizer object.
+        Return an already-preprocessed randomizer if available and create a new
+        one and preprocess it otherwise"""
+        randomizer_class = self._get_randomizer_class(ttype, spec_args)
+        randomizer = randomizer_class(spec_args, self, constraints)
 
-        randomizer = randomizer_class(spec_args, self)
+        # Check if this randomizer is already in self.randomizers
+        randomizers = self.randomizers[randomizer.__class__.ttype]
+        for other in randomizers:
+            if other == randomizer:
+                return other
 
+        # No match. Register and preprocess this randomizer
+        randomizers.append(randomizer)
+
+        randomizer.preprocess()
         return randomizer
-
-    def register_randomizer(self, randomizer):
-        type_randomizer_map = self.randomizer_map[randomizer.__class__.ttype]
-        type_randomizer_map.append((randomizer.spec_args, randomizer))
