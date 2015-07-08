@@ -463,12 +463,20 @@ class LayoutRoot {
 
  public:
   /**
+   * Padding is added to the end of the frozen region because packed ints end up
+   * inflating memory access when reading/writing. Without padding, a read of
+   * the last bit of an integer at the end of the layout would read up to 7
+   * additional bytes if the field was declared as an int64_t.
+   */
+  static constexpr size_t kPaddingBytes = 7;
+
+  /**
    * Adjust 'layout' so it is sufficient for freezing root, and return the total
    * number of bytes needed to store this object.
    */
   template <class T>
   static size_t layout(const T& root, Layout<T>& layout) {
-    return LayoutRoot().doLayout(root, layout);
+    return LayoutRoot().doLayout(root, layout) + kPaddingBytes;
   }
 
   /**

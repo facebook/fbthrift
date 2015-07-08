@@ -38,10 +38,14 @@ class FrozenFileForwardIncompatible : public std::runtime_error {
   int fileVersion_;
 };
 
+/**
+ * Returns the number of bytes needed to freeze the given object, not including
+ * padding bytes
+ */
 template <class T>
 size_t frozenSize(const T& v) {
   Layout<T> layout;
-  return LayoutRoot::layout(v, layout);
+  return LayoutRoot::layout(v, layout) - LayoutRoot::kPaddingBytes;
 }
 
 template <class T>

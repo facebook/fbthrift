@@ -269,6 +269,20 @@ TEST(Frozen, StringHashMapBig) {
   }
 }
 
+template <class T>
+size_t distance(const std::pair<T, T>& pair) {
+  return pair.second - pair.first;
+}
+
+TEST(Frozen, SpillBug) {
+  std::vector<std::map<int, int>> maps{{{-4, -3}, {-2, -1}},
+                                       {{-1, -2}, {-3, -4}}};
+  auto fmaps = freeze(maps);
+  EXPECT_EQ(distance(fmaps[0].equal_range(3)), 0);
+  EXPECT_EQ(distance(fmaps[0].equal_range(-1)), 0);
+  EXPECT_EQ(distance(fmaps[1].equal_range(-1)), 1);
+}
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   google::InitGoogleLogging(argv[0]);

@@ -219,7 +219,7 @@ struct ArrayLayout : public LayoutBase {
         return item;
       }
 
-      ptrdiff_t operator-(const Iterator& other) {
+      ptrdiff_t operator-(const Iterator& other) const {
         return index_ - other.index_;
       }
 
@@ -239,12 +239,12 @@ struct ArrayLayout : public LayoutBase {
         index_ -= delta;
         return *this;
       }
-      Iterator operator++(int) const {
+      Iterator operator++(int) {
         Iterator ret(*this);
         ++ret;
         return ret;
       }
-      Iterator operator--(int) const {
+      Iterator operator--(int) {
         Iterator ret(*this);
         --ret;
         return ret;
@@ -264,7 +264,9 @@ struct ArrayLayout : public LayoutBase {
         return index_ == other.index_ && data_ == other.data_;
       }
 
-      bool operator!=(const Iterator& other) const { return !(*this == other); }
+      bool operator!=(const Iterator& other) const {
+        return !this->operator==(other);
+      }
 
      private:
       size_t index_;

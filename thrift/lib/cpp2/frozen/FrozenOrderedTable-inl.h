@@ -60,7 +60,7 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
 
     std::pair<iterator, iterator> equal_range(const KeyView& key) const {
       auto begin = lower_bound(key);
-      if (KeyExtractor::getViewKey(*begin) == key) {
+      if (begin != this->end() && KeyExtractor::getViewKey(*begin) == key) {
         return make_pair(begin, begin + 1);
       } else {
         return make_pair(begin, begin);
@@ -69,7 +69,7 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
 
     iterator find(const KeyView& key) const {
       auto found = lower_bound(key);
-      if (KeyExtractor::getViewKey(*found) == key) {
+      if (found != this->end() && KeyExtractor::getViewKey(*found) == key) {
         return found;
       } else {
         return this->end();
