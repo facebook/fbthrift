@@ -34,6 +34,8 @@ from thrift import Thrift
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.protocol import TBinaryProtocol, TCompactProtocol, THeaderProtocol
 
+from . import randomizer
+
 def positive_int(s):
     """Typechecker for positive integers"""
     try:
@@ -81,21 +83,6 @@ class FuzzerConfiguration(object):
                 'const': True
             },
             'default': False
-        },
-        'container_max_size_bits': {
-            'description': ('Max bits in container size '
-                            '(e.g., 8 bits => up to 511 elements in list).'),
-            'type': positive_int,
-            'flag': '-m',
-            'default': 8
-        },
-        'default_probability': {
-            'description': ('Probability of using the default value of a '
-                            'field, if it exists.'),
-            'type': prob_float,
-            'flag': '-d',
-            'default': 0.05,
-            'attr_name': 'p_default'
         },
         'exclude_field_probability': {
             'description': 'Probability of excluding a non-required field.',
@@ -190,13 +177,6 @@ class FuzzerConfiguration(object):
                 'const': True
             },
             'default': False
-        },
-        'string_max_size_bits': {
-            'description': ('Max bits in string length '
-                            '(e.g., 10 bits => up to 2047 chars in string.)'),
-            'type': positive_int,
-            'flag': '-M',
-            'default': 10
         },
         'unframed': {
             'description': 'Use unframed transport.',
@@ -536,7 +516,7 @@ class Service(object):
                         thrift_exceptions.append(exception_type)
 
             methods[method_name] = {
-                'args_spec': args,
+                'args_class': args,
                 'result_spec': result,
                 'thrift_exceptions': tuple(thrift_exceptions)
             }
@@ -695,281 +675,6 @@ class FuzzerClient(object):
 
         return ret
 
-
-class Req:
-    """Enum defined in /thrift/compiler/parse/t_field.h"""
-    T_REQUIRED = 0
-    T_OPTIONAL = 1
-    T_OPT_IN_REQ_OUT = 2
-
-def random_int_factory(k):
-    """Return a function that generates a random k-bit signed int"""
-    min_ = -(1 << (k - 1))   # -2**(k-1)
-    max_ = 1 << (k - 1) - 1  # +2**(k-1)-1
-
-    def random_int_k_bits(spec_args):
-        return random.randint(min_, max_)
-    return random_int_k_bits
-
-
-FLOAT_EDGE_CASES = [0.0, float('nan'), float('inf'), float('-inf')]
-P_FLOAT_EDGE_CASE = 0.0
-
-def random_float_factory(e, m):
-    """Return a function that generates a random floating point value
-
-    e = number of exponent bits
-    m = number of mantissa bits
-    """
-    def random_float(spec_args):
-        if random.random() < P_FLOAT_EDGE_CASE:
-            return random.choice(FLOAT_EDGE_CASES)
-        else:
-            # Distribute exponents logarithmically
-            # (Exponents in [2**k, 2**(k+1)) are twice as likely
-            #  to be chosen as exponents in [2**(k+1), 2**(k+2))
-            exponent_bits = random.randint(1, e)
-            exponent = random.randint(0, (1 << exponent_bits) - 1)
-
-            # Get a fraction uniform over [0, 1]
-            fraction = random.random()
-            if exponent != 0:
-                # Not gradual underflow
-                fraction += 1
-
-            # Include negative exponents
-            exponent -= 1 << (exponent_bits - 1)
-
-            # Possibly negate fraction
-            if random.choice([True, False]):
-                fraction *= -1
-
-            return fraction * (2 ** exponent)
-    return random_float
-
-
-class TTypeRandomizer:
-    """Functions to generate random values for thrift types"""
-
-    def __init__(self, config):
-        self.randomizer_by_ttype = {
-            Thrift.TType.BOOL: self.random_bool,
-            Thrift.TType.BYTE: random_int_factory(8),
-            Thrift.TType.I08: random_int_factory(8),
-            Thrift.TType.DOUBLE: random_float_factory(11, 52),
-            Thrift.TType.I16: random_int_factory(16),
-            Thrift.TType.I32: self.random_i32,
-            Thrift.TType.I64: random_int_factory(64),
-            Thrift.TType.STRING: self.random_string,
-            Thrift.TType.STRUCT: self.random_struct,
-            Thrift.TType.MAP: self.random_map,
-            Thrift.TType.SET: self.random_set,
-            Thrift.TType.LIST: self.random_list,
-            Thrift.TType.UTF8: self.random_utf8,
-            Thrift.TType.UTF16: self.random_utf16,
-            Thrift.TType.FLOAT: random_float_factory(8, 23)
-        }
-
-        self.container_max_size_bits = config.container_max_size_bits
-        self.string_max_size_bits = config.string_max_size_bits
-        self.p_exclude_arg = config.p_exclude_arg
-        self.p_exclude_field = config.p_exclude_field
-        self.p_default = config.p_default
-        self.p_invalid_enum = config.p_invalid_enum
-        self.unicode_ranges = config.unicode_ranges
-        self.p_unicode_oor = config.p_unicode_oor
-        self.max_recursion_depth = config.recursion_depth
-
-    def random_bool(self, spec_args):
-        return random.choice([True, False])
-
-    random_int_32 = random_int_factory(32)
-
-    def random_i32(self, spec_args):
-        if (spec_args is None or
-            (self.p_invalid_enum != 0.0 and
-             random.random() < self.p_invalid_enum)):
-            # Regular i32 field, or a (probably) invalid enum
-            return self.random_int_32()
-        else:
-            # Valid enum field
-            return random.choice(spec_args._VALUES_TO_NAMES.keys())
-
-    def _random_exp_distribution(self, max_bits):
-        """Return an int with up to max_bits bits
-
-        Values generated here are distributed step-wise exponentially.
-        For 1 < k <= max_bits, if x is the return value, then:
-
-        P(2**(k-2) <= x < 2**(k-1)) == P(2**(k-1) <= x < 2**k)
-
-        The range [2**(k-1), 2**k) is the set of k-bit intgeters
-        (that is, the most significant `1` is at position k.)
-
-        Since each consecutive [2**(k-1), 2**k) bucket has twice
-        as many elements as the last, each individual element has
-        half the probability of being returned. In general:
-
-        P(return=x) == (1 / (n+1)) * (1 / (2 ** floor(log(x))))
-
-        1/(n+1) is the probability the bucket containing x is chosen.
-        (2**(floor(log(x)))) is the probability x is chosen among its
-        bucket, since there are floor(log(x)) elements in its bucket.
-
-        For example, if x=11, floor(log(x)) = 3, and there are 2**3=8
-        elements in the bucket of 4-bit numbers (8 through 15.)
-
-        The one exception to the probability given above is if x=0.
-        log(0) is undefined, but P(return=0) = (1 / n+1).
-        """
-        n_bits = random.randint(0, max_bits)
-        if n_bits == 0:
-            return 0
-        return random.randint(1 << (n_bits - 1),
-                              (1 << n_bits) - 1)
-
-    def _random_string_length(self):
-        return self._random_exp_distribution(self.string_max_size_bits)
-
-    def _random_container_length(self):
-        return self._random_exp_distribution(self.container_max_size_bits)
-
-    def random_string(self, spec_args):
-        return ''.join(chr(random.randint(0, 127)) for
-                       _ in sm.xrange(self._random_string_length()))
-
-    def random_struct(self, spec_args):
-        ttype, specs, is_union = spec_args
-
-        # Check if we have exceeded the maximum recursion depth for this type
-        depth = self.recursion_depth[ttype.__name__]
-        max_depth = self.max_recursion_depth
-        if depth >= max_depth:
-            if depth == max_depth:
-                # Already at maximum recursion depth
-                # Cannot generate new struct of this type
-                return None
-            else:
-                raise ValueError("Maximum recursion depth exceeded for %s" % (
-                    ttype.__name__))
-
-        self.recursion_depth[ttype.__name__] += 1
-
-        specs = [spec for spec in specs if spec is not None]
-        if is_union:
-            # Only populate one field
-            specs = [random.choice(specs)]
-        fields = self.random_fields(specs)
-
-        self.recursion_depth[ttype.__name__] -= 1
-
-        if fields is None:
-            # Unable to populate fields
-            return None
-        else:
-            return ttype(**fields)
-
-    def _random_container(self, elem_ttype, elem_spec_args, length=None):
-        length = self._random_container_length() if length is None else length
-
-        randomizer_fn = self[elem_ttype]
-        elements = []
-
-        for _ in sm.xrange(length):
-            value = randomizer_fn(elem_spec_args)
-            if value is not None:
-                elements.append(value)
-        return elements
-
-    def random_map(self, spec_args):
-        key_type, key_spec_args, val_type, val_spec_args = spec_args
-
-        keys = self._random_container(key_type, key_spec_args)
-        vals = self._random_container(val_type, val_spec_args, len(keys))
-
-        return dict(itertools.izip(keys, vals))
-
-    def random_set(self, spec_args):
-        return set(self._random_container(*spec_args))
-
-    def random_list(self, spec_args):
-        return self._random_container(*spec_args)
-
-    def random_utf8(self, spec_args):
-        length = self._random_string_length()
-        if (len(self.unicode_ranges) == 0 or
-                random.random() < self.p_unicode_oor):
-
-            # Out of specified ranges
-            return ''.join(six.unichr(random.randint(0, 0x110000)) for
-                           _ in sm.xrange(length))
-        else:
-            chars = []
-            for _ in sm.xrange(length):
-                range_ = random.choice(self.unicode_ranges)
-                chars.append(six.unichr(random.randint(range_[0], range_[1])))
-            return ''.join(chars)
-
-    # The only difference between UTF8 and UTF16 is how the protocol will
-    # encode the unicode string
-    random_utf16 = random_utf8
-
-    def __getitem__(self, ttype):
-        if ttype in self.randomizer_by_ttype:
-            return self.randomizer_by_ttype[ttype]
-        else:
-            raise TypeError("Unsupported field type: %d" % ttype)
-
-    def random_fields(self, specs, is_toplevel=False):
-        """Get random fields. Works for argument fields and struct fields.
-
-        Fields are returned as a dictionary of {field_name: value}
-
-        If fields cannot be generated for these specs (due to
-        "required" fields making the recursion depth limit
-        unsatisfiable,) then None will be returned instead.
-
-        is_toplevel should be True if the fields are to be generated
-        for a function call rather than a struct.
-        """
-        if is_toplevel:
-            self.recursion_depth = collections.defaultdict(int)
-            exclude_probability = self.p_exclude_arg
-        else:
-            exclude_probability = self.p_exclude_field
-
-        fields = {}
-        for spec in specs:
-            if spec is None:
-                continue
-
-            (key, ttype, name, spec_args, default_value, req) = spec
-
-            if (req != Req.T_REQUIRED and
-                    random.random() < exclude_probability):
-                continue
-
-            if (default_value is not None and
-                    random.random() < self.p_default):
-                fields[name] = default_value
-                continue
-
-            random_fn = self[ttype]
-            value = random_fn(spec_args)
-
-            if value is None:
-                # Could not generate a value for this field
-                if req == Req.T_REQUIRED:
-                    # Field was required -- cannot generate struct
-                    return None
-                else:
-                    # Ignore this field
-                    continue
-            else:
-                fields[name] = value
-
-        return fields
-
 class Timer(object):
     def __init__(self, aggregator, category, action):
         self.aggregator = aggregator
@@ -1107,20 +812,42 @@ class FuzzTester(object):
 
         return True
 
-    def fuzz_kwargs(self, method_name, args_spec, n_iterations):
+    def fuzz_kwargs(self, method_name, n_iterations):
         # For now, just yield n random sets of args
         # In future versions, fuzz fields more methodically based
         # on feedback and seeds
         for _ in sm.xrange(n_iterations):
             with self.timer.time(method_name, "Randomizing"):
-                kwargs = self.randomizer.random_fields(args_spec.thrift_spec,
-                                                       is_toplevel=True)
-
-            if kwargs is None:
+                method_randomizer = self.method_randomizers[method_name]
+                args_struct = method_randomizer.randomize()
+            if args_struct is None:
                 logging.error("Unable to produce valid arguments for %s" %
                               method_name)
             else:
+                kwargs = args_struct.__dict__  # Get members of args struct
                 yield kwargs
+
+    def get_method_randomizers(self, methods):
+        state = randomizer.RandomizerState()
+        method_randomizers = {}
+
+        for method_name in methods:
+            args_class = methods[method_name]['args_class']
+
+            # Create a spec_args tuple for the method args struct type
+            randomizer_spec_args = (
+                args_class,
+                args_class.thrift_spec,
+                False  # isUnion
+            )
+
+            method_randomizer = state.get_randomizer(
+                Thrift.TType.STRUCT,
+                randomizer_spec_args
+            )
+            method_randomizers[method_name] = method_randomizer
+
+        return method_randomizers
 
     def run(self):
         self.start_logging()
@@ -1130,16 +857,16 @@ class FuzzTester(object):
         logging.info(str(self.config))
 
         self.service = self.config.load_service()
-        self.randomizer = TTypeRandomizer(self.config)
 
         client_class = self.service.client_class
+
         methods = self.service.get_methods(self.config.functions)
+        self.method_randomizers = self.get_method_randomizers(methods)
 
         logging.info("Fuzzing methods: %s" % methods.keys())
 
         with FuzzerClient(self.config, client_class) as self.client:
             for method_name, spec in six.iteritems(methods):
-                args_spec = spec['args_spec']
                 result_spec = spec.get('result_spec', None)
                 thrift_exceptions = spec['thrift_exceptions']
                 is_oneway = result_spec is None
@@ -1147,8 +874,8 @@ class FuzzTester(object):
                 self.n_tests = 0
                 self.n_exceptions = 0
                 did_crash = False
-                for kwargs in self.fuzz_kwargs(method_name, args_spec,
-                                                    self.config.n_iterations):
+                for kwargs in self.fuzz_kwargs(
+                        method_name, self.config.n_iterations):
                     if not self.run_test(method_name, kwargs, None,
                                          is_oneway, thrift_exceptions):
                         did_crash = True
@@ -1177,6 +904,8 @@ def fuzz_service(service, ttypes, constants):
     service = Service(ttypes, constants, service)
     config = FuzzerConfiguration(service)
     run_fuzzer(config)
+
+
 
 if __name__ == '__main__':
     config = FuzzerConfiguration()
