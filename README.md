@@ -30,14 +30,19 @@ Dependencies
       libssl-dev
 ```
 
-For your convenience, a build script is provided for ubuntu 14.04 64-bit:
+For your convenience script are provided to install `fbthrift`'s
+dependencies on several common platforms:
 
 ```sh
-cd fbthrift/thrift
-./deps.sh
+cd fbthrift/thrift/
+# Or ./build/deps_ubuntu_12.04.sh or ./build/deps_centos.sh
+./build/deps_ubuntu_14.04.sh  
+autoreconf -if && ./configure && make
 ```
 
-It will automatically pull down folly and build it, and then configure and build thrift.
+Each `deps_*.sh` script will install a variety of base system packages, as
+well as compile and install into in `/usr/local` some from-source
+dependencies (like `folly`).
 
  - Ubuntu 14.04 64-bit requires the following packages:
 
