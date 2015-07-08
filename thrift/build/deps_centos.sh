@@ -1,3 +1,7 @@
+#!/bin/bash
+
+. "$(dirname "$0")/deps_common.sh"
+
 sudo yum install -y \
     openssl-devel \
     openssl-libs \
@@ -29,16 +33,4 @@ echo "Fetching double-conversion from git (yum failed)"
     cd ..
 fi
 
-git clone https://github.com/facebook/folly
-cd folly/folly
-
-autoreconf --install
-./configure
-make -j8
-cd ../..
-
-autoreconf --install
-$LD_LIBRARY_PATH_SAVED=$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH="`pwd`/folly/folly/.libs/:$LD_LIBRARY_PATH"
-CPPFLAGS=" -I`pwd`/folly/" LDFLAGS="-L`pwd`/folly/folly/.libs/" ./configure
-make -j8
+install_folly centos  # needs git

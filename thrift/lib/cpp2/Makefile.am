@@ -72,6 +72,12 @@ thrift2include_server_HEADERS = \
 	server/Cpp2Worker.h \
 	server/ThriftServer.h
 
+thrift2include_utildir = $(thrift2includedir)/util
+
+thrift2include_util_HEADERS = \
+	util/ScopedServerInterfaceThread.h \
+	util/ScopedServerInterfaceThread-inl.h
+
 thrift2include_securitydir = $(thrift2includedir)/security
 
 thrift2include_security_HEADERS = \
@@ -126,6 +132,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   server/Cpp2Connection.cpp \
 			   server/Cpp2Worker.cpp \
 			   server/ThriftServer.cpp \
+			   util/ScopedServerInterfaceThread.cpp \
 			   ../cpp/EventHandlerBase.cpp \
 			   ../cpp/transport/THeaderTransport.cpp \
 			   ../cpp/util/ScopedServerThread.cpp \
