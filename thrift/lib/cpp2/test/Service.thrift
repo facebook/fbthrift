@@ -5,6 +5,13 @@ struct TestStruct {
   2: i32 i,
 }
 
+typedef binary (cpp2.type = "folly::IOBuf") IOBuf
+
+struct TestStructIOBuf {
+  1: IOBuf buf,
+  2: i32 i,
+}
+
 struct TestStructRecursive {
   6: string tag,
   99: optional TestStructRecursive cdr (cpp.ref = 'true'),

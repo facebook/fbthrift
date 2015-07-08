@@ -47,6 +47,25 @@
 
 namespace apache { namespace thrift {
 
+/**
+ * Certain serialization / deserialization operations allow sharing
+ * external (user-owned) buffers. This means that the external buffers must
+ * remain allocated (and unchanged) until the serialization / deserialization
+ * is complete.
+ *
+ * This is often counter-intuitive; for example, deserializing from a string
+ * wouldn't work with a temporary string if sharing is allowed. So sharing
+ * external buffers must be requested explicitly.
+ *
+ * Note that we always share memory that is under IOBuf's control (that is,
+ * IOBuf chains for which isManaged() is true). To prevent that, call unshare()
+ * on the IOBuf chain as appropriate.
+ */
+enum ExternalBufferSharing {
+  COPY_EXTERNAL_BUFFER,
+  SHARE_EXTERNAL_BUFFER,
+};
+
 using apache::thrift::protocol::TType;
 using apache::thrift::protocol::TProtocolException;
 typedef apache::thrift::protocol::PROTOCOL_TYPES ProtocolType;

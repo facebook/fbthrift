@@ -45,8 +45,10 @@ class BinaryProtocolWriter {
  public:
   static const int32_t VERSION_1 = 0x80010000;
 
-  BinaryProtocolWriter()
-      : out_(nullptr, 0) {}
+  explicit BinaryProtocolWriter(
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
+    : out_(nullptr, 0)
+    , sharing_(sharing) {}
 
   static inline ProtocolType protocolType() {
     return ProtocolType::T_BINARY_PROTOCOL;
@@ -157,6 +159,7 @@ class BinaryProtocolWriter {
    * Cursor to write the data out to.
    */
   QueueAppender out_;
+  ExternalBufferSharing sharing_;
 };
 
 class BinaryProtocolReader {
@@ -165,16 +168,20 @@ class BinaryProtocolReader {
   static const int32_t VERSION_MASK = 0xffff0000;
   static const int32_t VERSION_1 = 0x80010000;
 
-  BinaryProtocolReader()
+  explicit BinaryProtocolReader(
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
     : string_limit_(FLAGS_thrift_cpp2_protocol_reader_string_limit)
     , container_limit_(FLAGS_thrift_cpp2_protocol_reader_container_limit)
+    , sharing_(sharing)
     , strict_read_(true)
     , in_(nullptr) {}
 
   BinaryProtocolReader(int32_t string_limit,
-                  int32_t container_limit)
+                       int32_t container_limit,
+                       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
     : string_limit_(string_limit)
     , container_limit_(container_limit)
+    , sharing_(sharing)
     , strict_read_(true)
     , in_(nullptr) {}
 
@@ -268,6 +275,7 @@ class BinaryProtocolReader {
 
   int32_t string_limit_;
   int32_t container_limit_;
+  ExternalBufferSharing sharing_;
 
   // Enforce presence of version identifier
   bool strict_read_;

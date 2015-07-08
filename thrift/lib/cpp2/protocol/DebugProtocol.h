@@ -31,7 +31,8 @@ std::string debugString(const T& obj);
 
 class DebugProtocolWriter {
  public:
-  DebugProtocolWriter();
+  explicit DebugProtocolWriter(
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER /* ignored */);
 
   static inline ProtocolType protocolType() {
     return ProtocolType::T_DEBUG_PROTOCOL;

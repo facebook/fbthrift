@@ -181,7 +181,11 @@ uint32_t BinaryProtocolWriter::writeBinary(
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
   }
   uint32_t result = writeI32((int32_t)size);
-  out_.insert(str.clone());
+  auto clone = str.clone();
+  if (sharing_ != SHARE_EXTERNAL_BUFFER) {
+    clone->makeManaged();
+  }
+  out_.insert(std::move(clone));
   return result + size;
 }
 
@@ -192,7 +196,11 @@ uint32_t BinaryProtocolWriter::writeSerializedData(
   }
   // TODO: insert() just chains IOBufs together. Consider copying data to the
   // output buffer as it was already preallocated with the correct size.
-  out_.insert(buf->clone());
+  auto clone = buf->clone();
+  if (sharing_ != SHARE_EXTERNAL_BUFFER) {
+    clone->makeManaged();
+  }
+  out_.insert(std::move(clone));
   return buf->computeChainDataLength();
 }
 
@@ -515,12 +523,10 @@ uint32_t BinaryProtocolReader::readBinary(StrType& str) {
 }
 
 uint32_t BinaryProtocolReader::readBinary(std::unique_ptr<folly::IOBuf>& str) {
-  uint32_t result;
-  int32_t size;
-  result = readI32(size);
-  checkStringSize(size);
-  in_.clone(str, size);
-  return result + (uint32_t)size;
+  if (!str) {
+    str = folly::make_unique<folly::IOBuf>();
+  }
+  return readBinary(*str);
 }
 
 uint32_t BinaryProtocolReader::readBinary(folly::IOBuf& str) {
@@ -530,6 +536,9 @@ uint32_t BinaryProtocolReader::readBinary(folly::IOBuf& str) {
   checkStringSize(size);
 
   in_.clone(str, size);
+  if (sharing_ != SHARE_EXTERNAL_BUFFER) {
+    str.makeManaged();
+  }
   return result + (uint32_t)size;
 }
 
@@ -573,12 +582,18 @@ uint32_t BinaryProtocolReader::readFromPositionAndAppend(
   if (ser) {
     std::unique_ptr<IOBuf> newBuf;
     snapshot.clone(newBuf, size);
+    if (sharing_ != SHARE_EXTERNAL_BUFFER) {
+      newBuf->makeManaged();
+    }
     // IOBuf are circular, so prependChain called on head is the same as
     // appending the whole chain at the tail.
     ser->prependChain(std::move(newBuf));
   } else {
     // cut a chunk of things directly
     snapshot.clone(ser, size);
+    if (sharing_ != SHARE_EXTERNAL_BUFFER) {
+      ser->makeManaged();
+    }
   }
 
   return (uint32_t) size;

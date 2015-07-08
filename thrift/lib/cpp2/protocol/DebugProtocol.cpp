@@ -25,7 +25,8 @@
 
 namespace apache { namespace thrift {
 
-DebugProtocolWriter::DebugProtocolWriter() : out_(nullptr) { }
+DebugProtocolWriter::DebugProtocolWriter(
+    ExternalBufferSharing sharing) : out_(nullptr) { }
 
 namespace {
 

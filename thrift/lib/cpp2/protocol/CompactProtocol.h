@@ -92,8 +92,10 @@ class CompactProtocolWriter {
 
  public:
 
-  CompactProtocolWriter()
+  explicit CompactProtocolWriter(
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
       : out_(nullptr, 0)
+      , sharing_(sharing)
       , booleanField_({nullptr, TType::T_BOOL, 0}) {}
 
   static inline ProtocolType protocolType() {
@@ -216,6 +218,7 @@ class CompactProtocolWriter {
    * Cursor to write the data out to.
    */
   QueueAppender out_;
+  ExternalBufferSharing sharing_;
 
   struct {
     const char* name;
@@ -233,16 +236,20 @@ class CompactProtocolReader {
  public:
   static const int8_t  VERSION_MASK = 0x1f; // 0001 1111
 
-  CompactProtocolReader()
+  explicit CompactProtocolReader(
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
     : string_limit_(FLAGS_thrift_cpp2_protocol_reader_string_limit)
     , container_limit_(FLAGS_thrift_cpp2_protocol_reader_container_limit)
+    , sharing_(sharing)
     , in_(nullptr)
     , boolValue_({false, false}) {}
 
   CompactProtocolReader(int32_t string_limit,
-                  int32_t container_limit)
+                        int32_t container_limit,
+                        ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
     : string_limit_(string_limit)
     , container_limit_(container_limit)
+    , sharing_(sharing)
     , in_(nullptr)
     , boolValue_({false, false}) {}
 
@@ -336,6 +343,7 @@ class CompactProtocolReader {
 
   int32_t string_limit_;
   int32_t container_limit_;
+  ExternalBufferSharing sharing_;
 
   /**
    * Cursor to manipulate the buffer to read from.  Throws an exception if

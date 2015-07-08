@@ -32,8 +32,10 @@ namespace apache { namespace thrift {
 template <typename Reader, typename Writer>
 struct Serializer {
   template <class T>
-  static void deserialize(const folly::IOBuf* buf, T& obj) {
-    Reader reader;
+  static void deserialize(
+      const folly::IOBuf* buf, T& obj,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    Reader reader(sharing);
     reader.setInput(buf);
 
     // This can be obj.read(&reader);
@@ -42,19 +44,25 @@ struct Serializer {
   }
 
   template <class T>
-  static void deserialize(folly::ByteRange range, T& obj) {
+  static void deserialize(
+      folly::ByteRange range, T& obj,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
     folly::IOBuf buf(folly::IOBuf::WRAP_BUFFER, range);
-    deserialize(&buf, obj);
+    deserialize(&buf, obj, sharing);
   }
 
   template <class T>
-  static void deserialize(folly::StringPiece range, T& obj) {
-    deserialize(folly::ByteRange(range), obj);
+  static void deserialize(
+      folly::StringPiece range, T& obj,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    deserialize(folly::ByteRange(range), obj, sharing);
   }
 
   template <class T>
-  static void serialize(const T& obj, folly::IOBufQueue* out) {
-    Writer writer;
+  static void serialize(
+      const T& obj, folly::IOBufQueue* out,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    Writer writer(sharing);
     writer.setOutput(out);
 
     // This can be obj.write(&writer);
@@ -65,9 +73,13 @@ struct Serializer {
   template <class T>
   static void serialize(const T& obj, std::string* out) {
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-    serialize(obj, &queue);
+    // Okay to share any external buffers, as we'll copy them to *out
+    // immediately afterwards.
+    serialize(obj, &queue, SHARE_EXTERNAL_BUFFER);
     queue.appendToString(*out);
   }
+
+ private:
 };
 
 typedef Serializer<CompactProtocolReader, CompactProtocolWriter>

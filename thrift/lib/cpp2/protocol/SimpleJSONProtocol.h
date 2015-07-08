@@ -38,8 +38,9 @@ class SimpleJSONProtocolWriter {
  public:
   static const int32_t VERSION_1 = 0x80010000;
 
-  SimpleJSONProtocolWriter()
-      : out_(nullptr, 0) {}
+  explicit SimpleJSONProtocolWriter(
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER /* ignored */)
+    : out_(nullptr, 0) {}
 
   static inline ProtocolType protocolType() {
     return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
@@ -181,7 +182,8 @@ class SimpleJSONProtocolReader {
   static const int32_t VERSION_MASK = 0xffff0000;
   static const int32_t VERSION_1 = 0x80010000;
 
-  SimpleJSONProtocolReader()
+  explicit SimpleJSONProtocolReader(
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER /* ignored */)
     : in_(nullptr)
     , allowDecodeUTF8_(true)
     , skippedWhitespace_(0)
