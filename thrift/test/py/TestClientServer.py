@@ -258,47 +258,6 @@ class AbstractTest(object):
         count = self.client.testConnectionDestroyed()
         self.assertTrue(count >= 0)
 
-    def testEventCountRelationships(self):
-        if self.server_type == "TCppServer":
-            return
-
-        if self.server_type == 'TNonblockingServer':
-            raise unittest.SkipTest(
-                "testEventCountRelationships flaky for TNonblockingServer (#6023505)")
-
-        orig_num_pre_serve = self.client.testPreServe()
-        orig_num_new = self.client.testNewConnection()
-        orig_num_dest = self.client.testConnectionDestroyed()
-
-        for i in range(5):
-            # force new server connection
-            self.transport.getTransport().close()
-            self.transport.getTransport().open()
-
-            num_pre_serve = self.client.testPreServe()
-            num_new = self.client.testNewConnection()
-            num_dest = self.client.testConnectionDestroyed()
-
-            # always exactly one pre-serve event
-            self.assertGreaterEqual(num_pre_serve, 1)
-
-            # every iteration is a new re-connection
-            self.assertEquals(num_new, orig_num_new + i + 1)
-
-            # every iteration is a new connection destroyed, and
-            # current conneciton is active, so num_dest should be
-            # num_new - 1.  Except:
-            # 1) TForkingServer does not update num_dest (or rather,
-            #    the num_dest is updated in the child process, which
-            #    doesn't make it back to the parent process), so
-            #    num_dest is always 0 in this case
-            # 2) TNonblockingServer fires the connectionDestroyed()
-            #    event on the top of the next handle() iteration, so
-            #    the count could be off by 2 in this case rather than 1.
-            # 3) THeaderProtocol on the server breaks this for some reason
-            if num_dest and not self.server_header:
-                self.assert_(num_new - num_dest <= 2)
-
     def testNonblockingTimeout(self):
         if self.server_type == "TNonblockingServer":
             self.socket.close()
@@ -349,10 +308,10 @@ class HeaderTest(AbstractTest):
             self.testStruct()
 
     def testKeyValueHeader(self):
-        # TODO(davejwatson) - Task #2488109
         if self.server_header and self.server_type == 'TNonblockingServer':
-            raise unittest.SkipTest(
-                "testKeyValueHeader fails for TNonblockingServer (#2488109)")
+            # TNonblockingServer uses different protocol instances for input
+            # and output so persistent header won't work
+            return
         htrans = self.protocol.trans
         if isinstance(htrans, THeaderTransport):
             # Try just persistent header
