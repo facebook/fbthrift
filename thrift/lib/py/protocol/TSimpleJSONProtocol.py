@@ -23,8 +23,10 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from base64 import b64encode, b64decode
+import json
+import sys
 
-from .TProtocol import *
+from .TProtocol import TProtocolBase, TProtocolException
 from thrift.Thrift import TType
 
 JSON_OBJECT_START = b'{'
@@ -365,7 +367,7 @@ class TSimpleJSONProtocolBase(TProtocolBase):
             outCh = JSON_CHAR_TABLE[charValue]
             if outCh == 1:
                 self.trans.write(ch)
-            elif outCh > 1:
+            elif outCh:
                 self.trans.write(JSON_BACKSLASH)
                 self.trans.write(outCh)
             else:
@@ -532,8 +534,11 @@ class TSimpleJSONProtocolBase(TProtocolBase):
             string = self.readJSONString(True)
             try:
                 double = float(string)
-                if self.context.escapeNum is False and double != inf and \
-                        double != -inf and double != nan:
+                if (self.context.escapeNum is False and
+                    double != float('inf') and
+                    double != float('-inf') and
+                    double != float('nan')
+                ):
                     raise TProtocolException(TProtocolException.INVALID_DATA,
                             "Numeric data unexpectedly quoted")
                 return double
@@ -549,7 +554,7 @@ class TSimpleJSONProtocolBase(TProtocolBase):
 
     def readJSONBase64(self):
         string = self.readJSONString()
-        return base64.b64decode(string)
+        return b64decode(string)
 
     def readJSONBool(self):
         self.context.read(self.reader)

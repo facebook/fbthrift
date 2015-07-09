@@ -22,7 +22,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from .TProtocol import *
+from .TProtocol import TProtocolBase, TProtocolException, TType
 import json, base64, sys
 
 __all__ = ['TJSONProtocol', 'TJSONProtocolFactory']
@@ -270,8 +270,11 @@ class TJSONProtocolBase(TProtocolBase):
             string = self.readJSONString(True)
             try:
                 double = float(string)
-                if self.context.escapeNum is False and double != inf and \
-                        double != nan:
+                if (self.context.escapeNum is False and
+                    double != float('inf') and
+                    double != float('-inf') and
+                    double != float('nan')
+                ):
                     raise TProtocolException(TProtocolException.INVALID_DATA,
                             "Numeric data unexpectedly quoted")
                 return double
