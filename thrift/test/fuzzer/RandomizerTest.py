@@ -56,6 +56,17 @@ class TestEnumRandomizer(unittest.TestCase, TestRandomizer):
         for _ in sm.xrange(cls.iterations):
             self.assertNotIn(gen.randomize(), ttypes.Color._VALUES_TO_NAMES)
 
+    def test_choices(self):
+        cls = self.__class__
+        choices = ["RED", "BLUE", "BLACK"]
+        constraints = {'choices': choices}
+        gen = self.get_randomizer(Thrift.TType.I32, ttypes.Color, constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.randomize()
+            name = ttypes.Color._VALUES_TO_NAMES[val]
+            self.assertIn(name, choices)
+
 
 class TestIntRandomizer(TestRandomizer):
     def testInRange(self):
@@ -69,6 +80,34 @@ class TestIntRandomizer(TestRandomizer):
             val = gen.randomize()
             self.assertGreaterEqual(val, min_)
             self.assertLessEqual(val, max_)
+
+    def testConstant(self):
+        cls = self.__class__
+        ttype = cls.ttype
+
+        constant = 17
+
+        constraints = {
+            'choices': [constant]
+        }
+
+        gen = self.get_randomizer(ttype, None, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.randomize()
+            self.assertEquals(val, constant)
+
+    def testChoices(self):
+        cls = self.__class__
+        ttype = cls.ttype
+
+        choices = [11, 17, 19]
+
+        constraints = {'choices': choices}
+
+        gen = self.get_randomizer(ttype, None, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.randomize()
+            self.assertIn(val, choices)
 
 class TestByteRandomizer(TestIntRandomizer, unittest.TestCase):
     ttype = Thrift.TType.BYTE
@@ -151,6 +190,17 @@ class TestFloatRandomizer(TestRandomizer):
             val = gen.randomize()
             self.assertEquals(val, constant)
 
+    def testChoices(self):
+        cls = self.__class__
+        choices = [float('-inf'), 0.0, 13.37]
+        constraints = {
+            'choices': choices
+        }
+        gen = self.get_randomizer(self.randomizer_cls.ttype, None, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.randomize()
+            self.assertIn(val, choices)
+
 class TestSinglePrecisionRandomizer(TestFloatRandomizer, unittest.TestCase):
     randomizer_cls = randomizer.SinglePrecisionFloatRandomizer
     ttype = Thrift.TType.FLOAT
@@ -179,6 +229,16 @@ class TestStringRandomizer(TestRandomizer, unittest.TestCase):
             val = gen.randomize()
             for char in val:
                 self.assertEquals(0, len(val))
+
+    def testChoices(self):
+        cls = self.__class__
+
+        choices = ['foo', 'bar']
+        constraints = {'choices': choices}
+        gen = self.get_randomizer(Thrift.TType.STRING, None, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.randomize()
+            self.assertIn(val, choices)
 
 class TestListRandomizer(TestRandomizer, unittest.TestCase):
     def testEmpty(self):

@@ -124,13 +124,30 @@ class BaseRandomizer(object):
         raise NotImplementedError("randomize not implemented for %s" % (
             self.__class__.__name__))
 
+class ScalarTypeRandomizer(BaseRandomizer):
+    """Randomizer for types that do not constain other types, including
+    enum, byte, i16, i32, i64, float, double and string. Bool is excluded
+    because it does not need to inherit any properties from this class"""
+
+    default_constraints = {
+        'choices': []
+    }
+
+    def randomize(self):
+        """Basic types support the choices constraint, which restricts
+        the range of the randomizer to an explicit list"""
+        choices = self.constraints['choices']
+        if choices:
+            return random.choice(choices)
+        else:
+            return None
 
 class BoolRandomizer(BaseRandomizer):
     name = "bool"
     ttype = Thrift.TType.BOOL
 
     default_constraints = {
-        'p_true': 1 / 2
+        'p_true': 0.5
     }
 
     @property
@@ -149,16 +166,17 @@ def _random_int_factory(k):
         return random.randint(min_, max_)
     return random_int_k_bits
 
-class EnumRandomizer(BaseRandomizer):
+class EnumRandomizer(ScalarTypeRandomizer):
     name = "enum"
     ttype = Thrift.TType.I32
 
     random_int_32 = staticmethod(_random_int_factory(32))
 
-    default_constraints = {
+    default_constraints = ScalarTypeRandomizer.default_constraints
+    default_constraints.update({
         # Probability of generating an i32 with no corresponding Enum name
         'p_invalid': 0.01,
-    }
+    })
 
     def _preprocess_constraints(self):
         self.ttype = self.spec_args
@@ -171,6 +189,13 @@ class EnumRandomizer(BaseRandomizer):
 
     def randomize(self):
         cls = self.__class__
+
+        val = super(EnumRandomizer, self).randomize()
+        if val is not None:
+            if isinstance(val, six.string_types):
+                return self.ttype._NAMES_TO_VALUES[val]
+            else:
+                return val
 
         if random.random() < self.constraints['p_invalid']:
             # Generate an i32 value that does not correspond to an enum member
@@ -191,14 +216,18 @@ def _integer_randomizer_factory(name, ttype, n_bits):
     _name = name
     _ttype = ttype
     _n_bits = n_bits
+    _random_i32 = _random_int_factory(_n_bits)
 
-    class NBitIntegerRandomizer(BaseRandomizer):
+    class NBitIntegerRandomizer(ScalarTypeRandomizer):
         name = _name
         ttype = _ttype
 
-        default_constraints = {}
+        def randomize(self):
+            val = super(NBitIntegerRandomizer, self).randomize()
+            if val is not None:
+                return val
 
-        randomize = staticmethod(_random_int_factory(_n_bits))
+            return _random_i32()
 
         @property
         def universe_size(self):
@@ -215,16 +244,17 @@ I64Randomizer = _integer_randomizer_factory("i64", Thrift.TType.I64, 64)
 
 del _integer_randomizer_factory
 
-class FloatingPointRandomizer(BaseRandomizer):
+class FloatingPointRandomizer(ScalarTypeRandomizer):
     """Abstract class for floating point types"""
     unreals = [float('nan'), float('inf'), float('-inf')]
 
-    default_constraints = {
+    default_constraints = dict(ScalarTypeRandomizer.default_constraints)
+    default_constraints.update({
         'p_zero': 0.01,
         'p_unreal': 0.01,
         'mean': 0.0,
-        'std_deviation': 1e8
-    }
+        'std_deviation': 1e8,
+    })
 
     @property
     def universe_size(self):
@@ -232,6 +262,10 @@ class FloatingPointRandomizer(BaseRandomizer):
 
     def randomize(self):
         cls = self.__class__
+
+        val = super(FloatingPointRandomizer, self).randomize()
+        if val is not None:
+            return val
 
         if random.random() < self.constraints['p_unreal']:
             return random.choice(cls.unreals)
@@ -257,6 +291,10 @@ class DoublePrecisionFloatRandomizer(FloatingPointRandomizer):
 class CollectionTypeRandomizer(BaseRandomizer):
     """Superclass for ttypes with lengths"""
 
+    default_constraints = {
+        'mean_length': 12
+    }
+
     @property
     def universe_size(self):
         return INFINITY
@@ -268,18 +306,21 @@ class CollectionTypeRandomizer(BaseRandomizer):
         else:
             return int(random.expovariate(1 / mean))
 
-class StringRandomizer(CollectionTypeRandomizer):
+class StringRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
     name = "string"
     ttype = Thrift.TType.STRING
 
     ascii_range = (0, 127)
 
-    default_constraints = {
-        'mean_length': 12
-    }
+    default_constraints = dict(CollectionTypeRandomizer.default_constraints)
+    default_constraints.update(ScalarTypeRandomizer.default_constraints)
 
     def randomize(self):
         cls = self.__class__
+
+        val = ScalarTypeRandomizer.randomize(self)
+        if val is not None:
+            return val
 
         length = self._get_length()
         chars = []
@@ -292,6 +333,11 @@ class StringRandomizer(CollectionTypeRandomizer):
 class NonAssociativeContainerRandomizer(CollectionTypeRandomizer):
     """Randomizer class for lists and sets"""
 
+    default_constraints = dict(CollectionTypeRandomizer.default_constraints)
+    default_constraints.update({
+        'element': {}
+    })
+
     def _init_subrandomizers(self):
         elem_ttype, elem_spec_args = self.spec_args
         elem_constraints = self.constraints['element']
@@ -302,11 +348,6 @@ class NonAssociativeContainerRandomizer(CollectionTypeRandomizer):
 class ListRandomizer(NonAssociativeContainerRandomizer):
     name = "list"
     ttype = Thrift.TType.LIST
-
-    default_constraints = {
-        'mean_length': 12,
-        'element': {}
-    }
 
     def randomize(self):
         length = self._get_length()
@@ -322,11 +363,6 @@ class ListRandomizer(NonAssociativeContainerRandomizer):
 class SetRandomizer(NonAssociativeContainerRandomizer):
     name = "set"
     ttype = Thrift.TType.SET
-
-    default_constraints = {
-        'mean_length': 12,
-        'element': {}
-    }
 
     def randomize(self):
         element_randomizer = self._element_randomizer
@@ -354,11 +390,11 @@ class MapRandomizer(CollectionTypeRandomizer):
     name = "map"
     ttype = Thrift.TType.MAP
 
-    default_constraints = {
-        'mean_length': 12,
+    default_constraints = dict(CollectionTypeRandomizer.default_constraints)
+    default_constraints.update({
         'key': {},
         'value': {}
-    }
+    })
 
     def _init_subrandomizers(self):
         key_ttype, key_spec_args, val_ttype, val_spec_args = self.spec_args
