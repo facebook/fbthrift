@@ -591,17 +591,17 @@ class HandlerCallback : public HandlerCallbackBase {
   }
 
   void complete(folly::Try<T>&& r) {
-    if (r.hasException()) {
-      exception(std::move(r.exception()));
-    } else {
+    try {
       result(std::move(r.value()));
+    } catch (...) {
+      exception(std::current_exception());
     }
   }
   void completeInThread(folly::Try<T>&& r) {
-    if (r.hasException()) {
-      exceptionInThread(std::move(r.exception()));
-    } else {
+    try {
       resultInThread(std::move(r.value()));
+    } catch (...) {
+      exceptionInThread(std::current_exception());
     }
   }
   static void completeInThread(
@@ -668,17 +668,19 @@ class HandlerCallback<void> : public HandlerCallbackBase {
   }
 
   void complete(folly::Try<folly::Unit>&& r) {
-    if (r.hasException()) {
-      exception(std::move(r.exception()));
-    } else {
+    try {
+      r.throwIfFailed();
       done();
+    } catch (...) {
+      exception(std::current_exception());
     }
   }
   void completeInThread(folly::Try<folly::Unit>&& r) {
-    if (r.hasException()) {
-      exceptionInThread(std::move(r.exception()));
-    } else {
+    try {
+      r.throwIfFailed();
       doneInThread();
+    } catch (...) {
+      exceptionInThread(std::current_exception());
     }
   }
   static void completeInThread(
