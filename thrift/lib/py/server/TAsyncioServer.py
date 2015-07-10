@@ -90,18 +90,12 @@ def ThriftAsyncServerFactory(
         )
     event_handler = TServerEventHandler()
     pfactory = ThriftServerProtocolFactory(processor, event_handler, loop)
-    try:
-        server = yield from loop.create_server(
-            pfactory,
-            interface,
-            port,
-            sock=sock,
-        )
-    except Exception:
-        logger.exception(
-            "Could not start server at %s:%d", interface or '*', port,
-        )
-        raise
+    server = yield from loop.create_server(
+        pfactory,
+        interface,
+        port,
+        sock=sock,
+    )
 
     if server.sockets:
         for socket in server.sockets:
