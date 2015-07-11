@@ -68,7 +68,7 @@ encode_MyStruct :: (Protocol p, Transport t) => p t -> MyStruct -> ByteString
 encode_MyStruct oprot record = serializeVal oprot $ from_MyStruct record
 to_MyStruct :: ThriftVal -> MyStruct
 to_MyStruct (TStruct fields) = MyStruct{
-  myStruct_myIncludedField = maybe (myStruct_myIncludedField default_MyStruct) (\(_,_val4) -> (case _val4 of {TStruct _val5 -> (Includes_Types.to_Included (TStruct _val5)); _ -> error "wrong type"})) (Map.lookup (1) fields)
+  myStruct_MyIncludedField = maybe (myStruct_MyIncludedField default_MyStruct) (\(_,_val4) -> (case _val4 of {TStruct _val5 -> (Includes_Types.to_Included (TStruct _val5)); _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_MyStruct _ = error "not a struct"
 read_MyStruct :: (Transport t, Protocol p) => p t -> IO MyStruct
@@ -79,4 +79,4 @@ typemap_MyStruct :: TypeMap
 typemap_MyStruct = Map.fromList [("MyIncludedField",(1,(T_STRUCT Includes_Types.typemap_Included)))]
 default_MyStruct :: MyStruct
 default_MyStruct = MyStruct{
-  myStruct_MyIncludedField = default_Includes_Types.Included{includes_Types.Included_MyIntField = 5}}
+  myStruct_MyIncludedField = Includes_Types.default_Included{Includes_Types.included_MyIntField = 5}}

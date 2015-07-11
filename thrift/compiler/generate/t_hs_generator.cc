@@ -212,6 +212,9 @@ class t_hs_generator : public t_oop_generator {
 
   string render_hs_type_for_function_name(t_type *type);
 
+  string module_part(const string& qualified_name);
+  string name_part(const string& qualified_name);
+
  private:
 
   ofstream f_types_;
@@ -475,7 +478,7 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
 
   } else if (type->is_struct() || type->is_xception()) {
     string cname = type_name(type);
-    out << "default_" << cname << "{";
+    out << module_part(cname) << "default_" << name_part(cname) << "{";
 
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;
@@ -728,7 +731,7 @@ void t_hs_generator::generate_hs_struct_reader(ofstream& out, t_struct* tstruct)
   for (auto* f_iter : fields) {
     int32_t key = f_iter->get_key();
     string etype = type_to_enum(f_iter->get_type());
-    string fname = decapitalize(f_iter->get_name());
+    string fname = f_iter->get_name();
 
     if (first) {
       first = false;
@@ -1888,7 +1891,35 @@ string t_hs_generator::type_name(t_type* ttype, string function_prefix) {
 }
 
 string t_hs_generator::field_name(string tname, string fname) {
-  return decapitalize(tname) + "_" + fname;
+  return module_part(tname) + decapitalize(name_part(tname)) + "_" + fname;
+}
+
+/**
+ * Takes a name, if it is qualified, such as `X.f` or `X.Constructor` it
+ * returns the module part including the trailing period, such as `X.`.  If the
+ * name is unqualified it returns an empty string.
+ */
+string t_hs_generator::module_part(const string& qualified_name) {
+  string::size_type pos = qualified_name.rfind('.');
+  if (pos == string::npos) {
+    return string();
+  } else {
+    return qualified_name.substr(0, pos+1);
+  }
+}
+
+/**
+ * Takes a name, if it is qualified, such as `X.f` or `X.Constructor`, it
+ * returns the name part, such as `f` or `Constructor`.  If the name is
+ * unqualified it is the identity funciton.
+ */
+string t_hs_generator::name_part(const string& qualified_name) {
+  string::size_type pos = qualified_name.rfind('.');
+  if (pos == string::npos) {
+    return qualified_name;
+  } else {
+    return qualified_name.substr(pos+1, string::npos);
+  }
 }
 
 /**

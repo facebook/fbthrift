@@ -66,7 +66,7 @@ encode_Included :: (Protocol p, Transport t) => p t -> Included -> ByteString
 encode_Included oprot record = serializeVal oprot $ from_Included record
 to_Included :: ThriftVal -> Included
 to_Included (TStruct fields) = Included{
-  included_myIntField = maybe (included_myIntField default_Included) (\(_,_val4) -> (case _val4 of {TI64 _val5 -> _val5; _ -> error "wrong type"})) (Map.lookup (1) fields)
+  included_MyIntField = maybe (included_MyIntField default_Included) (\(_,_val4) -> (case _val4 of {TI64 _val5 -> _val5; _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_Included _ = error "not a struct"
 read_Included :: (Transport t, Protocol p) => p t -> IO Included
