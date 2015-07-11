@@ -67,7 +67,7 @@ for name in fixtureNames:
     cmds = read_lines(os.path.join(cwd, 'cmd'))
     for cmd in cmds:
         subprocess.check_call(
-            [thrift, "--gen"] + shlex.split(cmd.strip()),
+            [thrift, "-r", "--gen"] + shlex.split(cmd.strip()),
             cwd=cwd,
             close_fds=True,
         )

@@ -35,7 +35,7 @@ def read_lines(path):
 def mkdir_p(path, mode):
     try:
         os.makedirs(path, mode)
-    except IOError:
+    except OSError:
         pass
 
 def parse_manifest(raw):
@@ -80,7 +80,7 @@ class MyTest(unittest.TestCase):
         cmds = read_lines(os.path.join(self.tmp, 'cmd'))
         for cmd in cmds:
             subprocess.check_call(
-                [thrift, '--gen'] + shlex.split(cmd.strip()),
+                [thrift, '-r', '--gen'] + shlex.split(cmd.strip()),
                 cwd=self.tmp,
                 close_fds=True,
             )
