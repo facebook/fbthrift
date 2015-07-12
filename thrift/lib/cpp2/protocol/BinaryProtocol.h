@@ -35,6 +35,8 @@ typedef folly::io::RWPrivateCursor RWCursor;
 using folly::io::Cursor;
 using folly::io::QueueAppender;
 
+class BinaryProtocolReader;
+
 /**
  * The default binary protocol for thrift. Writes all data in a very basic
  * binary format, essentially just spitting out the raw bytes.
@@ -44,6 +46,8 @@ class BinaryProtocolWriter {
 
  public:
   static const int32_t VERSION_1 = 0x80010000;
+
+  using ProtocolReader = BinaryProtocolReader;
 
   explicit BinaryProtocolWriter(
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
@@ -167,6 +171,8 @@ class BinaryProtocolReader {
  public:
   static const int32_t VERSION_MASK = 0xffff0000;
   static const int32_t VERSION_1 = 0x80010000;
+
+  using ProtocolWriter = BinaryProtocolWriter;
 
   explicit BinaryProtocolReader(
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)

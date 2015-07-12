@@ -124,6 +124,17 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
  public:
   ~GeneratedAsyncProcessor() override {}
 
+  template <typename Derived, typename ProtocolReader>
+  using ProcessFunc = void(Derived::*)(
+      std::unique_ptr<apache::thrift::ResponseChannel::Request>,
+      std::unique_ptr<folly::IOBuf>,
+      std::unique_ptr<ProtocolReader> iprot,
+      apache::thrift::Cpp2RequestContext* context,
+      apache::thrift::async::TEventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProcessFunc>
+  using ProcessMap = std::unordered_map<std::string, ProcessFunc>;
+
  protected:
   template <typename ProtocolIn, typename Args>
   static void deserializeRequest(Args& args,

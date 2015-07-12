@@ -1209,6 +1209,10 @@ class CppGenerator(t_generator.Generator):
                         modifiers='virtual'):
                 out("return \"{0}\";".format(service.name))
 
+            base_of = lambda n: "{}AsyncProcessor".format(self._type_name(n))
+            base = base_of(service.extends) if service.extends else "void"
+            out('using BaseAsyncProcessor = {};'.format(base))
+
             out().label('protected:')
 
             out('{0}SvIf* iface_;'.format(service.name))
@@ -1217,67 +1221,10 @@ class CppGenerator(t_generator.Generator):
                         'apache::thrift::protocol::PROTOCOL_TYPES protType)',
                         name='getCacheKey',
                         modifiers='virtual'):
-                out('std::string fname;')
-                out('apache::thrift::MessageType mtype;')
-                out('int32_t protoSeqId = 0;')
-                out('std::string pname;')
-                out('apache::thrift::protocol::TType ftype;')
-                out('int16_t fid;')
-                with out('try'):
-                    switch = out('switch(protType)').scope
-                    for shortprot, protname, prottype in self.protocols:
-                        with switch.case('apache::thrift::protocol::' +
-                                prottype, nobreak=True):
-                            out(('std::unique_ptr<apache::thrift::' +
-                                '{0}Reader> ' +
-                                'iprot(new apache::thrift::' +
-                                '{0}Reader());').format(protname))
-                            out('iprot->setInput(buf);')
-                            out('iprot->readMessageBegin(fname, mtype,' +
-                                  ' protoSeqId);')
-                            out('auto pfn = cacheKeyMap_.find(fname);')
-                            with out('if (pfn == cacheKeyMap_.end())'):
-                                out('return folly::none;')
-                            out('auto cacheKeyParamId = pfn->second;')
+                out('return apache::thrift::detail::ap::get_cache_key(' +
+                    'buf, protType, cacheKeyMap_);')
 
-                            out('uint32_t xfer = 0;')
-                            out('xfer += iprot->readStructBegin(pname);')
-
-                            whileLoop = out('while(true)').scope
-                            with whileLoop:
-                                out('xfer += iprot->readFieldBegin(pname, ' +
-                                        'ftype, fid);')
-                                stop = out('if (ftype == apache::thrift::' +
-                                        'protocol::T_STOP)').scope
-                                with stop:
-                                    out('break;')
-                                stop.release()
-
-                                isMatch = out('if (fid == ' +
-                                        'cacheKeyParamId)').scope
-                                with isMatch:
-                                    out('std::string cacheKey;')
-                                    out('iprot->readString(cacheKey);')
-                                    out('return folly::Optional<std::' +
-                                            'string>(std::move(cacheKey));')
-
-                                isMatch.release()
-                                out('xfer += iprot->skip(ftype);')
-                                out('xfer += iprot->readFieldEnd();')
-                            whileLoop.release()
-                            out('return folly::none;')
-
-                    with switch.case('default'):
-                        out('return folly::none;')
-                    switch.release()
-
-                    with out().catch('const std::exception& e'):
-                        out('LOG(ERROR) << \"Caught an exception ' +
-                                'parsing buffer:\" << e.what();')
-                        out('return folly::none;')
-
-                out('return folly::none;')
-                # end of getCacheKey
+            out().label('public:')
 
             with out().defn('void {name}(std::unique_ptr<' +
                         'apache::thrift::ResponseChannel::Request> req, ' +
@@ -1288,105 +1235,18 @@ class CppGenerator(t_generator.Generator):
                         'apache::thrift::concurrency::ThreadManager* tm)',
                         name='process',
                         modifiers='virtual'):
-                out('std::string fname;')
-                out('apache::thrift::MessageType mtype;')
-                out('int32_t protoSeqId = 0;')
-                switch = out('switch(protType)').scope
-                for shortprot, protname, prottype in self.protocols:
-                    if shortprot == 'simple_json':
-                        continue
-                    with switch.case('apache::thrift::protocol::' +
-                                     prottype, nobreak=True):
-                        out(('std::unique_ptr<apache::thrift::' +
-                           '{0}Reader> ' +
-                           'iprot(new apache::thrift::' +
-                           '{0}Reader());').format(protname))
-                        out('iprot->setInput(buf.get());')
-                        with out('try'):
-                            out('iprot->readMessageBegin(fname, mtype,' + \
-                                  ' protoSeqId);')
-                            with out().catch('const apache::thrift::'
-                                             'TException& ex'):
-                                out('LOG(ERROR) << "received invalid message' +
-                                  ' from client: " << ex.what();')
-                                out('apache::thrift::{0}Writer prot;'
-                                  .format(protname))
-                                self._generate_app_ex(
-                                    service, '"invalid message from client"',
-                                    "process", "protoSeqId", False, out(),
-                                    'context', False)
-                                out('return;')
-                        with out('if (mtype != apache::thrift::T_CALL && ' +
-                               'mtype != apache::thrift::T_ONEWAY)'):
-                            out('LOG(ERROR) << "received invalid message of ' +
-                              'type " << mtype;')
-                            out('apache::thrift::{0}Writer prot;'
-                              .format(protname))
-                            self._generate_app_ex(
-                                service, '"invalid message arguments"',
-                                "process", "protoSeqId", False, out(),
-                                'context', False)
-                        out('auto pfn = {0}ProcessMap_.find(fname);'.format(
-                                shortprot))
-                        with out('if (pfn == {0}ProcessMap_.end())'.format(
-                                shortprot)):
-                            if not service.extends:
-                                out('const std::string exMsg = ' +
-                                  'folly::stringPrintf(' +
-                                  ' "Method name %s not found",' +
-                                  ' fname.c_str());')
-                                out('apache::thrift::{0}Writer prot;'
-                                  .format(protname))
-                                self._generate_app_ex(
-                                    service, 'exMsg',
-                                    "process", "protoSeqId", False, out(),
-                                    'context', False)
-                            else:
-                                out(self._type_name(service.extends) +
-                                  'AsyncProcessor::process(std::move(req), ' +
-                                  'std::move(buf), protType, context, eb, tm);')
-                            out('return;')
-                        out('(this->*(pfn->second))(std::move(req), ' +
-                          'std::move(buf), std::move(iprot), context, eb, tm);')
-                        out('return;')
-                with switch.case('default'):
-                    out('LOG(ERROR) << "invalid protType: " << protType;')
-                    out('return;')
-                switch.release()
+                out('apache::thrift::detail::ap::process(' +
+                    'this, std::move(req), std::move(buf), protType, ' +
+                    'context, eb, tm);')
+
+            out().label('protected:')
 
             with out().defn('bool {name}(const folly::IOBuf* buf, ' +
                     'const apache::thrift::transport::THeader* header)',
                         name='isOnewayMethod',
                         modifiers='virtual'):
-                out('std::string fname;')
-                out('apache::thrift::MessageType mtype;')
-                out('int32_t protoSeqId = 0;')
-                out('apache::thrift::protocol::PROTOCOL_TYPES protType = ' +
-                  'static_cast<apache::thrift::protocol::PROTOCOL_TYPES>' +
-                  '(header->getProtocolId());')
-                switch = out('switch(protType)').scope
-                for shortprot, protname, prottype in self.protocols:
-                    if shortprot == 'simple_json':
-                        continue
-                    with switch.case('apache::thrift::protocol::' +
-                                     prottype, nobreak=True):
-                        out(('apache::thrift::{0}Reader iprot;')
-                                .format(protname))
-                        out('iprot.setInput(buf);')
-                        with out('try'):
-                            out('iprot.readMessageBegin(fname, mtype,' +
-                                  ' protoSeqId);')
-                            out('auto it = onewayMethods_.find(fname);')
-                            out('return it != onewayMethods_.end();')
-                            with out().catch('const apache::thrift::'
-                                             'TException& ex'):
-                                out('LOG(ERROR) << "received invalid message' +
-                                  ' from client: " << ex.what();')
-                                out('return false;')
-                with switch.case('default'):
-                    out('LOG(ERROR) << "invalid protType: " << protType;')
-                switch.release()
-                out('return false;')
+                out('return apache::thrift::detail::ap::is_oneway_method(' +
+                    'buf, header, onewayMethods_);')
 
             out().label('private:')
             oneways = out().defn('std::unordered_set<std::string> {name}',
@@ -1418,23 +1278,23 @@ class CppGenerator(t_generator.Generator):
             for shortprot, protname, prottype in self.protocols:
                 if shortprot == 'simple_json':
                     continue
-                out(('using {1}ProcessFunction = void({0}::*)(std::unique_ptr' +
-                   '<apache::thrift::ResponseChannel::Request> req, ').format(
-                           service.name + "AsyncProcessor", protname) +
-                  'std::unique_ptr<folly::IOBuf> buf, ' +
-                  'std::unique_ptr<apache::thrift::{0}Reader> iprot, '.format(
-                          protname) +
-                  'apache::thrift::Cpp2RequestContext* context, ' +
-                  'apache::thrift::async::TEventBase* eb, ' +
-                  'apache::thrift::concurrency::ThreadManager* tm' + ');')
-                out('using {0}ProcessMap = '
-                    .format(protname) +
-                    'std::unordered_map<std::string, {0}ProcessFunction>;'
-                    .format(protname))
-                map_type = '{0}::{1}ProcessMap'.format(
-                    service.name + "AsyncProcessor",
-                    protname)
+                out().label('public:')
+                out((
+                    'using {proto}ProcessFunc = ' +
+                    'ProcessFunc<{klass}AsyncProcessor, ' +
+                    'apache::thrift::{proto}Reader>;')
+                    .format(proto=protname, klass=service.name))
+                out('using {proto}ProcessMap = ProcessMap<{proto}ProcessFunc>;'
+                    .format(proto=protname))
+                map_type = '{klass}AsyncProcessor::{proto}ProcessMap' \
+                    .format(proto=protname, klass=service.name)
                 map_name = '{0}ProcessMap_'.format(shortprot)
+                with out().defn('const ' + map_type + '& {name}()',
+                                name='get{proto}ProcessMap'
+                                    .format(proto=protname),
+                                modifiers='static'):
+                    out('return {proto}ProcessMap_;'.format(proto=shortprot))
+                out().label('private:')
                 process_map = out().defn(map_type + ' {name}',
                                          name=map_name,
                                          modifiers='static')
@@ -1451,22 +1311,25 @@ class CppGenerator(t_generator.Generator):
                         '<apache::thrift::{0}Reader, '
                         'apache::thrift::{0}Writer>}}'.format(protname)
                             for function in service.functions))
+
+            out().label('private:')
             for function in service.functions:
                 loadname = '"{0}.{1}"'.format(service.name, function.name)
                 if not self._is_processed_in_eb(function):
-                    with out().defn('template <typename ProtocolIn_, '
-                                'typename ProtocolOut_>\n'
-                                'void {name}(std::unique_ptr<'
-                                'apache::thrift::ResponseChannel::Request> req,'
-                                ' std::unique_ptr<folly::IOBuf> buf, '
-                                'std::unique_ptr<ProtocolIn_> iprot, '
-                                'apache::thrift::Cpp2RequestContext* ctx, '
-                                'apache::thrift::async::TEventBase* eb, '
-                                'apache::thrift::concurrency::ThreadManager* tm'
-                                ')',
-                                name="_processInThread_{0}"
+                    with out().defn(
+                            'template <typename ProtocolIn_, '
+                            'typename ProtocolOut_>\n'
+                            'void {name}(std::unique_ptr<'
+                            'apache::thrift::ResponseChannel::Request> req, '
+                            'std::unique_ptr<folly::IOBuf> buf, '
+                            'std::unique_ptr<ProtocolIn_> iprot, '
+                            'apache::thrift::Cpp2RequestContext* ctx, '
+                            'apache::thrift::async::TEventBase* eb, '
+                            'apache::thrift::concurrency::ThreadManager* tm'
+                            ')',
+                            name="_processInThread_{0}"
                                 .format(function.name),
-                                output=self._out_tcc):
+                            output=self._out_tcc):
                         out('auto pri = iface_->getRequestPriority(ctx, '
                             'apache::thrift::concurrency::{0});'.format(
                                 self._get_function_priority(service, function)))

@@ -85,12 +85,16 @@ private:
 
 }}
 
+class CompactProtocolReader;
+
 /**
  * C++ Implementation of the Compact Protocol as described in THRIFT-110
  */
 class CompactProtocolWriter {
 
  public:
+
+  using ProtocolReader = CompactProtocolReader;
 
   explicit CompactProtocolWriter(
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
@@ -235,6 +239,8 @@ class CompactProtocolReader {
 
  public:
   static const int8_t  VERSION_MASK = 0x1f; // 0001 1111
+
+  using ProtocolWriter = CompactProtocolWriter;
 
   explicit CompactProtocolReader(
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)

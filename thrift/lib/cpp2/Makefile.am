@@ -105,6 +105,7 @@ thrift2include_protocol_HEADERS = \
 	protocol/VirtualProtocol.h
 
 libthriftcpp2_la_SOURCES = Version.cpp \
+			   GeneratedCodeHelper.cpp \
 			   async/HeaderChannel.cpp \
 			   async/HeaderClientChannel.cpp \
 			   async/HeaderServerChannel.cpp \

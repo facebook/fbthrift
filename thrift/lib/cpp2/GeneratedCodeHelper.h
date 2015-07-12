@@ -841,6 +841,164 @@ class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
   }
 };
 
+class BinaryProtocolReader;
+class BinaryProtocolWriter;
+class CompactProtocolReader;
+class CompactProtocolWriter;
+
+//  AsyncProcessor helpers
+namespace detail { namespace ap {
+
+//  Everything templated on only protocol goes here. The corresponding .cpp file
+//  explicitly instantiates this struct for each supported protocol.
+template <typename ProtocolReader, typename ProtocolWriter>
+struct helper {
+
+  static folly::IOBufQueue write_exn(
+      const char* method,
+      ProtocolWriter* prot,
+      int32_t protoSeqId,
+      ContextStack* ctx,
+      const TApplicationException& x);
+
+  static void process_exn(
+      const char* func,
+      const std::string& msg,
+      std::unique_ptr<ResponseChannel::Request> req,
+      Cpp2RequestContext* ctx,
+      async::TEventBase* eb,
+      int32_t protoSeqId);
+
+};
+
+template <typename ProtocolReader>
+using writer_of = typename ProtocolReader::ProtocolWriter;
+template <typename ProtocolWriter>
+using reader_of = typename ProtocolWriter::ProtocolReader;
+
+template <typename ProtocolReader>
+using helper_r = helper<ProtocolReader, writer_of<ProtocolReader>>;
+template <typename ProtocolWriter>
+using helper_w = helper<reader_of<ProtocolWriter>, ProtocolWriter>;
+
+template <typename T>
+using is_root_async_processor = std::is_void<typename T::BaseAsyncProcessor>;
+
+template <class ProtocolReader, class Processor>
+typename std::enable_if<is_root_async_processor<Processor>::value>::type
+process_missing(
+    Processor* processor,
+    const std::string& fname,
+    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<folly::IOBuf> buf,
+    Cpp2RequestContext* ctx,
+    async::TEventBase* eb,
+    concurrency::ThreadManager* tm,
+    int32_t protoSeqId) {
+  using h = helper_r<ProtocolReader>;
+  const char* fn = "process";
+  const auto msg = folly::sformat("Method name {} not found", fname);
+  return h::process_exn(fn, msg, std::move(req), ctx, eb, protoSeqId);
+}
+
+template <class ProtocolReader, class Processor>
+typename std::enable_if<!is_root_async_processor<Processor>::value>::type
+process_missing(
+    Processor* processor,
+    const std::string& fname,
+    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<folly::IOBuf> buf,
+    Cpp2RequestContext* ctx,
+    async::TEventBase* eb,
+    concurrency::ThreadManager* tm,
+    int32_t protoSeqId) {
+  auto protType = ProtocolReader::protocolType();
+  processor->Processor::BaseAsyncProcessor::process(
+      std::move(req), std::move(buf), protType, ctx, eb, tm);
+}
+
+template <class ProtocolReader, class Processor>
+void process_pmap(
+    Processor* proc,
+    const typename GeneratedAsyncProcessor::ProcessMap<
+        typename GeneratedAsyncProcessor::ProcessFunc<
+            Processor, ProtocolReader>>& pmap,
+    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<folly::IOBuf> buf,
+    Cpp2RequestContext* ctx,
+    async::TEventBase* eb,
+    concurrency::ThreadManager* tm) {
+  using h = helper_r<ProtocolReader>;
+  const char* fn = "process";
+  std::string fname;
+  MessageType mtype;
+  int32_t protoSeqId = 0;
+  auto iprot = folly::make_unique<ProtocolReader>();
+  iprot->setInput(buf.get());
+  try {
+    iprot->readMessageBegin(fname, mtype, protoSeqId);
+  } catch (const TException& ex) {
+    LOG(ERROR) << "received invalid message from client: " << ex.what();
+    const char* msg = "invalid message from client";
+    return h::process_exn(fn, msg, std::move(req), ctx, eb, protoSeqId);
+  }
+  if (mtype != T_CALL && mtype != T_ONEWAY) {
+    LOG(ERROR) << "received invalid message of type " << mtype;
+    const char* msg = "invalid message arguments";
+    return h::process_exn(fn, msg, std::move(req), ctx, eb, protoSeqId);
+  }
+  auto pfn = pmap.find(fname);
+  if (pfn == pmap.end()) {
+    auto protType = ProtocolReader::protocolType();
+    process_missing<ProtocolReader>(
+        proc, fname, std::move(req), std::move(buf), ctx, eb, tm, protoSeqId);
+    return;
+  }
+  (proc->*(pfn->second))(
+      std::move(req), std::move(buf), std::move(iprot), ctx, eb, tm);
+}
+
+//  Generated AsyncProcessor::process just calls this.
+template <class Processor>
+void process(
+    Processor* processor,
+    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<folly::IOBuf> buf,
+    protocol::PROTOCOL_TYPES protType,
+    Cpp2RequestContext* ctx,
+    async::TEventBase* eb,
+    concurrency::ThreadManager* tm) {
+  switch (protType) {
+    case protocol::T_BINARY_PROTOCOL: {
+      const auto& pmap = processor->getBinaryProtocolProcessMap();
+      return process_pmap(
+          processor, pmap, std::move(req), std::move(buf), ctx, eb, tm);
+    }
+    case protocol::T_COMPACT_PROTOCOL: {
+      const auto& pmap = processor->getCompactProtocolProcessMap();
+      return process_pmap(
+          processor, pmap, std::move(req), std::move(buf), ctx, eb, tm);
+    }
+    default:
+      LOG(ERROR) << "invalid protType: " << protType;
+      return;
+  }
+}
+
+//  Generated AsyncProcessor::getCacheKey just calls this.
+folly::Optional<std::string> get_cache_key(
+    const folly::IOBuf* buf,
+    const protocol::PROTOCOL_TYPES protType,
+    const std::unordered_map<std::string, int16_t>& cache_key_map);
+
+//  Generated AsyncProcessor::isOnewayMethod just calls this.
+bool is_oneway_method(
+    const folly::IOBuf* buf,
+    const transport::THeader* header,
+    const std::unordered_set<std::string>& oneways);
+
+}} // detail::ap
+
 //  ServerInterface helpers
 namespace detail { namespace si {
 

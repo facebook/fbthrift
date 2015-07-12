@@ -58,20 +58,30 @@ class MyNodeSvNull : public MyNodeSvIf, virtual public  ::cpp2::MyRootSvIf {
 class MyNodeAsyncProcessor : public  ::cpp2::MyRootAsyncProcessor {
  public:
   virtual const char* getServiceName();
+  using BaseAsyncProcessor =  ::cpp2::MyRootAsyncProcessor;
  protected:
   MyNodeSvIf* iface_;
   virtual folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType);
+ public:
   virtual void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+ protected:
   virtual bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header);
  private:
   static std::unordered_set<std::string> onewayMethods_;
   static std::unordered_map<std::string, int16_t> cacheKeyMap_;
-  using BinaryProtocolProcessFunction = void(MyNodeAsyncProcessor::*)(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::BinaryProtocolReader> iprot, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  using BinaryProtocolProcessMap = std::unordered_map<std::string, BinaryProtocolProcessFunction>;
+ public:
+  using BinaryProtocolProcessFunc = ProcessFunc<MyNodeAsyncProcessor, apache::thrift::BinaryProtocolReader>;
+  using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
+  static const MyNodeAsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
+ private:
   static MyNodeAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
-  using CompactProtocolProcessFunction = void(MyNodeAsyncProcessor::*)(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::CompactProtocolReader> iprot, apache::thrift::Cpp2RequestContext* context, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  using CompactProtocolProcessMap = std::unordered_map<std::string, CompactProtocolProcessFunction>;
+ public:
+  using CompactProtocolProcessFunc = ProcessFunc<MyNodeAsyncProcessor, apache::thrift::CompactProtocolReader>;
+  using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
+  static const MyNodeAsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
+ private:
   static MyNodeAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+ private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_do_mid(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, apache::thrift::async::TEventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
