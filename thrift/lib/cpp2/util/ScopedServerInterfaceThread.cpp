@@ -20,7 +20,8 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
 using namespace std;
-using folly::SocketAddress;
+using namespace folly;
+using namespace apache::thrift::concurrency;
 
 namespace apache { namespace thrift {
 
@@ -28,10 +29,14 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<ServerInterface> si,
     const string& host,
     uint16_t port) {
+  auto tm = ThreadManager::newSimpleThreadManager(1, 5, false, 50);
+  tm->threadFactory(make_shared<PosixThreadFactory>());
+  tm->start();
   auto ts = make_shared<ThriftServer>();
   ts->setAddress(host, port);
   ts->setInterface(move(si));
   ts->setNWorkerThreads(1);
+  ts->setThreadManager(tm);
   ts_ = move(ts);
   sst_.start(ts_);
 }
@@ -46,7 +51,7 @@ ThriftServer& ScopedServerInterfaceThread::getThriftServer() const {
   return *ts_;
 }
 
-const folly::SocketAddress& ScopedServerInterfaceThread::getAddress() const {
+const SocketAddress& ScopedServerInterfaceThread::getAddress() const {
   return *sst_.getAddress();
 }
 
