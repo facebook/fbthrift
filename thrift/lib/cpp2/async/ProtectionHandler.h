@@ -34,10 +34,7 @@ class ProtectionHandler : public folly::wangle::BytesToBytesHandler {
     WAITING,
   };
 
-  ProtectionHandler()
-    : protectionState_(ProtectionState::UNKNOWN)
-    , saslEndpoint_(nullptr)
-  {}
+  ProtectionHandler() {}
 
   void setProtectionState(ProtectionState protectionState,
                           SaslEndpoint* saslEndpoint = nullptr) {
@@ -79,9 +76,10 @@ class ProtectionHandler : public folly::wangle::BytesToBytesHandler {
   folly::Future<folly::Unit> close(Context* ctx) override;
 
  private:
-  ProtectionState protectionState_;
-  SaslEndpoint* saslEndpoint_;
+  ProtectionState protectionState_{ProtectionState::UNKNOWN};
+  SaslEndpoint* saslEndpoint_{nullptr};
   folly::IOBufQueue queue_{folly::IOBufQueue::cacheChainLength()};
+  bool allowFallback_{true};
 
   bool closing_{false};
 

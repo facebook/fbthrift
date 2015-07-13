@@ -49,13 +49,41 @@ void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
           break;
         }
 
-        // decrypt
-        std::unique_ptr<folly::IOBuf> unwrapped =
-          saslEndpoint_->unwrap(&inputQueue_, &remaining);
+        std::unique_ptr<folly::IOBuf> unwrapped;
+        // If this is the first message after protection state was set to valid,
+        // allow the ability to fall back to plaintext.
+        if (allowFallback_ && protectionState_ == ProtectionState::VALID) {
+          // Make sure we try the fallback only once
+          allowFallback_ = false;
+
+          // Make a copy of inputQueue_.
+          // If decryption fails, we try to read again without decrypting.
+          // The copy is necessary since decryption attempt modifies the queue.
+          folly::IOBufQueue inputQueueCopy;
+          auto copyBuf = inputQueue_.front()->clone();
+          copyBuf->unshare();
+          inputQueueCopy.append(std::move(copyBuf));
+
+          // decrypt inputQueue_
+          auto decryptEx = folly::try_and_catch<std::exception>([&]() {
+            unwrapped = saslEndpoint_->unwrap(&inputQueue_, &remaining);
+          });
+
+          if (decryptEx) {
+            // If decrypt fails, try reading again without decrypting. This
+            // allows a fallback to happen if the timeout happened in the last
+            // leg of the handshake.
+            inputQueue_ = std::move(inputQueueCopy);
+            ctx->fireRead(inputQueue_);
+            break;
+          }
+        } else {
+          unwrapped = saslEndpoint_->unwrap(&inputQueue_, &remaining);
+        }
+
         assert(bool(unwrapped) ^ (remaining > 0));   // 1 and only 1 should be true
         if (unwrapped) {
           queue_.append(std::move(unwrapped));
-
           ctx->fireRead(queue_);
         } else {
           break;

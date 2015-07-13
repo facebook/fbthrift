@@ -439,10 +439,10 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
       return nullptr;
     }
     // else, fall through to application message processing
-  } else if (getProtectionState() == ProtectionState::VALID ||
-      ((getProtectionState() == ProtectionState::INPROGRESS ||
-        getProtectionState() == ProtectionState::WAITING) &&
-          !isSupportedClient(ct))) {
+  } else if ((getProtectionState() == ProtectionState::VALID ||
+              getProtectionState() == ProtectionState::INPROGRESS ||
+              getProtectionState() == ProtectionState::WAITING) &&
+              !isSupportedClient(ct)) {
     // Either negotiation has completed or negotiation is incomplete,
     // non-sasl was received, but is not permitted.
     // We should fail hard in this case.
@@ -457,11 +457,14 @@ unique_ptr<IOBuf> HeaderServerChannel::handleSecurityMessage(
     // take.
     VLOG(5) << "non-SASL client connection received";
     setProtectionState(ProtectionState::NONE);
-  } else if ((getProtectionState() == ProtectionState::INPROGRESS ||
+  } else if ((getProtectionState() == ProtectionState::VALID ||
+              getProtectionState() == ProtectionState::INPROGRESS ||
               getProtectionState() == ProtectionState::WAITING) &&
               isSupportedClient(ct)) {
     // If a client  permits a non-secure connection, we allow falling back to
-    // one even if a SASL handshake is in progress.
+    // one even if a SASL handshake is in progress, or SASL handshake has been
+    // completed. The reason for latter is that we should allow a fallback if
+    // client timed out in the last leg of the handshake.
     VLOG(5) << "Client initiated a fallback during a SASL handshake";
     // Cancel any SASL-related state, and log
     setProtectionState(ProtectionState::NONE);
