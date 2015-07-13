@@ -1,13 +1,18 @@
 <?php
-// Copyright 2004-present Facebook. All Rights Reserved.
 
+/**
+* Copyright (c) 2006- Facebook
+* Distributed under the Thrift Software License
+*
+* See accompanying file LICENSE or visit the Thrift site at:
+* http://developers.facebook.com/thrift/
+*
+* @package thrift.transport
+*/
+
+require_once ($GLOBALS['HACKLIB_ROOT']);
 class TTransportFactory {
-  /**
-   * @static
-   * @param TTransport $transport
-   * @return TTransport
-   */
-  public static function getTransport(TTransport $transport) {
+  public function getTransport($transport) {
     return $transport;
   }
 }

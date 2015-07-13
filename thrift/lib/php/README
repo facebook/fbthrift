@@ -23,23 +23,29 @@ under the License.
 Using Thrift with PHP
 =====================
 
-Thrift requires PHP 5. Thrift makes as few assumptions about your PHP
-environment as possible while trying to make some more advanced PHP
-features (i.e. APC cacheing using asbolute path URLs) as simple as possible.
+The Thrift library for PHP requires PHP 5, with PHP 5.6+ recommended. It is a
+transpiled version of the Thrift library for Hack, and thus also requires the
+hacklib library distributed with HHVM.
 
 To use Thrift in your PHP codebase, take the following steps:
 
 #1) Copy all of thrift/lib/php/src into your PHP codebase
-#2) Set $GLOBALS['THRIFT_ROOT'] to the path you installed Thrift
-#3) include_once $GLOBALS['THRIFT_ROOT'].'/Thrift.php';
+#2) Copy the Hacklib library into your PHP codebase (see below)
+#3) Set $GLOBALS['THRIFT_ROOT'] to the path you installed Thrift
+#4) Set $GLOBALS['HACKLIB_ROOT'] to the path of hacklib.php
 
-Note that #3 must be done before including any other Thrift files.
-If you do not do #2, Thrift.php will set this global for you, but it will be
+If you do not do #3, Thrift.php will set this global for you, but it will be
 done using dirname(__FILE__), which is less efficient than providing the static
 string yourself.
 
-When you generate a Thrift package using the compiler, it makes an assumption
-about where your generated code will live. If your file is "MyPackage.thrift",
+This library is transpiled from Hack, and requires the hacklib library
+distributed with HHVM, found at
+
+https://github.com/facebook/hhvm/tree/master/hphp/hack/src/h2tp/resources
+
+When you generate a Thrift package using the compiler, by default it makes an
+assumption about where your generated code will live (autoloading is also
+supported via the "norequires" option). If your file is "MyPackage.thrift",
 the generated files must be installed into:
 
 $GLOBALS['THRIFT_ROOT'].'/packages/MyPackage/';
