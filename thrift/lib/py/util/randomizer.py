@@ -573,10 +573,10 @@ class StructRandomizer(BaseRandomizer):
 
         if self._is_union:
             if random.random() < p_include:
-                return {}
-            else:
                 fields_to_randomize = [random.choice(fields_to_randomize)]
                 p_include = 1.0
+            else:
+                return {}
 
         for field_name in fields_to_randomize:
             rule = self._field_rules[field_name]

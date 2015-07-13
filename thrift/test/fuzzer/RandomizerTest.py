@@ -353,6 +353,31 @@ class TestStructRandomizer(TestRandomizer):
             constraints
         )
 
+class TestUnionRandomizer(TestStructRandomizer, unittest.TestCase):
+    ttype = ttypes.IntUnion
+
+    def testAlwaysInclude(self):
+        cls = self.__class__
+        constraints = {'p_include': 1}
+
+        gen = self.struct_randomizer(constraints=constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.randomize()
+            # Check that field is nonzero, indicating a field is set
+            self.assertNotEqual(val.field, 0)
+
+    def testNeverInclude(self):
+        cls = self.__class__
+        constraints = {'p_include': 0}
+
+        gen = self.struct_randomizer(constraints=constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.randomize()
+            # Check that field is zero, indicating no fields are set
+            self.assertEqual(val.field, 0)
+
 class TestListStructRandomizer(TestStructRandomizer, unittest.TestCase):
     """
     Verify that this struct type is generated correctly

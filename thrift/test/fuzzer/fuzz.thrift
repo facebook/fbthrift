@@ -20,6 +20,11 @@ struct ListStruct {
   7: list<set<string>> g;
 }
 
+union IntUnion {
+  1: i32 a;
+  2: i32 b;
+}
+
 struct BTreeBranch {
   1: required BTree child;
   2: i16 cost;
