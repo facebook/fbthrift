@@ -728,14 +728,13 @@ class FuzzTester(object):
             if self.config.allow_application_exceptions:
                 if self.config.loglevel == "DEBUG":
                     with self.timer.time(method_name, "Logging"):
-                        logging.debug("Got TApplication exception %s (%r)" % (
-                            e, e))
+                        logging.debug("Got TApplication exception %s" % e)
                         logging.debug("Exception thrown by call: %s" % (
                             self._call_string(method_name, kwargs)))
             else:
                 with self.timer.time(method_name, "Logging"):
                     self.n_exceptions += 1
-                    logging.error("Got application exception: %r" % e)
+                    logging.error("Got application exception: %s" % e)
                     logging.error("Offending call: %s" % (
                         self._call_string(method_name, kwargs)))
 
