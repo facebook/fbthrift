@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <cassert>
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -706,10 +707,11 @@ void t_py_generator::init_generator() {
   // Make output directory
   string module = get_real_py_module(program_);
   package_dir_ = get_out_dir();
+  assert(package_dir_.back() == '/');
   while (true) {
     // TODO: Do better error checking here.
     MKDIR(package_dir_.c_str());
-    std::ofstream init_py((package_dir_+"/__init__.py").c_str());
+    std::ofstream init_py((package_dir_+"__init__.py").c_str());
     init_py << py_autogen_comment();
     init_py.close();
     if (module.empty()) {
@@ -717,26 +719,26 @@ void t_py_generator::init_generator() {
     }
     string::size_type pos = module.find('.');
     if (pos == string::npos) {
-      package_dir_ += "/";
       package_dir_ += module;
+      package_dir_ += "/";
       module.clear();
     } else {
-      package_dir_ += "/";
       package_dir_ += module.substr(0, pos);
+      package_dir_ += "/";
       module.erase(0, pos+1);
     }
   }
 
   // Make output file
-  string f_types_name = package_dir_+"/"+"ttypes.py";
+  string f_types_name = package_dir_+"ttypes.py";
   f_types_.open(f_types_name.c_str());
   record_genfile(f_types_name);
 
-  string f_consts_name = package_dir_+"/"+"constants.py";
+  string f_consts_name = package_dir_+"constants.py";
   f_consts_.open(f_consts_name.c_str());
   record_genfile(f_consts_name);
 
-  string f_init_name = package_dir_+"/__init__.py";
+  string f_init_name = package_dir_+"__init__.py";
   ofstream f_init;
   f_init.open(f_init_name.c_str());
   record_genfile(f_init_name);
@@ -1945,7 +1947,7 @@ void t_py_generator::generate_py_struct_writer(ofstream& out,
  * @param tservice The service definition
  */
 void t_py_generator::generate_service(t_service* tservice) {
-  string f_service_name = package_dir_+"/"+
+  string f_service_name = package_dir_+
     rename_reserved_keywords(service_name_)+".py";
   f_service_.open(f_service_name.c_str());
   record_genfile(f_service_name);
@@ -2462,7 +2464,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
  * @param tservice The service to generate a remote for.
  */
 void t_py_generator::generate_service_remote(t_service* tservice) {
-  string f_remote_name = package_dir_+"/"+service_name_+"-remote";
+  string f_remote_name = package_dir_+service_name_+"-remote";
   ofstream f_remote;
   f_remote.open(f_remote_name.c_str());
   record_genfile(f_remote_name);
@@ -2571,7 +2573,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
  * @param tservice The service to generate a fuzzer for.
  */
 void t_py_generator::generate_service_fuzzer(t_service* tservice) {
-  string f_fuzzer_name = package_dir_+"/"+service_name_+"-fuzzer";
+  string f_fuzzer_name = package_dir_+service_name_+"-fuzzer";
   ofstream f_fuzzer;
   f_fuzzer.open(f_fuzzer_name.c_str());
   record_genfile(f_fuzzer_name);
