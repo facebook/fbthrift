@@ -109,6 +109,38 @@ class TestIntRandomizer(TestRandomizer):
             val = gen.randomize()
             self.assertIn(val, choices)
 
+    def testRange(self):
+        cls = self.__class__
+        ttype = cls.ttype
+
+        range_ = [45, 55]
+
+        constraints = {'range': range_}
+
+        gen = self.get_randomizer(ttype, None, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.randomize()
+            self.assertGreaterEqual(val, range_[0])
+            self.assertLessEqual(val, range_[1])
+
+    def testRangeChoicePrecedence(self):
+        cls = self.__class__
+        ttype = cls.ttype
+
+        range_ = [45, 55]
+        choices = [11, 17, 19]
+
+        constraints = {
+            'range': range_,
+            'choices': choices
+        }
+
+        gen = self.get_randomizer(ttype, None, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.randomize()
+            self.assertIn(val, choices)
+
+
 class TestByteRandomizer(TestIntRandomizer, unittest.TestCase):
     ttype = Thrift.TType.BYTE
     n_bits = 8

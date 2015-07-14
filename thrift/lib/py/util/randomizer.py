@@ -222,10 +222,20 @@ def _integer_randomizer_factory(name, ttype, n_bits):
         name = _name
         ttype = _ttype
 
+        default_constraints = dict(ScalarTypeRandomizer.default_constraints)
+        default_constraints.update({
+            'range': []
+        })
+
         def randomize(self):
             val = super(NBitIntegerRandomizer, self).randomize()
             if val is not None:
                 return val
+
+            range_ = self.constraints['range']
+            if range_:
+                min_, max_ = range_
+                return random.randint(min_, max_)
 
             return _random_i32()
 
