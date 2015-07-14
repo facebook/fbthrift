@@ -132,35 +132,6 @@ TEST(ThriftServer, SecureAsyncCpp2Test) {
   AsyncCpp2Test(true);
 }
 
-TEST(ThriftServer, SyncClientTest) {
-  apache::thrift::TestThriftServerFactory<TestInterface> factory;
-  ScopedServerThread sst(factory.create());
-  TEventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
-
-  TestServiceAsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
-
-  boost::polymorphic_downcast<HeaderClientChannel*>(
-    client.getChannel())->setTimeout(10000);
-  std::string response;
-  client.sync_sendResponse(response, 64);
-  EXPECT_EQ(response, "test64");
-  RpcOptions options;
-  options.setTimeout(std::chrono::milliseconds(1));
-  try {
-    // should timeout
-    client.sync_sendResponse(options, response, 10000);
-  } catch (const TTransportException& e) {
-    EXPECT_EQ(int(TTransportException::TIMED_OUT), int(e.getType()));
-    return;
-  }
-  ADD_FAILURE();
-}
-
 TEST(ThriftServer, GetLoadTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   auto serv = factory.create();

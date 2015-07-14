@@ -20,9 +20,22 @@
 #include <gtest/gtest.h>
 
 using namespace std;
+using namespace std::chrono;
 using namespace folly;
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
+using namespace apache::thrift::transport;
+
+namespace {
+
+//  Until we can use move captures....
+template <class T, class F>
+void eb_delay(EventBase* eb, milliseconds delay, unique_ptr<T> x, F&& f) {
+  auto xm = makeMoveWrapper(x);
+  eb->runAfterDelay([=]() mutable { f(xm.move()); }, delay.count());
+}
+
+}
 
 class ThriftClientTest : public testing::Test {};
 
@@ -62,4 +75,52 @@ TEST_F(ThriftClientTest, FutureCapturesChannelOneway) {
   auto ret = fut.waitVia(&eb).getTry();
 
   EXPECT_TRUE(ret.hasValue());
+}
+
+TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
+  class DelayHandler : public TestServiceSvIf {
+  public:
+    DelayHandler(milliseconds delay) : delay_(delay) {}
+    void async_eb_eventBaseAsync(
+        unique_ptr<HandlerCallback<unique_ptr<string>>> cb) override {
+      auto eb = cb->getEventBase();
+      eb_delay(eb, delay_, move(cb), [](decltype(cb) cb) {
+          cb->result("hello world");
+      });
+    }
+  private:
+    milliseconds delay_;
+  };
+
+  //  rpcTimeout << handlerDelay << channelTimeout.
+  constexpr auto handlerDelay = milliseconds(10);
+  constexpr auto channelTimeout = duration_cast<milliseconds>(seconds(10));
+  constexpr auto rpcTimeout = milliseconds(1);
+
+  //  Handler has medium 10ms delay.
+  auto handler = make_shared<DelayHandler>(handlerDelay);
+  ScopedServerInterfaceThread runner(handler);
+
+  EventBase eb;
+  auto client = runner.newClient<TestServiceAsyncClient>(&eb);
+  auto channel = dynamic_cast<HeaderClientChannel*>(client->getChannel());
+  ASSERT_NE(nullptr, channel);
+  channel->setTimeout(channelTimeout.count());
+
+  auto start = steady_clock::now();
+  try {
+    RpcOptions options;
+    options.setTimeout(rpcTimeout);
+    std::string response;
+    client->sync_eventBaseAsync(options, response);
+    ADD_FAILURE() << "should have timed out";
+  } catch (const TTransportException& e) {
+    auto expected = TTransportException::TIMED_OUT;
+    EXPECT_EQ(expected, e.getType());
+  }
+
+  auto dur = steady_clock::now() - start;
+  EXPECT_EQ(channelTimeout.count(), channel->getTimeout());
+  EXPECT_GE(dur, rpcTimeout);
+  EXPECT_LT(dur, channelTimeout);
 }
