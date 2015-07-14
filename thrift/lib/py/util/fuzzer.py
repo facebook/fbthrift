@@ -472,6 +472,8 @@ class Service(object):
             thrift_exceptions = []
             if result is not None:
                 for res_spec in result.thrift_spec:
+                    if res_spec is None:
+                        continue
                     if res_spec[2] != 'success':
                         # This is an exception return type
                         spec_args = res_spec[3]
