@@ -220,7 +220,7 @@ void ThriftServer::setup() {
   // Initialize event base for this thread, ensure event_init() is called
   serveEventBase_ = eventBaseManager_->getEventBase();
   // Print some libevent stats
-  LOG(INFO) << "libevent " <<
+  VLOG(1) << "libevent " <<
     TEventBase::getLibeventVersion() << " method " <<
     TEventBase::getLibeventMethod();
 
