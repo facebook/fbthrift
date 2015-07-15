@@ -449,18 +449,29 @@ void t_java_generator::generate_enum(t_enum* tenum) {
   f_enum << " );" << endl << endl;
   indent_down();
 
-  indent(f_enum) <<
-    "@SuppressWarnings(\"serial\")" << endl <<
-    "public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>() {{" << endl;
+  bool skip_name_map =
+    // Some enums are really, really huge, with enough values that the code to
+    // build VALUES_TO_NAMES (the constructor for the anonymous HashMap
+    // subclass) is too big to fit in a single method, which causes javac
+    // errors. We provide an option to skip the VALUES_TO_NAMES map for such
+    // enums. A better long-term solution would be to split the constructor
+    // into multiple methods; a better still long-term solution would be to
+    // build the map with reflection.
+    tenum->annotations_.find("skip_java_name_map") != tenum->annotations_.end();
 
-  indent_up();
-  for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
-    indent(f_enum) << "put(" << (*c_iter)->get_name() << ", \"" << (*c_iter)->get_name() <<"\");" << endl;
+  if (!skip_name_map) {
+    indent(f_enum) <<
+      "@SuppressWarnings(\"serial\")" << endl <<
+      "public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>() {{" << endl;
+
+    indent_up();
+    for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
+      indent(f_enum) << "put(" << (*c_iter)->get_name() << ", \"" << (*c_iter)->get_name() <<"\");" << endl;
+    }
+    indent_down();
+
+    indent(f_enum) << "}};" << endl;
   }
-  indent_down();
-
-
-  indent(f_enum) << "}};" << endl;
 
   scope_down(f_enum);
 
