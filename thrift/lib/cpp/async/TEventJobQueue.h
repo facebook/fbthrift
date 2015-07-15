@@ -88,9 +88,7 @@ class TEventJobQueue {
       public TNotificationQueue<TEventRunnable*>::Consumer {
 
   public:
-    explicit JobThread(TEventJobQueue *parent) :
-        parent_(parent) {
-    }
+    explicit JobThread(TEventJobQueue *parent) {}
     ~JobThread() override {}
 
     TEventBase *getEventBase() { return &eventBase_; }
@@ -136,7 +134,6 @@ class TEventJobQueue {
     }
 
    private:
-    TEventJobQueue *parent_;
     TEventBase eventBase_;
     std::shared_ptr<apache::thrift::concurrency::Thread> thread_;
     TNotificationQueue<TEventRunnable*> jobQueue_;

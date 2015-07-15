@@ -63,14 +63,15 @@ std::shared_ptr<StreamingServiceAsyncClient> getClient(folly::EventBase& eb) {
   return client;
 }
 
+static constexpr size_t kCount = 5;
+
 TEST(Streaming, Callback) {
   folly::EventBase eb;
   auto client = getClient(eb);
-  const int COUNT = 5;
 
   int n = 0;
   client->streamingMethod([&n](ClientReceiveState&& state) mutable {
-      if (n < COUNT) {
+      if (n < kCount) {
         EXPECT_FALSE(state.isStreamEnd());
       } else {
         EXPECT_TRUE(state.isStreamEnd());
@@ -83,23 +84,22 @@ TEST(Streaming, Callback) {
       }
       EXPECT_EQ(x, n);
       n++;
-  }, COUNT);
+  }, kCount);
 
   eb.loop();
-  EXPECT_EQ(n, COUNT);
+  EXPECT_EQ(n, kCount);
 }
 
 TEST(Streaming, Observable) {
   folly::EventBase eb;
   auto client = getClient(eb);
-  const int COUNT = 5;
 
   int n = 0;
-  ObservablePtr<int> s = client->observable_streamingMethod(COUNT);
+  ObservablePtr<int> s = client->observable_streamingMethod(kCount);
   s->observe(Observer<int>::create(
       [&n](int x) mutable {
         // onNext
-        EXPECT_LT(n, COUNT);
+        EXPECT_LT(n, kCount);
         EXPECT_EQ(x, n);
         n++;
       },
@@ -109,26 +109,25 @@ TEST(Streaming, Observable) {
       },
       [&n]() {
         // onCompleted
-        EXPECT_EQ(n, COUNT);
+        EXPECT_EQ(n, kCount);
       }
   ));
 
   eb.loop();
-  EXPECT_EQ(n, COUNT);
+  EXPECT_EQ(n, kCount);
 }
 
 TEST(Streaming, Exception) {
   folly::EventBase eb;
   auto client = getClient(eb);
-  const int COUNT = 5;
 
   int n = 0;
   bool error = false;
-  ObservablePtr<int> s = client->observable_streamingException(COUNT);
+  ObservablePtr<int> s = client->observable_streamingException(kCount);
   s->observe(Observer<int>::create(
       [&n](int x) mutable {
         // onNext
-        EXPECT_LT(n, COUNT);
+        EXPECT_LT(n, kCount);
         EXPECT_EQ(x, n);
         n++;
       },
@@ -144,24 +143,23 @@ TEST(Streaming, Exception) {
   ));
 
   eb.loop();
-  EXPECT_EQ(n, COUNT);
+  EXPECT_EQ(n, kCount);
   EXPECT_TRUE(error);
 }
 
 TEST(Streaming, GlobalTimeout) {
   folly::EventBase eb;
   auto client = getClient(eb);
-  const int COUNT = 5;
 
   int n = 0;
   bool error = false;
   ObservablePtr<int> s = client->observable_streamingMethod(
       RpcOptions().setTimeout(std::chrono::milliseconds(10)),
-      COUNT);
+      kCount);
   s->observe(Observer<int>::create(
       [&n](int x) mutable {
         // onNext
-        EXPECT_LT(n, COUNT);
+        EXPECT_LT(n, kCount);
         EXPECT_EQ(x, n);
         n++;
       },
@@ -179,24 +177,23 @@ TEST(Streaming, GlobalTimeout) {
   ));
 
   eb.loop();
-  EXPECT_LT(n, COUNT);
+  EXPECT_LT(n, kCount);
   EXPECT_TRUE(error);
 }
 
 TEST(Streaming, ChunkTimeout) {
   folly::EventBase eb;
   auto client = getClient(eb);
-  const int COUNT = 5;
 
   int n = 0;
   bool error = false;
   ObservablePtr<int> s = client->observable_streamingMethod(
       RpcOptions().setChunkTimeout(std::chrono::milliseconds(5)),
-      COUNT);
+      kCount);
   s->observe(Observer<int>::create(
       [&n](int x) mutable {
         // onNext
-        EXPECT_LT(n, COUNT);
+        EXPECT_LT(n, kCount);
         EXPECT_EQ(x, n);
         n++;
       },
@@ -214,7 +211,7 @@ TEST(Streaming, ChunkTimeout) {
   ));
 
   eb.loop();
-  EXPECT_LT(n, COUNT);
+  EXPECT_LT(n, kCount);
   EXPECT_TRUE(error);
   // n should have been incremented at least once because the delay on
   // the initial chunks is smaller

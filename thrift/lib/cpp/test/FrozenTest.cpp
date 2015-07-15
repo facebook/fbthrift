@@ -99,7 +99,7 @@ TEST(Frozen, Basic) {
     EXPECT_EQ(frozen.projects.count("alpha"), 1);
     EXPECT_EQ(frozen.projects.count("beta"), 1);
 
-    EXPECT_THROW(frozen.peopleById.at(hasher(50)).name, std::out_of_range);
+    EXPECT_THROW(frozen.peopleById.at(hasher(50)), std::out_of_range);
   }
 }
 

@@ -143,7 +143,6 @@ class CtxClient : public Runnable {
   }
 
  private:
-  int64_t duration_;
   uint64_t numIterations_;
   const vector<folly::SocketAddress>* addresses_;
   ErrorVector errors_;

@@ -268,7 +268,6 @@ class ChunkSender : private TAsyncTransport::WriteCallback,
     , scheduleIndex_(0)
     , currentChunkLen_(0)
     , error_(false)
-    , eventBase_(evb)
     , socket_(socket)
     , message_(msg)
     , schedule_(schedule) {
@@ -357,7 +356,6 @@ class ChunkSender : private TAsyncTransport::WriteCallback,
   uint32_t scheduleIndex_;
   uint32_t currentChunkLen_;
   bool error_;
-  TEventBase* eventBase_;
   TAsyncSocket* socket_;
   const Message* message_;
   ChunkSchedule schedule_;
@@ -397,7 +395,6 @@ class MultiMessageSenderReceiver : private TAsyncTransport::WriteCallback,
     : TAsyncTimeout(evb)
     , writeError_(false)
     , readError_(false)
-    , eventBase_(evb)
     , socket_(socket)
     , queued_(queued)
     , delayMS_(delayMS) {
@@ -508,7 +505,6 @@ class MultiMessageSenderReceiver : private TAsyncTransport::WriteCallback,
 
   bool writeError_;
   bool readError_;
-  TEventBase* eventBase_;
   TAsyncSocket* socket_;
   vector<Message> writeMessages_;
   vector<std::shared_ptr<TMemoryBuffer> > readBuffers_;
