@@ -6,7 +6,53 @@
  *  @generated
  */
 
-interface MyServiceIf {
+interface MyServiceAsyncIf extends IThriftAsyncIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   ping();
+   */
+  public function ping(): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   getRandomData();
+   */
+  public function getRandomData(): Awaitable<string>;
+
+  /**
+   * Original thrift definition:-
+   * bool
+   *   hasDataById(1: i64 id);
+   */
+  public function hasDataById(int $id): Awaitable<bool>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   getDataById(1: i64 id);
+   */
+  public function getDataById(int $id): Awaitable<string>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function putDataById(int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * oneway void
+   *   lobDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function lobDataById(int $id, string $data): Awaitable<void>;
+}
+
+interface MyServiceIf extends IThriftSyncIf {
   /**
    * Original thrift definition:-
    * void
@@ -52,74 +98,11 @@ interface MyServiceIf {
   public function lobDataById(int $id, string $data): void;
 }
 
-<<__ConsistentConstruct>>
-class MyServiceClient implements MyServiceIf, IThriftClient {
-  protected TProtocol $input_;
-  protected TProtocol $output_;
-  protected TClientAsyncHandler $asyncHandler_;
-  protected TClientEventHandler $eventHandler_;
+trait MyServiceClientBase {
+  require extends ThriftClientBase;
 
-  protected int $seqid_ = 0;
-
-  final public static function factory(): (string, (function (TProtocol, ?TProtocol): this)) {
-    return tuple(get_called_class(), function(TProtocol $input, ?TProtocol $output) {
-      return new static($input, $output);
-    });
-  }
-
-  public function __construct(TProtocol $input, ?TProtocol $output = null) {
-    $this->input_ = $input;
-    $this->output_ = $output ?: $input;
-    $this->asyncHandler_ = new TClientAsyncHandler();
-    $this->eventHandler_ = new TClientEventHandler();
-  }
-
-  public function setEventHandler(TClientEventHandler $event_handler): this {
-    $this->eventHandler_ = $event_handler;
-    return $this;
-  }
-
-  public function getEventHandler(): TClientEventHandler {
-    return $this->eventHandler_;
-  }
-
-  public function setAsyncHandler(TClientAsyncHandler $async_handler): this {
-    $this->asyncHandler_ = $async_handler;
-    return $this;
-  }
-
-  public function getAsyncHandler(): TClientAsyncHandler {
-    return $this->asyncHandler_;
-  }
-
-  private function getsequenceid(): int {
-    $currentseqid = $this->seqid_;
-    if ($this->seqid_ >= 0x7fffffff) {
-       $this->seqid_ = 0;
-    } else {
-       $this->seqid_++;
-    }
-    return $currentseqid;
-  }
-
-  /**
-   * Original thrift definition:-
-   * void
-   *   ping();
-   */
-  public function ping(): void {
-    $currentseqid = $this->send_ping();
-    $this->recv_ping($currentseqid);
-  }
-
-  public async function gen_ping(): Awaitable<void> {
-    $currentseqid = $this->send_ping();
-    await $this->asyncHandler_->genWait($currentseqid);
-    $this->recv_ping($currentseqid);
-  }
-
-  public function send_ping(): int {
-    $currentseqid = $this->getsequenceid();
+  protected function sendImpl_ping(): int {
+    $currentseqid = $this->getNextSequenceID();
     $args = new MyService_ping_args();
     try {
       $this->eventHandler_->preSend('ping', $args, $currentseqid);
@@ -157,7 +140,7 @@ class MyServiceClient implements MyServiceIf, IThriftClient {
     return $currentseqid;
   }
 
-  public function recv_ping(?int $expectedsequenceid = null): void {
+  protected function recvImpl_ping(?int $expectedsequenceid = null): void {
     try {
       $this->eventHandler_->preRecv('ping', $expectedsequenceid);
       if ($this->input_ instanceof TBinaryProtocolAccelerated) {
@@ -207,24 +190,8 @@ class MyServiceClient implements MyServiceIf, IThriftClient {
 return;
   }
 
-  /**
-   * Original thrift definition:-
-   * string
-   *   getRandomData();
-   */
-  public function getRandomData(): string {
-    $currentseqid = $this->send_getRandomData();
-    return $this->recv_getRandomData($currentseqid);
-  }
-
-  public async function gen_getRandomData(): Awaitable<string> {
-    $currentseqid = $this->send_getRandomData();
-    await $this->asyncHandler_->genWait($currentseqid);
-    return $this->recv_getRandomData($currentseqid);
-  }
-
-  public function send_getRandomData(): int {
-    $currentseqid = $this->getsequenceid();
+  protected function sendImpl_getRandomData(): int {
+    $currentseqid = $this->getNextSequenceID();
     $args = new MyService_getRandomData_args();
     try {
       $this->eventHandler_->preSend('getRandomData', $args, $currentseqid);
@@ -262,7 +229,7 @@ return;
     return $currentseqid;
   }
 
-  public function recv_getRandomData(?int $expectedsequenceid = null): string {
+  protected function recvImpl_getRandomData(?int $expectedsequenceid = null): string {
     try {
       $this->eventHandler_->preRecv('getRandomData', $expectedsequenceid);
       if ($this->input_ instanceof TBinaryProtocolAccelerated) {
@@ -318,24 +285,8 @@ return;
     throw $x;
   }
 
-  /**
-   * Original thrift definition:-
-   * bool
-   *   hasDataById(1: i64 id);
-   */
-  public function hasDataById(int $id): bool {
-    $currentseqid = $this->send_hasDataById($id);
-    return $this->recv_hasDataById($currentseqid);
-  }
-
-  public async function gen_hasDataById(int $id): Awaitable<bool> {
-    $currentseqid = $this->send_hasDataById($id);
-    await $this->asyncHandler_->genWait($currentseqid);
-    return $this->recv_hasDataById($currentseqid);
-  }
-
-  public function send_hasDataById(int $id): int {
-    $currentseqid = $this->getsequenceid();
+  protected function sendImpl_hasDataById(int $id): int {
+    $currentseqid = $this->getNextSequenceID();
     $args = new MyService_hasDataById_args();
     $args->id = $id;
     try {
@@ -374,7 +325,7 @@ return;
     return $currentseqid;
   }
 
-  public function recv_hasDataById(?int $expectedsequenceid = null): bool {
+  protected function recvImpl_hasDataById(?int $expectedsequenceid = null): bool {
     try {
       $this->eventHandler_->preRecv('hasDataById', $expectedsequenceid);
       if ($this->input_ instanceof TBinaryProtocolAccelerated) {
@@ -430,24 +381,8 @@ return;
     throw $x;
   }
 
-  /**
-   * Original thrift definition:-
-   * string
-   *   getDataById(1: i64 id);
-   */
-  public function getDataById(int $id): string {
-    $currentseqid = $this->send_getDataById($id);
-    return $this->recv_getDataById($currentseqid);
-  }
-
-  public async function gen_getDataById(int $id): Awaitable<string> {
-    $currentseqid = $this->send_getDataById($id);
-    await $this->asyncHandler_->genWait($currentseqid);
-    return $this->recv_getDataById($currentseqid);
-  }
-
-  public function send_getDataById(int $id): int {
-    $currentseqid = $this->getsequenceid();
+  protected function sendImpl_getDataById(int $id): int {
+    $currentseqid = $this->getNextSequenceID();
     $args = new MyService_getDataById_args();
     $args->id = $id;
     try {
@@ -486,7 +421,7 @@ return;
     return $currentseqid;
   }
 
-  public function recv_getDataById(?int $expectedsequenceid = null): string {
+  protected function recvImpl_getDataById(?int $expectedsequenceid = null): string {
     try {
       $this->eventHandler_->preRecv('getDataById', $expectedsequenceid);
       if ($this->input_ instanceof TBinaryProtocolAccelerated) {
@@ -542,25 +477,8 @@ return;
     throw $x;
   }
 
-  /**
-   * Original thrift definition:-
-   * void
-   *   putDataById(1: i64 id,
-   *               2: string data);
-   */
-  public function putDataById(int $id, string $data): void {
-    $currentseqid = $this->send_putDataById($id, $data);
-    $this->recv_putDataById($currentseqid);
-  }
-
-  public async function gen_putDataById(int $id, string $data): Awaitable<void> {
-    $currentseqid = $this->send_putDataById($id, $data);
-    await $this->asyncHandler_->genWait($currentseqid);
-    $this->recv_putDataById($currentseqid);
-  }
-
-  public function send_putDataById(int $id, string $data): int {
-    $currentseqid = $this->getsequenceid();
+  protected function sendImpl_putDataById(int $id, string $data): int {
+    $currentseqid = $this->getNextSequenceID();
     $args = new MyService_putDataById_args();
     $args->id = $id;
     $args->data = $data;
@@ -600,7 +518,7 @@ return;
     return $currentseqid;
   }
 
-  public function recv_putDataById(?int $expectedsequenceid = null): void {
+  protected function recvImpl_putDataById(?int $expectedsequenceid = null): void {
     try {
       $this->eventHandler_->preRecv('putDataById', $expectedsequenceid);
       if ($this->input_ instanceof TBinaryProtocolAccelerated) {
@@ -650,22 +568,8 @@ return;
 return;
   }
 
-  /**
-   * Original thrift definition:-
-   * oneway void
-   *   lobDataById(1: i64 id,
-   *               2: string data);
-   */
-  public function lobDataById(int $id, string $data): void {
-    $currentseqid = $this->send_lobDataById($id, $data);
-  }
-
-  public async function gen_lobDataById(int $id, string $data): Awaitable<void> {
-    $currentseqid = $this->send_lobDataById($id, $data);
-  }
-
-  public function send_lobDataById(int $id, string $data): int {
-    $currentseqid = $this->getsequenceid();
+  protected function sendImpl_lobDataById(int $id, string $data): int {
+    $currentseqid = $this->getNextSequenceID();
     $args = new MyService_lobDataById_args();
     $args->id = $id;
     $args->data = $data;
@@ -704,56 +608,463 @@ return;
     $this->eventHandler_->postSend('lobDataById', $args, $currentseqid);
     return $currentseqid;
   }
+
 }
 
-class MyServiceProcessor implements IThriftProcessor {
-  protected TProcessorEventHandler $eventHandler_;
+class MyServiceAsyncClient extends ThriftClientBase implements MyServiceAsyncIf {
+  use MyServiceClientBase;
 
-  // This exists so subclasses still using php can still access the handler
-  // Once the migration to hack is complete, this field can be removed safely
-  protected $handler_;
-
-  private MyServiceIf $_handler;
-  public function __construct(MyServiceIf $handler) {
-    $this->eventHandler_ = new TProcessorEventHandler();
-    $this->handler_ = $handler;
-    $this->_handler = $handler;
+  /**
+   * Original thrift definition:-
+   * void
+   *   ping();
+   */
+  public async function ping(): Awaitable<void> {
+    $currentseqid = $this->sendImpl_ping();
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_ping($currentseqid);
   }
 
-  public function setEventHandler(TProcessorEventHandler $event_handler): this {
-    $this->eventHandler_ = $event_handler;
-    return $this;
+  /**
+   * Original thrift definition:-
+   * string
+   *   getRandomData();
+   */
+  public async function getRandomData(): Awaitable<string> {
+    $currentseqid = $this->sendImpl_getRandomData();
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_getRandomData($currentseqid);
   }
 
-  public function getEventHandler(): TProcessorEventHandler {
-    return $this->eventHandler_;
+  /**
+   * Original thrift definition:-
+   * bool
+   *   hasDataById(1: i64 id);
+   */
+  public async function hasDataById(int $id): Awaitable<bool> {
+    $currentseqid = $this->sendImpl_hasDataById($id);
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_hasDataById($currentseqid);
   }
 
-  public function process(TProtocol $input, TProtocol $output): bool {
-    $rseqid = 0;
-    $fname = '';
-    $mtype = 0;
+  /**
+   * Original thrift definition:-
+   * string
+   *   getDataById(1: i64 id);
+   */
+  public async function getDataById(int $id): Awaitable<string> {
+    $currentseqid = $this->sendImpl_getDataById($id);
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_getDataById($currentseqid);
+  }
 
-    $input->readMessageBegin($fname, $mtype, $rseqid);
-    $methodname = 'process_'.$fname;
-    if (!method_exists($this, $methodname)) {
-      $handler_ctx = $this->eventHandler_->getHandlerContext($methodname);
-      $this->eventHandler_->preRead($handler_ctx, $methodname, array());
-      $input->skip(TType::STRUCT);
-      $input->readMessageEnd();
-      $this->eventHandler_->postRead($handler_ctx, $methodname, array());
-      $x = new TApplicationException('Function '.$fname.' not implemented.', TApplicationException::UNKNOWN_METHOD);
-      $this->eventHandler_->handlerError($handler_ctx, $methodname, $x);
-      $output->writeMessageBegin($fname, TMessageType::EXCEPTION, $rseqid);
-      $x->write($output);
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public async function putDataById(int $id, string $data): Awaitable<void> {
+    $currentseqid = $this->sendImpl_putDataById($id, $data);
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_putDataById($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * oneway void
+   *   lobDataById(1: i64 id,
+   *               2: string data);
+   */
+  public async function lobDataById(int $id, string $data): Awaitable<void> {
+    $currentseqid = $this->sendImpl_lobDataById($id, $data);
+  }
+
+}
+
+class MyServiceClient extends ThriftClientBase implements MyServiceIf {
+  use MyServiceClientBase;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   ping();
+   */
+  public function ping(): void {
+    $currentseqid = $this->sendImpl_ping();
+    $this->recvImpl_ping($currentseqid);
+  }
+
+  public async function gen_ping(): Awaitable<void> {
+    $currentseqid = $this->sendImpl_ping();
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_ping($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   getRandomData();
+   */
+  public function getRandomData(): string {
+    $currentseqid = $this->sendImpl_getRandomData();
+    return $this->recvImpl_getRandomData($currentseqid);
+  }
+
+  public async function gen_getRandomData(): Awaitable<string> {
+    $currentseqid = $this->sendImpl_getRandomData();
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_getRandomData($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * bool
+   *   hasDataById(1: i64 id);
+   */
+  public function hasDataById(int $id): bool {
+    $currentseqid = $this->sendImpl_hasDataById($id);
+    return $this->recvImpl_hasDataById($currentseqid);
+  }
+
+  public async function gen_hasDataById(int $id): Awaitable<bool> {
+    $currentseqid = $this->sendImpl_hasDataById($id);
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_hasDataById($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   getDataById(1: i64 id);
+   */
+  public function getDataById(int $id): string {
+    $currentseqid = $this->sendImpl_getDataById($id);
+    return $this->recvImpl_getDataById($currentseqid);
+  }
+
+  public async function gen_getDataById(int $id): Awaitable<string> {
+    $currentseqid = $this->sendImpl_getDataById($id);
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_getDataById($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function putDataById(int $id, string $data): void {
+    $currentseqid = $this->sendImpl_putDataById($id, $data);
+    $this->recvImpl_putDataById($currentseqid);
+  }
+
+  public async function gen_putDataById(int $id, string $data): Awaitable<void> {
+    $currentseqid = $this->sendImpl_putDataById($id, $data);
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_putDataById($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * oneway void
+   *   lobDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function lobDataById(int $id, string $data): void {
+    $currentseqid = $this->sendImpl_lobDataById($id, $data);
+  }
+
+  public async function gen_lobDataById(int $id, string $data): Awaitable<void> {
+    $currentseqid = $this->sendImpl_lobDataById($id, $data);
+  }
+
+  /* send and recv functions */
+  public function send_ping(): int {
+    return $this->sendImpl_ping();
+  }
+  public function recv_ping(?int $expectedsequenceid = null): void {
+    $this->recvImpl_ping($expectedsequenceid);
+  }
+  public function send_getRandomData(): int {
+    return $this->sendImpl_getRandomData();
+  }
+  public function recv_getRandomData(?int $expectedsequenceid = null): string {
+    return $this->recvImpl_getRandomData($expectedsequenceid);
+  }
+  public function send_hasDataById(int $id): int {
+    return $this->sendImpl_hasDataById($id);
+  }
+  public function recv_hasDataById(?int $expectedsequenceid = null): bool {
+    return $this->recvImpl_hasDataById($expectedsequenceid);
+  }
+  public function send_getDataById(int $id): int {
+    return $this->sendImpl_getDataById($id);
+  }
+  public function recv_getDataById(?int $expectedsequenceid = null): string {
+    return $this->recvImpl_getDataById($expectedsequenceid);
+  }
+  public function send_putDataById(int $id, string $data): int {
+    return $this->sendImpl_putDataById($id, $data);
+  }
+  public function recv_putDataById(?int $expectedsequenceid = null): void {
+    $this->recvImpl_putDataById($expectedsequenceid);
+  }
+  public function send_lobDataById(int $id, string $data): int {
+    return $this->sendImpl_lobDataById($id, $data);
+  }
+}
+
+class MyServiceAsyncProcessor<T as MyServiceAsyncIf> extends ThriftAsyncProcessor<T> {
+  protected async function process_ping(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
+    $reply_type = TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'ping', array());
+
+    if ($input instanceof TBinaryProtocolAccelerated) {
+      $args = thrift_protocol_read_binary_struct($input, 'MyService_ping_args');
+    } else if ($input instanceof TCompactProtocolAccelerated) {
+      $args = thrift_protocol_read_compact_struct($input, 'MyService_ping_args');
+    } else {
+      $args = new MyService_ping_args();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
+    $result = new MyService_ping_result();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
+      await $this->handler->ping();
+      $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
+    } catch (Exception $ex) {
+      $reply_type = TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'ping', $ex);
+      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'ping', $result);
+    if ($output instanceof TBinaryProtocolAccelerated)
+    {
+      thrift_protocol_write_binary($output, 'ping', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output instanceof TCompactProtocolAccelerated)
+    {
+      thrift_protocol_write_compact($output, 'ping', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("ping", $reply_type, $seqid);
+      $result->write($output);
       $output->writeMessageEnd();
       $output->getTransport()->flush();
-      return true;
     }
-    $this->$methodname($rseqid, $input, $output);
-    return true;
+    $this->eventHandler_->postWrite($handler_ctx, 'ping', $result);
   }
+  protected async function process_getRandomData(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('getRandomData');
+    $reply_type = TMessageType::REPLY;
 
+    $this->eventHandler_->preRead($handler_ctx, 'getRandomData', array());
+
+    if ($input instanceof TBinaryProtocolAccelerated) {
+      $args = thrift_protocol_read_binary_struct($input, 'MyService_getRandomData_args');
+    } else if ($input instanceof TCompactProtocolAccelerated) {
+      $args = thrift_protocol_read_compact_struct($input, 'MyService_getRandomData_args');
+    } else {
+      $args = new MyService_getRandomData_args();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'getRandomData', $args);
+    $result = new MyService_getRandomData_result();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'getRandomData', $args);
+      $result->success = await $this->handler->getRandomData();
+      $this->eventHandler_->postExec($handler_ctx, 'getRandomData', $result);
+    } catch (Exception $ex) {
+      $reply_type = TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'getRandomData', $ex);
+      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'getRandomData', $result);
+    if ($output instanceof TBinaryProtocolAccelerated)
+    {
+      thrift_protocol_write_binary($output, 'getRandomData', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output instanceof TCompactProtocolAccelerated)
+    {
+      thrift_protocol_write_compact($output, 'getRandomData', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("getRandomData", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'getRandomData', $result);
+  }
+  protected async function process_hasDataById(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('hasDataById');
+    $reply_type = TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'hasDataById', array());
+
+    if ($input instanceof TBinaryProtocolAccelerated) {
+      $args = thrift_protocol_read_binary_struct($input, 'MyService_hasDataById_args');
+    } else if ($input instanceof TCompactProtocolAccelerated) {
+      $args = thrift_protocol_read_compact_struct($input, 'MyService_hasDataById_args');
+    } else {
+      $args = new MyService_hasDataById_args();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'hasDataById', $args);
+    $result = new MyService_hasDataById_result();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'hasDataById', $args);
+      $result->success = await $this->handler->hasDataById($args->id);
+      $this->eventHandler_->postExec($handler_ctx, 'hasDataById', $result);
+    } catch (Exception $ex) {
+      $reply_type = TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'hasDataById', $ex);
+      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'hasDataById', $result);
+    if ($output instanceof TBinaryProtocolAccelerated)
+    {
+      thrift_protocol_write_binary($output, 'hasDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output instanceof TCompactProtocolAccelerated)
+    {
+      thrift_protocol_write_compact($output, 'hasDataById', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("hasDataById", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'hasDataById', $result);
+  }
+  protected async function process_getDataById(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('getDataById');
+    $reply_type = TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'getDataById', array());
+
+    if ($input instanceof TBinaryProtocolAccelerated) {
+      $args = thrift_protocol_read_binary_struct($input, 'MyService_getDataById_args');
+    } else if ($input instanceof TCompactProtocolAccelerated) {
+      $args = thrift_protocol_read_compact_struct($input, 'MyService_getDataById_args');
+    } else {
+      $args = new MyService_getDataById_args();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'getDataById', $args);
+    $result = new MyService_getDataById_result();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'getDataById', $args);
+      $result->success = await $this->handler->getDataById($args->id);
+      $this->eventHandler_->postExec($handler_ctx, 'getDataById', $result);
+    } catch (Exception $ex) {
+      $reply_type = TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'getDataById', $ex);
+      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'getDataById', $result);
+    if ($output instanceof TBinaryProtocolAccelerated)
+    {
+      thrift_protocol_write_binary($output, 'getDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output instanceof TCompactProtocolAccelerated)
+    {
+      thrift_protocol_write_compact($output, 'getDataById', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("getDataById", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'getDataById', $result);
+  }
+  protected async function process_putDataById(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
+    $reply_type = TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'putDataById', array());
+
+    if ($input instanceof TBinaryProtocolAccelerated) {
+      $args = thrift_protocol_read_binary_struct($input, 'MyService_putDataById_args');
+    } else if ($input instanceof TCompactProtocolAccelerated) {
+      $args = thrift_protocol_read_compact_struct($input, 'MyService_putDataById_args');
+    } else {
+      $args = new MyService_putDataById_args();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'putDataById', $args);
+    $result = new MyService_putDataById_result();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'putDataById', $args);
+      await $this->handler->putDataById($args->id, $args->data);
+      $this->eventHandler_->postExec($handler_ctx, 'putDataById', $result);
+    } catch (Exception $ex) {
+      $reply_type = TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'putDataById', $ex);
+      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'putDataById', $result);
+    if ($output instanceof TBinaryProtocolAccelerated)
+    {
+      thrift_protocol_write_binary($output, 'putDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output instanceof TCompactProtocolAccelerated)
+    {
+      thrift_protocol_write_compact($output, 'putDataById', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("putDataById", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'putDataById', $result);
+  }
+  protected async function process_lobDataById(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('lobDataById');
+    $reply_type = TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'lobDataById', array());
+
+    if ($input instanceof TBinaryProtocolAccelerated) {
+      $args = thrift_protocol_read_binary_struct($input, 'MyService_lobDataById_args');
+    } else if ($input instanceof TCompactProtocolAccelerated) {
+      $args = thrift_protocol_read_compact_struct($input, 'MyService_lobDataById_args');
+    } else {
+      $args = new MyService_lobDataById_args();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'lobDataById', $args);
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'lobDataById', $args);
+      await $this->handler->lobDataById($args->id, $args->data);
+    } catch (Exception $ex) {
+      $reply_type = TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'lobDataById', $ex);
+      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    return;
+  }
+}
+class MyServiceSyncProcessor<T as MyServiceIf> extends ThriftSyncProcessor<T> {
   protected function process_ping(int $seqid, TProtocol $input, TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = TMessageType::REPLY;
@@ -773,7 +1084,7 @@ class MyServiceProcessor implements IThriftProcessor {
     $result = new MyService_ping_result();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
-      $this->_handler->ping();
+      $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
     } catch (Exception $ex) {
       $reply_type = TMessageType::EXCEPTION;
@@ -817,7 +1128,7 @@ class MyServiceProcessor implements IThriftProcessor {
     $result = new MyService_getRandomData_result();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'getRandomData', $args);
-      $result->success = $this->_handler->getRandomData();
+      $result->success = $this->handler->getRandomData();
       $this->eventHandler_->postExec($handler_ctx, 'getRandomData', $result);
     } catch (Exception $ex) {
       $reply_type = TMessageType::EXCEPTION;
@@ -861,7 +1172,7 @@ class MyServiceProcessor implements IThriftProcessor {
     $result = new MyService_hasDataById_result();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'hasDataById', $args);
-      $result->success = $this->_handler->hasDataById($args->id);
+      $result->success = $this->handler->hasDataById($args->id);
       $this->eventHandler_->postExec($handler_ctx, 'hasDataById', $result);
     } catch (Exception $ex) {
       $reply_type = TMessageType::EXCEPTION;
@@ -905,7 +1216,7 @@ class MyServiceProcessor implements IThriftProcessor {
     $result = new MyService_getDataById_result();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'getDataById', $args);
-      $result->success = $this->_handler->getDataById($args->id);
+      $result->success = $this->handler->getDataById($args->id);
       $this->eventHandler_->postExec($handler_ctx, 'getDataById', $result);
     } catch (Exception $ex) {
       $reply_type = TMessageType::EXCEPTION;
@@ -949,7 +1260,7 @@ class MyServiceProcessor implements IThriftProcessor {
     $result = new MyService_putDataById_result();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'putDataById', $args);
-      $this->_handler->putDataById($args->id, $args->data);
+      $this->handler->putDataById($args->id, $args->data);
       $this->eventHandler_->postExec($handler_ctx, 'putDataById', $result);
     } catch (Exception $ex) {
       $reply_type = TMessageType::EXCEPTION;
@@ -992,7 +1303,7 @@ class MyServiceProcessor implements IThriftProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'lobDataById', $args);
     try {
       $this->eventHandler_->preExec($handler_ctx, 'lobDataById', $args);
-      $this->_handler->lobDataById($args->id, $args->data);
+      $this->handler->lobDataById($args->id, $args->data);
     } catch (Exception $ex) {
       $reply_type = TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'lobDataById', $ex);
@@ -1001,6 +1312,8 @@ class MyServiceProcessor implements IThriftProcessor {
     return;
   }
 }
+// For backwards compatibility
+class MyServiceProcessor extends MyServiceSyncProcessor<MyServiceIf> {}
 // HELPER FUNCTIONS AND STRUCTURES
 
 class MyService_ping_args implements IThriftStruct {

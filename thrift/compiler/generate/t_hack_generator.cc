@@ -108,13 +108,15 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_service           (t_service* tservice, bool mangle);
   void generate_service_helpers   (t_service* tservice);
-  void generate_service_interface (t_service* tservice, bool mangle);
+  void generate_service_interface (t_service* tservice, bool mangle, bool async);
   void generate_service_rest      (t_service* tservice, bool mangle);
   void generate_service_client    (t_service* tservice, bool mangle);
   void _generate_service_client   (std::ofstream &out, t_service* tservice,
                                         bool mangle);
-  void generate_service_processor (t_service* tservice, bool mangle);
-  void generate_process_function  (t_service* tservice, t_function* tfunction);
+  void _generate_service_client_children (std::ofstream &out, t_service* tservice,
+                                        bool mangle, bool async);
+  void generate_service_processor (t_service* tservice, bool mangle, bool async);
+  void generate_process_function  (t_service* tservice, t_function* tfunction, bool async);
   void generate_processor_event_handler_functions (std::ofstream& out);
   void generate_client_event_handler_functions (std::ofstream& out);
   void generate_event_handler_functions (std::ofstream& out, string cl);
@@ -1729,13 +1731,15 @@ void t_hack_generator::generate_service(t_service* tservice, bool mangle) {
     autogen_comment() << endl;
 
   // Generate the main parts of the service
-  generate_service_interface(tservice, mangle);
+  generate_service_interface(tservice, mangle, true);
+  generate_service_interface(tservice, mangle, false);
   if (rest_) {
     generate_service_rest(tservice, mangle);
   }
   generate_service_client(tservice, mangle);
   if (phps_) {
-    generate_service_processor(tservice, mangle);
+    generate_service_processor(tservice, mangle, true);
+    generate_service_processor(tservice, mangle, false);
   }
   // Generate the structures passed around and helper functions
   generate_service_helpers(tservice);
@@ -1775,110 +1779,39 @@ void t_hack_generator::generate_event_handler_functions(ofstream& out, string cl
  * @param tservice The service to generate a server for.
  */
 void t_hack_generator::generate_service_processor(t_service* tservice,
-        bool mangle) {
+        bool mangle, bool async) {
   // Generate the dispatch methods
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
 
+  string suffix = async ? "Async" : "Sync";
   string extends = "";
-  string extends_processor = "";
+  string extends_processor = string("Thrift") + suffix + "Processor<T>";
   if (tservice->get_extends() != nullptr) {
     extends = php_servicename_mangle(mangle, tservice->get_extends());
-    extends_processor = " extends " + extends + "Processor";
+    extends_processor = extends + suffix + "Processor<T>";
   }
 
   string long_name = php_servicename_mangle(mangle, tservice);
   // Generate the header portion
   f_service_ <<
-    "class " << long_name << "Processor" << extends_processor << " implements IThriftProcessor {" << endl;
-  indent_up();
-
-  if (extends.empty()) {
-    f_service_ <<
-      indent() << "protected TProcessorEventHandler $eventHandler_;" << endl <<
-      endl <<
-      indent() << "// This exists so subclasses still using php can still access the handler" << endl <<
-      indent() << "// Once the migration to hack is complete, this field can be removed safely" << endl <<
-      indent() << "protected $handler_;" << endl <<
-      endl;
-  }
-
-  f_service_ <<
-    indent() << "private " << long_name << "If $_handler;" << endl;
-
-  f_service_ <<
-    indent() << "public function __construct(" << long_name
-             << "If $handler) {" << endl;
+    indent() << "class " << long_name << suffix << "Processor<T as " << long_name << (async ? "Async" : "") << "If> extends " << extends_processor << " {" << endl;
 
   indent_up();
-
-  if (extends.empty()) {
-    f_service_ <<
-      indent() << "$this->eventHandler_ = new TProcessorEventHandler();" << endl <<
-      indent() << "$this->handler_ = $handler;" << endl;
-  } else {
-    f_service_ <<
-      indent() << "parent::__construct($handler);" << endl;
-  }
-  f_service_ <<
-    indent() << "$this->_handler = $handler;" << endl;
-
-  indent_down();
-
-  f_service_ <<
-    indent() << "}" << endl <<
-    endl;
-
-  // Generate processor event handler functions
-  generate_processor_event_handler_functions(f_service_);
-
-  // Generate the server implementation
-  indent(f_service_) <<
-    "public function process(TProtocol $input, TProtocol $output): bool {" << endl;
-  indent_up();
-
-  f_service_ <<
-    indent() << "$rseqid = 0;" << endl <<
-    indent() << "$fname = '';" << endl <<
-    indent() << "$mtype = 0;" << endl <<
-    endl;
-
-  f_service_ <<
-    indent() << "$input->readMessageBegin($fname, $mtype, $rseqid);" << endl;
-
-  // HOT: check for method implementation
-  f_service_ <<
-    indent() << "$methodname = 'process_'.$fname;" << endl <<
-    indent() << "if (!method_exists($this, $methodname)) {" << endl;
-  f_service_ <<
-    indent() << "  $handler_ctx = $this->eventHandler_->getHandlerContext($methodname);" << endl <<
-    indent() << "  $this->eventHandler_->preRead($handler_ctx, $methodname, array());" << endl <<
-    indent() << "  $input->skip(TType::STRUCT);" << endl <<
-    indent() << "  $input->readMessageEnd();" << endl <<
-    indent() << "  $this->eventHandler_->postRead($handler_ctx, $methodname, array());" << endl <<
-    indent() << "  $x = new TApplicationException('Function '.$fname.' not implemented.', TApplicationException::UNKNOWN_METHOD);" << endl <<
-    indent() << "  $this->eventHandler_->handlerError($handler_ctx, $methodname, $x);" << endl <<
-    indent() << "  $output->writeMessageBegin($fname, TMessageType::EXCEPTION, $rseqid);" << endl <<
-    indent() << "  $x->write($output);" << endl <<
-    indent() << "  $output->writeMessageEnd();" << endl <<
-    indent() << "  $output->getTransport()->flush();" << endl <<
-    indent() << "  return true;" << endl;
-  f_service_ <<
-    indent() << "}" << endl <<
-    indent() << "$this->$methodname($rseqid, $input, $output);" << endl <<
-    indent() << "return true;" << endl;
-  indent_down();
-  f_service_ <<
-    indent() << "}" << endl <<
-    endl;
 
   // Generate the process subfunctions
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    generate_process_function(tservice, *f_iter);
+    generate_process_function(tservice, *f_iter, async);
   }
 
   indent_down();
   f_service_ << "}" << endl;
+
+  if (!async) {
+    f_service_ <<
+      indent() << "// For backwards compatibility" << endl <<
+      indent() << "class " << long_name << "Processor extends " << long_name << "SyncProcessor<" << long_name << (async ? "Async" : "") << "If> {}" << endl;
+  }
 }
 
 /**
@@ -1887,11 +1820,12 @@ void t_hack_generator::generate_service_processor(t_service* tservice,
  * @param tfunction The function to write a dispatcher for
  */
 void t_hack_generator::generate_process_function(t_service* tservice,
-                                                t_function* tfunction) {
+                                                t_function* tfunction,
+                                                bool async) {
   // Open function
   indent(f_service_) <<
-    "protected function process_" << tfunction->get_name() <<
-    "(int $seqid, TProtocol $input, TProtocol $output): void {" << endl;
+    "protected" << (async ? " async" : "") << " function process_" << tfunction->get_name() <<
+    "(int $seqid, TProtocol $input, TProtocol $output): " << (async ? "Awaitable<void>" : "void") << " {" << endl;
   indent_up();
 
   string argsname = php_namespace(tservice->get_program()) + service_name_ + "_" + tfunction->get_name() + "_args";
@@ -1950,8 +1884,8 @@ void t_hack_generator::generate_process_function(t_service* tservice,
   if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
     f_service_ << "$result->success = ";
   }
-  f_service_ <<
-    "$this->_handler->" << tfunction->get_name() << "(";
+  f_service_ << (async ? "await " : "") <<
+    "$this->handler->" << tfunction->get_name() << "(";
   bool first = true;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     if (first) {
@@ -2286,18 +2220,17 @@ string t_hack_generator::type_to_param_typehint(t_type* ttype, bool nullable) {
  * @param mangle Generate mangled service classes
  */
 void t_hack_generator::generate_service_interface(t_service* tservice,
-        bool mangle) {
+        bool mangle, bool async) {
   generate_php_docstring(f_service_, tservice);
-  string extends = "";
-  string extends_if = "";
+  string suffix = async ? "Async" : "";
+  string extends_if = string("IThrift") + (async ? "Async" : "Sync") + "If";
   if (tservice->get_extends() != nullptr) {
     string ext_prefix = php_servicename_mangle(mangle, tservice->get_extends());
-    extends = " extends " + ext_prefix;
-    extends_if = " extends " + ext_prefix + "If";
+    extends_if = ext_prefix + suffix + "If";
   }
   string long_name = php_servicename_mangle(mangle, tservice);
   f_service_ <<
-    "interface " << long_name << "If" << extends_if << " {" << endl;
+    "interface " << long_name << suffix << "If extends " << extends_if << " {" << endl;
   indent_up();
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
@@ -2311,8 +2244,12 @@ void t_hack_generator::generate_service_interface(t_service* tservice,
     generate_php_docstring(f_service_, *f_iter);
 
     // Finally, the function declaration.
+    string return_typehint = type_to_typehint((*f_iter)->get_returntype());
+    if (async) {
+      return_typehint = "Awaitable<" + return_typehint + ">";
+    }
     indent(f_service_) <<
-      "public function " << function_signature(*f_iter) << ";" << endl;
+      "public function " << function_signature(*f_iter, "", "", return_typehint) << ";" << endl;
   }
   indent_down();
   f_service_ <<
@@ -2423,92 +2360,12 @@ void t_hack_generator::generate_service_client(t_service* tservice,
 void t_hack_generator::_generate_service_client(
         ofstream& out, t_service* tservice, bool mangle) {
   generate_php_docstring(out, tservice);
-  string extends = "";
-  string extends_client = "";
-  bool root = tservice->get_extends() == nullptr;
-  if (root) {
-    out << "<<__ConsistentConstruct>>" << endl;
-  } else {
-    extends = php_servicename_mangle(mangle, tservice->get_extends());
-    extends_client = " extends " + extends + "Client";
-  }
 
   string long_name = php_servicename_mangle(mangle, tservice);
-  out << "class " << long_name << "Client" << extends_client << " implements "
-      << long_name << "If, IThriftClient {" << endl;
+  out << "trait " << long_name << "ClientBase {" << endl
+      << "  require extends ThriftClientBase;" << endl
+      << endl;
   indent_up();
-
-  // Private members
-  if (extends.empty()) {
-    out <<
-      indent() << "protected TProtocol $input_;" << endl <<
-      indent() << "protected TProtocol $output_;" << endl <<
-      indent() << "protected TClientAsyncHandler $asyncHandler_;" << endl <<
-      indent() << "protected TClientEventHandler $eventHandler_;" << endl <<
-      endl;
-    out <<
-      indent() << "protected int $seqid_ = 0;" << endl <<
-      endl;
-  }
-
-  // Factory
-  if (root) {
-    indent(out) << "final public static function factory(): (string, (function (TProtocol, ?TProtocol): this)) {" << endl;
-    indent_up();
-    indent(out) << "return tuple(get_called_class(), function(TProtocol $input, ?TProtocol $output) {" << endl;
-    indent_up();
-    indent(out) << "return new static($input, $output);" << endl;
-    indent_down();
-    indent(out) << "});" << endl;
-    indent_down();
-    indent(out) << "}" << endl << endl;
-  }
-
-  // Constructor function
-  out << indent() << "public function __construct("
-      << "TProtocol $input, ?TProtocol $output = null) {" << endl;
-  if (!extends.empty()) {
-    out <<
-      indent() << "  parent::__construct($input, $output);" << endl;
-  } else {
-    indent_up();
-    out <<
-      indent() << "$this->input_ = $input;" << endl <<
-      indent() << "$this->output_ = $output ?: $input;" << endl <<
-      indent() << "$this->asyncHandler_ = new TClientAsyncHandler();" << endl <<
-      indent() << "$this->eventHandler_ = new TClientEventHandler();" << endl;
-    indent_down();
-  }
-  out <<
-    indent() << "}" << endl << endl;
-
-  generate_client_event_handler_functions(out);
-
-  out <<
-    indent() << "public function setAsyncHandler(TClientAsyncHandler $async_handler): this {" << endl <<
-    indent() << "  $this->asyncHandler_ = $async_handler;" << endl <<
-    indent() << "  return $this;" << endl <<
-    indent() << "}" << endl <<
-    endl;
-
-  out <<
-    indent() << "public function getAsyncHandler(): TClientAsyncHandler {" << endl <<
-    indent() << "  return $this->asyncHandler_;" << endl <<
-    indent() << "}" << endl <<
-    endl;
-
-
-  // Generate the function to get the next sequence number
-  out <<
-    indent() << "private function getsequenceid(): int {" << endl <<
-    indent() << "  $currentseqid = $this->seqid_;" << endl <<
-    indent() << "  if ($this->seqid_ >= 0x7fffffff) {" << endl <<
-    indent() << "     $this->seqid_ = 0;" << endl <<
-    indent() << "  } else {" << endl <<
-    indent() << "     $this->seqid_++;" << endl <<
-    indent() << "  }" << endl <<
-    indent() << "  return $currentseqid;" << endl <<
-    indent() << "}" << endl << endl;
 
   // Generate client method implementations
   vector<t_function*> functions = tservice->get_functions();
@@ -2519,81 +2376,15 @@ void t_hack_generator::_generate_service_client(
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
 
-    // Open function
-    generate_php_docstring(out, *f_iter);
     indent(out) <<
-      "public function " << function_signature(*f_iter) << " {" << endl;
-    indent_up();
-      indent(out) <<
-        "$currentseqid = $this->send_" << funname << "(";
-
-      bool first = true;
-      for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-        if (first) {
-          first = false;
-        } else {
-          out << ", ";
-        }
-        out << "$" << (*fld_iter)->get_name();
-      }
-      out << ");" << endl;
-
-      if (!(*f_iter)->is_oneway()) {
-        out << indent();
-        if (!(*f_iter)->get_returntype()->is_void()) {
-          out << "return ";
-        }
-        out <<
-          "$this->recv_" << funname << "($currentseqid);" << endl;
-      }
-    scope_down(out);
-    out << endl;
-
-    // Gen function
-    indent(out)
-      << "public async function "
-      << function_signature(
-          *f_iter,
-          "gen_",
-          "",
-          "Awaitable<" + type_to_typehint((*f_iter)->get_returntype()) + ">")
-      << " {" << endl;
-    indent_up();
-      indent(out) <<
-        "$currentseqid = $this->send_" << funname << "(";
-
-      first = true;
-      for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-        if (first) {
-          first = false;
-        } else {
-          out << ", ";
-        }
-        out << "$" << (*fld_iter)->get_name();
-      }
-      out << ");" << endl;
-
-      if (!(*f_iter)->is_oneway()) {
-        indent(out) << "await $this->asyncHandler_->genWait($currentseqid);" << endl;
-        out << indent();
-        if (!(*f_iter)->get_returntype()->is_void()) {
-          out << "return ";
-        }
-        out <<
-          "$this->recv_" << funname << "($currentseqid);" << endl;
-      }
-    scope_down(out);
-    out << endl;
-
-    indent(out) <<
-      "public function send_" << function_signature(*f_iter, "", "", "int") << " {" << endl;
+      "protected function sendImpl_" << function_signature(*f_iter, "", "", "int") << " {" << endl;
     indent_up();
 
       std::string argsname = php_namespace(tservice->get_program()) +
             service_name_ + "_" + (*f_iter)->get_name() + "_args";
 
       out <<
-        indent() << "$currentseqid = $this->getsequenceid();" << endl <<
+        indent() << "$currentseqid = $this->getNextSequenceID();" << endl <<
         indent() << "$args = new " << argsname << "();" << endl;
 
       for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
@@ -2698,20 +2489,19 @@ void t_hack_generator::_generate_service_client(
 
     scope_down(out);
 
-
     if (!(*f_iter)->is_oneway()) {
       std::string resultname = php_namespace(tservice->get_program()) +
             service_name_ + "_" + (*f_iter)->get_name() + "_result";
       t_struct noargs(program_);
 
       t_function recv_function((*f_iter)->get_returntype(),
-                               string("recv_") + (*f_iter)->get_name(),
+                               string("recvImpl_") + (*f_iter)->get_name(),
                                &noargs);
       string return_typehint = type_to_typehint((*f_iter)->get_returntype());
       // Open function
       out <<
         endl <<
-        indent() << "public function " <<
+        indent() << "protected function " <<
         function_signature(&recv_function, "", "?int $expectedsequenceid = null", return_typehint) << " {" <<
         endl;
       indent_up();
@@ -2862,10 +2652,156 @@ void t_hack_generator::_generate_service_client(
           indent() << "throw $x;" << endl;
       }
 
-    // Close function
+      // Close function
+      scope_down(out);
+    }
+
+    out << endl;
+  }
+
+  scope_down(out);
+  out << endl;
+
+  _generate_service_client_children(out, tservice, mangle, /*async*/ true);
+  _generate_service_client_children(out, tservice, mangle, /*async*/ false);
+}
+
+void t_hack_generator::_generate_service_client_children(
+        ofstream& out, t_service* tservice, bool mangle, bool async) {
+  string long_name = php_servicename_mangle(mangle, tservice);
+  string suffix = (async ? "Async" : "");
+  string extends = "ThriftClientBase";
+  bool root = tservice->get_extends() == nullptr;
+  bool first = true;
+  if (!root) {
+    extends = php_servicename_mangle(mangle, tservice->get_extends()) + suffix + "Client";
+  }
+
+  out << "class " << long_name << suffix << "Client extends " << extends << " implements " << long_name << suffix <<"If {" << endl
+      << "  use " << long_name << "ClientBase;" << endl
+      << endl;
+  indent_up();
+
+  t_struct noargs(program_);
+
+  // Generate client method implementations
+  vector<t_function*> functions = tservice->get_functions();
+  vector<t_function*>::const_iterator f_iter;
+  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    t_struct* arg_struct = (*f_iter)->get_arglist();
+    const vector<t_field*>& fields = arg_struct->get_members();
+    vector<t_field*>::const_iterator fld_iter;
+    string funname = (*f_iter)->get_name();
+    string return_typehint = type_to_typehint((*f_iter)->get_returntype());
+
+    generate_php_docstring(out, *f_iter);
+
+    if (!async) {
+      // Non-Async function
+      indent(out) <<
+        "public function " << function_signature(*f_iter) << " {" << endl;
+      indent_up();
+        indent(out) <<
+          "$currentseqid = $this->sendImpl_" << funname << "(";
+
+        first = true;
+        for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+          if (first) {
+            first = false;
+          } else {
+            out << ", ";
+          }
+          out << "$" << (*fld_iter)->get_name();
+        }
+        out << ");" << endl;
+
+        if (!(*f_iter)->is_oneway()) {
+          out << indent();
+          if (!(*f_iter)->get_returntype()->is_void()) {
+            out << "return ";
+          }
+          out <<
+            "$this->recvImpl_" << funname << "($currentseqid);" << endl;
+        }
+      scope_down(out);
+      out << endl;
+    }
+
+    // Async function
+    indent(out)
+      << "public async function "
+      << function_signature(
+          *f_iter,
+          async ? "" : "gen_",
+          "",
+          "Awaitable<" + return_typehint + ">")
+      << " {" << endl;
+    indent_up();
+    indent(out) <<
+      "$currentseqid = $this->sendImpl_" << funname << "(";
+
+    first = true;
+    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+      if (first) {
+        first = false;
+      } else {
+        out << ", ";
+      }
+      out << "$" << (*fld_iter)->get_name();
+    }
+    out << ");" << endl;
+
+    if (!(*f_iter)->is_oneway()) {
+      indent(out) << "await $this->asyncHandler_->genWait($currentseqid);" << endl;
+      out << indent();
+      if (!(*f_iter)->get_returntype()->is_void()) {
+        out << "return ";
+      }
+      out <<
+        "$this->recvImpl_" << funname << "($currentseqid);" << endl;
+    }
     scope_down(out);
     out << endl;
+  }
 
+  if (!async) {
+    out <<
+      indent() << "/* send and recv functions */" << endl;
+
+    for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    t_struct* arg_struct = (*f_iter)->get_arglist();
+      const vector<t_field*>& fields = arg_struct->get_members();
+      vector<t_field*>::const_iterator fld_iter;
+      string funname = (*f_iter)->get_name();
+      string return_typehint = type_to_typehint((*f_iter)->get_returntype());
+
+      out <<
+        indent() << "public function send_" << function_signature(*f_iter, "", "", "int") << " {" << endl <<
+        indent() << "  return $this->sendImpl_" << funname << "(";
+      first = true;
+      for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+        if (first) {
+          first = false;
+        } else {
+          out << ", ";
+        }
+        out << "$" << (*fld_iter)->get_name();
+      }
+      out <<
+        ");" << endl <<
+        indent() << "}" << endl;
+      if (!(*f_iter)->is_oneway()) {
+        t_function recv_function((*f_iter)->get_returntype(),
+                                 string("recv_") + (*f_iter)->get_name(),
+                                 &noargs);
+        // Open function
+        bool is_void = (*f_iter)->get_returntype()->is_void();
+        out <<
+          indent() << "public function " <<
+            function_signature(&recv_function, "", "?int $expectedsequenceid = null", return_typehint) << " {" << endl <<
+          indent() << "  " << (is_void ? "" : "return ") << "$this->recvImpl_" << funname << "($expectedsequenceid);" << endl <<
+          indent() << "}" << endl;
+      }
     }
   }
 
