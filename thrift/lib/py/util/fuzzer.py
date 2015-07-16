@@ -783,7 +783,7 @@ class FuzzTester(object):
         for _ in sm.xrange(n_iterations):
             with self.timer.time(method_name, "Randomizing"):
                 method_randomizer = self.method_randomizers[method_name]
-                args_struct = method_randomizer.randomize()
+                args_struct = method_randomizer.generate()
             if args_struct is None:
                 logging.error("Unable to produce valid arguments for %s" %
                               method_name)
