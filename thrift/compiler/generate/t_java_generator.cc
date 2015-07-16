@@ -1064,7 +1064,8 @@ void t_java_generator::generate_union_hashcode(ofstream& out, t_struct* tstruct)
 }
 
 /**
- *
+ * Generates code for a constructor for a tstruct, given the fields that
+ * the constructor should take as parameters to initialize the struct.
  */
 void t_java_generator::generate_java_constructor(ofstream &out,
                                                  t_struct* tstruct,
