@@ -817,7 +817,7 @@ class MyServiceFastClient extends ThriftClientBase implements MyServiceFastIf {
 }
 
 class MyServiceFastAsyncProcessor extends ThriftAsyncProcessor {
-  const type T = MyServiceFastAsyncIf;
+  const type TThriftIf = MyServiceFastAsyncIf;
   protected async function process_ping(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = TMessageType::REPLY;
@@ -1066,7 +1066,7 @@ class MyServiceFastAsyncProcessor extends ThriftAsyncProcessor {
   }
 }
 class MyServiceFastSyncProcessor extends ThriftSyncProcessor {
-  const type T = MyServiceFastIf;
+  const type TThriftIf = MyServiceFastIf;
   protected function process_ping(int $seqid, TProtocol $input, TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = TMessageType::REPLY;

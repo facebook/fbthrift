@@ -1796,7 +1796,7 @@ void t_hack_generator::generate_service_processor(t_service* tservice,
   // Generate the header portion
   f_service_ <<
     indent() << "class " << long_name << suffix << "Processor extends " << extends_processor << " {" << endl <<
-    indent() << "  const type T = " << long_name << (async ? "Async" : "") << "If;" << endl;
+    indent() << "  const type TThriftIf = " << long_name << (async ? "Async" : "") << "If;" << endl;
 
   indent_up();
 
