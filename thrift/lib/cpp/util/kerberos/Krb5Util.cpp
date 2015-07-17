@@ -22,6 +22,8 @@
 #include <vector>
 #include <folly/ScopeGuard.h>
 
+#include <thrift/lib/cpp/util/kerberos/FBKrb5GetCreds.h>
+
 static const int kKeytabNameMaxLength = 512;
 
 namespace std {

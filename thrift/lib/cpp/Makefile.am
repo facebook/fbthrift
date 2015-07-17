@@ -240,6 +240,7 @@ include_utilkerberosdir = $(include_utildir)/kerberos
 include_utilkerberos_HEADERS = \
 	util/kerberos/Krb5CCacheStore.h \
 	util/kerberos/Krb5CredentialsCacheManager.h \
+	util/kerberos/FBKrb5GetCreds.h \
 	util/kerberos/Krb5OlderVersionStubs.h \
 	util/kerberos/Krb5Tgts.h \
 	util/kerberos/Krb5Util.h
