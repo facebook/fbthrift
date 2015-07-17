@@ -84,7 +84,8 @@ thrift1_SOURCES += generate/t_cpp_generator.cc \
                   generate/t_hs_generator.cc \
                   generate/t_xsd_generator.cc \
                   generate/t_html_generator.cc \
-                  generate/t_js_generator.cc 
+                  generate/t_js_generator.cc \
+                  generate/t_android_lite_generator.cc
 
 thrift1_LDFLAGS = -lfolly -lcrypto -lglog
 thrift1_LDADD = @LEXLIB@ libparse.la libthriftcompilerbase.la

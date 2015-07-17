@@ -1,2 +1,3 @@
+android_lite src/module.thrift
 cpp2 src/module.thrift
 java src/module.thrift
