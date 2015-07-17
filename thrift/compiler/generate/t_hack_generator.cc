@@ -1786,16 +1786,17 @@ void t_hack_generator::generate_service_processor(t_service* tservice,
 
   string suffix = async ? "Async" : "Sync";
   string extends = "";
-  string extends_processor = string("Thrift") + suffix + "Processor<T>";
+  string extends_processor = string("Thrift") + suffix + "Processor";
   if (tservice->get_extends() != nullptr) {
     extends = php_servicename_mangle(mangle, tservice->get_extends());
-    extends_processor = extends + suffix + "Processor<T>";
+    extends_processor = extends + suffix + "Processor";
   }
 
   string long_name = php_servicename_mangle(mangle, tservice);
   // Generate the header portion
   f_service_ <<
-    indent() << "class " << long_name << suffix << "Processor<T as " << long_name << (async ? "Async" : "") << "If> extends " << extends_processor << " {" << endl;
+    indent() << "class " << long_name << suffix << "Processor extends " << extends_processor << " {" << endl <<
+    indent() << "  const type T = " << long_name << (async ? "Async" : "") << "If;" << endl;
 
   indent_up();
 
@@ -1810,7 +1811,7 @@ void t_hack_generator::generate_service_processor(t_service* tservice,
   if (!async) {
     f_service_ <<
       indent() << "// For backwards compatibility" << endl <<
-      indent() << "class " << long_name << "Processor extends " << long_name << "SyncProcessor<" << long_name << (async ? "Async" : "") << "If> {}" << endl;
+      indent() << "class " << long_name << "Processor extends " << long_name << "SyncProcessor {}" << endl;
   }
 }
 

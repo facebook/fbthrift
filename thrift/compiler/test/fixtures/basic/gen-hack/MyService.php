@@ -816,7 +816,8 @@ class MyServiceClient extends ThriftClientBase implements MyServiceIf {
   }
 }
 
-class MyServiceAsyncProcessor<T as MyServiceAsyncIf> extends ThriftAsyncProcessor<T> {
+class MyServiceAsyncProcessor extends ThriftAsyncProcessor {
+  const type T = MyServiceAsyncIf;
   protected async function process_ping(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = TMessageType::REPLY;
@@ -1064,7 +1065,8 @@ class MyServiceAsyncProcessor<T as MyServiceAsyncIf> extends ThriftAsyncProcesso
     return;
   }
 }
-class MyServiceSyncProcessor<T as MyServiceIf> extends ThriftSyncProcessor<T> {
+class MyServiceSyncProcessor extends ThriftSyncProcessor {
+  const type T = MyServiceIf;
   protected function process_ping(int $seqid, TProtocol $input, TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
     $reply_type = TMessageType::REPLY;
@@ -1313,7 +1315,7 @@ class MyServiceSyncProcessor<T as MyServiceIf> extends ThriftSyncProcessor<T> {
   }
 }
 // For backwards compatibility
-class MyServiceProcessor extends MyServiceSyncProcessor<MyServiceIf> {}
+class MyServiceProcessor extends MyServiceSyncProcessor {}
 // HELPER FUNCTIONS AND STRUCTURES
 
 class MyService_ping_args implements IThriftStruct {
