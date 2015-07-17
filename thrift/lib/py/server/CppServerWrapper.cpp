@@ -24,12 +24,16 @@
 #include <boost/python/tuple.hpp>
 #include <boost/python/dict.hpp>
 
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 
 using namespace apache::thrift;
+using apache::thrift::concurrency::PosixThreadFactory;
+using apache::thrift::concurrency::ThreadManager;
 using apache::thrift::transport::THeader;
 using apache::thrift::server::TServerEventHandler;
 using apache::thrift::server::TConnectionContext;
@@ -296,6 +300,18 @@ public:
     setServerEventHandler(std::make_shared<CppServerEventHandler>(
           serverEventHandler));
   }
+
+  void setNewSimpleThreadManager(
+      size_t count,
+      size_t pendingTaskCountMax,
+      bool enableTaskStats,
+      size_t maxQueueLen) {
+    auto tm = ThreadManager::newSimpleThreadManager(
+        count, pendingTaskCountMax, enableTaskStats, maxQueueLen);
+    tm->threadFactory(std::make_shared<PosixThreadFactory>());
+    tm->start();
+    setThreadManager(std::move(tm));
+}
 };
 
 BOOST_PYTHON_MODULE(_cpp_server_wrapper) {
@@ -317,9 +333,12 @@ BOOST_PYTHON_MODULE(_cpp_server_wrapper) {
     .def("cleanUp", &CppServerWrapper::cleanUp)
     .def("setCppServerEventHandler",
          &CppServerWrapper::setCppServerEventHandler)
+    .def("setNewSimpleThreadManager",
+         &CppServerWrapper::setNewSimpleThreadManager)
 
     // methods directly passed to the C++ impl
     .def("setup", &CppServerWrapper::setup)
+    .def("setNPoolThreads", &CppServerWrapper::setNPoolThreads)
     .def("setNWorkerThreads", &CppServerWrapper::setNWorkerThreads)
     .def("setPort", &CppServerWrapper::setPort)
     .def("stop", &CppServerWrapper::stop)
