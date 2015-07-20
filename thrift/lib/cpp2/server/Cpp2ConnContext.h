@@ -70,7 +70,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     cleanupUserData();
   }
 
-  apache::thrift::transport::THeader* getHeader() override {
+  apache::thrift::transport::THeader* getHeader() const override {
     return header_;
   }
 
@@ -143,7 +143,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   }
 
   // The following two header functions _are_ thread safe
-  std::map<std::string, std::string> getHeaders() override {
+  std::map<std::string, std::string> getHeaders() const override {
     return headers_;
   }
 
@@ -239,7 +239,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
  protected:
   // Note:  Header is _not_ thread safe
-  apache::thrift::transport::THeader* getHeader() override {
+  apache::thrift::transport::THeader* getHeader() const override {
     return ctx_->getHeader();
   }
 

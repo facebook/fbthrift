@@ -61,7 +61,7 @@ class TConnectionContext {
   }
 
   // Expose the THeader to read headers or other flags
-  virtual transport::THeader* getHeader() {
+  virtual transport::THeader* getHeader() const {
     if (getOutputProtocol()) {
       return dynamic_cast<apache::thrift::transport::THeader*>(
         getOutputProtocol()->getTransport().get());
@@ -79,7 +79,7 @@ class TConnectionContext {
     }
   }
 
-  virtual std::map<std::string, std::string> getHeaders() {
+  virtual std::map<std::string, std::string> getHeaders() const {
     auto header = getHeader();
     if (header) {
       return header->getHeaders();
