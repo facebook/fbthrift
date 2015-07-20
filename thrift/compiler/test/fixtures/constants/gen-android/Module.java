@@ -17,8 +17,8 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.util.Arrays;
 
-import com.instagram.common.rpc.thrift.*;
-import com.instagram.common.rpc.thrift.protocol.*;
+import com.facebook.thrift.lite.*;
+import com.facebook.thrift.lite.protocol.*;
 
 
 public class Module {

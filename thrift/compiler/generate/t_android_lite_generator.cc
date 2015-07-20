@@ -296,8 +296,8 @@ string t_android_lite_generator::java_type_imports() {
 // the accompanying thrift library for android imported here.
 string t_android_lite_generator::android_thrift_imports() {
   return
-    "import com.instagram.common.rpc.thrift.*;\n"
-    "import com.instagram.common.rpc.thrift.protocol.*;\n";
+    "import com.facebook.thrift.lite.*;\n"
+    "import com.facebook.thrift.lite.protocol.*;\n";
 }
 
 string t_android_lite_generator::package_header() {
