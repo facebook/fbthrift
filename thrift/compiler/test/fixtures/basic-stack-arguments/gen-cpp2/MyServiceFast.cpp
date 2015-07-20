@@ -17,7 +17,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceFastSvIf::getProcessor(
   return folly::make_unique<MyServiceFastAsyncProcessor>(this);
 }
 
-bool MyServiceFastSvIf::hasDataById(int64_t id) {
+bool MyServiceFastSvIf::hasDataById(int64_t /*id*/) {
   throw apache::thrift::TApplicationException("Function hasDataById is unimplemented");
 }
 
@@ -29,7 +29,7 @@ void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::Han
   apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_hasDataById(id); });
 }
 
-void MyServiceFastSvIf::getDataById(std::string& _return, int64_t id) {
+void MyServiceFastSvIf::getDataById(std::string& /*_return*/, int64_t /*id*/) {
   throw apache::thrift::TApplicationException("Function getDataById is unimplemented");
 }
 
@@ -41,7 +41,7 @@ void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::Han
   apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_getDataById(id); });
 }
 
-void MyServiceFastSvIf::putDataById(int64_t id, const std::string& data) {
+void MyServiceFastSvIf::putDataById(int64_t /*id*/, const std::string& /*data*/) {
   throw apache::thrift::TApplicationException("Function putDataById is unimplemented");
 }
 
@@ -53,7 +53,7 @@ void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::Han
   apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_putDataById(id, data); });
 }
 
-void MyServiceFastSvIf::lobDataById(int64_t id, const std::string& data) {
+void MyServiceFastSvIf::lobDataById(int64_t /*id*/, const std::string& /*data*/) {
   throw apache::thrift::TApplicationException("Function lobDataById is unimplemented");
 }
 

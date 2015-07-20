@@ -58,10 +58,10 @@ class RaiserSvIf : public RaiserSvAsyncIf, public apache::thrift::ServerInterfac
   virtual void doRaise();
   folly::Future<folly::Unit> future_doRaise();
   virtual void async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
-  virtual void get200(std::string& _return);
+  virtual void get200(std::string& /*_return*/);
   folly::Future<std::unique_ptr<std::string>> future_get200();
   virtual void async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback);
-  virtual void get500(std::string& _return);
+  virtual void get500(std::string& /*_return*/);
   folly::Future<std::unique_ptr<std::string>> future_get500();
   virtual void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback);
 };

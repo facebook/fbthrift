@@ -29,7 +29,7 @@ void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbac
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_ping(); });
 }
 
-void MyServiceSvIf::getRandomData(std::string& _return) {
+void MyServiceSvIf::getRandomData(std::string& /*_return*/) {
   throw apache::thrift::TApplicationException("Function getRandomData is unimplemented");
 }
 
@@ -41,7 +41,7 @@ void MyServiceSvIf::async_tm_getRandomData(std::unique_ptr<apache::thrift::Handl
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_getRandomData(); });
 }
 
-bool MyServiceSvIf::hasDataById(int64_t id) {
+bool MyServiceSvIf::hasDataById(int64_t /*id*/) {
   throw apache::thrift::TApplicationException("Function hasDataById is unimplemented");
 }
 
@@ -53,7 +53,7 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_hasDataById(id); });
 }
 
-void MyServiceSvIf::getDataById(std::string& _return, int64_t id) {
+void MyServiceSvIf::getDataById(std::string& /*_return*/, int64_t /*id*/) {
   throw apache::thrift::TApplicationException("Function getDataById is unimplemented");
 }
 
@@ -65,7 +65,7 @@ void MyServiceSvIf::async_tm_getDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_getDataById(id); });
 }
 
-void MyServiceSvIf::putDataById(int64_t id, std::unique_ptr<std::string> data) {
+void MyServiceSvIf::putDataById(int64_t /*id*/, std::unique_ptr<std::string> /*data*/) {
   throw apache::thrift::TApplicationException("Function putDataById is unimplemented");
 }
 
@@ -77,7 +77,7 @@ void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_putDataById(id, std::move(data)); });
 }
 
-void MyServiceSvIf::lobDataById(int64_t id, std::unique_ptr<std::string> data) {
+void MyServiceSvIf::lobDataById(int64_t /*id*/, std::unique_ptr<std::string> /*data*/) {
   throw apache::thrift::TApplicationException("Function lobDataById is unimplemented");
 }
 

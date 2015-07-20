@@ -17,7 +17,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
   return folly::make_unique<MyServiceAsyncProcessor>(this);
 }
 
-bool MyServiceSvIf::hasDataById(int64_t id) {
+bool MyServiceSvIf::hasDataById(int64_t /*id*/) {
   throw apache::thrift::TApplicationException("Function hasDataById is unimplemented");
 }
 
@@ -29,7 +29,7 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_hasDataById(id); });
 }
 
-void MyServiceSvIf::getDataById(std::string& _return, int64_t id) {
+void MyServiceSvIf::getDataById(std::string& /*_return*/, int64_t /*id*/) {
   throw apache::thrift::TApplicationException("Function getDataById is unimplemented");
 }
 
@@ -41,7 +41,7 @@ void MyServiceSvIf::async_tm_getDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_getDataById(id); });
 }
 
-void MyServiceSvIf::putDataById(int64_t id, const std::string& data) {
+void MyServiceSvIf::putDataById(int64_t /*id*/, const std::string& /*data*/) {
   throw apache::thrift::TApplicationException("Function putDataById is unimplemented");
 }
 
@@ -53,7 +53,7 @@ void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_putDataById(id, data); });
 }
 
-void MyServiceSvIf::lobDataById(int64_t id, const std::string& data) {
+void MyServiceSvIf::lobDataById(int64_t /*id*/, const std::string& /*data*/) {
   throw apache::thrift::TApplicationException("Function lobDataById is unimplemented");
 }
 

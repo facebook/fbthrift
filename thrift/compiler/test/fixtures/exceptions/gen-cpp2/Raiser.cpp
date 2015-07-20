@@ -41,7 +41,7 @@ void RaiserSvIf::async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallbac
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_doRaise(); });
 }
 
-void RaiserSvIf::get200(std::string& _return) {
+void RaiserSvIf::get200(std::string& /*_return*/) {
   throw apache::thrift::TApplicationException("Function get200 is unimplemented");
 }
 
@@ -53,7 +53,7 @@ void RaiserSvIf::async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_get200(); });
 }
 
-void RaiserSvIf::get500(std::string& _return) {
+void RaiserSvIf::get500(std::string& /*_return*/) {
   throw apache::thrift::TApplicationException("Function get500 is unimplemented");
 }
 

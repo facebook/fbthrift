@@ -952,7 +952,8 @@ class CppGenerator(t_generator.Generator):
             for function in service.functions:
                 if not self._is_stream_type(function.returntype):
                     with out().defn(self._get_process_function_signature(service,
-                                                                     function),
+                                                                     function,
+                                                                     True),
                                 name=function.name,
                                 modifiers='virtual'):
                         out('throw apache::thrift::TApplicationException('
@@ -1055,19 +1056,22 @@ class CppGenerator(t_generator.Generator):
         sig += ')'
         return sig
 
-    def _get_process_function_signature(self, service, function):
+    def _get_process_function_signature(self, service, function,
+                                        no_param_names=False):
         addcomma = False
         if not function.oneway:
             if self._is_complex_type(function.returntype):
-                sig = 'void {name}' + '({0}& _return'.format(
-                    self._type_name(function.returntype))
+                sig = 'void {name}' + '({0}& {1}'.format(
+                    self._type_name(function.returntype),
+                    '/*_return*/' if no_param_names else '_return')
                 addcomma = True
             else:
                 sig = self._type_name(function.returntype)
                 sig += ' {name}('
         else:
             sig = 'void {name}('
-        sig += self._argument_list(function.arglist, addcomma, unique=True)
+        sig += self._argument_list(function.arglist, addcomma, unique=True,
+                                   no_param_names=no_param_names)
         sig += ')'
         return sig
 
@@ -2135,7 +2139,7 @@ class CppGenerator(t_generator.Generator):
     def _exception_idx(self, function, idx):
         return idx + (1 if self._function_produces_result(function) else 0)
 
-    def _argument_list(self, arglist, add_comma, unique):
+    def _argument_list(self, arglist, add_comma, unique, no_param_names=False):
         out = ""
         for field in arglist.members:
             if len(out) > 0 or add_comma:
@@ -2144,7 +2148,9 @@ class CppGenerator(t_generator.Generator):
             type_name = self._type_name(field.type,
                                         arg=True, unique=unique)
 
-            out += type_name + " " + field.name
+            field_name = "/*" + field.name + "*/" if no_param_names \
+                         else field.name
+            out += type_name + " " + field_name
 
         return out
 
