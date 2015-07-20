@@ -24,6 +24,10 @@
 #include <sys/types.h>
 #include <sstream>
 
+#include <folly/Format.h>
+#include <folly/gen/Base.h>
+#include <folly/gen/String.h>
+
 #include "t_oop_generator.h"
 
 // platform.h
@@ -1315,6 +1319,8 @@ string t_hs_generator::render_hs_type_for_function_name(t_type* type) {
  * @param tservice The service to generate a fuzzer for.
  */
 void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
+    using namespace folly;
+
     string f_service_name = get_out_dir()+capitalize(service_name_)+"_Fuzzer.hs";
     f_service_fuzzer_.open(f_service_name.c_str());
     record_genfile(f_service_name);
@@ -1465,33 +1471,47 @@ void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
        indent_up();
        const vector<t_field*>& fields = (*f_iter)->get_arglist()->get_members();
        vector<t_field*>::const_iterator fld_iter;
-       char var = 'a';
+       int varNum = 1;
        // random data sources
        for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
            indent(f_service_fuzzer_)
-               << var
+               << "a" << varNum
                << " <- "
                << "ZipList <$> "
                << "inf_"
                << render_hs_type_for_function_name((*fld_iter)->get_type())
                << nl;
-           var++;
+           varNum++;
        }
        // fuzzer invocation
        indent(f_service_fuzzer_) << "_ <- ";
        int argCount = fields.size();
+       auto argList =
+           gen::seq(1, argCount)
+           | gen::map([](int n) { return sformat("a{}", n); });
+
+       auto spaceSeparatedArgList = argList | gen::unsplit<string>(" ");
+       auto showArgList =
+           argList
+           | gen::map([](const string& s) { return sformat("Show {}", s); })
+           | gen::unsplit<string>(", ");
+       auto showElemList =
+           argList
+           | gen::map([](const string& s) { return sformat("show {}", s); })
+           | gen::unsplit<string>(" ++ ");
+       auto paramString =
+           sformat("({})", argList | gen::unsplit<string>(", "));
+
 //       assert (1 <= argCount);
        if (argCount == 1) {
            f_service_fuzzer_
-               << "forM (getZipList a) "
+               << "forM (getZipList a1) "
                << funname << "_fuzzFunc";
        } else {
            f_service_fuzzer_
                << "P.sequence . getZipList $ "
-               << funname << "_fuzzFunc <$> a";
-           for (var = 'b'; var < 'a' + argCount; var++) {
-               f_service_fuzzer_ << " <*> " << var;
-           }
+               << funname << "_fuzzFunc <$> "
+               << (argList | gen::unsplit<string>(" <*> "));
        }
        f_service_fuzzer_
            << nl << indent()
@@ -1499,21 +1519,16 @@ void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
 
        f_service_fuzzer_
            << "where" << nl << indent()
-           << funname << "_fuzzFunc";
-       for (var = 'a'; var < 'a' + argCount; var++) {
-           f_service_fuzzer_ << " " << var;
-       }
-       f_service_fuzzer_
-           << " = let param = (a";
-       for (var = 'b'; var < 'a' + argCount; var++) {
-           f_service_fuzzer_ << ", " << var;
-       }
-       f_service_fuzzer_ << ") in" << nl << indent() << indent()
+           << funname << "_fuzzFunc ";
+       f_service_fuzzer_ << spaceSeparatedArgList;
+       f_service_fuzzer_ << sformat(" = let param = {} in", paramString);
+       f_service_fuzzer_ << nl << indent() << indent()
            << "if opt_framed opts"
            << nl << indent() << indent()
            << "then withThriftDo opts (withFramedTransport opts) ("
              << funname << "_fuzzOnce param) ("
-             << funname << "_exceptionHandler param)" << nl << indent() << indent()
+             << funname << "_exceptionHandler param)"
+           << nl << indent() << indent()
            << "else withThriftDo opts (withHandle opts) ("
              << funname << "_fuzzOnce param) ("
              << funname << "_exceptionHandler param)" << nl;
@@ -1521,37 +1536,23 @@ void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
        indent_down();
 
        // exception handler
-       f_service_fuzzer_ << nl
-           << funname << "_exceptionHandler :: Show a => a -> IO ()" << nl
-           << funname << "_exceptionHandler a = do" << nl;
+       f_service_fuzzer_ << nl << funname
+           << "_exceptionHandler :: (" << showArgList << ") => "
+           << paramString << " -> IO ()";
+       f_service_fuzzer_ << nl << funname << "_exceptionHandler "
+           << paramString << " = do" << nl;
        indent_up();
        indent(f_service_fuzzer_)
            << "P.putStrLn $ \"Got exception on data:\"" << nl << indent()
-           << "print a" << nl;
+           << "P.putStrLn $ \"(\" ++ " << showElemList << " ++ \")\"";
        indent_down();
 
        // Thrift invoker
-       f_service_fuzzer_
-           << nl
-           << funname << "_fuzzOnce (";
-
-       first = true;
-       for (var = 'a'; var < 'a' + argCount; var++) {
-           if (first) {
-               first = false;
-           } else {
-               f_service_fuzzer_ << ", ";
-           }
-           f_service_fuzzer_ << var;
-       }
-       f_service_fuzzer_ << ") client = Client." << funname << " client ";
-       for (var = 'a'; var < 'a' + argCount; var++) {
-           f_service_fuzzer_ << var << " ";
-       }
-       f_service_fuzzer_ << " >> return ()";
-
+       f_service_fuzzer_ << nl << funname
+           << "_fuzzOnce " << paramString << " client = Client.";
+       f_service_fuzzer_ << funname
+           << " client " << spaceSeparatedArgList << " >> return ()";
        f_service_fuzzer_ << nl << nl;
-
     }
 
     f_service_fuzzer_.close();

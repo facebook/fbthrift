@@ -100,29 +100,33 @@ inf_Int64 = infexamples (arbitrary :: Gen Int64)
 -- Fuzzers and exception handlers
 init_fuzzer :: Options -> IO ()
 init_fuzzer opts = do
-  a <- ZipList <$> inf_Int64
-  b <- ZipList <$> inf_Int64
-  c <- ZipList <$> inf_Int64
-  d <- ZipList <$> inf_Int64
-  e <- ZipList <$> inf_Int64
-  f <- ZipList <$> inf_Int64
-  g <- ZipList <$> inf_Int64
-  h <- ZipList <$> inf_Int64
-  i <- ZipList <$> inf_Int64
-  j <- ZipList <$> inf_Int64
-  k <- ZipList <$> inf_Int64
-  _ <- P.sequence . getZipList $ init_fuzzFunc <$> a <*> b <*> c <*> d <*> e <*> f <*> g <*> h <*> i <*> j <*> k
+  a1 <- ZipList <$> inf_Int64
+  a2 <- ZipList <$> inf_Int64
+  a3 <- ZipList <$> inf_Int64
+  a4 <- ZipList <$> inf_Int64
+  a5 <- ZipList <$> inf_Int64
+  a6 <- ZipList <$> inf_Int64
+  a7 <- ZipList <$> inf_Int64
+  a8 <- ZipList <$> inf_Int64
+  a9 <- ZipList <$> inf_Int64
+  a10 <- ZipList <$> inf_Int64
+  a11 <- ZipList <$> inf_Int64
+  a12 <- ZipList <$> inf_Int64
+  a13 <- ZipList <$> inf_Int64
+  a14 <- ZipList <$> inf_Int64
+  a15 <- ZipList <$> inf_Int64
+  a16 <- ZipList <$> inf_Int64
+  _ <- P.sequence . getZipList $ init_fuzzFunc <$> a1 <*> a2 <*> a3 <*> a4 <*> a5 <*> a6 <*> a7 <*> a8 <*> a9 <*> a10 <*> a11 <*> a12 <*> a13 <*> a14 <*> a15 <*> a16
   return ()
   where
-  init_fuzzFunc a b c d e f g h i j k = let param = (a, b, c, d, e, f, g, h, i, j, k) in
+  init_fuzzFunc a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 = let param = (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16) in
     if opt_framed opts
     then withThriftDo opts (withFramedTransport opts) (init_fuzzOnce param) (init_exceptionHandler param)
     else withThriftDo opts (withHandle opts) (init_fuzzOnce param) (init_exceptionHandler param)
 
-init_exceptionHandler :: Show a => a -> IO ()
-init_exceptionHandler a = do
+init_exceptionHandler :: (Show a1, Show a2, Show a3, Show a4, Show a5, Show a6, Show a7, Show a8, Show a9, Show a10, Show a11, Show a12, Show a13, Show a14, Show a15, Show a16) => (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16) -> IO ()
+init_exceptionHandler (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16) = do
   P.putStrLn $ "Got exception on data:"
-  print a
-
-init_fuzzOnce (a, b, c, d, e, f, g, h, i, j, k) client = Client.init client a b c d e f g h i j k  >> return ()
+  P.putStrLn $ "(" ++ show a1 ++ show a2 ++ show a3 ++ show a4 ++ show a5 ++ show a6 ++ show a7 ++ show a8 ++ show a9 ++ show a10 ++ show a11 ++ show a12 ++ show a13 ++ show a14 ++ show a15 ++ show a16 ++ ")"
+init_fuzzOnce (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16) client = Client.init client a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 >> return ()
 

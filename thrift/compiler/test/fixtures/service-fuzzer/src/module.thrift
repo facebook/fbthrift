@@ -11,5 +11,10 @@ service TestService {
     9: i64 int9,
     10: i64 int10,
     11: i64 int11,
+    12: i64 int12,
+    13: i64 int13,
+    14: i64 int14,
+    15: i64 int15,
+    16: i64 int16,
   )
 }

@@ -49,14 +49,14 @@ import Thrift.Arbitraries
 import Module_Types
 import TestService
 seqid = newIORef 0
-init (ip,op) arg_int1 arg_int2 arg_int3 arg_int4 arg_int5 arg_int6 arg_int7 arg_int8 arg_int9 arg_int10 arg_int11 = do
-  send_init op arg_int1 arg_int2 arg_int3 arg_int4 arg_int5 arg_int6 arg_int7 arg_int8 arg_int9 arg_int10 arg_int11
+init (ip,op) arg_int1 arg_int2 arg_int3 arg_int4 arg_int5 arg_int6 arg_int7 arg_int8 arg_int9 arg_int10 arg_int11 arg_int12 arg_int13 arg_int14 arg_int15 arg_int16 = do
+  send_init op arg_int1 arg_int2 arg_int3 arg_int4 arg_int5 arg_int6 arg_int7 arg_int8 arg_int9 arg_int10 arg_int11 arg_int12 arg_int13 arg_int14 arg_int15 arg_int16
   recv_init ip
-send_init op arg_int1 arg_int2 arg_int3 arg_int4 arg_int5 arg_int6 arg_int7 arg_int8 arg_int9 arg_int10 arg_int11 = do
+send_init op arg_int1 arg_int2 arg_int3 arg_int4 arg_int5 arg_int6 arg_int7 arg_int8 arg_int9 arg_int10 arg_int11 arg_int12 arg_int13 arg_int14 arg_int15 arg_int16 = do
   seq <- seqid
   seqn <- readIORef seq
   writeMessage op ("init", M_CALL, seqn) $
-    write_Init_args op (Init_args{init_args_int1=arg_int1,init_args_int2=arg_int2,init_args_int3=arg_int3,init_args_int4=arg_int4,init_args_int5=arg_int5,init_args_int6=arg_int6,init_args_int7=arg_int7,init_args_int8=arg_int8,init_args_int9=arg_int9,init_args_int10=arg_int10,init_args_int11=arg_int11})
+    write_Init_args op (Init_args{init_args_int1=arg_int1,init_args_int2=arg_int2,init_args_int3=arg_int3,init_args_int4=arg_int4,init_args_int5=arg_int5,init_args_int6=arg_int6,init_args_int7=arg_int7,init_args_int8=arg_int8,init_args_int9=arg_int9,init_args_int10=arg_int10,init_args_int11=arg_int11,init_args_int12=arg_int12,init_args_int13=arg_int13,init_args_int14=arg_int14,init_args_int15=arg_int15,init_args_int16=arg_int16})
   tFlush (getTransport op)
 recv_init ip =
   readMessage ip $ \(fname,mtype,rseqid) -> do

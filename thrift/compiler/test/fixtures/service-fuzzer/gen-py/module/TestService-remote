@@ -40,7 +40,7 @@ from . import ttypes
 from thrift.util.remote import Function
 from thrift.remote import Remote
 FUNCTIONS = {
-    'init': Function('init', 'i64', [('i64', 'int1', 'i64'), ('i64', 'int2', 'i64'), ('i64', 'int3', 'i64'), ('i64', 'int4', 'i64'), ('i64', 'int5', 'i64'), ('i64', 'int6', 'i64'), ('i64', 'int7', 'i64'), ('i64', 'int8', 'i64'), ('i64', 'int9', 'i64'), ('i64', 'int10', 'i64'), ('i64', 'int11', 'i64')]),
+    'init': Function('init', 'i64', [('i64', 'int1', 'i64'), ('i64', 'int2', 'i64'), ('i64', 'int3', 'i64'), ('i64', 'int4', 'i64'), ('i64', 'int5', 'i64'), ('i64', 'int6', 'i64'), ('i64', 'int7', 'i64'), ('i64', 'int8', 'i64'), ('i64', 'int9', 'i64'), ('i64', 'int10', 'i64'), ('i64', 'int11', 'i64'), ('i64', 'int12', 'i64'), ('i64', 'int13', 'i64'), ('i64', 'int14', 'i64'), ('i64', 'int15', 'i64'), ('i64', 'int16', 'i64')]),
 }
 
 if __name__ == '__main__':
