@@ -1789,14 +1789,19 @@ void t_hack_generator::generate_service_processor(t_service* tservice,
   string extends_processor = string("Thrift") + suffix + "Processor";
   if (tservice->get_extends() != nullptr) {
     extends = php_servicename_mangle(mangle, tservice->get_extends());
-    extends_processor = extends + suffix + "Processor";
+    extends_processor = extends + suffix + "ProcessorBase";
   }
 
   string long_name = php_servicename_mangle(mangle, tservice);
-  // Generate the header portion
+
+  // I hate to make this abstract, but Hack doesn't support overriding const
+  // types. Thus, we will have an inheritance change that does not define the
+  // const type, then branch off at each service with the processor that does
+  // define the const type.
+
   f_service_ <<
-    indent() << "class " << long_name << suffix << "Processor extends " << extends_processor << " {" << endl <<
-    indent() << "  const type TThriftIf = " << long_name << (async ? "Async" : "") << "If;" << endl;
+    indent() << "abstract class " << long_name << suffix << "ProcessorBase extends " << extends_processor << " {" << endl <<
+    indent() << "  abstract const type TThriftIf as " << long_name << (async ? "Async" : "") << "If;" << endl;
 
   indent_up();
 
@@ -1808,11 +1813,18 @@ void t_hack_generator::generate_service_processor(t_service* tservice,
   indent_down();
   f_service_ << "}" << endl;
 
+  f_service_ <<
+    indent() << "class " << long_name << suffix << "Processor extends " << long_name << suffix << "ProcessorBase {" << endl <<
+    indent() << "  const type TThriftIf = " << long_name << (async ? "Async" : "") << "If;" << endl <<
+    indent() << "}" << endl;
+
   if (!async) {
     f_service_ <<
       indent() << "// For backwards compatibility" << endl <<
       indent() << "class " << long_name << "Processor extends " << long_name << "SyncProcessor {}" << endl;
   }
+
+  f_service_ << endl;
 }
 
 /**
