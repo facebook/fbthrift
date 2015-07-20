@@ -96,12 +96,23 @@ class TestEnumRandomizer(unittest.TestCase, TestRandomizer):
 
 
 class TestIntRandomizer(TestRandomizer):
+    @property
+    def min(self):
+        cls = self.__class__
+        n_bits = cls.n_bits
+        return -(2 ** (n_bits - 1))
+
+    @property
+    def max(self):
+        cls = self.__class__
+        n_bits = cls.n_bits
+        return (2 ** (n_bits - 1)) - 1
+
     def testInRange(self):
         cls = self.__class__
         ttype = cls.ttype
-        n_bits = cls.n_bits
-        min_ = -(2 ** (n_bits - 1))
-        max_ = (2 ** (n_bits - 1)) - 1
+        min_ = self.min
+        max_ = self.max
         gen = self.get_randomizer(ttype, None, {})
         for _ in sm.xrange(cls.iterations):
             val = gen.generate()
@@ -183,6 +194,44 @@ class TestIntRandomizer(TestRandomizer):
         for _ in sm.xrange(cls.iterations):
             val = gen.generate()
             self.assertIn(val, seeds)
+
+    def _one_bit_flipped(self, a, b):
+        """Return true if a and b differ at at most one bit position"""
+        diff = a ^ b  # Bits set to 1 where a and b differ
+        # If diff has only one `1` bit, subtracting one will clear that bit
+        # Otherwise, the most significant 1 will not be cleared
+        return 0 == (diff & (diff - 1))
+
+    def testFuzzing(self):
+        cls = self.__class__
+        ttype = cls.ttype
+        min_ = self.min
+        max_ = self.max
+
+        max_delta = 4
+        seeds = [
+            0, self.max - int(max_delta / 2), self.min + int(max_delta / 2)
+        ]
+
+        constraints = {
+            'seeds': seeds,
+            'p_random': 0,
+            'p_fuzz': 1,
+            'fuzz_max_delta': max_delta
+        }
+
+        gen = self.get_randomizer(ttype, None, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertGreaterEqual(val, min_)
+            self.assertLessEqual(val, max_)
+            one_bit_flipped = any(
+                self._one_bit_flipped(val, seed) for seed in seeds
+            )
+            within_delta = any(
+                max_delta >= abs(seed - val) for seed in seeds
+            )
+            self.assertTrue(one_bit_flipped or within_delta)
 
 class TestByteRandomizer(TestIntRandomizer, unittest.TestCase):
     ttype = Thrift.TType.BYTE

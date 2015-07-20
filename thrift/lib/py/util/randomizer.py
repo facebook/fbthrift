@@ -293,6 +293,8 @@ class EnumRandomizer(ScalarTypeRandomizer):
 
 def _integer_randomizer_factory(name, ttype, n_bits):
     _universe_size = 2 ** n_bits
+    _min = -(2 ** (n_bits - 1))
+    _max = (2 ** (n_bits - 1)) - 1
     _name = name
     _ttype = ttype
     _n_bits = n_bits
@@ -304,7 +306,8 @@ def _integer_randomizer_factory(name, ttype, n_bits):
 
         default_constraints = dict(ScalarTypeRandomizer.default_constraints)
         default_constraints.update({
-            'range': []
+            'range': [],
+            'fuzz_max_delta': 4
         })
 
         def _randomize(self):
@@ -319,6 +322,29 @@ def _integer_randomizer_factory(name, ttype, n_bits):
                 return random.randint(min_, max_)
 
             return _random_i32()
+
+        def _flip_bit(self, seed):
+            """Fuzz seed by flipping one bit, excluding the sign bit"""
+            flipper = 1 << random.randint(0, _n_bits - 2)
+            return seed ^ flipper
+
+        def _add_delta(self, seed):
+            """Fuzz seed by adding a small number"""
+            max_delta = self.constraints['fuzz_max_delta']
+            delta = random.randint(-max_delta, max_delta)
+            fuzzed = seed + delta
+
+            # Make sure fuzzed is in [_min, _max] to avoid overflow
+            return max(min(_max, fuzzed), _min)
+
+        def _fuzz(self, seed):
+            """Apply a random fuzzer function"""
+            seed = self.eval_seed(seed)
+            fuzz_fn = random.choice([
+                self._flip_bit,
+                self._add_delta
+            ])
+            return fuzz_fn(seed)
 
         @property
         def universe_size(self):
