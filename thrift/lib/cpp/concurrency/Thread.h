@@ -109,7 +109,7 @@ class Thread {
    * Sets thread name for debugging purposes after the thread was created.
    * Returns true on success.
    */
-  virtual bool setName(const std::string& name) { return false; }
+  virtual bool setName(const std::string& /*name*/) { return false; }
 
  protected:
   virtual void runnable(std::shared_ptr<Runnable> value) { _runnable = value; }

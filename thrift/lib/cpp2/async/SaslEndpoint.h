@@ -68,7 +68,7 @@ public:
 
   // Sets the protocol (e.g. binary/compact)
   // to use for serialization/deserialization of auth messages
-  virtual void setProtocolId(uint16_t protocol) {}
+  virtual void setProtocolId(uint16_t /*protocol*/) {}
 
 protected:
   virtual std::unique_ptr<folly::IOBuf> encrypt(

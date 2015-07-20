@@ -43,7 +43,7 @@ uint32_t BinaryProtocolWriter::writeMessageEnd() {
   return 0;
 }
 
-uint32_t BinaryProtocolWriter::writeStructBegin(const char* name) {
+uint32_t BinaryProtocolWriter::writeStructBegin(const char* /*name*/) {
   return 0;
 }
 
@@ -51,7 +51,7 @@ uint32_t BinaryProtocolWriter::writeStructEnd() {
   return 0;
 }
 
-uint32_t BinaryProtocolWriter::writeFieldBegin(const char* name,
+uint32_t BinaryProtocolWriter::writeFieldBegin(const char* /*name*/,
                                                TType fieldType,
                                                int16_t fieldId) {
   uint32_t wsize = 0;
@@ -214,20 +214,20 @@ uint32_t BinaryProtocolWriter::serializedMessageSize(
   return 2*serializedSizeI32() + serializedSizeString(name);
 }
 
-uint32_t BinaryProtocolWriter::serializedFieldSize(const char* name,
-                                                   TType fieldType,
-                                                   int16_t fieldId) {
+uint32_t BinaryProtocolWriter::serializedFieldSize(const char* /*name*/,
+                                                   TType /*fieldType*/,
+                                                   int16_t /*fieldId*/) {
   // byte + I16
   return serializedSizeByte() + serializedSizeI16();
 }
 
-uint32_t BinaryProtocolWriter::serializedStructSize(const char* name) {
+uint32_t BinaryProtocolWriter::serializedStructSize(const char* /*name*/) {
   return 0;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeMapBegin(TType keyType,
-                                                      TType valType,
-                                                      uint32_t size) {
+uint32_t BinaryProtocolWriter::serializedSizeMapBegin(TType /*keyType*/,
+                                                      TType /*valType*/,
+                                                      uint32_t /*size*/) {
   return serializedSizeByte() + serializedSizeByte() +
          serializedSizeI32();
 }
@@ -236,8 +236,8 @@ uint32_t BinaryProtocolWriter::serializedSizeMapEnd() {
   return 0;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeListBegin(TType elemType,
-                                                       uint32_t size) {
+uint32_t BinaryProtocolWriter::serializedSizeListBegin(TType /*elemType*/,
+                                                       uint32_t /*size*/) {
   return serializedSizeByte() + serializedSizeI32();
 }
 
@@ -245,8 +245,8 @@ uint32_t BinaryProtocolWriter::serializedSizeListEnd() {
   return 0;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeSetBegin(TType elemType,
-                                                      uint32_t size) {
+uint32_t BinaryProtocolWriter::serializedSizeSetBegin(TType /*elemType*/,
+                                                      uint32_t /*size*/) {
   return serializedSizeByte() + serializedSizeI32();
 }
 
@@ -258,31 +258,31 @@ uint32_t BinaryProtocolWriter::serializedSizeStop() {
   return 1;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeBool(bool val) {
+uint32_t BinaryProtocolWriter::serializedSizeBool(bool /*val*/) {
   return 1;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeByte(int8_t val) {
+uint32_t BinaryProtocolWriter::serializedSizeByte(int8_t /*val*/) {
   return 1;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeI16(int16_t val) {
+uint32_t BinaryProtocolWriter::serializedSizeI16(int16_t /*val*/) {
   return 2;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeI32(int32_t val) {
+uint32_t BinaryProtocolWriter::serializedSizeI32(int32_t /*val*/) {
   return 4;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeI64(int64_t val) {
+uint32_t BinaryProtocolWriter::serializedSizeI64(int64_t /*val*/) {
   return 8;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeDouble(double val) {
+uint32_t BinaryProtocolWriter::serializedSizeDouble(double /*val*/) {
   return 8;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeFloat(float val) {
+uint32_t BinaryProtocolWriter::serializedSizeFloat(float /*val*/) {
   return 4;
 }
 
@@ -307,7 +307,7 @@ uint32_t BinaryProtocolWriter::serializedSizeBinary(
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeSerializedData(
-    const std::unique_ptr<IOBuf>& buf) {
+    const std::unique_ptr<IOBuf>& /*buf*/) {
   // writeSerializedData's implementation just chains IOBufs together. Thus
   // we don't expect external buffer space for it.
   return 0;
@@ -368,7 +368,7 @@ uint32_t BinaryProtocolReader::readStructEnd() {
   return 0;
 }
 
-uint32_t BinaryProtocolReader::readFieldBegin(std::string& name,
+uint32_t BinaryProtocolReader::readFieldBegin(std::string& /*name*/,
                                               TType& fieldType,
                                               int16_t& fieldId) {
   uint32_t result = 0;

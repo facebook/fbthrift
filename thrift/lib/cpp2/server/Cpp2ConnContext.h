@@ -243,7 +243,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_->getHeader();
   }
 
-  static void no_op_destructor(void* ptr) {}
+  static void no_op_destructor(void* /*ptr*/) {}
 
  private:
   Cpp2ConnContext* ctx_;

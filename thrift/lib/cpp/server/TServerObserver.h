@@ -72,15 +72,15 @@ class TServerObserver {
 
   virtual void receivedRequest() {}
 
-  virtual void queuedRequests(int32_t numRequests) {}
+  virtual void queuedRequests(int32_t /*numRequests*/) {}
 
   virtual void queueTimeout() {}
 
   virtual void sentReply() {}
 
-  virtual void activeRequests(int32_t numRequests) {}
+  virtual void activeRequests(int32_t /*numRequests*/) {}
 
-  virtual void callCompleted(const CallTimestamps& runtimes) {}
+  virtual void callCompleted(const CallTimestamps& /*runtimes*/) {}
 
   // The observer has to specify a sample rate for callCompleted notifications
   inline uint32_t getSampleRate() const {

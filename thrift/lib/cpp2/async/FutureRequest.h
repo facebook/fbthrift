@@ -83,7 +83,7 @@ class OneWayFutureCallback : public FutureCallbackBase<folly::Unit> {
       promise_.setValue();
     };
 
-    void replyReceived(ClientReceiveState&& state) override {
+    void replyReceived(ClientReceiveState&& /*state*/) override {
       CHECK(false);
     }
 };

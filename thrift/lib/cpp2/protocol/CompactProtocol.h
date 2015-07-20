@@ -159,7 +159,7 @@ class CompactProtocolWriter {
   inline uint32_t writeBinary(const std::unique_ptr<IOBuf>& str);
   inline uint32_t writeBinary(const IOBuf& str);
   inline uint32_t writeSerializedData(
-    const std::unique_ptr<folly::IOBuf>& data) {
+    const std::unique_ptr<folly::IOBuf>& /*data*/) {
     // TODO
     return 0;
   }
@@ -203,16 +203,16 @@ class CompactProtocolWriter {
   uint32_t serializedSizeZCBinary(const StrType& v) {
     return serializedSizeBinary(v);
   }
-  uint32_t serializedSizeZCBinary(const std::unique_ptr<IOBuf>& v) {
+  uint32_t serializedSizeZCBinary(const std::unique_ptr<IOBuf>& /*v*/) {
     // size only
     return serializedSizeI32();
   }
-  uint32_t serializedSizeZCBinary(const IOBuf& v) {
+  uint32_t serializedSizeZCBinary(const IOBuf& /*v*/) {
     // size only
     return serializedSizeI32();
   }
   inline uint32_t serializedSizeSerializedData(
-    const std::unique_ptr<folly::IOBuf>& data) {
+    const std::unique_ptr<folly::IOBuf>& /*data*/) {
     // TODO
     return 0;
   }
@@ -327,8 +327,8 @@ class CompactProtocolReader {
     return in_;
   }
   inline uint32_t readFromPositionAndAppend(
-    Cursor& cursor,
-    std::unique_ptr<folly::IOBuf>& ser) {
+    Cursor& /*cursor*/,
+    std::unique_ptr<folly::IOBuf>& /*ser*/) {
     // TODO
     return 0;
   }

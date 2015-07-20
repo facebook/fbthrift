@@ -68,25 +68,25 @@ class TProcessorEventHandler {
    * The return value is passed to all other callbacks
    * for that function invocation.
    */
-  virtual void* getServiceContext(const char* service_name,
+  virtual void* getServiceContext(const char* /*service_name*/,
                            const char* fn_name,
                            TConnectionContext* connectionContext) {
     return getContext(fn_name, connectionContext);
   }
-  virtual void* getContext(const char* fn_name,
-                           TConnectionContext* connectionContext) {
+  virtual void* getContext(const char* /*fn_name*/,
+                           TConnectionContext* /*connectionContext*/) {
     return nullptr;
   }
 
   /**
    * Expected to free resources associated with a context.
    */
-  virtual void freeContext(void* ctx, const char* fn_name) { }
+  virtual void freeContext(void* /*ctx*/, const char* /*fn_name*/) { }
 
   /**
    * Called before reading arguments.
    */
-  virtual void preRead(void* ctx, const char* fn_name) {}
+  virtual void preRead(void* /*ctx*/, const char* /*fn_name*/) {}
 
   /**
    * Called before postRead, after reading arguments (server) / after reading
@@ -97,18 +97,20 @@ class TProcessorEventHandler {
    *
    * Only called for Cpp2.
    */
-  virtual void onReadData(void* ctx, const char* fn_name,
-                          const SerializedMessage& msg) {}
+  virtual void onReadData(void* /*ctx*/, const char* /*fn_name*/,
+                          const SerializedMessage& /*msg*/) {}
 
   /**
    * Called between reading arguments and calling the handler.
    */
-  virtual void postRead(void* ctx, const char* fn_name, uint32_t bytes) {}
+  virtual void postRead(void* /*ctx*/,
+                        const char* /*fn_name*/,
+                        uint32_t /*bytes*/) {}
 
   /**
    * Called between calling the handler and writing the response.
    */
-  virtual void preWrite(void* ctx, const char* fn_name) {}
+  virtual void preWrite(void* /*ctx*/, const char* /*fn_name*/) {}
 
   /**
    * Called before postWrite, after serializing response (server) / after
@@ -119,33 +121,35 @@ class TProcessorEventHandler {
    *
    * Only called for Cpp2.
    */
-  virtual void onWriteData(void* ctx, const char* fn_name,
-                           const SerializedMessage& msg) {}
+  virtual void onWriteData(void* /*ctx*/, const char* /*fn_name*/,
+                           const SerializedMessage& /*msg*/) {}
 
   /**
    * Called after writing the response.
    */
-  virtual void postWrite(void* ctx, const char* fn_name, uint32_t bytes) {}
+  virtual void postWrite(void* /*ctx*/,
+                         const char* /*fn_name*/,
+                         uint32_t /*bytes*/) {}
 
   /**
    * Called when an async function call completes successfully.
    */
-  virtual void asyncComplete(void* ctx, const char* fn_name) {}
+  virtual void asyncComplete(void* /*ctx*/, const char* /*fn_name*/) {}
 
   /**
    * Called if the handler throws an undeclared exception.
    */
-  virtual void handlerError(void* ctx, const char* fn_name) {}
+  virtual void handlerError(void* /*ctx*/, const char* /*fn_name*/) {}
 
   /**
    * Called if the handler throws a declared exception
    *
    * Only called for Cpp2
    */
-  virtual void userException(void* ctx,
-                             const char* fn_name,
-                             const std::string& ex,
-                             const std::string& ex_what) {}
+  virtual void userException(void* /*ctx*/,
+                             const char* /*fn_name*/,
+                             const std::string& /*ex*/,
+                             const std::string& /*ex_what*/) {}
 
  protected:
   TProcessorEventHandler() {}

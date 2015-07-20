@@ -905,13 +905,13 @@ template <class ProtocolReader, class Processor>
 typename std::enable_if<!is_root_async_processor<Processor>::value>::type
 process_missing(
     Processor* processor,
-    const std::string& fname,
+    const std::string& /*fname*/,
     std::unique_ptr<ResponseChannel::Request> req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
     async::TEventBase* eb,
     concurrency::ThreadManager* tm,
-    int32_t protoSeqId) {
+    int32_t /*protoSeqId*/) {
   auto protType = ProtocolReader::protocolType();
   processor->Processor::BaseAsyncProcessor::process(
       std::move(req), std::move(buf), protType, ctx, eb, tm);

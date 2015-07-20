@@ -147,11 +147,11 @@ class BinaryProtocolWriter {
   uint32_t serializedSizeZCBinary(const StrType& v) {
     return serializedSizeBinary(v);
   }
-  uint32_t serializedSizeZCBinary(const std::unique_ptr<folly::IOBuf>& v) {
+  uint32_t serializedSizeZCBinary(const std::unique_ptr<folly::IOBuf>& /*v*/) {
     // size only
     return serializedSizeI32();
   }
-  uint32_t serializedSizeZCBinary(const folly::IOBuf& v) {
+  uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/) {
     // size only
     return serializedSizeI32();
   }

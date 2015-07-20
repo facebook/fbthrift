@@ -235,7 +235,7 @@ class ThreadManager : public folly::Executor {
    * @param maxItems - max items collected for stats
    */
   virtual void getStats(int64_t& waitTimeUs, int64_t& runTimeUs,
-                        int64_t maxItems) {
+                        int64_t /*maxItems*/) {
     waitTimeUs = 0;
     runTimeUs = 0;
   }
@@ -351,11 +351,11 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   std::shared_ptr<ThreadFactory> threadFactory() const override {
     return nullptr;
   }
-  void threadFactory(std::shared_ptr<ThreadFactory> value) override {}
+  void threadFactory(std::shared_ptr<ThreadFactory> /*value*/) override {}
   std::string getNamePrefix() const override { return ""; }
-  void setNamePrefix(const std::string& name) override {}
-  void addWorker(size_t value = 1) override {}
-  void removeWorker(size_t value = 1) override {}
+  void setNamePrefix(const std::string& /*name*/) override {}
+  void addWorker(size_t /*value*/ = 1) override {}
+  void removeWorker(size_t /*value*/ = 1) override {}
 
   size_t idleWorkerCount() const override { return 0; }
   size_t workerCount() const override { return 0; }
@@ -365,22 +365,22 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   size_t expiredTaskCount() override { return 0; }
 
   void add(std::shared_ptr<Runnable> task,
-           int64_t timeout = 0LL,
-           int64_t expiration = 0LL,
-           bool cancellable = false,
-           bool numa = false) override {
+           int64_t /*timeout*/ = 0LL,
+           int64_t /*expiration*/ = 0LL,
+           bool /*cancellable*/ = false,
+           bool /*numa*/ = false) override {
     exe_->add([=]() {
       task->run();
     });
   }
   void add(folly::Func f) override { exe_->add(std::move(f)); }
 
-  void remove(std::shared_ptr<Runnable> task) override {}
+  void remove(std::shared_ptr<Runnable> /*task*/) override {}
   std::shared_ptr<Runnable> removeNextPending() override { return nullptr; }
 
-  void setExpireCallback(ExpireCallback expireCallback) override {}
-  void setCodelCallback(ExpireCallback expireCallback) override {}
-  void setThreadInitCallback(InitCallback initCallback) override {}
+  void setExpireCallback(ExpireCallback /*expireCallback*/) override {}
+  void setCodelCallback(ExpireCallback /*expireCallback*/) override {}
+  void setThreadInitCallback(InitCallback /*initCallback*/) override {}
   void enableCodel(bool) override {}
   folly::wangle::Codel* getCodel() override { return nullptr; }
 

@@ -107,7 +107,7 @@ uint32_t CompactProtocolWriter::writeMessageEnd() {
   return 0;
 }
 
-uint32_t CompactProtocolWriter::writeStructBegin(const char* name) {
+uint32_t CompactProtocolWriter::writeStructBegin(const char* /*name*/) {
   lastField_.push(lastFieldId_);
   lastFieldId_ = 0;
   return 0;
@@ -125,7 +125,7 @@ uint32_t CompactProtocolWriter::writeStructEnd() {
  * boolean field case.
  */
 uint32_t CompactProtocolWriter::writeFieldBeginInternal(
-    const char* name,
+    const char* /*name*/,
     const TType fieldType,
     const int16_t fieldId,
     int8_t typeOverride) {
@@ -323,20 +323,20 @@ uint32_t CompactProtocolWriter::serializedMessageSize(
   return 2*serializedSizeI32() + serializedSizeString(name);
 }
 
-uint32_t CompactProtocolWriter::serializedFieldSize(const char* name,
-                                                   TType fieldType,
-                                                   int16_t fieldId) {
+uint32_t CompactProtocolWriter::serializedFieldSize(const char* /*name*/,
+                                                   TType /*fieldType*/,
+                                                   int16_t /*fieldId*/) {
   // byte + I16
   return serializedSizeByte() + serializedSizeI16();
 }
 
-uint32_t CompactProtocolWriter::serializedStructSize(const char* name) {
+uint32_t CompactProtocolWriter::serializedStructSize(const char* /*name*/) {
   return 0;
 }
 
-uint32_t CompactProtocolWriter::serializedSizeMapBegin(TType keyType,
-                                                      TType valType,
-                                                      uint32_t size) {
+uint32_t CompactProtocolWriter::serializedSizeMapBegin(TType /*keyType*/,
+                                                      TType /*valType*/,
+                                                      uint32_t /*size*/) {
   return serializedSizeByte() + serializedSizeByte() +
          serializedSizeI32();
 }
@@ -345,8 +345,8 @@ uint32_t CompactProtocolWriter::serializedSizeMapEnd() {
   return 0;
 }
 
-uint32_t CompactProtocolWriter::serializedSizeListBegin(TType elemType,
-                                                       uint32_t size) {
+uint32_t CompactProtocolWriter::serializedSizeListBegin(TType /*elemType*/,
+                                                       uint32_t /*size*/) {
   return serializedSizeByte() + serializedSizeI32();
 }
 
@@ -354,8 +354,8 @@ uint32_t CompactProtocolWriter::serializedSizeListEnd() {
   return 0;
 }
 
-uint32_t CompactProtocolWriter::serializedSizeSetBegin(TType elemType,
-                                                      uint32_t size) {
+uint32_t CompactProtocolWriter::serializedSizeSetBegin(TType /*elemType*/,
+                                                      uint32_t /*size*/) {
   return serializedSizeByte() + serializedSizeI32();
 }
 
@@ -367,32 +367,32 @@ uint32_t CompactProtocolWriter::serializedSizeStop() {
   return 1;
 }
 
-uint32_t CompactProtocolWriter::serializedSizeBool(bool val) {
+uint32_t CompactProtocolWriter::serializedSizeBool(bool /*val*/) {
   return 1;
 }
 
-uint32_t CompactProtocolWriter::serializedSizeByte(int8_t val) {
+uint32_t CompactProtocolWriter::serializedSizeByte(int8_t /*val*/) {
   return 1;
 }
 
 // Varint writes can be up to one additional byte
-uint32_t CompactProtocolWriter::serializedSizeI16(int16_t val) {
+uint32_t CompactProtocolWriter::serializedSizeI16(int16_t /*val*/) {
   return 3;
 }
 
-uint32_t CompactProtocolWriter::serializedSizeI32(int32_t val) {
+uint32_t CompactProtocolWriter::serializedSizeI32(int32_t /*val*/) {
   return 5;
 }
 
-uint32_t CompactProtocolWriter::serializedSizeI64(int64_t val) {
+uint32_t CompactProtocolWriter::serializedSizeI64(int64_t /*val*/) {
   return 10;
 }
 
-uint32_t CompactProtocolWriter::serializedSizeDouble(double val) {
+uint32_t CompactProtocolWriter::serializedSizeDouble(double /*val*/) {
   return 8;
 }
 
-uint32_t CompactProtocolWriter::serializedSizeFloat(float val) {
+uint32_t CompactProtocolWriter::serializedSizeFloat(float /*val*/) {
   return 4;
 }
 
@@ -469,7 +469,7 @@ uint32_t CompactProtocolReader::readStructEnd() {
   return 0;
 }
 
-uint32_t CompactProtocolReader::readFieldBegin(std::string& name,
+uint32_t CompactProtocolReader::readFieldBegin(std::string& /*name*/,
                                               TType& fieldType,
                                               int16_t& fieldId) {
   uint32_t rsize = 0;

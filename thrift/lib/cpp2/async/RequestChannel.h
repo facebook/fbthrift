@@ -187,7 +187,7 @@ class FunctionSendCallback : public RequestCallback {
     auto cb = std::move(callback_);
     cb(std::move(state));
   }
-  void replyReceived(ClientReceiveState&& state) override {}
+  void replyReceived(ClientReceiveState&& /*state*/) override {}
  private:
   std::function<void (ClientReceiveState&&)> callback_;
 };
