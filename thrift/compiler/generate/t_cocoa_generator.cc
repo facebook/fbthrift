@@ -66,6 +66,9 @@ class t_cocoa_generator : public t_oop_generator {
     iter = parsed_options.find("validate_required");
     validate_required_ = (iter != parsed_options.end());
 
+    iter = parsed_options.find("nullability");
+    nullability_ = (iter != parsed_options.end());
+
     out_dir_base_ = "gen-cocoa";
   }
 
@@ -236,6 +239,7 @@ class t_cocoa_generator : public t_oop_generator {
 
   bool log_unexpected_;
   bool validate_required_;
+  bool nullability_;
 };
 
 
@@ -261,6 +265,9 @@ void t_cocoa_generator::init_generator() {
     custom_thrift_marker() <<
     cocoa_imports() <<
     cocoa_thrift_imports();
+  if (nullability_) {
+    f_header_ << "NS_ASSUME_NONNULL_BEGIN\n\n";
+  }
 
   // ...and a .m implementation file
   string f_impl_name = get_out_dir()+program_name_+".m";
@@ -339,6 +346,9 @@ void t_cocoa_generator::close_generator()
   // stick our constants declarations at the end of the header file
   // since they refer to things we are defining.
   f_header_ << constants_declarations_ << endl;
+  if (nullability_) {
+    f_header_ << endl << "NS_ASSUME_NONNULL_END\n" << endl;
+  }
 }
 
 /**
@@ -389,13 +399,13 @@ void t_cocoa_generator::generate_enum(t_enum* tenum) {
     endl;
 
 
-  const string toStringFunctionDeclaration = 
-        string("NSString* ") 
+  const string toStringFunctionDeclaration =
+        string("NSString* ")
         + cocoa_prefix_ + tenum->get_name() + kToStringPostfix + "(const "
         + cocoa_prefix_ + tenum->get_name() + " value)";
 
   f_header_ << indent() <<  toStringFunctionDeclaration << ";" << endl << endl;
- 
+
   // implementation:
   f_impl_ << indent() <<  toStringFunctionDeclaration << endl << "{" << endl;
   indent_up();
@@ -404,15 +414,15 @@ void t_cocoa_generator::generate_enum(t_enum* tenum) {
   indent_up();
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
     string itemName = cocoa_prefix_ + tenum->get_name() + "_" + (*c_iter)->get_name();
-    f_impl_ << indent() 
+    f_impl_ << indent()
             << "case " << itemName << ": return @\"" + itemName + "\";" << endl;
   }
   indent_down();
   f_impl_ << indent() << "}" << endl;
-  f_impl_ << indent() 
+  f_impl_ << indent()
           << "return [NSString stringWithFormat:@\""
           << cocoa_prefix_ << tenum->get_name() << "_"
-          << "%d\", (int)value];" 
+          << "%d\", (int)value];"
           << endl;
   indent_down();
   f_impl_ << indent() << "}" << endl;
@@ -607,7 +617,12 @@ void t_cocoa_generator::generate_cocoa_struct_initializer_signature(ofstream &ou
     } else {
       out << (*m_iter)->get_name();
     }
-    out << ": (" << type_name((*m_iter)->get_type()) << ") " <<
+    out << ": (";
+    if (nullability_ && type_can_be_null(((*m_iter)->get_type()))) {
+      out << ((*m_iter)->get_req() == t_field::T_REQUIRED ?
+          "nonnull " : "nullable ");
+    }
+    out << type_name((*m_iter)->get_type()) << ") " <<
       (*m_iter)->get_name();
     ++m_iter;
     if (m_iter != members.end()) {
@@ -1374,7 +1389,7 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(ofstream& out,
        out << indent() <<  ret_equals << "@(" << field_name << ");" << endl;
        if (ttype->is_enum()) {
          string ToStringFunctionName = cocoa_prefix_ + ttype->get_name() + kToStringPostfix;
-         out << indent() <<  "ret[@\"" + field->get_name() + "_str\"] = " 
+         out << indent() <<  "ret[@\"" + field->get_name() + "_str\"] = "
                          << ToStringFunctionName << "(" << field_name << ");" << endl;
        }
      }
@@ -2849,8 +2864,13 @@ string t_cocoa_generator::declare_field(t_field* tfield) {
 string t_cocoa_generator::declare_property(t_field* tfield) {
   std::ostringstream render;
   render << "@property (nonatomic";
-  if (type_can_be_null(tfield->get_type()))
+  if (type_can_be_null(tfield->get_type())) {
     render << ", retain";
+    if (nullability_) {
+      render << (tfield->get_req() == t_field::T_REQUIRED ?
+          ", nonnull" : ", nullable");
+    }
+  }
   render
          // << ", getter=" << decapitalize(tfield->get_name())
          // << ", setter=set" << capitalize(tfield->get_name()) + ":"
@@ -2998,6 +3018,7 @@ string t_cocoa_generator::call_field_setter(t_field* tfield, string fieldName) {
 
 THRIFT_REGISTER_GENERATOR(cocoa, "Cocoa",
 "    log_unexpected:  Log every time an unexpected field ID or type is encountered.\n"
+"    nullability:  Use annotations to ensure required fields are present.\n"
 "    validate_required:\n"
 "                     Throws exception if any required field is not set.\n"
 )

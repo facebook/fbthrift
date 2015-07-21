@@ -20,6 +20,8 @@
 #import "TBase.h"
 #import "TBaseStruct.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface exampleFoo : TBaseStruct <TBase, NSCoding> {
   int32_t __thrift_myInteger;
   NSString * __thrift_myString;
@@ -33,12 +35,12 @@
 }
 
 @property (nonatomic) int32_t myInteger;
-@property (nonatomic, retain) NSString * myString;
-@property (nonatomic, retain) TBaseStructArray * myBools;
-@property (nonatomic, retain) TBaseStructArray * myNumbers;
+@property (nonatomic, retain, nullable) NSString * myString;
+@property (nonatomic, retain, nullable) TBaseStructArray * myBools;
+@property (nonatomic, retain, nonnull) TBaseStructArray * myNumbers;
 
 - (id) init;
-- (id) initWithMyInteger: (int32_t) myInteger myString: (NSString *) myString myBools: (TBaseStructArray *) myBools myNumbers: (TBaseStructArray *) myNumbers;
+- (id) initWithMyInteger: (int32_t) myInteger myString: (nullable NSString *) myString myBools: (nullable TBaseStructArray *) myBools myNumbers: (nonnull TBaseStructArray *) myNumbers;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;
@@ -52,3 +54,6 @@
 @interface examplemoduleConstants : TBaseStruct {
 }
 @end
+
+NS_ASSUME_NONNULL_END
+

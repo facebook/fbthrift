@@ -36,7 +36,7 @@
   return self;
 }
 
-- (id) initWithMyInteger: (int32_t) myInteger myString: (NSString *) myString myBools: (TBaseStructArray *) myBools myNumbers: (TBaseStructArray *) myNumbers
+- (id) initWithMyInteger: (int32_t) myInteger myString: (nullable NSString *) myString myBools: (nullable TBaseStructArray *) myBools myNumbers: (nonnull TBaseStructArray *) myNumbers
 {
   self = [super init];
   __thrift_myInteger = myInteger;
