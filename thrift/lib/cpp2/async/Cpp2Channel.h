@@ -120,7 +120,7 @@ class Cpp2Channel
 private:
   std::shared_ptr<apache::thrift::async::TAsyncTransport> transport_;
   std::unique_ptr<folly::IOBufQueue> queue_;
-  std::deque<std::vector<SendCallback*>> sendCallbacks_;
+  std::deque<SendCallback*> sendCallbacks_;
 
   RecvCallback* recvCallback_;
   bool eofInvoked_;
