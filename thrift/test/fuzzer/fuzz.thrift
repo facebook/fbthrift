@@ -25,6 +25,17 @@ union IntUnion {
   2: i32 b;
 }
 
+struct Rainbow {
+  1: list<Color> colors;
+  2: double brightness;
+}
+
+struct NestedStructs {
+  1: ListStruct ls;
+  2: Rainbow rainbow;
+  3: IntUnion ints;
+}
+
 struct BTreeBranch {
   1: required BTree child;
   2: i16 cost;
@@ -48,11 +59,15 @@ exception EmptyData {
 }
 
 service TestService {
-    string lookup (
+  string lookup (
     1: BTree root;
     2: i32 key;
   ) throws (
     1: KeyNotFound e;
     2: EmptyData f;
+  ),
+
+  void nested (
+    1: NestedStructs ns;
   )
 }

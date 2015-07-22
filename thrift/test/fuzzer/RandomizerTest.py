@@ -748,6 +748,109 @@ class TestListStructRandomizer(TestStructRandomizer, unittest.TestCase):
             self.assertEqual(expected, getattr(val, key, None),
                              msg="%s, %s" % (val, dir(val)))
 
+    def testFuzz(self):
+        cls = self.__class__
+
+        seeds = [{
+            'a': [True, False, False],
+            'b': [1, 2, 3],
+            'c': [1.2, 2.3],
+            'd': ["foo", "bar"],
+            'e': [[]],
+            'f': [{1: 2}, {3: 4}],
+            'g': [{"foo", "bar"}]
+        }]
+
+        constraints = {
+            'seeds': seeds,
+            'p_random': 0,
+            'p_fuzz': 1
+        }
+
+        gen = self.struct_randomizer(constraints=constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            n_different = 0
+            for key, expected in six.iteritems(seeds[0]):
+                if expected != getattr(val, key, None):
+                    n_different += 1
+            self.assertLessEqual(n_different, 1)
+
+class TestNestedStruct(TestStructRandomizer, unittest.TestCase):
+    ttype = ttypes.NestedStructs
+
+    def testFuzz(self):
+        """Check that only one subfield is randomized"""
+        cls = self.__class__
+
+        seed = {
+            'ls': {
+                'a': [True, True],
+                'b': [1, 2, 3],
+                'c': [1.2, 3.4],
+                'd': ["foo"],
+                'e': [[1], [2, 3]],
+                'f': [{1: -1}, {-1: 1}],
+                'g': [{"a", "b"}, set(), set()]
+            },
+            'rainbow': {
+                'colors': ["YELLOW", "YELLOW", "GRAY"],
+                'brightness': float('inf')
+            },
+            'ints': {
+                'a': 1000
+            }
+        }
+
+        constraints = {
+            'seeds': [seed],
+            'p_random': 0,
+            'p_fuzz': 1,
+            'ls': {'p_random': 0},
+            'rainbow': {'p_random': 0},
+            'ints': {'p_random': 0}
+        }
+
+        gen = self.struct_randomizer(constraints=constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+
+            # To check the generated value against the seed,
+            # convert enum numbers back into enum names
+            val.rainbow.colors = [
+                ttypes.Color._VALUES_TO_NAMES.get(c, c)
+                for c in val.rainbow.colors
+            ]
+
+            n_different = 0
+            differents = []
+
+            # Compare actual (generated) struct to expected structs
+            for struct_name in {'ls', 'rainbow'}:
+                actual_struct = getattr(val, struct_name)
+                for key, expected_field in six.iteritems(seed[struct_name]):
+                    actual_field = getattr(actual_struct, key, None)
+                    if expected_field != actual_field:
+                        n_different += 1
+                        differents.append((
+                            '%s.%s' % (struct_name, key),
+                            expected_field,
+                            actual_field
+                        ))
+
+            # Fuzzed union should use the same field as the seed union (a=1)
+            self.assertEqual(val.ints.field, 1)
+
+            expected = seed['ints']['a']
+            actual = val.ints.value
+            if actual != expected:
+                n_different += 1
+                differents.append(('ints.a', expected, actual))
+
+            message = ', '.join('%s: %s != %s' % diff for diff in differents)
+            self.assertLessEqual(n_different, 1, msg=message)
+
 class TestStructRecursion(TestStructRandomizer, unittest.TestCase):
     ttype = ttypes.BTree
 

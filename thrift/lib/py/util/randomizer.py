@@ -735,6 +735,41 @@ class StructRandomizer(BaseRandomizer):
         else:
             return self._ttype(**fields)
 
+    def _fuzz(self, seed):
+        """Fuzz a single field of the struct at random"""
+        fields = {}
+        field_rules = self._field_rules
+
+        if self._is_union:
+            # The seed should be a single key/value pair
+            field_name, seed_val = six.next(six.iteritems(seed))
+            field_randomizer = field_rules[field_name]['randomizer']
+            fuzzed_val = field_randomizer.generate(seed=seed_val)
+            fields[field_name] = fuzzed_val
+
+        elif field_rules:
+            # Fuzz only one field and leave the rest with the seed value
+            fuzz_field_name = random.choice(list(field_rules))
+            fuzz_field_rule = field_rules[fuzz_field_name]
+            fuzz_field_randomizer = fuzz_field_rule['randomizer']
+            fuzz_seed_val = seed.get(fuzz_field_name, None)
+            fuzzed_value = fuzz_field_randomizer.generate(seed=fuzz_seed_val)
+
+            if fuzzed_value is None:
+                if fuzz_field_rule['required']:
+                    # Cannot generate the struct
+                    return None
+            else:
+                fields[fuzz_field_name] = fuzzed_value
+
+            for field_name, seed_val in six.iteritems(seed):
+                if field_name == fuzz_field_name:
+                    continue
+                field_randomizer = field_rules[field_name]['randomizer']
+                fields[field_name] = field_randomizer.eval_seed(seed_val)
+
+        return self._ttype(**fields)
+
     def eval_seed(self, seed):
         fields = {}
         for key, val in six.iteritems(seed):
