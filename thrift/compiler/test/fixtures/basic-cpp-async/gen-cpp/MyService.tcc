@@ -3728,7 +3728,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_lobDataById(std::function<void
 }
 
 template <class Protocol_>
-void MyServiceAsyncProcessorT<Protocol_>::process_lobDataById(std::function<void(bool ok)> cob, int32_t seqid, Protocol_* iprot, Protocol_* oprot, apache::thrift::server::TConnectionContext* connectionContext)
+void MyServiceAsyncProcessorT<Protocol_>::process_lobDataById(std::function<void(bool ok)> cob, int32_t /*seqid*/, Protocol_* iprot, Protocol_* /*oprot*/, apache::thrift::server::TConnectionContext* connectionContext)
 {
   MyService_lobDataById_args args;
   std::unique_ptr<apache::thrift::ContextStack> ctx(this->getContextStack(this->getServiceName(), "MyService.lobDataById", connectionContext));

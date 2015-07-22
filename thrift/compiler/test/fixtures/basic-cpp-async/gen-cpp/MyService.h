@@ -38,7 +38,7 @@ class MyServiceIfFactory {
   virtual ~MyServiceIfFactory() {}
 
   virtual MyServiceIf* getHandler(::apache::thrift::server::TConnectionContext* ctx) = 0;
-  virtual void releaseHandler(MyServiceIf* handler) = 0;
+  virtual void releaseHandler(MyServiceIf* /*handler*/) = 0;
 };
 
 class MyServiceIfSingletonFactory : virtual public MyServiceIfFactory {
@@ -49,7 +49,7 @@ class MyServiceIfSingletonFactory : virtual public MyServiceIfFactory {
   virtual MyServiceIf* getHandler(::apache::thrift::server::TConnectionContext*) {
     return iface_.get();
   }
-  virtual void releaseHandler(MyServiceIf* handler) {}
+  virtual void releaseHandler(MyServiceIf* /*handler*/) {}
 
  protected:
   std::shared_ptr<MyServiceIf> iface_;
@@ -938,7 +938,7 @@ class MyServiceCobSvIfFactory {
   virtual ~MyServiceCobSvIfFactory() {}
 
   virtual MyServiceCobSvIf* getHandler(::apache::thrift::server::TConnectionContext* ctx) = 0;
-  virtual void releaseHandler(MyServiceCobSvIf* handler) = 0;
+  virtual void releaseHandler(MyServiceCobSvIf* /*handler*/) = 0;
 };
 
 class MyServiceCobSvIfSingletonFactory : virtual public MyServiceCobSvIfFactory {
@@ -949,7 +949,7 @@ class MyServiceCobSvIfSingletonFactory : virtual public MyServiceCobSvIfFactory 
   virtual MyServiceCobSvIf* getHandler(::apache::thrift::server::TConnectionContext*) {
     return iface_.get();
   }
-  virtual void releaseHandler(MyServiceCobSvIf* handler) {}
+  virtual void releaseHandler(MyServiceCobSvIf* /*handler*/) {}
 
  protected:
   std::shared_ptr<MyServiceCobSvIf> iface_;
@@ -1026,7 +1026,7 @@ class MyServiceCobClientT : virtual public MyServiceCobClIfT<Protocol_>, virtual
   std::shared_ptr<apache::thrift::async::TAsyncChannel> getChannel() {
     return this->channel_;
   }
-  virtual void completed__(bool success) {}
+  virtual void completed__(bool /*success*/) {}
   virtual ~MyServiceCobClientT() {}
   void ping(std::function<void(MyServiceCobClientT<Protocol_>* client)> cob);
   virtual void send_ping();
