@@ -69,9 +69,9 @@ void RaiserSvNull::doBland() {}
 
 void RaiserSvNull::doRaise() {}
 
-void RaiserSvNull::get200(std::string& _return) {}
+void RaiserSvNull::get200(std::string& /*_return*/) {}
 
-void RaiserSvNull::get500(std::string& _return) {}
+void RaiserSvNull::get500(std::string& /*_return*/) {}
 
 const char* RaiserAsyncProcessor::getServiceName() {
   return "Raiser";

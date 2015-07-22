@@ -4019,7 +4019,7 @@ void t_cpp_generator::generate_service_interface_factory(t_service* tservice,
       "::apache::thrift::server::TConnectionContext* ctx) = 0;" <<
     endl <<
     indent() << "virtual void releaseHandler(" << base_if_name <<
-    "* handler) = 0;" << endl;
+    "* /*handler*/) = 0;" << endl;
 
   indent_down();
   f_header_ <<
@@ -4042,7 +4042,7 @@ void t_cpp_generator::generate_service_interface_factory(t_service* tservice,
     indent() << "  return iface_.get();" << endl <<
     indent() << "}" << endl <<
     indent() << "virtual void releaseHandler(" << base_if_name <<
-    "* handler) {}" << endl;
+    "* /*handler*/) {}" << endl;
 
   f_header_ <<
     endl <<
@@ -4590,7 +4590,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
       indent() << "}" << endl;
     if (!gen_no_client_completion_) {
       f_header_ <<
-        indent() << "virtual void completed__(bool success) {}" << endl;
+        indent() << "virtual void completed__(bool /*success*/) {}" << endl;
     }
   }
 
@@ -5955,12 +5955,17 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
       out <<
         indent() << "template <class Protocol_>" << endl;
     }
+    bool seqid_oprot_used =
+      (gen_templates_ && !specialized) || !tfunction->is_oneway();
+
     out <<
       "void " << tservice->get_name() << "AsyncProcessor" << class_suffix <<
       "::process_" << tfunction->get_name() <<
-      "(std::function<void(bool ok)> cob, int32_t seqid, " <<
-      prot_type << "* iprot, " << prot_type <<
-      "* oprot, apache::thrift::server::TConnectionContext* " <<
+      "(std::function<void(bool ok)> cob, int32_t " <<
+      (seqid_oprot_used ? "seqid" : "/*seqid*/") <<
+      ", " << prot_type << "* iprot, " << prot_type << "* " <<
+      (seqid_oprot_used ? "oprot" : "/*oprot*/") <<
+      ", apache::thrift::server::TConnectionContext* " <<
       "connectionContext)" << endl;
     scope_up(out);
 
@@ -7389,7 +7394,7 @@ string t_cpp_generator::function_signature(t_function* tfunction,
                   ? "()"
                   : ("(" + type_name(ttype) + " const& _return)"));
       if (has_xceptions) {
-        exn_cob = ", std::function<void(const std::exception& ex)> exn_cob";
+        exn_cob = ", std::function<void(const std::exception& ex)> /*exn_cob*/";
       }
     } else {
       throw "UNKNOWN STYLE";

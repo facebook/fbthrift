@@ -91,17 +91,17 @@ void MyServiceSvIf::async_tm_lobDataById(std::unique_ptr<apache::thrift::Handler
 
 void MyServiceSvNull::ping() {}
 
-void MyServiceSvNull::getRandomData(std::string& _return) {}
+void MyServiceSvNull::getRandomData(std::string& /*_return*/) {}
 
-bool MyServiceSvNull::hasDataById(int64_t id) {
+bool MyServiceSvNull::hasDataById(int64_t /*id*/) {
   return 0;
 }
 
-void MyServiceSvNull::getDataById(std::string& _return, int64_t id) {}
+void MyServiceSvNull::getDataById(std::string& /*_return*/, int64_t /*id*/) {}
 
-void MyServiceSvNull::putDataById(int64_t id, std::unique_ptr<std::string> data) {}
+void MyServiceSvNull::putDataById(int64_t /*id*/, std::unique_ptr<std::string> /*data*/) {}
 
-void MyServiceSvNull::lobDataById(int64_t id, std::unique_ptr<std::string> data) {}
+void MyServiceSvNull::lobDataById(int64_t /*id*/, std::unique_ptr<std::string> /*data*/) {}
 
 const char* MyServiceAsyncProcessor::getServiceName() {
   return "MyService";

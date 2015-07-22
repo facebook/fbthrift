@@ -65,15 +65,15 @@ void MyServiceSvIf::async_tm_lobDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] { return future_lobDataById(id, data); });
 }
 
-bool MyServiceSvNull::hasDataById(int64_t id) {
+bool MyServiceSvNull::hasDataById(int64_t /*id*/) {
   return 0;
 }
 
-void MyServiceSvNull::getDataById(std::string& _return, int64_t id) {}
+void MyServiceSvNull::getDataById(std::string& /*_return*/, int64_t /*id*/) {}
 
-void MyServiceSvNull::putDataById(int64_t id, const std::string& data) {}
+void MyServiceSvNull::putDataById(int64_t /*id*/, const std::string& /*data*/) {}
 
-void MyServiceSvNull::lobDataById(int64_t id, const std::string& data) {}
+void MyServiceSvNull::lobDataById(int64_t /*id*/, const std::string& /*data*/) {}
 
 const char* MyServiceAsyncProcessor::getServiceName() {
   return "MyService";

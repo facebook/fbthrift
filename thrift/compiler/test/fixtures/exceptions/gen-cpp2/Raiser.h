@@ -71,8 +71,8 @@ class RaiserSvNull : public RaiserSvIf {
   virtual ~RaiserSvNull() {}
   virtual void doBland();
   virtual void doRaise();
-  virtual void get200(std::string& _return);
-  virtual void get500(std::string& _return);
+  virtual void get200(std::string& /*_return*/);
+  virtual void get500(std::string& /*_return*/);
 };
 
 class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {

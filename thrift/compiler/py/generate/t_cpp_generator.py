@@ -880,7 +880,8 @@ class CppGenerator(t_generator.Generator):
                    not self._is_stream_type(function.returntype):
                     with out().defn(
                             self._get_process_function_signature(service,
-                                                                 function),
+                                                                 function,
+                                                                 True),
                             name=function.name,
                             modifiers='virtual'):
                         if not function.oneway and \

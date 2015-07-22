@@ -69,10 +69,10 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
 class MyServiceSvNull : public MyServiceSvIf {
  public:
   virtual ~MyServiceSvNull() {}
-  virtual bool hasDataById(int64_t id);
-  virtual void getDataById(std::string& _return, int64_t id);
-  virtual void putDataById(int64_t id, const std::string& data);
-  virtual void lobDataById(int64_t id, const std::string& data);
+  virtual bool hasDataById(int64_t /*id*/);
+  virtual void getDataById(std::string& /*_return*/, int64_t /*id*/);
+  virtual void putDataById(int64_t /*id*/, const std::string& /*data*/);
+  virtual void lobDataById(int64_t /*id*/, const std::string& /*data*/);
 };
 
 class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {

@@ -82,11 +82,11 @@ class MyServiceSvNull : public MyServiceSvIf {
  public:
   virtual ~MyServiceSvNull() {}
   virtual void ping();
-  virtual void getRandomData(std::string& _return);
-  virtual bool hasDataById(int64_t id);
-  virtual void getDataById(std::string& _return, int64_t id);
-  virtual void putDataById(int64_t id, std::unique_ptr<std::string> data);
-  virtual void lobDataById(int64_t id, std::unique_ptr<std::string> data);
+  virtual void getRandomData(std::string& /*_return*/);
+  virtual bool hasDataById(int64_t /*id*/);
+  virtual void getDataById(std::string& /*_return*/, int64_t /*id*/);
+  virtual void putDataById(int64_t /*id*/, std::unique_ptr<std::string> /*data*/);
+  virtual void lobDataById(int64_t /*id*/, std::unique_ptr<std::string> /*data*/);
 };
 
 class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
