@@ -23,10 +23,11 @@
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <thrift/lib/cpp/util/TNonblockingServerCreator.h>
 #include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 #include <thrift/lib/cpp/util/example/TThreadPoolServerCreator.h>
+#include <thrift/lib/cpp/async/TEventServer.h>
+#include <thrift/lib/cpp/util/TEventServerCreator.h>
 
 #include <boost/test/unit_test.hpp>
 #include <iostream>
@@ -51,7 +52,7 @@ using apache::thrift::transport::TSocket;
 using folly::SocketAddress;
 using apache::thrift::util::ScopedServerThread;
 using apache::thrift::util::ServerCreator;
-using apache::thrift::util::TNonblockingServerCreator;
+using apache::thrift::util::TEventServerCreator;
 using apache::thrift::util::TSimpleServerCreator;
 using apache::thrift::util::TThreadedServerCreator;
 using apache::thrift::util::TThreadPoolServerCreator;
@@ -243,23 +244,9 @@ BOOST_AUTO_TEST_CASE(TThreadPoolServerTest) {
   #pragma GCC diagnostic pop
 }
 
-/**
- * Test TNonblockingServer when used with a thread pool
- */
-BOOST_AUTO_TEST_CASE(TNonblockingServerTest) {
-  runTest<TNonblockingServerCreator>();
-}
-
-/**
- * Test TNonblockingServer when used without a thread pool
- */
-BOOST_AUTO_TEST_CASE(TNonblockingServerNoThreadsTest) {
-  std::shared_ptr<ConnCtxHandler> handler(new ConnCtxHandler);
-  std::shared_ptr<ConnCtxServiceProcessor> processor(
-      new ConnCtxServiceProcessor(handler));
-  TNonblockingServerCreator serverCreator(processor, 0, 0);
-
-  runTest(handler, &serverCreator);
+BOOST_AUTO_TEST_CASE(TEventServerTest) {
+  // "For testing TEventServerCreator"
+  runTest<TEventServerCreator>();
 }
 
 unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {

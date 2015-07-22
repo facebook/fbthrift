@@ -29,7 +29,6 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
-#include <thrift/lib/cpp/server/example/TNonblockingServer.h>
 #include <thrift/lib/cpp/server/example/TThreadedServer.h>
 #include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
 #include <thrift/lib/cpp/server/TServer.h>
@@ -43,7 +42,6 @@
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/util/ServerCreatorBase.h>
 #include <thrift/lib/cpp/util/TEventServerCreator.h>
-#include <thrift/lib/cpp/util/TNonblockingServerCreator.h>
 #include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 #include <thrift/lib/cpp/util/example/TThreadPoolServerCreator.h>
@@ -163,7 +161,6 @@ enum ServerType {
   SERVER_TYPE_SIMPLE = 0,
   SERVER_TYPE_THREADED = 1,
   SERVER_TYPE_THREADPOOL = 2,
-  SERVER_TYPE_NONBLOCKING = 4,
   SERVER_TYPE_EVENT = 5,
 };
 
@@ -403,9 +400,6 @@ void runTestCase(ServerType sType, ClientType clientType) {
         new TThreadPoolServerCreator(testProcessor, port, false));
       #pragma GCC diagnostic pop
       break;
-    case SERVER_TYPE_NONBLOCKING:
-      serverCreator.reset(new TNonblockingServerCreator(testProcessor, port));
-      break;
     case SERVER_TYPE_EVENT:
       serverCreator.reset(new TEventServerCreator(testAsyncProcessor, port));
       break;
@@ -444,10 +438,6 @@ BOOST_AUTO_TEST_CASE(threadPoolServerFramed) {
   runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_FRAMED);
 }
 
-BOOST_AUTO_TEST_CASE(nonblockingServerFramed) {
-  runTestCase(SERVER_TYPE_NONBLOCKING, CLIENT_TYPE_FRAMED);
-}
-
 BOOST_AUTO_TEST_CASE(eventServerFramed) {
   runTestCase(SERVER_TYPE_EVENT, CLIENT_TYPE_FRAMED);
 }
@@ -462,10 +452,6 @@ BOOST_AUTO_TEST_CASE(threadedServerHeader) {
 
 BOOST_AUTO_TEST_CASE(threadPoolServerHeader) {
   runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_HEADER);
-}
-
-BOOST_AUTO_TEST_CASE(nonblockingServerHeader) {
-  runTestCase(SERVER_TYPE_NONBLOCKING, CLIENT_TYPE_HEADER);
 }
 
 BOOST_AUTO_TEST_CASE(eventServerHeader) {
@@ -494,10 +480,6 @@ BOOST_AUTO_TEST_CASE(threadedServerCompactFramed) {
 
 BOOST_AUTO_TEST_CASE(threadPoolServerCompactFramed) {
   runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_FRAMED_COMPACT);
-}
-
-BOOST_AUTO_TEST_CASE(nonblockingServerCompactFramed) {
-  runTestCase(SERVER_TYPE_NONBLOCKING, CLIENT_TYPE_FRAMED_COMPACT);
 }
 
 BOOST_AUTO_TEST_CASE(eventServerCompactFramed) {

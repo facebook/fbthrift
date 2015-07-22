@@ -84,16 +84,7 @@ void ServerThread::run() {
     // preServe() method will be called once we've successfully bound to
     // the port and are about to start listening.
     server_->setServerEventHandler(helper_);
-
-    try {
-      // Try to serve requests
-      server_->serve();
-    } catch (const TException& x) {
-      // TNonblockingServer throws a generic TException if it fails to bind.
-      // If we get a TException, we'll optimistically assume the bind failed.
-      ++port_;
-      continue;
-    }
+    server_->serve();
 
     // Seriously?  serve() is pretty lame.  If it fails to start serving it
     // just returns rather than throwing an exception.

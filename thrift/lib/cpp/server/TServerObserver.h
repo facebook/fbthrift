@@ -16,8 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#ifndef THRIFT_SERVER_TNONBLOCKINGSERVEROBSERVER_H_
-#define THRIFT_SERVER_TNONBLOCKINGSERVEROBSERVER_H_ 1
+#ifndef THRIFT_SERVER_TSERVEROBSERVER_H_
+#define THRIFT_SERVER_TSERVEROBSERVER_H_ 1
 
 #include <stdint.h>
 #include <memory>
@@ -53,7 +53,6 @@ class TServerObserver {
 
   };
 
-  // Notifications for various events on the TNonblockingServer
   virtual void connAccepted() {}
 
   virtual void connDropped() {}

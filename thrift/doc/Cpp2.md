@@ -5,7 +5,7 @@ Cpp2 ThriftServer
 
 This is a re-implementation of both the generated cpp code, and a
 fully asynchronous version of the c++ server code.  In many ways it is
-similar to the older TNonblockingServer:
+similar to the older first-generation implementation:
 
 * Can run code inline, or in a ThreadManager queue
 

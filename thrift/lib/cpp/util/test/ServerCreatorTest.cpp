@@ -17,9 +17,9 @@
 #include <boost/test/unit_test.hpp>
 
 #include <thrift/lib/cpp/ClientUtil.h>
+#include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/util/TEventServerCreator.h>
-#include <thrift/lib/cpp/util/TNonblockingServerCreator.h>
 #include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 #include <thrift/lib/cpp/util/example/TThreadPoolServerCreator.h>
@@ -99,10 +99,6 @@ BOOST_AUTO_TEST_CASE(ThreadPoolServer) {
   #pragma GCC diagnostic pop
 }
 
-BOOST_AUTO_TEST_CASE(NonblockingServer) {
-  testServerCreator<TNonblockingServerCreator>();
-}
-
 BOOST_AUTO_TEST_CASE(EventServerTaskQueueMode) {
   testServerCreator<TEventServerCreator>();
 }
@@ -171,10 +167,6 @@ BOOST_AUTO_TEST_CASE(ThreadPoolServerBindFailure) {
   #pragma GCC diagnostic pop
 }
 
-BOOST_AUTO_TEST_CASE(NonblockingServerBindFailure) {
-  testBindFailure<TNonblockingServerCreator>();
-}
-
 BOOST_AUTO_TEST_CASE(EventServerBindFailure) {
   testBindFailure<TEventServerCreator, AsyncLoadHandler,
                   LoadTestAsyncProcessor>();
@@ -236,10 +228,6 @@ BOOST_AUTO_TEST_CASE(ThreadPoolServerThreadedBindFailure) {
   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   testThreadedBindFailure<TThreadPoolServerCreator>();
   #pragma GCC diagnostic pop
-}
-
-BOOST_AUTO_TEST_CASE(NonblockingServerThreadedBindFailure) {
-  testThreadedBindFailure<TNonblockingServerCreator>();
 }
 
 BOOST_AUTO_TEST_CASE(EventServerThreadedBindFailure) {

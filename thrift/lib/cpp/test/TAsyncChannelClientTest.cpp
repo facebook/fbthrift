@@ -126,7 +126,7 @@ void runTest(TEventBase& evb, LoadTestCobClient& client) {
 }
 
 BOOST_AUTO_TEST_CASE(TestZlibClient) {
-  // Start a TNonblockingServer using zlib transport
+  // Start a TThreadedServer using zlib transport
   std::shared_ptr<LoadHandler> handler(new LoadHandler);
   std::shared_ptr<LoadTestProcessor> processor(new LoadTestProcessor(handler));
   std::shared_ptr<TTransportFactory> transportFactory(
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(TestZlibClient) {
 }
 
 BOOST_AUTO_TEST_CASE(TestHttpClient) {
-  // Start a TNonblockingServer using HTTP transport
+  // Start a TThreadedServer using HTTP transport
   std::shared_ptr<LoadHandler> handler(new LoadHandler);
   std::shared_ptr<LoadTestProcessor> processor(new LoadTestProcessor(handler));
   std::shared_ptr<TTransportFactory> transportFactory(

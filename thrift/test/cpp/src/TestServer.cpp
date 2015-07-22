@@ -19,10 +19,10 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/server/example/TSimpleServer.h>
 #include <thrift/lib/cpp/server/example/TThreadedServer.h>
 #include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
-#include <thrift/lib/cpp/server/example/TNonblockingServer.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp/transport/TTransportUtils.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
@@ -47,6 +47,7 @@ using std::ostringstream;
 using std::invalid_argument;
 using namespace boost;
 using namespace apache::thrift;
+using namespace apache::thrift::async;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
@@ -384,7 +385,7 @@ int main(int argc, char **argv) {
     "[--protocol-type=<protocol-type>] [--workers=<worker-count>] " <<
     "[--processor-events]" << endl <<
     "\t\tserver-type\t\ttype of server, \"simple\", \"thread-pool\", " <<
-    "\"threaded\", or \"nonblocking\".  Default is " << serverType << endl <<
+    "\"threaded\", or \"event\".  Default is " << serverType << endl <<
     "\t\tprotocol-type\t\ttype of protocol, \"binary\", \"header\", " <<
     "\"ascii\", or \"xml\".  Default is " << protocolType << endl <<
     "\t\tworkers\t\tNumber of thread pools workers.  Only valid for " <<
@@ -417,7 +418,7 @@ int main(int argc, char **argv) {
       if (serverType == "simple") {
       } else if (serverType == "thread-pool") {
       } else if (serverType == "threaded") {
-      } else if (serverType == "nonblocking") {
+      } else if (serverType == "event") {
       } else {
         throw invalid_argument("Unknown server type "+serverType);
       }
@@ -549,11 +550,11 @@ int main(int argc, char **argv) {
 
     printf("Starting the server on port %d...\n", port);
 
-  } else if (serverType == "nonblocking") {
-    server = std::shared_ptr<TServer>(new TNonblockingServer(testProcessor,
-                                                        protocolFactory, port));
+  } else if (serverType == "event") {
+    server = std::shared_ptr<TServer>(new TEventServer(testProcessor,
+                                                       protocolFactory, port));
 
-    printf("Starting the nonblocking server on port %d...\n", port);
+    printf("Starting the event server on port %d...\n", port);
   }
 
   if (header) {

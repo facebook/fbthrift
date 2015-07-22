@@ -75,7 +75,7 @@ using apache::thrift::protocol::T_COMPACT_PROTOCOL;
  *
  * Backwards compatible with TFramed format, and unframed format, assuming
  * your server transport is compatible (some server types require 4-byte size
- * at the start, such as TNonblockingServer).
+ * at the start).
  */
 class THeader {
  public:

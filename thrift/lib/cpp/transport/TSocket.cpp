@@ -391,13 +391,6 @@ void TSocket::close() {
   cachedPeerAddr_.reset();
 }
 
-void TSocket::setSocketFD(int socket) {
-  if (socket_ >= 0) {
-    close();
-  }
-  socket_ = socket;
-}
-
 int TSocket::stealSocketFD() {
   int stolen = socket_;
   socket_ = -1;

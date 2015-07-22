@@ -31,7 +31,6 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/server/example/TThreadedServer.h>
 #include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
-#include <thrift/lib/cpp/server/example/TNonblockingServer.h>
 #include <thrift/lib/cpp/server/example/TSimpleServer.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
@@ -117,60 +116,6 @@ class TThreadPoolServerTraits {
   }
 };
 #pragma GCC diagnostic pop
-
-class TNonblockingServerTraits {
- public:
-  typedef TNonblockingServer ServerType;
-
-  std::shared_ptr<TNonblockingServer> createServer(
-      const std::shared_ptr<TProcessor>& processor,
-      uint16_t port,
-      const std::shared_ptr<TTransportFactory>& transportFactory,
-      const std::shared_ptr<TProtocolFactory>& protocolFactory) {
-    // TNonblockingServer automatically uses TFramedTransport.
-    // Raise an exception if the supplied transport factory is not a
-    // TFramedTransportFactory
-    TFramedTransportFactory* framedFactory =
-      dynamic_cast<TFramedTransportFactory*>(transportFactory.get());
-    if (framedFactory == nullptr) {
-      throw TLibraryException("TNonblockingServer must use TFramedTransport");
-    }
-
-    std::shared_ptr<PosixThreadFactory> threadFactory(new PosixThreadFactory);
-    std::shared_ptr<ThreadManager> threadManager =
-      ThreadManager::newSimpleThreadManager(8);
-    threadManager->threadFactory(threadFactory);
-    threadManager->start();
-
-    return std::shared_ptr<TNonblockingServer>(new TNonblockingServer(
-          processor, protocolFactory, port, threadManager));
-  }
-};
-
-class TNonblockingServerNoThreadsTraits {
- public:
-  typedef TNonblockingServer ServerType;
-
-  std::shared_ptr<TNonblockingServer> createServer(
-      const std::shared_ptr<TProcessor>& processor,
-      uint16_t port,
-      const std::shared_ptr<TTransportFactory>& transportFactory,
-      const std::shared_ptr<TProtocolFactory>& protocolFactory) {
-    // TNonblockingServer automatically uses TFramedTransport.
-    // Raise an exception if the supplied transport factory is not a
-    // TFramedTransportFactory
-    TFramedTransportFactory* framedFactory =
-      dynamic_cast<TFramedTransportFactory*>(transportFactory.get());
-    if (framedFactory == nullptr) {
-      throw TLibraryException("TNonblockingServer must use TFramedTransport");
-    }
-
-    // Use a nullptr ThreadManager
-    std::shared_ptr<ThreadManager> threadManager;
-    return std::shared_ptr<TNonblockingServer>(new TNonblockingServer(
-          processor, protocolFactory, port, threadManager));
-  }
-};
 
 /*
  * Traits classes for controlling if we instantiate templated or generic
@@ -892,16 +837,11 @@ void testUnexpectedError() {
   }
 
 // The testEventSequencing() test manually generates a request for the server,
-// and doesn't work with TFramedTransport.  Therefore we can't test it with
-// TNonblockingServer.
+// and doesn't work with TFramedTransport.
 #define DEFINE_NOFRAME_TESTS(Server, Template) \
   BOOST_AUTO_TEST_CASE(Server##_##Template##_eventSequencing) { \
     testEventSequencing<Server##Traits, Template##Traits>(); \
   }
-
-#define DEFINE_TNONBLOCKINGSERVER_TESTS(Server, Template) \
-  DEFINE_SIMPLE_TESTS(Server, Template) \
-  DEFINE_CONCURRENT_SERVER_TESTS(Server, Template)
 
 #define DEFINE_ALL_SERVER_TESTS(Server, Template) \
   DEFINE_SIMPLE_TESTS(Server, Template) \
@@ -912,11 +852,6 @@ DEFINE_ALL_SERVER_TESTS(TThreadedServer, Templated)
 DEFINE_ALL_SERVER_TESTS(TThreadedServer, Untemplated)
 DEFINE_ALL_SERVER_TESTS(TThreadPoolServer, Templated)
 DEFINE_ALL_SERVER_TESTS(TThreadPoolServer, Untemplated)
-
-DEFINE_TNONBLOCKINGSERVER_TESTS(TNonblockingServer, Templated)
-DEFINE_TNONBLOCKINGSERVER_TESTS(TNonblockingServer, Untemplated)
-DEFINE_TNONBLOCKINGSERVER_TESTS(TNonblockingServerNoThreads, Templated)
-DEFINE_TNONBLOCKINGSERVER_TESTS(TNonblockingServerNoThreads, Untemplated)
 
 DEFINE_SIMPLE_TESTS(TSimpleServer, Templated);
 DEFINE_SIMPLE_TESTS(TSimpleServer, Untemplated);

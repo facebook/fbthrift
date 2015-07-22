@@ -325,15 +325,6 @@ public:
   }
 
   /**
-   * (Re-)initialize a TSocket for the supplied descriptor.  This is only
-   * intended for use by TNonblockingServer -- other use may result in
-   * unfortunate surprises.
-   *
-   * @param fd the descriptor for an already-connected socket
-   */
-  void setSocketFD(int fd);
-
-  /**
    * Steals the underlying socket file descriptor.
    *
    * After calling this, the TSocket will no longer be open.

@@ -513,7 +513,6 @@ class TEventServer : public apache::thrift::server::TServer {
 
 
   /** Construct a task-queuing Thrift server for a particular TProtocol.
-      Largely compatible with TNonblockingServer.
 
       @param processor the TProcessor object for this service
       @param protocolFactory the TProtocolFactory to use for input & output
@@ -562,7 +561,6 @@ class TEventServer : public apache::thrift::server::TServer {
   }
 
   /** Construct a task-queuing Thrift server for a particular TProtocol.
-      Largely compatible with TNonblockingServer.
 
       @param processor the TProcessor object for this service
       @param protocolFactory the TProtocolFactory to use for input & output
