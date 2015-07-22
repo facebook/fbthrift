@@ -499,6 +499,50 @@ class ListRandomizer(NonAssociativeContainerRandomizer):
 
         return elements
 
+    def _fuzz_insert(self, seed):
+        """Fuzz a list seed by inserting a random element at a random index"""
+        seed = self.eval_seed(seed)
+        randomizer = self._element_randomizer
+        new_elem = randomizer.generate()
+        insertion_index = random.randint(0, len(seed))
+        seed.insert(insertion_index, new_elem)
+        return seed
+
+    def _fuzz_delete(self, seed):
+        """Fuzz a list seed by deleting a random element
+
+        Requires len(seed) >= 1"""
+        seed = self.eval_seed(seed)
+        delete_index = random.randint(0, len(seed) - 1)
+        seed.pop(delete_index)
+        return seed
+
+    def _fuzz_one_element(self, seed):
+        """Fuzz a list seed by fuzzing one element
+
+        Requires len(seed) >= 1"""
+        fuzz_index = random.randint(0, len(seed) - 1)
+        randomizer = self._element_randomizer
+        fuzzed_elem = randomizer.generate(seed=seed[fuzz_index])
+
+        seed = self.eval_seed(seed)
+        seed[fuzz_index] = fuzzed_elem
+        return seed
+
+    def _fuzz(self, seed):
+        if len(seed) == 0:
+            # Seed is an empty list. The only valid fuzzer function
+            # is the insert function
+            return self._fuzz_insert(seed)
+        else:
+            # All fuzzer functions are valid
+            fuzz_fn = random.choice([
+                self._fuzz_insert,
+                self._fuzz_delete,
+                self._fuzz_one_element
+            ])
+            return fuzz_fn(seed)
+
     def eval_seed(self, seed):
         return [self._element_randomizer.eval_seed(e) for e in seed]
 
