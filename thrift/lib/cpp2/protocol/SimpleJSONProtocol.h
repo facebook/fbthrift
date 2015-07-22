@@ -39,7 +39,7 @@ class SimpleJSONProtocolWriter {
   static const int32_t VERSION_1 = 0x80010000;
 
   explicit SimpleJSONProtocolWriter(
-      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER /* ignored */)
+      ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */)
     : out_(nullptr, 0) {}
 
   static inline ProtocolType protocolType() {
@@ -136,11 +136,11 @@ class SimpleJSONProtocolWriter {
   uint32_t serializedSizeZCBinary(const StrType& v) {
     return serializedSizeBinary(v);
   }
-  uint32_t serializedSizeZCBinary(const std::unique_ptr<folly::IOBuf>& v) {
+  uint32_t serializedSizeZCBinary(const std::unique_ptr<folly::IOBuf>& /*v*/) {
     // size only
     return serializedSizeI32();
   }
-  uint32_t serializedSizeZCBinary(const folly::IOBuf& v) {
+  uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/) {
     // size only
     return serializedSizeI32();
   }
@@ -183,7 +183,7 @@ class SimpleJSONProtocolReader {
   static const int32_t VERSION_1 = 0x80010000;
 
   explicit SimpleJSONProtocolReader(
-      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER /* ignored */)
+      ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */)
     : in_(nullptr)
     , allowDecodeUTF8_(true)
     , skippedWhitespace_(0)

@@ -35,7 +35,7 @@ struct ForEachImpl {
 };
 template <int Size, class F, class Tuple>
 struct ForEachImpl<Size, Size, F, Tuple> {
-  static uint32_t forEach(Tuple&& tuple, F&& f) {
+  static uint32_t forEach(Tuple&& /*tuple*/, F&& /*f*/) {
     return 0;
   }
 };
@@ -191,8 +191,8 @@ struct Reserver<T, typename std::enable_if<has_reserve<T>::value>::type> {
 
 template <bool hasIsSet, size_t count>
 struct IsSetHelper {
-  void setIsSet(size_t index, bool value = true) { }
-  bool getIsSet(size_t index) const { return true; }
+  void setIsSet(size_t /*index*/, bool /*value*/ = true) { }
+  bool getIsSet(size_t /*index*/) const { return true; }
 };
 
 template <size_t count>

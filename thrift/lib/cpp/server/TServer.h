@@ -67,7 +67,7 @@ class TServerEventHandler {
    *
    * @param address The address on which the server is listening.
    */
-  virtual void preServe(const folly::SocketAddress* address) {}
+  virtual void preServe(const folly::SocketAddress* /*address*/) {}
 
   /**
    * Called when a new client has connected and is about to being processing.
@@ -191,7 +191,7 @@ class TServer : public concurrency::Runnable {
     return nullptr;
   }
 
-  virtual void setFailureInjection(FailureInjection fi) {
+  virtual void setFailureInjection(FailureInjection /*fi*/) {
     throw std::runtime_error(
       "setFailureInjection not supported by this implementation.");
   }

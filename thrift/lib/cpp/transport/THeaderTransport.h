@@ -87,7 +87,7 @@ class THeaderTransport
     setSupportedClients(clientTypes);
   }
 
-  THeaderTransport(const std::shared_ptr<TTransport> transport, uint32_t sz,
+  THeaderTransport(const std::shared_ptr<TTransport> transport, uint32_t /*sz*/,
                    std::bitset<CLIENT_TYPES_LEN> const* clientTypes)
     : THeader()
     , transport_(transport)

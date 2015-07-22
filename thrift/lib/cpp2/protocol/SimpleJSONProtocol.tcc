@@ -286,7 +286,7 @@ uint32_t SimpleJSONProtocolWriter::writeMessageEnd() {
   return endContext();
 }
 
-uint32_t SimpleJSONProtocolWriter::writeStructBegin(const char* name) {
+uint32_t SimpleJSONProtocolWriter::writeStructBegin(const char* /*name*/) {
   auto ret = writeContext();
   return ret + beginContext(ContextType::MAP);
 }
@@ -296,8 +296,8 @@ uint32_t SimpleJSONProtocolWriter::writeStructEnd() {
 }
 
 uint32_t SimpleJSONProtocolWriter::writeFieldBegin(const char* name,
-                                               TType fieldType,
-                                               int16_t fieldId) {
+                                               TType /*fieldType*/,
+                                               int16_t /*fieldId*/) {
   auto ret = writeContext();
   return ret + writeJSONString(name, strlen(name));
 }
@@ -310,9 +310,9 @@ uint32_t SimpleJSONProtocolWriter::writeFieldStop() {
   return 0;
 }
 
-uint32_t SimpleJSONProtocolWriter::writeMapBegin(const TType keyType,
-                                             TType valType,
-                                             uint32_t size) {
+uint32_t SimpleJSONProtocolWriter::writeMapBegin(const TType /*keyType*/,
+                                             TType /*valType*/,
+                                             uint32_t /*size*/) {
   auto ret = writeContext();
   return ret + beginContext(ContextType::MAP);
 }
@@ -321,8 +321,8 @@ uint32_t SimpleJSONProtocolWriter::writeMapEnd() {
   return endContext();
 }
 
-uint32_t SimpleJSONProtocolWriter::writeListBegin(TType elemType,
-                                              uint32_t size) {
+uint32_t SimpleJSONProtocolWriter::writeListBegin(TType /*elemType*/,
+                                              uint32_t /*size*/) {
   auto ret = writeContext();
   return ret + beginContext(ContextType::ARRAY);
 }
@@ -331,8 +331,8 @@ uint32_t SimpleJSONProtocolWriter::writeListEnd() {
   return endContext();
 }
 
-uint32_t SimpleJSONProtocolWriter::writeSetBegin(TType elemType,
-                                             uint32_t size) {
+uint32_t SimpleJSONProtocolWriter::writeSetBegin(TType /*elemType*/,
+                                             uint32_t /*size*/) {
   auto ret = writeContext();
   return ret + beginContext(ContextType::ARRAY);
 }
@@ -430,19 +430,19 @@ uint32_t SimpleJSONProtocolWriter::serializedMessageSize(
 }
 
 uint32_t SimpleJSONProtocolWriter::serializedFieldSize(const char* name,
-                                                   TType fieldType,
-                                                   int16_t fieldId) {
+                                                   TType /*fieldType*/,
+                                                   int16_t /*fieldId*/) {
   // string plus ":"
   return strlen(name) * 6 + 3;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedStructSize(const char* name) {
+uint32_t SimpleJSONProtocolWriter::serializedStructSize(const char* /*name*/) {
   return 2; // braces
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeMapBegin(TType keyType,
-                                                      TType valType,
-                                                      uint32_t size) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeMapBegin(TType /*keyType*/,
+                                                      TType /*valType*/,
+                                                      uint32_t /*size*/) {
   return 1;
 }
 
@@ -450,8 +450,8 @@ uint32_t SimpleJSONProtocolWriter::serializedSizeMapEnd() {
   return 1;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeListBegin(TType elemType,
-                                                       uint32_t size) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeListBegin(TType /*elemType*/,
+                                                       uint32_t /*size*/) {
   return 1;
 }
 
@@ -459,8 +459,8 @@ uint32_t SimpleJSONProtocolWriter::serializedSizeListEnd() {
   return 1;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeSetBegin(TType elemType,
-                                                      uint32_t size) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeSetBegin(TType /*elemType*/,
+                                                      uint32_t /*size*/) {
   return 1;
 }
 
@@ -472,32 +472,32 @@ uint32_t SimpleJSONProtocolWriter::serializedSizeStop() {
   return 0;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeBool(bool val) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeBool(bool /*val*/) {
   return 6;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeByte(int8_t val) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeByte(int8_t /*val*/) {
   // 3 bytes for serialized, plus it might be a key, plus context
   return 6;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeI16(int16_t val) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeI16(int16_t /*val*/) {
   return 8;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeI32(int32_t val) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeI32(int32_t /*val*/) {
   return 13;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeI64(int64_t val) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeI64(int64_t /*val*/) {
   return 25;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeDouble(double val) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeDouble(double /*val*/) {
   return 25;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeFloat(float val) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeFloat(float /*val*/) {
   return 25;
 }
 
@@ -521,7 +521,7 @@ uint32_t SimpleJSONProtocolWriter::serializedSizeBinary(
 }
 
 uint32_t SimpleJSONProtocolWriter::serializedSizeSerializedData(
-    const std::unique_ptr<IOBuf>& buf) {
+    const std::unique_ptr<IOBuf>& /*buf*/) {
   // writeSerializedData's implementation just chains IOBufs together. Thus
   // we don't expect external buffer space for it.
   return 0;
@@ -932,7 +932,7 @@ uint32_t SimpleJSONProtocolReader::readMessageEnd() {
   return endContext();
 }
 
-uint32_t SimpleJSONProtocolReader::readStructBegin(std::string& name) {
+uint32_t SimpleJSONProtocolReader::readStructBegin(std::string& /*name*/) {
   return ensureAndBeginContext(ContextType::MAP);
 }
 
@@ -968,8 +968,8 @@ uint32_t SimpleJSONProtocolReader::readFieldEnd() {
   return 0;
 }
 
-uint32_t SimpleJSONProtocolReader::readMapBegin(TType& keyType,
-                                            TType& valType,
+uint32_t SimpleJSONProtocolReader::readMapBegin(TType& /*keyType*/,
+                                            TType& /*valType*/,
                                             uint32_t& size) {
   size = std::numeric_limits<uint32_t>::max();
   return ensureAndBeginContext(ContextType::MAP);
@@ -979,7 +979,7 @@ uint32_t SimpleJSONProtocolReader::readMapEnd() {
   return endContext();
 }
 
-uint32_t SimpleJSONProtocolReader::readListBegin(TType& elemType,
+uint32_t SimpleJSONProtocolReader::readListBegin(TType& /*elemType*/,
                                              uint32_t& size) {
   size = std::numeric_limits<uint32_t>::max();
   return ensureAndBeginContext(ContextType::ARRAY);
@@ -989,7 +989,7 @@ uint32_t SimpleJSONProtocolReader::readListEnd() {
   return endContext();
 }
 
-uint32_t SimpleJSONProtocolReader::readSetBegin(TType& elemType,
+uint32_t SimpleJSONProtocolReader::readSetBegin(TType& /*elemType*/,
                                             uint32_t& size) {
   size = std::numeric_limits<uint32_t>::max();
   return ensureAndBeginContext(ContextType::ARRAY);
@@ -1100,7 +1100,7 @@ uint32_t SimpleJSONProtocolReader::readFromPositionAndAppend(
   return (uint32_t) size;
 }
 
-uint32_t SimpleJSONProtocolReader::skip(TType type) {
+uint32_t SimpleJSONProtocolReader::skip(TType /*type*/) {
   bool keyish;
   auto ret = ensureAndReadContext(keyish);
   ret += readWhitespace();

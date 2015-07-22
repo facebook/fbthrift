@@ -70,7 +70,7 @@ class SaslClient : public SaslEndpoint {
   virtual void setServiceIdentity(const std::string& identity) = 0;
   virtual void setRequiredServicePrincipalFetcher(
     std::function<std::tuple<std::string, std::string, std::string>()>
-      function) {}
+      /*function*/) {}
   virtual void setSecurityMech(const SecurityMech& mech) {
     securityMech_ = std::make_shared<SecurityMech>(mech);
   }
@@ -96,10 +96,10 @@ class SaslClient : public SaslEndpoint {
   virtual void setErrorString(const std::string& str) = 0;
 
   virtual void setSaslThreadManager(
-    const std::shared_ptr<SaslThreadManager>& thread_manager) {};
+    const std::shared_ptr<SaslThreadManager>& /*thread_manager*/) {};
 
   virtual void setCredentialsCacheManager(
-    const std::shared_ptr<krb5::Krb5CredentialsCacheManager>& cc_manager) {}
+    const std::shared_ptr<krb5::Krb5CredentialsCacheManager>& /*cc_manager*/) {}
 
   std::shared_ptr<SecurityLogger> getSaslLogger() {
     return saslLogger_;
