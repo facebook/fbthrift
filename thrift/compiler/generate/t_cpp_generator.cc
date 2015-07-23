@@ -792,6 +792,7 @@ void t_cpp_generator::generate_hash_and_equal_to(ofstream& out,
                                                  const std::string& type_name) {
   const bool genHash = ttype->annotations_.count("cpp.declare_hash") > 0;
   const bool genEqualTo = ttype->annotations_.count("cpp.declare_equal_to") > 0;
+
   if (genHash || genEqualTo) {
     out << ns_close_ << endl << endl
       << indent() << namespace_open("std") << endl;
@@ -802,6 +803,13 @@ void t_cpp_generator::generate_hash_and_equal_to(ofstream& out,
         << fullName << "> {" << endl
         << indent() << "size_t operator()(const " << fullName << "&) const;"
         << endl << indent() << "};" << endl;
+      if (ttype->is_enum()) {
+        out << indent() << "inline size_t hash<typename " << fullName
+            << ">::operator()(const " << fullName << "& e) const {" << endl
+            << indent() << indent() << "return std::hash<int32_t>()("
+            << "static_cast<int32_t>(e));" << endl
+            << indent() << "}" << endl;
+      }
     }
     if (genEqualTo) {
       out << indent() << "template<> struct equal_to<typename "
@@ -809,6 +817,14 @@ void t_cpp_generator::generate_hash_and_equal_to(ofstream& out,
         << indent() << "bool operator()(const " << fullName << "&, " << endl
         << indent() << "const " << fullName << "&) const;"
         << endl << indent() << "};" << endl;
+      if (ttype->is_enum()) {
+        out << indent() << "inline bool equal_to<typename " << fullName
+            << ">::operator()("
+            << "const " << fullName << "& e1, const " << fullName << "& e2"
+            << ") const {" << endl
+            << indent() << indent() << "return e1 == e2;" << endl
+            << indent() << "}" << endl;
+      }
     }
 
     out << indent() << namespace_close("std") << endl << endl
@@ -966,6 +982,8 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     "} " << endl <<
     "}} // apache::thrift " << endl << endl <<
     ns_open_ << endl;
+
+  generate_hash_and_equal_to(f_types_, tenum, tenum->get_name());
 }
 
 /**
