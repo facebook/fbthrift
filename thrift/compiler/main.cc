@@ -29,6 +29,7 @@
 
 #include "thrift/compiler/main.h"
 
+#include "thrift/compiler/platform.h"
 #include "thrift/compiler/generate/t_generator.h"
 
 /**
@@ -345,6 +346,17 @@ int main(int argc, char** argv) {
 #endif
 
         struct stat sb;
+        if (out_path_is_absolute) {
+          // Invoker specified `-out blah`. We are supposed to output directly
+          // into blah, e.g. `blah/Foo.java`. Make the directory if necessary,
+          // just like how for `-o blah` we make `o/gen-java`
+          if (stat(out_path.c_str(), &sb) < 0
+              && errno == ENOENT
+              && MKDIR(out_path.c_str()) < 0) {
+            fprintf(stderr, "Output directory %s is unusable: mkdir: %s\n", out_path.c_str(), strerror(errno));
+            return -1;
+          }
+        }
         if (stat(out_path.c_str(), &sb) < 0) {
           fprintf(stderr, "Output directory %s is unusable: %s\n", out_path.c_str(), strerror(errno));
           return -1;
