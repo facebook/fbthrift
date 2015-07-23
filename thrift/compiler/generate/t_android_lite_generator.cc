@@ -73,12 +73,16 @@ class t_android_lite_generator : public t_java_generator {
                      bool in_init=false,
                      bool skip_generic=false) override;
 
-   virtual void print_const_value(std::ostream& out,
+   void print_const_value(std::ostream& out,
                                   std::string name,
                                   t_type* type,
                                   t_const_value* value,
                                   bool in_static,
                                   bool defval=false) override;
+    string render_const_value(ostream& out,
+                              string name,
+                              t_type* type,
+                              t_const_value* value) override;
 
     void output_case_statement(t_struct *tstruct);
     void output_property(t_field* tfield, const string parent_name);
@@ -116,14 +120,24 @@ class t_android_lite_generator : public t_java_generator {
                       bool needsCast,
                       stringstream& stream);
 
+    void output_write(t_enum* tenum,
+                      const string value,
+                      int depth,
+                      bool needsCast,
+                      stringstream& stream);
+
     void write_class_file();
     void write_logger_file();
+    void write_enum_file();
 
     string android_thrift_imports();
     string package_header();
     string temp_variable(const string& prefix, int postfix);
+    string full_property_name(t_struct* tstruct, t_field* tfield);
+    string full_enum_name(t_enum* tenum, int offset);
 
-
+    const string logger_name();
+    const string enum_name();
 
   private:
     string package_name_;
@@ -131,8 +145,9 @@ class t_android_lite_generator : public t_java_generator {
     string package_dir_;
     bool annotate_;
 
-    // We build up the text of the 2 main files in these streams before
+    // We build up the text of the 3 files in these streams before
     // outputting them into their actual files all in one go.
+    vector<string> enum_defns_;
     stringstream class_defns_;
     stringstream switch_stmts_;
 };
@@ -168,10 +183,10 @@ void t_android_lite_generator::init_generator() {
 };
 
 void t_android_lite_generator::write_logger_file() {
-  string logger_name;
+  string file_name;
   ofstream out_logger;
-  logger_name = package_dir_ + "/" + program_name_ + "Logger.java";
-  out_logger.open(logger_name.c_str());
+  file_name = package_dir_ + "/" + logger_name() + ".java";
+  out_logger.open(file_name.c_str());
 
   out_logger << autogen_comment() << package_header() << endl;
 
@@ -179,7 +194,7 @@ void t_android_lite_generator::write_logger_file() {
              << android_thrift_imports() << endl
              << endl; // empty line at end
 
-  out_logger << "public class " <<  program_name_ << "Logger {" << endl
+  out_logger << "public class " <<  logger_name() << " {" << endl
              << endl;
 
   indent_up();
@@ -189,15 +204,15 @@ void t_android_lite_generator::write_logger_file() {
   indent(out_logger) << "private final Map<ThriftProperty<?>, Object> mMap" <<
       " = new HashMap<ThriftProperty<?>, Object>();" << endl << endl;
 
-  indent(out_logger) << "public " << program_name_ << "Logger(" <<
+  indent(out_logger) << "public " << logger_name() << "(" <<
       program_name_ << ".EventType type) {" << endl;
   indent_up();
   indent(out_logger) << "mEventType = type;" << endl;
   indent_down();
   indent(out_logger) << "}" << endl << endl;
 
-  indent(out_logger) << "public <T> " << program_name_ <<
-      "Logger addProperty(ThriftProperty<T> property, T value) {" << endl;
+  indent(out_logger) << "public <T> " << logger_name() <<
+      " addProperty(ThriftProperty<T> property, T value) {" << endl;
   indent_up();
   indent(out_logger) << "mMap.put(property, value);" << endl;
   indent(out_logger) << "return this;" << endl;
@@ -280,6 +295,47 @@ void t_android_lite_generator::write_class_file() {
   out_class.close();
 }
 
+void t_android_lite_generator::write_enum_file() {
+  if (enum_defns_.empty()) {
+    return;
+  }
+  ofstream out_enum;
+  string file_name = package_dir_ + "/" + enum_name() + ".java";
+  out_enum.open(file_name.c_str());
+
+  out_enum << autogen_comment() << package_header() << endl << endl;
+
+  out_enum << "public enum " << enum_name() << " {" << endl;
+  indent_up();
+  string line;
+  vector<string>::const_iterator iter = enum_defns_.cbegin();
+  string first = *iter;
+  indent(out_enum) << first;
+  ++iter;
+  for( ; iter != enum_defns_.cend(); ++iter) {
+    out_enum << "," << endl << indent() << *iter;
+  }
+  out_enum << ";" << endl << endl;
+
+  // Definitions to make this class work.
+  indent(out_enum) << "private final int mValue;" << endl;
+  indent(out_enum) << "private " << enum_name() << "(int value) {" <<
+    endl;
+  indent_up();
+  indent(out_enum) << "mValue = value;" << endl;
+  indent_down();
+  indent(out_enum) << "}" << endl;
+  indent(out_enum) << "public int getValue() {" << endl;
+  indent_up();
+  indent(out_enum) << "return mValue;" << endl;
+  indent_down();
+  indent(out_enum) << "}" << endl;
+
+  indent_down();
+  out_enum << "}" << endl;
+  out_enum.close();
+}
+
 string t_android_lite_generator::java_type_imports() {
   return
     "import java.io.IOException;\n"
@@ -319,16 +375,38 @@ string t_android_lite_generator::type_name(t_type* ttype, bool in_container,
     bool in_init, bool skip_generic) {
   ttype = get_true_type(ttype);
   if (ttype->is_struct()) {
-    return capitalize(ttype->get_program()->get_name()) + "Logger";
+    return logger_name();
+  } else if (ttype->is_enum()) {
+    return enum_name();
   } else {
     return t_java_generator::type_name(ttype, in_container, in_init,
         skip_generic);
   }
 }
 
+string t_android_lite_generator::full_property_name(t_struct* tstruct,
+    t_field* tfield) {
+  return capitalize(tstruct->get_program()->get_name()) + "." +
+    tstruct->get_name() + "_" + tfield->get_name();
+}
+
+string t_android_lite_generator::full_enum_name(t_enum* tenum, int offset) {
+  return capitalize(tenum->get_program()->get_name()) + "Enum." +
+    tenum->get_name() + "_" + tenum->find_value(offset)->get_name();
+}
+
+const string t_android_lite_generator::logger_name() {
+  return program_name_ + "Logger";
+}
+
+const string t_android_lite_generator::enum_name() {
+  return program_name_ + "Enum";
+}
+
 void t_android_lite_generator::close_generator() {
   write_class_file();
   write_logger_file();
+  write_enum_file();
 }
 
 /* Just like Java, we don't do anything for typedefs. We still override the
@@ -405,7 +483,7 @@ void t_android_lite_generator::output_write(t_map* tmap, const string value,
 void t_android_lite_generator::output_write(t_struct* tstruct,
     const string value, int depth, bool needsCast, stringstream& stream) {
   if (needsCast) {
-    indent(stream) << "((" << program_name_ << "Logger) " << value << ")";
+    indent(stream) << "((" << logger_name() << ") " << value << ")";
   } else {
     indent(stream) << value;
   }
@@ -441,17 +519,27 @@ void t_android_lite_generator::output_write(t_set* tset, const string value,
   indent(stream) << "oprot.writeSetEnd();" << endl;
 }
 
+
+void t_android_lite_generator::output_write(t_enum* tenum, const string value,
+    int depth, bool needsCast, stringstream& stream) {
+  indent(stream) << "oprot.writeI32(";
+  if (needsCast) {
+    stream << "((" << type_name(tenum) << ")" << value << ")";
+  } else {
+    stream << value;
+  }
+  stream << ".getValue());" << endl;
+}
+
 void t_android_lite_generator::output_write(t_type* ttype, const string value,
     int depth, bool needsCast, stringstream& stream) {
   ttype = get_true_type(ttype);
   // We treat enums just like i32s.
-  if (ttype->is_base_type() || ttype->is_enum()) {
-    string java_name = ttype->is_enum() ?
-      "int" : base_type_name((t_base_type *) ttype);
-    string thrift_name = ttype->is_enum() ?
-        "I32" : capitalize(ttype->get_name());
+  if (ttype->is_base_type()) {
+    string thrift_name = capitalize(ttype->get_name());
 
     if (needsCast) {
+      string java_name = base_type_name((t_base_type *) ttype);
       indent(stream) << "oprot.write" << thrift_name <<
           "((" << java_name << ")" << value << ");" << endl;
     } else {
@@ -471,6 +559,9 @@ void t_android_lite_generator::output_write(t_type* ttype, const string value,
 
   } else if (ttype->is_set()) {
     output_write((t_set *)ttype, value, depth, needsCast, stream);
+
+  } else if (ttype->is_enum()) {
+    output_write((t_enum *)ttype, value, depth, needsCast, stream);
 
   } else {
     throw "Compiler error: unhandled type.";
@@ -510,8 +601,7 @@ void t_android_lite_generator::output_case_body_struct(t_struct *tstruct) {
   vector<t_field *>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_field *tfield = *m_iter;
-    string key = program_name_ + "." + tstruct->get_name() +
-      "_" + tfield->get_name();
+    string key = full_property_name(tstruct, tfield);
 
     indent(switch_stmts_) << "if (mMap.containsKey(" + key + ") && " <<
       "mMap.get(" + key + ") != null) {" << endl;
@@ -556,8 +646,7 @@ void t_android_lite_generator::output_case_body_union(t_struct *tunion) {
     indent(switch_stmts_) << "case " << tfield->get_key() << ": {" << endl;
     indent_up();
 
-    string key = program_name_ + "." + tunion->get_name() +
-        "_" + tfield->get_name();
+    string key = full_property_name(tunion, tfield);
     indent(switch_stmts_) << "writeFieldBegin(oprot, " + key + ");" << endl;
     string value ="mMap.get(" + key + ")";
     output_write(tfield->get_type(), value, 0, true, switch_stmts_);
@@ -651,19 +740,38 @@ void t_android_lite_generator::generate_consts(vector<t_const*> tconsts) {
   consts_stream.close();
 }
 
+string t_android_lite_generator::render_const_value(ostream& out, string name,
+    t_type *type, t_const_value* value) {
+  // Everything can be handled by the call to super except enums
+  if (!type->is_enum()) {
+    return t_java_generator::render_const_value(out, name, type, value);
+  }
+  t_enum * tenum = (t_enum *)type;
+  string enum_name = tenum->find_value(value->get_integer())->get_name();
+  return full_enum_name(tenum, value->get_integer());
+}
+
 void t_android_lite_generator::print_const_value(ostream& out, string name,
     t_type* type, t_const_value* value, bool in_static, bool defval) {
-  // Everything can be handled by the call to super except structs
-  if (!type->is_struct()) {
+  if (!type->is_struct() && !type->is_enum()) {
     t_java_generator::print_const_value(out, name, type, value, in_static,
         defval);
     return;
-  } else {
+  }
+
+  if (!defval) {
     indent(out);
+    out << (in_static ? "" : "public static final ") << type_name(type)
+      << " ";
+  }
+  if (type->is_enum()) {
+    t_enum * tenum = (t_enum *)type;
+    out << name << " = " << full_enum_name(tenum, value->get_integer());
+
     if (!defval) {
-      out << (in_static ? "" : "public static final ") << type_name(type)
-        << " ";
+      out << ";" << endl;
     }
+  } else if (type->is_struct()) {
     string eventType_key = capitalize(type->get_program()->get_name()) +
       ".EventType." + type->get_name();
     out << name << " = new " <<  type_name(type, false, true) <<
@@ -682,6 +790,7 @@ void t_android_lite_generator::print_const_value(ostream& out, string name,
       for (f_iter = fields.cbegin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
+          break;
         }
       }
       if (field_type == nullptr) {
@@ -690,30 +799,27 @@ void t_android_lite_generator::print_const_value(ostream& out, string name,
       }
       string val = render_const_value(out, name, field_type, v_iter->second);
       indent(out) << name << ".addProperty("
-                  << capitalize(type->get_program()->get_name()) << "."
-                  << type->get_name()  << "_" << v_iter->first->get_string()
+                  << full_property_name((t_struct *)type, *f_iter)
                   << ", " << val << ");" << endl;
-    }
+      }
 
     if (!in_static) {
-      indent(out) << "}" << endl;
       indent_down();
+      indent(out) << "}" << endl;
     }
   }
 }
 
 void t_android_lite_generator::generate_enum(t_enum* tenum) {
-  indent(class_defns_) << "// " << tenum->get_name() << " enum:" << endl;
-
   const vector<t_enum_value*> e_values = tenum->get_constants();
   vector<t_enum_value*>::const_iterator ev_iter;
   for (ev_iter = e_values.begin(); ev_iter != e_values.end(); ++ev_iter) {
     t_enum_value* val = *ev_iter;
-    indent(class_defns_) << "public static final int " << tenum->get_name() <<
-        "_" << val->get_name() << " = " << val->get_value() << ";" << endl;
+    stringstream line;
+    line << tenum->get_name() << "_" << val->get_name() << "(" <<
+      val->get_value() << ")";
+    enum_defns_.push_back(line.str());
   }
-
-  class_defns_ << endl;
 }
 
 void t_android_lite_generator::generate_service(t_service* tservice) {

@@ -5,6 +5,7 @@ const list<map<string, i32>> states = [
   {"New York": 8406000, "Albany": 98400}
 ];
 
+enum City { NYC, MPK, SEA, LON }
 enum Company { FACEBOOK, WHATSAPP, OCULUS, INSTAGRAM }
 
 struct Internship {

@@ -27,17 +27,11 @@ public class Module {
     Internship;
   }
 
-  // Company enum:
-  public static final int Company_FACEBOOK = 0;
-  public static final int Company_WHATSAPP = 1;
-  public static final int Company_OCULUS = 2;
-  public static final int Company_INSTAGRAM = 3;
-  
   public static final ThriftProperty<Integer> Internship_weeks =
       new ThriftProperty<Integer>("weeks", TType.I32, (short)1);
   public static final ThriftProperty<String> Internship_title =
       new ThriftProperty<String>("title", TType.STRING, (short)2);
-  public static final ThriftProperty<Integer> Internship_employer =
-      new ThriftProperty<Integer>("employer", TType.I32, (short)3);
+  public static final ThriftProperty<ModuleEnum> Internship_employer =
+      new ThriftProperty<ModuleEnum>("employer", TType.I32, (short)3);
   
 }

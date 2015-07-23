@@ -87,10 +87,10 @@ class t_java_generator : public t_oop_generator {
                                  t_const_value* value,
                                  bool in_static,
                                  bool defval=false);
-  std::string render_const_value(std::ostream& out,
-                                 std::string name,
-                                 t_type* type,
-                                 t_const_value* value);
+  virtual std::string render_const_value(std::ostream& out,
+                                        std::string name,
+                                        t_type* type,
+                                        t_const_value* value);
 
   /**
    * Service-level generation functions

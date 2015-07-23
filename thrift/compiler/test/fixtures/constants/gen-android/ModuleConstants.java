@@ -45,19 +45,19 @@ public class ModuleConstants {
   static {
     instagram.addProperty(Module.Internship_weeks, 12);
     instagram.addProperty(Module.Internship_title, "Software Engineer");
-    instagram.addProperty(Module.Internship_employer, 3);
-    }
+    instagram.addProperty(Module.Internship_employer, ModuleEnum.Company_INSTAGRAM);
+  }
   public static final List<ModuleLogger> internList = new ArrayList<ModuleLogger>();
   static {
     ModuleLogger tmp2 = new ModuleLogger(Module.EventType.Internship);
     tmp2.addProperty(Module.Internship_weeks, 12);
     tmp2.addProperty(Module.Internship_title, "Software Engineer");
-    tmp2.addProperty(Module.Internship_employer, 3);
+    tmp2.addProperty(Module.Internship_employer, ModuleEnum.Company_INSTAGRAM);
     internList.add(tmp2);
     ModuleLogger tmp3 = new ModuleLogger(Module.EventType.Internship);
     tmp3.addProperty(Module.Internship_weeks, 10);
     tmp3.addProperty(Module.Internship_title, "Sales Intern");
-    tmp3.addProperty(Module.Internship_employer, 0);
+    tmp3.addProperty(Module.Internship_employer, ModuleEnum.Company_FACEBOOK);
     internList.add(tmp3);
   }
 
