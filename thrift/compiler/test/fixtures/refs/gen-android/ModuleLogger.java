@@ -19,156 +19,157 @@ import java.util.Arrays;
 
 import com.facebook.thrift.lite.*;
 import com.facebook.thrift.lite.protocol.*;
+import com.facebook.thrift.lite.annotations.*;
 
 
 public class ModuleLogger {
 
-    public final Module.EventType mEventType;
+  public final Module.EventType mEventType;
 
-    private final Map<ThriftProperty<?>, Object> mMap = new HashMap<ThriftProperty<?>, Object>();
+  private final Map<ThriftProperty<?>, Object> mMap = new HashMap<ThriftProperty<?>, Object>();
 
-    public ModuleLogger(Module.EventType type) {
-      mEventType = type;
-    }
+  public ModuleLogger(Module.EventType type) {
+    mEventType = type;
+  }
 
-    public <T> ModuleLogger addProperty(ThriftProperty<T> property, T value) {
-      mMap.put(property, value);
-      return this;
-    }
+  public <T> ModuleLogger addProperty(ThriftProperty<T> property, T value) {
+    mMap.put(property, value);
+    return this;
+  }
 
-    public static <T> void writeFieldBegin(TBinaryProtocol oprot, ThriftProperty<T> field) throws IOException {
-      TField tField = new TField(field.key, field.type, field.id);
-      oprot.writeFieldBegin(tField);
-    }
+  public static <T> void writeFieldBegin(TBinaryProtocol oprot, ThriftProperty<T> field) throws IOException {
+    TField tField = new TField(field.key, field.type, field.id);
+    oprot.writeFieldBegin(tField);
+  }
 
-    public void write(TBinaryProtocol oprot) throws IOException {
-      switch (mEventType) {
-        case MyUnion: {
-          if (this.mMap.size() < 1) {
-            throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");
-          } else if (this.mMap.size() > 1) {
-            throw new TProtocolException(TProtocolException.INVALID_DATA, "Cannot write a union with more than one set value!");
+  public void write(TBinaryProtocol oprot) throws IOException {
+    switch (mEventType) {
+      case MyUnion: {
+        if (this.mMap.size() < 1) {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");
+        } else if (this.mMap.size() > 1) {
+          throw new TProtocolException(TProtocolException.INVALID_DATA, "Cannot write a union with more than one set value!");
+        }
+        oprot.writeStructBegin(new TStruct("MyUnion"));
+        switch (mMap.keySet().iterator().next().id) {
+        case 1: {
+          writeFieldBegin(oprot, Module.MyUnion_anInteger);
+          oprot.writeI32((int)mMap.get(Module.MyUnion_anInteger));
+          oprot.writeFieldEnd();
+          break;
           }
-          oprot.writeStructBegin(new TStruct("MyUnion"));
-          switch (mMap.keySet().iterator().next().id) {
-            case 1: {
-              writeFieldBegin(oprot, Module.MyUnion_anInteger);
-              oprot.writeI32((int)mMap.get(Module.MyUnion_anInteger));
-              oprot.writeFieldEnd();
-              break;
-              }
-        
-            case 2: {
-              writeFieldBegin(oprot, Module.MyUnion_aString);
-              oprot.writeString((String)mMap.get(Module.MyUnion_aString));
-              oprot.writeFieldEnd();
-              break;
-              }
-        
-            }
-            oprot.writeFieldStop();
-            oprot.writeStructEnd();
-            break;
+      
+        case 2: {
+          writeFieldBegin(oprot, Module.MyUnion_aString);
+          oprot.writeString((String)mMap.get(Module.MyUnion_aString));
+          oprot.writeFieldEnd();
+          break;
           }
-        
-          case MyField: {
-            oprot.writeStructBegin(new TStruct("MyField"));
-            if (mMap.containsKey(Module.MyField_opt_value) && mMap.get(Module.MyField_opt_value) != null) {
-              writeFieldBegin(oprot, Module.MyField_opt_value);
-              oprot.writeI64((long)mMap.get(Module.MyField_opt_value));
-              oprot.writeFieldEnd();
-            }
-        
-            if (mMap.containsKey(Module.MyField_value) && mMap.get(Module.MyField_value) != null) {
-              writeFieldBegin(oprot, Module.MyField_value);
-              oprot.writeI64((long)mMap.get(Module.MyField_value));
-              oprot.writeFieldEnd();
-            }
-        
-            if (mMap.containsKey(Module.MyField_req_value) && mMap.get(Module.MyField_req_value) != null) {
-              writeFieldBegin(oprot, Module.MyField_req_value);
-              oprot.writeI64((long)mMap.get(Module.MyField_req_value));
-              oprot.writeFieldEnd();
-            } else {
-              throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'MyField.req_value' was not present!");
-            }
-        
-            oprot.writeFieldStop();
-            oprot.writeStructEnd();
-            break;
-          }
-        
-          case MyStruct: {
-            oprot.writeStructBegin(new TStruct("MyStruct"));
-            if (mMap.containsKey(Module.MyStruct_opt_ref) && mMap.get(Module.MyStruct_opt_ref) != null) {
-              writeFieldBegin(oprot, Module.MyStruct_opt_ref);
-              ((ModuleLogger) mMap.get(Module.MyStruct_opt_ref)).write(oprot);
-              oprot.writeFieldEnd();
-            }
-        
-            if (mMap.containsKey(Module.MyStruct_ref) && mMap.get(Module.MyStruct_ref) != null) {
-              writeFieldBegin(oprot, Module.MyStruct_ref);
-              ((ModuleLogger) mMap.get(Module.MyStruct_ref)).write(oprot);
-              oprot.writeFieldEnd();
-            }
-        
-            if (mMap.containsKey(Module.MyStruct_req_ref) && mMap.get(Module.MyStruct_req_ref) != null) {
-              writeFieldBegin(oprot, Module.MyStruct_req_ref);
-              ((ModuleLogger) mMap.get(Module.MyStruct_req_ref)).write(oprot);
-              oprot.writeFieldEnd();
-            } else {
-              throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'MyStruct.req_ref' was not present!");
-            }
-        
-            oprot.writeFieldStop();
-            oprot.writeStructEnd();
-            break;
-          }
-        
-          case StructWithUnion: {
-            oprot.writeStructBegin(new TStruct("StructWithUnion"));
-            if (mMap.containsKey(Module.StructWithUnion_u) && mMap.get(Module.StructWithUnion_u) != null) {
-              writeFieldBegin(oprot, Module.StructWithUnion_u);
-              ((ModuleLogger) mMap.get(Module.StructWithUnion_u)).write(oprot);
-              oprot.writeFieldEnd();
-            }
-        
-            if (mMap.containsKey(Module.StructWithUnion_aDouble) && mMap.get(Module.StructWithUnion_aDouble) != null) {
-              writeFieldBegin(oprot, Module.StructWithUnion_aDouble);
-              oprot.writeDouble((double)mMap.get(Module.StructWithUnion_aDouble));
-              oprot.writeFieldEnd();
-            }
-        
-            if (mMap.containsKey(Module.StructWithUnion_f) && mMap.get(Module.StructWithUnion_f) != null) {
-              writeFieldBegin(oprot, Module.StructWithUnion_f);
-              ((ModuleLogger) mMap.get(Module.StructWithUnion_f)).write(oprot);
-              oprot.writeFieldEnd();
-            }
-        
-            oprot.writeFieldStop();
-            oprot.writeStructEnd();
-            break;
-          }
-        
-          case RecursiveStruct: {
-            oprot.writeStructBegin(new TStruct("RecursiveStruct"));
-            if (mMap.containsKey(Module.RecursiveStruct_mes) && mMap.get(Module.RecursiveStruct_mes) != null) {
-              writeFieldBegin(oprot, Module.RecursiveStruct_mes);
-              List<ModuleLogger> var0 = (List<ModuleLogger>)mMap.get(Module.RecursiveStruct_mes);
-              oprot.writeListBegin(new TList(TType.STRUCT, var0.size()));
-              for(ModuleLogger iter0 : var0) {
-                iter0.write(oprot);
-              }
-              oprot.writeListEnd();
-              oprot.writeFieldEnd();
-            }
-        
-            oprot.writeFieldStop();
-            oprot.writeStructEnd();
-            break;
-          }
-        
-        
+      
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
       }
+      
+      case MyField: {
+        oprot.writeStructBegin(new TStruct("MyField"));
+        if (mMap.containsKey(Module.MyField_opt_value) && mMap.get(Module.MyField_opt_value) != null) {
+          writeFieldBegin(oprot, Module.MyField_opt_value);
+          oprot.writeI64((long)mMap.get(Module.MyField_opt_value));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.MyField_value) && mMap.get(Module.MyField_value) != null) {
+          writeFieldBegin(oprot, Module.MyField_value);
+          oprot.writeI64((long)mMap.get(Module.MyField_value));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.MyField_req_value) && mMap.get(Module.MyField_req_value) != null) {
+          writeFieldBegin(oprot, Module.MyField_req_value);
+          oprot.writeI64((long)mMap.get(Module.MyField_req_value));
+          oprot.writeFieldEnd();
+        } else {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'MyField.req_value' was not present!");
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case MyStruct: {
+        oprot.writeStructBegin(new TStruct("MyStruct"));
+        if (mMap.containsKey(Module.MyStruct_opt_ref) && mMap.get(Module.MyStruct_opt_ref) != null) {
+          writeFieldBegin(oprot, Module.MyStruct_opt_ref);
+          ((ModuleLogger) mMap.get(Module.MyStruct_opt_ref)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.MyStruct_ref) && mMap.get(Module.MyStruct_ref) != null) {
+          writeFieldBegin(oprot, Module.MyStruct_ref);
+          ((ModuleLogger) mMap.get(Module.MyStruct_ref)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.MyStruct_req_ref) && mMap.get(Module.MyStruct_req_ref) != null) {
+          writeFieldBegin(oprot, Module.MyStruct_req_ref);
+          ((ModuleLogger) mMap.get(Module.MyStruct_req_ref)).write(oprot);
+          oprot.writeFieldEnd();
+        } else {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'MyStruct.req_ref' was not present!");
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case StructWithUnion: {
+        oprot.writeStructBegin(new TStruct("StructWithUnion"));
+        if (mMap.containsKey(Module.StructWithUnion_u) && mMap.get(Module.StructWithUnion_u) != null) {
+          writeFieldBegin(oprot, Module.StructWithUnion_u);
+          ((ModuleLogger) mMap.get(Module.StructWithUnion_u)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithUnion_aDouble) && mMap.get(Module.StructWithUnion_aDouble) != null) {
+          writeFieldBegin(oprot, Module.StructWithUnion_aDouble);
+          oprot.writeDouble((double)mMap.get(Module.StructWithUnion_aDouble));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithUnion_f) && mMap.get(Module.StructWithUnion_f) != null) {
+          writeFieldBegin(oprot, Module.StructWithUnion_f);
+          ((ModuleLogger) mMap.get(Module.StructWithUnion_f)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case RecursiveStruct: {
+        oprot.writeStructBegin(new TStruct("RecursiveStruct"));
+        if (mMap.containsKey(Module.RecursiveStruct_mes) && mMap.get(Module.RecursiveStruct_mes) != null) {
+          writeFieldBegin(oprot, Module.RecursiveStruct_mes);
+          List<ModuleLogger> var0 = (List<ModuleLogger>)mMap.get(Module.RecursiveStruct_mes);
+          oprot.writeListBegin(new TList(TType.STRUCT, var0.size()));
+          for(ModuleLogger iter0 : var0) {
+            iter0.write(oprot);
+          }
+          oprot.writeListEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      
     }
   }
+}

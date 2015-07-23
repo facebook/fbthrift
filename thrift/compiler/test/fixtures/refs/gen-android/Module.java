@@ -19,37 +19,50 @@ import java.util.Arrays;
 
 import com.facebook.thrift.lite.*;
 import com.facebook.thrift.lite.protocol.*;
+import com.facebook.thrift.lite.annotations.*;
 
 
 public class Module {
 
-    public enum EventType {
-      MyUnion, MyField, MyStruct, StructWithUnion, RecursiveStruct;
-    }
+  public enum EventType {
+    MyUnion, MyField, MyStruct, StructWithUnion, RecursiveStruct;
+  }
 
-    public static final ThriftProperty<Integer> MyUnion_anInteger =
-        new ThriftProperty<Integer>("anInteger", TType.I32, (short)1);
-    public static final ThriftProperty<String> MyUnion_aString =
-        new ThriftProperty<String>("aString", TType.STRING, (short)2);
-      public static final ThriftProperty<Long> MyField_opt_value =
-          new ThriftProperty<Long>("opt_value", TType.I64, (short)1);
-      public static final ThriftProperty<Long> MyField_value =
-          new ThriftProperty<Long>("value", TType.I64, (short)2);
-      public static final ThriftProperty<Long> MyField_req_value =
-          new ThriftProperty<Long>("req_value", TType.I64, (short)3);
-      public static final ThriftProperty<ModuleLogger> MyStruct_opt_ref =
-          new ThriftProperty<ModuleLogger>("opt_ref", TType.STRUCT, (short)1);
-      public static final ThriftProperty<ModuleLogger> MyStruct_ref =
-          new ThriftProperty<ModuleLogger>("ref", TType.STRUCT, (short)2);
-      public static final ThriftProperty<ModuleLogger> MyStruct_req_ref =
-          new ThriftProperty<ModuleLogger>("req_ref", TType.STRUCT, (short)3);
-      public static final ThriftProperty<ModuleLogger> StructWithUnion_u =
-          new ThriftProperty<ModuleLogger>("u", TType.STRUCT, (short)1);
-      public static final ThriftProperty<Double> StructWithUnion_aDouble =
-          new ThriftProperty<Double>("aDouble", TType.DOUBLE, (short)2);
-      public static final ThriftProperty<ModuleLogger> StructWithUnion_f =
-          new ThriftProperty<ModuleLogger>("f", TType.STRUCT, (short)3);
-      public static final ThriftProperty<List<ModuleLogger>> RecursiveStruct_mes =
-          new ThriftProperty<List<ModuleLogger>>("mes", TType.LIST, (short)1);
-    
+  @TOptional("MyUnion")
+  public static final ThriftProperty<Integer> MyUnion_anInteger =
+      new ThriftProperty<Integer>("anInteger", TType.I32, (short)1);
+  @TOptional("MyUnion")
+  public static final ThriftProperty<String> MyUnion_aString =
+      new ThriftProperty<String>("aString", TType.STRING, (short)2);
+  @TOptional("MyField")
+  public static final ThriftProperty<Long> MyField_opt_value =
+      new ThriftProperty<Long>("opt_value", TType.I64, (short)1);
+  @TOptional("MyField")
+  public static final ThriftProperty<Long> MyField_value =
+      new ThriftProperty<Long>("value", TType.I64, (short)2);
+  @TRequired("MyField")
+  public static final ThriftProperty<Long> MyField_req_value =
+      new ThriftProperty<Long>("req_value", TType.I64, (short)3);
+  @TOptional("MyStruct")
+  public static final ThriftProperty<ModuleLogger> MyStruct_opt_ref =
+      new ThriftProperty<ModuleLogger>("opt_ref", TType.STRUCT, (short)1);
+  @TOptional("MyStruct")
+  public static final ThriftProperty<ModuleLogger> MyStruct_ref =
+      new ThriftProperty<ModuleLogger>("ref", TType.STRUCT, (short)2);
+  @TRequired("MyStruct")
+  public static final ThriftProperty<ModuleLogger> MyStruct_req_ref =
+      new ThriftProperty<ModuleLogger>("req_ref", TType.STRUCT, (short)3);
+  @TOptional("StructWithUnion")
+  public static final ThriftProperty<ModuleLogger> StructWithUnion_u =
+      new ThriftProperty<ModuleLogger>("u", TType.STRUCT, (short)1);
+  @TOptional("StructWithUnion")
+  public static final ThriftProperty<Double> StructWithUnion_aDouble =
+      new ThriftProperty<Double>("aDouble", TType.DOUBLE, (short)2);
+  @TOptional("StructWithUnion")
+  public static final ThriftProperty<ModuleLogger> StructWithUnion_f =
+      new ThriftProperty<ModuleLogger>("f", TType.STRUCT, (short)3);
+  @TOptional("RecursiveStruct")
+  public static final ThriftProperty<List<ModuleLogger>> RecursiveStruct_mes =
+      new ThriftProperty<List<ModuleLogger>>("mes", TType.LIST, (short)1);
+  
 }

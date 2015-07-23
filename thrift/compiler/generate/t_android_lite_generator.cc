@@ -53,6 +53,7 @@ class t_android_lite_generator : public t_java_generator {
       package_name_ = program_->get_namespace("android_lite");
       program_name_ = capitalize(get_program()->get_name());
       out_dir_base_ = "gen-android";
+      annotate_ = option_is_specified(parsed_options, "annotate");
     }
 
     void generate_consts(vector<t_const*> tconsts) override;
@@ -128,6 +129,7 @@ class t_android_lite_generator : public t_java_generator {
     string package_name_;
     string program_name_;
     string package_dir_;
+    bool annotate_;
 
     // We build up the text of the 2 main files in these streams before
     // outputting them into their actual files all in one go.
@@ -295,9 +297,14 @@ string t_android_lite_generator::java_type_imports() {
 // When we open-source the android compiler, we'll need to also release
 // the accompanying thrift library for android imported here.
 string t_android_lite_generator::android_thrift_imports() {
-  return
+  string imports =
     "import com.facebook.thrift.lite.*;\n"
     "import com.facebook.thrift.lite.protocol.*;\n";
+  if (annotate_) {
+    imports +=
+      "import com.facebook.thrift.lite.annotations.*;\n";
+  }
+  return imports;
 }
 
 string t_android_lite_generator::package_header() {
@@ -472,10 +479,16 @@ void t_android_lite_generator::output_write(t_type* ttype, const string value,
 }
 
 // OUTPUTS:
+// @TOptional/@TRequired
 // public static final ThriftProperty<TypeName> ParentName_MyName =
 //    new ThriftProperty<TypeName>("Name", (short)idx);
 void t_android_lite_generator::output_property(t_field* tfield,
     const string parent_name) {
+  if (annotate_) {
+    indent(class_defns_) << ((tfield->get_req() == t_field::T_REQUIRED) ?
+      "@TRequired(\"" : "@TOptional(\"") << parent_name << "\")" << endl;
+  }
+
   indent(class_defns_) <<
     "public static final ThriftProperty<" <<
     type_name(tfield->get_type(), true) << "> " <<
@@ -531,7 +544,6 @@ void t_android_lite_generator::output_case_body_union(t_struct *tunion) {
   // We're guaranteed that there will be only one element in the keySet
   indent(switch_stmts_) << "switch (mMap.keySet().iterator().next().id) {" <<
       endl;
-  indent_up();
 
   const vector<t_field*> members = tunion->get_members();
   vector<t_field *>::const_iterator m_iter;
@@ -712,4 +724,5 @@ void t_android_lite_generator::generate_xception(t_struct* txception) {
   throw "Exceptions are not yet supported for Thrift on Android.";
 }
 
-THRIFT_REGISTER_GENERATOR(android_lite, "Android", "");
+THRIFT_REGISTER_GENERATOR(android_lite, "Android",
+"    annotate:        Generate annotations that help the linter.\n");
