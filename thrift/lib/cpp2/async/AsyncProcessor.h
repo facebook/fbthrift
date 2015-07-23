@@ -486,8 +486,10 @@ class HandlerCallbackBase {
     } else {
       auto req = folly::makeMoveWrapper(std::move(req_));
       auto ctx = folly::makeMoveWrapper(std::move(ctx_));
+      auto protoSeqId = protoSeqId_;
+      auto reqCtx = reqCtx_;
       getEventBase()->runInEventBaseThread([=]() mutable {
-        f(std::move(*req), protoSeqId_, ctx->get(), ex, reqCtx_);
+        f(std::move(*req), protoSeqId, ctx->get(), ex, reqCtx);
       });
     }
   }
