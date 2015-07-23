@@ -796,6 +796,8 @@ class FuzzTester(object):
         state = randomizer.RandomizerState()
         method_randomizers = {}
 
+        state.push_type_constraints(constraints)
+
         for method_name in methods:
             method_constraints = constraints.get(method_name, {})
             args_class = methods[method_name]['args_class']

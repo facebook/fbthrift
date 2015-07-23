@@ -69,5 +69,9 @@ service TestService {
 
   void nested (
     1: NestedStructs ns;
+  ),
+
+  void listStruct (
+    1: ListStruct ls;
   )
 }

@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import itertools
 import math
 import unittest
 
@@ -880,6 +881,117 @@ class TestListStructRandomizer(TestStructRandomizer, unittest.TestCase):
                 if expected != getattr(val, key, None):
                     n_different += 1
             self.assertLessEqual(n_different, 1)
+
+    def testBoolTypeConstraints(self):
+        cls = self.__class__
+
+        constraints = {
+            'p_include': 1.0,
+            '|bool': {'p_true': 1.0}
+        }
+
+        gen = self.struct_randomizer(constraints=constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(val)
+            self.assertIsNotNone(val.a)
+            for elem in val.a:
+                self.assertTrue(elem)
+
+    def testDoubleTypeConstraints(self):
+        cls = self.__class__
+        constant = 11.1
+
+        constraints = {
+            'p_include': 1.0,
+            '|double': {
+                'mean': constant,
+                'std_deviation': 0,
+                'p_unreal': 0,
+                'p_zero': 0
+            }
+        }
+
+        gen = self.struct_randomizer(constraints=constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(val)
+            self.assertIsNotNone(val.c)
+            for elem in val.c:
+                self.assertEquals(elem, constant)
+
+    def testListTypeConstraints(self):
+        """
+        We have an |i32 rule and a |list<i32> rule,
+        The |list<i32> rule is more specific and overrides the |i32 rule
+        """
+        cls = self.__class__
+
+        int_choices = [1, 2, 3]
+        list_int_choices = [4, 5, 6]
+
+        constraints = {
+            'p_include': 1.0,
+            '|list<i32>': {
+                'element': {
+                    'choices': list_int_choices
+                }
+            },
+            '|i32': {
+                'choices': int_choices
+            }
+        }
+
+        gen = self.struct_randomizer(constraints=constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(val)
+            self.assertIsNotNone(val.e)
+            # Iterate through each i32 element in list<list<i32>>
+            for elem in itertools.chain(*val.e):
+                self.assertIn(elem, list_int_choices)
+
+    def testMapTypeConstraints(self):
+        """
+        ListStruct.f is type list<map<i32, i32>>
+        We use two rules:
+        |i32
+        |map<i32, i32>.key
+
+        The |i32 rule will be used on map values, and the .key rule
+        will be used on map keys since it is more specific.
+        """
+        cls = self.__class__
+
+        int_choices = [1, 2, 3]
+        key_int_choices = [4, 5, 6]
+
+        constraints = {
+            'p_include': 1.0,
+            '|map<i32, i32>': {
+                'key': {
+                    'choices': key_int_choices
+                }
+            },
+            '|i32': {
+                'choices': int_choices
+            }
+        }
+
+        gen = self.struct_randomizer(constraints=constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(val)
+            self.assertIsNotNone(val.f)
+            for key in itertools.chain(*val.f):
+                self.assertIn(key, key_int_choices)
+            for val in itertools.chain(*map(dict.values, val.f)):
+                self.assertIn(val, int_choices)
+
 
 class TestNestedStruct(TestStructRandomizer, unittest.TestCase):
     ttype = ttypes.NestedStructs

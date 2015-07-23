@@ -71,14 +71,27 @@ class BaseRandomizer(object):
         'p_fuzz': 1  # If seed not ignored, chance of fuzzing seed
     }
 
+    @classmethod
+    def get_type_name(cls, spec_args):
+        """
+        Get the name of this type that should be used to index into the
+        type constraint stack dictionary. For basic types, it should
+        be the name of the thrift type. For collection types it should
+        include <brackets> with the element type. For user-defined types
+        it should be the user-defined name.
+        """
+        return cls.name
+
     def __init__(self, spec_args, state, constraints):
         """
         spec_args: thrift arguments for this field
         state: RandomizerState instance
         constraints: dict of constraints specific to this randomizer
         """
+        cls = self.__class__
         self.spec_args = spec_args
         self.state = state
+        self.type_name = cls.get_type_name(spec_args)
         self.constraints = self.flatten_constraints(constraints)
         self.preprocessing_done = False
 
@@ -92,8 +105,13 @@ class BaseRandomizer(object):
         if self.preprocessing_done:
             return
 
+        # Push type rules that may affect subrandomizers' constraints
+        pushed = self.state.push_type_constraints(self.constraints)
+
         self._preprocess_constraints()
         self._init_subrandomizers()
+
+        self.state.pop_type_constraints(pushed)
 
         self.preprocessing_done = True
 
@@ -104,6 +122,11 @@ class BaseRandomizer(object):
 
         flattened = {}
         deep_dict_update(flattened, cls.default_constraints)
+
+        type_name = self.type_name
+        for type_constraints in self.state.type_constraint_stacks[type_name]:
+            deep_dict_update(flattened, type_constraints)
+
         deep_dict_update(flattened, constraints)
 
         return flattened
@@ -246,11 +269,15 @@ class EnumRandomizer(ScalarTypeRandomizer):
 
     random_int_32 = staticmethod(_random_int_factory(32))
 
-    default_constraints = ScalarTypeRandomizer.default_constraints
+    default_constraints = dict(ScalarTypeRandomizer.default_constraints)
     default_constraints.update({
         # Probability of generating an i32 with no corresponding Enum name
         'p_invalid': 0.01,
     })
+
+    @classmethod
+    def get_type_name(cls, spec_args):
+        return spec_args.__name__
 
     def _preprocess_constraints(self):
         self.ttype = self.spec_args
@@ -424,7 +451,7 @@ class DoublePrecisionFloatRandomizer(FloatingPointRandomizer):
 class CollectionTypeRandomizer(BaseRandomizer):
     """Superclass for ttypes with lengths"""
 
-    default_constraints = BaseRandomizer.default_constraints
+    default_constraints = dict(BaseRandomizer.default_constraints)
     default_constraints.update({
         'mean_length': 12
     })
@@ -477,6 +504,13 @@ class NonAssociativeContainerRandomizer(CollectionTypeRandomizer):
     default_constraints.update({
         'element': {}
     })
+
+    @classmethod
+    def get_type_name(cls, spec_args):
+        elem_ttype, elem_spec_args = spec_args
+        elem_randomizer_cls = _get_randomizer_class(elem_ttype, elem_spec_args)
+        elem_type_name = elem_randomizer_cls.get_type_name(elem_spec_args)
+        return "%s<%s>" % (cls.name, elem_type_name)
 
     def _init_subrandomizers(self):
         elem_ttype, elem_spec_args = self.spec_args
@@ -585,6 +619,18 @@ class MapRandomizer(CollectionTypeRandomizer):
         'value': {}
     })
 
+    @classmethod
+    def get_type_name(cls, spec_args):
+        key_ttype, key_spec_args, val_ttype, val_spec_args = spec_args
+
+        key_randomizer_cls = _get_randomizer_class(key_ttype, key_spec_args)
+        key_type_name = key_randomizer_cls.get_type_name(key_spec_args)
+
+        val_randomizer_cls = _get_randomizer_class(val_ttype, val_spec_args)
+        val_type_name = val_randomizer_cls.get_type_name(val_spec_args)
+
+        return "%s<%s, %s>" % (cls.name, key_type_name, val_type_name)
+
     def _init_subrandomizers(self):
         key_ttype, key_spec_args, val_ttype, val_spec_args = self.spec_args
 
@@ -629,11 +675,16 @@ class StructRandomizer(BaseRandomizer):
     name = "struct"
     ttype = Thrift.TType.STRUCT
 
-    default_constraints = BaseRandomizer.default_constraints
+    default_constraints = dict(BaseRandomizer.default_constraints)
     default_constraints.update({
         'p_include': 0.99,
         'max_recursion_depth': 3
     })
+
+    @classmethod
+    def get_type_name(cls, spec_args):
+        ttype = spec_args[0]
+        return ttype.__name__
 
     @property
     def universe_size(self):
@@ -840,6 +891,16 @@ def _init_types():
 
 _init_types()
 
+def _get_randomizer_class(ttype, spec_args):
+    # Special case: i32 and enum have separate classes but the same ttype
+    if ttype == Thrift.TType.I32:
+        if spec_args is None:
+            return I32Randomizer
+        else:
+            return EnumRandomizer
+    return _ttype_to_randomizer[ttype]
+
+
 class RandomizerState(object):
     """A wrapper around randomizer_map and recursion_trace
 
@@ -870,27 +931,30 @@ class RandomizerState(object):
     At each level of recursion, the entry in the trace dictionary is
     decremented. When it reaches zero, the maximum depth has been reached
     and no more structs of that type are generated.
+
+    --
+
+    type_constraint_stacks maps type_name strings to
+    constraint dictionaries that should be applied to all randomizers
+    with type type_name. The items at the top of the stack
+    (higher indices) were pushed most recently and thus override the
+    constraints lower in the stack.
+
+    Randomizer instances are responsible for pushing to and popping from
+    their respective constraint stacks according to the type rules in
+    their constraint dictionaries.
     """
 
     def __init__(self):
         self.randomizers = collections.defaultdict(list)
         self.recursion_trace = {}
-
-    def _get_randomizer_class(self, ttype, spec_args):
-        # Special case: i32 and enum have separate classes but the same ttype
-        if ttype == Thrift.TType.I32:
-            if spec_args is None:
-                return I32Randomizer
-            else:
-                return EnumRandomizer
-
-        return _ttype_to_randomizer[ttype]
+        self.type_constraint_stacks = collections.defaultdict(list)
 
     def get_randomizer(self, ttype, spec_args, constraints):
         """Get a randomizer object.
         Return an already-preprocessed randomizer if available and create a new
         one and preprocess it otherwise"""
-        randomizer_class = self._get_randomizer_class(ttype, spec_args)
+        randomizer_class = _get_randomizer_class(ttype, spec_args)
         randomizer = randomizer_class(spec_args, self, constraints)
 
         # Check if this randomizer is already in self.randomizers
@@ -904,3 +968,26 @@ class RandomizerState(object):
 
         randomizer.preprocess()
         return randomizer
+
+    def push_type_constraints(self, constraints):
+        """Push type constraints onto the type constraint stack
+        Return a list of stacks that need to be popped from
+
+        Return `pushed`, a variable that should be passed back to
+        pop_type_constraints when leaving the type constraints' scope.
+        """
+
+        pushed = []
+        for key, val in six.iteritems(constraints):
+            if key.startswith("|"):
+                # This is a type constraint
+                type_name = key[1:]
+                stack = self.type_constraint_stacks[type_name]
+                stack.append(val)
+                pushed.append(stack)
+
+        return pushed
+
+    def pop_type_constraints(self, pushed):
+        for stack in pushed:
+            stack.pop()
