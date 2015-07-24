@@ -6,16 +6,6 @@
  */
 
 
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.BitSet;
-import java.util.Arrays;
 
 import com.facebook.thrift.lite.*;
 import com.facebook.thrift.lite.protocol.*;
@@ -28,10 +18,10 @@ public class Module {
   }
 
   public static final ThriftProperty<Integer> Internship_weeks =
-      new ThriftProperty<Integer>("weeks", TType.I32, (short)1);
+      new ThriftProperty<Integer>("weeks", TType.I32, (short) 1);
   public static final ThriftProperty<String> Internship_title =
-      new ThriftProperty<String>("title", TType.STRING, (short)2);
+      new ThriftProperty<String>("title", TType.STRING, (short) 2);
   public static final ThriftProperty<ModuleEnum> Internship_employer =
-      new ThriftProperty<ModuleEnum>("employer", TType.I32, (short)3);
+      new ThriftProperty<ModuleEnum>("employer", TType.I32, (short) 3);
   
 }

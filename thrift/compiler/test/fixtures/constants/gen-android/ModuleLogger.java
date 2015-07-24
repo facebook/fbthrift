@@ -7,15 +7,8 @@
 
 
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.BitSet;
-import java.util.Arrays;
+import java.util.Map;
 
 import com.facebook.thrift.lite.*;
 import com.facebook.thrift.lite.protocol.*;
@@ -47,13 +40,13 @@ public class ModuleLogger {
         oprot.writeStructBegin(new TStruct("Internship"));
         if (mMap.containsKey(Module.Internship_weeks) && mMap.get(Module.Internship_weeks) != null) {
           writeFieldBegin(oprot, Module.Internship_weeks);
-          oprot.writeI32((int)mMap.get(Module.Internship_weeks));
+          oprot.writeI32((int) mMap.get(Module.Internship_weeks));
           oprot.writeFieldEnd();
         }
       
         if (mMap.containsKey(Module.Internship_title) && mMap.get(Module.Internship_title) != null) {
           writeFieldBegin(oprot, Module.Internship_title);
-          oprot.writeString((String)mMap.get(Module.Internship_title));
+          oprot.writeString((String) mMap.get(Module.Internship_title));
           oprot.writeFieldEnd();
         }
       

@@ -7,15 +7,9 @@
 
 
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.BitSet;
-import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import com.facebook.thrift.lite.*;
 import com.facebook.thrift.lite.protocol.*;
@@ -53,41 +47,41 @@ public class ModuleLogger {
         switch (mMap.keySet().iterator().next().id) {
         case 1: {
           writeFieldBegin(oprot, Module.ComplexUnion_intValue);
-          oprot.writeI64((long)mMap.get(Module.ComplexUnion_intValue));
+          oprot.writeI64((long) mMap.get(Module.ComplexUnion_intValue));
           oprot.writeFieldEnd();
           break;
-          }
+        }
       
         case 2: {
           writeFieldBegin(oprot, Module.ComplexUnion_stringValue);
-          oprot.writeString((String)mMap.get(Module.ComplexUnion_stringValue));
+          oprot.writeString((String) mMap.get(Module.ComplexUnion_stringValue));
           oprot.writeFieldEnd();
           break;
-          }
+        }
       
         case 3: {
           writeFieldBegin(oprot, Module.ComplexUnion_intListValue);
-          List<Long> var0 = (List<Long>)mMap.get(Module.ComplexUnion_intListValue);
+          List<Long> var0 = (List<Long>) mMap.get(Module.ComplexUnion_intListValue);
           oprot.writeListBegin(new TList(TType.I64, var0.size()));
-          for(long iter0 : var0) {
+          for (long iter0 : var0) {
             oprot.writeI64(iter0);
           }
           oprot.writeListEnd();
           oprot.writeFieldEnd();
           break;
-          }
+        }
       
         case 4: {
           writeFieldBegin(oprot, Module.ComplexUnion_stringListValue);
-          List<String> var0 = (List<String>)mMap.get(Module.ComplexUnion_stringListValue);
+          List<String> var0 = (List<String>) mMap.get(Module.ComplexUnion_stringListValue);
           oprot.writeListBegin(new TList(TType.STRING, var0.size()));
-          for(String iter0 : var0) {
+          for (String iter0 : var0) {
             oprot.writeString(iter0);
           }
           oprot.writeListEnd();
           oprot.writeFieldEnd();
           break;
-          }
+        }
       
         }
         oprot.writeFieldStop();

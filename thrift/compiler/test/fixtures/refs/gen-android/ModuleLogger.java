@@ -7,15 +7,9 @@
 
 
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.BitSet;
-import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import com.facebook.thrift.lite.*;
 import com.facebook.thrift.lite.protocol.*;
@@ -54,17 +48,17 @@ public class ModuleLogger {
         switch (mMap.keySet().iterator().next().id) {
         case 1: {
           writeFieldBegin(oprot, Module.MyUnion_anInteger);
-          oprot.writeI32((int)mMap.get(Module.MyUnion_anInteger));
+          oprot.writeI32((int) mMap.get(Module.MyUnion_anInteger));
           oprot.writeFieldEnd();
           break;
-          }
+        }
       
         case 2: {
           writeFieldBegin(oprot, Module.MyUnion_aString);
-          oprot.writeString((String)mMap.get(Module.MyUnion_aString));
+          oprot.writeString((String) mMap.get(Module.MyUnion_aString));
           oprot.writeFieldEnd();
           break;
-          }
+        }
       
         }
         oprot.writeFieldStop();
@@ -76,19 +70,19 @@ public class ModuleLogger {
         oprot.writeStructBegin(new TStruct("MyField"));
         if (mMap.containsKey(Module.MyField_opt_value) && mMap.get(Module.MyField_opt_value) != null) {
           writeFieldBegin(oprot, Module.MyField_opt_value);
-          oprot.writeI64((long)mMap.get(Module.MyField_opt_value));
+          oprot.writeI64((long) mMap.get(Module.MyField_opt_value));
           oprot.writeFieldEnd();
         }
       
         if (mMap.containsKey(Module.MyField_value) && mMap.get(Module.MyField_value) != null) {
           writeFieldBegin(oprot, Module.MyField_value);
-          oprot.writeI64((long)mMap.get(Module.MyField_value));
+          oprot.writeI64((long) mMap.get(Module.MyField_value));
           oprot.writeFieldEnd();
         }
       
         if (mMap.containsKey(Module.MyField_req_value) && mMap.get(Module.MyField_req_value) != null) {
           writeFieldBegin(oprot, Module.MyField_req_value);
-          oprot.writeI64((long)mMap.get(Module.MyField_req_value));
+          oprot.writeI64((long) mMap.get(Module.MyField_req_value));
           oprot.writeFieldEnd();
         } else {
           throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'MyField.req_value' was not present!");
@@ -136,7 +130,7 @@ public class ModuleLogger {
       
         if (mMap.containsKey(Module.StructWithUnion_aDouble) && mMap.get(Module.StructWithUnion_aDouble) != null) {
           writeFieldBegin(oprot, Module.StructWithUnion_aDouble);
-          oprot.writeDouble((double)mMap.get(Module.StructWithUnion_aDouble));
+          oprot.writeDouble((double) mMap.get(Module.StructWithUnion_aDouble));
           oprot.writeFieldEnd();
         }
       
@@ -155,9 +149,9 @@ public class ModuleLogger {
         oprot.writeStructBegin(new TStruct("RecursiveStruct"));
         if (mMap.containsKey(Module.RecursiveStruct_mes) && mMap.get(Module.RecursiveStruct_mes) != null) {
           writeFieldBegin(oprot, Module.RecursiveStruct_mes);
-          List<ModuleLogger> var0 = (List<ModuleLogger>)mMap.get(Module.RecursiveStruct_mes);
+          List<ModuleLogger> var0 = (List<ModuleLogger>) mMap.get(Module.RecursiveStruct_mes);
           oprot.writeListBegin(new TList(TType.STRUCT, var0.size()));
-          for(ModuleLogger iter0 : var0) {
+          for (ModuleLogger iter0 : var0) {
             iter0.write(oprot);
           }
           oprot.writeListEnd();

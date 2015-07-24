@@ -23,12 +23,16 @@
 #include <iostream>
 #include <vector>
 #include <cctype>
-
-#include <sys/stat.h>
 #include <stdexcept>
+
+#include <folly/Format.h>
+#include <folly/gen/Base.h>
+#include <folly/gen/String.h>
+#include <sys/stat.h>
 
 #include "thrift/compiler/platform.h"
 #include "thrift/compiler/generate/t_java_generator.h"
+using namespace folly;
 using namespace std;
 
 /**
@@ -92,32 +96,32 @@ class t_android_lite_generator : public t_java_generator {
     void output_write(t_list* tlist,
                       const string value,
                       int depth,
-                      bool needsCast,
+                      bool needs_cast,
                       stringstream& stream);
 
     void output_write(t_map* tmap,
                       const string value,
                       int depth,
-                      bool needsCast,
+                      bool needs_cast,
                       stringstream& stream);
 
 
     void output_write(t_set* tset,
                       const string value,
                       int depth,
-                      bool needsCast,
+                      bool needs_cast,
                       stringstream& stream);
 
     void output_write(t_struct* tstruct,
                       const string value,
                       int depth,
-                      bool needsCast,
+                      bool needs_cast,
                       stringstream& stream);
 
     void output_write(t_type* type,
                       const string value,
                       int depth,
-                      bool needsCast,
+                      bool needs_cast,
                       stringstream& stream);
 
     void output_write(t_enum* tenum,
@@ -138,12 +142,15 @@ class t_android_lite_generator : public t_java_generator {
 
     const string logger_name();
     const string enum_name();
+    void record_type_use(t_type* ttype);
+
 
   private:
     string package_name_;
     string program_name_;
     string package_dir_;
     bool annotate_;
+    unordered_set<string> used_types_;
 
     // We build up the text of the 3 files in these streams before
     // outputting them into their actual files all in one go.
@@ -190,9 +197,22 @@ void t_android_lite_generator::write_logger_file() {
 
   out_logger << autogen_comment() << package_header() << endl;
 
+  // These 3 types are always used in the logger file. We don't want to import
+  // them in the class file, so we remove them from the set after printing.
+  // `Map` might be needed in the class file, so we shouldn't always remove it.
+  bool should_remove = used_types_.insert("java.util.Map").second;
+  used_types_.insert("java.io.IOException");
+  used_types_.insert("java.util.HashMap");
+
   out_logger << java_type_imports() << endl
              << android_thrift_imports() << endl
              << endl; // empty line at end
+
+  if (should_remove) {
+    used_types_.erase("java.util.Map");
+  }
+  used_types_.erase("java.io.IOException");
+  used_types_.erase("java.util.HashMap");
 
   out_logger << "public class " <<  logger_name() << " {" << endl
              << endl;
@@ -336,18 +356,26 @@ void t_android_lite_generator::write_enum_file() {
   out_enum.close();
 }
 
+void t_android_lite_generator::record_type_use(t_type* ttype) {
+  if (ttype->is_set()) {
+   used_types_.insert("java.util.Set");
+   record_type_use(((t_set*) ttype)->get_elem_type());
+  } else if (ttype->is_list()) {
+   used_types_.insert("java.util.List");
+   record_type_use(((t_list*) ttype)->get_elem_type());
+  } else if (ttype->is_map()) {
+   used_types_.insert("java.util.Map");
+   record_type_use(((t_map*) ttype)->get_key_type());
+   record_type_use(((t_map*) ttype)->get_val_type());
+  }
+}
+
 string t_android_lite_generator::java_type_imports() {
   return
-    "import java.io.IOException;\n"
-    "import java.util.List;\n"
-    "import java.util.ArrayList;\n"
-    "import java.util.Map;\n"
-    "import java.util.HashMap;\n"
-    "import java.util.Set;\n"
-    "import java.util.HashSet;\n"
-    "import java.util.Collections;\n"
-    "import java.util.BitSet;\n"
-    "import java.util.Arrays;\n";
+    gen::from(used_types_)
+    | gen::order
+    | gen::map([](const string &v) { return sformat("import {};\n", v); })
+    | gen::unsplit<string>("");
 }
 
 // When we open-source the android compiler, we'll need to also release
@@ -416,15 +444,15 @@ void t_android_lite_generator::generate_typedef(t_typedef* ttypedef) {
 }
 
 void t_android_lite_generator::output_write(t_list* tlist, const string value,
-    int depth, bool needsCast, stringstream& stream) {
+    int depth, bool needs_cast, stringstream& stream) {
   t_type* inner_type = tlist->get_elem_type();
   string inner_type_name = type_name(inner_type);
   string java_name = type_name(tlist);
   string tmp_var = temp_variable("var", depth);
 
-  if (needsCast) {
+  if (needs_cast) {
     indent(stream) << java_name << " " << tmp_var << " = " <<
-        "(" << java_name << ")" << value << ";" << endl;
+        "(" << java_name << ") " << value << ";" << endl;
   } else {
     indent(stream) << java_name << " " << tmp_var << " = " <<
         value << ";" << endl;
@@ -434,7 +462,7 @@ void t_android_lite_generator::output_write(t_list* tlist, const string value,
       "var" << depth << ".size()));" << endl;
 
   string tmp_iter = temp_variable("iter", depth);
-  indent(stream) << "for(" << inner_type_name <<
+  indent(stream) << "for (" << inner_type_name <<
     " " << tmp_iter << " : " << tmp_var << ") {" << endl;
   indent_up();
 
@@ -445,15 +473,15 @@ void t_android_lite_generator::output_write(t_list* tlist, const string value,
 }
 
 void t_android_lite_generator::output_write(t_map* tmap, const string value,
-    int depth, bool needsCast, stringstream& stream) {
+    int depth, bool needs_cast, stringstream& stream) {
   t_type* key_type = ((t_map*) tmap)->get_key_type();
   t_type* val_type = ((t_map*) tmap)->get_val_type();
   string java_name = type_name(tmap);
   string tmp_var = temp_variable("var", depth);
 
-  if (needsCast) {
+  if (needs_cast) {
     indent(stream) << java_name << " " << tmp_var << " = " <<
-      "(" << java_name << ")" << value << ";" << endl;
+      "(" << java_name << ") " << value << ";" << endl;
   } else {
     indent(stream) << java_name << " " << tmp_var << " = " <<
       value << ";" << endl;
@@ -481,8 +509,8 @@ void t_android_lite_generator::output_write(t_map* tmap, const string value,
 
 
 void t_android_lite_generator::output_write(t_struct* tstruct,
-    const string value, int depth, bool needsCast, stringstream& stream) {
-  if (needsCast) {
+    const string value, int depth, bool needs_cast, stringstream& stream) {
+  if (needs_cast) {
     indent(stream) << "((" << logger_name() << ") " << value << ")";
   } else {
     indent(stream) << value;
@@ -491,15 +519,15 @@ void t_android_lite_generator::output_write(t_struct* tstruct,
 }
 
 void t_android_lite_generator::output_write(t_set* tset, const string value,
-    int depth, bool needsCast, stringstream& stream) {
+    int depth, bool needs_cast, stringstream& stream) {
   t_type* inner_type =((t_set*) tset)->get_elem_type();
   string inner_type_name = type_name(inner_type);
   string java_name = type_name(tset);
   string tmp_var = temp_variable("var", depth);
 
-  if (needsCast) {
+  if (needs_cast) {
     indent(stream) << java_name << " " << tmp_var << " = " <<
-      "(" << java_name << ")" << value << ";" << endl;
+      "(" << java_name << ") " << value << ";" << endl;
   } else {
     indent(stream) << java_name << " " << tmp_var << " = " <<
       value << ";" << endl;
@@ -532,16 +560,19 @@ void t_android_lite_generator::output_write(t_enum* tenum, const string value,
 }
 
 void t_android_lite_generator::output_write(t_type* ttype, const string value,
-    int depth, bool needsCast, stringstream& stream) {
+    int depth, bool needs_cast, stringstream& stream) {
   ttype = get_true_type(ttype);
-  // We treat enums just like i32s.
   if (ttype->is_base_type()) {
     string thrift_name = capitalize(ttype->get_name());
-
-    if (needsCast) {
-      string java_name = base_type_name((t_base_type *) ttype);
+    string java_name = base_type_name((t_base_type *) ttype);
+    // Edge case: all the methods are named `writeFoo` for primitive type `foo`
+    // except `byte[]`, which pairs with `writeBinary`.
+    if (((t_base_type*)ttype)->is_binary()) {
+      java_name = "Binary";
+    }
+    if (needs_cast) {
       indent(stream) << "oprot.write" << thrift_name <<
-          "((" << java_name << ")" << value << ");" << endl;
+          "((" << java_name << ") " << value << ");" << endl;
     } else {
       indent(stream) << "oprot.write" << thrift_name <<
           "("  << value << ");" << endl;
@@ -549,19 +580,19 @@ void t_android_lite_generator::output_write(t_type* ttype, const string value,
     // Since C++ dispatch is handled statically at compile-time,
     // we need to cast to each of these methods individually.
   } else if (ttype->is_list()) {
-    output_write((t_list *)ttype, value, depth, needsCast, stream);
+    output_write((t_list *)ttype, value, depth, needs_cast, stream);
 
   } else if (ttype->is_struct()) {
-    output_write((t_struct *)ttype, value, depth, needsCast, stream);
+    output_write((t_struct *)ttype, value, depth, needs_cast, stream);
 
   } else if (ttype->is_map()) {
-    output_write((t_map *)ttype, value, depth, needsCast, stream);
+    output_write((t_map *)ttype, value, depth, needs_cast, stream);
 
   } else if (ttype->is_set()) {
-    output_write((t_set *)ttype, value, depth, needsCast, stream);
+    output_write((t_set *)ttype, value, depth, needs_cast, stream);
 
   } else if (ttype->is_enum()) {
-    output_write((t_enum *)ttype, value, depth, needsCast, stream);
+    output_write((t_enum *)ttype, value, depth, needs_cast, stream);
 
   } else {
     throw "Compiler error: unhandled type.";
@@ -572,13 +603,15 @@ void t_android_lite_generator::output_write(t_type* ttype, const string value,
 // OUTPUTS:
 // @TOptional/@TRequired
 // public static final ThriftProperty<TypeName> ParentName_MyName =
-//    new ThriftProperty<TypeName>("Name", (short)idx);
+//    new ThriftProperty<TypeName>("Name", (short) idx);
 void t_android_lite_generator::output_property(t_field* tfield,
     const string parent_name) {
   if (annotate_) {
     indent(class_defns_) << ((tfield->get_req() == t_field::T_REQUIRED) ?
       "@TRequired(\"" : "@TOptional(\"") << parent_name << "\")" << endl;
   }
+
+  record_type_use(tfield->get_type());
 
   indent(class_defns_) <<
     "public static final ThriftProperty<" <<
@@ -592,7 +625,7 @@ void t_android_lite_generator::output_property(t_field* tfield,
       type_name(tfield->get_type(), true) << ">(\"" <<
       tfield->get_name() << "\", " <<
       get_java_type_string(tfield->get_type()) << ", " <<
-      "(short)" << tfield->get_key() << ");" << endl;
+      "(short) " << tfield->get_key() << ");" << endl;
   indent_down(); indent_down();
 }
 
@@ -652,8 +685,8 @@ void t_android_lite_generator::output_case_body_union(t_struct *tunion) {
     output_write(tfield->get_type(), value, 0, true, switch_stmts_);
     indent(switch_stmts_) << "oprot.writeFieldEnd();" << endl;
     indent(switch_stmts_) << "break;" << endl;
-    indent(switch_stmts_) << "}" << endl;
     indent_down();
+    indent(switch_stmts_) << "}" << endl;
     switch_stmts_ << endl;
   }
   indent(switch_stmts_) << "}" << endl;
