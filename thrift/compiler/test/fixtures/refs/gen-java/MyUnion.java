@@ -90,6 +90,37 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   }
 
   @Override
+  public void read(TProtocol iprot) throws TException {
+    setField_ = 0;
+    value_ = null;
+    iprot.readStructBegin(metaDataMap);
+    TField field = iprot.readFieldBegin();
+    if (field.type != TType.STOP)
+    {
+      value_ = readValue(iprot, field);
+      if (value_ != null)
+      {
+        switch (field.id) {
+          case ANINTEGER:
+            if (field.type == AN_INTEGER_FIELD_DESC.type) {
+              setField_ = field.id;
+            }
+            break;
+          case ASTRING:
+            if (field.type == A_STRING_FIELD_DESC.type) {
+              setField_ = field.id;
+            }
+            break;
+        }
+      }
+      iprot.readFieldEnd();
+      iprot.readFieldBegin();
+      iprot.readFieldEnd();
+    }
+    iprot.readStructEnd();
+  }
+
+  @Override
   protected Object readValue(TProtocol iprot, TField field) throws TException {
     switch (field.id) {
       case ANINTEGER:

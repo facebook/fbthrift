@@ -153,6 +153,7 @@ class t_java_generator : public t_oop_generator {
   void generate_union_getters_and_setters(ofstream& out, t_struct* tstruct);
   void generate_union_abstract_methods(ofstream& out, t_struct* tstruct);
   void generate_check_type(ofstream& out, t_struct* tstruct);
+  void generate_union_reader(ofstream& out, t_struct* tstruct);
   void generate_read_value(ofstream& out, t_struct* tstruct);
   void generate_write_value(ofstream& out, t_struct* tstruct);
   void generate_get_field_desc(ofstream& out, t_struct* tstruct);

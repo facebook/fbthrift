@@ -122,6 +122,47 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   }
 
   @Override
+  public void read(TProtocol iprot) throws TException {
+    setField_ = 0;
+    value_ = null;
+    iprot.readStructBegin(metaDataMap);
+    TField field = iprot.readFieldBegin();
+    if (field.type != TType.STOP)
+    {
+      value_ = readValue(iprot, field);
+      if (value_ != null)
+      {
+        switch (field.id) {
+          case INTVALUE:
+            if (field.type == INT_VALUE_FIELD_DESC.type) {
+              setField_ = field.id;
+            }
+            break;
+          case STRINGVALUE:
+            if (field.type == STRING_VALUE_FIELD_DESC.type) {
+              setField_ = field.id;
+            }
+            break;
+          case INTLISTVALUE:
+            if (field.type == INT_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = field.id;
+            }
+            break;
+          case STRINGLISTVALUE:
+            if (field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = field.id;
+            }
+            break;
+        }
+      }
+      iprot.readFieldEnd();
+      iprot.readFieldBegin();
+      iprot.readFieldEnd();
+    }
+    iprot.readStructEnd();
+  }
+
+  @Override
   protected Object readValue(TProtocol iprot, TField field) throws TException {
     switch (field.id) {
       case INTVALUE:
