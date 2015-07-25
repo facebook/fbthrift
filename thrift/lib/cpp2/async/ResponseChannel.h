@@ -34,8 +34,15 @@ class IOBuf;
 const std::string kOverloadedErrorCode = "1";
 const std::string kTaskExpiredErrorCode = "2";
 const std::string kProxyTransportExceptionErrorCode = "3";
-const std::string kProxyProtocolExceptionErrorCode = "4";
+const std::string kProxyClientProtocolExceptionErrorCode = "4";
 const std::string kQueueOverloadedErrorCode = "5";
+const std::string kProxyHeaderParseExceptionErrorCode = "6";
+const std::string kProxyAuthExceptionErrorCode = "7";
+const std::string kProxyLookupTransportExceptionErrorCode = "8";
+const std::string kProxyLookupAppExceptionErrorCode = "9";
+const std::string kProxyWhitelistExceptionErrorCode = "10";
+const std::string kProxyClientAppExceptionErrorCode = "11";
+const std::string kProxyProtocolMismatchExceptionErrorCode = "12";
 
 namespace apache { namespace thrift {
 
