@@ -672,7 +672,7 @@ uint32_t RecursiveStruct::read(Protocol_* iprot) {
       case 1:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
-          this->mes.clear();
+          this->mes = std::move(std::vector< ::cpp2::RecursiveStruct>());
           uint32_t _size6;
           apache::thrift::protocol::TType _etype9;
           xfer += iprot->readListBegin(_etype9, _size6);

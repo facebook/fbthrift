@@ -100,6 +100,7 @@ class CppGenerator(t_generator.Generator):
         'implicit_templates' : 'templates are instantiated implicitly' +
                                'instead of explicitly',
         'separate_processmap': "generate processmap in separate files",
+        'optionals': "produce folly::Optional<...> for optional members",
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -276,8 +277,12 @@ class CppGenerator(t_generator.Generator):
     def _is_reference(self, f):
         return self._has_cpp_annotation(f, "ref")
 
+    def _is_optional_wrapped(self, f):
+        return f.req == e_req.optional and self.flag_optionals
+
     def _has_isset(self, f):
-        return not self._is_reference(f) and f.req != e_req.required
+        return not self._is_reference(f) and f.req != e_req.required \
+            and not self._is_optional_wrapped(f)
 
     # noncopyable is a hack to support gcc < 4.8, where declaring a constructor
     # as defaulted tries to generate it, even though it should be deleted.
@@ -499,7 +504,7 @@ class CppGenerator(t_generator.Generator):
         self._types_scope(txt)
 
     def _declare_field(self, field, pointer=False, constant=False,
-                        reference=False, unique=False):
+                        reference=False, unique=False, optional_wrapped=False):
         # I removed the 'init' argument, as all inits happen in default
         # constructor
         result = ''
@@ -512,6 +517,8 @@ class CppGenerator(t_generator.Generator):
             result += '&'
         if unique:
             result = "std::unique_ptr<" + result + ">"
+        if optional_wrapped:
+            result = "folly::Optional<" + result + ">"
         result += ' ' + field.name
         if not reference:
             result += ';'
@@ -2324,7 +2331,8 @@ class CppGenerator(t_generator.Generator):
         has_nonrequired_fields = any(member.req != e_req.required
                                         for member in members)
         should_generate_isset = has_nonrequired_fields and \
-            ((not pointers) or read) and not obj.is_union
+            ((not pointers) or read) and not obj.is_union \
+            and not self.flag_optionals
         struct_options = self._get_serialized_fields_options(obj)
 
         # Type enum for unions
@@ -2471,7 +2479,10 @@ class CppGenerator(t_generator.Generator):
                             t = self._get_true_type(member.type)
                             name = member.name + \
                                 self._type_access_suffix(member.type)
-                            if t.is_base_type or t.is_enum:
+                            if self._is_optional_wrapped(member):
+                                # trumps below conditions, regardless of type
+                                out(('{0}.clear();').format(name))
+                            elif t.is_base_type or t.is_enum:
                                 dval = self._member_default_value(
                                         member, explicit=True)
                                 out('{0} = {1};'.format(name, dval))
@@ -2520,7 +2531,8 @@ class CppGenerator(t_generator.Generator):
                 member,
                 pointers and not member.type.is_xception,
                 not read, False,
-                self._is_reference(member)))
+                self._is_reference(member),
+                self._is_optional_wrapped(member)))
 
         if s1 is not struct:
             s1()
@@ -2720,7 +2732,7 @@ class CppGenerator(t_generator.Generator):
                         if tfield.req != e_req.required:
                             has_nonrequired_fields = True
                         out('swap(a.{0}, b.{0});'.format(tfield.name))
-                    if has_nonrequired_fields:
+                    if should_generate_isset:
                         out('swap(a.__isset, b.__isset);')
                     if struct_options.has_serialized_fields:
                         out('swap(a.{0}, b.{0});'.format(
@@ -2734,6 +2746,8 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_struct_reader(self, scope, obj,
                                 pointers=False, has_isset=True):
+        if self.flag_optionals:
+            has_isset = False
         this = 'this'
         if self.flag_compatibility:
             this = 'obj'
@@ -2811,7 +2825,6 @@ class CppGenerator(t_generator.Generator):
         s2 = fields_scope('switch (fid)').scope
         # Generate deserialization code for known cases
         for field in fields:
-
             s3 = s2.case(field.key).scope
             if ('format' in field.annotations and
                     field.annotations['format'] == 'serialized'):
@@ -2902,22 +2915,28 @@ class CppGenerator(t_generator.Generator):
         name = prefix + field.name + self._type_access_suffix(field.type) + \
                 suffix
         self._generate_deserialize_type(
-            scope, field.type, name, self._is_reference(field))
+            scope, field.type, name, self._is_reference(field),
+            self._is_optional_wrapped(field))
 
-    def _generate_deserialize_type(self, scope, otype, name, pointer=False):
+    def _generate_deserialize_type(self, scope, otype, name,
+                                   pointer=False, optional_wrapped=False):
         'Deserializes a variable of any type.'
         ttype = self._get_true_type(otype)
         s = scope
         if ttype.is_void:
             raise TypeError('CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: '\
                             + name)
+
         if ttype.is_struct or ttype.is_xception:
             self._generate_deserialize_struct(
-                scope, otype, ttype.as_struct, name, pointer)
+                scope, otype, ttype.as_struct, name, pointer, optional_wrapped)
         elif ttype.is_container:
             self._generate_deserialize_container(scope, ttype.as_container,
-                                                 name)
+                                                 name, otype, optional_wrapped)
         elif ttype.is_base_type:
+            if optional_wrapped:
+                # assign a new default-constructed value into the Optional
+                s('{0} = {1}();'.format(name, self._type_name(ttype)))
             btype = ttype.as_base_type
             base = btype.base
             if base == t_base.void:
@@ -2945,7 +2964,10 @@ class CppGenerator(t_generator.Generator):
             else:
                 raise CompilerError('No C++ reader for base type ' + \
                         btype.t_base_name(base) + name)
-            txt = 'xfer += iprot->{0};'.format(txt.format(name))
+            dest = name
+            if optional_wrapped:
+                dest += ".value()"
+            txt = 'xfer += iprot->{0};'.format(txt.format(dest))
             s(txt)
         elif ttype.is_enum:
             t = self.tmp('ecast')
@@ -2956,20 +2978,27 @@ class CppGenerator(t_generator.Generator):
             raise TypeError(("DO NOT KNOW HOW TO DESERIALIZE '{0}' "
                              "TYPE {1}").format(name, self._type_name(ttype)))
 
-    def _generate_deserialize_struct(
-            self, scope, otype, struct, prefix, pointer=False):
+    def _generate_deserialize_struct(self, scope, otype, struct, prefix,
+                                     pointer=False, optional_wrapped=False):
         if pointer:
             scope("{0} = std::unique_ptr<{1}>(new {1});".format(
                 prefix, self._type_name(otype)))
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
                   'iprot, {1}.get());'.format(
                       self._type_name(otype), prefix))
+        elif optional_wrapped:
+            scope("{0} = std::move({1}());".format(
+                prefix, self._type_name(otype)))
+            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
+                  'iprot, &{1}.value());'.format(
+                      self._type_name(otype), prefix))
         else:
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
                   'iprot, &{1});'.format(
                       self._type_name(otype), prefix))
 
-    def _generate_deserialize_container(self, scope, cont, prefix):
+    def _generate_deserialize_container(self, scope, cont, prefix,
+                                        otype, optional_wrapped):
         s = scope
         size = self.tmp('_size')
         ktype = self.tmp('_ktype')
@@ -2978,7 +3007,13 @@ class CppGenerator(t_generator.Generator):
         cpptype = self._cpp_type_name(cont)
         use_push = (cpptype is not None and 'list' in cpptype) \
             or self._has_cpp_annotation(cont, 'template')
-        s(prefix + '.clear();')
+
+        s('{0} = std::move({1}());'.format(prefix, self._type_name(otype)))
+        if optional_wrapped:
+            cont_ref = "{0}.value()".format(prefix)
+        else:
+            cont_ref = prefix
+
         s('uint32_t {0};'.format(size))
         # Declare variables, read header
         if cont.is_map:
@@ -3010,31 +3045,33 @@ class CppGenerator(t_generator.Generator):
             with s('for ({0} = 0; {1}; {0}++)'.format(i, peek)):
                 if cont.is_map:
                     self._generate_deserialize_map_element(
-                            out(), cont.as_map, prefix)
+                            out(), cont.as_map, cont_ref)
                 elif cont.is_set:
                     self._generate_deserialize_set_element(
-                            out(), cont.as_set, prefix)
+                            out(), cont.as_set, cont_ref)
                 elif cont.is_list:
                     if not use_push:
-                        s('{0}.resize({1} + 1);'.format(prefix, i))
+                        s('{0}.resize({1} + 1);'.format(cont_ref, i))
                     self._generate_deserialize_list_element(out(), cont.as_list,
-                                                            prefix, use_push, i)
+                                                            cont_ref, use_push,
+                                                            i)
         with s('else'):
             if cont.is_list and not use_push:
-                s('{0}.resize({1});'.format(prefix, size))
+                s('{0}.resize({1});'.format(cont_ref, size))
             elif ((cont.is_map and cont.as_map.is_unordered) or
                   (cont.is_set and cont.as_set.is_unordered)):
-                s('{0}.reserve({1});'.format(prefix, size))
+                s('{0}.reserve({1});'.format(cont_ref, size))
             with s('for ({0} = 0; {0} < {1}; ++{0})'.format(i, size)):
                 if cont.is_map:
                     self._generate_deserialize_map_element(
-                            out(), cont.as_map, prefix)
+                            out(), cont.as_map, cont_ref)
                 elif cont.is_set:
                     self._generate_deserialize_set_element(
-                            out(), cont.as_set, prefix)
+                            out(), cont.as_set, cont_ref)
                 elif cont.is_list:
                     self._generate_deserialize_list_element(out(), cont.as_list,
-                                                            prefix, use_push, i)
+                                                            cont_ref, use_push,
+                                                            i)
         # Read container end
         if cont.is_map:
             s('xfer += iprot->readMapEnd();')
@@ -3120,8 +3157,15 @@ class CppGenerator(t_generator.Generator):
 
         first = True
         for field in filter(self._should_generate_field, obj.members):
-            isset_expr = ('{0}->{1}' if self._is_reference(field)
-                          else '{0}->__isset.{1}').format(this, field.name)
+            if self._is_reference(field):
+                isset_expr_format = '{0}->{1}'
+            elif self._is_optional_wrapped(field):
+                isset_expr_format = '{0}->{1}.hasValue()'
+            else:
+                isset_expr_format = '{0}->__isset.{1}'
+
+            isset_expr = isset_expr_format.format(this, field.name)
+
             if result == True:
                 if first:
                     first = False
@@ -3130,13 +3174,13 @@ class CppGenerator(t_generator.Generator):
                     s1 = s('else if ({0})'.format(isset_expr)).scope
             elif field.req == e_req.optional:
                 s1 = s('if ({0})'.format(isset_expr)).scope
-
             elif obj.is_union:
                 s1 = s.case(obj.name + '::Type::' + field.name).scope
             elif self.flag_terse_writes and not field.req == e_req.required:
                 s1 = self._try_terse_write(field, this, s, pointers)
             else:
                 s1 = s
+
             # Add the size of field header + footer
             s1('xfer += prot_->serializedFieldSize("{0}", {1}, {2});'
                ''.format(field.name, self._type_to_enum(field.type),
@@ -3257,8 +3301,15 @@ class CppGenerator(t_generator.Generator):
 
         first = True
         for field in fields:
-            isset_expr = ('{0}->{1}' if self._is_reference(field)
-                          else '{0}->__isset.{1}').format(this, field.name)
+            if self._is_reference(field):
+                isset_expr_format = '{0}->{1}'
+            elif self._is_optional_wrapped(field):
+                isset_expr_format = '{0}->{1}.hasValue()'
+            else:
+                isset_expr_format = '{0}->__isset.{1}'
+
+            isset_expr = isset_expr_format.format(this, field.name)
+
             if result == True:
                 if first:
                     first = False
@@ -3317,10 +3368,13 @@ class CppGenerator(t_generator.Generator):
         name = prefix + tfield.name + self._type_access_suffix(tfield.type) + \
                 suffix
         pointer = self._is_reference(tfield)
-        self._generate_serialize_type(scope, tfield.type, name, method,
+        self._generate_serialize_type(scope, tfield.type, name,
+                                      self._is_optional_wrapped(tfield),
+                                      method,
                                       struct_method, binary_method, pointer)
 
     def _generate_serialize_type(self, scope, otype, name,
+                                 is_optional_wrapped,
                                  method='write',
                                  struct_method=None,
                                  binary_method=None,
@@ -3332,16 +3386,21 @@ class CppGenerator(t_generator.Generator):
         if binary_method is None:
             binary_method = method
 
+        val_expr = name
+        if is_optional_wrapped:
+            val_expr += ".value()"
+
         # Do nothing for void types
         if ttype.is_void:
             raise TypeError('CANNOT GENERATE SERIALIZE CODE FOR void TYPE: '\
                             + name)
         if ttype.is_struct or ttype.is_xception:
-            self._generate_serialize_struct(scope, otype, ttype.as_struct, name,
+            self._generate_serialize_struct(scope, otype, ttype.as_struct,
+                                            val_expr,
                                             struct_method, pointer)
         elif ttype.is_container:
             self._generate_serialize_container(scope, ttype.as_container,
-                                               name,
+                                               val_expr,
                                                method,
                                                struct_method=struct_method,
                                                binary_method=binary_method)
@@ -3355,28 +3414,29 @@ class CppGenerator(t_generator.Generator):
                 if btype.is_binary:
                     txt = '{binary_method}Binary({name});'
                 else:
-                    txt = '{method}String({name});'
+                    txt = '{method}String({val_expr});'
             elif base == t_base.bool:
-                txt = '{method}Bool({name});'
+                txt = '{method}Bool({val_expr});'
             elif base == t_base.byte:
-                txt = '{method}Byte({name});'
+                txt = '{method}Byte({val_expr});'
             elif base == t_base.i16:
-                txt = '{method}I16({name});'
+                txt = '{method}I16({val_expr});'
             elif base == t_base.i32:
-                txt = '{method}I32({name});'
+                txt = '{method}I32({val_expr});'
             elif base == t_base.i64:
-                txt = '{method}I64({name});'
+                txt = '{method}I64({val_expr});'
             elif base == t_base.double:
-                txt = '{method}Double({name});'
+                txt = '{method}Double({val_expr});'
             elif base == t_base.float:
-                txt = '{method}Float({name});'
+                txt = '{method}Float({val_expr});'
             else:
                 raise CompilerError('No C++ writer for base type ' + \
                         btype.t_base_name(base) + name)
             txt = 'xfer += prot_->' + txt.format(name, **locals())
             scope(txt)
         elif ttype.is_enum:
-            scope('xfer += prot_->{0}I32((int32_t){1});'.format(method, name))
+            scope('xfer += prot_->{0}I32((int32_t){1});'
+                  .format(method, val_expr))
         else:
             raise TypeError(("DO NOT KNOW HOW TO SERIALIZE '{0}' "
                              "TYPE {1}").format(name, self._type_name(ttype)))
@@ -3954,6 +4014,8 @@ class CppGenerator(t_generator.Generator):
         s('#include <thrift/lib/cpp2/protocol/Protocol.h>')
         if not self.flag_bootstrap:
             s('#include <thrift/lib/cpp/TApplicationException.h>')
+        if self.flag_optionals:
+            s('#include <folly/Optional.h>')
         s('#include <folly/io/IOBuf.h>')
         s('#include <folly/io/Cursor.h>')
         s('#include <boost/operators.hpp>')
