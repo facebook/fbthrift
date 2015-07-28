@@ -1673,7 +1673,7 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
         tname = tname.substr(colonPos + 1);
       }
 
-      if (!nspace.empty()) {
+      if (!folly::trimWhitespace(nspace).empty()) {
         ret = "using namespace " + nspace + "; ";
       }
 
