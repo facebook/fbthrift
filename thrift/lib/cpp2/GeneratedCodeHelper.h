@@ -949,7 +949,6 @@ void process_pmap(
   }
   auto pfn = pmap.find(fname);
   if (pfn == pmap.end()) {
-    auto protType = ProtocolReader::protocolType();
     process_missing<ProtocolReader>(
         proc, fname, std::move(req), std::move(buf), ctx, eb, tm, protoSeqId);
     return;
