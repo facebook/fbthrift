@@ -461,7 +461,7 @@ mixin template TStructHelpers(alias fieldMetaData = cast(TFieldMeta[])null) if (
   }
 
   static if (canFind!`!a.defaultValue.empty`(mergeFieldMeta!(This, fieldMetaData))) {
-    static if (is(This _ == class)) {
+    static if (is(This __ == class)) {
       this() {
         mixin(thriftFieldInitCode!(mergeFieldMeta!(This, fieldMetaData))("this"));
       }
