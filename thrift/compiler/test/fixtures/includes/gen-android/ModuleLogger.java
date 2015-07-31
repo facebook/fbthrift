@@ -40,7 +40,7 @@ public class ModuleLogger {
         oprot.writeStructBegin(new TStruct("MyStruct"));
         if (mMap.containsKey(Module.MyStruct_MyIncludedField) && mMap.get(Module.MyStruct_MyIncludedField) != null) {
           writeFieldBegin(oprot, Module.MyStruct_MyIncludedField);
-          ((ModuleLogger) mMap.get(Module.MyStruct_MyIncludedField)).write(oprot);
+          ((one.two.three.IncludesLogger) mMap.get(Module.MyStruct_MyIncludedField)).write(oprot);
           oprot.writeFieldEnd();
         }
       

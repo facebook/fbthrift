@@ -402,10 +402,12 @@ string t_android_lite_generator::package_header() {
 string t_android_lite_generator::type_name(t_type* ttype, bool in_container,
     bool in_init, bool skip_generic) {
   ttype = get_true_type(ttype);
-  if (ttype->is_struct()) {
-    return logger_name();
-  } else if (ttype->is_enum()) {
-    return enum_name();
+  if (ttype->is_struct() || ttype->is_enum()) {
+    string suffix = ttype->is_struct() ? "Logger" : "Enum";
+    string name = capitalize(ttype->get_program()->get_name()) + suffix;
+    string package = ttype->get_program()->get_namespace("android_lite");
+    return package.empty() || package == package_name_
+      ? name : package + "." + name;
   } else {
     return t_java_generator::type_name(ttype, in_container, in_init,
         skip_generic);
@@ -511,7 +513,7 @@ void t_android_lite_generator::output_write(t_map* tmap, const string value,
 void t_android_lite_generator::output_write(t_struct* tstruct,
     const string value, int depth, bool needs_cast, stringstream& stream) {
   if (needs_cast) {
-    indent(stream) << "((" << logger_name() << ") " << value << ")";
+    indent(stream) << "((" << type_name(tstruct) << ") " << value << ")";
   } else {
     indent(stream) << value;
   }
@@ -552,7 +554,7 @@ void t_android_lite_generator::output_write(t_enum* tenum, const string value,
     int depth, bool needsCast, stringstream& stream) {
   indent(stream) << "oprot.writeI32(";
   if (needsCast) {
-    stream << "((" << type_name(tenum) << ")" << value << ")";
+    stream << "((" << type_name(tenum) << ") " << value << ")";
   } else {
     stream << value;
   }

@@ -52,7 +52,7 @@ public class ModuleLogger {
       
         if (mMap.containsKey(Module.Internship_employer) && mMap.get(Module.Internship_employer) != null) {
           writeFieldBegin(oprot, Module.Internship_employer);
-          oprot.writeI32(((ModuleEnum)mMap.get(Module.Internship_employer)).getValue());
+          oprot.writeI32(((ModuleEnum) mMap.get(Module.Internship_employer)).getValue());
           oprot.writeFieldEnd();
         }
       

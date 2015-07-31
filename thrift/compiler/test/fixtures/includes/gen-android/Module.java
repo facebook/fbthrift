@@ -17,7 +17,7 @@ public class Module {
     MyStruct;
   }
 
-  public static final ThriftProperty<ModuleLogger> MyStruct_MyIncludedField =
-      new ThriftProperty<ModuleLogger>("MyIncludedField", TType.STRUCT, (short) 1);
+  public static final ThriftProperty<one.two.three.IncludesLogger> MyStruct_MyIncludedField =
+      new ThriftProperty<one.two.three.IncludesLogger>("MyIncludedField", TType.STRUCT, (short) 1);
   
 }
