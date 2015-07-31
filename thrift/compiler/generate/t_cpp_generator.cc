@@ -7194,7 +7194,16 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
   }
 
   f_reflection_impl_ <<
-    "// Reflection initializer for " << tinfo.name << endl <<
+    "// Reflection initializer for " << tinfo.name << endl;
+
+  // Reflection initializers for dependent types of structs/exceptions are
+  // only called from within this file when initializing the structs and
+  // exceptions.
+  if (!ttype->is_struct() && !ttype->is_xception()) {
+    f_reflection_impl_ << "static ";
+  }
+
+  f_reflection_impl_ <<
     "void " << initializer << "(" << ns << "Schema& schema) {" << endl;
 
   f_reflection_impl_ <<

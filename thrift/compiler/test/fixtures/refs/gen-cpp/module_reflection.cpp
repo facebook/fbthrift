@@ -145,7 +145,7 @@ void reflectionInitializer_11295191354176986988(::apache::thrift::reflection::Sc
 
 void  reflectionInitializer_2826922994162023308(::apache::thrift::reflection::Schema&);  // struct module.RecursiveStruct
 // Reflection initializer for list<struct module.RecursiveStruct>
-void reflectionInitializer_1481110219371736233(::apache::thrift::reflection::Schema& schema) {
+static void reflectionInitializer_1481110219371736233(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 1481110219371736233U;
   if (schema.dataTypes.count(id)) return;
   ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
