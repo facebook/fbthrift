@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
@@ -531,9 +532,7 @@ TEST(ThriftServer, Thrift1OnewayRequestTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   auto cpp2Server = factory.create();
   cpp2Server->setNWorkerThreads(1);
-  cpp2Server->setIsOverloaded([]() {
-    return true;
-  });
+  cpp2Server->setIsOverloaded([](const THeader* header) { return true; });
   apache::thrift::util::ScopedServerThread st(cpp2Server);
 
   std::shared_ptr<TestServiceClient> client = getThrift1Client(
@@ -550,9 +549,7 @@ TEST(ThriftServer, Thrift1OnewayRequestTest) {
     ADD_FAILURE();
   }
 
-  cpp2Server->setIsOverloaded([]() {
-    return false;
-  });
+  cpp2Server->setIsOverloaded([](const THeader* header) { return false; });
   // Send another twoway request. Client should receive a response
   // with correct seqId
   client->sendResponse(response, 0);

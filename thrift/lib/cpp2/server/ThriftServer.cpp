@@ -123,7 +123,7 @@ ThriftServer::ThriftServer(const std::string& saslPolicy,
   useClientTimeout_(true),
   activeRequests_(0),
   minCompressBytes_(0),
-  isOverloaded_([]() { return false; }),
+  isOverloaded_([](const THeader* header) { return false; }),
   queueSends_(true),
   enableCodel_(false),
   stopWorkersOnStopListening_(true),
@@ -503,8 +503,9 @@ int32_t ThriftServer::getPendingCount() const {
   return count;
 }
 
-bool ThriftServer::isOverloaded(uint32_t workerActiveRequests) {
-  if (UNLIKELY(isOverloaded_())) {
+bool ThriftServer::isOverloaded(uint32_t workerActiveRequests,
+                                const THeader* header) {
+  if (UNLIKELY(isOverloaded_(header))) {
     return true;
   }
 

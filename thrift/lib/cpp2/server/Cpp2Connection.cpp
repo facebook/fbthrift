@@ -316,7 +316,7 @@ void Cpp2Connection::requestReceived(
   int activeRequests = worker_->activeRequests_;
   activeRequests += worker_->pendingCount();
 
-  if (server->isOverloaded(activeRequests)) {
+  if (server->isOverloaded(activeRequests, channel_->getHeader())) {
     killRequest(*req,
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
         "loadshedding request");
