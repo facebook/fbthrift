@@ -88,7 +88,7 @@ void reflectionInitializer_11029503283921871788(::apache::thrift::reflection::Sc
 }
 
 // Reflection initializer for set<i64>
-void reflectionInitializer_13240717138325130634(::apache::thrift::reflection::Schema& schema) {
+static void reflectionInitializer_13240717138325130634(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 13240717138325130634U;
   if (schema.dataTypes.count(id)) return;
   ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
@@ -99,7 +99,7 @@ void reflectionInitializer_13240717138325130634(::apache::thrift::reflection::Sc
 }
 
 // Reflection initializer for enum module.Animal
-void reflectionInitializer_11268218794008757992(::apache::thrift::reflection::Schema& schema) {
+static void reflectionInitializer_11268218794008757992(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 11268218794008757992U;
   if (schema.dataTypes.count(id)) return;
   ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
@@ -113,7 +113,7 @@ void reflectionInitializer_11268218794008757992(::apache::thrift::reflection::Sc
 
 void  reflectionInitializer_11268218794008757992(::apache::thrift::reflection::Schema&);  // enum module.Animal
 // Reflection initializer for map<enum module.Animal, string>
-void reflectionInitializer_8021126195852166827(::apache::thrift::reflection::Schema& schema) {
+static void reflectionInitializer_8021126195852166827(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 8021126195852166827U;
   if (schema.dataTypes.count(id)) return;
   ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
@@ -128,7 +128,7 @@ void reflectionInitializer_8021126195852166827(::apache::thrift::reflection::Sch
 
 void  reflectionInitializer_11029503283921871788(::apache::thrift::reflection::Schema&);  // struct module.Vehicle
 // Reflection initializer for list<struct module.Vehicle>
-void reflectionInitializer_4398152853717283049(::apache::thrift::reflection::Schema& schema) {
+static void reflectionInitializer_4398152853717283049(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 4398152853717283049U;
   if (schema.dataTypes.count(id)) return;
   ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];

@@ -164,7 +164,7 @@ public class ModuleLogger {
       
         if (mMap.containsKey(Module.Person_afraidOfAnimal) && mMap.get(Module.Person_afraidOfAnimal) != null) {
           writeFieldBegin(oprot, Module.Person_afraidOfAnimal);
-          oprot.writeI32(((ModuleEnum)mMap.get(Module.Person_afraidOfAnimal)).getValue());
+          oprot.writeI32(((ModuleEnum) mMap.get(Module.Person_afraidOfAnimal)).getValue());
           oprot.writeFieldEnd();
         }
       
