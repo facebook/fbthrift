@@ -24,10 +24,9 @@
 #include <thrift/lib/cpp/async/TEventTask.h>
 #include <thrift/lib/cpp/async/TEventHandler.h>
 #include <thrift/lib/cpp/async/TNotificationQueue.h>
-#include <thrift/lib/cpp/server/TServer.h>
-#include <ext/hash_map>
 #include <list>
 #include <stack>
+#include <unordered_map>
 
 namespace apache { namespace thrift { namespace async {
 
@@ -125,9 +124,9 @@ class TEventWorker :
         return ((size_t)p ^ ((size_t)p >> kPtrHashShift)) * kPtrHashMult;
       }
     };
-  typedef __gnu_cxx::hash_map<const TEventConnection*,
+  typedef std::unordered_map<const TEventConnection*,
                               ConnectionList::iterator,
-                              hash<TEventConnection*> > ConnectionMap;
+                              hash<TEventConnection*>> ConnectionMap;
 
   /**
    * The list of active connections (used to allow the oldest connections
