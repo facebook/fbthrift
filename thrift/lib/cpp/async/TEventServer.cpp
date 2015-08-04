@@ -122,8 +122,10 @@ void TEventServer::setupServerSocket() {
   bool eventBaseAttached = false;
 
   try {
+#ifndef _MSC_VER
     // We check for write success so we don't need or want SIGPIPEs.
     signal(SIGPIPE, sigNoOp);
+#endif
 
     // bind to the socket
     if (!socket_) {

@@ -209,10 +209,12 @@ void* PthreadThread::threadMain(void* arg) {
         err, strerror(err);
     }
   } else if (thread->policy_ == SCHED_OTHER) {
+#ifndef _MSC_VER
     if (setpriority(PRIO_PROCESS, 0, thread->priority_) != 0) {
       VLOG(1) << "setpriority failed (are you root?) with error " <<
         errno, strerror(errno);
     }
+#endif
   }
 
   thread->runnable()->run();
