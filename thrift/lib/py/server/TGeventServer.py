@@ -35,7 +35,7 @@ from thrift.transport.TSocket import TSocket
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
 
 from gevent import monkey
-monkey.patch_all()
+monkey.patch_all(select=False)
 
 class TGeventServer(TServer):
 
