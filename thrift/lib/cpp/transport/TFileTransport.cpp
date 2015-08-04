@@ -424,7 +424,7 @@ void TFileTransport::writerThread() {
             offset_ = lseek(fd_, 0, SEEK_CUR);
             int32_t padding = (int32_t)((offset_ / chunkSize_ + 1) * chunkSize_ - offset_);
 
-            uint8_t zeros[padding];
+            uint8_t* zeros = (uint8_t*)alloca(sizeof(uint8_t) * padding);
             bzero(zeros, padding);
             if (-1 == ::write(fd_, zeros, padding)) {
               int errno_copy = errno;
