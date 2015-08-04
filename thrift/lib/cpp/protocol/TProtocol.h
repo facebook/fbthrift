@@ -25,7 +25,7 @@
 
 #include <memory>
 
-#include <netinet/in.h>
+#include <folly/SocketPortability.h>
 #include <sys/types.h>
 #include <string>
 #include <map>

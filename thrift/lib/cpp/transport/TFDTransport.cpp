@@ -22,7 +22,7 @@
 #include <cerrno>
 #include <exception>
 
-#include <unistd.h>
+#include <folly/FilePortability.h>
 
 using namespace std;
 

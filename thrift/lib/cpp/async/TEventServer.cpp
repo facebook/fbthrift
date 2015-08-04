@@ -25,14 +25,12 @@
 #include <boost/thread/barrier.hpp>
 
 #include <iostream>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <netdb.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <assert.h>
 #include <signal.h>
+
+#include <folly/SocketPortability.h>
 
 namespace apache { namespace thrift { namespace async {
 

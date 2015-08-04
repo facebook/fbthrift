@@ -31,7 +31,7 @@
 #endif
 #include <fcntl.h>
 #include <errno.h>
-#include <unistd.h>
+#include <folly/FilePortability.h>
 #ifdef THRIFT_HAVE_STRINGS_H
 #include <strings.h>
 #endif

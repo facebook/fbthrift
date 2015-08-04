@@ -18,16 +18,11 @@
 
 #include <cstring>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/poll.h>
-#include <sys/un.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <netdb.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <unistd.h>
 
+#include <folly/FilePortability.h>
+#include <folly/SocketPortability.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <thrift/lib/cpp/util/FdUtils.h>
 #include <memory>
@@ -121,7 +116,7 @@ void TServerSocket::setCloseOnExec(bool closeOnExec) {
 
 void TServerSocket::listen() {
   int sv[2];
-  if (-1 == socketpair(AF_LOCAL, SOCK_STREAM, 0, sv)) {
+  if (-1 == socketpair(AF_UNIX, SOCK_STREAM, 0, sv)) {
     GlobalOutput.perror("TServerSocket::listen() socketpair() ", errno);
     intSock1_ = -1;
     intSock2_ = -1;
@@ -155,9 +150,9 @@ void TServerSocket::listen() {
   }
 
   if (!path_.empty()) {
-    serverSocket_ = socket(PF_UNIX, SOCK_STREAM, IPPROTO_IP);
+    serverSocket_ = fsp::socket(PF_UNIX, SOCK_STREAM, IPPROTO_IP);
   } else {
-    serverSocket_ = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    serverSocket_ = fsp::socket(res->ai_family, res->ai_socktype, res->ai_protocol);
   }
 
   if (serverSocket_ == -1) {
@@ -279,6 +274,7 @@ void TServerSocket::listen() {
 
   if (!path_.empty()) {
     // Unix Domain Socket
+#if HAVE_UNIX_SOCKETS
     size_t len = path_.size() + 1;
     if (len > sizeof(((sockaddr_un*)nullptr)->sun_path)) {
       int errno_copy = errno;
@@ -299,6 +295,9 @@ void TServerSocket::listen() {
       }
       // use short circuit evaluation here to only sleep if we need to
     } while ((retries++ < retryLimit_) && (sleep(retryDelay_) == 0));
+#else
+    assert(0);
+#endif
   } else {
     do {
       if (0 == ::bind(serverSocket_, res->ai_addr, res->ai_addrlen)) {
