@@ -74,7 +74,7 @@ bool PthreadThread::updateName() {
 PthreadThread::PthreadThread(int policy, int priority, int stackSize,
                              bool detached,
                              shared_ptr<Runnable> runnable) :
-  pthread_(0),
+  pthread_(pthread_t_init),
   state_(uninitialized),
   policy_(policy),
   priority_(priority),
@@ -162,7 +162,11 @@ void PthreadThread::join() {
 }
 
 Thread::id_t PthreadThread::getId() {
+#ifdef _MSC_VER
+  return (Thread::id_t)pthread_getw32threadid_np(pthread_);
+#else
   return (Thread::id_t)pthread_;
+#endif
 }
 
 shared_ptr<Runnable> PthreadThread::runnable() const {
@@ -312,7 +316,11 @@ void PosixThreadFactory::Impl::setDetachState(DetachState value) {
 }
 
 Thread::id_t PosixThreadFactory::Impl::getCurrentThreadId() const {
+#ifdef _MSC_VER
+  return (Thread::id_t)pthread_getw32threadid_np(pthread_self());
+#else
   return (Thread::id_t)pthread_self();
+#endif
 }
 
 

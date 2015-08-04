@@ -83,7 +83,7 @@ TFileTransport::TFileTransport(string path, bool readOnly)
   , maxCorruptedEvents_(DEFAULT_MAX_CORRUPTED_EVENTS)
   , eofSleepTime_(DEFAULT_EOF_SLEEP_TIME_US)
   , writerThreadIOErrorSleepTime_(DEFAULT_WRITER_THREAD_SLEEP_TIME_US)
-  , writerThreadId_(0)
+  , writerThreadId_(pthread_t_init)
   , dequeueBuffer_(nullptr)
   , enqueueBuffer_(nullptr)
   , closing_(false)
@@ -135,7 +135,7 @@ void TFileTransport::resetOutputFile(int fd, string filename, int64_t offset) {
 
 TFileTransport::~TFileTransport() {
   // flush the buffer if a writer thread is active
-  if (writerThreadId_ > 0) {
+  if (writerThreadId_ != 0) {
     // set state to closing
     closing_ = true;
 
@@ -146,7 +146,7 @@ TFileTransport::~TFileTransport() {
     pthread_mutex_unlock(&mutex_);
 
     pthread_join(writerThreadId_, nullptr);
-    writerThreadId_ = 0;
+    writerThreadId_ = pthread_t_init;
   }
 
   if (dequeueBuffer_) {
@@ -523,7 +523,7 @@ void TFileTransport::writerThread() {
 
 void TFileTransport::flush() {
   // file must be open for writing for any flushing to take place
-  if (writerThreadId_ <= 0) {
+  if (writerThreadId_ == 0) {
     return;
   }
   // wait for flush to take place
