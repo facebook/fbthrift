@@ -247,6 +247,8 @@ class BoolRandomizer(BaseRandomizer):
     def eval_seed(self, seed):
         if isinstance(seed, bool):
             return seed
+        elif isinstance(seed, six.integer_types):
+            return bool(seed)
         elif seed == "true":
             return True
         elif seed == "false":
@@ -431,7 +433,7 @@ class FloatingPointRandomizer(ScalarTypeRandomizer):
     def eval_seed(self, seed):
         if isinstance(seed, six.string_types):
             return float(seed)
-        elif isinstance(seed, float):
+        elif isinstance(seed, (float,) + six.integer_types):
             return seed
         else:
             raise TypeError("Invalid %s seed: %s" % (self.__class__.name, seed))

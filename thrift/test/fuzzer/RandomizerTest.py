@@ -52,6 +52,18 @@ class TestBoolRandomizer(unittest.TestCase, TestRandomizer):
         for _ in sm.xrange(cls.iterations):
             self.assertTrue(gen.generate())
 
+    def test_int_seeded(self):
+        cls = self.__class__
+        constraints = {
+            'seeds': [1],
+            'p_random': 0,
+            'p_fuzz': 0
+        }
+        gen = self.get_randomizer(Thrift.TType.BOOL, None, constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            self.assertTrue(gen.generate())
+
 class TestEnumRandomizer(unittest.TestCase, TestRandomizer):
     def test_always_valid(self):
         cls = self.__class__
@@ -346,6 +358,19 @@ class TestFloatRandomizer(TestRandomizer):
     def testSeeded(self):
         cls = self.__class__
         seeds = [float('-inf'), 0.0, 13.37]
+        constraints = {
+            'seeds': seeds,
+            'p_random': 0,
+            'p_fuzz': 0
+        }
+        gen = self.get_randomizer(self.randomizer_cls.ttype, None, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIn(val, seeds)
+
+    def testIntSeeded(self):
+        cls = self.__class__
+        seeds = [1, 2, 3]
         constraints = {
             'seeds': seeds,
             'p_random': 0,
