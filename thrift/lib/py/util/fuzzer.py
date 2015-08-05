@@ -686,6 +686,16 @@ class TimeAggregator(object):
 
 
 class FuzzTester(object):
+    summary_interval = 1  # Seconds between summary logs
+
+    class Result:
+        Success = 0
+        TransportException = 1
+        ApplicationException = 2
+        UserDefinedException = 3
+        OtherException = 4
+        Crash = 5
+
     def __init__(self, config):
         self.config = config
         self.service = None
@@ -697,13 +707,21 @@ class FuzzTester(object):
         if self.config.logfile is None:
             logfile = '/dev/null'
         log_level = getattr(logging, self.config.loglevel)
+
+        datefmt = '%Y-%m-%d %H:%M:%S'
+        fmt = "[%(asctime)s] [%(levelname)s] %(message)s"
+
         if logfile == 'stdout':
             logging.basicConfig(stream=sys.stdout, level=log_level)
         else:
             logging.basicConfig(filename=self.config.logfile, level=log_level)
 
+        log_handler = logging.getLogger().handlers[0]
+        log_handler.setFormatter(logging.Formatter(fmt, datefmt=datefmt))
+
     def start_timing(self):
         self.timer = TimeAggregator()
+        self.next_summary_time = time.time() + self.__class__.summary_interval
 
     def _call_string(self, method_name, kwargs):
         kwarg_str = ', '.join('%s=%s' % (k, v)
@@ -720,6 +738,8 @@ class FuzzTester(object):
                 self.client.make_call(method_name, kwargs,
                                             is_oneway)
         except thrift_exceptions as e:
+            self.record_result(
+                method_name, FuzzTester.Result.UserDefinedException)
             if self.config.loglevel == "DEBUG":
                 with self.timer.time(method_name, "Logging"):
                     logging.debug("Got thrift exception: %r" % e)
@@ -727,6 +747,8 @@ class FuzzTester(object):
                         self._call_string(method_name, kwargs)))
 
         except Thrift.TApplicationException as e:
+            self.record_result(
+                method_name, FuzzTester.Result.ApplicationException)
             if self.config.allow_application_exceptions:
                 if self.config.loglevel == "DEBUG":
                     with self.timer.time(method_name, "Logging"):
@@ -750,13 +772,19 @@ class FuzzTester(object):
 
             if "errno = 111: Connection refused" in e.args[0]:
                 # Unable to connect to server - server may be down
+                self.record_result(method_name, FuzzTester.Result.Crash)
                 return False
 
             if not self.client.reset():
                 logging.error("Inferring server crash.")
+                self.record_result(method_name, FuzzTester.Result.Crash)
                 return False
 
+            self.record_result(
+                method_name, FuzzTester.Result.TransportException)
+
         except Exception as e:
+            self.record_result(method_name, FuzzTester.Result.OtherException)
             with self.timer.time(method_name, "Logging"):
                 self.n_exceptions += 1
                 logging.error("Got exception %s (%r)" % (e, e))
@@ -767,6 +795,7 @@ class FuzzTester(object):
                         self._call_string(method_name, self.previous_kwargs)))
 
         else:
+            self.record_result(method_name, FuzzTester.Result.Success)
             if self.config.loglevel == "DEBUG":
                 with self.timer.time(method_name, "Logging"):
                     logging.debug("Successful call: %s" % (
@@ -892,9 +921,42 @@ class FuzzTester(object):
         add_constraints_from_dict(source_constraints)
         return constraints
 
+    def start_result_counters(self):
+        """Create result counters. The counters object is a dict that maps
+        a method name to a counter of FuzzTest.Results
+        """
+        self.result_counters = collections.defaultdict(collections.Counter)
+
+    def record_result(self, method_name, result):
+        self.result_counters[method_name][result] += 1
+
+    def log_result_summary(self, method_name):
+        if time.time() >= self.next_summary_time:
+            results = []
+            for name, val in six.iteritems(vars(FuzzTester.Result)):
+                if name.startswith('_'):
+                    continue
+                count = self.result_counters[method_name][val]
+                if count > 0:
+                    results.append((name, count))
+            results.sort()
+            logging.info('%s count: {%s}' %
+                (method_name, ', '.join('%s: %d' % r for r in results)))
+
+            interval = self.__class__.summary_interval
+            # Determine how many full intervals have passed between
+            # self.next_summary_time (the scheduled time for this summary) and
+            # the time the summary is actually completed.
+            intervals_passed = int(
+                (time.time() - self.next_summary_time) / interval)
+            # Schedule the next summary for the first interval that has not yet
+            # fully passed
+            self.next_summary_time += interval * (intervals_passed + 1)
+
     def run(self):
         self.start_logging()
         self.start_timing()
+        self.start_result_counters()
 
         logging.info("Starting Fuzz Tester")
         logging.info(str(self.config))
@@ -925,6 +987,7 @@ class FuzzTester(object):
                                          is_oneway, thrift_exceptions):
                         did_crash = True
                         break
+                    self.log_result_summary(method_name)
                     self.previous_kwargs = kwargs
 
                 if did_crash:
