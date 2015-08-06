@@ -314,7 +314,7 @@ public:
 }
 };
 
-BOOST_PYTHON_MODULE(_cpp_server_wrapper) {
+BOOST_PYTHON_MODULE(CppServerWrapper) {
   PyEval_InitThreads();
 
   class_<ContextData>("ContextData")

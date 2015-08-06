@@ -19,11 +19,50 @@
 # under the License.
 #
 
-from distutils.core import setup, Extension
+from distutils.core import setup, Extension as _Extension
+from distutils.command.build_ext import build_ext as _build_ext
+from distutils.errors import CCompilerError, DistutilsError, CompileError
 
-fastbinarymod = Extension('thrift.protocol.fastbinary',
-                          sources = ['protocol/fastbinary.c'],
-                          )
+import sys
+
+
+class Extension(_Extension):
+    """Add an `optional` kwarg, to allow skipping on failure"""
+    def __init__(self, name, sources, optional=False, **kwargs):
+        _Extension.__init__(self, name, sources, **kwargs)
+        self.optional = optional
+
+
+class build_ext(_build_ext):
+    """Build extensions, but skip on failure if optional is set"""
+    def build_extensions(self):
+        self.check_extensions_list(self.extensions)
+
+        for ext in self.extensions:
+            try:
+                self.build_extension(ext)
+            except (CCompilerError, DistutilsError, CompileError) as e:
+                if not ext.optional:
+                    raise
+                self.warn('building extension "%s" failed: %s' %
+                          (ext.name, e))
+
+
+fastbinarymod = Extension(
+    'thrift.protocol.fastbinary',
+    sources = ['protocol/fastbinary.c'],
+    optional=True,
+)
+
+version_info = sys.version_info
+boost_python = "boost_python-py{}{}".format(version_info[0], version_info[1])
+cppservermod = Extension(
+    'thrift.server.CppServerWrapper',
+    sources = ['server/CppServerWrapper.cpp'],
+    libraries=[boost_python, 'thriftcpp2', 'folly', 'wangle'],
+    extra_compile_args=['-std=c++0x'],
+    optional=True,
+)
 
 setup(name = 'Thrift',
       version = '0.1',
@@ -40,5 +79,6 @@ setup(name = 'Thrift',
         'thrift.util',
       ],
       package_dir = {'thrift' : '.'},
-      ext_modules = [fastbinarymod],
+      ext_modules = [fastbinarymod, cppservermod],
+      cmdclass={'build_ext': build_ext},
       )

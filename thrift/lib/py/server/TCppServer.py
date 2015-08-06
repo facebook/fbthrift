@@ -10,7 +10,7 @@ from thrift.server.TServer import TServer, TConnectionContext
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TTransport import TMemoryBuffer
 
-from _cpp_server_wrapper import CppServerWrapper, ContextData
+from thrift.server.CppServerWrapper import CppServerWrapper, ContextData
 
 class TCppConnectionContext(TConnectionContext):
     def __init__(self, context_data):
