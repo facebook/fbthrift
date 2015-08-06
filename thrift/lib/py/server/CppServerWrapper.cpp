@@ -342,5 +342,7 @@ BOOST_PYTHON_MODULE(_cpp_server_wrapper) {
     .def("setNWorkerThreads", &CppServerWrapper::setNWorkerThreads)
     .def("setPort", &CppServerWrapper::setPort)
     .def("stop", &CppServerWrapper::stop)
+    .def("setMaxConnections", &CppServerWrapper::setMaxConnections)
+    .def("getMaxConnections", &CppServerWrapper::getMaxConnections)
     ;
 }
