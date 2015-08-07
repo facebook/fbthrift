@@ -376,6 +376,85 @@ class THeaderTransport(TTransportBase, CReadableTransport):
     def onewayFlush(self):
         self.flushImpl(True)
 
+    def _flushHeaderMessage(self, buf, wout, wsz):
+        """Write a message for self.HEADERS_CLIENT_TYPE
+
+        @param buf(StringIO): Buffer to write message to
+        @param wout(str): Payload
+        @param wsz(int): Payload length
+        """
+        transform_data = StringIO()
+        # For now, all transforms don't require data.
+        num_transforms = len(self.__write_transforms)
+        for trans_id in self.__write_transforms:
+            transform_data.write(getVarint(trans_id))
+
+        if self.__hmac_func:
+            num_transforms += 1
+            transform_data.write(getVarint(self.HMAC_TRANSFORM))
+            transform_data.write(b'\0')  # size of hmac, fixup later.
+
+        # Add in special flags.
+        if self.__identity:
+            self.__write_headers[self.ID_VERSION_HEADER] = self.ID_VERSION
+            self.__write_headers[self.IDENTITY_HEADER] = self.__identity
+
+        info_data = StringIO()
+
+        # Write persistent kv-headers
+        THeaderTransport._flush_info_headers(info_data,
+            self.__write_persistent_headers,
+            self.INFO_PKEYVALUE)
+
+        # Write non-persistent kv-headers
+        THeaderTransport._flush_info_headers(info_data,
+                                             self.__write_headers,
+                                             self.INFO_KEYVALUE)
+
+        header_data = StringIO()
+        header_data.write(getVarint(self.__proto_id))
+        header_data.write(getVarint(num_transforms))
+
+        header_size = transform_data.tell() + header_data.tell() + \
+            info_data.tell()
+
+        padding_size = 4 - (header_size % 4)
+        header_size = header_size + padding_size
+
+        wsz += header_size + 10
+        buf.write(pack(b"!I", wsz))
+        buf.write(pack(b"!HH", self.HEADER_MAGIC, self.__flags))
+        buf.write(pack(b"!I", self.__seq_id))
+        buf.write(pack(b"!H", header_size // 4))
+
+        buf.write(header_data.getvalue())
+        buf.write(transform_data.getvalue())
+        hmac_loc = buf.tell() - 1  # Fixup hmac size later
+        buf.write(info_data.getvalue())
+
+        # Pad out the header with 0x00
+        for x in range(0, padding_size, 1):
+            buf.write(pack(b"!c", b'\0'))
+
+        # Send data section
+        buf.write(wout)
+
+        # HMAC calculation should always be last.
+        if self.__hmac_func:
+            hmac_data = buf.getvalue()[4:]
+            hmac = self.__hmac_func(hmac_data)
+
+            # Fill in hmac size.
+            buf.seek(hmac_loc)
+            buf.write(chr(len(hmac)))
+            buf.seek(0, os.SEEK_END)
+            buf.write(hmac)
+
+            # Fix packet size since we appended data.
+            new_sz = buf.tell() - 4
+            buf.seek(0)
+            buf.write(pack(b"!I", new_sz))
+
     def flushImpl(self, oneway):
         wout = self.__wbuf.getvalue()
         wout = self.transform(wout)
@@ -391,79 +470,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
         buf = StringIO()
         if self.__client_type == self.HEADERS_CLIENT_TYPE:
-
-            transform_data = StringIO()
-            # For now, all transforms don't require data.
-            num_transforms = len(self.__write_transforms)
-            for trans_id in self.__write_transforms:
-                transform_data.write(getVarint(trans_id))
-
-            if self.__hmac_func:
-                num_transforms += 1
-                transform_data.write(getVarint(self.HMAC_TRANSFORM))
-                transform_data.write(b'\0')  # size of hmac, fixup later.
-
-            # Add in special flags.
-            if self.__identity:
-                self.__write_headers[self.ID_VERSION_HEADER] = self.ID_VERSION
-                self.__write_headers[self.IDENTITY_HEADER] = self.__identity
-
-            info_data = StringIO()
-
-            # Write persistent kv-headers
-            THeaderTransport._flush_info_headers(info_data,
-                    self.__write_persistent_headers,
-                    self.INFO_PKEYVALUE)
-
-            # Write non-persistent kv-headers
-            THeaderTransport._flush_info_headers(info_data,
-                                                 self.__write_headers,
-                                                 self.INFO_KEYVALUE)
-
-            header_data = StringIO()
-            header_data.write(getVarint(self.__proto_id))
-            header_data.write(getVarint(num_transforms))
-
-            header_size = transform_data.tell() + header_data.tell() + \
-                info_data.tell()
-
-            padding_size = 4 - (header_size % 4)
-            header_size = header_size + padding_size
-
-            wsz += header_size + 10
-            buf.write(pack(b"!I", wsz))
-            buf.write(pack(b"!HH", self.HEADER_MAGIC, self.__flags))
-            buf.write(pack(b"!I", self.__seq_id))
-            buf.write(pack(b"!H", header_size // 4))
-
-            buf.write(header_data.getvalue())
-            buf.write(transform_data.getvalue())
-            hmac_loc = buf.tell() - 1  # Fixup hmac size later
-            buf.write(info_data.getvalue())
-
-            # Pad out the header with 0x00
-            for x in range(0, padding_size, 1):
-                buf.write(pack(b"!c", b'\0'))
-
-            # Send data section
-            buf.write(wout)
-
-            # HMAC calculation should always be last.
-            if self.__hmac_func:
-                hmac_data = buf.getvalue()[4:]
-                hmac = self.__hmac_func(hmac_data)
-
-                # Fill in hmac size.
-                buf.seek(hmac_loc)
-                buf.write(chr(len(hmac)))
-                buf.seek(0, os.SEEK_END)
-                buf.write(hmac)
-
-                # Fix packet size since we appended data.
-                new_sz = buf.tell() - 4
-                buf.seek(0)
-                buf.write(pack(b"!I", new_sz))
-
+            self._flushHeaderMessage(buf, wout, wsz)
         elif self.__client_type == self.FRAMED_DEPRECATED:
             buf.write(pack(b"!I", wsz))
             buf.write(wout)

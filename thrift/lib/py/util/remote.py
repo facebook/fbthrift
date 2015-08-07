@@ -33,6 +33,8 @@ import traceback
 
 from thrift import Thrift
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
+from thrift.transport.THeaderTransport import THeaderTransport
+from thrift.transport.TFuzzyHeaderTransport import TFuzzyHeaderTransport
 from thrift.protocol import TBinaryProtocol, TCompactProtocol, \
     TJSONProtocol, THeaderProtocol
 
@@ -217,14 +219,22 @@ class RemoteTransportClient(RemoteClient):
         # No explicit option about protocol is specified. Try to infer.
         elif options.framed or options.unframed:
             protocol = TBinaryProtocol.TBinaryProtocolAccelerated(transport)
-        else:
-            if socket is None:
-                self._exit(error_message=('No valid protocol '
-                                          'specified for %s' % (type(self))),
-                           status=os.EX_USAGE)
+
+        elif socket is not None:
+            # If json, compact, framed, and unframed are not specified,
+            # THeaderProtocol is the default. Create a protocol using either
+            # fuzzy or non-fuzzy transport depending on if options.fuzz is set.
+            if options.fuzz is not None:
+                transport = TFuzzyHeaderTransport(
+                    socket, fuzz_fields=options.fuzz, verbose=True)
             else:
-                protocol = THeaderProtocol.THeaderProtocol(socket)
-                transport = protocol.trans
+                transport = THeaderTransport(socket)
+            protocol = THeaderProtocol.THeaderProtocol(transport)
+        else:
+            self._exit(error_message=('No valid protocol '
+                                      'specified for %s' % (type(self))),
+                       status=os.EX_USAGE)
+
         transport.open()
         self._transport = transport
 
@@ -253,14 +263,35 @@ class RemoteTransportClient(RemoteClient):
 class RemoteHostClient(RemoteTransportClient):
     selector_option = 'host'
     options = list(RemoteTransportClient.options)
-    options.append((
+    options.extend([(
         ['h', 'host'],
         {
             'action': 'store',
             'metavar': 'HOST[:PORT]',
             'help': 'The host and port to connect to'
         }
-    ))
+    ), (
+        ['F', 'fuzz'],
+        {
+            'type': 'str',
+            'nargs': '*',
+            'default': None,
+            'help': ('Use TFuzzyHeaderTransport to send a fuzzed message for '
+                     'testing thrift transport. Optionally include a list of '
+                     'message field names to fuzz after this flag. Fields: ' +
+                     ', '.join(TFuzzyHeaderTransport.fuzzable_fields))
+        }
+    )])
+
+    def _validate_options(self, options):
+        super(RemoteHostClient, self)._validate_options(options)
+        if (options.fuzz is not None and
+            any([options.framed, options.unframed,
+                 options.json, options.compact])):
+            self._exit(error_message=('Transport fuzzing only supported for '
+                                      'THeaderTransport (no framed, unframed, '
+                                      'json, or compact.)'),
+                       status=os.EX_USAGE)
 
     def _get_client(self, options):
         host, port = self._parse_host_port(options.host, self.default_port)
@@ -417,12 +448,25 @@ class Remote(object):
                 args[identifier] = kwargs['const']
             else:
                 nargs = kwargs.get('nargs', 1)
-                arg_list = argv[i + 1:i + 1 + nargs]
+                # Take the slice of args in [i+1:j] where j is the index
+                # of the next argument identifier
+                if nargs in {'*', '+'}:
+                    # Find the next --flag
+                    j = i + 1
+                    while j < len(argv) and not argv[j].startswith('-'):
+                        j += 1
+                    if nargs == '+' and j == i + 1:
+                        raise ValueError("%s requires at least one argument" % (
+                            arg_name))
+                else:
+                    # We have an explicit number of args
+                    j = i + 1 + nargs
+                arg_list = argv[i + 1:j]
                 if nargs == 1:
                     args[identifier] = arg_list[0]
                 else:
                     args[identifier] = arg_list
-                i += nargs
+                i = j - 1
         else:
             print_usage(sys.stderr, help=True)
             sys.exit(os.EX_USAGE)
