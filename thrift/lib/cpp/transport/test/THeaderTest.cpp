@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(largetransform) {
 
 BOOST_AUTO_TEST_CASE(http_clear_header) {
   THeader header;
-  header.setClientTypeNoCheck(THRIFT_HTTP_CLIENT_TYPE);
+  header.setClientType(THRIFT_HTTP_CLIENT_TYPE);
   auto parser = std::make_shared<apache::thrift::util::THttpClientParser>(
       "testhost", "testuri");
   header.setHttpClientParser(parser);

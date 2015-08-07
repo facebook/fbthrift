@@ -52,12 +52,14 @@ class ClientReceiveState {
 
   ClientReceiveState(uint16_t protocolId,
                      std::unique_ptr<folly::IOBuf> buf,
+                     std::unique_ptr<apache::thrift::transport::THeader> header,
                      std::shared_ptr<apache::thrift::ContextStack> ctx,
                      bool isSecurityActive,
                      bool isStreamEnd = false)
     : protocolId_(protocolId),
       ctx_(std::move(ctx)),
       buf_(std::move(buf)),
+      header_(std::move(header)),
       isSecurityActive_(isSecurityActive),
       isStreamEnd_(isStreamEnd) {
   }
@@ -107,6 +109,14 @@ class ClientReceiveState {
     return std::move(buf_);
   }
 
+  apache::thrift::transport::THeader* header() const {
+    return header_.get();
+  }
+
+  std::unique_ptr<apache::thrift::transport::THeader> extractHeader() {
+    return std::move(header_);
+  }
+
   apache::thrift::ContextStack* ctx() const {
     return ctx_.get();
   }
@@ -126,6 +136,7 @@ class ClientReceiveState {
   uint16_t protocolId_;
   std::shared_ptr<apache::thrift::ContextStack> ctx_;
   std::unique_ptr<folly::IOBuf> buf_;
+  std::unique_ptr<apache::thrift::transport::THeader> header_;
   std::exception_ptr exc_;
   folly::exception_wrapper excw_;
   bool isSecurityActive_;
@@ -246,6 +257,26 @@ class RpcOptions {
     writeHeaders_[key] = value;
   }
 
+  void setReadHeaders(std::map<std::string, std::string>&& readHeaders) {
+    readHeaders_ = std::move(readHeaders);
+  }
+
+  const std::map<std::string, std::string>& getReadHeaders() const {
+    return readHeaders_;
+  }
+
+  void setUseForReadHeaders(bool use) {
+    useForReadHeaders_ = use;
+  }
+
+  bool getUseForReadHeaders() {
+    return useForReadHeaders_;
+  }
+
+  const std::map<std::string, std::string>& getWriteHeaders() const {
+    return writeHeaders_;
+  }
+
   std::map<std::string, std::string> releaseWriteHeaders() {
     std::map<std::string, std::string> headers;
     writeHeaders_.swap(headers);
@@ -256,8 +287,14 @@ class RpcOptions {
   PRIORITY priority_;
   std::chrono::milliseconds chunkTimeout_;
 
-  // For sending headers.
+  // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;
+  std::map<std::string, std::string> readHeaders_;
+
+  // For sync calls, this flag won't be checked since rpcOptions will always
+  // be in scope. For future calls, if readHeaders is needed, set this flag
+  // before passing it to the call and make sure it doesn't go out of scope.
+  bool useForReadHeaders_{false};
 };
 
 /**
@@ -276,18 +313,24 @@ class RequestChannel : virtual public TDelayedDestruction {
    *
    * cb must not be null.
    */
-  virtual uint32_t sendRequest(RpcOptions&,
-                               std::unique_ptr<RequestCallback>,
-                               std::unique_ptr<apache::thrift::ContextStack>,
-                               std::unique_ptr<folly::IOBuf>) = 0;
-  uint32_t sendRequest(std::unique_ptr<RequestCallback> cb,
-                       std::unique_ptr<apache::thrift::ContextStack> ctx,
-                       std::unique_ptr<folly::IOBuf> buf) {
-    RpcOptions rpcOptions;
-    return sendRequest(rpcOptions,
+  virtual uint32_t sendRequest(
+      RpcOptions&,
+      std::unique_ptr<RequestCallback>,
+      std::unique_ptr<apache::thrift::ContextStack>,
+      std::unique_ptr<folly::IOBuf>,
+      std::shared_ptr<apache::thrift::transport::THeader>) = 0;
+
+  uint32_t sendRequest(
+      std::unique_ptr<RequestCallback> cb,
+      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<apache::thrift::transport::THeader> header) {
+    RpcOptions options;
+    return sendRequest(options,
                        std::move(cb),
                        std::move(ctx),
-                       std::move(buf));
+                       std::move(buf),
+                       std::move(header));
   }
 
   /* Similar to sendRequest, although replyReceived will never be called
@@ -298,16 +341,20 @@ class RequestChannel : virtual public TDelayedDestruction {
       RpcOptions&,
       std::unique_ptr<RequestCallback>,
       std::unique_ptr<apache::thrift::ContextStack>,
-      std::unique_ptr<folly::IOBuf>) = 0;
+      std::unique_ptr<folly::IOBuf>,
+      std::shared_ptr<apache::thrift::transport::THeader>) = 0;
 
-  uint32_t sendOnewayRequest(std::unique_ptr<RequestCallback> cb,
-                             std::unique_ptr<apache::thrift::ContextStack> ctx,
-                             std::unique_ptr<folly::IOBuf> buf) {
-    RpcOptions rpcOptions;
-    return sendOnewayRequest(rpcOptions,
+  uint32_t sendOnewayRequest(
+      std::unique_ptr<RequestCallback> cb,
+      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<apache::thrift::transport::THeader> header) {
+    RpcOptions options;
+    return sendOnewayRequest(options,
                              std::move(cb),
                              std::move(ctx),
-                             std::move(buf));
+                             std::move(buf),
+                             std::move(header));
   }
 
   virtual void setCloseCallback(CloseCallback*) = 0;
@@ -316,9 +363,26 @@ class RequestChannel : virtual public TDelayedDestruction {
 
   virtual uint16_t getProtocolId() = 0;
 
-  virtual apache::thrift::transport::THeader* getHeader() {
-    return nullptr;
+  // HACK: for backwards compatibility, copy headers that were written
+  // directly to the channel. remove this eventually.
+  void setWriteHeaderThroughChannel(const std::string& k,
+                                    const std::string& v) {
+    writeHeaders_[k] = v;
   }
+
+  void flushWriteHeaders(apache::thrift::transport::THeader* header) {
+    if (writeHeaders_.empty()) {
+      return;
+    }
+
+    for (auto it = writeHeaders_.begin(); it != writeHeaders_.end(); ++it) {
+      header->setHeader(it->first, it->second);
+    }
+    writeHeaders_.clear();
+  }
+
+ private:
+  std::map<std::string, std::string> writeHeaders_;
 };
 
 class ClientSyncCallback : public RequestCallback {
@@ -381,6 +445,7 @@ static void clientSendT(
     apache::thrift::RpcOptions& rpcOptions,
     std::unique_ptr<apache::thrift::RequestCallback> callback,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
+    std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestChannel* channel,
     Pargs& pargs,
     const char* methodName,
@@ -413,23 +478,28 @@ static void clientSendT(
       // Calling asyncComplete before sending because
       // sendOnewayRequest moves from ctx and clears it.
       ctx->asyncComplete();
-      channel->sendOnewayRequest(rpcOptions, std::move(callback), std::move(ctx), queue.move());
+      channel->sendOnewayRequest(rpcOptions, std::move(callback),
+          std::move(ctx), queue.move(), header);
     } else {
-      channel->sendRequest(rpcOptions, std::move(callback), std::move(ctx), queue.move());
+      channel->sendRequest(rpcOptions, std::move(callback),
+          std::move(ctx), queue.move(), header);
     }
   }
   else {
     auto mvCb = folly::makeMoveWrapper(std::move(callback));
     auto mvCtx = folly::makeMoveWrapper(std::move(ctx));
     auto mvBuf = folly::makeMoveWrapper(queue.move());
-    eb->runInEventBaseThread([channel, rpcOptions, mvCb, mvCtx, mvBuf] () mutable {
+    eb->runInEventBaseThread(
+        [channel, rpcOptions, mvCb, mvCtx, mvBuf, header] () mutable {
       if (oneway) {
         // Calling asyncComplete before sending because
         // sendOnewayRequest moves from ctx and clears it.
         (*mvCtx)->asyncComplete();
-        channel->sendOnewayRequest(rpcOptions, std::move(*mvCb), std::move(*mvCtx), std::move(*mvBuf));
+        channel->sendOnewayRequest(rpcOptions, std::move(*mvCb),
+            std::move(*mvCtx), std::move(*mvBuf), header);
       } else {
-        channel->sendRequest(rpcOptions, std::move(*mvCb), std::move(*mvCtx), std::move(*mvBuf));
+        channel->sendRequest(rpcOptions, std::move(*mvCb),
+            std::move(*mvCtx), std::move(*mvBuf), header);
       }
     });
   }

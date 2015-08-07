@@ -37,15 +37,14 @@ class TClientBase;
 class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
  public:
   explicit Cpp2ConnContext(
-    const folly::SocketAddress* address,
-    const apache::thrift::async::TAsyncSocket* socket,
-    apache::thrift::transport::THeader* header,
-    const apache::thrift::SaslServer* sasl_server,
-    apache::thrift::async::TEventBaseManager* manager,
+    const folly::SocketAddress* address = nullptr,
+    const apache::thrift::async::TAsyncSocket* socket = nullptr,
+    const apache::thrift::SaslServer* sasl_server = nullptr,
+    apache::thrift::async::TEventBaseManager* manager = nullptr,
     const std::shared_ptr<RequestChannel>& duplexChannel = nullptr)
-    : header_(header),
-      saslServer_(sasl_server),
+    : saslServer_(sasl_server),
       manager_(manager),
+      requestHeader_(nullptr),
       duplexChannel_(duplexChannel) {
     if (address) {
       peerAddress_ = *address;
@@ -55,23 +54,16 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
   }
 
-  const folly::SocketAddress* getPeerAddress() const override {
-    return &peerAddress_;
-  }
-
   const folly::SocketAddress* getLocalAddress() const {
     return &localAddress_;
   }
 
-  void reset() {
-    peerAddress_.reset();
-    localAddress_.reset();
-    header_ = nullptr;
-    cleanupUserData();
+  apache::thrift::transport::THeader* getHeader() const override {
+    return requestHeader_;
   }
 
-  apache::thrift::transport::THeader* getHeader() const override {
-    return header_;
+  void setRequestHeader(apache::thrift::transport::THeader* header) {
+    requestHeader_ = header;
   }
 
   virtual void setSaslServer(const apache::thrift::SaslServer* sasl_server) {
@@ -82,7 +74,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return saslServer_;
   }
 
-  apache::thrift::async::TEventBaseManager* getEventBaseManager() override {
+  virtual apache::thrift::async::TEventBaseManager* getEventBaseManager() override {
     return manager_;
   }
 
@@ -97,11 +89,9 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return client;
   }
  private:
-  folly::SocketAddress peerAddress_;
-  folly::SocketAddress localAddress_;
-  apache::thrift::transport::THeader* header_;
   const apache::thrift::SaslServer* saslServer_;
   apache::thrift::async::TEventBaseManager* manager_;
+  transport::THeader* requestHeader_;
   std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
 };
@@ -110,27 +100,19 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
  public:
-  explicit Cpp2RequestContext(Cpp2ConnContext* ctx)
-      : ctx_(ctx), requestData_(nullptr, no_op_destructor) {
-    setConnectionContext(ctx);
-  }
+  explicit Cpp2RequestContext(Cpp2ConnContext* ctx,
+                              apache::thrift::transport::THeader* header = nullptr)
+      : ctx_(ctx)
+      , requestData_(nullptr, no_op_destructor)
+      , header_(header)
+      , startedProcessing_(false) {}
 
   void setConnectionContext(Cpp2ConnContext* ctx) {
-    ctx_ = ctx;
-    if (ctx_) {
-      auto header = ctx_->getHeader();
-      if (header) {
-        headers_ = header->getHeaders();
-        transforms_ = header->getWriteTransforms();
-        minCompressBytes_ = header->getMinCompressBytes();
-        callPriority_ = header->getCallPriority();
-      }
-    }
+    ctx_= ctx;
   }
 
   // Forward all connection-specific information
-  const folly::SocketAddress*
-  getPeerAddress() const override {
+  const folly::SocketAddress* getPeerAddress() const override {
     return ctx_->getPeerAddress();
   }
 
@@ -142,50 +124,20 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     ctx_->reset();
   }
 
-  // The following two header functions _are_ thread safe
-  std::map<std::string, std::string> getHeaders() const override {
-    return headers_;
-  }
-
-  virtual std::map<std::string, std::string> getWriteHeaders() {
-    return std::move(writeHeaders_);
-  }
-
-  std::map<std::string, std::string>* getHeadersPtr() override {
-    return &headers_;
-  }
-
-  bool setHeader(const std::string& key, const std::string& value) override {
-    writeHeaders_[key] = value;
-    return true;
-  }
-
-  void setHeaders(std::map<std::string, std::string>&& headers) {
-    writeHeaders_ = std::move(headers);
-  }
-
-  virtual std::vector<uint16_t>& getTransforms() {
-    return transforms_;
-  }
-
-  virtual uint32_t getMinCompressBytes() {
-    return minCompressBytes_;
-  }
-
   PriorityThreadManager::PRIORITY getCallPriority() {
-    return callPriority_;
+    return header_->getCallPriority();
   }
 
-  CLIENT_TYPE getClientType() {
-    return ctx_->getHeader()->getClientType();
-  }
-
-  std::map<std::string, std::string> releaseHeaders() {
-    return ctx_->getHeader()->releaseHeaders();
+  apache::thrift::transport::THeader* getHeader() const override {
+      return header_;
   }
 
   virtual const apache::thrift::SaslServer* getSaslServer() const {
     return ctx_->getSaslServer();
+  }
+
+  virtual std::vector<uint16_t>& getTransforms() {
+    return header_->getWriteTransforms();
   }
 
   apache::thrift::async::TEventBaseManager* getEventBaseManager() override {
@@ -238,24 +190,12 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   }
 
  protected:
-  // Note:  Header is _not_ thread safe
-  apache::thrift::transport::THeader* getHeader() const override {
-    return ctx_->getHeader();
-  }
-
   static void no_op_destructor(void* /*ptr*/) {}
 
  private:
   Cpp2ConnContext* ctx_;
-
   RequestData requestData_;
-
-  // Headers are per-request, not per-connection
-  std::map<std::string, std::string> headers_;
-  std::map<std::string, std::string> writeHeaders_;
-  std::vector<uint16_t> transforms_;
-  uint32_t minCompressBytes_;
-  PriorityThreadManager::PRIORITY callPriority_;
+  apache::thrift::transport::THeader* header_;
   bool startedProcessing_ = false;
   std::chrono::milliseconds requestTimeout_{0};
 };

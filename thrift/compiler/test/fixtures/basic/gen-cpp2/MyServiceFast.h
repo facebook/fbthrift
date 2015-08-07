@@ -168,7 +168,7 @@ class MyServiceFastAsyncClient : public apache::thrift::TClientBase {
 
   MyServiceFastAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
       channel_(channel) {
-    connectionContext_.reset(new apache::thrift::Cpp2ConnContext(nullptr, nullptr, channel_->getHeader(), nullptr, nullptr));
+    connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
   }
 
   apache::thrift::RequestChannel*  getChannel() {
@@ -274,7 +274,7 @@ class MyServiceFastAsyncClient : public apache::thrift::TClientBase {
   template <typename Protocol_>
   void lobDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data);
  protected:
-  std::unique_ptr<apache::thrift::server::TConnectionContext>connectionContext_;
+  std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;
 };
 

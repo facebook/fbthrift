@@ -89,13 +89,15 @@ protected:
   }
 
   virtual void sendMessage(Cpp2Channel::SendCallback* callback,
-                   std::unique_ptr<folly::IOBuf> buf) {
-    cpp2Channel_->sendMessage(callback, std::move(buf));
+                           std::unique_ptr<folly::IOBuf> buf,
+                           apache::thrift::transport::THeader* header) {
+    cpp2Channel_->sendMessage(callback, std::move(buf), header);
   }
 
   // Interface from MessageChannel::RecvCallback
   bool shouldSample() override;
   void messageReceived(std::unique_ptr<folly::IOBuf>&&,
+                       std::unique_ptr<apache::thrift::transport::THeader>&&,
                        std::unique_ptr<sample>) override;
   void messageChannelEOF() override;
   void messageReceiveErrorWrapped(folly::exception_wrapper&&) override;
@@ -107,56 +109,41 @@ protected:
   void sendCatchupRequests(
     std::unique_ptr<folly::IOBuf> next_req,
     MessageChannel::SendCallback* cb,
-    std::vector<uint16_t> transforms,
-    apache::thrift::transport::THeader::StringToStringMap&&);
+    std::unique_ptr<apache::thrift::transport::THeader> header);
 
   class HeaderRequest : public Request {
    public:
-    HeaderRequest(uint32_t seqId,
-                  HeaderServerChannel* channel,
+    HeaderRequest(HeaderServerChannel* channel,
                   std::unique_ptr<folly::IOBuf>&& buf,
-                  const std::map<std::string, std::string>& headers,
-                  const std::vector<uint16_t>& trans,
+                  std::unique_ptr<apache::thrift::transport::THeader>&& header,
                   bool outOfOrder,
                   std::unique_ptr<sample> sample);
 
     bool isActive() override { return active_; }
     void cancel() override { active_ = false; }
 
-    bool isOneway() override { return seqId_ == ONEWAY_REQUEST_ID; }
-
-    void sendReply(std::unique_ptr<folly::IOBuf>&& buf,
-                   MessageChannel::SendCallback* cb = nullptr) override {
-      apache::thrift::transport::THeader::StringToStringMap headers;
-      sendReply(std::move(buf), cb, std::move(headers));
+    bool isOneway() override {
+      return header_->getSequenceNumber() == ONEWAY_REQUEST_ID;
     }
+
+    void setInOrderRecvSequenceId(uint32_t seqId) { InOrderRecvSeqId_ = seqId; }
+
+    apache::thrift::transport::THeader* getHeader() {return header_.get(); }
+
     void sendReply(std::unique_ptr<folly::IOBuf>&&,
-                   MessageChannel::SendCallback* cb,
-                   apache::thrift::transport::THeader::StringToStringMap&&);
+                   MessageChannel::SendCallback* cb = nullptr) override;
+
     void sendErrorWrapped(folly::exception_wrapper ex,
                           std::string exCode,
-                          MessageChannel::SendCallback* cb = nullptr) override {
-      apache::thrift::transport::THeader::StringToStringMap headers;
-      sendErrorWrapped(ex, exCode, cb, std::move(headers));
-    }
-    void sendErrorWrapped(
-      folly::exception_wrapper ex,
-      std::string exCode,
-      MessageChannel::SendCallback* cb,
-      apache::thrift::transport::THeader::StringToStringMap&& headers);
+                          MessageChannel::SendCallback* cb = nullptr) override;
 
    private:
     HeaderServerChannel* channel_;
-    uint32_t seqId_;
-    std::map<std::string, std::string> headers_;
-    std::vector<uint16_t> transforms_;
+    std::unique_ptr<apache::thrift::transport::THeader> header_;
     bool outOfOrder_;
+    uint32_t InOrderRecvSeqId_{0}; // Used internally for in-order requests
     std::atomic<bool> active_;
   };
-
-  apache::thrift::transport::THeader* getHeader() {
-    return header_.get();
-  }
 
   // The default SASL implementation can be overridden for testing or
   // other purposes.  Most users will never need to call this.
@@ -196,10 +183,14 @@ protected:
     explicit ServerFramingHandler(HeaderServerChannel& channel)
       : channel_(channel) {}
 
-    std::pair<std::unique_ptr<folly::IOBuf>, size_t>
+    std::tuple<std::unique_ptr<folly::IOBuf>,
+               size_t,
+               std::unique_ptr<apache::thrift::transport::THeader>>
     removeFrame(folly::IOBufQueue* q) override;
 
-    std::unique_ptr<folly::IOBuf> addFrame(std::unique_ptr<folly::IOBuf> buf) override;
+    std::unique_ptr<folly::IOBuf> addFrame(
+        std::unique_ptr<folly::IOBuf> buf,
+        apache::thrift::transport::THeader* header) override;
   private:
     HeaderServerChannel& channel_;
   };
@@ -215,7 +206,8 @@ private:
   }
 
   std::unique_ptr<folly::IOBuf> handleSecurityMessage(
-      std::unique_ptr<folly::IOBuf>&& buf);
+      std::unique_ptr<folly::IOBuf>&& buf,
+      std::unique_ptr<apache::thrift::transport::THeader>&& header);
 
   static std::string getTransportDebugString(
       apache::thrift::async::TAsyncTransport *transport);
@@ -229,14 +221,11 @@ private:
     std::tuple<
       MessageChannel::SendCallback*,
       std::unique_ptr<folly::IOBuf>,
-      std::vector<uint16_t>,
-      apache::thrift::transport::THeader::StringToStringMap>> inOrderRequests_;
+      std::unique_ptr<apache::thrift::transport::THeader>>> inOrderRequests_;
 
   uint32_t arrivalSeqId_;
   uint32_t lastWrittenSeqId_;
 
-  // Save seqIds from inorder requests so they can be written back later
-  std::deque<uint32_t> inorderSeqIds_;
   static const int MAX_REQUEST_SIZE = 2000;
   static std::atomic<uint32_t> sample_;
   uint32_t sampleRate_;
@@ -246,13 +235,18 @@ private:
   class SaslServerCallback : public SaslServer::Callback {
    public:
     explicit SaslServerCallback(HeaderServerChannel& channel)
-      : channel_(channel) {}
+      : channel_(channel), header_(nullptr) {}
     void saslSendClient(std::unique_ptr<folly::IOBuf>&&) override;
     void saslError(folly::exception_wrapper&&) override;
     void saslComplete() override;
 
+    void setHeader(
+        std::unique_ptr<apache::thrift::transport::THeader>&& header) {
+      header_ = std::move(header);
+    }
    private:
     HeaderServerChannel& channel_;
+    std::unique_ptr<apache::thrift::transport::THeader> header_;
   } saslServerCallback_;
 
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
