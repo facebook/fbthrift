@@ -2071,7 +2071,7 @@ class CppGenerator(t_generator.Generator):
                     out("result.read(prot);")
 
                 out("prot->readMessageEnd();")
-                out('ctx->postRead(state.buf()->length());')
+                out('ctx->postRead(nullptr, state.buf()->length());')
 
                 if not function.returntype.is_void:
                     with out("if ({0})".format(self._get_presult_success_isset())):

@@ -841,7 +841,10 @@ class TestServerEventHandler
     EXPECT_EQ(4, count++);
   }
 
-  void postRead(void* ctx, const char* fn_name, uint32_t bytes) override {
+  void postRead(void* ctx,
+                const char* fn_name,
+                THeader* header,
+                uint32_t bytes) override {
     EXPECT_EQ(5, count++);
   }
 

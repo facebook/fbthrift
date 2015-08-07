@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp/server/example/TThreadPoolServer.h>
 #include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp/transport/TTransportUtils.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/transport/TSSLServerSocket.h>
 #include "thrift/test/gen-cpp/ThriftTest.h"
@@ -346,7 +347,10 @@ class TestProcessorEventHandler : public TProcessorEventHandler {
   void preRead(void* ctx, const char* fn_name) override {
     communicate("preRead", ctx, fn_name);
   }
-  void postRead(void* ctx, const char* fn_name, uint32_t bytes) override {
+  void postRead(void* ctx,
+                const char* fn_name,
+                apache::thrift::transport::THeader* header,
+                uint32_t bytes) override {
     communicate("postRead", ctx, fn_name);
   }
   void preWrite(void* ctx, const char* fn_name) override {

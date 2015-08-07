@@ -569,7 +569,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doBlandT(Protocol_* pro
     Raiser_doBland_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
   }
   );
   if (interior_ew || caught_ew) {
@@ -635,7 +635,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doRaiseT(Protocol_* pro
     Raiser_doRaise_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       interior_ew = folly::make_exception_wrapper< ::cpp2::Banal>(result.get<0>().ref());
       return; // from try_and_catch
@@ -710,7 +710,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200T(Protocol_* prot
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -785,7 +785,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500T(Protocol_* prot
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch

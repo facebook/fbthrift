@@ -148,7 +148,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     c->onReadData(smsg);
     uint32_t bytes = ::apache::thrift::Cpp2Ops<Args>::read(iprot, &args);
     iprot->readMessageEnd();
-    c->postRead(bytes);
+    c->postRead(nullptr, bytes);
   }
 
   template <typename ProtocolOut, typename Result>

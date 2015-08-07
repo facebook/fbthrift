@@ -253,7 +253,10 @@ class ProcessorEventHandler : public TProcessorEventHandler {
                  fnName);
   }
 
-  void postRead(void* ctx, const char* fnName, uint32_t bytes) override {
+  void postRead(void* ctx,
+                const char* fnName,
+                apache::thrift::transport::THeader* header,
+                uint32_t bytes) override {
     CallContext* context = reinterpret_cast<CallContext*>(ctx);
     checkName(context, fnName);
     log_->append(EventLog::ET_POST_READ, context->connContext->id, context->id,

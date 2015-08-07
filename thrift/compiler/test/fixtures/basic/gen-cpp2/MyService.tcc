@@ -659,7 +659,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_pingT(Protocol_* pro
     MyService_ping_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
   }
   );
   if (interior_ew || caught_ew) {
@@ -726,7 +726,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getRandomDataT(Proto
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -802,7 +802,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_hasDataByIdT(Protoco
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -880,7 +880,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getDataByIdT(Protoco
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -956,7 +956,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_putDataByIdT(Protoco
     MyService_putDataById_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
   }
   );
   if (interior_ew || caught_ew) {

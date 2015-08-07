@@ -398,7 +398,7 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_hasDataByIdT(Pro
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -476,7 +476,7 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getDataByIdT(Pro
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -552,7 +552,7 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_putDataByIdT(Pro
     MyServiceFast_putDataById_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
   }
   );
   if (interior_ew || caught_ew) {

@@ -175,7 +175,7 @@ folly::exception_wrapper MyRootAsyncClient::recv_wrapped_do_rootT(Protocol_* pro
     MyRoot_do_root_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
   }
   );
   if (interior_ew || caught_ew) {

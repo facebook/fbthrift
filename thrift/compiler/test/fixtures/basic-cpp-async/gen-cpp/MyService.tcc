@@ -978,7 +978,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_ping()
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     return; // from try_and_catch
   });
   if (interior_ew || caught_ew) {
@@ -1085,7 +1085,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_getRandomData
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     if (result.__isset.success) {
       // _return pointer has now been filled
       return; // from try_and_catch
@@ -1198,7 +1198,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_hasDataById(b
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     if (result.__isset.success) {
       return; // from try_and_catch
     }
@@ -1312,7 +1312,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_getDataById(s
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     if (result.__isset.success) {
       // _return pointer has now been filled
       return; // from try_and_catch
@@ -1425,7 +1425,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_putDataById()
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     return; // from try_and_catch
   });
   if (interior_ew || caught_ew) {
@@ -1577,7 +1577,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_putStructById
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     return; // from try_and_catch
   });
   if (interior_ew || caught_ew) {
@@ -1658,7 +1658,7 @@ void MyServiceProcessorT<Protocol_>::process_ping(int32_t seqid, apache::thrift:
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_ping_presult result;
   try {
@@ -1708,7 +1708,7 @@ void MyServiceProcessorT<Protocol_>::process_ping(int32_t seqid, Protocol_* ipro
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_ping_presult result;
   try {
@@ -1758,7 +1758,7 @@ void MyServiceProcessorT<Protocol_>::process_getRandomData(int32_t seqid, apache
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_getRandomData_presult result;
   std::string success;
@@ -1811,7 +1811,7 @@ void MyServiceProcessorT<Protocol_>::process_getRandomData(int32_t seqid, Protoc
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_getRandomData_presult result;
   std::string success;
@@ -1864,7 +1864,7 @@ void MyServiceProcessorT<Protocol_>::process_hasDataById(int32_t seqid, apache::
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_hasDataById_presult result;
   bool success;
@@ -1917,7 +1917,7 @@ void MyServiceProcessorT<Protocol_>::process_hasDataById(int32_t seqid, Protocol
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_hasDataById_presult result;
   bool success;
@@ -1970,7 +1970,7 @@ void MyServiceProcessorT<Protocol_>::process_getDataById(int32_t seqid, apache::
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_getDataById_presult result;
   std::string success;
@@ -2023,7 +2023,7 @@ void MyServiceProcessorT<Protocol_>::process_getDataById(int32_t seqid, Protocol
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_getDataById_presult result;
   std::string success;
@@ -2076,7 +2076,7 @@ void MyServiceProcessorT<Protocol_>::process_putDataById(int32_t seqid, apache::
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_putDataById_presult result;
   try {
@@ -2126,7 +2126,7 @@ void MyServiceProcessorT<Protocol_>::process_putDataById(int32_t seqid, Protocol
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_putDataById_presult result;
   try {
@@ -2176,7 +2176,7 @@ void MyServiceProcessorT<Protocol_>::process_lobDataById(int32_t seqid, apache::
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   try {
     iface_->lobDataById(args.id, args.data);
@@ -2211,7 +2211,7 @@ void MyServiceProcessorT<Protocol_>::process_lobDataById(int32_t seqid, Protocol
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   try {
     iface_->lobDataById(args.id, args.data);
@@ -2246,7 +2246,7 @@ void MyServiceProcessorT<Protocol_>::process_putStructById(int32_t seqid, apache
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_putStructById_presult result;
   try {
@@ -2296,7 +2296,7 @@ void MyServiceProcessorT<Protocol_>::process_putStructById(int32_t seqid, Protoc
   iprot->readMessageEnd();
   uint32_t bytes = iprot->getTransport()->readEnd();
 
-  if (ctx) ctx->postRead(bytes);
+  if (ctx) ctx->postRead(nullptr, bytes);
 
   MyService_putStructById_presult result;
   try {
@@ -2444,7 +2444,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_ping()
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     completed__(true);
     return; // from try_and_catch
   });
@@ -2563,7 +2563,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_getRandomD
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     if (result.__isset.success) {
       // _return pointer has now been filled
       completed__(true);
@@ -2689,7 +2689,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_hasDataByI
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     if (result.__isset.success) {
       completed__(true);
       return; // from try_and_catch
@@ -2816,7 +2816,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_getDataByI
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     if (result.__isset.success) {
       // _return pointer has now been filled
       completed__(true);
@@ -2942,7 +2942,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_putDataByI
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     completed__(true);
     return; // from try_and_catch
   });
@@ -3107,7 +3107,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_putStructB
     result.read(this->iprot_);
     this->iprot_->readMessageEnd();
     uint32_t bytes = this->iprot_->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
     completed__(true);
     return; // from try_and_catch
   });
@@ -3192,7 +3192,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_ping(std::function<void(bool o
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3241,7 +3241,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_ping(std::function<void(bool o
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3292,7 +3292,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_getRandomData(std::function<vo
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3343,7 +3343,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_getRandomData(std::function<vo
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3396,7 +3396,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_hasDataById(std::function<void
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3448,7 +3448,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_hasDataById(std::function<void
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3502,7 +3502,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_getDataById(std::function<void
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3554,7 +3554,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_getDataById(std::function<void
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3608,7 +3608,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_putDataById(std::function<void
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3659,7 +3659,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_putDataById(std::function<void
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3712,7 +3712,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_lobDataById(std::function<void
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3738,7 +3738,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_lobDataById(std::function<void
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3772,7 +3772,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_putStructById(std::function<vo
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {
@@ -3823,7 +3823,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_putStructById(std::function<vo
     args.read(iprot);
     iprot->readMessageEnd();
     uint32_t bytes = iprot->getTransport()->readEnd();
-    if (ctx) ctx->postRead(bytes);
+    if (ctx) ctx->postRead(nullptr, bytes);
 
   }
   catch (const std::exception& exn) {

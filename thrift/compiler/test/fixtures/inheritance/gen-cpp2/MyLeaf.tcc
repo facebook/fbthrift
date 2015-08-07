@@ -175,7 +175,7 @@ folly::exception_wrapper MyLeafAsyncClient::recv_wrapped_do_leafT(Protocol_* pro
     MyLeaf_do_leaf_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
   }
   );
   if (interior_ew || caught_ew) {

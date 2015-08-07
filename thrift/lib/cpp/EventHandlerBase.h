@@ -105,6 +105,7 @@ class TProcessorEventHandler {
    */
   virtual void postRead(void* /*ctx*/,
                         const char* /*fn_name*/,
+                        apache::thrift::transport::THeader* /*header*/,
                         uint32_t /*bytes*/) {}
 
   /**
@@ -264,10 +265,10 @@ class ContextStack {
     }
   }
 
-  void postRead(uint32_t bytes) {
+  void postRead(apache::thrift::transport::THeader* header, uint32_t bytes) {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->postRead(ctxs_[i], method_, bytes);
+        (*handlers_)[i]->postRead(ctxs_[i], method_, header, bytes);
       }
     }
   }

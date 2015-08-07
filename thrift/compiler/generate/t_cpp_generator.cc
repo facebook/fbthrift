@@ -5037,7 +5037,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
           indent() << _this << "iprot_->readMessageEnd();" << endl <<
           indent() << "uint32_t bytes = " << _this
                    << "iprot_->getTransport()->readEnd();" << endl <<
-          indent() << "if (ctx) ctx->postRead(bytes);" << endl;
+          indent() << "if (ctx) ctx->postRead(nullptr, bytes);" << endl;
 
         // Careful, only look for _result if not a void function
         if (!(*f_iter)->get_returntype()->is_void()) {
@@ -5845,7 +5845,7 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
       indent() << "iprot->readMessageEnd();" << endl <<
       indent() << "uint32_t bytes = iprot->getTransport()->readEnd();"
                << endl << endl <<
-      indent() << "if (ctx) ctx->postRead(bytes);" << endl << endl;
+      indent() << "if (ctx) ctx->postRead(nullptr, bytes);" << endl << endl;
 
     // Declare result
     if (!tfunction->is_oneway()) {
@@ -6020,7 +6020,7 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
       indent() << "iprot->readMessageEnd();" << endl <<
       indent() << "uint32_t bytes = iprot->getTransport()->readEnd();" <<
         endl <<
-      indent() << "if (ctx) ctx->postRead(bytes);" << endl << endl;
+      indent() << "if (ctx) ctx->postRead(nullptr, bytes);" << endl << endl;
     scope_down(out);
 
     // TODO(dreiss): Handle TExceptions?  Expose to server?

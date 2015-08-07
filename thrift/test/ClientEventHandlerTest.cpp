@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 
@@ -80,7 +81,10 @@ class ClientEventHandler : public TProcessorEventHandler {
     BOOST_CHECK_EQUAL(contextCalls, 3);
   }
 
-  void postRead(void* ctx, const char* fn_name, uint32_t bytes) override {
+  void postRead(void* ctx,
+                const char* fn_name,
+                apache::thrift::transport::THeader* header,
+                uint32_t bytes) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
     BOOST_CHECK(bytes > 20); // check we read something
@@ -122,7 +126,10 @@ class ServerEventHandler : public TProcessorEventHandler {
     BOOST_CHECK_EQUAL(contextCalls, 1);
   }
 
-  void postRead(void* ctx, const char* fn_name, uint32_t bytes) override {
+  void postRead(void* ctx,
+                const char* fn_name,
+                apache::thrift::transport::THeader* header,
+                uint32_t bytes) override {
     contextCalls++;
     BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
     BOOST_CHECK(bytes > 20); // check we read something

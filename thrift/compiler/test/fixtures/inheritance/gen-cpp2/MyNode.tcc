@@ -175,7 +175,7 @@ folly::exception_wrapper MyNodeAsyncClient::recv_wrapped_do_midT(Protocol_* prot
     MyNode_do_mid_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
   }
   );
   if (interior_ew || caught_ew) {
