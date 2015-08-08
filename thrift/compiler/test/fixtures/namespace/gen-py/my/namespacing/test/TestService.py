@@ -55,90 +55,6 @@ class ContextIface:
     pass
 
 
-class Client(Iface):
-  def __init__(self, iprot, oprot=None):
-    self._iprot = self._oprot = iprot
-    if oprot != None:
-      self._oprot = oprot
-    self._seqid = 0
-
-  def init(self, int1=None):
-    """
-    Parameters:
-     - int1
-    """
-    self.send_init(int1)
-    return self.recv_init()
-
-  def send_init(self, int1=None):
-    self._oprot.writeMessageBegin('init', TMessageType.CALL, self._seqid)
-    args = init_args()
-    args.int1 = int1
-    args.write(self._oprot)
-    self._oprot.writeMessageEnd()
-    self._oprot.trans.flush()
-
-  def recv_init(self, ):
-    (fname, mtype, rseqid) = self._iprot.readMessageBegin()
-    if mtype == TMessageType.EXCEPTION:
-      x = TApplicationException()
-      x.read(self._iprot)
-      self._iprot.readMessageEnd()
-      raise x
-    result = init_result()
-    result.read(self._iprot)
-    self._iprot.readMessageEnd()
-    if result.success != None:
-      return result.success
-    raise TApplicationException(TApplicationException.MISSING_RESULT, "init failed: unknown result");
-
-
-class Processor(Iface, TProcessor):
-  def __init__(self, handler):
-    TProcessor.__init__(self)
-    self._handler = handler
-    self._processMap = {}
-    self._processMap["init"] = Processor.process_init
-
-  @process_main()
-  def process(self,): pass
-
-  @process_method(oneway=False)
-  def process_init(self, args, handler_ctx):
-    result = init_result()
-    try:
-      result.success = self._handler.init(args.int1)
-    except:
-      ex = sys.exc_info()[1]
-      self._event_handler.handlerError(handler_ctx, 'init', ex)
-      result = Thrift.TApplicationException(message=str(ex))
-    return result
-
-Iface._processor_type = Processor
-
-class ContextProcessor(ContextIface, TProcessor):
-  def __init__(self, handler):
-    TProcessor.__init__(self)
-    self._handler = handler
-    self._processMap = {}
-    self._processMap["init"] = ContextProcessor.process_init
-
-  @process_main()
-  def process(self,): pass
-
-  @process_method(oneway=False)
-  def process_init(self, args, handler_ctx):
-    result = init_result()
-    try:
-      result.success = self._handler.init(handler_ctx, args.int1)
-    except:
-      ex = sys.exc_info()[1]
-      self._event_handler.handlerError(handler_ctx, 'init', ex)
-      result = Thrift.TApplicationException(message=str(ex))
-    return result
-
-ContextIface._processor_type = ContextProcessor
-
 # HELPER FUNCTIONS AND STRUCTURES
 
 class init_args:
@@ -321,6 +237,90 @@ def init_result__init__(self, success=None,):
   self.success = success
 
 init_result.__init__ = init_result__init__
+
+class Client(Iface):
+  def __init__(self, iprot, oprot=None):
+    self._iprot = self._oprot = iprot
+    if oprot != None:
+      self._oprot = oprot
+    self._seqid = 0
+
+  def init(self, int1=None):
+    """
+    Parameters:
+     - int1
+    """
+    self.send_init(int1)
+    return self.recv_init()
+
+  def send_init(self, int1=None):
+    self._oprot.writeMessageBegin('init', TMessageType.CALL, self._seqid)
+    args = init_args()
+    args.int1 = int1
+    args.write(self._oprot)
+    self._oprot.writeMessageEnd()
+    self._oprot.trans.flush()
+
+  def recv_init(self, ):
+    (fname, mtype, rseqid) = self._iprot.readMessageBegin()
+    if mtype == TMessageType.EXCEPTION:
+      x = TApplicationException()
+      x.read(self._iprot)
+      self._iprot.readMessageEnd()
+      raise x
+    result = init_result()
+    result.read(self._iprot)
+    self._iprot.readMessageEnd()
+    if result.success != None:
+      return result.success
+    raise TApplicationException(TApplicationException.MISSING_RESULT, "init failed: unknown result");
+
+
+class Processor(Iface, TProcessor):
+  def __init__(self, handler):
+    TProcessor.__init__(self)
+    self._handler = handler
+    self._processMap = {}
+    self._processMap["init"] = Processor.process_init
+
+  @process_main()
+  def process(self,): pass
+
+  @process_method(init_args, oneway=False)
+  def process_init(self, args, handler_ctx):
+    result = init_result()
+    try:
+      result.success = self._handler.init(args.int1)
+    except:
+      ex = sys.exc_info()[1]
+      self._event_handler.handlerError(handler_ctx, 'init', ex)
+      result = Thrift.TApplicationException(message=str(ex))
+    return result
+
+Iface._processor_type = Processor
+
+class ContextProcessor(ContextIface, TProcessor):
+  def __init__(self, handler):
+    TProcessor.__init__(self)
+    self._handler = handler
+    self._processMap = {}
+    self._processMap["init"] = ContextProcessor.process_init
+
+  @process_main()
+  def process(self,): pass
+
+  @process_method(init_args, oneway=False)
+  def process_init(self, args, handler_ctx):
+    result = init_result()
+    try:
+      result.success = self._handler.init(handler_ctx, args.int1)
+    except:
+      ex = sys.exc_info()[1]
+      self._event_handler.handlerError(handler_ctx, 'init', ex)
+      result = Thrift.TApplicationException(message=str(ex))
+    return result
+
+ContextIface._processor_type = ContextProcessor
 
 fix_spec(all_structs)
 del all_structs

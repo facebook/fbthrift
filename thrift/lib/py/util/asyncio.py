@@ -32,7 +32,7 @@ def process_main(func):
     return nested
 
 
-def process_method(oneway=False):
+def process_method(argtype, oneway=False):
     """Decorator for process_xxx methods for asyncio."""
     def _decorator(func):
         def nested(self, seqid, iprot, oprot, server_ctx):
@@ -40,7 +40,7 @@ def process_method(oneway=False):
             handler_ctx = self._event_handler.getHandlerContext(
                 fn_name, server_ctx,
             )
-            args = getattr(sys.modules[func.__module__], fn_name + "_args")()
+            args = argtype()
             reply_type = TMessageType.REPLY
             self._event_handler.preRead(handler_ctx, fn_name, args)
             args.read(iprot)

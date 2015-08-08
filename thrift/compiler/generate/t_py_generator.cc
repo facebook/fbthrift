@@ -2005,10 +2005,10 @@ void t_py_generator::generate_service(t_service* tservice) {
   // Generate the three main parts of the service (well, two for now in PHP)
   generate_service_interface(tservice, false);
   generate_service_interface(tservice, true);
+  generate_service_helpers(tservice);
   generate_service_client(tservice);
   generate_service_server(tservice, false);
   generate_service_server(tservice, true);
-  generate_service_helpers(tservice);
   generate_service_remote(tservice);
   generate_service_fuzzer(tservice);
 
@@ -2735,7 +2735,9 @@ void t_py_generator::generate_process_function(t_service* tservice,
 
   // Open function
   indent(f_service_)
-    << "@process_method(oneway="
+    << "@process_method("
+    << fn_name << "_args, "
+    << "oneway="
     << (tfunction->is_oneway() ? "True" : "False")
     << (gen_twisted_ ? ", twisted=True)" : ")") << endl;
 
