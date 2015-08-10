@@ -32,7 +32,8 @@ namespace server {
 
 class TRpcTransportContext : public TConnectionContext {
  public:
-  TRpcTransportContext(std::shared_ptr<transport::TRpcTransport> transport)
+  explicit TRpcTransportContext(
+      std::shared_ptr<transport::TRpcTransport> transport)
     : transport_(transport) {}
 
   TRpcTransportContext(
