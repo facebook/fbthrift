@@ -1,1 +1,2 @@
 android_lite src/module.thrift
+py src/module.thrift

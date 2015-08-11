@@ -28,3 +28,14 @@ const list<Internship> internList = [
     "employer": Company.FACEBOOK
   }
 ];
+
+const string apostrophe = "'";
+const string tripleApostrophe = "'''";
+const string quotationMark = '"'; //" // fix syntax highlighting
+const string backslash = '\';
+
+const map<string, i32> char2ascii = {
+  "'": 39,
+  '"': 34,
+  '\': 92,
+};

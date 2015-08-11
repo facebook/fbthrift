@@ -51,4 +51,19 @@ public class ModuleConstants {
     internList.add(tmp3);
   }
 
+  public static final String apostrophe = "'";
+
+  public static final String tripleApostrophe = "'''";
+
+  public static final String quotationMark = """;
+
+  public static final String backslash = "\";
+
+  public static final Map<String,Integer> char2ascii = new HashMap<String,Integer>();
+  static {
+    char2ascii.put("'", 39);
+    char2ascii.put(""", 34);
+    char2ascii.put("\", 92);
+  }
+
 }
