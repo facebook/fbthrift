@@ -114,7 +114,7 @@ void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
   }
 
   if (!recvCallback_) {
-    LOG(INFO) << "Received a message, but no recvCallback_ installed!";
+    VLOG(5) << "Received a message, but no recvCallback_ installed!";
     return;
   }
 
