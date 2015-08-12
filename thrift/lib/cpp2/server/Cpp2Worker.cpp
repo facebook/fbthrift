@@ -49,7 +49,7 @@ using apache::thrift::concurrency::Util;
 
 void Cpp2Worker::onNewConnection(
   folly::AsyncSocket::UniquePtr sock,
-  const apache::thrift::transport::TSocketAddress* addr,
+  const folly::SocketAddress* addr,
   const std::string& nextProtocolName,
   const folly::TransportInfo& tinfo) {
 

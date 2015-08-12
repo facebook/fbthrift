@@ -18,7 +18,7 @@
 #define THRIFT_ASYNC_TEVENTCONNECTION_H_ 1
 
 #include <thrift/lib/cpp/server/TConnectionContext.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <memory>
 #include <boost/noncopyable.hpp>

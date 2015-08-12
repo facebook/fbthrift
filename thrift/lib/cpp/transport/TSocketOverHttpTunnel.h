@@ -17,19 +17,19 @@
 #define _THRIFT_TRANSPORT_TSOCKETOVERHTTPTUNNEL_H_ 1
 
 #include <thrift/lib/cpp/transport/TSocket.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 
 namespace apache { namespace thrift { namespace transport {
 
 class TSocketOverHttpTunnel : public TSocket {
 
 private:
-  TSocketAddress address_;
-  TSocketAddress proxyAddress_;
+  folly::SocketAddress address_;
+  folly::SocketAddress proxyAddress_;
 
 public:
-  TSocketOverHttpTunnel(TSocketAddress& address,
-                        TSocketAddress& proxyAddress) :
+  TSocketOverHttpTunnel(folly::SocketAddress& address,
+                        folly::SocketAddress& proxyAddress) :
           TSocket(&proxyAddress), address_(address),
           proxyAddress_(proxyAddress) { }
 

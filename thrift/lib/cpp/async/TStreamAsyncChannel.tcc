@@ -20,7 +20,7 @@
 #define THRIFT_ASYNC_TSTREAMASYNCCHANNEL_TCC_ 1
 
 #include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 
 namespace apache { namespace thrift { namespace async {
 
@@ -333,7 +333,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::timeoutExpired()
 
   std::string addressStr;
   try {
-    transport::TSocketAddress addr;
+    folly::SocketAddress addr;
     transport_->getPeerAddress(&addr);
     addressStr = addr.describe();
   } catch (const std::exception& e) {
@@ -374,7 +374,7 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
 
     std::string addressStr;
     try {
-      transport::TSocketAddress addr;
+      folly::SocketAddress addr;
       transport_->getPeerAddress(&addr);
       addressStr = addr.describe();
     } catch (const std::exception& e) {

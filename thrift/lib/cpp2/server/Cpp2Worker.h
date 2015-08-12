@@ -108,7 +108,7 @@ class Cpp2Worker
   apache::thrift::async::TEventBase* eventBase_;
 
   void onNewConnection(folly::AsyncSocket::UniquePtr,
-                       const apache::thrift::transport::TSocketAddress*,
+                       const folly::SocketAddress*,
                        const std::string&,
                        const folly::TransportInfo&) override;
 

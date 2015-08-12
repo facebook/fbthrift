@@ -19,7 +19,7 @@
 
 #include <memory>
 #include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 
 namespace apache { namespace thrift {

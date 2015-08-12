@@ -18,7 +18,7 @@
 #define THRIFT_SERVER_TRPCTRANSPORTCONTEXT_H_ 1
 
 #include <thrift/lib/cpp/server/TConnectionContext.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 
 #include <memory>
 

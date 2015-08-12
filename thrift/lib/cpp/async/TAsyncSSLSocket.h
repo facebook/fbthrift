@@ -18,7 +18,7 @@
 
 #include <folly/io/async/AsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/transport/TSocketAddress.h>
+#include <folly/SocketAddress.h>
 
 namespace apache { namespace thrift { namespace transport {
 typedef folly::SSLContext SSLContext;
