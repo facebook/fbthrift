@@ -49,17 +49,17 @@ internList = [
   }),
 ]
 
-apostrophe = '''
+apostrophe = "'"
 
-tripleApostrophe = '''''
+tripleApostrophe = "'''"
 
 quotationMark = '"'
 
-backslash = '\'
+backslash = "\\"
 
 char2ascii = {
-  ''' : 39,
+  "'" : 39,
   '"' : 34,
-  '\' : 92,
+  "\\" : 92,
 }
 

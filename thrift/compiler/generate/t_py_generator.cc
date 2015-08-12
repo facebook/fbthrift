@@ -28,6 +28,7 @@
 #include <set>
 #include "thrift/compiler/generate/t_generator.h"
 #include "thrift/compiler/platform.h"
+#include <folly/String.h>
 using namespace std;
 
 // All other Python keywords (as of 2.7) are reserved by the Thrift
@@ -268,6 +269,7 @@ class t_py_generator : public t_generator {
   std::string type_to_enum(t_type* ttype);
   std::string type_to_spec_args(t_type* ttype);
   std::string get_real_py_module(const t_program* program);
+  std::string render_string(const std::string& value);
 
  private:
 
@@ -965,6 +967,16 @@ void t_py_generator::generate_const(t_const* tconst) {
   f_consts_ << endl << endl;
 }
 
+string t_py_generator::render_string(const string& value) {
+  std::ostringstream out;
+  if (value.find_first_of("'\\") == string::npos) {
+    out << "'" << value << "'";
+  } else {
+    out << "\"" << folly::cEscape<string>(value) << "\"";
+  }
+  return out.str();
+}
+
 /**
  * Prints the value of a constant with the given type. Note that type checking
  * is NOT performed in this function as it is always run beforehand using the
@@ -978,7 +990,7 @@ string t_py_generator::render_const_value(t_type* type, t_const_value* value) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
     case t_base_type::TYPE_STRING:
-      out << "'" << value->get_string() << "'";
+      out << render_string(value->get_string());
       break;
     case t_base_type::TYPE_BOOL:
       out << (value->get_integer() > 0 ? "True" : "False");
@@ -1442,7 +1454,7 @@ void t_py_generator::generate_py_string_dict(
   map<string, string>::const_iterator a_iter;
   indent_up();
   for (a_iter = fields.begin(); a_iter != fields.end(); ++a_iter) {
-    indent(out) << "'" << a_iter->first << "': \"\"\""
+    indent(out) << render_string(a_iter->first) << ": \"\"\""
                 << a_iter->second << "\"\"\"," << endl;
   }
   indent_down();
