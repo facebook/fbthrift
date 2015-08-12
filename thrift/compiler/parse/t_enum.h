@@ -21,6 +21,7 @@
 #define T_ENUM_H
 
 #include "thrift/compiler/parse/t_enum_value.h"
+#include <folly/Optional.h>
 #include <vector>
 
 /**
@@ -49,6 +50,15 @@ class t_enum : public t_type {
       }
     }
     return nullptr;
+  }
+
+  const folly::Optional<int32_t> find_int_val(const std::string& name) {
+    for (const auto it : constants_) {
+      if (it->get_name() == name) {
+        return it->get_value();
+      }
+    }
+    return folly::none;
   }
 
   bool is_enum() const override { return true; }

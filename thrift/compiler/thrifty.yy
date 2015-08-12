@@ -684,14 +684,38 @@ ConstValue:
 | tok_identifier
     {
       pdebug("ConstValue => tok_identifier");
-      t_const* constant = g_scope->get_constant($1);
-      if (constant != NULL) {
-        $$ = constant->get_value();
-      } else {
-        if (g_parse_mode == PROGRAM) {
-          pwarning(1, "Constant strings should be quoted: %s", $1);
+      bool is_qualified_enum = false;
+      string fullname = string($1);
+      std::string::size_type dot = fullname.rfind('.');
+      if (dot != std::string::npos) {
+        string enum_name = fullname.substr(0, dot);
+        string name = fullname.substr(dot+1);
+        auto enums = g_program->get_enums();
+        t_enum* parent = NULL;
+        for (t_enum* e : enums) {
+          if (e->get_name() == enum_name) {
+            parent = e;
+            break;
+          }
         }
-        $$ = new t_const_value($1);
+        if (parent) {
+          auto maybeVal = parent->find_int_val(name);
+          if (maybeVal) {
+            $$ = new t_const_value(maybeVal.value());
+            is_qualified_enum = true;
+          }
+        }
+      }
+      if (!is_qualified_enum) {
+        t_const* constant = g_scope->get_constant($1);
+        if (constant != NULL) {
+          $$ = constant->get_value();
+        } else {
+          if (g_parse_mode == PROGRAM) {
+            pwarning(1, "Constant strings should be quoted: %s", $1);
+          }
+          $$ = new t_const_value($1);
+        }
       }
     }
 | ConstList
@@ -1262,7 +1286,7 @@ FieldType:
           $$ = new t_typedef(g_program, $1);
           if ($2 != NULL) {
             $$->annotations_ = $2->annotations_;
-            delete $2;          
+            delete $2;
           }
         }
       }
