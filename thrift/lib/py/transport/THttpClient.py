@@ -60,6 +60,7 @@ class THttpClient(TTransportBase):
                 DeprecationWarning,
                 stacklevel=2)
             self.host = uri_or_host
+            self.http_host = self.host
             self.port = port
             assert path
             self.path = path
@@ -73,6 +74,7 @@ class THttpClient(TTransportBase):
             elif self.scheme == 'https':
                 self.port = parsed.port or httplib.HTTPS_PORT
             self.host = parsed.hostname
+            self.http_host = parsed.netloc
             self.path = parsed.path
             if parsed.query:
                 self.path += '?%s' % parsed.query
@@ -129,7 +131,7 @@ class THttpClient(TTransportBase):
         self.__http.putrequest('POST', self.path, skip_host=True)
 
         if not self.__custom_headers or 'Host' not in self.__custom_headers:
-            self.__http.putheader('Host', self.host)
+            self.__http.putheader('Host', self.http_host)
 
         self.__http.putheader('Content-Type', 'application/x-thrift')
         self.__http.putheader('Content-Length', str(len(data)))
