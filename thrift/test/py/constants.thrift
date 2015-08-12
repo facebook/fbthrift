@@ -21,11 +21,21 @@ namespace py thrift.test.py.constants
 
 const string apostrophe = "'";
 const string tripleApostrophe = "'''";
-const string quotationMark = '"';
-const string backslash = '\';
+const string quotationMark = '"'; //" //fix syntax highlighting
+const string quote = 'this is a "quote"';
+const string backslash = "\\";
+const string escaped_a = "\x61";
 
 const map<string, string> escapeChars = {
   "apostrophe" : "'",
   "quotationMark" : '"',
-  "backslash" : '\',
-}
+  "backslash" : "\\",
+  "escaped_a" : "\x61",
+};
+
+const map<string, i32> char2ascii = {
+  "'" : 39,
+  '"' : 34,
+  "\\" : 92,
+  "\x61" : 97,
+};

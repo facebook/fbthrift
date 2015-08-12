@@ -28,7 +28,6 @@
 #include <set>
 #include "thrift/compiler/generate/t_generator.h"
 #include "thrift/compiler/platform.h"
-#include <folly/String.h>
 using namespace std;
 
 // All other Python keywords (as of 2.7) are reserved by the Thrift
@@ -269,7 +268,7 @@ class t_py_generator : public t_generator {
   std::string type_to_enum(t_type* ttype);
   std::string type_to_spec_args(t_type* ttype);
   std::string get_real_py_module(const t_program* program);
-  std::string render_string(const std::string& value);
+  std::string render_string(std::string value);
 
  private:
 
@@ -967,13 +966,14 @@ void t_py_generator::generate_const(t_const* tconst) {
   f_consts_ << endl << endl;
 }
 
-string t_py_generator::render_string(const string& value) {
+string t_py_generator::render_string(string value) {
   std::ostringstream out;
-  if (value.find_first_of("'\\") == string::npos) {
-    out << "'" << value << "'";
-  } else {
-    out << "\"" << folly::cEscape<string>(value) << "\"";
+  size_t pos = 0;
+  while((pos = value.find('"', pos)) != string::npos) {
+    value.insert(pos, 1, '\\');
+    pos += 2;
   }
+  out << "\"" << value << "\"";
   return out.str();
 }
 

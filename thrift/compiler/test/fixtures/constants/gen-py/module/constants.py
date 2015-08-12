@@ -16,36 +16,36 @@ from .ttypes import *
 
 myInt = 1337
 
-name = 'Mark Zuckerberg'
+name = "Mark Zuckerberg"
 
 states = [
   {
-    'San Diego' : 3211000,
-    'Sacramento' : 479600,
-    'SF' : 837400,
+    "San Diego" : 3211000,
+    "Sacramento" : 479600,
+    "SF" : 837400,
   },
   {
-    'New York' : 8406000,
-    'Albany' : 98400,
+    "New York" : 8406000,
+    "Albany" : 98400,
   },
 ]
 
 instagram = Internship(**{
-  'weeks' : 12,
-  'title' : 'Software Engineer',
-  'employer' :   3,
+  "weeks" : 12,
+  "title" : "Software Engineer",
+  "employer" :   3,
 })
 
 internList = [
   Internship(**{
-    'weeks' : 12,
-    'title' : 'Software Engineer',
-    'employer' :     3,
+    "weeks" : 12,
+    "title" : "Software Engineer",
+    "employer" :     3,
   }),
   Internship(**{
-    'weeks' : 10,
-    'title' : 'Sales Intern',
-    'employer' :     0,
+    "weeks" : 10,
+    "title" : "Sales Intern",
+    "employer" :     0,
   }),
 ]
 
@@ -53,13 +53,16 @@ apostrophe = "'"
 
 tripleApostrophe = "'''"
 
-quotationMark = '"'
+quotationMark = "\""
 
 backslash = "\\"
 
+escaped_a = "\x61"
+
 char2ascii = {
   "'" : 39,
-  '"' : 34,
+  "\"" : 34,
   "\\" : 92,
+  "\x61" : 97,
 }
 

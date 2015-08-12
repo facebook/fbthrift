@@ -116,7 +116,7 @@ all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
   (1, TType.STRUCT, 'MyIncludedField', [includes.ttypes.Included, includes.ttypes.Included.thrift_spec, False], includes.ttypes.Included(**{
-    'MyIntField' : 5,
+    "MyIntField" : 5,
   }), 2, ), # 1
 )
 
@@ -128,7 +128,7 @@ MyStruct.thrift_field_annotations = {
 def MyStruct__init__(self, MyIncludedField=MyStruct.thrift_spec[1][4],):
   if MyIncludedField is self.thrift_spec[1][4]:
     MyIncludedField = includes.ttypes.Included(**{
-    'MyIntField' : 5,
+    "MyIntField" : 5,
   })
   self.MyIncludedField = MyIncludedField
 

@@ -57,13 +57,16 @@ public class ModuleConstants {
 
   public static final String quotationMark = """;
 
-  public static final String backslash = "\";
+  public static final String backslash = "\\";
+
+  public static final String escaped_a = "\x61";
 
   public static final Map<String,Integer> char2ascii = new HashMap<String,Integer>();
   static {
     char2ascii.put("'", 39);
     char2ascii.put(""", 34);
-    char2ascii.put("\", 92);
+    char2ascii.put("\\", 92);
+    char2ascii.put("\x61", 97);
   }
 
 }
