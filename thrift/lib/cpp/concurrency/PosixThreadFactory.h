@@ -28,9 +28,6 @@
 
 namespace apache { namespace thrift { namespace concurrency {
 
-void getLiveThreadIds(std::set<pthread_t>* tids);
-
-
 /**
  * Wrapper around pthread_setname_np that handles older glibc versions
  * -> moved to folly.

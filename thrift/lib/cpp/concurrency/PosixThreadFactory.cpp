@@ -40,29 +40,6 @@ const PosixThreadFactory::POLICY PosixThreadFactory::kDefaultPolicy;
 const PosixThreadFactory::PRIORITY PosixThreadFactory::kDefaultPriority;
 const int PosixThreadFactory::kDefaultStackSizeMB;
 
-// global set to track the ids of live threads.
-std::set<pthread_t> liveThreadIds;
-Mutex liveThreadIdMutex;
-
-void addLiveThreadId(pthread_t tid) {
-  Guard g(liveThreadIdMutex);
-  liveThreadIds.insert(tid);
-}
-
-void removeLiveThreadId(pthread_t tid) {
-  Guard g(liveThreadIdMutex);
-  liveThreadIds.erase(tid);
-}
-
-void getLiveThreadIds(std::set<pthread_t>* tids) {
-  Guard g(liveThreadIdMutex);
-  for (std::set<pthread_t>::const_iterator it = liveThreadIds.begin();
-       it != liveThreadIds.end(); ++it) {
-    tids->insert(*it);
-  }
-}
-
-
 // push our given name upstream into pthreads
 bool PthreadThread::updateName() {
   if (!pthread_ || name_.empty()) {
@@ -95,7 +72,6 @@ PthreadThread::~PthreadThread() {
       // We're really hosed.
     }
   }
-  removeLiveThreadId(pthread_);
 }
 
 void PthreadThread::start() {
@@ -134,7 +110,6 @@ void PthreadThread::start() {
 
   // Now that we have a thread, we can set the name we've been given, if any.
   updateName();
-  addLiveThreadId(pthread_);
 }
 
 void PthreadThread::join() {
