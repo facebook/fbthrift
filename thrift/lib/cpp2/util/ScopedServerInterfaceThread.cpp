@@ -26,7 +26,7 @@ using namespace apache::thrift::concurrency;
 namespace apache { namespace thrift {
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
-    shared_ptr<ServerInterface> si,
+    shared_ptr<AsyncProcessorFactory> apf,
     const string& host,
     uint16_t port) {
   auto tm = ThreadManager::newSimpleThreadManager(1, 5, false, 50);
@@ -34,7 +34,7 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   tm->start();
   auto ts = make_shared<ThriftServer>();
   ts->setAddress(host, port);
-  ts->setInterface(move(si));
+  ts->setProcessorFactory(move(apf));
   ts->setNWorkerThreads(1);
   ts->setThreadManager(tm);
   ts_ = move(ts);

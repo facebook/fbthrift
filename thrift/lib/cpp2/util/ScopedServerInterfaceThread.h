@@ -24,7 +24,7 @@
 
 namespace apache { namespace thrift {
 
-class ServerInterface;
+class AsyncProcessorFactory;
 class ThriftServer;
 
 /**
@@ -37,7 +37,7 @@ class ScopedServerInterfaceThread {
  public:
 
   explicit ScopedServerInterfaceThread(
-      std::shared_ptr<ServerInterface> si,
+      std::shared_ptr<AsyncProcessorFactory> apf,
       const std::string& host = "::1",
       uint16_t port = 0);
 

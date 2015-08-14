@@ -813,8 +813,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * @param handler interface shared_ptr
    */
   void setInterface(std::shared_ptr<ServerInterface> iface) {
-    CHECK(configMutable());
-    cpp2Pfac_ = iface;
+    setProcessorFactory(std::move(iface));
   }
 
   /**
@@ -822,8 +821,9 @@ class ThriftServer : public apache::thrift::server::TServer
    *
    */
   void setProcessorFactory(
-      std::unique_ptr<apache::thrift::AsyncProcessorFactory> pFac) {
-    cpp2Pfac_ = std::shared_ptr<AsyncProcessorFactory>(std::move(pFac));
+      std::shared_ptr<AsyncProcessorFactory> pFac) {
+    CHECK(configMutable());
+    cpp2Pfac_ = pFac;
   }
 
   /**
