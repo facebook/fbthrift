@@ -16,18 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #include "thrift/tutorial/cpp/async/sort/SortServerHandler.h"
 
-namespace tutorial { namespace sort {
+#include <folly/gen/Base.h>
 
-void SortServerHandler::sort(SortReturnCob cob, SortErrorCob errcobb,
-                             const IntVector &values) {
-  // The sort can be performed "immediately"--there are no blocking operations,
-  // this is just a CPU computation.  Therefore we can just perform the
-  // operation and invoke the callback object immedaitely
-  IntVector sorted(values.begin(), values.end());
-  std::sort(sorted.begin(), sorted.end());
-  cob(sorted);
+using namespace std;
+using namespace folly;
+
+namespace apache { namespace thrift { namespace tutorial { namespace sort {
+
+void SortServerHandler::sort(
+    vector<int32_t>& _return,
+    const vector<int32_t>& values) {
+  //  This operation is pure CPU work. No blocking ops, no async ops.
+  //  So we perform it in a CPU thread pool thread, which is the default.
+  _return = gen::from(values) | gen::order | gen::as<vector>();
 }
 
-}} // tutorial::sort
+}}}}

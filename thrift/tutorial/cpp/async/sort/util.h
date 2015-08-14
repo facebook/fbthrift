@@ -16,18 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#ifndef THRIFT_TUTORIAL_ASYNC_UTIL_H
-#define THRIFT_TUTORIAL_ASYNC_UTIL_H
 
-#include <stdint.h>
+#pragma once
+
+#include <cstdint>
 #include <string>
 
-namespace tutorial { namespace sort {
+namespace apache { namespace thrift { namespace tutorial { namespace sort {
 
 int util_parse_port(const char* value, uint16_t* port);
 int util_parse_host_port(const char* value, std::string* host, uint16_t* port);
 int util_resolve_host(const std::string& host, std::string* ip);
 
-}} // tutorial::sort
-
-#endif // THRIFT_TUTORIAL_ASYNC_UTIL_H
+}}}}

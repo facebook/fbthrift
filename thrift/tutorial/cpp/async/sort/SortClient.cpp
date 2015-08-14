@@ -19,48 +19,44 @@
 #include <iostream>
 #include <memory>
 
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include <thrift/lib/cpp/transport/TSocket.h>
-#include <thrift/lib/cpp/ClientUtil.h>
+#include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
 #include "thrift/tutorial/cpp/async/sort/util.h"
-#include "thrift/tutorial/cpp/async/sort/gen-cpp/Sorter.h"
+#include "thrift/tutorial/cpp/async/sort/gen-cpp2/Sorter.h"
 
-using std::shared_ptr;
+using namespace std;
+using namespace folly;
 using namespace apache::thrift;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
-
-using namespace tutorial::sort;
+using namespace apache::thrift::tutorial::sort;
 
 int main(int argc, char* argv[]) {
   // Parse the arguments
-  std::string host = "127.0.0.1";
+  string host = "127.0.0.1";
   uint16_t port = 12345;
   if (argc == 2) {
     if (util_parse_host_port(argv[1], &host, &port) != 0) {
-      std::cerr << "invalid address \"" << argv[1] << "\"" << std::endl;
+      cerr << "invalid address \"" << argv[1] << "\"" << endl;
       return 1;
     }
   }
   else if (argc > 2) {
-    std::cerr << "trailing arguments" << std::endl;
+    cerr << "trailing arguments" << endl;
     return 1;
   }
 
   // Read the list of integers to sort.
-  std::cout << "Reading list of integers from stdin..." << std::endl;
-  typedef std::vector<int32_t> IntVector;
-  IntVector values;
+  cout << "Reading list of integers from stdin..." << endl;
+  vector<int32_t> values;
   while (true) {
     int32_t i;
-    std::cin >> i;
-    if (std::cin.eof()) {
+    cin >> i;
+    if (cin.eof()) {
       break;
     }
-    if (std::cin.fail()) {
-      std::cerr << "error: input must be integers" << std::endl;
+    if (cin.fail()) {
+      cerr << "error: input must be integers" << endl;
       return 1;
     }
 
@@ -68,10 +64,12 @@ int main(int argc, char* argv[]) {
   }
 
   try {
-    std::cout << "Connecting to " << host << ":" << port << "..." << std::endl;
-    typedef SorterClientT< TBinaryProtocolT<TBufferBase> > SorterClient;
-    shared_ptr<SorterClient> client =
-      util::createClientPtr<SorterClient>(host, port);
+    cout << "Connecting to " << host << ":" << port << "..." << endl;
+    EventBase eb;
+    auto client = folly::make_unique<SorterAsyncClient>(
+        HeaderClientChannel::newChannel(
+          async::TAsyncSocket::newSocket(
+            &eb, {host, port})));
 
     // Now make the call to the server.
     //
@@ -79,22 +77,21 @@ int main(int argc, char* argv[]) {
     // to the server and then received the response.  (We could have created a
     // SorterCobClient instead of a plain SorterClient if we wanted to perform
     // the operations in a non-blocking fashion.)
-    IntVector sorted;
+    vector<int32_t> sorted;
 
     try {
-      client->sort(sorted, values);
+      client->sync_sort(sorted, values);
     } catch (SortError& ex) {
-      std::cerr << "SortError: " << ex.msg << std::endl;
+      cerr << "SortError: " << ex.msg << endl;
       return 2;
     }
 
     // Print the results.
-    for (IntVector::const_iterator it = sorted.begin();
-         it != sorted.end(); ++it) {
-      std::cout << *it << std::endl;
+    for (auto v : sorted) {
+      cout << v << endl;
     }
   } catch (TException& ex) {
-    std::cerr << "TException: " << ex.what() << std::endl;
+    cerr << "TException: " << ex.what() << endl;
     return 2;
   }
 

@@ -16,72 +16,42 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#ifndef THRIFT_TUTORIAL_ASYNC_SORTDISTRIBUTORHANDLER_H
-#define THRIFT_TUTORIAL_ASYNC_SORTDISTRIBUTORHANDLER_H
 
-#include <thrift/lib/cpp/async/TEventServer.h>
+#pragma once
+
+#include <vector>
+#include <folly/SocketAddress.h>
 
 #include "thrift/tutorial/cpp/async/sort/util.h"
-#include "thrift/tutorial/cpp/async/sort/gen-cpp/Sorter.h"
+#include "thrift/tutorial/cpp/async/sort/gen-cpp2/Sorter.h"
 
 
-namespace tutorial { namespace sort {
+namespace apache { namespace thrift { namespace tutorial { namespace sort {
 
 /**
  * Asynchronous, distributed handler implementation for Sorter
  */
-class SortDistributorHandler : public SorterCobSvIf, public boost::noncopyable {
+class SortDistributorHandler : public SorterSvIf {
  public:
-  typedef std::vector<int32_t> IntVector;
-  typedef std::function<void(const IntVector& _return)> SortReturnCob;
-  typedef std::function<void(const std::exception& ex)>
-    SortErrorCob;
-
-  SortDistributorHandler() : server_(nullptr) { }
-
-  void sort(SortReturnCob cob,
-            SortErrorCob errcob,
-            const IntVector& values) override;
 
   /**
-   * Set the TEventServer that will be used.
-   *
-   * This is necessary so that we can get the TEventBase for performing
-   * asynchronous operations.
-   */
-  void setServer(apache::thrift::async::TEventServer* server) {
-    server_ = server;
-  }
-
-  /**
-   * Add a thrift sort server
+   * Construct with a list of backend host:port pairs.
    *
    * sort() requests will be distributed to all known backend sort servers.
    */
-  void addSortServer(const std::string& ip, uint16_t port) {
-    sortServers_.push_back(std::make_pair(ip, port));
-  }
+  explicit SortDistributorHandler(std::vector<folly::SocketAddress> backends) :
+      backends_(std::move(backends)) {}
 
- protected:
-  /**
-   * Get the TEventBase used by the current thread.
-   */
-  apache::thrift::async::TEventBase* getEventBase() const {
-    if (!server_) {
-      throw apache::thrift::TLibraryException(
-          "SortDistributorHandler.server_ is NULL");
-    }
-    return server_->getEventBase();
-  }
+  SortDistributorHandler(const SortDistributorHandler&) = delete;
+  const SortDistributorHandler& operator=(
+      const SortDistributorHandler&) = delete;
+
+  folly::Future<std::vector<int32_t>> future_sort(
+      const std::vector<int32_t>& values) override;
 
  private:
-  class Aggregator;
-  typedef std::vector< std::pair<std::string, uint16_t> > ServerVector;
 
-  apache::thrift::async::TEventServer* server_;
-  ServerVector sortServers_;
+  std::vector<folly::SocketAddress> backends_;
 };
 
-}} // tutorial::sort
-
-#endif // THRIFT_TUTORIAL_ASYNC_SORTDISTRIBUTORHANDLER_H
+}}}}

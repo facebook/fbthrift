@@ -1,4 +1,4 @@
-namespace cpp tutorial.sort
+namespace cpp2 apache.thrift.tutorial.sort
 
 exception SortError {
   1: string msg

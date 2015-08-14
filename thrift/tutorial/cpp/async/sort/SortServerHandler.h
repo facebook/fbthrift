@@ -16,56 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#ifndef THRIFT_TUTORIAL_ASYNC_SORTSERVERHANDLER_H
-#define THRIFT_TUTORIAL_ASYNC_SORTSERVERHANDLER_H
 
-#include <thrift/lib/cpp/async/TEventServer.h>
+#pragma once
 
 #include "thrift/tutorial/cpp/async/sort/util.h"
-#include "thrift/tutorial/cpp/async/sort/gen-cpp/Sorter.h"
+#include "thrift/tutorial/cpp/async/sort/gen-cpp2/Sorter.h"
 
-namespace tutorial { namespace sort {
+namespace apache { namespace thrift { namespace tutorial { namespace sort {
 
 /**
  * Asynchronous handler implementation for Sorter
  */
-class SortServerHandler : public SorterCobSvIf, public boost::noncopyable {
+class SortServerHandler : public SorterSvIf {
  public:
-  typedef std::vector<int32_t> IntVector;
-  typedef std::function<void(const IntVector& _return)> SortReturnCob;
-  typedef std::function<void(std::exception const& ex)> SortErrorCob;
 
-  SortServerHandler() : server_(nullptr) { }
+  SortServerHandler() = default;
+  SortServerHandler(const SortServerHandler&) = delete;
+  const SortServerHandler& operator=(const SortServerHandler&) = delete;
 
-  void sort(SortReturnCob cob,
-            SortErrorCob errcob,
-            const IntVector& values) override;
+  void sort(
+      std::vector<int32_t>& _return,
+      const std::vector<int32_t>& values) override;
 
-  /**
-   * Set the TEventServer that will be used.
-   *
-   * This is necessary so that we can get the TEventBase for performing
-   * asynchronous operations.
-   */
-  void setServer(apache::thrift::async::TEventServer* server) {
-    server_ = server;
-  }
-
- protected:
-  /**
-   * Get the TEventBase used by the current thread.
-   */
-  apache::thrift::async::TEventBase* getEventBase() const {
-    if (!server_) {
-      throw apache::thrift::TLibraryException("SortServerHandler.server_ is NULL");
-    }
-    return server_->getEventBase();
-  }
-
- private:
-  apache::thrift::async::TEventServer* server_;
 };
 
-}} // tutorial::sort
-
-#endif // THRIFT_TUTORIAL_ASYNC_SORTSERVERHANDLER_H
+}}}}

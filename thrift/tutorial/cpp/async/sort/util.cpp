@@ -22,10 +22,10 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
-namespace tutorial { namespace sort {
+namespace apache { namespace thrift { namespace tutorial { namespace sort {
 
 /**
  * Parse a port number from a string.
@@ -137,4 +137,4 @@ int util_resolve_host(const std::string& host, std::string* ip) {
   return 0;
 }
 
-}} // tutorial::sort
+}}}}

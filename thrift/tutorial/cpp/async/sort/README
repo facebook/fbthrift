@@ -4,10 +4,7 @@ This example builds 3 programs:
 
   This program listens on port 12345 by default, and handles sort() requests.
   It accepts a list of integers, and returns the list sorted in ascending
-  order.
-
-  Although it uses TEventServer, the operation isn't really asynchronous, so
-  the callback is always invoked immediately.
+  order. The operation is synchronous.
 
 - SortClient
 
@@ -23,8 +20,8 @@ This example builds 3 programs:
   resulting list and returns it.
 
   This is perhaps the most interesting example, as the server performs the
-  backend sort calls in parallel using the cob version of the client, and then
-  asynchronously responds to the original request.
+  backend sort calls asynchronously in parallel, and then asynchronously
+  responds to the original request.
 
   The SortDistributor can be configured to point to itself.  This isn't
   realistic for most scenarios, but does exercise the code more thoroughly.
