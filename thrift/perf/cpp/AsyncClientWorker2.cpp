@@ -206,10 +206,19 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
     }
     return loadClient;
   } else {
-    std::shared_ptr<TAsyncSocket> socket =
-      TAsyncSocket::newSocket(&eb_, *config->getAddress(), kTimeout);
+    std::shared_ptr<TAsyncSocket> socket;
+    if (config->useSSL()) {
+      auto context = std::make_shared<SSLContext>();
+      socket = TAsyncSSLSocket::newSocket(std::move(context), &eb_);
+      socket->connect(nullptr, *config->getAddress(), kTimeout);
+      // Loop until connection is established and TLS handshake completes.
+      // Unlike a regular AsyncSocket which is usable even before TCP handshke
+      // completes, an SSL socket reports !good() until TLS handshake completes.
+      eb_.loop();
+    } else {
+      socket = TAsyncSocket::newSocket(&eb_, *config->getAddress(), kTimeout);
+    }
 
-    LoadTestAsyncClient *loadClient = nullptr;
     std::unique_ptr<
       apache::thrift::HeaderClientChannel,
       apache::thrift::async::TDelayedDestruction::Destructor> channel(
@@ -249,8 +258,7 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
           config->getAddressHostname()).str());
     }
 
-    loadClient = new LoadTestAsyncClient(std::move(channel));
-    return std::shared_ptr<LoadTestAsyncClient>(loadClient);
+    return std::make_shared<LoadTestAsyncClient>(std::move(channel));
   }
 }
 
