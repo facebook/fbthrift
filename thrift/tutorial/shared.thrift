@@ -22,7 +22,7 @@
  * these definitions.
  */
 
-namespace cpp shared
+namespace cpp2 apache.thrift.tutorial
 namespace java shared
 namespace perl shared
 

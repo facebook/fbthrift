@@ -17,33 +17,19 @@
  * under the License.
  */
 
-#include <concurrency/ThreadManager.h>
-#include <concurrency/PosixThreadFactory.h>
-#include <protocol/TBinaryProtocol.h>
-#include <server/example/TSimpleServer.h>
-#include <server/example/TThreadPoolServer.h>
-#include <server/TThreadedServer.h>
-#include <transport/TServerSocket.h>
-#include <transport/TTransportUtils.h>
-
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <sstream>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include "../gen-cpp/Calculator.h"
+#include "thrift/tutorial/gen-cpp2/Calculator.h"
 
 using namespace std;
 using namespace apache::thrift;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
-using namespace apache::thrift::server;
+using namespace apache::thrift::tutorial;
 
-using namespace tutorial;
-using namespace shared;
-
-using namespace boost;
-
-class CalculatorHandler : public CalculatorIf {
+class CalculatorHandler : public CalculatorSvIf {
  public:
   CalculatorHandler() {}
 
@@ -61,19 +47,19 @@ class CalculatorHandler : public CalculatorIf {
     int32_t val;
 
     switch (work.op) {
-    case ADD:
+    case Operation::ADD:
       val = work.num1 + work.num2;
       break;
-    case SUBTRACT:
+    case Operation::SUBTRACT:
       val = work.num1 - work.num2;
       break;
-    case MULTIPLY:
+    case Operation::MULTIPLY:
       val = work.num1 * work.num2;
       break;
-    case DIVIDE:
+    case Operation::DIVIDE:
       if (work.num2 == 0) {
         InvalidOperation io;
-        io.what = work.op;
+        io.op = work.op;
         io.why = "Cannot divide by 0";
         throw io;
       }
@@ -81,7 +67,7 @@ class CalculatorHandler : public CalculatorIf {
       break;
     default:
       InvalidOperation io;
-      io.what = work.op;
+      io.op = work.op;
       io.why = "Invalid Operation";
       throw io;
     }
@@ -113,42 +99,13 @@ protected:
 
 int main(int argc, char **argv) {
 
-  std::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
-  std::shared_ptr<CalculatorHandler> handler(new CalculatorHandler());
-  std::shared_ptr<TProcessor> processor(new CalculatorProcessor(handler));
-  std::shared_ptr<TServerTransport> serverTransport(new TServerSocket(9090));
-  std::shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
-
-  TSimpleServer server(processor,
-                       serverTransport,
-                       transportFactory,
-                       protocolFactory);
-
-
-  /**
-   * Or you could do one of these
-
-  std::shared_ptr<ThreadManager> threadManager =
-    ThreadManager::newSimpleThreadManager(workerCount);
-  std::shared_ptr<PosixThreadFactory> threadFactory =
-    std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
-  threadManager->threadFactory(threadFactory);
-  threadManager->start();
-  TThreadPoolServer server(processor,
-                           serverTransport,
-                           transportFactory,
-                           protocolFactory,
-                           threadManager);
-
-  TThreadedServer server(processor,
-                         serverTransport,
-                         transportFactory,
-                         protocolFactory);
-
-  */
+  auto handler = make_shared<CalculatorHandler>();
+  auto server = make_shared<ThriftServer>();
+  server->setInterface(handler);
+  server->setPort(9090);
 
   printf("Starting the server...\n");
-  server.serve();
+  server->serve();
   printf("done.\n");
   return 0;
 }

@@ -56,13 +56,13 @@
  * Included objects are accessed using the name of the .thrift file as a
  * prefix. i.e. shared.SharedObject
  */
-include "shared.thrift"
+include "thrift/tutorial/shared.thrift"
 
 /**
  * Thrift files can namespace, package, or prefix their output in various
  * target languages.
  */
-namespace cpp tutorial
+namespace cpp2 apache.thrift.tutorial
 namespace java tutorial
 namespace php tutorial
 namespace perl tutorial
@@ -112,7 +112,7 @@ struct Work {
  * Structs can also be exceptions, if they are nasty.
  */
 exception InvalidOperation {
-  1: i32 what,
+  1: Operation op,
   2: string why
 }
 
