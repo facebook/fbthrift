@@ -239,6 +239,7 @@ class t_php_generator : public t_oop_generator {
   void generate_php_docstring_args(ofstream& out,
                                    int start_pos,
                                    t_struct* arg_list);
+  std::string render_string(std::string value);
 
   bool is_bitmask_enum(t_enum* tenum) {
     return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
@@ -581,7 +582,7 @@ void t_php_generator::generate_json_reader(ofstream &out,
     indent(out) << "if (isset($parsed['" << tf->get_name() << "'])) {" << endl;
     indent_up();
     generate_json_field(out, tf, "$this->", "",
-                        "$parsed['" + tf->get_name() + "']");
+                        "$parsed[" + render_string(tf->get_name()) + "]");
     indent_down();
     indent(out) << "}";
     if(tf->get_req() == t_field::T_REQUIRED) {
@@ -833,13 +834,24 @@ void t_php_generator::generate_const(t_const* tconst) {
   // indent up cause we're going to be in an array definition
   indent_up();
   stringstream oss(stringstream::out);
-  indent(oss) << "'" << name << "' => ";
+  indent(oss) << render_string(name) << " => ";
   indent_up();
   oss << render_const_value(type, value);
   indent_down();
   indent_down();
   constants_values_.push_back(oss.str());
   indent_down();
+}
+
+string t_php_generator::render_string(string value) {
+  std::ostringstream out;
+  size_t pos = 0;
+  while((pos = value.find('"', pos)) != string::npos) {
+    value.insert(pos, 1, '\\');
+    pos += 2;
+  }
+  out << "\"" << value << "\"";
+  return out.str();
 }
 
 /**
@@ -854,7 +866,7 @@ string t_php_generator::render_const_value(t_type* type, t_const_value* value) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
     case t_base_type::TYPE_STRING:
-      out << "'" << value->get_string() << "'";
+      out << render_string(value->get_string());
       break;
     case t_base_type::TYPE_BOOL:
       out << (value->get_integer() > 0 ? "true" : "false");
@@ -1393,7 +1405,7 @@ void t_php_generator::generate_php_struct_writer(ofstream& out,
       indent(out) << "public function write(TProtocol $output)" << endl;
     }
     scope_up(out);
-    indent(out) << "return $this->_write('" << tstruct->get_name() << "', self::$_TSPEC, $output);" << endl;
+    indent(out) << "return $this->_write('" << name << "', self::$_TSPEC, $output);" << endl;
     scope_down(out);
     return;
   }
