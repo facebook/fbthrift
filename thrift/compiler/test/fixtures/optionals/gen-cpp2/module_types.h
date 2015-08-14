@@ -220,7 +220,8 @@ class Person : private boost::totally_ordered<Person> {
   Person() :
       id(0),
       age(0),
-      bestFriend(0) {}
+      bestFriend(0),
+      afraidOfAnimal( ::cpp2::Animal()) {}
   // FragileConstructor for use in initialization lists only
 
   Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, std::string name__arg, int16_t age__arg, std::string address__arg,  ::cpp2::Color favoriteColor__arg, std::set< ::cpp2::PersonID> friends__arg,  ::cpp2::PersonID bestFriend__arg, std::map< ::cpp2::Animal, std::string> petNames__arg,  ::cpp2::Animal afraidOfAnimal__arg, std::vector< ::cpp2::Vehicle> vehicles__arg) :

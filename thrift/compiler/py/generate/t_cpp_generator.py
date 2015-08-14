@@ -2190,7 +2190,7 @@ class CppGenerator(t_generator.Generator):
             return self._render_const_value(t, member.value)
         if t.is_base_type and not t.is_string:
             return '0'
-        if explicit:
+        if explicit or t.is_enum:
             return '{0}()'.format(self._type_name(t))
         return ''
 
