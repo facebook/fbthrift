@@ -3696,10 +3696,11 @@ class CppGenerator(t_generator.Generator):
             int64 = lambda x: str(x.integer) + "LL"
 
             bt = t.as_base_type
+            render_string = lambda x: x.string.replace('"', '\\"')
             mapping = {
-                t_base.string: lambda x: x.string if literal else
+                t_base.string: lambda x: render_string(x) if literal else
                 ('apache::thrift::StringTraits< {0}>::fromStringLiteral(' +
-                 '"{1}")').format(self._type_name(t), x.string),
+                    '"{1}")').format(self._type_name(t), render_string(x)),
                 t_base.bool: lambda x: (x.integer > 0 and 'true' or 'false'),
                 t_base.byte: lambda x: ("(int8_t)" + str(x.integer)),
                 t_base.i16: lambda x: ("(int16_t)" + str(x.integer)),

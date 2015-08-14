@@ -82,7 +82,7 @@ std::map<std::string, int32_t>  const &module_constants::char2ascii() {
     std::map<std::string, int32_t>  value;
 
     value.insert(std::make_pair("'", 39));
-    value.insert(std::make_pair(""", 34));
+    value.insert(std::make_pair("\"", 34));
     value.insert(std::make_pair("\\", 92));
     value.insert(std::make_pair("\x61", 97));
 
@@ -184,7 +184,7 @@ std::string const &module_constants_codemod::quotationMark() {
   static auto const instance([]() {
     std::string value;
 
-    value = """;
+    value = "\"";
     return value;
   }());
   return instance;
@@ -212,7 +212,7 @@ std::map<std::string, int32_t>  const &module_constants_codemod::char2ascii() {
     std::map<std::string, int32_t>  value;
 
     value.insert(std::make_pair("'", 39));
-    value.insert(std::make_pair(""", 34));
+    value.insert(std::make_pair("\"", 34));
     value.insert(std::make_pair("\\", 92));
     value.insert(std::make_pair("\x61", 97));
 
@@ -267,11 +267,11 @@ moduleConstants::moduleConstants() {
 
   apostrophe = "'";
   tripleApostrophe = "'''";
-  quotationMark = """;
+  quotationMark = "\"";
   backslash = "\\";
   escaped_a = "\x61";
   char2ascii.insert(std::make_pair("'", 39));
-  char2ascii.insert(std::make_pair(""", 34));
+  char2ascii.insert(std::make_pair("\"", 34));
   char2ascii.insert(std::make_pair("\\", 92));
   char2ascii.insert(std::make_pair("\x61", 97));
 

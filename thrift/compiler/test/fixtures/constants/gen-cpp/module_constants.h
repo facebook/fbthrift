@@ -35,7 +35,7 @@ struct module_constants {
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to 
   // prevent unnecessary allocations
-  static constexpr char const *const quotationMark_ = """;
+  static constexpr char const *const quotationMark_ = "\"";
   static constexpr char const *const quotationMark() { return quotationMark_; }
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to 

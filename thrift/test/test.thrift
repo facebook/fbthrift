@@ -15,6 +15,8 @@ const i32 i_2 = 99;
 
 const string str_1 = "hello"
 const string str_2 = "world"
+const string str_3 = "'"
+const string str_4 = '"foo"'
 
 const list<i32> l_1 = [23, 42, 56]
 const list<string> l_2 = ["foo", "bar", "baz"]
@@ -24,6 +26,7 @@ const set<string> s_2 = ["foo", "bar", "baz"]
 
 const map<i32, i32> m_1 = {23:97, 42:37, 56:11}
 const map<string, string> m_2 = {"foo":"bar", "baz":"gaz"}
+const map<string, i32> m_3 = {'"': 34, "'": 39, "\\": 92, "\x61": 97}
 
 struct struct1 {
   1: i32 a = 1234567

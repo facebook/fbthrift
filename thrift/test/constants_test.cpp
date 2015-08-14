@@ -34,6 +34,8 @@ TEST(constants, cpp) {
   EXPECT_EQ(std::string("hello"), test_cpp::test_constants::str_1());
   EXPECT_EQ(std::string("world"), test_cpp::test_constants::str_2_);
   EXPECT_EQ(std::string("world"), test_cpp::test_constants::str_2());
+  EXPECT_EQ(std::string("'"), test_cpp::test_constants::str_3());
+  EXPECT_EQ(std::string("\"foo\""), test_cpp::test_constants::str_4());
 
   EXPECT_EQ(
     (std::vector<std::int32_t>{23, 42, 56}),
@@ -60,6 +62,11 @@ TEST(constants, cpp) {
   EXPECT_EQ(
     (std::map<std::string, std::string>{{"foo", "bar"}, {"baz", "gaz"}}),
     test_cpp::test_constants::m_2()
+  );
+  EXPECT_EQ(
+    (std::map<std::string, std::int32_t>{
+     {"'", 39}, {"\"", 34}, {"\\", 92}, {"a", 97}}),
+    test_cpp::test_constants::m_3()
   );
 
   EXPECT_EQ(test_cpp::struct1(), test_cpp::test_constants::pod_0());
@@ -95,6 +102,8 @@ TEST(constants, cpp2) {
   EXPECT_EQ(std::string("hello"), test_cpp2::test_constants::str_1());
   EXPECT_EQ(std::string("world"), test_cpp2::test_constants::str_2_);
   EXPECT_EQ(std::string("world"), test_cpp2::test_constants::str_2());
+  EXPECT_EQ(std::string("'"), test_cpp2::test_constants::str_3());
+  EXPECT_EQ(std::string("\"foo\""), test_cpp2::test_constants::str_4());
 
   EXPECT_EQ(
     (std::vector<std::int32_t>{23, 42, 56}),
@@ -121,6 +130,11 @@ TEST(constants, cpp2) {
   EXPECT_EQ(
     (std::map<std::string, std::string>{{"foo", "bar"}, {"baz", "gaz"}}),
     test_cpp2::test_constants::m_2()
+  );
+  EXPECT_EQ(
+    (std::map<std::string, std::int32_t>{
+     {"'", 39}, {"\"", 34}, {"\\", 92}, {"a", 97}}),
+    test_cpp2::test_constants::m_3()
   );
 
   EXPECT_EQ(test_cpp2::struct1(), test_cpp2::test_constants::pod_0());
@@ -150,6 +164,8 @@ TEST(constants, cpp_codemod) {
 
   EXPECT_EQ(std::string("hello"), test_cpp::test_constants_codemod::str_1());
   EXPECT_EQ(std::string("world"), test_cpp::test_constants_codemod::str_2());
+  EXPECT_EQ(std::string("'"), test_cpp::test_constants_codemod::str_3());
+  EXPECT_EQ(std::string("\"foo\""), test_cpp::test_constants_codemod::str_4());
 
   EXPECT_EQ(
     (std::vector<std::int32_t>{23, 42, 56}),
@@ -176,6 +192,11 @@ TEST(constants, cpp_codemod) {
   EXPECT_EQ(
     (std::map<std::string, std::string>{{"foo", "bar"}, {"baz", "gaz"}}),
     test_cpp::test_constants_codemod::m_2()
+  );
+  EXPECT_EQ(
+    (std::map<std::string, std::int32_t>{
+     {"'", 39}, {"\"", 34}, {"\\", 92}, {"a", 97}}),
+    test_cpp::test_constants_codemod::m_3()
   );
 
   EXPECT_EQ(test_cpp::struct1(), test_cpp::test_constants::pod_0());
@@ -205,6 +226,8 @@ TEST(constants, cpp2_codemod) {
 
   EXPECT_EQ(std::string("hello"), test_cpp2::test_constants_codemod::str_1());
   EXPECT_EQ(std::string("world"), test_cpp2::test_constants_codemod::str_2());
+  EXPECT_EQ(std::string("'"), test_cpp2::test_constants_codemod::str_3());
+  EXPECT_EQ(std::string("\"foo\""), test_cpp2::test_constants_codemod::str_4());
 
   EXPECT_EQ(
     (std::vector<std::int32_t>{23, 42, 56}),
@@ -231,6 +254,11 @@ TEST(constants, cpp2_codemod) {
   EXPECT_EQ(
     (std::map<std::string, std::string>{{"foo", "bar"}, {"baz", "gaz"}}),
     test_cpp2::test_constants_codemod::m_2()
+  );
+  EXPECT_EQ(
+    (std::map<std::string, std::int32_t>{
+     {"'", 39}, {"\"", 34}, {"\\", 92}, {"a", 97}}),
+    test_cpp2::test_constants_codemod::m_3()
   );
 
   EXPECT_EQ(test_cpp2::struct1(), test_cpp2::test_constants::pod_0());
