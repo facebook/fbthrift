@@ -237,12 +237,24 @@ class RWGuard : boost::noncopyable {
 
 
 // A little hack to prevent someone from trying to do "Guard(m);"
-// Such a use is invalid because the temporary Guard object is
-// destroyed at the end of the line, releasing the lock.
-// Sorry for polluting the global namespace, but I think it's worth it.
-#define Guard(m) incorrect_use_of_Guard(m)
-#define RWGuard(m) incorrect_use_of_RWGuard(m)
 
+#define Guard(m) [&]() { \
+  static_assert(false, \
+    "\"Guard(m);\" is invalid because the temporary Guard object is " \
+    "destroyed at the end of the line, releasing the lock. " \
+    "Replace it with \"Guard g(m);\"" \
+  ); \
+  return (m); \
+}()
+
+#define RWGuard(m) [&]() { \
+  static_assert(false, \
+    "\"RWGuard(m);\" is invalid because the temporary RWGuard object is " \
+    "destroyed at the end of the line, releasing the lock. " \
+    "Replace it with \"RWGuard g(m);\"" \
+  ); \
+  return (m); \
+}()
 
 }}} // apache::thrift::concurrency
 
