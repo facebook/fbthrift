@@ -30,6 +30,12 @@ states = [
   },
 ]
 
+x = 1
+
+y = 1000000
+
+z = 1e+09
+
 instagram = Internship(**{
   "weeks" : 12,
   "title" : "Software Engineer",

@@ -19,6 +19,9 @@ class module_CONSTANTS {
         "Albany" => 98400,
       },
     };
+  const x = 1.0;
+  const y = 1000000.0;
+  const z = 1e+09.0;
   public static Internship $instagram = new Internship(
       12,
       "Software Engineer",
@@ -62,6 +65,9 @@ class module_CONSTANTS {
           "Albany" => 98400,
         },
       },
+    "x" => 1.0,
+    "y" => 1000000.0,
+    "z" => 1e+09.0,
     "instagram" => new Internship(
         12,
         "Software Engineer",

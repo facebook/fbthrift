@@ -20,6 +20,12 @@ struct module_constants {
   static constexpr char const *const name_ = "Mark Zuckerberg";
   static constexpr char const *const name() { return name_; }
   static std::vector<std::map<std::string, int32_t> >  const &states();
+  static constexpr double const x_ = 1;
+  static constexpr double const x() { return x_; }
+  static constexpr double const y_ = 1000000;
+  static constexpr double const y() { return y_; }
+  static constexpr double const z_ = 1e+09;
+  static constexpr double const z() { return z_; }
   static Internship const &instagram();
   static std::vector<Internship>  const &internList();
   // consider using folly::StringPiece instead of std::string whenever possible
@@ -54,6 +60,9 @@ struct  __attribute__((__deprecated__("module_constants_codemod is a transitiona
   static constexpr int32_t const myInt() { return 1337; }
   static std::string const &name();
   static std::vector<std::map<std::string, int32_t> >  const &states();
+  static constexpr double const x() { return 1; }
+  static constexpr double const y() { return 1000000; }
+  static constexpr double const z() { return 1e+09; }
   static Internship const &instagram();
   static std::vector<Internship>  const &internList();
   static std::string const &apostrophe();
@@ -71,6 +80,9 @@ public:
   int32_t myInt;
   std::string name;
   std::vector<std::map<std::string, int32_t> >  states;
+  double x;
+  double y;
+  double z;
   Internship instagram;
   std::vector<Internship>  internList;
   std::string apostrophe;

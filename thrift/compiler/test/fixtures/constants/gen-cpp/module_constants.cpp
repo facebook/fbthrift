@@ -30,6 +30,9 @@ std::vector<std::map<std::string, int32_t> >  const &module_constants::states() 
   }());
   return instance;
 }
+constexpr double const module_constants::x_;
+constexpr double const module_constants::y_;
+constexpr double const module_constants::z_;
 Internship const &module_constants::instagram() {
   static auto const instance([]() {
     Internship value;
@@ -239,6 +242,9 @@ moduleConstants::moduleConstants() {
 
   states.push_back(tmp9);
 
+  x = 1;
+  y = 1000000;
+  z = 1e+09;
   instagram.weeks = 12;
   instagram.__isset.weeks = true;
   instagram.title = "Software Engineer";

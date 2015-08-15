@@ -31,6 +31,12 @@ public class ModuleConstants {
     states.add(tmp1);
   }
 
+  public static final double x = 1;
+
+  public static final double y = (double)1000000;
+
+  public static final double z = 1e+09;
+
   public static final ModuleLogger instagram = new ModuleLogger(Module.EventType.Internship);
   static {
     instagram.addProperty(Module.Internship_weeks, 12);
