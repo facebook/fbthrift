@@ -2,6 +2,7 @@
 # @lint-avoid-python-3-compatibility-imports
 
 import asyncio
+from collections import defaultdict
 import functools
 import logging
 from io import BytesIO
@@ -9,7 +10,7 @@ import struct
 import warnings
 
 from .TServer import TServer, TServerEventHandler, TConnectionContext
-from thrift.Thrift import TProcessor
+from thrift.Thrift import TProcessor, TMessageType, TApplicationException
 from thrift.transport.TTransport import TMemoryBuffer, TTransportException
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.protocol.THeaderProtocol import (
@@ -104,9 +105,9 @@ def ThriftAsyncServerFactory(
     return server
 
 
-def ThriftClientProtocolFactory(client_class, loop=None):
+def ThriftClientProtocolFactory(client_class, loop=None, timeouts=None):
     return functools.partial(
-        ThriftHeaderClientProtocol, client_class, loop,
+        ThriftHeaderClientProtocol, client_class, loop, timeouts,
     )
 
 
@@ -155,6 +156,7 @@ class FramedProtocol(asyncio.Protocol):
             self.recvd = self.recvd[4 + length:]
             self.loop.create_task(self.message_received(frame))
 
+    @asyncio.coroutine
     def message_received(self, frame):
         raise NotImplementedError
 
@@ -195,28 +197,44 @@ class SenderTransport:
 
 class WrappedTransport(TMemoryBuffer):
 
-    def __init__(self, trans):
+    def __init__(self, trans, proto):
         super().__init__()
         self._trans = trans
+        self._proto = proto
 
     def flush(self):
-        self._trans.send_message(self._writeBuffer.getvalue())
+        msg = self._writeBuffer.getvalue()
+        tmi = TMemoryBuffer(msg)
+        iprot = THeaderProtocol(tmi)
+        fname, mtype, seqid = iprot.readMessageBegin()
+        fname = fname.decode()
+        self._proto.schedule_timeout(fname, seqid)
+        self._trans.send_message(msg)
         self._writeBuffer = BytesIO()
 
 
 class WrappedTransportFactory:
+    def __init__(self, proto):
+        self._proto = proto
 
     def getTransport(self, trans):
-        return WrappedTransport(trans)
+        return WrappedTransport(trans, self._proto)
 
 
 class ThriftHeaderClientProtocol(FramedProtocol):
+    DEFAULT_TIMEOUT = 60.0
 
-    def __init__(self, client_class, loop=None):
+    def __init__(self, client_class, loop=None, timeouts=None):
         super().__init__(loop=loop)
         self._client_class = client_class
         self.client = None
         self.transport = None
+        if timeouts is None:
+            timeouts = {}
+        default_timeout = timeouts.get('') or self.DEFAULT_TIMEOUT
+        self.timeouts = defaultdict(lambda: default_timeout)
+        self.timeouts.update(timeouts)
+        self.pending_tasks = {}
 
     def connection_made(self, transport):
         assert self.transport is None, "Transport already instantiated here."
@@ -227,7 +245,7 @@ class ThriftHeaderClientProtocol(FramedProtocol):
         self.thrift_transport = SenderTransport(self.transport, self.loop)
         self.client = self._client_class(
             self.thrift_transport,
-            WrappedTransportFactory(),
+            WrappedTransportFactory(self),
             THeaderProtocolFactory())
 
     def connection_lost(self, exc):
@@ -238,23 +256,66 @@ class ThriftHeaderClientProtocol(FramedProtocol):
             if not fut.done():
                 fut.set_exception(te)
 
+    def update_pending_tasks(self, seqid, task):
+        self.pending_tasks = {
+            _seqid: _task for _seqid, _task in self.pending_tasks.items()
+            if not _task.done() and not _task.cancelled()
+        }
+        assert seqid not in self.pending_tasks, (
+            "seqid already pending for timeout"
+        )
+        self.pending_tasks[seqid] = task
+
+    def schedule_timeout(self, fname, seqid):
+        timeout = self.timeouts[fname]
+        if not timeout:
+            return
+
+        tmo = TMemoryBuffer()
+        thp = THeaderTransport(tmo)
+        oprot = THeaderProtocol(thp)
+        exc = TApplicationException(
+            TApplicationException.TIMEOUT, "Call to {} timed out".format(fname)
+        )
+        oprot.writeMessageBegin(fname, TMessageType.EXCEPTION, seqid)
+        exc.write(oprot)
+        oprot.writeMessageEnd()
+        thp.flush()
+        timeout_task = self.loop.create_task(
+            self.message_received(tmo.getvalue(), delay=timeout),
+        )
+        self.update_pending_tasks(seqid, timeout_task)
+
     @asyncio.coroutine
-    def message_received(self, frame):
+    def message_received(self, frame, delay=0):
         tmi = TMemoryBuffer(frame)
         iprot = THeaderProtocol(tmi)
         (fname, mtype, rseqid) = iprot.readMessageBegin()
 
+        if delay:
+            yield from asyncio.sleep(delay)
+        else:
+            try:
+                timeout_task = self.pending_tasks.pop(rseqid)
+            except KeyError:
+                # Task doesn't have a timeout or has already been cancelled
+                # and pruned from `pending_tasks`.
+                pass
+            else:
+                timeout_task.cancel()
+
         method = getattr(self.client, "recv_" + fname.decode(), None)
         if method is None:
             logger.error("Method %r is not supported", method)
-            self.transport.close()
+            self.transport.abort()
         else:
             method(iprot, mtype, rseqid)
 
     def close(self):
-        # This is sadly necessary now because of the async tasks scheduled
-        # by SenderTransport.
-        self.transport.close()
+        for task in self.pending_tasks.values():
+            if not task.done() and not task.cancelled():
+                task.cancel()
+        self.transport.abort()
         self.thrift_transport.close()
 
 

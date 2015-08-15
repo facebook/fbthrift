@@ -2346,7 +2346,15 @@ void t_py_generator::generate_service_client(t_service* tservice) {
           indent() << "d = self._reqs.pop(rseqid)" << endl;
       } else if (gen_asyncio_) {
         f_service_ <<
-          indent() << "fut = self._futures.pop(rseqid)" << endl;
+          indent() << "try:" << endl;
+        f_service_ <<
+          indent() <<
+            indent() << "fut = self._futures.pop(rseqid)" << endl;
+        f_service_ <<
+          indent() << "except KeyError:" << endl;
+        f_service_ <<
+          indent() <<
+            indent() << "return   # request timed out" << endl;
       } else {
         f_service_ <<
           indent() << "(fname, mtype, rseqid) = " <<
