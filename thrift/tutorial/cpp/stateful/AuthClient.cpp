@@ -18,30 +18,27 @@
  */
 #define __STDC_FORMAT_MACROS
 
-#include "thrift/tutorial/cpp/stateful/gen-cpp/AuthenticatedService.h"
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include <thrift/lib/cpp/transport/TSocket.h>
+#include "thrift/tutorial/cpp/stateful/gen-cpp2/AuthenticatedService.h"
 
-using std::string;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
-using namespace boost;
+using namespace std;
+using namespace folly;
+using namespace apache::thrift;
+using namespace apache::thrift::tutorial::stateful;
 
 int main() {
   string host = "127.0.0.1";
   uint16_t port = 12345;
 
-  std::shared_ptr<TSocket> socket(new TSocket(host, port));
-  std::shared_ptr<TBufferBase> transport(new TFramedTransport(socket));
-  std::shared_ptr< TBinaryProtocolT<TBufferBase> > protocol(
-      new TBinaryProtocolT<TBufferBase>(transport));
-  transport->open();
-  AuthenticatedServiceClient client(protocol);
+  EventBase eb;
+  auto client = make_unique<AuthenticatedServiceAsyncClient>(
+      HeaderClientChannel::newChannel(
+        async::TAsyncSocket::newSocket(&eb, {host, port})));
 
   SessionInfoList sessions;
-  client.listSessions(sessions);
+  client->sync_listSessions(sessions);
 
   printf("%8s %-20s %-40s %s\n", "ID", "Login Time", "Client", "Username");
   for (SessionInfoList::const_iterator it = sessions.begin();

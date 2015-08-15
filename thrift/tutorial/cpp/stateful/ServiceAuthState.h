@@ -16,20 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#ifndef SERVICEAUTHSTATE_H
-#define SERVICEAUTHSTATE_H
 
-#include <boost/noncopyable.hpp>
+#pragma once
 
-#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <mutex>
 
-#include "thrift/tutorial/cpp/stateful/gen-cpp/AuthenticatedService.h"
+#include "thrift/tutorial/cpp/stateful/gen-cpp2/AuthenticatedService.h"
+
+namespace apache { namespace thrift { namespace tutorial { namespace stateful {
 
 class AuthHandler;
 
-class ServiceAuthState : public boost::noncopyable {
+class ServiceAuthState {
  public:
   ServiceAuthState();
+
+  ServiceAuthState(const ServiceAuthState&) = delete;
+  const ServiceAuthState& operator=(const ServiceAuthState&) = delete;
 
   /**
    * Called when a new session is opened.
@@ -46,12 +49,12 @@ class ServiceAuthState : public boost::noncopyable {
   /**
    * Call a function for each registered AuthHandler.
    */
-  void forEachSession(const std::function<void(AuthHandler*)>& fn);
+  void forEachSession(std::function<void(AuthHandler*)> fn);
 
  protected:
-  apache::thrift::concurrency::Mutex mutex_;
+  std::mutex mutex_;
   int64_t nextId_;
   std::set<AuthHandler*> sessions_;
 };
 
-#endif // SERVICEAUTHSTATE_H
+}}}}

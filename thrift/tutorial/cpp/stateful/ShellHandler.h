@@ -16,15 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#ifndef SHELLHANDLER_H
-#define SHELLHANDLER_H
+
+#pragma once
 
 #include "thrift/tutorial/cpp/stateful/AuthHandler.h"
-#include "thrift/tutorial/cpp/stateful/gen-cpp/ShellService.h"
+#include "thrift/tutorial/cpp/stateful/gen-cpp2/ShellService.h"
 
-class ShellHandler : virtual public ShellServiceIf, public AuthHandler {
+namespace apache { namespace thrift { namespace tutorial { namespace stateful {
+
+//  Unusual, but we want a per-connection handler. We can do that because
+//  ThriftServer only cares about having a global AsyncProcessorFactory, from
+//  which it gets a per-connection AsyncProcessor. The AsyncProcessor can do
+//  whatever it likes.
+class ShellHandler : virtual public ShellServiceSvIf, public AuthHandler {
  public:
-  ShellHandler(const std::shared_ptr<ServiceAuthState>& serviceAuthState,
+  ShellHandler(std::shared_ptr<ServiceAuthState> serviceAuthState,
                apache::thrift::server::TConnectionContext* ctx);
   ~ShellHandler() override;
 
@@ -38,25 +44,56 @@ class ShellHandler : virtual public ShellServiceIf, public AuthHandler {
   void validateState();
   void throwErrno(const char* msg);
 
+  std::mutex mutex_;
   int cwd_;
 };
 
-class ShellHandlerFactory : public ShellServiceIfFactory {
+class ShellHandlerFactory : public apache::thrift::AsyncProcessorFactory {
  public:
-  ShellHandlerFactory(const std::shared_ptr<ServiceAuthState>& authState) :
-      authState_(authState) {}
+  explicit ShellHandlerFactory(std::shared_ptr<ServiceAuthState> authState) :
+      authState_(move(authState)) {}
 
-  ShellHandler* getHandler(
-      apache::thrift::server::TConnectionContext* ctx) override {
-    return new ShellHandler(authState_, ctx);
-  }
+  //  Our custom AsyncProcessor creates a per-connection handler. In our case,
+  //  the handler's ctor wants a TConnectionContext, but
+  //  AsyncProcessorFactory::getProcessor doesn't have a way to pass one in.
+  //  So we create the handler on the first call to AsyncProcessor::process.
+  //  Note that all this happens in the io thread specific to the conenction,
+  //  so there is no need to do any concurrency control here.
+  class CustomProcessor : public ShellServiceAsyncProcessor {
+   public:
+    explicit CustomProcessor(
+        std::shared_ptr<ServiceAuthState> serviceAuthState) :
+        ShellServiceAsyncProcessor(nullptr),
+        serviceAuthState_(std::move(serviceAuthState)) {}
+    void process(
+        std::unique_ptr<apache::thrift::ResponseChannel::Request> req,
+        std::unique_ptr<folly::IOBuf> buf,
+        apache::thrift::protocol::PROTOCOL_TYPES protType,
+        apache::thrift::Cpp2RequestContext* context,
+        apache::thrift::async::TEventBase* eb,
+        apache::thrift::concurrency::ThreadManager* tm) override {
+      if (!handler_) {
+        handler_ = folly::make_unique<ShellHandler>(
+            std::move(serviceAuthState_), context->getConnectionContext());
+      }
+      if (!iface_) {
+        AuthenticatedServiceAsyncProcessor::iface_ = handler_.get();
+        ShellServiceAsyncProcessor::iface_ = handler_.get();
+      }
+      ShellServiceAsyncProcessor::process(
+          std::move(req), std::move(buf), protType, context, eb, tm);
+    }
+   private:
+    std::shared_ptr<ServiceAuthState> serviceAuthState_;
+    std::unique_ptr<ShellHandler> handler_;
+  };
 
-  void releaseHandler(AuthenticatedServiceIf* handler) override {
-    delete handler;
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+    return folly::make_unique<CustomProcessor>(authState_);
   }
 
  protected:
   std::shared_ptr<ServiceAuthState> authState_;
 };
 
-#endif // SHELLHANDLER_H
+}}}}

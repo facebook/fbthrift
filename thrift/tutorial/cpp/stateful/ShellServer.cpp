@@ -18,43 +18,26 @@
  */
 #include <iostream>
 
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+
 #include "thrift/tutorial/cpp/stateful/ServiceAuthState.h"
 #include "thrift/tutorial/cpp/stateful/ShellHandler.h"
 
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/server/example/TThreadedServer.h>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include <thrift/lib/cpp/transport/TServerSocket.h>
-
-using std::endl;
-using std::cout;
-using namespace boost;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::server;
-using namespace apache::thrift::transport;
+using namespace std;
+using namespace folly;
+using namespace apache::thrift;
+using namespace apache::thrift::tutorial::stateful;
 
 int main(int argc, char* argv[]) {
   uint16_t port = 12345;
 
-  std::shared_ptr<ServiceAuthState> authState(new ServiceAuthState);
-
-  typedef ShellServiceProcessorFactoryT< TBinaryProtocolT<TBufferBase> >
-    ProcessorFactory;
-
-  std::shared_ptr<ShellHandlerFactory> handlerFactory(
-      new ShellHandlerFactory(authState));
-  std::shared_ptr<ProcessorFactory> processorFactory(
-      new ProcessorFactory(handlerFactory));
-
-  std::shared_ptr<TServerSocket> socket(new TServerSocket(port));
-  std::shared_ptr<TTransportFactory> transportFactory(new TFramedTransportFactory);
-  std::shared_ptr<TProtocolFactory> protocolFactory(
-      new TBinaryProtocolFactoryT<TBufferBase>);
-
-  TThreadedServer server(processorFactory, socket, transportFactory,
-                         protocolFactory);
+  auto authState = make_shared<ServiceAuthState>();
+  auto handler = make_shared<ShellHandlerFactory>(authState);
+  auto server = make_shared<ThriftServer>();
+  server->setProcessorFactory(handler);
+  server->setPort(port);
 
   cout << "serving on port " << port << "..." << endl;
-  server.serve();
+  server->serve();
   return 0;
 }

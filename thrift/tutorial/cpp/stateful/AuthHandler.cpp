@@ -16,26 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#define __STDC_FORMAT_MACROS
 
 #include "thrift/tutorial/cpp/stateful/AuthHandler.h"
-
-#include <iostream>
 
 #include "thrift/tutorial/cpp/stateful/ServiceAuthState.h"
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 
-using std::endl;
-using std::vector;
-using std::cout;
-using std::string;
-using namespace boost;
+using namespace std;
 using namespace apache::thrift;
 using namespace apache::thrift::server;
 
-AuthHandler::AuthHandler(const std::shared_ptr<ServiceAuthState>& serviceState,
+namespace apache { namespace thrift { namespace tutorial { namespace stateful {
+
+AuthHandler::AuthHandler(shared_ptr<ServiceAuthState> serviceState,
                          TConnectionContext* ctx) :
-    serviceState_(serviceState),
+    serviceState_(move(serviceState)),
     clientAddress_(*ctx->getPeerAddress()) {
   sessionInfo_.openTime = time(nullptr);
   sessionInfo_.clientInfo = computeClientInfoString();
@@ -55,32 +50,15 @@ AuthHandler::authenticate(const string& username) {
   sessionInfo_.username = username;
   sessionInfo_.loginTime = time(nullptr);
 
-  cout << "\"" << username << "\" logged in from " <<
-    sessionInfo_.clientInfo << endl;
+  LOG(INFO) << "\"" << username << "\" logged in from "
+            << sessionInfo_.clientInfo;
 }
-
-// GetInfo should ideally be a local class inside listSessions().
-// Unfortunately, until C++1x is out, local classes can't be used as template
-// arguments.
-namespace {
-class GetInfo {
- public:
-  explicit GetInfo(vector<SessionInfo>* infoVector) :
-      infoVector_(infoVector) {}
-
-  void operator()(AuthHandler* handler) {
-    infoVector_->push_back(*handler->getSessionInfo());
-  }
-
- private:
-  vector<SessionInfo>* infoVector_;
-};
-} // unnamed namespace
 
 void
 AuthHandler::listSessions(vector<SessionInfo> &_return) {
-  GetInfo getInfo(&_return);
-  serviceState_->forEachSession(std::ref(getInfo));
+  serviceState_->forEachSession([&](AuthHandler* handler) {
+      _return.push_back(*handler->getSessionInfo());
+  });
 }
 
 void
@@ -92,7 +70,7 @@ AuthHandler::throwLoginError(const string& message) const {
 
 string
 AuthHandler::computeClientInfoString() const {
-  char portBuf[16];
-  snprintf(portBuf, sizeof(portBuf), ":%" PRIu16, clientAddress_.getPort());
-  return clientAddress_.getAddressStr() + portBuf;
+  return clientAddress_.describe();
 }
+
+}}}}

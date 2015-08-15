@@ -16,28 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/tutorial/cpp/stateful/gen-cpp/ShellService.h"
+
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+
+#include "thrift/tutorial/cpp/stateful/gen-cpp2/ShellService.h"
 
 #include <iostream>
 
-#include <thrift/lib/cpp/ClientUtil.h>
-
-using std::string;
-using std::cout;
-using std::cerr;
-using std::endl;
-using std::vector;
+using namespace std;
+using namespace folly;
 using namespace apache::thrift;
-using namespace boost;
+using namespace apache::thrift::tutorial::stateful;
 
-class LineTooLongError : public std::exception {
+class LineTooLongError : public exception {
  public:
   const char* what() const throw() override { return "input line is too long"; }
 };
 
-class CommandError : public std::exception {
+class CommandError : public exception {
  public:
-  CommandError(const string& msg) : msg_(msg) {}
+  explicit CommandError(const string& msg) : msg_(msg) {}
   ~CommandError() throw() override {}
 
   const char* what() const throw() override { return msg_.c_str(); }
@@ -48,7 +47,7 @@ class CommandError : public std::exception {
 
 class UnknownCommandError : public CommandError {
  public:
-  UnknownCommandError(const string& cmd) :
+  explicit UnknownCommandError(const string& cmd) :
       CommandError("unknown command \"" + cmd + "\""),
       cmd_(cmd) {}
   ~UnknownCommandError() throw() override {}
@@ -59,7 +58,7 @@ class UnknownCommandError : public CommandError {
 
 class UsageError : public CommandError {
  public:
-  UsageError(const string& msg) : CommandError(msg) {}
+  explicit UsageError(const string& msg) : CommandError(msg) {}
 };
 
 bool readNextCommand(vector<string>* cmd) {
@@ -127,7 +126,7 @@ void checkNumArgs(int argc, int min, int max = -1) {
   }
 }
 
-void runCommand(ShellServiceClient* client, const vector<string>& cmd) {
+void runCommand(ShellServiceAsyncClient* client, const vector<string>& cmd) {
   // Ignore empty lines
   if (cmd.empty()) {
       return;
@@ -136,32 +135,32 @@ void runCommand(ShellServiceClient* client, const vector<string>& cmd) {
   int argc = cmd.size();
   if (cmd[0] == "login") {
     checkNumArgs(argc, 1);
-    client->authenticate(cmd[1]);
+    client->sync_authenticate(cmd[1]);
     cout << "Logged in as \"" << cmd[1] << "\"" << endl;
   } else if (cmd[0] == "ls") {
     checkNumArgs(argc, 0, 1);
-    std::vector<StatInfo> files;
+    vector<StatInfo> files;
     if (argc == 2) {
-      client->listDirectory(files, cmd[1]);
+      client->sync_listDirectory(files, cmd[1]);
     } else {
-      client->listDirectory(files, ".");
+      client->sync_listDirectory(files, ".");
     }
-    for (std::vector<StatInfo>::const_iterator it = files.begin();
+    for (vector<StatInfo>::const_iterator it = files.begin();
          it != files.end();
          ++it) {
       cout << it->name << endl;
     }
   } else if (cmd[0] == "pwd") {
     string pwd;
-    client->pwd(pwd);
+    client->sync_pwd(pwd);
     cout << pwd << endl;
   } else if (cmd[0] == "cd") {
     checkNumArgs(argc, 1);
-    client->chdir(cmd[1]);
+    client->sync_chdir(cmd[1]);
   } else if (cmd[0] == "cat") {
     checkNumArgs(argc, 1);
     string data;
-    client->cat(data, cmd[1]);
+    client->sync_cat(data, cmd[1]);
     cout << data;
   } else if (cmd[0] == "help") {
     cout <<
@@ -177,8 +176,10 @@ void runCommand(ShellServiceClient* client, const vector<string>& cmd) {
 }
 
 void run(const string& host, uint16_t port) {
-  std::shared_ptr<ShellServiceClient> client =
-    util::createClientPtr<ShellServiceClient>(host, port);
+  EventBase eb;
+  auto client = make_unique<ShellServiceAsyncClient>(
+      HeaderClientChannel::newChannel(
+        async::TAsyncSocket::newSocket(&eb, {host, port})));
 
   while (true) {
     try {
@@ -188,13 +189,13 @@ void run(const string& host, uint16_t port) {
       }
       runCommand(client.get(), cmd);
     } catch (const CommandError& x) {
-      cerr << "error: " << x.what() << endl;
+      LOG(ERROR) << x.what();
     } catch (const LoginError& x) {
-      cerr << "error: " << x.message << endl;
+      LOG(ERROR) << x.message;
     } catch (const PermissionError& x) {
-      cerr << "error: " << x.message << endl;
+      LOG(ERROR) << x.message;
     } catch (const OSError& x) {
-      cerr << "error: " << x.message << " (" << x.code << ")" << endl;
+      LOG(ERROR) << x.message << " (" << x.code << ")";
     }
   }
 }
@@ -206,11 +207,11 @@ int main() {
   try {
     run(host, port);
     return 0;
-  } catch (const std::exception& x) {
-    cerr << "unhandled " << typeid(x).name() << " exception: " <<
-      x.what() << endl;
+  } catch (const exception& x) {
+    LOG(CRITICAL) << "unhandled " << typeid(x).name() << " exception: " <<
+      x.what();
   } catch (...) {
-    cerr << "unhandled exception caught in main()" << endl;
+    LOG(CRITICAL) << "unhandled exception caught in main()";
   }
 
   return 1;

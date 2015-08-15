@@ -1,3 +1,5 @@
+namespace cpp2 apache.thrift.tutorial.stateful
+
 exception LoginError {
   1: string message
 }

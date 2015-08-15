@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-#ifndef AUTHHANDLER_H
-#define AUTHHANDLER_H
+#pragma once
 
 #include <folly/SocketAddress.h>
-#include "thrift/tutorial/cpp/stateful/gen-cpp/AuthenticatedService.h"
+#include "thrift/tutorial/cpp/stateful/gen-cpp2/AuthenticatedService.h"
+
+namespace apache { namespace thrift { namespace tutorial { namespace stateful {
 
 class ServiceAuthState;
 
-class AuthHandler : virtual public AuthenticatedServiceIf {
+class AuthHandler : virtual public AuthenticatedServiceSvIf {
  public:
-  AuthHandler(const std::shared_ptr<ServiceAuthState>& serviceState,
+  AuthHandler(std::shared_ptr<ServiceAuthState> serviceState,
               apache::thrift::server::TConnectionContext* ctx);
   ~AuthHandler() override;
 
@@ -49,4 +50,4 @@ class AuthHandler : virtual public AuthenticatedServiceIf {
   folly::SocketAddress clientAddress_;
 };
 
-#endif // AUTHHANDLER_H
+}}}}

@@ -1,5 +1,7 @@
 include "thrift/tutorial/cpp/stateful/auth.thrift"
 
+namespace cpp2 apache.thrift.tutorial.stateful
+
 exception OSError {
   1: i32 code
   2: string message

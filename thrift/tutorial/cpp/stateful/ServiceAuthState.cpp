@@ -18,32 +18,32 @@
  */
 #include "thrift/tutorial/cpp/stateful/ServiceAuthState.h"
 
-using namespace apache::thrift::concurrency;
+using namespace std;
+
+namespace apache { namespace thrift { namespace tutorial { namespace stateful {
 
 ServiceAuthState::ServiceAuthState()
     : nextId_(1) {
 }
 
 int64_t ServiceAuthState::sessionOpened(AuthHandler* handler) {
-  Guard g(mutex_);
+  lock_guard<mutex> g(mutex_);
 
   sessions_.insert(handler);
   return nextId_++;
 }
 
 void ServiceAuthState::sessionClosed(AuthHandler* handler) {
-  Guard g(mutex_);
+  lock_guard<mutex> g(mutex_);
 
   sessions_.erase(handler);
 }
 
 void ServiceAuthState::forEachSession(
-    const std::function<void(AuthHandler*)>& fn) {
-  Guard g(mutex_);
+    function<void(AuthHandler*)> fn) {
+  lock_guard<mutex> g(mutex_);
 
-  for (std::set<AuthHandler*>::const_iterator it = sessions_.begin();
-       it != sessions_.end();
-       ++it) {
-    fn(*it);
-  }
+  for_each(sessions_.begin(), sessions_.end(), move(fn));
 }
+
+}}}}

@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#define _XOPEN_SOURCE 600
 
 #include "thrift/tutorial/cpp/stateful/ShellHandler.h"
 
@@ -29,22 +28,26 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <boost/noncopyable.hpp>
 
-using namespace boost;
+using namespace std;
 using namespace apache::thrift;
+
+namespace apache { namespace thrift { namespace tutorial { namespace stateful {
 
 namespace {
 
-class FdGuard : public boost::noncopyable {
+class FdGuard {
  public:
-  FdGuard(int fd) : fd_(fd) {}
+  explicit FdGuard(int fd) : fd_(fd) {}
   ~FdGuard() {
     if (fd_ >= 0) {
       close(fd_);
       // We ignore any error
     }
   }
+
+  FdGuard(const FdGuard&) = delete;
+  const FdGuard& operator=(const FdGuard&) = delete;
 
   operator int() {
     return fd_;
@@ -67,14 +70,17 @@ class FdGuard : public boost::noncopyable {
   int fd_;
 };
 
-class DirGuard : public boost::noncopyable {
+class DirGuard {
  public:
-  DirGuard(DIR* d) : dir_(d) {}
+  explicit DirGuard(DIR* d) : dir_(d) {}
   ~DirGuard() {
     if (dir_) {
       closedir(dir_);
     }
   }
+
+  DirGuard(const DirGuard&) = delete;
+  const DirGuard& operator=(const DirGuard&) = delete;
 
   operator DIR*() {
     return dir_;
@@ -93,13 +99,12 @@ class DirGuard : public boost::noncopyable {
 } // unnamed namespace
 
 ShellHandler::ShellHandler(
-    const std::shared_ptr<ServiceAuthState>& serviceAuthState,
+    shared_ptr<ServiceAuthState> serviceAuthState,
     apache::thrift::server::TConnectionContext* ctx) :
-    AuthHandler(serviceAuthState, ctx) {
+    AuthHandler(move(serviceAuthState), ctx) {
   cwd_ = open(".", O_RDONLY);
   if (cwd_ < 0) {
-    GlobalOutput.printf("failed to open current directory: %s (%d)",
-                        strerror(errno), errno);
+    PLOG(ERROR) << "failed to open current directory";
     throwErrno("failed to open current directory");
   }
 }
@@ -110,7 +115,8 @@ ShellHandler::~ShellHandler() {
   }
 }
 
-void ShellHandler::pwd(std::string& _return) {
+void ShellHandler::pwd(string& _return) {
+  unique_lock<mutex> g(mutex_);
   validateState();
 
   // TODO: this only works on linux
@@ -126,7 +132,8 @@ void ShellHandler::pwd(std::string& _return) {
   _return.assign(cwdPath, numBytes);
 }
 
-void ShellHandler::chdir(const std::string& dir) {
+void ShellHandler::chdir(const string& dir) {
+  unique_lock<mutex> g(mutex_);
   validateState();
 
   FdGuard newCwd(openat(cwd_, dir.c_str(), O_RDONLY));
@@ -138,8 +145,9 @@ void ShellHandler::chdir(const std::string& dir) {
   cwd_ = newCwd.release();
 }
 
-void ShellHandler::listDirectory(std::vector<StatInfo> &_return,
-                                 const std::string& dir) {
+void ShellHandler::listDirectory(vector<StatInfo> &_return,
+                                 const string& dir) {
+  unique_lock<mutex> g(mutex_);
   validateState();
 
   FdGuard fd(openat(cwd_, dir.c_str(), O_RDONLY));
@@ -169,7 +177,8 @@ void ShellHandler::listDirectory(std::vector<StatInfo> &_return,
   }
 }
 
-void ShellHandler::cat(std::string& _return, const std::string& file) {
+void ShellHandler::cat(string& _return, const string& file) {
+  unique_lock<mutex> g(mutex_);
   validateState();
 
   FdGuard fd(openat(cwd_, file.c_str(), O_RDONLY));
@@ -183,7 +192,7 @@ void ShellHandler::cat(std::string& _return, const std::string& file) {
   if (fstat(fd, &s) != 0) {
     throwErrno("unable to stat() file");
   }
-  _return.resize(s.st_size);
+  _return.reserve(s.st_size);
 
   char buf[4096];
   while (true) {
@@ -219,3 +228,5 @@ ShellHandler::throwErrno(const char* msg) {
 
   throw error;
 }
+
+}}}}
