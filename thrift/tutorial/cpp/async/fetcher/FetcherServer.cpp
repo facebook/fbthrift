@@ -18,22 +18,17 @@
  */
 #include <iostream>
 #include <memory>
-
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include <thrift/lib/cpp/async/TEventServer.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 
 #include "thrift/tutorial/cpp/async/fetcher/FetcherHandler.h"
 
-using std::shared_ptr;
-using namespace apache::thrift::async;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
+using namespace std;
+using namespace folly;
+using namespace apache::thrift;
+using namespace apache::thrift::tutorial::fetcher;
 
-using namespace tutorial::async::fetcher;
-
-void usage(std::ostream& os, const char* progname) {
-  os << "Usage: " << progname << " [PORT]" << std::endl;
+void usage(ostream& os, const char* progname) {
+  os << "Usage: " << progname << " [PORT]" << endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -43,33 +38,26 @@ int main(int argc, char* argv[]) {
     char* endptr;
     long val = strtol(argv[1], &endptr, 0);
     if (endptr == argv[1] || *endptr != '\0') {
-      std::cerr << "error: port number must be an integer" << std::endl;
+      cerr << "error: port number must be an integer" << endl;
       return 1;
     }
     if (val < 0 || val > 0xffff) {
-      std::cerr << "error: illegal port number " << val << std::endl;
+      cerr << "error: illegal port number " << val << endl;
       return 1;
     }
     port = val;
   } else if (argc > 2) {
-    usage(std::cerr, argv[0]);
-    std::cerr << "error: too many arguments" << std::endl;
+    usage(cerr, argv[0]);
+    cerr << "error: too many arguments" << endl;
     return 1;
   }
 
-  // Create the handler, processor, and server
-  shared_ptr<FetcherHandler> handler(new FetcherHandler());
-  shared_ptr<TAsyncProcessor> processor(new FetcherAsyncProcessor(handler));
-  shared_ptr<TProtocolFactory> proto_factory(
-      new TBinaryProtocolFactoryT<TBufferBase>());
-  TEventServer server(processor, proto_factory, port);
-
-  // Give the handler a pointer to the TEventServer, so it will be able
-  // to get the correct TEventBase to use.
-  handler->setServer(&server);
+  ThriftServer server;
+  server.setInterface(make_shared<FetcherHandler>());
+  server.setPort(port);
 
   // Serve requests
-  std::cout << "Serving requests on port " << port << "..." << std::endl;
+  cout << "Serving requests on port " << port << "..." << endl;
   server.serve();
 
   return 0;

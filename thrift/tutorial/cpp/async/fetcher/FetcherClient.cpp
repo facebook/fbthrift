@@ -18,20 +18,18 @@
  */
 #include <iostream>
 #include <memory>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
-#include <thrift/lib/cpp/ClientUtil.h>
+#include "thrift/tutorial/cpp/async/fetcher/gen-cpp2/Fetcher.h"
 
-#include "thrift/tutorial/cpp/async/fetcher/gen-cpp/Fetcher.h"
-
-using std::shared_ptr;
+using namespace std;
+using namespace folly;
 using namespace apache::thrift;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
+using namespace apache::thrift::tutorial::fetcher;
 
-using namespace tutorial::async::fetcher;
-
-void usage(std::ostream& os, const char* progname) {
-  os << "Usage: " << progname << " IP PATH" << std::endl;
+void usage(ostream& os, const char* progname) {
+  os << "Usage: " << progname << " IP PORT PATH" << endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -42,29 +40,36 @@ int main(int argc, char* argv[]) {
 
   // There should be exactly two arguments: the HTTP server's IP,
   // and the path to fetch
-  if (argc != 3) {
-    usage(std::cerr, argv[0]);
+  if (argc != 4) {
+    usage(cerr, argv[0]);
     return 1;
   }
   const char* http_ip = argv[1];
-  const char* http_path = argv[2];
+  const char* http_port = argv[2];
+  const char* http_path = argv[3];
 
   // Create the FetcherClient
-  typedef FetcherClientT< TBinaryProtocolT<TBufferBase> > FetcherClient;
-  shared_ptr<FetcherClient> client =
-    util::createClientPtr<FetcherClient>(thrift_host, thrift_port);
+  EventBase eb;
+  auto client = make_unique<FetcherAsyncClient>(
+      HeaderClientChannel::newChannel(
+        async::TAsyncSocket::newSocket(
+          &eb, {thrift_host, thrift_port})));
 
   // TODO: read IP and path from the command line
-  std::cout << "fetchHttp(\"" << http_ip << "\", \"" << http_path <<
-    "\")..." << std::endl;
-  std::string ret;
+  cout << "fetchHttp(\"" << http_ip << "\", \"" << http_path <<
+    "\")..." << endl;
+  string ret;
   try {
-    client->fetchHttp(ret, http_ip, http_path);
-    std::cout << "  return:" << std::endl << std::endl << ret;
+    FetchHttpRequest request;
+    request.addr = http_ip;
+    request.port = to<int32_t>(http_port);
+    request.path = http_path;
+    client->sync_fetchHttp(ret, request);
+    cout << "  return:" << endl << endl << ret;
   } catch (HttpError& ex) {
-    std::cout << "  HTTP error: \"" << ex.message << "\"" << std::endl;
+    cout << "  HTTP error: \"" << ex.message << "\"" << endl;
   } catch (TException& ex) {
-    std::cout << "  Thrift error: \"" << ex.what() << "\"" << std::endl;
+    cout << "  Thrift error: \"" << ex.what() << "\"" << endl;
   }
 
   return 0;

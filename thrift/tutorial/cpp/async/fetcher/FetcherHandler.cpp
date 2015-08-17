@@ -20,22 +20,25 @@
 
 #include "thrift/tutorial/cpp/async/fetcher/HttpFetcher.h"
 
-namespace tutorial { namespace async { namespace fetcher {
+using namespace std;
+using namespace folly;
+
+namespace apache { namespace thrift { namespace tutorial { namespace fetcher {
 
 /**
  * fetchHttp() implementation
  */
-void FetcherHandler::fetchHttp(
-    std::function<void(std::string const& _return)> cob,
-    std::function<void(std::exception const&)> exn_cob,
-    const std::string& host, const std::string& path) {
-  // Create a new HttpFetcher to get the HTTP URL in an asynchronous manner
-  HttpFetcher* fetcher = new HttpFetcher(getEventBase(), cob, exn_cob,
-                                         host, path);
-
-  // fetch() schedules the work to be done.
-  // Eventually, cob or exn_cob will be called when it is finished.
-  fetcher->fetch();
+Future<string>
+FetcherHandler::future_fetchHttp(
+    const FetchHttpRequest& request) {
+  auto eb = getEventBase();
+  auto p = make_shared<Promise<string>>();
+  auto ret_cob = [=](string value) { p->setValue(move(value)); };
+  auto exn_cob = [=](exception_wrapper exn) { p->setException(move(exn)); };
+  auto fetcher = new HttpFetcher(
+      eb, ret_cob, exn_cob, request.addr, request.port, request.path);
+  via(eb, [=] { fetcher->fetch(); });
+  return p->getFuture().ensure([=] { delete fetcher; });
 }
 
-}}} // tutorial::async::fetcher
+}}}}

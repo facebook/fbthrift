@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#ifndef THRIFT_TUTORIAL_HTTPFETCHER_H
-#define THRIFT_TUTORIAL_HTTPFETCHER_H
+#pragma once
 
 #include <string>
 #include <functional>
@@ -26,7 +25,7 @@
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
-namespace tutorial { namespace async { namespace fetcher {
+namespace apache { namespace thrift { namespace tutorial { namespace fetcher {
 
 /**
  * Simple class for asynchronously making an HTTP GET request.
@@ -64,13 +63,17 @@ class HttpFetcher :
     * @param path The HTTP path to fetch from the server.
     */
    HttpFetcher(apache::thrift::async::TEventBase* event_base,
-               ReturnCob cob, ErrorCob error_cob,
-               std::string const& ip, std::string const& path) :
+               ReturnCob cob,
+               ErrorCob error_cob,
+               std::string const& addr,
+               uint16_t port,
+               std::string const& path) :
        eventBase_(event_base),
        socket_(),
        cob_(cob),
        errorCob_(error_cob),
-       ip_(ip),
+       addr_(addr),
+       port_(port),
        path_(path),
        response_(),
        httpRequestLength_(-1) {}
@@ -79,8 +82,7 @@ class HttpFetcher :
     * Start the asynchronous fetch operation.
     *
     * This will fetch the HTTP page, and invoke the appropriate callback when
-    * the operation is complete.  After invoking the callback, the HttpFetcher
-    * object will delete itself.
+    * the operation is complete.
     *
     * Note that the operation may complete immediately, and invoke the callback
     * before fetch() returns.  In this case the HttpFetcher object will be
@@ -108,7 +110,8 @@ class HttpFetcher :
    std::shared_ptr<apache::thrift::async::TAsyncSocket> socket_;
    ReturnCob cob_;
    ErrorCob errorCob_;
-   std::string ip_;
+   std::string addr_;
+   uint16_t port_;
    std::string path_;
 
    std::string response_;
@@ -121,6 +124,4 @@ class HttpFetcher :
    char buffer_[4096];
 };
 
-}}} // tutorial::async::fetcher
-
-#endif // THRIFT_TUTORIAL_HTTPFETCHER_H
+}}}}

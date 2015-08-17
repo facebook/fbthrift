@@ -20,13 +20,13 @@
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
-#include "thrift/tutorial/cpp/async/fetcher/gen-cpp/fetcher_types.h"
+#include "thrift/tutorial/cpp/async/fetcher/gen-cpp2/fetcher_types.h"
 
+using namespace std;
 using apache::thrift::async::TAsyncSocket;
 using apache::thrift::transport::TTransportException;
-using std::string;
 
-namespace tutorial { namespace async { namespace fetcher {
+namespace apache { namespace thrift { namespace tutorial { namespace fetcher {
 
 /**
  * Start the fetch operation.
@@ -37,7 +37,7 @@ namespace tutorial { namespace async { namespace fetcher {
  */
 void HttpFetcher::fetch() {
   // Create the socket
-  socket_ = TAsyncSocket::newSocket(eventBase_, ip_, 80);
+  socket_ = TAsyncSocket::newSocket(eventBase_, addr_, port_);
   if (!socket_->good()) {
     fail("error creating socket");
     return;
@@ -86,10 +86,6 @@ void HttpFetcher::readEOF() noexcept {
   //
   // Invoke the callback object with the full response string
   cob_(response_);
-
-  // HttpFetcher objects are allocated on the heap.
-  // Destroy this object after it has finished.
-  delete this;
 }
 
 void HttpFetcher::readError(const TTransportException& ex) noexcept {
@@ -101,9 +97,6 @@ void HttpFetcher::fail(string const& msg) {
   HttpError e;
   e.message = msg;
   errorCob_(e);
-
-  // Destroy this object now that it has failed and invoked the error callback
-  delete this;
 }
 
-}}} // tutorial::async::fetcher
+}}}}
