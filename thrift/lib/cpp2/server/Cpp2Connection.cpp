@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 
 #include <assert.h>
 
@@ -419,7 +418,6 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
   , reqContext_(&con->context_) {
   RequestContext::create();
 
-  NumaThreadFactory::setNumaNode();
   softTimeout_.request_ = this;
   hardTimeout_.request_ = this;
 }

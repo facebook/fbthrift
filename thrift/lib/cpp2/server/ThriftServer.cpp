@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
-#include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 
 #include <iostream>
 #include <random>
@@ -235,8 +234,9 @@ void ThriftServer::setup() {
     // We always need a threadmanager for cpp2.
     if (!threadFactory_) {
       setThreadFactory(
-        std::make_shared<apache::thrift::concurrency::NumaThreadFactory>(
-          -1, // default setNode
+        std::make_shared<apache::thrift::concurrency::PosixThreadFactory>(
+          apache::thrift::concurrency::PosixThreadFactory::kDefaultPolicy,
+          apache::thrift::concurrency::PosixThreadFactory::kDefaultPriority,
           threadStackSizeMB_
         )
       );
@@ -287,11 +287,10 @@ void ThriftServer::setup() {
     if (!threadManager_) {
       int numThreads = nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_;
       std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-        threadManager(new apache::thrift::concurrency::NumaThreadManager(
+        threadManager(PriorityThreadManager::newPriorityThreadManager(
                         numThreads,
                         true /*stats*/,
-                        getMaxRequests() + numThreads /*maxQueueLen*/,
-                        threadStackSizeMB_));
+                        getMaxRequests() + numThreads /*maxQueueLen*/));
       threadManager->enableCodel(getEnableCodel());
       if (!poolThreadName_.empty()) {
         threadManager->setNamePrefix(poolThreadName_);
