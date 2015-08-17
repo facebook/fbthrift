@@ -22,7 +22,6 @@
 
 #include "ThreadsTest.h"
 #include <protocol/TBinaryProtocol.h>
-#include <server/example/TThreadPoolServer.h>
 #include <transport/TSocket.h>
 #include <transport/TTransportUtils.h>
 #include <thrift/concurrency/Monitor.h>
@@ -33,7 +32,6 @@ using std::shared_ptr;
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
-using namespace apache::thrift::server;
 using namespace apache::thrift::concurrency;
 
 int main(int argc, char **argv) {
