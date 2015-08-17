@@ -67,7 +67,12 @@ Cpp2Channel::Cpp2Channel(
 
 folly::Future<folly::Unit> Cpp2Channel::close(Context* ctx) {
   DestructorGuard dg(this);
-  processReadEOF();
+  if (transport_) {
+    // If transport is taken over, no need to call processReadEOF. This can
+    // happen when processing HTTP GET request, where the ownership of the
+    // socket is transferred to GetHandler.
+    processReadEOF();
+  }
   return ctx->fireClose();
 }
 
@@ -76,9 +81,7 @@ void Cpp2Channel::closeNow() {
   DestructorGuard dg(this);
 
   if (pipeline_) {
-    if (transport_) {
-      pipeline_->close();
-    }
+    pipeline_->close();
   }
 
   // Note that close() above might kill the pipeline_, so let's check again.

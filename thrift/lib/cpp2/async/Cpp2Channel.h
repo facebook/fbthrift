@@ -69,6 +69,7 @@ class Cpp2Channel
   void setTransport(
       const std::shared_ptr<async::TAsyncTransport>& transport) {
     transport_ = transport;
+    transportHandler_->setTransport(transport);
   }
   async::TAsyncTransport* getTransport() {
     return transport_.get();

@@ -43,6 +43,10 @@ class TAsyncTransportHandler
     }
   }
 
+  void setTransport(const std::shared_ptr<async::TAsyncTransport>& transport) {
+    transport_ = transport;
+  }
+
   void attachReadCallback() {
     transport_->setReadCallback(transport_->good() ? this : nullptr);
   }
