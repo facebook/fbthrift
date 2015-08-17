@@ -28,7 +28,7 @@ namespace apache { namespace thrift {
 
 // This Handler may only be used in a single Pipeline
 class TAsyncTransportHandler
-  : public folly::wangle::BytesToBytesHandler,
+  : public wangle::BytesToBytesHandler,
     public async::TAsyncTransport::ReadCallback {
  public:
   explicit TAsyncTransportHandler(

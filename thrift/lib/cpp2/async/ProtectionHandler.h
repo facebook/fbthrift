@@ -23,7 +23,7 @@
 namespace apache { namespace thrift {
 
 // This handler may only be used in a single Pipeline
-class ProtectionHandler : public folly::wangle::BytesToBytesHandler {
+class ProtectionHandler : public wangle::BytesToBytesHandler {
  public:
   enum class ProtectionState {
     UNKNOWN,

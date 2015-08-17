@@ -65,8 +65,8 @@ using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
 using apache::thrift::concurrency::PriorityThreadManager;
-using folly::wangle::IOThreadPoolExecutor;
-using folly::wangle::NamedThreadFactory;
+using wangle::IOThreadPoolExecutor;
+using wangle::NamedThreadFactory;
 
 const int ThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
   sysconf(_SC_NPROCESSORS_ONLN);
@@ -77,12 +77,12 @@ const std::chrono::milliseconds ThriftServer::DEFAULT_TASK_EXPIRE_TIME =
 const std::chrono::milliseconds ThriftServer::DEFAULT_TIMEOUT =
     std::chrono::milliseconds(60000);
 
-class ThriftAcceptorFactory : public folly::AcceptorFactory {
+class ThriftAcceptorFactory : public wangle::AcceptorFactory {
  public:
   explicit ThriftAcceptorFactory(ThriftServer* server)
       : server_(server) {}
 
-  std::shared_ptr<folly::Acceptor> newAcceptor(
+  std::shared_ptr<wangle::Acceptor> newAcceptor(
       folly::EventBase* eventBase) override {
     return std::make_shared<Cpp2Worker>(server_, nullptr, eventBase);
   }
@@ -495,7 +495,7 @@ int32_t ThriftServer::getPendingCount() const {
   if (!getIOGroupSafe()) { // Not enabled in duplex mode
     return 0;
   }
-  forEachWorker([&](folly::Acceptor* acceptor) {
+  forEachWorker([&](wangle::Acceptor* acceptor) {
     auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
     count += worker->getPendingCount();
   });
@@ -564,12 +564,12 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
   }
   auto ioGroup = getIOGroupSafe();
   auto workerFactory = ioGroup != nullptr ?
-    std::dynamic_pointer_cast<folly::wangle::NamedThreadFactory>(
+    std::dynamic_pointer_cast<wangle::NamedThreadFactory>(
       ioGroup->getThreadFactory()) : nullptr;
 
   if (maxConnections_ > 0) {
     int32_t connections = 0;
-    forEachWorker([&](folly::Acceptor* acceptor) mutable {
+    forEachWorker([&](wangle::Acceptor* acceptor) mutable {
       auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
       connections += worker->getPendingCount();
     });

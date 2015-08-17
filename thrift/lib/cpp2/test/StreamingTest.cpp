@@ -26,9 +26,9 @@ using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using apache::thrift::transport::TTransportException;
-using folly::wangle::Observer;
-using folly::wangle::ObservablePtr;
-using folly::wangle::Error;
+using wangle::Observer;
+using wangle::ObservablePtr;
+using wangle::Error;
 
 class StreamingServiceInterface : public StreamingServiceSvIf {
  public:

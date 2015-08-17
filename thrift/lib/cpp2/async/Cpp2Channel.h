@@ -41,7 +41,7 @@ namespace apache { namespace thrift {
 
 class Cpp2Channel
   : public MessageChannel
-  , public folly::wangle::BytesToBytesHandler
+  , public wangle::BytesToBytesHandler
  {
  public:
   explicit Cpp2Channel(
@@ -49,7 +49,7 @@ class Cpp2Channel
     std::unique_ptr<FramingHandler> framingHandler,
     std::unique_ptr<ProtectionHandler> protectionHandler = nullptr);
 
-  // TODO(jsedgwick) This should be protected, but folly::wangle::StaticPipeline
+  // TODO(jsedgwick) This should be protected, but wangle::StaticPipeline
   // will encase this in a folly::Optional, which requires a public destructor.
   // Need to add a static_assert to Optional to make that prereq clearer
   ~Cpp2Channel() override {}
@@ -105,7 +105,7 @@ class Cpp2Channel
   // minor latency increase.
   void setQueueSends(bool queueSends) {
     if (pipeline_) {
-      pipeline_->getHandler<folly::wangle::OutputBufferingHandler>(1)->queueSends_ = queueSends;
+      pipeline_->getHandler<wangle::OutputBufferingHandler>(1)->queueSends_ = queueSends;
     }
   }
 
@@ -130,10 +130,10 @@ private:
   std::shared_ptr<ProtectionHandler> protectionHandler_;
   std::shared_ptr<FramingHandler> framingHandler_;
 
-  typedef folly::wangle::StaticPipeline<
+  typedef wangle::StaticPipeline<
     folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>,
     TAsyncTransportHandler,
-    folly::wangle::OutputBufferingHandler,
+    wangle::OutputBufferingHandler,
     ProtectionHandler,
     FramingHandler,
     Cpp2Channel>

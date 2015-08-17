@@ -52,7 +52,7 @@ Cpp2Channel::Cpp2Channel(
   framingHandler_->setProtectionHandler(protectionHandler_.get());
   pipeline_.reset(new Pipeline(
       TAsyncTransportHandler(transport),
-      folly::wangle::OutputBufferingHandler(),
+      wangle::OutputBufferingHandler(),
       protectionHandler_,
       framingHandler_,
       this));

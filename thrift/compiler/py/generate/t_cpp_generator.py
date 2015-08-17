@@ -1709,7 +1709,7 @@ class CppGenerator(t_generator.Generator):
                 return_type = self._type_name(function.returntype)
 
                 subj = self.tmp("subj")
-                out("auto {subj} = std::make_shared<folly::wangle::Subject<{type}>>();".format(
+                out("auto {subj} = std::make_shared<wangle::Subject<{type}>>();".format(
                     type=return_type, subj=subj))
                 out("{name}(rpcOptions, "
                         "std::unique_ptr<apache::thrift::RequestCallback>("
@@ -1726,7 +1726,7 @@ class CppGenerator(t_generator.Generator):
         return self._get_noncallback_function_signature(
                 function,
                 uses_rpc_options,
-                "folly::wangle::ObservablePtr",
+                "wangle::ObservablePtr",
                 result_type)
 
     def _get_future_function_signature(self, function, uses_rpc_options):

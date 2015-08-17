@@ -40,7 +40,7 @@ namespace apache { namespace thrift {
  */
 class Cpp2Connection
     : public ResponseChannel::Callback
-    , public folly::wangle::ManagedConnection {
+    , public wangle::ManagedConnection {
  public:
 
   static const std::string loadHeader;

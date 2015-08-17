@@ -27,7 +27,7 @@ namespace apache { namespace thrift { namespace concurrency {
 
 using std::shared_ptr;
 using std::make_shared;
-using folly::wangle::Codel;
+using wangle::Codel;
 using std::dynamic_pointer_cast;
 using std::unique_ptr;
 using async::RequestContext;

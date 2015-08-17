@@ -206,7 +206,7 @@ class NumaThreadManager : public ThreadManager {
     }
   }
 
-  folly::wangle::Codel* getCodel() override {
+  wangle::Codel* getCodel() override {
     // They *should* be roughtly the same, just return one for now.
     return managers_[0]->getCodel();
   }

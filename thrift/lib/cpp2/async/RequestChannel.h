@@ -358,7 +358,7 @@ class ClientSyncCallback : public RequestCallback {
 template <typename T>
 void clientCallbackToObservable(ClientReceiveState& state,
     folly::exception_wrapper (*recv_wrapped)(T&, ClientReceiveState&),
-    folly::wangle::SubjectPtr<T>& subj) {
+    wangle::SubjectPtr<T>& subj) {
   if (auto ew = state.exceptionWrapper()) {
     subj->onError(ew);
     return;

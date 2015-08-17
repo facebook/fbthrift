@@ -929,7 +929,7 @@ TEST(ThriftServer, ShutdownDegenarateServer) {
 TEST(ThriftServer, ModifyingIOThreadCountLive) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   auto server = factory.create();
-  auto iothreadpool = std::make_shared<folly::wangle::IOThreadPoolExecutor>(0);
+  auto iothreadpool = std::make_shared<wangle::IOThreadPoolExecutor>(0);
   server->setIOThreadPool(iothreadpool);
 
   ScopedServerThread sst(server);
@@ -1046,7 +1046,7 @@ class FiberExecutor : public folly::Executor {
  public:
   void add(std::function<void()> f) override {
     folly::fibers::getFiberManager(
-      *folly::wangle::getEventBase()).add(f);
+      *wangle::getEventBase()).add(f);
   }
 };
 
@@ -1074,7 +1074,7 @@ TEST(ThriftServer, fiberExecutorTest) {
 }
 
 TEST(ThriftServer, setIOThreadPool) {
-  auto exe = std::make_shared<folly::wangle::IOThreadPoolExecutor>(1);
+  auto exe = std::make_shared<wangle::IOThreadPoolExecutor>(1);
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   factory.useSimpleThreadManager(false);
   auto server = factory.create();

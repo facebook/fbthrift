@@ -254,7 +254,7 @@ class ThreadManager : public folly::Executor {
 
   virtual void enableCodel(bool) = 0;
 
-  virtual folly::wangle::Codel* getCodel() = 0;
+  virtual wangle::Codel* getCodel() = 0;
 
   template <typename SemType>
   class ImplT;
@@ -301,7 +301,7 @@ public:
   }
 
   using ThreadManager::getCodel;
-  virtual folly::wangle::Codel* getCodel(PRIORITY priority) = 0;
+  virtual wangle::Codel* getCodel(PRIORITY priority) = 0;
 
   /**
    * Creates a priority-aware thread manager that uses counts[X]
@@ -382,7 +382,7 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   void setCodelCallback(ExpireCallback /*expireCallback*/) override {}
   void setThreadInitCallback(InitCallback /*initCallback*/) override {}
   void enableCodel(bool) override {}
-  folly::wangle::Codel* getCodel() override { return nullptr; }
+  wangle::Codel* getCodel() override { return nullptr; }
 
  private:
   std::shared_ptr<folly::Executor> exe_;

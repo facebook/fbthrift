@@ -72,7 +72,7 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
     std::shared_ptr<T> svIf_;
 };
 
-typedef folly::wangle::Pipeline<
+typedef wangle::Pipeline<
   folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>> Pipeline;
 
 /**
@@ -81,7 +81,7 @@ typedef folly::wangle::Pipeline<
  */
 
 class ThriftServer : public apache::thrift::server::TServer
-                   , public folly::ServerBootstrap<Pipeline> {
+                   , public wangle::ServerBootstrap<Pipeline> {
  protected:
 
   //! Default number of worker threads (should be # of processor cores).
@@ -101,7 +101,7 @@ class ThriftServer : public apache::thrift::server::TServer
   std::string poolThreadName_;
 
   //! SSL context
-  std::shared_ptr<folly::SSLContextConfig> sslContext_;
+  std::shared_ptr<wangle::SSLContextConfig> sslContext_;
 
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
@@ -151,7 +151,7 @@ class ThriftServer : public apache::thrift::server::TServer
   std::mutex ebmMutex_;
 
   //! IO thread pool. Drives Cpp2Workers.
-  std::shared_ptr<folly::wangle::IOThreadPoolExecutor> ioThreadPool_;
+  std::shared_ptr<wangle::IOThreadPoolExecutor> ioThreadPool_;
 
   /**
    * The thread manager used for sync calls.
@@ -234,7 +234,7 @@ class ThriftServer : public apache::thrift::server::TServer
 
   bool stopWorkersOnStopListening_;
 
-  std::shared_ptr<folly::wangle::IOThreadPoolExecutor> acceptPool_;
+  std::shared_ptr<wangle::IOThreadPoolExecutor> acceptPool_;
 
   // HeaderServerChannel and Cpp2Worker to use for a duplex server
   // (used by client). Both are nullptr for a regular server.
@@ -249,7 +249,7 @@ class ThriftServer : public apache::thrift::server::TServer
   // setters.
   std::atomic<bool> configMutable_{true};
 
-  std::shared_ptr<folly::wangle::IOThreadPoolExecutor> getIOGroupSafe() const {
+  std::shared_ptr<wangle::IOThreadPoolExecutor> getIOGroupSafe() const {
     std::lock_guard<std::mutex> lock(ioGroupMutex_);
     return getIOGroup();
   }
@@ -334,7 +334,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * @param the new thread pool
    */
   void setIOThreadPool(
-      std::shared_ptr<folly::wangle::IOThreadPoolExecutor> ioThreadPool) {
+      std::shared_ptr<wangle::IOThreadPoolExecutor> ioThreadPool) {
     CHECK(configMutable());
     ioThreadPool_ = ioThreadPool;
 
@@ -349,7 +349,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * @param the new thread factory
    */
   void setIOThreadFactory(
-      std::shared_ptr<folly::wangle::NamedThreadFactory> threadFactory) {
+      std::shared_ptr<wangle::NamedThreadFactory> threadFactory) {
     CHECK(configMutable());
     ioThreadPool_->setThreadFactory(threadFactory);
   }
@@ -365,7 +365,7 @@ class ThriftServer : public apache::thrift::server::TServer
     auto factory = ioThreadPool_->getThreadFactory();
     CHECK(factory);
     auto namedFactory =
-      std::dynamic_pointer_cast<folly::wangle::NamedThreadFactory>(factory);
+      std::dynamic_pointer_cast<wangle::NamedThreadFactory>(factory);
     CHECK(namedFactory);
     namedFactory->setNamePrefix(cpp2WorkerThreadName);
   }
@@ -494,11 +494,11 @@ class ThriftServer : public apache::thrift::server::TServer
   }
 
   void setIOThreadPoolExecutor(
-    std::shared_ptr<folly::wangle::IOThreadPoolExecutor> pool) {
+    std::shared_ptr<wangle::IOThreadPoolExecutor> pool) {
     acceptPool_ = pool;
   }
 
-  std::shared_ptr<folly::wangle::IOThreadPoolExecutor>
+  std::shared_ptr<wangle::IOThreadPoolExecutor>
   getIOThreadPoolExecutor_() const {
     return acceptPool_;
   }
@@ -507,7 +507,7 @@ class ThriftServer : public apache::thrift::server::TServer
    *
    */
   void setSSLConfig(
-    std::shared_ptr<folly::SSLContextConfig> context) {
+    std::shared_ptr<wangle::SSLContextConfig> context) {
     CHECK(configMutable());
     if (context) {
       context->isDefault = true;
@@ -515,13 +515,13 @@ class ThriftServer : public apache::thrift::server::TServer
     sslContext_ = context;
   }
 
-  std::shared_ptr<folly::SSLContextConfig>
+  std::shared_ptr<wangle::SSLContextConfig>
   getSSLConfig() const {
     return sslContext_;
   }
 
-  folly::ServerSocketConfig getServerSocketConfig() {
-    folly::ServerSocketConfig config;
+  wangle::ServerSocketConfig getServerSocketConfig() {
+    wangle::ServerSocketConfig config;
     if (getSSLConfig()) {
       config.sslContextConfigs.push_back(*getSSLConfig());
     }

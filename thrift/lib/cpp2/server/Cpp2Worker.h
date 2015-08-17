@@ -43,7 +43,7 @@ class ThriftServer;
  * typically be around one Cpp2Worker thread per core.
  */
 class Cpp2Worker
-    : public folly::Acceptor {
+    : public wangle::Acceptor {
  public:
 
   /**
@@ -110,7 +110,7 @@ class Cpp2Worker
   void onNewConnection(folly::AsyncSocket::UniquePtr,
                        const folly::SocketAddress*,
                        const std::string&,
-                       const folly::TransportInfo&) override;
+                       const wangle::TransportInfo&) override;
 
   folly::AsyncSocket::UniquePtr makeNewAsyncSocket(folly::EventBase* base,
                                                    int fd) override {

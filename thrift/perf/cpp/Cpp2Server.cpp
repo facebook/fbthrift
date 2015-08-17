@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
   server->setQueueSends(FLAGS_queue_sends);
 
   if (FLAGS_cert.length() > 0 && FLAGS_key.length() > 0) {
-    std::shared_ptr<folly::SSLContextConfig> sslContext(new folly::SSLContextConfig());
+    std::shared_ptr<wangle::SSLContextConfig> sslContext(new wangle::SSLContextConfig());
     sslContext->setCertificate(FLAGS_cert, FLAGS_key, "");
     sslContext->clientCAFile = FLAGS_client_ca_list;
     server->setSSLConfig(sslContext);

@@ -719,7 +719,7 @@ class HandlerCallback<void> : public HandlerCallbackBase {
 template <typename T>
 class StreamingHandlerCallback :
     public HandlerCallbackBase,
-    public folly::wangle::Observer<typename detail::inner_type<T>::type> {
+    public wangle::Observer<typename detail::inner_type<T>::type> {
 public:
   typedef typename detail::inner_type<T>::type ResultType;
 
@@ -776,7 +776,7 @@ public:
     done();
   }
 
-  void onError(folly::wangle::Error e) override {
+  void onError(wangle::Error e) override {
     exception(e);
   }
  private:

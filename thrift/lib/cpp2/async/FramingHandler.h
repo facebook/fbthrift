@@ -21,7 +21,7 @@
 
 namespace apache { namespace thrift {
 
-class FramingHandler : public folly::wangle::BytesToBytesHandler {
+class FramingHandler : public wangle::BytesToBytesHandler {
  public:
   ~FramingHandler() override {}
 
