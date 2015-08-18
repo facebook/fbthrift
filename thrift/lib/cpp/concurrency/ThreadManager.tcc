@@ -16,19 +16,9 @@
 
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
-#include <thrift/lib/cpp/concurrency/Exception.h>
-#include <thrift/lib/cpp/concurrency/Monitor.h>
-#include <thrift/lib/cpp/concurrency/Thread.h>
-#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <wangle/concurrent/Codel.h>
-#include <folly/Conv.h>
-#include <folly/MPMCQueue.h>
-#include <thrift/lib/cpp/async/Request.h>
-#include <folly/Logging.h>
+#include <assert.h>
 
 #include <memory>
-
-#include <assert.h>
 #include <queue>
 #include <set>
 #include <atomic>
@@ -36,6 +26,17 @@
 #if defined(DEBUG)
 #include <iostream>
 #endif //defined(DEBUG)
+
+#include <folly/Conv.h>
+#include <folly/Logging.h>
+#include <folly/MPMCQueue.h>
+#include <folly/Memory.h>
+#include <thrift/lib/cpp/async/Request.h>
+#include <thrift/lib/cpp/concurrency/Exception.h>
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
+#include <wangle/concurrent/Codel.h>
 
 #include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
 
@@ -79,7 +80,7 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
 
     while (true) {
       // Wait for a task to run
-      Task* task = manager_->waitOnTask();
+      auto task = manager_->waitOnTask();
 
       // A nullptr task means that this thread is supposed to exit
       if (!task) {
@@ -104,8 +105,7 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
           if (manager_->codelEnabled_) {
             FB_LOG_EVERY_MS(WARNING, 10000) << "Queueing delay timeout";
 
-            manager_->taskExpired(task);
-            delete task;
+            manager_->onTaskExpired(*task);
             continue;
           }
         }
@@ -114,8 +114,7 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
       // Check if the task is expired
       if (task->canExpire() &&
           task->getExpireTime() <= startTime) {
-        manager_->taskExpired(task);
-        delete task;
+        manager_->onTaskExpired(*task);
         continue;
       }
 
@@ -135,7 +134,6 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
                                   startTime,
                                   endTime);
       }
-      delete task;
     }
   }
 
@@ -247,10 +245,8 @@ void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
       // Empty the task queue, in case we stopped without running
       // all of the tasks.
       totalTaskCount_ -= tasks_.size();
-      Task* task;
-      while (tasks_.read(task)) {
-        delete task;
-      }
+      std::unique_ptr<Task> task;
+      while (tasks_.read(task)) { }
     }
     state_ = ThreadManager::STOPPED;
     monitor_.notifyAll();
@@ -336,7 +332,6 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
                                         int64_t expiration,
                                         bool cancellable,
                                         bool numa) {
-
   if (numa) {
     VLOG_EVERY_N(1, 100) << "ThreadManager::add called with numa == true, but "
                          << "not a NumaThreadManager";
@@ -365,13 +360,10 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
     }
   }
 
-  // If an idle thread is available notify it, otherwise all worker threads are
-  // running and will get around to this task in time.
-  Task* task = new ThreadManager::Task(std::move(value),
+  auto task = folly::make_unique<Task>(std::move(value),
                                        std::chrono::milliseconds{expiration});
-  if (!tasks_.write(task)) {
+  if (!tasks_.write(std::move(task))) {
     T_ERROR("ThreadManager: Failed to enqueue item. Increase maxQueueLen?");
-    delete task;
     throw TooManyPendingTasksException();
   }
 
@@ -382,6 +374,33 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
     // are running and will get around to this task in time.
     waitSem_.post();
   }
+}
+
+template <typename SemType>
+bool ThreadManager::ImplT<SemType>::tryAdd(shared_ptr<Runnable> value) {
+  if (state_ != ThreadManager::STARTED) {
+    return false;
+  }
+  if (pendingTaskCountMax_ > 0 &&
+      tasks_.size() >= folly::to<ssize_t>(pendingTaskCountMax_)) {
+    return false;
+  }
+
+  auto task = folly::make_unique<Task>(std::move(value),
+                                       std::chrono::milliseconds{0});
+  if (!tasks_.write(std::move(task))) {
+    return false;
+  }
+
+  ++totalTaskCount_;
+
+  if (idleCount_ > 0) {
+    // If an idle thread is available notify it, otherwise all worker threads
+    // are running and will get around to this task in time.
+    waitSem_.post();
+  }
+
+  return true;
 }
 
 template <typename SemType>
@@ -403,10 +422,9 @@ std::shared_ptr<Runnable> ThreadManager::ImplT<SemType>::removeNextPending() {
                                 "ThreadManager not started");
   }
 
-  ThreadManager::Task* task;
+  std::unique_ptr<Task> task;
   if (tasks_.read(task)) {
     std::shared_ptr<Runnable> r = task->getRunnable();
-    delete task;
     --totalTaskCount_;
     maybeNotifyMaxMonitor(false);
     return r;
@@ -431,12 +449,13 @@ bool ThreadManager::ImplT<SemType>::shouldStop() {
 }
 
 template <typename SemType>
-ThreadManager::Task* ThreadManager::ImplT<SemType>::waitOnTask() {
+std::unique_ptr<ThreadManager::Task>
+ThreadManager::ImplT<SemType>::waitOnTask() {
   if (shouldStop()) {
     return nullptr;
   }
 
-  ThreadManager::Task* task;
+  std::unique_ptr<Task> task;
 
   // Fast path - if tasks are ready, get one
   if (tasks_.read(task)) {
@@ -487,7 +506,7 @@ void ThreadManager::ImplT<SemType>::maybeNotifyMaxMonitor(bool shouldLock) {
 }
 
 template <typename SemType>
-void ThreadManager::ImplT<SemType>::taskExpired(Task* task) {
+void ThreadManager::ImplT<SemType>::onTaskExpired(const Task& task) {
   ExpireCallback expireCallback;
   {
     Guard g(mutex_);
@@ -497,7 +516,7 @@ void ThreadManager::ImplT<SemType>::taskExpired(Task* task) {
 
   if (expireCallback) {
     // Expired callback should _not_ be called holding mutex_
-    expireCallback(task->getRunnable());
+    expireCallback(task.getRunnable());
   }
 }
 
@@ -699,7 +718,6 @@ public:
   }
 
   std::shared_ptr<ThreadFactory> threadFactory() const override {
-
     throw IllegalStateException("Not implemented");
     return std::shared_ptr<ThreadFactory>();
   }
@@ -711,24 +729,34 @@ public:
     }
   }
 
-  void add(std::shared_ptr<Runnable>task,
-                   int64_t timeout=0LL,
-                   int64_t expiration=0LL,
-                   bool cancellable = false,
-                   bool numa = false) override {
+  void add(std::shared_ptr<Runnable> task,
+           int64_t timeout = 0,
+           int64_t expiration = 0,
+           bool cancellable = false,
+           bool numa = false) override {
     PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
     PRIORITY prio = p ? p->getPriority() : NORMAL;
-    add(prio, task, timeout, expiration, cancellable, numa);
+    add(prio, std::move(task), timeout, expiration, cancellable, numa);
   }
 
   void add(PRIORITY priority,
-                   std::shared_ptr<Runnable>task,
-                   int64_t timeout=0LL,
-                   int64_t expiration=0LL,
-                   bool cancellable = false,
-                   bool numa = false) override {
+           std::shared_ptr<Runnable> task,
+           int64_t timeout = 0,
+           int64_t expiration = 0,
+           bool cancellable = false,
+           bool numa = false) override {
+    managers_[priority]->add(
+        std::move(task), timeout, expiration, cancellable, numa);
+  }
 
-    managers_[priority]->add(task, timeout, expiration, cancellable, numa);
+  bool tryAdd(std::shared_ptr<Runnable> task) override {
+    PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
+    PRIORITY prio = p ? p->getPriority() : NORMAL;
+    return tryAdd(prio, std::move(task));
+  }
+
+  bool tryAdd(PRIORITY priority, std::shared_ptr<Runnable> task) override {
+    return managers_[priority]->tryAdd(std::move(task));
   }
 
   /**

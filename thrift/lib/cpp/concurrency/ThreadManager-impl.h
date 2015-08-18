@@ -17,12 +17,15 @@
 #ifndef THREADMANAGERIMPL_H
 #define THREADMANAGERIMPL_H
 
-#include <folly/SmallLocks.h>
-#include <folly/MPMCQueue.h>
+#include <deque>
+#include <memory>
+
 #include <folly/LifoSem.h>
+#include <folly/MPMCQueue.h>
+#include <folly/SmallLocks.h>
 #include <thrift/lib/cpp/async/Request.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
-#include <deque>
+
 namespace apache { namespace thrift { namespace concurrency {
 
 using std::shared_ptr;
@@ -192,8 +195,13 @@ class ThreadManager::ImplT : public ThreadManager  {
 
   bool canSleep();
 
-  void add(shared_ptr<Runnable> value, int64_t timeout, int64_t expiration,
-           bool cancellable, bool numa) override;
+  void add(shared_ptr<Runnable> value,
+           int64_t timeout,
+           int64_t expiration,
+           bool cancellable,
+           bool numa) override;
+
+  bool tryAdd(std::shared_ptr<Runnable> task) override;
 
   /**
    * Implements folly::Executor::add()
@@ -223,8 +231,8 @@ class ThreadManager::ImplT : public ThreadManager  {
   void reportTaskStats(const SystemClockTimePoint& queueBegin,
                        const SystemClockTimePoint& workBegin,
                        const SystemClockTimePoint& workEnd);
-  Task* waitOnTask();
-  void taskExpired(Task* task);
+  std::unique_ptr<Task> waitOnTask();
+  void onTaskExpired(const Task& task);
 
   Codel codel_;
 
@@ -259,7 +267,7 @@ class ThreadManager::ImplT : public ThreadManager  {
   ThreadManager::STATE state_;
   shared_ptr<ThreadFactory> threadFactory_;
 
-  folly::MPMCQueue<Task*> tasks_;
+  folly::MPMCQueue<std::unique_ptr<Task>> tasks_;
 
   Mutex mutex_;
   // monitor_ is signaled on any of the following events:

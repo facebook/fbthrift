@@ -17,11 +17,13 @@
 #ifndef _THRIFT_CONCURRENCY_THREADMANAGER_H_
 #define _THRIFT_CONCURRENCY_THREADMANAGER_H_ 1
 
+#include <sys/types.h>
+#include <unistd.h>
+
 #include <memory>
 #include <functional>
-#include <sys/types.h>
 #include <array>
-#include <unistd.h>
+
 #include <folly/Executor.h>
 #include <folly/LifoSem.h>
 #include <folly/RWSpinLock.h>
@@ -174,11 +176,16 @@ class ThreadManager : public folly::Executor {
    * @throws TooManyPendingTasksException Pending task count exceeds max
    * pending task count
    */
-  virtual void add(std::shared_ptr<Runnable>task,
-                   int64_t timeout=0LL,
-                   int64_t expiration=0LL,
+  virtual void add(std::shared_ptr<Runnable> task,
+                   int64_t timeout = 0,
+                   int64_t expiration = 0,
                    bool cancellable = false,
                    bool numa = false) = 0;
+
+  /**
+   * Similar to add(), but doesn't block or throw.
+   */
+  virtual bool tryAdd(std::shared_ptr<Runnable> task) = 0;
 
   /**
    * Implements folly::Executor::add()
@@ -279,7 +286,7 @@ class ThreadManager : public folly::Executor {
  * make sense in the priority world.
  */
 class PriorityThreadManager : public ThreadManager {
-public:
+ public:
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
 
   using ThreadManager::addWorker;
@@ -290,11 +297,14 @@ public:
 
   using ThreadManager::add;
   virtual void add(PRIORITY priority,
-                   std::shared_ptr<Runnable>task,
-                   int64_t timeout=0LL,
-                   int64_t expiration=0LL,
+                   std::shared_ptr<Runnable> task,
+                   int64_t timeout = 0,
+                   int64_t expiration = 0,
                    bool cancellable = false,
                    bool numa = false) = 0;
+
+  using ThreadManager::tryAdd;
+  virtual bool tryAdd(PRIORITY priority, std::shared_ptr<Runnable> task) = 0;
 
   virtual uint8_t getNumPriorities() const override {
     return N_PRIORITIES;
@@ -365,13 +375,15 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   size_t expiredTaskCount() override { return 0; }
 
   void add(std::shared_ptr<Runnable> task,
-           int64_t /*timeout*/ = 0LL,
-           int64_t /*expiration*/ = 0LL,
+           int64_t /*timeout*/ = 0,
+           int64_t /*expiration*/ = 0,
            bool /*cancellable*/ = false,
            bool /*numa*/ = false) override {
-    exe_->add([=]() {
-      task->run();
-    });
+    exe_->add([=] { task->run(); });
+  }
+  bool tryAdd(std::shared_ptr<Runnable> task) override {
+    add(std::move(task));
+    return true;
   }
   void add(folly::Func f) override { exe_->add(std::move(f)); }
 

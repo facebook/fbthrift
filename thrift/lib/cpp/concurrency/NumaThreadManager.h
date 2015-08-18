@@ -74,16 +74,18 @@ class NumaThreadManager : public ThreadManager {
  public:
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
 
+  virtual bool tryAdd(PRIORITY priority, std::shared_ptr<Runnable> task);
   virtual void add(PRIORITY priority,
-                   std::shared_ptr<Runnable>task,
-                   int64_t timeout=0LL,
-                   int64_t expiration=0LL,
+                   std::shared_ptr<Runnable> task,
+                   int64_t timeout = 0,
+                   int64_t expiration = 0,
                    bool cancellable = false,
                    bool numa = false);
 
+  bool tryAdd(std::shared_ptr<Runnable> task) override;
   void add(std::shared_ptr<Runnable> task,
-           int64_t timeout = 0LL,
-           int64_t expiration = 0LL,
+           int64_t timeout = 0,
+           int64_t expiration = 0,
            bool cancellable = false,
            bool numa = false) override;
 
