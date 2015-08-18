@@ -51,6 +51,7 @@ void Cpp2Worker::onNewConnection(
   folly::AsyncSocket::UniquePtr sock,
   const folly::SocketAddress* addr,
   const std::string& nextProtocolName,
+  SecureTransportType secureProtocolType,
   const wangle::TransportInfo& tinfo) {
 
   auto observer = server_->getObserver();

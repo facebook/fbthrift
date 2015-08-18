@@ -110,19 +110,12 @@ class Cpp2Worker
   void onNewConnection(folly::AsyncSocket::UniquePtr,
                        const folly::SocketAddress*,
                        const std::string&,
+                       SecureTransportType,
                        const wangle::TransportInfo&) override;
 
   folly::AsyncSocket::UniquePtr makeNewAsyncSocket(folly::EventBase* base,
                                                    int fd) override {
     return folly::AsyncSocket::UniquePtr(new apache::thrift::async::TAsyncSocket(base, fd));
-  }
-
-  folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(
-      const std::shared_ptr<folly::SSLContext>& ctx,
-      folly::EventBase* base,
-      int fd) override {
-    return folly::AsyncSSLSocket::UniquePtr(
-      new apache::thrift::async::TAsyncSSLSocket(ctx, base, fd));
   }
 
   /**
