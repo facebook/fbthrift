@@ -37,7 +37,6 @@ extern "C" {
 #endif
 
 #include <algorithm>
-#include <bitset>
 #include <cassert>
 #include <string>
 #include <zlib.h>
@@ -80,17 +79,6 @@ THeader::THeader()
 
 THeader::~THeader() {}
 
-uint16_t THeader::getProtocolId() const {
-  if (clientType == THRIFT_HEADER_CLIENT_TYPE ||
-      clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    return protoId_;
-  } if (clientType == THRIFT_FRAMED_COMPACT) {
-    return T_COMPACT_PROTOCOL;
-  } else {
-    return T_BINARY_PROTOCOL; // Assume other transports use TBinary
-  }
-}
-
 int8_t THeader::getProtocolVersion() const {
   return protoVersion;
 }
@@ -108,6 +96,7 @@ bool THeader::compactFramed(uint32_t magic) {
 unique_ptr<IOBuf> THeader::removeUnframed(
     IOBufQueue* queue,
     size_t& needed) {
+  protoId_ = T_BINARY_PROTOCOL;
   const_cast<IOBuf*>(queue->front())->coalesce();
 
   // Test skip using the protocol to detect the end of the message
@@ -135,11 +124,13 @@ unique_ptr<IOBuf> THeader::removeUnframed(
 }
 
 unique_ptr<IOBuf> THeader::removeHttpServer(IOBufQueue* queue) {
-    // Users must explicitly support this.
-    return queue->move();
+  protoId_ = T_BINARY_PROTOCOL;
+  // Users must explicitly support this.
+  return queue->move();
 }
 
 unique_ptr<IOBuf> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
+  protoId_ = T_BINARY_PROTOCOL;
   TMemoryBuffer memBuffer;
   THttpClientParser parser;
   parser.setDataBuffer(&memBuffer);
@@ -270,9 +261,11 @@ unique_ptr<IOBuf> THeader::removeHeader(
     if ((magic & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
       // framed
       clientType = THRIFT_FRAMED_DEPRECATED;
+      protoId_ = T_BINARY_PROTOCOL;
       buf = removeFramed(sz, queue);
     } else if (compactFramed(magic)) {
       clientType = THRIFT_FRAMED_COMPACT;
+      protoId_ = T_COMPACT_PROTOCOL;
       buf = removeFramed(sz, queue);
     } else if (HEADER_MAGIC == (magic & HEADER_MASK)) {
       if (sz < 10) {
@@ -566,10 +559,9 @@ unique_ptr<IOBuf> THeader::untransform(
   return std::move(buf);
 }
 
-unique_ptr<IOBuf> THeader::transform(
-  unique_ptr<IOBuf> buf,
-  std::vector<uint16_t>& writeTrans,
-uint32_t minCompressBytes) {
+unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
+                                     std::vector<uint16_t>& writeTrans,
+                                     uint32_t minCompressBytes) {
   uint32_t dataSize = buf->computeChainDataLength();
 
   for (vector<uint16_t>::iterator it = writeTrans.begin();
@@ -796,8 +788,8 @@ void THeader::setIdentity(const string& identity) {
 }
 
 unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
-                                    StringToStringMap& persistentWriteHeaders,
-                                    bool transform) {
+                                     StringToStringMap& persistentWriteHeaders,
+                                     bool transform) {
   // We may need to modify some transforms before send.  Make
   // a copy here
   std::vector<uint16_t> writeTrans = writeTrans_;

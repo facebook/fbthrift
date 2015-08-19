@@ -38,10 +38,6 @@ void HeaderChannel::setClientType(CLIENT_TYPE ct) {
   clientType_ = ct;
 }
 
-void HeaderChannel::forceClientType(bool enable) {
-  header_->forceClientType(enable);
-}
-
 void HeaderChannel::setSupportedClients(std::bitset<CLIENT_TYPES_LEN>
                                   const* clients) {
   if (clients) {
@@ -54,10 +50,8 @@ void HeaderChannel::setSupportedClients(std::bitset<CLIENT_TYPES_LEN>
 
     if (supported_clients[THRIFT_HEADER_SASL_CLIENT_TYPE]) {
       setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
-      header_->setClientTypeNoCheck(THRIFT_HEADER_SASL_CLIENT_TYPE);
     } else {
       setClientType(THRIFT_HEADER_CLIENT_TYPE);
-      header_->setClientTypeNoCheck(THRIFT_HEADER_CLIENT_TYPE);
     }
   } else {
     setSecurityPolicy(THRIFT_SECURITY_DISABLED);
@@ -108,6 +102,5 @@ void HeaderChannel::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
   setSupportedClients(&clients);
   securityPolicy_ = policy;
 }
-
 
 }} //apache::thrift

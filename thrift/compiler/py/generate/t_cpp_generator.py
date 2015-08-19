@@ -817,8 +817,7 @@ class CppGenerator(t_generator.Generator):
                         in_header=True):
                 if not service.extends:
                     out('connectionContext_.reset('
-                            'new apache::thrift::Cpp2ConnContext(nullptr, '
-                            'nullptr, channel_->getHeader(), nullptr, nullptr));')
+                            'new apache::thrift::Cpp2ConnContext);')
 
             if not service.extends:
                 with out().defn('apache::thrift::RequestChannel* '
@@ -857,7 +856,7 @@ class CppGenerator(t_generator.Generator):
 
             if not service.extends:
                 out().label('protected:')
-                out("std::unique_ptr<apache::thrift::server::TConnectionContext>"
+                out("std::unique_ptr<apache::thrift::Cpp2ConnContext> "
                   "connectionContext_;")
                 out("std::shared_ptr<apache::thrift::RequestChannel> channel_;")
 
@@ -1104,8 +1103,8 @@ class CppGenerator(t_generator.Generator):
                 'x);'.format(functionname, seqid, ctx))
             out('queue.append(apache::thrift::transport::THeader::transform('
                 'queue.move(), '
-                '{0}->getTransforms(), '
-                '{0}->getMinCompressBytes()));'.format(reqCtx))
+                '{0}->getHeader()->getWriteTransforms(), '
+                '{0}->getHeader()->getMinCompressBytes()));'.format(reqCtx))
             if is_in_eb:
                 out('req->sendReply(queue.move());')
             else:
@@ -1447,8 +1446,8 @@ class CppGenerator(t_generator.Generator):
                             out('queue.append('
                                 'apache::thrift::transport::THeader::transform('
                                 'queue.move(), '
-                                '{0}->getTransforms(), '
-                                '{0}->getMinCompressBytes()));'.format('reqCtx'))
+                                '{0}->getHeader()->getWriteTransforms(), '
+                                '{0}->getHeader()->getMinCompressBytes()));'.format('reqCtx'))
                             out('return req->sendReply(queue.move());')
                     with out().defn(
                         'template <class ProtocolIn_, class ProtocolOut_>\n' +
@@ -1498,8 +1497,8 @@ class CppGenerator(t_generator.Generator):
                             out('queue.append('
                                 'apache::thrift::transport::THeader::transform('
                                 'queue.move(), '
-                                '{0}->getTransforms(), '
-                                '{0}->getMinCompressBytes()));'.format('reqCtx'))
+                                '{0}->getHeader()->getWriteTransforms(), '
+                                '{0}->getHeader()->getMinCompressBytes()));'.format('reqCtx'))
                             out('return req->sendReply(queue.move());')
 
 
@@ -1579,19 +1578,27 @@ class CppGenerator(t_generator.Generator):
                 out("getChannel()->getEventBase()->loopForever();")
 
                 if not function.oneway:
+                    out("SCOPE_EXIT {")
+                    out("  if (_returnState.header() && "
+                            "!_returnState.header()->getHeaders().empty()) {")
+                    out("    rpcOptions.setReadHeaders("
+                            "_returnState.header()->releaseHeaders());")
+                    out("  }")
+                    out("};")
+
                     with out("if (!_returnState.buf())"):
                         out("assert(_returnState.exception());")
                         out("std::rethrow_exception(_returnState.exception());")
 
                     if not function.returntype.is_void:
                         if not self._is_complex_type(function.returntype):
-                            out("return recv_" + function.name +
-                                "(_returnState);")
+                            out("return recv_{}(_returnState);"
+                                    .format(function.name))
                         else:
-                            out("recv_" + function.name +
-                                "(_return, _returnState);")
+                            out("recv_{}(_return, _returnState);"
+                                    .format(function.name))
                     else:
-                        out("recv_" + function.name + "(_returnState);")
+                        out("recv_{}(_returnState);".format(function.name))
 
     def _get_sync_function_signature(self, function, uses_rpc_options=False):
         params = []
@@ -1673,7 +1680,9 @@ class CppGenerator(t_generator.Generator):
                     out("std::unique_ptr<apache::thrift::RequestCallback> "
                       "{callback}("
                       "new apache::thrift::FutureCallback<{type}>("
-                      "std::move({promise}), recv_wrapped_{name}, channel_));"
+                      "std::move({promise}), recv_wrapped_{name}, channel_, "
+                      "(rpcOptions.getUseForReadHeaders() ? &rpcOptions : "
+                      "nullptr)));"
                       .format(callback=callback,
                               type=_lift_unit(return_type),
                               promise=promise_name,
@@ -1807,11 +1816,15 @@ class CppGenerator(t_generator.Generator):
         func_name = function.name + "T"
 
         with out().defn(signature, name=func_name, output=self._out_tcc):
+            out("auto header = std::make_shared<apache::thrift::transport::THeader>();")
+            out("header->setProtocolId(getChannel()->getProtocolId());")
+            out("header->setHeaders(rpcOptions.releaseWriteHeaders());")
+            out("getChannel()->flushWriteHeaders(header.get());")
+            out("connectionContext_->setRequestHeader(header.get());")
             out("std::unique_ptr<apache::thrift::ContextStack> ctx = "
               "this->getContextStack(this->getServiceName(), "
               '"{0}.{1}", connectionContext_.get());'
               .format(service.name, function.name))
-
             pargs_class = "{0}_{1}_pargs".format(service.name, function.name)
             out("{0} args;".format(pargs_class))
 
@@ -1843,9 +1856,11 @@ class CppGenerator(t_generator.Generator):
             writer = writer.format(pargs_class)
 
             out('apache::thrift::clientSendT<{}>(prot, rpcOptions, '
-              'std::move(callback), std::move(ctx), channel_.get(), args, '
-              '"{}", {}, {});'.format(["false", "true"][function.oneway],
+                'std::move(callback), std::move(ctx), header, '
+                'channel_.get(), args, '
+                '"{}", {}, {});'.format(["false", "true"][function.oneway],
                                       function.name, writer, sizer))
+            out("connectionContext_->setRequestHeader(nullptr);")
 
     def _get_async_function_signature(self,
                                       function,
@@ -2071,7 +2086,7 @@ class CppGenerator(t_generator.Generator):
                     out("result.read(prot);")
 
                 out("prot->readMessageEnd();")
-                out('ctx->postRead(nullptr, state.buf()->length());')
+                out('ctx->postRead(state.header(), state.buf()->length());')
 
                 if not function.returntype.is_void:
                     with out("if ({0})".format(self._get_presult_success_isset())):

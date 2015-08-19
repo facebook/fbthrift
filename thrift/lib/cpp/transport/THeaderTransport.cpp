@@ -53,7 +53,7 @@ void THeaderTransport::checkSupportedClient(CLIENT_TYPE ct) {
 
 void THeaderTransport::setClientType(CLIENT_TYPE ct) {
   checkSupportedClient(ct);
-  setClientTypeNoCheck(ct);
+  THeader::setClientType(ct);
 }
 
 void THeaderTransport::setSupportedClients(

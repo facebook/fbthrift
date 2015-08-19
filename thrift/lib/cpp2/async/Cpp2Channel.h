@@ -39,9 +39,16 @@
 
 namespace apache { namespace thrift {
 
+using apache::thrift::transport::THeader;
+
 class Cpp2Channel
   : public MessageChannel
-  , public wangle::BytesToBytesHandler
+  , public wangle::Handler<
+        std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<THeader>>,
+        int, // last inbound handler so this doesn't matter
+        // Does nothing when writing
+        std::pair<std::unique_ptr<folly::IOBuf>, THeader*>,
+        std::pair<std::unique_ptr<folly::IOBuf>, THeader*>>
  {
  public:
   explicit Cpp2Channel(
@@ -79,10 +86,19 @@ class Cpp2Channel
   void destroy() override;
 
   // BytesToBytesHandler methods
-  void read(Context* ctx, folly::IOBufQueue& q) override;
+  void read(Context* ctx,
+            std::pair<std::unique_ptr<folly::IOBuf>,
+                      std::unique_ptr<THeader>> bufAndHeader) override;
   void readEOF(Context* ctx) override;
   void readException(Context* ctx, folly::exception_wrapper e) override;
   folly::Future<folly::Unit> close(Context* ctx) override;
+
+  folly::Future<folly::Unit> write(
+      Context* ctx,
+      std::pair<std::unique_ptr<folly::IOBuf>, THeader*> bufAndHeader) override
+  {
+    return ctx->fireWrite(std::move(bufAndHeader));
+  }
 
   void writeSuccess() noexcept;
   void writeError(size_t bytesWritten,
@@ -93,7 +109,8 @@ class Cpp2Channel
 
   // Interface from MessageChannel
   void sendMessage(SendCallback* callback,
-                   std::unique_ptr<folly::IOBuf>&& buf) override;
+                   std::unique_ptr<folly::IOBuf>&& buf,
+                   apache::thrift::transport::THeader* header) override;
   void setReceiveCallback(RecvCallback* callback) override;
 
   // event base methods
@@ -132,7 +149,9 @@ private:
   std::shared_ptr<FramingHandler> framingHandler_;
 
   typedef wangle::StaticPipeline<
-    folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>,
+    folly::IOBufQueue&,
+    std::pair<std::unique_ptr<folly::IOBuf>,
+              apache::thrift::transport::THeader*>,
     TAsyncTransportHandler,
     wangle::OutputBufferingHandler,
     ProtectionHandler,

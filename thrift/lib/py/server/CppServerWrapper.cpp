@@ -57,9 +57,9 @@ object makePythonAddress(const folly::SocketAddress& sa) {
   }
 }
 
-object makePythonHeaders(std::map<std::string, std::string>* cppheaders) {
+object makePythonHeaders(const std::map<std::string, std::string>& cppheaders) {
   object headers = dict();
-  for (const auto& it : *cppheaders) {
+  for (const auto& it : cppheaders) {
     headers[it.first] = it.second;
   }
   return headers;
@@ -161,7 +161,7 @@ public:
                apache::thrift::concurrency::ThreadManager* tm) override {
     folly::ByteRange input_range = buf->coalesce();
     auto input_data = const_cast<unsigned char*>(input_range.data());
-    auto clientType = context->getClientType();
+    auto clientType = context->getHeader()->getClientType();
     if (clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
       // SASL processing is already done, and we're not going to put
       // it back.  So just use standard header here.
@@ -190,7 +190,7 @@ public:
 
       object output = adapter_->attr("call_processor")(
           input,
-          makePythonHeaders(context->getHeadersPtr()),
+          makePythonHeaders(context->getHeader()->getHeaders()),
           int(clientType),
           int(protType),
           contextData);
@@ -222,8 +222,8 @@ public:
     }
     req->sendReply(THeader::transform(
       std::move(outbuf),
-      context->getTransforms(),
-      context->getMinCompressBytes()));
+      context->getHeader()->getWriteTransforms(),
+      context->getHeader()->getMinCompressBytes()));
   }
 
   bool isOnewayMethod(const folly::IOBuf* buf, const THeader* header) override {

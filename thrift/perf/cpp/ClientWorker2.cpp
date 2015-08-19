@@ -94,10 +94,9 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
       apache::thrift::async::TDelayedDestruction::Destructor> headerChannel(
           HeaderClientChannel::newChannel(socket));
     // Always use binary in loadtesting to get apples to apples comparison
-    headerChannel->getHeader()->setProtocolId(
-        apache::thrift::protocol::T_BINARY_PROTOCOL);
+    headerChannel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
     if (config->zlib()) {
-      headerChannel->getHeader()->setTransform(THeader::ZLIB_TRANSFORM);
+      headerChannel->setTransform(THeader::ZLIB_TRANSFORM);
     }
     if (!config->useHeaderProtocol()) {
       headerChannel->setClientType(THRIFT_FRAMED_DEPRECATED);

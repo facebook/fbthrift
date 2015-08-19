@@ -235,7 +235,7 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
       channel->setClientType(THRIFT_FRAMED_DEPRECATED);
     }
     if (config->zlib()) {
-      channel->getHeader()->setTransform(THeader::ZLIB_TRANSFORM);
+      channel->setTransform(THeader::ZLIB_TRANSFORM);
     }
 
     if (config->SASLPolicy() == "permitted") {

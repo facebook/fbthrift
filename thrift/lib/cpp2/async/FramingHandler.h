@@ -18,10 +18,18 @@
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <wangle/channel/Handler.h>
 #include <wangle/channel/StaticPipeline.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 
 namespace apache { namespace thrift {
 
-class FramingHandler : public wangle::BytesToBytesHandler {
+class FramingHandler
+  : public wangle::Handler<
+      folly::IOBufQueue&,
+      std::pair<std::unique_ptr<folly::IOBuf>,
+                std::unique_ptr<apache::thrift::transport::THeader>>,
+      std::pair<std::unique_ptr<folly::IOBuf>,
+                apache::thrift::transport::THeader*>,
+      std::unique_ptr<folly::IOBuf>> {
  public:
   ~FramingHandler() override {}
 
@@ -37,16 +45,20 @@ class FramingHandler : public wangle::BytesToBytesHandler {
 
   folly::Future<folly::Unit> write(
     Context* ctx,
-    std::unique_ptr<folly::IOBuf> buf) override;
+    std::pair<std::unique_ptr<folly::IOBuf>,
+              apache::thrift::transport::THeader*> bufAndHeader) override;
 
-  virtual std::pair<std::unique_ptr<folly::IOBuf>, size_t>
+  virtual std::tuple<std::unique_ptr<folly::IOBuf>,
+                     size_t,
+                     std::unique_ptr<apache::thrift::transport::THeader>>
   removeFrame(folly::IOBufQueue* q) = 0;
 
   /**
-   * Wrap and IOBuf in any headers/footers
+   * Wrap an IOBuf in any headers/footers
    */
   virtual std::unique_ptr<folly::IOBuf>
-  addFrame(std::unique_ptr<folly::IOBuf> buf) = 0;
+  addFrame(std::unique_ptr<folly::IOBuf> buf,
+           apache::thrift::transport::THeader* header) = 0;
 
   void setProtectionHandler(ProtectionHandler* h) {
     protectionHandler_ = h;
