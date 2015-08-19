@@ -1680,8 +1680,8 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
 void t_py_generator::generate_fastproto_write(ofstream& out,
                                               t_struct* tstruct) {
   indent(out) <<
-    "if (oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated "
-    "or (oprot.__class__ == THeaderProtocol.THeaderProtocol and "
+    "if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) "
+    "or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and "
     "oprot.get_protocol_id() == "
     "THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) "
     "and self.thrift_spec is not None "
@@ -1698,8 +1698,8 @@ void t_py_generator::generate_fastproto_write(ofstream& out,
 
   indent_down();
   indent(out) <<
-    "if (oprot.__class__ == TCompactProtocol.TCompactProtocolAccelerated "
-    "or (oprot.__class__ == THeaderProtocol.THeaderProtocol and "
+    "if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) "
+    "or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and "
     "oprot.get_protocol_id() == "
     "THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) "
     "and self.thrift_spec is not None "
@@ -1719,8 +1719,8 @@ void t_py_generator::generate_fastproto_write(ofstream& out,
 void t_py_generator::generate_fastproto_read(ofstream& out,
                                              t_struct* tstruct) {
   indent(out) <<
-    "if (iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated "
-    "or (iprot.__class__ == THeaderProtocol.THeaderProtocol and "
+    "if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) "
+    "or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and "
     "iprot.get_protocol_id() == "
     "THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) "
     "and isinstance(iprot.trans, TTransport.CReadableTransport) "
@@ -1738,8 +1738,8 @@ void t_py_generator::generate_fastproto_read(ofstream& out,
   indent_down();
 
   indent(out) <<
-    "if (iprot.__class__ == TCompactProtocol.TCompactProtocolAccelerated "
-    "or (iprot.__class__ == THeaderProtocol.THeaderProtocol and "
+    "if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) "
+    "or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and "
     "iprot.get_protocol_id() == "
     "THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) "
     "and isinstance(iprot.trans, TTransport.CReadableTransport) "
@@ -1760,8 +1760,8 @@ void t_py_generator::generate_fastproto_read(ofstream& out,
 void t_py_generator::generate_fastbinary_read(ofstream& out,
                                               t_struct* tstruct) {
   indent(out) <<
-    "if (iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated "
-    "or (iprot.__class__ == THeaderProtocol.THeaderProtocol and "
+    "if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) "
+    "or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and "
     "iprot.get_protocol_id() == "
     "THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) "
     "and isinstance(iprot.trans, TTransport.CReadableTransport) "
@@ -1781,8 +1781,8 @@ void t_py_generator::generate_fastbinary_read(ofstream& out,
 void t_py_generator::generate_fastbinary_write(ofstream& out,
                                                t_struct* tstruct) {
   indent(out) <<
-    "if (oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated "
-    "or (oprot.__class__ == THeaderProtocol.THeaderProtocol and "
+    "if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) "
+    "or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and "
     "oprot.get_protocol_id() == "
     "THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) "
     "and self.thrift_spec is not None "
