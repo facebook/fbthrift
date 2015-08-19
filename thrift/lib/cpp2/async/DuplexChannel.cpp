@@ -64,17 +64,17 @@ FramingHandler& DuplexChannel::DuplexFramingHandler::getHandler(
   }
 }
 
-std::tuple<std::unique_ptr<folly::IOBuf>, size_t, std::unique_ptr<THeader>>
+std::pair<std::unique_ptr<folly::IOBuf>, size_t>
 DuplexChannel::DuplexFramingHandler::removeFrame(folly::IOBufQueue* q) {
   if (!q || !q->front() || q->front()->empty()) {
-    return make_tuple(std::unique_ptr<IOBuf>(), 0, nullptr);
+    return make_pair(std::unique_ptr<IOBuf>(), 0);
   }
 
   uint32_t len = q->front()->computeChainDataLength();
 
   if (len < 4) {
     size_t remaining = 4 - len;
-    return make_tuple(unique_ptr<IOBuf>(), remaining, nullptr);
+    return make_pair(unique_ptr<IOBuf>(), remaining);
   }
 
   Cursor c(q->front());
@@ -89,7 +89,7 @@ DuplexChannel::DuplexFramingHandler::removeFrame(folly::IOBufQueue* q) {
   if (len - 4 < msgLen) {
     // Framed message, but haven't received whole message yet
     size_t remaining = msgLen - (len - 4);
-    return make_tuple(unique_ptr<IOBuf>(), remaining, nullptr);
+    return make_pair(unique_ptr<IOBuf>(), remaining);
   }
 
   // Got whole message, check if it's header
@@ -117,10 +117,8 @@ DuplexChannel::DuplexFramingHandler::removeFrame(folly::IOBufQueue* q) {
 
 std::unique_ptr<folly::IOBuf>
 DuplexChannel::DuplexFramingHandler::addFrame(
-    std::unique_ptr<folly::IOBuf> buf,
-    THeader* header) {
-  buf = getHandler(duplex_.lastSender_.get()).addFrame(std::move(buf),
-                                                       header);
+    std::unique_ptr<folly::IOBuf> buf) {
+  buf = getHandler(duplex_.lastSender_.get()).addFrame(std::move(buf));
 
   if (duplex_.lastSender_.get() != duplex_.mainChannel_.get()) {
     // Add reverse bit to header

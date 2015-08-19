@@ -50,7 +50,7 @@ void MyServiceAsyncProcessor::process_hasDataById(std::unique_ptr<apache::thrift
       LOG(ERROR) << ex.what() << " in function hasDataById";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("hasDataById", &prot, iprot->getSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getTransforms(), ctx->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
@@ -93,7 +93,7 @@ void MyServiceAsyncProcessor::throw_hasDataById(std::unique_ptr<apache::thrift::
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
       ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
       folly::IOBufQueue queue = serializeException("hasDataById", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -106,7 +106,7 @@ void MyServiceAsyncProcessor::throw_hasDataById(std::unique_ptr<apache::thrift::
       LOG(ERROR) << "<unknown exception>" << " in function hasDataById";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("hasDataById", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -128,7 +128,7 @@ void MyServiceAsyncProcessor::throw_wrapped_hasDataById(std::unique_ptr<apache::
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
       folly::IOBufQueue queue = serializeException("hasDataById", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -160,7 +160,7 @@ void MyServiceAsyncProcessor::process_getDataById(std::unique_ptr<apache::thrift
       LOG(ERROR) << ex.what() << " in function getDataById";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("getDataById", &prot, iprot->getSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getTransforms(), ctx->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
@@ -203,7 +203,7 @@ void MyServiceAsyncProcessor::throw_getDataById(std::unique_ptr<apache::thrift::
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
       ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
       folly::IOBufQueue queue = serializeException("getDataById", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -216,7 +216,7 @@ void MyServiceAsyncProcessor::throw_getDataById(std::unique_ptr<apache::thrift::
       LOG(ERROR) << "<unknown exception>" << " in function getDataById";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("getDataById", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -238,7 +238,7 @@ void MyServiceAsyncProcessor::throw_wrapped_getDataById(std::unique_ptr<apache::
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
       folly::IOBufQueue queue = serializeException("getDataById", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -270,7 +270,7 @@ void MyServiceAsyncProcessor::process_putDataById(std::unique_ptr<apache::thrift
       LOG(ERROR) << ex.what() << " in function putDataById";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("putDataById", &prot, iprot->getSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getTransforms(), ctx->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
@@ -311,7 +311,7 @@ void MyServiceAsyncProcessor::throw_putDataById(std::unique_ptr<apache::thrift::
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
       ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
       folly::IOBufQueue queue = serializeException("putDataById", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -324,7 +324,7 @@ void MyServiceAsyncProcessor::throw_putDataById(std::unique_ptr<apache::thrift::
       LOG(ERROR) << "<unknown exception>" << " in function putDataById";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("putDataById", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -346,7 +346,7 @@ void MyServiceAsyncProcessor::throw_wrapped_putDataById(std::unique_ptr<apache::
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
       folly::IOBufQueue queue = serializeException("putDataById", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -383,16 +383,10 @@ void MyServiceAsyncProcessor::process_lobDataById(std::unique_ptr<apache::thrift
 
 template <typename Protocol_>
 void MyServiceAsyncClient::hasDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
-  header->setProtocolId(getChannel()->getProtocolId());
-  header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
-  connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.hasDataById", connectionContext_.get());
   MyService_hasDataById_pargs args;
   args.get<0>().value = &id;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "hasDataById", [](Protocol_* prot, MyService_hasDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyService_hasDataById_pargs& args) { return args.serializedSizeZC(prot); });
-  connectionContext_->setRequestHeader(nullptr);
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), channel_.get(), args, "hasDataById", [](Protocol_* prot, MyService_hasDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyService_hasDataById_pargs& args) { return args.serializedSizeZC(prot); });
 }
 
 template <typename Protocol_>
@@ -437,7 +431,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_hasDataByIdT(Protoco
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -467,16 +461,10 @@ bool MyServiceAsyncClient::recv_hasDataByIdT(Protocol_* prot, ::apache::thrift::
 
 template <typename Protocol_>
 void MyServiceAsyncClient::getDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
-  header->setProtocolId(getChannel()->getProtocolId());
-  header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
-  connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.getDataById", connectionContext_.get());
   MyService_getDataById_pargs args;
   args.get<0>().value = &id;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "getDataById", [](Protocol_* prot, MyService_getDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyService_getDataById_pargs& args) { return args.serializedSizeZC(prot); });
-  connectionContext_->setRequestHeader(nullptr);
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), channel_.get(), args, "getDataById", [](Protocol_* prot, MyService_getDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyService_getDataById_pargs& args) { return args.serializedSizeZC(prot); });
 }
 
 template <typename Protocol_>
@@ -521,7 +509,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getDataByIdT(Protoco
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -549,17 +537,11 @@ void MyServiceAsyncClient::recv_getDataByIdT(Protocol_* prot, std::string& _retu
 
 template <typename Protocol_>
 void MyServiceAsyncClient::putDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
-  header->setProtocolId(getChannel()->getProtocolId());
-  header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
-  connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.putDataById", connectionContext_.get());
   MyService_putDataById_pargs args;
   args.get<0>().value = &id;
   args.get<1>().value = const_cast<std::string*>(&data);
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "putDataById", [](Protocol_* prot, MyService_putDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyService_putDataById_pargs& args) { return args.serializedSizeZC(prot); });
-  connectionContext_->setRequestHeader(nullptr);
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), channel_.get(), args, "putDataById", [](Protocol_* prot, MyService_putDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyService_putDataById_pargs& args) { return args.serializedSizeZC(prot); });
 }
 
 template <typename Protocol_>
@@ -603,7 +585,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_putDataByIdT(Protoco
     MyService_putDataById_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
   }
   );
   if (interior_ew || caught_ew) {
@@ -623,17 +605,11 @@ void MyServiceAsyncClient::recv_putDataByIdT(Protocol_* prot, ::apache::thrift::
 
 template <typename Protocol_>
 void MyServiceAsyncClient::lobDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
-  header->setProtocolId(getChannel()->getProtocolId());
-  header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
-  connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.lobDataById", connectionContext_.get());
   MyService_lobDataById_pargs args;
   args.get<0>().value = &id;
   args.get<1>().value = const_cast<std::string*>(&data);
-  apache::thrift::clientSendT<true>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "lobDataById", [](Protocol_* prot, MyService_lobDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyService_lobDataById_pargs& args) { return args.serializedSizeZC(prot); });
-  connectionContext_->setRequestHeader(nullptr);
+  apache::thrift::clientSendT<true>(prot, rpcOptions, std::move(callback), std::move(ctx), channel_.get(), args, "lobDataById", [](Protocol_* prot, MyService_lobDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyService_lobDataById_pargs& args) { return args.serializedSizeZC(prot); });
 }
 
 } // cpp2

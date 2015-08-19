@@ -56,7 +56,7 @@ class THeaderTransport
 
   explicit THeaderTransport(const std::shared_ptr<TTransport> transport)
     : THeader()
-    , transport_(transport)
+    ,transport_(transport)
     , outTransport_(transport)
     , httpTransport_(transport)
   {
@@ -144,7 +144,7 @@ class THeaderTransport
   }
 
   void checkSupportedClient(CLIENT_TYPE ct);
-  void setClientType(CLIENT_TYPE ct) override;
+  void setClientType(CLIENT_TYPE ct);
 
   /*
    * TVirtualTransport provides a default implementation of readAll().

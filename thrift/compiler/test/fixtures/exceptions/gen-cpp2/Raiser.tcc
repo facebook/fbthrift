@@ -47,7 +47,7 @@ void RaiserAsyncProcessor::process_doBland(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << ex.what() << " in function doBland";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("doBland", &prot, iprot->getSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getTransforms(), ctx->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
@@ -88,7 +88,7 @@ void RaiserAsyncProcessor::throw_doBland(std::unique_ptr<apache::thrift::Respons
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
       ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
       folly::IOBufQueue queue = serializeException("doBland", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -101,7 +101,7 @@ void RaiserAsyncProcessor::throw_doBland(std::unique_ptr<apache::thrift::Respons
       LOG(ERROR) << "<unknown exception>" << " in function doBland";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("doBland", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -123,7 +123,7 @@ void RaiserAsyncProcessor::throw_wrapped_doBland(std::unique_ptr<apache::thrift:
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
       folly::IOBufQueue queue = serializeException("doBland", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -155,7 +155,7 @@ void RaiserAsyncProcessor::process_doRaise(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << ex.what() << " in function doRaise";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("doRaise", &prot, iprot->getSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getTransforms(), ctx->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
@@ -207,7 +207,7 @@ void RaiserAsyncProcessor::throw_doRaise(std::unique_ptr<apache::thrift::Respons
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
       ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
       folly::IOBufQueue queue = serializeException("doRaise", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -220,7 +220,7 @@ void RaiserAsyncProcessor::throw_doRaise(std::unique_ptr<apache::thrift::Respons
       LOG(ERROR) << "<unknown exception>" << " in function doRaise";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("doRaise", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -229,7 +229,7 @@ void RaiserAsyncProcessor::throw_doRaise(std::unique_ptr<apache::thrift::Respons
     }
   }
   auto queue = serializeResponse("doRaise", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
   return req->sendReply(queue.move());
 }
 
@@ -258,7 +258,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(std::unique_ptr<apache::thrift:
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
       folly::IOBufQueue queue = serializeException("doRaise", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -267,7 +267,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(std::unique_ptr<apache::thrift:
     }
   }
   auto queue = serializeResponse("doRaise", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
   return req->sendReply(queue.move());
 }
 
@@ -293,7 +293,7 @@ void RaiserAsyncProcessor::process_get200(std::unique_ptr<apache::thrift::Respon
       LOG(ERROR) << ex.what() << " in function get200";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("get200", &prot, iprot->getSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getTransforms(), ctx->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
@@ -336,7 +336,7 @@ void RaiserAsyncProcessor::throw_get200(std::unique_ptr<apache::thrift::Response
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
       ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
       folly::IOBufQueue queue = serializeException("get200", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -349,7 +349,7 @@ void RaiserAsyncProcessor::throw_get200(std::unique_ptr<apache::thrift::Response
       LOG(ERROR) << "<unknown exception>" << " in function get200";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("get200", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -371,7 +371,7 @@ void RaiserAsyncProcessor::throw_wrapped_get200(std::unique_ptr<apache::thrift::
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
       folly::IOBufQueue queue = serializeException("get200", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -403,7 +403,7 @@ void RaiserAsyncProcessor::process_get500(std::unique_ptr<apache::thrift::Respon
       LOG(ERROR) << ex.what() << " in function get500";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("get500", &prot, iprot->getSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getTransforms(), ctx->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
@@ -457,7 +457,7 @@ void RaiserAsyncProcessor::throw_get500(std::unique_ptr<apache::thrift::Response
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
       ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
       folly::IOBufQueue queue = serializeException("get500", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -470,7 +470,7 @@ void RaiserAsyncProcessor::throw_get500(std::unique_ptr<apache::thrift::Response
       LOG(ERROR) << "<unknown exception>" << " in function get500";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("get500", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -479,7 +479,7 @@ void RaiserAsyncProcessor::throw_get500(std::unique_ptr<apache::thrift::Response
     }
   }
   auto queue = serializeResponse("get500", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
   return req->sendReply(queue.move());
 }
 
@@ -508,7 +508,7 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
       folly::IOBufQueue queue = serializeException("get500", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
     }
@@ -517,21 +517,15 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
     }
   }
   auto queue = serializeResponse("get500", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getTransforms(), reqCtx->getMinCompressBytes()));
   return req->sendReply(queue.move());
 }
 
 template <typename Protocol_>
 void RaiserAsyncClient::doBlandT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
-  header->setProtocolId(getChannel()->getProtocolId());
-  header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
-  connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.doBland", connectionContext_.get());
   Raiser_doBland_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "doBland", [](Protocol_* prot, Raiser_doBland_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_doBland_pargs& args) { return args.serializedSizeZC(prot); });
-  connectionContext_->setRequestHeader(nullptr);
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), channel_.get(), args, "doBland", [](Protocol_* prot, Raiser_doBland_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_doBland_pargs& args) { return args.serializedSizeZC(prot); });
 }
 
 template <typename Protocol_>
@@ -575,7 +569,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doBlandT(Protocol_* pro
     Raiser_doBland_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
   }
   );
   if (interior_ew || caught_ew) {
@@ -595,15 +589,9 @@ void RaiserAsyncClient::recv_doBlandT(Protocol_* prot, ::apache::thrift::ClientR
 
 template <typename Protocol_>
 void RaiserAsyncClient::doRaiseT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
-  header->setProtocolId(getChannel()->getProtocolId());
-  header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
-  connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.doRaise", connectionContext_.get());
   Raiser_doRaise_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "doRaise", [](Protocol_* prot, Raiser_doRaise_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_doRaise_pargs& args) { return args.serializedSizeZC(prot); });
-  connectionContext_->setRequestHeader(nullptr);
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), channel_.get(), args, "doRaise", [](Protocol_* prot, Raiser_doRaise_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_doRaise_pargs& args) { return args.serializedSizeZC(prot); });
 }
 
 template <typename Protocol_>
@@ -647,7 +635,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doRaiseT(Protocol_* pro
     Raiser_doRaise_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       interior_ew = folly::make_exception_wrapper< ::cpp2::Banal>(result.get<0>().ref());
       return; // from try_and_catch
@@ -675,15 +663,9 @@ void RaiserAsyncClient::recv_doRaiseT(Protocol_* prot, ::apache::thrift::ClientR
 
 template <typename Protocol_>
 void RaiserAsyncClient::get200T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
-  header->setProtocolId(getChannel()->getProtocolId());
-  header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
-  connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.get200", connectionContext_.get());
   Raiser_get200_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "get200", [](Protocol_* prot, Raiser_get200_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_get200_pargs& args) { return args.serializedSizeZC(prot); });
-  connectionContext_->setRequestHeader(nullptr);
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), channel_.get(), args, "get200", [](Protocol_* prot, Raiser_get200_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_get200_pargs& args) { return args.serializedSizeZC(prot); });
 }
 
 template <typename Protocol_>
@@ -728,7 +710,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200T(Protocol_* prot
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -756,15 +738,9 @@ void RaiserAsyncClient::recv_get200T(Protocol_* prot, std::string& _return, ::ap
 
 template <typename Protocol_>
 void RaiserAsyncClient::get500T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
-  header->setProtocolId(getChannel()->getProtocolId());
-  header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
-  connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.get500", connectionContext_.get());
   Raiser_get500_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "get500", [](Protocol_* prot, Raiser_get500_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_get500_pargs& args) { return args.serializedSizeZC(prot); });
-  connectionContext_->setRequestHeader(nullptr);
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), channel_.get(), args, "get500", [](Protocol_* prot, Raiser_get500_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_get500_pargs& args) { return args.serializedSizeZC(prot); });
 }
 
 template <typename Protocol_>
@@ -809,7 +785,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500T(Protocol_* prot
     result.get<0>().value = &_return;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), state.buf()->length());
+    ctx->postRead(nullptr, state.buf()->length());
     if (result.getIsSet(0)) {
       // _return pointer has been filled
       return; // from try_and_catch

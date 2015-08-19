@@ -207,7 +207,9 @@ class Cpp2Connection
   void disconnect(const char* comment) noexcept;
 
   // Set any error headers necessary, based on the received headers
-  void setErrorHeaders(apache::thrift::transport::THeader* recv_headers);
+  apache::thrift::transport::THeader::StringToStringMap setErrorHeaders(
+    const apache::thrift::transport::THeader::StringToStringMap&
+    recv_headers);
 
   friend class Cpp2Request;
 

@@ -453,10 +453,9 @@ class HandlerCallbackBase {
     // Do any compression or other transforms in this thread, the same thread
     // that serialization happens on.
     queue.append(
-      transport::THeader::transform(
-        queue.move(),
-        reqCtx_->getHeader()->getWriteTransforms(),
-        reqCtx_->getHeader()->getMinCompressBytes()));
+      transport::THeader::transform(queue.move(),
+                                    reqCtx_->getTransforms(),
+                                    reqCtx_->getMinCompressBytes()));
   }
 
   // Can be called from IO or TM thread

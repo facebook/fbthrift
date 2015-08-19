@@ -52,11 +52,6 @@ void MyLeafAsyncClient::sync_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
   std::unique_ptr<apache::thrift::RequestCallback> callback8(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
   do_leaf(rpcOptions, std::move(callback8));
   getChannel()->getEventBase()->loopForever();
-  SCOPE_EXIT {
-    if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
-      rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
-    }
-  };
   if (!_returnState.buf()) {
     assert(_returnState.exception());
     std::rethrow_exception(_returnState.exception());
@@ -72,7 +67,7 @@ folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf() {
 folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> promise9;
   auto future10 = promise9.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback11(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise9), recv_wrapped_do_leaf, channel_, (rpcOptions.getUseForReadHeaders() ? &rpcOptions : nullptr)));
+  std::unique_ptr<apache::thrift::RequestCallback> callback11(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise9), recv_wrapped_do_leaf, channel_));
   do_leaf(rpcOptions, std::move(callback11));
   return std::move(future10);
 }

@@ -52,11 +52,6 @@ void MyNodeAsyncClient::sync_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   std::unique_ptr<apache::thrift::RequestCallback> callback4(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
   do_mid(rpcOptions, std::move(callback4));
   getChannel()->getEventBase()->loopForever();
-  SCOPE_EXIT {
-    if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
-      rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
-    }
-  };
   if (!_returnState.buf()) {
     assert(_returnState.exception());
     std::rethrow_exception(_returnState.exception());
@@ -72,7 +67,7 @@ folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid() {
 folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> promise5;
   auto future6 = promise5.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback7(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise5), recv_wrapped_do_mid, channel_, (rpcOptions.getUseForReadHeaders() ? &rpcOptions : nullptr)));
+  std::unique_ptr<apache::thrift::RequestCallback> callback7(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise5), recv_wrapped_do_mid, channel_));
   do_mid(rpcOptions, std::move(callback7));
   return std::move(future6);
 }

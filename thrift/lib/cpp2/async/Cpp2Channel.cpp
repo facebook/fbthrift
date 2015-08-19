@@ -108,10 +108,7 @@ TEventBase* Cpp2Channel::getEventBase() {
   return transport_->getEventBase();
 }
 
-void Cpp2Channel::read(
-    Context* ctx,
-    std::pair<std::unique_ptr<folly::IOBuf>,
-              std::unique_ptr<THeader>> bufAndHeader) {
+void Cpp2Channel::read(Context* ctx, folly::IOBufQueue& q) {
   DestructorGuard dg(this);
 
   if (recvCallback_ && recvCallback_->shouldSample() && !sample_) {
@@ -128,9 +125,7 @@ void Cpp2Channel::read(
     sample_->readEnd = Util::currentTimeUsec();
   }
 
-  recvCallback_->messageReceived(std::move(bufAndHeader.first),
-                                 std::move(bufAndHeader.second),
-                                 std::move(sample_));
+  recvCallback_->messageReceived(q.move(), std::move(sample_));
 }
 
 void Cpp2Channel::readEOF(Context* ctx) {
@@ -185,8 +180,7 @@ void Cpp2Channel::processReadEOF() noexcept {
 
 // Low level interface
 void Cpp2Channel::sendMessage(SendCallback* callback,
-                              std::unique_ptr<folly::IOBuf>&& buf,
-                              apache::thrift::transport::THeader* header) {
+                                std::unique_ptr<folly::IOBuf>&& buf) {
   // Callback may be null.
   assert(buf);
 
@@ -208,7 +202,7 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
 
   DestructorGuard dg(this);
 
-  auto future = pipeline_->write(std::make_pair(std::move(buf), header));
+  auto future = pipeline_->write(std::move(buf));
   future.then([this,dg](folly::Try<folly::Unit>&& t) {
     if (t.withException<TTransportException>(
           [&](const TTransportException& ex) {

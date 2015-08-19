@@ -148,39 +148,27 @@ TEST(ThriftServer, GetLoadTest) {
 
   auto header_channel = boost::polymorphic_downcast<HeaderClientChannel*>(
     client.getChannel());
-  RpcOptions rpcOptions;
-  rpcOptions.setWriteHeader("load", "thrift.active_requests");
-  auto callback = std::unique_ptr<RequestCallback>(
-      new FunctionReplyCallback([&](ClientReceiveState&& state) {
-    std::string response;
-    auto headers = state.header()->getHeaders();
-    auto load = headers.find("load");
-    EXPECT_NE(load, headers.end());
-    EXPECT_EQ(load->second, "0");
-    TestServiceAsyncClient::recv_wrapped_sendResponse(response, state);
-    EXPECT_EQ(response, "test64");
-  }));
-  client.sendResponse(rpcOptions, std::move(callback), 64);
-  base.loop();
+  header_channel->getHeader()->setHeader("load", "thrift.active_requests");
+  std::string response;
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+  auto headers = header_channel->getHeader()->getHeaders();
+  auto load = headers.find("load");
+  EXPECT_NE(load, headers.end());
+  EXPECT_EQ(load->second, "0");
 
   serv->setGetLoad([&](std::string counter){
     EXPECT_EQ(counter, "thrift.active_requests");
     return 1;
   });
 
-  rpcOptions.setWriteHeader("load", "thrift.active_requests");
-  callback = std::unique_ptr<RequestCallback>(
-      new FunctionReplyCallback([&](ClientReceiveState&& state) {
-    std::string response;
-    auto headers = state.header()->getHeaders();
-    auto load = headers.find("load");
-    EXPECT_NE(load, headers.end());
-    EXPECT_EQ(load->second, "1");
-    TestServiceAsyncClient::recv_wrapped_sendResponse(response, state);
-    EXPECT_EQ(response, "test64");
-  }));
-  client.sendResponse(rpcOptions, std::move(callback), 64);
-  base.loop();
+  header_channel->getHeader()->setHeader("load", "thrift.active_requests");
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+  headers = header_channel->getHeader()->getHeaders();
+  load = headers.find("load");
+  EXPECT_NE(load, headers.end());
+  EXPECT_EQ(load->second, "1");
 }
 
 TEST(ThriftServer, SerializationInEventBaseTest) {
@@ -286,7 +274,9 @@ TEST(ThriftServer, OverloadTest) {
   int exception_headers = 0;
   auto lambda = [&](ClientReceiveState&& state) {
       std::string response;
-      auto headers = state.header()->getHeaders();
+      auto header = boost::polymorphic_downcast<HeaderClientChannel*>(
+          client.getChannel())->getHeader();
+      auto headers = header->getHeaders();
       if (headers.size() > 0) {
         EXPECT_EQ(headers["ex"], kQueueOverloadedErrorCode);
         exception_headers++;
@@ -370,7 +360,7 @@ TEST(ThriftServer, CompactClientTest) {
 
   // Set the client to compact
   boost::polymorphic_downcast<HeaderClientChannel*>(
-    client.getChannel())->setProtocolId(
+    client.getChannel())->getHeader()->setProtocolId(
       ::apache::thrift::protocol::T_COMPACT_PROTOCOL);
 
   std::string response;
@@ -391,17 +381,18 @@ TEST(ThriftServer, CompressionClientTest) {
                       new HeaderClientChannel(socket)));
 
   // Set the client to compact
-  auto channel = boost::polymorphic_downcast<HeaderClientChannel*>(
-    client.getChannel());
-  channel->setTransform(
+  auto header = boost::polymorphic_downcast<HeaderClientChannel*>(
+    client.getChannel())->getHeader();
+  header->setTransform(
     apache::thrift::transport::THeader::ZLIB_TRANSFORM);
-  channel->setMinCompressBytes(1);
+  header->setMinCompressBytes(1);
 
   std::string response;
   client.sync_sendResponse(response, 64);
   EXPECT_EQ(response, "test64");
 
-  auto trans = channel->getWriteTransforms();
+  auto trans = boost::polymorphic_downcast<HeaderClientChannel*>(
+    client.getChannel())->getHeader()->getTransforms();
   EXPECT_EQ(trans.size(), 1);
   for (auto& tran : trans) {
     EXPECT_EQ(tran, apache::thrift::transport::THeader::ZLIB_TRANSFORM);

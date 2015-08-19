@@ -160,8 +160,11 @@ void TClientBase::ConnContext::init(
     const folly::SocketAddress* address,
     std::shared_ptr<protocol::TProtocol> inputProtocol,
     std::shared_ptr<protocol::TProtocol> outputProtocol) {
-  if (address) {
-    peerAddress_ = localAddress_ = *address;
+  if (address == nullptr) {
+    address_ = nullptr;
+  } else {
+    internalAddress_ = *address;
+    address_ = &internalAddress_;
   }
   inputProtocol_ = inputProtocol;
   outputProtocol_ = outputProtocol;

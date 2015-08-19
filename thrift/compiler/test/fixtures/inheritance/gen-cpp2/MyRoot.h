@@ -107,7 +107,7 @@ class MyRootAsyncClient : public apache::thrift::TClientBase {
 
   MyRootAsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
       channel_(channel) {
-    connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
+    connectionContext_.reset(new apache::thrift::Cpp2ConnContext(nullptr, nullptr, channel_->getHeader(), nullptr, nullptr));
   }
 
   apache::thrift::RequestChannel*  getChannel() {
@@ -132,7 +132,7 @@ class MyRootAsyncClient : public apache::thrift::TClientBase {
   template <typename Protocol_>
   static void recv_do_rootT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  protected:
-  std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
+  std::unique_ptr<apache::thrift::server::TConnectionContext>connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;
 };
 

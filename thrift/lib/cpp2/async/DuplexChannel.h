@@ -65,10 +65,9 @@ class DuplexChannel {
       , duplex_(duplex)
     {}
     void sendMessage(Cpp2Channel::SendCallback* callback,
-                     std::unique_ptr<folly::IOBuf> buf,
-                     apache::thrift::transport::THeader* header) override {
+                     std::unique_ptr<folly::IOBuf> buf) override {
       duplex_.lastSender_.set(Who::CLIENT);
-      HeaderClientChannel::sendMessage(callback, std::move(buf), header);
+      HeaderClientChannel::sendMessage(callback, std::move(buf));
     }
     void messageChannelEOF() override {
       if (duplex_.mainChannel_.get() == Who::CLIENT) {
@@ -89,10 +88,9 @@ class DuplexChannel {
       , duplex_(duplex)
     {}
     void sendMessage(Cpp2Channel::SendCallback* callback,
-                     std::unique_ptr<folly::IOBuf> buf,
-                     apache::thrift::transport::THeader* header) override {
+                     std::unique_ptr<folly::IOBuf> buf) override {
       duplex_.lastSender_.set(Who::SERVER);
-      HeaderServerChannel::sendMessage(callback, std::move(buf), header);
+      HeaderServerChannel::sendMessage(callback, std::move(buf));
     }
     void messageChannelEOF() override {
       if (duplex_.mainChannel_.get() == Who::SERVER) {
@@ -167,14 +165,11 @@ class DuplexChannel {
         : duplex_(duplex)
     {}
 
-    std::tuple<std::unique_ptr<folly::IOBuf>,
-               size_t,
-               std::unique_ptr<apache::thrift::transport::THeader>>
+    std::pair<std::unique_ptr<folly::IOBuf>, size_t>
     removeFrame(folly::IOBufQueue* q) override;
 
     std::unique_ptr<folly::IOBuf>
-    addFrame(std::unique_ptr<folly::IOBuf> buf,
-        apache::thrift::transport::THeader* header) override;
+    addFrame(std::unique_ptr<folly::IOBuf> buf) override;
    private:
     DuplexChannel& duplex_;
 

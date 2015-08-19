@@ -32,7 +32,10 @@ namespace apache { namespace thrift {
  */
 class HeaderChannel {
   public:
-    HeaderChannel() {
+    HeaderChannel()
+      : header_(new apache::thrift::transport::THeader)
+      , clientType_(THRIFT_HEADER_CLIENT_TYPE)
+      , prevClientType_(THRIFT_HEADER_CLIENT_TYPE) {
       setSupportedClients(nullptr);
     }
 
@@ -57,56 +60,25 @@ class HeaderChannel {
 
     void setClientType(CLIENT_TYPE ct);
     // Force using specified client type when using legacy client types
-    void forceClientType(bool enable) { forceClientType_ = enable; }
-    bool getForceClientType() { return forceClientType_; }
+    void forceClientType(bool enable);
     CLIENT_TYPE getClientType() { return clientType_; }
     void updateClientType(CLIENT_TYPE ct);
 
     void setSecurityPolicy(THRIFT_SECURITY_POLICY policy);
 
-    void setMinCompressBytes(uint32_t bytes) {
-      minCompressBytes_ = bytes;
-    }
-
-    uint32_t getMinCompressBytes() {
-      return minCompressBytes_;
-    }
-
-    uint16_t getFlags() const { return flags_; }
-    void setFlags(uint16_t flags) { flags_ = flags; }
-
-    void setTransform(uint16_t transId) {
-      for (auto& trans : writeTrans_) {
-        if (trans == transId) {
-          return;
-        }
-      }
-      writeTrans_.push_back(transId);
-    }
-
-    void setWriteTransforms(const std::vector<uint16_t>& trans) {
-      writeTrans_ = trans;
-    }
-
-    const std::vector<uint16_t>& getWriteTransforms() const {
-      return writeTrans_;
-    }
+  protected:
+    std::shared_ptr<apache::thrift::transport::THeader> header_;
 
   private:
     // Map to use for persistent headers
     transport::THeader::StringToStringMap persistentReadHeaders_;
     transport::THeader::StringToStringMap persistentWriteHeaders_;
 
-    uint32_t minCompressBytes_{0};
-    uint16_t flags_;
-
-    CLIENT_TYPE clientType_{THRIFT_HEADER_CLIENT_TYPE};
-    CLIENT_TYPE prevClientType_{THRIFT_HEADER_CLIENT_TYPE};
-    bool forceClientType_{false};
+    CLIENT_TYPE clientType_;
+    CLIENT_TYPE prevClientType_;
     std::bitset<CLIENT_TYPES_LEN> supported_clients;
-    THRIFT_SECURITY_POLICY securityPolicy_;
 
-    std::vector<uint16_t> writeTrans_;
+    THRIFT_SECURITY_POLICY securityPolicy_;
 };
 
 }} // apache::thrift

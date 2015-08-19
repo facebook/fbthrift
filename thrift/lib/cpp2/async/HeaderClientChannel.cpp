@@ -56,8 +56,9 @@ HeaderClientChannel::HeaderClientChannel(
     , keepRegisteredForClose_(true)
     , saslClientCallback_(*this)
     , cpp2Channel_(cpp2Channel)
-    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase()))
-    , protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL) {}
+    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {
+  header_->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
+}
 
 void HeaderClientChannel::setTimeout(uint32_t ms) {
   getTransport()->setSendTimeout(ms);
@@ -86,6 +87,9 @@ void HeaderClientChannel::useAsHttpClient(const std::string& host,
                                           const std::string& uri) {
   setClientType(THRIFT_HTTP_CLIENT_TYPE);
   httpClientParser_ = std::make_shared<util::THttpClientParser>(host, uri);
+
+  header_->setClientTypeNoCheck(THRIFT_HTTP_CLIENT_TYPE);
+  header_->setHttpClientParser(httpClientParser_);
 }
 
 void HeaderClientChannel::attachEventBase(
@@ -138,7 +142,7 @@ void HeaderClientChannel::startSecurity() {
   // We'll restore it in setSecurityComplete().
   // TODO(alandau): Remove this code once all servers are upgraded to be able
   // to handle both compact and binary.
-  userProtocolId_ = getProtocolId();
+  userProtocolId_ = header_->getProtocolId();
 
   // Let's get this party started.
   setProtectionState(ProtectionState::INPROGRESS);
@@ -148,12 +152,11 @@ void HeaderClientChannel::startSecurity() {
 }
 
 unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
-    unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header) {
-  if (header->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
+    unique_ptr<IOBuf>&& buf) {
+  if (header_->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
     if (getProtectionState() == ProtectionState::INPROGRESS ||
         getProtectionState() == ProtectionState::WAITING) {
       setProtectionState(ProtectionState::INPROGRESS);
-      saslClientCallback_.setHeader(std::move(header));
       saslClient_->consumeFromServer(&saslClientCallback_, std::move(buf));
       return nullptr;
     }
@@ -191,11 +194,11 @@ void HeaderClientChannel::SaslClientCallback::saslSendServer(
   }
   channel_.handshakeMessagesSent_++;
 
-  header_->setProtocolId(T_COMPACT_PROTOCOL);
-  header_->setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
+  channel_.header_->setProtocolId(T_COMPACT_PROTOCOL);
+  channel_.header_->setClientTypeNoCheck(THRIFT_HEADER_SASL_CLIENT_TYPE);
   channel_.setProtectionState(ProtectionState::WAITING);
-  channel_.sendMessage(nullptr, std::move(message), header_.get());
-  channel_.setProtocolId(channel_.userProtocolId_);
+  channel_.sendMessage(nullptr, std::move(message));
+  channel_.header_->setProtocolId(channel_.userProtocolId_);
 }
 
 void HeaderClientChannel::SaslClientCallback::saslError(
@@ -311,7 +314,7 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
   setBaseReceivedCallback();
 
   // restore protocol to the one the user selected
-  setProtocolId(userProtocolId_);
+  header_->setProtocolId(userProtocolId_);
 
   // Replay any pending requests
   for (auto&& funcarg : afterSecurity_) {
@@ -319,29 +322,37 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
     folly::RequestContext::setContext(cb->context_);
     cb->securityEnd_ = std::chrono::duration_cast<Us>(
         HResClock::now().time_since_epoch()).count();
+    header_->setHeaders(std::move(std::get<5>(funcarg)));
     (this->*(std::get<0>(funcarg)))(std::get<1>(funcarg),
                                     std::move(std::get<2>(funcarg)),
                                     std::move(std::get<3>(funcarg)),
-                                    std::move(std::get<4>(funcarg)),
-                                    std::move(std::get<5>(funcarg)));
+                                    std::move(std::get<4>(funcarg)));
   }
   afterSecurity_.clear();
 }
 
-void HeaderClientChannel::addRpcOptionHeaders(THeader* header,
-                                              RpcOptions& rpcOptions) {
+void HeaderClientChannel::addRpcOptionHeaders(RpcOptions& rpcOptions) {
   if (!clientSupportHeader()) {
     return;
   }
 
+  auto headers = rpcOptions.releaseWriteHeaders();
+  if (!headers.empty()) {
+    if (header_->getHeaders().empty()) {
+      header_->setHeaders(std::move(headers));
+    } else {
+      header_->getWriteHeaders().insert(headers.begin(), headers.end());
+    }
+  }
+
   if (rpcOptions.getPriority() != apache::thrift::concurrency::N_PRIORITIES) {
-    header->setHeader(
+    header_->setHeader(
         transport::THeader::PRIORITY_HEADER,
         folly::to<std::string>(rpcOptions.getPriority()));
   }
 
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    header->setHeader(
+    header_->setHeader(
         transport::THeader::CLIENT_TIMEOUT_HEADER,
         folly::to<std::string>(rpcOptions.getTimeout().count()));
   }
@@ -357,8 +368,7 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
     RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
-    std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header) {
+    unique_ptr<IOBuf> buf) {
   cb->context_ = RequestContext::saveContext();
 
   if (isSecurityPending()) {
@@ -371,12 +381,12 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
                       std::move(cb),
                       std::move(ctx),
                       std::move(buf),
-                      std::move(header)));
+                      header_->releaseWriteHeaders()));
     return ResponseChannel::ONEWAY_REQUEST_ID;
   }
 
-  setRequestHeaderOptions(header.get());
-  addRpcOptionHeaders(header.get(), rpcOptions);
+  header_->setClientTypeNoCheck(getClientType());
+  addRpcOptionHeaders(rpcOptions);
 
   // Both cb and buf are allowed to be null.
   uint32_t oldSeqId = sendSeqId_;
@@ -385,9 +395,9 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
   if (cb) {
     sendMessage(new OnewayCallback(std::move(cb), std::move(ctx),
                                    isSecurityActive()),
-                std::move(buf), header.get());
+                std::move(buf));
   } else {
-    sendMessage(nullptr, std::move(buf), header.get());
+    sendMessage(nullptr, std::move(buf));
   }
   sendSeqId_ = oldSeqId;
   return ResponseChannel::ONEWAY_REQUEST_ID;
@@ -398,33 +408,11 @@ void HeaderClientChannel::setCloseCallback(CloseCallback* cb) {
   setBaseReceivedCallback();
 }
 
-void HeaderClientChannel::setRequestHeaderOptions(THeader* header) {
-  header->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
-  header->setClientType(getClientType());
-  header->forceClientType(getForceClientType());
-  header->setTransforms(getWriteTransforms());
-  if (getClientType() == THRIFT_HTTP_CLIENT_TYPE) {
-    header->setHttpClientParser(httpClientParser_);
-  }
-}
-
-uint16_t HeaderClientChannel::getProtocolId() {
-  if (getClientType() == THRIFT_HEADER_CLIENT_TYPE ||
-      getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    return protocolId_;
-  } else if (getClientType() == THRIFT_FRAMED_COMPACT) {
-    return T_COMPACT_PROTOCOL;
-  } else {
-    return T_BINARY_PROTOCOL; // Assume other transports use TBinary
-  }
-}
-
 uint32_t HeaderClientChannel::sendRequest(
     RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
-    std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header) {
+    unique_ptr<IOBuf> buf) {
   // cb is not allowed to be null.
   DCHECK(cb);
 
@@ -440,7 +428,7 @@ uint32_t HeaderClientChannel::sendRequest(
                       std::move(cb),
                       std::move(ctx),
                       std::move(buf),
-                      std::move(header)));
+                      header_->releaseWriteHeaders()));
 
     // Security always happens at the beginning of the channel, with seq id 0.
     // Return sequence id expected to be generated when security is done.
@@ -466,15 +454,15 @@ uint32_t HeaderClientChannel::sendRequest(
 
   auto twcb = new TwowayCallback(this,
                                  sendSeqId_,
-                                 getProtocolId(),
+                                 header_->getProtocolId(),
                                  std::move(cb),
                                  std::move(ctx),
                                  timer_.get(),
                                  timeout,
                                  rpcOptions.getChunkTimeout());
 
-  setRequestHeaderOptions(header.get());
-  addRpcOptionHeaders(header.get(), rpcOptions);
+  header_->setClientTypeNoCheck(getClientType());
+  addRpcOptionHeaders(rpcOptions);
 
   if (getClientType() != THRIFT_HEADER_CLIENT_TYPE &&
       getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
@@ -483,46 +471,44 @@ uint32_t HeaderClientChannel::sendRequest(
   recvCallbacks_[sendSeqId_] = twcb;
   setBaseReceivedCallback();
 
-  sendMessage(twcb, std::move(buf), header.get());
+  sendMessage(twcb, std::move(buf));
   return sendSeqId_;
 }
 
 // Header framing
 std::unique_ptr<folly::IOBuf>
-HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<IOBuf> buf,
-                                                    THeader* header) {
+HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<IOBuf> buf) {
+  THeader* header = channel_.getHeader();
   channel_.updateClientType(header->getClientType());
   header->setSequenceNumber(channel_.sendSeqId_);
   return header->addHeader(std::move(buf),
-                           channel_.getPersistentWriteHeaders());
+      channel_.getPersistentWriteHeaders());
 }
 
-std::tuple<std::unique_ptr<IOBuf>, size_t, std::unique_ptr<THeader>>
+std::pair<std::unique_ptr<IOBuf>, size_t>
 HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
-  std::unique_ptr<THeader> header(new THeader);
+  THeader* header = channel_.getHeader();
   if (!q || !q->front() || q->front()->empty()) {
-    return make_tuple(std::unique_ptr<IOBuf>(), 0, nullptr);
+    return make_pair(std::unique_ptr<IOBuf>(), 0);
   }
 
   size_t remaining = 0;
   std::unique_ptr<folly::IOBuf> buf = header->removeHeader(q, remaining,
       channel_.getPersistentReadHeaders());
   if (!buf) {
-    return make_tuple(std::unique_ptr<folly::IOBuf>(), remaining, nullptr);
+    return make_pair(std::unique_ptr<folly::IOBuf>(), remaining);
   }
   channel_.checkSupportedClient(header->getClientType());
-  header->setMinCompressBytes(channel_.getMinCompressBytes());
-  return make_tuple(std::move(buf), 0, std::move(header));
+  return make_pair(std::move(buf), 0);
 }
 
 // Interface from MessageChannel::RecvCallback
 void HeaderClientChannel::messageReceived(
     unique_ptr<IOBuf>&& buf,
-    unique_ptr<THeader>&& header,
     unique_ptr<MessageChannel::RecvCallback::sample>) {
   DestructorGuard dg(this);
 
-  buf = handleSecurityMessage(std::move(buf), std::move(header));
+  buf = handleSecurityMessage(std::move(buf));
 
   if (!buf) {
     return;
@@ -530,8 +516,8 @@ void HeaderClientChannel::messageReceived(
 
   uint32_t recvSeqId;
 
-  if (header->getClientType() != THRIFT_HEADER_CLIENT_TYPE &&
-      header->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (header_->getClientType() != THRIFT_HEADER_CLIENT_TYPE &&
+      header_->getClientType() != THRIFT_HEADER_SASL_CLIENT_TYPE) {
     // Non-header clients will always be in order.
     // Note that for non-header clients, getSequenceNumber()
     // will return garbage.
@@ -539,7 +525,7 @@ void HeaderClientChannel::messageReceived(
     recvCallbackOrder_.pop_front();
   } else {
     // The header contains the seq-id.  May be out of order.
-    recvSeqId = header->getSequenceNumber();
+    recvSeqId = header_->getSequenceNumber();
   }
 
   auto cb = recvCallbacks_.find(recvSeqId);
@@ -556,17 +542,18 @@ void HeaderClientChannel::messageReceived(
 
   auto f(cb->second);
 
-  auto it = header->getHeaders().find("thrift_stream");
-  bool isChunk = (it != header->getHeaders().end() && it->second == "chunk");
+  auto it = header_->getHeaders().find("thrift_stream");
+  bool isChunk = (it != header_->getHeaders().end() && it->second == "chunk");
 
   if (isChunk) {
-    f->partialReplyReceived(std::move(buf), std::move(header));
+    f->partialReplyReceived(std::move(buf));
   } else {
     // non-stream message or end of stream
     recvCallbacks_.erase(recvSeqId);
     // we are the last callback?
     setBaseReceivedCallback();
-    f->replyReceived(std::move(buf), std::move(header));
+
+    f->replyReceived(std::move(buf));
   }
 }
 

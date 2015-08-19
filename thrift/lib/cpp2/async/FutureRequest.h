@@ -51,11 +51,9 @@ class FutureCallback : public FutureCallbackBase<Result> {
     FutureCallback(
         folly::Promise<Result>&& promise,
         Processor processor,
-        std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr,
-        apache::thrift::RpcOptions* rpcOptions = nullptr)
+        std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr)
         : FutureCallbackBase<Result>(std::move(promise), std::move(channel)),
-          processor_(processor),
-          rpcOptions_(rpcOptions) {}
+          processor_(processor) {}
 
     void replyReceived(ClientReceiveState&& state) {
       CHECK(!state.isException());
@@ -68,14 +66,9 @@ class FutureCallback : public FutureCallbackBase<Result> {
       } else {
         this->promise_.setValue(std::move(result));
       }
-
-      if (rpcOptions_ && !state.header()->getHeaders().empty()) {
-        rpcOptions_->setReadHeaders(state.header()->releaseHeaders());
-      }
     }
   private:
     Processor processor_;
-    apache::thrift::RpcOptions* rpcOptions_;
 };
 
 class OneWayFutureCallback : public FutureCallbackBase<folly::Unit> {
@@ -104,11 +97,9 @@ class FutureCallback<folly::Unit> : public FutureCallbackBase<folly::Unit> {
   FutureCallback(
       folly::Promise<folly::Unit>&& promise,
       Processor processor,
-      std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr,
-      apache::thrift::RpcOptions* rpcOptions = nullptr)
+      std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr)
       : FutureCallbackBase<folly::Unit>(std::move(promise), std::move(channel)),
-        processor_(processor),
-        rpcOptions_(rpcOptions) {}
+        processor_(processor) {}
 
   void replyReceived(ClientReceiveState&& state) override {
     CHECK(!state.isException());
@@ -120,15 +111,10 @@ class FutureCallback<folly::Unit> : public FutureCallbackBase<folly::Unit> {
     } else {
       promise_.setValue();
     }
-
-    if (rpcOptions_ && !state.header()->getHeaders().empty()) {
-      rpcOptions_->setReadHeaders(state.header()->releaseHeaders());
-    }
   }
 
  private:
   Processor processor_;
-  RpcOptions* rpcOptions_;
 };
 
 }} // Namespace

@@ -66,8 +66,8 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
         func, &oprot, protoSeqId, nullptr, x);
     queue.append(THeader::transform(
           queue.move(),
-          ctx->getHeader()->getWriteTransforms(),
-          ctx->getHeader()->getMinCompressBytes()));
+          ctx->getTransforms(),
+          ctx->getMinCompressBytes()));
     auto queue_mw = makeMoveWrapper(move(queue));
     auto req_mw = makeMoveWrapper(move(req));
     eb->runInEventBaseThread([=]() mutable {

@@ -23,7 +23,10 @@
 #include <thrift/lib/cpp/async/TEventBaseManager.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <folly/SocketAddress.h>
+
+namespace folly {
+class SocketAddress;
+}
 
 namespace apache { namespace thrift {
 
@@ -44,14 +47,9 @@ class TConnectionContext {
   }
 
   // expose getPeerAddress() defined in TRpcTransportContext
-  virtual const folly::SocketAddress* getPeerAddress() const {
-    return &peerAddress_;
-  }
 
-  void reset() {
-    peerAddress_.reset();
-    localAddress_.reset();
-    cleanupUserData();
+  virtual const folly::SocketAddress* getPeerAddress() const {
+    return nullptr;
   }
 
   virtual std::shared_ptr<protocol::TProtocol> getInputProtocol() const {
@@ -66,7 +64,7 @@ class TConnectionContext {
   virtual transport::THeader* getHeader() const {
     if (getOutputProtocol()) {
       return dynamic_cast<apache::thrift::transport::THeader*>(
-          getOutputProtocol()->getTransport().get());
+        getOutputProtocol()->getTransport().get());
     }
     return nullptr;
   }
@@ -128,9 +126,6 @@ class TConnectionContext {
   }
 
  protected:
-  folly::SocketAddress peerAddress_;
-  folly::SocketAddress localAddress_;
-
   void cleanupUserData() {
     if (destructor_) {
       destructor_(userData_);

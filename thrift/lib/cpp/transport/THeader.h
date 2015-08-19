@@ -64,7 +64,6 @@ class THttpClientParser;
 namespace apache { namespace thrift { namespace transport {
 
 using apache::thrift::protocol::T_COMPACT_PROTOCOL;
-using apache::thrift::protocol::T_BINARY_PROTOCOL;
 
 /**
  * Class that will take an IOBuf and wrap it in some thrift headers.
@@ -85,16 +84,17 @@ class THeader {
 
   THeader();
 
-  virtual void setClientType(CLIENT_TYPE ct) { this->clientType = ct; }
+  void setClientTypeNoCheck(CLIENT_TYPE ct) { clientType = ct; }
   // Force using specified client type when using legacy client types
   // i.e. sniffing out client type is disabled.
   void forceClientType(bool enable) { forceClientType_ = enable; }
-  CLIENT_TYPE getClientType() const { return clientType; }
+  CLIENT_TYPE getClientType() { return clientType; }
 
-  uint16_t getProtocolId() const { return protoId_;}
+  uint16_t getProtocolId() const;
   void setProtocolId(uint16_t protoId) { this->protoId_ = protoId; }
 
   int8_t getProtocolVersion() const;
+
   void setProtocolVersion(uint8_t ver) { this->protoVersion = ver; }
 
   virtual void resetProtocol();
@@ -163,21 +163,24 @@ class THeader {
     writeTrans_ = trans;
   }
   const std::vector<uint16_t>& getTransforms() const { return readTrans_; }
-  std::vector<uint16_t>& getWriteTransforms() { return writeTrans_; }
+  const std::vector<uint16_t>& getWriteTransforms() const {
+    return writeTrans_; }
 
   // these work with write headers
   void setHeader(const std::string& key, const std::string& value);
   void setHeaders(StringToStringMap&&);
   void clearHeaders();
-  StringToStringMap& getWriteHeaders() { return writeHeaders_; }
 
-  StringToStringMap&& releaseWriteHeaders() {
-    return std::move(writeHeaders_);
+  void setReadHeaders(StringToStringMap&&);
+
+  StringToStringMap& getWriteHeaders() {
+    return writeHeaders_;
   }
 
   // these work with read headers
-  void setReadHeaders(StringToStringMap&&);
-  const StringToStringMap& getHeaders() const { return readHeaders_; }
+  const StringToStringMap& getHeaders() const {
+    return readHeaders_;
+  }
 
   StringToStringMap releaseHeaders() {
     StringToStringMap headers;
@@ -185,12 +188,16 @@ class THeader {
     return headers;
   }
 
+  StringToStringMap&& releaseWriteHeaders() {
+    return std::move(writeHeaders_);
+  }
+
   std::string getPeerIdentity();
   void setIdentity(const std::string& identity);
 
   // accessors for seqId
-  uint32_t getSequenceNumber() const { return seqId; }
-  void setSequenceNumber(uint32_t sid) { this->seqId = sid; }
+  int32_t getSequenceNumber() const { return seqId; }
+  void setSequenceNumber(int32_t sid) { this->seqId = sid; }
 
   enum TRANSFORMS {
     NONE = 0x0,
@@ -260,6 +267,7 @@ class THeader {
     folly::IOBufQueue*,
     size_t& needed,
     StringToStringMap& persistentReadHeaders);
+
 
   void setMinCompressBytes(uint32_t bytes) {
     minCompressBytes_ = bytes;

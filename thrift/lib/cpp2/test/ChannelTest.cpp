@@ -71,34 +71,32 @@ class EventBaseAborter : public TAsyncTimeout {
 // Creates/unwraps a framed message (LEN(MSG) | MSG)
 class TestFramingHandler : public FramingHandler {
 public:
-  std::tuple<unique_ptr<IOBuf>, size_t, unique_ptr<THeader>>
-  removeFrame(IOBufQueue* q) override {
+  std::pair<unique_ptr<IOBuf>, size_t> removeFrame(IOBufQueue* q) override {
     assert(q);
     queue_.append(*q);
     if (!queue_.front() || queue_.front()->empty()) {
-      return make_tuple(std::unique_ptr<IOBuf>(), 0, nullptr);
+      return make_pair(std::unique_ptr<IOBuf>(), 0);
     }
 
     uint32_t len = queue_.front()->computeChainDataLength();
 
     if (len < 4) {
       size_t remaining = 4 - len;
-      return make_tuple(unique_ptr<IOBuf>(), remaining, nullptr);
+      return make_pair(unique_ptr<IOBuf>(), remaining);
     }
 
     folly::io::Cursor c(queue_.front());
     uint32_t msgLen = c.readBE<uint32_t>();
     if (len - 4 < msgLen) {
       size_t remaining = msgLen - (len - 4);
-      return make_tuple(unique_ptr<IOBuf>(), remaining, nullptr);
+      return make_pair(unique_ptr<IOBuf>(), remaining);
     }
 
     queue_.trimStart(4);
-    return make_tuple(queue_.split(msgLen), 0, nullptr);
+    return make_pair(queue_.split(msgLen), 0);
   }
 
-  unique_ptr<IOBuf> addFrame(unique_ptr<IOBuf> buf,
-                             THeader* header) override {
+  unique_ptr<IOBuf> addFrame(unique_ptr<IOBuf> buf) override {
     assert(buf);
     unique_ptr<IOBuf> framing;
 
@@ -192,9 +190,7 @@ class MessageCallback
     sendError_++;
   }
 
-  void messageReceived(unique_ptr<IOBuf>&& buf,
-                       unique_ptr<THeader>&& header,
-                       unique_ptr<sample>) override {
+  void messageReceived(unique_ptr<IOBuf>&& buf, unique_ptr<sample>) override {
     recv_++;
     recvBytes_ += buf->computeChainDataLength();
   }
@@ -296,12 +292,11 @@ class MessageTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>
                   , public MessageCallback {
  public:
   explicit MessageTest(size_t len)
-      : len_(len)
-      , header_(new THeader) {
+      : len_(len) {
   }
 
   void preLoop() override {
-    channel0_->sendMessage(&sendCallback_, makeTestBuf(len_), header_.get());
+    channel0_->sendMessage(&sendCallback_, makeTestBuf(len_));
     channel1_->setReceiveCallback(this);
   }
 
@@ -315,18 +310,14 @@ class MessageTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>
   }
 
   void messageReceived(unique_ptr<IOBuf>&& buf,
-                       unique_ptr<THeader>&& header,
                        unique_ptr<sample> sample) override {
-    MessageCallback::messageReceived(std::move(buf),
-                                     std::move(header),
-                                     std::move(sample));
+    MessageCallback::messageReceived(std::move(buf), std::move(sample));
     channel1_->setReceiveCallback(nullptr);
   }
 
 
  private:
   size_t len_;
-  unique_ptr<THeader> header_;
   MessageCallback sendCallback_;
 };
 
@@ -339,12 +330,8 @@ TEST(Channel, Cpp2Channel) {
 class MessageCloseTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>
                        , public MessageCallback {
 public:
-  MessageCloseTest() : header_(new THeader) {}
-
-  void preLoop() override {
-    channel0_->sendMessage(&sendCallback_,
-                           makeTestBuf(1024*1024),
-                           header_.get());
+ void preLoop() override {
+    channel0_->sendMessage(&sendCallback_, makeTestBuf(1024*1024));
     // Close the other socket after delay
     this->eventBase_.runInLoop(
       std::bind(&TAsyncSocket::close, this->socket1_.get()));
@@ -366,7 +353,6 @@ public:
 
  private:
   MessageCallback sendCallback_;
-  unique_ptr<THeader> header_;
 };
 
 TEST(Channel, MessageCloseTest) {
@@ -402,14 +388,12 @@ public:
       std::unique_ptr<RequestCallback>(new Callback(this)),
       // Fake method name for creating a ContextStatck
       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
+      makeTestBuf(len_));
     channel0_->sendRequest(
       std::unique_ptr<RequestCallback>(new Callback(this)),
       // Fake method name for creating a ContextStatck
       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
+      makeTestBuf(len_));
     channel0_->setCloseCallback(nullptr);
   }
 
@@ -539,8 +523,7 @@ public:
       std::unique_ptr<RequestCallback>(new Callback(this)),
       // Fake method name for creating a ContextStatck
       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(1),
-      std::unique_ptr<THeader>(new THeader));
+      makeTestBuf(1));
   }
 
   void postLoop() override {
@@ -785,20 +768,18 @@ class InOrderTest
 
   void preLoop() override {
     TestRequestCallback::reset();
-    channel0_->setFlags(0); // turn off out of order
+    channel0_->getHeader()->setFlags(0); // turn off out of order
     channel1_->setCallback(this);
     channel0_->sendRequest(
       std::unique_ptr<RequestCallback>(new Callback(this)),
       // Fake method name for creating a ContextStatck
       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
+      makeTestBuf(len_));
     channel0_->sendRequest(
       std::unique_ptr<RequestCallback>(new Callback(this)),
       // Fake method name for creating a ContextStatck
       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_ + 1),
-      std::unique_ptr<THeader>(new THeader));
+      makeTestBuf(len_ + 1));
   }
 
   void postLoop() override {
@@ -853,12 +834,11 @@ public:
       oneway_++;
       return;
     }
-    unique_ptr<THeader> header(new THeader);
-    header->setSequenceNumber(-1);
+    std::map<std::string, std::string> headers;
+    std::vector<uint16_t> transforms;
     HeaderServerChannel::HeaderRequest r(
-      channel1_.get(),
-      req->extractBuf(),
-      std::move(header),
+      -1 /* bad seqid */, channel1_.get(),
+      req->extractBuf(), headers, transforms,
       true /*out of order*/,
       std::unique_ptr<MessageChannel::RecvCallback::sample>(nullptr));
     r.sendReply(r.extractBuf());
@@ -872,14 +852,12 @@ public:
       std::unique_ptr<RequestCallback>(new Callback(this)),
       // Fake method name for creating a ContextStatck
       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
+      makeTestBuf(len_));
     channel0_->sendRequest(
       std::unique_ptr<RequestCallback>(new Callback(this)),
       // Fake method name for creating a ContextStatck
       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
+      makeTestBuf(len_));
   }
 
   void postLoop() override {
@@ -923,14 +901,12 @@ public:
       std::unique_ptr<RequestCallback>(new TestRequestCallback),
       // Fake method name for creating a ContextStatck
       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
+      makeTestBuf(len_));
     channel0_->sendRequest(
       std::unique_ptr<RequestCallback>(new TestRequestCallback),
       // Fake method name for creating a ContextStatck
       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
+      makeTestBuf(len_));
   }
 
   void postLoop() override {
@@ -993,8 +969,7 @@ public:
         std::unique_ptr<RequestCallback>(new TestRequestCallback),
         // Fake method name for creating a ContextStatck
         std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-        makeTestBuf(len_),
-        std::unique_ptr<THeader>(new THeader));
+        makeTestBuf(len_));
     // Verify the timeout worked within 10ms
     channel0_->getEventBase()->tryRunAfterDelay([&](){
         EXPECT_EQ(replyError_, 1);
@@ -1005,8 +980,7 @@ public:
           std::unique_ptr<RequestCallback>(new TestRequestCallback),
           // Fake method name for creating a ContextStatck
           std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-          makeTestBuf(len_),
-          std::unique_ptr<THeader>(new THeader));
+          makeTestBuf(len_));
       }, 20);
   }
 
@@ -1219,9 +1193,8 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
     channel_->setReceiveCallback(this);
   }
   void messageReceived(
-    std::unique_ptr<folly::IOBuf>&&,
-    std::unique_ptr<apache::thrift::transport::THeader>&&,
-    std::unique_ptr<MessageChannel::RecvCallback::sample> sample) override {}
+      std::unique_ptr<folly::IOBuf>&&,
+      std::unique_ptr<MessageChannel::RecvCallback::sample> sample) override {}
   void messageChannelEOF() override {
     EXPECT_EQ(invocations_, 0);
     invocations_++;

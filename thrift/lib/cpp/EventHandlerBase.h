@@ -466,6 +466,16 @@ class TClientBase : public EventHandlerBase {
               std::shared_ptr<protocol::TProtocol> inputProtocol,
               std::shared_ptr<protocol::TProtocol> outputProtocol);
 
+    const folly::SocketAddress* getPeerAddress() const override {
+      return &internalAddress_;
+    }
+
+    void reset() {
+      internalAddress_.reset();
+      address_ = nullptr;
+      cleanupUserData();
+    }
+
     std::shared_ptr<protocol::TProtocol> getInputProtocol() const override {
       return inputProtocol_;
     }
@@ -475,6 +485,8 @@ class TClientBase : public EventHandlerBase {
     }
 
    private:
+    folly::SocketAddress* address_;
+    folly::SocketAddress internalAddress_;
     std::shared_ptr<protocol::TProtocol> inputProtocol_;
     std::shared_ptr<protocol::TProtocol> outputProtocol_;
   };

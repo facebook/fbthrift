@@ -36,11 +36,10 @@ void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
       return;
     }
     std::unique_ptr<folly::IOBuf> unframed;
-    std::unique_ptr<apache::thrift::transport::THeader> header;
     auto ex = folly::try_and_catch<std::exception>([&]() {
 
         // got a decrypted message
-        std::tie(unframed, remaining, header) = removeFrame(&q);
+        std::tie(unframed, remaining) = removeFrame(&q);
       });
 
     if (ex) {
@@ -55,18 +54,17 @@ void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
         readBufferSize_, remaining ? remaining : readBufferSize_);
       return;
     } else {
-      ctx->fireRead(std::make_pair(std::move(unframed), std::move(header)));
+      folly::IOBufQueue q2;
+      q2.append(std::move(unframed));
+      ctx->fireRead(q2);
     }
   }
 }
 
 folly::Future<folly::Unit> FramingHandler::write(
   Context* ctx,
-  std::pair<std::unique_ptr<folly::IOBuf>,
-            apache::thrift::transport::THeader*> bufAndHeader) {
-  return ctx->fireWrite(addFrame(
-        std::move(bufAndHeader.first),
-        bufAndHeader.second));
+  std::unique_ptr<folly::IOBuf> buf) {
+  return ctx->fireWrite(addFrame(std::move(buf)));
 }
 
 folly::Future<folly::Unit> FramingHandler::close(Context* ctx) {

@@ -180,31 +180,36 @@ TEST(Security, Basic) {
 
 TEST(Security, CompressionZlib) {
   runTest([](HeaderClientChannel* channel) {
-    channel->setTransform(transport::THeader::ZLIB_TRANSFORM);
+    auto header = channel->getHeader();
+    header->setTransform(transport::THeader::ZLIB_TRANSFORM);
   });
 }
 
 TEST(Security, CompressionSnappy) {
   runTest([](HeaderClientChannel* channel) {
-    channel->setTransform(transport::THeader::SNAPPY_TRANSFORM);
+    auto header = channel->getHeader();
+    header->setTransform(transport::THeader::SNAPPY_TRANSFORM);
   });
 }
 
 TEST(Security, DISABLED_CompressionQlz) {
   runTest([](HeaderClientChannel* channel) {
-    channel->setTransform(transport::THeader::QLZ_TRANSFORM);
+    auto header = channel->getHeader();
+    header->setTransform(transport::THeader::QLZ_TRANSFORM);
   });
 }
 
 TEST(Security, ProtocolBinary) {
   runTest([](HeaderClientChannel* channel) {
-    channel->setProtocolId(protocol::T_BINARY_PROTOCOL);
+    auto header = channel->getHeader();
+    header->setProtocolId(protocol::T_BINARY_PROTOCOL);
   });
 }
 
 TEST(Security, ProtocolCompact) {
   runTest([](HeaderClientChannel* channel) {
-    channel->setProtocolId(protocol::T_COMPACT_PROTOCOL);
+    auto header = channel->getHeader();
+    header->setProtocolId(protocol::T_COMPACT_PROTOCOL);
   });
 }
 
