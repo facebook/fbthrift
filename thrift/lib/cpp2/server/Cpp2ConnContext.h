@@ -201,7 +201,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   }
 
   typedef void (*void_ptr_destructor)(void*);
-  typedef std::unique_ptr<void, void_ptr_destructor> RequestData;
+  typedef std::unique_ptr<void, void_ptr_destructor> RequestDataPtr;
 
   // This data is set on a per request basis.
   void* getRequestData() const {
@@ -209,10 +209,10 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   }
 
   // Returns the old request data context so the caller can clean up
-  RequestData setRequestData(
+  RequestDataPtr setRequestData(
       void* data, void_ptr_destructor destructor = no_op_destructor) {
 
-    RequestData oldData(data, destructor);
+    RequestDataPtr oldData(data, destructor);
     requestData_.swap(oldData);
     return oldData;
   }
@@ -248,7 +248,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
  private:
   Cpp2ConnContext* ctx_;
 
-  RequestData requestData_;
+  RequestDataPtr requestData_;
 
   // Headers are per-request, not per-connection
   std::map<std::string, std::string> headers_;
