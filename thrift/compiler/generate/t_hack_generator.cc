@@ -853,7 +853,8 @@ string t_hack_generator::render_const_value(t_type* type, t_const_value* value) 
       } else {
         out << value->get_double();
       }
-      if (out.str().find(".") == string::npos) {
+      if (out.str().find(".") == string::npos &&
+          out.str().find("e") == string::npos) {
         out << ".0";
       }
       break;
