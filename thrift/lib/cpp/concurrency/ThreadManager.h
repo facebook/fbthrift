@@ -20,9 +20,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <memory>
-#include <functional>
 #include <array>
+#include <functional>
+#include <memory>
 
 #include <folly/Executor.h>
 #include <folly/LifoSem.h>
@@ -314,14 +314,27 @@ class PriorityThreadManager : public ThreadManager {
   virtual wangle::Codel* getCodel(PRIORITY priority) = 0;
 
   /**
-   * Creates a priority-aware thread manager that uses counts[X]
-   * worker threads for priority X.
-   * Atleast NORMAL_PRIORITY_MINIMUM_THREADS threads are created for
-   * priority NORMAL
+   * Creates a priority-aware thread manager given thread factory and size for
+   * each priority.
+   *
+   * At least NORMAL_PRIORITY_MINIMUM_THREADS threads are created for
+   * priority NORMAL.
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager>
-    newPriorityThreadManager(std::array<size_t, N_PRIORITIES> counts,
+    newPriorityThreadManager(
+        const std::array<std::pair<std::shared_ptr<ThreadFactory>, size_t>,
+                         N_PRIORITIES>& counts,
+        bool enableTaskStats = false,
+        size_t maxQueueLen = 0);
+
+  /**
+   * Creates a priority-aware thread manager that uses counts[X]
+   * worker threads for priority X.
+   */
+  template <typename SemType = folly::LifoSem>
+  static std::shared_ptr<PriorityThreadManager>
+    newPriorityThreadManager(const std::array<size_t, N_PRIORITIES>& counts,
                              bool enableTaskStats = false,
                              size_t maxQueueLen = 0);
 

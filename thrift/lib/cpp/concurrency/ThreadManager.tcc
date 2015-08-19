@@ -627,12 +627,11 @@ shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
 
 template <typename SemType>
 class PriorityThreadManager::PriorityImplT : public PriorityThreadManager {
-public:
-  PriorityImplT(std::array<
-               std::pair<shared_ptr<ThreadFactory>, size_t>,
-               N_PRIORITIES> factories,
-               bool enableTaskStats = false,
-               size_t maxQueueLen = 0) {
+ public:
+  PriorityImplT(const std::array<std::pair<shared_ptr<ThreadFactory>, size_t>,
+                                 N_PRIORITIES>& factories,
+                bool enableTaskStats = false,
+                size_t maxQueueLen = 0) {
     for (int i = 0; i < N_PRIORITIES; i++) {
       unique_ptr<ThreadManager> m(
         new ThreadManager::ImplT<SemType>(0, enableTaskStats, maxQueueLen));
@@ -879,38 +878,39 @@ static const size_t NORMAL_PRIORITY_MINIMUM_THREADS = 1;
 template <typename SemType>
 shared_ptr<PriorityThreadManager>
 PriorityThreadManager::newPriorityThreadManager(
-    std::array<size_t,N_PRIORITIES> counts,
+    const std::array<std::pair<shared_ptr<ThreadFactory>, size_t>,
+                     N_PRIORITIES>& factories,
     bool enableTaskStats,
     size_t maxQueueLen) {
-
-  assert(N_PRIORITIES == 5);
-  // Note that priorities for HIGH and IMPORTANT are the same, the difference
-  // is in the number of threads
-
-  if (counts[3] < NORMAL_PRIORITY_MINIMUM_THREADS) {
+  auto copy = factories;
+  if (copy[PRIORITY::NORMAL].second < NORMAL_PRIORITY_MINIMUM_THREADS) {
     LOG(INFO) << "Creating minimum threads of NORMAL priority: "
-      << NORMAL_PRIORITY_MINIMUM_THREADS;
+              << NORMAL_PRIORITY_MINIMUM_THREADS;
+    copy[PRIORITY::NORMAL].second = NORMAL_PRIORITY_MINIMUM_THREADS;
   }
-  std::array<std::pair<shared_ptr<ThreadFactory>, size_t>,
-             N_PRIORITIES> factories
-  {{
-      {Factory(PosixThreadFactory::HIGHER), counts[0]},   // HIGH_IMPORTANT
-      {Factory(PosixThreadFactory::HIGH),   counts[1]},   // HIGH
-      {Factory(PosixThreadFactory::HIGH),   counts[2]},   // IMPORTANT
-      {Factory(PosixThreadFactory::NORMAL),
-        std::max(
-          NORMAL_PRIORITY_MINIMUM_THREADS,
-          counts[3])},   // NORMAL
-      {Factory(PosixThreadFactory::LOW),    counts[4]}   // BEST_EFFORT
-  }};
+  return std::make_shared<PriorityThreadManager::PriorityImplT<SemType>>(
+      copy, enableTaskStats, maxQueueLen);
+}
 
-  return shared_ptr<PriorityThreadManager>(
-    new PriorityThreadManager::PriorityImplT<SemType>(
-      factories,
-      enableTaskStats,
-      maxQueueLen
-    )
-  );
+template <typename SemType>
+shared_ptr<PriorityThreadManager>
+PriorityThreadManager::newPriorityThreadManager(
+    const std::array<size_t, N_PRIORITIES>& counts,
+    bool enableTaskStats,
+    size_t maxQueueLen) {
+  static_assert(N_PRIORITIES == 5, "Implementation is out-of-date");
+  // Note that priorities for HIGH and IMPORTANT are the same, the difference
+  // is in the number of threads.
+  const std::array<std::pair<shared_ptr<ThreadFactory>, size_t>, N_PRIORITIES>
+    factories{{
+      {Factory(PosixThreadFactory::HIGHER), counts[PRIORITY::HIGH_IMPORTANT]},
+      {Factory(PosixThreadFactory::HIGH),   counts[PRIORITY::HIGH]},
+      {Factory(PosixThreadFactory::HIGH),   counts[PRIORITY::IMPORTANT]},
+      {Factory(PosixThreadFactory::NORMAL), counts[PRIORITY::NORMAL]},
+      {Factory(PosixThreadFactory::LOW),    counts[PRIORITY::BEST_EFFORT]},
+  }};
+  return newPriorityThreadManager<SemType>(
+      factories, enableTaskStats, maxQueueLen);
 }
 
 template <typename SemType>
