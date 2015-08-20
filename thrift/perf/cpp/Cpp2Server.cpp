@@ -57,6 +57,8 @@ DEFINE_string(cert, "", "server SSL certificate file");
 DEFINE_string(key, "", "server SSL private key file");
 DEFINE_string(client_ca_list, "", "file pointing to a client CA or list");
 DEFINE_bool(queue_sends, true, "Queue sends for better throughput");
+DEFINE_string(ecc_curve, "prime256v1",
+    "The ECC curve to use for EC handshakes");
 
 void setTunables(ThriftServer* server) {
   if (FLAGS_idle_timeout > 0) {
@@ -88,6 +90,12 @@ int main(int argc, char* argv[]) {
 
   auto handler = std::make_shared<AsyncLoadHandler2>();
 
+  folly::SSLContext::setSSLLockTypes({
+    {CRYPTO_LOCK_EVP_PKEY, SSLContext::LOCK_NONE},
+    {CRYPTO_LOCK_SSL_SESSION, SSLContext::LOCK_SPINLOCK},
+    {CRYPTO_LOCK_SSL_CTX, SSLContext::LOCK_NONE},
+    {CRYPTO_LOCK_ERR, SSLContext::LOCK_SPINLOCK}});
+
   std::shared_ptr<ThriftServer> server;
   server.reset(new ThriftServer());
   server->setInterface(handler);
@@ -97,11 +105,18 @@ int main(int argc, char* argv[]) {
   server->setMaxConnections(FLAGS_max_connections);
   server->setMaxRequests(FLAGS_max_requests);
   server->setQueueSends(FLAGS_queue_sends);
+  wangle::TLSTicketKeySeeds seeds = {
+    { "11111111" },
+    { "22111111" },
+    { "33111111" }
+  };
+  server->setTicketSeeds(std::move(seeds));
 
   if (FLAGS_cert.length() > 0 && FLAGS_key.length() > 0) {
     std::shared_ptr<wangle::SSLContextConfig> sslContext(new wangle::SSLContextConfig());
     sslContext->setCertificate(FLAGS_cert, FLAGS_key, "");
     sslContext->clientCAFile = FLAGS_client_ca_list;
+    sslContext->eccCurveName = FLAGS_ecc_curve;
     server->setSSLConfig(sslContext);
   }
 

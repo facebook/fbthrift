@@ -102,6 +102,7 @@ class ThriftServer : public apache::thrift::server::TServer
 
   //! SSL context
   std::shared_ptr<wangle::SSLContextConfig> sslContext_;
+  folly::Optional<wangle::TLSTicketKeySeeds> ticketSeeds_;
 
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
@@ -515,6 +516,11 @@ class ThriftServer : public apache::thrift::server::TServer
     sslContext_ = context;
   }
 
+  void setTicketSeeds(
+      wangle::TLSTicketKeySeeds seeds) {
+    ticketSeeds_ = seeds;
+  }
+
   std::shared_ptr<wangle::SSLContextConfig>
   getSSLConfig() const {
     return sslContext_;
@@ -527,6 +533,9 @@ class ThriftServer : public apache::thrift::server::TServer
     }
     config.connectionIdleTimeout = getIdleTimeout();
     config.acceptBacklog = getListenBacklog();
+    if (ticketSeeds_) {
+      config.initialTicketSeeds = *ticketSeeds_;
+    }
     return config;
   }
 
