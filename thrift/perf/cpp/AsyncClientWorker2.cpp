@@ -209,12 +209,19 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
     std::shared_ptr<TAsyncSocket> socket;
     if (config->useSSL()) {
       auto context = std::make_shared<SSLContext>();
-      socket = TAsyncSSLSocket::newSocket(std::move(context), &eb_);
-      socket->connect(nullptr, *config->getAddress(), kTimeout);
+      auto sslSocket = TAsyncSSLSocket::newSocket(std::move(context), &eb_);
+      if (session_) {
+        sslSocket->setSSLSession(session_.get());
+      }
+      sslSocket->connect(nullptr, *config->getAddress(), kTimeout);
       // Loop until connection is established and TLS handshake completes.
       // Unlike a regular AsyncSocket which is usable even before TCP handshke
       // completes, an SSL socket reports !good() until TLS handshake completes.
       eb_.loop();
+      if (config->useTickets()) {
+        session_.reset(sslSocket->getSSLSession());
+      }
+      socket = std::move(sslSocket);
     } else {
       socket = TAsyncSocket::newSocket(&eb_, *config->getAddress(), kTimeout);
     }

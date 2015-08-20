@@ -42,6 +42,7 @@ DEFINE_string(sasl_service_tier, "",
 DEFINE_string(key, "", "client SSL private key file");
 DEFINE_string(cert, "", "client SSL certificate file");
 DEFINE_string(trusted_ca_list, "", "file pointing to a trusted CA or list");
+DEFINE_bool(use_tickets, true, "Use SSL session tickets on the client?");
 /*
  * Please refer to the online OpenSSL manual for the format of the string of
  * ciphers. The default cipher list is "ALL:!aNULL:!eNULL", which means all
@@ -235,6 +236,10 @@ std::string ClientLoadConfig::trustedCAList() const {
 
 std::string ClientLoadConfig::ciphers() const {
   return FLAGS_ciphers;
+}
+
+bool ClientLoadConfig::useTickets() const {
+  return FLAGS_use_tickets;
 }
 
 uint32_t ClientLoadConfig::pickLogNormal(double mean, double sigma) {

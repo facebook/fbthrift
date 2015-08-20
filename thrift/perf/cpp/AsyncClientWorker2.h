@@ -71,6 +71,13 @@ class AsyncClientWorker2 : public Worker<
   TBinaryProtocolFactory binProtoFactory_;
   THeaderProtocolFactory duplexProtoFactory_;
 
+  struct SessionDeleter {
+    void operator()(SSL_SESSION* s) {
+      SSL_SESSION_free(s);
+    }
+  };
+  std::unique_ptr<SSL_SESSION, SessionDeleter> session_;
+
 };
 
 }} // apache::thrift

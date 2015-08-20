@@ -108,6 +108,7 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
   std::string cert() const;
   std::string trustedCAList() const;
   std::string ciphers() const;
+  bool useTickets() const;
 
  private:
   uint32_t pickLogNormal(double mean, double sigma);
