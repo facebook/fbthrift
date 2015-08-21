@@ -279,8 +279,8 @@ class TSocket(TSocketBase):
     def read(self, sz):
         buff = self.handle.recv(sz)
         if len(buff) == 0:
-            raise TTransportException(TTransportException.UNKNOWN,
-                                      'TSocket read 0 bytes')
+            raise TTransportException(type=TTransportException.END_OF_FILE,
+                                      message='TSocket read 0 bytes')
         return buff
 
     def write(self, buff):
@@ -295,7 +295,8 @@ class TSocket(TSocketBase):
             except socket.error as e:
                 message = 'Socket send failed with error %s (%s)' % (e.errno,
                         e.strerror)
-                raise TTransportException(TTransportException.UNKNOWN, message)
+                raise TTransportException(type=TTransportException.END_OF_FILE,
+                                          message=message)
             assert plus > 0
             sent += plus
             buff = buff[plus:]
