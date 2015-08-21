@@ -124,4 +124,47 @@ int Cpp2Worker::getPendingCount() const {
   return pendingCount_;
 }
 
+folly::Optional<SecureTransportType>
+Cpp2Worker::PeekingCallback::getSecureTransportType(
+    std::array<uint8_t, kPeekCount> bytes) {
+
+  // TLS starts as
+  // 0: 0x16 - handshake protocol magic
+  // 1: 0x03 - SSL version major
+  // 2: 0x00 to 0x03 - SSL version minor (SSLv3 or TLS1.0 through TLS1.2)
+  // 3-4: length (2 bytes)
+  // 5: 0x01 - handshake type (ClientHello)
+  // 6-8: handshake len (3 bytes), equals value from offset 3-4 minus 4
+
+  // Framed binary starts as
+  // 0-3: frame len
+  // 4: 0x80 - binary magic
+  // 5: 0x01 - protocol version
+  // 6-7: various
+  // 8-11: method name len
+
+  // Other Thrift transports/protocols can't conflict because they don't have
+  // 16-03-01 at offsets 0-1-5.
+
+  // Definitely not TLS
+  if (bytes[0] != 0x16 || bytes[1] != 0x03 || bytes[5] != 0x01) {
+    return SecureTransportType::NONE;
+  }
+
+  // This is most likely TLS, but could be framed binary, which has 80-01
+  // at offsets 4-5.
+  if (bytes[4] == 0x80 && bytes[8] != 0x7c) {
+    // Binary will have the method name length at offsets 8-11, which must be
+    // smaller than the frame length at 0-3, so byte 8 is <=  byte 0,
+    // which is 0x16.
+    // However, for TLS, bytes 6-8 (24 bits) are the length of the
+    // handshake protocol and this value is 4 less than the record-layer
+    // length at offset 3-4 (16 bits), so byte 8 equals 0x7c (0x80 - 4),
+    // which is not smaller than 0x16
+    return SecureTransportType::NONE;
+  }
+
+  return SecureTransportType::TLS;
+}
+
 }} // apache::thrift

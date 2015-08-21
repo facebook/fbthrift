@@ -28,6 +28,7 @@
 
 #include <wangle/acceptor/ConnectionManager.h>
 #include <wangle/acceptor/Acceptor.h>
+#include <wangle/acceptor/PeekingAcceptorHandshakeHelper.h>
 
 namespace apache { namespace thrift {
 
@@ -141,6 +142,34 @@ class Cpp2Worker
 
   int pendingCount_;
   std::chrono::steady_clock::time_point pendingTime_;
+
+  enum { kPeekCount = 9 };
+  using PeekingHelper = wangle::PeekingAcceptorHandshakeHelper<kPeekCount>;
+
+  class PeekingCallback : public PeekingHelper::Callback {
+   public:
+    folly::Optional<SecureTransportType> getSecureTransportType(
+        std::array<uint8_t, kPeekCount> peekedBytes) override;
+  };
+  PeekingCallback peekingCallback_;
+
+  void startHandshakeHelper(
+      folly::AsyncSSLSocket::UniquePtr sslSock,
+      wangle::Acceptor* acceptor,
+      const folly::SocketAddress& clientAddr,
+      std::chrono::steady_clock::time_point acceptTime,
+      wangle::TransportInfo& tinfo) noexcept override {
+
+    auto helper = new PeekingHelper(
+        std::move(sslSock),
+        this,
+        clientAddr,
+        acceptTime,
+        tinfo,
+        &peekingCallback_
+      );
+      helper->start();
+  }
 
   friend class Cpp2Connection;
   friend class ThriftServer;
