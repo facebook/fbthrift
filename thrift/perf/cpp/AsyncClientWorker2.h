@@ -47,12 +47,14 @@ class AsyncClientWorker2 : public Worker<
   AsyncClientWorker2() :
       eb_(),
       binProtoFactory_(),
-      duplexProtoFactory_(apache::thrift::protocol::T_BINARY_PROTOCOL, true) {
+      duplexProtoFactory_(apache::thrift::protocol::T_BINARY_PROTOCOL, true),
+      sslContext_(new folly::SSLContext()) {
     std::bitset<CLIENT_TYPES_LEN> clientTypes;
     clientTypes[THRIFT_FRAMED_DEPRECATED] = 1;
     clientTypes[THRIFT_HEADER_CLIENT_TYPE] = 1;
 
     duplexProtoFactory_.setClientTypes(clientTypes);
+    setupSSLContext();
   }
 
   typedef LoadTestAsyncClient Client;
@@ -67,9 +69,12 @@ class AsyncClientWorker2 : public Worker<
 
  private:
 
+  void setupSSLContext();
+
   apache::thrift::async::TEventBase eb_;
   TBinaryProtocolFactory binProtoFactory_;
   THeaderProtocolFactory duplexProtoFactory_;
+  std::shared_ptr<folly::SSLContext> sslContext_;
 
   struct SessionDeleter {
     void operator()(SSL_SESSION* s) {
@@ -77,7 +82,6 @@ class AsyncClientWorker2 : public Worker<
     }
   };
   std::unique_ptr<SSL_SESSION, SessionDeleter> session_;
-
 };
 
 }} // apache::thrift

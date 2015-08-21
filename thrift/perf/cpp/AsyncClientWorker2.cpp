@@ -208,11 +208,7 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
   } else {
     std::shared_ptr<TAsyncSocket> socket;
     if (config->useSSL()) {
-      auto context = std::make_shared<SSLContext>();
-      // Sets some sane properties on the context for ticket caching.
-      SSL_CTX_set_session_cache_mode(context->getSSLCtx(),
-        SSL_SESS_CACHE_NO_INTERNAL | SSL_SESS_CACHE_CLIENT);
-      auto sslSocket = TAsyncSSLSocket::newSocket(std::move(context), &eb_);
+      auto sslSocket = TAsyncSSLSocket::newSocket(sslContext_, &eb_);
       if (session_) {
         sslSocket->setSSLSession(session_.get());
       }
@@ -328,6 +324,30 @@ AsyncClientWorker2::run() {
   while (MAX_LOOPS == 0 || ++loopCount < MAX_LOOPS);
 
   stopWorker();
+}
+
+void
+AsyncClientWorker2::setupSSLContext() {
+  // Sets some sane properties on the context for ticket caching.
+  SSL_CTX_set_session_cache_mode(sslContext_->getSSLCtx(),
+    SSL_SESS_CACHE_NO_INTERNAL | SSL_SESS_CACHE_CLIENT);
+
+  if (getConfig()->cert().empty() ^ getConfig()->key().empty()) {
+    throw std::runtime_error("Must supply both key and cert or none");
+  }
+
+  // set client certs if specified.
+  if (!getConfig()->cert().empty()) {
+    SSL_CTX_use_certificate_chain_file(
+        sslContext_->getSSLCtx(),
+        getConfig()->cert().c_str());
+  }
+  if (!getConfig()->key().empty()) {
+    SSL_CTX_use_PrivateKey_file(
+        sslContext_->getSSLCtx(),
+        getConfig()->key().c_str(),
+        SSL_FILETYPE_PEM);
+  }
 }
 
 void AsyncRunner2::performAsyncOperation() {
