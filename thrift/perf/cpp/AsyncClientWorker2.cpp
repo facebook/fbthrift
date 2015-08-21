@@ -338,15 +338,12 @@ AsyncClientWorker2::setupSSLContext() {
 
   // set client certs if specified.
   if (!getConfig()->cert().empty()) {
-    SSL_CTX_use_certificate_chain_file(
-        sslContext_->getSSLCtx(),
-        getConfig()->cert().c_str());
+    sslContext_->loadCertificate(
+        getConfig()->cert().c_str(),
+        "PEM");
   }
   if (!getConfig()->key().empty()) {
-    SSL_CTX_use_PrivateKey_file(
-        sslContext_->getSSLCtx(),
-        getConfig()->key().c_str(),
-        SSL_FILETYPE_PEM);
+    sslContext_->loadPrivateKey(getConfig()->key().c_str(), "PEM");
   }
 }
 
