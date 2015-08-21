@@ -59,7 +59,6 @@ DEFINE_string(client_ca_list, "", "file pointing to a client CA or list");
 DEFINE_bool(queue_sends, true, "Queue sends for better throughput");
 DEFINE_string(ecc_curve, "prime256v1",
     "The ECC curve to use for EC handshakes");
-DEFINE_bool(verify_client, false, "Whether to verify the client via certs");
 
 void setTunables(ThriftServer* server) {
   if (FLAGS_idle_timeout > 0) {
@@ -118,13 +117,6 @@ int main(int argc, char* argv[]) {
     sslContext->setCertificate(FLAGS_cert, FLAGS_key, "");
     sslContext->clientCAFile = FLAGS_client_ca_list;
     sslContext->eccCurveName = FLAGS_ecc_curve;
-    if (FLAGS_verify_client) {
-      if (FLAGS_client_ca_list.empty()) {
-        throw std::runtime_error("Need to supply a CA to verify client");
-      }
-      sslContext->verifyPeer =
-        SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT;
-    }
     server->setSSLConfig(sslContext);
   }
 
