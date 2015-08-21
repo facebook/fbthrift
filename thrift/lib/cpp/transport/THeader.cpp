@@ -720,7 +720,8 @@ void writeString(uint8_t* &ptr, const string& str) {
  */
 void flushInfoHeaders(uint8_t* &pkt,
                       THeader::StringToStringMap &headers,
-                      uint32_t infoIdType) {
+                      uint32_t infoIdType,
+                      bool clearAfterFlush=true) {
   uint32_t headerCount = headers.size();
   if (headerCount > 0) {
     pkt += writeVarint32(infoIdType, pkt);
@@ -732,7 +733,9 @@ void flushInfoHeaders(uint8_t* &pkt,
       writeString(pkt, it->first);  // key
       writeString(pkt, it->second); // value
     }
-    headers.clear();
+    if (clearAfterFlush) {
+      headers.clear();
+    }
   }
 }
 
@@ -767,6 +770,9 @@ size_t THeader::getMaxWriteHeadersSize(
   size_t maxWriteHeadersSize = 0;
   maxWriteHeadersSize += getInfoHeaderSize(persistentWriteHeaders);
   maxWriteHeadersSize += getInfoHeaderSize(writeHeaders_);
+  if (extraWriteHeaders_) {
+    maxWriteHeadersSize += getInfoHeaderSize(*extraWriteHeaders_);
+  }
   return maxWriteHeadersSize;
 }
 
@@ -892,6 +898,9 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
 
     // write non-persistent kv-headers
     flushInfoHeaders(pkt, writeHeaders_, infoIdType::KEYVALUE);
+    if (extraWriteHeaders_) {
+      flushInfoHeaders(pkt, *extraWriteHeaders_, infoIdType::KEYVALUE, false);
+    }
 
     // TODO(davejwatson) optimize this for writing twice/memcopy to pkt buffer.
     // See code in TBufferTransports

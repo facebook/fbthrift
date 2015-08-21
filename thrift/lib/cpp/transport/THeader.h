@@ -185,6 +185,10 @@ class THeader {
     return headers;
   }
 
+  void setExtraWriteHeaders(StringToStringMap* extraWriteHeaders) {
+    extraWriteHeaders_ = extraWriteHeaders;
+  }
+
   std::string getPeerIdentity();
   void setIdentity(const std::string& identity);
 
@@ -319,6 +323,9 @@ class THeader {
   // Map to use for headers
   StringToStringMap readHeaders_;
   StringToStringMap writeHeaders_;
+
+  // Won't be cleared when flushing
+  StringToStringMap* extraWriteHeaders_{nullptr};
 
   static const std::string IDENTITY_HEADER;
   static const std::string ID_VERSION_HEADER;
