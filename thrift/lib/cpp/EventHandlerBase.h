@@ -197,6 +197,7 @@ class ContextStack {
       : ctxs_()
       , handlers_(handlers)
       , method_(method) {
+    ctxs_.reserve(handlers->size());
     for (auto handler: *handlers) {
       ctxs_.push_back(handler->getServiceContext(serviceName,
                                                  method, connectionContext));
