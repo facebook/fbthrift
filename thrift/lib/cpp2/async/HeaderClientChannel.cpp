@@ -79,7 +79,7 @@ void HeaderClientChannel::closeNow() {
 
 void HeaderClientChannel::destroy() {
   closeNow();
-  TDelayedDestruction::destroy();
+  async::TDelayedDestruction::destroy();
 }
 
 void HeaderClientChannel::useAsHttpClient(const std::string& host,

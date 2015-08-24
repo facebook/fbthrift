@@ -36,7 +36,7 @@ DuplexChannel::DuplexChannel(Who::WhoEnum who,
                      *this, transport,
                      make_unique<DuplexFramingHandler>(*this),
                      make_unique<DuplexProtectionHandler>(*this)),
-                 TDelayedDestruction::Destructor())
+                 async::TDelayedDestruction::Destructor())
   , clientChannel_(new DuplexClientChannel(*this, cpp2Channel_),
                    async::TDelayedDestruction::Destructor())
   , clientFramingHandler_(*clientChannel_.get())

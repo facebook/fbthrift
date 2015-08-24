@@ -77,7 +77,7 @@ void HeaderServerChannel::destroy() {
 
   cpp2Channel_->closeNow();
 
-  TDelayedDestruction::destroy();
+  async::TDelayedDestruction::destroy();
 }
 
 // Header framing

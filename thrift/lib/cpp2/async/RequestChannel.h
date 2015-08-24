@@ -300,7 +300,7 @@ class RpcOptions {
 /**
  * RequestChannel defines an asynchronous API for request-based I/O.
  */
-class RequestChannel : virtual public TDelayedDestruction {
+class RequestChannel : virtual public async::TDelayedDestruction {
  protected:
   ~RequestChannel() override {}
 

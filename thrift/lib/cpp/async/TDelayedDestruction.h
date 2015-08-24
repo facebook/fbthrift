@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2015 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,10 @@
 
 #include <folly/io/async/DelayedDestruction.h>
 
-namespace apache { namespace thrift {
+namespace apache { namespace thrift { namespace async {
 
 typedef folly::DelayedDestruction TDelayedDestruction;
 
-// For legacy reasons, also provide DelayedDestruction in the
-// apache::thrift::async namespace
-namespace async {
-typedef apache::thrift::TDelayedDestruction TDelayedDestruction;
-}
-
-}}
+}}}
 
 #endif
