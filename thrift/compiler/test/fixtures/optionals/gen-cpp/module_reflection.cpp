@@ -106,9 +106,12 @@ static void reflectionInitializer_11268218794008757992(::apache::thrift::reflect
   dt.name = "enum module.Animal";
   schema.names[dt.name] = id;
   dt.__isset.enumValues = true;
-  dt.enumValues["CAT"] = 2;
-  dt.enumValues["DOG"] = 1;
-  dt.enumValues["TARANTULA"] = 3;
+  static const std::pair<const char*, int32_t> enumValues[] = {
+    {"CAT", 2},
+    {"DOG", 1},
+    {"TARANTULA", 3},
+  };
+  dt.enumValues.insert(boost::container::ordered_unique_range_t(), enumValues, enumValues + 3);
 }
 
 void  reflectionInitializer_11268218794008757992(::apache::thrift::reflection::Schema&);  // enum module.Animal

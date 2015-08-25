@@ -17,10 +17,13 @@ static void reflectionInitializer_16163282776448022760(::apache::thrift::reflect
   dt.name = "enum module.Company";
   schema.names[dt.name] = id;
   dt.__isset.enumValues = true;
-  dt.enumValues["FACEBOOK"] = 0;
-  dt.enumValues["INSTAGRAM"] = 3;
-  dt.enumValues["OCULUS"] = 2;
-  dt.enumValues["WHATSAPP"] = 1;
+  static const std::pair<const char*, int32_t> enumValues[] = {
+    {"FACEBOOK", 0},
+    {"INSTAGRAM", 3},
+    {"OCULUS", 2},
+    {"WHATSAPP", 1},
+  };
+  dt.enumValues.insert(boost::container::ordered_unique_range_t(), enumValues, enumValues + 4);
 }
 
 void  reflectionInitializer_16163282776448022760(::apache::thrift::reflection::Schema&);  // enum module.Company

@@ -7267,11 +7267,19 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
   if (ttype->is_enum()) {
     f_reflection_impl_
       << "  dt.__isset.enumValues = true;" << endl;
+
+    f_reflection_impl_ << "  static const std::pair<const char*, int32_t> "
+                       << "enumValues[] = {" << endl;
     for (auto& p : enumValues) {
       f_reflection_impl_
-        << "  dt.enumValues[\"" << escape(p.first) << "\"] = " << p.second
-        << ";" << endl;
+        << "    {\"" << escape(p.first) << "\", " << p.second << "}," << endl;
     }
+    f_reflection_impl_ << "  };" << endl;
+
+    f_reflection_impl_ << "  dt.enumValues.insert("
+                       << "boost::container::ordered_unique_range_t(), "
+                       << "enumValues, enumValues + "
+                       << enumValues.size() << ");" << endl;
   }
 
   // Call dependent initializers
