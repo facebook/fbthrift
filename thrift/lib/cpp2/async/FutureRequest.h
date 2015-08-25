@@ -63,14 +63,15 @@ class FutureCallback : public FutureCallbackBase<Result> {
 
       Result result;
       auto ew = processor_(result, state);
+
+      if (rpcOptions_ && !state.header()->getHeaders().empty()) {
+        rpcOptions_->setReadHeaders(state.header()->releaseHeaders());
+      }
+
       if (ew) {
         this->promise_.setException(ew);
       } else {
         this->promise_.setValue(std::move(result));
-      }
-
-      if (rpcOptions_ && !state.header()->getHeaders().empty()) {
-        rpcOptions_->setReadHeaders(state.header()->releaseHeaders());
       }
     }
   private:
@@ -115,14 +116,15 @@ class FutureCallback<folly::Unit> : public FutureCallbackBase<folly::Unit> {
     CHECK(state.buf());
 
     auto ew = processor_(state);
+
+    if (rpcOptions_ && !state.header()->getHeaders().empty()) {
+      rpcOptions_->setReadHeaders(state.header()->releaseHeaders());
+    }
+
     if (ew) {
       promise_.setException(ew);
     } else {
       promise_.setValue();
-    }
-
-    if (rpcOptions_ && !state.header()->getHeaders().empty()) {
-      rpcOptions_->setReadHeaders(state.header()->releaseHeaders());
     }
   }
 
