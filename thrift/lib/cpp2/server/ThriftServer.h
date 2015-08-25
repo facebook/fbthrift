@@ -26,11 +26,11 @@
 
 #include <folly/Memory.h>
 #include <folly/io/ShutdownSocketSet.h>
+#include <folly/io/async/EventBaseManager.h>
 #include <wangle/bootstrap/ServerBootstrap.h>
 #include <wangle/concurrent/IOThreadPoolExecutor.h>
 #include <thrift/lib/cpp/async/TAsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/async/TEventBaseManager.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServer.h>
@@ -145,11 +145,8 @@ class ThriftServer : public apache::thrift::server::TServer
   //! Milliseconds we'll wait for data to appear (0 = infinity)
   std::chrono::milliseconds timeout_;
 
-  //! Manager of per-thread TEventBase objects.
-  std::unique_ptr<apache::thrift::async::TEventBaseManager>
-    eventBaseManagerHolder_;
-  apache::thrift::async::TEventBaseManager* eventBaseManager_;
-  std::mutex ebmMutex_;
+  //! Manager of per-thread EventBase objects.
+  folly::EventBaseManager* eventBaseManager_;
 
   //! IO thread pool. Drives Cpp2Workers.
   std::shared_ptr<wangle::IOThreadPoolExecutor> ioThreadPool_;
@@ -572,14 +569,14 @@ class ThriftServer : public apache::thrift::server::TServer
   }
 
   /**
-   * Get the TEventBaseManager used by this server.  This can be used to find
+   * Get the EventBaseManager used by this server.  This can be used to find
    * or create the TEventBase associated with any given thread, including any
    * new threads created by clients.  This may be called from any thread.
    *
-   * @return a pointer to the TEventBaseManager.
+   * @return a pointer to the EventBaseManager.
    */
-  apache::thrift::async::TEventBaseManager* getEventBaseManager();
-  const apache::thrift::async::TEventBaseManager* getEventBaseManager() const {
+  folly::EventBaseManager* getEventBaseManager();
+  const folly::EventBaseManager* getEventBaseManager() const {
     return const_cast<ThriftServer*>(this)->getEventBaseManager();
   }
 

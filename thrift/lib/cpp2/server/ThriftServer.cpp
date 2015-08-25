@@ -59,7 +59,6 @@ using namespace apache::thrift::transport;
 using namespace apache::thrift::async;
 using namespace std;
 using std::shared_ptr;
-using apache::thrift::async::TEventBaseManager;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
@@ -109,7 +108,7 @@ ThriftServer::ThriftServer(const std::string& saslPolicy,
   nPoolThreads_(0),
   threadStackSizeMB_(1),
   timeout_(DEFAULT_TIMEOUT),
-  eventBaseManager_(nullptr),
+  eventBaseManager_(folly::EventBaseManager::get()),
   ioThreadPool_(std::make_shared<IOThreadPoolExecutor>(0)),
   taskExpireTime_(DEFAULT_TASK_EXPIRE_TIME),
   listenBacklog_(DEFAULT_LISTEN_BACKLOG),
@@ -200,10 +199,7 @@ int ThriftServer::getListenSocket() const {
   return sockets[0];
 }
 
-TEventBaseManager* ThriftServer::getEventBaseManager() {
-  if (!eventBaseManager_) {
-    eventBaseManager_ = TEventBaseManager::get();
-  }
+folly::EventBaseManager* ThriftServer::getEventBaseManager() {
   return eventBaseManager_;
 }
 
@@ -212,9 +208,6 @@ void ThriftServer::setup() {
   DCHECK_GT(nWorkers_, 0);
 
   uint32_t threadsStarted = 0;
-
-  // Make sure EBM exists if we haven't set one explicitly
-  getEventBaseManager();
 
   // Initialize event base for this thread, ensure event_init() is called
   serveEventBase_ = eventBaseManager_->getEventBase();
