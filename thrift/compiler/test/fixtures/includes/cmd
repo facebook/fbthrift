@@ -1,3 +1,4 @@
 hs src/module.thrift
 py src/module.thrift
 android_lite -r src/module.thrift
+cocoa:import_path=thrift -r src/module.thrift
