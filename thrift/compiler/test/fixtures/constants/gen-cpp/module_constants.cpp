@@ -96,129 +96,70 @@ std::map<std::string, int32_t>  const &module_constants::char2ascii() {
 
 std::string const &module_constants_codemod::name() {
   static auto const instance([]() {
-    std::string value;
-
-    value = "Mark Zuckerberg";
+    std::string value = module_constants::name();
     return value;
   }());
   return instance;
 }
 std::vector<std::map<std::string, int32_t> >  const &module_constants_codemod::states() {
   static auto const instance([]() {
-    std::vector<std::map<std::string, int32_t> >  value;
-
-    std::map<std::string, int32_t>  tmp4;
-    tmp4.insert(std::make_pair("San Diego", 3211000));
-    tmp4.insert(std::make_pair("Sacramento", 479600));
-    tmp4.insert(std::make_pair("SF", 837400));
-
-    value.push_back(tmp4);
-    std::map<std::string, int32_t>  tmp5;
-    tmp5.insert(std::make_pair("New York", 8406000));
-    tmp5.insert(std::make_pair("Albany", 98400));
-
-    value.push_back(tmp5);
-
+    std::vector<std::map<std::string, int32_t> >  value = module_constants::states();
     return value;
   }());
   return instance;
 }
 Internship const &module_constants_codemod::instagram() {
   static auto const instance([]() {
-    Internship value;
-
-    value.weeks = 12;
-    value.__isset.weeks = true;
-    value.title = "Software Engineer";
-    value.__isset.title = true;
-    value.employer = (Company)3;
-    value.__isset.employer = true;
-
+    Internship value = module_constants::instagram();
     return value;
   }());
   return instance;
 }
 std::vector<Internship>  const &module_constants_codemod::internList() {
   static auto const instance([]() {
-    std::vector<Internship>  value;
-
-    Internship tmp6;
-    tmp6.weeks = 12;
-    tmp6.__isset.weeks = true;
-    tmp6.title = "Software Engineer";
-    tmp6.__isset.title = true;
-    tmp6.employer = (Company)3;
-    tmp6.__isset.employer = true;
-
-    value.push_back(tmp6);
-    Internship tmp7;
-    tmp7.weeks = 10;
-    tmp7.__isset.weeks = true;
-    tmp7.title = "Sales Intern";
-    tmp7.__isset.title = true;
-    tmp7.employer = (Company)0;
-    tmp7.__isset.employer = true;
-
-    value.push_back(tmp7);
-
+    std::vector<Internship>  value = module_constants::internList();
     return value;
   }());
   return instance;
 }
 std::string const &module_constants_codemod::apostrophe() {
   static auto const instance([]() {
-    std::string value;
-
-    value = "'";
+    std::string value = module_constants::apostrophe();
     return value;
   }());
   return instance;
 }
 std::string const &module_constants_codemod::tripleApostrophe() {
   static auto const instance([]() {
-    std::string value;
-
-    value = "'''";
+    std::string value = module_constants::tripleApostrophe();
     return value;
   }());
   return instance;
 }
 std::string const &module_constants_codemod::quotationMark() {
   static auto const instance([]() {
-    std::string value;
-
-    value = "\"";
+    std::string value = module_constants::quotationMark();
     return value;
   }());
   return instance;
 }
 std::string const &module_constants_codemod::backslash() {
   static auto const instance([]() {
-    std::string value;
-
-    value = "\\";
+    std::string value = module_constants::backslash();
     return value;
   }());
   return instance;
 }
 std::string const &module_constants_codemod::escaped_a() {
   static auto const instance([]() {
-    std::string value;
-
-    value = "\x61";
+    std::string value = module_constants::escaped_a();
     return value;
   }());
   return instance;
 }
 std::map<std::string, int32_t>  const &module_constants_codemod::char2ascii() {
   static auto const instance([]() {
-    std::map<std::string, int32_t>  value;
-
-    value.insert(std::make_pair("'", 39));
-    value.insert(std::make_pair("\"", 34));
-    value.insert(std::make_pair("\\", 92));
-    value.insert(std::make_pair("\x61", 97));
-
+    std::map<std::string, int32_t>  value = module_constants::char2ascii();
     return value;
   }());
   return instance;
@@ -228,59 +169,20 @@ std::map<std::string, int32_t>  const &module_constants_codemod::char2ascii() {
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 moduleConstants::moduleConstants() {
-  myInt = 1337;
-  name = "Mark Zuckerberg";
-  std::map<std::string, int32_t>  tmp8;
-  tmp8.insert(std::make_pair("San Diego", 3211000));
-  tmp8.insert(std::make_pair("Sacramento", 479600));
-  tmp8.insert(std::make_pair("SF", 837400));
-
-  states.push_back(tmp8);
-  std::map<std::string, int32_t>  tmp9;
-  tmp9.insert(std::make_pair("New York", 8406000));
-  tmp9.insert(std::make_pair("Albany", 98400));
-
-  states.push_back(tmp9);
-
-  x = 1;
-  y = 1000000;
-  z = 1e+09;
-  instagram.weeks = 12;
-  instagram.__isset.weeks = true;
-  instagram.title = "Software Engineer";
-  instagram.__isset.title = true;
-  instagram.employer = (Company)3;
-  instagram.__isset.employer = true;
-
-  Internship tmp10;
-  tmp10.weeks = 12;
-  tmp10.__isset.weeks = true;
-  tmp10.title = "Software Engineer";
-  tmp10.__isset.title = true;
-  tmp10.employer = (Company)3;
-  tmp10.__isset.employer = true;
-
-  internList.push_back(tmp10);
-  Internship tmp11;
-  tmp11.weeks = 10;
-  tmp11.__isset.weeks = true;
-  tmp11.title = "Sales Intern";
-  tmp11.__isset.title = true;
-  tmp11.employer = (Company)0;
-  tmp11.__isset.employer = true;
-
-  internList.push_back(tmp11);
-
-  apostrophe = "'";
-  tripleApostrophe = "'''";
-  quotationMark = "\"";
-  backslash = "\\";
-  escaped_a = "\x61";
-  char2ascii.insert(std::make_pair("'", 39));
-  char2ascii.insert(std::make_pair("\"", 34));
-  char2ascii.insert(std::make_pair("\\", 92));
-  char2ascii.insert(std::make_pair("\x61", 97));
-
+  myInt = module_constants::myInt();
+  name = module_constants::name();
+  states = module_constants::states();
+  x = module_constants::x();
+  y = module_constants::y();
+  z = module_constants::z();
+  instagram = module_constants::instagram();
+  internList = module_constants::internList();
+  apostrophe = module_constants::apostrophe();
+  tripleApostrophe = module_constants::tripleApostrophe();
+  quotationMark = module_constants::quotationMark();
+  backslash = module_constants::backslash();
+  escaped_a = module_constants::escaped_a();
+  char2ascii = module_constants::char2ascii();
 }
 
 #pragma GCC diagnostic pop

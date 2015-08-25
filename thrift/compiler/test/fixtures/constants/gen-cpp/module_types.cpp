@@ -136,9 +136,9 @@ uint32_t Internship::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 3:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast13;
-          xfer += iprot->readI32(ecast13);
-          this->employer = (Company)ecast13;
+          int32_t ecast5;
+          xfer += iprot->readI32(ecast5);
+          this->employer = (Company)ecast5;
           this->__isset.employer = true;
         } else {
           xfer += iprot->skip(ftype);

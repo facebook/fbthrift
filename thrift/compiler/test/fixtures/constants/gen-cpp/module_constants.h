@@ -57,12 +57,12 @@ struct module_constants {
 };
 
 struct  __attribute__((__deprecated__("module_constants_codemod is a transitional class only intended for codemods from the deprecated moduleConstants to module_constants. Consider switching to the latter as soon as possible."))) module_constants_codemod {
-  static constexpr int32_t const myInt() { return 1337; }
+  static constexpr int32_t const myInt() { return module_constants::myInt(); }
   static std::string const &name();
   static std::vector<std::map<std::string, int32_t> >  const &states();
-  static constexpr double const x() { return 1; }
-  static constexpr double const y() { return 1000000; }
-  static constexpr double const z() { return 1e+09; }
+  static constexpr double const x() { return module_constants::x(); }
+  static constexpr double const y() { return module_constants::y(); }
+  static constexpr double const z() { return module_constants::z(); }
   static Internship const &instagram();
   static std::vector<Internship>  const &internList();
   static std::string const &apostrophe();

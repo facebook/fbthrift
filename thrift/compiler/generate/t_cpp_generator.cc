@@ -1022,8 +1022,9 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     ns_open_ << endl <<
     endl;
 
+  string consts_struct = program_name_ + "_constants";
   // DECLARATIONS
-  f_consts << "struct " << program_name_ << "_constants {" << endl;
+  f_consts << "struct " << consts_struct << " {" << endl;
   vector<t_const*>::iterator c_iter;
   indent_up();
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
@@ -1137,8 +1138,8 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     }
     f_consts << name << "()";
     if (inlined) {
-      f_consts << " { return " << render_const_value(f_consts, type, value)
-        << "; }" << endl;
+      f_consts << " { return " << consts_struct << "::" << name
+               << "(); }" << endl;
     } else {
       f_consts << ';' << endl;
     }
@@ -1164,9 +1165,9 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     indent_up();
     f_consts_impl << indent() << "static auto const instance([]() {" << endl;
     indent_up();
-    f_consts_impl << indent() << type_name(type) << " value;" << endl << endl;
-    print_const_value(f_consts_impl, "value", type, value);
-    f_consts_impl << indent() << "return value;" << endl;
+    f_consts_impl << indent() << type_name(type) << " value = "
+                  << consts_struct << "::" << name << "();" << endl;
+     f_consts_impl << indent() << "return value;" << endl;
     indent_down();
     f_consts_impl << indent() << "}());" << endl
       << indent() << "return instance;" << endl;
@@ -1205,10 +1206,9 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     program_name_ << "Constants::" << program_name_ << "Constants() {" << endl;
   indent_up();
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    print_const_value(f_consts_impl,
-                      (*c_iter)->get_name(),
-                      (*c_iter)->get_type(),
-                      (*c_iter)->get_value());
+    string name = (*c_iter)->get_name();
+    f_consts_impl << indent() << name << " = "
+                  << consts_struct << "::" << name << "();" << endl;
   }
   indent_down();
   indent(f_consts_impl) <<
@@ -1330,9 +1330,7 @@ string t_cpp_generator::render_const_value(
   std::ostringstream render;
 
   // Resolve typedefs.
-  while (type->is_typedef()) {
-    type = ((t_typedef*)type)->get_type();
-  }
+  type = get_true_type(type);
 
   if (value == nullptr) {
     if (allow_null_val) {
@@ -6881,7 +6879,7 @@ void t_cpp_generator::generate_serialize_list_element(ofstream& out,
 /**
  * Makes a :: prefix for a namespace
  *
- * @param ns The namepsace, w/ periods in it
+ * @param ns The namespace, w/ periods in it
  * @return Namespaces
  */
 string t_cpp_generator::namespace_prefix(string ns, string delimiter) const {
