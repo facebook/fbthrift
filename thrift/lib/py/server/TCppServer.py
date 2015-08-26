@@ -97,6 +97,8 @@ class TCppServer(CppServerWrapper, TServer):
         if self._setup_done:
             return
         CppServerWrapper.setup(self)
+        # Task expire isn't supported in Python
+        CppServerWrapper.setTaskExpireTime(self, 0)
         if self.serverEventHandler is not None:
             self.serverEventHandler.preServe(self.getAddress())
         self._setup_done = True
