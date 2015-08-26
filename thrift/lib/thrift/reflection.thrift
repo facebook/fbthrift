@@ -1,5 +1,5 @@
 cpp_include "<unordered_map>"
-cpp_include "<boost/interprocess/containers/flat_map.hpp>"
+cpp_include "<boost/container/flat_map.hpp>"
 
 namespace cpp apache.thrift.reflection
 

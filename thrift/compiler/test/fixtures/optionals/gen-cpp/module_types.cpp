@@ -13,13 +13,13 @@
 
 
 
-int _kAnimalValues[] = {
+const int _kAnimalValues[] = {
   DOG,
   CAT,
   TARANTULA
 };
 
-const char* _kAnimalNames[] = {
+const char* const _kAnimalNames[] = {
   "DOG",
   "CAT",
   "TARANTULA"

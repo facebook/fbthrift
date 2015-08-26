@@ -13,14 +13,14 @@
 
 
 
-int _kCityValues[] = {
+const int _kCityValues[] = {
   NYC,
   MPK,
   SEA,
   LON
 };
 
-const char* _kCityNames[] = {
+const char* const _kCityNames[] = {
   "NYC",
   "MPK",
   "SEA",
@@ -45,14 +45,14 @@ return findValue( ::_City_NAMES_TO_VALUES, name, out);
 }} // apache::thrift 
 
 
-int _kCompanyValues[] = {
+const int _kCompanyValues[] = {
   FACEBOOK,
   WHATSAPP,
   OCULUS,
   INSTAGRAM
 };
 
-const char* _kCompanyNames[] = {
+const char* const _kCompanyNames[] = {
   "FACEBOOK",
   "WHATSAPP",
   "OCULUS",

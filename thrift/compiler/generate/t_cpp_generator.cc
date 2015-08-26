@@ -910,12 +910,12 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
      Generate a character array of enum names for debugging purposes.
   */
   f_types_impl_ <<
-    indent() << value_type << " _k" << name << "Values[] =";
+    indent() << "const " << value_type << " _k" << name << "Values[] =";
   generate_enum_constant_list(
       f_types_impl_, constants, false, false, typed_prefix);
 
   f_types_impl_ <<
-    indent() << "const char* _k" << name << "Names[] =";
+    indent() << "const char* const _k" << name << "Names[] =";
   generate_enum_constant_list(
       f_types_impl_, constants, true, false, typed_prefix);
 

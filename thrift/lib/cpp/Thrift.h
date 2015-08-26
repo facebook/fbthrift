@@ -155,8 +155,8 @@ template <typename T>
 class TEnumIterator : public std::map<T, char*>::iterator {
  public:
   TEnumIterator(int n,
-                T* enums,
-                const char** names) :
+                const T* enums,
+                const char* const* names) :
       ii_(0), n_(n), enums_(enums), names_(names) {
   }
 
@@ -164,7 +164,7 @@ class TEnumIterator : public std::map<T, char*>::iterator {
     return ++ii_;
   }
 
-  bool operator !=(const TEnumIterator<T>& end) {
+  bool operator !=(const TEnumIterator<T>& end) const {
     assert(end.n_ == -1);
     return (ii_ != n_);
   }
@@ -176,16 +176,16 @@ class TEnumIterator : public std::map<T, char*>::iterator {
  private:
   int ii_;
   const int n_;
-  T* enums_;
-  const char** names_;
+  const T* enums_;
+  const char* const* names_;
 };
 
 template <typename T>
 class TEnumInverseIterator : public std::map<T, char*>::iterator {
  public:
   TEnumInverseIterator(int n,
-                       T* enums,
-                       const char** names) :
+                       const T* enums,
+                       const char* const* names) :
       ii_(0), n_(n), enums_(enums), names_(names) {
   }
 
@@ -193,7 +193,7 @@ class TEnumInverseIterator : public std::map<T, char*>::iterator {
     return ++ii_;
   }
 
-  bool operator !=(const TEnumInverseIterator<T>& end) {
+  bool operator !=(const TEnumInverseIterator<T>& end) const {
     assert(end.n_ == -1);
     return (ii_ != n_);
   }
@@ -205,8 +205,8 @@ class TEnumInverseIterator : public std::map<T, char*>::iterator {
  private:
   int ii_;
   const int n_;
-  T* enums_;
-  const char** names_;
+  const T* enums_;
+  const char* const* names_;
 };
 
 class TOutput {

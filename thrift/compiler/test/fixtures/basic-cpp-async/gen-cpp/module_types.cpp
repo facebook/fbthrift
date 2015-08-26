@@ -11,12 +11,12 @@
 
 
 
-int _kMyEnumValues[] = {
+const int _kMyEnumValues[] = {
   MyValue1,
   MyValue2
 };
 
-const char* _kMyEnumNames[] = {
+const char* const _kMyEnumNames[] = {
   "MyValue1",
   "MyValue2"
 };

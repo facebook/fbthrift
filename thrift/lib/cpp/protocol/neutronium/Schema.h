@@ -21,12 +21,13 @@
 #define THRIFT_LIB_CPP_PROTOCOL_NEUTRONIUM_SCHEMA_H_
 
 #include <vector>
-#include "boost/interprocess/containers/flat_map.hpp"
-#include "boost/interprocess/containers/flat_set.hpp"
-#include <thrift/lib/cpp/protocol/TProtocol.h>
-#include <thrift/lib/cpp/Reflection.h>
-#include <glog/logging.h>
+
+#include <boost/container/flat_map.hpp>
+#include <boost/container/flat_set.hpp>
 #include <folly/Bits.h>
+#include <glog/logging.h>
+#include <thrift/lib/cpp/Reflection.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/protocol/neutronium/Utils.h>
 
 namespace apache {
