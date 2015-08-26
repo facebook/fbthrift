@@ -1291,7 +1291,7 @@ void t_hs_generator::generate_service_server(t_service* tservice) {
   indent_down();
 }
 
-bool hasNoArguments(t_function* func) {
+static bool hasNoArguments(t_function* func) {
     return (func->get_arglist()->get_members().empty());
 }
 

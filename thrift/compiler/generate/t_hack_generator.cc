@@ -37,7 +37,7 @@ class t_hack_generator : public t_oop_generator {
   t_hack_generator(
       t_program* program,
       const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::string& /*option_string*/)
     : t_oop_generator(program)
   {
     std::map<std::string, std::string>::const_iterator iter;
@@ -691,7 +691,7 @@ void t_hack_generator::close_generator() {
  *
  * @param ttypedef The type definition
  */
-void t_hack_generator::generate_typedef(t_typedef* ttypedef) {}
+void t_hack_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
 
 /**
  * Generates code for an enumerated type. Since define is expensive to lookup
@@ -1770,7 +1770,8 @@ void t_hack_generator::generate_processor_event_handler_functions(ofstream& out)
 void t_hack_generator::generate_client_event_handler_functions(ofstream& out) {
   generate_event_handler_functions(out, "TClientEventHandler");
 }
-void t_hack_generator::generate_event_handler_functions(ofstream& out, string cl) {
+void t_hack_generator::generate_event_handler_functions(ofstream& /*out*/,
+                                                        string cl) {
   f_service_ <<
     indent() << "public function setEventHandler(" << cl <<
                 " $event_handler): this {" << endl <<
@@ -2842,7 +2843,7 @@ void t_hack_generator::_generate_service_client_children(
 void t_hack_generator::generate_deserialize_field(ofstream &out,
                                                  t_field* tfield,
                                                  string name,
-                                                 bool inclass) {
+                                                 bool /*inclass*/) {
   t_type* type = get_true_type(tfield->get_type());
   if (name == "") {
     name = tfield->get_name();
@@ -3195,7 +3196,7 @@ void t_hack_generator::generate_serialize_field(ofstream &out,
  * @param prefix  String prefix to attach to all fields
  */
 void t_hack_generator::generate_serialize_struct(ofstream &out,
-                                                t_struct* tstruct,
+                                                t_struct* /*tstruct*/,
                                                 string prefix) {
   indent(out) <<
     "$xfer += $" << prefix << "->write($output);" << endl;
@@ -3318,7 +3319,7 @@ void t_hack_generator::generate_serialize_list_element(ofstream &out,
  * @param thrift iff the object is a thrift object
  */
 string t_hack_generator::declare_field(t_field* tfield, bool init,
-                                      bool obj, bool thrift) {
+                                       bool obj, bool /*thrift*/) {
   string result = "$" + tfield->get_name();
   if (init) {
     t_type* type = get_true_type(tfield->get_type());

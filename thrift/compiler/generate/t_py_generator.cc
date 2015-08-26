@@ -45,7 +45,7 @@ class t_py_generator : public t_generator {
   t_py_generator(
       t_program* program,
       const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::string& /*option_string*/)
     : t_generator(program)
   {
     std::map<std::string, std::string>::const_iterator iter;
@@ -907,7 +907,7 @@ void t_py_generator::close_generator() {
  *
  * @param ttypedef The type definition
  */
-void t_py_generator::generate_typedef(t_typedef* ttypedef) {}
+void t_py_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
 
 /**
  * Generates code for an enumerated type. Done using a class to scope
@@ -1347,7 +1347,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
 
 void t_py_generator::generate_py_thrift_spec(ofstream& out,
                                              t_struct* tstruct,
-                                             bool is_exception) {
+                                             bool /*is_exception*/) {
 
   const vector<t_field*>& members = tstruct->get_members();
   const vector<t_field*>& sorted_members = tstruct->get_sorted_members();
@@ -1499,7 +1499,7 @@ void t_py_generator::generate_py_annotations(std::ofstream& out,
 void t_py_generator::generate_py_struct_definition(ofstream& out,
                                                    t_struct* tstruct,
                                                    bool is_exception,
-                                                   bool is_result) {
+                                                   bool /*is_result*/) {
 
   const vector<t_field*>& members = tstruct->get_members();
   const vector<t_field*>& sorted_members = tstruct->get_sorted_members();
@@ -1758,7 +1758,7 @@ void t_py_generator::generate_fastproto_read(ofstream& out,
 }
 
 void t_py_generator::generate_fastbinary_read(ofstream& out,
-                                              t_struct* tstruct) {
+                                              t_struct* /*tstruct*/) {
   indent(out) <<
     "if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) "
     "or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and "
@@ -1779,7 +1779,7 @@ void t_py_generator::generate_fastbinary_read(ofstream& out,
 }
 
 void t_py_generator::generate_fastbinary_write(ofstream& out,
-                                               t_struct* tstruct) {
+                                               t_struct* /*tstruct*/) {
   indent(out) <<
     "if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) "
     "or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and "
@@ -2592,7 +2592,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
  *
  * @param tservice The service to generate a fuzzer for.
  */
-void t_py_generator::generate_service_fuzzer(t_service* tservice) {
+void t_py_generator::generate_service_fuzzer(t_service* /*tservice*/) {
   string f_fuzzer_name = package_dir_+service_name_+"-fuzzer";
   ofstream f_fuzzer;
   f_fuzzer.open(f_fuzzer_name.c_str());
@@ -2736,7 +2736,7 @@ void t_py_generator::generate_service_server(t_service* tservice,
  *
  * @param tfunction The function to write a dispatcher for
  */
-void t_py_generator::generate_process_function(t_service* tservice,
+void t_py_generator::generate_process_function(t_service* /*tservice*/,
                                                t_function* tfunction,
                                                bool with_context) {
   string fn_name = tfunction->get_name();
@@ -2972,7 +2972,7 @@ void t_py_generator::generate_process_function(t_service* tservice,
 void t_py_generator::generate_deserialize_field(ofstream &out,
                                                 t_field* tfield,
                                                 string prefix,
-                                                bool inclass) {
+                                                bool /*inclass*/) {
   t_type* type = get_true_type(tfield->get_type());
 
   if (type->is_void()) {
@@ -3287,7 +3287,7 @@ void t_py_generator::generate_serialize_field(ofstream &out,
  * @param prefix  String prefix to attach to all fields
  */
 void t_py_generator::generate_serialize_struct(ofstream &out,
-                                               t_struct* tstruct,
+                                               t_struct* /*tstruct*/,
                                                string prefix) {
   indent(out) <<
     prefix << ".write(oprot)" << endl;

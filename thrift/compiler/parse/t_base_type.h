@@ -79,7 +79,7 @@ class t_base_type : public t_type {
     return (base_ == TYPE_STRING) && binary_;
   }
 
-  void set_string_enum(bool val) {
+  void set_string_enum(bool /*val*/) {
     string_enum_ = true;
   }
 

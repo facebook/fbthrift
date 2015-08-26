@@ -26,7 +26,7 @@
 namespace apache { namespace thrift {
 
 DebugProtocolWriter::DebugProtocolWriter(
-    ExternalBufferSharing sharing) : out_(nullptr) { }
+    ExternalBufferSharing /*sharing*/) : out_(nullptr) { }
 
 namespace {
 
@@ -120,13 +120,14 @@ void DebugProtocolWriter::endItem() {
   }
 }
 
-void DebugProtocolWriter::setOutput(folly::IOBufQueue* out, size_t maxGrowth) {
+void DebugProtocolWriter::setOutput(folly::IOBufQueue* out,
+                                    size_t /*maxGrowth*/) {
   out_ = out;
 }
 
 uint32_t DebugProtocolWriter::writeMessageBegin(const std::string& name,
                                                 MessageType messageType,
-                                                int32_t seqid) {
+                                                int32_t /*seqid*/) {
   std::string mtype;
   switch (messageType) {
   case T_CALL:      mtype = "call";   break;

@@ -36,8 +36,8 @@ class t_xsd_generator : public t_generator {
  public:
   t_xsd_generator(
       t_program* program,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::map<std::string, std::string>& /*parsed_options*/,
+      const std::string& /*option_string*/)
     : t_generator(program)
   {
     out_dir_base_ = "gen-xsd";
@@ -57,7 +57,7 @@ class t_xsd_generator : public t_generator {
    */
 
   void generate_typedef(t_typedef* ttypedef) override;
-  void generate_enum(t_enum* tenum) override {}
+  void generate_enum(t_enum* /*tenum*/) override {}
 
   void generate_service(t_service* tservice) override;
   void generate_struct(t_struct* tstruct) override;

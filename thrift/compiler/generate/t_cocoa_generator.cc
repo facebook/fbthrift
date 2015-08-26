@@ -1264,8 +1264,9 @@ void t_cocoa_generator::generate_cocoa_struct_field_accessor_implementations(ofs
  *
  * @param tstruct The struct definition
  */
-void t_cocoa_generator::generate_cocoa_struct_description(ofstream& out,
-                                                          t_struct* tstruct) {
+void t_cocoa_generator::generate_cocoa_struct_description(
+    ofstream& out,
+    t_struct* /*tstruct*/) {
   out << indent() << "- (NSString *) description {" << endl;
   indent_up();
   indent(out) << "return [[self toDict] description];" << endl;

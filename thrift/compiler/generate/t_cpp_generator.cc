@@ -64,7 +64,7 @@ class t_cpp_generator : public t_oop_generator {
   t_cpp_generator(
       t_program* program,
       const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::string& /*option_string*/)
     : t_oop_generator(program)
   {
     std::map<std::string, std::string>::const_iterator iter;
@@ -2450,7 +2450,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
   generate_hash_and_equal_to(out, tstruct, tstruct->get_name());
 }
 
-bool is_boolean_type(t_type* ttype) {
+static bool is_boolean_type(t_type* ttype) {
   if (ttype->is_base_type()) {
     t_base_type* btype = static_cast<t_base_type*>(ttype);
     if (t_base_type::TYPE_BOOL == btype->get_base()) {

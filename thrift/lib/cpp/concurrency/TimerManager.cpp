@@ -264,7 +264,7 @@ void TimerManager::add(shared_ptr<Runnable> task, const struct timespec& value) 
 }
 
 
-void TimerManager::remove(shared_ptr<Runnable> task) {
+void TimerManager::remove(shared_ptr<Runnable> /*task*/) {
   Synchronized s(monitor_);
   if (state_ != TimerManager::STARTED) {
     throw IllegalStateException();

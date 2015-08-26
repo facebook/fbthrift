@@ -345,7 +345,7 @@ public:
     const size_t _id;
   };
 
-  void foo(PosixThreadFactory *tf) {
+  void foo(PosixThreadFactory* /*tf*/) {
   }
 
   bool floodNTest(size_t loop=1, size_t count=100000) {

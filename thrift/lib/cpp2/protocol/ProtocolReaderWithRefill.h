@@ -73,9 +73,9 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
     explicit CompactProtocolReaderWithRefill(Refiller refiller)
       : VirtualCompactReader(refiller) {}
 
-    inline uint32_t readMessageBegin(std::string& name,
-                                     MessageType& messageType,
-                                     int32_t& seqid) override {
+    inline uint32_t readMessageBegin(std::string& /*name*/,
+                                     MessageType& /*messageType*/,
+                                     int32_t& /*seqid*/) override {
       // Only called in python so leave it unimplemented.
       throw std::runtime_error("not implemented");
     }
@@ -297,14 +297,14 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
     explicit BinaryProtocolReaderWithRefill(Refiller refiller)
       : VirtualBinaryReader(refiller) {}
 
-    inline uint32_t readMessageBegin(std::string& name,
-                                     MessageType& messageType,
-                                     int32_t& seqid) override {
+    inline uint32_t readMessageBegin(std::string& /*name*/,
+                                     MessageType& /*messageType*/,
+                                     int32_t& /*seqid*/) override {
       // This is only called in python so leave it unimplemented.
       throw std::runtime_error("not implemented");
     }
 
-    inline uint32_t readFieldBegin(std::string& name,
+    inline uint32_t readFieldBegin(std::string& /*name*/,
                                    TType& fieldType,
                                    int16_t& fieldId) override {
       uint32_t result = 0;

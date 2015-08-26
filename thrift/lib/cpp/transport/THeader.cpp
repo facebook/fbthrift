@@ -303,7 +303,7 @@ unique_ptr<IOBuf> THeader::removeHeader(
   return std::move(buf);
 }
 
-string getString(RWPrivateCursor& c, uint32_t sz) {
+static string getString(RWPrivateCursor& c, uint32_t sz) {
   char strdata[sz];
   c.pull(strdata, sz);
   string str(strdata, sz);
@@ -316,12 +316,12 @@ string getString(RWPrivateCursor& c, uint32_t sz) {
  *
  * @param RWPrivateCursor        cursor to read from
  */
-string readString(RWPrivateCursor& c) {
+static string readString(RWPrivateCursor& c) {
   return getString(c, readVarint<uint32_t>(c));
 }
 
-void readInfoHeaders(RWPrivateCursor& c,
-                     THeader::StringToStringMap &headers_) {
+static void readInfoHeaders(RWPrivateCursor& c,
+                            THeader::StringToStringMap &headers_) {
   // Process key-value headers
   uint32_t numKVHeaders = readVarint<int32_t>(c);
   // continue until we reach (paded) end of packet
@@ -708,7 +708,7 @@ void THeader::resetProtocol() {
  * terminated)
  * Automatically advances ptr to after the written portion
  */
-void writeString(uint8_t* &ptr, const string& str) {
+static void writeString(uint8_t* &ptr, const string& str) {
   uint32_t strLen = str.length();
   ptr += writeVarint32(strLen, ptr);
   memcpy(ptr, str.c_str(), strLen); // no need to write \0
@@ -718,10 +718,10 @@ void writeString(uint8_t* &ptr, const string& str) {
 /**
  * Writes headers to a byte buffer and clear the header map
  */
-void flushInfoHeaders(uint8_t* &pkt,
-                      THeader::StringToStringMap &headers,
-                      uint32_t infoIdType,
-                      bool clearAfterFlush=true) {
+static void flushInfoHeaders(uint8_t* &pkt,
+                             THeader::StringToStringMap &headers,
+                             uint32_t infoIdType,
+                             bool clearAfterFlush=true) {
   uint32_t headerCount = headers.size();
   if (headerCount > 0) {
     pkt += writeVarint32(infoIdType, pkt);
@@ -751,7 +751,7 @@ void THeader::setReadHeaders(THeader::StringToStringMap&& headers) {
   readHeaders_ = std::move(headers);
 }
 
-size_t getInfoHeaderSize(const THeader::StringToStringMap &headers) {
+static size_t getInfoHeaderSize(const THeader::StringToStringMap &headers) {
   if (headers.empty()) {
     return 0;
   }

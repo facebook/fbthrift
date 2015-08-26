@@ -42,7 +42,7 @@ uint32_t g_socket_syscalls = 0;
 
 // Global helper functions
 
-int msTimeFromTimeval(struct timeval s) {
+static int msTimeFromTimeval(struct timeval s) {
   return folly::to<int>(s.tv_sec*1000 + s.tv_usec/1000);
 }
 

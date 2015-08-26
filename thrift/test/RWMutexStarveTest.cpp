@@ -78,7 +78,7 @@ public:
   Writer(shared_ptr<ReadWriteMutex> rwlock) : Locker(rwlock, true) { }
 };
 
-void test_starve(PosixThreadFactory::POLICY policy)
+static void test_starve(PosixThreadFactory::POLICY policy)
 {
   // the man pages for pthread_wrlock_rdlock suggest that any OS guarantee about
   // writer starvation may be influenced by the scheduling policy, so let's try
@@ -146,22 +146,24 @@ void test_starve(PosixThreadFactory::POLICY policy)
   BOOST_CHECK_MESSAGE(success, "writer is starving");
 }
 
-void test_starve_other()
+static void test_starve_other()
 {
   test_starve(PosixThreadFactory::OTHER);
 }
 
-void test_starve_rr()
+static void test_starve_rr()
 {
   test_starve(PosixThreadFactory::ROUND_ROBIN);
 }
 
-void test_starve_fifo()
+static void test_starve_fifo()
 {
   test_starve(PosixThreadFactory::FIFO);
 }
 
-test_suite* init_unit_test_suite(int argc, char* argv[])
+test_suite* init_unit_test_suite(int /*argc*/, char* /*argv*/[]);
+
+test_suite* init_unit_test_suite(int /*argc*/, char* /*argv*/[])
 {
   test_suite* suite = &master_test_suite();
   suite->p_name.value = "RWMutexStarveTest";

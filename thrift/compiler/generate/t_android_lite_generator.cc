@@ -441,7 +441,7 @@ void t_android_lite_generator::close_generator() {
 
 /* Just like Java, we don't do anything for typedefs. We still override the
  * method so that a change to the Java compiler doesn't suprise us. */
-void t_android_lite_generator::generate_typedef(t_typedef* ttypedef) {
+void t_android_lite_generator::generate_typedef(t_typedef* /*ttypedef*/) {
   // Empty.
 }
 
@@ -511,7 +511,7 @@ void t_android_lite_generator::output_write(t_map* tmap, const string value,
 
 
 void t_android_lite_generator::output_write(t_struct* tstruct,
-    const string value, int depth, bool needs_cast, stringstream& stream) {
+    const string value, int /*depth*/, bool needs_cast, stringstream& stream) {
   if (needs_cast) {
     indent(stream) << "((" << type_name(tstruct) << ") " << value << ")";
   } else {
@@ -551,7 +551,7 @@ void t_android_lite_generator::output_write(t_set* tset, const string value,
 
 
 void t_android_lite_generator::output_write(t_enum* tenum, const string value,
-    int depth, bool needsCast, stringstream& stream) {
+    int /*depth*/, bool needsCast, stringstream& stream) {
   indent(stream) << "oprot.writeI32(";
   if (needsCast) {
     stream << "((" << type_name(tenum) << ") " << value << ")";
@@ -857,11 +857,11 @@ void t_android_lite_generator::generate_enum(t_enum* tenum) {
   }
 }
 
-void t_android_lite_generator::generate_service(t_service* tservice) {
+void t_android_lite_generator::generate_service(t_service* /*tservice*/) {
   throw "Services are not yet supported for Thrift on Android.";
 }
 
-void t_android_lite_generator::generate_xception(t_struct* txception) {
+void t_android_lite_generator::generate_xception(t_struct* /*txception*/) {
   throw "Exceptions are not yet supported for Thrift on Android.";
 }
 

@@ -109,7 +109,7 @@ void THeaderTransport::allocateReadBuffer(uint32_t sz) {
   }
 }
 
-bool THeaderTransport::readFrame(uint32_t minFrameSize) {
+bool THeaderTransport::readFrame(uint32_t /*minFrameSize*/) {
   const size_t allocSize = 200; // Pick a useful size > 4.
 
   pair<void*, uint32_t> framing = queue_->preallocate(4, allocSize);

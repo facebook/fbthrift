@@ -53,7 +53,7 @@ uint32_t TBinaryProtocolT<Transport_>::writeMessageEnd() {
 }
 
 template <class Transport_>
-uint32_t TBinaryProtocolT<Transport_>::writeStructBegin(const char* name) {
+uint32_t TBinaryProtocolT<Transport_>::writeStructBegin(const char* /*name*/) {
   return 0;
 }
 
@@ -63,7 +63,7 @@ uint32_t TBinaryProtocolT<Transport_>::writeStructEnd() {
 }
 
 template <class Transport_>
-uint32_t TBinaryProtocolT<Transport_>::writeFieldBegin(const char* name,
+uint32_t TBinaryProtocolT<Transport_>::writeFieldBegin(const char* /*name*/,
                                                        const TType fieldType,
                                                        const int16_t fieldId) {
   uint32_t wsize = 0;
@@ -256,7 +256,7 @@ uint32_t TBinaryProtocolT<Transport_>::readStructEnd() {
 }
 
 template <class Transport_>
-uint32_t TBinaryProtocolT<Transport_>::readFieldBegin(std::string& name,
+uint32_t TBinaryProtocolT<Transport_>::readFieldBegin(std::string& /*name*/,
                                                       TType& fieldType,
                                                       int16_t& fieldId) {
   uint32_t result = 0;

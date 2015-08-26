@@ -37,7 +37,7 @@ class t_php_generator : public t_oop_generator {
   t_php_generator(
       t_program* program,
       const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::string& /*option_string*/)
     : t_oop_generator(program)
   {
     std::map<std::string, std::string>::const_iterator iter;
@@ -372,7 +372,7 @@ class t_php_generator : public t_oop_generator {
 };
 
 
-void t_php_generator::generate_json_enum(std::ofstream& out, t_enum* tenum,
+void t_php_generator::generate_json_enum(std::ofstream& out, t_enum* /*tenum*/,
                                          const string& prefix_thrift,
                                          const string& prefix_json) {
   indent(out) << prefix_thrift << " = " << "(int)"
@@ -724,7 +724,7 @@ void t_php_generator::close_generator() {
  *
  * @param ttypedef The type definition
  */
-void t_php_generator::generate_typedef(t_typedef* ttypedef) {}
+void t_php_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
 
 /**
  * Generates code for an enumerated type. Since define is expensive to lookup
@@ -3148,7 +3148,7 @@ void t_php_generator::generate_serialize_field(ofstream &out,
  * @param prefix  String prefix to attach to all fields
  */
 void t_php_generator::generate_serialize_struct(ofstream &out,
-                                                t_struct* tstruct,
+                                                t_struct* /*tstruct*/,
                                                 string prefix) {
   indent(out) <<
     "$xfer += $" << prefix << "->write($output);" << endl;

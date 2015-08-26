@@ -33,7 +33,7 @@ using namespace apache::thrift;
 using namespace folly;
 
 void KerberosSASLHandshakeUtils::GSSBufferFreeFunction(
-  void *buf, void *arg) {
+  void* /*buf*/, void *arg) {
   gss_buffer_desc* ptr = static_cast<gss_buffer_desc*>(arg);
   GSSBufferDeleter()(ptr);
 }

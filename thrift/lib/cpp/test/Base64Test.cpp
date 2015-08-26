@@ -25,7 +25,7 @@ using apache::thrift::protocol::base64_decode;
 
 BOOST_AUTO_TEST_SUITE( Base64Test )
 
-void setupTestData(int i, uint8_t* data, int& len) {
+static void setupTestData(int i, uint8_t* data, int& len) {
   len = 0;
   do {
     data[len] = (uint8_t)(i & 0xFF);
@@ -70,7 +70,10 @@ BOOST_AUTO_TEST_CASE( test_Base64_Encode_Decode ) {
 
 BOOST_AUTO_TEST_SUITE_END()
 
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
+boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]);
+
+boost::unit_test::test_suite* init_unit_test_suite(int /*argc*/,
+                                                   char* /*argv*/[]) {
   boost::unit_test::framework::master_test_suite().p_name.value =
     "Base64Test";
 

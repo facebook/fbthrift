@@ -24,7 +24,7 @@ namespace apache { namespace thrift {
 template <class T>
 struct AllSamePolicy : BaseDistinctTablePolicy<T> {
   struct Hash {
-    size_t operator()(const T& x) const { return 0; }
+    size_t operator()(const T&) const { return 0; }
   };
 
   struct Equal {

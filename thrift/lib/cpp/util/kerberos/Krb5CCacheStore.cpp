@@ -37,7 +37,7 @@ using namespace std;
 const int Krb5CCacheStore::SERVICE_HISTOGRAM_NUM_BUCKETS = 10;
 const int Krb5CCacheStore::SERVICE_HISTOGRAM_PERIOD = 600;
 
-bool serviceCountCompare (
+static bool serviceCountCompare (
     const pair<string, uint64_t>& i,
     const pair<string, uint64_t>& j) {
   return (i.second > j.second);

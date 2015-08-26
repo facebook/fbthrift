@@ -995,7 +995,7 @@ decodeT(DecodeBuffer *input, PyObject *dec_obj, StructTypeArgs *args,
 }
 
 static PyObject*
-encode(PyObject *self, PyObject *args, PyObject *kws) {
+encode(PyObject* /*self*/, PyObject *args, PyObject *kws) {
   PyObject *enc_obj;
   PyObject *spec;
   int utf8strings = 0;
@@ -1025,7 +1025,7 @@ encode(PyObject *self, PyObject *args, PyObject *kws) {
 }
 
 static PyObject*
-decode(PyObject *self, PyObject *args, PyObject *kws) {
+decode(PyObject* /*self*/, PyObject *args, PyObject *kws) {
   PyObject *dec_obj;
   PyObject *transport;
   PyObject *spec;
@@ -1121,11 +1121,17 @@ static struct PyModuleDef ThriftFastProtoModuleDef = {
 #define INITERROR return nullptr
 
 PyObject*
+PyInit_fastproto(void);
+
+PyObject*
 PyInit_fastproto(void)
 #else
 #define INITERROR return
 #define GETSTATE(m) (&_state)
 static struct module_state _state;
+
+PyMODINIT_FUNC
+initfastproto(void);
 
 PyMODINIT_FUNC
 initfastproto(void)

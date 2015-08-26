@@ -64,7 +64,7 @@ bool record_genfiles = false;
 /**
  * Diplays the usage message and then exits with an error code.
  */
-void usage() {
+static void usage() {
   fprintf(stderr, "Usage: thrift [options] file\n");
   fprintf(stderr, "Options:\n");
   fprintf(stderr, "  -o dir      Set the output directory for gen-* packages\n");
@@ -108,8 +108,9 @@ void usage() {
 /**
  * Generate code
  */
-bool generate(t_program* program, const vector<string>& generator_strings,
-              char** argv) {
+static bool generate(t_program* program,
+                     const vector<string>& generator_strings,
+                     char** argv) {
   // Oooohh, recursive code generation, hot!!
   if (gen_recurse) {
     const vector<t_program*>& includes = program->get_includes();

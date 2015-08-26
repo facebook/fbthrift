@@ -41,8 +41,8 @@ class t_rb_generator : public t_oop_generator {
  public:
   t_rb_generator(
       t_program* program,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::map<std::string, std::string>& /*parsed_options*/,
+      const std::string& /*option_string*/)
     : t_oop_generator(program)
   {
     out_dir_base_ = "gen-rb";
@@ -278,7 +278,7 @@ void t_rb_generator::close_generator() {
  *
  * @param ttypedef The type definition
  */
-void t_rb_generator::generate_typedef(t_typedef* ttypedef) {}
+void t_rb_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
 
 /**
  * Generates code for an enumerated type. Done using a class to scope
@@ -894,7 +894,7 @@ void t_rb_generator::generate_service_server(t_service* tservice) {
  *
  * @param tfunction The function to write a dispatcher for
  */
-void t_rb_generator::generate_process_function(t_service* tservice,
+void t_rb_generator::generate_process_function(t_service* /*tservice*/,
                                                t_function* tfunction) {
   // Open function
   indent(f_service_) <<

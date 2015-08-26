@@ -106,15 +106,15 @@ bool PeekProcessor::process(std::shared_ptr<TProtocol> in,
   return ret;
 }
 
-void PeekProcessor::peekName(const std::string& fname) {
+void PeekProcessor::peekName(const std::string& /*fname*/) {
 }
 
-void PeekProcessor::peekBuffer(uint8_t* buffer, uint32_t size) {
+void PeekProcessor::peekBuffer(uint8_t* /*buffer*/, uint32_t /*size*/) {
 }
 
 void PeekProcessor::peek(std::shared_ptr<TProtocol> in,
                          TType ftype,
-                         int16_t fid) {
+                         int16_t /*fid*/) {
   in->skip(ftype);
 }
 

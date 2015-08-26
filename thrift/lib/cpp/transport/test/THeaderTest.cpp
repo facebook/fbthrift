@@ -71,6 +71,8 @@ BOOST_AUTO_TEST_CASE(http_clear_header) {
   BOOST_CHECK(header.getWriteHeaders().empty());
 }
 
+boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]);
+
 boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
   boost::unit_test::framework::master_test_suite().p_name.value =
     "THeaderTest";

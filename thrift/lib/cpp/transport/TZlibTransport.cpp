@@ -319,7 +319,7 @@ void TZlibTransport::flushToZlib(const uint8_t* buf, int len, int flush) {
   }
 }
 
-const uint8_t* TZlibTransport::borrow(uint8_t* buf, uint32_t* len) {
+const uint8_t* TZlibTransport::borrow(uint8_t* /*buf*/, uint32_t* len) {
   // Don't try to be clever with shifting buffers.
   // If we have enough data, give a pointer to it,
   // otherwise let the protocol use its slow path.

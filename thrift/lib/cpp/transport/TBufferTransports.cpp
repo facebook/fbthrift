@@ -133,7 +133,8 @@ void TBufferedTransport::writeSlow(const uint8_t* buf, uint32_t len) {
   return;
 }
 
-const uint8_t* TBufferedTransport::borrowSlow(uint8_t* buf, uint32_t* len) {
+const uint8_t* TBufferedTransport::borrowSlow(uint8_t* /*buf*/,
+                                              uint32_t* /*len*/) {
   // Simply return nullptr.  We don't know if there is actually data available
   // on the underlying transport, so calling read() might block.
   return nullptr;
@@ -204,7 +205,7 @@ uint32_t TFramedTransport::readSlow(uint8_t* buf, uint32_t len) {
   return (len - want);
 }
 
-bool TFramedTransport::readFrame(uint32_t minFrameSize) {
+bool TFramedTransport::readFrame(uint32_t /*minFrameSize*/) {
   // TODO(dreiss): Think about using readv here, even though it would
   // result in (gasp) read-ahead.
 
@@ -324,7 +325,8 @@ uint32_t TFramedTransport::writeEnd() {
   return wBase_ - wBuf_.get();
 }
 
-const uint8_t* TFramedTransport::borrowSlow(uint8_t* buf, uint32_t* len) {
+const uint8_t* TFramedTransport::borrowSlow(uint8_t* /*buf*/,
+                                            uint32_t* /*len*/) {
   // Don't try to be clever with shifting buffers.
   // If the fast path failed let the protocol use its slow path.
   // Besides, who is going to try to borrow across messages?
@@ -467,7 +469,7 @@ void TMemoryBuffer::wroteBytes(uint32_t len) {
   wBase_ += len;
 }
 
-const uint8_t* TMemoryBuffer::borrowSlow(uint8_t* buf, uint32_t* len) {
+const uint8_t* TMemoryBuffer::borrowSlow(uint8_t* /*buf*/, uint32_t* len) {
   rBound_ = wBase_;
   if (available_read() >= *len) {
     *len = available_read();

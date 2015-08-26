@@ -66,7 +66,7 @@ void grabLockNTimes(T& m, int64_t iters) {
   }
 }
 
-void runConcurrently(int64_t numThreads, std::function<void ()> fn) {
+static void runConcurrently(int64_t numThreads, std::function<void ()> fn) {
   std::atomic<bool> go(false);
   std::vector<std::thread> threads;
   BENCHMARK_SUSPEND {

@@ -41,17 +41,17 @@
  */
 #include THRIFTY_HH
 
-void thrift_reserved_keyword(char* keyword) {
+static void thrift_reserved_keyword(char* keyword) {
   yyerror("Cannot use reserved language keyword: \"%s\"\n", keyword);
   exit(1);
 }
 
-void integer_overflow(char* text) {
+static void integer_overflow(char* text) {
   yyerror("This integer is too big: \"%s\"\n", text);
   exit(1);
 }
 
-void unexpected_token(char* text) {
+static void unexpected_token(char* text) {
   yyerror("Unexpected token in input: \"%s\"\n", text);
   exit(1);
 }

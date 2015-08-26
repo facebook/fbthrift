@@ -94,7 +94,7 @@ class LoadTask: public Runnable {
  * completes. Verify that all tasks completed and that thread manager cleans
  * up properly on delete.
  */
-void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
+static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   Monitor monitor;
   size_t tasksLeft = numTasks;
 
@@ -251,7 +251,7 @@ class BlockTask: public Runnable {
  * pendingTaskCountMax + 1th task.  Verify that we unblock when a task
  * completes
  */
-void blockTest(int64_t timeout, size_t numWorkers) {
+static void blockTest(int64_t /*timeout*/, size_t numWorkers) {
   size_t pendingTaskMaxCount = numWorkers;
 
   std::shared_ptr<ThreadManager> threadManager =
@@ -379,7 +379,9 @@ BOOST_AUTO_TEST_CASE(BlockTest) {
   blockTest(timeout, numWorkers);
 }
 
-void expireTestCallback(std::shared_ptr<Runnable>, Monitor* monitor, size_t* count) {
+static void expireTestCallback(std::shared_ptr<Runnable>,
+                               Monitor* monitor,
+                               size_t* count) {
   Synchronized s(*monitor);
   --(*count);
   if (*count == 0) {
@@ -387,7 +389,7 @@ void expireTestCallback(std::shared_ptr<Runnable>, Monitor* monitor, size_t* cou
   }
 }
 
-void expireTest(int64_t numWorkers, int64_t expirationTimeMs) {
+static void expireTest(int64_t numWorkers, int64_t expirationTimeMs) {
   int64_t maxPendingTasks = numWorkers;
   size_t activeTasks = numWorkers + maxPendingTasks;
   Monitor monitor;
@@ -769,9 +771,9 @@ class FailThreadFactory : public PosixThreadFactory {
     }
   };
 
-  explicit FailThreadFactory(POLICY policy=kDefaultPolicy,
-                             PRIORITY priority=kDefaultPriority,
-                             int stackSize=kDefaultStackSizeMB,
+  explicit FailThreadFactory(POLICY /*policy*/=kDefaultPolicy,
+                             PRIORITY /*priority*/=kDefaultPriority,
+                             int /*stackSize*/=kDefaultStackSizeMB,
                              bool detached=true) {
    impl_ = std::make_shared<FailThreadFactory::FakeImpl>(
         kDefaultPolicy,
@@ -849,6 +851,7 @@ BOOST_AUTO_TEST_CASE(ObserverTest) {
 ///////////////////////////////////////////////////////////////////////////
 // init_unit_test_suite()
 ///////////////////////////////////////////////////////////////////////////
+unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]);
 
 unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
   unit_test::framework::master_test_suite().p_name.value = "ThreadManagerTests";

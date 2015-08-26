@@ -307,14 +307,14 @@ class TJSONContext {
   /**
    * Write context data to the transport. Default is to do nothing.
    */
-  virtual uint32_t write(TTransport &trans) {
+  virtual uint32_t write(TTransport& /*trans*/) {
     return 0;
   };
 
   /**
    * Read context data from the transport. Default is to do nothing.
    */
-  virtual uint32_t read(TJSONProtocol::LookaheadReader &reader) {
+  virtual uint32_t read(TJSONProtocol::LookaheadReader& /*reader*/) {
     return 0;
   };
 
@@ -645,7 +645,7 @@ uint32_t TJSONProtocol::writeMessageEnd() {
   return writeJSONArrayEnd();
 }
 
-uint32_t TJSONProtocol::writeStructBegin(const char* name) {
+uint32_t TJSONProtocol::writeStructBegin(const char* /*name*/) {
   return writeJSONObjectStart();
 }
 
@@ -653,7 +653,7 @@ uint32_t TJSONProtocol::writeStructEnd() {
   return writeJSONObjectEnd();
 }
 
-uint32_t TJSONProtocol::writeFieldBegin(const char* name,
+uint32_t TJSONProtocol::writeFieldBegin(const char* /*name*/,
                                         const TType fieldType,
                                         const int16_t fieldId) {
   uint32_t result = writeJSONInteger(fieldId);
@@ -1034,7 +1034,7 @@ uint32_t TJSONProtocol::readMessageEnd() {
   return readJSONArrayEnd();
 }
 
-uint32_t TJSONProtocol::readStructBegin(std::string& name) {
+uint32_t TJSONProtocol::readStructBegin(std::string& /*name*/) {
   return readJSONObjectStart();
 }
 
@@ -1042,7 +1042,7 @@ uint32_t TJSONProtocol::readStructEnd() {
   return readJSONObjectEnd();
 }
 
-uint32_t TJSONProtocol::readFieldBegin(std::string& name,
+uint32_t TJSONProtocol::readFieldBegin(std::string& /*name*/,
                                        TType& fieldType,
                                        int16_t& fieldId) {
   uint32_t result = 0;

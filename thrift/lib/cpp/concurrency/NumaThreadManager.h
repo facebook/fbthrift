@@ -177,7 +177,7 @@ class NumaThreadManager : public ThreadManager {
     return sum(&ThreadManager::expiredTaskCount);
   }
 
-  void remove(std::shared_ptr<Runnable> task) override {
+  void remove(std::shared_ptr<Runnable> /*task*/) override {
     throw IllegalStateException("Not implemented");
   }
 
@@ -198,7 +198,7 @@ class NumaThreadManager : public ThreadManager {
     }
   }
 
-  void setThreadInitCallback(InitCallback initCallback) override {
+  void setThreadInitCallback(InitCallback /*initCallback*/) override {
     throw IllegalStateException("Not implemented");
   }
 
