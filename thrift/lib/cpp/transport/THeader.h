@@ -21,6 +21,7 @@
 #include <map>
 #include <vector>
 
+#include <folly/Optional.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
@@ -280,6 +281,8 @@ class THeader {
   void setHttpClientParser(
       std::shared_ptr<apache::thrift::util::THttpClientParser>);
 
+  static CLIENT_TYPE getClientType(uint32_t f, uint32_t s);
+
   // 0 and 16th bits must be 0 to differentiate from framed & unframed
   static const uint32_t HEADER_MAGIC = 0x0FFF0000;
   static const uint32_t HEADER_MASK = 0xFFFF0000;
@@ -294,6 +297,18 @@ class THeader {
   static const std::string CLIENT_TIMEOUT_HEADER;
 
  protected:
+  bool isFramed(CLIENT_TYPE clientType);
+
+  // Use first 64 bits to determine client protocol
+  static folly::Optional<CLIENT_TYPE> analyzeFirst32bit(uint32_t w);
+  static CLIENT_TYPE analyzeSecond32bit(uint32_t w);
+
+  // Calls appropriate method based on client type
+  // returns nullptr if Header of Unknown type
+  std::unique_ptr<folly::IOBuf> removeNonHeader(folly::IOBufQueue* queue,
+                                                size_t& needed,
+                                                CLIENT_TYPE clientType,
+                                                uint32_t sz);
   std::unique_ptr<folly::IOBuf> removeUnframed(folly::IOBufQueue* queue,
                                                size_t& needed);
   std::unique_ptr<folly::IOBuf> removeHttpServer(folly::IOBufQueue* queue);
@@ -348,7 +363,7 @@ class THeader {
    * Returns whether the 1st byte of the protocol payload should be hadled
    * as compact framed.
    */
-  bool compactFramed(uint32_t magic);
+  static bool compactFramed(uint32_t magic);
 
   struct infoIdType {
     enum idType {

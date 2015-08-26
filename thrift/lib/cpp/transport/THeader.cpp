@@ -173,13 +173,80 @@ unique_ptr<IOBuf> THeader::removeFramed(uint32_t sz, IOBufQueue* queue) {
   return queue->split(sz);
 }
 
+folly::Optional<CLIENT_TYPE> THeader::analyzeFirst32bit(uint32_t w) {
+  if ((w & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
+    return THRIFT_UNFRAMED_DEPRECATED;
+  } else if (w == HTTP_SERVER_MAGIC ||
+             w == HTTP_GET_CLIENT_MAGIC ||
+             w == HTTP_HEAD_CLIENT_MAGIC) {
+    return THRIFT_HTTP_SERVER_TYPE;
+  } else if (w == HTTP_CLIENT_MAGIC) {
+    return THRIFT_HTTP_CLIENT_TYPE;
+  }
+  return folly::none;
+}
+
+CLIENT_TYPE THeader::analyzeSecond32bit(uint32_t w) {
+  if ((w & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
+    return THRIFT_FRAMED_DEPRECATED;
+  }
+  if (compactFramed(w)) {
+    return THRIFT_FRAMED_COMPACT;
+  }
+  if ((w & HEADER_MASK) == HEADER_MAGIC) {
+    return THRIFT_HEADER_CLIENT_TYPE;
+  }
+  return THRIFT_UNKNOWN_CLIENT_TYPE;
+}
+
+CLIENT_TYPE THeader::getClientType(uint32_t f, uint32_t s) {
+  auto res = analyzeFirst32bit(f);
+  if (res) {
+    return *res;
+  }
+  return analyzeSecond32bit(s);
+}
+
+bool THeader::isFramed(CLIENT_TYPE type) {
+  switch (type) {
+  case THRIFT_FRAMED_DEPRECATED:
+  case THRIFT_FRAMED_COMPACT:
+    return true;
+  default:
+    return false;
+  };
+
+}
+
+unique_ptr<IOBuf> THeader::removeNonHeader(IOBufQueue* queue,
+                                           size_t& needed,
+                                           CLIENT_TYPE type,
+                                           uint32_t sz) {
+  switch (type) {
+  case THRIFT_FRAMED_DEPRECATED:
+    protoId_ = T_BINARY_PROTOCOL;
+    return removeFramed(sz, queue);
+  case THRIFT_FRAMED_COMPACT:
+    protoId_ = T_COMPACT_PROTOCOL;
+    return removeFramed(sz, queue);
+  case THRIFT_UNFRAMED_DEPRECATED:
+    return removeUnframed(queue, needed);
+  case THRIFT_HTTP_SERVER_TYPE:
+    return removeHttpServer(queue);
+  case THRIFT_HTTP_CLIENT_TYPE:
+    return removeHttpClient(queue, needed);
+  default:
+    // Fallback to sniffing out the magic for Header
+    return nullptr;
+  };
+}
+
 unique_ptr<IOBuf> THeader::removeHeader(
   IOBufQueue* queue,
   size_t& needed,
   StringToStringMap& persistentReadHeaders) {
   Cursor c(queue->front());
   size_t chainSize = queue->front()->computeChainDataLength();
-  unique_ptr<IOBuf> buf;
   needed = 0;
 
   if (chainSize < 4) {
@@ -191,39 +258,24 @@ unique_ptr<IOBuf> THeader::removeHeader(
   uint32_t sz = c.readBE<uint32_t>();
 
   if (forceClientType_) {
-    switch (clientType) {
-    case THRIFT_FRAMED_DEPRECATED:
-    case THRIFT_FRAMED_COMPACT:
-      // Make sure we have read the whole frame in.
-      if (4 + sz > chainSize) {
-        needed = sz - chainSize + 4;
-        return nullptr;
-      }
-      return removeFramed(sz, queue);
-    case THRIFT_UNFRAMED_DEPRECATED:
-      return removeUnframed(queue, needed);
-    case THRIFT_HTTP_SERVER_TYPE:
-      removeHttpServer(queue);
-    case THRIFT_HTTP_CLIENT_TYPE:
-      return removeHttpClient(queue, needed);
-    default:
-      // Fallback to sniffing out the magic for Header
-      break;
-    };
+    // Make sure we have read the whole frame in.
+    if (isFramed(clientType) && (4 + sz > chainSize)) {
+      needed = sz - chainSize + 4;
+      return nullptr;
+    }
+    unique_ptr<IOBuf> buf = THeader::removeNonHeader(queue,
+                                                     needed,
+                                                     clientType,
+                                                     sz);
+    if(buf) {
+      return buf;
+    }
   }
 
-  if ((sz & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
-    // unframed
-    clientType = THRIFT_UNFRAMED_DEPRECATED;
-    buf = removeUnframed(queue, needed);
-  } else if (sz == HTTP_SERVER_MAGIC ||
-            sz == HTTP_GET_CLIENT_MAGIC ||
-            sz == HTTP_HEAD_CLIENT_MAGIC) {
-    clientType = THRIFT_HTTP_SERVER_TYPE;
-    buf = removeHttpServer(queue);
-  } else if (sz == HTTP_CLIENT_MAGIC) {
-    clientType = THRIFT_HTTP_CLIENT_TYPE;
-    buf = removeHttpClient(queue, needed);
+  auto clientT = THeader::analyzeFirst32bit(sz);
+  if (clientT) {
+    clientType = *clientT;
+    return THeader::removeNonHeader(queue, needed, clientType, sz);
   } else {
     if (sz > MAX_FRAME_SIZE) {
       std::string err =
@@ -257,50 +309,45 @@ unique_ptr<IOBuf> THeader::removeHeader(
 
     // Could be header format or framed. Check next uint32
     uint32_t magic = c.readBE<uint32_t>();
+    clientType = analyzeSecond32bit(magic);
+    unique_ptr<IOBuf> buf = THeader::removeNonHeader(queue,
+                                                     needed,
+                                                     clientType,
+                                                     sz);
+    if(buf) {
+      return buf;
+    }
 
-    if ((magic & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
-      // framed
-      clientType = THRIFT_FRAMED_DEPRECATED;
-      protoId_ = T_BINARY_PROTOCOL;
-      buf = removeFramed(sz, queue);
-    } else if (compactFramed(magic)) {
-      clientType = THRIFT_FRAMED_COMPACT;
-      protoId_ = T_COMPACT_PROTOCOL;
-      buf = removeFramed(sz, queue);
-    } else if (HEADER_MAGIC == (magic & HEADER_MASK)) {
-      if (sz < 10) {
-        throw TTransportException(
-          TTransportException::INVALID_FRAME_SIZE,
-          folly::stringPrintf("Header transport frame is too small: %u", sz));
-      }
-
-      flags_ = magic & FLAGS_MASK;
-      seqId = c.readBE<uint32_t>();
-
-      // Trim off the frame size.
-      queue->trimStart(4);
-      buf = readHeaderFormat(queue->split(sz), persistentReadHeaders);
-
-      // auth client?
-      clientType = THRIFT_HEADER_CLIENT_TYPE;
-      auto auth_header = getHeaders().find(THRIFT_AUTH_HEADER);
-      if (auth_header != getHeaders().end()) {
-        if (auth_header->second == "1") {
-          clientType = THRIFT_HEADER_SASL_CLIENT_TYPE;
-        }
-        readHeaders_.erase(auth_header);
-      }
-    } else {
-      clientType = THRIFT_UNKNOWN_CLIENT_TYPE;
+    if (clientType == THRIFT_UNKNOWN_CLIENT_TYPE) {
       throw TTransportException(
         TTransportException::BAD_ARGS,
         folly::stringPrintf(
           "Could not detect client transport type: magic 0x%08x",
           magic));
     }
-  }
 
-  return std::move(buf);
+    if (sz < 10) {
+      throw TTransportException(
+         TTransportException::INVALID_FRAME_SIZE,
+         folly::stringPrintf("Header transport frame is too small: %u", sz));
+    }
+    flags_ = magic & FLAGS_MASK;
+    seqId = c.readBE<uint32_t>();
+
+    // Trim off the frame size.
+    queue->trimStart(4);
+    buf = readHeaderFormat(queue->split(sz), persistentReadHeaders);
+
+    // auth client?
+    auto auth_header = getHeaders().find(THRIFT_AUTH_HEADER);
+    if (auth_header != getHeaders().end()) {
+      if (auth_header->second == "1") {
+        clientType = THRIFT_HEADER_SASL_CLIENT_TYPE;
+      }
+      readHeaders_.erase(auth_header);
+    }
+    return buf;
+  }
 }
 
 static string getString(RWPrivateCursor& c, uint32_t sz) {
