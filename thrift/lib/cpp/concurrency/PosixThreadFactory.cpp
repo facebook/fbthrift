@@ -25,8 +25,7 @@
 
 #include <assert.h>
 #include <pthread.h>
-#include <sys/resource.h>
-
+#include <folly/CPortability.h>
 #include <iostream>
 
 #include <glog/logging.h>

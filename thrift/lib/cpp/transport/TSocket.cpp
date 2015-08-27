@@ -20,17 +20,12 @@
 #include <thrift/lib/cpp/util/PausableTimer.h>
 #include <cstring>
 #include <sstream>
-#include <sys/socket.h>
-#include <sys/poll.h>
 #include <sys/types.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <netdb.h>
-#include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
 
+#include <folly/FilePortability.h>
+#include <folly/SocketPortability.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace apache { namespace thrift { namespace transport {
@@ -156,9 +151,9 @@ void TSocket::openConnection(struct addrinfo *res) {
   }
 
   if (!path_.empty()) {
-    socket_ = socket(PF_UNIX, SOCK_STREAM, IPPROTO_IP);
+    socket_ = fsp::socket(PF_UNIX, SOCK_STREAM, IPPROTO_IP);
   } else {
-    socket_ = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    socket_ = fsp::socket(res->ai_family, res->ai_socktype, res->ai_protocol);
   }
   if (socket_ == -1) {
     int errno_copy = errno;
@@ -208,6 +203,7 @@ void TSocket::openConnection(struct addrinfo *res) {
   int ret;
   if (!path_.empty()) {
     size_t len = path_.size() + 1;
+#if HAVE_UNIX_SOCKETS
     if (len > sizeof(((sockaddr_un*)nullptr)->sun_path)) {
       int errno_copy = errno;
       GlobalOutput.perror("TSocket::open() Unix Domain socket path too long",
@@ -221,6 +217,9 @@ void TSocket::openConnection(struct addrinfo *res) {
     memcpy(address.sun_path, path_.c_str(), len);
     socklen_t structlen = static_cast<socklen_t>(sizeof(address));
     ret = connect(socket_, (struct sockaddr*)&address, structlen);
+#else
+    assert(0);
+#endif
   } else {
     ret = connect(socket_, res->ai_addr, static_cast<int>(res->ai_addrlen));
   }

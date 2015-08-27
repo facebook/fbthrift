@@ -35,8 +35,7 @@
 
 #include <bitset>
 #include <boost/scoped_array.hpp>
-#include <pwd.h>
-#include <unistd.h>
+#include <folly/FilePortability.h>
 
 namespace apache { namespace thrift { namespace transport {
 

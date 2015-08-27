@@ -18,7 +18,7 @@
 #define _THRIFT_TRANSPORT_TSOCKET_H_ 1
 
 #include <string>
-#include <sys/time.h>
+#include <folly/CPortability.h>
 
 #include <thrift/lib/cpp/transport/TRpcTransport.h>
 #include <thrift/lib/cpp/transport/TVirtualTransport.h>

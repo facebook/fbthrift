@@ -24,14 +24,12 @@
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <iostream>
-#include <sys/socket.h>
-#include <sys/uio.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <netdb.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <assert.h>
+
+#include <folly/FilePortability.h>
+#include <folly/SocketPortability.h>
 
 namespace apache { namespace thrift { namespace async {
 

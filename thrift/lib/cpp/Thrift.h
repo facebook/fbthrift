@@ -28,7 +28,7 @@
 #ifdef THRIFT_HAVE_INTTYPES_H
 #include <inttypes.h>
 #endif
-#include <netinet/in.h>
+#include <folly/SocketPortability.h>
 #include <stdio.h>
 #include <string.h>
 

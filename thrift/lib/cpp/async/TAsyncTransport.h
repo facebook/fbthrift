@@ -22,7 +22,7 @@
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp/thrift_config.h>
-#include <sys/uio.h>
+#include <folly/FilePortability.h>
 #include <inttypes.h>
 #include <memory>
 

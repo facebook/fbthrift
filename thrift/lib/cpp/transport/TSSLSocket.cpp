@@ -16,10 +16,10 @@
 
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
-#include <arpa/inet.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_array.hpp>
 #include <errno.h>
+#include <folly/SocketPortability.h>
 #include <folly/String.h>
 #include <glog/logging.h>
 #include <openssl/err.h>

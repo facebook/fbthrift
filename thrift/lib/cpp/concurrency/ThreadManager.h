@@ -18,12 +18,12 @@
 #define _THRIFT_CONCURRENCY_THREADMANAGER_H_ 1
 
 #include <sys/types.h>
-#include <unistd.h>
 
 #include <array>
 #include <functional>
 #include <memory>
 
+#include <folly/FilePortability.h>
 #include <folly/Executor.h>
 #include <folly/LifoSem.h>
 #include <folly/RWSpinLock.h>
