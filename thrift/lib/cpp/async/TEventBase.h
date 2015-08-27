@@ -22,7 +22,6 @@
 namespace apache { namespace thrift { namespace async {
 
 typedef folly::EventBase TEventBase;
-typedef folly::EventBaseObserver EventBaseObserver;
 typedef folly::Cob Cob;
 
 }}}

@@ -66,7 +66,7 @@ class Cpp2Worker
     pendingCount_(0),
     pendingTime_(std::chrono::steady_clock::now()) {
     auto observer =
-      std::dynamic_pointer_cast<apache::thrift::async::EventBaseObserver>(
+      std::dynamic_pointer_cast<folly::EventBaseObserver>(
       server_->getObserver());
     if (serverChannel) {
       // duplex
