@@ -74,7 +74,7 @@ bool PthreadThread::updateName() {
 PthreadThread::PthreadThread(int policy, int priority, int stackSize,
                              bool detached,
                              shared_ptr<Runnable> runnable) :
-  pthread_(pthread_t_init),
+  pthread_(pthread_zero),
   state_(uninitialized),
   policy_(policy),
   priority_(priority),
