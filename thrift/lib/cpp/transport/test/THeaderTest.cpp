@@ -20,17 +20,17 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 
-#include <boost/test/unit_test.hpp>
 #include <memory>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 
-using namespace boost;
+#include <gtest/gtest.h>
+
 using namespace apache::thrift;
 using namespace folly;
 using namespace apache::thrift::transport;
 
-BOOST_AUTO_TEST_CASE(largetransform) {
+TEST(THeaderTest, largetransform) {
   THeader header;
   header.setTransform(THeader::ZLIB_TRANSFORM); // ZLib flag
 
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(largetransform) {
   buf = header.removeHeader(queue2.get(), needed, persistentHeaders);
 }
 
-BOOST_AUTO_TEST_CASE(http_clear_header) {
+TEST(THeaderTest, http_clear_header) {
   THeader header;
   header.setClientType(THRIFT_HTTP_CLIENT_TYPE);
   auto parser = std::make_shared<apache::thrift::util::THttpClientParser>(
@@ -68,19 +68,5 @@ BOOST_AUTO_TEST_CASE(http_clear_header) {
   std::map<std::string, std::string> persistentHeaders;
   buf = header.addHeader(std::move(buf), persistentHeaders);
 
-  BOOST_CHECK(header.getWriteHeaders().empty());
-}
-
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]);
-
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  boost::unit_test::framework::master_test_suite().p_name.value =
-    "THeaderTest";
-
-  if (argc != 1) {
-    fprintf(stderr, "unexpected arguments: %s\n", argv[1]);
-    exit(1);
-  }
-
-  return nullptr;
+  EXPECT_TRUE(header.getWriteHeaders().empty());
 }
