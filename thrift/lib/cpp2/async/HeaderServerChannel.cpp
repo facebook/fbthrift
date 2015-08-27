@@ -197,10 +197,10 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     if (InOrderRecvSeqId_ != channel_->lastWrittenSeqId_ + 1) {
       // Save it until we can send it in order.
       channel_->inOrderRequests_[InOrderRecvSeqId_] =
-          std::make_tuple(cb, std::move(buf), std::move(header_));
+          std::make_tuple(cb, std::move(buf), header_.get());
     } else {
       // Send it now, and send any subsequent requests in order.
-      channel_->sendCatchupRequests(std::move(buf), cb, std::move(header_));
+      channel_->sendCatchupRequests(std::move(buf), cb, header_.get());
     }
   } else {
     if (!buf) {
@@ -271,14 +271,14 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
 void HeaderServerChannel::sendCatchupRequests(
     std::unique_ptr<folly::IOBuf> next_req,
     MessageChannel::SendCallback* cb,
-    std::unique_ptr<THeader> header) {
+    THeader* header) {
 
   DestructorGuard dg(this);
 
   while (true) {
     if (next_req) {
       try {
-        sendMessage(cb, std::move(next_req), header.get());
+        sendMessage(cb, std::move(next_req), header);
       } catch (const std::exception& e) {
         LOG(ERROR) << "Failed to send message: " << e.what();
       }
@@ -293,7 +293,7 @@ void HeaderServerChannel::sendCatchupRequests(
     if (next != inOrderRequests_.end()) {
       next_req = std::move(std::get<1>(next->second));
       cb = std::get<0>(next->second);
-      header = std::move(std::get<2>(next->second));
+      header = std::get<2>(next->second);
       inOrderRequests_.erase(lastWrittenSeqId_ + 1);
     } else {
       break;

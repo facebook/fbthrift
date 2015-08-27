@@ -109,7 +109,7 @@ protected:
   void sendCatchupRequests(
     std::unique_ptr<folly::IOBuf> next_req,
     MessageChannel::SendCallback* cb,
-    std::unique_ptr<apache::thrift::transport::THeader> header);
+    apache::thrift::transport::THeader* header);
 
   class HeaderRequest : public Request {
    public:
@@ -221,7 +221,7 @@ private:
     std::tuple<
       MessageChannel::SendCallback*,
       std::unique_ptr<folly::IOBuf>,
-      std::unique_ptr<apache::thrift::transport::THeader>>> inOrderRequests_;
+      apache::thrift::transport::THeader*>> inOrderRequests_;
 
   uint32_t arrivalSeqId_;
   uint32_t lastWrittenSeqId_;
