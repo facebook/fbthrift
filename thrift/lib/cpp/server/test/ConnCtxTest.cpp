@@ -29,10 +29,9 @@
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/util/TEventServerCreator.h>
 
-#include <boost/test/unit_test.hpp>
 #include <iostream>
+#include <gtest/gtest.h>
 
-using namespace boost;
 using std::vector;
 using std::string;
 using std::pair;
@@ -199,16 +198,15 @@ void runTest(std::shared_ptr<ConnCtxHandler> handler,
     // boost test checks, so boost complains.)  We also check size() rather
     // than empty(), so that the number of errors will be included in the
     // output, if there were any.
-    BOOST_CHECK_EQUAL(it->client->getErrors()->size(), 0);
+    EXPECT_EQ(0, it->client->getErrors()->size());
 
-    // Log any errors.  (We can't do it as they occur, since
-    // BOOST_CHECK/BOOST_ERROR isn't safe to call from other threads.)
+    // Log any errors.
     const CtxClient::ErrorVector* errors = it->client->getErrors();
     for (CtxClient::ErrorVector::const_iterator it = errors->begin();
          totalLogged < maxErrors && it != errors->end();
          ++totalLogged, ++it) {
-      BOOST_ERROR("address mismatch: " << it->first.describe() << " != " <<
-                  it->second.describe());
+      ADD_FAILURE() << "address mismatch: " << it->first.describe() << " "
+                    << "!= " << it->second.describe();
     }
   }
 }
@@ -224,7 +222,7 @@ void runTest() {
   runTest(handler, &serverCreator);
 }
 
-BOOST_AUTO_TEST_CASE(TSimpleServerTest) {
+TEST(ConnCtxTest, TSimpleServerTest) {
   // "For testing TSimpleServerCreator"
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -232,11 +230,11 @@ BOOST_AUTO_TEST_CASE(TSimpleServerTest) {
   #pragma GCC diagnostic pop
 }
 
-BOOST_AUTO_TEST_CASE(TThreadedServerTest) {
+TEST(ConnCtxTest, TThreadedServerTest) {
   runTest<TThreadedServerCreator>();
 }
 
-BOOST_AUTO_TEST_CASE(TThreadPoolServerTest) {
+TEST(ConnCtxTest, TThreadPoolServerTest) {
   // "For testing TThreadPoolServerCreator"
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -244,22 +242,7 @@ BOOST_AUTO_TEST_CASE(TThreadPoolServerTest) {
   #pragma GCC diagnostic pop
 }
 
-BOOST_AUTO_TEST_CASE(TEventServerTest) {
+TEST(ConnCtxTest, TEventServerTest) {
   // "For testing TEventServerCreator"
   runTest<TEventServerCreator>();
-}
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value = "ConnCtxTest";
-
-  if (argc != 1) {
-    cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      cerr << " " << argv[n];
-    }
-    cerr << endl;
-    exit(1);
-  }
-
-  return nullptr;
 }
