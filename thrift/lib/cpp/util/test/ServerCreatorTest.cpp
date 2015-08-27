@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include <boost/test/unit_test.hpp>
-
 #include <thrift/lib/cpp/ClientUtil.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
@@ -28,8 +26,8 @@
 #include "thrift/perf/cpp/LoadHandler.h"
 
 #include <iostream>
+#include <gtest/gtest.h>
 
-using namespace boost;
 using namespace apache::thrift::server;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::test;
@@ -50,7 +48,7 @@ void checkLoadServer(const folly::SocketAddress* address, bool framed = true) {
   string output;
   client->echo(output, input);
 
-  BOOST_CHECK_EQUAL(output, "foobar");
+  EXPECT_EQ("foobar", output);
 }
 
 /*
@@ -79,7 +77,7 @@ void testServerCreator() {
   testServerCreator<ServerCreatorT, LoadHandler, LoadTestProcessor>();
 }
 
-BOOST_AUTO_TEST_CASE(SimpleServer) {
+TEST(ServerCreatorTest, SimpleServer) {
   // "Testing TSimpleServerCreator"
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -87,11 +85,11 @@ BOOST_AUTO_TEST_CASE(SimpleServer) {
   #pragma GCC diagnostic pop
 }
 
-BOOST_AUTO_TEST_CASE(ThreadedServer) {
+TEST(ServerCreatorTest, ThreadedServer) {
   testServerCreator<TThreadedServerCreator>();
 }
 
-BOOST_AUTO_TEST_CASE(ThreadPoolServer) {
+TEST(ServerCreatorTest, ThreadPoolServer) {
   // "Testing TThreadPoolServerCreator"
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -99,11 +97,11 @@ BOOST_AUTO_TEST_CASE(ThreadPoolServer) {
   #pragma GCC diagnostic pop
 }
 
-BOOST_AUTO_TEST_CASE(EventServerTaskQueueMode) {
+TEST(ServerCreatorTest, EventServerTaskQueueMode) {
   testServerCreator<TEventServerCreator>();
 }
 
-BOOST_AUTO_TEST_CASE(EventServerNativeMode) {
+TEST(ServerCreatorTest, EventServerNativeMode) {
   testServerCreator<TEventServerCreator, AsyncLoadHandler,
                     LoadTestAsyncProcessor>();
 }
@@ -133,12 +131,12 @@ void testBindFailure() {
   // the server does manage to start, we won't block forever.
   try {
     server->serve();
-    BOOST_ERROR("we expected bind() to fail, but the server returned "
-                "successfully from serve()");
+    ADD_FAILURE() << "we expected bind() to fail, but the server returned "
+                  << "successfully from serve()";
   } catch (const TTransportException& ex) {
-    BOOST_CHECK_EQUAL(ex.getType(), TTransportException::COULD_NOT_BIND);
+    EXPECT_EQ(TTransportException::COULD_NOT_BIND, ex.getType());
   } catch (const std::system_error& ex) {
-    BOOST_CHECK_EQUAL(ex.code().value(), EADDRINUSE);
+    EXPECT_EQ(EADDRINUSE, ex.code().value());
   }
 }
 
@@ -147,7 +145,7 @@ void testBindFailure() {
   testBindFailure<ServerCreatorT, LoadHandler, LoadTestProcessor>();
 }
 
-BOOST_AUTO_TEST_CASE(SimpleServerBindFailure) {
+TEST(ServerCreatorTest, SimpleServerBindFailure) {
   // "Testing TSimpleServerCreator"
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -155,11 +153,11 @@ BOOST_AUTO_TEST_CASE(SimpleServerBindFailure) {
   #pragma GCC diagnostic pop
 }
 
-BOOST_AUTO_TEST_CASE(ThreadedServerBindFailure) {
+TEST(ServerCreatorTest, ThreadedServerBindFailure) {
   testBindFailure<TThreadedServerCreator>();
 }
 
-BOOST_AUTO_TEST_CASE(ThreadPoolServerBindFailure) {
+TEST(ServerCreatorTest, ThreadPoolServerBindFailure) {
   // "TestingTThreadPoolServerCreator"
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -167,7 +165,7 @@ BOOST_AUTO_TEST_CASE(ThreadPoolServerBindFailure) {
   #pragma GCC diagnostic pop
 }
 
-BOOST_AUTO_TEST_CASE(EventServerBindFailure) {
+TEST(ServerCreatorTest, EventServerBindFailure) {
   testBindFailure<TEventServerCreator, AsyncLoadHandler,
                   LoadTestAsyncProcessor>();
 }
@@ -194,13 +192,13 @@ void testThreadedBindFailure() {
   try {
     ServerCreatorT serverCreator2(processor, st.getAddress()->getPort());
     st2.start(&serverCreator2);
-    BOOST_ERROR("we expected bind() to fail, but the server thread started "
-                "successfully");
+    ADD_FAILURE() << "we expected bind() to fail, but the server thread "
+                  << "started successfully";
   } catch (const TTransportException& ex) {
     // Serve should throw a TTransportException
-    BOOST_CHECK_EQUAL(ex.getType(), TTransportException::COULD_NOT_BIND);
+    EXPECT_EQ(TTransportException::COULD_NOT_BIND, ex.getType());
   } catch (const std::system_error& ex) {
-    BOOST_CHECK_EQUAL(ex.code().value(), EADDRINUSE);
+    EXPECT_EQ(EADDRINUSE, ex.code().value());
   }
 }
 
@@ -210,7 +208,7 @@ void testThreadedBindFailure() {
                                  LoadTestProcessor>();
 }
 
-BOOST_AUTO_TEST_CASE(SimpleServerThreadedBindFailure) {
+TEST(ServerCreatorTest, SimpleServerThreadedBindFailure) {
   // "Testing TSimpleServerCreator"
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -218,11 +216,11 @@ BOOST_AUTO_TEST_CASE(SimpleServerThreadedBindFailure) {
   #pragma GCC diagnostic pop
 }
 
-BOOST_AUTO_TEST_CASE(ThreadedServerThreadedBindFailure) {
+TEST(ServerCreatorTest, ThreadedServerThreadedBindFailure) {
   testThreadedBindFailure<TThreadedServerCreator>();
 }
 
-BOOST_AUTO_TEST_CASE(ThreadPoolServerThreadedBindFailure) {
+TEST(ServerCreatorTest, ThreadPoolServerThreadedBindFailure) {
   // "Testing TThreadPoolServerCreator"
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -230,22 +228,7 @@ BOOST_AUTO_TEST_CASE(ThreadPoolServerThreadedBindFailure) {
   #pragma GCC diagnostic pop
 }
 
-BOOST_AUTO_TEST_CASE(EventServerThreadedBindFailure) {
+TEST(ServerCreatorTest, EventServerThreadedBindFailure) {
   testThreadedBindFailure<TEventServerCreator, AsyncLoadHandler,
                           LoadTestAsyncProcessor>();
-}
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value = "ServerCreatorTest";
-
-  if (argc != 1) {
-    cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      cerr << " " << argv[n];
-    }
-    cerr << endl;
-    exit(1);
-  }
-
-  return nullptr;
 }

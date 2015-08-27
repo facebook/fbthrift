@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-#define BOOST_TEST_MODULE FrozenUtilTest
-
-#include <boost/test/unit_test.hpp>
-
 #include <folly/File.h>
 #include <folly/MemoryMapping.h>
 
@@ -25,6 +21,8 @@
 #include <thrift/lib/cpp/test/gen-cpp/FrozenTypes_types.h>
 #include <thrift/lib/cpp/util/FrozenUtil.h>
 #include <thrift/lib/cpp/util/FrozenTestUtil.h>
+
+#include <gtest/gtest.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::util;
@@ -41,20 +39,19 @@ double filesize(int fd) {
 }
 
 }
-BOOST_AUTO_TEST_SUITE( FrozenUtilTest )
 
-BOOST_AUTO_TEST_CASE( Set ) {
+TEST(FrozenUtilTest, Set ) {
   std::set<std::string> tset { "1", "3", "7", "5" };
   auto tempFrozen = freezeToTempFile(tset);
   MemoryMapping mapping(tempFrozen.fd());
 
   auto* pfset = mapFrozen<std::set<std::string>>(mapping);
   auto& fset = *pfset;
-  BOOST_CHECK_EQUAL(1, fset.count("3"));
-  BOOST_CHECK_EQUAL(0, fset.count("4"));
+  EXPECT_EQ(1, fset.count("3"));
+  EXPECT_EQ(0, fset.count("4"));
 }
 
-BOOST_AUTO_TEST_CASE( Vector ) {
+TEST(FrozenUtilTest, Vector ) {
   std::vector<Person> people(3);
   people[0].id = 300;
   people[1].id = 301;
@@ -65,11 +62,11 @@ BOOST_AUTO_TEST_CASE( Vector ) {
 
   auto* pfvect= mapFrozen<std::vector<Person>>(mapping);
   auto& fvect = *pfvect;
-  BOOST_CHECK_EQUAL(300, fvect[0].id);
-  BOOST_CHECK_EQUAL(302, fvect[2].id);
+  EXPECT_EQ(300, fvect[0].id);
+  EXPECT_EQ(302, fvect[2].id);
 }
 
-BOOST_AUTO_TEST_CASE( Shrink ) {
+TEST(FrozenUtilTest, Shrink ) {
   std::vector<Person> people(3);
 
   File f = File::temporary();
@@ -81,20 +78,20 @@ BOOST_AUTO_TEST_CASE( Shrink ) {
   }
 
   freezeToFile(people, f.fd());
-  BOOST_CHECK_CLOSE(sizeof(Frozen<Person>) * count,
-                    filesize(f.fd()),
-                    1);
+  EXPECT_NEAR(sizeof(Frozen<Person>) * count,
+              filesize(f.fd()),
+              sizeof(Frozen<Person>) * count);
 
   count /= 16;
   people.resize(count);
 
   freezeToFile(people, f.fd());
-  BOOST_CHECK_CLOSE(sizeof(Frozen<Person>) * count,
-                    filesize(f.fd()),
-                    1);
+  EXPECT_NEAR(sizeof(Frozen<Person>) * count,
+              filesize(f.fd()),
+              sizeof(Frozen<Person>) * count);
 }
 
-BOOST_AUTO_TEST_CASE( Sparse ) {
+TEST(FrozenUtilTest, Sparse ) {
   std::vector<Person> people;
 
   size_t count = 1 << 20;
@@ -107,18 +104,18 @@ BOOST_AUTO_TEST_CASE( Sparse ) {
 
   freezeToSparseFile(people, folly::File(f.fd()));
 
-  BOOST_CHECK_CLOSE(sizeof(Frozen<Person>) * count,
-                    filesize(f.fd()),
-                    1);
+  EXPECT_NEAR(sizeof(Frozen<Person>) * count,
+              filesize(f.fd()),
+              sizeof(Frozen<Person>) * count);
 
   MemoryMapping mapping(f.fd());
-  auto* pfvect= mapFrozen<std::vector<Person>>(mapping);
+  auto* pfvect = mapFrozen<std::vector<Person>>(mapping);
   auto& fvect = *pfvect;
-  BOOST_CHECK_EQUAL(people[100].id, fvect[100].id);
-  BOOST_CHECK_EQUAL(people[9876].id, fvect[9876].id);
+  EXPECT_EQ(people[100].id, fvect[100].id);
+  EXPECT_EQ(people[9876].id, fvect[9876].id);
 }
 
-BOOST_AUTO_TEST_CASE( KeepMapped ) {
+TEST(FrozenUtilTest, KeepMapped ) {
   Person p;
   p.nums = { 9, 8, 7 };
   p.id = 123;
@@ -132,10 +129,8 @@ BOOST_AUTO_TEST_CASE( KeepMapped ) {
   auto* pfp = freezeToFile(p, mapping);
   auto& fp = *pfp;
 
-  BOOST_CHECK_EQUAL(123, fp.id);
-  BOOST_CHECK_EQUAL(1, fp.nums.count(8));
-  BOOST_CHECK_EQUAL(3, fp.nums.size());
-  BOOST_CHECK_EQUAL("Tom", fp.name);
+  EXPECT_EQ(123, fp.id);
+  EXPECT_EQ(1, fp.nums.count(8));
+  EXPECT_EQ(3, fp.nums.size());
+  EXPECT_EQ("Tom", fp.name.range());
 }
-
-BOOST_AUTO_TEST_SUITE_END()
