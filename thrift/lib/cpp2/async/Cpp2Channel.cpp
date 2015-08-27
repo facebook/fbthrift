@@ -50,12 +50,12 @@ Cpp2Channel::Cpp2Channel(
     protectionHandler_.reset(new ProtectionHandler);
   }
   framingHandler_->setProtectionHandler(protectionHandler_.get());
-  pipeline_.reset(new Pipeline(
+  pipeline_ = Pipeline::create(
       TAsyncTransportHandler(transport),
       wangle::OutputBufferingHandler(),
       protectionHandler_,
       framingHandler_,
-      this));
+      this);
   // Let the pipeline know that this handler owns the pipeline itself.
   // The pipeline will then avoid destruction order issues.
   // CHECK that this operation is successful.

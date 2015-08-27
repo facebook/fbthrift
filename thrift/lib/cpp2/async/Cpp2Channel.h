@@ -158,7 +158,7 @@ private:
     FramingHandler,
     Cpp2Channel>
   Pipeline;
-  std::unique_ptr<Pipeline, folly::DelayedDestruction::Destructor> pipeline_;
+  std::shared_ptr<Pipeline> pipeline_;
   TAsyncTransportHandler* transportHandler_;
 };
 
