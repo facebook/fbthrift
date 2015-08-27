@@ -11,14 +11,14 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TProtocol.h"
-#import "TApplicationException.h"
-#import "TProtocolException.h"
-#import "TProtocolUtil.h"
-#import "TProcessor.h"
-#import "TObjective-C.h"
-#import "TBase.h"
-#import "TBaseStruct.h"
+#import <thrift/TProtocol.h>
+#import <thrift/TApplicationException.h>
+#import <thrift/TProtocolException.h>
+#import <thrift/TProtocolUtil.h>
+#import <thrift/TProcessor.h>
+#import <thrift/TObjective-C.h>
+#import <thrift/TBase.h>
+#import <thrift/TBaseStruct.h>
 #import "includes.h"
 
 #import "module.h"
