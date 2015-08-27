@@ -58,7 +58,8 @@ Cpp2Connection::Cpp2Connection(
                channel_->getSaslServer(),
                worker->getServer()->getEventBaseManager(),
                duplexChannel_ ? duplexChannel_->getClientChannel() : nullptr)
-    , socket_(asyncSocket) {
+    , socket_(asyncSocket)
+    , threadManager_(worker_->getServer()->getThreadManager()) {
 
   channel_->setQueueSends(worker->getServer()->getQueueSends());
   channel_->setMinCompressBytes(worker_->getServer()->getMinCompressBytes());
@@ -323,8 +324,7 @@ void Cpp2Connection::requestReceived(
     req->timestamps_.processBegin =
       apache::thrift::concurrency::Util::currentTimeUsec();
     if (observer) {
-      observer->queuedRequests(
-        server->getThreadManager()->pendingTaskCount());
+      observer->queuedRequests(threadManager_->pendingTaskCount());
       if (server->getIsUnevenLoad()) {
         observer->activeRequests(
           server->getActiveRequests() +
@@ -379,7 +379,7 @@ void Cpp2Connection::requestReceived(
                         protoId,
                         reqContext,
                         worker_->getEventBase(),
-                        server->getThreadManager().get());
+                        threadManager_.get());
   } catch (...) {
     LOG(WARNING) << "Process exception: " <<
       folly::exceptionStr(std::current_exception());

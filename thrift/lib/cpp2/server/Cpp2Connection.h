@@ -99,6 +99,7 @@ class Cpp2Connection
   std::unique_ptr<apache::thrift::AsyncProcessor> processor_;
   std::unique_ptr<DuplexChannel> duplexChannel_;
   std::shared_ptr<apache::thrift::HeaderServerChannel> channel_;
+
   Cpp2Worker* worker_;
   Cpp2Worker* getWorker() {
     return worker_;
@@ -106,6 +107,7 @@ class Cpp2Connection
   Cpp2ConnContext context_;
 
   std::shared_ptr<apache::thrift::async::TAsyncSocket> socket_;
+  std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
 
   /**
    * Wrap the request in our own request.  This is done for 2 reasons:
