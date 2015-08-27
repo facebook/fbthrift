@@ -83,7 +83,7 @@ TFileTransport::TFileTransport(string path, bool readOnly)
   , maxCorruptedEvents_(DEFAULT_MAX_CORRUPTED_EVENTS)
   , eofSleepTime_(DEFAULT_EOF_SLEEP_TIME_US)
   , writerThreadIOErrorSleepTime_(DEFAULT_WRITER_THREAD_SLEEP_TIME_US)
-  , writerThreadId_(pthread_t_init)
+  , writerThreadId_(pthread_zero)
   , dequeueBuffer_(nullptr)
   , enqueueBuffer_(nullptr)
   , closing_(false)
@@ -146,7 +146,7 @@ TFileTransport::~TFileTransport() {
     pthread_mutex_unlock(&mutex_);
 
     pthread_join(writerThreadId_, nullptr);
-    writerThreadId_ = pthread_t_init;
+    writerThreadId_ = pthread_zero;
   }
 
   if (dequeueBuffer_) {
