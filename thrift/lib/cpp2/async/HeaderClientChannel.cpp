@@ -31,7 +31,7 @@ using folly::make_unique;
 using namespace apache::thrift::transport;
 using apache::thrift::async::TEventBase;
 using apache::thrift::async::TAsyncTransport;
-using apache::thrift::async::RequestContext;
+using folly::RequestContext;
 using HResClock = std::chrono::high_resolution_clock;
 using Us = std::chrono::microseconds;
 

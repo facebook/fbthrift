@@ -46,7 +46,7 @@ using std::shared_ptr;
 using std::make_shared;
 using std::dynamic_pointer_cast;
 using std::unique_ptr;
-using apache::thrift::async::RequestContext;
+using folly::RequestContext;
 
 folly::RWSpinLock ThreadManager::observerLock_;
 std::shared_ptr<ThreadManager::Observer> ThreadManager::observer_;

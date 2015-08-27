@@ -24,9 +24,9 @@
 
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
-#include <thrift/lib/cpp/async/Request.h>
+#include <folly/io/async/Request.h>
 
-using apache::thrift::async::RequestContext;
+using folly::RequestContext;
 
 DEFINE_bool(thrift_numa_enabled, false, "Enable NumaThreadManager in thrift");
 

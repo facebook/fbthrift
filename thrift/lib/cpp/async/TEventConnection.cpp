@@ -39,12 +39,12 @@ using namespace apache::thrift::transport;
 using namespace apache::thrift::async;
 using namespace std;
 using namespace std::placeholders;
-using std::shared_ptr;
+using namespace folly;
 
 
   // Constructor
 TEventConnection::TEventConnection(shared_ptr<TAsyncSocket> asyncSocket,
-                                   const folly::SocketAddress* address,
+                                   const SocketAddress* address,
                                    TEventWorker* worker,
                                    TEventServer::TransportType transport)
   : worker_(nullptr),
@@ -76,7 +76,7 @@ TEventConnection::~TEventConnection() {
 }
 
 void TEventConnection::init(shared_ptr<TAsyncSocket> asyncSocket,
-                            const folly::SocketAddress* address,
+                            const SocketAddress* address,
                             TEventWorker* worker,
                             TEventServer::TransportType transport) {
   T_DEBUG_T("fd=%d; TEventConnection::init()", asyncSocket->getFd());

@@ -22,7 +22,7 @@
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/async/Request.h>
+#include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -151,7 +151,7 @@ class RequestCallback {
   virtual void replyReceived(ClientReceiveState&&) = 0;
   virtual void requestError(ClientReceiveState&&) = 0;
 
-  std::shared_ptr<apache::thrift::async::RequestContext> context_;
+  std::shared_ptr<folly::RequestContext> context_;
   // To log latency incurred for doing thrift security
   int64_t securityStart_ = 0;
   int64_t securityEnd_ = 0;

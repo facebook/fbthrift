@@ -24,7 +24,7 @@
 #include <thrift/lib/cpp2/async/SaslClient.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <thrift/lib/cpp/async/TDelayedDestruction.h>
-#include <thrift/lib/cpp/async/Request.h>
+#include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
@@ -278,9 +278,9 @@ private:
       X_CHECK_STATE_EQ(sendState_, QState::QUEUED);
       CHECK(cb_);
       auto old_ctx =
-        apache::thrift::async::RequestContext::setContext(cb_->context_);
+        folly::RequestContext::setContext(cb_->context_);
       cb_->requestSent();
-      apache::thrift::async::RequestContext::setContext(old_ctx);
+      folly::RequestContext::setContext(old_ctx);
       sendState_ = QState::DONE;
       maybeDeleteThis();
     }
@@ -295,11 +295,11 @@ private:
       if (!cbCalled_) {
         cbCalled_ = true;
         auto old_ctx =
-          apache::thrift::async::RequestContext::setContext(cb_->context_);
+          folly::RequestContext::setContext(cb_->context_);
         cb_->requestError(
           ClientReceiveState(std::move(ex), std::move(ctx_),
                              channel_->isSecurityActive()));
-        apache::thrift::async::RequestContext::setContext(old_ctx);
+        folly::RequestContext::setContext(old_ctx);
       }
       delete this;
     }
@@ -316,7 +316,7 @@ private:
       cbCalled_ = true;
 
       auto old_ctx =
-        apache::thrift::async::RequestContext::setContext(cb_->context_);
+        folly::RequestContext::setContext(cb_->context_);
       cb_->replyReceived(ClientReceiveState(protoId_,
                                             std::move(buf),
                                             std::move(header),
@@ -324,7 +324,7 @@ private:
                                             channel_->isSecurityActive(),
                                             true));
 
-      apache::thrift::async::RequestContext::setContext(old_ctx);
+      folly::RequestContext::setContext(old_ctx);
       maybeDeleteThis();
     }
     void partialReplyReceived(
@@ -337,14 +337,14 @@ private:
       CHECK(cb_);
 
       auto old_ctx =
-        apache::thrift::async::RequestContext::setContext(cb_->context_);
+        folly::RequestContext::setContext(cb_->context_);
       cb_->replyReceived(ClientReceiveState(protoId_,
                                             std::move(buf),
                                             std::move(header),
                                             ctx_,
                                             channel_->isSecurityActive()));
 
-      apache::thrift::async::RequestContext::setContext(old_ctx);
+      folly::RequestContext::setContext(old_ctx);
     }
     void requestError(folly::exception_wrapper ex) {
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
@@ -354,11 +354,11 @@ private:
       if (!cbCalled_) {
         cbCalled_ = true;
         auto old_ctx =
-          apache::thrift::async::RequestContext::setContext(cb_->context_);
+          folly::RequestContext::setContext(cb_->context_);
         cb_->requestError(
           ClientReceiveState(std::move(ex), std::move(ctx_),
                              channel_->isSecurityActive()));
-        apache::thrift::async::RequestContext::setContext(old_ctx);
+        folly::RequestContext::setContext(old_ctx);
       }
       maybeDeleteThis();
     }
@@ -374,13 +374,13 @@ private:
         TTransportException ex(TTransportException::TIMED_OUT, "Timed Out");
         ex.setOptions(TTransportException::CHANNEL_IS_VALID);  // framing okay
         auto old_ctx =
-          apache::thrift::async::RequestContext::setContext(cb_->context_);
+          folly::RequestContext::setContext(cb_->context_);
         cb_->requestError(
             ClientReceiveState(
               folly::make_exception_wrapper<TTransportException>(std::move(ex)),
               std::move(ctx_),
               channel_->isSecurityActive()));
-        apache::thrift::async::RequestContext::setContext(old_ctx);
+        folly::RequestContext::setContext(old_ctx);
       }
       maybeDeleteThis();
     }
@@ -451,18 +451,18 @@ private:
     void messageSent() override {
       CHECK(cb_);
       auto old_ctx =
-        apache::thrift::async::RequestContext::setContext(cb_->context_);
+        folly::RequestContext::setContext(cb_->context_);
       cb_->requestSent();
-      apache::thrift::async::RequestContext::setContext(old_ctx);
+      folly::RequestContext::setContext(old_ctx);
       delete this;
     }
     void messageSendError(folly::exception_wrapper&& ex) override {
       CHECK(cb_);
       auto old_ctx =
-        apache::thrift::async::RequestContext::setContext(cb_->context_);
+        folly::RequestContext::setContext(cb_->context_);
       cb_->requestError(
         ClientReceiveState(ex, std::move(ctx_), isSecurityActive_));
-      apache::thrift::async::RequestContext::setContext(old_ctx);
+      folly::RequestContext::setContext(old_ctx);
       delete this;
     }
    private:

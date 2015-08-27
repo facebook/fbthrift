@@ -23,7 +23,7 @@
 #include <folly/LifoSem.h>
 #include <folly/MPMCQueue.h>
 #include <folly/SmallLocks.h>
-#include <thrift/lib/cpp/async/Request.h>
+#include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 
 namespace apache { namespace thrift { namespace concurrency {
@@ -33,7 +33,6 @@ using std::make_shared;
 using wangle::Codel;
 using std::dynamic_pointer_cast;
 using std::unique_ptr;
-using async::RequestContext;
 
 class ThreadManager::Task {
  public:
@@ -50,15 +49,15 @@ class ThreadManager::Task {
     , queueBeginTime_(SystemClock::now())
     , expireTime_(expiration > std::chrono::milliseconds::zero() ?
                   queueBeginTime_ + expiration : SystemClockTimePoint())
-    , context_(RequestContext::saveContext()) {}
+    , context_(folly::RequestContext::saveContext()) {}
 
   ~Task() {}
 
   void run() {
     auto old_ctx =
-      RequestContext::setContext(context_);
+      folly::RequestContext::setContext(context_);
     runnable_->run();
-    RequestContext::setContext(old_ctx);
+    folly::RequestContext::setContext(old_ctx);
   }
 
   const shared_ptr<Runnable>& getRunnable() const {
@@ -85,7 +84,7 @@ class ThreadManager::Task {
   shared_ptr<Runnable> runnable_;
   SystemClockTimePoint queueBeginTime_;
   SystemClockTimePoint expireTime_;
-  std::shared_ptr<RequestContext> context_;
+  std::shared_ptr<folly::RequestContext> context_;
 };
 
 template <typename SemType>
@@ -127,7 +126,7 @@ class ThreadManager::ImplT : public ThreadManager  {
     namePrefix_(""),
     namePrefixCounter_(0),
     codelEnabled_(false || FLAGS_codel_enabled) {
-      RequestContext::saveContext();
+      folly::RequestContext::saveContext();
   }
 
   ~ImplT() override { stop(); }

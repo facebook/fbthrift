@@ -31,7 +31,7 @@
 #include <folly/Logging.h>
 #include <folly/MPMCQueue.h>
 #include <folly/Memory.h>
-#include <thrift/lib/cpp/async/Request.h>
+#include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -46,7 +46,7 @@ using std::shared_ptr;
 using std::make_shared;
 using std::dynamic_pointer_cast;
 using std::unique_ptr;
-using apache::thrift::async::RequestContext;
+using folly::RequestContext;
 
 /**
  * ThreadManager class
