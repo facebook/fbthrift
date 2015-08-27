@@ -18,9 +18,7 @@
 #include <iostream>
 #include <chrono>
 #include <memory>
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int.hpp>
-#include <boost/test/unit_test.hpp>
+#include <random>
 #include <numa.h>
 
 #include <thrift/lib/cpp/concurrency/Monitor.h>
@@ -33,8 +31,11 @@
 #include <wangle/concurrent/Codel.h>
 #include <folly/Synchronized.h>
 
-using namespace boost;
+#include <gtest/gtest.h>
+
 using namespace apache::thrift::concurrency;
+
+DECLARE_bool(thrift_numa_enabled);
 
 // Loops until x==y for up to timeout ms.
 // The end result is the same as of BOOST_{CHECK,REQUIRE}_EQUAL(x,y)
@@ -44,13 +45,13 @@ using namespace apache::thrift::concurrency;
     using std::chrono::milliseconds;  \
     auto end = steady_clock::now() + milliseconds(timeout);  \
     while ((x) != (y) && steady_clock::now() < end)  {} \
-    BOOST_##OP##_EQUAL(x, y); \
+    OP##_EQ(x, y); \
   } while (0)
 
 #define CHECK_EQUAL_SPECIFIC_TIMEOUT(timeout, x, y) \
-  X_EQUAL_SPECIFIC_TIMEOUT(CHECK, timeout, x, y)
+  X_EQUAL_SPECIFIC_TIMEOUT(EXPECT, timeout, x, y)
 #define REQUIRE_EQUAL_SPECIFIC_TIMEOUT(timeout, x, y) \
-  X_EQUAL_SPECIFIC_TIMEOUT(REQUIRE, timeout, x, y)
+  X_EQUAL_SPECIFIC_TIMEOUT(ASSERT, timeout, x, y)
 
 // A default timeout of 1 sec should be long enough for other threads to
 // stabilize the values of x and y, and short enough to catch real errors
@@ -98,17 +99,15 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   Monitor monitor;
   size_t tasksLeft = numTasks;
 
-  std::shared_ptr<ThreadManager> threadManager =
+  auto threadManager =
     ThreadManager::newSimpleThreadManager(numWorkers, 0, true);
-  std::shared_ptr<PosixThreadFactory> threadFactory =
-    std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+  auto threadFactory = std::make_shared<PosixThreadFactory>();
   threadManager->threadFactory(threadFactory);
   threadManager->start();
 
   std::set<std::shared_ptr<LoadTask>> tasks;
   for (size_t n = 0; n < numTasks; n++) {
-    tasks.insert(std::shared_ptr<LoadTask>(
-          new LoadTask(&monitor, &tasksLeft, timeout)));
+    tasks.insert(std::make_shared<LoadTask>(&monitor, &tasksLeft, timeout));
   }
 
   int64_t startTime = Util::currentTime();
@@ -133,8 +132,8 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   int64_t maxTime = 0;
 
   for (const auto& task : tasks) {
-    BOOST_CHECK_GT(task->startTime_, 0);
-    BOOST_CHECK_GT(task->endTime_, 0);
+    EXPECT_GT(task->startTime_, 0);
+    EXPECT_GT(task->endTime_, 0);
 
     int64_t delta = task->endTime_ - task->startTime_;
     assert(delta > 0);
@@ -148,11 +147,11 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   }
   averageTime /= numTasks;
 
-  BOOST_TEST_MESSAGE("first start: " << firstTime << "ms " <<
-                     "last end: " << lastTime << "ms " <<
-                     "min: " << minTime << "ms " <<
-                     "max: " << maxTime << "ms " <<
-                     "average: " << averageTime << "ms");
+  LOG(INFO) << "first start: " << firstTime << "ms "
+            << "last end: " << lastTime << "ms "
+            << "min: " << minTime << "ms "
+            << "max: " << maxTime << "ms "
+            << "average: " << averageTime << "ms";
 
   double idealTime = ((numTasks + (numWorkers - 1)) / numWorkers) * timeout;
   double actualTime = endTime - startTime;
@@ -163,13 +162,13 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
     overheadPct*= -1.0;
   }
 
-  BOOST_TEST_MESSAGE("ideal time: " << idealTime << "ms " <<
-                     "actual time: "<< actualTime << "ms " <<
-                     "task startup time: " << taskStartTime << "ms " <<
-                     "overhead: " << overheadPct * 100.0 << "%");
+  LOG(INFO) << "ideal time: " << idealTime << "ms "
+            << "actual time: "<< actualTime << "ms "
+            << "task startup time: " << taskStartTime << "ms "
+            << "overhead: " << overheadPct * 100.0 << "%";
 
   // Fail if the test took 10% more time than the ideal time
-  BOOST_CHECK_LT(overheadPct, 0.10);
+  EXPECT_LT(overheadPct, 0.10);
 
   // Get the task stats
   int64_t waitTimeUs;
@@ -185,14 +184,14 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   int64_t idealAvgWaitUs =
     (expectedTotalWaitTimeMs * Util::US_PER_MS) / numTasks;
 
-  BOOST_TEST_MESSAGE("avg wait time: " << waitTimeUs << "us " <<
-                     "avg run time: " << runTimeUs << "us " <<
-                     "ideal wait time: " << idealAvgWaitUs << "us");
+  LOG(INFO) << "avg wait time: " << waitTimeUs << "us "
+            << "avg run time: " << runTimeUs << "us "
+            << "ideal wait time: " << idealAvgWaitUs << "us";
 
   // Verify that the average run time was more than the timeout, but not
   // more than 10% over.
-  BOOST_CHECK_GE(runTimeUs, timeout * Util::US_PER_MS);
-  BOOST_CHECK_LT(runTimeUs, timeout * Util::US_PER_MS * 1.10);
+  EXPECT_GE(runTimeUs, timeout * Util::US_PER_MS);
+  EXPECT_LT(runTimeUs, timeout * Util::US_PER_MS * 1.10);
   // Verify that the average wait time was within 10% of the ideal wait time.
   // The calculation for ideal average wait time assumes all tasks were started
   // instantaneously, in reality, starting 1000 tasks takes some non-zero amount
@@ -200,11 +199,11 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   // ideal wait time. Account for this by accepting an actual avg wait time that
   // is less than ideal avg wait time by up to the time it took to start all the
   // tasks.
-  BOOST_CHECK_GE(waitTimeUs, idealAvgWaitUs - taskStartTime * Util::US_PER_MS);
-  BOOST_CHECK_LT(waitTimeUs, idealAvgWaitUs * 1.10);
+  EXPECT_GE(waitTimeUs, idealAvgWaitUs - taskStartTime * Util::US_PER_MS);
+  EXPECT_LT(waitTimeUs, idealAvgWaitUs * 1.10);
 }
 
-BOOST_AUTO_TEST_CASE(LoadTest) {
+TEST(ThreadManagerTest, LoadTest) {
   size_t numTasks = 10000;
   int64_t timeout = 50;
   size_t numWorkers = 100;
@@ -254,10 +253,9 @@ class BlockTask: public Runnable {
 static void blockTest(int64_t /*timeout*/, size_t numWorkers) {
   size_t pendingTaskMaxCount = numWorkers;
 
-  std::shared_ptr<ThreadManager> threadManager =
+  auto threadManager =
     ThreadManager::newSimpleThreadManager(numWorkers, pendingTaskMaxCount);
-  std::shared_ptr<PosixThreadFactory> threadFactory =
-    std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+  auto threadFactory = std::make_shared<PosixThreadFactory>();
   threadManager->threadFactory(threadFactory);
   threadManager->start();
 
@@ -269,8 +267,8 @@ static void blockTest(int64_t /*timeout*/, size_t numWorkers) {
   size_t tasksCount1 = numWorkers;
   std::set<std::shared_ptr<BlockTask>> tasks;
   for (size_t ix = 0; ix < numWorkers; ix++) {
-    std::shared_ptr<BlockTask> task(new BlockTask(&monitor, &bmonitor,
-                                             &blocked1, &tasksCount1));
+    auto task = std::make_shared<BlockTask>(
+        &monitor, &bmonitor, &blocked1, &tasksCount1);
     tasks.insert(task);
     threadManager->add(task);
   }
@@ -282,8 +280,8 @@ static void blockTest(int64_t /*timeout*/, size_t numWorkers) {
   bool blocked2 = true;
   size_t tasksCount2 = pendingTaskMaxCount;
   for (size_t ix = 0; ix < pendingTaskMaxCount; ix++) {
-    std::shared_ptr<BlockTask> task(new BlockTask(&monitor, &bmonitor,
-                                             &blocked2, &tasksCount2));
+    auto task = std::make_shared<BlockTask>(
+        &monitor, &bmonitor, &blocked2, &tasksCount2);
     tasks.insert(task);
     threadManager->add(task);
   }
@@ -297,29 +295,11 @@ static void blockTest(int64_t /*timeout*/, size_t numWorkers) {
   // Since the pending task count is full, this should fail
   bool blocked3 = true;
   size_t tasksCount3 = 1;
-  std::shared_ptr<BlockTask> extraTask(new BlockTask(&monitor, &bmonitor,
-                                                &blocked3, &tasksCount3));
-  try {
-    threadManager->add(extraTask, 1);
-    BOOST_FAIL("Unexpected success adding task in excess "
-               "of pending task count");
-  } catch (const TooManyPendingTasksException& e) {
-    BOOST_FAIL("Should have timed out adding task in excess "
-               "of pending task count");
-  } catch (const TimedOutException& e) {
-    // Expected result
-  }
+  auto extraTask = std::make_shared<BlockTask>(
+      &monitor, &bmonitor, &blocked3, &tasksCount3);
+  ASSERT_THROW(threadManager->add(extraTask, 1), TimedOutException);
 
-  try {
-    threadManager->add(extraTask, -1);
-    BOOST_FAIL("Unexpected success adding task in excess "
-               "of pending task count");
-  } catch (const TimedOutException& e) {
-    BOOST_FAIL("Unexpected timeout adding task in excess "
-               "of pending task count");
-  } catch (const TooManyPendingTasksException& e) {
-    // Expected result
-  }
+  ASSERT_THROW(threadManager->add(extraTask, -1), TooManyPendingTasksException);
 
   // Unblock the first set of tasks
   {
@@ -339,9 +319,9 @@ static void blockTest(int64_t /*timeout*/, size_t numWorkers) {
   try {
     threadManager->add(extraTask, 1);
   } catch (const TimedOutException& e) {
-    BOOST_FAIL("Unexpected timeout adding task");
+    FAIL() << "Unexpected timeout adding task";
   } catch (const TooManyPendingTasksException& e) {
-    BOOST_FAIL("Unexpected failure adding task");
+    FAIL() << "Unexpected failure adding task";
   }
 
   // Unblock the second set of tasks
@@ -373,7 +353,7 @@ static void blockTest(int64_t /*timeout*/, size_t numWorkers) {
   CHECK_EQUAL_TIMEOUT(threadManager->totalTaskCount(), 0);
 }
 
-BOOST_AUTO_TEST_CASE(BlockTest) {
+TEST(ThreadManagerTest, BlockTest) {
   int64_t timeout = 50;
   size_t numWorkers = 100;
   blockTest(timeout, numWorkers);
@@ -394,10 +374,9 @@ static void expireTest(int64_t numWorkers, int64_t expirationTimeMs) {
   size_t activeTasks = numWorkers + maxPendingTasks;
   Monitor monitor;
 
-  std::shared_ptr<ThreadManager> threadManager =
+  auto threadManager =
     ThreadManager::newSimpleThreadManager(numWorkers, maxPendingTasks);
-  std::shared_ptr<PosixThreadFactory> threadFactory =
-    std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+  auto threadFactory = std::make_shared<PosixThreadFactory>();
   threadManager->threadFactory(threadFactory);
   threadManager->setExpireCallback(
       std::bind(expireTestCallback, std::placeholders::_1,
@@ -411,8 +390,8 @@ static void expireTest(int64_t numWorkers, int64_t expirationTimeMs) {
   Monitor bmonitor;
   bool blocked = true;
   for (int64_t n = 0; n < numWorkers + maxPendingTasks; ++n) {
-    std::shared_ptr<BlockTask> task(new BlockTask(&monitor, &bmonitor,
-                                             &blocked, &activeTasks));
+    auto task = std::make_shared<BlockTask>(
+        &monitor, &bmonitor, &blocked, &activeTasks);
     tasks.push_back(task);
     threadManager->add(task, 0, expirationTimeMs);
   }
@@ -439,15 +418,15 @@ static void expireTest(int64_t numWorkers, int64_t expirationTimeMs) {
   size_t index = 0;
   for (const auto& task : tasks) {
     if (index < numWorkers) {
-      BOOST_CHECK(tasks[index]->started_);
+      EXPECT_TRUE(tasks[index]->started_);
     } else {
-      BOOST_CHECK(!tasks[index]->started_);
+      EXPECT_TRUE(!tasks[index]->started_);
     }
     ++index;
   }
 }
 
-BOOST_AUTO_TEST_CASE(ExpireTest) {
+TEST(ThreadManagerTest, ExpireTest) {
   int64_t numWorkers = 100;
   int64_t expireTimeMs = 50;
   expireTest(numWorkers, expireTimeMs);
@@ -534,15 +513,15 @@ class WorkerCountChanger : public Runnable {
 
   void addAndRemove() {
     // Add a random number of workers
-    boost::uniform_int<> workerDist(1, 10);
+    std::uniform_int_distribution<> workerDist(1, 10);
     uint32_t workersToAdd = workerDist(rng_);
     manager_->addWorker(workersToAdd);
 
-    boost::uniform_int<> taskDist(1, 50);
+    std::uniform_int_distribution<> taskDist(1, 50);
     uint32_t tasksToAdd = taskDist(rng_);
 
     // Sleep for a random amount of time
-    boost::uniform_int<> sleepDist(1000, 5000);
+    std::uniform_int_distribution<> sleepDist(1000, 5000);
     uint32_t sleepUs = sleepDist(rng_);
     usleep(sleepUs);
 
@@ -551,7 +530,7 @@ class WorkerCountChanger : public Runnable {
   }
 
  private:
-  boost::mt19937 rng_;
+  std::mt19937 rng_;
   std::shared_ptr<ThreadManager> manager_;
   Monitor* monitor_;
   int64_t* count_;
@@ -560,7 +539,7 @@ class WorkerCountChanger : public Runnable {
 
 // Run lots of tasks, while several threads are all changing
 // the number of worker threads.
-BOOST_AUTO_TEST_CASE(AddRemoveWorker) {
+TEST(ThreadManagerTest, AddRemoveWorker) {
   // Number of tasks to run
   int64_t numTasks = 100000;
   // Minimum number of workers to keep at any point in time
@@ -570,10 +549,8 @@ BOOST_AUTO_TEST_CASE(AddRemoveWorker) {
   // Number of tasks to run in parallel
   int64_t numParallelTasks = 200;
 
-  std::shared_ptr<ThreadManager> threadManager =
-    ThreadManager::newSimpleThreadManager(minNumWorkers);
-  std::shared_ptr<PosixThreadFactory> threadFactory =
-    std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+  auto threadManager = ThreadManager::newSimpleThreadManager(minNumWorkers);
+  auto threadFactory = std::make_shared<PosixThreadFactory>();
   threadManager->threadFactory(threadFactory);
   threadManager->start();
 
@@ -582,24 +559,23 @@ BOOST_AUTO_TEST_CASE(AddRemoveWorker) {
   int64_t count = numTasks;
   int64_t addRemoveCount = 0;
 
-  boost::mt19937 rng;
-  boost::uniform_int<> taskTimeoutDist(1, 3000);
+  std::mt19937 rng;
+  std::uniform_int_distribution<> taskTimeoutDist(1, 3000);
   for (int64_t n = 0; n < numParallelTasks; ++n) {
     int64_t taskTimeoutUs = taskTimeoutDist(rng);
-    std::shared_ptr<AddRemoveTask> task(new AddRemoveTask(
-          taskTimeoutUs, threadManager, &monitor, &count,
-          &currentTaskObjects));
+    auto task = std::make_shared<AddRemoveTask>(
+        taskTimeoutUs, threadManager, &monitor, &count,
+        &currentTaskObjects);
     threadManager->add(task);
   }
 
-  std::shared_ptr<PosixThreadFactory> addRemoveFactory =
-    std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+  auto addRemoveFactory = std::make_shared<PosixThreadFactory>();
   addRemoveFactory->setDetached(false);
   std::deque<std::shared_ptr<Thread> > addRemoveThreads;
   for (int64_t n = 0; n < numAddRemoveWorkers; ++n) {
-    std::shared_ptr<WorkerCountChanger> worker(new WorkerCountChanger(
-          threadManager, &monitor, &count, &addRemoveCount));
-    std::shared_ptr<Thread> thread(addRemoveFactory->newThread(worker));
+    auto worker = std::make_shared<WorkerCountChanger>(
+          threadManager, &monitor, &count, &addRemoveCount);
+    auto thread = addRemoveFactory->newThread(worker);
     addRemoveThreads.push_back(thread);
     thread->start();
   }
@@ -609,41 +585,36 @@ BOOST_AUTO_TEST_CASE(AddRemoveWorker) {
     addRemoveThreads.pop_front();
   }
 
-  BOOST_TEST_MESSAGE("add remove count: " << addRemoveCount);
-  BOOST_CHECK_GT(addRemoveCount, 0);
+  LOG(INFO) << "add remove count: " << addRemoveCount;
+  EXPECT_GT(addRemoveCount, 0);
 
   // Stop the ThreadManager, and ensure that all Task objects have been
   // destroyed.
   threadManager->stop();
-  BOOST_CHECK_EQUAL(currentTaskObjects, 0);
+  EXPECT_EQ(0, currentTaskObjects);
 }
 
-BOOST_AUTO_TEST_CASE(NeverStartedTest) {
+TEST(ThreadManagerTest, NeverStartedTest) {
   // Test destroying a ThreadManager that was never started.
   // This ensures that calling stop() on an unstarted ThreadManager works
   // properly.
   {
-    std::shared_ptr<ThreadManager> threadManager =
-      ThreadManager::newSimpleThreadManager(10);
+    auto threadManager = ThreadManager::newSimpleThreadManager(10);
   }
 
   // Destroy a ThreadManager that has a ThreadFactory but was never started.
   {
-    std::shared_ptr<ThreadManager> threadManager =
-      ThreadManager::newSimpleThreadManager(10);
-    std::shared_ptr<PosixThreadFactory> threadFactory =
-      std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+    auto threadManager = ThreadManager::newSimpleThreadManager(10);
+    auto threadFactory = std::make_shared<PosixThreadFactory>();
     threadManager->threadFactory(threadFactory);
   }
 }
 
-BOOST_AUTO_TEST_CASE(OnlyStartedTest) {
+TEST(ThreadManagerTest, OnlyStartedTest) {
   // Destroy a ThreadManager that has a ThreadFactory and was started.
   for (int i = 0; i < 1000; ++i) {
-    std::shared_ptr<ThreadManager> threadManager =
-      ThreadManager::newSimpleThreadManager(10);
-    std::shared_ptr<PosixThreadFactory> threadFactory =
-      std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
+    auto threadManager = ThreadManager::newSimpleThreadManager(10);
+    auto threadFactory = std::make_shared<PosixThreadFactory>();
     threadManager->threadFactory(threadFactory);
     threadManager->start();
   }
@@ -660,12 +631,12 @@ class TestObserver : public ThreadManager::Observer {
                 const SystemClockTimePoint& queueBegin,
                 const SystemClockTimePoint& workBegin,
                 const SystemClockTimePoint& workEnd) override {
-    BOOST_CHECK_EQUAL(threadPoolName, expectedName);
+    EXPECT_EQ(expectedName, threadPoolName);
 
     // Note: Technically could fail if system clock changes.
-    BOOST_CHECK_GT((workBegin - queueBegin).count(), 0);
-    BOOST_CHECK_GT((workEnd - workBegin).count(), 0);
-    BOOST_CHECK_GT((workEnd - workBegin).count(), timeout - 1);
+    EXPECT_GT((workBegin - queueBegin).count(), 0);
+    EXPECT_GT((workEnd - workBegin).count(), 0);
+    EXPECT_GT((workEnd - workBegin).count(), timeout - 1);
     ++timesCalled;
   }
 
@@ -674,15 +645,16 @@ class TestObserver : public ThreadManager::Observer {
   std::string expectedName;
 };
 
-DECLARE_bool(thrift_numa_enabled);
-BOOST_AUTO_TEST_CASE(NumaThreadManagerTest) {
+TEST(ThreadManagerTest, NumaThreadManagerTest) {
+  google::FlagSaver saver;
+  FLAGS_thrift_numa_enabled = true;
+
   if (numa_available() == -1) {
-    BOOST_TEST_MESSAGE("numa is unavailable, skipping NumaThreadManagerTest");
+    LOG(ERROR) << "numa is unavailable, skipping NumaThreadManagerTest";
     return;
   }
 
-  FLAGS_thrift_numa_enabled = true;
-  auto numa = new NumaThreadManager(2);
+  auto numa = folly::make_unique<NumaThreadManager>(2);
   bool failed = false;
 
   numa->setNamePrefix("foo");
@@ -690,9 +662,8 @@ BOOST_AUTO_TEST_CASE(NumaThreadManagerTest) {
 
   folly::Synchronized<std::set<int>> nodes;
 
-  auto data = RequestContext::get()->getContextData(
-    "numa");
-  BOOST_CHECK(nullptr == data);
+  auto data = RequestContext::get()->getContextData("numa");
+  EXPECT_EQ(nullptr, data);
 
   auto checkFunc = FunctionRunner::create([&](){
       auto data = RequestContext::get()->getContextData(
@@ -734,8 +705,8 @@ BOOST_AUTO_TEST_CASE(NumaThreadManagerTest) {
   }
 
   numa->join();
-  BOOST_CHECK_EQUAL(numa_num_configured_nodes(), nodes->size());
-  BOOST_CHECK_EQUAL(failed, false);
+  EXPECT_EQ(numa_num_configured_nodes(), nodes->size());
+  EXPECT_FALSE(failed);
 }
 
 class FailThread : public PthreadThread {
@@ -759,12 +730,10 @@ class FailThreadFactory : public PosixThreadFactory {
 
     std::shared_ptr<Thread> newThread(const std::shared_ptr<Runnable>& runnable,
                                       DetachState detachState) const override {
-      std::shared_ptr<FailThread> result =
-        std::shared_ptr<FailThread>(
-          new FailThread(
-            toPthreadPolicy(policy_),
-            toPthreadPriority(policy_, priority_), stackSize_,
-            detachState == DETACHED, runnable));
+      auto result = std::make_shared<FailThread>(
+          toPthreadPolicy(policy_),
+          toPthreadPriority(policy_, priority_), stackSize_,
+          detachState == DETACHED, runnable);
       result->weakRef(result);
       runnable->thread(result);
       return result;
@@ -795,23 +764,17 @@ class DummyFailureClass {
   std::shared_ptr<ThreadManager> threadManager_;
 };
 
-BOOST_AUTO_TEST_CASE(ThreadStartFailureTest) {
-  bool exceptionThrown = false;
+TEST(ThreadManagerTest, ThreadStartFailureTest) {
   for (int i = 0; i < 10; i++) {
-    try {
-      DummyFailureClass myClass;
-    } catch(int ex) {
-      exceptionThrown = true;
-      BOOST_CHECK_EQUAL(ex, 2);
-    }
-
-    BOOST_CHECK_EQUAL(exceptionThrown, true);
+    EXPECT_THROW(DummyFailureClass(), int);
   }
 }
 
-BOOST_AUTO_TEST_CASE(NumaThreadManagerBind) {
+TEST(ThreadManagerTest, NumaThreadManagerBind) {
+  google::FlagSaver saver;
+  FLAGS_thrift_numa_enabled = true;
 
-  auto numa = new NumaThreadManager(2);
+  auto numa = folly::make_unique<NumaThreadManager>(2);
   numa->setNamePrefix("foo");
   numa->start();
 
@@ -821,12 +784,12 @@ BOOST_AUTO_TEST_CASE(NumaThreadManagerBind) {
       // Try binding the numa node
       NumaThreadFactory::setNumaNode();
       auto node = NumaThreadFactory::getNumaNode();
-      BOOST_CHECK(-1 != node);
+      EXPECT_NE(-1, node);
       }));
   numa->join();
 }
 
-BOOST_AUTO_TEST_CASE(ObserverTest) {
+TEST(ThreadManagerTest, ObserverTest) {
   int64_t timeout = 1000;
   auto observer = std::make_shared<TestObserver>(1000, "foo");
   ThreadManager::setObserver(observer);
@@ -834,36 +797,13 @@ BOOST_AUTO_TEST_CASE(ObserverTest) {
   Monitor monitor;
   size_t tasks = 1;
 
-  std::shared_ptr<ThreadManager> threadManager =
-      ThreadManager::newSimpleThreadManager(10);
+  auto threadManager = ThreadManager::newSimpleThreadManager(10);
   threadManager->setNamePrefix("foo");
-  std::shared_ptr<PosixThreadFactory> threadFactory =
-    std::shared_ptr<PosixThreadFactory>(new PosixThreadFactory());
-  threadManager->threadFactory(threadFactory);
+  threadManager->threadFactory(std::make_shared<PosixThreadFactory>());
   threadManager->start();
 
   auto task = std::make_shared<LoadTask>(&monitor, &tasks, 1000);
   threadManager->add(task);
   threadManager->join();
-  BOOST_CHECK_EQUAL(observer->timesCalled, 1);
-}
-
-///////////////////////////////////////////////////////////////////////////
-// init_unit_test_suite()
-///////////////////////////////////////////////////////////////////////////
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]);
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value = "ThreadManagerTests";
-
-  if (argc != 1) {
-    std::cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      std::cerr << " " << argv[n];
-    }
-    std::cerr << "\n";
-    exit(1);
-  }
-
-  return nullptr;
+  EXPECT_EQ(1, observer->timesCalled);
 }
