@@ -161,9 +161,6 @@ bool is_oneway_method(
     const IOBuf* buf,
     const THeader* header,
     const unordered_set<string>& oneways) {
-  string fname;
-  MessageType mtype;
-  int32_t protoSeqId = 0;
   auto protType = static_cast<PROTOCOL_TYPES>(header->getProtocolId());
   switch (protType) {
     case T_BINARY_PROTOCOL:
