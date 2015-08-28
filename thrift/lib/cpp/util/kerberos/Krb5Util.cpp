@@ -26,6 +26,10 @@
 
 static const int kKeytabNameMaxLength = 512;
 
+extern "C" {
+krb5_error_code krb5int_init_context_kdc(krb5_context*);
+}
+
 namespace std {
 
 std::ostream& operator<<(std::ostream& os,
@@ -78,13 +82,24 @@ std::vector<std::string> getHostRealm(krb5_context context,
 }
 
 Krb5Context::Krb5Context(bool thread_local_ctx)
-    : threadLocal_(thread_local_ctx) {
-  krb5_error_code code;
-  if (threadLocal_) {
-    code = krb5_init_thread_local_context(&context_);
-  } else {
+    : Krb5Context(thread_local_ctx ? ContextType::THREAD_LOCAL
+                                   : ContextType::NORMAL) {}
+
+Krb5Context::Krb5Context(ContextType type)
+    : threadLocal_(ContextType::THREAD_LOCAL == type) {
+  krb5_error_code code = 0;
+  switch (type) {
+  case ContextType::NORMAL:
     code = krb5_init_context(&context_);
+    break;
+  case ContextType::THREAD_LOCAL:
+    code = krb5_init_thread_local_context(&context_);
+    break;
+  case ContextType::KDC:
+    code = krb5int_init_context_kdc(&context_);
+    break;
   }
+
   if (code) {
     std::string msg = folly::to<std::string>(
       "Error while initialiing kerberos context: ",
