@@ -216,7 +216,6 @@ include_async_HEADERS = \
                      async/THeaderAsyncChannel.h \
                      async/THttpAsyncChannel.h \
                      async/TimeoutManager.h \
-                     async/TNotificationQueue.h \
                      async/TQueuingAsyncProcessor.h \
                      async/TStreamAsyncChannel.h \
                      async/TSyncToAsyncProcessor.h \

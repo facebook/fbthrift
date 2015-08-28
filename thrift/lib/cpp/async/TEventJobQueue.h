@@ -20,10 +20,11 @@
 #ifndef THRIFT_ASYNC_TEVENTJOBQUEUE_H_
 #define THRIFT_ASYNC_TEVENTJOBQUEUE_H_ 1
 
+#include <folly/io/async/NotificationQueue.h>
 #include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <thrift/lib/cpp/async/TNotificationQueue.h>
 
 namespace apache { namespace thrift { namespace async {
 
@@ -85,7 +86,7 @@ class TEventJobQueue {
    */
   class JobThread:
       public apache::thrift::concurrency::Runnable,
-      public TNotificationQueue<TEventRunnable*>::Consumer {
+      public folly::NotificationQueue<TEventRunnable*>::Consumer {
 
   public:
     explicit JobThread(TEventJobQueue *parent) {}
@@ -97,7 +98,7 @@ class TEventJobQueue {
       thread_->join();
     }
 
-    TNotificationQueue<TEventRunnable*>* getQueue() {
+    folly::NotificationQueue<TEventRunnable*>* getQueue() {
       return &jobQueue_;
     }
 
@@ -113,7 +114,7 @@ class TEventJobQueue {
         LOG(ERROR) << "Unhandled exception in TEventJobQueue: " <<
           ex.what();
       }
-      TNotificationQueue<TEventRunnable*>::Consumer::stopConsuming();
+      folly::NotificationQueue<TEventRunnable*>::Consumer::stopConsuming();
     }
 
     /**
@@ -136,7 +137,7 @@ class TEventJobQueue {
    private:
     TEventBase eventBase_;
     std::shared_ptr<apache::thrift::concurrency::Thread> thread_;
-    TNotificationQueue<TEventRunnable*> jobQueue_;
+    folly::NotificationQueue<TEventRunnable*> jobQueue_;
 
     /**
      * A new runnable arrived - run it!

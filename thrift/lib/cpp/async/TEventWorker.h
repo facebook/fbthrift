@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TEventTask.h>
 #include <thrift/lib/cpp/async/TEventHandler.h>
-#include <thrift/lib/cpp/async/TNotificationQueue.h>
+#include <folly/io/async/NotificationQueue.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <ext/hash_map>
 #include <list>
@@ -46,7 +46,7 @@ class TEventWorker :
       public apache::thrift::server::TServer,
       public TAsyncServerSocket::AcceptCallback,
       public TAsyncSSLSocket::HandshakeCallback,
-      public TNotificationQueue<TaskCompletionMessage>::Consumer {
+      public folly::NotificationQueue<TaskCompletionMessage>::Consumer {
  private:
   /// Object that processes requests.
   std::shared_ptr<TAsyncProcessorFactory> asyncProcessorFactory_;
@@ -61,7 +61,7 @@ class TEventWorker :
   uint32_t workerID_;
 
   /// Pipe that task completion notifications are sent over
-  TNotificationQueue<TaskCompletionMessage> notificationQueue_;
+  folly::NotificationQueue<TaskCompletionMessage> notificationQueue_;
 
   /**
    * A stack of idle TEventConnection objects for reuse.
