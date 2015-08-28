@@ -16,7 +16,6 @@
 
 #include <thrift/lib/cpp/util/THttpParser.h>
 
-#include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <cstdlib>
 #include <sstream>
@@ -346,13 +345,14 @@ bool THttpClientParser::isConnectClosedByServer() {
 
 unique_ptr<IOBuf> THttpClientParser::constructHeader(unique_ptr<IOBuf> buf) {
   std::map<std::string, std::string> empty;
-  return constructHeader(std::move(buf), empty, empty);
+  return constructHeader(std::move(buf), empty, empty, &empty);
 }
 
 unique_ptr<IOBuf> THttpClientParser::constructHeader(
    unique_ptr<IOBuf> buf,
    const std::map<std::string, std::string>& persistentWriteHeaders,
-   const std::map<std::string, std::string>& writeHeaders) {
+   const std::map<std::string, std::string>& writeHeaders,
+   const std::map<std::string, std::string>* extraWriteHeaders) {
   IOBufQueue queue;
   queue.append("POST ");
   queue.append(path_);
@@ -372,26 +372,29 @@ unique_ptr<IOBuf> THttpClientParser::constructHeader(
   string contentLen = std::to_string(buf->computeChainDataLength());
   queue.append(contentLen);
   queue.append(CRLF);
-  // write persistent headers
-  for (const auto& persistentWriteHeader : persistentWriteHeaders) {
-    queue.append(persistentWriteHeader.first);
 
-    queue.append(": ");
-    queue.append(persistentWriteHeader.second);
-    queue.append(CRLF);
+  THttpClientParser::appendHeadersToQueue(queue, persistentWriteHeaders);
+  THttpClientParser::appendHeadersToQueue(queue, writeHeaders);
+  if (extraWriteHeaders) {
+    THttpClientParser::appendHeadersToQueue(queue, *extraWriteHeaders);
   }
-  // write non-persistent headers
-  for (const auto& writeHeader : writeHeaders) {
-    queue.append(writeHeader.first);
-    queue.append(": ");
-    queue.append(writeHeader.second);
-    queue.append(CRLF);
-  }
+
   queue.append(CRLF);
 
   auto res = queue.move();
   res->appendChain(std::move(buf));
   return std::move(res);
+}
+
+void THttpClientParser::appendHeadersToQueue(
+  folly::IOBufQueue& queue,
+  const std::map<std::string, std::string>& headersToAppend) {
+  for (const auto& headerToAppend : headersToAppend) {
+    queue.append(headerToAppend.first);
+    queue.append(": ");
+    queue.append(headerToAppend.second);
+    queue.append(CRLF);
+  }
 }
 
 }}}

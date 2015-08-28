@@ -1014,7 +1014,8 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     CHECK(httpClientParser_.get() != nullptr);
     buf = std::move(httpClientParser_->constructHeader(std::move(buf),
                                                        persistentWriteHeaders,
-                                                       writeHeaders_));
+                                                       writeHeaders_,
+                                                       extraWriteHeaders_));
     writeHeaders_.clear();
   } else {
     throw TTransportException(TTransportException::BAD_ARGS,
