@@ -24,7 +24,6 @@
  */
 
 #include <functional>
-#include <boost/test/unit_test.hpp>
 
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
@@ -41,9 +40,10 @@
 #include <thrift/lib/cpp/processor/test/Handlers.h>
 #include <thrift/lib/cpp/processor/test/gen-cpp/ChildService.h>
 
+#include <gtest/gtest.h>
+
 using std::string;
 using std::vector;
-using namespace boost;
 using namespace apache::thrift;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::protocol;
@@ -253,7 +253,7 @@ void checkNoEvents(const std::shared_ptr<EventLog>& log) {
   // On the other hand, a non-zero timeout is nice since it does give a short
   // window for events to arrive in case there is a problem.
   Event event = log->waitForEvent(10);
-  BOOST_CHECK_EQUAL(EventLog::ET_LOG_END, event.type);
+  EXPECT_EQ(EventLog::ET_LOG_END, event.type);
 }
 
 /**
@@ -264,7 +264,7 @@ void checkNoEvents(const std::shared_ptr<EventLog>& log) {
 uint32_t checkNewConnEvents(const std::shared_ptr<EventLog>& log) {
   // Check for an ET_CONN_CREATED event
   Event event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_CONN_CREATED, event.type);
+  EXPECT_EQ(EventLog::ET_CONN_CREATED, event.type);
 
   return event.connectionId;
 }
@@ -275,8 +275,8 @@ uint32_t checkNewConnEvents(const std::shared_ptr<EventLog>& log) {
 void checkCloseEvents(const std::shared_ptr<EventLog>& log, uint32_t connId) {
   // Check for an ET_CONN_DESTROYED event
   Event event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_CONN_DESTROYED, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
+  EXPECT_EQ(EventLog::ET_CONN_DESTROYED, event.type);
+  EXPECT_EQ(connId, event.connectionId);
 
   // Make sure there are no more events
   checkNoEvents(log);
@@ -296,28 +296,28 @@ uint32_t checkCallHandlerEvents(const std::shared_ptr<EventLog>& log,
                                 const string& callName) {
   // Call started
   Event event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_CALL_STARTED, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callName, event.message);
+  EXPECT_EQ(EventLog::ET_CALL_STARTED, event.type);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callName, event.message);
   uint32_t callId = event.callId;
 
   // Pre-read
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_PRE_READ, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
-  BOOST_CHECK_EQUAL(callName, event.message);
+  EXPECT_EQ(EventLog::ET_PRE_READ, event.type);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
+  EXPECT_EQ(callName, event.message);
 
   // Post-read
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_POST_READ, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
-  BOOST_CHECK_EQUAL(callName, event.message);
+  EXPECT_EQ(EventLog::ET_POST_READ, event.type);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
+  EXPECT_EQ(callName, event.message);
 
   // Handler invocation
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(callType, event.type);
+  EXPECT_EQ(callType, event.type);
   // The handler doesn't have any connection or call context,
   // so the connectionId and callId in this event aren't valid
 
@@ -333,24 +333,24 @@ void checkCallPostHandlerEvents(const std::shared_ptr<EventLog>& log,
                                 const string& callName) {
   // Pre-write
   Event event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_PRE_WRITE, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
-  BOOST_CHECK_EQUAL(callName, event.message);
+  EXPECT_EQ(EventLog::ET_PRE_WRITE, event.type);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
+  EXPECT_EQ(callName, event.message);
 
   // Post-write
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_POST_WRITE, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
-  BOOST_CHECK_EQUAL(callName, event.message);
+  EXPECT_EQ(EventLog::ET_POST_WRITE, event.type);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
+  EXPECT_EQ(callName, event.message);
 
   // Call finished
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_CALL_FINISHED, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
-  BOOST_CHECK_EQUAL(callName, event.message);
+  EXPECT_EQ(EventLog::ET_CALL_FINISHED, event.type);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
+  EXPECT_EQ(callName, event.message);
 }
 
 /**
@@ -381,9 +381,9 @@ void testParentService(const std::shared_ptr<State_>& state) {
 
   int32_t gen = client->getGeneration();
   int32_t newGen = client->incrementGeneration();
-  BOOST_CHECK_EQUAL(gen + 1, newGen);
+  EXPECT_EQ(gen + 1, newGen);
   newGen = client->getGeneration();
-  BOOST_CHECK_EQUAL(gen + 1, newGen);
+  EXPECT_EQ(gen + 1, newGen);
 
   client->addString("foo");
   client->addString("bar");
@@ -391,10 +391,10 @@ void testParentService(const std::shared_ptr<State_>& state) {
 
   vector<string> strings;
   client->getStrings(strings);
-  BOOST_REQUIRE_EQUAL(3, strings.size());
-  BOOST_REQUIRE_EQUAL("foo", strings[0]);
-  BOOST_REQUIRE_EQUAL("bar", strings[1]);
-  BOOST_REQUIRE_EQUAL("asdf", strings[2]);
+  ASSERT_EQ(3, strings.size());
+  ASSERT_EQ("foo", strings[0]);
+  ASSERT_EQ("bar", strings[1]);
+  ASSERT_EQ("asdf", strings[2]);
 }
 
 template<typename State_>
@@ -404,15 +404,15 @@ void testChildService(const std::shared_ptr<State_>& state) {
   // Test calling some of the parent methids via the a child client
   int32_t gen = client->getGeneration();
   int32_t newGen = client->incrementGeneration();
-  BOOST_CHECK_EQUAL(gen + 1, newGen);
+  EXPECT_EQ(gen + 1, newGen);
   newGen = client->getGeneration();
-  BOOST_CHECK_EQUAL(gen + 1, newGen);
+  EXPECT_EQ(gen + 1, newGen);
 
   // Test some of the child methods
   client->setValue(10);
-  BOOST_CHECK_EQUAL(10, client->getValue());
-  BOOST_CHECK_EQUAL(10, client->setValue(99));
-  BOOST_CHECK_EQUAL(99, client->getValue());
+  EXPECT_EQ(10, client->getValue());
+  EXPECT_EQ(10, client->setValue(99));
+  EXPECT_EQ(99, client->getValue());
 }
 
 template<typename ServerTraits, typename TemplateTraits>
@@ -484,16 +484,16 @@ void testEventSequencing() {
 
   // Make sure we saw the call started and pre-read events
   Event event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_CALL_STARTED, event.type);
-  BOOST_CHECK_EQUAL(eventName, event.message);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
+  EXPECT_EQ(EventLog::ET_CALL_STARTED, event.type);
+  EXPECT_EQ(eventName, event.message);
+  EXPECT_EQ(connId, event.connectionId);
   uint32_t callId = event.callId;
 
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_PRE_READ, event.type);
-  BOOST_CHECK_EQUAL(eventName, event.message);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
+  EXPECT_EQ(EventLog::ET_PRE_READ, event.type);
+  EXPECT_EQ(eventName, event.message);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
 
   // Make sure there are no new events
   checkNoEvents(log);
@@ -511,14 +511,14 @@ void testEventSequencing() {
 
   // We should then see postRead()
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_POST_READ, event.type);
-  BOOST_CHECK_EQUAL(eventName, event.message);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
+  EXPECT_EQ(EventLog::ET_POST_READ, event.type);
+  EXPECT_EQ(eventName, event.message);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
 
   // Then the handler should be invoked
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_CALL_GET_DATA_WAIT, event.type);
+  EXPECT_EQ(EventLog::ET_CALL_GET_DATA_WAIT, event.type);
 
   // The handler won't respond until we notify it.
   // Make sure there are no more events.
@@ -530,14 +530,14 @@ void testEventSequencing() {
 
   // The handler will log a separate event before it returns
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_WAIT_RETURN, event.type);
+  EXPECT_EQ(EventLog::ET_WAIT_RETURN, event.type);
 
   // We should then see preWrite()
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_PRE_WRITE, event.type);
-  BOOST_CHECK_EQUAL(eventName, event.message);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
+  EXPECT_EQ(EventLog::ET_PRE_WRITE, event.type);
+  EXPECT_EQ(eventName, event.message);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
 
   // We requested more data than can be buffered, and we aren't reading it,
   // so the server shouldn't be able to finish its write yet.
@@ -549,26 +549,26 @@ void testEventSequencing() {
   int32_t responseSeqid = 0;
   apache::thrift::protocol::TMessageType responseType;
   protocol.readMessageBegin(responseName, responseType, responseSeqid);
-  BOOST_CHECK_EQUAL(responseSeqid, seqid);
-  BOOST_CHECK_EQUAL(requestName, responseName);
-  BOOST_CHECK_EQUAL(responseType, T_REPLY);
+  EXPECT_EQ(responseSeqid, seqid);
+  EXPECT_EQ(requestName, responseName);
+  EXPECT_EQ(responseType, T_REPLY);
   // Read the body.  We just ignore it for now.
   protocol.skip(T_STRUCT);
 
   // Now that we have read, the server should have finished sending the data
   // and called the postWrite() handler
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_POST_WRITE, event.type);
-  BOOST_CHECK_EQUAL(eventName, event.message);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
+  EXPECT_EQ(EventLog::ET_POST_WRITE, event.type);
+  EXPECT_EQ(eventName, event.message);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
 
   // Call finished should be last
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_CALL_FINISHED, event.type);
-  BOOST_CHECK_EQUAL(eventName, event.message);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
+  EXPECT_EQ(EventLog::ET_CALL_FINISHED, event.type);
+  EXPECT_EQ(eventName, event.message);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
 
   // There should be no more events
   checkNoEvents(log);
@@ -576,8 +576,8 @@ void testEventSequencing() {
   // Close the connection, and make sure we get a connection destroyed event
   socket->close();
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_CONN_DESTROYED, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
+  EXPECT_EQ(EventLog::ET_CONN_DESTROYED, event.type);
+  EXPECT_EQ(connId, event.connectionId);
 
   // There should be no more events
   checkNoEvents(log);
@@ -607,7 +607,7 @@ void testSeparateConnections() {
   uint32_t client2Id = checkNewConnEvents(log);
 
   // The two connections should have different IDs
-  BOOST_CHECK_NE(client1Id, client2Id);
+  EXPECT_NE(client1Id, client2Id);
 
   // Make a call, and check for the proper events
   int32_t value = 5;
@@ -617,16 +617,16 @@ void testSeparateConnections() {
 
   // Make a call with client2
   int32_t v = client2->getValue();
-  BOOST_CHECK_EQUAL(value, v);
+  EXPECT_EQ(value, v);
   checkCallEvents(log, client2Id, EventLog::ET_CALL_GET_VALUE,
                   "ChildService.getValue");
 
   // Make another call with client1
   v = client1->getValue();
-  BOOST_CHECK_EQUAL(value, v);
+  EXPECT_EQ(value, v);
   uint32_t call2 = checkCallEvents(log, client1Id, EventLog::ET_CALL_GET_VALUE,
                                      "ChildService.getValue");
-  BOOST_CHECK_NE(call1, call2);
+  EXPECT_NE(call1, call2);
 
   // Close the second client, and check for the appropriate events
   client2.reset();
@@ -666,20 +666,20 @@ void testOnewayCall() {
 
   // The handler will log an ET_WAIT_RETURN event when it wakes up
   Event event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_WAIT_RETURN, event.type);
+  EXPECT_EQ(EventLog::ET_WAIT_RETURN, event.type);
 
   // Now we should see the async complete event, then call finished
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_ASYNC_COMPLETE, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
-  BOOST_CHECK_EQUAL(callName, event.message);
+  EXPECT_EQ(EventLog::ET_ASYNC_COMPLETE, event.type);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
+  EXPECT_EQ(callName, event.message);
 
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_CALL_FINISHED, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
-  BOOST_CHECK_EQUAL(callName, event.message);
+  EXPECT_EQ(EventLog::ET_CALL_FINISHED, event.type);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
+  EXPECT_EQ(callName, event.message);
 
   // Destroy the client, and check for connection closed events
   client.reset();
@@ -720,14 +720,14 @@ void testExpectedError() {
 
   // The handler will log an ET_WAIT_RETURN event when it wakes up
   Event event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_WAIT_RETURN, event.type);
+  EXPECT_EQ(EventLog::ET_WAIT_RETURN, event.type);
 
   // Now receive the response
   try {
     client->recv_exceptionWait();
-    BOOST_FAIL("expected MyError to be thrown");
+    FAIL() << "expected MyError to be thrown";
   } catch (const MyError& e) {
-    BOOST_CHECK_EQUAL(message, e.message);
+    EXPECT_EQ(message, e.message);
   }
 
   // Now we should see the events for a normal call finish
@@ -774,31 +774,31 @@ void testUnexpectedError() {
 
   // The handler will log an ET_WAIT_RETURN event when it wakes up
   Event event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_WAIT_RETURN, event.type);
+  EXPECT_EQ(EventLog::ET_WAIT_RETURN, event.type);
 
   // Now receive the response
   try {
     client->recv_unexpectedExceptionWait();
-    BOOST_FAIL("expected TApplicationError to be thrown");
+    FAIL() << "expected TApplicationError to be thrown";
   } catch (const TApplicationException& e) {
   }
 
   // Now we should see a handler error event
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_HANDLER_ERROR, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
-  BOOST_CHECK_EQUAL(callName, event.message);
+  EXPECT_EQ(EventLog::ET_HANDLER_ERROR, event.type);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
+  EXPECT_EQ(callName, event.message);
 
   // pre-write and post-write events aren't generated after a handler error
   // (Even for non-oneway calls where a response is written.)
   //
   // A call finished event is logged when the call context is destroyed
   event = log->waitForEvent();
-  BOOST_CHECK_EQUAL(EventLog::ET_CALL_FINISHED, event.type);
-  BOOST_CHECK_EQUAL(connId, event.connectionId);
-  BOOST_CHECK_EQUAL(callId, event.callId);
-  BOOST_CHECK_EQUAL(callName, event.message);
+  EXPECT_EQ(EventLog::ET_CALL_FINISHED, event.type);
+  EXPECT_EQ(connId, event.connectionId);
+  EXPECT_EQ(callId, event.callId);
+  EXPECT_EQ(callName, event.message);
 
   // There shouldn't be any more events
   checkNoEvents(log);
@@ -813,33 +813,33 @@ void testUnexpectedError() {
 
 // Macro to define simple tests that can be used with all server types
 #define DEFINE_SIMPLE_TESTS(Server, Template) \
-  BOOST_AUTO_TEST_CASE(Server##_##Template##_basicService) { \
+  TEST(ProcessorTest, Server##_##Template##_basicService) { \
     testBasicService<Server##Traits, Template##Traits>(); \
   } \
-  BOOST_AUTO_TEST_CASE(Server##_##Template##_inheritedService) { \
+  TEST(ProcessorTest, Server##_##Template##_inheritedService) { \
     testInheritedService<Server##Traits, Template##Traits>(); \
   } \
-  BOOST_AUTO_TEST_CASE(Server##_##Template##_oneway) { \
+  TEST(ProcessorTest, Server##_##Template##_oneway) { \
     testOnewayCall<Server##Traits, Template##Traits>(); \
   } \
-  BOOST_AUTO_TEST_CASE(Server##_##Template##_exception) { \
+  TEST(ProcessorTest, Server##_##Template##_exception) { \
     testExpectedError<Server##Traits, Template##Traits>(); \
   } \
-  BOOST_AUTO_TEST_CASE(Server##_##Template##_unexpectedException) { \
+  TEST(ProcessorTest, Server##_##Template##_unexpectedException) { \
     testUnexpectedError<Server##Traits, Template##Traits>(); \
   }
 
 // Tests that require the server to process multiple connections concurrently
 // (i.e., not TSimpleServer)
 #define DEFINE_CONCURRENT_SERVER_TESTS(Server, Template) \
-  BOOST_AUTO_TEST_CASE(Server##_##Template##_separateConnections) { \
+  TEST(ProcessorTest, Server##_##Template##_separateConnections) { \
     testSeparateConnections<Server##Traits, Template##Traits>(); \
   }
 
 // The testEventSequencing() test manually generates a request for the server,
 // and doesn't work with TFramedTransport.
 #define DEFINE_NOFRAME_TESTS(Server, Template) \
-  BOOST_AUTO_TEST_CASE(Server##_##Template##_eventSequencing) { \
+  TEST(ProcessorTest, Server##_##Template##_eventSequencing) { \
     testEventSequencing<Server##Traits, Template##Traits>(); \
   }
 
@@ -857,13 +857,3 @@ DEFINE_SIMPLE_TESTS(TSimpleServer, Templated);
 DEFINE_SIMPLE_TESTS(TSimpleServer, Untemplated);
 DEFINE_NOFRAME_TESTS(TSimpleServer, Templated);
 DEFINE_NOFRAME_TESTS(TSimpleServer, Untemplated);
-
-// TODO: We should test TEventServer in the future.
-// For now, it is known not to work correctly with TProcessorEventHandler.
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value =
-    "ProcessorTest";
-
-  return nullptr;
-}

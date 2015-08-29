@@ -42,14 +42,8 @@ void ServerThread::start() {
   // Wait on the other thread to tell us that it has successfully
   // bound to the port and started listening (or until an error occurs).
   concurrency::Synchronized s(serverMonitor_);
-  while (!serving_ && !error_) {
+  while (!serving_) {
     serverMonitor_.waitForever();
-  }
-
-  if (error_) {
-    throw transport::TTransportException(
-        transport::TTransportException::NOT_OPEN,
-        "failed to bind on server socket");
   }
 }
 
@@ -75,46 +69,34 @@ void ServerThread::run() {
   /*
    * Try binding to several ports, in case the one we want is already in use.
    */
-  port_ = 12345;
-  unsigned int maxRetries = 10;
-  for (unsigned int n = 0; n < maxRetries; ++n) {
-    // Create the server
-    server_ = serverState_->createServer(port_);
-    // Install our helper as the server event handler, so that our
-    // preServe() method will be called once we've successfully bound to
-    // the port and are about to start listening.
-    server_->setServerEventHandler(helper_);
-    server_->serve();
+  port_ = 0;
 
-    // Seriously?  serve() is pretty lame.  If it fails to start serving it
-    // just returns rather than throwing an exception.
-    //
-    // We have to use our preServe() hook to tell if serve() successfully
-    // started serving and is returning because stop() is called, or if it just
-    // failed to start serving in the first place.
-    concurrency::Synchronized s(serverMonitor_);
-    if (serving_) {
-      // Oh good, we started serving and are exiting because
-      // we're trying to stop.
-      serving_ = false;
-      return;
-    } else {
-      // We never started serving, probably because we failed to bind to the
-      // port.  Increment the port number and try again.
-      ++port_;
-      continue;
-    }
-  }
+  // Create the server
+  server_ = serverState_->createServer(port_);
+  // Install our helper as the server event handler, so that our
+  // preServe() method will be called once we've successfully bound to
+  // the port and are about to start listening.
+  server_->setServerEventHandler(helper_);
+  server_->serve();
 
-  // We failed to bind on any port.
+  // Seriously?  serve() is pretty lame.  If it fails to start serving it
+  // just returns rather than throwing an exception.
+  //
+  // We have to use our preServe() hook to tell if serve() successfully
+  // started serving and is returning because stop() is called, or if it just
+  // failed to start serving in the first place.
   concurrency::Synchronized s(serverMonitor_);
-  error_ = true;
-  serverMonitor_.notify();
+  CHECK(serving_);
+  // Oh good, we started serving and are exiting because
+  // we're trying to stop.
+  serving_ = false;
+  return;
 }
 
 void ServerThread::preServe(const folly::SocketAddress* address) {
   // We bound to the port successfully, and are about to start serving requests
-  assert(port_ == address->getPort());
+  CHECK_EQ(port_, 0);
+  port_ = address->getPort();
   serverState_->bindSuccessful(port_);
 
   // Set the real server event handler (replacing ourself)
