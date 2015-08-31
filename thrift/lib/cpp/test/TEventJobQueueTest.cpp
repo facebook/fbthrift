@@ -17,25 +17,16 @@
  * under the License.
  */
 
-#include <signal.h>
-#include <pthread.h>
+#include <iostream>
 
 #include <thrift/lib/cpp/async/TEventJobQueue.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TAsyncTimeout.h>
 
-#include <boost/test/unit_test.hpp>
-#include <iostream>
+#include <gtest/gtest.h>
 
-using namespace boost;
-
-using std::cerr;
-using std::endl;
-using std::list;
-using apache::thrift::async::TEventBase;
-using apache::thrift::async::TEventJobQueue;
-using apache::thrift::async::TEventRunnable;
-using apache::thrift::async::TAsyncTimeout;
+using namespace std;
+using namespace apache::thrift::async;
 
 
 class SimpleRunnable : public TEventRunnable {
@@ -73,7 +64,7 @@ class EventBaseAborter : public TAsyncTimeout {
   }
 
   void timeoutExpired() noexcept override {
-    BOOST_FAIL("test timed out");
+    FAIL() << "test timed out";
     eventBase_->terminateLoopSoon();
   }
 
@@ -85,7 +76,7 @@ class EventBaseAborter : public TAsyncTimeout {
  * Dispatch a list of integers to the queue to be squared and sum the squares
  * in the main thread
  */
-BOOST_AUTO_TEST_CASE(SimpleJobQueueTest) {
+TEST(TEventJobQueueTest, SimpleJobQueueTest) {
   TEventBase eventBase;
   EventBaseAborter eba(&eventBase, 1000);
   TEventJobQueue jobQueue(4);
@@ -102,13 +93,13 @@ BOOST_AUTO_TEST_CASE(SimpleJobQueueTest) {
 
   jobQueue.shutdown();
 
-  cerr << "SimpleJobQueueTest test completed" << endl;
+  LOG(INFO) << "SimpleJobQueueTest test completed";
 }
 
 /**
  * Test the numThreads and thread factory options
  */
-BOOST_AUTO_TEST_CASE(ArgsJobQueueTest) {
+TEST(TEventJobQueueTest, ArgsJobQueueTest) {
   TEventBase eventBase;
   EventBaseAborter eba(&eventBase, 1000);
   TEventJobQueue jobQueue;
@@ -130,39 +121,18 @@ BOOST_AUTO_TEST_CASE(ArgsJobQueueTest) {
 
   jobQueue.shutdown();
 
-  cerr << "ArgsJobQueueTest test completed" << endl;
+  LOG(INFO) << "ArgsJobQueueTest test completed";
 }
 
 /**
  * Catch any race conditions between startup and shutdown.
  */
-BOOST_AUTO_TEST_CASE(ShortLivedJobQueueTest) {
+TEST(TEventJobQueueTest, ShortLivedJobQueueTest) {
   TEventJobQueue jobQueue(4);
 
   jobQueue.init();
 
   jobQueue.shutdown();
 
-  cerr << "ShortLivedJobQueueTest test completed" << endl;
-}
-
-///////////////////////////////////////////////////////////////////////////
-// init_unit_test_suite
-///////////////////////////////////////////////////////////////////////////
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value =
-    "TEventJobQueueTest";
-  signal(SIGPIPE, SIG_IGN);
-
-  if (argc != 1) {
-    cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      cerr << " " << argv[n];
-    }
-    cerr << endl;
-    exit(1);
-  }
-
-  return nullptr;
+  LOG(INFO) << "ShortLivedJobQueueTest test completed";
 }

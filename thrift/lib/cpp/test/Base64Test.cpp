@@ -17,13 +17,12 @@
  * under the License.
  */
 
-#include <boost/test/unit_test.hpp>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
+
+#include <gtest/gtest.h>
 
 using apache::thrift::protocol::base64_encode;
 using apache::thrift::protocol::base64_decode;
-
-BOOST_AUTO_TEST_SUITE( Base64Test )
 
 static void setupTestData(int i, uint8_t* data, int& len) {
   len = 0;
@@ -33,16 +32,16 @@ static void setupTestData(int i, uint8_t* data, int& len) {
     len++;
   } while ((len < 3) && (i != 0));
 
-  BOOST_ASSERT(i == 0);
+  ASSERT_EQ(0, i);
 }
 
 void checkEncoding(uint8_t* data, int len) {
   for (int i = 0; i < len; i++) {
-    BOOST_ASSERT(isalnum(data[i]) || data[i] == '/' || data[i] == '+');
+    ASSERT_TRUE(isalnum(data[i]) || data[i] == '/' || data[i] == '+');
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_Base64_Encode_Decode ) {
+TEST(Base64Test, test_Base64_Encode_Decode) {
   int len;
   uint8_t testInput[3];
   uint8_t testOutput[4];
@@ -63,19 +62,7 @@ BOOST_AUTO_TEST_CASE( test_Base64_Encode_Decode ) {
 
     // decode output and check that it matches input
     base64_decode(testOutput, len + 1);
-    BOOST_ASSERT(0 == memcmp(testInput, testOutput, len));
+    ASSERT_EQ(0, memcmp(testInput, testOutput, len));
 
   }
-}
-
-BOOST_AUTO_TEST_SUITE_END()
-
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]);
-
-boost::unit_test::test_suite* init_unit_test_suite(int /*argc*/,
-                                                   char* /*argv*/[]) {
-  boost::unit_test::framework::master_test_suite().p_name.value =
-    "Base64Test";
-
-  return nullptr;
 }

@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-#include <boost/test/unit_test.hpp>
-#include <boost/random.hpp>
-
+#include <random>
+#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
@@ -26,22 +25,20 @@
 #include <thrift/lib/cpp/async/TBinaryAsyncChannel.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
-#include "thrift/perf/cpp/LoadHandler.h"
-#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TZlibTransport.h>
 #include <thrift/lib/cpp/transport/THttpServer.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
+#include <thrift/perf/cpp/LoadHandler.h>
 
+#include <gtest/gtest.h>
+
+using namespace std;
 using namespace apache::thrift::async;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::test;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::util;
-using namespace boost;
-using std::string;
-using std::cerr;
-using std::endl;
 
 class TestCallback {
  public:
@@ -59,8 +56,8 @@ class TestCallback {
     done = true;
     try {
       addResult = client->recv_add();
-    } catch (const std::exception& ex) {
-      BOOST_ERROR("recv_add error: " << ex.what());
+    } catch (const exception& ex) {
+      ADD_FAILURE() << "recv_add error: " << ex.what();
     }
   }
 
@@ -68,8 +65,8 @@ class TestCallback {
     done = true;
     try {
       client->recv_echo(echoResult);
-    } catch (const std::exception& ex) {
-      BOOST_ERROR("recv_echo error: " << ex.what());
+    } catch (const exception& ex) {
+      ADD_FAILURE() << "recv_echo error: " << ex.what();
     }
   }
 
@@ -90,62 +87,59 @@ void randomizeString(string* str, size_t length) {
 void runTest(TEventBase& evb, LoadTestCobClient& client) {
   // Test sending a few requests to the server
   TestCallback callback;
-  client.add(std::bind(&TestCallback::addDone, &callback,
-                       std::placeholders::_1),
-                       9, 12);
+  client.add(bind(&TestCallback::addDone, &callback,
+                  placeholders::_1),
+                  9, 12);
   evb.loop();
-  BOOST_CHECK(callback.done);
-  BOOST_CHECK_EQUAL(callback.addResult, 21);
+  EXPECT_TRUE(callback.done);
+  EXPECT_EQ(21, callback.addResult);
 
   callback.reset();
   string testData;
   randomizeString(&testData, 3*1024);
-  client.echo(std::bind(&TestCallback::echoDone, &callback,
-                        std::placeholders::_1),
-                        testData);
+  client.echo(bind(&TestCallback::echoDone, &callback,
+                   placeholders::_1),
+                   testData);
   evb.loop();
-  BOOST_CHECK(callback.done);
-  BOOST_CHECK(callback.echoResult == testData);
+  EXPECT_TRUE(callback.done);
+  EXPECT_EQ(testData, callback.echoResult);
 
   callback.reset();
   randomizeString(&testData, 1024*1024);
-  client.echo(std::bind(&TestCallback::echoDone, &callback,
-                        std::placeholders::_1),
-                        testData);
+  client.echo(bind(&TestCallback::echoDone, &callback,
+                   placeholders::_1),
+                   testData);
   evb.loop();
-  BOOST_CHECK(callback.done);
-  BOOST_CHECK(callback.echoResult == testData);
+  EXPECT_TRUE(callback.done);
+  EXPECT_EQ(testData, callback.echoResult);
 
   callback.reset();
-  client.add(std::bind(&TestCallback::addDone, &callback,
-                       std::placeholders::_1),
-                       321, 987);
+  client.add(bind(&TestCallback::addDone, &callback,
+                  placeholders::_1),
+                  321, 987);
   evb.loop();
-  BOOST_CHECK(callback.done);
-  BOOST_CHECK_EQUAL(callback.addResult, 1308);
+  EXPECT_TRUE(callback.done);
+  EXPECT_EQ(callback.addResult, 1308);
 }
 
-BOOST_AUTO_TEST_CASE(TestZlibClient) {
+TEST(TAsyncChannelClientTest, TestZlibClient) {
   // Start a TThreadedServer using zlib transport
-  std::shared_ptr<LoadHandler> handler(new LoadHandler);
-  std::shared_ptr<LoadTestProcessor> processor(new LoadTestProcessor(handler));
-  std::shared_ptr<TTransportFactory> transportFactory(
-      new TFramedZlibTransportFactory);
-  std::shared_ptr<TProtocolFactory> protocolFactory(
-      new TBinaryProtocolFactoryT<TZlibTransport>(0, 0, true, true));
+  auto handler = make_shared<LoadHandler>();
+  auto processor = make_shared<LoadTestProcessor>(handler);
+  auto transportFactory = dynamic_pointer_cast<TTransportFactory>(
+      make_shared<TFramedZlibTransportFactory>());
+  auto protocolFactory = dynamic_pointer_cast<TProtocolFactory>(
+    make_shared<TBinaryProtocolFactoryT<TZlibTransport>>(0, 0, true, true));
   TThreadedServerCreator serverCreator(processor, 0, transportFactory,
                                        protocolFactory);
   ScopedServerThread serverThread(&serverCreator);
 
   // Create an async client using TZlibAsyncChannel
   TEventBase evb;
-  const folly::SocketAddress* serverAddr = serverThread.getAddress();
-  std::shared_ptr<TAsyncSocket> socket(TAsyncSocket::newSocket(
-        &evb, serverAddr->getAddressStr(), serverAddr->getPort()));
-  std::shared_ptr<TFramedAsyncChannel> framedChannel(
-      TFramedAsyncChannel::newChannel(socket));
-  std::shared_ptr<TZlibAsyncChannel> zlibChannel(
-      TZlibAsyncChannel::newChannel(framedChannel));
+  auto serverAddr = *serverThread.getAddress();
+  auto socket = TAsyncSocket::newSocket(&evb, serverAddr);
+  auto framedChannel = TFramedAsyncChannel::newChannel(socket);
+  auto zlibChannel = TZlibAsyncChannel::newChannel(framedChannel);
 
   TBinaryProtocolFactoryT<TBufferBase> clientProtocolFactory;
   clientProtocolFactory.setStrict(true, true);
@@ -154,28 +148,25 @@ BOOST_AUTO_TEST_CASE(TestZlibClient) {
   runTest(evb, client);
 }
 
-BOOST_AUTO_TEST_CASE(TestHttpClient) {
+TEST(TAsyncChannelClientTest, TestHttpClient) {
   // Start a TThreadedServer using HTTP transport
-  std::shared_ptr<LoadHandler> handler(new LoadHandler);
-  std::shared_ptr<LoadTestProcessor> processor(new LoadTestProcessor(handler));
-  std::shared_ptr<TTransportFactory> transportFactory(
-      new THttpServerTransportFactory());
-  std::shared_ptr<TProtocolFactory> protocolFactory(
-      new TBinaryProtocolFactoryT<THttpServer>());
+  auto handler = make_shared<LoadHandler>();
+  auto processor = make_shared<LoadTestProcessor>(handler);
+  auto transportFactory = dynamic_pointer_cast<TTransportFactory>(
+      make_shared<THttpServerTransportFactory>());
+  auto protocolFactory = dynamic_pointer_cast<TProtocolFactory>(
+      make_shared<TBinaryProtocolFactoryT<THttpServer>>());
   TThreadedServerCreator serverCreator(processor, 0, transportFactory,
                                        protocolFactory);
   ScopedServerThread serverThread(&serverCreator);
 
   // Create an async client using THttpAsyncChannel
   TEventBase evb;
-  const folly::SocketAddress* serverAddr = serverThread.getAddress();
-  std::shared_ptr<TAsyncSocket> socket(TAsyncSocket::newSocket(
-        &evb, serverAddr->getAddressStr(), serverAddr->getPort()));
-  std::shared_ptr<THttpAsyncChannel> httpChannel(
-      THttpAsyncChannel::newChannel(socket));
-  std::shared_ptr<THttpParser> parser(
-    new THttpClientParser(serverAddr->getAddressStr(),
-    "test"));
+  auto serverAddr = *serverThread.getAddress();
+  auto socket = TAsyncSocket::newSocket(&evb, serverAddr);
+  auto httpChannel = THttpAsyncChannel::newChannel(socket);
+  auto parser = make_shared<THttpClientParser>(
+      serverAddr.getAddressStr(), "test");
   httpChannel->setParser(parser);
   TBinaryProtocolFactoryT<TBufferBase> clientProtocolFactory;
   LoadTestCobClient client(httpChannel, &clientProtocolFactory);
@@ -183,23 +174,20 @@ BOOST_AUTO_TEST_CASE(TestHttpClient) {
   runTest(evb, client);
 }
 
-BOOST_AUTO_TEST_CASE(TestDuplexHeaderClient) {
+TEST(TAsyncChannelClientTest, TestDuplexHeaderClient) {
   // Start a TThreadedServer using Header transport
-  std::shared_ptr<LoadHandler> handler(new LoadHandler);
-  std::shared_ptr<LoadTestProcessor> processor(new LoadTestProcessor(handler));
+  auto handler = make_shared<LoadHandler>();
+  auto processor = make_shared<LoadTestProcessor>(handler);
 
-  std::bitset<CLIENT_TYPES_LEN> clientTypes;
+  bitset<CLIENT_TYPES_LEN> clientTypes;
   clientTypes[THRIFT_FRAMED_DEPRECATED] = 1;
   clientTypes[THRIFT_HEADER_CLIENT_TYPE] = 1;
-  std::shared_ptr<THeaderProtocolFactory> clientDuplexProtocolFactory(
-    new THeaderProtocolFactory);
-  std::shared_ptr<THeaderProtocolFactory> serverDuplexProtocolFactory(
-    new THeaderProtocolFactory);
+  auto clientDuplexProtocolFactory = make_shared<THeaderProtocolFactory>();
+  auto serverDuplexProtocolFactory = make_shared<THeaderProtocolFactory>();
   clientDuplexProtocolFactory->setClientTypes(clientTypes);
   serverDuplexProtocolFactory->setClientTypes(clientTypes);
 
-  std::shared_ptr<TTransportFactory> transportFactory(
-    new TBufferedTransportFactory());
+  auto transportFactory = make_shared<TBufferedTransportFactory>();
 
   TThreadedServerCreator serverCreator(processor, 0);
   serverCreator.setTransportFactory(transportFactory);
@@ -208,28 +196,10 @@ BOOST_AUTO_TEST_CASE(TestDuplexHeaderClient) {
 
   // Create an async client using THeaderAsyncChannel
   TEventBase evb;
-  const folly::SocketAddress* serverAddr = serverThread.getAddress();
-  std::shared_ptr<TAsyncSocket> socket(TAsyncSocket::newSocket(
-        &evb, serverAddr->getAddressStr(), serverAddr->getPort()));
-  std::shared_ptr<THeaderAsyncChannel> headerChannel(
-      THeaderAsyncChannel::newChannel(socket));
+  auto serverAddr = *serverThread.getAddress();
+  auto socket = TAsyncSocket::newSocket(&evb, serverAddr);
+  auto headerChannel = THeaderAsyncChannel::newChannel(socket);
   LoadTestCobClient client(headerChannel, clientDuplexProtocolFactory.get());
 
   runTest(evb, client);
-}
-
-unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  unit_test::framework::master_test_suite().p_name.value =
-  "TZlibAsyncChannelTest";
-
-  if (argc != 1) {
-    cerr << "error: unhandled arguments:";
-    for (int n = 1; n < argc; ++n) {
-      cerr << " " << argv[n];
-    }
-    cerr << endl;
-    exit(1);
-  }
-
-  return nullptr;
 }
