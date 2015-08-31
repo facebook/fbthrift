@@ -59,7 +59,7 @@ HeaderServerChannel::HeaderServerChannel(
     , timeoutSASL_(5000)
     , saslServerCallback_(*this)
     , cpp2Channel_(cpp2Channel)
-    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase())) {}
+    , timer_(new folly::HHWheelTimer(getEventBase())) {}
 
 void HeaderServerChannel::destroy() {
   DestructorGuard dg(this);
@@ -485,7 +485,7 @@ void HeaderServerChannel::SaslServerCallback::saslSendClient(
 
 void HeaderServerChannel::SaslServerCallback::saslError(
     folly::exception_wrapper&& ex) {
-  apache::thrift::async::HHWheelTimer::Callback::cancelTimeout();
+  folly::HHWheelTimer::Callback::cancelTimeout();
   const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
     channel_.getEventBase()->getObserver());
 
@@ -542,7 +542,7 @@ void HeaderServerChannel::SaslServerCallback::saslComplete() {
     observer->saslComplete();
   }
 
-  apache::thrift::async::HHWheelTimer::Callback::cancelTimeout();
+  folly::HHWheelTimer::Callback::cancelTimeout();
   auto& saslServer = channel_.saslServer_;
   VLOG(5) << "SASL server negotiation complete: "
              << saslServer->getServerIdentity() << " <= "

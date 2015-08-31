@@ -56,7 +56,7 @@ HeaderClientChannel::HeaderClientChannel(
     , keepRegisteredForClose_(true)
     , saslClientCallback_(*this)
     , cpp2Channel_(cpp2Channel)
-    , timer_(new apache::thrift::async::HHWheelTimer(getEventBase()))
+    , timer_(new folly::HHWheelTimer(getEventBase()))
     , protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL) {}
 
 void HeaderClientChannel::setTimeout(uint32_t ms) {
@@ -202,7 +202,7 @@ void HeaderClientChannel::SaslClientCallback::saslError(
     folly::exception_wrapper&& ex) {
   DestructorGuard g(&channel_);
 
-  apache::thrift::async::HHWheelTimer::Callback::cancelTimeout();
+  folly::HHWheelTimer::Callback::cancelTimeout();
   channel_.saslClient_->detachEventBase();
 
   auto logger = channel_.saslClient_->getSaslLogger();
@@ -256,7 +256,7 @@ void HeaderClientChannel::SaslClientCallback::saslError(
 }
 
 void HeaderClientChannel::SaslClientCallback::saslComplete() {
-  apache::thrift::async::HHWheelTimer::Callback::cancelTimeout();
+  folly::HHWheelTimer::Callback::cancelTimeout();
   channel_.saslClient_->detachEventBase();
 
   VLOG(5) << "SASL client negotiation complete: "

@@ -17,7 +17,7 @@
 #ifndef THRIFT_ASYNC_CPP2CONNECTION_H_
 #define THRIFT_ASYNC_CPP2CONNECTION_H_ 1
 
-#include <thrift/lib/cpp/async/HHWheelTimer.h>
+#include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp/async/TEventConnection.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <folly/SocketAddress.h>
@@ -120,13 +120,13 @@ class Cpp2Connection
     friend class Cpp2Connection;
 
     class SoftTimeout
-      : public apache::thrift::async::HHWheelTimer::Callback {
+      : public folly::HHWheelTimer::Callback {
       Cpp2Request* request_;
       void timeoutExpired() noexcept override;
       friend class Cpp2Request;
     };
     class HardTimeout
-      : public apache::thrift::async::HHWheelTimer::Callback {
+      : public folly::HHWheelTimer::Callback {
       Cpp2Request* request_;
       void timeoutExpired() noexcept override;
       friend class Cpp2Request;

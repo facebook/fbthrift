@@ -18,7 +18,7 @@
 #define THRIFT_SASLSERVER_H_ 1
 
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
-#include <thrift/lib/cpp/async/HHWheelTimer.h>
+#include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 #include <folly/ExceptionWrapper.h>
@@ -30,7 +30,7 @@ class SaslServer : public SaslEndpoint {
   explicit SaslServer(apache::thrift::async::TEventBase* evb = nullptr)
     : SaslEndpoint(evb) {}
 
-  class Callback : public apache::thrift::async::HHWheelTimer::Callback {
+  class Callback : public folly::HHWheelTimer::Callback {
    public:
     ~Callback() override {}
 

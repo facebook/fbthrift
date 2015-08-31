@@ -19,7 +19,7 @@
 #ifndef THRIFT_ASYNC_THEADERSERVERCHANNEL_H_
 #define THRIFT_ASYNC_THEADERSERVERCHANNEL_H_ 1
 
-#include <thrift/lib/cpp/async/HHWheelTimer.h>
+#include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
@@ -251,7 +251,7 @@ private:
 
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 
-  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
+  folly::HHWheelTimer::UniquePtr timer_;
 };
 
 }} // apache::thrift

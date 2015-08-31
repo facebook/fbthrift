@@ -17,7 +17,7 @@
 #ifndef THRIFT_ASYNC_THEADERCLIENTCHANNEL_H_
 #define THRIFT_ASYNC_THEADERCLIENTCHANNEL_H_ 1
 
-#include <thrift/lib/cpp/async/HHWheelTimer.h>
+#include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
@@ -231,7 +231,7 @@ private:
    */
   class TwowayCallback
       : public MessageChannel::SendCallback
-      , public apache::thrift::async::HHWheelTimer::Callback {
+      , public folly::HHWheelTimer::Callback {
    public:
 #define X_CHECK_STATE_EQ(state, expected) \
     CHECK_EQ(static_cast<int>(state), static_cast<int>(expected))
@@ -248,7 +248,7 @@ private:
                    uint16_t protoId,
                    std::unique_ptr<RequestCallback> cb,
                    std::unique_ptr<apache::thrift::ContextStack> ctx,
-                   apache::thrift::async::HHWheelTimer* timer,
+                   folly::HHWheelTimer* timer,
                    std::chrono::milliseconds timeout,
                    std::chrono::milliseconds chunkTimeout)
         : channel_(channel)
@@ -410,10 +410,10 @@ private:
     QState sendState_;
     QState recvState_;
     bool cbCalled_;
-    class TimerCallback : public apache::thrift::async::HHWheelTimer::Callback {
+    class TimerCallback : public folly::HHWheelTimer::Callback {
      public:
       TimerCallback(TwowayCallback* cb,
-                    apache::thrift::async::HHWheelTimer* timer,
+                    folly::HHWheelTimer* timer,
                     std::chrono::milliseconds chunkTimeout)
         : cb_(cb)
         , timer_(timer)
@@ -432,7 +432,7 @@ private:
       }
      private:
       TwowayCallback* cb_;
-      apache::thrift::async::HHWheelTimer* timer_;
+      folly::HHWheelTimer* timer_;
       std::chrono::milliseconds chunkTimeout_;
     } chunkTimeoutCallback_;
 #undef X_CHECK_STATE_NE
@@ -546,7 +546,7 @@ private:
 
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 
-  apache::thrift::async::HHWheelTimer::UniquePtr timer_;
+  folly::HHWheelTimer::UniquePtr timer_;
 
   uint16_t protocolId_;
   uint16_t userProtocolId_;

@@ -188,7 +188,6 @@ include_processor_HEADERS = \
 
 include_asyncdir = $(include_thriftdir)/async
 include_async_HEADERS = \
-                     async/HHWheelTimer.h \
                      async/SimpleCallback.h \
                      async/TAsyncChannel.h \
                      async/TAsyncDispatchProcessor.h \
