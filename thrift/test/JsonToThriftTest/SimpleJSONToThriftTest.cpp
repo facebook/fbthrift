@@ -17,8 +17,6 @@
  * under the License.
  */
 
-#include <boost/test/unit_test.hpp>
-
 #include <folly/json.h>
 #include "thrift/test/JsonToThriftTest/gen-cpp/myBinaryStruct_types.h"
 #include "thrift/test/JsonToThriftTest/gen-cpp/myStringStruct_types.h"
@@ -38,7 +36,6 @@
 
 #include <thrift/lib/cpp/Thrift.h>
 
-#include <boost/lexical_cast.hpp>
 #include <memory>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/protocol/TJSONProtocol.h>
@@ -48,6 +45,7 @@
 #include <iostream>
 #include <limits>
 
+#include <gtest/gtest.h>
 
 using namespace std;
 
@@ -55,7 +53,6 @@ using apache::thrift::protocol::TProtocol;
 using apache::thrift::protocol::TJSONProtocol;
 using apache::thrift::protocol::TSimpleJSONProtocol;
 using apache::thrift::transport::TMemoryBuffer;
-using std::shared_ptr;
 
 template <typename T>
 static void testSimpleJSON(T dataStruct){
@@ -64,7 +61,7 @@ static void testSimpleJSON(T dataStruct){
    T parsedStruct;
    deserializeJSON(parsedStruct, simpleJsonText);
 
-   BOOST_CHECK(parsedStruct == dataStruct);
+   EXPECT_TRUE(parsedStruct == dataStruct);
 }
 
 template <typename T>
@@ -110,10 +107,10 @@ static void deserializeJSON(T& dataStruct,
 
     uint32_t numRead = dataStruct.read(protocol.get());
 
-    BOOST_CHECK(numRead == json.length());
+    EXPECT_TRUE(numRead == json.length());
 }
 
-BOOST_AUTO_TEST_CASE(SimpleJSON_ComplexSerialization) {
+TEST(SimpleJSONToThriftTest, SimpleJSON_ComplexSerialization) {
    myComplexStruct thriftComplexObj;
    myMixedStruct thriftMixedObj;
 
@@ -146,7 +143,7 @@ BOOST_AUTO_TEST_CASE(SimpleJSON_ComplexSerialization) {
       obj.c = 7000+i;
       obj.e = -i;
       obj.f = -0.5 * i;
-      string elmName = "element" + boost::lexical_cast<std::string>(i+1);
+      string elmName = "element" + folly::to<std::string>(i+1);
       obj.g = elmName.c_str();
       thriftComplexObj.c.insert(std::make_pair(elmName, thriftSimpleObj));
    }
@@ -157,7 +154,7 @@ BOOST_AUTO_TEST_CASE(SimpleJSON_ComplexSerialization) {
    testSimpleJSON(thriftComplexObj);
 }
 
-BOOST_AUTO_TEST_CASE(SimpleJSON_BasicSerialization) {
+TEST(SimpleJSONToThriftTest, SimpleJSON_BasicSerialization) {
    mySimpleStruct thriftSimpleObj;
    myDoubleStruct thriftDoubleObj;
    myBoolStruct thriftBoolObj1, thriftBoolObj2;
@@ -199,7 +196,7 @@ BOOST_AUTO_TEST_CASE(SimpleJSON_BasicSerialization) {
    testSimpleJSON(thriftI32Obj);
 }
 
-BOOST_AUTO_TEST_CASE(SimpleJSON_BasicSerializationNan) {
+TEST(SimpleJSONToThriftTest, SimpleJSON_BasicSerializationNan) {
   myDoubleListStruct obj;
   std::vector<double> array = {NAN, -NAN, 0.3333333333};
   obj.l = array;
@@ -208,21 +205,21 @@ BOOST_AUTO_TEST_CASE(SimpleJSON_BasicSerializationNan) {
   myDoubleListStruct parsedStruct;
   deserializeJSON(parsedStruct, jsonString);
 
-  BOOST_CHECK_EQUAL(obj.l.size(), parsedStruct.l.size());
+  EXPECT_EQ(obj.l.size(), parsedStruct.l.size());
   for (int i = 0; i < obj.l.size(); ++i) {
     if (std::isnan(obj.l[i]) == std::isnan(parsedStruct.l[i])) {
       continue;
     }
-    BOOST_CHECK_EQUAL(obj.l[i], parsedStruct.l[i]);
+    EXPECT_EQ(obj.l[i], parsedStruct.l[i]);
   }
 
   auto jsonString2 = serializeJSON(parsedStruct);
 
   // this checks that nan and -nan still have correct '-' information
-  BOOST_CHECK_EQUAL(jsonString, jsonString2);
+  EXPECT_EQ(jsonString, jsonString2);
 }
 
-BOOST_AUTO_TEST_CASE(SimpleStructMissingNonRequiredField) {
+TEST(SimpleJSONToThriftTest, SimpleStructMissingNonRequiredField) {
 
   // jsonSimpleT1 is to test whether __isset is set properly, given
   // that all the required field has value: field a's value is missing
@@ -232,76 +229,76 @@ BOOST_AUTO_TEST_CASE(SimpleStructMissingNonRequiredField) {
 
   deserializeJSON(thriftSimpleObj, jsonSimpleT);
 
-  BOOST_CHECK(!thriftSimpleObj.__isset.a);
-  BOOST_CHECK_EQUAL(thriftSimpleObj.b, 8);
-  BOOST_CHECK(thriftSimpleObj.__isset.b);
+  EXPECT_TRUE(!thriftSimpleObj.__isset.a);
+  EXPECT_EQ(thriftSimpleObj.b, 8);
+  EXPECT_TRUE(thriftSimpleObj.__isset.b);
   // field c doesn't have __isset field, since it is required.
-  BOOST_CHECK_EQUAL(thriftSimpleObj.c, 16);
-  BOOST_CHECK_EQUAL(thriftSimpleObj.d, 32);
-  BOOST_CHECK(thriftSimpleObj.__isset.d);
-  BOOST_CHECK_EQUAL(thriftSimpleObj.e, 64);
-  BOOST_CHECK(thriftSimpleObj.__isset.e);
-  BOOST_CHECK_EQUAL(thriftSimpleObj.f, 0.99);
-  BOOST_CHECK(thriftSimpleObj.__isset.f);
-  BOOST_CHECK_EQUAL(thriftSimpleObj.g, "Hello");
-  BOOST_CHECK(thriftSimpleObj.__isset.g);
+  EXPECT_EQ(thriftSimpleObj.c, 16);
+  EXPECT_EQ(thriftSimpleObj.d, 32);
+  EXPECT_TRUE(thriftSimpleObj.__isset.d);
+  EXPECT_EQ(thriftSimpleObj.e, 64);
+  EXPECT_TRUE(thriftSimpleObj.__isset.e);
+  EXPECT_EQ(thriftSimpleObj.f, 0.99);
+  EXPECT_TRUE(thriftSimpleObj.__isset.f);
+  EXPECT_EQ(thriftSimpleObj.g, "Hello");
+  EXPECT_TRUE(thriftSimpleObj.__isset.g);
 }
 
-BOOST_AUTO_TEST_CASE(NegativeBoundaryCase) {
+TEST(SimpleJSONToThriftTest, NegativeBoundaryCase) {
 
   string jsonByteTW("{\"a\":-129}");
   myByteStruct thriftByteObjW;
   try {
     deserializeJSON(thriftByteObjW, jsonByteTW);
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   } catch (apache::thrift::TException &e) {
   }
 
   string jsonByteT("{\"a\":-128}");
   myByteStruct thriftByteObj;
   deserializeJSON(thriftByteObj, jsonByteT);
-  BOOST_CHECK_EQUAL(thriftByteObj.a, -128);
+  EXPECT_EQ(thriftByteObj.a, -128);
 
   string jsonI16TW("{\"a\":-32769}");
   myI16Struct thriftI16ObjW;
   try {
     deserializeJSON(thriftI16ObjW, jsonI16TW);
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   } catch (apache::thrift::TException &e) {
   }
 
   string jsonI16T("{\"a\":-32768}");
   myI16Struct thriftI16Obj;
   deserializeJSON(thriftI16Obj, jsonI16T);
-  BOOST_CHECK_EQUAL(thriftI16Obj.a, -32768);
+  EXPECT_EQ(thriftI16Obj.a, -32768);
 
   string jsonI32TW("{\"a\":-2147483649}");
   myI32Struct thriftI32ObjW;
   try {
     deserializeJSON(thriftI32ObjW, jsonI32TW);
     cout << serializeJSON(thriftI32ObjW) << endl;
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   } catch (apache::thrift::TException &e) {
   }
 
   string jsonI32T("{\"a\":-2147483648}");
   myI32Struct thriftI32Obj;
   deserializeJSON(thriftI32Obj, jsonI32T);
-  BOOST_CHECK_EQUAL(thriftI32Obj.a, -2147483648);
+  EXPECT_EQ(thriftI32Obj.a, -2147483648);
 }
 
-BOOST_AUTO_TEST_CASE(PassingWrongType) {
+TEST(SimpleJSONToThriftTest, PassingWrongType) {
 
   string jsonI32T("{\"a\":\"hello\"}");
   myI32Struct thriftI32Obj;
   try {
     deserializeJSON(thriftI32Obj, jsonI32T);
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   } catch (std::exception &e) {
   }
 }
 
-BOOST_AUTO_TEST_CASE(Whitespace) {
+TEST(SimpleJSONToThriftTest, Whitespace) {
   // tests if \n \r \t and space are ignored properly
   string jsonSimpleT("\n\r\t {\n\r\t \"c\"\n\r\t :\n\r\t 16,\"d\":32"
                      ",\"e\":64\t "
@@ -322,62 +319,62 @@ BOOST_AUTO_TEST_CASE(Whitespace) {
 
   deserializeJSON(thriftComplexObj, jsonComplexT);
 
-  BOOST_CHECK(!thriftComplexObj.a.__isset.a);
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.b, 8);
-  BOOST_CHECK(thriftComplexObj.a.__isset.b);
+  EXPECT_TRUE(!thriftComplexObj.a.__isset.a);
+  EXPECT_EQ(thriftComplexObj.a.b, 8);
+  EXPECT_TRUE(thriftComplexObj.a.__isset.b);
   // field c doesn't have __isset field, since it is required.
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.c, 16);
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.d, 32);
-  BOOST_CHECK(thriftComplexObj.a.__isset.d);
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.e, 64);
-  BOOST_CHECK(thriftComplexObj.a.__isset.e);
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.f, 0.99);
-  BOOST_CHECK(thriftComplexObj.a.__isset.f);
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.g, "Hello");
-  BOOST_CHECK(thriftComplexObj.a.__isset.g);
+  EXPECT_EQ(thriftComplexObj.a.c, 16);
+  EXPECT_EQ(thriftComplexObj.a.d, 32);
+  EXPECT_TRUE(thriftComplexObj.a.__isset.d);
+  EXPECT_EQ(thriftComplexObj.a.e, 64);
+  EXPECT_TRUE(thriftComplexObj.a.__isset.e);
+  EXPECT_EQ(thriftComplexObj.a.f, 0.99);
+  EXPECT_TRUE(thriftComplexObj.a.__isset.f);
+  EXPECT_EQ(thriftComplexObj.a.g, "Hello");
+  EXPECT_TRUE(thriftComplexObj.a.__isset.g);
 
-  BOOST_CHECK_EQUAL(thriftComplexObj.b[0], 3);
-  BOOST_CHECK_EQUAL(thriftComplexObj.b[1], 2);
-  BOOST_CHECK_EQUAL(thriftComplexObj.b[2], 1);
+  EXPECT_EQ(thriftComplexObj.b[0], 3);
+  EXPECT_EQ(thriftComplexObj.b[1], 2);
+  EXPECT_EQ(thriftComplexObj.b[2], 1);
 
-  BOOST_CHECK(!thriftComplexObj.c["key1"].__isset.a);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].b, 8);
-  BOOST_CHECK(thriftComplexObj.c["key1"].__isset.b);
+  EXPECT_TRUE(!thriftComplexObj.c["key1"].__isset.a);
+  EXPECT_EQ(thriftComplexObj.c["key1"].b, 8);
+  EXPECT_TRUE(thriftComplexObj.c["key1"].__isset.b);
   // field c doesn't have __isset field, since it is required.
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].c, 16);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].d, 32);
-  BOOST_CHECK(thriftComplexObj.c["key1"].__isset.d);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].e, 64);
-  BOOST_CHECK(thriftComplexObj.c["key1"].__isset.e);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].f, 0.99);
-  BOOST_CHECK(thriftComplexObj.c["key1"].__isset.f);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].g, "Hello");
-  BOOST_CHECK(thriftComplexObj.c["key1"].__isset.g);
+  EXPECT_EQ(thriftComplexObj.c["key1"].c, 16);
+  EXPECT_EQ(thriftComplexObj.c["key1"].d, 32);
+  EXPECT_TRUE(thriftComplexObj.c["key1"].__isset.d);
+  EXPECT_EQ(thriftComplexObj.c["key1"].e, 64);
+  EXPECT_TRUE(thriftComplexObj.c["key1"].__isset.e);
+  EXPECT_EQ(thriftComplexObj.c["key1"].f, 0.99);
+  EXPECT_TRUE(thriftComplexObj.c["key1"].__isset.f);
+  EXPECT_EQ(thriftComplexObj.c["key1"].g, "Hello");
+  EXPECT_TRUE(thriftComplexObj.c["key1"].__isset.g);
 
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key2"].c, 20);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key2"].d, 320);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key2"].f, 0.001);
+  EXPECT_EQ(thriftComplexObj.c["key2"].c, 20);
+  EXPECT_EQ(thriftComplexObj.c["key2"].d, 320);
+  EXPECT_EQ(thriftComplexObj.c["key2"].f, 0.001);
 }
 //fields in JSON that are not present in the thrift type spec
-BOOST_AUTO_TEST_CASE(MissingField) {
+TEST(SimpleJSONToThriftTest, MissingField) {
   string jsonSimpleT("{\"c\":16,\"d\":32,\"e\":64,\"b\":8,"
       "\"f\":0.99,\"g\":\"Hello\",\"extra\":12}");
   mySimpleStruct thriftSimpleObj;
   deserializeJSON(thriftSimpleObj, jsonSimpleT);
 
-  BOOST_CHECK(!thriftSimpleObj.__isset.a);
-  BOOST_CHECK_EQUAL(thriftSimpleObj.b, 8);
-  BOOST_CHECK(thriftSimpleObj.__isset.b);
+  EXPECT_TRUE(!thriftSimpleObj.__isset.a);
+  EXPECT_EQ(thriftSimpleObj.b, 8);
+  EXPECT_TRUE(thriftSimpleObj.__isset.b);
   // field c doesn't have __isset field, since it is required.
-  BOOST_CHECK_EQUAL(thriftSimpleObj.c, 16);
-  BOOST_CHECK_EQUAL(thriftSimpleObj.d, 32);
-  BOOST_CHECK(thriftSimpleObj.__isset.d);
-  BOOST_CHECK_EQUAL(thriftSimpleObj.e, 64);
-  BOOST_CHECK(thriftSimpleObj.__isset.e);
-  BOOST_CHECK_EQUAL(thriftSimpleObj.f, 0.99);
-  BOOST_CHECK(thriftSimpleObj.__isset.f);
-  BOOST_CHECK_EQUAL(thriftSimpleObj.g, "Hello");
-  BOOST_CHECK(thriftSimpleObj.__isset.g);
+  EXPECT_EQ(thriftSimpleObj.c, 16);
+  EXPECT_EQ(thriftSimpleObj.d, 32);
+  EXPECT_TRUE(thriftSimpleObj.__isset.d);
+  EXPECT_EQ(thriftSimpleObj.e, 64);
+  EXPECT_TRUE(thriftSimpleObj.__isset.e);
+  EXPECT_EQ(thriftSimpleObj.f, 0.99);
+  EXPECT_TRUE(thriftSimpleObj.__isset.f);
+  EXPECT_EQ(thriftSimpleObj.g, "Hello");
+  EXPECT_TRUE(thriftSimpleObj.__isset.g);
 
   // checks that a map is skipped properly
   string jsonEmptyListT("{\"e\":[1, 0.13]}");
@@ -402,13 +399,13 @@ BOOST_AUTO_TEST_CASE(MissingField) {
                       ",\"c\":-123}");
   myNestedEmptyStruct thriftNestedObj;
   deserializeJSON(thriftNestedObj, jsonNestedT);
-  BOOST_CHECK(thriftNestedObj.__isset.a);
-  BOOST_CHECK(thriftNestedObj.__isset.b);
-  BOOST_CHECK(thriftNestedObj.__isset.c);
-  BOOST_CHECK_EQUAL(thriftNestedObj.c, -123);
+  EXPECT_TRUE(thriftNestedObj.__isset.a);
+  EXPECT_TRUE(thriftNestedObj.__isset.b);
+  EXPECT_TRUE(thriftNestedObj.__isset.c);
+  EXPECT_EQ(thriftNestedObj.c, -123);
 }
 
-BOOST_AUTO_TEST_CASE(BoundaryCase) {
+TEST(SimpleJSONToThriftTest, BoundaryCase) {
 
   // jsonSimpleT2 is to test whether the generated code throw exeption
   // if the required field doesn't have value : field c's value is
@@ -418,7 +415,7 @@ BOOST_AUTO_TEST_CASE(BoundaryCase) {
   mySimpleStruct thriftSimpleObj;
   try {
     deserializeJSON(thriftSimpleObj, jsonSimpleT);
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   } catch (apache::thrift::TException &e) {
   }
 
@@ -426,59 +423,59 @@ BOOST_AUTO_TEST_CASE(BoundaryCase) {
   myByteStruct thriftByteObjW;
   try {
     deserializeJSON(thriftByteObjW, jsonByteTW);
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   } catch (apache::thrift::TException &e) {
   }
 
   string jsonByteT("{\"a\":127}");
   myByteStruct thriftByteObj;
   deserializeJSON(thriftByteObj, jsonByteT);
-  BOOST_CHECK_EQUAL(thriftByteObj.a, 127);
+  EXPECT_EQ(thriftByteObj.a, 127);
 
   string jsonI16TW("{\"a\":32768}");
   myI16Struct thriftI16ObjW;
   try {
     deserializeJSON(thriftI16ObjW, jsonI16TW);
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   } catch (apache::thrift::TException &e) {
   }
 
   string jsonI16T("{\"a\":32767}");
   myI16Struct thriftI16Obj;
   deserializeJSON(thriftI16Obj, jsonI16T);
-  BOOST_CHECK_EQUAL(thriftI16Obj.a, 32767);
+  EXPECT_EQ(thriftI16Obj.a, 32767);
 
   string jsonI32TW("{\"a\":2147483648}");
   myI32Struct thriftI32ObjW;
   try {
     deserializeJSON(thriftI32ObjW, jsonI32TW);
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   } catch (apache::thrift::TException &e) {
   }
 
   string jsonI32T("{\"a\":2147483647}");
   myI32Struct thriftI32Obj;
   deserializeJSON(thriftI32Obj, jsonI32T);
-  BOOST_CHECK_EQUAL(thriftI32Obj.a, 2147483647);
+  EXPECT_EQ(thriftI32Obj.a, 2147483647);
 
   string jsonBoolTW("{\"a\":2}");
   myBoolStruct thriftBoolObjW;
   try {
     deserializeJSON(thriftBoolObjW, jsonBoolTW);
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   } catch (std::exception &e) {
   }
 
 }
 
-BOOST_AUTO_TEST_CASE(DoubleExponents) {
+TEST(SimpleJSONToThriftTest, DoubleExponents) {
   string jsonDouble("{\"a\":21.47483647e9}");
   myDoubleStruct thriftDoubleObj;
   deserializeJSON(thriftDoubleObj, jsonDouble);
-  BOOST_CHECK_EQUAL(thriftDoubleObj.a, 21.47483647e9);
+  EXPECT_EQ(thriftDoubleObj.a, 21.47483647e9);
 }
 
-BOOST_AUTO_TEST_CASE(ComplexTypeMissingRequiredFieldInMember) {
+TEST(SimpleJSONToThriftTest, ComplexTypeMissingRequiredFieldInMember) {
 
   string jsonT("{\"a\":true,\"c\":16,\"d\":32,\"e\":64,\"b\":8,"
       "\"f\":0.99,\"g\":\"Hello\"}");
@@ -489,12 +486,12 @@ BOOST_AUTO_TEST_CASE(ComplexTypeMissingRequiredFieldInMember) {
   myComplexStruct thriftComplexObj;
   try {
     deserializeJSON(thriftComplexObj, jsonComplexT);
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   } catch (apache::thrift::TException &e) {
   }
 }
 
-BOOST_AUTO_TEST_CASE(ComplexTypeTest) {
+TEST(SimpleJSONToThriftTest, ComplexTypeTest) {
 
   string jsonT("{\"a\":true,\"c\":16,\"d\":32,\"e\":64,\"b\":8,"
       "\"f\":0.99,\"g\":\"Hello\"}");
@@ -505,52 +502,52 @@ BOOST_AUTO_TEST_CASE(ComplexTypeTest) {
   myComplexStruct thriftComplexObj;
   deserializeJSON(thriftComplexObj, jsonComplexT);
 
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.b, 8);
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.c, 16);
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.d, 32);
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.e, 64);
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.f, 0.99);
-  BOOST_CHECK_EQUAL(thriftComplexObj.a.g, "Hello");
+  EXPECT_EQ(thriftComplexObj.a.b, 8);
+  EXPECT_EQ(thriftComplexObj.a.c, 16);
+  EXPECT_EQ(thriftComplexObj.a.d, 32);
+  EXPECT_EQ(thriftComplexObj.a.e, 64);
+  EXPECT_EQ(thriftComplexObj.a.f, 0.99);
+  EXPECT_EQ(thriftComplexObj.a.g, "Hello");
 
-  BOOST_CHECK_EQUAL(thriftComplexObj.b[0], 3);
-  BOOST_CHECK_EQUAL(thriftComplexObj.b[1], 2);
-  BOOST_CHECK_EQUAL(thriftComplexObj.b[2], 1);
+  EXPECT_EQ(thriftComplexObj.b[0], 3);
+  EXPECT_EQ(thriftComplexObj.b[1], 2);
+  EXPECT_EQ(thriftComplexObj.b[2], 1);
 
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].b, 8);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].c, 16);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].d, 32);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].e, 64);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].f, 0.99);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key1"].g, "Hello");
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key2"].c, 20);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key2"].d, 320);
-  BOOST_CHECK_EQUAL(thriftComplexObj.c["key2"].f, 0.001);
+  EXPECT_EQ(thriftComplexObj.c["key1"].b, 8);
+  EXPECT_EQ(thriftComplexObj.c["key1"].c, 16);
+  EXPECT_EQ(thriftComplexObj.c["key1"].d, 32);
+  EXPECT_EQ(thriftComplexObj.c["key1"].e, 64);
+  EXPECT_EQ(thriftComplexObj.c["key1"].f, 0.99);
+  EXPECT_EQ(thriftComplexObj.c["key1"].g, "Hello");
+  EXPECT_EQ(thriftComplexObj.c["key2"].c, 20);
+  EXPECT_EQ(thriftComplexObj.c["key2"].d, 320);
+  EXPECT_EQ(thriftComplexObj.c["key2"].f, 0.001);
 }
 
-BOOST_AUTO_TEST_CASE(SetTypeTest) {
+TEST(SimpleJSONToThriftTest, SetTypeTest) {
 
   string jsonT("{\"a\":[1,2,3]}");
   mySetStruct thriftSetObj;
   deserializeJSON(thriftSetObj, jsonT);
-  BOOST_CHECK(thriftSetObj.__isset.a);
-  BOOST_CHECK_EQUAL(thriftSetObj.a.size(), 3);
-  BOOST_CHECK(thriftSetObj.a.find(2) != thriftSetObj.a.end());
-  BOOST_CHECK(thriftSetObj.a.find(5) ==  thriftSetObj.a.end());
+  EXPECT_TRUE(thriftSetObj.__isset.a);
+  EXPECT_EQ(thriftSetObj.a.size(), 3);
+  EXPECT_TRUE(thriftSetObj.a.find(2) != thriftSetObj.a.end());
+  EXPECT_TRUE(thriftSetObj.a.find(5) ==  thriftSetObj.a.end());
 }
 
-BOOST_AUTO_TEST_CASE(MixedStructTest) {
+TEST(SimpleJSONToThriftTest, MixedStructTest) {
   string jsonT("{\"a\":[1],\"b\":[{\"a\":1}],\"c\":{\"hello\":1},"
       "\"d\":{\"hello\":{\"a\":1}},\"e\":[1]}");
   myMixedStruct thriftMixedObj;
   deserializeJSON(thriftMixedObj, jsonT);
-  BOOST_CHECK_EQUAL(thriftMixedObj.a[0], 1);
-  BOOST_CHECK_EQUAL(thriftMixedObj.b[0].a, 1);
-  BOOST_CHECK_EQUAL(thriftMixedObj.c["hello"], 1);
-  BOOST_CHECK_EQUAL(thriftMixedObj.d["hello"].a, 1);
-  BOOST_CHECK(thriftMixedObj.e.find(1) != thriftMixedObj.e.end());
+  EXPECT_EQ(thriftMixedObj.a[0], 1);
+  EXPECT_EQ(thriftMixedObj.b[0].a, 1);
+  EXPECT_EQ(thriftMixedObj.c["hello"], 1);
+  EXPECT_EQ(thriftMixedObj.d["hello"].a, 1);
+  EXPECT_TRUE(thriftMixedObj.e.find(1) != thriftMixedObj.e.end());
 }
 
-BOOST_AUTO_TEST_CASE(MapTypeTest) {
+TEST(SimpleJSONToThriftTest, MapTypeTest) {
   string stringJson("\"stringMap\": {\"a\":\"A\", \"b\":\"B\"}");
   string boolJson("\"boolMap\": {\"true\":\"True\", \"false\":\"False\"}");
   string byteJson("\"byteMap\": {\"1\":\"one\", \"2\":\"two\"}");
@@ -560,38 +557,38 @@ BOOST_AUTO_TEST_CASE(MapTypeTest) {
     doubleJson + "," + enumJson + "}";
   myMapStruct mapStruct;
   deserializeJSON(mapStruct, json);
-  BOOST_CHECK_EQUAL(mapStruct.stringMap.size(), 2);
-  BOOST_CHECK_EQUAL(mapStruct.stringMap["a"], "A");
-  BOOST_CHECK_EQUAL(mapStruct.stringMap["b"], "B");
-  BOOST_CHECK_EQUAL(mapStruct.boolMap.size(), 2);
-  BOOST_CHECK_EQUAL(mapStruct.boolMap[true], "True");
-  BOOST_CHECK_EQUAL(mapStruct.boolMap[false], "False");
-  BOOST_CHECK_EQUAL(mapStruct.byteMap.size(), 2);
-  BOOST_CHECK_EQUAL(mapStruct.byteMap[1], "one");
-  BOOST_CHECK_EQUAL(mapStruct.byteMap[2], "two");
-  BOOST_CHECK_EQUAL(mapStruct.doubleMap.size(), 2);
-  BOOST_CHECK_EQUAL(mapStruct.doubleMap[0.1], "0.one");
-  BOOST_CHECK_EQUAL(mapStruct.doubleMap[0.2], "0.two");
-  BOOST_CHECK_EQUAL(mapStruct.enumMap.size(), 2);
-  BOOST_CHECK_EQUAL(mapStruct.enumMap[MALE], "male");
-  BOOST_CHECK_EQUAL(mapStruct.enumMap[FEMALE], "female");
+  EXPECT_EQ(mapStruct.stringMap.size(), 2);
+  EXPECT_EQ(mapStruct.stringMap["a"], "A");
+  EXPECT_EQ(mapStruct.stringMap["b"], "B");
+  EXPECT_EQ(mapStruct.boolMap.size(), 2);
+  EXPECT_EQ(mapStruct.boolMap[true], "True");
+  EXPECT_EQ(mapStruct.boolMap[false], "False");
+  EXPECT_EQ(mapStruct.byteMap.size(), 2);
+  EXPECT_EQ(mapStruct.byteMap[1], "one");
+  EXPECT_EQ(mapStruct.byteMap[2], "two");
+  EXPECT_EQ(mapStruct.doubleMap.size(), 2);
+  EXPECT_EQ(mapStruct.doubleMap[0.1], "0.one");
+  EXPECT_EQ(mapStruct.doubleMap[0.2], "0.two");
+  EXPECT_EQ(mapStruct.enumMap.size(), 2);
+  EXPECT_EQ(mapStruct.enumMap[MALE], "male");
+  EXPECT_EQ(mapStruct.enumMap[FEMALE], "female");
 }
 
-BOOST_AUTO_TEST_CASE(EmptyStringTest) {
+TEST(SimpleJSONToThriftTest, EmptyStringTest) {
   string jsonT("{\"a\":\"\"}");
   myStringStruct thriftStringObj;
   deserializeJSON(thriftStringObj, jsonT);
-  BOOST_CHECK_EQUAL(thriftStringObj.a, "");
+  EXPECT_EQ(thriftStringObj.a, "");
 }
 
-BOOST_AUTO_TEST_CASE(BinaryTypeTest) {
+TEST(SimpleJSONToThriftTest, BinaryTypeTest) {
   string jsonT("{\"a\":\"SSBsb3ZlIEJhc2U2NCEA\"}");
   myBinaryStruct thriftBinaryObj;
   deserializeJSON(thriftBinaryObj, jsonT);
-  BOOST_CHECK_EQUAL(thriftBinaryObj.a, std::string("I love Base64!\0", 15));
+  EXPECT_EQ(thriftBinaryObj.a, std::string("I love Base64!\0", 15));
 }
 
-BOOST_AUTO_TEST_CASE(CompoundTest) {
+TEST(SimpleJSONToThriftTest, CompoundTest) {
   SmallStruct struct1;
   struct1.bools = {};
   struct1.ints = {};
@@ -633,10 +630,10 @@ BOOST_AUTO_TEST_CASE(CompoundTest) {
   TestStruct deserialized;
   deserializeJSON(deserialized, text);
 
-  BOOST_CHECK(stuff == deserialized);
+  EXPECT_TRUE(stuff == deserialized);
 }
 
-BOOST_AUTO_TEST_CASE(MapKeysTests) {
+TEST(SimpleJSONToThriftTest, MapKeysTests) {
   myKeyStruct mapStruct;
   mapStruct.a[{}] = "";
   mapStruct.a[{1}] = "1";
@@ -648,18 +645,6 @@ BOOST_AUTO_TEST_CASE(MapKeysTests) {
   try {
     testSimpleJSON(mapStruct);
   } catch (apache::thrift::TException &e) {
-    BOOST_CHECK(false);
+    EXPECT_TRUE(false);
   }
-}
-
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  boost::unit_test::framework::master_test_suite().p_name.value =
-    "json_unittest";
-
-  if (argc != 1) {
-    fprintf(stderr, "unexpected arguments: %s\n", argv[1]);
-    exit(1);
-  }
-
-  return nullptr;
 }
