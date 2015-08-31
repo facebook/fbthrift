@@ -197,7 +197,15 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     if (InOrderRecvSeqId_ != channel_->lastWrittenSeqId_ + 1) {
       // Save it until we can send it in order.
       channel_->inOrderRequests_[InOrderRecvSeqId_] =
-          std::make_tuple(cb, std::move(buf), header_.get());
+          std::make_tuple(cb, std::move(buf), std::move(header_));
+      // Make a fake THeader here, because:
+      // 1. HeaderRequest can be destroyed after sendReply returns, so header_
+      //    must be moved.
+      // 2. For an expired request, sendReply is called from sendErrorWrapped
+      //    to send a timeout response. Later when request processing is
+      //    finished, the response is transformed using header_ again, although
+      //    it won't be sent. Setting it here to avoid use-after-free.
+      header_ = folly::make_unique<THeader>();
     } else {
       // Send it now, and send any subsequent requests in order.
       channel_->sendCatchupRequests(std::move(buf), cb, header_.get());
@@ -257,6 +265,7 @@ void HeaderServerChannel::sendCatchupRequests(
 
   DestructorGuard dg(this);
 
+  std::unique_ptr<THeader> header_ptr;
   while (true) {
     if (next_req) {
       try {
@@ -275,8 +284,9 @@ void HeaderServerChannel::sendCatchupRequests(
     if (next != inOrderRequests_.end()) {
       next_req = std::move(std::get<1>(next->second));
       cb = std::get<0>(next->second);
-      header = std::get<2>(next->second);
-      inOrderRequests_.erase(lastWrittenSeqId_ + 1);
+      header_ptr = std::move(std::get<2>(next->second));
+      header = header_ptr.get();
+      inOrderRequests_.erase(next);
     } else {
       break;
     }

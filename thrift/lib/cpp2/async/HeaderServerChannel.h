@@ -221,7 +221,7 @@ private:
     std::tuple<
       MessageChannel::SendCallback*,
       std::unique_ptr<folly::IOBuf>,
-      apache::thrift::transport::THeader*>> inOrderRequests_;
+      std::unique_ptr<apache::thrift::transport::THeader>>> inOrderRequests_;
 
   uint32_t arrivalSeqId_;
   uint32_t lastWrittenSeqId_;
