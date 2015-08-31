@@ -1,8 +1,8 @@
 # @lint-avoid-pyflakes2
 # @lint-avoid-python-3-compatibility-imports
 
-import sys
 import asyncio
+import contextlib
 
 from thrift.Thrift import TMessageType, TApplicationException, TType
 import thrift.server.TAsyncioServer as TAsyncioServer
@@ -70,19 +70,26 @@ def should_run_on_thread(func):
     return getattr(func, "_run_on_thread", False)
 
 
+@contextlib.contextmanager
+def protocol_manager(protocol):
+    yield protocol.client
+    protocol.close()
+
+
 @asyncio.coroutine
 def create_client(client_klass, *, host=None, port=None, loop=None):
     """
-    create a asyncio thrift client and return it
+    create a asyncio thrift client and return a context manager for it
     This is a coroutine
     :param client_klass: thrift Client class
     :param host: hostname/ip, None = loopback
     :param port: port number
     :param loop: asyncio event loop
+    :returns: a Context manager which provides the thrift client
     """
     if not loop:
         loop = asyncio.get_event_loop()
     transport, protocol = yield from loop.create_connection(
         TAsyncioServer.ThriftClientProtocolFactory(client_klass),
         host=host, port=port)
-    return protocol.client
+    return protocol_manager(protocol)
