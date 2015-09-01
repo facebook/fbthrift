@@ -16,112 +16,111 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#define BOOST_TEST_MODULE EnumTest
-#include <boost/test/unit_test.hpp>
+
+#include <memory>
 #include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include "thrift/test/gen-cpp/EnumTestStrict_types.h"
 #include "thrift/test/gen-cpp/EnumTestStrict_constants.h"
 #include <thrift/lib/cpp/util/EnumUtils.h>
 
+#include <gtest/gtest.h>
+
+using namespace std;
 using namespace apache::thrift::util;
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::protocol::TJSONProtocol;
 
-BOOST_AUTO_TEST_SUITE( EnumTestStrict )
-
-BOOST_AUTO_TEST_CASE( test_enum_strict ) {
+TEST(EnumTestStrict, test_enum_strict) {
   // Check that all the enum values match what we expect
-  BOOST_CHECK_EQUAL((int)MyEnum1::ME1_0, 0);
-  BOOST_CHECK_EQUAL((int)MyEnum1::ME1_1, 1);
-  BOOST_CHECK_EQUAL((int)MyEnum1::ME1_2, 2);
-  BOOST_CHECK_EQUAL((int)MyEnum1::ME1_3, 3);
-  BOOST_CHECK_EQUAL((int)MyEnum1::ME1_5, 5);
-  BOOST_CHECK_EQUAL((int)MyEnum1::ME1_6, 6);
+  EXPECT_EQ((int)MyEnum1::ME1_0, 0);
+  EXPECT_EQ((int)MyEnum1::ME1_1, 1);
+  EXPECT_EQ((int)MyEnum1::ME1_2, 2);
+  EXPECT_EQ((int)MyEnum1::ME1_3, 3);
+  EXPECT_EQ((int)MyEnum1::ME1_5, 5);
+  EXPECT_EQ((int)MyEnum1::ME1_6, 6);
 
-  BOOST_CHECK_EQUAL((int)MyEnum2::ME2_0, 0);
-  BOOST_CHECK_EQUAL((int)MyEnum2::ME2_1, 1);
-  BOOST_CHECK_EQUAL((int)MyEnum2::ME2_2, 2);
+  EXPECT_EQ((int)MyEnum2::ME2_0, 0);
+  EXPECT_EQ((int)MyEnum2::ME2_1, 1);
+  EXPECT_EQ((int)MyEnum2::ME2_2, 2);
 
-  BOOST_CHECK_EQUAL((int)MyEnum3::ME3_0, 0);
-  BOOST_CHECK_EQUAL((int)MyEnum3::ME3_1, 1);
-  BOOST_CHECK_EQUAL((int)MyEnum3::ME3_N2, -2);
-  BOOST_CHECK_EQUAL((int)MyEnum3::ME3_N1, -1);
-  BOOST_CHECK_EQUAL((int)MyEnum3::ME3_D0, 0);
-  BOOST_CHECK_EQUAL((int)MyEnum3::ME3_D1, 1);
-  BOOST_CHECK_EQUAL((int)MyEnum3::ME3_9, 9);
-  BOOST_CHECK_EQUAL((int)MyEnum3::ME3_10, 10);
+  EXPECT_EQ((int)MyEnum3::ME3_0, 0);
+  EXPECT_EQ((int)MyEnum3::ME3_1, 1);
+  EXPECT_EQ((int)MyEnum3::ME3_N2, -2);
+  EXPECT_EQ((int)MyEnum3::ME3_N1, -1);
+  EXPECT_EQ((int)MyEnum3::ME3_D0, 0);
+  EXPECT_EQ((int)MyEnum3::ME3_D1, 1);
+  EXPECT_EQ((int)MyEnum3::ME3_9, 9);
+  EXPECT_EQ((int)MyEnum3::ME3_10, 10);
 
-  BOOST_CHECK_EQUAL((int)MyEnum4::ME4_A, 0x7ffffffd);
-  BOOST_CHECK_EQUAL((int)MyEnum4::ME4_B, 0x7ffffffe);
-  BOOST_CHECK_EQUAL((int)MyEnum4::ME4_C, 0x7fffffff);
+  EXPECT_EQ((int)MyEnum4::ME4_A, 0x7ffffffd);
+  EXPECT_EQ((int)MyEnum4::ME4_B, 0x7ffffffe);
+  EXPECT_EQ((int)MyEnum4::ME4_C, 0x7fffffff);
 
-  BOOST_CHECK_EQUAL(
+  EXPECT_EQ(
     (int)EnumTestStrict_constants::c_me4_a(),
     (int)MyEnum4::ME4_A);
 }
 
-BOOST_AUTO_TEST_CASE( test_enum_strict_constant ) {
+TEST(EnumTestStrict, test_enum_strict_constant) {
   MyStruct ms;
   MyStruct ms2;
-  BOOST_CHECK_EQUAL((int)ms.me2_2,  (int)MyEnum2::ME2_2);
-  BOOST_CHECK_EQUAL((int)ms.me3_n2, (int)MyEnum3::ME3_N2);
-  BOOST_CHECK_EQUAL((int)ms.me3_d1, (int)MyEnum3::ME3_D1);
-  BOOST_CHECK_EQUAL(true, ms == ms2);
+  EXPECT_EQ((int)ms.me2_2,  (int)MyEnum2::ME2_2);
+  EXPECT_EQ((int)ms.me3_n2, (int)MyEnum3::ME3_N2);
+  EXPECT_EQ((int)ms.me3_d1, (int)MyEnum3::ME3_D1);
+  EXPECT_EQ(ms, ms2);
 
-  BOOST_CHECK_EQUAL(
+  EXPECT_EQ(
     (int)_MyEnum2_VALUES_TO_NAMES.find(MyEnum2::ME2_2)->first,
     (int)MyEnum2::ME2_2);
 
-  BOOST_CHECK_EQUAL(0,
+  EXPECT_EQ(0,
     strcmp(
       _MyEnum2_VALUES_TO_NAMES.find(MyEnum2::ME2_2)->second,
       "MyEnum2::ME2_2"));
 
-  BOOST_CHECK_EQUAL(
+  EXPECT_EQ(
     (int)_MyEnum3_NAMES_TO_VALUES.find("MyEnum3::ME3_10")->second,
     (int)MyEnum3::ME3_10);
 
   ms2.me2_2 = MyEnum2::ME2_1;
-  BOOST_CHECK_EQUAL(false, ms == ms2);
+  EXPECT_NE(ms, ms2);
 
   ms2.__clear();
-  BOOST_CHECK_EQUAL(true, ms == ms2);
+  EXPECT_EQ(ms, ms2);
 }
 
-BOOST_AUTO_TEST_CASE( test_enum_names ) {
-  BOOST_CHECK_EQUAL(enumName(MyEnum3::ME3_1), "MyEnum3::ME3_1");
-  BOOST_CHECK_EQUAL(enumName(MyEnum2::ME2_2), "MyEnum2::ME2_2");
+TEST(EnumTestStrict, test_enum_names) {
+  EXPECT_EQ(enumName(MyEnum3::ME3_1), std::string{"MyEnum3::ME3_1"});
+  EXPECT_EQ(enumName(MyEnum2::ME2_2), std::string{"MyEnum2::ME2_2"});
 }
 
-BOOST_AUTO_TEST_CASE( test_enum_parse ) {
+TEST(EnumTestStrict, test_enum_parse) {
   MyEnum2 e2;
   MyEnum3 e3;
 
-  BOOST_CHECK_EQUAL(true, tryParseEnum("MyEnum2::ME2_2", &e2));
-  BOOST_CHECK_EQUAL(true, tryParseEnum("MyEnum3::ME3_N2", &e3));
-  BOOST_CHECK_EQUAL((int)MyEnum2::ME2_2, (int)e2);
-  BOOST_CHECK_EQUAL((int)MyEnum3::ME3_N2, (int)e3);
+  EXPECT_TRUE(tryParseEnum("MyEnum2::ME2_2", &e2));
+  EXPECT_TRUE(tryParseEnum("MyEnum3::ME3_N2", &e3));
+  EXPECT_EQ((int)MyEnum2::ME2_2, (int)e2);
+  EXPECT_EQ((int)MyEnum3::ME3_N2, (int)e3);
 
-  BOOST_CHECK_EQUAL(false, tryParseEnum("FOO_ME2_0", &e2));
-  BOOST_CHECK_EQUAL(false, tryParseEnum("BAR_ME3_N2", &e3));
+  EXPECT_FALSE(tryParseEnum("FOO_ME2_0", &e2));
+  EXPECT_FALSE(tryParseEnum("BAR_ME3_N2", &e3));
 }
 
-BOOST_AUTO_TEST_CASE( test_enum_strict_transport ) {
+TEST(EnumTestStrict, test_enum_strict_transport) {
   MyStruct ms;
   MyStruct ms2;
 
   ms2.me2_2  = MyEnum2::ME2_1;
   ms2.me3_n2 = MyEnum3::ME3_9;
   ms2.me3_d1 = MyEnum3::ME3_10;
-  BOOST_CHECK_EQUAL(false, ms == ms2);
+  EXPECT_NE(ms, ms2);
 
-  std::shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer());
-  std::shared_ptr<TJSONProtocol> proto(new TJSONProtocol(buffer));
+  auto buffer = make_shared<TMemoryBuffer>();
+  auto proto = make_shared<TJSONProtocol>(buffer);
 
   ms.write(proto.get());
   ms2.read(proto.get());
-  BOOST_CHECK_EQUAL(true, ms == ms2);
+  EXPECT_EQ(ms, ms2);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

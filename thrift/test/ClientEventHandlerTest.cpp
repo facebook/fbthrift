@@ -15,7 +15,6 @@
  */
 
 #include "thrift/test/gen-cpp/Service.h"
-#include <boost/test/unit_test.hpp>
 #include <memory>
 
 #include <thrift/lib/cpp/async/TAsyncChannel.h>
@@ -29,6 +28,9 @@
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 
+#include <gtest/gtest.h>
+
+using namespace std;
 using namespace apache::thrift::async;
 using namespace apache::thrift;
 using namespace apache::thrift::util;
@@ -36,12 +38,7 @@ using namespace apache::thrift::concurrency;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::server;
-using namespace boost;
 using namespace test::stress;
-using std::string;
-using std::map;
-using std::set;
-using std::vector;
 
 class TestHandler : public ServiceIf {
 public:
@@ -77,8 +74,8 @@ class ClientEventHandler : public TProcessorEventHandler {
 
   void preRead(void* ctx, const char* fn_name) override {
     contextCalls++;
-    BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
-    BOOST_CHECK_EQUAL(contextCalls, 3);
+    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_EQ(contextCalls, 3);
   }
 
   void postRead(void* ctx,
@@ -86,31 +83,31 @@ class ClientEventHandler : public TProcessorEventHandler {
                 apache::thrift::transport::THeader* header,
                 uint32_t bytes) override {
     contextCalls++;
-    BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
-    BOOST_CHECK(bytes > 20); // check we read something
-    BOOST_CHECK_EQUAL(contextCalls, 4);
+    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_GT(bytes, 20); // check we read something
+    EXPECT_EQ(contextCalls, 4);
    }
 
    void preWrite(void* ctx, const char* fn_name) override {
     contextCalls++;
-    BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
-    BOOST_CHECK_EQUAL(contextCalls, 1);
+    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_EQ(contextCalls, 1);
   }
 
   void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override {
     contextCalls++;
-    BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
-    BOOST_CHECK(bytes > 20); // check we wrote something
-    BOOST_CHECK_EQUAL(contextCalls, 2);
+    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_GT(bytes, 20); // check we wrote something
+    EXPECT_EQ(contextCalls, 2);
   }
 
   void handlerError(void* ctx, const char* fn_name) override {
     contextCalls++;
-    BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
+    EXPECT_EQ(fn_name, "Service.echoVoid");
   }
 
   void checkContextCalls() {
-    BOOST_CHECK_EQUAL(contextCalls, 4);
+    EXPECT_EQ(contextCalls, 4);
   }
 };
 
@@ -122,8 +119,8 @@ class ServerEventHandler : public TProcessorEventHandler {
 
   void preRead(void* ctx, const char* fn_name) override {
     contextCalls++;
-    BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
-    BOOST_CHECK_EQUAL(contextCalls, 1);
+    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_EQ(contextCalls, 1);
   }
 
   void postRead(void* ctx,
@@ -131,39 +128,33 @@ class ServerEventHandler : public TProcessorEventHandler {
                 apache::thrift::transport::THeader* header,
                 uint32_t bytes) override {
     contextCalls++;
-    BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
-    BOOST_CHECK(bytes > 20); // check we read something
-    BOOST_CHECK_EQUAL(contextCalls, 2);
+    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_GT(bytes, 20); // check we read something
+    EXPECT_EQ(contextCalls, 2);
    }
 
    void preWrite(void* ctx, const char* fn_name) override {
     contextCalls++;
-    BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
-    BOOST_CHECK_EQUAL(contextCalls, 3);
+    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_EQ(contextCalls, 3);
   }
 
   void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override {
     contextCalls++;
-    BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
-    BOOST_CHECK(bytes > 20); // check we wrote something
-    BOOST_CHECK_EQUAL(contextCalls, 4);
+    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_GT(bytes, 20); // check we wrote something
+    EXPECT_EQ(contextCalls, 4);
   }
 
   void handlerError(void* ctx, const char* fn_name) override {
     contextCalls++;
-    BOOST_CHECK_EQUAL(fn_name, "Service.echoVoid");
+    EXPECT_EQ(fn_name, "Service.echoVoid");
   }
 
   void checkContextCalls() {
-    BOOST_CHECK_EQUAL(contextCalls, 4);
+    EXPECT_EQ(contextCalls, 4);
   }
 };
-
-std::shared_ptr<ClientEventHandler> handler(new ClientEventHandler());
-std::shared_ptr<ClientEventHandler> handler2(new ClientEventHandler());
-std::shared_ptr<ServerEventHandler> server_add_handler(new ServerEventHandler());
-std::shared_ptr<ServerEventHandler> server_add_handler2(new ServerEventHandler());
-std::shared_ptr<ServerEventHandler> server_set_handler(new ServerEventHandler());
 
 void echoVoidCallback(ServiceCobClient* client) {
   client->recv_echoVoid();
@@ -172,10 +163,15 @@ void echoVoidCallback(ServiceCobClient* client) {
   // handler2->checkContextCalls();
 }
 
-BOOST_AUTO_TEST_CASE(clientHandlerTest) {
-  std::shared_ptr<TestHandler> testHandler(new TestHandler());
-  std::shared_ptr<TDispatchProcessor> testProcessor(
-    new ServiceProcessor(testHandler));
+TEST(ClientEventHandlerTest, clientHandlerTest) {
+  auto handler = make_shared<ClientEventHandler>();
+  auto handler2 = make_shared<ClientEventHandler>();
+  auto server_add_handler = make_shared<ServerEventHandler>();
+  auto server_add_handler2 = make_shared<ServerEventHandler>();
+  auto server_set_handler = make_shared<ServerEventHandler>();
+
+  auto testHandler = make_shared<TestHandler>();
+  auto testProcessor = make_shared<ServiceProcessor>(testHandler);
   testProcessor->addEventHandler(server_add_handler);
   testProcessor->addEventHandler(server_add_handler2);
   testProcessor->setEventHandler(server_set_handler);
@@ -183,22 +179,20 @@ BOOST_AUTO_TEST_CASE(clientHandlerTest) {
   // "Handler test, so pick the simplest server"
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-  std::shared_ptr<TSimpleServerCreator> serverCreator(
-    new TSimpleServerCreator(testProcessor, 0));
+  auto serverCreator = make_shared<TSimpleServerCreator>(testProcessor, 0);
   #pragma GCC diagnostic pop
 
-  std::shared_ptr<TServer> server(serverCreator->createServer());
+  auto server = serverCreator->createServer();
   ScopedServerThread serverThread(server);
-  const folly::SocketAddress* address = serverThread.getAddress();
-  int port = address->getPort();
+  int port = serverThread.getAddress()->getPort();
 
-  std::shared_ptr<TSocket> socket(new TSocket("localhost", port));
+  auto socket = make_shared<TSocket>("localhost", port);
   socket->open();
-  std::shared_ptr<TTransport> transport(new TFramedTransport(socket));
-  std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+  auto transport = make_shared<TFramedTransport>(socket);
+  auto protocol = make_shared<TBinaryProtocol>(transport);
 
   ServiceClient testClient(protocol);
-  handler.reset(new ClientEventHandler());
+  handler = make_shared<ClientEventHandler>();
   testClient.addEventHandler(handler);
   testClient.echoVoid();
   handler->checkContextCalls();
@@ -209,38 +203,23 @@ BOOST_AUTO_TEST_CASE(clientHandlerTest) {
   server_add_handler2->checkContextCalls();
   server_set_handler->checkContextCalls();
 
-  testProcessor->setEventHandler(std::shared_ptr<TProcessorEventHandler>());
+  testProcessor->setEventHandler(nullptr);
   testProcessor->clearEventHandlers();
 
   // Test async
 
   TEventBase evb;
-  std::shared_ptr<TAsyncSocket> aSocket(TAsyncSocket::newSocket(&evb,
-                                                           "127.0.0.1", port));
-  std::shared_ptr<TFramedAsyncChannel> channel(
-    TFramedAsyncChannel::newChannel(aSocket));
-  std::shared_ptr<TBinaryProtocolFactory> protocolFactory(
-    new TBinaryProtocolFactory());
+  auto aSocket = TAsyncSocket::newSocket(&evb, "127.0.0.1", port);
+  auto channel = TFramedAsyncChannel::newChannel(aSocket);
+  auto protocolFactory = make_shared<TBinaryProtocolFactory>();
 
   ServiceCobClient testAsyncClient(channel, protocolFactory.get());
-  handler.reset(new ClientEventHandler());
+  handler = make_shared<ClientEventHandler>();
   testAsyncClient.addEventHandler(handler);
   testAsyncClient.addEventHandler(handler2);
-  std::function<void(ServiceCobClient* client)> recvCob;
-  recvCob = std::bind(echoVoidCallback, &testAsyncClient);
+  function<void(ServiceCobClient* client)> recvCob;
+  recvCob = bind(echoVoidCallback, &testAsyncClient);
 
   testAsyncClient.echoVoid(recvCob);
   evb.loop();
-}
-
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  boost::unit_test::framework::master_test_suite().p_name.value =
-    "ClientHandlerTest";
-
-  if (argc != 1) {
-    fprintf(stderr, "unexpected arguments: %s\n", argv[1]);
-    exit(1);
-  }
-
-  return nullptr;
 }

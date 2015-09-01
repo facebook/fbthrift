@@ -16,14 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include <boost/test/unit_test.hpp>
 
 #include "thrift/test/gen-cpp/ThriftTest_types.h"
 #include "thrift/test/gen-cpp/OptionalRequiredTest_types.h"
 
+#include <gtest/gtest.h>
+
 using namespace std;
 
-BOOST_AUTO_TEST_CASE(test_swap_xtruct2) {
+TEST(SwapTest, test_swap_xtruct2) {
   using namespace thrift::test;
 
   Xtruct2 a;
@@ -45,35 +46,35 @@ BOOST_AUTO_TEST_CASE(test_swap_xtruct2) {
 
   swap(a, b);
 
-  BOOST_CHECK_EQUAL(b.byte_thing, 12);
-  BOOST_CHECK_EQUAL(b.struct_thing.string_thing, "foobar");
-  BOOST_CHECK_EQUAL(b.struct_thing.byte_thing, 42);
-  BOOST_CHECK_EQUAL(b.struct_thing.i32_thing, 0);
-  BOOST_CHECK_EQUAL(b.struct_thing.i64_thing, 0x1234567887654321LL);
-  BOOST_CHECK_EQUAL(b.i32_thing, 0x7fffffff);
+  EXPECT_EQ(b.byte_thing, 12);
+  EXPECT_EQ(b.struct_thing.string_thing, "foobar");
+  EXPECT_EQ(b.struct_thing.byte_thing, 42);
+  EXPECT_EQ(b.struct_thing.i32_thing, 0);
+  EXPECT_EQ(b.struct_thing.i64_thing, 0x1234567887654321LL);
+  EXPECT_EQ(b.i32_thing, 0x7fffffff);
 
-  BOOST_CHECK_EQUAL(a.byte_thing, 0x7f);
-  BOOST_CHECK_EQUAL(a.struct_thing.string_thing, "abcdefghijklmnopqrstuvwxyz");
-  BOOST_CHECK_EQUAL(a.struct_thing.byte_thing, -1);
-  BOOST_CHECK_EQUAL(a.struct_thing.i32_thing, 99);
-  BOOST_CHECK_EQUAL(a.struct_thing.i64_thing, 10101);
-  BOOST_CHECK_EQUAL(a.i32_thing, 0xdeadbeef);
+  EXPECT_EQ(a.byte_thing, 0x7f);
+  EXPECT_EQ(a.struct_thing.string_thing, "abcdefghijklmnopqrstuvwxyz");
+  EXPECT_EQ(a.struct_thing.byte_thing, -1);
+  EXPECT_EQ(a.struct_thing.i32_thing, 99);
+  EXPECT_EQ(a.struct_thing.i64_thing, 10101);
+  EXPECT_EQ(a.i32_thing, 0xdeadbeef);
 }
 
 void check_simple(const thrift::test::Simple &s1,
                   const thrift::test::Simple &s2) {
   // Explicitly compare the fields, since the generated == operator
   // ignores optional fields that are marked as not set.  Also,
-  // this allows us to use the BOOST_CHECK_EQUAL, so the values are printed
+  // this allows us to use the EXPECT_EQ, so the values are printed
   // when they don't match.
-  BOOST_CHECK_EQUAL(s1.im_default, s2.im_default);
-  BOOST_CHECK_EQUAL(s1.im_required, s2.im_required);
-  BOOST_CHECK_EQUAL(s1.im_optional, s2.im_optional);
-  BOOST_CHECK_EQUAL(s1.__isset.im_default, s2.__isset.im_default);
-  BOOST_CHECK_EQUAL(s1.__isset.im_optional, s2.__isset.im_optional);
+  EXPECT_EQ(s1.im_default, s2.im_default);
+  EXPECT_EQ(s1.im_required, s2.im_required);
+  EXPECT_EQ(s1.im_optional, s2.im_optional);
+  EXPECT_EQ(s1.__isset.im_default, s2.__isset.im_default);
+  EXPECT_EQ(s1.__isset.im_optional, s2.__isset.im_optional);
 }
 
-BOOST_AUTO_TEST_CASE(test_swap_optional) {
+TEST(SwapTest, test_swap_optional) {
   using thrift::test::Complex;
   using thrift::test::Simple;
 
@@ -132,39 +133,27 @@ BOOST_AUTO_TEST_CASE(test_swap_optional) {
 
   swap(comp1, comp2);
 
-  BOOST_CHECK_EQUAL(comp1.cp_default, -7);
-  BOOST_CHECK_EQUAL(comp1.__isset.cp_default, false);
-  BOOST_CHECK_EQUAL(comp1.cp_required, 0);
-  BOOST_CHECK_EQUAL(comp1.cp_optional, 0);
-  BOOST_CHECK_EQUAL(comp1.__isset.cp_optional, false);
-  BOOST_CHECK_EQUAL(comp1.the_map.size(), 1);
+  EXPECT_EQ(comp1.cp_default, -7);
+  EXPECT_EQ(comp1.__isset.cp_default, false);
+  EXPECT_EQ(comp1.cp_required, 0);
+  EXPECT_EQ(comp1.cp_optional, 0);
+  EXPECT_EQ(comp1.__isset.cp_optional, false);
+  EXPECT_EQ(comp1.the_map.size(), 1);
   check_simple(comp1.the_map[6], simple2);
   check_simple(comp1.req_simp, simple1);
   check_simple(comp1.opt_simp, simple3);
-  BOOST_CHECK_EQUAL(comp1.__isset.opt_simp, true);
+  EXPECT_EQ(comp1.__isset.opt_simp, true);
 
-  BOOST_CHECK_EQUAL(comp2.cp_default, 5);
-  BOOST_CHECK_EQUAL(comp2.__isset.cp_default, true);
-  BOOST_CHECK_EQUAL(comp2.cp_required, 0x7fff);
-  BOOST_CHECK_EQUAL(comp2.cp_optional, 50);
-  BOOST_CHECK_EQUAL(comp2.__isset.cp_optional, true);
-  BOOST_CHECK_EQUAL(comp2.the_map.size(), 3);
+  EXPECT_EQ(comp2.cp_default, 5);
+  EXPECT_EQ(comp2.__isset.cp_default, true);
+  EXPECT_EQ(comp2.cp_required, 0x7fff);
+  EXPECT_EQ(comp2.cp_optional, 50);
+  EXPECT_EQ(comp2.__isset.cp_optional, true);
+  EXPECT_EQ(comp2.the_map.size(), 3);
   check_simple(comp2.the_map[1], simple1);
   check_simple(comp2.the_map[99], simple2);
   check_simple(comp2.the_map[-7], simple3);
   check_simple(comp2.req_simp, simple4);
   check_simple(comp2.opt_simp, simple1);
-  BOOST_CHECK_EQUAL(comp2.__isset.opt_simp, false);
-}
-
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  boost::unit_test::framework::master_test_suite().p_name.value =
-    "SwapTest";
-
-  if (argc != 1) {
-    fprintf(stderr, "unexpected arguments: %s\n", argv[1]);
-    exit(1);
-  }
-
-  return nullptr;
+  EXPECT_EQ(comp2.__isset.opt_simp, false);
 }

@@ -18,22 +18,20 @@
  */
 
 #include <algorithm>
-#include <boost/foreach.hpp>
-#include <boost/test/unit_test.hpp>
+#include <random>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/TShortReadTransport.h>
 
-using std::string;
-using std::shared_ptr;
+#include <gtest/gtest.h>
+
+using namespace std;
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TBufferedTransport;
 using apache::thrift::transport::TFramedTransport;
 using apache::thrift::transport::test::TShortReadTransport;
 
-#define foreach BOOST_FOREACH
-
 // Shamelessly copied from ZlibTransport.  TODO: refactor.
-unsigned int dist[][5000] = {
+static const unsigned int kDist[][5000] = {
  { 1<<15 },
 
  {
@@ -158,47 +156,43 @@ unsigned int dist[][5000] = {
  },
 };
 
-uint8_t data[1<<15];
-string data_str;
-void init_data() {
-  static bool initted = false;
-  if (initted) return;
-  initted = true;
+namespace {
 
-  // Repeatability.  Kind of.
-  std::srand(42);
-  for (int i = 0; i < (int)(sizeof(data)/sizeof(data[0])); ++i) {
-    data[i] = (uint8_t)rand();
+class TBufferBaseTest : public testing::Test {
+ public:
+  uint8_t data[1<<15];
+  string dataStr;
+  void SetUp() override {
+    mt19937 rng;  // Repeatable b/c ctor takes constant default seed.
+    uniform_int_distribution<uint8_t> dist;
+    for (int i = 0; i < (int)(sizeof(data)/sizeof(data[0])); ++i) {
+      data[i] = dist(rng);
+    }
+
+    dataStr.assign((char*)data, sizeof(data));
   }
+};
 
-  data_str.assign((char*)data, sizeof(data));
 }
 
-
-BOOST_AUTO_TEST_SUITE( TBufferBaseTest )
-
-BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_GetBuffer ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_MemoryBuffer_Write_GetBuffer) {
   for (int d1 = 0; d1 < 3; d1++) {
     TMemoryBuffer buffer(16);
     int offset = 0;
     int index = 0;
 
     while (offset < 1<<15) {
-      buffer.write(&data[offset], dist[d1][index]);
-      offset += dist[d1][index];
+      buffer.write(&data[offset], kDist[d1][index]);
+      offset += kDist[d1][index];
       index++;
     }
 
     string output = buffer.getBufferAsString();
-    BOOST_CHECK_EQUAL(data_str, output);
+    EXPECT_EQ(dataStr, output);
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_MemoryBuffer_Write_Read) {
   for (int d1 = 0; d1 < 3; d1++) {
     for (int d2 = 0; d2 < 3; d2++) {
       TMemoryBuffer buffer(16);
@@ -209,28 +203,26 @@ BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read ) {
       offset = 0;
       index = 0;
       while (offset < 1<<15) {
-        buffer.write(&data[offset], dist[d1][index]);
-        offset += dist[d1][index];
+        buffer.write(&data[offset], kDist[d1][index]);
+        offset += kDist[d1][index];
         index++;
       }
 
       offset = 0;
       index = 0;
       while (offset < 1<<15) {
-        unsigned int got = buffer.read(&data_out[offset], dist[d2][index]);
-        BOOST_CHECK_EQUAL(got, dist[d2][index]);
-        offset += dist[d2][index];
+        unsigned int got = buffer.read(&data_out[offset], kDist[d2][index]);
+        EXPECT_EQ(got, kDist[d2][index]);
+        offset += kDist[d2][index];
         index++;
       }
 
-      BOOST_CHECK(!memcmp(data, data_out, sizeof(data)));
+      EXPECT_TRUE(!memcmp(data, data_out, sizeof(data)));
     }
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_ReadString ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_MemoryBuffer_Write_ReadString) {
   for (int d1 = 0; d1 < 3; d1++) {
     for (int d2 = 0; d2 < 3; d2++) {
       TMemoryBuffer buffer(16);
@@ -241,28 +233,26 @@ BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_ReadString ) {
       offset = 0;
       index = 0;
       while (offset < 1<<15) {
-        buffer.write(&data[offset], dist[d1][index]);
-        offset += dist[d1][index];
+        buffer.write(&data[offset], kDist[d1][index]);
+        offset += kDist[d1][index];
         index++;
       }
 
       offset = 0;
       index = 0;
       while (offset < 1<<15) {
-        unsigned int got = buffer.readAppendToString(output, dist[d2][index]);
-        BOOST_CHECK_EQUAL(got, dist[d2][index]);
-        offset += dist[d2][index];
+        unsigned int got = buffer.readAppendToString(output, kDist[d2][index]);
+        EXPECT_EQ(got, kDist[d2][index]);
+        offset += kDist[d2][index];
         index++;
       }
 
-      BOOST_CHECK_EQUAL(output, data_str);
+      EXPECT_EQ(output, dataStr);
     }
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read_Multi1 ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_MemoryBuffer_Write_Read_Multi1) {
   // Do shorter writes and reads so we don't align to power-of-two boundaries.
 
   for (int d1 = 0; d1 < 3; d1++) {
@@ -276,20 +266,20 @@ BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read_Multi1 ) {
         offset = 0;
         index = 0;
         while (offset < (1<<15)-42) {
-          buffer.write(&data[offset], dist[d1][index]);
-          offset += dist[d1][index];
+          buffer.write(&data[offset], kDist[d1][index]);
+          offset += kDist[d1][index];
           index++;
         }
 
         offset = 0;
         index = 0;
         while (offset < (1<<15)-42) {
-          buffer.read(&data_out[offset], dist[d2][index]);
-          offset += dist[d2][index];
+          buffer.read(&data_out[offset], kDist[d2][index]);
+          offset += kDist[d2][index];
           index++;
         }
 
-        BOOST_CHECK(!memcmp(data, data_out, (1<<15)-42));
+        EXPECT_TRUE(!memcmp(data, data_out, (1<<15)-42));
 
         // Pull out the extra data.
         buffer.read(data_out, 42);
@@ -298,9 +288,7 @@ BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read_Multi1 ) {
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read_Multi2 ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_MemoryBuffer_Write_Read_Multi2) {
   // Do shorter writes and reads so we don't align to power-of-two boundaries.
   // Pull the buffer out of the loop so its state gets worked harder.
   TMemoryBuffer buffer(16);
@@ -315,20 +303,20 @@ BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read_Multi2 ) {
         offset = 0;
         index = 0;
         while (offset < (1<<15)-42) {
-          buffer.write(&data[offset], dist[d1][index]);
-          offset += dist[d1][index];
+          buffer.write(&data[offset], kDist[d1][index]);
+          offset += kDist[d1][index];
           index++;
         }
 
         offset = 0;
         index = 0;
         while (offset < (1<<15)-42) {
-          buffer.read(&data_out[offset], dist[d2][index]);
-          offset += dist[d2][index];
+          buffer.read(&data_out[offset], kDist[d2][index]);
+          offset += kDist[d2][index];
           index++;
         }
 
-        BOOST_CHECK(!memcmp(data, data_out, (1<<15)-42));
+        EXPECT_TRUE(!memcmp(data, data_out, (1<<15)-42));
 
         // Pull out the extra data.
         buffer.read(data_out, 42);
@@ -337,9 +325,7 @@ BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read_Multi2 ) {
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read_Incomplete ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_MemoryBuffer_Write_Read_Incomplete) {
   // Do shorter writes and reads so we don't align to power-of-two boundaries.
   // Pull the buffer out of the loop so its state gets worked harder.
 
@@ -352,7 +338,7 @@ BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read_Incomplete ) {
       int write_index = 0;
       unsigned int to_write = (1<<14)-42;
       while (to_write > 0) {
-        int write_amt = std::min(dist[d1][write_index], to_write);
+        int write_amt = min(kDist[d1][write_index], to_write);
         buffer.write(&data[write_offset], write_amt);
         write_offset += write_amt;
         write_index++;
@@ -363,21 +349,21 @@ BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read_Incomplete ) {
       int read_index = 0;
       unsigned int to_read = (1<<13)-42;
       while (to_read > 0) {
-        int read_amt = std::min(dist[d2][read_index], to_read);
+        int read_amt = min(kDist[d2][read_index], to_read);
         int got = buffer.read(&data_out[read_offset], read_amt);
-        BOOST_CHECK_EQUAL(got, read_amt);
+        EXPECT_EQ(got, read_amt);
         read_offset += read_amt;
         read_index++;
         to_read -= read_amt;
       }
 
-      BOOST_CHECK(!memcmp(data, data_out, (1<<13)-42));
+      EXPECT_TRUE(!memcmp(data, data_out, (1<<13)-42));
 
       int second_offset = write_offset;
       int second_index = write_index-1;
       unsigned int to_second = (1<<14)+42;
       while (to_second > 0) {
-        int second_amt = std::min(dist[d1][second_index], to_second);
+        int second_amt = min(kDist[d1][second_index], to_second);
         //printf("%d\n", second_amt);
         buffer.write(&data[second_offset], second_amt);
         second_offset += second_amt;
@@ -386,14 +372,12 @@ BOOST_AUTO_TEST_CASE( test_MemoryBuffer_Write_Read_Incomplete ) {
       }
 
       string output = buffer.getBufferAsString();
-      BOOST_CHECK_EQUAL(data_str.substr((1<<13)-42), output);
+      EXPECT_EQ(dataStr.substr((1<<13)-42), output);
     }
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_BufferedTransport_Write ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_BufferedTransport_Write) {
   int sizes[] = {
     12, 15, 16, 17, 20,
     501, 512, 523,
@@ -401,29 +385,27 @@ BOOST_AUTO_TEST_CASE( test_BufferedTransport_Write ) {
     1<<14, 1<<17,
   };
 
-  foreach (int size, sizes) {
+  for (auto size : sizes) {
     for (int d1 = 0; d1 < 3; d1++) {
-      shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer(16));
+      auto buffer = make_shared<TMemoryBuffer>(16);
       TBufferedTransport trans(buffer, size);
 
       int offset = 0;
       int index = 0;
       while (offset < 1<<15) {
-        trans.write(&data[offset], dist[d1][index]);
-        offset += dist[d1][index];
+        trans.write(&data[offset], kDist[d1][index]);
+        offset += kDist[d1][index];
         index++;
       }
       trans.flush();
 
       string output = buffer->getBufferAsString();
-      BOOST_CHECK_EQUAL(data_str, output);
+      EXPECT_EQ(dataStr, output);
     }
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_BufferedTransport_Read_Full ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_BufferedTransport_Read_Full) {
   int sizes[] = {
     12, 15, 16, 17, 20,
     501, 512, 523,
@@ -431,9 +413,9 @@ BOOST_AUTO_TEST_CASE( test_BufferedTransport_Read_Full ) {
     1<<14, 1<<17,
   };
 
-  foreach (int size, sizes) {
+  for (auto size : sizes) {
     for (int d1 = 0; d1 < 3; d1++) {
-      shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer(data, sizeof(data)));
+      auto buffer = make_shared<TMemoryBuffer>(data, sizeof(data));
       TBufferedTransport trans(buffer, size);
       uint8_t data_out[1<<15];
 
@@ -443,19 +425,17 @@ BOOST_AUTO_TEST_CASE( test_BufferedTransport_Read_Full ) {
         // Note: this doesn't work with "read" because TBufferedTransport
         // doesn't try loop over reads, so we get short reads.  We don't
         // check the return value, so that messes us up.
-        trans.readAll(&data_out[offset], dist[d1][index]);
-        offset += dist[d1][index];
+        trans.readAll(&data_out[offset], kDist[d1][index]);
+        offset += kDist[d1][index];
         index++;
       }
 
-      BOOST_CHECK(!memcmp(data, data_out, sizeof(data)));
+      EXPECT_TRUE(!memcmp(data, data_out, sizeof(data)));
     }
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_BufferedTransport_Read_Short ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_BufferedTransport_Read_Short) {
   int sizes[] = {
     12, 15, 16, 17, 20,
     501, 512, 523,
@@ -463,10 +443,10 @@ BOOST_AUTO_TEST_CASE( test_BufferedTransport_Read_Short ) {
     1<<14, 1<<17,
   };
 
-  foreach (int size, sizes) {
+  for (auto size : sizes) {
     for (int d1 = 0; d1 < 3; d1++) {
-      shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer(data, sizeof(data)));
-      shared_ptr<TShortReadTransport> tshort(new TShortReadTransport(buffer, 0.125));
+      auto buffer = make_shared<TMemoryBuffer>(data, sizeof(data));
+      auto tshort = make_shared<TShortReadTransport>(buffer, 0.125);
       TBufferedTransport trans(buffer, size);
       uint8_t data_out[1<<15];
 
@@ -476,19 +456,17 @@ BOOST_AUTO_TEST_CASE( test_BufferedTransport_Read_Short ) {
         // Note: this doesn't work with "read" because TBufferedTransport
         // doesn't try loop over reads, so we get short reads.  We don't
         // check the return value, so that messes us up.
-        trans.readAll(&data_out[offset], dist[d1][index]);
-        offset += dist[d1][index];
+        trans.readAll(&data_out[offset], kDist[d1][index]);
+        offset += kDist[d1][index];
         index++;
       }
 
-      BOOST_CHECK(!memcmp(data, data_out, sizeof(data)));
+      EXPECT_TRUE(!memcmp(data, data_out, sizeof(data)));
     }
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_FramedTransport_Write ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_FramedTransport_Write) {
   int sizes[] = {
     12, 15, 16, 17, 20,
     501, 512, 523,
@@ -496,16 +474,16 @@ BOOST_AUTO_TEST_CASE( test_FramedTransport_Write ) {
     1<<14, 1<<17,
   };
 
-  foreach (int size, sizes) {
+  for (auto size : sizes) {
     for (int d1 = 0; d1 < 3; d1++) {
-      shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer(16));
+      auto buffer = make_shared<TMemoryBuffer>(16);
       TFramedTransport trans(buffer, size);
 
       int offset = 0;
       int index = 0;
       while (offset < 1<<15) {
-        trans.write(&data[offset], dist[d1][index]);
-        offset += dist[d1][index];
+        trans.write(&data[offset], kDist[d1][index]);
+        offset += kDist[d1][index];
         index++;
       }
       trans.flush();
@@ -513,20 +491,18 @@ BOOST_AUTO_TEST_CASE( test_FramedTransport_Write ) {
       int32_t frame_size = -1;
       buffer->read(reinterpret_cast<uint8_t*>(&frame_size), sizeof(frame_size));
       frame_size = (int32_t)ntohl((uint32_t)frame_size);
-      BOOST_CHECK_EQUAL(frame_size, 1<<15);
-      BOOST_CHECK_EQUAL(data_str.size(), (unsigned int)frame_size);
+      EXPECT_EQ(frame_size, 1<<15);
+      EXPECT_EQ(dataStr.size(), (unsigned int)frame_size);
       string output = buffer->getBufferAsString();
-      BOOST_CHECK_EQUAL(data_str, output);
+      EXPECT_EQ(dataStr, output);
     }
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_FramedTransport_Read ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_FramedTransport_Read) {
   for (int d1 = 0; d1 < 3; d1++) {
     uint8_t data_out[1<<15];
-    shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer());
+    auto buffer = make_shared<TMemoryBuffer>();
     TFramedTransport trans(buffer);
     int32_t length = sizeof(data);
     length = (int32_t)htonl((uint32_t)length);
@@ -537,18 +513,16 @@ BOOST_AUTO_TEST_CASE( test_FramedTransport_Read ) {
     int index = 0;
     while (offset < 1<<15) {
       // This should work with read because we have one huge frame.
-      trans.read(&data_out[offset], dist[d1][index]);
-      offset += dist[d1][index];
+      trans.read(&data_out[offset], kDist[d1][index]);
+      offset += kDist[d1][index];
       index++;
     }
 
-    BOOST_CHECK(!memcmp(data, data_out, sizeof(data)));
+    EXPECT_TRUE(!memcmp(data, data_out, sizeof(data)));
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_FramedTransport_Write_Read ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_FramedTransport_Write_Read) {
   int sizes[] = {
     12, 15, 16, 17, 20,
     501, 512, 523,
@@ -558,23 +532,25 @@ BOOST_AUTO_TEST_CASE( test_FramedTransport_Write_Read ) {
 
   int probs[] = { 1, 2, 4, 8, 16, 32, };
 
-  foreach (int size, sizes) {
-    foreach (int prob, probs) {
+  mt19937 rng;
+  for (auto size : sizes) {
+    for (auto prob : probs) {
       for (int d1 = 0; d1 < 3; d1++) {
-        shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer(16));
+        auto buffer = make_shared<TMemoryBuffer>(16);
         TFramedTransport trans(buffer, size);
         uint8_t data_out[1<<15];
-        std::vector<int> flush_sizes;
+        vector<int> flush_sizes;
 
         int write_offset = 0;
         int write_index = 0;
         int flush_size = 0;
         while (write_offset < 1<<15) {
-          trans.write(&data[write_offset], dist[d1][write_index]);
-          write_offset += dist[d1][write_index];
-          flush_size += dist[d1][write_index];
+          trans.write(&data[write_offset], kDist[d1][write_index]);
+          write_offset += kDist[d1][write_index];
+          flush_size += kDist[d1][write_index];
           write_index++;
-          if (flush_size > 0 && rand()%prob == 0) {
+          uniform_int_distribution<int> dist(0, prob - 1);
+          if (flush_size > 0 && dist(rng) == 0) {
             flush_sizes.push_back(flush_size);
             flush_size = 0;
             trans.flush();
@@ -588,88 +564,77 @@ BOOST_AUTO_TEST_CASE( test_FramedTransport_Write_Read ) {
 
         int read_offset = 0;
         int read_index = 0;
-        foreach (int fsize, flush_sizes) {
+        for (auto fsize : flush_sizes) {
           // We are exploiting an implementation detail of TFramedTransport.
           // The read buffer starts empty and it will never do more than one
           // readFrame per read, so we should always get exactly one frame.
           int got = trans.read(&data_out[read_offset], 1<<15);
-          BOOST_CHECK_EQUAL(got, fsize);
+          EXPECT_EQ(got, fsize);
           read_offset += got;
           read_index++;
         }
 
-        BOOST_CHECK_EQUAL((unsigned int)read_offset, sizeof(data));
-        BOOST_CHECK(!memcmp(data, data_out, sizeof(data)));
+        EXPECT_EQ((unsigned int)read_offset, sizeof(data));
+        EXPECT_TRUE(!memcmp(data, data_out, sizeof(data)));
       }
     }
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_FramedTransport_Empty_Flush ) {
-  init_data();
-
+TEST_F(TBufferBaseTest, test_FramedTransport_Empty_Flush) {
   string output1("\x00\x00\x00\x01""a", 5);
   string output2("\x00\x00\x00\x01""a\x00\x00\x00\x02""bc", 11);
 
-  shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer());
+  auto buffer = make_shared<TMemoryBuffer>();
   TFramedTransport trans(buffer);
 
-  BOOST_CHECK_EQUAL(buffer->getBufferAsString(), "");
+  EXPECT_EQ(buffer->getBufferAsString(), "");
   trans.flush();
-  BOOST_CHECK_EQUAL(buffer->getBufferAsString(), "");
+  EXPECT_EQ(buffer->getBufferAsString(), "");
   trans.flush();
   trans.flush();
-  BOOST_CHECK_EQUAL(buffer->getBufferAsString(), "");
+  EXPECT_EQ(buffer->getBufferAsString(), "");
   trans.write((const uint8_t*)"a", 1);
-  BOOST_CHECK_EQUAL(buffer->getBufferAsString(), "");
+  EXPECT_EQ(buffer->getBufferAsString(), "");
   trans.flush();
-  BOOST_CHECK_EQUAL(buffer->getBufferAsString(), output1);
+  EXPECT_EQ(buffer->getBufferAsString(), output1);
   trans.flush();
   trans.flush();
-  BOOST_CHECK_EQUAL(buffer->getBufferAsString(), output1);
+  EXPECT_EQ(buffer->getBufferAsString(), output1);
   trans.write((const uint8_t*)"bc", 2);
-  BOOST_CHECK_EQUAL(buffer->getBufferAsString(), output1);
+  EXPECT_EQ(buffer->getBufferAsString(), output1);
   trans.flush();
-  BOOST_CHECK_EQUAL(buffer->getBufferAsString(), output2);
+  EXPECT_EQ(buffer->getBufferAsString(), output2);
   trans.flush();
   trans.flush();
-  BOOST_CHECK_EQUAL(buffer->getBufferAsString(), output2);
+  EXPECT_EQ(buffer->getBufferAsString(), output2);
 }
 
-BOOST_AUTO_TEST_CASE( test_BufferedTransport_putBack ) {
+TEST_F(TBufferBaseTest, test_BufferedTransport_putBack) {
   uint8_t data[] = {0,1,2,3,4,5,6,7,8,9};
-  shared_ptr<TMemoryBuffer> buffer(new TMemoryBuffer(data,10));
+  auto buffer = make_shared<TMemoryBuffer>(data,10);
   TBufferedTransport trans(buffer);
   uint8_t out[10];
 
-  BOOST_CHECK_EQUAL(true, trans.peek());
+  EXPECT_EQ(true, trans.peek());
   trans.read(out, 1);
-  BOOST_CHECK_EQUAL(out[0], 0);
+  EXPECT_EQ(out[0], 0);
   trans.putBack(out, 1); // Put back.  Shouldn't call memmove
   trans.read(out, 10);
-  BOOST_CHECK_EQUAL(false, trans.peek());
+  EXPECT_FALSE(trans.peek());
 
   trans.putBack(out, 2); // No memmove, but do incr rBase_
   trans.read(out, 2);
-  BOOST_CHECK_EQUAL(out[0], 0);
-  BOOST_CHECK_EQUAL(out[1], 1);
-  BOOST_CHECK_EQUAL(false, trans.peek());
+  EXPECT_EQ(out[0], 0);
+  EXPECT_EQ(out[1], 1);
+  EXPECT_FALSE(trans.peek());
 
   trans.putBack(out, 2);
   trans.putBack(out, 2); // do the memmove case
   trans.read(out, 4);
-  BOOST_CHECK_EQUAL(out[0], 0);
-  BOOST_CHECK_EQUAL(out[1], 1);
-  BOOST_CHECK_EQUAL(out[2], 0);
-  BOOST_CHECK_EQUAL(out[3], 1);
-  BOOST_CHECK_EQUAL(false, trans.peek());
-}
-
-BOOST_AUTO_TEST_SUITE_END()
-
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  boost::unit_test::framework::master_test_suite().p_name.value =
-    "TBufferBaseTest";
-
-  return nullptr;
+  EXPECT_EQ(out[0], 0);
+  EXPECT_EQ(out[1], 1);
+  EXPECT_EQ(out[2], 0);
+  EXPECT_EQ(out[3], 1);
+  EXPECT_FALSE(trans.peek());
 }

@@ -15,8 +15,8 @@
  */
 
 #include "thrift/test/gen-cpp/Service.h"
-#include <boost/test/unit_test.hpp>
 #include <memory>
+#include <folly/Format.h>
 
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
@@ -29,6 +29,10 @@
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <thrift/lib/cpp/async/TSyncToAsyncProcessor.h>
 
+#include <gtest/gtest.h>
+
+using namespace std;
+using namespace folly;
 using namespace apache::thrift::async;
 using namespace apache::thrift;
 using namespace apache::thrift::util;
@@ -36,15 +40,8 @@ using namespace apache::thrift::concurrency;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::server;
-using namespace boost;
 using namespace test::stress;
 using apache::thrift::util::TEventServerCreator;
-using std::function;
-using std::string;
-using std::map;
-using std::set;
-using std::vector;
-using std::pair;
 
 /**
  * The class for creating a client thread
@@ -67,14 +64,14 @@ class Client: public Runnable {
   }
 
   void run() override {
-    std::shared_ptr<TSocket> socket(new TSocket("localhost", port_));
+    auto socket = make_shared<TSocket>("localhost", port_);
     socket->open();
-    std::shared_ptr<TTransport> transport(new TFramedTransport(socket));
-    std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-    std::shared_ptr<ServiceClient> testClient(new ServiceClient(protocol));
+    auto transport = make_shared<TFramedTransport>(socket);
+    auto protocol = make_shared<TBinaryProtocol>(transport);
+    auto testClient = make_shared<ServiceClient>(protocol);
 
     // Get the ip for this client
-    std::shared_ptr<folly::SocketAddress> sa(new folly::SocketAddress());
+    auto sa = make_shared<folly::SocketAddress>();
     sa->setFromLocalAddress(socket->getSocketFD());
     // Update the countMap using the ipAddr port
     int port = sa->getPort();
@@ -99,7 +96,7 @@ class Client: public Runnable {
           testClient->echoByte(2);
           break;
         default:
-          BOOST_FAIL("echoType not supported");  // Not support this type
+          FAIL() << "echoType not supported";  // Not support this type
       }
     }
     socket->close();
@@ -160,8 +157,8 @@ class ServerEventHandler : public TProcessorEventHandler {
       return (void *)serverContext->getPeerAddress();
     }
     else {
-      BOOST_FAIL("The given connection context is null\n");
-      return nullptr;
+      ADD_FAILURE() << "The given connection context is null";
+      throw logic_error("The given connection context is null");
     }
   }
 
@@ -184,9 +181,9 @@ class ServerEventHandler : public TProcessorEventHandler {
     } else if (type == "Service.echoByte") {
       return Client::ECHO_BYTE;
     } else {
-      BOOST_FAIL(
-        string("The given fn_name is not supported:") + fn_name);
-      return Client::ERROR_TYPE;  // Should never go here
+      ADD_FAILURE() << "The given fn_name is not supported: " << + fn_name;
+      throw logic_error(
+          sformat("The given fn_name is not supported: {}", fn_name));
     }
   }
 
@@ -214,36 +211,34 @@ class ServerEventHandler : public TProcessorEventHandler {
    */
   virtual void checkCount(
                map<int, echoTypeMap>& clientCountMap) {
-    BOOST_CHECK_EQUAL(clientCountMap.size(), countMap.size());
+    EXPECT_EQ(clientCountMap.size(), countMap.size());
     for (auto it: countMap) {
       echoTypeMap& serverEntry = it.second;
       echoTypeMap& clientEntry =
         clientCountMap.find(it.first)->second;
-      BOOST_CHECK_EQUAL(serverEntry.size(), 1);
-      BOOST_CHECK_EQUAL(clientEntry.size(), 1);
-      BOOST_CHECK_EQUAL(clientEntry.find(serverEntry.begin()->first)->second,
+      EXPECT_EQ(serverEntry.size(), 1);
+      EXPECT_EQ(clientEntry.size(), 1);
+      EXPECT_EQ(clientEntry.find(serverEntry.begin()->first)->second,
                         serverEntry.begin()->second);
-      std::cout <<"Client IP: " << it.first <<  " echoType: " <<
-        it.second.begin()->first << " count: "
-        << it.second.begin()->second << "\n";
+      LOG(INFO) << "Client IP: " << it.first <<  " echoType: "
+                << it.second.begin()->first << " count: "
+                << it.second.begin()->second;
     }
   }
 };
 
-BOOST_AUTO_TEST_CASE(asyncConnectionContextTest) {
+TEST(AsyncConnectionContextTest, asyncConnectionContextTest) {
   // Start the thrift service
   PosixThreadFactory tf;
   tf.setDetached(false);
 
-  std::shared_ptr<ServerEventHandler> serverHandler(new ServerEventHandler());
-  std::shared_ptr<TestHandler> testHandler(new TestHandler());
+  auto serverHandler = make_shared<ServerEventHandler>();
+  auto testHandler = make_shared<TestHandler>();
 
-  std::shared_ptr<TDispatchProcessor> processor(
-    new ServiceProcessor(testHandler));
+  auto processor = make_shared<ServiceProcessor>(testHandler);
   processor->addEventHandler(serverHandler);
 
-  std::shared_ptr<TAsyncProcessor> asyncProcessor(
-    new TSyncToAsyncProcessor(processor));
+  auto asyncProcessor = make_shared<TSyncToAsyncProcessor>(processor);
   asyncProcessor->addEventHandler(serverHandler);
 
   // Start the async server
@@ -253,23 +248,17 @@ BOOST_AUTO_TEST_CASE(asyncConnectionContextTest) {
   const folly::SocketAddress* socketAddress = serverThread.getAddress();
   int port = socketAddress->getPort();
 
-  std::cout << "Initializing server on port " << port << "\n";
+  LOG(INFO) << "Initializing server on port " << port;
 
   // Going to create some client threads
-  std::cout << "Generate a EchoVoid client\n";
-  std::shared_ptr<Thread> t1 =
-    tf.newThread(std::shared_ptr<Runnable>(new Client(
-      port, Client::ECHO_VOID, 5)));
+  LOG(INFO) << "Generate a EchoVoid client";
+  auto t1 = tf.newThread(make_shared<Client>(port, Client::ECHO_VOID, 5));
 
-  std::cout << "Generate a EchoI32 client\n";
-  std::shared_ptr<Thread> t2 =
-    tf.newThread(std::shared_ptr<Runnable>(new Client(
-      port, Client::ECHO_I32, 2)));
+  LOG(INFO) << "Generate a EchoI32 client";
+  auto t2 = tf.newThread(make_shared<Client>(port, Client::ECHO_I32, 2));
 
-  std::cout << "Generate a EchoByte client\n";
-  std::shared_ptr<Thread> t3 =
-    tf.newThread(std::shared_ptr<Runnable>(new Client(
-      port, Client::ECHO_BYTE, 3)));
+  LOG(INFO) << "Generate a EchoByte client";
+  auto t3 = tf.newThread(make_shared<Client>(port, Client::ECHO_BYTE, 3));
 
   t1->start();
   t1->join();
@@ -280,17 +269,5 @@ BOOST_AUTO_TEST_CASE(asyncConnectionContextTest) {
 
   // Going to check the count info stored in the server
   serverHandler->checkCount(Client::countMap);
-  std::cout << "Server check end\n";
-}
-
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  boost::unit_test::framework::master_test_suite().p_name.value =
-    "AsyncConnectionContextTest";
-
-  if (argc != 1) {
-    fprintf(stderr, "unexpected arguments: %s\n", argv[1]);
-    exit(1);
-  }
-
-  return nullptr;
+  LOG(INFO) << "Server check end";
 }

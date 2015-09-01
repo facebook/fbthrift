@@ -16,37 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#define BOOST_TEST_MODULE ExceptionTest
-#include <boost/test/unit_test.hpp>
+
 #include "thrift/test/gen-cpp/ExceptionTest_types.h"
 #include "thrift/test/gen-cpp2/ExceptionTest_types.h"
 
-BOOST_AUTO_TEST_SUITE( ExceptionTest )
+#include <gtest/gtest.h>
 
-BOOST_AUTO_TEST_CASE( test_default_constructor ) {
+TEST(ExceptionTest, test_default_constructor) {
   try {
     MyException e;
     e.msg = "what!!!";
     throw e;
   } catch (const std::exception& ex) {
-    BOOST_CHECK_EQUAL(ex.what(), "what!!!");
+    EXPECT_EQ(ex.what(), std::string{"what!!!"});
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_constructor_with_param ) {
+TEST(ExceptionTest, test_constructor_with_param) {
   try {
     throw MyException("what!!!");
   } catch (const std::exception& ex) {
-    BOOST_CHECK_EQUAL(ex.what(), "what!!!");
+    EXPECT_EQ(ex.what(), std::string{"what!!!"});
   }
 }
 
-BOOST_AUTO_TEST_CASE( test_cpp2_constructor_with_param ) {
+TEST(ExceptionTest, test_cpp2_constructor_with_param) {
   try {
     throw cpp2::MyException("what!!!");
   } catch (const std::exception& ex) {
-    BOOST_CHECK_EQUAL(ex.what(), "what!!!");
+    EXPECT_EQ(ex.what(), std::string{"what!!!"});
   }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -20,26 +20,26 @@
 #include <iostream>
 #include <unistd.h>
 
+#include <atomic>
 #include <memory>
-#include <boost/test/unit_test.hpp>
 
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 
-using std::shared_ptr;
-using boost::unit_test::test_suite;
-using boost::unit_test::framework::master_test_suite;
+#include <gtest/gtest.h>
 
+using namespace std;
 using namespace apache::thrift::concurrency;
 
-class Locker : public Runnable
-{
-protected:
+namespace {
+
+class Locker : public Runnable {
+ protected:
   Locker(shared_ptr<ReadWriteMutex> rwlock, bool writer) :
     rwlock_(rwlock), writer_(writer),
     started_(false), gotLock_(false), signaled_(false) { }
 
-public:
+ public:
  void run() override {
     started_ = true;
     if (writer_) {
@@ -58,43 +58,45 @@ public:
   bool gotLock() const { return gotLock_; }
   void signal() { signaled_ = true; }
 
-protected:
+ protected:
   shared_ptr<ReadWriteMutex> rwlock_;
   bool writer_;
-  volatile bool started_;
-  volatile bool gotLock_;
-  volatile bool signaled_;
+  atomic<bool> started_;
+  atomic<bool> gotLock_;
+  atomic<bool> signaled_;
 };
 
-class Reader : public Locker
-{
-public:
-  Reader(shared_ptr<ReadWriteMutex> rwlock) : Locker(rwlock, false) { }
+class Reader : public Locker {
+ public:
+  explicit Reader(shared_ptr<ReadWriteMutex> rwlock) : Locker(rwlock, false) {}
 };
 
-class Writer : public Locker
-{
-public:
-  Writer(shared_ptr<ReadWriteMutex> rwlock) : Locker(rwlock, true) { }
+class Writer : public Locker {
+ public:
+  explicit Writer(shared_ptr<ReadWriteMutex> rwlock) : Locker(rwlock, true) {}
 };
 
-static void test_starve(PosixThreadFactory::POLICY policy)
-{
+class RWMutexStarveTest :
+  public testing::TestWithParam<PosixThreadFactory::POLICY> {};
+
+}
+
+TEST_P(RWMutexStarveTest, test_starve) {
   // the man pages for pthread_wrlock_rdlock suggest that any OS guarantee about
   // writer starvation may be influenced by the scheduling policy, so let's try
   // all 3 policies to see if any of them work.
-  PosixThreadFactory factory(policy);
+  PosixThreadFactory factory(GetParam());
   factory.setDetached(false);
 
-  shared_ptr<ReadWriteMutex> rwlock(new NoStarveReadWriteMutex());
+  auto rwlock = make_shared<NoStarveReadWriteMutex>();
 
-  shared_ptr<Reader> reader1(new Reader(rwlock));
-  shared_ptr<Reader> reader2(new Reader(rwlock));
-  shared_ptr<Writer> writer(new Writer(rwlock));
+  auto reader1 = make_shared<Reader>(rwlock);
+  auto reader2 = make_shared<Reader>(rwlock);
+  auto writer = make_shared<Writer>(rwlock);
 
-  shared_ptr<Thread> treader1 = factory.newThread(reader1);
-  shared_ptr<Thread> treader2 = factory.newThread(reader2);
-  shared_ptr<Thread> twriter = factory.newThread(writer);
+  auto treader1 = factory.newThread(reader1);
+  auto treader2 = factory.newThread(reader2);
+  auto twriter = factory.newThread(writer);
 
   // launch a reader and make sure he has the lock
   treader1->start();
@@ -143,33 +145,13 @@ static void test_starve(PosixThreadFactory::POLICY policy)
   twriter->join();
 
   // make sure it worked.
-  BOOST_CHECK_MESSAGE(success, "writer is starving");
+  EXPECT_TRUE(success) << "writer is starving";
 }
 
-static void test_starve_other()
-{
-  test_starve(PosixThreadFactory::OTHER);
-}
-
-static void test_starve_rr()
-{
-  test_starve(PosixThreadFactory::ROUND_ROBIN);
-}
-
-static void test_starve_fifo()
-{
-  test_starve(PosixThreadFactory::FIFO);
-}
-
-test_suite* init_unit_test_suite(int /*argc*/, char* /*argv*/[]);
-
-test_suite* init_unit_test_suite(int /*argc*/, char* /*argv*/[])
-{
-  test_suite* suite = &master_test_suite();
-  suite->p_name.value = "RWMutexStarveTest";
-  suite->add(BOOST_TEST_CASE(test_starve_other));
-  suite->add(BOOST_TEST_CASE(test_starve_rr));
-  suite->add(BOOST_TEST_CASE(test_starve_fifo));
-
-  return nullptr;
-}
+INSTANTIATE_TEST_CASE_P(
+    RWMutexStarveTest,
+    RWMutexStarveTest,
+    testing::Values(
+      PosixThreadFactory::POLICY::OTHER,
+      PosixThreadFactory::POLICY::FIFO,
+      PosixThreadFactory::POLICY::ROUND_ROBIN));

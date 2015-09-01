@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <boost/test/unit_test.hpp>
 #include <memory>
 #include <stdio.h>
 #include <iostream>
@@ -48,12 +47,9 @@
 
 #include "thrift/test/gen-cpp/Service.h"
 
-using std::string;
-using std::make_pair;
-using std::map;
-using std::vector;
-using std::set;
-using namespace boost;
+#include <gtest/gtest.h>
+
+using namespace std;
 using namespace apache::thrift;
 using namespace apache::thrift::async;
 using namespace apache::thrift::concurrency;
@@ -62,33 +58,8 @@ using namespace apache::thrift::server;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::util;
 using namespace test::stress;
-using std::cout;
-using std::endl;
 
 static const string testIdentity = "me";
-
-class TProcessorWrapper : public TProcessor {
- public:
-  explicit TProcessorWrapper(
-      std::shared_ptr<apache::thrift::TDispatchProcessor> wrappedProcessor
-  ) : wrappedProcessor_(wrappedProcessor) {}
-
-  bool process(std::shared_ptr<protocol::TProtocol> in,
-               std::shared_ptr<protocol::TProtocol> out,
-               TConnectionContext* connectionContext) override {
-    bool result;
-    try {
-      result = wrappedProcessor_->process(in, out, connectionContext);
-    } catch (std::exception& ex) {
-      BOOST_FAIL("Processor threw an exception");
-      throw;
-    }
-    return result;
-  }
-
- private:
-  std::shared_ptr<apache::thrift::TDispatchProcessor> wrappedProcessor_;
-};
 
 class TestHandler : public ServiceIf {
 public:
@@ -124,9 +95,9 @@ public:
 
   void* getContext(const char* fn_name,
                    TConnectionContext* connectionContext) override {
-    iprot_ = std::dynamic_pointer_cast<THeaderProtocol>
+    iprot_ = dynamic_pointer_cast<THeaderProtocol>
       (connectionContext->getInputProtocol());
-    oprot_ = std::dynamic_pointer_cast<THeaderProtocol>
+    oprot_ = dynamic_pointer_cast<THeaderProtocol>
       (connectionContext->getOutputProtocol());
     // we don't need to return any context
     return nullptr;
@@ -145,8 +116,8 @@ public:
   }
 
 private:
-  std::shared_ptr<THeaderProtocol> iprot_;
-  std::shared_ptr<THeaderProtocol> oprot_;
+  shared_ptr<THeaderProtocol> iprot_;
+  shared_ptr<THeaderProtocol> oprot_;
 };
 
 enum ClientType {
@@ -165,332 +136,262 @@ enum ServerType {
 };
 
 void runClient(ClientType clientType, ServerType sType, int port) {
-  std::shared_ptr<TSocket> socket(new TSocket("localhost", port));
-  std::shared_ptr<TTransport> transport;
-  std::shared_ptr<TProtocol> protocol;
+  auto socket = make_shared<TSocket>("localhost", port);
+  shared_ptr<TTransport> transport;
+  shared_ptr<TProtocol> protocol;
 
   switch(clientType) {
     case CLIENT_TYPE_UNFRAMED:
-      transport = std::shared_ptr<TTransport>(new TBufferedTransport(socket));
-      protocol = std::shared_ptr<TProtocol>(new TBinaryProtocol(transport));
+      transport = make_shared<TBufferedTransport>(socket);
+      protocol = make_shared<TBinaryProtocol>(transport);
       break;
     case CLIENT_TYPE_FRAMED:
-      transport = std::shared_ptr<TTransport>(new TFramedTransport(socket));
-      protocol = std::shared_ptr<TProtocol>(new TBinaryProtocol(transport));
+      transport = make_shared<TFramedTransport>(socket);
+      protocol = make_shared<TBinaryProtocol>(transport);
       break;
     case CLIENT_TYPE_HEADER:
-      transport = std::shared_ptr<TTransport>(new THeaderTransport(socket));
-      protocol = std::shared_ptr<TProtocol>(new THeaderProtocol(transport));
+      transport = make_shared<THeaderTransport>(socket);
+      protocol = make_shared<THeaderProtocol>(transport);
       break;
     case CLIENT_TYPE_HTTP:
-      transport = std::shared_ptr<TTransport>(new THttpClient("localhost",
-                                                         port, "/"));
-      protocol = std::shared_ptr<TProtocol>(new TBinaryProtocol(transport));
+      transport = make_shared<THttpClient>("localhost", port, "/");
+      protocol = make_shared<TBinaryProtocol>(transport);
       break;
     case CLIENT_TYPE_FRAMED_COMPACT:
-      transport = std::shared_ptr<TTransport>(new TFramedTransport(socket));
-      protocol = std::shared_ptr<TProtocol>(new TCompactProtocol(transport));
+      transport = make_shared<TFramedTransport>(socket);
+      protocol = make_shared<TCompactProtocol>(transport);
       break;
   }
 
   ServiceClient testClient(protocol);
 
-  try {
-    transport->open();
-  } catch (TTransportException& ttx) {
-    BOOST_CHECK_EQUAL(true, false);
-    return;
-  }
+  transport->open();
 
   // set some headers and expect them back
   if (clientType == CLIENT_TYPE_HEADER) {
-    std::shared_ptr<THeaderProtocol> hprotocol =
-      std::static_pointer_cast<THeaderProtocol>(protocol);
+    auto hprotocol = static_pointer_cast<THeaderProtocol>(protocol);
     hprotocol->setHeader("my-test-header", "myvalue1");
     hprotocol->setHeader("my-other-header", "myvalue2");
 
     hprotocol->setPersistentHeader("my-persis-test-header", "myvalue1");
 
     // Check that an empty identity call works
-    BOOST_CHECK_EQUAL(hprotocol->getPeerIdentity(), "");
+    EXPECT_EQ(hprotocol->getPeerIdentity(), "");
 
-    try {
-      string testString = "test me now";
-      string testOut;
-      testClient.echoString(testOut, testString);
-      // ensure that the function call worked
-      BOOST_CHECK_EQUAL(testOut, testString);
+    string testString = "test me now";
+    string testOut;
+    testClient.echoString(testOut, testString);
+    // ensure that the function call worked
+    EXPECT_EQ(testOut, testString);
 
-      // Verify that the identity works
-      BOOST_CHECK_EQUAL(hprotocol->getPeerIdentity(), testIdentity);
+    // Verify that the identity works
+    EXPECT_EQ(hprotocol->getPeerIdentity(), testIdentity);
 
-      // ensure that the write headers were cleared after issuing the command
-      BOOST_CHECK(hprotocol->getWriteHeaders().empty());
-      BOOST_CHECK(hprotocol->getPersistentWriteHeaders().empty());
+    // ensure that the write headers were cleared after issuing the command
+    EXPECT_TRUE(hprotocol->getWriteHeaders().empty());
+    EXPECT_TRUE(hprotocol->getPersistentWriteHeaders().empty());
 
-      auto headers = hprotocol->getHeaders();
-      bool ok;
-      BOOST_CHECK(ok = (headers.find("my-test-header") != headers.end()));
-      if (ok) {
-        BOOST_CHECK(headers.find("my-test-header")->second.compare("myvalue1")
-                    == 0);
-      }
-      BOOST_CHECK(ok = (headers.find("my-other-header") != headers.end()));
-      if (ok) {
-        BOOST_CHECK(headers.find("my-other-header")->second.compare("myvalue2")
-                    == 0);
-      }
-
-      // verify that the persistent header works
-      testClient.echoString(testOut, testString);
-      headers = hprotocol->getHeaders();
-      // verify if the non-persistent header falls apart
-      BOOST_CHECK(ok = (headers.find("my-test-header") == headers.end()));
-      BOOST_CHECK(
-          ok = (headers.find("my-persis-test-header") != headers.end())
-      );
-      if (ok) {
-        BOOST_CHECK(headers.find("my-persis-test-header")
-            ->second.compare("myvalue1") == 0);
-      }
-
-    } catch (const TApplicationException& tax) {
-      BOOST_CHECK_EQUAL(true, false);
+    auto headers = hprotocol->getHeaders();
+    bool ok;
+    EXPECT_TRUE(ok = (headers.find("my-test-header") != headers.end()));
+    if (ok) {
+      EXPECT_EQ(0, headers.find("my-test-header")->second.compare("myvalue1"));
     }
+    EXPECT_TRUE(ok = (headers.find("my-other-header") != headers.end()));
+    if (ok) {
+      EXPECT_EQ(0, headers.find("my-other-header")->second.compare("myvalue2"));
+    }
+
+    // verify that the persistent header works
+    testClient.echoString(testOut, testString);
+    headers = hprotocol->getHeaders();
+    // verify if the non-persistent header falls apart
+    EXPECT_TRUE(ok = (headers.find("my-test-header") == headers.end()));
+    EXPECT_TRUE(
+        ok = (headers.find("my-persis-test-header") != headers.end())
+    );
+    if (ok) {
+      EXPECT_EQ(
+          0, headers.find("my-persis-test-header")->second.compare("myvalue1"));
+    }
+
   }
 
-  try {
-    testClient.echoVoid();
-  } catch (const TApplicationException& tax) {
-    BOOST_CHECK_EQUAL(true, false);
-  }
+  testClient.echoVoid();
 
   // test that headers were cleared after sending the last message
   if (clientType == CLIENT_TYPE_HEADER) {
-    std::shared_ptr<THeaderProtocol> hprotocol =
-      std::static_pointer_cast<THeaderProtocol>(protocol);
-    BOOST_ASSERT(hprotocol->getWriteHeaders().empty());
+    auto hprotocol = static_pointer_cast<THeaderProtocol>(protocol);
+    ASSERT_TRUE(hprotocol->getWriteHeaders().empty());
   }
 
-  try {
-    BOOST_CHECK_EQUAL(testClient.echoByte(5), 5);
-  } catch (const TApplicationException& tax) {
-    BOOST_CHECK_EQUAL(true, false);
-  }
+  EXPECT_EQ(testClient.echoByte(5), 5);
 
-  try {
-    BOOST_CHECK_EQUAL(testClient.echoI32(5), 5);
-  } catch (const TApplicationException& tax) {
-    BOOST_CHECK_EQUAL(true, false);
-  }
+  EXPECT_EQ(testClient.echoI32(5), 5);
 
-  try {
-    BOOST_CHECK_EQUAL(testClient.echoI64(5), 5);
-  } catch (const TApplicationException& tax) {
-    BOOST_CHECK_EQUAL(true, false);
-  }
+  EXPECT_EQ(testClient.echoI64(5), 5);
 
-  try {
-    string testString = "test";
-    string testOut;
-    testClient.echoString(testOut, testString);
-    BOOST_CHECK_EQUAL(testString, testOut);
-  } catch (const TApplicationException& tax) {
-    BOOST_CHECK_EQUAL(true, false);
-  }
+  string testString = "test";
+  string testOut;
+  testClient.echoString(testOut, testString);
+  EXPECT_EQ(testString, testOut);
 
-  try {
-    vector<int8_t> listtest, outList;
-    listtest.push_back(5);
-    testClient.echoList(outList, listtest);
-    BOOST_CHECK_EQUAL(outList[0],5);
-  } catch (const TApplicationException& tax) {
-    BOOST_CHECK_EQUAL(true, false);
-  }
+  vector<int8_t> listtest, outList;
+  listtest.push_back(5);
+  testClient.echoList(outList, listtest);
+  EXPECT_EQ(outList[0],5);
 
-  try {
-    set<int8_t> settest, outSet;
-    settest.insert(5);
-    testClient.echoSet(outSet, settest);
-    BOOST_CHECK_EQUAL(outSet.count(5), 1);
-  } catch (const TApplicationException& tax) {
-    BOOST_CHECK_EQUAL(true, false);
-  }
+  set<int8_t> settest, outSet;
+  settest.insert(5);
+  testClient.echoSet(outSet, settest);
+  EXPECT_EQ(outSet.count(5), 1);
 
-  try {
-    map<int8_t, int8_t> maptest, outMap;
-    maptest[5] = 5;
-    testClient.echoMap(outMap, maptest);
-    BOOST_CHECK_EQUAL(outMap[5], 5);
-  } catch (const TApplicationException& tax) {
-    BOOST_CHECK_EQUAL(true, false);
-  }
+  map<int8_t, int8_t> maptest, outMap;
+  maptest[5] = 5;
+  testClient.echoMap(outMap, maptest);
+  EXPECT_EQ(outMap[5], 5);
 
-  try {
-    transport->close();
-  } catch (const TApplicationException& tax) {
-    BOOST_CHECK_EQUAL(true, false);
-  }
-}
-
-void* runServer(void*data) {
-
-  std::shared_ptr<TServer> server(*(std::shared_ptr<TServer>*)data);
-  server->serve();
-
-  return nullptr;
+  transport->close();
 }
 
 void runTestCase(ServerType sType, ClientType clientType) {
-  std::bitset<CLIENT_TYPES_LEN> clientTypes;
+  bitset<CLIENT_TYPES_LEN> clientTypes;
   clientTypes[THRIFT_UNFRAMED_DEPRECATED] = 1;
   clientTypes[THRIFT_FRAMED_DEPRECATED] = 1;
   clientTypes[THRIFT_HTTP_SERVER_TYPE] = 1;
   clientTypes[THRIFT_HEADER_CLIENT_TYPE] = 1;
   clientTypes[THRIFT_FRAMED_COMPACT] = 1;
-  THeaderProtocolFactory* factory = new THeaderProtocolFactory();
+  auto factory = make_shared<THeaderProtocolFactory>();
   factory->setClientTypes(clientTypes);
 
-  std::shared_ptr<TDuplexProtocolFactory> protocolFactory =
-    std::shared_ptr<TDuplexProtocolFactory>(factory);
+  auto protocolFactory = factory;
+  auto testHandler = make_shared<TestHandler>();
 
-  std::shared_ptr<TestHandler> testHandler(new TestHandler());
+  auto testProcessor = make_shared<ServiceProcessor>(testHandler);
+  auto testAsyncProcessor = make_shared<TSyncToAsyncProcessor>(testProcessor);
+  auto transportFactory =
+    make_shared<TSingleTransportFactory<TBufferedTransportFactory>>();
 
-  std::shared_ptr<TDispatchProcessor> wrappedProcessor(
-    new ServiceProcessor(testHandler));
-  // Wrap the processor to observe exceptions in processing
-  std::shared_ptr<TProcessor> testProcessor(
-    new TProcessorWrapper(wrappedProcessor));
-  std::shared_ptr<TAsyncProcessor> testAsyncProcessor(
-    new TSyncToAsyncProcessor(testProcessor));
-
-  std::shared_ptr<TDuplexTransportFactory> transportFactory(
-    new TSingleTransportFactory<TBufferedTransportFactory>());
-
-  auto event_handler = std::shared_ptr<TProcessorEventHandler>(
-      new HeaderEventHandler());
+  auto event_handler = make_shared<HeaderEventHandler>();
   // set the header-replying event handler
-  wrappedProcessor->addEventHandler(event_handler);
+  testProcessor->addEventHandler(event_handler);
   testAsyncProcessor->addEventHandler(event_handler);
 
   int port = 0;
 
-  std::shared_ptr<TServer> server;
-  std::shared_ptr<ServerCreatorBase> serverCreator;
+  shared_ptr<ServerCreatorBase> serverCreator;
   switch(sType) {
     case SERVER_TYPE_SIMPLE:
       // "Testing TSimpleServerCreator"
       #pragma GCC diagnostic push
       #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-      serverCreator = std::shared_ptr<ServerCreatorBase>(new TSimpleServerCreator(
-                                                      testProcessor, port,
-                                                      false));
+      serverCreator = make_shared<TSimpleServerCreator>(
+          testProcessor, port, false);
       #pragma GCC diagnostic pop
       break;
     case SERVER_TYPE_THREADED:
-      serverCreator = std::shared_ptr<ServerCreatorBase>(new TThreadedServerCreator(
-                                                      testProcessor, port,
-                                                      false));
+      serverCreator = make_shared<TThreadedServerCreator>(
+          testProcessor, port, false);
       break;
     case SERVER_TYPE_THREADPOOL:
       // "Testing TThreadPoolServerCreator"
       #pragma GCC diagnostic push
       #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-      serverCreator = std::shared_ptr<ServerCreatorBase>(
-        new TThreadPoolServerCreator(testProcessor, port, false));
+      serverCreator = make_shared<TThreadPoolServerCreator>(
+          testProcessor, port, false);
       #pragma GCC diagnostic pop
       break;
     case SERVER_TYPE_EVENT:
-      serverCreator.reset(new TEventServerCreator(testAsyncProcessor, port));
+      serverCreator = make_shared<TEventServerCreator>(
+          testAsyncProcessor, port);
       break;
   }
   serverCreator->setDuplexProtocolFactory(protocolFactory);
 
-  server = serverCreator->createServer();
+  auto server = serverCreator->createServer();
   ScopedServerThread serverThread(server);
-  const folly::SocketAddress* address = serverThread.getAddress();
-  runClient(clientType, sType, address->getPort());
+  runClient(clientType, sType, serverThread.getAddress()->getPort());
 }
 
 // Listed individually to make it easy to see in the unit runner
 
-BOOST_AUTO_TEST_CASE(simpleServerUnframed) {
+TEST(THeaderTest, simpleServerUnframed) {
   runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_UNFRAMED);
 }
 
-BOOST_AUTO_TEST_CASE(threadedServerUnframed) {
+TEST(THeaderTest, threadedServerUnframed) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_UNFRAMED);
 }
 
-BOOST_AUTO_TEST_CASE(threadPoolServerUnframed) {
+TEST(THeaderTest, threadPoolServerUnframed) {
   runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_UNFRAMED);
 }
 
-BOOST_AUTO_TEST_CASE(simpleServerFramed) {
+TEST(THeaderTest, simpleServerFramed) {
   runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_FRAMED);
 }
 
-BOOST_AUTO_TEST_CASE(threadedServerFramed) {
+TEST(THeaderTest, threadedServerFramed) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_FRAMED);
 }
 
-BOOST_AUTO_TEST_CASE(threadPoolServerFramed) {
+TEST(THeaderTest, threadPoolServerFramed) {
   runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_FRAMED);
 }
 
-BOOST_AUTO_TEST_CASE(eventServerFramed) {
+TEST(THeaderTest, eventServerFramed) {
   runTestCase(SERVER_TYPE_EVENT, CLIENT_TYPE_FRAMED);
 }
 
-BOOST_AUTO_TEST_CASE(simpleServerHeader) {
+TEST(THeaderTest, simpleServerHeader) {
   runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_HEADER);
 }
 
-BOOST_AUTO_TEST_CASE(threadedServerHeader) {
+TEST(THeaderTest, threadedServerHeader) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_HEADER);
 }
 
-BOOST_AUTO_TEST_CASE(threadPoolServerHeader) {
+TEST(THeaderTest, threadPoolServerHeader) {
   runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_HEADER);
 }
 
-BOOST_AUTO_TEST_CASE(eventServerHeader) {
+TEST(THeaderTest, eventServerHeader) {
   runTestCase(SERVER_TYPE_EVENT, CLIENT_TYPE_HEADER);
 }
 
-BOOST_AUTO_TEST_CASE(simpleServerHttp) {
+TEST(THeaderTest, simpleServerHttp) {
   runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_HTTP);
 }
 
-BOOST_AUTO_TEST_CASE(threadedServerHttp) {
+TEST(THeaderTest, threadedServerHttp) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_HTTP);
 }
 
-BOOST_AUTO_TEST_CASE(threadPoolServerHttp) {
+TEST(THeaderTest, threadPoolServerHttp) {
   runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_HTTP);
 }
 
-BOOST_AUTO_TEST_CASE(simpleServerCompactFramed) {
+TEST(THeaderTest, simpleServerCompactFramed) {
   runTestCase(SERVER_TYPE_SIMPLE, CLIENT_TYPE_FRAMED_COMPACT);
 }
 
-BOOST_AUTO_TEST_CASE(threadedServerCompactFramed) {
+TEST(THeaderTest, threadedServerCompactFramed) {
   runTestCase(SERVER_TYPE_THREADED, CLIENT_TYPE_FRAMED_COMPACT);
 }
 
-BOOST_AUTO_TEST_CASE(threadPoolServerCompactFramed) {
+TEST(THeaderTest, threadPoolServerCompactFramed) {
   runTestCase(SERVER_TYPE_THREADPOOL, CLIENT_TYPE_FRAMED_COMPACT);
 }
 
-BOOST_AUTO_TEST_CASE(eventServerCompactFramed) {
+TEST(THeaderTest, eventServerCompactFramed) {
   runTestCase(SERVER_TYPE_EVENT, CLIENT_TYPE_FRAMED_COMPACT);
 }
 
-BOOST_AUTO_TEST_CASE(unframedBadRead) {
-  auto buffer = std::shared_ptr<TTransport>(new TMemoryBuffer());
-  auto transport = std::shared_ptr<TTransport>(new THeaderTransport(buffer));
-  auto protocol = std::shared_ptr<TProtocol>(new THeaderProtocol(transport));
-  std::string name = "test";
+TEST(THeaderTest, unframedBadRead) {
+  auto buffer = make_shared<TMemoryBuffer>();
+  auto transport = make_shared<THeaderTransport>(buffer);
+  auto protocol = make_shared<THeaderProtocol>(transport);
+  string name = "test";
   TMessageType messageType = T_CALL;
   int32_t seqId = 0;
   uint8_t buf1 = 0x80;
@@ -502,22 +403,7 @@ BOOST_AUTO_TEST_CASE(unframedBadRead) {
   buffer->write(&buf3, 1);
   buffer->write(&buf4, 1);
 
-  try {
-    protocol->readMessageBegin(name, messageType, seqId);
-  } catch (...) {
-    return;
-  }
-  BOOST_CHECK_EQUAL(true, false);
-}
-
-boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
-  boost::unit_test::framework::master_test_suite().p_name.value =
-    "THeaderTest";
-
-  if (argc != 1) {
-    fprintf(stderr, "unexpected arguments: %s\n", argv[1]);
-    exit(1);
-  }
-
-  return nullptr;
+  EXPECT_THROW(
+      protocol->readMessageBegin(name, messageType, seqId),
+      TTransportException);
 }
