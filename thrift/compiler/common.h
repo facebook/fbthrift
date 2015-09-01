@@ -32,10 +32,10 @@
 #include <limits.h>
 
 // Careful: must include globals first for extern definitions
-#include "thrift/compiler/globals.h"
+#include <thrift/compiler/globals.h>
 
-#include "thrift/compiler/parse/t_program.h"
-#include "thrift/compiler/parse/t_scope.h"
+#include <thrift/compiler/parse/t_program.h>
+#include <thrift/compiler/parse/t_scope.h>
 #ifdef MINGW
 # include <windows.h> /* for GetFullPathName */
 #endif

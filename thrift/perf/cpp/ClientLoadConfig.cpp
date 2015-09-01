@@ -16,7 +16,7 @@
 
 #define __STDC_FORMAT_MACROS
 
-#include "thrift/perf/cpp/ClientLoadConfig.h"
+#include <thrift/perf/cpp/ClientLoadConfig.h>
 
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include "common/config/Flags.h"

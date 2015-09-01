@@ -17,8 +17,8 @@
  * under the License.
  */
 
-#include "thrift/test/gen-cpp/ExceptionTest_types.h"
-#include "thrift/test/gen-cpp2/ExceptionTest_types.h"
+#include <thrift/test/gen-cpp/ExceptionTest_types.h>
+#include <thrift/test/gen-cpp2/ExceptionTest_types.h>
 
 #include <gtest/gtest.h>
 

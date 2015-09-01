@@ -20,8 +20,8 @@
 
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include "thrift/tutorial/cpp/stateful/ServiceAuthState.h"
-#include "thrift/tutorial/cpp/stateful/ShellHandler.h"
+#include <thrift/tutorial/cpp/stateful/ServiceAuthState.h>
+#include <thrift/tutorial/cpp/stateful/ShellHandler.h>
 
 using namespace std;
 using namespace folly;

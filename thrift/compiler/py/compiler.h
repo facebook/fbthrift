@@ -19,7 +19,7 @@
 #ifndef THRIFT_PY_COMPILER_H
 #define THRIFT_PY_COMPILER_H
 
-#include "thrift/compiler/common.h"
+#include <thrift/compiler/common.h>
 
 // boost.python
 #include <boost/python.hpp>
@@ -28,7 +28,7 @@
 #include <boost/python/call.hpp>
 
 // boilerplate that enables quick definition of wrappers in boost::python
-#include "thrift/compiler/py/conv.h"
+#include <thrift/compiler/py/conv.h>
 
 namespace {
 using boost::noncopyable;

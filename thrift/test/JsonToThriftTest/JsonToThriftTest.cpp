@@ -19,18 +19,18 @@
 
 
 #include <folly/json.h>
-#include "thrift/test/JsonToThriftTest/gen-cpp/myBinaryStruct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/myStringStruct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/mySetStruct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/myDoubleStruct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/myByteStruct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/myI16Struct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/myI32Struct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/myBoolStruct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/myComplexStruct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/myDefaultStruct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/myMixedStruct_types.h"
-#include "thrift/test/JsonToThriftTest/gen-cpp/myMapStruct_types.h"
+#include <thrift/test/JsonToThriftTest/gen-cpp/myBinaryStruct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/myStringStruct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/mySetStruct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/myDoubleStruct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/myByteStruct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/myI16Struct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/myI32Struct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/myBoolStruct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/myComplexStruct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/myDefaultStruct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/myMixedStruct_types.h>
+#include <thrift/test/JsonToThriftTest/gen-cpp/myMapStruct_types.h>
 #include <thrift/lib/cpp/Thrift.h>
 
 #include <memory>

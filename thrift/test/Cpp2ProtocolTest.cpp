@@ -22,8 +22,8 @@
 #include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 
-#include "thrift/test/gen-cpp2/DebugProtoTest_types.h"
-#include "thrift/test/gen-cpp/DebugProtoTest_types.h"
+#include <thrift/test/gen-cpp2/DebugProtoTest_types.h>
+#include <thrift/test/gen-cpp/DebugProtoTest_types.h>
 
 #include <math.h>
 

@@ -23,9 +23,9 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include "thrift/test/gen-cpp2/Cpp2OpsCompat_constants.h"
-#include "thrift/test/gen-cpp2/Cpp2OpsCompat_types.h"
-#include "thrift/test/gen-cpp2/Cpp2OpsNative_types.h"
+#include <thrift/test/gen-cpp2/Cpp2OpsCompat_constants.h>
+#include <thrift/test/gen-cpp2/Cpp2OpsCompat_types.h>
+#include <thrift/test/gen-cpp2/Cpp2OpsNative_types.h>
 
 namespace thrift { namespace test { namespace cpp2ops {
 

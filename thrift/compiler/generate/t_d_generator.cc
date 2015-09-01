@@ -25,8 +25,8 @@
 
 #include <sys/stat.h>
 
-#include "thrift/compiler/platform.h"
-#include "thrift/compiler/generate/t_oop_generator.h"
+#include <thrift/compiler/platform.h>
+#include <thrift/compiler/generate/t_oop_generator.h>
 
 using std::map;
 using std::ofstream;

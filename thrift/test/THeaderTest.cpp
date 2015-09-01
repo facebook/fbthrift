@@ -45,7 +45,7 @@
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 #include <thrift/lib/cpp/util/example/TThreadPoolServerCreator.h>
 
-#include "thrift/test/gen-cpp/Service.h"
+#include <thrift/test/gen-cpp/Service.h>
 
 #include <gtest/gtest.h>
 

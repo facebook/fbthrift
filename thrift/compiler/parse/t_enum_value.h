@@ -21,7 +21,7 @@
 #define T_ENUM_VALUE_H
 
 #include <string>
-#include "thrift/compiler/parse/t_doc.h"
+#include <thrift/compiler/parse/t_doc.h>
 
 /**
  * A constant. These are used inside of enum definitions. Constants are just

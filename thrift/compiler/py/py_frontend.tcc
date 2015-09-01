@@ -20,7 +20,7 @@
 #ifndef PY_FRONTEND_TCC_
 #define PY_FRONTEND_TCC_
 
-#include "thrift/compiler/py/compiler.h"
+#include <thrift/compiler/py/compiler.h>
 
 namespace thrift { namespace compiler { namespace py {
 

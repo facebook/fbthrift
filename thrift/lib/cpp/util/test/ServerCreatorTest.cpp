@@ -21,9 +21,9 @@
 #include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/util/TThreadedServerCreator.h>
 #include <thrift/lib/cpp/util/example/TThreadPoolServerCreator.h>
-#include "thrift/perf/if/gen-cpp/LoadTest.h"
-#include "thrift/perf/cpp/AsyncLoadHandler.h"
-#include "thrift/perf/cpp/LoadHandler.h"
+#include <thrift/perf/if/gen-cpp/LoadTest.h>
+#include <thrift/perf/cpp/AsyncLoadHandler.h>
+#include <thrift/perf/cpp/LoadHandler.h>
 
 #include <iostream>
 #include <gtest/gtest.h>

@@ -19,8 +19,8 @@
 #include <folly/FileUtil.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
-#include "thrift/tutorial/cpp/stateful/ServiceAuthState.h"
-#include "thrift/tutorial/cpp/stateful/ShellHandler.h"
+#include <thrift/tutorial/cpp/stateful/ServiceAuthState.h>
+#include <thrift/tutorial/cpp/stateful/ShellHandler.h>
 
 #include <gtest/gtest.h>
 

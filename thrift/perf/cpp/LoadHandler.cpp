@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/perf/cpp/LoadHandler.h"
+#include <thrift/perf/cpp/LoadHandler.h>
 
 #include <thrift/lib/cpp/concurrency/Util.h>
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/perf/cpp/LoadHandler.h"
+#include <thrift/perf/cpp/LoadHandler.h>
 
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>

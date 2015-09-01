@@ -16,8 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/perf/cpp/AsyncLoadHandler2.h"
-#include "thrift/perf/cpp/LoadHandler.h"
+#include <thrift/perf/cpp/AsyncLoadHandler2.h>
+#include <thrift/perf/cpp/LoadHandler.h>
 
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 

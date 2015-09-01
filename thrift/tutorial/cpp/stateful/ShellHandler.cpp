@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/tutorial/cpp/stateful/ShellHandler.h"
+#include <thrift/tutorial/cpp/stateful/ShellHandler.h>
 
 #include <limits.h>
 #include <stdlib.h>

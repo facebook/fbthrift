@@ -17,7 +17,7 @@
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 
-#include "thrift/test/gen-cpp2/QualifiedEnumTest_types.h"
+#include <thrift/test/gen-cpp2/QualifiedEnumTest_types.h>
 
 using namespace apache::thrift;
 using namespace cpp2;

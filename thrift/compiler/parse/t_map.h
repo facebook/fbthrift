@@ -20,7 +20,7 @@
 #ifndef T_MAP_H
 #define T_MAP_H
 
-#include "thrift/compiler/parse/t_container.h"
+#include <thrift/compiler/parse/t_container.h>
 
 /**
  * A map is a lightweight container type that just wraps another two data

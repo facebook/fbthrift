@@ -17,8 +17,8 @@
  * under the License.
  */
 
-#include "thrift/test/gen-cpp/NoExcept_types.h"
-#include "thrift/test/gen-cpp2/NoExcept_types.h"
+#include <thrift/test/gen-cpp/NoExcept_types.h>
+#include <thrift/test/gen-cpp2/NoExcept_types.h>
 
 #include <glog/logging.h>
 #include <gtest/gtest.h>

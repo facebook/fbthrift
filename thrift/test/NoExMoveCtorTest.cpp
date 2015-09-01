@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "thrift/test/gen-cpp/NoExMoveCtorTest_types.h"
-#include "thrift/test/gen-cpp2/NoExMoveCtorTest_types.h"
+#include <thrift/test/gen-cpp/NoExMoveCtorTest_types.h>
+#include <thrift/test/gen-cpp2/NoExMoveCtorTest_types.h>
 
 #include <type_traits>
 

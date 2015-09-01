@@ -22,7 +22,7 @@
 #include <cstring>
 #include <stdint.h>
 #include <sstream>
-#include "thrift/compiler/parse/t_doc.h"
+#include <thrift/compiler/parse/t_doc.h>
 
 #include <folly/Bits.h>
 

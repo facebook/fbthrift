@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/test/gen-cpp/Service.h"
+#include <thrift/test/gen-cpp/Service.h>
 #include <memory>
 
 #include <thrift/lib/cpp/async/TAsyncChannel.h>

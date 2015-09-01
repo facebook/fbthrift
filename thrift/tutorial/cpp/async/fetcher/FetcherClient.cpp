@@ -21,7 +21,7 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
-#include "thrift/tutorial/cpp/async/fetcher/gen-cpp2/Fetcher.h"
+#include <thrift/tutorial/cpp/async/fetcher/gen-cpp2/Fetcher.h>
 
 using namespace std;
 using namespace folly;

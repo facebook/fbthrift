@@ -25,7 +25,7 @@
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <gtest/gtest.h>
 
-#include "thrift/test/gen-cpp2/ThriftTest.h"
+#include <thrift/test/gen-cpp2/ThriftTest.h>
 
 using namespace boost;
 using namespace apache::thrift;

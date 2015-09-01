@@ -37,7 +37,7 @@
 #include <algorithm>
 #include <clocale>
 #include "t_generator.h"
-#include "thrift/compiler/platform.h"
+#include <thrift/compiler/platform.h>
 
 using std::map;
 using std::ofstream;

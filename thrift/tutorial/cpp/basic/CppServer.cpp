@@ -23,7 +23,7 @@
 #include <sstream>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include "thrift/tutorial/gen-cpp2/Calculator.h"
+#include <thrift/tutorial/gen-cpp2/Calculator.h>
 
 using namespace std;
 using namespace apache::thrift;

@@ -27,7 +27,7 @@
  *
  */
 
-#include "thrift/compiler/py/compiler.h"
+#include <thrift/compiler/py/compiler.h>
 
 unique_ptr<t_base_type> g_type_void_sptr;
 

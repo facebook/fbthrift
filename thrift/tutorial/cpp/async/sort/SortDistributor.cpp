@@ -24,7 +24,7 @@
 
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include "thrift/tutorial/cpp/async/sort/SortDistributorHandler.h"
+#include <thrift/tutorial/cpp/async/sort/SortDistributorHandler.h>
 
 using namespace std;
 using namespace folly;

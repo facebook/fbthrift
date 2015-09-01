@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/test/gen-cpp2/EnumTest_types.h"
+#include <thrift/test/gen-cpp2/EnumTest_types.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
 
 #include <gtest/gtest.h>

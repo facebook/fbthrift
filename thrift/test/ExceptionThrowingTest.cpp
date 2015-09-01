@@ -22,8 +22,8 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include "thrift/test/gen-cpp/ExceptionThrowingService.h"
-#include "thrift/test/gen-cpp2/ExceptionThrowingService.h"
+#include <thrift/test/gen-cpp/ExceptionThrowingService.h>
+#include <thrift/test/gen-cpp2/ExceptionThrowingService.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::async;

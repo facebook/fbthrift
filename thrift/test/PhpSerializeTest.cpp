@@ -19,7 +19,7 @@
 
 #include <stdlib.h>
 #include <iostream>
-#include "thrift/test/gen-cpp/PhpSerializeTest_types.h"
+#include <thrift/test/gen-cpp/PhpSerializeTest_types.h>
 #include <boost/lexical_cast.hpp>
 #include <memory>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>

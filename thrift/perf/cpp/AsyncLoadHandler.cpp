@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/perf/cpp/AsyncLoadHandler.h"
+#include <thrift/perf/cpp/AsyncLoadHandler.h>
 
 #include <thrift/lib/cpp/async/TEventBase.h>
 #include <thrift/lib/cpp/async/TEventServer.h>

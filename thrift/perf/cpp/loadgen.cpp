@@ -19,11 +19,11 @@
 #include <thrift/lib/cpp/test/loadgen/loadgen.h>
 #include <thrift/lib/cpp/test/loadgen/QpsMonitor.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
-#include "thrift/perf/cpp/ClientLoadConfig.h"
-#include "thrift/perf/cpp/ClientWorker.h"
-#include "thrift/perf/cpp/ClientWorker2.h"
-#include "thrift/perf/cpp/AsyncClientWorker.h"
-#include "thrift/perf/cpp/AsyncClientWorker2.h"
+#include <thrift/perf/cpp/ClientLoadConfig.h>
+#include <thrift/perf/cpp/ClientWorker.h>
+#include <thrift/perf/cpp/ClientWorker2.h>
+#include <thrift/perf/cpp/AsyncClientWorker.h>
+#include <thrift/perf/cpp/AsyncClientWorker2.h>
 #include "common/services/cpp/ServiceFramework.h"
 
 #include "common/config/Flags.h"

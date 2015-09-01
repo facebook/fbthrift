@@ -17,7 +17,7 @@
 #pragma once
 
 #include <folly/SocketAddress.h>
-#include "thrift/tutorial/cpp/stateful/gen-cpp2/AuthenticatedService.h"
+#include <thrift/tutorial/cpp/stateful/gen-cpp2/AuthenticatedService.h>
 
 namespace apache { namespace thrift { namespace tutorial { namespace stateful {
 

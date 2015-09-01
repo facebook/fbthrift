@@ -19,7 +19,7 @@
 
 // Extra functions required for DebugProtoTest_types to work
 
-#include "thrift/test/gen-cpp/DebugProtoTest_types.h"
+#include <thrift/test/gen-cpp/DebugProtoTest_types.h>
 
 
 namespace thrift { namespace test { namespace debug {

@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/tutorial/cpp/async/fetcher/HttpFetcher.h"
+#include <thrift/tutorial/cpp/async/fetcher/HttpFetcher.h>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
-#include "thrift/tutorial/cpp/async/fetcher/gen-cpp2/fetcher_types.h"
+#include <thrift/tutorial/cpp/async/fetcher/gen-cpp2/fetcher_types.h>
 
 using namespace std;
 using apache::thrift::async::TAsyncSocket;

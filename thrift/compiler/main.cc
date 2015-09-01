@@ -27,10 +27,10 @@
  *
  */
 
-#include "thrift/compiler/main.h"
+#include <thrift/compiler/main.h>
 
-#include "thrift/compiler/platform.h"
-#include "thrift/compiler/generate/t_generator.h"
+#include <thrift/compiler/platform.h>
+#include <thrift/compiler/generate/t_generator.h>
 
 /**
  * Flags to control code generation

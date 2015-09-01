@@ -25,8 +25,8 @@
 #include <utility>
 #include <string>
 
-#include "thrift/compiler/parse/t_type.h"
-#include "thrift/compiler/parse/t_field.h"
+#include <thrift/compiler/parse/t_type.h>
+#include <thrift/compiler/parse/t_field.h>
 
 // Forward declare that puppy
 class t_program;

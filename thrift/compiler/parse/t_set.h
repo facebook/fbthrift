@@ -20,7 +20,7 @@
 #ifndef T_SET_H
 #define T_SET_H
 
-#include "thrift/compiler/parse/t_container.h"
+#include <thrift/compiler/parse/t_container.h>
 
 /**
  * A set is a lightweight container type that just wraps another data type.

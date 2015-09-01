@@ -30,8 +30,8 @@
 #include <folly/gen/String.h>
 #include <sys/stat.h>
 
-#include "thrift/compiler/platform.h"
-#include "thrift/compiler/generate/t_java_generator.h"
+#include <thrift/compiler/platform.h>
+#include <thrift/compiler/generate/t_java_generator.h>
 using namespace folly;
 using namespace std;
 

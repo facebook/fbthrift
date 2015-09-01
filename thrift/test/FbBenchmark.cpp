@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 
-#include "thrift/test/gen-cpp/DebugProtoTest_types.h"
+#include <thrift/test/gen-cpp/DebugProtoTest_types.h>
 
 #include <gflags/gflags.h>
 

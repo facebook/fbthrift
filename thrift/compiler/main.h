@@ -21,8 +21,8 @@
 #define T_MAIN_H
 
 #include <string>
-#include "thrift/compiler/parse/t_const.h"
-#include "thrift/compiler/parse/t_field.h"
+#include <thrift/compiler/parse/t_const.h>
+#include <thrift/compiler/parse/t_field.h>
 
 extern "C" {
 
@@ -106,6 +106,6 @@ extern FILE* yyin;
 
 // we need all the symbols defined above for common.h
 
-#include "thrift/compiler/common.h"
+#include <thrift/compiler/common.h>
 
 #endif

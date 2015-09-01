@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/compiler/generate/t_generator.h"
+#include <thrift/compiler/generate/t_generator.h>
 #include <openssl/sha.h>
 
 using namespace std;

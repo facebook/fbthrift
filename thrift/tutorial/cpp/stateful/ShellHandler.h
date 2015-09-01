@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "thrift/tutorial/cpp/stateful/AuthHandler.h"
-#include "thrift/tutorial/cpp/stateful/gen-cpp2/ShellService.h"
+#include <thrift/tutorial/cpp/stateful/AuthHandler.h>
+#include <thrift/tutorial/cpp/stateful/gen-cpp2/ShellService.h>
 
 namespace apache { namespace thrift { namespace tutorial { namespace stateful {
 

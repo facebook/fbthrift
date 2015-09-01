@@ -20,7 +20,7 @@
 #ifndef T_CONST_VALUE_H
 #define T_CONST_VALUE_H
 
-#include "thrift/compiler/parse/t_const.h"
+#include <thrift/compiler/parse/t_const.h>
 #include <stdint.h>
 #include <map>
 #include <vector>

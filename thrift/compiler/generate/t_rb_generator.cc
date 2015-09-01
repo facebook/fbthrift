@@ -28,8 +28,8 @@
 #include <sys/types.h>
 #include <sstream>
 
-#include "thrift/compiler/generate/t_oop_generator.h"
-#include "thrift/compiler/platform.h"
+#include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/platform.h>
 using namespace std;
 
 

@@ -19,7 +19,7 @@
 
 #define BOOST_TEST_MODULE HashMapTest
 #include <boost/test/unit_test.hpp>
-#include "thrift/test/gen-cpp/HashMapTest_types.h"
+#include <thrift/test/gen-cpp/HashMapTest_types.h>
 
 BOOST_AUTO_TEST_SUITE( HashMapTest )
 

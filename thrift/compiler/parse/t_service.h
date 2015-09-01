@@ -20,7 +20,7 @@
 #ifndef T_SERVICE_H
 #define T_SERVICE_H
 
-#include "thrift/compiler/parse/t_function.h"
+#include <thrift/compiler/parse/t_function.h>
 #include <vector>
 
 class t_program;

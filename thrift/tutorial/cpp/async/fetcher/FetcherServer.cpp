@@ -20,7 +20,7 @@
 #include <memory>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include "thrift/tutorial/cpp/async/fetcher/FetcherHandler.h"
+#include <thrift/tutorial/cpp/async/fetcher/FetcherHandler.h>
 
 using namespace std;
 using namespace folly;

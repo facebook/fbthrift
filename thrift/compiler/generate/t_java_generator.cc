@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/compiler/generate/t_java_generator.h"
+#include <thrift/compiler/generate/t_java_generator.h>
 
 #include <sstream>
 #include <string>
@@ -29,7 +29,7 @@
 #include <sys/stat.h>
 #include <stdexcept>
 
-#include "thrift/compiler/platform.h"
+#include <thrift/compiler/platform.h>
 using namespace std;
 
 

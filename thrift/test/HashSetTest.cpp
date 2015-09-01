@@ -19,7 +19,7 @@
 
 #define BOOST_TEST_MODULE HashSetTest
 #include <boost/test/unit_test.hpp>
-#include "thrift/test/gen-cpp/HashSetTest_types.h"
+#include <thrift/test/gen-cpp/HashSetTest_types.h>
 
 BOOST_AUTO_TEST_SUITE( HashSetTest )
 

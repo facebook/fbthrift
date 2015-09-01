@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/perf/cpp/LoadHandler.h"
+#include <thrift/perf/cpp/LoadHandler.h>
 
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>

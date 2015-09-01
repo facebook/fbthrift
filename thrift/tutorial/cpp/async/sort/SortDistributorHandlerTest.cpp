@@ -18,8 +18,8 @@
 #include <folly/gen/Base.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
-#include "thrift/tutorial/cpp/async/sort/SortServerHandler.h"
-#include "thrift/tutorial/cpp/async/sort/SortDistributorHandler.h"
+#include <thrift/tutorial/cpp/async/sort/SortServerHandler.h>
+#include <thrift/tutorial/cpp/async/sort/SortDistributorHandler.h>
 
 #include <gtest/gtest.h>
 

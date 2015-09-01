@@ -21,7 +21,7 @@
 
 #include "common/fb303/cpp/AsyncFacebookBase.h"
 
-#include "thrift/perf/if/gen-cpp/LoadTest.h"
+#include <thrift/perf/if/gen-cpp/LoadTest.h>
 
 namespace apache { namespace thrift {
 

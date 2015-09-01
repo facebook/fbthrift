@@ -21,7 +21,7 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
-#include "thrift/tutorial/cpp/stateful/gen-cpp2/AuthenticatedService.h"
+#include <thrift/tutorial/cpp/stateful/gen-cpp2/AuthenticatedService.h>
 
 using namespace std;
 using namespace folly;

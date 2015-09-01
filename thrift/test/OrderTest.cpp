@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/test/gen-cpp2/OrderTest_types.h"
+#include <thrift/test/gen-cpp2/OrderTest_types.h>
 
 #include <gtest/gtest.h>
 

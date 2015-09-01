@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/async/FramingHandler.h"
+#include <thrift/lib/cpp2/async/FramingHandler.h>
 
 namespace apache { namespace thrift {
 

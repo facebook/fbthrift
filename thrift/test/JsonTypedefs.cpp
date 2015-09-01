@@ -1,6 +1,6 @@
 #include <common/init/Init.h>
 #include <gtest/gtest.h>
-#include "thrift/test/gen-cpp/JsonReaderTest_types.h"
+#include <thrift/test/gen-cpp/JsonReaderTest_types.h>
 
 int main(int argc, char *argv[]) {
   testing::InitGoogleTest(&argc, argv);

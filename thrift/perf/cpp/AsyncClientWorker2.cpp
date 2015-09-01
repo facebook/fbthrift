@@ -16,11 +16,11 @@
 
 #define __STDC_FORMAT_MACROS
 
-#include "thrift/perf/cpp/AsyncClientWorker2.h"
+#include <thrift/perf/cpp/AsyncClientWorker2.h>
 
 #include <thrift/lib/cpp/ClientUtil.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
-#include "thrift//perf/cpp/ClientLoadConfig.h"
+#include <thrift//perf/cpp/ClientLoadConfig.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/GssSaslClient.h>

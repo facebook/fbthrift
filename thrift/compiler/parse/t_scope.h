@@ -23,8 +23,8 @@
 #include <map>
 #include <string>
 
-#include "thrift/compiler/parse/t_type.h"
-#include "thrift/compiler/parse/t_service.h"
+#include <thrift/compiler/parse/t_type.h>
+#include <thrift/compiler/parse/t_service.h>
 
 /**
  * This represents a variable scope used for looking up predefined types and

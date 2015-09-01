@@ -20,8 +20,8 @@
 #include <memory>
 #include <thrift/lib/cpp/protocol/TJSONProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include "thrift/test/gen-cpp/EnumTestStrict_types.h"
-#include "thrift/test/gen-cpp/EnumTestStrict_constants.h"
+#include <thrift/test/gen-cpp/EnumTestStrict_types.h>
+#include <thrift/test/gen-cpp/EnumTestStrict_constants.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
 
 #include <gtest/gtest.h>

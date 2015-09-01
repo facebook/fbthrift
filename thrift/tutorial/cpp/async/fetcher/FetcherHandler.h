@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "thrift/tutorial/cpp/async/fetcher/gen-cpp2/Fetcher.h"
+#include <thrift/tutorial/cpp/async/fetcher/gen-cpp2/Fetcher.h>
 
 namespace apache { namespace thrift { namespace tutorial { namespace fetcher {
 

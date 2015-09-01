@@ -22,8 +22,8 @@
 #include <vector>
 #include <folly/SocketAddress.h>
 
-#include "thrift/tutorial/cpp/async/sort/util.h"
-#include "thrift/tutorial/cpp/async/sort/gen-cpp2/Sorter.h"
+#include <thrift/tutorial/cpp/async/sort/util.h>
+#include <thrift/tutorial/cpp/async/sort/gen-cpp2/Sorter.h>
 
 
 namespace apache { namespace thrift { namespace tutorial { namespace sort {

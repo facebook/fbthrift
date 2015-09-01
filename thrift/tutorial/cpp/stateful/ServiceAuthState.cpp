@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/tutorial/cpp/stateful/ServiceAuthState.h"
+#include <thrift/tutorial/cpp/stateful/ServiceAuthState.h>
 
 using namespace std;
 

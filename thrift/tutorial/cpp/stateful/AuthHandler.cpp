@@ -17,9 +17,9 @@
  * under the License.
  */
 
-#include "thrift/tutorial/cpp/stateful/AuthHandler.h"
+#include <thrift/tutorial/cpp/stateful/AuthHandler.h>
 
-#include "thrift/tutorial/cpp/stateful/ServiceAuthState.h"
+#include <thrift/tutorial/cpp/stateful/ServiceAuthState.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 
 using namespace std;

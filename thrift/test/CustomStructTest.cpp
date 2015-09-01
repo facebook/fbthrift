@@ -24,7 +24,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
-#include "thrift/test/gen-cpp2/CustomStruct.h"
+#include <thrift/test/gen-cpp2/CustomStruct.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::async;

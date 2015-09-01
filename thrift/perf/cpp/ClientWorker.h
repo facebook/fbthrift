@@ -19,7 +19,7 @@
 #ifndef THRIFT_TEST_PERF_CLIENTWORKER_H_
 #define THRIFT_TEST_PERF_CLIENTWORKER_H_ 1
 
-#include "thrift/perf/if/gen-cpp/LoadTest.h"
+#include <thrift/perf/if/gen-cpp/LoadTest.h>
 #include <thrift/lib/cpp/test/loadgen/Worker.h>
 
 namespace apache { namespace thrift {

@@ -30,8 +30,8 @@
 #include <sys/stat.h>
 #include <stdexcept>
 
-#include "thrift/compiler/platform.h"
-#include "thrift/compiler/generate/t_oop_generator.h"
+#include <thrift/compiler/platform.h>
+#include <thrift/compiler/generate/t_oop_generator.h>
 
 /**
  * Java code generator.

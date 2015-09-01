@@ -25,21 +25,21 @@
 #include <vector>
 
 // For program_name()
-#include "thrift/compiler/main.h"
+#include <thrift/compiler/main.h>
 
-#include "thrift/compiler/parse/t_doc.h"
-#include "thrift/compiler/parse/t_scope.h"
-#include "thrift/compiler/parse/t_base_type.h"
-#include "thrift/compiler/parse/t_typedef.h"
-#include "thrift/compiler/parse/t_enum.h"
-#include "thrift/compiler/parse/t_const.h"
-#include "thrift/compiler/parse/t_struct.h"
-#include "thrift/compiler/parse/t_service.h"
-#include "thrift/compiler/parse/t_list.h"
-#include "thrift/compiler/parse/t_map.h"
-#include "thrift/compiler/parse/t_set.h"
-#include "thrift/compiler/parse/t_stream.h"
-//#include "thrift/compiler/parse/t_doc.h"
+#include <thrift/compiler/parse/t_doc.h>
+#include <thrift/compiler/parse/t_scope.h>
+#include <thrift/compiler/parse/t_base_type.h>
+#include <thrift/compiler/parse/t_typedef.h>
+#include <thrift/compiler/parse/t_enum.h>
+#include <thrift/compiler/parse/t_const.h>
+#include <thrift/compiler/parse/t_struct.h>
+#include <thrift/compiler/parse/t_service.h>
+#include <thrift/compiler/parse/t_list.h>
+#include <thrift/compiler/parse/t_map.h>
+#include <thrift/compiler/parse/t_set.h>
+#include <thrift/compiler/parse/t_stream.h>
+//#include <thrift/compiler/parse/t_doc.h>
 
 /**
  * Top level class representing an entire thrift program. A program consists

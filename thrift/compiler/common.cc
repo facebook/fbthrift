@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/compiler/common.h"
+#include <thrift/compiler/common.h>
 
 /**
  * Global program tree

@@ -28,7 +28,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/transport/TSSLServerSocket.h>
-#include "thrift/test/gen-cpp/ThriftTest.h"
+#include <thrift/test/gen-cpp/ThriftTest.h>
 
 #include <iostream>
 #include <stdexcept>

@@ -21,7 +21,7 @@
 
 #include "common/fb303/cpp/FacebookBase2.h"
 
-#include "thrift/perf/if/gen-cpp2/LoadTest.h"
+#include <thrift/perf/if/gen-cpp2/LoadTest.h>
 
 #include <thrift/lib/cpp/async/TEventServer.h>
 

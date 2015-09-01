@@ -17,7 +17,7 @@
  * under the License.
  */
 
-#include "thrift/tutorial/cpp/async/sort/SortDistributorHandler.h"
+#include <thrift/tutorial/cpp/async/sort/SortDistributorHandler.h>
 
 #include <queue>
 #include <folly/gen/Base.h>

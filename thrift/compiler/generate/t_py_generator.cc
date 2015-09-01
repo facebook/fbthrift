@@ -26,8 +26,8 @@
 #include <sstream>
 #include <algorithm>
 #include <set>
-#include "thrift/compiler/generate/t_generator.h"
-#include "thrift/compiler/platform.h"
+#include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/platform.h>
 using namespace std;
 
 // All other Python keywords (as of 2.7) are reserved by the Thrift

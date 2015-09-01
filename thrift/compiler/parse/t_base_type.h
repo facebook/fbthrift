@@ -22,7 +22,7 @@
 
 #include <cstdlib>
 #include <vector>
-#include "thrift/compiler/parse/t_type.h"
+#include <thrift/compiler/parse/t_type.h>
 
 /**
  * A thrift base type, which must be one of the defined enumerated types inside

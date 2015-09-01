@@ -22,8 +22,8 @@
 #include <fstream>
 #include <sstream>
 #include <unordered_set>
-#include "thrift/compiler/parse/t_program.h"
-#include "thrift/compiler/globals.h"
+#include <thrift/compiler/parse/t_program.h>
+#include <thrift/compiler/globals.h>
 
 // version.h
 #define THRIFT_VERSION "facebook"

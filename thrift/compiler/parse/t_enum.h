@@ -20,7 +20,7 @@
 #ifndef T_ENUM_H
 #define T_ENUM_H
 
-#include "thrift/compiler/parse/t_enum_value.h"
+#include <thrift/compiler/parse/t_enum_value.h>
 #include <folly/Optional.h>
 #include <vector>
 

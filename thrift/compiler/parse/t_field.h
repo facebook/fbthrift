@@ -23,7 +23,7 @@
 #include <string>
 #include <sstream>
 
-#include "thrift/compiler/parse/t_doc.h"
+#include <thrift/compiler/parse/t_doc.h>
 
 // Forward declarations
 class t_const_value;

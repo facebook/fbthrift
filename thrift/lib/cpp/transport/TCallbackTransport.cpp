@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/transport/TCallbackTransport.h"
+#include <thrift/lib/cpp/transport/TCallbackTransport.h>
 
 #include <exception>
 

@@ -27,7 +27,7 @@
 #include <sys/types.h>
 #include <sstream>
 
-#include "thrift/compiler/platform.h"
+#include <thrift/compiler/platform.h>
 #include "t_oop_generator.h"
 using namespace std;
 

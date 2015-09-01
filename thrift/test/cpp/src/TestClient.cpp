@@ -28,7 +28,7 @@
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 #include <memory>
-#include "thrift/test/gen-cpp/ThriftTest.h"
+#include <thrift/test/gen-cpp/ThriftTest.h>
 
 #include <inttypes.h>
 

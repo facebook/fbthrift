@@ -19,8 +19,8 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include "thrift/test/gen-cpp/UnionTest_types.h"
-#include "thrift/test/gen-cpp2/UnionTest_types.h"
+#include <thrift/test/gen-cpp/UnionTest_types.h>
+#include <thrift/test/gen-cpp2/UnionTest_types.h>
 
 #include <memory>
 #include <gtest/gtest.h>

@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include "thrift/tutorial/cpp/async/fetcher/FetcherHandler.h"
+#include <thrift/tutorial/cpp/async/fetcher/FetcherHandler.h>
 
-#include "thrift/tutorial/cpp/async/fetcher/HttpFetcher.h"
+#include <thrift/tutorial/cpp/async/fetcher/HttpFetcher.h>
 
 using namespace std;
 using namespace folly;
