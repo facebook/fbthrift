@@ -24,7 +24,7 @@
  */
 module thrift.codegen.idlgen;
 
-import std.algorithm : find, join;
+import std.algorithm : find, joiner;
 import std.array : empty, front;
 import std.conv : to;
 import std.traits : EnumMembers, isSomeFunction, OriginalType,
@@ -44,7 +44,7 @@ import thrift.util.hashset;
 alias Any!(isStruct, isException, isEnum, isService) isThriftEntity;
 
 /**
- * Returns an IDL string describing the passed »root« entities and all types
+ * Returns an IDL string describing the passed >>root<< entities and all types
  * they depend on.
  */
 template idlString(Roots...) if (allSatisfy!(isThriftEntity, Roots)) {
@@ -69,7 +69,7 @@ private {
       )
     ) Types;
 
-    enum result = join(
+    enum result = joiner(
       [
         staticMap!(
           enumIdlString,
@@ -237,9 +237,10 @@ private {
     } else static if (is(FullyUnqual!T _ : HashSet!E, E)) {
       alias CompositeTypeDeps!E CompositeTypeDeps;
     } else static if (is(FullyUnqual!T _ : V[K], K, V)) {
-      alias TypeTuple!(CompositeTypeDeps!K, CompositeTypeDeps!V) CompositeTypeDeps;
-    } else static if (is(FullyUnqual!T == enum) || is(FullyUnqual!T == struct) ||
-      is(FullyUnqual!T : TException)
+      alias TypeTuple!(CompositeTypeDeps!K, CompositeTypeDeps!V)
+        CompositeTypeDeps;
+    } else static if (is(FullyUnqual!T == enum) || is(FullyUnqual!T == struct)
+      || is(FullyUnqual!T : TException)
     ) {
       alias TypeTuple!(FullyUnqual!T) CompositeTypeDeps;
     } else {
@@ -304,10 +305,11 @@ template serviceIdlString(T) if (isService!T) {
         result ~= to!string(id) ~ ": " ~ dToIdlType!ParamType ~ " " ~ paramName;
 
         static if (havePM && !meta.front.params[i].defaultValue.empty) {
-          result ~= " = " ~ dToIdlConst(mixin(meta.front.params[i].defaultValue));
+          result ~= " = " ~
+            dToIdlConst(mixin(meta.front.params[i].defaultValue));
         } else {
           // Unfortunately, getting the default value for parameters from a
-          // function alias isn't possible – we can't transfer the default
+          // function alias isn't possible - we can't transfer the default
           // value to the IDL e.g. for interface Foo { void foo(int a = 5); }
           // without the user explicitly declaring it in metadata.
         }
@@ -374,7 +376,7 @@ template structIdlString(T) if (isStruct!T || isException!T) {
     }
     result ~= T.stringof ~ " {\n";
 
-    // The last automatically assigned id – fields with no meta information
+    // The last automatically assigned id - fields with no meta information
     // are assigned (in lexical order) descending negative ids, starting with
     // -1, just like the Thrift compiler does.
     short lastId;
@@ -420,13 +422,13 @@ template structIdlString(T) if (isStruct!T || isException!T) {
 
 private {
   // This very convoluted way of doing things was chosen because putting the
-  // static if directly into structIdlString caused »not evaluatable at compile
-  // time« errors to slip through even though typeof() was used, resp. the
+  // static if directly into structIdlString caused >>not evaluatable at compile
+  // time<< errors to slip through even though typeof() was used, resp. the
   // condition to be true even though the value couldn't actually be read at
   // compile time due to a @@BUG@@ in DMD 2.055.
-  // The extra »compiled« field in fieldInitA is needed because we must not try
-  // to use != if !is compiled as well (but was false), e.g. for floating point
-  // types.
+  // The extra >>compiled<< field in fieldInitA is needed because we must not
+  // try to use != if !is compiled as well (but was false), e.g. for floating
+  // point types.
   template fieldInitA(T, string name) {
     static if (mixin("T.init." ~ name) !is MemberType!(T, name).init) {
       enum fieldInitA = mixin("T.init." ~ name);
@@ -460,8 +462,8 @@ private {
       enum dToIdlType = "map<" ~ dToIdlType!K ~ ", " ~ dToIdlType!V ~ ">";
     } else static if (is(FullyUnqual!T _ : HashSet!E, E)) {
       enum dToIdlType = "set<" ~ dToIdlType!E ~ ">";
-    } else static if (is(FullyUnqual!T == struct) || is(FullyUnqual!T == enum) ||
-      is(FullyUnqual!T : TException)
+    } else static if (is(FullyUnqual!T == struct) || is(FullyUnqual!T == enum)
+      || is(FullyUnqual!T : TException)
     ) {
       enum dToIdlType = FullyUnqual!(T).stringof;
     } else {
@@ -757,7 +759,8 @@ service Srv {
   OneOfEach structMethod(),
   void methodWithDefaultArgs(1: i32 something = 2, ),
   oneway void onewayMethod(),
-  void exceptionMethod() throws (1: ExceptionWithAMap a, 2: ExceptionWithAMap b, ),
+  void exceptionMethod() throws (1: ExceptionWithAMap a,
+                                 2: ExceptionWithAMap b, ),
 }
 
 service ChildSrv extends Srv {

@@ -41,7 +41,7 @@ class TServer {
    * cancellation request has been triggered.
    *
    * Server implementations are expected to implement cancellation in a best-
-   * effort way – usually, it should be possible to immediately stop accepting
+   * effort way - usually, it should be possible to immediately stop accepting
    * connections and return after all currently active clients have been
    * processed, but this might not be the case for every conceivable
    * implementation.
@@ -135,7 +135,7 @@ interface TServerEventHandler {
   Variant createContext(TProtocol input, TProtocol output);
 
   /**
-   * Called when request handling for a client has been finished – can be used
+   * Called when request handling for a client has been finished - can be used
    * to perform clean up work.
    */
   void deleteContext(Variant serverContext, TProtocol input, TProtocol output);

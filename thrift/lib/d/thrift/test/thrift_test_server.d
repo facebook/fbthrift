@@ -211,7 +211,7 @@ void main(string[] args) {
 
   version (ThriftTestTemplates) {
     // Only exercise the specialized template code paths if explicitly enabled
-    // to reduce memory consumption on regular test suite runs – there should
+    // to reduce memory consumption on regular test suite runs - there should
     // not be much that can go wrong with that specifically anyway.
     alias TypeTuple!(TBufferedTransport, TFramedTransport, TServerHttpTransport)
       AvailableTransports;

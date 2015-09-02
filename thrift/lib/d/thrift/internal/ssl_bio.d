@@ -110,7 +110,7 @@ private {
     switch (cmd) {
       case BIO_C_SET_FD:
         // Note that close flag and "fd" are actually reversed here because we
-        // need 64 bit width for the pointer – should probably drop BIO_set_fd
+        // need 64 bit width for the pointer - should probably drop BIO_set_fd
         // altogether.
         ttDestroy(b);
         b.ptr = cast(void*)num;

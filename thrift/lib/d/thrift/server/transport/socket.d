@@ -216,7 +216,7 @@ Socket makeSocketAndListen(ushort port, int backlog, ushort retryLimit,
   Address localAddr;
   try {
     // null represents the wildcard address.
-    auto addrInfos = getAddressInfo(null, to!string(port),
+    auto addrInfos = getAddressInfo("::", to!string(port),
       AddressInfoFlags.PASSIVE, SocketType.STREAM, ProtocolType.TCP);
     foreach (i, ai; addrInfos) {
       // Prefer to bind to IPv6 addresses, because then IPv4 is listened to as
@@ -227,6 +227,7 @@ Socket makeSocketAndListen(ushort port, int backlog, ushort retryLimit,
       }
     }
   } catch (Exception e) {
+    logError("could not bind to local addr: %s", e.toString());
     throw new STE("Could not determine local address to listen on.",
       STE.Type.RESOURCE_FAILED, __FILE__, __LINE__, e);
   }

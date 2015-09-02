@@ -130,7 +130,7 @@ unittest {
 }
 
 /**
- * Adds »nothrow« to the type of the passed function pointer/delegate, if it
+ * Adds >>nothrow<< to the type of the passed function pointer/delegate, if it
  * is not already present.
  *
  * Technically, assumeNothrow just performs a cast, but using it has the

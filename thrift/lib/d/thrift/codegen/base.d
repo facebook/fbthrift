@@ -156,7 +156,7 @@ struct TParamMeta {
  * Compile-time metadata for a service method exception annotation.
  */
 struct TExceptionMeta {
-  /// The name of the exception »return value«. Contrary to TFieldMeta, it
+  /// The name of the exception >>return value<<. Contrary to TFieldMeta, it
   /// only serves decorative purposes here, as it is only used in code not
   /// visible to processor implementations/service clients.
   string name;
@@ -253,7 +253,7 @@ template BaseService(T) if (isDerivedService!T) {
 /**
  * Mixin template defining additional helper methods for using a struct with
  * Thrift, and a member called isSetFlags if the struct contains any fields
- * for which an »is set« flag is needed.
+ * for which an >>is set<< flag is needed.
  *
  * It can only be used inside structs or Exception classes.
  *
@@ -399,7 +399,8 @@ mixin template TStructHelpers(alias fieldMetaData = cast(TFieldMeta[])null) if (
   ) {
     static if (isNullable!(MemberType!(This, fieldName))) {
       return __traits(getMember, this, fieldName) !is null;
-    } else static if (is(typeof(mixin("this.isSetFlags." ~ fieldName)) : bool)) {
+    } else static if
+             (is(typeof(mixin("this.isSetFlags." ~ fieldName)) : bool)) {
       return __traits(getMember, this.isSetFlags, fieldName);
     } else {
       // This is a required field, which is always set.
@@ -442,7 +443,8 @@ mixin template TStructHelpers(alias fieldMetaData = cast(TFieldMeta[])null) if (
         } else {
           code ~= "result ~= `, `;\n";
         }
-        code ~= "result ~= `" ~ name ~ ": ` ~ to!string(cast()this." ~ name ~ ");\n";
+        code ~= "result ~= `" ~ name ~ ": ` ~ to!string(cast()this." ~ name
+          ~ ");\n";
         code ~= "if (!isSet!q{" ~ name ~ "}) {\n";
         code ~= "result ~= ` (unset)`;\n";
         code ~= "}\n";
@@ -460,17 +462,20 @@ mixin template TStructHelpers(alias fieldMetaData = cast(TFieldMeta[])null) if (
     return true;
   }
 
-  static if (canFind!`!a.defaultValue.empty`(mergeFieldMeta!(This, fieldMetaData))) {
+  static if
+    (canFind!`!a.defaultValue.empty`(mergeFieldMeta!(This, fieldMetaData))) {
     static if (is(This __ == class)) {
       this() {
-        mixin(thriftFieldInitCode!(mergeFieldMeta!(This, fieldMetaData))("this"));
+        mixin(thriftFieldInitCode!(
+                mergeFieldMeta!(This, fieldMetaData))("this"));
       }
     } else {
-      // DMD @@BUG@@: Have to use auto here to avoid »no size yet for forward
-      // reference« errors.
+      // DMD @@BUG@@: Have to use auto here to avoid >>no size yet for forward
+      // reference<< errors.
       static auto opCall() {
         auto result = This.init;
-        mixin(thriftFieldInitCode!(mergeFieldMeta!(This, fieldMetaData))("result"));
+        mixin(thriftFieldInitCode!(
+                mergeFieldMeta!(This, fieldMetaData))("result"));
         return result;
       }
     }
@@ -502,8 +507,8 @@ string thriftFieldInitCode(alias fieldMeta)(string thisName) {
 }
 
 version (unittest) {
-  // Cannot make this nested in the unittest block due to a »no size yet for
-  // forward reference« error.
+  // Cannot make this nested in the unittest block due to a >>no size yet for
+  // forward reference<< error.
   struct Foo {
     string a;
     int b;
@@ -536,7 +541,7 @@ unittest {
  * Generates an eponymous struct with boolean flags for the non-required
  * non-nullable fields of T.
  *
- * Nullable fields are just set to null to signal »not set«, so no flag is
+ * Nullable fields are just set to null to signal >>not set<<, so no flag is
  * emitted for them, even if they are optional.
  *
  * In most cases, you do not want to use this directly, but via TStructHelpers
@@ -549,11 +554,13 @@ template TIsSetFlags(T, alias fieldMetaData) {
       code ~= "static if (!is(MemberType!(T, `" ~ meta.name ~ "`))) {\n";
       code ~= q{
         static assert(false, "Field '" ~ meta.name ~
-          "' referenced in metadata not present in struct '" ~ T.stringof ~ "'.");
+          "' referenced in metadata not present in struct '" ~ T.stringof ~
+          "'.");
       };
       code ~= "}";
       if (meta.req == TReq.OPTIONAL || meta.req == TReq.OPT_IN_REQ_OUT) {
-        code ~= "else static if (!isNullable!(MemberType!(T, `" ~ meta.name ~ "`))) {\n";
+        code ~= "else static if (!isNullable!(MemberType!(T, `" ~ meta.name ~
+          "`))) {\n";
         code ~= "  bool " ~ meta.name ~ ";\n";
         code ~= "}\n";
       }
@@ -638,7 +645,8 @@ void readStruct(T, Protocol, alias fieldMetaData = cast(TFieldMeta[])null,
             readValueCode!K(key, level + 1) ~ "\n" ~
             "typeof(" ~ v ~ ".values[0]) " ~ value ~ ";\n" ~
             readValueCode!V(value, level + 1) ~ "\n" ~
-            v ~ "[cast(typeof(" ~ v ~ ".keys[0]))" ~ key ~ "] = " ~ value ~ ";\n" ~
+            v ~ "[cast(typeof(" ~ v ~ ".keys[0]))" ~ key ~ "] = " ~ value ~
+                ";\n" ~
           "}\n" ~
           "p.readMapEnd();" ~
         "}";
@@ -705,7 +713,7 @@ void readStruct(T, Protocol, alias fieldMetaData = cast(TFieldMeta[])null,
     /// Code for the case statements storing the fields to the result struct.
     string readMembersCode = "";
 
-    // The last automatically assigned id – fields with no meta information
+    // The last automatically assigned id - fields with no meta information
     // are assigned (in lexical order) descending negative ids, starting with
     // -1, just like the Thrift compiler does.
     short lastId;
@@ -780,10 +788,11 @@ void writeStruct(T, Protocol, alias fieldMetaData = cast(TFieldMeta[])null,
     }
 
     // Check that required nullable members are non-null.
-    // WORKAROUND: To stop LDC from emitting the manifest constant »meta« below
-    // into the writeStruct function body this is inside the string mixin
-    // block – the code wouldn't depend on it (this is an LDC bug, and because
-    // of it a new array would be allocated on each method invocation at runtime).
+    // WORKAROUND: To stop LDC from emitting the manifest constant >>meta<<
+    // below into the writeStruct function body this is inside the string mixin
+    // block - the code wouldn't depend on it (this is an LDC bug, and because
+    // of it a new array would be allocated on each method invocation
+    // at runtime).
     foreach (name; StaticFilter!(
       Compose!(isNullable, PApply!(MemberType, T)),
       FieldNames!T
@@ -880,7 +889,7 @@ void writeStruct(T, Protocol, alias fieldMetaData = cast(TFieldMeta[])null,
       return code;
     }
 
-    // The last automatically assigned id – fields with no meta information
+    // The last automatically assigned id - fields with no meta information
     // are assigned (in lexical order) descending negative ids, starting with
     // -1, just like the Thrift compiler does.
     short lastId;
@@ -893,8 +902,8 @@ void writeStruct(T, Protocol, alias fieldMetaData = cast(TFieldMeta[])null,
       if (meta.empty) {
         --lastId;
         version (TVerboseCodegen) {
-          code ~= "pragma(msg, `[thrift.codegen.base.writeStruct] Warning: No " ~
-            "meta information for field '" ~ name ~ "' in struct '" ~
+          code ~= "pragma(msg, `[thrift.codegen.base.writeStruct] Warning: No "
+            ~ "meta information for field '" ~ name ~ "' in struct '" ~
             T.stringof ~ "'. Assigned id: " ~ to!string(lastId) ~ ".`);\n";
         }
         code ~= writeFieldCode!F(name, lastId, req);

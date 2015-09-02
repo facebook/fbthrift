@@ -79,7 +79,7 @@ interface TTransport {
    * For potentially blocking data sources (e.g. sockets), read() will only
    * block if no data is available at all. If there is some data available,
    * but waiting for new data to arrive would be required to fill the whole
-   * buffer, the readily available data will be immediately returned – use
+   * buffer, the readily available data will be immediately returned - use
    * readAll() if you want to wait until the whole buffer is filled.
    *
    * Params:
@@ -118,7 +118,7 @@ interface TTransport {
    *
    * Note: You must call flush() to ensure the data is actually written,
    * and available to be read back in the future.  Destroying a TTransport
-   * object does not automatically flush pending data – if you destroy a
+   * object does not automatically flush pending data - if you destroy a
    * TTransport object with written but unflushed data, that data may be
    * discarded.
    *

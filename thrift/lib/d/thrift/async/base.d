@@ -21,19 +21,19 @@
  * Defines the interface used for client-side handling of asynchronous
  * I/O operations, based on coroutines.
  *
- * The main piece of the »client side« (e.g. for TAsyncClient users) of the
+ * The main piece of the >>client side<< (e.g. for TAsyncClient users) of the
  * API is TFuture, which represents an asynchronously executed operation,
  * which can have a return value, throw exceptions, and which can be waited
  * upon.
  *
- * On the »implementation side«, the idea is that by using a TAsyncTransport
+ * On the >>implementation side<<, the idea is that by using a TAsyncTransport
  * instead of a normal TTransport and executing the work through a
  * TAsyncManager, the same code as for synchronous I/O can be used for
  * asynchronous operation as well, for example:
  *
  * ---
  * auto socket = new TAsyncSocket(someTAsyncSocketManager(), host, port);
- * // …
+ * // ...
  * socket.asyncManager.execute(socket, {
  *   SomeThriftStruct s;
  *
@@ -65,7 +65,7 @@ import thrift.util.cancellation;
  * while waiting for time-consuming operations.
  *
  * The second important purpose of TAsyncManager is to serialize access to
- * the transport resources – without taking care of that, e.g. issuing multiple
+ * the transport resources - without taking care of that, e.g. issuing multiple
  * RPC calls over the same connection in rapid succession would likely lead to
  * more than one request being written at the same time, causing only garbage
  * to arrive at the remote end.
@@ -76,7 +76,7 @@ interface TAsyncManager {
   /**
    * Submits a work item to be executed asynchronously.
    *
-   * Access to asnyc transports is serialized – if two work items associated
+   * Access to asnyc transports is serialized - if two work items associated
    * with the same transport are submitted, the second delegate will not be
    * invoked until the first has returned, even it the latter context-switches
    * away (because it is waiting for I/O) and the async manager is idle
@@ -125,7 +125,7 @@ interface TAsyncManager {
    *
    * Example:
    * ---
-   * // A very basic example – usually, the actuall work item would enqueue
+   * // A very basic example - usually, the actuall work item would enqueue
    * // some async transport operation.
    * auto asyncMangager = someAsyncManager();
    *

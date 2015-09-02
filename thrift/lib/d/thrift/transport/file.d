@@ -18,11 +18,11 @@
  */
 
 /**
- * Transports for reading from/writing to Thrift »log files«.
+ * Transports for reading from/writing to Thrift >>log files<<.
  *
- * These transports are not »stupid« sources and sinks just reading and
+ * These transports are not >>stupid<< sources and sinks just reading and
  * writing bytes from a file verbatim, but organize the contents in the form
- * of so-called »events«, which refers to the data written between two flush()
+ * of so-called >>events<<, which refers to the data written between two flush()
  * calls.
  *
  * Chunking is supported, events are guaranteed to never span chunk boundaries.
@@ -538,7 +538,7 @@ private:
   Duration readTimeout_;
   size_t maxEventSize_;
 
-  // Read buffer – lazily allocated on the first read().
+  // Read buffer - lazily allocated on the first read().
   ubyte[] readBuffer_;
   size_t readBufferSize_;
 
@@ -686,7 +686,7 @@ final class TFileWriterTransport : TBaseTransport {
   /**
    * The size of the chunks the file is divided into, in bytes.
    *
-   * A single event (write call) never spans multiple chunks – this
+   * A single event (write call) never spans multiple chunks - this
    * effectively limits the event size to chunkSize - EventSize.sizeof.
    */
   ulong chunkSize() @property {
@@ -846,7 +846,8 @@ private {
       receiveTimeout(max(dur!"hnsecs"(0), maxFlushInterval - flushTimer.peek()),
         (immutable(ubyte)[] data) {
           while (errorOpening) {
-            logError("Writer thread going to sleep for %s µs due to IO errors",
+            logError("Writer thread going to sleep for %s microseconds "
+                     "due to IO errors",
               ioErrorSleepDuration.total!"usecs");
 
             // Sleep for ioErrorSleepDuration, being ready to be interrupted
@@ -875,11 +876,12 @@ private {
           // Make sure the event does not cross the chunk boundary by writing
           // a padding consisting of zeroes if it would.
           auto chunk1 = offset / chunkSize;
-          auto chunk2 = (offset + EventSize.sizeof + data.length - 1) / chunkSize;
+          auto chunk2 =
+            (offset + EventSize.sizeof + data.length - 1) / chunkSize;
 
           if (chunk1 != chunk2) {
-            // TODO: The C++ implementation refetches the offset here to »keep
-            // in sync« – why would this be needed?
+            // TODO: The C++ implementation refetches the offset here to >>keep
+            // in sync<< - why would this be needed?
             auto padding = cast(size_t)
               ((((offset / chunkSize) + 1) * chunkSize) - offset);
             auto zeroes = new ubyte[padding];
@@ -918,7 +920,8 @@ private {
       if (errorOpening) continue;
 
       bool flush;
-      if (forceFlush || shutdownRequested || unflushedByteCount > maxFlushBytes) {
+      if (forceFlush || shutdownRequested ||
+          unflushedByteCount > maxFlushBytes) {
         flush = true;
       } else if (cast(Duration)flushTimer.peek() > maxFlushInterval) {
         if (unflushedByteCount == 0) {
@@ -1083,7 +1086,7 @@ unittest {
       // However, if the box is heavily loaded, some of the test runs can take
       // longer. Additionally, on a Windows Server 2008 instance running in
       // a VirtualBox VM, it has been observed that about a quarter of the runs
-      // takes (217 ± 1) ms, for reasons not yet known.
+      // takes (217 plus or minus 1) ms, for reasons not yet known.
       if (sw.peek().msecs > 5) {
         ++numOver;
       }

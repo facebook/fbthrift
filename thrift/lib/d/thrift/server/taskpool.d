@@ -211,7 +211,7 @@ protected:
 // another module.
 // private {
   /*
-   * The state of the »connection queue«, i.e. used for keeping track of how
+   * The state of the >>connection queue<<, i.e. used for keeping track of how
    * many client connections are currently processed.
    */
   struct QueueState {

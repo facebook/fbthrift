@@ -18,7 +18,7 @@
  */
 module thrift.codegen.async_client;
 
-import std.algorithm : join;
+import std.algorithm : joiner;
 import std.conv : text, to;
 import std.traits : ParameterStorageClass, ParameterStorageClassTuple,
   ParameterTypeTuple, ReturnType;
@@ -208,7 +208,7 @@ template TAsyncClient(Interface, InputProtocol = TProtocol, OutputProtocol = voi
 
       immutable returnTypeCode = "ReturnType!(Interface." ~ methodName ~ ")";
       code ~= "TFuture!(" ~ returnTypeCode ~ ") " ~ methodName ~ "(" ~
-        join(paramList, ",") ~ ") {\n";
+        joiner(paramList, ",").text ~ ") {\n";
 
       // Create the future instance that will repesent the result.
       code ~= "auto promise = new TPromise!(" ~ returnTypeCode ~ ");\n";
@@ -218,11 +218,12 @@ template TAsyncClient(Interface, InputProtocol = TProtocol, OutputProtocol = voi
       code ~= "try {\n";
       code ~= "static if (is(ReturnType!(Interface." ~ methodName ~
         ") == void)) {\n";
-      code ~= "client_." ~ methodName ~ "(" ~ join(paramNames, ",") ~ ");\n";
+      code ~= "client_." ~ methodName ~ "(" ~ joiner(paramNames, ",").text ~
+        ");\n";
       code ~= "promise.succeed();\n";
       code ~= "} else {\n";
       code ~= "auto result = client_." ~ methodName ~ "(" ~
-        join(paramNames, ",") ~ ");\n";
+        joiner(paramNames, ",").text ~ ");\n";
       code ~= "promise.succeed(result);\n";
       code ~= "}\n";
       code ~= "} catch (Exception e) {\n";

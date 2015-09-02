@@ -19,7 +19,7 @@
 
 /**
  * A non-blocking server implementation that operates a set of I/O threads (by
- * default only one) and either does processing »in-line« or off-loads it to a
+ * default only one) and either does processing >>in-line<< or off-loads it to a
  * task pool.
  *
  * It *requires* TFramedTransport to be used on the client side, as it expects
@@ -238,7 +238,7 @@ class TNonblockingServer : TServer {
 
   /**
    * The task pool to use for processing requests. If null, no additional
-   * threads are used and request are processed »inline«.
+   * threads are used and request are processed >>inline<<.
    *
    * Can safely be set even when the server is already running.
    */
@@ -390,7 +390,7 @@ private:
     while (true) {
       // It is lame to use exceptions for regular control flow (failing is
       // excepted due to non-blocking mode of operation), but that's the
-      // interface std.socket offers…
+      // interface std.socket offers...
       Socket clientSocket;
       try {
         clientSocket = listenSocket_.accept();
@@ -480,7 +480,7 @@ private:
   /**
    * Determines if the server is currently overloaded.
    *
-   * If the number of open connections or »processing« connections is over the
+   * If the number of open connections or >>processing<< connections is over the
    * respective limit, the server will enter overload handling mode and a
    * warning will be logged. If below values are below the hysteresis curve,
    * this will cause the server to exit it again.
@@ -991,7 +991,7 @@ private {
 
           // Acquire the data written to the transport.
           // KLUDGE: To avoid copying, we simply cast the const away and
-          // modify the internal buffer of the TMemoryBuffer – works with the
+          // modify the internal buffer of the TMemoryBuffer - works with the
           // current implementation, but isn't exactly beautiful.
           writeBuffer_ = cast(ubyte[])outputTransport_.getContents();
 
@@ -1097,7 +1097,7 @@ private {
             auto bytesRead = socket_.read(
               (cast(ubyte[])((&frameSize)[0 .. 1]))[readBufferPos_ .. $]);
             if (bytesRead == 0) {
-              // Couldn't read anything, but we have been notified – client
+              // Couldn't read anything, but we have been notified - client
               // has disconnected.
               close();
               return;
@@ -1166,7 +1166,7 @@ private {
           assert(writeBufferPos_ <= writeBuffer_.length);
 
           if (writeBufferPos_ == writeBuffer_.length) {
-            // Nothing left to send – this shouldn't happen, just move on.
+            // Nothing left to send - this shouldn't happen, just move on.
             logInfo("WARNING: In send state, but no data to send.\n");
             transition();
             return;

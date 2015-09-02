@@ -47,7 +47,7 @@ import thrift.transport.socket;
 import thrift.transport.zlib;
 
 /*
- * Size generation helpers – used to be able to run the same testing code
+ * Size generation helpers - used to be able to run the same testing code
  * with both constant and random total/chunk sizes.
  */
 
@@ -609,7 +609,7 @@ void testBlocking(C)() if (isCoupledTransports!C) {
   }
 }
 
-// A quick hack, for the sake of brevity…
+// A quick hack, for the sake of brevity...
 float g_sizeMultiplier = 1;
 
 version (Posix) {

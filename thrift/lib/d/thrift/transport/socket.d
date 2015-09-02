@@ -79,9 +79,9 @@ abstract class TSocketBase : TBaseTransport {
     version (none) assert(written <= buf.length, text("Implementation wrote " ~
       "more data than requested to?! (", written, " vs. ", buf.length, ")"));
   } body {
-    assert(0, "DMD bug? – Why would contracts work for interfaces, but not "
+    assert(0, "DMD bug? - Why would contracts work for interfaces, but not "
       "for abstract methods? "
-      "(Error: function […] in and out contracts require function body");
+      "(Error: function [...] in and out contracts require function body");
   }
 
   /**
@@ -166,7 +166,7 @@ protected:
       logError("Could not set socket option: %s", e);
     }
 
-    // Just try to disable Nagle's algorithm – this will fail if we are passed
+    // Just try to disable Nagle's algorithm - this will fail if we are passed
     // in a non-TCP socket via the Socket-accepting constructor.
     try {
       socket_.setOption(SocketOptionLevel.TCP, SocketOption.TCP_NODELAY, true);
@@ -365,7 +365,7 @@ class TSocket : TSocketBase {
       auto lastErrno = getSocketErrno();
 
       if (lastErrno == WOULD_BLOCK_ERRNO) {
-        // Not an exceptional error per se – even with blocking sockets,
+        // Not an exceptional error per se - even with blocking sockets,
         // EAGAIN apparently is returned sometimes on out-of-resource
         // conditions (see the C++ implementation for details). Also, this
         // allows using TSocket with non-blocking sockets e.g. in

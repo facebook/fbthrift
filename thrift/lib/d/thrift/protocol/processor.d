@@ -57,14 +57,14 @@ interface TProcessorEventHandler {
   /**
    * Called before calling other callback methods.
    *
-   * Expected to return some sort of »call context«, which is passed to all
+   * Expected to return some sort of >>call context<<, which is passed to all
    * other callbacks for that function invocation.
    */
   Variant createContext(string methodName, Variant connectionContext);
 
   /**
    * Called when handling the method associated with a context has been
-   * finished – can be used to perform clean up work.
+   * finished - can be used to perform clean up work.
    */
   void deleteContext(Variant callContext, string methodName);
 

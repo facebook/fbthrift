@@ -63,7 +63,7 @@ final class TResourcePool(Resource) {
   }
 
   /**
-   * Returns an »enriched« input range to iterate over the pool members.
+   * Returns an >>enriched<< input range to iterate over the pool members.
    */
   struct Range {
     /**
@@ -98,7 +98,7 @@ final class TResourcePool(Resource) {
         auto fi = r in parent_.faultInfos_;
 
         if (fi && fi.resetTime != fi.resetTime.init) {
-          // The argument to < needs to be an lvalue…
+          // The argument to < needs to be an lvalue...
           auto currentTick = TickDuration.currSystemTick;
           if (fi.resetTime < currentTick) {
             // The timeout expired, remove the resource from the list and go

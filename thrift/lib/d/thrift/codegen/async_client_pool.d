@@ -22,7 +22,7 @@
  * TAsyncClient.
  *
  * Terminology note: The names of the artifacts defined in this module are
- *   derived from »client pool«, because they operate on a pool of
+ *   derived from >>client pool<<, because they operate on a pool of
  *   TAsyncClients. However, from a architectural point of view, they often
  *   represent a pool of hosts a Thrift client application communicates with
  *   using RPC calls.
@@ -110,7 +110,7 @@ static this() {
  * A TAsyncClientPoolBase implementation which queries multiple servers in a
  * row until a request succeeds, the result of which is then returned.
  *
- * The definition of »success« can be customized using the rpcFaultFilter()
+ * The definition of >>success<< can be customized using the rpcFaultFilter()
  * delegate property. If it is non-null and calling it for an exception set by
  * a failed method invocation returns true, the error is considered to be
  * caused by the RPC layer rather than the application layer, and the next
@@ -332,7 +332,7 @@ private {
  * A TAsyncClientPoolBase implementation which queries multiple servers at
  * the same time and returns the first success response.
  *
- * The definition of »success« can be customized using the rpcFaultFilter()
+ * The definition of >>success<< can be customized using the rpcFaultFilter()
  * delegate property. If it is non-null and calling it for an exception set by
  * a failed method invocation returns true, the error is considered to be
  * caused by the RPC layer rather than the application layer, and the next
@@ -599,7 +599,7 @@ private {
  *   byte[] bar();
  * }
  *
- * // Create the aggregator pool – client0, client1, client2 are some
+ * // Create the aggregator pool - client0, client1, client2 are some
  * // TAsyncClient!Foo instances, but in theory could also be other
  * // TFutureInterface!Foo implementations (e.g. some async client pool).
  * auto pool = new TAsyncAggregator!Foo([client0, client1, client2]);
@@ -634,8 +634,8 @@ private {
  * pragma(msg, typeof(pool.bar().accumulate().get())); // byte[].
  * ---
  *
- * Note: For the accumulate!() interface, you might currently hit a »cannot use
- * local '…' as parameter to non-global template accumulate«-error, see
+ * Note: For the accumulate!() interface, you might currently hit a >>cannot use
+ * local '...' as parameter to non-global template accumulate<<-error, see
  * $(DMDBUG 5710, DMD issue 5710). If your accumulator function does not need
  * to access the surrounding scope, you might want to use a function literal
  * instead of a delegate to avoid the issue.

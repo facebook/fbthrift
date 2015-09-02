@@ -254,7 +254,7 @@ private:
  *
  * Typically used with TAsyncClient. As an unfortunate consequence of the
  * async client design, the passed transports cannot be statically verified to
- * be of type TAsyncSocket. Instead, the type is verified at runtime – if a
+ * be of type TAsyncSocket. Instead, the type is verified at runtime - if a
  * transport of an unexpected type is passed to getTransport(), it fails,
  * throwing a TTransportException.
  *

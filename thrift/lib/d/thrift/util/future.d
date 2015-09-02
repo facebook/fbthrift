@@ -66,7 +66,7 @@ interface TFuture(ResultType) {
    * If the operation has already completed, the result is immediately
    * returned.
    *
-   * The result of this method is »alias this«'d to the interface, so that
+   * The result of this method is >>alias this<<'d to the interface, so that
    * TFuture can be used as a drop-in replacement for a simple value in
    * synchronous code.
    */
@@ -439,7 +439,7 @@ final class TFutureAggregatorRange(T) {
             TickDuration.currSystemTick);
 
           if (remaining <= dur!"hnsecs"(0)) {
-            // No time left, but still no element received – we are empty now.
+            // No time left, but still no element received - we are empty now.
             finished_ = true;
             childCancellation_.trigger();
             return true;

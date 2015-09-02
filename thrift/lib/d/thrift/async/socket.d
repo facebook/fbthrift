@@ -102,7 +102,7 @@ class TAsyncSocket : TSocketBase, TAsyncTransport {
     Address addr;
     try {
       // Currently, we just go with the first address returned, could be made
-      // more intelligent though – IPv6?
+      // more intelligent though - IPv6?
       addr = getAddress(host_, port_)[0];
     } catch (Exception e) {
       throw new TTransportException(`Unable to resolve host "` ~ host_ ~ `".`,
@@ -301,7 +301,7 @@ private:
       }
 
       auto fiber = Fiber.getThis();
-      assert(fiber, "Current fiber null – not running in TAsyncManager?");
+      assert(fiber, "Current fiber null - not running in TAsyncManager?");
       TAsyncEventReason eventReason = void;
       asyncManager_.addOneshotListener(socket_, eventType, timeout,
         scopedDelegate((TAsyncEventReason reason) {

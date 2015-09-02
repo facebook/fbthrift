@@ -62,7 +62,7 @@ interface TCancellation {
  *
  * This design allows operations to pass the TCancellation on to sub-tasks,
  * while making sure that the cancellation can only be triggered by the
- * »outermost« instance waiting for the result.
+ * >>outermost<< instance waiting for the result.
  */
 final class TCancellationOrigin : TCancellation {
   this() {

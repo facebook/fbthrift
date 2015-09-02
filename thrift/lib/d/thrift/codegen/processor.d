@@ -18,9 +18,9 @@
  */
 module thrift.codegen.processor;
 
-import std.algorithm : find, join;
+import std.algorithm : find, joiner;
 import std.array : empty, front;
-import std.conv : to;
+import std.conv : to, text;
 import std.traits : ParameterTypeTuple, ReturnType, Unqual;
 import std.typetuple : allSatisfy, TypeTuple;
 import std.variant : Variant;
@@ -68,7 +68,7 @@ import thrift.protocol.processor;
  * // Low overhead.
  * proc.process(tBinaryProtocol(tBufferTransport(someSocket)));
  *
- * // Not in the specialization list – higher overhead.
+ * // Not in the specialization list - higher overhead.
  * proc.process(tBinaryProtocol(tFramedTransport(someSocket)));
  *
  * // Same as above, but optimized for the Compact protocol backed by a
@@ -247,7 +247,7 @@ template TServiceProcessor(Interface, Protocols...) if (
       }
 
       immutable call = "iface_." ~ methodName ~
-        "(" ~ join(paramList, ", ") ~ ")";
+        "(" ~ joiner(paramList, ", ").text ~ ")";
       if (is(ReturnType!(mixin("Interface." ~ methodName)) == void)) {
         code ~= call ~ ";\n";
       } else {
@@ -369,7 +369,7 @@ template TArgsStruct(Interface, string methodName) {
     string[] fieldMetaCodes;
     foreach (i, _; ParameterTypeTuple!(mixin("Interface." ~ methodName))) {
       // If we have no meta information, just use param1, param2, etc. as
-      // field names, it shouldn't really matter anyway. 1-based »indexing«
+      // field names, it shouldn't really matter anyway. 1-based >>indexing<<
       // is used to match the common scheme in the Thrift world.
       string memberId;
       string memberName;
@@ -402,7 +402,7 @@ template TArgsStruct(Interface, string methodName) {
       }
     }
     immutable fieldMetaCode =
-      fieldMetaCodes.empty ? "" : "[" ~ join(fieldMetaCodes, ", ") ~ "]";
+      fieldMetaCodes.empty ? "" : "[" ~ joiner(fieldMetaCodes, ", ").text ~ "]";
     code ~= "mixin TStructHelpers!(" ~ fieldMetaCode  ~ ");\n";
     code ~= "}\n";
     return code;
@@ -489,7 +489,7 @@ template TResultStruct(Interface, string methodName) {
     }
 
     immutable fieldMetaCode =
-      fieldMetaCodes.empty ? "" : "[" ~ join(fieldMetaCodes, ", ") ~ "]";
+      fieldMetaCodes.empty ? "" : "[" ~ joiner(fieldMetaCodes, ", ").text ~ "]";
     code ~= "mixin TStructHelpers!(" ~ fieldMetaCode  ~ ");\n";
     code ~= "}\n";
     return code;

@@ -102,7 +102,7 @@ final class TBufferedTransport : TBaseTransport {
         // directly read to the passed buffer. This probably doesn't occur too
         // often in practice (and even if it does, the underlying transport
         // probably cannot fulfill the request at once anyway), but it can't
-        // harm to try…
+        // harm to try...
         return transport_.read(buf);
       }
 

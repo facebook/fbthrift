@@ -27,8 +27,9 @@ import std.traits;
  * is evaluatable at compile time.
  *
  * There is a wealth of problems associated with the algorithm used (e.g. 5.0
- * prints as 4.999…, incorrect rounding, etc.), but a better alternative should
- * be included with the D standard library instead of implementing it here.
+ * prints as 4.999..., incorrect rounding, etc.), but a better alternative
+ * should be included with the D standard library instead of implementing it
+ * here.
  */
 string ctfeToString(T)(T val) if (isFloatingPoint!T) {
   if (val is T.nan) return "nan";

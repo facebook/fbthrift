@@ -93,7 +93,7 @@ class TLibeventAsyncManager : TAsyncSocketManager {
 
     ensureWorkerThreadRunning();
 
-    // We should be able to send the control message as a whole – we currently
+    // We should be able to send the control message as a whole - we currently
     // assume to be able to receive it at once as well. If this proves to be
     // unstable (e.g. send could possibly return early if the receiving buffer
     // is full and the blocking call gets interrupted by a signal), it could

@@ -18,9 +18,9 @@
  */
 module thrift.codegen.client;
 
-import std.algorithm : find, join;
+import std.algorithm : find, joiner;
 import std.array : empty, front;
-import std.conv : to;
+import std.conv : to, text;
 import std.traits : isSomeFunction, ParameterStorageClass,
   ParameterStorageClassTuple, ParameterTypeTuple, ReturnType;
 import thrift.codegen.base;
@@ -98,7 +98,7 @@ template TClient(Interface, InputProtocol = TProtocol, OutputProtocol = void) if
         }
 
         // DMD @@BUG@@: If these are not present in this class (would be)
-        // inherited anyway, »not implemented« errors are raised.
+        // inherited anyway, >>not implemented<< errors are raised.
         override IProt inputProtocol() @property {
           return super.inputProtocol;
         }
@@ -158,7 +158,7 @@ template TClient(Interface, InputProtocol = TProtocol, OutputProtocol = void) if
         string[] paramList;
         string paramAssignCode;
         foreach (i, _; ParameterTypeTuple!(mixin("Interface." ~ methodName))) {
-          // Use the param name speficied in the meta information if any –
+          // Use the param name specified in the meta information if any -
           // just cosmetics in this case.
           string paramName;
           if (methodMetaFound && i < methodMeta.params.length) {
@@ -175,7 +175,7 @@ template TClient(Interface, InputProtocol = TProtocol, OutputProtocol = void) if
           paramAssignCode ~= "args." ~ paramName ~ " = &" ~ paramName ~ ";\n";
         }
         code ~= "ReturnType!(Interface." ~ methodName ~ ") " ~ methodName ~
-          "(" ~ join(paramList, ", ") ~ ") {\n";
+          "(" ~ joiner(paramList, ", ").text ~ ") {\n";
 
         code ~= "immutable methodName = `" ~ methodName ~ "`;\n";
 
@@ -321,7 +321,7 @@ template TPargsStruct(Interface, string methodName) {
     string[] fieldMetaCodes;
     foreach (i, _; ParameterTypeTuple!(mixin("Interface." ~ methodName))) {
       // If we have no meta information, just use param1, param2, etc. as
-      // field names, it shouldn't really matter anyway. 1-based »indexing«
+      // field names, it shouldn't really matter anyway. 1-based >>indexing<<
       // is used to match the common scheme in the Thrift world.
       string memberId;
       string memberName;
@@ -355,8 +355,8 @@ template TPargsStruct(Interface, string methodName) {
       }
     }
     code ~= "void write(P)(P proto) const if (isTProtocol!P) {\n";
-    code ~= "writeStruct!(typeof(this), P, [" ~ join(fieldMetaCodes, ", ") ~
-      "], true)(this, proto);\n";
+    code ~= "writeStruct!(typeof(this), P, [" ~
+      joiner(fieldMetaCodes, ", ").text ~ "], true)(this, proto);\n";
     code ~= "}\n";
     code ~= "}\n";
     return code;
@@ -474,8 +474,8 @@ template TPresultStruct(Interface, string methodName) {
     };
 
     code ~= "void read(P)(P proto) if (isTProtocol!P) {\n";
-    code ~= "readStruct!(typeof(this), P, [" ~ join(fieldMetaCodes, ", ") ~
-      "], true)(this, proto);\n";
+    code ~= "readStruct!(typeof(this), P, [" ~
+      joiner(fieldMetaCodes, ", ").text ~ "], true)(this, proto);\n";
     code ~= "}\n";
     code ~= "}\n";
     return code;
