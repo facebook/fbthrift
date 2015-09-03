@@ -38,7 +38,7 @@ using namespace apache::thrift::concurrency;
 DECLARE_bool(thrift_numa_enabled);
 
 // Loops until x==y for up to timeout ms.
-// The end result is the same as of BOOST_{CHECK,REQUIRE}_EQUAL(x,y)
+// The end result is the same as of {EXPECT,ASSERT}_EQ(x,y)
 // (depending on OP) if x!=y after the timeout passes
 #define X_EQUAL_SPECIFIC_TIMEOUT(OP, timeout, x, y) do { \
     using std::chrono::steady_clock; \

@@ -293,15 +293,7 @@ class ProcessorEventHandler : public TProcessorEventHandler {
 
  protected:
   void checkName(const CallContext* context, const char* fnName) {
-    // Note: we can't use BOOST_CHECK_EQUAL here, since the handler runs in a
-    // different thread from the test functions.  Just abort if the names are
-    // different
-    if (context->name != fnName) {
-      fprintf(stderr, "call context name mismatch: \"%s\" != \"%s\"\n",
-              context->name.c_str(), fnName);
-      fflush(stderr);
-      abort();
-    }
+    CHECK_EQ(context->name, fnName);
   }
 
   uint32_t nextId_;
