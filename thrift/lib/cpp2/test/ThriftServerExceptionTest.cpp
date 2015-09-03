@@ -36,38 +36,35 @@ namespace {
 
 using AppExn = TApplicationException;
 
-class HandlerBase : public RaiserSvIf {
+class RaiserHandler : public RaiserSvIf {
 public:
-  explicit HandlerBase(string message) : message_(move(message)) {}
-  virtual void go(unique_ptr<HandlerCallbackBase> cb) = 0;
+  explicit RaiserHandler(function<exception_ptr()> go) :
+    go_(wrap(move(go))) {}
+  explicit RaiserHandler(function<exception_wrapper()> go) :
+    go_(wrap(move(go))) {}
 
 protected:
-  const string& message() const { return message_; }
-
-  lulz make_lulz() const { return lulz(message()); }
-  Banal make_banal() const { return Banal(); }
-  Fiery make_fiery() const { Fiery f; f.message = message(); return f; }
-
-  template <class E> exception_ptr to_eptr(const E& e) {
-    try { throw e; }
-    catch (E&) { return current_exception(); }
-  }
-
   void async_tm_doBland(unique_ptr<HandlerCallback<void>> cb) override {
-    go(move(cb));
+    go_(move(cb));
   }
   void async_tm_doRaise(unique_ptr<HandlerCallback<void>> cb) override {
-    go(move(cb));
+    go_(move(cb));
   }
   void async_tm_get200(unique_ptr<HandlerCallback<string>> cb) override {
-    go(move(cb));
+    go_(move(cb));
   }
   void async_tm_get500(unique_ptr<HandlerCallback<string>> cb) override {
-    go(move(cb));
+    go_(move(cb));
+  }
+
+  template <typename E>
+  function<void(unique_ptr<HandlerCallbackBase>)> wrap(E e) {
+    auto em = makeMoveWrapper(move(e));
+    return [=](unique_ptr<HandlerCallbackBase> cb) { cb->exception((*em)()); };
   }
 
 private:
-  string message_;
+  function<void(unique_ptr<HandlerCallbackBase>)> go_;
 };
 
 }
@@ -75,6 +72,21 @@ private:
 class ThriftServerExceptionTest : public testing::Test {
 public:
   EventBase eb;
+
+  string message { "rofl" };
+
+  template <class E> exception_ptr to_eptr(const E& e) {
+    try { throw e; }
+    catch (E&) { return current_exception(); }
+  }
+
+  template <class E> exception_wrapper to_wrap(const E& e) {
+    return exception_wrapper(e);  // just an alias
+  }
+
+  lulz make_lulz() const { return lulz(message); }
+  Banal make_banal() const { return Banal(); }
+  Fiery make_fiery() const { Fiery f; f.message = message; return f; }
 
   template <typename T>
   struct action_traits_impl;
@@ -96,15 +108,9 @@ public:
 };
 
 TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
-  struct Handler : public HandlerBase {
-    explicit Handler(string message) : HandlerBase(move(message)) {}
-    void go(unique_ptr<HandlerCallbackBase> cb) override {
-      cb->exception(to_eptr(make_lulz()));
-    }
-  };
+  auto go = [&] { return to_eptr(make_lulz()); };
 
-  auto message = string{"rofl"};
-  auto handler = make_shared<Handler>(message);
+  auto handler = make_shared<RaiserHandler>(go);
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
@@ -130,15 +136,9 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
 }
 
 TEST_F(ThriftServerExceptionTest, banal_with_exception_ptr) {
-  struct Handler : public HandlerBase {
-    explicit Handler(string message) : HandlerBase(move(message)) {}
-    void go(unique_ptr<HandlerCallbackBase> cb) override {
-      cb->exception(to_eptr(make_banal()));
-    }
-  };
+  auto go = [&] { return to_eptr(make_banal()); };
 
-  auto message = string{"rofl"};
-  auto handler = make_shared<Handler>(message);
+  auto handler = make_shared<RaiserHandler>(go);
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
@@ -162,15 +162,9 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_ptr) {
 }
 
 TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
-  struct Handler : public HandlerBase {
-    explicit Handler(string message) : HandlerBase(move(message)) {}
-    void go(unique_ptr<HandlerCallbackBase> cb) override {
-      cb->exception(to_eptr(make_fiery()));
-    }
-  };
+  auto go = [&] { return to_eptr(make_fiery()); };
 
-  auto message = string{"rofl"};
-  auto handler = make_shared<Handler>(message);
+  auto handler = make_shared<RaiserHandler>(go);
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
@@ -196,15 +190,9 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
 }
 
 TEST_F(ThriftServerExceptionTest, bland_with_exception_wrapper) {
-  struct Handler : public HandlerBase {
-    explicit Handler(string message) : HandlerBase(move(message)) {}
-    void go(unique_ptr<HandlerCallbackBase> cb) override {
-      cb->exception(exception_wrapper(make_lulz()));
-    }
-  };
+  auto go = [&] { return to_wrap(make_lulz()); };
 
-  auto message = string{"rofl"};
-  auto handler = make_shared<Handler>(message);
+  auto handler = make_shared<RaiserHandler>(go);
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
@@ -230,15 +218,9 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_wrapper) {
 }
 
 TEST_F(ThriftServerExceptionTest, banal_with_exception_wrapper) {
-  struct Handler : public HandlerBase {
-    explicit Handler(string message) : HandlerBase(move(message)) {}
-    void go(unique_ptr<HandlerCallbackBase> cb) override {
-      cb->exception(exception_wrapper(make_banal()));
-    }
-  };
+  auto go = [&] { return to_wrap(make_banal()); };
 
-  auto message = string{"rofl"};
-  auto handler = make_shared<Handler>(message);
+  auto handler = make_shared<RaiserHandler>(go);
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
@@ -262,15 +244,9 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_wrapper) {
 }
 
 TEST_F(ThriftServerExceptionTest, fiery_with_exception_wrapper) {
-  struct Handler : public HandlerBase {
-    explicit Handler(string message) : HandlerBase(move(message)) {}
-    void go(unique_ptr<HandlerCallbackBase> cb) override {
-      cb->exception(exception_wrapper(make_fiery()));
-    }
-  };
+  auto go = [&] { return to_wrap(make_fiery()); };
 
-  auto message = string{"rofl"};
-  auto handler = make_shared<Handler>(message);
+  auto handler = make_shared<RaiserHandler>(go);
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
