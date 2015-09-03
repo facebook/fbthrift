@@ -50,27 +50,27 @@ class ClientReceiveState {
         isStreamEnd_(false) {
   }
 
-  ClientReceiveState(uint16_t protocolId,
-                     std::unique_ptr<folly::IOBuf> buf,
-                     std::unique_ptr<apache::thrift::transport::THeader> header,
-                     std::shared_ptr<apache::thrift::ContextStack> ctx,
-                     bool isSecurityActive,
-                     bool isStreamEnd = false)
-    : protocolId_(protocolId),
-      ctx_(std::move(ctx)),
-      buf_(std::move(buf)),
-      header_(std::move(header)),
-      isSecurityActive_(isSecurityActive),
-      isStreamEnd_(isStreamEnd) {
+  ClientReceiveState(uint16_t _protocolId,
+                    std::unique_ptr<folly::IOBuf> _buf,
+                    std::unique_ptr<apache::thrift::transport::THeader> _header,
+                    std::shared_ptr<apache::thrift::ContextStack> _ctx,
+                    bool _isSecurityActive,
+                    bool _isStreamEnd = false)
+    : protocolId_(_protocolId),
+      ctx_(std::move(_ctx)),
+      buf_(std::move(_buf)),
+      header_(std::move(_header)),
+      isSecurityActive_(_isSecurityActive),
+      isStreamEnd_(_isStreamEnd) {
   }
-  ClientReceiveState(folly::exception_wrapper excw,
-                     std::shared_ptr<apache::thrift::ContextStack> ctx,
-                     bool isSecurityActive)
+  ClientReceiveState(folly::exception_wrapper _excw,
+                     std::shared_ptr<apache::thrift::ContextStack> _ctx,
+                     bool _isSecurityActive)
     : protocolId_(-1),
-      ctx_(std::move(ctx)),
+      ctx_(std::move(_ctx)),
       header_(folly::make_unique<apache::thrift::transport::THeader>()),
-      excw_(std::move(excw)),
-      isSecurityActive_(isSecurityActive),
+      excw_(std::move(_excw)),
+      isSecurityActive_(_isSecurityActive),
       isStreamEnd_(false) {
   }
 
@@ -125,8 +125,8 @@ class ClientReceiveState {
     return isSecurityActive_;
   }
 
-  void resetCtx(std::shared_ptr<apache::thrift::ContextStack> ctx) {
-    ctx_ = std::move(ctx);
+  void resetCtx(std::shared_ptr<apache::thrift::ContextStack> _ctx) {
+    ctx_ = std::move(_ctx);
   }
 
   bool isStreamEnd() const {
