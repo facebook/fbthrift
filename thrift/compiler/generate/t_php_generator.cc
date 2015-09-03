@@ -20,14 +20,13 @@
 #include <iterator>
 #include <vector>
 
+#include <sstream>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include <sstream>
 #include <thrift/compiler/generate/t_oop_generator.h>
 #include <thrift/compiler/platform.h>
+
 using namespace std;
-
-
 /**
  * PHP code generator.
  *
@@ -101,9 +100,9 @@ class t_php_generator : public t_oop_generator {
   void generate_php_struct_writer(std::ofstream& out, t_struct* tstruct);
   void generate_php_function_helpers(t_function* tfunction);
 
-  void generate_php_type_spec(std::ofstream &out, t_type* t);
-  void generate_php_struct_spec(std::ofstream &out, t_struct* tstruct);
-  void generate_php_structural_id(std::ofstream &out, t_struct* tstruct);
+  void generate_php_type_spec(std::ofstream& out, t_type* t);
+  void generate_php_struct_spec(std::ofstream& out, t_struct* tstruct);
+  void generate_php_structural_id(std::ofstream& out, t_struct* tstruct);
 
   /**
    * Service-level generation functions
@@ -114,7 +113,7 @@ class t_php_generator : public t_oop_generator {
   void generate_service_interface (t_service* tservice, bool mangle);
   void generate_service_rest      (t_service* tservice, bool mangle);
   void generate_service_client    (t_service* tservice, bool mangle);
-  void _generate_service_client   (std::ofstream &out, t_service* tservice,
+  void _generate_service_client   (std::ofstream& out, t_service* tservice,
                                         bool mangle);
   void generate_service_processor (t_service* tservice, bool mangle);
   void generate_process_function  (t_service* tservice, t_function* tfunction);
@@ -126,92 +125,113 @@ class t_php_generator : public t_oop_generator {
    * Serialization constructs
    */
 
-  void generate_deserialize_field        (std::ofstream &out,
+  void generate_deserialize_field        (std::ofstream& out,
+                                          t_name_generator& namer,
                                           t_field*    tfield,
                                           std::string prefix="",
                                           bool inclass=false);
 
-  void generate_deserialize_struct       (std::ofstream &out,
+  void generate_deserialize_struct       (std::ofstream& out,
                                           t_struct*   tstruct,
                                           std::string prefix="");
 
-  void generate_deserialize_container    (std::ofstream &out,
+  void generate_deserialize_container    (std::ofstream& out,
+                                          t_name_generator& namer,
                                           t_type*     ttype,
                                           std::string prefix="");
 
-  void generate_deserialize_set_element  (std::ofstream &out,
+  void generate_deserialize_set_element  (std::ofstream& out,
+                                          t_name_generator& namer,
                                           t_set*      tset,
                                           std::string size,
                                           std::string prefix="");
 
-  void generate_deserialize_map_element  (std::ofstream &out,
-                                          t_map*      tmap,
+  void generate_deserialize_map_element  (std::ofstream& out,
+                                          t_name_generator& namer,
+                                          t_map* tmap,
                                           std::string size,
-                                          std::string prefix="");
+                                          std::string prefix = "");
 
-  void generate_deserialize_list_element (std::ofstream &out,
-                                          t_list*     tlist,
+  void generate_deserialize_list_element (std::ofstream& out,
+                                          t_name_generator& namer,
+                                          t_list* tlist,
                                           std::string size,
-                                          std::string prefix="");
+                                          std::string prefix = "");
 
-  void generate_serialize_field          (std::ofstream &out,
-                                          t_field*    tfield,
-                                          std::string prefix="");
+  void generate_serialize_field          (std::ofstream& out,
+                                          t_name_generator& namer,
+                                          t_field* tfield,
+                                          std::string prefix = "");
 
-  void generate_serialize_struct         (std::ofstream &out,
-                                          t_struct*   tstruct,
-                                          std::string prefix="");
+  void generate_serialize_struct         (std::ofstream& out,
+                                          t_name_generator& namer,
+                                          t_struct* tstruct,
+                                          std::string prefix = "");
 
-  void generate_serialize_container      (std::ofstream &out,
-                                          t_type*     ttype,
-                                          std::string prefix="");
+  void generate_serialize_container      (std::ofstream& out,
+                                          t_name_generator& namer,
+                                          t_type* ttype,
+                                          std::string prefix = "");
 
-  void generate_serialize_map_element    (std::ofstream &out,
-                                          t_map*      tmap,
+  void generate_serialize_map_element    (std::ofstream& out,
+                                          t_name_generator& namer,
+                                          t_map* tmap,
                                           std::string kiter,
                                           std::string viter);
 
-  void generate_serialize_set_element    (std::ofstream &out,
-                                          t_set*      tmap,
+  void generate_serialize_set_element    (std::ofstream& out,
+                                          t_name_generator& namer,
+                                          t_set* tmap,
                                           std::string iter);
 
-  void generate_serialize_list_element   (std::ofstream &out,
-                                          t_list*     tlist,
+  void generate_serialize_list_element   (std::ofstream& out,
+                                          t_name_generator& namer,
+                                          t_list* tlist,
                                           std::string iter);
   /**
    * Read thrift object from JSON string, generated using the
    * TSimpleJSONProtocol.
    */
 
-  void generate_json_enum            (std::ofstream& out, t_enum* tenum,
+  void generate_json_enum            (std::ofstream& out,
+                                      t_name_generator& namer,
+                                      t_enum* tenum,
                                       const string& prefix_thrift,
                                       const string& prefix_json);
 
-  void generate_json_struct          (std::ofstream& out, t_struct* tstruct,
+  void generate_json_struct          (std::ofstream& out,
+                                      t_name_generator& namer,
+                                      t_struct* tstruct,
                                       const string& prefix_thrift,
                                       const string& prefix_json);
 
-  void generate_json_field           (std::ofstream& out, t_field* tfield,
+  void generate_json_field           (std::ofstream& out,
+                                      t_name_generator& namer,
+                                      t_field* tfield,
                                       const string& prefix_thrift = "",
                                       const string& suffix_thrift = "",
                                       const string& prefix_json = "");
 
   void generate_json_container       (std::ofstream& out,
+                                      t_name_generator& namer,
                                       t_type* ttype,
                                       const string& prefix_thrift = "",
                                       const string& prefix_json = "");
 
   void generate_json_set_element     (std::ofstream& out,
+                                      t_name_generator& namer,
                                       t_set* tset,
                                       const string& value,
                                       const string& prefix_thrift);
 
   void generate_json_list_element    (ofstream& out,
+                                      t_name_generator& namer,
                                       t_list* list,
                                       const string& value,
                                       const string& prefix_thrift);
 
   void generate_json_map_element     (std::ofstream& out,
+                                      t_name_generator& namer,
                                       t_map* tmap,
                                       const string& key,
                                       const string& value,
@@ -275,14 +295,6 @@ class t_php_generator : public t_oop_generator {
   }
 
  private:
-
-  /**
-   * Generate a tmp php variable name started by '$'
-   */
-  std::string php_tmp(std::string pre) {
-    return "$" + tmp(pre);
-  }
-
   /**
    * Generate the namespace mangled string, if necessary
    */
@@ -371,22 +383,25 @@ class t_php_generator : public t_oop_generator {
   bool mangled_services_;
 };
 
-
-void t_php_generator::generate_json_enum(std::ofstream& out, t_enum* /*tenum*/,
+void t_php_generator::generate_json_enum(std::ofstream& out,
+                                         t_name_generator& namer,
+                                         t_enum* /*tenum*/,
                                          const string& prefix_thrift,
                                          const string& prefix_json) {
   indent(out) << prefix_thrift << " = " << "(int)"
               << prefix_json << ";" << endl;
 }
 
-void t_php_generator::generate_json_struct(ofstream& out, t_struct* tstruct,
+void t_php_generator::generate_json_struct(ofstream& out,
+                                           t_name_generator& namer,
+                                           t_struct* tstruct,
                                            const string& prefix_thrift,
                                            const string& prefix_json) {
 
-  string enc = php_tmp("_tmp");
+  string enc = namer("$_tmp");
   indent(out) << enc << " = " << "json_encode(" << prefix_json
               << ");" << endl;
-  string tmp = php_tmp("_tmp");
+  string tmp = namer("$_tmp");
   t_field felem(tstruct, tmp);
   indent(out) << declare_field(&felem, true, true, true).substr(1) << endl;
   indent(out) << tmp << "->readFromJson(" << enc << ");" << endl;
@@ -394,6 +409,7 @@ void t_php_generator::generate_json_struct(ofstream& out, t_struct* tstruct,
 }
 
 void t_php_generator::generate_json_field(ofstream& out,
+                                          t_name_generator& namer,
                                           t_field* tfield,
                                           const string& prefix_thrift,
                                           const string& suffix_thrift,
@@ -408,20 +424,12 @@ void t_php_generator::generate_json_field(ofstream& out,
   string name = prefix_thrift + tfield->get_name() + suffix_thrift;
 
   if (type->is_struct() || type->is_xception()) {
-    generate_json_struct(out,
-        (t_struct*)type,
-        name,
-        prefix_json);
+    generate_json_struct(out, namer, (t_struct*)type, name, prefix_json);
   } else if (type->is_container()) {
-    generate_json_container(out,
-        (t_container*)type,
-        name,
-        prefix_json);
+    generate_json_container(out, namer, (t_container*)type, name, prefix_json);
   } else if (type->is_enum()) {
-    generate_json_enum(out,
-        static_cast<t_enum*>(type),
-        name,
-        prefix_json);
+    generate_json_enum(
+        out, namer, static_cast<t_enum*>(type), name, prefix_json);
   } else if (type->is_base_type()) {
     string typeConversionString = "";
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -460,7 +468,7 @@ void t_php_generator::generate_json_field(ofstream& out,
         indent(out) << name << " = " << typeConversionString
                     << prefix_json << ";" << endl;
     } else {
-      string temp = php_tmp("_tmp");
+      string temp = namer("$_tmp");
       indent(out) << temp << " = (int)" << prefix_json << ";" << endl;
       indent(out) << "if (" << temp << " > " << number_limit << ") {" <<endl;
       indent_up();
@@ -478,14 +486,15 @@ void t_php_generator::generate_json_field(ofstream& out,
 }
 
 void t_php_generator::generate_json_container(std::ofstream& out,
+                                              t_name_generator& namer,
                                               t_type* ttype,
                                               const string& prefix_thrift,
                                               const string& prefix_json) {
   t_container* tcontainer = (t_container*)ttype;
-  string size = php_tmp("_size");
-  string key = php_tmp("_key");
-  string value = php_tmp("_value");
-  string json = php_tmp("_json");
+  string size = namer("$_size");
+  string key = namer("$_key");
+  string value = namer("$_value");
+  string json = namer("$_json");
 
   indent(out) << json << " = " << prefix_json << ";" << endl;
   indent(out) << prefix_thrift << " = array();" << endl;
@@ -494,11 +503,13 @@ void t_php_generator::generate_json_container(std::ofstream& out,
   indent_up();
 
   if (ttype->is_list()) {
-    generate_json_list_element(out, (t_list*)ttype, value, prefix_thrift);
+    generate_json_list_element(
+        out, namer, (t_list*)ttype, value, prefix_thrift);
   } else if (ttype->is_set()) {
-    generate_json_set_element(out, (t_set*)ttype, value, prefix_thrift);
+    generate_json_set_element(out, namer, (t_set*)ttype, value, prefix_thrift);
   } else if (ttype->is_map()) {
-    generate_json_map_element(out, (t_map*)ttype, key, value, prefix_thrift);
+    generate_json_map_element(
+        out, namer, (t_map*)ttype, key, value, prefix_thrift);
   } else {
     throw "compiler error: no PHP reader for this type.";
   }
@@ -507,27 +518,30 @@ void t_php_generator::generate_json_container(std::ofstream& out,
 }
 
 void t_php_generator::generate_json_list_element(ofstream& out,
+                                                 t_name_generator& namer,
                                                  t_list* tlist,
                                                  const string& value,
                                                  const string& prefix_thrift) {
-  string elem = php_tmp("_elem");
+  string elem = namer("$_elem");
   t_field felem(tlist->get_elem_type(), elem);
   indent(out) << declare_field(&felem, true, true, true).substr(1) << endl;
-  generate_json_field(out, &felem, "", "", value);
+  generate_json_field(out, namer, &felem, "", "", value);
   indent(out) << prefix_thrift << " []= " << elem << ";" << endl;
-
 }
+
 void t_php_generator::generate_json_set_element(std::ofstream& out,
-                                               t_set* tset,
-                                               const string& value,
-                                               const string& prefix_thrift) {
-  string elem = php_tmp("_elem");
+                                                t_name_generator& namer,
+                                                t_set* tset,
+                                                const string& value,
+                                                const string& prefix_thrift) {
+  string elem = namer("$_elem");
   t_field felem(tset->get_elem_type(), elem);
   indent(out) << declare_field(&felem, true, true, true).substr(1) << endl;
-  generate_json_field(out, &felem, "", "", value);
+  generate_json_field(out, namer, &felem, "", "", value);
   indent(out) << prefix_thrift << "[" << elem << "] = true;" << endl;
 }
 void t_php_generator::generate_json_map_element(std::ofstream& out,
+                                                t_name_generator& namer,
                                                 t_map* tmap,
                                                 const string& key,
                                                 const string& value,
@@ -551,15 +565,14 @@ void t_php_generator::generate_json_map_element(std::ofstream& out,
         break;
     }
   }
-  string _value = php_tmp("_value");
+  string _value = namer("$_value");
   t_field vfelem(tmap->get_val_type(), _value);
   indent(out) << declare_field(&vfelem, true, true, true).substr(1) << endl;
-  generate_json_field(out, &vfelem, "", "", value);
+  generate_json_field(out, namer, &vfelem, "", "", value);
   indent(out) << prefix_thrift << "[" << key << "] = " << _value << ";" << endl;
 }
 
-void t_php_generator::generate_json_reader(ofstream &out,
-                                           t_struct* tstruct) {
+void t_php_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
   if(!json_) {
     return;
   }
@@ -568,6 +581,9 @@ void t_php_generator::generate_json_reader(ofstream &out,
 
   string name = tstruct->get_name();
   indent(out) << "public function " << "readFromJson($jsonText) {" << endl;
+
+  t_name_generator namer;
+
   indent_up();
   indent(out) << "$parsed = json_decode($jsonText, true);" << endl << endl;
 
@@ -581,7 +597,11 @@ void t_php_generator::generate_json_reader(ofstream &out,
     t_field *tf = *f_iter;
     indent(out) << "if (isset($parsed['" << tf->get_name() << "'])) {" << endl;
     indent_up();
-    generate_json_field(out, tf, "$this->", "",
+    generate_json_field(out,
+                        namer,
+                        tf,
+                        "$this->",
+                        "",
                         "$parsed[" + render_string(tf->get_name()) + "]");
     indent_down();
     indent(out) << "}";
@@ -1234,6 +1254,8 @@ void t_php_generator::generate_php_struct_reader(ofstream& out,
     "public function read(TProtocol $input)" << endl;
   scope_up(out);
 
+  t_name_generator namer;
+
   out <<
     indent() << "$xfer = 0;" << endl <<
     indent() << "$fname = null;" << endl <<
@@ -1256,12 +1278,12 @@ void t_php_generator::generate_php_struct_reader(ofstream& out,
     if (binary_inline_) {
       t_field fftype(g_type_byte, "ftype");
       t_field ffid(g_type_i16, "fid");
-      generate_deserialize_field(out, &fftype);
+      generate_deserialize_field(out, namer, &fftype);
       out <<
         indent() << "if ($ftype == TType::STOP) {" << endl <<
         indent() << "  break;" << endl <<
         indent() << "}" << endl;
-      generate_deserialize_field(out, &ffid);
+      generate_deserialize_field(out, namer, &ffid);
     } else {
       indent(out) <<
         "$xfer += $input->readFieldBegin($fname, $ftype, $fid);" << endl;
@@ -1296,7 +1318,7 @@ void t_php_generator::generate_php_struct_reader(ofstream& out,
         indent_up();
         indent(out) << "if ($ftype == " << type_to_enum((*f_iter)->get_type()) << ") {" << endl;
         indent_up();
-        generate_deserialize_field(out, *f_iter, "this->");
+        generate_deserialize_field(out, namer, *f_iter, "this->");
         indent_down();
         out <<
           indent() << "} else {" << endl;
@@ -1419,6 +1441,8 @@ void t_php_generator::generate_php_struct_writer(ofstream& out,
   }
   indent_up();
 
+  t_name_generator namer;
+
   indent(out) <<
     "$xfer = 0;" << endl;
 
@@ -1477,7 +1501,7 @@ void t_php_generator::generate_php_struct_writer(ofstream& out,
     }
 
     // Write field contents
-    generate_serialize_field(out, *f_iter, "this->");
+    generate_serialize_field(out, namer, *f_iter, "this->");
 
     // Write field closer
     if (!binary_inline_) {
@@ -1523,15 +1547,8 @@ void t_php_generator::generate_service(t_service* tservice) {
       throw "cannot generate mangled services for " + tservice->get_name() +
           "; no php namespace found";
     }
-    // Note: Because calling generate_service again "uses up" tmp variables,
-    //   generating a mangled service has the effect of changing the files of
-    //   unmangled services declared in the same thrift file (i.e., with
-    //   different tmp variables). Thus we store/restore the tmp_ counter so
-    //   that unmangled service files are not affected.
-    int orig_tmp = get_tmp_counter();
     // generate new files for mangled services, if requested
     generate_service(tservice, true);
-    set_tmp_counter(orig_tmp);
   }
 }
 
@@ -1661,6 +1678,8 @@ void t_php_generator::generate_service_processor(t_service* tservice,
     "public function process(TProtocol $input, TProtocol $output) {" << endl;
   indent_up();
 
+  t_name_generator namer;
+
   f_service_ <<
     indent() << "$rseqid = 0;" << endl <<
     indent() << "$fname = null;" << endl <<
@@ -1671,9 +1690,9 @@ void t_php_generator::generate_service_processor(t_service* tservice,
     t_field ffname(g_type_string, "fname");
     t_field fmtype(g_type_byte, "mtype");
     t_field fseqid(g_type_i32, "rseqid");
-    generate_deserialize_field(f_service_, &ffname, "", true);
-    generate_deserialize_field(f_service_, &fmtype, "", true);
-    generate_deserialize_field(f_service_, &fseqid, "", true);
+    generate_deserialize_field(f_service_, namer, &ffname, "", true);
+    generate_deserialize_field(f_service_, namer, &fmtype, "", true);
+    generate_deserialize_field(f_service_, namer, &fseqid, "", true);
   } else {
     f_service_ <<
       indent() << "$input->readMessageBegin($fname, $mtype, $rseqid);" << endl;
@@ -2522,6 +2541,8 @@ void t_php_generator::_generate_service_client(
         endl;
       scope_up(out);
 
+      t_name_generator namer;
+
       out <<
         indent() << "try {" << endl;
       indent_up();
@@ -2567,8 +2588,8 @@ void t_php_generator::_generate_service_client(
           indent() << "if ($ver != 0x80010000) "
                    << "throw new TProtocolException('Bad version identifier: "
                    << "'.$ver, TProtocolException::BAD_VERSION);" << endl;
-        generate_deserialize_field(out, &ffname, "", true);
-        generate_deserialize_field(out, &fseqid, "", true);
+        generate_deserialize_field(out, namer, &ffname, "", true);
+        generate_deserialize_field(out, namer, &fseqid, "", true);
       } else {
         out <<
           indent() << "$this->input_->readMessageBegin($fname, $mtype, "
@@ -2688,7 +2709,8 @@ void t_php_generator::_generate_service_client(
 /**
  * Deserializes a field of any type.
  */
-void t_php_generator::generate_deserialize_field(ofstream &out,
+void t_php_generator::generate_deserialize_field(ofstream& out,
+                                                 t_name_generator& namer,
                                                  t_field* tfield,
                                                  string prefix,
                                                  bool inclass) {
@@ -2708,7 +2730,7 @@ void t_php_generator::generate_deserialize_field(ofstream &out,
   } else {
 
     if (type->is_container()) {
-      generate_deserialize_container(out, type, name);
+      generate_deserialize_container(out, namer, type, name);
     } else if (type->is_base_type() || type->is_enum()) {
 
       if (binary_inline_) {
@@ -2848,7 +2870,7 @@ void t_php_generator::generate_deserialize_field(ofstream &out,
  * buffer for deserialization, and that there is a variable protocol which
  * is a reference to a TProtocol serialization object.
  */
-void t_php_generator::generate_deserialize_struct(ofstream &out,
+void t_php_generator::generate_deserialize_struct(ofstream& out,
                                                   t_struct* tstruct,
                                                   string prefix) {
   out <<
@@ -2856,13 +2878,14 @@ void t_php_generator::generate_deserialize_struct(ofstream &out,
     indent() << "$xfer += $" << prefix << "->read($input);" << endl;
 }
 
-void t_php_generator::generate_deserialize_container(ofstream &out,
+void t_php_generator::generate_deserialize_container(ofstream& out,
+                                                     t_name_generator& namer,
                                                      t_type* ttype,
                                                      string prefix) {
-  string size = tmp("_size");
-  string ktype = tmp("_ktype");
-  string vtype = tmp("_vtype");
-  string etype = tmp("_etype");
+  string size = namer("_size");
+  string ktype = namer("_ktype");
+  string vtype = namer("_vtype");
+  string etype = namer("_etype");
 
   t_field fsize(g_type_i32, size);
   t_field fktype(g_type_byte, ktype);
@@ -2879,9 +2902,9 @@ void t_php_generator::generate_deserialize_container(ofstream &out,
       indent() << "$" << ktype << " = 0;" << endl <<
       indent() << "$" << vtype << " = 0;" << endl;
     if (binary_inline_) {
-      generate_deserialize_field(out, &fktype);
-      generate_deserialize_field(out, &fvtype);
-      generate_deserialize_field(out, &fsize);
+      generate_deserialize_field(out, namer, &fktype);
+      generate_deserialize_field(out, namer, &fvtype);
+      generate_deserialize_field(out, namer, &fsize);
     } else {
       out <<
         indent() << "$xfer += $input->readMapBegin(" <<
@@ -2889,8 +2912,8 @@ void t_php_generator::generate_deserialize_container(ofstream &out,
     }
   } else if (ttype->is_set()) {
     if (binary_inline_) {
-      generate_deserialize_field(out, &fetype);
-      generate_deserialize_field(out, &fsize);
+      generate_deserialize_field(out, namer, &fetype);
+      generate_deserialize_field(out, namer, &fsize);
     } else {
       out <<
         indent() << "$" << etype << " = 0;" << endl <<
@@ -2899,8 +2922,8 @@ void t_php_generator::generate_deserialize_container(ofstream &out,
     }
   } else if (ttype->is_list()) {
     if (binary_inline_) {
-      generate_deserialize_field(out, &fetype);
-      generate_deserialize_field(out, &fsize);
+      generate_deserialize_field(out, namer, &fetype);
+      generate_deserialize_field(out, namer, &fsize);
     } else {
       out <<
         indent() << "$" << etype << " = 0;" << endl <<
@@ -2910,7 +2933,7 @@ void t_php_generator::generate_deserialize_container(ofstream &out,
   }
 
   // For loop iterates over elements
-  string i = tmp("_i");
+  string i = namer("_i");
   indent(out) <<
     "for ($" <<
     i << " = 0; $" << size << " === null || $" << i << " < $" << size << "; ++$" << i << ")" << endl;
@@ -2918,11 +2941,14 @@ void t_php_generator::generate_deserialize_container(ofstream &out,
     scope_up(out);
 
     if (ttype->is_map()) {
-      generate_deserialize_map_element(out, (t_map*)ttype, size, prefix);
+      generate_deserialize_map_element(
+          out, namer, (t_map*)ttype, size, prefix);
     } else if (ttype->is_set()) {
-      generate_deserialize_set_element(out, (t_set*)ttype, size, prefix);
+      generate_deserialize_set_element(
+          out, namer, (t_set*)ttype, size, prefix);
     } else if (ttype->is_list()) {
-      generate_deserialize_list_element(out, (t_list*)ttype, size, prefix);
+      generate_deserialize_list_element(
+          out, namer, (t_list*)ttype, size, prefix);
     }
 
     scope_down(out);
@@ -2943,12 +2969,14 @@ void t_php_generator::generate_deserialize_container(ofstream &out,
 /**
  * Generates code to deserialize a map
  */
-void t_php_generator::generate_deserialize_map_element(ofstream &out,
-                                                       t_map* tmap,
-                                                       string size,
-                                                       string prefix) {
-  string key = tmp("key");
-  string val = tmp("val");
+void t_php_generator::generate_deserialize_map_element(
+    ofstream& out,
+    t_name_generator& namer,
+    t_map* tmap,
+    string size,
+    string prefix) {
+  string key = namer("key");
+  string val = namer("val");
   t_field fkey(tmap->get_key_type(), key);
   t_field fval(tmap->get_val_type(), val);
 
@@ -2962,18 +2990,20 @@ void t_php_generator::generate_deserialize_map_element(ofstream &out,
   indent(out) <<
     declare_field(&fval, true, true) << endl;
 
-  generate_deserialize_field(out, &fkey);
-  generate_deserialize_field(out, &fval);
+  generate_deserialize_field(out, namer, &fkey);
+  generate_deserialize_field(out, namer, &fval);
 
   indent(out) <<
     "$" << prefix << "[$" << key << "] = $" << val << ";" << endl;
 }
 
-void t_php_generator::generate_deserialize_set_element(ofstream &out,
-                                                       t_set* tset,
-                                                       string size,
-                                                       string prefix) {
-  string elem = tmp("elem");
+void t_php_generator::generate_deserialize_set_element(
+    ofstream& out,
+    t_name_generator& namer,
+    t_set* tset,
+    string size,
+    string prefix) {
+  string elem = namer("elem");
   t_field felem(tset->get_elem_type(), elem);
 
   out <<
@@ -2984,17 +3014,19 @@ void t_php_generator::generate_deserialize_set_element(ofstream &out,
   indent(out) <<
     "$" << elem << " = null;" << endl;
 
-  generate_deserialize_field(out, &felem);
+  generate_deserialize_field(out, namer, &felem);
 
   indent(out) <<
     "$" << prefix << "[$" << elem << "] = true;" << endl;
 }
 
-void t_php_generator::generate_deserialize_list_element(ofstream &out,
-                                                        t_list* tlist,
-                                                       string size,
-                                                        string prefix) {
-  string elem = tmp("elem");
+void t_php_generator::generate_deserialize_list_element(
+    ofstream& out,
+    t_name_generator& namer,
+    t_list* tlist,
+    string size,
+    string prefix) {
+  string elem = namer("elem");
   t_field felem(tlist->get_elem_type(), elem);
 
   out <<
@@ -3003,9 +3035,9 @@ void t_php_generator::generate_deserialize_list_element(ofstream &out,
     indent() << "}" << endl;
 
   indent(out) <<
-    "$" << elem << " = null;" << endl;
+    elem << " = null;" << endl;
 
-  generate_deserialize_field(out, &felem);
+  generate_deserialize_field(out, namer, &felem);
 
   indent(out) <<
     "$" << prefix << " []= $" << elem << ";" << endl;
@@ -3018,7 +3050,8 @@ void t_php_generator::generate_deserialize_list_element(ofstream &out,
  * @param tfield The field to serialize
  * @param prefix Name to prepend to field name
  */
-void t_php_generator::generate_serialize_field(ofstream &out,
+void t_php_generator::generate_serialize_field(ofstream& out,
+                                               t_name_generator& namer,
                                                t_field* tfield,
                                                string prefix) {
   t_type* type = get_true_type(tfield->get_type());
@@ -3031,10 +3064,12 @@ void t_php_generator::generate_serialize_field(ofstream &out,
 
   if (type->is_struct() || type->is_xception()) {
     generate_serialize_struct(out,
+                              namer,
                               (t_struct*)type,
                               prefix + tfield->get_name());
   } else if (type->is_container()) {
     generate_serialize_container(out,
+                                 namer,
                                  type,
                                  prefix + tfield->get_name());
   } else if (type->is_base_type() || type->is_enum()) {
@@ -3147,7 +3182,8 @@ void t_php_generator::generate_serialize_field(ofstream &out,
  * @param tstruct The struct to serialize
  * @param prefix  String prefix to attach to all fields
  */
-void t_php_generator::generate_serialize_struct(ofstream &out,
+void t_php_generator::generate_serialize_struct(ofstream& out,
+                                                t_name_generator& namer,
                                                 t_struct* /*tstruct*/,
                                                 string prefix) {
   indent(out) <<
@@ -3157,7 +3193,8 @@ void t_php_generator::generate_serialize_struct(ofstream &out,
 /**
  * Writes out a container
  */
-void t_php_generator::generate_serialize_container(ofstream &out,
+void t_php_generator::generate_serialize_container(ofstream& out,
+                                                   t_name_generator& namer,
                                                    t_type* ttype,
                                                    string prefix) {
   scope_up(out);
@@ -3204,27 +3241,27 @@ void t_php_generator::generate_serialize_container(ofstream &out,
   scope_up(out);
 
   if (ttype->is_map()) {
-    string kiter = tmp("kiter");
-    string viter = tmp("viter");
+    string kiter = namer("kiter");
+    string viter = namer("viter");
     indent(out) <<
       "foreach ($" << prefix << " as " <<
       "$" << kiter << " => $" << viter << ")" << endl;
     scope_up(out);
-    generate_serialize_map_element(out, (t_map*)ttype, kiter, viter);
+    generate_serialize_map_element(out, namer, (t_map*)ttype, kiter, viter);
     scope_down(out);
   } else if (ttype->is_set()) {
-    string iter = tmp("iter");
+    string iter = namer("iter");
     indent(out) <<
       "foreach ($" << prefix << " as $" << iter << " => $true)" << endl;
     scope_up(out);
-    generate_serialize_set_element(out, (t_set*)ttype, iter);
+    generate_serialize_set_element(out, namer, (t_set*)ttype, iter);
     scope_down(out);
   } else if (ttype->is_list()) {
-    string iter = tmp("iter");
+    string iter = namer("iter");
     indent(out) <<
       "foreach ($" << prefix << " as $" << iter << ")" << endl;
     scope_up(out);
-    generate_serialize_list_element(out, (t_list*)ttype, iter);
+    generate_serialize_list_element(out, namer, (t_list*)ttype, iter);
     scope_down(out);
   }
 
@@ -3250,35 +3287,38 @@ void t_php_generator::generate_serialize_container(ofstream &out,
  * Serializes the members of a map.
  *
  */
-void t_php_generator::generate_serialize_map_element(ofstream &out,
+void t_php_generator::generate_serialize_map_element(ofstream& out,
+                                                     t_name_generator& namer,
                                                      t_map* tmap,
                                                      string kiter,
                                                      string viter) {
   t_field kfield(tmap->get_key_type(), kiter);
-  generate_serialize_field(out, &kfield, "");
+  generate_serialize_field(out, namer, &kfield, "");
 
   t_field vfield(tmap->get_val_type(), viter);
-  generate_serialize_field(out, &vfield, "");
+  generate_serialize_field(out, namer, &vfield, "");
 }
 
 /**
  * Serializes the members of a set.
  */
-void t_php_generator::generate_serialize_set_element(ofstream &out,
+void t_php_generator::generate_serialize_set_element(ofstream& out,
+                                                     t_name_generator& namer,
                                                      t_set* tset,
                                                      string iter) {
   t_field efield(tset->get_elem_type(), iter);
-  generate_serialize_field(out, &efield, "");
+  generate_serialize_field(out, namer, &efield, "");
 }
 
 /**
  * Serializes the members of a list.
  */
-void t_php_generator::generate_serialize_list_element(ofstream &out,
+void t_php_generator::generate_serialize_list_element(ofstream& out,
+                                                      t_name_generator& namer,
                                                       t_list* tlist,
                                                       string iter) {
   t_field efield(tlist->get_elem_type(), iter);
-  generate_serialize_field(out, &efield, "");
+  generate_serialize_field(out, namer, &efield, "");
 }
 
 /**

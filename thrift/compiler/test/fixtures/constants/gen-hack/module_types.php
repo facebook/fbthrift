@@ -124,21 +124,21 @@ class Internship implements IThriftStruct {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Internship');
     if ($this->weeks !== null) {
-      $_val1 = $this->weeks;
+      $_val0 = $this->weeks;
       $xfer += $output->writeFieldBegin('weeks', TType::I32, 1);
-      $xfer += $output->writeI32($_val1);
+      $xfer += $output->writeI32($_val0);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->title !== null) {
-      $_val2 = $this->title;
+      $_val1 = $this->title;
       $xfer += $output->writeFieldBegin('title', TType::STRING, 2);
-      $xfer += $output->writeString($_val2);
+      $xfer += $output->writeString($_val1);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->employer !== null) {
-      $_val3 = Company::assert($this->employer);
+      $_val2 = Company::assert($this->employer);
       $xfer += $output->writeFieldBegin('employer', TType::I32, 3);
-      $xfer += $output->writeI32($_val3);
+      $xfer += $output->writeI32($_val2);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

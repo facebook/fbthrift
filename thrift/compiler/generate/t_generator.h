@@ -468,6 +468,22 @@ class t_generator_factory {
   std::string documentation_;
 };
 
+class t_name_generator {
+ public:
+  t_name_generator() {}
+
+  std::string operator()() { return operator()("tmp_"); }
+
+  std::string operator()(const char* prefix) {
+    std::ostringstream out;
+    out << prefix << counter_++;
+    return out.str();
+  }
+
+ private:
+  int counter_{0};
+};
+
 template <typename generator>
 class t_generator_factory_impl : public t_generator_factory {
  public:

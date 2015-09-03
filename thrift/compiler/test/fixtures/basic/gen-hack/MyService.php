@@ -1549,9 +1549,9 @@ class MyService_getRandomData_result implements IThriftStruct {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_getRandomData_result');
     if ($this->success !== null) {
-      $_val2 = $this->success;
+      $_val0 = $this->success;
       $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
-      $xfer += $output->writeString($_val2);
+      $xfer += $output->writeString($_val0);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -1627,9 +1627,9 @@ class MyService_hasDataById_args implements IThriftStruct {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_hasDataById_args');
     if ($this->id !== null) {
-      $_val3 = $this->id;
+      $_val0 = $this->id;
       $xfer += $output->writeFieldBegin('id', TType::I64, 1);
-      $xfer += $output->writeI64($_val3);
+      $xfer += $output->writeI64($_val0);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -1700,9 +1700,9 @@ class MyService_hasDataById_result implements IThriftStruct {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_hasDataById_result');
     if ($this->success !== null) {
-      $_val4 = $this->success;
+      $_val0 = $this->success;
       $xfer += $output->writeFieldBegin('success', TType::BOOL, 0);
-      $xfer += $output->writeBool($_val4);
+      $xfer += $output->writeBool($_val0);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -1778,9 +1778,9 @@ class MyService_getDataById_args implements IThriftStruct {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_getDataById_args');
     if ($this->id !== null) {
-      $_val5 = $this->id;
+      $_val0 = $this->id;
       $xfer += $output->writeFieldBegin('id', TType::I64, 1);
-      $xfer += $output->writeI64($_val5);
+      $xfer += $output->writeI64($_val0);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -1851,9 +1851,9 @@ class MyService_getDataById_result implements IThriftStruct {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_getDataById_result');
     if ($this->success !== null) {
-      $_val6 = $this->success;
+      $_val0 = $this->success;
       $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
-      $xfer += $output->writeString($_val6);
+      $xfer += $output->writeString($_val0);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -1947,15 +1947,15 @@ class MyService_putDataById_args implements IThriftStruct {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_putDataById_args');
     if ($this->id !== null) {
-      $_val7 = $this->id;
+      $_val0 = $this->id;
       $xfer += $output->writeFieldBegin('id', TType::I64, 1);
-      $xfer += $output->writeI64($_val7);
+      $xfer += $output->writeI64($_val0);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->data !== null) {
-      $_val8 = $this->data;
+      $_val1 = $this->data;
       $xfer += $output->writeFieldBegin('data', TType::STRING, 2);
-      $xfer += $output->writeString($_val8);
+      $xfer += $output->writeString($_val1);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -2103,15 +2103,15 @@ class MyService_lobDataById_args implements IThriftStruct {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_lobDataById_args');
     if ($this->id !== null) {
-      $_val9 = $this->id;
+      $_val0 = $this->id;
       $xfer += $output->writeFieldBegin('id', TType::I64, 1);
-      $xfer += $output->writeI64($_val9);
+      $xfer += $output->writeI64($_val0);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->data !== null) {
-      $_val10 = $this->data;
+      $_val1 = $this->data;
       $xfer += $output->writeFieldBegin('data', TType::STRING, 2);
-      $xfer += $output->writeString($_val10);
+      $xfer += $output->writeString($_val1);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
