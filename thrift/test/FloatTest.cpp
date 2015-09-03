@@ -16,20 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#define BOOST_TEST_MODULE FloatTest
-#include <boost/test/unit_test.hpp>
+
 #include <thrift/test/gen-cpp/FloatTest_types.h>
 
-BOOST_AUTO_TEST_SUITE( FloatTest )
+#include <gtest/gtest.h>
 
-BOOST_AUTO_TEST_CASE( test_float ) {
+TEST(FloatTest, example) {
   foo f;
   f.bar = 5;
-  BOOST_CHECK_EQUAL(f.bar, 5);
-  BOOST_CHECK_EQUAL(f.baz, 1);
-  BOOST_CHECK_EQUAL(f.baz1, (float)12.345);
+  EXPECT_EQ(5, f.bar);
+  EXPECT_EQ(1, f.baz);
+  EXPECT_EQ((float)12.345, f.baz1);
   f.baz = (float)12.345;
-  BOOST_CHECK_EQUAL(f.baz, (float)12.345);
+  EXPECT_EQ((float)12.345, f.baz);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -17,91 +17,66 @@
  * under the License.
  */
 
-#include <boost/test/unit_test.hpp>
 #include <iostream>
 #include <climits>
 #include <cassert>
-#include <transport/TBufferTransports.h>
-#include <protocol/TBinaryProtocol.h>
-#include "gen-cpp/ThriftTest_types.h"
+#include <folly/Memory.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
+#include <thrift/test/gen-cpp/test_types.h>
 
-BOOST_AUTO_TEST_SUITE( TMemoryBufferTest )
+#include <gtest/gtest.h>
 
-BOOST_AUTO_TEST_CASE( test_roundtrip ) {
-    using apache::thrift::transport::TMemoryBuffer;
-    using apache::thrift::protocol::TBinaryProtocol;
-    using std::shared_ptr;
+using namespace std;
+using namespace folly;
+using apache::thrift::transport::TMemoryBuffer;
+using apache::thrift::transport::TTransportException;
+using apache::thrift::protocol::TBinaryProtocol;
 
-    shared_ptr<TMemoryBuffer> strBuffer(new TMemoryBuffer());
-    shared_ptr<TBinaryProtocol> binaryProtcol(new TBinaryProtocol(strBuffer));
+TEST(TMemoryBufferTest,  test_roundtrip) {
+  auto strBuffer = make_shared<TMemoryBuffer>();
+  auto binaryProtcol = make_shared<TBinaryProtocol>(strBuffer);
 
-    thrift::test::Xtruct a;
-    a.i32_thing = 10;
-    a.i64_thing = 30;
-    a.string_thing ="holla back a";
+  test_cpp::struct1 a;
+  a.a = 10;
+  a.b = "holla back a";
 
-    a.write(binaryProtcol.get());
-    std::string serialized = strBuffer->getBufferAsString();
+  a.write(binaryProtcol.get());
+  string serialized = strBuffer->getBufferAsString();
 
-    shared_ptr<TMemoryBuffer> strBuffer2(new TMemoryBuffer());
-    shared_ptr<TBinaryProtocol> binaryProtcol2(new TBinaryProtocol(strBuffer2));
+  auto strBuffer2 = make_shared<TMemoryBuffer>();
+  auto binaryProtcol2 = make_shared<TBinaryProtocol>(strBuffer2);
 
-    strBuffer2->resetBuffer((uint8_t*)serialized.data(), serialized.length());
-    thrift::test::Xtruct a2;
-    a2.read(binaryProtcol2.get());
+  strBuffer2->resetBuffer((uint8_t*)serialized.data(), serialized.length());
+  test_cpp::struct1 a2;
+  a2.read(binaryProtcol2.get());
 
-    assert(a == a2);
-  }
+  EXPECT_EQ(a, a2);
+}
 
-BOOST_AUTO_TEST_CASE( test_copy )
-  {
-    using apache::thrift::transport::TMemoryBuffer;
-    using std::string;
-    using std::cout;
-    using std::endl;
+TEST(TMemoryBufferTest,  test_copy) {
+  auto str1 = make_unique<string>("abcd1234");
+  TMemoryBuffer buf((uint8_t*)str1->data(), str1->length(), TMemoryBuffer::COPY);
+  str1 = nullptr;
 
-    string* str1 = new string("abcd1234");
-    const char* data1 = str1->data();
-    TMemoryBuffer buf((uint8_t*)str1->data(), str1->length(), TMemoryBuffer::COPY);
-    delete str1;
-    string* str2 = new string("plsreuse");
-    bool obj_reuse = (str1 == str2);
-    bool dat_reuse = (data1 == str2->data());
-    cout << "Object reuse: " << obj_reuse << "   Data reuse: " << dat_reuse
-      << ((obj_reuse && dat_reuse) ? "   YAY!" : "") << endl;
-    delete str2;
+  string str3 = "wxyz", str4 = "6789";
+  buf.readAppendToString(str3, 4);
+  buf.readAppendToString(str4, std::numeric_limits<int>::max());
 
-    string str3 = "wxyz", str4 = "6789";
-    buf.readAppendToString(str3, 4);
-    buf.readAppendToString(str4, INT_MAX);
+  EXPECT_EQ("wxyzabcd", str3);
+  EXPECT_EQ("67891234", str4);
+}
 
-    assert(str3 == "wxyzabcd");
-    assert(str4 == "67891234");
-  }
+TEST(TMemoryBufferTest,  test_exceptions) {
+  char data[] = "foo\0bar";
 
-BOOST_AUTO_TEST_CASE( test_exceptions )
-  {
-    using apache::thrift::transport::TTransportException;
-    using apache::thrift::transport::TMemoryBuffer;
-    using std::string;
+  TMemoryBuffer buf1((uint8_t*)data, 7, TMemoryBuffer::OBSERVE);
+  string str = buf1.getBufferAsString();
+  ASSERT_EQ(7, str.length());
 
-    char data[] = "foo\0bar";
+  buf1.resetBuffer();
+  EXPECT_THROW(buf1.write((const uint8_t*)"foo", 3), TTransportException);
 
-    TMemoryBuffer buf1((uint8_t*)data, 7, TMemoryBuffer::OBSERVE);
-    string str = buf1.getBufferAsString();
-    assert(str.length() == 7);
-    buf1.resetBuffer();
-    try {
-      buf1.write((const uint8_t*)"foo", 3);
-      assert(false);
-    } catch (TTransportException& ex) {}
-
-    TMemoryBuffer buf2((uint8_t*)data, 7, TMemoryBuffer::COPY);
-    try {
-      buf2.write((const uint8_t*)"bar", 3);
-    } catch (TTransportException& ex) {
-      assert(false);
-    }
-  }
-
-BOOST_AUTO_TEST_SUITE_END()
+  TMemoryBuffer buf2((uint8_t*)data, 7, TMemoryBuffer::COPY);
+  buf2.write((const uint8_t*)"bar", 3);
+}

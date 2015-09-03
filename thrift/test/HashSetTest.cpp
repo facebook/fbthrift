@@ -17,27 +17,23 @@
  * under the License.
  */
 
-#define BOOST_TEST_MODULE HashSetTest
-#include <boost/test/unit_test.hpp>
 #include <thrift/test/gen-cpp/HashSetTest_types.h>
 
-BOOST_AUTO_TEST_SUITE( HashSetTest )
+#include <gtest/gtest.h>
 
-BOOST_AUTO_TEST_CASE( test_hashset ) {
+TEST(HashSetTest, example) {
   foo f;
   f.bar.insert(5);
-  BOOST_CHECK_EQUAL(f.bar.count(5), 1);
+  EXPECT_EQ(1, f.bar.count(5));
   f.bar.insert(6);
-  BOOST_CHECK_EQUAL(f.bar.count(6), 1);
+  EXPECT_EQ(1, f.bar.count(6));
 
   f.bar.erase(5);
-  BOOST_CHECK_EQUAL(f.bar.count(5), 0);
+  EXPECT_EQ(0, f.bar.count(5));
 
   f.baz.insert("cool");
-  BOOST_CHECK_EQUAL(f.baz.count("cool"), 1);
+  EXPECT_EQ(1, f.baz.count("cool"));
 
   f.baz.erase("cool");
-  BOOST_CHECK_EQUAL(f.baz.count("cool"), 0);
+  EXPECT_EQ(0, f.baz.count("cool"));
 }
-
-BOOST_AUTO_TEST_SUITE_END()
