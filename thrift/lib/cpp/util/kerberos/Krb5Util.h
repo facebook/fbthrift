@@ -164,6 +164,10 @@ public:
     return !(*this == other);
   }
 
+  // This is an unofficial agreement and may be not true for
+  // 'unusual' kerberos setups
+  bool isUser() const;
+
   krb5_context get_context() const { return context_; }
 
 private:

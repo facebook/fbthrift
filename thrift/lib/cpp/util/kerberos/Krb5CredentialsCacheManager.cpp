@@ -27,17 +27,22 @@
 #include <folly/ScopeGuard.h>
 #include <folly/String.h>
 
-// DO NOT modify this flag from your application
 #ifndef NO_LIB_GFLAGS
+// DO NOT modify this flag from your application
 DEFINE_string(
   thrift_cc_manager_kill_switch_file,
   "/var/thrift_security/disable_cc_manager",
   "A file, which when present, acts as a kill switch for and disables the cc "
   " manager thread running on the host.");
+DEFINE_bool(thrift_cc_manager_renew_user_creds,
+            false,
+            "If true will try to renew *@REALM and */admin@REALM creds");
+
 #else
 namespace apache { namespace thrift { namespace krb5 {
 const std::string FLAGS_thrift_cc_manager_kill_switch_file(
   "/var/thrift_security/disable_cc_manager");
+const bool FLAGS_thrift_cc_manager_renew_user_creds = false;
 }}} // namespace apache::thrift::krb5
 #endif
 
@@ -62,7 +67,6 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
     , logger_(logger)
     , ccacheTypeIsMemory_(false)
     , updateFileCacheEnabled_(true) {
-
   try {
     // These calls can throw if the context cannot be initialized for some
     // reason, e.g. bad config format, etc.
@@ -130,24 +134,28 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
           logger->logEnd("init_cache_store");
         }
 
-        // If the cache store needs to be renewed, renew it
-        auto lifetime = store_->getLifetime();
-        bool reached_renew_time = reachedRenewTime(
-          lifetime, folly::to<string>(store_->getClientPrincipal()));
-        if (reached_renew_time) {
-          logger->logStart("build_renewed_cache");
-          uint64_t renewCount = store_->renewCreds();
-          logger->logEnd(
-            "build_renewed_cache", folly::to<std::string>(renewCount));
-        }
+        // If not a user credential and the cache store needs to be renewed,
+        // renew it
+        Krb5Principal clientPrinc = store_->getClientPrincipal();
+        if (!clientPrinc.isUser() || FLAGS_thrift_cc_manager_renew_user_creds) {
+          auto lifetime = store_->getLifetime();
+          bool reached_renew_time = reachedRenewTime(
+            lifetime, folly::to<string>(clientPrinc));
+          if (reached_renew_time) {
+            logger->logStart("build_renewed_cache");
+            uint64_t renewCount = store_->renewCreds();
+            logger->logEnd(
+              "build_renewed_cache", folly::to<std::string>(renewCount));
+          }
 
-        if (updateFileCacheEnabled_) {
-          // Persist cache store to a file
-          logger->logStart("persist_ccache");
-          int outSize = writeOutCache(
-            Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE);
-          logger->logEnd(
-            "persist_ccache", folly::to<std::string>(outSize));
+          if (updateFileCacheEnabled_) {
+            // Persist cache store to a file
+            logger->logStart("persist_ccache");
+            int outSize = writeOutCache(
+              Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE);
+            logger->logEnd(
+              "persist_ccache", folly::to<std::string>(outSize));
+          }
         }
       } catch (const std::runtime_error& e) {
         // Notify the waitForCache functions that an error happened.
@@ -537,6 +545,11 @@ void Krb5CredentialsCacheManager::initCacheStore() {
     }
     logger_->logEnd(
       "renew_expired_princ", folly::to<std::string>(renewCount));
+  }
+
+  if(!store_->isInitialized()) {
+    throw std::runtime_error("Ccache store initialization failed: " +
+        err_string);
   }
 }
 

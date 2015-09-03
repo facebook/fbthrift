@@ -21,9 +21,19 @@
 #include <string>
 #include <vector>
 #include <folly/ScopeGuard.h>
+#include <folly/String.h>
 
 #include <thrift/lib/cpp/util/kerberos/FBKrb5GetCreds.h>
 
+#ifndef NO_LIB_GFLAGS
+DEFINE_string (thrift_krb5_user_instances, "admin,root,sudo",
+       "List of possible instances(second component) of "
+       "user kerberos credentials. Separated by ','. ");
+#else
+namespace apache { namespace thrift { namespace krb5 {
+  const std::string FLAGS_thrift_krb5_user_instances = "admin,root,sudo";
+}}} // namespace apache::thrift::krb5
+#endif
 static const int kKeytabNameMaxLength = 512;
 
 extern "C" {
@@ -207,6 +217,20 @@ krb5_principal Krb5Principal::release() {
   krb5_principal ret = principal_;
   principal_ = nullptr;
   return ret;
+}
+
+bool Krb5Principal::isUser() const {
+  if (size() == 1) {
+    return true;
+  }
+  if (size() > 2) {
+    return false;
+  }
+  std::vector<std::string> userInstances;
+  folly::split(",", FLAGS_thrift_krb5_user_instances, userInstances, true);
+  return std::find(userInstances.begin(),
+                   userInstances.end(),
+                   getComponent(1)) != userInstances.end();
 }
 
 std::ostream& operator<<(std::ostream& os, const Krb5Principal& obj) {
