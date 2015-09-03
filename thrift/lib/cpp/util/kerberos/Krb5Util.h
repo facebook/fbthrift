@@ -103,7 +103,9 @@ public:
 
 private:
   mutable krb5_context context_;
+#ifdef KRB5_HAS_INIT_THREAD_LOCAL_CONTEXT
   bool threadLocal_;
+#endif
 };
 
 /**

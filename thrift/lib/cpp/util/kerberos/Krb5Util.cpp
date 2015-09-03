@@ -86,7 +86,10 @@ Krb5Context::Krb5Context(bool thread_local_ctx)
                                    : ContextType::NORMAL) {}
 
 Krb5Context::Krb5Context(ContextType type)
-    : threadLocal_(ContextType::THREAD_LOCAL == type) {
+#ifdef KRB5_HAS_INIT_THREAD_LOCAL_CONTEXT
+    : threadLocal_(ContextType::THREAD_LOCAL == type)
+#endif
+{
   krb5_error_code code = 0;
   switch (type) {
   case ContextType::NORMAL:
@@ -109,17 +112,17 @@ Krb5Context::Krb5Context(ContextType type)
 }
 
 Krb5Context::~Krb5Context() {
-#ifndef KRB5_HAS_INIT_THREAD_LOCAL_CONTEXT
+#ifdef KRB5_HAS_INIT_THREAD_LOCAL_CONTEXT
+  if (threadLocal_) {
+    // No need to free thread-local contexts. There is only one per thread,
+    // and they're updated as needed.
+    return;
+  }
+#endif
+
   // If thread-local context is not define, we're using regular context,
   // so we should free to avoid leaks.
   krb5_free_context(context_);
-#else
-  if (!threadLocal_) {
-    // No need to free thread-local contexts. There is only one per thread,
-    // and they're updated as needed.
-    krb5_free_context(context_);
-  }
-#endif
 }
 
 krb5_context Krb5Context::get() const {
