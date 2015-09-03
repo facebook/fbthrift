@@ -668,7 +668,6 @@ TEST(ThreadManagerTest, NumaThreadManagerTest) {
   auto checkFunc = FunctionRunner::create([&](){
       auto data = RequestContext::get()->getContextData(
         "numa");
-      // Boost_check macros are not thread safe :(
       // Check that the request is not bound unless requested
       if (nullptr != data) {
         failed = true;
