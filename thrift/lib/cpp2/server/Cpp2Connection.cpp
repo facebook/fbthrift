@@ -264,9 +264,10 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
+  auto* hreq = static_cast<HeaderServerChannel::HeaderRequest*>(req.get());
   bool useHttpHandler = false;
   // Any POST not for / should go to the status handler
-  if (channel_->getClientType() == THRIFT_HTTP_SERVER_TYPE) {
+  if (hreq->getHeader()->getClientType() == THRIFT_HTTP_SERVER_TYPE) {
     auto buf = req->getBuf();
     // 7 == length of "POST / " - we are matching on the path
     if (buf->length() >= 7 &&
@@ -309,7 +310,6 @@ void Cpp2Connection::requestReceived(
   int activeRequests = worker_->activeRequests_;
   activeRequests += worker_->pendingCount();
 
-  auto* hreq = static_cast<HeaderServerChannel::HeaderRequest*>(req.get());
   if (server->isOverloaded(activeRequests, hreq->getHeader())) {
     killRequest(*req,
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
