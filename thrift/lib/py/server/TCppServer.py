@@ -19,6 +19,13 @@ class TCppConnectionContext(TConnectionContext):
     def getClientPrincipal(self):
         return self.context_data.getClientIdentity()
 
+    def getClientPrincipalUser(self):
+        principal = self.getClientPrincipal()
+        user, match, domain = principal.partition('@')
+        if match:
+            return user
+        return None
+
     def getPeerName(self):
         return self.context_data.getPeerAddress()
 
