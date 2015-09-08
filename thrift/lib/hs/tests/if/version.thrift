@@ -4,5 +4,5 @@ struct Foo1 {
 
 struct Foo2 {
   1: i32 bar,
-  2: i32 baz,
+  2: list<list<i32>> baz,
 }

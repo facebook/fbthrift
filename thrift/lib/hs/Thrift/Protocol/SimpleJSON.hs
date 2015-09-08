@@ -161,8 +161,9 @@ parseAnyValue = choice $
                   ]
   where
     skipBetween :: Char -> Char -> Parser ()
-    skipBetween a b = between a b $ void (PC.satisfy (\c -> c /= a && c /= b))
-                                          <|> skipBetween a b
+    skipBetween a b = between a b $ void $ many $
+                      void (PC.takeWhile1 $ \c -> c /= a && c /= b)
+                      <|> skipBetween a b
 
 parseJSONStruct :: TypeMap -> Parser (Map.HashMap Int16 (LT.Text, ThriftVal))
 parseJSONStruct tmap = Map.fromList . catMaybes <$> parseField
