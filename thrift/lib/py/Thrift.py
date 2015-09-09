@@ -103,6 +103,9 @@ class TProcessor:
     def process(self, iprot, oprot, server_context=None):
         pass
 
+    def onewayMethods(self):
+        return ()
+
 
 class TException(Exception):
 

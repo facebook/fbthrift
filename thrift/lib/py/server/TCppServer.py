@@ -86,6 +86,9 @@ class _ProcessorAdapter(object):
             # Don't let exceptions escape back into C++
             traceback.print_exc()
 
+    def oneway_methods(self):
+        return self.processor.onewayMethods()
+
 class TCppServer(CppServerWrapper, TServer):
     def __init__(self, processor):
         CppServerWrapper.__init__(self)

@@ -2671,6 +2671,14 @@ void t_py_generator::generate_service_server(t_service* tservice,
 
   indent_up();
 
+  f_service_ << indent() << "_onewayMethods = (";
+  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    if ((*f_iter)->is_oneway()) {
+      f_service_ << "\"" << (*f_iter)->get_name() << "\",";
+    }
+  }
+  f_service_ << ")" << endl << endl;
+
   indent(f_service_) <<
     "def __init__(self, handler):" << endl;
   indent_up();
@@ -2707,6 +2715,17 @@ void t_py_generator::generate_service_server(t_service* tservice,
   }
   indent_down();
   f_service_ << endl;
+
+  f_service_ << indent() << "def onewayMethods(self):" << endl;
+  indent_up();
+  f_service_ << indent() << "l = []" << endl;
+  if (!extends.empty()) {
+    f_service_ << indent() << "l.extend(" << extends << "." << class_prefix
+               << "Processor.onewayMethods(self))" << endl;
+  }
+  f_service_ << indent() << "l.extend(self._onewayMethods)" << endl
+             << indent() << "return tuple(l)" << endl << endl;
+  indent_down();
 
   // Generate the server implementation
   if (gen_asyncio_) {

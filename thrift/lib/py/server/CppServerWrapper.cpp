@@ -28,6 +28,9 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 
@@ -151,7 +154,9 @@ private:
 class PythonAsyncProcessor : public AsyncProcessor {
 public:
   explicit PythonAsyncProcessor(std::shared_ptr<object> adapter)
-    : adapter_(adapter) {}
+    : adapter_(adapter) {
+    getPythonOnewayMethods();
+  }
 
   // Create a task and add it to thread manager's queue. Essentially the same
   // as GeneratedAsyncProcessor's processInThread method.
@@ -165,7 +170,6 @@ public:
     if (oneway && !req->isOneway()) {
       req->sendReply(std::unique_ptr<folly::IOBuf>());
     }
-
     auto preq = req.get();
     auto buf_mw = folly::makeMoveWrapper(std::move(buf));
     try {
@@ -275,12 +279,52 @@ public:
   }
 
   bool isOnewayMethod(const folly::IOBuf* buf, const THeader* header) override {
-    //TODO haijunz: make oneway work the same as cpp
-    return false;
+    auto protType = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>
+      (header->getProtocolId());
+    switch (protType) {
+      case apache::thrift::protocol::T_BINARY_PROTOCOL:
+        return isOnewayMethod<apache::thrift::BinaryProtocolReader>(buf);
+      case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+        return isOnewayMethod<apache::thrift::CompactProtocolReader>(buf);
+      default:
+        LOG(ERROR) << "Invalid protType: " << protType;
+        return false;
+    }
   }
 
 private:
+  template <typename ProtocolReader>
+  bool isOnewayMethod(const folly::IOBuf* buf) {
+    std::string fname;
+    MessageType mtype;
+    int32_t protoSeqId = 0;
+    ProtocolReader iprot;
+    iprot.setInput(buf);
+    try {
+      iprot.readMessageBegin(fname, mtype, protoSeqId);
+      return onewayMethods_.find(fname) != onewayMethods_.end();
+    } catch (const std::exception& ex) {
+      LOG(ERROR) << "received invalid message from client: " << ex.what();
+      return false;
+    }
+  }
+
+  void getPythonOnewayMethods() {
+    PyGILState_STATE state = PyGILState_Ensure();
+    SCOPE_EXIT { PyGILState_Release(state); };
+    object ret = adapter_->attr("oneway_methods")();
+    if (ret.is_none()) {
+      LOG(ERROR) << "Unexpected error in processor method";
+      return;
+    }
+    tuple t = extract<tuple>(ret);
+    for (int i = 0; i < len(t); i++) {
+      onewayMethods_.insert(extract<std::string>(t[i]));
+    }
+  }
+
   std::shared_ptr<object> adapter_;
+  std::unordered_set<std::string> onewayMethods_;
 };
 
 class PythonAsyncProcessorFactory : public AsyncProcessorFactory {

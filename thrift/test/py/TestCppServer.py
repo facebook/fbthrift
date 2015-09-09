@@ -104,13 +104,16 @@ class OnewayProcess(multiprocessing.Process):
 
     def run(self):
         client = getClient(self.addr)
+
+        hw = "hello, world"
+        hw_spaced = "h e l l o ,   w o r l d"
+
         client.noop()
-        # Hold the connection for 0.5 sec. If the connection is closed
-        # too soon and the task is still on the thread manager queue, the
-        # task can be marked as inactive and won't be executed. In cpp
-        # oneway task is never marked as inactive but PythonProcessor
-        # doesn't know whether a task is oneway or not.
-        time.sleep(0.5)
+        # Requests sent after the oneway request still get responses
+        result = client.space(hw)
+        if isinstance(result, bytes):
+            result = result.decode('latin1')
+        assert result == hw_spaced
 
 class TestHeaderProcessor(TProcessor, BaseFacebookTestCase):
     def process(self, iprot, oprot, server_context=None):

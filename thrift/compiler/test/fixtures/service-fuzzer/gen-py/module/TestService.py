@@ -517,11 +517,18 @@ class Client(Iface):
 
 
 class Processor(Iface, TProcessor):
+  _onewayMethods = ()
+
   def __init__(self, handler):
     TProcessor.__init__(self)
     self._handler = handler
     self._processMap = {}
     self._processMap["init"] = Processor.process_init
+
+  def onewayMethods(self):
+    l = []
+    l.extend(self._onewayMethods)
+    return tuple(l)
 
   @process_main()
   def process(self,): pass
@@ -540,11 +547,18 @@ class Processor(Iface, TProcessor):
 Iface._processor_type = Processor
 
 class ContextProcessor(ContextIface, TProcessor):
+  _onewayMethods = ()
+
   def __init__(self, handler):
     TProcessor.__init__(self)
     self._handler = handler
     self._processMap = {}
     self._processMap["init"] = ContextProcessor.process_init
+
+  def onewayMethods(self):
+    l = []
+    l.extend(self._onewayMethods)
+    return tuple(l)
 
   @process_main()
   def process(self,): pass
