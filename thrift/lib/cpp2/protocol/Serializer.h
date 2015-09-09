@@ -32,7 +32,7 @@ namespace apache { namespace thrift {
 template <typename Reader, typename Writer>
 struct Serializer {
   template <class T>
-  static void deserialize(
+  static uint32_t deserialize(
       const folly::IOBuf* buf, T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
     Reader reader(sharing);
@@ -40,22 +40,22 @@ struct Serializer {
 
     // This can be obj.read(&reader);
     // if you don't need to support thrift1-compatibility types
-    apache::thrift::Cpp2Ops<T>::read(&reader, &obj);
+    return apache::thrift::Cpp2Ops<T>::read(&reader, &obj);
   }
 
   template <class T>
-  static void deserialize(
+  static uint32_t deserialize(
       folly::ByteRange range, T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
     folly::IOBuf buf(folly::IOBuf::WRAP_BUFFER, range);
-    deserialize(&buf, obj, sharing);
+    return deserialize(&buf, obj, sharing);
   }
 
   template <class T>
-  static void deserialize(
+  static uint32_t deserialize(
       folly::StringPiece range, T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
-    deserialize(folly::ByteRange(range), obj, sharing);
+    return deserialize(folly::ByteRange(range), obj, sharing);
   }
 
   template <class T>
