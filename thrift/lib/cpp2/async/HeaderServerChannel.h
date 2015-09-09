@@ -209,6 +209,7 @@ private:
       std::unique_ptr<folly::IOBuf>&& buf,
       std::unique_ptr<apache::thrift::transport::THeader>&& header);
 
+  static std::string getTHeaderPayloadString(folly::IOBuf* buf);
   static std::string getTransportDebugString(
       apache::thrift::async::TAsyncTransport *transport);
 

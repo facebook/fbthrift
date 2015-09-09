@@ -37,6 +37,7 @@ using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::TApplicationException;
 using apache::thrift::server::TServerObserver;
+using apache::thrift::protocol::PROTOCOL_TYPES;
 
 namespace apache { namespace thrift {
 
@@ -127,6 +128,39 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
     channel_.checkSupportedClient(ct);
   }
 
+  // Check if protocol used in the buffer is consistent with the protocol
+  // id in the header.
+
+  // Initialize it to a value never used on the wire
+  PROTOCOL_TYPES protInBuf = PROTOCOL_TYPES::T_DEBUG_PROTOCOL;
+  if (buf->data()[0] == 0x82) {
+    protInBuf = PROTOCOL_TYPES::T_COMPACT_PROTOCOL;
+  } else if (buf->data()[0] == 0x80) {
+    protInBuf = PROTOCOL_TYPES::T_BINARY_PROTOCOL;
+  } else if (ct != THRIFT_HTTP_SERVER_TYPE) {
+    LOG(ERROR) << "Received corrupted request from client: "
+               << getTransportDebugString(channel_.getTransport()) << ". "
+               << "Corrupted payload in header message. In message header, "
+               << "protoId: " << header->getProtocolId() << ", "
+               << "clientType: " << folly::to<std::string>(ct) << ". "
+               << "First few bytes of payload: "
+               << getTHeaderPayloadString(buf.get());
+
+  }
+
+  if (protInBuf != PROTOCOL_TYPES::T_DEBUG_PROTOCOL &&
+      header->getProtocolId() != protInBuf) {
+    LOG(ERROR) << "Received corrupted request from client: "
+               << getTransportDebugString(channel_.getTransport()) << ". "
+               << "Protocol mismatch, in message header, protocolId: "
+               << folly::to<std::string>(header->getProtocolId()) << ", "
+               << "clientType: " << folly::to<std::string>(ct) << ", "
+               << "in payload, protocolId: "
+               << folly::to<std::string>(protInBuf)
+               << ". First few bytes of payload: "
+               << getTHeaderPayloadString(buf.get());
+  }
+
   // In order to allow negotiation to happen when the client requests
   // sasl but it's not supported, we don't throw an exception in the
   // sasl case.  Instead, we let the message bubble up, and check if
@@ -135,6 +169,13 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
 
   header->setMinCompressBytes(channel_.getMinCompressBytes());
   return make_tuple(std::move(buf), 0, std::move(header));
+}
+
+std::string
+HeaderServerChannel::getTHeaderPayloadString(IOBuf* buf) {
+  auto len = std::min<size_t>(buf->length(), 20);
+  return folly::cEscape<std::string>(
+      folly::StringPiece((const char*)buf->data(), len));
 }
 
 std::string
