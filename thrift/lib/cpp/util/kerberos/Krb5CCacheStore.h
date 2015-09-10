@@ -17,8 +17,6 @@
 #ifndef KRB5_CCACHE_STORE
 #define KRB5_CCACHE_STORE
 
-#include <boost/thread/shared_mutex.hpp>
-#include <boost/thread/locks.hpp>
 #include <condition_variable>
 #include <iostream>
 #include <krb5.h>
@@ -31,6 +29,8 @@
 #include <thrift/lib/cpp/util/kerberos/Krb5Tgts.h>
 #include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
+
+#include <folly/SharedMutex.h>
 
 namespace apache { namespace thrift { namespace krb5 {
 
@@ -46,10 +46,6 @@ class Krb5CCacheStore {
     : maxCacheSize_(maxCacheSize)
     , logger_(logger) {}
   virtual ~Krb5CCacheStore() {}
-
-  typedef boost::shared_mutex Lock;
-  typedef boost::unique_lock<Lock> WriteLock;
-  typedef boost::shared_lock<Lock> ReadLock;
 
   std::shared_ptr<Krb5CCache> waitForCache(
     const Krb5Principal& service,
@@ -86,9 +82,9 @@ class Krb5CCacheStore {
      void bumpCount();
      uint64_t getCount();
 
-     Lock lockTimeSeries;
+     folly::SharedMutex lockTimeSeries;
      folly::BucketedTimeSeries<uint64_t> timeSeries;
-     Lock lockCache;
+     folly::SharedMutex lockCache;
      // Credentials cache for the service
      std::shared_ptr<Krb5CCache> cache;
   };
@@ -121,7 +117,7 @@ class Krb5CCacheStore {
   std::queue<std::string> cacheItemQueue_;
   int maxCacheSize_;
 
-  Lock serviceDataMapLock_;
+  folly::SharedMutex serviceDataMapLock_;
   DataMapType serviceDataMap_;
 
   /**

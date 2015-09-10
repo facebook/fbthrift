@@ -51,13 +51,13 @@ Krb5CCacheStore::ServiceData::ServiceData() :
 }
 
 void Krb5CCacheStore::ServiceData::bumpCount() {
-  WriteLock guard(lockTimeSeries);
+  folly::SharedMutex::WriteHolder guard(lockTimeSeries);
   time_t now = time(nullptr);
   timeSeries.addValue(std::chrono::seconds(now), 1);
 }
 
 uint64_t Krb5CCacheStore::ServiceData::getCount() {
-  ReadLock guard(lockTimeSeries);
+  folly::SharedMutex::ReadHolder guard(lockTimeSeries);
   // Note that we don't have a need to call timeSeries_.update(<time>)
   // here because we don't care to have the exact count at the current
   // time. We're ok with grabbing the count at the last update.
@@ -77,7 +77,7 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
   }
 
   {
-    ReadLock readLock(dataPtr->lockCache);
+    folly::SharedMutex::ReadHolder readLock(dataPtr->lockCache);
     // If there is a cache, just return it. Try with a read lock first
     // for performance reasons.
     if (dataPtr->cache) {
@@ -101,7 +101,7 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
 
   // Upgrade to a write lock, and initialize the cache only if it is not already
   // initialized by some other thread meanwhile.
-  WriteLock writeLock(dataPtr->lockCache);
+  folly::SharedMutex::WriteHolder writeLock(dataPtr->lockCache);
   if (!dataPtr->cache) {
     dataPtr->cache = std::move(tempCache);
   }
@@ -118,7 +118,7 @@ std::shared_ptr<Krb5CCacheStore::ServiceData>
 
   string service_name = folly::to<string>(service);
   {
-    ReadLock readLock(serviceDataMapLock_);
+    folly::SharedMutex::ReadHolder readLock(serviceDataMapLock_);
     auto found = serviceDataMap_.find(service_name);
     if (found != serviceDataMap_.end()) {
       // Get the element from the map if it exists
@@ -127,7 +127,7 @@ std::shared_ptr<Krb5CCacheStore::ServiceData>
   }
 
   // Not found, we need to create it
-  WriteLock writeLock(serviceDataMapLock_);
+  folly::SharedMutex::WriteHolder writeLock(serviceDataMapLock_);
   auto found = serviceDataMap_.find(service_name);
   if (found == serviceDataMap_.end()) {
     // If we reached the limit, then we need to free some room
@@ -250,7 +250,7 @@ void Krb5CCacheStore::importCache(
     count++;
   }
 
-  WriteLock service_data_lock(serviceDataMapLock_);
+  folly::SharedMutex::WriteHolder service_data_lock(serviceDataMapLock_);
   serviceDataMap_ = std::move(new_data_map);
   cacheItemQueue_ = std::move(new_data_queue);
   logger_->logEnd("import_service_creds", folly::to<std::string>(count));
@@ -258,9 +258,9 @@ void Krb5CCacheStore::importCache(
 
 std::vector<Krb5Principal> Krb5CCacheStore::getServicePrincipalList() {
   std::vector<Krb5Principal> services;
-  ReadLock lock(serviceDataMapLock_);
+  folly::SharedMutex::ReadHolder lock(serviceDataMapLock_);
   for (auto& data : serviceDataMap_) {
-    ReadLock lock(data.second->lockCache);
+    folly::SharedMutex::ReadHolder lock(data.second->lockCache);
     if (!data.second->cache) {
       continue;
     }
@@ -305,10 +305,10 @@ uint64_t Krb5CCacheStore::renewCreds() {
   // Update the main service data map with the renewed creds.
   // If the creds failed to be renewed and the old ones are stale, then
   // just delete the old ones.
-  WriteLock service_data_lock(serviceDataMapLock_);
+  folly::SharedMutex::WriteHolder service_data_lock(serviceDataMapLock_);
   for (auto& entry : serviceDataMap_) {
     auto renewed_entry = renewed_map.find(entry.first);
-    WriteLock lock(entry.second->lockCache);
+    folly::SharedMutex::WriteHolder lock(entry.second->lockCache);
     if (renewed_entry != renewed_map.end()) {
       entry.second->cache = std::move(renewed_entry->second);
     } else if (entry.second->cache) {
@@ -339,7 +339,7 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::exportCache(size_t limit) {
   {
     // Put 'limit' number of most frequently used credentials into the
     // top_services set.
-    ReadLock readLock(serviceDataMapLock_);
+    folly::SharedMutex::ReadHolder readLock(serviceDataMapLock_);
     vector<pair<string, uint64_t>> count_vector;
     for (auto& element : serviceDataMap_) {
       count_vector.emplace_back(element.first, element.second->getCount());
@@ -358,7 +358,7 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::exportCache(size_t limit) {
     }
 
     for (auto& data : serviceDataMap_) {
-      ReadLock lock(data.second->lockCache);
+      folly::SharedMutex::ReadHolder lock(data.second->lockCache);
       if (!data.second->cache) {
         continue;
       }
@@ -400,7 +400,7 @@ Krb5Principal Krb5CCacheStore::getClientPrincipal() {
 
 void Krb5CCacheStore::kInit(const Krb5Principal& client) {
   tgts_.kInit(client);
-  WriteLock service_data_lock(serviceDataMapLock_);
+  folly::SharedMutex::WriteHolder service_data_lock(serviceDataMapLock_);
   serviceDataMap_.clear();
   std::queue<std::string> emptyQueue;
   cacheItemQueue_ = std::move(emptyQueue);
