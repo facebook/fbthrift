@@ -22,7 +22,7 @@
 
 #include <thrift/compiler/parse/t_const.h>
 #include <stdint.h>
-#include <map>
+#include <utility>
 #include <vector>
 
 /**
@@ -85,10 +85,11 @@ class t_const_value {
   }
 
   void add_map(t_const_value* key, t_const_value* val) {
-    mapVal_[key] = val;
+    mapVal_.emplace_back(key, val);
   }
 
-  const std::map<t_const_value*, t_const_value*>& get_map() const {
+  const std::vector<std::pair<t_const_value*, t_const_value*>>& get_map()
+    const {
     return mapVal_;
   }
 
@@ -109,7 +110,11 @@ class t_const_value {
   }
 
  private:
-  std::map<t_const_value*, t_const_value*> mapVal_;
+
+  // Use a vector of pairs to store the contents of the map so that we
+  // preserve thrift-file ordering when generating per-language source.
+  std::vector<std::pair<t_const_value*, t_const_value*>> mapVal_;
+
   std::vector<t_const_value*> listVal_;
   std::string stringVal_;
   int64_t intVal_;

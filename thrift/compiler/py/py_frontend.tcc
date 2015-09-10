@@ -39,7 +39,8 @@ BOOST_PYTHON_MODULE(frontend) {
   // map<string, string> for t_type.annotations
   indexMap<string, string> ("str_to_str_map");
 
-  class_<std::map<t_const_value*, t_const_value*>>("const_to_const_map")
+  class_<std::vector<std::pair<t_const_value*, t_const_value*>>>
+      ("const_to_const_map")
     .def("items"       , &map_item<t_const_value*, t_const_value*>().items)
     ;
 

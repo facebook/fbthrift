@@ -328,8 +328,9 @@ void t_json_generator::print_const_value(t_const_value* tvalue) {
   case t_const_value::CV_MAP:
     {
       f_out_ << "{ ";
-      map<t_const_value*, t_const_value*> map_elems = tvalue->get_map();
-      map<t_const_value*, t_const_value*>::iterator map_iter;
+      const vector<pair<t_const_value*, t_const_value*>>& map_elems =
+        tvalue->get_map();
+      vector<pair<t_const_value*, t_const_value*>>::const_iterator map_iter;
       for (map_iter = map_elems.begin(); map_iter != map_elems.end();
            map_iter++) {
         if (!first) {

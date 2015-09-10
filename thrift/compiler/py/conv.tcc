@@ -17,6 +17,9 @@
  * under the License.
  */
 
+#include <utility>
+#include <vector>
+
 namespace thrift { namespace compiler { namespace py { namespace conv {
 
 template <class T>
@@ -56,13 +59,13 @@ const T& TO(const U& from) {
 // Assumes Key and Val are pointers.
 template<class Key, class Val>
 struct map_item {
-  typedef std::map<Key,Val> Map;
+  typedef std::vector<std::pair<Key,Val>> Map;
 
   static list items(Map const& self) {
     list t;
-    for(typename Map::const_iterator it=self.begin(); it!=self.end(); ++it)
-      t.append( boost::python::make_tuple(boost::ref(it->first),
-                                          boost::ref(it->second)));
+    for (const auto& v : self)
+      t.append( boost::python::make_tuple(boost::ref(v.first),
+                                          boost::ref(v.second)));
     return t;
   }
 };

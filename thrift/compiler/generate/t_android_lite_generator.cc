@@ -818,8 +818,8 @@ void t_android_lite_generator::print_const_value(ostream& out, string name,
 
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;
-    const map<t_const_value*, t_const_value*>& vals = value->get_map();
-    map<t_const_value*, t_const_value*>::const_iterator v_iter;
+    const vector<pair<t_const_value*, t_const_value*>>& vals = value->get_map();
+    vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
     for (v_iter = vals.cbegin(); v_iter != vals.cend(); ++v_iter) {
       t_type* field_type = nullptr;
       for (f_iter = fields.cbegin(); f_iter != fields.end(); ++f_iter) {
