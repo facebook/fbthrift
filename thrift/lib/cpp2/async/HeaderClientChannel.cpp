@@ -37,6 +37,8 @@ using Us = std::chrono::microseconds;
 
 namespace apache { namespace thrift {
 
+template class ChannelCallbacks::TwowayCallback<HeaderClientChannel>;
+
 HeaderClientChannel::HeaderClientChannel(
   const std::shared_ptr<TAsyncTransport>& transport)
     : HeaderClientChannel(
@@ -328,25 +330,6 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
   afterSecurity_.clear();
 }
 
-void HeaderClientChannel::addRpcOptionHeaders(THeader* header,
-                                              RpcOptions& rpcOptions) {
-  if (!clientSupportHeader()) {
-    return;
-  }
-
-  if (rpcOptions.getPriority() != apache::thrift::concurrency::N_PRIORITIES) {
-    header->setHeader(
-        transport::THeader::PRIORITY_HEADER,
-        folly::to<std::string>(rpcOptions.getPriority()));
-  }
-
-  if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    header->setHeader(
-        transport::THeader::CLIENT_TIMEOUT_HEADER,
-        folly::to<std::string>(rpcOptions.getTimeout().count()));
-  }
-}
-
 bool HeaderClientChannel::clientSupportHeader() {
   return getClientType() == THRIFT_HEADER_CLIENT_TYPE ||
          getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE;
@@ -464,7 +447,7 @@ uint32_t HeaderClientChannel::sendRequest(
     timeout = rpcOptions.getTimeout();
   }
 
-  auto twcb = new TwowayCallback(this,
+  auto twcb = new TwowayCallback<HeaderClientChannel>(this,
                                  sendSeqId_,
                                  getProtocolId(),
                                  std::move(cb),
@@ -619,7 +602,9 @@ void HeaderClientChannel::messageReceiveErrorWrapped(
   setBaseReceivedCallback();
 }
 
-void HeaderClientChannel::eraseCallback(uint32_t seqId, TwowayCallback* cb) {
+void HeaderClientChannel::eraseCallback(
+    uint32_t seqId,
+    TwowayCallback<HeaderClientChannel>* cb) {
   CHECK(getEventBase()->isInEventBaseThread());
   auto it = recvCallbacks_.find(seqId);
   CHECK(it != recvCallbacks_.end());

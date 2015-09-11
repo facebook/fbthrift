@@ -17,6 +17,7 @@
 #define THRIFT_ASYNC_HEADERCHANNEL_H_ 1
 
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/async/HeaderCapableChannel.h>
 
 enum THRIFT_SECURITY_POLICY {
   THRIFT_SECURITY_DISABLED = 1,
@@ -27,26 +28,12 @@ enum THRIFT_SECURITY_POLICY {
 namespace apache { namespace thrift {
 
 /**
- * HeaderChannel manages persistent headers and some other channel level
- * information.
+ * HeaderChannel manages THeader specific channel level information.
  */
-class HeaderChannel {
+class HeaderChannel: public HeaderCapableChannel {
   public:
     HeaderChannel() {
       setSupportedClients(nullptr);
-    }
-
-    void setPersistentHeader(const std::string& key,
-                             const std::string& value) {
-      persistentWriteHeaders_[key] = value;
-    }
-
-    transport::THeader::StringToStringMap& getPersistentReadHeaders() {
-      return persistentReadHeaders_;
-    }
-
-    transport::THeader::StringToStringMap& getPersistentWriteHeaders() {
-      return persistentWriteHeaders_;
     }
 
     // If clients is nullptr, a security policy of THRIFT_SECURITY_DISABLED
@@ -93,10 +80,6 @@ class HeaderChannel {
     }
 
   private:
-    // Map to use for persistent headers
-    transport::THeader::StringToStringMap persistentReadHeaders_;
-    transport::THeader::StringToStringMap persistentWriteHeaders_;
-
     uint32_t minCompressBytes_{0};
     uint16_t flags_;
 

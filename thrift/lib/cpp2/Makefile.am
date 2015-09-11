@@ -44,14 +44,17 @@ thrift2include_asyncdir = $(thrift2includedir)/async
 
 thrift2include_async_HEADERS = \
 	async/AsyncProcessor.h \
+	async/ChannelCallbacks.h \
 	async/Cpp2Channel.h \
 	async/ProtectionHandler.h \
 	async/FramingHandler.h \
+	async/HeaderCapableChannel.h \
 	async/HeaderChannel.h \
 	async/DuplexChannel.h \
 	async/FutureRequest.h \
 	async/GssSaslClient.h \
 	async/GssSaslServer.h \
+	async/HTTPClientChannel.h \
 	async/HeaderClientChannel.h \
 	async/HeaderServerChannel.h \
 	async/MessageChannel.h \
@@ -106,6 +109,8 @@ thrift2include_protocol_HEADERS = \
 
 libthriftcpp2_la_SOURCES = Version.cpp \
 			   GeneratedCodeHelper.cpp \
+			   async/HTTPClientChannel.cpp \
+			   async/HeaderCapableChannel.cpp \
 			   async/HeaderChannel.cpp \
 			   async/HeaderClientChannel.cpp \
 			   async/HeaderServerChannel.cpp \
