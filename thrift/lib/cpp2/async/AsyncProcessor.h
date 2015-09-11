@@ -184,9 +184,6 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     size_t bufSize = x.serializedSizeZC(prot);
     bufSize += prot->serializedMessageSize(method);
     prot->setOutput(&queue, bufSize);
-    if (ctx) {
-      ctx->handlerError();
-    }
     prot->writeMessageBegin(method, apache::thrift::T_EXCEPTION, protoSeqId);
     x.write(prot);
     prot->writeMessageEnd();
@@ -605,17 +602,17 @@ class HandlerCallback : public HandlerCallbackBase {
   }
 
   void complete(folly::Try<T>&& r) {
-    try {
+    if (r.hasException()) {
+      exception(std::move(r.exception()));
+    } else {
       result(std::move(r.value()));
-    } catch (...) {
-      exception(std::current_exception());
     }
   }
   void completeInThread(folly::Try<T>&& r) {
-    try {
+    if (r.hasException()) {
+      exceptionInThread(std::move(r.exception()));
+    } else {
       resultInThread(std::move(r.value()));
-    } catch (...) {
-      exceptionInThread(std::current_exception());
     }
   }
   static void completeInThread(
@@ -682,19 +679,17 @@ class HandlerCallback<void> : public HandlerCallbackBase {
   }
 
   void complete(folly::Try<folly::Unit>&& r) {
-    try {
-      r.throwIfFailed();
+    if (r.hasException()) {
+      exception(std::move(r.exception()));
+    } else {
       done();
-    } catch (...) {
-      exception(std::current_exception());
     }
   }
   void completeInThread(folly::Try<folly::Unit>&& r) {
-    try {
-      r.throwIfFailed();
+    if (r.hasException()) {
+      exceptionInThread(std::move(r.exception()));
+    } else {
       doneInThread();
-    } catch (...) {
-      exceptionInThread(std::current_exception());
     }
   }
   static void completeInThread(

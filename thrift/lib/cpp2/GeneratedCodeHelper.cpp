@@ -42,7 +42,7 @@ IOBufQueue helper<ProtocolReader, ProtocolWriter>::write_exn(
   bufSize += prot->serializedMessageSize(method);
   prot->setOutput(&queue, bufSize);
   if (ctx) {
-    ctx->handlerError();
+    ctx->handlerErrorWrapped(exception_wrapper(x));
   }
   prot->writeMessageBegin(method, T_EXCEPTION, protoSeqId);
   x.write(prot);

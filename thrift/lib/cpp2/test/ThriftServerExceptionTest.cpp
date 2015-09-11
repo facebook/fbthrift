@@ -40,6 +40,7 @@ struct Context {
   string name;
   string ex_type;
   string ex_what;
+  exception_wrapper ew;
   exception_ptr ep;
   explicit Context(string name) : name(name) {}
 };
@@ -65,6 +66,14 @@ class ExceptionTrackingEventHandler : public TProcessorEventHandler {
     context->ex_type = ex;
     context->ex_what = ex_what;
     context->ep = current_exception();
+  }
+  void userExceptionWrapped(void* ctx,
+                            const char* fn_name,
+                            bool declared,
+                            const folly::exception_wrapper& ew) override {
+    TProcessorEventHandler::userExceptionWrapped(ctx, fn_name, declared, ew);
+    auto context = static_cast<Context*>(ctx);
+    context->ew = ew;
   }
  private:
   std::vector<std::shared_ptr<Context>>* contexts_;
@@ -179,6 +188,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
       EXPECT_EQ(lulz_s, ctx().ex_type);
       EXPECT_EQ(message, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const AppExn& e) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
@@ -186,6 +196,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
       EXPECT_EQ(lulz_s, ctx().ex_type);
       EXPECT_EQ(message, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
   EXPECT_TRUE(exn(client->future_get200(), [&](const AppExn& e) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
@@ -193,6 +204,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
       EXPECT_EQ(lulz_s, ctx().ex_type);
       EXPECT_EQ(message, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
   EXPECT_TRUE(exn(client->future_get500(), [&](const AppExn& e) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
@@ -200,6 +212,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
       EXPECT_EQ(lulz_s, ctx().ex_type);
       EXPECT_EQ(message, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
 }
 
@@ -220,24 +233,28 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_ptr) {
       EXPECT_EQ(banal_s, ctx().ex_type);
       EXPECT_EQ(banal_w_known, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Banal>());
   }));
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const Banal& e) {
       EXPECT_EQ(banal_w_known, string(e.what()));
       EXPECT_EQ(banal_s, ctx().ex_type);
       EXPECT_EQ(banal_w_known, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Banal>());
   }));
   EXPECT_TRUE(exn(client->future_get200(), [&](const AppExn& e) {
       EXPECT_EQ(banal_w_guess, string(e.what()));
       EXPECT_EQ(banal_s, ctx().ex_type);
       EXPECT_EQ(banal_w_known, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Banal>());
   }));
   EXPECT_TRUE(exn(client->future_get500(), [&](const Banal& e) {
       EXPECT_EQ(banal_w_known, string(e.what()));
       EXPECT_EQ(banal_s, ctx().ex_type);
       EXPECT_EQ(banal_w_known, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Banal>());
   }));
 }
 
@@ -258,6 +275,7 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
       EXPECT_EQ(fiery_s, ctx().ex_type);
       EXPECT_EQ(fiery_w_known, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
   }));
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const Fiery& e) {
       EXPECT_EQ(fiery_w_known, string(e.what()));
@@ -265,12 +283,14 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
       EXPECT_EQ(fiery_s, ctx().ex_type);
       EXPECT_EQ(fiery_w_known, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
   }));
   EXPECT_TRUE(exn(client->future_get200(), [&](const AppExn& e) {
       EXPECT_EQ(fiery_w_guess, string(e.what()));
       EXPECT_EQ(fiery_s, ctx().ex_type);
       EXPECT_EQ(fiery_w_known, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
   }));
   EXPECT_TRUE(exn(client->future_get500(), [&](const Fiery& e) {
       EXPECT_EQ(fiery_w_known, string(e.what()));
@@ -278,6 +298,7 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
       EXPECT_EQ(fiery_s, ctx().ex_type);
       EXPECT_EQ(fiery_w_known, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
   }));
 }
 
@@ -298,6 +319,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_wrapper) {
       EXPECT_EQ(lulz_s, ctx().ex_type);
       EXPECT_EQ(lulz_w, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const AppExn& e) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
@@ -305,6 +327,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_wrapper) {
       EXPECT_EQ(lulz_s, ctx().ex_type);
       EXPECT_EQ(lulz_w, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
   EXPECT_TRUE(exn(client->future_get200(), [&](const AppExn& e) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
@@ -312,6 +335,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_wrapper) {
       EXPECT_EQ(lulz_s, ctx().ex_type);
       EXPECT_EQ(lulz_w, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
   EXPECT_TRUE(exn(client->future_get500(), [&](const AppExn& e) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
@@ -319,6 +343,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_wrapper) {
       EXPECT_EQ(lulz_s, ctx().ex_type);
       EXPECT_EQ(lulz_w, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
 }
 
@@ -339,24 +364,28 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_wrapper) {
       EXPECT_EQ(banal_s, ctx().ex_type);
       EXPECT_EQ(banal_w_guess, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Banal>());
   }));
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const Banal& e) {
       EXPECT_EQ(banal_w_known, string(e.what()));
       EXPECT_EQ(banal_s, ctx().ex_type);
       EXPECT_EQ(banal_w_known, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Banal>());
   }));
   EXPECT_TRUE(exn(client->future_get200(), [&](const AppExn& e) {
       EXPECT_EQ(banal_w_guess, string(e.what()));
       EXPECT_EQ(banal_s, ctx().ex_type);
       EXPECT_EQ(banal_w_guess, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Banal>());
   }));
   EXPECT_TRUE(exn(client->future_get500(), [&](const Banal& e) {
       EXPECT_EQ(banal_w_known, string(e.what()));
       EXPECT_EQ(banal_s, ctx().ex_type);
       EXPECT_EQ(banal_w_known, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Banal>());
   }));
 }
 
@@ -377,6 +406,7 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_wrapper) {
       EXPECT_EQ(fiery_s, ctx().ex_type);
       EXPECT_EQ(fiery_w_guess, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
   }));
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const Fiery& e) {
       EXPECT_EQ(fiery_w_known, string(e.what()));
@@ -384,12 +414,14 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_wrapper) {
       EXPECT_EQ(fiery_s, ctx().ex_type);
       EXPECT_EQ(fiery_w_known, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
   }));
   EXPECT_TRUE(exn(client->future_get200(), [&](const AppExn& e) {
       EXPECT_EQ(fiery_w_guess, string(e.what()));
       EXPECT_EQ(fiery_s, ctx().ex_type);
       EXPECT_EQ(fiery_w_guess, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
   }));
   EXPECT_TRUE(exn(client->future_get500(), [&](const Fiery& e) {
       EXPECT_EQ(fiery_w_known, string(e.what()));
@@ -397,5 +429,6 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_wrapper) {
       EXPECT_EQ(fiery_s, ctx().ex_type);
       EXPECT_EQ(fiery_w_known, ctx().ex_what);
       EXPECT_FALSE(ctx().ep);
+      EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
   }));
 }

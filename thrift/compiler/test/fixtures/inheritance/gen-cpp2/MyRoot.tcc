@@ -77,10 +77,12 @@ void MyRootAsyncProcessor::throw_do_root(std::unique_ptr<apache::thrift::Respons
     std::rethrow_exception(ep);
   }
   catch (const std::exception& e) {
+    auto ew = folly::exception_wrapper(ep, e);
     if (req) {
       LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function do_root";
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("do_root", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
@@ -115,7 +117,8 @@ void MyRootAsyncProcessor::throw_wrapped_do_root(std::unique_ptr<apache::thrift:
     if (req) {
       LOG(ERROR) << ew.what().toStdString() << " in function do_root";
       apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("do_root", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
@@ -184,11 +187,11 @@ folly::exception_wrapper MyRootAsyncClient::recv_wrapped_do_rootT(Protocol_* pro
     ctx->postRead(state.header(), state.buf()->length());
   }
   );
-  if (interior_ew || caught_ew) {
-    ctx->handlerError();
-    return interior_ew ? interior_ew : caught_ew;
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
   }
-  return folly::exception_wrapper();
+  return ew;
 }
 
 template <typename Protocol_>

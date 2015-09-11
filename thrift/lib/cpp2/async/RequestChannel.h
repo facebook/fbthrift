@@ -469,7 +469,8 @@ static void clientSendT(
     ctx->postWrite(queue.chainLength());
   }
   catch (const apache::thrift::TException &ex) {
-    ctx->handlerError();
+    ctx->handlerErrorWrapped(
+        folly::exception_wrapper(std::current_exception(), ex));
     throw;
   }
 

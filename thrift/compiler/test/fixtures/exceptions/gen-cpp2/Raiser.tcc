@@ -83,10 +83,12 @@ void RaiserAsyncProcessor::throw_doBland(std::unique_ptr<apache::thrift::Respons
     std::rethrow_exception(ep);
   }
   catch (const std::exception& e) {
+    auto ew = folly::exception_wrapper(ep, e);
     if (req) {
       LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function doBland";
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("doBland", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
@@ -121,7 +123,8 @@ void RaiserAsyncProcessor::throw_wrapped_doBland(std::unique_ptr<apache::thrift:
     if (req) {
       LOG(ERROR) << ew.what().toStdString() << " in function doBland";
       apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("doBland", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
@@ -192,20 +195,22 @@ void RaiserAsyncProcessor::throw_doRaise(std::unique_ptr<apache::thrift::Respons
     std::rethrow_exception(ep);
   }
   catch (const  ::cpp2::Banal& e) {
-    ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+    ctx->userExceptionWrapped(true, folly::exception_wrapper(e));
     result.get<0>().ref() = e;
     result.setIsSet(0, true);
   }
   catch (const  ::cpp2::Fiery& e) {
-    ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+    ctx->userExceptionWrapped(true, folly::exception_wrapper(e));
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
   catch (const std::exception& e) {
+    auto ew = folly::exception_wrapper(ep, e);
     if (req) {
       LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function doRaise";
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("doRaise", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
@@ -241,13 +246,13 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(std::unique_ptr<apache::thrift:
   ProtocolOut_ prot;
   Raiser_doRaise_presult result;
   if (ew.with_exception< ::cpp2::Banal>([&]( ::cpp2::Banal& e) {
-    ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+    ctx->userExceptionWrapped(true, ew);
     result.get<0>().ref() = e;
     result.setIsSet(0, true);
   }
   )) {} else
   if (ew.with_exception< ::cpp2::Fiery>([&]( ::cpp2::Fiery& e) {
-    ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+    ctx->userExceptionWrapped(true, ew);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
@@ -256,7 +261,8 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(std::unique_ptr<apache::thrift:
     if (req) {
       LOG(ERROR) << ew.what().toStdString() << " in function doRaise";
       apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("doRaise", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
@@ -331,10 +337,12 @@ void RaiserAsyncProcessor::throw_get200(std::unique_ptr<apache::thrift::Response
     std::rethrow_exception(ep);
   }
   catch (const std::exception& e) {
+    auto ew = folly::exception_wrapper(ep, e);
     if (req) {
       LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function get200";
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("get200", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
@@ -369,7 +377,8 @@ void RaiserAsyncProcessor::throw_wrapped_get200(std::unique_ptr<apache::thrift::
     if (req) {
       LOG(ERROR) << ew.what().toStdString() << " in function get200";
       apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("get200", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
@@ -442,20 +451,22 @@ void RaiserAsyncProcessor::throw_get500(std::unique_ptr<apache::thrift::Response
     std::rethrow_exception(ep);
   }
   catch (const  ::cpp2::Fiery& e) {
-    ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+    ctx->userExceptionWrapped(true, folly::exception_wrapper(e));
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
   catch (const  ::cpp2::Banal& e) {
-    ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+    ctx->userExceptionWrapped(true, folly::exception_wrapper(e));
     result.get<2>().ref() = e;
     result.setIsSet(2, true);
   }
   catch (const std::exception& e) {
+    auto ew = folly::exception_wrapper(ep, e);
     if (req) {
       LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function get500";
       apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("get500", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
@@ -491,13 +502,13 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
   ProtocolOut_ prot;
   Raiser_get500_presult result;
   if (ew.with_exception< ::cpp2::Fiery>([&]( ::cpp2::Fiery& e) {
-    ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+    ctx->userExceptionWrapped(true, ew);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
   )) {} else
   if (ew.with_exception< ::cpp2::Banal>([&]( ::cpp2::Banal& e) {
-    ctx->userException(folly::demangle(typeid(e)).toStdString(), e.what());
+    ctx->userExceptionWrapped(true, ew);
     result.get<2>().ref() = e;
     result.setIsSet(2, true);
   }
@@ -506,7 +517,8 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
     if (req) {
       LOG(ERROR) << ew.what().toStdString() << " in function get500";
       apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userException(ew.class_name().toStdString(), ew.what().toStdString());
+      ctx->userExceptionWrapped(false, ew);
+      ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("get500", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
@@ -578,11 +590,11 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doBlandT(Protocol_* pro
     ctx->postRead(state.header(), state.buf()->length());
   }
   );
-  if (interior_ew || caught_ew) {
-    ctx->handlerError();
-    return interior_ew ? interior_ew : caught_ew;
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
   }
-  return folly::exception_wrapper();
+  return ew;
 }
 
 template <typename Protocol_>
@@ -658,11 +670,11 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doRaiseT(Protocol_* pro
     }
   }
   );
-  if (interior_ew || caught_ew) {
-    ctx->handlerError();
-    return interior_ew ? interior_ew : caught_ew;
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
   }
-  return folly::exception_wrapper();
+  return ew;
 }
 
 template <typename Protocol_>
@@ -739,11 +751,11 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200T(Protocol_* prot
     }
   }
   );
-  if (interior_ew || caught_ew) {
-    ctx->handlerError();
-    return interior_ew ? interior_ew : caught_ew;
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
   }
-  return folly::exception_wrapper();
+  return ew;
 }
 
 template <typename Protocol_>
@@ -828,11 +840,11 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500T(Protocol_* prot
     }
   }
   );
-  if (interior_ew || caught_ew) {
-    ctx->handlerError();
-    return interior_ew ? interior_ew : caught_ew;
+  auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
   }
-  return folly::exception_wrapper();
+  return ew;
 }
 
 template <typename Protocol_>

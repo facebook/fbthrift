@@ -1083,9 +1083,7 @@ class CppGenerator(t_generator.Generator):
         return sig
 
     def _generate_app_ex(self, service, errorstr, functionname, seqid, is_in_eb,
-                         s, reqCtx, static=True, err_code=None,
-                         uex_str='folly::demangle(typeid(e)).toStdString()',
-                         uexw_str='e.what()'):
+                         s, reqCtx, err_code=None, uex_ew=None):
         with out('if (req)'):
             out('LOG(ERROR) << {0} << " in function {1}";'.format(
                     errorstr, functionname))
@@ -1094,9 +1092,10 @@ class CppGenerator(t_generator.Generator):
                     'TApplicationExceptionType::' + err_code + ', '
             out('apache::thrift::TApplicationException x({0}{1});'.
                 format(code, errorstr))
-            if static:
+            if uex_ew:
                 ctx = 'ctx'
-                out('ctx->userException({}, {});'.format(uex_str, uexw_str))
+                out('ctx->userExceptionWrapped(false, {});'.format(uex_ew))
+                out('ctx->handlerErrorWrapped({});'.format(uex_ew))
             else:
                 ctx = 'nullptr'
             out('folly::IOBufQueue queue = serializeException("{0}", &prot, {1}, {2}, '
@@ -1170,7 +1169,7 @@ class CppGenerator(t_generator.Generator):
                 out('ProtocolOut_ prot;')
                 self._generate_app_ex(service, 'ex.what()',
                                       function.name, "iprot->getSeqId()",
-                                      False, out, 'ctx', False,
+                                      False, out, 'ctx',
                                       'PROTOCOL_ERROR')
         args = []
         for idx, member in enumerate(function.arglist.members):
@@ -1398,9 +1397,8 @@ class CppGenerator(t_generator.Generator):
                     for idx, xception in enumerate(xceptions):
                         with out('catch (const {0}& e)'.format(
                             self._type_name(xception.type))):
-                            out('ctx->userException(' +
-                              'folly::demangle(typeid(e)).toStdString(), ' +
-                              'e.what());')
+                            ew = 'folly::exception_wrapper(e)'
+                            out('ctx->userExceptionWrapped(true, {});'.format(ew))
                             ex_idx = self._exception_idx(function, idx)
                             out('{0} = e;'.format(
                                 self._get_presult_exception(ex_idx, xception)))
@@ -1427,18 +1425,20 @@ class CppGenerator(t_generator.Generator):
                         cast_xceptions(
                             function.xceptions.members)
                         with out('catch (const std::exception& e)'):
+                            out('auto ew = folly::exception_wrapper(ep, e);')
                             self._generate_app_ex(
                                 service,
                                 "folly::exceptionStr(e)." +
                                 "toStdString()",
                                 function.name, "protoSeqId", True,
-                                out(), 'reqCtx')
+                                out(), 'reqCtx',
+                                uex_ew='ew')
                         with out('catch (...)'):
                             self._generate_app_ex(
                                 service,
                                 "\"<unknown exception>\"",
                                 function.name, "protoSeqId", True,
-                                out(), 'reqCtx', False)
+                                out(), 'reqCtx')
                         if len(function.xceptions.members) > 0:
                             out('auto queue = serializeResponse('
                               '"{0}", &prot, protoSeqId, ctx,'
@@ -1473,9 +1473,7 @@ class CppGenerator(t_generator.Generator):
                                 xception.type)
                             with out('if (ew.with_exception<{0}>([&]({0}& e)'.
                                      format(xception_type)):
-                                out('ctx->userException('
-                                    'folly::demangle(typeid(e)).'
-                                    'toStdString(), e.what());')
+                                out('ctx->userExceptionWrapped(true, ew);')
                                 ex_idx = self._exception_idx(function, idx)
                                 out('{0} = e;'.format(
                                     self._get_presult_exception(ex_idx, xception)))
@@ -1487,9 +1485,8 @@ class CppGenerator(t_generator.Generator):
                                 service,
                                 'ew.what().toStdString()',
                                 function.name, "protoSeqId", True,
-                                out(), 'reqCtx', True, None,
-                                'ew.class_name().toStdString()',
-                                'ew.what().toStdString()')
+                                out(), 'reqCtx', None,
+                                uex_ew='ew')
                         if len(function.xceptions.members) > 0:
                             out('auto queue = serializeResponse('
                                 '"{0}", &prot, protoSeqId, ctx,'
@@ -2112,10 +2109,10 @@ class CppGenerator(t_generator.Generator):
                             '"failed: unknown result");')
                         out("return; // from try_and_catch")
             out(");")
-            with out("if (interior_ew || caught_ew)"):
-                out("ctx->handlerError();")
-                out("return interior_ew ? interior_ew : caught_ew;")
-            out("return folly::exception_wrapper();")
+            out("auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);")
+            with out("if (ew)"):
+                out("ctx->handlerErrorWrapped(ew);")
+            out("return ew;")
 
         self._generate_throwing_recv_function(function, True)
 
