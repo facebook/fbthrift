@@ -164,6 +164,8 @@ class Cpp2Connection
       return req_->getTimestamps();
     }
 
+    void setLoadHeader();
+
    private:
     MessageChannel::SendCallback* prepareSendCallback(
         MessageChannel::SendCallback* sendCallback,
@@ -207,9 +209,6 @@ class Cpp2Connection
                    TApplicationException::TApplicationExceptionType reason,
                    const char* comment);
   void disconnect(const char* comment) noexcept;
-
-  // Set any error headers necessary, based on the received headers
-  void setErrorHeaders(apache::thrift::transport::THeader* recv_headers);
 
   friend class Cpp2Request;
 

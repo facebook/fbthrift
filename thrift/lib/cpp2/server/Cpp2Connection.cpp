@@ -215,7 +215,6 @@ void Cpp2Connection::killRequest(
   // Thrift1 oneway request doesn't use ONEWAY_REQUEST_ID and
   // may end up here. No need to send error back for such requests
   if (!processor_->isOnewayMethod(req.getBuf(), header_req->getHeader())) {
-    setErrorHeaders(header_req->getHeader());
     header_req->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(reason,
                                                              comment),
@@ -225,19 +224,6 @@ void Cpp2Connection::killRequest(
     // Send an empty response so reqId will be handled properly
     req.sendReply(std::unique_ptr<folly::IOBuf>());
   }
-}
-
-void Cpp2Connection::setErrorHeaders(THeader* recv_header) {
-  const auto& read_headers = recv_header->getHeaders();
-
-  auto load_header = read_headers.find(Cpp2Connection::loadHeader);
-  std::string counter_name = "";
-  if (load_header != read_headers.end()) {
-    counter_name = load_header->second;
-  }
-
-  recv_header->setHeader(Cpp2Connection::loadHeader, folly::to<std::string>(
-    getWorker()->getServer()->getLoad(counter_name)));
 }
 
 // Response Channel callbacks
@@ -362,15 +348,6 @@ void Cpp2Connection::requestReceived(
   auto reqContext = t2r->getContext();
   reqContext->setRequestTimeout(hardTimeout);
 
-  const auto& headers = reqContext->getHeader()->getHeaders();
-  auto load_header = headers.find(Cpp2Connection::loadHeader);
-  if (load_header != headers.end()) {
-    reqContext->getHeader()->setHeader(
-        Cpp2Connection::loadHeader,
-        folly::to<std::string>(
-            getWorker()->getServer()->getLoad(load_header->second)));
-  }
-
   try {
     auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>
       (t2r->req_->getHeader()->getProtocolId());
@@ -436,11 +413,29 @@ Cpp2Connection::Cpp2Request::prepareSendCallback(
   return cb;
 }
 
+void Cpp2Connection::Cpp2Request::setLoadHeader() {
+  // Set load header, based on the received load header
+  auto header = req_->getHeader();
+  if (!header) {
+    return;
+  }
+
+  const auto& headers = header->getHeaders();
+  auto load_header = headers.find(Cpp2Connection::loadHeader);
+  if (load_header == headers.end()) {
+    return;
+  }
+
+  auto load =
+      connection_->getWorker()->getServer()->getLoad(load_header->second);
+  header->setHeader(Cpp2Connection::loadHeader, folly::to<std::string>(load));
+}
 
 void Cpp2Connection::Cpp2Request::sendReply(
     std::unique_ptr<folly::IOBuf>&& buf,
     MessageChannel::SendCallback* sendCallback) {
   if (req_->isActive()) {
+    setLoadHeader();
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
     req_->sendReply(
       std::move(buf),
@@ -457,8 +452,8 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
     std::string exCode,
     MessageChannel::SendCallback* sendCallback) {
   if (req_->isActive()) {
+    setLoadHeader();
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
-    connection_->setErrorHeaders(req_->getHeader());
     req_->sendErrorWrapped(std::move(ew),
                            std::move(exCode),
                            prepareSendCallback(sendCallback, observer));
