@@ -164,11 +164,20 @@ class TProcessorEventHandler {
     CHECK(bool(ew));
     std::string type;
     std::string what;
-    if (auto* ex = ew.getCopied()) {
-      type = ew.class_name().toStdString();
+    auto typefb = ew.class_name();
+    if (ew.getCopied()) {
+      auto* ex = ew.getCopied();
+      type = typefb.toStdString();
       what = declared ? ex->what() : type + ": " + ex->what();
+    } else if (typefb.empty()) {
+      try {
+        ew.throwException();
+      } catch (const std::exception& ex) {
+        type = folly::demangle(typeid(ex).name()).toStdString();
+        what = ex.what();
+      }
     } else {
-      type = ew.class_name().toStdString();
+      type = typefb.toStdString();
       auto whatfb = ew.what();
       folly::StringPiece whatsp(whatfb);
       CHECK(whatsp.removePrefix(type)) << "weird format: '" << whatfb << "'";
