@@ -171,8 +171,8 @@ class TProcessorEventHandler {
       type = ew.class_name().toStdString();
       auto whatfb = ew.what();
       folly::StringPiece whatsp(whatfb);
-      CHECK(whatsp.removePrefix(type));
-      CHECK(whatsp.removePrefix(": "));
+      CHECK(whatsp.removePrefix(type)) << "weird format: '" << whatfb << "'";
+      CHECK(whatsp.removePrefix(": ")) << "weird format: '" << whatfb << "'";
       what = whatsp.str();
     }
     userException(ctx, fn_name, type, what);
