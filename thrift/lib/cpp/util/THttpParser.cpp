@@ -119,6 +119,28 @@ bool THttpParser::readDataAvailable(size_t len) {
   }
 }
 
+int THttpParser::getMinBytesRequired() {
+  size_t avail;
+  switch (state_) {
+    case HTTP_PARSE_START:
+      return 0;
+
+    case HTTP_PARSE_HEADER:
+    case HTTP_PARSE_CHUNK:
+    case HTTP_PARSE_CHUNKFOOTER:
+    case HTTP_PARSE_TRAILING:
+      // Don't know exactly how much we'll need, but at least 1 more byte
+      return 1;
+
+    case HTTP_PARSE_CONTENT:
+      CHECK_LE(httpPos_, httpBufLen_);
+      avail = httpBufLen_ - httpPos_;
+      return std::max<int>(0, contentLength_ - avail);
+  }
+
+  throw TTransportException("Unknown state");
+}
+
 char* THttpParser::readLine() {
   char* eol = nullptr;
   eol = strstr(httpBuf_ + httpPos_, CRLF);

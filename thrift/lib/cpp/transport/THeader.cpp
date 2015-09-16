@@ -156,7 +156,7 @@ unique_ptr<IOBuf> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
   if (!success) {
     // We don't have full data yet and we don't know how many bytes we need,
     // but it is at least 1.
-    needed = 1;
+    needed = parser.getMinBytesRequired();
     return nullptr;
   }
 
