@@ -2718,6 +2718,10 @@ class CppGenerator(t_generator.Generator):
             struct('Type type_;')
             struct('storage_type value_;')
 
+        if self._has_cpp_annotation(obj, 'methods'):
+            struct('// user defined code (cpp2.methods = ...)')
+            struct(self._cpp_annotation(obj, 'methods'))
+
         # we're done with the struct definition
         struct.release()
 
