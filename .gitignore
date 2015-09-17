@@ -48,4 +48,6 @@ gen-cpp2
 /thrift/compiler/thriftl.cc
 /thrift/compiler/thrifty.cc
 /thrift/compiler/py/build/
+/thrift/compiler/py/dist/
 /thrift/compiler/py/frontend.so
+/thrift/compiler/py/thrift_py.egg-info/
