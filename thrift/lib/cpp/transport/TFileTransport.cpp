@@ -910,7 +910,7 @@ void TFileTransport::getNextFlushTime(struct timespec* ts_next_flush) {
 }
 
 TFileTransportBuffer::TFileTransportBuffer(uint32_t size)
-  : bufferMode_(WRITE)
+  : bufferMode_(BUF_WRITE)
   , writePoint_(0)
   , readPoint_(0)
   , size_(size)
@@ -929,7 +929,7 @@ TFileTransportBuffer::~TFileTransportBuffer() {
 }
 
 bool TFileTransportBuffer::addEvent(eventInfo *event) {
-  if (bufferMode_ == READ) {
+  if (bufferMode_ == BUF_READ) {
     GlobalOutput("Trying to write to a buffer in read mode");
   }
   if (writePoint_ < size_) {
@@ -942,8 +942,8 @@ bool TFileTransportBuffer::addEvent(eventInfo *event) {
 }
 
 eventInfo* TFileTransportBuffer::getNext() {
-  if (bufferMode_ == WRITE) {
-    bufferMode_ = READ;
+  if (bufferMode_ == BUF_WRITE) {
+    bufferMode_ = BUF_READ;
   }
   if (readPoint_ < writePoint_) {
     return buffer_[readPoint_++];
@@ -954,14 +954,14 @@ eventInfo* TFileTransportBuffer::getNext() {
 }
 
 void TFileTransportBuffer::reset() {
-  if (bufferMode_ == WRITE || writePoint_ > readPoint_) {
+  if (bufferMode_ == BUF_WRITE || writePoint_ > readPoint_) {
     T_DEBUG("Resetting a buffer with unread entries");
   }
   // Clean up the old entries
   for (uint32_t i = 0; i < writePoint_; i++) {
     delete buffer_[i];
   }
-  bufferMode_ = WRITE;
+  bufferMode_ = BUF_WRITE;
   writePoint_ = 0;
   readPoint_ = 0;
 }

@@ -125,8 +125,8 @@ class TFileTransportBuffer {
     TFileTransportBuffer(); // should not be used
 
     enum mode {
-      WRITE,
-      READ
+      BUF_WRITE,
+      BUF_READ,
     };
     mode bufferMode_;
 
