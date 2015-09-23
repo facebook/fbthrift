@@ -3035,7 +3035,7 @@ void t_php_generator::generate_deserialize_list_element(
     indent() << "}" << endl;
 
   indent(out) <<
-    elem << " = null;" << endl;
+    "$" << elem << " = null;" << endl;
 
   generate_deserialize_field(out, namer, &felem);
 
