@@ -56,7 +56,7 @@ struct MapTableLayout
         : Base::View(layout, position) {}
 
     mapped_type getDefault(const key_type& key,
-                           mapped_type def = mapped_type()) {
+                           mapped_type def = mapped_type()) const {
       auto found = this->find(key);
       if (found == this->end()) {
         return std::move(def);
@@ -64,7 +64,7 @@ struct MapTableLayout
       return found->second();
     }
 
-    mapped_type at(const key_type& key) {
+    mapped_type at(const key_type& key) const {
       auto found = this->find(key);
       if (found == this->end()) {
         throw std::out_of_range("Key not found");
