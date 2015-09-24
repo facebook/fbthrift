@@ -23,7 +23,9 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys
-from thrift.Thrift import TMessageType, TApplicationException, TType
+from thrift.Thrift import TMessageType, TApplicationException, TType, \
+        TRequestContext
+from thrift.protocol import THeaderProtocol
 
 def process_main(twisted=False):
     """Decorator for process method."""
@@ -70,6 +72,12 @@ def process_method(argtype, oneway=False, twisted=False):
             iprot.readMessageEnd()
             self._event_handler.postRead(handler_ctx, fn_name, args)
 
+            if hasattr(self._handler, "setRequestContext"):
+                request_context = TRequestContext()
+                if (isinstance(iprot, THeaderProtocol.THeaderProtocol)):
+                    request_context.setHeaders(iprot.trans.get_headers())
+                self._handler.setRequestContext(request_context)
+
             if twisted is True:
                 return func(self, args, handler_ctx, seqid, oprot)
             elif oneway is True:
@@ -85,7 +93,8 @@ def process_method(argtype, oneway=False, twisted=False):
                 oprot.writeMessageEnd()
                 oprot.trans.flush()
                 self._event_handler.postWrite(handler_ctx, fn_name, result)
-
+            if hasattr(self._handler, "setRequestContext"):
+                self._handler.setRequestContext(None)
         return nested
 
     return _decorator

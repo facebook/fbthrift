@@ -23,6 +23,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys
+import threading
 
 class TType:
     STOP = 0
@@ -50,6 +51,15 @@ class TMessageType:
     EXCEPTION = 3
     ONEWAY = 4
 
+class TRequestContext:
+    def __init__(self):
+        self._headers = None
+
+    def getHeaders(self):
+        return self._headers
+
+    def setHeaders(self, headers):
+        self._headers = headers
 
 class TProcessorEventHandler:
     """Event handler for thrift processors"""
@@ -86,10 +96,19 @@ class TProcessorEventHandler:
         exception that is declared in the thrift service specification"""
         pass
 
+class TServerInterface:
+    def __init__(self):
+        self._tl_request_context = threading.local()
+
+    def setRequestContext(self, request_context):
+        self._tl_request_context.ctx = request_context
+
+    def getRequestContext(self):
+        return self._tl_request_context.ctx
 
 class TProcessor:
 
-    """Base class for procsessor, which works on two streams."""
+    """Base class for processor, which works on two streams."""
 
     def __init__(self):
         self._event_handler = TProcessorEventHandler()  # null object handler

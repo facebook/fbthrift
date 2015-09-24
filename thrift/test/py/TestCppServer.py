@@ -14,7 +14,8 @@ from fb303.ContextFacebookBase import FacebookBase
 from libfb.testutil import BaseFacebookTestCase
 from thrift.transport import TSocket, TTransport, THeaderTransport
 from thrift.protocol import TBinaryProtocol, THeaderProtocol
-from thrift.Thrift import TProcessorEventHandler, TProcessor, TMessageType
+from thrift.Thrift import TProcessorEventHandler, TProcessor, TMessageType, \
+        TServerInterface
 from thrift.server.TCppServer import TCppServer
 from thrift.server.TServer import TServerEventHandler
 from tools.test.stubs import fbpyunit
@@ -31,16 +32,24 @@ def getClient(addr):
     transport.open()
     return client
 
+def getHeaderClient(addr):
+    transport = TSocket.TSocket(addr[0], addr[1])
+    transport = THeaderTransport.THeaderTransport(transport)
+    transport.set_header("hello", "world")
+    protocol = THeaderProtocol.THeaderProtocol(transport)
+    client = SleepService.Client(protocol)
+    transport.open()
+    return client
 
 class SleepProcessorEventHandler(TProcessorEventHandler):
     def getHandlerContext(self, fn_name, server_context):
         self.last_peer_name = server_context.getPeerName()
         self.last_sock_name = server_context.getSockName()
 
-
-class SleepHandler(FacebookBase, SleepService.Iface):
+class SleepHandler(FacebookBase, SleepService.Iface, TServerInterface):
     def __init__(self, noop_event):
         FacebookBase.__init__(self, "sleep")
+        TServerInterface.__init__(self)
         self.noop_event = noop_event
 
     def sleep(self, seconds):
@@ -57,6 +66,14 @@ class SleepHandler(FacebookBase, SleepService.Iface):
     def noop(self):
         self.noop_event.set()
 
+    def header(self):
+        request_context = self.getRequestContext()
+        if request_context is None:
+            return False
+        headers = request_context.getHeaders()
+        if headers is None:
+            return False
+        return headers.get(b"hello") == b"world"
 
 class SpaceProcess(multiprocessing.Process):
     def __init__(self, addr):
@@ -79,6 +96,14 @@ class SpaceProcess(multiprocessing.Process):
         queue.put((client._iprot.trans.getTransport().getSocketName(),
                    client._iprot.trans.getTransport().getPeerName()))
 
+class HeaderProcess(multiprocessing.Process):
+    def __init__(self, addr):
+        multiprocessing.Process.__init__(self)
+        self.addr = addr
+
+    def run(self):
+        client = getHeaderClient(self.addr)
+        assert client.header()
 
 class ParallelProcess(multiprocessing.Process):
     def __init__(self, addr):
@@ -186,6 +211,12 @@ class BaseTestServer(TestServer):
         self.assertEquals(self.serverEventHandler.connCreated, 1)
         self.assertEquals(self.serverEventHandler.connDestroyed, 1)
 
+    def testHeader(self):
+        header = HeaderProcess(self.server_addr)
+        header.start()
+        header.join()
+        self.stopServer()
+
     def testParallel(self):
         parallel = ParallelProcess(self.server_addr)
         parallel.start()
@@ -215,14 +246,8 @@ class HeaderTestServer(TestServer):
     def getProcessor(self):
         return TestHeaderProcessor()
 
-    def testHeader(self):
-        transport = TSocket.TSocket(self.server_addr[0], self.server_addr[1])
-        transport = THeaderTransport.THeaderTransport(transport)
-        transport.set_header("hello", "world")
-        protocol = THeaderProtocol.THeaderProtocol(transport)
-        client = SleepService.Client(protocol)
-        transport.open()
-
+    def testHeaderInProcessor(self):
+        client = getHeaderClient(self.server_addr)
         self.assertEquals(client.space("hi"), "h i")
         self.stopServer()
 
