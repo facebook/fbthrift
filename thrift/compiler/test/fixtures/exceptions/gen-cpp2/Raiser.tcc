@@ -538,7 +538,6 @@ void RaiserAsyncClient::doBlandT(Protocol_* prot, apache::thrift::RpcOptions& rp
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.doBland", connectionContext_.get());
   Raiser_doBland_pargs args;
@@ -610,7 +609,6 @@ void RaiserAsyncClient::doRaiseT(Protocol_* prot, apache::thrift::RpcOptions& rp
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.doRaise", connectionContext_.get());
   Raiser_doRaise_pargs args;
@@ -690,7 +688,6 @@ void RaiserAsyncClient::get200T(Protocol_* prot, apache::thrift::RpcOptions& rpc
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.get200", connectionContext_.get());
   Raiser_get200_pargs args;
@@ -771,7 +768,6 @@ void RaiserAsyncClient::get500T(Protocol_* prot, apache::thrift::RpcOptions& rpc
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.get500", connectionContext_.get());
   Raiser_get500_pargs args;

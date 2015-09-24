@@ -135,7 +135,6 @@ void MyLeafAsyncClient::do_leafT(Protocol_* prot, apache::thrift::RpcOptions& rp
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyLeaf.do_leaf", connectionContext_.get());
   MyLeaf_do_leaf_pargs args;

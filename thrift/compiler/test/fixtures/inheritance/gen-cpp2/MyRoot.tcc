@@ -135,7 +135,6 @@ void MyRootAsyncClient::do_rootT(Protocol_* prot, apache::thrift::RpcOptions& rp
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyRoot.do_root", connectionContext_.get());
   MyRoot_do_root_pargs args;

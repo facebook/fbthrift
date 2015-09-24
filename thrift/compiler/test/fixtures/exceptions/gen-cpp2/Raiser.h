@@ -7,6 +7,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <folly/futures/Future.h>
@@ -163,6 +164,10 @@ class RaiserAsyncClient : public apache::thrift::TClientBase {
 
   apache::thrift::RequestChannel*  getChannel() {
     return this->channel_.get();
+  }
+
+  apache::thrift::HeaderChannel*  getHeaderChannel() {
+    return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
   }
   virtual void doBland(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void doBland(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);

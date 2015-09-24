@@ -363,27 +363,6 @@ class RequestChannel : virtual public async::TDelayedDestruction {
   virtual apache::thrift::async::TEventBase* getEventBase() = 0;
 
   virtual uint16_t getProtocolId() = 0;
-
-  // HACK: for backwards compatibility, copy headers that were written
-  // directly to the channel. remove this eventually.
-  void setWriteHeaderThroughChannel(const std::string& k,
-                                    const std::string& v) {
-    writeHeaders_[k] = v;
-  }
-
-  void flushWriteHeaders(apache::thrift::transport::THeader* header) {
-    if (writeHeaders_.empty()) {
-      return;
-    }
-
-    for (auto it = writeHeaders_.begin(); it != writeHeaders_.end(); ++it) {
-      header->setHeader(it->first, it->second);
-    }
-    writeHeaders_.clear();
-  }
-
- private:
-  std::map<std::string, std::string> writeHeaders_;
 };
 
 class ClientSyncCallback : public RequestCallback {

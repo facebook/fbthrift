@@ -362,7 +362,6 @@ void MyServiceFastAsyncClient::hasDataByIdT(Protocol_* prot, apache::thrift::Rpc
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyServiceFast.hasDataById", connectionContext_.get());
   MyServiceFast_hasDataById_pargs args;
@@ -446,7 +445,6 @@ void MyServiceFastAsyncClient::getDataByIdT(Protocol_* prot, apache::thrift::Rpc
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyServiceFast.getDataById", connectionContext_.get());
   MyServiceFast_getDataById_pargs args;
@@ -528,7 +526,6 @@ void MyServiceFastAsyncClient::putDataByIdT(Protocol_* prot, apache::thrift::Rpc
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyServiceFast.putDataById", connectionContext_.get());
   MyServiceFast_putDataById_pargs args;
@@ -602,7 +599,6 @@ void MyServiceFastAsyncClient::lobDataByIdT(Protocol_* prot, apache::thrift::Rpc
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyServiceFast.lobDataById", connectionContext_.get());
   MyServiceFast_lobDataById_pargs args;

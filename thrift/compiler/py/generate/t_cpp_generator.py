@@ -572,6 +572,7 @@ class CppGenerator(t_generator.Generator):
         # Enter the scope (prints guard)
         s.acquire()
         s('#include <thrift/lib/cpp2/ServiceIncludes.h>')
+        s('#include <thrift/lib/cpp2/async/HeaderChannel.h>')
         if not self.flag_bootstrap:
             s('#include <thrift/lib/cpp/TApplicationException.h>')
         s('#include <thrift/lib/cpp2/async/FutureRequest.h>')
@@ -824,6 +825,12 @@ class CppGenerator(t_generator.Generator):
                             ' {name}()', name='getChannel',
                             in_header=True):
                     out("return this->channel_.get();")
+                with out().defn('apache::thrift::HeaderChannel* '
+                            ' {name}()', name='getHeaderChannel',
+                            in_header=True):
+                    out("return dynamic_cast<apache::thrift::HeaderChannel*>"
+                            "(this->channel_.get());")
+
 
             # Write out all the functions
             for function in service.functions:
@@ -1816,7 +1823,6 @@ class CppGenerator(t_generator.Generator):
             out("auto header = std::make_shared<apache::thrift::transport::THeader>();")
             out("header->setProtocolId(getChannel()->getProtocolId());")
             out("header->setHeaders(rpcOptions.releaseWriteHeaders());")
-            out("getChannel()->flushWriteHeaders(header.get());")
             out("connectionContext_->setRequestHeader(header.get());")
             out("std::unique_ptr<apache::thrift::ContextStack> ctx = "
               "this->getContextStack(this->getServiceName(), "

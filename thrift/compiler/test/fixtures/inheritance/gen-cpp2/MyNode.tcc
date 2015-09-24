@@ -135,7 +135,6 @@ void MyNodeAsyncClient::do_midT(Protocol_* prot, apache::thrift::RpcOptions& rpc
   auto header = std::make_shared<apache::thrift::transport::THeader>();
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  getChannel()->flushWriteHeaders(header.get());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyNode.do_mid", connectionContext_.get());
   MyNode_do_mid_pargs args;
