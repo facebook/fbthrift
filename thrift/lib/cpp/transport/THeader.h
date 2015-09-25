@@ -84,7 +84,11 @@ class THeader {
 
   virtual ~THeader();
 
-  THeader();
+  enum {
+    ALLOW_BIG_FRAMES = 1 << 0,
+  };
+
+  explicit THeader(int options = 0);
 
   virtual void setClientType(CLIENT_TYPE ct) { this->clientType = ct; }
   // Force using specified client type when using legacy client types
@@ -141,7 +145,7 @@ class THeader {
   static std::unique_ptr<folly::IOBuf> transform(
     std::unique_ptr<folly::IOBuf>,
     std::vector<uint16_t>& writeTrans,
-    uint32_t minCompressBytes);
+    size_t minCompressBytes);
 
   uint16_t getNumTransforms(std::vector<uint16_t>& transforms) const {
     int trans = transforms.size();
@@ -291,6 +295,7 @@ class THeader {
   static const uint32_t HTTP_CLIENT_MAGIC = 0x48545450; // HTTP
   static const uint32_t HTTP_GET_CLIENT_MAGIC = 0x47455420; // GET
   static const uint32_t HTTP_HEAD_CLIENT_MAGIC = 0x48454144; // HEAD
+  static const uint32_t BIG_FRAME_MAGIC = 0x42494746;  // BIGF
 
   static const uint32_t MAX_FRAME_SIZE = 0x3FFFFFFF;
   static const std::string PRIORITY_HEADER;
@@ -352,6 +357,7 @@ class THeader {
   VerifyMacCallback verifyCallback_;
 
   uint32_t minCompressBytes_;
+  bool allowBigFrames_;
 
   /**
    * Returns the maximum number of bytes that write k/v headers can take

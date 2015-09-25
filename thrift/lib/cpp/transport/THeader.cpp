@@ -66,7 +66,7 @@ string THeader::s_identity = "";
 
 static const string THRIFT_AUTH_HEADER = "thrift_auth";
 
-THeader::THeader()
+THeader::THeader(int options)
   : queue_(new folly::IOBufQueue)
   , protoId_(T_COMPACT_PROTOCOL)
   , protoVersion(-1)
@@ -75,7 +75,8 @@ THeader::THeader()
   , seqId(0)
   , flags_(0)
   , identity(s_identity)
-  , minCompressBytes_(0) {}
+  , minCompressBytes_(0)
+  , allowBigFrames_(options & ALLOW_BIG_FRAMES) {}
 
 THeader::~THeader() {}
 
@@ -246,52 +247,70 @@ unique_ptr<IOBuf> THeader::removeHeader(
   size_t& needed,
   StringToStringMap& persistentReadHeaders) {
   Cursor c(queue->front());
-  size_t chainSize = queue->front()->computeChainDataLength();
+  size_t remaining = queue->front()->computeChainDataLength();
+  size_t frameSizeBytes = 4;
   needed = 0;
 
-  if (chainSize < 4) {
-    needed = 4 - chainSize;
+  if (remaining < 4) {
+    needed = 4 - remaining;
     return nullptr;
   }
 
   // Use first word to check type.
-  uint32_t sz = c.readBE<uint32_t>();
+  uint32_t sz32 = c.readBE<uint32_t>();
+  remaining -= 4;
 
   if (forceClientType_) {
     // Make sure we have read the whole frame in.
-    if (isFramed(clientType) && (4 + sz > chainSize)) {
-      needed = sz - chainSize + 4;
+    if (isFramed(clientType) && (sz32 > remaining)) {
+      needed = sz32 - remaining;
       return nullptr;
     }
     unique_ptr<IOBuf> buf = THeader::removeNonHeader(queue,
                                                      needed,
                                                      clientType,
-                                                     sz);
+                                                     sz32);
     if(buf) {
       return buf;
     }
   }
 
-  auto clientT = THeader::analyzeFirst32bit(sz);
+  auto clientT = THeader::analyzeFirst32bit(sz32);
   if (clientT) {
     clientType = *clientT;
-    return THeader::removeNonHeader(queue, needed, clientType, sz);
-  } else {
-    if (sz > MAX_FRAME_SIZE) {
+    return THeader::removeNonHeader(queue, needed, clientType, sz32);
+  }
+
+  size_t sz = sz32;
+  if (sz32 > MAX_FRAME_SIZE) {
+    if (sz32 == BIG_FRAME_MAGIC) {
+      if (!allowBigFrames_) {
+        throw TTransportException(
+            TTransportException::INVALID_FRAME_SIZE,
+            "Big frames not allowed");
+      }
+      if (8 > remaining) {
+        needed = 8 - remaining;
+        return nullptr;
+      }
+      sz = c.readBE<uint64_t>();
+      remaining -= 8;
+      frameSizeBytes += 8;
+    } else {
       std::string err =
         folly::stringPrintf(
           "Header transport frame is too large: %u (hex 0x%08x",
-          sz, sz);
+          sz32, sz32);
       // does it look like ascii?
       if (  // all bytes 0x7f or less; all are > 0x1F
-           ((sz & 0x7f7f7f7f) == sz)
-        && ((sz >> 24) & 0xff) >= 0x20
-        && ((sz >> 16) & 0xff) >= 0x20
-        && ((sz >>  8) & 0xff) >= 0x20
-        && ((sz >>  0) & 0xff) >= 0x20) {
+           ((sz32 & 0x7f7f7f7f) == sz32)
+        && ((sz32 >> 24) & 0xff) >= 0x20
+        && ((sz32 >> 16) & 0xff) >= 0x20
+        && ((sz32 >>  8) & 0xff) >= 0x20
+        && ((sz32 >>  0) & 0xff) >= 0x20) {
         char buffer[5];
         uint32_t *asUint32 = reinterpret_cast<uint32_t *> (buffer);
-        *asUint32 = htonl(sz);
+        *asUint32 = htonl(sz32);
         buffer[4] = 0;
         folly::stringAppendf(&err, ", ascii '%s'", buffer);
       }
@@ -300,57 +319,60 @@ unique_ptr<IOBuf> THeader::removeHeader(
         TTransportException::INVALID_FRAME_SIZE,
         err);
     }
+  } else {
+    sz = sz32;
+  }
 
-    // Make sure we have read the whole frame in.
-    if (4 + sz > chainSize) {
-      needed = sz - chainSize + 4;
-      return nullptr;
-    }
+  // Make sure we have read the whole frame in.
+  if (sz > remaining) {
+    needed = sz - remaining;
+    return nullptr;
+  }
 
-    // Could be header format or framed. Check next uint32
-    uint32_t magic = c.readBE<uint32_t>();
-    clientType = analyzeSecond32bit(magic);
-    unique_ptr<IOBuf> buf = THeader::removeNonHeader(queue,
-                                                     needed,
-                                                     clientType,
-                                                     sz);
-    if(buf) {
-      return buf;
-    }
-
-    if (clientType == THRIFT_UNKNOWN_CLIENT_TYPE) {
-      throw TTransportException(
-        TTransportException::BAD_ARGS,
-        folly::stringPrintf(
-          "Could not detect client transport type: magic 0x%08x",
-          magic));
-    }
-
-    if (sz < 10) {
-      throw TTransportException(
-         TTransportException::INVALID_FRAME_SIZE,
-         folly::stringPrintf("Header transport frame is too small: %u", sz));
-    }
-    flags_ = magic & FLAGS_MASK;
-    seqId = c.readBE<uint32_t>();
-
-    // Trim off the frame size.
-    queue->trimStart(4);
-    buf = readHeaderFormat(queue->split(sz), persistentReadHeaders);
-
-    // auth client?
-    auto auth_header = getHeaders().find(THRIFT_AUTH_HEADER);
-    if (auth_header != getHeaders().end()) {
-      if (auth_header->second == "1") {
-        clientType = THRIFT_HEADER_SASL_CLIENT_TYPE;
-      }
-      readHeaders_.erase(auth_header);
-    }
+  // Could be header format or framed. Check next uint32
+  uint32_t magic = c.readBE<uint32_t>();
+  remaining -= 4;
+  clientType = analyzeSecond32bit(magic);
+  unique_ptr<IOBuf> buf = THeader::removeNonHeader(queue,
+                                                   needed,
+                                                   clientType,
+                                                   sz);
+  if(buf) {
     return buf;
   }
+
+  if (clientType == THRIFT_UNKNOWN_CLIENT_TYPE) {
+    throw TTransportException(
+      TTransportException::BAD_ARGS,
+      folly::stringPrintf(
+        "Could not detect client transport type: magic 0x%08x",
+        magic));
+  }
+
+  if (sz < 10) {
+    throw TTransportException(
+       TTransportException::INVALID_FRAME_SIZE,
+       folly::stringPrintf("Header transport frame is too small: %zu", sz));
+  }
+  flags_ = magic & FLAGS_MASK;
+  seqId = c.readBE<uint32_t>();
+
+  // Trim off the frame size.
+  queue->trimStart(frameSizeBytes);
+  buf = readHeaderFormat(queue->split(sz), persistentReadHeaders);
+
+  // auth client?
+  auto auth_header = getHeaders().find(THRIFT_AUTH_HEADER);
+  if (auth_header != getHeaders().end()) {
+    if (auth_header->second == "1") {
+      clientType = THRIFT_HEADER_SASL_CLIENT_TYPE;
+    }
+    readHeaders_.erase(auth_header);
+  }
+  return buf;
 }
 
-static string getString(RWPrivateCursor& c, uint32_t sz) {
+static string getString(RWPrivateCursor& c, size_t sz) {
   char strdata[sz];
   c.pull(strdata, sz);
   string str(strdata, sz);
@@ -451,7 +473,7 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(
   }
 
   if (verifyCallback_) {
-    uint32_t bufLength = buf->computeChainDataLength();
+    size_t bufLength = buf->computeChainDataLength();
     RWPrivateCursor macCursor(buf.get());
 
     // Mac callbacks don't have a zero-copy interface
@@ -608,8 +630,8 @@ unique_ptr<IOBuf> THeader::untransform(
 
 unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
                                      std::vector<uint16_t>& writeTrans,
-                                     uint32_t minCompressBytes) {
-  uint32_t dataSize = buf->computeChainDataLength();
+                                     size_t minCompressBytes) {
+  size_t dataSize = buf->computeChainDataLength();
 
   for (vector<uint16_t>::iterator it = writeTrans.begin();
        it != writeTrans.end(); ) {
@@ -756,6 +778,7 @@ void THeader::resetProtocol() {
  * Automatically advances ptr to after the written portion
  */
 static void writeString(uint8_t* &ptr, const string& str) {
+  DCHECK_LT(str.length(), std::numeric_limits<uint32_t>::max());
   uint32_t strLen = str.length();
   ptr += writeVarint32(strLen, ptr);
   memcpy(ptr, str.c_str(), strLen); // no need to write \0
@@ -849,7 +872,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
 
   if (clientType == THRIFT_HEADER_CLIENT_TYPE ||
       clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    uint32_t dataSizeBeforeTransform = buf->computeChainDataLength();
+    size_t dataSizeBeforeTransform = buf->computeChainDataLength();
     if (transform) {
       buf = THeader::transform(std::move(buf), writeTrans, minCompressBytes_);
     } else {
@@ -875,9 +898,12 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
                               "Trying to send JSON without HTTP");
   }
 
-  if (chainSize > MAX_FRAME_SIZE) {
-    throw TTransportException(TTransportException::INVALID_FRAME_SIZE,
-                              "Attempting to send frame that is too large");
+  if (chainSize > MAX_FRAME_SIZE &&
+      clientType != THRIFT_HEADER_CLIENT_TYPE &&
+      clientType != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+    throw TTransportException(
+        TTransportException::INVALID_FRAME_SIZE,
+        "Attempting to send non-header frame that is too large");
   }
 
   // Add in special flags
@@ -897,13 +923,16 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     headerSize += getMaxWriteHeadersSize(persistentWriteHeaders);
 
     // Pkt size
-    unique_ptr<IOBuf> header = IOBuf::create(14 + headerSize);
+    unique_ptr<IOBuf> header = IOBuf::create(22 + headerSize);
+    // 8 bytes of headroom, we'll use them if we go over MAX_FRAME_SIZE
+    header->advance(8);
+
     uint8_t* pkt = header->writableData();
     uint8_t* headerStart;
     uint8_t* headerSizePtr;
     uint8_t* pktStart = pkt;
 
-    uint32_t szHbo;
+    size_t szHbo;
     uint32_t szNbo;
     uint16_t headerSizeN;
 
@@ -986,8 +1015,22 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     }
 
     // Set framing size.
-    szNbo = htonl(szHbo);
-    memcpy(pktStart, &szNbo, sizeof(szNbo));
+    if (szHbo > MAX_FRAME_SIZE) {
+      if (!allowBigFrames_) {
+        throw TTransportException(
+            TTransportException::INVALID_FRAME_SIZE,
+            "Big frames not allowed");
+      }
+      header->prepend(8);
+      pktStart -= 8;
+      szNbo = htonl(BIG_FRAME_MAGIC);
+      memcpy(pktStart, &szNbo, sizeof(szNbo));
+      uint64_t s = folly::Endian::big<uint64_t>(szHbo);
+      memcpy(pktStart + 4, &s, sizeof(s));
+    } else {
+      szNbo = htonl(szHbo);
+      memcpy(pktStart, &szNbo, sizeof(szNbo));
+    }
 
     header->append(szHbo - chainSize + 4 - hmac.length());
     header->prependChain(std::move(buf));

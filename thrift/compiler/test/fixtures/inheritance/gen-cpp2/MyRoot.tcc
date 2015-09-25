@@ -132,7 +132,7 @@ void MyRootAsyncProcessor::throw_wrapped_do_root(std::unique_ptr<apache::thrift:
 
 template <typename Protocol_>
 void MyRootAsyncClient::do_rootT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());

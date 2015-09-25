@@ -575,7 +575,7 @@ void MyServiceFastAsyncProcessor::process_lobDataById(std::unique_ptr<apache::th
 
 template <typename Protocol_>
 void MyServiceFastAsyncClient::pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
@@ -646,7 +646,7 @@ void MyServiceFastAsyncClient::recv_pingT(Protocol_* prot, ::apache::thrift::Cli
 
 template <typename Protocol_>
 void MyServiceFastAsyncClient::getRandomDataT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
@@ -726,7 +726,7 @@ void MyServiceFastAsyncClient::recv_getRandomDataT(Protocol_* prot, std::string&
 
 template <typename Protocol_>
 void MyServiceFastAsyncClient::hasDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
@@ -809,7 +809,7 @@ bool MyServiceFastAsyncClient::recv_hasDataByIdT(Protocol_* prot, ::apache::thri
 
 template <typename Protocol_>
 void MyServiceFastAsyncClient::getDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
@@ -890,7 +890,7 @@ void MyServiceFastAsyncClient::recv_getDataByIdT(Protocol_* prot, std::string& _
 
 template <typename Protocol_>
 void MyServiceFastAsyncClient::putDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
@@ -963,7 +963,7 @@ void MyServiceFastAsyncClient::recv_putDataByIdT(Protocol_* prot, ::apache::thri
 
 template <typename Protocol_>
 void MyServiceFastAsyncClient::lobDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());

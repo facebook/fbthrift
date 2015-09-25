@@ -98,7 +98,7 @@ HeaderServerChannel::ServerFramingHandler::addFrame(unique_ptr<IOBuf> buf,
 
 std::tuple<unique_ptr<IOBuf>, size_t, unique_ptr<THeader>>
 HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
-  std::unique_ptr<THeader> header(new THeader);
+  std::unique_ptr<THeader> header(new THeader(THeader::ALLOW_BIG_FRAMES));
   // removeHeader will set seqid in header.
   // For older clients with seqid in the protocol, header
   // will dig in to the protocol to get the seqid correctly.

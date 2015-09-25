@@ -48,6 +48,12 @@ using apache::thrift::test::TestServiceClient;
 
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 
+namespace {
+
+const std::string kEchoSuffix(45, 'c');
+
+}  // namespace
+
 class TestInterface : public TestServiceSvIf {
   void sendResponse(std::string& _return, int64_t size) override {
     if (size >= 0) {
@@ -63,7 +69,7 @@ class TestInterface : public TestServiceSvIf {
 
   void echoRequest(std::string& _return,
                    std::unique_ptr<std::string> req) override {
-    _return = *req + "ccccccccccccccccccccccccccccccccccccccccccccc";
+    _return = *req + kEchoSuffix;
   }
 
   typedef apache::thrift::HandlerCallback<std::unique_ptr<std::string>>
@@ -240,20 +246,22 @@ TEST(ThriftServer, LargeSendTest) {
   std::string request;
   boost::polymorphic_downcast<HeaderClientChannel*>(
     client.getChannel())->setTimeout(5000);
-  request.reserve(0x3fffffff);
-  for (uint32_t i = 0; i < 0x3fffffd0 / 30; i++) {
-    request += "cccccccccccccccccccccccccccccc";
+  // A bit more than 1GiB, which used to be the max frame size
+  constexpr size_t hugeSize = (size_t(1) << 30) + (1 << 10);
+  request.reserve(hugeSize);
+  for (uint32_t i = 0; i < hugeSize / 30; i++) {
+    request.append(30, char(i & 0xff));
   }
 
-  try {
-    // should timeout
-    client.sync_echoRequest(response, request);
-  } catch (const TTransportException& e) {
-    EXPECT_EQ(int(TTransportException::TIMED_OUT), int(e.getType()));
-    sleep(1); // Wait for server to timeout also - otherwise other tests fail
-    return;
-  }
-  ADD_FAILURE();
+  client.sync_echoRequest(response, request);
+  ASSERT_EQ(request.size() + kEchoSuffix.size(), response.size());
+
+  // Not EXPECT_EQ; do you want to print two >1GiB strings on error?
+  EXPECT_TRUE(folly::StringPiece(request) ==
+              folly::StringPiece(response.data(), request.size()));
+  EXPECT_TRUE(folly::StringPiece(kEchoSuffix) ==
+              folly::StringPiece(response.data() + request.size(),
+                                 kEchoSuffix.size()));
 }
 
 TEST(ThriftServer, OverloadTest) {

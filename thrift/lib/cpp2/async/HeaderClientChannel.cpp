@@ -482,7 +482,7 @@ HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<IOBuf> buf,
 
 std::tuple<std::unique_ptr<IOBuf>, size_t, std::unique_ptr<THeader>>
 HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
-  std::unique_ptr<THeader> header(new THeader);
+  std::unique_ptr<THeader> header(new THeader(THeader::ALLOW_BIG_FRAMES));
   if (!q || !q->front() || q->front()->empty()) {
     return make_tuple(std::unique_ptr<IOBuf>(), 0, nullptr);
   }

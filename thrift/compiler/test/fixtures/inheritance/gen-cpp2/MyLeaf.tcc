@@ -132,7 +132,7 @@ void MyLeafAsyncProcessor::throw_wrapped_do_leaf(std::unique_ptr<apache::thrift:
 
 template <typename Protocol_>
 void MyLeafAsyncClient::do_leafT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());

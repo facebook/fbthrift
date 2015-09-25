@@ -535,7 +535,7 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
 
 template <typename Protocol_>
 void RaiserAsyncClient::doBlandT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
@@ -606,7 +606,7 @@ void RaiserAsyncClient::recv_doBlandT(Protocol_* prot, ::apache::thrift::ClientR
 
 template <typename Protocol_>
 void RaiserAsyncClient::doRaiseT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
@@ -685,7 +685,7 @@ void RaiserAsyncClient::recv_doRaiseT(Protocol_* prot, ::apache::thrift::ClientR
 
 template <typename Protocol_>
 void RaiserAsyncClient::get200T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
@@ -765,7 +765,7 @@ void RaiserAsyncClient::recv_get200T(Protocol_* prot, std::string& _return, ::ap
 
 template <typename Protocol_>
 void RaiserAsyncClient::get500T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());

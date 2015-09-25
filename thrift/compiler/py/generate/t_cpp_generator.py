@@ -1820,7 +1820,7 @@ class CppGenerator(t_generator.Generator):
         func_name = function.name + "T"
 
         with out().defn(signature, name=func_name, output=self._out_tcc):
-            out("auto header = std::make_shared<apache::thrift::transport::THeader>();")
+            out("auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);")
             out("header->setProtocolId(getChannel()->getProtocolId());")
             out("header->setHeaders(rpcOptions.releaseWriteHeaders());")
             out("connectionContext_->setRequestHeader(header.get());")

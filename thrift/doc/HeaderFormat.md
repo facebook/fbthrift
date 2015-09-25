@@ -5,7 +5,11 @@ Header format for the THeader.h
 
       0 1 2 3 4 5 6 7 8 9 a b c d e f 0 1 2 3 4 5 6 7 8 9 a b c d e f
     +----------------------------------------------------------------+
-    | 0|                          LENGTH                             |
+    | 0|                         LENGTH32                            |
+    +----------------------------------------------------------------+
+    |                           LENGTH_MSW*                          |
+    +----------------------------------------------------------------+
+    |                           LENGTH_LSW*                          |
     +----------------------------------------------------------------+
     | 0|       HEADER MAGIC          |            FLAGS              |
     +----------------------------------------------------------------+
@@ -33,13 +37,22 @@ Header format for the THeader.h
     |                                                                |
     +----------------------------------------------------------------+
 
-The `LENGTH` field is 32 bits, and counts the remaining bytes in the
-packet, NOT including the length field.  The header size field is 16
-bits, and defines the size of the header remaining NOT including the
-`HEADER MAGIC`, `FLAGS`, `SEQUENCE NUMBER` and header size fields.  The
+The `LENGTH32` field is 32 bits, and counts the remaining bytes in the
+packet, NOT including the length field.  For packets 1GiB or larger, the
+length field contains the magic value `BIG_FRAME_MAGIC`, and the fields
+`LENGTH_MSW` and `LENGTH_LSW` follow and contain the 64-bit length (not
+including the `LENGTH32`, `LENGTH_MSW`, and `LENGTH_LSW` fields).  For packets
+smaller than 1GiB, the `LENGTH_MSW` and `LENGTH_LSW` fields do not appear, and
+the `LENGTH32` field contains the actual length of the packet.  The header size
+field is 16 bits, and defines the size of the header remaining NOT including
+the `HEADER MAGIC`, `FLAGS`, `SEQUENCE NUMBER` and header size fields.  The
 Header size field is in bytes/4.
 
-The transform ID's are varints.  The data for each transform is
+Note that the `LENGTH_MSW` and `LENGTH_LSW` fields only appear if the
+`LENGTH32` field contains the magic value `BIG_FRAME_MAGIC` (0x42494746, "BIGF"
+big-endian).
+
+The transform IDs are varints.  The data for each transform is
 defined by the transform ID in the code - no size is given in the
 header.  If a transform ID is specified from a client and the server
 doesn't know about the transform ID, an error MUST be returned as we
@@ -59,9 +72,6 @@ Info ID's and transform ID's should share the same ID space.
 ### PADDING:
 
 Header will be padded out to next 4-byte boundary with `0x00`.
-
-Max frame size is `0x3FFFFFFF`, which is slightly less than `HTTP_MAGIC`.
-This allows us to distingush between different (older) transports.
 
 ### Transform IDs:
 
