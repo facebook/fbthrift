@@ -23,7 +23,7 @@ using folly::SSLContextPtr;
 
 namespace apache { namespace thrift { namespace async {
 
-TAsyncSSLSocketFactory::TAsyncSSLSocketFactory(TEventBase* eventBase) :
+TAsyncSSLSocketFactory::TAsyncSSLSocketFactory(folly::EventBase* eventBase) :
   TAsyncSocketFactory(eventBase),
   eventBase_(eventBase),
   context_(),

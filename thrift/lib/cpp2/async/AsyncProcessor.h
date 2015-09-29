@@ -18,7 +18,7 @@
 #define THRIFT_ASYNCPROCESSOR2_H 1
 
 #include <thrift/lib/cpp/TProcessor.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
@@ -39,7 +39,7 @@ class EventTask : public virtual apache::thrift::concurrency::Runnable {
  public:
   EventTask(std::function<void()>&& taskFunc,
   apache::thrift::ResponseChannel::Request* req,
-    apache::thrift::async::TEventBase* base,
+    folly::EventBase* base,
     bool oneway)
       : taskFunc_(std::move(taskFunc))
       , req_(req)
@@ -79,7 +79,7 @@ class EventTask : public virtual apache::thrift::concurrency::Runnable {
  private:
   std::function<void()> taskFunc_;
   apache::thrift::ResponseChannel::Request* req_;
-  apache::thrift::async::TEventBase* base_;
+  folly::EventBase* base_;
   bool oneway_;
 };
 
@@ -90,7 +90,7 @@ class PriorityEventTask : public apache::thrift::concurrency::PriorityRunnable,
     apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
     std::function<void()>&& taskFunc,
     apache::thrift::ResponseChannel::Request* req,
-    apache::thrift::async::TEventBase* base,
+    folly::EventBase* base,
     bool oneway)
       : EventTask(std::move(taskFunc), req, base, oneway)
       , priority_(priority) {}
@@ -112,7 +112,7 @@ class AsyncProcessor : public TProcessorBase {
                        std::unique_ptr<folly::IOBuf> buf,
                        apache::thrift::protocol::PROTOCOL_TYPES protType,
                        Cpp2RequestContext* context,
-                       apache::thrift::async::TEventBase* eb,
+                       folly::EventBase* eb,
                        apache::thrift::concurrency::ThreadManager* tm) = 0;
 
   virtual bool isOnewayMethod(const folly::IOBuf* buf,
@@ -130,7 +130,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       std::unique_ptr<folly::IOBuf>,
       std::unique_ptr<ProtocolReader> iprot,
       apache::thrift::Cpp2RequestContext* context,
-      apache::thrift::async::TEventBase* eb,
+      folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProcessFunc>
   using ProcessMap = std::unordered_map<std::string, ProcessFunc>;
@@ -197,7 +197,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<ProtocolIn_> iprot,
       apache::thrift::Cpp2RequestContext* ctx,
-      apache::thrift::async::TEventBase* eb,
+      folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm,
       apache::thrift::concurrency::PRIORITY pri,
       bool oneway,
@@ -298,7 +298,7 @@ class HandlerCallbackBase {
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     exn_ptr ep,
     exnw_ptr ewp,
-    apache::thrift::async::TEventBase* eb,
+    folly::EventBase* eb,
     apache::thrift::concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx) :
       req_(std::move(req)),
@@ -384,7 +384,7 @@ class HandlerCallbackBase {
     thisPtr.release()->exceptionInThread(ex);
   }
 
-  apache::thrift::async::TEventBase* getEventBase() {
+  folly::EventBase* getEventBase() {
     assert(eb_);
     return eb_;
   }
@@ -514,7 +514,7 @@ class HandlerCallbackBase {
   exnw_ptr ewp_;
 
   // Useful pointers, so handler doesn't need to have a pointer to the server
-  apache::thrift::async::TEventBase* eb_;
+  folly::EventBase* eb_;
   apache::thrift::concurrency::ThreadManager* tm_;
   Cpp2RequestContext* reqCtx_;
 
@@ -554,7 +554,7 @@ class HandlerCallback : public HandlerCallbackBase {
     exn_ptr ep,
     exnw_ptr ewp,
     int32_t protoSeqId,
-    apache::thrift::async::TEventBase* eb,
+    folly::EventBase* eb,
     apache::thrift::concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx) :
       HandlerCallbackBase(std::move(req), std::move(ctx), ep, ewp,
@@ -654,7 +654,7 @@ class HandlerCallback<void> : public HandlerCallbackBase {
     exn_ptr ep,
     exnw_ptr ewp,
     int32_t protoSeqId,
-    apache::thrift::async::TEventBase* eb,
+    folly::EventBase* eb,
     apache::thrift::concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx) :
       HandlerCallbackBase(std::move(req), std::move(ctx), ep, ewp,
@@ -733,7 +733,7 @@ public:
     exn_ptr ep,
     exnw_ptr ewp,
     int32_t protoSeqId,
-    apache::thrift::async::TEventBase* eb,
+    folly::EventBase* eb,
     apache::thrift::concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx) :
       HandlerCallbackBase(std::move(req), std::move(ctx), ep, ewp,
@@ -822,12 +822,12 @@ class ServerInterface : public AsyncProcessorFactory {
     return tm_;
   }
 
-  void setEventBase(apache::thrift::async::TEventBase* eb) {
+  void setEventBase(folly::EventBase* eb) {
     folly::RequestEventBase::set(eb);
     eb_ = eb;
   }
 
-  apache::thrift::async::TEventBase* getEventBase() {
+  folly::EventBase* getEventBase() {
     return eb_;
   }
 
@@ -857,7 +857,7 @@ class ServerInterface : public AsyncProcessorFactory {
    */
   static __thread Cpp2RequestContext* reqCtx_;
   static __thread apache::thrift::concurrency::ThreadManager* tm_;
-  static __thread apache::thrift::async::TEventBase* eb_;
+  static __thread folly::EventBase* eb_;
 };
 
 }} // apache::thrift

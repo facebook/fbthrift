@@ -17,12 +17,12 @@
 #ifndef CPP2_WORKER_H_
 #define CPP2_WORKER_H_ 1
 
-#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <folly/io/async/AsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/async/TEventHandler.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/io/async/EventHandler.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <unordered_set>
 
@@ -105,8 +105,8 @@ class Cpp2Worker
   /// The mother ship.
   ThriftServer* server_;
 
-  /// An instance's TEventBase for I/O.
-  apache::thrift::async::TEventBase* eventBase_;
+  /// An instance's folly::EventBase for I/O.
+  folly::EventBase* eventBase_;
 
   void onNewConnection(folly::AsyncSocket::UniquePtr,
                        const folly::SocketAddress*,

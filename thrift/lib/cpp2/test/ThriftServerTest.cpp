@@ -22,9 +22,9 @@
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <folly/io/async/AsyncServerSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
@@ -104,7 +104,7 @@ std::shared_ptr<TestServiceClient> getThrift1Client(
 void AsyncCpp2Test(bool enable_security) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
@@ -143,13 +143,13 @@ TEST(ThriftServer, GetLoadTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   auto serv = factory.create();
   ScopedServerThread sst(serv);
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   auto header_channel = boost::polymorphic_downcast<HeaderClientChannel*>(
@@ -192,13 +192,13 @@ TEST(ThriftServer, GetLoadTest) {
 TEST(ThriftServer, SerializationInEventBaseTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel =
       std::unique_ptr<HeaderClientChannel,
-                      apache::thrift::async::TDelayedDestruction::Destructor>(
+                      folly::DelayedDestruction::Destructor>(
                           new HeaderClientChannel(socket));
   channel->setTimeout(10000);
 
@@ -212,13 +212,13 @@ TEST(ThriftServer, SerializationInEventBaseTest) {
 TEST(ThriftServer, HandlerInEventBaseTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel =
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                         new HeaderClientChannel(socket));
   channel->setTimeout(10000);
 
@@ -233,13 +233,13 @@ TEST(ThriftServer, HandlerInEventBaseTest) {
 TEST(ThriftServer, LargeSendTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   std::string response;
@@ -276,13 +276,13 @@ TEST(ThriftServer, OverloadTest) {
     factory.useSimpleThreadManager(false).useThreadManager(tm);
   }
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   std::string response;
@@ -323,13 +323,13 @@ TEST(ThriftServer, OverloadTest) {
 TEST(ThriftServer, OnewaySyncClientTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   client.sync_noResponse(0);
@@ -349,12 +349,12 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
   ScopedServerThread st(factory2.create());
 
   {
-    TEventBase base;
+    folly::EventBase base;
     std::shared_ptr<TAsyncSocket> socket(
       TAsyncSocket::newSocket(&base, *st.getAddress()));
     TestServiceAsyncClient client(
         std::unique_ptr<HeaderClientChannel,
-            apache::thrift::async::TDelayedDestruction::Destructor>(
+            folly::DelayedDestruction::Destructor>(
             new HeaderClientChannel(socket)));
 
     client.sync_noResponse(10000);
@@ -367,13 +367,13 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
 TEST(ThriftServer, CompactClientTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   // Set the client to compact
@@ -389,13 +389,13 @@ TEST(ThriftServer, CompactClientTest) {
 TEST(ThriftServer, CompressionClientTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   // Set the client to compact
@@ -420,7 +420,7 @@ TEST(ThriftServer, ClientTimeoutTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   auto server = factory.create();
   ScopedServerThread sst(server);
-  TEventBase base;
+  folly::EventBase base;
 
   auto getClient = [&base, &sst] () {
     std::shared_ptr<TAsyncSocket> socket(
@@ -428,7 +428,7 @@ TEST(ThriftServer, ClientTimeoutTest) {
 
     return std::make_shared<TestServiceAsyncClient>(
       std::unique_ptr<HeaderClientChannel,
-                      apache::thrift::async::TDelayedDestruction::Destructor>(
+                      folly::DelayedDestruction::Destructor>(
                         new HeaderClientChannel(socket)));
   };
 
@@ -530,13 +530,13 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
   server->setIdleTimeout(std::chrono::milliseconds(20));
   apache::thrift::util::ScopedServerThread st(server);
 
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *st.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   std::string response;
@@ -593,13 +593,13 @@ class Callback : public RequestCallback {
 TEST(ThriftServer, BadSendTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   client.sendResponse(
@@ -613,14 +613,14 @@ TEST(ThriftServer, BadSendTest) {
 }
 
 TEST(ThriftServer, ResetStateTest) {
-  TEventBase base;
+  folly::EventBase base;
 
   // Create a server socket and bind, don't listen.  This gets us a
   // port to test with which is guaranteed to fail.
   auto ssock = std::unique_ptr<
-    TAsyncServerSocket,
-    apache::thrift::async::TDelayedDestruction::Destructor>(
-      new TAsyncServerSocket);
+    folly::AsyncServerSocket,
+    folly::DelayedDestruction::Destructor>(
+      new folly::AsyncServerSocket);
   ssock->bind(0);
   EXPECT_FALSE(ssock->getAddresses().empty());
 
@@ -634,7 +634,7 @@ TEST(ThriftServer, ResetStateTest) {
     // Create a client.
     TestServiceAsyncClient client(
       std::unique_ptr<HeaderClientChannel,
-      apache::thrift::async::TDelayedDestruction::Destructor>(
+      folly::DelayedDestruction::Destructor>(
         new HeaderClientChannel(socket)));
 
     std::string response;
@@ -710,13 +710,13 @@ TEST(ThriftServer, FailureInjection) {
 
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
       std::unique_ptr<HeaderClientChannel,
-                      apache::thrift::async::TDelayedDestruction::Destructor>(
+                      folly::DelayedDestruction::Destructor>(
           new HeaderClientChannel(socket)));
 
   auto server = std::dynamic_pointer_cast<ThriftServer>(
@@ -762,7 +762,7 @@ TEST(ThriftServer, FailureInjection) {
 TEST(ThriftServer, useExistingSocketAndExit) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   auto server = factory.create();
-  TAsyncServerSocket::UniquePtr serverSocket(new TAsyncServerSocket);
+  folly::AsyncServerSocket::UniquePtr serverSocket(new folly::AsyncServerSocket);
   serverSocket->bind(0);
   server->useExistingSocket(std::move(serverSocket));
   // In the past, this would cause a SEGV
@@ -772,20 +772,20 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
   // This is ConnectionIdleTimeoutTest, but with an existing socket
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   auto server = factory.create();
-  TAsyncServerSocket::UniquePtr serverSocket(new TAsyncServerSocket);
+  folly::AsyncServerSocket::UniquePtr serverSocket(new folly::AsyncServerSocket);
   serverSocket->bind(0);
   server->useExistingSocket(std::move(serverSocket));
 
   server->setIdleTimeout(std::chrono::milliseconds(20));
   apache::thrift::util::ScopedServerThread st(server);
 
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *st.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   std::string response;
@@ -797,13 +797,13 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
 TEST(ThriftServer, FreeCallbackTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   RpcOptions options;
@@ -880,13 +880,13 @@ TEST(ThriftServer, CallbackOrderingTest) {
   server->setServerEventHandler(serverHandler);
 
   ScopedServerThread sst(server);
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   client.noResponse([](ClientReceiveState&& state){}, 10000);
@@ -918,7 +918,7 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   auto server = factory.create();
   ScopedServerThread sst(server);
-  TEventBase base;
+  folly::EventBase base;
   ReadCallbackTest cb;
 
   std::shared_ptr<TAsyncSocket> socket2(
@@ -961,14 +961,14 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
     iothreadpool->setNumThreads(0);
   });
 
-  TEventBase base;
+  folly::EventBase base;
 
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   std::string response;
@@ -992,7 +992,7 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   // Can't reuse client since the channel has gone bad
   TestServiceAsyncClient client2(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket2)));
 
   client2.sync_sendResponse(response, 64);
@@ -1004,7 +1004,7 @@ TEST(ThriftServer, ThriftServerSizeLimits) {
 
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase eb;
+  folly::EventBase eb;
 
   TestServiceAsyncClient client(
       HeaderClientChannel::newChannel(
@@ -1045,7 +1045,7 @@ TEST(ThriftServer, poolExecutorTest) {
     .useThreadManager(std::make_shared<
         apache::thrift::concurrency::ThreadManagerExecutorAdapter>(exe));
   ScopedServerThread sst(factory.create());
-  TEventBase eb;
+  folly::EventBase eb;
 
   TestServiceAsyncClient client(
       HeaderClientChannel::newChannel(
@@ -1076,7 +1076,7 @@ TEST(ThriftServer, fiberExecutorTest) {
     .useSimpleThreadManager(false)
     .useThreadManager(exe);
   ScopedServerThread sst(factory.create());
-  TEventBase eb;
+  folly::EventBase eb;
 
   TestServiceAsyncClient client(
       HeaderClientChannel::newChannel(

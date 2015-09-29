@@ -21,7 +21,7 @@
 
 #include <thrift/lib/cpp/async/TAsyncEventChannel.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
-#include <thrift/lib/cpp/async/TAsyncTimeout.h>
+#include <folly/io/async/AsyncTimeout.h>
 
 #include <memory>
 
@@ -201,7 +201,7 @@ template<typename WriteRequest_, typename ReadState_>
 class TStreamAsyncChannel : public TAsyncEventChannel,
                             protected TAsyncTransport::ReadCallback,
                             protected TAsyncTransport::WriteCallback,
-                            protected TAsyncTimeout {
+                            protected folly::AsyncTimeout {
  public:
   explicit TStreamAsyncChannel(
       const std::shared_ptr<TAsyncTransport>& transport);
@@ -303,30 +303,30 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
   void closeNow();
 
   /**
-   * Attach the channel to a TEventBase.
+   * Attach the channel to a EventBase.
    *
    * This may only be called if the channel is not currently attached to a
-   * TEventBase (by an earlier call to detachEventBase()).
+   * EventBase (by an earlier call to detachEventBase()).
    *
-   * This method must be invoked in the TEventBase's thread.
+   * This method must be invoked in the EventBase's thread.
    */
-  void attachEventBase(TEventBase* eventBase) override;
+  void attachEventBase(folly::EventBase* eventBase) override;
 
   /**
-   * Detach the channel from its TEventBase.
+   * Detach the channel from its EventBase.
    *
    * This may only be called when the channel is idle and has no reads or
    * writes pending.  Once detached, the channel may not be used again until it
-   * is re-attached to a TEventBase by calling attachEventBase().
+   * is re-attached to a EventBase by calling attachEventBase().
    *
-   * This method must be called from the current TEventBase's thread.
+   * This method must be called from the current EventBase's thread.
    */
   void detachEventBase() override;
 
   /**
-   * Get the TEventBase used by this channel.
+   * Get the EventBase used by this channel.
    */
-  TEventBase* getEventBase() const;
+  folly::EventBase* getEventBase() const;
 
   /**
    * Set the timeout for receiving messages.
@@ -411,7 +411,7 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
   void writeError(size_t bytesWritten,
                   const transport::TTransportException& ex) noexcept override;
 
-  // callback from TAsyncTimeout
+  // callback from AsyncTimeout
   void timeoutExpired() noexcept override;
 
   bool invokeReadDataAvailable(size_t len) noexcept;

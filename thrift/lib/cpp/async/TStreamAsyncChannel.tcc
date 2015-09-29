@@ -27,7 +27,7 @@ namespace apache { namespace thrift { namespace async {
 template<typename WriteRequest_, typename ReadState_>
 TStreamAsyncChannel<WriteRequest_, ReadState_>::TStreamAsyncChannel(
     const std::shared_ptr<TAsyncTransport>& transport)
-  : TAsyncTimeout(transport->getEventBase())
+  : folly::AsyncTimeout(transport->getEventBase())
   , transport_(transport)
   , writeReqHead_(nullptr)
   , writeReqTail_(nullptr)
@@ -44,9 +44,9 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::destroy() {
   // When destroy is called, close the channel immediately
   closeNow();
 
-  // Then call TDelayedDestruction::destroy() to take care of
+  // Then call DelayedDestruction::destroy() to take care of
   // whether or not we need immediate or delayed destruction
-  TDelayedDestruction::destroy();
+  folly::DelayedDestruction::destroy();
 }
 
 template<typename WriteRequest_, typename ReadState_>
@@ -210,8 +210,8 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::closeNow() {
 
 template<typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::attachEventBase(
-    TEventBase* eventBase) {
-  TAsyncTimeout::attachEventBase(eventBase);
+    folly::EventBase* eventBase) {
+  folly::AsyncTimeout::attachEventBase(eventBase);
   transport_->attachEventBase(eventBase);
 }
 
@@ -231,12 +231,12 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::detachEventBase() {
     transport_->setReadCallback(nullptr);
   }
 
-  TAsyncTimeout::detachEventBase();
+  folly::AsyncTimeout::detachEventBase();
   transport_->detachEventBase();
 }
 
 template<typename WriteRequest_, typename ReadState_>
-TEventBase*
+folly::EventBase*
 TStreamAsyncChannel<WriteRequest_, ReadState_>::getEventBase() const {
   return transport_->getEventBase();
 }
@@ -399,7 +399,7 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
     return false;
   }
 
-  TEventBase* ourEventBase = transport_->getEventBase();
+  folly::EventBase* ourEventBase = transport_->getEventBase();
 
   // We read a full message.  Invoke the read callback.
   invokeReadCallback(readCallback_, "read callback");
@@ -419,8 +419,8 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
   // timeout, so we have nothing else to do.
   //
   // If readCallback_ is unset, recvMessage() wasn't called again and we need
-  // to stop reading.  If our TEventBase has changed, detachEventBase() will
-  // have already stopped reading.  (Note that if the TEventBase has changed,
+  // to stop reading.  If our EventBase has changed, detachEventBase() will
+  // have already stopped reading.  (Note that if the EventBase has changed,
   // it's possible that readCallback_ has already been set again to start
   // reading in the other thread.)
   if (transport_->getEventBase() == ourEventBase && !readCallback_) {

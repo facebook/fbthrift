@@ -18,7 +18,7 @@
 
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TEventHandler.h>
+#include <folly/io/async/EventHandler.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 
@@ -46,13 +46,13 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
       : folly::AsyncSocket(evb, ip, port, connectTimeout) {}
 
 
-  static std::shared_ptr<TAsyncSocket> newSocket(TEventBase* evb) {
+  static std::shared_ptr<TAsyncSocket> newSocket(folly::EventBase* evb) {
     return std::shared_ptr<TAsyncSocket>(new TAsyncSocket(evb),
                                            Destructor());
   }
 
   static std::shared_ptr<TAsyncSocket> newSocket(
-      TEventBase* evb,
+      folly::EventBase* evb,
       const folly::SocketAddress& address,
       uint32_t connectTimeout = 0) {
     return std::shared_ptr<TAsyncSocket>(
@@ -61,7 +61,7 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
   }
 
   static std::shared_ptr<TAsyncSocket> newSocket(
-      TEventBase* evb,
+      folly::EventBase* evb,
       const std::string& ip,
       uint16_t port,
       uint32_t connectTimeout = 0) {
@@ -70,7 +70,7 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
         Destructor());
   }
 
-  static std::shared_ptr<TAsyncSocket> newSocket(TEventBase* evb, int fd) {
+  static std::shared_ptr<TAsyncSocket> newSocket(folly::EventBase* evb, int fd) {
     return std::shared_ptr<TAsyncSocket>(new TAsyncSocket(evb, fd),
                                            Destructor());
   }

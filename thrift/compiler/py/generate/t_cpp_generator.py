@@ -798,7 +798,7 @@ class CppGenerator(t_generator.Generator):
                 out("return \"{0}\";".format(service.name))
 
             out("typedef std::unique_ptr<apache::thrift::RequestChannel"
-              ", apache::thrift::async::TDelayedDestruction::Destructor>"
+              ", folly::DelayedDestruction::Destructor>"
               " channel_ptr;")
             init = OrderedDict()
             if service.extends:
@@ -1248,7 +1248,7 @@ class CppGenerator(t_generator.Generator):
                         'std::unique_ptr<folly::IOBuf> buf, ' +
                         'apache::thrift::protocol::PROTOCOL_TYPES protType, ' +
                         'apache::thrift::Cpp2RequestContext* context, ' +
-                        'apache::thrift::async::TEventBase* eb, ' +
+                        'folly::EventBase* eb, ' +
                         'apache::thrift::concurrency::ThreadManager* tm)',
                         name='process',
                         modifiers='virtual'):
@@ -1341,7 +1341,7 @@ class CppGenerator(t_generator.Generator):
                             'std::unique_ptr<folly::IOBuf> buf, '
                             'std::unique_ptr<ProtocolIn_> iprot, '
                             'apache::thrift::Cpp2RequestContext* ctx, '
-                            'apache::thrift::async::TEventBase* eb, '
+                            'folly::EventBase* eb, '
                             'apache::thrift::concurrency::ThreadManager* tm'
                             ')',
                             name="_processInThread_{0}"
@@ -1365,7 +1365,7 @@ class CppGenerator(t_generator.Generator):
                             'std::unique_ptr<folly::IOBuf> buf, ' +
                             'std::unique_ptr<ProtocolIn_> iprot,' +
                             'apache::thrift::Cpp2RequestContext* ctx,' +
-                            'apache::thrift::async::TEventBase* eb, ' +
+                            'folly::EventBase* eb, ' +
                             'apache::thrift::concurrency::ThreadManager* tm)',
                             name="process_{0}".format(function.name),
                             output=self._out_tcc):

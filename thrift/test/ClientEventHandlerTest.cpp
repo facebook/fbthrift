@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/async/TAsyncChannel.h>
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
@@ -208,7 +208,7 @@ TEST(ClientEventHandlerTest, clientHandlerTest) {
 
   // Test async
 
-  TEventBase evb;
+  folly::EventBase evb;
   auto aSocket = TAsyncSocket::newSocket(&evb, "127.0.0.1", port);
   auto channel = TFramedAsyncChannel::newChannel(aSocket);
   auto protocolFactory = make_shared<TBinaryProtocolFactory>();

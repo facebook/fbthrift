@@ -30,7 +30,7 @@ using folly::IOBuf;
 using folly::IOBufQueue;
 using namespace folly::io;
 using namespace apache::thrift::transport;
-using apache::thrift::async::TEventBase;
+using folly::EventBase;
 using namespace apache::thrift::concurrency;
 using apache::thrift::async::TAsyncTransport;
 
@@ -96,7 +96,7 @@ void Cpp2Channel::destroy() {
 }
 
 void Cpp2Channel::attachEventBase(
-  TEventBase* eventBase) {
+  EventBase* eventBase) {
   transportHandler_->attachEventBase(eventBase);
 }
 
@@ -104,7 +104,7 @@ void Cpp2Channel::detachEventBase() {
   transportHandler_->detachEventBase();
 }
 
-TEventBase* Cpp2Channel::getEventBase() {
+EventBase* Cpp2Channel::getEventBase() {
   return transport_->getEventBase();
 }
 

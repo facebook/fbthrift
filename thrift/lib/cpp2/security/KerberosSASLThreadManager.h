@@ -17,7 +17,7 @@
 #ifndef KERBEROS_SASL_THREAD_MANAGER_H
 #define KERBEROS_SASL_THREAD_MANAGER_H
 
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
@@ -64,7 +64,7 @@ class SaslThreadManager {
   unsigned int maxSimultaneousSecureConnections_;
   std::deque<std::shared_ptr<apache::thrift::concurrency::FunctionRunner>>
     pendingSecureStarts_;
-  apache::thrift::async::TEventBase healthCheckEvb_;
+  folly::EventBase healthCheckEvb_;
   std::thread healthCheckThread_;
   std::chrono::milliseconds lastActivity_;
   std::atomic<bool> healthy_;

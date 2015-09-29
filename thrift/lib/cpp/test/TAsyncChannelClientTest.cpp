@@ -17,7 +17,7 @@
 #include <random>
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
 #include <thrift/lib/cpp/async/THttpAsyncChannel.h>
 #include <thrift/lib/cpp/async/THeaderAsyncChannel.h>
@@ -84,7 +84,7 @@ void randomizeString(string* str, size_t length) {
   str->assign(buf, length);
 }
 
-void runTest(TEventBase& evb, LoadTestCobClient& client) {
+void runTest(folly::EventBase& evb, LoadTestCobClient& client) {
   // Test sending a few requests to the server
   TestCallback callback;
   client.add(bind(&TestCallback::addDone, &callback,
@@ -135,7 +135,7 @@ TEST(TAsyncChannelClientTest, TestZlibClient) {
   ScopedServerThread serverThread(&serverCreator);
 
   // Create an async client using TZlibAsyncChannel
-  TEventBase evb;
+  folly::EventBase evb;
   auto serverAddr = *serverThread.getAddress();
   auto socket = TAsyncSocket::newSocket(&evb, serverAddr);
   auto framedChannel = TFramedAsyncChannel::newChannel(socket);
@@ -161,7 +161,7 @@ TEST(TAsyncChannelClientTest, TestHttpClient) {
   ScopedServerThread serverThread(&serverCreator);
 
   // Create an async client using THttpAsyncChannel
-  TEventBase evb;
+  folly::EventBase evb;
   auto serverAddr = *serverThread.getAddress();
   auto socket = TAsyncSocket::newSocket(&evb, serverAddr);
   auto httpChannel = THttpAsyncChannel::newChannel(socket);
@@ -195,7 +195,7 @@ TEST(TAsyncChannelClientTest, TestDuplexHeaderClient) {
   ScopedServerThread serverThread(&serverCreator);
 
   // Create an async client using THeaderAsyncChannel
-  TEventBase evb;
+  folly::EventBase evb;
   auto serverAddr = *serverThread.getAddress();
   auto socket = TAsyncSocket::newSocket(&evb, serverAddr);
   auto headerChannel = THeaderAsyncChannel::newChannel(socket);

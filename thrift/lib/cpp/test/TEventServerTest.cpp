@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/util/AsyncClientUtil.h>
 #include <thrift/lib/cpp/test/gen-cpp/TEventServerTestService.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
@@ -43,7 +43,7 @@ namespace {
 class TEventServerServiceHandler :
       public TEventServerTestServiceCobSvIf {
  public:
-  explicit TEventServerServiceHandler(TEventBase *eventBase) :
+  explicit TEventServerServiceHandler(EventBase *eventBase) :
       eventBase_(eventBase) {
   }
 
@@ -64,7 +64,7 @@ class TEventServerServiceHandler :
 
  private:
 
-  TEventBase *eventBase_;
+  EventBase *eventBase_;
 };
 
 static void responseReceived(TEventServerTestServiceCobClient* client,
@@ -85,7 +85,7 @@ TEST(TEventServerTest, ServerShutdownWithOutstandingMessage) {
   int workerThreads = 1;
 
   // Initialize thrift service
-  TEventBase eventBase;
+  EventBase eventBase;
   auto handler = make_shared<TEventServerServiceHandler>(&eventBase);
   auto processor = make_shared<TEventServerTestServiceAsyncProcessor>(handler);
 
@@ -105,7 +105,7 @@ TEST(TEventServerTest, ServerShutdownWithOutstandingMessage) {
 
 TEST(TEventServerTest, ExplicitHeaderProtocolAndTransport) {
   // Initialize thrift service
-  TEventBase eventBase;
+  EventBase eventBase;
   auto handler = make_shared<TEventServerServiceHandler>(&eventBase);
   auto processor = make_shared<TEventServerTestServiceAsyncProcessor>(handler);
   auto headerProtocolFactory = make_shared<THeaderProtocolFactory>();

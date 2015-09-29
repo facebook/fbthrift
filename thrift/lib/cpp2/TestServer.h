@@ -46,7 +46,7 @@ struct TestThriftServerFactory {
     server->setSaslEnabled(true);
     if (useStubSaslServer_) {
       server->setSaslServerFactory(
-          [] (apache::thrift::async::TEventBase* evb) {
+          [] (folly::EventBase* evb) {
             return std::unique_ptr<apache::thrift::SaslServer>(
                 new apache::thrift::StubSaslServer(evb));
           });

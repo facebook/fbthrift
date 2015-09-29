@@ -29,7 +29,7 @@ using folly::IOBuf;
 using folly::IOBufQueue;
 using folly::make_unique;
 using namespace apache::thrift::transport;
-using apache::thrift::async::TEventBase;
+using folly::EventBase;
 using apache::thrift::async::TAsyncTransport;
 using folly::RequestContext;
 using HResClock = std::chrono::high_resolution_clock;
@@ -81,7 +81,7 @@ void HeaderClientChannel::closeNow() {
 
 void HeaderClientChannel::destroy() {
   closeNow();
-  async::TDelayedDestruction::destroy();
+  folly::DelayedDestruction::destroy();
 }
 
 void HeaderClientChannel::useAsHttpClient(const std::string& host,
@@ -91,7 +91,7 @@ void HeaderClientChannel::useAsHttpClient(const std::string& host,
 }
 
 void HeaderClientChannel::attachEventBase(
-    TEventBase* eventBase) {
+    EventBase* eventBase) {
   cpp2Channel_->attachEventBase(eventBase);
   timer_->attachEventBase(eventBase);
   if (saslClient_ && getProtectionState() == ProtectionState::UNKNOWN) {

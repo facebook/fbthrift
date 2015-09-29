@@ -53,7 +53,7 @@ class HttpFetcher :
    /**
     * Create a new HttpFetcher object.
     *
-    * @param event_base The TEventBase to use for performing asynchronous
+    * @param event_base The EventBase to use for performing asynchronous
     *        operations.
     * @param cob The callback object to be invoked on successful completion.
     * @param error_cob The callback object to be invoked if an error occurs.
@@ -62,7 +62,7 @@ class HttpFetcher :
     *        resolving host names.)
     * @param path The HTTP path to fetch from the server.
     */
-   HttpFetcher(apache::thrift::async::TEventBase* event_base,
+   HttpFetcher(folly::EventBase* event_base,
                ReturnCob cob,
                ErrorCob error_cob,
                std::string const& addr,
@@ -106,7 +106,7 @@ class HttpFetcher :
 
    void fail(std::string const& msg);
 
-   apache::thrift::async::TEventBase* eventBase_;
+   folly::EventBase* eventBase_;
    std::shared_ptr<apache::thrift::async::TAsyncSocket> socket_;
    ReturnCob cob_;
    ErrorCob errorCob_;

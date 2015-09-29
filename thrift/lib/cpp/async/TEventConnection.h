@@ -52,7 +52,7 @@ class TaskCompletionMessage;
  * essentially encapsulates a socket that has some associated libevent state.
  */
 class TEventConnection : private boost::noncopyable,
-                         public TEventBase::LoopCallback {
+                         public folly::EventBase::LoopCallback {
  public:
 
   /**

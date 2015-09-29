@@ -29,8 +29,8 @@
 #include <folly/io/async/EventBaseManager.h>
 #include <wangle/bootstrap/ServerBootstrap.h>
 #include <wangle/concurrent/IOThreadPoolExecutor.h>
-#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/AsyncServerSocket.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServer.h>
@@ -50,7 +50,7 @@
 namespace apache { namespace thrift {
 
 typedef std::function<void(
-  apache::thrift::async::TEventBase*,
+  folly::EventBase*,
   std::shared_ptr<apache::thrift::async::TAsyncTransport>,
   std::unique_ptr<folly::IOBuf>)> getHandlerFunc;
 
@@ -119,7 +119,7 @@ class ThriftServer : public apache::thrift::server::TServer
   const std::string saslPolicy_;
   const bool allowInsecureLoopback_;
   std::function<std::unique_ptr<SaslServer> (
-    apache::thrift::async::TEventBase*)> saslServerFactory_;
+    folly::EventBase*)> saslServerFactory_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
     saslThreadManager_;
   int nSaslPoolThreads_;
@@ -127,10 +127,10 @@ class ThriftServer : public apache::thrift::server::TServer
   std::unique_ptr<folly::ShutdownSocketSet> shutdownSocketSet_;
 
   //! Listen socket
-  apache::thrift::async::TAsyncServerSocket::UniquePtr socket_;
+  folly::AsyncServerSocket::UniquePtr socket_;
 
-  //! The TEventBase currently driving serve().  NULL when not serving.
-  std::atomic<apache::thrift::async::TEventBase*> serveEventBase_;
+  //! The folly::EventBase currently driving serve().  NULL when not serving.
+  std::atomic<folly::EventBase*> serveEventBase_;
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
   int nWorkers_;
@@ -547,7 +547,7 @@ class ThriftServer : public apache::thrift::server::TServer
   void useExistingSocket(int socket);
   void useExistingSockets(const std::vector<int>& sockets);
   void useExistingSocket(
-    apache::thrift::async::TAsyncServerSocket::UniquePtr socket);
+    folly::AsyncServerSocket::UniquePtr socket);
 
   /**
    * Return the file descriptor(s) associated with the listening socket
@@ -562,15 +562,15 @@ class ThriftServer : public apache::thrift::server::TServer
   /**
    * Get the TEventServer's main event base.
    *
-   * @return a pointer to the TEventBase.
+   * @return a pointer to the EventBase.
    */
-  apache::thrift::async::TEventBase* getServeEventBase() const {
+  folly::EventBase* getServeEventBase() const {
     return serveEventBase_;
   }
 
   /**
    * Get the EventBaseManager used by this server.  This can be used to find
-   * or create the TEventBase associated with any given thread, including any
+   * or create the EventBase associated with any given thread, including any
    * new threads created by clients.  This may be called from any thread.
    *
    * @return a pointer to the EventBaseManager.
@@ -648,12 +648,12 @@ class ThriftServer : public apache::thrift::server::TServer
   // The default SASL implementation can be overridden for testing or
   // other purposes.  Most users will never need to call this.
   void setSaslServerFactory(std::function<std::unique_ptr<SaslServer> (
-      apache::thrift::async::TEventBase*)> func) {
+      folly::EventBase*)> func) {
     saslServerFactory_ = func;
   }
 
   std::function<std::unique_ptr<SaslServer> (
-      apache::thrift::async::TEventBase*)> getSaslServerFactory() {
+      folly::EventBase*)> getSaslServerFactory() {
     return saslServerFactory_;
   }
 
@@ -718,7 +718,7 @@ class ThriftServer : public apache::thrift::server::TServer
   }
 
   /**
-   * Get the number of connections dropped by the TAsyncServerSocket
+   * Get the number of connections dropped by the AsyncServerSocket
    */
   uint64_t getNumDroppedConnections() const;
 

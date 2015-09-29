@@ -22,7 +22,7 @@
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 #include <thrift/perf/if/gen-cpp2/LoadTest.h>
 #include <thrift/lib/cpp/test/loadgen/Worker.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 
@@ -71,7 +71,7 @@ class AsyncClientWorker2 : public Worker<
 
   void setupSSLContext();
 
-  apache::thrift::async::TEventBase eb_;
+  folly::EventBase eb_;
   TBinaryProtocolFactory binProtoFactory_;
   THeaderProtocolFactory duplexProtoFactory_;
   std::shared_ptr<folly::SSLContext> sslContext_;

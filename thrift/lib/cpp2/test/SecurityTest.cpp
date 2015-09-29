@@ -26,7 +26,7 @@
 #include <thrift/lib/cpp2/TestServer.h>
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
 #include <thrift/lib/cpp2/async/GssSaslClient.h>
@@ -88,7 +88,7 @@ void enableSecurity(HeaderClientChannel* channel,
   channel->setSaslClient(std::move(saslClient));
 }
 
-HeaderClientChannel::Ptr getClientChannel(TEventBase* eb,
+HeaderClientChannel::Ptr getClientChannel(EventBase* eb,
                                           const folly::SocketAddress& address,
                                           bool failSecurity = false) {
   auto socket = TAsyncSocket::newSocket(eb, address);
@@ -120,7 +120,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   factory.useStubSaslServer(false);
   ScopedServerThread sst(factory.create());
 
-  TEventBase base;
+  EventBase base;
   auto channel = getClientChannel(&base, *sst.getAddress());
   setup(channel.get());
   TestServiceAsyncClient client(std::move(channel));
@@ -240,7 +240,7 @@ public:
     auto callbackp = callback.release();
     EXPECT_EQ(currentIndex, expectIndex_);
     expectIndex_++;
-    TEventBase *eb = callbackp->getEventBase();
+    EventBase *eb = callbackp->getEventBase();
     callbackp->resultInThread(currentIndex);
     if (expectIndex_ == lastIndex_) {
       success_ = true;
@@ -256,7 +256,7 @@ private:
 class Updater {
 public:
   Updater(shared_ptr<DuplexClientAsyncClient> client,
-          TEventBase* eb,
+          EventBase* eb,
           int32_t startIndex,
           int32_t numUpdates,
           int32_t interval)
@@ -290,7 +290,7 @@ public:
   }
 private:
   shared_ptr<DuplexClientAsyncClient> client_;
-  TEventBase* eb_;
+  EventBase* eb_;
   int32_t startIndex_;
   int32_t numUpdates_;
   int32_t interval_;
@@ -331,7 +331,7 @@ void duplexTest(const apache::thrift::SecurityMech mech) {
   apache::thrift::TestThriftServerFactory<DuplexServiceInterface> factory;
   factory.useStubSaslServer(false).duplex(true);
   ScopedServerThread duplexsst(factory.create());
-  TEventBase base;
+  EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *duplexsst.getAddress()));
 
@@ -383,7 +383,7 @@ void runRequestContextTest(bool failSecurity) {
   apache::thrift::TestThriftServerFactory<TestServiceInterface> factory;
   factory.useStubSaslServer(false);
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  EventBase base;
   auto channel = getClientChannel(&base, *sst.getAddress(), failSecurity);
   TestServiceAsyncClient client(std::move(channel));
   Countdown c(2, [&base](){base.terminateLoopSoon();});

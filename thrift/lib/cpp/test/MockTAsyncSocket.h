@@ -21,7 +21,7 @@
 #include <gmock/gmock.h>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 
 namespace apache {
 namespace thrift {
@@ -32,7 +32,7 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
  public:
   typedef std::unique_ptr<MockTAsyncSocket, Destructor> UniquePtr;
 
-  explicit MockTAsyncSocket(async::TEventBase* base) : TAsyncSocket(base) {
+  explicit MockTAsyncSocket(folly::EventBase* base) : TAsyncSocket(base) {
     attachEventBase(base);
   }
 

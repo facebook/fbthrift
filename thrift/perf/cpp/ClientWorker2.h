@@ -21,7 +21,7 @@
 
 #include <thrift/perf/if/gen-cpp2/LoadTest.h>
 #include <thrift/lib/cpp/test/loadgen/Worker.h>
-#include <thrift/lib/cpp/async/TEventBaseManager.h>
+#include <folly/io/async/EventBaseManager.h>
 
 #include "servicerouter/client/cpp2/ClientFactory.h"
 
@@ -67,7 +67,7 @@ class ClientWorker2 : public loadgen::Worker<
   void performEcho(const std::shared_ptr<Client>& client);
   void performAdd(const std::shared_ptr<Client>& client);
 
-  apache::thrift::async::TEventBaseManager ebm_;
+  folly::EventBaseManager ebm_;
 };
 
 }}} // apache::thrift::test

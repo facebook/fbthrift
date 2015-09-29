@@ -19,7 +19,7 @@
 
 #include <memory>
 
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 
 namespace folly {
 class IOBuf;
@@ -30,8 +30,8 @@ namespace apache { namespace thrift {
 
 class SaslEndpoint {
 public:
-  explicit SaslEndpoint(apache::thrift::async::TEventBase* evb = nullptr) :
-    evb_(std::make_shared<apache::thrift::async::TEventBase*>(evb)) {}
+  explicit SaslEndpoint(folly::EventBase* evb = nullptr) :
+    evb_(std::make_shared<folly::EventBase*>(evb)) {}
   virtual ~SaslEndpoint() {}
 
   // The following methods must not be called until after
@@ -62,7 +62,7 @@ public:
     *evb_ = nullptr;
   }
 
-  virtual void attachEventBase(apache::thrift::async::TEventBase* evb) {
+  virtual void attachEventBase(folly::EventBase* evb) {
     *evb_ = evb;
   }
 
@@ -77,7 +77,7 @@ protected:
   virtual std::unique_ptr<folly::IOBuf> decrypt(
     std::unique_ptr<folly::IOBuf>&&) = 0;
 
-  std::shared_ptr<apache::thrift::async::TEventBase*> evb_;
+  std::shared_ptr<folly::EventBase*> evb_;
 };
 
 }} // apache::thrift

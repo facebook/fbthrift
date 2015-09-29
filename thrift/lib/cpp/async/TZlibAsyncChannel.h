@@ -61,7 +61,7 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
     return channel_->getTransport();
   }
 
-  void attachEventBase(TEventBase* eventBase) override {
+  void attachEventBase(folly::EventBase* eventBase) override {
     channel_->attachEventBase(eventBase);
   }
   void detachEventBase() override { channel_->detachEventBase(); }

@@ -51,7 +51,7 @@ Cpp2Connection::Cpp2Connection(
                duplexChannel_ ? duplexChannel_->getServerChannel() : // server
                std::shared_ptr<HeaderServerChannel>(
                    new HeaderServerChannel(asyncSocket),
-                   TDelayedDestruction::Destructor()))
+                   folly::DelayedDestruction::Destructor()))
     , worker_(worker)
     , context_(address,
                asyncSocket.get(),

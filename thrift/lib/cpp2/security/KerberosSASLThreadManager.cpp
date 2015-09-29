@@ -17,7 +17,7 @@
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
 
 #include <folly/ExceptionWrapper.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>

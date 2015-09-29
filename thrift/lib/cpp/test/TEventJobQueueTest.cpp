@@ -20,8 +20,8 @@
 #include <iostream>
 
 #include <thrift/lib/cpp/async/TEventJobQueue.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/async/TAsyncTimeout.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/io/async/AsyncTimeout.h>
 
 #include <gtest/gtest.h>
 
@@ -31,7 +31,7 @@ using namespace apache::thrift::async;
 
 class SimpleRunnable : public TEventRunnable {
  public:
-  SimpleRunnable(TEventBase *origEventBase, int x, int *sum)
+  SimpleRunnable(folly::EventBase *origEventBase, int x, int *sum)
       : origEventBase_(origEventBase),
         x_(x),
         sum_(sum) {}
@@ -49,16 +49,16 @@ class SimpleRunnable : public TEventRunnable {
   }
 
  private:
-  TEventBase *origEventBase_;
+  folly::EventBase *origEventBase_;
   int x_;
   int *sum_;
 };
 
 // TODO: Move this to the test/util library
-class EventBaseAborter : public TAsyncTimeout {
+class EventBaseAborter : public folly::AsyncTimeout {
  public:
-  EventBaseAborter(TEventBase* eventBase, uint32_t timeoutMS)
-    : TAsyncTimeout(eventBase, TAsyncTimeout::InternalEnum::INTERNAL)
+  EventBaseAborter(folly::EventBase* eventBase, uint32_t timeoutMS)
+    : folly::AsyncTimeout(eventBase, folly::AsyncTimeout::InternalEnum::INTERNAL)
     , eventBase_(eventBase) {
     scheduleTimeout(timeoutMS);
   }
@@ -69,7 +69,7 @@ class EventBaseAborter : public TAsyncTimeout {
   }
 
  private:
-  TEventBase* eventBase_;
+  folly::EventBase* eventBase_;
 };
 
 /**
@@ -77,7 +77,7 @@ class EventBaseAborter : public TAsyncTimeout {
  * in the main thread
  */
 TEST(TEventJobQueueTest, SimpleJobQueueTest) {
-  TEventBase eventBase;
+  folly::EventBase eventBase;
   EventBaseAborter eba(&eventBase, 1000);
   TEventJobQueue jobQueue(4);
   int data[] = { 8, 6, 7, 5, 3, 0, 9 };
@@ -100,7 +100,7 @@ TEST(TEventJobQueueTest, SimpleJobQueueTest) {
  * Test the numThreads and thread factory options
  */
 TEST(TEventJobQueueTest, ArgsJobQueueTest) {
-  TEventBase eventBase;
+  folly::EventBase eventBase;
   EventBaseAborter eba(&eventBase, 1000);
   TEventJobQueue jobQueue;
   jobQueue.setNumThreads(4);

@@ -58,7 +58,7 @@ class AsyncLoadHandler : public LoadTestCobSvIf
   }
 
   /**
-   * To play nicely with TEventBase, the burn*() methods yield to the event
+   * To play nicely with EventBase, the burn*() methods yield to the event
    * loop every so often.  This method sets how long the burn methods will
    * burn at one time before yeilding.
    */

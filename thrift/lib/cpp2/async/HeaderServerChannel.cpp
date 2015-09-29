@@ -32,7 +32,7 @@ using folly::IOBufQueue;
 using folly::make_unique;
 using namespace apache::thrift::transport;
 using namespace apache::thrift;
-using apache::thrift::async::TEventBase;
+using folly::EventBase;
 using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::TApplicationException;
@@ -78,7 +78,7 @@ void HeaderServerChannel::destroy() {
 
   cpp2Channel_->closeNow();
 
-  async::TDelayedDestruction::destroy();
+  folly::DelayedDestruction::destroy();
 }
 
 // Header framing

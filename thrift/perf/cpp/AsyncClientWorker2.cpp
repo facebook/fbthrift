@@ -66,7 +66,7 @@ class LoadCallback;
 
 class LoopTerminator {
  public:
-  explicit LoopTerminator(TEventBase* base)
+  explicit LoopTerminator(folly::EventBase* base)
   : ops_(0)
   ,base_(base) {}
 
@@ -81,7 +81,7 @@ class LoopTerminator {
   }
  private:
   uint32_t ops_;
-  TEventBase* base_;
+  folly::EventBase* base_;
 };
 
 /* This class drives the async load for a single connection */
@@ -227,7 +227,7 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
 
     std::unique_ptr<
       apache::thrift::HeaderClientChannel,
-      apache::thrift::async::TDelayedDestruction::Destructor> channel(
+      folly::DelayedDestruction::Destructor> channel(
         HeaderClientChannel::newChannel(socket));
     channel->setTimeout(kTimeout);
     // For testing equality, make sure to use binary

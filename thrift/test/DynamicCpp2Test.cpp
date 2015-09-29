@@ -19,7 +19,7 @@
 #include <folly/json.h>
 #include <gtest/gtest.h>
 
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -170,13 +170,13 @@ TEST_P(RoundtripTestFixture, RoundtripContainer) {
 
 TEST_P(RoundtripTestFixture, SerializeOverHandler) {
   ScopedServerThread sst(getServer());
-  TEventBase base;
+  EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   DynamicTestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
   const SerializableDynamic expected = GetParam();
   SerializableDynamic actual;

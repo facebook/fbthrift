@@ -27,7 +27,7 @@ class MockTAsyncSSLSocket :
  public:
   MockTAsyncSSLSocket(
    const std::shared_ptr<transport::SSLContext>& ctx,
-   async::TEventBase* base) :
+   folly::EventBase* base) :
     TAsyncSSLSocket(ctx, base) {
   }
 

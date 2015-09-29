@@ -18,7 +18,7 @@
 #define THRIFT_ASYNC_TASYNCSOCKETFACTORY_H_ 1
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 
 namespace apache { namespace thrift { namespace async {
 
@@ -30,7 +30,7 @@ namespace apache { namespace thrift { namespace async {
  */
 class TAsyncSocketFactory {
  public:
-  explicit TAsyncSocketFactory(TEventBase* eventBase);
+  explicit TAsyncSocketFactory(folly::EventBase* eventBase);
   virtual ~TAsyncSocketFactory();
 
   /**
@@ -44,7 +44,7 @@ class TAsyncSocketFactory {
   virtual TAsyncSocket::UniquePtr make(int fd) const;
 
  protected:
-  TEventBase* eventBase_;
+  folly::EventBase* eventBase_;
 };
 
 }}}

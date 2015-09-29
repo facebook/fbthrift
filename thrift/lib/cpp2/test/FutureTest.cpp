@@ -22,7 +22,7 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
@@ -115,7 +115,7 @@ class TestInterface : public FutureServiceSvIf {
 void AsyncCpp2Test(bool enable_security) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
@@ -146,13 +146,13 @@ void AsyncCpp2Test(bool enable_security) {
 TEST(ThriftServer, FutureExceptions) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   FutureServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
   auto f = client.future_throwing().waitVia(&base);
 
@@ -168,13 +168,13 @@ TEST(ThriftServer, FutureClientTest) {
 
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   FutureServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   boost::polymorphic_downcast<HeaderClientChannel*>(
@@ -235,13 +235,13 @@ TEST(ThriftServer, FutureGetOrderTest) {
   factory.useSimpleThreadManager(false);
   factory.useThreadManager(thm);
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   FutureServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   boost::polymorphic_downcast<HeaderClientChannel*>(
@@ -275,13 +275,13 @@ TEST(ThriftServer, OnewayFutureClientTest) {
 
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   FutureServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   auto future = client.future_noResponse(1000);

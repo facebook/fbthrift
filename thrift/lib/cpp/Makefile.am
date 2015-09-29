@@ -193,20 +193,14 @@ include_async_HEADERS = \
                      async/TAsyncDispatchProcessor.h \
                      async/TAsyncEventChannel.h \
                      async/TAsyncProcessor.h \
-                     async/TAsyncServerSocket.h \
                      async/TAsyncSocketFactory.h \
                      async/TAsyncSocket.h \
                      async/TAsyncSSLSocketFactory.h \
                      async/TAsyncSSLSocket.h \
-                     async/TAsyncTimeout.h \
                      async/TAsyncTransport.h \
                      async/TBinaryAsyncChannel.h \
-                     async/TDelayedDestruction.h \
-                     async/TEventBase.h \
-                     async/TEventBaseManager.h \
                      async/TEventConnection.h \
                      async/TEventFDWrapper.h \
-                     async/TEventHandler.h \
                      async/TEventJobQueue.h \
                      async/TEventServer.h \
                      async/TEventTask.h \

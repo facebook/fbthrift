@@ -18,13 +18,13 @@
  */
 #include <thrift/perf/cpp/AsyncLoadHandler.h>
 
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <unistd.h>
 
-using apache::thrift::async::TEventBase;
+using folly::EventBase;
 using apache::thrift::concurrency::Util;
 
 namespace apache { namespace thrift { namespace test {
@@ -87,12 +87,12 @@ void AsyncLoadHandler::asyncNoop(VoidCob cob) {
 }
 
 void AsyncLoadHandler::sleep(VoidCob cob, const int64_t microseconds) {
-  // We only have millisecond resolution for TEventBase timeouts
+  // We only have millisecond resolution for EventBase timeouts
   server_->getEventBase()->tryRunAfterDelay(cob, microseconds / Util::US_PER_MS);
 }
 
 void AsyncLoadHandler::onewaySleep(VoidCob cob, const int64_t microseconds) {
-  // We only have millisecond resolution for TEventBase timeouts
+  // We only have millisecond resolution for EventBase timeouts
   server_->getEventBase()->tryRunAfterDelay(cob, microseconds / Util::US_PER_MS);
 }
 
@@ -128,7 +128,7 @@ void AsyncLoadHandler::throwError(VoidCob cob, ErrorCob exn_cob,
 void AsyncLoadHandler::throwUnexpected(VoidCob cob, const int32_t code) {
   // FIXME: it isn't possible to implement this behavior with the async code
   //
-  // Actually throwing an exception from the handler is bad, and TEventBase
+  // Actually throwing an exception from the handler is bad, and EventBase
   // should probably be changed to fatal the entire program if that happens.
   cob();
 }
@@ -136,7 +136,7 @@ void AsyncLoadHandler::throwUnexpected(VoidCob cob, const int32_t code) {
 void AsyncLoadHandler::onewayThrow(VoidCob cob, const int32_t code) {
   // FIXME: it isn't possible to implement this behavior with the async code
   //
-  // Actually throwing an exception from the handler is bad, and TEventBase
+  // Actually throwing an exception from the handler is bad, and EventBase
   // should probably be changed to fatal the entire program if that happens.
   cob();
 }

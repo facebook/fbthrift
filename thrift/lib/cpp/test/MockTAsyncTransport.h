@@ -24,7 +24,6 @@ namespace apache { namespace thrift { namespace test {
 
 class MockTAsyncTransport: public apache::thrift::async::TAsyncTransport {
  public:
-  using TEventBase = apache::thrift::async::TEventBase;
   using ReadCallback = apache::thrift::async::TAsyncTransport::ReadCallback;
   using WriteCallback = apache::thrift::async::TAsyncTransport::WriteCallback;
 
@@ -56,10 +55,10 @@ class MockTAsyncTransport: public apache::thrift::async::TAsyncTransport {
   MOCK_CONST_METHOD0(readable, bool());
   MOCK_CONST_METHOD0(connecting, bool());
   MOCK_CONST_METHOD0(error, bool());
-  MOCK_METHOD1(attachEventBase, void(TEventBase*));
+  MOCK_METHOD1(attachEventBase, void(folly::EventBase*));
   MOCK_METHOD0(detachEventBase, void());
   MOCK_CONST_METHOD0(isDetachable, bool());
-  MOCK_CONST_METHOD0(getEventBase, TEventBase*());
+  MOCK_CONST_METHOD0(getEventBase, folly::EventBase*());
   MOCK_METHOD1(setSendTimeout, void(uint32_t));
   MOCK_CONST_METHOD0(getSendTimeout, uint32_t());
   MOCK_CONST_METHOD1(getLocalAddress, void(folly::SocketAddress*));

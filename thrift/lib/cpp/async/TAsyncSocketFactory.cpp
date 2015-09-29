@@ -20,7 +20,7 @@
 
 namespace apache { namespace thrift { namespace async {
 
-TAsyncSocketFactory::TAsyncSocketFactory(TEventBase* eventBase) :
+TAsyncSocketFactory::TAsyncSocketFactory(folly::EventBase* eventBase) :
  eventBase_(eventBase) {
 }
 

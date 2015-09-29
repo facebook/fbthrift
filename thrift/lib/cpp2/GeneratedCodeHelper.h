@@ -866,7 +866,7 @@ struct helper {
       const std::string& msg,
       std::unique_ptr<ResponseChannel::Request> req,
       Cpp2RequestContext* ctx,
-      async::TEventBase* eb,
+      folly::EventBase* eb,
       int32_t protoSeqId);
 
 };
@@ -892,7 +892,7 @@ process_missing(
     std::unique_ptr<ResponseChannel::Request> req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
-    async::TEventBase* eb,
+    folly::EventBase* eb,
     concurrency::ThreadManager* tm,
     int32_t protoSeqId) {
   using h = helper_r<ProtocolReader>;
@@ -909,7 +909,7 @@ process_missing(
     std::unique_ptr<ResponseChannel::Request> req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
-    async::TEventBase* eb,
+    folly::EventBase* eb,
     concurrency::ThreadManager* tm,
     int32_t /*protoSeqId*/) {
   auto protType = ProtocolReader::protocolType();
@@ -926,7 +926,7 @@ void process_pmap(
     std::unique_ptr<ResponseChannel::Request> req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
-    async::TEventBase* eb,
+    folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
   using h = helper_r<ProtocolReader>;
   const char* fn = "process";
@@ -965,7 +965,7 @@ void process(
     std::unique_ptr<folly::IOBuf> buf,
     protocol::PROTOCOL_TYPES protType,
     Cpp2RequestContext* ctx,
-    async::TEventBase* eb,
+    folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL: {

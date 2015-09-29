@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 
-using namespace apache::thrift::async;
 
 // Interface for D code.  Note that we use C-style functions instead of C++
 // members, to avoid mismatched virtual tables.
 extern "C" {
 
-void teventbase_loop(TEventBase* eb) {
+void teventbase_loop(folly::EventBase* eb) {
   eb->loop();
 }
 
-bool teventbase_isRunning(TEventBase* eb) {
+bool teventbase_isRunning(folly::EventBase* eb) {
   return eb->isRunning();
 }
 

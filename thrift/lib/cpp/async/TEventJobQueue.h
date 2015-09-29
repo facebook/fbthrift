@@ -22,14 +22,14 @@
 
 #include <folly/io/async/NotificationQueue.h>
 #include <thrift/lib/cpp/Thrift.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 
 namespace apache { namespace thrift { namespace async {
 
 /**
- * Similar to concurrency::Runnable, but run has access to a TEventBase to do
+ * Similar to concurrency::Runnable, but run has access to a EventBase to do
  * asynchronous work.
  *
  * There is one queue per worker thread, so work is distributed not
@@ -45,7 +45,7 @@ class TEventRunnable {
   /**
    * Set the event base on this runnable
    */
-  void setEventBase(TEventBase *eventBase) {
+  void setEventBase(folly::EventBase *eventBase) {
     eventBase_ = eventBase;
   }
 
@@ -54,7 +54,7 @@ class TEventRunnable {
    *
    * The TEventJobQueue will set this correctly for run and jobComplete
    */
-  TEventBase *getEventBase() const {
+  folly::EventBase *getEventBase() const {
     return eventBase_;
   }
 
@@ -66,13 +66,13 @@ class TEventRunnable {
 
  protected:
 
-  TEventBase *eventBase_;
+  folly::EventBase *eventBase_;
 
 };
 
 
 /**
- * A job queue for working in a TEventBase driven application.
+ * A job queue for working in a EventBase driven application.
  *
  * N threads are spawned and begin consuming a notification queue of
  * TEventRunnable's.
@@ -92,7 +92,7 @@ class TEventJobQueue {
     explicit JobThread(TEventJobQueue *parent) {}
     ~JobThread() override {}
 
-    TEventBase *getEventBase() { return &eventBase_; }
+    folly::EventBase *getEventBase() { return &eventBase_; }
 
     void join() {
       thread_->join();
@@ -135,7 +135,7 @@ class TEventJobQueue {
     }
 
    private:
-    TEventBase eventBase_;
+    folly::EventBase eventBase_;
     std::shared_ptr<apache::thrift::concurrency::Thread> thread_;
     folly::NotificationQueue<TEventRunnable*> jobQueue_;
 
@@ -240,7 +240,7 @@ class TEventJobQueue {
    * Run the given function in all consumer threads.  The function is passed
    * the event base for the consumer thread.
    */
-  void runInAllThreads(const std::function<void(TEventBase *)>& fn) {
+  void runInAllThreads(const std::function<void(folly::EventBase *)>& fn) {
     for (auto &thread: threads_) {
       thread->getEventBase()->runInEventBaseThread(
         std::bind(fn, thread->getEventBase()));

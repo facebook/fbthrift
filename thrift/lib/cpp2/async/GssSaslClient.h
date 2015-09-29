@@ -18,7 +18,7 @@
 #define THRIFT_GSSSASLCLIENT_H_ 1
 
 #include <chrono>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/async/SaslClient.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h>
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
@@ -34,7 +34,7 @@ namespace apache { namespace thrift {
  */
 class GssSaslClient : public SaslClient {
 public:
-  explicit GssSaslClient(apache::thrift::async::TEventBase*,
+  explicit GssSaslClient(folly::EventBase*,
     const std::shared_ptr<SecurityLogger>& logger =
       std::make_shared<SecurityLogger>());
   void start(Callback* cb) override;
@@ -94,7 +94,7 @@ public:
   }
 
   void detachEventBase() override;
-  void attachEventBase(apache::thrift::async::TEventBase* evb) override;
+  void attachEventBase(folly::EventBase* evb) override;
 
   static std::chrono::milliseconds getCurTime();
 

@@ -21,7 +21,7 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/Memory.h>
 #include <folly/MoveWrapper.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp2/protocol/MessageSerializer.h>
 #include <thrift/lib/cpp2/gen-cpp2/Sasl_types.h>
@@ -65,7 +65,7 @@ static const char KRB5_SASL[] = "krb5";
 static const char KRB5_GSS[] = "gss";
 static const char KRB5_GSS_NO_MUTUAL[] = "gssnm";
 
-GssSaslClient::GssSaslClient(apache::thrift::async::TEventBase* evb,
+GssSaslClient::GssSaslClient(folly::EventBase* evb,
       const std::shared_ptr<SecurityLogger>& logger)
     : SaslClient(evb, logger)
     , clientHandshake_(new KerberosSASLHandshakeClient(logger))
@@ -453,7 +453,7 @@ void GssSaslClient::detachEventBase() {
 }
 
 void GssSaslClient::attachEventBase(
-    apache::thrift::async::TEventBase* evb) {
+    folly::EventBase* evb) {
   apache::thrift::concurrency::Guard guard(*mutex_);
   *evb_ = evb;
 }

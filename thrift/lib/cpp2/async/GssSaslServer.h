@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 
 namespace apache { namespace thrift {
@@ -31,7 +31,7 @@ namespace apache { namespace thrift {
 class GssSaslServer : public SaslServer {
 public:
   explicit GssSaslServer(
-    apache::thrift::async::TEventBase*,
+    folly::EventBase*,
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> thread_manager
   );
   void consumeFromClient(Callback* cb,
@@ -49,7 +49,7 @@ public:
     apache::thrift::concurrency::Guard guard(*mutex_);
     *evb_ = nullptr;
   }
-  void attachEventBase(apache::thrift::async::TEventBase* evb) override {
+  void attachEventBase(folly::EventBase* evb) override {
     apache::thrift::concurrency::Guard guard(*mutex_);
     *evb_ = evb;
   }

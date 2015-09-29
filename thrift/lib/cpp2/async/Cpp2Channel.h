@@ -22,9 +22,9 @@
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/TAsyncTransportHandler.h>
-#include <thrift/lib/cpp/async/TDelayedDestruction.h>
+#include <folly/io/async/DelayedDestruction.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <folly/io/IOBufQueue.h>
 #include <wangle/channel/Handler.h>
@@ -62,12 +62,12 @@ class Cpp2Channel
   ~Cpp2Channel() override {}
 
   static std::unique_ptr<Cpp2Channel,
-                         apache::thrift::async::TDelayedDestruction::Destructor>
+                         folly::DelayedDestruction::Destructor>
   newChannel(
       const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
       std::unique_ptr<FramingHandler> framingHandler) {
     return std::unique_ptr<Cpp2Channel,
-      apache::thrift::async::TDelayedDestruction::Destructor>(
+      folly::DelayedDestruction::Destructor>(
       new Cpp2Channel(transport, std::move(framingHandler)));
   }
 
@@ -82,7 +82,7 @@ class Cpp2Channel
     return transport_.get();
   }
 
-  // TDelayedDestruction methods
+  // DelayedDestruction methods
   void destroy() override;
 
   // BytesToBytesHandler methods
@@ -114,9 +114,9 @@ class Cpp2Channel
   void setReceiveCallback(RecvCallback* callback) override;
 
   // event base methods
-  virtual void attachEventBase(apache::thrift::async::TEventBase*);
+  virtual void attachEventBase(folly::EventBase*);
   virtual void detachEventBase();
-  apache::thrift::async::TEventBase* getEventBase();
+  folly::EventBase* getEventBase();
 
   // Queued sends feature - optimizes by minimizing syscalls in high-QPS
   // loads for greater throughput, but at the expense of some

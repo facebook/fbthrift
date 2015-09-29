@@ -24,10 +24,10 @@
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
-#include <thrift/lib/cpp/async/TDelayedDestruction.h>
+#include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <memory>
 
 #include <unordered_map>
@@ -46,7 +46,7 @@ class HTTPClientChannel : public RequestChannel,
                           public HeaderCapableChannel,
                           public MessageChannel::RecvCallback,
                           public ChannelCallbacks,
-                          virtual public async::TDelayedDestruction {
+                          virtual public folly::DelayedDestruction {
  protected:
   ~HTTPClientChannel() override {}
 
@@ -73,7 +73,7 @@ class HTTPClientChannel : public RequestChannel,
 
   typedef std::unique_ptr<
       HTTPClientChannel,
-      apache::thrift::async::TDelayedDestruction::Destructor> Ptr;
+      folly::DelayedDestruction::Destructor> Ptr;
 
   static Ptr newChannel(
       const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
@@ -90,7 +90,7 @@ class HTTPClientChannel : public RequestChannel,
 
   void closeNow();
 
-  // TDelayedDestruction methods
+  // DelayedDestruction methods
   void destroy() override;
 
   apache::thrift::async::TAsyncTransport* getTransport() {
@@ -143,12 +143,12 @@ class HTTPClientChannel : public RequestChannel,
 
   bool getKeepRegisteredForClose() { return keepRegisteredForClose_; }
 
-  apache::thrift::async::TEventBase* getEventBase() override {
+  folly::EventBase* getEventBase() override {
     return cpp2Channel_->getEventBase();
   }
 
   // event base methods
-  void attachEventBase(apache::thrift::async::TEventBase*);
+  void attachEventBase(folly::EventBase*);
   void detachEventBase();
   bool isDetachable();
 

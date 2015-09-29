@@ -18,12 +18,12 @@
  */
 #include <thrift/perf/cpp/AsyncLoadHandler2.h>
 
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <unistd.h>
 
-using apache::thrift::async::TEventBase;
+using folly::EventBase;
 using apache::thrift::concurrency::Util;
 
 namespace apache { namespace thrift {
@@ -142,7 +142,7 @@ void AsyncLoadHandler2::async_eb_throwUnexpected(
 
   // FIXME: it isn't possible to implement this behavior with the async code
   //
-  // Actually throwing an exception from the handler is bad, and TEventBase
+  // Actually throwing an exception from the handler is bad, and EventBase
   // should probably be changed to fatal the entire program if that happens.
   decltype(callback)::element_type::doneInThread(std::move(callback));
 }

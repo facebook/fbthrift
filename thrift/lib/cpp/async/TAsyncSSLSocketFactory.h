@@ -28,7 +28,7 @@ namespace apache { namespace thrift { namespace async {
 class TAsyncSSLSocketFactory :
  public TAsyncSocketFactory {
  public:
-  explicit TAsyncSSLSocketFactory(TEventBase* eventBase);
+  explicit TAsyncSSLSocketFactory(folly::EventBase* eventBase);
   virtual ~TAsyncSSLSocketFactory();
 
   /**
@@ -48,7 +48,7 @@ class TAsyncSSLSocketFactory :
   virtual TAsyncSocket::UniquePtr make(int fd) const override;
 
  protected:
-  TEventBase* eventBase_;
+  folly::EventBase* eventBase_;
   folly::SSLContextPtr context_;
   bool serverMode_;
 };

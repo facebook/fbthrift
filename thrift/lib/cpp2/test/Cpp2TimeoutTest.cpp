@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
@@ -67,7 +67,7 @@ TEST(ThriftServer, IdleTimeoutTest) {
   factory.idleTimeoutMs(10);
   ScopedServerThread sst(factory.create());
 
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
@@ -87,7 +87,7 @@ TEST(ThriftServer, NoIdleTimeoutWhileWorkingTest) {
   factory.idleTimeoutMs(10);
   ScopedServerThread sst(factory.create());
 
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
@@ -111,7 +111,7 @@ TEST(ThriftServer, IdleTimeoutAfterTest) {
   factory.idleTimeoutMs(10);
   ScopedServerThread sst(factory.create());
 
-  TEventBase base;
+  folly::EventBase base;
 
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));

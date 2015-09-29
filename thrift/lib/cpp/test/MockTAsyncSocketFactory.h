@@ -18,7 +18,7 @@
 #define THRIFT_TEST_MOCKTASYNCSOCKETFACTORY_H_ 1
 
 #include <thrift/lib/cpp/async/TAsyncSocketFactory.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 
 #include <gmock/gmock.h>
 
@@ -28,7 +28,7 @@ namespace test {
 
 class MockTAsyncSocketFactory : public async::TAsyncSocketFactory {
  public:
-  explicit MockTAsyncSocketFactory(async::TEventBase* base) :
+  explicit MockTAsyncSocketFactory(folly::EventBase* base) :
    async::TAsyncSocketFactory(base) {
   }
 

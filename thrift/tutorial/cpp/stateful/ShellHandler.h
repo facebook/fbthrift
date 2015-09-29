@@ -70,7 +70,7 @@ class ShellHandlerFactory : public apache::thrift::AsyncProcessorFactory {
         std::unique_ptr<folly::IOBuf> buf,
         apache::thrift::protocol::PROTOCOL_TYPES protType,
         apache::thrift::Cpp2RequestContext* context,
-        apache::thrift::async::TEventBase* eb,
+        folly::EventBase* eb,
         apache::thrift::concurrency::ThreadManager* tm) override {
       if (!handler_) {
         handler_ = folly::make_unique<ShellHandler>(

@@ -35,7 +35,7 @@ using folly::IOBufQueue;
 using folly::RequestContext;
 using folly::make_unique;
 using namespace apache::thrift::transport;
-using apache::thrift::async::TEventBase;
+using folly::EventBase;
 using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::THeader;
 using HResClock = std::chrono::high_resolution_clock;
@@ -106,10 +106,10 @@ void HTTPClientChannel::closeNow() { cpp2Channel_->closeNow(); }
 
 void HTTPClientChannel::destroy() {
   closeNow();
-  async::TDelayedDestruction::destroy();
+  folly::DelayedDestruction::destroy();
 }
 
-void HTTPClientChannel::attachEventBase(TEventBase* eventBase) {
+void HTTPClientChannel::attachEventBase(EventBase* eventBase) {
   cpp2Channel_->attachEventBase(eventBase);
   timer_->attachEventBase(eventBase);
 }

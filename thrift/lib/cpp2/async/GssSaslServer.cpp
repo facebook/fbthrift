@@ -21,7 +21,7 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/Conv.h>
 #include <folly/MoveWrapper.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/protocol/MessageSerializer.h>
@@ -56,7 +56,7 @@ static const char KRB5_GSS[] = "gss";
 static const char KRB5_GSS_NO_MUTUAL[] = "gssnm";
 
 GssSaslServer::GssSaslServer(
-    apache::thrift::async::TEventBase* evb,
+    folly::EventBase* evb,
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> thread_manager)
     : SaslServer(evb)
     , threadManager_(thread_manager)

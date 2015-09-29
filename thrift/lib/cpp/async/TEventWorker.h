@@ -17,12 +17,12 @@
 #ifndef THRIFT_SERVER_TEVENTWORKER_H_
 #define THRIFT_SERVER_TEVENTWORKER_H_ 1
 
-#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <folly/io/async/AsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TEventServer.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TEventTask.h>
-#include <thrift/lib/cpp/async/TEventHandler.h>
+#include <folly/io/async/EventHandler.h>
 #include <folly/io/async/NotificationQueue.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <ext/hash_map>
@@ -44,7 +44,7 @@ class TEventServer;
  */
 class TEventWorker :
       public apache::thrift::server::TServer,
-      public TAsyncServerSocket::AcceptCallback,
+      public folly::AsyncServerSocket::AcceptCallback,
       public TAsyncSSLSocket::HandshakeCallback,
       public folly::NotificationQueue<TaskCompletionMessage>::Consumer {
  private:
@@ -54,8 +54,8 @@ class TEventWorker :
   /// The mother ship.
   TEventServer* server_;
 
-  /// An instance's TEventBase for I/O.
-  TEventBase eventBase_;
+  /// An instance's folly::EventBase for I/O.
+  folly::EventBase eventBase_;
 
   /// Our ID in [0:nWorkers).
   uint32_t workerID_;
@@ -98,7 +98,7 @@ class TEventWorker :
   void makeCompletionCallback();
 
   /**
-   * Initialize our TEventBase to generate incoming connection events.
+   * Initialize our EventBase to generate incoming connection events.
    * Note that this is called once before the main loop is executed and
    * sets up a READ event on the output of the listener's socktpair.
    */
@@ -200,11 +200,11 @@ class TEventWorker :
   }
 
   /**
-   * Get my TEventBase object.
+   * Get my EventBase object.
    *
-   * @returns pointer to my TEventBase object.
+   * @returns pointer to my EventBase object.
    */
-  TEventBase* getEventBase() {
+  folly::EventBase* getEventBase() {
     return &eventBase_;
   }
 

@@ -19,7 +19,7 @@
 
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/SaslServer.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 
 namespace apache { namespace thrift {
 
@@ -30,7 +30,7 @@ namespace apache { namespace thrift {
 
 class StubSaslServer : public SaslServer {
 public:
-  explicit StubSaslServer(apache::thrift::async::TEventBase*);
+  explicit StubSaslServer(folly::EventBase*);
   void consumeFromClient(Callback* cb,
                          std::unique_ptr<folly::IOBuf>&& message) override;
   virtual std::unique_ptr<folly::IOBuf> wrap(std::unique_ptr<folly::IOBuf>&&);

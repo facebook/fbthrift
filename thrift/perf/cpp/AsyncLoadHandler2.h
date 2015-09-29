@@ -31,7 +31,7 @@ namespace apache { namespace thrift {
 
 // Using classes as callbacks is _much_ faster than std::function
 class FastNoopCallback
-    : public apache::thrift::async::TEventBase::LoopCallback {
+    : public folly::EventBase::LoopCallback {
  public:
   FastNoopCallback(std::unique_ptr<HandlerCallback<void>> callback)
       : callback_(std::move(callback)) {}

@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
@@ -77,14 +77,14 @@ int SyncClientTest() {
   ScopedServerThread sst(factory.create());
   auto port = sst.getAddress()->getPort();
 
-  TEventBase base;
+  folly::EventBase base;
 
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
   TestServiceAsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   std::string response;

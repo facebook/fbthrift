@@ -32,7 +32,7 @@ template<typename ClientT,
          typename ProtocolFactoryT =
            protocol::TBinaryProtocolFactoryT<transport::TBufferBase>,
          typename ChannelT = async::TFramedAsyncChannel>
-ClientT* createClient(async::TEventBase* eventBase,
+ClientT* createClient(folly::EventBase* eventBase,
                       const folly::SocketAddress& address) {
   std::shared_ptr<async::TAsyncTransport> transport(
       async::TAsyncSocket::newSocket(eventBase, address));
@@ -50,7 +50,7 @@ template<typename ClientT,
          typename ProtocolFactoryT =
          protocol::TBinaryProtocolFactoryT<transport::TBufferBase>,
          typename ChannelT = async::TFramedAsyncChannel>
-ClientT* createClient(async::TEventBase* eventBase,
+ClientT* createClient(folly::EventBase* eventBase,
                       const std::string& ip, uint16_t port) {
   // Note that we intentionally use setFromIpPort() and not setFromHostPort()
   // here.  If users want asynchronous operation they almost certainly don't

@@ -20,7 +20,7 @@
 #include <folly/MoveWrapper.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -45,7 +45,7 @@ static const char CHALLENGE1[] = "challenge1";
 static const char RESPONSE1[] = "response1";
 static const char CHALLENGE2[] = "challenge2";
 
-StubSaslClient::StubSaslClient(apache::thrift::async::TEventBase* evb,
+StubSaslClient::StubSaslClient(folly::EventBase* evb,
       const std::shared_ptr<SecurityLogger>& logger,
       int forceMsSpentPerRTT)
     : SaslClient(evb, logger)

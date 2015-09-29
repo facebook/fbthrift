@@ -165,13 +165,13 @@ ThriftServer::~ThriftServer() {
   stopWorkers();
 }
 
-void ThriftServer::useExistingSocket(TAsyncServerSocket::UniquePtr socket)
+void ThriftServer::useExistingSocket(folly::AsyncServerSocket::UniquePtr socket)
 {
   socket_ = std::move(socket);
 }
 
 void ThriftServer::useExistingSockets(const std::vector<int>& sockets) {
-  TAsyncServerSocket::UniquePtr socket(new TAsyncServerSocket);
+  folly::AsyncServerSocket::UniquePtr socket(new folly::AsyncServerSocket);
   socket->useExistingSockets(sockets);
   useExistingSocket(std::move(socket));
 }
@@ -213,8 +213,8 @@ void ThriftServer::setup() {
   serveEventBase_ = eventBaseManager_->getEventBase();
   // Print some libevent stats
   VLOG(1) << "libevent " <<
-    TEventBase::getLibeventVersion() << " method " <<
-    TEventBase::getLibeventMethod();
+    folly::EventBase::getLibeventVersion() << " method " <<
+    folly::EventBase::getLibeventMethod();
 
   try {
     // We check for write success so we don't need or want SIGPIPEs.
@@ -261,7 +261,7 @@ void ThriftServer::setup() {
         if (gethostname(hostname, 255)) {
           LOG(FATAL) << "Failed getting hostname";
         }
-        setSaslServerFactory([=] (TEventBase* evb) {
+        setSaslServerFactory([=] (folly::EventBase* evb) {
           auto saslServer = std::unique_ptr<SaslServer>(
             new GssSaslServer(evb, saslThreadManager));
           saslServer->setServiceIdentity(
@@ -270,7 +270,7 @@ void ThriftServer::setup() {
         });
       } else {
         // Allow the server to accept anything in the keytab.
-        setSaslServerFactory([=] (TEventBase* evb) {
+        setSaslServerFactory([=] (folly::EventBase* evb) {
           return std::unique_ptr<SaslServer>(
             new GssSaslServer(evb, saslThreadManager));
         });
@@ -396,7 +396,7 @@ uint64_t ThriftServer::getNumDroppedConnections() const {
 }
 
 void ThriftServer::stop() {
-  TEventBase* eventBase = serveEventBase_;
+  folly::EventBase* eventBase = serveEventBase_;
   if (eventBase) {
     eventBase->terminateLoopSoon();
   }

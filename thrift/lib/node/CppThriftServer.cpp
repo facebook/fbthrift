@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 
 using namespace v8;
-apache::thrift::async::TEventBase integrated_uv_event_base;
+folly::EventBase integrated_uv_event_base;
 
 void run_loop(uv_async_t *handle, int status) {
   integrated_uv_event_base.loop();
@@ -86,7 +86,7 @@ class ThriftServerCallback : public node::ObjectWrap {
   static void setRequest(
       Local<Object> arg,
       std::unique_ptr<apache::thrift::ResponseChannel::Request> req,
-      apache::thrift::async::TEventBase* base) {
+      folly::EventBase* base) {
     auto obj = ObjectWrap::Unwrap<ThriftServerCallback>(arg);
     obj->req_ = std::move(req);
     obj->eb_ = base;
@@ -94,7 +94,7 @@ class ThriftServerCallback : public node::ObjectWrap {
 
  private:
   std::unique_ptr<apache::thrift::ResponseChannel::Request> req_;
-  apache::thrift::async::TEventBase* eb_;
+  folly::EventBase* eb_;
 };
 
 Persistent<Function> ThriftServerCallback::constructor;
@@ -111,7 +111,7 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
                std::unique_ptr<folly::IOBuf> buf,
                apache::thrift::protocol::PROTOCOL_TYPES protType,
                apache::thrift::Cpp2RequestContext* context,
-               apache::thrift::async::TEventBase* eb,
+               folly::EventBase* eb,
                apache::thrift::concurrency::ThreadManager* tm) override {
 
     auto reqd = folly::makeMoveWrapper(std::move(req));

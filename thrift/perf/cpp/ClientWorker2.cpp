@@ -44,7 +44,7 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   std::shared_ptr<TAsyncSocket> socket;
   std::unique_ptr<
     RequestChannel,
-    apache::thrift::async::TDelayedDestruction::Destructor> channel;
+    folly::DelayedDestruction::Destructor> channel;
   if (config->useSR()) {
     facebook::servicerouter::ConnConfigs configs;
     facebook::servicerouter::ServiceOptions options;
@@ -91,7 +91,7 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
     }
     std::unique_ptr<
       HeaderClientChannel,
-      apache::thrift::async::TDelayedDestruction::Destructor> headerChannel(
+      folly::DelayedDestruction::Destructor> headerChannel(
           HeaderClientChannel::newChannel(socket));
     // Always use binary in loadtesting to get apples to apples comparison
     headerChannel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);

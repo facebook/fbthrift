@@ -19,8 +19,8 @@
 
 #include <gmock/gmock.h>
 
-#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/AsyncServerSocket.h>
+#include <folly/io/async/EventBase.h>
 
 namespace apache {
 namespace thrift {
@@ -28,12 +28,12 @@ namespace thrift {
 namespace test {
 
 class MockTAsyncServerSocket :
-  public apache::thrift::async::TAsyncServerSocket {
+  public folly::AsyncServerSocket {
 public:
   typedef std::unique_ptr<MockTAsyncServerSocket, Destructor> UniquePtr;
 
   // We explicitly do not mock destroy(), since the base class implementation
-  // in TDelayedDestruction is what actually deletes the object.
+  // in DelayedDestruction is what actually deletes the object.
   //MOCK_METHOD0(destroy,
   //             void());
   MOCK_METHOD1(bind,
@@ -49,7 +49,7 @@ public:
                void());
   MOCK_METHOD3(addAcceptCallback,
                void(AcceptCallback *callback,
-                    apache::thrift::async::TEventBase *eventBase,
+                    folly::EventBase *eventBase,
                     uint32_t maxAtOnce));
 };
 

@@ -63,7 +63,7 @@ class IOBufPtrTest : public ::testing::Test {
     return server_.getAddress();
   }
 
-  apache::thrift::async::TEventBase* getEventBase() const {
+  folly::EventBase* getEventBase() const {
     return server_.getEventBaseManager()->getEventBase();
   }
 
@@ -77,7 +77,7 @@ class IOBufPtrTest : public ::testing::Test {
   std::thread serverThread_;
   std::mutex mutex_;
   std::condition_variable startedCond_;
-  apache::thrift::async::TEventBase* serverEventBase_;
+  folly::EventBase* serverEventBase_;
   apache::thrift::ThriftServer server_;
   std::unique_ptr<IOBufPtrTestServiceAsyncClient> client_;
 };

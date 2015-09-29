@@ -33,7 +33,7 @@
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
@@ -73,13 +73,13 @@ std::shared_ptr<ThriftServer> getServer() {
 int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
   apache::thrift::TestThriftServerFactory<SampleServiceHandler> factory;
   ScopedServerThread sst(factory.create());
-  TEventBase base;
+  folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   SampleService2AsyncClient client(
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>(
+                    folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
   Inner2 inner;

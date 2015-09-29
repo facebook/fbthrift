@@ -19,7 +19,7 @@
 #include <memory>
 #include <folly/Memory.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncServerSocket.h>
+#include <folly/io/async/AsyncServerSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -46,7 +46,7 @@ class PortHolder {
   PortHolder() {
     th_ = thread([&]{ eb_.loopForever(); });
     eb_.waitUntilRunning();
-    sock_ = TAsyncServerSocket::newSocket(&eb_);
+    sock_ = AsyncServerSocket::newSocket(&eb_);
     sock_->bind(0);
   }
   ~PortHolder() {
@@ -61,7 +61,7 @@ class PortHolder {
  private:
   EventBase eb_;
   thread th_;
-  shared_ptr<TAsyncServerSocket> sock_;
+  shared_ptr<AsyncServerSocket> sock_;
 };
 
 class TestServiceServerMock : public TestServiceSvIf {

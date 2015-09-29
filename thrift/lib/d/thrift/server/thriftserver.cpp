@@ -27,7 +27,7 @@ using folly::makeMoveWrapper;
 class ThriftServerInterface {
  public:
   virtual void process(ResponseChannel::Request* req,
-                       TEventBase* eb,
+                       folly::EventBase* eb,
                        unsigned char* data, size_t len, char protType);
  private:
    ~ThriftServerInterface() {}
@@ -42,7 +42,7 @@ class DProcessor : public AsyncProcessor {
                std::unique_ptr<folly::IOBuf> buf,
                protocol::PROTOCOL_TYPES protType,
                Cpp2RequestContext* context,
-               async::TEventBase* eb,
+               folly::EventBase* eb,
                concurrency::ThreadManager* tm) override {
     assert(iface_);
     auto reqd = makeMoveWrapper(std::move(req));
@@ -80,7 +80,7 @@ class DServerInterface : public ServerInterface {
 // members, to avoid mismatched virtual tables.
 extern "C" {
 
-TEventBaseManager* thriftserver_getEventBaseManager(ThriftServer* server) {
+folly::EventBaseManager* thriftserver_getEventBaseManager(ThriftServer* server) {
   return server->getEventBaseManager();
 }
 
@@ -129,7 +129,7 @@ void thriftserver_setInterface(
 }
 
 void thriftserver_sendReply(
-  ResponseChannel::Request* req, TEventBase* eb,
+  ResponseChannel::Request* req, folly::EventBase* eb,
   const char* bytes, size_t len) {
 
   auto buf = makeMoveWrapper(folly::IOBuf::copyBuffer(bytes, len));

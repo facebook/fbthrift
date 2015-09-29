@@ -22,6 +22,6 @@ namespace apache { namespace thrift {
 
 __thread Cpp2RequestContext* ServerInterface::reqCtx_;
 __thread concurrency::ThreadManager* ServerInterface::tm_;
-__thread async::TEventBase* ServerInterface::eb_;
+__thread folly::EventBase* ServerInterface::eb_;
 
 }} // apache::thrift

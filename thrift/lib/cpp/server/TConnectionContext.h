@@ -20,7 +20,7 @@
 #include <stddef.h>
 
 #include <memory>
-#include <thrift/lib/cpp/async/TEventBaseManager.h>
+#include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <folly/SocketAddress.h>
@@ -99,7 +99,7 @@ class TConnectionContext {
     }
   }
 
-  virtual apache::thrift::async::TEventBaseManager* getEventBaseManager() {
+  virtual folly::EventBaseManager* getEventBaseManager() {
     return nullptr;
   }
 

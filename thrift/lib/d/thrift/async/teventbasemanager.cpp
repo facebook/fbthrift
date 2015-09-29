@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/async/TEventBaseManager.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBaseManager.h>
+#include <folly/io/async/EventBase.h>
 
-using namespace apache::thrift::async;
 
 // Interface for D code.  Note that we use C-style functions instead of C++
 // members, to avoid mismatched virtual tables.
 extern "C" {
 
-TEventBase* teventbasemanager_getEventBase(TEventBaseManager* manager) {
+folly::EventBase* teventbasemanager_getEventBase(folly::EventBaseManager* manager) {
   return manager->getEventBase();
 }
 

@@ -56,7 +56,7 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
     const string& msg,
     unique_ptr<ResponseChannel::Request> req,
     Cpp2RequestContext* ctx,
-    TEventBase* eb,
+    EventBase* eb,
     int32_t protoSeqId) {
   ProtocolWriter oprot;
   if (req) {

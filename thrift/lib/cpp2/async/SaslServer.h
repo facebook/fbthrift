@@ -27,7 +27,7 @@ namespace apache { namespace thrift {
 
 class SaslServer : public SaslEndpoint {
  public:
-  explicit SaslServer(apache::thrift::async::TEventBase* evb = nullptr)
+  explicit SaslServer(folly::EventBase* evb = nullptr)
     : SaslEndpoint(evb) {}
 
   class Callback : public folly::HHWheelTimer::Callback {

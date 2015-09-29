@@ -17,7 +17,7 @@
 #ifndef THRIFT_SASLCLIENT_H_
 #define THRIFT_SASLCLIENT_H_ 1
 
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
@@ -60,7 +60,7 @@ class SaslClient : public SaslEndpoint {
   };
 
   explicit SaslClient(
-      apache::thrift::async::TEventBase* evb = nullptr,
+      folly::EventBase* evb = nullptr,
       const std::shared_ptr<SecurityLogger>& logger = nullptr)
     : SaslEndpoint(evb)
     , saslLogger_(logger)

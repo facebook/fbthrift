@@ -18,7 +18,7 @@
 #define THRIFT_UTIL_SCOPEDSERVEREVENTBASETHREAD_H
 
 #include <memory>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 
@@ -49,9 +49,9 @@ class ScopedServerInterfaceThread {
   uint16_t getPort() const;
 
   template <class AsyncClientT>
-  std::unique_ptr<AsyncClientT> newClient(async::TEventBase* eb) const;
+  std::unique_ptr<AsyncClientT> newClient(folly::EventBase* eb) const;
   template <class AsyncClientT>
-  std::unique_ptr<AsyncClientT> newClient(async::TEventBase& eb) const;
+  std::unique_ptr<AsyncClientT> newClient(folly::EventBase& eb) const;
 
  private:
 

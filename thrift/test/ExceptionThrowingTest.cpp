@@ -142,7 +142,7 @@ TEST(ExceptionThrowingTest, Thrift2Client) {
   auto* serverAddr = serverThread->getAddress();
   std::shared_ptr<TAsyncSocket> socket(TAsyncSocket::newSocket(
       &eb, *serverAddr));
-  std::unique_ptr<HeaderClientChannel, TDelayedDestruction::Destructor> channel(
+  std::unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor> channel(
       new HeaderClientChannel(socket));
   ExceptionThrowingServiceAsyncClient client(std::move(channel));
 

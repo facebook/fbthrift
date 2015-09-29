@@ -36,12 +36,12 @@ DuplexChannel::DuplexChannel(Who::WhoEnum who,
                      *this, transport,
                      make_unique<DuplexFramingHandler>(*this),
                      make_unique<DuplexProtectionHandler>(*this)),
-                 async::TDelayedDestruction::Destructor())
+                 folly::DelayedDestruction::Destructor())
   , clientChannel_(new DuplexClientChannel(*this, cpp2Channel_),
-                   async::TDelayedDestruction::Destructor())
+                   folly::DelayedDestruction::Destructor())
   , clientFramingHandler_(*clientChannel_.get())
   , serverChannel_(new DuplexServerChannel(*this, cpp2Channel_),
-                   async::TDelayedDestruction::Destructor())
+                   folly::DelayedDestruction::Destructor())
   , serverFramingHandler_(*serverChannel_.get())
   , mainChannel_(who)
 {

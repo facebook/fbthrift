@@ -74,10 +74,10 @@ std::unique_ptr<ScopedServerThread> createHttpServer() {
 TEST(HTTPClientChannelTest, SimpleTest) {
   std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
 
-  TEventBase eb;
+  folly::EventBase eb;
   const folly::SocketAddress* addr = serverThread->getAddress();
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, *addr);
-  std::unique_ptr<HTTPClientChannel, TDelayedDestruction::Destructor> channel(
+  std::unique_ptr<HTTPClientChannel, folly::DelayedDestruction::Destructor> channel(
       new HTTPClientChannel(socket, "127.0.0.1", "/foobar"));
   TestServiceAsyncClient client(std::move(channel));
   client.sendResponse([](apache::thrift::ClientReceiveState&& state) {
@@ -107,10 +107,10 @@ TEST(HTTPClientChannelTest, SimpleTest) {
 TEST(HTTPClientChannelTest, LongResponse) {
   std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
 
-  TEventBase eb;
+  folly::EventBase eb;
   const folly::SocketAddress* addr = serverThread->getAddress();
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, *addr);
-  std::unique_ptr<HTTPClientChannel, TDelayedDestruction::Destructor> channel(
+  std::unique_ptr<HTTPClientChannel, folly::DelayedDestruction::Destructor> channel(
       new HTTPClientChannel(socket, "127.0.0.1", "/foobar"));
   TestServiceAsyncClient client(std::move(channel));
 

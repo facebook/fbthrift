@@ -21,7 +21,7 @@
 #include <memory>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp/Thrift.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
@@ -301,7 +301,7 @@ class RpcOptions {
 /**
  * RequestChannel defines an asynchronous API for request-based I/O.
  */
-class RequestChannel : virtual public async::TDelayedDestruction {
+class RequestChannel : virtual public folly::DelayedDestruction {
  protected:
   ~RequestChannel() override {}
 
@@ -360,7 +360,7 @@ class RequestChannel : virtual public async::TDelayedDestruction {
 
   virtual void setCloseCallback(CloseCallback*) = 0;
 
-  virtual apache::thrift::async::TEventBase* getEventBase() = 0;
+  virtual folly::EventBase* getEventBase() = 0;
 
   virtual uint16_t getProtocolId() = 0;
 };
@@ -368,7 +368,7 @@ class RequestChannel : virtual public async::TDelayedDestruction {
 class ClientSyncCallback : public RequestCallback {
  public:
   ClientSyncCallback(ClientReceiveState* rs,
-                     apache::thrift::async::TEventBase* eb,
+                     folly::EventBase* eb,
                      bool oneway = false)
       : rs_(rs)
       , eb_(eb)
@@ -395,7 +395,7 @@ class ClientSyncCallback : public RequestCallback {
   }
  private:
   ClientReceiveState* rs_;
-  apache::thrift::async::TEventBase* eb_;
+  folly::EventBase* eb_;
   bool oneway_;
 };
 

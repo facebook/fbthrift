@@ -45,7 +45,7 @@ using std::shared_ptr;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadFactory;
 
-void TEventServer::useExistingSocket(TAsyncServerSocket::UniquePtr socket) {
+void TEventServer::useExistingSocket(folly::AsyncServerSocket::UniquePtr socket) {
   if (!socket_) {
     socket_ = std::move(socket);
   }
@@ -53,7 +53,7 @@ void TEventServer::useExistingSocket(TAsyncServerSocket::UniquePtr socket) {
 
 void TEventServer::useExistingSocket(int socket) {
   if (!socket_) {
-    socket_.reset(new TAsyncServerSocket());
+    socket_.reset(new folly::AsyncServerSocket());
     socket_->useExistingSocket(socket);
   }
 }
@@ -127,7 +127,7 @@ void TEventServer::setupServerSocket() {
 
     // bind to the socket
     if (!socket_) {
-      socket_.reset(new TAsyncServerSocket());
+      socket_.reset(new folly::AsyncServerSocket());
       socket_->bind(port_);
     }
 
@@ -214,7 +214,7 @@ void TEventServer::stop() {
   // the compiler doesn't optimize out eventBase.  In practice, most users will
   // only call stop() when the server is actually serving, so this shouldn't be
   // much of an issue.
-  TEventBase* eventBase = serveEventBase_;
+  folly::EventBase* eventBase = serveEventBase_;
   if (eventBase) {
     eventBase->terminateLoopSoon();
   }

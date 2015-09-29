@@ -21,7 +21,7 @@
 #define THRIFT_ASYNC_MESSAGECHANNEL_H_ 1
 
 #include <memory>
-#include <thrift/lib/cpp/async/TDelayedDestruction.h>
+#include <folly/io/async/DelayedDestruction.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <folly/ExceptionWrapper.h>
@@ -40,7 +40,7 @@ namespace apache { namespace thrift {
  * MessageChannel defines an asynchronous API for message-based I/O.
  */
 class MessageChannel :
-      virtual public apache::thrift::async::TDelayedDestruction {
+      virtual public folly::DelayedDestruction {
  protected:
   ~MessageChannel() override {}
 

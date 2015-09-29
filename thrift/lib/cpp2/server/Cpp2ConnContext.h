@@ -40,7 +40,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     const folly::SocketAddress* address = nullptr,
     const apache::thrift::async::TAsyncSocket* socket = nullptr,
     const apache::thrift::SaslServer* sasl_server = nullptr,
-    apache::thrift::async::TEventBaseManager* manager = nullptr,
+    folly::EventBaseManager* manager = nullptr,
     const std::shared_ptr<RequestChannel>& duplexChannel = nullptr)
     : saslServer_(sasl_server),
       manager_(manager),
@@ -74,7 +74,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return saslServer_;
   }
 
-  virtual apache::thrift::async::TEventBaseManager* getEventBaseManager() override {
+  virtual folly::EventBaseManager* getEventBaseManager() override {
     return manager_;
   }
 
@@ -90,7 +90,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   }
  private:
   const apache::thrift::SaslServer* saslServer_;
-  apache::thrift::async::TEventBaseManager* manager_;
+  folly::EventBaseManager* manager_;
   transport::THeader* requestHeader_;
   std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
@@ -140,7 +140,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return header_->getWriteTransforms();
   }
 
-  apache::thrift::async::TEventBaseManager* getEventBaseManager() override {
+  folly::EventBaseManager* getEventBaseManager() override {
     return ctx_->getEventBaseManager();
   }
 

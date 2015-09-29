@@ -140,7 +140,7 @@ void TEventWorker::finishConnectionAccepted(TAsyncSocket *asyncSocket) {
   TEventConnection* clientConnection;
 
   shared_ptr<TAsyncSocket> asyncSocketPtr(asyncSocket,
-                                          TDelayedDestruction::Destructor());
+                                          folly::DelayedDestruction::Destructor());
   try {
     folly::SocketAddress clientAddr;
     asyncSocketPtr->getPeerAddress(&clientAddr);
@@ -181,8 +181,8 @@ void TEventWorker::registerEvents() {
 
    // Print some libevent stats
   T_DEBUG_T("libevent %s method %s\n",
-                  TEventBase::getLibeventVersion(),
-                  TEventBase::getLibeventMethod());
+                  folly::EventBase::getLibeventVersion(),
+                  folly::EventBase::getLibeventMethod());
 
 }
 
@@ -193,7 +193,7 @@ void TEventWorker::maxLatencyCob() {
     if (it == activeConnectionMap_.end()) {
       T_ERROR("connection %p not found in ConnectionMap", connection);
     } else {
-      // This happens when iterations of the loop in TEventBase::loop() are
+      // This happens when iterations of the loop in EventBase::loop() are
       // taking too long. Likely causes:
       // - Server uses async handlers, but makes some blocking call or otherwise
       // ties up the async I/O thread for an extended time time.
@@ -239,10 +239,10 @@ void TEventWorker::messageAvailable(TaskCompletionMessage &&msg) {
  */
 void TEventWorker::serve() {
   try {
-    // Inform the TEventBaseManager that our TEventBase will be used
+    // Inform the EventBaseManager that our EventBase will be used
     // for this thread.  This relies on the fact that TEventWorker always
     // starts in a brand new thread, so nothing else has tried to use the
-    // TEventBaseManager to get an event base for this thread yet.
+    // EventBaseManager to get an event base for this thread yet.
     server_->getEventBaseManager()->setEventBase(&eventBase_, false);
 
     registerEvents();

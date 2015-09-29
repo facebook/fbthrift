@@ -49,7 +49,7 @@ namespace apache { namespace thrift {
 /**
  * ResponseChannel defines an asynchronous API for servers.
  */
-class ResponseChannel : virtual public async::TDelayedDestruction {
+class ResponseChannel : virtual public folly::DelayedDestruction {
  public:
 
   static const uint32_t ONEWAY_REQUEST_ID =

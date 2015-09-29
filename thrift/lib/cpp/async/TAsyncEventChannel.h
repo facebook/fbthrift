@@ -20,17 +20,17 @@
 #define THRIFT_ASYNC_TASYNCEVENTCHANNEL_H_ 1
 
 #include <thrift/lib/cpp/async/TAsyncChannel.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
-#include <thrift/lib/cpp/async/TDelayedDestruction.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/io/async/DelayedDestruction.h>
 
 namespace apache { namespace thrift { namespace async {
 
 /**
  * TAsyncEventChannel defines an API for TAsyncChannel objects that are driven
- * by TEventBase.
+ * by EventBase.
  */
 class TAsyncEventChannel : public TAsyncChannel,
-                           public TDelayedDestruction {
+                           public folly::DelayedDestruction {
  public:
 
   /**
@@ -40,23 +40,23 @@ class TAsyncEventChannel : public TAsyncChannel,
   virtual bool isIdle() const = 0;
 
   /**
-   * Attach the channel to a TEventBase.
+   * Attach the channel to a EventBase.
    *
    * This may only be called if the channel is not currently attached to a
-   * TEventBase (by an earlier call to detachEventBase()).
+   * EventBase (by an earlier call to detachEventBase()).
    *
-   * This method must be invoked in the TEventBase's thread.
+   * This method must be invoked in the EventBase's thread.
    */
-  virtual void attachEventBase(TEventBase* eventBase) = 0;
+  virtual void attachEventBase(folly::EventBase* eventBase) = 0;
 
   /**
-   * Detach the channel from its TEventBase.
+   * Detach the channel from its EventBase.
    *
    * This may only be called when the channel is idle and has no reads or
    * writes pending.  Once detached, the channel may not be used again until it
-   * is re-attached to a TEventBase by calling attachEventBase().
+   * is re-attached to a EventBase by calling attachEventBase().
    *
-   * This method must be called from the current TEventBase's thread.
+   * This method must be called from the current EventBase's thread.
    */
   virtual void detachEventBase() = 0;
 
@@ -82,7 +82,7 @@ class TAsyncEventChannel : public TAsyncChannel,
    * Protected destructor.
    *
    * Users of TAsyncEventChannel must never delete it directly. Instead, invoke
-   * destroy() instead. (See the documentation in TDelayedDestruction.h for
+   * destroy() instead. (See the documentation in DelayedDestruction.h for
    * more details.)
    */
 

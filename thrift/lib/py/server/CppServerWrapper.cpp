@@ -164,7 +164,7 @@ public:
                std::unique_ptr<folly::IOBuf> buf,
                apache::thrift::protocol::PROTOCOL_TYPES protType,
                Cpp2RequestContext* context,
-               apache::thrift::async::TEventBase* eb,
+               folly::EventBase* eb,
                apache::thrift::concurrency::ThreadManager* tm) override {
     bool oneway = isOnewayMethod(buf.get(), context->getHeader());
     if (oneway && !req->isOneway()) {

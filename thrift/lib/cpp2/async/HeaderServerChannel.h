@@ -26,7 +26,7 @@
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TDelayedDestruction.h>
+#include <folly/io/async/DelayedDestruction.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <memory>
 
@@ -43,7 +43,7 @@ namespace apache { namespace thrift {
 class HeaderServerChannel : public ResponseChannel,
                             public HeaderChannel,
                             public MessageChannel::RecvCallback,
-                            virtual public async::TDelayedDestruction {
+                            virtual public folly::DelayedDestruction {
   typedef ProtectionHandler::ProtectionState ProtectionState;
 protected:
  ~HeaderServerChannel() override {}
@@ -56,16 +56,16 @@ protected:
     const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
   static std::unique_ptr<HeaderServerChannel,
-                         apache::thrift::async::TDelayedDestruction::Destructor>
+                         folly::DelayedDestruction::Destructor>
   newChannel(
     const std::shared_ptr<
     apache::thrift::async::TAsyncTransport>& transport) {
     return std::unique_ptr<HeaderServerChannel,
-      apache::thrift::async::TDelayedDestruction::Destructor>(
+      folly::DelayedDestruction::Destructor>(
       new HeaderServerChannel(transport));
   }
 
-  // TDelayedDestruction methods
+  // DelayedDestruction methods
   void destroy() override;
 
   apache::thrift::async::TAsyncTransport* getTransport() {
@@ -102,7 +102,7 @@ protected:
   void messageChannelEOF() override;
   void messageReceiveErrorWrapped(folly::exception_wrapper&&) override;
 
-  apache::thrift::async::TEventBase* getEventBase() {
+  folly::EventBase* getEventBase() {
       return cpp2Channel_->getEventBase();
   }
 

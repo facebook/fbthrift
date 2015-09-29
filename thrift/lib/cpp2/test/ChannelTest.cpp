@@ -27,9 +27,9 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/async/test/SocketPair.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
-#include <thrift/lib/cpp/async/TAsyncTimeout.h>
+#include <folly/io/async/AsyncTimeout.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
@@ -51,10 +51,10 @@ unique_ptr<IOBuf> makeTestBuf(size_t len) {
   return buf;
 }
 
-class EventBaseAborter : public TAsyncTimeout {
+class EventBaseAborter : public folly::AsyncTimeout {
  public:
-  EventBaseAborter(TEventBase* eventBase, uint32_t timeoutMS)
-    : TAsyncTimeout(eventBase, TAsyncTimeout::InternalEnum::INTERNAL)
+  EventBaseAborter(folly::EventBase* eventBase, uint32_t timeoutMS)
+    : folly::AsyncTimeout(eventBase, folly::AsyncTimeout::InternalEnum::INTERNAL)
     , eventBase_(eventBase) {
     scheduleTimeout(timeoutMS);
   }
@@ -65,7 +65,7 @@ class EventBaseAborter : public TAsyncTimeout {
   }
 
  private:
-  TEventBase* eventBase_;
+  folly::EventBase* eventBase_;
 };
 
 // Creates/unwraps a framed message (LEN(MSG) | MSG)
@@ -120,13 +120,13 @@ private:
 };
 
 template <typename Channel>
-unique_ptr<Channel, TDelayedDestruction::Destructor> createChannel(
+unique_ptr<Channel, folly::DelayedDestruction::Destructor> createChannel(
     const shared_ptr<TAsyncTransport>& transport) {
   return Channel::newChannel(transport);
 }
 
 template <>
-unique_ptr<Cpp2Channel, TDelayedDestruction::Destructor> createChannel(
+unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor> createChannel(
     const shared_ptr<TAsyncTransport>& transport) {
   return Cpp2Channel::newChannel(transport, make_unique<TestFramingHandler>());
 }
@@ -165,11 +165,11 @@ class SocketPairTest {
   virtual void postLoop() {}
 
  protected:
-  TEventBase eventBase_;
+  folly::EventBase eventBase_;
   shared_ptr<TAsyncSocket> socket0_;
   shared_ptr<TAsyncSocket> socket1_;
-  unique_ptr<Channel1, TDelayedDestruction::Destructor> channel0_;
-  unique_ptr<Channel2, TDelayedDestruction::Destructor> channel1_;
+  unique_ptr<Channel1, folly::DelayedDestruction::Destructor> channel0_;
+  unique_ptr<Channel2, folly::DelayedDestruction::Destructor> channel1_;
 };
 
 
@@ -1187,10 +1187,10 @@ class DestroyAsyncTransport : public apache::thrift::async::TAsyncTransport {
   bool readable() const override { return false; }
   bool connecting() const override { return false; }
   bool error() const override { return false; }
-  void attachEventBase(TEventBase* e) override {}
+  void attachEventBase(folly::EventBase* e) override {}
   void detachEventBase() override {}
   bool isDetachable() const override { return true; }
-  TEventBase* getEventBase() const override { return nullptr; }
+  folly::EventBase* getEventBase() const override { return nullptr; }
   void setSendTimeout(uint32_t ms) override {}
   uint32_t getSendTimeout() const override { return 0; }
   void getLocalAddress(folly::SocketAddress* a) const override {}
@@ -1211,7 +1211,7 @@ class DestroyAsyncTransport : public apache::thrift::async::TAsyncTransport {
 
 class DestroyRecvCallback : public MessageChannel::RecvCallback {
  public:
-  typedef std::unique_ptr<Cpp2Channel, TDelayedDestruction::Destructor>
+  typedef std::unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor>
       ChannelPointer;
   explicit DestroyRecvCallback(ChannelPointer&& channel)
       : channel_(std::move(channel)),
@@ -1256,7 +1256,7 @@ TEST(Channel, SetKeepRegisteredForClose) {
   socklen_t addrlen = sizeof(addr);
   rc = getsockname(lfd, (struct sockaddr*)&addr, &addrlen);
 
-  TEventBase base;
+  folly::EventBase base;
   auto transport =
     TAsyncSocket::newSocket(&base, "127.0.0.1", ntohs(addr.sin_port));
   auto channel = createChannel<HeaderClientChannel>(transport);

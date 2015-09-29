@@ -21,7 +21,7 @@
 
 #include <thrift/perf/if/gen-cpp/LoadTest.h>
 #include <thrift/lib/cpp/test/loadgen/Worker.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 
@@ -84,7 +84,7 @@ class AsyncClientWorker : public loadgen::Worker<
 
  private:
 
-  apache::thrift::async::TEventBase eb_;
+  folly::EventBase eb_;
   protocol::TBinaryProtocolFactory binProtoFactory_;
   protocol::THeaderProtocolFactory duplexProtoFactory_;
   std::list<AsyncRunner *> clients_;

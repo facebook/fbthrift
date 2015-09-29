@@ -24,10 +24,10 @@
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp2/async/SaslClient.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
-#include <thrift/lib/cpp/async/TDelayedDestruction.h>
+#include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp/async/TEventBase.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 #include <memory>
 
@@ -46,7 +46,7 @@ class HeaderClientChannel : public RequestChannel,
                             public HeaderChannel,
                             public MessageChannel::RecvCallback,
                             public ChannelCallbacks,
-                            virtual public async::TDelayedDestruction {
+                            virtual public folly::DelayedDestruction {
   typedef ProtectionHandler::ProtectionState ProtectionState;
  protected:
   ~HeaderClientChannel() override {}
@@ -60,7 +60,7 @@ class HeaderClientChannel : public RequestChannel,
 
   typedef
     std::unique_ptr<HeaderClientChannel,
-                    apache::thrift::async::TDelayedDestruction::Destructor>
+                    folly::DelayedDestruction::Destructor>
     Ptr;
 
   static Ptr newChannel(
@@ -77,7 +77,7 @@ class HeaderClientChannel : public RequestChannel,
 
   void closeNow();
 
-  // TDelayedDestruction methods
+  // DelayedDestruction methods
   void destroy() override;
 
   apache::thrift::async::TAsyncTransport* getTransport() {
@@ -139,7 +139,7 @@ class HeaderClientChannel : public RequestChannel,
     return keepRegisteredForClose_;
   }
 
-  apache::thrift::async::TEventBase* getEventBase() override {
+  folly::EventBase* getEventBase() override {
       return cpp2Channel_->getEventBase();
   }
 
@@ -149,7 +149,7 @@ class HeaderClientChannel : public RequestChannel,
   void useAsHttpClient(const std::string& host, const std::string& uri);
 
   // event base methods
-  void attachEventBase(apache::thrift::async::TEventBase*);
+  void attachEventBase(folly::EventBase*);
   void detachEventBase();
   bool isDetachable();
 
