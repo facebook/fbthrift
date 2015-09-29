@@ -33,9 +33,13 @@ import Control.Exception
 import Data.Attoparsec.ByteString
 import Data.ByteString.Lazy (ByteString, toStrict)
 import Data.ByteString.Unsafe
+#if __GLASGOW_HASKELL__ < 710
 import Data.Functor ((<$>))
+#endif
 import Data.Int
+#if __GLASGOW_HASKELL__ < 710
 import Data.Monoid (mempty)
+#endif
 import Data.Text.Lazy (Text)
 import Data.Typeable (Typeable)
 import Foreign.Ptr (castPtr)

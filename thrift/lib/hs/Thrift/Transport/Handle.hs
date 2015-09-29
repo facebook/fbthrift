@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -29,7 +30,9 @@ module Thrift.Transport.Handle
 
 import Control.Exception ( catch, throw )
 import Data.ByteString.Internal (c2w)
+#if __GLASGOW_HASKELL__ < 710
 import Data.Functor
+#endif
 
 import Network
 
@@ -39,7 +42,9 @@ import System.IO.Error ( isEOFError )
 import Thrift.Transport
 
 import qualified Data.ByteString.Lazy as LBS
+#if __GLASGOW_HASKELL__ < 710
 import Data.Monoid
+#endif
 
 instance Transport Handle where
     tIsOpen = hIsOpen

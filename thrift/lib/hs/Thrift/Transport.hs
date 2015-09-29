@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 --
@@ -27,12 +28,16 @@ module Thrift.Transport
 
 import Control.Monad ( when )
 import Control.Exception ( Exception, throw )
+#if __GLASGOW_HASKELL__ < 710
 import Data.Functor ( (<$>) )
+#endif
 import Data.Typeable ( Typeable )
 import Data.Word
 
 import qualified Data.ByteString.Lazy as LBS
+#if __GLASGOW_HASKELL__ < 710
 import Data.Monoid
+#endif
 
 -- | Type class for Thrift Transports.  A 'Transport' is used in conjunction
 -- with a 'Protocol' to serialize/deserialize and read/write data.  The

@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 --
 -- Licensed to the Apache Software Foundation (ASF) under one
 -- or more contributor license agreements. See the NOTICE file
@@ -30,7 +31,9 @@ module Thrift.Transport.IOBuffer
        ) where
 
 import Data.ByteString.Builder
+#if __GLASGOW_HASKELL__ < 710
 import Data.Functor
+#endif
 import Data.IORef
 import Data.Monoid
 import Data.Word

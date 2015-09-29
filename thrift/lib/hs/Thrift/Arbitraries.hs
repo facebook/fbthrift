@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Thrift.Arbitraries where
@@ -6,7 +7,9 @@ import Data.Bits()
 
 import Test.QuickCheck.Arbitrary
 
+#if __GLASGOW_HASKELL__ < 710
 import Control.Applicative ((<$>))
+#endif
 import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set

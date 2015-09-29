@@ -31,7 +31,9 @@ import Control.Exception ( throw )
 import Control.Monad
 import Data.Bits
 import Data.ByteString.Builder
+#if __GLASGOW_HASKELL__ < 710
 import Data.Functor
+#endif
 import Data.Int
 import Data.Monoid
 import Data.Word

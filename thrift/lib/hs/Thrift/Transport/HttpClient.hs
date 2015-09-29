@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleInstances #-}
 --
 -- Licensed to the Apache Software Foundation (ASF) under one
@@ -30,7 +31,9 @@ import Network.URI
 import Network.HTTP hiding (port, host)
 
 import Data.Maybe (fromJust)
+#if __GLASGOW_HASKELL__ < 710
 import Data.Monoid (mempty)
+#endif
 import Control.Exception (throw)
 import qualified Data.ByteString.Lazy as LBS
 
