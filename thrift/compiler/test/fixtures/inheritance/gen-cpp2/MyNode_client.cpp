@@ -49,8 +49,8 @@ void MyNodeAsyncClient::sync_do_mid() {
 
 void MyNodeAsyncClient::sync_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  std::unique_ptr<apache::thrift::RequestCallback> callback4(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
-  do_mid(rpcOptions, std::move(callback4));
+  std::unique_ptr<apache::thrift::RequestCallback> callback7(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
+  do_mid(rpcOptions, std::move(callback7));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -70,11 +70,19 @@ folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid() {
 }
 
 folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<folly::Unit> promise5;
-  auto future6 = promise5.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback7(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise5), recv_wrapped_do_mid, channel_, (rpcOptions.getUseForReadHeaders() ? &rpcOptions : nullptr)));
-  do_mid(rpcOptions, std::move(callback7));
-  return std::move(future6);
+  folly::Promise<folly::Unit> promise8;
+  auto future9 = promise8.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback10(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise8), recv_wrapped_do_mid, channel_));
+  do_mid(rpcOptions, std::move(callback10));
+  return std::move(future9);
+}
+
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyNodeAsyncClient::header_future_do_mid(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise11;
+  auto future12 = promise11.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback13(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise11), recv_wrapped_do_mid, channel_));
+  do_mid(rpcOptions, std::move(callback13));
+  return std::move(future12);
 }
 
 void MyNodeAsyncClient::do_mid(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {

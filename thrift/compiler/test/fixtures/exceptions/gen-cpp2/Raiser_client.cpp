@@ -72,9 +72,17 @@ folly::Future<folly::Unit> RaiserAsyncClient::future_doBland() {
 folly::Future<folly::Unit> RaiserAsyncClient::future_doBland(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> promise1;
   auto future2 = promise1.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback3(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise1), recv_wrapped_doBland, channel_, (rpcOptions.getUseForReadHeaders() ? &rpcOptions : nullptr)));
+  std::unique_ptr<apache::thrift::RequestCallback> callback3(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise1), recv_wrapped_doBland, channel_));
   doBland(rpcOptions, std::move(callback3));
   return std::move(future2);
+}
+
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_future_doBland(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise4;
+  auto future5 = promise4.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback6(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise4), recv_wrapped_doBland, channel_));
+  doBland(rpcOptions, std::move(callback6));
+  return std::move(future5);
 }
 
 void RaiserAsyncClient::doBland(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -155,8 +163,8 @@ void RaiserAsyncClient::sync_doRaise() {
 
 void RaiserAsyncClient::sync_doRaise(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  std::unique_ptr<apache::thrift::RequestCallback> callback4(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
-  doRaise(rpcOptions, std::move(callback4));
+  std::unique_ptr<apache::thrift::RequestCallback> callback7(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
+  doRaise(rpcOptions, std::move(callback7));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -176,11 +184,19 @@ folly::Future<folly::Unit> RaiserAsyncClient::future_doRaise() {
 }
 
 folly::Future<folly::Unit> RaiserAsyncClient::future_doRaise(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<folly::Unit> promise5;
-  auto future6 = promise5.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback7(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise5), recv_wrapped_doRaise, channel_, (rpcOptions.getUseForReadHeaders() ? &rpcOptions : nullptr)));
-  doRaise(rpcOptions, std::move(callback7));
-  return std::move(future6);
+  folly::Promise<folly::Unit> promise8;
+  auto future9 = promise8.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback10(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise8), recv_wrapped_doRaise, channel_));
+  doRaise(rpcOptions, std::move(callback10));
+  return std::move(future9);
+}
+
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_future_doRaise(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise11;
+  auto future12 = promise11.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback13(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise11), recv_wrapped_doRaise, channel_));
+  doRaise(rpcOptions, std::move(callback13));
+  return std::move(future12);
 }
 
 void RaiserAsyncClient::doRaise(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -261,8 +277,8 @@ void RaiserAsyncClient::sync_get200(std::string& _return) {
 
 void RaiserAsyncClient::sync_get200(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
-  std::unique_ptr<apache::thrift::RequestCallback> callback8(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
-  get200(rpcOptions, std::move(callback8));
+  std::unique_ptr<apache::thrift::RequestCallback> callback14(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
+  get200(rpcOptions, std::move(callback14));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -282,11 +298,19 @@ folly::Future<std::string> RaiserAsyncClient::future_get200() {
 }
 
 folly::Future<std::string> RaiserAsyncClient::future_get200(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::string> promise9;
-  auto future10 = promise9.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback11(new apache::thrift::FutureCallback<std::string>(std::move(promise9), recv_wrapped_get200, channel_, (rpcOptions.getUseForReadHeaders() ? &rpcOptions : nullptr)));
-  get200(rpcOptions, std::move(callback11));
-  return std::move(future10);
+  folly::Promise<std::string> promise15;
+  auto future16 = promise15.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback17(new apache::thrift::FutureCallback<std::string>(std::move(promise15), recv_wrapped_get200, channel_));
+  get200(rpcOptions, std::move(callback17));
+  return std::move(future16);
+}
+
+folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_future_get200(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise18;
+  auto future19 = promise18.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback20(new apache::thrift::HeaderFutureCallback<std::string>(std::move(promise18), recv_wrapped_get200, channel_));
+  get200(rpcOptions, std::move(callback20));
+  return std::move(future19);
 }
 
 void RaiserAsyncClient::get200(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -367,8 +391,8 @@ void RaiserAsyncClient::sync_get500(std::string& _return) {
 
 void RaiserAsyncClient::sync_get500(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
-  std::unique_ptr<apache::thrift::RequestCallback> callback12(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
-  get500(rpcOptions, std::move(callback12));
+  std::unique_ptr<apache::thrift::RequestCallback> callback21(new apache::thrift::ClientSyncCallback(&_returnState, getChannel()->getEventBase(), false));
+  get500(rpcOptions, std::move(callback21));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -388,11 +412,19 @@ folly::Future<std::string> RaiserAsyncClient::future_get500() {
 }
 
 folly::Future<std::string> RaiserAsyncClient::future_get500(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::string> promise13;
-  auto future14 = promise13.getFuture();
-  std::unique_ptr<apache::thrift::RequestCallback> callback15(new apache::thrift::FutureCallback<std::string>(std::move(promise13), recv_wrapped_get500, channel_, (rpcOptions.getUseForReadHeaders() ? &rpcOptions : nullptr)));
-  get500(rpcOptions, std::move(callback15));
-  return std::move(future14);
+  folly::Promise<std::string> promise22;
+  auto future23 = promise22.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback24(new apache::thrift::FutureCallback<std::string>(std::move(promise22), recv_wrapped_get500, channel_));
+  get500(rpcOptions, std::move(callback24));
+  return std::move(future23);
+}
+
+folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_future_get500(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise25;
+  auto future26 = promise25.getFuture();
+  std::unique_ptr<apache::thrift::RequestCallback> callback27(new apache::thrift::HeaderFutureCallback<std::string>(std::move(promise25), recv_wrapped_get500, channel_));
+  get500(rpcOptions, std::move(callback27));
+  return std::move(future26);
 }
 
 void RaiserAsyncClient::get500(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {

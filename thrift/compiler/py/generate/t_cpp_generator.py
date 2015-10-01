@@ -845,6 +845,10 @@ class CppGenerator(t_generator.Generator):
                     self._generate_client_future_function(service, function)
                     self._generate_client_future_function(service, function,
                                                           uses_rpc_options=True)
+                    if not function.oneway:
+                        self._generate_client_future_function(
+                                service, function,
+                                uses_rpc_options=True, header=True)
 
                 self._generate_client_std_function(function)
 
@@ -1637,11 +1641,15 @@ class CppGenerator(t_generator.Generator):
               .format(function=function_name, args=args_list))
 
     def _generate_client_future_function(self, service, function,
-                                         uses_rpc_options=False):
+                                         uses_rpc_options=False, header=False):
 
-        function_name = "future_" + function.name
+        if header:
+            function_name = "header_future_" + function.name
+        else:
+            function_name = "future_" + function.name
         signature = self._get_future_function_signature(function,
-                                                        uses_rpc_options)
+                                                        uses_rpc_options,
+                                                        header)
         with out().defn(signature,
                 name=function_name,
                 modifiers='virtual',
@@ -1656,10 +1664,14 @@ class CppGenerator(t_generator.Generator):
 
                 promise_name = self.tmp("promise")
 
-                return_type = self._type_name(function.returntype)
+                return_type = _lift_unit(self._type_name(function.returntype))
 
-                out("folly::Promise<{type}> {promise};"
-                  .format(type=_lift_unit(return_type), promise=promise_name))
+                if header:
+                    out("folly::Promise<std::pair<{type}, std::unique_ptr<apache::thrift::transport::THeader>>> {promise};"
+                            .format(type=return_type, promise=promise_name))
+                else:
+                    out("folly::Promise<{type}> {promise};"
+                            .format(type=return_type, promise=promise_name))
 
                 future_name = self.tmp("future")
                 out("auto {future} = {promise}.getFuture();"
@@ -1681,14 +1693,17 @@ class CppGenerator(t_generator.Generator):
                     args.append("std::move({0})".format(callback))
 
                 else:
+                    if header:
+                        future_cb_name = "HeaderFutureCallback"
+                    else:
+                        future_cb_name = "FutureCallback"
                     out("std::unique_ptr<apache::thrift::RequestCallback> "
                       "{callback}("
-                      "new apache::thrift::FutureCallback<{type}>("
-                      "std::move({promise}), recv_wrapped_{name}, channel_, "
-                      "(rpcOptions.getUseForReadHeaders() ? &rpcOptions : "
-                      "nullptr)));"
+                      "new apache::thrift::{future_cb}<{type}>("
+                      "std::move({promise}), recv_wrapped_{name}, channel_));"
                       .format(callback=callback,
-                              type=_lift_unit(return_type),
+                              future_cb=future_cb_name,
+                              type=return_type,
                               promise=promise_name,
                               name=function.name))
 
@@ -1742,8 +1757,10 @@ class CppGenerator(t_generator.Generator):
                 "wangle::ObservablePtr",
                 result_type)
 
-    def _get_future_function_signature(self, function, uses_rpc_options):
+    def _get_future_function_signature(self, function, uses_rpc_options, header):
         result_type = _lift_unit(self._type_name(function.returntype))
+        if header:
+            result_type = "std::pair<{0}, std::unique_ptr<apache::thrift::transport::THeader>>".format(result_type)
         return self._get_noncallback_function_signature(
                 function, uses_rpc_options, "folly::Future", result_type)
 

@@ -266,14 +266,6 @@ class RpcOptions {
     return readHeaders_;
   }
 
-  void setUseForReadHeaders(bool use) {
-    useForReadHeaders_ = use;
-  }
-
-  bool getUseForReadHeaders() {
-    return useForReadHeaders_;
-  }
-
   const std::map<std::string, std::string>& getWriteHeaders() const {
     return writeHeaders_;
   }
@@ -291,11 +283,6 @@ class RpcOptions {
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;
   std::map<std::string, std::string> readHeaders_;
-
-  // For sync calls, this flag won't be checked since rpcOptions will always
-  // be in scope. For future calls, if readHeaders is needed, set this flag
-  // before passing it to the call and make sure it doesn't go out of scope.
-  bool useForReadHeaders_{false};
 };
 
 /**
