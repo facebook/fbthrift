@@ -131,11 +131,13 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   // Check if protocol used in the buffer is consistent with the protocol
   // id in the header.
 
+  folly::io::Cursor c(buf.get());
+  auto byte = c.read<uint8_t>();
   // Initialize it to a value never used on the wire
   PROTOCOL_TYPES protInBuf = PROTOCOL_TYPES::T_DEBUG_PROTOCOL;
-  if (buf->data()[0] == 0x82) {
+  if (byte == 0x82) {
     protInBuf = PROTOCOL_TYPES::T_COMPACT_PROTOCOL;
-  } else if (buf->data()[0] == 0x80) {
+  } else if (byte == 0x80) {
     protInBuf = PROTOCOL_TYPES::T_BINARY_PROTOCOL;
   } else if (ct != THRIFT_HTTP_SERVER_TYPE) {
     LOG(ERROR) << "Received corrupted request from client: "
