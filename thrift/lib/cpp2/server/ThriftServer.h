@@ -111,45 +111,47 @@ class ThriftServer : public apache::thrift::server::TServer
   folly::SocketAddress address_;
 
   //! The server's listening port
-  int port_;
+  int port_ = -1;
 
   // Security negotiation settings
-  bool saslEnabled_;
-  bool nonSaslEnabled_;
+  bool saslEnabled_ = false;
+  bool nonSaslEnabled_ = true;
   const std::string saslPolicy_;
   const bool allowInsecureLoopback_;
   std::function<std::unique_ptr<SaslServer> (
     folly::EventBase*)> saslServerFactory_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
     saslThreadManager_;
-  int nSaslPoolThreads_;
+  int nSaslPoolThreads_ = 0;
 
-  std::unique_ptr<folly::ShutdownSocketSet> shutdownSocketSet_;
+  std::unique_ptr<folly::ShutdownSocketSet> shutdownSocketSet_ =
+      folly::make_unique<folly::ShutdownSocketSet>();
 
   //! Listen socket
   folly::AsyncServerSocket::UniquePtr socket_;
 
   //! The folly::EventBase currently driving serve().  NULL when not serving.
-  std::atomic<folly::EventBase*> serveEventBase_;
+  std::atomic<folly::EventBase*> serveEventBase_{nullptr};
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
-  int nWorkers_;
+  int nWorkers_ = T_ASYNC_DEFAULT_WORKER_THREADS;
 
   //! Number of sync pool threads (may be set) (should be set to expected
   //  sync load)
-  int nPoolThreads_;
+  int nPoolThreads_ = 0;
 
   //! Thread stack size in MB
-  int threadStackSizeMB_;
+  int threadStackSizeMB_ = 1;
 
   //! Milliseconds we'll wait for data to appear (0 = infinity)
-  std::chrono::milliseconds timeout_;
+  std::chrono::milliseconds timeout_ = DEFAULT_TIMEOUT;
 
   //! Manager of per-thread EventBase objects.
-  folly::EventBaseManager* eventBaseManager_;
+  folly::EventBaseManager* eventBaseManager_ = folly::EventBaseManager::get();
 
   //! IO thread pool. Drives Cpp2Workers.
-  std::shared_ptr<wangle::IOThreadPoolExecutor> ioThreadPool_;
+  std::shared_ptr<wangle::IOThreadPoolExecutor> ioThreadPool_ =
+      std::make_shared<wangle::IOThreadPoolExecutor>(0);
 
   /**
    * The thread manager used for sync calls.
@@ -161,7 +163,7 @@ class ThriftServer : public apache::thrift::server::TServer
    * The time in milliseconds before an unperformed task expires
    * (0 == infinite)
    */
-  std::chrono::milliseconds taskExpireTime_;
+  std::chrono::milliseconds taskExpireTime_ = DEFAULT_TASK_EXPIRE_TIME;
 
   /**
    * The number of incoming connections the TCP stack will buffer up while
@@ -174,19 +176,19 @@ class ThriftServer : public apache::thrift::server::TServer
    * implementation, and it may be further limited or even ignored on some
    * systems. See manpage for listen(2) for details.
    */
-  int listenBacklog_;
+  int listenBacklog_ = DEFAULT_LISTEN_BACKLOG;
 
   /**
    * The speed for adjusting connection accept rate.
    * 0 for disabling auto adjusting connection accept rate.
    */
-  double acceptRateAdjustSpeed_;
+  double acceptRateAdjustSpeed_ = 0.0;
 
   /**
    * The maximum number of unprocessed messages which a NotificationQueue
    * can hold.
    */
-  uint32_t maxNumMsgsInQueue_;
+  uint32_t maxNumMsgsInQueue_ = T_MAX_NUM_MESSAGES_IN_QUEUE;
 
   /**
    * ThreadFactory used to create worker threads
@@ -203,34 +205,35 @@ class ThriftServer : public apache::thrift::server::TServer
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
 
   // Max number of active connections
-  uint32_t maxConnections_;
+  uint32_t maxConnections_ = 0;
 
   // Max active requests
-  uint32_t maxRequests_;
+  uint32_t maxRequests_ = concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE;
 
   // If it is set true, # of global active requests is tracked
-  bool isUnevenLoad_;
+  bool isUnevenLoad_ = true;
 
   // If it is set true, server will check and use client timeout header
-  bool useClientTimeout_;
+  bool useClientTimeout_ = true;
 
   // Track # of active requests for this server
-  std::atomic<int32_t> activeRequests_;
+  std::atomic<int32_t> activeRequests_{0};
 
   // Minimum size of response before it might be compressed
   // Prevents small responses from being compressed,
   // does not by itself turn on compression.  Client must
   // request compression.
-  uint32_t minCompressBytes_;
+  uint32_t minCompressBytes_ = 0;
 
-  std::function<bool(const apache::thrift::transport::THeader*)> isOverloaded_;
+  std::function<bool(const transport::THeader*)> isOverloaded_ =
+      [](const THeader* header) { return false; };
   std::function<int64_t(const std::string&)> getLoad_;
 
-  bool queueSends_;
+  bool queueSends_ = true;
 
-  bool enableCodel_;
+  bool enableCodel_ = false;
 
-  bool stopWorkersOnStopListening_;
+  bool stopWorkersOnStopListening_ = true;
 
   std::shared_ptr<wangle::IOThreadPoolExecutor> acceptPool_;
 
@@ -239,7 +242,7 @@ class ThriftServer : public apache::thrift::server::TServer
   std::shared_ptr<HeaderServerChannel> serverChannel_;
   std::unique_ptr<Cpp2Worker> duplexWorker_;
 
-  bool isDuplex_;   // is server in duplex mode? (used by server)
+  bool isDuplex_ = false;   // is server in duplex mode? (used by server)
 
   mutable std::mutex ioGroupMutex_;
 

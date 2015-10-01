@@ -92,41 +92,11 @@ ThriftServer::ThriftServer() :
   ThriftServer("", false) {}
 
 ThriftServer::ThriftServer(const std::string& saslPolicy,
-                           bool allowInsecureLoopback) :
-  apache::thrift::server::TServer(
-    std::shared_ptr<apache::thrift::server::TProcessor>()),
-  port_(-1),
-  saslEnabled_(false),
-  nonSaslEnabled_(true),
-  saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy),
-  allowInsecureLoopback_(allowInsecureLoopback),
-  nSaslPoolThreads_(0),
-  shutdownSocketSet_(
-    folly::make_unique<folly::ShutdownSocketSet>()),
-  serveEventBase_(nullptr),
-  nWorkers_(T_ASYNC_DEFAULT_WORKER_THREADS),
-  nPoolThreads_(0),
-  threadStackSizeMB_(1),
-  timeout_(DEFAULT_TIMEOUT),
-  eventBaseManager_(folly::EventBaseManager::get()),
-  ioThreadPool_(std::make_shared<IOThreadPoolExecutor>(0)),
-  taskExpireTime_(DEFAULT_TASK_EXPIRE_TIME),
-  listenBacklog_(DEFAULT_LISTEN_BACKLOG),
-  acceptRateAdjustSpeed_(0),
-  maxNumMsgsInQueue_(T_MAX_NUM_MESSAGES_IN_QUEUE),
-  maxConnections_(0),
-  maxRequests_(
-    apache::thrift::concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE),
-  isUnevenLoad_(true),
-  useClientTimeout_(true),
-  activeRequests_(0),
-  minCompressBytes_(0),
-  isOverloaded_([](const THeader* header) { return false; }),
-  queueSends_(true),
-  enableCodel_(false),
-  stopWorkersOnStopListening_(true),
-  isDuplex_(false) {
-
+                           bool allowInsecureLoopback)
+  : server::TServer(std::shared_ptr<server::TProcessor>())
+  , saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy)
+  , allowInsecureLoopback_(allowInsecureLoopback)
+{
   // SASL setup
   if (saslPolicy_ == "required") {
     setSaslEnabled(true);
