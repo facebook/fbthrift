@@ -51,7 +51,6 @@ enum HEADER_FLAGS {
   HEADER_FLAG_SUPPORT_OUT_OF_ORDER = 0x01,
   // Set for reverse messages (server->client requests, client->server replies)
   HEADER_FLAG_DUPLEX_REVERSE = 0x08,
-  HEADER_FLAG_SASL = 0x10,
 };
 
 namespace folly {

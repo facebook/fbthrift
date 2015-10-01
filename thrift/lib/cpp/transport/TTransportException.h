@@ -51,18 +51,17 @@ class TTransportException : public apache::thrift::TLibraryException {
   , SSL_ERROR = 12
   , COULD_NOT_BIND = 13
   , SASL_HANDSHAKE_TIMEOUT = 14
-  , AUTH_HEADER_FLAG_MISMATCH = 15
   };
 
   TTransportException() :
     apache::thrift::TLibraryException(),
       type_(UNKNOWN), errno_(0), options_(0) {}
 
-  explicit TTransportException(TTransportExceptionType type) :
+  TTransportException(TTransportExceptionType type) :
     apache::thrift::TLibraryException(),
     type_(type), errno_(0), options_(0) {}
 
-  explicit TTransportException(const std::string& message) :
+  TTransportException(const std::string& message) :
     apache::thrift::TLibraryException(message),
     type_(UNKNOWN), errno_(0), options_(0) {}
 
@@ -115,8 +114,6 @@ class TTransportException : public apache::thrift::TLibraryException {
         case INVALID_FRAME_SIZE:
           return "TTransportException: Invalid frame size";
         case SSL_ERROR      : return "TTransportException: SSL error";
-        case AUTH_HEADER_FLAG_MISMATCH :
-          return "TTransportException: SASL header and flag mismatch";
         default             : return "TTransportException: (Invalid exception type)";
       }
     } else {
