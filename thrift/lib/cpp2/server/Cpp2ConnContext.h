@@ -18,12 +18,14 @@
 #define THRIFT_ASYNC_CPP2CONNCONTEXT_H_ 1
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/SaslServer.h>
 
 #include <folly/SocketAddress.h>
+#include <wangle/ssl/SSLUtil.h>
 
 #include <memory>
 
@@ -51,6 +53,9 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
     if (socket) {
       socket->getLocalAddress(&localAddress_);
+      if (auto sslSocket = dynamic_cast<const async::TAsyncSSLSocket*>(socket)) {
+        peerCert_ = sslSocket->getPeerCert();
+      }
     }
   }
 
@@ -78,6 +83,15 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return manager_;
   }
 
+  std::string getPeerCommonName() const {
+    if (peerCert_) {
+      if (auto cnPtr = wangle::SSLUtil::getCommonName(peerCert_.get())) {
+        return std::move(*cnPtr);
+      }
+    }
+    return std::string();
+  }
+
   template <typename Client>
   std::shared_ptr<Client> getDuplexClient() {
     DCHECK(duplexChannel_);
@@ -94,6 +108,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   transport::THeader* requestHeader_;
   std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
+  std::unique_ptr<X509, folly::AsyncSSLSocket::X509_deleter> peerCert_;
 };
 
 // Request-specific context
