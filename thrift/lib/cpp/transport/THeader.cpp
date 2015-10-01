@@ -195,6 +195,9 @@ CLIENT_TYPE THeader::analyzeSecond32bit(uint32_t w) {
     return THRIFT_FRAMED_COMPACT;
   }
   if ((w & HEADER_MASK) == HEADER_MAGIC) {
+    if ((w & HEADER_FLAG_SASL) != 0) {
+      return THRIFT_HEADER_SASL_CLIENT_TYPE;
+    }
     return THRIFT_HEADER_CLIENT_TYPE;
   }
   return THRIFT_UNKNOWN_CLIENT_TYPE;
@@ -362,10 +365,24 @@ unique_ptr<IOBuf> THeader::removeHeader(
   buf = readHeaderFormat(queue->split(sz), persistentReadHeaders);
 
   // auth client?
+  bool auth_header_set = false;
   auto auth_header = getHeaders().find(THRIFT_AUTH_HEADER);
+  if (auth_header != getHeaders().end() && auth_header->second == "1") {
+    auth_header_set = true;
+  }
+
+  if (!auth_header_set && clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
+    throw TTransportException(
+        TTransportException::AUTH_HEADER_FLAG_MISMATCH,
+        folly::stringPrintf("Packet has a SASL flag set, "
+                            "but auth header is not set or set to false"));
+  }
   if (auth_header != getHeaders().end()) {
-    if (auth_header->second == "1") {
+    if (auth_header_set) {
+      // This should be already set by clients that support SASL flag,
+      // but keep doing it for compatibility
       clientType = THRIFT_HEADER_SASL_CLIENT_TYPE;
+      flags_ |= HEADER_FLAG_SASL;
     }
     readHeaders_.erase(auth_header);
   }
@@ -941,6 +958,9 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     uint16_t magicN = htons(HEADER_MAGIC >> 16);
     memcpy(pkt, &magicN, sizeof(magicN));
     pkt += sizeof(magicN);
+    if (clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
+      flags_ |= HEADER_FLAG_SASL;
+    }
     uint16_t flagsN = htons(flags_);
     memcpy(pkt, &flagsN, sizeof(flagsN));
     pkt += sizeof(flagsN);
