@@ -21,7 +21,6 @@ module Interface
        , c_freeTestStruct
        ) where
 
-import Data.Functor
 import Data.Maybe
 import Data.Text.Lazy.Encoding
 import Foreign.C.Types

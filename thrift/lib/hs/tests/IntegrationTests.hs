@@ -3,7 +3,6 @@
 module IntegrationTests where
 
 import Control.Exception
-import Data.Functor
 import Foreign.Ptr
 import Foreign.Storable
 import Test.QuickCheck

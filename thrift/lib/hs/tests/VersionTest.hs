@@ -1,7 +1,6 @@
 module VersionTest where
 
 import Data.Int
-import Data.Functor
 import Data.Vector
 import Test.QuickCheck
 import Thrift.Protocol.Binary
