@@ -1215,16 +1215,45 @@ void t_hack_generator::generate_php_struct_definition(ofstream& out,
 void t_hack_generator::generate_php_union_methods(ofstream& out,
                                                   t_struct* tstruct) {
   vector<t_field*>::const_iterator m_iter;
+  const vector<t_field*>& members = tstruct->get_members();
+  auto enumName = union_enum_name(tstruct);
+  auto structNamespace = php_namespace(tstruct->get_program());
 
   // getType() : <UnionName>Enum {}
-  indent(out) << "public function getType(): "
-      << union_enum_name(tstruct) << " {" << endl;
+  indent(out) << "public function getType(): " << enumName << " {" << endl;
   indent(out) << indent() << "return $this->_type;"<< endl;
   indent(out) << "}" << endl << endl;
 
-  // TODO: Generate missing methods such as {set|get}_<field_name>(), clear()
-}
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    auto fieldName = (*m_iter)->get_name();
+    auto typehint = type_to_typehint((*m_iter)->get_type());
+    // set_<fieldName>()
+    indent(out) << "public function set_" << fieldName << "(" << typehint <<
+        " $" << fieldName << "): void {" << endl;
+    indent_up();
+    indent(out) << "$this->_type = " << enumName << "::" << fieldName << ";" <<
+        endl;
+    indent(out) << "$this->" << fieldName << " = " << "$" << fieldName << ";" <<
+        endl;
+    indent_down();
+    indent(out) << "}" << endl << endl;
 
+    // set_<fieldName>()
+    indent(out) << "public function get_" << fieldName << "(): " << typehint <<
+        " {" << endl;
+    indent_up();
+    indent(out) << "invariant($this->_type === " << enumName << "::" <<
+        fieldName << "," << endl;
+    indent_up();
+    indent(out) << "'get_" << fieldName << " called on an instance of " <<
+        tstruct->get_name() << " whose current type is' . $this->_type);" <<
+        endl;
+    indent_down();
+    indent(out) << "return nullthrows($this->" << fieldName << ");" << endl;
+    indent_down();
+    indent(out) << "}" << endl << endl;
+  }
+}
 
 void t_hack_generator::generate_php_union_enum(ofstream& out,
                                                t_struct* tstruct) {
@@ -1313,13 +1342,13 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     typehint += type_to_typehint(t);
 
     indent(out) <<
-      "public " << typehint << " $" << (*m_iter)->get_name() << ";" << endl;
+        "public " << typehint << " $" << (*m_iter)->get_name() << ";" << endl;
   }
 
   if (tstruct->is_union()) {
     // Generate _type to store which field is set and initialize it to _EMPTY_
     indent(out) <<
-      "private " << union_enum_name(tstruct) << " $_type = "
+      "protected " << union_enum_name(tstruct) << " $_type = "
       << union_field_to_enum(tstruct, nullptr) << ";" << endl;
   }
 

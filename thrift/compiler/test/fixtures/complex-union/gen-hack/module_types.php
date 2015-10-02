@@ -54,7 +54,7 @@ class ComplexUnion implements IThriftStruct {
   public ?string $stringValue;
   public ?Vector<int> $intListValue;
   public ?Vector<string> $stringListValue;
-  private ComplexUnionEnum $_type = ComplexUnionEnum::_EMPTY_;
+  protected ComplexUnionEnum $_type = ComplexUnionEnum::_EMPTY_;
 
   public function __construct(?int $intValue = null, ?string $stringValue = null, ?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null  ) {
     $this->_type = ComplexUnionEnum::_EMPTY_;
@@ -82,6 +82,50 @@ class ComplexUnion implements IThriftStruct {
 
   public function getType(): ComplexUnionEnum {
     return $this->_type;
+  }
+
+  public function set_intValue(int $intValue): void {
+    $this->_type = ComplexUnionEnum::intValue;
+    $this->intValue = $intValue;
+  }
+
+  public function get_intValue(): int {
+    invariant($this->_type === ComplexUnionEnum::intValue,
+      'get_intValue called on an instance of ComplexUnion whose current type is' . $this->_type);
+    return nullthrows($this->intValue);
+  }
+
+  public function set_stringValue(string $stringValue): void {
+    $this->_type = ComplexUnionEnum::stringValue;
+    $this->stringValue = $stringValue;
+  }
+
+  public function get_stringValue(): string {
+    invariant($this->_type === ComplexUnionEnum::stringValue,
+      'get_stringValue called on an instance of ComplexUnion whose current type is' . $this->_type);
+    return nullthrows($this->stringValue);
+  }
+
+  public function set_intListValue(Vector<int> $intListValue): void {
+    $this->_type = ComplexUnionEnum::intListValue;
+    $this->intListValue = $intListValue;
+  }
+
+  public function get_intListValue(): Vector<int> {
+    invariant($this->_type === ComplexUnionEnum::intListValue,
+      'get_intListValue called on an instance of ComplexUnion whose current type is' . $this->_type);
+    return nullthrows($this->intListValue);
+  }
+
+  public function set_stringListValue(Vector<string> $stringListValue): void {
+    $this->_type = ComplexUnionEnum::stringListValue;
+    $this->stringListValue = $stringListValue;
+  }
+
+  public function get_stringListValue(): Vector<string> {
+    invariant($this->_type === ComplexUnionEnum::stringListValue,
+      'get_stringListValue called on an instance of ComplexUnion whose current type is' . $this->_type);
+    return nullthrows($this->stringListValue);
   }
 
   public function read(TProtocol $input): int {
