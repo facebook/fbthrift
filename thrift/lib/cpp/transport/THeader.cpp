@@ -872,23 +872,8 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
 
   if (clientType == THRIFT_HEADER_CLIENT_TYPE ||
       clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    size_t dataSizeBeforeTransform = buf->computeChainDataLength();
     if (transform) {
       buf = THeader::transform(std::move(buf), writeTrans, minCompressBytes_);
-    } else {
-      // If transform is already done elsewhere, writeTrans still
-      // need to be cleaned up.
-      for (auto it = writeTrans.begin(); it != writeTrans.end(); ) {
-        uint16_t transId = *it;
-        if ((transId == ZLIB_TRANSFORM ||
-             transId == SNAPPY_TRANSFORM ||
-             transId == QLZ_TRANSFORM) &&
-            dataSizeBeforeTransform < minCompressBytes_) {
-          it = writeTrans.erase(it);
-        } else {
-          ++it;
-        }
-      }
     }
   }
   size_t chainSize = buf->computeChainDataLength();

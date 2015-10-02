@@ -60,6 +60,7 @@ struct TestThriftServerFactory {
       server->setDuplex(true);
     }
 
+    server->setMinCompressBytes(minCompressBytes_);
     server->setInterface(std::unique_ptr<Interface>(new Interface));
     return server;
   }
@@ -90,12 +91,18 @@ struct TestThriftServerFactory {
     return *this;
   }
 
+  TestThriftServerFactory& minCompressBytes(uint32_t minCompressBytes) {
+    minCompressBytes_ = minCompressBytes;
+    return *this;
+  }
+
   private:
     bool useSimpleThreadManager_{true};
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe_{nullptr};
     bool useStubSaslServer_{true};
     uint32_t idleTimeoutMs_{0};
     bool duplex_{false};
+    uint32_t minCompressBytes_{0};
 };
 
 }} // apache::thrift

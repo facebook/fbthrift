@@ -398,7 +398,6 @@ TEST(ThriftServer, CompressionClientTest) {
                     folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
-  // Set the client to compact
   auto channel = boost::polymorphic_downcast<HeaderClientChannel*>(
     client.getChannel());
   channel->setTransform(
@@ -414,6 +413,32 @@ TEST(ThriftServer, CompressionClientTest) {
   for (auto& tran : trans) {
     EXPECT_EQ(tran, apache::thrift::transport::THeader::ZLIB_TRANSFORM);
   }
+}
+
+TEST(ThriftServer, CompressionServerTest) {
+  apache::thrift::TestThriftServerFactory<TestInterface> factory;
+  factory.minCompressBytes(100);
+  ScopedServerThread sst(factory.create());
+  folly::EventBase base;
+  std::shared_ptr<TAsyncSocket> socket(
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
+
+  TestServiceAsyncClient client(
+    std::unique_ptr<HeaderClientChannel,
+                    folly::DelayedDestruction::Destructor>(
+                      new HeaderClientChannel(socket)));
+
+  auto channel = boost::polymorphic_downcast<HeaderClientChannel*>(
+    client.getChannel());
+  channel->setTransform(
+    apache::thrift::transport::THeader::ZLIB_TRANSFORM);
+
+  std::string request(55, 'a');
+  std::string response;
+  // The response is slightly more than 100 bytes before compression
+  // and less than 100 bytes after compression
+  client.sync_echoRequest(response, request);
+  EXPECT_EQ(response.size(), 100);
 }
 
 TEST(ThriftServer, ClientTimeoutTest) {
