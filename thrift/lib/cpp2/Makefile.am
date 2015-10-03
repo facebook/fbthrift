@@ -67,6 +67,17 @@ thrift2include_async_HEADERS = \
 	async/StubSaslServer.h \
 	async/TAsyncTransportHandler.h
 
+thrift2include_fataldir = $(thrift2includedir)/fatal
+
+thrift2include_fatal_HEADERS = \
+	fatal/folly_dynamic-inl.h \
+	fatal/folly_dynamic.h \
+	fatal/reflect_category-inl.h \
+	fatal/reflect_category.h \
+	fatal/reflection-inl.h \
+	fatal/reflection.h
+
+
 thrift2include_serverdir = $(thrift2includedir)/server
 
 thrift2include_server_HEADERS = \

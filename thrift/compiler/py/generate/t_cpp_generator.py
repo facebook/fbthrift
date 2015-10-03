@@ -101,6 +101,7 @@ class CppGenerator(t_generator.Generator):
                                'instead of explicitly',
         'separate_processmap': "generate processmap in separate files",
         'optionals': "produce folly::Optional<...> for optional members",
+        'fatal': 'uses the Fatal library to generate reflection metadata',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -3962,6 +3963,432 @@ class CppGenerator(t_generator.Generator):
         sns.release()  # namespace
 
         sg.release()   # global scope
+
+    def _generate_fatal(self, program):
+        name = self._program.name
+        ns = self._get_namespace()
+        safe_ns = ns.replace('.', '_')
+
+        str_class = '{0}_{1}__unique_strings_list'.format(safe_ns, name)
+        strclsid = 'detail::{0}'.format(str_class)
+
+        order = ['enum', 'union', 'struct', 'constant', 'service']
+        items = {}
+        items['enum'] = (self._generate_fatal_enum(program, strclsid), True)
+        items['union'] = (self._generate_fatal_union(program, strclsid), True)
+        items['struct'] = (self._generate_fatal_struct(program, strclsid), True)
+        items['constant'] = (
+            self._generate_fatal_constant(program, strclsid),
+            False
+        )
+        items['service'] = (
+            self._generate_fatal_service(program, strclsid),
+            False
+        )
+
+        context = self._make_context(name + '_fatal', tcc=False)
+        sg = get_global_scope(CppPrimitiveFactory, context)
+        with sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_types.h')))
+            sg()
+            sg('#include <thrift/lib/cpp2/fatal/reflection.h>')
+            sg()
+            sg('#include <fatal/type/list.h>')
+            sg('#include <fatal/type/map.h>')
+            sg('#include <fatal/type/pair.h>')
+            sg('#include <fatal/type/sequence.h>')
+            sg()
+            sns = sg.namespace(ns).scope
+            with sns:
+                detail = sg.namespace('detail').scope
+                with detail:
+                    cstr = detail.cls('struct {0}'.format(str_class)).scope
+                    with cstr:
+                        strings = []
+                        for i in items:
+                            for s in items[i][0]:
+                                if s not in strings:
+                                    strings.append(s)
+                        for i in strings:
+                            cstr('using {0} = {1};'
+                                .format(i, self._render_fatal_string(i)))
+
+                tags = sns.cls('class {0}_tags'.format(name)).scope
+                with tags:
+                    nname = {}
+                    for i in order:
+                        nname[i] = '{0}_{1}__unique_{2}s_list'.format(
+                            safe_ns, name, i)
+                        ncls = sns.cls('struct {0}'.format(nname[i])).scope
+                        with ncls:
+                            for n in items[i][0]:
+                                ncls('using {0} = {1}::{0};'
+                                    .format(n, strclsid))
+                    tags('public:')
+                    for i in order:
+                        tags('using {0}s = {1};'.format(i, nname[i]))
+                    with tags.cls('struct metadata').scope:
+                        pass
+                sns('THRIFT_REGISTER_REFLECTION_METADATA(')
+                sns('  {0}_tags::metadata,'.format(name))
+                for item_idx, item in enumerate(order):
+                    entries = items[item]
+                    sns('  // {0}s'.format(item))
+                    if entries[1]:
+                        sns('  ::fatal::type_map<')
+                    else:
+                        sns('  ::fatal::type_list<')
+                    for idx, i in enumerate(entries[0]):
+                        cseq = ('{0}::{1}'.format(strclsid, i))
+                        if entries[1]:
+                            sns('    ::fatal::type_pair<{0}, {1}>{2}'.format(
+                                i, cseq,
+                                ',' if idx + 1 < len(entries[0]) else ''))
+                        else:
+                            sns('    {0}{1}'.format(
+                                cseq, ',' if idx + 1 < len(entries[0]) else ''))
+                    sns('  >{0}'
+                        .format(',' if item_idx + 1 < len(order) else ''))
+                sns(');')
+
+    def _render_fatal_string(self, s):
+        l = []
+        l.extend(s)
+        return "::fatal::constant_sequence<char, '{0}'>".format("', '".join(l))
+
+    def _render_fatal_thrift_category(self, ttype):
+        if ttype.is_enum:
+            return 'enums'
+        elif ttype.is_list:
+            return 'lists'
+        elif ttype.is_map:
+            return 'maps'
+        elif ttype.is_set:
+            return 'sets'
+        elif ttype.is_struct:
+            if ttype.as_struct.is_union:
+                return 'unions'
+            else:
+                return 'structs'
+        else:
+            return 'unknown'
+
+    def _generate_fatal_enum(self, program, strclsid):
+        name = self._program.name
+        ns = self._get_namespace()
+        scoped_ns = ns.replace('.', '::')
+
+        context = self._make_context(name + '_fatal_enum', tcc=False)
+        sg = get_global_scope(CppPrimitiveFactory, context)
+
+        result = []
+
+        with sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal.h')))
+            sg()
+            sg('#include <fatal/type/enum.h>')
+            sg()
+            sg('#include <type_traits>')
+            sg()
+            sns = sg.namespace(ns).scope
+            with sns:
+                traits = {}
+                for i in program.enums:
+                    tn = self._generate_fatal_enum_traits(
+                        scoped_ns, i.name, i.constants, sns)
+                    result.append(i.name)
+                    traits[i.name] = tn
+        return result
+
+    def _generate_fatal_enum_traits(self, scoped_ns, enum_name, members, scope):
+        name = '{0}_enum_traits'.format(enum_name.replace('::', '_'))
+
+        detail = scope.namespace('detail').scope
+        with detail:
+            t = detail.cls('struct {0}'.format(name)).scope
+            with t:
+                t('using type = ::{0}::{1};'.format(scoped_ns, enum_name))
+                t()
+                s = t.cls('struct str')
+                with s:
+                    for i in members:
+                        cseq = self._render_fatal_string(i.name)
+                        t('using {0} = {1};'.format(i.name, cseq))
+                t()
+                t('using name_to_value = ::fatal::type_map<')
+                for idx, i in enumerate(members):
+                    t('  ::fatal::type_pair<')
+                    t('    str::{0},'.format(i.name))
+                    t('    std::integral_constant<type, type::{0}>'
+                        .format(i.name))
+                    t('  >{0}'.format(',' if idx + 1 < len(members) else ''))
+                t('>;')
+                t()
+                t('static char const *to_string(type e, char const *fallback)'
+                    + ' {0}'.format('{'))
+                t('  switch (e) {')
+                for i in members:
+                    t('    case type::{0}: return "{0}";'.format(i.name))
+                t('    default: return fallback;')
+                t('  }')
+                t('}')
+        scope()
+        scope('FATAL_REGISTER_ENUM_TRAITS({0}::detail::{1});'
+            .format(scoped_ns, name))
+        return name
+
+    def _generate_fatal_union(self, program, strclsid):
+        name = self._program.name
+        ns = self._get_namespace()
+        scoped_ns = ns.replace('.', '::')
+
+        context = self._make_context(name + '_fatal_union', tcc=False)
+        sg = get_global_scope(CppPrimitiveFactory, context)
+
+        result = []
+
+        with sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal.h')))
+            sg()
+            sg('#include <fatal/type/enum.h>')
+            sg('#include <fatal/type/variant_traits.h>')
+            sg()
+            sg('#include <type_traits>')
+            sg()
+            sns = sg.namespace(ns).scope
+            with sns:
+                traits = {}
+                for i in program.structs:
+                    if not i.is_union:
+                        continue
+                    self._generate_fatal_enum_traits(
+                        scoped_ns, '{0}::Type'.format(i.name), i.members, sns)
+                    sns()
+                    detail = sns.namespace('detail').scope
+                    with detail:
+                        tn = self._generate_fatal_union_traits(
+                            scoped_ns, i, detail)
+                    result.append(i.name)
+                    traits[i.name] = tn
+                if len(traits) > 0:
+                    sns()
+                for i in result:
+                    sns('FATAL_REGISTER_VARIANT_TRAITS({0}::detail::{1});'
+                        .format(scoped_ns, traits[i]))
+        return result
+
+    def _generate_fatal_union_traits(self, scoped_ns, union, scope):
+        name = '{0}_variant_traits'.format(union.name)
+        t = scope.cls('class {0}'.format(name)).scope
+        with t:
+            s = t.cls('struct get')
+            with s:
+                for i in union.members:
+                    self._generate_fatal_union_traits_getter(union, i, t)
+            t()
+            s = t.cls('struct set')
+            with s:
+                for i in union.members:
+                    self._generate_fatal_union_traits_setter(union, i, t)
+            t()
+            t('public:')
+            t('using type = ::{0}::{1};'.format(scoped_ns, union.name))
+            t('using id = type::Type;')
+            t()
+            s = t.cls('struct names')
+            with s:
+                for i in union.members:
+                    cseq = self._render_fatal_string(i.name)
+                    t("using {0} = {1};".format(i.name, cseq))
+            t()
+            s = t.cls('struct ids')
+            with s:
+                for i in union.members:
+                    t("using {0} = std::integral_constant<id, id::{0}>;"
+                        .format(i.name))
+            t()
+            t('using descriptors = ::fatal::type_list<')
+            for idx, i in enumerate(union.members):
+                t('  ::fatal::variant_type_descriptor<')
+                t('    {0},'.format(self._type_name(i.type)))
+                t('    ids::{0},'.format(i.name))
+                t('    names::{0},'.format(i.name))
+                t('    get::{0},'.format(i.name))
+                t('    set::{0}'.format(i.name))
+                t('  >{0}'.format(',' if idx + 1 < len(union.members) else ''))
+            t('>;')
+        return name
+
+    def _generate_fatal_union_traits_getter(self, union, field, scope):
+        ftname = self._type_name(field.type)
+        s = scope.cls('struct {0}'.format(field.name))
+        with s:
+            scope('{0} const &operator ()({1} const &variant) const {2}'
+                .format(ftname, union.name, '{'))
+            scope('  return variant.get_{0}();'.format(field.name))
+            scope('}')
+            scope()
+            scope('{0} &operator ()({1} &variant) const {2}'
+                .format(ftname, union.name, '{'))
+            scope('  return variant.mutable_{0}();'.format(field.name))
+            scope('}')
+            scope()
+            scope('{0} operator ()({1} &&variant) const {2}'
+                .format(ftname, union.name, '{'))
+            scope('  return std::move(variant).move_{0}();'.format(field.name))
+            scope('}')
+
+    def _generate_fatal_union_traits_setter(self, union, field, scope):
+        ftname = self._type_name(field.type)
+        s = scope.cls('struct {0}'.format(field.name))
+        with s:
+            scope('template <typename... Args>')
+            scope('void operator ()({1} &variant, Args &&...args) const {2}'
+                .format(ftname, union.name, '{'))
+            scope('  return variant.set_{0}(std::forward<Args>(args)...);'
+                .format(field.name))
+            scope('}')
+
+    def _generate_fatal_struct(self, program, strclsid):
+        name = self._program.name
+        ns = self._get_namespace()
+        safe_ns = ns.replace('.', '_')
+
+        context = self._make_context(name + '_fatal_struct', tcc=False)
+        sg = get_global_scope(CppPrimitiveFactory, context)
+
+        result = []
+
+        strclsprefix = '{0}_{1}__struct_unique_strings_list'.format(
+            safe_ns, name)
+
+        dtmclsprefix = '{0}_{1}__struct_unique_data_member_getters_list'.format(
+            safe_ns, name)
+
+        with sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal.h')))
+            sg()
+            sg('#include <fatal/type/traits.h>')
+            sg()
+            sns = sg.namespace(ns).scope
+            with sns:
+                detail = sns.namespace('detail').scope
+                with detail:
+                    members = []
+                    for i in program.structs:
+                        if i.is_union:
+                            continue
+                        result.append(i.name)
+                        for m in i.members:
+                            if m.name not in members:
+                                members.append(m.name)
+                    cstr = detail.cls('struct {0}'.format(strclsprefix)).scope
+                    with cstr:
+                        for i in members:
+                            cstr('using {0} = {1};'
+                                .format(i, self._render_fatal_string(i)))
+                    dtm = detail.cls('struct {0}'.format(dtmclsprefix)).scope
+                    with dtm:
+                        for i in members:
+                            dtm('FATAL_DATA_MEMBER_GETTER({0}, {0});'.format(i))
+                    for i in program.structs:
+                        if i.is_union:
+                            continue
+                        cnms = sns.cls('struct {0}_{1}'
+                            .format(i.name, strclsprefix)).scope
+                        with cnms:
+                            for m in i.members:
+                                cnms('using {0} = {1}::{0};'
+                                    .format(m.name, strclsprefix))
+                for i in program.structs:
+                    if i.is_union:
+                        continue
+                    sns('THRIFT_REGISTER_STRUCT_TRAITS(')
+                    sns('  {0},'.format(i.name))
+                    sns('  detail::{0}_{1},'.format(i.name, strclsprefix))
+                    sns('  ::fatal::type_list<')
+                    for midx, m in enumerate(i.members):
+                        sns('    ::apache::thrift::'
+                            + 'reflected_struct_data_member<')
+                        sns('      detail::{0}::{1},'
+                            .format(strclsprefix, m.name))
+                        sns('      {0},'.format(self._type_name(m.type)))
+                        sns('      {0},'.format(m.key))
+                        sns('      detail::{0}::{1},'
+                            .format(dtmclsprefix, m.name))
+                        sns('      ::apache::thrift::thrift_category::{0}'
+                            .format(self._render_fatal_thrift_category(m.type)))
+                        sns('    >{0}'
+                            .format(',' if midx + 1 < len(i.members) else ''))
+                    sns('  >')
+                    sns(');')
+        return result
+
+    def _generate_fatal_constant(self, program, strclsid):
+        name = self._program.name
+        ns = self._get_namespace()
+
+        context = self._make_context(name + '_fatal_constant', tcc=False)
+        sg = get_global_scope(CppPrimitiveFactory, context)
+
+        result = []
+
+        with sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal_enum.h')))
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal_union.h')))
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal_struct.h')))
+            sg()
+            sns = sg.namespace(ns).scope
+            with sns:
+                for i in program.consts:
+                    result.append(i.name)
+        return result
+
+    def _generate_fatal_service(self, program, strclsid):
+        name = self._program.name
+        ns = self._get_namespace()
+        safe_ns = ns.replace('.', '_')
+
+        context = self._make_context(name + '_fatal_service', tcc=False)
+        sg = get_global_scope(CppPrimitiveFactory, context)
+
+        result = []
+
+        strclsprefix = '{0}_{1}__service_unique_strings_list'.format(
+            safe_ns, name)
+
+        with sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal.h')))
+            sg()
+            sns = sg.namespace(ns).scope
+            with sns:
+                detail = sns.namespace('detail').scope
+                with detail:
+                    cstr = detail.cls('struct {0}_strings'
+                        .format(strclsprefix)).scope
+                    with cstr:
+                        strings = []
+                        for s in program.services:
+                            for m in s.functions:
+                                if m.name not in strings:
+                                    strings.append(m.name)
+                                for a in m.arglist.members:
+                                    if a.name not in strings:
+                                        strings.append(a.name)
+                        for i in strings:
+                            cstr('using {0} = {1};'
+                                .format(i, self._render_fatal_string(i)))
+                for i in program.services:
+                    result.append(i.name)
+        return result
 
     def _make_context(self, filename,
                       tcc=False,
