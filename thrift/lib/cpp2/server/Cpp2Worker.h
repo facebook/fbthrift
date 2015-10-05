@@ -160,15 +160,42 @@ class Cpp2Worker
       std::chrono::steady_clock::time_point acceptTime,
       wangle::TransportInfo& tinfo) noexcept override {
 
-    auto helper = new PeekingHelper(
-        std::move(sslSock),
-        this,
-        clientAddr,
-        acceptTime,
-        tinfo,
-        &peekingCallback_
-      );
+    switch (server_->getSSLPolicy()) {
+    default:
+    case SSLPolicy::DISABLED:
+      // No TLS, complete "handshake" and stay in STATE_UNENCRYPTED
+      sslConnectionReady(
+          std::move(sslSock),
+          clientAddr,
+          "",
+          SecureTransportType::NONE,
+          tinfo);
+      break;
+
+    case SSLPolicy::PERMITTED: {
+      // Peek and fall back to insecure if non-TLS bytes discovered
+      auto helper = new PeekingHelper(
+          std::move(sslSock),
+          this,
+          clientAddr,
+          acceptTime,
+          tinfo,
+          &peekingCallback_
+        );
       helper->start();
+      break;
+    }
+
+    case SSLPolicy::REQUIRED:
+      // Delegate to Acceptor, which always does TLS
+      wangle::Acceptor::startHandshakeHelper(
+          std::move(sslSock),
+          acceptor,
+          clientAddr,
+          acceptTime,
+          tinfo);
+      break;
+    }
   }
 
   friend class Cpp2Connection;

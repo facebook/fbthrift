@@ -72,6 +72,10 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
     std::shared_ptr<T> svIf_;
 };
 
+enum class SSLPolicy {
+  DISABLED, PERMITTED, REQUIRED
+};
+
 typedef wangle::Pipeline<
   folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>> Pipeline;
 
@@ -117,6 +121,7 @@ class ThriftServer : public apache::thrift::server::TServer
   bool saslEnabled_ = false;
   bool nonSaslEnabled_ = true;
   const std::string saslPolicy_;
+  SSLPolicy sslPolicy_;
   const bool allowInsecureLoopback_;
   std::function<std::unique_ptr<SaslServer> (
     folly::EventBase*)> saslServerFactory_;
@@ -629,6 +634,14 @@ class ThriftServer : public apache::thrift::server::TServer
   void setPort(uint16_t port) {
     CHECK(configMutable());
     port_ = port;
+  }
+
+  SSLPolicy getSSLPolicy() const {
+    return sslPolicy_;
+  }
+
+  void setSSLPolicy(SSLPolicy policy) {
+    sslPolicy_ = policy;
   }
 
   /**

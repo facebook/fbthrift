@@ -41,6 +41,9 @@
 DEFINE_string(sasl_policy, "permitted",
              "SASL handshake required / permitted / disabled");
 
+DEFINE_string(thrift_ssl_policy, "disabled",
+  "SSL required / permitted / disabled");
+
 DEFINE_string(
   service_identity,
   "",
@@ -104,6 +107,12 @@ ThriftServer::ThriftServer(const std::string& saslPolicy,
   } else if (saslPolicy_ == "permitted") {
     setSaslEnabled(true);
     setNonSaslEnabled(true);
+  }
+
+  if (FLAGS_thrift_ssl_policy == "required") {
+    sslPolicy_ = SSLPolicy::REQUIRED;
+  } else if (FLAGS_thrift_ssl_policy == "permitted") {
+    sslPolicy_ = SSLPolicy::PERMITTED;
   }
   // Disable replay caching since we're doing mutual auth. Enabling
   // this will significantly degrade perf. Force this to overwrite
