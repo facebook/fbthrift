@@ -374,12 +374,10 @@ TEST(JsonToThriftTest, BoundaryCase) {
 
   string jsonBoolTW("{\"a\":2}");
   myBoolStruct thriftBoolObjW;
-  try {
-    thriftBoolObjW.readFromJson(jsonBoolTW.c_str());
-    EXPECT_TRUE(false);
-  } catch (std::exception &e) {
-  }
-
+  thriftBoolObjW.readFromJson(jsonBoolTW.c_str());
+  // readFromJson for primitive types uses the asXxx() functions from folly
+  // (e.g. asBool for bool types) which are very forgiving (e.g. 2 => true).
+  EXPECT_EQ(thriftBoolObjW.a, true);
 }
 
 TEST(JsonToThriftTest, ComplexTypeMissingRequiredFieldInMember) {

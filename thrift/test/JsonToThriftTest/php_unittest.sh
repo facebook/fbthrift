@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-THRIFT_ROOT=`readlink -m thrift/lib/php/src`
+THRIFT_ROOT=`readlink -m thrift/lib/hack/src`
 GEN_ROOT=`readlink -m _bin/thrift/test/JsonToThriftTest/thrift_test_json-php.thrift-gen`
 PACKAGE_ROOT=`readlink -m _bin/thrift/test/JsonToThriftTest/packages`
 HERE=`pwd -L`

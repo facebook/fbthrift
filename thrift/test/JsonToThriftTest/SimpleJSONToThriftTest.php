@@ -9,6 +9,7 @@ $FBCODE_DIR = './';
 $HERE = $FBCODE_DIR.'thrift/test/JsonToThriftTest';
 
 // Temporarily change to gen-php
+$TMP_THRIFT_ROOT = $GLOBALS['THRIFT_ROOT'];
 $GLOBALS['THRIFT_ROOT'] =
   $FBCODE_DIR.'_bin/thrift/test/JsonToThriftTest';
 
@@ -32,12 +33,21 @@ require_once $PACKAGE_DIR.'/config/config_types.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift.php';
 
 /** Include the binary protocol */
-require_once $GLOBALS['THRIFT_ROOT'].'/protocol/TBinaryProtocol.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/protocol/TProtocolException.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/protocol/binary/TBinaryProtocolBase.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/protocol/binary/TBinaryProtocolAccelerated.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/protocol/binary/TBinaryProtocol.php';
 
 /** Include the socket layer */
+require_once $GLOBALS['THRIFT_ROOT'].'/transport/TTransportStatus.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/transport/IThriftRemoteConn.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/transport/InstrumentedTTransport.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/transport/InstrumentedTTransportTrait.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/transport/TSocket.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/transport/TSocketPool.php';
 
-/** Include the socket layer */
+/** Include the buffered transport layer */
+require_once $GLOBALS['THRIFT_ROOT'].'/transport/IThriftBufferedTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/transport/TBufferedTransport.php';
 
 
@@ -318,4 +328,3 @@ $GLOBALS['THRIFT_ROOT'] = $TMP_THRIFT_ROOT;
 print "Success!";
 return 0;
 ?>
-
