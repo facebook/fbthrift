@@ -154,6 +154,13 @@ class ChannelCallbacks {
       folly::RequestContext::setContext(old_ctx);
     }
     void requestError(folly::exception_wrapper ex) {
+      using namespace apache::thrift::transport;
+      bool eof = false;
+      ex.with_exception<TTransportException>([&](const TTransportException& e) {
+        if (e.getType() == TTransportException::END_OF_FILE) {
+          eof = true;
+        }
+      });
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       recvState_ = QState::DONE;
       cancelTimeout();
@@ -164,6 +171,10 @@ class ChannelCallbacks {
         cb_->requestError(ClientReceiveState(
             std::move(ex), std::move(ctx_), channel_->isSecurityActive()));
         folly::RequestContext::setContext(old_ctx);
+      }
+
+      if (eof) {
+        sendState_ = QState::DONE;
       }
       maybeDeleteThis();
     }

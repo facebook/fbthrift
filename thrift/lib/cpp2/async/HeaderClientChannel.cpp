@@ -557,6 +557,7 @@ void HeaderClientChannel::messageChannelEOF() {
   DestructorGuard dg(this);
   setProtectionState(ProtectionState::INVALID);
   messageReceiveErrorWrapped(folly::make_exception_wrapper<TTransportException>(
+      TTransportException::TTransportExceptionType::END_OF_FILE,
       "Channel got EOF"));
   if (closeCallback_) {
     closeCallback_->channelClosed();

@@ -437,6 +437,71 @@ TEST(Channel, HeaderChannelTest) {
   HeaderChannelTest(1024*1024).run();
 }
 
+class HeaderChannelClosedTest
+    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel> {
+  //   , public TestRequestCallback
+  //   , public ResponseCallback {
+ public:
+  explicit HeaderChannelClosedTest() {}
+
+  class Callback : public RequestCallback {
+   public:
+    explicit Callback(HeaderChannelClosedTest* c)
+      : c_(c) {}
+
+    ~Callback() {
+      c_->callbackDtor_ = true;
+    }
+
+    void replyReceived(ClientReceiveState&& state) override {
+      FAIL() << "should not recv reply from closed channel";
+    }
+
+    void requestSent() override {
+      FAIL() << "should not have sent message on closed channel";
+    }
+
+    void requestError(ClientReceiveState&& state) override {
+      EXPECT_TRUE(state.isException());
+      EXPECT_TRUE(state.exceptionWrapper().with_exception<TTransportException>(
+        [this] (const TTransportException& e) {
+          EXPECT_EQ(e.getType(), TTransportException::END_OF_FILE);
+          c_->gotError_ = true;
+        }
+      ));
+    }
+
+   private:
+    HeaderChannelClosedTest* c_;
+  };
+
+  void preLoop() override {
+    TestRequestCallback::reset();
+    channel1_->getTransport()->shutdownWrite();
+    seqId_ = channel0_->sendRequest(
+      folly::make_unique<Callback>(this),
+      // Fake method name for creating a ContextStatck
+      folly::make_unique<ContextStack>("{ChannelTest}"),
+      makeTestBuf(42),
+      folly::make_unique<THeader>());
+  }
+
+  void postLoop() override {
+    EXPECT_TRUE(gotError_);
+    EXPECT_FALSE(channel0_->expireCallback(seqId_));
+    EXPECT_TRUE(callbackDtor_);
+  }
+
+ private:
+  uint32_t seqId_;
+  bool gotError_ = true;
+  bool callbackDtor_ = false;
+};
+
+TEST(Channel, HeaderChannelClosedTest) {
+  HeaderChannelClosedTest().run();
+}
+
 class SecurityNegotiationTest
     : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
     , public TestRequestCallback
