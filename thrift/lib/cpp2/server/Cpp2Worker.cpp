@@ -60,6 +60,7 @@ void Cpp2Worker::onNewConnection(
        server_->maxConnections_ / server_->nWorkers_) ) {
     if (observer) {
       observer->connDropped();
+      observer->connRejected();
     }
     return;
   }

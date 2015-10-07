@@ -57,6 +57,8 @@ class TServerObserver {
 
   virtual void connDropped() {}
 
+  virtual void connRejected() {}
+
   virtual void saslError() {}
 
   virtual void saslFallBack() {}
