@@ -238,9 +238,9 @@ class HTTPClientChannel : public RequestChannel,
 
   std::unordered_map<proxygen::HTTPCodec::StreamID, uint32_t> streamIDToSeqId_;
   std::unordered_map<proxygen::HTTPCodec::StreamID,
-                     unique_ptr<proxygen::HTTPMessage>> streamIDToMsg_;
+                     std::unique_ptr<proxygen::HTTPMessage>> streamIDToMsg_;
   std::unordered_map<proxygen::HTTPCodec::StreamID,
-                     unique_ptr<folly::IOBufQueue>> streamIDToBody_;
+                     std::unique_ptr<folly::IOBufQueue>> streamIDToBody_;
   std::deque<proxygen::HTTPCodec::StreamID> completedStreamIDs_;
 
   std::unordered_map<uint32_t, TwowayCallback<HTTPClientChannel>*>
