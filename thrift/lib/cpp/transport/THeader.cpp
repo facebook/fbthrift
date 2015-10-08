@@ -195,6 +195,9 @@ CLIENT_TYPE THeader::analyzeSecond32bit(uint32_t w) {
     return THRIFT_FRAMED_COMPACT;
   }
   if ((w & HEADER_MASK) == HEADER_MAGIC) {
+    if ((w & HEADER_FLAG_SASL) != 0) {
+      return THRIFT_HEADER_SASL_CLIENT_TYPE;
+    }
     return THRIFT_HEADER_CLIENT_TYPE;
   }
   return THRIFT_UNKNOWN_CLIENT_TYPE;
@@ -363,9 +366,13 @@ unique_ptr<IOBuf> THeader::removeHeader(
 
   // auth client?
   auto auth_header = getHeaders().find(THRIFT_AUTH_HEADER);
+
+  // Correct client type if needed
   if (auth_header != getHeaders().end()) {
     if (auth_header->second == "1") {
       clientType = THRIFT_HEADER_SASL_CLIENT_TYPE;
+    } else {
+      clientType = THRIFT_HEADER_CLIENT_TYPE;
     }
     readHeaders_.erase(auth_header);
   }
@@ -926,7 +933,9 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     uint16_t magicN = htons(HEADER_MAGIC >> 16);
     memcpy(pkt, &magicN, sizeof(magicN));
     pkt += sizeof(magicN);
-    uint16_t flagsN = htons(flags_);
+    uint16_t flagsN = (clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) ?
+                      htons(flags_ | HEADER_FLAG_SASL) :
+                      htons(flags_);
     memcpy(pkt, &flagsN, sizeof(flagsN));
     pkt += sizeof(flagsN);
     uint32_t seqIdN = htonl(seqId);
