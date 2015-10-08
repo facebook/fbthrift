@@ -2484,7 +2484,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
  * @param tservice The service to generate a remote for.
  */
 void t_py_generator::generate_service_remote(t_service* tservice) {
-  string f_remote_name = package_dir_+service_name_+"-remote";
+  string f_remote_name = package_dir_+"remote.py";
   ofstream f_remote;
   f_remote.open(f_remote_name.c_str());
   record_genfile(f_remote_name);
@@ -2498,17 +2498,13 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
     "import os\n"
     "import sys\n"
     "\n" <<
-    // This has to be before thrift definitions
-    // in case the environment is not correct.
-    py_par_warning("remote") <<
     // Import the service module and types
     "\n"
     << "from . import "
     << rename_reserved_keywords(service_name_) << "\n"
     << "from . import ttypes\n"
     "\n"
-    "from thrift.util.remote import Function\n"
-    "from thrift.remote import Remote\n";
+    "from thrift.util.remote import Function, Remote\n";
 
   // Emit a list of objects describing the service functions.
   // The library code will use this to print the usage message and
@@ -2572,19 +2568,6 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
 
   // Close the remote file
   f_remote.close();
-
-  // Make file executable, love that bitwise OR action
-  chmod(f_remote_name.c_str(),
-          S_IRUSR
-        | S_IWUSR
-        | S_IXUSR
-#ifndef MINGW
-        | S_IRGRP
-        | S_IXGRP
-        | S_IROTH
-        | S_IXOTH
-#endif
-  );
 }
 
 /**
@@ -2593,7 +2576,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
  * @param tservice The service to generate a fuzzer for.
  */
 void t_py_generator::generate_service_fuzzer(t_service* tservice) {
-  string f_fuzzer_name = package_dir_+service_name_+"-fuzzer";
+  string f_fuzzer_name = package_dir_+"fuzzer.py";
   ofstream f_fuzzer;
   f_fuzzer.open(f_fuzzer_name.c_str());
   record_genfile(f_fuzzer_name);
@@ -2609,8 +2592,6 @@ void t_py_generator::generate_service_fuzzer(t_service* tservice) {
     "import os\n"
     "import sys\n"
     "\n" <<
-    py_par_warning("fuzzer") <<
-    "\n" <<
     "from . import " <<
     rename_reserved_keywords(service_name_) << "\n" <<
     "from . import ttypes\n" <<
@@ -2622,17 +2603,6 @@ void t_py_generator::generate_service_fuzzer(t_service* tservice) {
     rename_reserved_keywords(service_name_) <<
     ", ttypes, constants)";
   f_fuzzer.close();
-  chmod(f_fuzzer_name.c_str(),
-        S_IRUSR
-        | S_IWUSR
-        | S_IXUSR
-#ifndef MINGW
-        | S_IRGRP
-        | S_IXGRP
-        | S_IROTH
-        | S_IXOTH
-#endif
-  );
 }
 
 
