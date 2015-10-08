@@ -121,7 +121,7 @@ class ThriftServer : public apache::thrift::server::TServer
   bool saslEnabled_ = false;
   bool nonSaslEnabled_ = true;
   const std::string saslPolicy_;
-  SSLPolicy sslPolicy_;
+  SSLPolicy sslPolicy_ = SSLPolicy::PERMITTED;
   const bool allowInsecureLoopback_;
   std::function<std::unique_ptr<SaslServer> (
     folly::EventBase*)> saslServerFactory_;
