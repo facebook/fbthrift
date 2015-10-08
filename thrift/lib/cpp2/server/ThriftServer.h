@@ -54,6 +54,9 @@ typedef std::function<void(
   std::shared_ptr<apache::thrift::async::TAsyncTransport>,
   std::unique_ptr<folly::IOBuf>)> getHandlerFunc;
 
+typedef std::function<void(const apache::thrift::transport::THeader*)>
+    GetHeaderHandlerFunc;
+
 // Forward declaration of classes
 class Cpp2Connection;
 class Cpp2Worker;
@@ -299,6 +302,7 @@ class ThriftServer : public apache::thrift::server::TServer
   }
 
   getHandlerFunc getHandler_;
+  GetHeaderHandlerFunc getHeaderHandler_;
 
  public:
   ThriftServer();
@@ -1084,6 +1088,13 @@ class ThriftServer : public apache::thrift::server::TServer
     return getHandler_;
   }
 
+  void setGetHeaderHandler(GetHeaderHandlerFunc func) {
+    getHeaderHandler_ = func;
+  }
+
+  GetHeaderHandlerFunc getGetHeaderHandler() {
+    return getHeaderHandler_;
+  }
 
   // client side duplex
   std::shared_ptr<HeaderServerChannel> getDuplexServerChannel() {

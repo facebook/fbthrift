@@ -293,6 +293,10 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
+  if (worker_->getServer()->getGetHeaderHandler()) {
+    worker_->getServer()->getGetHeaderHandler()(hreq->getHeader());
+  }
+
   int activeRequests = worker_->activeRequests_;
   activeRequests += worker_->pendingCount();
 
