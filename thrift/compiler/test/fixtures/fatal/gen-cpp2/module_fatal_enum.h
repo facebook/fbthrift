@@ -52,7 +52,7 @@ struct enum1_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(test_cpp2::cpp_reflection::detail::enum1_enum_traits);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum1_enum_traits);
 namespace detail {
 
 struct enum2_enum_traits {
@@ -91,7 +91,7 @@ struct enum2_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(test_cpp2::cpp_reflection::detail::enum2_enum_traits);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum2_enum_traits);
 namespace detail {
 
 struct enum3_enum_traits {
@@ -130,6 +130,6 @@ struct enum3_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(test_cpp2::cpp_reflection::detail::enum3_enum_traits);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum3_enum_traits);
 
 }} // test_cpp2::cpp_reflection

@@ -21,14 +21,14 @@
 
 namespace apache { namespace thrift { namespace detail {
 
-template <> struct dynamic_converter_impl<thrift_category::enums> {
+template <> struct dynamic_converter_impl<thrift_category::enumeration> {
   template <typename T>
   static void to(folly::dynamic &out, T const &what) {
     out = fatal::enum_to_string(what);
   }
 };
 
-template <> struct dynamic_converter_impl<thrift_category::lists> {
+template <> struct dynamic_converter_impl<thrift_category::list> {
   template <typename T>
   static void to(folly::dynamic &out, T const &what) {
     out = std::initializer_list<folly::dynamic>{};
@@ -38,7 +38,7 @@ template <> struct dynamic_converter_impl<thrift_category::lists> {
   }
 };
 
-template <> struct dynamic_converter_impl<thrift_category::maps> {
+template <> struct dynamic_converter_impl<thrift_category::map> {
   template <typename T>
   static void to(folly::dynamic &out, T const &what) {
     out = folly::dynamic::object;
@@ -48,10 +48,10 @@ template <> struct dynamic_converter_impl<thrift_category::maps> {
   }
 };
 
-template <> struct dynamic_converter_impl<thrift_category::sets> {
+template <> struct dynamic_converter_impl<thrift_category::set> {
   template <typename T>
   static void to(folly::dynamic &out, T const &what) {
-    dynamic_converter_impl<thrift_category::lists>::to(out, what);
+    dynamic_converter_impl<thrift_category::list>::to(out, what);
   }
 };
 
@@ -71,7 +71,7 @@ struct to_dynamic_variant_visitor {
   }
 };
 
-template <> struct dynamic_converter_impl<thrift_category::unions> {
+template <> struct dynamic_converter_impl<thrift_category::variant> {
   template <typename T>
   static void to(folly::dynamic &out, T const &what) {
     using traits = fatal::variant_traits<T>;
@@ -106,7 +106,7 @@ struct to_dynamic_struct_visitor {
   }
 };
 
-template <> struct dynamic_converter_impl<thrift_category::structs> {
+template <> struct dynamic_converter_impl<thrift_category::structure> {
   template <typename T>
   static void to(folly::dynamic &out, T const &what) {
     using info = reflect_struct<T>;
@@ -116,7 +116,7 @@ template <> struct dynamic_converter_impl<thrift_category::structs> {
 };
 
 // fallback
-template <thrift_category>
+template <thrift_category Category>
 struct dynamic_converter_impl {
   template <typename T>
   static void to(folly::dynamic &out, T const &what) {

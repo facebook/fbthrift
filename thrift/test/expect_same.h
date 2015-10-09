@@ -17,6 +17,8 @@
 #ifndef THRIFT_TEST_EXPECT_SAME_H
 #define THRIFT_TEST_EXPECT_SAME_H
 
+#include <folly/Demangle.h>
+
 #include <gtest/gtest.h>
 
 #include <string>
@@ -32,9 +34,13 @@ struct expect_same {
   template <typename LHS, typename RHS>
   void check() const {
     using type = std::tuple<std::string, std::size_t, char const *, bool>;
-    type const lhs(filename_, line_, typeid(LHS).name(), true);
+    auto const lhs_name = folly::demangle(typeid(LHS));
+    auto const rhs_name = folly::demangle(typeid(RHS));
+    type const lhs(filename_, line_, lhs_name.c_str(), true);
     type const rhs(
-      filename_, line_, typeid(RHS).name(), std::is_same<LHS, RHS>::value
+      filename_, line_,
+      lhs_name == rhs_name ? lhs_name.c_str() : rhs_name.c_str(),
+      std::is_same<LHS, RHS>::value
     );
     EXPECT_EQ(lhs, rhs);
   }

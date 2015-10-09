@@ -214,14 +214,20 @@ using is_reflectable_union = fatal::has_variant_traits<T>;
  *
  *  // yields `std::integral_constant<
  *  //   thrift_category,
- *  //   thrift_category::structs
+ *  //   thrift_category::structure
  *  // >`
  *  using result1 = reflect_category<MyStruct>;
  *
- *  // yields `std::integral_constant<thrift_category, thrift_category::enums>`
+ *  // yields `std::integral_constant<
+ *  //   thrift_category,
+ *  //   thrift_category::enumeration
+ *  // >`
  *  using result2 = reflect_category<MyEnum>;
  *
- *  // yields `std::integral_constant<thrift_category, thrift_category::lists>`
+ *  // yields `std::integral_constant<
+ *  //   thrift_category,
+ *  //   thrift_category::list
+ *  // >`
  *  using result3 = reflect_category<MyList>;
  *
  *  // yields `std::integral_constant<
@@ -251,14 +257,14 @@ using reflect_category = typename detail::reflect_category_impl<T>::type;
  *  struct get_thrift_category<my_custom_map<K, V>> {
  *    using type = std::integral_constant<
  *      thrift_category,
- *      thrift_category::maps
+ *      thrift_category::map
  *    >;
  *  };
  *
- *  // yields `std::integral_constant<thrift_category, thrift_category::maps>`
+ *  // yields `std::integral_constant<thrift_category, thrift_category::map>`
  *  using result1 = reflect_category<my_custom_map<int, std::string>>;
  *
- *  // yields `std::integral_constant<thrift_category, thrift_category::maps>`
+ *  // yields `std::integral_constant<thrift_category, thrift_category::map>`
  *  using result2 = reflect_category<my_custom_map<int, MyStruct>>;
  *
  * @author: Marcelo Juchem <marcelo@fb.com>

@@ -63,6 +63,10 @@ class t_base_type : public t_type {
 
   bool is_bool() const override { return base_ == TYPE_BOOL; }
 
+  bool is_floating_point() const override {
+    return base_ == TYPE_DOUBLE || base_ == TYPE_FLOAT;
+  }
+
   void set_string_list(bool val) {
     string_list_ = val;
   }

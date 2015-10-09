@@ -40,48 +40,41 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
 };
 
 } // detail
-
 class module_tags {
   struct test_cpp2_cpp_reflection_module__unique_enums_list {
     using enum1 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
     using enum2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
     using enum3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
-  };
-
+};
   struct test_cpp2_cpp_reflection_module__unique_unions_list {
     using union1 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1;
     using union2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2;
     using union3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3;
-  };
-
+};
   struct test_cpp2_cpp_reflection_module__unique_structs_list {
     using structA = detail::test_cpp2_cpp_reflection_module__unique_strings_list::structA;
     using structB = detail::test_cpp2_cpp_reflection_module__unique_strings_list::structB;
     using struct1 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct1;
     using struct2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct2;
     using struct3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct3;
-  };
-
+};
   struct test_cpp2_cpp_reflection_module__unique_constants_list {
     using constant1 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant1;
     using constant2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant2;
     using constant3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant3;
-  };
-
+};
   struct test_cpp2_cpp_reflection_module__unique_services_list {
     using service1 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::service1;
     using service2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::service2;
     using service3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::service3;
-  };
-
-  public:
+};
+public:
   using enums = test_cpp2_cpp_reflection_module__unique_enums_list;
   using unions = test_cpp2_cpp_reflection_module__unique_unions_list;
   using structs = test_cpp2_cpp_reflection_module__unique_structs_list;
   using constants = test_cpp2_cpp_reflection_module__unique_constants_list;
   using services = test_cpp2_cpp_reflection_module__unique_services_list;
-
-  struct metadata {};
+struct metadata {};
 };
 
 THRIFT_REGISTER_REFLECTION_METADATA(

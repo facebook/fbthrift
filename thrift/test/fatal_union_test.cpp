@@ -68,7 +68,8 @@ TEST(fatal_union, variants) {
 }
 
 TEST(fatal_union, by_name) {
-  using traits = fatal::variant_traits<union1>::by_name;
+  using vtraits = fatal::variant_traits<union1>;
+  using traits = vtraits::by_name;
 
   EXPECT_SAME<fatal::type_list<uis, uds, uss, ues>, traits::tags>();
 
@@ -91,30 +92,66 @@ TEST(fatal_union, by_name) {
   union1 const &uc = u;
   union1 &ul = u;
   union1 &&ur = std::move(u);
+  EXPECT_TRUE(vtraits::empty(u));
+  EXPECT_TRUE(vtraits::empty(uc));
+  EXPECT_TRUE(vtraits::empty(ul));
+  EXPECT_TRUE(vtraits::empty(ur));
 
   traits::set<uis>(u, 10);
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::ui, u.getType());
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(ur));
   EXPECT_EQ(10, u.get_ui());
   EXPECT_EQ(10, traits::get<uis>(ul));
   EXPECT_EQ(10, traits::get<uis>(uc));
   EXPECT_EQ(10, traits::get<uis>(ur));
 
   traits::set<uds>(u, 5.6);
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::ud, u.getType());
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(ur));
   EXPECT_EQ(5.6, u.get_ud());
   EXPECT_EQ(5.6, traits::get<uds>(ul));
   EXPECT_EQ(5.6, traits::get<uds>(uc));
   EXPECT_EQ(5.6, traits::get<uds>(ur));
 
   traits::set<uss>(u, "hello");
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::us, u.getType());
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(ur));
   EXPECT_EQ("hello", u.get_us());
   EXPECT_EQ("hello", traits::get<uss>(ul));
   EXPECT_EQ("hello", traits::get<uss>(uc));
   EXPECT_EQ("hello", traits::get<uss>(ur));
 
   traits::set<ues>(u, enum1::field1);
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::ue, u.getType());
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(ur));
   EXPECT_EQ(enum1::field1, u.get_ue());
   EXPECT_EQ(enum1::field1, traits::get<ues>(ul));
   EXPECT_EQ(enum1::field1, traits::get<ues>(uc));
@@ -122,7 +159,8 @@ TEST(fatal_union, by_name) {
 }
 
 TEST(fatal_union, by_id) {
-  using traits = fatal::variant_traits<union1>::by_id;
+  using vtraits = fatal::variant_traits<union1>;
+  using traits = vtraits::by_id;
 
   EXPECT_SAME<fatal::type_list<uii, udi, usi, uei>, traits::tags>();
 
@@ -145,30 +183,66 @@ TEST(fatal_union, by_id) {
   union1 const &uc = u;
   union1 &ul = u;
   union1 &&ur = std::move(u);
+  EXPECT_TRUE(vtraits::empty(u));
+  EXPECT_TRUE(vtraits::empty(uc));
+  EXPECT_TRUE(vtraits::empty(ul));
+  EXPECT_TRUE(vtraits::empty(ur));
 
   traits::set<uii>(u, 10);
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::ui, u.getType());
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(ur));
   EXPECT_EQ(10, u.get_ui());
   EXPECT_EQ(10, traits::get<uii>(ul));
   EXPECT_EQ(10, traits::get<uii>(uc));
   EXPECT_EQ(10, traits::get<uii>(ur));
 
   traits::set<udi>(u, 5.6);
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::ud, u.getType());
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(ur));
   EXPECT_EQ(5.6, u.get_ud());
   EXPECT_EQ(5.6, traits::get<udi>(ul));
   EXPECT_EQ(5.6, traits::get<udi>(uc));
   EXPECT_EQ(5.6, traits::get<udi>(ur));
 
   traits::set<usi>(u, "hello");
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::us, u.getType());
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(ur));
   EXPECT_EQ("hello", u.get_us());
   EXPECT_EQ("hello", traits::get<usi>(ul));
   EXPECT_EQ("hello", traits::get<usi>(uc));
   EXPECT_EQ("hello", traits::get<usi>(ur));
 
   traits::set<uei>(u, enum1::field1);
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::ue, u.getType());
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(ur));
   EXPECT_EQ(enum1::field1, u.get_ue());
   EXPECT_EQ(enum1::field1, traits::get<uei>(ul));
   EXPECT_EQ(enum1::field1, traits::get<uei>(uc));
@@ -176,7 +250,8 @@ TEST(fatal_union, by_id) {
 }
 
 TEST(fatal_union, by_type) {
-  using traits = fatal::variant_traits<union1>::by_type;
+  using vtraits = fatal::variant_traits<union1>;
+  using traits = vtraits::by_type;
 
   EXPECT_SAME<
     fatal::type_list<std::int32_t, double, std::string, enum1>,
@@ -202,30 +277,66 @@ TEST(fatal_union, by_type) {
   union1 const &uc = u;
   union1 &ul = u;
   union1 &&ur = std::move(u);
+  EXPECT_TRUE(vtraits::empty(u));
+  EXPECT_TRUE(vtraits::empty(uc));
+  EXPECT_TRUE(vtraits::empty(ul));
+  EXPECT_TRUE(vtraits::empty(ur));
 
   traits::set<std::int32_t>(u, 10);
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::ui, u.getType());
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::ui, vtraits::get_id(ur));
   EXPECT_EQ(10, u.get_ui());
   EXPECT_EQ(10, traits::get<std::int32_t>(ul));
   EXPECT_EQ(10, traits::get<std::int32_t>(uc));
   EXPECT_EQ(10, traits::get<std::int32_t>(ur));
 
   traits::set<double>(u, 5.6);
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::ud, u.getType());
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::ud, vtraits::get_id(ur));
   EXPECT_EQ(5.6, u.get_ud());
   EXPECT_EQ(5.6, traits::get<double>(ul));
   EXPECT_EQ(5.6, traits::get<double>(uc));
   EXPECT_EQ(5.6, traits::get<double>(ur));
 
   traits::set<std::string>(u, "hello");
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::us, u.getType());
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::us, vtraits::get_id(ur));
   EXPECT_EQ("hello", u.get_us());
   EXPECT_EQ("hello", traits::get<std::string>(ul));
   EXPECT_EQ("hello", traits::get<std::string>(uc));
   EXPECT_EQ("hello", traits::get<std::string>(ur));
 
   traits::set<enum1>(u, enum1::field1);
+  EXPECT_FALSE(vtraits::empty(u));
+  EXPECT_FALSE(vtraits::empty(uc));
+  EXPECT_FALSE(vtraits::empty(ul));
+  EXPECT_FALSE(vtraits::empty(ur));
   EXPECT_EQ(union1::Type::ue, u.getType());
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(u));
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(uc));
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(ul));
+  EXPECT_EQ(union1::Type::ue, vtraits::get_id(ur));
   EXPECT_EQ(enum1::field1, u.get_ue());
   EXPECT_EQ(enum1::field1, traits::get<enum1>(ul));
   EXPECT_EQ(enum1::field1, traits::get<enum1>(uc));

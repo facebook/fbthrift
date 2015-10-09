@@ -75,20 +75,21 @@ class t_type : public t_doc {
     return name_;
   }
 
-  virtual bool is_void()      const { return false; }
-  virtual bool is_base_type() const { return false; }
-  virtual bool is_string()    const { return false; }
-  virtual bool is_bool()      const { return false; }
-  virtual bool is_typedef()   const { return false; }
-  virtual bool is_enum()      const { return false; }
-  virtual bool is_struct()    const { return false; }
-  virtual bool is_xception()  const { return false; }
-  virtual bool is_container() const { return false; }
-  virtual bool is_list()      const { return false; }
-  virtual bool is_set()       const { return false; }
-  virtual bool is_map()       const { return false; }
-  virtual bool is_stream()    const { return false; }
-  virtual bool is_service()   const { return false; }
+  virtual bool is_void()           const { return false; }
+  virtual bool is_base_type()      const { return false; }
+  virtual bool is_string()         const { return false; }
+  virtual bool is_bool()           const { return false; }
+  virtual bool is_floating_point() const { return false; }
+  virtual bool is_typedef()        const { return false; }
+  virtual bool is_enum()           const { return false; }
+  virtual bool is_struct()         const { return false; }
+  virtual bool is_xception()       const { return false; }
+  virtual bool is_container()      const { return false; }
+  virtual bool is_list()           const { return false; }
+  virtual bool is_set()            const { return false; }
+  virtual bool is_map()            const { return false; }
+  virtual bool is_stream()         const { return false; }
+  virtual bool is_service()        const { return false; }
 
   t_program* get_program() {
     return program_;

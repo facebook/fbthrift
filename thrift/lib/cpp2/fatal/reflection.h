@@ -41,13 +41,97 @@ using field_id_t = std::int16_t;
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 enum class thrift_category {
-  enums,
-  lists,
-  maps,
-  sets,
-  structs,
-  unions,
-  unknown
+  /**
+   * Represents types unknown to the reflection framework.
+   *
+   * This often means it's a custom type with no `get_thrift_category`
+   * specialization.
+   *
+   * See documentation for `get_thrift_category` on `reflect_category.h`.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  unknown,
+  /**
+   * Represents types with no actual data representation. Most commonly `void`.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  nothing,
+  /**
+   * Represents all signed and unsigned integral types, including `bool`.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  integral,
+  /**
+   * Represents all floating point types.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  floating_point,
+  /**
+   * Represents all known strings implementation.
+   *
+   * If this is not the category returned for a string, this often means there's
+   * no `get_thrift_category` specialization for it.
+   *
+   * See documentation for `get_thrift_category` on `reflect_category.h`.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  string,
+  /**
+   * Represents an enum.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  enumeration,
+  /**
+   * Represents an class or structure.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  structure,
+  /**
+   * Represents a variant (or union, as the Thrift IDL grammar goes).
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  variant,
+  /**
+   * Represents all known list implementations.
+   *
+   * If this is not the category returned for a list, this often means there's
+   * no `get_thrift_category` specialization for it.
+   *
+   * See documentation for `get_thrift_category` on `reflect_category.h`.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  list,
+  /**
+   * Represents all known set implementations.
+   *
+   * If this is not the category returned for a set, this often means there's
+   * no `get_thrift_category` specialization for it.
+   *
+   * See documentation for `get_thrift_category` on `reflect_category.h`.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  set,
+  /**
+   * Represents all known map implementations.
+   *
+   * If this is not the category returned for a map, this often means there's
+   * no `get_thrift_category` specialization for it.
+   *
+   * See documentation for `get_thrift_category` on `reflect_category.h`.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  map
 };
 
 /**

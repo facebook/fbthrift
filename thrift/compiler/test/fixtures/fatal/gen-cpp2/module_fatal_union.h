@@ -59,7 +59,7 @@ struct union1_Type_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(test_cpp2::cpp_reflection::detail::union1_Type_enum_traits);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union1_Type_enum_traits);
 
 namespace detail {
 
@@ -200,6 +200,14 @@ class union1_variant_traits {
       set::ue
     >
   >;
+
+  static id get_id(type const &variant) {
+    return variant.getType();
+  }
+
+  static bool empty(type const &variant) {
+    return variant.getType() == id::__EMPTY__;
+  }
 };
 
 } // detail
@@ -247,7 +255,7 @@ struct union2_Type_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(test_cpp2::cpp_reflection::detail::union2_Type_enum_traits);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union2_Type_enum_traits);
 
 namespace detail {
 
@@ -388,6 +396,14 @@ class union2_variant_traits {
       set::ue_2
     >
   >;
+
+  static id get_id(type const &variant) {
+    return variant.getType();
+  }
+
+  static bool empty(type const &variant) {
+    return variant.getType() == id::__EMPTY__;
+  }
 };
 
 } // detail
@@ -435,7 +451,7 @@ struct union3_Type_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(test_cpp2::cpp_reflection::detail::union3_Type_enum_traits);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union3_Type_enum_traits);
 
 namespace detail {
 
@@ -576,12 +592,20 @@ class union3_variant_traits {
       set::ue_3
     >
   >;
+
+  static id get_id(type const &variant) {
+    return variant.getType();
+  }
+
+  static bool empty(type const &variant) {
+    return variant.getType() == id::__EMPTY__;
+  }
 };
 
 } // detail
 
-FATAL_REGISTER_VARIANT_TRAITS(test_cpp2::cpp_reflection::detail::union1_variant_traits);
-FATAL_REGISTER_VARIANT_TRAITS(test_cpp2::cpp_reflection::detail::union2_variant_traits);
-FATAL_REGISTER_VARIANT_TRAITS(test_cpp2::cpp_reflection::detail::union3_variant_traits);
+FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union1_variant_traits);
+FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union2_variant_traits);
+FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union3_variant_traits);
 
 }} // test_cpp2::cpp_reflection

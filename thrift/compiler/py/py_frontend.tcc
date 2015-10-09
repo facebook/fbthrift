@@ -58,6 +58,7 @@ BOOST_PYTHON_MODULE(frontend) {
       .add_property("is_base_type", &t_type::is_base_type)
       .add_property("is_string", &t_type::is_string)
       .add_property("is_bool", &t_type::is_bool)
+      .add_property("is_floating_point", &t_type::is_floating_point)
       .add_property("is_typedef", &t_type::is_typedef)
       .add_property("is_enum", &t_type::is_enum)
       .add_property("is_struct", &t_type::is_struct)

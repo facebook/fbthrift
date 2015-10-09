@@ -136,14 +136,14 @@ THRIFT_REGISTER_STRUCT_TRAITS(
       int32_t,
       1,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::a,
-      ::apache::thrift::thrift_category::unknown
+      ::apache::thrift::thrift_category::integral
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::b,
       std::string,
       2,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::b,
-      ::apache::thrift::thrift_category::unknown
+      ::apache::thrift::thrift_category::string
     >
   >
 );
@@ -156,14 +156,14 @@ THRIFT_REGISTER_STRUCT_TRAITS(
       double,
       1,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::c,
-      ::apache::thrift::thrift_category::unknown
+      ::apache::thrift::thrift_category::floating_point
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::d,
       bool,
       2,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::d,
-      ::apache::thrift::thrift_category::unknown
+      ::apache::thrift::thrift_category::integral
     >
   >
 );
@@ -176,42 +176,42 @@ THRIFT_REGISTER_STRUCT_TRAITS(
       int32_t,
       1,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::field0,
-      ::apache::thrift::thrift_category::unknown
+      ::apache::thrift::thrift_category::integral
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::field1,
       std::string,
       2,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::field1,
-      ::apache::thrift::thrift_category::unknown
+      ::apache::thrift::thrift_category::string
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::field2,
        ::test_cpp2::cpp_reflection::enum1,
       3,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::field2,
-      ::apache::thrift::thrift_category::enums
+      ::apache::thrift::thrift_category::enumeration
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::field3,
        ::test_cpp2::cpp_reflection::enum2,
       4,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::field3,
-      ::apache::thrift::thrift_category::enums
+      ::apache::thrift::thrift_category::enumeration
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::field4,
        ::test_cpp2::cpp_reflection::union1,
       5,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::field4,
-      ::apache::thrift::thrift_category::unions
+      ::apache::thrift::thrift_category::variant
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::field5,
        ::test_cpp2::cpp_reflection::union2,
       6,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::field5,
-      ::apache::thrift::thrift_category::unions
+      ::apache::thrift::thrift_category::variant
     >
   >
 );
@@ -224,49 +224,49 @@ THRIFT_REGISTER_STRUCT_TRAITS(
       int32_t,
       1,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldA,
-      ::apache::thrift::thrift_category::unknown
+      ::apache::thrift::thrift_category::integral
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldB,
       std::string,
       2,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldB,
-      ::apache::thrift::thrift_category::unknown
+      ::apache::thrift::thrift_category::string
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldC,
        ::test_cpp2::cpp_reflection::enum1,
       3,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldC,
-      ::apache::thrift::thrift_category::enums
+      ::apache::thrift::thrift_category::enumeration
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldD,
        ::test_cpp2::cpp_reflection::enum2,
       4,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldD,
-      ::apache::thrift::thrift_category::enums
+      ::apache::thrift::thrift_category::enumeration
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldE,
        ::test_cpp2::cpp_reflection::union1,
       5,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldE,
-      ::apache::thrift::thrift_category::unions
+      ::apache::thrift::thrift_category::variant
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldF,
        ::test_cpp2::cpp_reflection::union2,
       6,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldF,
-      ::apache::thrift::thrift_category::unions
+      ::apache::thrift::thrift_category::variant
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldG,
        ::test_cpp2::cpp_reflection::struct1,
       7,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldG,
-      ::apache::thrift::thrift_category::structs
+      ::apache::thrift::thrift_category::structure
     >
   >
 );
@@ -279,126 +279,126 @@ THRIFT_REGISTER_STRUCT_TRAITS(
       int32_t,
       1,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldA,
-      ::apache::thrift::thrift_category::unknown
+      ::apache::thrift::thrift_category::integral
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldB,
       std::string,
       2,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldB,
-      ::apache::thrift::thrift_category::unknown
+      ::apache::thrift::thrift_category::string
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldC,
        ::test_cpp2::cpp_reflection::enum1,
       3,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldC,
-      ::apache::thrift::thrift_category::enums
+      ::apache::thrift::thrift_category::enumeration
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldD,
        ::test_cpp2::cpp_reflection::enum2,
       4,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldD,
-      ::apache::thrift::thrift_category::enums
+      ::apache::thrift::thrift_category::enumeration
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldE,
        ::test_cpp2::cpp_reflection::union1,
       5,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldE,
-      ::apache::thrift::thrift_category::unions
+      ::apache::thrift::thrift_category::variant
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldF,
        ::test_cpp2::cpp_reflection::union2,
       6,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldF,
-      ::apache::thrift::thrift_category::unions
+      ::apache::thrift::thrift_category::variant
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldG,
        ::test_cpp2::cpp_reflection::struct1,
       7,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldG,
-      ::apache::thrift::thrift_category::structs
+      ::apache::thrift::thrift_category::structure
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldH,
        ::test_cpp2::cpp_reflection::union2,
       8,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldH,
-      ::apache::thrift::thrift_category::unions
+      ::apache::thrift::thrift_category::variant
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldI,
       std::vector<int32_t>,
       9,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldI,
-      ::apache::thrift::thrift_category::lists
+      ::apache::thrift::thrift_category::list
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldJ,
       std::vector<std::string>,
       10,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldJ,
-      ::apache::thrift::thrift_category::lists
+      ::apache::thrift::thrift_category::list
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldK,
       std::vector<std::string>,
       11,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldK,
-      ::apache::thrift::thrift_category::lists
+      ::apache::thrift::thrift_category::list
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldL,
       std::vector< ::test_cpp2::cpp_reflection::structA>,
       12,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldL,
-      ::apache::thrift::thrift_category::lists
+      ::apache::thrift::thrift_category::list
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldM,
       std::set<int32_t>,
       13,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldM,
-      ::apache::thrift::thrift_category::sets
+      ::apache::thrift::thrift_category::set
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldN,
       std::set<std::string>,
       14,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldN,
-      ::apache::thrift::thrift_category::sets
+      ::apache::thrift::thrift_category::set
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldO,
       std::set<std::string>,
       15,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldO,
-      ::apache::thrift::thrift_category::sets
+      ::apache::thrift::thrift_category::set
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldP,
       std::set< ::test_cpp2::cpp_reflection::structB>,
       16,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldP,
-      ::apache::thrift::thrift_category::sets
+      ::apache::thrift::thrift_category::set
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldQ,
       std::map<std::string,  ::test_cpp2::cpp_reflection::structA>,
       17,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldQ,
-      ::apache::thrift::thrift_category::maps
+      ::apache::thrift::thrift_category::map
     >,
     ::apache::thrift::reflected_struct_data_member<
       detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::fieldR,
       std::map<std::string,  ::test_cpp2::cpp_reflection::structB>,
       18,
       detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fieldR,
-      ::apache::thrift::thrift_category::maps
+      ::apache::thrift::thrift_category::map
     >
   >
 );
