@@ -39,7 +39,8 @@ THeaderProtocol = _default_thpfactory.getProtocol
 
 @asyncio.coroutine
 def ThriftAsyncServerFactory(
-    processor, *, interface=None, port=0, loop=None, nthreads=None, sock=None
+    processor, *, interface=None, port=0, loop=None, nthreads=None, sock=None,
+    backlog=100
 ):
     """
     ThriftAsyncServerFactory(processor) -> asyncio.Server
@@ -105,6 +106,7 @@ def ThriftAsyncServerFactory(
         interface,
         port,
         sock=sock,
+        backlog=backlog,
     )
 
     if server.sockets:
