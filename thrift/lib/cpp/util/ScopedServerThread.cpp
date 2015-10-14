@@ -99,8 +99,32 @@ class ScopedServerThread::Helper : public Runnable,
     ExceptionT exception_;
   };
 
+  // Attempt to downcast to a specific type to avoid slicing.
+  template<typename ExceptionT>
+  bool tryHandleServeError(const std::exception& x) {
+    auto e = dynamic_cast<const ExceptionT*>(&x);
+    if (e) {
+      handleServeError<ExceptionT>(*e);
+    }
+    return e;
+  }
+
+  // Copying exceptions is difficult because of the slicing problem. Match the
+  // most commonly expected exception types, and try our best to copy as much
+  // state as possible.
+  void handleServeError(const std::exception& x) override {
+    tryHandleServeError<TTransportException>(x) ||
+    tryHandleServeError<TException>(x) ||
+    tryHandleServeError<std::system_error>(x) ||
+    tryHandleServeError<std::exception>(x);
+  }
+
   template<typename ExceptionT>
   void handleServeError(const ExceptionT& x) {
+    if (eventHandler_) {
+      eventHandler_->handleServeError(x);
+    }
+
     Synchronized s(stateMonitor_);
 
     if (state_ == STATE_NOT_STARTED) {
@@ -144,22 +168,13 @@ void ScopedServerThread::Helper::run() {
   // Call serve()
   //
   // If an error occurs before the server finishes starting, save the error and
-  // notify the main thread of the failure.  Copying exceptions is difficult
-  // because of the slicing problem.  Catch the most commonly expected
-  // exception types, and try our best to copy as much state as possible.
+  // notify the main thread of the failure.
   try {
     server_->serve();
-  } catch (const TTransportException& x) {
-    handleServeError(x);
-  } catch (const TException& x) {
-    handleServeError(x);
-  } catch (const std::system_error& x) {
-    handleServeError(x);
   } catch (const std::exception& x) {
     handleServeError(x);
   } catch (...) {
-    TLibraryException x("serve() threw non-exception type");
-    handleServeError(x);
+    TServerEventHandler::handleServeError();
   }
 }
 

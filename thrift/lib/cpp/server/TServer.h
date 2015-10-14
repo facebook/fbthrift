@@ -20,6 +20,9 @@
 #ifndef THRIFT_SERVER_TSERVER_H
 #define THRIFT_SERVER_TSERVER_H 1
 
+#include <stdexcept>
+
+#include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/TProcessor.h>
 #include <thrift/lib/cpp/transport/TServerTransport.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
@@ -68,6 +71,19 @@ class TServerEventHandler {
    * @param address The address on which the server is listening.
    */
   virtual void preServe(const folly::SocketAddress* /*address*/) {}
+
+  /**
+   * Called if the server will not begin.
+   *
+   * @param e The exception that caused the failure, if any.
+   */
+  virtual void handleServeError(const std::exception& x) {
+    (void)x;
+  }
+
+  void handleServeError() {
+    handleServeError(TLibraryException("serve() threw non-exception type"));
+  }
 
   /**
    * Called when a new client has connected and is about to being processing.
