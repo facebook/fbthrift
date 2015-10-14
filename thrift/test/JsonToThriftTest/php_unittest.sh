@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 THRIFT_ROOT=`readlink -m thrift/lib/hack/src`
+PHP_ROOT=`readlink -m thrift/lib/php/src`
 GEN_ROOT=`readlink -m _bin/thrift/test/JsonToThriftTest/thrift_test_json-php.thrift-gen`
 PACKAGE_ROOT=`readlink -m _bin/thrift/test/JsonToThriftTest/packages`
 HERE=`pwd -L`
@@ -24,6 +25,7 @@ mkdir -p ${PACKAGE_ROOT}/config #2>/dev/null
 
 # Copy all thrift php library to $GEN_ROOT
 cp -R -f ${THRIFT_ROOT}/. ${GEN_ROOT}/..
+cp ${PHP_ROOT}/Thrift.php ${GEN_ROOT}/..
 cp -f ${GEN_ROOT}/myBinaryStruct/gen-php/myBinaryStruct_types.php ${PACKAGE_ROOT}/myBinaryStruct/myBinaryStruct_types.php
 cp -f ${GEN_ROOT}/myBoolStruct/gen-php/myBoolStruct_types.php ${PACKAGE_ROOT}/myBoolStruct/myBoolStruct_types.php
 cp -f ${GEN_ROOT}/myByteStruct/gen-php/myByteStruct_types.php ${PACKAGE_ROOT}/myByteStruct/myByteStruct_types.php
