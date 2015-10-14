@@ -1,3 +1,5 @@
+include "Recursive2.thrift"
+
 namespace cpp cpp1
 namespace cpp2 cpp2
 
@@ -29,6 +31,10 @@ struct MyField {
 
 struct MyStruct {
   1: optional MyField field (cpp.ref = "true", cpp2.ref = "true")
+}
+
+struct StructUsingOtherNamespace {
+  1: optional Recursive2.OtherStruct other (cpp.ref = "true", cpp2.ref = "true")
 }
 
 service TestService

@@ -34,7 +34,7 @@ void StructUsingOtherNamespace::readFromJson(const char* jsonText, size_t len)
 {
   folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
   if (parsed["other"] != nullptr) {
-    this->other.reset(new Included());
+    this->other.reset(new  ::cpp1::Included());
     this->other->readFromJson(folly::toJson(parsed["other"]).toStdString().c_str());
   }}
 void StructUsingOtherNamespace::readFromJson(const char* jsonText)

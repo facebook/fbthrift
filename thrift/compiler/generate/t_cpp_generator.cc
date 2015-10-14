@@ -2828,7 +2828,7 @@ void t_cpp_generator::generate_json_struct(ofstream& out,
   }
 
   if (dereference) {
-    indent(out) << prefix_thrift << ".reset(new " << tstruct->get_name()
+    indent(out) << prefix_thrift << ".reset(new " << type_name(tstruct)
       << "());" << endl;
   }
   indent(out) << prefix_thrift << ref << "readFromJson(folly::toJson("
