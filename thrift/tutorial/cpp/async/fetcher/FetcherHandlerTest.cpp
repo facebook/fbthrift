@@ -51,7 +51,7 @@ TEST_F(FetcherHandlerTest, example_pass) {
     {"/bar", "<html><head></head><body></body></html>"},
   };
   auto sock = make_shared<transport::TServerSocket>(0);
-  sock->setAcceptTimeout(10);
+  sock->setAcceptTimeout(1000);
   sock->listen();
   auto listen = thread([=] {
       while (true) {
