@@ -6,6 +6,7 @@ struct TestStruct {
 }
 
 typedef binary (cpp2.type = "folly::IOBuf") IOBuf
+typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 
 struct TestStructIOBuf {
   1: IOBuf buf,
@@ -25,4 +26,5 @@ service TestService {
   string eventBaseAsync() (thread = 'eb')
   void notCalledBack()
   void voidResponse()
+  IOBufPtr echoIOBuf(1: IOBuf buf)
 }

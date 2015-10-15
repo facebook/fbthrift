@@ -57,6 +57,7 @@ class TestServiceHandler : public TestServiceIf {
 
   void notCalledBack() override {}
   void voidResponse() override {}
+  void echoIOBuf(string& /*_return*/, const string& /*buf*/) override {}
 };
 
 std::unique_ptr<ScopedServerThread> createHttpServer() {

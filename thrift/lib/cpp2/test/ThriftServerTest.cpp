@@ -87,6 +87,13 @@ class TestInterface : public TestServiceSvIf {
 
   void async_tm_notCalledBack(
       std::unique_ptr<apache::thrift::HandlerCallback<void>> cb) override {}
+
+  void echoIOBuf(std::unique_ptr<folly::IOBuf>& ret,
+      std::unique_ptr<folly::IOBuf> buf) override {
+    ret = std::move(buf);
+    folly::io::Appender cursor(ret.get(), kEchoSuffix.size());
+    cursor.push(folly::StringPiece(kEchoSuffix.data(), kEchoSuffix.size()));
+  }
 };
 
 std::shared_ptr<TestServiceClient> getThrift1Client(
@@ -230,6 +237,33 @@ TEST(ThriftServer, HandlerInEventBaseTest) {
 
 }
 
+bool compareIOBufChain(const folly::IOBuf* buf1, const folly::IOBuf* buf2) {
+  folly::io::Cursor c1(buf1);
+  folly::io::Cursor c2(buf2);
+  std::pair<const uint8_t*, size_t> p1, p2;
+  while (1) {
+    if (p1.second == 0) {
+      p1 = c1.peek();
+      c1.skip(p1.second);
+    }
+    if (p2.second == 0) {
+      p2 = c2.peek();
+      c2.skip(p2.second);
+    }
+    if (p1.second == 0 || p2.second == 0) {
+      // one is finished, the other must be finished too
+      return p1.second == 0 && p2.second == 0;
+    }
+
+    size_t m = std::min(p1.second, p2.second);
+    if (memcmp(p1.first, p2.first, m) != 0) {
+      return false;
+    }
+    p1.first += m; p1.second -= m;
+    p2.first += m; p2.second -= m;
+  }
+}
+
 TEST(ThriftServer, LargeSendTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
@@ -242,26 +276,38 @@ TEST(ThriftServer, LargeSendTest) {
                     folly::DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
-  std::string response;
-  std::string request;
+  std::unique_ptr<folly::IOBuf> response;
+  std::unique_ptr<folly::IOBuf> request;
   boost::polymorphic_downcast<HeaderClientChannel*>(
-    client.getChannel())->setTimeout(5000);
+    client.getChannel())->setTimeout(10000);
+
+  constexpr size_t oneMB = 1<< 20;
+  std::string oneMBBuf;
+  oneMBBuf.reserve(oneMB);
+  for (uint32_t i = 0; i < (1 << 20) / 32; i++) {
+    oneMBBuf.append(32, char(i & 0xff));
+  }
+  ASSERT_EQ(oneMBBuf.size(), oneMB);
+
   // A bit more than 1GiB, which used to be the max frame size
   constexpr size_t hugeSize = (size_t(1) << 30) + (1 << 10);
-  request.reserve(hugeSize);
-  for (uint32_t i = 0; i < hugeSize / 30; i++) {
-    request.append(30, char(i & 0xff));
+  request = folly::IOBuf::wrapBuffer(oneMBBuf.data(), oneMB);
+  for (uint32_t i = 0; i < hugeSize / oneMB - 1; i++) {
+    request->prependChain(folly::IOBuf::wrapBuffer(oneMBBuf.data(), oneMB));
   }
+  request->prependChain(
+      folly::IOBuf::wrapBuffer(oneMBBuf.data(), hugeSize % oneMB));
+  ASSERT_EQ(request->computeChainDataLength(), hugeSize);
 
-  client.sync_echoRequest(response, request);
-  ASSERT_EQ(request.size() + kEchoSuffix.size(), response.size());
+  client.sync_echoIOBuf(response, *request);
+  ASSERT_EQ(request->computeChainDataLength() + kEchoSuffix.size(),
+      response->computeChainDataLength());
 
+  // response = request + kEchoSuffix. Make sure it's so
+  request->prependChain(
+      folly::IOBuf::wrapBuffer(kEchoSuffix.data(), kEchoSuffix.size()));
   // Not EXPECT_EQ; do you want to print two >1GiB strings on error?
-  EXPECT_TRUE(folly::StringPiece(request) ==
-              folly::StringPiece(response.data(), request.size()));
-  EXPECT_TRUE(folly::StringPiece(kEchoSuffix) ==
-              folly::StringPiece(response.data() + request.size(),
-                                 kEchoSuffix.size()));
+  EXPECT_TRUE(compareIOBufChain(request.get(), response.get()));
 }
 
 TEST(ThriftServer, OverloadTest) {
