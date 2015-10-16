@@ -24,6 +24,7 @@
 #include "common/time/TimeConstants.h"
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thread>
+#include <condition_variable>
 #include <vector>
 
 using namespace std;
@@ -232,17 +233,29 @@ TEST(NoStarveRWMutexTest, Writer_Wait_Readers ) {
   EXPECT_TRUE(l.timedWrite(kTimeoutMs));
   l.release();
 
+  std::condition_variable cv;
+  std::mutex cv_m;
+  int readers = 0;
+
   // Testing timeout
   vector<std::thread> threads_;
   for (int i = 0; i < kMaxReaders; ++i) {
-    threads_.push_back(std::thread([this, &l] {
+    threads_.push_back(std::thread([&, this] {
       EXPECT_TRUE(l.timedRead(kTimeoutMs));
+      {
+        std::lock_guard<std::mutex> lk(cv_m);
+        readers++;
+        cv.notify_one();
+      }
       usleep(kOpTimeInMs * kMicroSecInMilliSec);
       l.release();
     }));
   }
-  // make sure reader lock the lock first
-  usleep(1000);
+
+  {
+    std::unique_lock<std::mutex> lk(cv_m);
+    cv.wait(lk, [&] {return readers == kMaxReaders;});
+  }
 
   // wait shorter than the operation time will timeout
   std::thread thread1 = std::thread([this, &l] {
