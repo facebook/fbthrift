@@ -294,7 +294,8 @@ void Cpp2Connection::requestReceived(
   }
 
   if (worker_->getServer()->getGetHeaderHandler()) {
-    worker_->getServer()->getGetHeaderHandler()(hreq->getHeader());
+    worker_->getServer()->getGetHeaderHandler()(
+        hreq->getHeader(), context_.getPeerAddress()->describe());
   }
 
   int activeRequests = worker_->activeRequests_;

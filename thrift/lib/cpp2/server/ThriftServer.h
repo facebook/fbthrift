@@ -54,8 +54,8 @@ typedef std::function<void(
   std::shared_ptr<apache::thrift::async::TAsyncTransport>,
   std::unique_ptr<folly::IOBuf>)> getHandlerFunc;
 
-typedef std::function<void(const apache::thrift::transport::THeader*)>
-    GetHeaderHandlerFunc;
+typedef std::function<void(const apache::thrift::transport::THeader*,
+                           const std::string&)> GetHeaderHandlerFunc;
 
 // Forward declaration of classes
 class Cpp2Connection;
