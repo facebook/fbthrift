@@ -4,8 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef  _module_CONSTANTS_H
-#define  _module_CONSTANTS_H
+#pragma once
 
 #include "module_types.h"
 
@@ -95,4 +94,3 @@ public:
 
 
 
-#endif

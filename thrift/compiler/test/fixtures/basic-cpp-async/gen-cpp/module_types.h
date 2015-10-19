@@ -4,8 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef  _module_TYPES_H
-#define  _module_TYPES_H
+#pragma once
 
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -98,4 +97,3 @@ void merge(MyStruct&& from, MyStruct& to);
 
 #include "module_types.tcc"
 
-#endif

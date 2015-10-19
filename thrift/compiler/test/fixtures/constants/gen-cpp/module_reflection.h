@@ -4,8 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef  _module_REFLECTION_H
-#define  _module_REFLECTION_H
+#pragma once
 
 namespace apache { namespace thrift { namespace reflection {
 class Schema;
@@ -17,4 +16,3 @@ void reflectionInitializer_9022508676980868684(::apache::thrift::reflection::Sch
 
 }
 
-#endif

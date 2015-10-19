@@ -4,8 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef  _module_TYPES_TCC
-#define  _module_TYPES_TCC
+#pragma once
 
 #include "module_types.h"
 
@@ -85,4 +84,3 @@ uint32_t MyStruct::write(Protocol_* oprot) const {
 
 
 
-#endif

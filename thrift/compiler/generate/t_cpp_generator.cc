@@ -372,9 +372,9 @@ class t_cpp_generator : public t_oop_generator {
   std::string get_include_prefix(const t_program& program) const;
 
   /**
-   * Returns an include guard using namespace, program name and suffix
+   * Returns an include guard.
    */
-  string get_include_guard(const char* suffix) const;
+  string get_include_guard() const;
 
   /**
    * True iff we should generate a function parse json to thrift object.
@@ -556,10 +556,10 @@ void t_cpp_generator::init_generator() {
     autogen_comment();
 
   // Start ifndef
-  f_types_ << get_include_guard("_TYPES_H");
-  f_types_tcc_ << get_include_guard("_TYPES_TCC");
+  f_types_ << get_include_guard();
+  f_types_tcc_ << get_include_guard();
 
-  f_reflection_ << get_include_guard("_REFLECTION_H");
+  f_reflection_ << get_include_guard();
 
   // Include base types
   f_types_ <<
@@ -576,7 +576,7 @@ void t_cpp_generator::init_generator() {
   }
 
   if (frozen2_) {
-    f_types_layouts_ << get_include_guard("_LAYOUTS_H") << endl
+    f_types_layouts_ << get_include_guard() << endl
                      << "#include <thrift/lib/cpp2/frozen/Frozen.h>" << endl
                      << "#include \"" << get_include_prefix(*get_program())
                      << program_name_ << "_types.h\"" << endl;
@@ -740,21 +740,11 @@ void t_cpp_generator::close_generator() {
       endl;
   }
 
-  // Close ifndef
-  f_types_ <<
-    "#endif" << endl;
-  f_types_tcc_ <<
-    "#endif" << endl;
-
-  f_reflection_ <<
-    "#endif" << endl;
-
   // Close output file
   if (frozen2_) {
     f_types_layouts_
       << endl
-      << "}}} // apache::thrift::frozen " << endl
-      << "#endif" << endl;
+      << "}}} // apache::thrift::frozen " << endl;
     f_types_layouts_impl_
       << endl
       << "}}} // apache::thrift::frozen " << endl;
@@ -1008,7 +998,7 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     autogen_comment();
 
   // Start ifndef
-  f_consts << get_include_guard("_CONSTANTS_H") <<
+  f_consts << get_include_guard() <<
     "#include \"" << get_include_prefix(*get_program()) << program_name_ <<
     "_types.h\"" << endl <<
     endl <<
@@ -1217,8 +1207,7 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
 
   f_consts << endl <<
     ns_close_ << endl <<
-    endl <<
-    "#endif" << endl;
+    endl;
   f_consts.close();
 
   f_consts_impl <<
@@ -7543,18 +7532,8 @@ string t_cpp_generator::get_include_prefix(const t_program& program) const {
   return "";
 }
 
-string t_cpp_generator::get_include_guard(const char* suffix) const {
-
-  string ns = namespace_prefix(get_program()->get_namespace("cpp"), "_");
-
-  stringstream ss;
-  ss << "#ifndef " << ns << program_name_ << suffix
-     << endl
-     << "#define " << ns << program_name_ << suffix
-     << endl
-     << endl;
-
-  return ss.str();
+string t_cpp_generator::get_include_guard() const {
+  return "#pragma once\n\n";
 }
 
 THRIFT_REGISTER_GENERATOR(cpp, "C++",
