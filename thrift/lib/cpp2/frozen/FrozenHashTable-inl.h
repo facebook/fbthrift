@@ -119,7 +119,6 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
       }
     }
     size_t count = 0;
-    size_t bucketCount = 0;
     for (size_t blockIndex = 0; blockIndex < blocks; ++blockIndex) {
       Block& block = sparseTable[blockIndex];
       block.offset = count;
