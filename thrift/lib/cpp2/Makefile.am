@@ -129,6 +129,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   async/GssSaslClient.cpp \
 			   async/GssSaslServer.cpp \
 			   async/Cpp2Channel.cpp \
+			   async/ResponseChannel.cpp \
 			   async/ProtectionHandler.cpp \
 			   async/FramingHandler.cpp \
 			   async/AsyncProcessor.cpp \

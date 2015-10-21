@@ -31,18 +31,18 @@ namespace folly {
 class IOBuf;
 }
 
-const std::string kOverloadedErrorCode = "1";
-const std::string kTaskExpiredErrorCode = "2";
-const std::string kProxyTransportExceptionErrorCode = "3";
-const std::string kProxyClientProtocolExceptionErrorCode = "4";
-const std::string kQueueOverloadedErrorCode = "5";
-const std::string kProxyHeaderParseExceptionErrorCode = "6";
-const std::string kProxyAuthExceptionErrorCode = "7";
-const std::string kProxyLookupTransportExceptionErrorCode = "8";
-const std::string kProxyLookupAppExceptionErrorCode = "9";
-const std::string kProxyWhitelistExceptionErrorCode = "10";
-const std::string kProxyClientAppExceptionErrorCode = "11";
-const std::string kProxyProtocolMismatchExceptionErrorCode = "12";
+extern const std::string kOverloadedErrorCode;
+extern const std::string kTaskExpiredErrorCode;
+extern const std::string kProxyTransportExceptionErrorCode;
+extern const std::string kProxyClientProtocolExceptionErrorCode;
+extern const std::string kQueueOverloadedErrorCode;
+extern const std::string kProxyHeaderParseExceptionErrorCode;
+extern const std::string kProxyAuthExceptionErrorCode;
+extern const std::string kProxyLookupTransportExceptionErrorCode;
+extern const std::string kProxyLookupAppExceptionErrorCode;
+extern const std::string kProxyWhitelistExceptionErrorCode;
+extern const std::string kProxyClientAppExceptionErrorCode;
+extern const std::string kProxyProtocolMismatchExceptionErrorCode;
 
 namespace apache { namespace thrift {
 
