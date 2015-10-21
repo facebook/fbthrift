@@ -92,7 +92,10 @@ void Cpp2Worker::useExistingChannel(
 
   auto conn = std::make_shared<Cpp2Connection>(
       nullptr, &address, this, serverChannel);
-  Acceptor::getConnectionManager()->addConnection(conn.get(), false);
+  auto connMgr = Acceptor::getConnectionManager();
+  if (connMgr) {
+    connMgr->addConnection(conn.get(), false);
+  }
   conn->addConnection(conn);
 
   DCHECK(!eventBase_);
