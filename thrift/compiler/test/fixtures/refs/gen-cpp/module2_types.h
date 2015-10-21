@@ -4,8 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef  _module2_TYPES_H
-#define  _module2_TYPES_H
+#pragma once
 
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -83,4 +82,3 @@ void merge(const StructUsingOtherNamespace& from, StructUsingOtherNamespace& to)
 void merge(StructUsingOtherNamespace&& from, StructUsingOtherNamespace& to);
 
 
-#endif

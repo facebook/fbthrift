@@ -4,8 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef  _cpp1_includes_REFLECTION_H
-#define  _cpp1_includes_REFLECTION_H
+#pragma once
 
 namespace apache { namespace thrift { namespace reflection {
 class Schema;
@@ -17,4 +16,3 @@ void reflectionInitializer_16202005076139393548(::apache::thrift::reflection::Sc
 
 }} // namespace
 
-#endif

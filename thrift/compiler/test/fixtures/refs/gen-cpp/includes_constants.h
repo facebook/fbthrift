@@ -4,8 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef  _cpp1_includes_CONSTANTS_H
-#define  _cpp1_includes_CONSTANTS_H
+#pragma once
 
 #include "includes_types.h"
 
@@ -25,4 +24,3 @@ public:
 
 } // namespace
 
-#endif

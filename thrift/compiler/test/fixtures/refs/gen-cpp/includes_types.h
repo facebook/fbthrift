@@ -4,8 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef  _cpp1_includes_TYPES_H
-#define  _cpp1_includes_TYPES_H
+#pragma once
 
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -80,4 +79,3 @@ void merge(const Included& from, Included& to);
 void merge(Included&& from, Included& to);
 } // namespace
 
-#endif
