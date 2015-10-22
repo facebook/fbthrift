@@ -53,9 +53,6 @@ void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
         // If this is the first message after protection state was set to valid,
         // allow the ability to fall back to plaintext.
         if (allowFallback_ && protectionState_ == ProtectionState::VALID) {
-          // Make sure we try the fallback only once
-          allowFallback_ = false;
-
           // Make a copy of inputQueue_.
           // If decryption fails, we try to read again without decrypting.
           // The copy is necessary since decryption attempt modifies the queue.
@@ -68,6 +65,13 @@ void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
           auto decryptEx = folly::try_and_catch<std::exception>([&]() {
             unwrapped = saslEndpoint_->unwrap(&inputQueue_, &remaining);
           });
+
+          if (remaining == 0) {
+            // If we got an entire frame, make sure we try the fallback
+            // only once. If we only got a partial frame, we have to try falling
+            // back again until we get the full first frame.
+            allowFallback_ = false;
+          }
 
           if (decryptEx) {
             // If decrypt fails, try reading again without decrypting. This
