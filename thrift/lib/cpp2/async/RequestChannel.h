@@ -227,6 +227,10 @@ class RpcOptions {
      chunkTimeout_(0)
   { }
 
+  /**
+   * NOTE: This only sets the receive timeout, and not the send timeout on
+   * transport. Probably you want to use HeaderClientChannel::setTimeout()
+   */
   RpcOptions& setTimeout(std::chrono::milliseconds timeout) {
     timeout_ = timeout;
     return *this;
