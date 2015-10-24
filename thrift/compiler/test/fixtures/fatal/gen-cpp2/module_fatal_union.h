@@ -156,13 +156,6 @@ class union1_variant_traits {
   using type = ::test_cpp2::cpp_reflection::union1;
   using id = type::Type;
 
-  struct names {
-    using ui = ::fatal::constant_sequence<char, 'u', 'i'>;
-    using ud = ::fatal::constant_sequence<char, 'u', 'd'>;
-    using us = ::fatal::constant_sequence<char, 'u', 's'>;
-    using ue = ::fatal::constant_sequence<char, 'u', 'e'>;
-  };
-
   struct ids {
     using ui = std::integral_constant<id, id::ui>;
     using ud = std::integral_constant<id, id::ud>;
@@ -174,28 +167,24 @@ class union1_variant_traits {
     ::fatal::variant_type_descriptor<
       int32_t,
       ids::ui,
-      names::ui,
       get::ui,
       set::ui
     >,
     ::fatal::variant_type_descriptor<
       double,
       ids::ud,
-      names::ud,
       get::ud,
       set::ud
     >,
     ::fatal::variant_type_descriptor<
       std::string,
       ids::us,
-      names::us,
       get::us,
       set::us
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       ids::ue,
-      names::ue,
       get::ue,
       set::ue
     >
@@ -352,13 +341,6 @@ class union2_variant_traits {
   using type = ::test_cpp2::cpp_reflection::union2;
   using id = type::Type;
 
-  struct names {
-    using ui_2 = ::fatal::constant_sequence<char, 'u', 'i', '_', '2'>;
-    using ud_2 = ::fatal::constant_sequence<char, 'u', 'd', '_', '2'>;
-    using us_2 = ::fatal::constant_sequence<char, 'u', 's', '_', '2'>;
-    using ue_2 = ::fatal::constant_sequence<char, 'u', 'e', '_', '2'>;
-  };
-
   struct ids {
     using ui_2 = std::integral_constant<id, id::ui_2>;
     using ud_2 = std::integral_constant<id, id::ud_2>;
@@ -370,28 +352,24 @@ class union2_variant_traits {
     ::fatal::variant_type_descriptor<
       int32_t,
       ids::ui_2,
-      names::ui_2,
       get::ui_2,
       set::ui_2
     >,
     ::fatal::variant_type_descriptor<
       double,
       ids::ud_2,
-      names::ud_2,
       get::ud_2,
       set::ud_2
     >,
     ::fatal::variant_type_descriptor<
       std::string,
       ids::us_2,
-      names::us_2,
       get::us_2,
       set::us_2
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       ids::ue_2,
-      names::ue_2,
       get::ue_2,
       set::ue_2
     >
@@ -548,13 +526,6 @@ class union3_variant_traits {
   using type = ::test_cpp2::cpp_reflection::union3;
   using id = type::Type;
 
-  struct names {
-    using ui_3 = ::fatal::constant_sequence<char, 'u', 'i', '_', '3'>;
-    using ud_3 = ::fatal::constant_sequence<char, 'u', 'd', '_', '3'>;
-    using us_3 = ::fatal::constant_sequence<char, 'u', 's', '_', '3'>;
-    using ue_3 = ::fatal::constant_sequence<char, 'u', 'e', '_', '3'>;
-  };
-
   struct ids {
     using ui_3 = std::integral_constant<id, id::ui_3>;
     using ud_3 = std::integral_constant<id, id::ud_3>;
@@ -566,28 +537,24 @@ class union3_variant_traits {
     ::fatal::variant_type_descriptor<
       int32_t,
       ids::ui_3,
-      names::ui_3,
       get::ui_3,
       set::ui_3
     >,
     ::fatal::variant_type_descriptor<
       double,
       ids::ud_3,
-      names::ud_3,
       get::ud_3,
       set::ud_3
     >,
     ::fatal::variant_type_descriptor<
       std::string,
       ids::us_3,
-      names::us_3,
       get::us_3,
       set::us_3
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       ids::ue_3,
-      names::ue_3,
       get::ue_3,
       set::ue_3
     >

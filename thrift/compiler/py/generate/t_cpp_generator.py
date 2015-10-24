@@ -4203,11 +4203,6 @@ class CppGenerator(t_generator.Generator):
             t('using type = {0}::{1};'.format(scoped_ns, union.name))
             t('using id = type::Type;')
             t()
-            with t.cls('struct names'):
-                for i in union.members:
-                    cseq = self._render_fatal_string(i.name)
-                    t("using {0} = {1};".format(i.name, cseq))
-            t()
             with t.cls('struct ids'):
                 for i in union.members:
                     t("using {0} = std::integral_constant<id, id::{0}>;"
@@ -4218,7 +4213,6 @@ class CppGenerator(t_generator.Generator):
                 t('  ::fatal::variant_type_descriptor<')
                 t('    {0},'.format(self._type_name(i.type)))
                 t('    ids::{0},'.format(i.name))
-                t('    names::{0},'.format(i.name))
                 t('    get::{0},'.format(i.name))
                 t('    set::{0}'.format(i.name))
                 t('  >{0}'.format(',' if idx + 1 < len(union.members) else ''))
