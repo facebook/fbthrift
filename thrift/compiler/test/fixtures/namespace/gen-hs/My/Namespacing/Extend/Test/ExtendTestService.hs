@@ -13,7 +13,7 @@
 --  @generated
 -----------------------------------------------------------------
 
-module ExtendTestService where
+module My.Namespacing.Extend.Test.ExtendTestService where
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
@@ -44,12 +44,12 @@ import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
 import Thrift.Arbitraries
 
-import qualified Hsmodule_Types
+import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
 
-import qualified HsTestService
-import Extend_Types
-import qualified ExtendTestService_Iface as Iface
+import qualified My.Namespacing.Test.HsTestService
+import My.Namespacing.Extend.Test.Extend_Types
+import qualified My.Namespacing.Extend.Test.ExtendTestService_Iface as Iface
 -- HELPER FUNCTIONS AND STRUCTURES --
 
 data Check_args = Check_args
@@ -133,6 +133,6 @@ process_check (seqid, iprot, oprot, handler) = do
       tFlush (getTransport oprot)) :: SomeException -> IO ()))
 proc_ handler (iprot,oprot) (name,typ,seqid) = case name of
   "check" -> process_check (seqid,iprot,oprot,handler)
-  _ -> HsTestService.proc_ handler (iprot,oprot) (name,typ,seqid)
+  _ -> My.Namespacing.Test.HsTestService.proc_ handler (iprot,oprot) (name,typ,seqid)
 process handler (iprot, oprot) =
   readMessage iprot (proc_ handler (iprot,oprot)) >> return True

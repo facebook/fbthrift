@@ -13,7 +13,7 @@
 --  @generated
 -----------------------------------------------------------------
 
-module Extend_Consts where
+module My.Namespacing.Extend.Test.Extend_Consts where
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
@@ -44,7 +44,7 @@ import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
 import Thrift.Arbitraries
 
-import qualified Hsmodule_Types
+import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
 
-import Extend_Types
+import My.Namespacing.Extend.Test.Extend_Types

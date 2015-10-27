@@ -13,7 +13,7 @@
 --  @generated
 -----------------------------------------------------------------
 
-module HsTestService_Iface where
+module My.Namespacing.Extend.Test.Extend_Types where
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
@@ -44,8 +44,6 @@ import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
 import Thrift.Arbitraries
 
+import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
-import Hsmodule_Types
 
-class HsTestService_Iface a where
-  init :: a -> Int64 -> IO Int64

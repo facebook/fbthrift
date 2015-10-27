@@ -13,9 +13,7 @@
 --  @generated
 -----------------------------------------------------------------
 
-module ExtendTestService_Client(check) where
-import HsTestService_Client
-import Data.IORef
+module My.Namespacing.Test.Hsmodule_Types where
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
@@ -46,23 +44,37 @@ import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
 import Thrift.Arbitraries
 
-import qualified Hsmodule_Types
 
-
-import Extend_Types
-import ExtendTestService
-seqid = newIORef 0
-check (ip,op) arg_struct1 = do
-  send_check op arg_struct1
-  recv_check ip
-send_check op arg_struct1 = do
-  seq <- seqid
-  seqn <- readIORef seq
-  writeMessage op ("check", M_CALL, seqn) $
-    write_Check_args op (Check_args{check_args_struct1=arg_struct1})
-  tFlush (getTransport op)
-recv_check ip =
-  readMessage ip $ \(fname,mtype,rseqid) -> do
-    when (mtype == M_EXCEPTION) $ readAppExn ip >>= throw
-    res <- read_Check_result ip
-    return $ check_result_success res
+data HsFoo = HsFoo
+  { hsFoo_MyInt :: Int64
+  } deriving (Show,Eq,Typeable)
+instance Hashable HsFoo where
+  hashWithSalt salt record = salt   `hashWithSalt` hsFoo_MyInt record  
+instance Arbitrary HsFoo where 
+  arbitrary = liftM HsFoo (arbitrary)
+  shrink obj | obj == default_HsFoo = []
+             | otherwise = catMaybes
+    [ if obj == default_HsFoo{hsFoo_MyInt = hsFoo_MyInt obj} then Nothing else Just $ default_HsFoo{hsFoo_MyInt = hsFoo_MyInt obj}
+    ]
+from_HsFoo :: HsFoo -> ThriftVal
+from_HsFoo record = TStruct $ Map.fromList $ catMaybes
+  [ (\_v2 -> Just (1, ("MyInt",TI64 _v2))) $ hsFoo_MyInt record
+  ]
+write_HsFoo :: (Protocol p, Transport t) => p t -> HsFoo -> IO ()
+write_HsFoo oprot record = writeVal oprot $ from_HsFoo record
+encode_HsFoo :: (Protocol p, Transport t) => p t -> HsFoo -> ByteString
+encode_HsFoo oprot record = serializeVal oprot $ from_HsFoo record
+to_HsFoo :: ThriftVal -> HsFoo
+to_HsFoo (TStruct fields) = HsFoo{
+  hsFoo_MyInt = maybe (hsFoo_MyInt default_HsFoo) (\(_,_val4) -> (case _val4 of {TI64 _val5 -> _val5; _ -> error "wrong type"})) (Map.lookup (1) fields)
+  }
+to_HsFoo _ = error "not a struct"
+read_HsFoo :: (Transport t, Protocol p) => p t -> IO HsFoo
+read_HsFoo iprot = to_HsFoo <$> readVal iprot (T_STRUCT typemap_HsFoo)
+decode_HsFoo :: (Protocol p, Transport t) => p t -> ByteString -> HsFoo
+decode_HsFoo iprot bs = to_HsFoo $ deserializeVal iprot (T_STRUCT typemap_HsFoo) bs
+typemap_HsFoo :: TypeMap
+typemap_HsFoo = Map.fromList [("MyInt",(1,T_I64))]
+default_HsFoo :: HsFoo
+default_HsFoo = HsFoo{
+  hsFoo_MyInt = 0}

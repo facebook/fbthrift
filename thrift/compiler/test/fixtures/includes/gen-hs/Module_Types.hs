@@ -44,7 +44,7 @@ import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
 import Thrift.Arbitraries
 
-import qualified Includes_Types
+import qualified Includes_Types as Includes_Types
 
 
 data MyStruct = MyStruct

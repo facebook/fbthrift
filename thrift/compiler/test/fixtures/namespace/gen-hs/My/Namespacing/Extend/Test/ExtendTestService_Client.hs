@@ -13,7 +13,8 @@
 --  @generated
 -----------------------------------------------------------------
 
-module HsTestService_Client(init) where
+module My.Namespacing.Extend.Test.ExtendTestService_Client(check) where
+import My.Namespacing.Test.HsTestService_Client
 import Data.IORef
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
@@ -45,21 +46,23 @@ import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
 import Thrift.Arbitraries
 
+import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
-import Hsmodule_Types
-import HsTestService
+
+import My.Namespacing.Extend.Test.Extend_Types
+import My.Namespacing.Extend.Test.ExtendTestService
 seqid = newIORef 0
-init (ip,op) arg_int1 = do
-  send_init op arg_int1
-  recv_init ip
-send_init op arg_int1 = do
+check (ip,op) arg_struct1 = do
+  send_check op arg_struct1
+  recv_check ip
+send_check op arg_struct1 = do
   seq <- seqid
   seqn <- readIORef seq
-  writeMessage op ("init", M_CALL, seqn) $
-    write_Init_args op (Init_args{init_args_int1=arg_int1})
+  writeMessage op ("check", M_CALL, seqn) $
+    write_Check_args op (Check_args{check_args_struct1=arg_struct1})
   tFlush (getTransport op)
-recv_init ip =
+recv_check ip =
   readMessage ip $ \(fname,mtype,rseqid) -> do
     when (mtype == M_EXCEPTION) $ readAppExn ip >>= throw
-    res <- read_Init_result ip
-    return $ init_result_success res
+    res <- read_Check_result ip
+    return $ check_result_success res

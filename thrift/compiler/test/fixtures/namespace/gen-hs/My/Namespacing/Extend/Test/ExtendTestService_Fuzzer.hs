@@ -13,10 +13,10 @@
 --  @generated
 -----------------------------------------------------------------
 
-module ExtendTestService_Fuzzer (main) where
-import Extend_Types
-import qualified ExtendTestService_Client as Client
-import Hsmodule_Types
+module My.Namespacing.Extend.Test.ExtendTestService_Fuzzer (main) where
+import My.Namespacing.Extend.Test.Extend_Types
+import qualified My.Namespacing.Extend.Test.ExtendTestService_Client as Client
+import My.Namespacing.Test.Hsmodule_Types
 
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
@@ -48,7 +48,7 @@ import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
 import Thrift.Arbitraries
 
-import qualified Hsmodule_Types
+import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
 import Prelude ((>>), print)
 import qualified Prelude as P

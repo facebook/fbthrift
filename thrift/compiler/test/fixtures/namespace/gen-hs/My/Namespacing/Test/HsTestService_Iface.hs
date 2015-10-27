@@ -13,7 +13,7 @@
 --  @generated
 -----------------------------------------------------------------
 
-module Hsmodule_Consts where
+module My.Namespacing.Test.HsTestService_Iface where
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
@@ -45,4 +45,7 @@ import Thrift.Types
 import Thrift.Arbitraries
 
 
-import Hsmodule_Types
+import My.Namespacing.Test.Hsmodule_Types
+
+class HsTestService_Iface a where
+  init :: a -> Int64 -> IO Int64

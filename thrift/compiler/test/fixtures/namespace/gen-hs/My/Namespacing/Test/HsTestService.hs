@@ -13,7 +13,7 @@
 --  @generated
 -----------------------------------------------------------------
 
-module HsTestService where
+module My.Namespacing.Test.HsTestService where
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
@@ -45,8 +45,8 @@ import Thrift.Types
 import Thrift.Arbitraries
 
 
-import Hsmodule_Types
-import qualified HsTestService_Iface as Iface
+import My.Namespacing.Test.Hsmodule_Types
+import qualified My.Namespacing.Test.HsTestService_Iface as Iface
 -- HELPER FUNCTIONS AND STRUCTURES --
 
 data Init_args = Init_args

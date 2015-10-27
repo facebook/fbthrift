@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <cctype>
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -28,10 +29,8 @@
 #include <folly/gen/Base.h>
 #include <folly/gen/String.h>
 
-#include "t_oop_generator.h"
-
-// platform.h
-#define MKDIR(x) mkdir(x, S_IRWXU | S_IRWXG | S_IRWXO)
+#include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/platform.h>
 
 using std::map;
 using std::ofstream;
@@ -219,6 +218,9 @@ class t_hs_generator : public t_oop_generator {
   string module_part(const string& qualified_name);
   string name_part(const string& qualified_name);
 
+  const string& get_package_dir() const;
+  string get_module_prefix(const t_program* program) const;
+
  private:
 
   ofstream f_types_;
@@ -227,6 +229,8 @@ class t_hs_generator : public t_oop_generator {
   ofstream f_iface_;
   ofstream f_client_;
   ofstream f_service_fuzzer_;
+
+  string package_dir_;
 };
 
 /**
@@ -237,29 +241,45 @@ class t_hs_generator : public t_oop_generator {
  */
 void t_hs_generator::init_generator() {
   // Make output directory
-  MKDIR(get_out_dir().c_str());
+  package_dir_ = get_out_dir();
+  MKDIR(package_dir_.c_str());
+
+  string hs_namespace = program_->get_namespace("hs");
+  if (!hs_namespace.empty()) {
+    vector<string> components;
+    folly::split(".", hs_namespace, components, false /* ignoreEmpty */);
+    for (const auto& component : components) {
+      if (component.empty() || !std::isupper(component[0])) {
+        throw "compiler error: Invalid Haskell Module " + hs_namespace;
+      }
+      package_dir_ += component;
+      package_dir_.push_back('/');
+      MKDIR(package_dir_.c_str());
+    }
+  }
 
   // Make output file
   string pname = capitalize(program_name_);
-  string f_types_name = get_out_dir() + pname + "_Types.hs";
+  string f_types_name = get_package_dir() + pname + "_Types.hs";
   f_types_.open(f_types_name.c_str());
   record_genfile(f_types_name);
 
-  string f_consts_name = get_out_dir() + pname + "_Consts.hs";
+  string f_consts_name = get_package_dir() + pname + "_Consts.hs";
   f_consts_.open(f_consts_name.c_str());
   record_genfile(f_consts_name);
 
   // Print header
+  string module_prefix = get_module_prefix(program_);
   f_types_ << hs_language_pragma() << nl;
   f_types_ << hs_autogen_comment() << nl;
-  f_types_ << "module " << pname << "_Types where" << nl;
+  f_types_ << "module " << module_prefix << pname << "_Types where" << nl;
   f_types_ << hs_imports() << nl;
 
   f_consts_ << hs_language_pragma() << nl;
   f_consts_ << hs_autogen_comment() << nl;
-  f_consts_ << "module " << pname << "_Consts where" << nl;
+  f_consts_ << "module " << module_prefix << pname << "_Consts where" << nl;
   f_consts_ << hs_imports() << nl;
-  f_consts_ << "import " << pname << "_Types" << nl;
+  f_consts_ << "import " << module_prefix << pname << "_Types" << nl;
 }
 
 string t_hs_generator::hs_language_pragma() {
@@ -321,8 +341,12 @@ string t_hs_generator::hs_imports() {
       "import Thrift.Arbitraries\n"
       "\n");
 
-  for (size_t i = 0; i < includes.size(); ++i)
-    result += "import qualified " + capitalize(includes[i]->get_name()) + "_Types\n";
+  for (const auto& program_include : includes) {
+    auto module_prefix = get_module_prefix(program_include);
+    auto base_name = capitalize(program_include->get_name()) + "_Types";
+    result += folly::to<string>(
+      "import qualified ", module_prefix, base_name, " as ", base_name, "\n");
+  }
 
   if (includes.size() > 0)
     result += "\n";
@@ -917,21 +941,32 @@ void t_hs_generator::generate_hs_struct_writer(ofstream& out,
  * @param tservice The service definition
  */
 void t_hs_generator::generate_service(t_service* tservice) {
-  string f_service_name = get_out_dir() + capitalize(service_name_) + ".hs";
+  string f_service_name = get_package_dir() + capitalize(service_name_) + ".hs";
   f_service_.open(f_service_name.c_str());
   record_genfile(f_service_name);
 
   f_service_ << hs_language_pragma() << nl;
   f_service_ << hs_autogen_comment() << nl;
-  f_service_ << "module " << capitalize(service_name_) << " where" << nl;
+
+  string module_prefix = get_module_prefix(program_);
+  f_service_ << "module "
+             << module_prefix << capitalize(service_name_)
+             << " where" << nl;
   f_service_ << hs_imports() << nl;
 
   if (tservice->get_extends()) {
-    f_service_ << "import qualified " << capitalize(tservice->get_extends()->get_name()) << nl;
+    auto extends_service = tservice->get_extends();
+    auto extends_program = extends_service->get_program();
+    f_service_ << "import qualified "
+               << get_module_prefix(extends_program)
+               << capitalize(extends_service->get_name()) << nl;
   }
 
-  f_service_ << "import " << capitalize(program_name_) << "_Types" << nl;
-  f_service_ << "import qualified " << capitalize(service_name_) << "_Iface as Iface" << nl;
+  f_service_ << "import "
+             << module_prefix << capitalize(program_name_) << "_Types" << nl;
+  f_service_ << "import qualified "
+             << module_prefix << capitalize(service_name_)
+             << "_Iface as Iface" << nl;
 
   // Generate the three main parts of the service
   generate_service_helpers(tservice);
@@ -1064,24 +1099,30 @@ void t_hs_generator::generate_hs_default(ofstream& out,
  * @param tservice The service to generate a header definition for
  */
 void t_hs_generator::generate_service_interface(t_service* tservice) {
-  string f_iface_name = get_out_dir() + capitalize(service_name_) + "_Iface.hs";
+  string f_iface_name =
+    get_package_dir() + capitalize(service_name_) + "_Iface.hs";
   f_iface_.open(f_iface_name.c_str());
   record_genfile(f_iface_name);
 
   f_iface_ << hs_language_pragma() << nl;
   f_iface_ << hs_autogen_comment() << nl;
 
-  f_iface_ << "module " << capitalize(service_name_) << "_Iface where" << nl;
+  string module_prefix = get_module_prefix(program_);
+  f_iface_ << "module " << module_prefix
+           << capitalize(service_name_) << "_Iface where" << nl;
 
   f_iface_ << hs_imports() << nl;
-  f_iface_ << "import " << capitalize(program_name_) << "_Types" << nl;
+  f_iface_ << "import "
+           << module_prefix << capitalize(program_name_) << "_Types" << nl;
   f_iface_ << nl;
 
   string sname = capitalize(service_name_);
   if (tservice->get_extends() != nullptr) {
+    auto extends_program = tservice->get_extends()->get_program();
     string extends = type_name(tservice->get_extends());
-
-    indent(f_iface_) << "import " << extends << "_Iface" << nl;
+    indent(f_iface_) << "import "
+                     << get_module_prefix(extends_program)
+                     << extends << "_Iface" << nl;
     indent(f_iface_) << "class " << extends << "_Iface a => " << sname << "_Iface a where" << nl;
 
   } else {
@@ -1108,7 +1149,8 @@ void t_hs_generator::generate_service_interface(t_service* tservice) {
  * @param tservice The service to generate a server for.
  */
 void t_hs_generator::generate_service_client(t_service* tservice) {
-  string f_client_name = get_out_dir() + capitalize(service_name_) + "_Client.hs";
+  string f_client_name =
+    get_package_dir() + capitalize(service_name_) + "_Client.hs";
   f_client_.open(f_client_name.c_str());
   record_genfile(f_client_name);
   f_client_ << hs_language_pragma() << nl;
@@ -1129,17 +1171,26 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
   }
 
   string sname = capitalize(service_name_);
-  indent(f_client_) << "module " << sname << "_Client(" << exports << ") where" << nl;
+  string module_prefix = get_module_prefix(program_);
+  indent(f_client_) << "module "
+                    << module_prefix << sname << "_Client(" << exports
+                    << ") where" << nl;
 
   if (tservice->get_extends() != nullptr) {
+    auto extends_program = tservice->get_extends()->get_program();
     extends = type_name(tservice->get_extends());
-    indent(f_client_) << "import " << extends << "_Client" << nl;
+    indent(f_client_) << "import "
+                      << get_module_prefix(extends_program)
+                      << extends << "_Client" << nl;
   }
 
   indent(f_client_) << "import Data.IORef" << nl;
   indent(f_client_) << hs_imports() << nl;
-  indent(f_client_) << "import " << capitalize(program_name_) << "_Types" << nl;
-  indent(f_client_) << "import " << capitalize(service_name_) << nl;
+  indent(f_client_) << "import "
+                    << module_prefix << capitalize(program_name_) << "_Types"
+                    << nl;
+  indent(f_client_) << "import "
+                    << module_prefix << capitalize(service_name_) << nl;
 
   // DATS RITE A GLOBAL VAR
   indent(f_client_) << "seqid = newIORef 0" << nl;
@@ -1266,8 +1317,9 @@ void t_hs_generator::generate_service_server(t_service* tservice) {
 
   indent(f_service_) << "_ -> ";
   if (tservice->get_extends() != nullptr) {
-    f_service_ << type_name(tservice->get_extends()) << ".proc_ handler (iprot,oprot) (name,typ,seqid)" << nl;
-
+    f_service_ << get_module_prefix(tservice->get_extends()->get_program())
+               << type_name(tservice->get_extends())
+               << ".proc_ handler (iprot,oprot) (name,typ,seqid)" << nl;
   } else {
     f_service_ << "do" << nl;
     indent_up();
@@ -1321,26 +1373,34 @@ string t_hs_generator::render_hs_type_for_function_name(t_type* type) {
 void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
     using namespace folly;
 
-    string f_service_name = get_out_dir()+capitalize(service_name_)+"_Fuzzer.hs";
+    string f_service_name =
+      get_package_dir() + capitalize(service_name_) + "_Fuzzer.hs";
     f_service_fuzzer_.open(f_service_name.c_str());
     record_genfile(f_service_name);
 
+    string module_prefix = get_module_prefix(program_);
     // Generate module declaration
     f_service_fuzzer_ <<
         //"{-# LANGUAGE ScopedTypeVariables, DeriveDataTypeable #-}" << nl <<
         hs_language_pragma() << nl <<
         hs_autogen_comment() << nl <<
-        "module " << capitalize(service_name_) << "_Fuzzer (main) where" << nl;
+        "module " << module_prefix << capitalize(service_name_)
+                  << "_Fuzzer (main) where" << nl;
 
     // Generate imports specific to the .thrift file.
-    f_service_fuzzer_ <<
-        "import " << capitalize(program_name_) << "_Types" << nl <<
-        "import qualified " << capitalize(service_name_) << "_Client as Client" << nl;
+    f_service_fuzzer_
+        << "import "
+        << module_prefix << capitalize(program_name_) << "_Types" << nl
+        << "import qualified "
+        << module_prefix << capitalize(service_name_) << "_Client as Client"
+        << nl;
 
     const vector<t_program*>& includes = program_->get_includes();
-    for (size_t i = 0; i < includes.size(); ++i) {
-        f_service_fuzzer_ << "import " + capitalize(includes[i]->get_name())
-                          << "_Types\n";
+    for (const auto& program_include : includes) {
+      f_service_fuzzer_ << "import "
+                        << get_module_prefix(program_include)
+                        << capitalize(program_include->get_name())
+                        << "_Types" << nl;
     }
 
     // Generate non-specific body code
@@ -1921,6 +1981,24 @@ string t_hs_generator::name_part(const string& qualified_name) {
   } else {
     return qualified_name.substr(pos+1, string::npos);
   }
+}
+
+const string& t_hs_generator::get_package_dir() const {
+  return package_dir_;
+}
+
+/**
+ * Takes a Thrift program file. It returns the Haskell module prefix, which
+ * is the Haskell namespace with trailing period. If Haskell namespace is not
+ * specified, it returns an empty string
+ */
+string t_hs_generator::get_module_prefix(const t_program* program) const {
+  string hs_namespace = program->get_namespace("hs");
+  if (!hs_namespace.empty()) {
+    hs_namespace += '.';
+  }
+
+  return hs_namespace;
 }
 
 /**

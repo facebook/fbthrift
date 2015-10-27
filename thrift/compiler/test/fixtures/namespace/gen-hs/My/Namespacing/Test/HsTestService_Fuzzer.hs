@@ -13,9 +13,9 @@
 --  @generated
 -----------------------------------------------------------------
 
-module HsTestService_Fuzzer (main) where
-import Hsmodule_Types
-import qualified HsTestService_Client as Client
+module My.Namespacing.Test.HsTestService_Fuzzer (main) where
+import My.Namespacing.Test.Hsmodule_Types
+import qualified My.Namespacing.Test.HsTestService_Client as Client
 
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
