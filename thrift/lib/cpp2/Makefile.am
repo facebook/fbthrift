@@ -71,6 +71,9 @@ thrift2include_fataldir = $(thrift2includedir)/fatal
 thrift2include_fatal_HEADERS = \
 	fatal/folly_dynamic-inl.h \
 	fatal/folly_dynamic.h \
+	fatal/indenter.h \
+	fatal/pretty_print-inl.h \
+	fatal/pretty_print.h \
 	fatal/reflect_category-inl.h \
 	fatal/reflect_category.h \
 	fatal/reflection-inl.h \

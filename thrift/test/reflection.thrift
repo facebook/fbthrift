@@ -44,9 +44,50 @@ struct structA {
   2: string b
 }
 
+union unionA {
+  1: i32 i
+  2: double d
+  3: string s
+  4: enum1 e
+  5: structA a
+}
+
 struct structB {
   1: double c
   2: bool d
+}
+
+struct structC {
+  1: i32 a
+  2: string b
+  3: double c
+  4: bool d
+  5: enum1 e
+  6: enum2 f
+  7: union1 g
+  8: unionA h
+  9: unionA i
+  10: list<i32> j
+  11: list<i32> j1
+  12: list<enum1> j2
+  13: list<structA> j3
+  14: set<i32> k
+  15: set<i32> k1
+  16: set<enum2> k2
+  17: set<structB> k3
+  18: map<i32, i32> l
+  19: map<i32, i32> l1
+  20: map<i32, enum1> l2
+  21: map<i32, structB> l3
+  22: map<enum1, i32> m1
+  23: map<enum1, enum2> m2
+  24: map<enum1, structB> m3
+  25: map<string, i32> n1
+  26: map<string, enum1> n2
+  27: map<string, structB> n3
+  28: map<structA, i32> o1
+  29: map<structA, enum1> o2
+  30: map<structA, structB> o3
 }
 
 struct struct1 {

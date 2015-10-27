@@ -30,9 +30,11 @@ FATAL_STR(enum3s, "enum3");
 FATAL_STR(union1s, "union1");
 FATAL_STR(union2s, "union2");
 FATAL_STR(union3s, "union3");
+FATAL_STR(unionAs, "unionA");
 
 FATAL_STR(structAs, "structA");
 FATAL_STR(structBs, "structB");
+FATAL_STR(structCs, "structC");
 FATAL_STR(struct1s, "struct1");
 FATAL_STR(struct2s, "struct2");
 FATAL_STR(struct3s, "struct3");
@@ -91,7 +93,8 @@ TEST(fatal, metadata) {
     fatal::build_type_map<
       union1, union1s,
       union2, union2s,
-      union3, union3s
+      union3, union3s,
+      unionA, unionAs
     >,
     info::unions
   >();
@@ -100,6 +103,7 @@ TEST(fatal, metadata) {
     fatal::build_type_map<
       structA, structAs,
       structB, structBs,
+      structC, structCs,
       struct1, struct1s,
       struct2, struct2s,
       struct3, struct3s
