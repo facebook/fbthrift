@@ -47,10 +47,11 @@ class SleepProcessorEventHandler(TProcessorEventHandler):
         self.last_sock_name = server_context.getSockName()
 
 class SleepHandler(FacebookBase, SleepService.Iface, TServerInterface):
-    def __init__(self, noop_event):
+    def __init__(self, noop_event, shutdown_event):
         FacebookBase.__init__(self, "sleep")
         TServerInterface.__init__(self)
         self.noop_event = noop_event
+        self.shutdown_event = shutdown_event
 
     def sleep(self, seconds):
         print("server sleeping...")
@@ -65,6 +66,9 @@ class SleepHandler(FacebookBase, SleepService.Iface, TServerInterface):
 
     def noop(self):
         self.noop_event.set()
+
+    def shutdown(self):
+        self.shutdown_event.set()
 
     def header(self):
         request_context = self.getRequestContext()
@@ -134,6 +138,7 @@ class OnewayProcess(multiprocessing.Process):
         hw_spaced = "h e l l o ,   w o r l d"
 
         client.noop()
+        client.shutdown()
         # Requests sent after the oneway request still get responses
         result = client.space(hw)
         if isinstance(result, bytes):
@@ -164,7 +169,8 @@ class TestServerEventHandler(TServerEventHandler):
 
 class TestServer(BaseFacebookTestCase):
     def getProcessor(self):
-        processor = SleepService.Processor(SleepHandler(self.noop_event))
+        processor = SleepService.Processor(
+                SleepHandler(self.noop_event, self.shutdown_event))
         self.event_handler = SleepProcessorEventHandler()
         processor.setEventHandler(self.event_handler)
         return processor
@@ -172,6 +178,7 @@ class TestServer(BaseFacebookTestCase):
     def setUp(self):
         super(TestServer, self).setUp()
         self.noop_event = threading.Event()
+        self.shutdown_event = threading.Event()
         self.serverEventHandler = TestServerEventHandler()
         self.server = TCppServer(self.getProcessor())
         self.server.setServerEventHandler(self.serverEventHandler)
@@ -241,6 +248,7 @@ class BaseTestServer(TestServer):
         self.stopServer()
 
         self.assertTrue(self.noop_event.wait(5))
+        self.assertTrue(self.shutdown_event.wait(5))
 
 class HeaderTestServer(TestServer):
     def getProcessor(self):

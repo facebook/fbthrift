@@ -527,7 +527,7 @@ class Processor(Iface, TProcessor):
 
   def onewayMethods(self):
     l = []
-    l.extend(self._onewayMethods)
+    l.extend(Processor._onewayMethods)
     return tuple(l)
 
   @process_main()
@@ -557,7 +557,7 @@ class ContextProcessor(ContextIface, TProcessor):
 
   def onewayMethods(self):
     l = []
-    l.extend(self._onewayMethods)
+    l.extend(ContextProcessor._onewayMethods)
     return tuple(l)
 
   @process_main()

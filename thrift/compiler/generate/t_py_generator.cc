@@ -2723,7 +2723,8 @@ void t_py_generator::generate_service_server(t_service* tservice,
     f_service_ << indent() << "l.extend(" << extends << "." << class_prefix
                << "Processor.onewayMethods(self))" << endl;
   }
-  f_service_ << indent() << "l.extend(self._onewayMethods)" << endl
+  f_service_ << indent() << "l.extend(" << class_prefix
+             << "Processor._onewayMethods)" << endl
              << indent() << "return tuple(l)" << endl << endl;
   indent_down();
 
