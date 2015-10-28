@@ -52,34 +52,52 @@ void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
         std::unique_ptr<folly::IOBuf> unwrapped;
         // If this is the first message after protection state was set to valid,
         // allow the ability to fall back to plaintext.
-        if (allowFallback_ && protectionState_ == ProtectionState::VALID) {
-          // Make a copy of inputQueue_.
-          // If decryption fails, we try to read again without decrypting.
-          // The copy is necessary since decryption attempt modifies the queue.
-          folly::IOBufQueue inputQueueCopy;
-          auto copyBuf = inputQueue_.front()->clone();
-          copyBuf->unshare();
-          inputQueueCopy.append(std::move(copyBuf));
-
-          // decrypt inputQueue_
-          auto decryptEx = folly::try_and_catch<std::exception>([&]() {
-            unwrapped = saslEndpoint_->unwrap(&inputQueue_, &remaining);
-          });
-
-          if (remaining == 0) {
-            // If we got an entire frame, make sure we try the fallback
-            // only once. If we only got a partial frame, we have to try falling
-            // back again until we get the full first frame.
-            allowFallback_ = false;
-          }
-
-          if (decryptEx) {
-            // If decrypt fails, try reading again without decrypting. This
-            // allows a fallback to happen if the timeout happened in the last
-            // leg of the handshake.
-            inputQueue_ = std::move(inputQueueCopy);
-            ctx->fireRead(inputQueue_);
+        if (allowFallback_) {
+          if (inputQueue_.chainLength() < 6) {
+            // 4 for frame length + 2 for header magic 0x0fff
+            // If less than that, continue buffering
             break;
+          }
+          folly::io::Cursor c(inputQueue_.front());
+          if (c.readBE<uint32_t>() >= 2 && c.readBE<uint16_t>() == 0x0fff) {
+            // Frame length is at least 2 and first 2 bytes are the header
+            // magic 0x0fff. This is potentially a plaintext message on an
+            // encrypted channel because the client timed out and fallen back.
+            // Make a copy of inputQueue_.
+            // If decryption fails, we try to read again without decrypting.
+            // The copy is necessary since a decryption attempt modifies the
+            // queue.
+            folly::IOBufQueue inputQueueCopy;
+            auto copyBuf = inputQueue_.front()->clone();
+            copyBuf->unshare();
+            inputQueueCopy.append(std::move(copyBuf));
+
+            // decrypt inputQueue_
+            auto decryptEx = folly::try_and_catch<std::exception>([&]() {
+              unwrapped = saslEndpoint_->unwrap(&inputQueue_, &remaining);
+            });
+
+            if (remaining == 0) {
+              // If we got an entire frame, make sure we try the fallback
+              // only once. If we only got a partial frame, we have to try
+              // falling back again until we get the full first frame.
+              allowFallback_ = false;
+            }
+
+            if (decryptEx) {
+              // If decrypt fails, try reading again without decrypting. This
+              // allows a fallback to happen if the timeout happened in the last
+              // leg of the handshake.
+              inputQueue_ = std::move(inputQueueCopy);
+              ctx->fireRead(inputQueue_);
+              break;
+            }
+          } else {
+            // This is definitely not a plaintext header message. We can try
+            // decrypting without a copy. unwrap() will handle buffering if
+            // we only received a chunk.
+            allowFallback_ = false;
+            unwrapped = saslEndpoint_->unwrap(&inputQueue_, &remaining);
           }
         } else {
           unwrapped = saslEndpoint_->unwrap(&inputQueue_, &remaining);
