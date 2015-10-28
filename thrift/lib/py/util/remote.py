@@ -23,7 +23,6 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import itertools
 import os
 import pprint
 from six.moves.urllib.parse import urlparse
@@ -113,7 +112,7 @@ class RemoteClient(object):
             thrift_types[key] = getattr(self.ttypes, key)
 
         fn_args = []
-        for arg, arg_info in itertools.izip(args, fn.args):
+        for arg, arg_info in zip(args, fn.args):
             if arg_info[2] == 'string':
                 # For ease-of-use, we don't eval string arguments, simply so
                 # users don't have to wrap the arguments in quotes
