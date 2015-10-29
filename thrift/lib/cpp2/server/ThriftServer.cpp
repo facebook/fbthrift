@@ -69,15 +69,6 @@ using apache::thrift::concurrency::PriorityThreadManager;
 using wangle::IOThreadPoolExecutor;
 using wangle::NamedThreadFactory;
 
-const int ThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
-  sysconf(_SC_NPROCESSORS_ONLN);
-
-const std::chrono::milliseconds ThriftServer::DEFAULT_TASK_EXPIRE_TIME =
-    std::chrono::milliseconds(5000);
-
-const std::chrono::milliseconds ThriftServer::DEFAULT_TIMEOUT =
-    std::chrono::milliseconds(60000);
-
 class ThriftAcceptorFactory : public wangle::AcceptorFactory {
  public:
   explicit ThriftAcceptorFactory(ThriftServer* server)
@@ -96,7 +87,7 @@ ThriftServer::ThriftServer() :
 
 ThriftServer::ThriftServer(const std::string& saslPolicy,
                            bool allowInsecureLoopback)
-  : server::TServer(std::shared_ptr<server::TProcessor>())
+  : BaseThriftServer()
   , saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy)
   , allowInsecureLoopback_(allowInsecureLoopback)
 {
@@ -422,45 +413,6 @@ void ThriftServer::immediateShutdown(bool abortConnections) {
   shutdownSocketSet_->shutdownAll(abortConnections);
 }
 
-void ThriftServer::CumulativeFailureInjection::set(
-    const FailureInjection& fi) {
-  CHECK_GE(fi.errorFraction, 0);
-  CHECK_GE(fi.dropFraction, 0);
-  CHECK_GE(fi.disconnectFraction, 0);
-  CHECK_LE(fi.errorFraction + fi.dropFraction + fi.disconnectFraction, 1);
-
-  std::lock_guard<std::mutex> lock(mutex_);
-  errorThreshold_ = fi.errorFraction;
-  dropThreshold_ = errorThreshold_ + fi.dropFraction;
-  disconnectThreshold_ = dropThreshold_ + fi.disconnectFraction;
-  empty_.store((disconnectThreshold_ == 0), std::memory_order_relaxed);
-}
-
-ThriftServer::InjectedFailure
-ThriftServer::CumulativeFailureInjection::test() const {
-  if (empty_.load(std::memory_order_relaxed)) {
-    return InjectedFailure::NONE;
-  }
-
-  static folly::ThreadLocalPtr<std::mt19937> rng;
-  if (!rng) {
-    rng.reset(new std::mt19937(folly::randomNumberSeed()));
-  }
-
-  std::uniform_real_distribution<float> dist(0, 1);
-  float val = dist(*rng);
-
-  std::lock_guard<std::mutex> lock(mutex_);
-  if (val <= errorThreshold_) {
-    return InjectedFailure::ERROR;
-  } else if (val <= dropThreshold_) {
-    return InjectedFailure::DROP;
-  } else if (val <= disconnectThreshold_) {
-    return InjectedFailure::DISCONNECT;
-  }
-  return InjectedFailure::NONE;
-}
-
 int32_t ThriftServer::getPendingCount() const {
   int32_t count = 0;
   if (!getIOGroupSafe()) { // Not enabled in duplex mode
@@ -488,36 +440,6 @@ bool ThriftServer::isOverloaded(uint32_t workerActiveRequests,
     }
   }
 
-  return false;
-}
-
-bool ThriftServer::getTaskExpireTimeForRequest(
-  const apache::thrift::transport::THeader& requestHeader,
-  std::chrono::milliseconds& softTimeout,
-  std::chrono::milliseconds& hardTimeout
-) const {
-  softTimeout = getTaskExpireTime();
-  if (softTimeout == std::chrono::milliseconds(0)) {
-    hardTimeout = softTimeout;
-    return false;
-  }
-  if (getUseClientTimeout()) {
-    // we add 10% to the client timeout so that the request is much more likely
-    // to timeout on the client side than to read the timeout from the server
-    // as a TApplicationException (which can be confusing)
-    hardTimeout = std::chrono::milliseconds(
-      (uint32_t)(requestHeader.getClientTimeout().count() * 1.1));
-    if (hardTimeout > std::chrono::milliseconds(0)) {
-      if (hardTimeout < softTimeout ||
-          softTimeout == std::chrono::milliseconds(0)) {
-        softTimeout = hardTimeout;
-        return false;
-      } else {
-        return true;
-      }
-    }
-  }
-  hardTimeout = softTimeout;
   return false;
 }
 

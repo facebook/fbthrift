@@ -83,6 +83,7 @@ thrift2include_fatal_HEADERS = \
 thrift2include_serverdir = $(thrift2includedir)/server
 
 thrift2include_server_HEADERS = \
+	server/BaseThriftServer.h \
 	server/Cpp2ConnContext.h \
 	server/Cpp2Connection.h \
 	server/Cpp2Worker.h \
@@ -148,6 +149,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   security/KerberosSASLHandshakeUtils.cpp \
 			   security/KerberosSASLThreadManager.cpp \
 			   security/SecurityKillSwitch.cpp \
+			   server/BaseThriftServer.cpp \
 			   server/Cpp2Connection.cpp \
 			   server/Cpp2Worker.cpp \
 			   server/ThriftServer.cpp \
