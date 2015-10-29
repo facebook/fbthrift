@@ -88,10 +88,12 @@ class ChannelCallbacks {
     }
     void messageSent() override {
       X_CHECK_STATE_EQ(sendState_, QState::QUEUED);
-      CHECK(cb_);
-      auto old_ctx = folly::RequestContext::setContext(cb_->context_);
-      cb_->requestSent();
-      folly::RequestContext::setContext(old_ctx);
+      if (!cbCalled_) {
+        CHECK(cb_);
+        auto old_ctx = folly::RequestContext::setContext(cb_->context_);
+        cb_->requestSent();
+        folly::RequestContext::setContext(old_ctx);
+      }
       sendState_ = QState::DONE;
       maybeDeleteThis();
     }
@@ -104,11 +106,13 @@ class ChannelCallbacks {
         cancelTimeout();
       }
       if (!cbCalled_) {
+        CHECK(cb_);
         cbCalled_ = true;
         auto old_ctx = folly::RequestContext::setContext(cb_->context_);
         cb_->requestError(ClientReceiveState(
             std::move(ex), std::move(ctx_), channel_->isSecurityActive()));
         folly::RequestContext::setContext(old_ctx);
+        cb_.reset();
       }
       delete this;
     }
@@ -131,6 +135,7 @@ class ChannelCallbacks {
                                             std::move(ctx_),
                                             channel_->isSecurityActive(),
                                             true));
+      cb_.reset();
 
       folly::RequestContext::setContext(old_ctx);
       maybeDeleteThis();
@@ -154,13 +159,6 @@ class ChannelCallbacks {
       folly::RequestContext::setContext(old_ctx);
     }
     void requestError(folly::exception_wrapper ex) {
-      using namespace apache::thrift::transport;
-      bool eof = false;
-      ex.with_exception<TTransportException>([&](const TTransportException& e) {
-        if (e.getType() == TTransportException::END_OF_FILE) {
-          eof = true;
-        }
-      });
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       recvState_ = QState::DONE;
       cancelTimeout();
@@ -171,11 +169,9 @@ class ChannelCallbacks {
         cb_->requestError(ClientReceiveState(
             std::move(ex), std::move(ctx_), channel_->isSecurityActive()));
         folly::RequestContext::setContext(old_ctx);
+        cb_.reset();
       }
 
-      if (eof) {
-        sendState_ = QState::DONE;
-      }
       maybeDeleteThis();
     }
     void timeoutExpired() noexcept override {
@@ -195,6 +191,7 @@ class ChannelCallbacks {
             std::move(ctx_),
             channel_->isSecurityActive()));
         folly::RequestContext::setContext(old_ctx);
+        cb_.reset();
       }
       maybeDeleteThis();
     }
@@ -203,6 +200,7 @@ class ChannelCallbacks {
       channel_->eraseCallback(sendSeqId_, this);
       recvState_ = QState::DONE;
       cbCalled_ = true;
+      cb_.reset();
 
       maybeDeleteThis();
     }
@@ -221,7 +219,7 @@ class ChannelCallbacks {
     std::shared_ptr<apache::thrift::ContextStack> ctx_;
     QState sendState_;
     QState recvState_;
-    bool cbCalled_;
+    bool cbCalled_; // invariant: (cb_ == nullptr) == cbCalled_
     class TimerCallback : public folly::HHWheelTimer::Callback {
      public:
       TimerCallback(TwowayCallback* cb,

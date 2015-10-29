@@ -210,19 +210,17 @@ void Cpp2Channel::sendMessage(SendCallback* callback,
 
   auto future = pipeline_->write(std::make_pair(std::move(buf), header));
   future.then([this,dg](folly::Try<folly::Unit>&& t) {
-    if (!eofInvoked_) { // callbacks already called
-      if (t.withException<TTransportException>(
-            [&](const TTransportException& ex) {
-              writeError(0, ex);
-            }) ||
-          t.withException<std::exception>(
-            [&](const std::exception& ex) {
-              writeError(0, TTransportException(ex.what()));
-            })) {
-        return;
-      } else {
-        writeSuccess();
-      }
+    if (t.withException<TTransportException>(
+          [&](const TTransportException& ex) {
+            writeError(0, ex);
+          }) ||
+        t.withException<std::exception>(
+          [&](const std::exception& ex) {
+            writeError(0, TTransportException(ex.what()));
+          })) {
+      return;
+    } else {
+      writeSuccess();
     }
   });
 }

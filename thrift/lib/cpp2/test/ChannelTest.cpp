@@ -373,6 +373,35 @@ TEST(Channel, MessageCloseTest) {
   MessageCloseTest().run();
 }
 
+class MessageEOFTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>
+                     , public MessageCallback {
+public:
+  MessageEOFTest() : header_(new THeader) {}
+
+  void preLoop() override {
+    channel0_->setReceiveCallback(this);
+    channel1_->getTransport()->shutdownWrite();
+    channel0_->sendMessage(this,
+                           makeTestBuf(1024*1024),
+                           header_.get());
+  }
+
+  void postLoop() override {
+    EXPECT_EQ(sendError_, 1);
+    EXPECT_EQ(recvError_, 0);
+    EXPECT_EQ(recvEOF_, 1);
+    EXPECT_EQ(recv_, 0);
+    EXPECT_EQ(sent_, 0);
+  }
+
+ private:
+  unique_ptr<THeader> header_;
+};
+
+TEST(Channel, MessageEOFTest) {
+  MessageEOFTest().run();
+}
+
 class HeaderChannelTest
     : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
     , public TestRequestCallback
