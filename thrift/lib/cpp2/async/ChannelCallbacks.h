@@ -113,7 +113,7 @@ class ChannelCallbacks {
         folly::RequestContext::setContext(old_ctx);
         cb_.reset();
       }
-      delete this;
+      destroy();
     }
     void replyReceived(
         std::unique_ptr<folly::IOBuf> buf,
