@@ -145,14 +145,6 @@ have_cpp=yes
 if test "$with_cpp" = "yes";  then
   AC_CHECK_LIB([glog],[openlog],[],[AC_MSG_ERROR(
              [Please install google-glog library])])
-  AC_CHECK_LIB([gflags],[getenv],[],[AC_MSG_ERROR(
-             [Please install google-gflags library])])
-  AC_CHECK_LIB([snappy], [main], [], [AC_MSG_ERROR(
-             [Please install snappy library])])
-  AC_CHECK_LIB([numa], [numa_available], [], [AC_MSG_ERROR(
-             [Please install numa library])])
-  AC_CHECK_LIB([wangle], [getenv], [], [AC_MSG_ERROR(
-             [Please install the wangle library from https://github.com/facebook/wangle])])
 
   AX_BOOST_BASE([1.40.0])
   if test "x$succeeded" != "xyes" ; then
@@ -177,29 +169,6 @@ if test "$with_cpp" = "yes";  then
     *) AC_MSG_ERROR([Please install bison])
        have_cpp="no" ;;
   esac
-
-  AX_LIB_EVENT([1.0])
-  have_libevent=$success
-  if test x"$success" != x"yes"; then
-    AC_MSG_ERROR([Please install libevent])
-  fi
-
-  AC_CHECK_HEADER([gssapi/gssapi_generic.h], [], [
-    AC_MSG_ERROR([Please install libkrb5-dev])
-  ], [])
-
-
-  AC_CHECK_LIB(sasl2, sasl_client_new, [], [
-    AC_MSG_ERROR([Please install libsasl2])
-  ], [])
-
-  AC_CHECK_HEADER([snappy.h], [], [
-    AC_MSG_ERROR([Please install libsnappy-dev])
-  ], [])
-
-  AC_CHECK_HEADER([numa.h], [], [
-    AC_MSG_ERROR([Please install libnuma-dev])
-  ], [])
 
   AX_LIB_ZLIB([1.2.3])
   have_zlib=$success

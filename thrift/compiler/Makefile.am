@@ -25,7 +25,7 @@ AM_YFLAGS = -d
 LIBS =
 BUILT_SOURCES =
 
-SUBDIRS = . py
+SUBDIRS = .
 
 bin_PROGRAMS = thrift1
 

@@ -19,7 +19,7 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = compiler lib
+SUBDIRS = compiler
 
 
 dist-hook:
