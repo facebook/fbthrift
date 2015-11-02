@@ -29,9 +29,8 @@ import Data.Functor ( (<$>) )
 import Data.Hashable
 import Data.Int
 import Data.Maybe (catMaybes)
-import Data.Text.Lazy ( Text )
 import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
-import qualified Data.Text.Lazy as T
+import qualified Data.Text.Lazy as LT
 import Data.Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set
@@ -223,7 +222,7 @@ proc_ handler (iprot,oprot) (name,typ,seqid) = case name of
   _ -> do
     _ <- readVal iprot (T_STRUCT Map.empty)
     writeMessage oprot (name,M_EXCEPTION,seqid) $
-      writeAppExn oprot (AppExn AE_UNKNOWN_METHOD ("Unknown function " ++ T.unpack name))
+      writeAppExn oprot (AppExn AE_UNKNOWN_METHOD ("Unknown function " ++ LT.unpack name))
     tFlush (getTransport oprot)
 process handler (iprot, oprot) =
   readMessage iprot (proc_ handler (iprot,oprot)) >> return True

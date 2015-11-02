@@ -14,7 +14,8 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import qualified Data.Vector as Vector
-import qualified Data.Text.Lazy as Text
+import qualified Data.Text as Text
+import qualified Data.Text.Lazy as LT
 import qualified Data.HashSet as HSet
 import qualified Data.HashMap.Strict as HMap
 import Data.Hashable (Hashable)
@@ -40,6 +41,9 @@ instance (Arbitrary k) => Arbitrary (Vector.Vector k) where
 
 instance Arbitrary Text.Text where
   arbitrary = Text.pack . filter (/= '\0') <$> arbitrary
+
+instance Arbitrary LT.Text where
+  arbitrary = LT.pack . filter (/= '\0') <$> arbitrary
 
 instance (Eq k, Hashable k, Arbitrary k) => Arbitrary (HSet.HashSet k) where
   arbitrary = HSet.fromList <$> arbitrary

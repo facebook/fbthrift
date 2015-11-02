@@ -32,9 +32,8 @@ import Data.Functor ( (<$>) )
 import Data.Hashable
 import Data.Int
 import Data.Maybe (catMaybes)
-import Data.Text.Lazy ( Text )
 import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
-import qualified Data.Text.Lazy as T
+import qualified Data.Text.Lazy as LT
 import Data.Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set

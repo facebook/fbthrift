@@ -61,6 +61,8 @@ class t_hs_generator : public t_oop_generator {
       parsed_options.end();
     use_list_ = parsed_options.find("use_list") != parsed_options.end();
     use_string_ = parsed_options.find("use_string") != parsed_options.end();
+    use_strict_text_ =
+      parsed_options.find("use_strict_text") != parsed_options.end();
 
   }
 
@@ -71,6 +73,7 @@ class t_hs_generator : public t_oop_generator {
   bool gen_haddock_;
   bool use_list_;
   bool use_string_;
+  bool use_strict_text_;
 
   /**
    * Init and close methods
@@ -325,9 +328,8 @@ string t_hs_generator::hs_imports() {
       "import Data.Hashable\n"
       "import Data.Int\n"
       "import Data.Maybe (catMaybes)\n"
-      "import Data.Text.Lazy ( Text )\n"
       "import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )\n"
-      "import qualified Data.Text.Lazy as T\n"
+      "import qualified Data.Text.Lazy as LT\n"
       "import Data.Typeable ( Typeable )\n"
       "import qualified Data.HashMap.Strict as Map\n"
       "import qualified Data.HashSet as Set\n"
@@ -340,6 +342,9 @@ string t_hs_generator::hs_imports() {
       "import Thrift.Types\n"
       "import Thrift.Arbitraries\n"
       "\n");
+
+  if (use_strict_text_)
+    result += "import qualified Data.Text as T\n\n";
 
   for (const auto& program_include : includes) {
     auto module_prefix = get_module_prefix(program_include);
@@ -1326,7 +1331,7 @@ void t_hs_generator::generate_service_server(t_service* tservice) {
     indent(f_service_) << "_ <- readVal iprot (T_STRUCT Map.empty)" << nl;
     indent(f_service_) << "writeMessage oprot (name,M_EXCEPTION,seqid) $" << nl;
     indent_up();
-    indent(f_service_) << "writeAppExn oprot (AppExn AE_UNKNOWN_METHOD (\"Unknown function \" ++ T.unpack name))" << nl;
+    indent(f_service_) << "writeAppExn oprot (AppExn AE_UNKNOWN_METHOD (\"Unknown function \" ++ LT.unpack name))" << nl;
     indent_down();
     indent(f_service_) << "tFlush (getTransport oprot)" << nl;
     indent_down();
@@ -1773,7 +1778,9 @@ void t_hs_generator::generate_deserialize_type(ofstream &out,
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     if (tbase == t_base_type::TYPE_STRING && !((t_base_type*)type)->is_binary()) {
       if (use_string_)
-        out << "T.unpack $ ";
+        out << "LT.unpack $ ";
+      else if (use_strict_text_)
+        out << "LT.toStrict $ ";
       out << "decodeUtf8 ";
     }
     out << val;
@@ -1859,7 +1866,9 @@ void t_hs_generator::generate_serialize_type(ofstream &out,
       if (tbase == t_base_type::TYPE_STRING && !((t_base_type*)type)->is_binary()) {
         out << "$ encodeUtf8 ";
         if (use_string_)
-          out << "$ T.pack ";
+          out << "$ LT.pack ";
+        else if (use_strict_text_)
+          out << "$ LT.fromStrict ";
       }
       out << name;
 
@@ -2100,8 +2109,10 @@ string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
         return "ByteString";
       else if (use_string_)
         return "String";
+      else if (use_strict_text_)
+        return "T.Text";
       else
-        return "Text";
+        return "LT.Text";
     case t_base_type::TYPE_BOOL:   return "Bool";
     case t_base_type::TYPE_BYTE:   return "Int8";
     case t_base_type::TYPE_I16:    return "Int16";

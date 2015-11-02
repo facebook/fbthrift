@@ -29,9 +29,8 @@ import Data.Functor ( (<$>) )
 import Data.Hashable
 import Data.Int
 import Data.Maybe (catMaybes)
-import Data.Text.Lazy ( Text )
 import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
-import qualified Data.Text.Lazy as T
+import qualified Data.Text.Lazy as LT
 import Data.Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set
@@ -46,6 +45,6 @@ import Thrift.Arbitraries
 
 
 import Module_Types
-tEST_MAP :: Map.HashMap Int64 (Vector.Vector Text)
+tEST_MAP :: Map.HashMap Int64 (Vector.Vector LT.Text)
 tEST_MAP = (Map.fromList [(0,(Vector.fromList ["foo","bar"])),(1,(Vector.fromList ["baz"]))])
 
