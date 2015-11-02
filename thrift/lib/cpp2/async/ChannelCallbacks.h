@@ -17,6 +17,7 @@
 #ifndef THRIFT_ASYNC_CHANNELCALLBACKS_H_
 #define THRIFT_ASYNC_CHANNELCALLBACKS_H_ 1
 
+#include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/HHWheelTimer.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
@@ -44,7 +45,8 @@ class ChannelCallbacks {
    */
   template <class Channel>
   class TwowayCallback : public MessageChannel::SendCallback,
-                         public folly::HHWheelTimer::Callback {
+                         public folly::HHWheelTimer::Callback,
+                         public folly::DelayedDestruction {
    public:
 #define X_CHECK_STATE_EQ(state, expected) \
   CHECK_EQ(static_cast<int>(state), static_cast<int>(expected))
@@ -77,16 +79,12 @@ class ChannelCallbacks {
         timer->scheduleTimeout(this, timeout);
       }
     }
-    ~TwowayCallback() override {
-      X_CHECK_STATE_EQ(sendState_, QState::DONE);
-      X_CHECK_STATE_EQ(recvState_, QState::DONE);
-      CHECK(cbCalled_);
-    }
     void sendQueued() override {
       X_CHECK_STATE_EQ(sendState_, QState::INIT);
       sendState_ = QState::QUEUED;
     }
     void messageSent() override {
+      DestructorGuard dg(this);
       X_CHECK_STATE_EQ(sendState_, QState::QUEUED);
       if (!cbCalled_) {
         CHECK(cb_);
@@ -98,6 +96,7 @@ class ChannelCallbacks {
       maybeDeleteThis();
     }
     void messageSendError(folly::exception_wrapper&& ex) override {
+      DestructorGuard dg(this);
       X_CHECK_STATE_NE(sendState_, QState::DONE);
       sendState_ = QState::DONE;
       if (recvState_ == QState::QUEUED) {
@@ -119,6 +118,7 @@ class ChannelCallbacks {
     void replyReceived(
         std::unique_ptr<folly::IOBuf> buf,
         std::unique_ptr<apache::thrift::transport::THeader> header) {
+      DestructorGuard dg(this);
       X_CHECK_STATE_NE(sendState_, QState::INIT);
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       recvState_ = QState::DONE;
@@ -143,6 +143,7 @@ class ChannelCallbacks {
     void partialReplyReceived(
         std::unique_ptr<folly::IOBuf> buf,
         std::unique_ptr<apache::thrift::transport::THeader> header) {
+      DestructorGuard dg(this);
       X_CHECK_STATE_NE(sendState_, QState::INIT);
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       chunkTimeoutCallback_.resetTimeout();
@@ -159,6 +160,7 @@ class ChannelCallbacks {
       folly::RequestContext::setContext(old_ctx);
     }
     void requestError(folly::exception_wrapper ex) {
+      DestructorGuard dg(this);
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       recvState_ = QState::DONE;
       cancelTimeout();
@@ -175,6 +177,7 @@ class ChannelCallbacks {
       maybeDeleteThis();
     }
     void timeoutExpired() noexcept override {
+      DestructorGuard dg(this);
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       channel_->eraseCallback(sendSeqId_, this);
       recvState_ = QState::DONE;
@@ -196,6 +199,7 @@ class ChannelCallbacks {
       maybeDeleteThis();
     }
     void expire() {
+      DestructorGuard dg(this);
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       channel_->eraseCallback(sendSeqId_, this);
       recvState_ = QState::DONE;
@@ -209,8 +213,13 @@ class ChannelCallbacks {
     enum class QState { INIT, QUEUED, DONE };
     void maybeDeleteThis() {
       if (sendState_ == QState::DONE && recvState_ == QState::DONE) {
-        delete this;
+        destroy();
       }
+    }
+    ~TwowayCallback() override {
+      X_CHECK_STATE_EQ(sendState_, QState::DONE);
+      X_CHECK_STATE_EQ(recvState_, QState::DONE);
+      CHECK(cbCalled_);
     }
     Channel* channel_;
     uint32_t sendSeqId_;
@@ -245,7 +254,8 @@ class ChannelCallbacks {
 #undef X_CHECK_STATE_EQ
   };
 
-  class OnewayCallback : public MessageChannel::SendCallback {
+  class OnewayCallback : public MessageChannel::SendCallback,
+                         public folly::DelayedDestruction {
    public:
     OnewayCallback(std::unique_ptr<RequestCallback> cb,
                    std::unique_ptr<apache::thrift::ContextStack> ctx,
@@ -255,19 +265,21 @@ class ChannelCallbacks {
           isSecurityActive_(isSecurityActive) {}
     void sendQueued() override {}
     void messageSent() override {
+      DestructorGuard dg(this);
       CHECK(cb_);
       auto old_ctx = folly::RequestContext::setContext(cb_->context_);
       cb_->requestSent();
       folly::RequestContext::setContext(old_ctx);
-      delete this;
+      destroy();
     }
     void messageSendError(folly::exception_wrapper&& ex) override {
+      DestructorGuard dg(this);
       CHECK(cb_);
       auto old_ctx = folly::RequestContext::setContext(cb_->context_);
       cb_->requestError(
           ClientReceiveState(ex, std::move(ctx_), isSecurityActive_));
       folly::RequestContext::setContext(old_ctx);
-      delete this;
+      destroy();
     }
 
    private:
