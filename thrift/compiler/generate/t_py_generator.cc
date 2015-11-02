@@ -1588,8 +1588,8 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
       indent() << "def __repr__(self):" << endl <<
       indent() << "  L = []" << endl <<
       indent() << "  for key, value in six.iteritems(self.__dict__):" << endl <<
-      indent() << "    padding = ' ' * (len(key) + 1)" << endl <<
-      indent() << "    value = pprint.pformat(value)" << endl <<
+      indent() << "    padding = ' ' * 4" << endl <<
+      indent() << "    value = pprint.pformat(value, indent=0)" << endl <<
       indent() << "    value = padding.join(value.splitlines(True))" << endl <<
       indent() << "    L.append('    %s=%s' % (key, value))" << endl;
 
@@ -1647,7 +1647,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
       indent() << "def __repr__(self):" << endl <<
       indent() << "  L = []" << endl <<
       indent() << "  for key in self.__slots__:" << endl <<
-      indent() << "    padding = ' ' * (len(key) + 1)" << endl <<
+      indent() << "    padding = ' ' * 4" << endl <<
       indent() << "    value = pprint.pformat(getattr(self, key))" << endl <<
       indent() << "    value = padding.join(value.splitlines(True))" << endl <<
       indent() << "    L.append('    %s=%s' % (key, value))" << endl <<
