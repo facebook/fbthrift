@@ -67,6 +67,9 @@ class TProcessorEventHandler:
         """Called after the handler method's argument are read"""
         pass
 
+    def handlerDone(self, handler_context, fn_name, args):
+        """Called after the handler's method has executed"""
+
     def preWrite(self, handler_context, fn_name, result):
         """Called before the handler method's results are written"""
         pass

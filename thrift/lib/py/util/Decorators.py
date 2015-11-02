@@ -74,10 +74,12 @@ def process_method(argtype, oneway=False, twisted=False):
                 return func(self, args, handler_ctx, seqid, oprot)
             elif oneway is True:
                 func(self, args, handler_ctx)
+                self._event_handler.handlerDone(handler_ctx, fn_name, args)
             else:
                 result = func(self, args, handler_ctx)
                 if isinstance(result, TApplicationException):
                     reply_type = TMessageType.EXCEPTION
+                self._event_handler.handlerDone(handler_ctx, fn_name, args)
 
                 self._event_handler.preWrite(handler_ctx, fn_name, result)
                 oprot.writeMessageBegin(fn_name, reply_type, seqid)
