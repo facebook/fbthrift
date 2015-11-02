@@ -20,7 +20,6 @@
 #include <algorithm>
 #include <map>
 #include <memory>
-#include <memory>
 #include <set>
 #include <type_traits>
 #include <vector>
@@ -28,7 +27,7 @@
 
 #include <folly/Bits.h>
 #include <folly/Range.h>
-#include <folly/Range.h>
+#include <glog/logging.h>
 #include <thrift/lib/cpp/RelativePtr.h>
 
 /**
@@ -246,8 +245,7 @@ freeze(const T& src, Frozen1 = Frozen1::Marker) {
   // start populating the object graph, starting from 'src' with spare storage
   // allocated at 'buffer'.
   freeze(src, *frozen, buffer);
-  assert(buffer == finish);
-
+  DCHECK_EQ(buffer, finish);
   return ret;
 }
 
