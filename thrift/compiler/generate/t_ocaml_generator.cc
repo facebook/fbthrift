@@ -442,7 +442,7 @@ string t_ocaml_generator::render_const_value(t_type* type, t_const_value* value)
     indent_up();
     indent(out) << "(let " << hm << " = Hashtbl.create " << val.size() << " in" << endl;
     indent_up();
-    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
+    for (auto v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       string key = render_const_value(ktype, v_iter->first);
       string val = render_const_value(vtype, v_iter->second);
       indent(out) << "Hashtbl.add " << hm << " " << key << " " << val << ";" << endl;
@@ -1597,6 +1597,8 @@ string t_ocaml_generator::type_to_enum(t_type* type) {
       return "Protocol.T_I32";
     case t_base_type::TYPE_I64:
       return "Protocol.T_I64";
+    case t_base_type::TYPE_FLOAT:
+      return "Protocol.T_FLOAT";
     case t_base_type::TYPE_DOUBLE:
       return "Protocol.T_DOUBLE";
     }
@@ -1638,6 +1640,7 @@ string t_ocaml_generator::render_ocaml_type(t_type* type) {
       return "Int32.t";
     case t_base_type::TYPE_I64:
       return "Int64.t";
+    case t_base_type::TYPE_FLOAT:
     case t_base_type::TYPE_DOUBLE:
       return "float";
     }
