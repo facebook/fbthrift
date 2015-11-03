@@ -86,7 +86,9 @@ trait NestedContainersClientBase {
   protected function sendImpl_mapList(Indexish<int, Indexish<int, int>> $foo): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new NestedContainers_mapList_args();
-    $args->foo = new Map($foo);
+    $args->foo = (new Map($foo))->map(
+      $_val0 ==> (new Vector($_val0))
+    );
     try {
       $this->eventHandler_->preSend('mapList', $args, $currentseqid);
       if ($this->output_ instanceof TBinaryProtocolAccelerated)
@@ -176,7 +178,7 @@ return;
   protected function sendImpl_mapSet(Indexish<int, Set<int>> $foo): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new NestedContainers_mapSet_args();
-    $args->foo = new Map($foo);
+    $args->foo = (new Map($foo));
     try {
       $this->eventHandler_->preSend('mapSet', $args, $currentseqid);
       if ($this->output_ instanceof TBinaryProtocolAccelerated)
@@ -266,7 +268,9 @@ return;
   protected function sendImpl_listMap(Indexish<int, Indexish<int, int>> $foo): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new NestedContainers_listMap_args();
-    $args->foo = new Vector($foo);
+    $args->foo = (new Vector($foo))->map(
+      $_val0 ==> (new Map($_val0))
+    );
     try {
       $this->eventHandler_->preSend('listMap', $args, $currentseqid);
       if ($this->output_ instanceof TBinaryProtocolAccelerated)
@@ -356,7 +360,7 @@ return;
   protected function sendImpl_listSet(Indexish<int, Set<int>> $foo): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new NestedContainers_listSet_args();
-    $args->foo = new Vector($foo);
+    $args->foo = (new Vector($foo));
     try {
       $this->eventHandler_->preSend('listSet', $args, $currentseqid);
       if ($this->output_ instanceof TBinaryProtocolAccelerated)
@@ -446,7 +450,13 @@ return;
   protected function sendImpl_turtles(Indexish<int, Indexish<int, Indexish<int, Indexish<int, Set<int>>>>> $foo): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new NestedContainers_turtles_args();
-    $args->foo = new Vector($foo);
+    $args->foo = (new Vector($foo))->map(
+      $_val0 ==> (new Vector($_val0))->map(
+        $_val1 ==> (new Map($_val1))->map(
+          $_val2 ==> (new Map($_val2))
+        )
+      )
+    );
     try {
       $this->eventHandler_->preSend('turtles', $args, $currentseqid);
       if ($this->output_ instanceof TBinaryProtocolAccelerated)

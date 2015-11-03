@@ -2475,12 +2475,40 @@ void t_hack_generator::_generate_service_client(
         out <<
           indent() << "$args->" << (*fld_iter)->get_name() << " = ";
         t_type* t = (*fld_iter)->get_type();
-        if (!strict_types_ && t->is_map()) {
-          out <<
-            "new Map($" << (*fld_iter)->get_name() << ");" << endl;
-        } else if (!strict_types_ && t->is_list()) {
-          out <<
-            "new Vector($" << (*fld_iter)->get_name() << ");" << endl;
+        if (!strict_types_ && t->is_container() && !t->is_set()) {
+          t_type* val_type;
+          if (t->is_map()) {
+            out <<
+              "(new Map($" << (*fld_iter)->get_name() << "))";
+            val_type = ((t_map*)t)->get_val_type();
+          } else {
+            out <<
+              "(new Vector($" << (*fld_iter)->get_name() << "))";
+            val_type = ((t_list*)t)->get_elem_type();
+          }
+          val_type = get_true_type(val_type);
+          int nest = 0;
+          t_name_generator namer;
+          while (val_type->is_container() && !val_type->is_set()) {
+            nest++;
+            string val = namer("_val");
+            indent_up();
+            out << "->map(" << endl
+                << indent() << "$" << val << " ==> ";
+            if (val_type->is_map()) {
+              out << "(new Map($" << val << "))";
+              val_type = ((t_map*)val_type)->get_val_type();
+            } else {
+              out << "(new Vector($" << val << "))";
+              val_type = ((t_list*)val_type)->get_elem_type();
+            }
+            val_type = get_true_type(val_type);
+          }
+          for (int i = nest; i > 0; i--) {
+            indent_down();
+            out << endl << indent() << ")";
+          }
+          out << ";" << endl;
         } else {
           out <<
             "$" << (*fld_iter)->get_name() << ";" << endl;
