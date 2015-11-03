@@ -122,6 +122,14 @@ class TAsyncTransportHandler
     getContext()->fireRead(bufQueue_);
   }
 
+  bool isBufferMovable() noexcept override { return true; }
+
+  void readBufferAvailable(
+      std::unique_ptr<folly::IOBuf> buf) noexcept override {
+    bufQueue_.append(std::move(buf));
+    getContext()->fireRead(bufQueue_);
+  }
+
   void readEOF() noexcept override {
     getContext()->fireReadEOF();
   }
