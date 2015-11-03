@@ -12,7 +12,7 @@ from thrift.server.TAsyncioServer import (
     ThriftClientProtocolFactory,
     ThriftAsyncServerFactory,
 )
-
+from thrift.transport.THeaderTransport import THeaderTransport
 
 loop = asyncio.get_event_loop()
 
@@ -93,6 +93,7 @@ def async_test(f):
 
 
 class ThriftTestCase(unittest.TestCase):
+    CLIENT_TYPE = None
 
     @async_test
     def setUp(self):
@@ -104,7 +105,9 @@ class ThriftTestCase(unittest.TestCase):
         )
         self.port = self.server.sockets[0].getsockname()[1]
         self.transport, self.protocol = yield from loop.create_connection(
-            ThriftClientProtocolFactory(ThriftTest.Client),
+            ThriftClientProtocolFactory(
+                ThriftTest.Client,
+                client_type=self.CLIENT_TYPE),
             host=self.host,
             port=self.port,
         )
@@ -182,3 +185,6 @@ class ThriftTestCase(unittest.TestCase):
         yield from self.client.testOneway(2)
         start, end, seconds = yield from self.handler.onewaysQueue.get()
         self.assertAlmostEqual(seconds, (end - start), places=2)
+
+class FramedThriftTestCase(ThriftTestCase):
+    CLIENT_TYPE = THeaderTransport.FRAMED_DEPRECATED

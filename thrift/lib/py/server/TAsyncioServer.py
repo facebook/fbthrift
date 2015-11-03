@@ -116,9 +116,10 @@ def ThriftAsyncServerFactory(
     return server
 
 
-def ThriftClientProtocolFactory(client_class, loop=None, timeouts=None):
+def ThriftClientProtocolFactory(client_class, loop=None, timeouts=None,
+        client_type=None):
     return functools.partial(
-        ThriftHeaderClientProtocol, client_class, loop, timeouts,
+        ThriftHeaderClientProtocol, client_class, loop, timeouts, client_type
     )
 
 
@@ -311,7 +312,10 @@ class ThriftHeaderClientProtocol(FramedProtocol):
     DEFAULT_TIMEOUT = 60.0
     _exception_serializer = None
 
-    def __init__(self, client_class, loop=None, timeouts=None):
+    def __init__(self, client_class,
+                 loop=None,
+                 timeouts=None,
+                 client_type=None):
         super().__init__(loop=loop)
         self._client_class = client_class
         self.client = None
@@ -322,6 +326,7 @@ class ThriftHeaderClientProtocol(FramedProtocol):
         self.timeouts = defaultdict(lambda: default_timeout)
         self.timeouts.update(timeouts)
         self.pending_tasks = {}
+        self.client_type = client_type
 
     def connection_made(self, transport):
         assert self.transport is None, "Transport already instantiated here."
@@ -333,7 +338,7 @@ class ThriftHeaderClientProtocol(FramedProtocol):
         self.client = self._client_class(
             self.thrift_transport,
             WrappedTransportFactory(self),
-            THeaderProtocolFactory())
+            THeaderProtocolFactory(client_type=self.client_type))
 
     def connection_lost(self, exc):
         for fut in self.client._futures.values():

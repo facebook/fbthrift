@@ -57,7 +57,8 @@ class THeaderProtocol(TProtocolBase):
                                         "Unknown protocol requested")
         self.__proto_id = proto_id
 
-    def __init__(self, trans, strictRead=False, client_types=None):
+    def __init__(self, trans, strictRead=False,
+                 client_types=None, client_type=None):
         """Create a THeaderProtocol instance
 
         @param transport(TTransport) The underlying transport.
@@ -70,9 +71,11 @@ class THeaderProtocol(TProtocolBase):
         if isinstance(trans, THeaderTransport):
             trans._THeaderTransport__supported_client_types = set(
                     client_types or (THeaderTransport.HEADERS_CLIENT_TYPE,))
+            if client_type is not None:
+                trans._THeaderTransport__client_type = client_type
             htrans = trans
         else:
-            htrans = THeaderTransport(trans, client_types)
+            htrans = THeaderTransport(trans, client_types, client_type)
         TProtocolBase.__init__(self, htrans)
         self.strictRead = strictRead
         self.reset_protocol()
@@ -211,10 +214,12 @@ class THeaderProtocol(TProtocolBase):
         return self.__proto.readString()
 
 class THeaderProtocolFactory(object):
-    def __init__(self, strictRead=False, client_types=None):
+    def __init__(self, strictRead=False, client_types=None, client_type=None):
         self.strictRead = strictRead
         self.client_types = client_types
+        self.client_type = client_type
 
     def getProtocol(self, trans):
-        prot = THeaderProtocol(trans, self.strictRead, self.client_types)
+        prot = THeaderProtocol(trans, self.strictRead, self.client_types,
+                self.client_type)
         return prot

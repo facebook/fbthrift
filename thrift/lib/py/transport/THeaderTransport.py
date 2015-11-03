@@ -104,7 +104,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
     __hmac_func = None
     __hmac_verify_func = None
 
-    def __init__(self, trans, client_types=None):
+    def __init__(self, trans, client_types=None, client_type=None):
         self.__trans = trans
         self.__rbuf = StringIO()
         self.__rbuf_frame = False
@@ -117,7 +117,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__supported_client_types = set(client_types or
                                             (self.HEADERS_CLIENT_TYPE,))
         self.__proto_id = 0  # default to binary, because fastbinary is fast
-        self.__client_type = self.HEADERS_CLIENT_TYPE
+        self.__client_type = client_type or self.HEADERS_CLIENT_TYPE
         self.__read_headers = {}
         self.__read_persistent_headers = {}
         self.__write_headers = {}
