@@ -282,7 +282,9 @@ void ThriftServer::setup() {
       ioThreadPool_->setNumThreads(nWorkers_);
 
       ServerBootstrap::childHandler(
-        std::make_shared<ThriftAcceptorFactory>(this));
+          acceptorFactory_ ? acceptorFactory_
+                           : std::make_shared<ThriftAcceptorFactory>(this));
+
       {
         std::lock_guard<std::mutex> lock(ioGroupMutex_);
         ServerBootstrap::group(acceptPool_, ioThreadPool_);

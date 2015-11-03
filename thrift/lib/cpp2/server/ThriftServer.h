@@ -111,6 +111,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   double acceptRateAdjustSpeed_ = 0.0;
 
   /**
+   * Acceptors accept and process incoming connections.  The acceptor factory
+   * helps create acceptors.
+   */
+  std::shared_ptr<wangle::AcceptorFactory> acceptorFactory_;
+
+  /**
    * ThreadFactory used to create worker threads
    */
   std::shared_ptr<apache::thrift::concurrency::ThreadFactory> threadFactory_;
@@ -390,6 +396,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::function<std::unique_ptr<SaslServer> (
       folly::EventBase*)> getSaslServerFactory() {
     return saslServerFactory_;
+  }
+
+  void setAcceptorFactory(
+      const std::shared_ptr<wangle::AcceptorFactory>& acceptorFactory) {
+    acceptorFactory_ = acceptorFactory;
   }
 
   /**

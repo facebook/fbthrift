@@ -101,18 +101,35 @@ class Cpp2Worker
    */
   int getPendingCount() const;
 
- private:
-  /// The mother ship.
-  ThriftServer* server_;
+ protected:
+  enum { kPeekCount = 9 };
+  using PeekingHelper = wangle::PeekingAcceptorHandshakeHelper<kPeekCount>;
 
-  /// An instance's folly::EventBase for I/O.
-  folly::EventBase* eventBase_;
+  class PeekingCallback : public PeekingHelper::Callback {
+   public:
+    folly::Optional<SecureTransportType> getSecureTransportType(
+        std::array<uint8_t, kPeekCount> peekedBytes) override;
+  };
+
+  /**
+   * The socket peeker to use to determine the type of incoming byte stream.
+   */
+  virtual PeekingHelper::Callback* getPeekingHandshakeCallback() {
+    return &peekingCallback_;
+  }
 
   void onNewConnection(folly::AsyncSocket::UniquePtr,
                        const folly::SocketAddress*,
                        const std::string&,
                        SecureTransportType,
                        const wangle::TransportInfo&) override;
+
+ private:
+  /// The mother ship.
+  ThriftServer* server_;
+
+  /// An instance's folly::EventBase for I/O.
+  folly::EventBase* eventBase_;
 
   folly::AsyncSocket::UniquePtr makeNewAsyncSocket(folly::EventBase* base,
                                                    int fd) override {
@@ -143,14 +160,6 @@ class Cpp2Worker
   int pendingCount_;
   std::chrono::steady_clock::time_point pendingTime_;
 
-  enum { kPeekCount = 9 };
-  using PeekingHelper = wangle::PeekingAcceptorHandshakeHelper<kPeekCount>;
-
-  class PeekingCallback : public PeekingHelper::Callback {
-   public:
-    folly::Optional<SecureTransportType> getSecureTransportType(
-        std::array<uint8_t, kPeekCount> peekedBytes) override;
-  };
   PeekingCallback peekingCallback_;
 
   void startHandshakeHelper(
@@ -180,7 +189,7 @@ class Cpp2Worker
           clientAddr,
           acceptTime,
           tinfo,
-          &peekingCallback_
+          getPeekingHandshakeCallback()
         );
       helper->start();
       break;
