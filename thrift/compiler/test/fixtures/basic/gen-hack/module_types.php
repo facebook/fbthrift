@@ -12,7 +12,7 @@ enum MyEnum: int {
 }
 type MyEnumType = MyEnum;
 
-class MyStruct implements IThriftStruct {
+class MyStruct implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'MyIntField',
@@ -27,6 +27,10 @@ class MyStruct implements IThriftStruct {
     'MyIntField' => 1,
     'MyStringField' => 2,
   };
+  const type TShape = shape(
+    'MyIntField' => int,
+    'MyStringField' => string,
+  );
   const int STRUCTURAL_ID = 4929291502389600438;
   public int $MyIntField;
   public string $MyStringField;
@@ -48,6 +52,12 @@ class MyStruct implements IThriftStruct {
     return 'MyStruct';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+      'MyIntField' => $this->MyIntField,
+      'MyStringField' => $this->MyStringField,
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';

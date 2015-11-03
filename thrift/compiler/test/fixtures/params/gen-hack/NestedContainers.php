@@ -1179,7 +1179,7 @@ class NestedContainersProcessor extends NestedContainersSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class NestedContainers_mapList_args implements IThriftStruct {
+class NestedContainers_mapList_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -1203,6 +1203,9 @@ class NestedContainers_mapList_args implements IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const type TShape = shape(
+    'foo' => array<int, array<int>>,
+  );
   const int STRUCTURAL_ID = 860610040470759468;
   public Map<int, Vector<int>> $foo;
 
@@ -1218,6 +1221,13 @@ class NestedContainers_mapList_args implements IThriftStruct {
     return 'NestedContainers_mapList_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+      'foo' => $this->foo->map(
+        $_val0 ==> $_val0->toArray()
+      )->toArray(),
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';
@@ -1326,7 +1336,7 @@ class NestedContainers_mapList_args implements IThriftStruct {
 
 }
 
-class NestedContainers_mapList_result implements IThriftStruct {
+class NestedContainers_mapList_result implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1380,7 +1390,7 @@ class NestedContainers_mapList_result implements IThriftStruct {
 
 }
 
-class NestedContainers_mapSet_args implements IThriftStruct {
+class NestedContainers_mapSet_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -1404,6 +1414,9 @@ class NestedContainers_mapSet_args implements IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const type TShape = shape(
+    'foo' => array<int, array<int, bool>>,
+  );
   const int STRUCTURAL_ID = 860610040470759468;
   public Map<int, Set<int>> $foo;
 
@@ -1419,6 +1432,13 @@ class NestedContainers_mapSet_args implements IThriftStruct {
     return 'NestedContainers_mapSet_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+      'foo' => $this->foo->map(
+        $_val0 ==> array_fill_keys($_val0->toValuesArray(), bool)->toArray()
+      )->toArray(),
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';
@@ -1527,7 +1547,7 @@ class NestedContainers_mapSet_args implements IThriftStruct {
 
 }
 
-class NestedContainers_mapSet_result implements IThriftStruct {
+class NestedContainers_mapSet_result implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1581,7 +1601,7 @@ class NestedContainers_mapSet_result implements IThriftStruct {
 
 }
 
-class NestedContainers_listMap_args implements IThriftStruct {
+class NestedContainers_listMap_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -1605,6 +1625,9 @@ class NestedContainers_listMap_args implements IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const type TShape = shape(
+    'foo' => array<array<int, int>>,
+  );
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Map<int, int>> $foo;
 
@@ -1620,6 +1643,13 @@ class NestedContainers_listMap_args implements IThriftStruct {
     return 'NestedContainers_listMap_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+      'foo' => $this->foo->map(
+        $_val0 ==> $_val0->toArray()
+      )->toArray(),
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';
@@ -1728,7 +1758,7 @@ class NestedContainers_listMap_args implements IThriftStruct {
 
 }
 
-class NestedContainers_listMap_result implements IThriftStruct {
+class NestedContainers_listMap_result implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1782,7 +1812,7 @@ class NestedContainers_listMap_result implements IThriftStruct {
 
 }
 
-class NestedContainers_listSet_args implements IThriftStruct {
+class NestedContainers_listSet_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -1802,6 +1832,9 @@ class NestedContainers_listSet_args implements IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const type TShape = shape(
+    'foo' => array<array<int, bool>>,
+  );
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Set<int>> $foo;
 
@@ -1817,6 +1850,13 @@ class NestedContainers_listSet_args implements IThriftStruct {
     return 'NestedContainers_listSet_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+      'foo' => $this->foo->map(
+        $_val0 ==> array_fill_keys($_val0->toValuesArray(), bool)->toArray()
+      )->toArray(),
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';
@@ -1921,7 +1961,7 @@ class NestedContainers_listSet_args implements IThriftStruct {
 
 }
 
-class NestedContainers_listSet_result implements IThriftStruct {
+class NestedContainers_listSet_result implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1975,7 +2015,7 @@ class NestedContainers_listSet_result implements IThriftStruct {
 
 }
 
-class NestedContainers_turtles_args implements IThriftStruct {
+class NestedContainers_turtles_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -2018,6 +2058,9 @@ class NestedContainers_turtles_args implements IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const type TShape = shape(
+    'foo' => array<array<array<int, array<int, array<int, bool>>>>>,
+  );
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo;
 
@@ -2033,6 +2076,19 @@ class NestedContainers_turtles_args implements IThriftStruct {
     return 'NestedContainers_turtles_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+      'foo' => $this->foo->map(
+        $_val0 ==> $_val0->map(
+          $_val1 ==> $_val1->map(
+            $_val2 ==> $_val2->map(
+              $_val3 ==> array_fill_keys($_val3->toValuesArray(), bool)->toArray()
+            )->toArray()
+          )->toArray()
+        )->toArray()
+      )->toArray(),
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';
@@ -2217,7 +2273,7 @@ class NestedContainers_turtles_args implements IThriftStruct {
 
 }
 
-class NestedContainers_turtles_result implements IThriftStruct {
+class NestedContainers_turtles_result implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {

@@ -1326,11 +1326,13 @@ class MyServiceProcessor extends MyServiceSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class MyService_ping_args implements IThriftStruct {
+class MyService_ping_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
   };
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  ) {
@@ -1340,6 +1342,10 @@ class MyService_ping_args implements IThriftStruct {
     return 'MyService_ping_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';
@@ -1380,7 +1386,7 @@ class MyService_ping_args implements IThriftStruct {
 
 }
 
-class MyService_ping_result implements IThriftStruct {
+class MyService_ping_result implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1434,11 +1440,13 @@ class MyService_ping_result implements IThriftStruct {
 
 }
 
-class MyService_getRandomData_args implements IThriftStruct {
+class MyService_getRandomData_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
   };
+  const type TShape = shape(
+  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  ) {
@@ -1448,6 +1456,10 @@ class MyService_getRandomData_args implements IThriftStruct {
     return 'MyService_getRandomData_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';
@@ -1488,7 +1500,7 @@ class MyService_getRandomData_args implements IThriftStruct {
 
 }
 
-class MyService_getRandomData_result implements IThriftStruct {
+class MyService_getRandomData_result implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
@@ -1561,7 +1573,7 @@ class MyService_getRandomData_result implements IThriftStruct {
 
 }
 
-class MyService_hasDataById_args implements IThriftStruct {
+class MyService_hasDataById_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -1571,6 +1583,9 @@ class MyService_hasDataById_args implements IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
   };
+  const type TShape = shape(
+    'id' => int,
+  );
   const int STRUCTURAL_ID = 3807211151619655933;
   public int $id;
 
@@ -1586,6 +1601,11 @@ class MyService_hasDataById_args implements IThriftStruct {
     return 'MyService_hasDataById_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+      'id' => $this->id,
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';
@@ -1639,7 +1659,7 @@ class MyService_hasDataById_args implements IThriftStruct {
 
 }
 
-class MyService_hasDataById_result implements IThriftStruct {
+class MyService_hasDataById_result implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
@@ -1712,7 +1732,7 @@ class MyService_hasDataById_result implements IThriftStruct {
 
 }
 
-class MyService_getDataById_args implements IThriftStruct {
+class MyService_getDataById_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -1722,6 +1742,9 @@ class MyService_getDataById_args implements IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
   };
+  const type TShape = shape(
+    'id' => int,
+  );
   const int STRUCTURAL_ID = 3807211151619655933;
   public int $id;
 
@@ -1737,6 +1760,11 @@ class MyService_getDataById_args implements IThriftStruct {
     return 'MyService_getDataById_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+      'id' => $this->id,
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';
@@ -1790,7 +1818,7 @@ class MyService_getDataById_args implements IThriftStruct {
 
 }
 
-class MyService_getDataById_result implements IThriftStruct {
+class MyService_getDataById_result implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
@@ -1863,7 +1891,7 @@ class MyService_getDataById_result implements IThriftStruct {
 
 }
 
-class MyService_putDataById_args implements IThriftStruct {
+class MyService_putDataById_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -1878,6 +1906,10 @@ class MyService_putDataById_args implements IThriftStruct {
     'id' => 1,
     'data' => 2,
   };
+  const type TShape = shape(
+    'id' => int,
+    'data' => string,
+  );
   const int STRUCTURAL_ID = 1055685087985327657;
   public int $id;
   public string $data;
@@ -1899,6 +1931,12 @@ class MyService_putDataById_args implements IThriftStruct {
     return 'MyService_putDataById_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+      'id' => $this->id,
+      'data' => $this->data,
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';
@@ -1965,7 +2003,7 @@ class MyService_putDataById_args implements IThriftStruct {
 
 }
 
-class MyService_putDataById_result implements IThriftStruct {
+class MyService_putDataById_result implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -2019,7 +2057,7 @@ class MyService_putDataById_result implements IThriftStruct {
 
 }
 
-class MyService_lobDataById_args implements IThriftStruct {
+class MyService_lobDataById_args implements IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -2034,6 +2072,10 @@ class MyService_lobDataById_args implements IThriftStruct {
     'id' => 1,
     'data' => 2,
   };
+  const type TShape = shape(
+    'id' => int,
+    'data' => string,
+  );
   const int STRUCTURAL_ID = 1055685087985327657;
   public int $id;
   public string $data;
@@ -2055,6 +2097,12 @@ class MyService_lobDataById_args implements IThriftStruct {
     return 'MyService_lobDataById_args';
   }
 
+  public function __toShape(): self::TShape {
+    return shape(
+      'id' => $this->id,
+      'data' => $this->data,
+    );
+  }
   public function read(TProtocol $input): int {
     $xfer = 0;
     $fname = '';

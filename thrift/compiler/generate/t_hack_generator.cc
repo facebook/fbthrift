@@ -52,6 +52,7 @@ class t_hack_generator : public t_oop_generator {
     no_nullables_ = option_is_specified(parsed_options, "nonullables");
     map_construct_ = option_is_specified(parsed_options, "mapconstruct");
     struct_trait_ = option_is_specified(parsed_options, "structtrait");
+    shapes_ = option_is_specified(parsed_options, "shapes");
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
 
@@ -96,6 +97,9 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_php_union_enum(std::ofstream& out, t_struct* tstruct);
   void generate_php_union_methods(std::ofstream& out, t_struct* tstruct);
+
+  void generate_php_struct_shape_spec(std::ofstream& out, t_struct* tstruct);
+  void generate_php_struct_shape_methods(std::ofstream& out, t_struct* tstruct);
 
   void generate_php_type_spec(std::ofstream& out, t_type* t);
   void generate_php_struct_spec(std::ofstream& out, t_struct* tstruct);
@@ -263,7 +267,7 @@ class t_hack_generator : public t_oop_generator {
                                    t_struct* arg_list);
   std::string render_string(std::string value);
 
-  std::string type_to_typehint(t_type* ttype, bool nullable=false);
+  std::string type_to_typehint(t_type* ttype, bool nullable=false, bool shape=false);
   std::string type_to_param_typehint(t_type* ttype, bool nullable=false);
 
   std::string union_enum_name(t_struct* tstruct) {
@@ -393,6 +397,11 @@ class t_hack_generator : public t_oop_generator {
    * True if we should add a "use StructNameTrait" to the generated class
    */
   bool struct_trait_;
+
+  /**
+   * True if we should generate Shape types for the generated structs
+   */
+  bool shapes_;
 };
 
 void t_hack_generator::generate_json_enum(std::ofstream& out,
@@ -1190,6 +1199,132 @@ void t_hack_generator::generate_php_struct_struct_trait(std::ofstream& out,
   }
 }
 
+void t_hack_generator::generate_php_struct_shape_spec(std::ofstream& out,
+                                                     t_struct* tstruct) {
+  indent(out) << "const type TShape = shape(" << endl;
+  const vector<t_field*>& members = tstruct->get_members();
+  vector<t_field*>::const_iterator m_iter;
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    t_type* t = get_true_type((*m_iter)->get_type());
+
+    string dval = "";
+    if ((*m_iter)->get_value() != nullptr
+        && !(t->is_struct()
+          || t->is_xception()
+        )
+    ) {
+      dval = render_const_value(t, (*m_iter)->get_value());
+    } else {
+      dval = render_default_value(t);
+    }
+
+    // TODO(ckwalsh) Extract this logic into a helper function
+    bool nullable = (dval == "null")
+        || tstruct->is_union()
+        || ((*m_iter)->get_req() == t_field::T_OPTIONAL
+            && (*m_iter)->get_value() == nullptr)
+        || (t->is_enum()
+            && (*m_iter)->get_req() != t_field::T_REQUIRED);
+    string typehint = nullable ? "?" : "";
+
+    typehint += type_to_typehint(t, false, true);
+
+    indent(out) << "  '" << (*m_iter)->get_name() << "' => " << typehint << "," << endl;
+  }
+  indent(out) << ");" << endl;
+}
+
+void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
+                                                     t_struct* tstruct) {
+  indent(out) << "public function __toShape(): self::TShape {" << endl;
+  indent_up();
+  indent(out) << "return shape(" << endl;
+  indent_up();
+  const vector<t_field*>& members = tstruct->get_members();
+  vector<t_field*>::const_iterator m_iter;
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    t_type* t = get_true_type((*m_iter)->get_type());
+
+    indent(out) << "'" << (*m_iter)->get_name() << "' => ";
+
+    stringstream val;
+
+    if (t->is_container()) {
+      if (t->is_map() || t->is_list()) {
+        val << "$this->" << (*m_iter)->get_name();
+        t_type* val_type;
+        if (t->is_map()) {
+          val_type = ((t_map*)t)->get_val_type();
+        } else {
+          val_type = ((t_list*)t)->get_elem_type();
+        }
+
+        val_type = get_true_type(val_type);
+        int nest = 0;
+        t_name_generator namer;
+        while (val_type->is_container()) {
+          nest++;
+          string tmp = namer("_val");
+          indent_up();
+          val << "->map(" << endl
+              <<  indent() << "$" << tmp << " ==> ";
+          if (val_type->is_set()) {
+            val <<  "array_fill_keys($" << tmp << "->toValuesArray(), bool)";
+          } else if (val_type->is_container()) {
+            val << "$" << tmp;
+          } else if (val_type->is_struct()) {
+            string dval = render_default_value(t);
+
+            // TODO(ckwalsh) Extract this logic into a helper function
+            bool nullable = (dval == "null")
+                || tstruct->is_union()
+                || ((*m_iter)->get_req() == t_field::T_OPTIONAL
+                    && (*m_iter)->get_value() == nullptr)
+                || (t->is_enum()
+                    && (*m_iter)->get_req() != t_field::T_REQUIRED);
+            val << "$" << tmp << (nullable ? "?" : "") << "->__toShape()";
+          }
+          if (val_type->is_map()) {
+            val_type = ((t_map*)val_type)->get_val_type();
+          } else {
+            val_type = ((t_list*)val_type)->get_elem_type();
+          }
+          val_type = get_true_type(val_type);
+        }
+
+        for (int i = nest; i > 0; i--) {
+          indent_down();
+          val << "->toArray()" << endl << indent() << ")";
+        }
+
+        val << "->toArray()";
+      } else {
+        val << "array_fill_keys($this->" << (*m_iter)->get_name() << "->toValuesArray(), bool)";
+      }
+    } else if (t->is_struct()) {
+      val << "$this->" << (*m_iter)->get_name();
+      string dval = render_default_value(t);
+
+      // TODO(ckwalsh) Extract this logic into a helper function
+      bool nullable = (dval == "null")
+          || tstruct->is_union()
+          || ((*m_iter)->get_req() == t_field::T_OPTIONAL
+              && (*m_iter)->get_value() == nullptr)
+          || (t->is_enum()
+              && (*m_iter)->get_req() != t_field::T_REQUIRED);
+      val << (nullable ? "?" : "") << "->__toShape()";
+    } else {
+      val << "$this->" << (*m_iter)->get_name();
+    }
+
+    out << val.str() << "," << endl;
+  }
+  indent_down();
+  indent(out) << ");" << endl;
+  indent_down();
+  indent(out) << "}" << endl;
+}
+
 /**
  * Generates the structural ID definition, see generate_structural_id()
  * for information about the structural ID.
@@ -1300,12 +1435,15 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     out << " extends TException";
   }
   out <<
-    " implements IThriftStruct {" << endl;
+    " implements " << (shapes_ ? "IThriftShapishStruct" : "IThriftStruct") << " {" << endl;
   indent_up();
 
   generate_php_struct_struct_trait(out, tstruct);
-
   generate_php_struct_spec(out, tstruct);
+
+  if (shapes_ && !is_exception && !is_result) {
+    generate_php_struct_shape_spec(out, tstruct);
+  }
 
   generate_php_structural_id(out, tstruct);
 
@@ -1330,6 +1468,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     // result structs only contain fields: success and e.
     // success is whatever type the method returns, but must be nullable
     // regardless, since if there is an exception we expect it to be null
+    // TODO(ckwalsh) Extract this logic into a helper function
     bool nullable = (dval == "null")
         || tstruct->is_union()
         || is_result
@@ -1426,6 +1565,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
       // result structs only contain fields: success and e.
       // success is whatever type the method returns, but must be nullable
       // regardless, since if there is an exception we expect it to be null
+      // TODO(ckwalsh) Extract this logic into a helper function
       bool nullable = (dval == "null")
           || is_result
           || ((*m_iter)->get_req() == t_field::T_OPTIONAL
@@ -1461,6 +1601,9 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     endl;
   if (tstruct->is_union()) {
     generate_php_union_methods(out, tstruct);
+  }
+  if (shapes_ && !is_exception && !is_result) {
+    generate_php_struct_shape_methods(out, tstruct);
   }
   generate_php_struct_reader(out, tstruct);
   generate_php_struct_writer(out, tstruct);
@@ -2228,7 +2371,7 @@ void t_hack_generator::generate_php_docstring_args(ofstream& out,
 /**
  * Generate an appropriate string for a php typehint
  */
-string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable) {
+string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
   if (ttype->is_base_type()) {
     switch (((t_base_type*)ttype)->get_base()) {
       case t_base_type::TYPE_VOID:
@@ -2249,7 +2392,7 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable) {
         return "mixed";
     }
   } else if (ttype->is_typedef()) {
-    return type_to_typehint(((t_typedef*) ttype)->get_type());
+    return type_to_typehint(((t_typedef*) ttype)->get_type(), nullable, shape);
   } else if (ttype->is_enum()) {
     if (is_bitmask_enum((t_enum*) ttype)) {
       return "int";
@@ -2257,17 +2400,17 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable) {
       return (nullable ? "?" : "") + php_namespace(ttype->get_program()) + ttype->get_name();
     }
   } else if (ttype->is_struct() || ttype->is_xception()) {
-    return (nullable ? "?" : "") + php_namespace(ttype->get_program()) + ttype->get_name();
+    return (nullable ? "?" : "") + php_namespace(ttype->get_program()) + ttype->get_name() + (shape ? "::TShape" : "");
   } else if (ttype->is_list()) {
-    return "Vector<" + type_to_typehint(((t_list*)ttype)->get_elem_type())  + ">";
+    string prefix = shape ? "array" : "Vector";
+    return prefix + "<" + type_to_typehint(((t_list*)ttype)->get_elem_type(), false, shape)  + ">";
   } else if (ttype->is_map()) {
-    return "Map<" + type_to_typehint(((t_map*)ttype)->get_key_type()) + ", "  + type_to_typehint(((t_map*)ttype)->get_val_type()) + ">";
+    string prefix = shape ? "array" : "Map";
+    return prefix + "<" + type_to_typehint(((t_map*)ttype)->get_key_type(), nullable, shape) + ", "  + type_to_typehint(((t_map*)ttype)->get_val_type(), false, shape) + ">";
   } else if (ttype->is_set()) {
-    if (arraysets_) {
-      return "array<" + type_to_typehint(((t_set*)ttype)->get_elem_type()) + ", bool>";
-    } else {
-      return "Set<" + type_to_typehint(((t_set*)ttype)->get_elem_type()) + ">";
-    }
+    string prefix = (arraysets_ || shape) ? "array" : "Set";
+    string suffix = (arraysets_ || shape) ? ", bool>" : ">";
+    return prefix + "<" + type_to_typehint(((t_set*)ttype)->get_elem_type(), false, shape) + suffix;
   } else {
     return "mixed";
   }
@@ -3607,4 +3750,5 @@ THRIFT_REGISTER_GENERATOR(hack, "HACK",
 "    nonullables      Instantiate struct fields within structs, rather than nullable\n"
 "    mapconstruct     Struct constructors accept arrays/Maps rather than their fields\n"
 "    structtrait         Add 'use [StructName]Trait;' to generated classes\n"
+"    shapes           Generate Shape definitions for structs\n"
 );
