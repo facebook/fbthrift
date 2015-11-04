@@ -152,10 +152,16 @@ class THttpClient(TTransportBase):
             for key, val in custom_headers_iter:
                 self.__http.putheader(key, val)
 
-        self.__http.endheaders()
+        try:
+            self.__http.endheaders()
 
-        # Write payload
-        self.__http.send(data)
+            # Write payload
+            self.__http.send(data)
+        except socket.gaierror as e:
+            raise TTransportException(TTransportException.NOT_OPEN, str(e))
+        except Exception as e:
+            raise TTransportException(TTransportException.UNKNOWN, str(e))
+
 
         # Get reply to flush the request
         self.response = self.__http.getresponse()
