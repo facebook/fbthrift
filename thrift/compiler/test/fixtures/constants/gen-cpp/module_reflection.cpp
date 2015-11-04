@@ -51,12 +51,36 @@ void reflectionInitializer_9022508676980868684(::apache::thrift::reflection::Sch
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[3];
-    f.isRequired = true;
+    f.isRequired = false;
     f.type = 16163282776448022760U;
     f.name = "employer";
     f.order = 2;
   }
   reflectionInitializer_16163282776448022760(schema);  // enum module.Company
+}
+
+// Reflection initializer for struct module.Range
+void reflectionInitializer_7757081658652615948(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 7757081658652615948U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.Range";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "min";
+    f.order = 0;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "max";
+    f.order = 1;
+  }
 }
 
 }

@@ -42,6 +42,8 @@ public class ModuleLogger {
           writeFieldBegin(oprot, Module.Internship_weeks);
           oprot.writeI32((int) mMap.get(Module.Internship_weeks));
           oprot.writeFieldEnd();
+        } else {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'Internship.weeks' was not present!");
         }
       
         if (mMap.containsKey(Module.Internship_title) && mMap.get(Module.Internship_title) != null) {
@@ -54,6 +56,29 @@ public class ModuleLogger {
           writeFieldBegin(oprot, Module.Internship_employer);
           oprot.writeI32(((ModuleEnum) mMap.get(Module.Internship_employer)).getValue());
           oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case Range: {
+        oprot.writeStructBegin(new TStruct("Range"));
+        if (mMap.containsKey(Module.Range_min) && mMap.get(Module.Range_min) != null) {
+          writeFieldBegin(oprot, Module.Range_min);
+          oprot.writeI32((int) mMap.get(Module.Range_min));
+          oprot.writeFieldEnd();
+        } else {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'Range.min' was not present!");
+        }
+      
+        if (mMap.containsKey(Module.Range_max) && mMap.get(Module.Range_max) != null) {
+          writeFieldBegin(oprot, Module.Range_max);
+          oprot.writeI32((int) mMap.get(Module.Range_max));
+          oprot.writeFieldEnd();
+        } else {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'Range.max' was not present!");
         }
       
         oprot.writeFieldStop();

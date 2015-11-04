@@ -27,6 +27,16 @@ class module_CONSTANTS {
       "Software Engineer",
       Company::INSTAGRAM,
     );
+  public static Vector<Range> $kRanges = Vector {
+      new Range(
+        1,
+        2,
+      ),
+      new Range(
+        5,
+        6,
+      ),
+    };
   public static Vector<Internship> $internList = Vector {
       new Internship(
         12,
@@ -73,6 +83,16 @@ class module_CONSTANTS {
         "Software Engineer",
         Company::INSTAGRAM,
       ),
+    "kRanges" => Vector {
+        new Range(
+          1,
+          2,
+        ),
+        new Range(
+          5,
+          6,
+        ),
+      },
     "internList" => Vector {
         new Internship(
           12,

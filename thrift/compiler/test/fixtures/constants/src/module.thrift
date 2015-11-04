@@ -12,9 +12,9 @@ enum City { NYC, MPK, SEA, LON }
 enum Company { FACEBOOK, WHATSAPP, OCULUS, INSTAGRAM }
 
 struct Internship {
-  1: i32 weeks;
+  1: required i32 weeks;
   2: string title;
-  3: Company employer;
+  3: optional Company employer;
 }
 
 const Internship instagram = {
@@ -22,6 +22,22 @@ const Internship instagram = {
   "title": "Software Engineer",
   "employer": Company.INSTAGRAM
 };
+
+struct Range {
+  1: required i32 min;
+  2: required i32 max;
+}
+
+const list<Range> kRanges = [
+  {
+    "min": 1,
+    "max": 2,
+  },
+  {
+    "min": 5,
+    "max": 6,
+  },
+]
 
 const list<Internship> internList = [
   instagram,

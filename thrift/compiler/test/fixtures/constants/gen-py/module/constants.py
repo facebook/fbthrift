@@ -42,6 +42,17 @@ instagram = Internship(**{
   "employer" :   3,
 })
 
+kRanges = [
+  Range(**{
+    "min" : 1,
+    "max" : 2,
+  }),
+  Range(**{
+    "min" : 5,
+    "max" : 6,
+  }),
+]
+
 internList = [
   Internship(**{
     "weeks" : 12,

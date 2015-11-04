@@ -87,7 +87,9 @@ bool Internship::operator == (const Internship & rhs) const {
     return false;
   if (!(this->title == rhs.title))
     return false;
-  if (!(this->employer == rhs.employer))
+  if (__isset.employer != rhs.__isset.employer)
+    return false;
+  else if (__isset.employer && !(employer == rhs.employer))
     return false;
   return true;
 }
@@ -109,6 +111,7 @@ uint32_t Internship::read(apache::thrift::protocol::TProtocol* iprot) {
   using apache::thrift::protocol::TProtocolException;
 
 
+  bool isset_weeks = false;
 
   while (true)
   {
@@ -121,7 +124,7 @@ uint32_t Internship::read(apache::thrift::protocol::TProtocol* iprot) {
       case 1:
         if (ftype == apache::thrift::protocol::T_I32) {
           xfer += iprot->readI32(this->weeks);
-          this->__isset.weeks = true;
+          isset_weeks = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -136,9 +139,9 @@ uint32_t Internship::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 3:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast5;
-          xfer += iprot->readI32(ecast5);
-          this->employer = (Company)ecast5;
+          int32_t ecast7;
+          xfer += iprot->readI32(ecast7);
+          this->employer = (Company)ecast7;
           this->__isset.employer = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -153,6 +156,8 @@ uint32_t Internship::read(apache::thrift::protocol::TProtocol* iprot) {
 
   xfer += iprot->readStructEnd();
 
+  if (!isset_weeks)
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'weeks' was not found in serialized data! Struct: Internship");
   return xfer;
 }
 
@@ -171,9 +176,11 @@ uint32_t Internship::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("title", apache::thrift::protocol::T_STRING, 2);
   xfer += oprot->writeString(this->title);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("employer", apache::thrift::protocol::T_I32, 3);
-  xfer += oprot->writeI32((int32_t)this->employer);
-  xfer += oprot->writeFieldEnd();
+  if (this->__isset.employer) {
+    xfer += oprot->writeFieldBegin("employer", apache::thrift::protocol::T_I32, 3);
+    xfer += oprot->writeI32((int32_t)this->employer);
+    xfer += oprot->writeFieldEnd();
+  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -191,10 +198,7 @@ void swap(Internship &a, Internship &b) {
 
 void merge(const Internship& from, Internship& to) {
   using apache::thrift::merge;
-  if (from.__isset.weeks) {
-    merge(from.weeks, to.weeks);
-    to.__isset.weeks = true;
-  }
+  merge(from.weeks, to.weeks);
   if (from.__isset.title) {
     merge(from.title, to.title);
     to.__isset.title = true;
@@ -207,10 +211,7 @@ void merge(const Internship& from, Internship& to) {
 
 void merge(Internship&& from, Internship& to) {
   using apache::thrift::merge;
-  if (from.__isset.weeks) {
-    merge(std::move(from.weeks), to.weeks);
-    to.__isset.weeks = true;
-  }
+  merge(std::move(from.weeks), to.weeks);
   if (from.__isset.title) {
     merge(std::move(from.title), to.title);
     to.__isset.title = true;
@@ -219,6 +220,117 @@ void merge(Internship&& from, Internship& to) {
     merge(std::move(from.employer), to.employer);
     to.__isset.employer = true;
   }
+}
+
+const uint64_t Range::_reflection_id;
+void Range::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::module_reflection_::reflectionInitializer_7757081658652615948(schema);
+}
+
+bool Range::operator == (const Range & rhs) const {
+  if (!(this->min == rhs.min))
+    return false;
+  if (!(this->max == rhs.max))
+    return false;
+  return true;
+}
+
+uint32_t Range::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::module_reflection_::reflectionInitializer_7757081658652615948(*schema);
+    iprot->setNextStructType(Range::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+  bool isset_min = false;
+  bool isset_max = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->min);
+          isset_min = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->max);
+          isset_max = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_min)
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'min' was not found in serialized data! Struct: Range");
+  if (!isset_max)
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'max' was not found in serialized data! Struct: Range");
+  return xfer;
+}
+
+void Range::__clear() {
+  min = 0;
+  max = 0;
+}
+uint32_t Range::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Range");
+  xfer += oprot->writeFieldBegin("min", apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->min);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("max", apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->max);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(Range &a, Range &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.min, b.min);
+  swap(a.max, b.max);
+}
+
+void merge(const Range& from, Range& to) {
+  using apache::thrift::merge;
+  merge(from.min, to.min);
+  merge(from.max, to.max);
+}
+
+void merge(Range&& from, Range& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.min), to.min);
+  merge(std::move(from.max), to.max);
 }
 
 

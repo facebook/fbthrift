@@ -43,7 +43,7 @@ class Internship implements IThriftStruct {
     'title' => 2,
     'employer' => 3,
   };
-  const int STRUCTURAL_ID = 1706194036292837275;
+  const int STRUCTURAL_ID = 749038867953722654;
   public int $weeks;
   public string $title;
   public ?Company $employer;
@@ -71,6 +71,7 @@ class Internship implements IThriftStruct {
     $fname = '';
     $ftype = 0;
     $fid = 0;
+    $weeks__isset = false;
     $xfer += $input->readStructBegin($fname);
     while (true)
     {
@@ -89,6 +90,7 @@ class Internship implements IThriftStruct {
         case 1:
           if ($ftype == TType::I32) {
             $xfer += $input->readI32($this->weeks);
+            $weeks__isset = true;
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -117,6 +119,9 @@ class Internship implements IThriftStruct {
       $xfer += $input->readFieldEnd();
     }
     $xfer += $input->readStructEnd();
+    if (!$weeks__isset) {
+      throw new TProtocolException("Required field 'weeks' was not found in serialized data! Struct: Internship", TProtocolException::MISSING_REQUIRED_FIELD);
+    }
     return $xfer;
   }
 
@@ -139,6 +144,118 @@ class Internship implements IThriftStruct {
       $_val2 = Company::assert($this->employer);
       $xfer += $output->writeFieldBegin('employer', TType::I32, 3);
       $xfer += $output->writeI32($_val2);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class Range implements IThriftStruct {
+  public static array $_TSPEC = array(
+    1 => array(
+      'var' => 'min',
+      'type' => TType::I32,
+      ),
+    2 => array(
+      'var' => 'max',
+      'type' => TType::I32,
+      ),
+    );
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'min' => 1,
+    'max' => 2,
+  };
+  const int STRUCTURAL_ID = 6850388386457434767;
+  public int $min;
+  public int $max;
+
+  public function __construct(?int $min = null, ?int $max = null  ) {
+    if ($min === null) {
+      $this->min = 0;
+    } else {
+      $this->min = $min;
+    }
+    if ($max === null) {
+      $this->max = 0;
+    } else {
+      $this->max = $max;
+    }
+  }
+
+  public function getName(): string {
+    return 'Range';
+  }
+
+  public function read(TProtocol $input): int {
+    $xfer = 0;
+    $fname = '';
+    $ftype = 0;
+    $fid = 0;
+    $min__isset = false;
+    $max__isset = false;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      if (!$fid && $fname !== null) {
+        $fid = (int) self::$_TFIELDMAP->get($fname);
+        if ($fid !== 0) {
+          $ftype = self::$_TSPEC[$fid]['type'];
+        }
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->min);
+            $min__isset = true;
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->max);
+            $max__isset = true;
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    if (!$min__isset) {
+      throw new TProtocolException("Required field 'min' was not found in serialized data! Struct: Range", TProtocolException::MISSING_REQUIRED_FIELD);
+    }
+    if (!$max__isset) {
+      throw new TProtocolException("Required field 'max' was not found in serialized data! Struct: Range", TProtocolException::MISSING_REQUIRED_FIELD);
+    }
+    return $xfer;
+  }
+
+  public function write(TProtocol $output): int {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('Range');
+    if ($this->min !== null) {
+      $_val0 = $this->min;
+      $xfer += $output->writeFieldBegin('min', TType::I32, 1);
+      $xfer += $output->writeI32($_val0);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->max !== null) {
+      $_val1 = $this->max;
+      $xfer += $output->writeFieldBegin('max', TType::I32, 2);
+      $xfer += $output->writeI32($_val1);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

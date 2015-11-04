@@ -29,6 +29,16 @@ class module_CONSTANTS {
       "title" => "Software Engineer",
       "employer" =>       3,
     ));
+  static $kRanges = array(
+      new Range(array(
+        "min" => 1,
+        "max" => 2,
+      )),
+      new Range(array(
+        "min" => 5,
+        "max" => 6,
+      )),
+    );
   static $internList = array(
       new Internship(array(
         "weeks" => 12,
@@ -75,6 +85,16 @@ class module_CONSTANTS {
         "title" => "Software Engineer",
         "employer" =>         3,
       )),
+    "kRanges" => array(
+        new Range(array(
+          "min" => 1,
+          "max" => 2,
+        )),
+        new Range(array(
+          "min" => 5,
+          "max" => 6,
+        )),
+      ),
     "internList" => array(
         new Internship(array(
           "weeks" => 12,

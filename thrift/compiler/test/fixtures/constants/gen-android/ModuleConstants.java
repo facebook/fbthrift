@@ -43,18 +43,30 @@ public class ModuleConstants {
     instagram.addProperty(Module.Internship_title, "Software Engineer");
     instagram.addProperty(Module.Internship_employer, ModuleEnum.Company_INSTAGRAM);
   }
+  public static final List<ModuleLogger> kRanges = new ArrayList<ModuleLogger>();
+  static {
+    ModuleLogger tmp2 = new ModuleLogger(Module.EventType.Range);
+    tmp2.addProperty(Module.Range_min, 1);
+    tmp2.addProperty(Module.Range_max, 2);
+    kRanges.add(tmp2);
+    ModuleLogger tmp3 = new ModuleLogger(Module.EventType.Range);
+    tmp3.addProperty(Module.Range_min, 5);
+    tmp3.addProperty(Module.Range_max, 6);
+    kRanges.add(tmp3);
+  }
+
   public static final List<ModuleLogger> internList = new ArrayList<ModuleLogger>();
   static {
-    ModuleLogger tmp2 = new ModuleLogger(Module.EventType.Internship);
-    tmp2.addProperty(Module.Internship_weeks, 12);
-    tmp2.addProperty(Module.Internship_title, "Software Engineer");
-    tmp2.addProperty(Module.Internship_employer, ModuleEnum.Company_INSTAGRAM);
-    internList.add(tmp2);
-    ModuleLogger tmp3 = new ModuleLogger(Module.EventType.Internship);
-    tmp3.addProperty(Module.Internship_weeks, 10);
-    tmp3.addProperty(Module.Internship_title, "Sales Intern");
-    tmp3.addProperty(Module.Internship_employer, ModuleEnum.Company_FACEBOOK);
-    internList.add(tmp3);
+    ModuleLogger tmp4 = new ModuleLogger(Module.EventType.Internship);
+    tmp4.addProperty(Module.Internship_weeks, 12);
+    tmp4.addProperty(Module.Internship_title, "Software Engineer");
+    tmp4.addProperty(Module.Internship_employer, ModuleEnum.Company_INSTAGRAM);
+    internList.add(tmp4);
+    ModuleLogger tmp5 = new ModuleLogger(Module.EventType.Internship);
+    tmp5.addProperty(Module.Internship_weeks, 10);
+    tmp5.addProperty(Module.Internship_title, "Sales Intern");
+    tmp5.addProperty(Module.Internship_employer, ModuleEnum.Company_FACEBOOK);
+    internList.add(tmp5);
   }
 
   public static final String apostrophe = "'";

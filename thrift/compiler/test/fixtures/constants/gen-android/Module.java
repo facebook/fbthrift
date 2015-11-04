@@ -14,7 +14,7 @@ import com.facebook.thrift.lite.protocol.*;
 public class Module {
 
   public enum EventType {
-    Internship;
+    Internship, Range;
   }
 
   public static final ThriftProperty<Integer> Internship_weeks =
@@ -23,5 +23,9 @@ public class Module {
       new ThriftProperty<String>("title", TType.STRING, (short) 2);
   public static final ThriftProperty<ModuleEnum> Internship_employer =
       new ThriftProperty<ModuleEnum>("employer", TType.I32, (short) 3);
+  public static final ThriftProperty<Integer> Range_min =
+      new ThriftProperty<Integer>("min", TType.I32, (short) 1);
+  public static final ThriftProperty<Integer> Range_max =
+      new ThriftProperty<Integer>("max", TType.I32, (short) 2);
   
 }

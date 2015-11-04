@@ -72,6 +72,8 @@ return  ::Company::INSTAGRAM;
 
 class Internship;
 
+class Range;
+
 void swap(Internship &a, Internship &b);
 
 class Internship : public apache::thrift::TStructType<Internship> {
@@ -98,11 +100,9 @@ class Internship : public apache::thrift::TStructType<Internship> {
   struct __isset {
     __isset() { __clear(); } 
     void __clear() {
-      weeks = false;
       title = false;
       employer = false;
     }
-    bool weeks;
     bool title;
     bool employer;
   } __isset;
@@ -122,5 +122,42 @@ class Internship : public apache::thrift::TStructType<Internship> {
 class Internship;
 void merge(const Internship& from, Internship& to);
 void merge(Internship&& from, Internship& to);
+void swap(Range &a, Range &b);
+
+class Range : public apache::thrift::TStructType<Range> {
+ public:
+
+  static const uint64_t _reflection_id = 7757081658652615948U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  Range() : min(0), max(0) {
+  }
+
+  Range(const Range&) = default;
+  Range& operator=(const Range& src)= default;
+  Range(Range&&) = default;
+  Range& operator=(Range&&) = default;
+
+  void __clear();
+
+  virtual ~Range() throw() {}
+
+  int32_t min;
+  int32_t max;
+
+  bool operator == (const Range &) const;
+  bool operator != (const Range& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Range & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class Range;
+void merge(const Range& from, Range& to);
+void merge(Range&& from, Range& to);
 
 

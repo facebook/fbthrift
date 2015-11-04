@@ -26,6 +26,7 @@ struct module_constants {
   static constexpr double const z_ = 1e+09;
   static constexpr double const z() { return z_; }
   static Internship const &instagram();
+  static std::vector<Range>  const &kRanges();
   static std::vector<Internship>  const &internList();
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to 
@@ -63,6 +64,7 @@ struct  __attribute__((__deprecated__("module_constants_codemod is a transitiona
   static constexpr double const y() { return module_constants::y(); }
   static constexpr double const z() { return module_constants::z(); }
   static Internship const &instagram();
+  static std::vector<Range>  const &kRanges();
   static std::vector<Internship>  const &internList();
   static std::string const &apostrophe();
   static std::string const &tripleApostrophe();
@@ -83,6 +85,7 @@ public:
   double y;
   double z;
   Internship instagram;
+  std::vector<Range>  kRanges;
   std::vector<Internship>  internList;
   std::string apostrophe;
   std::string tripleApostrophe;

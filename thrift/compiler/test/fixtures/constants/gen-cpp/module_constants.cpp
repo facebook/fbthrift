@@ -38,7 +38,6 @@ Internship const &module_constants::instagram() {
     Internship value;
 
     value.weeks = 12;
-    value.__isset.weeks = true;
     value.title = "Software Engineer";
     value.__isset.title = true;
     value.employer = (Company)3;
@@ -48,28 +47,45 @@ Internship const &module_constants::instagram() {
   }());
   return instance;
 }
+std::vector<Range>  const &module_constants::kRanges() {
+  static auto const instance([]() {
+    std::vector<Range>  value;
+
+    Range tmp2;
+    tmp2.min = 1;
+    tmp2.max = 2;
+
+    value.push_back(tmp2);
+    Range tmp3;
+    tmp3.min = 5;
+    tmp3.max = 6;
+
+    value.push_back(tmp3);
+
+    return value;
+  }());
+  return instance;
+}
 std::vector<Internship>  const &module_constants::internList() {
   static auto const instance([]() {
     std::vector<Internship>  value;
 
-    Internship tmp2;
-    tmp2.weeks = 12;
-    tmp2.__isset.weeks = true;
-    tmp2.title = "Software Engineer";
-    tmp2.__isset.title = true;
-    tmp2.employer = (Company)3;
-    tmp2.__isset.employer = true;
+    Internship tmp4;
+    tmp4.weeks = 12;
+    tmp4.title = "Software Engineer";
+    tmp4.__isset.title = true;
+    tmp4.employer = (Company)3;
+    tmp4.__isset.employer = true;
 
-    value.push_back(tmp2);
-    Internship tmp3;
-    tmp3.weeks = 10;
-    tmp3.__isset.weeks = true;
-    tmp3.title = "Sales Intern";
-    tmp3.__isset.title = true;
-    tmp3.employer = (Company)0;
-    tmp3.__isset.employer = true;
+    value.push_back(tmp4);
+    Internship tmp5;
+    tmp5.weeks = 10;
+    tmp5.title = "Sales Intern";
+    tmp5.__isset.title = true;
+    tmp5.employer = (Company)0;
+    tmp5.__isset.employer = true;
 
-    value.push_back(tmp3);
+    value.push_back(tmp5);
 
     return value;
   }());
@@ -111,6 +127,13 @@ std::vector<std::map<std::string, int32_t> >  const &module_constants_codemod::s
 Internship const &module_constants_codemod::instagram() {
   static auto const instance([]() {
     Internship value = module_constants::instagram();
+    return value;
+  }());
+  return instance;
+}
+std::vector<Range>  const &module_constants_codemod::kRanges() {
+  static auto const instance([]() {
+    std::vector<Range>  value = module_constants::kRanges();
     return value;
   }());
   return instance;
@@ -176,6 +199,7 @@ moduleConstants::moduleConstants() {
   y = module_constants::y();
   z = module_constants::z();
   instagram = module_constants::instagram();
+  kRanges = module_constants::kRanges();
   internList = module_constants::internList();
   apostrophe = module_constants::apostrophe();
   tripleApostrophe = module_constants::tripleApostrophe();

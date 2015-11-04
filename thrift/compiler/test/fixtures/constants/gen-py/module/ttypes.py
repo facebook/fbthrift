@@ -124,6 +124,9 @@ class Internship:
         iprot.skip(ftype)
       iprot.readFieldEnd()
     iprot.readStructEnd()
+    if self.weeks == None:
+      raise TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'weeks' was not found in serialized data! Struct: Internship")
+
 
   def write(self, oprot):
     if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastbinary is not None:
@@ -169,12 +172,103 @@ class Internship:
   def __ne__(self, other):
     return not (self == other)
 
+class Range:
+  """
+  Attributes:
+   - min
+   - max
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
+      fastbinary.decode_binary(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS)
+      return
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.I32:
+          self.min = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.I32:
+          self.max = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+    if self.min == None:
+      raise TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'min' was not found in serialized data! Struct: Range")
+
+    if self.max == None:
+      raise TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'max' was not found in serialized data! Struct: Range")
+
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastbinary is not None:
+      oprot.trans.write(fastbinary.encode_binary(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS))
+      return
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('Range')
+    if self.min != None:
+      oprot.writeFieldBegin('min', TType.I32, 1)
+      oprot.writeI32(self.min)
+      oprot.writeFieldEnd()
+    if self.max != None:
+      oprot.writeFieldBegin('max', TType.I32, 2)
+      oprot.writeI32(self.max)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def __repr__(self):
+    L = []
+    for key, value in six.iteritems(self.__dict__):
+      padding = ' ' * 4
+      value = pprint.pformat(value, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    %s=%s' % (key, value))
+    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
 all_structs.append(Internship)
 Internship.thrift_spec = (
   None, # 0
-  (1, TType.I32, 'weeks', None, None, 2, ), # 1
+  (1, TType.I32, 'weeks', None, None, 0, ), # 1
   (2, TType.STRING, 'title', True, None, 2, ), # 2
-  (3, TType.I32, 'employer', Company, None, 2, ), # 3
+  (3, TType.I32, 'employer', Company, None, 1, ), # 3
 )
 
 Internship.thrift_struct_annotations = {
@@ -188,6 +282,24 @@ def Internship__init__(self, weeks=None, title=None, employer=None,):
   self.employer = employer
 
 Internship.__init__ = Internship__init__
+
+all_structs.append(Range)
+Range.thrift_spec = (
+  None, # 0
+  (1, TType.I32, 'min', None, None, 0, ), # 1
+  (2, TType.I32, 'max', None, None, 0, ), # 2
+)
+
+Range.thrift_struct_annotations = {
+}
+Range.thrift_field_annotations = {
+}
+
+def Range__init__(self, min=None, max=None,):
+  self.min = min
+  self.max = max
+
+Range.__init__ = Range__init__
 
 fix_spec(all_structs)
 del all_structs
