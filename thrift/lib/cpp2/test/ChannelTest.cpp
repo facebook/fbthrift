@@ -113,7 +113,7 @@ public:
     folly::io::RWPrivateCursor c(framing.get());
     c.writeBE<uint32_t>(framing->computeChainDataLength() - 4);
 
-    return std::move(framing);
+    return framing;
   }
 private:
   IOBufQueue queue_;

@@ -62,7 +62,7 @@ class TestInterface : public FutureServiceSvIf {
       RequestEventBase::get()->tryRunAfterDelay(func, size);
     });
 
-    return std::move(f);
+    return f;
   }
 
   Future<Unit> future_noResponse(int64_t size) override {
@@ -75,7 +75,7 @@ class TestInterface : public FutureServiceSvIf {
     RequestEventBase::get()->runInEventBaseThread([this, func, size](){
       RequestEventBase::get()->tryRunAfterDelay(func, size);
     });
-    return std::move(f);
+    return f;
   }
 
   Future<std::unique_ptr<std::string>> future_echoRequest(
@@ -95,7 +95,7 @@ class TestInterface : public FutureServiceSvIf {
 
     p.setException(x);
 
-    return std::move(f);
+    return f;
   }
 
   Future<Unit> future_voidThrowing() override {
@@ -108,7 +108,7 @@ class TestInterface : public FutureServiceSvIf {
 
     p.setException(x);
 
-    return std::move(f);
+    return f;
   }
 };
 

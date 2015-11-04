@@ -147,7 +147,7 @@ class THttpAsyncChannel :
   }
 
   std::unique_ptr<IOBuf> constructHeader(std::unique_ptr<IOBuf> buf) {
-    return std::move(parser_->constructHeader(std::move(buf)));
+    return parser_->constructHeader(std::move(buf));
   }
 
  protected:

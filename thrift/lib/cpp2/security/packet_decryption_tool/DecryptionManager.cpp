@@ -358,7 +358,7 @@ DecryptionManager::PacketHandler::removeThriftHeader(Packet* packet) {
       onError("Corrupted security message");
       return nullptr;
     }
-    return std::move(msg);
+    return msg;
   } catch (...) {
     onError("Failed to remove thrift header. "
             "Maybe not secure thrift connection?");

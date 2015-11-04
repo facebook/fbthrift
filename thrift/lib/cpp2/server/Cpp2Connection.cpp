@@ -282,9 +282,8 @@ void Cpp2Connection::requestReceived(
   }
 
   if (useHttpHandler && worker_->getServer()->getGetHandler()) {
-    worker_->getServer()->getGetHandler()(worker_->getEventBase(),
-                                          socket_,
-                                          std::move(req->extractBuf()));
+    worker_->getServer()->getGetHandler()(
+        worker_->getEventBase(), socket_, req->extractBuf());
 
     // Close the channel, since the handler now owns the socket.
     channel_->setCallback(nullptr);

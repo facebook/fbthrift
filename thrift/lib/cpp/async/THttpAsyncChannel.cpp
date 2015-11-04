@@ -46,7 +46,7 @@ void THttpACWriteRequest::write(
   // We can call wrapBuffer (instead of having to copy the buffer) because
   // buffer_ last longer than the IOBuf that we are creating.
   auto buf = folly::IOBuf::wrapBuffer(buffer_.borrow(nullptr, &len), len);
-  buf = std::move(channel_->constructHeader(std::move(buf)));
+  buf = channel_->constructHeader(std::move(buf));
   transport->writeChain(callback, std::move(buf));
 }
 

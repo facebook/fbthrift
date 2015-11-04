@@ -236,7 +236,7 @@ void ThriftServer::setup() {
             new GssSaslServer(evb, saslThreadManager));
           saslServer->setServiceIdentity(
             FLAGS_service_identity + "/" + hostname);
-          return std::move(saslServer);
+          return saslServer;
         });
       } else {
         // Allow the server to accept anything in the keytab.

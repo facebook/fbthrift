@@ -359,7 +359,7 @@ std::unique_ptr<std::string> KerberosSASLHandshakeClient::getTokenToSend() {
         wrapped_sec_layer_message->length()
       ));
       logger_->logEnd("prepare_third_request");
-      return std::move(ptr);
+      return ptr;
       break;
     }
     default:

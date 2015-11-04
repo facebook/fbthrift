@@ -405,7 +405,7 @@ unique_ptr<IOBuf> THttpClientParser::constructHeader(
 
   auto res = queue.move();
   res->appendChain(std::move(buf));
-  return std::move(res);
+  return res;
 }
 
 void THttpClientParser::appendHeadersToQueue(

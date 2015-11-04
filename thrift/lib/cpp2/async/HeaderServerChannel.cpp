@@ -199,7 +199,7 @@ HeaderServerChannel::getTransportDebugString(TAsyncTransport* transport) {
   }
 
   ret += ')';
-  return std::move(ret);
+  return ret;
 }
 
 // Client Interface

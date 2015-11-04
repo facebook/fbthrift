@@ -137,7 +137,7 @@ DuplexChannel::DuplexFramingHandler::addFrame(
     }
   }
 
-  return std::move(buf);
+  return buf;
 }
 
 }} // apache::thrift

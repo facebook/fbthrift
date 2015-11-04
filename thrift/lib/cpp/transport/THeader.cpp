@@ -121,7 +121,7 @@ unique_ptr<IOBuf> THeader::removeUnframed(
     }
   }
 
-  return std::move(queue->split(msgSize));
+  return queue->split(msgSize);
 }
 
 unique_ptr<IOBuf> THeader::removeHttpServer(IOBufQueue* queue) {
@@ -165,7 +165,7 @@ unique_ptr<IOBuf> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
   queue->move();
   readHeaders_ = parser.moveReadHeaders();
 
-  return std::move(memBuffer.cloneBufferAsIOBuf());
+  return memBuffer.cloneBufferAsIOBuf();
 }
 
 unique_ptr<IOBuf> THeader::removeFramed(uint32_t sz, IOBufQueue* queue) {
@@ -383,7 +383,7 @@ static string getString(RWPrivateCursor& c, size_t sz) {
   char strdata[sz];
   c.pull(strdata, sz);
   string str(strdata, sz);
-  return std::move(str);
+  return str;
 }
 
 /**
@@ -519,7 +519,7 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(
                                 "Client is trying to send JSON without HTTP");
   }
 
-  return std::move(buf);
+  return buf;
 }
 
 unique_ptr<IOBuf> THeader::untransform(
@@ -632,7 +632,7 @@ unique_ptr<IOBuf> THeader::untransform(
     }
   }
 
-  return std::move(buf);
+  return buf;
 }
 
 unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
@@ -771,7 +771,7 @@ unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
     ++it;
   }
 
-  return std::move(buf);
+  return buf;
 }
 
 void THeader::resetProtocol() {
@@ -1049,10 +1049,10 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     // TODO: IOBufize httpTransport.
   } else if (clientType == THRIFT_HTTP_CLIENT_TYPE) {
     CHECK(httpClientParser_.get() != nullptr);
-    buf = std::move(httpClientParser_->constructHeader(std::move(buf),
-                                                       persistentWriteHeaders,
-                                                       writeHeaders_,
-                                                       extraWriteHeaders_));
+    buf = httpClientParser_->constructHeader(std::move(buf),
+                                             persistentWriteHeaders,
+                                             writeHeaders_,
+                                             extraWriteHeaders_);
     writeHeaders_.clear();
   } else {
     throw TTransportException(TTransportException::BAD_ARGS,

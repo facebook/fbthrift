@@ -97,7 +97,7 @@ HeaderClientChannel::Ptr getClientChannel(EventBase* eb,
   enableSecurity(channel.get(), apache::thrift::SecurityMech::KRB5_GSS,
                  failSecurity);
 
-  return std::move(channel);
+  return channel;
 }
 
 class Countdown {
