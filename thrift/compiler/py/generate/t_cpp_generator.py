@@ -1717,7 +1717,7 @@ class CppGenerator(t_generator.Generator):
                 out("{name}({args_list});".format(name=function.name,
                                                 args_list=args_list))
 
-                out("return std::move({0});".format(future_name))
+                out("return {0};".format(future_name))
 
     def _generate_client_streaming_function(self, service, function,
                                             uses_rpc_options=False):
@@ -3027,7 +3027,7 @@ class CppGenerator(t_generator.Generator):
                   'iprot, {1}.get());'.format(
                       self._type_name(otype), prefix))
         elif optional_wrapped:
-            scope("{0} = std::move({1}());".format(
+            scope("{0} = {1}();".format(
                 prefix, self._type_name(otype)))
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
                   'iprot, &{1}.value());'.format(
@@ -3048,7 +3048,7 @@ class CppGenerator(t_generator.Generator):
         use_push = (cpptype is not None and 'list' in cpptype) \
             or self._has_cpp_annotation(cont, 'template')
 
-        s('{0} = std::move({1}());'.format(prefix, self._type_name(otype)))
+        s('{0} = {1}();'.format(prefix, self._type_name(otype)))
         if optional_wrapped:
             cont_ref = "{0}.value()".format(prefix)
         else:

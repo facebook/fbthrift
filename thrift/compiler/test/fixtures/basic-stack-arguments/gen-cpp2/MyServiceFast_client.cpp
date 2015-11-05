@@ -74,7 +74,7 @@ folly::Future<bool> MyServiceFastAsyncClient::future_hasDataById(apache::thrift:
   auto future27 = promise26.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback28(new apache::thrift::FutureCallback<bool>(std::move(promise26), recv_wrapped_hasDataById, channel_));
   hasDataById(rpcOptions, std::move(callback28), id);
-  return std::move(future27);
+  return future27;
 }
 
 folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
@@ -82,7 +82,7 @@ folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader
   auto future30 = promise29.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback31(new apache::thrift::HeaderFutureCallback<bool>(std::move(promise29), recv_wrapped_hasDataById, channel_));
   hasDataById(rpcOptions, std::move(callback31), id);
-  return std::move(future30);
+  return future30;
 }
 
 void MyServiceFastAsyncClient::hasDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
@@ -190,7 +190,7 @@ folly::Future<std::string> MyServiceFastAsyncClient::future_getDataById(apache::
   auto future34 = promise33.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback35(new apache::thrift::FutureCallback<std::string>(std::move(promise33), recv_wrapped_getDataById, channel_));
   getDataById(rpcOptions, std::move(callback35), id);
-  return std::move(future34);
+  return future34;
 }
 
 folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
@@ -198,7 +198,7 @@ folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::
   auto future37 = promise36.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback38(new apache::thrift::HeaderFutureCallback<std::string>(std::move(promise36), recv_wrapped_getDataById, channel_));
   getDataById(rpcOptions, std::move(callback38), id);
-  return std::move(future37);
+  return future37;
 }
 
 void MyServiceFastAsyncClient::getDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
@@ -304,7 +304,7 @@ folly::Future<folly::Unit> MyServiceFastAsyncClient::future_putDataById(apache::
   auto future41 = promise40.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback42(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise40), recv_wrapped_putDataById, channel_));
   putDataById(rpcOptions, std::move(callback42), id, data);
-  return std::move(future41);
+  return future41;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
@@ -312,7 +312,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   auto future44 = promise43.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback45(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise43), recv_wrapped_putDataById, channel_));
   putDataById(rpcOptions, std::move(callback45), id, data);
-  return std::move(future44);
+  return future44;
 }
 
 void MyServiceFastAsyncClient::putDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
@@ -408,7 +408,7 @@ folly::Future<folly::Unit> MyServiceFastAsyncClient::future_lobDataById(apache::
   auto future48 = promise47.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback49(new apache::thrift::OneWayFutureCallback(std::move(promise47), channel_));
   lobDataById(rpcOptions, std::move(callback49), id, data);
-  return std::move(future48);
+  return future48;
 }
 
 void MyServiceFastAsyncClient::lobDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {

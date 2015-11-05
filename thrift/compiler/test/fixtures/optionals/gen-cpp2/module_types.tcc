@@ -435,7 +435,7 @@ uint32_t Person::read(Protocol_* iprot) {
       case 5:
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
-          this->favoriteColor = std::move( ::cpp2::Color());
+          this->favoriteColor =  ::cpp2::Color();
           xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::read(iprot, &this->favoriteColor.value());
         } else {
           xfer += iprot->skip(ftype);
@@ -445,7 +445,7 @@ uint32_t Person::read(Protocol_* iprot) {
       case 6:
       {
         if (ftype == apache::thrift::protocol::T_SET) {
-          this->friends = std::move(std::set< ::cpp2::PersonID>());
+          this->friends = std::set< ::cpp2::PersonID>();
           uint32_t _size0;
           apache::thrift::protocol::TType _etype3;
           xfer += iprot->readSetBegin(_etype3, _size0);
@@ -483,7 +483,7 @@ uint32_t Person::read(Protocol_* iprot) {
       case 8:
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
-          this->petNames = std::move(std::map< ::cpp2::Animal, std::string>());
+          this->petNames = std::map< ::cpp2::Animal, std::string>();
           uint32_t _size7;
           apache::thrift::protocol::TType _ktype8;
           apache::thrift::protocol::TType _vtype9;
@@ -529,7 +529,7 @@ uint32_t Person::read(Protocol_* iprot) {
       case 10:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
-          this->vehicles = std::move(std::vector< ::cpp2::Vehicle>());
+          this->vehicles = std::vector< ::cpp2::Vehicle>();
           uint32_t _size19;
           apache::thrift::protocol::TType _etype22;
           xfer += iprot->readListBegin(_etype22, _size19);

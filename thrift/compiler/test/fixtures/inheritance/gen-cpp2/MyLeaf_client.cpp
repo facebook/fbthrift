@@ -74,7 +74,7 @@ folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf(apache::thrift::Rpc
   auto future16 = promise15.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback17(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise15), recv_wrapped_do_leaf, channel_));
   do_leaf(rpcOptions, std::move(callback17));
-  return std::move(future16);
+  return future16;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyLeafAsyncClient::header_future_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
@@ -82,7 +82,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   auto future19 = promise18.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback20(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise18), recv_wrapped_do_leaf, channel_));
   do_leaf(rpcOptions, std::move(callback20));
-  return std::move(future19);
+  return future19;
 }
 
 void MyLeafAsyncClient::do_leaf(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {

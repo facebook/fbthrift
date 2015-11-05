@@ -78,7 +78,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           this->set_intListValue();
-          this->mutable_intListValue() = std::move(std::vector<int64_t>());
+          this->mutable_intListValue() = std::vector<int64_t>();
           uint32_t _size0;
           apache::thrift::protocol::TType _etype3;
           xfer += iprot->readListBegin(_etype3, _size0);
@@ -105,7 +105,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           this->set_stringListValue();
-          this->mutable_stringListValue() = std::move(std::vector<std::string>());
+          this->mutable_stringListValue() = std::vector<std::string>();
           uint32_t _size5;
           apache::thrift::protocol::TType _etype8;
           xfer += iprot->readListBegin(_etype8, _size5);

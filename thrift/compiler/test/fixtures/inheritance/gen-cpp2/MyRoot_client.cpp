@@ -74,7 +74,7 @@ folly::Future<folly::Unit> MyRootAsyncClient::future_do_root(apache::thrift::Rpc
   auto future2 = promise1.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback3(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise1), recv_wrapped_do_root, channel_));
   do_root(rpcOptions, std::move(callback3));
-  return std::move(future2);
+  return future2;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyRootAsyncClient::header_future_do_root(apache::thrift::RpcOptions& rpcOptions) {
@@ -82,7 +82,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   auto future5 = promise4.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback6(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise4), recv_wrapped_do_root, channel_));
   do_root(rpcOptions, std::move(callback6));
-  return std::move(future5);
+  return future5;
 }
 
 void MyRootAsyncClient::do_root(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {

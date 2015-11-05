@@ -74,7 +74,7 @@ folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid(apache::thrift::RpcO
   auto future9 = promise8.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback10(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise8), recv_wrapped_do_mid, channel_));
   do_mid(rpcOptions, std::move(callback10));
-  return std::move(future9);
+  return future9;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyNodeAsyncClient::header_future_do_mid(apache::thrift::RpcOptions& rpcOptions) {
@@ -82,7 +82,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   auto future12 = promise11.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback13(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise11), recv_wrapped_do_mid, channel_));
   do_mid(rpcOptions, std::move(callback13));
-  return std::move(future12);
+  return future12;
 }
 
 void MyNodeAsyncClient::do_mid(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {

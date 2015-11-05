@@ -74,7 +74,7 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapList(apache::t
   auto future2 = promise1.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback3(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise1), recv_wrapped_mapList, channel_));
   mapList(rpcOptions, std::move(callback3), foo);
-  return std::move(future2);
+  return future2;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_mapList(apache::thrift::RpcOptions& rpcOptions, const std::map<int32_t, std::vector<int32_t>>& foo) {
@@ -82,7 +82,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   auto future5 = promise4.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback6(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise4), recv_wrapped_mapList, channel_));
   mapList(rpcOptions, std::move(callback6), foo);
-  return std::move(future5);
+  return future5;
 }
 
 void NestedContainersAsyncClient::mapList(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<int32_t, std::vector<int32_t>>& foo) {
@@ -188,7 +188,7 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapSet(apache::th
   auto future9 = promise8.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback10(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise8), recv_wrapped_mapSet, channel_));
   mapSet(rpcOptions, std::move(callback10), foo);
-  return std::move(future9);
+  return future9;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_mapSet(apache::thrift::RpcOptions& rpcOptions, const std::map<int32_t, std::set<int32_t>>& foo) {
@@ -196,7 +196,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   auto future12 = promise11.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback13(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise11), recv_wrapped_mapSet, channel_));
   mapSet(rpcOptions, std::move(callback13), foo);
-  return std::move(future12);
+  return future12;
 }
 
 void NestedContainersAsyncClient::mapSet(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<int32_t, std::set<int32_t>>& foo) {
@@ -302,7 +302,7 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_listMap(apache::t
   auto future16 = promise15.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback17(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise15), recv_wrapped_listMap, channel_));
   listMap(rpcOptions, std::move(callback17), foo);
-  return std::move(future16);
+  return future16;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_listMap(apache::thrift::RpcOptions& rpcOptions, const std::vector<std::map<int32_t, int32_t>>& foo) {
@@ -310,7 +310,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   auto future19 = promise18.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback20(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise18), recv_wrapped_listMap, channel_));
   listMap(rpcOptions, std::move(callback20), foo);
-  return std::move(future19);
+  return future19;
 }
 
 void NestedContainersAsyncClient::listMap(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<std::map<int32_t, int32_t>>& foo) {
@@ -416,7 +416,7 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_listSet(apache::t
   auto future23 = promise22.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback24(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise22), recv_wrapped_listSet, channel_));
   listSet(rpcOptions, std::move(callback24), foo);
-  return std::move(future23);
+  return future23;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_listSet(apache::thrift::RpcOptions& rpcOptions, const std::vector<std::set<int32_t>>& foo) {
@@ -424,7 +424,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   auto future26 = promise25.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback27(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise25), recv_wrapped_listSet, channel_));
   listSet(rpcOptions, std::move(callback27), foo);
-  return std::move(future26);
+  return future26;
 }
 
 void NestedContainersAsyncClient::listSet(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<std::set<int32_t>>& foo) {
@@ -530,7 +530,7 @@ folly::Future<folly::Unit> NestedContainersAsyncClient::future_turtles(apache::t
   auto future30 = promise29.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback31(new apache::thrift::FutureCallback<folly::Unit>(std::move(promise29), recv_wrapped_turtles, channel_));
   turtles(rpcOptions, std::move(callback31), foo);
-  return std::move(future30);
+  return future30;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> NestedContainersAsyncClient::header_future_turtles(apache::thrift::RpcOptions& rpcOptions, const std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>& foo) {
@@ -538,7 +538,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   auto future33 = promise32.getFuture();
   std::unique_ptr<apache::thrift::RequestCallback> callback34(new apache::thrift::HeaderFutureCallback<folly::Unit>(std::move(promise32), recv_wrapped_turtles, channel_));
   turtles(rpcOptions, std::move(callback34), foo);
-  return std::move(future33);
+  return future33;
 }
 
 void NestedContainersAsyncClient::turtles(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>& foo) {

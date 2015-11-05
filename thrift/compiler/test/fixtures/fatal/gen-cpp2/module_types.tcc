@@ -1461,7 +1461,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       case 9:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
-          this->fieldI = std::move(std::vector<int32_t>());
+          this->fieldI = std::vector<int32_t>();
           uint32_t _size9;
           apache::thrift::protocol::TType _etype12;
           xfer += iprot->readListBegin(_etype12, _size9);
@@ -1488,7 +1488,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       case 10:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
-          this->fieldJ = std::move(std::vector<std::string>());
+          this->fieldJ = std::vector<std::string>();
           uint32_t _size14;
           apache::thrift::protocol::TType _etype17;
           xfer += iprot->readListBegin(_etype17, _size14);
@@ -1515,7 +1515,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       case 11:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
-          this->fieldK = std::move(std::vector<std::string>());
+          this->fieldK = std::vector<std::string>();
           uint32_t _size19;
           apache::thrift::protocol::TType _etype22;
           xfer += iprot->readListBegin(_etype22, _size19);
@@ -1542,7 +1542,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       case 12:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
-          this->fieldL = std::move(std::vector< ::test_cpp2::cpp_reflection::structA>());
+          this->fieldL = std::vector< ::test_cpp2::cpp_reflection::structA>();
           uint32_t _size24;
           apache::thrift::protocol::TType _etype27;
           xfer += iprot->readListBegin(_etype27, _size24);
@@ -1569,7 +1569,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       case 13:
       {
         if (ftype == apache::thrift::protocol::T_SET) {
-          this->fieldM = std::move(std::set<int32_t>());
+          this->fieldM = std::set<int32_t>();
           uint32_t _size29;
           apache::thrift::protocol::TType _etype32;
           xfer += iprot->readSetBegin(_etype32, _size29);
@@ -1598,7 +1598,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       case 14:
       {
         if (ftype == apache::thrift::protocol::T_SET) {
-          this->fieldN = std::move(std::set<std::string>());
+          this->fieldN = std::set<std::string>();
           uint32_t _size36;
           apache::thrift::protocol::TType _etype39;
           xfer += iprot->readSetBegin(_etype39, _size36);
@@ -1627,7 +1627,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       case 15:
       {
         if (ftype == apache::thrift::protocol::T_SET) {
-          this->fieldO = std::move(std::set<std::string>());
+          this->fieldO = std::set<std::string>();
           uint32_t _size43;
           apache::thrift::protocol::TType _etype46;
           xfer += iprot->readSetBegin(_etype46, _size43);
@@ -1656,7 +1656,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       case 16:
       {
         if (ftype == apache::thrift::protocol::T_SET) {
-          this->fieldP = std::move(std::set< ::test_cpp2::cpp_reflection::structB>());
+          this->fieldP = std::set< ::test_cpp2::cpp_reflection::structB>();
           uint32_t _size50;
           apache::thrift::protocol::TType _etype53;
           xfer += iprot->readSetBegin(_etype53, _size50);
@@ -1685,7 +1685,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       case 17:
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
-          this->fieldQ = std::move(std::map<std::string,  ::test_cpp2::cpp_reflection::structA>());
+          this->fieldQ = std::map<std::string,  ::test_cpp2::cpp_reflection::structA>();
           uint32_t _size57;
           apache::thrift::protocol::TType _ktype58;
           apache::thrift::protocol::TType _vtype59;
@@ -1717,7 +1717,7 @@ uint32_t struct3::read(Protocol_* iprot) {
       case 18:
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
-          this->fieldR = std::move(std::map<std::string,  ::test_cpp2::cpp_reflection::structB>());
+          this->fieldR = std::map<std::string,  ::test_cpp2::cpp_reflection::structB>();
           uint32_t _size66;
           apache::thrift::protocol::TType _ktype67;
           apache::thrift::protocol::TType _vtype68;
