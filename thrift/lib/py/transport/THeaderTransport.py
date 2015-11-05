@@ -77,7 +77,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
     # TRANSFORMS
     ZLIB_TRANSFORM = 0x01
-    HMAC_TRANSFORM = 0x02
+    HMAC_TRANSFORM = 0x02   # No longer supported
     SNAPPY_TRANSFORM = 0x03
 
     # INFOS
@@ -100,9 +100,6 @@ class THeaderTransport(TTransportBase, CReadableTransport):
     IDENTITY_HEADER = "identity"
     ID_VERSION_HEADER = "id_version"
     ID_VERSION = "1"
-
-    __hmac_func = None
-    __hmac_verify_func = None
 
     def __init__(self, trans, client_types=None, client_type=None):
         self.__trans = trans
@@ -138,10 +135,6 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
     def set_identity(self, identity):
         self.__identity = identity
-
-    def set_hmac(self, hmac_func=None, hmac_verify_func=None):
-        self.__hmac_func = hmac_func
-        self.__hmac_verify_func = hmac_verify_func
 
     def get_protocol_id(self):
         if self.__client_type == self.HEADERS_CLIENT_TYPE:
@@ -294,7 +287,6 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                     "Trying to recv JSON encoding over binary")
 
         # Read the headers.  Data for each header varies.
-        hmac_sz = 0
         for h in range(0, num_headers):
             trans_id = readVarint(data)
             if trans_id == self.ZLIB_TRANSFORM:
@@ -302,9 +294,9 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             elif trans_id == self.SNAPPY_TRANSFORM:
                 self.__read_transforms.insert(0, trans_id)
             elif trans_id == self.HMAC_TRANSFORM:
-                hmac_sz = ord(data.read(1))
-                data.seek(-1, os.SEEK_CUR)
-                data.write(b'\0')
+                raise TApplicationException(
+                        TApplicationException.INVALID_TRANSFORM,
+                        "Hmac transform is no longer supported: %i" % trans_id)
             else:
                 # TApplicationException will be sent back to client
                 raise TApplicationException(
@@ -333,15 +325,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         # Skip the rest of the header
         data.seek(end_header)
 
-        payload = data.read(sz - header_size - hmac_sz)
-
-        # Verify the mac
-        if self.__hmac_verify_func:
-            hmac = data.read(hmac_sz)
-            verify_data = data.getvalue()[:-hmac_sz]
-            if not self.__hmac_verify_func(verify_data, hmac):
-                raise TTransportException(TTransportException.INVALID_TRANSFORM,
-                                            "HMAC did not verify")
+        payload = data.read(sz - header_size)
 
         # Read the data section.
         self.__rbuf = StringIO(self.untransform(payload))
@@ -389,11 +373,6 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         for trans_id in self.__write_transforms:
             transform_data.write(getVarint(trans_id))
 
-        if self.__hmac_func:
-            num_transforms += 1
-            transform_data.write(getVarint(self.HMAC_TRANSFORM))
-            transform_data.write(b'\0')  # size of hmac, fixup later.
-
         # Add in special flags.
         if self.__identity:
             self.__write_headers[self.ID_VERSION_HEADER] = self.ID_VERSION
@@ -429,7 +408,6 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
         buf.write(header_data.getvalue())
         buf.write(transform_data.getvalue())
-        hmac_loc = buf.tell() - 1  # Fixup hmac size later
         buf.write(info_data.getvalue())
 
         # Pad out the header with 0x00
@@ -438,22 +416,6 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
         # Send data section
         buf.write(wout)
-
-        # HMAC calculation should always be last.
-        if self.__hmac_func:
-            hmac_data = buf.getvalue()[4:]
-            hmac = self.__hmac_func(hmac_data)
-
-            # Fill in hmac size.
-            buf.seek(hmac_loc)
-            buf.write(chr(len(hmac)))
-            buf.seek(0, os.SEEK_END)
-            buf.write(hmac)
-
-            # Fix packet size since we appended data.
-            new_sz = buf.tell() - 4
-            buf.seek(0)
-            buf.write(pack(b"!I", new_sz))
 
     def flushImpl(self, oneway):
         wout = self.__wbuf.getvalue()

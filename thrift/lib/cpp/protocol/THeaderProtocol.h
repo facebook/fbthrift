@@ -159,11 +159,6 @@ class THeaderProtocol
     trans_->setIdentity(identity);
   }
 
-  void setHmac(transport::THeaderTransport::MacCallback macCb,
-               transport::THeaderTransport::VerifyMacCallback verifyCb) {
-    trans_->setHmac(macCb, verifyCb);
-  }
-
   /**
    * Writing functions.
    */

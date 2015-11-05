@@ -78,8 +78,7 @@ Header will be padded out to next 4-byte boundary with `0x00`.
     ZLIB_TRANSFORM 0x01 - No data for this.  Use zlib to (de)compress the
                           data.
 
-    HMAC_TRANSFORM 0x02 - Variable amount of mac data.  One byte to specify
-                          size. Mac data is appended at the end of the packet.
+    HMAC_TRANSFORM 0x02 - Deprecated and no longer supported.
     SNAPPY_TRANSFORM  0x03  - No data for this.  Use snappy to (de)compress the
                           data.
 

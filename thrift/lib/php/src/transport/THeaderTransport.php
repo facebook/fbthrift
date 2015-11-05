@@ -28,7 +28,7 @@ class THeaderTransport extends TFramedTransport
   const HTTP_MAGIC = 0x504f5354;
   const MAX_FRAME_SIZE = 0x3fffffff;
   const ZLIB_TRANSFORM = 0x01;
-  const HMAC_TRANSFORM = 0x02;
+  const HMAC_TRANSFORM = 0x02; // No longer supported
   const SNAPPY_TRANSFORM = 0x03;
   const INFO_KEYVALUE = 0x01;
   const HEADER_CLIENT_TYPE = 0x00;
@@ -50,8 +50,6 @@ class THeaderTransport extends TFramedTransport
   const ID_VERSION_HEADER = "id_version";
   const ID_VERSION = 1;
   protected $identity = null;
-  protected $hmacFunc = null;
-  protected $verifyFunc = null;
   public function __construct($transport = null, $protocols = null) {
     parent::__construct($transport, true, true);
     $this->readTrans_ = new \HH\Vector(array());
@@ -88,11 +86,6 @@ class THeaderTransport extends TFramedTransport
     }
     $this->clientType_ = self::HEADER_CLIENT_TYPE;
     $this->readFrame(0);
-  }
-  public function setHmac($hmac_func, $verify_func) {
-    $this->hmacFunc = $hmac_func;
-    $this->verifyFunc = $verify_func;
-    return $this;
   }
   public function setHeader($str_key, $str_value) {
     $this->writeHeaders[$str_key] = (string) $str_value;
@@ -285,7 +278,6 @@ class THeaderTransport extends TFramedTransport
         TTransportException::INVALID_CLIENT
       );
     }
-    $hmac_sz = 0;
     for ($i = 0; $i < $numHeaders; $i++) {
       $transId = $this->readVarint($data, $index);
       switch ($transId) {
@@ -294,10 +286,10 @@ class THeaderTransport extends TFramedTransport
           $this->readTrans_[] = $transId;
           break;
         case self::HMAC_TRANSFORM:
-          $hmac_sz = ord($data[$index]);
-          $data[$index] = pack('C', '\0');
-          ++$index;
-          break;
+          throw new TApplicationException(
+            'Hmac transform is no longer supported',
+            TApplicationException::INVALID_TRANSFORM
+          );
         default:
           throw new TApplicationException(
             'Unknown transform in client request',
@@ -306,18 +298,6 @@ class THeaderTransport extends TFramedTransport
       }
     }
     $this->readTrans_ = array_reverse($this->readTrans_);
-    if ($this->verifyFunc !== null) {
-      $vf = $this->verifyFunc;
-      $hmac = substr($data, -$hmac_sz);
-      if (!\hacklib_cast_as_boolean(
-            $vf(substr($data, 4, (strlen($data) - $hmac_sz) - 4), $hmac)
-          )) {
-        throw new TApplicationException(
-          'HMAC did not verify',
-          TApplicationException::INVALID_TRANSFORM
-        );
-      }
-    }
     $this->readHeaders = \HH\Map::hacklib_new(array(), array());
     while ($index < $end_of_header) {
       $infoId = $this->readVarint($data, $index);
@@ -405,11 +385,6 @@ class THeaderTransport extends TFramedTransport
         ++$num_headers;
         $transformData .= $this->getVarint($trans);
       }
-      if ($this->hmacFunc !== null) {
-        $num_headers++;
-        $transformData .= $this->getVarint(self::HMAC_TRANSFORM);
-        $transformData .= (string) pack('C', '\0');
-      }
       if ($this->identity !== null) {
         $this->writeHeaders[self::ID_VERSION_HEADER] =
           (string) self::ID_VERSION;
@@ -442,18 +417,11 @@ class THeaderTransport extends TFramedTransport
       $buf = (string) pack('nn', self::HEADER_MAGIC, $this->flags_);
       $buf .= (string) pack('Nn', $this->seqId_, $header_size / 4);
       $buf .= $headerData.$transformData;
-      $hmac_loc = strlen($buf) - 1;
       $buf .= $infoData;
       for ($i = 0; $i < $paddingSize; $i++) {
         $buf .= (string) pack('C', '\0');
       }
       $buf .= $out;
-      if (\hacklib_cast_as_boolean($this->hmacFunc)) {
-        $hf = $this->hmacFunc;
-        $hmac = $hf($buf);
-        $buf[$hmac_loc] = (string) pack('C', strlen($hmac));
-        $buf .= $hmac;
-      }
       $buf = ((string) pack('N', strlen($buf))).$buf;
     } else {
       if ($this->clientType_ === self::FRAMED_DEPRECATED) {

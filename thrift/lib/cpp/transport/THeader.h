@@ -72,7 +72,7 @@ using apache::thrift::protocol::T_BINARY_PROTOCOL;
  * Class that will take an IOBuf and wrap it in some thrift headers.
  * see thrift/doc/HeaderFormat.txt for details.
  *
- * Supports transforms: zlib snappy hmac qlz
+ * Supports transforms: zlib snappy qlz
  * Supports headers: http-style key/value per request and per connection
  * other: Protocol Id and seq ID in header.
  *
@@ -149,11 +149,7 @@ class THeader {
     size_t minCompressBytes);
 
   uint16_t getNumTransforms(std::vector<uint16_t>& transforms) const {
-    int trans = transforms.size();
-    if (macCallback_) {
-      trans += 1;
-    }
-    return trans;
+    return transforms.size();
   }
 
   void setTransform(uint16_t transId) {
@@ -205,34 +201,10 @@ class THeader {
   enum TRANSFORMS {
     NONE = 0x0,
     ZLIB_TRANSFORM = 0x01,
-    HMAC_TRANSFORM = 0x02,
+    HMAC_TRANSFORM = 0x02, // Deprecated and no longer supported
     SNAPPY_TRANSFORM = 0x03,
     QLZ_TRANSFORM = 0x04,
   };
-
-  /**
-   * Callbacks to get and verify a mac transform.
-
-   * If a mac callback is provided, it will be called with the outgoing packet,
-   * with the returned string appended at the end of the data.
-   *
-   * If a verify callback is provided, all incoming packets will be called with
-   * their mac data and packet data to verify.  If false is returned, an
-   * exception is thrown. Packets without any mac also throw an exception if a
-   * verify function is provided.
-   *
-   * If no verify callback is provided, and an incoming packet contains a mac,
-   * the mac is ignored.
-   *
-   **/
-  typedef std::function<std::string(const std::string&)> MacCallback;
-  typedef std::function<
-    bool(const std::string&, const std::string)> VerifyMacCallback;
-
-  void setHmac(MacCallback macCb, VerifyMacCallback verifyCb) {
-    macCallback_ = macCb;
-    verifyCallback_ = verifyCb;
-  }
 
   /* IOBuf interface */
 
@@ -353,9 +325,6 @@ class THeader {
   static const std::string ID_VERSION;
 
   static std::string s_identity;
-
-  MacCallback macCallback_;
-  VerifyMacCallback verifyCallback_;
 
   uint32_t minCompressBytes_;
   bool allowBigFrames_;

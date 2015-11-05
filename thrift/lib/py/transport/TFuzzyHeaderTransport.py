@@ -185,11 +185,6 @@ class TFuzzyHeaderTransport(THeaderTransport):
             trans_id = self._get_fuzzy_field('transform_id', trans_id, 'i32')
             transform_data.write(getVarint(trans_id))
 
-        if self._THeaderTransport__hmac_func:
-            num_transforms += 1
-            transform_data.write(getVarint(self.HMAC_TRANSFORM))
-            transform_data.write(b'\0')  # size of hmac, fixup later.
-
         # Add in special flags.
         if self._THeaderTransport__identity:
             id_version = self._get_fuzzy_field(
@@ -246,7 +241,6 @@ class TFuzzyHeaderTransport(THeaderTransport):
 
         buf.write(header_data.getvalue())
         buf.write(transform_data.getvalue())
-        hmac_loc = buf.tell() - 1  # Fixup hmac size later
         buf.write(info_data.getvalue())
 
         # Pad out the header with 0x00
@@ -261,19 +255,3 @@ class TFuzzyHeaderTransport(THeaderTransport):
         self._verbose = old_verbose
 
         self._write_fuzzy_field(buf, 'payload', wout, 'str')
-
-        # HMAC calculation should always be last.
-        if self._THeaderTransport__hmac_func:
-            hmac_data = buf.getvalue()[4:]
-            hmac = self._THeaderTransport__hmac_func(hmac_data)
-
-            # Fill in hmac size.
-            buf.seek(hmac_loc)
-            self._write_hmac_size(buf, hmac)
-            buf.seek(0, os.SEEK_END)
-            self._write_hmac(buf, hmac)
-
-            # Fix packet size since we appended data.
-            new_sz = buf.tell() - 4
-            buf.seek(0)
-            self._write_wsz(buf, new_sz)

@@ -440,15 +440,8 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(
   // For now all transforms consist of only the ID, not data.
   for (int i = 0; i < numTransforms; i++) {
     int32_t transId = readVarint<int32_t>(c);
-
-    if (transId == HMAC_TRANSFORM) {
-      RWPrivateCursor macCursor(c);
-      macSz = c.read<uint8_t>();
-      macCursor.write<uint8_t>(0x00);
-    } else {
-      readTrans_.push_back(transId);
-      setTransform(transId);
-    }
+    readTrans_.push_back(transId);
+    setTransform(transId);
   }
 
   // Info headers
@@ -477,25 +470,6 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(
   if (!persistentReadHeaders.empty()) {
     readHeaders_.insert(persistentReadHeaders.begin(),
                         persistentReadHeaders.end());
-  }
-
-  if (verifyCallback_) {
-    size_t bufLength = buf->computeChainDataLength();
-    RWPrivateCursor macCursor(buf.get());
-
-    // Mac callbacks don't have a zero-copy interface
-    string verify_data = getString(macCursor, bufLength - macSz);
-    string mac = getString(macCursor, macSz);
-
-    if (!verifyCallback_(verify_data, mac)) {
-      if (macSz > 0) {
-        throw TTransportException(TTransportException::INVALID_STATE,
-                                  "mac did not verify");
-      } else {
-        throw TTransportException(TTransportException::INVALID_STATE,
-                                  "Client did not send a mac");
-      }
-    }
   }
 
   // Get just the data section using trim on a queue
@@ -953,14 +927,6 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
       pkt += writeVarint32(transId, pkt);
     }
 
-    uint8_t* mac_loc = nullptr;
-    if (macCallback_) {
-      pkt += writeVarint32(HMAC_TRANSFORM, pkt);
-      mac_loc = pkt;
-      *pkt = 0x00;
-      pkt++;
-    }
-
     // write info headers
 
     // write persistent kv-headers
@@ -992,22 +958,6 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     headerSizeN = htons(headerSize / 4);
     memcpy(headerSizePtr, &headerSizeN, sizeof(headerSizeN));
 
-    // hmac calculation should always be last.
-    string hmac;
-    if (macCallback_) {
-      // TODO(davejwatson): refactor macCallback_ interface to take
-      // several uint8_t buffers instead of string to avoid the extra copying.
-
-      buf->coalesce(); // Needs to be coalesced for string data anyway.
-      // Ignoring 4 bytes of framing.
-      string headerData(reinterpret_cast<char*>(pktStart + 4),
-                        szHbo - chainSize);
-      string data(reinterpret_cast<char*>(buf->writableData()), chainSize);
-      hmac = macCallback_(headerData + data);
-      *mac_loc = hmac.length(); // Set mac size.
-      szHbo += hmac.length();
-    }
-
     // Set framing size.
     if (szHbo > MAX_FRAME_SIZE) {
       if (!allowBigFrames_) {
@@ -1026,13 +976,9 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
       memcpy(pktStart, &szNbo, sizeof(szNbo));
     }
 
-    header->append(szHbo - chainSize + 4 - hmac.length());
+    header->append(szHbo - chainSize + 4);
     header->prependChain(std::move(buf));
     buf = std::move(header);
-    if (hmac.length() > 0) {
-      unique_ptr<IOBuf> hmacBuf(IOBuf::wrapBuffer(hmac.data(), hmac.length()));
-      buf->prependChain(std::move(hmacBuf));
-    }
   } else if ((clientType == THRIFT_FRAMED_DEPRECATED) ||
              (clientType == THRIFT_FRAMED_COMPACT)){
     uint32_t szHbo = (uint32_t)chainSize;

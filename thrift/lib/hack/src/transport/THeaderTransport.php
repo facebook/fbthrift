@@ -63,9 +63,6 @@ class THeaderTransport extends TFramedTransport
   const int ID_VERSION = 1;
   protected ?string $identity = null;
 
-  protected ?(function(string): string) $hmacFunc = null;
-  protected ?(function(string, ?string): bool) $verifyFunc = null;
-
   /**
    * Constructor.
    *
@@ -112,15 +109,6 @@ class THeaderTransport extends TFramedTransport
     }
     $this->clientType_ = self::HEADER_CLIENT_TYPE;
     $this->readFrame(0);
-  }
-
-  public function setHmac(
-    ?(function(string): string) $hmac_func,
-    ?(function(string, ?string): bool) $verify_func,
-  ): this {
-    $this->hmacFunc = $hmac_func;
-    $this->verifyFunc = $verify_func;
-    return $this;
   }
 
   public function setHeader(string $str_key, @string $str_value): this {
@@ -356,7 +344,6 @@ class THeaderTransport extends TFramedTransport
     }
 
     // Read in the headers.  Data for each header varies.
-    $hmac_sz = 0;
     for ($i = 0; $i < $numHeaders; $i++) {
       $transId = $this->readVarint($data, $index);
       switch ($transId) {
@@ -366,10 +353,10 @@ class THeaderTransport extends TFramedTransport
           break;
 
         case self::HMAC_TRANSFORM:
-          $hmac_sz = ord($data[$index]);
-          $data[$index] = pack('C', '\0');
-          ++$index;
-          break;
+          throw new TApplicationException(
+            'Hmac transform no longer supported',
+            TApplicationException::INVALID_TRANSFORM,
+          );
 
         default:
           throw new TApplicationException(
@@ -381,18 +368,6 @@ class THeaderTransport extends TFramedTransport
     // Make sure that the read transforms are applied in the reverse order
     // from when the data was written.
     $this->readTrans_ = array_reverse($this->readTrans_);
-
-    // Checking hmac should always happen last
-    if ($this->verifyFunc !== null) {
-      $vf = $this->verifyFunc;
-      $hmac = substr($data, -$hmac_sz);
-      if (!$vf(substr($data, 4, strlen($data) - $hmac_sz - 4), $hmac)) {
-        throw new TApplicationException(
-          'HMAC did not verify',
-          TApplicationException::INVALID_TRANSFORM,
-        );
-      }
-    }
 
     // Read the info headers
     $this->readHeaders = Map {};
@@ -513,14 +488,6 @@ class THeaderTransport extends TFramedTransport
         $transformData .= $this->getVarint($trans);
       }
 
-      if ($this->hmacFunc !== null) {
-        $num_headers++;
-        $transformData .= $this->getVarint(self::HMAC_TRANSFORM);
-
-        // Append hmac size, updated later.
-        $transformData .= (string) pack('C', '\0');
-      }
-
       // Add in special flags.
       if ($this->identity !== null) {
         $this->writeHeaders[self::ID_VERSION_HEADER] =
@@ -557,7 +524,6 @@ class THeaderTransport extends TFramedTransport
       $buf .= (string) pack('Nn', $this->seqId_, $header_size / 4);
 
       $buf .= $headerData.$transformData;
-      $hmac_loc = strlen($buf) - 1; // Update with hmac size.
       $buf .= $infoData;
 
       // Pad out the header with 0x00
@@ -567,13 +533,6 @@ class THeaderTransport extends TFramedTransport
 
       // Append the data
       $buf .= $out;
-
-      if ($this->hmacFunc) {
-        $hf = $this->hmacFunc;
-        $hmac = $hf($buf);
-        $buf[$hmac_loc] = (string) pack('C', strlen($hmac));
-        $buf .= $hmac;
-      }
 
       // Prepend the size.
       $buf = (string) pack('N', strlen($buf)).$buf;
