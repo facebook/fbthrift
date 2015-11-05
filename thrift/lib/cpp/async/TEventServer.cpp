@@ -132,7 +132,7 @@ void TEventServer::setupServerSocket() {
     }
 
     socket_->listen(listenBacklog_);
-    socket_->setMaxNumMessagesInQueue(maxNumMsgsInPipe_);
+    socket_->setMaxNumPendingConnectionsPerWorker(maxNumMsgsInPipe_);
     socket_->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
 
     // Notify handler of the preServe event

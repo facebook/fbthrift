@@ -304,7 +304,8 @@ void ThriftServer::setup() {
 
       for (auto& socket : getSockets()) {
         socket->setShutdownSocketSet(shutdownSocketSet_.get());
-        socket->setMaxNumMessagesInQueue(maxNumMsgsInQueue_);
+        socket->setMaxNumPendingConnectionsPerWorker(
+            maxNumPendingConnectionsPerWorker_);
         socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
       }
 

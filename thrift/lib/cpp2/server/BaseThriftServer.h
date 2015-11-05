@@ -68,7 +68,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   //! Default number of worker threads (should be # of processor cores).
   static const int T_ASYNC_DEFAULT_WORKER_THREADS;
 
-  static const uint32_t T_MAX_NUM_MESSAGES_IN_QUEUE = 0xffffffff;
+  static const uint32_t T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER = 0xffffffff;
 
   static const std::chrono::milliseconds DEFAULT_TIMEOUT;
 
@@ -127,10 +127,10 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   int listenBacklog_ = DEFAULT_LISTEN_BACKLOG;
 
   /**
-   * The maximum number of unprocessed messages which a NotificationQueue
-   * can hold.
+   * The maximum number of pending connections each io worker thread can hold.
    */
-  uint32_t maxNumMsgsInQueue_ = T_MAX_NUM_MESSAGES_IN_QUEUE;
+  uint32_t maxNumPendingConnectionsPerWorker_ =
+    T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER;
 
   // Notification of various server events
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
@@ -368,20 +368,21 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   }
 
   /**
-   * Get the maximum number of unprocessed messages which a NotificationQueue
-   * can hold.
+   * Get the maximum number of pending connections each io worker thread can
+   * hold.
    */
-  uint32_t getMaxNumMessagesInQueue() const {
-    return maxNumMsgsInQueue_;
+  uint32_t getMaxNumPendingConnectionsPerWorker() const {
+    return maxNumPendingConnectionsPerWorker_;
   }
   /**
-   * Set the maximum number of unprocessed messages in NotificationQueue.
-   * No new message will be sent to that NotificationQueue if there are more
-   * than such number of unprocessed messages in that queue.
+   * Set the maximum number of pending connections each io worker thread can
+   * hold. No new connections will be sent to that io worker thread if there
+   * are more than such number of unprocessed connections in that queue. If
+   * every io worker thread's queue is full the connection will be dropped.
    */
-  void setMaxNumMessagesInQueue(uint32_t num) {
+  void setMaxNumPendingConnectionsPerWorker(uint32_t num) {
     CHECK(configMutable());
-    maxNumMsgsInQueue_ = num;
+    maxNumPendingConnectionsPerWorker_ = num;
   }
 
   /**
