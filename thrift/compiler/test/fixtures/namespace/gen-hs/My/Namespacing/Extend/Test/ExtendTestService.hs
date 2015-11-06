@@ -18,10 +18,11 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
                  maybe, not, null, otherwise, return, show, toEnum,
-                 enumFromTo, Bounded, minBound, maxBound,
+                 enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
 import Control.Applicative (ZipList(..), (<*>))
+import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
@@ -56,6 +57,10 @@ data Check_args = Check_args
   } deriving (Show,Eq,Typeable)
 instance Hashable Check_args where
   hashWithSalt salt record = salt   `hashWithSalt` check_args_struct1 record  
+instance NFData Check_args where
+  rnf record =
+   rnf (check_args_struct1 record) `seq`
+   ()
 instance Arbitrary Check_args where 
   arbitrary = liftM Check_args (arbitrary)
   shrink obj | obj == default_Check_args = []
@@ -89,6 +94,10 @@ data Check_result = Check_result
   } deriving (Show,Eq,Typeable)
 instance Hashable Check_result where
   hashWithSalt salt record = salt   `hashWithSalt` check_result_success record  
+instance NFData Check_result where
+  rnf record =
+   rnf (check_result_success record) `seq`
+   ()
 instance Arbitrary Check_result where 
   arbitrary = liftM Check_result (arbitrary)
   shrink obj | obj == default_Check_result = []

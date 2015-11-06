@@ -18,10 +18,11 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
                  maybe, not, null, otherwise, return, show, toEnum,
-                 enumFromTo, Bounded, minBound, maxBound,
+                 enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
 import Control.Applicative (ZipList(..), (<*>))
+import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
@@ -68,6 +69,25 @@ data Init_args = Init_args
   } deriving (Show,Eq,Typeable)
 instance Hashable Init_args where
   hashWithSalt salt record = salt   `hashWithSalt` init_args_int1 record   `hashWithSalt` init_args_int2 record   `hashWithSalt` init_args_int3 record   `hashWithSalt` init_args_int4 record   `hashWithSalt` init_args_int5 record   `hashWithSalt` init_args_int6 record   `hashWithSalt` init_args_int7 record   `hashWithSalt` init_args_int8 record   `hashWithSalt` init_args_int9 record   `hashWithSalt` init_args_int10 record   `hashWithSalt` init_args_int11 record   `hashWithSalt` init_args_int12 record   `hashWithSalt` init_args_int13 record   `hashWithSalt` init_args_int14 record   `hashWithSalt` init_args_int15 record   `hashWithSalt` init_args_int16 record  
+instance NFData Init_args where
+  rnf record =
+   rnf (init_args_int1 record) `seq`
+   rnf (init_args_int2 record) `seq`
+   rnf (init_args_int3 record) `seq`
+   rnf (init_args_int4 record) `seq`
+   rnf (init_args_int5 record) `seq`
+   rnf (init_args_int6 record) `seq`
+   rnf (init_args_int7 record) `seq`
+   rnf (init_args_int8 record) `seq`
+   rnf (init_args_int9 record) `seq`
+   rnf (init_args_int10 record) `seq`
+   rnf (init_args_int11 record) `seq`
+   rnf (init_args_int12 record) `seq`
+   rnf (init_args_int13 record) `seq`
+   rnf (init_args_int14 record) `seq`
+   rnf (init_args_int15 record) `seq`
+   rnf (init_args_int16 record) `seq`
+   ()
 instance Arbitrary Init_args where 
   arbitrary = liftM Init_args (arbitrary)
           `ap`(arbitrary)
@@ -176,6 +196,10 @@ data Init_result = Init_result
   } deriving (Show,Eq,Typeable)
 instance Hashable Init_result where
   hashWithSalt salt record = salt   `hashWithSalt` init_result_success record  
+instance NFData Init_result where
+  rnf record =
+   rnf (init_result_success record) `seq`
+   ()
 instance Arbitrary Init_result where 
   arbitrary = liftM Init_result (arbitrary)
   shrink obj | obj == default_Init_result = []

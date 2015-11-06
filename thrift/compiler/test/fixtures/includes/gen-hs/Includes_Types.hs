@@ -18,10 +18,11 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
                  maybe, not, null, otherwise, return, show, toEnum,
-                 enumFromTo, Bounded, minBound, maxBound,
+                 enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
 import Control.Applicative (ZipList(..), (<*>))
+import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
@@ -49,6 +50,10 @@ data Included = Included
   } deriving (Show,Eq,Typeable)
 instance Hashable Included where
   hashWithSalt salt record = salt   `hashWithSalt` included_MyIntField record  
+instance NFData Included where
+  rnf record =
+   rnf (included_MyIntField record) `seq`
+   ()
 instance Arbitrary Included where 
   arbitrary = liftM Included (arbitrary)
   shrink obj | obj == default_Included = []

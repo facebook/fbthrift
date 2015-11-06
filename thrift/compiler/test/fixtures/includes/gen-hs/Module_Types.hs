@@ -18,10 +18,11 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
                  maybe, not, null, otherwise, return, show, toEnum,
-                 enumFromTo, Bounded, minBound, maxBound,
+                 enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
 import Control.Applicative (ZipList(..), (<*>))
+import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
@@ -51,6 +52,10 @@ data MyStruct = MyStruct
   } deriving (Show,Eq,Typeable)
 instance Hashable MyStruct where
   hashWithSalt salt record = salt   `hashWithSalt` myStruct_MyIncludedField record  
+instance NFData MyStruct where
+  rnf record =
+   rnf (myStruct_MyIncludedField record) `seq`
+   ()
 instance Arbitrary MyStruct where 
   arbitrary = liftM MyStruct (arbitrary)
   shrink obj | obj == default_MyStruct = []

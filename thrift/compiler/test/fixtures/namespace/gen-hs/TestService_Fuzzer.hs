@@ -21,10 +21,11 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
                  maybe, not, null, otherwise, return, show, toEnum,
-                 enumFromTo, Bounded, minBound, maxBound,
+                 enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
 import Control.Applicative (ZipList(..), (<*>))
+import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)

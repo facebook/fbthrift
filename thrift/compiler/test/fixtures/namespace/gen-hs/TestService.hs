@@ -18,10 +18,11 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
                  maybe, not, null, otherwise, return, show, toEnum,
-                 enumFromTo, Bounded, minBound, maxBound,
+                 enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
 import Control.Applicative (ZipList(..), (<*>))
+import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
@@ -53,6 +54,10 @@ data Init_args = Init_args
   } deriving (Show,Eq,Typeable)
 instance Hashable Init_args where
   hashWithSalt salt record = salt   `hashWithSalt` init_args_int1 record  
+instance NFData Init_args where
+  rnf record =
+   rnf (init_args_int1 record) `seq`
+   ()
 instance Arbitrary Init_args where 
   arbitrary = liftM Init_args (arbitrary)
   shrink obj | obj == default_Init_args = []
@@ -86,6 +91,10 @@ data Init_result = Init_result
   } deriving (Show,Eq,Typeable)
 instance Hashable Init_result where
   hashWithSalt salt record = salt   `hashWithSalt` init_result_success record  
+instance NFData Init_result where
+  rnf record =
+   rnf (init_result_success record) `seq`
+   ()
 instance Arbitrary Init_result where 
   arbitrary = liftM Init_result (arbitrary)
   shrink obj | obj == default_Init_result = []

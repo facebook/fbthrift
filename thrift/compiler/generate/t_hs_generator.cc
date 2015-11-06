@@ -317,10 +317,11 @@ string t_hs_generator::hs_imports() {
       "                 Eq, Show, Ord,\n"
       "                 concat, error, fromIntegral, fromEnum, length, map,\n"
       "                 maybe, not, null, otherwise, return, show, toEnum,\n"
-      "                 enumFromTo, Bounded, minBound, maxBound,\n"
+      "                 enumFromTo, Bounded, minBound, maxBound, seq,\n"
       "                 (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))\n"
       "\n"
       "import Control.Applicative (ZipList(..), (<*>))\n"
+      "import Control.DeepSeq\n"
       "import Control.Exception\n"
       "import Control.Monad ( liftM, ap, when )\n"
       "import Data.ByteString.Lazy (ByteString)\n"
@@ -428,6 +429,11 @@ void t_hs_generator::generate_enum(t_enum* tenum) {
   indent(f_types_) << "instance Hashable " << ename << " where" << nl;
   indent_up();
   indent(f_types_) << "hashWithSalt salt = hashWithSalt salt . fromEnum" << nl;
+  indent_down();
+
+  indent(f_types_) << "instance NFData " << ename << " where" << nl;
+  indent_up();
+  indent(f_types_) << "rnf x = x `seq` ()" << nl;
   indent_down();
 
   indent(f_types_) << "instance Arbitrary " << ename << " where" << nl;
@@ -676,6 +682,20 @@ void t_hs_generator::generate_hs_struct_definition(ofstream& out,
     indent(out) << " `hashWithSalt` " << field_name(tname, mname) << " record";
   }
   indent(out) << nl;
+  indent_down();
+
+  indent(out) << "instance NFData " << tname << " where" << nl;
+  indent_up();
+  string record = tmp("_record");
+  indent(out) << "rnf " << record << " =" << nl;
+  indent_up();
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    string mname = (*m_iter)->get_name();
+    indent(out) << "rnf (" << field_name(tname, mname) << " " << record
+                << ") `seq`" << nl;
+  }
+  indent(out) << "()" << nl;
+  indent_down();
   indent_down();
 
   generate_hs_struct_arbitrary(out, tstruct);
