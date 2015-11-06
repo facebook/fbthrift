@@ -55,9 +55,9 @@ data Init_args = Init_args
 instance Hashable Init_args where
   hashWithSalt salt record = salt   `hashWithSalt` init_args_int1 record  
 instance NFData Init_args where
-  rnf record =
-   rnf (init_args_int1 record) `seq`
-   ()
+  rnf _record7 =
+    rnf (init_args_int1 _record7) `seq`
+    ()
 instance Arbitrary Init_args where 
   arbitrary = liftM Init_args (arbitrary)
   shrink obj | obj == default_Init_args = []
@@ -66,7 +66,7 @@ instance Arbitrary Init_args where
     ]
 from_Init_args :: Init_args -> ThriftVal
 from_Init_args record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v8 -> Just (1, ("int1",TI64 _v8))) $ init_args_int1 record
+  [ (\_v10 -> Just (1, ("int1",TI64 _v10))) $ init_args_int1 record
   ]
 write_Init_args :: (Protocol p, Transport t) => p t -> Init_args -> IO ()
 write_Init_args oprot record = writeVal oprot $ from_Init_args record
@@ -74,7 +74,7 @@ encode_Init_args :: (Protocol p, Transport t) => p t -> Init_args -> ByteString
 encode_Init_args oprot record = serializeVal oprot $ from_Init_args record
 to_Init_args :: ThriftVal -> Init_args
 to_Init_args (TStruct fields) = Init_args{
-  init_args_int1 = maybe (init_args_int1 default_Init_args) (\(_,_val10) -> (case _val10 of {TI64 _val11 -> _val11; _ -> error "wrong type"})) (Map.lookup (1) fields)
+  init_args_int1 = maybe (init_args_int1 default_Init_args) (\(_,_val12) -> (case _val12 of {TI64 _val13 -> _val13; _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_Init_args _ = error "not a struct"
 read_Init_args :: (Transport t, Protocol p) => p t -> IO Init_args
@@ -92,9 +92,9 @@ data Init_result = Init_result
 instance Hashable Init_result where
   hashWithSalt salt record = salt   `hashWithSalt` init_result_success record  
 instance NFData Init_result where
-  rnf record =
-   rnf (init_result_success record) `seq`
-   ()
+  rnf _record14 =
+    rnf (init_result_success _record14) `seq`
+    ()
 instance Arbitrary Init_result where 
   arbitrary = liftM Init_result (arbitrary)
   shrink obj | obj == default_Init_result = []
@@ -103,7 +103,7 @@ instance Arbitrary Init_result where
     ]
 from_Init_result :: Init_result -> ThriftVal
 from_Init_result record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v14 -> Just (0, ("success",TI64 _v14))) $ init_result_success record
+  [ (\_v17 -> Just (0, ("success",TI64 _v17))) $ init_result_success record
   ]
 write_Init_result :: (Protocol p, Transport t) => p t -> Init_result -> IO ()
 write_Init_result oprot record = writeVal oprot $ from_Init_result record
@@ -111,7 +111,7 @@ encode_Init_result :: (Protocol p, Transport t) => p t -> Init_result -> ByteStr
 encode_Init_result oprot record = serializeVal oprot $ from_Init_result record
 to_Init_result :: ThriftVal -> Init_result
 to_Init_result (TStruct fields) = Init_result{
-  init_result_success = maybe (init_result_success default_Init_result) (\(_,_val16) -> (case _val16 of {TI64 _val17 -> _val17; _ -> error "wrong type"})) (Map.lookup (0) fields)
+  init_result_success = maybe (init_result_success default_Init_result) (\(_,_val19) -> (case _val19 of {TI64 _val20 -> _val20; _ -> error "wrong type"})) (Map.lookup (0) fields)
   }
 to_Init_result _ = error "not a struct"
 read_Init_result :: (Transport t, Protocol p) => p t -> IO Init_result

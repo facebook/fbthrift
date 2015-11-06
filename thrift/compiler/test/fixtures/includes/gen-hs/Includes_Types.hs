@@ -51,9 +51,9 @@ data Included = Included
 instance Hashable Included where
   hashWithSalt salt record = salt   `hashWithSalt` included_MyIntField record  
 instance NFData Included where
-  rnf record =
-   rnf (included_MyIntField record) `seq`
-   ()
+  rnf _record0 =
+    rnf (included_MyIntField _record0) `seq`
+    ()
 instance Arbitrary Included where 
   arbitrary = liftM Included (arbitrary)
   shrink obj | obj == default_Included = []
@@ -62,7 +62,7 @@ instance Arbitrary Included where
     ]
 from_Included :: Included -> ThriftVal
 from_Included record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v2 -> Just (1, ("MyIntField",TI64 _v2))) $ included_MyIntField record
+  [ (\_v3 -> Just (1, ("MyIntField",TI64 _v3))) $ included_MyIntField record
   ]
 write_Included :: (Protocol p, Transport t) => p t -> Included -> IO ()
 write_Included oprot record = writeVal oprot $ from_Included record
@@ -70,7 +70,7 @@ encode_Included :: (Protocol p, Transport t) => p t -> Included -> ByteString
 encode_Included oprot record = serializeVal oprot $ from_Included record
 to_Included :: ThriftVal -> Included
 to_Included (TStruct fields) = Included{
-  included_MyIntField = maybe (included_MyIntField default_Included) (\(_,_val4) -> (case _val4 of {TI64 _val5 -> _val5; _ -> error "wrong type"})) (Map.lookup (1) fields)
+  included_MyIntField = maybe (included_MyIntField default_Included) (\(_,_val5) -> (case _val5 of {TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_Included _ = error "not a struct"
 read_Included :: (Transport t, Protocol p) => p t -> IO Included

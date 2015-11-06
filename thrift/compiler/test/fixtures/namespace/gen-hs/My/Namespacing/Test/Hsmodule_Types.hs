@@ -51,9 +51,9 @@ data HsFoo = HsFoo
 instance Hashable HsFoo where
   hashWithSalt salt record = salt   `hashWithSalt` hsFoo_MyInt record  
 instance NFData HsFoo where
-  rnf record =
-   rnf (hsFoo_MyInt record) `seq`
-   ()
+  rnf _record0 =
+    rnf (hsFoo_MyInt _record0) `seq`
+    ()
 instance Arbitrary HsFoo where 
   arbitrary = liftM HsFoo (arbitrary)
   shrink obj | obj == default_HsFoo = []
@@ -62,7 +62,7 @@ instance Arbitrary HsFoo where
     ]
 from_HsFoo :: HsFoo -> ThriftVal
 from_HsFoo record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v2 -> Just (1, ("MyInt",TI64 _v2))) $ hsFoo_MyInt record
+  [ (\_v3 -> Just (1, ("MyInt",TI64 _v3))) $ hsFoo_MyInt record
   ]
 write_HsFoo :: (Protocol p, Transport t) => p t -> HsFoo -> IO ()
 write_HsFoo oprot record = writeVal oprot $ from_HsFoo record
@@ -70,7 +70,7 @@ encode_HsFoo :: (Protocol p, Transport t) => p t -> HsFoo -> ByteString
 encode_HsFoo oprot record = serializeVal oprot $ from_HsFoo record
 to_HsFoo :: ThriftVal -> HsFoo
 to_HsFoo (TStruct fields) = HsFoo{
-  hsFoo_MyInt = maybe (hsFoo_MyInt default_HsFoo) (\(_,_val4) -> (case _val4 of {TI64 _val5 -> _val5; _ -> error "wrong type"})) (Map.lookup (1) fields)
+  hsFoo_MyInt = maybe (hsFoo_MyInt default_HsFoo) (\(_,_val5) -> (case _val5 of {TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_HsFoo _ = error "not a struct"
 read_HsFoo :: (Transport t, Protocol p) => p t -> IO HsFoo

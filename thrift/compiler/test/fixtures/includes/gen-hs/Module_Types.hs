@@ -53,9 +53,9 @@ data MyStruct = MyStruct
 instance Hashable MyStruct where
   hashWithSalt salt record = salt   `hashWithSalt` myStruct_MyIncludedField record  
 instance NFData MyStruct where
-  rnf record =
-   rnf (myStruct_MyIncludedField record) `seq`
-   ()
+  rnf _record0 =
+    rnf (myStruct_MyIncludedField _record0) `seq`
+    ()
 instance Arbitrary MyStruct where 
   arbitrary = liftM MyStruct (arbitrary)
   shrink obj | obj == default_MyStruct = []
@@ -64,7 +64,7 @@ instance Arbitrary MyStruct where
     ]
 from_MyStruct :: MyStruct -> ThriftVal
 from_MyStruct record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v2 -> Just (1, ("MyIncludedField",Includes_Types.from_Included _v2))) $ myStruct_MyIncludedField record
+  [ (\_v3 -> Just (1, ("MyIncludedField",Includes_Types.from_Included _v3))) $ myStruct_MyIncludedField record
   ]
 write_MyStruct :: (Protocol p, Transport t) => p t -> MyStruct -> IO ()
 write_MyStruct oprot record = writeVal oprot $ from_MyStruct record
@@ -72,7 +72,7 @@ encode_MyStruct :: (Protocol p, Transport t) => p t -> MyStruct -> ByteString
 encode_MyStruct oprot record = serializeVal oprot $ from_MyStruct record
 to_MyStruct :: ThriftVal -> MyStruct
 to_MyStruct (TStruct fields) = MyStruct{
-  myStruct_MyIncludedField = maybe (myStruct_MyIncludedField default_MyStruct) (\(_,_val4) -> (case _val4 of {TStruct _val5 -> (Includes_Types.to_Included (TStruct _val5)); _ -> error "wrong type"})) (Map.lookup (1) fields)
+  myStruct_MyIncludedField = maybe (myStruct_MyIncludedField default_MyStruct) (\(_,_val5) -> (case _val5 of {TStruct _val6 -> (Includes_Types.to_Included (TStruct _val6)); _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_MyStruct _ = error "not a struct"
 read_MyStruct :: (Transport t, Protocol p) => p t -> IO MyStruct

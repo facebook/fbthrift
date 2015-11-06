@@ -70,24 +70,24 @@ data Init_args = Init_args
 instance Hashable Init_args where
   hashWithSalt salt record = salt   `hashWithSalt` init_args_int1 record   `hashWithSalt` init_args_int2 record   `hashWithSalt` init_args_int3 record   `hashWithSalt` init_args_int4 record   `hashWithSalt` init_args_int5 record   `hashWithSalt` init_args_int6 record   `hashWithSalt` init_args_int7 record   `hashWithSalt` init_args_int8 record   `hashWithSalt` init_args_int9 record   `hashWithSalt` init_args_int10 record   `hashWithSalt` init_args_int11 record   `hashWithSalt` init_args_int12 record   `hashWithSalt` init_args_int13 record   `hashWithSalt` init_args_int14 record   `hashWithSalt` init_args_int15 record   `hashWithSalt` init_args_int16 record  
 instance NFData Init_args where
-  rnf record =
-   rnf (init_args_int1 record) `seq`
-   rnf (init_args_int2 record) `seq`
-   rnf (init_args_int3 record) `seq`
-   rnf (init_args_int4 record) `seq`
-   rnf (init_args_int5 record) `seq`
-   rnf (init_args_int6 record) `seq`
-   rnf (init_args_int7 record) `seq`
-   rnf (init_args_int8 record) `seq`
-   rnf (init_args_int9 record) `seq`
-   rnf (init_args_int10 record) `seq`
-   rnf (init_args_int11 record) `seq`
-   rnf (init_args_int12 record) `seq`
-   rnf (init_args_int13 record) `seq`
-   rnf (init_args_int14 record) `seq`
-   rnf (init_args_int15 record) `seq`
-   rnf (init_args_int16 record) `seq`
-   ()
+  rnf _record0 =
+    rnf (init_args_int1 _record0) `seq`
+    rnf (init_args_int2 _record0) `seq`
+    rnf (init_args_int3 _record0) `seq`
+    rnf (init_args_int4 _record0) `seq`
+    rnf (init_args_int5 _record0) `seq`
+    rnf (init_args_int6 _record0) `seq`
+    rnf (init_args_int7 _record0) `seq`
+    rnf (init_args_int8 _record0) `seq`
+    rnf (init_args_int9 _record0) `seq`
+    rnf (init_args_int10 _record0) `seq`
+    rnf (init_args_int11 _record0) `seq`
+    rnf (init_args_int12 _record0) `seq`
+    rnf (init_args_int13 _record0) `seq`
+    rnf (init_args_int14 _record0) `seq`
+    rnf (init_args_int15 _record0) `seq`
+    rnf (init_args_int16 _record0) `seq`
+    ()
 instance Arbitrary Init_args where 
   arbitrary = liftM Init_args (arbitrary)
           `ap`(arbitrary)
@@ -126,22 +126,22 @@ instance Arbitrary Init_args where
     ]
 from_Init_args :: Init_args -> ThriftVal
 from_Init_args record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v2 -> Just (1, ("int1",TI64 _v2))) $ init_args_int1 record
-  , (\_v2 -> Just (2, ("int2",TI64 _v2))) $ init_args_int2 record
-  , (\_v2 -> Just (3, ("int3",TI64 _v2))) $ init_args_int3 record
-  , (\_v2 -> Just (4, ("int4",TI64 _v2))) $ init_args_int4 record
-  , (\_v2 -> Just (5, ("int5",TI64 _v2))) $ init_args_int5 record
-  , (\_v2 -> Just (6, ("int6",TI64 _v2))) $ init_args_int6 record
-  , (\_v2 -> Just (7, ("int7",TI64 _v2))) $ init_args_int7 record
-  , (\_v2 -> Just (8, ("int8",TI64 _v2))) $ init_args_int8 record
-  , (\_v2 -> Just (9, ("int9",TI64 _v2))) $ init_args_int9 record
-  , (\_v2 -> Just (10, ("int10",TI64 _v2))) $ init_args_int10 record
-  , (\_v2 -> Just (11, ("int11",TI64 _v2))) $ init_args_int11 record
-  , (\_v2 -> Just (12, ("int12",TI64 _v2))) $ init_args_int12 record
-  , (\_v2 -> Just (13, ("int13",TI64 _v2))) $ init_args_int13 record
-  , (\_v2 -> Just (14, ("int14",TI64 _v2))) $ init_args_int14 record
-  , (\_v2 -> Just (15, ("int15",TI64 _v2))) $ init_args_int15 record
-  , (\_v2 -> Just (16, ("int16",TI64 _v2))) $ init_args_int16 record
+  [ (\_v3 -> Just (1, ("int1",TI64 _v3))) $ init_args_int1 record
+  , (\_v3 -> Just (2, ("int2",TI64 _v3))) $ init_args_int2 record
+  , (\_v3 -> Just (3, ("int3",TI64 _v3))) $ init_args_int3 record
+  , (\_v3 -> Just (4, ("int4",TI64 _v3))) $ init_args_int4 record
+  , (\_v3 -> Just (5, ("int5",TI64 _v3))) $ init_args_int5 record
+  , (\_v3 -> Just (6, ("int6",TI64 _v3))) $ init_args_int6 record
+  , (\_v3 -> Just (7, ("int7",TI64 _v3))) $ init_args_int7 record
+  , (\_v3 -> Just (8, ("int8",TI64 _v3))) $ init_args_int8 record
+  , (\_v3 -> Just (9, ("int9",TI64 _v3))) $ init_args_int9 record
+  , (\_v3 -> Just (10, ("int10",TI64 _v3))) $ init_args_int10 record
+  , (\_v3 -> Just (11, ("int11",TI64 _v3))) $ init_args_int11 record
+  , (\_v3 -> Just (12, ("int12",TI64 _v3))) $ init_args_int12 record
+  , (\_v3 -> Just (13, ("int13",TI64 _v3))) $ init_args_int13 record
+  , (\_v3 -> Just (14, ("int14",TI64 _v3))) $ init_args_int14 record
+  , (\_v3 -> Just (15, ("int15",TI64 _v3))) $ init_args_int15 record
+  , (\_v3 -> Just (16, ("int16",TI64 _v3))) $ init_args_int16 record
   ]
 write_Init_args :: (Protocol p, Transport t) => p t -> Init_args -> IO ()
 write_Init_args oprot record = writeVal oprot $ from_Init_args record
@@ -149,22 +149,22 @@ encode_Init_args :: (Protocol p, Transport t) => p t -> Init_args -> ByteString
 encode_Init_args oprot record = serializeVal oprot $ from_Init_args record
 to_Init_args :: ThriftVal -> Init_args
 to_Init_args (TStruct fields) = Init_args{
-  init_args_int1 = maybe (init_args_int1 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val5 -> _val5; _ -> error "wrong type"})) (Map.lookup (1) fields),
-  init_args_int2 = maybe (init_args_int2 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (2) fields),
-  init_args_int3 = maybe (init_args_int3 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val7 -> _val7; _ -> error "wrong type"})) (Map.lookup (3) fields),
-  init_args_int4 = maybe (init_args_int4 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val8 -> _val8; _ -> error "wrong type"})) (Map.lookup (4) fields),
-  init_args_int5 = maybe (init_args_int5 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val9 -> _val9; _ -> error "wrong type"})) (Map.lookup (5) fields),
-  init_args_int6 = maybe (init_args_int6 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val10 -> _val10; _ -> error "wrong type"})) (Map.lookup (6) fields),
-  init_args_int7 = maybe (init_args_int7 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val11 -> _val11; _ -> error "wrong type"})) (Map.lookup (7) fields),
-  init_args_int8 = maybe (init_args_int8 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val12 -> _val12; _ -> error "wrong type"})) (Map.lookup (8) fields),
-  init_args_int9 = maybe (init_args_int9 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val13 -> _val13; _ -> error "wrong type"})) (Map.lookup (9) fields),
-  init_args_int10 = maybe (init_args_int10 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val14 -> _val14; _ -> error "wrong type"})) (Map.lookup (10) fields),
-  init_args_int11 = maybe (init_args_int11 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val15 -> _val15; _ -> error "wrong type"})) (Map.lookup (11) fields),
-  init_args_int12 = maybe (init_args_int12 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val16 -> _val16; _ -> error "wrong type"})) (Map.lookup (12) fields),
-  init_args_int13 = maybe (init_args_int13 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val17 -> _val17; _ -> error "wrong type"})) (Map.lookup (13) fields),
-  init_args_int14 = maybe (init_args_int14 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val18 -> _val18; _ -> error "wrong type"})) (Map.lookup (14) fields),
-  init_args_int15 = maybe (init_args_int15 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val19 -> _val19; _ -> error "wrong type"})) (Map.lookup (15) fields),
-  init_args_int16 = maybe (init_args_int16 default_Init_args) (\(_,_val4) -> (case _val4 of {TI64 _val20 -> _val20; _ -> error "wrong type"})) (Map.lookup (16) fields)
+  init_args_int1 = maybe (init_args_int1 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields),
+  init_args_int2 = maybe (init_args_int2 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val7 -> _val7; _ -> error "wrong type"})) (Map.lookup (2) fields),
+  init_args_int3 = maybe (init_args_int3 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val8 -> _val8; _ -> error "wrong type"})) (Map.lookup (3) fields),
+  init_args_int4 = maybe (init_args_int4 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val9 -> _val9; _ -> error "wrong type"})) (Map.lookup (4) fields),
+  init_args_int5 = maybe (init_args_int5 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val10 -> _val10; _ -> error "wrong type"})) (Map.lookup (5) fields),
+  init_args_int6 = maybe (init_args_int6 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val11 -> _val11; _ -> error "wrong type"})) (Map.lookup (6) fields),
+  init_args_int7 = maybe (init_args_int7 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val12 -> _val12; _ -> error "wrong type"})) (Map.lookup (7) fields),
+  init_args_int8 = maybe (init_args_int8 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val13 -> _val13; _ -> error "wrong type"})) (Map.lookup (8) fields),
+  init_args_int9 = maybe (init_args_int9 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val14 -> _val14; _ -> error "wrong type"})) (Map.lookup (9) fields),
+  init_args_int10 = maybe (init_args_int10 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val15 -> _val15; _ -> error "wrong type"})) (Map.lookup (10) fields),
+  init_args_int11 = maybe (init_args_int11 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val16 -> _val16; _ -> error "wrong type"})) (Map.lookup (11) fields),
+  init_args_int12 = maybe (init_args_int12 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val17 -> _val17; _ -> error "wrong type"})) (Map.lookup (12) fields),
+  init_args_int13 = maybe (init_args_int13 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val18 -> _val18; _ -> error "wrong type"})) (Map.lookup (13) fields),
+  init_args_int14 = maybe (init_args_int14 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val19 -> _val19; _ -> error "wrong type"})) (Map.lookup (14) fields),
+  init_args_int15 = maybe (init_args_int15 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val20 -> _val20; _ -> error "wrong type"})) (Map.lookup (15) fields),
+  init_args_int16 = maybe (init_args_int16 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val21 -> _val21; _ -> error "wrong type"})) (Map.lookup (16) fields)
   }
 to_Init_args _ = error "not a struct"
 read_Init_args :: (Transport t, Protocol p) => p t -> IO Init_args
@@ -197,9 +197,9 @@ data Init_result = Init_result
 instance Hashable Init_result where
   hashWithSalt salt record = salt   `hashWithSalt` init_result_success record  
 instance NFData Init_result where
-  rnf record =
-   rnf (init_result_success record) `seq`
-   ()
+  rnf _record22 =
+    rnf (init_result_success _record22) `seq`
+    ()
 instance Arbitrary Init_result where 
   arbitrary = liftM Init_result (arbitrary)
   shrink obj | obj == default_Init_result = []
@@ -208,7 +208,7 @@ instance Arbitrary Init_result where
     ]
 from_Init_result :: Init_result -> ThriftVal
 from_Init_result record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v23 -> Just (0, ("success",TI64 _v23))) $ init_result_success record
+  [ (\_v25 -> Just (0, ("success",TI64 _v25))) $ init_result_success record
   ]
 write_Init_result :: (Protocol p, Transport t) => p t -> Init_result -> IO ()
 write_Init_result oprot record = writeVal oprot $ from_Init_result record
@@ -216,7 +216,7 @@ encode_Init_result :: (Protocol p, Transport t) => p t -> Init_result -> ByteStr
 encode_Init_result oprot record = serializeVal oprot $ from_Init_result record
 to_Init_result :: ThriftVal -> Init_result
 to_Init_result (TStruct fields) = Init_result{
-  init_result_success = maybe (init_result_success default_Init_result) (\(_,_val25) -> (case _val25 of {TI64 _val26 -> _val26; _ -> error "wrong type"})) (Map.lookup (0) fields)
+  init_result_success = maybe (init_result_success default_Init_result) (\(_,_val27) -> (case _val27 of {TI64 _val28 -> _val28; _ -> error "wrong type"})) (Map.lookup (0) fields)
   }
 to_Init_result _ = error "not a struct"
 read_Init_result :: (Transport t, Protocol p) => p t -> IO Init_result
