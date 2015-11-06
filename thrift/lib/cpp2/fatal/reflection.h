@@ -219,7 +219,7 @@ struct reflected_module {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename Struct, typename Names, typename Info>
+template <typename Struct, typename Name, typename Names, typename Info>
 struct reflected_struct {
   /**
    * A type alias for the struct itself.
@@ -234,6 +234,23 @@ struct reflected_struct {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using type = Struct;
+
+  /**
+   * A compile-time string representing the struct name.
+   *
+   * Example:
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *
+   *  // yields `fatal::constant_sequence<
+   *  //   char,
+   *  //   'M', 'y', 'S', 't', 'r', 'u', 'c', 't'
+   *  // >`
+   *  using result = info::type;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using name = Name;
 
   /**
    * An implementation defined type that provides the names for each data member
@@ -366,19 +383,6 @@ struct reflected_struct {
  * Thrift users should ignore the template parameters taken by it and focus
  * simply on the members provided.
  *
- * For the examples below, consider code generated for this Thrift file:
- *
- *  /////////////////////
- *  // MyModule.thrift //
- *  /////////////////////
- *  namespace My.Namespace
- *
- *  struct MyStruct {
- *    1: i32 fieldA
- *    2: string fieldB
- *    3: double fieldC
- *  }
- *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <
@@ -386,7 +390,8 @@ template <
   typename Type,
   field_id_t Id,
   typename Getter,
-  thrift_category Category
+  thrift_category Category,
+  template <typename> class Pod
 >
 struct reflected_struct_data_member {
   /**
@@ -394,6 +399,18 @@ struct reflected_struct_data_member {
    * a compile-time string.
    *
    * Example:
+   *
+   *  // MyModule.thrift
+   *
+   *  namespace My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: i32 fieldA
+   *    2: string fieldB
+   *    3: double fieldC
+   *  }
+   *
+   *  // C++
    *
    *  using info = reflect_struct<MyStruct>;
    *  using member = info::types::members<info::names::fieldC>;
@@ -413,6 +430,18 @@ struct reflected_struct_data_member {
    *
    * Example:
    *
+   *  // MyModule.thrift
+   *
+   *  namespace My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: i32 fieldA
+   *    2: string fieldB
+   *    3: double fieldC
+   *  }
+   *
+   *  // C++
+   *
    *  using info = reflect_struct<MyStruct>;
    *  using member = info::types::members<info::names::fieldC>;
    *
@@ -428,6 +457,18 @@ struct reflected_struct_data_member {
    * field id for the data member.
    *
    * Example:
+   *
+   *  // MyModule.thrift
+   *
+   *  namespace My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: i32 fieldA
+   *    2: string fieldB
+   *    3: double fieldC
+   *  }
+   *
+   *  // C++
    *
    *  using info = reflect_struct<MyStruct>;
    *  using member = info::types::members<info::names::fieldC>;
@@ -450,6 +491,18 @@ struct reflected_struct_data_member {
    * the data member getter.
    *
    * Example:
+   *
+   *  // MyModule.thrift
+   *
+   *  namespace My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: i32 fieldA
+   *    2: string fieldB
+   *    3: double fieldC
+   *  }
+   *
+   *  // C++
    *
    *  using info = reflect_struct<MyStruct>;
    *  using member = info::types::members<info::names::fieldC>;
@@ -474,11 +527,51 @@ struct reflected_struct_data_member {
   using getter = Getter;
 
   /**
-   * Tells what's the Thrift type
+   * Tells what's the Thrift category for this member.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using category = std::integral_constant<thrift_category, Category>;
+
+  /**
+   * A POD (plain old data) that holds a single data member with the same name
+   * as this member. The template parameter `T` defines the type of this POD's
+   * sole member, and defaults to `type`.
+   *
+   * This is useful when you need to create a class with an API compatible to
+   * the original Thrift struct.
+   *
+   * Example:
+   *
+   *  // MyModule.thrift
+   *
+   *  namespace My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: i32 fieldA
+   *    2: string fieldB
+   *    3: double fieldC
+   *  }
+   *
+   *  // C++
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *  using member = info::types::members<info::names::fieldC>;
+   *
+   *  member::pod<> original;
+   *
+   *  // yields `double`
+   *  using result1 = decltype(original.fieldC);
+   *
+   *  member::pod<bool> another;
+   *
+   *  // yields `bool`
+   *  using result2 = decltype(another.fieldC);
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  template <typename T = type>
+  using pod = Pod<T>;
 };
 
 /**

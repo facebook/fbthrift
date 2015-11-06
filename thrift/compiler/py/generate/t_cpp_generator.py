@@ -4278,21 +4278,34 @@ class CppGenerator(t_generator.Generator):
             safe_ns, name)
         dtmclsprefix = '{0}_{1}__struct_unique_data_member_getters_list'.format(
             safe_ns, name)
+        mpdclsprefix = '{0}_{1}__struct_unique_member_pod_list'.format(
+            safe_ns, name)
         with sns.namespace('detail').scope as detail:
             members = []
+            strings = []
             for i in program.structs:
                 if i.is_union:
                     continue
+                if i.name not in strings:
+                    strings.append(i.name)
                 for m in i.members:
+                    if m.name not in strings:
+                        strings.append(m.name)
                     if m.name not in members:
                         members.append(m.name)
             with detail.cls('struct {0}'.format(strclsprefix)).scope as cstr:
-                for i in members:
+                for i in strings:
                     cstr('using {0} = {1};'
                         .format(i, self._render_fatal_string(i)))
             with detail.cls('struct {0}'.format(dtmclsprefix)).scope as dtm:
                 for i in members:
                     dtm('FATAL_DATA_MEMBER_GETTER({0}, {0});'.format(i))
+            with detail.cls('struct {0}'.format(mpdclsprefix)).scope as mpd:
+                for i in members:
+                    mpd('template <typename T>')
+                    with detail.cls('struct {0}_{1}_struct_member_pod_{2}'
+                      .format(safe_ns, name, i)).scope as pod:
+                        pod('T {0};'.format(i))
             for i in program.structs:
                 if i.is_union:
                     continue
@@ -4309,6 +4322,7 @@ class CppGenerator(t_generator.Generator):
             result.append(i.name)
             sns('THRIFT_REGISTER_STRUCT_TRAITS(')
             sns('  {0},'.format(i.name))
+            sns('  detail::{0}::{1},'.format(strclsprefix, i.name))
             sns('  detail::{0}_{1},'.format(i.name, strclsprefix))
             sns('  ::fatal::type_list<')
             for midx, m in enumerate(i.members):
@@ -4317,8 +4331,10 @@ class CppGenerator(t_generator.Generator):
                 sns('      {0},'.format(self._type_name(m.type)))
                 sns('      {0},'.format(m.key))
                 sns('      detail::{0}::{1},'.format(dtmclsprefix, m.name))
-                sns('      ::apache::thrift::thrift_category::{0}'
+                sns('      ::apache::thrift::thrift_category::{0},'
                     .format(self._render_fatal_thrift_category(m.type)))
+                sns('      detail::{0}::{1}_{2}_struct_member_pod_{3}'
+                    .format(mpdclsprefix, safe_ns, name, m.name))
                 sns('    >{0}'.format(',' if midx + 1 < len(i.members) else ''))
             sns('  >')
             sns(');')
