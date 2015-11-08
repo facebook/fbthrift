@@ -57,11 +57,11 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
         configs["thrift_security_service_tier"] = config->SASLServiceTier();
       }
     }
-    channel = std::move(facebook::servicerouter::cpp2::getClientFactory()
-                                        .getChannel(config->srTier(),
-                                                    ebm_.getEventBase(),
-                                                    std::move(options),
-                                                    std::move(configs)));
+    channel = facebook::servicerouter::cpp2::getClientFactory().getChannel(
+        config->srTier(),
+        ebm_.getEventBase(),
+        std::move(options),
+        std::move(configs));
   } else {
     if (config->useSSL()) {
       std::shared_ptr<SSLContext> context = std::make_shared<SSLContext>();
