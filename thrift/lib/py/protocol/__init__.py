@@ -19,7 +19,7 @@
 
 __all__ = ['TProtocol',
            'TBinaryProtocol',
-           'fastbinary',
+           'fastproto',
            'TSimpleJSONProtocol',
            'TCompactProtocol',
            'THeaderProtocol',

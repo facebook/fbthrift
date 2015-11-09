@@ -341,7 +341,7 @@ class TFramedTransport(TTransportBase, CReadableTransport):
         return self.__rbuf
 
     def cstringio_refill(self, prefix, reqlen):
-        # self.__rbuf will already be empty here because fastbinary doesn't
+        # self.__rbuf will already be empty here because fastproto doesn't
         # ask for a refill until the previous buffer is empty.  Therefore,
         # we can start reading new frames immediately.
         while len(prefix) < reqlen:

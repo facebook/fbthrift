@@ -113,7 +113,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__write_transforms = []
         self.__supported_client_types = set(client_types or
                                             (self.HEADERS_CLIENT_TYPE,))
-        self.__proto_id = 0  # default to binary, because fastbinary is fast
+        self.__proto_id = 0  # default to binary
         self.__client_type = client_type or self.HEADERS_CLIENT_TYPE
         self.__read_headers = {}
         self.__read_persistent_headers = {}
@@ -467,7 +467,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         return self.__rbuf
 
     def cstringio_refill(self, prefix, reqlen):
-        # self.__rbuf will already be empty here because fastbinary doesn't
+        # self.__rbuf will already be empty here because fastproto doesn't
         # ask for a refill until the previous buffer is empty.  Therefore,
         # we can start reading new frames immediately.
         while len(prefix) < reqlen:

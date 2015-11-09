@@ -54,10 +54,8 @@ def start_server(server_type, ssl, server_header, server_context,
         multiple, port):
     if sys.version_info[0] >= 3:
         server_path = '_bin/thrift/test/py/py3_test_server.par'
-    elif fastproto is None:
-        server_path = '_bin/thrift/test/py/python_test_server.par'
     else:
-        server_path = '_bin/thrift/test/py/python_fastproto_test_server.par'
+        server_path = '_bin/thrift/test/py/python_test_server.par'
     args = [server_path, '--port', str(port)]
     if ssl:
         args.append('--ssl')

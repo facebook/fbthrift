@@ -240,10 +240,6 @@ class t_py_generator : public t_generator {
   void generate_json_reader          (std::ofstream& out,
                                       t_struct* tstruct);
 
-  void generate_fastbinary_read       (std::ofstream& out,
-                                      t_struct* tstruct);
-  void generate_fastbinary_write      (std::ofstream& out,
-                                      t_struct* tstruct);
   void generate_fastproto_read       (std::ofstream& out,
                                       t_struct* tstruct);
   void generate_fastproto_write      (std::ofstream& out,
@@ -258,7 +254,7 @@ class t_py_generator : public t_generator {
   std::string py_imports();
   std::string rename_reserved_keywords(const std::string& value);
   std::string render_includes();
-  std::string render_fastbinary_and_fastproto_includes();
+  std::string render_fastproto_includes();
   std::string declare_argument(std::string structname, t_field* tfield);
   std::string render_field_default_value(t_field* tfield);
   std::string type_name(t_type* ttype);
@@ -758,7 +754,7 @@ void t_py_generator::init_generator() {
     py_autogen_comment() << endl <<
     py_imports() << endl <<
     render_includes() << endl <<
-    render_fastbinary_and_fastproto_includes() <<
+    render_fastproto_includes() <<
     "all_structs = []" << endl <<
     "UTF8STRINGS = bool(" << gen_utf8strings_ << ") or " <<
     "sys.version_info.major >= 3" << endl << endl;
@@ -796,13 +792,9 @@ string t_py_generator::render_includes() {
 }
 
 /**
- * Renders all the imports necessary to use the accelerated TBinaryProtocol
- * or fastproto.
+ * Renders all the imports necessary to use fastproto.
  */
-string t_py_generator::render_fastbinary_and_fastproto_includes() {
-  // In the try block below, we disable fastbinary if either
-  // 'version' is not defined (causing an exception), or if it is defined
-  // and has an old value.  Warn if it is an old value.
+string t_py_generator::render_fastproto_includes() {
   return
     "import pprint\n"
     "import warnings\n"
@@ -811,13 +803,6 @@ string t_py_generator::render_fastbinary_and_fastproto_includes() {
     "from thrift.protocol import TBinaryProtocol\n"
     "from thrift.protocol import TCompactProtocol\n"
     "from thrift.protocol import THeaderProtocol\n"
-    "try:\n"
-    "  from thrift.protocol import fastbinary\n"
-    "  if fastbinary.version < 2:\n"
-    "    fastbinary = None\n"
-    "    warnings.warn(\"Disabling fastbinary, need at least version 2\")\n"
-    "except:\n"
-    "  fastbinary = None\n"
     "try:\n"
     "  from thrift.protocol import fastproto\n"
     "except:\n"
@@ -1137,7 +1122,6 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
 
   out << endl;
 
-  // TODO: make union work with fastbinary
   indent(out) << "thrift_spec = None" << endl;
   if (members.size() != 0) {
     indent(out) << "__init__ = None" << endl << endl;
@@ -1205,8 +1189,6 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
   indent(out) << "self.field = 0" << endl;
   indent(out) << "self.value = None" << endl;
 
-  // fastbinary doesn't support union (we could add it, but it should
-  // be deprecated by fastproto)
   generate_fastproto_read(out, tstruct);
 
   indent(out) << "iprot.readStructBegin()" << endl;
@@ -1251,7 +1233,6 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
   indent(out) << "def write(self, oprot):" << endl;
   indent_up();
 
-  // fastbinary doesn't support union
   generate_fastproto_write(out, tstruct);
 
   indent(out) << "oprot.writeUnionBegin('" << tstruct->get_name()
@@ -1520,8 +1501,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
   out << endl;
 
   /*
-     Here we generate the structure specification for the fastbinary/fastproto
-     codec.
+     Here we generate the structure specification for the fastproto codec.
      These specifications have the following structure:
      thrift_spec -> tuple of item_spec
      item_spec -> None | (tag, type_enum, name, spec_args, default)
@@ -1757,47 +1737,6 @@ void t_py_generator::generate_fastproto_read(ofstream& out,
   indent_down();
 }
 
-void t_py_generator::generate_fastbinary_read(ofstream& out,
-                                              t_struct* /*tstruct*/) {
-  indent(out) <<
-    "if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) "
-    "or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and "
-    "iprot.get_protocol_id() == "
-    "THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) "
-    "and isinstance(iprot.trans, TTransport.CReadableTransport) "
-    "and self.thrift_spec is not None "
-    "and fastbinary is not None:" << endl;
-  indent_up();
-
-  indent(out) <<
-    "fastbinary.decode_binary(self, iprot.trans, " <<
-    "[self.__class__, self.thrift_spec, False], " <<
-    "utf8strings=UTF8STRINGS)" << endl;
-  indent(out) <<
-    "return" << endl;
-  indent_down();
-}
-
-void t_py_generator::generate_fastbinary_write(ofstream& out,
-                                               t_struct* /*tstruct*/) {
-  indent(out) <<
-    "if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) "
-    "or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and "
-    "oprot.get_protocol_id() == "
-    "THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) "
-    "and self.thrift_spec is not None "
-    "and fastbinary is not None:" << endl;
-  indent_up();
-
-  indent(out) <<
-    "oprot.trans.write(fastbinary.encode_binary(self, " <<
-    "[self.__class__, self.thrift_spec, False], "
-    "utf8strings=UTF8STRINGS))" << endl;
-  indent(out) <<
-    "return" << endl;
-  indent_down();
-}
-
 /**
  * Generates the read method for a struct
  */
@@ -1810,7 +1749,6 @@ void t_py_generator::generate_py_struct_reader(ofstream& out,
     "def read(self, iprot):" << endl;
   indent_up();
 
-  generate_fastbinary_read(out, tstruct);
   generate_fastproto_read(out, tstruct);
 
   indent(out) <<
@@ -1906,7 +1844,6 @@ void t_py_generator::generate_py_struct_writer(ofstream& out,
     "def write(self, oprot):" << endl;
   indent_up();
 
-  generate_fastbinary_write(out, tstruct);
   generate_fastproto_write(out, tstruct);
 
   indent(out) <<
@@ -1979,7 +1916,7 @@ void t_py_generator::generate_service(t_service* tservice) {
   f_service_ <<
     "from .ttypes import *" << endl <<
     "from thrift.Thrift import TProcessor" << endl <<
-    render_fastbinary_and_fastproto_includes() << endl <<
+    render_fastproto_includes() << endl <<
     "all_structs = []" << endl <<
     "UTF8STRINGS = bool(" << gen_utf8strings_ << ") or " <<
     "sys.version_info.major >= 3" << endl;

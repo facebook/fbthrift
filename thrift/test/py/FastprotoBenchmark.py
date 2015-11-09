@@ -52,40 +52,6 @@ class TDevNullTransport(TTransport.TTransportBase):
 
 iters = 1000000
 
-def benchmark_fastbinary():
-    setup_write = """
-from __main__ import ooe, TDevNullTransport
-from thrift.protocol import TBinaryProtocol
-
-trans = TDevNullTransport()
-proto = TBinaryProtocol.TBinaryProtocol{}(trans)
-"""
-    print("Standard write = {}".format(
-        timeit.Timer('ooe.write(proto)', setup_write.format(""))
-            .timeit(number=iters)))
-    print("Fastbinary write = {}".format(
-        timeit.Timer('ooe.write(proto)', setup_write.format("Accelerated"))
-            .timeit(number=iters)))
-
-    setup_read = """
-from __main__ import binary_buf
-from FastProto.ttypes import OneOfEach
-from thrift.protocol import TBinaryProtocol
-from thrift.transport import TTransport
-
-def doRead():
-    trans = TTransport.TMemoryBuffer(binary_buf)
-    proto = TBinaryProtocol.TBinaryProtocol{}(trans)
-    ooe = OneOfEach()
-    ooe.read(proto)
-"""
-    print("Standard read = {}".format(
-        timeit.Timer('doRead()', setup_read.format(""))
-            .timeit(number=iters)))
-    print("Fastbinary read = {}".format(
-        timeit.Timer('doRead()', setup_read.format("Accelerated"))
-            .timeit(number=iters)))
-
 def benchmark_fastproto():
     setup_write = """
 from __main__ import ooe, TDevNullTransport
@@ -195,7 +161,6 @@ def memory_usage_fastproto():
 
 if __name__ == "__main__":
     print("Starting Benchmarks")
-    benchmark_fastbinary()
     benchmark_fastproto()
     if hpy is not None:
         memory_usage_fastproto()

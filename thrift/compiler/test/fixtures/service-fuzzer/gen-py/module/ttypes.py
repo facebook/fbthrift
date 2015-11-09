@@ -21,13 +21,6 @@ from thrift.protocol import TBinaryProtocol
 from thrift.protocol import TCompactProtocol
 from thrift.protocol import THeaderProtocol
 try:
-  from thrift.protocol import fastbinary
-  if fastbinary.version < 2:
-    fastbinary = None
-    warnings.warn("Disabling fastbinary, need at least version 2")
-except:
-  fastbinary = None
-try:
   from thrift.protocol import fastproto
 except:
   fastproto = None
