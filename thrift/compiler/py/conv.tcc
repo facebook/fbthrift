@@ -43,11 +43,25 @@ struct indexVec {
   }
 };
 
+
 template <class T, class U>
 struct indexMap {
+  typedef map<T, U> Map;
+
+  struct iteration_helper {
+    static list keys(Map const& self) {
+      list t;
+      for (const auto& v : self)
+        t.append(v.first);
+      return t;
+    }
+  };
+
   indexMap(char const* name) {
-    class_<map<T, U>> (name)
-      .def(map_indexing_suite<map<T, U>>());
+    class_<Map> (name)
+      .def(map_indexing_suite<Map>())
+      .def("keys", &iteration_helper::keys)
+      ;
   }
 };
 

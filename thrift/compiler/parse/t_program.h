@@ -178,6 +178,10 @@ class t_program : public t_doc {
     return iter->second;
   }
 
+  const std::map<std::string, std::string>& get_namespaces() const {
+    return namespaces_;
+  }
+
   // Language specific namespace / packaging
 
   void add_cpp_include(std::string path) {

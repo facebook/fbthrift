@@ -46,8 +46,31 @@ BOOST_PYTHON_MODULE(frontend) {
 
   indexPtrVec<t_const_value>("t_const_value_vec");
 
+  enum_<t_types::TypeValue>("TypeValue")
+    .value("TYPE_VOID", t_types::TYPE_VOID)
+    .value("TYPE_STRING", t_types::TYPE_STRING)
+    .value("TYPE_BOOL", t_types::TYPE_BOOL)
+    .value("TYPE_BYTE", t_types::TYPE_BYTE)
+    .value("TYPE_I16", t_types::TYPE_I16)
+    .value("TYPE_I32", t_types::TYPE_I32)
+    .value("TYPE_I64", t_types::TYPE_I64)
+    .value("TYPE_DOUBLE", t_types::TYPE_DOUBLE)
+    .value("TYPE_ENUM", t_types::TYPE_ENUM)
+    .value("TYPE_LIST", t_types::TYPE_LIST)
+    .value("TYPE_SET", t_types::TYPE_SET)
+    .value("TYPE_MAP", t_types::TYPE_MAP)
+    .value("TYPE_STRUCT", t_types::TYPE_STRUCT)
+    .value("TYPE_SERVICE", t_types::TYPE_SERVICE)
+    .value("TYPE_PROGRAM", t_types::TYPE_PROGRAM)
+    .value("TYPE_FLOAT", t_types::TYPE_FLOAT)
+    .value("TYPE_STREAM", t_types::TYPE_STREAM)
+    ;
+
   // t_type
   object ttype_class = class_<t_type, noncopyable> ("t_type", no_init)
+      .add_property("type_id", &t_type::get_type_id)
+      .add_property("full_name", &t_type::get_full_name)
+      .add_property("type_value", &t_type::get_type_value)
       .add_property("name",
           make_function(&t_type::get_name, policy_ccr()),
                     &t_type::set_name)
@@ -70,7 +93,7 @@ BOOST_PYTHON_MODULE(frontend) {
       .add_property("is_stream", &t_type::is_stream)
       .add_property("is_service", &t_type::is_service)
       .add_property("is_typedef", &t_type::is_typedef)
-      .def_readonly("annotations", &t_type::annotations_)
+      .add_property("annotations", &t_type::annotations_)
       .add_property("as_typedef",
             make_function(TO<t_typedef, t_type>, policy_rir()))
       .add_property("as_base_type",
@@ -162,7 +185,7 @@ BOOST_PYTHON_MODULE(frontend) {
       .add_property("value",
           make_function(static_cast<const t_const_value* (t_field::*)() const>
                         (&t_field::get_value), policy_reo()))
-      .add_property("annotations", &t_field::annotations_)
+      .def_readonly("annotations", &t_field::annotations_)
       .add_property("key", &t_field::get_key)
       .add_property("req", &t_field::get_req)
       ;
@@ -287,6 +310,8 @@ BOOST_PYTHON_MODULE(frontend) {
       .def("get_namespace",
            static_cast<string (t_program::*)(const string&) const>
            (&t_program::get_namespace))
+      .add_property("namespaces",
+          make_function(&t_program::get_namespaces, policy_rir()))
       .add_property("include_prefix",
           make_function(&t_program::get_include_prefix, policy_ccr()),
           &t_program::set_include_prefix)

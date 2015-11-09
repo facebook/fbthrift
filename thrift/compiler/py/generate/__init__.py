@@ -20,5 +20,6 @@
 
 import t_generator
 import t_cpp_generator
+import t_schema_generator
 
-__all__ = [t_cpp_generator, t_generator]
+__all__ = [t_cpp_generator, t_schema_generator, t_generator]
