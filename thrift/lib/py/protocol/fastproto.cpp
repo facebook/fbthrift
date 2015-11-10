@@ -1108,7 +1108,7 @@ static int fastproto_clear(PyObject *m) {
 
 static struct PyModuleDef ThriftFastProtoModuleDef = {
   PyModuleDef_HEAD_INIT,
-  "fbcode.thrift.protocol.fastproto",
+  "thrift.protocol.fastproto",
   nullptr,
   sizeof(struct module_state),
   ThriftFastProtoMethods,
@@ -1154,7 +1154,7 @@ initfastproto(void)
 #else
   PycString_IMPORT;
   if (PycStringIO == nullptr) return;
-  module = Py_InitModule("fbcode.thrift.protocol.fastproto", ThriftFastProtoMethods);
+  module = Py_InitModule("thrift.protocol.fastproto", ThriftFastProtoMethods);
 #endif
 
   if (module == nullptr) {
