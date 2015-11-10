@@ -37,7 +37,6 @@ template <class T>
 static T jsonToObj(const std::string& json) {
   SimpleJSONProtocolReader reader;
   T ret;
-  ret.__clear();
   auto iobuf = folly::IOBuf::copyBuffer(json);
   reader.setInput(iobuf.get());
   ret.read(&reader);
@@ -50,8 +49,6 @@ TEST(TestWithFollyOptionals, SerDesTests) {
 
   cpp2::HasOptionals obj1;
   cpp2::HasOptionals obj2;
-  obj1.__clear();
-  obj2.__clear();
 
   // first try with only the required fields, leave all optionals empty
   obj1.int64Req = 42;
@@ -61,7 +58,6 @@ TEST(TestWithFollyOptionals, SerDesTests) {
   obj1.mapReq = std::map<int64_t, int64_t>{{100, 101}, {102, 103}};
   obj1.enumReq = cpp2::HasOptionalsTestEnum::FOO;
   obj1.structReq = cpp2::HasOptionalsExtra();
-  obj1.structReq.__clear();
   obj1.structReq.extraInt64Req = 69;
   obj1.structReq.extraStringReq = "world";
   obj1.structReq.extraSetReq = std::set<int64_t>{210, 220, 230};
@@ -73,6 +69,9 @@ TEST(TestWithFollyOptionals, SerDesTests) {
   json1 = objToJSON(obj1);
   obj2 = jsonToObj<cpp2::HasOptionals>(json1);
   EXPECT_EQ(obj1, obj2);
+  EXPECT_FALSE(obj2.int64Opt.hasValue());
+  EXPECT_FALSE(obj2.listOpt.hasValue());
+  EXPECT_FALSE(obj2.structOpt.hasValue());
   json2 = objToJSON(obj2);
   EXPECT_EQ(json1, json2);
 
@@ -83,7 +82,6 @@ TEST(TestWithFollyOptionals, SerDesTests) {
   obj1.mapOpt = std::map<int64_t, int64_t>{{100, 101}, {102, 103}};
   obj1.enumOpt = cpp2::HasOptionalsTestEnum::FOO;
   obj1.structOpt = cpp2::HasOptionalsExtra();
-  obj1.structOpt->__clear();
   obj1.structOpt->extraInt64Opt = 69;
   obj1.structOpt->extraStringOpt = "world";
   obj1.structOpt->extraSetOpt = std::set<int64_t>{210, 220, 230};
@@ -103,8 +101,6 @@ TEST(TestWithFollyOptionals, SerDesTests) {
 TEST(TestWithFollyOptionals, EqualityTests) {
   cpp2::HasOptionals obj1;
   cpp2::HasOptionals obj2;
-  obj1.__clear();
-  obj2.__clear();
 
   // for each of the fields:
   // * set a required field, expect equal.
@@ -163,15 +159,11 @@ TEST(TestWithFollyOptionals, EqualityTests) {
   EXPECT_EQ(obj1, obj2);
 
   obj1.structReq = cpp2::HasOptionalsExtra();
-  obj1.structReq.__clear();
   obj2.structReq = cpp2::HasOptionalsExtra();
-  obj2.structReq.__clear();
   EXPECT_EQ(obj1, obj2);
   obj1.structOpt = cpp2::HasOptionalsExtra();
-  obj1.structOpt->__clear();
   EXPECT_NE(obj1, obj2);
   obj2.structOpt = cpp2::HasOptionalsExtra();
-  obj2.structOpt->__clear();
   EXPECT_EQ(obj1, obj2);
 
   // just one more test: try required/optional fields in the optional struct

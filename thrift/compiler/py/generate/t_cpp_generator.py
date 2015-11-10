@@ -2224,6 +2224,8 @@ class CppGenerator(t_generator.Generator):
         t = self._get_true_type(member.type)
         if member.value:
             return self._render_const_value(t, member.value)
+        if self._is_optional_wrapped(member):
+            return ''
         if t.is_base_type and not t.is_string:
             return '0'
         if explicit or t.is_enum:
