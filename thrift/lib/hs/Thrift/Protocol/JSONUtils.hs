@@ -31,8 +31,10 @@ module Thrift.Protocol.JSONUtils
 import Control.Applicative
 import Data.Attoparsec.ByteString as P
 import Data.Attoparsec.ByteString.Char8 as PC
+import Data.Bits
 import Data.ByteString.Builder as B
 import Data.ByteString.Internal (c2w, w2c)
+import Data.Char as C
 import Data.Monoid
 import Data.Word
 import qualified Data.ByteString.Lazy as LBS
@@ -44,37 +46,7 @@ escapedString = PC.char8 '"' *>
 
 escapedChar :: Parser Word8
 escapedChar = PC.char8 '\\' *> (c2w <$> choice
-                                [ '\SOH' <$ P.string "u0001"
-                                , '\STX' <$ P.string "u0002"
-                                , '\ETX' <$ P.string "u0003"
-                                , '\EOT' <$ P.string "u0004"
-                                , '\ENQ' <$ P.string "u0005"
-                                , '\ACK' <$ P.string "u0006"
-                                , '\BEL' <$ P.string "u0007"
-                                , '\BS'  <$ P.string "u0008"
-                                , '\VT'  <$ P.string "u000b"
-                                , '\FF'  <$ P.string "u000c"
-                                , '\CR'  <$ P.string "u000d"
-                                , '\SO'  <$ P.string "u000e"
-                                , '\SI'  <$ P.string "u000f"
-                                , '\DLE' <$ P.string "u0010"
-                                , '\DC1' <$ P.string "u0011"
-                                , '\DC2' <$ P.string "u0012"
-                                , '\DC3' <$ P.string "u0013"
-                                , '\DC4' <$ P.string "u0014"
-                                , '\NAK' <$ P.string "u0015"
-                                , '\SYN' <$ P.string "u0016"
-                                , '\ETB' <$ P.string "u0017"
-                                , '\CAN' <$ P.string "u0018"
-                                , '\EM'  <$ P.string "u0019"
-                                , '\SUB' <$ P.string "u001a"
-                                , '\ESC' <$ P.string "u001b"
-                                , '\FS'  <$ P.string "u001c"
-                                , '\GS'  <$ P.string "u001d"
-                                , '\RS'  <$ P.string "u001e"
-                                , '\US'  <$ P.string "u001f"
-                                , '\DEL' <$ P.string "u007f"
-                                , '\0' <$ PC.char '0'
+                                [ '\0' <$ PC.char '0'
                                 , '\a' <$ PC.char 'a'
                                 , '\b' <$ PC.char 'b'
                                 , '\f' <$ PC.char 'f'
@@ -86,7 +58,28 @@ escapedChar = PC.char8 '\\' *> (c2w <$> choice
                                 , '\'' <$ PC.char '\''
                                 , '\\' <$ PC.char '\\'
                                 , '/'  <$ PC.char '/'
+                                , PC.string "u00" *> hexdigits
                                 ])
+    where
+      -- The cpp implementation only accepts escaped characters of the form
+      -- "\u00XX" where the X's are hex digits, so we will do the same here
+      hexdigits :: Parser Char
+      hexdigits = do
+        msB <- hexdigit =<< anyWord8
+        lsB <- hexdigit =<< anyWord8
+        return $ C.chr $ (msB `shiftL` 4) .|. lsB
+
+      hexdigit n | n >= w_0 && n <= w_9 = return $ fromIntegral $ n - w_0
+                 | n >= w_a && n <= w_f = return $ fromIntegral $ n - w_a + 10
+                 | n >= w_A && n <= w_F = return $ fromIntegral $ n - w_A + 10
+                 | otherwise            = fail $ "not a hex digit: " ++ show n
+
+      w_0 = fromIntegral $ ord '0'
+      w_9 = fromIntegral $ ord '9'
+      w_a = fromIntegral $ ord 'a'
+      w_f = fromIntegral $ ord 'f'
+      w_A = fromIntegral $ ord 'A'
+      w_F = fromIntegral $ ord 'F'
 
 escape :: LBS.ByteString -> Builder
 escape = LBS.foldl' escapeChar mempty

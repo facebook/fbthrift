@@ -4,6 +4,7 @@ module PrettyJSONTests where
 import Data.IORef
 import Test.HUnit
 import Thrift.Protocol.PrettyJSON
+import Thrift.Transport.Empty
 import ThriftTest_Types
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.HashMap.Strict as Map
@@ -49,6 +50,18 @@ tests = TestList
           ]
 
     assertEqual "Insanity" expected result
+  , TestLabel "Escaped JSON test" $ TestCase $ do
+    let json = BSL.intercalate "\n"
+          [ "{"
+          , "  \"string_thing\": \"\\u0074\\u0065\\u0073\\u0074999\","
+          , "  \"byte_thing\": 0,"
+          , "  \"i32_thing\": 0,"
+          , "  \"i64_thing\": 0"
+          , "}"
+          ]
+        expected = Xtruct "test999" 0 0 0
+        result = decode_Xtruct (PrettyJSONProtocol 2 EmptyTransport) json
+    assertEqual "parse escaped" expected result
   ]
 
 main :: IO Counts
