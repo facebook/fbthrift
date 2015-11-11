@@ -23,6 +23,9 @@
 namespace test_cpp2 {
 namespace cpp_reflection {
 
+FATAL_STR(cpp2s, "cpp2");
+FATAL_STR(cpp2ns, "test_cpp2::cpp_reflection");
+
 FATAL_STR(enum1s, "enum1");
 FATAL_STR(enum2s, "enum2");
 FATAL_STR(enum3s, "enum3");
@@ -48,6 +51,8 @@ FATAL_STR(service2s, "service2");
 FATAL_STR(service3s, "service3");
 
 TEST(fatal, tags) {
+  EXPECT_SAME<cpp2s, reflection_tags::languages::cpp2>();
+
   EXPECT_SAME<enum1s, reflection_tags::enums::enum1>();
   EXPECT_SAME<enum2s, reflection_tags::enums::enum2>();
   EXPECT_SAME<enum3s, reflection_tags::enums::enum3>();
@@ -79,6 +84,13 @@ TEST(fatal, metadata) {
     apache::thrift::try_reflect_module<reflection_tags::metadata, void>
   >();
   EXPECT_SAME<void, apache::thrift::try_reflect_module<int, void>>();
+
+  EXPECT_SAME<
+    fatal::build_type_map<
+      cpp2s, cpp2ns
+    >,
+    info::namespaces
+  >();
 
   EXPECT_SAME<
     fatal::build_type_map<
@@ -118,6 +130,65 @@ TEST(fatal, metadata) {
       service3s
     >,
     info::services
+  >();
+}
+
+} // namespace cpp_reflection {
+} // namespace test_cpp2 {
+
+#include <thrift/test/gen-cpp2/reflection_fatal_constant.h>
+#include <thrift/test/gen-cpp2/reflection_fatal_enum.h>
+#include <thrift/test/gen-cpp2/reflection_fatal_service.h>
+#include <thrift/test/gen-cpp2/reflection_fatal_struct.h>
+#include <thrift/test/gen-cpp2/reflection_fatal_union.h>
+
+namespace test_cpp2 {
+namespace cpp_reflection {
+
+TEST(fatal, reflect_module_tag) {
+  using tag = reflection_tags::metadata;
+
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<enum1>>();
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<enum2>>();
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<enum3>>();
+
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<union1>>();
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<union2>>();
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<union3>>();
+
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<structA>>();
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<structB>>();
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<struct1>>();
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<struct2>>();
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<struct3>>();
+
+  // TODO: ADD SERVICES
+}
+
+TEST(fatal, try_reflect_module_tag) {
+  using tag = reflection_tags::metadata;
+
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<enum1, void>>();
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<enum2, void>>();
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<enum3, void>>();
+
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<union1, void>>();
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<union2, void>>();
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<union3, void>>();
+
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<structA, void>>();
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<structB, void>>();
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<struct1, void>>();
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<struct2, void>>();
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<struct3, void>>();
+
+  // TODO: ADD SERVICES
+
+  EXPECT_SAME<void, apache::thrift::try_reflect_module_tag<int, void>>();
+  EXPECT_SAME<void, apache::thrift::try_reflect_module_tag<void, void>>();
+  EXPECT_SAME<
+    void,
+    apache::thrift::try_reflect_module_tag<std::string, void>
   >();
 }
 

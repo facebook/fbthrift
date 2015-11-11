@@ -306,6 +306,7 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_strings_list {
 THRIFT_REGISTER_STRUCT_TRAITS(
   structA,
   detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::structA,
+  module_tags::metadata,
   detail::structA_test_cpp2_cpp_reflection_module__struct_unique_strings_list,
   ::fatal::type_list<
     ::apache::thrift::reflected_struct_data_member<
@@ -329,6 +330,7 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 THRIFT_REGISTER_STRUCT_TRAITS(
   structB,
   detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::structB,
+  module_tags::metadata,
   detail::structB_test_cpp2_cpp_reflection_module__struct_unique_strings_list,
   ::fatal::type_list<
     ::apache::thrift::reflected_struct_data_member<
@@ -352,6 +354,7 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 THRIFT_REGISTER_STRUCT_TRAITS(
   struct1,
   detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::struct1,
+  module_tags::metadata,
   detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_strings_list,
   ::fatal::type_list<
     ::apache::thrift::reflected_struct_data_member<
@@ -407,6 +410,7 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 THRIFT_REGISTER_STRUCT_TRAITS(
   struct2,
   detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::struct2,
+  module_tags::metadata,
   detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_strings_list,
   ::fatal::type_list<
     ::apache::thrift::reflected_struct_data_member<
@@ -470,6 +474,7 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 THRIFT_REGISTER_STRUCT_TRAITS(
   struct3,
   detail::test_cpp2_cpp_reflection_module__struct_unique_strings_list::struct3,
+  module_tags::metadata,
   detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_strings_list,
   ::fatal::type_list<
     ::apache::thrift::reflected_struct_data_member<

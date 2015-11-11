@@ -25,6 +25,7 @@
 namespace test_cpp2 {
 namespace cpp_reflection {
 
+FATAL_STR(union1s, "union1");
 FATAL_STR(uis, "ui");
 FATAL_STR(uds, "ud");
 FATAL_STR(uss, "us");
@@ -39,6 +40,7 @@ TEST(fatal_union, variants) {
   using traits = fatal::variant_traits<union1>;
 
   EXPECT_SAME<union1, traits::type>();
+  EXPECT_SAME<union1s, traits::name>();
   EXPECT_SAME<union1::Type, traits::id>();
 
   EXPECT_SAME<uii, traits::ids::ui>();

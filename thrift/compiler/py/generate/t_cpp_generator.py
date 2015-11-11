@@ -3989,36 +3989,45 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_fatal_impl(self, sns, program):
         name = self._program.name
+        tag = '{0}_tags::metadata'.format(name)
         safe_ns = self._get_namespace().replace('.', '_')
         str_class = '{0}_{1}__unique_strings_list'.format(safe_ns, name)
         strclsid = 'detail::{0}'.format(str_class)
 
-        order = ['enum', 'union', 'struct', 'constant', 'service']
+        order = ['language', 'enum', 'union', 'struct', 'constant', 'service']
+        as_map = ['language', 'enum', 'union', 'struct']
+        str_from_mapped = ['language']
         items = {}
-        items['enum'] = (self._generate_fatal_enum(program), True)
-        items['union'] = (self._generate_fatal_union(program), True)
-        items['struct'] = (self._generate_fatal_struct(program), True)
-        items['constant'] = (self._generate_fatal_constant(program), False)
-        items['service'] = (self._generate_fatal_service(program), False)
+        items['language'] = self._generate_fatal_lanuage(program)
+        items['enum'] = self._generate_fatal_enum(program)
+        items['union'] = self._generate_fatal_union(program)
+        items['struct'] = self._generate_fatal_struct(program)
+        items['constant'] = self._generate_fatal_constant(program)
+        items['service'] = self._generate_fatal_service(program)
 
         with sns.namespace('detail').scope as detail:
             with detail.cls('struct {0}'.format(str_class)).scope as cstr:
-                strings = []
+                strings = {}
                 for i in items:
-                    for s in items[i][0]:
-                        if s not in strings:
-                            strings.append(s)
+                    for s in items[i]:
+                        if s[0] not in strings:
+                            strings[s[0]] = s[1]
+                for i in str_from_mapped:
+                    for k in items[i]:
+                        s = items[i][k]
+                        if s[0] not in strings:
+                            strings[s[0]] = s[1]
                 for i in strings:
                     cstr('using {0} = {1};'
-                        .format(i, self._render_fatal_string(i)))
+                        .format(i, self._render_fatal_string(strings[i])))
         sns('class {0}_tags {1}'.format(name, '{')).scope
         nname = {}
         for i in order:
             nname[i] = '{0}_{1}__unique_{2}s_list'.format(safe_ns, name, i)
 
             sns('  struct {0} {1}'.format(nname[i], '{'))
-            for n in items[i][0]:
-                sns('    using {0} = {1}::{0};'.format(n, strclsid))
+            for n in items[i]:
+                sns('    using {0} = {1}::{2};'.format(n[0], strclsid, n[1]))
             sns('};')
         sns('public:')
         for i in order:
@@ -4027,22 +4036,26 @@ class CppGenerator(t_generator.Generator):
         sns('};')
         sns()
         sns('THRIFT_REGISTER_REFLECTION_METADATA(')
-        sns('  {0}_tags::metadata,'.format(name))
+        sns('  {0},'.format(tag))
         for item_idx, item in enumerate(order):
             entries = items[item]
             sns('  // {0}s'.format(item))
-            if entries[1]:
+            if item in as_map:
                 sns('  ::fatal::type_map<')
             else:
                 sns('  ::fatal::type_list<')
-            for idx, i in enumerate(entries[0]):
-                cseq = ('{0}::{1}'.format(strclsid, i))
-                if entries[1]:
-                    sns('    ::fatal::type_pair<{0}, {1}>{2}'.format(
-                        i, cseq, ',' if idx + 1 < len(entries[0]) else ''))
-                else:
+            for idx, i in enumerate(entries):
+                cseq = ('{0}::{1}'.format(strclsid, i[0]))
+                if item not in as_map:
                     sns('    {0}{1}'.format(
-                        cseq, ',' if idx + 1 < len(entries[0]) else ''))
+                        cseq, ',' if idx + 1 < len(entries) else ''))
+                elif item not in str_from_mapped:
+                    sns('    ::fatal::type_pair<{0}, {1}>{2}'.format(
+                        i[0], cseq, ',' if idx + 1 < len(entries) else ''))
+                else:
+                    mseq = ('{0}::{1}'.format(strclsid, entries[i][0]))
+                    sns('    ::fatal::type_pair<{0}, {1}>{2}'.format(
+                        cseq, mseq, ',' if idx + 1 < len(entries) else ''))
             sns('  >{0}'.format(',' if item_idx + 1 < len(order) else ''))
         sns(');')
 
@@ -4089,6 +4102,18 @@ class CppGenerator(t_generator.Generator):
         else:
             return 'unknown'
 
+    def _generate_fatal_lanuage(self, program):
+        replacement = {'cpp': '::', 'cpp2': '::', 'php': '_'}
+        result = {}
+        for i in program.namespaces:
+            language = i.key()
+            ns = self._program.get_namespace(language)
+            safe_ns = ns.replace('.', '__')
+            if language in replacement:
+                ns = ns.replace('.', replacement[language])
+            result[(language, language)] = (safe_ns, ns)
+        return result
+
     def _generate_fatal_enum(self, program):
         name = self._program.name
         ns = self._get_original_namespace()
@@ -4111,16 +4136,18 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_enum_impl(self, sns, program):
         result = []
         for i in program.enums:
-            self._generate_fatal_enum_traits(i.name, i.constants, sns)
-            result.append(i.name)
+            self._generate_fatal_enum_traits(i.name, i.name, i.constants, sns)
+            result.append((i.name, i.name))
         return result
 
-    def _generate_fatal_enum_traits(self, enum_name, members, scope):
+    def _generate_fatal_enum_traits(self, name, scoped_name, members, scope):
         scoped_ns = self._get_scoped_original_namespace()
-        name = '{0}_enum_traits'.format(enum_name.replace('::', '_'))
+        traits_name = '{0}_enum_traits'.format(scoped_name.replace('::', '_'))
+        tag = '{0}_tags::metadata'.format(self._program.name)
         with scope.namespace('detail').scope as detail:
-            with detail.cls('struct {0}'.format(name)).scope as t:
-                t('using type = {0}::{1};'.format(scoped_ns, enum_name))
+            with detail.cls('struct {0}'.format(traits_name)).scope as t:
+                t('using type = {0}::{1};'.format(scoped_ns, scoped_name))
+                t('using name = {0};'.format(self._render_fatal_string(name)))
                 t()
                 with t.cls('struct str'):
                     for i in members:
@@ -4145,9 +4172,9 @@ class CppGenerator(t_generator.Generator):
                 t('  }')
                 t('}')
         scope()
-        scope('FATAL_REGISTER_ENUM_TRAITS({0}::detail::{1});'
-            .format(scoped_ns, name))
-        return name
+        scope('FATAL_REGISTER_ENUM_TRAITS({0}::detail::{1}, {2});'
+            .format(scoped_ns, traits_name, tag))
+        return traits_name
 
     def _generate_fatal_union(self, program):
         name = self._program.name
@@ -4170,6 +4197,7 @@ class CppGenerator(t_generator.Generator):
                 return self._generate_fatal_union_impl(sg, program)
 
     def _generate_fatal_union_impl(self, sns, program):
+        tag = '{0}_tags::metadata'.format(self._program.name)
         scoped_ns = self._get_scoped_original_namespace()
         result = []
         traits = {}
@@ -4177,16 +4205,16 @@ class CppGenerator(t_generator.Generator):
             if not i.is_union:
                 continue
             self._generate_fatal_enum_traits(
-                '{0}::Type'.format(i.name), i.members, sns)
+                'Type', '{0}::Type'.format(i.name), i.members, sns)
             sns()
-            result.append(i.name)
+            result.append((i.name, i.name))
             with sns.namespace('detail').scope as detail:
                 traits[i.name] = self._generate_fatal_union_traits(i, detail)
         if len(traits) > 0:
             sns()
         for i in result:
-            sns('FATAL_REGISTER_VARIANT_TRAITS({0}::detail::{1});'
-                .format(scoped_ns, traits[i]))
+            sns('FATAL_REGISTER_VARIANT_TRAITS({0}::detail::{1}, {2});'
+                .format(scoped_ns, traits[i[1]], tag))
         return result
 
     def _generate_fatal_union_traits(self, union, scope):
@@ -4203,6 +4231,7 @@ class CppGenerator(t_generator.Generator):
             t()
             t('public:')
             t('using type = {0}::{1};'.format(scoped_ns, union.name))
+            t('using name = {0};'.format(self._render_fatal_string(union.name)))
             t('using id = type::Type;')
             t()
             with t.cls('struct ids'):
@@ -4275,6 +4304,7 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_fatal_struct_impl(self, sns, program):
         name = self._program.name
+        tag = '{0}_tags::metadata'.format(name)
         safe_ns = self._get_namespace().replace('.', '_')
         strclsprefix = '{0}_{1}__struct_unique_strings_list'.format(
             safe_ns, name)
@@ -4321,10 +4351,11 @@ class CppGenerator(t_generator.Generator):
         for i in program.structs:
             if i.is_union:
                 continue
-            result.append(i.name)
+            result.append((i.name, i.name))
             sns('THRIFT_REGISTER_STRUCT_TRAITS(')
             sns('  {0},'.format(i.name))
             sns('  detail::{0}::{1},'.format(strclsprefix, i.name))
+            sns('  {0},'.format(tag))
             sns('  detail::{0}_{1},'.format(i.name, strclsprefix))
             sns('  ::fatal::type_list<')
             for midx, m in enumerate(i.members):
@@ -4364,7 +4395,7 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_constant_impl(self, sns, program):
         result = []
         for i in program.consts:
-            result.append(i.name)
+            result.append((i.name, i.name))
         return result
 
     def _generate_fatal_service(self, program):
@@ -4402,7 +4433,7 @@ class CppGenerator(t_generator.Generator):
                         .format(i, self._render_fatal_string(i)))
         result = []
         for i in program.services:
-            result.append(i.name)
+            result.append((i.name, i.name))
         return result
 
     def _make_context(self, filename,

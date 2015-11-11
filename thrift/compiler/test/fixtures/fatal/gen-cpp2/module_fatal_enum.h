@@ -18,6 +18,7 @@ namespace detail {
 
 struct enum1_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum1;
+  using name = ::fatal::constant_sequence<char, 'e', 'n', 'u', 'm', '1'>;
 
   struct str {
     using field0 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0'>;
@@ -52,11 +53,12 @@ struct enum1_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum1_enum_traits);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum1_enum_traits, module_tags::metadata);
 namespace detail {
 
 struct enum2_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum2;
+  using name = ::fatal::constant_sequence<char, 'e', 'n', 'u', 'm', '2'>;
 
   struct str {
     using field0_2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '2'>;
@@ -91,11 +93,12 @@ struct enum2_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum2_enum_traits);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum2_enum_traits, module_tags::metadata);
 namespace detail {
 
 struct enum3_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum3;
+  using name = ::fatal::constant_sequence<char, 'e', 'n', 'u', 'm', '3'>;
 
   struct str {
     using field0_3 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '3'>;
@@ -130,6 +133,6 @@ struct enum3_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum3_enum_traits);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum3_enum_traits, module_tags::metadata);
 
 }} // test_cpp2::cpp_reflection

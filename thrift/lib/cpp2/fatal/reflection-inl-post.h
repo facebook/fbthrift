@@ -13,22 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef THRIFT_FATAL_REFLECT_CATEGORY_INL_H_
-#define THRIFT_FATAL_REFLECT_CATEGORY_INL_H_ 1
+#ifndef THRIFT_FATAL_REFLECTION_INL_POST_H_
+#define THRIFT_FATAL_REFLECTION_INL_POST_H_ 1
 
-#include <folly/FBString.h>
+#if !defined THRIFT_FATAL_REFLECTION_H_
+# error "This file must be included from reflection.h"
+#endif
 
-#include <type_traits>
-
-#include <map>
-#include <set>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
-
-namespace apache { namespace thrift {
-namespace detail {
+namespace apache { namespace thrift { namespace detail {
 
 template <thrift_category Category>
 using as_thrift_category = std::integral_constant<thrift_category, Category>;
@@ -53,11 +45,7 @@ struct reflect_category_impl {
             typename std::conditional<
               std::is_same<void, T>::value,
               as_thrift_category<thrift_category::nothing>,
-              typename std::conditional<
-                std::is_same<folly::fbstring, T>::value,
-                as_thrift_category<thrift_category::string>,
-                typename get_thrift_category<T>::type
-              >::type
+              typename get_thrift_category<T>::type
             >::type
           >::type
         >::type
@@ -66,38 +54,59 @@ struct reflect_category_impl {
   >::type;
 };
 
-} // namespace detail {
-
-template <typename C, typename T, typename A>
-struct get_thrift_category<std::basic_string<C, T, A>> {
-  using type = detail::as_thrift_category<thrift_category::string>;
+template <thrift_category, typename>
+struct reflect_module_tag_selector {
+  using type = void;
 };
 
-template <typename T, typename A>
-struct get_thrift_category<std::vector<T, A>> {
-  using type = detail::as_thrift_category<thrift_category::list>;
+template <typename T>
+struct reflect_module_tag_impl {
+  template <typename = void>
+  struct get {
+    using type = typename reflect_module_tag_selector<
+      reflect_category<T>::value,
+      T
+    >::type;
+
+    static_assert(
+      !std::is_same<void, type>::value,
+      "given type has no reflection metadata or is not a struct, enum or union"
+    );
+  };
+
+  template <typename Default>
+  class try_get {
+    using impl = typename reflect_module_tag_selector<
+      reflect_category<T>::value,
+      T
+    >::type;
+
+  public:
+    using type = typename std::conditional<
+      std::is_same<void, impl>::value, Default, impl
+    >::type;
+  };
 };
 
-template <typename K, typename C, typename A>
-struct get_thrift_category<std::set<K, C, A>> {
-  using type = detail::as_thrift_category<thrift_category::set>;
+template <typename T>
+struct reflect_module_tag_selector<thrift_category::enumeration, T> {
+  using type = typename fatal::enum_traits<T>::metadata;
 };
 
-template <typename K, typename H, typename E, typename A>
-struct get_thrift_category<std::unordered_set<K, H, E, A>> {
-  using type = detail::as_thrift_category<thrift_category::set>;
+template <typename T>
+struct reflect_module_tag_selector<thrift_category::variant, T> {
+  using type = typename fatal::variant_traits<T>::metadata;
 };
 
-template <typename K, typename T, typename C, typename A>
-struct get_thrift_category<std::map<K, T, C, A>> {
-  using type = detail::as_thrift_category<thrift_category::map>;
+template <typename T>
+struct reflect_module_tag_selector<thrift_category::structure, T> {
+  using type = typename reflect_struct<T>::module;
 };
 
-template <typename K, typename T, typename H, typename E, typename A>
-struct get_thrift_category<std::unordered_map<K, T, H, E, A>> {
-  using type = detail::as_thrift_category<thrift_category::map>;
-};
+////////////////////////////
+// IMPLEMENTATION DETAILS //
+////////////////////////////
 
-}} // apache::thrift
+}}} // apache::thrift::detail
 
-#endif // THRIFT_FATAL_REFLECT_CATEGORY_INL_H_
+#endif // THRIFT_FATAL_REFLECTION_INL_POST_H_

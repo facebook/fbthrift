@@ -74,11 +74,10 @@ thrift2include_fatal_HEADERS = \
 	fatal/indenter.h \
 	fatal/pretty_print-inl.h \
 	fatal/pretty_print.h \
-	fatal/reflect_category-inl.h \
 	fatal/reflect_category.h \
-	fatal/reflection-inl.h \
+	fatal/reflection-inl-post.h \
+	fatal/reflection-inl-pre.h \
 	fatal/reflection.h
-
 
 thrift2include_serverdir = $(thrift2includedir)/server
 

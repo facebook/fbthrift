@@ -23,6 +23,7 @@
 namespace test_cpp2 {
 namespace cpp_reflection {
 
+FATAL_STR(enum1s, "enum1");
 FATAL_STR(field0s, "field0");
 FATAL_STR(field1s, "field1");
 FATAL_STR(field2s, "field2");
@@ -35,6 +36,7 @@ TEST(fatal_enum, sanity_check) {
   using traits = fatal::enum_traits<enum1>;
 
   EXPECT_SAME<enum1, traits::type>();
+  EXPECT_SAME<enum1s, traits::name>();
   EXPECT_SAME<std::underlying_type<enum1>::type, traits::int_type>();
 
   EXPECT_SAME<field0s, traits::str::field0>();

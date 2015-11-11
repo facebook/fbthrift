@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef THRIFT_FATAL_REFLECTION_INL_H_
-#define THRIFT_FATAL_REFLECTION_INL_H_ 1
+#ifndef THRIFT_FATAL_REFLECTION_INL_PRE_H_
+#define THRIFT_FATAL_REFLECTION_INL_PRE_H_ 1
 
-#include <fatal/type/map.h>
-#include <fatal/type/registry.h>
-#include <fatal/type/transform.h>
+#if !defined THRIFT_FATAL_REFLECTION_H_
+# error "This file must be included from reflection.h"
+#endif
 
 namespace apache { namespace thrift {
 namespace detail { namespace reflection_impl {
+
 struct reflection_metadata_tag {};
 struct struct_traits_metadata_tag {};
+
 }} // detail::reflection_impl
 
 #define THRIFT_REGISTER_REFLECTION_METADATA(Tag, ...) \
@@ -47,4 +49,4 @@ struct struct_traits_metadata_tag {};
 
 }} // apache::thrift
 
-#endif // THRIFT_FATAL_REFLECTION_INL_H_
+#endif // THRIFT_FATAL_REFLECTION_INL_PRE_H_
