@@ -29,6 +29,7 @@
 
 #include <iostream>
 
+#include <folly/String.h>
 #include <glog/logging.h>
 
 namespace apache { namespace thrift { namespace concurrency {
@@ -180,13 +181,13 @@ void* PthreadThread::threadMain(void* arg) {
     int err =
       pthread_setschedparam(pthread_self(), thread->policy_, &sched_param);
     if (err != 0) {
-      VLOG(1) << "pthread_setschedparam failed (are you root?) with error " <<
-        err, strerror(err);
+      VLOG(1) << "pthread_setschedparam failed (are you root?) with error "
+              << err << ": " << folly::errnoStr(err);
     }
   } else if (thread->policy_ == SCHED_OTHER) {
     if (setpriority(PRIO_PROCESS, 0, thread->priority_) != 0) {
-      VLOG(1) << "setpriority failed (are you root?) with error " <<
-        errno, strerror(errno);
+      VLOG(1) << "setpriority failed (are you root?) with error " << errno
+              << ": " << folly::errnoStr(errno);
     }
   }
 
@@ -207,8 +208,9 @@ int PosixThreadFactory::Impl::toPthreadPolicy(POLICY policy) {
   return SCHED_OTHER;
 }
 
-int PosixThreadFactory::Impl::toPthreadPriority(
-    POLICY policy, PRIORITY priority) {
+/* static */
+int PosixThreadFactory::Impl::toPthreadPriority(POLICY policy,
+                                                PRIORITY priority) {
   int pthread_policy = toPthreadPolicy(policy);
   int min_priority = 0;
   int max_priority = 0;
@@ -224,23 +226,35 @@ int PosixThreadFactory::Impl::toPthreadPriority(
     max_priority = -20;
   }
   int quanta = HIGHEST - LOWEST;
-  float stepsperquanta = (float)(max_priority - min_priority) / quanta;
+  float stepsperquanta =
+      static_cast<float>(max_priority - min_priority) / quanta;
 
-  if (priority <= HIGHEST) {
-    return (int)(min_priority + stepsperquanta * priority);
+  if (priority >= LOWEST && priority <= HIGHEST) {
+    return static_cast<int>(min_priority + stepsperquanta * priority);
+  } else if (priority == INHERITED && pthread_policy == SCHED_OTHER) {
+    errno = 0;
+    int prio = getpriority(PRIO_PROCESS, 0);
+    if (prio == -1 && errno != 0) {
+      PLOG(WARNING) << "getpriority failed";
+    } else {
+      return prio;
+    }
   } else {
-    // should never get here for priority increments.
+    // Should never get here.
     assert(false);
-    return (int)(min_priority + stepsperquanta * NORMAL);
   }
+
+  return static_cast<int>(min_priority + stepsperquanta * NORMAL);
 }
 
-PosixThreadFactory::Impl::Impl(
-  POLICY policy, PRIORITY priority, int stackSize, DetachState detached) :
-  policy_(policy),
-  priority_(priority),
-  stackSize_(stackSize),
-  detached_(detached) {}
+PosixThreadFactory::Impl::Impl(POLICY policy,
+                               PRIORITY priority,
+                               int stackSize,
+                               DetachState detached)
+    : policy_(policy),
+      priority_(priority),
+      stackSize_(stackSize),
+      detached_(detached) {}
 
 shared_ptr<Thread> PosixThreadFactory::Impl::newThread(
     const shared_ptr<Runnable>& runnable,

@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-#include <deque>
-#include <iostream>
-#include <chrono>
-#include <memory>
-#include <random>
+#include <sys/time.h>
+#include <sys/resource.h>
 #include <numa.h>
 
-#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <chrono>
+#include <deque>
+#include <iostream>
+#include <memory>
+#include <random>
+#include <thread>
+
+#include <folly/Synchronized.h>
+#include <gtest/gtest.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
+#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
-#include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
-
 #include <wangle/concurrent/Codel.h>
-#include <folly/Synchronized.h>
-
-#include <gtest/gtest.h>
 
 using namespace apache::thrift::concurrency;
 
@@ -805,4 +807,32 @@ TEST(ThreadManagerTest, ObserverTest) {
   threadManager->add(task);
   threadManager->join();
   EXPECT_EQ(1, observer->timesCalled);
+}
+
+TEST(ThreadManagerTest, PosixThreadFactoryPriority) {
+  auto getNiceValue = [](PosixThreadFactory::PRIORITY prio) -> int {
+    PosixThreadFactory factory(PosixThreadFactory::OTHER, prio);
+    factory.setDetached(false);
+    int result = 0;
+    auto t = factory.newThread(FunctionRunner::create([&] {
+      result = getpriority(PRIO_PROCESS, 0);
+    }));
+    t->start();
+    t->join();
+    return result;
+  };
+
+  // NOTE: Test may not have permission to raise priority,
+  // so use prio <= NORMAL.
+  EXPECT_EQ(0, getNiceValue(PosixThreadFactory::NORMAL));
+  EXPECT_LT(0, getNiceValue(PosixThreadFactory::LOW));
+  std::thread([&] {
+    for (int i = 0; i < 20; ++i) {
+      if (setpriority(PRIO_PROCESS, 0, i) != 0) {
+        PLOG(WARNING) << "failed setpriority(" << i << ")";
+        continue;
+      }
+      EXPECT_EQ(i, getNiceValue(PosixThreadFactory::INHERITED));
+    }
+  }).join();
 }
