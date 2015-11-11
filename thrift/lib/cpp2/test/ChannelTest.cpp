@@ -1262,17 +1262,23 @@ class DestroyAsyncTransport : public apache::thrift::async::TAsyncTransport {
   ReadCallback* getReadCallback() const override {
     return dynamic_cast<ReadCallback*>(cb_);
   }
-  void write(folly::AsyncTransportWrapper::WriteCallback* c,
-             const void* v,
-             size_t s,
-             WriteFlags flags) override {}
-  void writev(folly::AsyncTransportWrapper::WriteCallback* c,
-              const iovec* v,
-              size_t s,
-              WriteFlags flags) override {}
-  void writeChain(folly::AsyncTransportWrapper::WriteCallback* c,
-                  std::unique_ptr<folly::IOBuf>&& i,
-                  WriteFlags flags) override {}
+  void write(
+      folly::AsyncTransportWrapper::WriteCallback*,
+      const void*,
+      size_t,
+      WriteFlags,
+      folly::AsyncTransportWrapper::BufferCallback* = nullptr) override {}
+  void writev(
+      folly::AsyncTransportWrapper::WriteCallback*,
+      const iovec*,
+      size_t,
+      WriteFlags,
+      folly::AsyncTransportWrapper::BufferCallback* = nullptr) override {}
+  void writeChain(
+      folly::AsyncTransportWrapper::WriteCallback*,
+      std::unique_ptr<folly::IOBuf>&&,
+      WriteFlags,
+      folly::AsyncTransportWrapper::BufferCallback* = nullptr) override {}
   void close() override {}
   void closeNow() override {}
   void shutdownWrite() override {}
