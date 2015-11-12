@@ -56,6 +56,7 @@ data JSONProtocol t = JSONProtocol t
                       -- ^ Construct a 'JSONProtocol' with a 'Transport'
 
 instance Protocol JSONProtocol where
+    mkProtocol = JSONProtocol
     getTransport (JSONProtocol t) = t
 
     writeMessage (JSONProtocol t) (s, ty, sq) =

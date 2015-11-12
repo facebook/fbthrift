@@ -56,6 +56,8 @@ import Thrift.Transport
 -- All 'Protocol's should satisfy the round trip property:
 -- >>> @deserializeVal p t (serializeVal p v) = v@
 class Protocol a where
+  -- | Given a transport, create a protocol with default settings.
+  mkProtocol :: Transport t => t -> a t
   -- | Get the underlying Transport for this Protocol
   getTransport :: Transport t => a t -> t
 

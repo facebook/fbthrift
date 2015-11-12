@@ -26,6 +26,7 @@ import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
+import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
 import Data.Hashable
 import Data.Int
@@ -42,6 +43,7 @@ import Test.QuickCheck ( elements )
 import Thrift hiding (ProtocolExnType(..))
 import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
+import Thrift.Serializable
 import Thrift.Arbitraries
 
 
@@ -52,6 +54,9 @@ import qualified TestService_Iface as Iface
 data Init_args = Init_args
   { init_args_int1 :: Int64
   } deriving (Show,Eq,Typeable)
+instance ThriftSerializable Init_args where
+  encode = encode_Init_args
+  decode = decode_Init_args
 instance Hashable Init_args where
   hashWithSalt salt record = salt   `hashWithSalt` init_args_int1 record  
 instance NFData Init_args where
@@ -89,6 +94,9 @@ default_Init_args = Init_args{
 data Init_result = Init_result
   { init_result_success :: Int64
   } deriving (Show,Eq,Typeable)
+instance ThriftSerializable Init_result where
+  encode = encode_Init_result
+  decode = decode_Init_result
 instance Hashable Init_result where
   hashWithSalt salt record = salt   `hashWithSalt` init_result_success record  
 instance NFData Init_result where

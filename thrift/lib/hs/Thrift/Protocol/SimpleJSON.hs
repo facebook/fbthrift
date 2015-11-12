@@ -57,6 +57,7 @@ version :: Int32
 version = 1
 
 instance Protocol SimpleJSONProtocol where
+    mkProtocol = SimpleJSONProtocol
     getTransport (SimpleJSONProtocol t) = t
 
     writeMessage (SimpleJSONProtocol t) (s, ty, sq) =

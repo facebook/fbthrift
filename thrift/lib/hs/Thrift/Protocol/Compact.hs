@@ -66,6 +66,7 @@ typeShiftAmount :: Int
 typeShiftAmount = 5
 
 instance Protocol CompactProtocol where
+    mkProtocol = CompactProtocol
     getTransport (CompactProtocol t) = t
 
     writeMessage p (n, t, s) = (writeMessageBegin >>)

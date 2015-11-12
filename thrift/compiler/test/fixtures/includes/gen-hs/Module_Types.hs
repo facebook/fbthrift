@@ -26,6 +26,7 @@ import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
+import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
 import Data.Hashable
 import Data.Int
@@ -42,6 +43,7 @@ import Test.QuickCheck ( elements )
 import Thrift hiding (ProtocolExnType(..))
 import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
+import Thrift.Serializable
 import Thrift.Arbitraries
 
 import qualified Includes_Types as Includes_Types
@@ -50,6 +52,9 @@ import qualified Includes_Types as Includes_Types
 data MyStruct = MyStruct
   { myStruct_MyIncludedField :: Includes_Types.Included
   } deriving (Show,Eq,Typeable)
+instance ThriftSerializable MyStruct where
+  encode = encode_MyStruct
+  decode = decode_MyStruct
 instance Hashable MyStruct where
   hashWithSalt salt record = salt   `hashWithSalt` myStruct_MyIncludedField record  
 instance NFData MyStruct where

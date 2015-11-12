@@ -26,6 +26,7 @@ import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
+import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
 import Data.Hashable
 import Data.Int
@@ -42,6 +43,7 @@ import Test.QuickCheck ( elements )
 import Thrift hiding (ProtocolExnType(..))
 import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
+import Thrift.Serializable
 import Thrift.Arbitraries
 
 import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
@@ -55,6 +57,9 @@ import qualified My.Namespacing.Extend.Test.ExtendTestService_Iface as Iface
 data Check_args = Check_args
   { check_args_struct1 :: Hsmodule_Types.HsFoo
   } deriving (Show,Eq,Typeable)
+instance ThriftSerializable Check_args where
+  encode = encode_Check_args
+  decode = decode_Check_args
 instance Hashable Check_args where
   hashWithSalt salt record = salt   `hashWithSalt` check_args_struct1 record  
 instance NFData Check_args where
@@ -92,6 +97,9 @@ default_Check_args = Check_args{
 data Check_result = Check_result
   { check_result_success :: Bool
   } deriving (Show,Eq,Typeable)
+instance ThriftSerializable Check_result where
+  encode = encode_Check_result
+  decode = decode_Check_result
 instance Hashable Check_result where
   hashWithSalt salt record = salt   `hashWithSalt` check_result_success record  
 instance NFData Check_result where

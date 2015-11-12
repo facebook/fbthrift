@@ -27,6 +27,7 @@ import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
+import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
 import Data.Hashable
 import Data.Int
@@ -43,6 +44,7 @@ import Test.QuickCheck ( elements )
 import Thrift hiding (ProtocolExnType(..))
 import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
+import Thrift.Serializable
 import Thrift.Arbitraries
 
 

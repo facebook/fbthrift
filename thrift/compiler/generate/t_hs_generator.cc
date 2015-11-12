@@ -325,6 +325,7 @@ string t_hs_generator::hs_imports() {
       "import Control.Exception\n"
       "import Control.Monad ( liftM, ap, when )\n"
       "import Data.ByteString.Lazy (ByteString)\n"
+      "import qualified Data.ByteString.Lazy as BS\n"
       "import Data.Functor ( (<$>) )\n"
       "import Data.Hashable\n"
       "import Data.Int\n"
@@ -341,6 +342,7 @@ string t_hs_generator::hs_imports() {
       "import Thrift hiding (ProtocolExnType(..))\n"
       "import qualified Thrift (ProtocolExnType(..))\n"
       "import Thrift.Types\n"
+      "import Thrift.Serializable\n"
       "import Thrift.Arbitraries\n"
       "\n");
 
@@ -673,6 +675,12 @@ void t_hs_generator::generate_hs_struct_definition(ofstream& out,
 
   if (is_exception)
     out << "instance Exception " << tname << nl;
+
+  indent(out) << "instance ThriftSerializable " << tname << " where" << nl;
+  indent_up();
+  indent(out) << "encode = encode_" << tname << nl;
+  indent(out) << "decode = decode_" << tname << nl;
+  indent_down();
 
   indent(out) << "instance Hashable " << tname << " where" << nl;
   indent_up();

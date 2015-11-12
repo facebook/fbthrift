@@ -26,6 +26,7 @@ import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
+import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
 import Data.Hashable
 import Data.Int
@@ -42,6 +43,7 @@ import Test.QuickCheck ( elements )
 import Thrift hiding (ProtocolExnType(..))
 import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
+import Thrift.Serializable
 import Thrift.Arbitraries
 
 
@@ -67,6 +69,9 @@ data Init_args = Init_args
   , init_args_int15 :: Int64
   , init_args_int16 :: Int64
   } deriving (Show,Eq,Typeable)
+instance ThriftSerializable Init_args where
+  encode = encode_Init_args
+  decode = decode_Init_args
 instance Hashable Init_args where
   hashWithSalt salt record = salt   `hashWithSalt` init_args_int1 record   `hashWithSalt` init_args_int2 record   `hashWithSalt` init_args_int3 record   `hashWithSalt` init_args_int4 record   `hashWithSalt` init_args_int5 record   `hashWithSalt` init_args_int6 record   `hashWithSalt` init_args_int7 record   `hashWithSalt` init_args_int8 record   `hashWithSalt` init_args_int9 record   `hashWithSalt` init_args_int10 record   `hashWithSalt` init_args_int11 record   `hashWithSalt` init_args_int12 record   `hashWithSalt` init_args_int13 record   `hashWithSalt` init_args_int14 record   `hashWithSalt` init_args_int15 record   `hashWithSalt` init_args_int16 record  
 instance NFData Init_args where
@@ -194,6 +199,9 @@ default_Init_args = Init_args{
 data Init_result = Init_result
   { init_result_success :: Int64
   } deriving (Show,Eq,Typeable)
+instance ThriftSerializable Init_result where
+  encode = encode_Init_result
+  decode = decode_Init_result
 instance Hashable Init_result where
   hashWithSalt salt record = salt   `hashWithSalt` init_result_success record  
 instance NFData Init_result where

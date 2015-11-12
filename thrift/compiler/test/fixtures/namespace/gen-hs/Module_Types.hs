@@ -26,6 +26,7 @@ import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
+import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
 import Data.Hashable
 import Data.Int
@@ -42,12 +43,16 @@ import Test.QuickCheck ( elements )
 import Thrift hiding (ProtocolExnType(..))
 import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
+import Thrift.Serializable
 import Thrift.Arbitraries
 
 
 data Foo = Foo
   { foo_MyInt :: Int64
   } deriving (Show,Eq,Typeable)
+instance ThriftSerializable Foo where
+  encode = encode_Foo
+  decode = decode_Foo
 instance Hashable Foo where
   hashWithSalt salt record = salt   `hashWithSalt` foo_MyInt record  
 instance NFData Foo where
