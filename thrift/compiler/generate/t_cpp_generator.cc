@@ -7140,15 +7140,14 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
   };
   std::vector<Field> fields;
 
-  std::map<std::string, std::string> deps;
+  std::map<std::string, t_type*> deps;
 
   auto gen_dep = [&] (t_type* ttype) mutable -> TypeInfo {
     auto initializer = generate_reflection_datatype(ttype);
-    std::string name = ttype->get_full_name();
     if (!initializer.empty()) {
-      deps[initializer] = name;
+      deps[initializer] = ttype;
     }
-    return {ttype->get_type_id(), name};
+    return {ttype->get_type_id(), ttype->get_full_name()};
   };
 
   std::map<std::string, int32_t> enumValues;
@@ -7182,6 +7181,13 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
     throw "compiler error: weird type? " + ttype->get_name();
   }
 
+  auto maybePrintStatic = [this](t_type* ttype) {
+    ttype = get_true_type(ttype);
+    if (!ttype->is_struct() && !ttype->is_xception()) {
+      f_reflection_impl_ << "static ";
+    }
+  };
+
   // Generate initializer.
   //
   // We only remove duplicates from the same file, so we could end up
@@ -7191,9 +7197,10 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
 
   // Generate forward decls for dependent initializers
   for (auto& p : deps) {
+    maybePrintStatic(p.second);
     f_reflection_impl_
       << "void  " << p.first << "(" << ns << "Schema&);"
-      << "  // " << p.second << endl;
+      << "  // " << p.second->get_full_name() << endl;
   }
 
   f_reflection_impl_ <<
@@ -7202,10 +7209,7 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
   // Reflection initializers for dependent types of structs/exceptions are
   // only called from within this file when initializing the structs and
   // exceptions.
-  if (!ttype->is_struct() && !ttype->is_xception()) {
-    f_reflection_impl_ << "static ";
-  }
-
+  maybePrintStatic(ttype);
   f_reflection_impl_ <<
     "void " << initializer << "(" << ns << "Schema& schema) {" << endl;
 
@@ -7278,7 +7282,8 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
   // Call dependent initializers
   for (auto& p : deps) {
     f_reflection_impl_
-      << "  " << p.first << "(schema);" << "  // " << p.second << endl;
+      << "  " << p.first << "(schema);"
+      << "  // " << p.second->get_full_name() << endl;
   }
 
   f_reflection_impl_ <<

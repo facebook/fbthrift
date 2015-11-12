@@ -26,7 +26,7 @@ static void reflectionInitializer_16163282776448022760(::apache::thrift::reflect
   dt.enumValues.insert(boost::container::ordered_unique_range_t(), enumValues, enumValues + 4);
 }
 
-void  reflectionInitializer_16163282776448022760(::apache::thrift::reflection::Schema&);  // enum module.Company
+static void  reflectionInitializer_16163282776448022760(::apache::thrift::reflection::Schema&);  // enum module.Company
 // Reflection initializer for struct module.Internship
 void reflectionInitializer_9022508676980868684(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 9022508676980868684U;

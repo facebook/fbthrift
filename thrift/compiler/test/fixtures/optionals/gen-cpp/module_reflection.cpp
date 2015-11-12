@@ -114,7 +114,7 @@ static void reflectionInitializer_11268218794008757992(::apache::thrift::reflect
   dt.enumValues.insert(boost::container::ordered_unique_range_t(), enumValues, enumValues + 3);
 }
 
-void  reflectionInitializer_11268218794008757992(::apache::thrift::reflection::Schema&);  // enum module.Animal
+static void  reflectionInitializer_11268218794008757992(::apache::thrift::reflection::Schema&);  // enum module.Animal
 // Reflection initializer for map<enum module.Animal, string>
 static void reflectionInitializer_8021126195852166827(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 8021126195852166827U;
@@ -143,10 +143,10 @@ static void reflectionInitializer_4398152853717283049(::apache::thrift::reflecti
 }
 
 void  reflectionInitializer_11194926431654439212(::apache::thrift::reflection::Schema&);  // struct module.Color
-void  reflectionInitializer_11268218794008757992(::apache::thrift::reflection::Schema&);  // enum module.Animal
-void  reflectionInitializer_13240717138325130634(::apache::thrift::reflection::Schema&);  // set<i64>
-void  reflectionInitializer_4398152853717283049(::apache::thrift::reflection::Schema&);  // list<struct module.Vehicle>
-void  reflectionInitializer_8021126195852166827(::apache::thrift::reflection::Schema&);  // map<enum module.Animal, string>
+static void  reflectionInitializer_11268218794008757992(::apache::thrift::reflection::Schema&);  // enum module.Animal
+static void  reflectionInitializer_13240717138325130634(::apache::thrift::reflection::Schema&);  // set<i64>
+static void  reflectionInitializer_4398152853717283049(::apache::thrift::reflection::Schema&);  // list<struct module.Vehicle>
+static void  reflectionInitializer_8021126195852166827(::apache::thrift::reflection::Schema&);  // map<enum module.Animal, string>
 // Reflection initializer for struct module.Person
 void reflectionInitializer_17004913262661492556(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 17004913262661492556U;

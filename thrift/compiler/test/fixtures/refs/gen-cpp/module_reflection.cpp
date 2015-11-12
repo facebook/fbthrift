@@ -156,7 +156,7 @@ static void reflectionInitializer_1481110219371736233(::apache::thrift::reflecti
   reflectionInitializer_2826922994162023308(schema);  // struct module.RecursiveStruct
 }
 
-void  reflectionInitializer_1481110219371736233(::apache::thrift::reflection::Schema&);  // list<struct module.RecursiveStruct>
+static void  reflectionInitializer_1481110219371736233(::apache::thrift::reflection::Schema&);  // list<struct module.RecursiveStruct>
 // Reflection initializer for struct module.RecursiveStruct
 void reflectionInitializer_2826922994162023308(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 2826922994162023308U;
