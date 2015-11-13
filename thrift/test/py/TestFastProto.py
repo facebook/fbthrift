@@ -131,8 +131,8 @@ class AbstractTest():
         self.decode_helper(swu)
 
     def test_refill(self):
-        for idx in range(1, 10):
-            self.decode_helper(self.buildOneOfEachB(), split=0.1*idx)
+        for idx in range(1, 100):
+            self.decode_helper(self.buildOneOfEachB(), split=0.01 * idx)
 
     def test_negative_fid(self):
         self.encode_helper(NegativeFieldId(anInteger=20,

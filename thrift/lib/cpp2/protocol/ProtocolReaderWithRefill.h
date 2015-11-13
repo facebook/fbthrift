@@ -249,9 +249,8 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
           break;
         bytes++;
       }
-      if (bytes == 1 || bytes != avail.second) {
-        return;
-      } else { // Still need 1 more byte to read key/value type
+      // Non-empty maps have an additional byte for the key/value type.
+      if (bytes == avail.second && *avail.first) {
         ensureBuffer(avail.second + 1);
       }
     }
@@ -261,6 +260,7 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
       if (protocol_.in_.length() >= 11)
         return;
 
+      ensureBuffer(1);
       auto avail = protocol_.in_.peek();
       const uint8_t *b = avail.first;
       int8_t size_and_type = folly::Endian::big(*b);
