@@ -33,7 +33,8 @@
 #include <assert.h>
 #include <signal.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::server;
@@ -43,7 +44,7 @@ using namespace std;
 using std::shared_ptr;
 
 const int BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
-  sysconf(_SC_NPROCESSORS_ONLN);
+    sysconf(_SC_NPROCESSORS_ONLN);
 
 const std::chrono::milliseconds BaseThriftServer::DEFAULT_TASK_EXPIRE_TIME =
     std::chrono::milliseconds(5000);
@@ -91,10 +92,9 @@ BaseThriftServer::CumulativeFailureInjection::test() const {
 }
 
 bool BaseThriftServer::getTaskExpireTimeForRequest(
-  const apache::thrift::transport::THeader& requestHeader,
-  std::chrono::milliseconds& softTimeout,
-  std::chrono::milliseconds& hardTimeout
-) const {
+    const apache::thrift::transport::THeader& requestHeader,
+    std::chrono::milliseconds& softTimeout,
+    std::chrono::milliseconds& hardTimeout) const {
   softTimeout = getTaskExpireTime();
   if (softTimeout == std::chrono::milliseconds(0)) {
     hardTimeout = softTimeout;
@@ -105,7 +105,7 @@ bool BaseThriftServer::getTaskExpireTimeForRequest(
     // to timeout on the client side than to read the timeout from the server
     // as a TApplicationException (which can be confusing)
     hardTimeout = std::chrono::milliseconds(
-      (uint32_t)(requestHeader.getClientTimeout().count() * 1.1));
+        (uint32_t)(requestHeader.getClientTimeout().count() * 1.1));
     if (hardTimeout > std::chrono::milliseconds(0)) {
       if (hardTimeout < softTimeout ||
           softTimeout == std::chrono::milliseconds(0)) {
@@ -120,7 +120,8 @@ bool BaseThriftServer::getTaskExpireTimeForRequest(
   return false;
 }
 
-int64_t BaseThriftServer::getLoad(const std::string& counter, bool check_custom) {
+int64_t BaseThriftServer::getLoad(const std::string& counter,
+                                  bool check_custom) {
   if (check_custom && getLoad_) {
     return getLoad_(counter);
   }
@@ -130,7 +131,8 @@ int64_t BaseThriftServer::getLoad(const std::string& counter, bool check_custom)
   auto queueload = getQueueLoad();
 
   if (VLOG_IS_ON(1)) {
-    FB_LOG_EVERY_MS(INFO, 1000 * 10) << getLoadInfo(reqload, connload, queueload);
+    FB_LOG_EVERY_MS(INFO, 1000 * 10)
+        << getLoadInfo(reqload, connload, queueload);
   }
 
   return std::max({reqload, connload, queueload});
@@ -148,15 +150,13 @@ int64_t BaseThriftServer::getQueueLoad() {
   return 0;
 }
 
-std::string BaseThriftServer::getLoadInfo(int64_t reqload, int64_t connload, int64_t queueload) {
+std::string BaseThriftServer::getLoadInfo(int64_t reqload,
+                                           int64_t connload,
+                                           int64_t queueload) {
   std::stringstream stream;
-  stream
-    << "Load is: "
-    << reqload << "% requests, "
-    << connload << "% connections, "
-    << queueload << "% queue time";
+  stream << "Load is: " << reqload << "% requests, " << connload
+         << "% connections, " << queueload << "% queue time";
   return stream.str();
 }
-
-
-}} // apache::thrift
+}
+} // apache::thrift

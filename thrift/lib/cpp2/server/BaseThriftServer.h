@@ -34,28 +34,30 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 typedef std::function<void(
-  folly::EventBase*,
-  std::shared_ptr<apache::thrift::async::TAsyncTransport>,
-  std::unique_ptr<folly::IOBuf>)> getHandlerFunc;
+    folly::EventBase*,
+    std::shared_ptr<apache::thrift::async::TAsyncTransport>,
+    std::unique_ptr<folly::IOBuf>)> getHandlerFunc;
 
 typedef std::function<void(const apache::thrift::transport::THeader*,
                            const folly::SocketAddress*)> GetHeaderHandlerFunc;
 
 template <typename T>
 class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
-  public:
-    explicit ThriftServerAsyncProcessorFactory(std::shared_ptr<T> t) {
-      svIf_ = t;
-    }
-    std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
-      return std::unique_ptr<apache::thrift::AsyncProcessor> (
+ public:
+  explicit ThriftServerAsyncProcessorFactory(std::shared_ptr<T> t) {
+    svIf_ = t;
+  }
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+    return std::unique_ptr<apache::thrift::AsyncProcessor>(
         new typename T::ProcessorType(svIf_.get()));
-    }
-  private:
-    std::shared_ptr<T> svIf_;
+  }
+
+ private:
+  std::shared_ptr<T> svIf_;
 };
 
 /**
@@ -64,7 +66,6 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
 
 class BaseThriftServer : public apache::thrift::server::TServer {
  protected:
-
   //! Default number of worker threads (should be # of processor cores).
   static const int T_ASYNC_DEFAULT_WORKER_THREADS;
 
@@ -130,7 +131,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    * The maximum number of pending connections each io worker thread can hold.
    */
   uint32_t maxNumPendingConnectionsPerWorker_ =
-    T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER;
+      T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER;
 
   // Notification of various server events
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
@@ -154,21 +155,15 @@ class BaseThriftServer : public apache::thrift::server::TServer {
       [](const transport::THeader* header) { return false; };
   std::function<int64_t(const std::string&)> getLoad_;
 
-  enum class InjectedFailure {
-    NONE,
-    ERROR,
-    DROP,
-    DISCONNECT
-  };
+  enum class InjectedFailure { NONE, ERROR, DROP, DISCONNECT };
 
   class CumulativeFailureInjection {
    public:
     CumulativeFailureInjection()
-      : empty_(true),
-        errorThreshold_(0),
-        dropThreshold_(0),
-        disconnectThreshold_(0) {
-    }
+        : empty_(true),
+          errorThreshold_(0),
+          dropThreshold_(0),
+          disconnectThreshold_(0) {}
 
     InjectedFailure test() const;
 
@@ -197,13 +192,12 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   std::atomic<bool> configMutable_{true};
 
   BaseThriftServer()
-    : apache::thrift::server::TServer(std::shared_ptr<server::TProcessor>()){
+      : apache::thrift::server::TServer(std::shared_ptr<server::TProcessor>()) {
   }
 
   ~BaseThriftServer() override {}
 
  public:
-
   /**
    * Indicate whether it is safe to modify the server config through setters.
    * This roughly corresponds to whether the IO thread pool could be servicing
@@ -211,18 +205,14 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @return true if the configuration can be modified, false otherwise
    */
-  bool configMutable() {
-    return configMutable_;
-  }
+  bool configMutable() { return configMutable_; }
 
   /**
    * Get the prefix for naming the pool threads.
    *
    * @return current setting.
    */
-  const std::string& getPoolThreadName() const {
-    return poolThreadName_;
-  }
+  const std::string& getPoolThreadName() const { return poolThreadName_; }
 
   /**
    * Set the prefix for naming the pool threads. Not set by default.
@@ -241,9 +231,8 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @param threadManager a shared pointer to the thread manager
    */
-  void setThreadManager(
-    std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-    threadManager) {
+  void setThreadManager(std::shared_ptr<
+      apache::thrift::concurrency::ThreadManager> threadManager) {
     CHECK(configMutable());
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     threadManager_ = threadManager;
@@ -265,9 +254,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @return current setting.
    */
-  uint32_t getMaxConnections() const {
-    return maxConnections_;
-  }
+  uint32_t getMaxConnections() const { return maxConnections_; }
 
   /**
    * Set the maximum # of connections allowed before overload.
@@ -283,36 +270,28 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @return current setting.
    */
-  uint32_t getMaxRequests() const {
-    return maxRequests_;
-  }
+  uint32_t getMaxRequests() const { return maxRequests_; }
 
   /**
    * Set the maximum # of requests being processed in handler before overload.
    *
    * @param maxRequests new setting for maximum # of active requests.
    */
-  void setMaxRequests(uint32_t maxRequests) {
-    maxRequests_ = maxRequests;
-  }
+  void setMaxRequests(uint32_t maxRequests) { maxRequests_ = maxRequests; }
 
   /**
    * Get if the server expects uneven load among workers.
    *
    * @return current setting.
    */
-  bool getIsUnevenLoad() const {
-    return isUnevenLoad_;
-  }
+  bool getIsUnevenLoad() const { return isUnevenLoad_; }
 
   /**
    * Set if the server expects uneven load among workers.
    *
    * @param isUnevenLoad new setting for the expected load.
    */
-  void setIsUnevenLoad(bool isUnevenLoad) {
-    isUnevenLoad_ = isUnevenLoad;
-  }
+  void setIsUnevenLoad(bool isUnevenLoad) { isUnevenLoad_ = isUnevenLoad; }
 
   void incActiveRequests(int32_t numRequests = 1) {
     if (isUnevenLoad_) {
@@ -326,20 +305,17 @@ class BaseThriftServer : public apache::thrift::server::TServer {
     }
   }
 
-  int32_t getActiveRequests() const {
-    return activeRequests_;
-  }
+  int32_t getActiveRequests() const { return activeRequests_; }
 
-  bool getUseClientTimeout() const {
-    return useClientTimeout_;
-  }
+  bool getUseClientTimeout() const { return useClientTimeout_; }
 
   void setUseClientTimeout(bool useClientTimeout) {
     useClientTimeout_ = useClientTimeout;
   }
 
-  virtual bool isOverloaded(uint32_t workerActiveRequests = 0,
-                    const apache::thrift::transport::THeader* header = nullptr) = 0;
+  virtual bool isOverloaded(
+      uint32_t workerActiveRequests = 0,
+      const apache::thrift::transport::THeader* header = nullptr) = 0;
 
   // Get load percent of the server.  Must be a number between 0 and 100:
   // 0 - no load, 100-fully loaded.
@@ -347,15 +323,17 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   virtual int64_t getRequestLoad() = 0;
   virtual int64_t getConnectionLoad() = 0;
   int64_t getQueueLoad();
-  virtual std::string getLoadInfo(int64_t reqload, int64_t connload, int64_t queueload);
+  virtual std::string getLoadInfo(int64_t reqload,
+                                   int64_t connload,
+                                   int64_t queueload);
 
-  void setObserver(
-    const std::shared_ptr<apache::thrift::server::TServerObserver>& observer) {
+  void setObserver(const std::shared_ptr<
+      apache::thrift::server::TServerObserver>& observer) {
     observer_ = observer;
   }
 
-  const std::shared_ptr<apache::thrift::server::TServerObserver>&
-  getObserver() const {
+  const std::shared_ptr<apache::thrift::server::TServerObserver>& getObserver()
+      const {
     return observer_;
   }
 
@@ -399,9 +377,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    * for providing their own synchronization to ensure that setup() is not
    * modifying the address while they are using it.)
    */
-  const folly::SocketAddress& getAddress() const {
-    return address_;
-  }
+  const folly::SocketAddress& getAddress() const { return address_; }
 
   /**
    * Set the port to listen on.
@@ -438,9 +414,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    *  @return number of milliseconds, or 0 if no timeout set.
    */
-  std::chrono::milliseconds getIdleTimeout() const {
-    return timeout_;
-  }
+  std::chrono::milliseconds getIdleTimeout() const { return timeout_; }
 
   /** Set maximum number of milliseconds we'll wait for data (0 = infinity).
    *  Note: existing connections are unaffected by this call.
@@ -467,9 +441,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @return number of worker threads
    */
-  int getNWorkerThreads() {
-    return nWorkers_;
-  }
+  int getNWorkerThreads() { return nWorkers_; }
 
   /**
    * Set the number of pool threads
@@ -489,21 +461,15 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    *
    * @return number of pool threads
    */
-  int getNPoolThreads() {
-    return nPoolThreads_;
-  }
+  int getNPoolThreads() { return nPoolThreads_; }
 
   /**
    * Codel queuing timeout - limit queueing time before overload
    * http://en.wikipedia.org/wiki/CoDel
    */
-  void setEnableCodel(bool enableCodel) {
-    enableCodel_ = enableCodel;
-  }
+  void setEnableCodel(bool enableCodel) { enableCodel_ = enableCodel; }
 
-  bool getEnableCodel() {
-    return enableCodel_;
-  }
+  bool getEnableCodel() { return enableCodel_; }
 
   /**
    * Set the processor factory as the one built into the
@@ -522,8 +488,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    * Sets an explicit AsyncProcessorFactory
    *
    */
-  void setProcessorFactory(
-      std::shared_ptr<AsyncProcessorFactory> pFac) {
+  void setProcessorFactory(std::shared_ptr<AsyncProcessorFactory> pFac) {
     CHECK(configMutable());
     cpp2Pfac_ = pFac;
   }
@@ -562,27 +527,22 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    * @returns whether or not the soft and hard timeouts are different
    */
   bool getTaskExpireTimeForRequest(
-    const apache::thrift::transport::THeader& header,
-    std::chrono::milliseconds& softTimeout,
-    std::chrono::milliseconds& hardTimeout
-  ) const;
+      const apache::thrift::transport::THeader& header,
+      std::chrono::milliseconds& softTimeout,
+      std::chrono::milliseconds& hardTimeout) const;
 
   /**
    * Set the listen backlog. Refer to the comment on listenBacklog_ member for
    * details.
    */
-  void setListenBacklog(int listenBacklog) {
-    listenBacklog_ = listenBacklog;
-  }
+  void setListenBacklog(int listenBacklog) { listenBacklog_ = listenBacklog; }
 
   /**
    * Get the listen backlog.
    *
    * @return listen backlog.
    */
-  int getListenBacklog() const {
-    return listenBacklog_;
-  }
+  int getListenBacklog() const { return listenBacklog_; }
 
   void setIsOverloaded(std::function<
       bool(const apache::thrift::transport::THeader*)> isOverloaded) {
@@ -593,9 +553,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
     getLoad_ = getLoad;
   }
 
-  std::function<int64_t(const std::string&)> getGetLoad() {
-    return getLoad_;
-  }
+  std::function<int64_t(const std::string&)> getGetLoad() { return getLoad_; }
 
   /**
    * Set failure injection parameters.
@@ -604,21 +562,15 @@ class BaseThriftServer : public apache::thrift::server::TServer {
     failureInjection_.set(fi);
   }
 
-  void setGetHandler(getHandlerFunc func) {
-    getHandler_ = func;
-  }
+  void setGetHandler(getHandlerFunc func) { getHandler_ = func; }
 
-  getHandlerFunc getGetHandler() {
-    return getHandler_;
-  }
+  getHandlerFunc getGetHandler() { return getHandler_; }
 
   void setGetHeaderHandler(GetHeaderHandlerFunc func) {
     getHeaderHandler_ = func;
   }
 
-  GetHeaderHandlerFunc getGetHeaderHandler() {
-    return getHeaderHandler_;
-  }
+  GetHeaderHandlerFunc getGetHeaderHandler() { return getHeaderHandler_; }
 };
-
-}} // apache::thrift
+}
+} // apache::thrift
