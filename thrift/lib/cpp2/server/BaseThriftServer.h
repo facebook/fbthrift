@@ -141,6 +141,12 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   // Max active requests
   uint32_t maxRequests_ = concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE;
 
+  // If it is set true, # of global active requests is tracked
+  bool isUnevenLoad_ = true;
+
+  // Track # of active requests for this server
+  std::atomic<int32_t> activeRequests_{0};
+
   // If it is set true, server will check and use client timeout header
   bool useClientTimeout_ = true;
 
@@ -288,6 +294,40 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    */
   void setMaxRequests(uint32_t maxRequests) {
     maxRequests_ = maxRequests;
+  }
+
+  /**
+   * Get if the server expects uneven load among workers.
+   *
+   * @return current setting.
+   */
+  bool getIsUnevenLoad() const {
+    return isUnevenLoad_;
+  }
+
+  /**
+   * Set if the server expects uneven load among workers.
+   *
+   * @param isUnevenLoad new setting for the expected load.
+   */
+  void setIsUnevenLoad(bool isUnevenLoad) {
+    isUnevenLoad_ = isUnevenLoad;
+  }
+
+  void incActiveRequests(int32_t numRequests = 1) {
+    if (isUnevenLoad_) {
+      activeRequests_ += numRequests;
+    }
+  }
+
+  void decActiveRequests(int32_t numRequests = 1) {
+    if (isUnevenLoad_) {
+      activeRequests_ -= numRequests;
+    }
+  }
+
+  int32_t getActiveRequests() const {
+    return activeRequests_;
   }
 
   bool getUseClientTimeout() const {
