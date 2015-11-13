@@ -446,18 +446,16 @@ bool ThriftServer::isOverloaded(uint32_t workerActiveRequests,
   return false;
 }
 
-int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
-  if (check_custom && getLoad_) {
-    return getLoad_(counter);
-  }
-
-  int reqload = 0;
-  int connload = 0;
-  int queueload = 0;
+int64_t ThriftServer::getRequestLoad() {
   if (maxRequests_ > 0) {
-    reqload = (100*(activeRequests_ + getPendingCount()))
+    return (100*(activeRequests_ + getPendingCount()))
       / ((float)maxRequests_);
   }
+
+  return 0;
+}
+
+int64_t ThriftServer::getConnectionLoad() {
   auto ioGroup = getIOGroupSafe();
   auto workerFactory = ioGroup != nullptr ?
     std::dynamic_pointer_cast<wangle::NamedThreadFactory>(
@@ -470,29 +468,33 @@ int64_t ThriftServer::getLoad(const std::string& counter, bool check_custom) {
       connections += worker->getPendingCount();
     });
 
-    connload = (100*connections) / (float)maxConnections_;
+    return (100*connections) / (float)maxConnections_;
   }
 
-  auto tm = getThreadManager();
-  if (tm) {
-    auto codel = tm->getCodel();
-    if (codel) {
-      queueload = codel->getLoad();
-    }
+  return 0;
+}
+
+std::string ThriftServer::getLoadInfo(int64_t reqload, int64_t connload, int64_t queueload) {
+  auto ioGroup = getIOGroupSafe();
+  auto workerFactory = ioGroup != nullptr ?
+    std::dynamic_pointer_cast<wangle::NamedThreadFactory>(
+      ioGroup->getThreadFactory()) : nullptr;
+
+  if (!workerFactory) {
+    return "";
   }
 
-  if (VLOG_IS_ON(1) && workerFactory) {
-    FB_LOG_EVERY_MS(INFO, 1000 * 10)
-      << workerFactory->getNamePrefix() << " load is: "
-      << reqload << "% requests, "
-      << connload << "% connections, "
-      << queueload << "% queue time, "
-      << activeRequests_ << " active reqs, "
-      << getPendingCount() << " pending reqs";
-  }
+  std::stringstream stream;
 
-  int load = std::max({reqload, connload, queueload});
-  return load;
+  stream
+    << workerFactory->getNamePrefix() << " load is: "
+    << reqload << "% requests, "
+    << connload << "% connections, "
+    << queueload << "% queue time, "
+    << activeRequests_ << " active reqs, "
+    << getPendingCount() << " pending reqs";
+
+  return stream.str();
 }
 
 }} // apache::thrift

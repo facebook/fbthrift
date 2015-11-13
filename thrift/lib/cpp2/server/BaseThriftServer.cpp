@@ -120,4 +120,43 @@ bool BaseThriftServer::getTaskExpireTimeForRequest(
   return false;
 }
 
+int64_t BaseThriftServer::getLoad(const std::string& counter, bool check_custom) {
+  if (check_custom && getLoad_) {
+    return getLoad_(counter);
+  }
+
+  auto reqload = getRequestLoad();
+  auto connload = getConnectionLoad();
+  auto queueload = getQueueLoad();
+
+  if (VLOG_IS_ON(1)) {
+    FB_LOG_EVERY_MS(INFO, 1000 * 10) << getLoadInfo(reqload, connload, queueload);
+  }
+
+  return std::max({reqload, connload, queueload});
+}
+
+int64_t BaseThriftServer::getQueueLoad() {
+  auto tm = getThreadManager();
+  if (tm) {
+    auto codel = tm->getCodel();
+    if (codel) {
+      return codel->getLoad();
+    }
+  }
+
+  return 0;
+}
+
+std::string BaseThriftServer::getLoadInfo(int64_t reqload, int64_t connload, int64_t queueload) {
+  std::stringstream stream;
+  stream
+    << "Load is: "
+    << reqload << "% requests, "
+    << connload << "% connections, "
+    << queueload << "% queue time";
+  return stream.str();
+}
+
+
 }} // apache::thrift
