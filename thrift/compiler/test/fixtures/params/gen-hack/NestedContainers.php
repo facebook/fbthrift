@@ -1224,7 +1224,7 @@ class NestedContainers_mapList_args implements IThriftShapishStruct {
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> $_val0->toArray()
+        $_val0 ==> $_val0->toArray(),
       )->toArray(),
     );
   }
@@ -1435,7 +1435,7 @@ class NestedContainers_mapSet_args implements IThriftShapishStruct {
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> array_fill_keys($_val0->toValuesArray(), bool)->toArray()
+        $_val0 ==> array_fill_keys($_val0, true),
       )->toArray(),
     );
   }
@@ -1646,7 +1646,7 @@ class NestedContainers_listMap_args implements IThriftShapishStruct {
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> $_val0->toArray()
+        $_val0 ==> $_val0->toArray(),
       )->toArray(),
     );
   }
@@ -1853,7 +1853,7 @@ class NestedContainers_listSet_args implements IThriftShapishStruct {
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> array_fill_keys($_val0->toValuesArray(), bool)->toArray()
+        $_val0 ==> array_fill_keys($_val0, true),
       )->toArray(),
     );
   }
@@ -2082,10 +2082,10 @@ class NestedContainers_turtles_args implements IThriftShapishStruct {
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->map(
             $_val2 ==> $_val2->map(
-              $_val3 ==> array_fill_keys($_val3->toValuesArray(), bool)->toArray()
-            )->toArray()
-          )->toArray()
-        )->toArray()
+              $_val3 ==> array_fill_keys($_val3, true),
+            )->toArray(),
+          )->toArray(),
+        )->toArray(),
       )->toArray(),
     );
   }

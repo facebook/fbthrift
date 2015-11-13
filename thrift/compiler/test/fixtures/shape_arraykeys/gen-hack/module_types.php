@@ -625,54 +625,72 @@ class B implements IThriftShapishStruct {
   public function __toShape(): self::TShape {
     return shape(
       'just_an_A' => $this->just_an_A?->__toShape(),
-      'set_of_i32' => array_fill_keys($this->set_of_i32->toValuesArray(), bool),
+      'set_of_i32' => array_fill_keys($this->set_of_i32->toValuesArray(), true),
       'list_of_i32' => $this->list_of_i32->toArray(),
       'list_of_i32' => $this->list_of_i32->toArray(),
       'map_of_string_to_i32' => $this->map_of_string_to_i32->toArray(),
-      'map_of_string_to_A' => $this->map_of_string_to_A->toArray(),
+      'map_of_string_to_A' => $this->map_of_string_to_A->map(
+        $_val0 ==> $_val0->__toShape(),
+      )->toArray(),
       'map_of_string_to_list_of_i32' => $this->map_of_string_to_list_of_i32->map(
-        $_val0 ==> $_val0->toArray()
+        $_val0 ==> $_val0->toArray(),
       )->toArray(),
       'map_of_string_to_list_of_A' => $this->map_of_string_to_list_of_A->map(
-        $_val0 ==> $_val0->toArray()
+        $_val0 ==> $_val0->map(
+          $_val1 ==> $_val1->__toShape(),
+        )->toArray(),
       )->toArray(),
       'map_of_string_to_set_of_i32' => $this->map_of_string_to_set_of_i32->map(
-        $_val0 ==> array_fill_keys($_val0->toValuesArray(), bool)->toArray()
+        $_val0 ==> array_fill_keys($_val0, true),
       )->toArray(),
       'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32->map(
-        $_val0 ==> $_val0->toArray()
+        $_val0 ==> $_val0->toArray(),
       )->toArray(),
       'map_of_string_to_map_of_string_to_A' => $this->map_of_string_to_map_of_string_to_A->map(
-        $_val0 ==> $_val0->toArray()
+        $_val0 ==> $_val0->map(
+          $_val1 ==> $_val1->__toShape(),
+        )->toArray(),
       )->toArray(),
       'list_of_set_of_i32' => $this->list_of_set_of_i32->map(
-        $_val0 ==> array_fill_keys($_val0->toValuesArray(), bool)->toArray()
+        $_val0 ==> array_fill_keys($_val0, true),
       )->toArray(),
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A->map(
         $_val0 ==> $_val0->map(
-          $_val1 ==> $_val1->toArray()
-        )->toArray()
+          $_val1 ==> $_val1->map(
+            $_val2 ==> $_val2->__toShape(),
+          )->toArray(),
+        )->toArray(),
       )->toArray(),
       'list_of_map_of_string_to_A' => $this->list_of_map_of_string_to_A->map(
-        $_val0 ==> $_val0->toArray()
+        $_val0 ==> $_val0->map(
+          $_val1 ==> $_val1->__toShape(),
+        )->toArray(),
       )->toArray(),
-      'list_of_self' => $this->list_of_self->toArray(),
-      'map_of_string_to_self' => $this->map_of_string_to_self->toArray(),
+      'list_of_self' => $this->list_of_self->map(
+        $_val0 ==> $_val0->__toShape(),
+      )->toArray(),
+      'map_of_string_to_self' => $this->map_of_string_to_self->map(
+        $_val0 ==> $_val0->__toShape(),
+      )->toArray(),
       'optional_just_an_A' => $this->optional_just_an_A?->__toShape(),
-      'optional_set_of_i32' => array_fill_keys($this->optional_set_of_i32->toValuesArray(), bool),
-      'optional_list_of_i32' => $this->optional_list_of_i32->toArray(),
-      'optional_list_of_i32' => $this->optional_list_of_i32->toArray(),
-      'optional_map_of_string_to_i32' => $this->optional_map_of_string_to_i32->toArray(),
-      'optional_map_of_string_to_A' => $this->optional_map_of_string_to_A->toArray(),
-      'optional_map_of_string_to_list_of_i32' => $this->optional_map_of_string_to_list_of_i32->map(
-        $_val0 ==> $_val0->toArray()
-      )->toArray(),
-      'optional_map_of_string_to_list_of_A' => $this->optional_map_of_string_to_list_of_A->map(
-        $_val0 ==> $_val0->toArray()
-      )->toArray(),
-      'optional_map_of_string_to_set_of_i32' => $this->optional_map_of_string_to_set_of_i32->map(
-        $_val0 ==> array_fill_keys($_val0->toValuesArray(), bool)->toArray()
-      )->toArray(),
+      'optional_set_of_i32' => array_fill_keys($this->optional_set_of_i32->toValuesArray(), true),
+      'optional_list_of_i32' => $this->optional_list_of_i32?->toArray(),
+      'optional_list_of_i32' => $this->optional_list_of_i32?->toArray(),
+      'optional_map_of_string_to_i32' => $this->optional_map_of_string_to_i32?->toArray(),
+      'optional_map_of_string_to_A' => $this->optional_map_of_string_to_A?->map(
+        $_val0 ==> $_val0->__toShape(),
+      )?->toArray(),
+      'optional_map_of_string_to_list_of_i32' => $this->optional_map_of_string_to_list_of_i32?->map(
+        $_val0 ==> $_val0->toArray(),
+      )?->toArray(),
+      'optional_map_of_string_to_list_of_A' => $this->optional_map_of_string_to_list_of_A?->map(
+        $_val0 ==> $_val0->map(
+          $_val1 ==> $_val1->__toShape(),
+        )->toArray(),
+      )?->toArray(),
+      'optional_map_of_string_to_set_of_i32' => $this->optional_map_of_string_to_set_of_i32?->map(
+        $_val0 ==> array_fill_keys($_val0, true),
+      )?->toArray(),
     );
   }
   public function read(TProtocol $input): int {

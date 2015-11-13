@@ -99,6 +99,9 @@ class t_hack_generator : public t_oop_generator {
   void generate_php_union_methods(std::ofstream& out, t_struct* tstruct);
 
   void generate_php_struct_shape_spec(std::ofstream& out, t_struct* tstruct);
+  void generate_php_struct_shape_collection_value_lambda(std::ostream& out,
+                                                         t_name_generator& namer,
+                                                         t_type* t);
   void generate_php_struct_shape_methods(std::ofstream& out, t_struct* tstruct);
 
   void generate_php_type_spec(std::ofstream& out, t_type* t);
@@ -1234,6 +1237,64 @@ void t_hack_generator::generate_php_struct_shape_spec(std::ofstream& out,
   indent(out) << ");" << endl;
 }
 
+
+/**
+ * Generate a Lambda on a Collection Value.
+ *
+ * For example, if our structure is:
+ *
+ * 1: map<string, list<i32>> map_of_string_to_list_of_i32;
+ *
+ * Then our __toShape() routine results in:
+ *
+ *   'map_of_string_to_list_of_i32' => $this->map_of_string_to_list_of_i32->map(
+ *     $_val0 ==> $_val0->toArray(),
+ *   )->toArray(),
+ *
+ * And this method here will get called with
+ *
+ *  generate_php_struct_shape_collection_value_lambda(..., list<i32>)
+ *
+ * And returns the string:
+ *
+ *   "  $_val0 ==> $_val0->toArray(),"
+ *
+ * This method operates via recursion on complex types.
+ */
+void t_hack_generator::generate_php_struct_shape_collection_value_lambda(std::ostream& out,
+                                                                         t_name_generator& namer,
+                                                                         t_type* t) {
+  string tmp = namer("_val");
+  indent(out) << "$" << tmp << " ==> ";
+  if (t->is_struct()) {
+    out << "$" << tmp << "->__toShape()," << endl;
+  } else if (t->is_set()) {
+    out << "array_fill_keys($" << tmp << ", true)," << endl;
+  } else if (t->is_map() ||
+             t->is_list()) {
+
+    t_type* val_type;
+    if (t->is_map()) {
+      val_type = ((t_map*)t)->get_val_type();
+    } else {
+      val_type = ((t_list*)t)->get_elem_type();
+    }
+    val_type = get_true_type(val_type);
+
+    if (!val_type->is_container() &&
+        !val_type->is_struct()) {
+      out << "$" << tmp << "->toArray()," << endl;
+      return;
+    }
+
+    out << "$" << tmp << "->map(" << endl;
+    indent_up();
+    generate_php_struct_shape_collection_value_lambda(out, namer, val_type);
+    indent_down();
+    indent(out) << ")->toArray()," << endl;
+  }
+}
+
 void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
                                                      t_struct* tstruct) {
   indent(out) << "public function __toShape(): self::TShape {" << endl;
@@ -1251,55 +1312,38 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
 
     if (t->is_container()) {
       if (t->is_map() || t->is_list()) {
-        val << "$this->" << (*m_iter)->get_name();
+        string dval = render_default_value(t);
+        // TODO(ckwalsh) Extract this logic into a helper function
+        bool nullable = (dval == "null")
+          || tstruct->is_union()
+          || ((*m_iter)->get_req() == t_field::T_OPTIONAL
+              && (*m_iter)->get_value() == nullptr)
+          || (t->is_enum()
+              && (*m_iter)->get_req() != t_field::T_REQUIRED);
+
+        val << "$this->" << (*m_iter)->get_name() << (nullable ? "?" :"");
+
         t_type* val_type;
         if (t->is_map()) {
           val_type = ((t_map*)t)->get_val_type();
         } else {
           val_type = ((t_list*)t)->get_elem_type();
         }
-
         val_type = get_true_type(val_type);
-        int nest = 0;
-        t_name_generator namer;
-        while (val_type->is_container()) {
-          nest++;
-          string tmp = namer("_val");
+
+        if (val_type->is_container() ||
+            val_type->is_struct()) {
+          val  << "->map(" << endl;
           indent_up();
-          val << "->map(" << endl
-              <<  indent() << "$" << tmp << " ==> ";
-          if (val_type->is_set()) {
-            val <<  "array_fill_keys($" << tmp << "->toValuesArray(), bool)";
-          } else if (val_type->is_container()) {
-            val << "$" << tmp;
-          } else if (val_type->is_struct()) {
-            string dval = render_default_value(t);
-
-            // TODO(ckwalsh) Extract this logic into a helper function
-            bool nullable = (dval == "null")
-                || tstruct->is_union()
-                || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-                    && (*m_iter)->get_value() == nullptr)
-                || (t->is_enum()
-                    && (*m_iter)->get_req() != t_field::T_REQUIRED);
-            val << "$" << tmp << (nullable ? "?" : "") << "->__toShape()";
-          }
-          if (val_type->is_map()) {
-            val_type = ((t_map*)val_type)->get_val_type();
-          } else {
-            val_type = ((t_list*)val_type)->get_elem_type();
-          }
-          val_type = get_true_type(val_type);
-        }
-
-        for (int i = nest; i > 0; i--) {
+          t_name_generator namer;
+          generate_php_struct_shape_collection_value_lambda(val, namer, val_type);
           indent_down();
-          val << "->toArray()" << endl << indent() << ")";
+          indent(val) << ")" << (nullable ? "?" :"") << "->toArray()," << endl;
+        } else {
+          val <<  "->toArray()," << endl;
         }
-
-        val << "->toArray()";
       } else {
-        val << "array_fill_keys($this->" << (*m_iter)->get_name() << "->toValuesArray(), bool)";
+        val << "array_fill_keys($this->" << (*m_iter)->get_name() << "->toValuesArray(), true)," << endl;
       }
     } else if (t->is_struct()) {
       val << "$this->" << (*m_iter)->get_name();
@@ -1312,12 +1356,12 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
               && (*m_iter)->get_value() == nullptr)
           || (t->is_enum()
               && (*m_iter)->get_req() != t_field::T_REQUIRED);
-      val << (nullable ? "?" : "") << "->__toShape()";
+      val << (nullable ? "?" : "") << "->__toShape()," << endl;
     } else {
-      val << "$this->" << (*m_iter)->get_name();
+      val << "$this->" << (*m_iter)->get_name() << "," << endl;
     }
 
-    out << val.str() << "," << endl;
+    out << val.str();
   }
   indent_down();
   indent(out) << ");" << endl;
