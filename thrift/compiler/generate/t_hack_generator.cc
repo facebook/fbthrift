@@ -53,6 +53,7 @@ class t_hack_generator : public t_oop_generator {
     map_construct_ = option_is_specified(parsed_options, "mapconstruct");
     struct_trait_ = option_is_specified(parsed_options, "structtrait");
     shapes_ = option_is_specified(parsed_options, "shapes");
+    shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
 
@@ -405,6 +406,11 @@ class t_hack_generator : public t_oop_generator {
    * True if we should generate Shape types for the generated structs
    */
   bool shapes_;
+
+  /**
+   * True if we should generate array<arraykey, TValue> instead of array<string, TValue>
+   */
+  bool shape_arraykeys_;
 };
 
 void t_hack_generator::generate_json_enum(std::ofstream& out,
@@ -2450,7 +2456,13 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
     return prefix + "<" + type_to_typehint(((t_list*)ttype)->get_elem_type(), false, shape)  + ">";
   } else if (ttype->is_map()) {
     string prefix = shape ? "array" : "Map";
-    return prefix + "<" + type_to_typehint(((t_map*)ttype)->get_key_type(), nullable, shape) + ", "  + type_to_typehint(((t_map*)ttype)->get_val_type(), false, shape) + ">";
+    string key_type =  type_to_typehint(((t_map*)ttype)->get_key_type(), nullable, shape);
+    if (shape &&
+        shape_arraykeys_ &&
+        key_type == "string") {
+      key_type = "arraykey";
+    }
+    return prefix + "<" + key_type + ", "  + type_to_typehint(((t_map*)ttype)->get_val_type(), false, shape) + ">";
   } else if (ttype->is_set()) {
     string prefix = (arraysets_ || shape) ? "array" : "Set";
     string suffix = (arraysets_ || shape) ? ", bool>" : ">";
@@ -3795,4 +3807,6 @@ THRIFT_REGISTER_GENERATOR(hack, "HACK",
 "    mapconstruct     Struct constructors accept arrays/Maps rather than their fields\n"
 "    structtrait         Add 'use [StructName]Trait;' to generated classes\n"
 "    shapes           Generate Shape definitions for structs\n"
+"    shape_arraykeys  When generating Shape definition for structs:\n"
+"                        replace array<string, TValue> with array<arraykey, TValue>\n"
 );
