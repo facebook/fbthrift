@@ -1569,10 +1569,9 @@ class CppGenerator(t_generator.Generator):
                 out('apache::thrift::ClientReceiveState _returnState;')
 
                 sync_callback_name = self.tmp("callback")
-                out("std::unique_ptr<apache::thrift::RequestCallback> "
-                  "{sync_callback_name}("
-                  "new apache::thrift::ClientSyncCallback("
-                  "&_returnState, getChannel()->getEventBase(), {isOneWay}));"
+                out("auto {sync_callback_name} = "
+                    "folly::make_unique<apache::thrift::ClientSyncCallback>("
+                    "&_returnState, getChannel()->getEventBase(), {isOneWay});"
                   .format(sync_callback_name=sync_callback_name,
                       isOneWay=str(function.oneway).lower()))
 
@@ -1684,12 +1683,11 @@ class CppGenerator(t_generator.Generator):
                 callback = self.tmp("callback")
 
                 if function.oneway:
-                    out("std::unique_ptr<apache::thrift::RequestCallback> "
-                      "{callback}("
-                      "new apache::thrift::OneWayFutureCallback("
-                      "std::move({promise}), channel_));"
-                      .format(callback=callback,
-                              promise=promise_name))
+                    out("auto {callback} = "
+                        "folly::make_unique<apache::thrift::OneWayFutureCallback>("
+                        "std::move({promise}), channel_);"
+                        .format(callback=callback,
+                                promise=promise_name))
 
                     args.append("std::move({0})".format(callback))
 
@@ -1698,15 +1696,14 @@ class CppGenerator(t_generator.Generator):
                         future_cb_name = "HeaderFutureCallback"
                     else:
                         future_cb_name = "FutureCallback"
-                    out("std::unique_ptr<apache::thrift::RequestCallback> "
-                      "{callback}("
-                      "new apache::thrift::{future_cb}<{type}>("
-                      "std::move({promise}), recv_wrapped_{name}, channel_));"
-                      .format(callback=callback,
-                              future_cb=future_cb_name,
-                              type=return_type,
-                              promise=promise_name,
-                              name=function.name))
+                    out("auto {callback} = "
+                        "folly::make_unique<apache::thrift::{future_cb}<{type}>>("
+                        "std::move({promise}), recv_wrapped_{name}, channel_);"
+                        .format(callback=callback,
+                                future_cb=future_cb_name,
+                                type=return_type,
+                                promise=promise_name,
+                                name=function.name))
 
                     args.append("std::move({0})".format(callback))
 
@@ -1915,9 +1912,8 @@ class CppGenerator(t_generator.Generator):
                "::apache::thrift::ClientReceiveState&&)> callback" +
                self._argument_list(function.arglist, True, unique=False) + ")")
 
-        args = ["std::unique_ptr<apache::thrift::RequestCallback>("
-                "new apache::thrift::FunctionReplyCallback("
-                "std::move(callback)))"]
+        args = ["folly::make_unique<apache::thrift::FunctionReplyCallback>("
+                "std::move(callback))"]
         args.extend([arg.name for arg in function.arglist.members])
         args_list = ",".join(args)
 
