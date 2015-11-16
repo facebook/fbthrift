@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 #include <thrift/lib/cpp2/TestServer.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
@@ -35,6 +36,7 @@
 #include <atomic>
 
 #include <folly/Executor.h>
+#include <folly/MapUtil.h>
 #include <folly/futures/ManualExecutor.h>
 
 using namespace apache::thrift;
@@ -81,6 +83,12 @@ class TestInterface : public FutureServiceSvIf {
   Future<std::unique_ptr<std::string>> future_echoRequest(
       std::unique_ptr<std::string> req) override {
     *req += "ccccccccccccccccccccccccccccccccccccccccccccc";
+
+    auto header = getConnectionContext()->getHeader();
+
+    if (header->getHeaders().count("foo")) {
+      header->setHeader("header_from_server", "1");
+    }
 
     return makeFuture<std::unique_ptr<std::string>>(std::move(req));
   }
@@ -299,6 +307,20 @@ TEST(ThriftServer, OnewayFutureClientTest) {
 
   int factor = 1;
   EXPECT_GE(waitTime, factor * gotTime);
+}
+
+TEST(ThriftServer, FutureHeaderClientTest) {
+  ScopedServerInterfaceThread runner(make_shared<TestInterface>());
+  EventBase eb;
+  auto client = runner.newClient<FutureServiceAsyncClient>(&eb);
+
+  RpcOptions rpcOptions;
+  rpcOptions.setWriteHeader("foo", "bar");
+  auto future = client->header_future_echoRequest(rpcOptions, "hi")
+    .waitVia(&eb);
+
+  const auto& headers = future.value().second->getHeaders();
+  EXPECT_EQ(get_default(headers, "header_from_server"), "1");
 }
 
 int main(int argc, char** argv) {
