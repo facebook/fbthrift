@@ -63,6 +63,7 @@ class t_hs_generator : public t_oop_generator {
     use_string_ = parsed_options.find("use_string") != parsed_options.end();
     use_strict_text_ =
       parsed_options.find("use_strict_text") != parsed_options.end();
+    use_int_ = parsed_options.find("use_int") != parsed_options.end();
 
   }
 
@@ -74,6 +75,7 @@ class t_hs_generator : public t_oop_generator {
   bool use_list_;
   bool use_string_;
   bool use_strict_text_;
+  bool use_int_;
 
   /**
    * Init and close methods
@@ -286,13 +288,21 @@ void t_hs_generator::init_generator() {
 }
 
 string t_hs_generator::hs_language_pragma() {
+
   return string("{-# LANGUAGE DeriveDataTypeable #-}\n"
                 "{-# LANGUAGE OverloadedStrings #-}\n"
                 "{-# OPTIONS_GHC -fno-warn-missing-fields #-}\n"
                 "{-# OPTIONS_GHC -fno-warn-missing-signatures #-}\n"
                 "{-# OPTIONS_GHC -fno-warn-name-shadowing #-}\n"
                 "{-# OPTIONS_GHC -fno-warn-unused-imports #-}\n"
-                "{-# OPTIONS_GHC -fno-warn-unused-matches #-}\n");
+                "{-# OPTIONS_GHC -fno-warn-unused-matches #-}\n")
+    + (use_int_ ? string(
+        "{-# LANGUAGE CPP #-}\n"
+        "#include \"MachDeps.h\"\n"
+        "#if SIZEOF_HSINT < 8\n"
+        "#error Can't use the 'use_int' flag on <64-bit architectures\n"
+        "#endif\n")
+        : "");
 }
 
 /**
@@ -1380,6 +1390,17 @@ static bool hasNoArguments(t_function* func) {
     return (func->get_arglist()->get_members().empty());
 }
 
+static bool isIntegralType(t_base_type::t_base tbase) {
+    switch (tbase) {
+    case t_base_type::TYPE_BYTE:
+    case t_base_type::TYPE_I16:
+    case t_base_type::TYPE_I32:
+    case t_base_type::TYPE_I64:
+      return true;
+    default: return false;
+    }
+}
+
 string t_hs_generator::render_hs_type_for_function_name(t_type* type) {
     string type_str = render_hs_type(type, false);
     int found = -1;
@@ -1810,6 +1831,8 @@ void t_hs_generator::generate_deserialize_type(ofstream &out,
       else if (use_strict_text_)
         out << "LT.toStrict $ ";
       out << "decodeUtf8 ";
+    } else if (use_int_ && isIntegralType(tbase)) {
+      out << "fromIntegral $ ";
     }
     out << val;
   } else if (type->is_enum()) {
@@ -1897,9 +1920,10 @@ void t_hs_generator::generate_serialize_type(ofstream &out,
           out << "$ LT.pack ";
         else if (use_strict_text_)
           out << "$ LT.fromStrict ";
+      } else if (use_int_ && isIntegralType(tbase)) {
+        out << "$ fromIntegral ";
       }
       out << name;
-
     } else if (type->is_enum()) {
       string ename = capitalize(type->get_name());
       out << "TI32 $ fromIntegral $ fromEnum " << name;
@@ -2142,10 +2166,10 @@ string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
       else
         return "LT.Text";
     case t_base_type::TYPE_BOOL:   return "Bool";
-    case t_base_type::TYPE_BYTE:   return "Int8";
-    case t_base_type::TYPE_I16:    return "Int16";
-    case t_base_type::TYPE_I32:    return "Int32";
-    case t_base_type::TYPE_I64:    return "Int64";
+    case t_base_type::TYPE_BYTE:   return use_int_ ? "Int" : "Int8";
+    case t_base_type::TYPE_I16:    return use_int_ ? "Int" : "Int16";
+    case t_base_type::TYPE_I32:    return use_int_ ? "Int" : "Int32";
+    case t_base_type::TYPE_I64:    return use_int_ ? "Int" : "Int64";
     case t_base_type::TYPE_FLOAT:  return "Float";
     case t_base_type::TYPE_DOUBLE: return "Double";
     }
