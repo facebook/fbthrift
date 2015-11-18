@@ -151,6 +151,7 @@ T& maybe_remove_pointer(T* x) { return *x; }
 
 FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(push_back_checker, push_back);
 FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(insert_checker, insert);
+FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(op_bracket_checker, operator[]);
 FOLLY_CREATE_HAS_MEMBER_FN_TRAITS(reserve_checker, reserve);
 
 // The std::vector<bool> specialization in gcc provides a push_back(bool)
@@ -159,6 +160,14 @@ template <class C>
 using is_vector_like = std::integral_constant<bool,
     push_back_checker<C, void(typename C::value_type&&)>::value ||
     push_back_checker<C, void(typename C::value_type)>::value>;
+
+template <class C>
+using op_bracket_of_key_signature =
+    typename C::mapped_type&(const typename C::key_type&);
+
+template <class C>
+using has_op_bracket_of_key = std::integral_constant<bool,
+      op_bracket_checker<C, op_bracket_of_key_signature<C>>::value>;
 
 template <class C>
 using has_insert = insert_checker<C,
@@ -170,9 +179,7 @@ using is_set_like = std::integral_constant<bool,
       std::is_same<typename C::key_type, typename C::value_type>::value>;
 
 template <class C>
-using is_map_like = std::integral_constant<bool,
-      has_insert<C>::value &&
-      !std::is_same<typename C::key_type, typename C::value_type>::value>;
+using is_map_like = has_op_bracket_of_key<C>;
 
 template <class T, class = void>
 struct Reserver {
