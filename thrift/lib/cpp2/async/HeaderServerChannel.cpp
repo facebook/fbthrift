@@ -208,11 +208,9 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
       HeaderServerChannel* channel,
       unique_ptr<IOBuf>&& buf,
       unique_ptr<THeader>&& header,
-      bool outOfOrder,
       unique_ptr<sample> sample)
   : channel_(channel)
   , header_(std::move(header))
-  , outOfOrder_(outOfOrder)
   , active_(true) {
 
   this->buf_ = std::move(buf);
@@ -235,7 +233,7 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
 void HeaderServerChannel::HeaderRequest::sendReply(
     unique_ptr<IOBuf>&& buf,
     MessageChannel::SendCallback* cb) {
-  if (!outOfOrder_) {
+  if (!channel_->outOfOrder_.value()) {
     // In order processing, make sure the ordering is correct.
     if (InOrderRecvSeqId_ != channel_->lastWrittenSeqId_ + 1) {
       // Save it until we can send it in order.
@@ -355,6 +353,18 @@ void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
 
   uint32_t recvSeqId = header->getSequenceNumber();
   bool outOfOrder = (header->getFlags() & HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
+  if (!outOfOrder_.hasValue()) {
+    outOfOrder_ = outOfOrder;
+  } else if (outOfOrder_.value() != outOfOrder) {
+    LOG(ERROR) << "Channel " << (outOfOrder_.value() ? "" : "doesn't ")
+               << "support out-of-order, but received a message with the "
+               << "out-of-order bit " << (outOfOrder ? "set" : "unset");
+    messageReceiveErrorWrapped(
+        folly::make_exception_wrapper<TTransportException>(
+            "Bad out-of-order flag"));
+    return;
+  }
+
   if (!outOfOrder) {
     // Create a new seqid for in-order messages because they might not
     // be sequential.  This seqid is only used internally in HeaderServerChannel
@@ -366,7 +376,6 @@ void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
         new HeaderRequest(this,
                           std::move(buf),
                           std::move(header),
-                          outOfOrder,
                           std::move(sample)));
 
     if (!outOfOrder) {

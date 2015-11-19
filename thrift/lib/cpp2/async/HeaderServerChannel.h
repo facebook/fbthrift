@@ -116,7 +116,6 @@ protected:
     HeaderRequest(HeaderServerChannel* channel,
                   std::unique_ptr<folly::IOBuf>&& buf,
                   std::unique_ptr<apache::thrift::transport::THeader>&& header,
-                  bool outOfOrder,
                   std::unique_ptr<sample> sample);
 
     bool isActive() override { return active_; }
@@ -140,7 +139,6 @@ protected:
    private:
     HeaderServerChannel* channel_;
     std::unique_ptr<apache::thrift::transport::THeader> header_;
-    bool outOfOrder_;
     uint32_t InOrderRecvSeqId_{0}; // Used internally for in-order requests
     std::atomic<bool> active_;
   };
@@ -226,6 +224,8 @@ private:
 
   uint32_t arrivalSeqId_;
   uint32_t lastWrittenSeqId_;
+
+  folly::Optional<bool> outOfOrder_;
 
   static const int MAX_REQUEST_SIZE = 2000;
   static std::atomic<uint32_t> sample_;

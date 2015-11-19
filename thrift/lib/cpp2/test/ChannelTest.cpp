@@ -953,7 +953,6 @@ public:
       channel1_.get(),
       req->extractBuf(),
       std::move(header),
-      true /*out of order*/,
       std::unique_ptr<MessageChannel::RecvCallback::sample>(nullptr));
     r.sendReply(r.extractBuf());
   }
