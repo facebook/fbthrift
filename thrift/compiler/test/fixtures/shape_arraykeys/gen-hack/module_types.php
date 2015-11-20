@@ -34,6 +34,12 @@ class A implements IThriftShapishStruct {
     return 'A';
   }
 
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->a = $shape['a'];
+    return $me;
+  }
+
   public function __toShape(): self::TShape {
     return shape(
       'a' => $this->a,
@@ -622,6 +628,85 @@ class B implements IThriftShapishStruct {
     return 'B';
   }
 
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->just_an_A = $shape['just_an_A'] === null ? null : A::__fromShape(nullthrows($shape['just_an_A']));
+    $me->set_of_i32 = new Set(array_keys($shape['set_of_i32']));
+    $me->list_of_i32 = (new Vector($shape['list_of_i32']));
+    $me->list_of_i32 = (new Vector($shape['list_of_i32']));
+    $me->map_of_string_to_i32 = (new Map($shape['map_of_string_to_i32']));
+    $me->map_of_string_to_A = (new Map($shape['map_of_string_to_A']))->map(
+      $val0 ==> A::__fromShape($val0),
+    );
+    $me->map_of_string_to_list_of_i32 = (new Map($shape['map_of_string_to_list_of_i32']))->map(
+      $val1 ==> (new Vector($val1)),
+    );
+    $me->map_of_string_to_list_of_A = (new Map($shape['map_of_string_to_list_of_A']))->map(
+      $val2 ==> (new Vector($val2))->map(
+        $val3 ==> A::__fromShape($val3),
+      ),
+    );
+    $me->map_of_string_to_set_of_i32 = (new Map($shape['map_of_string_to_set_of_i32']))->map(
+      $val4 ==> new Set(array_keys($val4)),
+    );
+    $me->map_of_string_to_map_of_string_to_i32 = (new Map($shape['map_of_string_to_map_of_string_to_i32']))->map(
+      $val5 ==> (new Map($val5)),
+    );
+    $me->map_of_string_to_map_of_string_to_A = (new Map($shape['map_of_string_to_map_of_string_to_A']))->map(
+      $val6 ==> (new Map($val6))->map(
+        $val7 ==> A::__fromShape($val7),
+      ),
+    );
+    $me->list_of_set_of_i32 = (new Vector($shape['list_of_set_of_i32']))->map(
+      $val8 ==> new Set(array_keys($val8)),
+    );
+    $me->list_of_map_of_string_to_list_of_A = (new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
+      $val9 ==> (new Map($val9))->map(
+        $val10 ==> (new Vector($val10))->map(
+          $val11 ==> A::__fromShape($val11),
+        ),
+      ),
+    );
+    $me->list_of_map_of_string_to_A = (new Vector($shape['list_of_map_of_string_to_A']))->map(
+      $val12 ==> (new Map($val12))->map(
+        $val13 ==> A::__fromShape($val13),
+      ),
+    );
+    $me->list_of_self = (new Vector($shape['list_of_self']))->map(
+      $val14 ==> B::__fromShape($val14),
+    );
+    $me->map_of_string_to_self = (new Map($shape['map_of_string_to_self']))->map(
+      $val15 ==> B::__fromShape($val15),
+    );
+    $me->optional_just_an_A = $shape['optional_just_an_A'] === null ? null : A::__fromShape(nullthrows($shape['optional_just_an_A']));
+    $me->optional_set_of_i32 = $shape['optional_set_of_i32'] === null ? null : new Set(array_keys(nullthrows($shape['optional_set_of_i32'])));
+    $me->optional_list_of_i32 = $shape['optional_list_of_i32'] === null ? null : 
+      (new Vector($shape['optional_list_of_i32']));
+    $me->optional_list_of_i32 = $shape['optional_list_of_i32'] === null ? null : 
+      (new Vector($shape['optional_list_of_i32']));
+    $me->optional_map_of_string_to_i32 = $shape['optional_map_of_string_to_i32'] === null ? null : 
+      (new Map($shape['optional_map_of_string_to_i32']));
+    $me->optional_map_of_string_to_A = $shape['optional_map_of_string_to_A'] === null ? null : 
+      (new Map($shape['optional_map_of_string_to_A']))->map(
+        $val16 ==> A::__fromShape($val16),
+      );
+    $me->optional_map_of_string_to_list_of_i32 = $shape['optional_map_of_string_to_list_of_i32'] === null ? null : 
+      (new Map($shape['optional_map_of_string_to_list_of_i32']))->map(
+        $val17 ==> (new Vector($val17)),
+      );
+    $me->optional_map_of_string_to_list_of_A = $shape['optional_map_of_string_to_list_of_A'] === null ? null : 
+      (new Map($shape['optional_map_of_string_to_list_of_A']))->map(
+        $val18 ==> (new Vector($val18))->map(
+          $val19 ==> A::__fromShape($val19),
+        ),
+      );
+    $me->optional_map_of_string_to_set_of_i32 = $shape['optional_map_of_string_to_set_of_i32'] === null ? null : 
+      (new Map($shape['optional_map_of_string_to_set_of_i32']))->map(
+        $val20 ==> new Set(array_keys($val20)),
+      );
+    return $me;
+  }
+
   public function __toShape(): self::TShape {
     return shape(
       'just_an_A' => $this->just_an_A?->__toShape(),
@@ -673,7 +758,7 @@ class B implements IThriftShapishStruct {
         $_val0 ==> $_val0->__toShape(),
       )->toArray(),
       'optional_just_an_A' => $this->optional_just_an_A?->__toShape(),
-      'optional_set_of_i32' => array_fill_keys($this->optional_set_of_i32->toValuesArray(), true),
+      'optional_set_of_i32' => $this->optional_set_of_i32 === null ? null : array_fill_keys(nullthrows($this->optional_set_of_i32->toValuesArray()), true),
       'optional_list_of_i32' => $this->optional_list_of_i32?->toArray(),
       'optional_list_of_i32' => $this->optional_list_of_i32?->toArray(),
       'optional_map_of_string_to_i32' => $this->optional_map_of_string_to_i32?->toArray(),

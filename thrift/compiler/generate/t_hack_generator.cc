@@ -1302,13 +1302,142 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(std::os
 }
 
 void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
-                                                     t_struct* tstruct) {
+                                                         t_struct* tstruct) {
+  indent(out) << "public static function __fromShape(self::TShape $shape): this {" << endl;
+  indent_up();
+  indent(out) << "$me = /* HH_IGNORE_ERROR[4060] */ new static();" << endl;
+  const vector<t_field*>& members = tstruct->get_members();
+  vector<t_field*>::const_iterator m_iter;
+  t_name_generator namer;
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    t_type* t = get_true_type((*m_iter)->get_type());
+
+    string dval = render_default_value(t);
+    // TODO(ckwalsh) Extract this logic into a helper function
+    bool nullable = (dval == "null")
+      || tstruct->is_union()
+      || ((*m_iter)->get_req() == t_field::T_OPTIONAL
+          && (*m_iter)->get_value() == nullptr)
+      || (t->is_enum()
+          && (*m_iter)->get_req() != t_field::T_REQUIRED);
+
+    stringstream val;
+    indent(val) << "$me->" << (*m_iter)->get_name() << " = ";
+    stringstream source;
+    source << "$shape['" << (*m_iter)->get_name() << "']";
+
+    if (t->is_set()) {
+      if (nullable) {
+        val << source.str() << " === null ? null : ";
+      }
+      if (arraysets_) {
+        val << source.str() << ";" << endl;
+      } else {
+        val << "new Set(array_keys("
+            << (nullable ? "nullthrows(" : "")
+            << source.str()
+            << (nullable ? ")" : "")
+            << "));" << endl;
+      }
+    } else if (t->is_map() || t->is_list()) {
+      if (nullable) {
+        val << source.str() << " === null ? null : " << endl;
+        indent_up();
+        indent(val);
+      }
+      if (t->is_map()) {
+        val << "(new Map(";
+      } else {
+        val << "(new Vector(";
+      }
+      val << source.str() << "))";
+
+      int nest = 0;
+      while (true) {
+        t_type* val_type;
+        if (t->is_map()) {
+          val_type = ((t_map*)t)->get_val_type();
+        } else {
+          val_type = ((t_list*)t)->get_elem_type();
+        }
+        val_type = get_true_type(val_type);
+
+        if ((val_type->is_set() && !arraysets_) ||
+            val_type->is_map() ||
+            val_type->is_list() ||
+            val_type->is_struct()) {
+          indent_up();
+          nest++;
+          val << "->map(" << endl;
+
+          if (val_type->is_set()) {
+            string tmp = namer("val");
+            indent(val) << "$" << tmp << " ==> new Set(array_keys($" << tmp << "))," << endl;
+            break;
+          } else if (val_type->is_map() || val_type->is_list()) {
+            string tmp = namer("val");
+            indent(val)  << "$" << tmp << " ==> (new ";
+            if (val_type->is_map()) {
+              val << "Map";
+            } else {
+              val << "Vector";
+            }
+            val << "($" << tmp << "))";
+            t = val_type;
+          } else if (val_type->is_struct()) {
+            string tmp = namer("val");
+            string type = php_namespace(val_type->get_program()) + val_type->get_name();
+            indent(val) << "$" << tmp << " ==> " << type << "::__fromShape("
+                        << "$" << tmp << ")," << endl;
+            break;
+          }
+        } else {
+          if (nest > 0) {
+            val << "," <<  endl;
+          }
+          break;
+        }
+      }
+      while (nest-- > 0) {
+        indent_down();
+        indent(val) << ")";
+        if (nest > 0) {
+          val << "," << endl;
+        }
+      }
+      val <<  ";" << endl;
+      if (nullable) {
+        indent_down();
+      }
+    } else if (t->is_struct()) {
+      string type = php_namespace(t->get_program()) + t->get_name();
+      if (nullable) {
+        val <<source.str() << " === null ? null : ";
+      }
+      val
+        << type << "::__fromShape("
+        << (nullable ? "nullthrows(" : "")
+        << source.str()
+        << (nullable ? ")" : "")
+        << ");" << endl;
+    } else {
+      val << source.str() << ";" << endl;
+    }
+
+
+    out << val.str();
+  }
+  indent(out) << "return $me;" << endl;
+  indent_down();
+  indent(out) << "}" << endl;
+  out << endl;
+
+
+
   indent(out) << "public function __toShape(): self::TShape {" << endl;
   indent_up();
   indent(out) << "return shape(" << endl;
   indent_up();
-  const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
 
@@ -1316,17 +1445,18 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
 
     stringstream val;
 
+    string dval = render_default_value(t);
+
+    // TODO(ckwalsh) Extract this logic into a helper function
+    bool nullable = (dval == "null")
+      || tstruct->is_union()
+      || ((*m_iter)->get_req() == t_field::T_OPTIONAL
+          && (*m_iter)->get_value() == nullptr)
+      || (t->is_enum()
+          && (*m_iter)->get_req() != t_field::T_REQUIRED);
+
     if (t->is_container()) {
       if (t->is_map() || t->is_list()) {
-        string dval = render_default_value(t);
-        // TODO(ckwalsh) Extract this logic into a helper function
-        bool nullable = (dval == "null")
-          || tstruct->is_union()
-          || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-              && (*m_iter)->get_value() == nullptr)
-          || (t->is_enum()
-              && (*m_iter)->get_req() != t_field::T_REQUIRED);
-
         val << "$this->" << (*m_iter)->get_name() << (nullable ? "?" :"");
 
         t_type* val_type;
@@ -1349,19 +1479,21 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
           val <<  "->toArray()," << endl;
         }
       } else {
-        val << "array_fill_keys($this->" << (*m_iter)->get_name() << "->toValuesArray(), true)," << endl;
+        if (nullable) {
+          val << "$this->" << (*m_iter)->get_name() << " === null ? null : ";
+        }
+        if (arraysets_) {
+          val << "$this->" << (*m_iter)->get_name() << "," << endl;
+        } else {
+          val << "array_fill_keys("
+              << (nullable ? "nullthrows(" : "")
+              << "$this->" << (*m_iter)->get_name() << "->toValuesArray()"
+              << (nullable ? ")" : "")
+              << ", true)," << endl;
+        }
       }
     } else if (t->is_struct()) {
       val << "$this->" << (*m_iter)->get_name();
-      string dval = render_default_value(t);
-
-      // TODO(ckwalsh) Extract this logic into a helper function
-      bool nullable = (dval == "null")
-          || tstruct->is_union()
-          || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-              && (*m_iter)->get_value() == nullptr)
-          || (t->is_enum()
-              && (*m_iter)->get_req() != t_field::T_REQUIRED);
       val << (nullable ? "?" : "") << "->__toShape()," << endl;
     } else {
       val << "$this->" << (*m_iter)->get_name() << "," << endl;

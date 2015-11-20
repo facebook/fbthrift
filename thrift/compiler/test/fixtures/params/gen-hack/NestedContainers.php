@@ -1221,6 +1221,14 @@ class NestedContainers_mapList_args implements IThriftShapishStruct {
     return 'NestedContainers_mapList_args';
   }
 
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->foo = (new Map($shape['foo']))->map(
+      $val0 ==> (new Vector($val0)),
+    );
+    return $me;
+  }
+
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
@@ -1430,6 +1438,14 @@ class NestedContainers_mapSet_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'NestedContainers_mapSet_args';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->foo = (new Map($shape['foo']))->map(
+      $val0 ==> new Set(array_keys($val0)),
+    );
+    return $me;
   }
 
   public function __toShape(): self::TShape {
@@ -1643,6 +1659,14 @@ class NestedContainers_listMap_args implements IThriftShapishStruct {
     return 'NestedContainers_listMap_args';
   }
 
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->foo = (new Vector($shape['foo']))->map(
+      $val0 ==> (new Map($val0)),
+    );
+    return $me;
+  }
+
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
@@ -1848,6 +1872,14 @@ class NestedContainers_listSet_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'NestedContainers_listSet_args';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->foo = (new Vector($shape['foo']))->map(
+      $val0 ==> new Set(array_keys($val0)),
+    );
+    return $me;
   }
 
   public function __toShape(): self::TShape {
@@ -2074,6 +2106,20 @@ class NestedContainers_turtles_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'NestedContainers_turtles_args';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->foo = (new Vector($shape['foo']))->map(
+      $val0 ==> (new Vector($val0))->map(
+        $val1 ==> (new Map($val1))->map(
+          $val2 ==> (new Map($val2))->map(
+            $val3 ==> new Set(array_keys($val3)),
+          ),
+        ),
+      ),
+    );
+    return $me;
   }
 
   public function __toShape(): self::TShape {

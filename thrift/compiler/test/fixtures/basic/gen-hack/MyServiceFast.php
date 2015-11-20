@@ -1342,6 +1342,11 @@ class MyServiceFast_ping_args implements IThriftShapishStruct {
     return 'MyServiceFast_ping_args';
   }
 
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    return $me;
+  }
+
   public function __toShape(): self::TShape {
     return shape(
     );
@@ -1454,6 +1459,11 @@ class MyServiceFast_getRandomData_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'MyServiceFast_getRandomData_args';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    return $me;
   }
 
   public function __toShape(): self::TShape {
@@ -1599,6 +1609,12 @@ class MyServiceFast_hasDataById_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'MyServiceFast_hasDataById_args';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->id = $shape['id'];
+    return $me;
   }
 
   public function __toShape(): self::TShape {
@@ -1758,6 +1774,12 @@ class MyServiceFast_getDataById_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'MyServiceFast_getDataById_args';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->id = $shape['id'];
+    return $me;
   }
 
   public function __toShape(): self::TShape {
@@ -1931,6 +1953,13 @@ class MyServiceFast_putDataById_args implements IThriftShapishStruct {
     return 'MyServiceFast_putDataById_args';
   }
 
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->id = $shape['id'];
+    $me->data = $shape['data'];
+    return $me;
+  }
+
   public function __toShape(): self::TShape {
     return shape(
       'id' => $this->id,
@@ -2095,6 +2124,13 @@ class MyServiceFast_lobDataById_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'MyServiceFast_lobDataById_args';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->id = $shape['id'];
+    $me->data = $shape['data'];
+    return $me;
   }
 
   public function __toShape(): self::TShape {

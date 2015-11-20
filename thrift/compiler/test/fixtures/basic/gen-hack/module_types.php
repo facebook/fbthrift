@@ -52,6 +52,13 @@ class MyStruct implements IThriftShapishStruct {
     return 'MyStruct';
   }
 
+  public static function __fromShape(self::TShape $shape): this {
+    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me->MyIntField = $shape['MyIntField'];
+    $me->MyStringField = $shape['MyStringField'];
+    return $me;
+  }
+
   public function __toShape(): self::TShape {
     return shape(
       'MyIntField' => $this->MyIntField,
