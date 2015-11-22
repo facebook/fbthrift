@@ -233,7 +233,7 @@ uint32_t MyField::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_value) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_value' was not foundin serialized data! Struct: MyField");
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_value' was not found in serialized data! Struct: MyField");
   }
   return xfer;
 }
@@ -371,7 +371,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_ref) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref' was not foundin serialized data! Struct: MyStruct");
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref' was not found in serialized data! Struct: MyStruct");
   }
   return xfer;
 }
