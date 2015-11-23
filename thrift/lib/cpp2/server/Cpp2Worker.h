@@ -118,7 +118,7 @@ class Cpp2Worker
     return &peekingCallback_;
   }
 
-  void onNewConnection(folly::AsyncSocket::UniquePtr,
+  void onNewConnection(folly::AsyncTransportWrapper::UniquePtr,
                        const folly::SocketAddress*,
                        const std::string&,
                        SecureTransportType,

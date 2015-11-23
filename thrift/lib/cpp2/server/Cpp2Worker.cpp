@@ -48,7 +48,7 @@ using std::shared_ptr;
 using apache::thrift::concurrency::Util;
 
 void Cpp2Worker::onNewConnection(
-  folly::AsyncSocket::UniquePtr sock,
+  folly::AsyncTransportWrapper::UniquePtr sock,
   const folly::SocketAddress* addr,
   const std::string& nextProtocolName,
   SecureTransportType secureProtocolType,
