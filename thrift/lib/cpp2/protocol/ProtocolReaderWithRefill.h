@@ -189,19 +189,16 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
      * start all over again.
      **/
     void ensureInteger(int idx = 0) {
-      while (true) {
-        if (protocol_.in_.length() - idx >= 10) {
-          return;
-        }
-
+      while (protocol_.in_.length() - idx < 10) {
         if (protocol_.in_.length() <= idx) {
           ensureBuffer(idx + 1);
         } else {
           auto avail = protocol_.in_.peek();
           const uint8_t *b = avail.first + idx;
-          while (idx++ < avail.second) {
+          while (idx < avail.second) {
             if (!(*b++ & 0x80))
               return;
+            idx++;
           }
 
           ensureBuffer(avail.second + 1);
