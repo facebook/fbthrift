@@ -12,66 +12,66 @@
 
 struct module_constants {
   static constexpr int32_t const myInt_ = 1337;
-  static constexpr int32_t const myInt() { return myInt_; }
+  static constexpr int32_t myInt() { return myInt_; }
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to 
   // prevent unnecessary allocations
   static constexpr char const *const name_ = "Mark Zuckerberg";
-  static constexpr char const *const name() { return name_; }
-  static std::vector<std::map<std::string, int32_t> >  const &states();
+  static constexpr char const* name() { return name_; }
+  static std::vector<std::map<std::string, int32_t> >  const& states();
   static constexpr double const x_ = 1;
-  static constexpr double const x() { return x_; }
+  static constexpr double x() { return x_; }
   static constexpr double const y_ = 1000000;
-  static constexpr double const y() { return y_; }
+  static constexpr double y() { return y_; }
   static constexpr double const z_ = 1e+09;
-  static constexpr double const z() { return z_; }
-  static Internship const &instagram();
-  static std::vector<Range>  const &kRanges();
-  static std::vector<Internship>  const &internList();
+  static constexpr double z() { return z_; }
+  static Internship const& instagram();
+  static std::vector<Range>  const& kRanges();
+  static std::vector<Internship>  const& internList();
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to 
   // prevent unnecessary allocations
   static constexpr char const *const apostrophe_ = "'";
-  static constexpr char const *const apostrophe() { return apostrophe_; }
+  static constexpr char const* apostrophe() { return apostrophe_; }
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to 
   // prevent unnecessary allocations
   static constexpr char const *const tripleApostrophe_ = "'''";
-  static constexpr char const *const tripleApostrophe() { return tripleApostrophe_; }
+  static constexpr char const* tripleApostrophe() { return tripleApostrophe_; }
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to 
   // prevent unnecessary allocations
   static constexpr char const *const quotationMark_ = "\"";
-  static constexpr char const *const quotationMark() { return quotationMark_; }
+  static constexpr char const* quotationMark() { return quotationMark_; }
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to 
   // prevent unnecessary allocations
   static constexpr char const *const backslash_ = "\\";
-  static constexpr char const *const backslash() { return backslash_; }
+  static constexpr char const* backslash() { return backslash_; }
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to 
   // prevent unnecessary allocations
   static constexpr char const *const escaped_a_ = "\x61";
-  static constexpr char const *const escaped_a() { return escaped_a_; }
-  static std::map<std::string, int32_t>  const &char2ascii();
+  static constexpr char const* escaped_a() { return escaped_a_; }
+  static std::map<std::string, int32_t>  const& char2ascii();
 };
 
 struct  __attribute__((__deprecated__("module_constants_codemod is a transitional class only intended for codemods from the deprecated moduleConstants to module_constants. Consider switching to the latter as soon as possible."))) module_constants_codemod {
-  static constexpr int32_t const myInt() { return module_constants::myInt(); }
-  static std::string const &name();
-  static std::vector<std::map<std::string, int32_t> >  const &states();
-  static constexpr double const x() { return module_constants::x(); }
-  static constexpr double const y() { return module_constants::y(); }
-  static constexpr double const z() { return module_constants::z(); }
-  static Internship const &instagram();
-  static std::vector<Range>  const &kRanges();
-  static std::vector<Internship>  const &internList();
-  static std::string const &apostrophe();
-  static std::string const &tripleApostrophe();
-  static std::string const &quotationMark();
-  static std::string const &backslash();
-  static std::string const &escaped_a();
-  static std::map<std::string, int32_t>  const &char2ascii();
+  static constexpr int32_t myInt() { return module_constants::myInt(); }
+  static std::string const& name();
+  static std::vector<std::map<std::string, int32_t> >  const& states();
+  static constexpr double x() { return module_constants::x(); }
+  static constexpr double y() { return module_constants::y(); }
+  static constexpr double z() { return module_constants::z(); }
+  static Internship const& instagram();
+  static std::vector<Range>  const& kRanges();
+  static std::vector<Internship>  const& internList();
+  static std::string const& apostrophe();
+  static std::string const& tripleApostrophe();
+  static std::string const& quotationMark();
+  static std::string const& backslash();
+  static std::string const& escaped_a();
+  static std::map<std::string, int32_t>  const& char2ascii();
 };
 
 class __attribute__((__deprecated__("moduleConstants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH your program. Instead, use module_constants::CONSTANT_NAME()"))) moduleConstants {
