@@ -3895,10 +3895,10 @@ class CppGenerator(t_generator.Generator):
                       .format('char const *' if c.type.is_string else
                         self._type_name(c.type), name, c.name))
 
-                b = s.defn('static {0}{1} const {2}{{name}}()'.format(
+                b = s.defn('static {0}{1} {2}{{name}}()'.format(
                     'constexpr ' if inlined else '', 'char const *' if
                     c.type.is_string else self._type_name(c.type), '' if
-                    inlined else '&'), name=c.name, in_header=True).scope
+                    inlined else 'const& '), name=c.name, in_header=True).scope
                 with b:
 
                     if inlined:
@@ -3923,9 +3923,9 @@ class CppGenerator(t_generator.Generator):
                 value = self._render_const_value(c.type, c.value)
                 inlined = (c.type.is_base_type
                     and not c.type.is_string) or c.type.is_enum
-                b = s.defn('static {0}{1} const {2}{{name}}()'.format(
+                b = s.defn('static {0}{1} {2}{{name}}()'.format(
                     'constexpr ' if inlined else '', self._type_name(
-                    c.type), '' if inlined else '&'), name=c.name,
+                    c.type), '' if inlined else 'const& '), name=c.name,
                     in_header=True).scope
                 with b:
                     if inlined:

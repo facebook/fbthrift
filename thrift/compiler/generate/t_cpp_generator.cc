@@ -1048,13 +1048,12 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
       f_consts << "constexpr ";
     }
     if (type->is_string()) {
-      f_consts << "char const *";
+      f_consts << "char const* ";
     } else {
       f_consts << type_name(type) << ' ';
     }
-    f_consts << "const ";
     if (!inlined) {
-      f_consts << '&';
+      f_consts << "const& ";
     }
     f_consts << name << "()";
     if (inlined) {
@@ -1122,9 +1121,9 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     if (inlined) {
       f_consts << "constexpr ";
     }
-    f_consts << type_name(type) << " const ";
+    f_consts << type_name(type) << " ";
     if (!inlined) {
-      f_consts << '&';
+      f_consts << "const& ";
     }
     f_consts << name << "()";
     if (inlined) {
