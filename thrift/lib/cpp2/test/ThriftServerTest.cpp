@@ -29,6 +29,7 @@
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
+#include <thrift/lib/cpp2/test/util/TestInterface.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 
 #include <folly/experimental/fibers/FiberManagerMap.h>
@@ -47,54 +48,6 @@ using apache::thrift::protocol::TBinaryProtocolT;
 using apache::thrift::test::TestServiceClient;
 
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
-
-namespace {
-
-const std::string kEchoSuffix(45, 'c');
-
-}  // namespace
-
-class TestInterface : public TestServiceSvIf {
-  void sendResponse(std::string& _return, int64_t size) override {
-    if (size >= 0) {
-      usleep(size);
-    }
-
-    EXPECT_NE("", getConnectionContext()->getPeerAddress()->describe());
-
-    _return = "test" + boost::lexical_cast<std::string>(size);
-  }
-
-  void noResponse(int64_t size) override { usleep(size); }
-
-  void echoRequest(std::string& _return,
-                   std::unique_ptr<std::string> req) override {
-    _return = *req + kEchoSuffix;
-  }
-
-  typedef apache::thrift::HandlerCallback<std::unique_ptr<std::string>>
-      StringCob;
-  void async_tm_serializationTest(std::unique_ptr<StringCob> callback,
-                                  bool inEventBase) override {
-    std::unique_ptr<std::string> sp(new std::string("hello world"));
-    callback->result(std::move(sp));
-  }
-
-  void async_eb_eventBaseAsync(std::unique_ptr<StringCob> callback) override {
-    std::unique_ptr<std::string> hello(new std::string("hello world"));
-    callback->result(std::move(hello));
-  }
-
-  void async_tm_notCalledBack(
-      std::unique_ptr<apache::thrift::HandlerCallback<void>> cb) override {}
-
-  void echoIOBuf(std::unique_ptr<folly::IOBuf>& ret,
-      std::unique_ptr<folly::IOBuf> buf) override {
-    ret = std::move(buf);
-    folly::io::Appender cursor(ret.get(), kEchoSuffix.size());
-    cursor.push(folly::StringPiece(kEchoSuffix.data(), kEchoSuffix.size()));
-  }
-};
 
 std::shared_ptr<TestServiceClient> getThrift1Client(
     const folly::SocketAddress& address) {

@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2/test/util/TestInterface.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
@@ -36,41 +37,6 @@ using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
 using apache::thrift::test::cpp2::TestServiceAsyncClient;
-
-class TestInterface : public TestServiceSvIf {
-  void sendResponse(std::string& _return, int64_t size) {
-    if (size >= 0) {
-      usleep(size);
-    }
-
-    _return = "test" + boost::lexical_cast<std::string>(size);
-  }
-
-  void noResponse(int64_t size) {
-    usleep(size);
-  }
-
-  void echoRequest(std::string& _return, std::unique_ptr<std::string> req) {
-    _return = *req + "ccccccccccccccccccccccccccccccccccccccccccccc";
-  }
-
-  typedef apache::thrift::HandlerCallback<std::unique_ptr<std::string>>
-      StringCob;
-  void async_tm_serializationTest(std::unique_ptr<StringCob> callback,
-                                  bool inEventBase) {
-    std::unique_ptr<std::string> sp(new std::string("hello world"));
-    callback->result(std::move(sp));
-  }
-
-  void async_eb_eventBaseAsync(std::unique_ptr<StringCob> callback) {
-    std::unique_ptr<std::string> hello(new std::string("hello world"));
-    callback->result(std::move(hello));
-  }
-
-  void async_tm_notCalledBack(std::unique_ptr<
-                              apache::thrift::HandlerCallback<void>> cb) {
-  }
-};
 
 int SyncClientTest() {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;

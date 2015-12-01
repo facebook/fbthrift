@@ -29,6 +29,7 @@
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2/test/util/TestInterface.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
@@ -38,18 +39,6 @@ using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
-
-class TestInterface : public TestServiceSvIf {
-  void sendResponse(std::string& _return, int64_t size) override {
-    if (size >= 0) {
-      usleep(size * 1000);
-    }
-
-    _return = "test";
-  }
-
-  void noResponse(int64_t size) override { usleep(size * 1000); }
-};
 
 class CloseChecker : public CloseCallback {
  public:
