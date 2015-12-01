@@ -125,6 +125,12 @@ ThriftServer::~ThriftServer() {
     saslThreadManager_->stop();
   }
 
+  if (duplexWorker_) {
+    // usually ServerBootstrap::stop drains the workers, but ServerBootstrap
+    // doesn't know about duplexWorker_
+    duplexWorker_->drainAllConnections();
+  }
+
   if (stopWorkersOnStopListening_) {
     // Everything is already taken care of.
     return;
@@ -316,6 +322,9 @@ void ThriftServer::setup() {
     } else {
       CHECK(configMutable());
       duplexWorker_ = folly::make_unique<Cpp2Worker>(this, serverChannel_);
+      // we don't control the EventBase for the duplexWorker, so when we shut
+      // it down, we need to ensure there's no delay
+      duplexWorker_->setGracefulShutdownTimeout(std::chrono::milliseconds(0));
     }
 
     // Do not allow setters to be called past this point until the IO worker
@@ -348,6 +357,7 @@ void ThriftServer::serve() {
 }
 
 void ThriftServer::cleanUp() {
+  DCHECK(!serverChannel_);
   // It is users duty to make sure that setup() call
   // should have returned before doing this cleanup
   serveEventBase_ = nullptr;
@@ -398,6 +408,7 @@ void ThriftServer::stopWorkers() {
   if (serverChannel_) {
     return;
   }
+  DCHECK(!duplexWorker_);
   ServerBootstrap::stop();
   ServerBootstrap::join();
   configMutable_ = true;

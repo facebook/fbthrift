@@ -61,7 +61,6 @@ class Cpp2Worker
              folly::EventBase* eventBase = nullptr) :
     Acceptor(server->getServerSocketConfig()),
     server_(server),
-    eventBase_(eventBase),
     activeRequests_(0),
     pendingCount_(0),
     pendingTime_(std::chrono::steady_clock::now()) {
@@ -69,16 +68,21 @@ class Cpp2Worker
       std::dynamic_pointer_cast<folly::EventBaseObserver>(
       server_->getObserver());
     if (serverChannel) {
+      eventBase = serverChannel->getEventBase();
+    } else if (!eventBase) {
+      eventBase = folly::EventBaseManager::get()->getEventBase();
+    }
+    Acceptor::init(nullptr, eventBase);
+
+    if (serverChannel) {
       // duplex
       useExistingChannel(serverChannel);
-    } else if (!eventBase_) {
-      eventBase_ = folly::EventBaseManager::get()->getEventBase();
-    }
-    if (observer) {
-      eventBase_->setObserver(observer);
     }
 
-    Acceptor::init(nullptr, eventBase_);
+    if (observer) {
+      eventBase->setObserver(observer);
+    }
+
   }
 
   /**
@@ -127,9 +131,6 @@ class Cpp2Worker
  private:
   /// The mother ship.
   ThriftServer* server_;
-
-  /// An instance's folly::EventBase for I/O.
-  folly::EventBase* eventBase_;
 
   folly::AsyncSocket::UniquePtr makeNewAsyncSocket(folly::EventBase* base,
                                                    int fd) override {
