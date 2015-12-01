@@ -245,13 +245,13 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(std::unique_ptr<apache::thrift:
   }
   ProtocolOut_ prot;
   Raiser_doRaise_presult result;
-  if (ew.with_exception< ::cpp2::Banal>([&]( ::cpp2::Banal& e) {
+  if (ew.with_exception([&]( ::cpp2::Banal& e) {
     ctx->userExceptionWrapped(true, ew);
     result.get<0>().ref() = e;
     result.setIsSet(0, true);
   }
   )) {} else
-  if (ew.with_exception< ::cpp2::Fiery>([&]( ::cpp2::Fiery& e) {
+  if (ew.with_exception([&]( ::cpp2::Fiery& e) {
     ctx->userExceptionWrapped(true, ew);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
@@ -501,13 +501,13 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
   }
   ProtocolOut_ prot;
   Raiser_get500_presult result;
-  if (ew.with_exception< ::cpp2::Fiery>([&]( ::cpp2::Fiery& e) {
+  if (ew.with_exception([&]( ::cpp2::Fiery& e) {
     ctx->userExceptionWrapped(true, ew);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
   )) {} else
-  if (ew.with_exception< ::cpp2::Banal>([&]( ::cpp2::Banal& e) {
+  if (ew.with_exception([&]( ::cpp2::Banal& e) {
     ctx->userExceptionWrapped(true, ew);
     result.get<2>().ref() = e;
     result.setIsSet(2, true);

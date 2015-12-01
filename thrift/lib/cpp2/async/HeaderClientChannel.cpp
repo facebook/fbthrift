@@ -210,7 +210,7 @@ void HeaderClientChannel::SaslClientCallback::saslError(
   auto logger = channel_.saslClient_->getSaslLogger();
 
   bool ex_eof = false;
-  ex.with_exception<TTransportException>([&](TTransportException& tex) {
+  ex.with_exception([&](TTransportException& tex) {
       if (tex.getType() == TTransportException::END_OF_FILE) {
         ex_eof = true;
       }

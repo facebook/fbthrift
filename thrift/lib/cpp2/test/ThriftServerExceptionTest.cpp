@@ -152,22 +152,10 @@ class ThriftServerExceptionTest : public testing::Test {
   Banal make_banal() const { return Banal(); }
   Fiery make_fiery() const { Fiery f; f.message = message; return f; }
 
-  template <typename T>
-  struct action_traits_impl;
-  template <typename C, typename A>
-  struct action_traits_impl<void(C::*)(A&) const> { using arg_type = A; };
-  template <typename C, typename A>
-  struct action_traits_impl<void(C::*)(A&)> { using arg_type = A; };
-  template <typename F>
-  using action_traits = action_traits_impl<decltype(&F::operator())>;
-  template <typename F>
-  using arg = typename action_traits<F>::arg_type;
-
   template <class V, class F>
   bool exn(Future<V> fv, F&& f) {
-    using E = typename std::decay<arg<F>>::type;
     exception_wrapper wrap = fv.waitVia(&eb).getTry().exception();
-    return wrap.with_exception<E>(move(f));
+    return wrap.with_exception(move(f));
   }
 };
 

@@ -1483,7 +1483,7 @@ class CppGenerator(t_generator.Generator):
                         for idx, xception in enumerate(function.xceptions.members):
                             xception_type = self._type_name(
                                 xception.type)
-                            with out('if (ew.with_exception<{0}>([&]({0}& e)'.
+                            with out('if (ew.with_exception([&]({0}& e)'.
                                      format(xception_type)):
                                 out('ctx->userExceptionWrapped(true, ew);')
                                 ex_idx = self._exception_idx(function, idx)

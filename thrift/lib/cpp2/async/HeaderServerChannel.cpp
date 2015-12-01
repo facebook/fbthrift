@@ -280,7 +280,7 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
   DCHECK(ew.is_compatible_with<TApplicationException>());
 
   header_->setHeader("ex", exCode);
-  ew.with_exception<TApplicationException>([&](TApplicationException& tae) {
+  ew.with_exception([&](TApplicationException& tae) {
       std::unique_ptr<folly::IOBuf> exbuf;
       uint16_t proto = header_->getProtocolId();
       auto transforms = header_->getWriteTransforms();

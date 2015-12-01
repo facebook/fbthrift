@@ -492,7 +492,7 @@ class HeaderChannelClosedTest
 
     void requestError(ClientReceiveState&& state) override {
       EXPECT_TRUE(state.isException());
-      EXPECT_TRUE(state.exceptionWrapper().with_exception<TTransportException>(
+      EXPECT_TRUE(state.exceptionWrapper().with_exception(
         [this] (const TTransportException& e) {
           EXPECT_EQ(e.getType(), TTransportException::END_OF_FILE);
           c_->gotError_ = true;

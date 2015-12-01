@@ -165,7 +165,7 @@ TEST(Streaming, GlobalTimeout) {
       },
       [&error](Error e) {
         // onError
-        EXPECT_TRUE(e.with_exception<TTransportException>([](TTransportException& ex) {
+        EXPECT_TRUE(e.with_exception([](TTransportException& ex) {
           EXPECT_EQ(ex.getType(), TTransportException::TIMED_OUT);
         }));
         error = true;
@@ -199,7 +199,7 @@ TEST(Streaming, ChunkTimeout) {
       },
       [&error](Error e) {
         // onError
-        EXPECT_TRUE(e.with_exception<TTransportException>([](TTransportException& ex) {
+        EXPECT_TRUE(e.with_exception([](TTransportException& ex) {
           EXPECT_EQ(ex.getType(), TTransportException::TIMED_OUT);
         }));
         error = true;
