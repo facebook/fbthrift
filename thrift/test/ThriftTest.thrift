@@ -74,7 +74,8 @@ struct Xtruct3
 struct Insanity
 {
   1: map<Numberz, UserId> userMap,
-  2: list<Xtruct> xtructs
+  2: list<Xtruct> xtructs,
+  3: hash_map<string, string> str2str,
 }
 
 struct CrazyNesting {

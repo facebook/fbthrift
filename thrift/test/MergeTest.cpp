@@ -27,8 +27,11 @@
 using namespace apache::thrift;
 using namespace thrift::test;
 using std::map;
+using std::set;
 using std::string;
 using std::vector;
+using std::unordered_map;
+using std::unordered_set;
 
 namespace {
 
@@ -60,13 +63,21 @@ void setAll(Maps& m) {
   m.__isset.str2struct = true;
 }
 
-Insanity makeInsanity(int8_t insanityDegree) {
+Insanity makeInsanity(
+    int8_t insanityDegree,
+    const std::vector<std::pair<std::string, std::string>>& keyValues = {}) {
   Insanity ret;
   ret.userMap[static_cast<Numberz>((insanityDegree - 1)  % 8 + 1)] =
     insanityDegree;
   ret.userMap[static_cast<Numberz>(insanityDegree % 8 + 1)] =
     insanityDegree;
   ret.__isset.userMap = true;
+
+  for (const auto& kv : keyValues) {
+    ret.str2str[kv.first] = kv.second;
+  }
+  ret.__isset.str2str = !keyValues.empty();
+
   for (int i = 0; i < insanityDegree; i++) {
     ret.xtructs.emplace_back();
     Xtruct& last = ret.xtructs.back();
@@ -104,8 +115,10 @@ TEST(MergeTest, Basic) {
 }
 
 TEST(MergeTest, Container) {
-  Insanity mergeTo = makeInsanity(1);
-  Insanity mergeFrom = makeInsanity(2);
+  Insanity mergeTo =
+      makeInsanity(1, {{"nepal", "prabal"}, {"italy", "gianni"}});
+  Insanity mergeFrom =
+      makeInsanity(2, {{"germany", "karl"}, {"italy", "giorgio"}});
   merge(mergeFrom, mergeTo);
 
   map<Numberz, UserId> expectedUserMap(
@@ -115,6 +128,16 @@ TEST(MergeTest, Container) {
       {THREE, 2},  // new
     });
   EXPECT_EQ(expectedUserMap, mergeTo.userMap);
+  ASSERT_TRUE(mergeTo.__isset.userMap);
+
+  unordered_map<string, string> expectedStr2Str({
+      {"nepal", "prabal"}, // old
+      {"italy", "giorgio"}, // overwrite
+      {"germany", "karl"}, // new
+  });
+  EXPECT_EQ(expectedStr2Str, mergeTo.str2str);
+  ASSERT_TRUE(mergeTo.__isset.str2str);
+
   ASSERT_EQ(1 + 2, mergeTo.xtructs.size());
   for (int i = 0; i < mergeTo.xtructs.size(); i++) {
     int8_t insanity = i == 0 ? 1 : 2;
@@ -124,6 +147,16 @@ TEST(MergeTest, Container) {
     EXPECT_EQ(insanity, mergeTo.xtructs[i].i32_thing);
     EXPECT_EQ(insanity, mergeTo.xtructs[i].i64_thing);
   }
+
+  std::set<std::string> setA{"alpha", "beta"}, setB{"beta", "gamma"};
+  std::set<std::string> expectedSet{"alpha", "beta", "gamma"};
+  merge(setA, setB);
+  EXPECT_EQ(expectedSet, setB);
+
+  std::unordered_set<std::string> usetA{"aleph", "bet"}, usetB{"bet", "gimel"};
+  std::unordered_set<std::string> expectedUnorderedSet{"aleph", "bet", "gimel"};
+  merge(usetA, usetB);
+  EXPECT_EQ(expectedUnorderedSet, usetB);
 }
 
 TEST(MergeTest, Nested) {
