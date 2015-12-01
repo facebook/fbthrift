@@ -22,6 +22,8 @@
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
+#include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/async/SaslClient.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <folly/io/async/DelayedDestruction.h>
@@ -42,8 +44,8 @@ namespace apache { namespace thrift {
  * This is a channel implementation that reads and writes
  * messages encoded using THeaderProtocol.
  */
-class HeaderClientChannel : public RequestChannel,
-                            public HeaderChannel,
+class HeaderClientChannel : public ClientChannel,
+                            public HeaderChannelTrait,
                             public MessageChannel::RecvCallback,
                             public ChannelCallbacks,
                             virtual public folly::DelayedDestruction {
@@ -75,12 +77,12 @@ class HeaderClientChannel : public RequestChannel,
     cpp2Channel_->sendMessage(callback, std::move(buf), header);
   }
 
-  void closeNow();
+  void closeNow() override;
 
   // DelayedDestruction methods
   void destroy() override;
 
-  apache::thrift::async::TAsyncTransport* getTransport() {
+  apache::thrift::async::TAsyncTransport* getTransport() override {
     return cpp2Channel_->getTransport();
   }
 
@@ -114,8 +116,8 @@ class HeaderClientChannel : public RequestChannel,
 
   // Client timeouts for read, write.
   // Servers should use timeout methods on underlying transport.
-  void setTimeout(uint32_t ms);
-  uint32_t getTimeout() {
+  void setTimeout(uint32_t ms) override;
+  uint32_t getTimeout() override {
     return getTransport()->getSendTimeout();
   }
 
@@ -149,9 +151,9 @@ class HeaderClientChannel : public RequestChannel,
   void useAsHttpClient(const std::string& host, const std::string& uri);
 
   // event base methods
-  void attachEventBase(folly::EventBase*);
-  void detachEventBase();
-  bool isDetachable();
+  void attachEventBase(folly::EventBase*) override;
+  void detachEventBase() override;
+  bool isDetachable() override;
 
   uint16_t getProtocolId() override;
   void setProtocolId(uint16_t protocolId) { protocolId_ = protocolId; }
@@ -192,8 +194,12 @@ class HeaderClientChannel : public RequestChannel,
   }
 
   // Returns true if security is negotiated and used
-  bool isSecurityActive() {
+  bool isSecurityActive() override {
     return getProtectionState() == ProtectionState::VALID;
+  }
+
+  CLIENT_TYPE getClientType() override {
+    return HeaderChannelTrait::getClientType();
   }
 
   class ClientFramingHandler : public FramingHandler {
@@ -218,6 +224,9 @@ class HeaderClientChannel : public RequestChannel,
 
 protected:
   bool clientSupportHeader() override;
+  void setPersistentAuthHeader(bool auth) override {
+    setPersistentHeader("thrift_auth", auth ? "1" : "0");
+  }
 
 private:
 

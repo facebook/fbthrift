@@ -13,29 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#pragma once
+
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 
 namespace apache {
 namespace thrift {
 
-using apache::thrift::transport::THeader;
-
-void HeaderChannel::addRpcOptionHeaders(THeader* header,
-                                        RpcOptions& rpcOptions) {
-  if (!clientSupportHeader()) {
-    return;
-  }
-
-  if (rpcOptions.getPriority() != apache::thrift::concurrency::N_PRIORITIES) {
-    header->setHeader(transport::THeader::PRIORITY_HEADER,
-                      folly::to<std::string>(rpcOptions.getPriority()));
-  }
-
-  if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    header->setHeader(transport::THeader::CLIENT_TIMEOUT_HEADER,
-                      folly::to<std::string>(rpcOptions.getTimeout().count()));
-  }
-}
+/**
+ * Interface for Thrift Server channels
+ */
+class ServerChannel : public ResponseChannel, public HeaderChannel {
+ public:
+  ServerChannel() {}
+};
 }
 } // apache::thrift

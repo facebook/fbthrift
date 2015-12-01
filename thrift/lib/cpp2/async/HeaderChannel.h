@@ -13,85 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef THRIFT_ASYNC_HEADERCHANNEL_H_
-#define THRIFT_ASYNC_HEADERCHANNEL_H_ 1
+#pragma once
 
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp2/async/HeaderCapableChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 
-enum THRIFT_SECURITY_POLICY {
-  THRIFT_SECURITY_DISABLED = 1,
-  THRIFT_SECURITY_PERMITTED = 2,
-  THRIFT_SECURITY_REQUIRED = 3,
-};
-
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
- * HeaderChannel manages THeader specific channel level information.
+ * HeaderChannel manages persistent headers.
  */
-class HeaderChannel: public HeaderCapableChannel {
-  public:
-    HeaderChannel() {
-      setSupportedClients(nullptr);
-    }
+class HeaderChannel {
+ public:
+  HeaderChannel() {}
 
-    // If clients is nullptr, a security policy of THRIFT_SECURITY_DISABLED
-    // will be used.
-    void setSupportedClients(std::bitset<CLIENT_TYPES_LEN> const* clients);
-    bool isSupportedClient(CLIENT_TYPE ct);
-    void checkSupportedClient(CLIENT_TYPE ct);
+  void addRpcOptionHeaders(apache::thrift::transport::THeader* header,
+                           RpcOptions& rpcOptions);
 
-    void setClientType(CLIENT_TYPE ct);
-    // Force using specified client type when using legacy client types
-    void forceClientType(bool enable) { forceClientType_ = enable; }
-    bool getForceClientType() { return forceClientType_; }
-    CLIENT_TYPE getClientType() { return clientType_; }
-    void updateClientType(CLIENT_TYPE ct);
+  void setPersistentHeader(const std::string& key, const std::string& value) {
+    persistentWriteHeaders_[key] = value;
+  }
 
-    void setSecurityPolicy(THRIFT_SECURITY_POLICY policy);
+  transport::THeader::StringToStringMap& getPersistentReadHeaders() {
+    return persistentReadHeaders_;
+  }
 
-    void setMinCompressBytes(uint32_t bytes) {
-      minCompressBytes_ = bytes;
-    }
+  transport::THeader::StringToStringMap& getPersistentWriteHeaders() {
+    return persistentWriteHeaders_;
+  }
 
-    uint32_t getMinCompressBytes() {
-      return minCompressBytes_;
-    }
+ protected:
+  virtual ~HeaderChannel() {}
 
-    uint16_t getFlags() const { return flags_; }
-    void setFlags(uint16_t flags) { flags_ = flags; }
+  virtual bool clientSupportHeader() { return true; }
 
-    void setTransform(uint16_t transId) {
-      for (auto& trans : writeTrans_) {
-        if (trans == transId) {
-          return;
-        }
-      }
-      writeTrans_.push_back(transId);
-    }
-
-    void setWriteTransforms(const std::vector<uint16_t>& trans) {
-      writeTrans_ = trans;
-    }
-
-    const std::vector<uint16_t>& getWriteTransforms() const {
-      return writeTrans_;
-    }
-
-  private:
-    uint32_t minCompressBytes_{0};
-    uint16_t flags_;
-
-    CLIENT_TYPE clientType_{THRIFT_HEADER_CLIENT_TYPE};
-    CLIENT_TYPE prevClientType_{THRIFT_HEADER_CLIENT_TYPE};
-    bool forceClientType_{false};
-    std::bitset<CLIENT_TYPES_LEN> supported_clients;
-    THRIFT_SECURITY_POLICY securityPolicy_;
-
-    std::vector<uint16_t> writeTrans_;
+ private:
+  // Map to use for persistent headers
+  transport::THeader::StringToStringMap persistentReadHeaders_;
+  transport::THeader::StringToStringMap persistentWriteHeaders_;
 };
-
-}} // apache::thrift
-
-#endif // #ifndef THRIFT_ASYNC_HEADERCHANNEL_H_
+}
+} // apache::thrift

@@ -48,8 +48,8 @@ thrift2include_async_HEADERS = \
 	async/Cpp2Channel.h \
 	async/ProtectionHandler.h \
 	async/FramingHandler.h \
-	async/HeaderCapableChannel.h \
 	async/HeaderChannel.h \
+	async/HeaderChannelTrait.h \
 	async/DuplexChannel.h \
 	async/FutureRequest.h \
 	async/GssSaslClient.h \
@@ -64,7 +64,9 @@ thrift2include_async_HEADERS = \
 	async/SaslServer.h \
 	async/StubSaslClient.h \
 	async/StubSaslServer.h \
-	async/TAsyncTransportHandler.h
+	async/TAsyncTransportHandler.h \
+	async/ClientChannel.h \
+	async/ServerChannel.h
 
 thrift2include_fataldir = $(thrift2includedir)/fatal
 
@@ -122,8 +124,8 @@ thrift2include_protocol_HEADERS = \
 
 libthriftcpp2_la_SOURCES = Version.cpp \
 			   GeneratedCodeHelper.cpp \
-			   async/HeaderCapableChannel.cpp \
 			   async/HeaderChannel.cpp \
+			   async/HeaderChannelTrait.cpp \
 			   async/HeaderClientChannel.cpp \
 			   async/HeaderServerChannel.cpp \
 			   async/StubSaslClient.cpp \

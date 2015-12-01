@@ -21,8 +21,8 @@
 
 #include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp2/async/ResponseChannel.h>
-#include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include <thrift/lib/cpp2/async/ServerChannel.h>
+#include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
@@ -40,8 +40,8 @@ namespace apache { namespace thrift {
  * This is a server channel implementation that
  * manages requests / responses via seqId.
  */
-class HeaderServerChannel : public ResponseChannel,
-                            public HeaderChannel,
+class HeaderServerChannel : public ServerChannel,
+                            public HeaderChannelTrait,
                             public MessageChannel::RecvCallback,
                             virtual public folly::DelayedDestruction {
   typedef ProtectionHandler::ProtectionState ProtectionState;
@@ -192,6 +192,11 @@ protected:
   private:
     HeaderServerChannel& channel_;
   };
+
+protected:
+  void setPersistentAuthHeader(bool auth) override {
+    setPersistentHeader("thrift_auth", auth ? "1" : "0");
+  }
 
 private:
   ProtectionState getProtectionState() {

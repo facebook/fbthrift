@@ -21,8 +21,7 @@
 #include <proxygen/lib/http/codec/HTTPCodec.h>
 #include <thrift/lib/cpp2/async/ChannelCallbacks.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/Request.h>
@@ -42,8 +41,7 @@ namespace thrift {
  * This is a channel implementation that reads and writes
  * messages encoded using THttpProtocol.
  */
-class HTTPClientChannel : public RequestChannel,
-                          public HeaderCapableChannel,
+class HTTPClientChannel : public ClientChannel,
                           public MessageChannel::RecvCallback,
                           public ChannelCallbacks,
                           virtual public folly::DelayedDestruction {
@@ -88,12 +86,12 @@ class HTTPClientChannel : public RequestChannel,
     cpp2Channel_->sendMessage(callback, std::move(buf), header);
   }
 
-  void closeNow();
+  void closeNow() override;
 
   // DelayedDestruction methods
   void destroy() override;
 
-  apache::thrift::async::TAsyncTransport* getTransport() {
+  apache::thrift::async::TAsyncTransport* getTransport() override {
     return cpp2Channel_->getTransport();
   }
 
@@ -130,8 +128,8 @@ class HTTPClientChannel : public RequestChannel,
 
   // Client timeouts for read, write.
   // Servers should use timeout methods on underlying transport.
-  void setTimeout(uint32_t ms);
-  uint32_t getTimeout() { return getTransport()->getSendTimeout(); }
+  void setTimeout(uint32_t ms) override;
+  uint32_t getTimeout() override { return getTransport()->getSendTimeout(); }
 
   // If a Close Callback is set, should we reregister callbacks for it
   // alone?  Basically, this means that loop() will return if the only thing
@@ -148,16 +146,16 @@ class HTTPClientChannel : public RequestChannel,
   }
 
   // event base methods
-  void attachEventBase(folly::EventBase*);
-  void detachEventBase();
-  bool isDetachable();
+  void attachEventBase(folly::EventBase*) override;
+  void detachEventBase() override;
+  bool isDetachable() override;
 
   uint16_t getProtocolId() override { return protocolId_; }
   void setProtocolId(uint16_t protocolId) { protocolId_ = protocolId; }
 
   bool expireCallback(uint32_t seqId);
 
-  bool isSecurityActive() { return false; }
+  bool isSecurityActive() override { return false; }
 
   class ClientFramingHandler : public FramingHandler {
    public:
@@ -179,6 +177,8 @@ class HTTPClientChannel : public RequestChannel,
 
   // Remove a callback from the recvCallbacks_ map.
   void eraseCallback(uint32_t seqId, TwowayCallback<HTTPClientChannel>* cb);
+
+  CLIENT_TYPE getClientType() override { return THRIFT_HTTP_CLIENT_TYPE; }
 
  private:
   class HTTPCodecCallback : public proxygen::HTTPCodec::Callback {

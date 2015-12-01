@@ -13,29 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#pragma once
+
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
 
 namespace apache {
 namespace thrift {
 
-using apache::thrift::transport::THeader;
+/**
+ * Interface for Thrift Client channels
+ */
+class ClientChannel : public RequestChannel, public HeaderChannel {
+ public:
+  ClientChannel() {}
+  virtual ~ClientChannel() {}
 
-void HeaderChannel::addRpcOptionHeaders(THeader* header,
-                                        RpcOptions& rpcOptions) {
-  if (!clientSupportHeader()) {
-    return;
-  }
+  typedef
+    std::unique_ptr<ClientChannel,
+                    folly::DelayedDestruction::Destructor>
+    Ptr;
 
-  if (rpcOptions.getPriority() != apache::thrift::concurrency::N_PRIORITIES) {
-    header->setHeader(transport::THeader::PRIORITY_HEADER,
-                      folly::to<std::string>(rpcOptions.getPriority()));
-  }
+  virtual apache::thrift::async::TAsyncTransport* getTransport() = 0;
 
-  if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    header->setHeader(transport::THeader::CLIENT_TIMEOUT_HEADER,
-                      folly::to<std::string>(rpcOptions.getTimeout().count()));
-  }
-}
+  virtual void attachEventBase(folly::EventBase*) = 0;
+  virtual void detachEventBase() = 0;
+  virtual bool isDetachable() = 0;
+
+  virtual bool isSecurityActive() = 0;
+  virtual uint32_t getTimeout() = 0;
+  virtual void setTimeout(uint32_t ms) = 0;
+
+  virtual void closeNow() = 0;
+  virtual CLIENT_TYPE getClientType() = 0;
+};
 }
 } // apache::thrift
