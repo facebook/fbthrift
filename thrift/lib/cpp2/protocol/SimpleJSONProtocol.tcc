@@ -765,7 +765,7 @@ uint32_t SimpleJSONProtocolReader::readJSONVal(double& val) {
 uint32_t SimpleJSONProtocolReader::readJSONVal(float& val) {
   double d;
   auto ret = readJSONVal(d);
-  val = d;
+  val = float(d);
   return ret;
 }
 
