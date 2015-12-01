@@ -19,7 +19,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/TestServer.h>
+#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 
 using namespace cpp2;
 using namespace apache::thrift;

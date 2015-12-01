@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/DuplexService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DuplexClient.h>
 #include <thrift/lib/cpp2/async/DuplexChannel.h>
-#include <thrift/lib/cpp2/TestServer.h>
+#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <folly/io/async/EventBase.h>

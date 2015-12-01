@@ -38,7 +38,7 @@ thrift2include_HEADERS = \
 	GeneratedCodeHelper.h \
 	ServiceIncludes.h \
 	CloneableIOBuf.h \
-	TestServer.h
+	test/util/TestThriftServerFactory.h
 
 thrift2include_asyncdir = $(thrift2includedir)/async
 

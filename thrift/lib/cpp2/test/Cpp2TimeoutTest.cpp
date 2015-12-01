@@ -28,7 +28,7 @@
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
-#include <thrift/lib/cpp2/TestServer.h>
+#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
