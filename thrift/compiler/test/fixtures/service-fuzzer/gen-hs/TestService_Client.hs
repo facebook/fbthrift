@@ -48,8 +48,8 @@ import Thrift.Serializable
 import Thrift.Arbitraries
 
 
-import Module_Types
-import TestService
+import qualified Module_Types
+import qualified TestService
 seqid = newIORef 0
 init (ip,op) arg_int1 arg_int2 arg_int3 arg_int4 arg_int5 arg_int6 arg_int7 arg_int8 arg_int9 arg_int10 arg_int11 arg_int12 arg_int13 arg_int14 arg_int15 arg_int16 = do
   send_init op arg_int1 arg_int2 arg_int3 arg_int4 arg_int5 arg_int6 arg_int7 arg_int8 arg_int9 arg_int10 arg_int11 arg_int12 arg_int13 arg_int14 arg_int15 arg_int16
@@ -58,10 +58,10 @@ send_init op arg_int1 arg_int2 arg_int3 arg_int4 arg_int5 arg_int6 arg_int7 arg_
   seq <- seqid
   seqn <- readIORef seq
   writeMessage op ("init", M_CALL, seqn) $
-    write_Init_args op (Init_args{init_args_int1=arg_int1,init_args_int2=arg_int2,init_args_int3=arg_int3,init_args_int4=arg_int4,init_args_int5=arg_int5,init_args_int6=arg_int6,init_args_int7=arg_int7,init_args_int8=arg_int8,init_args_int9=arg_int9,init_args_int10=arg_int10,init_args_int11=arg_int11,init_args_int12=arg_int12,init_args_int13=arg_int13,init_args_int14=arg_int14,init_args_int15=arg_int15,init_args_int16=arg_int16})
+    TestService.write_Init_args op (TestService.Init_args{TestService.init_args_int1=arg_int1,TestService.init_args_int2=arg_int2,TestService.init_args_int3=arg_int3,TestService.init_args_int4=arg_int4,TestService.init_args_int5=arg_int5,TestService.init_args_int6=arg_int6,TestService.init_args_int7=arg_int7,TestService.init_args_int8=arg_int8,TestService.init_args_int9=arg_int9,TestService.init_args_int10=arg_int10,TestService.init_args_int11=arg_int11,TestService.init_args_int12=arg_int12,TestService.init_args_int13=arg_int13,TestService.init_args_int14=arg_int14,TestService.init_args_int15=arg_int15,TestService.init_args_int16=arg_int16})
   tFlush (getTransport op)
 recv_init ip =
   readMessage ip $ \(fname,mtype,rseqid) -> do
     when (mtype == M_EXCEPTION) $ readAppExn ip >>= throw
-    res <- read_Init_result ip
-    return $ init_result_success res
+    res <- TestService.read_Init_result ip
+    return $ TestService.init_result_success res

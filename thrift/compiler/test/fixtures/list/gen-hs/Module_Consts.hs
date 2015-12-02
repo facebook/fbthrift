@@ -47,7 +47,7 @@ import Thrift.Serializable
 import Thrift.Arbitraries
 
 
-import Module_Types
+import qualified Module_Types
 tEST_MAP :: Map.HashMap Int64 (Vector.Vector LT.Text)
 tEST_MAP = (Map.fromList [(0,(Vector.fromList ["foo","bar"])),(1,(Vector.fromList ["baz"]))])
 

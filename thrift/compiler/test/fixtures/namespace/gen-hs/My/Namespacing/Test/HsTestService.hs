@@ -47,7 +47,7 @@ import Thrift.Serializable
 import Thrift.Arbitraries
 
 
-import My.Namespacing.Test.Hsmodule_Types
+import qualified My.Namespacing.Test.Hsmodule_Types
 import qualified My.Namespacing.Test.HsTestService_Iface as Iface
 -- HELPER FUNCTIONS AND STRUCTURES --
 
@@ -132,7 +132,7 @@ default_Init_result :: Init_result
 default_Init_result = Init_result{
   init_result_success = 0}
 process_init (seqid, iprot, oprot, handler) = do
-  args <- read_Init_args iprot
+  args <- HsTestService.read_Init_args iprot
   (Control.Exception.catch
     (do
       val <- Iface.init handler (init_args_int1 args)

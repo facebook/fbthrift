@@ -49,4 +49,4 @@ import Thrift.Arbitraries
 import qualified Includes_Types as Includes_Types
 
 
-import Module_Types
+import qualified Module_Types

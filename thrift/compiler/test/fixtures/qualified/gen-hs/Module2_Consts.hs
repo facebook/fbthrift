@@ -13,7 +13,7 @@
 --  @generated
 -----------------------------------------------------------------
 
-module TestService_Iface where
+module Module2_Consts where
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
@@ -26,7 +26,6 @@ import Control.DeepSeq
 import Control.Exception
 import Control.Monad ( liftM, ap, when )
 import Data.ByteString.Lazy (ByteString)
-import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
 import Data.Hashable
 import Data.Int
@@ -43,11 +42,10 @@ import Test.QuickCheck ( elements )
 import Thrift hiding (ProtocolExnType(..))
 import qualified Thrift (ProtocolExnType(..))
 import Thrift.Types
-import Thrift.Serializable
 import Thrift.Arbitraries
 
+import qualified Module0_Types as Module0_Types
+import qualified Module1_Types as Module1_Types
 
-import qualified Module_Types
 
-class TestService_Iface a where
-  init :: a -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> Int64 -> IO Int64
+import qualified Module2_Types

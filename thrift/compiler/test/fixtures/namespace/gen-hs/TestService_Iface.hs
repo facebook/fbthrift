@@ -47,7 +47,7 @@ import Thrift.Serializable
 import Thrift.Arbitraries
 
 
-import Module_Types
+import qualified Module_Types
 
 class TestService_Iface a where
   init :: a -> Int64 -> IO Int64

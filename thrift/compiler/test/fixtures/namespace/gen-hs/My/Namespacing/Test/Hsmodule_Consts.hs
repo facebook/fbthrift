@@ -47,4 +47,4 @@ import Thrift.Serializable
 import Thrift.Arbitraries
 
 
-import My.Namespacing.Test.Hsmodule_Types
+import qualified My.Namespacing.Test.Hsmodule_Types

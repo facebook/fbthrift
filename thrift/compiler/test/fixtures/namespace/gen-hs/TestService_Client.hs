@@ -48,8 +48,8 @@ import Thrift.Serializable
 import Thrift.Arbitraries
 
 
-import Module_Types
-import TestService
+import qualified Module_Types
+import qualified TestService
 seqid = newIORef 0
 init (ip,op) arg_int1 = do
   send_init op arg_int1
@@ -58,10 +58,10 @@ send_init op arg_int1 = do
   seq <- seqid
   seqn <- readIORef seq
   writeMessage op ("init", M_CALL, seqn) $
-    write_Init_args op (Init_args{init_args_int1=arg_int1})
+    TestService.write_Init_args op (TestService.Init_args{TestService.init_args_int1=arg_int1})
   tFlush (getTransport op)
 recv_init ip =
   readMessage ip $ \(fname,mtype,rseqid) -> do
     when (mtype == M_EXCEPTION) $ readAppExn ip >>= throw
-    res <- read_Init_result ip
-    return $ init_result_success res
+    res <- TestService.read_Init_result ip
+    return $ TestService.init_result_success res

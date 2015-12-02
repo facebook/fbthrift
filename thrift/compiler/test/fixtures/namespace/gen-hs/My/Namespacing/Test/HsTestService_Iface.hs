@@ -47,7 +47,7 @@ import Thrift.Serializable
 import Thrift.Arbitraries
 
 
-import My.Namespacing.Test.Hsmodule_Types
+import qualified My.Namespacing.Test.Hsmodule_Types
 
 class HsTestService_Iface a where
   init :: a -> Int64 -> IO Int64

@@ -50,7 +50,7 @@ import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
 
 import qualified My.Namespacing.Test.HsTestService
-import My.Namespacing.Extend.Test.Extend_Types
+import qualified My.Namespacing.Extend.Test.Extend_Types
 import qualified My.Namespacing.Extend.Test.ExtendTestService_Iface as Iface
 -- HELPER FUNCTIONS AND STRUCTURES --
 
@@ -135,7 +135,7 @@ default_Check_result :: Check_result
 default_Check_result = Check_result{
   check_result_success = False}
 process_check (seqid, iprot, oprot, handler) = do
-  args <- read_Check_args iprot
+  args <- ExtendTestService.read_Check_args iprot
   (Control.Exception.catch
     (do
       val <- Iface.check handler (check_args_struct1 args)

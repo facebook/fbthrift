@@ -14,7 +14,7 @@
 -----------------------------------------------------------------
 
 module TestService_Fuzzer (main) where
-import Module_Types
+import qualified Module_Types
 import qualified TestService_Client as Client
 
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),

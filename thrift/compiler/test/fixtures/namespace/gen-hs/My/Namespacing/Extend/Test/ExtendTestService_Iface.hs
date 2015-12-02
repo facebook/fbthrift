@@ -49,8 +49,8 @@ import Thrift.Arbitraries
 import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
 
-import My.Namespacing.Extend.Test.Extend_Types
+import qualified My.Namespacing.Extend.Test.Extend_Types
 
-import My.Namespacing.Test.HsTestService_Iface
-class HsTestService_Iface a => ExtendTestService_Iface a where
+import qualified My.Namespacing.Test.HsTestService_Iface
+class HsTestService_Iface.HsTestService_Iface a => ExtendTestService_Iface a where
   check :: a -> Hsmodule_Types.HsFoo -> IO Bool

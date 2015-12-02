@@ -49,4 +49,4 @@ import Thrift.Arbitraries
 import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
 
-import My.Namespacing.Extend.Test.Extend_Types
+import qualified My.Namespacing.Extend.Test.Extend_Types

@@ -48,8 +48,8 @@ import Thrift.Serializable
 import Thrift.Arbitraries
 
 
-import My.Namespacing.Test.Hsmodule_Types
-import My.Namespacing.Test.HsTestService
+import qualified My.Namespacing.Test.Hsmodule_Types
+import qualified My.Namespacing.Test.HsTestService
 seqid = newIORef 0
 init (ip,op) arg_int1 = do
   send_init op arg_int1
@@ -58,10 +58,10 @@ send_init op arg_int1 = do
   seq <- seqid
   seqn <- readIORef seq
   writeMessage op ("init", M_CALL, seqn) $
-    write_Init_args op (Init_args{init_args_int1=arg_int1})
+    HsTestService.write_Init_args op (HsTestService.Init_args{HsTestService.init_args_int1=arg_int1})
   tFlush (getTransport op)
 recv_init ip =
   readMessage ip $ \(fname,mtype,rseqid) -> do
     when (mtype == M_EXCEPTION) $ readAppExn ip >>= throw
-    res <- read_Init_result ip
-    return $ init_result_success res
+    res <- HsTestService.read_Init_result ip
+    return $ HsTestService.init_result_success res

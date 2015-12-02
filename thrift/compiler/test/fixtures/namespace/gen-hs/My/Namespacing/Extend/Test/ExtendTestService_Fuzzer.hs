@@ -14,9 +14,9 @@
 -----------------------------------------------------------------
 
 module My.Namespacing.Extend.Test.ExtendTestService_Fuzzer (main) where
-import My.Namespacing.Extend.Test.Extend_Types
+import qualified My.Namespacing.Extend.Test.Extend_Types
 import qualified My.Namespacing.Extend.Test.ExtendTestService_Client as Client
-import My.Namespacing.Test.Hsmodule_Types
+import qualified My.Namespacing.Test.Hsmodule_Types
 
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,

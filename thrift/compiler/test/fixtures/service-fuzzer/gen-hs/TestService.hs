@@ -47,7 +47,7 @@ import Thrift.Serializable
 import Thrift.Arbitraries
 
 
-import Module_Types
+import qualified Module_Types
 import qualified TestService_Iface as Iface
 -- HELPER FUNCTIONS AND STRUCTURES --
 
@@ -237,7 +237,7 @@ default_Init_result :: Init_result
 default_Init_result = Init_result{
   init_result_success = 0}
 process_init (seqid, iprot, oprot, handler) = do
-  args <- read_Init_args iprot
+  args <- TestService.read_Init_args iprot
   (Control.Exception.catch
     (do
       val <- Iface.init handler (init_args_int1 args) (init_args_int2 args) (init_args_int3 args) (init_args_int4 args) (init_args_int5 args) (init_args_int6 args) (init_args_int7 args) (init_args_int8 args) (init_args_int9 args) (init_args_int10 args) (init_args_int11 args) (init_args_int12 args) (init_args_int13 args) (init_args_int14 args) (init_args_int15 args) (init_args_int16 args)

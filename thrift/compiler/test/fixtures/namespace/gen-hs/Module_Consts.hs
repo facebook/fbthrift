@@ -47,4 +47,4 @@ import Thrift.Serializable
 import Thrift.Arbitraries
 
 
-import Module_Types
+import qualified Module_Types

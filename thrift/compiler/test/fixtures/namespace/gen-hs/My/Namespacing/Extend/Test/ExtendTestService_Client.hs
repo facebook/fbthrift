@@ -14,7 +14,7 @@
 -----------------------------------------------------------------
 
 module My.Namespacing.Extend.Test.ExtendTestService_Client(check) where
-import My.Namespacing.Test.HsTestService_Client
+import qualified My.Namespacing.Test.HsTestService_Client
 import Data.IORef
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
@@ -51,8 +51,8 @@ import Thrift.Arbitraries
 import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
 
-import My.Namespacing.Extend.Test.Extend_Types
-import My.Namespacing.Extend.Test.ExtendTestService
+import qualified My.Namespacing.Extend.Test.Extend_Types
+import qualified My.Namespacing.Extend.Test.ExtendTestService
 seqid = newIORef 0
 check (ip,op) arg_struct1 = do
   send_check op arg_struct1
@@ -61,10 +61,10 @@ send_check op arg_struct1 = do
   seq <- seqid
   seqn <- readIORef seq
   writeMessage op ("check", M_CALL, seqn) $
-    write_Check_args op (Check_args{check_args_struct1=arg_struct1})
+    ExtendTestService.write_Check_args op (ExtendTestService.Check_args{ExtendTestService.check_args_struct1=arg_struct1})
   tFlush (getTransport op)
 recv_check ip =
   readMessage ip $ \(fname,mtype,rseqid) -> do
     when (mtype == M_EXCEPTION) $ readAppExn ip >>= throw
-    res <- read_Check_result ip
-    return $ check_result_success res
+    res <- ExtendTestService.read_Check_result ip
+    return $ ExtendTestService.check_result_success res
