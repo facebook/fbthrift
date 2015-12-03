@@ -43,7 +43,11 @@ class CalculatorHandler : public CalculatorSvIf {
   }
 
   int32_t calculate(const int32_t logid, const Work &work) {
-    printf("calculate(%d,{%d,%d,%d})\n", logid, work.op, work.num1, work.num2);
+    printf("calculate(%d,{%d,%d,%d})\n",
+           logid,
+           static_cast<int32_t>(work.op),
+           work.num1,
+           work.num2);
     int32_t val;
 
     switch (work.op) {
