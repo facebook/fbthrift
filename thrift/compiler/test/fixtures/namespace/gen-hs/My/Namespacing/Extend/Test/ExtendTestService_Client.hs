@@ -23,30 +23,29 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
-import Control.Applicative (ZipList(..), (<*>))
-import Control.DeepSeq
-import Control.Exception
-import Control.Monad ( liftM, ap, when )
-import Data.ByteString.Lazy (ByteString)
+import qualified Control.Applicative as Applicative (ZipList(..))
+import Control.Applicative ( (<*>) )
+import qualified Control.DeepSeq as DeepSeq
+import qualified Control.Exception as Exception
+import qualified Control.Monad as Monad ( liftM, ap, when )
 import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
-import Data.Hashable
-import Data.Int
-import Data.Maybe (catMaybes)
-import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
+import qualified Data.Hashable as Hashable
+import qualified Data.Int as Int
+import qualified Data.Maybe as Maybe (catMaybes)
+import qualified Data.Text.Lazy.Encoding as Encoding ( decodeUtf8, encodeUtf8 )
 import qualified Data.Text.Lazy as LT
-import Data.Typeable ( Typeable )
+import qualified Data.Typeable as Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set
 import qualified Data.Vector as Vector
-import Test.QuickCheck.Arbitrary ( Arbitrary(..) )
-import Test.QuickCheck ( elements )
+import qualified Test.QuickCheck.Arbitrary as Arbitrary ( Arbitrary(..) )
+import qualified Test.QuickCheck as QuickCheck ( elements )
 
-import Thrift hiding (ProtocolExnType(..))
-import qualified Thrift (ProtocolExnType(..))
-import Thrift.Types
-import Thrift.Serializable
-import Thrift.Arbitraries
+import qualified Thrift
+import qualified Thrift.Types as Types
+import qualified Thrift.Serializable as Serializable
+import qualified Thrift.Arbitraries as Arbitraries
 
 import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
@@ -60,11 +59,11 @@ check (ip,op) arg_struct1 = do
 send_check op arg_struct1 = do
   seq <- seqid
   seqn <- readIORef seq
-  writeMessage op ("check", M_CALL, seqn) $
+  Thrift.writeMessage op ("check", Types.M_CALL, seqn) $
     ExtendTestService.write_Check_args op (ExtendTestService.Check_args{ExtendTestService.check_args_struct1=arg_struct1})
-  tFlush (getTransport op)
+  Thrift.tFlush (Thrift.getTransport op)
 recv_check ip =
-  readMessage ip $ \(fname,mtype,rseqid) -> do
-    when (mtype == M_EXCEPTION) $ readAppExn ip >>= throw
+  Thrift.readMessage ip $ \(fname,mtype,rseqid) -> do
+    Monad.when (mtype == Types.M_EXCEPTION) $ Thrift.readAppExn ip >>= Exception.throw
     res <- ExtendTestService.read_Check_result ip
     return $ ExtendTestService.check_result_success res

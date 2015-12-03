@@ -21,30 +21,29 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
-import Control.Applicative (ZipList(..), (<*>))
-import Control.DeepSeq
-import Control.Exception
-import Control.Monad ( liftM, ap, when )
-import Data.ByteString.Lazy (ByteString)
+import qualified Control.Applicative as Applicative (ZipList(..))
+import Control.Applicative ( (<*>) )
+import qualified Control.DeepSeq as DeepSeq
+import qualified Control.Exception as Exception
+import qualified Control.Monad as Monad ( liftM, ap, when )
 import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
-import Data.Hashable
-import Data.Int
-import Data.Maybe (catMaybes)
-import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
+import qualified Data.Hashable as Hashable
+import qualified Data.Int as Int
+import qualified Data.Maybe as Maybe (catMaybes)
+import qualified Data.Text.Lazy.Encoding as Encoding ( decodeUtf8, encodeUtf8 )
 import qualified Data.Text.Lazy as LT
-import Data.Typeable ( Typeable )
+import qualified Data.Typeable as Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set
 import qualified Data.Vector as Vector
-import Test.QuickCheck.Arbitrary ( Arbitrary(..) )
-import Test.QuickCheck ( elements )
+import qualified Test.QuickCheck.Arbitrary as Arbitrary ( Arbitrary(..) )
+import qualified Test.QuickCheck as QuickCheck ( elements )
 
-import Thrift hiding (ProtocolExnType(..))
-import qualified Thrift (ProtocolExnType(..))
-import Thrift.Types
-import Thrift.Serializable
-import Thrift.Arbitraries
+import qualified Thrift
+import qualified Thrift.Types as Types
+import qualified Thrift.Serializable as Serializable
+import qualified Thrift.Arbitraries as Arbitraries
 
 
 import qualified Module_Types
@@ -52,66 +51,66 @@ import qualified TestService_Iface as Iface
 -- HELPER FUNCTIONS AND STRUCTURES --
 
 data Init_args = Init_args
-  { init_args_int1 :: Int64
-  , init_args_int2 :: Int64
-  , init_args_int3 :: Int64
-  , init_args_int4 :: Int64
-  , init_args_int5 :: Int64
-  , init_args_int6 :: Int64
-  , init_args_int7 :: Int64
-  , init_args_int8 :: Int64
-  , init_args_int9 :: Int64
-  , init_args_int10 :: Int64
-  , init_args_int11 :: Int64
-  , init_args_int12 :: Int64
-  , init_args_int13 :: Int64
-  , init_args_int14 :: Int64
-  , init_args_int15 :: Int64
-  , init_args_int16 :: Int64
-  } deriving (Show,Eq,Typeable)
-instance ThriftSerializable Init_args where
+  { init_args_int1 :: Int.Int64
+  , init_args_int2 :: Int.Int64
+  , init_args_int3 :: Int.Int64
+  , init_args_int4 :: Int.Int64
+  , init_args_int5 :: Int.Int64
+  , init_args_int6 :: Int.Int64
+  , init_args_int7 :: Int.Int64
+  , init_args_int8 :: Int.Int64
+  , init_args_int9 :: Int.Int64
+  , init_args_int10 :: Int.Int64
+  , init_args_int11 :: Int.Int64
+  , init_args_int12 :: Int.Int64
+  , init_args_int13 :: Int.Int64
+  , init_args_int14 :: Int.Int64
+  , init_args_int15 :: Int.Int64
+  , init_args_int16 :: Int.Int64
+  } deriving (Show,Eq,Typeable.Typeable)
+instance Serializable.ThriftSerializable Init_args where
   encode = encode_Init_args
   decode = decode_Init_args
-instance Hashable Init_args where
-  hashWithSalt salt record = salt   `hashWithSalt` init_args_int1 record   `hashWithSalt` init_args_int2 record   `hashWithSalt` init_args_int3 record   `hashWithSalt` init_args_int4 record   `hashWithSalt` init_args_int5 record   `hashWithSalt` init_args_int6 record   `hashWithSalt` init_args_int7 record   `hashWithSalt` init_args_int8 record   `hashWithSalt` init_args_int9 record   `hashWithSalt` init_args_int10 record   `hashWithSalt` init_args_int11 record   `hashWithSalt` init_args_int12 record   `hashWithSalt` init_args_int13 record   `hashWithSalt` init_args_int14 record   `hashWithSalt` init_args_int15 record   `hashWithSalt` init_args_int16 record  
-instance NFData Init_args where
+instance Hashable.Hashable Init_args where
+  hashWithSalt salt record = salt   `Hashable.hashWithSalt` init_args_int1 record   `Hashable.hashWithSalt` init_args_int2 record   `Hashable.hashWithSalt` init_args_int3 record   `Hashable.hashWithSalt` init_args_int4 record   `Hashable.hashWithSalt` init_args_int5 record   `Hashable.hashWithSalt` init_args_int6 record   `Hashable.hashWithSalt` init_args_int7 record   `Hashable.hashWithSalt` init_args_int8 record   `Hashable.hashWithSalt` init_args_int9 record   `Hashable.hashWithSalt` init_args_int10 record   `Hashable.hashWithSalt` init_args_int11 record   `Hashable.hashWithSalt` init_args_int12 record   `Hashable.hashWithSalt` init_args_int13 record   `Hashable.hashWithSalt` init_args_int14 record   `Hashable.hashWithSalt` init_args_int15 record   `Hashable.hashWithSalt` init_args_int16 record  
+instance DeepSeq.NFData Init_args where
   rnf _record0 =
-    rnf (init_args_int1 _record0) `seq`
-    rnf (init_args_int2 _record0) `seq`
-    rnf (init_args_int3 _record0) `seq`
-    rnf (init_args_int4 _record0) `seq`
-    rnf (init_args_int5 _record0) `seq`
-    rnf (init_args_int6 _record0) `seq`
-    rnf (init_args_int7 _record0) `seq`
-    rnf (init_args_int8 _record0) `seq`
-    rnf (init_args_int9 _record0) `seq`
-    rnf (init_args_int10 _record0) `seq`
-    rnf (init_args_int11 _record0) `seq`
-    rnf (init_args_int12 _record0) `seq`
-    rnf (init_args_int13 _record0) `seq`
-    rnf (init_args_int14 _record0) `seq`
-    rnf (init_args_int15 _record0) `seq`
-    rnf (init_args_int16 _record0) `seq`
+    DeepSeq.rnf (init_args_int1 _record0) `seq`
+    DeepSeq.rnf (init_args_int2 _record0) `seq`
+    DeepSeq.rnf (init_args_int3 _record0) `seq`
+    DeepSeq.rnf (init_args_int4 _record0) `seq`
+    DeepSeq.rnf (init_args_int5 _record0) `seq`
+    DeepSeq.rnf (init_args_int6 _record0) `seq`
+    DeepSeq.rnf (init_args_int7 _record0) `seq`
+    DeepSeq.rnf (init_args_int8 _record0) `seq`
+    DeepSeq.rnf (init_args_int9 _record0) `seq`
+    DeepSeq.rnf (init_args_int10 _record0) `seq`
+    DeepSeq.rnf (init_args_int11 _record0) `seq`
+    DeepSeq.rnf (init_args_int12 _record0) `seq`
+    DeepSeq.rnf (init_args_int13 _record0) `seq`
+    DeepSeq.rnf (init_args_int14 _record0) `seq`
+    DeepSeq.rnf (init_args_int15 _record0) `seq`
+    DeepSeq.rnf (init_args_int16 _record0) `seq`
     ()
-instance Arbitrary Init_args where 
-  arbitrary = liftM Init_args (arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
-          `ap`(arbitrary)
+instance Arbitrary.Arbitrary Init_args where 
+  arbitrary = Monad.liftM Init_args (Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
   shrink obj | obj == default_Init_args = []
-             | otherwise = catMaybes
+             | otherwise = Maybe.catMaybes
     [ if obj == default_Init_args{init_args_int1 = init_args_int1 obj} then Nothing else Just $ default_Init_args{init_args_int1 = init_args_int1 obj}
     , if obj == default_Init_args{init_args_int2 = init_args_int2 obj} then Nothing else Just $ default_Init_args{init_args_int2 = init_args_int2 obj}
     , if obj == default_Init_args{init_args_int3 = init_args_int3 obj} then Nothing else Just $ default_Init_args{init_args_int3 = init_args_int3 obj}
@@ -129,55 +128,55 @@ instance Arbitrary Init_args where
     , if obj == default_Init_args{init_args_int15 = init_args_int15 obj} then Nothing else Just $ default_Init_args{init_args_int15 = init_args_int15 obj}
     , if obj == default_Init_args{init_args_int16 = init_args_int16 obj} then Nothing else Just $ default_Init_args{init_args_int16 = init_args_int16 obj}
     ]
-from_Init_args :: Init_args -> ThriftVal
-from_Init_args record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v3 -> Just (1, ("int1",TI64 _v3))) $ init_args_int1 record
-  , (\_v3 -> Just (2, ("int2",TI64 _v3))) $ init_args_int2 record
-  , (\_v3 -> Just (3, ("int3",TI64 _v3))) $ init_args_int3 record
-  , (\_v3 -> Just (4, ("int4",TI64 _v3))) $ init_args_int4 record
-  , (\_v3 -> Just (5, ("int5",TI64 _v3))) $ init_args_int5 record
-  , (\_v3 -> Just (6, ("int6",TI64 _v3))) $ init_args_int6 record
-  , (\_v3 -> Just (7, ("int7",TI64 _v3))) $ init_args_int7 record
-  , (\_v3 -> Just (8, ("int8",TI64 _v3))) $ init_args_int8 record
-  , (\_v3 -> Just (9, ("int9",TI64 _v3))) $ init_args_int9 record
-  , (\_v3 -> Just (10, ("int10",TI64 _v3))) $ init_args_int10 record
-  , (\_v3 -> Just (11, ("int11",TI64 _v3))) $ init_args_int11 record
-  , (\_v3 -> Just (12, ("int12",TI64 _v3))) $ init_args_int12 record
-  , (\_v3 -> Just (13, ("int13",TI64 _v3))) $ init_args_int13 record
-  , (\_v3 -> Just (14, ("int14",TI64 _v3))) $ init_args_int14 record
-  , (\_v3 -> Just (15, ("int15",TI64 _v3))) $ init_args_int15 record
-  , (\_v3 -> Just (16, ("int16",TI64 _v3))) $ init_args_int16 record
+from_Init_args :: Init_args -> Types.ThriftVal
+from_Init_args record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
+  [ (\_v3 -> Just (1, ("int1",Types.TI64 _v3))) $ init_args_int1 record
+  , (\_v3 -> Just (2, ("int2",Types.TI64 _v3))) $ init_args_int2 record
+  , (\_v3 -> Just (3, ("int3",Types.TI64 _v3))) $ init_args_int3 record
+  , (\_v3 -> Just (4, ("int4",Types.TI64 _v3))) $ init_args_int4 record
+  , (\_v3 -> Just (5, ("int5",Types.TI64 _v3))) $ init_args_int5 record
+  , (\_v3 -> Just (6, ("int6",Types.TI64 _v3))) $ init_args_int6 record
+  , (\_v3 -> Just (7, ("int7",Types.TI64 _v3))) $ init_args_int7 record
+  , (\_v3 -> Just (8, ("int8",Types.TI64 _v3))) $ init_args_int8 record
+  , (\_v3 -> Just (9, ("int9",Types.TI64 _v3))) $ init_args_int9 record
+  , (\_v3 -> Just (10, ("int10",Types.TI64 _v3))) $ init_args_int10 record
+  , (\_v3 -> Just (11, ("int11",Types.TI64 _v3))) $ init_args_int11 record
+  , (\_v3 -> Just (12, ("int12",Types.TI64 _v3))) $ init_args_int12 record
+  , (\_v3 -> Just (13, ("int13",Types.TI64 _v3))) $ init_args_int13 record
+  , (\_v3 -> Just (14, ("int14",Types.TI64 _v3))) $ init_args_int14 record
+  , (\_v3 -> Just (15, ("int15",Types.TI64 _v3))) $ init_args_int15 record
+  , (\_v3 -> Just (16, ("int16",Types.TI64 _v3))) $ init_args_int16 record
   ]
-write_Init_args :: (Protocol p, Transport t) => p t -> Init_args -> IO ()
-write_Init_args oprot record = writeVal oprot $ from_Init_args record
-encode_Init_args :: (Protocol p, Transport t) => p t -> Init_args -> ByteString
-encode_Init_args oprot record = serializeVal oprot $ from_Init_args record
-to_Init_args :: ThriftVal -> Init_args
-to_Init_args (TStruct fields) = Init_args{
-  init_args_int1 = maybe (init_args_int1 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields),
-  init_args_int2 = maybe (init_args_int2 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val7 -> _val7; _ -> error "wrong type"})) (Map.lookup (2) fields),
-  init_args_int3 = maybe (init_args_int3 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val8 -> _val8; _ -> error "wrong type"})) (Map.lookup (3) fields),
-  init_args_int4 = maybe (init_args_int4 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val9 -> _val9; _ -> error "wrong type"})) (Map.lookup (4) fields),
-  init_args_int5 = maybe (init_args_int5 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val10 -> _val10; _ -> error "wrong type"})) (Map.lookup (5) fields),
-  init_args_int6 = maybe (init_args_int6 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val11 -> _val11; _ -> error "wrong type"})) (Map.lookup (6) fields),
-  init_args_int7 = maybe (init_args_int7 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val12 -> _val12; _ -> error "wrong type"})) (Map.lookup (7) fields),
-  init_args_int8 = maybe (init_args_int8 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val13 -> _val13; _ -> error "wrong type"})) (Map.lookup (8) fields),
-  init_args_int9 = maybe (init_args_int9 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val14 -> _val14; _ -> error "wrong type"})) (Map.lookup (9) fields),
-  init_args_int10 = maybe (init_args_int10 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val15 -> _val15; _ -> error "wrong type"})) (Map.lookup (10) fields),
-  init_args_int11 = maybe (init_args_int11 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val16 -> _val16; _ -> error "wrong type"})) (Map.lookup (11) fields),
-  init_args_int12 = maybe (init_args_int12 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val17 -> _val17; _ -> error "wrong type"})) (Map.lookup (12) fields),
-  init_args_int13 = maybe (init_args_int13 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val18 -> _val18; _ -> error "wrong type"})) (Map.lookup (13) fields),
-  init_args_int14 = maybe (init_args_int14 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val19 -> _val19; _ -> error "wrong type"})) (Map.lookup (14) fields),
-  init_args_int15 = maybe (init_args_int15 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val20 -> _val20; _ -> error "wrong type"})) (Map.lookup (15) fields),
-  init_args_int16 = maybe (init_args_int16 default_Init_args) (\(_,_val5) -> (case _val5 of {TI64 _val21 -> _val21; _ -> error "wrong type"})) (Map.lookup (16) fields)
+write_Init_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Init_args -> IO ()
+write_Init_args oprot record = Thrift.writeVal oprot $ from_Init_args record
+encode_Init_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Init_args -> BS.ByteString
+encode_Init_args oprot record = Thrift.serializeVal oprot $ from_Init_args record
+to_Init_args :: Types.ThriftVal -> Init_args
+to_Init_args (Types.TStruct fields) = Init_args{
+  init_args_int1 = maybe (init_args_int1 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields),
+  init_args_int2 = maybe (init_args_int2 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val7 -> _val7; _ -> error "wrong type"})) (Map.lookup (2) fields),
+  init_args_int3 = maybe (init_args_int3 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val8 -> _val8; _ -> error "wrong type"})) (Map.lookup (3) fields),
+  init_args_int4 = maybe (init_args_int4 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val9 -> _val9; _ -> error "wrong type"})) (Map.lookup (4) fields),
+  init_args_int5 = maybe (init_args_int5 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val10 -> _val10; _ -> error "wrong type"})) (Map.lookup (5) fields),
+  init_args_int6 = maybe (init_args_int6 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val11 -> _val11; _ -> error "wrong type"})) (Map.lookup (6) fields),
+  init_args_int7 = maybe (init_args_int7 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val12 -> _val12; _ -> error "wrong type"})) (Map.lookup (7) fields),
+  init_args_int8 = maybe (init_args_int8 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val13 -> _val13; _ -> error "wrong type"})) (Map.lookup (8) fields),
+  init_args_int9 = maybe (init_args_int9 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val14 -> _val14; _ -> error "wrong type"})) (Map.lookup (9) fields),
+  init_args_int10 = maybe (init_args_int10 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val15 -> _val15; _ -> error "wrong type"})) (Map.lookup (10) fields),
+  init_args_int11 = maybe (init_args_int11 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val16 -> _val16; _ -> error "wrong type"})) (Map.lookup (11) fields),
+  init_args_int12 = maybe (init_args_int12 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val17 -> _val17; _ -> error "wrong type"})) (Map.lookup (12) fields),
+  init_args_int13 = maybe (init_args_int13 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val18 -> _val18; _ -> error "wrong type"})) (Map.lookup (13) fields),
+  init_args_int14 = maybe (init_args_int14 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val19 -> _val19; _ -> error "wrong type"})) (Map.lookup (14) fields),
+  init_args_int15 = maybe (init_args_int15 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val20 -> _val20; _ -> error "wrong type"})) (Map.lookup (15) fields),
+  init_args_int16 = maybe (init_args_int16 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val21 -> _val21; _ -> error "wrong type"})) (Map.lookup (16) fields)
   }
 to_Init_args _ = error "not a struct"
-read_Init_args :: (Transport t, Protocol p) => p t -> IO Init_args
-read_Init_args iprot = to_Init_args <$> readVal iprot (T_STRUCT typemap_Init_args)
-decode_Init_args :: (Protocol p, Transport t) => p t -> ByteString -> Init_args
-decode_Init_args iprot bs = to_Init_args $ deserializeVal iprot (T_STRUCT typemap_Init_args) bs
-typemap_Init_args :: TypeMap
-typemap_Init_args = Map.fromList [("int1",(1,T_I64)),("int2",(2,T_I64)),("int3",(3,T_I64)),("int4",(4,T_I64)),("int5",(5,T_I64)),("int6",(6,T_I64)),("int7",(7,T_I64)),("int8",(8,T_I64)),("int9",(9,T_I64)),("int10",(10,T_I64)),("int11",(11,T_I64)),("int12",(12,T_I64)),("int13",(13,T_I64)),("int14",(14,T_I64)),("int15",(15,T_I64)),("int16",(16,T_I64))]
+read_Init_args :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Init_args
+read_Init_args iprot = to_Init_args <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Init_args)
+decode_Init_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Init_args
+decode_Init_args iprot bs = to_Init_args $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Init_args) bs
+typemap_Init_args :: Types.TypeMap
+typemap_Init_args = Map.fromList [("int1",(1,Types.T_I64)),("int2",(2,Types.T_I64)),("int3",(3,Types.T_I64)),("int4",(4,Types.T_I64)),("int5",(5,Types.T_I64)),("int6",(6,Types.T_I64)),("int7",(7,Types.T_I64)),("int8",(8,Types.T_I64)),("int9",(9,Types.T_I64)),("int10",(10,Types.T_I64)),("int11",(11,Types.T_I64)),("int12",(12,Types.T_I64)),("int13",(13,Types.T_I64)),("int14",(14,Types.T_I64)),("int15",(15,Types.T_I64)),("int16",(16,Types.T_I64))]
 default_Init_args :: Init_args
 default_Init_args = Init_args{
   init_args_int1 = 0,
@@ -197,64 +196,64 @@ default_Init_args = Init_args{
   init_args_int15 = 0,
   init_args_int16 = 0}
 data Init_result = Init_result
-  { init_result_success :: Int64
-  } deriving (Show,Eq,Typeable)
-instance ThriftSerializable Init_result where
+  { init_result_success :: Int.Int64
+  } deriving (Show,Eq,Typeable.Typeable)
+instance Serializable.ThriftSerializable Init_result where
   encode = encode_Init_result
   decode = decode_Init_result
-instance Hashable Init_result where
-  hashWithSalt salt record = salt   `hashWithSalt` init_result_success record  
-instance NFData Init_result where
+instance Hashable.Hashable Init_result where
+  hashWithSalt salt record = salt   `Hashable.hashWithSalt` init_result_success record  
+instance DeepSeq.NFData Init_result where
   rnf _record22 =
-    rnf (init_result_success _record22) `seq`
+    DeepSeq.rnf (init_result_success _record22) `seq`
     ()
-instance Arbitrary Init_result where 
-  arbitrary = liftM Init_result (arbitrary)
+instance Arbitrary.Arbitrary Init_result where 
+  arbitrary = Monad.liftM Init_result (Arbitrary.arbitrary)
   shrink obj | obj == default_Init_result = []
-             | otherwise = catMaybes
+             | otherwise = Maybe.catMaybes
     [ if obj == default_Init_result{init_result_success = init_result_success obj} then Nothing else Just $ default_Init_result{init_result_success = init_result_success obj}
     ]
-from_Init_result :: Init_result -> ThriftVal
-from_Init_result record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v25 -> Just (0, ("success",TI64 _v25))) $ init_result_success record
+from_Init_result :: Init_result -> Types.ThriftVal
+from_Init_result record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
+  [ (\_v25 -> Just (0, ("success",Types.TI64 _v25))) $ init_result_success record
   ]
-write_Init_result :: (Protocol p, Transport t) => p t -> Init_result -> IO ()
-write_Init_result oprot record = writeVal oprot $ from_Init_result record
-encode_Init_result :: (Protocol p, Transport t) => p t -> Init_result -> ByteString
-encode_Init_result oprot record = serializeVal oprot $ from_Init_result record
-to_Init_result :: ThriftVal -> Init_result
-to_Init_result (TStruct fields) = Init_result{
-  init_result_success = maybe (init_result_success default_Init_result) (\(_,_val27) -> (case _val27 of {TI64 _val28 -> _val28; _ -> error "wrong type"})) (Map.lookup (0) fields)
+write_Init_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Init_result -> IO ()
+write_Init_result oprot record = Thrift.writeVal oprot $ from_Init_result record
+encode_Init_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Init_result -> BS.ByteString
+encode_Init_result oprot record = Thrift.serializeVal oprot $ from_Init_result record
+to_Init_result :: Types.ThriftVal -> Init_result
+to_Init_result (Types.TStruct fields) = Init_result{
+  init_result_success = maybe (init_result_success default_Init_result) (\(_,_val27) -> (case _val27 of {Types.TI64 _val28 -> _val28; _ -> error "wrong type"})) (Map.lookup (0) fields)
   }
 to_Init_result _ = error "not a struct"
-read_Init_result :: (Transport t, Protocol p) => p t -> IO Init_result
-read_Init_result iprot = to_Init_result <$> readVal iprot (T_STRUCT typemap_Init_result)
-decode_Init_result :: (Protocol p, Transport t) => p t -> ByteString -> Init_result
-decode_Init_result iprot bs = to_Init_result $ deserializeVal iprot (T_STRUCT typemap_Init_result) bs
-typemap_Init_result :: TypeMap
-typemap_Init_result = Map.fromList [("success",(0,T_I64))]
+read_Init_result :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Init_result
+read_Init_result iprot = to_Init_result <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Init_result)
+decode_Init_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Init_result
+decode_Init_result iprot bs = to_Init_result $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Init_result) bs
+typemap_Init_result :: Types.TypeMap
+typemap_Init_result = Map.fromList [("success",(0,Types.T_I64))]
 default_Init_result :: Init_result
 default_Init_result = Init_result{
   init_result_success = 0}
 process_init (seqid, iprot, oprot, handler) = do
   args <- TestService.read_Init_args iprot
-  (Control.Exception.catch
+  (Exception.catch
     (do
       val <- Iface.init handler (init_args_int1 args) (init_args_int2 args) (init_args_int3 args) (init_args_int4 args) (init_args_int5 args) (init_args_int6 args) (init_args_int7 args) (init_args_int8 args) (init_args_int9 args) (init_args_int10 args) (init_args_int11 args) (init_args_int12 args) (init_args_int13 args) (init_args_int14 args) (init_args_int15 args) (init_args_int16 args)
       let res = default_Init_result{init_result_success = val}
-      writeMessage oprot ("init", M_REPLY, seqid) $
+      Thrift.writeMessage oprot ("init", Types.M_REPLY, seqid) $
         write_Init_result oprot res
-      tFlush (getTransport oprot))
+      Thrift.tFlush (Thrift.getTransport oprot))
     ((\_ -> do
-      writeMessage oprot ("init", M_EXCEPTION, seqid) $
-        writeAppExn oprot (AppExn AE_UNKNOWN "")
-      tFlush (getTransport oprot)) :: SomeException -> IO ()))
+      Thrift.writeMessage oprot ("init", Types.M_EXCEPTION, seqid) $
+        Thrift.writeAppExn oprot (Thrift.AppExn Thrift.AE_UNKNOWN "")
+      Thrift.tFlush (Thrift.getTransport oprot)) :: Exception.SomeException -> IO ()))
 proc_ handler (iprot,oprot) (name,typ,seqid) = case name of
   "init" -> process_init (seqid,iprot,oprot,handler)
   _ -> do
-    _ <- readVal iprot (T_STRUCT Map.empty)
-    writeMessage oprot (name,M_EXCEPTION,seqid) $
-      writeAppExn oprot (AppExn AE_UNKNOWN_METHOD ("Unknown function " ++ LT.unpack name))
-    tFlush (getTransport oprot)
+    _ <- Thrift.readVal iprot (Types.T_STRUCT Map.empty)
+    Thrift.writeMessage oprot (name,Types.M_EXCEPTION,seqid) $
+      Thrift.writeAppExn oprot (Thrift.AppExn Thrift.AE_UNKNOWN_METHOD ("Unknown function " ++ LT.unpack name))
+    Thrift.tFlush (Thrift.getTransport oprot)
 process handler (iprot, oprot) =
-  readMessage iprot (proc_ handler (iprot,oprot)) >> return True
+  Thrift.readMessage iprot (proc_ handler (iprot,oprot)) >> return True

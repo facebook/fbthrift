@@ -21,69 +21,68 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
-import Control.Applicative (ZipList(..), (<*>))
-import Control.DeepSeq
-import Control.Exception
-import Control.Monad ( liftM, ap, when )
-import Data.ByteString.Lazy (ByteString)
+import qualified Control.Applicative as Applicative (ZipList(..))
+import Control.Applicative ( (<*>) )
+import qualified Control.DeepSeq as DeepSeq
+import qualified Control.Exception as Exception
+import qualified Control.Monad as Monad ( liftM, ap, when )
 import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
-import Data.Hashable
-import Data.Int
-import Data.Maybe (catMaybes)
-import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
+import qualified Data.Hashable as Hashable
+import qualified Data.Int as Int
+import qualified Data.Maybe as Maybe (catMaybes)
+import qualified Data.Text.Lazy.Encoding as Encoding ( decodeUtf8, encodeUtf8 )
 import qualified Data.Text.Lazy as LT
-import Data.Typeable ( Typeable )
+import qualified Data.Typeable as Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set
 import qualified Data.Vector as Vector
-import Test.QuickCheck.Arbitrary ( Arbitrary(..) )
-import Test.QuickCheck ( elements )
+import qualified Test.QuickCheck.Arbitrary as Arbitrary ( Arbitrary(..) )
+import qualified Test.QuickCheck as QuickCheck ( elements )
 
-import Thrift hiding (ProtocolExnType(..))
-import qualified Thrift (ProtocolExnType(..))
-import Thrift.Types
-import Thrift.Serializable
-import Thrift.Arbitraries
+import qualified Thrift
+import qualified Thrift.Types as Types
+import qualified Thrift.Serializable as Serializable
+import qualified Thrift.Arbitraries as Arbitraries
 
 
 data HsFoo = HsFoo
-  { hsFoo_MyInt :: Int64
-  } deriving (Show,Eq,Typeable)
-instance ThriftSerializable HsFoo where
+  { hsFoo_MyInt :: Int.Int64
+  } deriving (Show,Eq,Typeable.Typeable)
+instance Serializable.ThriftSerializable HsFoo where
   encode = encode_HsFoo
   decode = decode_HsFoo
-instance Hashable HsFoo where
-  hashWithSalt salt record = salt   `hashWithSalt` hsFoo_MyInt record  
-instance NFData HsFoo where
+instance Hashable.Hashable HsFoo where
+  hashWithSalt salt record = salt   `Hashable.hashWithSalt` hsFoo_MyInt record  
+instance DeepSeq.NFData HsFoo where
   rnf _record0 =
-    rnf (hsFoo_MyInt _record0) `seq`
+    DeepSeq.rnf (hsFoo_MyInt _record0) `seq`
     ()
-instance Arbitrary HsFoo where 
-  arbitrary = liftM HsFoo (arbitrary)
+instance Arbitrary.Arbitrary HsFoo where 
+  arbitrary = Monad.liftM HsFoo (Arbitrary.arbitrary)
   shrink obj | obj == default_HsFoo = []
-             | otherwise = catMaybes
+             | otherwise = Maybe.catMaybes
     [ if obj == default_HsFoo{hsFoo_MyInt = hsFoo_MyInt obj} then Nothing else Just $ default_HsFoo{hsFoo_MyInt = hsFoo_MyInt obj}
     ]
-from_HsFoo :: HsFoo -> ThriftVal
-from_HsFoo record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v3 -> Just (1, ("MyInt",TI64 _v3))) $ hsFoo_MyInt record
+from_HsFoo :: HsFoo -> Types.ThriftVal
+from_HsFoo record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
+  [ (\_v3 -> Just (1, ("MyInt",Types.TI64 _v3))) $ hsFoo_MyInt record
   ]
-write_HsFoo :: (Protocol p, Transport t) => p t -> HsFoo -> IO ()
-write_HsFoo oprot record = writeVal oprot $ from_HsFoo record
-encode_HsFoo :: (Protocol p, Transport t) => p t -> HsFoo -> ByteString
-encode_HsFoo oprot record = serializeVal oprot $ from_HsFoo record
-to_HsFoo :: ThriftVal -> HsFoo
-to_HsFoo (TStruct fields) = HsFoo{
-  hsFoo_MyInt = maybe (hsFoo_MyInt default_HsFoo) (\(_,_val5) -> (case _val5 of {TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields)
+write_HsFoo :: (Thrift.Protocol p, Thrift.Transport t) => p t -> HsFoo -> IO ()
+write_HsFoo oprot record = Thrift.writeVal oprot $ from_HsFoo record
+encode_HsFoo :: (Thrift.Protocol p, Thrift.Transport t) => p t -> HsFoo -> BS.ByteString
+encode_HsFoo oprot record = Thrift.serializeVal oprot $ from_HsFoo record
+to_HsFoo :: Types.ThriftVal -> HsFoo
+to_HsFoo (Types.TStruct fields) = HsFoo{
+  hsFoo_MyInt = maybe (hsFoo_MyInt default_HsFoo) (\(_,_val5) -> (case _val5 of {Types.TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_HsFoo _ = error "not a struct"
-read_HsFoo :: (Transport t, Protocol p) => p t -> IO HsFoo
-read_HsFoo iprot = to_HsFoo <$> readVal iprot (T_STRUCT typemap_HsFoo)
-decode_HsFoo :: (Protocol p, Transport t) => p t -> ByteString -> HsFoo
-decode_HsFoo iprot bs = to_HsFoo $ deserializeVal iprot (T_STRUCT typemap_HsFoo) bs
-typemap_HsFoo :: TypeMap
-typemap_HsFoo = Map.fromList [("MyInt",(1,T_I64))]
+read_HsFoo :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO HsFoo
+read_HsFoo iprot = to_HsFoo <$> Thrift.readVal iprot (Types.T_STRUCT typemap_HsFoo)
+decode_HsFoo :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> HsFoo
+decode_HsFoo iprot bs = to_HsFoo $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_HsFoo) bs
+typemap_HsFoo :: Types.TypeMap
+typemap_HsFoo = Map.fromList [("MyInt",(1,Types.T_I64))]
 default_HsFoo :: HsFoo
 default_HsFoo = HsFoo{
   hsFoo_MyInt = 0}

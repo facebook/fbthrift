@@ -25,30 +25,29 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
-import Control.Applicative (ZipList(..), (<*>))
-import Control.DeepSeq
-import Control.Exception
-import Control.Monad ( liftM, ap, when )
-import Data.ByteString.Lazy (ByteString)
+import qualified Control.Applicative as Applicative (ZipList(..))
+import Control.Applicative ( (<*>) )
+import qualified Control.DeepSeq as DeepSeq
+import qualified Control.Exception as Exception
+import qualified Control.Monad as Monad ( liftM, ap, when )
 import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
-import Data.Hashable
-import Data.Int
-import Data.Maybe (catMaybes)
-import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
+import qualified Data.Hashable as Hashable
+import qualified Data.Int as Int
+import qualified Data.Maybe as Maybe (catMaybes)
+import qualified Data.Text.Lazy.Encoding as Encoding ( decodeUtf8, encodeUtf8 )
 import qualified Data.Text.Lazy as LT
-import Data.Typeable ( Typeable )
+import qualified Data.Typeable as Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set
 import qualified Data.Vector as Vector
-import Test.QuickCheck.Arbitrary ( Arbitrary(..) )
-import Test.QuickCheck ( elements )
+import qualified Test.QuickCheck.Arbitrary as Arbitrary ( Arbitrary(..) )
+import qualified Test.QuickCheck as QuickCheck ( elements )
 
-import Thrift hiding (ProtocolExnType(..))
-import qualified Thrift (ProtocolExnType(..))
-import Thrift.Types
-import Thrift.Serializable
-import Thrift.Arbitraries
+import qualified Thrift
+import qualified Thrift.Types as Types
+import qualified Thrift.Serializable as Serializable
+import qualified Thrift.Arbitraries as Arbitraries
 
 import qualified My.Namespacing.Test.Hsmodule_Types as Hsmodule_Types
 
@@ -100,13 +99,13 @@ fuzzerFunctions = [("check", check_fuzzer)]
 
 -- Random data generation
 inf_Hsmodule_Types_HsFoo :: IO [Hsmodule_Types.HsFoo]
-inf_Hsmodule_Types_HsFoo = infexamples (arbitrary :: Gen Hsmodule_Types.HsFoo)
+inf_Hsmodule_Types_HsFoo = infexamples (Arbitrary.arbitrary :: Gen Hsmodule_Types.HsFoo)
 
 -- Fuzzers and exception handlers
 check_fuzzer :: Options -> IO ()
 check_fuzzer opts = do
-  a1 <- ZipList <$> inf_Hsmodule_Types_HsFoo
-  _ <- forM (getZipList a1) check_fuzzFunc
+  a1 <- Applicative.ZipList <$> inf_Hsmodule_Types_HsFoo
+  _ <- forM (Applicative.getZipList a1) check_fuzzFunc
   return ()
   where
   check_fuzzFunc a1 = let param = (a1) in

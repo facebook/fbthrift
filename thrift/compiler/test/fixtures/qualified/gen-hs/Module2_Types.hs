@@ -21,28 +21,29 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
-import Control.Applicative (ZipList(..), (<*>))
-import Control.DeepSeq
-import Control.Exception
-import Control.Monad ( liftM, ap, when )
-import Data.ByteString.Lazy (ByteString)
+import qualified Control.Applicative as Applicative (ZipList(..))
+import Control.Applicative ( (<*>) )
+import qualified Control.DeepSeq as DeepSeq
+import qualified Control.Exception as Exception
+import qualified Control.Monad as Monad ( liftM, ap, when )
+import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
-import Data.Hashable
-import Data.Int
-import Data.Maybe (catMaybes)
-import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
+import qualified Data.Hashable as Hashable
+import qualified Data.Int as Int
+import qualified Data.Maybe as Maybe (catMaybes)
+import qualified Data.Text.Lazy.Encoding as Encoding ( decodeUtf8, encodeUtf8 )
 import qualified Data.Text.Lazy as LT
-import Data.Typeable ( Typeable )
+import qualified Data.Typeable as Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set
 import qualified Data.Vector as Vector
-import Test.QuickCheck.Arbitrary ( Arbitrary(..) )
-import Test.QuickCheck ( elements )
+import qualified Test.QuickCheck.Arbitrary as Arbitrary ( Arbitrary(..) )
+import qualified Test.QuickCheck as QuickCheck ( elements )
 
-import Thrift hiding (ProtocolExnType(..))
-import qualified Thrift (ProtocolExnType(..))
-import Thrift.Types
-import Thrift.Arbitraries
+import qualified Thrift
+import qualified Thrift.Types as Types
+import qualified Thrift.Serializable as Serializable
+import qualified Thrift.Arbitraries as Arbitraries
 
 import qualified Module0_Types as Module0_Types
 import qualified Module1_Types as Module1_Types
@@ -51,87 +52,93 @@ import qualified Module1_Types as Module1_Types
 data Struct = Struct
   { struct_first :: Module0_Types.Struct
   , struct_second :: Module1_Types.Struct
-  } deriving (Show,Eq,Typeable)
-instance Hashable Struct where
-  hashWithSalt salt record = salt   `hashWithSalt` struct_first record   `hashWithSalt` struct_second record  
-instance NFData Struct where
+  } deriving (Show,Eq,Typeable.Typeable)
+instance Serializable.ThriftSerializable Struct where
+  encode = encode_Struct
+  decode = decode_Struct
+instance Hashable.Hashable Struct where
+  hashWithSalt salt record = salt   `Hashable.hashWithSalt` struct_first record   `Hashable.hashWithSalt` struct_second record  
+instance DeepSeq.NFData Struct where
   rnf _record0 =
-    rnf (struct_first _record0) `seq`
-    rnf (struct_second _record0) `seq`
+    DeepSeq.rnf (struct_first _record0) `seq`
+    DeepSeq.rnf (struct_second _record0) `seq`
     ()
-instance Arbitrary Struct where 
-  arbitrary = liftM Struct (arbitrary)
-          `ap`(arbitrary)
+instance Arbitrary.Arbitrary Struct where 
+  arbitrary = Monad.liftM Struct (Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
   shrink obj | obj == default_Struct = []
-             | otherwise = catMaybes
+             | otherwise = Maybe.catMaybes
     [ if obj == default_Struct{struct_first = struct_first obj} then Nothing else Just $ default_Struct{struct_first = struct_first obj}
     , if obj == default_Struct{struct_second = struct_second obj} then Nothing else Just $ default_Struct{struct_second = struct_second obj}
     ]
-from_Struct :: Struct -> ThriftVal
-from_Struct record = TStruct $ Map.fromList $ catMaybes
+from_Struct :: Struct -> Types.ThriftVal
+from_Struct record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v3 -> Just (1, ("first",Module0_Types.from_Struct _v3))) $ struct_first record
   , (\_v3 -> Just (2, ("second",Module1_Types.from_Struct _v3))) $ struct_second record
   ]
-write_Struct :: (Protocol p, Transport t) => p t -> Struct -> IO ()
-write_Struct oprot record = writeVal oprot $ from_Struct record
-encode_Struct :: (Protocol p, Transport t) => p t -> Struct -> ByteString
-encode_Struct oprot record = serializeVal oprot $ from_Struct record
-to_Struct :: ThriftVal -> Struct
-to_Struct (TStruct fields) = Struct{
-  struct_first = maybe (struct_first default_Struct) (\(_,_val5) -> (case _val5 of {TStruct _val6 -> (Module0_Types.to_Struct (TStruct _val6)); _ -> error "wrong type"})) (Map.lookup (1) fields),
-  struct_second = maybe (struct_second default_Struct) (\(_,_val5) -> (case _val5 of {TStruct _val7 -> (Module1_Types.to_Struct (TStruct _val7)); _ -> error "wrong type"})) (Map.lookup (2) fields)
+write_Struct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Struct -> IO ()
+write_Struct oprot record = Thrift.writeVal oprot $ from_Struct record
+encode_Struct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Struct -> BS.ByteString
+encode_Struct oprot record = Thrift.serializeVal oprot $ from_Struct record
+to_Struct :: Types.ThriftVal -> Struct
+to_Struct (Types.TStruct fields) = Struct{
+  struct_first = maybe (struct_first default_Struct) (\(_,_val5) -> (case _val5 of {Types.TStruct _val6 -> (Module0_Types.to_Struct (Types.TStruct _val6)); _ -> error "wrong type"})) (Map.lookup (1) fields),
+  struct_second = maybe (struct_second default_Struct) (\(_,_val5) -> (case _val5 of {Types.TStruct _val7 -> (Module1_Types.to_Struct (Types.TStruct _val7)); _ -> error "wrong type"})) (Map.lookup (2) fields)
   }
 to_Struct _ = error "not a struct"
-read_Struct :: (Transport t, Protocol p) => p t -> IO Struct
-read_Struct iprot = to_Struct <$> readVal iprot (T_STRUCT typemap_Struct)
-decode_Struct :: (Protocol p, Transport t) => p t -> ByteString -> Struct
-decode_Struct iprot bs = to_Struct $ deserializeVal iprot (T_STRUCT typemap_Struct) bs
-typemap_Struct :: TypeMap
-typemap_Struct = Map.fromList [("first",(1,(T_STRUCT Module0_Types.typemap_Struct))),("second",(2,(T_STRUCT Module1_Types.typemap_Struct)))]
+read_Struct :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Struct
+read_Struct iprot = to_Struct <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Struct)
+decode_Struct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Struct
+decode_Struct iprot bs = to_Struct $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Struct) bs
+typemap_Struct :: Types.TypeMap
+typemap_Struct = Map.fromList [("first",(1,(Types.T_STRUCT Module0_Types.typemap_Struct))),("second",(2,(Types.T_STRUCT Module1_Types.typemap_Struct)))]
 default_Struct :: Struct
 default_Struct = Struct{
   struct_first = Module0_Types.default_Struct,
   struct_second = Module1_Types.default_Struct}
 data BigStruct = BigStruct
   { bigStruct_s :: Module2_Types.Struct
-  , bigStruct_id :: Int32
-  } deriving (Show,Eq,Typeable)
-instance Hashable BigStruct where
-  hashWithSalt salt record = salt   `hashWithSalt` bigStruct_s record   `hashWithSalt` bigStruct_id record  
-instance NFData BigStruct where
+  , bigStruct_id :: Int.Int32
+  } deriving (Show,Eq,Typeable.Typeable)
+instance Serializable.ThriftSerializable BigStruct where
+  encode = encode_BigStruct
+  decode = decode_BigStruct
+instance Hashable.Hashable BigStruct where
+  hashWithSalt salt record = salt   `Hashable.hashWithSalt` bigStruct_s record   `Hashable.hashWithSalt` bigStruct_id record  
+instance DeepSeq.NFData BigStruct where
   rnf _record8 =
-    rnf (bigStruct_s _record8) `seq`
-    rnf (bigStruct_id _record8) `seq`
+    DeepSeq.rnf (bigStruct_s _record8) `seq`
+    DeepSeq.rnf (bigStruct_id _record8) `seq`
     ()
-instance Arbitrary BigStruct where 
-  arbitrary = liftM BigStruct (arbitrary)
-          `ap`(arbitrary)
+instance Arbitrary.Arbitrary BigStruct where 
+  arbitrary = Monad.liftM BigStruct (Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
   shrink obj | obj == default_BigStruct = []
-             | otherwise = catMaybes
+             | otherwise = Maybe.catMaybes
     [ if obj == default_BigStruct{bigStruct_s = bigStruct_s obj} then Nothing else Just $ default_BigStruct{bigStruct_s = bigStruct_s obj}
     , if obj == default_BigStruct{bigStruct_id = bigStruct_id obj} then Nothing else Just $ default_BigStruct{bigStruct_id = bigStruct_id obj}
     ]
-from_BigStruct :: BigStruct -> ThriftVal
-from_BigStruct record = TStruct $ Map.fromList $ catMaybes
+from_BigStruct :: BigStruct -> Types.ThriftVal
+from_BigStruct record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v11 -> Just (1, ("s",Module2_Types.from_Struct _v11))) $ bigStruct_s record
-  , (\_v11 -> Just (2, ("id",TI32 _v11))) $ bigStruct_id record
+  , (\_v11 -> Just (2, ("id",Types.TI32 _v11))) $ bigStruct_id record
   ]
-write_BigStruct :: (Protocol p, Transport t) => p t -> BigStruct -> IO ()
-write_BigStruct oprot record = writeVal oprot $ from_BigStruct record
-encode_BigStruct :: (Protocol p, Transport t) => p t -> BigStruct -> ByteString
-encode_BigStruct oprot record = serializeVal oprot $ from_BigStruct record
-to_BigStruct :: ThriftVal -> BigStruct
-to_BigStruct (TStruct fields) = BigStruct{
-  bigStruct_s = maybe (bigStruct_s default_BigStruct) (\(_,_val13) -> (case _val13 of {TStruct _val14 -> (Module2_Types.to_Struct (TStruct _val14)); _ -> error "wrong type"})) (Map.lookup (1) fields),
-  bigStruct_id = maybe (bigStruct_id default_BigStruct) (\(_,_val13) -> (case _val13 of {TI32 _val15 -> _val15; _ -> error "wrong type"})) (Map.lookup (2) fields)
+write_BigStruct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BigStruct -> IO ()
+write_BigStruct oprot record = Thrift.writeVal oprot $ from_BigStruct record
+encode_BigStruct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BigStruct -> BS.ByteString
+encode_BigStruct oprot record = Thrift.serializeVal oprot $ from_BigStruct record
+to_BigStruct :: Types.ThriftVal -> BigStruct
+to_BigStruct (Types.TStruct fields) = BigStruct{
+  bigStruct_s = maybe (bigStruct_s default_BigStruct) (\(_,_val13) -> (case _val13 of {Types.TStruct _val14 -> (Module2_Types.to_Struct (Types.TStruct _val14)); _ -> error "wrong type"})) (Map.lookup (1) fields),
+  bigStruct_id = maybe (bigStruct_id default_BigStruct) (\(_,_val13) -> (case _val13 of {Types.TI32 _val15 -> _val15; _ -> error "wrong type"})) (Map.lookup (2) fields)
   }
 to_BigStruct _ = error "not a struct"
-read_BigStruct :: (Transport t, Protocol p) => p t -> IO BigStruct
-read_BigStruct iprot = to_BigStruct <$> readVal iprot (T_STRUCT typemap_BigStruct)
-decode_BigStruct :: (Protocol p, Transport t) => p t -> ByteString -> BigStruct
-decode_BigStruct iprot bs = to_BigStruct $ deserializeVal iprot (T_STRUCT typemap_BigStruct) bs
-typemap_BigStruct :: TypeMap
-typemap_BigStruct = Map.fromList [("s",(1,(T_STRUCT Module2_Types.typemap_Struct))),("id",(2,T_I32))]
+read_BigStruct :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO BigStruct
+read_BigStruct iprot = to_BigStruct <$> Thrift.readVal iprot (Types.T_STRUCT typemap_BigStruct)
+decode_BigStruct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> BigStruct
+decode_BigStruct iprot bs = to_BigStruct $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_BigStruct) bs
+typemap_BigStruct :: Types.TypeMap
+typemap_BigStruct = Map.fromList [("s",(1,(Types.T_STRUCT Module2_Types.typemap_Struct))),("id",(2,Types.T_I32))]
 default_BigStruct :: BigStruct
 default_BigStruct = BigStruct{
   bigStruct_s = Module2_Types.default_Struct,

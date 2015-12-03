@@ -21,69 +21,68 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
-import Control.Applicative (ZipList(..), (<*>))
-import Control.DeepSeq
-import Control.Exception
-import Control.Monad ( liftM, ap, when )
-import Data.ByteString.Lazy (ByteString)
+import qualified Control.Applicative as Applicative (ZipList(..))
+import Control.Applicative ( (<*>) )
+import qualified Control.DeepSeq as DeepSeq
+import qualified Control.Exception as Exception
+import qualified Control.Monad as Monad ( liftM, ap, when )
 import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
-import Data.Hashable
-import Data.Int
-import Data.Maybe (catMaybes)
-import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
+import qualified Data.Hashable as Hashable
+import qualified Data.Int as Int
+import qualified Data.Maybe as Maybe (catMaybes)
+import qualified Data.Text.Lazy.Encoding as Encoding ( decodeUtf8, encodeUtf8 )
 import qualified Data.Text.Lazy as LT
-import Data.Typeable ( Typeable )
+import qualified Data.Typeable as Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set
 import qualified Data.Vector as Vector
-import Test.QuickCheck.Arbitrary ( Arbitrary(..) )
-import Test.QuickCheck ( elements )
+import qualified Test.QuickCheck.Arbitrary as Arbitrary ( Arbitrary(..) )
+import qualified Test.QuickCheck as QuickCheck ( elements )
 
-import Thrift hiding (ProtocolExnType(..))
-import qualified Thrift (ProtocolExnType(..))
-import Thrift.Types
-import Thrift.Serializable
-import Thrift.Arbitraries
+import qualified Thrift
+import qualified Thrift.Types as Types
+import qualified Thrift.Serializable as Serializable
+import qualified Thrift.Arbitraries as Arbitraries
 
 
 data Included = Included
-  { included_MyIntField :: Int64
-  } deriving (Show,Eq,Typeable)
-instance ThriftSerializable Included where
+  { included_MyIntField :: Int.Int64
+  } deriving (Show,Eq,Typeable.Typeable)
+instance Serializable.ThriftSerializable Included where
   encode = encode_Included
   decode = decode_Included
-instance Hashable Included where
-  hashWithSalt salt record = salt   `hashWithSalt` included_MyIntField record  
-instance NFData Included where
+instance Hashable.Hashable Included where
+  hashWithSalt salt record = salt   `Hashable.hashWithSalt` included_MyIntField record  
+instance DeepSeq.NFData Included where
   rnf _record0 =
-    rnf (included_MyIntField _record0) `seq`
+    DeepSeq.rnf (included_MyIntField _record0) `seq`
     ()
-instance Arbitrary Included where 
-  arbitrary = liftM Included (arbitrary)
+instance Arbitrary.Arbitrary Included where 
+  arbitrary = Monad.liftM Included (Arbitrary.arbitrary)
   shrink obj | obj == default_Included = []
-             | otherwise = catMaybes
+             | otherwise = Maybe.catMaybes
     [ if obj == default_Included{included_MyIntField = included_MyIntField obj} then Nothing else Just $ default_Included{included_MyIntField = included_MyIntField obj}
     ]
-from_Included :: Included -> ThriftVal
-from_Included record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v3 -> Just (1, ("MyIntField",TI64 _v3))) $ included_MyIntField record
+from_Included :: Included -> Types.ThriftVal
+from_Included record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
+  [ (\_v3 -> Just (1, ("MyIntField",Types.TI64 _v3))) $ included_MyIntField record
   ]
-write_Included :: (Protocol p, Transport t) => p t -> Included -> IO ()
-write_Included oprot record = writeVal oprot $ from_Included record
-encode_Included :: (Protocol p, Transport t) => p t -> Included -> ByteString
-encode_Included oprot record = serializeVal oprot $ from_Included record
-to_Included :: ThriftVal -> Included
-to_Included (TStruct fields) = Included{
-  included_MyIntField = maybe (included_MyIntField default_Included) (\(_,_val5) -> (case _val5 of {TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields)
+write_Included :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Included -> IO ()
+write_Included oprot record = Thrift.writeVal oprot $ from_Included record
+encode_Included :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Included -> BS.ByteString
+encode_Included oprot record = Thrift.serializeVal oprot $ from_Included record
+to_Included :: Types.ThriftVal -> Included
+to_Included (Types.TStruct fields) = Included{
+  included_MyIntField = maybe (included_MyIntField default_Included) (\(_,_val5) -> (case _val5 of {Types.TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_Included _ = error "not a struct"
-read_Included :: (Transport t, Protocol p) => p t -> IO Included
-read_Included iprot = to_Included <$> readVal iprot (T_STRUCT typemap_Included)
-decode_Included :: (Protocol p, Transport t) => p t -> ByteString -> Included
-decode_Included iprot bs = to_Included $ deserializeVal iprot (T_STRUCT typemap_Included) bs
-typemap_Included :: TypeMap
-typemap_Included = Map.fromList [("MyIntField",(1,T_I64))]
+read_Included :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Included
+read_Included iprot = to_Included <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Included)
+decode_Included :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Included
+decode_Included iprot bs = to_Included $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Included) bs
+typemap_Included :: Types.TypeMap
+typemap_Included = Map.fromList [("MyIntField",(1,Types.T_I64))]
 default_Included :: Included
 default_Included = Included{
   included_MyIntField = 0}

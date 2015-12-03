@@ -24,30 +24,29 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
-import Control.Applicative (ZipList(..), (<*>))
-import Control.DeepSeq
-import Control.Exception
-import Control.Monad ( liftM, ap, when )
-import Data.ByteString.Lazy (ByteString)
+import qualified Control.Applicative as Applicative (ZipList(..))
+import Control.Applicative ( (<*>) )
+import qualified Control.DeepSeq as DeepSeq
+import qualified Control.Exception as Exception
+import qualified Control.Monad as Monad ( liftM, ap, when )
 import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
-import Data.Hashable
-import Data.Int
-import Data.Maybe (catMaybes)
-import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
+import qualified Data.Hashable as Hashable
+import qualified Data.Int as Int
+import qualified Data.Maybe as Maybe (catMaybes)
+import qualified Data.Text.Lazy.Encoding as Encoding ( decodeUtf8, encodeUtf8 )
 import qualified Data.Text.Lazy as LT
-import Data.Typeable ( Typeable )
+import qualified Data.Typeable as Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set
 import qualified Data.Vector as Vector
-import Test.QuickCheck.Arbitrary ( Arbitrary(..) )
-import Test.QuickCheck ( elements )
+import qualified Test.QuickCheck.Arbitrary as Arbitrary ( Arbitrary(..) )
+import qualified Test.QuickCheck as QuickCheck ( elements )
 
-import Thrift hiding (ProtocolExnType(..))
-import qualified Thrift (ProtocolExnType(..))
-import Thrift.Types
-import Thrift.Serializable
-import Thrift.Arbitraries
+import qualified Thrift
+import qualified Thrift.Types as Types
+import qualified Thrift.Serializable as Serializable
+import qualified Thrift.Arbitraries as Arbitraries
 
 import Prelude ((>>), print)
 import qualified Prelude as P
@@ -96,14 +95,14 @@ fuzzerFunctions :: [(String, (Options -> IO ()))]
 fuzzerFunctions = [("init", init_fuzzer)]
 
 -- Random data generation
-inf_Int64 :: IO [Int64]
-inf_Int64 = infexamples (arbitrary :: Gen Int64)
+inf_Int_Int64 :: IO [Int.Int64]
+inf_Int_Int64 = infexamples (Arbitrary.arbitrary :: Gen Int.Int64)
 
 -- Fuzzers and exception handlers
 init_fuzzer :: Options -> IO ()
 init_fuzzer opts = do
-  a1 <- ZipList <$> inf_Int64
-  _ <- forM (getZipList a1) init_fuzzFunc
+  a1 <- Applicative.ZipList <$> inf_Int_Int64
+  _ <- forM (Applicative.getZipList a1) init_fuzzFunc
   return ()
   where
   init_fuzzFunc a1 = let param = (a1) in

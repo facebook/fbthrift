@@ -21,31 +21,32 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  enumFromTo, Bounded, minBound, maxBound, seq,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
-import Control.Applicative (ZipList(..), (<*>))
-import Control.DeepSeq
-import Control.Exception
-import Control.Monad ( liftM, ap, when )
-import Data.ByteString.Lazy (ByteString)
+import qualified Control.Applicative as Applicative (ZipList(..))
+import Control.Applicative ( (<*>) )
+import qualified Control.DeepSeq as DeepSeq
+import qualified Control.Exception as Exception
+import qualified Control.Monad as Monad ( liftM, ap, when )
+import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
-import Data.Hashable
-import Data.Int
-import Data.Maybe (catMaybes)
-import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
+import qualified Data.Hashable as Hashable
+import qualified Data.Int as Int
+import qualified Data.Maybe as Maybe (catMaybes)
+import qualified Data.Text.Lazy.Encoding as Encoding ( decodeUtf8, encodeUtf8 )
 import qualified Data.Text.Lazy as LT
-import Data.Typeable ( Typeable )
+import qualified Data.Typeable as Typeable ( Typeable )
 import qualified Data.HashMap.Strict as Map
 import qualified Data.HashSet as Set
 import qualified Data.Vector as Vector
-import Test.QuickCheck.Arbitrary ( Arbitrary(..) )
-import Test.QuickCheck ( elements )
+import qualified Test.QuickCheck.Arbitrary as Arbitrary ( Arbitrary(..) )
+import qualified Test.QuickCheck as QuickCheck ( elements )
 
-import Thrift hiding (ProtocolExnType(..))
-import qualified Thrift (ProtocolExnType(..))
-import Thrift.Types
-import Thrift.Arbitraries
+import qualified Thrift
+import qualified Thrift.Types as Types
+import qualified Thrift.Serializable as Serializable
+import qualified Thrift.Arbitraries as Arbitraries
 
 
-data Enum = ONE|TWO|THREE  deriving (Show,Eq, Typeable, Ord, Bounded)
+data Enum = ONE|TWO|THREE  deriving (Show,Eq, Typeable.Typeable, Ord, Bounded)
 instance Enum Enum where
   fromEnum t = case t of
     ONE -> 1
@@ -55,53 +56,56 @@ instance Enum Enum where
     1 -> ONE
     2 -> TWO
     3 -> THREE
-    _ -> throw ThriftException
-instance Hashable Enum where
-  hashWithSalt salt = hashWithSalt salt . fromEnum
-instance NFData Enum where
+    _ -> Exception.throw Thrift.ThriftException
+instance Hashable.Hashable Enum where
+  hashWithSalt salt = Hashable.hashWithSalt salt . fromEnum
+instance DeepSeq.NFData Enum where
   rnf x = x `seq` ()
-instance Arbitrary Enum where
-  arbitrary = elements (enumFromTo minBound maxBound)
+instance Arbitrary.Arbitrary Enum where
+  arbitrary = QuickCheck.elements (enumFromTo minBound maxBound)
 data Struct = Struct
-  { struct_first :: Int32
+  { struct_first :: Int.Int32
   , struct_second :: LT.Text
-  } deriving (Show,Eq,Typeable)
-instance Hashable Struct where
-  hashWithSalt salt record = salt   `hashWithSalt` struct_first record   `hashWithSalt` struct_second record  
-instance NFData Struct where
+  } deriving (Show,Eq,Typeable.Typeable)
+instance Serializable.ThriftSerializable Struct where
+  encode = encode_Struct
+  decode = decode_Struct
+instance Hashable.Hashable Struct where
+  hashWithSalt salt record = salt   `Hashable.hashWithSalt` struct_first record   `Hashable.hashWithSalt` struct_second record  
+instance DeepSeq.NFData Struct where
   rnf _record0 =
-    rnf (struct_first _record0) `seq`
-    rnf (struct_second _record0) `seq`
+    DeepSeq.rnf (struct_first _record0) `seq`
+    DeepSeq.rnf (struct_second _record0) `seq`
     ()
-instance Arbitrary Struct where 
-  arbitrary = liftM Struct (arbitrary)
-          `ap`(arbitrary)
+instance Arbitrary.Arbitrary Struct where 
+  arbitrary = Monad.liftM Struct (Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
   shrink obj | obj == default_Struct = []
-             | otherwise = catMaybes
+             | otherwise = Maybe.catMaybes
     [ if obj == default_Struct{struct_first = struct_first obj} then Nothing else Just $ default_Struct{struct_first = struct_first obj}
     , if obj == default_Struct{struct_second = struct_second obj} then Nothing else Just $ default_Struct{struct_second = struct_second obj}
     ]
-from_Struct :: Struct -> ThriftVal
-from_Struct record = TStruct $ Map.fromList $ catMaybes
-  [ (\_v3 -> Just (1, ("first",TI32 _v3))) $ struct_first record
-  , (\_v3 -> Just (2, ("second",TString $ encodeUtf8 _v3))) $ struct_second record
+from_Struct :: Struct -> Types.ThriftVal
+from_Struct record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
+  [ (\_v3 -> Just (1, ("first",Types.TI32 _v3))) $ struct_first record
+  , (\_v3 -> Just (2, ("second",Types.TString $ Encoding.encodeUtf8 _v3))) $ struct_second record
   ]
-write_Struct :: (Protocol p, Transport t) => p t -> Struct -> IO ()
-write_Struct oprot record = writeVal oprot $ from_Struct record
-encode_Struct :: (Protocol p, Transport t) => p t -> Struct -> ByteString
-encode_Struct oprot record = serializeVal oprot $ from_Struct record
-to_Struct :: ThriftVal -> Struct
-to_Struct (TStruct fields) = Struct{
-  struct_first = maybe (struct_first default_Struct) (\(_,_val5) -> (case _val5 of {TI32 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields),
-  struct_second = maybe (struct_second default_Struct) (\(_,_val5) -> (case _val5 of {TString _val7 -> decodeUtf8 _val7; _ -> error "wrong type"})) (Map.lookup (2) fields)
+write_Struct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Struct -> IO ()
+write_Struct oprot record = Thrift.writeVal oprot $ from_Struct record
+encode_Struct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Struct -> BS.ByteString
+encode_Struct oprot record = Thrift.serializeVal oprot $ from_Struct record
+to_Struct :: Types.ThriftVal -> Struct
+to_Struct (Types.TStruct fields) = Struct{
+  struct_first = maybe (struct_first default_Struct) (\(_,_val5) -> (case _val5 of {Types.TI32 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields),
+  struct_second = maybe (struct_second default_Struct) (\(_,_val5) -> (case _val5 of {Types.TString _val7 -> Encoding.decodeUtf8 _val7; _ -> error "wrong type"})) (Map.lookup (2) fields)
   }
 to_Struct _ = error "not a struct"
-read_Struct :: (Transport t, Protocol p) => p t -> IO Struct
-read_Struct iprot = to_Struct <$> readVal iprot (T_STRUCT typemap_Struct)
-decode_Struct :: (Protocol p, Transport t) => p t -> ByteString -> Struct
-decode_Struct iprot bs = to_Struct $ deserializeVal iprot (T_STRUCT typemap_Struct) bs
-typemap_Struct :: TypeMap
-typemap_Struct = Map.fromList [("first",(1,T_I32)),("second",(2,T_STRING))]
+read_Struct :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Struct
+read_Struct iprot = to_Struct <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Struct)
+decode_Struct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Struct
+decode_Struct iprot bs = to_Struct $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Struct) bs
+typemap_Struct :: Types.TypeMap
+typemap_Struct = Map.fromList [("first",(1,Types.T_I32)),("second",(2,Types.T_STRING))]
 default_Struct :: Struct
 default_Struct = Struct{
   struct_first = 0,
