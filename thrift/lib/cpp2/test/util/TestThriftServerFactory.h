@@ -20,13 +20,14 @@
 
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
+#include <thrift/lib/cpp2/test/util/TestServerFactory.h>
 
 namespace apache { namespace thrift {
 
 template<typename Interface>
-struct TestThriftServerFactory {
+struct TestThriftServerFactory : public TestServerFactory {
   public:
-    std::shared_ptr<ThriftServer> create() {
+    std::shared_ptr<BaseThriftServer> create() {
       auto server = std::make_shared<apache::thrift::ThriftServer>();
       server->setNWorkerThreads(1);
       if (useSimpleThreadManager_) {
@@ -58,6 +59,10 @@ struct TestThriftServerFactory {
 
     if (duplex_) {
       server->setDuplex(true);
+    }
+
+    if (serverEventHandler_) {
+      server->setServerEventHandler(serverEventHandler_);
     }
 
     server->setMinCompressBytes(minCompressBytes_);

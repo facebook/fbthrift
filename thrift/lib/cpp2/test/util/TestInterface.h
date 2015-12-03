@@ -13,53 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 
-namespace {
-  const std::string kEchoSuffix(45, 'c');
-}
+extern const std::string kEchoSuffix;
 
 class TestInterface : public apache::thrift::test::cpp2::TestServiceSvIf {
-  void sendResponse(std::string& _return, int64_t size) override {
-    if (size >= 0) {
-      usleep(size);
-    }
-
-    EXPECT_NE("", getConnectionContext()->getPeerAddress()->describe());
-
-    _return = folly::format("test{0}", size).str();
-  }
-
-  void noResponse(int64_t size) override { usleep(size); }
+  void sendResponse(std::string& _return, int64_t size) override;
+  void noResponse(int64_t size) override;
 
   void echoRequest(std::string& _return,
-                   std::unique_ptr<std::string> req) override {
-    _return = *req + kEchoSuffix;
-  }
-
+                   std::unique_ptr<std::string> req) override;
   typedef apache::thrift::HandlerCallback<std::unique_ptr<std::string>>
       StringCob;
   void async_tm_serializationTest(std::unique_ptr<StringCob> callback,
-                                  bool inEventBase) override {
-    std::unique_ptr<std::string> sp(new std::string("hello world"));
-    callback->result(std::move(sp));
-  }
+                                  bool inEventBase) override;
 
-  void async_eb_eventBaseAsync(std::unique_ptr<StringCob> callback) override {
-    std::unique_ptr<std::string> hello(new std::string("hello world"));
-    callback->result(std::move(hello));
-  }
+  void async_eb_eventBaseAsync(std::unique_ptr<StringCob> callback) override;
 
   void async_tm_notCalledBack(
-      std::unique_ptr<apache::thrift::HandlerCallback<void>> cb) override {}
+      std::unique_ptr<apache::thrift::HandlerCallback<void>> cb) override;
 
   void echoIOBuf(std::unique_ptr<folly::IOBuf>& ret,
-      std::unique_ptr<folly::IOBuf> buf) override {
-    ret = std::move(buf);
-    folly::io::Appender cursor(ret.get(), kEchoSuffix.size());
-    cursor.push(folly::StringPiece(kEchoSuffix.data(), kEchoSuffix.size()));
-  }
+                 std::unique_ptr<folly::IOBuf> buf) override;
 };
