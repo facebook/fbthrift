@@ -109,16 +109,20 @@ class Cpp2Worker
   enum { kPeekCount = 9 };
   using PeekingHelper = wangle::PeekingAcceptorHandshakeHelper<kPeekCount>;
 
-  class PeekingCallback : public PeekingHelper::Callback {
+  class PeekingCallback : public PeekingHelper::PeekCallback {
    public:
-    folly::Optional<SecureTransportType> getSecureTransportType(
-        std::array<uint8_t, kPeekCount> peekedBytes) override;
+    virtual wangle::AcceptorHandshakeHelper::UniquePtr getHelper(
+        std::array<uint8_t, kPeekCount> bytes,
+        wangle::Acceptor* acceptor,
+        const folly::SocketAddress& clientAddr,
+        std::chrono::steady_clock::time_point acceptTime,
+        wangle::TransportInfo& tinfo) override;
   };
 
   /**
    * The socket peeker to use to determine the type of incoming byte stream.
    */
-  virtual PeekingHelper::Callback* getPeekingHandshakeCallback() {
+  virtual PeekingHelper::PeekCallback* getPeekingHandshakeCallback() {
     return &peekingCallback_;
   }
 
@@ -127,6 +131,12 @@ class Cpp2Worker
                        const std::string&,
                        SecureTransportType,
                        const wangle::TransportInfo&) override;
+
+  static bool looksLikeTLS(std::array<uint8_t, kPeekCount>& bytes);
+
+  SSLPolicy getSSLPolicy() {
+    return server_->getSSLPolicy();
+  }
 
  private:
   /// The mother ship.
@@ -163,14 +173,14 @@ class Cpp2Worker
 
   PeekingCallback peekingCallback_;
 
-  void startHandshakeHelper(
+  void startHandshakeManager(
       folly::AsyncSSLSocket::UniquePtr sslSock,
       wangle::Acceptor* acceptor,
       const folly::SocketAddress& clientAddr,
       std::chrono::steady_clock::time_point acceptTime,
       wangle::TransportInfo& tinfo) noexcept override {
 
-    switch (server_->getSSLPolicy()) {
+    switch (getSSLPolicy()) {
     default:
     case SSLPolicy::DISABLED:
       // No TLS, complete "handshake" and stay in STATE_UNENCRYPTED
@@ -184,21 +194,20 @@ class Cpp2Worker
 
     case SSLPolicy::PERMITTED: {
       // Peek and fall back to insecure if non-TLS bytes discovered
-      auto helper = new PeekingHelper(
-          std::move(sslSock),
+      auto manager = new wangle::PeekingAcceptorHandshakeManager<kPeekCount>(
           this,
           clientAddr,
           acceptTime,
           tinfo,
           getPeekingHandshakeCallback()
         );
-      helper->start();
+      manager->start(std::move(sslSock));
       break;
     }
 
     case SSLPolicy::REQUIRED:
       // Delegate to Acceptor, which always does TLS
-      wangle::Acceptor::startHandshakeHelper(
+      wangle::Acceptor::startHandshakeManager(
           std::move(sslSock),
           acceptor,
           clientAddr,
