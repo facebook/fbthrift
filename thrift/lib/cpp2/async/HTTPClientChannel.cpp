@@ -18,9 +18,11 @@
 #include <proxygen/lib/http/codec/HTTPCodec.h>
 #include <proxygen/lib/http/codec/HTTP1xCodec.h>
 #include <proxygen/lib/http/codec/TransportDirection.h>
+#include <proxygen/lib/http/codec/experimental/HTTP2Codec.h>
 #include <proxygen/lib/http/HTTPMethod.h>
 #include <proxygen/lib/http/HTTPCommonHeaders.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
@@ -40,69 +42,77 @@ using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::THeader;
 using HResClock = std::chrono::high_resolution_clock;
 using Us = std::chrono::microseconds;
+using apache::thrift::transport::TTransportException;
 
 namespace apache {
 namespace thrift {
 
-template class ChannelCallbacks::TwowayCallback<HTTPClientChannel>;
-
-HTTPClientChannel::HTTPClientChannel(
-    const std::shared_ptr<TAsyncTransport>& transport,
+HTTPClientChannel::Ptr HTTPClientChannel::newHTTP1xChannel(
+    apache::thrift::async::TAsyncTransport::UniquePtr transport,
     const std::string& host,
-    const std::string& url)
-    : HTTPClientChannel(
-          std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-              transport, make_unique<ClientFramingHandler>(*this))),
-          host,
-          url) {}
+    const std::string& url) {
+  auto channel = newChannel(std::move(transport),
+                            host,
+                            url,
+                            folly::make_unique<proxygen::HTTP1xCodec>(
+                                proxygen::TransportDirection::UPSTREAM));
+  channel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
 
-HTTPClientChannel::HTTPClientChannel(
-    const std::shared_ptr<TAsyncTransport>& transport,
-    const std::string& host,
-    const std::string& url,
-    std::unique_ptr<proxygen::HTTPCodec> codec)
-    : HTTPClientChannel(
-          std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-              transport, make_unique<ClientFramingHandler>(*this))),
-          host,
-          url,
-          std::move(codec)) {}
+  return channel;
+}
 
-HTTPClientChannel::HTTPClientChannel(
-    const std::shared_ptr<Cpp2Channel>& cpp2Channel,
+HTTPClientChannel::Ptr HTTPClientChannel::newHTTP2Channel(
+    apache::thrift::async::TAsyncTransport::UniquePtr transport,
     const std::string& host,
-    const std::string& url)
-    : HTTPClientChannel(cpp2Channel,
-                        host,
-                        url,
-                        folly::make_unique<proxygen::HTTP1xCodec>(
-                            proxygen::TransportDirection::UPSTREAM)) {}
+    const std::string& url) {
+  return newChannel(std::move(transport),
+                    host,
+                    url,
+                    folly::make_unique<proxygen::HTTP2Codec>(
+                        proxygen::TransportDirection::UPSTREAM));
+}
 
-HTTPClientChannel::HTTPClientChannel(
-    const std::shared_ptr<Cpp2Channel>& cpp2Channel,
-    const std::string& host,
-    const std::string& url,
-    std::unique_ptr<proxygen::HTTPCodec> codec)
-    : httpCallback_(folly::make_unique<HTTPCodecCallback>(this)),
-      httpCodec_(std::move(codec)),
-      httpHost_(host),
+HTTPClientChannel::HTTPClientChannel(TAsyncTransport::UniquePtr transport,
+                                     const std::string& host,
+                                     const std::string& url,
+                                     std::unique_ptr<proxygen::HTTPCodec> codec)
+    : httpHost_(host),
       httpUrl_(url),
-      sendSeqId_(0),
       closeCallback_(nullptr),
       timeout_(0),
       keepRegisteredForClose_(true),
-      cpp2Channel_(cpp2Channel),
-      timer_(new folly::HHWheelTimer(getEventBase())),
-      protocolId_(apache::thrift::protocol::T_BINARY_PROTOCOL) {
-  httpCodec_->setCallback(httpCallback_.get());
+      evb_(transport->getEventBase()),
+      timer_(folly::HHWheelTimer::newTimer(
+          evb_,
+          std::chrono::milliseconds(folly::HHWheelTimer::DEFAULT_TICK_INTERVAL),
+          folly::AsyncTimeout::InternalEnum::NORMAL,
+          std::chrono::seconds(60))),
+      protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL) {
+  folly::SocketAddress localAddr;
+  folly::SocketAddress peerAddr;
+  transport->getLocalAddress(&localAddr);
+  transport->getPeerAddress(&peerAddr);
+
+  httpSession_ = new proxygen::HTTPUpstreamSession(timer_.get(),
+                                                   std::move(transport),
+                                                   localAddr,
+                                                   peerAddr,
+                                                   std::move(codec),
+                                                   wangle::TransportInfo(),
+                                                   this);
+  this->setFlowControl(4194304, 4194304, 4194304);
 }
 
-void HTTPClientChannel::setTimeout(uint32_t ms) {
-  getTransport()->setSendTimeout(ms);
-  timeout_ = ms;
-}
+void HTTPClientChannel::setTimeout(uint32_t ms) { timeout_ = ms; }
 
-void HTTPClientChannel::closeNow() { cpp2Channel_->closeNow(); }
+void HTTPClientChannel::closeNow() {
+  if (httpSession_) {
+    httpSession_->setInfoCallback(nullptr);
+    httpSession_->shutdownTransport();
+    httpSession_ = nullptr;
+    timer_.reset();
+  }
+}
 
 void HTTPClientChannel::destroy() {
   closeNow();
@@ -110,17 +120,39 @@ void HTTPClientChannel::destroy() {
 }
 
 void HTTPClientChannel::attachEventBase(EventBase* eventBase) {
-  cpp2Channel_->attachEventBase(eventBase);
   timer_->attachEventBase(eventBase);
+  if (httpSession_) {
+    auto trans = httpSession_->getTransport();
+    if (trans) {
+      trans->attachEventBase(eventBase);
+    }
+  }
+  evb_ = eventBase;
 }
 
 void HTTPClientChannel::detachEventBase() {
-  cpp2Channel_->detachEventBase();
   timer_->detachEventBase();
+  if (httpSession_) {
+    auto trans = httpSession_->getTransport();
+    if (trans) {
+      trans->detachEventBase();
+    }
+  }
+  evb_ = nullptr;
 }
 
 bool HTTPClientChannel::isDetachable() {
-  return getTransport()->isDetachable() && timer_->isDetachable();
+  return timer_->isDetachable() &&
+         (!httpSession_ || httpSession_->getTransport()->isDetachable());
+}
+
+void HTTPClientChannel::setCloseCallback(CloseCallback* cb) {
+  closeCallback_ = cb;
+}
+
+void HTTPClientChannel::setRequestHeaderOptions(THeader* header) {
+  header->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+  header->forceClientType(THRIFT_HTTP_CLIENT_TYPE);
 }
 
 // Client Interface
@@ -130,37 +162,58 @@ uint32_t HTTPClientChannel::sendOnewayRequest(
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     unique_ptr<IOBuf> buf,
     std::shared_ptr<THeader> header) {
+  DestructorGuard dg(this);
   cb->context_ = RequestContext::saveContext();
+
+  HTTPTransactionOnewayCallback* owcb = nullptr;
+
+  if (cb) {
+    owcb = new HTTPTransactionOnewayCallback(
+        std::move(cb), std::move(ctx), isSecurityActive());
+  }
+
+  if (!httpSession_) {
+    if (owcb) {
+      TTransportException ex(TTransportException::NOT_OPEN,
+                             "HTTPSession is not open");
+      owcb->messageSendError(
+          folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+
+      delete owcb;
+    }
+
+    return -1;
+  }
+
+  auto txn = httpSession_->newTransaction(owcb);
+
+  if (!txn) {
+    if (owcb) {
+      TTransportException ex(TTransportException::NOT_OPEN,
+                             "Too many active requests on connection");
+      owcb->messageSendError(
+          folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+
+      delete owcb;
+    }
+
+    return -1;
+  }
 
   setRequestHeaderOptions(header.get());
   addRpcOptionHeaders(header.get(), rpcOptions);
 
-  // Both cb and buf are allowed to be null.
-  uint32_t oldSeqId = sendSeqId_;
-  sendSeqId_ = ResponseChannel::ONEWAY_REQUEST_ID;
+  auto msg = buildHTTPMessage(header.get());
 
-  if (cb) {
-    sendMessage(new OnewayCallback(std::move(cb), std::move(ctx), false),
-                std::move(buf),
-                header.get());
-  } else {
-    sendMessage(nullptr, std::move(buf), header.get());
+  txn->sendHeaders(msg);
+  txn->sendBody(std::move(buf));
+  txn->sendEOM();
+
+  if (owcb) {
+    owcb->sendQueued();
   }
-  sendSeqId_ = oldSeqId;
+
   return ResponseChannel::ONEWAY_REQUEST_ID;
-}
-
-void HTTPClientChannel::setCloseCallback(CloseCallback* cb) {
-  closeCallback_ = cb;
-  setBaseReceivedCallback();
-}
-
-void HTTPClientChannel::setRequestHeaderOptions(THeader* header) {
-  if (httpCodec_->supportsParallelRequests()) {
-    header->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
-  }
-  header->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-  header->forceClientType(THRIFT_HTTP_CLIENT_TYPE);
 }
 
 uint32_t HTTPClientChannel::sendRequest(
@@ -172,16 +225,9 @@ uint32_t HTTPClientChannel::sendRequest(
   // cb is not allowed to be null.
   DCHECK(cb);
 
-  cb->context_ = RequestContext::saveContext();
-
   DestructorGuard dg(this);
 
-  // Oneway requests use a special sequence id.
-  // Make sure this non-oneway request doesn't use
-  // the oneway request ID.
-  if (++sendSeqId_ == ResponseChannel::ONEWAY_REQUEST_ID) {
-    ++sendSeqId_;
-  }
+  cb->context_ = RequestContext::saveContext();
 
   std::chrono::milliseconds timeout(timeout_);
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
@@ -189,44 +235,64 @@ uint32_t HTTPClientChannel::sendRequest(
   }
 
   auto twcb =
-      new TwowayCallback<HTTPClientChannel>(this,
-                                            sendSeqId_,
-                                            protocolId_,
-                                            std::move(cb),
-                                            std::move(ctx),
-                                            timer_.get(),
-                                            timeout,
-                                            rpcOptions.getChunkTimeout());
+      new HTTPTransactionTwowayCallback(std::move(cb),
+                                        std::move(ctx),
+                                        isSecurityActive(),
+                                        protocolId_,
+                                        timer_.get(),
+                                        std::chrono::milliseconds(timeout_));
+
+  if (!httpSession_) {
+    TTransportException ex(TTransportException::NOT_OPEN,
+                           "HTTPSession is not open");
+    twcb->messageSendError(
+        folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+
+    delete twcb;
+
+    return -1;
+  }
+
+  auto txn = httpSession_->newTransaction(twcb);
+
+  if (!txn) {
+    TTransportException ex(TTransportException::NOT_OPEN,
+                            "Too many active requests on connection");
+    // Might be able to create another transaction soon
+    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
+    twcb->messageSendError(
+        folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+
+    delete twcb;
+
+    return -1;
+  }
+
+  auto streamId = txn->getID();
 
   setRequestHeaderOptions(header.get());
   addRpcOptionHeaders(header.get(), rpcOptions);
 
-  recvCallbackOrder_.push_back(sendSeqId_);
-  recvCallbacks_[sendSeqId_] = twcb;
-  setBaseReceivedCallback();
+  auto msg = buildHTTPMessage(header.get());
 
-  sendMessage(twcb, std::move(buf), header.get());
-  return sendSeqId_;
+  txn->sendHeaders(msg);
+  txn->sendBody(std::move(buf));
+  txn->sendEOM();
+
+  twcb->sendQueued();
+
+  return (uint32_t)streamId;
 }
 
-// Header framing
-std::unique_ptr<folly::IOBuf> HTTPClientChannel::ClientFramingHandler::addFrame(
-    unique_ptr<IOBuf> buf, apache::thrift::transport::THeader* header) {
-  const auto& codec = channel_.httpCodec_;
-  proxygen::HTTPCodec::StreamID sid = codec->createStream();
-
-  channel_.streamIDToSeqId_[sid] = channel_.sendSeqId_;
-
-  folly::IOBufQueue writeBuf;
-
+proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
   proxygen::HTTPMessage msg;
   msg.setMethod(proxygen::HTTPMethod::POST);
-  msg.setURL(channel_.httpUrl_);
+  msg.setURL(httpUrl_);
   msg.setHTTPVersion(1, 1);
   msg.setIsChunked(false);
   auto& headers = msg.getHeaders();
 
-  auto pwh = channel_.getPersistentWriteHeaders();
+  auto pwh = getPersistentWriteHeaders();
 
   for (auto it = pwh.begin(); it != pwh.end(); ++it) {
     headers.rawSet(it->first, it->second);
@@ -236,186 +302,48 @@ std::unique_ptr<folly::IOBuf> HTTPClientChannel::ClientFramingHandler::addFrame(
   // distinguish persistent/per request headers
   // pwh.clear();
 
-  auto wh = header->getWriteHeaders();
+  auto wh = header->releaseWriteHeaders();
 
   for (auto it = wh.begin(); it != wh.end(); ++it) {
     headers.rawSet(it->first, it->second);
   }
 
-  headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_HOST, channel_.httpHost_);
-  headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_CONTENT_LENGTH,
-              folly::to<std::string>(buf->computeChainDataLength()));
+  headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
+  headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE,
+              "application/x-thrift");
 
-  wh.clear();
-
-  codec->generateHeader(writeBuf, sid, msg);
-  codec->generateBody(writeBuf, sid, std::move(buf), boost::none, true);
-
-  return writeBuf.move();
-}
-
-std::tuple<std::unique_ptr<IOBuf>, size_t, std::unique_ptr<THeader>>
-HTTPClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
-  if (q && q->front() && !q->front()->empty()) {
-    const auto& codec = channel_.httpCodec_;
-
-    auto bytes_read = 1;
-    while (bytes_read && q->front()) {
-      bytes_read = codec->onIngress(*(q->front()));
-      q->trimStart(bytes_read);
-    }
+  switch (protocolId_) {
+    case protocol::T_BINARY_PROTOCOL:
+      headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
+                  "binary");
+      break;
+    case protocol::T_COMPACT_PROTOCOL:
+      headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
+                  "compact");
+      break;
+    case protocol::T_JSON_PROTOCOL:
+      headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
+                  "json");
+      break;
+    case protocol::T_SIMPLE_JSON_PROTOCOL:
+      headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
+                  "simplejson");
+      break;
+    default:
+      // Do nothing
+      break;
   }
 
-  if (channel_.completedStreamIDs_.empty()) {
-    return make_tuple(std::unique_ptr<IOBuf>(), 1, nullptr);
-  } else {
-    auto header = folly::make_unique<THeader>();
-
-    auto sid = channel_.completedStreamIDs_.front();
-    channel_.completedStreamIDs_.pop_front();
-
-    auto reqid = channel_.streamIDToSeqId_.find(sid);
-    auto msg = channel_.streamIDToMsg_.find(sid);
-    auto body = channel_.streamIDToBody_.find(sid);
-
-    CHECK(reqid != channel_.streamIDToSeqId_.end());
-    CHECK(msg != channel_.streamIDToMsg_.end());
-    CHECK(body != channel_.streamIDToBody_.end());
-
-    header->setSequenceNumber(reqid->second);
-
-    THeader::StringToStringMap readHeaders;
-
-    auto hdrs = msg->second->getHeaders();
-
-    hdrs.forEach([&](const std::string& key, const std::string& val) {
-      readHeaders[key] = val;
-    });
-
-    auto trlrs = msg->second->getTrailers();
-
-    if (trlrs) {
-      trlrs->forEach([&](const std::string& key, const std::string& val) {
-        readHeaders[key] = val;
-      });
-    }
-
-    header->setReadHeaders(std::move(readHeaders));
-
-    auto response = make_tuple(body->second->move(), 0, std::move(header));
-
-    channel_.streamIDToSeqId_.erase(reqid);
-    channel_.streamIDToMsg_.erase(msg);
-    channel_.streamIDToBody_.erase(body);
-
-    return std::move(response);
-  }
+  return msg;
 }
 
-// Interface from MessageChannel::RecvCallback
-void HTTPClientChannel::messageReceived(
-    unique_ptr<IOBuf>&& buf,
-    std::unique_ptr<THeader>&& header,
-    unique_ptr<MessageChannel::RecvCallback::sample>) {
-  DestructorGuard dg(this);
-
-  uint32_t recvSeqId;
-
-  recvSeqId = recvCallbackOrder_.front();
-  recvCallbackOrder_.pop_front();
-
-  auto cb = recvCallbacks_.find(recvSeqId);
-
-  // TODO: On some errors, some servers will return 0 for seqid.
-  // Could possibly try and deserialize the buf and throw a
-  // TApplicationException.
-  // BUT, we don't even know for sure what protocol to deserialize with.
-  if (cb == recvCallbacks_.end()) {
-    VLOG(5) << "Could not find message id in recvCallbacks "
-            << "(timed out, possibly server is just now sending response?)";
-    return;
-  }
-
-  auto f(cb->second);
-
-  auto it = header->getHeaders().find("thrift_stream");
-  bool isChunk = (it != header->getHeaders().end() && it->second == "chunk");
-
-  if (isChunk) {
-    f->partialReplyReceived(std::move(buf), std::move(header));
-  } else {
-    // non-stream message or end of stream
-    recvCallbacks_.erase(recvSeqId);
-    // we are the last callback?
-    setBaseReceivedCallback();
-
-    f->replyReceived(std::move(buf), std::move(header));
-  }
-}
-
-void HTTPClientChannel::messageChannelEOF() {
-  DestructorGuard dg(this);
-  messageReceiveErrorWrapped(
-      folly::make_exception_wrapper<TTransportException>("Channel got EOF"));
-  if (closeCallback_) {
-    closeCallback_->channelClosed();
-    closeCallback_ = nullptr;
-  }
-  setBaseReceivedCallback();
-}
-
-void HTTPClientChannel::messageReceiveErrorWrapped(
-    folly::exception_wrapper&& ex) {
-  DestructorGuard dg(this);
-
-  // Clear callbacks early.  The last callback can delete the client,
-  // which may cause the channel to be destroy()ed, which will call
-  // messageChannelEOF(), which will reenter messageReceiveError().
-
-  decltype(recvCallbacks_) callbacks;
-  using std::swap;
-  swap(recvCallbacks_, callbacks);
-
-  if (!callbacks.empty()) {
-    for (auto& cb : callbacks) {
-      if (cb.second) {
-        cb.second->requestError(ex);
-      }
-    }
-  }
-
-  setBaseReceivedCallback();
-}
-
-void HTTPClientChannel::eraseCallback(uint32_t seqId,
-                                      TwowayCallback<HTTPClientChannel>* cb) {
-  CHECK(getEventBase()->isInEventBaseThread());
-  auto it = recvCallbacks_.find(seqId);
-  CHECK(it != recvCallbacks_.end());
-  CHECK(it->second == cb);
-  recvCallbacks_.erase(it);
-
-  setBaseReceivedCallback(); // was this the last callback?
-}
-
-bool HTTPClientChannel::expireCallback(uint32_t seqId) {
-  VLOG(4) << "Expiring callback with sequence id " << seqId;
-  CHECK(getEventBase()->isInEventBaseThread());
-  auto it = recvCallbacks_.find(seqId);
-  if (it != recvCallbacks_.end()) {
-    it->second->expire();
-    return true;
-  }
-
-  return false;
-}
-
-void HTTPClientChannel::setBaseReceivedCallback() {
-  if (recvCallbacks_.size() != 0 ||
-      (closeCallback_ && keepRegisteredForClose_)) {
-    cpp2Channel_->setReceiveCallback(this);
-  } else {
-    cpp2Channel_->setReceiveCallback(nullptr);
+void HTTPClientChannel::setFlowControl(size_t initialReceiveWindow,
+                                       size_t receiveStreamWindowSize,
+                                       size_t receiveSessionWindowSize) {
+  if (httpSession_) {
+    httpSession_->setFlowControl(initialReceiveWindow,
+                                 receiveStreamWindowSize,
+                                 receiveSessionWindowSize);
   }
 }
 }

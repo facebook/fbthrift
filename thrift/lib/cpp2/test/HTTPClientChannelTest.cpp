@@ -40,6 +40,10 @@ using std::string;
 class TestServiceHandler : public TestServiceIf {
  public:
   void sendResponse(string& _return, int64_t size) override {
+    if (size >= 0) {
+      usleep(size);
+    }
+
     _return = "test" + boost::lexical_cast<std::string>(size);
   }
 
@@ -72,16 +76,16 @@ std::unique_ptr<ScopedServerThread> createHttpServer() {
   return folly::make_unique<ScopedServerThread>(&serverCreator);
 }
 
-TEST(HTTPClientChannelTest, SimpleTest) {
+TEST(HTTPClientChannelTest, SimpleTestAsync) {
   std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
 
   folly::EventBase eb;
   const folly::SocketAddress* addr = serverThread->getAddress();
-  std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, *addr);
-  std::unique_ptr<HTTPClientChannel, folly::DelayedDestruction::Destructor> channel(
-      new HTTPClientChannel(socket, "127.0.0.1", "/foobar"));
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+  auto channel = HTTPClientChannel::newHTTP1xChannel(
+      std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
-  client.sendResponse([](apache::thrift::ClientReceiveState&& state) {
+  client.sendResponse([&eb](apache::thrift::ClientReceiveState&& state) {
     if (state.exception()) {
       try {
         std::rethrow_exception(state.exception());
@@ -93,16 +97,35 @@ TEST(HTTPClientChannelTest, SimpleTest) {
     std::string res;
     TestServiceAsyncClient::recv_sendResponse(res, state);
     EXPECT_EQ(res, "test24");
+    eb.terminateLoopSoon();
   }, 24);
   eb.loop();
 
-  client.eventBaseAsync([](apache::thrift::ClientReceiveState&& state) {
+  client.eventBaseAsync([&eb](apache::thrift::ClientReceiveState&& state) {
     EXPECT_TRUE(state.exception() == nullptr);
     std::string res;
     TestServiceAsyncClient::recv_eventBaseAsync(res, state);
     EXPECT_EQ(res, "hello world");
+    eb.terminateLoopSoon();
   });
   eb.loop();
+}
+
+TEST(HTTPClientChannelTest, SimpleTestSync) {
+  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+
+  folly::EventBase eb;
+  const folly::SocketAddress* addr = serverThread->getAddress();
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+  auto channel = HTTPClientChannel::newHTTP1xChannel(
+      std::move(socket), "127.0.0.1", "/foobar");
+  TestServiceAsyncClient client(std::move(channel));
+  std::string res;
+  client.sync_sendResponse(res, 24);
+  EXPECT_EQ(res, "test24");
+
+  client.sync_eventBaseAsync(res);
+  EXPECT_EQ(res, "hello world");
 }
 
 TEST(HTTPClientChannelTest, LongResponse) {
@@ -110,18 +133,52 @@ TEST(HTTPClientChannelTest, LongResponse) {
 
   folly::EventBase eb;
   const folly::SocketAddress* addr = serverThread->getAddress();
-  std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, *addr);
-  std::unique_ptr<HTTPClientChannel, folly::DelayedDestruction::Destructor> channel(
-      new HTTPClientChannel(socket, "127.0.0.1", "/foobar"));
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+  auto channel = HTTPClientChannel::newHTTP1xChannel(
+      std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
 
-  client.serializationTest([](apache::thrift::ClientReceiveState&& state) {
+  client.serializationTest([&eb](apache::thrift::ClientReceiveState&& state) {
     EXPECT_TRUE(state.exception() == nullptr);
     std::string res;
     TestServiceAsyncClient::recv_serializationTest(res, state);
     EXPECT_EQ(res, string(4096, 'a'));
+    eb.terminateLoopSoon();
   }, true);
   eb.loop();
+}
+
+TEST(HTTPClientChannelTest, ClientTimeout) {
+  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+
+  folly::EventBase eb;
+  const folly::SocketAddress* addr = serverThread->getAddress();
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+  auto channel = HTTPClientChannel::newHTTP1xChannel(
+      std::move(socket), "127.0.0.1", "/foobar");
+  channel->setTimeout(1);
+  TestServiceAsyncClient client(std::move(channel));
+  bool threw = false;
+  client.sendResponse([&](apache::thrift::ClientReceiveState&& state) {
+    if (state.exception()) {
+      try {
+        std::rethrow_exception(state.exception());
+      } catch (const TTransportException& e) {
+        auto expected = TTransportException::TIMED_OUT;
+        EXPECT_EQ(expected, e.getType());
+        threw = true;
+      }
+    } else {
+      std::string res;
+      TestServiceAsyncClient::recv_sendResponse(res, state);
+      LOG(WARNING) << res;
+      EXPECT_EQ(res, "test99999");
+    }
+    eb.terminateLoopSoon();
+  }, 99999);
+  eb.loop();
+
+  EXPECT_TRUE(threw);
 }
 
 int main(int argc, char** argv) {
