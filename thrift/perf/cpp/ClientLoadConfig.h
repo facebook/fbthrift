@@ -88,6 +88,12 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
 
   bool useHeaderProtocol() const;
 
+  bool useHTTP1Protocol() const;
+
+  bool useHTTP2Protocol() const;
+
+  bool useSPDYProtocol() const;
+
   bool useAsync() const;
 
   bool useCpp2() const;

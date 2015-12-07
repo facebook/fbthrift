@@ -28,6 +28,9 @@ DEFINE_string(server, "127.0.0.1", "Name/IP address of the server to test");
 DEFINE_int32(port, 1234, "server port");
 DEFINE_bool(framed, true, "use TFramedTransport");
 DEFINE_bool(header, false, "use THeaderProtocol");
+DEFINE_bool(http1, false, "use Proxygen HTTP Protocol");
+DEFINE_bool(http2, false, "use Proxygen HTTP2 Protocol");
+DEFINE_bool(spdy, false, "use Proxygen SPDY Protocol");
 DEFINE_bool(async, false, "Use async client");
 DEFINE_bool(cpp2, false, "Use cpp cpp2");
 DEFINE_bool(ssl, false, "Use SSL");
@@ -184,6 +187,18 @@ bool ClientLoadConfig::useFramedTransport() const {
 
 bool ClientLoadConfig::useHeaderProtocol() const {
   return FLAGS_header;
+}
+
+bool ClientLoadConfig::useHTTP1Protocol() const {
+  return FLAGS_http1;
+}
+
+bool ClientLoadConfig::useHTTP2Protocol() const {
+  return FLAGS_http2;
+}
+
+bool ClientLoadConfig::useSPDYProtocol() const {
+  return FLAGS_spdy;
 }
 
 bool ClientLoadConfig::useAsync() const {
