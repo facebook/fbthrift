@@ -195,7 +195,7 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
           new TAsyncSocket(&eb_, *config->getAddress(), kTimeout));
       std::unique_ptr<apache::thrift::HTTPClientChannel,
                       folly::DelayedDestruction::Destructor>
-          channel(HTTPClientChannel::newChannel(
+          channel(HTTPClientChannel::newHTTP1xChannel(
               std::move(socket), "localhost", "/"));
 
       return std::make_shared<LoadTestAsyncClient>(std::move(channel));
@@ -204,12 +204,10 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
           new TAsyncSocket(&eb_, *config->getAddress(), kTimeout));
       std::unique_ptr<apache::thrift::HTTPClientChannel,
                       folly::DelayedDestruction::Destructor>
-          channel(HTTPClientChannel::newChannel(
+          channel(HTTPClientChannel::newHTTP2Channel(
               std::move(socket),
               "localhost",
-              "/",
-              folly::make_unique<proxygen::HTTP2Codec>(
-                  proxygen::TransportDirection::UPSTREAM)));
+              "/"));
 
       return std::make_shared<LoadTestAsyncClient>(std::move(channel));
     } else if (config->useSPDYProtocol()) {
