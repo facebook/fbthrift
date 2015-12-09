@@ -50,67 +50,6 @@ AS_IF([test x"$PY_PREFIX" != x],
 AC_SUBST([PY_INSTALL_ARGS])
 AC_SUBST([PY_RUN_ENV])
 
-AC_ARG_VAR([JAVA_PREFIX], [Prefix for installing the Java lib jar.
-                           (Normal --prefix is ignored for Java because
-                           Java has different conventions.)
-                           Default = "/usr/local/lib"])
-AS_IF([test "x$JAVA_PREFIX" = x], [JAVA_PREFIX="/usr/local/lib"])
-
-AC_ARG_VAR([RUBY_PREFIX], [Prefix for installing Ruby modules.
-                           (Normal --prefix is ignored for Ruby because
-                           Ruby has different conventions.)
-                           Default = none, let ruby setup decide])
-
-AC_ARG_VAR([PHP_PREFIX], [Prefix for installing PHP modules.
-                         (Normal --prefix is ignored for PHP because
-                         PHP has different conventions.)
-                         Default = "/usr/lib/php"])
-AS_IF([test "x$PHP_PREFIX" = x], [PHP_PREFIX="/usr/lib/php"])
-
-AC_ARG_VAR([PHP_CONFIG_PREFIX],
-           [Prefix for installing PHP extension module .ini file.
-            (Normal --prefix is ignored for PHP because PHP has
-             different conventions.)
-           Default = "/etc/php.d"])
-AS_IF([test "x$PHP_CONFIG_PREFIX" = x], [PHP_CONFIG_PREFIX="/etc/php.d"])
-
-AC_ARG_VAR([INSTALLDIRS], [When installing Perl modules, specifies which
-                           of the sets of installation directories
-                           to choose: perl, site or vendor.
-                           Default = "vendor"])
-AS_IF([test "x$INSTALLDIRS" = x], [INSTALLDIRS="vendor"])
-
-AC_ARG_VAR([PERL_PREFIX], [Prefix for installing Perl modules.
-                           (Normal --prefix is ignored for Perl because
-                           Perl has different conventions.)
-                           Ignored, when INSTALLDIRS set to site or vendor.
-                           Default = "/usr/local/lib"])
-AS_IF([test "x$PERL_PREFIX" = x], [PERL_PREFIX="/usr/local"])
-
-AC_ARG_VAR([CABAL_CONFIGURE_FLAGS],
-           [Extra flags to pass to cabal: "cabal Setup.lhs configure $CABAL_CONFIGURE_FLAGS".
-            (Typically used to set --user or force --global.)])
-
-AC_SUBST(CABAL_CONFIGURE_FLAGS)
-
-AC_ARG_VAR([GOROOT], [Prefix for the Go source directory.
-                           (Normal --prefix is ignored for Go because
-                           Go has different conventions.)
-                           Default = "/usr/local/share/go"])
-AS_IF([test "x$GOROOT" = x], [GOROOT="/usr/local/share/go"])
-
-AC_ARG_VAR([GOARCH], [Architecture default for Go.
-                           Default = "amd64"])
-AS_IF([test "x$GOARCH" = x], [GOARCH="amd64"])
-
-AC_ARG_VAR([GOBIN], [Binary directory for Go.
-                           Default = "/usr/local/bin"])
-AS_IF([test "x$GOBIN" = x], [GOBIN="/usr/local/bin"])
-
-AC_ARG_VAR([D_IMPORT_PREFIX], [Prefix for installing D modules.
-                           [INCLUDEDIR/d2]])
-AS_IF([test "x$D_IMPORT_PREFIX" = x], [D_IMPORT_PREFIX="${includedir}/d2"])
-
 AC_ARG_VAR([DMD_LIBEVENT_FLAGS], [DMD flags for linking libevent (auto-detected if not set).])
 AC_ARG_VAR([DMD_OPENSSL_FLAGS], [DMD flags for linking OpenSSL (auto-detected if not set).])
 
@@ -205,116 +144,7 @@ if test "$with_cpp" = "yes";  then
   have_zlib=$success
 fi
 AM_CONDITIONAL([WITH_CPP], [test "$have_cpp" = "yes"])
-AM_CONDITIONAL([AMX_HAVE_LIBEVENT], [test "$have_libevent" = "yes"])
 AM_CONDITIONAL([AMX_HAVE_ZLIB], [test "$have_zlib" = "yes"])
-
-AX_THRIFT_LIB(python, [Python], yes)
-if test "$with_python" = "yes";  then
-  AM_PATH_PYTHON(2.4,, :)
-  if test "x$PYTHON" != "x" && test "x$PYTHON" != "x:" ; then
-    have_python="yes"
-  fi
-fi
-AM_CONDITIONAL(WITH_PYTHON, [test "$have_python" = "yes"])
-
-AC_PATH_PROG([TRIAL], [trial])
-
-AX_THRIFT_LIB(perl, [Perl], yes)
-if test "$with_perl" = "yes"; then
-  AC_PATH_PROG([PERL], [perl])
-  if test -n "$PERL" ; then
-    AC_PROG_PERL_MODULES([Bit::Vector], success="yes", success="no")
-    have_perl_bit_vector="$success"
-  fi
-  if test -n "$PERL" -a "$have_perl_bit_vector" = "yes" ; then
-    have_perl="yes"
-  fi
-fi
-AM_CONDITIONAL(WITH_PERL, [test "$have_perl" = "yes"])
-
-AX_THRIFT_LIB(php, [PHP], yes)
-if test "$with_php" = "yes"; then
-  AC_PATH_PROG([PHP], [php])
-  if test -n "$PHP" ; then
-    have_php="yes"
-  fi
-fi
-AM_CONDITIONAL(WITH_PHP, [test "$have_php" = "yes"])
-
-AX_THRIFT_LIB(php_extension, [PHP_EXTENSION], yes)
-if test "$with_php_extension" = "yes"; then
-  AC_PATH_PROG([PHP_CONFIG], [php-config])
-  if test -n "$PHP_CONFIG" ; then
-    AC_CONFIG_SUBDIRS([lib/php/src/ext/thrift_protocol])
-    have_php_extension="yes"
-  fi
-fi
-AM_CONDITIONAL(WITH_PHP_EXTENSION, [test "$have_php_extension" = "yes"])
-
-AC_PATH_PROG([PHPUNIT], [phpunit])
-AM_CONDITIONAL(HAVE_PHPUNIT, [test "x$PHPUNIT" != "x"])
-
-AX_THRIFT_LIB(ruby, [Ruby], yes)
-have_ruby=no
-if test "$with_ruby" = "yes"; then
-  AC_PATH_PROG([RUBY], [ruby])
-  AC_PATH_PROG([RAKE], [rake])
-  AC_PATH_PROG([BUNDLER], [bundle])
-  if test "x$RUBY" != "x" -a "x$RAKE" != "x"; then
-    have_ruby="yes"
-  fi
-fi
-AM_CONDITIONAL(WITH_RUBY, [test "$have_ruby" = "yes"])
-AM_CONDITIONAL(HAVE_BUNDLER, [test "x$BUNDLER" != "x"])
-
-AX_THRIFT_LIB(haskell, [Haskell], yes)
-have_haskell=no
-RUNHASKELL=true
-CABAL=true
-if test "$with_haskell" = "yes"; then
-  AC_PATH_PROG([CABAL], [cabal])
-  AC_PATH_PROG([RUNHASKELL], [runhaskell])
-  if test "x$CABAL" != "x" -a "x$RUNHASKELL" != "x"; then
-    have_haskell="yes"
-  else
-    RUNHASKELL=true
-    CABAL=true
-  fi
-fi
-AC_SUBST(CABAL)
-AC_SUBST(RUNHASKELL)
-AM_CONDITIONAL(WITH_HASKELL, [test "$have_haskell" = "yes"])
-
-AX_THRIFT_LIB(go, [Go], yes)
-if test "$with_go" = "yes";  then
-  case X"$GOARCH" in
-  Xamd64)
-    GOARCH_NUM=6
-  	;;
-  X386)
-    GOARCH_NUM=8
-  	;;
-  Xarm)
-    GOARCH_NUM=5
-  	;;
-  *)
-    GOARCH_NUM=6
-    ;;
-  esac
-  GO_C=${GOBIN}/${GOARCH_NUM}g
-  GO_L=${GOBIN}/${GOARCH_NUM}l
-  GOMAKE=${GOBIN}/gomake
-  GOINSTALL=${GOBIN}/goinstall
-  AC_PATH_PROG([GO_C], [${GOARCH_NUM}g])
-  AC_PATH_PROG([GO_L], [${GOARCH_NUM}l])
-  AC_PATH_PROG([GOMAKE], [gomake])
-  AC_PATH_PROG([GOINSTALL], [goinstall])
-  if [[ -x "$GO_C" -a -x "$GO_L" -a -x "$GOMAKE" -a -x "$GOINSTALL" ]] ; then
-    have_go="yes"
-  fi
-fi
-AM_CONDITIONAL(WITH_GO, [test "$have_go" = "yes"])
-
 
 AX_THRIFT_LIB(d, [D], yes)
 if test "$with_d" = "yes";  then
@@ -402,12 +232,6 @@ AM_CONDITIONAL(HAVE_DEIMOS_OPENSSL, [test "$have_deimos_openssl" = "yes"])
 AM_CONDITIONAL(WITH_D_SSL_TESTS, [test "$with_d_ssl_tests" = "yes"])
 AC_SUBST(DMD_OPENSSL_FLAGS)
 
-
-have_tests=yes
-if test "$with_tests" = "no"; then
-  have_tests="no"
-fi
-AM_CONDITIONAL(WITH_TESTS, [test "$have_tests" = "yes"])
 
 AM_CONDITIONAL(MINGW, false)
 case "${host_os}" in
@@ -555,24 +379,6 @@ AC_SUBST(AM_CPPFLAGS, '-I$(top_srcdir)/..'" $CXX_FLAGS $BOOST_CPPFLAGS")
 
 AC_SUBST(PY_LOCAL_ROOT, '$(top_builddir)/.python-local')
 AC_SUBST(PY_LOCAL_PATH, '$(PY_LOCAL_ROOT)/lib/python')
-
-AC_ARG_ENABLE(boostthreads,
-              [  --enable-boostthreads      use boost threads, instead of POSIX pthread (experimental) ],
-              [case "${enableval}" in
-                yes) ENABLE_BOOSTTHREADS=1 ;;
-                no) ENABLE_BOOSTTHREADS=0 ;;
-                *) AC_MSG_ERROR(bad value ${enableval} for --enable-cov) ;;
-              esac],
-              [ENABLE_BOOSTTHREADS=2])
-
-
-if test "x[$]ENABLE_BOOSTTHREADS" = "x1"; then
-  AC_MSG_WARN(enable boostthreads)
-  AC_DEFINE([USE_BOOST_THREAD], [1], [experimental --enable-boostthreads that replaces POSIX pthread by boost::thread])
-  LIBS="-lboost_thread $LIBS"
-fi
-
-AM_CONDITIONAL([WITH_BOOSTTHREADS], [test "x[$]ENABLE_BOOSTTHREADS" = "x1"])
 
 AC_CONFIG_HEADERS(config.h:config.hin)
 AX_PREFIX_CONFIG_H([lib/cpp/thrift_config.h], [thrift], [config.h])

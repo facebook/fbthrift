@@ -580,10 +580,6 @@
 #define THRIFT_UNKNOWN_RIGHT_SHIFT 3
 #endif
 
-/* experimental --enable-boostthreads that replaces POSIX pthread by
-   boost::thread */
-/* #undef USE_BOOST_THREAD */
-
 /* Version number of package */
 #ifndef THRIFT_VERSION
 #define THRIFT_VERSION "1.0"
