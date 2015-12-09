@@ -33,7 +33,10 @@
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2/test/util/TestProxygenThriftServerFactory.h>
+
 #include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
+#include <thrift/lib/cpp2/test/util/TestHTTPClientChannelFactory.h>
 
 #include <folly/experimental/fibers/FiberManagerMap.h>
 #include <wangle/concurrent/GlobalExecutor.h>
@@ -56,10 +59,12 @@ namespace {
 
 enum ThriftServerTypes {
   THRIFT_SERVER,
+  PROXYGEN,
 };
 
 enum ClientChannelTypes {
   HEADER,
+  HTTP2,
 };
 
 class SharedServerTests
@@ -83,6 +88,12 @@ class SharedServerTests
         serverFactory = std::move(f);
         break;
       }
+      case PROXYGEN: {
+        ASSERT_EQ(THRIFT_SECURITY_DISABLED, securityPolicy);
+        serverFactory = folly::make_unique<
+            TestProxygenThriftServerFactory<TestInterface>>();
+        break;
+      }
       default:
         FAIL();
         break;
@@ -93,6 +104,14 @@ class SharedServerTests
         auto c = folly::make_unique<TestHeaderClientChannelFactory>();
         c->setProtocolId(protocolId);
         c->setSecurityPolicy(securityPolicy);
+        channelFactory = std::move(c);
+        break;
+      }
+      case HTTP2: {
+        ASSERT_EQ(THRIFT_SECURITY_DISABLED, securityPolicy);
+        auto c = folly::make_unique<TestHTTPClientChannelFactory>();
+        c->setCodec(TestHTTPClientChannelFactory::Codec::HTTP2);
+        c->setProtocolId(protocolId);
         channelFactory = std::move(c);
         break;
       }
@@ -515,3 +534,11 @@ INSTANTIATE_TEST_CASE_P(ThriftServerTests,
                                 Values(THRIFT_SECURITY_DISABLED,
                                        THRIFT_SECURITY_PERMITTED,
                                        THRIFT_SECURITY_REQUIRED)));
+
+INSTANTIATE_TEST_CASE_P(ProxygenThriftServerTests,
+                        SharedServerTests,
+                        Combine(Values(ThriftServerTypes::PROXYGEN),
+                                Values(ClientChannelTypes::HTTP2),
+                                Values(protocol::T_BINARY_PROTOCOL,
+                                       protocol::T_COMPACT_PROTOCOL),
+                                Values(THRIFT_SECURITY_DISABLED)));
