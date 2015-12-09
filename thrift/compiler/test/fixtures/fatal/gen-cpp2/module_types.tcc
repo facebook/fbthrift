@@ -20,18 +20,27 @@
 namespace test_cpp2 { namespace cpp_reflection {
 
 }} // test_cpp2::cpp_reflection
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 }} // test_cpp2::cpp_reflection
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 }} // test_cpp2::cpp_reflection
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 }} // apache::thrift

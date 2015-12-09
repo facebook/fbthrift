@@ -28,6 +28,9 @@ const std::map<enum1, const char*> _enum1_VALUES_TO_NAMES(apache::thrift::TEnumI
 const std::map<const char*, enum1, apache::thrift::ltstr> _enum1_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<enum1>(3, _kenum1Values, _kenum1Names), apache::thrift::TEnumInverseIterator<enum1>(-1, nullptr, nullptr));
 
 }} // test_cpp2::cpp_reflection
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::findName( ::test_cpp2::cpp_reflection::enum1 value) {
@@ -57,6 +60,9 @@ const std::map<enum2, const char*> _enum2_VALUES_TO_NAMES(apache::thrift::TEnumI
 const std::map<const char*, enum2, apache::thrift::ltstr> _enum2_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<enum2>(3, _kenum2Values, _kenum2Names), apache::thrift::TEnumInverseIterator<enum2>(-1, nullptr, nullptr));
 
 }} // test_cpp2::cpp_reflection
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::findName( ::test_cpp2::cpp_reflection::enum2 value) {
@@ -86,6 +92,9 @@ const std::map<enum3, const char*> _enum3_VALUES_TO_NAMES(apache::thrift::TEnumI
 const std::map<const char*, enum3, apache::thrift::ltstr> _enum3_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<enum3>(3, _kenum3Values, _kenum3Names), apache::thrift::TEnumInverseIterator<enum3>(-1, nullptr, nullptr));
 
 }} // test_cpp2::cpp_reflection
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::findName( ::test_cpp2::cpp_reflection::enum3 value) {

@@ -26,6 +26,9 @@ const std::map<MyEnum, const char*> _MyEnum_VALUES_TO_NAMES(apache::thrift::TEnu
 const std::map<const char*, MyEnum, apache::thrift::ltstr> _MyEnum_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<MyEnum>(2, _kMyEnumValues, _kMyEnumNames), apache::thrift::TEnumInverseIterator<MyEnum>(-1, nullptr, nullptr));
 
 } // cpp2
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::cpp2::MyEnum>::findName( ::cpp2::MyEnum value) {

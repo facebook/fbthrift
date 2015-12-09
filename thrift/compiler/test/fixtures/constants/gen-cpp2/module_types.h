@@ -32,6 +32,12 @@ extern const std::map<City, const char*> _City_VALUES_TO_NAMES;
 extern const std::map<const char*, City, apache::thrift::ltstr> _City_NAMES_TO_VALUES;
 
 } // cpp2
+namespace std {
+
+template<> struct hash<typename  ::cpp2::City> : public apache::thrift::detail::enum_hash<typename  ::cpp2::City> {};
+template<> struct equal_to<typename  ::cpp2::City> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::City> {};
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::cpp2::City>::findName( ::cpp2::City value);
@@ -59,6 +65,12 @@ extern const std::map<Company, const char*> _Company_VALUES_TO_NAMES;
 extern const std::map<const char*, Company, apache::thrift::ltstr> _Company_NAMES_TO_VALUES;
 
 } // cpp2
+namespace std {
+
+template<> struct hash<typename  ::cpp2::Company> : public apache::thrift::detail::enum_hash<typename  ::cpp2::Company> {};
+template<> struct equal_to<typename  ::cpp2::Company> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::Company> {};
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::cpp2::Company>::findName( ::cpp2::Company value);

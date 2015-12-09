@@ -20,12 +20,18 @@
 namespace cpp2 {
 
 } // cpp2
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
 
 } // cpp2
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 }} // apache::thrift

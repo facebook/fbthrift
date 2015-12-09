@@ -33,6 +33,12 @@ extern const std::map<Animal, const char*> _Animal_VALUES_TO_NAMES;
 extern const std::map<const char*, Animal, apache::thrift::ltstr> _Animal_NAMES_TO_VALUES;
 
 } // cpp2
+namespace std {
+
+template<> struct hash<typename  ::cpp2::Animal> : public apache::thrift::detail::enum_hash<typename  ::cpp2::Animal> {};
+template<> struct equal_to<typename  ::cpp2::Animal> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::Animal> {};
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::cpp2::Animal>::findName( ::cpp2::Animal value);

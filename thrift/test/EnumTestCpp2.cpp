@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <unordered_set>
 #include <thrift/test/gen-cpp2/EnumTest_types.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
 
@@ -83,4 +84,21 @@ TEST(EnumTestCpp2, test_enum_parse) {
 
   EXPECT_FALSE(tryParseEnum("FOO_ME2_0", &e2));
   EXPECT_FALSE(tryParseEnum("BAR_ME3_N2", &e3));
+}
+
+TEST(EnumTestCpp2, test_unordered_set) {
+  std::unordered_set<MyEnum2> stuff;
+  stuff.insert(MyEnum2::ME2_0);
+  EXPECT_TRUE(stuff.count(MyEnum2::ME2_0));
+  EXPECT_FALSE(stuff.count(MyEnum2::ME2_1));
+}
+
+TEST(EnumTestCpp2, test_hash_specialization) {
+  EXPECT_EQ((std::hash<int>()(0)), (std::hash<MyEnum2>()(MyEnum2::ME2_0)));
+  EXPECT_NE((std::hash<int>()(0)), (std::hash<MyEnum2>()(MyEnum2::ME2_1)));
+}
+
+TEST(EnumTestCpp2, test_equal_to_specialization) {
+  EXPECT_TRUE((std::equal_to<MyEnum2>()(MyEnum2::ME2_0, MyEnum2::ME2_0)));
+  EXPECT_FALSE((std::equal_to<MyEnum2>()(MyEnum2::ME2_0, MyEnum2::ME2_1)));
 }

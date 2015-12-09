@@ -26,6 +26,23 @@ enum FragileConstructor {
   FRAGILE,
 };
 
+namespace detail {
+
+template <typename T>
+struct enum_hash {
+  size_t operator()(T t) const {
+    using underlying_t = typename std::underlying_type<T>::type;
+    return std::hash<underlying_t>()(underlying_t(t));
+  }
+};
+
+template <typename T>
+struct enum_equal_to {
+  bool operator()(T t0, T t1) const { return t0 == t1; }
+};
+
+}
+
 /**
  * Class template (specialized for each type in generated code) that allows
  * access to write / read / serializedSize / serializedSizeZC functions in

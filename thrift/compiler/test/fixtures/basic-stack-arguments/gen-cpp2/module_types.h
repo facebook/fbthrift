@@ -29,6 +29,12 @@ extern const std::map<MyEnum, const char*> _MyEnum_VALUES_TO_NAMES;
 extern const std::map<const char*, MyEnum, apache::thrift::ltstr> _MyEnum_NAMES_TO_VALUES;
 
 } // cpp2
+namespace std {
+
+template<> struct hash<typename  ::cpp2::MyEnum> : public apache::thrift::detail::enum_hash<typename  ::cpp2::MyEnum> {};
+template<> struct equal_to<typename  ::cpp2::MyEnum> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::MyEnum> {};
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::cpp2::MyEnum>::findName( ::cpp2::MyEnum value);

@@ -37,6 +37,12 @@ extern const std::map<enum1, const char*> _enum1_VALUES_TO_NAMES;
 extern const std::map<const char*, enum1, apache::thrift::ltstr> _enum1_NAMES_TO_VALUES;
 
 }} // test_cpp2::cpp_reflection
+namespace std {
+
+template<> struct hash<typename  ::test_cpp2::cpp_reflection::enum1> : public apache::thrift::detail::enum_hash<typename  ::test_cpp2::cpp_reflection::enum1> {};
+template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum1> : public apache::thrift::detail::enum_equal_to<typename  ::test_cpp2::cpp_reflection::enum1> {};
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::findName( ::test_cpp2::cpp_reflection::enum1 value);
@@ -63,6 +69,12 @@ extern const std::map<enum2, const char*> _enum2_VALUES_TO_NAMES;
 extern const std::map<const char*, enum2, apache::thrift::ltstr> _enum2_NAMES_TO_VALUES;
 
 }} // test_cpp2::cpp_reflection
+namespace std {
+
+template<> struct hash<typename  ::test_cpp2::cpp_reflection::enum2> : public apache::thrift::detail::enum_hash<typename  ::test_cpp2::cpp_reflection::enum2> {};
+template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum2> : public apache::thrift::detail::enum_equal_to<typename  ::test_cpp2::cpp_reflection::enum2> {};
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::findName( ::test_cpp2::cpp_reflection::enum2 value);
@@ -89,6 +101,12 @@ extern const std::map<enum3, const char*> _enum3_VALUES_TO_NAMES;
 extern const std::map<const char*, enum3, apache::thrift::ltstr> _enum3_NAMES_TO_VALUES;
 
 }} // test_cpp2::cpp_reflection
+namespace std {
+
+template<> struct hash<typename  ::test_cpp2::cpp_reflection::enum3> : public apache::thrift::detail::enum_hash<typename  ::test_cpp2::cpp_reflection::enum3> {};
+template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum3> : public apache::thrift::detail::enum_equal_to<typename  ::test_cpp2::cpp_reflection::enum3> {};
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::findName( ::test_cpp2::cpp_reflection::enum3 value);

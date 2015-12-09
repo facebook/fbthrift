@@ -28,6 +28,9 @@ const std::map<Animal, const char*> _Animal_VALUES_TO_NAMES(apache::thrift::TEnu
 const std::map<const char*, Animal, apache::thrift::ltstr> _Animal_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<Animal>(3, _kAnimalValues, _kAnimalNames), apache::thrift::TEnumInverseIterator<Animal>(-1, nullptr, nullptr));
 
 } // cpp2
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::cpp2::Animal>::findName( ::cpp2::Animal value) {

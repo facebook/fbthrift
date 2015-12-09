@@ -30,6 +30,9 @@ const std::map<City, const char*> _City_VALUES_TO_NAMES(apache::thrift::TEnumIte
 const std::map<const char*, City, apache::thrift::ltstr> _City_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<City>(4, _kCityValues, _kCityNames), apache::thrift::TEnumInverseIterator<City>(-1, nullptr, nullptr));
 
 } // cpp2
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::cpp2::City>::findName( ::cpp2::City value) {
@@ -61,6 +64,9 @@ const std::map<Company, const char*> _Company_VALUES_TO_NAMES(apache::thrift::TE
 const std::map<const char*, Company, apache::thrift::ltstr> _Company_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<Company>(4, _kCompanyValues, _kCompanyNames), apache::thrift::TEnumInverseIterator<Company>(-1, nullptr, nullptr));
 
 } // cpp2
+namespace std {
+
+} // std
 namespace apache { namespace thrift {
 
 template <> const char* TEnumTraitsBase< ::cpp2::Company>::findName( ::cpp2::Company value) {
