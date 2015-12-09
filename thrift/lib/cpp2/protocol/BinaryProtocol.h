@@ -54,7 +54,7 @@ class BinaryProtocolWriter {
     : out_(nullptr, 0)
     , sharing_(sharing) {}
 
-  static inline ProtocolType protocolType() {
+  static constexpr ProtocolType protocolType() {
     return ProtocolType::T_BINARY_PROTOCOL;
   }
 
@@ -191,7 +191,7 @@ class BinaryProtocolReader {
     , strict_read_(true)
     , in_(nullptr) {}
 
-  static inline ProtocolType protocolType() {
+  static constexpr ProtocolType protocolType() {
     return ProtocolType::T_BINARY_PROTOCOL;
   }
 

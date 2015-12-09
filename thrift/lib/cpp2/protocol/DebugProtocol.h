@@ -34,7 +34,7 @@ class DebugProtocolWriter {
   explicit DebugProtocolWriter(
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER /* ignored */);
 
-  static inline ProtocolType protocolType() {
+  static constexpr ProtocolType protocolType() {
     return ProtocolType::T_DEBUG_PROTOCOL;
   }
 

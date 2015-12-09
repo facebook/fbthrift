@@ -42,7 +42,7 @@ class SimpleJSONProtocolWriter {
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */)
     : out_(nullptr, 0) {}
 
-  static inline ProtocolType protocolType() {
+  static constexpr ProtocolType protocolType() {
     return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
   }
 
@@ -190,7 +190,7 @@ class SimpleJSONProtocolReader {
     , skippedChars_(0)
     , skippedIsUnread_(false) {}
 
-  static inline ProtocolType protocolType() {
+  static constexpr ProtocolType protocolType() {
     return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
   }
 

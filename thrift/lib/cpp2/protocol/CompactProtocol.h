@@ -102,7 +102,7 @@ class CompactProtocolWriter {
       , sharing_(sharing)
       , booleanField_({nullptr, TType::T_BOOL, 0}) {}
 
-  static inline ProtocolType protocolType() {
+  static constexpr ProtocolType protocolType() {
     return ProtocolType::T_COMPACT_PROTOCOL;
   }
 
@@ -259,7 +259,7 @@ class CompactProtocolReader {
     , in_(nullptr)
     , boolValue_({false, false}) {}
 
-  static inline ProtocolType protocolType() {
+  static constexpr ProtocolType protocolType() {
     return ProtocolType::T_COMPACT_PROTOCOL;
   }
 
