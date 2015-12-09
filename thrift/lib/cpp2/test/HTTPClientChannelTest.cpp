@@ -61,6 +61,7 @@ class TestServiceHandler : public TestServiceIf {
 
   void notCalledBack() override {}
   void voidResponse() override {}
+  int32_t processHeader() override { return 1; }
   void echoIOBuf(string& /*_return*/, const string& /*buf*/) override {}
 };
 

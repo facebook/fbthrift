@@ -36,5 +36,7 @@ class TestInterface : public apache::thrift::test::cpp2::TestServiceSvIf {
       std::unique_ptr<apache::thrift::HandlerCallback<void>> cb) override;
 
   void echoIOBuf(std::unique_ptr<folly::IOBuf>& ret,
-                 std::unique_ptr<folly::IOBuf> buf) override;
+      std::unique_ptr<folly::IOBuf> buf) override;
+
+  int32_t processHeader() override;
 };

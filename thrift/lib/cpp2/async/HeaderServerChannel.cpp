@@ -233,23 +233,16 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
 void HeaderServerChannel::HeaderRequest::sendReply(
     unique_ptr<IOBuf>&& buf,
     MessageChannel::SendCallback* cb) {
+  auto& header = useTimeoutHeader_ ? timeoutHeader_ : header_;
   if (!channel_->outOfOrder_.value()) {
     // In order processing, make sure the ordering is correct.
     if (InOrderRecvSeqId_ != channel_->lastWrittenSeqId_ + 1) {
       // Save it until we can send it in order.
       channel_->inOrderRequests_[InOrderRecvSeqId_] =
-          std::make_tuple(cb, std::move(buf), std::move(header_));
-      // Make a fake THeader here, because:
-      // 1. HeaderRequest can be destroyed after sendReply returns, so header_
-      //    must be moved.
-      // 2. For an expired request, sendReply is called from sendErrorWrapped
-      //    to send a timeout response. Later when request processing is
-      //    finished, the response is transformed using header_ again, although
-      //    it won't be sent. Setting it here to avoid use-after-free.
-      header_ = folly::make_unique<THeader>();
+        std::make_tuple(cb, std::move(buf), std::move(header));
     } else {
       // Send it now, and send any subsequent requests in order.
-      channel_->sendCatchupRequests(std::move(buf), cb, header_.get());
+      channel_->sendCatchupRequests(std::move(buf), cb, header.get());
     }
   } else {
     if (!buf) {
@@ -259,7 +252,7 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     }
     try {
       // out of order, send as soon as it is done.
-      channel_->sendMessage(cb, std::move(buf), header_.get());
+      channel_->sendMessage(cb, std::move(buf), header.get());
     } catch (const std::exception& e) {
       LOG(ERROR) << "Failed to send message: " << e.what();
     }
@@ -297,6 +290,44 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
                                  header_->getMinCompressBytes());
       sendReply(std::move(exbuf), cb);
     });
+}
+
+void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
+    MessageChannel::SendCallback* cb,
+    const std::map<std::string, std::string>& headers) {
+  // Sending tiemout response always happens on eb thread, while normal
+  // request handling might still be work-in-progress on tm thread and
+  // touches the per-request THeader at any time. This builds a new THeader
+  // and only reads certain fields from header_. To avoid race condition,
+  // DO NOT read any header from the per-request THeader.
+  useTimeoutHeader_ = true;
+  timeoutHeader_ = folly::make_unique<THeader>();
+  timeoutHeader_->setProtocolId(header_->getProtocolId());
+  timeoutHeader_->setTransforms(header_->getWriteTransforms());
+  timeoutHeader_->setMinCompressBytes(header_->getMinCompressBytes());
+  timeoutHeader_->setSequenceNumber(header_->getSequenceNumber());
+  timeoutHeader_->setHeader("ex", kTaskExpiredErrorCode);
+  for (const auto& it : headers) {
+    timeoutHeader_->setHeader(it.first, it.second);
+  }
+
+  std::unique_ptr<folly::IOBuf> exbuf;
+  TApplicationException tae(
+      TApplicationException::TApplicationExceptionType::TIMEOUT,
+      "Task expired");
+  try {
+    exbuf = serializeError(timeoutHeader_->getProtocolId(), tae, getBuf());
+  } catch (const TProtocolException& pe) {
+    LOG(ERROR) << "serializeError failed. type=" << pe.getType()
+      << " what()=" << pe.what();
+    channel_->closeNow();
+    return;
+  }
+
+  exbuf = THeader::transform(std::move(exbuf),
+                             timeoutHeader_->getWriteTransforms(),
+                             timeoutHeader_->getMinCompressBytes());
+  sendReply(std::move(exbuf), cb);
 }
 
 void HeaderServerChannel::sendCatchupRequests(

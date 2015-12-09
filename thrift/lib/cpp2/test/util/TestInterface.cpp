@@ -55,3 +55,14 @@ void TestInterface::echoIOBuf(std::unique_ptr<folly::IOBuf>& ret,
   folly::io::Appender cursor(ret.get(), kEchoSuffix.size());
   cursor.push(folly::StringPiece(kEchoSuffix.data(), kEchoSuffix.size()));
 }
+
+int32_t TestInterface::processHeader() {
+  // Handler method can touch header at any time. Use this to test race
+  // condition on per-request THeader.
+  auto header = getConnectionContext()->getHeader();
+  for (int i = 0; i < 1000000; i++) {
+    header->setHeader("foo", "bar");
+    header->clearHeaders();
+  }
+  return 1;
+}

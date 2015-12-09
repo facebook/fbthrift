@@ -149,6 +149,7 @@ class Cpp2Connection
         folly::exception_wrapper ew,
         std::string exCode,
         MessageChannel::SendCallback* notUsed = nullptr) override;
+    void sendTimeoutResponse();
 
     ~Cpp2Request() override;
 
@@ -174,6 +175,7 @@ class Cpp2Connection
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req_;
     std::shared_ptr<Cpp2Connection> connection_;
     Cpp2RequestContext reqContext_;
+    std::string loadHeader_;
     SoftTimeout softTimeout_;
     HardTimeout hardTimeout_;
 

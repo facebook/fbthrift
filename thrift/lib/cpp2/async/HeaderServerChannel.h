@@ -136,11 +136,15 @@ protected:
                           std::string exCode,
                           MessageChannel::SendCallback* cb = nullptr) override;
 
+    void sendTimeoutResponse(MessageChannel::SendCallback* cb,
+                             const std::map<std::string, std::string>& headers);
    private:
     HeaderServerChannel* channel_;
     std::unique_ptr<apache::thrift::transport::THeader> header_;
+    std::unique_ptr<apache::thrift::transport::THeader> timeoutHeader_;
     uint32_t InOrderRecvSeqId_{0}; // Used internally for in-order requests
     std::atomic<bool> active_;
+    std::atomic<bool> useTimeoutHeader_{false};
   };
 
   // The default SASL implementation can be overridden for testing or

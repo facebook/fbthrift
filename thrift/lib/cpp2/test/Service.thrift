@@ -26,5 +26,6 @@ service TestService {
   string eventBaseAsync() (thread = 'eb')
   void notCalledBack()
   void voidResponse()
+  i32 processHeader()
   IOBufPtr echoIOBuf(1: IOBuf buf)
 }

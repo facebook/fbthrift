@@ -395,6 +395,12 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
 
   softTimeout_.request_ = this;
   hardTimeout_.request_ = this;
+
+  const auto& headers = req_->getHeader()->getHeaders();
+  auto it = headers.find(Cpp2Connection::loadHeader);
+  if (it != headers.end()) {
+    loadHeader_ = it->second;
+  }
 }
 
 MessageChannel::SendCallback*
@@ -419,20 +425,14 @@ Cpp2Connection::Cpp2Request::prepareSendCallback(
 
 void Cpp2Connection::Cpp2Request::setLoadHeader() {
   // Set load header, based on the received load header
-  auto header = req_->getHeader();
-  if (!header) {
-    return;
-  }
-
-  const auto& headers = header->getHeaders();
-  auto load_header = headers.find(Cpp2Connection::loadHeader);
-  if (load_header == headers.end()) {
+  if (loadHeader_.empty()) {
     return;
   }
 
   auto load =
-      connection_->getWorker()->getServer()->getLoad(load_header->second);
-  header->setHeader(Cpp2Connection::loadHeader, folly::to<std::string>(load));
+      connection_->getWorker()->getServer()->getLoad(loadHeader_);
+  req_->getHeader()->setHeader(Cpp2Connection::loadHeader,
+                               folly::to<std::string>(load));
 }
 
 void Cpp2Connection::Cpp2Request::sendReply(
@@ -465,13 +465,24 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
   }
 }
 
+void Cpp2Connection::Cpp2Request::sendTimeoutResponse() {
+  auto observer = connection_->getWorker()->getServer()->getObserver().get();
+  std::map<std::string, std::string> headers;
+  if (!loadHeader_.empty()) {
+    auto load =
+      connection_->getWorker()->getServer()->getLoad(loadHeader_);
+    headers[Cpp2Connection::loadHeader] = folly::to<std::string>(load);
+  }
+  req_->sendTimeoutResponse(prepareSendCallback(nullptr, observer), headers);
+  cancelTimeout();
+}
+
 void Cpp2Connection::Cpp2Request::HardTimeout::timeoutExpired() noexcept {
-  request_->sendErrorWrapped(
-      folly::make_exception_wrapper<TApplicationException>(
-        TApplicationException::TApplicationExceptionType::TIMEOUT,
-        "Task expired"),
-      kTaskExpiredErrorCode);
+  // TODO haijunz: this still needs to be fixed if the normal response is
+  // also being sent now. We need an atomic test-and-set to ensure only one
+  // response is sent.
   request_->req_->cancel();
+  request_->sendTimeoutResponse();
   request_->connection_->requestTimeoutExpired();
 }
 

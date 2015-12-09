@@ -144,6 +144,34 @@ TEST(ThriftServer, CompressionServerTest) {
   EXPECT_EQ(response.size(), 100);
 }
 
+TEST(ThriftServer, HeaderTest) {
+  TestThriftServerFactory<TestInterface> factory;
+  auto serv = factory.create();
+  ScopedServerThread sst(serv);
+  folly::EventBase base;
+  std::shared_ptr<TAsyncSocket> socket(
+    TAsyncSocket::newSocket(&base, *sst.getAddress()));
+
+  TestServiceAsyncClient client(
+    std::unique_ptr<HeaderClientChannel,
+                    folly::DelayedDestruction::Destructor>(
+                      new HeaderClientChannel(socket)));
+
+  RpcOptions options;
+  // Set it as a header directly so the client channel won't set a
+  // timeout and the test won't throw TTransportException
+  options.setWriteHeader(
+      apache::thrift::transport::THeader::CLIENT_TIMEOUT_HEADER,
+      folly::to<std::string>(10));
+  try {
+    client.sync_processHeader(options);
+    ADD_FAILURE() << "should timeout";
+  } catch (const TApplicationException& e) {
+    EXPECT_EQ(e.getType(),
+              TApplicationException::TApplicationExceptionType::TIMEOUT);
+  }
+}
+
 TEST(ThriftServer, ClientTimeoutTest) {
   TestThriftServerFactory<TestInterface> factory;
   auto server = factory.create();
