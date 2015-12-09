@@ -794,6 +794,15 @@ void THeader::setHeader(const string& key, const string& value) {
   writeHeaders_[key] = value;
 }
 
+void THeader::setHeader(const char* key,
+                        size_t keyLength,
+                        const char* value,
+                        size_t valueLength) {
+  writeHeaders_.emplace(std::make_pair(
+        std::string(key, keyLength),
+        std::string(value, valueLength)));
+}
+
 void THeader::setHeaders(THeader::StringToStringMap&& headers) {
   writeHeaders_ = std::move(headers);
 }

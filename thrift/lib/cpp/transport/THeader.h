@@ -169,9 +169,13 @@ class THeader {
 
   // these work with write headers
   void setHeader(const std::string& key, const std::string& value);
+  void setHeader(const char* key, size_t keyLength, const char* value,
+                 size_t valueLength);
   void setHeaders(StringToStringMap&&);
   void clearHeaders();
-  StringToStringMap& getWriteHeaders() { return writeHeaders_; }
+  bool isWriteHeadersEmpty() {
+    return writeHeaders_.empty();
+  }
 
   StringToStringMap&& releaseWriteHeaders() {
     return std::move(writeHeaders_);

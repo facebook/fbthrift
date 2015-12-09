@@ -68,5 +68,5 @@ TEST(THeaderTest, http_clear_header) {
   std::map<std::string, std::string> persistentHeaders;
   buf = header.addHeader(std::move(buf), persistentHeaders);
 
-  EXPECT_TRUE(header.getWriteHeaders().empty());
+  EXPECT_TRUE(header.isWriteHeadersEmpty());
 }

@@ -110,7 +110,7 @@ public:
   void preWrite(void* ctx, const char* fn_name) override {
     if (iprot_.get() != nullptr && oprot_.get() != nullptr) {
       auto headers = iprot_->getHeaders();
-      oprot_->getWriteHeaders() = headers;
+      oprot_->setHeaders(headers);
       oprot_->setIdentity(testIdentity);
     }
   }
@@ -188,7 +188,7 @@ void runClient(ClientType clientType, ServerType sType, int port) {
     EXPECT_EQ(hprotocol->getPeerIdentity(), testIdentity);
 
     // ensure that the write headers were cleared after issuing the command
-    EXPECT_TRUE(hprotocol->getWriteHeaders().empty());
+    EXPECT_TRUE(hprotocol->isWriteHeadersEmpty());
     EXPECT_TRUE(hprotocol->getPersistentWriteHeaders().empty());
 
     auto headers = hprotocol->getHeaders();
@@ -222,7 +222,7 @@ void runClient(ClientType clientType, ServerType sType, int port) {
   // test that headers were cleared after sending the last message
   if (clientType == CLIENT_TYPE_HEADER) {
     auto hprotocol = static_pointer_cast<THeaderProtocol>(protocol);
-    ASSERT_TRUE(hprotocol->getWriteHeaders().empty());
+    ASSERT_TRUE(hprotocol->isWriteHeadersEmpty());
   }
 
   EXPECT_EQ(testClient.echoByte(5), 5);
