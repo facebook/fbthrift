@@ -63,10 +63,9 @@ class DebugProtocolWriter {
   uint32_t writeI64(int64_t i64);
   uint32_t writeDouble(double dub);
   uint32_t writeFloat(float flt);
-  template <typename StrType>
-  uint32_t writeString(const StrType& str) { writeSP(str); return 0; }
-  template <typename StrType>
-  uint32_t writeBinary(const StrType& str) { writeSP(str); return 0; }
+  uint32_t writeString(folly::StringPiece str);
+  uint32_t writeBinary(folly::StringPiece str);
+  uint32_t writeBinary(folly::ByteRange v);
   uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
   uint32_t writeBinary(const folly::IOBuf& str);
   uint32_t writeSerializedData(const std::unique_ptr<folly::IOBuf>& /*data*/) {
@@ -74,13 +73,26 @@ class DebugProtocolWriter {
     return 0;
   }
 
+  /**
+   * Functions that return the serialized size
+   */
+  uint32_t serializedSizeString(folly::StringPiece str);
+  uint32_t serializedSizeBinary(folly::StringPiece str);
+  uint32_t serializedSizeBinary(folly::ByteRange v);
+  uint32_t serializedSizeBinary(const std::unique_ptr<folly::IOBuf>& v);
+  uint32_t serializedSizeBinary(const folly::IOBuf& v);
+  uint32_t serializedSizeZCBinary(folly::StringPiece str);
+  uint32_t serializedSizeZCBinary(folly::ByteRange v);
+  uint32_t serializedSizeZCBinary(const std::unique_ptr<folly::IOBuf>&);
+  uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/);
+
  private:
   void indentUp();
   void indentDown();
   void startItem();
   void endItem();
 
-  void writeSP(folly::StringPiece sp);
+  void writeByteRange(folly::ByteRange v);
 
   void writeRaw(folly::StringPiece sp) {
     out_->append(sp.data(), sp.size());

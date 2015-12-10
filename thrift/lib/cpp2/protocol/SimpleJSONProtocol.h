@@ -87,11 +87,9 @@ class SimpleJSONProtocolWriter {
   inline uint32_t writeI64(int64_t i64);
   inline uint32_t writeDouble(double dub);
   inline uint32_t writeFloat(float flt);
-  template <typename StrType>
-  inline uint32_t writeString(const StrType& str);
-  inline uint32_t writeString(const char* str);
-  template <typename StrType>
-  inline uint32_t writeBinary(const StrType& str);
+  inline uint32_t writeString(folly::StringPiece str);
+  inline uint32_t writeBinary(folly::StringPiece str);
+  inline uint32_t writeBinary(folly::ByteRange v);
   inline uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
   inline uint32_t writeBinary(const folly::IOBuf& str);
   inline uint32_t writeSerializedData(
@@ -124,26 +122,16 @@ class SimpleJSONProtocolWriter {
   inline uint32_t serializedSizeI64(int64_t = 0);
   inline uint32_t serializedSizeDouble(double = 0.0);
   inline uint32_t serializedSizeFloat(float = 0);
-  template <typename StrType>
-  inline uint32_t serializedSizeString(const StrType&);
-  template <typename StrType>
-  uint32_t serializedSizeBinary(const StrType& v) {
-    return serializedSizeString(v);
-  }
+  inline uint32_t serializedSizeString(folly::StringPiece);
+  inline uint32_t serializedSizeBinary(folly::StringPiece str);
+  inline uint32_t serializedSizeBinary(folly::ByteRange v);
   inline uint32_t serializedSizeBinary(const std::unique_ptr<folly::IOBuf>& v);
   inline uint32_t serializedSizeBinary(const folly::IOBuf& v);
-  template <typename StrType>
-  uint32_t serializedSizeZCBinary(const StrType& v) {
-    return serializedSizeBinary(v);
-  }
-  uint32_t serializedSizeZCBinary(const std::unique_ptr<folly::IOBuf>& /*v*/) {
-    // size only
-    return serializedSizeI32();
-  }
-  uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/) {
-    // size only
-    return serializedSizeI32();
-  }
+  inline uint32_t serializedSizeZCBinary(folly::StringPiece str);
+  inline uint32_t serializedSizeZCBinary(folly::ByteRange v);
+  inline uint32_t serializedSizeZCBinary(
+      const std::unique_ptr<folly::IOBuf>& /*v*/);
+  inline uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/);
   inline uint32_t serializedSizeSerializedData(
       const std::unique_ptr<folly::IOBuf>& data);
 
@@ -154,10 +142,8 @@ class SimpleJSONProtocolWriter {
   inline uint32_t writeContext();
   inline uint32_t writeJSONEscapeChar(uint8_t ch);
   inline uint32_t writeJSONChar(uint8_t ch);
-  template <typename StrType>
-  uint32_t writeJSONString(const StrType&);
-  inline uint32_t writeJSONString(const char* str, uint32_t);
-  inline uint32_t writeJSONBase64(const uint8_t*, uint32_t);
+  inline uint32_t writeJSONString(folly::StringPiece);
+  inline uint32_t writeJSONBase64(folly::ByteRange);
   inline uint32_t writeJSONBool(bool val);
   inline uint32_t writeJSONInt(int64_t num);
   template<typename T>

@@ -184,29 +184,24 @@ uint32_t SimpleJSONProtocolWriter::writeJSONChar(uint8_t ch) {
   }
 }
 
-template <typename StrType>
-uint32_t SimpleJSONProtocolWriter::writeJSONString(const StrType& str) {
-  return writeJSONString(str.c_str(), str.length());
-}
-
-uint32_t SimpleJSONProtocolWriter::writeJSONString(
-    const char* str, uint32_t len) {
+uint32_t SimpleJSONProtocolWriter::writeJSONString(folly::StringPiece str) {
   uint32_t ret = 2;
 
   out_.write(TJSONProtocol::kJSONStringDelimiter);
-  for (uint32_t i = 0; i < len; i++, str++) {
-    ret += writeJSONChar(*str);
+  for (auto c : str) {
+    ret += writeJSONChar(c);
   }
   out_.write(TJSONProtocol::kJSONStringDelimiter);
 
   return ret;
 }
 
-uint32_t SimpleJSONProtocolWriter::writeJSONBase64(const uint8_t* bytes,
-                                                   uint32_t len) {
+uint32_t SimpleJSONProtocolWriter::writeJSONBase64(folly::ByteRange v) {
   uint32_t ret = 2;
 
   out_.write(TJSONProtocol::kJSONStringDelimiter);
+  auto bytes = v.data();
+  auto len = v.size();
   uint8_t b[4];
   while (len >= 3) {
     // Encode 3 bytes at a time
@@ -276,7 +271,7 @@ uint32_t SimpleJSONProtocolWriter::writeMessageBegin(const std::string& name,
                                                  int32_t seqid) {
   auto ret = beginContext(ContextType::ARRAY);
   ret += writeI32(TJSONProtocol::kThriftVersion1);
-  ret += writeString(name.c_str());
+  ret += writeString(name);
   ret += writeI32(messageType);
   ret += writeI32(seqid);
   return ret;
@@ -299,7 +294,7 @@ uint32_t SimpleJSONProtocolWriter::writeFieldBegin(const char* name,
                                                TType /*fieldType*/,
                                                int16_t /*fieldId*/) {
   auto ret = writeContext();
-  return ret + writeJSONString(name, strlen(name));
+  return ret + writeJSONString(name);
 }
 
 uint32_t SimpleJSONProtocolWriter::writeFieldEnd() {
@@ -377,21 +372,18 @@ uint32_t SimpleJSONProtocolWriter::writeFloat(float flt) {
 }
 
 
-template<typename StrType>
-uint32_t SimpleJSONProtocolWriter::writeString(const StrType& str) {
+uint32_t SimpleJSONProtocolWriter::writeString(folly::StringPiece str) {
   auto ret = writeContext();
   return ret + writeJSONString(str);
 }
 
-uint32_t SimpleJSONProtocolWriter::writeString(const char* str) {
-  auto ret = writeContext();
-  return ret + writeJSONString(str, strlen(str));
+uint32_t SimpleJSONProtocolWriter::writeBinary(folly::StringPiece str) {
+  return writeBinary(folly::ByteRange(str));
 }
 
-template <typename StrType>
-uint32_t SimpleJSONProtocolWriter::writeBinary(const StrType& str) {
+uint32_t SimpleJSONProtocolWriter::writeBinary(folly::ByteRange v) {
   auto ret = writeContext();
-  return ret + writeJSONBase64((const uint8_t*)str.c_str(), str.length());
+  return ret + writeJSONBase64(v);
 }
 
 uint32_t SimpleJSONProtocolWriter::writeBinary(
@@ -399,14 +391,14 @@ uint32_t SimpleJSONProtocolWriter::writeBinary(
   DCHECK(str);
   auto ret = writeContext();
   if (!str) {
-    return ret + writeJSONString("", 0);
+    return ret + writeJSONString(folly::StringPiece());
   }
   return writeBinary(*str);
 }
 
 uint32_t SimpleJSONProtocolWriter::writeBinary(const folly::IOBuf& str) {
   auto ret = writeContext();
-  return ret + writeJSONBase64(str.data(), str.length());
+  return ret + writeJSONBase64(folly::ByteRange(str.data(), str.length()));
 }
 
 uint32_t SimpleJSONProtocolWriter::writeSerializedData(
@@ -501,9 +493,18 @@ uint32_t SimpleJSONProtocolWriter::serializedSizeFloat(float /*val*/) {
   return 25;
 }
 
-template<typename StrType>
-uint32_t SimpleJSONProtocolWriter::serializedSizeString(const StrType& str) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeString(
+    folly::StringPiece str) {
   return str.size() * 6 + 3;
+}
+
+uint32_t SimpleJSONProtocolWriter::serializedSizeBinary(
+    folly::StringPiece str) {
+  return serializedSizeBinary(folly::ByteRange(str));
+}
+
+uint32_t SimpleJSONProtocolWriter::serializedSizeBinary(folly::ByteRange v) {
+  return v.size() * 6 + 3;
 }
 
 uint32_t SimpleJSONProtocolWriter::serializedSizeBinary(
@@ -518,6 +519,26 @@ uint32_t SimpleJSONProtocolWriter::serializedSizeBinary(
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
   }
   return size * 6 + 3;
+}
+
+uint32_t SimpleJSONProtocolWriter::serializedSizeZCBinary(
+    folly::StringPiece str) {
+  return serializedSizeZCBinary(folly::ByteRange(str));
+}
+
+uint32_t SimpleJSONProtocolWriter::serializedSizeZCBinary(folly::ByteRange v) {
+  return serializedSizeBinary(v);
+}
+
+uint32_t SimpleJSONProtocolWriter::serializedSizeZCBinary(
+    const std::unique_ptr<folly::IOBuf>&) {
+  // size only
+  return serializedSizeI32();
+}
+
+uint32_t SimpleJSONProtocolWriter::serializedSizeZCBinary(const folly::IOBuf&) {
+  // size only
+  return serializedSizeI32();
 }
 
 uint32_t SimpleJSONProtocolWriter::serializedSizeSerializedData(

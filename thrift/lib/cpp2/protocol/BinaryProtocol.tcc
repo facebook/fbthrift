@@ -151,17 +151,19 @@ uint32_t BinaryProtocolWriter::writeFloat(float flt) {
 }
 
 
-template<typename StrType>
-uint32_t BinaryProtocolWriter::writeString(const StrType& str) {
-  uint32_t size = str.size();
-  uint32_t result = writeI32((int32_t)size);
-  out_.push((const uint8_t*)str.data(), size);
-  return result + size;
+uint32_t BinaryProtocolWriter::writeString(folly::StringPiece str) {
+  return writeBinary(str);
 }
 
-template <typename StrType>
-uint32_t BinaryProtocolWriter::writeBinary(const StrType& str) {
-  return writeString(str);
+uint32_t BinaryProtocolWriter::writeBinary(folly::StringPiece str) {
+  return writeBinary(folly::ByteRange(str));
+}
+
+uint32_t BinaryProtocolWriter::writeBinary(folly::ByteRange v) {
+  uint32_t size = v.size();
+  uint32_t result = writeI32((int32_t)size);
+  out_.push(v.data(), size);
+  return result + size;
 }
 
 uint32_t BinaryProtocolWriter::writeBinary(
@@ -286,8 +288,15 @@ uint32_t BinaryProtocolWriter::serializedSizeFloat(float /*val*/) {
   return 4;
 }
 
-template<typename StrType>
-uint32_t BinaryProtocolWriter::serializedSizeString(const StrType& str) {
+uint32_t BinaryProtocolWriter::serializedSizeString(folly::StringPiece str) {
+  return serializedSizeBinary(str);
+}
+
+uint32_t BinaryProtocolWriter::serializedSizeBinary(folly::StringPiece str) {
+  return serializedSizeBinary(folly::ByteRange(str));
+}
+
+uint32_t BinaryProtocolWriter::serializedSizeBinary(folly::ByteRange str) {
   // I32{length of string} + binary{string contents}
   return serializedSizeI32() + str.size();
 }
@@ -304,6 +313,22 @@ uint32_t BinaryProtocolWriter::serializedSizeBinary(
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
   }
   return serializedSizeI32() + size;
+}
+
+uint32_t BinaryProtocolWriter::serializedSizeZCBinary(folly::StringPiece str) {
+  return serializedSizeZCBinary(folly::ByteRange(str));
+}
+uint32_t BinaryProtocolWriter::serializedSizeZCBinary(folly::ByteRange v) {
+  return serializedSizeBinary(v);
+}
+uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
+    const std::unique_ptr<folly::IOBuf>&) {
+  // size only
+  return serializedSizeI32();
+}
+uint32_t BinaryProtocolWriter::serializedSizeZCBinary(const folly::IOBuf&) {
+  // size only
+  return serializedSizeI32();
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeSerializedData(

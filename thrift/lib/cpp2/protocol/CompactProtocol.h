@@ -152,10 +152,9 @@ class CompactProtocolWriter {
   inline uint32_t writeI64(int64_t i64);
   inline uint32_t writeDouble(double dub);
   inline uint32_t writeFloat(float flt);
-  template <typename StrType>
-  inline uint32_t writeString(const StrType& str);
-  template <typename StrType>
-  inline uint32_t writeBinary(const StrType& str);
+  inline uint32_t writeString(folly::StringPiece str);
+  inline uint32_t writeBinary(folly::StringPiece str);
+  inline uint32_t writeBinary(folly::ByteRange str);
   inline uint32_t writeBinary(const std::unique_ptr<IOBuf>& str);
   inline uint32_t writeBinary(const IOBuf& str);
   inline uint32_t writeSerializedData(
@@ -191,26 +190,15 @@ class CompactProtocolWriter {
   inline uint32_t serializedSizeI64(int64_t = 0);
   inline uint32_t serializedSizeDouble(double = 0.0);
   inline uint32_t serializedSizeFloat(float = 0);
-  template <typename StrType>
-  inline uint32_t serializedSizeString(const StrType&);
-  template <typename StrType>
-  uint32_t serializedSizeBinary(const StrType& v) {
-    return serializedSizeString(v);
-  }
+  inline uint32_t serializedSizeString(folly::StringPiece str);
+  inline uint32_t serializedSizeBinary(folly::StringPiece str);
+  inline uint32_t serializedSizeBinary(folly::ByteRange v);
   inline uint32_t serializedSizeBinary(const std::unique_ptr<IOBuf>& v);
   inline uint32_t serializedSizeBinary(const IOBuf& v);
-  template <typename StrType>
-  uint32_t serializedSizeZCBinary(const StrType& v) {
-    return serializedSizeBinary(v);
-  }
-  uint32_t serializedSizeZCBinary(const std::unique_ptr<IOBuf>& /*v*/) {
-    // size only
-    return serializedSizeI32();
-  }
-  uint32_t serializedSizeZCBinary(const IOBuf& /*v*/) {
-    // size only
-    return serializedSizeI32();
-  }
+  inline uint32_t serializedSizeZCBinary(folly::StringPiece str);
+  inline uint32_t serializedSizeZCBinary(folly::ByteRange v);
+  inline uint32_t serializedSizeZCBinary(const std::unique_ptr<IOBuf>& /*v*/);
+  inline uint32_t serializedSizeZCBinary(const IOBuf& /*v*/);
   inline uint32_t serializedSizeSerializedData(
     const std::unique_ptr<folly::IOBuf>& /*data*/) {
     // TODO

@@ -253,22 +253,74 @@ uint32_t DebugProtocolWriter::writeDouble(double v) {
   return 0;
 }
 
+uint32_t DebugProtocolWriter::writeString(folly::StringPiece str) {
+  return writeBinary(str);
+}
+
+uint32_t DebugProtocolWriter::writeBinary(folly::StringPiece str) {
+  return writeBinary(folly::ByteRange(str));
+}
+
+uint32_t DebugProtocolWriter::writeBinary(folly::ByteRange v) {
+  writeByteRange(v);
+  return 0;
+}
+
 uint32_t DebugProtocolWriter::writeBinary(
     const std::unique_ptr<folly::IOBuf>& str) {
-  writeSP(folly::StringPiece(str->clone()->coalesce()));
+  writeByteRange(folly::ByteRange(str->clone()->coalesce()));
   return 0;
 }
 
 uint32_t DebugProtocolWriter::writeBinary(
     const folly::IOBuf& str) {
-  writeSP(folly::StringPiece(str.clone()->coalesce()));
+  writeByteRange(folly::ByteRange(str.clone()->coalesce()));
   return 0;
 }
 
-void DebugProtocolWriter::writeSP(folly::StringPiece str) {
+uint32_t DebugProtocolWriter::serializedSizeString(folly::StringPiece str) {
+  return serializedSizeBinary(str);
+}
+
+uint32_t DebugProtocolWriter::serializedSizeBinary(folly::StringPiece str) {
+  return serializedSizeBinary(folly::ByteRange(str));
+}
+
+uint32_t DebugProtocolWriter::serializedSizeBinary(folly::ByteRange) {
+  return 0;
+}
+
+uint32_t DebugProtocolWriter::serializedSizeBinary(
+    const std::unique_ptr<folly::IOBuf>&) {
+  return 0;
+}
+
+uint32_t DebugProtocolWriter::serializedSizeBinary(const folly::IOBuf&) {
+  return 0;
+}
+
+uint32_t DebugProtocolWriter::serializedSizeZCBinary(folly::StringPiece str) {
+  return serializedSizeBinary(folly::ByteRange(str));
+}
+
+uint32_t DebugProtocolWriter::serializedSizeZCBinary(folly::ByteRange) {
+  return 0;
+}
+
+uint32_t DebugProtocolWriter::serializedSizeZCBinary(
+    const std::unique_ptr<folly::IOBuf>&) {
+  return 0;
+}
+
+uint32_t DebugProtocolWriter::serializedSizeZCBinary(const folly::IOBuf&) {
+  return 0;
+}
+
+void DebugProtocolWriter::writeByteRange(folly::ByteRange v) {
   static constexpr size_t kStringLimit = 256;
   static constexpr size_t kStringPrefixSize = 128;
 
+  auto str = folly::StringPiece(v);
   std::string toShow = str.str();
   if (toShow.length() > kStringLimit) {
     toShow = str.subpiece(0, kStringPrefixSize).str();
