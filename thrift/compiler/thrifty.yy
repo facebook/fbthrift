@@ -522,11 +522,15 @@ TypeDefinition:
     }
 
 Typedef:
-  tok_typedef FieldType tok_identifier
+  tok_typedef FieldType tok_identifier TypeAnnotations
     {
       pdebug("TypeDef -> tok_typedef FieldType tok_identifier");
       t_typedef *td = new t_typedef(g_program, $2, $3);
       $$ = td;
+      if ($4 != NULL) {
+        $$->annotations_ = $4->annotations_;
+        delete $4;
+      }
     }
 
 CommaOrSemicolonOptional:
