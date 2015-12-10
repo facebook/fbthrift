@@ -478,9 +478,6 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse() {
 }
 
 void Cpp2Connection::Cpp2Request::HardTimeout::timeoutExpired() noexcept {
-  // TODO haijunz: this still needs to be fixed if the normal response is
-  // also being sent now. We need an atomic test-and-set to ensure only one
-  // response is sent.
   request_->req_->cancel();
   request_->sendTimeoutResponse();
   request_->connection_->requestTimeoutExpired();
