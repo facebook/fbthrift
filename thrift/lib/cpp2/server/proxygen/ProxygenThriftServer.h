@@ -130,6 +130,12 @@ class ProxygenThriftServer : public BaseThriftServer,
       explicit ProxygenRequest(ThriftRequestHandler* handler)
           : handler_(handler) {}
 
+      ~ProxygenRequest() {
+        if (handler_) {
+          handler_->request_ = nullptr;
+        }
+      }
+
       bool isActive() override {
         if (handler_) {
           return handler_->isActive();
