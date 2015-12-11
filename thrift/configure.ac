@@ -80,10 +80,32 @@ fi
 
 
 AX_THRIFT_LIB(cpp, [C++], yes)
+AX_BOOST_BASE([1.40.0])
+if test "x$succeeded" != "xyes" ; then
+  AC_MSG_ERROR([Please install libboost-dev-all])
+fi
+AX_PYTHON_DEVEL()
+AX_BOOST_PYTHON
+
+if test "x$LEX" != xflex; then
+  AC_MSG_ERROR([Please install flex])
+  have_cpp="no"
+fi
+case $YACC in bison*) ;;
+  *) AC_MSG_ERROR([Please install bison])
+     have_cpp="no" ;;
+esac
+
+AX_CHECK_FOLLY([], [AC_MSG_ERROR(
+           [Please install the folly library])])
+LDFLAGS="$LDFLAGS $FOLLY_LDFLAGS"
+CPPFLAGS="$FOLLY_INCLUDES $CPPFLAGS"
+
+AC_CHECK_LIB([glog],[openlog],[],[AC_MSG_ERROR(
+           [Please install google-glog library])])
+
 have_cpp=yes
 if test "$with_cpp" = "yes";  then
-  AC_CHECK_LIB([glog],[openlog],[],[AC_MSG_ERROR(
-             [Please install google-glog library])])
   AC_CHECK_LIB([gflags],[getenv],[],[AC_MSG_ERROR(
              [Please install google-gflags library])])
   AC_CHECK_LIB([snappy], [main], [], [AC_MSG_ERROR(
@@ -93,29 +115,7 @@ if test "$with_cpp" = "yes";  then
   AC_CHECK_LIB([wangle], [getenv], [], [AC_MSG_ERROR(
              [Please install the wangle library from https://github.com/facebook/wangle])])
 
-  AX_BOOST_BASE([1.40.0])
-  if test "x$succeeded" != "xyes" ; then
-    AC_MSG_ERROR([Please install libboost-dev-all])
-    have_cpp="no"
-  fi
   AX_BOOST_THREAD
-
-  AX_CHECK_FOLLY([], [AC_MSG_ERROR(
-             [Please install the folly library])])
-  LDFLAGS="$LDFLAGS $FOLLY_LDFLAGS"
-  CPPFLAGS="$FOLLY_INCLUDES $CPPFLAGS"
-
-  AX_PYTHON_DEVEL()
-  AX_BOOST_PYTHON
-
-  if test "x$LEX" != xflex; then
-    AC_MSG_ERROR([Please install flex])
-    have_cpp="no"
-  fi
-  case $YACC in bison*) ;;
-    *) AC_MSG_ERROR([Please install bison])
-       have_cpp="no" ;;
-  esac
 
   AX_LIB_EVENT([1.0])
   have_libevent=$success
@@ -126,7 +126,6 @@ if test "$with_cpp" = "yes";  then
   AC_CHECK_HEADER([gssapi/gssapi_generic.h], [], [
     AC_MSG_ERROR([Please install libkrb5-dev])
   ], [])
-
 
   AC_CHECK_LIB(sasl2, sasl_client_new, [], [
     AC_MSG_ERROR([Please install libsasl2])
@@ -143,7 +142,7 @@ if test "$with_cpp" = "yes";  then
   AX_LIB_ZLIB([1.2.3])
   have_zlib=$success
 fi
-AM_CONDITIONAL([WITH_CPP], [test "$have_cpp" = "yes"])
+AM_CONDITIONAL([WITH_CPP], [test "$have_cpp" = "yes" -a "$with_cpp" = "yes"])
 AM_CONDITIONAL([AMX_HAVE_ZLIB], [test "$have_zlib" = "yes"])
 
 AX_THRIFT_LIB(d, [D], yes)
