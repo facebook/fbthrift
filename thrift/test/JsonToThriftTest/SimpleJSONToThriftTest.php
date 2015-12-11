@@ -8,12 +8,8 @@
 $FBCODE_DIR = './';
 $HERE = $FBCODE_DIR.'thrift/test/JsonToThriftTest';
 
-// Temporarily change to gen-php
-$TMP_THRIFT_ROOT = $GLOBALS['THRIFT_ROOT'];
-$GLOBALS['THRIFT_ROOT'] =
-  $FBCODE_DIR.'_bin/thrift/test/JsonToThriftTest';
-
-$PACKAGE_DIR = $GLOBALS['THRIFT_ROOT'].'/packages';
+$GLOBALS['THRIFT_ROOT'] = $argv[1];
+$PACKAGE_DIR = $argv[2];
 
 require_once $PACKAGE_DIR.'/myBinaryStruct/myBinaryStruct_types.php';
 require_once $PACKAGE_DIR.'/myBoolStruct/myBoolStruct_types.php';
@@ -324,7 +320,6 @@ test_exception($stringStruct, $invalidJson3);
 $invalidJson4 = 'foo: bar';
 test_exception($stringStruct, $invalidJson4);
 // Restore THRIFT_ROOT
-$GLOBALS['THRIFT_ROOT'] = $TMP_THRIFT_ROOT;
-print "Success!";
+print "Success!\n";
 return 0;
 ?>
