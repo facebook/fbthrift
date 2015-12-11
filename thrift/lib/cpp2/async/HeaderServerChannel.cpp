@@ -233,7 +233,9 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
 void HeaderServerChannel::HeaderRequest::sendReply(
     unique_ptr<IOBuf>&& buf,
     MessageChannel::SendCallback* cb) {
-  auto& header = useTimeoutHeader_ ? timeoutHeader_ : header_;
+  // This method is only called and active_ is only touched in evb, so
+  // it is safe to use this flag from both timeout and normal responses.
+  auto& header = active_ ? header_ : timeoutHeader_;
   if (!channel_->outOfOrder_.value()) {
     // In order processing, make sure the ordering is correct.
     if (InOrderRecvSeqId_ != channel_->lastWrittenSeqId_ + 1) {
@@ -300,7 +302,6 @@ void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
   // touches the per-request THeader at any time. This builds a new THeader
   // and only reads certain fields from header_. To avoid race condition,
   // DO NOT read any header from the per-request THeader.
-  useTimeoutHeader_ = true;
   timeoutHeader_ = folly::make_unique<THeader>();
   timeoutHeader_->setProtocolId(header_->getProtocolId());
   timeoutHeader_->setTransforms(header_->getWriteTransforms());
