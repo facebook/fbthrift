@@ -16,6 +16,7 @@
 
 #include <thrift/test/gen-cpp2/reflection_fatal_enum.h>
 
+#include <thrift/lib/cpp2/fatal/reflection.h>
 #include <thrift/test/expect_same.h>
 
 #include <gtest/gtest.h>
@@ -73,12 +74,12 @@ TEST(fatal_enum, sanity_check) {
   EXPECT_EQ("field0", fatal::enum_to_string(enum1::field0));
   EXPECT_EQ("field1", fatal::enum_to_string(enum1::field1));
   EXPECT_EQ("field2", fatal::enum_to_string(enum1::field2));
-  EXPECT_EQ(nullptr, fatal::enum_to_string(static_cast<enum1>(~0)));
+  EXPECT_EQ(nullptr, fatal::enum_to_string(static_cast<enum1>(99999)));
 
   EXPECT_EQ("field0", traits::to_string(enum1::field0));
   EXPECT_EQ("field1", traits::to_string(enum1::field1));
   EXPECT_EQ("field2", traits::to_string(enum1::field2));
-  EXPECT_EQ(nullptr, traits::to_string(static_cast<enum1>(~0)));
+  EXPECT_EQ(nullptr, traits::to_string(static_cast<enum1>(99999)));
 
   EXPECT_EQ(enum1::field0, traits::parse(std::string("field0")));
   EXPECT_EQ(enum1::field1, traits::parse(std::string("field1")));
@@ -94,6 +95,34 @@ TEST(fatal_enum, sanity_check) {
   EXPECT_EQ(enum1::field2, e);
   EXPECT_FALSE(traits::try_parse(e, std::string("not a field")));
   EXPECT_EQ(enum1::field2, e);
+}
+
+FATAL_STR(enum3_annotation1k, "another.there");
+FATAL_STR(enum3_annotation1v, ".");
+FATAL_STR(enum3_annotation2k, "one.here");
+FATAL_STR(enum3_annotation2v, "with some value associated");
+FATAL_STR(enum3_annotation3k, "yet.another");
+FATAL_STR(enum3_annotation3v, "and yet more text - it's that easy");
+
+TEST(fatal_struct, annotations) {
+  EXPECT_SAME<
+    fatal::type_map<>,
+    apache::thrift::reflect_enum<enum1>::annotations
+  >();
+
+  EXPECT_SAME<
+    fatal::type_map<>,
+    apache::thrift::reflect_enum<enum2>::annotations
+  >();
+
+  EXPECT_SAME<
+    fatal::build_type_map<
+      enum3_annotation1k, enum3_annotation1v,
+      enum3_annotation2k, enum3_annotation2v,
+      enum3_annotation3k, enum3_annotation3v
+    >,
+    apache::thrift::reflect_enum<enum3>::annotations
+  >();
 }
 
 } // namespace cpp_reflection {

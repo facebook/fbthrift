@@ -274,5 +274,63 @@ TEST(fatal_struct, struct1_sanity_check) {
   >();
 }
 
+FATAL_STR(structB_annotation1k, "some.annotation");
+FATAL_STR(structB_annotation1v, "this is its value");
+FATAL_STR(structB_annotation2k, "some.other.annotation");
+FATAL_STR(structB_annotation2v, "this is its other value");
+
+TEST(fatal_struct, annotations) {
+  EXPECT_SAME<
+    fatal::type_map<>,
+    apache::thrift::reflect_struct<struct1>::annotations
+  >();
+
+  EXPECT_SAME<
+    fatal::type_map<>,
+    apache::thrift::reflect_struct<struct2>::annotations
+  >();
+
+  EXPECT_SAME<
+    fatal::type_map<>,
+    apache::thrift::reflect_struct<struct3>::annotations
+  >();
+
+  EXPECT_SAME<
+    fatal::type_map<>,
+    apache::thrift::reflect_struct<structA>::annotations
+  >();
+
+  EXPECT_SAME<
+    fatal::build_type_map<
+      structB_annotation1k, structB_annotation1v,
+      structB_annotation2k, structB_annotation2v
+    >,
+    apache::thrift::reflect_struct<structB>::annotations
+  >();
+
+  EXPECT_SAME<
+    fatal::type_map<>,
+    apache::thrift::reflect_struct<structC>::annotations
+  >();
+}
+
+FATAL_STR(structBd_annotation1k, "another.annotation");
+FATAL_STR(structBd_annotation1v, "another value");
+FATAL_STR(structBd_annotation2k, "some.annotation");
+FATAL_STR(structBd_annotation2v, "some value");
+
+TEST(fatal_struct, member_annotations) {
+  using info = apache::thrift::reflect_struct<structB>;
+  using member = info::members::get<info::names::d>;
+
+  EXPECT_SAME<
+    fatal::build_type_map<
+      structBd_annotation1k, structBd_annotation1v,
+      structBd_annotation2k, structBd_annotation2v
+    >,
+    member::annotations
+  >();
+}
+
 } // namespace cpp_reflection {
 } // namespace test_cpp2 {

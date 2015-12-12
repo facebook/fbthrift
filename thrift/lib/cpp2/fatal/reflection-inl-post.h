@@ -90,12 +90,12 @@ struct reflect_module_tag_impl {
 
 template <typename T>
 struct reflect_module_tag_selector<thrift_category::enumeration, T> {
-  using type = typename fatal::enum_traits<T>::metadata;
+  using type = typename fatal::enum_traits<T>::metadata::first;
 };
 
 template <typename T>
 struct reflect_module_tag_selector<thrift_category::variant, T> {
-  using type = typename fatal::variant_traits<T>::metadata;
+  using type = typename fatal::variant_traits<T>::metadata::first;
 };
 
 template <typename T>

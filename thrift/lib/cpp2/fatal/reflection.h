@@ -274,7 +274,10 @@ struct reflected_module {
  *    1: i32 a
  *    2: string b
  *    3: double c
- *  }
+ *  } (
+ *    some.annotation = "some value",
+ *    another.annotation = "another value",
+ *  )
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
@@ -283,7 +286,8 @@ template <
   typename Name,
   typename Module,
   typename Names,
-  typename Info
+  typename Info,
+  typename Annotations
 >
 struct reflected_struct {
   /**
@@ -383,9 +387,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using members = typename fatal::type_map_from<
-    fatal::get_member_type::name
-  >::template list<Info>;
+  using members = Info;
 
   /**
    * A `fatal::type_map` from the data member name to the data member type.
@@ -454,6 +456,27 @@ struct reflected_struct {
   using getters = typename members::template transform<
     fatal::get_member_type::getter
   >;
+
+  /**
+   * A type map representing the annotations declared for this type in the
+   * Thrift file, sorted by keys.
+   *
+   * Both the keys and the values of this map are compile-time strings
+   * represented by `fatal::constant_sequence` of type `char`.
+   *
+   * Example:
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *  FATAL_STR(key, "another.annotation");
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
+   *  // >`
+   *  using result = info::annotations::get<key>;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using annotations = Annotations;
 };
 
 /**
@@ -471,7 +494,8 @@ template <
   field_id_t Id,
   typename Getter,
   thrift_category Category,
-  template <typename> class Pod
+  template <typename> class Pod,
+  typename Annotations
 >
 struct reflected_struct_data_member {
   /**
@@ -652,7 +676,285 @@ struct reflected_struct_data_member {
    */
   template <typename T = type>
   using pod = Pod<T>;
+
+  /**
+   * A type map representing the annotations declared for this member in the
+   * Thrift file, sorted by keys.
+   *
+   * Both the keys and the values of this map are compile-time strings
+   * represented by `fatal::constant_sequence` of type `char`.
+   *
+   * Example:
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *  using member = info::types::members<info::names::fieldC>;
+   *  FATAL_STR(key, "another.annotation");
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
+   *  // >`
+   *  using result = info::annotations::get<key>;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using annotations = Annotations;
 };
+
+/**
+ * Holds reflection metadata for a given enumeration.
+ *
+ * NOTE: this class template is only intended to be instantiated by Thrift.
+ * Users should ignore the template parameters taken by it and focus simply on
+ * the members provided.
+ *
+ * For the examples below, consider code generated for this Thrift file:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  enum MyEnum {
+ *    a, b, c
+ *  } (
+ *    some.annotation = "some value",
+ *    another.annotation = "another value",
+ *  )
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T>
+struct reflected_enum {
+  /**
+   * A type alias for the enumeration itself.
+   *
+   * Example:
+   *
+   *  using info = reflect_enum<MyEnum>;
+   *
+   *  // yields `MyEnum`
+   *  using result = info::type;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using type = T;
+
+  /**
+   * An alias to `fatal::enum_traits`.
+   *
+   * See `fatal::enum_traits`, from the Fatal library, for more information.
+   *
+   * Example:
+   *
+   *  using info = reflect_enum<MyEnum>;
+   *  using traits = info::traits;
+   *
+   *  // yields "a"
+   *  auto result = traits::to_string(MyEnum::a);
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using traits = fatal::enum_traits<type>;
+
+  /**
+   * The reflection metadata tag for the Thrift file where this enumeration is
+   * declared.
+   *
+   * Example:
+   *
+   *  using info = reflect_enum<MyEnum>;
+   *
+   *  // yields `My::Namespace::MyModule_tags::module`
+   *  using result = info::module;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using module = typename traits::metadata::first;
+
+  /**
+   * A type map representing the annotations declared for this type in the
+   * Thrift file, sorted by keys.
+   *
+   * Both the keys and the values of this map are compile-time strings
+   * represented by `fatal::constant_sequence` of type `char`.
+   *
+   * Example:
+   *
+   *  using info = reflect_enum<MyEnum>;
+   *  FATAL_STR(key, "another.annotation");
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
+   *  // >`
+   *  using result = info::annotations::get<key>;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using annotations = typename traits::metadata::second;
+};
+
+/**
+ * Retrieves reflection metadata (as a `reflected_enum`) associated with the
+ * given enumeration.
+ *
+ * If the given type is not a Thrift enumeration, or if there's no reflection
+ * metadata available for it, compilation will fail.
+ *
+ * See the documentation on `reflected_enum` (above) for more information on
+ * the returned type.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  enum MyEnum { a, b, c }
+ *
+ *  //////////////////
+ *  // whatever.cpp //
+ *  //////////////////
+ *  using info = reflect_enum<My::Namespace::MyEnum>;
+ *
+ *  // yields `MyEnum`
+ *  auto result = info::type;
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T>
+using reflect_enum = reflected_enum<T>;
+
+/**
+ * Holds reflection metadata for a given union.
+ *
+ * NOTE: this class template is only intended to be instantiated by Thrift.
+ * Users should ignore the template parameters taken by it and focus simply on
+ * the members provided.
+ *
+ * For the examples below, consider code generated for this Thrift file:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  union MyUnion {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  } (
+ *    some.annotation = "some value",
+ *    another.annotation = "another value",
+ *  )
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T>
+struct reflected_union {
+  /**
+   * A type alias for the union itself.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<MyUnion>;
+   *
+   *  // yields `MyUnion`
+   *  using result = info::type;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using type = T;
+
+  /**
+   * An alias to `fatal::variant_traits`.
+   *
+   * See `fatal::variant_traits`, from the Fatal library, for more information.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<MyUnion>;
+   *  using traits = info::traits;
+   *
+   *  // yields `MyUnion::Type::a`
+   *  auto result = traits::array::ids::get[0];
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using traits = fatal::variant_traits<type>;
+
+  /**
+   * The reflection metadata tag for the Thrift file where this union is
+   * declared.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<MyUnion>;
+   *
+   *  // yields `My::Namespace::MyModule_tags::module`
+   *  using result = info::module;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using module = typename traits::metadata::first;
+
+  /**
+   * A type map representing the annotations declared for this type in the
+   * Thrift file, sorted by keys.
+   *
+   * Both the keys and the values of this map are compile-time strings
+   * represented by `fatal::constant_sequence` of type `char`.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<MyUnion>;
+   *  FATAL_STR(key, "another.annotation");
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
+   *  // >`
+   *  using result = info::annotations::get<key>;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using annotations = typename traits::metadata::second;
+};
+
+/**
+ * Retrieves reflection metadata (as a `reflected_union`) associated with the
+ * given union.
+ *
+ * If the given type is not a Thrift union, or if there's no reflection
+ * metadata available for it, compilation will fail.
+ *
+ * See the documentation on `reflected_union` (above) for more information on
+ * the returned type.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  union MyUnion {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  //////////////////
+ *  // whatever.cpp //
+ *  //////////////////
+ *  using info = reflect_union<My::Namespace::MyUnion>;
+ *
+ *  // yields `MyUnion`
+ *  auto result = info::type;
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T>
+using reflect_union = reflected_union<T>;
 
 /**
  * Retrieves reflection metadata (as a `reflected_module`) associated with the

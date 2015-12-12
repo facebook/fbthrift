@@ -16,7 +16,11 @@ enum enum3 {
   field0_3,
   field1_3,
   field2_3
-}
+} (
+  one.here = "with some value associated",
+  another.there = ".",
+  yet.another = "and yet more text - it's that easy",
+)
 
 union union1 {
   1: i32 ui
@@ -50,12 +54,21 @@ union unionA {
   3: string s
   4: enum1 e
   5: structA a
-}
+} (
+  sample.annotation = "some text here",
+  another.annotation = "some more text",
+)
 
 struct structB {
   1: double c
-  2: bool d
-}
+  2: bool d (
+    some.annotation = "some value",
+    another.annotation = "another value",
+  )
+} (
+  some.annotation = "this is its value",
+  some.other.annotation = "this is its other value",
+)
 
 struct structC {
   1: i32 a

@@ -19,13 +19,13 @@ namespace detail {
 
 struct union1_Type_enum_traits {
   using type = ::test_cpp2::cpp_reflection::union1::Type;
-  using name = ::fatal::constant_sequence<char, 'T', 'y', 'p', 'e'>;
+  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
   struct str {
-    using ui = ::fatal::constant_sequence<char, 'u', 'i'>;
-    using ud = ::fatal::constant_sequence<char, 'u', 'd'>;
-    using us = ::fatal::constant_sequence<char, 'u', 's'>;
-    using ue = ::fatal::constant_sequence<char, 'u', 'e'>;
+    using ui = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui;
+    using ud = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud;
+    using us = detail::test_cpp2_cpp_reflection_module__unique_strings_list::us;
+    using ue = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -60,7 +60,14 @@ struct union1_Type_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union1_Type_enum_traits, module_tags::module);
+FATAL_REGISTER_ENUM_TRAITS(
+  ::test_cpp2::cpp_reflection::detail::union1_Type_enum_traits,
+  ::fatal::type_pair<
+    module_tags::module,
+    ::fatal::type_map<
+    >
+  >
+);
 
 namespace detail {
 
@@ -155,7 +162,7 @@ class union1_variant_traits {
 
   public:
   using type = ::test_cpp2::cpp_reflection::union1;
-  using name = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', '1'>;
+  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1;
   using id = type::Type;
 
   struct ids {
@@ -206,13 +213,13 @@ namespace detail {
 
 struct union2_Type_enum_traits {
   using type = ::test_cpp2::cpp_reflection::union2::Type;
-  using name = ::fatal::constant_sequence<char, 'T', 'y', 'p', 'e'>;
+  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
   struct str {
-    using ui_2 = ::fatal::constant_sequence<char, 'u', 'i', '_', '2'>;
-    using ud_2 = ::fatal::constant_sequence<char, 'u', 'd', '_', '2'>;
-    using us_2 = ::fatal::constant_sequence<char, 'u', 's', '_', '2'>;
-    using ue_2 = ::fatal::constant_sequence<char, 'u', 'e', '_', '2'>;
+    using ui_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_2;
+    using ud_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_2;
+    using us_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_2;
+    using ue_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_2;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -247,7 +254,14 @@ struct union2_Type_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union2_Type_enum_traits, module_tags::module);
+FATAL_REGISTER_ENUM_TRAITS(
+  ::test_cpp2::cpp_reflection::detail::union2_Type_enum_traits,
+  ::fatal::type_pair<
+    module_tags::module,
+    ::fatal::type_map<
+    >
+  >
+);
 
 namespace detail {
 
@@ -342,7 +356,7 @@ class union2_variant_traits {
 
   public:
   using type = ::test_cpp2::cpp_reflection::union2;
-  using name = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', '2'>;
+  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2;
   using id = type::Type;
 
   struct ids {
@@ -393,13 +407,13 @@ namespace detail {
 
 struct union3_Type_enum_traits {
   using type = ::test_cpp2::cpp_reflection::union3::Type;
-  using name = ::fatal::constant_sequence<char, 'T', 'y', 'p', 'e'>;
+  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
   struct str {
-    using ui_3 = ::fatal::constant_sequence<char, 'u', 'i', '_', '3'>;
-    using ud_3 = ::fatal::constant_sequence<char, 'u', 'd', '_', '3'>;
-    using us_3 = ::fatal::constant_sequence<char, 'u', 's', '_', '3'>;
-    using ue_3 = ::fatal::constant_sequence<char, 'u', 'e', '_', '3'>;
+    using ui_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_3;
+    using ud_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_3;
+    using us_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_3;
+    using ue_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_3;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -434,7 +448,14 @@ struct union3_Type_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union3_Type_enum_traits, module_tags::module);
+FATAL_REGISTER_ENUM_TRAITS(
+  ::test_cpp2::cpp_reflection::detail::union3_Type_enum_traits,
+  ::fatal::type_pair<
+    module_tags::module,
+    ::fatal::type_map<
+    >
+  >
+);
 
 namespace detail {
 
@@ -529,7 +550,7 @@ class union3_variant_traits {
 
   public:
   using type = ::test_cpp2::cpp_reflection::union3;
-  using name = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', '3'>;
+  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3;
   using id = type::Type;
 
   struct ids {
@@ -577,8 +598,29 @@ class union3_variant_traits {
 
 } // detail
 
-FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union1_variant_traits, module_tags::module);
-FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union2_variant_traits, module_tags::module);
-FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union3_variant_traits, module_tags::module);
+FATAL_REGISTER_VARIANT_TRAITS(
+  ::test_cpp2::cpp_reflection::detail::union1_variant_traits,
+  ::fatal::type_pair<
+    module_tags::module,
+    ::fatal::type_map<
+    >
+  >
+);
+FATAL_REGISTER_VARIANT_TRAITS(
+  ::test_cpp2::cpp_reflection::detail::union2_variant_traits,
+  ::fatal::type_pair<
+    module_tags::module,
+    ::fatal::type_map<
+    >
+  >
+);
+FATAL_REGISTER_VARIANT_TRAITS(
+  ::test_cpp2::cpp_reflection::detail::union3_variant_traits,
+  ::fatal::type_pair<
+    module_tags::module,
+    ::fatal::type_map<
+    >
+  >
+);
 
 }} // test_cpp2::cpp_reflection

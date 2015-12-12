@@ -4052,9 +4052,12 @@ class CppGenerator(t_generator.Generator):
     def _get_fatal_string_id(self, s):
         return '{0}::{1}'.format(self.fatal_str_map_id, self.fatal_str_map[s])
 
+    def _string_to_identifier(self, s):
+        return re.sub(r'[\W\.:]', '_', s)
+
     def _set_fatal_string(self, s):
         if s not in self.fatal_str_map:
-            identifier = s.replace('.', '_').replace(':', '_').replace(' ', '_')
+            identifier = self._string_to_identifier(s)
             self.fatal_str_map[s] = identifier
         return self._get_fatal_string_id(s)
 
@@ -4070,9 +4073,13 @@ class CppGenerator(t_generator.Generator):
         return ''
 
     def _render_fatal_string(self, s):
-        l = []
-        l.extend(s)
-        return "::fatal::constant_sequence<char, '{0}'>".format("', '".join(l))
+        result = "::fatal::constant_sequence<char"
+        for i in s:
+            result += ", '"
+            result += re.sub(r"(['\n\\])", r'\\\1', i)
+            result += "'"
+        result += ">"
+        return result
 
     def _render_fatal_thrift_category(self, ttype):
         while ttype.is_typedef:
@@ -4100,6 +4107,19 @@ class CppGenerator(t_generator.Generator):
                 return 'structure'
         else:
             return 'unknown'
+
+    def _render_fatal_annotations_map(self, annotations, scope, indent):
+        scope('{0}::fatal::type_map<'.format(indent))
+        if annotations is not None:
+            for idx, i in enumerate(sorted(annotations.keys())):
+                value = annotations[i]
+                scope('{0}  ::fatal::type_pair<'.format(indent))
+                scope('{0}    {1},'.format(indent, self._set_fatal_string(i)))
+                scope('{0}    {1}'.format(indent,
+                    self._render_fatal_string(value)))
+                comma = ',' if idx + 1 < len(annotations) else ''
+                scope('{0}  >{1}'.format(indent, comma))
+        scope('{0}>'.format(indent))
 
     def _generate_fatal_language(self, program):
         replacement = {'cpp': '::', 'cpp2': '::', 'php': '_'}
@@ -4138,23 +4158,25 @@ class CppGenerator(t_generator.Generator):
         result = {}
         order = []
         for i in program.enums:
-            self._generate_fatal_enum_traits(i.name, i.name, i.constants, sns)
+            self._generate_fatal_enum_traits(i.name, i.name, i.constants, sns,
+                i.annotations)
             string_ref = self._set_fatal_string(i.name)
             result[i.name] = (i.name, string_ref, string_ref)
             order.append(i.name)
         return (order, result)
 
-    def _generate_fatal_enum_traits(self, name, scoped_name, members, scope):
+    def _generate_fatal_enum_traits(self, name, scoped_name, members, scope,
+      annotations):
         scoped_ns = self._get_scoped_original_namespace()
         traits_name = '{0}_enum_traits'.format(scoped_name.replace('::', '_'))
         with scope.namespace('detail').scope as detail:
             with detail.cls('struct {0}'.format(traits_name)).scope as t:
                 t('using type = {0}::{1};'.format(scoped_ns, scoped_name))
-                t('using name = {0};'.format(self._render_fatal_string(name)))
+                t('using name = {0};'.format(self._set_fatal_string(name)))
                 t()
                 with t.cls('struct str'):
                     for i in members:
-                        cseq = self._render_fatal_string(i.name)
+                        cseq = self._set_fatal_string(i.name)
                         t('using {0} = {1};'.format(i.name, cseq))
                 t()
                 t('using name_to_value = ::fatal::type_map<')
@@ -4175,8 +4197,13 @@ class CppGenerator(t_generator.Generator):
                 t('  }')
                 t('}')
         scope()
-        scope('FATAL_REGISTER_ENUM_TRAITS({0}::detail::{1}, {2});'
-            .format(scoped_ns, traits_name, self.fatal_tag))
+        scope('FATAL_REGISTER_ENUM_TRAITS(')
+        scope('  {0}::detail::{1},'.format(scoped_ns, traits_name))
+        scope('  ::fatal::type_pair<')
+        scope('    {0},'.format(self.fatal_tag))
+        self._render_fatal_annotations_map(annotations, scope, '    ')
+        scope('  >')
+        scope(');')
         return traits_name
 
     def _generate_fatal_union(self, program):
@@ -4204,22 +4231,29 @@ class CppGenerator(t_generator.Generator):
         result = {}
         order = []
         traits = {}
+        annotations = {}
         for i in program.structs:
             if not i.is_union:
                 continue
             self._generate_fatal_enum_traits(
-                'Type', '{0}::Type'.format(i.name), i.members, sns)
+                'Type', '{0}::Type'.format(i.name), i.members, sns, None)
             sns()
             string_ref = self._set_fatal_string(i.name)
             result[i.name] = (i.name, string_ref, string_ref)
+            annotations[i.name] = i.annotations
             order.append(i.name)
             with sns.namespace('detail').scope as detail:
                 traits[i.name] = self._generate_fatal_union_traits(i, detail)
         if len(traits) > 0:
             sns()
         for i in order:
-            sns('FATAL_REGISTER_VARIANT_TRAITS({0}::detail::{1}, {2});'
-                .format(scoped_ns, traits[i], self.fatal_tag))
+            sns('FATAL_REGISTER_VARIANT_TRAITS(')
+            sns('  {0}::detail::{1},'.format(scoped_ns, traits[i]))
+            sns('  ::fatal::type_pair<')
+            sns('    {0},'.format(self.fatal_tag))
+            self._render_fatal_annotations_map(annotations[i], sns, '    ')
+            sns('  >')
+            sns(');')
         return (order, result)
 
     def _generate_fatal_union_traits(self, union, scope):
@@ -4236,7 +4270,7 @@ class CppGenerator(t_generator.Generator):
             t()
             t('public:')
             t('using type = {0}::{1};'.format(scoped_ns, union.name))
-            t('using name = {0};'.format(self._render_fatal_string(union.name)))
+            t('using name = {0};'.format(self._set_fatal_string(union.name)))
             t('using id = type::Type;')
             t()
             with t.cls('struct ids'):
@@ -4356,19 +4390,25 @@ class CppGenerator(t_generator.Generator):
             sns('  {0},'.format(self._get_fatal_string_id(i.name)))
             sns('  {0},'.format(self.fatal_tag))
             sns('  detail::{0}_{1},'.format(i.name, strclsprefix))
-            sns('  ::fatal::type_list<')
+            sns('  ::fatal::type_map<')
             for midx, m in enumerate(i.members):
-                sns('    ::apache::thrift::reflected_struct_data_member<')
+                sns('    ::fatal::type_pair<')
                 sns('      {0},'.format(self._get_fatal_string_id(m.name)))
-                sns('      {0},'.format(self._type_name(m.type)))
-                sns('      {0},'.format(m.key))
-                sns('      detail::{0}::{1},'.format(dtmclsprefix, m.name))
-                sns('      ::apache::thrift::thrift_category::{0},'
+                sns('      ::apache::thrift::reflected_struct_data_member<')
+                sns('        {0},'.format(self._get_fatal_string_id(m.name)))
+                sns('        {0},'.format(self._type_name(m.type)))
+                sns('        {0},'.format(m.key))
+                sns('        detail::{0}::{1},'.format(dtmclsprefix, m.name))
+                sns('        ::apache::thrift::thrift_category::{0},'
                     .format(self._render_fatal_thrift_category(m.type)))
-                sns('      detail::{0}::{1}_{2}_struct_member_pod_{3}'
+                sns('        detail::{0}::{1}_{2}_struct_member_pod_{3},'
                     .format(mpdclsprefix, safe_ns, name, m.name))
+                self._render_fatal_annotations_map(m.annotations,
+                    sns, '        ')
+                sns('      >')
                 sns('    >{0}'.format(',' if midx + 1 < len(i.members) else ''))
-            sns('  >')
+            sns('  >,')
+            self._render_fatal_annotations_map(i.annotations, sns, '  ')
             sns(');')
         return (order, result)
 

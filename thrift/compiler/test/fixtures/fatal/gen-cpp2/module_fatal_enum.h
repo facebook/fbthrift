@@ -18,12 +18,12 @@ namespace detail {
 
 struct enum1_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum1;
-  using name = ::fatal::constant_sequence<char, 'e', 'n', 'u', 'm', '1'>;
+  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
 
   struct str {
-    using field0 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0'>;
-    using field1 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '1'>;
-    using field2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '2'>;
+    using field0 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0;
+    using field1 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1;
+    using field2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -53,17 +53,24 @@ struct enum1_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum1_enum_traits, module_tags::module);
+FATAL_REGISTER_ENUM_TRAITS(
+  ::test_cpp2::cpp_reflection::detail::enum1_enum_traits,
+  ::fatal::type_pair<
+    module_tags::module,
+    ::fatal::type_map<
+    >
+  >
+);
 namespace detail {
 
 struct enum2_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum2;
-  using name = ::fatal::constant_sequence<char, 'e', 'n', 'u', 'm', '2'>;
+  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
 
   struct str {
-    using field0_2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '2'>;
-    using field1_2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '2'>;
-    using field2_2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '2', '_', '2'>;
+    using field0_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_2;
+    using field1_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_2;
+    using field2_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_2;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -93,17 +100,24 @@ struct enum2_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum2_enum_traits, module_tags::module);
+FATAL_REGISTER_ENUM_TRAITS(
+  ::test_cpp2::cpp_reflection::detail::enum2_enum_traits,
+  ::fatal::type_pair<
+    module_tags::module,
+    ::fatal::type_map<
+    >
+  >
+);
 namespace detail {
 
 struct enum3_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum3;
-  using name = ::fatal::constant_sequence<char, 'e', 'n', 'u', 'm', '3'>;
+  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
 
   struct str {
-    using field0_3 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '3'>;
-    using field1_3 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '3'>;
-    using field2_3 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '2', '_', '3'>;
+    using field0_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_3;
+    using field1_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_3;
+    using field2_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_3;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -133,6 +147,13 @@ struct enum3_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::enum3_enum_traits, module_tags::module);
+FATAL_REGISTER_ENUM_TRAITS(
+  ::test_cpp2::cpp_reflection::detail::enum3_enum_traits,
+  ::fatal::type_pair<
+    module_tags::module,
+    ::fatal::type_map<
+    >
+  >
+);
 
 }} // test_cpp2::cpp_reflection

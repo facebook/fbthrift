@@ -16,6 +16,7 @@
 
 #include <thrift/test/gen-cpp2/reflection_fatal_union.h>
 
+#include <thrift/lib/cpp2/fatal/reflection.h>
 #include <thrift/test/expect_same.h>
 
 #include <gtest/gtest.h>
@@ -232,6 +233,36 @@ TEST(fatal_union, by_type) {
   EXPECT_EQ(enum1::field1, traits::get<enum1>(ul));
   EXPECT_EQ(enum1::field1, traits::get<enum1>(uc));
   EXPECT_EQ(enum1::field1, traits::get<enum1>(ur));
+}
+
+FATAL_STR(unionA_annotation1k, "another.annotation");
+FATAL_STR(unionA_annotation1v, "some more text");
+FATAL_STR(unionA_annotation2k, "sample.annotation");
+FATAL_STR(unionA_annotation2v, "some text here");
+
+TEST(fatal_struct, annotations) {
+  EXPECT_SAME<
+    fatal::type_map<>,
+    apache::thrift::reflect_union<union1>::annotations
+  >();
+
+  EXPECT_SAME<
+    fatal::type_map<>,
+    apache::thrift::reflect_union<union2>::annotations
+  >();
+
+  EXPECT_SAME<
+    fatal::type_map<>,
+    apache::thrift::reflect_union<union3>::annotations
+  >();
+
+  EXPECT_SAME<
+    fatal::build_type_map<
+      unionA_annotation1k, unionA_annotation1v,
+      unionA_annotation2k, unionA_annotation2v
+    >,
+    apache::thrift::reflect_union<unionA>::annotations
+  >();
 }
 
 } // namespace cpp_reflection {
