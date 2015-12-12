@@ -77,11 +77,11 @@ TEST(fatal, tags) {
 }
 
 TEST(fatal, metadata) {
-  using info = apache::thrift::reflect_module<reflection_tags::metadata>;
+  using info = apache::thrift::reflect_module<reflection_tags::module>;
 
   EXPECT_SAME<
     info,
-    apache::thrift::try_reflect_module<reflection_tags::metadata, void>
+    apache::thrift::try_reflect_module<reflection_tags::module, void>
   >();
   EXPECT_SAME<void, apache::thrift::try_reflect_module<int, void>>();
 
@@ -146,7 +146,7 @@ namespace test_cpp2 {
 namespace cpp_reflection {
 
 TEST(fatal, reflect_module_tag) {
-  using tag = reflection_tags::metadata;
+  using tag = reflection_tags::module;
 
   EXPECT_SAME<tag, apache::thrift::reflect_module_tag<enum1>>();
   EXPECT_SAME<tag, apache::thrift::reflect_module_tag<enum2>>();
@@ -166,7 +166,7 @@ TEST(fatal, reflect_module_tag) {
 }
 
 TEST(fatal, try_reflect_module_tag) {
-  using tag = reflection_tags::metadata;
+  using tag = reflection_tags::module;
 
   EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<enum1, void>>();
   EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<enum2, void>>();

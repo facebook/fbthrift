@@ -179,7 +179,7 @@ struct reflected_module {
    *
    *  // C++
    *
-   *  using info = reflect_module<My::Namespace::MyModule_tags::metadata>;
+   *  using info = reflect_module<My::Namespace::MyModule_tags::module>;
    *
    *  FATAL_STR(cpp, "cpp");
    *  FATAL_STR(cpp2, "cpp2");
@@ -325,7 +325,7 @@ struct reflected_struct {
    *
    *  using info = reflect_struct<MyStruct>;
    *
-   *  // yields `My::Namespace::MyModule_tags::metadata`
+   *  // yields `My::Namespace::MyModule_tags::module`
    *  using result = info::module;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
@@ -659,7 +659,7 @@ struct reflected_struct_data_member {
  * given reflection metadata tag.
  *
  * The Thrift compiler generates a reflection metadata tag for each Thrift file
- * named `namespace::thriftfilename_tags::metadata`.
+ * named `namespace::thriftfilename_tags::module`.
  *
  * If the given tag does not represent a Thrift module, or if there's no
  * reflection metadata available for it, compilation will fail.
@@ -680,7 +680,7 @@ struct reflected_struct_data_member {
  *  //////////////////
  *  // whatever.cpp //
  *  //////////////////
- *  using info = reflect_module<My::Namespace::MyModule_tags::metadata>;
+ *  using info = reflect_module<My::Namespace::MyModule_tags::module>;
  *
  *  // yields `2`
  *  auto result1 = info::enums::size;
@@ -701,7 +701,7 @@ using reflect_module = fatal::registry_lookup<
  * given reflection metadata tag.
  *
  * The Thrift compiler generates a reflection metadata tag for each Thrift file
- * named `namespace::thriftfilename_tags::metadata`.
+ * named `namespace::thriftfilename_tags::module`.
  *
  * If the given tag does not represent a Thrift module, or if there's no
  * reflection metadata available for it, `Default` will be returned.
@@ -723,7 +723,7 @@ using reflect_module = fatal::registry_lookup<
  *  // whatever.cpp //
  *  //////////////////
  *  using info = try_reflect_module<
- *    My::Namespace::MyModule_tags::metadata,
+ *    My::Namespace::MyModule_tags::module,
  *    void
  *  >;
  *
@@ -843,7 +843,7 @@ using try_reflect_struct = fatal::try_registry_lookup<
  *  /////////////
  *
  *  // yields `std::true_type`
- *  using result1 = is_reflectable_module<MyModule_tags::metadata>;
+ *  using result1 = is_reflectable_module<MyModule_tags::module>;
  *
  *  // yields `std::false_type`
  *  using result2 = is_reflectable_module<MyStruct>;
@@ -1104,10 +1104,10 @@ template <typename> struct reflect_module_tag_impl;
  *
  *  // C++
  *
- *  // yields `My::Namespace::MyModule_tags::metadata`
+ *  // yields `My::Namespace::MyModule_tags::module`
  *  using result1 = reflect_module_tag<MyStruct>;
  *
- *  // yields `My::Namespace::MyModule_tags::metadata`
+ *  // yields `My::Namespace::MyModule_tags::module`
  *  using result2 = reflect_module_tag<MyEnum>;
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
@@ -1141,10 +1141,10 @@ using reflect_module_tag = typename detail::reflect_module_tag_impl<
  *
  *  // C++
  *
- *  // yields `My::Namespace::MyModule_tags::metadata`
+ *  // yields `My::Namespace::MyModule_tags::module`
  *  using result1 = reflect_module_tag<MyStruct, void>;
  *
- *  // yields `My::Namespace::MyModule_tags::metadata`
+ *  // yields `My::Namespace::MyModule_tags::module`
  *  using result2 = reflect_module_tag<MyEnum, void>;
  *
  *  // yields `void`

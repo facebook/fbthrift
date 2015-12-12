@@ -60,7 +60,7 @@ struct union1_Type_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union1_Type_enum_traits, module_tags::metadata);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union1_Type_enum_traits, module_tags::module);
 
 namespace detail {
 
@@ -247,7 +247,7 @@ struct union2_Type_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union2_Type_enum_traits, module_tags::metadata);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union2_Type_enum_traits, module_tags::module);
 
 namespace detail {
 
@@ -434,7 +434,7 @@ struct union3_Type_enum_traits {
 
 } // detail
 
-FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union3_Type_enum_traits, module_tags::metadata);
+FATAL_REGISTER_ENUM_TRAITS(::test_cpp2::cpp_reflection::detail::union3_Type_enum_traits, module_tags::module);
 
 namespace detail {
 
@@ -577,8 +577,8 @@ class union3_variant_traits {
 
 } // detail
 
-FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union1_variant_traits, module_tags::metadata);
-FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union2_variant_traits, module_tags::metadata);
-FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union3_variant_traits, module_tags::metadata);
+FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union1_variant_traits, module_tags::module);
+FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union2_variant_traits, module_tags::module);
+FATAL_REGISTER_VARIANT_TRAITS(::test_cpp2::cpp_reflection::detail::union3_variant_traits, module_tags::module);
 
 }} // test_cpp2::cpp_reflection

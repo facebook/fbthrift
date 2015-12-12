@@ -12,30 +12,6 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 namespace detail {
 
-struct test_cpp2_cpp_reflection_module__service_unique_strings_list_strings {
-  using method1 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '1'>;
-  using method2 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '2'>;
-  using x = ::fatal::constant_sequence<char, 'x'>;
-  using y = ::fatal::constant_sequence<char, 'y'>;
-  using z = ::fatal::constant_sequence<char, 'z'>;
-  using method3 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '3'>;
-  using method4 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '4'>;
-  using i = ::fatal::constant_sequence<char, 'i'>;
-  using j = ::fatal::constant_sequence<char, 'j'>;
-  using k = ::fatal::constant_sequence<char, 'k'>;
-  using method5 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '5'>;
-  using method6 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '6'>;
-  using l = ::fatal::constant_sequence<char, 'l'>;
-  using m = ::fatal::constant_sequence<char, 'm'>;
-  using n = ::fatal::constant_sequence<char, 'n'>;
-  using methodA = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'A'>;
-  using methodB = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'B'>;
-  using methodC = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'C'>;
-  using methodD = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'D'>;
-  using methodE = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'E'>;
-  using methodF = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'F'>;
-};
-
 } // detail
 
 }} // test_cpp2::cpp_reflection
