@@ -1342,6 +1342,14 @@ class MyServiceFast_ping_args implements IThriftShapishStruct {
     return 'MyServiceFast_ping_args';
   }
 
+  public static function __jsonArrayToShape(
+    array<arraykey, mixed> $json_data,
+  ): ?self::TShape {
+    $shape_data = $json_data;
+
+    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
+  }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     return $me;
@@ -1459,6 +1467,14 @@ class MyServiceFast_getRandomData_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'MyServiceFast_getRandomData_args';
+  }
+
+  public static function __jsonArrayToShape(
+    array<arraykey, mixed> $json_data,
+  ): ?self::TShape {
+    $shape_data = $json_data;
+
+    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
   }
 
   public static function __fromShape(self::TShape $shape): this {
@@ -1609,6 +1625,21 @@ class MyServiceFast_hasDataById_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'MyServiceFast_hasDataById_args';
+  }
+
+  public static function __jsonArrayToShape(
+    array<arraykey, mixed> $json_data,
+  ): ?self::TShape {
+    $shape_data = $json_data;
+
+    if (!array_key_exists('id', $shape_data)) {
+      $shape_data['id'] = 0;
+    }
+    if (!is_int($shape_data['id'])) {
+      return null;
+    }
+
+    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
   }
 
   public static function __fromShape(self::TShape $shape): this {
@@ -1774,6 +1805,21 @@ class MyServiceFast_getDataById_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'MyServiceFast_getDataById_args';
+  }
+
+  public static function __jsonArrayToShape(
+    array<arraykey, mixed> $json_data,
+  ): ?self::TShape {
+    $shape_data = $json_data;
+
+    if (!array_key_exists('id', $shape_data)) {
+      $shape_data['id'] = 0;
+    }
+    if (!is_int($shape_data['id'])) {
+      return null;
+    }
+
+    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
   }
 
   public static function __fromShape(self::TShape $shape): this {
@@ -1953,6 +1999,28 @@ class MyServiceFast_putDataById_args implements IThriftShapishStruct {
     return 'MyServiceFast_putDataById_args';
   }
 
+  public static function __jsonArrayToShape(
+    array<arraykey, mixed> $json_data,
+  ): ?self::TShape {
+    $shape_data = $json_data;
+
+    if (!array_key_exists('id', $shape_data)) {
+      $shape_data['id'] = 0;
+    }
+    if (!is_int($shape_data['id'])) {
+      return null;
+    }
+
+    if (!array_key_exists('data', $shape_data)) {
+      $shape_data['data'] = '';
+    }
+    if (!is_string($shape_data['data'])) {
+      return null;
+    }
+
+    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
+  }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->id = $shape['id'];
@@ -2124,6 +2192,28 @@ class MyServiceFast_lobDataById_args implements IThriftShapishStruct {
 
   public function getName(): string {
     return 'MyServiceFast_lobDataById_args';
+  }
+
+  public static function __jsonArrayToShape(
+    array<arraykey, mixed> $json_data,
+  ): ?self::TShape {
+    $shape_data = $json_data;
+
+    if (!array_key_exists('id', $shape_data)) {
+      $shape_data['id'] = 0;
+    }
+    if (!is_int($shape_data['id'])) {
+      return null;
+    }
+
+    if (!array_key_exists('data', $shape_data)) {
+      $shape_data['data'] = '';
+    }
+    if (!is_string($shape_data['data'])) {
+      return null;
+    }
+
+    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
   }
 
   public static function __fromShape(self::TShape $shape): this {

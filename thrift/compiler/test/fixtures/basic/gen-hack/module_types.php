@@ -52,6 +52,28 @@ class MyStruct implements IThriftShapishStruct {
     return 'MyStruct';
   }
 
+  public static function __jsonArrayToShape(
+    array<arraykey, mixed> $json_data,
+  ): ?self::TShape {
+    $shape_data = $json_data;
+
+    if (!array_key_exists('MyIntField', $shape_data)) {
+      $shape_data['MyIntField'] = 0;
+    }
+    if (!is_int($shape_data['MyIntField'])) {
+      return null;
+    }
+
+    if (!array_key_exists('MyStringField', $shape_data)) {
+      $shape_data['MyStringField'] = '';
+    }
+    if (!is_string($shape_data['MyStringField'])) {
+      return null;
+    }
+
+    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
+  }
+
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->MyIntField = $shape['MyIntField'];

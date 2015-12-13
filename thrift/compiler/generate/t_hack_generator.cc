@@ -54,6 +54,7 @@ class t_hack_generator : public t_oop_generator {
     struct_trait_ = option_is_specified(parsed_options, "structtrait");
     shapes_ = option_is_specified(parsed_options, "shapes");
     shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
+    shape_unsafe_json_ = option_is_specified(parsed_options, "shape_unsafe_json");
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
 
@@ -103,6 +104,12 @@ class t_hack_generator : public t_oop_generator {
   void generate_php_struct_shape_collection_value_lambda(std::ostream& out,
                                                          t_name_generator& namer,
                                                          t_type* t);
+  bool field_is_nullable(t_struct* tstruct, const t_field* field, string dval);
+  void generate_php_struct_shape_json_conversion(std::ofstream& out,
+                                                 bool nullable,
+                                                 string value,
+                                                 t_type *t,
+                                                 t_name_generator& namer);
   void generate_php_struct_shape_methods(std::ofstream& out, t_struct* tstruct);
 
   void generate_php_type_spec(std::ofstream& out, t_type* t);
@@ -411,6 +418,11 @@ class t_hack_generator : public t_oop_generator {
    * True if we should generate array<arraykey, TValue> instead of array<string, TValue>
    */
   bool shape_arraykeys_;
+
+  /**
+   * True if we should not validate json when converting to Shapes
+   */
+  bool shape_unsafe_json_;
 };
 
 void t_hack_generator::generate_json_enum(std::ofstream& out,
@@ -1227,13 +1239,8 @@ void t_hack_generator::generate_php_struct_shape_spec(std::ofstream& out,
       dval = render_default_value(t);
     }
 
-    // TODO(ckwalsh) Extract this logic into a helper function
-    bool nullable = (dval == "null")
-        || tstruct->is_union()
-        || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-            && (*m_iter)->get_value() == nullptr)
-        || (t->is_enum()
-            && (*m_iter)->get_req() != t_field::T_REQUIRED);
+    bool nullable = field_is_nullable(tstruct, *m_iter, dval);
+
     string typehint = nullable ? "?" : "";
 
     typehint += type_to_typehint(t, false, true);
@@ -1301,11 +1308,247 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(std::os
   }
 }
 
+/**
+ * Determine whether a field should be marked nullable.
+ */
+bool t_hack_generator::field_is_nullable(t_struct* tstruct,
+                                         const t_field* field,
+                                         string dval) {
+  t_type* t = get_true_type(field->get_type());
+  return
+    (dval == "null") ||
+    tstruct->is_union() ||
+    (field->get_req() == t_field::T_OPTIONAL &&
+     field->get_value() == nullptr) ||
+    (t->is_enum() && field->get_req() != t_field::T_REQUIRED);
+}
+
+
+/**
+ * Recursively convert a json field into a shape field by
+ * -- performing type validation, and
+ * -- converting Sets from array<int, X> to array<X, bool>
+ *
+ * Example output for a field 'set_of_i32' is:
+ *
+ *   if (!array_key_exists('set_of_i32', $shape_data)) {
+ *     return null;
+ *   }
+ *   $the_set2 = array();
+ *   foreach ($shape_data['set_of_i32'] as $key0 => $shape_data1) {
+ *     if (!is_int($shape_data1)) {
+ *       return null;
+ *     }
+ *     $the_set2[$shape_data1] = true;
+ *   }
+ *   $shape_data['set_of_i32'] = $the_set2;
+ */
+void t_hack_generator::generate_php_struct_shape_json_conversion(std::ofstream& out,
+                                                                 bool nullable,
+                                                                 string shape_data,
+                                                                 t_type *t,
+                                                                 t_name_generator& namer) {
+
+  t = get_true_type(t);
+  if (t->is_base_type()) {
+    if (!shape_unsafe_json_) {
+      switch (((t_base_type*)t)->get_base()) {
+        case t_base_type::TYPE_STRING:
+          indent(out) << "if (!is_string(" << shape_data << ")";
+          if (nullable) {
+            out << " && !is_null(" << shape_data << ")";
+          }
+          out << ") {" << endl;
+          indent(out) << "  return null;" << endl;
+          indent(out) << "}" << endl;
+          return;
+        case t_base_type::TYPE_BOOL:
+          indent(out) << "if (!is_bool(" << shape_data << ")";
+          if (nullable) {
+            out << " && !is_null(" << shape_data << ")";
+          }
+          out << ") {" << endl;
+          indent(out) << "  return null;" << endl;
+          indent(out) << "}" << endl;
+          return;
+        case t_base_type::TYPE_BYTE:
+        case t_base_type::TYPE_I16:
+        case t_base_type::TYPE_I32:
+        case t_base_type::TYPE_I64:
+          indent(out) << "if (!is_int(" << shape_data << ")";
+          if (nullable) {
+            out << " && !is_null(" << shape_data << ")";
+          }
+          out << ") {" << endl;
+          indent(out) << "  return null;" << endl;
+          indent(out) << "}" << endl;
+          return;
+        case t_base_type::TYPE_DOUBLE:
+        case t_base_type::TYPE_FLOAT:
+          indent(out) << "if (!(is_float(" << shape_data
+                      << ") || is_int(" << shape_data << "))";
+          if (nullable) {
+            out << " && !is_null(" << shape_data << ")";
+          }
+          out << ") {" << endl;
+          indent(out) << "  return null;" << endl;
+          indent(out) << "}" << endl;
+          indent(out) << "if (is_int(" << shape_data << ")) {" << endl;
+          indent(out) << "  " << shape_data
+                      << " = (float)" << shape_data << ";" << endl;
+          indent(out) << "}" << endl;
+          return;
+        default:
+          indent(out) << "return null;" << endl;
+      }
+    }
+  } else if (t->is_set()) {
+    string k = "$" + namer("key");
+    string v = "$" + namer("shape_data");
+    t_type* val_type = get_true_type(((t_set*)t)->get_elem_type());
+    string the_set = "$" + namer("the_set");
+    indent(out) << the_set << " = array();" << endl;
+    indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */ " << shape_data << " as "
+                << k << " => " << v << ") {" << endl;
+    if (!shape_unsafe_json_) {
+      if (((t_base_type*)val_type)->get_base() == t_base_type::TYPE_STRING) {
+        indent(out) << "  if (!is_string(" << v << ")) {" << endl;
+        indent(out) << "    return null;" << endl;
+        indent(out) << "  }" << endl;
+      } else {
+        indent(out) << "  if (!is_int(" << v << ")) {" << endl;
+        indent(out) << "    return null;" << endl;
+        indent(out) << "  }" << endl;
+      }
+    }
+    indent(out) << "  " << the_set << "[" << v << "] = true;" << endl;
+    indent(out) << "}" << endl;
+    indent(out) << shape_data << " = " << the_set << ";" << endl;
+  } else if (t->is_list()) {
+    t_type* val_type = get_true_type(((t_list*)t)->get_elem_type());
+    string k = "$" + namer("key");
+    string v = "$" + namer("value");
+    if (!shape_unsafe_json_) {
+      if (nullable) {
+        indent(out) << "if (!is_null(" << shape_data << ")) {" << endl;
+        indent_up();
+      }
+      indent(out) << "if (!is_array(" << shape_data << ")) {" << endl;
+      indent(out) << "  return null;" << endl;
+      indent(out) << "}" << endl;
+    }
+    indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */" << shape_data << " as "
+                << k << " => " << v << ") {" << endl;
+    indent_up();
+    if (!shape_unsafe_json_) {
+      indent(out) << "if (!is_int(" << k << ")) {" << endl;
+      indent(out) << "  return null;" << endl;
+      indent(out) << "}" << endl;
+    }
+    generate_php_struct_shape_json_conversion(out,
+                                              false,
+                                              v,
+                                              val_type,
+                                              namer);
+    indent(out) << "/* HH_IGNORE_ERROR[4005] */" << endl;
+    indent(out) << shape_data << "[" << k << "] = " << v << ";" << endl;
+    indent_down();
+    indent(out) << "}" << endl;
+    if (nullable && !shape_unsafe_json_) {
+      indent_down();
+      indent(out) << "}" << endl;
+    }
+  } else if (t->is_map()) {
+    t_type* key_type = get_true_type(((t_map*)t)->get_key_type());
+    t_type* val_type = get_true_type(((t_map*)t)->get_val_type());
+    string k = "$" + namer("key");
+    string v = "$" + namer("value");
+    if (nullable) {
+      indent(out) << "if (!is_null(" << shape_data << ")) {" << endl;
+      indent_up();
+    }
+    if (!shape_unsafe_json_) {
+      indent(out) << "if (!is_array(" << shape_data << ")) {" << endl;
+      indent(out) << "  return null;" << endl;
+      indent(out) << "}" << endl;
+    }
+    indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */" << shape_data << " as "
+                << k << " => " << v << ") {" << endl;
+    indent_up();
+
+    bool key_is_string = false;
+    if (((t_base_type*)key_type)->get_base() == t_base_type::TYPE_STRING) {
+      key_is_string = true;
+    }
+    if (!shape_unsafe_json_) {
+      if (shape_arraykeys_) {
+        indent(out) << "if (!is_string(" << k << ") && " << endl;
+        indent(out) << "    !is_int(" << k << ")) {" << endl;
+        indent(out) << "  return null;" << endl;
+        indent(out) << "}" << endl;
+      } else {
+        if (key_is_string) {
+          indent(out) << "if (!is_string(" << k << ")) {" << endl;
+          indent(out) << "  return null;" << endl;
+          indent(out) << "}" << endl;
+        } else {
+          indent(out) << "if (!is_int(" << k << ")) {" << endl;
+          indent(out) << "  return null;" << endl;
+          indent(out) << "}" << endl;
+        }
+      }
+    }
+    generate_php_struct_shape_json_conversion(out,
+                                              false,
+                                              v,
+                                              val_type,
+                                              namer);
+    indent(out) << "/* HH_IGNORE_ERROR[4005] */" << endl;
+    indent(out) << shape_data << "[" << k << "] = " << v << ";" << endl;
+    indent_down();
+    indent(out) << "}" << endl;
+    if (nullable) {
+      indent_down();
+      indent(out) << "}" << endl;
+    }
+  } else if (t->is_struct()) {
+    string struct_type = php_namespace(t->get_program()) + t->get_name();
+
+    if (nullable && !shape_unsafe_json_) {
+      indent(out) << "if (!is_null(" << shape_data << ")) {" << endl;
+      indent_up();
+    }
+    indent(out) << shape_data << " = "
+                << struct_type
+                << "::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ "
+                << shape_data << ");" << endl;
+    if (!shape_unsafe_json_) {
+      indent(out) << "if (is_null(" << shape_data << ")) {" << endl;
+      indent(out) << "  return null;" << endl;
+      indent(out) << "}" << endl;
+    }
+    if (nullable && !shape_unsafe_json_) {
+      indent_down();
+      indent(out) << "}" << endl;
+    }
+  } else if (t->is_enum()) {
+    if (!shape_unsafe_json_) {
+      indent(out) << "if (!is_int(" << shape_data << ")) {" << endl;
+      indent(out) << "  return null;" << endl;
+      indent(out) << "}" << endl;
+    }
+  } else {
+    indent(out) << "return null; // unknown type" <<endl;
+  }
+}
+
 void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
                                                          t_struct* tstruct) {
-  indent(out) << "public static function __fromShape(self::TShape $shape): this {" << endl;
+  indent(out) << "public static function __jsonArrayToShape(" << endl;
+  indent(out) << "  array<arraykey, mixed> $json_data," << endl;
+  indent(out) << "): ?self::TShape {" << endl;
   indent_up();
-  indent(out) << "$me = /* HH_IGNORE_ERROR[4060] */ new static();" << endl;
+  indent(out) << "$shape_data = $json_data;"<<endl;
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   t_name_generator namer;
@@ -1313,19 +1556,65 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
     t_type* t = get_true_type((*m_iter)->get_type());
 
     string dval = render_default_value(t);
-    // TODO(ckwalsh) Extract this logic into a helper function
-    bool nullable = (dval == "null")
-      || tstruct->is_union()
-      || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-          && (*m_iter)->get_value() == nullptr)
-      || (t->is_enum()
-          && (*m_iter)->get_req() != t_field::T_REQUIRED);
+    bool nullable = field_is_nullable(tstruct, *m_iter, render_default_value(t));
+    out << endl;
 
-    stringstream val;
-    indent(val) << "$me->" << (*m_iter)->get_name() << " = ";
+    if (!shape_unsafe_json_) {
+      indent(out) << "if (!array_key_exists('"
+                  << (*m_iter)->get_name() << "', $shape_data)) {" << endl;
+      if (nullable) {
+        indent(out) << "  $shape_data['" << (*m_iter)->get_name() << "'] = null;"
+                    << endl;
+      } else if (dval != "null" && t->is_base_type()) {
+        // for "optional" fields with default values:
+        indent(out) << "  $shape_data['" << (*m_iter)->get_name() << "'] = "
+                    << dval << ";"
+                    << endl;
+      } else {
+        indent(out) << "  return null;" << endl;
+      }
+      indent(out) << "}" << endl;
+    }
+    string value = "$shape_data['" + (*m_iter)->get_name() + "']";
+    generate_php_struct_shape_json_conversion(out,
+                                              nullable,
+                                              value,
+                                              t,
+                                              namer);
+  }
+  out << endl;
+  indent(out) << "return /* HH_IGNORE_ERROR[4110] */ $shape_data;" << endl;
+  indent_down();
+  indent(out) << "}" << endl;
+  out << endl;
+
+  if (shape_arraykeys_) {
+    indent(out) << "public static function __stringifyMapKeys<T>("
+                << "Map<arraykey, T> $m): Map<string, T> {" << endl;
+    indent(out) << "  $new_map = Map {};" << endl;
+    indent(out) << "  foreach ($m as $k => $v) {" << endl;
+    indent(out) << "    $new_map[(string)$k] = $v;" << endl;
+    indent(out) << "  }" << endl;
+    indent(out) << "  return $new_map;" << endl;
+    indent(out) << "}" << endl;
+    out << endl;
+  }
+
+  indent(out) << "public static function __fromShape(self::TShape $shape): this {" << endl;
+  indent_up();
+  indent(out) << "$me = /* HH_IGNORE_ERROR[4060] */ new static();" << endl;
+
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    t_type* t = get_true_type((*m_iter)->get_type());
+
+    bool nullable = field_is_nullable(tstruct, *m_iter, render_default_value(t));
+
     stringstream source;
     source << "$shape['" << (*m_iter)->get_name() << "']";
 
+    stringstream val;
+
+    indent(val) << "$me->" << (*m_iter)->get_name() << " = ";
     if (t->is_set()) {
       if (nullable) {
         val << source.str() << " === null ? null : ";
@@ -1345,11 +1634,28 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
         indent_up();
         indent(val);
       }
-      if (t->is_map()) {
-        val << "(new Map(";
-      } else {
-        val << "(new Vector(";
+
+      bool stringify_map_keys = false;
+      if (t->is_map() && shape_arraykeys_) {
+        t_type *key_type =((t_map*)t)->get_key_type();
+        if (key_type->is_base_type() &&
+            ((t_base_type*)key_type)->get_base() == t_base_type::TYPE_STRING) {
+          stringify_map_keys = true;
+        }
       }
+
+      if (stringify_map_keys) {
+        val << "self::__stringifyMapKeys(";
+      } else {
+        val << "(";
+      }
+
+      if (t->is_map()) {
+        val << "new Map(";
+      } else {
+        val << "new Vector(";
+      }
+
       val << source.str() << "))";
 
       int nest = 0;
@@ -1376,7 +1682,20 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
             break;
           } else if (val_type->is_map() || val_type->is_list()) {
             string tmp = namer("val");
-            indent(val)  << "$" << tmp << " ==> (new ";
+
+            stringify_map_keys = false;
+            if (val_type->is_map() && shape_arraykeys_) {
+              t_type *key_type =((t_map*)val_type)->get_key_type();
+              if (key_type->is_base_type() &&
+                  ((t_base_type*)key_type)->get_base() == t_base_type::TYPE_STRING) {
+                stringify_map_keys = true;
+              }
+            }
+
+            indent(val)  << "$" << tmp
+                         << " ==> "
+                         << (stringify_map_keys ? "self::__stringifyMapKeys" : "")
+                         << "(new ";
             if (val_type->is_map()) {
               val << "Map";
             } else {
@@ -1405,7 +1724,7 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
           val << "," << endl;
         }
       }
-      val <<  ";" << endl;
+      val << ";" << endl;
       if (nullable) {
         indent_down();
       }
@@ -1423,16 +1742,12 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
     } else {
       val << source.str() << ";" << endl;
     }
-
-
     out << val.str();
   }
   indent(out) << "return $me;" << endl;
   indent_down();
   indent(out) << "}" << endl;
   out << endl;
-
-
 
   indent(out) << "public function __toShape(): self::TShape {" << endl;
   indent_up();
@@ -1445,15 +1760,7 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
 
     stringstream val;
 
-    string dval = render_default_value(t);
-
-    // TODO(ckwalsh) Extract this logic into a helper function
-    bool nullable = (dval == "null")
-      || tstruct->is_union()
-      || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-          && (*m_iter)->get_value() == nullptr)
-      || (t->is_enum()
-          && (*m_iter)->get_req() != t_field::T_REQUIRED);
+    bool nullable = field_is_nullable(tstruct, *m_iter, render_default_value(t));
 
     if (t->is_container()) {
       if (t->is_map() || t->is_list()) {
@@ -1652,12 +1959,12 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     // regardless, since if there is an exception we expect it to be null
     // TODO(ckwalsh) Extract this logic into a helper function
     bool nullable = (dval == "null")
-        || tstruct->is_union()
+      || tstruct->is_union()
         || is_result
-        || ((*m_iter)->get_req() == t_field::T_OPTIONAL
-            && (*m_iter)->get_value() == nullptr)
-        || (t->is_enum()
-            && (*m_iter)->get_req() != t_field::T_REQUIRED);
+      || ((*m_iter)->get_req() == t_field::T_OPTIONAL
+          && (*m_iter)->get_value() == nullptr)
+      || (t->is_enum()
+          && (*m_iter)->get_req() != t_field::T_REQUIRED);
     string typehint = nullable ? "?" : "";
 
     typehint += type_to_typehint(t);
@@ -3941,4 +4248,5 @@ THRIFT_REGISTER_GENERATOR(hack, "HACK",
 "    shapes           Generate Shape definitions for structs\n"
 "    shape_arraykeys  When generating Shape definition for structs:\n"
 "                        replace array<string, TValue> with array<arraykey, TValue>\n"
+"    shape_unsafe_json When converting json to Shapes, do not validate.\n"
 );
