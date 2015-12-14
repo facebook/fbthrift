@@ -2730,6 +2730,8 @@ void t_java_generator::generate_process_function(t_service* tservice,
   }
 
   if (!tfunction->is_oneway() && xceptions.size() > 0) {
+    string pservice_func_name = "\"" + tservice->get_name() + "." + tfunction->get_name() + "\"";
+    string pservice_func_name_error = tservice->get_name() + "." + tfunction->get_name();
     indent_down();
     f_service_ << indent() << "}";
     for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
@@ -2737,7 +2739,10 @@ void t_java_generator::generate_process_function(t_service* tservice,
       if (!tfunction->is_oneway()) {
         indent_up();
         f_service_ <<
-          indent() << "result." << (*x_iter)->get_name() << " = " << (*x_iter)->get_name() << ";" << endl;
+          indent() << "result." << (*x_iter)->get_name() << " = " << (*x_iter)->get_name() << ";" << endl <<
+          indent() << "event_handler_.declaredUserException(handler_ctx, "
+                   << pservice_func_name << ", "
+                   << (*x_iter)->get_name() << ");" << endl;
         indent_down();
         f_service_ << indent() << "}";
       } else {
@@ -2746,16 +2751,14 @@ void t_java_generator::generate_process_function(t_service* tservice,
     }
     f_service_ << " catch (Throwable th) {" << endl;
     indent_up();
-    string pservice_func_name = "\"" + tservice->get_name() + "." + tfunction->get_name() + "\"";
-    string pservice_func_name_error = tservice->get_name() + "." + tfunction->get_name();
     f_service_ <<
       indent() << "LOGGER.error(\"Internal error processing " << pservice_func_name_error << "\", th);" << endl <<
-      indent() << "event_handler_.handlerError(handler_ctx, \""
-               << pservice_func_name_error << "\", th);" << endl <<
+      indent() << "event_handler_.handlerError(handler_ctx, "
+               << pservice_func_name << ", th);" << endl <<
       indent() << "TApplicationException x = new TApplicationException(TApplicationException.INTERNAL_ERROR, \"Internal error processing " << pservice_func_name_error << "\");" << endl <<
       indent() << "event_handler_.preWrite(handler_ctx, \""
                << pservice_func_name_error << "\", null);" << endl <<
-      indent() << "oprot.writeMessageBegin(new TMessage(\"" << pservice_func_name_error << "\", TMessageType.EXCEPTION, seqid));" << endl <<
+      indent() << "oprot.writeMessageBegin(new TMessage(" << pservice_func_name << ", TMessageType.EXCEPTION, seqid));" << endl <<
       indent() << "x.write(oprot);" << endl <<
       indent() << "oprot.writeMessageEnd();" << endl <<
       indent() << "oprot.getTransport().flush();" << endl <<
