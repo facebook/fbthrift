@@ -15,17 +15,17 @@
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-namespace detail {
+namespace thrift_fatal_impl_detail {
 
 struct union1_Type_enum_traits {
   using type = ::test_cpp2::cpp_reflection::union1::Type;
-  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
   struct str {
-    using ui = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui;
-    using ud = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud;
-    using us = detail::test_cpp2_cpp_reflection_module__unique_strings_list::us;
-    using ue = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue;
+    using ui = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui;
+    using ud = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud;
+    using us = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us;
+    using ue = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -58,18 +58,19 @@ struct union1_Type_enum_traits {
   }
 };
 
-} // detail
+} // thrift_fatal_impl_detail
 
 FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::detail::union1_Type_enum_traits,
-  ::fatal::type_pair<
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union1_Type_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
     ::fatal::type_map<
-    >
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
 
-namespace detail {
+namespace thrift_fatal_impl_detail {
 
 class union1_variant_traits {
   struct get {
@@ -162,7 +163,7 @@ class union1_variant_traits {
 
   public:
   using type = ::test_cpp2::cpp_reflection::union1;
-  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1;
   using id = type::Type;
 
   struct ids {
@@ -208,18 +209,18 @@ class union1_variant_traits {
   }
 };
 
-} // detail
-namespace detail {
+} // thrift_fatal_impl_detail
+namespace thrift_fatal_impl_detail {
 
 struct union2_Type_enum_traits {
   using type = ::test_cpp2::cpp_reflection::union2::Type;
-  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
   struct str {
-    using ui_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_2;
-    using ud_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_2;
-    using us_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_2;
-    using ue_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_2;
+    using ui_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_2;
+    using ud_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_2;
+    using us_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_2;
+    using ue_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_2;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -252,18 +253,19 @@ struct union2_Type_enum_traits {
   }
 };
 
-} // detail
+} // thrift_fatal_impl_detail
 
 FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::detail::union2_Type_enum_traits,
-  ::fatal::type_pair<
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union2_Type_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
     ::fatal::type_map<
-    >
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
 
-namespace detail {
+namespace thrift_fatal_impl_detail {
 
 class union2_variant_traits {
   struct get {
@@ -356,7 +358,7 @@ class union2_variant_traits {
 
   public:
   using type = ::test_cpp2::cpp_reflection::union2;
-  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2;
   using id = type::Type;
 
   struct ids {
@@ -402,18 +404,18 @@ class union2_variant_traits {
   }
 };
 
-} // detail
-namespace detail {
+} // thrift_fatal_impl_detail
+namespace thrift_fatal_impl_detail {
 
 struct union3_Type_enum_traits {
   using type = ::test_cpp2::cpp_reflection::union3::Type;
-  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
   struct str {
-    using ui_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_3;
-    using ud_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_3;
-    using us_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_3;
-    using ue_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_3;
+    using ui_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_3;
+    using ud_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_3;
+    using us_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_3;
+    using ue_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_3;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -446,18 +448,19 @@ struct union3_Type_enum_traits {
   }
 };
 
-} // detail
+} // thrift_fatal_impl_detail
 
 FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::detail::union3_Type_enum_traits,
-  ::fatal::type_pair<
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union3_Type_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
     ::fatal::type_map<
-    >
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
 
-namespace detail {
+namespace thrift_fatal_impl_detail {
 
 class union3_variant_traits {
   struct get {
@@ -550,7 +553,7 @@ class union3_variant_traits {
 
   public:
   using type = ::test_cpp2::cpp_reflection::union3;
-  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3;
   using id = type::Type;
 
   struct ids {
@@ -596,30 +599,33 @@ class union3_variant_traits {
   }
 };
 
-} // detail
+} // thrift_fatal_impl_detail
 
 FATAL_REGISTER_VARIANT_TRAITS(
-  ::test_cpp2::cpp_reflection::detail::union1_variant_traits,
-  ::fatal::type_pair<
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
     ::fatal::type_map<
-    >
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(7384876196182105420ull)
   >
 );
 FATAL_REGISTER_VARIANT_TRAITS(
-  ::test_cpp2::cpp_reflection::detail::union2_variant_traits,
-  ::fatal::type_pair<
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union2_variant_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
     ::fatal::type_map<
-    >
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(16722894251049030828ull)
   >
 );
 FATAL_REGISTER_VARIANT_TRAITS(
-  ::test_cpp2::cpp_reflection::detail::union3_variant_traits,
-  ::fatal::type_pair<
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union3_variant_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
     ::fatal::type_map<
-    >
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(12878995471701578764ull)
   >
 );
 

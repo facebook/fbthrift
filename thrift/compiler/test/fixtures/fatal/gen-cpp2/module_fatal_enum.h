@@ -14,16 +14,16 @@
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-namespace detail {
+namespace thrift_fatal_impl_detail {
 
 struct enum1_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum1;
-  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
 
   struct str {
-    using field0 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0;
-    using field1 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1;
-    using field2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2;
+    using field0 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0;
+    using field1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1;
+    using field2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -51,26 +51,27 @@ struct enum1_enum_traits {
   }
 };
 
-} // detail
+} // thrift_fatal_impl_detail
 
 FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::detail::enum1_enum_traits,
-  ::fatal::type_pair<
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum1_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
     ::fatal::type_map<
-    >
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(4992076682252594856ull)
   >
 );
-namespace detail {
+namespace thrift_fatal_impl_detail {
 
 struct enum2_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum2;
-  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
 
   struct str {
-    using field0_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_2;
-    using field1_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_2;
-    using field2_2 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_2;
+    using field0_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_2;
+    using field1_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_2;
+    using field2_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_2;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -98,26 +99,27 @@ struct enum2_enum_traits {
   }
 };
 
-} // detail
+} // thrift_fatal_impl_detail
 
 FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::detail::enum2_enum_traits,
-  ::fatal::type_pair<
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum2_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
     ::fatal::type_map<
-    >
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(6888467747342894920ull)
   >
 );
-namespace detail {
+namespace thrift_fatal_impl_detail {
 
 struct enum3_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum3;
-  using name = detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
 
   struct str {
-    using field0_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_3;
-    using field1_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_3;
-    using field2_3 = detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_3;
+    using field0_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_3;
+    using field1_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_3;
+    using field2_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_3;
   };
 
   using name_to_value = ::fatal::type_map<
@@ -145,14 +147,15 @@ struct enum3_enum_traits {
   }
 };
 
-} // detail
+} // thrift_fatal_impl_detail
 
 FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::detail::enum3_enum_traits,
-  ::fatal::type_pair<
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum3_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
     ::fatal::type_map<
-    >
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(4626344424889780008ull)
   >
 );
 

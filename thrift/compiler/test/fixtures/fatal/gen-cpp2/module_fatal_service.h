@@ -10,8 +10,8 @@
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-namespace detail {
+namespace thrift_fatal_impl_detail {
 
-} // detail
+} // thrift_fatal_impl_detail
 
 }} // test_cpp2::cpp_reflection

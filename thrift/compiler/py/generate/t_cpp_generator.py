@@ -3960,9 +3960,14 @@ class CppGenerator(t_generator.Generator):
 
         sg.release()   # global scope
 
+    # ==========================================================================
+    # FATAL REFLECTION CODE - begin
+    # ==========================================================================
+
     def _generate_fatal(self, program):
         name = self._program.name
         ns = self._get_original_namespace()
+        self.fatal_detail_ns = 'thrift_fatal_impl_detail'
         context = self._make_context(name + '_fatal', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
@@ -3987,7 +3992,8 @@ class CppGenerator(t_generator.Generator):
         safe_ns = self._get_namespace().replace('.', '_')
 
         str_class = '{0}_{1}__unique_strings_list'.format(safe_ns, name)
-        self.fatal_str_map_id = 'detail::{0}'.format(str_class)
+        self.fatal_str_map_id = '{0}::{1}'.format(
+            self.fatal_detail_ns, str_class)
         self.fatal_str_map = {}
 
         order = ['language', 'enum', 'union', 'struct', 'constant', 'service']
@@ -3999,7 +4005,7 @@ class CppGenerator(t_generator.Generator):
         items['constant'] = self._generate_fatal_constant(program)
         items['service'] = self._generate_fatal_service(program)
 
-        with sns.namespace('detail').scope as detail:
+        with sns.namespace(self.fatal_detail_ns).scope as detail:
             with detail.cls('struct {0}'.format(str_class)).scope as cstr:
                 for i in self.fatal_str_map:
                     cstr('using {0} = {1};'.format(
@@ -4108,7 +4114,18 @@ class CppGenerator(t_generator.Generator):
         else:
             return 'unknown'
 
-    def _render_fatal_annotations_map(self, annotations, scope, indent):
+    def _render_fatal_required_qualifier(self, required):
+        if required == e_req.required:
+            return 'required'
+        elif required == e_req.optional:
+            return 'optional'
+        else:
+            assert required == e_req.opt_in_req_out, \
+                "unknown required qualifier"
+            return 'required_of_writer'
+
+    def _render_fatal_annotations_map(self, annotations, scope, indent,
+      trailing_comma):
         scope('{0}::fatal::type_map<'.format(indent))
         if annotations is not None:
             for idx, i in enumerate(sorted(annotations.keys())):
@@ -4119,6 +4136,17 @@ class CppGenerator(t_generator.Generator):
                     self._render_fatal_string(value)))
                 comma = ',' if idx + 1 < len(annotations) else ''
                 scope('{0}  >{1}'.format(indent, comma))
+        scope('{0}>{1}'.format(indent, ',' if trailing_comma else ''))
+
+    def _render_fatal_type_common_metadata(self, annotations, legacyid, scope,
+      indent):
+        scope('{0}::apache::thrift::detail::type_common_metadata_impl<'.format(
+            indent))
+        scope('{0}  {1},'.format(indent, self.fatal_tag))
+        self._render_fatal_annotations_map(annotations, scope, indent + '  ',
+            True)
+        scope('{0}  static_cast<::apache::thrift::{1}>({2}ull)'.format(
+            indent, 'legacy_type_id_t', legacyid))
         scope('{0}>'.format(indent))
 
     def _generate_fatal_language(self, program):
@@ -4159,17 +4187,17 @@ class CppGenerator(t_generator.Generator):
         order = []
         for i in program.enums:
             self._generate_fatal_enum_traits(i.name, i.name, i.constants, sns,
-                i.annotations)
+                i.annotations, i.type_id)
             string_ref = self._set_fatal_string(i.name)
             result[i.name] = (i.name, string_ref, string_ref)
             order.append(i.name)
         return (order, result)
 
     def _generate_fatal_enum_traits(self, name, scoped_name, members, scope,
-      annotations):
+      annotations, legacyid):
         scoped_ns = self._get_scoped_original_namespace()
         traits_name = '{0}_enum_traits'.format(scoped_name.replace('::', '_'))
-        with scope.namespace('detail').scope as detail:
+        with scope.namespace(self.fatal_detail_ns).scope as detail:
             with detail.cls('struct {0}'.format(traits_name)).scope as t:
                 t('using type = {0}::{1};'.format(scoped_ns, scoped_name))
                 t('using name = {0};'.format(self._set_fatal_string(name)))
@@ -4198,11 +4226,10 @@ class CppGenerator(t_generator.Generator):
                 t('}')
         scope()
         scope('FATAL_REGISTER_ENUM_TRAITS(')
-        scope('  {0}::detail::{1},'.format(scoped_ns, traits_name))
-        scope('  ::fatal::type_pair<')
-        scope('    {0},'.format(self.fatal_tag))
-        self._render_fatal_annotations_map(annotations, scope, '    ')
-        scope('  >')
+        scope('  {0}::{1}::{2},'.format(
+            scoped_ns, self.fatal_detail_ns, traits_name))
+        self._render_fatal_type_common_metadata(annotations, legacyid,
+            scope, '  ')
         scope(');')
         return traits_name
 
@@ -4230,29 +4257,27 @@ class CppGenerator(t_generator.Generator):
         scoped_ns = self._get_scoped_original_namespace()
         result = {}
         order = []
-        traits = {}
-        annotations = {}
+        data = {}
         for i in program.structs:
             if not i.is_union:
                 continue
             self._generate_fatal_enum_traits(
-                'Type', '{0}::Type'.format(i.name), i.members, sns, None)
+                'Type', '{0}::Type'.format(i.name), i.members, sns, None, 0)
             sns()
             string_ref = self._set_fatal_string(i.name)
             result[i.name] = (i.name, string_ref, string_ref)
-            annotations[i.name] = i.annotations
             order.append(i.name)
-            with sns.namespace('detail').scope as detail:
-                traits[i.name] = self._generate_fatal_union_traits(i, detail)
-        if len(traits) > 0:
+            data[i.name] = [None, i.annotations, i.type_id]
+            with sns.namespace(self.fatal_detail_ns).scope as detail:
+                data[i.name][0] = self._generate_fatal_union_traits(i, detail)
+        if len(data) > 0:
             sns()
         for i in order:
             sns('FATAL_REGISTER_VARIANT_TRAITS(')
-            sns('  {0}::detail::{1},'.format(scoped_ns, traits[i]))
-            sns('  ::fatal::type_pair<')
-            sns('    {0},'.format(self.fatal_tag))
-            self._render_fatal_annotations_map(annotations[i], sns, '    ')
-            sns('  >')
+            sns('  {0}::{1}::{2},'.format(
+                scoped_ns, self.fatal_detail_ns, data[i][0]))
+            self._render_fatal_type_common_metadata(data[i][1], data[i][2],
+                sns, '  ')
             sns(');')
         return (order, result)
 
@@ -4350,7 +4375,7 @@ class CppGenerator(t_generator.Generator):
             safe_ns, name)
         mpdclsprefix = '{0}_{1}__struct_unique_member_pod_list'.format(
             safe_ns, name)
-        with sns.namespace('detail').scope as detail:
+        with sns.namespace(self.fatal_detail_ns).scope as detail:
             members = []
             for i in program.structs:
                 if i.is_union:
@@ -4388,8 +4413,8 @@ class CppGenerator(t_generator.Generator):
             sns('THRIFT_REGISTER_STRUCT_TRAITS(')
             sns('  {0},'.format(i.name))
             sns('  {0},'.format(self._get_fatal_string_id(i.name)))
-            sns('  {0},'.format(self.fatal_tag))
-            sns('  detail::{0}_{1},'.format(i.name, strclsprefix))
+            sns('  {0}::{1}_{2},'.format(
+                self.fatal_detail_ns, i.name, strclsprefix))
             sns('  ::fatal::type_map<')
             for midx, m in enumerate(i.members):
                 sns('    ::fatal::type_pair<')
@@ -4398,17 +4423,21 @@ class CppGenerator(t_generator.Generator):
                 sns('        {0},'.format(self._get_fatal_string_id(m.name)))
                 sns('        {0},'.format(self._type_name(m.type)))
                 sns('        {0},'.format(m.key))
-                sns('        detail::{0}::{1},'.format(dtmclsprefix, m.name))
+                sns('        ::apache::thrift::optionality::{0},'
+                    .format(self._render_fatal_required_qualifier(m.req)))
+                sns('        {0}::{1}::{2},'.format(
+                    self.fatal_detail_ns, dtmclsprefix, m.name))
                 sns('        ::apache::thrift::thrift_category::{0},'
                     .format(self._render_fatal_thrift_category(m.type)))
-                sns('        detail::{0}::{1}_{2}_struct_member_pod_{3},'
-                    .format(mpdclsprefix, safe_ns, name, m.name))
-                self._render_fatal_annotations_map(m.annotations,
-                    sns, '        ')
+                sns('        {0}::{1}::{2}_{3}_struct_member_pod_{4},'.format(
+                    self.fatal_detail_ns, mpdclsprefix, safe_ns, name, m.name))
+                self._render_fatal_annotations_map(m.annotations, sns,
+                    '        ', False)
                 sns('      >')
                 sns('    >{0}'.format(',' if midx + 1 < len(i.members) else ''))
             sns('  >,')
-            self._render_fatal_annotations_map(i.annotations, sns, '  ')
+            self._render_fatal_type_common_metadata(i.annotations, i.type_id,
+                sns, '  ')
             sns(');')
         return (order, result)
 
@@ -4455,7 +4484,7 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_service_impl(self, sns, program):
         name = self._program.name
         safe_ns = self._get_namespace().replace('.', '_')
-        with sns.namespace('detail').scope as detail:
+        with sns.namespace(self.fatal_detail_ns).scope:
             for s in program.services:
                 for m in s.functions:
                     self._set_fatal_string(m.name)
@@ -4466,6 +4495,10 @@ class CppGenerator(t_generator.Generator):
             string_ref = self._set_fatal_string(i.name)
             result.append((i.name, string_ref, string_ref))
         return (result, result)
+
+    # ==========================================================================
+    # FATAL REFLECTION CODE - end
+    # ==========================================================================
 
     def _make_context(self, filename,
                       tcc=False,

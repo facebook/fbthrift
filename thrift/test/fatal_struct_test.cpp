@@ -35,6 +35,21 @@ FATAL_STR(fieldEs, "fieldE");
 FATAL_STR(fieldFs, "fieldF");
 FATAL_STR(fieldGs, "fieldG");
 
+template <apache::thrift::field_id_t Id>
+using field_id = std::integral_constant<apache::thrift::field_id_t, Id>;
+
+template <apache::thrift::thrift_category Category>
+using category = std::integral_constant<
+  apache::thrift::thrift_category,
+  Category
+>;
+
+template <apache::thrift::optionality Optionality>
+using required = std::integral_constant<
+  apache::thrift::optionality,
+  Optionality
+>;
+
 namespace test_cpp2 {
 namespace cpp_reflection {
 
@@ -69,12 +84,12 @@ TEST(fatal_struct, struct1_sanity_check) {
 
   EXPECT_SAME<
     fatal::build_type_map<
-      field0s, std::integral_constant<apache::thrift::field_id_t, 1>,
-      field1s, std::integral_constant<apache::thrift::field_id_t, 2>,
-      field2s, std::integral_constant<apache::thrift::field_id_t, 3>,
-      field3s, std::integral_constant<apache::thrift::field_id_t, 4>,
-      field4s, std::integral_constant<apache::thrift::field_id_t, 5>,
-      field5s, std::integral_constant<apache::thrift::field_id_t, 6>
+      field0s, field_id<1>,
+      field1s, field_id<2>,
+      field2s, field_id<3>,
+      field3s, field_id<4>,
+      field4s, field_id<5>,
+      field5s, field_id<6>
     >,
     traits::ids
   >();
@@ -140,29 +155,36 @@ TEST(fatal_struct, struct1_sanity_check) {
   EXPECT_SAME<union1, traits::members::get<field4s>::type>();
   EXPECT_SAME<union2, traits::members::get<field5s>::type>();
 
+  EXPECT_SAME<field_id<1>, traits::members::get<field0s>::id>();
+  EXPECT_SAME<field_id<2>, traits::members::get<field1s>::id>();
+  EXPECT_SAME<field_id<3>, traits::members::get<field2s>::id>();
+  EXPECT_SAME<field_id<4>, traits::members::get<field3s>::id>();
+  EXPECT_SAME<field_id<5>, traits::members::get<field4s>::id>();
+  EXPECT_SAME<field_id<6>, traits::members::get<field5s>::id>();
+
   EXPECT_SAME<
-    std::integral_constant<apache::thrift::field_id_t, 1>,
-    traits::members::get<field0s>::id
+    required<apache::thrift::optionality::required>,
+    traits::members::get<field0s>::optional
   >();
   EXPECT_SAME<
-    std::integral_constant<apache::thrift::field_id_t, 2>,
-    traits::members::get<field1s>::id
+    required<apache::thrift::optionality::optional>,
+    traits::members::get<field1s>::optional
   >();
   EXPECT_SAME<
-    std::integral_constant<apache::thrift::field_id_t, 3>,
-    traits::members::get<field2s>::id
+    required<apache::thrift::optionality::required_of_writer>,
+    traits::members::get<field2s>::optional
   >();
   EXPECT_SAME<
-    std::integral_constant<apache::thrift::field_id_t, 4>,
-    traits::members::get<field3s>::id
+    required<apache::thrift::optionality::required>,
+    traits::members::get<field3s>::optional
   >();
   EXPECT_SAME<
-    std::integral_constant<apache::thrift::field_id_t, 5>,
-    traits::members::get<field4s>::id
+    required<apache::thrift::optionality::optional>,
+    traits::members::get<field4s>::optional
   >();
   EXPECT_SAME<
-    std::integral_constant<apache::thrift::field_id_t, 6>,
-    traits::members::get<field5s>::id
+    required<apache::thrift::optionality::required_of_writer>,
+    traits::members::get<field5s>::optional
   >();
 
   EXPECT_EQ(
@@ -198,30 +220,30 @@ TEST(fatal_struct, struct1_sanity_check) {
     traits::members::get<traits::names::field5>::getter::ref(pod).get_ue_2()
   );
 
-  EXPECT_EQ(
-    apache::thrift::thrift_category::integral,
-    traits::members::get<field0s>::category::value
-  );
-  EXPECT_EQ(
-    apache::thrift::thrift_category::string,
-    traits::members::get<field1s>::category::value
-  );
-  EXPECT_EQ(
-    apache::thrift::thrift_category::enumeration,
-    traits::members::get<field2s>::category::value
-  );
-  EXPECT_EQ(
-    apache::thrift::thrift_category::enumeration,
-    traits::members::get<field3s>::category::value
-  );
-  EXPECT_EQ(
-    apache::thrift::thrift_category::variant,
-    traits::members::get<field4s>::category::value
-  );
-  EXPECT_EQ(
-    apache::thrift::thrift_category::variant,
-    traits::members::get<field5s>::category::value
-  );
+  EXPECT_SAME<
+    category<apache::thrift::thrift_category::integral>,
+    traits::members::get<field0s>::category
+  >();
+  EXPECT_SAME<
+    category<apache::thrift::thrift_category::string>,
+    traits::members::get<field1s>::category
+  >();
+  EXPECT_SAME<
+    category<apache::thrift::thrift_category::enumeration>,
+    traits::members::get<field2s>::category
+  >();
+  EXPECT_SAME<
+    category<apache::thrift::thrift_category::enumeration>,
+    traits::members::get<field3s>::category
+  >();
+  EXPECT_SAME<
+    category<apache::thrift::thrift_category::variant>,
+    traits::members::get<field4s>::category
+  >();
+  EXPECT_SAME<
+    category<apache::thrift::thrift_category::variant>,
+    traits::members::get<field5s>::category
+  >();
 
   EXPECT_SAME<
     std::int32_t,

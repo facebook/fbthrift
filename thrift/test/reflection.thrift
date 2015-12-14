@@ -104,11 +104,11 @@ struct structC {
 }
 
 struct struct1 {
-  1: i32 field0
-  2: string field1
+  1: required i32 field0
+  2: optional string field1
   3: enum1 field2
-  4: enum2 field3
-  5: union1 field4
+  4: required enum2 field3
+  5: optional union1 field4
   6: union2 field5
 }
 

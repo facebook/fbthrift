@@ -31,11 +31,34 @@
 namespace apache { namespace thrift {
 
 /**
+ * READ ME FIRST: this file is divided into sections for each specific
+ * reflaction API.
+ *
+ * To quickly navigate this file, look for the string "SECTION: " without the
+ * quotes.
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+
+////////////////////////////////////////////
+// SECTION: TYPE ALIASES AND ENUMERATIONS //
+////////////////////////////////////////////
+
+/**
  * An alias to the type used by Thrift as a struct's field ID.
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 using field_id_t = std::int16_t;
+
+/**
+ * An alias to the type used by Thrift as a type's unique identifier.
+ *
+ * NOTE: this is a legacy feature and should be avoided on new code.
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+using legacy_type_id_t = std::uint64_t;
 
 /**
  * The high-level category of a type as it concerns Thrift.
@@ -137,6 +160,36 @@ enum class thrift_category {
    */
   map
 };
+
+/**
+ * Represents whether a field is required to be set in a given structure or not.
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+enum class optionality {
+  /**
+   * Field is required.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  required,
+  /**
+   * Field is optional.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  optional,
+  /**
+   * Field is optional on the reading side but required on the writing side.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  required_of_writer
+};
+
+/////////////////////////
+// SECTION: MODULE API //
+/////////////////////////
 
 /**
  * Holds reflection metadata for stuff defined in a Thrift file.
@@ -257,6 +310,218 @@ struct reflected_module {
 };
 
 /**
+ * Retrieves reflection metadata (as a `reflected_module`) associated with the
+ * given reflection metadata tag.
+ *
+ * The Thrift compiler generates a reflection metadata tag for each Thrift file
+ * named `namespace::thriftfilename_tags::module`.
+ *
+ * If the given tag does not represent a Thrift module, or if there's no
+ * reflection metadata available for it, compilation will fail.
+ *
+ * See the documentation on `reflected_module` (above) for more information on
+ * the returned type.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  enum MyEnum1 { a, b, c }
+ *  enum MyEnum2 { x, y, x }
+ *
+ *  //////////////////
+ *  // whatever.cpp //
+ *  //////////////////
+ *  using info = reflect_module<My::Namespace::MyModule_tags::module>;
+ *
+ *  // yields `2`
+ *  auto result1 = info::enums::size;
+ *
+ *  // fails compilation
+ *  using result2 = reflect_module<void>;
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename Tag>
+using reflect_module = fatal::registry_lookup<
+  detail::reflection_impl::reflection_metadata_tag,
+  Tag
+>;
+
+/**
+ * Retrieves reflection metadata (as a `reflected_module`) associated with the
+ * given reflection metadata tag.
+ *
+ * The Thrift compiler generates a reflection metadata tag for each Thrift file
+ * named `namespace::thriftfilename_tags::module`.
+ *
+ * If the given tag does not represent a Thrift module, or if there's no
+ * reflection metadata available for it, `Default` will be returned.
+ *
+ * See the documentation on `reflected_module` (above) for more information on
+ * the returned type.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  enum MyEnum1 { a, b, c }
+ *  enum MyEnum2 { x, y, x }
+ *
+ *  //////////////////
+ *  // whatever.cpp //
+ *  //////////////////
+ *  using info = try_reflect_module<
+ *    My::Namespace::MyModule_tags::module,
+ *    void
+ *  >;
+ *
+ *  // yields `2`
+ *  auto result1 = info::enums::size;
+ *
+ *  // yields `void`
+ *  using result2 = itry_reflect_module<int, void>;
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename Tag, typename Default>
+using try_reflect_module = fatal::try_registry_lookup<
+  detail::reflection_impl::reflection_metadata_tag,
+  Tag,
+  Default
+>;
+
+/**
+ * Tells whether the given type is a tag that represents the reflection metadata
+ * of the types declared in a Thrift file.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  struct MyStruct {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  /////////////
+ *  // foo.cpp //
+ *  /////////////
+ *
+ *  // yields `std::true_type`
+ *  using result1 = is_reflectable_module<MyModule_tags::module>;
+ *
+ *  // yields `std::false_type`
+ *  using result2 = is_reflectable_module<MyStruct>;
+ *
+ *  // yields `std::false_type`
+ *  using result3 = is_reflectable_module<void>;
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T>
+using is_reflectable_module = std::integral_constant<
+  bool,
+  !std::is_same<
+    try_reflect_module<T, void>,
+    void
+  >::value
+>;
+
+namespace detail {
+template <typename> struct reflect_module_tag_impl;
+} // namespace detail {
+
+/**
+ * Gets the reflection metadata tag for the Thrift file where the type `T` is
+ * declared.
+ *
+ * The type `T` must be either a struct, enum or union.
+ *
+ * Example:
+ *
+ *  // MyModule.thrift
+ *
+ *  namespace cpp2 My.Namespace
+ *
+ *  struct MyStruct {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  enum MyEnum { a, b, c }
+ *
+ *  // C++
+ *
+ *  // yields `My::Namespace::MyModule_tags::module`
+ *  using result1 = reflect_module_tag<MyStruct>;
+ *
+ *  // yields `My::Namespace::MyModule_tags::module`
+ *  using result2 = reflect_module_tag<MyEnum>;
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T>
+using reflect_module_tag = typename detail::reflect_module_tag_impl<
+  T
+>::template get<>::type;
+
+/**
+ * Tries to get the reflection metadata tag for the Thrift file where the type
+ * `T` is declared.
+ *
+ * If the type `T` is a struct, enum or union and there is reflection
+ * metadata available, the reflection metadata tag is returned. Otherwise,
+ * returns `Default`.
+ *
+ * Example:
+ *
+ *  // MyModule.thrift
+ *
+ *  namespace cpp2 My.Namespace
+ *
+ *  struct MyStruct {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  enum MyEnum { a, b, c }
+ *
+ *  // C++
+ *
+ *  // yields `My::Namespace::MyModule_tags::module`
+ *  using result1 = reflect_module_tag<MyStruct, void>;
+ *
+ *  // yields `My::Namespace::MyModule_tags::module`
+ *  using result2 = reflect_module_tag<MyEnum, void>;
+ *
+ *  // yields `void`
+ *  using result3 = reflect_module_tag<int, void>;
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T, typename Default>
+using try_reflect_module_tag = typename detail::reflect_module_tag_impl<
+  T
+>::template try_get<Default>::type;
+
+////////////////////////////
+// SECTION: STRUCTURE API //
+////////////////////////////
+
+/**
  * Holds reflection metadata for a given struct.
  *
  * NOTE: this class template is only intended to be instantiated by Thrift.
@@ -284,10 +549,9 @@ struct reflected_module {
 template <
   typename Struct,
   typename Name,
-  typename Module,
   typename Names,
   typename Info,
-  typename Annotations
+  typename Metadata
 >
 struct reflected_struct {
   /**
@@ -334,7 +598,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using module = Module;
+  using module = typename Metadata::module;
 
   /**
    * An implementation defined type that provides the names for each data member
@@ -476,7 +740,16 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using annotations = Annotations;
+  using annotations = typename Metadata::annotations;
+
+  /**
+   * A unique identifier generated by thrift for this structure.
+   *
+   * NOTE: this is a legacy feature and should be avoided on new code.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using legacy_id = typename Metadata::legacy_id;
 };
 
 /**
@@ -492,6 +765,7 @@ template <
   typename Name,
   typename Type,
   field_id_t Id,
+  optionality Optionality,
   typename Getter,
   thrift_category Category,
   template <typename> class Pod,
@@ -586,6 +860,45 @@ struct reflected_struct_data_member {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using id = std::integral_constant<field_id_t, Id>;
+
+  /**
+   * A `std::integral_constant` of type `optionality` representing whether a
+   * field is qualified as required or optional.
+   *
+   * Example:
+   *
+   *  // MyModule.thrift
+   *
+   *  namespace cpp2 My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: required i32 fieldA
+   *    2: optional string fieldB
+   *    3: double fieldC
+   *  }
+   *
+   *  // C++
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *  using a = info::types::members<info::names::fieldA>;
+   *  using b = info::types::members<info::names::fieldB>;
+   *  using c = info::types::members<info::names::fieldC>;
+   *
+   *  // yields `std::integral_constant<optionality, optionality::required>`
+   *  using result1 = a::required;
+   *
+   *  // yields `std::integral_constant<optionality, optionality::optional>`
+   *  using result2 = b::required;
+   *
+   *  // yields `std::integral_constant<
+   *  //   optionality,
+   *  //   optionality::required_of_writer
+   *  // >`
+   *  using result3 = c::required;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using optional = std::integral_constant<optionality, Optionality>;
 
   /**
    * A type that works as a getter for the data member.
@@ -701,350 +1014,6 @@ struct reflected_struct_data_member {
 };
 
 /**
- * Holds reflection metadata for a given enumeration.
- *
- * NOTE: this class template is only intended to be instantiated by Thrift.
- * Users should ignore the template parameters taken by it and focus simply on
- * the members provided.
- *
- * For the examples below, consider code generated for this Thrift file:
- *
- *  /////////////////////
- *  // MyModule.thrift //
- *  /////////////////////
- *  namespace cpp2 My.Namespace
- *
- *  enum MyEnum {
- *    a, b, c
- *  } (
- *    some.annotation = "some value",
- *    another.annotation = "another value",
- *  )
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename T>
-struct reflected_enum {
-  /**
-   * A type alias for the enumeration itself.
-   *
-   * Example:
-   *
-   *  using info = reflect_enum<MyEnum>;
-   *
-   *  // yields `MyEnum`
-   *  using result = info::type;
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using type = T;
-
-  /**
-   * An alias to `fatal::enum_traits`.
-   *
-   * See `fatal::enum_traits`, from the Fatal library, for more information.
-   *
-   * Example:
-   *
-   *  using info = reflect_enum<MyEnum>;
-   *  using traits = info::traits;
-   *
-   *  // yields "a"
-   *  auto result = traits::to_string(MyEnum::a);
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using traits = fatal::enum_traits<type>;
-
-  /**
-   * The reflection metadata tag for the Thrift file where this enumeration is
-   * declared.
-   *
-   * Example:
-   *
-   *  using info = reflect_enum<MyEnum>;
-   *
-   *  // yields `My::Namespace::MyModule_tags::module`
-   *  using result = info::module;
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using module = typename traits::metadata::first;
-
-  /**
-   * A type map representing the annotations declared for this type in the
-   * Thrift file, sorted by keys.
-   *
-   * Both the keys and the values of this map are compile-time strings
-   * represented by `fatal::constant_sequence` of type `char`.
-   *
-   * Example:
-   *
-   *  using info = reflect_enum<MyEnum>;
-   *  FATAL_STR(key, "another.annotation");
-   *
-   *  // yields `fatal::constant_sequence<char,
-   *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
-   *  // >`
-   *  using result = info::annotations::get<key>;
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using annotations = typename traits::metadata::second;
-};
-
-/**
- * Retrieves reflection metadata (as a `reflected_enum`) associated with the
- * given enumeration.
- *
- * If the given type is not a Thrift enumeration, or if there's no reflection
- * metadata available for it, compilation will fail.
- *
- * See the documentation on `reflected_enum` (above) for more information on
- * the returned type.
- *
- * Example:
- *
- *  /////////////////////
- *  // MyModule.thrift //
- *  /////////////////////
- *  namespace cpp2 My.Namespace
- *
- *  enum MyEnum { a, b, c }
- *
- *  //////////////////
- *  // whatever.cpp //
- *  //////////////////
- *  using info = reflect_enum<My::Namespace::MyEnum>;
- *
- *  // yields `MyEnum`
- *  auto result = info::type;
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename T>
-using reflect_enum = reflected_enum<T>;
-
-/**
- * Holds reflection metadata for a given union.
- *
- * NOTE: this class template is only intended to be instantiated by Thrift.
- * Users should ignore the template parameters taken by it and focus simply on
- * the members provided.
- *
- * For the examples below, consider code generated for this Thrift file:
- *
- *  /////////////////////
- *  // MyModule.thrift //
- *  /////////////////////
- *  namespace cpp2 My.Namespace
- *
- *  union MyUnion {
- *    1: i32 a
- *    2: string b
- *    3: double c
- *  } (
- *    some.annotation = "some value",
- *    another.annotation = "another value",
- *  )
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename T>
-struct reflected_union {
-  /**
-   * A type alias for the union itself.
-   *
-   * Example:
-   *
-   *  using info = reflect_union<MyUnion>;
-   *
-   *  // yields `MyUnion`
-   *  using result = info::type;
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using type = T;
-
-  /**
-   * An alias to `fatal::variant_traits`.
-   *
-   * See `fatal::variant_traits`, from the Fatal library, for more information.
-   *
-   * Example:
-   *
-   *  using info = reflect_union<MyUnion>;
-   *  using traits = info::traits;
-   *
-   *  // yields `MyUnion::Type::a`
-   *  auto result = traits::array::ids::get[0];
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using traits = fatal::variant_traits<type>;
-
-  /**
-   * The reflection metadata tag for the Thrift file where this union is
-   * declared.
-   *
-   * Example:
-   *
-   *  using info = reflect_union<MyUnion>;
-   *
-   *  // yields `My::Namespace::MyModule_tags::module`
-   *  using result = info::module;
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using module = typename traits::metadata::first;
-
-  /**
-   * A type map representing the annotations declared for this type in the
-   * Thrift file, sorted by keys.
-   *
-   * Both the keys and the values of this map are compile-time strings
-   * represented by `fatal::constant_sequence` of type `char`.
-   *
-   * Example:
-   *
-   *  using info = reflect_union<MyUnion>;
-   *  FATAL_STR(key, "another.annotation");
-   *
-   *  // yields `fatal::constant_sequence<char,
-   *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
-   *  // >`
-   *  using result = info::annotations::get<key>;
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using annotations = typename traits::metadata::second;
-};
-
-/**
- * Retrieves reflection metadata (as a `reflected_union`) associated with the
- * given union.
- *
- * If the given type is not a Thrift union, or if there's no reflection
- * metadata available for it, compilation will fail.
- *
- * See the documentation on `reflected_union` (above) for more information on
- * the returned type.
- *
- * Example:
- *
- *  /////////////////////
- *  // MyModule.thrift //
- *  /////////////////////
- *  namespace cpp2 My.Namespace
- *
- *  union MyUnion {
- *    1: i32 a
- *    2: string b
- *    3: double c
- *  }
- *
- *  //////////////////
- *  // whatever.cpp //
- *  //////////////////
- *  using info = reflect_union<My::Namespace::MyUnion>;
- *
- *  // yields `MyUnion`
- *  auto result = info::type;
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename T>
-using reflect_union = reflected_union<T>;
-
-/**
- * Retrieves reflection metadata (as a `reflected_module`) associated with the
- * given reflection metadata tag.
- *
- * The Thrift compiler generates a reflection metadata tag for each Thrift file
- * named `namespace::thriftfilename_tags::module`.
- *
- * If the given tag does not represent a Thrift module, or if there's no
- * reflection metadata available for it, compilation will fail.
- *
- * See the documentation on `reflected_module` (above) for more information on
- * the returned type.
- *
- * Example:
- *
- *  /////////////////////
- *  // MyModule.thrift //
- *  /////////////////////
- *  namespace cpp2 My.Namespace
- *
- *  enum MyEnum1 { a, b, c }
- *  enum MyEnum2 { x, y, x }
- *
- *  //////////////////
- *  // whatever.cpp //
- *  //////////////////
- *  using info = reflect_module<My::Namespace::MyModule_tags::module>;
- *
- *  // yields `2`
- *  auto result1 = info::enums::size;
- *
- *  // fails compilation
- *  using result2 = reflect_module<void>;
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename Tag>
-using reflect_module = fatal::registry_lookup<
-  detail::reflection_impl::reflection_metadata_tag,
-  Tag
->;
-
-/**
- * Retrieves reflection metadata (as a `reflected_module`) associated with the
- * given reflection metadata tag.
- *
- * The Thrift compiler generates a reflection metadata tag for each Thrift file
- * named `namespace::thriftfilename_tags::module`.
- *
- * If the given tag does not represent a Thrift module, or if there's no
- * reflection metadata available for it, `Default` will be returned.
- *
- * See the documentation on `reflected_module` (above) for more information on
- * the returned type.
- *
- * Example:
- *
- *  /////////////////////
- *  // MyModule.thrift //
- *  /////////////////////
- *  namespace cpp2 My.Namespace
- *
- *  enum MyEnum1 { a, b, c }
- *  enum MyEnum2 { x, y, x }
- *
- *  //////////////////
- *  // whatever.cpp //
- *  //////////////////
- *  using info = try_reflect_module<
- *    My::Namespace::MyModule_tags::module,
- *    void
- *  >;
- *
- *  // yields `2`
- *  auto result1 = info::enums::size;
- *
- *  // yields `void`
- *  using result2 = itry_reflect_module<int, void>;
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename Tag, typename Default>
-using try_reflect_module = fatal::try_registry_lookup<
-  detail::reflection_impl::reflection_metadata_tag,
-  Tag,
-  Default
->;
-
-/**
  * Retrieves reflection metadata (as a `reflected_struct`) associated with the
  * given struct.
  *
@@ -1124,47 +1093,6 @@ using try_reflect_struct = fatal::try_registry_lookup<
 >;
 
 /**
- * Tells whether the given type is a tag that represents the reflection metadata
- * of the types declared in a Thrift file.
- *
- * Example:
- *
- *  /////////////////////
- *  // MyModule.thrift //
- *  /////////////////////
- *  namespace cpp2 My.Namespace
- *
- *  struct MyStruct {
- *    1: i32 a
- *    2: string b
- *    3: double c
- *  }
- *
- *  /////////////
- *  // foo.cpp //
- *  /////////////
- *
- *  // yields `std::true_type`
- *  using result1 = is_reflectable_module<MyModule_tags::module>;
- *
- *  // yields `std::false_type`
- *  using result2 = is_reflectable_module<MyStruct>;
- *
- *  // yields `std::false_type`
- *  using result3 = is_reflectable_module<void>;
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename T>
-using is_reflectable_module = std::integral_constant<
-  bool,
-  !std::is_same<
-    try_reflect_module<T, void>,
-    void
-  >::value
->;
-
-/**
  * Tells whether the given type is a Thrift struct with compile-time reflection
  * support.
  *
@@ -1207,6 +1135,144 @@ using is_reflectable_struct = std::integral_constant<
   >::value
 >;
 
+//////////////////////////////
+// SECTION: ENUMERATION API //
+//////////////////////////////
+
+/**
+ * Holds reflection metadata for a given enumeration.
+ *
+ * NOTE: this class template is only intended to be instantiated by Thrift.
+ * Users should ignore the template parameters taken by it and focus simply on
+ * the members provided.
+ *
+ * For the examples below, consider code generated for this Thrift file:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  enum MyEnum {
+ *    a, b, c
+ *  } (
+ *    some.annotation = "some value",
+ *    another.annotation = "another value",
+ *  )
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T>
+struct reflected_enum {
+  /**
+   * A type alias for the enumeration itself.
+   *
+   * Example:
+   *
+   *  using info = reflect_enum<MyEnum>;
+   *
+   *  // yields `MyEnum`
+   *  using result = info::type;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using type = T;
+
+  /**
+   * An alias to `fatal::enum_traits`.
+   *
+   * See `fatal::enum_traits`, from the Fatal library, for more information.
+   *
+   * Example:
+   *
+   *  using info = reflect_enum<MyEnum>;
+   *  using traits = info::traits;
+   *
+   *  // yields "a"
+   *  auto result = traits::to_string(MyEnum::a);
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using traits = fatal::enum_traits<type>;
+
+  /**
+   * The reflection metadata tag for the Thrift file where this enumeration is
+   * declared.
+   *
+   * Example:
+   *
+   *  using info = reflect_enum<MyEnum>;
+   *
+   *  // yields `My::Namespace::MyModule_tags::module`
+   *  using result = info::module;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using module = typename traits::metadata::module;
+
+  /**
+   * A type map representing the annotations declared for this type in the
+   * Thrift file, sorted by keys.
+   *
+   * Both the keys and the values of this map are compile-time strings
+   * represented by `fatal::constant_sequence` of type `char`.
+   *
+   * Example:
+   *
+   *  using info = reflect_enum<MyEnum>;
+   *  FATAL_STR(key, "another.annotation");
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
+   *  // >`
+   *  using result = info::annotations::get<key>;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using annotations = typename traits::metadata::annotations;
+
+  /**
+   * A unique identifier generated by thrift for this structure.
+   *
+   * NOTE: this is a legacy feature and should be avoided on new code.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using legacy_id = typename traits::metadata::legacy_id;
+};
+
+/**
+ * Retrieves reflection metadata (as a `reflected_enum`) associated with the
+ * given enumeration.
+ *
+ * If the given type is not a Thrift enumeration, or if there's no reflection
+ * metadata available for it, compilation will fail.
+ *
+ * See the documentation on `reflected_enum` (above) for more information on
+ * the returned type.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  enum MyEnum { a, b, c }
+ *
+ *  //////////////////
+ *  // whatever.cpp //
+ *  //////////////////
+ *  using info = reflect_enum<My::Namespace::MyEnum>;
+ *
+ *  // yields `MyEnum`
+ *  auto result = info::type;
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T>
+using reflect_enum = reflected_enum<T>;
+
 /**
  * Tells whether the given type is a Thrift enum with compile-time reflection
  * support.
@@ -1244,6 +1310,150 @@ using is_reflectable_struct = std::integral_constant<
 template <typename T>
 using is_reflectable_enum = fatal::has_enum_traits<T>;
 
+//////////////////////////////////
+// SECTION: VARIANT (UNION) API //
+//////////////////////////////////
+
+/**
+ * Holds reflection metadata for a given union.
+ *
+ * NOTE: this class template is only intended to be instantiated by Thrift.
+ * Users should ignore the template parameters taken by it and focus simply on
+ * the members provided.
+ *
+ * For the examples below, consider code generated for this Thrift file:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  union MyUnion {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  } (
+ *    some.annotation = "some value",
+ *    another.annotation = "another value",
+ *  )
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T>
+struct reflected_union {
+  /**
+   * A type alias for the union itself.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<MyUnion>;
+   *
+   *  // yields `MyUnion`
+   *  using result = info::type;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using type = T;
+
+  /**
+   * An alias to `fatal::variant_traits`.
+   *
+   * See `fatal::variant_traits`, from the Fatal library, for more information.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<MyUnion>;
+   *  using traits = info::traits;
+   *
+   *  // yields `MyUnion::Type::a`
+   *  auto result = traits::array::ids::get[0];
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using traits = fatal::variant_traits<type>;
+
+  /**
+   * The reflection metadata tag for the Thrift file where this union is
+   * declared.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<MyUnion>;
+   *
+   *  // yields `My::Namespace::MyModule_tags::module`
+   *  using result = info::module;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using module = typename traits::metadata::module;
+
+  /**
+   * A type map representing the annotations declared for this type in the
+   * Thrift file, sorted by keys.
+   *
+   * Both the keys and the values of this map are compile-time strings
+   * represented by `fatal::constant_sequence` of type `char`.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<MyUnion>;
+   *  FATAL_STR(key, "another.annotation");
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
+   *  // >`
+   *  using result = info::annotations::get<key>;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using annotations = typename traits::metadata::annotations;
+
+  /**
+   * A unique identifier generated by thrift for this structure.
+   *
+   * NOTE: this is a legacy feature and should be avoided on new code.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using legacy_id = typename traits::metadata::legacy_id;
+};
+
+/**
+ * Retrieves reflection metadata (as a `reflected_union`) associated with the
+ * given union.
+ *
+ * If the given type is not a Thrift union, or if there's no reflection
+ * metadata available for it, compilation will fail.
+ *
+ * See the documentation on `reflected_union` (above) for more information on
+ * the returned type.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  union MyUnion {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  //////////////////
+ *  // whatever.cpp //
+ *  //////////////////
+ *  using info = reflect_union<My::Namespace::MyUnion>;
+ *
+ *  // yields `MyUnion`
+ *  auto result = info::type;
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename T>
+using reflect_union = reflected_union<T>;
+
 /**
  * Tells whether the given type is a Thrift union with compile-time reflection
  * support.
@@ -1280,6 +1490,10 @@ using is_reflectable_enum = fatal::has_enum_traits<T>;
  */
 template <typename T>
 using is_reflectable_union = fatal::has_variant_traits<T>;
+
+///////////////////////////
+// SECTION: CATEGORY API //
+///////////////////////////
 
 namespace detail {
 template <typename> struct reflect_category_impl;
@@ -1379,85 +1593,6 @@ struct get_thrift_category{
     thrift_category::unknown
   >;
 };
-
-namespace detail {
-template <typename> struct reflect_module_tag_impl;
-} // namespace detail {
-
-/**
- * Gets the reflection metadata tag for the Thrift file where the type `T` is
- * declared.
- *
- * The type `T` must be either a struct, enum or union.
- *
- * Example:
- *
- *  // MyModule.thrift
- *
- *  namespace cpp2 My.Namespace
- *
- *  struct MyStruct {
- *    1: i32 a
- *    2: string b
- *    3: double c
- *  }
- *
- *  enum MyEnum { a, b, c }
- *
- *  // C++
- *
- *  // yields `My::Namespace::MyModule_tags::module`
- *  using result1 = reflect_module_tag<MyStruct>;
- *
- *  // yields `My::Namespace::MyModule_tags::module`
- *  using result2 = reflect_module_tag<MyEnum>;
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename T>
-using reflect_module_tag = typename detail::reflect_module_tag_impl<
-  T
->::template get<>::type;
-
-/**
- * Tries to get the reflection metadata tag for the Thrift file where the type
- * `T` is declared.
- *
- * If the type `T` is a struct, enum or union and there is reflection
- * metadata available, the reflection metadata tag is returned. Otherwise,
- * returns `Default`.
- *
- * Example:
- *
- *  // MyModule.thrift
- *
- *  namespace cpp2 My.Namespace
- *
- *  struct MyStruct {
- *    1: i32 a
- *    2: string b
- *    3: double c
- *  }
- *
- *  enum MyEnum { a, b, c }
- *
- *  // C++
- *
- *  // yields `My::Namespace::MyModule_tags::module`
- *  using result1 = reflect_module_tag<MyStruct, void>;
- *
- *  // yields `My::Namespace::MyModule_tags::module`
- *  using result2 = reflect_module_tag<MyEnum, void>;
- *
- *  // yields `void`
- *  using result3 = reflect_module_tag<int, void>;
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename T, typename Default>
-using try_reflect_module_tag = typename detail::reflect_module_tag_impl<
-  T
->::template try_get<Default>::type;
 
 }} // apache::thrift
 

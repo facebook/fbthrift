@@ -22,6 +22,13 @@
 
 namespace apache { namespace thrift { namespace detail {
 
+template <typename Module, typename Annotations, legacy_type_id_t LegacyTypeId>
+struct type_common_metadata_impl {
+  using module = Module;
+  using annotations = Annotations;
+  using legacy_id = std::integral_constant<legacy_type_id_t, LegacyTypeId>;
+};
+
 template <thrift_category Category>
 using as_thrift_category = std::integral_constant<thrift_category, Category>;
 
@@ -90,12 +97,12 @@ struct reflect_module_tag_impl {
 
 template <typename T>
 struct reflect_module_tag_selector<thrift_category::enumeration, T> {
-  using type = typename fatal::enum_traits<T>::metadata::first;
+  using type = typename fatal::enum_traits<T>::metadata::module;
 };
 
 template <typename T>
 struct reflect_module_tag_selector<thrift_category::variant, T> {
-  using type = typename fatal::variant_traits<T>::metadata::first;
+  using type = typename fatal::variant_traits<T>::metadata::module;
 };
 
 template <typename T>
