@@ -57,7 +57,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onRequest(
     std::unique_ptr<HTTPMessage> msg) noexcept {
   msg_ = std::move(msg);
 
-  header_.setSequenceNumber(msg_->getSeqNo());
+  header_->setSequenceNumber(msg_->getSeqNo());
 
   apache::thrift::THeader::StringToStringMap thriftHeaders;
   msg_->getHeaders().forEach(
@@ -65,7 +65,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onRequest(
         thriftHeaders[key] = val;
       });
 
-  header_.setReadHeaders(std::move(thriftHeaders));
+  header_->setReadHeaders(std::move(thriftHeaders));
 }
 
 void ProxygenThriftServer::ThriftRequestHandler::onBody(
@@ -81,13 +81,13 @@ void ProxygenThriftServer::ThriftRequestHandler::onBody(
     auto proto = headers.getSingleOrEmpty(
         proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL);
     if (proto == "binary") {
-      header_.setProtocolId(protocol::T_BINARY_PROTOCOL);
+      header_->setProtocolId(protocol::T_BINARY_PROTOCOL);
     } else if (proto == "compact") {
-      header_.setProtocolId(protocol::T_COMPACT_PROTOCOL);
+      header_->setProtocolId(protocol::T_COMPACT_PROTOCOL);
     } else if (proto == "json") {
-      header_.setProtocolId(protocol::T_JSON_PROTOCOL);
+      header_->setProtocolId(protocol::T_JSON_PROTOCOL);
     } else if (proto == "simplejson") {
-      header_.setProtocolId(protocol::T_SIMPLE_JSON_PROTOCOL);
+      header_->setProtocolId(protocol::T_SIMPLE_JSON_PROTOCOL);
     } else {
       if (body_->length() == 0) {
         LOG(ERROR) << "Do not have a magic byte to sniff for the protocol";
@@ -97,10 +97,10 @@ void ProxygenThriftServer::ThriftRequestHandler::onBody(
       auto protByte = body_->data()[0];
       switch (protByte) {
         case 0x80:
-          header_.setProtocolId(protocol::T_BINARY_PROTOCOL);
+          header_->setProtocolId(protocol::T_BINARY_PROTOCOL);
           break;
         case 0x82:
-          header_.setProtocolId(protocol::T_COMPACT_PROTOCOL);
+          header_->setProtocolId(protocol::T_COMPACT_PROTOCOL);
           break;
         default:
           LOG(ERROR) << "Unable to determine protocol from magic byte "
@@ -112,7 +112,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onBody(
 
 void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
   folly::RequestContext::create();
-  connCtx_ = folly::make_unique<apache::thrift::Cpp2ConnContext>(
+  connCtx_ = std::make_shared<apache::thrift::Cpp2ConnContext>(
       &msg_->getClientAddress(), nullptr, nullptr, nullptr, nullptr);
 
   buf_ = body_->clone(); // for apache::thrift::ResponseChannel::Request
@@ -121,7 +121,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
   std::chrono::milliseconds softTimeout;
   std::chrono::milliseconds hardTimeout;
   bool differentTimeouts = worker_->server_->getTaskExpireTimeForRequest(
-      header_, softTimeout, hardTimeout);
+      *header_, softTimeout, hardTimeout);
   if (differentTimeouts) {
     DCHECK(softTimeout > std::chrono::milliseconds(0));
     DCHECK(hardTimeout > std::chrono::milliseconds(0));
@@ -134,17 +134,18 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
 
   worker_->server_->incActiveRequests();
 
-  auto req = folly::make_unique<ProxygenRequest>(this);
-  request_ = req.get();
+  reqCtx_ = std::make_shared<apache::thrift::Cpp2RequestContext>(connCtx_.get(),
+                                                                 header_.get());
 
-  reqCtx_ = folly::make_unique<apache::thrift::Cpp2RequestContext>(
-      connCtx_.get(), &header_);
+  auto req =
+      folly::make_unique<ProxygenRequest>(this, header_, connCtx_, reqCtx_);
+  request_ = req.get();
 
   worker_->getProcessor()->process(
       std::move(req),
       std::move(body_),
       static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
-          header_.getProtocolId()),
+          header_->getProtocolId()),
       reqCtx_.get(),
       worker_->evb_,
       threadManager_);
@@ -189,14 +190,14 @@ void ProxygenThriftServer::ThriftRequestHandler::sendReply(
 
   response.status(200, "OK");
 
-  for (auto itr : header_.releaseWriteHeaders()) {
+  for (auto itr : header_->releaseWriteHeaders()) {
     response.header(itr.first, itr.second);
   }
 
   response.header(proxygen::HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE,
                   "application/x-thrift");
 
-  switch (header_.getProtocolId()) {
+  switch (header_->getProtocolId()) {
     case protocol::T_BINARY_PROTOCOL:
       response.header(proxygen::HTTPHeaderCode::HTTP_HEADER_X_THRIFT_PROTOCOL,
                       "binary");
@@ -242,12 +243,12 @@ void ProxygenThriftServer::ThriftRequestHandler::sendErrorWrapped(
   // Other types are unimplemented.
   DCHECK(ew.is_compatible_with<apache::thrift::TApplicationException>());
 
-  header_.setHeader("ex", exCode);
+  header_->setHeader("ex", exCode);
 
   ew.with_exception<apache::thrift::TApplicationException>(
       [&](apache::thrift::TApplicationException& tae) {
         std::unique_ptr<folly::IOBuf> exbuf;
-        auto proto = header_.getProtocolId();
+        auto proto = header_->getProtocolId();
         try {
           exbuf = serializeError(proto, tae, getBuf());
         } catch (const apache::thrift::protocol::TProtocolException& pe) {

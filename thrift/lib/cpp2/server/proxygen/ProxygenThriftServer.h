@@ -18,6 +18,8 @@
 
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 
+#include <memory>
+
 #include <folly/io/async/HHWheelTimer.h>
 #include <folly/io/async/Request.h>
 #include <proxygen/httpserver/HTTPServer.h>
@@ -86,7 +88,7 @@ class ProxygenThriftServer : public BaseThriftServer,
         : worker_(worker),
           timer_(timer),
           threadManager_(threadManager),
-          header_(),
+          header_(std::make_shared<apache::thrift::transport::THeader>()),
           active_(true),
           cb_(nullptr),
           softTimeout_(this, false),
@@ -127,8 +129,15 @@ class ProxygenThriftServer : public BaseThriftServer,
 
     class ProxygenRequest : public apache::thrift::ResponseChannel::Request {
      public:
-      explicit ProxygenRequest(ThriftRequestHandler* handler)
-          : handler_(handler) {}
+      explicit ProxygenRequest(
+          ThriftRequestHandler* handler,
+          std::shared_ptr<apache::thrift::transport::THeader>& header,
+          std::shared_ptr<apache::thrift::Cpp2ConnContext>& connCtx,
+          std::shared_ptr<apache::thrift::Cpp2RequestContext> reqCtx)
+          : handler_(handler),
+            header_(header),
+            connCtx_(connCtx),
+            reqCtx_(reqCtx) {}
 
       ~ProxygenRequest() {
         if (handler_) {
@@ -179,6 +188,9 @@ class ProxygenThriftServer : public BaseThriftServer,
 
      private:
       ThriftRequestHandler* handler_;
+      std::shared_ptr<apache::thrift::transport::THeader> header_;
+      std::shared_ptr<apache::thrift::Cpp2ConnContext> connCtx_;
+      std::shared_ptr<apache::thrift::Cpp2RequestContext> reqCtx_;
     };
 
     class TaskTimeout : public folly::HHWheelTimer::Callback {
@@ -199,12 +211,12 @@ class ProxygenThriftServer : public BaseThriftServer,
     apache::thrift::concurrency::ThreadManager* threadManager_;
 
     std::unique_ptr<proxygen::HTTPMessage> msg_;
-    apache::thrift::transport::THeader header_;
+    std::shared_ptr<apache::thrift::transport::THeader> header_;
 
     std::unique_ptr<folly::IOBuf> body_;
 
-    std::unique_ptr<apache::thrift::Cpp2ConnContext> connCtx_;
-    std::unique_ptr<apache::thrift::Cpp2RequestContext> reqCtx_;
+    std::shared_ptr<apache::thrift::Cpp2ConnContext> connCtx_;
+    std::shared_ptr<apache::thrift::Cpp2RequestContext> reqCtx_;
 
     std::atomic<bool> active_;
     apache::thrift::MessageChannel::SendCallback* cb_;
