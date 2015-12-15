@@ -65,7 +65,7 @@ template <> struct pretty_print_impl<thrift_category::list> {
       auto const size = what.size();
       std::size_t index = 0;
       for (auto const &i: what) {
-        auto scope = out.push();
+        auto scope = out.start_scope();
         scope << index << ": ";
         detail::pretty_print(scope, i);
         if (++index < size) {
@@ -92,7 +92,7 @@ template <> struct pretty_print_impl<thrift_category::map> {
       auto const size = what.size();
       std::size_t index = 0;
       for (auto const &i: what) {
-        auto scope = out.push();
+        auto scope = out.start_scope();
         detail::pretty_print(scope, i.first);
         scope << ": ";
         detail::pretty_print(scope, i.second);
@@ -120,7 +120,7 @@ template <> struct pretty_print_impl<thrift_category::set> {
       auto const size = what.size();
       std::size_t index = 0;
       for (auto const &i: what) {
-        auto scope = out.push();
+        auto scope = out.start_scope();
         detail::pretty_print(scope, i);
         if (++index < size) {
           scope << ',';
@@ -167,7 +167,7 @@ template <> struct pretty_print_impl<thrift_category::variant> {
     fatal::variant_traits<T>::by_id::map::template binary_search<>::exact(
       what.getType(),
       pretty_print_variant_visitor(),
-      out.push(),
+      out.start_scope(),
       what
     );
     out << '}';
@@ -190,7 +190,7 @@ struct pretty_print_struct_visitor {
     OutputStream &&out,
     T const &what
   ) const {
-    auto scope = out.push();
+    auto scope = out.start_scope();
     scope << MemberInfo::name::z_data() << ": ";
     detail::pretty_print(scope, MemberInfo::getter::ref(what));
     if (Index + 1 < Size) {

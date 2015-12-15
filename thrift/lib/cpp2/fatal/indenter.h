@@ -43,7 +43,7 @@ class indenter {
       }
     }
 
-    scope push() { return out_->push(); }
+    scope start_scope() { return out_->start_scope(); }
 
     scope &skip() {
       out_->skip();
@@ -66,27 +66,37 @@ class indenter {
 
 public:
   template <typename UOutputStream, typename Indentation>
-  indenter(UOutputStream &&out, Indentation &&indentation):
-    out_(out)
+  indenter(UOutputStream &&out, Indentation &&indentation, std::string margin)
+    : out_(out), margin_(std::move(margin))
   {
     indentation_.reserve(4);
     indentation_.emplace_back();
     indentation_.emplace_back(std::forward<Indentation>(indentation));
   }
 
-  scope push() {
-    ++level_;
+  void push(std::size_t levels = 1) {
+    if (levels == 0) {
+      return;
+    }
+
+    level_ += levels;
 
     assert(indentation_.size() > 1);
-    indentation_.emplace_back(indentation_.back() + indentation_[1]);
+    for (auto i = indentation_.size(); i <= level_; ++i) {
+      indentation_.emplace_back(indentation_.back() + indentation_[1]);
+    }
     assert(level_ < indentation_.size());
+  }
 
+  scope start_scope() {
+    push();
     return scope(this);
   }
 
-  void pop() {
-    assert(level_ > 0);
-    --level_;
+  void pop(std::size_t levels = 1) {
+    assert(levels >= 0);
+    assert(level_ >= levels);
+    level_ -= levels;
   }
 
   indenter &skip() {
@@ -98,10 +108,12 @@ public:
   indenter &operator <<(U &&value) {
     if (indent_) {
       assert(level_ < indentation_.size());
+      put_margin();
       out_ << indentation_[level_];
       indent_ = false;
     }
 
+    put_margin();
     out_ << std::forward<U>(value);
     return *this;
   }
@@ -109,6 +121,12 @@ public:
   indenter &newline() {
     out_ << '\n';
     indent_ = true;
+    at_margin_ = true;
+    return *this;
+  }
+
+  indenter& set_margin(std::string margin) {
+    margin_ = std::move(margin);
     return *this;
   }
 
@@ -116,7 +134,16 @@ private:
   OutputStream &out_;
   std::vector<std::string> indentation_;
   std::size_t level_ = 0;
-  bool indent_ = false;
+  bool indent_ = true;
+  bool at_margin_ = true;
+  std::string margin_;
+
+  void put_margin() {
+    if (at_margin_) {
+      out_ << margin_;
+      at_margin_ = false;
+    }
+  }
 };
 
 template <typename OutputStream, typename Indentation>
@@ -124,7 +151,7 @@ indenter<typename std::decay<OutputStream>::type> make_indenter(
   OutputStream &&out,
   Indentation &&indentation
 ) {
-  return {out, std::forward<Indentation>(indentation)};
+  return {out, std::forward<Indentation>(indentation), ""};
 }
 
 }} // apache::thrift
