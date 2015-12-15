@@ -483,7 +483,8 @@ class HTTPClientChannel : public ClientChannel,
   void onSettingsOutgoingStreamsNotFull(const proxygen::HTTPSession&) override {
   }
   void onFlowControlWindowClosed(const proxygen::HTTPSession&) override {}
-  void onEgressBuffered(const proxygen::HTTPSession&) override{};
+  void onEgressBuffered(const proxygen::HTTPSession&) override {}
+  void onEgressBufferCleared(const proxygen::HTTPSession&) override {}
 
   void setRequestHeaderOptions(apache::thrift::transport::THeader* header);
 

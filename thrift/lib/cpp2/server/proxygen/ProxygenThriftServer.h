@@ -289,6 +289,7 @@ class ProxygenThriftServer : public BaseThriftServer,
   }
   void onFlowControlWindowClosed(const proxygen::HTTPSession&) override {}
   void onEgressBuffered(const proxygen::HTTPSession&) override {}
+  void onEgressBufferCleared(const proxygen::HTTPSession&) override {}
 
   std::unique_ptr<proxygen::HTTPServer> server_;
 
