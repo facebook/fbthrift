@@ -84,6 +84,60 @@ TEST(SerializationTest, MixedRoundtripFails) {
   }
 }
 
+TEST(SerializationTest, DeserializeReturningObjGivenIOBuf) {
+  using serializer = SimpleJSONSerializer;
+
+  auto s = makeTestStruct();
+  IOBufQueue q;
+  serializer::serialize(s, &q);
+  auto b = q.move();
+
+  auto out = serializer::deserialize<TestStruct>(b.get());
+  EXPECT_EQ(s, out);
+}
+
+TEST(SerializationTest, DeserializeReturningObjGivenByteRange) {
+  using serializer = SimpleJSONSerializer;
+
+  auto s = makeTestStruct();
+  IOBufQueue q;
+  serializer::serialize(s, &q);
+  auto b = q.move();
+
+  auto out = serializer::deserialize<TestStruct>(ByteRange(b->coalesce()));
+  EXPECT_EQ(s, out);
+}
+
+TEST(SerializationTest, DeserializeReturningObjGivenStringPiece) {
+  using serializer = SimpleJSONSerializer;
+
+  auto s = makeTestStruct();
+  IOBufQueue q;
+  serializer::serialize(s, &q);
+  auto b = q.move();
+
+  auto out = serializer::deserialize<TestStruct>(StringPiece(b->coalesce()));
+  EXPECT_EQ(s, out);
+}
+
+TEST(SerializationTest, SerializeReturningIOBufQueue) {
+  using serializer = SimpleJSONSerializer;
+  auto s = makeTestStruct();
+  string expected;
+  serializer::serialize(s, &expected);
+  auto actual = serializer::serialize<IOBufQueue>(s);
+  EXPECT_EQ(expected, StringPiece(actual.move()->coalesce()));
+}
+
+TEST(SerializationTest, SerializeReturningString) {
+  using serializer = SimpleJSONSerializer;
+  auto s = makeTestStruct();
+  string expected;
+  serializer::serialize(s, &expected);
+  auto actual = serializer::serialize<string>(s);
+  EXPECT_EQ(expected, actual);
+}
+
 TestStructRecursive makeTestStructRecursive(size_t levels) {
   unique_ptr<TestStructRecursive> s;
   for (size_t i = levels; i > 0; --i) {

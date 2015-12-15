@@ -59,6 +59,28 @@ struct Serializer {
   }
 
   template <class T>
+  static T deserialize(
+      const folly::IOBuf* buf, uint32_t* size = nullptr) {
+    return returning<T>([&](T& obj) { set(size, deserialize(buf, obj)); });
+  }
+
+  template <class T>
+  static T deserialize(
+      folly::ByteRange range, uint32_t* size = nullptr,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    return returning<T>([&](T& obj) {
+        set(size, deserialize(range, obj, sharing));
+    });
+  }
+
+  template <class T>
+  static T deserialize(
+      folly::StringPiece range, uint32_t* size = nullptr,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    return deserialize<T>(folly::ByteRange(range), size, sharing);
+  }
+
+  template <class T>
   static void serialize(
       const T& obj, folly::IOBufQueue* out,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
@@ -79,7 +101,28 @@ struct Serializer {
     queue.appendToString(*out);
   }
 
+  template <class R, class T, typename... Args>
+  static R serialize(const T& obj, Args&&... args) {
+    R _return;
+    serialize(obj, &_return, std::forward<Args>(args)...);
+    return _return;
+  }
+
  private:
+
+  template <typename T>
+  static void set(T* t, T&& v) {
+    if (t != nullptr) {
+      *t = std::forward<T>(v);
+    }
+  }
+
+  template <typename R, typename F>
+  static R returning(F&& f) {
+    R _return;
+    f(_return);
+    return _return;
+  }
 };
 
 typedef Serializer<CompactProtocolReader, CompactProtocolWriter>
