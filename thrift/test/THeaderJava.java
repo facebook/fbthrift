@@ -34,6 +34,7 @@ import com.facebook.thrift.TException;
 import com.facebook.thrift.TProcessor;
 import com.facebook.thrift.TProcessorEventHandler;
 import com.facebook.thrift.TProcessorFactory;
+import com.facebook.thrift.UserExceptionHandler;
 import com.facebook.thrift.direct_server.TDirectServer;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.THeaderProtocol;
@@ -83,11 +84,17 @@ public class THeaderJava extends junit.framework.TestCase {
     private ThriftTest.Processor testProcessor;
     TProcessorFactory pFactory;
 
-    public ServerThread(ServerType serverType) throws IOException, TException {
+    public ServerThread(ServerType serverType)
+      throws IOException, TException {
+      this(serverType, new TestEventHandler());
+    }
+
+    public ServerThread(ServerType serverType, TProcessorEventHandler eventHandler)
+      throws IOException, TException {
       // processor
       TestHandler testHandler = new TestHandler();
       testProcessor = new ThriftTest.Processor(testHandler);
-      pFactory = new TestProcessorFactory(testProcessor);
+      pFactory = new TestProcessorFactory(testProcessor, eventHandler);
 
       // Reset transports
       tServerSocket = null;
@@ -186,9 +193,9 @@ public class THeaderJava extends junit.framework.TestCase {
   }
 
   public class TestProcessorFactory extends TProcessorFactory {
-    public TestProcessorFactory(TProcessor processor) {
+    public TestProcessorFactory(TProcessor processor, TProcessorEventHandler eventHandler) {
       super(processor);
-      processor.setEventHandler(new TestEventHandler());
+      processor.setEventHandler(eventHandler);
     }
   }
 
@@ -519,6 +526,39 @@ public class THeaderJava extends junit.framework.TestCase {
   public void testSnappyTransform() throws TException {
     testTransform(
       THeaderTransport.Transforms.SNAPPY_TRANSFORM);
+  }
+
+  @Test
+  public void testUserExceptionHandler()
+    throws Exception {
+    ServerThread st = new ServerThread(ServerType.SIMPLE, new UserExceptionHandler());
+    Thread r = new Thread(st);
+    r.start();
+
+    TSocket socket = new TSocket("localhost", TEST_PORT);
+    socket.setTimeout(1000);
+    socket.open();
+    TProtocol prot = new TBinaryProtocol(socket);
+    List<THeaderTransport.ClientTypes> clientTypes =
+      new ArrayList<THeaderTransport.ClientTypes>();
+    prot = new THeaderProtocol(socket, clientTypes);
+
+    ThriftTest.Client testClient =
+      new ThriftTest.Client(prot);
+    try {
+      testClient.testMultiException("Xception", "foo");
+    }
+    catch (Xception x) {
+      THeaderTransport headerTransport = (THeaderTransport)prot.getTransport();
+      assertEquals("Xception", headerTransport.getHeaders().get("uex"));
+      assertEquals("This is an Xception", headerTransport.getHeaders().get("uexw"));
+    }
+
+    socket.close();
+
+    st.stop();
+    r.interrupt();
+    r.join();
   }
 
   public void doServerClient(ServerType serverType, boolean unframed,
