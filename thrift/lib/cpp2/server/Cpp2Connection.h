@@ -209,6 +209,7 @@ class Cpp2Connection
   void removeRequest(Cpp2Request* req);
   void killRequest(ResponseChannel::Request& req,
                    TApplicationException::TApplicationExceptionType reason,
+                   const std::string& errorCode,
                    const char* comment);
   void disconnect(const char* comment) noexcept;
 

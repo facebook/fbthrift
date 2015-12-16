@@ -419,6 +419,9 @@ TEST(ThriftServer, FailureInjection) {
         TestServiceAsyncClient::recv_sendResponse(response, state);
         EXPECT_EQ(NONE, *expected_);
       } catch (const apache::thrift::TApplicationException& ex) {
+        const auto& headers = state.header()->getHeaders();
+        EXPECT_TRUE(headers.find("ex") != headers.end() &&
+                    headers.find("ex")->second == kInjectedFailureErrorCode);
         EXPECT_EQ(ERROR, *expected_);
       } catch (...) {
         ADD_FAILURE() << "Unexpected exception thrown";

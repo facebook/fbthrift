@@ -190,6 +190,7 @@ bool Cpp2Connection::pending() {
 void Cpp2Connection::killRequest(
     ResponseChannel::Request& req,
     TApplicationException::TApplicationExceptionType reason,
+    const std::string& errorCode,
     const char* comment) {
   VLOG(1) << "ERROR: Task killed: " << comment
           << ": " << context_.getPeerAddress()->getAddressStr();
@@ -218,7 +219,7 @@ void Cpp2Connection::killRequest(
     header_req->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(reason,
                                                              comment),
-        kOverloadedErrorCode,
+        errorCode,
         nullptr);
   } else {
     // Send an empty response so reqId will be handled properly
@@ -239,6 +240,7 @@ void Cpp2Connection::requestReceived(
   case ThriftServer::InjectedFailure::ERROR:
     killRequest(*req,
         TApplicationException::TApplicationExceptionType::INJECTED_FAILURE,
+        kInjectedFailureErrorCode,
         "injected failure");
     return;
   case ThriftServer::InjectedFailure::DROP:
@@ -303,6 +305,7 @@ void Cpp2Connection::requestReceived(
   if (server->isOverloaded(activeRequests, hreq->getHeader())) {
     killRequest(*req,
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
+        kOverloadedErrorCode,
         "loadshedding request");
     return;
   }

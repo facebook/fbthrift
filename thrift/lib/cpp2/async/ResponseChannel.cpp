@@ -30,3 +30,4 @@ const std::string kProxyWhitelistExceptionErrorCode{"10"};
 const std::string kProxyClientAppExceptionErrorCode{"11"};
 const std::string kProxyProtocolMismatchExceptionErrorCode{"12"};
 const std::string kProxyThrottledExceptionErrorCode{"13"};
+const std::string kInjectedFailureErrorCode{"14"};
