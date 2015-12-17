@@ -3861,8 +3861,6 @@ class CppGenerator(t_generator.Generator):
             cpp1_namespace = self._namespace_prefix(
                 self._program.get_namespace('cpp')).lstrip()
             sns('using ' + cpp1_namespace + self._program.name + '_constants;')
-            sns('using ' + cpp1_namespace + self._program.name
-                + '_constants_codemod;')
             sns.release()
             sg.release()
             return
@@ -3906,33 +3904,6 @@ class CppGenerator(t_generator.Generator):
                             self._type_name(c.type),
                             '({0})'.format(value) if value is not None else ''
                         ))
-                        b('return instance;')
-
-        # CODEMOD TRANSITIONAL
-        s = sns.cls(('struct __attribute__((__deprecated__("{1}"))) '
-            + '{0}_constants_codemod').format(name, ('{0}_constants_codemod is '
-                + 'a transitional class only intended for codemods from the '
-                + 'deprecated {0}Constants to {0}_constants. Consider switching'
-                + ' to the latter as soon as possible.').format(name))).scope
-
-        with s:
-            # Default constructor
-            for c in constants:
-                value = self._render_const_value(c.type, c.value)
-                inlined = (c.type.is_base_type
-                    and not c.type.is_string) or c.type.is_enum
-                b = s.defn('static {0}{1} {2}{{name}}()'.format(
-                    'constexpr ' if inlined else '', self._type_name(
-                    c.type), '' if inlined else 'const& '), name=c.name,
-                    in_header=True).scope
-                with b:
-                    if inlined:
-                        b('return {0};'.format(
-                          value if value is not None else '{}'))
-                    else:
-                        b('static {0} const instance{1};'.format(
-                            self._type_name(c.type),
-                            '({0})'.format(value) if value is not None else ''))
                         b('return instance;')
 
         # DEPRECATED

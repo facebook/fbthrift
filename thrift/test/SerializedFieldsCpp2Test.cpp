@@ -30,9 +30,9 @@ using namespace apache::thrift;
 using namespace std;
 
 const MetaStruct& kTestMetaStruct =
-    SerializedFieldsTest_constants_codemod::kTestMetaStruct();
+    SerializedFieldsTest_constants::kTestMetaStruct();
 const ProxyUnknownStruct& kTestProxyUnknownStruct =
-    SerializedFieldsTest_constants_codemod::kTestProxyUnknownStruct();
+    SerializedFieldsTest_constants::kTestProxyUnknownStruct();
 
 template<typename T>
 string easySerialize(const T& a) {

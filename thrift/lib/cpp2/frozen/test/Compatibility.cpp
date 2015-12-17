@@ -66,7 +66,7 @@ TEST_P(CompatibilityTest, Read) {
 INSTANTIATE_TEST_CASE_P(
     AllCases,
     CompatibilityTest,
-    ::testing::ValuesIn(Compatibility_constants_codemod::kTestCases()));
+    ::testing::ValuesIn(Compatibility_constants::kTestCases()));
 
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);

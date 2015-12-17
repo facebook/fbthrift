@@ -13,9 +13,6 @@ namespace cpp1 {
 struct includes_constants {
 };
 
-struct  __attribute__((__deprecated__("includes_constants_codemod is a transitional class only intended for codemods from the deprecated includesConstants to includes_constants. Consider switching to the latter as soon as possible."))) includes_constants_codemod {
-};
-
 class __attribute__((__deprecated__("includesConstants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH your program. Instead, use includes_constants::CONSTANT_NAME()"))) includesConstants {
 public:
   includesConstants();

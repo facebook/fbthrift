@@ -56,24 +56,6 @@ struct module_constants {
   static std::map<std::string, int32_t>  const& char2ascii();
 };
 
-struct  __attribute__((__deprecated__("module_constants_codemod is a transitional class only intended for codemods from the deprecated moduleConstants to module_constants. Consider switching to the latter as soon as possible."))) module_constants_codemod {
-  static constexpr int32_t myInt() { return module_constants::myInt(); }
-  static std::string const& name();
-  static std::vector<std::map<std::string, int32_t> >  const& states();
-  static constexpr double x() { return module_constants::x(); }
-  static constexpr double y() { return module_constants::y(); }
-  static constexpr double z() { return module_constants::z(); }
-  static Internship const& instagram();
-  static std::vector<Range>  const& kRanges();
-  static std::vector<Internship>  const& internList();
-  static std::string const& apostrophe();
-  static std::string const& tripleApostrophe();
-  static std::string const& quotationMark();
-  static std::string const& backslash();
-  static std::string const& escaped_a();
-  static std::map<std::string, int32_t>  const& char2ascii();
-};
-
 class __attribute__((__deprecated__("moduleConstants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH your program. Instead, use module_constants::CONSTANT_NAME()"))) moduleConstants {
 public:
   moduleConstants();

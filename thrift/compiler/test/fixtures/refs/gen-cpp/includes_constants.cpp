@@ -9,7 +9,6 @@
 namespace cpp1 {
 
 
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
