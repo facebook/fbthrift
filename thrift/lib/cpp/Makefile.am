@@ -21,6 +21,7 @@ SUBDIRS = .
 
 pkgconfigdir = $(libdir)/pkgconfig
 
+if WITH_CPP
 lib_LTLIBRARIES = libthrift.la
 pkgconfig_DATA = thrift.pc
 libthrift_la_LDFLAGS = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
@@ -30,6 +31,7 @@ libthrift_la_LDFLAGS = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
 if AMX_HAVE_ZLIB
 lib_LTLIBRARIES += libthriftz.la
 pkgconfig_DATA += thrift-z.pc
+endif
 endif
 
 AM_CXXFLAGS = -Wall

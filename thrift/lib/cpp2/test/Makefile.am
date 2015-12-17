@@ -29,12 +29,12 @@ libService_a_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../../cpp -I$(top_
 check_PROGRAMS = ThriftServerTest SharedServerTest
 
 ThriftServerTest_SOURCES = util/ThriftServerTest.cpp
-ThriftServerTest_LDADD = ../libthriftcpp2.la ../libsaslstubs.a libService.a ../../cpp/libthrift.la -levent -lkrb5 -lsnappy -lsasl2 -lfolly  -lgssapi_krb5 $(BOOST_THREAD_LIB) -lboost_thread  -ldouble-conversion
+ThriftServerTest_LDADD = ../libthriftprotocol.la ../libthriftcpp2.la ../libsaslstubs.a libService.a ../../cpp/libthrift.la -levent -lkrb5 -lsnappy -lsasl2 -lfolly  -lgssapi_krb5 $(BOOST_THREAD_LIB) -lboost_thread  -ldouble-conversion
 ThriftServerTest_LDFLAGS = -lglog -lgtest
 ThriftServerTest_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_builddir)/../../gperftools-2.0.99/src -I../../../../
 
 SharedServerTest_SOURCES = util/SharedServerTest.cpp
-SharedServerTest_LDADD = ../libthriftcpp2.la ../libsaslstubs.a libService.a ../../cpp/libthrift.la -levent -lkrb5 -lsnappy -lsasl2 -lfolly  -lgssapi_krb5 $(BOOST_THREAD_LIB) -lboost_thread  -ldouble-conversion
+SharedServerTest_LDADD = ../libthriftprotocol.la ../libthriftcpp2.la ../libsaslstubs.a libService.a ../../cpp/libthrift.la -levent -lkrb5 -lsnappy -lsasl2 -lfolly  -lgssapi_krb5 $(BOOST_THREAD_LIB) -lboost_thread  -ldouble-conversion
 SharedServerTest_LDFLAGS = -lglog -lgtest
 SharedServerTest_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_builddir)/../../gperftools-2.0.99/src -I../../../../
 
@@ -48,6 +48,6 @@ gen-cpp2/InstalledCheck_types.cpp: InstalledCheck.thrift
 	$(PY_RUN_ENV) $(PYTHON) -mthrift_compiler.main --gen cpp2 InstalledCheck.thrift
 
 InstalledCheck: gen-cpp2/TestService.cpp
-	$(CXX) $(CXXFLAGS) -o InstalledCheck $(LDFLAGS) -L@prefix@/lib $(CPPFLAGS) -I@prefix@/include -I../../../../ InstalledCheck.cpp util/TestInterface.cpp gen-cpp2/InstalledCheck_types.cpp gen-cpp2/TestService.cpp gen-cpp2/TestService_client.cpp -lthriftcpp2 -lthrift -lfolly -lglog -lboost_system -lboost_thread -lpthread -lm -ldouble-conversion -lssl -lcrypto
+	$(CXX) $(CXXFLAGS) -o InstalledCheck $(LDFLAGS) -L@prefix@/lib $(CPPFLAGS) -I@prefix@/include -I../../../../ InstalledCheck.cpp util/TestInterface.cpp gen-cpp2/InstalledCheck_types.cpp gen-cpp2/TestService.cpp gen-cpp2/TestService_client.cpp -lthriftprotocol -lthriftcpp2 -lthrift -lfolly -lglog -lboost_system -lboost_thread -lpthread -lm -ldouble-conversion -lssl -lcrypto
 
 installcheck: gen-cpp2/InstalledCheck_types.cpp InstalledCheck

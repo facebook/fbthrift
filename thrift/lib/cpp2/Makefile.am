@@ -23,8 +23,12 @@
 
 SUBDIRS = . test
 
-lib_LTLIBRARIES = libthriftcpp2.la
+lib_LTLIBRARIES = libthriftprotocol.la
+
+if WITH_CPP
+lib_LTLIBRARIES += libthriftcpp2.la
 noinst_LIBRARIES = libsaslstubs.a
+endif
 
 gen-cpp2/Sasl_constants.cpp: gen-cpp2/Sasl_types.h
 gen-cpp2/Sasl_types.cpp: gen-cpp2/Sasl_types.h
@@ -121,6 +125,27 @@ thrift2include_protocol_HEADERS = \
 	protocol/Serializer.h \
 	protocol/VirtualProtocol.h
 
+libthriftprotocol_la_SOURCES = Version.cpp \
+                               ../cpp/Thrift.cpp \
+                               ../cpp/concurrency/Util.cpp \
+                               ../cpp/transport/TTransportException.cpp \
+                               ../cpp/util/VarintUtils.cpp \
+                               protocol/BinaryProtocol.cpp \
+                               protocol/CompactProtocol.cpp \
+                               protocol/DebugProtocol.cpp \
+                               protocol/Serializer.cpp \
+                               protocol/SimpleJSONProtocol.cpp \
+                               protocol/VirtualProtocol.cpp
+
+libthriftprotocol_la_LIBADD = $(FOLLY_LIBS) -lboost_system
+
+libthriftprotocol_la_LDFLAGS = -module \
+                               -no-undefined \
+                               -avoid-version \
+                               $(BOOST_LDFLAGS)
+
+libthriftprotocol_la_CPPFLAGS = $(AM_CPPFLAGS) -I../cpp
+
 libthriftcpp2_la_SOURCES = Version.cpp \
 			   GeneratedCodeHelper.cpp \
 			   async/HeaderChannel.cpp \
@@ -138,12 +163,6 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   async/FramingHandler.cpp \
 			   async/AsyncProcessor.cpp \
 			   async/DuplexChannel.cpp \
-			   protocol/Serializer.cpp \
-			   protocol/SimpleJSONProtocol.cpp \
-			   protocol/DebugProtocol.cpp \
-			   protocol/BinaryProtocol.cpp \
-			   protocol/VirtualProtocol.cpp \
-			   protocol/CompactProtocol.cpp \
 			   security/KerberosSASLHandshakeClient.cpp \
 			   security/KerberosSASLHandshakeServer.cpp \
 			   security/KerberosSASLHandshakeUtils.cpp \
@@ -173,6 +192,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 
 libthriftcpp2_la_LIBADD = \
 	../cpp/libthrift.la \
+	libthriftprotocol.la \
 	libsaslstubs.a \
 	$(FOLLY_LIBS) \
 	-lkrb5 \
