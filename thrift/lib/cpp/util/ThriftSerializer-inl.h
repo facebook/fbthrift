@@ -38,6 +38,8 @@ template <typename T, class String>
 void
 ThriftSerializer<Dummy, P>::serialize(const T& fields, String* serialized)
 {
+  static_assert(is_legacy_struct<T>::value, "Only works with legacy structs.");
+
   // prepare or reset buffer
   //
   // note: Three cases:
@@ -91,6 +93,8 @@ void
 ThriftSerializer<Dummy, P>::serialize(const T& fields,
                                       const uint8_t** serializedBuffer,
                                       size_t* serializedLen) {
+  static_assert(is_legacy_struct<T>::value, "Only works with legacy structs.");
+
   CHECK(serializedBuffer);
   CHECK(serializedLen);
 
@@ -135,6 +139,8 @@ uint32_t
 ThriftSerializer<Dummy, P>::deserializeClean(const String& serialized,
                                              T* fields)
 {
+  static_assert(is_legacy_struct<T>::value, "Only works with legacy structs.");
+
   // prepare buffer if necessary
   if (!prepared_) {
     prepare();
@@ -170,6 +176,8 @@ ThriftSerializer<Dummy, P>::deserialize(const uint8_t* serializedBuffer,
                                         size_t length,
                                         T* fields)
 {
+  static_assert(is_legacy_struct<T>::value, "Only works with legacy structs.");
+
   // prepare buffer if necessary
   if (!prepared_) {
     prepare();

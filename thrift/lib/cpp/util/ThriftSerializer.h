@@ -89,6 +89,9 @@ class ThriftSerializer {
   , setVersion_(false)
   , serializeVersion_(false) {}
 
+  template <typename T>
+  using is_legacy_struct = std::is_base_of<TStructType<T>, T>;
+
   /**
    * Serializes the passed type into the passed string.
    *
