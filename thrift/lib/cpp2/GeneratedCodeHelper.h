@@ -1078,11 +1078,22 @@ future_exn(std::exception_ptr ex) {
   return folly::makeFuture<R>(folly::exception_wrapper(std::move(ex)));
 }
 
+template <class R, class E>
+folly::Future<R>
+future_exn(std::exception_ptr ex, E& e) {
+  return folly::makeFuture<R>(folly::exception_wrapper(std::move(ex), e));
+}
+
 template <class F>
 ret<F>
 future_catching(F&& f) {
-  try { return f(); }
-  catch(...) { return future_exn<fut_ret<F>>(std::current_exception()); }
+  try {
+    return f();
+  } catch (const std::exception& e) {
+    return future_exn<fut_ret<F>>(std::current_exception(), e);
+  } catch(...) {
+    return future_exn<fut_ret<F>>(std::current_exception());
+  }
 }
 
 using CallbackBase = HandlerCallbackBase;
