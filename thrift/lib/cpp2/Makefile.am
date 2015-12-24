@@ -139,8 +139,7 @@ libthriftprotocol_la_SOURCES = Version.cpp \
 
 libthriftprotocol_la_LIBADD = $(FOLLY_LIBS) -lboost_system
 
-libthriftprotocol_la_LDFLAGS = -module \
-                               -no-undefined \
+libthriftprotocol_la_LDFLAGS = -no-undefined \
                                -avoid-version \
                                $(BOOST_LDFLAGS)
 
