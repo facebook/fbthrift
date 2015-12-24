@@ -41,8 +41,10 @@ AC_ARG_VAR([PY_PREFIX], [Prefix for installing Python modules.
 AC_ARG_VAR([PY_INSTALL_HOME], [Prefix for installing Python modules using
                                home scheme. Usually unused.])
 
+AX_PYTHON_DEVEL()
 AS_IF([test x"$PY_PREFIX" != x],
-          [PY_INSTALL_ARGS="--prefix '$PY_PREFIX'"],
+          [PY_INSTALL_ARGS="--prefix '$PY_PREFIX'"
+           PY_RUN_ENV="PYTHONPATH=$PY_PREFIX/lib/python$ac_python_version/site-packages"],
       [test x"$PY_INSTALL_HOME" != x],
           [PY_INSTALL_ARGS="--home '$PY_INSTALL_HOME'"
            PY_RUN_ENV="PYTHONPATH='$PY_INSTALL_HOME/lib/python'"])
@@ -84,7 +86,6 @@ AX_BOOST_BASE([1.40.0])
 if test "x$succeeded" != "xyes" ; then
   AC_MSG_ERROR([Please install libboost-dev-all])
 fi
-AX_PYTHON_DEVEL()
 AX_BOOST_PYTHON
 
 if test "x$LEX" != xflex; then
