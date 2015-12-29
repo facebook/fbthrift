@@ -55,6 +55,7 @@ class t_hack_generator : public t_oop_generator {
     shapes_ = option_is_specified(parsed_options, "shapes");
     shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
     shape_unsafe_json_ = option_is_specified(parsed_options, "shape_unsafe_json");
+    lazy_constants_ = option_is_specified(parsed_options, "lazy_constants");
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
 
@@ -331,6 +332,11 @@ class t_hack_generator : public t_oop_generator {
 
   const char* UNION_EMPTY = "_EMPTY_";
 
+  void generate_lazy_init_for_constant(ofstream& out,
+                                       const std::string& name,
+                                       const std::string& typehint,
+                                       const std::string& rendered_value);
+
  private:
 
   /**
@@ -423,6 +429,11 @@ class t_hack_generator : public t_oop_generator {
    * True if we should not validate json when converting to Shapes
    */
   bool shape_unsafe_json_;
+
+  /**
+   * True if we should generate lazy initialization code for constants
+   */
+  bool lazy_constants_;
 };
 
 void t_hack_generator::generate_json_enum(std::ofstream& out,
@@ -728,10 +739,24 @@ void t_hack_generator::close_generator() {
     // write out the values array
     indent_up();
     f_consts_ << endl;
-    indent(f_consts_) << "public static array $__values = array(" << endl;
-    std::copy(constants_values_.begin(), constants_values_.end(),
-        std::ostream_iterator<string>(f_consts_, ",\n"));
-    indent(f_consts_) << ");" << endl;
+    if (!lazy_constants_) {
+      indent(f_consts_) << "public static array $__values = array(" << endl;
+      std::copy(constants_values_.begin(),
+                constants_values_.end(),
+                std::ostream_iterator<string>(f_consts_, ",\n"));
+      indent(f_consts_) << ");" << endl;
+    } else {
+      stringstream oss(stringstream::out);
+      oss << "array(" << endl;
+      std::copy(constants_values_.begin(),
+                constants_values_.end(),
+                std::ostream_iterator<string>(oss, ",\n"));
+      indent(oss) << "    )";
+
+      string rendered_value = oss.str();
+      generate_lazy_init_for_constant(
+          f_consts_, "__values", "array", rendered_value);
+    }
     indent_down();
     // close constants class
     f_consts_ << "}" << endl <<
@@ -842,28 +867,79 @@ void t_hack_generator::generate_const(t_const* tconst) {
 
   indent_up();
   generate_php_docstring(f_consts_, tconst);
-  // for base php types, use const (guarantees optimization in hphp)
-  if (type->is_base_type()) {
-    indent(f_consts_) << "const " << name << " = ";
-  // cannot use const for objects (incl arrays). use static
+  if (!lazy_constants_) {
+    // for base php types, use const (guarantees optimization in hphp)
+    if (type->is_base_type()) {
+      indent(f_consts_) << "const " << name << " = ";
+      // cannot use const for objects (incl arrays). use static
+    } else {
+      indent(f_consts_) << "public static " << type_to_typehint(type) << " $"
+                        << name << " = ";
+    }
+    indent_up();
+    f_consts_ << render_const_value(type, value);
+    indent_down();
+    f_consts_ << ";" << endl;
+
+    // add the definitions to a values array as well
+    // indent up cause we're going to be in an array definition
+    indent_up();
+    stringstream oss(stringstream::out);
+    indent(oss) << render_string(name) << " => ";
+    indent_up();
+
+    oss << render_const_value(type, value);
+    indent_down();
+    indent_down();
+    constants_values_.push_back(oss.str());
   } else {
-    indent(f_consts_) << "public static " << type_to_typehint(type) << " $" << name << " = ";
+    // generate rendered value with right number of identations (2)
+    indent_up();
+    indent_up();
+    stringstream val(stringstream::out);
+    val << render_const_value(type, value);
+    indent_down();
+    indent_down();
+
+    string rendered_value = val.str();
+    generate_lazy_init_for_constant(
+        f_consts_, name, type_to_typehint(type), rendered_value);
+
+    // add the definitions to a values array as well
+    // indent up 3 times cause we're going to be 2 levels deeper
+    // than in non lazy case
+    indent_up();
+    indent_up();
+    indent_up();
+    stringstream oss(stringstream::out);
+    indent(oss) << render_string(name) << " => ";
+    oss << render_const_value(type, value);
+    indent_down();
+    indent_down();
+    indent_down();
+
+    constants_values_.push_back(oss.str());
   }
-  indent_up();
-  f_consts_ << render_const_value(type, value);
+
   indent_down();
-  f_consts_ << ";" << endl;
-  // add the definitions to a values array as well
-  // indent up cause we're going to be in an array definition
-  indent_up();
-  stringstream oss(stringstream::out);
-  indent(oss) << render_string(name) << " => ";
-  indent_up();
-  oss << render_const_value(type, value);
-  indent_down();
-  indent_down();
-  constants_values_.push_back(oss.str());
-  indent_down();
+}
+
+void t_hack_generator::generate_lazy_init_for_constant(
+    ofstream& out,
+    const std::string& name,
+    const std::string& typehint,
+    const std::string& rendered_value) {
+  string name_internal = "__" + name;
+  indent(out) << "private static ?" << typehint << " $" << name_internal
+              << " = null;" << endl;
+  indent(out) << "public static function " << name << "(): " << typehint << " {"
+              << endl;
+  indent(out) << "  if (self::$" << name_internal << " == null) {" << endl;
+  indent(out) << "    self::$" << name_internal << " = " << rendered_value
+              << ";" << endl;
+  indent(out) << "  }" << endl;
+  indent(out) << "  return self::$" << name_internal << ";" << endl;
+  indent(out) << "}" << endl << endl;
 }
 
 string t_hack_generator::render_string(string value) {
@@ -4249,4 +4325,5 @@ THRIFT_REGISTER_GENERATOR(hack, "HACK",
 "    shape_arraykeys  When generating Shape definition for structs:\n"
 "                        replace array<string, TValue> with array<arraykey, TValue>\n"
 "    shape_unsafe_json When converting json to Shapes, do not validate.\n"
+"    lazy_constants   Generate lazy initialization code for global constants.\n"
 );
