@@ -1,7 +1,13 @@
 #!/bin/sh
 
-# remove --fbcode_dir and --install_dir
-shift 2
+set -e
 
-PB_PATH=$FBCODE_DIR/$EXT_PROJECT_protobuf
-LD_LIBRARY_PATH=$PB_PATH/lib $PB_PATH/bin/protoc --cpp_out=$INSTALL_DIR "$@"
+# remove --install_dir
+shift 1
+
+protoc --cpp_out="$INSTALL_DIR" "$@"
+
+# Fix up include path
+sed -i \
+  's|ProtoBufBenchData.pb.h|thrift/lib/cpp2/test/ProtoBufBenchData.pb.h|g' \
+  "$INSTALL_DIR"/ProtoBufBenchData.pb.cc
