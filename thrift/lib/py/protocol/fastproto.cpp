@@ -1002,7 +1002,7 @@ decodeT(DecodeBuffer *input, PyObject *dec_obj, StructTypeArgs *args,
     ioobj = IOOOBJECT(input->stringiobuf);
     ioobj->pos += reader.totalBytesRead();
     return ret;
-  } catch (const std::runtime_error& e) {
+  } catch (const std::exception& e) {
     PyErr_SetString(PyExc_RuntimeError, e.what());
     return false;
   }
