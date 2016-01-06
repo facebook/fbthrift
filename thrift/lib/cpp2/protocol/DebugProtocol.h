@@ -31,6 +31,9 @@ std::string debugString(const T& obj);
 
 class DebugProtocolWriter {
  public:
+
+  using ProtocolReader = void;
+
   explicit DebugProtocolWriter(
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER /* ignored */);
 
@@ -76,6 +79,27 @@ class DebugProtocolWriter {
   /**
    * Functions that return the serialized size
    */
+  uint32_t serializedMessageSize(const std::string& name);
+  uint32_t serializedFieldSize(const char* name,
+                               TType fieldName,
+                               int16_t fieldId);
+  uint32_t serializedStructSize(const char* name);
+  uint32_t serializedSizeMapBegin(TType keyType,
+                                  TType valType,
+                                  uint32_t size);
+  uint32_t serializedSizeMapEnd();
+  uint32_t serializedSizeListBegin(TType elemType, uint32_t size);
+  uint32_t serializedSizeListEnd();
+  uint32_t serializedSizeSetBegin(TType elemType, uint32_t size);
+  uint32_t serializedSizeSetEnd();
+  uint32_t serializedSizeStop();
+  uint32_t serializedSizeBool(bool value);
+  uint32_t serializedSizeByte(int8_t byte);
+  uint32_t serializedSizeI16(int16_t i16);
+  uint32_t serializedSizeI32(int32_t i32);
+  uint32_t serializedSizeI64(int64_t i64);
+  uint32_t serializedSizeDouble(double dub);
+  uint32_t serializedSizeFloat(float flt);
   uint32_t serializedSizeString(folly::StringPiece str);
   uint32_t serializedSizeBinary(folly::StringPiece str);
   uint32_t serializedSizeBinary(folly::ByteRange v);

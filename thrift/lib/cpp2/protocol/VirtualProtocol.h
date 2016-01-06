@@ -165,8 +165,13 @@ std::unique_ptr<VirtualReaderBase> makeVirtualReader(ProtocolType type);
 std::unique_ptr<VirtualWriterBase> makeVirtualWriter(ProtocolType type);
 
 template <class ProtocolT>
+class VirtualWriter;
+
+template <class ProtocolT>
 class VirtualReader : public VirtualReaderBase {
  public:
+  using ProtocolWriter = VirtualWriter<typename ProtocolT::ProtocolWriter>;
+
   template <typename ...Args,
             typename std::enable_if<
               std::is_constructible<ProtocolT, Args...>::value,
@@ -257,6 +262,10 @@ class VirtualReader : public VirtualReaderBase {
 template <class ProtocolT>
 class VirtualWriter : public VirtualWriterBase {
  public:
+  using ProtocolReader = typename std::conditional<
+    std::is_same<void, typename ProtocolT::ProtocolReader>::value,
+    void, VirtualReader<typename ProtocolT::ProtocolReader>>::type;
+
   template <typename ...Args,
             typename std::enable_if<
               std::is_constructible<ProtocolT, Args...>::value,

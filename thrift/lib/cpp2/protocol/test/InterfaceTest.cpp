@@ -57,7 +57,7 @@ using Writers = testing::Types<
     SimpleJSONProtocolWriter,
     VirtualWriter<BinaryProtocolWriter>,
     VirtualWriter<CompactProtocolWriter>,
-    //VirtualWriter<DebugProtocolWriter>,
+    VirtualWriter<DebugProtocolWriter>,
     VirtualWriter<SimpleJSONProtocolWriter>>;
 
 template <typename Writer>
@@ -74,45 +74,57 @@ class WriterInterfaceTest : public testing::Test {
 
 TYPED_TEST_CASE_P(WriterInterfaceTest);
 
-#define WRITER_INTERFACE_TYPED_TEST_P(method, argtype) \
-  TYPED_TEST_P(WriterInterfaceTest, method ## _ ## argtype) { \
+template <typename Reader>
+struct WriterOfReader { using type = typename Reader::ProtocolWriter; };
+template <>
+struct WriterOfReader<void> { using type = void; };
+
+TYPED_TEST_P(WriterInterfaceTest, reader_writer_cycle) {
+  using W = decltype(this->writer);
+  using W2 = typename WriterOfReader<typename W::ProtocolReader>::type;
+  EXPECT_TRUE((std::is_same<W, W2>::value || std::is_same<void, W2>::value));
+}
+
+#define WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(method, argtype) \
+  TYPED_TEST_P(WriterInterfaceTest, method_sig_ ## method ## _ ## argtype) { \
     this->writer.method(maker<argtype>::make()); \
   }
 
-WRITER_INTERFACE_TYPED_TEST_P(writeString, StringPiece)
-WRITER_INTERFACE_TYPED_TEST_P(writeBinary, StringPiece)
-WRITER_INTERFACE_TYPED_TEST_P(writeBinary, ByteRange)
-WRITER_INTERFACE_TYPED_TEST_P(writeBinary, UniquePtrIOBuf)
-WRITER_INTERFACE_TYPED_TEST_P(writeBinary, IOBuf)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(writeString, StringPiece)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(writeBinary, StringPiece)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(writeBinary, ByteRange)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(writeBinary, UniquePtrIOBuf)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(writeBinary, IOBuf)
 
-WRITER_INTERFACE_TYPED_TEST_P(serializedSizeString, StringPiece)
-WRITER_INTERFACE_TYPED_TEST_P(serializedSizeBinary, StringPiece)
-WRITER_INTERFACE_TYPED_TEST_P(serializedSizeBinary, ByteRange)
-WRITER_INTERFACE_TYPED_TEST_P(serializedSizeBinary, UniquePtrIOBuf)
-WRITER_INTERFACE_TYPED_TEST_P(serializedSizeBinary, IOBuf)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(serializedSizeString, StringPiece)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(serializedSizeBinary, StringPiece)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(serializedSizeBinary, ByteRange)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(serializedSizeBinary, UniquePtrIOBuf)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(serializedSizeBinary, IOBuf)
 
-WRITER_INTERFACE_TYPED_TEST_P(serializedSizeZCBinary, StringPiece)
-WRITER_INTERFACE_TYPED_TEST_P(serializedSizeZCBinary, ByteRange)
-WRITER_INTERFACE_TYPED_TEST_P(serializedSizeZCBinary, UniquePtrIOBuf)
-WRITER_INTERFACE_TYPED_TEST_P(serializedSizeZCBinary, IOBuf)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(serializedSizeZCBinary, StringPiece)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(serializedSizeZCBinary, ByteRange)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(serializedSizeZCBinary, UniquePtrIOBuf)
+WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P(serializedSizeZCBinary, IOBuf)
 
-#undef WRITER_INTERFACE_TYPED_TEST_P
+#undef WRITER_INTERFACE_METHOD_SIG_TYPED_TEST_P
 
 REGISTER_TYPED_TEST_CASE_P(
     WriterInterfaceTest,
-    writeString_StringPiece,
-    writeBinary_StringPiece,
-    writeBinary_ByteRange,
-    writeBinary_UniquePtrIOBuf,
-    writeBinary_IOBuf,
-    serializedSizeString_StringPiece,
-    serializedSizeBinary_StringPiece,
-    serializedSizeBinary_ByteRange,
-    serializedSizeBinary_UniquePtrIOBuf,
-    serializedSizeBinary_IOBuf,
-    serializedSizeZCBinary_StringPiece,
-    serializedSizeZCBinary_ByteRange,
-    serializedSizeZCBinary_UniquePtrIOBuf,
-    serializedSizeZCBinary_IOBuf);
+    reader_writer_cycle,
+    method_sig_writeString_StringPiece,
+    method_sig_writeBinary_StringPiece,
+    method_sig_writeBinary_ByteRange,
+    method_sig_writeBinary_UniquePtrIOBuf,
+    method_sig_writeBinary_IOBuf,
+    method_sig_serializedSizeString_StringPiece,
+    method_sig_serializedSizeBinary_StringPiece,
+    method_sig_serializedSizeBinary_ByteRange,
+    method_sig_serializedSizeBinary_UniquePtrIOBuf,
+    method_sig_serializedSizeBinary_IOBuf,
+    method_sig_serializedSizeZCBinary_StringPiece,
+    method_sig_serializedSizeZCBinary_ByteRange,
+    method_sig_serializedSizeZCBinary_UniquePtrIOBuf,
+    method_sig_serializedSizeZCBinary_IOBuf);
 
 INSTANTIATE_TYPED_TEST_CASE_P(Thrift, WriterInterfaceTest, Writers);

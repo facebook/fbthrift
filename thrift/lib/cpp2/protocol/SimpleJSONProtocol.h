@@ -33,10 +33,14 @@ typedef folly::io::RWPrivateCursor RWCursor;
 using folly::io::Cursor;
 using folly::io::QueueAppender;
 
+class SimpleJSONProtocolReader;
+
 class SimpleJSONProtocolWriter {
 
  public:
   static const int32_t VERSION_1 = 0x80010000;
+
+  using ProtocolReader = SimpleJSONProtocolReader;
 
   explicit SimpleJSONProtocolWriter(
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */)
@@ -167,6 +171,8 @@ class SimpleJSONProtocolReader {
  public:
   static const int32_t VERSION_MASK = 0xffff0000;
   static const int32_t VERSION_1 = 0x80010000;
+
+  using ProtocolWriter = SimpleJSONProtocolWriter;
 
   explicit SimpleJSONProtocolReader(
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */)
