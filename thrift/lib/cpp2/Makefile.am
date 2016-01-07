@@ -118,6 +118,8 @@ thrift2include_protocol_HEADERS = \
 	protocol/BinaryProtocol.tcc \
 	protocol/CompactProtocol.h \
 	protocol/CompactProtocol.tcc \
+	protocol/JSONProtocol.h \
+	protocol/JSONProtocol.tcc \
 	protocol/SimpleJSONProtocol.h \
 	protocol/SimpleJSONProtocol.tcc \
 	protocol/DebugProtocol.h \
@@ -133,6 +135,7 @@ libthriftprotocol_la_SOURCES = Version.cpp \
                                protocol/BinaryProtocol.cpp \
                                protocol/CompactProtocol.cpp \
                                protocol/DebugProtocol.cpp \
+                               protocol/JSONProtocol.cpp \
                                protocol/Serializer.cpp \
                                protocol/SimpleJSONProtocol.cpp \
                                protocol/VirtualProtocol.cpp

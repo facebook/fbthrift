@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2016 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,39 +14,29 @@
  * limitations under the License.
  */
 
-#ifndef CPP2_PROTOCOL_TSIMPLEJSONPROTOCOL_H_
-#define CPP2_PROTOCOL_TSIMPLEJSONPROTOCOL_H_ 1
+#pragma once
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/Cursor.h>
-#include <list>
-#include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/JSONProtocolCommon.h>
 
 namespace apache { namespace thrift {
 
-using folly::IOBuf;
-using folly::IOBufQueue;
+class JSONProtocolReader;
 
-typedef folly::io::RWPrivateCursor RWCursor;
-using folly::io::Cursor;
-using folly::io::QueueAppender;
-
-class SimpleJSONProtocolReader;
-
-class SimpleJSONProtocolWriter : public JSONProtocolWriterCommon {
+class JSONProtocolWriter : public JSONProtocolWriterCommon {
 
  public:
   static const int32_t VERSION_1 = 0x80010000;
 
-  using ProtocolReader = SimpleJSONProtocolReader;
+  using ProtocolReader = JSONProtocolReader;
 
   using JSONProtocolWriterCommon::JSONProtocolWriterCommon;
 
   static constexpr ProtocolType protocolType() {
-    return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
+    return ProtocolType::T_JSON_PROTOCOL;
   }
 
   inline uint32_t writeStructBegin(const char* name);
@@ -89,23 +79,20 @@ class SimpleJSONProtocolWriter : public JSONProtocolWriterCommon {
   inline uint32_t serializedSizeBool(bool = false);
 };
 
-class SimpleJSONProtocolReader : public JSONProtocolReaderCommon {
+class JSONProtocolReader : public JSONProtocolReaderCommon {
 
  public:
   static const int32_t VERSION_MASK = 0xffff0000;
   static const int32_t VERSION_1 = 0x80010000;
 
-  using ProtocolWriter = SimpleJSONProtocolWriter;
+  using ProtocolWriter = JSONProtocolWriter;
 
   using JSONProtocolReaderCommon::JSONProtocolReaderCommon;
 
   static constexpr ProtocolType protocolType() {
-    return ProtocolType::T_SIMPLE_JSON_PROTOCOL;
+    return ProtocolType::T_JSON_PROTOCOL;
   }
 
-  /**
-   * Reading functions
-   */
   inline uint32_t readStructBegin(std::string& name);
   inline uint32_t readStructEnd();
   inline uint32_t readFieldBegin(std::string& name,
@@ -123,12 +110,10 @@ class SimpleJSONProtocolReader : public JSONProtocolReaderCommon {
   inline uint32_t readBool(bool& value);
   inline uint32_t readBool(std::vector<bool>::reference value);
   inline bool peekMap();
-  inline bool peekList();
   inline bool peekSet();
+  inline bool peekList();
 };
 
 }} // apache::thrift
 
-#include "SimpleJSONProtocol.tcc"
-
-#endif // #ifndef CPP2_PROTOCOL_TSIMPLEJSONPROTOCOL_H_
+#include "JSONProtocol.tcc"

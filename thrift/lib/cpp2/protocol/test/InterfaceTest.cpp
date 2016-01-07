@@ -18,6 +18,7 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
+#include <thrift/lib/cpp2/protocol/JSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/VirtualProtocol.h>
 
@@ -54,10 +55,12 @@ using Writers = testing::Types<
     BinaryProtocolWriter,
     CompactProtocolWriter,
     DebugProtocolWriter,
+    JSONProtocolWriter,
     SimpleJSONProtocolWriter,
     VirtualWriter<BinaryProtocolWriter>,
     VirtualWriter<CompactProtocolWriter>,
     VirtualWriter<DebugProtocolWriter>,
+    VirtualWriter<JSONProtocolWriter>,
     VirtualWriter<SimpleJSONProtocolWriter>>;
 
 template <typename Writer>
