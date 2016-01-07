@@ -23,8 +23,20 @@
 namespace test_cpp2 {
 namespace cpp_reflection {
 
-FATAL_STR(cpp2s, "cpp2");
-FATAL_STR(cpp2ns, "test_cpp2::cpp_reflection");
+FATAL_STR(cpp_s, "cpp");
+FATAL_STR(cpp_ns, "test_cpp1::cpp_reflection");
+FATAL_STR(cpp2_s, "cpp2");
+FATAL_STR(cpp2_ns, "test_cpp2::cpp_reflection");
+FATAL_STR(d_s, "d");
+FATAL_STR(d_2ns, "test_d.cpp_reflection");
+FATAL_STR(java_s, "java");
+FATAL_STR(java_ns, "test_java.cpp_reflection");
+FATAL_STR(java_swift_s, "java.swift");
+FATAL_STR(java_swift_ns, "test_swift.cpp_reflection");
+FATAL_STR(php_s, "php");
+FATAL_STR(php_ns, "test_php_cpp_reflection");
+FATAL_STR(python_s, "python");
+FATAL_STR(python_ns, "test_py.cpp_reflection");
 
 FATAL_STR(enum1s, "enum1");
 FATAL_STR(enum2s, "enum2");
@@ -51,7 +63,13 @@ FATAL_STR(service2s, "service2");
 FATAL_STR(service3s, "service3");
 
 TEST(fatal, tags) {
-  EXPECT_SAME<cpp2s, reflection_tags::languages::cpp2>();
+  EXPECT_SAME<cpp_s, reflection_tags::languages::cpp>();
+  EXPECT_SAME<cpp2_s, reflection_tags::languages::cpp2>();
+  EXPECT_SAME<d_s, reflection_tags::languages::d>();
+  EXPECT_SAME<java_s, reflection_tags::languages::java>();
+  EXPECT_SAME<java_swift_s, reflection_tags::languages::java_swift>();
+  EXPECT_SAME<php_s, reflection_tags::languages::php>();
+  EXPECT_SAME<python_s, reflection_tags::languages::python>();
 
   EXPECT_SAME<enum1s, reflection_tags::enums::enum1>();
   EXPECT_SAME<enum2s, reflection_tags::enums::enum2>();
@@ -87,7 +105,13 @@ TEST(fatal, metadata) {
 
   EXPECT_SAME<
     fatal::build_type_map<
-      cpp2s, cpp2ns
+      cpp_s, cpp_ns,
+      cpp2_s, cpp2_ns,
+      d_s, d_2ns,
+      java_s, java_ns,
+      java_swift_s, java_swift_ns,
+      php_s, php_ns,
+      python_s, python_ns
     >,
     info::namespaces
   >();

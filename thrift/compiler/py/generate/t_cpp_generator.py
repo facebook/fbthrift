@@ -25,6 +25,7 @@ import copy
 import errno
 import os
 import re
+import string
 import sys
 
 from thrift_compiler import frontend
@@ -3966,6 +3967,7 @@ class CppGenerator(t_generator.Generator):
         self.fatal_str_map_id = '{0}::{1}'.format(
             self.fatal_detail_ns, str_class)
         self.fatal_str_map = {}
+        self.fatal_str_uid = []
 
         order = ['language', 'enum', 'union', 'struct', 'constant', 'service']
         items = {}
@@ -3976,6 +3978,7 @@ class CppGenerator(t_generator.Generator):
         items['constant'] = self._generate_fatal_constant(program)
         items['service'] = self._generate_fatal_service(program)
 
+        # Unique Compile-time Strings
         with sns.namespace(self.fatal_detail_ns).scope as detail:
             with detail.cls('struct {0}'.format(str_class)).scope as cstr:
                 for i in self.fatal_str_map:
@@ -3983,6 +3986,7 @@ class CppGenerator(t_generator.Generator):
                         self.fatal_str_map[i],
                         self._render_fatal_string(i)))
 
+        # Metadata tags
         sns('class {0}_tags {1}'.format(name, '{')).scope
         nname = {}
         for o in order:
@@ -3992,10 +3996,12 @@ class CppGenerator(t_generator.Generator):
             sns('  struct {0} {1}'.format(nname[o], '{'))
             for i in eorder:
                 if type(entries) == list:
-                    sns('    using {0} = {1};'.format(i[0], i[1]))
+                    sns('    using {0} = {1};'.format(
+                        self._get_fatal_string_short_id(i[0]), i[1]))
                 elif type(entries) == dict:
                     sns('    using {0} = {1};'.format(
-                        entries[i][0], entries[i][1]))
+                        self._get_fatal_string_short_id(entries[i][0]),
+                        entries[i][1]))
             sns('  };')
             sns()
         sns('public:')
@@ -4006,6 +4012,7 @@ class CppGenerator(t_generator.Generator):
         sns('};')
         sns()
 
+        # Metadata registration
         sns('THRIFT_REGISTER_REFLECTION_METADATA(')
         sns('  {0},'.format(self.fatal_tag))
         for item_idx, o in enumerate(order):
@@ -4026,16 +4033,29 @@ class CppGenerator(t_generator.Generator):
             sns('  >{0}'.format(',' if item_idx + 1 < len(items) else ''))
         sns(');')
 
-    def _get_fatal_string_id(self, s):
-        return '{0}::{1}'.format(self.fatal_str_map_id, self.fatal_str_map[s])
+    def _get_fatal_string_short_id(self, s):
+        return self.fatal_str_map[s]
 
-    def _string_to_identifier(self, s):
-        return re.sub(r'[\W\.:]', '_', s)
+    def _get_fatal_string_id(self, s):
+        return '{0}::{1}'.format(
+            self.fatal_str_map_id, self._get_fatal_string_short_id(s))
 
     def _set_fatal_string(self, s):
         if s not in self.fatal_str_map:
-            identifier = self._string_to_identifier(s)
-            self.fatal_str_map[s] = identifier
+            identifier = s
+            if len(identifier) == 0:
+                identifier = "empty"
+            else:
+                if identifier[0] not in string.ascii_letters + '_':
+                    identifier = "s_" + identifier
+                identifier = re.sub(r'[\W\.:]', '_', s)
+
+            uid = identifier
+            uid_round = 0
+            while uid in self.fatal_str_uid:
+                uid = "{0}_{1}".format(identifier, uid_round)
+                uid_round = uid_round + 1
+            self.fatal_str_map[s] = uid
         return self._get_fatal_string_id(s)
 
     def _get_original_namespace(self):

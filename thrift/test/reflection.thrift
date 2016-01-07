@@ -1,4 +1,10 @@
+namespace cpp test_cpp1.cpp_reflection
 namespace cpp2 test_cpp2.cpp_reflection
+namespace d test_d.cpp_reflection
+namespace java test_java.cpp_reflection
+namespace java.swift test_swift.cpp_reflection
+namespace php test_php.cpp_reflection
+namespace python test_py.cpp_reflection
 
 enum enum1 {
   field0,
@@ -20,6 +26,9 @@ enum enum3 {
   one.here = "with some value associated",
   another.there = ".",
   yet.another = "and yet more text - it's that easy",
+  duplicate_id_annotation_1 = "duplicate id annotation",
+  duplicate_id_annotation_2 = "duplicate.id.annotation",
+  _now.with.an.underscore = "_now.with.an.underscore"
 )
 
 union union1 {

@@ -97,12 +97,18 @@ TEST(fatal_enum, sanity_check) {
   EXPECT_EQ(enum1::field2, e);
 }
 
-FATAL_STR(enum3_annotation1k, "another.there");
-FATAL_STR(enum3_annotation1v, ".");
-FATAL_STR(enum3_annotation2k, "one.here");
-FATAL_STR(enum3_annotation2v, "with some value associated");
-FATAL_STR(enum3_annotation3k, "yet.another");
-FATAL_STR(enum3_annotation3v, "and yet more text - it's that easy");
+FATAL_STR(enum3_annotation1k, "_now.with.an.underscore");
+FATAL_STR(enum3_annotation1v, "_now.with.an.underscore");
+FATAL_STR(enum3_annotation2k, "another.there");
+FATAL_STR(enum3_annotation2v, ".");
+FATAL_STR(enum3_annotation3k, "duplicate_id_annotation_1");
+FATAL_STR(enum3_annotation3v, "duplicate id annotation");
+FATAL_STR(enum3_annotation4k, "duplicate_id_annotation_2");
+FATAL_STR(enum3_annotation4v, "duplicate.id.annotation");
+FATAL_STR(enum3_annotation5k, "one.here");
+FATAL_STR(enum3_annotation5v, "with some value associated");
+FATAL_STR(enum3_annotation6k, "yet.another");
+FATAL_STR(enum3_annotation6v, "and yet more text - it's that easy");
 
 TEST(fatal_struct, annotations) {
   EXPECT_SAME<
@@ -119,7 +125,10 @@ TEST(fatal_struct, annotations) {
     fatal::build_type_map<
       enum3_annotation1k, enum3_annotation1v,
       enum3_annotation2k, enum3_annotation2v,
-      enum3_annotation3k, enum3_annotation3v
+      enum3_annotation3k, enum3_annotation3v,
+      enum3_annotation4k, enum3_annotation4v,
+      enum3_annotation5k, enum3_annotation5v,
+      enum3_annotation6k, enum3_annotation6v
     >,
     apache::thrift::reflect_enum<enum3>::annotations
   >();
