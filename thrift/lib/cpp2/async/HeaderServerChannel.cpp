@@ -307,6 +307,7 @@ void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
   timeoutHeader_->setTransforms(header_->getWriteTransforms());
   timeoutHeader_->setMinCompressBytes(header_->getMinCompressBytes());
   timeoutHeader_->setSequenceNumber(header_->getSequenceNumber());
+  timeoutHeader_->setClientType(header_->getClientType());
   timeoutHeader_->setHeader("ex", kTaskExpiredErrorCode);
   for (const auto& it : headers) {
     timeoutHeader_->setHeader(it.first, it.second);
