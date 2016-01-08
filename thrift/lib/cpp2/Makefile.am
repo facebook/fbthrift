@@ -120,6 +120,8 @@ thrift2include_protocol_HEADERS = \
 	protocol/CompactProtocol.tcc \
 	protocol/JSONProtocol.h \
 	protocol/JSONProtocol.tcc \
+	protocol/JSONProtocolCommon.h \
+	protocol/JSONProtocolCommon.tcc \
 	protocol/SimpleJSONProtocol.h \
 	protocol/SimpleJSONProtocol.tcc \
 	protocol/DebugProtocol.h \
