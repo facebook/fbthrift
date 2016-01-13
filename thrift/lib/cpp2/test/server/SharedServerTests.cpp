@@ -286,7 +286,7 @@ bool compareIOBufChain(const folly::IOBuf* buf1, const folly::IOBuf* buf2) {
 }
 
 TEST_P(SharedServerTests, LargeSendTest) {
-  channelFactory->setTimeout(30000);
+  channelFactory->setTimeout(45000);
   init();
 
   std::unique_ptr<folly::IOBuf> response;
