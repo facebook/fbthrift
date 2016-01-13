@@ -23,6 +23,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 #include <folly/Memory.h>
+#include <folly/Singleton.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/util/kerberos/Krb5Util.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
@@ -35,6 +36,51 @@ using namespace apache::thrift::concurrency;
 using namespace apache::thrift::krb5;
 using apache::thrift::concurrency::FunctionRunner;
 using apache::thrift::concurrency::TooManyPendingTasksException;
+
+DEFINE_int32(
+    sasl_handshake_client_num_cleanup_threads,
+    1,
+    "Number of background threads that clean up SASL handshake client memory");
+
+namespace {
+
+/**
+ * This class handles cleaning up SASL handshake client contexts in a
+ * background thread, so we don't do the work on an I/O thread. It just
+ * wraps a ThreadManager. We access it through a folly::Singleton<>.
+ * If a handshake client is destructed during program shutdown after the
+ * singleton is gone, it will do the cleanup inline on the I/O thread.
+ */
+class KerberosSASLHandshakeClientCleanupManager {
+ public:
+  KerberosSASLHandshakeClientCleanupManager() {
+    threadManager_ = concurrency::ThreadManager::newSimpleThreadManager(
+        FLAGS_sasl_handshake_client_num_cleanup_threads);
+    auto threadFactory = std::make_shared<concurrency::PosixThreadFactory>(
+        concurrency::PosixThreadFactory::kDefaultPolicy,
+        concurrency::PosixThreadFactory::kDefaultPriority,
+        2 /* stackSizeMb */);
+    threadManager_->threadFactory(threadFactory);
+    threadManager_->setNamePrefix("sasl-client-cleanup-thread");
+    threadManager_->start();
+  }
+
+  ~KerberosSASLHandshakeClientCleanupManager() {
+    threadManager_->join();
+  }
+
+  std::shared_ptr<concurrency::ThreadManager> getThreadManager() {
+    return threadManager_;
+  }
+
+ private:
+  std::shared_ptr<concurrency::ThreadManager> threadManager_;
+};
+
+// singleton instance
+folly::Singleton<KerberosSASLHandshakeClientCleanupManager> theCleanupManager;
+
+}
 
 /**
  * Client functions.
@@ -82,20 +128,20 @@ KerberosSASLHandshakeClient::~KerberosSASLHandshakeClient() {
     return;
   }
   auto logger = logger_;
-  if (!saslThreadManager_) {
+  auto cleanupManager =
+    folly::Singleton<KerberosSASLHandshakeClientCleanupManager>::try_get();
+  if (cleanupManager == nullptr) {
+    logger->log("sasl_handshake_client_sync_cleanup");
     cleanUpState(context, target_name, client_creds, logger);
     return;
   }
 
-  try {
-    saslThreadManager_->get()->add(std::make_shared<FunctionRunner>([=] {
-      cleanUpState(
-        context, target_name, client_creds, logger);
-    }));
-  } catch (const TooManyPendingTasksException& e) {
-    // If we can't do this async, do it inline, since we don't want to leak
-    // memory.
-    logger->log("too_many_pending_tasks_in_cleanup");
+  auto functionRunner = std::make_shared<FunctionRunner>([=] {
+    cleanUpState(context, target_name, client_creds, logger);
+  });
+  if (!cleanupManager->getThreadManager()->tryAdd(functionRunner)) {
+    // If we can't do this async, do it inline. We don't want to leak memory.
+    logger->log("sasl_handshake_client_sync_cleanup");
     cleanUpState(context, target_name, client_creds, logger);
   }
 }
