@@ -27,6 +27,7 @@
 
 #define __STDC_LIMIT_MACROS
 #define __STDC_FORMAT_MACROS
+#include <cassert>
 #include <stdio.h>
 #include <inttypes.h>
 #include <limits.h>
@@ -52,6 +53,7 @@ int32_t y_enum_val = -1;
 int g_arglist = 0;
 const int struct_is_struct = 0;
 const int struct_is_union = 1;
+char* y_enum_name = nullptr;
 
 %}
 
@@ -542,15 +544,21 @@ CommaOrSemicolonOptional:
     {}
 
 Enum:
-  tok_enum tok_identifier '{' EnumDefList '}' TypeAnnotations
+  tok_enum tok_identifier
+    {
+      assert(y_enum_name == nullptr);
+      y_enum_name = $2;
+    }
+  '{' EnumDefList '}' TypeAnnotations
     {
       pdebug("Enum -> tok_enum tok_identifier { EnumDefList }");
-      $$ = $4;
+      $$ = $5;
       $$->set_name($2);
-      if ($6 != NULL) {
-        $$->annotations_ = $6->annotations_;
-        delete $6;
+      if ($7 != NULL) {
+        $$->annotations_ = $7->annotations_;
+        delete $7;
       }
+      y_enum_name = nullptr;
     }
 
 EnumDefList:
@@ -581,10 +589,15 @@ EnumDef:
         // scope
         t_const* constant = new t_const(g_type_i32, $2->get_name(),
                                         new t_const_value($2->get_value()));
+        assert(y_enum_name != nullptr);
+        string type_prefix = string(y_enum_name) + ".";
         g_scope->add_constant($2->get_name(), constant);
+        g_scope->add_constant(type_prefix + $2->get_name(), constant);
         if (g_parent_scope != NULL) {
           g_parent_scope->add_constant(g_parent_prefix + $2->get_name(),
                                        constant);
+          g_parent_scope->add_constant(
+              g_parent_prefix + type_prefix + $2->get_name(), constant);
         }
       }
     }
@@ -688,38 +701,14 @@ ConstValue:
 | tok_identifier
     {
       pdebug("ConstValue => tok_identifier");
-      bool is_qualified_enum = false;
-      string fullname = string($1);
-      std::string::size_type dot = fullname.rfind('.');
-      if (dot != std::string::npos) {
-        string enum_name = fullname.substr(0, dot);
-        string name = fullname.substr(dot+1);
-        auto enums = g_program->get_enums();
-        t_enum* parent = NULL;
-        for (t_enum* e : enums) {
-          if (e->get_name() == enum_name) {
-            parent = e;
-            break;
-          }
+      t_const* constant = g_scope->get_constant($1);
+      if (constant != nullptr) {
+        $$ = constant->get_value();
+      } else {
+        if (g_parse_mode == PROGRAM) {
+          pwarning(1, "Constant strings should be quoted: %s", $1);
         }
-        if (parent) {
-          auto maybeVal = parent->find_int_val(name);
-          if (maybeVal) {
-            $$ = new t_const_value(maybeVal.value());
-            is_qualified_enum = true;
-          }
-        }
-      }
-      if (!is_qualified_enum) {
-        t_const* constant = g_scope->get_constant($1);
-        if (constant != NULL) {
-          $$ = constant->get_value();
-        } else {
-          if (g_parse_mode == PROGRAM) {
-            pwarning(1, "Constant strings should be quoted: %s", $1);
-          }
-          $$ = new t_const_value($1);
-        }
+        $$ = new t_const_value($1);
       }
     }
 | ConstList

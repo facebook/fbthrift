@@ -17,51 +17,31 @@
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 
+#include <thrift/test/gen-cpp2/EnumTest_types.h>
 #include <thrift/test/gen-cpp2/QualifiedEnumTest_types.h>
 
 using namespace apache::thrift;
 using namespace cpp2;
 
-// If field1 is unspecified, default should be BAR
-TEST(QualifiedEnums, AmbiguousDefault1) {
-  MyStruct expected;
-  expected.field1 = MyEnum::BAR;
-
-  MyStruct original;
-  original.__isset.field1 = false;
+TEST(QualifiedEnums, Defaults) {
+  MyQualifiedStruct empty;
 
   BinaryProtocolWriter protWriter;
-  size_t bufSize = Cpp2Ops<MyStruct>::serializedSize(&protWriter, &expected);
+  size_t bufSize = Cpp2Ops<MyQualifiedStruct>::serializedSize(&protWriter,
+                                                              &empty);
   folly::IOBufQueue queue;
   protWriter.setOutput(&queue, bufSize);
-  Cpp2Ops<MyStruct>::write(&protWriter, &expected);
+  Cpp2Ops<MyQualifiedStruct>::write(&protWriter, &empty);
 
   auto buf = queue.move();
   BinaryProtocolReader protReader;
   protReader.setInput(buf.get());
-  MyStruct actual;
-  Cpp2Ops<MyStruct>::read(&protReader, &actual);
-  EXPECT_EQ(expected.field1, actual.field1);
-}
+  MyQualifiedStruct actual;
+  Cpp2Ops<MyQualifiedStruct>::read(&protReader, &actual);
 
-// If field2 is unspecified, default should be FOO
-TEST(QualifiedEnums, AmbiguousDefault2) {
-  MyStruct expected;
-  expected.field2 = MyEnum::FOO;
-
-  MyStruct original;
-  original.__isset.field2 = false;
-
-  BinaryProtocolWriter protWriter;
-  size_t bufSize = Cpp2Ops<MyStruct>::serializedSize(&protWriter, &expected);
-  folly::IOBufQueue queue;
-  protWriter.setOutput(&queue, bufSize);
-  Cpp2Ops<MyStruct>::write(&protWriter, &expected);
-
-  auto buf = queue.move();
-  BinaryProtocolReader protReader;
-  protReader.setInput(buf.get());
-  MyStruct actual;
-  Cpp2Ops<MyStruct>::read(&protReader, &actual);
-  EXPECT_EQ(expected.field2, actual.field2);
+  EXPECT_EQ(MyQualifiedEnum::BAR, actual.field1);
+  EXPECT_EQ(MyQualifiedEnum::FOO, actual.field2);
+  EXPECT_EQ(MyEnum1::ME1_1, actual.field3);
+  EXPECT_EQ(MyEnum1::ME1_1, actual.field4);
+  EXPECT_EQ(MyEnum4::ME4_A, actual.field5);
 }

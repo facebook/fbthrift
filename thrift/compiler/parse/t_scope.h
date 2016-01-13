@@ -58,15 +58,7 @@ class t_scope {
   }
 
   t_const* get_constant(std::string name) {
-    t_const* retval = constants_[name];
-    if (!(retval)) {
-      std::string::size_type dot = name.rfind('.');
-      if (dot != std::string::npos) {
-        std::string tmp_name = name.substr(dot+1);
-        retval = constants_[tmp_name];
-      }
-    }
-    return retval;
+    return constants_[name];
   }
 
   void print() {
