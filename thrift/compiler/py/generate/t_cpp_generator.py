@@ -3978,6 +3978,20 @@ class CppGenerator(t_generator.Generator):
         items['constant'] = self._generate_fatal_constant(program)
         items['service'] = self._generate_fatal_service(program)
 
+        # Combo include: types
+        context_cmb_types = self._make_context(name + '_fatal_types', tcc=False)
+        with get_global_scope(CppPrimitiveFactory, context_cmb_types) as sg:
+            for what in ['enum', 'union', 'struct']:
+                sg('#include "{0}"'.format(self._with_include_prefix(
+                    self._program, name + '_' + what + '_fatal.h')))
+
+        # Combo include: all
+        context_cmb_all = self._make_context(name + '_fatal_all', tcc=False)
+        with get_global_scope(CppPrimitiveFactory, context_cmb_all) as sg:
+            for what in ['enum', 'union', 'struct', 'constant', 'service']:
+                sg('#include "{0}"'.format(self._with_include_prefix(
+                    self._program, name + '_' + what + '_fatal.h')))
+
         # Unique Compile-time Strings
         with sns.namespace(self.fatal_detail_ns).scope as detail:
             with detail.cls('struct {0}'.format(str_class)).scope as cstr:
