@@ -138,6 +138,7 @@ libthriftprotocol_la_SOURCES = Version.cpp \
                                protocol/CompactProtocol.cpp \
                                protocol/DebugProtocol.cpp \
                                protocol/JSONProtocol.cpp \
+                               protocol/JSONProtocolCommon.cpp \
                                protocol/Serializer.cpp \
                                protocol/SimpleJSONProtocol.cpp \
                                protocol/VirtualProtocol.cpp
