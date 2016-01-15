@@ -45,7 +45,7 @@ data PrettyJSONProtocol t = PrettyJSONProtocol Int t
                       -- and a 'Transport'
 
 instance Protocol PrettyJSONProtocol where
-    mkProtocol = PrettyJSONProtocol 2
+    mkProtocol = PrettyJSONProtocol 3
     getTransport (PrettyJSONProtocol _ t) = t
     writeMessage (PrettyJSONProtocol _ t)  = writeMessage (SimpleJSONProtocol t)
     readMessage (PrettyJSONProtocol _ t) = readMessage (SimpleJSONProtocol t)
