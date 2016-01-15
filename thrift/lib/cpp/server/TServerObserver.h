@@ -65,6 +65,14 @@ class TServerObserver {
 
   virtual void saslComplete() {}
 
+  virtual void tlsError() {}
+
+  virtual void tlsComplete() {}
+
+  virtual void tlsFallback() {}
+
+  virtual void tlsResumption() {}
+
   virtual void taskKilled() {}
 
   virtual void taskTimeout() {}

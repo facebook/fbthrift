@@ -105,6 +105,15 @@ class Cpp2Worker
    */
   int getPendingCount() const;
 
+  /**
+   * SSL stats hook
+   */
+  void updateSSLStats(
+    const folly::AsyncTransportWrapper* sock,
+    std::chrono::milliseconds acceptLatency,
+    wangle::SSLErrorEnum error,
+    SecureTransportType type = SecureTransportType::TLS) noexcept override;
+
  protected:
   enum { kPeekCount = 9 };
   using PeekingHelper = wangle::PeekingAcceptorHandshakeHelper<kPeekCount>;

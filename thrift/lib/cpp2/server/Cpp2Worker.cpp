@@ -38,6 +38,7 @@
 #include <glog/logging.h>
 
 #include <folly/String.h>
+#include <folly/io/async/AsyncSSLSocket.h>
 
 DEFINE_int32(pending_interval, 0, "Pending count interval in ms");
 
@@ -122,6 +123,29 @@ int Cpp2Worker::pendingCount() {
 
 int Cpp2Worker::getPendingCount() const {
   return pendingCount_;
+}
+
+void Cpp2Worker::updateSSLStats(
+  const folly::AsyncTransportWrapper* sock,
+  std::chrono::milliseconds acceptLatency,
+  wangle::SSLErrorEnum error,
+  SecureTransportType type) noexcept {
+  auto socket = sock->getUnderlyingTransport<folly::AsyncSSLSocket>();
+  if (!socket) {
+    return;
+  }
+  auto observer = server_->getObserver();
+  if (!observer) {
+    return;
+  }
+  if (socket->good() && error == wangle::SSLErrorEnum::NO_ERROR) {
+    observer->tlsComplete();
+    if (socket->getSSLSessionReused()) {
+      observer->tlsResumption();
+    }
+  } else {
+    observer->tlsError();
+  }
 }
 
 bool Cpp2Worker::looksLikeTLS(std::array<uint8_t, kPeekCount>& bytes) {
