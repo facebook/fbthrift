@@ -76,6 +76,7 @@ void HeaderChannelTrait::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
   switch (policy) {
     case THRIFT_SECURITY_DISABLED: {
       clients[THRIFT_UNFRAMED_DEPRECATED] = true;
+      clients[THRIFT_UNFRAMED_COMPACT_DEPRECATED] = true;
       clients[THRIFT_FRAMED_DEPRECATED] = true;
       clients[THRIFT_HTTP_SERVER_TYPE] = true;
       clients[THRIFT_HTTP_CLIENT_TYPE] = true;
@@ -85,6 +86,7 @@ void HeaderChannelTrait::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
     }
     case THRIFT_SECURITY_PERMITTED: {
       clients[THRIFT_UNFRAMED_DEPRECATED] = true;
+      clients[THRIFT_UNFRAMED_COMPACT_DEPRECATED] = true;
       clients[THRIFT_FRAMED_DEPRECATED] = true;
       clients[THRIFT_HTTP_SERVER_TYPE] = true;
       clients[THRIFT_HTTP_CLIENT_TYPE] = true;

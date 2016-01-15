@@ -44,6 +44,7 @@ enum CLIENT_TYPE {
   THRIFT_HEADER_SASL_CLIENT_TYPE = 6,
   THRIFT_HTTP_GET_CLIENT_TYPE = 7,
   THRIFT_UNKNOWN_CLIENT_TYPE = 8,
+  THRIFT_UNFRAMED_COMPACT_DEPRECATED = 9,
 };
 
 // These appear on the wire.
@@ -291,6 +292,9 @@ class THeader {
                                                 size_t& needed,
                                                 CLIENT_TYPE clientType,
                                                 uint32_t sz);
+
+  template<template <class BaseProt> class ProtocolClass,
+           protocol::PROTOCOL_TYPES ProtocolID>
   std::unique_ptr<folly::IOBuf> removeUnframed(folly::IOBufQueue* queue,
                                                size_t& needed);
   std::unique_ptr<folly::IOBuf> removeHttpServer(folly::IOBufQueue* queue);

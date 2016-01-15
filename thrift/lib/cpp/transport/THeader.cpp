@@ -94,16 +94,18 @@ bool THeader::compactFramed(uint32_t magic) {
 
 }
 
+template<template <class BaseProt> class ProtocolClass,
+         PROTOCOL_TYPES ProtocolID>
 unique_ptr<IOBuf> THeader::removeUnframed(
     IOBufQueue* queue,
     size_t& needed) {
-  protoId_ = T_BINARY_PROTOCOL;
   const_cast<IOBuf*>(queue->front())->coalesce();
 
   // Test skip using the protocol to detect the end of the message
   TMemoryBuffer memBuffer(const_cast<uint8_t*>(queue->front()->data()),
                           queue->front()->length(), TMemoryBuffer::OBSERVE);
-  TBinaryProtocolT<TBufferBase> proto(&memBuffer);
+  protoId_ = ProtocolID;
+  ProtocolClass<TBufferBase> proto(&memBuffer);
   uint32_t msgSize = 0;
   try {
     std::string name;
@@ -177,6 +179,8 @@ unique_ptr<IOBuf> THeader::removeFramed(uint32_t sz, IOBufQueue* queue) {
 folly::Optional<CLIENT_TYPE> THeader::analyzeFirst32bit(uint32_t w) {
   if ((w & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
     return THRIFT_UNFRAMED_DEPRECATED;
+  } else if (compactFramed(w)) {
+    return THRIFT_UNFRAMED_COMPACT_DEPRECATED;
   } else if (w == HTTP_SERVER_MAGIC ||
              w == HTTP_GET_CLIENT_MAGIC ||
              w == HTTP_HEAD_CLIENT_MAGIC) {
@@ -234,11 +238,13 @@ unique_ptr<IOBuf> THeader::removeNonHeader(IOBufQueue* queue,
     protoId_ = T_COMPACT_PROTOCOL;
     return removeFramed(sz, queue);
   case THRIFT_UNFRAMED_DEPRECATED:
-    return removeUnframed(queue, needed);
+    return removeUnframed<TBinaryProtocolT, T_BINARY_PROTOCOL>(queue, needed);
   case THRIFT_HTTP_SERVER_TYPE:
     return removeHttpServer(queue);
   case THRIFT_HTTP_CLIENT_TYPE:
     return removeHttpClient(queue, needed);
+  case THRIFT_UNFRAMED_COMPACT_DEPRECATED:
+    return removeUnframed<TCompactProtocolT, T_COMPACT_PROTOCOL>(queue, needed);
   default:
     // Fallback to sniffing out the magic for Header
     return nullptr;
@@ -999,6 +1005,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     header->prependChain(std::move(buf));
     buf = std::move(header);
   } else if (clientType == THRIFT_UNFRAMED_DEPRECATED ||
+             clientType == THRIFT_UNFRAMED_COMPACT_DEPRECATED ||
              clientType == THRIFT_HTTP_SERVER_TYPE) {
     // We just return buf
     // TODO: IOBufize httpTransport.
