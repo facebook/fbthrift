@@ -167,17 +167,19 @@ class MyUnion : private boost::totally_ordered<MyUnion> {
   }
 
   template<typename... T>
-  void set_anInteger(T&&... t) {
+  int32_t &set_anInteger(T&&... t) {
     __clear();
     type_ = Type::anInteger;
     new (&value_.anInteger) int32_t(std::forward<T>(t)...);
+    return value_.anInteger;
   }
 
   template<typename... T>
-  void set_aString(T&&... t) {
+  std::string &set_aString(T&&... t) {
     __clear();
     type_ = Type::aString;
     new (&value_.aString) std::string(std::forward<T>(t)...);
+    return value_.aString;
   }
 
   const int32_t& get_anInteger() const {

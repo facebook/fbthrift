@@ -2668,8 +2668,12 @@ class CppGenerator(t_generator.Generator):
         if obj.is_union:
             for member in members:
                 t = self._type_name(self._get_true_type(member.type))
+                setter_result = t
+                if self._is_reference(member):
+                    setter_result = "std::unique_ptr<" + setter_result + ">"
                 with struct.defn('template<typename... T>\n'
-                                 'void set_{name}(T&&... t)',
+                                 '{0} &set_{{name}}(T&&... t)'
+                                 .format(setter_result),
                                  in_header=True, name=member.name):
                     out('__clear();')
                     out('type_ = Type::{0};'.format(member.name))
@@ -2680,6 +2684,7 @@ class CppGenerator(t_generator.Generator):
                     else:
                         out('new (&value_.{0}) {1}(std::forward<T>(t)...);'
                                 .format(member.name, t))
+                    out('return value_.{0};'.format(member.name))
 
             for member in members:
                 t = self._type_name(self._get_true_type(member.type))
@@ -4330,18 +4335,27 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_union_traits_getter(self, union, field, scope):
         ftname = self._type_name(field.type)
         with scope.cls('struct {0}'.format(field.name)):
-            scope('{0} const &operator ()({1} const &variant) const {2}'
-                .format(ftname, union.name, '{'))
+            scope('auto operator ()({0} const &variant) const'
+                .format(union.name))
+            scope('  -> decltype(std::declval<{0} const &>().get_{1}())'
+                .format(union.name, field.name))
+            scope('{')
             scope('  return variant.get_{0}();'.format(field.name))
             scope('}')
             scope()
-            scope('{0} &operator ()({1} &variant) const {2}'
-                .format(ftname, union.name, '{'))
+            scope('auto operator ()({0} &variant) const'
+                .format(union.name))
+            scope('  -> decltype(std::declval<{0} &>().mutable_{1}())'
+                .format(union.name, field.name))
+            scope('{')
             scope('  return variant.mutable_{0}();'.format(field.name))
             scope('}')
             scope()
-            scope('{0} operator ()({1} &&variant) const {2}'
-                .format(ftname, union.name, '{'))
+            scope('auto operator ()({0} &&variant) const'
+                .format(union.name))
+            scope('  -> decltype(std::declval<{0} &&>().move_{1}())'
+                .format(union.name, field.name))
+            scope('{')
             scope('  return std::move(variant).move_{0}();'.format(field.name))
             scope('}')
 
@@ -4349,8 +4363,13 @@ class CppGenerator(t_generator.Generator):
         ftname = self._type_name(field.type)
         with scope.cls('struct {0}'.format(field.name)):
             scope('template <typename... Args>')
-            scope('void operator ()({1} &variant, Args &&...args) const {2}'
-                .format(ftname, union.name, '{'))
+            scope('auto operator ()({0} &variant, Args &&...args) const'
+                .format(union.name))
+            scope('  -> decltype(')
+            scope('    std::declval<{0} &>()'.format(union.name)
+                + '.set_{0}(std::forward<Args>(args)...)'.format(field.name))
+            scope('  )')
+            scope('{')
             scope('  return variant.set_{0}(std::forward<Args>(args)...);'
                 .format(field.name))
             scope('}')

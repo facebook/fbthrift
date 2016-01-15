@@ -217,31 +217,35 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
   }
 
   template<typename... T>
-  void set_intValue(T&&... t) {
+  int64_t &set_intValue(T&&... t) {
     __clear();
     type_ = Type::intValue;
     new (&value_.intValue) int64_t(std::forward<T>(t)...);
+    return value_.intValue;
   }
 
   template<typename... T>
-  void set_stringValue(T&&... t) {
+  std::string &set_stringValue(T&&... t) {
     __clear();
     type_ = Type::stringValue;
     new (&value_.stringValue) std::string(std::forward<T>(t)...);
+    return value_.stringValue;
   }
 
   template<typename... T>
-  void set_intListValue(T&&... t) {
+  std::vector<int64_t> &set_intListValue(T&&... t) {
     __clear();
     type_ = Type::intListValue;
     new (&value_.intListValue) std::vector<int64_t>(std::forward<T>(t)...);
+    return value_.intListValue;
   }
 
   template<typename... T>
-  void set_stringListValue(T&&... t) {
+  std::vector<std::string> &set_stringListValue(T&&... t) {
     __clear();
     type_ = Type::stringListValue;
     new (&value_.stringListValue) std::vector<std::string>(std::forward<T>(t)...);
+    return value_.stringListValue;
   }
 
   const int64_t& get_intValue() const {

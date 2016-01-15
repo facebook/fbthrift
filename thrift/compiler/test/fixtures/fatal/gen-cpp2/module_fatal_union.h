@@ -75,57 +75,81 @@ namespace thrift_fatal_impl_detail {
 class union1_variant_traits {
   struct get {
     struct ui {
-      int32_t const &operator ()(union1 const &variant) const {
+      auto operator ()(union1 const &variant) const
+        -> decltype(std::declval<union1 const &>().get_ui())
+      {
         return variant.get_ui();
       }
 
-      int32_t &operator ()(union1 &variant) const {
+      auto operator ()(union1 &variant) const
+        -> decltype(std::declval<union1 &>().mutable_ui())
+      {
         return variant.mutable_ui();
       }
 
-      int32_t operator ()(union1 &&variant) const {
+      auto operator ()(union1 &&variant) const
+        -> decltype(std::declval<union1 &&>().move_ui())
+      {
         return std::move(variant).move_ui();
       }
     };
 
     struct ud {
-      double const &operator ()(union1 const &variant) const {
+      auto operator ()(union1 const &variant) const
+        -> decltype(std::declval<union1 const &>().get_ud())
+      {
         return variant.get_ud();
       }
 
-      double &operator ()(union1 &variant) const {
+      auto operator ()(union1 &variant) const
+        -> decltype(std::declval<union1 &>().mutable_ud())
+      {
         return variant.mutable_ud();
       }
 
-      double operator ()(union1 &&variant) const {
+      auto operator ()(union1 &&variant) const
+        -> decltype(std::declval<union1 &&>().move_ud())
+      {
         return std::move(variant).move_ud();
       }
     };
 
     struct us {
-      std::string const &operator ()(union1 const &variant) const {
+      auto operator ()(union1 const &variant) const
+        -> decltype(std::declval<union1 const &>().get_us())
+      {
         return variant.get_us();
       }
 
-      std::string &operator ()(union1 &variant) const {
+      auto operator ()(union1 &variant) const
+        -> decltype(std::declval<union1 &>().mutable_us())
+      {
         return variant.mutable_us();
       }
 
-      std::string operator ()(union1 &&variant) const {
+      auto operator ()(union1 &&variant) const
+        -> decltype(std::declval<union1 &&>().move_us())
+      {
         return std::move(variant).move_us();
       }
     };
 
     struct ue {
-       ::test_cpp2::cpp_reflection::enum1 const &operator ()(union1 const &variant) const {
+      auto operator ()(union1 const &variant) const
+        -> decltype(std::declval<union1 const &>().get_ue())
+      {
         return variant.get_ue();
       }
 
-       ::test_cpp2::cpp_reflection::enum1 &operator ()(union1 &variant) const {
+      auto operator ()(union1 &variant) const
+        -> decltype(std::declval<union1 &>().mutable_ue())
+      {
         return variant.mutable_ue();
       }
 
-       ::test_cpp2::cpp_reflection::enum1 operator ()(union1 &&variant) const {
+      auto operator ()(union1 &&variant) const
+        -> decltype(std::declval<union1 &&>().move_ue())
+      {
         return std::move(variant).move_ue();
       }
     };
@@ -134,28 +158,44 @@ class union1_variant_traits {
   struct set {
     struct ui {
       template <typename... Args>
-      void operator ()(union1 &variant, Args &&...args) const {
+      auto operator ()(union1 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union1 &>().set_ui(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_ui(std::forward<Args>(args)...);
       }
     };
 
     struct ud {
       template <typename... Args>
-      void operator ()(union1 &variant, Args &&...args) const {
+      auto operator ()(union1 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union1 &>().set_ud(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_ud(std::forward<Args>(args)...);
       }
     };
 
     struct us {
       template <typename... Args>
-      void operator ()(union1 &variant, Args &&...args) const {
+      auto operator ()(union1 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union1 &>().set_us(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_us(std::forward<Args>(args)...);
       }
     };
 
     struct ue {
       template <typename... Args>
-      void operator ()(union1 &variant, Args &&...args) const {
+      auto operator ()(union1 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union1 &>().set_ue(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_ue(std::forward<Args>(args)...);
       }
     };
@@ -270,57 +310,81 @@ namespace thrift_fatal_impl_detail {
 class union2_variant_traits {
   struct get {
     struct ui_2 {
-      int32_t const &operator ()(union2 const &variant) const {
+      auto operator ()(union2 const &variant) const
+        -> decltype(std::declval<union2 const &>().get_ui_2())
+      {
         return variant.get_ui_2();
       }
 
-      int32_t &operator ()(union2 &variant) const {
+      auto operator ()(union2 &variant) const
+        -> decltype(std::declval<union2 &>().mutable_ui_2())
+      {
         return variant.mutable_ui_2();
       }
 
-      int32_t operator ()(union2 &&variant) const {
+      auto operator ()(union2 &&variant) const
+        -> decltype(std::declval<union2 &&>().move_ui_2())
+      {
         return std::move(variant).move_ui_2();
       }
     };
 
     struct ud_2 {
-      double const &operator ()(union2 const &variant) const {
+      auto operator ()(union2 const &variant) const
+        -> decltype(std::declval<union2 const &>().get_ud_2())
+      {
         return variant.get_ud_2();
       }
 
-      double &operator ()(union2 &variant) const {
+      auto operator ()(union2 &variant) const
+        -> decltype(std::declval<union2 &>().mutable_ud_2())
+      {
         return variant.mutable_ud_2();
       }
 
-      double operator ()(union2 &&variant) const {
+      auto operator ()(union2 &&variant) const
+        -> decltype(std::declval<union2 &&>().move_ud_2())
+      {
         return std::move(variant).move_ud_2();
       }
     };
 
     struct us_2 {
-      std::string const &operator ()(union2 const &variant) const {
+      auto operator ()(union2 const &variant) const
+        -> decltype(std::declval<union2 const &>().get_us_2())
+      {
         return variant.get_us_2();
       }
 
-      std::string &operator ()(union2 &variant) const {
+      auto operator ()(union2 &variant) const
+        -> decltype(std::declval<union2 &>().mutable_us_2())
+      {
         return variant.mutable_us_2();
       }
 
-      std::string operator ()(union2 &&variant) const {
+      auto operator ()(union2 &&variant) const
+        -> decltype(std::declval<union2 &&>().move_us_2())
+      {
         return std::move(variant).move_us_2();
       }
     };
 
     struct ue_2 {
-       ::test_cpp2::cpp_reflection::enum1 const &operator ()(union2 const &variant) const {
+      auto operator ()(union2 const &variant) const
+        -> decltype(std::declval<union2 const &>().get_ue_2())
+      {
         return variant.get_ue_2();
       }
 
-       ::test_cpp2::cpp_reflection::enum1 &operator ()(union2 &variant) const {
+      auto operator ()(union2 &variant) const
+        -> decltype(std::declval<union2 &>().mutable_ue_2())
+      {
         return variant.mutable_ue_2();
       }
 
-       ::test_cpp2::cpp_reflection::enum1 operator ()(union2 &&variant) const {
+      auto operator ()(union2 &&variant) const
+        -> decltype(std::declval<union2 &&>().move_ue_2())
+      {
         return std::move(variant).move_ue_2();
       }
     };
@@ -329,28 +393,44 @@ class union2_variant_traits {
   struct set {
     struct ui_2 {
       template <typename... Args>
-      void operator ()(union2 &variant, Args &&...args) const {
+      auto operator ()(union2 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union2 &>().set_ui_2(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_ui_2(std::forward<Args>(args)...);
       }
     };
 
     struct ud_2 {
       template <typename... Args>
-      void operator ()(union2 &variant, Args &&...args) const {
+      auto operator ()(union2 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union2 &>().set_ud_2(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_ud_2(std::forward<Args>(args)...);
       }
     };
 
     struct us_2 {
       template <typename... Args>
-      void operator ()(union2 &variant, Args &&...args) const {
+      auto operator ()(union2 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union2 &>().set_us_2(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_us_2(std::forward<Args>(args)...);
       }
     };
 
     struct ue_2 {
       template <typename... Args>
-      void operator ()(union2 &variant, Args &&...args) const {
+      auto operator ()(union2 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union2 &>().set_ue_2(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_ue_2(std::forward<Args>(args)...);
       }
     };
@@ -465,57 +545,81 @@ namespace thrift_fatal_impl_detail {
 class union3_variant_traits {
   struct get {
     struct ui_3 {
-      int32_t const &operator ()(union3 const &variant) const {
+      auto operator ()(union3 const &variant) const
+        -> decltype(std::declval<union3 const &>().get_ui_3())
+      {
         return variant.get_ui_3();
       }
 
-      int32_t &operator ()(union3 &variant) const {
+      auto operator ()(union3 &variant) const
+        -> decltype(std::declval<union3 &>().mutable_ui_3())
+      {
         return variant.mutable_ui_3();
       }
 
-      int32_t operator ()(union3 &&variant) const {
+      auto operator ()(union3 &&variant) const
+        -> decltype(std::declval<union3 &&>().move_ui_3())
+      {
         return std::move(variant).move_ui_3();
       }
     };
 
     struct ud_3 {
-      double const &operator ()(union3 const &variant) const {
+      auto operator ()(union3 const &variant) const
+        -> decltype(std::declval<union3 const &>().get_ud_3())
+      {
         return variant.get_ud_3();
       }
 
-      double &operator ()(union3 &variant) const {
+      auto operator ()(union3 &variant) const
+        -> decltype(std::declval<union3 &>().mutable_ud_3())
+      {
         return variant.mutable_ud_3();
       }
 
-      double operator ()(union3 &&variant) const {
+      auto operator ()(union3 &&variant) const
+        -> decltype(std::declval<union3 &&>().move_ud_3())
+      {
         return std::move(variant).move_ud_3();
       }
     };
 
     struct us_3 {
-      std::string const &operator ()(union3 const &variant) const {
+      auto operator ()(union3 const &variant) const
+        -> decltype(std::declval<union3 const &>().get_us_3())
+      {
         return variant.get_us_3();
       }
 
-      std::string &operator ()(union3 &variant) const {
+      auto operator ()(union3 &variant) const
+        -> decltype(std::declval<union3 &>().mutable_us_3())
+      {
         return variant.mutable_us_3();
       }
 
-      std::string operator ()(union3 &&variant) const {
+      auto operator ()(union3 &&variant) const
+        -> decltype(std::declval<union3 &&>().move_us_3())
+      {
         return std::move(variant).move_us_3();
       }
     };
 
     struct ue_3 {
-       ::test_cpp2::cpp_reflection::enum1 const &operator ()(union3 const &variant) const {
+      auto operator ()(union3 const &variant) const
+        -> decltype(std::declval<union3 const &>().get_ue_3())
+      {
         return variant.get_ue_3();
       }
 
-       ::test_cpp2::cpp_reflection::enum1 &operator ()(union3 &variant) const {
+      auto operator ()(union3 &variant) const
+        -> decltype(std::declval<union3 &>().mutable_ue_3())
+      {
         return variant.mutable_ue_3();
       }
 
-       ::test_cpp2::cpp_reflection::enum1 operator ()(union3 &&variant) const {
+      auto operator ()(union3 &&variant) const
+        -> decltype(std::declval<union3 &&>().move_ue_3())
+      {
         return std::move(variant).move_ue_3();
       }
     };
@@ -524,28 +628,44 @@ class union3_variant_traits {
   struct set {
     struct ui_3 {
       template <typename... Args>
-      void operator ()(union3 &variant, Args &&...args) const {
+      auto operator ()(union3 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union3 &>().set_ui_3(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_ui_3(std::forward<Args>(args)...);
       }
     };
 
     struct ud_3 {
       template <typename... Args>
-      void operator ()(union3 &variant, Args &&...args) const {
+      auto operator ()(union3 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union3 &>().set_ud_3(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_ud_3(std::forward<Args>(args)...);
       }
     };
 
     struct us_3 {
       template <typename... Args>
-      void operator ()(union3 &variant, Args &&...args) const {
+      auto operator ()(union3 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union3 &>().set_us_3(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_us_3(std::forward<Args>(args)...);
       }
     };
 
     struct ue_3 {
       template <typename... Args>
-      void operator ()(union3 &variant, Args &&...args) const {
+      auto operator ()(union3 &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union3 &>().set_ue_3(std::forward<Args>(args)...)
+        )
+      {
         return variant.set_ue_3(std::forward<Args>(args)...);
       }
     };

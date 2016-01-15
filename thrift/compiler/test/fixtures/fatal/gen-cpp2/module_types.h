@@ -320,31 +320,35 @@ class union1 : private boost::totally_ordered<union1> {
   }
 
   template<typename... T>
-  void set_ui(T&&... t) {
+  int32_t &set_ui(T&&... t) {
     __clear();
     type_ = Type::ui;
     new (&value_.ui) int32_t(std::forward<T>(t)...);
+    return value_.ui;
   }
 
   template<typename... T>
-  void set_ud(T&&... t) {
+  double &set_ud(T&&... t) {
     __clear();
     type_ = Type::ud;
     new (&value_.ud) double(std::forward<T>(t)...);
+    return value_.ud;
   }
 
   template<typename... T>
-  void set_us(T&&... t) {
+  std::string &set_us(T&&... t) {
     __clear();
     type_ = Type::us;
     new (&value_.us) std::string(std::forward<T>(t)...);
+    return value_.us;
   }
 
   template<typename... T>
-  void set_ue(T&&... t) {
+   ::test_cpp2::cpp_reflection::enum1 &set_ue(T&&... t) {
     __clear();
     type_ = Type::ue;
     new (&value_.ue)  ::test_cpp2::cpp_reflection::enum1(std::forward<T>(t)...);
+    return value_.ue;
   }
 
   const int32_t& get_ui() const {
@@ -656,31 +660,35 @@ class union2 : private boost::totally_ordered<union2> {
   }
 
   template<typename... T>
-  void set_ui_2(T&&... t) {
+  int32_t &set_ui_2(T&&... t) {
     __clear();
     type_ = Type::ui_2;
     new (&value_.ui_2) int32_t(std::forward<T>(t)...);
+    return value_.ui_2;
   }
 
   template<typename... T>
-  void set_ud_2(T&&... t) {
+  double &set_ud_2(T&&... t) {
     __clear();
     type_ = Type::ud_2;
     new (&value_.ud_2) double(std::forward<T>(t)...);
+    return value_.ud_2;
   }
 
   template<typename... T>
-  void set_us_2(T&&... t) {
+  std::string &set_us_2(T&&... t) {
     __clear();
     type_ = Type::us_2;
     new (&value_.us_2) std::string(std::forward<T>(t)...);
+    return value_.us_2;
   }
 
   template<typename... T>
-  void set_ue_2(T&&... t) {
+   ::test_cpp2::cpp_reflection::enum1 &set_ue_2(T&&... t) {
     __clear();
     type_ = Type::ue_2;
     new (&value_.ue_2)  ::test_cpp2::cpp_reflection::enum1(std::forward<T>(t)...);
+    return value_.ue_2;
   }
 
   const int32_t& get_ui_2() const {
@@ -992,31 +1000,35 @@ class union3 : private boost::totally_ordered<union3> {
   }
 
   template<typename... T>
-  void set_ui_3(T&&... t) {
+  int32_t &set_ui_3(T&&... t) {
     __clear();
     type_ = Type::ui_3;
     new (&value_.ui_3) int32_t(std::forward<T>(t)...);
+    return value_.ui_3;
   }
 
   template<typename... T>
-  void set_ud_3(T&&... t) {
+  double &set_ud_3(T&&... t) {
     __clear();
     type_ = Type::ud_3;
     new (&value_.ud_3) double(std::forward<T>(t)...);
+    return value_.ud_3;
   }
 
   template<typename... T>
-  void set_us_3(T&&... t) {
+  std::string &set_us_3(T&&... t) {
     __clear();
     type_ = Type::us_3;
     new (&value_.us_3) std::string(std::forward<T>(t)...);
+    return value_.us_3;
   }
 
   template<typename... T>
-  void set_ue_3(T&&... t) {
+   ::test_cpp2::cpp_reflection::enum1 &set_ue_3(T&&... t) {
     __clear();
     type_ = Type::ue_3;
     new (&value_.ue_3)  ::test_cpp2::cpp_reflection::enum1(std::forward<T>(t)...);
+    return value_.ue_3;
   }
 
   const int32_t& get_ui_3() const {
