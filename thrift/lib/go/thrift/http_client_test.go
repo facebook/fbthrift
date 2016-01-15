@@ -24,27 +24,27 @@ import (
 )
 
 func TestHttpClient(t *testing.T) {
-	l, addr := HttpClientSetupForTest(t)
+	l := HttpClientSetupForTest(t)
 	if l != nil {
 		defer l.Close()
 	}
-	trans, err := NewTHttpPostClient("http://" + addr.String())
+	trans, err := NewTHttpPostClient("http://" + l.Addr().String())
 	if err != nil {
 		l.Close()
-		t.Fatalf("Unable to connect to %s: %s", addr.String(), err)
+		t.Fatalf("Unable to connect to %s: %s", l.Addr().String(), err)
 	}
 	TransportTest(t, trans, trans)
 }
 
 func TestHttpClientHeaders(t *testing.T) {
-	l, addr := HttpClientSetupForTest(t)
+	l := HttpClientSetupForTest(t)
 	if l != nil {
 		defer l.Close()
 	}
-	trans, err := NewTHttpPostClient("http://" + addr.String())
+	trans, err := NewTHttpPostClient("http://" + l.Addr().String())
 	if err != nil {
 		l.Close()
-		t.Fatalf("Unable to connect to %s: %s", addr.String(), err)
+		t.Fatalf("Unable to connect to %s: %s", l.Addr().String(), err)
 	}
 	TransportHeaderTest(t, trans, trans)
 }
