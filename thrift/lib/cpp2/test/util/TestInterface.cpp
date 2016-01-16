@@ -28,6 +28,8 @@ void TestInterface::sendResponse(std::string& _return, int64_t size) {
 
 void TestInterface::noResponse(int64_t size) { usleep(size); }
 
+void TestInterface::voidResponse() { }
+
 void TestInterface::echoRequest(std::string& _return,
                                 std::unique_ptr<std::string> req) {
   _return = *req + kEchoSuffix;

@@ -20,6 +20,7 @@
 #include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp/async/TEventConnection.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
+#include <folly/Optional.h>
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
@@ -175,7 +176,7 @@ class Cpp2Connection
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req_;
     std::shared_ptr<Cpp2Connection> connection_;
     Cpp2RequestContext reqContext_;
-    std::string loadHeader_;
+    folly::Optional<std::string> loadHeader_;
     SoftTimeout softTimeout_;
     HardTimeout hardTimeout_;
 

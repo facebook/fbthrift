@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
+#include <memory>
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/test/gen-cpp/TestService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <folly/io/async/AsyncServerSocket.h>
+#include <folly/Memory.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
@@ -170,6 +174,47 @@ TEST(ThriftServer, HeaderTest) {
     EXPECT_EQ(e.getType(),
               TApplicationException::TApplicationExceptionType::TIMEOUT);
   }
+}
+
+TEST(ThriftServer, LoadHeaderTest) {
+  class Callback : public RequestCallback {
+   public:
+    explicit Callback(bool isLoadExpected)
+        : isLoadExpected_(isLoadExpected) {}
+
+   private:
+    void requestSent() override {}
+
+    void replyReceived(ClientReceiveState&& state) override {
+      const auto& headers = state.header()->getHeaders();
+      auto loadIter = headers.find(Cpp2Connection::loadHeader);
+      ASSERT_EQ(isLoadExpected_, loadIter != headers.end());
+      if (isLoadExpected_) {
+        auto load = loadIter->second;
+        EXPECT_EQ("0", load);
+      }
+    }
+    void requestError(ClientReceiveState&&) override {
+      ADD_FAILURE() << "The response should not be an error";
+    }
+    bool isLoadExpected_;
+  };
+
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  folly::EventBase base;
+  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+
+  client->voidResponse(folly::make_unique<Callback>(false));
+
+  RpcOptions emptyLoadOptions;
+  emptyLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "");
+  client->voidResponse(emptyLoadOptions, folly::make_unique<Callback>(true));
+
+  RpcOptions customLoadOptions;
+  customLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "foo");
+  client->voidResponse(customLoadOptions, folly::make_unique<Callback>(true));
+
+  base.loop();
 }
 
 TEST(ThriftServer, ClientTimeoutTest) {

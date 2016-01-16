@@ -428,12 +428,12 @@ Cpp2Connection::Cpp2Request::prepareSendCallback(
 
 void Cpp2Connection::Cpp2Request::setLoadHeader() {
   // Set load header, based on the received load header
-  if (loadHeader_.empty()) {
+  if (!loadHeader_) {
     return;
   }
 
   auto load =
-      connection_->getWorker()->getServer()->getLoad(loadHeader_);
+      connection_->getWorker()->getServer()->getLoad(*loadHeader_);
   req_->getHeader()->setHeader(Cpp2Connection::loadHeader,
                                folly::to<std::string>(load));
 }
@@ -471,9 +471,9 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
 void Cpp2Connection::Cpp2Request::sendTimeoutResponse() {
   auto observer = connection_->getWorker()->getServer()->getObserver().get();
   std::map<std::string, std::string> headers;
-  if (!loadHeader_.empty()) {
+  if (loadHeader_) {
     auto load =
-      connection_->getWorker()->getServer()->getLoad(loadHeader_);
+      connection_->getWorker()->getServer()->getLoad(*loadHeader_);
     headers[Cpp2Connection::loadHeader] = folly::to<std::string>(load);
   }
   req_->sendTimeoutResponse(prepareSendCallback(nullptr, observer), headers);
