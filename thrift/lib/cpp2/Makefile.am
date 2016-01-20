@@ -107,6 +107,7 @@ thrift2include_security_HEADERS = \
 	security/KerberosSASLHandshakeUtils.h \
 	security/KerberosSASLThreadManager.h \
 	security/SecurityKillSwitch.h \
+	security/SecurityKillSwitchPoller.h \
 	security/SecurityLogger.h
 
 thrift2include_protocoldir = $(thrift2includedir)/protocol
@@ -173,6 +174,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   security/KerberosSASLHandshakeUtils.cpp \
 			   security/KerberosSASLThreadManager.cpp \
 			   security/SecurityKillSwitch.cpp \
+			   security/SecurityKillSwitchPoller.cpp \
 			   server/BaseThriftServer.cpp \
 			   server/Cpp2Connection.cpp \
 			   server/Cpp2Worker.cpp \

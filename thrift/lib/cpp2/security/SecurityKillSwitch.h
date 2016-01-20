@@ -23,6 +23,7 @@
 namespace apache { namespace thrift {
 
 bool isSecurityKillSwitchEnabled();
+bool isTlsKillSwitchEnabled();
 
 }}  // apache::thrift
 

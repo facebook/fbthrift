@@ -29,18 +29,33 @@ DEFINE_string(
   "A file, which when present acts as a kill switch and disables thrift "
   " security everywhere. This DOES NOT disable ACL checking / authorization.");
 
+DEFINE_string(
+  thrift_security_tls_kill_switch_file,
+  "/var/thrift_security/disable_thrift_security_tls",
+  "A file, which when present on a client, disables the use of TLS to "
+  "endpoints, and on servers will downgrade a 'required' SSL policy to "
+  "'permitted'");
+
 // Time in seconds after which thrift kill switch expires
 static const time_t thriftKillSwitchExpired = 86400;
 
 namespace apache { namespace thrift {
 
-bool isSecurityKillSwitchEnabled() {
+static bool isKillSwitchEnabled(const std::string& file) {
   struct stat info;
-  int ret = stat(FLAGS_thrift_security_kill_switch_file.c_str(), &info);
+  int ret = stat(file.c_str(), &info);
   if (ret == 0 && time(nullptr) - info.st_mtime < thriftKillSwitchExpired) {
     return true;
   }
   return false;
+}
+
+bool isSecurityKillSwitchEnabled() {
+  return isKillSwitchEnabled(FLAGS_thrift_security_kill_switch_file);
+}
+
+bool isTlsKillSwitchEnabled() {
+  return isKillSwitchEnabled(FLAGS_thrift_security_tls_kill_switch_file);
 }
 
 }} // apache::thrift

@@ -44,6 +44,8 @@
 #include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/security/SecurityKillSwitchPoller.h>
+#include <folly/Singleton.h>
 
 #include <wangle/ssl/SSLContextConfig.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
@@ -324,7 +326,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   }
 
   SSLPolicy getSSLPolicy() const {
-    return sslPolicy_;
+    auto policy = sslPolicy_;
+    if (policy == SSLPolicy::REQUIRED) {
+      auto ksPoller = folly::Singleton<SecurityKillSwitchPoller>::try_get();
+      if (ksPoller && ksPoller->isKillSwitchEnabled()) {
+        policy = SSLPolicy::PERMITTED;
+      }
+    }
+    return policy;
   }
 
   void setSSLPolicy(SSLPolicy policy) {
