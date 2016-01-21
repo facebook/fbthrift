@@ -42,6 +42,10 @@
 #  define __BYTE_ORDER BYTE_ORDER
 #  define __LITTLE_ENDIAN LITTLE_ENDIAN
 #  define __BIG_ENDIAN BIG_ENDIAN
+# elif defined(_WIN32)
+#  define __BYTE_ORDER 1
+#  define __LITTLE_ENDIAN 1
+#  define __BIG_ENDIAN 2
 # else
 #  error "Cannot determine endianness"
 # endif
