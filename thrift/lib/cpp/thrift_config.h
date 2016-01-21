@@ -353,9 +353,11 @@
 #define THRIFT_HAVE_STRFTIME 1
 #endif
 
+#ifndef _MSC_VER
 /* Define to 1 if you have the <strings.h> header file. */
 #ifndef THRIFT_HAVE_STRINGS_H
 #define THRIFT_HAVE_STRINGS_H 1
+#endif
 #endif
 
 /* Define to 1 if you have the <string.h> header file. */
@@ -408,9 +410,11 @@
 #define THRIFT_HAVE_SYS_STAT_H 1
 #endif
 
+#ifndef _MSC_VER
 /* Define to 1 if you have the <sys/time.h> header file. */
 #ifndef THRIFT_HAVE_SYS_TIME_H
 #define THRIFT_HAVE_SYS_TIME_H 1
+#endif
 #endif
 
 /* Define to 1 if you have the <sys/types.h> header file. */
@@ -418,6 +422,7 @@
 #define THRIFT_HAVE_SYS_TYPES_H 1
 #endif
 
+#ifndef _MSC_VER
 /* Define to 1 if you have the <sys/un.h> header file. */
 #ifndef THRIFT_HAVE_SYS_UN_H
 #define THRIFT_HAVE_SYS_UN_H 1
@@ -437,6 +442,7 @@
 #ifndef THRIFT_HAVE_VFORK
 #define THRIFT_HAVE_VFORK 1
 #endif
+#endif
 
 /* Define to 1 if you have the <vfork.h> header file. */
 /* #undef HAVE_VFORK_H */
@@ -446,6 +452,7 @@
 #define THRIFT_HAVE_VPRINTF 1
 #endif
 
+#ifndef _MSC_VER
 /* Define to 1 if `fork' works. */
 #ifndef THRIFT_HAVE_WORKING_FORK
 #define THRIFT_HAVE_WORKING_FORK 1
@@ -454,6 +461,7 @@
 /* Define to 1 if `vfork' works. */
 #ifndef THRIFT_HAVE_WORKING_VFORK
 #define THRIFT_HAVE_WORKING_VFORK 1
+#endif
 #endif
 
 /* define if zlib is available */
