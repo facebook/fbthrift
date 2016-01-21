@@ -92,6 +92,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return std::string();
   }
 
+  std::shared_ptr<X509> getPeerCertificate() const {
+    return peerCert_;
+  }
+
   template <typename Client>
   std::shared_ptr<Client> getDuplexClient() {
     DCHECK(duplexChannel_);
@@ -108,7 +112,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   transport::THeader* requestHeader_;
   std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
-  std::unique_ptr<X509, folly::AsyncSSLSocket::X509_deleter> peerCert_;
+  std::shared_ptr<X509> peerCert_;
 };
 
 // Request-specific context
