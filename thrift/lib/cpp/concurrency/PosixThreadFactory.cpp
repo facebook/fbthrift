@@ -185,12 +185,10 @@ void* PthreadThread::threadMain(void* arg) {
               << err << ": " << folly::errnoStr(err);
     }
   } else if (thread->policy_ == SCHED_OTHER) {
-#ifndef _MSC_VER
     if (setpriority(PRIO_PROCESS, 0, thread->priority_) != 0) {
       VLOG(1) << "setpriority failed (are you root?) with error " << errno
               << ": " << folly::errnoStr(errno);
     }
-#endif
   }
 
   thread->runnable()->run();
