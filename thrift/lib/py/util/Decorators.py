@@ -22,10 +22,30 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import logging
+import os
+import resource
 import sys
 from thrift.Thrift import TMessageType, TApplicationException, TType, \
         TRequestContext
 from thrift.protocol import THeaderProtocol
+
+
+log = logging.getLogger(__name__)
+
+
+def get_memory_usage():
+    #this parses the resident set size from /proc/self/stat, which
+    #is the same approach the C++ FacebookBase takes
+    with open('/proc/self/stat') as stat:
+        stat_string = stat.read()
+    #rss is field number 23 in /proc/pid/stat, see man proc
+    #for the full list
+    rss_pages = int(stat_string.split()[23])
+    #/proc/pid/stat excludes 3 administrative pages from the count
+    rss_pages += 3
+    return rss_pages * resource.getpagesize()
+
 
 def process_main(twisted=False):
     """Decorator for process method."""
@@ -58,11 +78,31 @@ def process_main(twisted=False):
 
     return _decorator
 
+
+try:
+    # You can use the following for last resort memory leak debugging if Heapy
+    # and other clean room methods fail. Setting this to multiple megabytes
+    # will expose unexpectedly heavy requests.
+
+    # Note that in case of multithreading use, there's sometimes going to be
+    # multiple requests reporting a single bump in memory usage. Look at the
+    # slowest request first (it will present the biggest bump).
+    MEMORY_WARNING_THRESHOLD = int(
+        os.environ.get('THRIFT_PER_REQUEST_MEMORY_WARNING', 0)
+    )
+except (TypeError, ValueError):
+    MEMORY_WARNING_THRESHOLD = 0
+
+_process_method_mem_usage = get_memory_usage if MEMORY_WARNING_THRESHOLD else lambda: 0
+
+
 def process_method(argtype, oneway=False, twisted=False):
     """Decorator for process_xxx methods."""
     def _decorator(func):
+        fn_name = func.__name__.split('_', 1)[-1]
         def nested(self, seqid, iprot, oprot, server_ctx):
-            fn_name = func.__name__.split('_', 1)[-1]
+            _mem_before = _process_method_mem_usage()
+
             handler_ctx = self._event_handler.getHandlerContext(fn_name,
                     server_ctx)
             args = argtype()
@@ -95,9 +135,21 @@ def process_method(argtype, oneway=False, twisted=False):
                 self._event_handler.postWrite(handler_ctx, fn_name, result)
             if hasattr(self._handler, "setRequestContext"):
                 self._handler.setRequestContext(None)
+
+            _mem_after = _process_method_mem_usage()
+            if _mem_after - _mem_before > MEMORY_WARNING_THRESHOLD:
+                log.error(
+                    'Memory usage rose from %d to %d while processing `%s` '
+                    'with args `%s`',
+                    _mem_before,
+                    _mem_after,
+                    fn_name,
+                    str(args),
+                )
         return nested
 
     return _decorator
+
 
 def write_results_success_callback(func):
     """Decorator for twisted write_results_success_xxx methods.
@@ -114,6 +166,7 @@ def write_results_success_callback(func):
         self._event_handler.postWrite(handler_ctx, fn_name, result)
 
     return nested
+
 
 def write_results_exception_callback(func):
     """Decorator for twisted write_results_exception_xxx methods."""
