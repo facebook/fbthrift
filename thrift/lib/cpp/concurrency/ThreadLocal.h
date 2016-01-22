@@ -19,7 +19,6 @@
 #ifndef THRIFT_CONCURRENCY_THREADLOCAL_H_
 #define THRIFT_CONCURRENCY_THREADLOCAL_H_ 1
 
-#include <folly/Portability.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <pthread.h>
 
@@ -165,7 +164,7 @@ class ThreadLocal {
 template <typename T>
 class DefaultThreadLocalManager {
  public:
-  FOLLY_DEPRECATED("") T* allocate() {
+  T* allocate() __attribute__((__deprecated__)) {
     return new T;
   }
 
@@ -183,7 +182,7 @@ class DefaultThreadLocalManager {
 template <typename T>
 class DestroyOnlyThreadLocalManager {
  public:
-  FOLLY_DEPRECATED("") T* allocate() {
+  T* allocate() __attribute__((__deprecated__))  {
     return nullptr;
   }
 
