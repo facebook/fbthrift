@@ -200,10 +200,7 @@ void ThreadManager::ImplT<SemType>::workerExiting(Worker<SemType>* worker) {
   Guard g(mutex_);
 
   shared_ptr<Thread> thread = worker->thread();
-#ifndef _MSC_VER
-  __attribute__((__unused__))
-#endif
-  size_t numErased = idMap_.erase(thread->getId());
+  __attribute__((__unused__)) size_t numErased = idMap_.erase(thread->getId());
   assert(numErased == 1);
 
   --workerCount_;
