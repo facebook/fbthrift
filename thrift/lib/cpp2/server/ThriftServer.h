@@ -267,9 +267,16 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     ticketSeeds_ = seeds;
   }
 
+  void updateTicketSeeds(wangle::TLSTicketKeySeeds seeds);
+
   std::shared_ptr<wangle::SSLContextConfig>
   getSSLConfig() const {
     return sslContext_;
+  }
+
+  folly::Optional<wangle::TLSTicketKeySeeds>
+  getTicketSeeds() const {
+    return ticketSeeds_;
   }
 
   wangle::ServerSocketConfig getServerSocketConfig() {

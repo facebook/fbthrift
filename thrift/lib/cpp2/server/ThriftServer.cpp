@@ -27,6 +27,8 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
+#include <wangle/ssl/SSLContextManager.h>
+
 #include <iostream>
 #include <random>
 #include <sys/socket.h>
@@ -437,6 +439,18 @@ int32_t ThriftServer::getPendingCount() const {
   });
 
   return count;
+}
+
+void ThriftServer::updateTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
+  forEachWorker([&](wangle::Acceptor* acceptor) {
+    auto ctxMgr = acceptor->getSSLContextManager();
+    if (ctxMgr) {
+      ctxMgr->reloadTLSTicketKeys(
+          seeds.oldSeeds,
+          seeds.currentSeeds,
+          seeds.newSeeds);
+    }
+  });
 }
 
 bool ThriftServer::isOverloaded(uint32_t workerActiveRequests,
