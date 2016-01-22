@@ -81,7 +81,7 @@ class FunctionRunner : public Runnable {
    * execute the given callback.  Note that the 'void*' return value is ignored.
    */
   FunctionRunner(PthreadFuncPtr func, void* arg)
-   : func_([=]{ func(arg); }), repFunc_(), initFunc_()
+   : func_([=]{ func(arg); }), repFunc_(0), initFunc_(0)
   { }
 
   /**
@@ -89,7 +89,7 @@ class FunctionRunner : public Runnable {
    */
   template <class F>
   explicit FunctionRunner(F&& cob)
-   : func_(std::forward<F>(cob)), repFunc_(), initFunc_()
+   : func_(std::forward<F>(cob)), repFunc_(0), initFunc_(0)
   { }
 
   /**
@@ -100,8 +100,8 @@ class FunctionRunner : public Runnable {
    */
   template <class F>
   FunctionRunner(F&& cob, int intervalMs)
-   : func_(), repFunc_(std::forward<F>(cob)), intervalMs_(intervalMs),
-     initFunc_()
+   : func_(0), repFunc_(std::forward<F>(cob)), intervalMs_(intervalMs),
+     initFunc_(0)
   {
     if (intervalMs_ < 0) {
       throw InvalidArgumentException();
