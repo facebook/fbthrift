@@ -5,6 +5,7 @@
  *  @generated
  */
 
+import java.lang.reflect.*;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
@@ -18,15 +19,27 @@ public class Animal {
   public static final int CAT = 2;
   public static final int TARANTULA = 3;
 
-  public static final IntRangeSet VALID_VALUES = new IntRangeSet(
-    DOG, 
-    CAT, 
-    TARANTULA );
+  public static final IntRangeSet VALID_VALUES;
+  public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();
 
-  @SuppressWarnings("serial")
-public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>() {{
-    put(DOG, "DOG");
-    put(CAT, "CAT");
-    put(TARANTULA, "TARANTULA");
-  }};
+  static {
+    try {
+      Class<?> klass = Animal.class;
+      for (Field f : klass.getDeclaredFields()) {
+        if (f.getType() == Integer.TYPE) {
+          VALUES_TO_NAMES.put(f.getInt(null), f.getName());
+        }
+      }
+    } catch (ReflectiveOperationException e) {
+      throw new AssertionError(e);
+    }
+
+    int[] values = new int[VALUES_TO_NAMES.size()];
+    int i = 0;
+    for (Integer v : VALUES_TO_NAMES.keySet()) {
+      values[i++] = v;
+    }
+
+    VALID_VALUES = new IntRangeSet(values);
+  }
 }
