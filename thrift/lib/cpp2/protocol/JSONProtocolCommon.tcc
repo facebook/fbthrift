@@ -390,7 +390,6 @@ uint32_t JSONProtocolReaderCommon::readMessageBegin(std::string& name,
   ret += readI64(tmpVal);
   messageType = (MessageType)tmpVal;
   ret += readI32(seqid);
-  seqid_ = seqid;
   return ret;
 }
 

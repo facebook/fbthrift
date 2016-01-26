@@ -175,12 +175,6 @@ class JSONProtocolReaderCommon {
   inline uint32_t readFromPositionAndAppend(folly::io::Cursor& cursor,
                                             std::unique_ptr<folly::IOBuf>& ser);
 
-  // Returns the last read sequence ID.  Used in servers
-  // for backwards compatibility with thrift1.
-  int32_t getSeqId() {
-    return seqid_;
-  }
-
  protected:
 
   using TJSONProtocol = protocol::TJSONProtocol;
@@ -265,7 +259,6 @@ class JSONProtocolReaderCommon {
   uint32_t skippedChars_{0};
   bool skippedIsUnread_{false};
   bool allowDecodeUTF8_{true};
-  int32_t seqid_{-1};
 
 };
 

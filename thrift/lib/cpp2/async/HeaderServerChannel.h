@@ -136,7 +136,15 @@ protected:
                           std::string exCode,
                           MessageChannel::SendCallback* cb = nullptr) override;
 
-    void sendTimeoutResponse(MessageChannel::SendCallback* cb,
+    void sendErrorWrapped(folly::exception_wrapper ex,
+                          std::string exCode,
+                          const std::string& methodName,
+                          int32_t protoSeqId,
+                          MessageChannel::SendCallback* cb = nullptr);
+
+    void sendTimeoutResponse(const std::string& methodName,
+                             int32_t protoSeqId,
+                             MessageChannel::SendCallback* cb,
                              const std::map<std::string, std::string>& headers);
    private:
     HeaderServerChannel* channel_;

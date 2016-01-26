@@ -83,6 +83,60 @@ template struct helper<CompactProtocolReader, CompactProtocolWriter>;
 
 template <class ProtocolReader>
 static
+bool deserializeMessageBegin(
+    std::unique_ptr<ResponseChannel::Request>& req,
+    folly::IOBuf* buf,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb) {
+  using h = helper_r<ProtocolReader>;
+  const char* fn = "process";
+  std::string fname;
+  MessageType mtype;
+  int32_t protoSeqId = 0;
+  auto iprot = folly::make_unique<ProtocolReader>();
+  iprot->setInput(buf);
+  try {
+    auto bytes = iprot->readMessageBegin(fname, mtype, protoSeqId);
+    ctx->setMessageBeginSize(bytes);
+  } catch (const TException& ex) {
+    LOG(ERROR) << "received invalid message from client: " << ex.what();
+    const char* msg = "invalid message from client";
+    h::process_exn(fn, msg, std::move(req), ctx, eb, protoSeqId);
+    return false;
+  }
+  if (mtype != T_CALL && mtype != T_ONEWAY) {
+    LOG(ERROR) << "received invalid message of type " << mtype;
+    const char* msg = "invalid message arguments";
+    h::process_exn(fn, msg, std::move(req), ctx, eb, protoSeqId);
+    return false;
+  }
+
+  ctx->setMethodName(fname);
+  ctx->setProtoSeqId(protoSeqId);
+  return true;
+}
+
+bool deserializeMessageBegin(
+    protocol::PROTOCOL_TYPES protType,
+    std::unique_ptr<ResponseChannel::Request>& req,
+    folly::IOBuf* buf,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb) {
+  switch (protType) {
+    case protocol::T_BINARY_PROTOCOL:
+      return deserializeMessageBegin<BinaryProtocolReader>(
+          req, buf, ctx, eb);
+    case protocol::T_COMPACT_PROTOCOL:
+      return deserializeMessageBegin<CompactProtocolReader>(
+          req, buf, ctx, eb);
+    default:
+      LOG(ERROR) << "invalid protType: " << protType;
+      return false;
+  }
+}
+
+template <class ProtocolReader>
+static
 Optional<string> get_cache_key(
     const IOBuf* buf,
     const unordered_map<string, int16_t>& cache_key_map) {

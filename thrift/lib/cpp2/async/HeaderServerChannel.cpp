@@ -294,7 +294,38 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
     });
 }
 
+void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
+  folly::exception_wrapper ew,
+  std::string exCode,
+  const std::string& methodName,
+  int32_t protoSeqId,
+  MessageChannel::SendCallback* cb) {
+  // Other types are unimplemented.
+  DCHECK(ew.is_compatible_with<TApplicationException>());
+
+  header_->setHeader("ex", exCode);
+  ew.with_exception([&](TApplicationException& tae) {
+      std::unique_ptr<folly::IOBuf> exbuf;
+      uint16_t proto = header_->getProtocolId();
+      auto transforms = header_->getWriteTransforms();
+      try {
+        exbuf = serializeError(proto, tae, methodName, protoSeqId);
+      } catch (const TProtocolException& pe) {
+        LOG(ERROR) << "serializeError failed. type=" << pe.getType()
+            << " what()=" << pe.what();
+        channel_->closeNow();
+        return;
+      }
+      exbuf = THeader::transform(std::move(exbuf),
+                                 transforms,
+                                 header_->getMinCompressBytes());
+      sendReply(std::move(exbuf), cb);
+    });
+}
+
 void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
+    const std::string& methodName,
+    int32_t protoSeqId,
     MessageChannel::SendCallback* cb,
     const std::map<std::string, std::string>& headers) {
   // Sending tiemout response always happens on eb thread, while normal
@@ -318,7 +349,10 @@ void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
       TApplicationException::TApplicationExceptionType::TIMEOUT,
       "Task expired");
   try {
-    exbuf = serializeError(timeoutHeader_->getProtocolId(), tae, getBuf());
+    exbuf = serializeError(timeoutHeader_->getProtocolId(),
+                           tae,
+                           methodName,
+                           protoSeqId);
   } catch (const TProtocolException& pe) {
     LOG(ERROR) << "serializeError failed. type=" << pe.getType()
       << " what()=" << pe.what();

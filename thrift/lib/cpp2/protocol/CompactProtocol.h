@@ -321,12 +321,6 @@ class CompactProtocolReader {
     return 0;
   }
 
-  // Returns the last read sequence ID.  Used in servers
-  // for backwards compatibility with thrift1.
-  int32_t getSeqId() {
-    return seqid_;
-  }
-
  protected:
   inline uint32_t readStringSize(int32_t& size);
 
@@ -344,8 +338,6 @@ class CompactProtocolReader {
    * there is not enough data tor ead the whole struct.
    */
   Cursor in_;
-
-  int32_t seqid_;
 
   detail::compact::SimpleStack<int16_t, 10> lastField_;
   int16_t lastFieldId_;

@@ -208,6 +208,30 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     requestTimeout_ = requestTimeout;
   }
 
+  void setMethodName(std::string methodName) {
+    methodName_ = std::move(methodName);
+  }
+
+  const std::string& getMethodName() {
+    return methodName_;
+  }
+
+  void setProtoSeqId(int32_t protoSeqId) {
+    protoSeqId_ = protoSeqId;
+  }
+
+  int32_t getProtoSeqId() {
+    return protoSeqId_;
+  }
+
+  void setMessageBeginSize(uint32_t messageBeginSize) {
+    messageBeginSize_ = messageBeginSize;
+  }
+
+  uint32_t getMessageBeginSize() {
+    return messageBeginSize_;
+  }
+
  protected:
   static void no_op_destructor(void* /*ptr*/) {}
 
@@ -217,6 +241,10 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   apache::thrift::transport::THeader* header_;
   bool startedProcessing_ = false;
   std::chrono::milliseconds requestTimeout_{0};
+  std::string methodName_;
+  int32_t protoSeqId_{0};
+  uint32_t messageBeginSize_{0};
+
 };
 
 } }

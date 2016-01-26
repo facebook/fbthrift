@@ -1181,7 +1181,7 @@ class CppGenerator(t_generator.Generator):
             else:
                 out('ProtocolOut_ prot;')
                 self._generate_app_ex(service, 'ex.what()',
-                                      function.name, "iprot->getSeqId()",
+                                      function.name, "ctx->getProtoSeqId()",
                                       False, out, 'ctx',
                                       'PROTOCOL_ERROR')
         args = []
@@ -1203,7 +1203,7 @@ class CppGenerator(t_generator.Generator):
                'std::move(c), return_{1}<ProtocolIn_,' +
                'ProtocolOut_>, throw_{1}<ProtocolIn_,' +
                ' ProtocolOut_>, throw_wrapped_{1}<ProtocolIn_,' +
-               ' ProtocolOut_>, iprot->getSeqId(),' +
+               ' ProtocolOut_>, ctx->getProtoSeqId(),' +
                ' eb, tm, ctx);').format(cb_class, function.name))
         # Oneway request won't be canceled if expired. see D1006482 for
         # further details. TODO: fix this

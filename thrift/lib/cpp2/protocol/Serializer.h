@@ -158,8 +158,28 @@ std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
   return queue.move();
 }
 
+template<typename ProtOut>
+std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
+    TApplicationException obj, const std::string& fname, int32_t protoSeqId) {
+  ProtOut prot;
+  size_t bufSize = obj.serializedSizeZC(&prot);
+  bufSize += prot.serializedMessageSize(fname);
+  folly::IOBufQueue queue;
+  prot.setOutput(&queue, bufSize);
+  prot.writeMessageBegin(fname,
+                         apache::thrift::T_EXCEPTION, protoSeqId);
+  obj.write(&prot);
+  prot.writeMessageEnd();
+  return queue.move();
+}
+
 std::unique_ptr<folly::IOBuf> serializeError(
   int protId, TApplicationException obj, folly::IOBuf* buf);
+
+std::unique_ptr<folly::IOBuf> serializeError(int protId,
+                                             TApplicationException obj,
+                                             const std::string& fname,
+                                             int32_t protoSeqId);
 
 }} // namespace apache::thrift
 #endif

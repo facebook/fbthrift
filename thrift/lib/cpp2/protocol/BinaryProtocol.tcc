@@ -375,7 +375,6 @@ uint32_t BinaryProtocolReader::readMessageBegin(std::string& name,
       result += readI32(seqid);
     }
   }
-  seqid_ = seqid;
 
   return result;
 }

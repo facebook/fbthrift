@@ -924,6 +924,13 @@ process_missing(
       std::move(req), std::move(buf), protType, ctx, eb, tm);
 }
 
+bool deserializeMessageBegin(
+    protocol::PROTOCOL_TYPES protType,
+    std::unique_ptr<ResponseChannel::Request>& req,
+    folly::IOBuf* buf,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb);
+
 template <class ProtocolReader, class Processor>
 void process_pmap(
     Processor* proc,
@@ -935,31 +942,17 @@ void process_pmap(
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
-  using h = helper_r<ProtocolReader>;
-  const char* fn = "process";
-  std::string fname;
-  MessageType mtype;
-  int32_t protoSeqId = 0;
-  auto iprot = folly::make_unique<ProtocolReader>();
-  iprot->setInput(buf.get());
-  try {
-    iprot->readMessageBegin(fname, mtype, protoSeqId);
-  } catch (const TException& ex) {
-    LOG(ERROR) << "received invalid message from client: " << ex.what();
-    const char* msg = "invalid message from client";
-    return h::process_exn(fn, msg, std::move(req), ctx, eb, protoSeqId);
-  }
-  if (mtype != T_CALL && mtype != T_ONEWAY) {
-    LOG(ERROR) << "received invalid message of type " << mtype;
-    const char* msg = "invalid message arguments";
-    return h::process_exn(fn, msg, std::move(req), ctx, eb, protoSeqId);
-  }
+  const auto& fname = ctx->getMethodName();
   auto pfn = pmap.find(fname);
   if (pfn == pmap.end()) {
-    process_missing<ProtocolReader>(
-        proc, fname, std::move(req), std::move(buf), ctx, eb, tm, protoSeqId);
+    process_missing<ProtocolReader>(proc, fname, std::move(req),
+        std::move(buf), ctx, eb, tm, ctx->getProtoSeqId());
     return;
   }
+
+  auto iprot = folly::make_unique<ProtocolReader>();
+  buf->trimStart(ctx->getMessageBeginSize());
+  iprot->setInput(buf.get());
   (proc->*(pfn->second))(
       std::move(req), std::move(buf), std::move(iprot), ctx, eb, tm);
 }

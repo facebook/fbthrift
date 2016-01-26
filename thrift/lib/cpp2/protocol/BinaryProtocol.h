@@ -254,12 +254,6 @@ class BinaryProtocolReader {
   inline uint32_t readFromPositionAndAppend(Cursor& cursor,
                                             std::unique_ptr<folly::IOBuf>& ser);
 
-  // Returns the last read sequence ID.  Used in servers
-  // for backwards compatibility with thrift1.
-  int32_t getSeqId() {
-    return seqid_;
-  }
-
  protected:
   template<typename StrType>
   inline uint32_t readStringBody(StrType& str, int32_t sz);
@@ -279,8 +273,6 @@ class BinaryProtocolReader {
    * there is not enough data to read the whole struct.
    */
   Cursor in_;
-
-  int32_t seqid_;
 
   template<typename T> friend class ProtocolReaderWithRefill;
   friend class BinaryProtocolReaderWithRefill;

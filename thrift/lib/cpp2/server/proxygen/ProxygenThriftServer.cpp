@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <proxygen/httpserver/ResponseBuilder.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncServerSocket.h>
 
@@ -137,15 +138,24 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
   reqCtx_ = std::make_shared<apache::thrift::Cpp2RequestContext>(connCtx_.get(),
                                                                  header_.get());
 
-  auto req =
-      folly::make_unique<ProxygenRequest>(this, header_, connCtx_, reqCtx_);
-  request_ = req.get();
+  request_ = new ProxygenRequest(this, header_, connCtx_, reqCtx_);
+  auto req = std::unique_ptr<apache::thrift::ResponseChannel::Request>(
+      request_);
+  auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
+      header_->getProtocolId());
+  if (!apache::thrift::detail::ap::deserializeMessageBegin(
+        protoId,
+        req,
+        body_.get(),
+        reqCtx_.get(),
+        worker_->evb_)) {
+    return;
+  }
 
   worker_->getProcessor()->process(
       std::move(req),
       std::move(body_),
-      static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
-          header_->getProtocolId()),
+      protoId,
       reqCtx_.get(),
       worker_->evb_,
       threadManager_);

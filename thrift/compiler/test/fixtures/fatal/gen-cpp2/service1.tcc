@@ -50,7 +50,7 @@ void service1AsyncProcessor::process_method1(std::unique_ptr<apache::thrift::Res
     if (req) {
       LOG(ERROR) << ex.what() << " in function method1";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("method1", &prot, iprot->getSeqId(), nullptr, x);
+      folly::IOBufQueue queue = serializeException("method1", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
@@ -64,7 +64,7 @@ void service1AsyncProcessor::process_method1(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function method1";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_method1<ProtocolIn_,ProtocolOut_>, throw_method1<ProtocolIn_, ProtocolOut_>, throw_wrapped_method1<ProtocolIn_, ProtocolOut_>, iprot->getSeqId(), eb, tm, ctx);
+  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_method1<ProtocolIn_,ProtocolOut_>, throw_method1<ProtocolIn_, ProtocolOut_>, throw_wrapped_method1<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -167,7 +167,7 @@ void service1AsyncProcessor::process_method2(std::unique_ptr<apache::thrift::Res
     if (req) {
       LOG(ERROR) << ex.what() << " in function method2";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("method2", &prot, iprot->getSeqId(), nullptr, x);
+      folly::IOBufQueue queue = serializeException("method2", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
@@ -181,7 +181,7 @@ void service1AsyncProcessor::process_method2(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function method2";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_method2<ProtocolIn_,ProtocolOut_>, throw_method2<ProtocolIn_, ProtocolOut_>, throw_wrapped_method2<ProtocolIn_, ProtocolOut_>, iprot->getSeqId(), eb, tm, ctx);
+  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_method2<ProtocolIn_,ProtocolOut_>, throw_method2<ProtocolIn_, ProtocolOut_>, throw_wrapped_method2<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -278,7 +278,7 @@ void service1AsyncProcessor::process_method3(std::unique_ptr<apache::thrift::Res
     if (req) {
       LOG(ERROR) << ex.what() << " in function method3";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("method3", &prot, iprot->getSeqId(), nullptr, x);
+      folly::IOBufQueue queue = serializeException("method3", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
@@ -292,7 +292,7 @@ void service1AsyncProcessor::process_method3(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function method3";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_method3<ProtocolIn_,ProtocolOut_>, throw_method3<ProtocolIn_, ProtocolOut_>, throw_wrapped_method3<ProtocolIn_, ProtocolOut_>, iprot->getSeqId(), eb, tm, ctx);
+  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_method3<ProtocolIn_,ProtocolOut_>, throw_method3<ProtocolIn_, ProtocolOut_>, throw_wrapped_method3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -397,7 +397,7 @@ void service1AsyncProcessor::process_method4(std::unique_ptr<apache::thrift::Res
     if (req) {
       LOG(ERROR) << ex.what() << " in function method4";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("method4", &prot, iprot->getSeqId(), nullptr, x);
+      folly::IOBufQueue queue = serializeException("method4", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
@@ -411,7 +411,7 @@ void service1AsyncProcessor::process_method4(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function method4";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_method4<ProtocolIn_,ProtocolOut_>, throw_method4<ProtocolIn_, ProtocolOut_>, throw_wrapped_method4<ProtocolIn_, ProtocolOut_>, iprot->getSeqId(), eb, tm, ctx);
+  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_method4<ProtocolIn_,ProtocolOut_>, throw_method4<ProtocolIn_, ProtocolOut_>, throw_wrapped_method4<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -510,7 +510,7 @@ void service1AsyncProcessor::process_method5(std::unique_ptr<apache::thrift::Res
     if (req) {
       LOG(ERROR) << ex.what() << " in function method5";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("method5", &prot, iprot->getSeqId(), nullptr, x);
+      folly::IOBufQueue queue = serializeException("method5", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
@@ -524,7 +524,7 @@ void service1AsyncProcessor::process_method5(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function method5";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>>(std::move(req), std::move(c), return_method5<ProtocolIn_,ProtocolOut_>, throw_method5<ProtocolIn_, ProtocolOut_>, throw_wrapped_method5<ProtocolIn_, ProtocolOut_>, iprot->getSeqId(), eb, tm, ctx);
+  auto callback = folly::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>>(std::move(req), std::move(c), return_method5<ProtocolIn_,ProtocolOut_>, throw_method5<ProtocolIn_, ProtocolOut_>, throw_wrapped_method5<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -629,7 +629,7 @@ void service1AsyncProcessor::process_method6(std::unique_ptr<apache::thrift::Res
     if (req) {
       LOG(ERROR) << ex.what() << " in function method6";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("method6", &prot, iprot->getSeqId(), nullptr, x);
+      folly::IOBufQueue queue = serializeException("method6", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
@@ -643,7 +643,7 @@ void service1AsyncProcessor::process_method6(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function method6";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>>(std::move(req), std::move(c), return_method6<ProtocolIn_,ProtocolOut_>, throw_method6<ProtocolIn_, ProtocolOut_>, throw_wrapped_method6<ProtocolIn_, ProtocolOut_>, iprot->getSeqId(), eb, tm, ctx);
+  auto callback = folly::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>>(std::move(req), std::move(c), return_method6<ProtocolIn_,ProtocolOut_>, throw_method6<ProtocolIn_, ProtocolOut_>, throw_wrapped_method6<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

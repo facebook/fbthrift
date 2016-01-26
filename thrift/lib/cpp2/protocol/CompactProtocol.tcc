@@ -470,7 +470,6 @@ uint32_t CompactProtocolReader::readMessageBegin(std::string& name,
      detail::compact::TYPE_SHIFT_AMOUNT);
   rsize += apache::thrift::util::readVarint(in_, seqid);
   rsize += readString(name);
-  seqid_ = seqid;
 
   return rsize;
 }

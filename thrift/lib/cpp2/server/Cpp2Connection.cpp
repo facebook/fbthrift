@@ -22,6 +22,8 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 
 #include <assert.h>
 
@@ -326,10 +328,12 @@ void Cpp2Connection::requestReceived(
     }
   }
 
-  unique_ptr<folly::IOBuf> buf = req->getBuf()->clone();
-  unique_ptr<Cpp2Request> t2r(
-    new Cpp2Request(std::move(req), this_));
-  activeRequests_.insert(t2r.get());
+  // After this, the request buffer is no longer owned by the request
+  // and will be released after deserializeRequest.
+  unique_ptr<folly::IOBuf> buf = hreq->extractBuf();
+  Cpp2Request* t2r = new Cpp2Request(std::move(req), this_);
+  auto up2r = std::unique_ptr<ResponseChannel::Request>(t2r);
+  activeRequests_.insert(t2r);
   ++worker_->activeRequests_;
 
   if (observer) {
@@ -339,7 +343,7 @@ void Cpp2Connection::requestReceived(
   std::chrono::milliseconds softTimeout;
   std::chrono::milliseconds hardTimeout;
   auto differentTimeouts = server->getTaskExpireTimeForRequest(
-    *(t2r->req_->getHeader()),
+    *(hreq->getHeader()),
     softTimeout,
     hardTimeout
   );
@@ -357,8 +361,19 @@ void Cpp2Connection::requestReceived(
 
   try {
     auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>
-      (t2r->req_->getHeader()->getProtocolId());
-    processor_->process(std::move(t2r),
+      (hreq->getHeader()->getProtocolId());
+
+    if (!server->getSkipDeserializeMessageBegin() &&
+        !apache::thrift::detail::ap::deserializeMessageBegin(
+          protoId,
+          up2r,
+          buf.get(),
+          reqContext,
+          worker_->getEventBase())) {
+      return;
+    }
+
+    processor_->process(std::move(up2r),
                         std::move(buf),
                         protoId,
                         reqContext,
@@ -463,6 +478,8 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
     req_->sendErrorWrapped(std::move(ew),
                            std::move(exCode),
+                           reqContext_.getMethodName(),
+                           reqContext_.getProtoSeqId(),
                            prepareSendCallback(sendCallback, observer));
     cancelTimeout();
   }
@@ -476,7 +493,10 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse() {
       connection_->getWorker()->getServer()->getLoad(*loadHeader_);
     headers[Cpp2Connection::loadHeader] = folly::to<std::string>(load);
   }
-  req_->sendTimeoutResponse(prepareSendCallback(nullptr, observer), headers);
+  req_->sendTimeoutResponse(reqContext_.getMethodName(),
+                            reqContext_.getProtoSeqId(),
+                            prepareSendCallback(nullptr, observer),
+                            headers);
   cancelTimeout();
 }
 
