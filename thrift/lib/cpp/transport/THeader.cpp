@@ -754,6 +754,19 @@ unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
   return buf;
 }
 
+std::unique_ptr<THeader> THeader::clone() {
+  auto clone = folly::make_unique<THeader>();
+  clone->setProtocolId(protoId_);
+  clone->setTransforms(writeTrans_);
+  clone->setMinCompressBytes(minCompressBytes_);
+  clone->setSequenceNumber(seqId);
+  clone->setClientType(clientType);
+  clone->setFlags(flags_);
+  clone->forceClientType(forceClientType_);
+
+  return clone;
+}
+
 void THeader::resetProtocol() {
   // Set to anything except HTTP type so we don't flush again
   clientType = THRIFT_HEADER_CLIENT_TYPE;

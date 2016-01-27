@@ -149,6 +149,11 @@ class THeader {
     std::vector<uint16_t>& writeTrans,
     size_t minCompressBytes);
 
+  /**
+   * Clone a new THeader. Metadata is copied, but not headers.
+   */
+  std::unique_ptr<THeader> clone();
+
   uint16_t getNumTransforms(std::vector<uint16_t>& transforms) const {
     return transforms.size();
   }

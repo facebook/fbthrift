@@ -333,12 +333,7 @@ void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
   // touches the per-request THeader at any time. This builds a new THeader
   // and only reads certain fields from header_. To avoid race condition,
   // DO NOT read any header from the per-request THeader.
-  timeoutHeader_ = folly::make_unique<THeader>();
-  timeoutHeader_->setProtocolId(header_->getProtocolId());
-  timeoutHeader_->setTransforms(header_->getWriteTransforms());
-  timeoutHeader_->setMinCompressBytes(header_->getMinCompressBytes());
-  timeoutHeader_->setSequenceNumber(header_->getSequenceNumber());
-  timeoutHeader_->setClientType(header_->getClientType());
+  timeoutHeader_ = header_->clone();
   timeoutHeader_->setHeader("ex", kTaskExpiredErrorCode);
   for (const auto& it : headers) {
     timeoutHeader_->setHeader(it.first, it.second);

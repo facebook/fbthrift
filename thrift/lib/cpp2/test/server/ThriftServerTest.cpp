@@ -257,6 +257,8 @@ TEST(ThriftServer, ClientTimeoutTest) {
           } catch (const TApplicationException& e) {
             timeout = true;
             EXPECT_EQ(int(TApplicationException::TIMEOUT), int(e.getType()));
+            EXPECT_TRUE(state.header()->getFlags() &
+                HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
             return;
           }
           timeout = false;
