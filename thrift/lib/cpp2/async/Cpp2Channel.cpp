@@ -39,22 +39,30 @@ namespace apache { namespace thrift {
 Cpp2Channel::Cpp2Channel(
   const std::shared_ptr<TAsyncTransport>& transport,
   std::unique_ptr<FramingHandler> framingHandler,
-  std::unique_ptr<ProtectionHandler> protectionHandler)
+  std::unique_ptr<ProtectionHandler> protectionHandler,
+  std::unique_ptr<SaslNegotiationHandler> saslNegotiationHandler)
     : transport_(transport)
     , queue_(new IOBufQueue(IOBufQueue::cacheChainLength()))
     , recvCallback_(nullptr)
     , eofInvoked_(false)
     , protectionHandler_(std::move(protectionHandler))
-    , framingHandler_(std::move(framingHandler)) {
+    , framingHandler_(std::move(framingHandler))
+    , saslNegotiationHandler_(std::move(saslNegotiationHandler)) {
   if (!protectionHandler_) {
     protectionHandler_.reset(new ProtectionHandler);
   }
   framingHandler_->setProtectionHandler(protectionHandler_.get());
+
+  if (!saslNegotiationHandler_) {
+    saslNegotiationHandler_ = folly::make_unique<DummySaslNegotiationHandler>();
+  }
+  saslNegotiationHandler_->setProtectionHandler(protectionHandler_.get());
   pipeline_ = Pipeline::create(
       TAsyncTransportHandler(transport),
       wangle::OutputBufferingHandler(),
       protectionHandler_,
       framingHandler_,
+      saslNegotiationHandler_,
       this);
   // Let the pipeline know that this handler owns the pipeline itself.
   // The pipeline will then avoid destruction order issues.

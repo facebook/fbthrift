@@ -35,7 +35,8 @@ DuplexChannel::DuplexChannel(Who::WhoEnum who,
   : cpp2Channel_(new DuplexCpp2Channel(
                      *this, transport,
                      make_unique<DuplexFramingHandler>(*this),
-                     make_unique<DuplexProtectionHandler>(*this)),
+                     make_unique<DuplexProtectionHandler>(*this),
+                     make_unique<DuplexSaslNegotiationHandler>(*this)),
                  folly::DelayedDestruction::Destructor())
   , clientChannel_(new DuplexClientChannel(*this, cpp2Channel_),
                    folly::DelayedDestruction::Destructor())

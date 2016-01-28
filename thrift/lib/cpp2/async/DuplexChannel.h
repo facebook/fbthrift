@@ -56,6 +56,10 @@ class DuplexChannel {
     return serverChannel_;
   }
 
+  std::shared_ptr<Cpp2Channel> getCpp2Channel() {
+    return cpp2Channel_;
+  }
+
  private:
   class DuplexClientChannel : public HeaderClientChannel {
    public:
@@ -110,8 +114,12 @@ class DuplexChannel {
     DuplexCpp2Channel(DuplexChannel& duplex,
         const std::shared_ptr<async::TAsyncTransport>& transport,
         std::unique_ptr<FramingHandler> framingHandler,
-        std::unique_ptr<ProtectionHandler> protectionHandler)
-      : Cpp2Channel(transport, std::move(framingHandler), std::move(protectionHandler))
+        std::unique_ptr<ProtectionHandler> protectionHandler,
+        std::unique_ptr<SaslNegotiationHandler> saslNegotiationHandler)
+      : Cpp2Channel(transport,
+                    std::move(framingHandler),
+                    std::move(protectionHandler),
+                    std::move(saslNegotiationHandler))
       , duplex_(duplex)
       , client_(nullptr)
       , server_(nullptr)
@@ -219,6 +227,52 @@ class DuplexChannel {
     }
    private:
     DuplexChannel& duplex_;
+  };
+
+  class DuplexSaslNegotiationHandler : public SaslNegotiationHandler {
+   public:
+    explicit DuplexSaslNegotiationHandler(DuplexChannel& duplex)
+        : SaslNegotiationHandler()
+        , duplex_(duplex)
+    {}
+
+    void read(Context* ctx,
+              std::pair<std::unique_ptr<folly::IOBuf>,
+                        std::unique_ptr<apache::thrift::transport::THeader>> bufAndHeader) override {
+      if (!serverHandler_) {
+        initializeHandlers(*(duplex_.getServerChannel()));
+      }
+
+      switch (duplex_.mainChannel_.get()) {
+      case Who::CLIENT:
+        clientHandler_->read(ctx, std::move(bufAndHeader));
+        break;
+      case Who::SERVER:
+        serverHandler_->read(ctx, std::move(bufAndHeader));
+        break;
+      case Who::UNKNOWN:
+        CHECK(false);
+      }
+    }
+
+    bool handleSecurityMessage(
+        std::unique_ptr<folly::IOBuf>&& buf,
+        std::unique_ptr<apache::thrift::transport::THeader>&& header) override {
+      return false;
+    }
+
+    void initializeHandlers(HeaderServerChannel& serverChannel) {
+      serverHandler_ = folly::make_unique<HeaderServerChannel::ServerSaslNegotiationHandler>(serverChannel);
+      serverHandler_->setProtectionHandler(duplex_.getCpp2Channel()->getProtectionHandler());
+      clientHandler_ = folly::make_unique<DummySaslNegotiationHandler>();
+      clientHandler_->setProtectionHandler(duplex_.getCpp2Channel()->getProtectionHandler());
+    }
+
+   private:
+    DuplexChannel& duplex_;
+    std::unique_ptr<HeaderServerChannel::ServerSaslNegotiationHandler>
+      serverHandler_{nullptr};
+    std::unique_ptr<DummySaslNegotiationHandler> clientHandler_{nullptr};
   };
 };
 
