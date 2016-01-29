@@ -168,7 +168,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   async/ResponseChannel.cpp \
 			   async/ProtectionHandler.cpp \
 			   async/FramingHandler.cpp \
-			   asybc/SaslNegotiationHandler.cpp \
+			   async/SaslNegotiationHandler.cpp \
 			   async/AsyncProcessor.cpp \
 			   async/DuplexChannel.cpp \
 			   security/KerberosSASLHandshakeClient.cpp \
