@@ -53,7 +53,7 @@ class DummySaslNegotiationHandler : public SaslNegotiationHandler {
 
   bool handleSecurityMessage(
       std::unique_ptr<folly::IOBuf>&& buf,
-      std::unique_ptr<apache::thrift::transport::THeader>&& header) {
+      std::unique_ptr<apache::thrift::transport::THeader>&& header) override {
     return false;
   }
 };
