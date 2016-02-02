@@ -317,15 +317,10 @@ class BaseThriftServer : public apache::thrift::server::TServer {
       uint32_t workerActiveRequests = 0,
       const apache::thrift::transport::THeader* header = nullptr) = 0;
 
-  // Get load percent of the server.  Must be a number between 0 and 100:
-  // 0 - no load, 100-fully loaded.
+  // Get load of the server.
   int64_t getLoad(const std::string& counter = "", bool check_custom = true);
-  virtual int64_t getRequestLoad() = 0;
-  virtual int64_t getConnectionLoad() = 0;
-  int64_t getQueueLoad();
-  virtual std::string getLoadInfo(int64_t reqload,
-                                   int64_t connload,
-                                   int64_t queueload);
+  virtual int64_t getRequestLoad();
+  virtual std::string getLoadInfo(int64_t load);
 
   void setObserver(const std::shared_ptr<
       apache::thrift::server::TServerObserver>& observer) {
