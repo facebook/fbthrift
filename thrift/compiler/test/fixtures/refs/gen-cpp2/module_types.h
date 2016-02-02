@@ -166,38 +166,50 @@ class MyUnion : private boost::totally_ordered<MyUnion> {
     }
   }
 
-  template<typename... T>
-  int32_t &set_anInteger(T&&... t) {
+  int32_t& set_anInteger(int32_t t = int32_t()) {
     __clear();
     type_ = Type::anInteger;
-    new (&value_.anInteger) int32_t(std::forward<T>(t)...);
+    ::new (std::addressof(value_.anInteger)) int32_t(t);
     return value_.anInteger;
   }
 
-  template<typename... T>
-  std::string &set_aString(T&&... t) {
+  std::string& set_aString(std::string const &t) {
     __clear();
     type_ = Type::aString;
-    new (&value_.aString) std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.aString)) std::string(t);
     return value_.aString;
   }
 
-  const int32_t& get_anInteger() const {
+  std::string& set_aString(std::string&& t) {
+    __clear();
+    type_ = Type::aString;
+    ::new (std::addressof(value_.aString)) std::string(std::move(t));
+    return value_.aString;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_aString(T&&... t) {
+    __clear();
+    type_ = Type::aString;
+    ::new (std::addressof(value_.aString)) std::string(std::forward<T>(t)...);
+    return value_.aString;
+  }
+
+  int32_t const & get_anInteger() const {
     assert(type_ == Type::anInteger);
     return value_.anInteger;
   }
 
-  const std::string& get_aString() const {
+  std::string const & get_aString() const {
     assert(type_ == Type::aString);
     return value_.aString;
   }
 
-  int32_t& mutable_anInteger() {
+  int32_t & mutable_anInteger() {
     assert(type_ == Type::anInteger);
     return value_.anInteger;
   }
 
-  std::string& mutable_aString() {
+  std::string & mutable_aString() {
     assert(type_ == Type::aString);
     return value_.aString;
   }

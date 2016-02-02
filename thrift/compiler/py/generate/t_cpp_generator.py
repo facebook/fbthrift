@@ -2302,6 +2302,8 @@ class CppGenerator(t_generator.Generator):
             else:
                 s.impl(data)
 
+        self._generated_types.append(obj)
+
         if not self.flag_implicit_templates:
             for a,b,c in self.protocols:
                 if a == 'simple_json' and not simplejson:
@@ -2667,32 +2669,105 @@ class CppGenerator(t_generator.Generator):
         # generate union accessors/settors
         if obj.is_union:
             for member in members:
-                t = self._type_name(self._get_true_type(member.type))
+                mtype = member.type
+                t = self._type_name(self._get_true_type(mtype))
                 setter_result = t
-                if self._is_reference(member):
+                is_reference = self._is_reference(member)
+                if is_reference:
                     setter_result = "std::unique_ptr<" + setter_result + ">"
-                with struct.defn('template<typename... T>\n'
-                                 '{0} &set_{{name}}(T&&... t)'
-                                 .format(setter_result),
-                                 in_header=True, name=member.name):
-                    out('__clear();')
-                    out('type_ = Type::{0};'.format(member.name))
-                    if self._is_reference(member):
-                        out('new (&value_.{0}) std::unique_ptr<{1}>('
-                                'new {1}(std::forward<T>(t)...));'.format(
-                                    member.name, t))
-                    else:
-                        out('new (&value_.{0}) {1}(std::forward<T>(t)...);'
-                                .format(member.name, t))
-                    out('return value_.{0};'.format(member.name))
+                # generate definition on the tcc file if layout information
+                # is incomplete (say, recursive types)
+                outofline = is_reference and not mtype.is_base_type \
+                    and not mtype in self._generated_types
+                setter_result += '&'
+                is_primitive = (mtype.is_base_type and not mtype.is_string) \
+                               or mtype.is_enum
+                if is_primitive:
+                    with struct.defn('{{result_type}} {{symbol_scope}}'
+                                     'set_{{symbol_name}}({0} t = {0}())'
+                                     .format(t),
+                                   name=member.name,
+                                   symbol_name=member.name,
+                                   result_type=setter_result,
+                                   in_header=True):
+                        out('__clear();')
+                        out('type_ = Type::{0};'.format(member.name))
+                        if is_reference:
+                            out(('::new (std::addressof(value_.{0})) '
+                                 'std::unique_ptr<{1}>(new {1}(t));')
+                                 .format(member.name, t))
+                        else:
+                            out('::new (std::addressof(value_.{0})) {1}(t);'
+                              .format(member.name, t))
+                        out('return value_.{0};'.format(member.name))
+                else:
+                    with struct.defn('{{result_type}} {{symbol_scope}}'
+                                     'set_{{symbol_name}}({0} const &t)'
+                                     .format(t),
+                                   name=member.name,
+                                   symbol_name=member.name,
+                                   result_type=setter_result,
+                                   in_header=not outofline):
+                        out('__clear();')
+                        out('type_ = Type::{0};'.format(member.name))
+                        if is_reference:
+                            out(('::new (std::addressof(value_.{0})) '
+                                 'std::unique_ptr<{1}>(new {1}(t));')
+                                 .format(member.name, t))
+                        else:
+                            out('::new (std::addressof(value_.{0})) {1}(t);'
+                              .format(member.name, t))
+                        out('return value_.{0};'.format(member.name))
+                    with struct.defn('{{result_type}} {{symbol_scope}}'
+                                     'set_{{symbol_name}}({0}&& t)'.format(t),
+                                   name=member.name,
+                                   symbol_name=member.name,
+                                   result_type=setter_result,
+                                   in_header=not outofline):
+                        out('__clear();')
+                        out('type_ = Type::{0};'.format(member.name))
+                        if is_reference:
+                            out(('::new (std::addressof(value_.{0})) '
+                                 'std::unique_ptr<{1}>(new {1}(std::move(t)));')
+                                 .format(member.name, t))
+                        else:
+                            out(('::new (std::addressof(value_.{0})) '
+                                 '{1}(std::move(t));')
+                                 .format(member.name, t))
+                        out('return value_.{0};'.format(member.name))
+                    with struct.defn('template<typename... T, typename '
+                                  '{tpl_default_0}> {result_type} '
+                                  '{symbol_scope}set_{symbol_name}(T&&... t)',
+                                   name=member.name,
+                                   symbol_name=member.name,
+                                   result_type=setter_result,
+                                   tpl_default_0='::apache::thrift::'
+                                    'safe_overload_t<{0}, T...>'.format(t),
+                                   output=self._out_tcc if outofline else None,
+                                   in_header=not outofline):
+                        out('__clear();')
+                        out('type_ = Type::{0};'.format(member.name))
+                        if is_reference:
+                            out(('::new (std::addressof(value_.{0})) '
+                                 'std::unique_ptr<{1}>(new {1}('
+                                 'std::forward<T>(t)...));')
+                                 .format(member.name, t))
+                        else:
+                            out(('::new (std::addressof(value_.{0})) '
+                                 '{1}(std::forward<T>(t)...);')
+                                 .format(member.name, t))
+                        out('return value_.{0};'.format(member.name))
 
             for member in members:
                 t = self._type_name(self._get_true_type(member.type))
                 if self._is_reference(member):
                     t = "std::unique_ptr<" + t + ">"
-                with struct.defn('get_{name}() const', in_header=True,
-                        name=member.name,
-                        modifiers='const {0}&'.format(t)):
+                with struct.defn('{result_type} {symbol_scope}'
+                               + 'get_{symbol_name}() const',
+                               name=member.name,
+                               symbol_name=member.name,
+                               result_type=t + ' const &',
+                               in_header=True):
                     out('assert(type_ == Type::{0});'.format(member.name))
                     out('return value_.{0};'.format(member.name))
 
@@ -2700,9 +2775,12 @@ class CppGenerator(t_generator.Generator):
                 t = self._type_name(self._get_true_type(member.type))
                 if self._is_reference(member):
                     t = "std::unique_ptr<" + t + ">"
-                with struct.defn('mutable_{name}()', in_header=True,
-                        name=member.name,
-                        modifiers='{0}&'.format(t)):
+                with struct.defn('{result_type} {symbol_scope}'
+                               + 'mutable_{symbol_name}()',
+                               name=member.name,
+                               symbol_name=member.name,
+                               result_type=t + ' &',
+                               in_header=True):
                     out('assert(type_ == Type::{0});'.format(member.name))
                     out('return value_.{0};'.format(member.name))
 
@@ -2710,8 +2788,12 @@ class CppGenerator(t_generator.Generator):
                 t = self._type_name(self._get_true_type(member.type))
                 if self._is_reference(member):
                     t = "std::unique_ptr<" + t + ">"
-                with struct.defn('move_{name}()', in_header=True,
-                        name=member.name, modifiers=t):
+                with struct.defn('{result_type} {symbol_scope}'
+                               + 'move_{symbol_name}()',
+                               name=member.name,
+                               symbol_name=member.name,
+                               result_type=t,
+                               in_header=True):
                     out('assert(type_ == Type::{0});'.format(member.name))
                     out('return std::move(value_.{0});'.format(member.name))
 
@@ -4608,6 +4690,7 @@ class CppGenerator(t_generator.Generator):
         self._types_out_impl = types_out_impl = context.impl
         self._types_out_h = types_out_h = context.h
         self._out_tcc = types_out_tcc = context.tcc
+        self._generated_types = []
         # Enter the scope (prints guard)
         s.acquire()
         # Include base types

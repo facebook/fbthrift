@@ -77,6 +77,28 @@ class Cpp2Ops {
   static constexpr apache::thrift::protocol::TType thriftType();
 };
 
+namespace detail {
+// Adapted from Fatal (https://github.com/facebook/fatal/)
+// Inlined here to keep the amount of mandatory dependencies at bay
+// For more context, see http://ericniebler.com/2013/08/07/
+// - Universal References and the Copy Constructor
+template <typename, typename...>
+struct is_safe_overload { using type = std::true_type; };
+template <typename Class, typename T>
+struct is_safe_overload<Class, T> {
+  using type = std::integral_constant<
+    bool,
+    !std::is_same<
+      Class,
+      typename std::remove_cv<typename std::remove_reference<T>::type>::type
+    >::value
+  >;
+};
+} // detail
+template <typename Class, typename... Args>
+using safe_overload_t = typename std::enable_if<
+  detail::is_safe_overload<Class, Args...>::type::value
+>::type;
 }} // apache::thrift
 
 #endif // #ifndef THRIFT_CPP2_H_

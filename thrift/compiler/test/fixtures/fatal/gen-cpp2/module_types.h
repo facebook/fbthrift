@@ -319,74 +319,84 @@ class union1 : private boost::totally_ordered<union1> {
     }
   }
 
-  template<typename... T>
-  int32_t &set_ui(T&&... t) {
+  int32_t& set_ui(int32_t t = int32_t()) {
     __clear();
     type_ = Type::ui;
-    new (&value_.ui) int32_t(std::forward<T>(t)...);
+    ::new (std::addressof(value_.ui)) int32_t(t);
     return value_.ui;
   }
 
-  template<typename... T>
-  double &set_ud(T&&... t) {
+  double& set_ud(double t = double()) {
     __clear();
     type_ = Type::ud;
-    new (&value_.ud) double(std::forward<T>(t)...);
+    ::new (std::addressof(value_.ud)) double(t);
     return value_.ud;
   }
 
-  template<typename... T>
-  std::string &set_us(T&&... t) {
+  std::string& set_us(std::string const &t) {
     __clear();
     type_ = Type::us;
-    new (&value_.us) std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.us)) std::string(t);
     return value_.us;
   }
 
-  template<typename... T>
-   ::test_cpp2::cpp_reflection::enum1 &set_ue(T&&... t) {
+  std::string& set_us(std::string&& t) {
+    __clear();
+    type_ = Type::us;
+    ::new (std::addressof(value_.us)) std::string(std::move(t));
+    return value_.us;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_us(T&&... t) {
+    __clear();
+    type_ = Type::us;
+    ::new (std::addressof(value_.us)) std::string(std::forward<T>(t)...);
+    return value_.us;
+  }
+
+   ::test_cpp2::cpp_reflection::enum1& set_ue( ::test_cpp2::cpp_reflection::enum1 t =  ::test_cpp2::cpp_reflection::enum1()) {
     __clear();
     type_ = Type::ue;
-    new (&value_.ue)  ::test_cpp2::cpp_reflection::enum1(std::forward<T>(t)...);
+    ::new (std::addressof(value_.ue))  ::test_cpp2::cpp_reflection::enum1(t);
     return value_.ue;
   }
 
-  const int32_t& get_ui() const {
+  int32_t const & get_ui() const {
     assert(type_ == Type::ui);
     return value_.ui;
   }
 
-  const double& get_ud() const {
+  double const & get_ud() const {
     assert(type_ == Type::ud);
     return value_.ud;
   }
 
-  const std::string& get_us() const {
+  std::string const & get_us() const {
     assert(type_ == Type::us);
     return value_.us;
   }
 
-  const  ::test_cpp2::cpp_reflection::enum1& get_ue() const {
+   ::test_cpp2::cpp_reflection::enum1 const & get_ue() const {
     assert(type_ == Type::ue);
     return value_.ue;
   }
 
-  int32_t& mutable_ui() {
+  int32_t & mutable_ui() {
     assert(type_ == Type::ui);
     return value_.ui;
   }
 
-  double& mutable_ud() {
+  double & mutable_ud() {
     assert(type_ == Type::ud);
     return value_.ud;
   }
 
-  std::string& mutable_us() {
+  std::string & mutable_us() {
     assert(type_ == Type::us);
     return value_.us;
   }
 
-   ::test_cpp2::cpp_reflection::enum1& mutable_ue() {
+   ::test_cpp2::cpp_reflection::enum1 & mutable_ue() {
     assert(type_ == Type::ue);
     return value_.ue;
   }
@@ -659,74 +669,84 @@ class union2 : private boost::totally_ordered<union2> {
     }
   }
 
-  template<typename... T>
-  int32_t &set_ui_2(T&&... t) {
+  int32_t& set_ui_2(int32_t t = int32_t()) {
     __clear();
     type_ = Type::ui_2;
-    new (&value_.ui_2) int32_t(std::forward<T>(t)...);
+    ::new (std::addressof(value_.ui_2)) int32_t(t);
     return value_.ui_2;
   }
 
-  template<typename... T>
-  double &set_ud_2(T&&... t) {
+  double& set_ud_2(double t = double()) {
     __clear();
     type_ = Type::ud_2;
-    new (&value_.ud_2) double(std::forward<T>(t)...);
+    ::new (std::addressof(value_.ud_2)) double(t);
     return value_.ud_2;
   }
 
-  template<typename... T>
-  std::string &set_us_2(T&&... t) {
+  std::string& set_us_2(std::string const &t) {
     __clear();
     type_ = Type::us_2;
-    new (&value_.us_2) std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.us_2)) std::string(t);
     return value_.us_2;
   }
 
-  template<typename... T>
-   ::test_cpp2::cpp_reflection::enum1 &set_ue_2(T&&... t) {
+  std::string& set_us_2(std::string&& t) {
+    __clear();
+    type_ = Type::us_2;
+    ::new (std::addressof(value_.us_2)) std::string(std::move(t));
+    return value_.us_2;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_us_2(T&&... t) {
+    __clear();
+    type_ = Type::us_2;
+    ::new (std::addressof(value_.us_2)) std::string(std::forward<T>(t)...);
+    return value_.us_2;
+  }
+
+   ::test_cpp2::cpp_reflection::enum1& set_ue_2( ::test_cpp2::cpp_reflection::enum1 t =  ::test_cpp2::cpp_reflection::enum1()) {
     __clear();
     type_ = Type::ue_2;
-    new (&value_.ue_2)  ::test_cpp2::cpp_reflection::enum1(std::forward<T>(t)...);
+    ::new (std::addressof(value_.ue_2))  ::test_cpp2::cpp_reflection::enum1(t);
     return value_.ue_2;
   }
 
-  const int32_t& get_ui_2() const {
+  int32_t const & get_ui_2() const {
     assert(type_ == Type::ui_2);
     return value_.ui_2;
   }
 
-  const double& get_ud_2() const {
+  double const & get_ud_2() const {
     assert(type_ == Type::ud_2);
     return value_.ud_2;
   }
 
-  const std::string& get_us_2() const {
+  std::string const & get_us_2() const {
     assert(type_ == Type::us_2);
     return value_.us_2;
   }
 
-  const  ::test_cpp2::cpp_reflection::enum1& get_ue_2() const {
+   ::test_cpp2::cpp_reflection::enum1 const & get_ue_2() const {
     assert(type_ == Type::ue_2);
     return value_.ue_2;
   }
 
-  int32_t& mutable_ui_2() {
+  int32_t & mutable_ui_2() {
     assert(type_ == Type::ui_2);
     return value_.ui_2;
   }
 
-  double& mutable_ud_2() {
+  double & mutable_ud_2() {
     assert(type_ == Type::ud_2);
     return value_.ud_2;
   }
 
-  std::string& mutable_us_2() {
+  std::string & mutable_us_2() {
     assert(type_ == Type::us_2);
     return value_.us_2;
   }
 
-   ::test_cpp2::cpp_reflection::enum1& mutable_ue_2() {
+   ::test_cpp2::cpp_reflection::enum1 & mutable_ue_2() {
     assert(type_ == Type::ue_2);
     return value_.ue_2;
   }
@@ -999,74 +1019,84 @@ class union3 : private boost::totally_ordered<union3> {
     }
   }
 
-  template<typename... T>
-  int32_t &set_ui_3(T&&... t) {
+  int32_t& set_ui_3(int32_t t = int32_t()) {
     __clear();
     type_ = Type::ui_3;
-    new (&value_.ui_3) int32_t(std::forward<T>(t)...);
+    ::new (std::addressof(value_.ui_3)) int32_t(t);
     return value_.ui_3;
   }
 
-  template<typename... T>
-  double &set_ud_3(T&&... t) {
+  double& set_ud_3(double t = double()) {
     __clear();
     type_ = Type::ud_3;
-    new (&value_.ud_3) double(std::forward<T>(t)...);
+    ::new (std::addressof(value_.ud_3)) double(t);
     return value_.ud_3;
   }
 
-  template<typename... T>
-  std::string &set_us_3(T&&... t) {
+  std::string& set_us_3(std::string const &t) {
     __clear();
     type_ = Type::us_3;
-    new (&value_.us_3) std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.us_3)) std::string(t);
     return value_.us_3;
   }
 
-  template<typename... T>
-   ::test_cpp2::cpp_reflection::enum1 &set_ue_3(T&&... t) {
+  std::string& set_us_3(std::string&& t) {
+    __clear();
+    type_ = Type::us_3;
+    ::new (std::addressof(value_.us_3)) std::string(std::move(t));
+    return value_.us_3;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_us_3(T&&... t) {
+    __clear();
+    type_ = Type::us_3;
+    ::new (std::addressof(value_.us_3)) std::string(std::forward<T>(t)...);
+    return value_.us_3;
+  }
+
+   ::test_cpp2::cpp_reflection::enum1& set_ue_3( ::test_cpp2::cpp_reflection::enum1 t =  ::test_cpp2::cpp_reflection::enum1()) {
     __clear();
     type_ = Type::ue_3;
-    new (&value_.ue_3)  ::test_cpp2::cpp_reflection::enum1(std::forward<T>(t)...);
+    ::new (std::addressof(value_.ue_3))  ::test_cpp2::cpp_reflection::enum1(t);
     return value_.ue_3;
   }
 
-  const int32_t& get_ui_3() const {
+  int32_t const & get_ui_3() const {
     assert(type_ == Type::ui_3);
     return value_.ui_3;
   }
 
-  const double& get_ud_3() const {
+  double const & get_ud_3() const {
     assert(type_ == Type::ud_3);
     return value_.ud_3;
   }
 
-  const std::string& get_us_3() const {
+  std::string const & get_us_3() const {
     assert(type_ == Type::us_3);
     return value_.us_3;
   }
 
-  const  ::test_cpp2::cpp_reflection::enum1& get_ue_3() const {
+   ::test_cpp2::cpp_reflection::enum1 const & get_ue_3() const {
     assert(type_ == Type::ue_3);
     return value_.ue_3;
   }
 
-  int32_t& mutable_ui_3() {
+  int32_t & mutable_ui_3() {
     assert(type_ == Type::ui_3);
     return value_.ui_3;
   }
 
-  double& mutable_ud_3() {
+  double & mutable_ud_3() {
     assert(type_ == Type::ud_3);
     return value_.ud_3;
   }
 
-  std::string& mutable_us_3() {
+  std::string & mutable_us_3() {
     assert(type_ == Type::us_3);
     return value_.us_3;
   }
 
-   ::test_cpp2::cpp_reflection::enum1& mutable_ue_3() {
+   ::test_cpp2::cpp_reflection::enum1 & mutable_ue_3() {
     assert(type_ == Type::ue_3);
     return value_.ue_3;
   }

@@ -61,6 +61,19 @@ class Definition(Primitive):
         # TODO error in case badly formatted (str(self) doesn't contain
         # {name})
         fields = {}
+        if 'symbol_name' in self:
+            fields['symbol_name'] = self.symbol_name
+        if 'result_type' in self:
+            fields['result_type'] = self.result_type
+        fields['symbol_scope'] = ''
+        tpl_default_n = 0
+        tpl_default_list = []
+        while 'tpl_default_' + str(tpl_default_n) in self:
+            s = 'tpl_default_' + str(tpl_default_n)
+            tpl_default_list.append(s)
+            fields[s] = '= ' + str(getattr(self, s))
+            tpl_default_n = tpl_default_n + 1
+
         if 'name' not in self:
             if not self.in_header:
                 raise AttributeError('Cannot find mandatory keyword "name"'
@@ -112,6 +125,9 @@ class Definition(Primitive):
                 # Use previously defined txt
                 pass
             else:
+                for i in tpl_default_list:
+                    fields[i] = ''
+                fields['symbol_scope'] = self.parent.opts.abspath + '::'
                 fields['name'] = ''.join((self.parent.opts.abspath,
                     '::', self.name))
                 txt = str(self).format(**fields)

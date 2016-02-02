@@ -216,74 +216,112 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
     }
   }
 
-  template<typename... T>
-  int64_t &set_intValue(T&&... t) {
+  int64_t& set_intValue(int64_t t = int64_t()) {
     __clear();
     type_ = Type::intValue;
-    new (&value_.intValue) int64_t(std::forward<T>(t)...);
+    ::new (std::addressof(value_.intValue)) int64_t(t);
     return value_.intValue;
   }
 
-  template<typename... T>
-  std::string &set_stringValue(T&&... t) {
+  std::string& set_stringValue(std::string const &t) {
     __clear();
     type_ = Type::stringValue;
-    new (&value_.stringValue) std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.stringValue)) std::string(t);
     return value_.stringValue;
   }
 
-  template<typename... T>
-  std::vector<int64_t> &set_intListValue(T&&... t) {
+  std::string& set_stringValue(std::string&& t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(std::move(t));
+    return value_.stringValue;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_stringValue(T&&... t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(std::forward<T>(t)...);
+    return value_.stringValue;
+  }
+
+  std::vector<int64_t>& set_intListValue(std::vector<int64_t> const &t) {
     __clear();
     type_ = Type::intListValue;
-    new (&value_.intListValue) std::vector<int64_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.intListValue)) std::vector<int64_t>(t);
     return value_.intListValue;
   }
 
-  template<typename... T>
-  std::vector<std::string> &set_stringListValue(T&&... t) {
+  std::vector<int64_t>& set_intListValue(std::vector<int64_t>&& t) {
+    __clear();
+    type_ = Type::intListValue;
+    ::new (std::addressof(value_.intListValue)) std::vector<int64_t>(std::move(t));
+    return value_.intListValue;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector<int64_t>, T...>> std::vector<int64_t>& set_intListValue(T&&... t) {
+    __clear();
+    type_ = Type::intListValue;
+    ::new (std::addressof(value_.intListValue)) std::vector<int64_t>(std::forward<T>(t)...);
+    return value_.intListValue;
+  }
+
+  std::vector<std::string>& set_stringListValue(std::vector<std::string> const &t) {
     __clear();
     type_ = Type::stringListValue;
-    new (&value_.stringListValue) std::vector<std::string>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.stringListValue)) std::vector<std::string>(t);
     return value_.stringListValue;
   }
 
-  const int64_t& get_intValue() const {
+  std::vector<std::string>& set_stringListValue(std::vector<std::string>&& t) {
+    __clear();
+    type_ = Type::stringListValue;
+    ::new (std::addressof(value_.stringListValue)) std::vector<std::string>(std::move(t));
+    return value_.stringListValue;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector<std::string>, T...>> std::vector<std::string>& set_stringListValue(T&&... t) {
+    __clear();
+    type_ = Type::stringListValue;
+    ::new (std::addressof(value_.stringListValue)) std::vector<std::string>(std::forward<T>(t)...);
+    return value_.stringListValue;
+  }
+
+  int64_t const & get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  const std::string& get_stringValue() const {
+  std::string const & get_stringValue() const {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  const std::vector<int64_t>& get_intListValue() const {
+  std::vector<int64_t> const & get_intListValue() const {
     assert(type_ == Type::intListValue);
     return value_.intListValue;
   }
 
-  const std::vector<std::string>& get_stringListValue() const {
+  std::vector<std::string> const & get_stringListValue() const {
     assert(type_ == Type::stringListValue);
     return value_.stringListValue;
   }
 
-  int64_t& mutable_intValue() {
+  int64_t & mutable_intValue() {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  std::string& mutable_stringValue() {
+  std::string & mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  std::vector<int64_t>& mutable_intListValue() {
+  std::vector<int64_t> & mutable_intListValue() {
     assert(type_ == Type::intListValue);
     return value_.intListValue;
   }
 
-  std::vector<std::string>& mutable_stringListValue() {
+  std::vector<std::string> & mutable_stringListValue() {
     assert(type_ == Type::stringListValue);
     return value_.stringListValue;
   }
