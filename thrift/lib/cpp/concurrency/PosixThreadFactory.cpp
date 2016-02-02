@@ -229,6 +229,9 @@ int PosixThreadFactory::Impl::toPthreadPriority(POLICY policy,
   float stepsperquanta =
       static_cast<float>(max_priority - min_priority) / quanta;
 
+#ifdef _MSC_VER
+  return static_cast<int>(min_priority + stepsperquanta * priority);
+#else
   if (priority >= LOWEST && priority <= HIGHEST) {
     return static_cast<int>(min_priority + stepsperquanta * priority);
   } else if (priority == INHERITED && pthread_policy == SCHED_OTHER) {
@@ -245,6 +248,7 @@ int PosixThreadFactory::Impl::toPthreadPriority(POLICY policy,
   }
 
   return static_cast<int>(min_priority + stepsperquanta * NORMAL);
+#endif
 }
 
 PosixThreadFactory::Impl::Impl(POLICY policy,
