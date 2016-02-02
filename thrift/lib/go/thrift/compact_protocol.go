@@ -50,6 +50,7 @@ const (
 	COMPACT_SET           = 0x0A
 	COMPACT_MAP           = 0x0B
 	COMPACT_STRUCT        = 0x0C
+	COMPACT_FLOAT         = 0x0D
 )
 
 var (
@@ -65,6 +66,7 @@ func init() {
 		I32:    COMPACT_I32,
 		I64:    COMPACT_I64,
 		DOUBLE: COMPACT_DOUBLE,
+		FLOAT:  COMPACT_FLOAT,
 		STRING: COMPACT_BINARY,
 		LIST:   COMPACT_LIST,
 		SET:    COMPACT_SET,
@@ -294,6 +296,14 @@ func (p *TCompactProtocol) WriteI64(value int64) error {
 func (p *TCompactProtocol) WriteDouble(value float64) error {
 	buf := p.buffer[0:8]
 	binary.LittleEndian.PutUint64(buf, math.Float64bits(value))
+	_, err := p.trans.Write(buf)
+	return NewTProtocolException(err)
+}
+
+// Write a float to the wire as 4 bytes.
+func (p *TCompactProtocol) WriteFloat(value float32) error {
+	buf := p.buffer[0:4]
+	binary.LittleEndian.PutUint32(buf, math.Float32bits(value))
 	_, err := p.trans.Write(buf)
 	return NewTProtocolException(err)
 }
@@ -545,6 +555,16 @@ func (p *TCompactProtocol) ReadDouble() (value float64, err error) {
 	return math.Float64frombits(p.bytesToUint64(longBits)), nil
 }
 
+// No magic here - just read a float off the wire.
+func (p *TCompactProtocol) ReadFloat() (value float32, err error) {
+	bits := p.buffer[0:4]
+	_, e := io.ReadFull(p.trans, bits)
+	if e != nil {
+		return 0.0, NewTProtocolException(e)
+	}
+	return math.Float32frombits(p.bytesToUint32(bits)), nil
+}
+
 // Reads a []byte (via readBinary), and then UTF-8 decodes it.
 func (p *TCompactProtocol) ReadString() (value string, err error) {
 	length, e := p.readVarint32()
@@ -737,6 +757,15 @@ func (p *TCompactProtocol) zigzagToInt64(n int64) int64 {
 	return int64(u>>1) ^ -(n & 1)
 }
 
+func (p *TCompactProtocol) bytesToInt32(b []byte) int32 {
+	return int32(binary.LittleEndian.Uint32(b))
+}
+
+func (p *TCompactProtocol) bytesToUint32(b []byte) uint32 {
+	return binary.LittleEndian.Uint32(b)
+
+}
+
 // Note that it's important that the mask bytes are long literals,
 // otherwise they'll default to ints, and when you shift an int left 56 bits,
 // you just get a messed up int.
@@ -777,6 +806,8 @@ func (p *TCompactProtocol) getTType(t tCompactType) (TType, error) {
 		return I64, nil
 	case COMPACT_DOUBLE:
 		return DOUBLE, nil
+	case COMPACT_FLOAT:
+		return FLOAT, nil
 	case COMPACT_BINARY:
 		return STRING, nil
 	case COMPACT_LIST:

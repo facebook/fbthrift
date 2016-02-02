@@ -67,6 +67,22 @@ func NewNumericFromDouble(dValue float64) Numeric {
 	return &numeric{iValue: iValue, dValue: dValue, sValue: sValue, isNil: isNil}
 }
 
+func NewNumericFromFloat(dValue float32) Numeric {
+	if math.IsInf(float64(dValue), 1) {
+		return INFINITY
+	}
+	if math.IsInf(float64(dValue), -1) {
+		return NEGATIVE_INFINITY
+	}
+	if math.IsNaN(float64(dValue)) {
+		return NAN
+	}
+	iValue := int32(dValue)
+	sValue := strconv.FormatFloat(float64(dValue), 'g', 10, 32)
+	isNil := false
+	return &numeric{iValue: int64(iValue), dValue: float64(dValue), sValue: sValue, isNil: isNil}
+}
+
 func NewNumericFromI64(iValue int64) Numeric {
 	dValue := float64(iValue)
 	sValue := string(iValue)

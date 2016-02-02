@@ -43,6 +43,8 @@ func compareStructs(m, m1 TestStruct) (bool, error) {
 		return false, errors.New("Int64 not equal")
 	case m.D != m1.D:
 		return false, errors.New("Double not equal")
+	case m.F != m1.F:
+		return false, errors.New("Float not equal")
 	case m.St != m1.St:
 		return false, errors.New("String not equal")
 
@@ -81,6 +83,7 @@ func ProtocolTest1(test *testing.T, pf ProtocolFactory) (bool, error) {
 	m.Int32 = 2
 	m.Int64 = 3
 	m.D = 4.1
+	m.F = 3.14
 	m.St = "Test"
 	m.Bin = make([]byte, 10)
 	m.StringMap = make(map[string]string, 5)
@@ -115,6 +118,7 @@ func ProtocolTest2(test *testing.T, pf ProtocolFactory) (bool, error) {
 	m.Int32 = 2
 	m.Int64 = 3
 	m.D = 4.1
+	m.F = 3.14
 	m.St = "Test"
 	m.Bin = make([]byte, 10)
 	m.StringMap = make(map[string]string, 5)

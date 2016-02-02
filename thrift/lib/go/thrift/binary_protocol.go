@@ -212,6 +212,10 @@ func (p *TBinaryProtocol) WriteDouble(value float64) error {
 	return p.WriteI64(int64(math.Float64bits(value)))
 }
 
+func (p *TBinaryProtocol) WriteFloat(value float32) error {
+	return p.WriteI32(int32(math.Float32bits(value)))
+}
+
 func (p *TBinaryProtocol) WriteString(value string) error {
 	e := p.WriteI32(int32(len(value)))
 	if e != nil {
@@ -421,6 +425,13 @@ func (p *TBinaryProtocol) ReadDouble() (value float64, err error) {
 	buf := p.buffer[0:8]
 	err = p.readAll(buf)
 	value = math.Float64frombits(binary.BigEndian.Uint64(buf))
+	return value, err
+}
+
+func (p *TBinaryProtocol) ReadFloat() (value float32, err error) {
+	buf := p.buffer[0:4]
+	err = p.readAll(buf)
+	value = math.Float32frombits(binary.BigEndian.Uint32(buf))
 	return value, err
 }
 

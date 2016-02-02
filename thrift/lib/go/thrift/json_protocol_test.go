@@ -350,6 +350,82 @@ func TestReadJSONProtocolDouble(t *testing.T) {
 	}
 }
 
+func TestWriteJSONProtocolFloat(t *testing.T) {
+	thetype := "float"
+	trans := NewTMemoryBuffer()
+	p := NewTJSONProtocol(trans)
+	for _, value := range FLOAT_VALUES {
+		if e := p.WriteFloat(value); e != nil {
+			t.Fatalf("Unable to write %s value %v due to error: %s", thetype, value, e.Error())
+		}
+		if e := p.Flush(); e != nil {
+			t.Fatalf("Unable to write %s value %v due to error flushing: %s", thetype, value, e.Error())
+		}
+		s := trans.String()
+		if math.IsInf(float64(value), 1) {
+			if s != jsonQuote(JSON_INFINITY) {
+				t.Fatalf("Bad value for %s %v, wrote: %v, expected: %v", thetype, value, s, jsonQuote(JSON_INFINITY))
+			}
+		} else if math.IsInf(float64(value), -1) {
+			if s != jsonQuote(JSON_NEGATIVE_INFINITY) {
+				t.Fatalf("Bad value for %s %v, wrote: %v, expected: %v", thetype, value, s, jsonQuote(JSON_NEGATIVE_INFINITY))
+			}
+		} else if math.IsNaN(float64(value)) {
+			if s != jsonQuote(JSON_NAN) {
+				t.Fatalf("Bad value for %s %v, wrote: %v, expected: %v", thetype, value, s, jsonQuote(JSON_NAN))
+			}
+		} else {
+			if s != fmt.Sprint(value) {
+				t.Fatalf("Bad value for %s %v: %s", thetype, value, s)
+			}
+			v := float32(0)
+			if err := json.Unmarshal([]byte(s), &v); err != nil || v != value {
+				t.Fatalf("Bad json-decoded value for %s %v, wrote: '%s', expected: '%v'", thetype, value, s, v)
+			}
+		}
+		trans.Reset()
+	}
+	trans.Close()
+}
+
+func TestReadJSONProtocolFloat(t *testing.T) {
+	thetype := "float"
+	for _, value := range FLOAT_VALUES {
+		trans := NewTMemoryBuffer()
+		p := NewTJSONProtocol(trans)
+		n := NewNumericFromFloat(value)
+		trans.WriteString(n.String())
+		trans.Flush()
+		s := trans.String()
+		v, e := p.ReadFloat()
+		if e != nil {
+			t.Fatalf("Unable to read %s value %v due to error: %s", thetype, value, e.Error())
+		}
+		if math.IsInf(float64(value), 1) {
+			if !math.IsInf(float64(v), 1) {
+				t.Fatalf("Bad value for %s %v, wrote: %v, received: %v", thetype, value, s, v)
+			}
+		} else if math.IsInf(float64(value), -1) {
+			if !math.IsInf(float64(v), -1) {
+				t.Fatalf("Bad value for %s %v, wrote: %v, received: %v", thetype, value, s, v)
+			}
+		} else if math.IsNaN(float64(value)) {
+			if !math.IsNaN(float64(v)) {
+				t.Fatalf("Bad value for %s %v, wrote: %v, received: %v", thetype, value, s, v)
+			}
+		} else {
+			if v != value {
+				t.Fatalf("Bad value for %s value %v, wrote: %v, received: %v", thetype, value, s, v)
+			}
+			if err := json.Unmarshal([]byte(s), &v); err != nil || v != value {
+				t.Fatalf("Bad json-decoded value for %s %v, wrote: '%s', expected: '%v'", thetype, value, s, v)
+			}
+		}
+		trans.Reset()
+		trans.Close()
+	}
+}
+
 func TestWriteJSONProtocolString(t *testing.T) {
 	thetype := "string"
 	trans := NewTMemoryBuffer()

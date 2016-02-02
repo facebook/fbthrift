@@ -190,6 +190,10 @@ func (p *TJSONProtocol) WriteDouble(v float64) error {
 	return p.OutputF64(v)
 }
 
+func (p *TJSONProtocol) WriteFloat(v float32) error {
+	return p.OutputF32(v)
+}
+
 func (p *TJSONProtocol) WriteString(v string) error {
 	return p.OutputString(v)
 }
@@ -374,6 +378,11 @@ func (p *TJSONProtocol) ReadDouble() (float64, error) {
 	return v, err
 }
 
+func (p *TJSONProtocol) ReadFloat() (float32, error) {
+	v, _, err := p.ParseF32()
+	return v, err
+}
+
 func (p *TJSONProtocol) ReadString() (string, error) {
 	var v string
 	if err := p.ParsePreValue(); err != nil {
@@ -533,6 +542,8 @@ func (p *TJSONProtocol) TypeIdToString(fieldType TType) (string, error) {
 		return "i64", nil
 	case DOUBLE:
 		return "dbl", nil
+	case FLOAT:
+		return "flt", nil
 	case STRING:
 		return "str", nil
 	case STRUCT:
@@ -563,6 +574,8 @@ func (p *TJSONProtocol) StringToTypeId(fieldType string) (TType, error) {
 		return TType(I64), nil
 	case "dbl":
 		return TType(DOUBLE), nil
+	case "flt":
+		return TType(FLOAT), nil
 	case "str":
 		return TType(STRING), nil
 	case "rec":

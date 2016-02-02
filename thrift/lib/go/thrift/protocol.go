@@ -44,6 +44,7 @@ type TProtocol interface {
 	WriteI32(value int32) error
 	WriteI64(value int64) error
 	WriteDouble(value float64) error
+	WriteFloat(value float32) error
 	WriteString(value string) error
 	WriteBinary(value []byte) error
 
@@ -65,6 +66,7 @@ type TProtocol interface {
 	ReadI32() (value int32, err error)
 	ReadI64() (value int64, err error)
 	ReadDouble() (value float64, err error)
+	ReadFloat() (value float32, err error)
 	ReadString() (value string, err error)
 	ReadBinary() (value []byte, err error)
 
@@ -104,6 +106,9 @@ func Skip(self TProtocol, fieldType TType, maxDepth int) (err error) {
 		return
 	case DOUBLE:
 		_, err = self.ReadDouble()
+		return
+	case FLOAT:
+		_, err = self.ReadFloat()
 		return
 	case STRING:
 		_, err = self.ReadString()

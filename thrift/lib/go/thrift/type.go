@@ -41,6 +41,7 @@ const (
 	UTF8   = 16
 	UTF16  = 17
 	BINARY = 18
+	FLOAT  = 19
 )
 
 var typeNames = map[int]string{

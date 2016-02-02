@@ -142,6 +142,11 @@ func (tdp *TDebugProtocol) WriteDouble(value float64) error {
 	log.Printf("%sWriteDouble(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
+func (tdp *TDebugProtocol) WriteFloat(value float32) error {
+	err := tdp.Delegate.WriteFloat(value)
+	log.Printf("%sWriteFloat(value=%#v) => %#v", tdp.LogPrefix, value, err)
+	return err
+}
 func (tdp *TDebugProtocol) WriteString(value string) error {
 	err := tdp.Delegate.WriteString(value)
 	log.Printf("%sWriteString(value=%#v) => %#v", tdp.LogPrefix, value, err)
@@ -241,6 +246,11 @@ func (tdp *TDebugProtocol) ReadI64() (value int64, err error) {
 func (tdp *TDebugProtocol) ReadDouble() (value float64, err error) {
 	value, err = tdp.Delegate.ReadDouble()
 	log.Printf("%sReadDouble() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
+	return
+}
+func (tdp *TDebugProtocol) ReadFloat() (value float32, err error) {
+	value, err = tdp.Delegate.ReadFloat()
+	log.Printf("%sReadFloat() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
 func (tdp *TDebugProtocol) ReadString() (value string, err error) {

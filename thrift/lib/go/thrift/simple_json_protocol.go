@@ -257,6 +257,10 @@ func (p *TSimpleJSONProtocol) WriteDouble(v float64) error {
 	return p.OutputF64(v)
 }
 
+func (p *TSimpleJSONProtocol) WriteFloat(v float32) error {
+	return p.OutputF32(v)
+}
+
 func (p *TSimpleJSONProtocol) WriteString(v string) error {
 	return p.OutputString(v)
 }
@@ -488,6 +492,11 @@ func (p *TSimpleJSONProtocol) ReadDouble() (float64, error) {
 	return v, err
 }
 
+func (p *TSimpleJSONProtocol) ReadFloat() (float32, error) {
+	v, _, err := p.ParseF32()
+	return v, err
+}
+
 func (p *TSimpleJSONProtocol) ReadString() (string, error) {
 	var v string
 	if err := p.ParsePreValue(); err != nil {
@@ -645,6 +654,31 @@ func (p *TSimpleJSONProtocol) OutputF64(value float64) error {
 		v = string(JSON_QUOTE) + JSON_NEGATIVE_INFINITY + string(JSON_QUOTE)
 	} else {
 		v = strconv.FormatFloat(value, 'g', -1, 64)
+		switch _ParseContext(p.dumpContext[len(p.dumpContext)-1]) {
+		case _CONTEXT_IN_OBJECT_FIRST, _CONTEXT_IN_OBJECT_NEXT_KEY:
+			v = string(JSON_QUOTE) + v + string(JSON_QUOTE)
+		default:
+		}
+	}
+	if e := p.OutputStringData(v); e != nil {
+		return e
+	}
+	return p.OutputPostValue()
+}
+
+func (p *TSimpleJSONProtocol) OutputF32(value float32) error {
+	if e := p.OutputPreValue(); e != nil {
+		return e
+	}
+	var v string
+	if math.IsNaN(float64(value)) {
+		v = string(JSON_QUOTE) + JSON_NAN + string(JSON_QUOTE)
+	} else if math.IsInf(float64(value), 1) {
+		v = string(JSON_QUOTE) + JSON_INFINITY + string(JSON_QUOTE)
+	} else if math.IsInf(float64(value), -1) {
+		v = string(JSON_QUOTE) + JSON_NEGATIVE_INFINITY + string(JSON_QUOTE)
+	} else {
+		v = strconv.FormatFloat(float64(value), 'g', -1, 32)
 		switch _ParseContext(p.dumpContext[len(p.dumpContext)-1]) {
 		case _CONTEXT_IN_OBJECT_FIRST, _CONTEXT_IN_OBJECT_NEXT_KEY:
 			v = string(JSON_QUOTE) + v + string(JSON_QUOTE)
@@ -956,6 +990,28 @@ func (p *TSimpleJSONProtocol) ParseF64() (float64, bool, error) {
 		isnull = (num == nil)
 		if !isnull {
 			value = num.Float64()
+		}
+		if err != nil {
+			return value, isnull, err
+		}
+	}
+	return value, isnull, p.ParsePostValue()
+}
+
+func (p *TSimpleJSONProtocol) ParseF32() (float32, bool, error) {
+	if err := p.ParsePreValue(); err != nil {
+		return 0, false, err
+	}
+	var value float32
+	var isnull bool
+	if p.safePeekContains(JSON_NULL) {
+		p.reader.Read(make([]byte, len(JSON_NULL)))
+		isnull = true
+	} else {
+		num, err := p.readNumeric()
+		isnull = (num == nil)
+		if !isnull {
+			value = num.Float32()
 		}
 		if err != nil {
 			return value, isnull, err

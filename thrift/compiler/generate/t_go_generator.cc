@@ -323,15 +323,12 @@ bool t_go_generator::omit_initialization(t_field* tfield) {
     case t_base_type::TYPE_I64:
       return value->get_integer() == 0;
     case t_base_type::TYPE_DOUBLE:
+    case t_base_type::TYPE_FLOAT:
       if (value->get_type() == t_const_value::CV_INTEGER) {
         return value->get_integer() == 0;
       } else {
         return value->get_double() == 0.;
       }
-
-    case t_base_type::TYPE_FLOAT:
-      throw "Float type not supported";
-
     }
   }
   return false;
@@ -384,10 +381,8 @@ bool t_go_generator::is_pointer_field(t_field* tfield, bool in_container_value) 
     case t_base_type::TYPE_I32:
     case t_base_type::TYPE_I64:
     case t_base_type::TYPE_DOUBLE:
-      return !has_default;
-
     case t_base_type::TYPE_FLOAT:
-      throw "Float type not supported";
+      return !has_default;
     }
   } else if (type->is_enum()) {
     return !has_default;
@@ -961,6 +956,7 @@ string t_go_generator::render_const_value(t_type* type, t_const_value* value, co
       break;
 
     case t_base_type::TYPE_DOUBLE:
+    case t_base_type::TYPE_FLOAT:
       if (value->get_type() == t_const_value::CV_INTEGER) {
         out << value->get_integer();
       } else {
@@ -2290,6 +2286,15 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
           f_remote << indent() << "}" << endl;
           break;
 
+        case t_base_type::TYPE_FLOAT:
+          f_remote << indent() << "argvalue" << i << ", " << err
+                   << " := (strconv.ParseFloat(flag.Arg(" << flagArg << "), 32))" << endl;
+          f_remote << indent() << "if " << err << " != nil {" << endl;
+          f_remote << indent() << "  Usage()" << endl;
+          f_remote << indent() << "  return" << endl;
+          f_remote << indent() << "}" << endl;
+          break;
+
         default:
           throw("Invalid base type in generate_service_remote");
         }
@@ -2393,6 +2398,7 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
         case t_base_type::TYPE_I32:
         case t_base_type::TYPE_I64:
         case t_base_type::TYPE_DOUBLE:
+        case t_base_type::TYPE_FLOAT:
           f_remote << "value" << i;
           break;
 
@@ -2788,6 +2794,10 @@ void t_go_generator::generate_deserialize_field(ofstream& out,
         out << "ReadDouble()";
         break;
 
+      case t_base_type::TYPE_FLOAT:
+        out << "ReadFloat()";
+        break;
+
       default:
         throw "compiler error: no Go name for base type " + t_base_type::t_base_name(tbase);
       }
@@ -3038,6 +3048,10 @@ void t_go_generator::generate_serialize_field(ofstream& out,
 
       case t_base_type::TYPE_DOUBLE:
         out << "WriteDouble(float64(" << name << "))";
+        break;
+
+      case t_base_type::TYPE_FLOAT:
+        out << "WriteFloat(float32(" << name << "))";
         break;
 
       default:
@@ -3404,7 +3418,7 @@ string t_go_generator::type_to_enum(t_type* type) {
       return "thrift.DOUBLE";
 
     case t_base_type::TYPE_FLOAT:
-      throw "Float type not supported.";
+      return "thrift.FLOAT";
     }
   } else if (type->is_enum()) {
     return "thrift.I32";
@@ -3491,7 +3505,7 @@ string t_go_generator::type_to_go_type_with_opt(t_type* type,
       return maybe_pointer + "float64";
 
     case t_base_type::TYPE_FLOAT:
-      throw "Float type not supported.";
+      return maybe_pointer + "float32";
     }
   } else if (type->is_enum()) {
     return maybe_pointer + publicize(type_name(type));

@@ -39,6 +39,7 @@ var (
 	INT32_VALUES   []int32
 	INT64_VALUES   []int64
 	DOUBLE_VALUES  []float64
+	FLOAT_VALUES   []float32
 	STRING_VALUES  []string
 )
 
@@ -54,6 +55,7 @@ func init() {
 	INT32_VALUES = []int32{459, 0, 1, -1, -128, 127, 32767, 2147483647, -2147483535}
 	INT64_VALUES = []int64{459, 0, 1, -1, -128, 127, 32767, 2147483647, -2147483535, 34359738481, -35184372088719, -9223372036854775808, 9223372036854775807}
 	DOUBLE_VALUES = []float64{459.3, 0.0, -1.0, 1.0, 0.5, 0.3333, 3.14159, 1.537e-38, 1.673e25, 6.02214179e23, -6.02214179e23, INFINITY.Float64(), NEGATIVE_INFINITY.Float64(), NAN.Float64()}
+	FLOAT_VALUES = []float32{459.3, 0.0, -1.0, 1.0, 0.5, 0.3333, 3.14159, 1.537e-38, 1.673e25, 6.02214179e23, -6.02214179e23, INFINITY.Float32(), NEGATIVE_INFINITY.Float32(), NAN.Float32()}
 	STRING_VALUES = []string{"", "a", "st[uf]f", "st,u:ff with spaces", "stuff\twith\nescape\\characters'...\"lots{of}fun</xml>"}
 }
 
@@ -151,6 +153,12 @@ func ReadWriteProtocolTest(t *testing.T, protocolFactory TProtocolFactory) {
 	for _, tf := range transports {
 		trans := tf.GetTransport(nil)
 		p := protocolFactory.GetProtocol(trans)
+		ReadWriteFloat(t, p, trans)
+		trans.Close()
+	}
+	for _, tf := range transports {
+		trans := tf.GetTransport(nil)
+		p := protocolFactory.GetProtocol(trans)
 		ReadWriteString(t, p, trans)
 		trans.Close()
 	}
@@ -165,6 +173,7 @@ func ReadWriteProtocolTest(t *testing.T, protocolFactory TProtocolFactory) {
 		p := protocolFactory.GetProtocol(trans)
 		ReadWriteI64(t, p, trans)
 		ReadWriteDouble(t, p, trans)
+		ReadWriteFloat(t, p, trans)
 		ReadWriteBinary(t, p, trans)
 		ReadWriteByte(t, p, trans)
 		trans.Close()
@@ -410,6 +419,44 @@ func ReadWriteDouble(t testing.TB, p TProtocol, trans TTransport) {
 	err = p.ReadListEnd()
 	if err != nil {
 		t.Errorf("%s: %T %T Unable to read list end: %q", "ReadWriteDouble", p, trans, err)
+	}
+}
+
+func ReadWriteFloat(t testing.TB, p TProtocol, trans TTransport) {
+	thetype := TType(FLOAT)
+	thelen := len(FLOAT_VALUES)
+	p.WriteListBegin(thetype, thelen)
+	for _, v := range FLOAT_VALUES {
+		p.WriteFloat(v)
+	}
+	p.WriteListEnd()
+	p.Flush()
+	thetype2, thelen2, err := p.ReadListBegin()
+	if err != nil {
+		t.Errorf("%s: %T %T %q Error reading list: %q", "ReadWriteFloat", p, trans, err, FLOAT_VALUES)
+	}
+	if thetype != thetype2 {
+		t.Errorf("%s: %T %T type %s != type %s", "ReadWriteFloat", p, trans, thetype, thetype2)
+	}
+	if thelen != thelen2 {
+		t.Errorf("%s: %T %T len %s != len %s", "ReadWriteFloat", p, trans, thelen, thelen2)
+	}
+	for k, v := range FLOAT_VALUES {
+		value, err := p.ReadFloat()
+		if err != nil {
+			t.Errorf("%s: %T %T %q Error reading double at index %d: %q", "ReadWriteFloat", p, trans, err, k, v)
+		}
+		if math.IsNaN(float64(v)) {
+			if !math.IsNaN(float64(value)) {
+				t.Errorf("%s: %T %T math.IsNaN(%q) != math.IsNaN(%q)", "ReadWriteFloat", p, trans, v, value)
+			}
+		} else if v != value {
+			t.Errorf("%s: %T %T %v != %q", "ReadWriteFloat", p, trans, v, value)
+		}
+	}
+	err = p.ReadListEnd()
+	if err != nil {
+		t.Errorf("%s: %T %T Unable to read list end: %q", "ReadWriteFloat", p, trans, err)
 	}
 }
 
