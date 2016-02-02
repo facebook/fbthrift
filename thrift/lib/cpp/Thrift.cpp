@@ -74,7 +74,7 @@ std::string TOutput::strerror_s(int errno_copy) {
   char *b_error = strerror_r(errno_copy, b_errbuf, sizeof(b_errbuf));
 #else
   char *b_error = b_errbuf;
-  int rv = strerror_r(errno_copy, b_errbuf, sizeof(b_errbuf));
+  int rv = ::strerror_r(errno_copy, b_errbuf, sizeof(b_errbuf));
   if (rv == -1) {
     // strerror_r failed.  omgwtfbbq.
     return "XSI-compliant strerror_r() failed with errno = " +
