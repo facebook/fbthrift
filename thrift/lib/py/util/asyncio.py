@@ -2,33 +2,28 @@
 # @lint-avoid-python-3-compatibility-imports
 
 import asyncio
-import contextlib
 
-from thrift.Thrift import TMessageType, TApplicationException, TType
-import thrift.server.TAsyncioServer as TAsyncioServer
+from thrift.server import TAsyncioServer
+from thrift.util.Decorators import (
+    get_function_name,
+    make_unknown_function_exception,
+    protocol_manager,
+)
 
 def process_main(func):
     """Decorator for process method."""
 
     def nested(self, iprot, oprot, server_ctx=None):
-        name, _, seqid = iprot.readMessageBegin()
-        if isinstance(name, bytes):
-            name = name.decode('utf8')
-        if name not in self._processMap:
-            iprot.skip(TType.STRUCT)
-            iprot.readMessageEnd()
-            x = TApplicationException(
-                TApplicationException.UNKNOWN_METHOD,
-                'Unknown function {!r}'.format(name),
-            )
-            oprot.writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
-            x.write(oprot)
-            oprot.writeMessageEnd()
-            oprot.trans.flush()
-        else:
+        # self is a TProcessor instance
+        name, seqid = self.readMessageBegin(iprot)
+        if self.doesKnowFunction(name):
             yield from self._processMap[name](
                 self, seqid, iprot, oprot, server_ctx,
             )
+        else:
+            self.skipMessageStruct(iprot)
+            exc = make_unknown_function_exception(name)
+            self.writeException(oprot, name, seqid, exc)
     return nested
 
 
@@ -36,27 +31,17 @@ def process_method(argtype, oneway=False):
     """Decorator for process_xxx methods for asyncio."""
     def _decorator(func):
         def nested(self, seqid, iprot, oprot, server_ctx):
-            fn_name = func.__name__.split('_', 1)[-1]
+            fn_name = get_function_name(func)
+            # self is a TProcessor instance
             handler_ctx = self._event_handler.getHandlerContext(
-                fn_name, server_ctx,
+                fn_name,
+                server_ctx,
             )
-            args = argtype()
-            reply_type = TMessageType.REPLY
-            self._event_handler.preRead(handler_ctx, fn_name, args)
-            args.read(iprot)
-            iprot.readMessageEnd()
-            self._event_handler.postRead(handler_ctx, fn_name, args)
+            args = self.readArgs(iprot, handler_ctx, fn_name, argtype)
 
             result = yield from func(self, args, handler_ctx)
             if not oneway:
-                if isinstance(result, TApplicationException):
-                    reply_type = TMessageType.EXCEPTION
-                self._event_handler.preWrite(handler_ctx, fn_name, result)
-                oprot.writeMessageBegin(fn_name, reply_type, seqid)
-                result.write(oprot)
-                oprot.writeMessageEnd()
-                oprot.trans.flush()
-                self._event_handler.postWrite(handler_ctx, fn_name, result)
+                self.writeReply(oprot, handler_ctx, fn_name, seqid, result)
         return nested
     return _decorator
 
@@ -68,12 +53,6 @@ def run_on_thread(func):
 
 def should_run_on_thread(func):
     return getattr(func, "_run_on_thread", False)
-
-
-@contextlib.contextmanager
-def protocol_manager(protocol):
-    yield protocol.client
-    protocol.close()
 
 
 @asyncio.coroutine

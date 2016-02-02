@@ -22,6 +22,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import six
 import sys
 import threading
 
@@ -106,12 +107,15 @@ class TServerInterface:
     def getRequestContext(self):
         return self._tl_request_context.ctx
 
+
 class TProcessor:
 
     """Base class for processor, which works on two streams."""
 
     def __init__(self):
         self._event_handler = TProcessorEventHandler()  # null object handler
+        self._handler = None
+        self._processMap = {}
 
     def setEventHandler(self, event_handler):
         self._event_handler = event_handler
@@ -124,6 +128,51 @@ class TProcessor:
 
     def onewayMethods(self):
         return ()
+
+    def readMessageBegin(self, iprot):
+        name, _, seqid = iprot.readMessageBegin()
+        if six.PY3:
+            name = name.decode('utf8')
+        return name, seqid
+
+    def skipMessageStruct(self, iprot):
+        iprot.skip(TType.STRUCT)
+        iprot.readMessageEnd()
+
+    def doesKnowFunction(self, name):
+        return name in self._processMap
+
+    def callFunction(self, name, seqid, iprot, oprot, server_ctx):
+        process_fn = self._processMap[name]
+        return process_fn(self, seqid, iprot, oprot, server_ctx)
+
+    def readArgs(self, iprot, handler_ctx, fn_name, argtype):
+        args = argtype()
+        self._event_handler.preRead(handler_ctx, fn_name, args)
+        args.read(iprot)
+        iprot.readMessageEnd()
+        self._event_handler.postRead(handler_ctx, fn_name, args)
+        return args
+
+    def writeException(self, oprot, name, seqid, exc):
+        oprot.writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
+        exc.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+
+    def _getReplyType(self, result):
+        if isinstance(result, TApplicationException):
+            return TMessageType.EXCEPTION
+        return TMessageType.REPLY
+
+    def writeReply(self, oprot, handler_ctx, fn_name, seqid, result):
+        self._event_handler.preWrite(handler_ctx, fn_name, result)
+        reply_type = self._getReplyType(result)
+        oprot.writeMessageBegin(fn_name, reply_type, seqid)
+        result.write(oprot)
+        oprot.writeMessageEnd()
+        oprot.trans.flush()
+        self._event_handler.postWrite(handler_ctx, fn_name, result)
 
 
 class TException(Exception):
