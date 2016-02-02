@@ -372,3 +372,22 @@ TEST(Frozen, RelativePtr) {
   // pointing to addresses more than 4GB away = overflow
   EXPECT_DEATH(locals.rptr.reset(&locals.after + (1 << 30)), "address");
 }
+
+TEST(Frozen, Utf8StringMap) {
+  map<string, int> tmap {
+    { u8"anxiety", 1 },
+    { u8"a\u00F1onuevo", 2 },
+    { u8"aot", 3 },
+    { u8"bacon", 4 },
+  };
+  auto pfmap = freeze(tmap);
+  auto& fmap = *pfmap;
+  EXPECT_NE(fmap.find(u8"anxiety"), fmap.end());
+  EXPECT_NE(fmap.find(u8"a\u00F1onuevo"), fmap.end());
+  EXPECT_NE(fmap.find(u8"aot"), fmap.end());
+  EXPECT_NE(fmap.find(u8"bacon"), fmap.end());
+  EXPECT_EQ(fmap.at(u8"anxiety"), 1);
+  EXPECT_EQ(fmap.at(u8"a\u00F1onuevo"), 2);
+  EXPECT_EQ(fmap.at(u8"aot"), 3);
+  EXPECT_EQ(fmap.at(u8"bacon"), 4);
+}
