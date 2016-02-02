@@ -25,9 +25,9 @@
 #include <folly/io/async/EventHandler.h>
 #include <folly/io/async/NotificationQueue.h>
 #include <thrift/lib/cpp/server/TServer.h>
-#include <ext/hash_map>
 #include <list>
 #include <stack>
+#include <unordered_map>
 
 namespace apache { namespace thrift { namespace async {
 
@@ -125,9 +125,9 @@ class TEventWorker :
         return ((size_t)p ^ ((size_t)p >> kPtrHashShift)) * kPtrHashMult;
       }
     };
-  typedef __gnu_cxx::hash_map<const TEventConnection*,
-                              ConnectionList::iterator,
-                              hash<TEventConnection*> > ConnectionMap;
+  typedef std::unordered_map<const TEventConnection*,
+                             ConnectionList::iterator,
+                             hash<TEventConnection*>> ConnectionMap;
 
   /**
    * The list of active connections (used to allow the oldest connections
