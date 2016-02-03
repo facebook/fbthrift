@@ -49,7 +49,7 @@ class LoadHandler(object):
 
     def burn(self, us):
         start = now = time.time()
-        end = now + us
+        end = now + us_to_sec(us)
         while True:
             now = time.time()
             if now > end:
