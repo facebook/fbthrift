@@ -211,7 +211,7 @@ TEST_P(SharedServerTests, GetLoadTest) {
         auto headers = state.header()->getHeaders();
         auto load = headers.find("load");
         EXPECT_NE(load, headers.end());
-        EXPECT_NE(load->second, "");
+        EXPECT_EQ(load->second, "0");
         TestServiceAsyncClient::recv_wrapped_sendResponse(response, state);
         EXPECT_EQ(response, "test64");
         base->terminateLoopSoon();
@@ -231,7 +231,7 @@ TEST_P(SharedServerTests, GetLoadTest) {
         auto headers = state.header()->getHeaders();
         auto load = headers.find("load");
         EXPECT_NE(load, headers.end());
-        EXPECT_NE(load->second, "");
+        EXPECT_EQ(load->second, "1");
         TestServiceAsyncClient::recv_wrapped_sendResponse(response, state);
         EXPECT_EQ(response, "test64");
         base->terminateLoopSoon();

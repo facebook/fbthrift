@@ -127,22 +127,35 @@ int64_t BaseThriftServer::getLoad(const std::string& counter,
   }
 
   auto reqload = getRequestLoad();
+  auto connload = getConnectionLoad();
+  auto queueload = getQueueLoad();
 
   if (VLOG_IS_ON(1)) {
     FB_LOG_EVERY_MS(INFO, 1000 * 10)
-        << getLoadInfo(reqload);
+        << getLoadInfo(reqload, connload, queueload);
   }
 
-  return reqload;
+  return std::max({reqload, connload, queueload});
 }
 
-int64_t BaseThriftServer::getRequestLoad() {
-  return activeRequests_;
+int64_t BaseThriftServer::getQueueLoad() {
+  auto tm = getThreadManager();
+  if (tm) {
+    auto codel = tm->getCodel();
+    if (codel) {
+      return codel->getLoad();
+    }
+  }
+
+  return 0;
 }
 
-std::string BaseThriftServer::getLoadInfo(int64_t load) {
+std::string BaseThriftServer::getLoadInfo(int64_t reqload,
+                                           int64_t connload,
+                                           int64_t queueload) {
   std::stringstream stream;
-  stream << "Load is: " << load << "% requests";
+  stream << "Load is: " << reqload << "% requests, " << connload
+         << "% connections, " << queueload << "% queue time";
   return stream.str();
 }
 }

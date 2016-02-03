@@ -191,7 +191,7 @@ TEST(ThriftServer, LoadHeaderTest) {
       ASSERT_EQ(isLoadExpected_, loadIter != headers.end());
       if (isLoadExpected_) {
         auto load = loadIter->second;
-        EXPECT_NE("", load);
+        EXPECT_EQ("0", load);
       }
     }
     void requestError(ClientReceiveState&&) override {
