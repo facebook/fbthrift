@@ -311,7 +311,7 @@ bool ProxygenThriftServer::isOverloaded(const THeader* header) {
 }
 
 int64_t ProxygenThriftServer::getRequestLoad() {
-  if (isUnevenLoad_ && maxRequests_ > 0) {
+  if (maxRequests_ > 0) {
     return (100 * activeRequests_) / ((float)maxRequests_);
   }
 
