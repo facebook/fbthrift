@@ -424,14 +424,26 @@ void TFileTransport::writerThread() {
             offset_ = lseek(fd_, 0, SEEK_CUR);
             int32_t padding = (int32_t)((offset_ / chunkSize_ + 1) * chunkSize_ - offset_);
 
-            uint8_t zeros[padding];
-            bzero(zeros, padding);
-            if (-1 == ::write(fd_, zeros, padding)) {
-              int errno_copy = errno;
-              GlobalOutput.perror("TFileTransport: writerThread() error while padding zeros ", errno_copy);
-              hasIOError = true;
+            std::array<std::uint8_t, 64> zeroes{};
+
+            while (padding > 0) {
+              auto written = ::write(fd_, zeroes.data(),
+                std::min<size_t>(zeroes.size(), padding));
+              if (written < 0) {
+                int errno_copy = errno;
+                GlobalOutput.perror("TFileTransport: writerThread() error while padding zeros ", errno_copy);
+                hasIOError = true;
+                padding = -1;
+              } else {
+                assert(written <= padding);
+                padding -= written;
+              }
+            }
+
+            if (padding < 0) {
               continue;
             }
+
             unflushed += padding;
             offset_ += padding;
           }
