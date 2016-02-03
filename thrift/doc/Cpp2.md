@@ -81,11 +81,6 @@ Useful (but not complete set of) options that can be set on the ThriftServer:
 * setMaxRequests(uint32_t) - The maximum number of outstanding
   requests.
 
-* setIsUnevenLoad(bool) - If true, then maxRequests is a total for the
-  whole server.   If false, at startup we set each IO thread to
-  maxRequests/numIOThreads, so that we don't have to lock (std::atomic
-  CAS, actually) on any global variables.
-
 * setSSLContext(context) - Allow SSL connections
 
 *There are other options for specific use cases, such as*

@@ -142,9 +142,6 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   // Max active requests
   uint32_t maxRequests_ = concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE;
 
-  // If it is set true, # of global active requests is tracked
-  bool isUnevenLoad_ = true;
-
   // Track # of active requests for this server
   std::atomic<int32_t> activeRequests_{0};
 
@@ -280,29 +277,17 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   void setMaxRequests(uint32_t maxRequests) { maxRequests_ = maxRequests; }
 
   /**
-   * Get if the server expects uneven load among workers.
-   *
-   * @return current setting.
+   * NOTE: low hanging perf fruit. In a test this was roughly a 10%
+   * regression at 2 million QPS (noops). High performance servers can override
+   * this with a noop at the expense of poor load metrics. To my knowledge
+   * no current thrift server does even close to this QPS.
    */
-  bool getIsUnevenLoad() const { return isUnevenLoad_; }
-
-  /**
-   * Set if the server expects uneven load among workers.
-   *
-   * @param isUnevenLoad new setting for the expected load.
-   */
-  void setIsUnevenLoad(bool isUnevenLoad) { isUnevenLoad_ = isUnevenLoad; }
-
   void incActiveRequests(int32_t numRequests = 1) {
-    if (isUnevenLoad_) {
-      activeRequests_ += numRequests;
-    }
+     activeRequests_ += numRequests;
   }
 
   void decActiveRequests(int32_t numRequests = 1) {
-    if (isUnevenLoad_) {
-      activeRequests_ -= numRequests;
-    }
+    activeRequests_ -= numRequests;
   }
 
   int32_t getActiveRequests() const { return activeRequests_; }
@@ -314,8 +299,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   }
 
   virtual bool isOverloaded(
-      uint32_t workerActiveRequests = 0,
-      const apache::thrift::transport::THeader* header = nullptr) = 0;
+    const apache::thrift::transport::THeader* header = nullptr) = 0;
 
   // Get load percent of the server.  Must be a number between 0 and 100:
   // 0 - no load, 100-fully loaded.

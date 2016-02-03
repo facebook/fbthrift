@@ -300,8 +300,7 @@ void ProxygenThriftServer::ThriftRequestHandler::TaskTimeout::
   }
 }
 
-bool ProxygenThriftServer::isOverloaded(uint32_t /*workerActiveRequests*/,
-                                        const THeader* header) {
+bool ProxygenThriftServer::isOverloaded(const THeader* header) {
   if (UNLIKELY(isOverloaded_(header))) {
     return true;
   }

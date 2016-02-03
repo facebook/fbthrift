@@ -301,10 +301,7 @@ void Cpp2Connection::requestReceived(
         hreq->getHeader(), context_.getPeerAddress());
   }
 
-  int activeRequests = worker_->activeRequests_;
-  activeRequests += worker_->pendingCount();
-
-  if (server->isOverloaded(activeRequests, hreq->getHeader())) {
+  if (server->isOverloaded(hreq->getHeader())) {
     killRequest(*req,
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
         kOverloadedErrorCode,
@@ -320,11 +317,9 @@ void Cpp2Connection::requestReceived(
       apache::thrift::concurrency::Util::currentTimeUsec();
     if (observer) {
       observer->queuedRequests(threadManager_->pendingTaskCount());
-      if (server->getIsUnevenLoad()) {
-        observer->activeRequests(
-          server->getActiveRequests() +
-          server->getPendingCount());
-      }
+      observer->activeRequests(
+        server->getActiveRequests() +
+        server->getPendingCount());
     }
   }
 

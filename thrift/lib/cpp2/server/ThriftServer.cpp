@@ -453,18 +453,13 @@ void ThriftServer::updateTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
   });
 }
 
-bool ThriftServer::isOverloaded(uint32_t workerActiveRequests,
-                                const THeader* header) {
+bool ThriftServer::isOverloaded(const THeader* header) {
   if (UNLIKELY(isOverloaded_(header))) {
     return true;
   }
 
   if (maxRequests_ > 0) {
-    if (isUnevenLoad_) {
-      return activeRequests_ + getPendingCount() >= maxRequests_;
-    } else {
-      return workerActiveRequests >= maxRequests_ / nWorkers_;
-    }
+    return activeRequests_ + getPendingCount() >= maxRequests_;
   }
 
   return false;
