@@ -200,6 +200,13 @@ bool validate_throws(t_struct* throws) {
   return true;
 }
 
+// Thrift has some leaks which aren't trivial to fix, so just always silence
+// them by default.
+extern "C"
+const char* __asan_default_options() {
+  return "detect_leaks=0";
+}
+
 /**
  * Parse it up.. then spit it back out, in pretty much every language. Alright
  * not that many languages, but the cool ones that we care about.
