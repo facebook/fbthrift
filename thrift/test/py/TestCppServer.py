@@ -12,11 +12,12 @@ import time
 
 from fb303.ContextFacebookBase import FacebookBase
 from libfb.testutil import BaseFacebookTestCase
-from thrift.transport import TSocket, TTransport, THeaderTransport
+from thrift.transport import TSocket, TSSLSocket, TTransport, THeaderTransport
 from thrift.protocol import TBinaryProtocol, THeaderProtocol
 from thrift.Thrift import TProcessorEventHandler, TProcessor, TMessageType, \
-        TServerInterface
-from thrift.server.TCppServer import TCppServer
+    TServerInterface
+from thrift.server.TCppServer import TCppServer, TSSLConfig, SSLPolicy, \
+    SSLVerifyPeerEnum
 from thrift.server.TServer import TServerEventHandler
 from tools.test.stubs import fbpyunit
 
@@ -24,16 +25,16 @@ from test.sleep import SleepService, ttypes
 
 TIMEOUT = 60 * 1000  # milliseconds
 
-def getClient(addr):
-    transport = TSocket.TSocket(addr[0], addr[1])
+def getClient(addr, sock_cls=TSocket.TSocket):
+    transport = sock_cls(addr[0], addr[1])
     transport = TTransport.TFramedTransport(transport)
     protocol = TBinaryProtocol.TBinaryProtocol(transport)
     client = SleepService.Client(protocol)
     transport.open()
     return client
 
-def getHeaderClient(addr):
-    transport = TSocket.TSocket(addr[0], addr[1])
+def getHeaderClient(addr, sock_cls=TSocket.TSocket):
+    transport = sock_cls(addr[0], addr[1])
     transport = THeaderTransport.THeaderTransport(transport)
     transport.set_header("hello", "world")
     protocol = THeaderProtocol.THeaderProtocol(transport)
@@ -181,6 +182,7 @@ class TestServer(BaseFacebookTestCase):
         self.shutdown_event = threading.Event()
         self.serverEventHandler = TestServerEventHandler()
         self.server = TCppServer(self.getProcessor())
+        self.configureSSL()
         self.server.setServerEventHandler(self.serverEventHandler)
         self.addCleanup(self.stopServer)
         # Let the kernel choose a port.
@@ -197,6 +199,9 @@ class TestServer(BaseFacebookTestCase):
         self.assertTrue(addr)
 
         self.server_addr = addr
+
+    def configureSSL(self):
+        pass
 
     def stopServer(self):
         if self.server:
@@ -258,6 +263,55 @@ class HeaderTestServer(TestServer):
         client = getHeaderClient(self.server_addr)
         self.assertEquals(client.space("hi"), "h i")
         self.stopServer()
+
+class TSSLConfigTest(BaseFacebookTestCase):
+
+    def testDefaults(self):
+        config = TSSLConfig()
+        self.assertEquals(config.cert_path, '')
+        self.assertEquals(config.key_path, '')
+        self.assertEquals(config.key_pw_path, '')
+        self.assertEquals(config.client_ca_path, '')
+        self.assertEquals(config.ecc_curve_name, '')
+        self.assertEquals(config.verify, SSLVerifyPeerEnum.VERIFY)
+        self.assertEquals(config.ssl_policy, SSLPolicy.PERMITTED)
+
+    def testEnumSetters(self):
+        config = TSSLConfig()
+        bogus_values = ['', 'bogus', 5, 0]
+        for v in bogus_values:
+            with self.assertRaises(ValueError):
+                config.verify = v
+
+        for v in bogus_values:
+            with self.assertRaises(ValueError):
+                config.ssl_policy = v
+
+class SSLHeaderTestServer(TestServer):
+    def getProcessor(self):
+        return TestHeaderProcessor()
+
+    def configureSSL(self):
+        config = TSSLConfig()
+        self.assertEquals(config.key_path, "")
+        config.ssl_policy = SSLPolicy.REQUIRED
+        config.cert_path = 'thrift/test/py/test_cert.pem'
+        config.client_verify = SSLVerifyPeerEnum.VERIFY
+        config.key_path = None
+        # expect an error with a cert_path but no key_path
+        with self.assertRaises(ValueError):
+            self.server.setSSLConfig(config)
+        config.key_path = 'thrift/test/py/test_cert.pem'
+        self.server.setSSLConfig(config)
+
+    def testSSLClient(self):
+        ssl_client = getHeaderClient(self.server_addr, TSSLSocket.TSSLSocket)
+        self.assertEquals(ssl_client.space("hi"), "h i")
+        client = getHeaderClient(self.server_addr)
+        with self.assertRaises(Exception):
+            client.space("hi")
+        self.stopServer()
+
 
 if __name__ == '__main__':
     rc = fbpyunit.MainProgram(sys.argv).run()

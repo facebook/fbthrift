@@ -10,7 +10,8 @@ from thrift.server.TServer import TServer, TConnectionContext
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TTransport import TMemoryBuffer
 
-from thrift.server.CppServerWrapper import CppServerWrapper, ContextData
+from thrift.server.CppServerWrapper import CppServerWrapper, ContextData, \
+    SSLPolicy, SSLVerifyPeerEnum
 
 class TCppConnectionContext(TConnectionContext):
     def __init__(self, context_data):
@@ -89,6 +90,36 @@ class _ProcessorAdapter(object):
     def oneway_methods(self):
         return self.processor.onewayMethods()
 
+class TSSLConfig(object):
+    def __init__(self):
+        self.cert_path = ''
+        self.key_path = ''
+        self.key_pw_path = ''
+        self.client_ca_path = ''
+        self.ecc_curve_name = ''
+        self.verify = SSLVerifyPeerEnum.VERIFY
+        self.ssl_policy = SSLPolicy.PERMITTED
+
+    @property
+    def ssl_policy(self):
+        return self._ssl_policy
+
+    @ssl_policy.setter
+    def ssl_policy(self, val):
+        if not isinstance(val, SSLPolicy):
+            raise ValueError("{} is an invalid policy".format(val))
+        self._ssl_policy = val
+
+    @property
+    def verify(self):
+        return self._verify
+
+    @verify.setter
+    def verify(self, val):
+        if not isinstance(val, SSLVerifyPeerEnum):
+            raise ValueError("{} is an invalid value".format(val))
+        self._verify = val
+
 class TCppServer(CppServerWrapper, TServer):
     def __init__(self, processor):
         CppServerWrapper.__init__(self)
@@ -102,6 +133,11 @@ class TCppServer(CppServerWrapper, TServer):
         handler.CONTEXT_DATA = ContextData
         handler.CPP_CONNECTION_CONTEXT = TCppConnectionContext
         self.setCppServerEventHandler(handler)
+
+    def setSSLConfig(self, config):
+        if not isinstance(config, TSSLConfig):
+            raise ValueError("Config must be of type TSSLConfig")
+        self.setCppSSLConfig(config)
 
     def setup(self):
         if self._setup_done:

@@ -18,6 +18,7 @@
 
 #include <boost/python/class.hpp>
 #include <boost/python/def.hpp>
+#include <boost/python/enum.hpp>
 #include <boost/python/errors.hpp>
 #include <boost/python/import.hpp>
 #include <boost/python/module.hpp>
@@ -33,6 +34,7 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
+#include <wangle/ssl/SSLContextConfig.h>
 
 using namespace apache::thrift;
 using apache::thrift::concurrency::PosixThreadFactory;
@@ -40,6 +42,8 @@ using apache::thrift::concurrency::ThreadManager;
 using apache::thrift::transport::THeader;
 using apache::thrift::server::TServerEventHandler;
 using apache::thrift::server::TConnectionContext;
+using folly::SSLContext;
+using wangle::SSLContextConfig;
 using namespace boost::python;
 
 namespace {
@@ -66,6 +70,14 @@ object makePythonHeaders(const std::map<std::string, std::string>& cppheaders) {
     headers[it.first] = it.second;
   }
   return headers;
+}
+
+std::string getStringAttrSafe(object& pyObject, const char* attrName) {
+  object val = pyObject.attr(attrName);
+  if (val.is_none()) {
+    return "";
+  }
+  return extract<std::string>(str(val));
 }
 
 }
@@ -365,6 +377,31 @@ public:
     getServeEventBase()->loopForever();
   }
 
+  void setCppSSLConfig(object sslConfig) {
+    auto certPath = getStringAttrSafe(sslConfig, "cert_path");
+    auto keyPath = getStringAttrSafe(sslConfig, "key_path");
+    if (certPath.empty() ^ keyPath.empty()) {
+      PyErr_SetString(PyExc_ValueError,
+                      "certPath and keyPath must both be populated");
+      throw_error_already_set();
+      return;
+    }
+    auto cfg = std::make_shared<SSLContextConfig>();
+    cfg->clientCAFile = getStringAttrSafe(sslConfig, "client_ca_path");
+    if (!certPath.empty()) {
+      auto keyPwPath = getStringAttrSafe(sslConfig, "key_pw_path");
+      cfg->setCertificate(certPath, keyPath, keyPwPath);
+    }
+    cfg->clientVerification
+      = extract<SSLContext::SSLVerifyPeerEnum>(sslConfig.attr("verify"));
+    auto eccCurve = getStringAttrSafe(sslConfig, "ecc_curve_name");
+    if (!eccCurve.empty()) {
+      cfg->eccCurveName = eccCurve;
+    }
+    ThriftServer::setSSLConfig(cfg);
+    setSSLPolicy(extract<SSLPolicy>(sslConfig.attr("ssl_policy")));
+  }
+
   void cleanUp() {
     // Deadlock avoidance: consider a thrift worker thread is doing
     // something in C++-land having relinquished the GIL.  This thread
@@ -406,7 +443,7 @@ public:
     tm->threadFactory(std::make_shared<PosixThreadFactory>());
     tm->start();
     setThreadManager(std::move(tm));
-}
+  }
 };
 
 BOOST_PYTHON_MODULE(CppServerWrapper) {
@@ -440,5 +477,19 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("stop", &CppServerWrapper::stop)
     .def("setMaxConnections", &CppServerWrapper::setMaxConnections)
     .def("getMaxConnections", &CppServerWrapper::getMaxConnections)
+    .def("setCppSSLConfig", &CppServerWrapper::setCppSSLConfig)
+    ;
+
+  enum_<SSLPolicy>("SSLPolicy")
+    .value("DISABLED", SSLPolicy::DISABLED)
+    .value("PERMITTED", SSLPolicy::PERMITTED)
+    .value("REQUIRED", SSLPolicy::REQUIRED)
+    ;
+
+  enum_<folly::SSLContext::SSLVerifyPeerEnum>("SSLVerifyPeerEnum")
+    .value("VERIFY", folly::SSLContext::SSLVerifyPeerEnum::VERIFY)
+    .value("VERIFY_REQ",
+           folly::SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT)
+    .value("NO_VERIFY", folly::SSLContext::SSLVerifyPeerEnum::NO_VERIFY)
     ;
 }
