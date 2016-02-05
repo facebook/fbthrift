@@ -20,8 +20,7 @@ namespace apache { namespace thrift {
 using ProtectionState = apache::thrift::ProtectionHandler::ProtectionState;
 
 void SaslNegotiationHandler::read(Context* ctx, BufAndHeader bufAndHeader) {
-  if (protectionHandler_->getProtectionState() == ProtectionState::NONE ||
-      protectionHandler_->getProtectionState() == ProtectionState::VALID) {
+  if (protectionHandler_->getProtectionState() == ProtectionState::NONE) {
     // This handler should be removed from the pipeline after sasl
     // negotiation is completed. If it is still installed, it should
     // do nothing.
