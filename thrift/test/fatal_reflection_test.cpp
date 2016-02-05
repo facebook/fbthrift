@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2016 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 #include <thrift/test/gen-cpp2/reflection_fatal_struct.h>
 #include <thrift/test/gen-cpp2/reflection_fatal_union.h>
 
-#include <thrift/test/expect_same.h>
+#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
 
 #include <gtest/gtest.h>
 

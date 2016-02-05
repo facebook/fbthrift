@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2016 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef THRIFT_TEST_EXPECT_SAME_H
-#define THRIFT_TEST_EXPECT_SAME_H
+#ifndef THRIFT_FATAL_INTERNAL_TEST_HELPERS_H
+#define THRIFT_FATAL_INTERNAL_TEST_HELPERS_H
 
 #include <folly/Demangle.h>
 
@@ -25,6 +25,8 @@
 #include <tuple>
 #include <typeinfo>
 
+namespace apache { namespace thrift { namespace detail {
+
 struct expect_same {
   expect_same(char const *filename, std::size_t line):
     filename_(filename),
@@ -33,12 +35,15 @@ struct expect_same {
 
   template <typename LHS, typename RHS>
   void check() const {
-    using type = std::tuple<std::string, std::size_t, char const *, bool>;
+    using type = std::tuple<
+      std::string, char const *, std::size_t, char const *, bool
+    >;
     auto const lhs_name = folly::demangle(typeid(LHS));
     auto const rhs_name = folly::demangle(typeid(RHS));
-    type const lhs(filename_, line_, lhs_name.c_str(), true);
+    auto const line_caption = "line: ";
+    type const lhs(filename_, line_caption, line_, lhs_name.c_str(), true);
     type const rhs(
-      filename_, line_,
+      filename_, line_caption, line_,
       lhs_name == rhs_name ? lhs_name.c_str() : rhs_name.c_str(),
       std::is_same<LHS, RHS>::value
     );
@@ -50,6 +55,9 @@ private:
   std::size_t const line_;
 };
 
-#define EXPECT_SAME expect_same(__FILE__, __LINE__).check
+#define EXPECT_SAME \
+  ::apache::thrift::detail::expect_same(__FILE__, __LINE__).check
 
-#endif // THRIFT_TEST_EXPECT_SAME_H
+}}} // apache::thrift::detail
+
+#endif // THRIFT_FATAL_INTERNAL_TEST_HELPERS_H
