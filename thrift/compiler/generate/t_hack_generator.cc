@@ -1929,12 +1929,13 @@ void t_hack_generator::generate_php_union_methods(ofstream& out,
     auto typehint = type_to_typehint((*m_iter)->get_type());
     // set_<fieldName>()
     indent(out) << "public function set_" << fieldName << "(" << typehint <<
-        " $" << fieldName << "): void {" << endl;
+        " $" << fieldName << "): this {" << endl;
     indent_up();
     indent(out) << "$this->_type = " << enumName << "::" << fieldName << ";" <<
         endl;
     indent(out) << "$this->" << fieldName << " = " << "$" << fieldName << ";" <<
         endl;
+    indent(out) << "return $this;" << endl;
     indent_down();
     indent(out) << "}" << endl << endl;
 
