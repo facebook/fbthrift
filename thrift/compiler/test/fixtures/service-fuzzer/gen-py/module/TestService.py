@@ -28,6 +28,7 @@ except:
 
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
+
 from thrift.util.Decorators import *
 
 class Iface:

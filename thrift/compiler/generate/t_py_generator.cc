@@ -65,6 +65,9 @@ class t_py_generator : public t_generator {
     iter = parsed_options.find("twisted");
     gen_twisted_ = (iter != parsed_options.end());
 
+    iter = parsed_options.find("future");
+    gen_future_ = (iter != parsed_options.end());
+
     iter = parsed_options.find("utf8strings");
     gen_utf8strings_ = (iter != parsed_options.end());
 
@@ -138,7 +141,7 @@ class t_py_generator : public t_generator {
   void generate_service_fuzzer    (t_service* tservice);
   void generate_service_server    (t_service* tservice, bool with_context);
   void generate_process_function  (t_service* tservice, t_function* tfunction,
-                                   bool with_context);
+                                   bool with_context, bool future);
 
   /**
    * Serialization constructs
@@ -292,6 +295,11 @@ class t_py_generator : public t_generator {
    * True iff we should generate Twisted-friendly RPC services.
    */
   bool gen_twisted_;
+
+  /**
+   * True iff we should generate services supporting concurrent.futures.
+   */
+  bool gen_future_;
 
   /**
    * True iff strings should be encoded using utf-8.
@@ -1919,13 +1927,18 @@ void t_py_generator::generate_service(t_service* tservice) {
     render_fastproto_includes() << endl <<
     "all_structs = []" << endl <<
     "UTF8STRINGS = bool(" << gen_utf8strings_ << ") or " <<
-    "sys.version_info.major >= 3" << endl;
+    "sys.version_info.major >= 3" << endl << endl;
 
   if (gen_twisted_) {
     f_service_ <<
       "from zope.interface import Interface, implements" << endl <<
       "from twisted.internet import defer" << endl <<
       "from thrift.transport import TTwisted" << endl;
+  }
+
+  if (gen_future_) {
+    f_service_ <<
+      "from concurrent.futures import Future, ThreadPoolExecutor" << endl;
   }
 
   if (gen_asyncio_) {
@@ -1941,11 +1954,16 @@ void t_py_generator::generate_service(t_service* tservice) {
 
   // Generate the three main parts of the service (well, two for now in PHP)
   generate_service_interface(tservice, false);
-  generate_service_interface(tservice, true);
+  if (!gen_future_) {
+    generate_service_interface(tservice, true);
+  }
+
   generate_service_helpers(tservice);
   generate_service_client(tservice);
   generate_service_server(tservice, false);
-  generate_service_server(tservice, true);
+  if (!gen_future_) {
+    generate_service_server(tservice, true);
+  }
   generate_service_remote(tservice);
   generate_service_fuzzer(tservice);
 
@@ -2038,12 +2056,41 @@ void t_py_generator::generate_service_interface(t_service* tservice,
       f_service_ <<
         indent() << "pass" << endl << endl;
       indent_down();
+
+      if (gen_future_) {
+        f_service_
+          << indent() << "def future_"
+          << function_signature_if(*f_iter, false) << ":" << endl;
+        indent_up();
+        generate_python_docstring(f_service_, (*f_iter));
+        f_service_
+          << indent() << "fut = Future()" << endl
+          << indent() << "try:" << endl;
+        indent_up();
+        f_service_
+          << indent() << "fut.set_result(self." << (*f_iter)->get_name() << "(";
+        const vector<t_field*>& fields =
+          (*f_iter)->get_arglist()->get_members();
+        for (auto it = fields.begin(); it != fields.end(); ++it) {
+          f_service_ << rename_reserved_keywords((*it)->get_name()) << ",";
+        }
+        f_service_ << "))" << endl;
+        indent_down();
+        f_service_
+          << indent() << "except:" << endl;
+        indent_up();
+        f_service_
+          << indent() << "fut.set_exception(sys.exc_info()[1])" << endl;
+        indent_down();
+        f_service_
+          << indent() << "return fut" << endl << endl;
+        indent_down();
+      }
     }
   }
 
   indent_down();
-  f_service_ <<
-    endl;
+  f_service_ << endl;
 }
 
 /**
@@ -2616,8 +2663,12 @@ void t_py_generator::generate_service_server(t_service* tservice,
   }
   f_service_ << ")" << endl << endl;
 
-  indent(f_service_) <<
-    "def __init__(self, handler):" << endl;
+  if (gen_future_) {
+    indent(f_service_) << "def __init__(self, handler, executor=None):"
+                       << endl;
+  } else {
+    indent(f_service_) << "def __init__(self, handler):" << endl;
+  }
   indent_up();
   if (extends.empty()) {
     f_service_ << indent() << "TProcessor.__init__(self)" << endl;
@@ -2628,6 +2679,11 @@ void t_py_generator::generate_service_server(t_service* tservice,
     } else {
       f_service_ <<
         indent() << "self._handler = handler" << endl;
+    }
+
+    if (gen_future_) {
+      f_service_ << indent() << "self._executor = executor or "
+                 << "ThreadPoolExecutor(max_workers=32)" << endl;
     }
 
     f_service_ <<
@@ -2647,7 +2703,8 @@ void t_py_generator::generate_service_server(t_service* tservice,
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     f_service_ <<
       indent() << "self._processMap[\"" << (*f_iter)->get_name() <<
-      "\"] = " << class_prefix << "Processor.process_" <<
+      "\"] = " << class_prefix << "Processor." <<
+      (gen_future_ ? "future_process_" : "process_") <<
       (*f_iter)->get_name() << endl;
   }
   indent_down();
@@ -2668,6 +2725,8 @@ void t_py_generator::generate_service_server(t_service* tservice,
   // Generate the server implementation
   if (gen_asyncio_) {
     indent(f_service_) << "@process_main" << endl;
+  } else if (gen_future_) {
+    indent(f_service_) << "@future_process_main()" << endl;
   } else {
     indent(f_service_) << "@process_main" <<
       (gen_twisted_ ? "(twisted=True)" : "()") << endl;
@@ -2677,7 +2736,11 @@ void t_py_generator::generate_service_server(t_service* tservice,
 
   // Generate the process subfunctions
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    generate_process_function(tservice, *f_iter, with_context);
+    if (gen_future_) {
+      generate_process_function(tservice, *f_iter, false, true);
+    } else {
+      generate_process_function(tservice, *f_iter, with_context, false);
+    }
   }
 
   indent_down();
@@ -2695,20 +2758,24 @@ void t_py_generator::generate_service_server(t_service* tservice,
  */
 void t_py_generator::generate_process_function(t_service* /*tservice*/,
                                                t_function* tfunction,
-                                               bool with_context) {
+                                               bool with_context,
+                                               bool future) {
   string fn_name = tfunction->get_name();
 
   // Open function
-  indent(f_service_)
-    << "@process_method("
-    << fn_name << "_args, "
-    << "oneway="
-    << (tfunction->is_oneway() ? "True" : "False")
-    << (gen_twisted_ ? ", twisted=True)" : ")") << endl;
+  if (future) {
+    indent(f_service_)
+      << "def then_" << fn_name << "(self, args, handler_ctx):" << endl;
+  } else {
+    indent(f_service_)
+      << "@process_method(" << fn_name << "_args, oneway="
+      << (tfunction->is_oneway() ? "True" : "False")
+      << (gen_twisted_ ? ", twisted=True)" : ")") << endl;
 
-  f_service_
-    << indent() << "def process_" << fn_name << "(self, args, handler_ctx"
-    << (gen_twisted_ ? ", seqid, oprot):" : "):") << endl;
+    f_service_
+      << indent() << "def process_" << fn_name << "(self, args, handler_ctx"
+      << (gen_twisted_ ? ", seqid, oprot):" : "):") << endl;
+  }
   indent_up();
 
   t_struct* xs = tfunction->get_xceptions();
@@ -2827,7 +2894,7 @@ void t_py_generator::generate_process_function(t_service* /*tservice*/,
     const std::vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator f_iter;
 
-    string handler = "self._handler." +
+    string handler = (future ? "self._handler.future_" : "self._handler.") +
       rename_reserved_keywords(tfunction->get_name());
 
     f_service_ << indent();
@@ -2882,7 +2949,7 @@ void t_py_generator::generate_process_function(t_service* /*tservice*/,
         f_service_ << "args." <<
           rename_reserved_keywords((*f_iter)->get_name());
       }
-      f_service_ << ")" << endl;
+      f_service_ << ")" << (future ? ".result()" : "") << endl;
     }
 
     indent_down();
@@ -2919,6 +2986,25 @@ void t_py_generator::generate_process_function(t_service* /*tservice*/,
 
     // Close function
     indent_down();
+
+    if (future) {
+      f_service_ << endl;
+
+      f_service_
+        << indent() << "@future_process_method(" << fn_name << "_args, oneway="
+        << (tfunction->is_oneway() ? "True" : "False") << ")" << endl;
+
+      f_service_
+        << indent() << "def future_process_" << fn_name
+        << "(self, args, handler_ctx):" << endl;
+
+      indent_up();
+      f_service_
+        << indent() << "return self._executor.submit(self.then_" << fn_name
+        << ", args, handler_ctx)" << endl;
+      indent_down();
+    }
+
     f_service_ << endl;
   }
 }

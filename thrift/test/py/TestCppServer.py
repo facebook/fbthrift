@@ -9,6 +9,7 @@ import multiprocessing
 import sys
 import threading
 import time
+import math
 
 from fb303.ContextFacebookBase import FacebookBase
 from libfb.testutil import BaseFacebookTestCase
@@ -21,15 +22,17 @@ from thrift.server.TCppServer import TCppServer, TSSLConfig, SSLPolicy, \
 from thrift.server.TServer import TServerEventHandler
 from tools.test.stubs import fbpyunit
 
+from concurrent.futures import ProcessPoolExecutor
 from test.sleep import SleepService, ttypes
+from futuretest.future import FutureSleepService
 
 TIMEOUT = 60 * 1000  # milliseconds
 
-def getClient(addr, sock_cls=TSocket.TSocket):
-    transport = sock_cls(addr[0], addr[1])
+def getClient(addr, sock_cls=TSocket.TSocket, service_module=SleepService):
+    transport = TSocket.TSocket(addr[0], addr[1])
     transport = TTransport.TFramedTransport(transport)
     protocol = TBinaryProtocol.TBinaryProtocol(transport)
-    client = SleepService.Client(protocol)
+    client = service_module.Client(protocol)
     transport.open()
     return client
 
@@ -80,6 +83,32 @@ class SleepHandler(FacebookBase, SleepService.Iface, TServerInterface):
             return False
         return headers.get(b"hello") == b"world"
 
+def is_prime(num):
+    if num % 2 == 0:
+        return False
+
+    sqrt_n = int(math.floor(math.sqrt(num)))
+    for i in range(3, sqrt_n + 1, 2):
+        if num % i == 0:
+            return False
+
+    return True
+
+class FutureSleepHandler(FacebookBase, FutureSleepService.Iface,
+        TServerInterface):
+    def __init__(self, executor):
+        FacebookBase.__init__(self, "futuresleep")
+        TServerInterface.__init__(self)
+        self.executor = executor
+
+    def sleep(self, seconds):
+        print("future server sleeping...")
+        time.sleep(seconds)
+        print("future server sleeping... done")
+
+    def future_isPrime(self, num):
+        return self.executor.submit(is_prime, num)
+
 class SpaceProcess(multiprocessing.Process):
     def __init__(self, addr):
         self.queue = multiprocessing.Queue()
@@ -100,6 +129,45 @@ class SpaceProcess(multiprocessing.Process):
 
         queue.put((client._iprot.trans.getTransport().getSocketName(),
                    client._iprot.trans.getTransport().getPeerName()))
+
+class FutureProcess(multiprocessing.Process):
+    # Stolen from PEP-3148
+    PRIMES = [
+            112272535095293,
+            112582705942171,
+            112272535095293,
+            115280095190773,
+            115797848077099,
+    ]
+
+    def __init__(self, addr):
+        multiprocessing.Process.__init__(self)
+        self.addr = addr
+
+    def isPrime(self, num):
+        client = getClient(self.addr, FutureSleepService)
+        assert client.isPrime(num)
+
+    def sleep(self):
+        client = getClient(self.addr, FutureSleepService)
+        client.sleep(2)
+
+    def run(self):
+        threads = []
+        # Send multiple requests from multiple threads. Unfortunately
+        # future client isn't supported yet.
+        for prime in FutureProcess.PRIMES:
+            t = threading.Thread(target=self.isPrime, args=(prime,))
+            t.start()
+            threads.append(t)
+
+        for i in range(5):
+            t = threading.Thread(target=self.sleep)
+            t.start()
+            threads.append(t)
+
+        for t in threads:
+            t.join()
 
 class HeaderProcess(multiprocessing.Process):
     def __init__(self, addr):
@@ -207,6 +275,19 @@ class TestServer(BaseFacebookTestCase):
         if self.server:
             self.server.stop()
             self.server = None
+
+class FutureTestServer(TestServer):
+    EXECUTOR = ProcessPoolExecutor()
+
+    def getProcessor(self):
+        return FutureSleepService.Processor(
+                FutureSleepHandler(FutureTestServer.EXECUTOR))
+
+    def testIsPrime(self):
+        sleep = FutureProcess(self.server_addr)
+        sleep.start()
+        sleep.join()
+        self.stopServer()
 
 class BaseTestServer(TestServer):
     def testSpace(self):

@@ -11,7 +11,10 @@ from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TTransport import TMemoryBuffer
 
 from thrift.server.CppServerWrapper import CppServerWrapper, ContextData, \
-    SSLPolicy, SSLVerifyPeerEnum
+        SSLPolicy, SSLVerifyPeerEnum, CallbackWrapper
+
+from concurrent.futures import Future
+from functools import partial
 
 class TCppConnectionContext(TConnectionContext):
     def __init__(self, context_data):
@@ -35,6 +38,7 @@ class TCppConnectionContext(TConnectionContext):
 
 class _ProcessorAdapter(object):
     CONTEXT_DATA = ContextData
+    CALLBACK_WRAPPER = CallbackWrapper
 
     def __init__(self, processor):
         self.processor = processor
@@ -43,7 +47,7 @@ class _ProcessorAdapter(object):
     # the constructed header buffer.  Also add endpoint addrs to the
     # context
     def call_processor(self, input, headers, client_type, protocol_type,
-                       context_data):
+                       context_data, callback):
         try:
             # The input string has already had the header removed, but
             # the python processor will expect it to be there.  In
@@ -64,27 +68,39 @@ class _ProcessorAdapter(object):
 
             ctx = TCppConnectionContext(context_data)
 
-            self.processor.process(prot, prot, ctx)
+            ret = self.processor.process(prot, prot, ctx)
 
-            # Check for empty result. If so, return an empty string
-            # here.  This is probably a oneway request, but we can't
-            # reliably tell.  The C++ code does basically the same
-            # thing.
-
-            response = prot_buf.getvalue()
-            if len(response) == 0:
-                return response
-
-            # And on the way out, we need to strip off the header,
-            # because the C++ code will expect to add it.
-
-            read_buf = TMemoryBuffer(response)
-            trans = THeaderTransport(read_buf, client_types=[client_type])
-            trans.readFrame(len(response))
-
-            return trans.cstringio_buf.read()
+            done_callback = partial(_ProcessorAdapter.done,
+                                    prot_buf=prot_buf,
+                                    client_type=client_type,
+                                    callback=callback)
+            # This future is created by and returned from the processor's
+            # ThreadPoolExecutor, which keeps a reference to it. So it is
+            # fine for this future to end its lifecycle here.
+            if isinstance(ret, Future):
+                ret.add_done_callback(lambda x, d=done_callback: d())
+            else:
+                done_callback()
         except:
             # Don't let exceptions escape back into C++
+            traceback.print_exc()
+
+    @staticmethod
+    def done(prot_buf, client_type, callback):
+        try:
+            response = prot_buf.getvalue()
+
+            if len(response) == 0:
+                callback.call(response)
+            else:
+                # And on the way out, we need to strip off the header,
+                # because the C++ code will expect to add it.
+
+                read_buf = TMemoryBuffer(response)
+                trans = THeaderTransport(read_buf, client_types=[client_type])
+                trans.readFrame(len(response))
+                callback.call(trans.cstringio_buf.read())
+        except:
             traceback.print_exc()
 
     def oneway_methods(self):

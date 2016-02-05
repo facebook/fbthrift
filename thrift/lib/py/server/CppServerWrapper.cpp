@@ -132,6 +132,20 @@ private:
   folly::SocketAddress localAddress_;
 };
 
+class CallbackWrapper {
+public:
+  void call(object obj) {
+    callback_(obj);
+  }
+
+  void setCallback(std::function<void(object)>&& callback) {
+    callback_ = std::move(callback);
+  }
+
+private:
+  std::function<void(object)> callback_;
+};
+
 class CppServerEventHandler : public TServerEventHandler {
 public:
   explicit CppServerEventHandler(object serverEventHandler)
@@ -194,8 +208,8 @@ public:
                   std::unique_ptr<ResponseChannel::Request>(preq));
 
               SCOPE_EXIT {
-                eb->runInEventBaseThread([=]() mutable {
-                  delete req_mw->release();
+                eb->runInEventBaseThread([req_mw]() mutable {
+                    delete req_mw->release();
                 });
               };
 
@@ -211,8 +225,6 @@ public:
                 // it back.  So just use standard header here.
                 clientType = THRIFT_HEADER_CLIENT_TYPE;
               }
-
-              std::unique_ptr<folly::IOBuf> outbuf;
 
               {
                 PyGILState_STATE state = PyGILState_Ensure();
@@ -232,51 +244,77 @@ public:
                 extract<ContextData&>(contextData)().copyContextContents(
                     context->getConnectionContext());
 
-                object output = adapter_->attr("call_processor")(
+                auto cb_ctor = adapter_->attr("CALLBACK_WRAPPER");
+                object callbackWrapper = cb_ctor();
+                extract<CallbackWrapper&>(callbackWrapper)().setCallback(
+                    [oneway, req_mw, context, eb] (object output) mutable {
+                  // Make sure the request is deleted in evb.
+                  SCOPE_EXIT {
+                    eb->runInEventBaseThread([req_mw]() mutable {
+                      delete req_mw->release();
+                    });
+                  };
+
+                  // Always called from python so no need to grab GIL.
+                  try {
+                    std::unique_ptr<folly::IOBuf> outbuf;
+                    if (output.is_none()) {
+                      throw std::runtime_error(
+                          "Unexpected error in processor method");
+                    }
+                    PyObject* output_ptr = output.ptr();
+#if PY_MAJOR_VERSION == 2
+                    if (PyString_Check(output_ptr)) {
+                      int len = extract<int>(output.attr("__len__")());
+                      if (len == 0) {
+                        return;
+                      }
+                      outbuf = folly::IOBuf::copyBuffer(
+                          extract<const char *>(output), len);
+                    } else
+#endif
+                    if (PyBytes_Check(output_ptr)) {
+                      int len = PyBytes_Size(output_ptr);
+                      if (len == 0) {
+                        return;
+                      }
+                      outbuf = folly::IOBuf::copyBuffer(
+                          PyBytes_AsString(output_ptr), len);
+                    } else {
+                      throw std::runtime_error("Return from processor "
+                          "method is not string or bytes");
+                    }
+
+                    if (!(*req_mw)->isActive()) {
+                      return;
+                    }
+                    auto q_mw = folly::makeMoveWrapper(THeader::transform(
+                          std::move(outbuf),
+                          context->getHeader()->getWriteTransforms(),
+                          context->getHeader()->getMinCompressBytes()));
+                    eb->runInEventBaseThread([req_mw, q_mw]() mutable {
+                        (*req_mw)->sendReply(q_mw.move());
+                    });
+                  } catch (const std::exception& e) {
+                    if (!oneway) {
+                      (*req_mw)->sendErrorWrapped(
+                          folly::make_exception_wrapper<TApplicationException>(
+                            folly::to<std::string>(
+                                "Failed to read response from Python:",
+                                e.what())),
+                          "python");
+                    }
+                  }
+                });
+
+                adapter_->attr("call_processor")(
                     input,
                     makePythonHeaders(context->getHeader()->getHeaders()),
                     int(clientType),
                     int(protType),
-                    contextData);
-                if (output.is_none()) {
-                  throw std::runtime_error(
-                      "Unexpected error in processor method");
-                }
-                PyObject* output_ptr = output.ptr();
-#if PY_MAJOR_VERSION == 2
-                if (PyString_Check(output_ptr)) {
-                  int len = extract<int>(output.attr("__len__")());
-                  if (len == 0) {
-                    return;
-                  }
-                  outbuf = folly::IOBuf::copyBuffer(
-                      extract<const char *>(output), len);
-                } else
-#endif
-                if (PyBytes_Check(output_ptr)) {
-                  int len = PyBytes_Size(output_ptr);
-                  if (len == 0) {
-                    return;
-                  }
-                  outbuf = folly::IOBuf::copyBuffer(
-                      PyBytes_AsString(output_ptr), len);
-                } else {
-                  throw std::runtime_error(
-                      "Return from processor method is not string or bytes");
-                }
+                    contextData,
+                    callbackWrapper);
               }
-
-              if (!(*req_mw)->isActive()) {
-                return;
-              }
-
-              auto q_mw = folly::makeMoveWrapper(THeader::transform(
-                  std::move(outbuf),
-                  context->getHeader()->getWriteTransforms(),
-                  context->getHeader()->getMinCompressBytes()));
-              eb->runInEventBaseThread([req_mw, q_mw]() mutable {
-                (*req_mw)->sendReply(q_mw.move());
-              });
             },
             preq, eb, oneway));
       req.release();
@@ -453,6 +491,10 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("getClientIdentity", &ContextData::getClientIdentity)
     .def("getPeerAddress", &ContextData::getPeerAddress)
     .def("getLocalAddress", &ContextData::getLocalAddress)
+    ;
+
+  class_<CallbackWrapper>("CallbackWrapper")
+    .def("call", &CallbackWrapper::call)
     ;
 
   class_<CppServerWrapper, boost::noncopyable >(

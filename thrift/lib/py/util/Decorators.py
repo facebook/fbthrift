@@ -26,8 +26,12 @@ import contextlib
 import logging
 import os
 import resource
+from concurrent.futures import Future
+from functools import partial
+
 
 from thrift.Thrift import (
+    TMessageType,
     TApplicationException,
     TRequestContext,
 )
@@ -115,7 +119,6 @@ def reset_request_context(processor):
     if needs_request_context(processor):
         processor._handler.setRequestContext(None)
 
-
 def process_method(argtype, oneway=False, twisted=False):
     """Decorator for process_xxx methods."""
     def _decorator(func):
@@ -152,6 +155,92 @@ def process_method(argtype, oneway=False, twisted=False):
 
     return _decorator
 
+def future_process_main():
+    """Decorator for process method of future processor."""
+    def _decorator(func):
+        def nested(self, iprot, oprot, server_ctx=None):
+            name, seqid = self.readMessageBegin(iprot)
+            if self.doesKnowFunction(name):
+                return self._processMap[name](self, seqid, iprot, oprot,
+                        server_ctx)
+            else:
+                self.skipMessageStruct(iprot)
+                exc = make_unknown_function_exception(name)
+                self.writeException(oprot, name, seqid, exc)
+                fut = Future()
+                fut.set_result(True)
+                return fut
+        return nested
+
+    return _decorator
+
+def _done(future, processor, handler_ctx, fn_name, oprot, reply_type, seqid,
+        oneway):
+    try:
+        result = future.result()
+    except TApplicationException as e:
+        if oneway:
+            result = None
+        else:
+            result = e
+
+    if result is None:
+        return
+
+    if isinstance(result, TApplicationException):
+        reply_type = TMessageType.EXCEPTION
+
+    processor._event_handler.preWrite(handler_ctx, fn_name, result)
+    oprot.writeMessageBegin(fn_name, reply_type, seqid)
+    result.write(oprot)
+    oprot.writeMessageEnd()
+    oprot.trans.flush()
+    processor._event_handler.postWrite(handler_ctx, fn_name, result)
+
+def future_process_method(argtype, oneway=False):
+    """Decorator for process_xxx methods of futuer processor.
+
+    TODO haijunz: handler_ctx is not supported in FutureProcessor's handler
+    methods. handler_ctx should only be used by processor event handlers
+    and ContextProcessor should be deprecated. To pass things to handler
+    methods, use request context.
+    """
+    def _decorator(func):
+        def nested(self, seqid, iprot, oprot, server_ctx):
+            fn_name = func.__name__.split('_', 1)[-1]
+            handler_ctx = self._event_handler.getHandlerContext(fn_name,
+                    server_ctx)
+            args = argtype()
+            reply_type = TMessageType.REPLY
+            self._event_handler.preRead(handler_ctx, fn_name, args)
+            args.read(iprot)
+            iprot.readMessageEnd()
+            self._event_handler.postRead(handler_ctx, fn_name, args)
+
+            if hasattr(self._handler, "setRequestContext"):
+                request_context = TRequestContext()
+                if (isinstance(iprot, THeaderProtocol.THeaderProtocol)):
+                    request_context.setHeaders(iprot.trans.get_headers())
+                self._handler.setRequestContext(request_context)
+
+            fut = func(self, args, handler_ctx)
+            done_callback = partial(_done,
+                                    processor=self,
+                                    handler_ctx=handler_ctx,
+                                    fn_name=fn_name,
+                                    oprot=oprot,
+                                    reply_type=reply_type,
+                                    seqid=seqid,
+                                    oneway=oneway)
+            fut.add_done_callback(done_callback)
+
+            if hasattr(self._handler, "setRequestContext"):
+                self._handler.setRequestContext(None)
+            return fut
+
+        return nested
+
+    return _decorator
 
 def write_results_success_callback(func):
     """Decorator for twisted write_results_success_xxx methods.
