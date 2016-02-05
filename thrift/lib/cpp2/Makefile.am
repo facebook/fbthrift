@@ -83,10 +83,7 @@ thrift2include_fatal_HEADERS = \
 	fatal/reflect_category.h \
 	fatal/reflection-inl-post.h \
 	fatal/reflection-inl-pre.h \
-	fatal/reflection.h \
-  fatal/traits_test_helpers.h \
-  fatal/traits_test_helpers-inl.h \
-  fatal/internal/test_helpers.h
+	fatal/reflection.h
 
 thrift2include_serverdir = $(thrift2includedir)/server
 
