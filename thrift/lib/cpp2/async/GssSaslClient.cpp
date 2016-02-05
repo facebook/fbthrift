@@ -56,8 +56,12 @@ using apache::thrift::sasl::SaslAuthService_authFirstRequest_presult;
 using apache::thrift::sasl::SaslAuthService_authNextRequest_pargs;
 using apache::thrift::sasl::SaslAuthService_authNextRequest_presult;
 
+#ifndef NO_LIB_GFLAGS
 DEFINE_int32(sasl_thread_manager_timeout_ms, 1000,
   "Max number of ms for sasl tasks to wait in the thread manager queue");
+#else
+int32_t FLAGS_sasl_thread_manager_timeout_ms = 1000;
+#endif
 
 namespace apache { namespace thrift {
 
