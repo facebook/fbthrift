@@ -116,6 +116,7 @@ class ThriftTestCase(unittest.TestCase):
     @async_test
     def tearDown(self):
         self.transport.close()
+        self.protocol.close()
         self.server.close()
 
     @async_test

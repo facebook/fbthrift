@@ -183,6 +183,14 @@ class SenderTransport:
         self._consumer = self._loop.create_task(self._send())
         self._producers = []
 
+    def __del__(self):
+        if not self._consumer.done() or not self._consumer.cancelled():
+            logger.error(
+                'SenderTransport did not finish properly'
+                ' as the consumer asyncio.Task is still pending.'
+                ' Please make sure to call .close() on this object.'
+            )
+
     def send_message(self, msg):
         self._producers.append(
             self._loop.create_task(self._queue.put(msg)),
@@ -289,6 +297,13 @@ class WrappedTransport(TWriteOnlyBuffer):
         self._trans = trans
         self._proto = proto
 
+    def __del__(self):
+        if self.isOpen():
+            logger.error(
+                'A WrappedTransport object should not be garbage collected'
+                ' while the transport channel is open.',
+            )
+
     def flush(self):
         msg = self.getvalue()
         tmi = TReadOnlyBuffer(msg)
@@ -298,6 +313,10 @@ class WrappedTransport(TWriteOnlyBuffer):
         self._proto.schedule_timeout(fname, seqid)
         self._trans.send_message(msg)
         self.reset()
+
+    def close(self):
+        super().close()
+        self._trans.close()
 
 
 class WrappedTransportFactory:
