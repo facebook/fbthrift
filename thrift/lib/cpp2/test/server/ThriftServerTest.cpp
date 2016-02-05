@@ -265,10 +265,10 @@ TEST(ThriftServer, ClientTimeoutTest) {
         }));
   };
 
-  // Set the timeout to be 9 milliseconds, but the call will take 10 ms.
-  // The server should send a timeout after 9 milliseconds
+  // Set the timeout to be 5 milliseconds, but the call will take 10 ms.
+  // The server should send a timeout after 5 milliseconds
   RpcOptions options;
-  options.setTimeout(std::chrono::milliseconds(9));
+  options.setTimeout(std::chrono::milliseconds(5));
   auto client1 = getClient();
   bool timeout1;
   client1->sendResponse(options, callback(client1, timeout1), 10000);
@@ -276,9 +276,9 @@ TEST(ThriftServer, ClientTimeoutTest) {
   EXPECT_TRUE(timeout1);
   usleep(10000);
 
-  // This time we set the timeout to be 11 millseconds.  The server
+  // This time we set the timeout to be 15 millseconds.  The server
   // should not time out
-  options.setTimeout(std::chrono::milliseconds(11));
+  options.setTimeout(std::chrono::milliseconds(15));
   client1->sendResponse(options, callback(client1, timeout1), 10000);
   base.loop();
   EXPECT_FALSE(timeout1);
@@ -294,9 +294,9 @@ TEST(ThriftServer, ClientTimeoutTest) {
   usleep(10000);
 
   // The server timeout stays at 1 ms, but we put the client timeout at
-  // 9 ms.  We should timeout even though the server starts processing within
+  // 5 ms.  We should timeout even though the server starts processing within
   // 1ms.
-  options.setTimeout(std::chrono::milliseconds(9));
+  options.setTimeout(std::chrono::milliseconds(5));
   client1->sendResponse(options, callback(client1, timeout1), 10000);
   base.loop();
   EXPECT_TRUE(timeout1);
