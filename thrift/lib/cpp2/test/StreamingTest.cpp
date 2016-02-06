@@ -53,11 +53,15 @@ class StreamingServiceInterface : public StreamingServiceSvIf {
   }
 };
 
-apache::thrift::TestThriftServerFactory<StreamingServiceInterface> factory;
-ScopedServerThread sst(factory.create());
+ScopedServerThread& sst() {
+  static apache::thrift::TestThriftServerFactory<StreamingServiceInterface>
+    factory;
+  static auto t = new ScopedServerThread(factory.create());
+  return *t;
+}
 
 std::shared_ptr<StreamingServiceAsyncClient> getClient(folly::EventBase& eb) {
-  auto socket = TAsyncSocket::newSocket(&eb, *sst.getAddress());
+  auto socket = TAsyncSocket::newSocket(&eb, *sst().getAddress());
   auto channel = HeaderClientChannel::newChannel(socket);
   auto client = std::make_shared<StreamingServiceAsyncClient>(std::move(channel));
   return client;
