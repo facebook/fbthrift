@@ -16,19 +16,16 @@
 
 #include <thrift/lib/cpp2/test/gen-cpp2/StreamingService.h>
 #include <gtest/gtest.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2//util/ScopedServerInterfaceThread.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
-using namespace apache::thrift::util;
-using namespace apache::thrift::async;
 using apache::thrift::transport::TTransportException;
 using wangle::Observer;
 using wangle::ObservablePtr;
 using wangle::Error;
+
+namespace {
 
 class StreamingServiceInterface : public StreamingServiceSvIf {
  public:
@@ -53,25 +50,24 @@ class StreamingServiceInterface : public StreamingServiceSvIf {
   }
 };
 
-ScopedServerThread& sst() {
-  static apache::thrift::TestThriftServerFactory<StreamingServiceInterface>
-    factory;
-  static auto t = new ScopedServerThread(factory.create());
-  return *t;
-}
-
-std::shared_ptr<StreamingServiceAsyncClient> getClient(folly::EventBase& eb) {
-  auto socket = TAsyncSocket::newSocket(&eb, *sst().getAddress());
-  auto channel = HeaderClientChannel::newChannel(socket);
-  auto client = std::make_shared<StreamingServiceAsyncClient>(std::move(channel));
-  return client;
-}
-
 static constexpr size_t kCount = 5;
 
-TEST(Streaming, Callback) {
+class StreamingTest : public testing::Test {
+ public:
+  std::shared_ptr<StreamingServiceInterface> handler {
+    std::make_shared<StreamingServiceInterface>() };
+  apache::thrift::ScopedServerInterfaceThread runner { handler };
   folly::EventBase eb;
-  auto client = getClient(eb);
+
+  std::unique_ptr<StreamingServiceAsyncClient> newClient() {
+    return runner.newClient<StreamingServiceAsyncClient>(&eb);
+  }
+};
+
+}
+
+TEST_F(StreamingTest, Callback) {
+  auto client = newClient();
 
   int n = 0;
   client->streamingMethod([&n](ClientReceiveState&& state) mutable {
@@ -94,9 +90,8 @@ TEST(Streaming, Callback) {
   EXPECT_EQ(n, kCount);
 }
 
-TEST(Streaming, Observable) {
-  folly::EventBase eb;
-  auto client = getClient(eb);
+TEST_F(StreamingTest, Observable) {
+  auto client = newClient();
 
   int n = 0;
   ObservablePtr<int> s = client->observable_streamingMethod(kCount);
@@ -121,9 +116,8 @@ TEST(Streaming, Observable) {
   EXPECT_EQ(n, kCount);
 }
 
-TEST(Streaming, Exception) {
-  folly::EventBase eb;
-  auto client = getClient(eb);
+TEST_F(StreamingTest, Exception) {
+  auto client = newClient();
 
   int n = 0;
   bool error = false;
@@ -151,9 +145,8 @@ TEST(Streaming, Exception) {
   EXPECT_TRUE(error);
 }
 
-TEST(Streaming, GlobalTimeout) {
-  folly::EventBase eb;
-  auto client = getClient(eb);
+TEST_F(StreamingTest, GlobalTimeout) {
+  auto client = newClient();
 
   int n = 0;
   bool error = false;
@@ -185,9 +178,8 @@ TEST(Streaming, GlobalTimeout) {
   EXPECT_TRUE(error);
 }
 
-TEST(Streaming, ChunkTimeout) {
-  folly::EventBase eb;
-  auto client = getClient(eb);
+TEST_F(StreamingTest, ChunkTimeout) {
+  auto client = newClient();
 
   int n = 0;
   bool error = false;
