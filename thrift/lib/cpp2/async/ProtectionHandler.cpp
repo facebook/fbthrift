@@ -67,7 +67,8 @@ void ProtectionHandler::read(Context* ctx, folly::IOBufQueue& q) {
             // If decryption fails, we try to read again without decrypting.
             // The copy is necessary since a decryption attempt modifies the
             // queue.
-            folly::IOBufQueue inputQueueCopy;
+            folly::IOBufQueue inputQueueCopy(
+                folly::IOBufQueue::cacheChainLength());
             auto copyBuf = inputQueue_.front()->clone();
             copyBuf->unshare();
             inputQueueCopy.append(std::move(copyBuf));
