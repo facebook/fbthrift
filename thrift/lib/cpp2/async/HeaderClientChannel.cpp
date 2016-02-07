@@ -191,6 +191,9 @@ void HeaderClientChannel::SaslClientCallback::saslSendServer(
     channel_.timer_->scheduleTimeout(this,
         std::chrono::milliseconds(channel_.timeoutSASL_));
   }
+  if (sendServerHook_) {
+    sendServerHook_();
+  }
   channel_.handshakeMessagesSent_++;
 
   header_->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);

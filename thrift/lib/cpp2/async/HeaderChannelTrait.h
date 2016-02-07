@@ -51,6 +51,7 @@ class HeaderChannelTrait {
   void updateClientType(CLIENT_TYPE ct);
 
   void setSecurityPolicy(THRIFT_SECURITY_POLICY policy);
+  THRIFT_SECURITY_POLICY getSecurityPolicy() { return securityPolicy_; }
 
   void setMinCompressBytes(uint32_t bytes) { minCompressBytes_ = bytes; }
 

@@ -219,6 +219,34 @@ class HeaderClientChannel : public ClientChannel,
     HeaderClientChannel& channel_;
   };
 
+  class SaslClientCallback : public SaslClient::Callback {
+   public:
+    explicit SaslClientCallback(HeaderClientChannel& channel)
+      : channel_(channel)
+      , header_(new apache::thrift::transport::THeader) {}
+    void saslStarted() override;
+    void saslSendServer(std::unique_ptr<folly::IOBuf>&&) override;
+    void saslError(folly::exception_wrapper&&) override;
+    void saslComplete() override;
+
+    void setHeader(
+        std::unique_ptr<apache::thrift::transport::THeader>&& header) {
+      header_ = std::move(header);
+    }
+
+    void setSendServerHook(std::function<void()> hook) {
+      sendServerHook_ = std::move(hook);
+    }
+   private:
+    HeaderClientChannel& channel_;
+    std::unique_ptr<apache::thrift::transport::THeader> header_;
+    std::function<void()> sendServerHook_;
+  };
+
+  SaslClientCallback* getSaslClientCallback() {
+    return &saslClientCallback_;
+  }
+
   // Remove a callback from the recvCallbacks_ map.
   void eraseCallback(uint32_t seqId, TwowayCallback<HeaderClientChannel>* cb);
 
@@ -284,24 +312,7 @@ private:
                                                              saslClient_.get());
   }
 
-  class SaslClientCallback : public SaslClient::Callback {
-   public:
-    explicit SaslClientCallback(HeaderClientChannel& channel)
-      : channel_(channel)
-      , header_(new apache::thrift::transport::THeader) {}
-    void saslStarted() override;
-    void saslSendServer(std::unique_ptr<folly::IOBuf>&&) override;
-    void saslError(folly::exception_wrapper&&) override;
-    void saslComplete() override;
-
-    void setHeader(
-        std::unique_ptr<apache::thrift::transport::THeader>&& header) {
-      header_ = std::move(header);
-    }
-   private:
-    HeaderClientChannel& channel_;
-    std::unique_ptr<apache::thrift::transport::THeader> header_;
-  } saslClientCallback_;
+  SaslClientCallback saslClientCallback_;
 
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 

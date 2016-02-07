@@ -123,12 +123,17 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   EventBase base;
   auto channel = getClientChannel(&base, *sst.getAddress());
   setup(channel.get());
+  auto sp = channel->getSecurityPolicy();
   TestServiceAsyncClient client(std::move(channel));
   Countdown c(3, [&base](){base.terminateLoopSoon();});
 
-  client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
+  client.sendResponse([&base,&client,&c,&sp](ClientReceiveState&& state) {
     EXPECT_FALSE(state.isException());
-    EXPECT_TRUE(state.isSecurityActive());
+    if (sp == THRIFT_SECURITY_REQUIRED) {
+      EXPECT_TRUE(state.isSecurityActive());
+    } else {
+      EXPECT_FALSE(state.isSecurityActive());
+    }
     std::string res;
     try {
       TestServiceAsyncClient::recv_sendResponse(res, state);
@@ -143,10 +148,14 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   // fail on time out
   base.tryRunAfterDelay([] {EXPECT_TRUE(false);}, 5000);
 
-  base.tryRunAfterDelay([&client,&base,&c] {
-    client.sendResponse([&base,&c](ClientReceiveState&& state) {
+  base.tryRunAfterDelay([&client,&base,&c,&sp] {
+    client.sendResponse([&base,&c,&sp](ClientReceiveState&& state) {
       EXPECT_FALSE(state.isException());
-      EXPECT_TRUE(state.isSecurityActive());
+      if (sp == THRIFT_SECURITY_REQUIRED) {
+        EXPECT_TRUE(state.isSecurityActive());
+      } else {
+        EXPECT_FALSE(state.isSecurityActive());
+      }
       std::string res;
       try {
         TestServiceAsyncClient::recv_sendResponse(res, state);
@@ -156,9 +165,13 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
       EXPECT_EQ(res, "10");
       c.down();
     }, 10);
-    client.sendResponse([&base,&c](ClientReceiveState&& state) {
+    client.sendResponse([&base,&c,&sp](ClientReceiveState&& state) {
       EXPECT_FALSE(state.isException());
-      EXPECT_TRUE(state.isSecurityActive());
+      if (sp == THRIFT_SECURITY_REQUIRED) {
+        EXPECT_TRUE(state.isSecurityActive());
+      } else {
+        EXPECT_FALSE(state.isSecurityActive());
+      }
       std::string res;
       try {
         TestServiceAsyncClient::recv_sendResponse(res, state);
@@ -226,6 +239,17 @@ TEST(Security, GSS) {
   runTest([](HeaderClientChannel* channel) {
     channel->getSaslClient()->setSecurityMech(
       apache::thrift::SecurityMech::KRB5_GSS);
+  });
+}
+
+TEST(Security, Fallback) {
+  runTest([](HeaderClientChannel* channel) {
+    channel->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
+    channel->setSaslTimeout(1);
+    channel->getSaslClientCallback()->setSendServerHook([]{
+      /* sleep override */
+      usleep(20000);
+    });
   });
 }
 
