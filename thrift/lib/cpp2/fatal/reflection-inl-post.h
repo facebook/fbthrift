@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2016 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,23 @@ struct reflect_category_impl {
             typename std::conditional<
               std::is_same<void, T>::value,
               as_thrift_category<thrift_category::nothing>,
-              typename get_thrift_category<T>::type
+              typename std::conditional<
+                fatal::is_complete<thrift_string_traits<T>>::value,
+                as_thrift_category<thrift_category::string>,
+                typename std::conditional<
+                  fatal::is_complete<thrift_list_traits<T>>::value,
+                  as_thrift_category<thrift_category::list>,
+                  typename std::conditional<
+                    fatal::is_complete<thrift_set_traits<T>>::value,
+                    as_thrift_category<thrift_category::set>,
+                    typename std::conditional<
+                      fatal::is_complete<thrift_map_traits<T>>::value,
+                      as_thrift_category<thrift_category::map>,
+                      as_thrift_category<thrift_category::unknown>
+                    >::type
+                  >::type
+                >::type
+              >::type
             >::type
           >::type
         >::type

@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/reflection_fatal_service.h>
-
-#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
-
-#include <gtest/gtest.h>
+#include <thrift/lib/cpp2/fatal/reflect_category.h>
+#include <thrift/lib/cpp2/fatal/traits_test_helpers.h>
 
 namespace test_cpp2 {
 namespace cpp_reflection {
 
-TEST(fatal_service, sanity_check) {
+TEST(reflection, thrift_std_set_traits) {
+  apache::thrift::test_thrift_set_traits<std::set<int>>();
+}
+
+TEST(reflection, thrift_std_unordered_set_traits) {
+  apache::thrift::test_thrift_set_traits<std::unordered_set<int>>();
 }
 
 } // namespace cpp_reflection {
