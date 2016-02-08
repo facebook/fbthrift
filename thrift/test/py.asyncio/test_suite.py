@@ -3,6 +3,7 @@
 
 import asyncio
 import functools
+import logging
 import time
 import unittest
 
@@ -15,17 +16,31 @@ from thrift.server.TAsyncioServer import (
 from thrift.transport.THeaderTransport import THeaderTransport
 
 loop = asyncio.get_event_loop()
+loop.set_debug(True)
+logging.getLogger('asyncio').setLevel(logging.DEBUG)
 
 
 class TestHandler(ThriftTest.Iface):
 
-    def __init__(self):
+    def __init__(self, use_async=False):
         self.onewaysQueue = asyncio.Queue(loop=loop)
+        if use_async:
+            self.testOneway = self.fireOnewayAsync
+            self.testString = self.fireStringAsync
+        else:
+            self.testOneway = self.fireOnewayCoro
+            self.testString = self.fireStringCoro
 
     def testVoid(self):
         pass
 
-    def testString(self, s):
+    @asyncio.coroutine
+    def fireStringCoro(self, s):
+        yield from asyncio.sleep(0)
+        return s
+
+    async def fireStringAsync(self, s):
+        await asyncio.sleep(0)
         return s
 
     def testByte(self, b):
@@ -55,12 +70,16 @@ class TestHandler(ThriftTest.Iface):
         elif s == "throw_undeclared":
             raise ValueError("foo")
 
-    def testOneway(self, seconds):
-        @asyncio.coroutine
-        def fireOneway(t):
-            yield from asyncio.sleep(seconds)
-            yield from self.onewaysQueue.put((t, time.time(), seconds))
-        asyncio.async(fireOneway(time.time()))
+    @asyncio.coroutine
+    def fireOnewayCoro(self, seconds):
+        t = time.time()
+        yield from asyncio.sleep(seconds)
+        yield from self.onewaysQueue.put((t, time.time(), seconds))
+
+    async def fireOnewayAsync(self, seconds):
+        t = time.time()
+        await asyncio.sleep(seconds)
+        await self.onewaysQueue.put((t, time.time(), seconds))
 
     def testNest(self, thing):
         return thing
@@ -85,21 +104,22 @@ def async_test(f):
 
     @functools.wraps(f)
     def wrapper(*args, **kwargs):
-        global loop
-        coro = asyncio.coroutine(f)
-        loop.run_until_complete(coro(*args, **kwargs))
+        nonlocal f
+        if not asyncio.iscoroutinefunction(f):
+            f = asyncio.coroutine(f)
+        loop.run_until_complete(f(*args, **kwargs))
 
     return wrapper
 
 
-class ThriftTestCase(unittest.TestCase):
+class ThriftCoroTestCase(unittest.TestCase):
     CLIENT_TYPE = None
 
     @async_test
     def setUp(self):
         global loop
         self.host = '127.0.0.1'
-        self.handler = TestHandler()
+        self.handler = TestHandler(use_async=False)
         self.server = yield from ThriftAsyncServerFactory(
             self.handler, interface=self.host, port=0, loop=loop,
         )
@@ -115,6 +135,7 @@ class ThriftTestCase(unittest.TestCase):
 
     @async_test
     def tearDown(self):
+        self.protocol.close()
         self.transport.close()
         self.protocol.close()
         self.server.close()
@@ -185,7 +206,107 @@ class ThriftTestCase(unittest.TestCase):
     def testOneway(self):
         yield from self.client.testOneway(2)
         start, end, seconds = yield from self.handler.onewaysQueue.get()
-        self.assertAlmostEqual(seconds, (end - start), places=2)
+        self.assertAlmostEqual(seconds, (end - start), places=1)
 
-class FramedThriftTestCase(ThriftTestCase):
+
+class ThriftAsyncTestCase(unittest.TestCase):
+    CLIENT_TYPE = None
+
+    @async_test
+    async def setUp(self):
+        global loop
+        self.host = '127.0.0.1'
+        self.handler = TestHandler(use_async=True)
+        self.server = await ThriftAsyncServerFactory(
+            self.handler, interface=self.host, port=0, loop=loop,
+        )
+        self.port = self.server.sockets[0].getsockname()[1]
+        self.transport, self.protocol = await loop.create_connection(
+            ThriftClientProtocolFactory(
+                ThriftTest.Client,
+                client_type=self.CLIENT_TYPE),
+            host=self.host,
+            port=self.port,
+        )
+        self.client = self.protocol.client
+
+    @async_test
+    async def tearDown(self):
+        self.protocol.close()
+        self.transport.close()
+        self.server.close()
+
+    @async_test
+    async def testVoid(self):
+        result = await self.client.testVoid()
+        self.assertEqual(result, None)
+
+    @async_test
+    async def testString(self):
+        result = await self.client.testString('Python')
+        self.assertEqual(result, 'Python')
+
+    @async_test
+    async def testByte(self):
+        result = await self.client.testByte(63)
+        self.assertEqual(result, 63)
+
+    @async_test
+    async def testI32(self):
+        result = await self.client.testI32(-1)
+        self.assertEqual(result, -1)
+        result = await self.client.testI32(0)
+        self.assertEqual(result, 0)
+
+    @async_test
+    async def testI64(self):
+        result = await self.client.testI64(-34359738368)
+        self.assertEqual(result, -34359738368)
+
+    @async_test
+    async def testDouble(self):
+        result = await self.client.testDouble(-5.235098235)
+        self.assertAlmostEqual(result, -5.235098235)
+
+    @async_test
+    async def testStruct(self):
+        x = Xtruct()
+        x.string_thing = "Zero"
+        x.byte_thing = 1
+        x.i32_thing = -3
+        x.i64_thing = -5
+        y = await self.client.testStruct(x)
+
+        self.assertEqual(y.string_thing, "Zero")
+        self.assertEqual(y.byte_thing, 1)
+        self.assertEqual(y.i32_thing, -3)
+        self.assertEqual(y.i64_thing, -5)
+
+    @async_test
+    async def testException(self):
+        await self.client.testException('Safe')
+        try:
+            await self.client.testException('Xception')
+            self.fail("Xception not raised")
+        except Xception as x:
+            self.assertEqual(x.errorCode, 1001)
+            self.assertEqual(x.message, 'Xception')
+
+        try:
+            await self.client.testException("throw_undeclared")
+            self.fail("exception not raised")
+        except Exception:  # type is undefined
+            pass
+
+    @async_test
+    async def testOneway(self):
+        await self.client.testOneway(2)
+        start, end, seconds = await self.handler.onewaysQueue.get()
+        self.assertAlmostEqual(seconds, (end - start), places=1)
+
+
+class FramedThriftCoroTestCase(ThriftCoroTestCase):
+    CLIENT_TYPE = THeaderTransport.FRAMED_DEPRECATED
+
+class FramedThriftAsyncTestCase(ThriftAsyncTestCase):
     CLIENT_TYPE = THeaderTransport.FRAMED_DEPRECATED

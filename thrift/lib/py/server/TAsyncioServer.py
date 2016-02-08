@@ -10,7 +10,12 @@ import struct
 import warnings
 
 from .TServer import TServer, TServerEventHandler, TConnectionContext
-from thrift.Thrift import TProcessor, TMessageType, TApplicationException
+from thrift.Thrift import (
+    TApplicationException,
+    TException,
+    TMessageType,
+    TProcessor,
+)
 from thrift.transport.TTransport import TTransportBase, TTransportException
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.protocol.THeaderProtocol import (
@@ -413,10 +418,13 @@ class ThriftHeaderClientProtocol(FramedProtocol):
 
         method = getattr(self.client, "recv_" + fname.decode(), None)
         if method is None:
-            logger.error("Method %r is not supported", method)
+            logger.error("Method %r is not supported", fname)
             self.transport.abort()
         else:
-            method(iprot, mtype, rseqid)
+            try:
+                method(iprot, mtype, rseqid)
+            except (asyncio.futures.InvalidStateError, asyncio.CancelledError) as e:
+                logger.warning("Method %r cancelled: %s", fname, str(e))
 
     def close(self):
         for task in self.pending_tasks.values():
@@ -474,8 +482,13 @@ class ThriftHeaderServerProtocol(FramedProtocol):
             msg = buf.getvalue()
             if len(msg) > 0:
                 self.transport.write(msg)
-        except Exception:
-            logger.exception("Exception while processing request")
+        except TException as e:
+            logger.warning("TException while processing request: %s", str(e))
+            msg = buf.getvalue()
+            if len(msg) > 0:
+                self.transport.write(msg)
+        except BaseException as e:
+            logger.error("Exception while processing request: %s", str(e))
             self.transport.close()
 
     def connection_made(self, transport):
@@ -513,7 +526,7 @@ class TAsyncioServer(TServer):
         try:
             self.loop.run_forever()
         except KeyboardInterrupt:
-            logging.info("Server killed, exitting.")
+            logging.info("Server killed, exiting.")
         finally:
             self.server.close()
             self.loop.close()

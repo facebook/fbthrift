@@ -15,11 +15,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from itertools import chain
-import os.path
-import getpass
 import sys
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen
 import time
 import unittest
 import string
@@ -263,7 +260,7 @@ class AbstractTest(object):
             stime = time.time()
             try:
                 self.socket.read(1)
-            except TTransport.TTransportException as x:
+            except TTransport.TTransportException:
                 total_time = time.time() - stime
                 self.assertTrue(total_time > 1, "Read timeout was too short")
                 self.assertTrue(total_time < 10, "Read timeout took too long")
@@ -370,19 +367,14 @@ def class_name_mixin(k, v):
 
 
 def new_test_class(cls, vars):
-    class Subclass(cls, unittest.TestCase):
-        pass
+    template = ""
     name = cls.__name__
-    if sys.version_info[0] >= 3:
-        iter = sorted(list(vars.items()))
-    else:
-        iter = vars.iteritems()
-    for k, v in iter:
+    for k, v in sorted(vars.items()):
         name += class_name_mixin(k, v)
-        setattr(Subclass, k, v)
-    Subclass.__name__ = \
-        name.encode('ascii') if sys.version_info[0] < 3 else name
-    return Subclass
+        template += "  {} = {!r}\n".format(k, v)
+    template = "class {}(cls, unittest.TestCase):\n".format(name) + template
+    exec(template)
+    return locals()[name]
 
 
 def add_test_classes(module):

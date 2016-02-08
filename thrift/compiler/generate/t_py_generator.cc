@@ -1954,12 +1954,15 @@ void t_py_generator::generate_service(t_service* tservice) {
 
   if (gen_asyncio_) {
     f_service_ <<
-      "import asyncio" << endl <<
-      "from thrift.util.asyncio import *" << endl;
-  } else {
-    f_service_ <<
-      "from thrift.util.Decorators import *" << endl;
+    "if six.PY3:" << endl <<
+    "  import asyncio" << endl <<
+    "  from thrift.util.asyncio import call_as_future" << endl <<
+    "else:" << endl <<
+    "  import trollius as asyncio" << endl <<
+    "  from thrift.util.trollius import call_as_future" << endl;
   }
+  f_service_ <<
+    "from thrift.util.Decorators import *" << endl;
 
   f_service_ << endl;
 
@@ -2735,12 +2738,13 @@ void t_py_generator::generate_service_server(t_service* tservice,
 
   // Generate the server implementation
   if (gen_asyncio_) {
-    indent(f_service_) << "@process_main" << endl;
+    indent(f_service_) << "@process_main(asyncio=True)" << endl;
   } else if (gen_future_) {
     indent(f_service_) << "@future_process_main()" << endl;
+  } else if (gen_twisted_) {
+    indent(f_service_) << "@process_main(twisted=True)" << endl;
   } else {
-    indent(f_service_) << "@process_main" <<
-      (gen_twisted_ ? "(twisted=True)" : "()") << endl;
+    indent(f_service_) << "@process_main()" << endl;
   }
   indent(f_service_) <<
     "def process(self,): pass" << endl << endl;
@@ -2779,13 +2783,18 @@ void t_py_generator::generate_process_function(t_service* /*tservice*/,
       << "def then_" << fn_name << "(self, args, handler_ctx):" << endl;
   } else {
     indent(f_service_)
-      << "@process_method(" << fn_name << "_args, oneway="
+      << "@process_method("
+      << fn_name << "_args, "
+      << "oneway="
       << (tfunction->is_oneway() ? "True" : "False")
-      << (gen_twisted_ ? ", twisted=True)" : ")") << endl;
+      << (gen_asyncio_ ? ", asyncio=True": "")
+      << (gen_twisted_ ? ", twisted=True": "")
+      << ")" << endl;
 
     f_service_
       << indent() << "def process_" << fn_name << "(self, args, handler_ctx"
-      << (gen_twisted_ ? ", seqid, oprot):" : "):") << endl;
+      << (gen_twisted_ || gen_asyncio_ ? ", seqid, oprot, fn_name):" : "):")
+      << endl;
   }
   indent_up();
 
@@ -2893,8 +2902,63 @@ void t_py_generator::generate_process_function(t_service* /*tservice*/,
       indent() << "return reply_type, result" << endl;
     indent_down();
     f_service_ << endl;
-  } else {
+  } else if (gen_asyncio_) {
+    t_struct* arg_struct = tfunction->get_arglist();
+    const std::vector<t_field*>& fields = arg_struct->get_members();
+    vector<t_field*>::const_iterator f_iter;
 
+    string handler = "self._handler." +
+      rename_reserved_keywords(tfunction->get_name());
+
+    string args_list = "";
+    bool first = true;
+    if (with_context) {
+      args_list += "handler_ctx";
+      first = false;
+    }
+    for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
+      if (first) {
+        first = false;
+      } else {
+        args_list += ", ";
+      }
+      args_list += "args.";
+      args_list += rename_reserved_keywords((*f_iter)->get_name());
+    }
+
+    f_service_ <<
+      indent() << "if should_run_on_thread(" << handler << "):" << endl <<
+      indent() << "  loop = asyncio.get_event_loop()" << endl <<
+      indent() << "  fut = loop.run_in_executor(None, " <<
+      handler << ", " << args_list << ")" << endl <<
+      indent() << "else:" << endl <<
+      indent() << "  fut = call_as_future(" << handler << ", " <<
+      args_list << ")" << endl;
+
+    if (!tfunction->is_oneway()) {
+      string known_exceptions = "{";
+      int exc_num;
+      for (exc_num = 0, x_iter = xceptions.begin();
+          x_iter != xceptions.end(); ++x_iter, ++exc_num) {
+        if (exc_num > 0) {
+          known_exceptions += ", ";
+        }
+        known_exceptions += "'";
+        known_exceptions += rename_reserved_keywords((*x_iter)->get_name());
+        known_exceptions += "': ";
+        known_exceptions += type_name((*x_iter)->get_type());
+      }
+      known_exceptions += "}";
+
+      f_service_ << indent() << "fut.add_done_callback(" <<
+        "lambda f: write_results_after_future(" <<
+        "result, self._event_handler, handler_ctx, seqid, oprot, fn_name, " <<
+        known_exceptions + ", f))" << endl;
+    }
+    f_service_ << indent() << "return fut" << endl;
+    indent_down();
+    f_service_ << endl;
+  } else {
     // Try block to wrap call to handler
     f_service_ <<
       indent() << "try:" << endl;
@@ -2910,58 +2974,25 @@ void t_py_generator::generate_process_function(t_service* /*tservice*/,
 
     f_service_ << indent();
 
-    if (gen_asyncio_) {
-      string args_list = "";
-      bool first = true;
-      if (with_context) {
-        args_list += "handler_ctx";
-        first = false;
-      }
-      for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-        if (first) {
-          first = false;
-        } else {
-          args_list += ", ";
-        }
-        args_list += "args.";
-        args_list += rename_reserved_keywords((*f_iter)->get_name());
-      }
-
-      f_service_ << "if asyncio.iscoroutinefunction(" << handler << "):" <<
-        endl <<
-        indent() << "  ret = yield from " << handler << "(" << args_list <<
-        ")" << endl <<
-        indent() << "elif should_run_on_thread(" << handler << "):" << endl <<
-        indent() << "  loop = asyncio.get_event_loop()" << endl <<
-        indent() << "  ret = yield from loop.run_in_executor(None, " <<
-        handler << ", " << args_list << ")" << endl <<
-        indent() << "else: " << endl <<
-        indent() << "  ret = " << handler << "(" << args_list << ")" << endl;
-
-      if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
-        f_service_ << indent() << "result.success = ret" << endl;
-      }
-    } else {
-      if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
-        f_service_ << "result.success = ";
-      }
-      f_service_ << handler << "(";
-      bool  first = true;
-      if (with_context) {
-        f_service_ << "handler_ctx";
-        first = false;
-      }
-      for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-        if (first) {
-          first = false;
-        } else {
-          f_service_ << ", ";
-        }
-        f_service_ << "args." <<
-          rename_reserved_keywords((*f_iter)->get_name());
-      }
-      f_service_ << ")" << (future ? ".result()" : "") << endl;
+    if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
+      f_service_ << "result.success = ";
     }
+    f_service_ << handler << "(";
+    bool  first = true;
+    if (with_context) {
+      f_service_ << "handler_ctx";
+      first = false;
+    }
+    for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
+      if (first) {
+        first = false;
+      } else {
+        f_service_ << ", ";
+      }
+      f_service_ << "args." <<
+        rename_reserved_keywords((*f_iter)->get_name());
+    }
+    f_service_ << ")" << (future ? ".result()" : "") << endl;
 
     indent_down();
     int exc_num;

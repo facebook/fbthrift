@@ -33,6 +33,8 @@ from functools import partial
 from thrift.Thrift import (
     TMessageType,
     TApplicationException,
+    TException,
+    TMessageType,
     TRequestContext,
 )
 from thrift.protocol import THeaderProtocol
@@ -65,21 +67,34 @@ def make_unknown_function_exception(name):
     )
 
 
-def process_main(twisted=False):
+def process_main(twisted=False, asyncio=False):
     """Decorator for process method."""
+    if asyncio:
+        try:
+            from asyncio import Future
+        except ImportError:
+            from trollius import Future
+
     def _decorator(func):
         def nested(self, iprot, oprot, server_ctx=None):
             # self is a TProcessor instance
             name, seqid = self.readMessageBegin(iprot)
             if self.doesKnowFunction(name):
                 ret = self.callFunction(name, seqid, iprot, oprot, server_ctx)
-                return ret if twisted else True
+                if twisted or asyncio:
+                    return ret   # a Deferred/Future
+
+                return True
             self.skipMessageStruct(iprot)
             exc = make_unknown_function_exception(name)
             self.writeException(oprot, name, seqid, exc)
             if twisted:
                 from twisted.internet import defer
                 return defer.succeed(None)
+            if asyncio:
+                fut = Future()
+                fut.set_result(None)
+                return fut
 
         return nested
 
@@ -94,6 +109,8 @@ try:
     # Note that in case of multithreading use, there's sometimes going to be
     # multiple requests reporting a single bump in memory usage. Look at the
     # slowest request first (it will present the biggest bump).
+
+    # Also note this is unsupported on Twisted/asyncio.
     MEMORY_WARNING_THRESHOLD = int(
         os.environ.get('THRIFT_PER_REQUEST_MEMORY_WARNING', 0)
     )
@@ -119,7 +136,8 @@ def reset_request_context(processor):
     if needs_request_context(processor):
         processor._handler.setRequestContext(None)
 
-def process_method(argtype, oneway=False, twisted=False):
+
+def process_method(argtype, oneway=False, twisted=False, asyncio=False):
     """Decorator for process_xxx methods."""
     def _decorator(func):
         def nested(self, seqid, iprot, oprot, server_ctx):
@@ -131,9 +149,8 @@ def process_method(argtype, oneway=False, twisted=False):
                 server_ctx,
             )
             args = self.readArgs(iprot, handler_ctx, fn_name, argtype)
-
-            if twisted:
-                return func(self, args, handler_ctx, seqid, oprot)
+            if asyncio or twisted:
+                return func(self, args, handler_ctx, seqid, oprot, fn_name)
 
             set_request_context(self, iprot)
             result = func(self, args, handler_ctx)
@@ -242,6 +259,36 @@ def future_process_method(argtype, oneway=False):
 
     return _decorator
 
+def write_results_after_future(
+    result, event_handler, handler_ctx, seqid, oprot, fn_name,
+    known_exceptions, future,
+):
+    """Result/exception handler for asyncio futures."""
+    try:
+        try:
+            result.success = future.result()
+            reply_type = TMessageType.REPLY
+        except TException as e:
+            for exc_name, exc_type in known_exceptions.items():
+                setattr(result, exc_name, e)
+                reply_type = TMessageType.REPLY
+                event_handler.handlerException(handler_ctx, fn_name, e)
+                break
+            else:
+                raise
+    except Exception as e:
+        result = TApplicationException(message=str(e))
+        reply_type = TMessageType.EXCEPTION
+        event_handler.handlerError(handler_ctx, fn_name, e)
+
+    event_handler.preWrite(handler_ctx, fn_name, result)
+    oprot.writeMessageBegin(fn_name, reply_type, seqid)
+    result.write(oprot)
+    oprot.writeMessageEnd()
+    oprot.trans.flush()
+    event_handler.postWrite(handler_ctx, fn_name, result)
+
+
 def write_results_success_callback(func):
     """Decorator for twisted write_results_success_xxx methods.
        No need to call func so it can be empty.
@@ -268,3 +315,12 @@ def write_results_exception_callback(func):
 def protocol_manager(protocol):
     yield protocol.client
     protocol.close()
+
+
+def run_on_thread(func):
+    func._run_on_thread = True
+    return func
+
+
+def should_run_on_thread(func):
+    return getattr(func, "_run_on_thread", False)
