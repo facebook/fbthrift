@@ -48,7 +48,10 @@ def main(loop):
             .format(len(calls), time_spent))
     for fut in done:
         print(fut.result())
+    transport.close()
+    protocol.close()
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main(loop))
+    loop.close()
