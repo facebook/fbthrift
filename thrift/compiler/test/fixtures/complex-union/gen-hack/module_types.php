@@ -14,18 +14,21 @@ enum ComplexUnionEnum: int {
   stringListValue = 4;
 }
 
-class ComplexUnion implements IThriftStruct {
+class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'intValue',
+      'union' => true,
       'type' => TType::I64,
       ),
     2 => array(
       'var' => 'stringValue',
+      'union' => true,
       'type' => TType::STRING,
       ),
     3 => array(
       'var' => 'intListValue',
+      'union' => true,
       'type' => TType::LST,
       'etype' => TType::I64,
       'elem' => array(
@@ -35,6 +38,7 @@ class ComplexUnion implements IThriftStruct {
       ),
     4 => array(
       'var' => 'stringListValue',
+      'union' => true,
       'type' => TType::LST,
       'etype' => TType::STRING,
       'elem' => array(

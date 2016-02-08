@@ -1179,7 +1179,7 @@ class NestedContainersProcessor extends NestedContainersSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class NestedContainers_mapList_args implements IThriftShapishStruct {
+class NestedContainers_mapList_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -1379,7 +1379,7 @@ class NestedContainers_mapList_args implements IThriftShapishStruct {
 
 }
 
-class NestedContainers_mapList_result implements IThriftShapishStruct {
+class NestedContainers_mapList_result implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1433,7 +1433,7 @@ class NestedContainers_mapList_result implements IThriftShapishStruct {
 
 }
 
-class NestedContainers_mapSet_args implements IThriftShapishStruct {
+class NestedContainers_mapSet_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -1628,7 +1628,7 @@ class NestedContainers_mapSet_args implements IThriftShapishStruct {
 
 }
 
-class NestedContainers_mapSet_result implements IThriftShapishStruct {
+class NestedContainers_mapSet_result implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1682,7 +1682,7 @@ class NestedContainers_mapSet_result implements IThriftShapishStruct {
 
 }
 
-class NestedContainers_listMap_args implements IThriftShapishStruct {
+class NestedContainers_listMap_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -1882,7 +1882,7 @@ class NestedContainers_listMap_args implements IThriftShapishStruct {
 
 }
 
-class NestedContainers_listMap_result implements IThriftShapishStruct {
+class NestedContainers_listMap_result implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1936,7 +1936,7 @@ class NestedContainers_listMap_result implements IThriftShapishStruct {
 
 }
 
-class NestedContainers_listSet_args implements IThriftShapishStruct {
+class NestedContainers_listSet_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -2123,7 +2123,7 @@ class NestedContainers_listSet_args implements IThriftShapishStruct {
 
 }
 
-class NestedContainers_listSet_result implements IThriftShapishStruct {
+class NestedContainers_listSet_result implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -2177,7 +2177,7 @@ class NestedContainers_listSet_result implements IThriftShapishStruct {
 
 }
 
-class NestedContainers_turtles_args implements IThriftShapishStruct {
+class NestedContainers_turtles_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -2509,7 +2509,7 @@ class NestedContainers_turtles_args implements IThriftShapishStruct {
 
 }
 
-class NestedContainers_turtles_result implements IThriftShapishStruct {
+class NestedContainers_turtles_result implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {

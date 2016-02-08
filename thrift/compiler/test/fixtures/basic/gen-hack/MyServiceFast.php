@@ -1326,7 +1326,7 @@ class MyServiceFastProcessor extends MyServiceFastSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class MyServiceFast_ping_args implements IThriftShapishStruct {
+class MyServiceFast_ping_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1399,7 +1399,7 @@ class MyServiceFast_ping_args implements IThriftShapishStruct {
 
 }
 
-class MyServiceFast_ping_result implements IThriftShapishStruct {
+class MyServiceFast_ping_result implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1453,7 +1453,7 @@ class MyServiceFast_ping_result implements IThriftShapishStruct {
 
 }
 
-class MyServiceFast_getRandomData_args implements IThriftShapishStruct {
+class MyServiceFast_getRandomData_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1526,7 +1526,7 @@ class MyServiceFast_getRandomData_args implements IThriftShapishStruct {
 
 }
 
-class MyServiceFast_getRandomData_result implements IThriftShapishStruct {
+class MyServiceFast_getRandomData_result implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
@@ -1599,7 +1599,7 @@ class MyServiceFast_getRandomData_result implements IThriftShapishStruct {
 
 }
 
-class MyServiceFast_hasDataById_args implements IThriftShapishStruct {
+class MyServiceFast_hasDataById_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -1706,7 +1706,7 @@ class MyServiceFast_hasDataById_args implements IThriftShapishStruct {
 
 }
 
-class MyServiceFast_hasDataById_result implements IThriftShapishStruct {
+class MyServiceFast_hasDataById_result implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
@@ -1779,7 +1779,7 @@ class MyServiceFast_hasDataById_result implements IThriftShapishStruct {
 
 }
 
-class MyServiceFast_getDataById_args implements IThriftShapishStruct {
+class MyServiceFast_getDataById_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -1886,7 +1886,7 @@ class MyServiceFast_getDataById_args implements IThriftShapishStruct {
 
 }
 
-class MyServiceFast_getDataById_result implements IThriftShapishStruct {
+class MyServiceFast_getDataById_result implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
@@ -1959,7 +1959,7 @@ class MyServiceFast_getDataById_result implements IThriftShapishStruct {
 
 }
 
-class MyServiceFast_putDataById_args implements IThriftShapishStruct {
+class MyServiceFast_putDataById_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -2100,7 +2100,7 @@ class MyServiceFast_putDataById_args implements IThriftShapishStruct {
 
 }
 
-class MyServiceFast_putDataById_result implements IThriftShapishStruct {
+class MyServiceFast_putDataById_result implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -2154,7 +2154,7 @@ class MyServiceFast_putDataById_result implements IThriftShapishStruct {
 
 }
 
-class MyServiceFast_lobDataById_args implements IThriftShapishStruct {
+class MyServiceFast_lobDataById_args implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',

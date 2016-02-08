@@ -1259,6 +1259,14 @@ void t_hack_generator::generate_php_struct_spec(ofstream& out,
     indent_up();
     out <<
       indent() << "'var' => '" << (*m_iter)->get_name() << "'," << endl;
+    if (tstruct->is_union()) {
+      // Optimally, we shouldn't set this per field but rather per struct.
+      // However, the tspec is a field_id => data array, and if we set it at
+      // the top level people might think the 'union' key is a field id, which
+      // isn't cool. It's safer and more bc to instead set this key on all
+      // fields.
+      out << indent() << "'union' => true," << endl;
+    }
     generate_php_type_spec(out, t);
     indent(out) << ")," << endl;
     indent_down();
@@ -1965,7 +1973,6 @@ void t_hack_generator::generate_php_union_enum(ofstream& out,
   // }
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
-  int enum_index = 1;
 
   out << "enum " << union_enum_name(tstruct) << ": int {"<< endl;
 
@@ -1974,7 +1981,7 @@ void t_hack_generator::generate_php_union_enum(ofstream& out,
   indent(out) <<  UNION_EMPTY << " = 0;" << endl;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     indent(out)
-        << (*m_iter)->get_name() << " = "<< enum_index++ << ";" << endl;
+        << (*m_iter)->get_name() << " = "<< (*m_iter)->get_key() << ";" << endl;
   }
   indent_down();
   out << "}" << endl << endl;
@@ -2000,8 +2007,17 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
   if (is_exception) {
     out << " extends TException";
   }
-  out <<
-    " implements " << (shapes_ ? "IThriftShapishStruct" : "IThriftStruct") << " {" << endl;
+  out << " implements IThriftStruct";
+
+  if (tstruct->is_union()) {
+    out << ", IThriftUnion<" << union_enum_name(tstruct) << ">";
+  }
+
+  if (shapes_) {
+    out << ", IThriftShapishStruct";
+  }
+
+  out << " {" << endl;
   indent_up();
 
   generate_php_struct_struct_trait(out, tstruct);

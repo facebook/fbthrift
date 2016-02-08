@@ -6,7 +6,7 @@
  *  @generated
  */
 
-class A implements IThriftShapishStruct {
+class A implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'a',
@@ -107,7 +107,7 @@ class A implements IThriftShapishStruct {
 
 }
 
-class B implements IThriftShapishStruct {
+class B implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'just_an_A',

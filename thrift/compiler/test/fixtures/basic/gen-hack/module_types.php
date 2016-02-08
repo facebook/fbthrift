@@ -12,7 +12,7 @@ enum MyEnum: int {
 }
 type MyEnumType = MyEnum;
 
-class MyStruct implements IThriftShapishStruct {
+class MyStruct implements IThriftStruct, IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'MyIntField',
