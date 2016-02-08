@@ -39,6 +39,7 @@ from optparse import OptionParser
 from ThriftTest import ThriftTest, SecondService
 from ThriftTest.ttypes import *
 from thrift import TMultiplexedProcessor
+from thrift.Thrift import TProcessorEventHandler
 from thrift.transport import TTransport
 from thrift.transport import TSocket, TSSLSocket
 from thrift.transport.THeaderTransport import THeaderTransport

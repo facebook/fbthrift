@@ -767,6 +767,16 @@ void t_py_generator::init_generator() {
     "UTF8STRINGS = bool(" << gen_utf8strings_ << ") or " <<
     "sys.version_info.major >= 3" << endl << endl;
 
+  // Define __all__ for ttypes
+  f_types_ << "__all__ = ['UTF8STRINGS'";
+  for (auto& en : program_->get_enums()) {
+    f_types_ << ", '" << rename_reserved_keywords(en->get_name()) << "'";
+  }
+  for (auto& object : program_->get_objects()) {
+    f_types_ << ", '" << rename_reserved_keywords(object->get_name()) << "'";
+  }
+  f_types_ << "]" << endl << endl;
+
   f_consts_ <<
     py_autogen_comment() << endl <<
     py_imports() << endl << "from .ttypes import *" << endl << endl;
@@ -1923,6 +1933,7 @@ void t_py_generator::generate_service(t_service* tservice) {
 
   f_service_ <<
     "from .ttypes import *" << endl <<
+    render_includes() <<
     "from thrift.Thrift import TProcessor" << endl <<
     render_fastproto_includes() << endl <<
     "all_structs = []" << endl <<

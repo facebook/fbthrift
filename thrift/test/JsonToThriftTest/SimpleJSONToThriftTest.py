@@ -44,6 +44,7 @@ from myStringStruct.ttypes import *
 from myDoubleListStruct.ttypes import *
 from myCollectionStruct.ttypes import *
 
+from thrift.transport import TTransport
 from thrift.protocol.TSimpleJSONProtocol import TSimpleJSONProtocolFactory
 from thrift.protocol.TProtocol import TProtocolException
 

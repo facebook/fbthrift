@@ -27,6 +27,8 @@ except:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
+__all__ = ['UTF8STRINGS', 'Included']
+
 class Included:
   """
   Attributes:
