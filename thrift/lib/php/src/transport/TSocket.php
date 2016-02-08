@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -25,7 +25,7 @@ class TSocket extends TTransport
   implements TTransportStatus, InstrumentedTTransport, IThriftRemoteConn {
   use InstrumentedTTransportTrait;
   private $handle_ = null;
-  protected $host_ = 'localhost';
+  protected $host_ = "localhost";
   protected $port_ = 9090;
   protected $lport_ = 0;
   private $sendTimeout_ = 100;
@@ -40,7 +40,7 @@ class TSocket extends TTransport
   protected $errno_ = null;
   protected $maxReadChunkSize_ = null;
   public function __construct(
-    $host = 'localhost',
+    $host = "localhost",
     $port = 9090,
     $persist = false,
     $debugHandler = null
@@ -49,7 +49,7 @@ class TSocket extends TTransport
     $this->port_ = $port;
     $this->persist_ = $persist;
     $this->debugHandler_ =
-      \hacklib_cast_as_boolean($debugHandler) ?: fun('error_log');
+      \hacklib_cast_as_boolean($debugHandler) ?: fun("error_log");
   }
   public function setMaxReadChunkSize($maxReadChunkSize) {
     $this->maxReadChunkSize_ = $maxReadChunkSize;
@@ -94,19 +94,19 @@ class TSocket extends TTransport
   public function open() {
     if (\hacklib_cast_as_boolean($this->isOpen())) {
       throw new TTransportException(
-        'TSocket: socket already connected',
+        "TSocket: socket already connected",
         TTransportException::ALREADY_OPEN
       );
     }
     if ($this->host_ === null) {
       throw new TTransportException(
-        'TSocket: cannot open null host',
+        "TSocket: cannot open null host",
         TTransportException::NOT_OPEN
       );
     }
     if ($this->port_ <= 0) {
       throw new TTransportException(
-        'TSocket: cannot open without port',
+        "TSocket: cannot open without port",
         TTransportException::NOT_OPEN
       );
     }
@@ -129,9 +129,8 @@ class TSocket extends TTransport
       );
     }
     if (!\hacklib_cast_as_boolean($handle)) {
-      $error =
-        'TSocket: could not connect to '.$this->host_.':'.$this->port_;
-      $error .= ' ('.$this->errstr_.' ['.$this->errno_.'])';
+      $error = "TSocket: could not connect to ".$this->host_.":".$this->port_;
+      $error .= " (".$this->errstr_." [".$this->errno_."])";
       if (\hacklib_cast_as_boolean($this->debug_)) {
         call_user_func($this->debugHandler_, $error);
       }
@@ -165,7 +164,7 @@ class TSocket extends TTransport
       if ((microtime(true) - ((int) $this->writeAttemptStart_)) >
           ($this->sendTimeout_ / 1000.0)) {
         throw new TTransportException(
-          'TSocket: socket not writable after '.$this->sendTimeout_.'ms',
+          "TSocket: socket not writable after ".$this->sendTimeout_."ms",
           TTransportException::TIMED_OUT
         );
       }
@@ -185,7 +184,7 @@ class TSocket extends TTransport
     $excpt = array();
     $ret = stream_select($read, $write, $excpt, 0, 0);
     if ($ret === false) {
-      $error = 'TSocket: stream_select failed on socket.';
+      $error = "TSocket: stream_select failed on socket.";
       if (\hacklib_cast_as_boolean($this->debug_)) {
         call_user_func($this->debugHandler_, $error);
       }
@@ -214,14 +213,14 @@ class TSocket extends TTransport
       stream_set_timeout($this->handle_, $sec, $msec * 1000);
       $this->sendTimeoutSet_ = false;
     }
-    $pre = '';
+    $pre = "";
     while (true) {
       $t_start = microtime(true);
       $buf = $this->readChunk($len);
       $t_stop = microtime(true);
-      if (($buf === null) || ($buf === '')) {
+      if (($buf === null) || ($buf === "")) {
         $read_err_detail = sprintf(
-          '%d bytes from %s:%d to localhost:%d. Spent %2.2f ms.',
+          "%d bytes from %s:%d to localhost:%d. Spent %2.2f ms.",
           $len,
           $this->host_,
           $this->port_,
@@ -229,24 +228,24 @@ class TSocket extends TTransport
           ($t_stop - $t_start) * 1000
         );
         $md = stream_get_meta_data($this->handle_);
-        if (\hacklib_cast_as_boolean($md[\hacklib_id('timed_out')])) {
+        if (\hacklib_cast_as_boolean($md[\hacklib_id("timed_out")])) {
           throw new TTransportException(
-            'TSocket: timeout while reading '.$read_err_detail,
+            "TSocket: timeout while reading ".$read_err_detail,
             TTransportException::TIMED_OUT
           );
         } else {
           $md_str = str_replace("\n", " ", print_r($md, true));
           throw new TTransportException(
-            'TSocket: could not read '.$read_err_detail,
+            "TSocket: could not read ".$read_err_detail,
             TTransportException::COULD_NOT_READ
           );
         }
       } else {
         if (($sz = strlen($buf)) < $len) {
           $md = stream_get_meta_data($this->handle_);
-          if (\hacklib_cast_as_boolean($md[\hacklib_id('timed_out')])) {
+          if (\hacklib_cast_as_boolean($md[\hacklib_id("timed_out")])) {
             $read_err_detail = sprintf(
-              '%d bytes from %s:%d to localhost:%d. Spent %2.2f ms.',
+              "%d bytes from %s:%d to localhost:%d. Spent %2.2f ms.",
               $len,
               $this->host_,
               $this->port_,
@@ -254,7 +253,7 @@ class TSocket extends TTransport
               ($t_stop - $t_start) * 1000
             );
             throw new TTransportException(
-              'TSocket: timeout while reading '.$read_err_detail,
+              "TSocket: timeout while reading ".$read_err_detail,
               TTransportException::TIMED_OUT
             );
           } else {
@@ -279,9 +278,9 @@ class TSocket extends TTransport
     $t_start = microtime(true);
     $data = $this->readChunk($len);
     $t_stop = microtime(true);
-    if (($data === null) || ($data === '')) {
+    if (($data === null) || ($data === "")) {
       $read_err_detail = sprintf(
-        '%d bytes from %s:%d to localhost:%d. Spent %2.2f ms.',
+        "%d bytes from %s:%d to localhost:%d. Spent %2.2f ms.",
         $len,
         $this->host_,
         $this->port_,
@@ -289,15 +288,15 @@ class TSocket extends TTransport
         ($t_stop - $t_start) * 1000
       );
       $md = stream_get_meta_data($this->handle_);
-      if (\hacklib_cast_as_boolean($md[\hacklib_id('timed_out')])) {
+      if (\hacklib_cast_as_boolean($md[\hacklib_id("timed_out")])) {
         throw new TTransportException(
-          'TSocket: timeout while reading '.$read_err_detail,
+          "TSocket: timeout while reading ".$read_err_detail,
           TTransportException::TIMED_OUT
         );
       } else {
         $md_str = str_replace("\n", " ", print_r($md, true));
         throw new TTransportException(
-          'TSocket: could not read '.$read_err_detail,
+          "TSocket: could not read ".$read_err_detail,
           TTransportException::COULD_NOT_READ
         );
       }
@@ -309,21 +308,21 @@ class TSocket extends TTransport
   }
   public function nonBlockingRead($len) {
     $md = stream_get_meta_data($this->handle_);
-    $is_blocking = $md[\hacklib_id('blocked')];
+    $is_blocking = $md[\hacklib_id("blocked")];
     if (\hacklib_cast_as_boolean($is_blocking) &&
         (!\hacklib_cast_as_boolean(stream_set_blocking($this->handle_, 0)))) {
       throw new TTransportException(
-        'TSocket: '.'cannot set stream to non-blocking'
+        "TSocket: "."cannot set stream to non-blocking"
       );
     }
     $data = $this->readChunk($len);
     if ($data === null) {
-      throw new TTransportException('TSocket: failed in non-blocking read');
+      throw new TTransportException("TSocket: failed in non-blocking read");
     }
     if (\hacklib_cast_as_boolean($is_blocking) &&
         (!\hacklib_cast_as_boolean(stream_set_blocking($this->handle_, 1)))) {
       throw new TTransportException(
-        'TSocket: '.'cannot swtich stream back to blocking'
+        "TSocket: "."cannot swtich stream back to blocking"
       );
     }
     $this->onRead(strlen($data));
@@ -331,7 +330,7 @@ class TSocket extends TTransport
   }
   public function write($buf) {
     if ($this->handle_ === null) {
-      throw new TException('TSocket: handle_ is null');
+      throw new TException("TSocket: handle_ is null");
     }
     $this->onWrite(strlen($buf));
     if (!\hacklib_cast_as_boolean($this->sendTimeoutSet_)) {
@@ -345,7 +344,7 @@ class TSocket extends TTransport
       $write_time = microtime(true) - $t_start;
       if (($got === 0) || (!\hacklib_cast_as_boolean(is_int($got)))) {
         $read_err_detail = sprintf(
-          '%d bytes from %s:%d to localhost:%d. Spent %2.2f ms.',
+          "%d bytes from %s:%d to localhost:%d. Spent %2.2f ms.",
           $buflen,
           $this->host_,
           $this->port_,
@@ -353,15 +352,15 @@ class TSocket extends TTransport
           $write_time * 1000
         );
         $md = stream_get_meta_data($this->handle_);
-        if (\hacklib_cast_as_boolean($md[\hacklib_id('timed_out')])) {
+        if (\hacklib_cast_as_boolean($md[\hacklib_id("timed_out")])) {
           throw new TTransportException(
-            'TSocket: timeout while writing '.$read_err_detail,
+            "TSocket: timeout while writing ".$read_err_detail,
             TTransportException::TIMED_OUT
           );
         } else {
           $md_str = str_replace("\n", " ", print_r($md, true));
           throw new TTransportException(
-            'TSocket: could not write '.$read_err_detail,
+            "TSocket: could not write ".$read_err_detail,
             TTransportException::COULD_NOT_WRITE
           );
         }
@@ -374,7 +373,7 @@ class TSocket extends TTransport
     $ret = fflush($this->handle_);
     if ($ret === false) {
       throw new TTransportException(
-        'TSocket: could not flush '.$this->host_.':'.$this->port_
+        "TSocket: could not flush ".$this->host_.":".$this->port_
       );
     }
   }

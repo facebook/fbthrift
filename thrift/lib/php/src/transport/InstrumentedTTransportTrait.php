@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 trait InstrumentedTTransportTrait {
   private $bytesWritten = 0;
   private $bytesRead = 0;

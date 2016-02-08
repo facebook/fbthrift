@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -31,7 +31,7 @@ class TTransportException extends TException {
   public function __construct(
     $message = null,
     $code = 0,
-    $short_message = ''
+    $short_message = ""
   ) {
     $this->shortMessage = $short_message;
     parent::__construct($message, $code);

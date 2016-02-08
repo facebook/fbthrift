@@ -10,7 +10,7 @@
 * @package thrift
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__;
 }
@@ -19,8 +19,8 @@ require_once $GLOBALS['THRIFT_ROOT'].'/TType.php';
 class TApplicationException extends TException {
   static
     $_TSPEC = array(
-      1 => array('var' => 'message', 'type' => TType::STRING),
-      2 => array('var' => 'code', 'type' => TType::I32)
+      1 => array("var" => "message", "type" => TType::STRING),
+      2 => array("var" => "code", "type" => TType::I32)
     );
   const UNKNOWN = 0;
   const UNKNOWN_METHOD = 1;
@@ -33,18 +33,18 @@ class TApplicationException extends TException {
     parent::__construct($message, $code);
   }
   public function read($output) {
-    return $this->_read('TApplicationException', self::$_TSPEC, $output);
+    return $this->_read("TApplicationException", self::$_TSPEC, $output);
   }
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('TApplicationException');
+    $xfer += $output->writeStructBegin("TApplicationException");
     if (\hacklib_cast_as_boolean($message = $this->getMessage())) {
-      $xfer += $output->writeFieldBegin('message', TType::STRING, 1);
+      $xfer += $output->writeFieldBegin("message", TType::STRING, 1);
       $xfer += $output->writeString($message);
       $xfer += $output->writeFieldEnd();
     }
     if (\hacklib_cast_as_boolean($code = $this->getCode())) {
-      $xfer += $output->writeFieldBegin('type', TType::I32, 2);
+      $xfer += $output->writeFieldBegin("type", TType::I32, 2);
       $xfer += $output->writeI32($code);
       $xfer += $output->writeFieldEnd();
     }

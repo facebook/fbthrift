@@ -123,6 +123,7 @@ abstract class TBase {
     } else {
       $espec = $spec['elem'];
     }
+    /* UNSAFE_EXPR - this array is used both as vector and a map */
     $var = array();
     $_etype = $size = 0;
     if ($set) {

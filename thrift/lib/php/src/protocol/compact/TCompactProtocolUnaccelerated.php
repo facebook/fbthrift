@@ -10,7 +10,7 @@
 * @package thrift.protocol.compact
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/../..';
 }

@@ -10,7 +10,7 @@
 * @package thrift.protocol.simplephpobject
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/../..';
 }
@@ -28,10 +28,10 @@ class TSimplePHPObjectProtocol extends TProtocol {
     parent::__construct(new TNullTransport());
   }
   public function readMessageBegin(&$name, &$type, &$seqid) {
-    throw new TProtocolException('Not Supported');
+    throw new TProtocolException("Not Supported");
   }
   public function readMessageEnd() {
-    throw new TProtocolException('Not Supported');
+    throw new TProtocolException("Not Supported");
   }
   public function readStructBegin(&$name) {
     $name = null;
@@ -40,7 +40,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
     $itr = null;
     if (($val instanceof \HH\Set) || ($val instanceof \HH\ImmSet)) {
       throw new TProtocolException(
-        'Unsupported data structure for struct: '.gettype($val)
+        "Unsupported data structure for struct: ".gettype($val)
       );
     } else {
       if ($val instanceof \HH\Vector) {
@@ -49,7 +49,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
           $itr = $val->getIterator();
         } else {
           throw new TProtocolException(
-            'Unsupported data structure for struct: '.gettype($val)
+            "Unsupported data structure for struct: ".gettype($val)
           );
         }
       } else {
@@ -59,7 +59,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
             $itr = $val->getIterator();
           } else {
             throw new TProtocolException(
-              'Unsupported data structure for struct: '.gettype($val)
+              "Unsupported data structure for struct: ".gettype($val)
             );
           }
         } else {
@@ -115,7 +115,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
     $itr = null;
     if (($val instanceof \HH\Set) || ($val instanceof \HH\ImmSet)) {
       throw new TProtocolException(
-        'Unsupported data structure for map: '.gettype($val)
+        "Unsupported data structure for map: ".gettype($val)
       );
     } else {
       if ($val instanceof \HH\Vector) {
@@ -124,7 +124,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
           $itr = $val->getIterator();
         } else {
           throw new TProtocolException(
-            'Unsupported data structure for map: '.gettype($val)
+            "Unsupported data structure for map: ".gettype($val)
           );
         }
       } else {
@@ -134,7 +134,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
             $itr = $val->getIterator();
           } else {
             throw new TProtocolException(
-              'Unsupported data structure for map: '.gettype($val)
+              "Unsupported data structure for map: ".gettype($val)
             );
           }
         } else {
@@ -183,7 +183,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
     $itr = null;
     if (($val instanceof \HH\Set) || ($val instanceof \HH\ImmSet)) {
       throw new TProtocolException(
-        'Unsupported data structure for list: '.gettype($val)
+        "Unsupported data structure for list: ".gettype($val)
       );
     } else {
       if ($val instanceof \HH\Map) {
@@ -260,8 +260,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
                   $itr = new ArrayIterator($val);
                   $size = count($val);
                 } else {
-                  $val =
-                    array_keys((array) \hacklib_cast_as_array($val));
+                  $val = array_keys((array) \hacklib_cast_as_array($val));
                   $itr = new ArrayIterator($val);
                   $size = count($val);
                 }
@@ -292,21 +291,21 @@ class TSimplePHPObjectProtocol extends TProtocol {
     $value = (int) $this->top->current();
     $this->top->next();
     if (($value < (-0x80)) || ($value > 0x7F)) {
-      throw new TProtocolException('Value is outside of valid range');
+      throw new TProtocolException("Value is outside of valid range");
     }
   }
   public function readI16(&$value) {
     $value = (int) $this->top->current();
     $this->top->next();
     if (($value < (-0x8000)) || ($value > 0x7FFF)) {
-      throw new TProtocolException('Value is outside of valid range');
+      throw new TProtocolException("Value is outside of valid range");
     }
   }
   public function readI32(&$value) {
     $value = (int) $this->top->current();
     $this->top->next();
     if (($value < (-0x80000000)) || ($value > 0x7FFFFFFF)) {
-      throw new TProtocolException('Value is outside of valid range');
+      throw new TProtocolException("Value is outside of valid range");
     }
   }
   public function readI64(&$value) {
@@ -314,7 +313,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
     $this->top->next();
     if (($value < ((-0x80000000) << 32)) ||
         ($value > ((0x7FFFFFFF << 32) | 0xFFFFFFFF))) {
-      throw new TProtocolException('Value is outside of valid range');
+      throw new TProtocolException("Value is outside of valid range");
     }
   }
   public function readDouble(&$value) {
@@ -330,67 +329,67 @@ class TSimplePHPObjectProtocol extends TProtocol {
     $this->top->next();
   }
   public function writeMessageBegin($name, $type, $seqid) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeMessageEnd() {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeStructBegin($name) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeStructEnd() {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeFieldBegin($fieldName, $fieldType, $fieldId) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeFieldEnd() {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeFieldStop() {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeMapBegin($keyType, $valType, $size) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeMapEnd() {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeListBegin($elemType, $size) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeListEnd() {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeSetBegin($elemType, $size) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeSetEnd() {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeBool($value) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeByte($value) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeI16($value) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeI32($value) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeI64($value) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeDouble($value) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeFloat($value) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   public function writeString($value) {
-    throw new TProtocolException('Not Implemented');
+    throw new TProtocolException("Not Implemented");
   }
   private function guessTypeForValue($val) {
     if (\hacklib_cast_as_boolean(is_bool($val))) {
@@ -419,7 +418,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
       }
     }
     throw new TProtocolException(
-      'Unable to guess thrift type for '.gettype($val)
+      "Unable to guess thrift type for ".gettype($val)
     );
   }
 }

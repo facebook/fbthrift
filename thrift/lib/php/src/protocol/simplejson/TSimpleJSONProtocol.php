@@ -10,7 +10,7 @@
 * @package thrift.protocol.simplejson
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/../..';
 }
@@ -127,10 +127,10 @@ class TSimpleJSONProtocol extends TProtocol {
   public function writeBool($value) {
     $x = $this->getContext()->writeSeparator();
     if (\hacklib_cast_as_boolean($value)) {
-      $this->trans_->write('true');
+      $this->trans_->write("true");
       $x += 4;
     } else {
-      $this->trans_->write('false');
+      $this->trans_->write("false");
       $x += 5;
     }
     return $x;
@@ -168,35 +168,35 @@ class TSimpleJSONProtocol extends TProtocol {
     $ret = $ctx->writeSeparator();
     $value = (string) $value;
     $sb = new StringBuffer();
-    $sb->append('"');
+    $sb->append("\"");
     $len = strlen($value);
     for ($i = 0; $i < $len; $i++) {
       $c = $value[$i];
       $ord = ord($c);
       switch ($ord) {
         case 8:
-          $sb->append('\b');
+          $sb->append("\\b");
           break;
         case 9:
-          $sb->append('\t');
+          $sb->append("\\t");
           break;
         case 10:
-          $sb->append('\n');
+          $sb->append("\\n");
           break;
         case 12:
-          $sb->append('\f');
+          $sb->append("\\f");
           break;
         case 13:
-          $sb->append('\r');
+          $sb->append("\\r");
           break;
         case 34:
         case 92:
-          $sb->append('\\');
+          $sb->append("\\");
           $sb->append($c);
           break;
         default:
           if (($ord < 32) || ($ord > 126)) {
-            $sb->append('\\u00');
+            $sb->append("\\u00");
             $sb->append(bin2hex($c));
           } else {
             $sb->append($c);
@@ -204,21 +204,21 @@ class TSimpleJSONProtocol extends TProtocol {
           break;
       }
     }
-    $sb->append('"');
+    $sb->append("\"");
     $enc = $sb->detach();
     $this->trans_->write($enc);
     return $ret + strlen($enc);
   }
   public function readMessageBegin(&$name, &$type, &$seqid) {
     throw new TProtocolException(
-      'Reading with TSimpleJSONProtocol is not supported. '.
-      'Use readFromJSON() on your struct'
+      "Reading with TSimpleJSONProtocol is not supported. ".
+      "Use readFromJSON() on your struct"
     );
   }
   public function readMessageEnd() {
     throw new TProtocolException(
-      'Reading with TSimpleJSONProtocol is not supported. '.
-      'Use readFromJSON() on your struct'
+      "Reading with TSimpleJSONProtocol is not supported. ".
+      "Use readFromJSON() on your struct"
     );
   }
   public function readStructBegin(&$name) {
@@ -242,10 +242,10 @@ class TSimpleJSONProtocol extends TProtocol {
         $this->skipWhitespace();
         $name = $this->readJSONString()[0];
         $offset = $this->skipWhitespace(true);
-        $this->expectChar(':', true, $offset);
+        $this->expectChar(":", true, $offset);
         $offset += 1 + $this->skipWhitespace(true, $offset + 1);
         $c = $this->bufTrans->peek(1, $offset);
-        if (($c === 'n') && ($this->bufTrans->peek(4, $offset) === 'null')) {
+        if (($c === "n") && ($this->bufTrans->peek(4, $offset) === "null")) {
           $ctx->readSeparator();
           $this->skipWhitespace();
           $this->trans_->readAll(4);
@@ -268,7 +268,7 @@ class TSimpleJSONProtocol extends TProtocol {
       $this->skipWhitespace();
       $offset = $this->readJSONString(true)[1];
       $offset += $this->skipWhitespace(true, $offset);
-      $this->expectChar(':', true, $offset);
+      $this->expectChar(":", true, $offset);
       $offset += 1 + $this->skipWhitespace(true, $offset + 1);
       $c = $this->bufTrans->peek(1, $offset);
       $valType = $this->guessFieldTypeBasedOnByte($c);
@@ -320,18 +320,17 @@ class TSimpleJSONProtocol extends TProtocol {
     $c = $this->trans_->readAll(1);
     $target = null;
     switch ($c) {
-      case 't':
+      case "t":
         $value = true;
-        $target = 'rue';
+        $target = "rue";
         break;
-      case 'f':
+      case "f":
         $value = false;
-        $target = 'alse';
+        $target = "alse";
         break;
       default:
         throw new TProtocolException(
-          'TSimpleJSONProtocol: Expected t or f, encountered 0x'.
-          bin2hex($c)
+          "TSimpleJSONProtocol: Expected t or f, encountered 0x".bin2hex($c)
         );
     }
     for ($i = 0; $i < strlen($target); $i++) {
@@ -344,9 +343,7 @@ class TSimpleJSONProtocol extends TProtocol {
         ($max !== null) &&
         (($val < $min) || ($val > $max))) {
       throw new TProtocolException(
-        'TProtocolException: value '.
-        $val.
-        ' is outside the expected bounds'
+        "TProtocolException: value ".$val." is outside the expected bounds"
       );
     }
     return $val;
@@ -354,28 +351,28 @@ class TSimpleJSONProtocol extends TProtocol {
   private function readNumStr() {
     $ctx = $this->getContext();
     if (\hacklib_cast_as_boolean($ctx->escapeNum())) {
-      $this->expectChar('"');
+      $this->expectChar("\"");
     }
     $count = 0;
     $reading = true;
     while (\hacklib_cast_as_boolean($reading)) {
       $c = $this->bufTrans->peek(1, $count);
       switch ($c) {
-        case '+':
-        case '-':
-        case '.':
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case 'E':
-        case 'e':
+        case "+":
+        case "-":
+        case ".":
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+        case "E":
+        case "e":
           $count++;
           break;
         default:
@@ -386,16 +383,16 @@ class TSimpleJSONProtocol extends TProtocol {
     $str = $this->trans_->readAll($count);
     if (!\hacklib_cast_as_boolean(
           preg_match(
-            '/^[+-]?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/',
+            "/^[+-]?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?\044/",
             $str
           )
         )) {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Invalid json number '.$str
+        "TSimpleJSONProtocol: Invalid json number ".$str
       );
     }
     if (\hacklib_cast_as_boolean($ctx->escapeNum())) {
-      $this->expectChar('"');
+      $this->expectChar("\"");
     }
     return $str;
   }
@@ -438,65 +435,63 @@ class TSimpleJSONProtocol extends TProtocol {
     if (!\hacklib_cast_as_boolean($peek)) {
       $start = 0;
     }
-    $this->expectChar('"', $peek, $start);
+    $this->expectChar("\"", $peek, $start);
     $count = \hacklib_cast_as_boolean($peek) ? 1 : 0;
     $sb = new StringBuffer();
     $reading = true;
     while (\hacklib_cast_as_boolean($reading)) {
       $c = $this->bufTrans->peek(1, $start + $count);
       switch ($c) {
-        case '"':
+        case "\"":
           $reading = false;
           break;
-        case '\\':
+        case "\\":
           $count++;
           $c = $this->bufTrans->peek(1, $start + $count);
           switch ($c) {
-            case '\\':
+            case "\\":
               $count++;
-              $sb->append('\\');
+              $sb->append("\\");
               break;
-            case '"':
+            case "\"":
               $count++;
-              $sb->append('"');
+              $sb->append("\"");
               break;
-            case 'b':
+            case "b":
               $count++;
               $sb->append(chr(0x08));
               break;
-            case '/':
+            case "/":
               $count++;
-              $sb->append('/');
+              $sb->append("/");
               break;
-            case 'f':
+            case "f":
               $count++;
-              $sb->append("\f");
+              $sb->append("\014");
               break;
-            case 'n':
+            case "n":
               $count++;
               $sb->append("\n");
               break;
-            case 'r':
+            case "r":
               $count++;
               $sb->append("\r");
               break;
-            case 't':
+            case "t":
               $count++;
               $sb->append("\t");
               break;
-            case 'u':
+            case "u":
               $count++;
-              $this->expectChar('0', true, $start + $count);
-              $this->expectChar('0', true, $start + $count + 1);
+              $this->expectChar("0", true, $start + $count);
+              $this->expectChar("0", true, $start + $count + 1);
               $count += 2;
-              $sb->append(
-                hex2bin($this->bufTrans->peek(2, $start + $count))
-              );
+              $sb->append(hex2bin($this->bufTrans->peek(2, $start + $count)));
               $count += 2;
               break;
             default:
               throw new TProtocolException(
-                'TSimpleJSONProtocol: Expected Control Character, found 0x'.
+                "TSimpleJSONProtocol: Expected Control Character, found 0x".
                 bin2hex($c)
               );
           }
@@ -510,7 +505,7 @@ class TSimpleJSONProtocol extends TProtocol {
     if (!\hacklib_cast_as_boolean($peek)) {
       $this->trans_->readAll($count);
     }
-    $this->expectChar('"', $peek, $start + $count);
+    $this->expectChar("\"", $peek, $start + $count);
     return \HH\Pair::hacklib_new($sb->detach(), $count + 1);
   }
   private function skipWhitespace($peek = false, $start = 0) {
@@ -522,7 +517,7 @@ class TSimpleJSONProtocol extends TProtocol {
     while (\hacklib_cast_as_boolean($reading)) {
       $byte = $this->bufTrans->peek(1, $count + $start);
       switch ($byte) {
-        case ' ':
+        case " ":
         case "\t":
         case "\n":
         case "\r":
@@ -550,44 +545,44 @@ class TSimpleJSONProtocol extends TProtocol {
     }
     if ($c !== $char) {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected '.
+        "TSimpleJSONProtocol: Expected ".
         $char.
-        ', but encountered 0x'.
+        ", but encountered 0x".
         bin2hex($c)
       );
     }
   }
   private function guessFieldTypeBasedOnByte($byte) {
     switch ($byte) {
-      case '{':
+      case "{":
         return TType::STRUCT;
-      case '[':
+      case "[":
         return TType::LST;
-      case 't':
-      case 'f':
+      case "t":
+      case "f":
         return TType::BOOL;
-      case '-':
-      case '0':
-      case '1':
-      case '2':
-      case '3':
-      case '4':
-      case '5':
-      case '6':
-      case '7':
-      case '8':
-      case '9':
-      case '+':
-      case '.':
+      case "-":
+      case "0":
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9":
+      case "+":
+      case ".":
         return TType::DOUBLE;
-      case '"':
+      case "\"":
         return TType::STRING;
-      case ']':
-      case '}':
+      case "]":
+      case "}":
         return TType::STOP;
     }
     throw new TProtocolException(
-      'TSimpleJSONProtocol: Unable to guess TType for character 0x'.
+      "TSimpleJSONProtocol: Unable to guess TType for character 0x".
       bin2hex($byte)
     );
   }

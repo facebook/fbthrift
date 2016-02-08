@@ -10,7 +10,7 @@
 * @package thrift
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__;
 }
@@ -23,7 +23,7 @@ class TException extends Exception {
       $spec = $p1;
       $vals = $p2;
       foreach ($spec as $fid => $fspec) {
-        $var = $fspec[\hacklib_id('var')];
+        $var = $fspec[\hacklib_id("var")];
         if (\hacklib_cast_as_boolean(isset($vals[$var]))) {
           $this->$var = $vals[$var];
         }
@@ -35,31 +35,31 @@ class TException extends Exception {
   }
   static
     $tmethod = array(
-      TType::BOOL => 'Bool',
-      TType::BYTE => 'Byte',
-      TType::I16 => 'I16',
-      TType::I32 => 'I32',
-      TType::I64 => 'I64',
-      TType::DOUBLE => 'Double',
-      TType::STRING => 'String',
-      TType::FLOAT => 'Float'
+      TType::BOOL => "Bool",
+      TType::BYTE => "Byte",
+      TType::I16 => "I16",
+      TType::I32 => "I32",
+      TType::I64 => "I64",
+      TType::DOUBLE => "Double",
+      TType::STRING => "String",
+      TType::FLOAT => "Float"
     );
   private function _readMap(&$var, $spec, $input) {
     $xfer = 0;
-    $ktype = $spec[\hacklib_id('ktype')];
-    $vtype = $spec[\hacklib_id('vtype')];
+    $ktype = $spec[\hacklib_id("ktype")];
+    $vtype = $spec[\hacklib_id("vtype")];
     $kread = $vread = null;
     $kspec = array();
     $vspec = array();
     if (\hacklib_cast_as_boolean(isset(TBase::$tmethod[$ktype]))) {
-      $kread = 'read'.TBase::$tmethod[$ktype];
+      $kread = "read".TBase::$tmethod[$ktype];
     } else {
-      $kspec = $spec[\hacklib_id('key')];
+      $kspec = $spec[\hacklib_id("key")];
     }
     if (\hacklib_cast_as_boolean(isset(TBase::$tmethod[$vtype]))) {
-      $vread = 'read'.TBase::$tmethod[$vtype];
+      $vread = "read".TBase::$tmethod[$vtype];
     } else {
-      $vspec = $spec[\hacklib_id('val')];
+      $vspec = $spec[\hacklib_id("val")];
     }
     $var = array();
     $_ktype = $_vtype = $size = 0;
@@ -71,7 +71,7 @@ class TException extends Exception {
       } else {
         switch ($ktype) {
           case TType::STRUCT:
-            $class = $kspec[\hacklib_id('class')];
+            $class = $kspec[\hacklib_id("class")];
             $key = new $class();
             $xfer += $key->read($input);
             break;
@@ -91,7 +91,7 @@ class TException extends Exception {
       } else {
         switch ($vtype) {
           case TType::STRUCT:
-            $class = $vspec[\hacklib_id('class')];
+            $class = $vspec[\hacklib_id("class")];
             $val = new $class();
             $xfer += $val->read($input);
             break;
@@ -113,13 +113,14 @@ class TException extends Exception {
   }
   private function _readList(&$var, $spec, $input, $set = false) {
     $xfer = 0;
-    $etype = $spec[\hacklib_id('etype')];
+    $etype = $spec[\hacklib_id("etype")];
     $eread = $vread = null;
     if (\hacklib_cast_as_boolean(isset(TBase::$tmethod[$etype]))) {
-      $eread = 'read'.TBase::$tmethod[$etype];
+      $eread = "read".TBase::$tmethod[$etype];
     } else {
-      $espec = $spec[\hacklib_id('elem')];
+      $espec = $spec[\hacklib_id("elem")];
     }
+    /* UNSAFE_EXPR */
     $var = array();
     $_etype = $size = 0;
     if (\hacklib_cast_as_boolean($set)) {
@@ -132,10 +133,10 @@ class TException extends Exception {
       if ($eread !== null) {
         $xfer += $input->$eread($elem);
       } else {
-        $espec = $spec[\hacklib_id('elem')];
+        $espec = $spec[\hacklib_id("elem")];
         switch ($etype) {
           case TType::STRUCT:
-            $class = $espec[\hacklib_id('class')];
+            $class = $espec[\hacklib_id("class")];
             $elem = new $class();
             $xfer += $elem->read($input);
             break;
@@ -176,16 +177,16 @@ class TException extends Exception {
       }
       if (\hacklib_cast_as_boolean(isset($spec[$fid]))) {
         $fspec = $spec[$fid];
-        $var = $fspec[\hacklib_id('var')];
-        if (\hacklib_equals($ftype, $fspec[\hacklib_id('type')])) {
+        $var = $fspec[\hacklib_id("var")];
+        if (\hacklib_equals($ftype, $fspec[\hacklib_id("type")])) {
           $xfer = 0;
           if (\hacklib_cast_as_boolean(isset(TBase::$tmethod[$ftype]))) {
-            $func = 'read'.TBase::$tmethod[$ftype];
+            $func = "read".TBase::$tmethod[$ftype];
             $xfer += $input->$func($this->$var);
           } else {
             switch ($ftype) {
               case TType::STRUCT:
-                $class = $fspec[\hacklib_id('class')];
+                $class = $fspec[\hacklib_id("class")];
                 $this->$var = new $class();
                 $xfer += $this->$var->read($input);
                 break;
@@ -193,12 +194,10 @@ class TException extends Exception {
                 $xfer += $this->_readMap($this->$var, $fspec, $input);
                 break;
               case TType::LST:
-                $xfer +=
-                  $this->_readList($this->$var, $fspec, $input, false);
+                $xfer += $this->_readList($this->$var, $fspec, $input, false);
                 break;
               case TType::SET:
-                $xfer +=
-                  $this->_readList($this->$var, $fspec, $input, true);
+                $xfer += $this->_readList($this->$var, $fspec, $input, true);
                 break;
             }
           }
@@ -215,20 +214,20 @@ class TException extends Exception {
   }
   private function _writeMap($var, $spec, $output) {
     $xfer = 0;
-    $ktype = $spec[\hacklib_id('ktype')];
-    $vtype = $spec[\hacklib_id('vtype')];
+    $ktype = $spec[\hacklib_id("ktype")];
+    $vtype = $spec[\hacklib_id("vtype")];
     $kwrite = $vwrite = null;
     $kspec = null;
     $vspec = null;
     if (\hacklib_cast_as_boolean(isset(TBase::$tmethod[$ktype]))) {
-      $kwrite = 'write'.TBase::$tmethod[$ktype];
+      $kwrite = "write".TBase::$tmethod[$ktype];
     } else {
-      $kspec = $spec[\hacklib_id('key')];
+      $kspec = $spec[\hacklib_id("key")];
     }
     if (\hacklib_cast_as_boolean(isset(TBase::$tmethod[$vtype]))) {
-      $vwrite = 'write'.TBase::$tmethod[$vtype];
+      $vwrite = "write".TBase::$tmethod[$vtype];
     } else {
-      $vspec = $spec[\hacklib_id('val')];
+      $vspec = $spec[\hacklib_id("val")];
     }
     $xfer += $output->writeMapBegin($ktype, $vtype, count($var));
     foreach ($var as $key => $val) {
@@ -274,13 +273,13 @@ class TException extends Exception {
   }
   private function _writeList($var, $spec, $output, $set = false) {
     $xfer = 0;
-    $etype = $spec[\hacklib_id('etype')];
+    $etype = $spec[\hacklib_id("etype")];
     $ewrite = null;
     $espec = null;
     if (\hacklib_cast_as_boolean(isset(TBase::$tmethod[$etype]))) {
-      $ewrite = 'write'.TBase::$tmethod[$etype];
+      $ewrite = "write".TBase::$tmethod[$etype];
     } else {
-      $espec = $spec[\hacklib_id('elem')];
+      $espec = $spec[\hacklib_id("elem")];
     }
     if (\hacklib_cast_as_boolean($set)) {
       $xfer += $output->writeSetBegin($etype, count($var));
@@ -319,12 +318,12 @@ class TException extends Exception {
     $xfer = 0;
     $xfer += $output->writeStructBegin($class);
     foreach ($spec as $fid => $fspec) {
-      $var = $fspec[\hacklib_id('var')];
+      $var = $fspec[\hacklib_id("var")];
       if ($this->$var !== null) {
-        $ftype = $fspec[\hacklib_id('type')];
+        $ftype = $fspec[\hacklib_id("type")];
         $xfer += $output->writeFieldBegin($var, $ftype, $fid);
         if (\hacklib_cast_as_boolean(isset(TBase::$tmethod[$ftype]))) {
-          $func = 'write'.TBase::$tmethod[$ftype];
+          $func = "write".TBase::$tmethod[$ftype];
           $xfer += $output->$func($this->$var);
         } else {
           switch ($ftype) {
@@ -335,12 +334,10 @@ class TException extends Exception {
               $xfer += $this->_writeMap($this->$var, $fspec, $output);
               break;
             case TType::LST:
-              $xfer +=
-                $this->_writeList($this->$var, $fspec, $output, false);
+              $xfer += $this->_writeList($this->$var, $fspec, $output, false);
               break;
             case TType::SET:
-              $xfer +=
-                $this->_writeList($this->$var, $fspec, $output, true);
+              $xfer += $this->_writeList($this->$var, $fspec, $output, true);
               break;
           }
         }

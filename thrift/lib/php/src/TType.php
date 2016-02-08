@@ -10,7 +10,7 @@
 * @package thrift
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 abstract class TType {
   const STOP = 0;
   const VOID = 1;

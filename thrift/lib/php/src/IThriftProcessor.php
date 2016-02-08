@@ -10,7 +10,7 @@
 * @package thrift
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 interface IThriftProcessor {
   public function getEventHandler();
   public function setEventHandler($handler);

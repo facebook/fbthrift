@@ -108,6 +108,10 @@ class TFramedTransport extends TTransport
     return true;
   }
 
+  public function minBytesAvailable(): int {
+    return strlen($this->rBuf_) - $this->rIndex_;
+  }
+
   /**
    * Reads from the buffer. When more data is required reads another entire
    * chunk and serves future reads out of that.

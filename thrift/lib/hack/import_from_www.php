@@ -181,7 +181,7 @@ class ImportThriftLibFromWWW {
 
         if (!$includes->isEmpty()) {
           sort($includes);
-          $hacklib = 'require_once ($GLOBALS[\'HACKLIB_ROOT\']);';
+          $hacklib = 'require_once ($GLOBALS["HACKLIB_ROOT"]);';
           $thrift_root_path = '__DIR__';
 
           $subdirs = substr_count($path, '/');

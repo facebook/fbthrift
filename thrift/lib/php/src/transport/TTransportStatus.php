@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 interface TTransportStatus {
   public function isReadable();
   public function isWritable();

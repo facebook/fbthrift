@@ -10,7 +10,7 @@
 * @package thrift
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__;
 }
@@ -42,7 +42,7 @@ final class TProcessorMultiEventHandler extends TProcessorEventHandler {
   public function preRead($handler_context, $fn_name, $args) {
     \HH\invariant(
       $handler_context instanceof \HH\Map,
-      'Context is not a Map'
+      "Context is not a Map"
     );
     foreach ($this->handlers as $key => $handler) {
       $handler->preRead($handler_context->at($key), $fn_name, $args);
@@ -51,7 +51,7 @@ final class TProcessorMultiEventHandler extends TProcessorEventHandler {
   public function postRead($handler_context, $fn_name, $args) {
     \HH\invariant(
       $handler_context instanceof \HH\Map,
-      'Context is not a Map'
+      "Context is not a Map"
     );
     foreach ($this->handlers as $key => $handler) {
       $handler->postRead($handler_context->at($key), $fn_name, $args);
@@ -60,7 +60,7 @@ final class TProcessorMultiEventHandler extends TProcessorEventHandler {
   public function preExec($handler_context, $fn_name, $args) {
     \HH\invariant(
       $handler_context instanceof \HH\Map,
-      'Context is not a Map'
+      "Context is not a Map"
     );
     foreach ($this->handlers as $key => $handler) {
       $handler->preExec($handler_context->at($key), $fn_name, $args);
@@ -69,7 +69,7 @@ final class TProcessorMultiEventHandler extends TProcessorEventHandler {
   public function postExec($handler_context, $fn_name, $result) {
     \HH\invariant(
       $handler_context instanceof \HH\Map,
-      'Context is not a Map'
+      "Context is not a Map"
     );
     foreach ($this->handlers as $key => $handler) {
       $handler->postExec($handler_context->at($key), $fn_name, $result);
@@ -78,7 +78,7 @@ final class TProcessorMultiEventHandler extends TProcessorEventHandler {
   public function preWrite($handler_context, $fn_name, $result) {
     \HH\invariant(
       $handler_context instanceof \HH\Map,
-      'Context is not a Map'
+      "Context is not a Map"
     );
     foreach ($this->handlers as $key => $handler) {
       $handler->preWrite($handler_context->at($key), $fn_name, $result);
@@ -87,7 +87,7 @@ final class TProcessorMultiEventHandler extends TProcessorEventHandler {
   public function postWrite($handler_context, $fn_name, $result) {
     \HH\invariant(
       $handler_context instanceof \HH\Map,
-      'Context is not a Map'
+      "Context is not a Map"
     );
     foreach ($this->handlers as $key => $handler) {
       $handler->postWrite($handler_context->at($key), $fn_name, $result);
@@ -96,7 +96,7 @@ final class TProcessorMultiEventHandler extends TProcessorEventHandler {
   public function handlerException($handler_context, $fn_name, $ex) {
     \HH\invariant(
       $handler_context instanceof \HH\Map,
-      'Context is not a Map'
+      "Context is not a Map"
     );
     foreach ($this->handlers as $key => $handler) {
       $handler->handlerException($handler_context->at($key), $fn_name, $ex);
@@ -105,7 +105,7 @@ final class TProcessorMultiEventHandler extends TProcessorEventHandler {
   public function handlerError($handler_context, $fn_name, $ex) {
     \HH\invariant(
       $handler_context instanceof \HH\Map,
-      'Context is not a Map'
+      "Context is not a Map"
     );
     foreach ($this->handlers as $key => $handler) {
       $handler->handlerError($handler_context->at($key), $fn_name, $ex);

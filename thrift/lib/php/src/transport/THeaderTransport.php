@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -28,7 +28,7 @@ class THeaderTransport extends TFramedTransport
   const HTTP_MAGIC = 0x504f5354;
   const MAX_FRAME_SIZE = 0x3fffffff;
   const ZLIB_TRANSFORM = 0x01;
-  const HMAC_TRANSFORM = 0x02; // No longer supported
+  const HMAC_TRANSFORM = 0x02;
   const SNAPPY_TRANSFORM = 0x03;
   const INFO_KEYVALUE = 0x01;
   const HEADER_CLIENT_TYPE = 0x00;
@@ -135,16 +135,17 @@ class THeaderTransport extends TFramedTransport
     $out = substr($this->rBuf_, $this->rIndex_, $len);
     $this->rIndex_ += $len;
     if (strlen($this->rBuf_) <= $this->rIndex_) {
-      $this->rBuf_ = '';
+      $this->rBuf_ = "";
       $this->rIndex_ = 0;
     }
     return $out;
   }
   private function readFrame($req_sz) {
     $buf = $this->transport_->readAll(4);
-    $val = unpack('N', $buf);
+    $val = unpack("N", $buf);
     $sz = $val[1];
-    if (($sz & TBinaryProtocol::VERSION_MASK) === TBinaryProtocol::VERSION_1) {
+    if (($sz & TBinaryProtocol::VERSION_MASK) ===
+        TBinaryProtocol::VERSION_1) {
       $this->clientType_ = self::UNFRAMED_DEPRECATED;
       if ($req_sz <= 4) {
         $this->rBuf_ = $buf;
@@ -154,19 +155,19 @@ class THeaderTransport extends TFramedTransport
     } else {
       if ($sz === self::HTTP_MAGIC) {
         throw new TTransportException(
-          'PHP HeaderTransport does not support HTTP',
+          "PHP HeaderTransport does not support HTTP",
           TTransportException::INVALID_CLIENT
         );
       } else {
         $buf2 = $this->transport_->readAll(4);
-        $val2 = unpack('N', $buf2);
+        $val2 = unpack("N", $buf2);
         $version = $val2[1];
         if (($version & TBinaryProtocol::VERSION_MASK) ===
             TBinaryProtocol::VERSION_1) {
           $this->clientType_ = self::FRAMED_DEPRECATED;
           if (($sz - 4) > self::MAX_FRAME_SIZE) {
             throw new TTransportException(
-              'Frame size is too large',
+              "Frame size is too large",
               TTransportException::INVALID_FRAME_SIZE
             );
           }
@@ -176,30 +177,25 @@ class THeaderTransport extends TFramedTransport
             $this->clientType_ = self::HEADER_CLIENT_TYPE;
             if (($sz - 4) > self::MAX_FRAME_SIZE) {
               throw new TTransportException(
-                'Frame size is too large',
+                "Frame size is too large",
                 TTransportException::INVALID_FRAME_SIZE
               );
             }
             $this->flags_ = $version & 0x0000ffff;
             $buf3 = $this->transport_->readAll(4);
-            $val3 = unpack('N', $buf3);
+            $val3 = unpack("N", $buf3);
             $this->seqId_ = $val3[1];
             $buf4 = $this->transport_->readAll(2);
-            $val4 = unpack('n', $buf4);
+            $val4 = unpack("n", $buf4);
             $header_size = $val4[1];
             $data = $buf.$buf2.$buf3.$buf4;
             $index = strlen($data);
             $data .= $this->transport_->readAll($sz - 10);
-            $this->readHeaderFormat(
-              $sz - 10,
-              $header_size,
-              $data,
-              $index
-            );
+            $this->readHeaderFormat($sz - 10, $header_size, $data, $index);
           } else {
             $this->clientType_ = self::UNKNOWN_CLIENT_TYPE;
             throw new TTransportException(
-              'Unknown client type',
+              "Unknown client type",
               TTransportException::INVALID_CLIENT
             );
           }
@@ -210,7 +206,7 @@ class THeaderTransport extends TFramedTransport
           $this->supportedProtocols->contains($this->clientType_)
         )) {
       throw new TTransportException(
-        'Client type not supported on this server',
+        "Client type not supported on this server",
         TTransportException::INVALID_CLIENT
       );
     }
@@ -251,7 +247,7 @@ class THeaderTransport extends TFramedTransport
     $str_sz = $this->readVarint($data, $index);
     if (($str_sz + $index) > $limit) {
       throw new TTransportException(
-        'String read too long',
+        "String read too long",
         TTransportException::INVALID_FRAME_SIZE
       );
     }
@@ -264,7 +260,7 @@ class THeaderTransport extends TFramedTransport
     $header_size = $header_size * 4;
     if ($header_size > $sz) {
       throw new TTransportException(
-        'Header size is larger than frame',
+        "Header size is larger than frame",
         TTransportException::INVALID_FRAME_SIZE
       );
     }
@@ -274,7 +270,7 @@ class THeaderTransport extends TFramedTransport
     if (($this->protoId_ === 1) &&
         ($this->clientType_ !== self::HTTP_CLIENT_TYPE)) {
       throw new TTransportException(
-        'Trying to recv JSON encoding over binary',
+        "Trying to recv JSON encoding over binary",
         TTransportException::INVALID_CLIENT
       );
     }
@@ -287,12 +283,12 @@ class THeaderTransport extends TFramedTransport
           break;
         case self::HMAC_TRANSFORM:
           throw new TApplicationException(
-            'Hmac transform is no longer supported',
+            "Hmac transform no longer supported",
             TApplicationException::INVALID_TRANSFORM
           );
         default:
           throw new TApplicationException(
-            'Unknown transform in client request',
+            "Unknown transform in client request",
             TApplicationException::INVALID_TRANSFORM
           );
       }
@@ -328,7 +324,7 @@ class THeaderTransport extends TFramedTransport
           break;
         default:
           throw new TTransportException(
-            'Unknown transform during send',
+            "Unknown transform during send",
             TTransportException::INVALID_TRANSFORM
           );
       }
@@ -346,7 +342,7 @@ class THeaderTransport extends TFramedTransport
           break;
         default:
           throw new TApplicationException(
-            'Unknown transform during recv',
+            "Unknown transform during recv",
             TTransportException::INVALID_TRANSFORM
           );
       }
@@ -369,17 +365,17 @@ class THeaderTransport extends TFramedTransport
       return;
     }
     $out = $this->transform($this->wBuf_);
-    $this->wBuf_ = '';
+    $this->wBuf_ = "";
     if (($this->protoId_ === 1) &&
         ($this->clientType_ !== self::HTTP_CLIENT_TYPE)) {
       throw new TTransportException(
-        'Trying to send JSON encoding over binary',
+        "Trying to send JSON encoding over binary",
         TTransportException::INVALID_CLIENT
       );
     }
-    $buf = '';
+    $buf = "";
     if ($this->clientType_ === self::HEADER_CLIENT_TYPE) {
-      $transformData = '';
+      $transformData = "";
       $num_headers = 0;
       foreach ($this->writeTrans_ as $trans) {
         ++$num_headers;
@@ -390,13 +386,12 @@ class THeaderTransport extends TFramedTransport
           (string) self::ID_VERSION;
         $this->writeHeaders[self::IDENTITY_HEADER] = $this->identity;
       }
-      $infoData = '';
+      $infoData = "";
       if (\hacklib_cast_as_boolean($this->writeHeaders) ||
           \hacklib_cast_as_boolean($this->persistentWriteHeaders)) {
         $infoData .= $this->getVarint(self::INFO_KEYVALUE);
         $infoData .= $this->getVarint(
-          count($this->writeHeaders) +
-          count($this->persistentWriteHeaders)
+          count($this->writeHeaders) + count($this->persistentWriteHeaders)
         );
         foreach ($this->persistentWriteHeaders as $str_key => $str_value) {
           $infoData .= $this->writeString($str_key);
@@ -414,18 +409,18 @@ class THeaderTransport extends TFramedTransport
         strlen($transformData) + strlen($infoData) + strlen($headerData);
       $paddingSize = 4 - ($header_size % 4);
       $header_size += $paddingSize;
-      $buf = (string) pack('nn', self::HEADER_MAGIC, $this->flags_);
-      $buf .= (string) pack('Nn', $this->seqId_, $header_size / 4);
+      $buf = (string) pack("nn", self::HEADER_MAGIC, $this->flags_);
+      $buf .= (string) pack("Nn", $this->seqId_, $header_size / 4);
       $buf .= $headerData.$transformData;
       $buf .= $infoData;
       for ($i = 0; $i < $paddingSize; $i++) {
-        $buf .= (string) pack('C', '\0');
+        $buf .= (string) pack("C", "\\0");
       }
       $buf .= $out;
-      $buf = ((string) pack('N', strlen($buf))).$buf;
+      $buf = ((string) pack("N", strlen($buf))).$buf;
     } else {
       if ($this->clientType_ === self::FRAMED_DEPRECATED) {
-        $buf = (string) pack('N', strlen($out));
+        $buf = (string) pack("N", strlen($out));
         $buf .= $out;
       } else {
         if ($this->clientType_ === self::UNFRAMED_DEPRECATED) {
@@ -433,12 +428,12 @@ class THeaderTransport extends TFramedTransport
         } else {
           if ($this->clientType_ === self::HTTP_CLIENT_TYPE) {
             throw new TTransportException(
-              'HTTP not implemented',
+              "HTTP not implemented",
               TTransportException::INVALID_CLIENT
             );
           } else {
             throw new TTransportException(
-              'Unknown client type',
+              "Unknown client type",
               TTransportException::INVALID_CLIENT
             );
           }
@@ -447,7 +442,7 @@ class THeaderTransport extends TFramedTransport
     }
     if (strlen($buf) > self::MAX_FRAME_SIZE) {
       throw new TTransportException(
-        'Attempting to send oversize frame',
+        "Attempting to send oversize frame",
         TTransportException::INVALID_FRAME_SIZE
       );
     }

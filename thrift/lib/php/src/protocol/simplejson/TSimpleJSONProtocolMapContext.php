@@ -10,7 +10,7 @@
 * @package thrift.protocol.simplejson
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/../..';
 }
@@ -21,7 +21,7 @@ class TSimpleJSONProtocolMapContext extends TSimpleJSONProtocolContext {
   private $first = true;
   private $colon = true;
   public function writeStart() {
-    $this->trans->write('{');
+    $this->trans->write("{");
     return 1;
   }
   public function writeSeparator() {
@@ -30,23 +30,23 @@ class TSimpleJSONProtocolMapContext extends TSimpleJSONProtocolContext {
       return 0;
     }
     if (\hacklib_cast_as_boolean($this->colon)) {
-      $this->trans->write(':');
+      $this->trans->write(":");
     } else {
-      $this->trans->write(',');
+      $this->trans->write(",");
     }
     $this->colon = !\hacklib_cast_as_boolean($this->colon);
     return 1;
   }
   public function writeEnd() {
-    $this->trans->write('}');
+    $this->trans->write("}");
     return 1;
   }
   public function readStart() {
     $this->skipWhitespace();
     $c = $this->trans->readAll(1);
-    if ($c !== '{') {
+    if ($c !== "{") {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected "{", encountered 0x'.bin2hex($c)
+        "TSimpleJSONProtocol: Expected \"{\", encountered 0x".bin2hex($c)
       );
     }
   }
@@ -57,12 +57,12 @@ class TSimpleJSONProtocolMapContext extends TSimpleJSONProtocolContext {
     }
     $this->skipWhitespace();
     $c = $this->trans->readAll(1);
-    $target = \hacklib_cast_as_boolean($this->colon) ? ':' : ',';
+    $target = \hacklib_cast_as_boolean($this->colon) ? ":" : ",";
     if ($c !== $target) {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected "'.
+        "TSimpleJSONProtocol: Expected \"".
         $target.
-        '", encountered 0x'.
+        "\", encountered 0x".
         bin2hex($c)
       );
     }
@@ -72,21 +72,21 @@ class TSimpleJSONProtocolMapContext extends TSimpleJSONProtocolContext {
     $pos = $this->skipWhitespace(false);
     $c = $this->bufTrans->peek(1, $pos);
     if ((!\hacklib_cast_as_boolean($this->first)) &&
-        ($c !== ',') &&
-        ($c !== '}')) {
+        ($c !== ",") &&
+        ($c !== "}")) {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected "," or "}", encountered 0x'.
+        "TSimpleJSONProtocol: Expected \",\" or \"}\", encountered 0x".
         bin2hex($c)
       );
     }
-    return $c === '}';
+    return $c === "}";
   }
   public function readEnd() {
     $this->skipWhitespace();
     $c = $this->trans->readAll(1);
-    if ($c !== '}') {
+    if ($c !== "}") {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected "}", encountered 0x'.bin2hex($c)
+        "TSimpleJSONProtocol: Expected \"}\", encountered 0x".bin2hex($c)
       );
     }
   }

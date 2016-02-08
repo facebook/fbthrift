@@ -22,7 +22,7 @@ class TSimplePHPObjectProtocolKeyedIteratorWrapper
 
   public function current(): mixed {
     if ($this->key) {
-      // UNSAFE
+      // UNSAFE_BLOCK
       return $this->itr->key();
     } else {
       return $this->itr->current();

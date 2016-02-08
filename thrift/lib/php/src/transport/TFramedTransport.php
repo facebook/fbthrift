@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -21,9 +21,9 @@ require_once $GLOBALS['THRIFT_ROOT'].'/transport/TTransportStatus.php';
 class TFramedTransport extends TTransport
   implements TTransportStatus, IThriftBufferedTransport {
   protected $transport_;
-  protected $rBuf_ = '';
+  protected $rBuf_ = "";
   protected $rIndex_ = 0;
-  protected $wBuf_ = '';
+  protected $wBuf_ = "";
   private $read_;
   private $write_;
   public function __construct($transport = null, $read = true, $write = true) {
@@ -56,6 +56,9 @@ class TFramedTransport extends TTransport
     }
     return true;
   }
+  public function minBytesAvailable() {
+    return strlen($this->rBuf_) - $this->rIndex_;
+  }
   public function read($len) {
     if (!\hacklib_cast_as_boolean($this->read_)) {
       return $this->transport_->read($len);
@@ -66,14 +69,14 @@ class TFramedTransport extends TTransport
     $out = substr($this->rBuf_, $this->rIndex_, $len);
     $this->rIndex_ += $len;
     if (strlen($this->rBuf_) <= $this->rIndex_) {
-      $this->rBuf_ = '';
+      $this->rBuf_ = "";
       $this->rIndex_ = 0;
     }
     return $out;
   }
   public function peek($len, $start = 0) {
     if (!\hacklib_cast_as_boolean($this->read_)) {
-      return '';
+      return "";
     }
     if (strlen($this->rBuf_) === 0) {
       $this->readFrame();
@@ -91,7 +94,7 @@ class TFramedTransport extends TTransport
   }
   private function readFrame() {
     $buf = $this->transport_->readAll(4);
-    $val = unpack('N', $buf);
+    $val = unpack("N", $buf);
     $sz = $val[1];
     $this->rBuf_ = $this->transport_->readAll($sz);
     $this->rIndex_ = 0;
@@ -112,9 +115,9 @@ class TFramedTransport extends TTransport
       $this->transport_->flush();
       return;
     }
-    $out = (string) pack('N', strlen($this->wBuf_));
+    $out = (string) pack("N", strlen($this->wBuf_));
     $out .= $this->wBuf_;
-    $this->wBuf_ = '';
+    $this->wBuf_ = "";
     $this->transport_->write($out);
     $this->transport_->flush();
   }

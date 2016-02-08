@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -23,11 +23,11 @@ class THttpClientPool extends THttpClient {
   public function __construct(
     $hosts,
     $ports,
-    $uri = '',
-    $scheme = 'http',
+    $uri = "",
+    $scheme = "http",
     $debugHandler = null
   ) {
-    parent::__construct('', 0, $uri, $scheme, $debugHandler);
+    parent::__construct("", 0, $uri, $scheme, $debugHandler);
     foreach ($hosts as $key => $host) {
       $this->servers_[] = array($host, $ports[$key]);
     }
@@ -61,11 +61,11 @@ class THttpClientPool extends THttpClient {
         }
       }
     }
-    $this->host_ = '';
+    $this->host_ = "";
     $this->port_ = 0;
     $error =
-      'THttpClientPool: Could not connect to any of the servers '.
-      'in the pool';
+      "THttpClientPool: Could not connect to any of the servers ".
+      "in the pool";
     throw new TTransportException($error, TTransportException::NOT_OPEN);
   }
 }

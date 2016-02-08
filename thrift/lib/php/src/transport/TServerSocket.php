@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -34,11 +34,11 @@ class TServerSocket {
     $this->recv_buffer_size = $recv_buffer_size;
   }
   public function listen() {
-    foreach (array('[::]', '0.0.0.0') as $addr) {
+    foreach (array("[::]", "0.0.0.0") as $addr) {
       $errno = 0;
-      $errstr = '';
+      $errstr = "";
       $this->handle = stream_socket_server(
-        'tcp://'.$addr.':'.$this->port,
+        "tcp://".$addr.":".$this->port,
         $errno,
         $errstr,
         STREAM_SERVER_BIND | STREAM_SERVER_LISTEN

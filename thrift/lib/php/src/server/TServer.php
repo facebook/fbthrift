@@ -10,7 +10,7 @@
 * @package thrift.server
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -47,7 +47,7 @@ abstract class TServer {
     } catch (TTransportException $tx) {
       return false;
     } catch (Exception $x) {
-      echo ('Handle caught transport exception: '.$x->getMessage()."\n");
+      echo ("Handle caught transport exception: ".$x->getMessage()."\n");
       return false;
     }
     $trans->close();

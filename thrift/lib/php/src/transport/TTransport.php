@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 abstract class TTransport {
   protected $service_ = null;
   public abstract function isOpen();
@@ -18,7 +18,7 @@ abstract class TTransport {
   public abstract function close();
   public abstract function read($len);
   public function readAll($len) {
-    $data = '';
+    $data = "";
     $got = 0;
     while (($got = strlen($data)) < $len) {
       $data .= $this->read($len - $got);

@@ -10,7 +10,7 @@
 * @package thrift.protocol.simplejson
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/../..';
 }
@@ -20,7 +20,7 @@ require_once $GLOBALS['THRIFT_ROOT'].'/protocol/simplejson/TSimpleJSONProtocolCo
 class TSimpleJSONProtocolListContext extends TSimpleJSONProtocolContext {
   private $first = true;
   public function writeStart() {
-    $this->trans->write('[');
+    $this->trans->write("[");
     return 1;
   }
   public function writeSeparator() {
@@ -28,19 +28,19 @@ class TSimpleJSONProtocolListContext extends TSimpleJSONProtocolContext {
       $this->first = false;
       return 0;
     }
-    $this->trans->write(',');
+    $this->trans->write(",");
     return 1;
   }
   public function writeEnd() {
-    $this->trans->write(']');
+    $this->trans->write("]");
     return 1;
   }
   public function readStart() {
     $this->skipWhitespace();
     $c = $this->trans->readAll(1);
-    if ($c !== '[') {
+    if ($c !== "[") {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected "[", encountered 0x'.bin2hex($c)
+        "TSimpleJSONProtocol: Expected \"[\", encountered 0x".bin2hex($c)
       );
     }
   }
@@ -51,9 +51,9 @@ class TSimpleJSONProtocolListContext extends TSimpleJSONProtocolContext {
     }
     $this->skipWhitespace();
     $c = $this->trans->readAll(1);
-    if ($c !== ',') {
+    if ($c !== ",") {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected ",", encountered 0x'.bin2hex($c)
+        "TSimpleJSONProtocol: Expected \",\", encountered 0x".bin2hex($c)
       );
     }
   }
@@ -61,21 +61,21 @@ class TSimpleJSONProtocolListContext extends TSimpleJSONProtocolContext {
     $pos = $this->skipWhitespace(false);
     $c = $this->bufTrans->peek(1, $pos);
     if ((!\hacklib_cast_as_boolean($this->first)) &&
-        ($c !== ',') &&
-        ($c !== ']')) {
+        ($c !== ",") &&
+        ($c !== "]")) {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected "," or "]", encountered 0x'.
+        "TSimpleJSONProtocol: Expected \",\" or \"]\", encountered 0x".
         bin2hex($c)
       );
     }
-    return $c === ']';
+    return $c === "]";
   }
   public function readEnd() {
     $this->skipWhitespace();
     $c = $this->trans->readAll(1);
-    if ($c !== ']') {
+    if ($c !== "]") {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected "]", encountered 0x'.bin2hex($c)
+        "TSimpleJSONProtocol: Expected \"]\", encountered 0x".bin2hex($c)
       );
     }
   }

@@ -10,7 +10,7 @@
 * @package thrift.protocol.compact
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/../..';
 }
@@ -249,7 +249,7 @@ abstract class TCompactProtocolBase extends TProtocol {
             : self::COMPACT_FALSE
         );
       } else {
-        throw new TProtocolException('Invalid state in compact protocol');
+        throw new TProtocolException("Invalid state in compact protocol");
       }
     }
   }
@@ -270,7 +270,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return $this->writeVarint($thing);
   }
   public function writeDouble($value) {
-    $data = pack('d', $value);
+    $data = pack("d", $value);
     if ($this->version >= self::VERSION_DOUBLE_BE) {
       $data = strrev($data);
     }
@@ -278,7 +278,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return 8;
   }
   public function writeFloat($value) {
-    $data = pack('f', $value);
+    $data = pack("f", $value);
     $data = strrev($data);
     $this->trans_->write($data);
     return 4;
@@ -347,7 +347,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     $protoId = 0;
     $result = $this->readUByte($protoId);
     if (\hacklib_not_equals($protoId, self::PROTOCOL_ID)) {
-      throw new TProtocolException('Bad protocol id in TCompact message');
+      throw new TProtocolException("Bad protocol id in TCompact message");
     }
     $verType = 0;
     $result += $this->readUByte($verType);
@@ -355,7 +355,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     $this->version = $verType & self::VERSION_MASK;
     if (!(($this->version <= self::VERSION) &&
           ($this->version >= self::VERSION_LOW))) {
-      throw new TProtocolException('Bad version in TCompact message');
+      throw new TProtocolException("Bad version in TCompact message");
     }
     $result += $this->readVarint($seqid);
     $result += $this->readString($name);
@@ -365,7 +365,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return 0;
   }
   public function readStructBegin(&$name) {
-    $name = '';
+    $name = "";
     $this->structs[] = array($this->state, $this->lastFid);
     $this->state = self::STATE_FIELD_READ;
     $this->lastFid = 0;
@@ -430,7 +430,7 @@ abstract class TCompactProtocolBase extends TProtocol {
         $value = \hacklib_equals($value, self::COMPACT_TRUE);
         return $result;
       } else {
-        throw new TProtocolException('Invalid state in compact protocol');
+        throw new TProtocolException("Invalid state in compact protocol");
       }
     }
   }
@@ -445,14 +445,14 @@ abstract class TCompactProtocolBase extends TProtocol {
     if ($this->version >= self::VERSION_DOUBLE_BE) {
       $data = strrev($data);
     }
-    $arr = unpack('d', $data);
+    $arr = unpack("d", $data);
     $value = $arr[1];
     return 8;
   }
   public function readFloat(&$value) {
     $data = $this->trans_->readAll(4);
     $data = strrev($data);
-    $arr = unpack('f', $data);
+    $arr = unpack("f", $data);
     $value = $arr[1];
     return 4;
   }
@@ -462,7 +462,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     if (\hacklib_cast_as_boolean($len)) {
       $value = $this->trans_->readAll($len);
     } else {
-      $value = '';
+      $value = "";
     }
     return $result + $len;
   }

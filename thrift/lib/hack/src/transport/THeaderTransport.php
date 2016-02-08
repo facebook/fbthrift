@@ -393,7 +393,7 @@ class THeaderTransport extends TFramedTransport
   }
 
   protected function transform(string $data): string {
-    // UNSAFE: the only way we know that these possibly iterated compressors
+    // UNSAFE_BLOCK: the only way we know that these possibly iterated compressors
     // will produce reeasonable results is by complicated promises of the way
     // thrift sets things up, which Hack has no way to understand.
     foreach ($this->writeTrans_ as $trans) {
@@ -417,7 +417,7 @@ class THeaderTransport extends TFramedTransport
   }
 
   protected function untransform(string $data): @string { // Task #5347782
-    // UNSAFE: the only way we know that these possibly iterated compressors
+    // UNSAFE_BLOCK: the only way we know that these possibly iterated compressors
     // will produce reeasonable results is by complicated promises of the way
     // thrift sets things up, which Hack has no way to understand.
     foreach ($this->readTrans_ as $trans) {

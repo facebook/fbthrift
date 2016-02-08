@@ -10,7 +10,7 @@
 * @package thrift.protocol
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 abstract class TProtocolSerializer {
   abstract public static function serialize($object);
   abstract public static function deserialize($str, $object);

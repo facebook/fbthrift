@@ -10,7 +10,7 @@
 * @package thrift.server
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 abstract class TServerEventHandler {
   public abstract function clientBegin($prot);
 }

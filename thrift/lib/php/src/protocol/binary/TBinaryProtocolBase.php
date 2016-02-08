@@ -10,7 +10,7 @@
 * @package thrift.protocol.binary
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/../..';
 }
@@ -34,20 +34,20 @@ abstract class TBinaryProtocolBase extends TProtocol {
     parent::__construct($trans);
     $this->strictRead_ = $strictRead;
     $this->strictWrite_ = $strictWrite;
-    if (\hacklib_equals(pack('S', 1), "\x01\x00")) {
+    if (\hacklib_equals(pack("S", 1), "\001\000")) {
       $this->littleendian_ = true;
     }
-    $this->memory_limit = self::getBytes(ini_get('memory_limit'));
+    $this->memory_limit = self::getBytes(ini_get("memory_limit"));
   }
   public static function getBytes($notation) {
     $val = trim($notation);
     $last = strtolower($val[strlen($val) - 1]);
     switch ($last) {
-      case 'g':
+      case "g":
         $val *= 1024; // FALLTHROUGH
-      case 'm':
+      case "m":
         $val *= 1024; // FALLTHROUGH
-      case 'k':
+      case "k":
         $val *= 1024;
     }
     return $val;
@@ -106,7 +106,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return 0;
   }
   public function writeBool($value) {
-    $data = pack('c', \hacklib_cast_as_boolean($value) ? 1 : 0);
+    $data = pack("c", \hacklib_cast_as_boolean($value) ? 1 : 0);
     $this->trans_->write($data);
     return 1;
   }
@@ -131,7 +131,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return 4;
   }
   public function writeI64($value) {
-    $data = '';
+    $data = "";
     if (PHP_INT_SIZE == 4) {
       $neg = $value < 0;
       if (\hacklib_cast_as_boolean($neg)) {
@@ -149,7 +149,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
           $lo++;
         }
       }
-      $data = pack('N2', $hi, $lo);
+      $data = pack("N2", $hi, $lo);
     } else {
       $data =
         chr($value).
@@ -168,7 +168,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return 8;
   }
   public function writeDouble($value) {
-    $data = pack('d', $value);
+    $data = pack("d", $value);
     if (\hacklib_cast_as_boolean($this->littleendian_)) {
       $data = strrev($data);
     }
@@ -176,7 +176,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return 8;
   }
   public function writeFloat($value) {
-    $data = pack('f', $value);
+    $data = pack("f", $value);
     if (\hacklib_cast_as_boolean($this->littleendian_)) {
       $data = strrev($data);
     }
@@ -206,13 +206,13 @@ abstract class TBinaryProtocolBase extends TProtocol {
     $trans = $this->trans_;
     if (!($trans instanceof IThriftBufferedTransport)) {
       throw new TProtocolException(
-        get_class($this->trans_).' does not support peek',
+        get_class($this->trans_)." does not support peek",
         TProtocolException::BAD_VERSION
       );
     }
     if ($this->sequenceID !== null) {
       throw new TProtocolException(
-        'peekSequenceID can only be called '.'before readMessageBegin',
+        "peekSequenceID can only be called "."before readMessageBegin",
         TProtocolException::INVALID_DATA
       );
     }
@@ -223,7 +223,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
       $version = $sz & self::VERSION_MASK;
       if (\hacklib_not_equals($version, self::VERSION_1)) {
         throw new TProtocolException(
-          'Bad version identifier: '.$sz,
+          "Bad version identifier: ".$sz,
           TProtocolException::BAD_VERSION
         );
       }
@@ -235,13 +235,13 @@ abstract class TBinaryProtocolBase extends TProtocol {
     } else {
       if (\hacklib_cast_as_boolean($this->strictRead_)) {
         throw new TProtocolException(
-          'No version identifier, old protocol client?',
+          "No version identifier, old protocol client?",
           TProtocolException::BAD_VERSION
         );
       } else {
         if (($this->memory_limit > 0) && ($sz > $this->memory_limit)) {
           throw new TProtocolException(
-            'Length overflow: '.$sz,
+            "Length overflow: ".$sz,
             TProtocolException::SIZE_LIMIT
           );
         }
@@ -260,7 +260,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
       $version = $sz & self::VERSION_MASK;
       if (\hacklib_not_equals($version, self::VERSION_1)) {
         throw new TProtocolException(
-          'Bad version identifier: '.$sz,
+          "Bad version identifier: ".$sz,
           TProtocolException::BAD_VERSION
         );
       }
@@ -269,13 +269,13 @@ abstract class TBinaryProtocolBase extends TProtocol {
     } else {
       if (\hacklib_cast_as_boolean($this->strictRead_)) {
         throw new TProtocolException(
-          'No version identifier, old protocol client?',
+          "No version identifier, old protocol client?",
           TProtocolException::BAD_VERSION
         );
       } else {
         if (($this->memory_limit > 0) && ($sz > $this->memory_limit)) {
           throw new TProtocolException(
-            'Length overflow: '.$sz,
+            "Length overflow: ".$sz,
             TProtocolException::SIZE_LIMIT
           );
         }
@@ -291,7 +291,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return 0;
   }
   public function readStructBegin(&$name) {
-    $name = '';
+    $name = "";
     return 0;
   }
   public function readStructEnd() {
@@ -332,7 +332,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
   }
   public function readBool(&$value) {
     $data = $this->trans_->readAll(1);
-    $arr = unpack('c', $data);
+    $arr = unpack("c", $data);
     $value = \hacklib_equals($arr[1], 1);
     return 1;
   }
@@ -359,7 +359,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
   }
   public function readI64(&$value) {
     $data = $this->trans_->readAll(8);
-    $arr = unpack('N2', $data);
+    $arr = unpack("N2", $data);
     if (PHP_INT_SIZE == 4) {
       $hi = $arr[1];
       $lo = $arr[2];
@@ -406,7 +406,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     if (\hacklib_cast_as_boolean($this->littleendian_)) {
       $data = strrev($data);
     }
-    $arr = unpack('d', $data);
+    $arr = unpack("d", $data);
     $value = $arr[1];
     return 8;
   }
@@ -415,7 +415,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     if (\hacklib_cast_as_boolean($this->littleendian_)) {
       $data = strrev($data);
     }
-    $arr = unpack('f', $data);
+    $arr = unpack("f", $data);
     $value = $arr[1];
     return 4;
   }
@@ -425,7 +425,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     if (\hacklib_cast_as_boolean($len)) {
       $value = $this->trans_->readAll($len);
     } else {
-      $value = '';
+      $value = "";
     }
     return $result + $len;
   }

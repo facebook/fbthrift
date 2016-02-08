@@ -10,7 +10,7 @@
 * @package thrift.protocol.binary
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/../..';
 }
@@ -23,7 +23,7 @@ class TBinarySerializer extends TProtocolSerializer {
     $transport = new TMemoryBuffer();
     $protocol = new TBinaryProtocolAccelerated($transport);
     if (\hacklib_cast_as_boolean(
-          function_exists('thrift_protocol_write_binary')
+          function_exists("thrift_protocol_write_binary")
         ) &&
         (!\hacklib_cast_as_boolean($disable_hphp_extension))) {
       thrift_protocol_write_binary(
@@ -35,11 +35,7 @@ class TBinarySerializer extends TProtocolSerializer {
         $protocol->isStrictWrite()
       );
       $unused_name = $unused_type = $unused_seqid = null;
-      $protocol->readMessageBegin(
-        $unused_name,
-        $unused_type,
-        $unused_seqid
-      );
+      $protocol->readMessageBegin($unused_name, $unused_type, $unused_seqid);
     } else {
       $object->write($protocol);
     }
@@ -53,10 +49,10 @@ class TBinarySerializer extends TProtocolSerializer {
     $transport = new TMemoryBuffer();
     $protocol = new TBinaryProtocolAccelerated($transport);
     if (\hacklib_cast_as_boolean(
-          function_exists('thrift_protocol_read_binary')
+          function_exists("thrift_protocol_read_binary")
         ) &&
         (!\hacklib_cast_as_boolean($disable_hphp_extension))) {
-      $protocol->writeMessageBegin('', TMessageType::REPLY, 0);
+      $protocol->writeMessageBegin("", TMessageType::REPLY, 0);
       $transport->write($str);
       $object = thrift_protocol_read_binary(
         $protocol,

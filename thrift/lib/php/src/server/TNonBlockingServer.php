@@ -10,7 +10,7 @@
 * @package thrift.server
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -44,19 +44,17 @@ class TNonBlockingServer extends TServer {
       }
     } catch (Exception $x) {
       $md = $client->getMetaData();
-      if (\hacklib_cast_as_boolean($md[\hacklib_id('timed_out')])) {
+      if (\hacklib_cast_as_boolean($md[\hacklib_id("timed_out")])) {
       } else {
-        if (\hacklib_cast_as_boolean($md[\hacklib_id('eof')])) {
+        if (\hacklib_cast_as_boolean($md[\hacklib_id("eof")])) {
           \HH\invariant(
             $trans instanceof TTransport,
-            'Need to make Hack happy'
+            "Need to make Hack happy"
           );
           $trans->close();
           return false;
         } else {
-          echo
-            ('Handle caught transport exception: '.$x->getMessage()."\n")
-          ;
+          echo ("Handle caught transport exception: ".$x->getMessage()."\n");
         }
       }
     }

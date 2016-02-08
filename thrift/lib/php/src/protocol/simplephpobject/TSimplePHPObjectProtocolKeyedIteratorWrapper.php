@@ -10,7 +10,7 @@
 * @package thrift.protocol.simplephpobject
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 class TSimplePHPObjectProtocolKeyedIteratorWrapper implements \HH\Iterator {
   private $key = true;
   private $itr;
@@ -18,7 +18,7 @@ class TSimplePHPObjectProtocolKeyedIteratorWrapper implements \HH\Iterator {
     $this->itr = $itr;
   }
   public function key() {
-    \HH\invariant_violation('Cannot Access Key');
+    \HH\invariant_violation("Cannot Access Key");
   }
   public function current() {
     if (\hacklib_cast_as_boolean($this->key)) { // UNSAFE

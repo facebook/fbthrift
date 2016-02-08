@@ -116,6 +116,10 @@ class TBufferedTransport extends TTransport
     return true;
   }
 
+  public function minBytesAvailable(): int {
+    return strlen($this->rBuf_);
+  }
+
   /**
    * The reason that we customize readAll here is that the majority of PHP
    * streams are already internally buffered by PHP. The socket stream, for

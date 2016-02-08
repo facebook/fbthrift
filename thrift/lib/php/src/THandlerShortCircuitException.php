@@ -10,7 +10,7 @@
 * @package thrift
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 class THandlerShortCircuitException extends Exception {
   const R_SUCCESS = 0;
   const R_EXPECTED_EX = 1;

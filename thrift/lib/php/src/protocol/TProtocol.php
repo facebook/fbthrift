@@ -10,19 +10,19 @@
 * @package thrift.protocol
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
 require_once $GLOBALS['THRIFT_ROOT'].'/TType.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/protocol/TProtocolException.php';
 abstract class TProtocol {
-  public static $TBINARYPROTOCOLACCELERATED = 'TBinaryProtocolAccelerated';
-  public static $TCOMPACTPROTOCOLACCELERATED = 'TCompactProtocolAccelerated';
+  public static $TBINARYPROTOCOLACCELERATED = "TBinaryProtocolAccelerated";
+  public static $TCOMPACTPROTOCOLACCELERATED = "TCompactProtocolAccelerated";
   public static
-    $TBINARYPROTOCOLUNACCELERATED = 'TBinaryProtocolUnaccelerated';
+    $TBINARYPROTOCOLUNACCELERATED = "TBinaryProtocolUnaccelerated";
   public static
-    $TCOMPACTPROTOCOLUNACCELERATED = 'TCompactProtocolUnaccelerated';
+    $TCOMPACTPROTOCOLUNACCELERATED = "TCompactProtocolUnaccelerated";
   protected $trans_;
   protected function __construct($trans) {
     $this->trans_ = $trans;
@@ -66,21 +66,21 @@ abstract class TProtocol {
   public abstract function readMapBegin(&$keyType, &$valType, &$size);
   public function readMapHasNext() {
     throw new TProtocolException(
-      get_called_class().' does not support unknown map sizes'
+      get_called_class()." does not support unknown map sizes"
     );
   }
   public abstract function readMapEnd();
   public abstract function readListBegin(&$elemType, &$size);
   public function readListHasNext() {
     throw new TProtocolException(
-      get_called_class().' does not support unknown list sizes'
+      get_called_class()." does not support unknown list sizes"
     );
   }
   public abstract function readListEnd();
   public abstract function readSetBegin(&$elemType, &$size);
   public function readSetHasNext() {
     throw new TProtocolException(
-      get_called_class().' does not support unknown set sizes'
+      get_called_class()." does not support unknown set sizes"
     );
   }
   public abstract function readSetEnd();
@@ -175,7 +175,7 @@ abstract class TProtocol {
         }
       default:
         throw new TProtocolException(
-          'Unknown field type: '.$type,
+          "Unknown field type: ".$type,
           TProtocolException::INVALID_DATA
         );
     }
@@ -197,7 +197,7 @@ abstract class TProtocol {
       case TType::FLOAT:
         return $itrans->readAll(4);
       case TType::STRING:
-        $len = unpack('N', $itrans->readAll(4));
+        $len = unpack("N", $itrans->readAll(4));
         $len = $len[1];
         if ($len > 0x7fffffff) {
           $len = 0 - (($len - 1) ^ 0xffffffff);
@@ -210,7 +210,7 @@ abstract class TProtocol {
             $ftype = 0;
             $fid = 0;
             $data = $itrans->readAll(1);
-            $arr = unpack('c', $data);
+            $arr = unpack("c", $data);
             $ftype = $arr[1];
             if (\hacklib_equals($ftype, TType::STOP)) {
               break;
@@ -223,13 +223,13 @@ abstract class TProtocol {
       case TType::MAP:
         {
           $data = $itrans->readAll(1);
-          $arr = unpack('c', $data);
+          $arr = unpack("c", $data);
           $ktype = $arr[1];
           $data = $itrans->readAll(1);
-          $arr = unpack('c', $data);
+          $arr = unpack("c", $data);
           $vtype = $arr[1];
           $data = $itrans->readAll(4);
-          $arr = unpack('N', $data);
+          $arr = unpack("N", $data);
           $size = $arr[1];
           if ($size > 0x7fffffff) {
             $size = 0 - (($size - 1) ^ 0xffffffff);
@@ -245,10 +245,10 @@ abstract class TProtocol {
       case TType::LST:
         {
           $data = $itrans->readAll(1);
-          $arr = unpack('c', $data);
+          $arr = unpack("c", $data);
           $vtype = $arr[1];
           $data = $itrans->readAll(4);
-          $arr = unpack('N', $data);
+          $arr = unpack("N", $data);
           $size = $arr[1];
           if ($size > 0x7fffffff) {
             $size = 0 - (($size - 1) ^ 0xffffffff);
@@ -261,7 +261,7 @@ abstract class TProtocol {
         }
       default:
         throw new TProtocolException(
-          'Unknown field type: '.$type,
+          "Unknown field type: ".$type,
           TProtocolException::INVALID_DATA
         );
     }

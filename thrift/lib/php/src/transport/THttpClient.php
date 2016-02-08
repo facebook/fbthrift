@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -34,24 +34,24 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
   public function __construct(
     $host,
     $port = 80,
-    $uri = '',
-    $scheme = 'http',
+    $uri = "",
+    $scheme = "http",
     $debugHandler = null
   ) {
-    if (\hacklib_cast_as_boolean($uri) && \hacklib_not_equals($uri[0], '/')) {
-      $uri = '/'.$uri;
+    if (\hacklib_cast_as_boolean($uri) && \hacklib_not_equals($uri[0], "/")) {
+      $uri = "/".$uri;
     }
     $this->scheme_ = $scheme;
     $this->host_ = $host;
     $this->port_ = $port;
     $this->uri_ = $uri;
-    $this->buf_ = '';
-    $this->data_ = '';
-    $this->errstr_ = '';
+    $this->buf_ = "";
+    $this->data_ = "";
+    $this->errstr_ = "";
     $this->timeout_ = null;
     $this->custom_headers_ = null;
     $this->debugHandler_ =
-      \hacklib_cast_as_boolean($debugHandler) ?: fun('error_log');
+      \hacklib_cast_as_boolean($debugHandler) ?: fun("error_log");
   }
   public function setMaxReadChunkSize($maxReadChunkSize) {
     $this->maxReadChunkSize_ = $maxReadChunkSize;
@@ -85,7 +85,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
   }
   public function open() {}
   public function close() {
-    $this->data_ = '';
+    $this->data_ = "";
   }
   public function read($len) {
     if ($this->maxReadChunkSize_ !== null) {
@@ -93,20 +93,20 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
     }
     if (strlen($this->data_) < $len) {
       $data = $this->data_;
-      $this->data_ = '';
+      $this->data_ = "";
     } else {
       $data = substr($this->data_, 0, $len);
       $this->data_ = substr($this->data_, $len);
     }
-    if (($data === false) || ($data === '')) {
+    if (($data === false) || ($data === "")) {
       throw new TTransportException(
-        'THttpClient: Could not read '.
+        "THttpClient: Could not read ".
         $len.
-        ' bytes from '.
+        " bytes from ".
         $this->host_.
-        ':'.
+        ":".
         $this->port_.
-        '/'.
+        "/".
         $this->uri_.
         " Reason: ".
         $this->errstr_,
@@ -119,27 +119,27 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
     $this->buf_ .= $buf;
   }
   public function flush() {
-    $host = $this->host_.':'.$this->port_;
-    $user_agent = 'PHP/THttpClient';
+    $host = $this->host_.":".$this->port_;
+    $user_agent = "PHP/THttpClient";
     $script =
-      (string) urlencode(basename($_SERVER[\hacklib_id('SCRIPT_FILENAME')]));
+      (string) urlencode(basename($_SERVER[\hacklib_id("SCRIPT_FILENAME")]));
     if (\hacklib_cast_as_boolean($script)) {
-      $user_agent .= ' ('.$script.')';
+      $user_agent .= " (".$script.")";
     }
-    $curl = curl_init($this->scheme_.'://'.$host.$this->uri_);
+    $curl = curl_init($this->scheme_."://".$host.$this->uri_);
     $headers = array(
-      'Host: '.$host,
-      'Accept: application/x-thrift',
-      'User-Agent: '.$user_agent,
-      'Content-Type: application/x-thrift',
-      'Content-Length: '.((string) strlen($this->buf_))
+      "Host: ".$host,
+      "Accept: application/x-thrift",
+      "User-Agent: ".$user_agent,
+      "Content-Type: application/x-thrift",
+      "Content-Length: ".((string) strlen($this->buf_))
     );
     if ($this->custom_headers_ !== null) {
       foreach ($this->custom_headers_ as $header => $value) {
-        $headers[] = $header.': '.$value;
+        $headers[] = $header.": ".$value;
       }
     }
-    curl_setopt($curl, CURLOPT_PROXY, '');
+    curl_setopt($curl, CURLOPT_PROXY, "");
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($curl, CURLOPT_POST, true);
     curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
@@ -151,12 +151,12 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
     if ($this->caInfo_ !== null) {
       curl_setopt($curl, CURLOPT_CAINFO, $this->caInfo_);
     }
-    $this->buf_ = '';
+    $this->buf_ = "";
     $this->data_ = curl_exec($curl);
     $this->errstr_ = curl_error($curl);
     curl_close($curl);
     if ($this->data_ === false) {
-      $error = 'THttpClient: Could not connect to '.$host.$this->uri_;
+      $error = "THttpClient: Could not connect to ".$host.$this->uri_;
       throw new TTransportException($error, TTransportException::NOT_OPEN);
     }
   }

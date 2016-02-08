@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -34,8 +34,8 @@ class TBufferedTransport extends TTransport
   protected $transport_;
   protected $rBufSize_ = 512;
   protected $wBufSize_ = 512;
-  protected $wBuf_ = '';
-  protected $rBuf_ = '';
+  protected $wBuf_ = "";
+  protected $rBuf_ = "";
   public function isOpen() {
     return $this->transport_->isOpen();
   }
@@ -73,20 +73,23 @@ class TBufferedTransport extends TTransport
     }
     return true;
   }
+  public function minBytesAvailable() {
+    return strlen($this->rBuf_);
+  }
   public function readAll($len) {
     $have = strlen($this->rBuf_);
-    $data = '';
+    $data = "";
     if (\hacklib_equals($have, 0)) {
       $data = $this->transport_->readAll($len);
     } else {
       if ($have < $len) {
         $data = $this->rBuf_;
-        $this->rBuf_ = '';
+        $this->rBuf_ = "";
         $data .= $this->transport_->readAll($len - $have);
       } else {
         if (\hacklib_equals($have, $len)) {
           $data = $this->rBuf_;
-          $this->rBuf_ = '';
+          $this->rBuf_ = "";
         } else {
           if ($have > $len) {
             $data = substr($this->rBuf_, 0, $len);
@@ -103,7 +106,7 @@ class TBufferedTransport extends TTransport
     }
     if (strlen($this->rBuf_) <= $len) {
       $ret = $this->rBuf_;
-      $this->rBuf_ = '';
+      $this->rBuf_ = "";
       return $ret;
     }
     $ret = substr($this->rBuf_, 0, $len);
@@ -127,14 +130,14 @@ class TBufferedTransport extends TTransport
     $this->wBuf_ .= $buf;
     if (strlen($this->wBuf_) >= $this->wBufSize_) {
       $out = $this->wBuf_;
-      $this->wBuf_ = '';
+      $this->wBuf_ = "";
       $this->transport_->write($out);
     }
   }
   public function flush() {
     if (strlen($this->wBuf_) > 0) {
       $this->transport_->write($this->wBuf_);
-      $this->wBuf_ = '';
+      $this->wBuf_ = "";
     }
     $this->transport_->flush();
   }

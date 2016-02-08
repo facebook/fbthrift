@@ -10,7 +10,7 @@
 * @package thrift.protocol.simplejson
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 class TSimpleJSONProtocolContext {
   protected $trans;
   protected $bufTrans;
@@ -42,7 +42,7 @@ class TSimpleJSONProtocolContext {
     while (\hacklib_cast_as_boolean($reading)) {
       $byte = $this->bufTrans->peek(1, $count);
       switch ($byte) {
-        case ' ':
+        case " ":
         case "\t":
         case "\n":
         case "\r":

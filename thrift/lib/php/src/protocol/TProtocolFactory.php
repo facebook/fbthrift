@@ -10,7 +10,7 @@
 * @package thrift.protocol
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 interface TProtocolFactory {
   public function getProtocol($trans);
 }

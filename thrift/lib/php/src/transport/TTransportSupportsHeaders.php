@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 interface TTransportSupportsHeaders {
   public function setHeader($str_key, $str_value);
   public function setPersistentHeader($str_key, $str_value);

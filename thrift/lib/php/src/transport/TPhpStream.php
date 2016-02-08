@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -33,15 +33,15 @@ class TPhpStream extends TTransport {
   }
   public function open() {
     if (\hacklib_cast_as_boolean($this->read_)) {
-      $this->inStream_ = fopen(self::inStreamName(), 'r');
+      $this->inStream_ = fopen(self::inStreamName(), "r");
       if (!\hacklib_cast_as_boolean(is_resource($this->inStream_))) {
-        throw new TException('TPhpStream: Could not open php://input');
+        throw new TException("TPhpStream: Could not open php://input");
       }
     }
     if (\hacklib_cast_as_boolean($this->write_)) {
-      $this->outStream_ = fopen('php://output', 'w');
+      $this->outStream_ = fopen("php://output", "w");
       if (!\hacklib_cast_as_boolean(is_resource($this->outStream_))) {
-        throw new TException('TPhpStream: Could not open php://output');
+        throw new TException("TPhpStream: Could not open php://output");
       }
     }
   }
@@ -67,8 +67,8 @@ class TPhpStream extends TTransport {
       $len = min($len, $this->maxReadChunkSize_);
     }
     $data = fread($this->inStream_, $len);
-    if (($data === false) || ($data === '')) {
-      throw new TException('TPhpStream: Could not read '.$len.' bytes');
+    if (($data === false) || ($data === "")) {
+      throw new TException("TPhpStream: Could not read ".$len." bytes");
     }
     return $data;
   }
@@ -77,7 +77,7 @@ class TPhpStream extends TTransport {
       $got = fwrite($this->outStream_, $buf);
       if (($got === 0) || ($got === false)) {
         throw new TException(
-          'TPhpStream: Could not write '.((string) strlen($buf)).' bytes'
+          "TPhpStream: Could not write ".((string) strlen($buf))." bytes"
         );
       }
       $buf = substr($buf, $got);
@@ -87,9 +87,9 @@ class TPhpStream extends TTransport {
     fflush($this->outStream_);
   }
   private static function inStreamName() {
-    if (\hacklib_equals(php_sapi_name(), 'cli')) {
-      return 'php://stdin';
+    if (\hacklib_equals(php_sapi_name(), "cli")) {
+      return "php://stdin";
     }
-    return 'php://input';
+    return "php://input";
   }
 }

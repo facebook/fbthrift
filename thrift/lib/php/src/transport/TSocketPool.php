@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -30,12 +30,12 @@ class TSocketPool extends TSocket {
   private $alwaysRetryForTransientFailure_ = false;
   const ERROR_RESOURCE_TEMPORARILY_UNAVAILABLE = 11;
   public function __construct(
-    $hosts = array('localhost'),
+    $hosts = array("localhost"),
     $ports = array(9090),
     $persist = false,
     $debugHandler = null
   ) {
-    parent::__construct('', 0, $persist, $debugHandler);
+    parent::__construct("", 0, $persist, $debugHandler);
     foreach ($hosts as $key => $host) {
       $this->servers_[] = array((string) $host, (int) $ports[$key]);
     }
@@ -81,7 +81,12 @@ class TSocketPool extends TSocket {
       $failtimeKey = TSocketPool::getAPCFailtimeKey($host, $port);
       $lastFailtime = (int) $this->apcFetch($failtimeKey);
       $this->apcLog(
-        "TSocketPool: host $host:$port last fail time: ".$lastFailtime
+        "TSocketPool: host ".
+        $host.
+        ":".
+        $port.
+        " last fail time: ".
+        $lastFailtime
       );
       $retryIntervalPassed = false;
       if ($lastFailtime > 0) {
@@ -92,13 +97,13 @@ class TSocketPool extends TSocket {
               ($this->debugHandler_ !== null)) {
             $dh = $this->debugHandler_;
             $dh(
-              'TSocketPool: retryInterval '.
-              '('.
+              "TSocketPool: retryInterval ".
+              "(".
               $this->retryInterval_.
-              ') '.
-              'has passed for host '.
+              ") ".
+              "has passed for host ".
               $host.
-              ':'.
+              ":".
               $port
             );
           }
@@ -125,9 +130,9 @@ class TSocketPool extends TSocket {
             $errstr = $this->getErrStr();
             $errno = $this->getErrNo();
             if (($errstr !== null) || ($errno !== null)) {
-              $fail_reason[$i] = '('.$errstr.'['.$errno.'])';
+              $fail_reason[$i] = "(".$errstr."[".$errno."])";
             } else {
-              $fail_reason[$i] = '(?)';
+              $fail_reason[$i] = "(?)";
             }
           }
         }
@@ -151,21 +156,21 @@ class TSocketPool extends TSocket {
           $dh
         );
       } else {
-        $fail_reason[$i] = '(cached-down)';
+        $fail_reason[$i] = "(cached-down)";
       }
     }
-    $error = 'TSocketPool: All hosts in pool are down. ';
+    $error = "TSocketPool: All hosts in pool are down. ";
     $hosts = array();
     foreach ($this->servers_ as $i => $server) {
       list($host, $port) = $server;
-      $h = $host.':'.$port;
+      $h = $host.":".$port;
       if (\hacklib_cast_as_boolean(array_key_exists($i, $fail_reason))) {
         $h .= (string) $fail_reason[$i];
       }
       $hosts[] = $h;
     }
-    $hostlist = implode(',', $hosts);
-    $error .= '('.$hostlist.')';
+    $hostlist = implode(",", $hosts);
+    $error .= "(".$hostlist.")";
     if (\hacklib_cast_as_boolean($this->debug_) &&
         ($this->debugHandler_ !== null)) {
       $dh = $this->debugHandler_;
@@ -174,7 +179,7 @@ class TSocketPool extends TSocket {
     throw new TTransportException($error);
   }
   public static function getAPCFailtimeKey($host, $port) {
-    return 'thrift_failtime:'.$host.':'.$port.'~';
+    return "thrift_failtime:".$host.":".$port."~";
   }
   public function recordFailure(
     $host,
@@ -185,7 +190,7 @@ class TSocketPool extends TSocket {
   ) {
     $marked_down = false;
     $failtimeKey = self::getAPCFailtimeKey($host, $port);
-    $consecfailsKey = 'thrift_consecfails:'.$host.':'.$port.'~';
+    $consecfailsKey = "thrift_consecfails:".$host.":".$port."~";
     $consecfails = $this->apcFetch($consecfailsKey);
     if ($consecfails === false) {
       $consecfails = 0;
@@ -195,38 +200,45 @@ class TSocketPool extends TSocket {
     if ($consecfails >= $max_failures) {
       if ($log_handler !== null) {
         $log_handler(
-          'TSocketPool: marking '.
+          "TSocketPool: marking ".
           $host.
-          ':'.
+          ":".
           $port.
-          ' as down for '.
+          " as down for ".
           $down_period.
-          ' secs '.
-          'after '.
+          " secs ".
+          "after ".
           $consecfails.
-          ' failed attempts.'
+          " failed attempts."
         );
       }
       $curr_time = time();
       $this->apcStore($failtimeKey, $curr_time);
       $this->apcLog(
-        'TSocketPool: marking '.
+        "TSocketPool: marking ".
         $host.
-        ':'.
+        ":".
         $port.
-        ' as down for '.
+        " as down for ".
         $down_period.
-        ' secs '.
-        'after '.
+        " secs ".
+        "after ".
         $consecfails.
-        ' failed attempts.('.
-        "max_failures=$max_failures)"
+        " failed attempts.(".
+        "max_failures=".
+        $max_failures.
+        ")"
       );
       $marked_down = true;
       $this->apcStore($consecfailsKey, 0);
     } else {
       $this->apcLog(
-        "TSocketPool: increased $host:$port consec fails to ".$consecfails
+        "TSocketPool: increased ".
+        $host.
+        ":".
+        $port.
+        " consec fails to ".
+        $consecfails
       );
       $this->apcStore($consecfailsKey, $consecfails);
     }

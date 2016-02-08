@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -19,17 +19,17 @@ require_once $GLOBALS['THRIFT_ROOT'].'/transport/TTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/transport/TTransportException.php';
 class TNonBlockingSocket extends TTransport implements IThriftRemoteConn {
   private $handle_ = null;
-  protected $host_ = 'localhost';
+  protected $host_ = "localhost";
   protected $port_ = 9090;
   protected $ipV6_ = false;
-  protected $wBuf_ = '';
-  protected $rBuf_ = '';
+  protected $wBuf_ = "";
+  protected $rBuf_ = "";
   protected $rBufPos_ = 0;
   protected $debug_ = false;
   protected $debugHandler_;
   private $sockRecvCapacity_ = null;
   public function __construct(
-    $host = 'localhost',
+    $host = "localhost",
     $port = 9090,
     $debugHandler = null
   ) {
@@ -37,7 +37,7 @@ class TNonBlockingSocket extends TTransport implements IThriftRemoteConn {
     $this->port_ = $port;
     $this->ipV6_ = \hacklib_equals(strlen(inet_pton($host)), 16);
     $this->debugHandler_ =
-      \hacklib_cast_as_boolean($debugHandler) ?: fun('error_log');
+      \hacklib_cast_as_boolean($debugHandler) ?: fun("error_log");
   }
   public function getHost() {
     return $this->host_;
@@ -55,7 +55,7 @@ class TNonBlockingSocket extends TTransport implements IThriftRemoteConn {
     return 0;
   }
   public function setRecvTimeout($timeout) {
-    throw new TTransportException('setRecvTimeout is insupported');
+    throw new TTransportException("setRecvTimeout is insupported");
   }
   public function isReadable() {
     return $this->isOpen();
@@ -73,12 +73,12 @@ class TNonBlockingSocket extends TTransport implements IThriftRemoteConn {
       $handle = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
     }
     if ($handle === false) {
-      $error = 'TNonBlockingSocket: Could not create socket';
+      $error = "TNonBlockingSocket: Could not create socket";
       throw new TTransportException($error);
     }
     $this->handle_ = $handle;
     if (!\hacklib_cast_as_boolean(socket_set_nonblock($this->handle_))) {
-      $error = 'TNonBlockingSocket: Could not set nonblocking.';
+      $error = "TNonBlockingSocket: Could not set nonblocking.";
       throw new TTransportException($error);
     }
     $res = socket_connect($this->handle_, $this->host_, $this->port_);
@@ -86,11 +86,11 @@ class TNonBlockingSocket extends TTransport implements IThriftRemoteConn {
       $errno = socket_last_error($this->handle_);
       $errstr = socket_strerror($errno);
       $error =
-        'TNonBlockingSocket: socket_connect error ('.
+        "TNonBlockingSocket: socket_connect error (".
         ((string) $errstr).
-        '['.
+        "[".
         ((string) $errno).
-        '])';
+        "])";
       if (\hacklib_not_equals($errno, 115)) {
         if (\hacklib_cast_as_boolean($this->debug_)) {
           call_user_func($this->debugHandler_, $error);
@@ -98,8 +98,8 @@ class TNonBlockingSocket extends TTransport implements IThriftRemoteConn {
       }
       throw new TTransportException($error);
     }
-    $wBuf_ = '';
-    $rBuf_ = '';
+    $wBuf_ = "";
+    $rBuf_ = "";
     $rBufPos_ = 0;
     $this->sockRecvCapacity_ =
       socket_get_option($this->handle_, SOL_SOCKET, SO_RCVBUF);
@@ -124,15 +124,15 @@ class TNonBlockingSocket extends TTransport implements IThriftRemoteConn {
     $len -= strlen($ret);
     while (true) {
       $buf = $this->read($len);
-      if ($buf === '') {
+      if ($buf === "") {
         $this->rBuf_ .= $ret;
         throw new TTransportException(
-          'TNonBlockingSocket: readAll could not'.
-          ' read '.
+          "TNonBlockingSocket: readAll could not".
+          " read ".
           $len.
-          ' bytes from '.
+          " bytes from ".
           $this->host_.
-          ':'.
+          ":".
           $this->port_
         );
       } else {
@@ -155,7 +155,7 @@ class TNonBlockingSocket extends TTransport implements IThriftRemoteConn {
     $this->rBufPos_ = 0;
   }
   public function clearBuf() {
-    $this->rBuf_ = '';
+    $this->rBuf_ = "";
     $this->rBufPos_ = 0;
   }
   public function read($len) {
@@ -163,23 +163,23 @@ class TNonBlockingSocket extends TTransport implements IThriftRemoteConn {
       $len = min($len, $this->sockRecvCapacity_);
     }
     $data = socket_read($this->handle_, $len);
-    if (($data === false) || ($data === '')) {
+    if (($data === false) || ($data === "")) {
       $errno = socket_last_error($this->handle_);
       $errstr = socket_strerror($errno);
       $error =
         "read: no data to be read ".
         $this->host_.
-        ':'.
+        ":".
         $this->port_.
-        ' ('.
+        " (".
         ((string) $errstr).
-        ' ['.
+        " [".
         ((string) $errno).
-        '])';
+        "])";
       if (\hacklib_cast_as_boolean($this->debug_)) {
         call_user_func($this->debugHandler_, $error);
       }
-      return '';
+      return "";
     }
     return $data;
   }
@@ -192,13 +192,13 @@ class TNonBlockingSocket extends TTransport implements IThriftRemoteConn {
       $errno = socket_last_error($this->handle_);
       $errstr = socket_strerror($errno);
       $error =
-        'doWrite: write failed ('.
+        "doWrite: write failed (".
         ((string) $errno).
-        '): '.
+        "): ".
         ((string) $errstr).
-        ' '.
+        " ".
         $this->host_.
-        ':'.
+        ":".
         $this->port_;
       throw new TTransportException($error);
     }

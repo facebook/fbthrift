@@ -10,7 +10,7 @@
 * @package thrift.transport
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/..';
 }
@@ -18,10 +18,10 @@ require_once $GLOBALS['THRIFT_ROOT'].'/transport/IThriftBufferedTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/transport/TTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/transport/TTransportException.php';
 class TMemoryBuffer extends TTransport implements IThriftBufferedTransport {
-  private $buf_ = '';
+  private $buf_ = "";
   private $index_ = 0;
   private $length_ = null;
-  public function __construct($buf = '') {
+  public function __construct($buf = "") {
     $this->buf_ = (string) $buf;
   }
   public function isOpen() {
@@ -38,6 +38,9 @@ class TMemoryBuffer extends TTransport implements IThriftBufferedTransport {
   public function available() {
     return $this->length() - $this->index_;
   }
+  public function minBytesAvailable() {
+    return $this->available();
+  }
   public function write($buf) {
     $this->buf_ .= $buf;
     $this->length_ = null;
@@ -47,16 +50,16 @@ class TMemoryBuffer extends TTransport implements IThriftBufferedTransport {
     if ($available === 0) {
       $buffer_dump = bin2hex($this->buf_);
       throw new TTransportException(
-        'TMemoryBuffer: Could not read '.
+        "TMemoryBuffer: Could not read ".
         $len.
-        ' bytes from buffer.'.
-        ' Original length is '.
+        " bytes from buffer.".
+        " Original length is ".
         $this->length().
-        ' Current index is '.
+        " Current index is ".
         $this->index_.
-        ' Buffer content <start>'.
+        " Buffer content <start>".
         $buffer_dump.
-        '<end>',
+        "<end>",
         TTransportException::UNKNOWN
       );
     }
@@ -90,7 +93,7 @@ class TMemoryBuffer extends TTransport implements IThriftBufferedTransport {
     return substr($this->buf_, $this->index_);
   }
   public function resetBuffer() {
-    $this->buf_ = '';
+    $this->buf_ = "";
     $this->index_ = 0;
     $this->length_ = null;
   }

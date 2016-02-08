@@ -10,7 +10,7 @@
 * @package thrift.protocol.compact
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 if (!isset($GLOBALS['THRIFT_ROOT'])) {
   $GLOBALS['THRIFT_ROOT'] = __DIR__.'/../..';
 }
@@ -28,14 +28,14 @@ class TCompactSerializer extends TProtocolSerializer {
     $protocol = new TCompactProtocolAccelerated($transport);
     $use_hphp_extension =
       \hacklib_cast_as_boolean(
-        function_exists('thrift_protocol_write_compact')
+        function_exists("thrift_protocol_write_compact")
       ) &&
       (!\hacklib_cast_as_boolean($disable_hphp_extension));
     $last_version = null;
     if ($override_version !== null) {
       $protocol->setWriteVersion($override_version);
       if (\hacklib_cast_as_boolean(
-            function_exists('thrift_protocol_set_compact_version')
+            function_exists("thrift_protocol_set_compact_version")
           )) {
         $last_version =
           thrift_protocol_set_compact_version($override_version);
@@ -55,11 +55,7 @@ class TCompactSerializer extends TProtocolSerializer {
         thrift_protocol_set_compact_version($last_version);
       }
       $unused_name = $unused_type = $unused_seqid = null;
-      $protocol->readMessageBegin(
-        $unused_name,
-        $unused_type,
-        $unused_seqid
-      );
+      $protocol->readMessageBegin($unused_name, $unused_type, $unused_seqid);
     } else {
       $object->write($protocol);
     }
@@ -75,19 +71,19 @@ class TCompactSerializer extends TProtocolSerializer {
     $protocol = new TCompactProtocolAccelerated($transport);
     $use_hphp_extension =
       \hacklib_cast_as_boolean(
-        function_exists('thrift_protocol_read_compact')
+        function_exists("thrift_protocol_read_compact")
       ) &&
       (!\hacklib_cast_as_boolean($disable_hphp_extension));
     if ($override_version !== null) {
       $protocol->setWriteVersion($override_version);
       if (!\hacklib_cast_as_boolean(
-            function_exists('thrift_protocol_set_compact_version')
+            function_exists("thrift_protocol_set_compact_version")
           )) {
         $use_hphp_extension = false;
       }
     }
     if (\hacklib_cast_as_boolean($use_hphp_extension)) {
-      $protocol->writeMessageBegin('', TMessageType::REPLY, 0);
+      $protocol->writeMessageBegin("", TMessageType::REPLY, 0);
       $transport->write($str);
       $object = thrift_protocol_read_compact($protocol, get_class($object));
     } else {

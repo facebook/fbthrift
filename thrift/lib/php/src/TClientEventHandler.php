@@ -10,7 +10,7 @@
 * @package thrift
 */
 
-require_once ($GLOBALS['HACKLIB_ROOT']);
+require_once ($GLOBALS["HACKLIB_ROOT"]);
 class TClientEventHandler {
   public function setClient($client) {}
   public function preSend($fn_name, $args, $sequence_id) {}

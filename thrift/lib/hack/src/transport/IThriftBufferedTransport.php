@@ -13,4 +13,5 @@
 interface IThriftBufferedTransport {
   public function peek(int $len, int $start = 0);
   public function putBack(string $data): void;
+  public function minBytesAvailable(): int;
 }

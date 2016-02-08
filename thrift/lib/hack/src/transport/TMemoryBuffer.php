@@ -51,6 +51,10 @@ class TMemoryBuffer extends TTransport implements IThriftBufferedTransport {
     return $this->length() - $this->index_;
   }
 
+  public function minBytesAvailable(): int {
+    return $this->available();
+  }
+
   public function write(string $buf): void {
     $this->buf_ .= $buf;
     $this->length_ = null; // reset length
