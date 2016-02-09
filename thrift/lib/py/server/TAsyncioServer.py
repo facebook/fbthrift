@@ -190,7 +190,7 @@ class SenderTransport:
 
     def __del__(self):
         if not self._consumer.done() or not self._consumer.cancelled():
-            logger.error(
+            logger.debug(
                 'SenderTransport did not finish properly'
                 ' as the consumer asyncio.Task is still pending.'
                 ' Please make sure to call .close() on this object.'
@@ -304,7 +304,7 @@ class WrappedTransport(TWriteOnlyBuffer):
 
     def __del__(self):
         if self.isOpen():
-            logger.error(
+            logger.debug(
                 'A WrappedTransport object should not be garbage collected'
                 ' while the transport channel is open.',
             )
