@@ -291,7 +291,6 @@ uint32_t JSONProtocolReader::readFieldBegin(std::string& name,
   }
   uint32_t ret = 0;
   ret += readI16(fieldId);
-  LOG(INFO) << __func__ << ": " << fieldId;
   ret += ensureAndBeginContext(ContextType::MAP);
   std::string fieldTypeS;
   ret += readString(fieldTypeS);
