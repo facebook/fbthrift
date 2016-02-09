@@ -843,59 +843,59 @@ class MyServiceMultiface : virtual public MyServiceIf {
   }
  public:
   void ping() {
-    uint32_t i;
-    uint32_t sz = ifaces_.size();
-    for (i = 0; i < sz; ++i) {
-      ifaces_[i]->ping();
+    uint32_t thrift_multifaces_index_tmp_;
+    uint32_t thrift_multifaces_size_tmp_ = ifaces_.size();
+    for (thrift_multifaces_index_tmp_ = 0; thrift_multifaces_index_tmp_ < thrift_multifaces_size_tmp_; ++thrift_multifaces_index_tmp_) {
+      ifaces_[thrift_multifaces_index_tmp_]->ping();
     }
   }
 
   void getRandomData(std::string& _return) {
-    uint32_t i;
-    uint32_t sz = ifaces_.size();
-    for (i = 0; i < sz; ++i) {
-      ifaces_[i]->getRandomData(_return);
+    uint32_t thrift_multifaces_index_tmp_;
+    uint32_t thrift_multifaces_size_tmp_ = ifaces_.size();
+    for (thrift_multifaces_index_tmp_ = 0; thrift_multifaces_index_tmp_ < thrift_multifaces_size_tmp_; ++thrift_multifaces_index_tmp_) {
+      ifaces_[thrift_multifaces_index_tmp_]->getRandomData(_return);
     }
   }
 
   bool hasDataById(int64_t id) {
-    uint32_t i;
-    uint32_t sz = ifaces_.size();
-    for (i = 0; i < sz - 1; ++i) {
-      ifaces_[i]->hasDataById(id);
+    uint32_t thrift_multifaces_index_tmp_;
+    uint32_t thrift_multifaces_size_tmp_ = ifaces_.size();
+    for (thrift_multifaces_index_tmp_ = 0; thrift_multifaces_index_tmp_ < thrift_multifaces_size_tmp_ - 1; ++thrift_multifaces_index_tmp_) {
+      ifaces_[thrift_multifaces_index_tmp_]->hasDataById(id);
     }
-    return ifaces_[i]->hasDataById(id);
+    return ifaces_[thrift_multifaces_index_tmp_]->hasDataById(id);
   }
 
   void getDataById(std::string& _return, int64_t id) {
-    uint32_t i;
-    uint32_t sz = ifaces_.size();
-    for (i = 0; i < sz; ++i) {
-      ifaces_[i]->getDataById(_return, id);
+    uint32_t thrift_multifaces_index_tmp_;
+    uint32_t thrift_multifaces_size_tmp_ = ifaces_.size();
+    for (thrift_multifaces_index_tmp_ = 0; thrift_multifaces_index_tmp_ < thrift_multifaces_size_tmp_; ++thrift_multifaces_index_tmp_) {
+      ifaces_[thrift_multifaces_index_tmp_]->getDataById(_return, id);
     }
   }
 
   void putDataById(int64_t id, const std::string& data) {
-    uint32_t i;
-    uint32_t sz = ifaces_.size();
-    for (i = 0; i < sz; ++i) {
-      ifaces_[i]->putDataById(id, data);
+    uint32_t thrift_multifaces_index_tmp_;
+    uint32_t thrift_multifaces_size_tmp_ = ifaces_.size();
+    for (thrift_multifaces_index_tmp_ = 0; thrift_multifaces_index_tmp_ < thrift_multifaces_size_tmp_; ++thrift_multifaces_index_tmp_) {
+      ifaces_[thrift_multifaces_index_tmp_]->putDataById(id, data);
     }
   }
 
   void lobDataById(int64_t id, const std::string& data) {
-    uint32_t i;
-    uint32_t sz = ifaces_.size();
-    for (i = 0; i < sz; ++i) {
-      ifaces_[i]->lobDataById(id, data);
+    uint32_t thrift_multifaces_index_tmp_;
+    uint32_t thrift_multifaces_size_tmp_ = ifaces_.size();
+    for (thrift_multifaces_index_tmp_ = 0; thrift_multifaces_index_tmp_ < thrift_multifaces_size_tmp_; ++thrift_multifaces_index_tmp_) {
+      ifaces_[thrift_multifaces_index_tmp_]->lobDataById(id, data);
     }
   }
 
   void putStructById(int64_t id, const MyStruct& data) {
-    uint32_t i;
-    uint32_t sz = ifaces_.size();
-    for (i = 0; i < sz; ++i) {
-      ifaces_[i]->putStructById(id, data);
+    uint32_t thrift_multifaces_index_tmp_;
+    uint32_t thrift_multifaces_size_tmp_ = ifaces_.size();
+    for (thrift_multifaces_index_tmp_ = 0; thrift_multifaces_index_tmp_ < thrift_multifaces_size_tmp_; ++thrift_multifaces_index_tmp_) {
+      ifaces_[thrift_multifaces_index_tmp_]->putStructById(id, data);
     }
   }
 

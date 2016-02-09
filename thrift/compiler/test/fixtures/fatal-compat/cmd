@@ -1,0 +1,2 @@
+cpp:json src/module.thrift
+cpp2:compatibility,fatal src/module.thrift

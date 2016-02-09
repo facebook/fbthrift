@@ -720,6 +720,285 @@ class union3_variant_traits {
 };
 
 } // thrift_fatal_impl_detail
+namespace thrift_fatal_impl_detail {
+
+struct unionA_Type_enum_traits {
+  using type = ::test_cpp2::cpp_reflection::unionA::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+
+  struct str {
+    using i = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::i;
+    using d = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d;
+    using s = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::s;
+    using e = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::e;
+    using a = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::a;
+  };
+
+  using name_to_value = ::fatal::type_map<
+    ::fatal::type_pair<
+      str::i,
+      std::integral_constant<type, type::i>
+    >,
+    ::fatal::type_pair<
+      str::d,
+      std::integral_constant<type, type::d>
+    >,
+    ::fatal::type_pair<
+      str::s,
+      std::integral_constant<type, type::s>
+    >,
+    ::fatal::type_pair<
+      str::e,
+      std::integral_constant<type, type::e>
+    >,
+    ::fatal::type_pair<
+      str::a,
+      std::integral_constant<type, type::a>
+    >
+  >;
+
+  static char const *to_string(type e, char const *fallback) {
+    switch (e) {
+      case type::i: return "i";
+      case type::d: return "d";
+      case type::s: return "s";
+      case type::e: return "e";
+      case type::a: return "a";
+      default: return fallback;
+    }
+  }
+};
+
+} // thrift_fatal_impl_detail
+
+FATAL_REGISTER_ENUM_TRAITS(
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::unionA_Type_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::fatal::type_map<
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
+  >
+);
+
+namespace thrift_fatal_impl_detail {
+
+class unionA_variant_traits {
+  struct get {
+    struct i {
+      auto operator ()(unionA const &variant) const
+        -> decltype(std::declval<unionA const &>().get_i())
+      {
+        return variant.get_i();
+      }
+
+      auto operator ()(unionA &variant) const
+        -> decltype(std::declval<unionA &>().mutable_i())
+      {
+        return variant.mutable_i();
+      }
+
+      auto operator ()(unionA &&variant) const
+        -> decltype(std::declval<unionA &&>().move_i())
+      {
+        return std::move(variant).move_i();
+      }
+    };
+
+    struct d {
+      auto operator ()(unionA const &variant) const
+        -> decltype(std::declval<unionA const &>().get_d())
+      {
+        return variant.get_d();
+      }
+
+      auto operator ()(unionA &variant) const
+        -> decltype(std::declval<unionA &>().mutable_d())
+      {
+        return variant.mutable_d();
+      }
+
+      auto operator ()(unionA &&variant) const
+        -> decltype(std::declval<unionA &&>().move_d())
+      {
+        return std::move(variant).move_d();
+      }
+    };
+
+    struct s {
+      auto operator ()(unionA const &variant) const
+        -> decltype(std::declval<unionA const &>().get_s())
+      {
+        return variant.get_s();
+      }
+
+      auto operator ()(unionA &variant) const
+        -> decltype(std::declval<unionA &>().mutable_s())
+      {
+        return variant.mutable_s();
+      }
+
+      auto operator ()(unionA &&variant) const
+        -> decltype(std::declval<unionA &&>().move_s())
+      {
+        return std::move(variant).move_s();
+      }
+    };
+
+    struct e {
+      auto operator ()(unionA const &variant) const
+        -> decltype(std::declval<unionA const &>().get_e())
+      {
+        return variant.get_e();
+      }
+
+      auto operator ()(unionA &variant) const
+        -> decltype(std::declval<unionA &>().mutable_e())
+      {
+        return variant.mutable_e();
+      }
+
+      auto operator ()(unionA &&variant) const
+        -> decltype(std::declval<unionA &&>().move_e())
+      {
+        return std::move(variant).move_e();
+      }
+    };
+
+    struct a {
+      auto operator ()(unionA const &variant) const
+        -> decltype(std::declval<unionA const &>().get_a())
+      {
+        return variant.get_a();
+      }
+
+      auto operator ()(unionA &variant) const
+        -> decltype(std::declval<unionA &>().mutable_a())
+      {
+        return variant.mutable_a();
+      }
+
+      auto operator ()(unionA &&variant) const
+        -> decltype(std::declval<unionA &&>().move_a())
+      {
+        return std::move(variant).move_a();
+      }
+    };
+  };
+
+  struct set {
+    struct i {
+      template <typename... Args>
+      auto operator ()(unionA &variant, Args &&...args) const
+        -> decltype(
+          std::declval<unionA &>().set_i(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_i(std::forward<Args>(args)...);
+      }
+    };
+
+    struct d {
+      template <typename... Args>
+      auto operator ()(unionA &variant, Args &&...args) const
+        -> decltype(
+          std::declval<unionA &>().set_d(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_d(std::forward<Args>(args)...);
+      }
+    };
+
+    struct s {
+      template <typename... Args>
+      auto operator ()(unionA &variant, Args &&...args) const
+        -> decltype(
+          std::declval<unionA &>().set_s(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_s(std::forward<Args>(args)...);
+      }
+    };
+
+    struct e {
+      template <typename... Args>
+      auto operator ()(unionA &variant, Args &&...args) const
+        -> decltype(
+          std::declval<unionA &>().set_e(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_e(std::forward<Args>(args)...);
+      }
+    };
+
+    struct a {
+      template <typename... Args>
+      auto operator ()(unionA &variant, Args &&...args) const
+        -> decltype(
+          std::declval<unionA &>().set_a(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_a(std::forward<Args>(args)...);
+      }
+    };
+  };
+
+  public:
+  using type = ::test_cpp2::cpp_reflection::unionA;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::unionA;
+  using id = type::Type;
+
+  struct ids {
+    using i = std::integral_constant<id, id::i>;
+    using d = std::integral_constant<id, id::d>;
+    using s = std::integral_constant<id, id::s>;
+    using e = std::integral_constant<id, id::e>;
+    using a = std::integral_constant<id, id::a>;
+  };
+
+  using descriptors = ::fatal::type_list<
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      ids::i,
+      get::i,
+      set::i
+    >,
+    ::fatal::variant_type_descriptor<
+      double,
+      ids::d,
+      get::d,
+      set::d
+    >,
+    ::fatal::variant_type_descriptor<
+      std::string,
+      ids::s,
+      get::s,
+      set::s
+    >,
+    ::fatal::variant_type_descriptor<
+       ::test_cpp2::cpp_reflection::enum1,
+      ids::e,
+      get::e,
+      set::e
+    >,
+    ::fatal::variant_type_descriptor<
+       ::test_cpp2::cpp_reflection::structA,
+      ids::a,
+      get::a,
+      set::a
+    >
+  >;
+
+  static id get_id(type const &variant) {
+    return variant.getType();
+  }
+
+  static bool empty(type const &variant) {
+    return variant.getType() == id::__EMPTY__;
+  }
+};
+
+} // thrift_fatal_impl_detail
 
 FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits,
@@ -746,6 +1025,23 @@ FATAL_REGISTER_VARIANT_TRAITS(
     ::fatal::type_map<
     >,
     static_cast<::apache::thrift::legacy_type_id_t>(12878995471701578764ull)
+  >
+);
+FATAL_REGISTER_VARIANT_TRAITS(
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::unionA_variant_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::fatal::type_map<
+      ::fatal::type_pair<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::another_annotation,
+        ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't'>
+      >,
+      ::fatal::type_pair<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sample_annotation,
+        ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', ' ', 't', 'e', 'x', 't', ' ', 'h', 'e', 'r', 'e'>
+      >
+    >,
+    static_cast<::apache::thrift::legacy_type_id_t>(7943717058393504940ull)
   >
 );
 

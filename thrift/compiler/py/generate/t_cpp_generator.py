@@ -4044,10 +4044,15 @@ class CppGenerator(t_generator.Generator):
                     self._generate_fatal_impl(sns, program)
             else:
                 self._generate_fatal_impl(sg, program)
+            if self.flag_compatibility:
+                with sg.namespace(self._get_namespace()).scope as sns:
+                    sns('using {0} = {1}::{0};'.format(
+                        self.fatal_tags_class, ns.replace('.', '::')))
 
     def _generate_fatal_impl(self, sns, program):
         name = self._program.name
-        self.fatal_tag = '{0}_tags::module'.format(name)
+        self.fatal_tags_class = '{0}_tags'.format(name)
+        self.fatal_tag = '{0}::module'.format(self.fatal_tags_class)
         safe_ns = self._get_namespace().replace('.', '_')
 
         str_class = '{0}_{1}__unique_strings_list'.format(safe_ns, name)

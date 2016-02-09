@@ -398,6 +398,100 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+template uint32_t unionA::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t unionA::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t unionA::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t unionA::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t unionA::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t unionA::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t unionA::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t unionA::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+
+void unionA::__clear() {
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::i:
+    {
+      destruct(value_.i);
+      break;
+    }
+    case Type::d:
+    {
+      destruct(value_.d);
+      break;
+    }
+    case Type::s:
+    {
+      destruct(value_.s);
+      break;
+    }
+    case Type::e:
+    {
+      destruct(value_.e);
+      break;
+    }
+    case Type::a:
+    {
+      destruct(value_.a);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool unionA::operator==(const unionA& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::i:
+    {
+      return value_.i == rhs.value_.i;
+      break;
+    }
+    case Type::d:
+    {
+      return value_.d == rhs.value_.d;
+      break;
+    }
+    case Type::s:
+    {
+      return value_.s == rhs.value_.s;
+      break;
+    }
+    case Type::e:
+    {
+      return value_.e == rhs.value_.e;
+      break;
+    }
+    case Type::a:
+    {
+      return value_.a == rhs.value_.a;
+      break;
+    }
+    default:
+    {
+      return true;
+      break;
+    }
+  }
+}
+
+void swap(unionA& a, unionA& b) {
+  unionA temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 template uint32_t structB::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t structB::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t structB::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
@@ -436,6 +530,184 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+template uint32_t structC::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t structC::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t structC::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t structC::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t structC::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t structC::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t structC::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t structC::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+
+void structC::__clear() {
+  a = 0;
+  b = std::string();
+  c = 0;
+  d = 0;
+  e =  ::test_cpp2::cpp_reflection::enum1();
+  f =  ::test_cpp2::cpp_reflection::enum2();
+  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&g);
+  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::unionA>::clear(&h);
+  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::unionA>::clear(&i);
+  j.clear();
+  j1.clear();
+  j2.clear();
+  j3.clear();
+  k.clear();
+  k1.clear();
+  k2.clear();
+  k3.clear();
+  l.clear();
+  l1.clear();
+  l2.clear();
+  l3.clear();
+  m1.clear();
+  m2.clear();
+  m3.clear();
+  n1.clear();
+  n2.clear();
+  n3.clear();
+  o1.clear();
+  o2.clear();
+  o3.clear();
+  __isset.__clear();
+}
+
+bool structC::operator==(const structC& rhs) const {
+  if (!((a == rhs.a))) {
+    return false;
+  }
+  if (!((b == rhs.b))) {
+    return false;
+  }
+  if (!((c == rhs.c))) {
+    return false;
+  }
+  if (!((d == rhs.d))) {
+    return false;
+  }
+  if (!((e == rhs.e))) {
+    return false;
+  }
+  if (!((f == rhs.f))) {
+    return false;
+  }
+  if (!((g == rhs.g))) {
+    return false;
+  }
+  if (!((h == rhs.h))) {
+    return false;
+  }
+  if (!((i == rhs.i))) {
+    return false;
+  }
+  if (!((j == rhs.j))) {
+    return false;
+  }
+  if (!((j1 == rhs.j1))) {
+    return false;
+  }
+  if (!((j2 == rhs.j2))) {
+    return false;
+  }
+  if (!((j3 == rhs.j3))) {
+    return false;
+  }
+  if (!((k == rhs.k))) {
+    return false;
+  }
+  if (!((k1 == rhs.k1))) {
+    return false;
+  }
+  if (!((k2 == rhs.k2))) {
+    return false;
+  }
+  if (!((k3 == rhs.k3))) {
+    return false;
+  }
+  if (!((l == rhs.l))) {
+    return false;
+  }
+  if (!((l1 == rhs.l1))) {
+    return false;
+  }
+  if (!((l2 == rhs.l2))) {
+    return false;
+  }
+  if (!((l3 == rhs.l3))) {
+    return false;
+  }
+  if (!((m1 == rhs.m1))) {
+    return false;
+  }
+  if (!((m2 == rhs.m2))) {
+    return false;
+  }
+  if (!((m3 == rhs.m3))) {
+    return false;
+  }
+  if (!((n1 == rhs.n1))) {
+    return false;
+  }
+  if (!((n2 == rhs.n2))) {
+    return false;
+  }
+  if (!((n3 == rhs.n3))) {
+    return false;
+  }
+  if (!((o1 == rhs.o1))) {
+    return false;
+  }
+  if (!((o2 == rhs.o2))) {
+    return false;
+  }
+  if (!((o3 == rhs.o3))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(structC& a, structC& b) {
+  using ::std::swap;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.c, b.c);
+  swap(a.d, b.d);
+  swap(a.e, b.e);
+  swap(a.f, b.f);
+  swap(a.g, b.g);
+  swap(a.h, b.h);
+  swap(a.i, b.i);
+  swap(a.j, b.j);
+  swap(a.j1, b.j1);
+  swap(a.j2, b.j2);
+  swap(a.j3, b.j3);
+  swap(a.k, b.k);
+  swap(a.k1, b.k1);
+  swap(a.k2, b.k2);
+  swap(a.k3, b.k3);
+  swap(a.l, b.l);
+  swap(a.l1, b.l1);
+  swap(a.l2, b.l2);
+  swap(a.l3, b.l3);
+  swap(a.m1, b.m1);
+  swap(a.m2, b.m2);
+  swap(a.m3, b.m3);
+  swap(a.n1, b.n1);
+  swap(a.n2, b.n2);
+  swap(a.n3, b.n3);
+  swap(a.o1, b.o1);
+  swap(a.o2, b.o2);
+  swap(a.o3, b.o3);
+  swap(a.__isset, b.__isset);
+}
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 template uint32_t struct1::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct1::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct1::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
@@ -459,7 +731,10 @@ bool struct1::operator==(const struct1& rhs) const {
   if (!((field0 == rhs.field0))) {
     return false;
   }
-  if (!((field1 == rhs.field1))) {
+  if (__isset.field1 != rhs.__isset.field1) {
+    return false;
+  }
+  else if (__isset.field1 && !((field1 == rhs.field1))) {
     return false;
   }
   if (!((field2 == rhs.field2))) {
@@ -468,7 +743,10 @@ bool struct1::operator==(const struct1& rhs) const {
   if (!((field3 == rhs.field3))) {
     return false;
   }
-  if (!((field4 == rhs.field4))) {
+  if (__isset.field4 != rhs.__isset.field4) {
+    return false;
+  }
+  else if (__isset.field4 && !((field4 == rhs.field4))) {
     return false;
   }
   if (!((field5 == rhs.field5))) {

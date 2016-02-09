@@ -4253,26 +4253,32 @@ void t_cpp_generator::generate_service_multiface(t_service* tservice) {
     indent() << " public:" << endl;
   indent_up();
 
+  char const *indexVar = "thrift_multifaces_index_tmp_";
+  char const *sizeVar = "thrift_multifaces_size_tmp_";
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     t_struct* arglist = (*f_iter)->get_arglist();
     const vector<t_field*>& args = arglist->get_members();
     vector<t_field*>::const_iterator a_iter;
 
-    string call = string("ifaces_[i]->") + (*f_iter)->get_name() + "(";
+    string call("ifaces_[");
+    call.append(indexVar);
+    call.append("]->");
+    call.append((*f_iter)->get_name());
+    call.push_back('(');
     bool first = true;
     if (is_complex_type((*f_iter)->get_returntype())) {
-      call += "_return";
+      call.append("_return");
       first = false;
     }
     for (a_iter = args.begin(); a_iter != args.end(); ++a_iter) {
       if (first) {
         first = false;
       } else {
-        call += ", ";
+        call.append(", ");
       }
-      call += (*a_iter)->get_name();
+      call.append((*a_iter)->get_name());
     }
-    call += ")";
+    call.push_back(')');
 
     // If the generated function actually returns a value, then we break
     // out of the loop an iteration early to return the value from the call
@@ -4286,10 +4292,11 @@ void t_cpp_generator::generate_service_multiface(t_service* tservice) {
     indent_up();
 
     f_header_ <<
-      indent() << "uint32_t i;" << endl <<
-      indent() << "uint32_t sz = ifaces_.size();" << endl <<
-      indent() << "for (i = 0; i < sz" << (has_ret ? " - 1" : "")
-               << "; ++i) {" << endl <<
+      indent() << "uint32_t " << indexVar << ";" << endl <<
+      indent() << "uint32_t " << sizeVar << " = ifaces_.size();" << endl <<
+      indent() << "for (" << indexVar << " = 0; " << indexVar << " < "
+               << sizeVar << (has_ret ? " - 1" : "")
+               << "; ++" << indexVar << ") {" << endl <<
       indent() << "  " << call << ";" << endl <<
       indent() << "}" << endl;
 

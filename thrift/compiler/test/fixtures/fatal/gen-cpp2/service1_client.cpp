@@ -49,8 +49,8 @@ void service1AsyncClient::sync_method1() {
 
 void service1AsyncClient::sync_method1(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback105 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  method1(rpcOptions, std::move(callback105));
+  auto callback354 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  method1(rpcOptions, std::move(callback354));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -70,19 +70,19 @@ folly::Future<folly::Unit> service1AsyncClient::future_method1() {
 }
 
 folly::Future<folly::Unit> service1AsyncClient::future_method1(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<folly::Unit> promise106;
-  auto future107 = promise106.getFuture();
-  auto callback108 = folly::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise106), recv_wrapped_method1, channel_);
-  method1(rpcOptions, std::move(callback108));
-  return future107;
+  folly::Promise<folly::Unit> promise355;
+  auto future356 = promise355.getFuture();
+  auto callback357 = folly::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise355), recv_wrapped_method1, channel_);
+  method1(rpcOptions, std::move(callback357));
+  return future356;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> service1AsyncClient::header_future_method1(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise109;
-  auto future110 = promise109.getFuture();
-  auto callback111 = folly::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise109), recv_wrapped_method1, channel_);
-  method1(rpcOptions, std::move(callback111));
-  return future110;
+  folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise358;
+  auto future359 = promise358.getFuture();
+  auto callback360 = folly::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise358), recv_wrapped_method1, channel_);
+  method1(rpcOptions, std::move(callback360));
+  return future359;
 }
 
 void service1AsyncClient::method1(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -163,8 +163,8 @@ void service1AsyncClient::sync_method2(int32_t x, const  ::test_cpp2::cpp_reflec
 
 void service1AsyncClient::sync_method2(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback112 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  method2(rpcOptions, std::move(callback112), x, y, z);
+  auto callback361 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  method2(rpcOptions, std::move(callback361), x, y, z);
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -184,19 +184,19 @@ folly::Future<folly::Unit> service1AsyncClient::future_method2(int32_t x, const 
 }
 
 folly::Future<folly::Unit> service1AsyncClient::future_method2(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
-  folly::Promise<folly::Unit> promise113;
-  auto future114 = promise113.getFuture();
-  auto callback115 = folly::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise113), recv_wrapped_method2, channel_);
-  method2(rpcOptions, std::move(callback115), x, y, z);
-  return future114;
+  folly::Promise<folly::Unit> promise362;
+  auto future363 = promise362.getFuture();
+  auto callback364 = folly::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise362), recv_wrapped_method2, channel_);
+  method2(rpcOptions, std::move(callback364), x, y, z);
+  return future363;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> service1AsyncClient::header_future_method2(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
-  folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise116;
-  auto future117 = promise116.getFuture();
-  auto callback118 = folly::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise116), recv_wrapped_method2, channel_);
-  method2(rpcOptions, std::move(callback118), x, y, z);
-  return future117;
+  folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise365;
+  auto future366 = promise365.getFuture();
+  auto callback367 = folly::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise365), recv_wrapped_method2, channel_);
+  method2(rpcOptions, std::move(callback367), x, y, z);
+  return future366;
 }
 
 void service1AsyncClient::method2(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
@@ -277,8 +277,8 @@ int32_t service1AsyncClient::sync_method3() {
 
 int32_t service1AsyncClient::sync_method3(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback119 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  method3(rpcOptions, std::move(callback119));
+  auto callback368 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  method3(rpcOptions, std::move(callback368));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -298,19 +298,19 @@ folly::Future<int32_t> service1AsyncClient::future_method3() {
 }
 
 folly::Future<int32_t> service1AsyncClient::future_method3(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise120;
-  auto future121 = promise120.getFuture();
-  auto callback122 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise120), recv_wrapped_method3, channel_);
-  method3(rpcOptions, std::move(callback122));
-  return future121;
+  folly::Promise<int32_t> promise369;
+  auto future370 = promise369.getFuture();
+  auto callback371 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise369), recv_wrapped_method3, channel_);
+  method3(rpcOptions, std::move(callback371));
+  return future370;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service1AsyncClient::header_future_method3(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise123;
-  auto future124 = promise123.getFuture();
-  auto callback125 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise123), recv_wrapped_method3, channel_);
-  method3(rpcOptions, std::move(callback125));
-  return future124;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise372;
+  auto future373 = promise372.getFuture();
+  auto callback374 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise372), recv_wrapped_method3, channel_);
+  method3(rpcOptions, std::move(callback374));
+  return future373;
 }
 
 void service1AsyncClient::method3(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -393,8 +393,8 @@ int32_t service1AsyncClient::sync_method4(int32_t i, const  ::test_cpp2::cpp_ref
 
 int32_t service1AsyncClient::sync_method4(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback126 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  method4(rpcOptions, std::move(callback126), i, j, k);
+  auto callback375 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  method4(rpcOptions, std::move(callback375), i, j, k);
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -414,19 +414,19 @@ folly::Future<int32_t> service1AsyncClient::future_method4(int32_t i, const  ::t
 }
 
 folly::Future<int32_t> service1AsyncClient::future_method4(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
-  folly::Promise<int32_t> promise127;
-  auto future128 = promise127.getFuture();
-  auto callback129 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise127), recv_wrapped_method4, channel_);
-  method4(rpcOptions, std::move(callback129), i, j, k);
-  return future128;
+  folly::Promise<int32_t> promise376;
+  auto future377 = promise376.getFuture();
+  auto callback378 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise376), recv_wrapped_method4, channel_);
+  method4(rpcOptions, std::move(callback378), i, j, k);
+  return future377;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service1AsyncClient::header_future_method4(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise130;
-  auto future131 = promise130.getFuture();
-  auto callback132 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise130), recv_wrapped_method4, channel_);
-  method4(rpcOptions, std::move(callback132), i, j, k);
-  return future131;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise379;
+  auto future380 = promise379.getFuture();
+  auto callback381 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise379), recv_wrapped_method4, channel_);
+  method4(rpcOptions, std::move(callback381), i, j, k);
+  return future380;
 }
 
 void service1AsyncClient::method4(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
@@ -509,8 +509,8 @@ void service1AsyncClient::sync_method5( ::test_cpp2::cpp_reflection::struct2& _r
 
 void service1AsyncClient::sync_method5(apache::thrift::RpcOptions& rpcOptions,  ::test_cpp2::cpp_reflection::struct2& _return) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback133 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  method5(rpcOptions, std::move(callback133));
+  auto callback382 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  method5(rpcOptions, std::move(callback382));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -530,19 +530,19 @@ folly::Future< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::future
 }
 
 folly::Future< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::future_method5(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise< ::test_cpp2::cpp_reflection::struct2> promise134;
-  auto future135 = promise134.getFuture();
-  auto callback136 = folly::make_unique<apache::thrift::FutureCallback< ::test_cpp2::cpp_reflection::struct2>>(std::move(promise134), recv_wrapped_method5, channel_);
-  method5(rpcOptions, std::move(callback136));
-  return future135;
+  folly::Promise< ::test_cpp2::cpp_reflection::struct2> promise383;
+  auto future384 = promise383.getFuture();
+  auto callback385 = folly::make_unique<apache::thrift::FutureCallback< ::test_cpp2::cpp_reflection::struct2>>(std::move(promise383), recv_wrapped_method5, channel_);
+  method5(rpcOptions, std::move(callback385));
+  return future384;
 }
 
 folly::Future<std::pair< ::test_cpp2::cpp_reflection::struct2, std::unique_ptr<apache::thrift::transport::THeader>>> service1AsyncClient::header_future_method5(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair< ::test_cpp2::cpp_reflection::struct2, std::unique_ptr<apache::thrift::transport::THeader>>> promise137;
-  auto future138 = promise137.getFuture();
-  auto callback139 = folly::make_unique<apache::thrift::HeaderFutureCallback< ::test_cpp2::cpp_reflection::struct2>>(std::move(promise137), recv_wrapped_method5, channel_);
-  method5(rpcOptions, std::move(callback139));
-  return future138;
+  folly::Promise<std::pair< ::test_cpp2::cpp_reflection::struct2, std::unique_ptr<apache::thrift::transport::THeader>>> promise386;
+  auto future387 = promise386.getFuture();
+  auto callback388 = folly::make_unique<apache::thrift::HeaderFutureCallback< ::test_cpp2::cpp_reflection::struct2>>(std::move(promise386), recv_wrapped_method5, channel_);
+  method5(rpcOptions, std::move(callback388));
+  return future387;
 }
 
 void service1AsyncClient::method5(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -623,8 +623,8 @@ void service1AsyncClient::sync_method6( ::test_cpp2::cpp_reflection::struct2& _r
 
 void service1AsyncClient::sync_method6(apache::thrift::RpcOptions& rpcOptions,  ::test_cpp2::cpp_reflection::struct2& _return, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback140 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  method6(rpcOptions, std::move(callback140), l, m, n);
+  auto callback389 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  method6(rpcOptions, std::move(callback389), l, m, n);
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -644,19 +644,19 @@ folly::Future< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::future
 }
 
 folly::Future< ::test_cpp2::cpp_reflection::struct2> service1AsyncClient::future_method6(apache::thrift::RpcOptions& rpcOptions, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
-  folly::Promise< ::test_cpp2::cpp_reflection::struct2> promise141;
-  auto future142 = promise141.getFuture();
-  auto callback143 = folly::make_unique<apache::thrift::FutureCallback< ::test_cpp2::cpp_reflection::struct2>>(std::move(promise141), recv_wrapped_method6, channel_);
-  method6(rpcOptions, std::move(callback143), l, m, n);
-  return future142;
+  folly::Promise< ::test_cpp2::cpp_reflection::struct2> promise390;
+  auto future391 = promise390.getFuture();
+  auto callback392 = folly::make_unique<apache::thrift::FutureCallback< ::test_cpp2::cpp_reflection::struct2>>(std::move(promise390), recv_wrapped_method6, channel_);
+  method6(rpcOptions, std::move(callback392), l, m, n);
+  return future391;
 }
 
 folly::Future<std::pair< ::test_cpp2::cpp_reflection::struct2, std::unique_ptr<apache::thrift::transport::THeader>>> service1AsyncClient::header_future_method6(apache::thrift::RpcOptions& rpcOptions, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
-  folly::Promise<std::pair< ::test_cpp2::cpp_reflection::struct2, std::unique_ptr<apache::thrift::transport::THeader>>> promise144;
-  auto future145 = promise144.getFuture();
-  auto callback146 = folly::make_unique<apache::thrift::HeaderFutureCallback< ::test_cpp2::cpp_reflection::struct2>>(std::move(promise144), recv_wrapped_method6, channel_);
-  method6(rpcOptions, std::move(callback146), l, m, n);
-  return future145;
+  folly::Promise<std::pair< ::test_cpp2::cpp_reflection::struct2, std::unique_ptr<apache::thrift::transport::THeader>>> promise393;
+  auto future394 = promise393.getFuture();
+  auto callback395 = folly::make_unique<apache::thrift::HeaderFutureCallback< ::test_cpp2::cpp_reflection::struct2>>(std::move(promise393), recv_wrapped_method6, channel_);
+  method6(rpcOptions, std::move(callback395), l, m, n);
+  return future394;
 }
 
 void service1AsyncClient::method6(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {

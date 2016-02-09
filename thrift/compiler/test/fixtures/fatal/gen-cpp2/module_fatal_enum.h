@@ -154,6 +154,30 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
     ::fatal::type_map<
+      ::fatal::type_pair<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::_now_with_an_underscore,
+        ::fatal::constant_sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>
+      >,
+      ::fatal::type_pair<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::another_there,
+        ::fatal::constant_sequence<char, '.'>
+      >,
+      ::fatal::type_pair<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::duplicate_id_annotation_1,
+        ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', ' ', 'i', 'd', ' ', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>
+      >,
+      ::fatal::type_pair<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::duplicate_id_annotation_2,
+        ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '.', 'i', 'd', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>
+      >,
+      ::fatal::type_pair<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::one_here,
+        ::fatal::constant_sequence<char, 'w', 'i', 't', 'h', ' ', 's', 'o', 'm', 'e', ' ', 'v', 'a', 'l', 'u', 'e', ' ', 'a', 's', 's', 'o', 'c', 'i', 'a', 't', 'e', 'd'>
+      >,
+      ::fatal::type_pair<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::yet_another,
+        ::fatal::constant_sequence<char, 'a', 'n', 'd', ' ', 'y', 'e', 't', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't', ' ', '-', ' ', 'i', 't', '\'', 's', ' ', 't', 'h', 'a', 't', ' ', 'e', 'a', 's', 'y'>
+      >
     >,
     static_cast<::apache::thrift::legacy_type_id_t>(4626344424889780008ull)
   >

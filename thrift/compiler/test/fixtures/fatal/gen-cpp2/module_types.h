@@ -22,7 +22,9 @@ class union1;
 class union2;
 class union3;
 class structA;
+class unionA;
 class structB;
+class structC;
 class struct1;
 class struct2;
 class struct3;
@@ -1265,6 +1267,419 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+class unionA : private boost::totally_ordered<unionA> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    i = 1,
+    d = 2,
+    s = 3,
+    e = 4,
+    a = 5,
+  } ;
+
+  unionA() :
+      type_(Type::__EMPTY__) {}
+
+  unionA(unionA&& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(std::move(rhs.value_.i));
+        break;
+      }
+      case Type::d:
+      {
+        set_d(std::move(rhs.value_.d));
+        break;
+      }
+      case Type::s:
+      {
+        set_s(std::move(rhs.value_.s));
+        break;
+      }
+      case Type::e:
+      {
+        set_e(std::move(rhs.value_.e));
+        break;
+      }
+      case Type::a:
+      {
+        set_a(std::move(rhs.value_.a));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  unionA(const unionA& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(rhs.value_.i);
+        break;
+      }
+      case Type::d:
+      {
+        set_d(rhs.value_.d);
+        break;
+      }
+      case Type::s:
+      {
+        set_s(rhs.value_.s);
+        break;
+      }
+      case Type::e:
+      {
+        set_e(rhs.value_.e);
+        break;
+      }
+      case Type::a:
+      {
+        set_a(rhs.value_.a);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  unionA& operator=(unionA&& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(std::move(rhs.value_.i));
+        break;
+      }
+      case Type::d:
+      {
+        set_d(std::move(rhs.value_.d));
+        break;
+      }
+      case Type::s:
+      {
+        set_s(std::move(rhs.value_.s));
+        break;
+      }
+      case Type::e:
+      {
+        set_e(std::move(rhs.value_.e));
+        break;
+      }
+      case Type::a:
+      {
+        set_a(std::move(rhs.value_.a));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  unionA& operator=(const unionA& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(rhs.value_.i);
+        break;
+      }
+      case Type::d:
+      {
+        set_d(rhs.value_.d);
+        break;
+      }
+      case Type::s:
+      {
+        set_s(rhs.value_.s);
+        break;
+      }
+      case Type::e:
+      {
+        set_e(rhs.value_.e);
+        break;
+      }
+      case Type::a:
+      {
+        set_a(rhs.value_.a);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  void __clear();
+
+  virtual ~unionA() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int32_t i;
+    double d;
+    std::string s;
+     ::test_cpp2::cpp_reflection::enum1 e;
+     ::test_cpp2::cpp_reflection::structA a;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const unionA& rhs) const;
+
+  bool operator < (const unionA& rhs) const {
+    if (type_ != rhs.type_) { return type_ < rhs.type_; }
+    switch(type_) {
+      case Type::i:
+      {
+        return value_.i < rhs.value_.i;
+        break;
+      }
+      case Type::d:
+      {
+        return value_.d < rhs.value_.d;
+        break;
+      }
+      case Type::s:
+      {
+        return value_.s < rhs.value_.s;
+        break;
+      }
+      case Type::e:
+      {
+        return value_.e < rhs.value_.e;
+        break;
+      }
+      case Type::a:
+      {
+        return value_.a < rhs.value_.a;
+        break;
+      }
+      default:
+      {
+        return false;
+        break;
+      }
+    }
+  }
+
+  int32_t& set_i(int32_t t = int32_t()) {
+    __clear();
+    type_ = Type::i;
+    ::new (std::addressof(value_.i)) int32_t(t);
+    return value_.i;
+  }
+
+  double& set_d(double t = double()) {
+    __clear();
+    type_ = Type::d;
+    ::new (std::addressof(value_.d)) double(t);
+    return value_.d;
+  }
+
+  std::string& set_s(std::string const &t) {
+    __clear();
+    type_ = Type::s;
+    ::new (std::addressof(value_.s)) std::string(t);
+    return value_.s;
+  }
+
+  std::string& set_s(std::string&& t) {
+    __clear();
+    type_ = Type::s;
+    ::new (std::addressof(value_.s)) std::string(std::move(t));
+    return value_.s;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_s(T&&... t) {
+    __clear();
+    type_ = Type::s;
+    ::new (std::addressof(value_.s)) std::string(std::forward<T>(t)...);
+    return value_.s;
+  }
+
+   ::test_cpp2::cpp_reflection::enum1& set_e( ::test_cpp2::cpp_reflection::enum1 t =  ::test_cpp2::cpp_reflection::enum1()) {
+    __clear();
+    type_ = Type::e;
+    ::new (std::addressof(value_.e))  ::test_cpp2::cpp_reflection::enum1(t);
+    return value_.e;
+  }
+
+   ::test_cpp2::cpp_reflection::structA& set_a( ::test_cpp2::cpp_reflection::structA const &t) {
+    __clear();
+    type_ = Type::a;
+    ::new (std::addressof(value_.a))  ::test_cpp2::cpp_reflection::structA(t);
+    return value_.a;
+  }
+
+   ::test_cpp2::cpp_reflection::structA& set_a( ::test_cpp2::cpp_reflection::structA&& t) {
+    __clear();
+    type_ = Type::a;
+    ::new (std::addressof(value_.a))  ::test_cpp2::cpp_reflection::structA(std::move(t));
+    return value_.a;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::test_cpp2::cpp_reflection::structA, T...>>  ::test_cpp2::cpp_reflection::structA& set_a(T&&... t) {
+    __clear();
+    type_ = Type::a;
+    ::new (std::addressof(value_.a))  ::test_cpp2::cpp_reflection::structA(std::forward<T>(t)...);
+    return value_.a;
+  }
+
+  int32_t const & get_i() const {
+    assert(type_ == Type::i);
+    return value_.i;
+  }
+
+  double const & get_d() const {
+    assert(type_ == Type::d);
+    return value_.d;
+  }
+
+  std::string const & get_s() const {
+    assert(type_ == Type::s);
+    return value_.s;
+  }
+
+   ::test_cpp2::cpp_reflection::enum1 const & get_e() const {
+    assert(type_ == Type::e);
+    return value_.e;
+  }
+
+   ::test_cpp2::cpp_reflection::structA const & get_a() const {
+    assert(type_ == Type::a);
+    return value_.a;
+  }
+
+  int32_t & mutable_i() {
+    assert(type_ == Type::i);
+    return value_.i;
+  }
+
+  double & mutable_d() {
+    assert(type_ == Type::d);
+    return value_.d;
+  }
+
+  std::string & mutable_s() {
+    assert(type_ == Type::s);
+    return value_.s;
+  }
+
+   ::test_cpp2::cpp_reflection::enum1 & mutable_e() {
+    assert(type_ == Type::e);
+    return value_.e;
+  }
+
+   ::test_cpp2::cpp_reflection::structA & mutable_a() {
+    assert(type_ == Type::a);
+    return value_.a;
+  }
+
+  int32_t move_i() {
+    assert(type_ == Type::i);
+    return std::move(value_.i);
+  }
+
+  double move_d() {
+    assert(type_ == Type::d);
+    return std::move(value_.d);
+  }
+
+  std::string move_s() {
+    assert(type_ == Type::s);
+    return std::move(value_.s);
+  }
+
+   ::test_cpp2::cpp_reflection::enum1 move_e() {
+    assert(type_ == Type::e);
+    return std::move(value_.e);
+  }
+
+   ::test_cpp2::cpp_reflection::structA move_a() {
+    assert(type_ == Type::a);
+    return std::move(value_.a);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+};
+
+void swap(unionA& a, unionA& b);
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::test_cpp2::cpp_reflection::unionA>::clear( ::test_cpp2::cpp_reflection::unionA* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp2::cpp_reflection::unionA>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::unionA>::write(Protocol* proto, const  ::test_cpp2::cpp_reflection::unionA* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::unionA>::read(Protocol* proto,   ::test_cpp2::cpp_reflection::unionA* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::unionA>::serializedSize(Protocol* proto, const  ::test_cpp2::cpp_reflection::unionA* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::unionA>::serializedSizeZC(Protocol* proto, const  ::test_cpp2::cpp_reflection::unionA* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 class structB : private boost::totally_ordered<structB> {
  public:
 
@@ -1358,6 +1773,298 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+class structC : private boost::totally_ordered<structC> {
+ public:
+
+  structC() :
+      a(0),
+      c(0),
+      d(0),
+      e( ::test_cpp2::cpp_reflection::enum1()),
+      f( ::test_cpp2::cpp_reflection::enum2()) {}
+  // FragileConstructor for use in initialization lists only
+
+  structC(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, std::vector<int32_t> j__arg, std::vector<int32_t> j1__arg, std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, std::set<int32_t> k__arg, std::set<int32_t> k1__arg, std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, std::map<int32_t, int32_t> l__arg, std::map<int32_t, int32_t> l1__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, std::map<std::string, int32_t> n1__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg) :
+      a(std::move(a__arg)),
+      b(std::move(b__arg)),
+      c(std::move(c__arg)),
+      d(std::move(d__arg)),
+      e(std::move(e__arg)),
+      f(std::move(f__arg)),
+      g(std::move(g__arg)),
+      h(std::move(h__arg)),
+      i(std::move(i__arg)),
+      j(std::move(j__arg)),
+      j1(std::move(j1__arg)),
+      j2(std::move(j2__arg)),
+      j3(std::move(j3__arg)),
+      k(std::move(k__arg)),
+      k1(std::move(k1__arg)),
+      k2(std::move(k2__arg)),
+      k3(std::move(k3__arg)),
+      l(std::move(l__arg)),
+      l1(std::move(l1__arg)),
+      l2(std::move(l2__arg)),
+      l3(std::move(l3__arg)),
+      m1(std::move(m1__arg)),
+      m2(std::move(m2__arg)),
+      m3(std::move(m3__arg)),
+      n1(std::move(n1__arg)),
+      n2(std::move(n2__arg)),
+      n3(std::move(n3__arg)),
+      o1(std::move(o1__arg)),
+      o2(std::move(o2__arg)),
+      o3(std::move(o3__arg)) {}
+
+  structC(structC&&) = default;
+
+  structC(const structC&) = default;
+
+  structC& operator=(structC&&) = default;
+
+  structC& operator=(const structC&) = default;
+  void __clear();
+
+  virtual ~structC() throw() {}
+
+  int32_t a;
+  std::string b;
+  double c;
+  bool d;
+   ::test_cpp2::cpp_reflection::enum1 e;
+   ::test_cpp2::cpp_reflection::enum2 f;
+   ::test_cpp2::cpp_reflection::union1 g;
+   ::test_cpp2::cpp_reflection::unionA h;
+   ::test_cpp2::cpp_reflection::unionA i;
+  std::vector<int32_t> j;
+  std::vector<int32_t> j1;
+  std::vector< ::test_cpp2::cpp_reflection::enum1> j2;
+  std::vector< ::test_cpp2::cpp_reflection::structA> j3;
+  std::set<int32_t> k;
+  std::set<int32_t> k1;
+  std::set< ::test_cpp2::cpp_reflection::enum2> k2;
+  std::set< ::test_cpp2::cpp_reflection::structB> k3;
+  std::map<int32_t, int32_t> l;
+  std::map<int32_t, int32_t> l1;
+  std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2;
+  std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3;
+  std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1;
+  std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2;
+  std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3;
+  std::map<std::string, int32_t> n1;
+  std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> n2;
+  std::map<std::string,  ::test_cpp2::cpp_reflection::structB> n3;
+  std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1;
+  std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2;
+  std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3;
+
+  struct __isset {
+    __isset() {
+      __clear();
+    }
+
+    void __clear() {
+      a = false;
+      b = false;
+      c = false;
+      d = false;
+      e = false;
+      f = false;
+      g = false;
+      h = false;
+      i = false;
+      j = false;
+      j1 = false;
+      j2 = false;
+      j3 = false;
+      k = false;
+      k1 = false;
+      k2 = false;
+      k3 = false;
+      l = false;
+      l1 = false;
+      l2 = false;
+      l3 = false;
+      m1 = false;
+      m2 = false;
+      m3 = false;
+      n1 = false;
+      n2 = false;
+      n3 = false;
+      o1 = false;
+      o2 = false;
+      o3 = false;
+    }
+
+    bool a;
+    bool b;
+    bool c;
+    bool d;
+    bool e;
+    bool f;
+    bool g;
+    bool h;
+    bool i;
+    bool j;
+    bool j1;
+    bool j2;
+    bool j3;
+    bool k;
+    bool k1;
+    bool k2;
+    bool k3;
+    bool l;
+    bool l1;
+    bool l2;
+    bool l3;
+    bool m1;
+    bool m2;
+    bool m3;
+    bool n1;
+    bool n2;
+    bool n3;
+    bool o1;
+    bool o2;
+    bool o3;
+  } __isset;
+  bool operator==(const structC& rhs) const;
+
+  bool operator < (const structC& rhs) const {
+    if (!(a == rhs.a)) {
+      return a < rhs.a;
+    }
+    if (!(b == rhs.b)) {
+      return b < rhs.b;
+    }
+    if (!(c == rhs.c)) {
+      return c < rhs.c;
+    }
+    if (!(d == rhs.d)) {
+      return d < rhs.d;
+    }
+    if (!(e == rhs.e)) {
+      return e < rhs.e;
+    }
+    if (!(f == rhs.f)) {
+      return f < rhs.f;
+    }
+    if (!(g == rhs.g)) {
+      return g < rhs.g;
+    }
+    if (!(h == rhs.h)) {
+      return h < rhs.h;
+    }
+    if (!(i == rhs.i)) {
+      return i < rhs.i;
+    }
+    if (!(j == rhs.j)) {
+      return j < rhs.j;
+    }
+    if (!(j1 == rhs.j1)) {
+      return j1 < rhs.j1;
+    }
+    if (!(j2 == rhs.j2)) {
+      return j2 < rhs.j2;
+    }
+    if (!(j3 == rhs.j3)) {
+      return j3 < rhs.j3;
+    }
+    if (!(k == rhs.k)) {
+      return k < rhs.k;
+    }
+    if (!(k1 == rhs.k1)) {
+      return k1 < rhs.k1;
+    }
+    if (!(k2 == rhs.k2)) {
+      return k2 < rhs.k2;
+    }
+    if (!(k3 == rhs.k3)) {
+      return k3 < rhs.k3;
+    }
+    if (!(l == rhs.l)) {
+      return l < rhs.l;
+    }
+    if (!(l1 == rhs.l1)) {
+      return l1 < rhs.l1;
+    }
+    if (!(l2 == rhs.l2)) {
+      return l2 < rhs.l2;
+    }
+    if (!(l3 == rhs.l3)) {
+      return l3 < rhs.l3;
+    }
+    if (!(m1 == rhs.m1)) {
+      return m1 < rhs.m1;
+    }
+    if (!(m2 == rhs.m2)) {
+      return m2 < rhs.m2;
+    }
+    if (!(m3 == rhs.m3)) {
+      return m3 < rhs.m3;
+    }
+    if (!(n1 == rhs.n1)) {
+      return n1 < rhs.n1;
+    }
+    if (!(n2 == rhs.n2)) {
+      return n2 < rhs.n2;
+    }
+    if (!(n3 == rhs.n3)) {
+      return n3 < rhs.n3;
+    }
+    if (!(o1 == rhs.o1)) {
+      return o1 < rhs.o1;
+    }
+    if (!(o2 == rhs.o2)) {
+      return o2 < rhs.o2;
+    }
+    if (!(o3 == rhs.o3)) {
+      return o3 < rhs.o3;
+    }
+    return false;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(structC& a, structC& b);
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::test_cpp2::cpp_reflection::structC>::clear( ::test_cpp2::cpp_reflection::structC* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp2::cpp_reflection::structC>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::structC>::write(Protocol* proto, const  ::test_cpp2::cpp_reflection::structC* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::structC>::read(Protocol* proto,   ::test_cpp2::cpp_reflection::structC* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::structC>::serializedSize(Protocol* proto, const  ::test_cpp2::cpp_reflection::structC* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::structC>::serializedSizeZC(Protocol* proto, const  ::test_cpp2::cpp_reflection::structC* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 class struct1 : private boost::totally_ordered<struct1> {
  public:
 
@@ -1399,44 +2106,19 @@ class struct1 : private boost::totally_ordered<struct1> {
     }
 
     void __clear() {
-      field0 = false;
       field1 = false;
       field2 = false;
-      field3 = false;
       field4 = false;
       field5 = false;
     }
 
-    bool field0;
     bool field1;
     bool field2;
-    bool field3;
     bool field4;
     bool field5;
   } __isset;
   bool operator==(const struct1& rhs) const;
-
-  bool operator < (const struct1& rhs) const {
-    if (!(field0 == rhs.field0)) {
-      return field0 < rhs.field0;
-    }
-    if (!(field1 == rhs.field1)) {
-      return field1 < rhs.field1;
-    }
-    if (!(field2 == rhs.field2)) {
-      return field2 < rhs.field2;
-    }
-    if (!(field3 == rhs.field3)) {
-      return field3 < rhs.field3;
-    }
-    if (!(field4 == rhs.field4)) {
-      return field4 < rhs.field4;
-    }
-    if (!(field5 == rhs.field5)) {
-      return field5 < rhs.field5;
-    }
-    return false;
-  }
+  bool operator < (const struct1& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1541,31 +2223,7 @@ class struct2 : private boost::totally_ordered<struct2> {
     bool fieldG;
   } __isset;
   bool operator==(const struct2& rhs) const;
-
-  bool operator < (const struct2& rhs) const {
-    if (!(fieldA == rhs.fieldA)) {
-      return fieldA < rhs.fieldA;
-    }
-    if (!(fieldB == rhs.fieldB)) {
-      return fieldB < rhs.fieldB;
-    }
-    if (!(fieldC == rhs.fieldC)) {
-      return fieldC < rhs.fieldC;
-    }
-    if (!(fieldD == rhs.fieldD)) {
-      return fieldD < rhs.fieldD;
-    }
-    if (!(fieldE == rhs.fieldE)) {
-      return fieldE < rhs.fieldE;
-    }
-    if (!(fieldF == rhs.fieldF)) {
-      return fieldF < rhs.fieldF;
-    }
-    if (!(fieldG == rhs.fieldG)) {
-      return fieldG < rhs.fieldG;
-    }
-    return false;
-  }
+  bool operator < (const struct2& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1714,64 +2372,7 @@ class struct3 : private boost::totally_ordered<struct3> {
     bool fieldR;
   } __isset;
   bool operator==(const struct3& rhs) const;
-
-  bool operator < (const struct3& rhs) const {
-    if (!(fieldA == rhs.fieldA)) {
-      return fieldA < rhs.fieldA;
-    }
-    if (!(fieldB == rhs.fieldB)) {
-      return fieldB < rhs.fieldB;
-    }
-    if (!(fieldC == rhs.fieldC)) {
-      return fieldC < rhs.fieldC;
-    }
-    if (!(fieldD == rhs.fieldD)) {
-      return fieldD < rhs.fieldD;
-    }
-    if (!(fieldE == rhs.fieldE)) {
-      return fieldE < rhs.fieldE;
-    }
-    if (!(fieldF == rhs.fieldF)) {
-      return fieldF < rhs.fieldF;
-    }
-    if (!(fieldG == rhs.fieldG)) {
-      return fieldG < rhs.fieldG;
-    }
-    if (!(fieldH == rhs.fieldH)) {
-      return fieldH < rhs.fieldH;
-    }
-    if (!(fieldI == rhs.fieldI)) {
-      return fieldI < rhs.fieldI;
-    }
-    if (!(fieldJ == rhs.fieldJ)) {
-      return fieldJ < rhs.fieldJ;
-    }
-    if (!(fieldK == rhs.fieldK)) {
-      return fieldK < rhs.fieldK;
-    }
-    if (!(fieldL == rhs.fieldL)) {
-      return fieldL < rhs.fieldL;
-    }
-    if (!(fieldM == rhs.fieldM)) {
-      return fieldM < rhs.fieldM;
-    }
-    if (!(fieldN == rhs.fieldN)) {
-      return fieldN < rhs.fieldN;
-    }
-    if (!(fieldO == rhs.fieldO)) {
-      return fieldO < rhs.fieldO;
-    }
-    if (!(fieldP == rhs.fieldP)) {
-      return fieldP < rhs.fieldP;
-    }
-    if (!(fieldQ == rhs.fieldQ)) {
-      return fieldQ < rhs.fieldQ;
-    }
-    if (!(fieldR == rhs.fieldR)) {
-      return fieldR < rhs.fieldR;
-    }
-    return false;
-  }
+  bool operator < (const struct3& rhs) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

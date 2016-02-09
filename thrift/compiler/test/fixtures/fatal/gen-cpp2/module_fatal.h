@@ -33,10 +33,10 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using field1 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '1'>;
   using field4 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '4'>;
   using field5 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '5'>;
-  using test_py_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'p', 'y', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using fieldE = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'E'>;
   using ui_3 = ::fatal::constant_sequence<char, 'u', 'i', '_', '3'>;
   using ui_2 = ::fatal::constant_sequence<char, 'u', 'i', '_', '2'>;
-  using fieldR = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'R'>;
+  using python = ::fatal::constant_sequence<char, 'p', 'y', 't', 'h', 'o', 'n'>;
   using fieldP = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'P'>;
   using fieldQ = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'Q'>;
   using fieldJ = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'J'>;
@@ -53,16 +53,24 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using fieldF = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'F'>;
   using fieldG = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'G'>;
   using fieldD = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'D'>;
-  using fieldE = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'E'>;
+  using test_py_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'p', 'y', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
   using ue_3 = ::fatal::constant_sequence<char, 'u', 'e', '_', '3'>;
   using ue_2 = ::fatal::constant_sequence<char, 'u', 'e', '_', '2'>;
+  using h = ::fatal::constant_sequence<char, 'h'>;
   using field0_3 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '3'>;
   using field0_2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '2'>;
   using l = ::fatal::constant_sequence<char, 'l'>;
+  using l2 = ::fatal::constant_sequence<char, 'l', '2'>;
+  using l3 = ::fatal::constant_sequence<char, 'l', '3'>;
   using test_swift_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 's', 'w', 'i', 'f', 't', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using l1 = ::fatal::constant_sequence<char, 'l', '1'>;
   using x = ::fatal::constant_sequence<char, 'x'>;
+  using unionA = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', 'A'>;
   using cpp2 = ::fatal::constant_sequence<char, 'c', 'p', 'p', '2'>;
-  using d = ::fatal::constant_sequence<char, 'd'>;
+  using j1 = ::fatal::constant_sequence<char, 'j', '1'>;
+  using j2 = ::fatal::constant_sequence<char, 'j', '2'>;
+  using j3 = ::fatal::constant_sequence<char, 'j', '3'>;
+  using fieldR = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'R'>;
   using n = ::fatal::constant_sequence<char, 'n'>;
   using Type = ::fatal::constant_sequence<char, 'T', 'y', 'p', 'e'>;
   using test_java_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'j', 'a', 'v', 'a', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
@@ -72,6 +80,9 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using methodB = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'B'>;
   using methodC = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'C'>;
   using methodA = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'A'>;
+  using o3 = ::fatal::constant_sequence<char, 'o', '3'>;
+  using o2 = ::fatal::constant_sequence<char, 'o', '2'>;
+  using o1 = ::fatal::constant_sequence<char, 'o', '1'>;
   using test_cpp1__cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'c', 'p', 'p', '1', ':', ':', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
   using method6 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '6'>;
   using method4 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '4'>;
@@ -80,20 +91,31 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using method3 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '3'>;
   using method1 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '1'>;
   using test_php_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'p', 'h', 'p', '_', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using one_here = ::fatal::constant_sequence<char, 'o', 'n', 'e', '.', 'h', 'e', 'r', 'e'>;
+  using _now_with_an_underscore = ::fatal::constant_sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>;
   using c = ::fatal::constant_sequence<char, 'c'>;
+  using g = ::fatal::constant_sequence<char, 'g'>;
   using k = ::fatal::constant_sequence<char, 'k'>;
   using java_swift = ::fatal::constant_sequence<char, 'j', 'a', 'v', 'a', '.', 's', 'w', 'i', 'f', 't'>;
   using union1 = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', '1'>;
   using union3 = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', '3'>;
   using union2 = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', '2'>;
+  using d = ::fatal::constant_sequence<char, 'd'>;
   using test_cpp2__cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'c', 'p', 'p', '2', ':', ':', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
   using struct2 = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', '2'>;
   using struct3 = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', '3'>;
   using struct1 = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', '1'>;
   using java = ::fatal::constant_sequence<char, 'j', 'a', 'v', 'a'>;
+  using another_there = ::fatal::constant_sequence<char, 'a', 'n', 'o', 't', 'h', 'e', 'r', '.', 't', 'h', 'e', 'r', 'e'>;
+  using m1 = ::fatal::constant_sequence<char, 'm', '1'>;
+  using m3 = ::fatal::constant_sequence<char, 'm', '3'>;
+  using m2 = ::fatal::constant_sequence<char, 'm', '2'>;
   using b = ::fatal::constant_sequence<char, 'b'>;
+  using some_annotation = ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+  using f = ::fatal::constant_sequence<char, 'f'>;
   using j = ::fatal::constant_sequence<char, 'j'>;
   using structB = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', 'B'>;
+  using structC = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', 'C'>;
   using us = ::fatal::constant_sequence<char, 'u', 's'>;
   using structA = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', 'A'>;
   using test_d_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'd', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
@@ -105,17 +127,30 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using service2 = ::fatal::constant_sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '2'>;
   using service1 = ::fatal::constant_sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '1'>;
   using constant1 = ::fatal::constant_sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '1'>;
-  using constant3 = ::fatal::constant_sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '3'>;
+  using duplicate_id_annotation_2 = ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '_', 'i', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '_', '2'>;
+  using duplicate_id_annotation_1 = ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '_', 'i', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '_', '1'>;
   using constant2 = ::fatal::constant_sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '2'>;
-  using field1_2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '2'>;
-  using python = ::fatal::constant_sequence<char, 'p', 'y', 't', 'h', 'o', 'n'>;
+  using some_other_annotation = ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', '.', 'o', 't', 'h', 'e', 'r', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+  using s = ::fatal::constant_sequence<char, 's'>;
+  using k3 = ::fatal::constant_sequence<char, 'k', '3'>;
+  using k2 = ::fatal::constant_sequence<char, 'k', '2'>;
+  using k1 = ::fatal::constant_sequence<char, 'k', '1'>;
   using field1_3 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '3'>;
-  using cpp = ::fatal::constant_sequence<char, 'c', 'p', 'p'>;
+  using constant3 = ::fatal::constant_sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '3'>;
+  using field1_2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '2'>;
+  using another_annotation = ::fatal::constant_sequence<char, 'a', 'n', 'o', 't', 'h', 'e', 'r', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+  using sample_annotation = ::fatal::constant_sequence<char, 's', 'a', 'm', 'p', 'l', 'e', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+  using y = ::fatal::constant_sequence<char, 'y'>;
   using php = ::fatal::constant_sequence<char, 'p', 'h', 'p'>;
   using a = ::fatal::constant_sequence<char, 'a'>;
+  using e = ::fatal::constant_sequence<char, 'e'>;
   using i = ::fatal::constant_sequence<char, 'i'>;
   using m = ::fatal::constant_sequence<char, 'm'>;
-  using y = ::fatal::constant_sequence<char, 'y'>;
+  using yet_another = ::fatal::constant_sequence<char, 'y', 'e', 't', '.', 'a', 'n', 'o', 't', 'h', 'e', 'r'>;
+  using cpp = ::fatal::constant_sequence<char, 'c', 'p', 'p'>;
+  using n1 = ::fatal::constant_sequence<char, 'n', '1'>;
+  using n2 = ::fatal::constant_sequence<char, 'n', '2'>;
+  using n3 = ::fatal::constant_sequence<char, 'n', '3'>;
   using ud_2 = ::fatal::constant_sequence<char, 'u', 'd', '_', '2'>;
   using ud_3 = ::fatal::constant_sequence<char, 'u', 'd', '_', '3'>;
 };
@@ -142,11 +177,13 @@ class module_tags {
     using union1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1;
     using union2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2;
     using union3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3;
+    using unionA = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::unionA;
   };
 
   struct test_cpp2_cpp_reflection_module__unique_structs_list {
     using structA = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structA;
     using structB = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structB;
+    using structC = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structC;
     using struct1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct1;
     using struct2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct2;
     using struct3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct3;
@@ -197,12 +234,14 @@ THRIFT_REGISTER_REFLECTION_METADATA(
   ::fatal::type_map<
     ::fatal::type_pair<union1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1>,
     ::fatal::type_pair<union2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2>,
-    ::fatal::type_pair<union3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3>
+    ::fatal::type_pair<union3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3>,
+    ::fatal::type_pair<unionA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::unionA>
   >,
   // structs
   ::fatal::type_map<
     ::fatal::type_pair<structA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structA>,
     ::fatal::type_pair<structB, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structB>,
+    ::fatal::type_pair<structC, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structC>,
     ::fatal::type_pair<struct1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct1>,
     ::fatal::type_pair<struct2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct2>,
     ::fatal::type_pair<struct3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct3>

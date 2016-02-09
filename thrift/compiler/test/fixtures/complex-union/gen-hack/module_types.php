@@ -88,9 +88,10 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
     return $this->_type;
   }
 
-  public function set_intValue(int $intValue): void {
+  public function set_intValue(int $intValue): this {
     $this->_type = ComplexUnionEnum::intValue;
     $this->intValue = $intValue;
+    return $this;
   }
 
   public function get_intValue(): int {
@@ -99,9 +100,10 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
     return nullthrows($this->intValue);
   }
 
-  public function set_stringValue(string $stringValue): void {
+  public function set_stringValue(string $stringValue): this {
     $this->_type = ComplexUnionEnum::stringValue;
     $this->stringValue = $stringValue;
+    return $this;
   }
 
   public function get_stringValue(): string {
@@ -110,9 +112,10 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
     return nullthrows($this->stringValue);
   }
 
-  public function set_intListValue(Vector<int> $intListValue): void {
+  public function set_intListValue(Vector<int> $intListValue): this {
     $this->_type = ComplexUnionEnum::intListValue;
     $this->intListValue = $intListValue;
+    return $this;
   }
 
   public function get_intListValue(): Vector<int> {
@@ -121,9 +124,10 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
     return nullthrows($this->intListValue);
   }
 
-  public function set_stringListValue(Vector<string> $stringListValue): void {
+  public function set_stringListValue(Vector<string> $stringListValue): this {
     $this->_type = ComplexUnionEnum::stringListValue;
     $this->stringListValue = $stringListValue;
+    return $this;
   }
 
   public function get_stringListValue(): Vector<string> {
