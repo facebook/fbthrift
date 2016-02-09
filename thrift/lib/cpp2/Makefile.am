@@ -100,6 +100,7 @@ thrift2include_server_HEADERS = \
 thrift2include_utildir = $(thrift2includedir)/util
 
 thrift2include_util_HEADERS = \
+	util/FilePoller.h \
 	util/ScopedServerInterfaceThread.h \
 	util/ScopedServerInterfaceThread-inl.h
 
@@ -112,7 +113,8 @@ thrift2include_security_HEADERS = \
 	security/KerberosSASLThreadManager.h \
 	security/SecurityKillSwitch.h \
 	security/SecurityKillSwitchPoller.h \
-	security/SecurityLogger.h
+	security/SecurityLogger.h \
+	security/TLSTicketProcessor.h
 
 thrift2include_protocoldir = $(thrift2includedir)/protocol
 
@@ -180,10 +182,12 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   security/KerberosSASLThreadManager.cpp \
 			   security/SecurityKillSwitch.cpp \
 			   security/SecurityKillSwitchPoller.cpp \
+			   security/TLSTicketProcessor.cpp \
 			   server/BaseThriftServer.cpp \
 			   server/Cpp2Connection.cpp \
 			   server/Cpp2Worker.cpp \
 			   server/ThriftServer.cpp \
+			   util/FilePoller.cpp \
 			   util/ScopedServerInterfaceThread.cpp \
 			   ../cpp/EventHandlerBase.cpp \
 			   ../cpp/transport/THeaderTransport.cpp \
