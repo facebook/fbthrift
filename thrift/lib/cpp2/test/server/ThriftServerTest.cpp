@@ -276,26 +276,26 @@ TEST(ThriftServer, ClientTimeoutTest) {
   EXPECT_TRUE(timeout1);
   usleep(10000);
 
-  // This time we set the timeout to be 15 millseconds.  The server
+  // This time we set the timeout to be 100 millseconds.  The server
   // should not time out
-  options.setTimeout(std::chrono::milliseconds(15));
+  options.setTimeout(std::chrono::milliseconds(100));
   client1->sendResponse(options, callback(client1, timeout1), 10000);
   base.loop();
   EXPECT_FALSE(timeout1);
   usleep(10000);
 
-  // This time we set server timeout to be 1 millsecond.  However, the
+  // This time we set server timeout to be 5 millseconds.  However, the
   // task should start processing within that millisecond, so we should
   // not see an exception because the client timeout should be used after
   // processing is started
-  server->setTaskExpireTime(std::chrono::milliseconds(1));
+  server->setTaskExpireTime(std::chrono::milliseconds(5));
   client1->sendResponse(options, callback(client1, timeout1), 10000);
   base.loop();
   usleep(10000);
 
-  // The server timeout stays at 1 ms, but we put the client timeout at
+  // The server timeout stays at 5 ms, but we put the client timeout at
   // 5 ms.  We should timeout even though the server starts processing within
-  // 1ms.
+  // 5ms.
   options.setTimeout(std::chrono::milliseconds(5));
   client1->sendResponse(options, callback(client1, timeout1), 10000);
   base.loop();
