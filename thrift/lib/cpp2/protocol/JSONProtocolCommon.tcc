@@ -547,7 +547,8 @@ uint32_t JSONProtocolReaderCommon::ensureCharNoWhitespace(char expected) {
   if (actual != expected) {
     throw TProtocolException(
       TProtocolException::INVALID_DATA,
-      folly::to<std::string>("expected '", expected, "', read '", actual, "'"));
+      folly::sformat("expected '{}' (hex 0x{:02x}), read '{:c}' (hex 0x{:02x})",
+                     expected, expected, actual, actual));
   }
   return 1;
 }
