@@ -7,7 +7,7 @@ import functools
 import logging
 import trollius as asyncio
 
-from asyncio import From
+from trollius import From
 from collections import defaultdict
 from thrift.Thrift import TMessageType, TApplicationException
 from thrift.transport.TTransport import TTransportException

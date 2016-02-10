@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import trollius as asyncio
 
-from asyncio import (
+from trollius import (
     From,
     Return,
 )
