@@ -83,6 +83,13 @@ public class ModuleLogger {
           break;
         }
       
+        case 5: {
+          writeFieldBegin(oprot, Module.ComplexUnion_stringRef);
+          oprot.writeString((String) mMap.get(Module.ComplexUnion_stringRef));
+          oprot.writeFieldEnd();
+          break;
+        }
+      
         }
         oprot.writeFieldStop();
         oprot.writeStructEnd();

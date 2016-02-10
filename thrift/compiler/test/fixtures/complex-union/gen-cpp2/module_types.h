@@ -28,6 +28,7 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
     stringValue = 2,
     intListValue = 3,
     stringListValue = 4,
+    stringRef = 5,
   } ;
 
   ComplexUnion() :
@@ -56,6 +57,11 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
       case Type::stringListValue:
       {
         set_stringListValue(std::move(rhs.value_.stringListValue));
+        break;
+      }
+      case Type::stringRef:
+      {
+        set_stringRef(std::move(*rhs.value_.stringRef));
         break;
       }
       default:
@@ -92,6 +98,11 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
         set_stringListValue(rhs.value_.stringListValue);
         break;
       }
+      case Type::stringRef:
+      {
+        set_stringRef(*rhs.value_.stringRef);
+        break;
+      }
       default:
       {
         assert(false);
@@ -123,6 +134,11 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
       case Type::stringListValue:
       {
         set_stringListValue(std::move(rhs.value_.stringListValue));
+        break;
+      }
+      case Type::stringRef:
+      {
+        set_stringRef(std::move(*rhs.value_.stringRef));
         break;
       }
       default:
@@ -160,6 +176,11 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
         set_stringListValue(rhs.value_.stringListValue);
         break;
       }
+      case Type::stringRef:
+      {
+        set_stringRef(*rhs.value_.stringRef);
+        break;
+      }
       default:
       {
         assert(false);
@@ -179,6 +200,7 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
     std::string stringValue;
     std::vector<int64_t> intListValue;
     std::vector<std::string> stringListValue;
+    std::unique_ptr<std::string> stringRef;
 
     storage_type() {}
     ~storage_type() {}
@@ -206,6 +228,11 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
       case Type::stringListValue:
       {
         return value_.stringListValue < rhs.value_.stringListValue;
+        break;
+      }
+      case Type::stringRef:
+      {
+        return value_.stringRef < rhs.value_.stringRef;
         break;
       }
       default:
@@ -286,6 +313,27 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
     return value_.stringListValue;
   }
 
+  std::unique_ptr<std::string>& set_stringRef(std::string const &t) {
+    __clear();
+    type_ = Type::stringRef;
+    ::new (std::addressof(value_.stringRef)) std::unique_ptr<std::string>(new std::string(t));
+    return value_.stringRef;
+  }
+
+  std::unique_ptr<std::string>& set_stringRef(std::string&& t) {
+    __clear();
+    type_ = Type::stringRef;
+    ::new (std::addressof(value_.stringRef)) std::unique_ptr<std::string>(new std::string(std::move(t)));
+    return value_.stringRef;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::unique_ptr<std::string>& set_stringRef(T&&... t) {
+    __clear();
+    type_ = Type::stringRef;
+    ::new (std::addressof(value_.stringRef)) std::unique_ptr<std::string>(new std::string(std::forward<T>(t)...));
+    return value_.stringRef;
+  }
+
   int64_t const & get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
@@ -304,6 +352,11 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
   std::vector<std::string> const & get_stringListValue() const {
     assert(type_ == Type::stringListValue);
     return value_.stringListValue;
+  }
+
+  std::unique_ptr<std::string> const & get_stringRef() const {
+    assert(type_ == Type::stringRef);
+    return value_.stringRef;
   }
 
   int64_t & mutable_intValue() {
@@ -326,6 +379,11 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
     return value_.stringListValue;
   }
 
+  std::unique_ptr<std::string> & mutable_stringRef() {
+    assert(type_ == Type::stringRef);
+    return value_.stringRef;
+  }
+
   int64_t move_intValue() {
     assert(type_ == Type::intValue);
     return std::move(value_.intValue);
@@ -344,6 +402,11 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
   std::vector<std::string> move_stringListValue() {
     assert(type_ == Type::stringListValue);
     return std::move(value_.stringListValue);
+  }
+
+  std::unique_ptr<std::string> move_stringRef() {
+    assert(type_ == Type::stringRef);
+    return std::move(value_.stringRef);
   }
 
   Type getType() const { return type_; }

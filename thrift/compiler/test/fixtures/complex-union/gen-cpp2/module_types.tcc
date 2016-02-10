@@ -52,6 +52,10 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         fid = 4;
         ftype = apache::thrift::protocol::T_LIST;
       }
+      else if (fname == "stringRef") {
+        fid = 5;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
     }
     switch (fid) {
       case 1:
@@ -128,6 +132,16 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         }
         break;
       }
+      case 5:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          this->set_stringRef();
+          xfer += iprot->readString(this->mutable_stringRef());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -180,6 +194,12 @@ uint32_t ComplexUnion::serializedSize(Protocol_* prot_) const {
       xfer += prot_->serializedSizeListEnd();
       break;
     }
+    case ComplexUnion::Type::stringRef:
+    {
+      xfer += prot_->serializedFieldSize("stringRef", apache::thrift::protocol::T_STRING, 5);
+      xfer += prot_->serializedSizeString(this->get_stringRef());
+      break;
+    }
     case ComplexUnion::Type::__EMPTY__:;
   }
   xfer += prot_->serializedSizeStop();
@@ -221,6 +241,12 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_* prot_) const {
         xfer += prot_->serializedSizeString((*_iter13));
       }
       xfer += prot_->serializedSizeListEnd();
+      break;
+    }
+    case ComplexUnion::Type::stringRef:
+    {
+      xfer += prot_->serializedFieldSize("stringRef", apache::thrift::protocol::T_STRING, 5);
+      xfer += prot_->serializedSizeString(this->get_stringRef());
       break;
     }
     case ComplexUnion::Type::__EMPTY__:;
@@ -267,6 +293,13 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
         xfer += prot_->writeString((*_iter15));
       }
       xfer += prot_->writeListEnd();
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case ComplexUnion::Type::stringRef:
+    {
+      xfer += prot_->writeFieldBegin("stringRef", apache::thrift::protocol::T_STRING, 5);
+      xfer += prot_->writeString(this->get_stringRef());
       xfer += prot_->writeFieldEnd();
       break;
     }

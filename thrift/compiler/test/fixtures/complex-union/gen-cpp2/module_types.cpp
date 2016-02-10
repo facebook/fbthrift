@@ -44,6 +44,11 @@ void ComplexUnion::__clear() {
       destruct(value_.stringListValue);
       break;
     }
+    case Type::stringRef:
+    {
+      destruct(value_.stringRef);
+      break;
+    }
     default:
     {
       assert(false);
@@ -74,6 +79,11 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     case Type::stringListValue:
     {
       return value_.stringListValue == rhs.value_.stringListValue;
+      break;
+    }
+    case Type::stringRef:
+    {
+      return value_.stringRef == rhs.value_.stringRef;
       break;
     }
     default:

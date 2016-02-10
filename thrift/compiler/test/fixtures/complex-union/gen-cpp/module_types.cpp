@@ -104,6 +104,15 @@ uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
         }
         break;
       }
+      case 5: {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          set_stringRef();
+          xfer += iprot->readString(this->value_.stringRef);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default: xfer += iprot->skip(ftype); break;
     }
     xfer += iprot->readFieldEnd();
@@ -156,6 +165,12 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
         }
         xfer += oprot->writeListEnd();
       }
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::stringRef: {
+      xfer += oprot->writeFieldBegin("stringRef", apache::thrift::protocol::T_STRING, 5);
+      xfer += oprot->writeString(this->value_.stringRef);
       xfer += oprot->writeFieldEnd();
       break;
     }

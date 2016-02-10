@@ -12,6 +12,7 @@ enum ComplexUnionEnum: int {
   stringValue = 2;
   intListValue = 3;
   stringListValue = 4;
+  stringRef = 5;
 }
 
 class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
@@ -46,21 +47,28 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
         ),
         'format' => 'collection',
       ),
+    5 => array(
+      'var' => 'stringRef',
+      'union' => true,
+      'type' => TType::STRING,
+      ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
     'intValue' => 1,
     'stringValue' => 2,
     'intListValue' => 3,
     'stringListValue' => 4,
+    'stringRef' => 5,
   };
-  const int STRUCTURAL_ID = 9172279449995145515;
+  const int STRUCTURAL_ID = 6550502502248501709;
   public ?int $intValue;
   public ?string $stringValue;
   public ?Vector<int> $intListValue;
   public ?Vector<string> $stringListValue;
+  public ?string $stringRef;
   protected ComplexUnionEnum $_type = ComplexUnionEnum::_EMPTY_;
 
-  public function __construct(?int $intValue = null, ?string $stringValue = null, ?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null  ) {
+  public function __construct(?int $intValue = null, ?string $stringValue = null, ?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null, ?string $stringRef = null  ) {
     $this->_type = ComplexUnionEnum::_EMPTY_;
     if ($intValue !== null) {
       $this->intValue = $intValue;
@@ -77,6 +85,10 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
     if ($stringListValue !== null) {
       $this->stringListValue = $stringListValue;
       $this->_type = ComplexUnionEnum::stringListValue;
+    }
+    if ($stringRef !== null) {
+      $this->stringRef = $stringRef;
+      $this->_type = ComplexUnionEnum::stringRef;
     }
   }
 
@@ -134,6 +146,18 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
     invariant($this->_type === ComplexUnionEnum::stringListValue,
       'get_stringListValue called on an instance of ComplexUnion whose current type is' . $this->_type);
     return nullthrows($this->stringListValue);
+  }
+
+  public function set_stringRef(string $stringRef): this {
+    $this->_type = ComplexUnionEnum::stringRef;
+    $this->stringRef = $stringRef;
+    return $this;
+  }
+
+  public function get_stringRef(): string {
+    invariant($this->_type === ComplexUnionEnum::stringRef,
+      'get_stringRef called on an instance of ComplexUnion whose current type is' . $this->_type);
+    return nullthrows($this->stringRef);
   }
 
   public function read(TProtocol $input): int {
@@ -221,6 +245,14 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 5:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->stringRef);
+            $this->_type = ComplexUnionEnum::stringRef;
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -278,6 +310,12 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
         }
       }
       $output->writeListEnd();
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->stringRef !== null) {
+      $_val6 = $this->stringRef;
+      $xfer += $output->writeFieldBegin('stringRef', TType::STRING, 5);
+      $xfer += $output->writeString($_val6);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

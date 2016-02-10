@@ -31,11 +31,13 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   private static final TField STRING_VALUE_FIELD_DESC = new TField("stringValue", TType.STRING, (short)2);
   private static final TField INT_LIST_VALUE_FIELD_DESC = new TField("intListValue", TType.LIST, (short)3);
   private static final TField STRING_LIST_VALUE_FIELD_DESC = new TField("stringListValue", TType.LIST, (short)4);
+  private static final TField STRING_REF_FIELD_DESC = new TField("stringRef", TType.STRING, (short)5);
 
   public static final int INTVALUE = 1;
   public static final int STRINGVALUE = 2;
   public static final int INTLISTVALUE = 3;
   public static final int STRINGLISTVALUE = 4;
+  public static final int STRINGREF = 5;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
   static {
@@ -50,6 +52,8 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     tmpMetaDataMap.put(STRINGLISTVALUE, new FieldMetaData("stringListValue", TFieldRequirementType.DEFAULT, 
         new ListMetaData(TType.LIST, 
             new FieldValueMetaData(TType.STRING))));
+    tmpMetaDataMap.put(STRINGREF, new FieldMetaData("stringRef", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -92,6 +96,12 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     return x;
   }
 
+  public static ComplexUnion stringRef(String value) {
+    ComplexUnion x = new ComplexUnion();
+    x.setStringRef(value);
+    return x;
+  }
+
 
   @Override
   protected void checkType(short setField, Object value) throws ClassCastException {
@@ -116,6 +126,11 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
           break;
         }
         throw new ClassCastException("Was expecting value of type List<String> for field 'stringListValue', but got " + value.getClass().getSimpleName());
+      case STRINGREF:
+        if (value instanceof String) {
+          break;
+        }
+        throw new ClassCastException("Was expecting value of type String for field 'stringRef', but got " + value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -150,6 +165,11 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
             break;
           case STRINGLISTVALUE:
             if (field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = field.id;
+            }
+            break;
+          case STRINGREF:
+            if (field.type == STRING_REF_FIELD_DESC.type) {
               setField_ = field.id;
             }
             break;
@@ -225,6 +245,15 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
           TProtocolUtil.skip(iprot, field.type);
           return null;
         }
+      case STRINGREF:
+        if (field.type == STRING_REF_FIELD_DESC.type) {
+          String stringRef;
+          stringRef = iprot.readString();
+          return stringRef;
+        } else {
+          TProtocolUtil.skip(iprot, field.type);
+          return null;
+        }
       default:
         TProtocolUtil.skip(iprot, field.type);
         return null;
@@ -262,6 +291,10 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
           oprot.writeListEnd();
         }
         return;
+      case STRINGREF:
+        String stringRef = (String)getFieldValue();
+        oprot.writeString(stringRef);
+        return;
       default:
         throw new IllegalStateException("Cannot write union with unknown field " + setField);
     }
@@ -278,6 +311,8 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
         return INT_LIST_VALUE_FIELD_DESC;
       case STRINGLISTVALUE:
         return STRING_LIST_VALUE_FIELD_DESC;
+      case STRINGREF:
+        return STRING_REF_FIELD_DESC;
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -340,6 +375,20 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   public void setStringListValue(List<String> value) {
     if (value == null) throw new NullPointerException();
     setField_ = STRINGLISTVALUE;
+    value_ = value;
+  }
+
+  public String  getStringRef() {
+    if (getSetField() == STRINGREF) {
+      return (String)getFieldValue();
+    } else {
+      throw new RuntimeException("Cannot get field 'stringRef' because union is currently set to " + getFieldDesc(getSetField()).name);
+    }
+  }
+
+  public void setStringRef(String value) {
+    if (value == null) throw new NullPointerException();
+    setField_ = STRINGREF;
     value_ = value;
   }
 
@@ -442,6 +491,21 @@ String space = prettyPrint ? " " : "";
         sb.append("null");
       } else {
         sb.append(TBaseHelper.toString(this. getStringListValue(), indent + 1, prettyPrint));
+      }
+      first = false;
+    }
+    // Only print this field if it is the set field
+    if (getSetField() == STRINGREF)
+    {
+      if (!first) sb.append("," + newLine);
+      sb.append(indentStr);
+      sb.append("stringRef");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this. getStringRef() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this. getStringRef(), indent + 1, prettyPrint));
       }
       first = false;
     }
