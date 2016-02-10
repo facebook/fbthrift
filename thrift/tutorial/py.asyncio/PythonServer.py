@@ -5,7 +5,7 @@ import asyncio
 import time
 
 from thrift.server.TAsyncioServer import ThriftAsyncServerFactory
-from thrift.util.asyncio import run_on_thread
+from thrift.util.Decorators import run_on_thread
 
 from shared.ttypes import SharedStruct
 from tutorial import Calculator
