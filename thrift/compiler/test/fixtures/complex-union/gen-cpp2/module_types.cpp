@@ -83,7 +83,7 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     }
     case Type::stringRef:
     {
-      return value_.stringRef == rhs.value_.stringRef;
+      return *value_.stringRef == *rhs.value_.stringRef;
       break;
     }
     default:

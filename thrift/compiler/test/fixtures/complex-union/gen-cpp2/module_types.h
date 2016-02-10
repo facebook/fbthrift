@@ -232,7 +232,7 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
       }
       case Type::stringRef:
       {
-        return value_.stringRef < rhs.value_.stringRef;
+        return *value_.stringRef < *rhs.value_.stringRef;
         break;
       }
       default:

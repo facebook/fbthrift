@@ -2283,12 +2283,15 @@ class CppGenerator(t_generator.Generator):
             if is_operator:
                 out('return *this;')
 
-    def _gen_union_switch(self, members, stmt,
+    def _gen_union_switch(self, members, stmt, stmt_ref,
                           val='type_', default='assert(false);'):
         with out('switch({0})'.format(val)):
             for member in members:
                 with out().case('Type::' + member.name):
-                    out(stmt.format(field=member.name))
+                    if self._is_reference(member):
+                        out(stmt_ref.format(field=member.name))
+                    else:
+                        out(stmt.format(field=member.name))
             with out().case('default'):
                 out(default)
 
@@ -2509,6 +2512,7 @@ class CppGenerator(t_generator.Generator):
                     if obj.is_union:
                         out('if (type_ == Type::__EMPTY__) { return; }')
                         self._gen_union_switch(members,
+                            'destruct(value_.{field});',
                             'destruct(value_.{field});')
                         out('type_ = Type::__EMPTY__;')
                     else:
@@ -2611,6 +2615,7 @@ class CppGenerator(t_generator.Generator):
                     out('if (type_ != rhs.type_) { return false; }')
                     self._gen_union_switch(members,
                         'return value_.{field} == rhs.value_.{field};',
+                        'return *value_.{field} == *rhs.value_.{field};',
                         default='return true;')
                 else:
                     for m in members:
@@ -2655,6 +2660,7 @@ class CppGenerator(t_generator.Generator):
                             ' { return type_ < rhs.type_; }')
                         self._gen_union_switch(members,
                             'return value_.{field} < rhs.value_.{field};',
+                            'return *value_.{field} < *rhs.value_.{field};',
                             default='return false;')
                     else:
                         for m in members:
