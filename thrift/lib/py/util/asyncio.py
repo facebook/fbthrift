@@ -6,6 +6,7 @@ import asyncio
 from thrift.server import TAsyncioServer
 from thrift.util.Decorators import protocol_manager
 
+
 @asyncio.coroutine
 def create_client(client_klass, *, host=None, port=None, loop=None):
     """
@@ -20,12 +21,12 @@ def create_client(client_klass, *, host=None, port=None, loop=None):
     if not loop:
         loop = asyncio.get_event_loop()
     transport, protocol = yield from loop.create_connection(
-        TAsyncioServer.ThriftClientProtocolFactory(client_klass),
+        TAsyncioServer.ThriftClientProtocolFactory(client_klass, loop),
         host=host, port=port)
     return protocol_manager(protocol)
 
 
-def call_as_future(f, *args, **kwargs):
+def call_as_future(f, loop, *args, **kwargs):
     """call_as_future(callable, *args, **kwargs) -> asyncio.Task
 
     Like asyncio.ensure_future() but takes any callable and converts
@@ -34,4 +35,4 @@ def call_as_future(f, *args, **kwargs):
     if not asyncio.iscoroutinefunction(f):
         f = asyncio.coroutine(f)
 
-    return asyncio.ensure_future(f(*args, **kwargs))
+    return asyncio.ensure_future(f(*args, **kwargs), loop=loop)

@@ -2146,7 +2146,8 @@ void t_py_generator::generate_service_client(t_service* tservice) {
   } else if (gen_asyncio_) {
     f_service_ <<
       indent() <<
-      "def __init__(self, transport, otrans_factory, oprot_factory):" << endl;
+      "def __init__(" <<
+        "self, transport, otrans_factory, oprot_factory, loop=None):" << endl;
   } else {
     f_service_ <<
       indent() << "def __init__(self, iprot, oprot=None):" << endl;
@@ -2164,6 +2165,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
         indent() << "  self._transport = transport" << endl <<
         indent() << "  self._otrans_factory = otrans_factory" << endl <<
         indent() << "  self._oprot_factory = oprot_factory" << endl <<
+        indent() << "  self._loop = loop or asyncio.get_event_loop()" << endl <<
         indent() << "  self._seqid = 0" << endl <<
         indent() << "  self._futures = {}" << endl <<
         endl;
@@ -2183,8 +2185,9 @@ void t_py_generator::generate_service_client(t_service* tservice) {
     } else if (gen_asyncio_) {
       f_service_ <<
         indent() << "  " << extends <<
-        ".Client.__init__(self, transport, otrans_factory, oprot_factory)" <<
-        endl << endl;
+        ".Client.__init__(" <<
+          " self, transport, otrans_factory, oprot_factory, loop)" << endl
+          << endl;
     } else {
       f_service_ <<
         indent() << "  " << extends <<
@@ -2215,7 +2218,8 @@ void t_py_generator::generate_service_client(t_service* tservice) {
     } else if (gen_asyncio_) {
       indent(f_service_) << "self._seqid += 1" << endl;
       indent(f_service_) <<
-        "fut = self._futures[self._seqid] = asyncio.Future()" << endl;
+        "fut = self._futures[self._seqid] = asyncio.Future(loop=self._loop)" <<
+        endl;
     }
 
     indent(f_service_) <<
@@ -2680,6 +2684,8 @@ void t_py_generator::generate_service_server(t_service* tservice,
   if (gen_future_) {
     indent(f_service_) << "def __init__(self, handler, executor=None):"
                        << endl;
+  } else if (gen_asyncio_) {
+    indent(f_service_) << "def __init__(self, handler, loop=None):" << endl;
   } else {
     indent(f_service_) << "def __init__(self, handler):" << endl;
   }
@@ -2699,6 +2705,10 @@ void t_py_generator::generate_service_server(t_service* tservice,
       f_service_ << indent() << "self._executor = executor or "
                  << "ThreadPoolExecutor(max_workers=32)" << endl;
     }
+    if (gen_asyncio_) {
+      f_service_ <<
+        indent() << "self._loop = loop or asyncio.get_event_loop()" << endl;
+    }
 
     f_service_ <<
       indent() << "self._processMap = {}" << endl;
@@ -2708,6 +2718,10 @@ void t_py_generator::generate_service_server(t_service* tservice,
         indent() << extends << "." << class_prefix <<
         "Processor.__init__(self, " << class_prefix << "Iface(handler))" <<
         endl;
+    } else if (gen_asyncio_) {
+      f_service_ <<
+        indent() << extends << "." << class_prefix <<
+        "Processor.__init__(self, handler, loop)" << endl;
     } else {
       f_service_ <<
         indent() << extends << "." << class_prefix <<
@@ -2928,12 +2942,11 @@ void t_py_generator::generate_process_function(t_service* /*tservice*/,
 
     f_service_ <<
       indent() << "if should_run_on_thread(" << handler << "):" << endl <<
-      indent() << "  loop = asyncio.get_event_loop()" << endl <<
-      indent() << "  fut = loop.run_in_executor(None, " <<
+      indent() << "  fut = self._loop.run_in_executor(None, " <<
       handler << ", " << args_list << ")" << endl <<
       indent() << "else:" << endl <<
-      indent() << "  fut = call_as_future(" << handler << ", " <<
-      args_list << ")" << endl;
+      indent() << "  fut = call_as_future(" << handler << ", self._loop, " <<
+        args_list << ")" << endl;
 
     if (!tfunction->is_oneway()) {
       string known_exceptions = "{";

@@ -27,14 +27,14 @@ def create_client(client_klass, host=None, port=None, loop=None):
     if not loop:
         loop = asyncio.get_event_loop()
     transport, protocol = yield From(loop.create_connection(
-        ThriftClientProtocolFactory(client_klass),
+        ThriftClientProtocolFactory(client_klass, loop),
         host=host,
         port=port,
     ))
     raise Return(protocol_manager(protocol))
 
 
-def call_as_future(callable, *args, **kwargs):
+def call_as_future(callable, loop, *args, **kwargs):
     """This is a copy of thrift.util.asyncio. So, let's consider unifying them.
 
         call_as_future(callable, *args, **kwargs) -> trollius.Task
@@ -45,4 +45,4 @@ def call_as_future(callable, *args, **kwargs):
     if not asyncio.iscoroutinefunction(callable):
         callable = asyncio.coroutine(callable)
 
-    return asyncio.ensure_future(callable(*args, **kwargs))
+    return asyncio.ensure_future(callable(*args, **kwargs), loop=loop)

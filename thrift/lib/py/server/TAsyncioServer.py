@@ -85,16 +85,17 @@ def ThriftAsyncServerFactory(
                 server.close()
     """
 
+    if loop is None:
+        loop = asyncio.get_event_loop()
+
     if not isinstance(processor, TProcessor):
         try:
-            processor = processor._processor_type(processor)
+            processor = processor._processor_type(processor, loop=loop)
         except AttributeError:
             raise TypeError(
                 "Unsupported processor type: {}".format(type(processor)),
             )
 
-    if loop is None:
-        loop = asyncio.get_event_loop()
     if nthreads:
         from concurrent.futures import ThreadPoolExecutor
         loop.set_default_executor(
@@ -143,9 +144,12 @@ class SenderTransport:
     MAX_QUEUE_SIZE = 1024
 
     def __init__(self, trans, loop=None):
-        self._queue = asyncio.Queue(maxsize=self.MAX_QUEUE_SIZE)
-        self._trans = trans
         self._loop = loop or asyncio.get_event_loop()
+        self._queue = asyncio.Queue(
+            maxsize=self.MAX_QUEUE_SIZE,
+            loop=self._loop,
+        )
+        self._trans = trans
         self._consumer = self._loop.create_task(self._send())
         self._producers = []
 
@@ -211,7 +215,9 @@ class ThriftHeaderClientProtocol(FramedProtocol):
         self.client = self._client_class(
             self.thrift_transport,
             WrappedTransportFactory(self),
-            THeaderProtocolFactory(client_type=self.client_type))
+            THeaderProtocolFactory(client_type=self.client_type),
+            self.loop,
+        )
 
     def connection_lost(self, exc):
         for fut in self.client._futures.values():
@@ -254,7 +260,7 @@ class ThriftHeaderClientProtocol(FramedProtocol):
         (fname, mtype, rseqid) = iprot.readMessageBegin()
 
         if delay:
-            yield from asyncio.sleep(delay)
+            yield from asyncio.sleep(delay, loop=self.loop)
         else:
             try:
                 timeout_task = self.pending_tasks.pop(rseqid)
