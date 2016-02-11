@@ -102,6 +102,15 @@ struct Serializer {
     queue.appendToString(*out);
   }
 
+  template <class T>
+  static void serialize(const T& obj, folly::fbstring* out) {
+    folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+    // Okay to share any external buffers, as we'll copy them to *out
+    // immediately afterwards.
+    serialize(obj, &queue, SHARE_EXTERNAL_BUFFER);
+    *out = queue.move()->moveToFbString();
+  }
+
   template <class R, class T, typename... Args>
   static R serialize(const T& obj, Args&&... args) {
     R _return;

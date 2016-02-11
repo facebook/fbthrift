@@ -138,6 +138,15 @@ TEST(SerializationTest, SerializeReturningString) {
   EXPECT_EQ(expected, actual);
 }
 
+TEST(SerializationTest, SerializeReturningFBString) {
+  using serializer = SimpleJSONSerializer;
+  auto s = makeTestStruct();
+  fbstring expected;
+  serializer::serialize(s, &expected);
+  auto actual = serializer::serialize<fbstring>(s);
+  EXPECT_EQ(expected, actual);
+}
+
 TestStructRecursive makeTestStructRecursive(size_t levels) {
   unique_ptr<TestStructRecursive> s;
   for (size_t i = levels; i > 0; --i) {
