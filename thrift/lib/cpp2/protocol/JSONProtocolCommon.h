@@ -181,6 +181,9 @@ class JSONProtocolReaderCommon {
 
   enum class ContextType { MAP, ARRAY };
 
+  template <typename Str>
+  using is_string = std::is_same<typename Str::value_type, char>;
+
   // skip over whitespace so that we can peek, and store number of bytes
   // skipped
   inline void skipWhitespace();
@@ -217,7 +220,9 @@ class JSONProtocolReaderCommon {
   inline uint32_t readJSONVal(int64_t& val);
   inline uint32_t readJSONVal(double& val);
   inline uint32_t readJSONVal(float& val);
-  inline uint32_t readJSONVal(std::string& val);
+  template <typename Str>
+  inline typename std::enable_if<is_string<Str>::value, uint32_t>::type
+  readJSONVal(Str& val);
   inline bool JSONtoBool(const std::string& s);
   inline uint32_t readJSONVal(bool& val);
   inline uint32_t readJSONNull();

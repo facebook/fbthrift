@@ -752,7 +752,10 @@ uint32_t JSONProtocolReaderCommon::readJSONVal(float& val) {
   return ret;
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONVal(std::string& val) {
+template <typename Str>
+typename std::enable_if<
+    JSONProtocolReaderCommon::is_string<Str>::value, uint32_t>::type
+JSONProtocolReaderCommon::readJSONVal(Str& val) {
   return readJSONString(val);
 }
 

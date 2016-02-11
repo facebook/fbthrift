@@ -63,6 +63,16 @@ using Writers = testing::Types<
     VirtualWriter<JSONProtocolWriter>,
     VirtualWriter<SimpleJSONProtocolWriter>>;
 
+using Readers = testing::Types<
+    BinaryProtocolReader,
+    CompactProtocolReader,
+    JSONProtocolReader,
+    SimpleJSONProtocolReader,
+    VirtualReader<BinaryProtocolReader>,
+    VirtualReader<CompactProtocolReader>,
+    VirtualReader<JSONProtocolReader>,
+    VirtualReader<SimpleJSONProtocolReader>>;
+
 template <typename Writer>
 class WriterInterfaceTest : public testing::Test {
  protected:
@@ -70,6 +80,21 @@ class WriterInterfaceTest : public testing::Test {
   Writer writer;
   void SetUp() override {
     writer.setOutput(&queue);
+  }
+};
+
+template <typename Reader>
+class ReaderInterfaceTest : public testing::Test {
+ protected:
+  IOBufQueue queue;
+  typename Reader::ProtocolWriter writer;
+  void SetUp() override {
+    writer.setOutput(&queue);
+  }
+  Reader reader() {
+    Reader reader;
+    reader.setInput(queue.front());
+    return reader;
   }
 };
 
@@ -131,3 +156,18 @@ REGISTER_TYPED_TEST_CASE_P(
     method_sig_serializedSizeZCBinary_IOBuf);
 
 INSTANTIATE_TYPED_TEST_CASE_P(Thrift, WriterInterfaceTest, Writers);
+
+TYPED_TEST_CASE_P(ReaderInterfaceTest);
+
+TYPED_TEST_P(ReaderInterfaceTest, readString_fbstring) {
+  this->writer.writeString("hello");
+  folly::fbstring out;
+  this->reader().readString(out);
+  EXPECT_EQ("hello", out);
+}
+
+REGISTER_TYPED_TEST_CASE_P(
+    ReaderInterfaceTest,
+    readString_fbstring);
+
+INSTANTIATE_TYPED_TEST_CASE_P(Thrift, ReaderInterfaceTest, Readers);
