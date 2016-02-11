@@ -64,8 +64,10 @@ include "thrift/tutorial/shared.thrift"
  */
 namespace cpp2 apache.thrift.tutorial
 namespace java tutorial
-namespace php tutorial
 namespace perl tutorial
+namespace php tutorial
+namespace py tutorial
+namespace py.asyncio thrift_asyncio.tutorial
 namespace smalltalk.category Thrift.Tutorial
 
 /**

@@ -7,9 +7,9 @@ import time
 from thrift.server.TAsyncioServer import ThriftAsyncServerFactory
 from thrift.util.Decorators import run_on_thread
 
-from shared.ttypes import SharedStruct
-from tutorial import Calculator
-from tutorial.ttypes import Operation, InvalidOperation
+from thrift_asyncio.shared.ttypes import SharedStruct
+from thrift_asyncio.tutorial import Calculator
+from thrift_asyncio.tutorial.ttypes import Operation, InvalidOperation
 
 
 class CalculatorHandler(Calculator.Iface):

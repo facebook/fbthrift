@@ -9,25 +9,12 @@ import unittest
 
 from thrift.server.TAsyncioServer import ThriftAsyncServerFactory
 from thrift.server.TAsyncioServer import ThriftClientProtocolFactory
-from tutorial import Calculator
-
-
-class DummyCalcHandler(Calculator.Iface):
-    @asyncio.coroutine
-    def add(self, n1, n2):
-        return 42
-
-    @asyncio.coroutine
-    def calculate(self, logid, work):
-        return 0
-
-    @asyncio.coroutine
-    def zip(self):
-        print('zip')
+from thrift_asyncio.tutorial import Calculator
+from thrift.server.test.handler import AsyncCalculatorHandler
 
 
 def server_loop_runner(loop, sock):
-    handler = DummyCalcHandler()
+    handler = AsyncCalculatorHandler()
     return loop.run_until_complete(
         ThriftAsyncServerFactory(handler, port=None, loop=loop, sock=sock),
     )

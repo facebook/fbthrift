@@ -25,6 +25,8 @@
 namespace cpp2 apache.thrift.tutorial
 namespace java shared
 namespace perl shared
+namespace py shared
+namespace py.asyncio thrift_asyncio.shared
 
 struct SharedStruct {
   1: i32 key

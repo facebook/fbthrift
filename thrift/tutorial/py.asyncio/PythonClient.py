@@ -6,8 +6,8 @@ import time
 
 from thrift.server.TAsyncioServer import ThriftClientProtocolFactory
 
-from tutorial import Calculator
-from tutorial.ttypes import Work, Operation, InvalidOperation
+from thrift_asyncio.tutorial import Calculator
+from thrift_asyncio.tutorial.ttypes import Work, Operation, InvalidOperation
 
 
 @asyncio.coroutine

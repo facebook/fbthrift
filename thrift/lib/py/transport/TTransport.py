@@ -52,7 +52,7 @@ class TTransportException(TException):
         self.type = type
 
 
-class TTransportBase:
+class TTransportBase(object):
 
     """Base class for Thrift transport layer."""
 
