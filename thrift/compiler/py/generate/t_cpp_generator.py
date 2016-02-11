@@ -2672,6 +2672,94 @@ class CppGenerator(t_generator.Generator):
                 struct('bool operator < (const {0}& rhs) const;'
                   .format(obj.name))
 
+        # generate getters/setters for structures not using folly::Optional
+        if not obj.is_union and not self.flag_optionals:
+            for member in members:
+                # Doesn't make sense to generate getters/setters for ref fields.
+                # (There is no __isset bit for refs.)
+                if self._is_reference(member):
+                    continue
+                t = self._type_name(member.type)
+                getter_name = 'get_' + member.name
+                if getter_name in [m.name for m in members]:
+                    raise CompilerError("Cannot have object with fields with "
+                        "names of form 'field' and 'get_field'. (In structure "
+                        "{0}: fields '{1}' and '{2}'.)"
+                        .format(obj.name, member.name, getter_name))
+                ttype = self._get_true_type(member.type)
+                outofline = not ttype.is_base_type and \
+                            not ttype.is_enum and \
+                            not member.type in self._generated_types
+                if member.req == e_req.optional:
+                    # getter overload 1: const T* get_field() const&
+                    with struct.defn('const {0}* {{name}}() const&'
+                                     .format(t),
+                                     name=getter_name,
+                                     in_header=not outofline):
+                        out('return __isset.{0} ? std::addressof({0})'
+                            ' : nullptr;'
+                            .format(member.name))
+                    # getter overload 2: T* get_field() &
+                    with struct.defn('{0}* {{name}}() &'.format(t),
+                                     name=getter_name,
+                                     in_header=not outofline):
+                        out('return __isset.{0} ? std::addressof({0})'
+                            ' : nullptr;'
+                            .format(member.name))
+                    # getter overload 3: T* get_field() && = delete
+                    out('{0}* {1}() && = delete;'.format(t, getter_name))
+                else:
+                    if not self._is_complex_type(member.type):
+                        # getter: T get_field() const
+                        with struct.defn('{0} {{name}}() const'
+                                         .format(t),
+                                         name=getter_name,
+                                         in_header=True):
+                            out('return {0};'.format(member.name))
+                    else:
+                        # getter overload 1: const T& get_field() const&
+                        with struct.defn('const {0}& {{name}}() const&'
+                                         .format(t),
+                                         name=getter_name,
+                                         in_header=not outofline):
+                            out('return {0};'.format(member.name))
+                        # getter overload 2: T get_field() &&
+                        with struct.defn('{0} {{name}}() &&'.format(t),
+                                         name=getter_name,
+                                         in_header=not outofline):
+                            out('return std::move({0});'.format(member.name))
+
+                # setters
+                setter_name = 'set_' + member.name
+                if setter_name in [m.name for m in members]:
+                    raise CompilerError("Cannot have object with fields with "
+                        "names of form 'field' and 'set_field'. (In structure "
+                        "{0}: fields '{1}' and '{2}'.)"
+                        .format(obj.name, member.name, setter_name))
+                param_name = member.name + '_'
+                if not self._is_complex_type(member.type):
+                    # setter: void set_field(T t)
+                    with struct.defn('void {{name}}({0} {1})'
+                                     .format(t, param_name),
+                                     name=setter_name,
+                                     in_header=True):
+                        out('{0} = {1};'.format(member.name, param_name))
+                        if self._has_isset(member):
+                            out('__isset.{0} = true;'.format(member.name))
+                else:
+                    # rely on compiler to generate appropriate pass-by-ref
+                    # setters
+                    with struct.defn('template <typename T>\n'
+                                    'void {{name}}(T&& {0})'
+                                    .format(param_name),
+                                    name=setter_name,
+                                    output=self._out_tcc if outofline else None,
+                                    in_header=not outofline):
+                        out('{0} = std::forward<T>({1});'
+                            .format(member.name, param_name))
+                        if self._has_isset(member):
+                            out('__isset.{0} = true;'.format(member.name))
+
         # generate union accessors/settors
         if obj.is_union:
             for member in members:

@@ -1123,6 +1123,150 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+template <typename T>
+void structC::set_g(T&& g_) {
+  g = std::forward<T>(g_);
+  __isset.g = true;
+}
+
+template <typename T>
+void structC::set_h(T&& h_) {
+  h = std::forward<T>(h_);
+  __isset.h = true;
+}
+
+template <typename T>
+void structC::set_i(T&& i_) {
+  i = std::forward<T>(i_);
+  __isset.i = true;
+}
+
+template <typename T>
+void structC::set_j(T&& j_) {
+  j = std::forward<T>(j_);
+  __isset.j = true;
+}
+
+template <typename T>
+void structC::set_j1(T&& j1_) {
+  j1 = std::forward<T>(j1_);
+  __isset.j1 = true;
+}
+
+template <typename T>
+void structC::set_j2(T&& j2_) {
+  j2 = std::forward<T>(j2_);
+  __isset.j2 = true;
+}
+
+template <typename T>
+void structC::set_j3(T&& j3_) {
+  j3 = std::forward<T>(j3_);
+  __isset.j3 = true;
+}
+
+template <typename T>
+void structC::set_k(T&& k_) {
+  k = std::forward<T>(k_);
+  __isset.k = true;
+}
+
+template <typename T>
+void structC::set_k1(T&& k1_) {
+  k1 = std::forward<T>(k1_);
+  __isset.k1 = true;
+}
+
+template <typename T>
+void structC::set_k2(T&& k2_) {
+  k2 = std::forward<T>(k2_);
+  __isset.k2 = true;
+}
+
+template <typename T>
+void structC::set_k3(T&& k3_) {
+  k3 = std::forward<T>(k3_);
+  __isset.k3 = true;
+}
+
+template <typename T>
+void structC::set_l(T&& l_) {
+  l = std::forward<T>(l_);
+  __isset.l = true;
+}
+
+template <typename T>
+void structC::set_l1(T&& l1_) {
+  l1 = std::forward<T>(l1_);
+  __isset.l1 = true;
+}
+
+template <typename T>
+void structC::set_l2(T&& l2_) {
+  l2 = std::forward<T>(l2_);
+  __isset.l2 = true;
+}
+
+template <typename T>
+void structC::set_l3(T&& l3_) {
+  l3 = std::forward<T>(l3_);
+  __isset.l3 = true;
+}
+
+template <typename T>
+void structC::set_m1(T&& m1_) {
+  m1 = std::forward<T>(m1_);
+  __isset.m1 = true;
+}
+
+template <typename T>
+void structC::set_m2(T&& m2_) {
+  m2 = std::forward<T>(m2_);
+  __isset.m2 = true;
+}
+
+template <typename T>
+void structC::set_m3(T&& m3_) {
+  m3 = std::forward<T>(m3_);
+  __isset.m3 = true;
+}
+
+template <typename T>
+void structC::set_n1(T&& n1_) {
+  n1 = std::forward<T>(n1_);
+  __isset.n1 = true;
+}
+
+template <typename T>
+void structC::set_n2(T&& n2_) {
+  n2 = std::forward<T>(n2_);
+  __isset.n2 = true;
+}
+
+template <typename T>
+void structC::set_n3(T&& n3_) {
+  n3 = std::forward<T>(n3_);
+  __isset.n3 = true;
+}
+
+template <typename T>
+void structC::set_o1(T&& o1_) {
+  o1 = std::forward<T>(o1_);
+  __isset.o1 = true;
+}
+
+template <typename T>
+void structC::set_o2(T&& o2_) {
+  o2 = std::forward<T>(o2_);
+  __isset.o2 = true;
+}
+
+template <typename T>
+void structC::set_o3(T&& o3_) {
+  o3 = std::forward<T>(o3_);
+  __isset.o3 = true;
+}
+
 template <class Protocol_>
 uint32_t structC::read(Protocol_* iprot) {
   uint32_t xfer = 0;
@@ -2578,6 +2722,18 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+template <typename T>
+void struct1::set_field4(T&& field4_) {
+  field4 = std::forward<T>(field4_);
+  __isset.field4 = true;
+}
+
+template <typename T>
+void struct1::set_field5(T&& field5_) {
+  field5 = std::forward<T>(field5_);
+  __isset.field5 = true;
+}
+
 template <class Protocol_>
 uint32_t struct1::read(Protocol_* iprot) {
   uint32_t xfer = 0;
@@ -2791,6 +2947,24 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
+
+template <typename T>
+void struct2::set_fieldE(T&& fieldE_) {
+  fieldE = std::forward<T>(fieldE_);
+  __isset.fieldE = true;
+}
+
+template <typename T>
+void struct2::set_fieldF(T&& fieldF_) {
+  fieldF = std::forward<T>(fieldF_);
+  __isset.fieldF = true;
+}
+
+template <typename T>
+void struct2::set_fieldG(T&& fieldG_) {
+  fieldG = std::forward<T>(fieldG_);
+  __isset.fieldG = true;
+}
 
 template <class Protocol_>
 uint32_t struct2::read(Protocol_* iprot) {
@@ -3006,6 +3180,90 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
+
+template <typename T>
+void struct3::set_fieldE(T&& fieldE_) {
+  fieldE = std::forward<T>(fieldE_);
+  __isset.fieldE = true;
+}
+
+template <typename T>
+void struct3::set_fieldF(T&& fieldF_) {
+  fieldF = std::forward<T>(fieldF_);
+  __isset.fieldF = true;
+}
+
+template <typename T>
+void struct3::set_fieldG(T&& fieldG_) {
+  fieldG = std::forward<T>(fieldG_);
+  __isset.fieldG = true;
+}
+
+template <typename T>
+void struct3::set_fieldH(T&& fieldH_) {
+  fieldH = std::forward<T>(fieldH_);
+  __isset.fieldH = true;
+}
+
+template <typename T>
+void struct3::set_fieldI(T&& fieldI_) {
+  fieldI = std::forward<T>(fieldI_);
+  __isset.fieldI = true;
+}
+
+template <typename T>
+void struct3::set_fieldJ(T&& fieldJ_) {
+  fieldJ = std::forward<T>(fieldJ_);
+  __isset.fieldJ = true;
+}
+
+template <typename T>
+void struct3::set_fieldK(T&& fieldK_) {
+  fieldK = std::forward<T>(fieldK_);
+  __isset.fieldK = true;
+}
+
+template <typename T>
+void struct3::set_fieldL(T&& fieldL_) {
+  fieldL = std::forward<T>(fieldL_);
+  __isset.fieldL = true;
+}
+
+template <typename T>
+void struct3::set_fieldM(T&& fieldM_) {
+  fieldM = std::forward<T>(fieldM_);
+  __isset.fieldM = true;
+}
+
+template <typename T>
+void struct3::set_fieldN(T&& fieldN_) {
+  fieldN = std::forward<T>(fieldN_);
+  __isset.fieldN = true;
+}
+
+template <typename T>
+void struct3::set_fieldO(T&& fieldO_) {
+  fieldO = std::forward<T>(fieldO_);
+  __isset.fieldO = true;
+}
+
+template <typename T>
+void struct3::set_fieldP(T&& fieldP_) {
+  fieldP = std::forward<T>(fieldP_);
+  __isset.fieldP = true;
+}
+
+template <typename T>
+void struct3::set_fieldQ(T&& fieldQ_) {
+  fieldQ = std::forward<T>(fieldQ_);
+  __isset.fieldQ = true;
+}
+
+template <typename T>
+void struct3::set_fieldR(T&& fieldR_) {
+  fieldR = std::forward<T>(fieldR_);
+  __isset.fieldR = true;
+}
 
 template <class Protocol_>
 uint32_t struct3::read(Protocol_* iprot) {

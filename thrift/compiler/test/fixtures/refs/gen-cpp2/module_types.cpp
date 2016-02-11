@@ -220,6 +220,14 @@ bool StructWithUnion::operator==(const StructWithUnion& rhs) const {
   return true;
 }
 
+const  ::cpp2::MyField& StructWithUnion::get_f() const& {
+  return f;
+}
+
+ ::cpp2::MyField StructWithUnion::get_f() && {
+  return std::move(f);
+}
+
 void swap(StructWithUnion& a, StructWithUnion& b) {
   using ::std::swap;
   swap(a.u, b.u);
@@ -256,6 +264,14 @@ bool RecursiveStruct::operator==(const RecursiveStruct& rhs) const {
     return false;
   }
   return true;
+}
+
+const std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() const& {
+  return __isset.mes ? std::addressof(mes) : nullptr;
+}
+
+std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() & {
+  return __isset.mes ? std::addressof(mes) : nullptr;
 }
 
 void swap(RecursiveStruct& a, RecursiveStruct& b) {

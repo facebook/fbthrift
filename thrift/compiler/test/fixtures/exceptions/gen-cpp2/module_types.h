@@ -117,6 +117,19 @@ class Fiery : private boost::totally_ordered<Fiery>, public apache::thrift::TExc
     return false;
   }
 
+  const std::string& get_message() const& {
+    return message;
+  }
+
+  std::string get_message() && {
+    return std::move(message);
+  }
+
+  template <typename T>
+  void set_message(T&& message_) {
+    message = std::forward<T>(message_);
+  }
+
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>

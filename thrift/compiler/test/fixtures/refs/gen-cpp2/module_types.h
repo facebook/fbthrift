@@ -321,6 +321,37 @@ class MyField : private boost::totally_ordered<MyField> {
   bool operator==(const MyField& rhs) const;
   bool operator < (const MyField& rhs) const;
 
+  const int64_t* get_opt_value() const& {
+    return __isset.opt_value ? std::addressof(opt_value) : nullptr;
+  }
+
+  int64_t* get_opt_value() & {
+    return __isset.opt_value ? std::addressof(opt_value) : nullptr;
+  }
+  int64_t* get_opt_value() && = delete;
+
+  void set_opt_value(int64_t opt_value_) {
+    opt_value = opt_value_;
+    __isset.opt_value = true;
+  }
+
+  int64_t get_value() const {
+    return value;
+  }
+
+  void set_value(int64_t value_) {
+    value = value_;
+    __isset.value = true;
+  }
+
+  int64_t get_req_value() const {
+    return req_value;
+  }
+
+  void set_req_value(int64_t req_value_) {
+    req_value = req_value_;
+  }
+
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
@@ -481,6 +512,19 @@ class StructWithUnion : private boost::totally_ordered<StructWithUnion> {
   bool operator==(const StructWithUnion& rhs) const;
   bool operator < (const StructWithUnion& rhs) const;
 
+  double get_aDouble() const {
+    return aDouble;
+  }
+
+  void set_aDouble(double aDouble_) {
+    aDouble = aDouble_;
+    __isset.aDouble = true;
+  }
+  const  ::cpp2::MyField& get_f() const&;
+   ::cpp2::MyField get_f() &&;
+  template <typename T>
+  void set_f(T&& f_);
+
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
@@ -558,6 +602,11 @@ class RecursiveStruct : private boost::totally_ordered<RecursiveStruct> {
   } __isset;
   bool operator==(const RecursiveStruct& rhs) const;
   bool operator < (const RecursiveStruct& rhs) const;
+  const std::vector< ::cpp2::RecursiveStruct>* get_mes() const&;
+  std::vector< ::cpp2::RecursiveStruct>* get_mes() &;
+  std::vector< ::cpp2::RecursiveStruct>* get_mes() && = delete;
+  template <typename T>
+  void set_mes(T&& mes_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

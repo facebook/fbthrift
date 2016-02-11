@@ -667,6 +667,198 @@ bool structC::operator==(const structC& rhs) const {
   return true;
 }
 
+const  ::test_cpp2::cpp_reflection::union1& structC::get_g() const& {
+  return g;
+}
+
+ ::test_cpp2::cpp_reflection::union1 structC::get_g() && {
+  return std::move(g);
+}
+
+const  ::test_cpp2::cpp_reflection::unionA& structC::get_h() const& {
+  return h;
+}
+
+ ::test_cpp2::cpp_reflection::unionA structC::get_h() && {
+  return std::move(h);
+}
+
+const  ::test_cpp2::cpp_reflection::unionA& structC::get_i() const& {
+  return i;
+}
+
+ ::test_cpp2::cpp_reflection::unionA structC::get_i() && {
+  return std::move(i);
+}
+
+const std::vector<int32_t>& structC::get_j() const& {
+  return j;
+}
+
+std::vector<int32_t> structC::get_j() && {
+  return std::move(j);
+}
+
+const std::vector<int32_t>& structC::get_j1() const& {
+  return j1;
+}
+
+std::vector<int32_t> structC::get_j1() && {
+  return std::move(j1);
+}
+
+const std::vector< ::test_cpp2::cpp_reflection::enum1>& structC::get_j2() const& {
+  return j2;
+}
+
+std::vector< ::test_cpp2::cpp_reflection::enum1> structC::get_j2() && {
+  return std::move(j2);
+}
+
+const std::vector< ::test_cpp2::cpp_reflection::structA>& structC::get_j3() const& {
+  return j3;
+}
+
+std::vector< ::test_cpp2::cpp_reflection::structA> structC::get_j3() && {
+  return std::move(j3);
+}
+
+const std::set<int32_t>& structC::get_k() const& {
+  return k;
+}
+
+std::set<int32_t> structC::get_k() && {
+  return std::move(k);
+}
+
+const std::set<int32_t>& structC::get_k1() const& {
+  return k1;
+}
+
+std::set<int32_t> structC::get_k1() && {
+  return std::move(k1);
+}
+
+const std::set< ::test_cpp2::cpp_reflection::enum2>& structC::get_k2() const& {
+  return k2;
+}
+
+std::set< ::test_cpp2::cpp_reflection::enum2> structC::get_k2() && {
+  return std::move(k2);
+}
+
+const std::set< ::test_cpp2::cpp_reflection::structB>& structC::get_k3() const& {
+  return k3;
+}
+
+std::set< ::test_cpp2::cpp_reflection::structB> structC::get_k3() && {
+  return std::move(k3);
+}
+
+const std::map<int32_t, int32_t>& structC::get_l() const& {
+  return l;
+}
+
+std::map<int32_t, int32_t> structC::get_l() && {
+  return std::move(l);
+}
+
+const std::map<int32_t, int32_t>& structC::get_l1() const& {
+  return l1;
+}
+
+std::map<int32_t, int32_t> structC::get_l1() && {
+  return std::move(l1);
+}
+
+const std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>& structC::get_l2() const& {
+  return l2;
+}
+
+std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> structC::get_l2() && {
+  return std::move(l2);
+}
+
+const std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>& structC::get_l3() const& {
+  return l3;
+}
+
+std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> structC::get_l3() && {
+  return std::move(l3);
+}
+
+const std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>& structC::get_m1() const& {
+  return m1;
+}
+
+std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> structC::get_m1() && {
+  return std::move(m1);
+}
+
+const std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>& structC::get_m2() const& {
+  return m2;
+}
+
+std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> structC::get_m2() && {
+  return std::move(m2);
+}
+
+const std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>& structC::get_m3() const& {
+  return m3;
+}
+
+std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> structC::get_m3() && {
+  return std::move(m3);
+}
+
+const std::map<std::string, int32_t>& structC::get_n1() const& {
+  return n1;
+}
+
+std::map<std::string, int32_t> structC::get_n1() && {
+  return std::move(n1);
+}
+
+const std::map<std::string,  ::test_cpp2::cpp_reflection::enum1>& structC::get_n2() const& {
+  return n2;
+}
+
+std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> structC::get_n2() && {
+  return std::move(n2);
+}
+
+const std::map<std::string,  ::test_cpp2::cpp_reflection::structB>& structC::get_n3() const& {
+  return n3;
+}
+
+std::map<std::string,  ::test_cpp2::cpp_reflection::structB> structC::get_n3() && {
+  return std::move(n3);
+}
+
+const std::map< ::test_cpp2::cpp_reflection::structA, int32_t>& structC::get_o1() const& {
+  return o1;
+}
+
+std::map< ::test_cpp2::cpp_reflection::structA, int32_t> structC::get_o1() && {
+  return std::move(o1);
+}
+
+const std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>& structC::get_o2() const& {
+  return o2;
+}
+
+std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> structC::get_o2() && {
+  return std::move(o2);
+}
+
+const std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>& structC::get_o3() const& {
+  return o3;
+}
+
+std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> structC::get_o3() && {
+  return std::move(o3);
+}
+
 void swap(structC& a, structC& b) {
   using ::std::swap;
   swap(a.a, b.a);
@@ -755,6 +947,22 @@ bool struct1::operator==(const struct1& rhs) const {
   return true;
 }
 
+const  ::test_cpp2::cpp_reflection::union1* struct1::get_field4() const& {
+  return __isset.field4 ? std::addressof(field4) : nullptr;
+}
+
+ ::test_cpp2::cpp_reflection::union1* struct1::get_field4() & {
+  return __isset.field4 ? std::addressof(field4) : nullptr;
+}
+
+const  ::test_cpp2::cpp_reflection::union2& struct1::get_field5() const& {
+  return field5;
+}
+
+ ::test_cpp2::cpp_reflection::union2 struct1::get_field5() && {
+  return std::move(field5);
+}
+
 void swap(struct1& a, struct1& b) {
   using ::std::swap;
   swap(a.field0, b.field0);
@@ -815,6 +1023,30 @@ bool struct2::operator==(const struct2& rhs) const {
     return false;
   }
   return true;
+}
+
+const  ::test_cpp2::cpp_reflection::union1& struct2::get_fieldE() const& {
+  return fieldE;
+}
+
+ ::test_cpp2::cpp_reflection::union1 struct2::get_fieldE() && {
+  return std::move(fieldE);
+}
+
+const  ::test_cpp2::cpp_reflection::union2& struct2::get_fieldF() const& {
+  return fieldF;
+}
+
+ ::test_cpp2::cpp_reflection::union2 struct2::get_fieldF() && {
+  return std::move(fieldF);
+}
+
+const  ::test_cpp2::cpp_reflection::struct1& struct2::get_fieldG() const& {
+  return fieldG;
+}
+
+ ::test_cpp2::cpp_reflection::struct1 struct2::get_fieldG() && {
+  return std::move(fieldG);
 }
 
 void swap(struct2& a, struct2& b) {
@@ -922,6 +1154,118 @@ bool struct3::operator==(const struct3& rhs) const {
     return false;
   }
   return true;
+}
+
+const  ::test_cpp2::cpp_reflection::union1& struct3::get_fieldE() const& {
+  return fieldE;
+}
+
+ ::test_cpp2::cpp_reflection::union1 struct3::get_fieldE() && {
+  return std::move(fieldE);
+}
+
+const  ::test_cpp2::cpp_reflection::union2& struct3::get_fieldF() const& {
+  return fieldF;
+}
+
+ ::test_cpp2::cpp_reflection::union2 struct3::get_fieldF() && {
+  return std::move(fieldF);
+}
+
+const  ::test_cpp2::cpp_reflection::struct1& struct3::get_fieldG() const& {
+  return fieldG;
+}
+
+ ::test_cpp2::cpp_reflection::struct1 struct3::get_fieldG() && {
+  return std::move(fieldG);
+}
+
+const  ::test_cpp2::cpp_reflection::union2& struct3::get_fieldH() const& {
+  return fieldH;
+}
+
+ ::test_cpp2::cpp_reflection::union2 struct3::get_fieldH() && {
+  return std::move(fieldH);
+}
+
+const std::vector<int32_t>& struct3::get_fieldI() const& {
+  return fieldI;
+}
+
+std::vector<int32_t> struct3::get_fieldI() && {
+  return std::move(fieldI);
+}
+
+const std::vector<std::string>& struct3::get_fieldJ() const& {
+  return fieldJ;
+}
+
+std::vector<std::string> struct3::get_fieldJ() && {
+  return std::move(fieldJ);
+}
+
+const std::vector<std::string>& struct3::get_fieldK() const& {
+  return fieldK;
+}
+
+std::vector<std::string> struct3::get_fieldK() && {
+  return std::move(fieldK);
+}
+
+const std::vector< ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldL() const& {
+  return fieldL;
+}
+
+std::vector< ::test_cpp2::cpp_reflection::structA> struct3::get_fieldL() && {
+  return std::move(fieldL);
+}
+
+const std::set<int32_t>& struct3::get_fieldM() const& {
+  return fieldM;
+}
+
+std::set<int32_t> struct3::get_fieldM() && {
+  return std::move(fieldM);
+}
+
+const std::set<std::string>& struct3::get_fieldN() const& {
+  return fieldN;
+}
+
+std::set<std::string> struct3::get_fieldN() && {
+  return std::move(fieldN);
+}
+
+const std::set<std::string>& struct3::get_fieldO() const& {
+  return fieldO;
+}
+
+std::set<std::string> struct3::get_fieldO() && {
+  return std::move(fieldO);
+}
+
+const std::set< ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldP() const& {
+  return fieldP;
+}
+
+std::set< ::test_cpp2::cpp_reflection::structB> struct3::get_fieldP() && {
+  return std::move(fieldP);
+}
+
+const std::map<std::string,  ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldQ() const& {
+  return fieldQ;
+}
+
+std::map<std::string,  ::test_cpp2::cpp_reflection::structA> struct3::get_fieldQ() && {
+  return std::move(fieldQ);
+}
+
+const std::map<std::string,  ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldR() const& {
+  return fieldR;
+}
+
+std::map<std::string,  ::test_cpp2::cpp_reflection::structB> struct3::get_fieldR() && {
+  return std::move(fieldR);
 }
 
 void swap(struct3& a, struct3& b) {

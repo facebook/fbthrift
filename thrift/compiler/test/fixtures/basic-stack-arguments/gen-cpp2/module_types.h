@@ -101,6 +101,29 @@ class MyStruct : private boost::totally_ordered<MyStruct> {
     return false;
   }
 
+  int64_t get_MyIntField() const {
+    return MyIntField;
+  }
+
+  void set_MyIntField(int64_t MyIntField_) {
+    MyIntField = MyIntField_;
+    __isset.MyIntField = true;
+  }
+
+  const std::string& get_MyStringField() const& {
+    return MyStringField;
+  }
+
+  std::string get_MyStringField() && {
+    return std::move(MyStringField);
+  }
+
+  template <typename T>
+  void set_MyStringField(T&& MyStringField_) {
+    MyStringField = std::forward<T>(MyStringField_);
+    __isset.MyStringField = true;
+  }
+
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>

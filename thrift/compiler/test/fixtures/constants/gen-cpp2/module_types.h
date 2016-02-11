@@ -131,6 +131,42 @@ class Internship : private boost::totally_ordered<Internship> {
   bool operator==(const Internship& rhs) const;
   bool operator < (const Internship& rhs) const;
 
+  int32_t get_weeks() const {
+    return weeks;
+  }
+
+  void set_weeks(int32_t weeks_) {
+    weeks = weeks_;
+  }
+
+  const std::string& get_title() const& {
+    return title;
+  }
+
+  std::string get_title() && {
+    return std::move(title);
+  }
+
+  template <typename T>
+  void set_title(T&& title_) {
+    title = std::forward<T>(title_);
+    __isset.title = true;
+  }
+
+  const  ::cpp2::Company* get_employer() const& {
+    return __isset.employer ? std::addressof(employer) : nullptr;
+  }
+
+   ::cpp2::Company* get_employer() & {
+    return __isset.employer ? std::addressof(employer) : nullptr;
+  }
+   ::cpp2::Company* get_employer() && = delete;
+
+  void set_employer( ::cpp2::Company employer_) {
+    employer = employer_;
+    __isset.employer = true;
+  }
+
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
@@ -208,6 +244,22 @@ class Range : private boost::totally_ordered<Range> {
       return max < rhs.max;
     }
     return false;
+  }
+
+  int32_t get_min() const {
+    return min;
+  }
+
+  void set_min(int32_t min_) {
+    min = min_;
+  }
+
+  int32_t get_max() const {
+    return max;
+  }
+
+  void set_max(int32_t max_) {
+    max = max_;
   }
 
   template <class Protocol_>
