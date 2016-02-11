@@ -105,6 +105,7 @@ char* y_enum_name = nullptr;
 %token tok_namespace
 %token tok_cpp_namespace
 %token tok_cpp_include
+%token tok_hs_include
 %token tok_php_namespace
 %token tok_py_module
 %token tok_perl_package
@@ -330,6 +331,11 @@ Header:
       if (g_parse_mode == PROGRAM) {
         g_program->add_cpp_include($2);
       }
+    }
+| tok_hs_include tok_literal
+    {
+      pdebug("Header -> tok_hs_include tok_literal");
+      // Do nothing. This syntax is handled by the hs compiler
     }
 | tok_php_namespace tok_identifier
     {

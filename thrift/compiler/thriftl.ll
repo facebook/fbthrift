@@ -112,6 +112,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "namespace"          { return tok_namespace;            }
 "cpp_namespace"      { return tok_cpp_namespace;        }
 "cpp_include"        { return tok_cpp_include;          }
+"hs_include"         { return tok_hs_include;           }
 "cpp_type"           {
   yyerror("\"cpp_type\" is no longer allowed. "
     "Use the cpp.type annotation instead.\n");
