@@ -15,7 +15,7 @@
  */
 #pragma once
 
-#include <proxygen/lib/http/codec/experimental/HTTP2Codec.h>
+#include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/test/util/TestClientChannelFactory.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>

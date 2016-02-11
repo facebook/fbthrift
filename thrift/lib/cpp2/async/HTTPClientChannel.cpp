@@ -18,7 +18,7 @@
 #include <proxygen/lib/http/codec/HTTPCodec.h>
 #include <proxygen/lib/http/codec/HTTP1xCodec.h>
 #include <proxygen/lib/http/codec/TransportDirection.h>
-#include <proxygen/lib/http/codec/experimental/HTTP2Codec.h>
+#include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <proxygen/lib/http/HTTPMethod.h>
 #include <proxygen/lib/http/HTTPCommonHeaders.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
