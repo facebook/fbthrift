@@ -310,20 +310,6 @@ bool ProxygenThriftServer::isOverloaded(const THeader* header) {
   return false;
 }
 
-int64_t ProxygenThriftServer::getRequestLoad() {
-  if (maxRequests_ > 0) {
-    return (100 * activeRequests_) / ((float)maxRequests_);
-  }
-
-  return 0;
-}
-
-int64_t ProxygenThriftServer::getConnectionLoad() {
-  LOG(WARNING) << "getConnLoad is not implemented";
-
-  return 0;
-}
-
 uint64_t ProxygenThriftServer::getNumDroppedConnections() const {
   uint64_t droppedConns = 0;
   if (server_) {

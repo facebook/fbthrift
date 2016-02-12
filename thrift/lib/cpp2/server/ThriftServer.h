@@ -241,11 +241,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   virtual bool isOverloaded(
     const apache::thrift::transport::THeader* header = nullptr) override;
 
-  // Get load percent of the server.  Must be a number between 0 and 100:
-  // 0 - no load, 100-fully loaded.
   int64_t getRequestLoad() override;
-  int64_t getConnectionLoad() override;
-  std::string getLoadInfo(int64_t reqload, int64_t connload, int64_t queueload) override;
+  std::string getLoadInfo(int64_t load) override;
 
   void setIOThreadPoolExecutor(
     std::shared_ptr<wangle::IOThreadPoolExecutor> pool) {

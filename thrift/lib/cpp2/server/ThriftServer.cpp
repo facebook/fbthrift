@@ -466,34 +466,10 @@ bool ThriftServer::isOverloaded(const THeader* header) {
 }
 
 int64_t ThriftServer::getRequestLoad() {
-  if (maxRequests_ > 0) {
-    return (100*(activeRequests_ + getPendingCount()))
-      / ((float)maxRequests_);
-  }
-
-  return 0;
+  return activeRequests_ + getPendingCount();
 }
 
-int64_t ThriftServer::getConnectionLoad() {
-  auto ioGroup = getIOGroupSafe();
-  auto workerFactory = ioGroup != nullptr ?
-    std::dynamic_pointer_cast<wangle::NamedThreadFactory>(
-      ioGroup->getThreadFactory()) : nullptr;
-
-  if (maxConnections_ > 0) {
-    int32_t connections = 0;
-    forEachWorker([&](wangle::Acceptor* acceptor) mutable {
-      auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
-      connections += worker->getPendingCount();
-    });
-
-    return (100*connections) / (float)maxConnections_;
-  }
-
-  return 0;
-}
-
-std::string ThriftServer::getLoadInfo(int64_t reqload, int64_t connload, int64_t queueload) {
+std::string ThriftServer::getLoadInfo(int64_t load) {
   auto ioGroup = getIOGroupSafe();
   auto workerFactory = ioGroup != nullptr ?
     std::dynamic_pointer_cast<wangle::NamedThreadFactory>(
@@ -507,9 +483,7 @@ std::string ThriftServer::getLoadInfo(int64_t reqload, int64_t connload, int64_t
 
   stream
     << workerFactory->getNamePrefix() << " load is: "
-    << reqload << "% requests, "
-    << connload << "% connections, "
-    << queueload << "% queue time, "
+    << load << "% requests, "
     << activeRequests_ << " active reqs, "
     << getPendingCount() << " pending reqs";
 
