@@ -3,7 +3,7 @@
 
 import asyncio
 
-from thrift.server import TAsyncioServer
+from thrift.server.TAsyncioServer import ThriftClientProtocolFactory
 from thrift.util.Decorators import protocol_manager
 
 
@@ -21,8 +21,10 @@ def create_client(client_klass, *, host=None, port=None, loop=None):
     if not loop:
         loop = asyncio.get_event_loop()
     transport, protocol = yield from loop.create_connection(
-        TAsyncioServer.ThriftClientProtocolFactory(client_klass, loop),
-        host=host, port=port)
+        ThriftClientProtocolFactory(client_klass, loop=loop),
+        host=host,
+        port=port,
+    )
     return protocol_manager(protocol)
 
 

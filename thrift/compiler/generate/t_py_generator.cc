@@ -2145,9 +2145,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
       indent() << "def __init__(self, transport, oprot_factory):" << endl;
   } else if (gen_asyncio_) {
     f_service_ <<
-      indent() <<
-      "def __init__(" <<
-        "self, transport, otrans_factory, oprot_factory, loop=None):" << endl;
+      indent() << "def __init__(self, oprot, loop=None):" << endl;
   } else {
     f_service_ <<
       indent() << "def __init__(self, iprot, oprot=None):" << endl;
@@ -2162,9 +2160,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
         endl;
     } else if (gen_asyncio_) {
       f_service_ <<
-        indent() << "  self._transport = transport" << endl <<
-        indent() << "  self._otrans_factory = otrans_factory" << endl <<
-        indent() << "  self._oprot_factory = oprot_factory" << endl <<
+        indent() << "  self._oprot = oprot" << endl <<
         indent() << "  self._loop = loop or asyncio.get_event_loop()" << endl <<
         indent() << "  self._seqid = 0" << endl <<
         indent() << "  self._futures = {}" << endl <<
@@ -2185,9 +2181,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
     } else if (gen_asyncio_) {
       f_service_ <<
         indent() << "  " << extends <<
-        ".Client.__init__(" <<
-          " self, transport, otrans_factory, oprot_factory, loop)" << endl
-          << endl;
+        ".Client.__init__(self, oprot, loop)" << endl << endl;
     } else {
       f_service_ <<
         indent() << "  " << extends <<
@@ -2278,16 +2272,6 @@ void t_py_generator::generate_service_client(t_service* tservice) {
         indent() <<
           "oprot.writeMessageBegin('" << (*f_iter)->get_name() <<
           "', TMessageType.CALL, self._seqid)" << endl;
-    } else if (gen_asyncio_) {
-      f_service_ <<
-        indent() <<
-          "otrans = self._otrans_factory.getTransport(self._transport)" <<
-          endl <<
-        indent() <<
-          "oprot = self._oprot_factory.getProtocol(otrans)" << endl <<
-        indent() <<
-          "oprot.writeMessageBegin('" << (*f_iter)->get_name() <<
-          "', TMessageType.CALL, self._seqid)" << endl;
     } else {
       f_service_ <<
         indent() << "self._oprot.writeMessageBegin('" <<
@@ -2307,7 +2291,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
 
     std::string flush = (*f_iter)->is_oneway() ? "onewayFlush" : "flush";
     // Write to the stream
-    if (gen_twisted_ || gen_asyncio_) {
+    if (gen_twisted_) {
       f_service_ <<
         indent() << "args.write(oprot)" << endl <<
         indent() << "oprot.writeMessageEnd()" << endl <<

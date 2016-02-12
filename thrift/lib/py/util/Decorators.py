@@ -92,7 +92,7 @@ def process_main(twisted=False, asyncio=False):
                 from twisted.internet import defer
                 return defer.succeed(None)
             if asyncio:
-                fut = Future()
+                fut = Future(loop=self._loop)
                 fut.set_result(None)
                 return fut
 
@@ -184,7 +184,7 @@ def future_process_main():
                 self.skipMessageStruct(iprot)
                 exc = make_unknown_function_exception(name)
                 self.writeException(oprot, name, seqid, exc)
-                fut = Future()
+                fut = Future(self._loop)
                 fut.set_result(True)
                 return fut
         return nested

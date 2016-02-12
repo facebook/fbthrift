@@ -27,7 +27,7 @@ def create_client(client_klass, host=None, port=None, loop=None):
     if not loop:
         loop = asyncio.get_event_loop()
     transport, protocol = yield From(loop.create_connection(
-        ThriftClientProtocolFactory(client_klass, loop),
+        ThriftClientProtocolFactory(client_klass, loop=loop),
         host=host,
         port=port,
     ))
