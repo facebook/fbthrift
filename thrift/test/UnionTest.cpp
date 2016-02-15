@@ -157,6 +157,10 @@ TEST_F(UnionTestFixture, FromJson) {
   j = "{\"random\": 123765}";
   u.readFromJson(j.c_str());
   EXPECT_EQ(TestUnion::Type::__EMPTY__, u.getType());
+
+  j = "{}";
+  u.readFromJson(j.c_str());
+  EXPECT_EQ(TestUnion::Type::__EMPTY__, u.getType());
 }
 
 TEST_F(UnionTestFixture, CppAndCpp2Compat) {

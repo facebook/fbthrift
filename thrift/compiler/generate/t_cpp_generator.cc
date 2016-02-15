@@ -1810,9 +1810,12 @@ void t_cpp_generator::generate_union_json_reader(ofstream& out,
   indent(out) << "folly::dynamic parsed = "
     << "folly::parseJson(folly::StringPiece(jsonText, len));" << endl;
 
-  indent(out) << "if (!parsed.isObject() || parsed.size() != 1) {" << endl;
+  indent(out) << "if (!parsed.isObject() || parsed.size() > 1) {" << endl;
   indent(out) << "  throw apache::thrift::TLibraryException("
               <<        "\"Can't parse " << name << "\");" << endl;
+  indent(out) << "}" << endl << endl;
+  indent(out) << "if (parsed.empty()) {" << endl;
+  indent(out) << "  return;" << endl;
   indent(out) << "}" << endl << endl;
 
   for (auto& member: members) {
@@ -1821,6 +1824,7 @@ void t_cpp_generator::generate_union_json_reader(ofstream& out,
     indent_up();
     indent(out) << "set_" << member->get_name() << "();" << endl;
     generate_json_field(out, member, "this->value_.", "", elem);
+    indent(out) << "return;" << endl;
     indent_down();
     indent(out) << "}" << endl;
   }

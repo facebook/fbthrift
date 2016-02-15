@@ -107,8 +107,12 @@ namespace test_cpp1 { namespace cpp_reflection {
   {
     __clear();
     folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
-    if (!parsed.isObject() || parsed.size() != 1) {
+    if (!parsed.isObject() || parsed.size() > 1) {
       throw apache::thrift::TLibraryException("Can't parse union1");
+    }
+
+    if (parsed.empty()) {
+      return;
     }
 
     if (parsed["ui"] != nullptr) {
@@ -119,18 +123,22 @@ namespace test_cpp1 { namespace cpp_reflection {
       } else {
         this->value_.ui = (int32_t)_tmp0;
       }
+      return;
     }
     if (parsed["ud"] != nullptr) {
       set_ud();
       this->value_.ud = parsed["ud"].asDouble();
+      return;
     }
     if (parsed["us"] != nullptr) {
       set_us();
       this->value_.us = parsed["us"].asString().toStdString();
+      return;
     }
     if (parsed["ue"] != nullptr) {
       set_ue();
       this->value_.ue=(enum1)(int32_t)parsed["ue"].asInt();
+      return;
     }
   }
   void union1::readFromJson(const char* jsonText)
@@ -237,8 +245,12 @@ uint32_t union1::write(apache::thrift::protocol::TProtocol* oprot) const {
   {
     __clear();
     folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
-    if (!parsed.isObject() || parsed.size() != 1) {
+    if (!parsed.isObject() || parsed.size() > 1) {
       throw apache::thrift::TLibraryException("Can't parse union2");
+    }
+
+    if (parsed.empty()) {
+      return;
     }
 
     if (parsed["ui_2"] != nullptr) {
@@ -249,18 +261,22 @@ uint32_t union1::write(apache::thrift::protocol::TProtocol* oprot) const {
       } else {
         this->value_.ui_2 = (int32_t)_tmp3;
       }
+      return;
     }
     if (parsed["ud_2"] != nullptr) {
       set_ud_2();
       this->value_.ud_2 = parsed["ud_2"].asDouble();
+      return;
     }
     if (parsed["us_2"] != nullptr) {
       set_us_2();
       this->value_.us_2 = parsed["us_2"].asString().toStdString();
+      return;
     }
     if (parsed["ue_2"] != nullptr) {
       set_ue_2();
       this->value_.ue_2=(enum1)(int32_t)parsed["ue_2"].asInt();
+      return;
     }
   }
   void union2::readFromJson(const char* jsonText)
@@ -367,8 +383,12 @@ uint32_t union2::write(apache::thrift::protocol::TProtocol* oprot) const {
   {
     __clear();
     folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
-    if (!parsed.isObject() || parsed.size() != 1) {
+    if (!parsed.isObject() || parsed.size() > 1) {
       throw apache::thrift::TLibraryException("Can't parse union3");
+    }
+
+    if (parsed.empty()) {
+      return;
     }
 
     if (parsed["ui_3"] != nullptr) {
@@ -379,18 +399,22 @@ uint32_t union2::write(apache::thrift::protocol::TProtocol* oprot) const {
       } else {
         this->value_.ui_3 = (int32_t)_tmp6;
       }
+      return;
     }
     if (parsed["ud_3"] != nullptr) {
       set_ud_3();
       this->value_.ud_3 = parsed["ud_3"].asDouble();
+      return;
     }
     if (parsed["us_3"] != nullptr) {
       set_us_3();
       this->value_.us_3 = parsed["us_3"].asString().toStdString();
+      return;
     }
     if (parsed["ue_3"] != nullptr) {
       set_ue_3();
       this->value_.ue_3=(enum1)(int32_t)parsed["ue_3"].asInt();
+      return;
     }
   }
   void union3::readFromJson(const char* jsonText)
@@ -642,8 +666,12 @@ void merge(structA&& from, structA& to) {
   {
     __clear();
     folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
-    if (!parsed.isObject() || parsed.size() != 1) {
+    if (!parsed.isObject() || parsed.size() > 1) {
       throw apache::thrift::TLibraryException("Can't parse unionA");
+    }
+
+    if (parsed.empty()) {
+      return;
     }
 
     if (parsed["i"] != nullptr) {
@@ -654,22 +682,27 @@ void merge(structA&& from, structA& to) {
       } else {
         this->value_.i = (int32_t)_tmp11;
       }
+      return;
     }
     if (parsed["d"] != nullptr) {
       set_d();
       this->value_.d = parsed["d"].asDouble();
+      return;
     }
     if (parsed["s"] != nullptr) {
       set_s();
       this->value_.s = parsed["s"].asString().toStdString();
+      return;
     }
     if (parsed["e"] != nullptr) {
       set_e();
       this->value_.e=(enum1)(int32_t)parsed["e"].asInt();
+      return;
     }
     if (parsed["a"] != nullptr) {
       set_a();
       this->value_.a.readFromJson(folly::toJson(parsed["a"]).toStdString().c_str());
+      return;
     }
   }
   void unionA::readFromJson(const char* jsonText)
