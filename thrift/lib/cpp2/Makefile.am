@@ -75,6 +75,9 @@ thrift2include_async_HEADERS = \
 thrift2include_fataldir = $(thrift2includedir)/fatal
 
 thrift2include_fatal_HEADERS = \
+	fatal/debug-inl-post.h \
+	fatal/debug-inl-pre.h \
+	fatal/debug.h \
 	fatal/folly_dynamic-inl.h \
 	fatal/folly_dynamic.h \
 	fatal/indenter.h \
