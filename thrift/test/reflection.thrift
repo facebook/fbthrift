@@ -182,3 +182,97 @@ service service3 {
 const i32 constant1 = 1357;
 const string constant2 = "hello";
 const enum1 constant3 = enum1.field0;
+
+enum enum_with_special_names {
+  get,
+  getter,
+  lists,
+  maps,
+  name,
+  name_to_value,
+  names,
+  prefix_tree,
+  sets,
+  setter,
+  str,
+  strings,
+  type,
+  value,
+  value_to_name,
+  values,
+  id,
+  ids,
+  descriptor,
+  descriptors,
+}
+
+union union_with_special_names {
+  1:  i32 get
+  2:  i32 getter
+  3:  i32 lists
+  4:  i32 maps
+  5:  i32 name
+  6:  i32 name_to_value
+  7:  i32 names
+  8:  i32 prefix_tree
+  9:  i32 sets
+  10: i32 setter
+  11: i32 str
+  12: i32 strings
+  13: i32 type
+  14: i32 value
+  15: i32 value_to_name
+  16: i32 values
+  17: i32 id
+  18: i32 ids
+  19: i32 descriptor
+  20: i32 descriptors
+}
+
+struct struct_with_special_names {
+  1:  i32 get
+  2:  i32 getter
+  3:  i32 lists
+  4:  i32 maps
+  5:  i32 name
+  6:  i32 name_to_value
+  7:  i32 names
+  8:  i32 prefix_tree
+  9:  i32 sets
+  10: i32 setter
+  11: i32 str
+  12: i32 strings
+  13: i32 type
+  14: i32 value
+  15: i32 value_to_name
+  16: i32 values
+  17: i32 id
+  18: i32 ids
+  19: i32 descriptor
+  20: i32 descriptors
+}
+
+service service_with_special_names {
+  i32 get()
+  i32 getter()
+  i32 lists()
+  i32 maps()
+  i32 name()
+  i32 name_to_value()
+  i32 names()
+  i32 prefix_tree()
+  i32 sets()
+  i32 setter()
+  i32 str()
+  i32 strings()
+  i32 type()
+  i32 value()
+  i32 value_to_name()
+  i32 values()
+  i32 id()
+  i32 ids()
+  i32 descriptor()
+  i32 descriptors()
+}
+
+const i32 constant_with_special_name = 42;

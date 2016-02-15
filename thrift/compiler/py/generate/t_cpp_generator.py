@@ -4389,15 +4389,17 @@ class CppGenerator(t_generator.Generator):
         scoped_ns = self._get_scoped_original_namespace()
         traits_name = '{0}_enum_traits'.format(scoped_name.replace('::', '_'))
         with scope.namespace(self.fatal_detail_ns).scope as detail:
-            with detail.cls('struct {0}'.format(traits_name)).scope as t:
-                t('using type = {0}::{1};'.format(scoped_ns, scoped_name))
-                t('using name = {0};'.format(self._set_fatal_string(name)))
-                t()
-                with t.cls('struct str'):
+            with detail.cls('class {0}'.format(traits_name)).scope as t:
+                strcls = '{0}__struct_unique_strings_list'.format(name)
+                with t.cls('struct {0}'.format(strcls)):
                     for i in members:
                         cseq = self._set_fatal_string(i.name)
                         t('using {0} = {1};'.format(i.name, cseq))
                 t()
+                t('public:')
+                t('using type = {0}::{1};'.format(scoped_ns, scoped_name))
+                t('using name = {0};'.format(self._set_fatal_string(name)))
+                t('using str = {0};'.format(strcls))
                 t('using name_to_value = ::fatal::type_map<')
                 for idx, i in enumerate(members):
                     t('  ::fatal::type_pair<')
@@ -4475,32 +4477,36 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_union_traits(self, union, scope):
         scoped_ns = self._get_scoped_original_namespace()
         name = '{0}_variant_traits'.format(union.name)
+        type_name = '{0}::{1}'.format(scoped_ns, union.name)
         with scope.cls('class {0}'.format(name)).scope as t:
-            with t.cls('struct get'):
+            idscls = '{0}__struct_unique_identifiers_list'.format(union.name)
+            with t.cls('struct {0}'.format(idscls)):
+                for i in union.members:
+                    t(('using {0} = std::integral_constant<{1}::Type, {1}::Type'
+                       '::{0}>;').format(i.name, type_name))
+            t()
+            getcls = '{0}__struct_unique_getters_list'.format(union.name)
+            with t.cls('struct {0}'.format(getcls)):
                 for i in union.members:
                     self._generate_fatal_union_traits_getter(union, i, t)
             t()
-            with t.cls('struct set'):
+            setcls = '{0}__struct_unique_setters_list'.format(union.name)
+            with t.cls('struct {0}'.format(setcls)):
                 for i in union.members:
                     self._generate_fatal_union_traits_setter(union, i, t)
             t()
             t('public:')
-            t('using type = {0}::{1};'.format(scoped_ns, union.name))
+            t('using type = {0};'.format(type_name))
             t('using name = {0};'.format(self._set_fatal_string(union.name)))
             t('using id = type::Type;')
-            t()
-            with t.cls('struct ids'):
-                for i in union.members:
-                    t("using {0} = std::integral_constant<id, id::{0}>;"
-                        .format(i.name))
-            t()
+            t('using ids = {0};'.format(idscls))
             t('using descriptors = ::fatal::type_list<')
             for idx, i in enumerate(union.members):
                 t('  ::fatal::variant_type_descriptor<')
                 t('    {0},'.format(self._type_name(i.type)))
-                t('    ids::{0},'.format(i.name))
-                t('    get::{0},'.format(i.name))
-                t('    set::{0}'.format(i.name))
+                t('    {0}::{1},'.format(idscls, i.name))
+                t('    {0}::{1},'.format(getcls, i.name))
+                t('    {0}::{1}'.format(setcls, i.name))
                 t('  >{0}'.format(',' if idx + 1 < len(union.members) else ''))
             t('>;')
             t()
@@ -4510,6 +4516,10 @@ class CppGenerator(t_generator.Generator):
             t()
             t('static bool empty(type const &variant) {0}'.format('{'))
             t('  return variant.getType() == id::__EMPTY__;')
+            t('}')
+            t()
+            t('static void clear(type &variant) {0}'.format('{'))
+            t('  return variant.__clear();')
             t('}')
         return name
 

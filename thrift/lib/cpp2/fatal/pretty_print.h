@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2016 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,22 @@
 #include <string>
 #include <type_traits>
 #include <utility>
+
+/**
+ * READ ME FIRST: this header provides pretty printers for Thrift types.
+ *
+ * Please refer to the top of `thrift/lib/cpp2/fatal/reflection.h` on how to
+ * enable compile-time reflection for Thrift types. The present header relies on
+ * it for its functionality.
+ *
+ * TROUBLESHOOTING:
+ *  - make sure you've followed the instructions on `reflection.h` to enable
+ *    generation of compile-time reflection;
+ *  - make sure you've included the metadata for your Thrift types, as specified
+ *    in `reflection.h`.
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
 
 namespace apache { namespace thrift { namespace detail {
 template <typename OutputStream, typename T>

@@ -17,17 +17,18 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 namespace thrift_fatal_impl_detail {
 
-struct union1_Type_enum_traits {
-  using type = ::test_cpp2::cpp_reflection::union1::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
-
-  struct str {
+class union1_Type_enum_traits {
+  struct Type__struct_unique_strings_list {
     using ui = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui;
     using ud = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud;
     using us = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us;
     using ue = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue;
   };
 
+  public:
+  using type = ::test_cpp2::cpp_reflection::union1::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+  using str = Type__struct_unique_strings_list;
   using name_to_value = ::fatal::type_map<
     ::fatal::type_pair<
       str::ui,
@@ -73,7 +74,14 @@ FATAL_REGISTER_ENUM_TRAITS(
 namespace thrift_fatal_impl_detail {
 
 class union1_variant_traits {
-  struct get {
+  struct union1__struct_unique_identifiers_list {
+    using ui = std::integral_constant<::test_cpp2::cpp_reflection::union1::Type, ::test_cpp2::cpp_reflection::union1::Type::ui>;
+    using ud = std::integral_constant<::test_cpp2::cpp_reflection::union1::Type, ::test_cpp2::cpp_reflection::union1::Type::ud>;
+    using us = std::integral_constant<::test_cpp2::cpp_reflection::union1::Type, ::test_cpp2::cpp_reflection::union1::Type::us>;
+    using ue = std::integral_constant<::test_cpp2::cpp_reflection::union1::Type, ::test_cpp2::cpp_reflection::union1::Type::ue>;
+  };
+
+  struct union1__struct_unique_getters_list {
     struct ui {
       auto operator ()(union1 const &variant) const
         -> decltype(std::declval<union1 const &>().get_ui())
@@ -155,7 +163,7 @@ class union1_variant_traits {
     };
   };
 
-  struct set {
+  struct union1__struct_unique_setters_list {
     struct ui {
       template <typename... Args>
       auto operator ()(union1 &variant, Args &&...args) const
@@ -205,38 +213,31 @@ class union1_variant_traits {
   using type = ::test_cpp2::cpp_reflection::union1;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1;
   using id = type::Type;
-
-  struct ids {
-    using ui = std::integral_constant<id, id::ui>;
-    using ud = std::integral_constant<id, id::ud>;
-    using us = std::integral_constant<id, id::us>;
-    using ue = std::integral_constant<id, id::ue>;
-  };
-
+  using ids = union1__struct_unique_identifiers_list;
   using descriptors = ::fatal::type_list<
     ::fatal::variant_type_descriptor<
       int32_t,
-      ids::ui,
-      get::ui,
-      set::ui
+      union1__struct_unique_identifiers_list::ui,
+      union1__struct_unique_getters_list::ui,
+      union1__struct_unique_setters_list::ui
     >,
     ::fatal::variant_type_descriptor<
       double,
-      ids::ud,
-      get::ud,
-      set::ud
+      union1__struct_unique_identifiers_list::ud,
+      union1__struct_unique_getters_list::ud,
+      union1__struct_unique_setters_list::ud
     >,
     ::fatal::variant_type_descriptor<
       std::string,
-      ids::us,
-      get::us,
-      set::us
+      union1__struct_unique_identifiers_list::us,
+      union1__struct_unique_getters_list::us,
+      union1__struct_unique_setters_list::us
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
-      ids::ue,
-      get::ue,
-      set::ue
+      union1__struct_unique_identifiers_list::ue,
+      union1__struct_unique_getters_list::ue,
+      union1__struct_unique_setters_list::ue
     >
   >;
 
@@ -247,22 +248,27 @@ class union1_variant_traits {
   static bool empty(type const &variant) {
     return variant.getType() == id::__EMPTY__;
   }
+
+  static void clear(type &variant) {
+    return variant.__clear();
+  }
 };
 
 } // thrift_fatal_impl_detail
 namespace thrift_fatal_impl_detail {
 
-struct union2_Type_enum_traits {
-  using type = ::test_cpp2::cpp_reflection::union2::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
-
-  struct str {
+class union2_Type_enum_traits {
+  struct Type__struct_unique_strings_list {
     using ui_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_2;
     using ud_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_2;
     using us_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_2;
     using ue_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_2;
   };
 
+  public:
+  using type = ::test_cpp2::cpp_reflection::union2::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+  using str = Type__struct_unique_strings_list;
   using name_to_value = ::fatal::type_map<
     ::fatal::type_pair<
       str::ui_2,
@@ -308,7 +314,14 @@ FATAL_REGISTER_ENUM_TRAITS(
 namespace thrift_fatal_impl_detail {
 
 class union2_variant_traits {
-  struct get {
+  struct union2__struct_unique_identifiers_list {
+    using ui_2 = std::integral_constant<::test_cpp2::cpp_reflection::union2::Type, ::test_cpp2::cpp_reflection::union2::Type::ui_2>;
+    using ud_2 = std::integral_constant<::test_cpp2::cpp_reflection::union2::Type, ::test_cpp2::cpp_reflection::union2::Type::ud_2>;
+    using us_2 = std::integral_constant<::test_cpp2::cpp_reflection::union2::Type, ::test_cpp2::cpp_reflection::union2::Type::us_2>;
+    using ue_2 = std::integral_constant<::test_cpp2::cpp_reflection::union2::Type, ::test_cpp2::cpp_reflection::union2::Type::ue_2>;
+  };
+
+  struct union2__struct_unique_getters_list {
     struct ui_2 {
       auto operator ()(union2 const &variant) const
         -> decltype(std::declval<union2 const &>().get_ui_2())
@@ -390,7 +403,7 @@ class union2_variant_traits {
     };
   };
 
-  struct set {
+  struct union2__struct_unique_setters_list {
     struct ui_2 {
       template <typename... Args>
       auto operator ()(union2 &variant, Args &&...args) const
@@ -440,38 +453,31 @@ class union2_variant_traits {
   using type = ::test_cpp2::cpp_reflection::union2;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2;
   using id = type::Type;
-
-  struct ids {
-    using ui_2 = std::integral_constant<id, id::ui_2>;
-    using ud_2 = std::integral_constant<id, id::ud_2>;
-    using us_2 = std::integral_constant<id, id::us_2>;
-    using ue_2 = std::integral_constant<id, id::ue_2>;
-  };
-
+  using ids = union2__struct_unique_identifiers_list;
   using descriptors = ::fatal::type_list<
     ::fatal::variant_type_descriptor<
       int32_t,
-      ids::ui_2,
-      get::ui_2,
-      set::ui_2
+      union2__struct_unique_identifiers_list::ui_2,
+      union2__struct_unique_getters_list::ui_2,
+      union2__struct_unique_setters_list::ui_2
     >,
     ::fatal::variant_type_descriptor<
       double,
-      ids::ud_2,
-      get::ud_2,
-      set::ud_2
+      union2__struct_unique_identifiers_list::ud_2,
+      union2__struct_unique_getters_list::ud_2,
+      union2__struct_unique_setters_list::ud_2
     >,
     ::fatal::variant_type_descriptor<
       std::string,
-      ids::us_2,
-      get::us_2,
-      set::us_2
+      union2__struct_unique_identifiers_list::us_2,
+      union2__struct_unique_getters_list::us_2,
+      union2__struct_unique_setters_list::us_2
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
-      ids::ue_2,
-      get::ue_2,
-      set::ue_2
+      union2__struct_unique_identifiers_list::ue_2,
+      union2__struct_unique_getters_list::ue_2,
+      union2__struct_unique_setters_list::ue_2
     >
   >;
 
@@ -482,22 +488,27 @@ class union2_variant_traits {
   static bool empty(type const &variant) {
     return variant.getType() == id::__EMPTY__;
   }
+
+  static void clear(type &variant) {
+    return variant.__clear();
+  }
 };
 
 } // thrift_fatal_impl_detail
 namespace thrift_fatal_impl_detail {
 
-struct union3_Type_enum_traits {
-  using type = ::test_cpp2::cpp_reflection::union3::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
-
-  struct str {
+class union3_Type_enum_traits {
+  struct Type__struct_unique_strings_list {
     using ui_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_3;
     using ud_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_3;
     using us_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_3;
     using ue_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_3;
   };
 
+  public:
+  using type = ::test_cpp2::cpp_reflection::union3::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+  using str = Type__struct_unique_strings_list;
   using name_to_value = ::fatal::type_map<
     ::fatal::type_pair<
       str::ui_3,
@@ -543,7 +554,14 @@ FATAL_REGISTER_ENUM_TRAITS(
 namespace thrift_fatal_impl_detail {
 
 class union3_variant_traits {
-  struct get {
+  struct union3__struct_unique_identifiers_list {
+    using ui_3 = std::integral_constant<::test_cpp2::cpp_reflection::union3::Type, ::test_cpp2::cpp_reflection::union3::Type::ui_3>;
+    using ud_3 = std::integral_constant<::test_cpp2::cpp_reflection::union3::Type, ::test_cpp2::cpp_reflection::union3::Type::ud_3>;
+    using us_3 = std::integral_constant<::test_cpp2::cpp_reflection::union3::Type, ::test_cpp2::cpp_reflection::union3::Type::us_3>;
+    using ue_3 = std::integral_constant<::test_cpp2::cpp_reflection::union3::Type, ::test_cpp2::cpp_reflection::union3::Type::ue_3>;
+  };
+
+  struct union3__struct_unique_getters_list {
     struct ui_3 {
       auto operator ()(union3 const &variant) const
         -> decltype(std::declval<union3 const &>().get_ui_3())
@@ -625,7 +643,7 @@ class union3_variant_traits {
     };
   };
 
-  struct set {
+  struct union3__struct_unique_setters_list {
     struct ui_3 {
       template <typename... Args>
       auto operator ()(union3 &variant, Args &&...args) const
@@ -675,38 +693,31 @@ class union3_variant_traits {
   using type = ::test_cpp2::cpp_reflection::union3;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3;
   using id = type::Type;
-
-  struct ids {
-    using ui_3 = std::integral_constant<id, id::ui_3>;
-    using ud_3 = std::integral_constant<id, id::ud_3>;
-    using us_3 = std::integral_constant<id, id::us_3>;
-    using ue_3 = std::integral_constant<id, id::ue_3>;
-  };
-
+  using ids = union3__struct_unique_identifiers_list;
   using descriptors = ::fatal::type_list<
     ::fatal::variant_type_descriptor<
       int32_t,
-      ids::ui_3,
-      get::ui_3,
-      set::ui_3
+      union3__struct_unique_identifiers_list::ui_3,
+      union3__struct_unique_getters_list::ui_3,
+      union3__struct_unique_setters_list::ui_3
     >,
     ::fatal::variant_type_descriptor<
       double,
-      ids::ud_3,
-      get::ud_3,
-      set::ud_3
+      union3__struct_unique_identifiers_list::ud_3,
+      union3__struct_unique_getters_list::ud_3,
+      union3__struct_unique_setters_list::ud_3
     >,
     ::fatal::variant_type_descriptor<
       std::string,
-      ids::us_3,
-      get::us_3,
-      set::us_3
+      union3__struct_unique_identifiers_list::us_3,
+      union3__struct_unique_getters_list::us_3,
+      union3__struct_unique_setters_list::us_3
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
-      ids::ue_3,
-      get::ue_3,
-      set::ue_3
+      union3__struct_unique_identifiers_list::ue_3,
+      union3__struct_unique_getters_list::ue_3,
+      union3__struct_unique_setters_list::ue_3
     >
   >;
 
@@ -717,16 +728,17 @@ class union3_variant_traits {
   static bool empty(type const &variant) {
     return variant.getType() == id::__EMPTY__;
   }
+
+  static void clear(type &variant) {
+    return variant.__clear();
+  }
 };
 
 } // thrift_fatal_impl_detail
 namespace thrift_fatal_impl_detail {
 
-struct unionA_Type_enum_traits {
-  using type = ::test_cpp2::cpp_reflection::unionA::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
-
-  struct str {
+class unionA_Type_enum_traits {
+  struct Type__struct_unique_strings_list {
     using i = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::i;
     using d = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d;
     using s = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::s;
@@ -734,6 +746,10 @@ struct unionA_Type_enum_traits {
     using a = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::a;
   };
 
+  public:
+  using type = ::test_cpp2::cpp_reflection::unionA::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+  using str = Type__struct_unique_strings_list;
   using name_to_value = ::fatal::type_map<
     ::fatal::type_pair<
       str::i,
@@ -784,7 +800,15 @@ FATAL_REGISTER_ENUM_TRAITS(
 namespace thrift_fatal_impl_detail {
 
 class unionA_variant_traits {
-  struct get {
+  struct unionA__struct_unique_identifiers_list {
+    using i = std::integral_constant<::test_cpp2::cpp_reflection::unionA::Type, ::test_cpp2::cpp_reflection::unionA::Type::i>;
+    using d = std::integral_constant<::test_cpp2::cpp_reflection::unionA::Type, ::test_cpp2::cpp_reflection::unionA::Type::d>;
+    using s = std::integral_constant<::test_cpp2::cpp_reflection::unionA::Type, ::test_cpp2::cpp_reflection::unionA::Type::s>;
+    using e = std::integral_constant<::test_cpp2::cpp_reflection::unionA::Type, ::test_cpp2::cpp_reflection::unionA::Type::e>;
+    using a = std::integral_constant<::test_cpp2::cpp_reflection::unionA::Type, ::test_cpp2::cpp_reflection::unionA::Type::a>;
+  };
+
+  struct unionA__struct_unique_getters_list {
     struct i {
       auto operator ()(unionA const &variant) const
         -> decltype(std::declval<unionA const &>().get_i())
@@ -886,7 +910,7 @@ class unionA_variant_traits {
     };
   };
 
-  struct set {
+  struct unionA__struct_unique_setters_list {
     struct i {
       template <typename... Args>
       auto operator ()(unionA &variant, Args &&...args) const
@@ -947,45 +971,37 @@ class unionA_variant_traits {
   using type = ::test_cpp2::cpp_reflection::unionA;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::unionA;
   using id = type::Type;
-
-  struct ids {
-    using i = std::integral_constant<id, id::i>;
-    using d = std::integral_constant<id, id::d>;
-    using s = std::integral_constant<id, id::s>;
-    using e = std::integral_constant<id, id::e>;
-    using a = std::integral_constant<id, id::a>;
-  };
-
+  using ids = unionA__struct_unique_identifiers_list;
   using descriptors = ::fatal::type_list<
     ::fatal::variant_type_descriptor<
       int32_t,
-      ids::i,
-      get::i,
-      set::i
+      unionA__struct_unique_identifiers_list::i,
+      unionA__struct_unique_getters_list::i,
+      unionA__struct_unique_setters_list::i
     >,
     ::fatal::variant_type_descriptor<
       double,
-      ids::d,
-      get::d,
-      set::d
+      unionA__struct_unique_identifiers_list::d,
+      unionA__struct_unique_getters_list::d,
+      unionA__struct_unique_setters_list::d
     >,
     ::fatal::variant_type_descriptor<
       std::string,
-      ids::s,
-      get::s,
-      set::s
+      unionA__struct_unique_identifiers_list::s,
+      unionA__struct_unique_getters_list::s,
+      unionA__struct_unique_setters_list::s
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
-      ids::e,
-      get::e,
-      set::e
+      unionA__struct_unique_identifiers_list::e,
+      unionA__struct_unique_getters_list::e,
+      unionA__struct_unique_setters_list::e
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::structA,
-      ids::a,
-      get::a,
-      set::a
+      unionA__struct_unique_identifiers_list::a,
+      unionA__struct_unique_getters_list::a,
+      unionA__struct_unique_setters_list::a
     >
   >;
 
@@ -995,6 +1011,10 @@ class unionA_variant_traits {
 
   static bool empty(type const &variant) {
     return variant.getType() == id::__EMPTY__;
+  }
+
+  static void clear(type &variant) {
+    return variant.__clear();
   }
 };
 

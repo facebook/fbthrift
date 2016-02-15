@@ -16,16 +16,17 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 namespace thrift_fatal_impl_detail {
 
-struct enum1_enum_traits {
-  using type = ::test_cpp2::cpp_reflection::enum1;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
-
-  struct str {
+class enum1_enum_traits {
+  struct enum1__struct_unique_strings_list {
     using field0 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0;
     using field1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1;
     using field2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2;
   };
 
+  public:
+  using type = ::test_cpp2::cpp_reflection::enum1;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
+  using str = enum1__struct_unique_strings_list;
   using name_to_value = ::fatal::type_map<
     ::fatal::type_pair<
       str::field0,
@@ -64,16 +65,17 @@ FATAL_REGISTER_ENUM_TRAITS(
 );
 namespace thrift_fatal_impl_detail {
 
-struct enum2_enum_traits {
-  using type = ::test_cpp2::cpp_reflection::enum2;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
-
-  struct str {
+class enum2_enum_traits {
+  struct enum2__struct_unique_strings_list {
     using field0_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_2;
     using field1_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_2;
     using field2_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_2;
   };
 
+  public:
+  using type = ::test_cpp2::cpp_reflection::enum2;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
+  using str = enum2__struct_unique_strings_list;
   using name_to_value = ::fatal::type_map<
     ::fatal::type_pair<
       str::field0_2,
@@ -112,16 +114,17 @@ FATAL_REGISTER_ENUM_TRAITS(
 );
 namespace thrift_fatal_impl_detail {
 
-struct enum3_enum_traits {
-  using type = ::test_cpp2::cpp_reflection::enum3;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
-
-  struct str {
+class enum3_enum_traits {
+  struct enum3__struct_unique_strings_list {
     using field0_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_3;
     using field1_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_3;
     using field2_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_3;
   };
 
+  public:
+  using type = ::test_cpp2::cpp_reflection::enum3;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
+  using str = enum3__struct_unique_strings_list;
   using name_to_value = ::fatal::type_map<
     ::fatal::type_pair<
       str::field0_3,
