@@ -102,7 +102,7 @@ template <> struct pretty_print_impl<thrift_category::map> {
         scope.newline();
       }
     }
-    out << ']';
+    out << '}';
   }
 };
 
