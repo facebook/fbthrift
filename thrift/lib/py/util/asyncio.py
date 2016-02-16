@@ -8,7 +8,15 @@ from thrift.util.Decorators import protocol_manager
 
 
 @asyncio.coroutine
-def create_client(client_klass, *, host=None, port=None, loop=None):
+def create_client(
+    client_klass,
+    *,
+    host=None,
+    port=None,
+    loop=None,
+    timeouts=None,
+    client_type=None
+):
     """
     create a asyncio thrift client and return a context manager for it
     This is a coroutine
@@ -21,7 +29,12 @@ def create_client(client_klass, *, host=None, port=None, loop=None):
     if not loop:
         loop = asyncio.get_event_loop()
     transport, protocol = yield from loop.create_connection(
-        ThriftClientProtocolFactory(client_klass, loop=loop),
+        ThriftClientProtocolFactory(
+            client_klass,
+            loop=loop,
+            timeouts=timeouts,
+            client_type=client_type,
+        ),
         host=host,
         port=port,
     )

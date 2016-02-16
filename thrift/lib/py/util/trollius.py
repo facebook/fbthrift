@@ -5,16 +5,18 @@ from __future__ import unicode_literals
 
 import trollius as asyncio
 
-from trollius import (
-    From,
-    Return,
-)
+from trollius import (From, Return, )
 from thrift.server.TTrolliusServer import ThriftClientProtocolFactory
 from thrift.util.Decorators import protocol_manager
 
 
 @asyncio.coroutine
-def create_client(client_klass, host=None, port=None, loop=None):
+def create_client(client_klass,
+                  host=None,
+                  port=None,
+                  loop=None,
+                  timeouts=None,
+                  client_type=None):
     """
     create a Trollius thrift client and return a context manager for it
     This is a coroutine
@@ -26,11 +28,18 @@ def create_client(client_klass, host=None, port=None, loop=None):
     """
     if not loop:
         loop = asyncio.get_event_loop()
-    transport, protocol = yield From(loop.create_connection(
-        ThriftClientProtocolFactory(client_klass, loop=loop),
-        host=host,
-        port=port,
-    ))
+    transport, protocol = yield From(
+        loop.create_connection(
+            ThriftClientProtocolFactory(
+                client_klass,
+                loop=loop,
+                timeouts=timeouts,
+                client_type=client_type,
+            ),
+            host=host,
+            port=port,
+        )
+    )
     raise Return(protocol_manager(protocol))
 
 
