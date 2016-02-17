@@ -38,7 +38,8 @@ class VirtualReaderBase {
 
   virtual ProtocolType protocolType() const = 0;
 
-  virtual void setInput(const folly::IOBuf* buf) = 0;
+  virtual void setInput(const folly::io::Cursor& cursor) = 0;
+  void setInput(const folly::IOBuf* buf) { setInput(folly::io::Cursor(buf)); }
 
   virtual uint32_t readMessageBegin(std::string& name,
                                    MessageType& messageType,
@@ -184,7 +185,10 @@ class VirtualReader : public VirtualReaderBase {
     return protocol_.protocolType();
   }
 
-  void setInput(const folly::IOBuf* buf) override { protocol_.setInput(buf); }
+  using VirtualReaderBase::setInput;
+  void setInput(const folly::io::Cursor& cursor) override {
+    protocol_.setInput(cursor);
+  }
 
   uint32_t readMessageBegin(std::string& name,
                             MessageType& messageType,

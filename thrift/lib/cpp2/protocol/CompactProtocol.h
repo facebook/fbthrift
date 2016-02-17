@@ -271,9 +271,8 @@ class CompactProtocolReader {
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
-  inline void setInput(const IOBuf* buf) {
-    in_.reset(buf);
-  }
+  void setInput(const Cursor& cursor) { in_ = cursor; }
+  void setInput(const IOBuf* buf) { setInput(Cursor(buf)); }
 
   /**
    * Reading functions

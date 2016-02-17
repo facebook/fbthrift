@@ -44,9 +44,10 @@ class ProtocolReaderWithRefill : public VirtualReader<ProtocolT> {
       return bufferLength_ - this->protocol_.in_.length();
     }
 
-    void setInput(const folly::IOBuf* buf) override {
-      VirtualReader<ProtocolT>::setInput(buf);
-      bufferLength_ = buf->length();
+    using VirtualReader<ProtocolT>::setInput;
+    void setInput(const folly::io::Cursor& cursor) override {
+      VirtualReader<ProtocolT>::setInput(cursor);
+      bufferLength_ = cursor.length();
     }
 
   protected:

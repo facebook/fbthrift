@@ -24,12 +24,16 @@
 
 using namespace std;
 using namespace folly;
+using namespace folly::io;
 using namespace apache::thrift;
 
 namespace {
 
 constexpr auto strvalue = StringPiece("hello world");
+const IOBuf iobuf(IOBuf::WRAP_BUFFER, strvalue);
+
 using UniquePtrIOBuf = unique_ptr<IOBuf>;
+using ConstIOBufPtr = const IOBuf*;
 
 template <typename R> struct maker {
   static R make();
@@ -49,6 +53,14 @@ template <> struct maker<IOBuf> {
 
 template <> struct maker<UniquePtrIOBuf> {
   static UniquePtrIOBuf make() { return IOBuf::copyBuffer(strvalue); }
+};
+
+template <> struct maker<ConstIOBufPtr> {
+  static ConstIOBufPtr make() { return &iobuf; }
+};
+
+template <> struct maker<Cursor> {
+  static Cursor make() { return Cursor(&iobuf); }
 };
 
 using Writers = testing::Types<
@@ -91,6 +103,7 @@ class ReaderInterfaceTest : public testing::Test {
   void SetUp() override {
     writer.setOutput(&queue);
   }
+
   Reader reader() {
     Reader reader;
     reader.setInput(queue.front());
@@ -166,8 +179,20 @@ TYPED_TEST_P(ReaderInterfaceTest, readString_fbstring) {
   EXPECT_EQ("hello", out);
 }
 
+#define READER_INTERFACE_METHOD_SIG_TYPED_TEST_P(method, argtype) \
+  TYPED_TEST_P(ReaderInterfaceTest, method_sig_ ## method ## _ ## argtype) { \
+    this->reader().method(maker<argtype>::make()); \
+  }
+
+READER_INTERFACE_METHOD_SIG_TYPED_TEST_P(setInput, ConstIOBufPtr)
+READER_INTERFACE_METHOD_SIG_TYPED_TEST_P(setInput, Cursor)
+
+#undef READER_INTERFACE_METHOD_SIG_TYPED_TEST_P
+
 REGISTER_TYPED_TEST_CASE_P(
     ReaderInterfaceTest,
-    readString_fbstring);
+    readString_fbstring,
+    method_sig_setInput_ConstIOBufPtr,
+    method_sig_setInput_Cursor);
 
 INSTANTIATE_TYPED_TEST_CASE_P(Thrift, ReaderInterfaceTest, Readers);

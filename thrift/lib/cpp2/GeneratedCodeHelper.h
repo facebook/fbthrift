@@ -950,15 +950,12 @@ void process_pmap(
     return;
   }
 
+  folly::io::Cursor cursor(buf.get());
+  cursor.skip(ctx->getMessageBeginSize());
+
   auto iprot = folly::make_unique<ProtocolReader>();
-  auto trim = ctx->getMessageBeginSize();
-  while (trim >= buf->length()) {
-    trim -= buf->length();
-    buf = buf->pop();
-    DCHECK(buf);
-  }
-  buf->trimStart(trim);
-  iprot->setInput(buf.get());
+  iprot->setInput(cursor);
+
   (proc->*(pfn->second))(
       std::move(req), std::move(buf), std::move(iprot), ctx, eb, tm);
 }

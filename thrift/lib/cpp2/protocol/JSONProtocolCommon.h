@@ -145,9 +145,8 @@ class JSONProtocolReaderCommon {
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
-  inline void setInput(const folly::IOBuf* buf) {
-    in_.reset(buf);
-  }
+  void setInput(const folly::io::Cursor& cursor) { in_ = cursor; }
+  void setInput(const folly::IOBuf* buf) { setInput(folly::io::Cursor(buf)); }
 
   inline uint32_t readMessageBegin(std::string& name,
                                    MessageType& messageType,
