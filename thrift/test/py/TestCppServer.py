@@ -5,11 +5,14 @@ from __future__ import print_function
 # @lint-avoid-python-3-compatibility-imports
 #from __future__ import unicode_literals
 
+import json
+import math
 import multiprocessing
+import os
 import sys
+import tempfile
 import threading
 import time
-import math
 
 from fb303.ContextFacebookBase import FacebookBase
 from libfb.testutil import BaseFacebookTestCase
@@ -372,13 +375,26 @@ class SSLHeaderTestServer(TestServer):
     def getProcessor(self):
         return TestHeaderProcessor()
 
+    def setupTickets(self):
+        self.ticket_file = tempfile.NamedTemporaryFile(delete=False)
+        self.ticket_data = {
+            'old': ['00000000'],
+            'current': ['11111111'],
+            'new': ['22222222']
+        }
+        with open(self.ticket_file.name, 'w') as f:
+            f.write(json.dumps(self.ticket_data))
+
+
     def configureSSL(self):
         config = TSSLConfig()
+        self.setupTickets()
         self.assertEquals(config.key_path, "")
         config.ssl_policy = SSLPolicy.REQUIRED
         config.cert_path = 'thrift/test/py/test_cert.pem'
         config.client_verify = SSLVerifyPeerEnum.VERIFY
         config.key_path = None
+        config.ticket_file_path = self.ticket_file.name
         # expect an error with a cert_path but no key_path
         with self.assertRaises(ValueError):
             self.server.setSSLConfig(config)
@@ -393,6 +409,12 @@ class SSLHeaderTestServer(TestServer):
             client.space("hi")
         self.stopServer()
 
+    def testTickets(self):
+        tickets = self.server.getTicketSeeds()
+        self.assertEquals(tickets, self.ticket_data)
+
+    def tearDown(self):
+        os.remove(self.ticket_file.name)
 
 if __name__ == '__main__':
     rc = fbpyunit.MainProgram(sys.argv).run()

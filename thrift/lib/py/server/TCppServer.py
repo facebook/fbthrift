@@ -115,6 +115,7 @@ class TSSLConfig(object):
         self.ecc_curve_name = ''
         self.verify = SSLVerifyPeerEnum.VERIFY
         self.ssl_policy = SSLPolicy.PERMITTED
+        self.ticket_file_path = ''
 
     @property
     def ssl_policy(self):
@@ -154,6 +155,9 @@ class TCppServer(CppServerWrapper, TServer):
         if not isinstance(config, TSSLConfig):
             raise ValueError("Config must be of type TSSLConfig")
         self.setCppSSLConfig(config)
+
+    def getTicketSeeds(self):
+        return self.getCppTicketSeeds()
 
     def setup(self):
         if self._setup_done:

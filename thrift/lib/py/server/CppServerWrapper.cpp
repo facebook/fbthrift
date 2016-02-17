@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
+#include <map>
+
 #include <glog/logging.h>
 
 #include <boost/python/class.hpp>
 #include <boost/python/def.hpp>
+#include <boost/python/dict.hpp>
 #include <boost/python/enum.hpp>
 #include <boost/python/errors.hpp>
 #include <boost/python/import.hpp>
+#include <boost/python/list.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/tuple.hpp>
-#include <boost/python/dict.hpp>
 
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/security/TLSTicketProcessor.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -70,6 +74,14 @@ object makePythonHeaders(const std::map<std::string, std::string>& cppheaders) {
     headers[it.first] = it.second;
   }
   return headers;
+}
+
+object makePythonList(const std::vector<std::string>& vec) {
+  list result;
+  for (auto it = vec.begin(); it != vec.end(); ++it) {
+    result.append(*it);
+  }
+  return result;
 }
 
 std::string getStringAttrSafe(object& pyObject, const char* attrName) {
@@ -438,6 +450,31 @@ public:
     }
     ThriftServer::setSSLConfig(cfg);
     setSSLPolicy(extract<SSLPolicy>(sslConfig.attr("ssl_policy")));
+
+    auto ticketFilePath = getStringAttrSafe(sslConfig, "ticket_file_path");
+    ticketProcessor_.reset(); // stops the existing poller if any
+    if (!ticketFilePath.empty()) {
+      ticketProcessor_.reset(new TLSTicketProcessor(ticketFilePath));
+      ticketProcessor_->addCallback([this](wangle::TLSTicketKeySeeds seeds) {
+        updateTicketSeeds(std::move(seeds));
+      });
+      auto seeds = TLSTicketProcessor::processTLSTickets(ticketFilePath);
+      if (seeds) {
+        setTicketSeeds(std::move(*seeds));
+      }
+    }
+  }
+
+  object getCppTicketSeeds() {
+    auto seeds = getTicketSeeds();
+    if (!seeds) {
+      return boost::python::object();
+    }
+    boost::python::dict result;
+    result["old"] = makePythonList(seeds->oldSeeds);
+    result["current"] = makePythonList(seeds->currentSeeds);
+    result["new"] = makePythonList(seeds->newSeeds);
+    return result;
   }
 
   void cleanUp() {
@@ -452,7 +489,7 @@ public:
 
     PyThreadState* save_state = PyEval_SaveThread();
     SCOPE_EXIT { PyEval_RestoreThread(save_state); };
-
+    ticketProcessor_.reset();
     ThriftServer::cleanUp();
   }
 
@@ -482,6 +519,10 @@ public:
     tm->start();
     setThreadManager(std::move(tm));
   }
+
+ private:
+  std::unique_ptr<TLSTicketProcessor> ticketProcessor_;
+
 };
 
 BOOST_PYTHON_MODULE(CppServerWrapper) {
@@ -510,6 +551,8 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
          &CppServerWrapper::setCppServerEventHandler)
     .def("setNewSimpleThreadManager",
          &CppServerWrapper::setNewSimpleThreadManager)
+    .def("setCppSSLConfig", &CppServerWrapper::setCppSSLConfig)
+    .def("getCppTicketSeeds", &CppServerWrapper::getCppTicketSeeds)
 
     // methods directly passed to the C++ impl
     .def("setup", &CppServerWrapper::setup)
@@ -519,7 +562,6 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("stop", &CppServerWrapper::stop)
     .def("setMaxConnections", &CppServerWrapper::setMaxConnections)
     .def("getMaxConnections", &CppServerWrapper::getMaxConnections)
-    .def("setCppSSLConfig", &CppServerWrapper::setCppSSLConfig)
     ;
 
   enum_<SSLPolicy>("SSLPolicy")
