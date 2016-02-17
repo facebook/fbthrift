@@ -89,7 +89,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
     logger->log("max_cache_size", folly::to<string>(maxCacheSize));
 
     string oldError = "";
-    while(true) {
+    while (true) {
       MutexGuard l(manageThreadMutex_);
       if (stopManageThread_) {
         break;
@@ -178,22 +178,25 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
         }
       }
 
-      if (!stopManageThread_) {
-        int wait_time =
-          Krb5CredentialsCacheManager::MANAGE_THREAD_SLEEP_PERIOD;
-        if (store_ && !store_->isInitialized()) {
-          // Shorten loop time to 1 second if first iteration didn't initialize
-          // the client successfully
-          wait_time = 1000;
-        }
-        manageThreadCondVar_.wait_for(l, std::chrono::milliseconds(wait_time));
+      auto waitTime =
+        std::chrono::milliseconds(
+            Krb5CredentialsCacheManager::MANAGE_THREAD_SLEEP_PERIOD);
+      if (store_ && !store_->isInitialized()) {
+        // Shorten loop time to 1 second if first iteration didn't initialize
+        // the client successfully
+        waitTime = std::chrono::milliseconds(1000);
       }
+      manageThreadCondVar_.wait_for(l, waitTime);
     }
   });
 }
 
 Krb5CredentialsCacheManager::~Krb5CredentialsCacheManager() {
-  stopThread();
+  MutexGuard l(manageThreadMutex_);
+  stopManageThread_ = true;
+  l.unlock();
+  manageThreadCondVar_.notify_one();
+  manageThread_.join();
   logger_->log("manager_destroyed");
 }
 
@@ -223,17 +226,6 @@ bool Krb5CredentialsCacheManager::waitUntilCacheStoreInitialized(
     sched_yield();
   }
   return true;
-}
-
-void Krb5CredentialsCacheManager::stopThread() {
-  // Kill the manage thread
-  MutexGuard l(manageThreadMutex_);
-  if (!stopManageThread_) {
-    stopManageThread_ = true;
-    manageThreadCondVar_.notify_one();
-    l.unlock();
-    manageThread_.join();
-  }
 }
 
 std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {

@@ -98,8 +98,6 @@ class Krb5CredentialsCacheManager {
     apache::thrift::krb5::raiseIf(ctx_->get(), code, what);
   }
 
-  void stopThread();
-
   /**
    * Keytab access helpers.
    */
