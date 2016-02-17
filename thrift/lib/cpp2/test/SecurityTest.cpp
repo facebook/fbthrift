@@ -50,8 +50,12 @@ public:
   void async_tm_sendResponse(
       unique_ptr<HandlerCallback<unique_ptr<std::string>>> callback,
       int64_t size) override {
-    EXPECT_NE(callback->getConnectionContext()->
-                getSaslServer()->getClientIdentity(), "");
+    const auto& headers = callback->getConnectionContext()->
+      getHeader()->getHeaders();
+    if (headers.find("security_test")->second == "1") {
+      EXPECT_NE(callback->getConnectionContext()->
+                  getSaslServer()->getClientIdentity(), "");
+    }
     callback.release()->resultInThread(folly::to<std::string>(size));
   }
 };
@@ -127,7 +131,11 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   TestServiceAsyncClient client(std::move(channel));
   Countdown c(3, [&base](){base.terminateLoopSoon();});
 
-  client.sendResponse([&base,&client,&c,&sp](ClientReceiveState&& state) {
+  RpcOptions rpcOptions;
+  rpcOptions.setWriteHeader("security_test",
+                            sp == THRIFT_SECURITY_REQUIRED ? "1" : "0");
+  client.sendResponse(rpcOptions, folly::make_unique<FunctionReplyCallback>(
+                      [&base,&client,&c,&sp](ClientReceiveState&& state) {
     EXPECT_FALSE(state.isException());
     if (sp == THRIFT_SECURITY_REQUIRED) {
       EXPECT_TRUE(state.isSecurityActive());
@@ -142,14 +150,18 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
     }
     EXPECT_EQ(res, "10");
     c.down();
-  }, 10);
+  }), 10);
 
 
   // fail on time out
   base.tryRunAfterDelay([] {EXPECT_TRUE(false);}, 5000);
 
   base.tryRunAfterDelay([&client,&base,&c,&sp] {
-    client.sendResponse([&base,&c,&sp](ClientReceiveState&& state) {
+    RpcOptions rpcOptions1;
+    rpcOptions1.setWriteHeader("security_test",
+                              sp == THRIFT_SECURITY_REQUIRED ? "1" : "0");
+    client.sendResponse(rpcOptions1, folly::make_unique<FunctionReplyCallback>(
+          [&base,&c,&sp](ClientReceiveState&& state) {
       EXPECT_FALSE(state.isException());
       if (sp == THRIFT_SECURITY_REQUIRED) {
         EXPECT_TRUE(state.isSecurityActive());
@@ -164,8 +176,13 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
       }
       EXPECT_EQ(res, "10");
       c.down();
-    }, 10);
-    client.sendResponse([&base,&c,&sp](ClientReceiveState&& state) {
+    }), 10);
+
+    RpcOptions rpcOptions2;
+    rpcOptions2.setWriteHeader("security_test",
+                              sp == THRIFT_SECURITY_REQUIRED ? "1" : "0");
+    client.sendResponse(rpcOptions2, folly::make_unique<FunctionReplyCallback>(
+          [&base,&c,&sp](ClientReceiveState&& state) {
       EXPECT_FALSE(state.isException());
       if (sp == THRIFT_SECURITY_REQUIRED) {
         EXPECT_TRUE(state.isSecurityActive());
@@ -180,7 +197,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
       }
       EXPECT_EQ(res, "10");
       c.down();
-    }, 10);
+    }), 10);
   }, 1);
 
   base.loopForever();
