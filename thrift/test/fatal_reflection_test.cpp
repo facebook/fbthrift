@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/reflect_category.h>
+#include <thrift/lib/cpp2/fatal/container_traits.h>
 
 #include <thrift/test/gen-cpp2/reflection_fatal.h>
 #include <thrift/test/gen-cpp2/reflection_fatal_enum.h>

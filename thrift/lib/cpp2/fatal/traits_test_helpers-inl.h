@@ -31,6 +31,20 @@
 
 namespace apache { namespace thrift { namespace detail {
 
+template <typename LHS, typename RHS>
+void compare_elements_eq(LHS const &lhs, RHS const &rhs) {
+  EXPECT_EQ(lhs, rhs);
+}
+
+template <typename LHSF, typename LHSS, typename RHSF, typename RHSS>
+void compare_elements_eq(
+  std::pair<LHSF, LHSS> const &lhs,
+  std::pair<RHSF, RHSS> const &rhs
+) {
+  EXPECT_EQ(lhs.first, rhs.first);
+  EXPECT_EQ(lhs.second, rhs.second);
+}
+
 #define THRIFT_COMPARE_ITERATORS_IMPL(TRAITS, EI, EE, AI, AE) \
   do { \
     auto ei = (EI); \
@@ -82,7 +96,7 @@ namespace apache { namespace thrift { namespace detail {
     for (auto const ee = expected.end(); ai != ae; ++ai) { \
       auto const e = expected.find(*ai); \
       ASSERT_NE(ee, e); \
-      EXPECT_EQ(*e, *ai); \
+      ::apache::thrift::detail::compare_elements_eq(*e, *ai); \
     } \
   } while (false)
 

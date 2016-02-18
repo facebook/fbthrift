@@ -16,7 +16,7 @@
 #ifndef THRIFT_FATAL_DEBUG_POST_INL_H_
 #define THRIFT_FATAL_DEBUG_POST_INL_H_ 1
 
-#include <thrift/lib/cpp2/fatal/reflect_category.h>
+#include <thrift/lib/cpp2/fatal/container_traits.h>
 
 #include <folly/Conv.h>
 

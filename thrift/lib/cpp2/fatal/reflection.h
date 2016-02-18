@@ -1524,7 +1524,8 @@ template <typename> struct reflect_category_impl;
  *
  * To keep compilation times at bay, strings and containers are not detected by
  * default, therefore they will yield `unknown` as the category. To enable their
- * detection you must include `reflect_category.h`.
+ * detection you must include `container_traits.h`. There's also support
+ * for containers defined in Folly at `container_traits_folly.h`.
  *
  * See `thrift_category` for the possible categories.
  *
@@ -1587,7 +1588,8 @@ using reflect_category = typename detail::reflect_category_impl<T>::type;
  *
  * To keep compilation times at bay, standard strings are not supported by
  * default, therefore they will yield an undefined `thrift_string_traits`.
- * To enable their support, include `reflect_category.h`.
+ * To enable their support, include `container_traits.h`. There's also support
+ * for containers defined in Folly at `container_traits_folly.h`.
  *
  * This is the specialization for standard strings, showing what's offered by
  * the `thrift_string_traits` class. It can also be used as a template when
@@ -1631,7 +1633,8 @@ template <typename> struct thrift_string_traits;
  *
  * To keep compilation times at bay, standard lists are not supported by
  * default, therefore they will yield an undefined `thrift_list_traits`.
- * To enable their support, include `reflect_category.h`.
+ * To enable their support, include `container_traits.h`. There's also support
+ * for containers defined in Folly at `container_traits_folly.h`.
  *
  * This is the specialization for standard vector, showing what's offered by
  * the `thrift_list_traits` class. It can also be used as a template when
@@ -1672,7 +1675,8 @@ template <typename> struct thrift_list_traits;
  *
  * To keep compilation times at bay, standard sets are not supported by
  * default, therefore they will yield an undefined `thrift_set_traits`.
- * To enable their support, include `reflect_category.h`.
+ * To enable their support, include `container_traits.h`. There's also support
+ * for containers defined in Folly at `container_traits_folly.h`.
  *
  * This is the specialization for standard sets, showing what's offered by
  * the `thrift_set_traits` class. It can also be used as a template when
@@ -1717,7 +1721,8 @@ template <typename> struct thrift_set_traits;
  *
  * To keep compilation times at bay, standard maps are not supported by
  * default, therefore they will yield an undefined `thrift_map_traits`.
- * To enable their support, include `reflect_category.h`.
+ * To enable their support, include `container_traits.h`. There's also support
+ * for containers defined in Folly at `container_traits_folly.h`.
  *
  * This is the specialization for standard maps, showing what's offered by
  * the `thrift_map_traits` class. It can also be used as a template when

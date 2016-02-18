@@ -75,6 +75,8 @@ thrift2include_async_HEADERS = \
 thrift2include_fataldir = $(thrift2includedir)/fatal
 
 thrift2include_fatal_HEADERS = \
+  fatal/container_traits.h \
+  fatal/container_traits_folly.h \
 	fatal/debug-inl-post.h \
 	fatal/debug-inl-pre.h \
 	fatal/debug.h \
@@ -83,7 +85,6 @@ thrift2include_fatal_HEADERS = \
 	fatal/indenter.h \
 	fatal/pretty_print-inl.h \
 	fatal/pretty_print.h \
-	fatal/reflect_category.h \
 	fatal/reflection-inl-post.h \
 	fatal/reflection-inl-pre.h \
 	fatal/reflection.h \

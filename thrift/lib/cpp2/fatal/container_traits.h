@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef THRIFT_FATAL_REFLECT_CATEGORY_H_
-#define THRIFT_FATAL_REFLECT_CATEGORY_H_ 1
+#ifndef THRIFT_FATAL_CONTAINER_TRAITS_H_
+#define THRIFT_FATAL_CONTAINER_TRAITS_H_ 1
 
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
@@ -224,4 +224,4 @@ struct thrift_map_traits<std::unordered_map<K, T, H, E, A>> {
 
 }} // apache::thrift
 
-#endif // THRIFT_FATAL_REFLECT_CATEGORY_H_
+#endif // THRIFT_FATAL_CONTAINER_TRAITS_H_

@@ -17,7 +17,6 @@
 #define THRIFT_FATAL_PRETTY_PRINT_H_ 1
 
 #include <thrift/lib/cpp2/fatal/indenter.h>
-#include <thrift/lib/cpp2/fatal/reflect_category.h>
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <sstream>

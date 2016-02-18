@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/container_traits.h>
+#include <thrift/lib/cpp2/fatal/container_traits_folly.h>
 #include <thrift/lib/cpp2/fatal/traits_test_helpers.h>
 
 namespace test_cpp2 {
 namespace cpp_reflection {
 
-TEST(reflection, thrift_std_string_traits) {
-  apache::thrift::test_thrift_string_traits<std::string>();
+TEST(reflection, thrift_sorted_vector_set_traits) {
+  apache::thrift::test_thrift_set_traits<folly::sorted_vector_set<int>>();
 }
 
-TEST(reflection, thrift_fbstring_traits) {
-  apache::thrift::test_thrift_string_traits<folly::fbstring>();
+TEST(reflection, thrift_sorted_vector_map_traits) {
+  apache::thrift::test_thrift_map_traits<folly::sorted_vector_map<int, int>>();
 }
 
 } // namespace cpp_reflection {

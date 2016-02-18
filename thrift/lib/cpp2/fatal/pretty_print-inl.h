@@ -16,6 +16,8 @@
 #ifndef THRIFT_FATAL_PRETTY_PRINT_INL_H_
 #define THRIFT_FATAL_PRETTY_PRINT_INL_H_ 1
 
+#include <thrift/lib/cpp2/fatal/container_traits.h>
+
 #include <fatal/type/enum.h>
 #include <fatal/type/variant_traits.h>
 
