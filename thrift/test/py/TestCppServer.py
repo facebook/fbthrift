@@ -31,7 +31,7 @@ from futuretest.future import FutureSleepService
 
 TIMEOUT = 60 * 1000  # milliseconds
 
-def getClient(addr, sock_cls=TSocket.TSocket, service_module=SleepService):
+def getClient(addr, service_module=SleepService):
     transport = TSocket.TSocket(addr[0], addr[1])
     transport = TTransport.TFramedTransport(transport)
     protocol = TBinaryProtocol.TBinaryProtocol(transport)
@@ -385,7 +385,6 @@ class SSLHeaderTestServer(TestServer):
         with open(self.ticket_file.name, 'w') as f:
             f.write(json.dumps(self.ticket_data))
 
-
     def configureSSL(self):
         config = TSSLConfig()
         self.setupTickets()
@@ -415,6 +414,37 @@ class SSLHeaderTestServer(TestServer):
 
     def tearDown(self):
         os.remove(self.ticket_file.name)
+
+    def testValidateSSL(self):
+        valid, msg = self.server.validateSSLConfig({})
+        self.assertFalse(valid)
+        self.assertIsNotNone(msg)
+
+        cfg = TSSLConfig()
+        valid, msg = self.server.validateSSLConfig(cfg)
+        self.assertTrue(valid)
+        self.assertIsNone(msg)
+
+        cfg.key_path = 'thrift/test/py/test_cert.pem'
+        valid, msg = self.server.validateSSLConfig(cfg)
+        self.assertFalse(valid)
+        self.assertIsNotNone(msg)
+
+        cfg.key_path = ''
+        cfg.cert_path = 'thrift/test/py/test_cert.pem'
+        valid, msg = self.server.validateSSLConfig(cfg)
+        self.assertFalse(valid)
+        self.assertIsNotNone(msg)
+
+        cfg.key_path = cfg.cert_path
+        valid, msg = self.server.validateSSLConfig(cfg)
+        self.assertTrue(valid)
+        self.assertIsNone(msg)
+
+        cfg.client_ca_path = 'thrift/test/should/not/exist.pem'
+        valid, msg = self.server.validateSSLConfig(cfg)
+        self.assertFalse(valid)
+        self.assertIsNotNone(msg)
 
 if __name__ == '__main__':
     rc = fbpyunit.MainProgram(sys.argv).run()
