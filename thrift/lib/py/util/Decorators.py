@@ -26,6 +26,7 @@ import contextlib
 import logging
 import os
 import resource
+import six
 from concurrent.futures import Future
 from functools import partial
 
@@ -69,11 +70,10 @@ def make_unknown_function_exception(name):
 
 def process_main(twisted=False, asyncio=False):
     """Decorator for process method."""
-    if asyncio:
-        try:
-            from asyncio import Future
-        except ImportError:
-            from trollius import Future
+    if asyncio and six.PY3:
+        from asyncio import Future
+    elif asyncio:
+        from trollius import Future
 
     def _decorator(func):
         def nested(self, iprot, oprot, server_ctx=None):

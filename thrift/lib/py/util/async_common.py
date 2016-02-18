@@ -3,11 +3,6 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-try:
-    import asyncio
-except ImportError:
-    import trollius as asyncio
-
 import six
 import logging
 import struct
@@ -24,6 +19,11 @@ from thrift.Thrift import (
     TApplicationException,
     TMessageType,
 )
+
+if six.PY3:
+    import asyncio
+else:
+    import trollius as asyncio
 
 # We support the deprecated FRAMED transport for old fb303
 # clients that were otherwise failing miserably.
