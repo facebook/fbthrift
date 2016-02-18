@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <folly/portability/Constexpr.h>
+
 namespace apache { namespace thrift {
 
 namespace detail { namespace json {
