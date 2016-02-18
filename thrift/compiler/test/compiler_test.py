@@ -95,7 +95,6 @@ class MyTest(unittest.TestCase):
             for gen in gens:
                 genc = read_file(os.path.join(self.tmp, gen))
                 fixc = read_file(os.path.join(fixtureChildDir, gen))
-                self.assertEqual(len(genc), len(fixc))
                 self.assertMultiLineEqual(genc, fixc)
         except Exception as e:
             print(self.MSG, file=sys.stderr)

@@ -4385,7 +4385,7 @@ class CppGenerator(t_generator.Generator):
         return (order, result)
 
     def _generate_fatal_enum_traits(self, name, scoped_name, members, scope,
-      annotations, legacyid):
+      annotations, legacyid, guaranteed_unique=False):
         scoped_ns = self._get_scoped_original_namespace()
         traits_name = '{0}_enum_traits'.format(scoped_name.replace('::', '_'))
         with scope.namespace(self.fatal_detail_ns).scope as detail:
@@ -4412,8 +4412,14 @@ class CppGenerator(t_generator.Generator):
                 t('static char const *to_string(type e, char const *fallback)'
                     + ' {0}'.format('{'))
                 t('  switch (e) {')
+                member_names = []
+                member_values = []
                 for i in members:
-                    t('    case type::{0}: return "{0}";'.format(i.name))
+                    if guaranteed_unique or i.value not in member_values:
+                        member_names.append(i.name)
+                        member_values.append(i.value)
+                for i in member_names:
+                    t('    case type::{0}: return "{0}";'.format(i))
                 t('    default: return fallback;')
                 t('  }')
                 t('}')
@@ -4455,7 +4461,8 @@ class CppGenerator(t_generator.Generator):
             if not i.is_union:
                 continue
             self._generate_fatal_enum_traits(
-                'Type', '{0}::Type'.format(i.name), i.members, sns, None, 0)
+                'Type', '{0}::Type'.format(i.name),
+                i.members, sns, None, 0, True)
             sns()
             string_ref = self._set_fatal_string(i.name)
             result[i.name] = (i.name, string_ref, string_ref)

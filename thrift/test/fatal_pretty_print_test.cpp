@@ -42,7 +42,7 @@ namespace cpp_reflection {
         << std::endl; \
     } \
     \
-    EXPECT_EQ(actual, Expected); \
+    EXPECT_EQ(Expected, actual); \
   } while (false)
 
 TEST(fatal_pretty_print, pretty_print) {
