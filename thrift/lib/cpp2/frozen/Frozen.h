@@ -406,7 +406,6 @@ class ViewBase {
   ViewBase(const Layout* layout, ViewPosition position)
       : layout_(layout), position_(position) {}
 
-
   explicit operator bool() const {
     return position_.start && !layout_->empty();
   }
@@ -689,8 +688,12 @@ struct HolderImpl : public Holder {
 template <class Base>
 class Bundled : public Base {
  public:
+  Bundled() {}
+  Bundled(Bundled&&) = default;
   explicit Bundled(Base&& base) : Base(std::move(base)) {}
   explicit Bundled(const Base& base) : Base(base) {}
+
+  Bundled& operator=(Bundled&&) = default;
 
   template <class T, class Decayed = typename std::decay<T>::type>
   Decayed* hold(T&& t) {

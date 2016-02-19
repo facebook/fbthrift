@@ -24,8 +24,9 @@ using namespace util;
 
 TEST(FrozenUtil, FreezeAndUse) {
   auto file = freezeToTempFile(std::string("hello"));
-  auto view = mapFrozen<std::string>(folly::File(file.fd()));
-  EXPECT_EQ(folly::StringPiece(view), "hello");
+  MappedFrozen<std::string> mapped;
+  mapped = mapFrozen<std::string>(folly::File(file.fd()));
+  EXPECT_EQ(folly::StringPiece(mapped), "hello");
 }
 
 TEST(FrozenUtil, FreezeAndMap) {
@@ -33,7 +34,11 @@ TEST(FrozenUtil, FreezeAndMap) {
   folly::test::TemporaryFile tmp;
 
   freezeToFile(original, folly::File(tmp.fd()));
-  auto mapped = mapFrozen<std::vector<std::string>>(folly::File(tmp.fd()));
+
+  MappedFrozen<std::vector<std::string>> mapped;
+  EXPECT_FALSE(mapped);
+  mapped = mapFrozen<std::vector<std::string>>(folly::File(tmp.fd()));
+  EXPECT_TRUE(mapped);
 
   auto thawed = mapped.thaw();
   EXPECT_EQ(original, thawed);
