@@ -223,7 +223,7 @@ void ThriftServer::setup() {
             0, /* pendingTaskCountMax -- no limit */
             false, /* enableTaskStats */
             0 /* maxQueueLen -- large default */);
-        saslThreadManager_->setNamePrefix("thrift-sasl");
+        saslThreadManager_->setNamePrefix(saslThreadsNamePrefix_);
         saslThreadManager_->threadFactory(threadFactory_);
         saslThreadManager_->start();
       }

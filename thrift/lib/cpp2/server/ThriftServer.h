@@ -86,6 +86,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
     saslThreadManager_;
   int nSaslPoolThreads_ = 0;
+  std::string saslThreadsNamePrefix_ = "thrift-sasl";
 
   std::unique_ptr<folly::ShutdownSocketSet> shutdownSocketSet_ =
       folly::make_unique<folly::ShutdownSocketSet>();
@@ -411,6 +412,21 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    */
   int getNSaslPoolThreads() {
     return nSaslPoolThreads_;
+  }
+
+  /**
+   * Sets the prefix used for SASL threads.
+   */
+  void setSaslThreadsNamePrefix(std::string saslThreadsNamePrefix) {
+    CHECK(configMutable());
+    saslThreadsNamePrefix_ = std::move(saslThreadsNamePrefix);
+  }
+
+  /**
+   * Get the prefix used for SASL threads.
+   */
+  const std::string& getSaslThreadsNamePrefix() {
+    return saslThreadsNamePrefix_;
   }
 
   /**
