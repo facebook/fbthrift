@@ -26,16 +26,11 @@
 
 namespace apache { namespace thrift { namespace detail {
 
-template <dynamic_format Format, bool Strict>
-struct dynamic_converter_impl<Format, thrift_category::enumeration, Strict> {
-  static_assert(
-    Format == dynamic_format::PORTABLE || Format == dynamic_format::JSON_1,
-    "to_dynamic/from_dynamic: unsupported format"
-  );
-
+template <>
+struct dynamic_converter_impl<thrift_category::enumeration> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input) {
-    switch (Format) {
+  static void to(folly::dynamic &out, T const &input, dynamic_format format) {
+    switch (format) {
       case dynamic_format::PORTABLE: {
           auto const s = fatal::enum_to_string(input);
           if (!s) {
@@ -48,7 +43,7 @@ struct dynamic_converter_impl<Format, thrift_category::enumeration, Strict> {
         out = static_cast<typename fatal::enum_traits<T>::int_type>(input);
         break;
       default:
-        assert(false);
+        assert("to_dynamic: unsupported format" == nullptr);
         break;
     }
   }
@@ -65,117 +60,153 @@ struct dynamic_converter_impl<Format, thrift_category::enumeration, Strict> {
   }
 
   template <typename T>
-  static void from(T &out, folly::dynamic const &input) {
-    if (Strict) {
-      switch (Format) {
-        case dynamic_format::PORTABLE:
-          from_portable(out, input);
-          break;
-        case dynamic_format::JSON_1:
-          from_json_1(out, input);
-          break;
-        default:
-          assert(false);
-          break;
-      }
-    } else {
-      switch (Format) {
-        case dynamic_format::PORTABLE:
-        case dynamic_format::JSON_1:
-          if (input.isInt()) {
-            from_json_1(out, input);
-          } else {
+  static void from(
+    T &out,
+    folly::dynamic const &input,
+    dynamic_format format,
+    format_adherence adherence
+  ) {
+    switch (adherence) {
+      case format_adherence::STRICT:
+        switch (format) {
+          case dynamic_format::PORTABLE:
             from_portable(out, input);
-          }
-          break;
-        default:
-          assert(false);
-          break;
-      }
+            break;
+          case dynamic_format::JSON_1:
+            from_json_1(out, input);
+            break;
+          default:
+            assert("from_dynamic (STRICT): unsupported format" == nullptr);
+            break;
+        }
+        break;
+
+      case format_adherence::LENIENT:
+        switch (format) {
+          case dynamic_format::PORTABLE:
+          case dynamic_format::JSON_1:
+            if (input.isInt()) {
+              from_json_1(out, input);
+            } else {
+              from_portable(out, input);
+            }
+            break;
+          default:
+            assert("from_dynamic (LENIENT): unsupported format" == nullptr);
+            break;
+        }
+        break;
+
+      default:
+        assert("from_dynamic: unsupported format adherence" == nullptr);
+        break;
     }
   }
 };
 
-template <dynamic_format Format, bool Strict>
-struct dynamic_converter_impl<Format, thrift_category::list, Strict> {
+template <>
+struct dynamic_converter_impl<thrift_category::list> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input) {
+  static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     using traits = thrift_list_traits<T>;
 
     out = std::initializer_list<folly::dynamic>{};
 
     for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
-      out.push_back(to_dynamic<Format>(*i));
+      out.push_back(to_dynamic(*i, format));
     }
   }
 
   template <typename T>
-  static void from(T &out, folly::dynamic const &input) {
+  static void from(
+    T &out,
+    folly::dynamic const &input,
+    dynamic_format format,
+    format_adherence adherence
+  ) {
     using traits = thrift_list_traits<T>;
 
     for (auto const &i: input) {
       out.push_back(
-        from_dynamic<Format, typename traits::value_type, Strict>(i)
+        from_dynamic<typename traits::value_type>(i, format, adherence)
       );
     }
   }
 };
 
-template <dynamic_format Format, bool Strict>
-struct dynamic_converter_impl<Format, thrift_category::map, Strict> {
+template <>
+struct dynamic_converter_impl<thrift_category::map> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input) {
+  static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     using traits = thrift_map_traits<T>;
 
     out = folly::dynamic::object;
 
     for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
-      to_dynamic<Format>(
-        out[to_dynamic<Format>(traits::key(i))],
-        traits::mapped(i)
+      to_dynamic(
+        out[to_dynamic(traits::key(i), format)],
+        traits::mapped(i),
+        format
       );
     }
   }
 
   template <typename T>
-  static void from(T &out, folly::dynamic const &input) {
+  static void from(
+    T &out,
+    folly::dynamic const &input,
+    dynamic_format format,
+    format_adherence adherence
+  ) {
     using traits = thrift_map_traits<T>;
 
     for (auto const &i: input.items()) {
-      from_dynamic<Format, Strict>(
-        out[from_dynamic<Format, typename traits::key_type, Strict>(i.first)],
-        i.second
+      from_dynamic(
+        out[
+          from_dynamic<typename traits::key_type>(
+            i.first,
+            format,
+            adherence
+          )
+        ],
+        i.second,
+        format,
+        adherence
       );
     }
   }
 };
 
-template <dynamic_format Format, bool Strict>
-struct dynamic_converter_impl<Format, thrift_category::set, Strict> {
+template <>
+struct dynamic_converter_impl<thrift_category::set> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input) {
+  static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     using traits = thrift_set_traits<T>;
 
     out = std::initializer_list<folly::dynamic>{};
 
     for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
-      out.push_back(to_dynamic<Format>(*i));
+      out.push_back(to_dynamic(*i, format));
     }
   }
 
   template <typename T>
-  static void from(T &out, folly::dynamic const &input) {
+  static void from(
+    T &out,
+    folly::dynamic const &input,
+    dynamic_format format,
+    format_adherence adherence
+  ) {
     using traits = thrift_set_traits<T>;
 
     for (auto const &i: input) {
       out.insert(
-        from_dynamic<Format, typename traits::value_type, Strict>(i)
+        from_dynamic<typename traits::value_type>(i, format, adherence)
       );
     }
   }
 };
 
-template <dynamic_format Format>
 struct to_dynamic_variant_visitor {
   template <
     typename Id, typename Descriptor, std::size_t Index,
@@ -185,22 +216,26 @@ struct to_dynamic_variant_visitor {
     fatal::indexed_type_pair_tag<Id, Descriptor, Index>,
     Needle,
     folly::dynamic &out,
-    T const &input
+    T const &input,
+    dynamic_format format
   ) const {
-    to_dynamic<Format>(
+    to_dynamic(
       out[fatal::enum_to_string(input.getType())],
-      typename Descriptor::getter()(input)
+      typename Descriptor::getter()(input),
+      format
     );
   }
 };
 
-template <dynamic_format Format, bool Strict, typename VariantTraits>
+template <typename VariantTraits>
 struct from_dynamic_variant_visitor {
   template <typename T, typename IdName>
   void operator ()(
     fatal::type_tag<IdName>,
     T &out,
-    folly::dynamic const &input
+    folly::dynamic const &input,
+    dynamic_format format,
+    format_adherence adherence
   ) const {
     using id_traits = fatal::enum_traits<typename VariantTraits::id>;
     using id = typename id_traits::name_to_value::template get<IdName>;
@@ -208,29 +243,35 @@ struct from_dynamic_variant_visitor {
 
     VariantTraits::by_id::template set<id>(
       out,
-      from_dynamic<Format, type, Strict>(input)
+      from_dynamic<type>(input, format, adherence)
     );
   }
 };
 
-template <dynamic_format Format, bool Strict>
-struct dynamic_converter_impl<Format, thrift_category::variant, Strict> {
+template <>
+struct dynamic_converter_impl<thrift_category::variant> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input) {
+  static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     using traits = fatal::variant_traits<T>;
 
     out = folly::dynamic::object;
 
     traits::by_id::map::template binary_search<>::exact(
       input.getType(),
-      to_dynamic_variant_visitor<Format>(),
+      to_dynamic_variant_visitor(),
       out,
-      input
+      input,
+      format
     );
   }
 
   template <typename T>
-  static void from(T &out, folly::dynamic const &input) {
+  static void from(
+    T &out,
+    folly::dynamic const &input,
+    dynamic_format format,
+    format_adherence adherence
+  ) {
     using variant_traits = fatal::variant_traits<T>;
     using id_traits = fatal::enum_traits<typename variant_traits::id>;
 
@@ -246,8 +287,9 @@ struct dynamic_converter_impl<Format, thrift_category::variant, Strict> {
       auto const type = i->first.stringPiece();
       bool const found = id_traits::prefix_tree::template match<>::exact(
         type.begin(), type.end(),
-        from_dynamic_variant_visitor<Format, Strict, variant_traits>(),
-        out, i->second
+        from_dynamic_variant_visitor<variant_traits>(),
+        out, i->second,
+        format, adherence
       );
 
       if (!found) {
@@ -257,17 +299,15 @@ struct dynamic_converter_impl<Format, thrift_category::variant, Strict> {
   }
 };
 
-template <dynamic_format Format>
 struct to_dynamic_struct_visitor {
   template <typename MemberInfo, std::size_t Index, typename T>
   void operator ()(
     fatal::indexed_type_tag<MemberInfo, Index>,
     folly::dynamic &out,
-    T const &input
+    T const &input,
+    dynamic_format format
   ) const {
-    using impl = dynamic_converter_impl<
-      Format, MemberInfo::category::value, true
-    >;
+    using impl = dynamic_converter_impl<MemberInfo::category::value>;
 
     static_assert(
       fatal::is_complete<impl>::value,
@@ -276,37 +316,44 @@ struct to_dynamic_struct_visitor {
 
     impl::to(
       out[folly::StringPiece(MemberInfo::name::data(), MemberInfo::name::size)],
-      MemberInfo::getter::ref(input)
+      MemberInfo::getter::ref(input),
+      format
     );
   }
 };
 
-template <dynamic_format Format, bool Strict>
 struct from_dynamic_struct_visitor {
   template <typename Member, typename T>
   void operator ()(
     fatal::type_tag<Member>,
     T &out,
-    folly::dynamic const &input
+    folly::dynamic const &input,
+    dynamic_format format,
+    format_adherence adherence
   ) const {
     using getter = typename reflect_struct<T>::getters::template get<Member>;
-    from_dynamic<Format, Strict>(getter::ref(out), input);
+    from_dynamic(getter::ref(out), input, format, adherence);
   }
 };
 
-template <dynamic_format Format, bool Strict>
-struct dynamic_converter_impl<Format, thrift_category::structure, Strict> {
+template <>
+struct dynamic_converter_impl<thrift_category::structure> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input) {
+  static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     out = folly::dynamic::object;
     reflect_struct<T>::members::mapped::foreach(
-      to_dynamic_struct_visitor<Format>(),
-      out, input
+      to_dynamic_struct_visitor(),
+      out, input, format
     );
   }
 
   template <typename T>
-  static void from(T &out, folly::dynamic const &input) {
+  static void from(
+    T &out,
+    folly::dynamic const &input,
+    dynamic_format format,
+    format_adherence adherence
+  ) {
     using trie = typename reflect_struct<T>::members::keys::template apply<
       fatal::build_type_prefix_tree<>::from
     >;
@@ -315,56 +362,82 @@ struct dynamic_converter_impl<Format, thrift_category::structure, Strict> {
       auto const member = i.first.stringPiece();
       trie::template match<>::exact(
         member.begin(), member.end(),
-        from_dynamic_struct_visitor<Format, Strict>(),
-        out, i.second
+        from_dynamic_struct_visitor(),
+        out, i.second,
+        format, adherence
       );
     }
   }
 };
 
-template <dynamic_format Format, bool Strict>
-struct dynamic_converter_impl<Format, thrift_category::string, Strict> {
+template <>
+struct dynamic_converter_impl<thrift_category::string> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input) {
+  static void to(folly::dynamic &out, T const &input, dynamic_format) {
     out = input;
   }
 
-  static void from(std::string &out, folly::dynamic const &input) {
+  static void from(
+    std::string &out,
+    folly::dynamic const &input,
+    dynamic_format,
+    format_adherence
+  ) {
     out = input.asString().toStdString();
   }
 
   template <typename T>
-  static void from(T &out, folly::dynamic const &input) {
+  static void from(
+    T &out,
+    folly::dynamic const &input,
+    dynamic_format,
+    format_adherence
+  ) {
     out = input.asString();
   }
 };
 
-template <dynamic_format Format, bool Strict>
-struct dynamic_converter_impl<Format, thrift_category::floating_point, Strict> {
+template <>
+struct dynamic_converter_impl<thrift_category::floating_point> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input) {
+  static void to(folly::dynamic &out, T const &input, dynamic_format) {
     out = static_cast<double>(input);
   }
 
   template <typename T>
-  static void from(T &out, folly::dynamic const &input) {
+  static void from(
+    T &out,
+    folly::dynamic const &input,
+    dynamic_format,
+    format_adherence
+  ) {
     out = static_cast<T>(input.asDouble());
   }
 };
 
-template <dynamic_format Format, bool Strict>
-struct dynamic_converter_impl<Format, thrift_category::integral, Strict> {
+template <>
+struct dynamic_converter_impl<thrift_category::integral> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input) {
+  static void to(folly::dynamic &out, T const &input, dynamic_format) {
     out = input;
   }
 
-  static void from(bool &out, folly::dynamic const &input) {
+  static void from(
+    bool &out,
+    folly::dynamic const &input,
+    dynamic_format,
+    format_adherence
+  ) {
     out = input.asBool();
   }
 
   template <typename T>
-  static void from(T &out, folly::dynamic const &input) {
+  static void from(
+    T &out,
+    folly::dynamic const &input,
+    dynamic_format,
+    format_adherence
+  ) {
     out = static_cast<T>(input.asInt());
   }
 };

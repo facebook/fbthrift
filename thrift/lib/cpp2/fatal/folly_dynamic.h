@@ -57,6 +57,7 @@ enum class dynamic_format {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   PORTABLE,
+
   /**
    * A data format that's compatible with `readFromJson()` and
    * `TSimpleJSONProtocol` from Thrift 1.
@@ -66,8 +67,31 @@ enum class dynamic_format {
   JSON_1
 };
 
+/**
+ * Tells how much a decoder should adhere to the data format specification.
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+enum class format_adherence {
+  /**
+   * Demands the data to strictly follow the given format. Any deviation from
+   * the format will be rejected.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  STRICT,
+
+  /**
+   * Accepts data that deviates from the format, as long as the deviation is not
+   * ambiguous and can be safely interpreted by the decoder.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  LENIENT
+};
+
 namespace detail {
-template <dynamic_format, thrift_category, bool> struct dynamic_converter_impl;
+template <thrift_category> struct dynamic_converter_impl;
 } // namespace detail {
 
 /**
@@ -81,12 +105,10 @@ template <dynamic_format, thrift_category, bool> struct dynamic_converter_impl;
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <dynamic_format Format, typename T>
-void to_dynamic(folly::dynamic &out, T &&input) {
+template <typename T>
+void to_dynamic(folly::dynamic &out, T &&input, dynamic_format format) {
   using impl = detail::dynamic_converter_impl<
-    Format,
-    reflect_category<typename std::decay<T>::type>::value,
-    true
+    reflect_category<typename std::decay<T>::type>::value
   >;
 
   static_assert(
@@ -94,7 +116,7 @@ void to_dynamic(folly::dynamic &out, T &&input) {
     "to_dynamic: unsupported type"
   );
 
-  impl::to(out, std::forward<T>(input));
+  impl::to(out, std::forward<T>(input), format);
 }
 
 /**
@@ -106,11 +128,11 @@ void to_dynamic(folly::dynamic &out, T &&input) {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <dynamic_format Format, typename T>
-folly::dynamic to_dynamic(T &&input) {
+template <typename T>
+folly::dynamic to_dynamic(T &&input, dynamic_format format) {
   folly::dynamic result(folly::dynamic::object);
 
-  to_dynamic<Format>(result, std::forward<T>(input));
+  to_dynamic(result, std::forward<T>(input), format);
 
   return result;
 }
@@ -119,11 +141,6 @@ folly::dynamic to_dynamic(T &&input) {
  * Converts an object from its `folly::dynamic` representation using Thrift's
  * reflection support.
  *
- * When the `Strict` option is `true`, only documents that strictly follow the
- * given format will be accepted. When it is `false`, documents that don't
- * strictly adhere to the format but which still could be understood will also
- * be accepted, making the decoder more lenient to differences in encoders.
- *
  * All Thrift types are required to be generated using the 'fatal' cpp2 flag,
  * otherwise compile-time reflection metadata won't be available.
  *
@@ -131,12 +148,15 @@ folly::dynamic to_dynamic(T &&input) {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <dynamic_format Format, bool Strict = true, typename T>
-void from_dynamic(T &out, folly::dynamic const &input) {
+template <typename T>
+void from_dynamic(
+  T &out,
+  folly::dynamic const &input,
+  dynamic_format format,
+  format_adherence adherence = format_adherence::STRICT
+) {
   using impl = detail::dynamic_converter_impl<
-    Format,
-    reflect_category<typename std::decay<T>::type>::value,
-    Strict
+    reflect_category<typename std::decay<T>::type>::value
   >;
 
   static_assert(
@@ -144,28 +164,27 @@ void from_dynamic(T &out, folly::dynamic const &input) {
     "from_dynamic: unsupported type"
   );
 
-  impl::from(out, input);
+  impl::from(out, input, format, adherence);
 }
 
 /**
  * Converts an object from its `folly::dynamic` representation using Thrift's
  * reflection support.
  *
- * When the `Strict` option is `true`, only documents that strictly follow the
- * given format will be accepted. When it is `false`, documents that don't
- * strictly adhere to the format but which still could be understood will also
- * be accepted, making the decoder more lenient to differences in encoders.
- *
  * All Thrift types are required to be generated using the 'fatal' cpp2 flag,
  * otherwise compile-time reflection metadata won't be available.
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <dynamic_format Format, typename T, bool Strict = true>
-T from_dynamic(folly::dynamic const &input) {
+template <typename T>
+T from_dynamic(
+  folly::dynamic const &input,
+  dynamic_format format,
+  format_adherence adherence = format_adherence::STRICT
+) {
   T result;
 
-  from_dynamic<Format, Strict>(result, input);
+  from_dynamic(result, input, format, adherence);
 
   return result;
 }

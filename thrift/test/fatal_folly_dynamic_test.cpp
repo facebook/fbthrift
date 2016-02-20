@@ -43,9 +43,9 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
   std::ostringstream log;
   try {
     log.str("to_dynamic(PORTABLE):\n");
-    auto const actual = apache::thrift::to_dynamic<
-      apache::thrift::dynamic_format::PORTABLE
-    >(pod);
+    auto const actual = apache::thrift::to_dynamic(
+      pod, apache::thrift::dynamic_format::PORTABLE
+    );
     if (actual != json) {
       log << "actual: " << folly::toPrettyJson(actual)
         << std::endl << "expected: " << folly::toPrettyJson(json);
@@ -58,9 +58,9 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
   }
   try {
     log.str("from_dynamic(PORTABLE):\n");
-    auto const actual = apache::thrift::from_dynamic<
-      apache::thrift::dynamic_format::PORTABLE, T
-    >(json);
+    auto const actual = apache::thrift::from_dynamic<T>(
+      json, apache::thrift::dynamic_format::PORTABLE
+    );
     if (actual != pod) {
       apache::thrift::pretty_print(log << "actual: ", actual);
       log << std::endl;
@@ -75,12 +75,12 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
   }
   try {
     log.str("from_dynamic(PORTABLE)/to_dynamic(PORTABLE):\n");
-    auto const from = apache::thrift::from_dynamic<
-      apache::thrift::dynamic_format::PORTABLE, T
-    >(json);
-    auto const to = apache::thrift::to_dynamic<
-      apache::thrift::dynamic_format::PORTABLE
-    >(from);
+    auto const from = apache::thrift::from_dynamic<T>(
+      json, apache::thrift::dynamic_format::PORTABLE
+    );
+    auto const to = apache::thrift::to_dynamic(
+      from, apache::thrift::dynamic_format::PORTABLE
+    );
     if (json != to) {
       apache::thrift::pretty_print(log << "from: ", from);
       log << std::endl << "to: " << folly::toPrettyJson(to)
@@ -94,12 +94,12 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
   }
   try {
     log.str("to_dynamic(PORTABLE)/from_dynamic(PORTABLE):\n");
-    auto const to = apache::thrift::to_dynamic<
-      apache::thrift::dynamic_format::PORTABLE
-    >(pod);
-    auto const from = apache::thrift::from_dynamic<
-      apache::thrift::dynamic_format::PORTABLE, T
-    >(to);
+    auto const to = apache::thrift::to_dynamic(
+      pod, apache::thrift::dynamic_format::PORTABLE
+    );
+    auto const from = apache::thrift::from_dynamic<T>(
+      to, apache::thrift::dynamic_format::PORTABLE
+    );
     if (pod != from) {
       log << "to: " << folly::toPrettyJson(to) << std::endl;
       apache::thrift::pretty_print(log << "from: ", from);
@@ -115,12 +115,14 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
   }
   try {
     log.str("to_dynamic(PORTABLE)/from_dynamic(PORTABLE,LENIENT):\n");
-    auto const to = apache::thrift::to_dynamic<
-      apache::thrift::dynamic_format::PORTABLE
-    >(pod);
-    auto const from = apache::thrift::from_dynamic<
-      apache::thrift::dynamic_format::PORTABLE, T, false
-    >(to);
+    auto const to = apache::thrift::to_dynamic(
+      pod, apache::thrift::dynamic_format::PORTABLE
+    );
+    auto const from = apache::thrift::from_dynamic<T>(
+      to,
+      apache::thrift::dynamic_format::PORTABLE,
+      apache::thrift::format_adherence::LENIENT
+    );
     if (pod != from) {
       log << "to: " << folly::toPrettyJson(to) << std::endl;
       apache::thrift::pretty_print(log << "from: ", from);
@@ -136,12 +138,14 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
   }
   try {
     log.str("to_dynamic(PORTABLE)/from_dynamic(JSON_1,LENIENT):\n");
-    auto const to = apache::thrift::to_dynamic<
-      apache::thrift::dynamic_format::PORTABLE
-    >(pod);
-    auto const from = apache::thrift::from_dynamic<
-      apache::thrift::dynamic_format::JSON_1, T, false
-    >(to);
+    auto const to = apache::thrift::to_dynamic(
+      pod, apache::thrift::dynamic_format::PORTABLE
+    );
+    auto const from = apache::thrift::from_dynamic<T>(
+      to,
+      apache::thrift::dynamic_format::JSON_1,
+      apache::thrift::format_adherence::LENIENT
+    );
     if (pod != from) {
       log << "to: " << folly::toPrettyJson(to) << std::endl;
       apache::thrift::pretty_print(log << "from: ", from);
@@ -157,12 +161,14 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
   }
   try {
     log.str("to_dynamic(JSON_1)/from_dynamic(PORTABLE,LENIENT):\n");
-    auto const to = apache::thrift::to_dynamic<
-      apache::thrift::dynamic_format::JSON_1
-    >(pod);
-    auto const from = apache::thrift::from_dynamic<
-      apache::thrift::dynamic_format::PORTABLE, T, false
-    >(to);
+    auto const to = apache::thrift::to_dynamic(
+      pod, apache::thrift::dynamic_format::JSON_1
+    );
+    auto const from = apache::thrift::from_dynamic<T>(
+      to,
+      apache::thrift::dynamic_format::PORTABLE,
+      apache::thrift::format_adherence::LENIENT
+    );
     if (pod != from) {
       log << "to: " << folly::toPrettyJson(to) << std::endl;
       apache::thrift::pretty_print(log << "from: ", from);
@@ -178,12 +184,15 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
   }
   try {
     log.str("to_dynamic(JSON_1)/from_dynamic(JSON_1,LENIENT):\n");
-    auto const to = apache::thrift::to_dynamic<
+    auto const to = apache::thrift::to_dynamic(
+      pod,
       apache::thrift::dynamic_format::JSON_1
-    >(pod);
-    auto const from = apache::thrift::from_dynamic<
-      apache::thrift::dynamic_format::JSON_1, T, false
-    >(to);
+    );
+    auto const from = apache::thrift::from_dynamic<T>(
+      to,
+      apache::thrift::dynamic_format::JSON_1,
+      apache::thrift::format_adherence::LENIENT
+    );
     if (pod != from) {
       log << "to: " << folly::toPrettyJson(to) << std::endl;
       apache::thrift::pretty_print(log << "from: ", from);
@@ -206,9 +215,9 @@ void test_compat(T const &pod, folly::dynamic const &json) {
     log.str("to_dynamic(JSON_1)/readFromJson:\n");
     T decoded;
     auto const prettyJson = folly::toPrettyJson(
-      apache::thrift::to_dynamic<
-        apache::thrift::dynamic_format::JSON_1
-      >(pod)
+      apache::thrift::to_dynamic(
+        pod, apache::thrift::dynamic_format::JSON_1
+      )
     );
     decoded.readFromJson(prettyJson.data(), prettyJson.size());
     if (pod != decoded) {
@@ -234,9 +243,9 @@ void test_compat(T const &pod, folly::dynamic const &json) {
     log.str("to_dynamic(JSON_1,LENIENT)/readFromJson:\n");
     T decoded;
     auto const prettyJson = folly::toPrettyJson(
-      apache::thrift::to_dynamic<
-        apache::thrift::dynamic_format::JSON_1
-      >(pod)
+      apache::thrift::to_dynamic(
+        pod, apache::thrift::dynamic_format::JSON_1
+      )
     );
     decoded.readFromJson(prettyJson.data(), prettyJson.size());
     if (pod != decoded) {
@@ -401,10 +410,9 @@ TEST(fatal_folly_dynamic, to_from_dynamic) {
 
 TEST(fatal_folly_dynamic, booleans) {
   auto const decode = [](char const *json) {
-    return apache::thrift::from_dynamic<
-      apache::thrift::dynamic_format::PORTABLE,
-      test_cpp2::cpp_reflection::structB
-    >(folly::parseJson(json));
+    return apache::thrift::from_dynamic<test_cpp2::cpp_reflection::structB>(
+      folly::parseJson(json), apache::thrift::dynamic_format::PORTABLE
+    );
   };
 
   test_cpp2::cpp_reflection::structB expected;
