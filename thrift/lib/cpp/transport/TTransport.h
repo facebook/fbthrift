@@ -24,6 +24,7 @@
 #include <memory>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <string>
+#include <folly/Conv.h>
 
 namespace apache { namespace thrift { namespace transport {
 
@@ -38,8 +39,13 @@ uint32_t readAll(Transport_ &trans, uint8_t* buf, uint32_t len) {
   while (have < len) {
     get = trans.read(buf+have, len-have);
     if (get <= 0) {
-      throw TTransportException(TTransportException::END_OF_FILE,
-                                "No more data to read.");
+      throw TTransportException(
+          TTransportException::END_OF_FILE,
+          folly::to<std::string>(
+            "No more data to read. Attempted blocking readAll for ",
+            len,
+            " bytes, but only able to fetch ",
+            have));
     }
     have += get;
   }
