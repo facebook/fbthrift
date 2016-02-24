@@ -7,6 +7,7 @@ import socket
 import threading
 import unittest
 
+from contextlib import contextmanager
 from thrift_asyncio.tutorial import Calculator
 from thrift_asyncio.sleep import Sleep
 from thrift.util.asyncio import create_client
@@ -111,19 +112,48 @@ class TAsyncioServerTest(unittest.TestCase):
                 results_in_arrival_order.append(result)
             self.assertEquals(['1', '2', '3'], results_in_arrival_order)
 
-    def test_out_of_order_calls(self):
-        sock = socket.socket()
+    @contextmanager
+    def server_in_background_thread(self, sock):
         server_loop = asyncio.new_event_loop()
         server_loop.set_debug(True)
         handler = AsyncSleepHandler(server_loop)
         server = server_loop_runner(server_loop, sock, handler)
         server_thread = self._start_server_thread(server, server_loop)
+        try:
+            yield server
+        finally:
+            server_loop.call_soon_threadsafe(server.close)
+            server_thread.join()
 
-        client_loop = asyncio.new_event_loop()
-        client_loop.set_debug(True)
-        client_loop.run_until_complete(
-            self._make_out_of_order_calls(sock, client_loop),
+    def test_out_of_order_calls(self):
+        sock = socket.socket()
+        with self.server_in_background_thread(sock):
+            client_loop = asyncio.new_event_loop()
+            client_loop.set_debug(True)
+            client_loop.run_until_complete(
+                self._make_out_of_order_calls(sock, client_loop),
+            )
+
+    @asyncio.coroutine
+    def _assert_transport_is_closed_on_error(self, sock, loop):
+        port = sock.getsockname()[1]
+        client_manager = yield from create_client(
+            Sleep.Client,
+            host='localhost',
+            port=port,
+            loop=loop,
         )
+        try:
+            with client_manager as client:
+                raise Exception('expected exception from test')
+        except:
+            self.assertFalse(client._oprot.trans.isOpen())
 
-        server_loop.call_soon_threadsafe(server.close)
-        server_thread.join()
+    def test_close_client_on_error(self):
+        sock = socket.socket()
+        with self.server_in_background_thread(sock):
+            loop = asyncio.new_event_loop()
+            loop.set_debug(True)
+            loop.run_until_complete(
+                self._assert_transport_is_closed_on_error(sock, loop),
+            )

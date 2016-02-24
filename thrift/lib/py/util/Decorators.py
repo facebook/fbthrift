@@ -313,8 +313,10 @@ def write_results_exception_callback(func):
 
 @contextlib.contextmanager
 def protocol_manager(protocol):
-    yield protocol.client
-    protocol.close()
+    try:
+        yield protocol.client
+    finally:
+        protocol.close()
 
 
 def run_on_thread(func):
