@@ -109,6 +109,14 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
             continue;
           }
         }
+
+        if (manager_->observer_) {
+          // Hold lock to ensure that observer_ does not get deleted
+          folly::RWSpinLock::ReadHolder g(manager_->observerLock_);
+          if (manager_->observer_) {
+            manager_->observer_->preRun(task->getContext().get());
+          }
+        }
       }
 
       // Check if the task is expired
@@ -569,6 +577,7 @@ void ThreadManager::ImplT<SemType>::reportTaskStats(
     // Hold lock to ensure that observer_ does not get deleted.
     folly::RWSpinLock::ReadHolder g(ThreadManager::ImplT<SemType>::observerLock_);
     if (ThreadManager::ImplT<SemType>::observer_) {
+      ThreadManager::ImplT<SemType>::observer_->postRun();
       // Note: We are assuming the namePrefix_ does not change after the thread is
       // started.
       // TODO: enforce this.

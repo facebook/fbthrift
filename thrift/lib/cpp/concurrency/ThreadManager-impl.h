@@ -80,6 +80,10 @@ class ThreadManager::Task {
     return queueBeginTime_ != SystemClockTimePoint();
   }
 
+  const std::shared_ptr<folly::RequestContext>& getContext() const {
+    return context_;
+  }
+
  private:
   shared_ptr<Runnable> runnable_;
   SystemClockTimePoint queueBeginTime_;

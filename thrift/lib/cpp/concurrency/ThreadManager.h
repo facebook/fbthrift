@@ -25,6 +25,7 @@
 #include <memory>
 
 #include <folly/Executor.h>
+#include <folly/io/async/Request.h>
 #include <folly/LifoSem.h>
 #include <folly/RWSpinLock.h>
 #include <wangle/concurrent/Codel.h>
@@ -251,6 +252,9 @@ class ThreadManager : public folly::Executor {
    public:
     virtual ~Observer() {}
 
+    virtual void preRun(folly::RequestContext*) {}
+    virtual void postRun() {}
+
     virtual void addStats(const std::string& threadPoolName,
                           const SystemClockTimePoint& queueBegin,
                           const SystemClockTimePoint& workBegin,
@@ -267,6 +271,7 @@ class ThreadManager : public folly::Executor {
   class ImplT;
 
   typedef ImplT<folly::LifoSem> Impl;
+
  protected:
   static folly::RWSpinLock observerLock_;
   static std::shared_ptr<Observer> observer_;
