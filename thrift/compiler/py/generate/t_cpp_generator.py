@@ -4315,29 +4315,46 @@ class CppGenerator(t_generator.Generator):
                 "unknown required qualifier"
             return 'required_of_writer'
 
-    def _render_fatal_annotations_map(self, annotations, scope, indent,
-      trailing_comma):
-        scope('{0}::fatal::type_map<'.format(indent))
-        if annotations is not None:
-            for idx, i in enumerate(sorted(annotations.keys())):
-                value = annotations[i]
-                scope('{0}  ::fatal::type_pair<'.format(indent))
-                scope('{0}    {1},'.format(indent, self._set_fatal_string(i)))
-                scope('{0}    {1}'.format(indent,
-                    self._render_fatal_string(value)))
-                comma = ',' if idx + 1 < len(annotations) else ''
-                scope('{0}  >{1}'.format(indent, comma))
-        scope('{0}>{1}'.format(indent, ',' if trailing_comma else ''))
+    def _render_fatal_annotations(self, annotations, class_name, scope):
+        clsnmkeys = '{0}__unique_annotations_keys'.format(class_name)
+        clsnmvalues = '{0}__unique_annotations_values'.format(class_name)
+        with scope.cls('class {0}'.format(class_name)).scope as aclass:
+            with scope.cls('struct {0}'.format(clsnmkeys)).scope as akeys:
+                if annotations is not None:
+                    for idx, i in enumerate(annotations.keys()):
+                        full_id = self._set_fatal_string(i)
+                        short_id = self._get_fatal_string_short_id(i)
+                        akeys('using {0} = {1};'.format(short_id, full_id))
+            with scope.cls('struct {0}'.format(clsnmvalues)).scope as avalues:
+                if annotations is not None:
+                    for idx, i in enumerate(annotations.keys()):
+                        avalues('using {0} = {1};'.format(
+                            self._get_fatal_string_short_id(i),
+                            self._render_fatal_string(annotations[i])))
+            aclass()
+            aclass('public:')
+            aclass('using keys = {0};'.format(clsnmkeys))
+            aclass('using values = {0};'.format(clsnmvalues))
+            aclass('using map = ::fatal::type_map<')
+            if annotations is not None:
+                for idx, i in enumerate(sorted(annotations.keys())):
+                    identifier = self._get_fatal_string_short_id(i)
+                    aclass('  ::fatal::type_pair<')
+                    aclass('    keys::{0},'.format(identifier))
+                    aclass('    values::{0}'.format(identifier))
+                    comma = ',' if idx + 1 < len(annotations) else ''
+                    aclass('  >{0}'.format(comma))
+            aclass('>;')
+        return class_name
 
-    def _render_fatal_type_common_metadata(self, annotations, legacyid, scope,
-      indent):
+    def _render_fatal_type_common_metadata(self, annotations_class, legacyid,
+      scope, indent):
         scope('{0}::apache::thrift::detail::type_common_metadata_impl<'.format(
             indent))
         scope('{0}  {1},'.format(indent, self.fatal_tag))
-        self._render_fatal_annotations_map(annotations, scope, indent + '  ',
-            True)
-        scope('{0}  static_cast<::apache::thrift::{1}>({2}ull)'.format(
-            indent, 'legacy_type_id_t', legacyid))
+        scope('{0}  {1},'.format(indent, annotations_class))
+        scope('{0}  static_cast<::apache::thrift::legacy_type_id_t>({1}ull)'
+            .format(indent, legacyid))
         scope('{0}>'.format(indent))
 
     def _generate_fatal_language(self, program):
@@ -4409,6 +4426,8 @@ class CppGenerator(t_generator.Generator):
                     t('  >{0}'.format(',' if idx + 1 < len(members) else ''))
                 t('>;')
                 t()
+                self._render_fatal_annotations(annotations, 'annotations', t)
+                t()
                 t('static char const *to_string(type e, char const *fallback)'
                     + ' {0}'.format('{'))
                 t('  switch (e) {')
@@ -4427,8 +4446,10 @@ class CppGenerator(t_generator.Generator):
         scope('FATAL_REGISTER_ENUM_TRAITS(')
         scope('  {0}::{1}::{2},'.format(
             scoped_ns, self.fatal_detail_ns, traits_name))
-        self._render_fatal_type_common_metadata(annotations, legacyid,
-            scope, '  ')
+        self._render_fatal_type_common_metadata(
+            '{0}::{1}::{2}::annotations'.format(
+                scoped_ns, self.fatal_detail_ns, traits_name),
+            legacyid, scope, '  ')
         scope(');')
         return traits_name
 
@@ -4467,21 +4488,23 @@ class CppGenerator(t_generator.Generator):
             string_ref = self._set_fatal_string(i.name)
             result[i.name] = (i.name, string_ref, string_ref)
             order.append(i.name)
-            data[i.name] = [None, i.annotations, i.type_id]
+            data[i.name] = [None, i.type_id]
             with sns.namespace(self.fatal_detail_ns).scope as detail:
-                data[i.name][0] = self._generate_fatal_union_traits(i, detail)
+                data[i.name][0] = self._generate_fatal_union_traits(
+                    i, detail, i.annotations)
         if len(data) > 0:
             sns()
         for i in order:
+            traits_class = '{0}::{1}::{2}'.format(
+                scoped_ns, self.fatal_detail_ns, data[i][0])
             sns('FATAL_REGISTER_VARIANT_TRAITS(')
-            sns('  {0}::{1}::{2},'.format(
-                scoped_ns, self.fatal_detail_ns, data[i][0]))
-            self._render_fatal_type_common_metadata(data[i][1], data[i][2],
-                sns, '  ')
+            sns('  {0},'.format(traits_class))
+            self._render_fatal_type_common_metadata(
+                '{0}::annotations'.format(traits_class), data[i][1], sns, '  ')
             sns(');')
         return (order, result)
 
-    def _generate_fatal_union_traits(self, union, scope):
+    def _generate_fatal_union_traits(self, union, scope, annotations):
         scoped_ns = self._get_scoped_original_namespace()
         name = '{0}_variant_traits'.format(union.name)
         type_name = '{0}::{1}'.format(scoped_ns, union.name)
@@ -4516,6 +4539,8 @@ class CppGenerator(t_generator.Generator):
                 t('    {0}::{1}'.format(setcls, i.name))
                 t('  >{0}'.format(',' if idx + 1 < len(union.members) else ''))
             t('>;')
+            t()
+            self._render_fatal_annotations(annotations, 'annotations', t)
             t()
             t('static id get_id(type const &variant) {0}'.format('{'))
             t('  return variant.getType();')
@@ -4591,11 +4616,13 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_struct_impl(self, sns, program):
         name = self._program.name
         safe_ns = self._get_namespace().replace('.', '_')
-        strclsprefix = '{0}_{1}__struct_unique_strings_list'.format(
-            safe_ns, name)
         dtmclsprefix = '{0}_{1}__struct_unique_data_member_getters_list'.format(
             safe_ns, name)
         mpdclsprefix = '{0}_{1}__struct_unique_member_pod_list'.format(
+            safe_ns, name)
+        annclsprefix = '{0}_{1}__struct_unique_annotations'.format(
+            safe_ns, name)
+        strclsprefix = '{0}_{1}__struct_unique_strings_list'.format(
             safe_ns, name)
         with sns.namespace(self.fatal_detail_ns).scope as detail:
             members = []
@@ -4624,6 +4651,27 @@ class CppGenerator(t_generator.Generator):
                     for m in i.members:
                         cnms('using {0} = {1};'
                             .format(m.name, self._set_fatal_string(m.name)))
+                with detail.cls('class {0}_{1}'.format(
+                        i.name, annclsprefix)).scope as cann:
+                    members_class = '{0}_{1}_members'.format(
+                        i.name, annclsprefix)
+                    with cann.cls('class {0}'.format(
+                            members_class)).scope as cmann:
+                        for m in i.members:
+                            self._render_fatal_annotations(
+                                m.annotations, '{0}_{1}'.format(
+                                    members_class, m.name), cmann)
+                        cmann('public:')
+                        for m in i.members:
+                            cmann('using {0} = {1}_{0};'.format(
+                                m.name, members_class))
+                    self._render_fatal_annotations(i.annotations,
+                        'annotations', cann)
+                    cann('public:')
+                    cann('using keys = annotations::keys;')
+                    cann('using values = annotations::values;')
+                    cann('using map = annotations::map;')
+                    cann('using members = {0};'.format(members_class))
         result = {}
         order = []
         for i in program.structs:
@@ -4638,6 +4686,8 @@ class CppGenerator(t_generator.Generator):
             sns('  {0}::{1}_{2},'.format(
                 self.fatal_detail_ns, i.name, strclsprefix))
             sns('  ::fatal::type_map<')
+            annclsnm = '{0}::{1}_{2}'.format(
+                self.fatal_detail_ns, i.name, annclsprefix)
             for midx, m in enumerate(i.members):
                 sns('    ::fatal::type_pair<')
                 sns('      {0},'.format(self._get_fatal_string_id(m.name)))
@@ -4653,13 +4703,12 @@ class CppGenerator(t_generator.Generator):
                     .format(self._render_fatal_thrift_category(m.type)))
                 sns('        {0}::{1}::{2}_{3}_struct_member_pod_{4},'.format(
                     self.fatal_detail_ns, mpdclsprefix, safe_ns, name, m.name))
-                self._render_fatal_annotations_map(m.annotations, sns,
-                    '        ', False)
+                sns('        {0}::members::{1}'.format(annclsnm, m.name))
                 sns('      >')
                 sns('    >{0}'.format(',' if midx + 1 < len(i.members) else ''))
             sns('  >,')
-            self._render_fatal_type_common_metadata(i.annotations, i.type_id,
-                sns, '  ')
+            self._render_fatal_type_common_metadata(
+                annclsnm, i.type_id, sns, '  ')
             sns(');')
         return (order, result)
 

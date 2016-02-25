@@ -42,6 +42,18 @@ class enum1_enum_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+    >;
+  };
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::field0: return "field0";
@@ -58,8 +70,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::enum1_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::enum1_enum_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(4992076682252594856ull)
   >
 );
@@ -91,6 +102,18 @@ class enum2_enum_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+    >;
+  };
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::field0_2: return "field0_2";
@@ -107,8 +130,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::enum2_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::enum2_enum_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(6888467747342894920ull)
   >
 );
@@ -140,6 +162,56 @@ class enum3_enum_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {
+      using _now_with_an_underscore = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::_now_with_an_underscore;
+      using another_there = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::another_there;
+      using duplicate_id_annotation_1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::duplicate_id_annotation_1;
+      using duplicate_id_annotation_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::duplicate_id_annotation_2;
+      using one_here = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::one_here;
+      using yet_another = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::yet_another;
+    };
+
+    struct annotations__unique_annotations_values {
+      using _now_with_an_underscore = ::fatal::constant_sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>;
+      using another_there = ::fatal::constant_sequence<char, '.'>;
+      using duplicate_id_annotation_1 = ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', ' ', 'i', 'd', ' ', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+      using duplicate_id_annotation_2 = ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '.', 'i', 'd', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+      using one_here = ::fatal::constant_sequence<char, 'w', 'i', 't', 'h', ' ', 's', 'o', 'm', 'e', ' ', 'v', 'a', 'l', 'u', 'e', ' ', 'a', 's', 's', 'o', 'c', 'i', 'a', 't', 'e', 'd'>;
+      using yet_another = ::fatal::constant_sequence<char, 'a', 'n', 'd', ' ', 'y', 'e', 't', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't', ' ', '-', ' ', 'i', 't', '\'', 's', ' ', 't', 'h', 'a', 't', ' ', 'e', 'a', 's', 'y'>;
+    };
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+      ::fatal::type_pair<
+        keys::_now_with_an_underscore,
+        values::_now_with_an_underscore
+      >,
+      ::fatal::type_pair<
+        keys::another_there,
+        values::another_there
+      >,
+      ::fatal::type_pair<
+        keys::duplicate_id_annotation_1,
+        values::duplicate_id_annotation_1
+      >,
+      ::fatal::type_pair<
+        keys::duplicate_id_annotation_2,
+        values::duplicate_id_annotation_2
+      >,
+      ::fatal::type_pair<
+        keys::one_here,
+        values::one_here
+      >,
+      ::fatal::type_pair<
+        keys::yet_another,
+        values::yet_another
+      >
+    >;
+  };
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::field0_3: return "field0_3";
@@ -156,32 +228,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::enum3_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-      ::fatal::type_pair<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::_now_with_an_underscore,
-        ::fatal::constant_sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>
-      >,
-      ::fatal::type_pair<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::another_there,
-        ::fatal::constant_sequence<char, '.'>
-      >,
-      ::fatal::type_pair<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::duplicate_id_annotation_1,
-        ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', ' ', 'i', 'd', ' ', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>
-      >,
-      ::fatal::type_pair<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::duplicate_id_annotation_2,
-        ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '.', 'i', 'd', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>
-      >,
-      ::fatal::type_pair<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::one_here,
-        ::fatal::constant_sequence<char, 'w', 'i', 't', 'h', ' ', 's', 'o', 'm', 'e', ' ', 'v', 'a', 'l', 'u', 'e', ' ', 'a', 's', 's', 'o', 'c', 'i', 'a', 't', 'e', 'd'>
-      >,
-      ::fatal::type_pair<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::yet_another,
-        ::fatal::constant_sequence<char, 'a', 'n', 'd', ' ', 'y', 'e', 't', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't', ' ', '-', ' ', 'i', 't', '\'', 's', ' ', 't', 'h', 'a', 't', ' ', 'e', 'a', 's', 'y'>
-      >
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::enum3_enum_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(4626344424889780008ull)
   >
 );

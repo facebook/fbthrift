@@ -48,6 +48,18 @@ class union1_Type_enum_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+    >;
+  };
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::ui: return "ui";
@@ -65,8 +77,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union1_Type_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union1_Type_enum_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
@@ -241,6 +252,18 @@ class union1_variant_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+    >;
+  };
+
   static id get_id(type const &variant) {
     return variant.getType();
   }
@@ -288,6 +311,18 @@ class union2_Type_enum_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+    >;
+  };
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::ui_2: return "ui_2";
@@ -305,8 +340,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union2_Type_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union2_Type_enum_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
@@ -481,6 +515,18 @@ class union2_variant_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+    >;
+  };
+
   static id get_id(type const &variant) {
     return variant.getType();
   }
@@ -528,6 +574,18 @@ class union3_Type_enum_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+    >;
+  };
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::ui_3: return "ui_3";
@@ -545,8 +603,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union3_Type_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union3_Type_enum_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
@@ -721,6 +778,18 @@ class union3_variant_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+    >;
+  };
+
   static id get_id(type const &variant) {
     return variant.getType();
   }
@@ -773,6 +842,18 @@ class unionA_Type_enum_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+    >;
+  };
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::i: return "i";
@@ -791,8 +872,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::unionA_Type_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::unionA_Type_enum_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
@@ -1005,6 +1085,32 @@ class unionA_variant_traits {
     >
   >;
 
+  class annotations {
+    struct annotations__unique_annotations_keys {
+      using another_annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::another_annotation;
+      using sample_annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sample_annotation;
+    };
+
+    struct annotations__unique_annotations_values {
+      using another_annotation = ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't'>;
+      using sample_annotation = ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', ' ', 't', 'e', 'x', 't', ' ', 'h', 'e', 'r', 'e'>;
+    };
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::type_map<
+      ::fatal::type_pair<
+        keys::another_annotation,
+        values::another_annotation
+      >,
+      ::fatal::type_pair<
+        keys::sample_annotation,
+        values::sample_annotation
+      >
+    >;
+  };
+
   static id get_id(type const &variant) {
     return variant.getType();
   }
@@ -1024,8 +1130,7 @@ FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(7384876196182105420ull)
   >
 );
@@ -1033,8 +1138,7 @@ FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union2_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union2_variant_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(16722894251049030828ull)
   >
 );
@@ -1042,8 +1146,7 @@ FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union3_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union3_variant_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(12878995471701578764ull)
   >
 );
@@ -1051,16 +1154,7 @@ FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::unionA_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::fatal::type_map<
-      ::fatal::type_pair<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::another_annotation,
-        ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't'>
-      >,
-      ::fatal::type_pair<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sample_annotation,
-        ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', ' ', 't', 'e', 'x', 't', ' ', 'h', 'e', 'r', 'e'>
-      >
-    >,
+    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::unionA_variant_traits::annotations,
     static_cast<::apache::thrift::legacy_type_id_t>(7943717058393504940ull)
   >
 );

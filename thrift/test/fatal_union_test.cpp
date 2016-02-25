@@ -240,28 +240,35 @@ FATAL_STR(unionA_annotation1v, "some more text");
 FATAL_STR(unionA_annotation2k, "sample.annotation");
 FATAL_STR(unionA_annotation2v, "some text here");
 
-TEST(fatal_struct, annotations) {
+TEST(fatal_union, annotations) {
   EXPECT_SAME<
     fatal::type_map<>,
-    apache::thrift::reflect_union<union1>::annotations
+    apache::thrift::reflect_union<union1>::annotations::map
   >();
 
   EXPECT_SAME<
     fatal::type_map<>,
-    apache::thrift::reflect_union<union2>::annotations
+    apache::thrift::reflect_union<union2>::annotations::map
   >();
 
   EXPECT_SAME<
     fatal::type_map<>,
-    apache::thrift::reflect_union<union3>::annotations
+    apache::thrift::reflect_union<union3>::annotations::map
   >();
+
+  using actual_unionA = apache::thrift::reflect_union<unionA>::annotations;
+
+  EXPECT_SAME<unionA_annotation1k, actual_unionA::keys::another_annotation>();
+  EXPECT_SAME<unionA_annotation1v, actual_unionA::values::another_annotation>();
+  EXPECT_SAME<unionA_annotation2k, actual_unionA::keys::sample_annotation>();
+  EXPECT_SAME<unionA_annotation2v, actual_unionA::values::sample_annotation>();
 
   EXPECT_SAME<
     fatal::build_type_map<
       unionA_annotation1k, unionA_annotation1v,
       unionA_annotation2k, unionA_annotation2v
     >,
-    apache::thrift::reflect_union<unionA>::annotations
+    actual_unionA::map
   >();
 }
 

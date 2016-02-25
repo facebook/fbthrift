@@ -204,6 +204,12 @@ enum enum_with_special_names {
   ids,
   descriptor,
   descriptors,
+  key,
+  keys,
+  annotation,
+  annotations,
+  member,
+  members,
 }
 
 union union_with_special_names {
@@ -227,6 +233,12 @@ union union_with_special_names {
   18: i32 ids
   19: i32 descriptor
   20: i32 descriptors
+  21: i32 key
+  22: i32 keys
+  23: i32 annotation
+  24: i32 annotations
+  25: i32 member
+  26: i32 members
 }
 
 struct struct_with_special_names {
@@ -250,6 +262,12 @@ struct struct_with_special_names {
   18: i32 ids
   19: i32 descriptor
   20: i32 descriptors
+  21: i32 key
+  22: i32 keys
+  23: i32 annotation
+  24: i32 annotations
+  25: i32 member
+  26: i32 members
 }
 
 service service_with_special_names {
@@ -273,6 +291,12 @@ service service_with_special_names {
   i32 ids()
   i32 descriptor()
   i32 descriptors()
+  i32 key()
+  i32 keys()
+  i32 annotation()
+  i32 annotations()
+  i32 member()
+  i32 members()
 }
 
 const i32 constant_with_special_name = 42;

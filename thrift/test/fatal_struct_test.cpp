@@ -304,35 +304,54 @@ FATAL_STR(structB_annotation2v, "this is its other value");
 TEST(fatal_struct, annotations) {
   EXPECT_SAME<
     fatal::type_map<>,
-    apache::thrift::reflect_struct<struct1>::annotations
+    apache::thrift::reflect_struct<struct1>::annotations::map
   >();
 
   EXPECT_SAME<
     fatal::type_map<>,
-    apache::thrift::reflect_struct<struct2>::annotations
+    apache::thrift::reflect_struct<struct2>::annotations::map
   >();
 
   EXPECT_SAME<
     fatal::type_map<>,
-    apache::thrift::reflect_struct<struct3>::annotations
+    apache::thrift::reflect_struct<struct3>::annotations::map
   >();
 
   EXPECT_SAME<
     fatal::type_map<>,
-    apache::thrift::reflect_struct<structA>::annotations
+    apache::thrift::reflect_struct<structA>::annotations::map
   >();
 
+  using structB_annotations = apache::thrift::reflect_struct<structB>
+    ::annotations;
+
+  EXPECT_SAME<
+    structB_annotation1k,
+    structB_annotations::keys::some_annotation
+  >();
+  EXPECT_SAME<
+    structB_annotation1v,
+    structB_annotations::values::some_annotation
+  >();
+  EXPECT_SAME<
+    structB_annotation2k,
+    structB_annotations::keys::some_other_annotation
+  >();
+  EXPECT_SAME<
+    structB_annotation2v,
+    structB_annotations::values::some_other_annotation
+  >();
   EXPECT_SAME<
     fatal::build_type_map<
       structB_annotation1k, structB_annotation1v,
       structB_annotation2k, structB_annotation2v
     >,
-    apache::thrift::reflect_struct<structB>::annotations
+    structB_annotations::map
   >();
 
   EXPECT_SAME<
     fatal::type_map<>,
-    apache::thrift::reflect_struct<structC>::annotations
+    apache::thrift::reflect_struct<structC>::annotations::map
   >();
 }
 
@@ -343,14 +362,54 @@ FATAL_STR(structBd_annotation2v, "some value");
 
 TEST(fatal_struct, member_annotations) {
   using info = apache::thrift::reflect_struct<structB>;
-  using member = info::members::get<info::names::d>;
+
+  EXPECT_SAME<fatal::build_type_map<>, info::annotations::members::c::map>();
+  EXPECT_SAME<
+    fatal::build_type_map<>,
+    info::members::get<info::names::c>::annotations::map
+  >();
+
+  using annotations_d = info::members::get<info::names::d>::annotations;
+  using expected_d_map = fatal::build_type_map<
+    structBd_annotation1k, structBd_annotation1v,
+    structBd_annotation2k, structBd_annotation2v
+  >;
+
+  EXPECT_SAME<expected_d_map, info::annotations::members::d::map>();
+  EXPECT_SAME<expected_d_map, annotations_d::map>();
 
   EXPECT_SAME<
-    fatal::build_type_map<
-      structBd_annotation1k, structBd_annotation1v,
-      structBd_annotation2k, structBd_annotation2v
-    >,
-    member::annotations
+    structBd_annotation1k,
+    info::annotations::members::d::keys::another_annotation
+  >();
+  EXPECT_SAME<
+    structBd_annotation1v,
+    info::annotations::members::d::values::another_annotation
+  >();
+  EXPECT_SAME<
+    structBd_annotation2k,
+    info::annotations::members::d::keys::some_annotation
+  >();
+  EXPECT_SAME<
+    structBd_annotation2v,
+    info::annotations::members::d::values::some_annotation
+  >();
+
+  EXPECT_SAME<
+    structBd_annotation1k,
+    annotations_d::keys::another_annotation
+  >();
+  EXPECT_SAME<
+    structBd_annotation1v,
+    annotations_d::values::another_annotation
+  >();
+  EXPECT_SAME<
+    structBd_annotation2k,
+    annotations_d::keys::some_annotation
+  >();
+  EXPECT_SAME<
+    structBd_annotation2v,
+    annotations_d::values::some_annotation
   >();
 }
 

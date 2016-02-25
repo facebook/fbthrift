@@ -110,15 +110,66 @@ FATAL_STR(enum3_annotation5v, "with some value associated");
 FATAL_STR(enum3_annotation6k, "yet.another");
 FATAL_STR(enum3_annotation6v, "and yet more text - it's that easy");
 
-TEST(fatal_struct, annotations) {
+TEST(fatal_enum, annotations) {
   EXPECT_SAME<
     fatal::type_map<>,
-    apache::thrift::reflect_enum<enum1>::annotations
+    apache::thrift::reflect_enum<enum1>::annotations::map
   >();
 
   EXPECT_SAME<
     fatal::type_map<>,
-    apache::thrift::reflect_enum<enum2>::annotations
+    apache::thrift::reflect_enum<enum2>::annotations::map
+  >();
+
+  using enum3_annotations = apache::thrift::reflect_enum<enum3>::annotations;
+
+  EXPECT_SAME<
+    enum3_annotation1k,
+    enum3_annotations::keys::_now_with_an_underscore
+  >();
+  EXPECT_SAME<
+    enum3_annotation1v,
+    enum3_annotations::values::_now_with_an_underscore
+  >();
+  EXPECT_SAME<
+    enum3_annotation2k,
+    enum3_annotations::keys::another_there
+  >();
+  EXPECT_SAME<
+    enum3_annotation2v,
+    enum3_annotations::values::another_there
+  >();
+  EXPECT_SAME<
+    enum3_annotation3k,
+    enum3_annotations::keys::duplicate_id_annotation_1
+  >();
+  EXPECT_SAME<
+    enum3_annotation3v,
+    enum3_annotations::values::duplicate_id_annotation_1
+  >();
+  EXPECT_SAME<
+    enum3_annotation4k,
+    enum3_annotations::keys::duplicate_id_annotation_2
+  >();
+  EXPECT_SAME<
+    enum3_annotation4v,
+    enum3_annotations::values::duplicate_id_annotation_2
+  >();
+  EXPECT_SAME<
+    enum3_annotation5k,
+    enum3_annotations::keys::one_here
+  >();
+  EXPECT_SAME<
+    enum3_annotation5v,
+    enum3_annotations::values::one_here
+  >();
+  EXPECT_SAME<
+    enum3_annotation6k,
+    enum3_annotations::keys::yet_another
+  >();
+  EXPECT_SAME<
+    enum3_annotation6v,
+    enum3_annotations::values::yet_another
   >();
 
   EXPECT_SAME<
@@ -130,7 +181,7 @@ TEST(fatal_struct, annotations) {
       enum3_annotation5k, enum3_annotation5v,
       enum3_annotation6k, enum3_annotation6v
     >,
-    apache::thrift::reflect_enum<enum3>::annotations
+    enum3_annotations::map
   >();
 }
 
