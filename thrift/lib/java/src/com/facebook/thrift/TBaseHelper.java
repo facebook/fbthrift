@@ -18,7 +18,11 @@
 package com.facebook.thrift;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,27 +36,25 @@ public final class TBaseHelper {
 
   private TBaseHelper(){}
 
-  private static final Comparator<Object> comparator =
-      new NestedStructureComparator();
 
-  public static int compareTo(Object o1, Object o2) {
-    if (o1 instanceof Comparable<?>) {
-      return compareTo((Comparable<?>)o1, (Comparable<?>)o2);
-    } else if (o1 instanceof List<?>) {
-      return compareTo((List<?>)o1, (List<?>)o2);
-    } else if (o1 instanceof Set<?>) {
-      return compareTo((Set<?>)o1, (Set<?>)o2);
-    } else if (o1 instanceof Map<?,?>) {
-      return compareTo((Map<?,?>)o1, (Map<?,?>)o2);
-    } else if (o1 instanceof byte[]) {
-      return compareTo((byte[])o1, (byte[])o2);
-    } else {
-      throw new IllegalArgumentException("Cannot compare objects of type " + o1.getClass());
+  public static <T extends TBase & Comparable<T>> int compareTo(T a, T b) {
+    if (a == null && b == null) {
+      return 0;
+    } else if (a == null) {
+      return -1;
+    } else if (b == null) {
+      return +1;
     }
+
+    if (a == b) {  // performance, not correctness
+      return 0;
+    }
+
+    return a.compareTo(b);
   }
 
   public static int compareTo(boolean a, boolean b) {
-    return Boolean.valueOf(a).compareTo(b);
+    return a == b ? 0 : (a ? +1 : -1); // Boolean.compareTo
   }
 
   public static int compareTo(byte a, byte b) {
@@ -105,53 +107,120 @@ public final class TBaseHelper {
     }
   }
 
+  public static int compareTo(float a, float b) {
+    if (a < b) {
+      return -1;
+    } else if (b < a) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
   public static int compareTo(String a, String b) {
+    if (a == null && b == null) {
+      return 0;
+    } else if (a == null) {
+      return -1;
+    } else if (b == null) {
+      return +1;
+    }
+
+    if (a == b) {  // performance, not correctness
+      return 0;
+    }
+
     return a.compareTo(b);
   }
 
   public static int compareTo(byte[] a, byte[] b) {
+    if (a == null && b == null) {
+      return 0;
+    } else if (a == null) {
+      return -1;
+    } else if (b == null) {
+      return +1;
+    }
+
+    if (a == b) {  // performance, not correctness
+      return 0;
+    }
+
     int sizeCompare = compareTo(a.length, b.length);
     if (sizeCompare != 0) {
       return sizeCompare;
     }
+
     for (int i = 0; i < a.length; i++) {
       int byteCompare = compareTo(a[i], b[i]);
       if (byteCompare != 0) {
         return byteCompare;
       }
     }
+
     return 0;
   }
 
-  public static <T> int compareTo(Comparable<T> a, T b) {
-    return a.compareTo(b);
-  }
+  public static <T> int compareTo(List<T> a, List<T> b) {
+    if (a == null && b == null) {
+      return 0;
+    } else if (a == null) {
+      return -1;
+    } else if (b == null) {
+      return +1;
+    }
 
-  public static int compareTo(List<?> a, List<?> b) {
+    if (a == b) {  // performance, not correctness
+      return 0;
+    }
+
     int lastComparison = compareTo(a.size(), b.size());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    for (int i = 0; i < a.size(); i++) {
-      lastComparison = comparator.compare(a.get(i), b.get(i));
+
+    Comparator<T> comparator = NestedStructureComparator.get();
+
+    Iterator<T> iterA = a.iterator();
+    Iterator<T> iterB = b.iterator();
+
+    while (iterA.hasNext() && iterB.hasNext()) {
+      lastComparison = comparator.compare(iterA.next(), iterB.next());
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
+    assert !iterA.hasNext() && !iterB.hasNext();
+
     return 0;
   }
 
-  public static <S,T> int compareTo(Set<S> a, Set<T> b) {
+  public static <T> int compareTo(Set<T> a, Set<T> b) {
+    if (a == null && b == null) {
+      return 0;
+    } else if (a == null) {
+      return -1;
+    } else if (b == null) {
+      return +1;
+    }
+
+    if (a == b) {  // performance, not correctness
+      return 0;
+    }
+
     int lastComparison = compareTo(a.size(), b.size());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    SortedSet<S> sortedA = new TreeSet<S>(comparator);
+
+    Comparator<T> comparator = NestedStructureComparator.get();
+
+    SortedSet<T> sortedA = new TreeSet<T>(comparator);
     sortedA.addAll(a);
     SortedSet<T> sortedB = new TreeSet<T>(comparator);
     sortedB.addAll(b);
 
-    Iterator<S> iterA = sortedA.iterator();
+    Iterator<T> iterA = sortedA.iterator();
     Iterator<T> iterB = sortedB.iterator();
 
     // Compare each item.
@@ -161,48 +230,71 @@ public final class TBaseHelper {
         return lastComparison;
       }
     }
+    assert !iterA.hasNext() && !iterB.hasNext();
 
     return 0;
   }
 
-  public static <S,T,U,V> int compareTo(Map<S,T> a, Map<U,V> b) {
+  public static <K,V> int compareTo(Map<K, V> a, Map<K, V> b) {
     int lastComparison = compareTo(a.size(), b.size());
     if (lastComparison != 0) {
       return lastComparison;
     }
 
+    if (a == b) {  // performance, not correctness
+      return 0;
+    }
+
+    Comparator<K> comparatorK = NestedStructureComparator.get();
+    Comparator<V> comparatorV = NestedStructureComparator.get();
+
     // Sort a and b so we can compare them.
-    SortedMap<S,T> sortedA = new TreeMap<S,T>(comparator);
+    SortedMap<K, V> sortedA = new TreeMap<K, V>(comparatorK);
     sortedA.putAll(a);
-    Iterator<Map.Entry<S,T>> iterA = sortedA.entrySet().iterator();
-    SortedMap<U,V> sortedB = new TreeMap<U,V>(comparator);
+    SortedMap<K, V> sortedB = new TreeMap<K, V>(comparatorK);
     sortedB.putAll(b);
-    Iterator<Map.Entry<U,V>> iterB = sortedB.entrySet().iterator();
+
+    Iterator<Map.Entry<K, V>> iterA = sortedA.entrySet().iterator();
+    Iterator<Map.Entry<K, V>> iterB = sortedB.entrySet().iterator();
 
     // Compare each item.
     while (iterA.hasNext() && iterB.hasNext()) {
-      Map.Entry<S,T> entryA = iterA.next();
-      Map.Entry<U,V> entryB = iterB.next();
-      lastComparison = comparator.compare(entryA.getKey(), entryB.getKey());
+      Map.Entry<K, V> entryA = iterA.next();
+      Map.Entry<K, V> entryB = iterB.next();
+      lastComparison = comparatorK.compare(entryA.getKey(), entryB.getKey());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      lastComparison = comparator.compare(entryA.getValue(), entryB.getValue());
+      lastComparison = comparatorV.compare(entryA.getValue(), entryB.getValue());
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
+    assert !iterA.hasNext() && !iterB.hasNext();
 
     return 0;
   }
 
+  /*package*/ static int compareToUnchecked(Object a, Object b) {
+    return NestedStructureComparator.get().compare(a, b);
+  }
+
   /**
-   * Comparator to compare items inside a structure (e.g. a list, set, or map).
+   * Comparator to compare items inside containers (lists, sets, maps), while
+   * respecting Thrift's equality semantics. The type of this comparator is
+   * <code>Comparator&lt;T&gt;</code>, but it can only be used with types
+   * <code>T</code> supported by Thrift: the base types, Lists, Sets, and Maps
+   * of Thrift-supported types, and structs and unions.
    */
-  private static class NestedStructureComparator
-        implements Comparator<Object> {
+  private static class NestedStructureComparator<T>
+        implements Comparator<T> {
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public int compare(Object oA, Object oB) {
+    public int compare(T oA, T oB) {
+      if (oA == oB) {  // performance, not correctness
+        return 0;
+      }
       if (oA == null && oB == null) {
         return 0;
       } else if (oA == null) {
@@ -210,20 +302,47 @@ public final class TBaseHelper {
       } else if (oB == null) {
         return 1;
       } else if (oA instanceof List<?> && oB instanceof List<?>) {
-        return compareTo((List<?>)oA, (List<?>)oB);
+        return compareTo((List)oA, (List)oB);
       } else if (oA instanceof Set<?> && oB instanceof Set<?>) {
-        return compareTo((Set<?>)oA, (Set<?>)oB);
+        return compareTo((Set)oA, (Set)oB);
       } else if (oA instanceof Map<?,?> && oB instanceof Map<?,?>) {
-        return compareTo((Map<?,?>)oA, (Map<?,?>)oB);
+        return compareTo((Map)oA, (Map)oB);
       } else if (oA instanceof byte[]) {
         return compareTo((byte[])oA, (byte[])oB);
-      } else if (oA instanceof Comparable<?> && oB instanceof Comparable<?>) {
-        return compareTo((Comparable<?>)oA, (Comparable<?>)oB);
+      } else if (oA.getClass() == oB.getClass()
+              && ( oA instanceof String
+                || oA instanceof Boolean
+                || oA instanceof Byte
+                || oA instanceof Short
+                || oA instanceof Integer
+                || oA instanceof Long
+                || oA instanceof Float
+                || oA instanceof Double
+                || oA instanceof TBase)) {
+        // All the primitives are Comparable. Assume that any TBase
+        // we're called on is Comparable, because otherwise the codegen
+        // wouldn't have made code that calls us on it. At this point,
+        // we know that oA could be typed `Comparable<? super oA.getClass()>`
+        // which is to say its `compareTo` accepts any subtype of some
+        // unspecified supertype of oA.getClass(), so it certainly accepts
+        // things of oA.getClass() and so it accepts oB.
+        return ((Comparable)oA).compareTo(oB);
       }
       throw new IllegalArgumentException(
           "cannot compare " + oA + " and " + oB);
     }
+
+    // All instances of NestedStructureComparator are operationally equivalent,
+    // so we only need to make one.
+    private static final NestedStructureComparator<?> INSTANCE
+        = new NestedStructureComparator<Void>();
+
+    @SuppressWarnings("unchecked")
+    public static <T> NestedStructureComparator<T> get() {
+      return (NestedStructureComparator<T>) INSTANCE;
+    }
   }
+
 
   public static void toString(ByteBuffer bb, StringBuilder sb) {
     byte[] buf = bb.array();
@@ -284,29 +403,546 @@ public final class TBaseHelper {
     return ByteBuffer.wrap(byteBufferToByteArray(in));
   }
 
-  public static ByteBuffer copyBinary(final ByteBuffer orig) {
+  public static byte[] deepCopy(byte[] orig) {
     if (orig == null) {
       return null;
     }
-    ByteBuffer copy = ByteBuffer.wrap(new byte[orig.remaining()]);
-    if (orig.hasArray()) {
-      System.arraycopy(orig.array(), orig.arrayOffset() + orig.position(), copy.array(), 0, orig.remaining());
+    return Arrays.copyOf(orig, orig.length);
+  }
+
+  public static String deepCopy(String orig) {
+    return orig;  // immutable
+  }
+
+  public static boolean deepCopy(boolean orig) {
+    return orig;  // primitive
+  }
+
+  public static Boolean deepCopy(Boolean orig) {
+    return orig;  // immutable
+  }
+
+  public static byte deepCopy(byte orig) {
+    return orig;  // primitive
+  }
+
+  public static Byte deepCopy(Byte orig) {
+    return orig;  // immutable
+  }
+
+  public static short deepCopy(short orig) {
+    return orig;  // primitive
+  }
+
+  public static Short deepCopy(Short orig) {
+    return orig;  // immutable
+  }
+
+  public static int deepCopy(int orig) {
+    return orig;  // primitive
+  }
+
+  public static Integer deepCopy(Integer orig) {
+    return orig;  // immutable
+  }
+
+  public static long deepCopy(long orig) {
+    return orig;  // primitive
+  }
+
+  public static Long deepCopy(Long orig) {
+    return orig;  // immutable
+  }
+
+  public static double deepCopy(double orig) {
+    return orig;  // primitive
+  }
+
+  public static Double deepCopy(Double orig) {
+    return orig;  // primitive
+  }
+
+  public static float deepCopy(float orig) {
+    return orig;  // primitive
+  }
+
+  public static Float deepCopy(Float orig) {
+    return orig;  // immutable
+  }
+
+  public static <K, V> Map<K, V> deepCopy(Map<K, V> orig) {
+    if (orig == null) {
+      return null;
+    }
+    Map<K, V> copy = new HashMap<K, V>(orig);
+    for (Map.Entry<K, V> entry : orig.entrySet()) {
+      copy.put(deepCopyUnchecked(entry.getKey()), deepCopyUnchecked(entry.getValue()));
+    }
+    return copy;
+  }
+
+  public static <T> List<T> deepCopy(List<T> orig) {
+    if (orig == null) {
+      return null;
+    }
+    List<T> copy = new ArrayList<T>();
+    for (T item : orig) {
+      copy.add(deepCopyUnchecked(item));
+    }
+    return copy;
+  }
+
+  public static <T> Set<T> deepCopy(Set<T> orig) {
+    if (orig == null) {
+      return null;
+    }
+    Set<T> copy = new HashSet<T>();
+    for (T item : orig) {
+      copy.add(deepCopyUnchecked(item));
+    }
+    return copy;
+  }
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  public static <T extends TBase> T deepCopy(T orig) {
+    return (T) orig.deepCopy();
+  }
+
+  // Called above and from TUnion
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  /*package*/ static <T> T deepCopyUnchecked(T orig) {
+    if (orig == null) {
+      return null;
+    }
+    if (orig instanceof byte[]) {
+      return (T) deepCopy((byte[]) orig);
+    }
+    if (orig instanceof String
+        || orig instanceof Boolean
+        || orig instanceof Byte
+        || orig instanceof Short
+        || orig instanceof Integer
+        || orig instanceof Long
+        || orig instanceof Double
+        || orig instanceof Float) {
+      return orig;  // immutable
+    }
+    if (orig instanceof Map<?, ?>) {
+      return (T) deepCopy((Map<?, ?>) orig);
+    }
+    if (orig instanceof List<?>) {
+      return (T) deepCopy((List<?>) orig);
+    }
+    if (orig instanceof Set<?>) {
+      return (T) deepCopy((Set<?>) orig);
+    }
+    if (orig instanceof TBase) {
+      return (T) deepCopy((TBase) orig);
+    }
+    throw new UnsupportedOperationException(
+        "Don't know how to deepCopy something of type " + orig.getClass()
+        + " which is weird because nothing should be calling me on something"
+        + " I don't understand");
+  }
+
+  /* ********************************************************
+   * Equality.
+   *
+   * Thrift equality is value-based, not identity-based. For
+   * structs and unions, we override .equals() appropriately.
+   * The contract for Lists, Maps, and Sets is that their
+   * equals() method is also logical equality (see the Javadocs),
+   * where elements are compared with equals(). Strings and
+   * boxed primitives also have equals() which do what we want.
+   * Unfortunately, byte[].equals() does reference comparison.
+   * That means that, we can only rely on equals() to behave the
+   * way we want on structs, unions, primitives, strings, and
+   * Java containers containing only things where equals() behaves
+   * properly. If a Java container contains a byte[] without
+   * a struct wrapping it (a "naked binary"), we can't Java's
+   * equals() to do the comparison.
+   *
+   * ********************************************************
+   */
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static boolean equalsNobinary(byte[] a, byte[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static boolean equalsNobinary(String a, String b) {
+    return a.equals(b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   */
+  public static boolean equalsNobinary(boolean a, boolean b) {
+    return a == b;
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static boolean equalsNobinary(Boolean a, Boolean b) {
+    return a.equals(b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   */
+  public static boolean equalsNobinary(byte a, byte b) {
+    return a == b;
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static boolean equalsNobinary(Byte a, Byte b) {
+    return a.equals(b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   */
+  public static boolean equalsNobinary(short a, short b) {
+    return a == b;
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static boolean equalsNobinary(Short a, Short b) {
+    return a.equals(b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   */
+  public static boolean equalsNobinary(int a, int b) {
+    return a == b;
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static boolean equalsNobinary(Integer a, Integer b) {
+    return a.equals(b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   */
+  public static boolean equalsNobinary(long a, long b) {
+    return a == b;
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static boolean equalsNobinary(Long a, Long b) {
+    return a.equals(b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   */
+  public static boolean equalsNobinary(double a, double b) {
+    return a == b;
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static boolean equalsNobinary(Double a, Double b) {
+    return a.equals(b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   */
+  public static boolean equalsNobinary(float a, float b) {
+    return a == b;
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static boolean equalsNobinary(Float a, Float b) {
+    return a.equals(b);
+  }
+
+  /**
+   * Checks two items for logical equality. The items should not contain
+   * "naked binaries"; that is, neither keys nor values can be <code>byte[]</code>
+   * or containers which themselves contain naked binaries. The key type and
+   * value type should both be expressible in thrift.
+   *
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static <K, V> boolean equalsNobinary(Map<K, V> as, Map<K, V> bs) {
+    return as.equals(bs);
+  }
+
+  /**
+   * Checks two items for logical equality. The items should not contain
+   * "naked binaries"; that is, elements can not be <code>byte[]</code>
+   * or containers which themselves contain naked binaries. The element
+   * type should be expressible in thrift.
+   *
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static <T> boolean equalsNobinary(List<T> as, List<T> bs) {
+    if (as == bs) {  // performance, not correctness
+      return true;
+    }
+    return as.equals(bs);
+  }
+
+  /**
+   * Checks two items for logical equality. The items should not contain
+   * "naked binaries"; that is, elements can not be <code>byte[]</code>
+   * or containers which themselves contain naked binaries. The element
+   * type should be expressible in thrift.
+   *
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static <T> boolean equalsNobinary(Set<T> as, Set<T> bs) {
+    if (as == bs) {  // performance, not correctness
+      return true;
+    }
+    return as.equals(bs);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static <T extends TBase> boolean equalsNobinary(T a, T b) {
+    if (a == b) {  // performance, not correctness
+      return true;
+    }
+    return a.equals(b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static boolean equalsSlow(byte[] a, byte[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static <K, V> boolean equalsSlow(Map<K, V> a, Map<K, V> b) {
+    if (a == b) {  // performance, not correctness
+      return true;
+    }
+    if (a.size() != b.size()) {
+      return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    Map.Entry<K, V>[] as = a.entrySet().toArray(new Map.Entry[a.size()]);
+    int firstValidA = 0;
+
+    for (Map.Entry<K, V> elemB : b.entrySet()) {
+      boolean found = false;
+      for (int i=firstValidA; i<as.length; i++) {
+        if (equalsSlowUnchecked(as[i].getKey(), elemB.getKey())
+            && equalsSlowUnchecked(as[i].getValue(), elemB.getValue())) {
+          found = true;
+          as[i] = as[firstValidA];
+          firstValidA++;
+          break;
+        }
+      }
+      if (!found) {
+        return false;
+      }
+    }
+
+    assert firstValidA == as.length;
+
+    return true;
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static <T> boolean equalsSlow(List<T> a, List<T> b) {
+    if (a == b) {  // performance, not correctness
+      return true;
+    }
+    if (a.size() != b.size()) {
+      return false;
+    }
+
+    Iterator<T> iterA = a.iterator();
+    Iterator<T> iterB = b.iterator();
+
+    while (iterA.hasNext() && iterB.hasNext()) {
+      if (!equalsNobinaryUnchecked(iterA.next(), iterB.next())) {
+        return false;
+      }
+    }
+    assert !iterA.hasNext() && !iterB.hasNext();
+
+    return true;
+  }
+
+  /**
+   * Checks two items for logical equality.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static <T> boolean equalsSlow(Set<T> a, Set<T> b) {
+    if (a == b) {  // performance, not correctness
+      return true;
+    }
+    if (a.size() != b.size()) {
+      return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    T[] as = a.toArray((T[]) new Object[a.size()]);
+    int firstValidA = 0;
+
+    for (T elemB : b) {
+      boolean found = false;
+      for (int i=firstValidA; i<as.length; i++) {
+        if (equalsSlowUnchecked(as[i], elemB)) {
+          found = true;
+          as[i] = as[firstValidA];
+          firstValidA++;
+          break;
+        }
+      }
+      if (!found) {
+        return false;
+      }
+    }
+
+    assert firstValidA == as.length;
+
+    return true;
+  }
+
+  /**
+   * Checks two items for logical equality. Neither item should contain
+   * naked binaries. Both items should be of the same Thrift-expressible
+   * type.
+   *
+   * @param a non-null item
+   * @param b non-null item
+   */
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  /*package*/ static <T> boolean equalsNobinaryUnchecked(T a, T b) {
+    if (a == b) {  // performance, not correctness
+      return true;
+    }
+    if (a instanceof byte[] && b instanceof byte[]) {
+      return equalsSlow((byte[])a, (byte[])b);
+    } else if (a.getClass() == b.getClass()
+        && (a instanceof String
+            || a instanceof Boolean
+            || a instanceof Byte
+            || a instanceof Short
+            || a instanceof Integer
+            || a instanceof Long
+            || a instanceof Double
+            || a instanceof Float)) {
+      return a.equals(b);
+    } else if (a instanceof TBase) {
+      return a.equals(b);
+    } else if (a instanceof Map && b instanceof Map) {
+      return equalsNobinary((Map) a, (Map) b);
+    } else if (a instanceof List && b instanceof List) {
+      return equalsNobinary((List) a, (List) b);
+    } else if (a instanceof Set && b instanceof Set) {
+      return equalsNobinary((Set) a, (Set) b);
     } else {
-      orig.slice().get(copy.array());
+      throw new IllegalAccessError(
+          "Don't know how to compare " + a + " and " + b
+          + " which is odd, because nothing should be calling me on types"
+          + " I don't understand");
     }
-
-    return copy;
   }
 
-  public static byte[] copyBinary(final byte[] orig) {
-    if (orig == null) {
-      return null;
+  /**
+   * Checks two items for logical equality. Both items should be
+   * of the same Thrift-expressible type.
+   * @param a non-null item
+   * @param b non-null item
+   */
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  /*package*/ static <T> boolean equalsSlowUnchecked(T a, T b) {
+    if (a == b) {  // performance, not correctness
+      return true;
     }
-
-    byte[] copy = new byte[orig.length];
-    System.arraycopy(orig, 0, copy, 0, orig.length);
-    return copy;
+    if (a instanceof byte[] && b instanceof byte[]) {
+      return equalsSlow((byte[])a, (byte[])b);
+    } else if (a.getClass() == b.getClass()
+        && (a instanceof String
+            || a instanceof Boolean
+            || a instanceof Byte
+            || a instanceof Short
+            || a instanceof Integer
+            || a instanceof Long
+            || a instanceof Double
+            || a instanceof Float)) {
+      return a.equals(b);
+    } else if (a instanceof TBase) {
+      return a.equals(b);
+    } else if (a instanceof Map && b instanceof Map) {
+      return equalsSlow((Map) a, (Map) b);
+    } else if (a instanceof List && b instanceof List) {
+      return equalsSlow((List) a, (List) b);
+    } else if (a instanceof Set && b instanceof Set) {
+      return equalsSlow((Set) a, (Set) b);
+    } else {
+      throw new IllegalAccessError(
+          "Don't know how to compare " + a + " and " + b
+          + " which is odd, because nothing should be calling me on types"
+          + " I don't understand");
+    }
   }
+
+
 
   public static String getIndentedString(int indent) {
     StringBuilder sb  = new StringBuilder();

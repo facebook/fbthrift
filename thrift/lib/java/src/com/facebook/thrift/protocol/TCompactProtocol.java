@@ -40,7 +40,7 @@ public final class TCompactProtocol extends TProtocol {
   private final static TStruct ANONYMOUS_STRUCT = new TStruct("");
   private final static TField TSTOP = new TField("", TType.STOP, (short)0);
 
-  private final static byte[] ttypeToCompactType = new byte[16];
+  private final static byte[] ttypeToCompactType = new byte[20];
 
   static {
     ttypeToCompactType[TType.STOP] = TType.STOP;
@@ -55,6 +55,7 @@ public final class TCompactProtocol extends TProtocol {
     ttypeToCompactType[TType.SET] = Types.SET;
     ttypeToCompactType[TType.MAP] = Types.MAP;
     ttypeToCompactType[TType.STRUCT] = Types.STRUCT;
+    ttypeToCompactType[TType.FLOAT] = Types.FLOAT;
   }
 
   /**
@@ -93,6 +94,7 @@ public final class TCompactProtocol extends TProtocol {
     public static final byte SET            = 0x0A;
     public static final byte MAP            = 0x0B;
     public static final byte STRUCT         = 0x0C;
+    public static final byte FLOAT          = 0x0D;
   }
 
   /**
@@ -643,11 +645,7 @@ public final class TCompactProtocol extends TProtocol {
     byte[] intBits = new byte[4];
     trans_.readAll(intBits, 0, 4);
     int value;
-    if (version_ >= VERSION_DOUBLE_BE) {
-      value = bytesToInt(intBits);
-    } else {
-      value = bytesToIntLE(intBits);
-    }
+    value = bytesToInt(intBits);
     return Float.intBitsToFloat(value);
   }
 
@@ -820,14 +818,6 @@ public final class TCompactProtocol extends TProtocol {
       ((bytes[3] & 0xff));
   }
 
-  private int bytesToIntLE(byte[] bytes) {
-    return
-      ((bytes[3] & 0xff) << 24) |
-      ((bytes[2] & 0xff) << 16) |
-      ((bytes[1] & 0xff) <<  8) |
-      ((bytes[0] & 0xff));
-  }
-
   //
   // type testing and converting
   //
@@ -858,6 +848,8 @@ public final class TCompactProtocol extends TProtocol {
         return TType.I64;
       case Types.DOUBLE:
         return TType.DOUBLE;
+      case Types.FLOAT:
+        return TType.FLOAT;
       case Types.BINARY:
         return TType.STRING;
       case Types.LIST:

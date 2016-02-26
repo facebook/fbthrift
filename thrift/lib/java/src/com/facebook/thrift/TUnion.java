@@ -1,19 +1,12 @@
 package com.facebook.thrift;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.facebook.thrift.protocol.TField;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolException;
 import com.facebook.thrift.protocol.TStruct;
 
 @SuppressWarnings("serial")
-public abstract class TUnion implements TBase {
+public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
 
   protected Object value_;
   protected int setField_;
@@ -27,55 +20,12 @@ public abstract class TUnion implements TBase {
     setFieldValue(setField, value);
   }
 
-  protected TUnion(TUnion other) {
+  protected TUnion(TUnion<Me> other) {
     if (!other.getClass().equals(this.getClass())) {
       throw new ClassCastException();
     }
     setField_ = other.setField_;
-    value_ = deepCopyObject(other.value_);
-  }
-
-  private static Object deepCopyObject(Object o) {
-    if (o instanceof TBase) {
-      return ((TBase)o).deepCopy();
-    } else if (o instanceof byte[]) {
-      byte[] other_val = (byte[])o;
-      byte[] this_val = new byte[other_val.length];
-      System.arraycopy(other_val, 0, this_val, 0, other_val.length);
-      return this_val;
-    } else if (o instanceof List) {
-      return deepCopyList((List<?>)o);
-    } else if (o instanceof Set) {
-      return deepCopySet((Set<?>)o);
-    } else if (o instanceof Map) {
-      return deepCopyMap((Map<?,?>)o);
-    } else {
-      return o;
-    }
-  }
-
-  private static Map<Object,Object> deepCopyMap(Map<? extends Object,? extends Object> map) {
-    Map<Object, Object> copy = new HashMap<Object, Object>();
-    for (Map.Entry<? extends Object,? extends Object> entry : map.entrySet()) {
-      copy.put(deepCopyObject(entry.getKey()), deepCopyObject(entry.getValue()));
-    }
-    return copy;
-  }
-
-  private static Set<Object> deepCopySet(Set<? extends Object> set) {
-    Set<Object> copy = new HashSet<Object>();
-    for (Object o : set) {
-      copy.add(deepCopyObject(o));
-    }
-    return copy;
-  }
-
-  private static List<Object> deepCopyList(List<? extends Object> list) {
-    List<Object> copy = new ArrayList<Object>(list.size());
-    for (Object o : list) {
-      copy.add(deepCopyObject(o));
-    }
-    return copy;
+    value_ = TBaseHelper.deepCopyUnchecked(other.value_);
   }
 
   public int getSetField() {
@@ -163,6 +113,58 @@ public abstract class TUnion implements TBase {
   protected abstract TStruct getStructDesc();
 
   protected abstract TField getFieldDesc(int setField);
+
+  public abstract Me deepCopy();
+
+  protected int compareToImpl(Me other) {
+    if (other == null) {
+      // See docs for java.lang.Comparable
+      throw new NullPointerException();
+    }
+
+    if (other == this) {
+      return 0;
+    }
+
+    int lastComparison = TBaseHelper.compareTo(this.setField_, other.setField_);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+
+    return TBaseHelper.compareToUnchecked(this, other);
+  }
+
+  protected boolean equalsNobinaryImpl(Me other) {
+    if (other == null || this.getClass() != other.getClass()) {
+      return false;
+    }
+    if (other == this) {
+      return true;
+    }
+    if (this.getSetField() != other.getSetField()) {
+      return false;
+    }
+    if (this.getFieldValue() == null || other.getFieldValue() == null) {
+      return this.getFieldValue() == null && other.getFieldValue() == null;
+    }
+    return TBaseHelper.equalsNobinaryUnchecked(this.getFieldValue(), other.getFieldValue());
+  }
+
+  protected boolean equalsSlowImpl(Me other) {
+    if (other == null || this.getClass() != other.getClass()) {
+      return false;
+    }
+    if (other == this) {
+      return true;
+    }
+    if (this.getSetField() != other.getSetField()) {
+      return false;
+    }
+    if (this.getFieldValue() == null || other.getFieldValue() == null) {
+      return this.getFieldValue() == null && other.getFieldValue() == null;
+    }
+    return TBaseHelper.equalsSlowUnchecked(this.getFieldValue(), other.getFieldValue());
+  }
 
   @Override
   public String toString() {

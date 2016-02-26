@@ -43,11 +43,18 @@ import thrift.test.Nesting;
 import thrift.test.OneOfEach;
 import thrift.test.Srv;
 
-public class TCompactProtocolTest {
+import org.junit.*;
+
+public class TCompactProtocolTest extends junit.framework.TestCase {
 
   static TProtocolFactory factory = new TCompactProtocol.Factory();
 
   public static void main(String[] args) throws Exception {
+    testCompactProtocol();
+  }
+
+  @Test
+  public static void testCompactProtocol() throws Exception {
     testNakedByte();
     for (int i = 0; i < 128; i++) {
       testByteField((byte)i);
@@ -111,6 +118,8 @@ public class TCompactProtocolTest {
 
     testDouble();
 
+    testFloat();
+
     testNakedString("");
     testNakedString("short");
     testNakedString("borderlinetiny");
@@ -120,6 +129,13 @@ public class TCompactProtocolTest {
     testStringField("short");
     testStringField("borderlinetiny");
     testStringField("a bit longer than the smallest possible");
+
+    testFloatField(123.456f);
+    testFloatField(-1.0f);
+    testFloatField(0.0f);
+    testFloatField(Float.NaN);
+    testFloatField(Float.POSITIVE_INFINITY);
+    testFloatField(Float.NEGATIVE_INFINITY);
 
     testNakedBinary(new byte[]{});
     testNakedBinary(new byte[]{0,1,2,3,4,5,6,7,8,9,10});
@@ -253,6 +269,31 @@ public class TCompactProtocolTest {
     if (out != 123.456) {
       throw new RuntimeException("Double was supposed to be " + 123.456 + " but was " + out);
     }
+  }
+
+  public static void testFloat() throws Exception {
+    TMemoryBuffer buf = new TMemoryBuffer(1000);
+    TProtocol proto = factory.getProtocol(buf);
+    proto.writeFloat(123.456f);
+    float out = proto.readFloat();
+    if (out != 123.456f) {
+      throw new RuntimeException("Float was supposed to be " + 123.456f + " but was " + out);
+    }
+  }
+
+  public static void testFloatField(final float value) throws Exception {
+    testStructField(new StructFieldTestCase(TType.FLOAT, (short)15) {
+      public void writeMethod(TProtocol proto) throws TException {
+        proto.writeFloat(value);
+      }
+
+      public void readMethod(TProtocol proto) throws TException {
+        float result = proto.readFloat();
+        if (0 != Float.compare(result, value)) {
+          throw new RuntimeException("Float was supposed to  be " + value + " but was " + result);
+        }
+      }
+    });
   }
 
   public static void testNakedString(String str) throws Exception {

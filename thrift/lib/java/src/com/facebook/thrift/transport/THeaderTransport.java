@@ -49,7 +49,7 @@ public class THeaderTransport extends TFramedTransport {
   // Transforms
   public enum Transforms {
     ZLIB_TRANSFORM(0x01),
-    HMAC_TRANSFORM(0x02),
+    HMAC_TRANSFORM(0x02), // Deprecated and no longer supported
     SNAPPY_TRANSFORM(0x03);
 
     private int value;
@@ -125,14 +125,6 @@ public class THeaderTransport extends TFramedTransport {
   private static final String ID_VERSION = "1";
 
   private String identity;
-
-  public interface CryptoCallback {
-    public byte[] mac(byte[] data) throws Exception;
-    public boolean isValidMac(byte[] data, byte[] mac) throws Exception;
-  }
-
-  private CryptoCallback crypto;
-
 
   public THeaderTransport(TTransport transport) {
     super(transport);
@@ -248,10 +240,6 @@ public class THeaderTransport extends TFramedTransport {
 
   public void setIdentity(String identity) {
     this.identity = identity;
-  }
-
-  public void setCrypto(CryptoCallback crypto) {
-    this.crypto = crypto;
   }
 
   @Override
@@ -432,9 +420,7 @@ public class THeaderTransport extends TFramedTransport {
       } else if (transId == Transforms.SNAPPY_TRANSFORM.getValue()) {
         readTransforms.add(transId);
       } else if (transId == Transforms.HMAC_TRANSFORM.getValue()) {
-        hmacSz = frame.get();
-        frame.position(frame.position() - 1);
-        frame.put((byte)0x00);
+        throw new THeaderException("Hmac transform no longer supported");
       } else {
         throw new THeaderException("Unknown transform during recv");
       }
@@ -465,23 +451,6 @@ public class THeaderTransport extends TFramedTransport {
     }
     readHeaders.putAll(readPersistentHeaders);
 
-    if (crypto != null) {
-      // TODO(davejwatson): update isValidMac crypto interface to
-      // accept ByteByffer to avoid extra copies here.
-      frame.position(0);
-      byte[] payload = new byte[frame.limit() - hmacSz];
-      frame.get(payload, 0, frame.limit() - hmacSz);
-
-      byte[] macBytes = new byte[hmacSz];
-      frame.get(macBytes, 0, hmacSz);
-      try {
-        if (!crypto.isValidMac(payload, macBytes)) {
-          throw new THeaderException("Mac did not verify");
-        }
-      } catch (Exception e) {
-        throw new THeaderException("Unable to mac data: " + e.toString());
-      }
-    }
     // Read in the data section.
     frame.position(endHeader);
     frame.limit(frame.limit() - hmacSz); // limit to data without mac
@@ -616,7 +585,15 @@ public class THeaderTransport extends TFramedTransport {
    */
   @Override
   public void flush() throws TTransportException {
+    flushImpl(false);
+  }
 
+  @Override
+  public void onewayFlush() throws TTransportException {
+    flushImpl(true);
+  }
+
+  public void flushImpl(boolean oneway) throws TTransportException {
     ByteBuffer frame = ByteBuffer.wrap(writeBuffer_.get());
     frame.limit(writeBuffer_.len());
     writeBuffer_.reset();
@@ -638,19 +615,13 @@ public class THeaderTransport extends TFramedTransport {
     if (clientType == ClientTypes.HEADERS) {
 
       // Each varint could be up to 5 in size.
-      // Extra 10 for crypto varints.
       ByteBuffer transformData =
-        ByteBuffer.allocate(writeTransforms.size() * 5 + 10);
+        ByteBuffer.allocate(writeTransforms.size() * 5);
 
       // For now, no transforms require data.
       int numTransforms = writeTransforms.size();
       for (Transforms trans : writeTransforms) {
         writeVarint(transformData, trans.getValue());
-      }
-      if (crypto != null) {
-        numTransforms += 1;
-        writeVarint(transformData, Transforms.HMAC_TRANSFORM.getValue());
-        transformData.put((byte)0x00); // mac size, fixup later
       }
       transformData.limit(transformData.position());
       transformData.position(0);
@@ -690,7 +661,6 @@ public class THeaderTransport extends TFramedTransport {
 
       out.put(headerData);
       out.put(transformData);
-      int macLoc = out.position() - 1;
       out.put(infoData1);
       out.put(infoData2);
 
@@ -701,35 +671,8 @@ public class THeaderTransport extends TFramedTransport {
       }
       out.position(0);
 
-      byte[] mac = null;
-      if (crypto != null) {
-        // TODO(davejwatson) update crypto interface to accept ByteBuffer
-        // and multiple buffers to prevent the extra copying here
-        out.position(4);
-        byte[] dataBuf = new byte[out.limit() - 4 + frame.remaining()];
-        out.get(dataBuf, 0, out.limit() - 4);
-        frame.get(dataBuf, out.limit() - 4, frame.limit());
-        frame.position(0);
-        try {
-          mac = crypto.mac(dataBuf);
-        } catch (Exception e) {
-          throw new THeaderException("Unable to mac data: " + e.toString());
-        }
-
-        // Update mac size
-        out.position(macLoc);
-        out.put((byte)mac.length);
-        out.position(0);
-        // Update the frame size to include mac bytes
-        encodeInt(out, 10 + headerSize + frame.remaining() + mac.length);
-        out.position(0);
-      }
-
       transport_.write(out.array(), out.position(), out.remaining());
       transport_.write(frame.array(), frame.position(), frame.remaining());
-      if (mac != null) {
-        transport_.write(mac, 0, mac.length);
-      }
     } else if (clientType == ClientTypes.FRAMED_DEPRECATED) {
       ByteBuffer out = ByteBuffer.allocate(4);
       encodeInt(out, frame.remaining());
@@ -744,7 +687,11 @@ public class THeaderTransport extends TFramedTransport {
       throw new TTransportException("Unknown client type on send");
     }
 
-    transport_.flush();
+    if (oneway) {
+      transport_.onewayFlush();
+    } else {
+      transport_.flush();
+    }
   }
 
   // TODO(davejwatson) potential inclusion in a java util class

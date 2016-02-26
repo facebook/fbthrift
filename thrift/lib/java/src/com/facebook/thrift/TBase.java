@@ -66,6 +66,12 @@ public interface TBase extends Serializable {
    */
   public void setFieldValue(int fieldId, Object value);
 
+  /**
+   * Returns a copy of `this`. The type of the returned object should
+   * be the same as the type of this; that is,
+   * <code>x.getClass() == x.deepCopy().getClass()</code> should be true
+   * for any TBase.
+   */
   public TBase deepCopy();
 
   /**

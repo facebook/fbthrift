@@ -81,4 +81,21 @@ public class TProcessorEventHandler {
    */
   public void handlerError(Object handler_context, String fn_name, Throwable th)
     throws TException {}
+
+  /**
+   * Called before the thrift handler method's results are written iff
+   * an exception is thrown that is declared in IDL and declared as
+   * throwable by the currently processing server method.
+   *
+   * @param handler_context object returned by {@link getContext} call
+   * @param fn_name name of the thrift method being invoked
+   * @param th the exception thrown by the thrift handler
+   */
+  // NB: for compatibility with Processor code generated in Dec 2015/Jan 2016,
+  // this method should have type erasure `(LObject;LString;LThrowable;)V`
+  public <T extends Throwable & TBase>
+    void declaredUserException(Object handler_context,
+                               String fn_name,
+                               T th)
+    throws TException {}
 }
