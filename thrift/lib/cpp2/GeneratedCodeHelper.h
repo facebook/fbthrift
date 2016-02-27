@@ -935,7 +935,7 @@ template <class ProtocolReader, class Processor>
 void process_pmap(
     Processor* proc,
     const typename GeneratedAsyncProcessor::ProcessMap<
-        typename GeneratedAsyncProcessor::ProcessFunc<
+        GeneratedAsyncProcessor::ProcessFunc<
             Processor, ProtocolReader>>& pmap,
     std::unique_ptr<ResponseChannel::Request> req,
     std::unique_ptr<folly::IOBuf> buf,
