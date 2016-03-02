@@ -58,10 +58,11 @@ template <typename OutputStream, typename T>
 void pretty_print(
   OutputStream &&out,
   T &&what,
-  std::string indentation = "  "
+  std::string indentation = "  ",
+  std::string margin = std::string()
 ) {
   detail::pretty_print(
-    make_indenter(out, std::move(indentation)),
+    make_indenter(out, std::move(indentation), std::move(margin)),
     std::forward<T>(what)
   );
 }
@@ -74,10 +75,10 @@ void pretty_print(
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename T>
-std::string pretty_string(T &&what) {
+template <typename... Args>
+std::string pretty_string(Args &&...args) {
   std::ostringstream out;
-  pretty_print(out, std::forward<T>(what));
+  pretty_print(out, std::forward<Args>(args)...);
   return out.str();
 }
 

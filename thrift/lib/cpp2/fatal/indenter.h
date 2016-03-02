@@ -149,9 +149,10 @@ private:
 template <typename OutputStream, typename Indentation>
 indenter<typename std::decay<OutputStream>::type> make_indenter(
   OutputStream &&out,
-  Indentation &&indentation
+  Indentation &&indentation,
+  std::string margin = std::string()
 ) {
-  return {out, std::forward<Indentation>(indentation), ""};
+  return {out, std::forward<Indentation>(indentation), std::move(margin)};
 }
 
 }} // apache::thrift
