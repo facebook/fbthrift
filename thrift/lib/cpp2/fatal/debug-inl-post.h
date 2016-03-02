@@ -108,7 +108,7 @@ template <> struct debug_equals_impl<thrift_category::list> {
     using traits = thrift_list_traits<T>;
 
     if (traits::size(lhs) != traits::size(rhs)) {
-      callback(traits::size(lhs), traits::size(rhs), path, "size mismatch");
+      callback(lhs, rhs, path, "size mismatch");
       return false;
     }
 
@@ -140,7 +140,7 @@ template <> struct debug_equals_impl<thrift_category::map> {
     using traits = thrift_map_traits<T>;
 
     if (traits::size(lhs) != traits::size(rhs)) {
-      callback(traits::size(lhs), traits::size(rhs), path, "size mismatch");
+      callback(lhs, rhs, path, "size mismatch");
       return false;
     }
     auto l = traits::begin(lhs);
@@ -173,7 +173,7 @@ template <> struct debug_equals_impl<thrift_category::set> {
     using traits = thrift_set_traits<T>;
 
     if (traits::size(lhs) != traits::size(rhs)) {
-      callback(traits::size(lhs), traits::size(rhs), path, "size mismatch");
+      callback(lhs, rhs, path, "size mismatch");
       return false;
     }
 

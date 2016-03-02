@@ -38,6 +38,8 @@
 
 #include <thrift/lib/cpp2/fatal/debug-inl-pre.h>
 
+#include <thrift/lib/cpp2/fatal/pretty_print.h>
+
 namespace apache { namespace thrift {
 
 /**
@@ -86,10 +88,12 @@ struct debug_output_callback {
     folly::StringPiece path,
     folly::StringPiece message
   ) const {
-    out_ << path << ": " << message
-      << std::endl << "  lhs: '" << lhs << '\''
-      << std::endl << "  rhs: '" << rhs << '\''
-      << std::endl;
+    out_ << path << ": " << message;
+    out_ << std::endl << "  lhs:" << std::endl;
+    pretty_print(out_, lhs, "  ", "    ");
+    out_ << std::endl << "  rhs:" << std::endl;
+    pretty_print(out_, rhs, "  ", "    ");
+    out_ << std::endl;
   }
 
 private:
