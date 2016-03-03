@@ -193,9 +193,9 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
     } else if (config->SASLPolicy() == "permitted" ||
                config->SASLPolicy() == "required") {
       configs["thrift_security"] = config->SASLPolicy();
-      if (!config->SASLServiceTier().empty()) {
-        configs["thrift_security_service_tier"] = config->SASLServiceTier();
-      }
+    }
+    if (!config->SASLServiceTier().empty()) {
+      configs["thrift_security_service_tier"] = config->SASLServiceTier();
     }
     loadClient.reset(facebook::servicerouter::cpp2::getClientFactory()
                      .getClient<LoadTestAsyncClient>(
