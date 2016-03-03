@@ -660,7 +660,7 @@ uint32_t JSONProtocolReaderCommon::readJSONKey(folly::fbstring& key) {
   return readJSONString(key);
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONKey(bool key) {
+uint32_t JSONProtocolReaderCommon::readJSONKey(bool& key) {
   std::string s;
   auto ret = readJSONString(s);
   key = JSONtoBool(s);

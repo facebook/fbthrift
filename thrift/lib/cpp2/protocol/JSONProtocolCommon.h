@@ -207,7 +207,7 @@ class JSONProtocolReaderCommon {
   uint32_t readInContext(T& val);
   inline uint32_t readJSONKey(std::string& key);
   inline uint32_t readJSONKey(folly::fbstring& key);
-  inline uint32_t readJSONKey(bool key);
+  inline uint32_t readJSONKey(bool& key);
   template <typename T>
   uint32_t readJSONKey(T& key);
   template <typename T>
