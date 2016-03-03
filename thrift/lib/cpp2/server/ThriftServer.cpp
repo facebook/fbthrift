@@ -71,6 +71,17 @@ using apache::thrift::concurrency::PriorityThreadManager;
 using wangle::IOThreadPoolExecutor;
 using wangle::NamedThreadFactory;
 
+namespace {
+struct DisableKerberosReplayCacheSingleton {
+  DisableKerberosReplayCacheSingleton() {
+    // Disable replay caching since we're doing mutual auth. Enabling
+    // this will significantly degrade perf. Force this to overwrite
+    // existing env variables to avoid performance regressions.
+    setenv("KRB5RCACHETYPE", "none", 1);
+  }
+} kDisableKerberosReplayCacheSingleton;
+}
+
 class ThriftAcceptorFactory : public wangle::AcceptorFactory {
  public:
   explicit ThriftAcceptorFactory(ThriftServer* server)
@@ -107,10 +118,6 @@ ThriftServer::ThriftServer(const std::string& saslPolicy,
   } else if (FLAGS_thrift_ssl_policy == "permitted") {
     sslPolicy_ = SSLPolicy::PERMITTED;
   }
-  // Disable replay caching since we're doing mutual auth. Enabling
-  // this will significantly degrade perf. Force this to overwrite
-  // existing env variables to avoid performance regressions.
-  setenv("KRB5RCACHETYPE", "none", 1);
 }
 
 ThriftServer::ThriftServer(
