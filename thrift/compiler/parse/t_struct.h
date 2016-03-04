@@ -93,7 +93,7 @@ class t_struct : public t_type {
     return members_;
   }
 
-  const members_type& get_sorted_members() {
+  const members_type& get_sorted_members() const {
     return members_in_id_order_;
   }
 

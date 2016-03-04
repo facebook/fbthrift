@@ -49,7 +49,7 @@ class t_service : public t_type {
     return functions_;
   }
 
-  t_service* get_extends() {
+  t_service* get_extends() const {
     return extends_;
   }
 

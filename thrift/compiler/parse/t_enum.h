@@ -38,7 +38,7 @@ class t_enum : public t_type {
     constants_.push_back(constant);
   }
 
-  const std::vector<t_enum_value*>& get_constants() {
+  const std::vector<t_enum_value*>& get_constants() const {
     return constants_;
   }
 
