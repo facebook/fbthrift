@@ -43,7 +43,7 @@ inline Type getType(int64_t typeId) {
 }
 
 inline bool isBaseType(Type type) {
-  return (type <= TYPE_DOUBLE) || (type == TYPE_FLOAT);
+  return (type <= Type::TYPE_DOUBLE) || (type == Type::TYPE_FLOAT);
 }
 
 }  // namespace reflection

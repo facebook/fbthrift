@@ -28,35 +28,35 @@ using namespace apache::thrift::util;
 TEST(EnumTest, test_enum) {
   // Check that all the enum values match what we expect
   EXPECT_EQ(TEnumTraits<MyEnum1>::min(), 0);
-  EXPECT_EQ(ME1_0, 0);
-  EXPECT_EQ(ME1_1, 1);
-  EXPECT_EQ(ME1_2, 2);
-  EXPECT_EQ(ME1_3, 3);
-  EXPECT_EQ(ME1_5, 5);
-  EXPECT_EQ(ME1_6, 6);
+  EXPECT_EQ(MyEnum1::ME1_0, 0);
+  EXPECT_EQ(MyEnum1::ME1_1, 1);
+  EXPECT_EQ(MyEnum1::ME1_2, 2);
+  EXPECT_EQ(MyEnum1::ME1_3, 3);
+  EXPECT_EQ(MyEnum1::ME1_5, 5);
+  EXPECT_EQ(MyEnum1::ME1_6, 6);
   EXPECT_EQ(TEnumTraits<MyEnum1>::max(), 6);
 
   EXPECT_EQ(TEnumTraits<MyEnum2>::min(), 0);
-  EXPECT_EQ(ME2_0, 0);
-  EXPECT_EQ(ME2_1, 1);
-  EXPECT_EQ(ME2_2, 2);
+  EXPECT_EQ(MyEnum2::ME2_0, 0);
+  EXPECT_EQ(MyEnum2::ME2_1, 1);
+  EXPECT_EQ(MyEnum2::ME2_2, 2);
   EXPECT_EQ(TEnumTraits<MyEnum2>::max(), 2);
 
   EXPECT_EQ(TEnumTraits<MyEnum3>::min(), -2);
-  EXPECT_EQ(ME3_0, 0);
-  EXPECT_EQ(ME3_1, 1);
-  EXPECT_EQ(ME3_N2, -2);
-  EXPECT_EQ(ME3_N1, -1);
-  EXPECT_EQ(ME3_D0, 0);
-  EXPECT_EQ(ME3_D1, 1);
-  EXPECT_EQ(ME3_9, 9);
-  EXPECT_EQ(ME3_10, 10);
+  EXPECT_EQ(MyEnum3::ME3_0, 0);
+  EXPECT_EQ(MyEnum3::ME3_1, 1);
+  EXPECT_EQ(MyEnum3::ME3_N2, -2);
+  EXPECT_EQ(MyEnum3::ME3_N1, -1);
+  EXPECT_EQ(MyEnum3::ME3_D0, 0);
+  EXPECT_EQ(MyEnum3::ME3_D1, 1);
+  EXPECT_EQ(MyEnum3::ME3_9, 9);
+  EXPECT_EQ(MyEnum3::ME3_10, 10);
   EXPECT_EQ(TEnumTraits<MyEnum3>::max(), 10);
 
   EXPECT_EQ(TEnumTraits<MyEnum4>::min(), 0x7ffffffd);
-  EXPECT_EQ(ME4_A, 0x7ffffffd);
-  EXPECT_EQ(ME4_B, 0x7ffffffe);
-  EXPECT_EQ(ME4_C, 0x7fffffff);
+  EXPECT_EQ(MyEnum4::ME4_A, 0x7ffffffd);
+  EXPECT_EQ(MyEnum4::ME4_B, 0x7ffffffe);
+  EXPECT_EQ(MyEnum4::ME4_C, 0x7fffffff);
   EXPECT_EQ(TEnumTraits<MyEnum4>::max(), 0x7fffffff);
 }
 
@@ -68,8 +68,8 @@ TEST(EnumTest, test_enum_constant) {
 }
 
 TEST(EnumTest, test_enum_names) {
-  EXPECT_EQ(enumName(ME3_1), std::string{"ME3_1"});
-  EXPECT_EQ(enumName(ME2_2), std::string{"ME2_2"});
+  EXPECT_EQ(enumName(MyEnum3::ME3_1), std::string{"ME3_1"});
+  EXPECT_EQ(enumName(MyEnum2::ME2_2), std::string{"ME2_2"});
   EXPECT_EQ(enumName(static_cast<MyEnum2>(-10)), (const char*)nullptr);
   EXPECT_EQ(enumName(static_cast<MyEnum2>(-10), "foo"), "foo");
 }
@@ -79,9 +79,9 @@ TEST(EnumTest, test_enum_parse) {
   MyEnum3 e3;
 
   EXPECT_EQ(true, tryParseEnum("ME2_2", &e2));
-  EXPECT_EQ((int)ME2_2, (int)e2);
+  EXPECT_EQ((int)MyEnum2::ME2_2, (int)e2);
   EXPECT_EQ(true, tryParseEnum("ME3_N2", &e3));
-  EXPECT_EQ((int)ME3_N2, (int)e3);
+  EXPECT_EQ((int)MyEnum3::ME3_N2, (int)e3);
 
   EXPECT_FALSE(tryParseEnum("FOO_ME2_0", &e2));
   EXPECT_FALSE(tryParseEnum("BAR_ME3_N2", &e3));

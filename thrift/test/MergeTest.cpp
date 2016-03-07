@@ -123,9 +123,9 @@ TEST(MergeTest, Container) {
 
   map<Numberz, UserId> expectedUserMap(
     {
-      {ONE, 1},     // old
-      {TWO, 2},    // overwrite
-      {THREE, 2},  // new
+      {Numberz::ONE, 1},     // old
+      {Numberz::TWO, 2},    // overwrite
+      {Numberz::THREE, 2},  // new
     });
   EXPECT_EQ(expectedUserMap, mergeTo.userMap);
   ASSERT_TRUE(mergeTo.__isset.userMap);

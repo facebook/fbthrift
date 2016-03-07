@@ -95,7 +95,7 @@ class Decoder {
 
   struct TypeInfo {
     TypeInfo()
-      : typeVal(reflection::TYPE_VOID),
+      : typeVal(reflection::Type::TYPE_VOID),
         length(kVariableLength),
         dataType(nullptr),
         terminator('\0') { }

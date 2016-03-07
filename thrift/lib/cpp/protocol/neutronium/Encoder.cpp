@@ -51,19 +51,19 @@ Encoder::EncoderState::EncoderState(
     optionalSet(dt->optionalFields.size(), false),
     bytesWritten(0) {
   switch (reflection::getType(type)) {
-  case reflection::TYPE_MAP:
+  case reflection::Type::TYPE_MAP:
     state = IN_MAP_KEY;
     field.type = dataType->mapKeyType;
     break;
-  case reflection::TYPE_SET:
+  case reflection::Type::TYPE_SET:
     state = IN_SET_VALUE;
     field.type = dataType->valueType;
     break;
-  case reflection::TYPE_LIST:
+  case reflection::Type::TYPE_LIST:
     state = IN_LIST_VALUE;
     field.type = dataType->valueType;
     break;
-  case reflection::TYPE_STRUCT:
+  case reflection::Type::TYPE_STRUCT:
     state = IN_STRUCT;
     break;
   default:

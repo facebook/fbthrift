@@ -36,7 +36,7 @@ class AsyncLoadHandler : public LoadTestCobSvIf
  public:
   void getStatus(std::function<void(facebook::fb303::fb_status const& _return)>
                      cob) override {
-    cob(facebook::fb303::ALIVE);
+    cob(facebook::fb303::fb_status::ALIVE);
   }
 
   typedef std::function<void()> VoidCob;

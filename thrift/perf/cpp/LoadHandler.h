@@ -51,7 +51,7 @@ class LoadHandler : public LoadTestIf
   int64_t add(int64_t a, int64_t b) override;
 
   facebook::fb303::fb_status getStatus() override {
-    return facebook::fb303::ALIVE;
+    return facebook::fb303::fb_status::ALIVE;
   }
 
  private:

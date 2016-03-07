@@ -127,7 +127,7 @@ inline void Encoder::EncoderState::appendToOutput(const Vec& vec) {
 
 inline void Encoder::writeMapBegin(TType keyType, TType valType,
                                    uint32_t size) {
-  push(reflection::TYPE_MAP, topType(), size);
+  push(reflection::Type::TYPE_MAP, topType(), size);
 }
 
 inline void Encoder::writeMapEnd() {
@@ -137,7 +137,7 @@ inline void Encoder::writeMapEnd() {
 }
 
 inline void Encoder::writeListBegin(TType elemType, uint32_t size) {
-  push(reflection::TYPE_LIST, topType(), size);
+  push(reflection::Type::TYPE_LIST, topType(), size);
 }
 
 inline void Encoder::writeListEnd() {
@@ -147,7 +147,7 @@ inline void Encoder::writeListEnd() {
 }
 
 inline void Encoder::writeSetBegin(TType elemType, uint32_t size) {
-  push(reflection::TYPE_SET, topType(), size);
+  push(reflection::Type::TYPE_SET, topType(), size);
 }
 
 inline void Encoder::writeSetEnd() {
@@ -157,7 +157,7 @@ inline void Encoder::writeSetEnd() {
 }
 
 inline void Encoder::writeStructBegin(const char* name) {
-  push(reflection::TYPE_STRUCT, topType(), 0);
+  push(reflection::Type::TYPE_STRUCT, topType(), 0);
 }
 
 inline void Encoder::writeStructEnd() {
@@ -216,7 +216,7 @@ inline int64_t Encoder::topType() const {
 inline void Encoder::writeBool(bool v) {
   auto& s = top();
   DCHECK(s.inDataState());
-  s.checkType(reflection::TYPE_BOOL);
+  s.checkType(reflection::Type::TYPE_BOOL);
   s.markFieldSet();
   s.bools.emplace_back(s.tag, v);
   s.dataWritten();
@@ -226,7 +226,7 @@ inline void Encoder::writeByte(int8_t v) {
   auto& s = top();
   DCHECK(s.inDataState());
   s.markFieldSet();
-  s.checkType(reflection::TYPE_BYTE);
+  s.checkType(reflection::Type::TYPE_BYTE);
   s.bytes.emplace_back(s.tag, v);
   s.dataWritten();
 }
@@ -234,7 +234,7 @@ inline void Encoder::writeByte(int8_t v) {
 inline void Encoder::writeI16(int16_t v) {
   auto& s = top();
   DCHECK(s.inDataState());
-  s.checkType(reflection::TYPE_I16);
+  s.checkType(reflection::Type::TYPE_I16);
   s.markFieldSet();
   if (s.field.isFixed) {
     s.fixedInt16s.emplace_back(s.tag, v);
@@ -247,9 +247,9 @@ inline void Encoder::writeI16(int16_t v) {
 inline void Encoder::writeI32(int32_t v) {
   auto& s = top();
   DCHECK(s.inDataState());
-  s.checkType(reflection::TYPE_I32, reflection::TYPE_ENUM);
+  s.checkType(reflection::Type::TYPE_I32, reflection::Type::TYPE_ENUM);
   s.markFieldSet();
-  if (reflection::getType(s.field.type) == reflection::TYPE_ENUM &&
+  if (reflection::getType(s.field.type) == reflection::Type::TYPE_ENUM &&
       s.field.isStrictEnum) {
     auto& dt = schema_->map().at(s.field.type);
     uint8_t nbits = dt.enumBits();
@@ -267,11 +267,11 @@ inline void Encoder::writeI32(int32_t v) {
 }
 
 inline void Encoder::writeI64(int64_t v) {
-  innerWriteI64(v, reflection::TYPE_I64);
+  innerWriteI64(v, reflection::Type::TYPE_I64);
 }
 
 inline void Encoder::writeDouble(double v) {
-  innerWriteI64(bitwise_cast<int64_t>(v), reflection::TYPE_DOUBLE);
+  innerWriteI64(bitwise_cast<int64_t>(v), reflection::Type::TYPE_DOUBLE);
 }
 
 inline void Encoder::innerWriteI64(int64_t v, reflection::Type expected) {
@@ -319,7 +319,7 @@ std::unique_ptr<folly::IOBuf> copyBufferAndTerminate(
 inline void Encoder::writeBytes(folly::StringPiece data) {
   auto& s = top();
   DCHECK(s.inDataState());
-  s.checkType(reflection::TYPE_STRING);
+  s.checkType(reflection::Type::TYPE_STRING);
   s.markFieldSet();
   if (s.field.isInterned) {
     CHECK(internTable_);

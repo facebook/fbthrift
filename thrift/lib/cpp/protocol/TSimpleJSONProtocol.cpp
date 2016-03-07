@@ -320,22 +320,22 @@ uint32_t TSimpleJSONProtocol::readBool(bool& value) {
 TType TSimpleJSONProtocol::getTypeIdFromTypeNum(int64_t fieldType) {
   Type type = getType(fieldType);
   switch (type) {
-    case TYPE_VOID:   return T_VOID;
-    case TYPE_STRING: return T_STRING;
-    case TYPE_BOOL:   return T_BOOL;
-    case TYPE_BYTE:   return T_BYTE;
-    case TYPE_I16:    return T_I16;
-    case TYPE_I32:    return T_I32;
-    case TYPE_I64:    return T_I64;
-    case TYPE_DOUBLE: return T_DOUBLE;
-    case TYPE_FLOAT:  return T_FLOAT;
-    case TYPE_LIST:   return T_LIST;
-    case TYPE_SET:    return T_SET;
-    case TYPE_MAP:    return T_MAP;
-    case TYPE_STRUCT: return T_STRUCT;
-    case TYPE_ENUM:   return T_I32;
-    case TYPE_SERVICE:
-    case TYPE_PROGRAM:
+    case Type::TYPE_VOID:   return T_VOID;
+    case Type::TYPE_STRING: return T_STRING;
+    case Type::TYPE_BOOL:   return T_BOOL;
+    case Type::TYPE_BYTE:   return T_BYTE;
+    case Type::TYPE_I16:    return T_I16;
+    case Type::TYPE_I32:    return T_I32;
+    case Type::TYPE_I64:    return T_I64;
+    case Type::TYPE_DOUBLE: return T_DOUBLE;
+    case Type::TYPE_FLOAT:  return T_FLOAT;
+    case Type::TYPE_LIST:   return T_LIST;
+    case Type::TYPE_SET:    return T_SET;
+    case Type::TYPE_MAP:    return T_MAP;
+    case Type::TYPE_STRUCT: return T_STRUCT;
+    case Type::TYPE_ENUM:   return T_I32;
+    case Type::TYPE_SERVICE:
+    case Type::TYPE_PROGRAM:
     default:
       throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
                                "Unrecognized type");

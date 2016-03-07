@@ -220,20 +220,20 @@ class TestHandler : public ThriftTestIf {
     goodbye.i64_thing = 4;
 
     Insanity crazy;
-    crazy.userMap.insert(make_pair(EIGHT, 8));
+    crazy.userMap.insert(make_pair(Numberz::EIGHT, 8));
     crazy.xtructs.push_back(goodbye);
 
     Insanity looney;
-    crazy.userMap.insert(make_pair(FIVE, 5));
+    crazy.userMap.insert(make_pair(Numberz::FIVE, 5));
     crazy.xtructs.push_back(hello);
 
     map<Numberz, Insanity> first_map;
     map<Numberz, Insanity> second_map;
 
-    first_map.insert(make_pair(TWO, crazy));
-    first_map.insert(make_pair(THREE, crazy));
+    first_map.insert(make_pair(Numberz::TWO, crazy));
+    first_map.insert(make_pair(Numberz::THREE, crazy));
 
-    second_map.insert(make_pair(SIX, looney));
+    second_map.insert(make_pair(Numberz::SIX, looney));
 
     insane.insert(make_pair(1, first_map));
     insane.insert(make_pair(2, second_map));

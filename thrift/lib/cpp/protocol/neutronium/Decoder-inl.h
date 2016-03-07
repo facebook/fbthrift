@@ -54,7 +54,7 @@ inline void Decoder::setRootType(int64_t rootType) {
 }
 
 inline void Decoder::readStructBegin() {
-  push(reflection::TYPE_STRUCT, nextType(), 0);
+  push(reflection::Type::TYPE_STRUCT, nextType(), 0);
 }
 
 inline void Decoder::readStructEnd() {
@@ -79,7 +79,7 @@ inline int64_t Decoder::nextType() {
 inline void Decoder::readMapBegin(TType& keyType, TType& valType,
                                   uint32_t& size, bool& sizeUnknown) {
   size = peekElementCount();
-  push(reflection::TYPE_MAP, nextType(), size);
+  push(reflection::Type::TYPE_MAP, nextType(), size);
   keyType = top().list.mapKeyType.ttype();
   valType = top().list.valueType.ttype();
   size = top().list.remaining;
@@ -95,7 +95,7 @@ inline void Decoder::readMapEnd() {
 inline void Decoder::readListBegin(TType& elemType, uint32_t& size,
                                    bool& sizeUnknown) {
   size = peekElementCount();
-  push(reflection::TYPE_LIST, nextType(), size);
+  push(reflection::Type::TYPE_LIST, nextType(), size);
   elemType = top().list.valueType.ttype();
   size = top().list.remaining;
   sizeUnknown = false;
@@ -110,7 +110,7 @@ inline void Decoder::readListEnd() {
 inline void Decoder::readSetBegin(TType& elemType, uint32_t& size,
                                   bool& sizeUnknown) {
   size = peekElementCount();
-  push(reflection::TYPE_SET, nextType(), size);
+  push(reflection::Type::TYPE_SET, nextType(), size);
   elemType = top().list.valueType.ttype();
   size = top().list.remaining;
   sizeUnknown = false;
@@ -182,21 +182,21 @@ inline void Decoder::DecoderState::nextList() {
   // Advance to next element
 
   switch (type.typeVal) {
-  case reflection::TYPE_BOOL:
+  case reflection::Type::TYPE_BOOL:
     setStateList(bools);
     break;
-  case reflection::TYPE_BYTE:
+  case reflection::Type::TYPE_BYTE:
     setStateList(bytes);
     break;
-  case reflection::TYPE_I16:  // fallthrough
-  case reflection::TYPE_I32:
+  case reflection::Type::TYPE_I16:  // fallthrough
+  case reflection::Type::TYPE_I32:
     setStateList(ints);
     break;
-  case reflection::TYPE_I64: // fallthrough
-  case reflection::TYPE_DOUBLE:
+  case reflection::Type::TYPE_I64: // fallthrough
+  case reflection::Type::TYPE_DOUBLE:
     setStateList(int64s);
     break;
-  case reflection::TYPE_STRING: // fallthrough
+  case reflection::Type::TYPE_STRING: // fallthrough
   default:
     setStateList(strings);
   }
@@ -283,7 +283,7 @@ inline void Decoder::DecoderState::nextValue() {
 }
 
 inline void Decoder::DecoderState::setLength() {
-  if (type.type() == reflection::TYPE_STRING &&
+  if (type.type() == reflection::Type::TYPE_STRING &&
       type.length == kVariableLength) {
     // Variable size, read length
     if (++vars.index == vars.count) {
@@ -324,7 +324,7 @@ inline void Decoder::readFieldEnd() {
 inline void Decoder::readBool(bool& value) {
   auto& s = top();
   s.nextValue();
-  if (UNLIKELY(s.type.typeVal != reflection::TYPE_BOOL)) {
+  if (UNLIKELY(s.type.typeVal != reflection::Type::TYPE_BOOL)) {
     throw TProtocolException("invalid type");
   }
   value = testBit(s.bools.values, s.boolStartBit + s.bools.index);
@@ -333,7 +333,7 @@ inline void Decoder::readBool(bool& value) {
 inline void Decoder::readByte(int8_t& value) {
   auto& s = top();
   s.nextValue();
-  if (UNLIKELY(s.type.typeVal != reflection::TYPE_BYTE)) {
+  if (UNLIKELY(s.type.typeVal != reflection::Type::TYPE_BYTE)) {
     throw TProtocolException("invalid type");
   }
   value = s.bytes.values[s.bytes.index];
@@ -342,7 +342,7 @@ inline void Decoder::readByte(int8_t& value) {
 inline void Decoder::readI16(int16_t& value) {
   auto& s = top();
   s.nextValue();
-  if (UNLIKELY(s.type.typeVal != reflection::TYPE_I16)) {
+  if (UNLIKELY(s.type.typeVal != reflection::Type::TYPE_I16)) {
     throw TProtocolException("invalid type");
   }
   value = s.ints.values[s.ints.index];
@@ -355,7 +355,7 @@ inline void Decoder::readI32(int32_t& value) {
   // TODO(tudorb): Relax?
   if (s.state == IN_FIELD && s.str.fieldState == DecoderState::FS_STRICT_ENUM) {
     value = s.strictEnums.values[s.strictEnums.index];
-  } else if (UNLIKELY(s.type.typeVal != reflection::TYPE_I32)) {
+  } else if (UNLIKELY(s.type.typeVal != reflection::Type::TYPE_I32)) {
     throw TProtocolException("invalid type");
   } else {
     value = s.ints.values[s.ints.index];
@@ -365,7 +365,7 @@ inline void Decoder::readI32(int32_t& value) {
 inline void Decoder::readI64(int64_t& value) {
   auto& s = top();
   s.nextValue();
-  if (UNLIKELY(s.type.typeVal != reflection::TYPE_I64)) {
+  if (UNLIKELY(s.type.typeVal != reflection::Type::TYPE_I64)) {
     throw TProtocolException("invalid type");
   }
   value = s.int64s.values[s.int64s.index];
@@ -374,7 +374,7 @@ inline void Decoder::readI64(int64_t& value) {
 inline void Decoder::readDouble(double& value) {
   auto& s = top();
   s.nextValue();
-  if (UNLIKELY(s.type.typeVal != reflection::TYPE_DOUBLE)) {
+  if (UNLIKELY(s.type.typeVal != reflection::Type::TYPE_DOUBLE)) {
     throw TProtocolException("invalid type");
   }
   int64_t i64 = s.int64s.values[s.int64s.index];
@@ -384,7 +384,7 @@ inline void Decoder::readDouble(double& value) {
 inline bool Decoder::beginReadString() {
   auto& s = top();
   s.nextValue();
-  if (UNLIKELY(s.type.typeVal != reflection::TYPE_STRING)) {
+  if (UNLIKELY(s.type.typeVal != reflection::Type::TYPE_STRING)) {
     throw TProtocolException("invalid type");
   }
   // Interned strings only occur in structs,

@@ -475,8 +475,8 @@ TEST(JsonToThriftTest, MapTypeTest) {
   EXPECT_EQ(mapStruct.doubleMap[0.1], "0.one");
   EXPECT_EQ(mapStruct.doubleMap[0.2], "0.two");
   EXPECT_EQ(mapStruct.enumMap.size(), 2);
-  EXPECT_EQ(mapStruct.enumMap[MALE], "male");
-  EXPECT_EQ(mapStruct.enumMap[FEMALE], "female");
+  EXPECT_EQ(mapStruct.enumMap[Gender::MALE], "male");
+  EXPECT_EQ(mapStruct.enumMap[Gender::FEMALE], "female");
 }
 
 TEST(JsonToThriftTest, EmptyStringTest) {

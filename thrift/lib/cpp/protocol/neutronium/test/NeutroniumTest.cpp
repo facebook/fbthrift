@@ -48,17 +48,17 @@ Schema schema;
 }  // namespace
 
 TEST(Neutronium, SchemaUtils) {
-  EXPECT_EQ(T_BOOL, toTType(reflection::TYPE_BOOL));
-  EXPECT_EQ(T_I08, toTType(reflection::TYPE_BYTE));
-  EXPECT_EQ(T_I16, toTType(reflection::TYPE_I16));
-  EXPECT_EQ(T_I32, toTType(reflection::TYPE_I32));
-  EXPECT_EQ(T_I64, toTType(reflection::TYPE_I64));
-  EXPECT_EQ(T_DOUBLE, toTType(reflection::TYPE_DOUBLE));
-  EXPECT_EQ(T_STRING, toTType(reflection::TYPE_STRING));
-  EXPECT_EQ(T_STRUCT, toTType(reflection::TYPE_STRUCT));
-  EXPECT_EQ(T_MAP, toTType(reflection::TYPE_MAP));
-  EXPECT_EQ(T_SET, toTType(reflection::TYPE_SET));
-  EXPECT_EQ(T_LIST, toTType(reflection::TYPE_LIST));
+  EXPECT_EQ(T_BOOL, toTType(reflection::Type::TYPE_BOOL));
+  EXPECT_EQ(T_I08, toTType(reflection::Type::TYPE_BYTE));
+  EXPECT_EQ(T_I16, toTType(reflection::Type::TYPE_I16));
+  EXPECT_EQ(T_I32, toTType(reflection::Type::TYPE_I32));
+  EXPECT_EQ(T_I64, toTType(reflection::Type::TYPE_I64));
+  EXPECT_EQ(T_DOUBLE, toTType(reflection::Type::TYPE_DOUBLE));
+  EXPECT_EQ(T_STRING, toTType(reflection::Type::TYPE_STRING));
+  EXPECT_EQ(T_STRUCT, toTType(reflection::Type::TYPE_STRUCT));
+  EXPECT_EQ(T_MAP, toTType(reflection::Type::TYPE_MAP));
+  EXPECT_EQ(T_SET, toTType(reflection::Type::TYPE_SET));
+  EXPECT_EQ(T_LIST, toTType(reflection::Type::TYPE_LIST));
 }
 
 TEST(Neutronium, BitUtils) {
@@ -128,19 +128,19 @@ TEST(Neutronium, SchemaStruct1) {
   uint64_t t1 = TestStruct1::_reflection_id;
   auto& dt = schema.map().at(t1);
   EXPECT_EQ(7, dt.fields.size());
-  EXPECT_EQ(reflection::TYPE_BOOL, dt.fields.at(1).type);
+  EXPECT_EQ(reflection::Type::TYPE_BOOL, dt.fields.at(1).type);
   EXPECT_TRUE(dt.fields.at(1).isRequired);
-  EXPECT_EQ(reflection::TYPE_BOOL, dt.fields.at(2).type);
+  EXPECT_EQ(reflection::Type::TYPE_BOOL, dt.fields.at(2).type);
   EXPECT_FALSE(dt.fields.at(2).isRequired);
-  EXPECT_EQ(reflection::TYPE_I32, dt.fields.at(3).type);
+  EXPECT_EQ(reflection::Type::TYPE_I32, dt.fields.at(3).type);
   EXPECT_TRUE(dt.fields.at(3).isRequired);
-  EXPECT_EQ(reflection::TYPE_I32, dt.fields.at(4).type);
+  EXPECT_EQ(reflection::Type::TYPE_I32, dt.fields.at(4).type);
   EXPECT_FALSE(dt.fields.at(4).isRequired);
-  EXPECT_EQ(reflection::TYPE_I64, dt.fields.at(5).type);
+  EXPECT_EQ(reflection::Type::TYPE_I64, dt.fields.at(5).type);
   EXPECT_TRUE(dt.fields.at(5).isRequired);
-  EXPECT_EQ(reflection::TYPE_I64, dt.fields.at(6).type);
+  EXPECT_EQ(reflection::Type::TYPE_I64, dt.fields.at(6).type);
   EXPECT_FALSE(dt.fields.at(6).isRequired);
-  EXPECT_EQ(reflection::TYPE_STRING, dt.fields.at(7).type);
+  EXPECT_EQ(reflection::Type::TYPE_STRING, dt.fields.at(7).type);
   EXPECT_TRUE(dt.fields.at(7).isRequired);
 }
 
@@ -591,7 +591,7 @@ TEST(Neutronium, EnumEncoding1) {
 
   {
     TestEnumEncoding1 a;
-    a.a = WORLD;
+    a.a = Foo::WORLD;
     a.c = true;
     a.d = 23;
 
@@ -601,15 +601,15 @@ TEST(Neutronium, EnumEncoding1) {
       Neutronium n(&schema, nullptr, buf.get());
       EXPECT_THROW({n.serialize(a);}, std::exception);
     }
-    a.b = GOODBYE;
+    a.b = Foo::GOODBYE;
     neutronium.serialize(a);
   }
 
   {
     TestEnumEncoding1 a;
     neutronium.deserialize(a);
-    EXPECT_EQ(WORLD, a.a);
-    EXPECT_EQ(GOODBYE, a.b);
+    EXPECT_EQ(Foo::WORLD, a.a);
+    EXPECT_EQ(Foo::GOODBYE, a.b);
     EXPECT_TRUE(a.c);
     EXPECT_EQ(23, a.d);
   }
@@ -624,7 +624,7 @@ TEST(Neutronium, EnumEncoding2) {
     // Invalid, but ensure that non-strict enums are encoded as integers and
     // don't actually cause exceptions during serialization / deserialization
     a.a = static_cast<Foo>(999);
-    a.b = GOODBYE;
+    a.b = Foo::GOODBYE;
     a.c = true;
     a.d = 23;
 
@@ -635,7 +635,7 @@ TEST(Neutronium, EnumEncoding2) {
     TestEnumEncoding1 a;
     neutronium.deserialize(a);
     EXPECT_EQ(999, static_cast<uint32_t>(a.a));
-    EXPECT_EQ(GOODBYE, a.b);
+    EXPECT_EQ(Foo::GOODBYE, a.b);
     EXPECT_TRUE(a.c);
     EXPECT_EQ(23, a.d);
   }
@@ -648,10 +648,10 @@ TEST(Neutronium, EnumEncoding3) {
   {
     TestEnumEncoding2 a;
     a.a = false;
-    a.b = WORLD;
+    a.b = Foo::WORLD;
     a.__isset.d = true;
-    a.d = GOODBYE;
-    a.e = HELLO;
+    a.d = Foo::GOODBYE;
+    a.e = Foo::HELLO;
     neutronium.serialize(a);
   }
 
@@ -665,10 +665,10 @@ TEST(Neutronium, EnumEncoding3) {
     TestEnumEncoding2 a;
     neutronium.deserialize(a);
     EXPECT_FALSE(a.a);
-    EXPECT_EQ(WORLD, a.b);
+    EXPECT_EQ(Foo::WORLD, a.b);
     EXPECT_TRUE(a.__isset.d);
-    EXPECT_EQ(GOODBYE, a.d);
-    EXPECT_EQ(HELLO, a.e);
+    EXPECT_EQ(Foo::GOODBYE, a.d);
+    EXPECT_EQ(Foo::HELLO, a.e);
   }
 }
 

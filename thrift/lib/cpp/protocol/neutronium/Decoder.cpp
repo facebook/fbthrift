@@ -43,23 +43,23 @@ Decoder::DecoderState::DecoderState(const Schema* schema,
     boolStartBit(0),
     totalStrictEnumBits(0) {
   switch (reflection::getType(type)) {
-  case reflection::TYPE_MAP:
+  case reflection::Type::TYPE_MAP:
     state = IN_MAP_VALUE;
     list.remaining = size;
     list.mapKeyType = TypeInfo(schema, dataType->mapKeyType);
     list.valueType = TypeInfo(schema, dataType->valueType);
     break;
-  case reflection::TYPE_SET:
+  case reflection::Type::TYPE_SET:
     state = IN_SET_VALUE;
     list.remaining = size;
     list.valueType = TypeInfo(schema, dataType->valueType);
     break;
-  case reflection::TYPE_LIST:
+  case reflection::Type::TYPE_LIST:
     state = IN_LIST_VALUE;
     list.remaining = size;
     list.valueType = TypeInfo(schema, dataType->valueType);
     break;
-  case reflection::TYPE_STRUCT:
+  case reflection::Type::TYPE_STRUCT:
     state = IN_STRUCT;
     str.fieldState = FS_START;
     str.tag = 0;
@@ -76,20 +76,20 @@ void Decoder::DecoderState::addType(TypeInfo& tinfo,
 
   auto type = tinfo.type();
   switch (type) {
-  case reflection::TYPE_BOOL:
+  case reflection::Type::TYPE_BOOL:
     bools.count += count;
     if (isStruct) {
       str.boolTags.emplace_back(tag, type);
     }
     break;
-  case reflection::TYPE_BYTE:
+  case reflection::Type::TYPE_BYTE:
     bytes.count += count;
     if (isStruct) {
       str.byteTags.emplace_back(tag, type);
     }
     break;
-  case reflection::TYPE_I64:     // fallthrough
-  case reflection::TYPE_DOUBLE:
+  case reflection::Type::TYPE_I64:     // fallthrough
+  case reflection::Type::TYPE_DOUBLE:
     int64s.count += count;
     if (isStruct) {
       if (field.isFixed) {
@@ -99,7 +99,7 @@ void Decoder::DecoderState::addType(TypeInfo& tinfo,
       }
     }
     break;
-  case reflection::TYPE_I16:
+  case reflection::Type::TYPE_I16:
     ints.count += count;
     if (isStruct) {
       if (field.isFixed) {
@@ -109,7 +109,7 @@ void Decoder::DecoderState::addType(TypeInfo& tinfo,
       }
     }
     break;
-  case reflection::TYPE_ENUM:
+  case reflection::Type::TYPE_ENUM:
     if (field.isStrictEnum) {
       strictEnums.count += count;
       totalStrictEnumBits += count * tinfo.dataType->enumBits();
@@ -118,9 +118,9 @@ void Decoder::DecoderState::addType(TypeInfo& tinfo,
       }
       break;
     }
-    type = reflection::TYPE_I32;  // handle non-strict enums as i32
+    type = reflection::Type::TYPE_I32;  // handle non-strict enums as i32
     // fallthrough (to TYPE_I32)
-  case reflection::TYPE_I32:
+  case reflection::Type::TYPE_I32:
     ints.count += count;
     if (isStruct) {
       if (field.isFixed) {
@@ -130,7 +130,7 @@ void Decoder::DecoderState::addType(TypeInfo& tinfo,
       }
     }
     break;
-  case reflection::TYPE_STRING:
+  case reflection::Type::TYPE_STRING:
     if (field.isInterned) {
       internedStrings.count += count;
       if (isStruct) {

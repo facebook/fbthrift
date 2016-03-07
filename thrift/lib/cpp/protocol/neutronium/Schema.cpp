@@ -86,7 +86,7 @@ void StructField::setFlags(const reflection::DataType& rtype,
 
   // Sanity checks
   auto t = reflection::getType(type);
-  if (t == reflection::TYPE_STRING) {
+  if (t == reflection::Type::TYPE_STRING) {
     if (isInterned) {
       if (isTerminated || hasPadAnnotation || isFixed) {
         throw std::runtime_error("Invalid annotation on interned string");
@@ -100,7 +100,7 @@ void StructField::setFlags(const reflection::DataType& rtype,
         throw std::runtime_error("Invalid annotation on terminated string");
       }
     }
-  } else if (t == reflection::TYPE_ENUM) {
+  } else if (t == reflection::Type::TYPE_ENUM) {
     if (isInterned || isTerminated || hasPadAnnotation || fixedStringSize > 1) {
       throw std::runtime_error("Invalid string annotation on enum");
     }
@@ -128,24 +128,24 @@ void Schema::add(const reflection::Schema& rschema) {
 
 int64_t Schema::fixedSizeForField(const StructField& field) const {
   auto t = reflection::getType(field.type);
-  if (reflection::isBaseType(t) || t == reflection::TYPE_ENUM) {
+  if (reflection::isBaseType(t) || t == reflection::Type::TYPE_ENUM) {
     switch (t) {
-    case reflection::TYPE_BOOL:
+    case reflection::Type::TYPE_BOOL:
       return 0;  // handled separately
-    case reflection::TYPE_BYTE:
+    case reflection::Type::TYPE_BYTE:
       return 1;
-    case reflection::TYPE_I16:
+    case reflection::Type::TYPE_I16:
       return field.isFixed ? 2 : -1;
-    case reflection::TYPE_I32:
+    case reflection::Type::TYPE_I32:
       return field.isFixed ? 4 : -1;
-    case reflection::TYPE_ENUM:
+    case reflection::Type::TYPE_ENUM:
       return (field.isStrictEnum ? 0 :  // handled separately
               field.isFixed ? 4 : -1);
-    case reflection::TYPE_I64:
+    case reflection::Type::TYPE_I64:
       return field.isFixed ? 8 : -1;
-    case reflection::TYPE_DOUBLE:
+    case reflection::Type::TYPE_DOUBLE:
       return field.isFixed ? 8 : -1;
-    case reflection::TYPE_STRING:
+    case reflection::Type::TYPE_STRING:
       return field.isFixed ? static_cast<int64_t>(field.fixedStringSize) : -1;
     default:
       break;
@@ -208,9 +208,9 @@ void Schema::add(const reflection::Schema& rschema, int64_t type,
         dt.optionalFields.insert(p.first);
         dt.fixedSize = -1;  // optional fields imply variable size
       } else {
-        if (field.type == reflection::TYPE_BOOL) {
+        if (field.type == reflection::Type::TYPE_BOOL) {
           ++requiredBitCount;
-        } else if (reflection::getType(field.type) == reflection::TYPE_ENUM &&
+        } else if (reflection::getType(field.type) == reflection::Type::TYPE_ENUM &&
                    field.isStrictEnum) {
           requiredBitCount += map_.at(field.type).enumValues.size();
         }
