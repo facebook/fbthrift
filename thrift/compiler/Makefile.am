@@ -70,6 +70,7 @@ thrift1_SOURCES = main.cc \
 
 # Specific client generator source
 thrift1_SOURCES += generate/t_cpp_generator.cc \
+                  generate/t_d_generator.cc \
                   generate/t_java_generator.cc \
                   generate/t_csharp_generator.cc \
                   generate/t_py_generator.cc \
