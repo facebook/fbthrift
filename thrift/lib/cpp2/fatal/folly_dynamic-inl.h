@@ -110,7 +110,7 @@ struct dynamic_converter_impl<thrift_category::list> {
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     using traits = thrift_list_traits<T>;
 
-    out = std::initializer_list<folly::dynamic>{};
+    out = folly::dynamic::array;
 
     for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
       out.push_back(to_dynamic(*i, format));
@@ -183,7 +183,7 @@ struct dynamic_converter_impl<thrift_category::set> {
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     using traits = thrift_set_traits<T>;
 
-    out = std::initializer_list<folly::dynamic>{};
+    out = folly::dynamic::array;
 
     for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
       out.push_back(to_dynamic(*i, format));

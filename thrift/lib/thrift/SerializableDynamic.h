@@ -110,7 +110,7 @@ class SerializableDynamic {
         case 5:
         {
           if (ftype == protocol::T_LIST) {
-            value_ = {};
+            value_ = folly::dynamic::array;
             uint32_t size;
             bool sizeUnknown;
             protocol::TType etype;
@@ -392,7 +392,7 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::read(
       case 5:
       {
         if (ftype == protocol::T_LIST) {
-          obj->value_ = {};
+          obj->value_ = folly::dynamic::array;
           uint32_t size;
           protocol::TType etype;
           xfer += iprot->readListBegin(etype, size);

@@ -66,11 +66,13 @@ static dynamic kDynamics[] = {
   "Hello World",
 
   // ARRAY
-  { },
-  { nullptr },
-  { 0 },
-  { nullptr, 0, false, 0.0, "", { }, dynamic::object },
-  { 1, true, 3.14, "Goodnight Moon", { 1 }, dynamic::object("a", "A")},
+  dynamic::array,
+  dynamic::array(nullptr),
+  dynamic::array(0),
+  dynamic::array(nullptr, 0, false, 0.0, "",
+                 dynamic::array(), dynamic::object()),
+  dynamic::array(1, true, 3.14, "Goodnight Moon",
+                 dynamic::array(1), dynamic::object("a", "A")),
 
   // OBJECT
   dynamic::object,
@@ -84,7 +86,7 @@ static dynamic kDynamics[] = {
     ("c", 0)
     ("d", 0.0)
     ("e", "")
-    ("f", { })
+    ("f", dynamic::array)
     ("g", dynamic::object),
 
   dynamic::object
@@ -92,7 +94,7 @@ static dynamic kDynamics[] = {
     ("c", 1)
     ("d", 3.14)
     ("e", "Goodnight Moon")
-    ("f", { 1 })
+    ("f", dynamic::array(1))
     ("g", dynamic::object("a", "A")),
 };
 
