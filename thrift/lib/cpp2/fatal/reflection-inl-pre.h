@@ -26,6 +26,8 @@ namespace detail { namespace reflection_impl {
 struct reflection_metadata_tag {};
 struct struct_traits_metadata_tag {};
 
+template <typename, typename, typename> struct is_set;
+
 }} // detail::reflection_impl
 
 #define THRIFT_REGISTER_REFLECTION_METADATA(Tag, ...) \
@@ -46,6 +48,8 @@ struct struct_traits_metadata_tag {};
       __VA_ARGS__ \
     > \
   )
+
+template <typename = void> struct reflected_annotations;
 
 }} // apache::thrift
 

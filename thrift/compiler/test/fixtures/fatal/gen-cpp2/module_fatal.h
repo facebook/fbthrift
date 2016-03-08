@@ -210,6 +210,8 @@ public:
   using structs = test_cpp2_cpp_reflection_module__unique_structs_list;
   using constants = test_cpp2_cpp_reflection_module__unique_constants_list;
   using services = test_cpp2_cpp_reflection_module__unique_services_list;
+
+  using strings = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list;
 };
 
 THRIFT_REGISTER_REFLECTION_METADATA(

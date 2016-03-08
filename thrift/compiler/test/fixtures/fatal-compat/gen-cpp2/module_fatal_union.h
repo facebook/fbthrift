@@ -77,7 +77,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union1_Type_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union1_Type_enum_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union1_Type_enum_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
@@ -340,7 +340,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union2_Type_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union2_Type_enum_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union2_Type_enum_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
@@ -603,7 +603,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union3_Type_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union3_Type_enum_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union3_Type_enum_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
@@ -872,7 +872,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::unionA_Type_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::unionA_Type_enum_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::unionA_Type_enum_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
@@ -1130,7 +1130,7 @@ FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(7384876196182105420ull)
   >
 );
@@ -1138,7 +1138,7 @@ FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union2_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union2_variant_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union2_variant_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(16722894251049030828ull)
   >
 );
@@ -1146,7 +1146,7 @@ FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union3_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union3_variant_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::union3_variant_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(12878995471701578764ull)
   >
 );
@@ -1154,7 +1154,7 @@ FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::unionA_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::unionA_variant_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::unionA_variant_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(7943717058393504940ull)
   >
 );

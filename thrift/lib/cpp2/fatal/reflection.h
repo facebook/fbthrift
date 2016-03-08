@@ -62,6 +62,32 @@ namespace apache { namespace thrift {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 
+//////////////////////////////////////////////
+// SECTION: IMPORTANT NOTES AND CONVENTIONS //
+//////////////////////////////////////////////
+
+/**
+ * NOTE ON COMPILE-TIME STRINGS: many strings found in the Thrift file are
+ * converted to compile-time strings in the form of a `fatal::constant_sequence`
+ * of `char`.
+ *
+ * They are often represented as general C++ identifiers. Not all strings are
+ * directly representable as C++ identifiers though, given that not all
+ * characters are accepted as identifier names, only [_a-zA-Z0-9]. When that's
+ * the case, the invalid characters are replaced by an underscode (_).
+ *
+ * Names starting with numbers are prefixed with 's_'. For example, the string
+ * "42 is it" could be represented by the identifier 's_42_is_it'.
+ *
+ * Collisions are solved by appending a positive integer starting at 1 and
+ * growing by 1 per collision, in the order the identifiers appear. For
+ * instance, say there are three strings "a_", "a " and "a.". "a_" could be
+ * represented by the identifier 'a_' while "a " could be represented by 'a_1'
+ * and "a." could be 'a_2'.
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+
 ////////////////////////////////////////////
 // SECTION: TYPE ALIASES AND ENUMERATIONS //
 ////////////////////////////////////////////
@@ -536,6 +562,111 @@ using try_reflect_module_tag = typename detail::reflect_module_tag_impl<
   T
 >::template try_get<Default>::type;
 
+/**
+ * Holds reflection metadata for annotations.
+ *
+ * For the examples below, consider code generated for this Thrift file:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  struct MyStruct {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  } (
+ *    some.annotation = "some value",
+ *    another.annotation = "another value",
+ *  )
+ *
+ * NOTE: this class template is only intended to be instantiated by Thrift.
+ * Users should ignore the template parameters taken by it and focus simply on
+ * the members provided.
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename Metadata>
+struct reflected_annotations {
+  /**
+   * An implementation defined type that provides the names for each annotation
+   * key as a member type alias named after the key.
+   *
+   * These type aliases are used as the key for the `map` member.
+   *
+   * Look for 'NOTE ON COMPILE-TIME STRINGS' for how the strings are converted
+   * to C++ identifiers - caveat: instead of using the order they appear as the
+   * precedence for collision resolution, it uses lexicographical order of the
+   * keys.
+   *
+   * Example:
+   *
+   *  using annotations = reflect_struct<MyStruct>::annotations;
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   's', 'o', 'm', 'e', '.',
+   *  //   'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'
+   *  // >`
+   *  using result1 = annotations::keys::some_annotation;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using keys = typename Metadata::keys;
+
+  /**
+   * An implementation defined type that provides the names for each annotation
+   * value as a member type alias named after the key.
+   *
+   * These type aliases are used as the value for the `map` member.
+   *
+   * Look for 'NOTE ON COMPILE-TIME STRINGS' for how the strings are converted
+   * to C++ identifiers - caveat: instead of using the order they appear as the
+   * precedence for collision resolution, it uses lexicographical order of the
+   * keys.
+   *
+   * Example:
+   *
+   *  using annotations = reflect_struct<MyStruct>::annotations;
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   's', 'o', 'm', 'e', ' ', 'v', 'a', 'l', 'u', 'e'
+   *  // >`
+   *  using result1 = annotations::values::some_annotation;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using values = typename Metadata::values;
+
+  /**
+   * A type map representing the annotations declared in the Thrift file,
+   * sorted by keys.
+   *
+   * Both the keys and the values of this map are compile-time strings
+   * represented by `fatal::constant_sequence` of type `char`.
+   *
+   * Example:
+   *
+   *  // yields an instantiation of the `reflected_annotations` template
+   *  using annotations = reflect_struct<MyStruct>::annotations;
+   *
+   *  FATAL_STR(key, "another.annotation");
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
+   *  // >`
+   *  using result1 = annotations::map::get<key>;
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   's', 'o', 'm', 'e', ' ', 'v', 'a', 'l', 'u', 'e'
+   *  // >`
+   *  using result2 = annotations::map::get<annotations::keys::some_annotation>;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using map = typename Metadata::map;
+};
+
 ////////////////////////////
 // SECTION: STRUCTURE API //
 ////////////////////////////
@@ -557,7 +688,10 @@ using try_reflect_module_tag = typename detail::reflect_module_tag_impl<
  *  struct MyStruct {
  *    1: i32 a
  *    2: string b
- *    3: double c
+ *    3: double c (
+ *      member.note = "member text",
+ *      another.member.note = "another member text",
+ *    )
  *  } (
  *    some.annotation = "some value",
  *    another.annotation = "another value",
@@ -570,6 +704,7 @@ template <
   typename Name,
   typename Names,
   typename Info,
+  typename MembersAnnotations,
   typename Metadata
 >
 struct reflected_struct {
@@ -741,25 +876,39 @@ struct reflected_struct {
   >;
 
   /**
-   * A type map representing the annotations declared for this type in the
-   * Thrift file, sorted by keys.
-   *
-   * Both the keys and the values of this map are compile-time strings
-   * represented by `fatal::constant_sequence` of type `char`.
+   * An instantiation of `reflected_annotations` representing the annotations
+   * declared for this type in the Thrift file.
    *
    * Example:
    *
    *  using info = reflect_struct<MyStruct>;
-   *  FATAL_STR(key, "another.annotation");
    *
    *  // yields `fatal::constant_sequence<char,
    *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
    *  // >`
-   *  using result = info::annotations::get<key>;
+   *  using result = info::annotations::values::another_annotation;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using annotations = typename Metadata::annotations;
+
+  /**
+   * An implementation defined type that provides the annotations for each
+   * member of the struct. Each member's annotations are represented by an
+   * instance of `reflected_annotations` named after the member itself.
+   *
+   * Example:
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *
+   *  // yields `fatal::constant_sequence<char,
+   *  //   'm', 'e', 'm', 'b', 'e', 'r', ' ', 't', 'e', 'x', 't'
+   *  // >`
+   *  using result1 = info::members_annotations::c::values::member_note
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using members_annotations = MembersAnnotations;
 
   /**
    * A unique identifier generated by thrift for this structure.
@@ -1010,26 +1159,72 @@ struct reflected_struct_data_member {
   using pod = Pod<T>;
 
   /**
-   * A type map representing the annotations declared for this member in the
-   * Thrift file, sorted by keys.
-   *
-   * Both the keys and the values of this map are compile-time strings
-   * represented by `fatal::constant_sequence` of type `char`.
+   * An instantiation of `reflected_annotations` representing the annotations
+   * declared for this member in the Thrift file.
    *
    * Example:
    *
+   *  // MyModule.thrift
+   *
+   *  namespace cpp2 My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: i32 fieldA
+   *    2: string fieldB
+   *    3: double fieldC (field.note = "some notes")
+   *  }
+   *
+   *  // MyModule.cpp
+   *
    *  using info = reflect_struct<MyStruct>;
    *  using member = info::types::members<info::names::fieldC>;
-   *  FATAL_STR(key, "another.annotation");
    *
    *  // yields `fatal::constant_sequence<char,
-   *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
+   *  //   's', 'o', 'm', 'e', ' ', 'n', 'o', 't', 'e', 's'
    *  // >`
-   *  using result = info::annotations::get<key>;
+   *  using result = info::annotations::values::field_note;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using annotations = Annotations;
+
+  /**
+   * Checks whether the member represented by this metadata is set in the given
+   * object.
+   *
+   * Example:
+   *
+   *  // MyModule.thrift
+   *
+   *  namespace cpp2 My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: optional i32 field
+   *  }
+   *
+   *  // MyModule.cpp
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *  using member = info::types::members<info::names::field>;
+   *
+   *  MyStruct pod;
+   *
+   *  // yields `false`
+   *  bool result1 = member::is_set(pod);
+   *
+   *  pod.set_field(42);
+   *
+   *  // yields `true`
+   *  bool result2 = member::is_set(pod);
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  template <typename Owner>
+  static bool is_set(Owner const &owner) {
+    return detail::reflection_impl::is_set<Owner, getter, optional>::check(
+      owner
+    );
+  }
 };
 
 /**
@@ -1231,21 +1426,17 @@ struct reflected_enum {
   using module = typename traits::metadata::module;
 
   /**
-   * A type map representing the annotations declared for this type in the
-   * Thrift file, sorted by keys.
-   *
-   * Both the keys and the values of this map are compile-time strings
-   * represented by `fatal::constant_sequence` of type `char`.
+   * An instantiation of `reflected_annotations` representing the annotations
+   * declared for this type in the Thrift file.
    *
    * Example:
    *
    *  using info = reflect_enum<MyEnum>;
-   *  FATAL_STR(key, "another.annotation");
    *
    *  // yields `fatal::constant_sequence<char,
    *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
    *  // >`
-   *  using result = info::annotations::get<key>;
+   *  using result = info::annotations::values::another_annotation;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
@@ -1408,21 +1599,17 @@ struct reflected_union {
   using module = typename traits::metadata::module;
 
   /**
-   * A type map representing the annotations declared for this type in the
-   * Thrift file, sorted by keys.
-   *
-   * Both the keys and the values of this map are compile-time strings
-   * represented by `fatal::constant_sequence` of type `char`.
+   * An instantiation of `reflected_annotations` representing the annotations
+   * declared for this type in the Thrift file.
    *
    * Example:
    *
    *  using info = reflect_union<MyUnion>;
-   *  FATAL_STR(key, "another.annotation");
    *
    *  // yields `fatal::constant_sequence<char,
    *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
    *  // >`
-   *  using result = info::annotations::get<key>;
+   *  using result = info::annotations::values::another_annotation;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */

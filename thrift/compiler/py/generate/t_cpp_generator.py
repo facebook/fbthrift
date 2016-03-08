@@ -4209,6 +4209,8 @@ class CppGenerator(t_generator.Generator):
         sns()
         for o in order:
             sns('  using {0}s = {1};'.format(o, nname[o]))
+        sns()
+        sns('  using strings = {0};'.format(self.fatal_str_map_id))
         sns('};')
         sns()
 
@@ -4352,7 +4354,8 @@ class CppGenerator(t_generator.Generator):
         scope('{0}::apache::thrift::detail::type_common_metadata_impl<'.format(
             indent))
         scope('{0}  {1},'.format(indent, self.fatal_tag))
-        scope('{0}  {1},'.format(indent, annotations_class))
+        scope('{0}  ::apache::thrift::reflected_annotations<{1}>,'
+            .format(indent, annotations_class))
         scope('{0}  static_cast<::apache::thrift::legacy_type_id_t>({1}ull)'
             .format(indent, legacyid))
         scope('{0}>'.format(indent))
@@ -4663,8 +4666,9 @@ class CppGenerator(t_generator.Generator):
                                     members_class, m.name), cmann)
                         cmann('public:')
                         for m in i.members:
-                            cmann('using {0} = {1}_{0};'.format(
-                                m.name, members_class))
+                            cmann(('using {0} = ::apache::thrift::'
+                                'reflected_annotations<{1}_{0}>;').format(
+                                    m.name, members_class))
                     self._render_fatal_annotations(i.annotations,
                         'annotations', cann)
                     cann('public:')
@@ -4703,10 +4707,12 @@ class CppGenerator(t_generator.Generator):
                     .format(self._render_fatal_thrift_category(m.type)))
                 sns('        {0}::{1}::{2}_{3}_struct_member_pod_{4},'.format(
                     self.fatal_detail_ns, mpdclsprefix, safe_ns, name, m.name))
-                sns('        {0}::members::{1}'.format(annclsnm, m.name))
+                sns('        ::apache::thrift::reflected_annotations<'
+                    '{0}::members::{1}>'.format(annclsnm, m.name))
                 sns('      >')
                 sns('    >{0}'.format(',' if midx + 1 < len(i.members) else ''))
             sns('  >,')
+            sns('  {0}::members,'.format(annclsnm))
             self._render_fatal_type_common_metadata(
                 annclsnm, i.type_id, sns, '  ')
             sns(');')

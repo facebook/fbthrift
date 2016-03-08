@@ -363,7 +363,7 @@ FATAL_STR(structBd_annotation2v, "some value");
 TEST(fatal_struct, member_annotations) {
   using info = apache::thrift::reflect_struct<structB>;
 
-  EXPECT_SAME<fatal::build_type_map<>, info::annotations::members::c::map>();
+  EXPECT_SAME<fatal::build_type_map<>, info::members_annotations::c::map>();
   EXPECT_SAME<
     fatal::build_type_map<>,
     info::members::get<info::names::c>::annotations::map
@@ -375,24 +375,24 @@ TEST(fatal_struct, member_annotations) {
     structBd_annotation2k, structBd_annotation2v
   >;
 
-  EXPECT_SAME<expected_d_map, info::annotations::members::d::map>();
+  EXPECT_SAME<expected_d_map, info::members_annotations::d::map>();
   EXPECT_SAME<expected_d_map, annotations_d::map>();
 
   EXPECT_SAME<
     structBd_annotation1k,
-    info::annotations::members::d::keys::another_annotation
+    info::members_annotations::d::keys::another_annotation
   >();
   EXPECT_SAME<
     structBd_annotation1v,
-    info::annotations::members::d::values::another_annotation
+    info::members_annotations::d::values::another_annotation
   >();
   EXPECT_SAME<
     structBd_annotation2k,
-    info::annotations::members::d::keys::some_annotation
+    info::members_annotations::d::keys::some_annotation
   >();
   EXPECT_SAME<
     structBd_annotation2v,
-    info::annotations::members::d::values::some_annotation
+    info::members_annotations::d::values::some_annotation
   >();
 
   EXPECT_SAME<

@@ -70,7 +70,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum1_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum1_enum_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum1_enum_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(4992076682252594856ull)
   >
 );
@@ -130,7 +130,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum2_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum2_enum_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum2_enum_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(6888467747342894920ull)
   >
 );
@@ -228,7 +228,7 @@ FATAL_REGISTER_ENUM_TRAITS(
   ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum3_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     module_tags::module,
-    ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum3_enum_traits::annotations,
+    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum3_enum_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(4626344424889780008ull)
   >
 );

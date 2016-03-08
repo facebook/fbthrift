@@ -20,7 +20,24 @@
 # error "This file must be included from reflection.h"
 #endif
 
-namespace apache { namespace thrift { namespace detail {
+namespace apache { namespace thrift {
+namespace detail { namespace reflection_impl {
+
+template <typename Owner, typename Getter, typename>
+struct is_set {
+  static bool check(Owner const &owner) { return Getter::ref(owner.__isset); }
+};
+
+template <typename Owner, typename Getter>
+struct is_set<
+  Owner,
+  Getter,
+  std::integral_constant<optionality, optionality::required>
+> {
+  constexpr static bool check(Owner const &) { return true; }
+};
+
+} // reflection_impl
 
 template <typename Module, typename Annotations, legacy_type_id_t LegacyTypeId>
 struct type_common_metadata_impl {
@@ -126,10 +143,15 @@ struct reflect_module_tag_selector<thrift_category::structure, T> {
   using type = typename reflect_struct<T>::module;
 };
 
-////////////////////////////
-// IMPLEMENTATION DETAILS //
-////////////////////////////
+} // detail
 
-}}} // apache::thrift::detail
+template <>
+struct reflected_annotations<void> {
+  struct keys {};
+  struct values {};
+  using map = fatal::type_map<>;
+};
+
+}} // apache::thrift
 
 #endif // THRIFT_FATAL_REFLECTION_INL_POST_H_
