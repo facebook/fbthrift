@@ -27,7 +27,7 @@
 #include <folly/SocketAddress.h>
 #include <folly/io/async/SSLContext.h>
 
-using folly::OpenSSLUtils;
+using folly::ssl::OpenSSLUtils;
 using folly::SSLContext;
 using folly::SocketAddress;
 
