@@ -76,10 +76,10 @@ AC_LANG([C++])
 
 CXXFLAGS=""
 if test "$ac_cv_cxx_compile_cxx0x_cxx" = yes; then
-   CXXFLAGS="-std=c++0x"
+   CXXFLAGS="-std=c++1y"
 fi
 if test "$ac_cv_cxx_compile_cxx0x_gxx" = yes; then
-   CXXFLAGS="-std=gnu++0x"
+   CXXFLAGS="-std=gnu++1y"
 fi
 
 
