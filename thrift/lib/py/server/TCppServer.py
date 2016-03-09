@@ -116,6 +116,7 @@ class TSSLConfig(object):
         self.verify = SSLVerifyPeerEnum.VERIFY
         self.ssl_policy = SSLPolicy.PERMITTED
         self.ticket_file_path = ''
+        self.alpn_protocols = []
 
     @property
     def ssl_policy(self):
