@@ -21,7 +21,6 @@
 #include <fatal/type/enum.h>
 #include <fatal/type/variant_traits.h>
 
-#include <initializer_list>
 #include <stdexcept>
 
 namespace apache { namespace thrift { namespace detail {
