@@ -200,11 +200,14 @@ uint32_t HTTPClientChannel::sendOnewayRequest(
     return -1;
   }
 
+  if (timeout_ > 0) {
+    txn->setIdleTimeout(std::chrono::milliseconds(timeout_));
+  }
+
   setRequestHeaderOptions(header.get());
   addRpcOptionHeaders(header.get(), rpcOptions);
 
   auto msg = buildHTTPMessage(header.get());
-
   txn->sendHeaders(msg);
   txn->sendBody(std::move(buf));
   txn->sendEOM();
@@ -268,6 +271,9 @@ uint32_t HTTPClientChannel::sendRequest(
     return -1;
   }
 
+  if (timeout_ > 0) {
+    txn->setIdleTimeout(std::chrono::milliseconds(timeout_));
+  }
   auto streamId = txn->getID();
 
   setRequestHeaderOptions(header.get());
