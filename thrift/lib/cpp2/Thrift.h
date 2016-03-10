@@ -20,6 +20,11 @@
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 
+#include <initializer_list>
+#include <utility>
+
+#include <cstdint>
+
 namespace apache { namespace thrift {
 
 enum FragileConstructor {
@@ -78,6 +83,7 @@ class Cpp2Ops {
 };
 
 namespace detail {
+
 // Adapted from Fatal (https://github.com/facebook/fatal/)
 // Inlined here to keep the amount of mandatory dependencies at bay
 // For more context, see http://ericniebler.com/2013/08/07/
@@ -94,11 +100,56 @@ struct is_safe_overload<Class, T> {
     >::value
   >;
 };
+
 } // detail
+
 template <typename Class, typename... Args>
 using safe_overload_t = typename std::enable_if<
   detail::is_safe_overload<Class, Args...>::type::value
 >::type;
+
+namespace detail {
+
+template <std::intmax_t Id, typename T>
+struct argument_wrapper {
+  static_assert(
+    std::is_rvalue_reference<T&&>::value,
+    "this wrapper handles only rvalues and initializer_list"
+  );
+
+  template <typename U>
+  explicit argument_wrapper(U&& value):
+    argument_(std::move(value))
+  {
+    static_assert(
+      std::is_rvalue_reference<U&&>::value,
+      "this wrapper handles only rvalues and initializer_list"
+    );
+  }
+
+  T&& move() { return std::move(argument_); }
+
+private:
+  T argument_;
+};
+
+} // detail
+
+template <std::intmax_t Id, typename T>
+detail::argument_wrapper<Id, std::initializer_list<T>> wrap_argument(
+  std::initializer_list<T> value
+) {
+  return detail::argument_wrapper<Id, std::initializer_list<T>>(
+    std::move(value)
+  );
+}
+
+template <std::intmax_t Id, typename T>
+detail::argument_wrapper<Id, T&&> wrap_argument(T&& value) {
+  static_assert(std::is_rvalue_reference<T&&>::value, "internal thrift error");
+  return detail::argument_wrapper<Id, T&&>(std::forward<T>(value));
+}
+
 }} // apache::thrift
 
 #endif // #ifndef THRIFT_CPP2_H_
