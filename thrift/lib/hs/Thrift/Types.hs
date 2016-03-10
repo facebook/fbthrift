@@ -22,8 +22,9 @@ module Thrift.Types where
 
 import Data.ByteString.Lazy (ByteString)
 import Data.Foldable (foldl')
-import Data.Hashable ( Hashable, hashWithSalt )
+import Data.Hashable (Hashable, hash, hashWithSalt)
 import Data.Int
+import Data.List (sort)
 import Test.QuickCheck.Arbitrary
 import Test.QuickCheck.Gen (elements)
 import Data.Text.Lazy (Text)
@@ -32,10 +33,12 @@ import qualified Data.HashSet as Set
 import qualified Data.Vector as Vector
 
 instance (Hashable k, Hashable v) => Hashable (Map.HashMap k v) where
-  hashWithSalt salt = foldl' hashWithSalt salt . Map.toList
+  hashWithSalt salt m = foldl' hashWithSalt salt $
+    sort [hash k `hashWithSalt` v | (k, v) <- Map.toList m]
 
 instance (Hashable a) => Hashable (Set.HashSet a) where
-  hashWithSalt = foldl' hashWithSalt
+  hashWithSalt salt s = foldl' hashWithSalt salt $
+    sort [hash i | i <- Set.toList s]
 
 instance (Hashable a) => Hashable (Vector.Vector a) where
   hashWithSalt = Vector.foldl' hashWithSalt
