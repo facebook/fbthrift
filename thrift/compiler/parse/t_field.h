@@ -49,7 +49,6 @@ class t_field : public t_doc {
     type_(type),
     name_(name),
     key_(key),
-    req_(T_OPT_IN_REQ_OUT),
     value_(nullptr),
     xsd_optional_(false),
     xsd_nillable_(false),
@@ -139,7 +138,7 @@ class t_field : public t_doc {
   t_type* type_;
   std::string name_;
   int32_t key_;
-  e_req req_;
+  e_req req_ = T_OPT_IN_REQ_OUT;
   t_const_value* value_;
 
   bool xsd_optional_;
