@@ -205,7 +205,11 @@ void Krb5CCacheStore::importCache(
     if (server.isTgt()) {
       tgts.push_back(std::move(cred));
       count++;
-    } else {
+    } else if (!server.getRealm().empty()) {
+      // Sometimes, somehow, principals for host/{hg.vvv,svn.vip} have no
+      // realm!!  Why?  No idea, but they exist and they blow up the entire
+      // cache reading thread, so defend against them for now by ignoring that
+      // entry (example: #7808411).
       services.push_back(std::move(cred));
     }
   }
