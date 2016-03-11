@@ -113,6 +113,20 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
       AsyncSocket::getReadCallback());
   }
 
+  void setIsAccepted(bool accepted) {
+    accepted_ = accepted;
+  }
+
+  // Returns true if this socket was created as a result of an accept() call,
+  // rather than a connect() call. Used to check if our end is the client or
+  // the server. This can't be inferred automatically from the socket fd,
+  // so we set it manually with setIsAccepted() after accepting.
+  bool isAccepted() const {
+    return accepted_;
+  }
+
+ private:
+  bool accepted_ = false;
 };
 
 typedef folly::WriteFlags WriteFlags;
