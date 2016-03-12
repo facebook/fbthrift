@@ -75,7 +75,6 @@ void Cpp2Worker::onNewConnection(
   VLOG(4) << "Cpp2Worker: Creating connection for socket " <<
     asyncSocket->getFd();
 
-  asyncSocket->setIsAccepted(true);
   asyncSocket->setShutdownSocketSet(server_->shutdownSocketSet_.get());
   std::shared_ptr<Cpp2Connection> result(
     new Cpp2Connection(asyncSocket, addr, this));

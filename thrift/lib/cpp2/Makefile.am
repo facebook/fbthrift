@@ -52,7 +52,6 @@ thrift2include_async_HEADERS = \
 	async/ProtectionHandler.h \
 	async/FramingHandler.h \
 	async/SaslNegotiationHandler.h \
-	async/PcapLoggingHandler.h \
 	async/HeaderChannel.h \
 	async/HeaderChannelTrait.h \
 	async/DuplexChannel.h \
@@ -180,7 +179,6 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   async/ProtectionHandler.cpp \
 			   async/FramingHandler.cpp \
 			   async/SaslNegotiationHandler.cpp \
-			   async/PcapLoggingHandler.cpp \
 			   async/AsyncProcessor.cpp \
 			   async/DuplexChannel.cpp \
 			   security/KerberosSASLHandshakeClient.cpp \

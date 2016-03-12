@@ -33,7 +33,6 @@
 #include <thrift/lib/cpp2/async/FramingHandler.h>
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <thrift/lib/cpp2/async/SaslNegotiationHandler.h>
-#include <thrift/lib/cpp2/async/PcapLoggingHandler.h>
 #include <memory>
 
 #include <deque>
@@ -162,7 +161,6 @@ private:
     TAsyncTransportHandler,
     wangle::OutputBufferingHandler,
     ProtectionHandler,
-    PcapLoggingHandler,
     FramingHandler,
     SaslNegotiationHandler,
     Cpp2Channel>
