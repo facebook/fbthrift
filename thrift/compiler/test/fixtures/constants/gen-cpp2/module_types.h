@@ -147,10 +147,11 @@ class Internship : private boost::totally_ordered<Internship> {
     return std::move(title);
   }
 
-  template <typename T>
-  void set_title(T&& title_) {
-    title = std::forward<T>(title_);
+  template <typename T_Internship_title_struct_setter>
+  std::string& set_title(T_Internship_title_struct_setter&& title_) {
+    title = std::forward<T_Internship_title_struct_setter>(title_);
     __isset.title = true;
+    return title;
   }
 
   const  ::cpp2::Company* get_employer() const& {

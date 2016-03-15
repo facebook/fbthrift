@@ -118,10 +118,11 @@ class MyStruct : private boost::totally_ordered<MyStruct> {
     return std::move(MyStringField);
   }
 
-  template <typename T>
-  void set_MyStringField(T&& MyStringField_) {
-    MyStringField = std::forward<T>(MyStringField_);
+  template <typename T_MyStruct_MyStringField_struct_setter>
+  std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
+    MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
+    return MyStringField;
   }
 
   template <class Protocol_>

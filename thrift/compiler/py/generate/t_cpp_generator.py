@@ -2749,16 +2749,20 @@ class CppGenerator(t_generator.Generator):
                 else:
                     # rely on compiler to generate appropriate pass-by-ref
                     # setters
-                    with struct.defn('template <typename T>\n'
-                                    'void {{name}}(T&& {0})'
-                                    .format(param_name),
+                    setter_arg = 'T_{0}_{1}_struct_setter'.format(
+                        obj.name, member.name)
+                    with struct.defn(('template <typename {0}>\n'
+                                    '{1}& {{name}}({0}&& {2})')
+                                    .format(setter_arg, t, param_name),
                                     name=setter_name,
                                     output=self._out_tcc if outofline else None,
                                     in_header=not outofline):
-                        out('{0} = std::forward<T>({1});'
-                            .format(member.name, param_name))
+                        out('{0} = std::forward<{1}>({2});'
+                            .format(member.name, setter_arg, param_name))
                         if self._has_isset(member):
                             out('__isset.{0} = true;'.format(member.name))
+                        out('return {0};'.format(member.name))
+
 
         # generate union accessors/settors
         if obj.is_union:
@@ -4641,11 +4645,12 @@ class CppGenerator(t_generator.Generator):
                 for i in members:
                     dtm('FATAL_DATA_MEMBER_GETTER({0}, {0});'.format(i))
             with detail.cls('struct {0}'.format(mpdclsprefix)).scope as mpd:
+                pod_arg = 'T_{0}_{1}_struct_member_pod'.format(safe_ns, name)
                 for i in members:
-                    mpd('template <typename T>')
+                    mpd('template <typename {0}>'.format(pod_arg))
                     with detail.cls('struct {0}_{1}_struct_member_pod_{2}'
                       .format(safe_ns, name, i)).scope as pod:
-                        pod('T {0};'.format(i))
+                        pod('{0} {1};'.format(pod_arg, i))
             for i in program.structs:
                 if i.is_union:
                     continue

@@ -125,9 +125,10 @@ class Fiery : private boost::totally_ordered<Fiery>, public apache::thrift::TExc
     return std::move(message);
   }
 
-  template <typename T>
-  void set_message(T&& message_) {
-    message = std::forward<T>(message_);
+  template <typename T_Fiery_message_struct_setter>
+  std::string& set_message(T_Fiery_message_struct_setter&& message_) {
+    message = std::forward<T_Fiery_message_struct_setter>(message_);
+    return message;
   }
 
   template <class Protocol_>

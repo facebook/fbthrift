@@ -522,8 +522,8 @@ class StructWithUnion : private boost::totally_ordered<StructWithUnion> {
   }
   const  ::cpp2::MyField& get_f() const&;
    ::cpp2::MyField get_f() &&;
-  template <typename T>
-  void set_f(T&& f_);
+  template <typename T_StructWithUnion_f_struct_setter>
+   ::cpp2::MyField& set_f(T_StructWithUnion_f_struct_setter&& f_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -605,8 +605,8 @@ class RecursiveStruct : private boost::totally_ordered<RecursiveStruct> {
   const std::vector< ::cpp2::RecursiveStruct>* get_mes() const&;
   std::vector< ::cpp2::RecursiveStruct>* get_mes() &;
   std::vector< ::cpp2::RecursiveStruct>* get_mes() && = delete;
-  template <typename T>
-  void set_mes(T&& mes_);
+  template <typename T_RecursiveStruct_mes_struct_setter>
+  std::vector< ::cpp2::RecursiveStruct>& set_mes(T_RecursiveStruct_mes_struct_setter&& mes_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

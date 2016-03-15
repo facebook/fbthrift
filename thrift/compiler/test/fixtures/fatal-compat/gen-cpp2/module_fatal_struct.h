@@ -72,328 +72,328 @@ struct test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list {
 };
 
 struct test_cpp2_cpp_reflection_module__struct_unique_member_pod_list {
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_a {
-    T a;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod a;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_b {
-    T b;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod b;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_c {
-    T c;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod c;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_d {
-    T d;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod d;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_e {
-    T e;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod e;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_f {
-    T f;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod f;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_g {
-    T g;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod g;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_h {
-    T h;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod h;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_i {
-    T i;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod i;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_j {
-    T j;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod j;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_j1 {
-    T j1;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod j1;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_j2 {
-    T j2;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod j2;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_j3 {
-    T j3;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod j3;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_k {
-    T k;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod k;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_k1 {
-    T k1;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod k1;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_k2 {
-    T k2;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod k2;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_k3 {
-    T k3;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod k3;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_l {
-    T l;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod l;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_l1 {
-    T l1;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod l1;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_l2 {
-    T l2;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod l2;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_l3 {
-    T l3;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod l3;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_m1 {
-    T m1;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod m1;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_m2 {
-    T m2;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod m2;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_m3 {
-    T m3;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod m3;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_n1 {
-    T n1;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod n1;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_n2 {
-    T n2;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod n2;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_n3 {
-    T n3;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod n3;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_o1 {
-    T o1;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod o1;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_o2 {
-    T o2;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod o2;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_o3 {
-    T o3;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod o3;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_field0 {
-    T field0;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod field0;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_field1 {
-    T field1;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod field1;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_field2 {
-    T field2;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod field2;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_field3 {
-    T field3;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod field3;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_field4 {
-    T field4;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod field4;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_field5 {
-    T field5;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod field5;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldA {
-    T fieldA;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldA;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldB {
-    T fieldB;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldB;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldC {
-    T fieldC;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldC;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldD {
-    T fieldD;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldD;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldE {
-    T fieldE;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldE;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldF {
-    T fieldF;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldF;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldG {
-    T fieldG;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldG;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldH {
-    T fieldH;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldH;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldI {
-    T fieldI;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldI;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldJ {
-    T fieldJ;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldJ;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldK {
-    T fieldK;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldK;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldL {
-    T fieldL;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldL;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldM {
-    T fieldM;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldM;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldN {
-    T fieldN;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldN;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldO {
-    T fieldO;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldO;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldP {
-    T fieldP;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldP;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldQ {
-    T fieldQ;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldQ;
   };
 
-  template <typename T>
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
   struct test_cpp2_cpp_reflection_module_struct_member_pod_fieldR {
-    T fieldR;
+    T_test_cpp2_cpp_reflection_module_struct_member_pod fieldR;
   };
 
 };
