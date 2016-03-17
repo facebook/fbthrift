@@ -75,6 +75,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::shared_ptr<wangle::SSLContextConfig> sslContext_;
   folly::Optional<wangle::TLSTicketKeySeeds> ticketSeeds_;
 
+  folly::Optional<wangle::SSLCacheOptions> sslCacheOptions_;
+
   // Security negotiation settings
   bool saslEnabled_ = false;
   bool nonSaslEnabled_ = true;
@@ -267,6 +269,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     sslContext_ = context;
   }
 
+  void setSSLCacheOptions(wangle::SSLCacheOptions options) {
+    sslCacheOptions_ = std::move(options);
+  }
+
   void setTicketSeeds(
       wangle::TLSTicketKeySeeds seeds) {
     ticketSeeds_ = seeds;
@@ -284,10 +290,17 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     return ticketSeeds_;
   }
 
+  folly::Optional<wangle::SSLCacheOptions> getSSLCacheOptions() const {
+    return sslCacheOptions_;
+  }
+
   wangle::ServerSocketConfig getServerSocketConfig() {
     wangle::ServerSocketConfig config;
     if (getSSLConfig()) {
       config.sslContextConfigs.push_back(*getSSLConfig());
+    }
+    if (sslCacheOptions_) {
+      config.sslCacheOptions = *sslCacheOptions_;
     }
     config.connectionIdleTimeout = getIdleTimeout();
     config.acceptBacklog = getListenBacklog();
