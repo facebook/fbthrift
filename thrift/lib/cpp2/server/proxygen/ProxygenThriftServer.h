@@ -254,6 +254,7 @@ class ProxygenThriftServer : public BaseThriftServer,
   }
   void onIngressError(const proxygen::HTTPSession&,
                       proxygen::ProxygenError) override {}
+  void onIngressEOF() override {}
   void onRead(const proxygen::HTTPSession&, size_t) override {}
   void onWrite(const proxygen::HTTPSession&, size_t) override {}
   void onRequestBegin(const proxygen::HTTPSession&) override {}

@@ -459,6 +459,7 @@ class HTTPClientChannel : public ClientChannel,
   void onCreate(const proxygen::HTTPSession&) override {}
   void onIngressError(const proxygen::HTTPSession&,
                       proxygen::ProxygenError /*error*/) override {}
+  void onIngressEOF() override {}
   void onRead(const proxygen::HTTPSession&, size_t /*bytesRead*/) override {}
   void onWrite(const proxygen::HTTPSession&, size_t /*bytesWritten*/) override {
   }
