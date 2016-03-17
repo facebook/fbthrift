@@ -117,6 +117,7 @@ class TSSLConfig(object):
         self.ssl_policy = SSLPolicy.PERMITTED
         self.ticket_file_path = ''
         self.alpn_protocols = []
+        self.session_context = None
 
     @property
     def ssl_policy(self):
@@ -138,6 +139,12 @@ class TSSLConfig(object):
             raise ValueError("{} is an invalid value".format(val))
         self._verify = val
 
+class TSSLCacheOptions(object):
+    def __init__(self):
+        self.ssl_cache_timeout_seconds = 86400
+        self.max_ssl_cache_size = 20480
+        self.ssl_cache_flush_size = 200
+
 class TCppServer(CppServerWrapper, TServer):
     def __init__(self, processor):
         CppServerWrapper.__init__(self)
@@ -156,6 +163,11 @@ class TCppServer(CppServerWrapper, TServer):
         if not isinstance(config, TSSLConfig):
             raise ValueError("Config must be of type TSSLConfig")
         self.setCppSSLConfig(config)
+
+    def setSSLCacheOptions(self, cache_options):
+        if not isinstance(cache_options, TSSLCacheOptions):
+            raise ValueError("Options might be of type TSSLCacheOptions")
+        self.setCppSSLCacheOptions(cache_options)
 
     def getTicketSeeds(self):
         return self.getCppTicketSeeds()

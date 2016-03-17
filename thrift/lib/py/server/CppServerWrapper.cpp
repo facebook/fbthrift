@@ -49,6 +49,7 @@ using apache::thrift::server::TServerEventHandler;
 using apache::thrift::server::TConnectionContext;
 using folly::SSLContext;
 using wangle::SSLContextConfig;
+using wangle::SSLCacheOptions;
 using namespace boost::python;
 
 namespace {
@@ -75,6 +76,12 @@ std::string getStringAttrSafe(object& pyObject, const char* attrName) {
     return "";
   }
   return extract<std::string>(str(val));
+}
+
+template<class T>
+T getIntAttr(object& pyObject, const char* attrName) {
+  object val = pyObject.attr(attrName);
+  return extract<T>(val);
 }
 
 std::list<std::string> getStringListSafe(object& pyObject, const char* attr) {
@@ -432,6 +439,11 @@ public:
     }
     auto alpnProtocols = getStringListSafe(sslConfig, "alpn_protocols");
     cfg->setNextProtocols(alpnProtocols);
+    object sessionContext = sslConfig.attr("session_context");
+    if (!sessionContext.is_none()) {
+      cfg->sessionContext = extract<std::string>(str(sessionContext));
+    }
+
     ThriftServer::setSSLConfig(cfg);
 
     setSSLPolicy(extract<SSLPolicy>(sslConfig.attr("ssl_policy")));
@@ -448,6 +460,18 @@ public:
         setTicketSeeds(std::move(*seeds));
       }
     }
+  }
+
+  void setCppSSLCacheOptions(object cacheOptions) {
+    SSLCacheOptions options = {
+        .sslCacheTimeout = std::chrono::seconds(
+            getIntAttr<uint32_t>(cacheOptions, "ssl_cache_timeout_seconds")),
+        .maxSSLCacheSize =
+            getIntAttr<uint64_t>(cacheOptions, "max_ssl_cache_size"),
+        .sslCacheFlushSize =
+            getIntAttr<uint64_t>(cacheOptions, "ssl_cache_flush_size"),
+    };
+    ThriftServer::setSSLCacheOptions(std::move(options));
   }
 
   object getCppTicketSeeds() {
@@ -537,6 +561,7 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("setNewSimpleThreadManager",
          &CppServerWrapper::setNewSimpleThreadManager)
     .def("setCppSSLConfig", &CppServerWrapper::setCppSSLConfig)
+    .def("setCppSSLCacheOptions", &CppServerWrapper::setCppSSLCacheOptions)
     .def("getCppTicketSeeds", &CppServerWrapper::getCppTicketSeeds)
     .def("validateCppSSLConfig", &CppServerWrapper::validateCppSSLConfig)
 

@@ -20,8 +20,8 @@ from thrift.transport import TSocket, TSSLSocket, TTransport, THeaderTransport
 from thrift.protocol import TBinaryProtocol, THeaderProtocol
 from thrift.Thrift import TProcessorEventHandler, TProcessor, TMessageType, \
     TServerInterface
-from thrift.server.TCppServer import TCppServer, TSSLConfig, SSLPolicy, \
-    SSLVerifyPeerEnum
+from thrift.server.TCppServer import TCppServer, TSSLConfig, TSSLCacheOptions, \
+    SSLPolicy, SSLVerifyPeerEnum
 from thrift.server.TServer import TServerEventHandler
 from tools.test.stubs import fbpyunit
 
@@ -399,6 +399,8 @@ class SSLHeaderTestServer(TestServer):
             self.server.setSSLConfig(config)
         config.key_path = 'thrift/test/py/test_cert.pem'
         self.server.setSSLConfig(config)
+        cache_options = TSSLCacheOptions()
+        self.server.setSSLCacheOptions(cache_options)
 
     def testSSLClient(self):
         ssl_client = getHeaderClient(self.server_addr, TSSLSocket.TSSLSocket)
