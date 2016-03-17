@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/py/server/CppContextData.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 #include <wangle/ssl/SSLContextConfig.h>
@@ -51,22 +52,6 @@ using wangle::SSLContextConfig;
 using namespace boost::python;
 
 namespace {
-
-object makePythonAddress(const folly::SocketAddress& sa) {
-  if (!sa.isInitialized()) {
-    return object();  // None
-  }
-
-  // This constructs a tuple in the same form as socket.getpeername()
-  if (sa.getFamily() == AF_INET) {
-    return boost::python::make_tuple(sa.getAddressStr(), sa.getPort());
-  } else if (sa.getFamily() == AF_INET6) {
-    return boost::python::make_tuple(sa.getAddressStr(), sa.getPort(), 0, 0);
-  } else {
-    LOG(FATAL) << "CppServerWrapper can't create a non-inet thrift endpoint";
-    abort();
-  }
-}
 
 object makePythonHeaders(const std::map<std::string, std::string>& cppheaders) {
   object headers = dict();
@@ -111,56 +96,6 @@ std::list<std::string> getStringListSafe(object& pyObject, const char* attr) {
 
 }
 
-class ContextData {
-public:
-  void copyContextContents(Cpp2ConnContext* ctx) {
-    if (!ctx) {
-      return;
-    }
-    auto ss = ctx->getSaslServer();
-    if (ss) {
-      clientIdentity_ = ss->getClientIdentity();
-    } else {
-      clientIdentity_.clear();
-    }
-
-    auto pa = ctx->getPeerAddress();
-    if (pa) {
-      peerAddress_ = *pa;
-    } else {
-      peerAddress_.reset();
-    }
-
-    auto la = ctx->getLocalAddress();
-    if (la) {
-      localAddress_ = *la;
-    } else {
-      localAddress_.reset();
-    }
-  }
-
-  object getClientIdentity() const {
-    if (clientIdentity_.empty()) {
-      return object();
-    } else {
-      return str(clientIdentity_);
-    }
-  }
-
-  object getPeerAddress() const {
-    return makePythonAddress(peerAddress_);
-  }
-
-  object getLocalAddress() const {
-    return makePythonAddress(localAddress_);
-  }
-
-private:
-  std::string clientIdentity_;
-  folly::SocketAddress peerAddress_;
-  folly::SocketAddress localAddress_;
-};
-
 class CallbackWrapper {
 public:
   void call(object obj) {
@@ -197,7 +132,7 @@ private:
     Cpp2ConnContext *cpp2Ctx = dynamic_cast<Cpp2ConnContext*>(ctx);
     auto cd_cls = handler_->attr("CONTEXT_DATA");
     object contextData = cd_cls();
-    extract<ContextData&>(contextData)().copyContextContents(cpp2Ctx);
+    extract<CppContextData&>(contextData)().copyContextContents(cpp2Ctx);
     auto ctx_cls = handler_->attr("CPP_CONNECTION_CONTEXT");
     object cppConnContext = ctx_cls(contextData);
     handler_->attr(method)(cppConnContext);
@@ -270,7 +205,7 @@ public:
 
                 auto cd_ctor = adapter_->attr("CONTEXT_DATA");
                 object contextData = cd_ctor();
-                extract<ContextData&>(contextData)().copyContextContents(
+                extract<CppContextData&>(contextData)().copyContextContents(
                     context->getConnectionContext());
 
                 auto cb_ctor = adapter_->attr("CALLBACK_WRAPPER");
@@ -578,10 +513,10 @@ public:
 BOOST_PYTHON_MODULE(CppServerWrapper) {
   PyEval_InitThreads();
 
-  class_<ContextData>("ContextData")
-    .def("getClientIdentity", &ContextData::getClientIdentity)
-    .def("getPeerAddress", &ContextData::getPeerAddress)
-    .def("getLocalAddress", &ContextData::getLocalAddress)
+  class_<CppContextData>("CppContextData")
+    .def("getClientIdentity", &CppContextData::getClientIdentity)
+    .def("getPeerAddress", &CppContextData::getPeerAddress)
+    .def("getLocalAddress", &CppContextData::getLocalAddress)
     ;
 
   class_<CallbackWrapper>("CallbackWrapper")

@@ -43,11 +43,13 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     const apache::thrift::async::TAsyncSocket* socket = nullptr,
     const apache::thrift::SaslServer* sasl_server = nullptr,
     folly::EventBaseManager* manager = nullptr,
-    const std::shared_ptr<RequestChannel>& duplexChannel = nullptr)
+    const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
+    const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/)
     : saslServer_(sasl_server),
       manager_(manager),
       requestHeader_(nullptr),
-      duplexChannel_(duplexChannel) {
+      duplexChannel_(duplexChannel),
+      peerCert_(peerCert) {
     if (address) {
       peerAddress_ = *address;
     }
@@ -106,6 +108,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
     return client;
   }
+
  private:
   const apache::thrift::SaslServer* saslServer_;
   folly::EventBaseManager* manager_;

@@ -10,7 +10,7 @@ from thrift.server.TServer import TServer, TConnectionContext
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TTransport import TMemoryBuffer
 
-from thrift.server.CppServerWrapper import CppServerWrapper, ContextData, \
+from thrift.server.CppServerWrapper import CppServerWrapper, CppContextData, \
         SSLPolicy, SSLVerifyPeerEnum, CallbackWrapper
 
 from concurrent.futures import Future
@@ -37,7 +37,7 @@ class TCppConnectionContext(TConnectionContext):
         return self.context_data.getLocalAddress()
 
 class _ProcessorAdapter(object):
-    CONTEXT_DATA = ContextData
+    CONTEXT_DATA = CppContextData
     CALLBACK_WRAPPER = CallbackWrapper
 
     def __init__(self, processor):
@@ -148,7 +148,7 @@ class TCppServer(CppServerWrapper, TServer):
 
     def setServerEventHandler(self, handler):
         TServer.setServerEventHandler(self, handler)
-        handler.CONTEXT_DATA = ContextData
+        handler.CONTEXT_DATA = CppContextData
         handler.CPP_CONNECTION_CONTEXT = TCppConnectionContext
         self.setCppServerEventHandler(handler)
 
