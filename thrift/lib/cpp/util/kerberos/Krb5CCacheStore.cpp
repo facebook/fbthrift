@@ -211,10 +211,7 @@ void Krb5CCacheStore::importCache(
       // cache reading thread, so defend against them for now by ignoring that
       // entry (example: #7808411).
       services.push_back(std::move(cred));
-    } else if logger() {
-      logger->log("Realm empty, so service ignored");
     }
-
   }
 
   // Import TGTs
