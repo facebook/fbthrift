@@ -400,7 +400,10 @@ public:
         dummyContext->loadPrivateKey(keyPath.c_str());
         dummyContext->loadCertificate(certPath.c_str());
       } catch (const std::exception& ex) {
-        std::string err = "failed to load key or cert file";
+        std::string err
+          = folly::to<std::string>("failed to load key ", keyPath,
+                                   " or cert ", certPath, " with exception: ",
+                                   ex.what());
         return boost::python::make_tuple(false, err);
       }
     }
@@ -409,7 +412,10 @@ public:
       try {
         dummyContext->loadTrustedCertificates(clientCaFile.c_str());
       } catch (std::exception& ex) {
-        std::string err = "failed to load client ca file";
+        std::string err
+          = folly::to<std::string>("failed to load client ca file ",
+                                   clientCaFile, " with exception: ",
+                                   ex.what());
         return boost::python::make_tuple(false, err);
       }
     }
