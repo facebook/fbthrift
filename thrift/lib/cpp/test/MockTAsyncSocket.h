@@ -36,12 +36,28 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
     attachEventBase(base);
   }
 
-  GMOCK_METHOD5_(, noexcept, , connect,
-      void(AsyncSocket::ConnectCallback*,
-           const folly::SocketAddress&,
-           int,
-           const OptionMap&,
-           const folly::SocketAddress&));
+  static MockTAsyncSocket::UniquePtr newSocket(folly::EventBase* base) {
+    return MockTAsyncSocket::UniquePtr(new MockTAsyncSocket(base));
+  }
+
+  GMOCK_METHOD5_(,
+                 noexcept,
+                 ,
+                 connectInternal,
+                 void(AsyncSocket::ConnectCallback*,
+                      const folly::SocketAddress&,
+                      int,
+                      const OptionMap&,
+                      const folly::SocketAddress&));
+
+  virtual void connect(
+      AsyncSocket::ConnectCallback* callback,
+      const folly::SocketAddress& addr,
+      int timeout = 0,
+      const OptionMap& options = emptyOptionMap,
+      const folly::SocketAddress& bindAddr = anyAddress()) noexcept override {
+    connectInternal(callback, addr, timeout, options, bindAddr);
+  }
 
   MOCK_CONST_METHOD1(getPeerAddress,
                      void(folly::SocketAddress*));
