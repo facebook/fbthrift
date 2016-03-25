@@ -231,7 +231,7 @@ class ThreadManager::ImplT : public ThreadManager  {
   // Methods to be invoked by workers
   void workerStarted(Worker<SemType>* worker);
   void workerExiting(Worker<SemType>* worker);
-  void reportTaskStats(const SystemClockTimePoint& queueBegin,
+  void reportTaskStats(const Task& task,
                        const SystemClockTimePoint& workBegin,
                        const SystemClockTimePoint& workEnd);
   std::unique_ptr<Task> waitOnTask();

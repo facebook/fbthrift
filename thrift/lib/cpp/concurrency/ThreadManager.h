@@ -253,7 +253,7 @@ class ThreadManager : public folly::Executor {
     virtual ~Observer() {}
 
     virtual void preRun(folly::RequestContext*) {}
-    virtual void postRun() {}
+    virtual void postRun(folly::RequestContext*) {}
 
     virtual void addStats(const std::string& threadPoolName,
                           const SystemClockTimePoint& queueBegin,
