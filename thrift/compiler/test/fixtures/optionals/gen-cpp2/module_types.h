@@ -72,6 +72,30 @@ class Color : private boost::totally_ordered<Color> {
       green(std::move(green__arg)),
       blue(std::move(blue__arg)),
       alpha(std::move(alpha__arg)) {}
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Color(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Color(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    red = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Color(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Color(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    green = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Color(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Color(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    blue = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Color(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Color(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    alpha = arg.move();
+  }
 
   Color(Color&&) = default;
 
@@ -159,6 +183,30 @@ class Vehicle : private boost::totally_ordered<Vehicle> {
       licensePlate(std::move(licensePlate__arg)),
       description(std::move(description__arg)),
       name(std::move(name__arg)) {}
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Vehicle(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Vehicle(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    color = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Vehicle(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Vehicle(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    licensePlate = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Vehicle(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Vehicle(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    description = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Vehicle(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Vehicle(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    name = arg.move();
+  }
 
   Vehicle(Vehicle&&) = default;
 
@@ -238,6 +286,66 @@ class Person : private boost::totally_ordered<Person> {
       petNames(std::move(petNames__arg)),
       afraidOfAnimal(std::move(afraidOfAnimal__arg)),
       vehicles(std::move(vehicles__arg)) {}
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Person(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    id = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Person(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    name = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Person(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    age = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Person(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    address = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Person(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    favoriteColor = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Person(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    friends = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Person(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    bestFriend = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Person(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    petNames = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Person(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    afraidOfAnimal = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Person(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Person(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    vehicles = arg.move();
+  }
 
   Person(Person&&) = default;
 

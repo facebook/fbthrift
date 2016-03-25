@@ -27,7 +27,7 @@ struct module_constants {
   }
 
   static std::vector<std::map<std::string, int32_t>> const& states() {
-    static std::vector<std::map<std::string, int32_t>> const instance(std::initializer_list<std::map<std::string, int32_t>>{{{apache::thrift::StringTraits< std::string>::fromStringLiteral("San Diego"), 3211000}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("Sacramento"), 479600}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("SF"), 837400}}, {{apache::thrift::StringTraits< std::string>::fromStringLiteral("New York"), 8406000}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("Albany"), 98400}}});
+    static std::vector<std::map<std::string, int32_t>> const instance(std::initializer_list<std::map<std::string, int32_t>>{std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("San Diego"), 3211000}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("Sacramento"), 479600}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("SF"), 837400}}, std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("New York"), 8406000}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("Albany"), 98400}}});
     return instance;
   }
 
@@ -50,17 +50,17 @@ struct module_constants {
   }
 
   static  ::cpp2::Internship const& instagram() {
-    static  ::cpp2::Internship const instance( ::cpp2::Internship(apache::thrift::FRAGILE, 12, apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer"),  ::cpp2::Company::INSTAGRAM));
+    static  ::cpp2::Internship const instance( ::cpp2::Internship(::apache::thrift::wrap_argument<1>(12), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)));
     return instance;
   }
 
   static std::vector< ::cpp2::Range> const& kRanges() {
-    static std::vector< ::cpp2::Range> const instance(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(apache::thrift::FRAGILE, 1, 2),  ::cpp2::Range(apache::thrift::FRAGILE, 5, 6)});
+    static std::vector< ::cpp2::Range> const instance(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(::apache::thrift::wrap_argument<1>(1), ::apache::thrift::wrap_argument<2>(2)),  ::cpp2::Range(::apache::thrift::wrap_argument<1>(5), ::apache::thrift::wrap_argument<2>(6))});
     return instance;
   }
 
   static std::vector< ::cpp2::Internship> const& internList() {
-    static std::vector< ::cpp2::Internship> const instance(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(apache::thrift::FRAGILE, 12, apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer"),  ::cpp2::Company::INSTAGRAM),  ::cpp2::Internship(apache::thrift::FRAGILE, 10, apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern"),  ::cpp2::Company::FACEBOOK)});
+    static std::vector< ::cpp2::Internship> const instance(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::apache::thrift::wrap_argument<1>(12), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)),  ::cpp2::Internship(::apache::thrift::wrap_argument<1>(10), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::FACEBOOK))});
     return instance;
   }
   // consider using folly::StringPiece instead of std::string whenever possible
@@ -110,7 +110,7 @@ struct module_constants {
   }
 
   static std::map<std::string, int32_t> const& char2ascii() {
-    static std::map<std::string, int32_t> const instance({{apache::thrift::StringTraits< std::string>::fromStringLiteral("'"), 39}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\""), 34}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\\"), 92}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"), 97}});
+    static std::map<std::string, int32_t> const instance(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("'"), 39}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\""), 34}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\\"), 92}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"), 97}});
     return instance;
   }
 };
@@ -120,19 +120,19 @@ class __attribute__((__deprecated__("moduleConstants suffers from the 'static in
   moduleConstants() :
       myInt(1337),
       name(apache::thrift::StringTraits< std::string>::fromStringLiteral("Mark Zuckerberg")),
-      states(std::initializer_list<std::map<std::string, int32_t>>{{{apache::thrift::StringTraits< std::string>::fromStringLiteral("San Diego"), 3211000}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("Sacramento"), 479600}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("SF"), 837400}}, {{apache::thrift::StringTraits< std::string>::fromStringLiteral("New York"), 8406000}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("Albany"), 98400}}}),
+      states(std::initializer_list<std::map<std::string, int32_t>>{std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("San Diego"), 3211000}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("Sacramento"), 479600}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("SF"), 837400}}, std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("New York"), 8406000}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("Albany"), 98400}}}),
       x(1.0),
       y(1000000),
       z(1000000000.0),
-      instagram( ::cpp2::Internship(apache::thrift::FRAGILE, 12, apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer"),  ::cpp2::Company::INSTAGRAM)),
-      kRanges(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(apache::thrift::FRAGILE, 1, 2),  ::cpp2::Range(apache::thrift::FRAGILE, 5, 6)}),
-      internList(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(apache::thrift::FRAGILE, 12, apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer"),  ::cpp2::Company::INSTAGRAM),  ::cpp2::Internship(apache::thrift::FRAGILE, 10, apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern"),  ::cpp2::Company::FACEBOOK)}),
+      instagram( ::cpp2::Internship(::apache::thrift::wrap_argument<1>(12), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::INSTAGRAM))),
+      kRanges(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(::apache::thrift::wrap_argument<1>(1), ::apache::thrift::wrap_argument<2>(2)),  ::cpp2::Range(::apache::thrift::wrap_argument<1>(5), ::apache::thrift::wrap_argument<2>(6))}),
+      internList(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::apache::thrift::wrap_argument<1>(12), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)),  ::cpp2::Internship(::apache::thrift::wrap_argument<1>(10), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::FACEBOOK))}),
       apostrophe(apache::thrift::StringTraits< std::string>::fromStringLiteral("'")),
       tripleApostrophe(apache::thrift::StringTraits< std::string>::fromStringLiteral("'''")),
       quotationMark(apache::thrift::StringTraits< std::string>::fromStringLiteral("\"")),
       backslash(apache::thrift::StringTraits< std::string>::fromStringLiteral("\\")),
       escaped_a(apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61")),
-      char2ascii({{apache::thrift::StringTraits< std::string>::fromStringLiteral("'"), 39}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\""), 34}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\\"), 92}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"), 97}}) {}
+      char2ascii(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("'"), 39}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\""), 34}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\\"), 92}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"), 97}}) {}
 
   int32_t myInt;
 

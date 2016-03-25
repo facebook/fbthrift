@@ -2418,6 +2418,7 @@ class CppGenerator(t_generator.Generator):
             is_copyable = self._is_copyable_struct(obj)
             is_comparable = self._is_comparable_struct(obj)
             if not obj.is_union:
+                # BEGIN FRAGILE CONSTRUCTOR
                 # Generate a initializer_list type constructor
                 init_vars = []
                 init_vars.append('apache::thrift::FragileConstructor')
@@ -2434,10 +2435,32 @@ class CppGenerator(t_generator.Generator):
                         name=member.name)
                 struct('// FragileConstructor for use in'
                        ' initialization lists only')
-                c = struct.defn('{name}(' + ', '.join(init_vars) + ')',
+                with struct.defn('{name}(' + ', '.join(init_vars) + ')',
                                 name=obj.name,
                                 in_header=True,
-                                init_dict=i).scope.empty()
+                                init_dict=i).scope as c:
+                    for member in members:
+                        if self._has_isset(member) and not self.flag_optionals:
+                            c("__isset.{0} = true;".format(member.name))
+                # END FRAGILE CONSTRUCTOR
+
+                # SELECTIVE CONSTRUCTOR
+                for member in members:
+                    struct('template <typename T__ThriftWrappedArgument__Ctor, '
+                        'typename... Args__ThriftWrappedArgument__Ctor>')
+                    struct(('{0}(::apache::thrift::detail::argument_wrapper<'
+                        '{1}, T__ThriftWrappedArgument__Ctor> arg, '
+                        'Args__ThriftWrappedArgument__Ctor&&... args):').format(
+                            obj.name, member.key))
+                    struct(('  {0}(std::forward<'
+                        'Args__ThriftWrappedArgument__Ctor>(args)...)').format(
+                            obj.name))
+                    struct('{')
+                    struct('  {0} = arg.move();'.format(member.name))
+                    if self._has_isset(member) and not self.flag_optionals:
+                        struct('  __isset.{0} = true;'.format(member.name))
+                    struct('}')
+                # SELECTIVE CONSTRUCTOR
 
                 # move constructor, move assignment, defaulted
                 # (not implicitly declared because we have a destructor)
@@ -2586,8 +2609,6 @@ class CppGenerator(t_generator.Generator):
         if should_generate_isset:
             struct()
             with struct.cls('struct __isset', epilogue=' __isset;') as ist:
-                with ist.defn('__isset()', in_header=True):
-                    out('__clear();')
                 with ist.defn('void __clear()', in_header=True):
                     for member in members:
                         if self._has_isset(member):
@@ -2596,7 +2617,7 @@ class CppGenerator(t_generator.Generator):
                 ist()
                 for member in members:
                     if self._has_isset(member):
-                        ist('bool {0};'.format(member.name))
+                        ist('bool {0} = false;'.format(member.name))
         if struct_options.has_serialized_fields:
             struct()
             struct('apache::thrift::ProtocolType {0};'.format(
@@ -2738,14 +2759,15 @@ class CppGenerator(t_generator.Generator):
                         .format(obj.name, member.name, setter_name))
                 param_name = member.name + '_'
                 if not self._is_complex_type(member.type):
-                    # setter: void set_field(T t)
-                    with struct.defn('void {{name}}({0} {1})'
+                    # setter: T& set_field(T t)
+                    with struct.defn('{0}& {{name}}({0} {1})'
                                      .format(t, param_name),
                                      name=setter_name,
                                      in_header=True):
                         out('{0} = {1};'.format(member.name, param_name))
                         if self._has_isset(member):
                             out('__isset.{0} = true;'.format(member.name))
+                        out('return {0};'.format(member.name))
                 else:
                     # rely on compiler to generate appropriate pass-by-ref
                     # setters
@@ -2762,7 +2784,6 @@ class CppGenerator(t_generator.Generator):
                         if self._has_isset(member):
                             out('__isset.{0} = true;'.format(member.name))
                         out('return {0};'.format(member.name))
-
 
         # generate union accessors/settors
         if obj.is_union:
@@ -3954,15 +3975,13 @@ class CppGenerator(t_generator.Generator):
             if not value_map:
                 return '{0}()'.format(self._type_name(t)) if explicit else None
             fields = filter(self._should_generate_field, t.as_struct.members)
-            out_list = ['apache::thrift::FRAGILE']
+            out_list = []
             for field in fields:
                 if field.name in value_map:
-                    val = self._render_const_value(field.type,
-                                                   value_map[field.name],
-                                                   explicit=True)
-                else:
-                    val = self._member_default_value(field, explicit=True)
-                out_list.append(val or "")
+                    out_list.append('::apache::thrift::wrap_argument<{0}>({1})'
+                        .format(field.key, self._render_const_value(field.type,
+                                                          value_map[field.name],
+                                                          explicit=True)))
             return '{0}({1})'.format(self._type_name(t), ', '.join(out_list))
         elif t.is_map:
             outlist = []
@@ -3972,9 +3991,12 @@ class CppGenerator(t_generator.Generator):
                 value_render = self._render_const_value(t.value_type, value,
                                                         explicit=True)
                 outlist.append('{{{0}, {1}}}'.format(key_render, value_render))
+            out_prefix = 'std::initializer_list<std::pair<const {0}, {1}>>'\
+                .format(self._type_name(self._get_true_type(t.key_type)),
+                        self._type_name(self._get_true_type(t.value_type)))
             if not outlist:
-                return '{}' if explicit else None
-            return '{' + ', '.join(outlist) + '}'
+                return out_prefix + '{}' if explicit else None
+            return out_prefix + '{' + ', '.join(outlist) + '}'
         elif t.is_list:
             outlist = []
             for item in value.list:

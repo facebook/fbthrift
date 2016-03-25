@@ -16,6 +16,7 @@
 
 #include <thrift/test/gen-cpp/test_constants.h>
 #include <thrift/test/gen-cpp2/test_constants.h>
+#include <thrift/test/gen-cpp2/test_types.tcc>
 
 #include <gtest/gtest.h>
 
@@ -75,6 +76,8 @@ TEST(constants, cpp) {
   pod1.a = 10;
   pod1.b = "foo";
 
+  EXPECT_TRUE(test_cpp::test_constants::pod_1().__isset.a);
+  EXPECT_TRUE(test_cpp::test_constants::pod_1().__isset.b);
   EXPECT_EQ(pod1, test_cpp::test_constants::pod_1());
 
   test_cpp::struct2 pod2;
@@ -84,6 +87,12 @@ TEST(constants, cpp) {
   pod2.c.b = "bar";
   pod2.d = {11, 22, 33};
 
+  EXPECT_TRUE(test_cpp::test_constants::pod_2().__isset.a);
+  EXPECT_TRUE(test_cpp::test_constants::pod_2().__isset.b);
+  EXPECT_TRUE(test_cpp::test_constants::pod_2().__isset.c);
+  EXPECT_TRUE(test_cpp::test_constants::pod_2().c.__isset.a);
+  EXPECT_TRUE(test_cpp::test_constants::pod_2().c.__isset.b);
+  EXPECT_TRUE(test_cpp::test_constants::pod_2().__isset.d);
   EXPECT_EQ(pod2, test_cpp::test_constants::pod_2());
 }
 
@@ -140,17 +149,39 @@ TEST(constants, cpp2) {
   EXPECT_EQ(test_cpp2::struct1(), test_cpp2::test_constants::pod_0());
 
   test_cpp2::struct1 pod1;
-  pod1.a = 10;
-  pod1.b = "foo";
+  pod1.set_a(10);
+  pod1.set_b("foo");
 
-  EXPECT_EQ(pod1, test_cpp2::test_constants::pod_1());
+  auto const& pod_1 = test_cpp2::test_constants::pod_1();
+  EXPECT_TRUE(pod_1.__isset.a);
+  EXPECT_TRUE(pod_1.__isset.b);
+  EXPECT_EQ(pod1, pod_1);
 
   test_cpp2::struct2 pod2;
-  pod2.a = 98;
-  pod2.b = "gaz";
-  pod2.c.a = 12;
-  pod2.c.b = "bar";
-  pod2.d = {11, 22, 33};
+  pod2.set_a(98);
+  pod2.set_b("gaz");
+  auto& pod2_c = pod2.set_c(test_cpp2::struct1());
+  pod2_c.set_a(12);
+  pod2_c.set_b("bar");
+  pod2.set_d(std::vector<std::int32_t>{11, 22, 33});
 
-  EXPECT_EQ(pod2, test_cpp2::test_constants::pod_2());
+  auto const& pod_2 = test_cpp2::test_constants::pod_2();
+  EXPECT_TRUE(pod_2.__isset.a);
+  EXPECT_TRUE(pod_2.__isset.b);
+  EXPECT_TRUE(pod_2.__isset.c);
+  EXPECT_TRUE(pod_2.__isset.d);
+  EXPECT_TRUE(pod_2.c.__isset.a);
+  EXPECT_TRUE(pod_2.c.__isset.b);
+  EXPECT_EQ(pod2, pod_2);
+
+  auto const& pod_3 = test_cpp2::test_constants::pod_3();
+  EXPECT_TRUE(pod_3.__isset.a);
+  EXPECT_TRUE(pod_3.__isset.b);
+  EXPECT_TRUE(pod_3.__isset.c);
+  EXPECT_TRUE(pod_3.c.__isset.a);
+  EXPECT_FALSE(pod_3.c.__isset.b);
+  EXPECT_TRUE(pod_3.c.__isset.c);
+  EXPECT_FALSE(pod_3.c.__isset.d);
+  EXPECT_FALSE(pod_3.c.c.__isset.a);
+  EXPECT_TRUE(pod_3.c.c.__isset.b);
 }

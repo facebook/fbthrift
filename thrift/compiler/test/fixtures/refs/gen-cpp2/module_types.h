@@ -288,7 +288,30 @@ class MyField : private boost::totally_ordered<MyField> {
   MyField(apache::thrift::FragileConstructor, int64_t opt_value__arg, int64_t value__arg, int64_t req_value__arg) :
       opt_value(std::move(opt_value__arg)),
       value(std::move(value__arg)),
-      req_value(std::move(req_value__arg)) {}
+      req_value(std::move(req_value__arg)) {
+    __isset.opt_value = true;
+    __isset.value = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyField(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_value = arg.move();
+    __isset.opt_value = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyField(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    value = arg.move();
+    __isset.value = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyField(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_value = arg.move();
+  }
 
   MyField(MyField&&) = default;
 
@@ -306,17 +329,13 @@ class MyField : private boost::totally_ordered<MyField> {
   int64_t req_value;
 
   struct __isset {
-    __isset() {
-      __clear();
-    }
-
     void __clear() {
       opt_value = false;
       value = false;
     }
 
-    bool opt_value;
-    bool value;
+    bool opt_value = false;
+    bool value = false;
   } __isset;
   bool operator==(const MyField& rhs) const;
   bool operator < (const MyField& rhs) const;
@@ -330,26 +349,29 @@ class MyField : private boost::totally_ordered<MyField> {
   }
   int64_t* get_opt_value() && = delete;
 
-  void set_opt_value(int64_t opt_value_) {
+  int64_t& set_opt_value(int64_t opt_value_) {
     opt_value = opt_value_;
     __isset.opt_value = true;
+    return opt_value;
   }
 
   int64_t get_value() const {
     return value;
   }
 
-  void set_value(int64_t value_) {
+  int64_t& set_value(int64_t value_) {
     value = value_;
     __isset.value = true;
+    return value;
   }
 
   int64_t get_req_value() const {
     return req_value;
   }
 
-  void set_req_value(int64_t req_value_) {
+  int64_t& set_req_value(int64_t req_value_) {
     req_value = req_value_;
+    return req_value;
   }
 
   template <class Protocol_>
@@ -404,6 +426,24 @@ class MyStruct : private boost::totally_ordered<MyStruct> {
       opt_ref(std::move(opt_ref__arg)),
       ref(std::move(ref__arg)),
       req_ref(std::move(req_ref__arg)) {}
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_ref = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    ref = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_ref = arg.move();
+  }
 
   MyStruct(MyStruct&&) = default;
   MyStruct(const MyStruct& src0);
@@ -419,10 +459,6 @@ class MyStruct : private boost::totally_ordered<MyStruct> {
   std::unique_ptr< ::cpp2::MyField> req_ref;
 
   struct __isset {
-    __isset() {
-      __clear();
-    }
-
     void __clear() {}
 
   } __isset;
@@ -481,7 +517,30 @@ class StructWithUnion : private boost::totally_ordered<StructWithUnion> {
   StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg) :
       u(std::move(u__arg)),
       aDouble(std::move(aDouble__arg)),
-      f(std::move(f__arg)) {}
+      f(std::move(f__arg)) {
+    __isset.aDouble = true;
+    __isset.f = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    u = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithUnion(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    aDouble = arg.move();
+    __isset.aDouble = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithUnion(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    f = arg.move();
+    __isset.f = true;
+  }
 
   StructWithUnion(StructWithUnion&&) = default;
   StructWithUnion(const StructWithUnion& src3);
@@ -497,17 +556,13 @@ class StructWithUnion : private boost::totally_ordered<StructWithUnion> {
    ::cpp2::MyField f;
 
   struct __isset {
-    __isset() {
-      __clear();
-    }
-
     void __clear() {
       aDouble = false;
       f = false;
     }
 
-    bool aDouble;
-    bool f;
+    bool aDouble = false;
+    bool f = false;
   } __isset;
   bool operator==(const StructWithUnion& rhs) const;
   bool operator < (const StructWithUnion& rhs) const;
@@ -516,9 +571,10 @@ class StructWithUnion : private boost::totally_ordered<StructWithUnion> {
     return aDouble;
   }
 
-  void set_aDouble(double aDouble_) {
+  double& set_aDouble(double aDouble_) {
     aDouble = aDouble_;
     __isset.aDouble = true;
+    return aDouble;
   }
   const  ::cpp2::MyField& get_f() const&;
    ::cpp2::MyField get_f() &&;
@@ -574,7 +630,16 @@ class RecursiveStruct : private boost::totally_ordered<RecursiveStruct> {
   // FragileConstructor for use in initialization lists only
 
   RecursiveStruct(apache::thrift::FragileConstructor, std::vector< ::cpp2::RecursiveStruct> mes__arg) :
-      mes(std::move(mes__arg)) {}
+      mes(std::move(mes__arg)) {
+    __isset.mes = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  RecursiveStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    RecursiveStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    mes = arg.move();
+    __isset.mes = true;
+  }
 
   RecursiveStruct(RecursiveStruct&&) = default;
 
@@ -590,15 +655,11 @@ class RecursiveStruct : private boost::totally_ordered<RecursiveStruct> {
   std::vector< ::cpp2::RecursiveStruct> mes;
 
   struct __isset {
-    __isset() {
-      __clear();
-    }
-
     void __clear() {
       mes = false;
     }
 
-    bool mes;
+    bool mes = false;
   } __isset;
   bool operator==(const RecursiveStruct& rhs) const;
   bool operator < (const RecursiveStruct& rhs) const;

@@ -98,7 +98,30 @@ class Internship : private boost::totally_ordered<Internship> {
   Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, std::string title__arg,  ::cpp2::Company employer__arg) :
       weeks(std::move(weeks__arg)),
       title(std::move(title__arg)),
-      employer(std::move(employer__arg)) {}
+      employer(std::move(employer__arg)) {
+    __isset.title = true;
+    __isset.employer = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Internship(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Internship(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    weeks = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Internship(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Internship(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    title = arg.move();
+    __isset.title = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Internship(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Internship(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    employer = arg.move();
+    __isset.employer = true;
+  }
 
   Internship(Internship&&) = default;
 
@@ -116,17 +139,13 @@ class Internship : private boost::totally_ordered<Internship> {
    ::cpp2::Company employer;
 
   struct __isset {
-    __isset() {
-      __clear();
-    }
-
     void __clear() {
       title = false;
       employer = false;
     }
 
-    bool title;
-    bool employer;
+    bool title = false;
+    bool employer = false;
   } __isset;
   bool operator==(const Internship& rhs) const;
   bool operator < (const Internship& rhs) const;
@@ -135,8 +154,9 @@ class Internship : private boost::totally_ordered<Internship> {
     return weeks;
   }
 
-  void set_weeks(int32_t weeks_) {
+  int32_t& set_weeks(int32_t weeks_) {
     weeks = weeks_;
+    return weeks;
   }
 
   const std::string& get_title() const& {
@@ -163,9 +183,10 @@ class Internship : private boost::totally_ordered<Internship> {
   }
    ::cpp2::Company* get_employer() && = delete;
 
-  void set_employer( ::cpp2::Company employer_) {
+   ::cpp2::Company& set_employer( ::cpp2::Company employer_) {
     employer = employer_;
     __isset.employer = true;
+    return employer;
   }
 
   template <class Protocol_>
@@ -221,6 +242,18 @@ class Range : private boost::totally_ordered<Range> {
   Range(apache::thrift::FragileConstructor, int32_t min__arg, int32_t max__arg) :
       min(std::move(min__arg)),
       max(std::move(max__arg)) {}
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Range(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Range(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    min = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Range(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Range(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    max = arg.move();
+  }
 
   Range(Range&&) = default;
 
@@ -251,16 +284,18 @@ class Range : private boost::totally_ordered<Range> {
     return min;
   }
 
-  void set_min(int32_t min_) {
+  int32_t& set_min(int32_t min_) {
     min = min_;
+    return min;
   }
 
   int32_t get_max() const {
     return max;
   }
 
-  void set_max(int32_t max_) {
+  int32_t& set_max(int32_t max_) {
     max = max_;
+    return max;
   }
 
   template <class Protocol_>

@@ -56,3 +56,20 @@ const struct2 pod_2 = {
   },
   "d":[11, 22, 33]
 }
+
+struct struct3 {
+  1: string a
+  2: i32 b
+  3: struct2 c
+}
+
+const struct3 pod_3 = {
+  "a":"abc",
+  "b":456,
+  "c": {
+    "a":888,
+    "c":{
+      "b":"gaz"
+    },
+  }
+}

@@ -60,7 +60,24 @@ class MyStruct : private boost::totally_ordered<MyStruct> {
 
   MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg) :
       MyIntField(std::move(MyIntField__arg)),
-      MyStringField(std::move(MyStringField__arg)) {}
+      MyStringField(std::move(MyStringField__arg)) {
+    __isset.MyIntField = true;
+    __isset.MyStringField = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyIntField = arg.move();
+    __isset.MyIntField = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyStringField = arg.move();
+    __isset.MyStringField = true;
+  }
 
   MyStruct(MyStruct&&) = default;
 
@@ -77,17 +94,13 @@ class MyStruct : private boost::totally_ordered<MyStruct> {
   std::string MyStringField;
 
   struct __isset {
-    __isset() {
-      __clear();
-    }
-
     void __clear() {
       MyIntField = false;
       MyStringField = false;
     }
 
-    bool MyIntField;
-    bool MyStringField;
+    bool MyIntField = false;
+    bool MyStringField = false;
   } __isset;
   bool operator==(const MyStruct& rhs) const;
 
@@ -105,9 +118,10 @@ class MyStruct : private boost::totally_ordered<MyStruct> {
     return MyIntField;
   }
 
-  void set_MyIntField(int64_t MyIntField_) {
+  int64_t& set_MyIntField(int64_t MyIntField_) {
     MyIntField = MyIntField_;
     __isset.MyIntField = true;
+    return MyIntField;
   }
 
   const std::string& get_MyStringField() const& {
