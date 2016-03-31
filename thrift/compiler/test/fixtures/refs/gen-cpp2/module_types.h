@@ -130,6 +130,18 @@ class MyUnion : private boost::totally_ordered<MyUnion> {
     }
     return *this;
   }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  MyUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_anInteger(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  MyUnion(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_aString(arg.move());
+  }
   void __clear();
 
   virtual ~MyUnion() throw() {

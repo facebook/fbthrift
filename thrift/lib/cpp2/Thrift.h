@@ -133,8 +133,6 @@ private:
   T argument_;
 };
 
-} // detail
-
 template <std::intmax_t Id, typename T>
 detail::argument_wrapper<Id, std::initializer_list<T>> wrap_argument(
   std::initializer_list<T> value
@@ -150,6 +148,6 @@ detail::argument_wrapper<Id, T&&> wrap_argument(T&& value) {
   return detail::argument_wrapper<Id, T&&>(std::forward<T>(value));
 }
 
-}} // apache::thrift
+}}} // apache::thrift::detail
 
 #endif // #ifndef THRIFT_CPP2_H_

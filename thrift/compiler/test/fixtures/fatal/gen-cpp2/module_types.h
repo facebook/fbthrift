@@ -273,6 +273,30 @@ class union1 : private boost::totally_ordered<union1> {
     }
     return *this;
   }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union1(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_ui(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union1(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_ud(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union1(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_us(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union1(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_ue(arg.move());
+  }
   void __clear();
 
   virtual ~union1() throw() {
@@ -623,6 +647,30 @@ class union2 : private boost::totally_ordered<union2> {
     }
     return *this;
   }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_ui_2(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union2(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_ud_2(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union2(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_us_2(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union2(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_ue_2(arg.move());
+  }
   void __clear();
 
   virtual ~union2() throw() {
@@ -972,6 +1020,30 @@ class union3 : private boost::totally_ordered<union3> {
       }
     }
     return *this;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union3(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_ui_3(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union3(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_ud_3(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union3(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_us_3(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union3(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_ue_3(arg.move());
   }
   void __clear();
 
@@ -1473,6 +1545,36 @@ class unionA : private boost::totally_ordered<unionA> {
       }
     }
     return *this;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  unionA(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_i(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  unionA(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_d(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  unionA(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_s(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  unionA(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_e(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  unionA(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_a(arg.move());
   }
   void __clear();
 

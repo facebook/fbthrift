@@ -1158,9 +1158,28 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
  */
 void t_cpp_generator::print_const_value(ofstream& out, string name, t_type* type, t_const_value* value) {
   type = get_true_type(type);
+  auto as_struct = dynamic_cast<t_struct *>(type);
+  assert((as_struct != nullptr) == type->is_struct());
   if (type->is_base_type() || type->is_enum()) {
     string v2 = render_const_value(out, type, value);
     indent(out) << name << " = " << v2 << ";" << endl;
+  } else if (as_struct && as_struct->is_union()) {
+    assert(value->get_type() == t_const_value::CV_MAP);
+    auto const &map = value->get_map();
+    assert(map.size() <= 1);
+    if (!map.empty()) {
+      assert(map.front().first->get_type() == t_const_value::CV_STRING);
+      auto &member_name = map.front().first->get_string();
+      indent(out) << name << ".set_" << member_name << "([](){" << endl;
+      indent_up();
+      auto const member = as_struct->get_member(member_name);
+      indent(out) << type_name(member->get_type()) << " value;" << endl << endl;
+      assert(member);
+      print_const_value(out, "value", member->get_type(), map.front().second);
+      indent(out) << "return value;" << endl;
+      indent_down();
+      indent(out) << "}());" << endl;
+    }
   } else if (type->is_struct() || type->is_xception()) {
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;

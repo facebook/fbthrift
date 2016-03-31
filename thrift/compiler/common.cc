@@ -471,6 +471,8 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
     throw string("type error: cannot declare a void const: " + name);
   }
 
+  auto as_struct = dynamic_cast<t_struct *>(type);
+  assert((as_struct != nullptr) == type->is_struct());
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
@@ -521,10 +523,31 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
     if (value->get_type() != t_const_value::CV_INTEGER) {
       throw string("type error: const \"" + name + "\" was declared as enum");
     }
+  } else if (as_struct && as_struct->is_union()) {
+    if (value->get_type() != t_const_value::CV_MAP) {
+      throw string("type error: const \"" + name + "\" was declared as union");
+    }
+    auto const &map = value->get_map();
+    if (map.size() > 1) {
+      throw string("type error: const \"" + name + "\" is a union and can't "
+        "have more than one field set");
+    }
+    if (!map.empty()) {
+      if (map.front().first->get_type() != t_const_value::CV_STRING) {
+        throw string("type error: const \"" + name + "\" is a union and member "
+          "names must be a string");
+      }
+      auto const &member_name = map.front().first->get_string();
+      auto const &member = as_struct->get_member(member_name);
+      if (!member) {
+        throw string("type error: no member named \"" + member_name + "\" for "
+          "union const \"" + name + "\"");
+      }
+    }
   } else if (type->is_struct() || type->is_xception()) {
     if (value->get_type() != t_const_value::CV_MAP) {
-      throw string("type error: const \"" + name + "\" was declared as" +
-        "struct/xception");
+      throw string("type error: const \"" + name + "\" was declared as " +
+        "struct/exception");
     }
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;

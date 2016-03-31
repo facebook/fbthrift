@@ -50,17 +50,17 @@ struct module_constants {
   }
 
   static  ::cpp2::Internship const& instagram() {
-    static  ::cpp2::Internship const instance( ::cpp2::Internship(::apache::thrift::wrap_argument<1>(12), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)));
+    static  ::cpp2::Internship const instance( ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)));
     return instance;
   }
 
   static std::vector< ::cpp2::Range> const& kRanges() {
-    static std::vector< ::cpp2::Range> const instance(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(::apache::thrift::wrap_argument<1>(1), ::apache::thrift::wrap_argument<2>(2)),  ::cpp2::Range(::apache::thrift::wrap_argument<1>(5), ::apache::thrift::wrap_argument<2>(6))});
+    static std::vector< ::cpp2::Range> const instance(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(1), ::apache::thrift::detail::wrap_argument<2>(2)),  ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(5), ::apache::thrift::detail::wrap_argument<2>(6))});
     return instance;
   }
 
   static std::vector< ::cpp2::Internship> const& internList() {
-    static std::vector< ::cpp2::Internship> const instance(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::apache::thrift::wrap_argument<1>(12), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)),  ::cpp2::Internship(::apache::thrift::wrap_argument<1>(10), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::FACEBOOK))});
+    static std::vector< ::cpp2::Internship> const instance(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)),  ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(10), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::FACEBOOK))});
     return instance;
   }
   // consider using folly::StringPiece instead of std::string whenever possible
@@ -124,9 +124,9 @@ class __attribute__((__deprecated__("moduleConstants suffers from the 'static in
       x(1.0),
       y(1000000),
       z(1000000000.0),
-      instagram( ::cpp2::Internship(::apache::thrift::wrap_argument<1>(12), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::INSTAGRAM))),
-      kRanges(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(::apache::thrift::wrap_argument<1>(1), ::apache::thrift::wrap_argument<2>(2)),  ::cpp2::Range(::apache::thrift::wrap_argument<1>(5), ::apache::thrift::wrap_argument<2>(6))}),
-      internList(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::apache::thrift::wrap_argument<1>(12), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)),  ::cpp2::Internship(::apache::thrift::wrap_argument<1>(10), ::apache::thrift::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::wrap_argument<3>( ::cpp2::Company::FACEBOOK))}),
+      instagram( ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM))),
+      kRanges(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(1), ::apache::thrift::detail::wrap_argument<2>(2)),  ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(5), ::apache::thrift::detail::wrap_argument<2>(6))}),
+      internList(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)),  ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(10), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::FACEBOOK))}),
       apostrophe(apache::thrift::StringTraits< std::string>::fromStringLiteral("'")),
       tripleApostrophe(apache::thrift::StringTraits< std::string>::fromStringLiteral("'''")),
       quotationMark(apache::thrift::StringTraits< std::string>::fromStringLiteral("\"")),

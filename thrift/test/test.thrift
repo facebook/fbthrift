@@ -36,8 +36,8 @@ struct struct1 {
 const struct1 pod_0 = {};
 
 const struct1 pod_1 = {
-  "a":10,
-  "b":"foo"
+  "a": 10,
+  "b": "foo"
 }
 
 struct struct2 {
@@ -48,13 +48,13 @@ struct struct2 {
 }
 
 const struct2 pod_2 = {
-  "a":98,
-  "b":"gaz",
-  "c":{
-    "a":12,
-    "b":"bar"
+  "a": 98,
+  "b": "gaz",
+  "c": {
+    "a": 12,
+    "b": "bar"
   },
-  "d":[11, 22, 33]
+  "d": [11, 22, 33]
 }
 
 struct struct3 {
@@ -70,6 +70,59 @@ const struct3 pod_3 = {
     "a":888,
     "c":{
       "b":"gaz"
-    },
+    }
   }
+}
+
+union union1 {
+  1: i32 i
+  2: double d
+}
+
+const union1 u_1_1 = {
+  "i": 97
+}
+
+const union1 u_1_2 = {
+  "d": 5.6
+}
+
+const union1 u_1_3 = {}
+
+union union2 {
+  1: i32 i
+  2: double d
+  3: struct1 s
+  4: union1 u
+}
+
+const union2 u_2_1 = {
+  "i": 51
+}
+
+const union2 u_2_2 = {
+  "d": 6.7
+}
+
+const union2 u_2_3 = {
+  "s": {
+    "a": 8,
+    "b": "abacabb"
+  }
+}
+
+const union2 u_2_4 = {
+  "u": {
+    "i": 43
+  }
+}
+
+const union2 u_2_5 = {
+  "u": {
+    "d": 9.8
+  }
+}
+
+const union2 u_2_6 = {
+  "u": {}
 }

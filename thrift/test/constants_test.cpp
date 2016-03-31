@@ -94,6 +94,73 @@ TEST(constants, cpp) {
   EXPECT_TRUE(test_cpp::test_constants::pod_2().c.__isset.b);
   EXPECT_TRUE(test_cpp::test_constants::pod_2().__isset.d);
   EXPECT_EQ(pod2, test_cpp::test_constants::pod_2());
+
+  EXPECT_EQ(
+    test_cpp::union1::Type::i,
+    test_cpp::test_constants::u_1_1().getType()
+  );
+  EXPECT_EQ(97, test_cpp::test_constants::u_1_1().get_i());
+
+  EXPECT_EQ(
+    test_cpp::union1::Type::d,
+    test_cpp::test_constants::u_1_2().getType()
+  );
+  EXPECT_EQ(5.6, test_cpp::test_constants::u_1_2().get_d());
+
+  EXPECT_EQ(
+    test_cpp::union1::Type::__EMPTY__,
+    test_cpp::test_constants::u_1_3().getType()
+  );
+
+  EXPECT_EQ(
+    test_cpp::union2::Type::i,
+    test_cpp::test_constants::u_2_1().getType()
+  );
+  EXPECT_EQ(51, test_cpp::test_constants::u_2_1().get_i());
+
+  EXPECT_EQ(
+    test_cpp::union2::Type::d,
+    test_cpp::test_constants::u_2_2().getType()
+  );
+  EXPECT_EQ(6.7, test_cpp::test_constants::u_2_2().get_d());
+
+  EXPECT_EQ(
+    test_cpp::union2::Type::s,
+    test_cpp::test_constants::u_2_3().getType()
+  );
+  EXPECT_EQ(8, test_cpp::test_constants::u_2_3().get_s().a);
+  EXPECT_TRUE(test_cpp::test_constants::u_2_3().get_s().__isset.a);
+  EXPECT_EQ("abacabb", test_cpp::test_constants::u_2_3().get_s().b);
+  EXPECT_TRUE(test_cpp::test_constants::u_2_3().get_s().__isset.b);
+
+  EXPECT_EQ(
+    test_cpp::union2::Type::u,
+    test_cpp::test_constants::u_2_4().getType()
+  );
+  EXPECT_EQ(
+    test_cpp::union1::Type::i,
+    test_cpp::test_constants::u_2_4().get_u().getType()
+  );
+  EXPECT_EQ(43, test_cpp::test_constants::u_2_4().get_u().get_i());
+
+  EXPECT_EQ(
+    test_cpp::union2::Type::u,
+    test_cpp::test_constants::u_2_5().getType()
+  );
+  EXPECT_EQ(
+    test_cpp::union1::Type::d,
+    test_cpp::test_constants::u_2_5().get_u().getType()
+  );
+  EXPECT_EQ(9.8, test_cpp::test_constants::u_2_5().get_u().get_d());
+
+  EXPECT_EQ(
+    test_cpp::union2::Type::u,
+    test_cpp::test_constants::u_2_6().getType()
+  );
+  EXPECT_EQ(
+    test_cpp::union1::Type::__EMPTY__,
+    test_cpp::test_constants::u_2_6().get_u().getType()
+  );
 }
 
 TEST(constants, cpp2) {
@@ -184,4 +251,69 @@ TEST(constants, cpp2) {
   EXPECT_FALSE(pod_3.c.__isset.d);
   EXPECT_FALSE(pod_3.c.c.__isset.a);
   EXPECT_TRUE(pod_3.c.c.__isset.b);
+
+  EXPECT_EQ(
+    test_cpp2::union1::Type::i,
+    test_cpp2::test_constants::u_1_1().getType()
+  );
+  EXPECT_EQ(97, test_cpp2::test_constants::u_1_1().get_i());
+
+  EXPECT_EQ(
+    test_cpp2::union1::Type::d,
+    test_cpp2::test_constants::u_1_2().getType()
+  );
+  EXPECT_EQ(5.6, test_cpp2::test_constants::u_1_2().get_d());
+
+  EXPECT_EQ(
+    test_cpp2::union1::Type::__EMPTY__,
+    test_cpp2::test_constants::u_1_3().getType()
+  );
+
+  EXPECT_EQ(
+    test_cpp2::union2::Type::i,
+    test_cpp2::test_constants::u_2_1().getType()
+  );
+  EXPECT_EQ(51, test_cpp2::test_constants::u_2_1().get_i());
+
+  EXPECT_EQ(
+    test_cpp2::union2::Type::d,
+    test_cpp2::test_constants::u_2_2().getType()
+  );
+  EXPECT_EQ(6.7, test_cpp2::test_constants::u_2_2().get_d());
+
+  EXPECT_EQ(
+    test_cpp2::union2::Type::s,
+    test_cpp2::test_constants::u_2_3().getType()
+  );
+  EXPECT_EQ(8, test_cpp2::test_constants::u_2_3().get_s().get_a());
+  EXPECT_EQ("abacabb", test_cpp2::test_constants::u_2_3().get_s().get_b());
+
+  EXPECT_EQ(
+    test_cpp2::union2::Type::u,
+    test_cpp2::test_constants::u_2_4().getType()
+  );
+  EXPECT_EQ(
+    test_cpp2::union1::Type::i,
+    test_cpp2::test_constants::u_2_4().get_u().getType()
+  );
+  EXPECT_EQ(43, test_cpp2::test_constants::u_2_4().get_u().get_i());
+
+  EXPECT_EQ(
+    test_cpp2::union2::Type::u,
+    test_cpp2::test_constants::u_2_5().getType()
+  );
+  EXPECT_EQ(
+    test_cpp2::union1::Type::d,
+    test_cpp2::test_constants::u_2_5().get_u().getType()
+  );
+  EXPECT_EQ(9.8, test_cpp2::test_constants::u_2_5().get_u().get_d());
+
+  EXPECT_EQ(
+    test_cpp2::union2::Type::u,
+    test_cpp2::test_constants::u_2_6().getType()
+  );
+  EXPECT_EQ(
+    test_cpp2::union1::Type::__EMPTY__,
+    test_cpp2::test_constants::u_2_6().get_u().getType()
+  );
 }

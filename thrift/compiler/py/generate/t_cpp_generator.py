@@ -2530,6 +2530,18 @@ class CppGenerator(t_generator.Generator):
                     if is_copyable:
                         self._gen_union_constructor(struct, obj, op, False)
 
+                # SELECTIVE CONSTRUCTOR
+                for member in members:
+                    struct('template <typename T__ThriftWrappedArgument__Ctor>')
+                    struct(('{0}(::apache::thrift::detail::argument_wrapper<'
+                        '{1}, T__ThriftWrappedArgument__Ctor> arg):').format(
+                            obj.name, member.key))
+                    struct('  type_(Type::__EMPTY__)')
+                    struct('{')
+                    struct('  set_{0}(arg.move());'.format(member.name))
+                    struct('}')
+                # SELECTIVE CONSTRUCTOR
+
             if len(members) > 0:
                 with struct.defn('void {name}()', name="__clear"):
                     if obj.is_union:
@@ -3978,7 +3990,8 @@ class CppGenerator(t_generator.Generator):
             out_list = []
             for field in fields:
                 if field.name in value_map:
-                    out_list.append('::apache::thrift::wrap_argument<{0}>({1})'
+                    out_list.append(
+                        '::apache::thrift::detail::wrap_argument<{0}>({1})'
                         .format(field.key, self._render_const_value(field.type,
                                                           value_map[field.name],
                                                           explicit=True)))
