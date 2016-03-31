@@ -75,6 +75,8 @@ class BaseThriftServer : public apache::thrift::server::TServer {
 
   static const std::chrono::milliseconds DEFAULT_TASK_EXPIRE_TIME;
 
+  static const std::chrono::milliseconds DEFAULT_QUEUE_TIMEOUT;
+
   /// Listen backlog
   static const int DEFAULT_LISTEN_BACKLOG = 1024;
 
@@ -113,6 +115,12 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    * (0 == infinite)
    */
   std::chrono::milliseconds taskExpireTime_ = DEFAULT_TASK_EXPIRE_TIME;
+
+  /**
+   * The time we'll allow a task to wait on the queue and still perform it
+   * (0 == infinite)
+   */
+  std::chrono::milliseconds queueTimeout_ = DEFAULT_QUEUE_TIMEOUT;
 
   /**
    * The number of incoming connections the TCP stack will buffer up while
@@ -489,6 +497,28 @@ class BaseThriftServer : public apache::thrift::server::TServer {
     return taskExpireTime_;
   }
 
+
+  /**
+   * Set the time requests are allowed to stay on the queue.
+   * Note, queuing is an indication that your server cannot keep
+   * up with load, and realtime systems should not queue. Only
+   * override this if you do heavily batched requests.
+   *
+   * @return queue timeout
+   */
+  void setQueueTimeout(std::chrono::milliseconds timeout) {
+    queueTimeout_ = timeout;
+  }
+
+  /**
+   * Get the time requests are allowed to stay on the queue
+   *
+   * @return queue timeout
+   */
+  std::chrono::milliseconds getQueueTimeout() const {
+    return queueTimeout_;
+  }
+
   /**
    * A task has two timeouts:
    *
@@ -507,8 +537,8 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    */
   bool getTaskExpireTimeForRequest(
       const apache::thrift::transport::THeader& header,
-      std::chrono::milliseconds& softTimeout,
-      std::chrono::milliseconds& hardTimeout) const;
+      std::chrono::milliseconds& queueTimeout,
+      std::chrono::milliseconds& taskTimeout) const;
 
   /**
    * Set the listen backlog. Refer to the comment on listenBacklog_ member for

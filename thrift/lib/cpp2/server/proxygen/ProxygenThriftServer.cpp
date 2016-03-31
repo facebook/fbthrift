@@ -119,18 +119,17 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
   buf_ = body_->clone(); // for apache::thrift::ResponseChannel::Request
 
   // Set up timeouts
-  std::chrono::milliseconds softTimeout;
-  std::chrono::milliseconds hardTimeout;
+  std::chrono::milliseconds queueTimeout;
+  std::chrono::milliseconds taskTimeout;
   bool differentTimeouts = worker_->server_->getTaskExpireTimeForRequest(
-      *header_, softTimeout, hardTimeout);
+      *header_, queueTimeout, taskTimeout);
   if (differentTimeouts) {
-    DCHECK(softTimeout > std::chrono::milliseconds(0));
-    DCHECK(hardTimeout > std::chrono::milliseconds(0));
-    timer_->scheduleTimeout(&softTimeout_, softTimeout);
-    timer_->scheduleTimeout(&hardTimeout_, hardTimeout);
-  } else {
-    DCHECK(hardTimeout > std::chrono::milliseconds(0));
-    timer_->scheduleTimeout(&hardTimeout_, hardTimeout);
+    if (queueTimeout > std::chrono::milliseconds(0)) {
+      timer_->scheduleTimeout(&queueTimeout_, queueTimeout);
+    }
+  }
+  if (taskTimeout > std::chrono::milliseconds(0)) {
+    timer_->scheduleTimeout(&taskTimeout_, taskTimeout);
   }
 
   worker_->server_->incActiveRequests();
@@ -186,8 +185,8 @@ void ProxygenThriftServer::ThriftRequestHandler::sendReply(
     std::unique_ptr<folly::IOBuf>&& buf, // && from ResponseChannel.h
     apache::thrift::MessageChannel::SendCallback* cb) {
 
-  softTimeout_.cancelTimeout();
-  hardTimeout_.cancelTimeout();
+  queueTimeout_.cancelTimeout();
+  taskTimeout_.cancelTimeout();
 
   if (request_) {
     request_->clearHandler();

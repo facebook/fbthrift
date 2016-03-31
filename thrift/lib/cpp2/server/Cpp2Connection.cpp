@@ -335,24 +335,24 @@ void Cpp2Connection::requestReceived(
     observer->receivedRequest();
   }
 
-  std::chrono::milliseconds softTimeout;
-  std::chrono::milliseconds hardTimeout;
+  std::chrono::milliseconds queueTimeout;
+  std::chrono::milliseconds taskTimeout;
   auto differentTimeouts = server->getTaskExpireTimeForRequest(
     *(hreq->getHeader()),
-    softTimeout,
-    hardTimeout
+    queueTimeout,
+    taskTimeout
   );
   if (differentTimeouts) {
-    DCHECK(softTimeout > std::chrono::milliseconds(0));
-    DCHECK(hardTimeout > std::chrono::milliseconds(0));
-    scheduleTimeout(&t2r->softTimeout_, softTimeout);
-    scheduleTimeout(&t2r->hardTimeout_, hardTimeout);
-  } else if (hardTimeout > std::chrono::milliseconds(0)) {
-    scheduleTimeout(&t2r->hardTimeout_, hardTimeout);
+    if (queueTimeout > std::chrono::milliseconds(0)) {
+      scheduleTimeout(&t2r->queueTimeout_, queueTimeout);
+    }
+  }
+  if (taskTimeout > std::chrono::milliseconds(0)) {
+    scheduleTimeout(&t2r->taskTimeout_, taskTimeout);
   }
 
   auto reqContext = t2r->getContext();
-  reqContext->setRequestTimeout(hardTimeout);
+  reqContext->setRequestTimeout(taskTimeout);
 
   try {
     auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>
@@ -406,8 +406,8 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
   , reqContext_(&con->context_, req_->getHeader()) {
   RequestContext::create();
 
-  softTimeout_.request_ = this;
-  hardTimeout_.request_ = this;
+  queueTimeout_.request_ = this;
+  taskTimeout_.request_ = this;
 
   const auto& headers = req_->getHeader()->getHeaders();
   auto it = headers.find(Cpp2Connection::loadHeader);
@@ -495,15 +495,15 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse() {
   cancelTimeout();
 }
 
-void Cpp2Connection::Cpp2Request::HardTimeout::timeoutExpired() noexcept {
+void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
   request_->req_->cancel();
   request_->sendTimeoutResponse();
   request_->connection_->requestTimeoutExpired();
 }
 
-void Cpp2Connection::Cpp2Request::SoftTimeout::timeoutExpired() noexcept {
+void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
   if (!request_->reqContext_.getStartedProcessing()) {
-    request_->hardTimeout_.timeoutExpired();
+    request_->taskTimeout_.timeoutExpired();
   }
 }
 

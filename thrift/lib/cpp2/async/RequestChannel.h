@@ -224,7 +224,8 @@ class RpcOptions {
   RpcOptions()
    : timeout_(0),
      priority_(apache::thrift::concurrency::N_PRIORITIES),
-     chunkTimeout_(0)
+     chunkTimeout_(0),
+     queueTimeout_(0)
   { }
 
   /**
@@ -258,6 +259,16 @@ class RpcOptions {
     return chunkTimeout_;
   }
 
+
+  RpcOptions& setQueueTimeout(std::chrono::milliseconds queueTimeout) {
+    queueTimeout_ = queueTimeout;
+    return *this;
+  }
+
+  std::chrono::milliseconds getQueueTimeout() const {
+    return queueTimeout_;
+  }
+
   void setWriteHeader(const std::string& key, const std::string& value) {
     writeHeaders_[key] = value;
   }
@@ -283,6 +294,7 @@ class RpcOptions {
   std::chrono::milliseconds timeout_;
   PRIORITY priority_;
   std::chrono::milliseconds chunkTimeout_;
+  std::chrono::milliseconds queueTimeout_;
 
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;

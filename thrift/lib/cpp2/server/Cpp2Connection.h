@@ -120,20 +120,20 @@ class Cpp2Connection
    public:
     friend class Cpp2Connection;
 
-    class SoftTimeout
+    class QueueTimeout
       : public folly::HHWheelTimer::Callback {
       Cpp2Request* request_;
       void timeoutExpired() noexcept override;
       friend class Cpp2Request;
     };
-    class HardTimeout
+    class TaskTimeout
       : public folly::HHWheelTimer::Callback {
       Cpp2Request* request_;
       void timeoutExpired() noexcept override;
       friend class Cpp2Request;
     };
-    friend class SoftTimeout;
-    friend class HardTimeout;
+    friend class QueueTimeout;
+    friend class TaskTimeout;
 
     Cpp2Request(std::unique_ptr<ResponseChannel::Request> req,
                    std::shared_ptr<Cpp2Connection> con);
@@ -177,12 +177,12 @@ class Cpp2Connection
     std::shared_ptr<Cpp2Connection> connection_;
     Cpp2RequestContext reqContext_;
     folly::Optional<std::string> loadHeader_;
-    SoftTimeout softTimeout_;
-    HardTimeout hardTimeout_;
+    QueueTimeout queueTimeout_;
+    TaskTimeout taskTimeout_;
 
     void cancelTimeout() {
-      softTimeout_.cancelTimeout();
-      hardTimeout_.cancelTimeout();
+      queueTimeout_.cancelTimeout();
+      taskTimeout_.cancelTimeout();
     }
   };
 

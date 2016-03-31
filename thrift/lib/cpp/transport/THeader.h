@@ -263,7 +263,13 @@ class THeader {
 
   apache::thrift::concurrency::PRIORITY getCallPriority();
 
+  std::chrono::milliseconds getTimeoutFromHeader(
+    const std::string header
+  ) const;
+
   std::chrono::milliseconds getClientTimeout() const;
+
+  std::chrono::milliseconds getClientQueueTimeout() const;
 
   void setHttpClientParser(
       std::shared_ptr<apache::thrift::util::THttpClientParser>);
@@ -283,6 +289,7 @@ class THeader {
   static const uint32_t MAX_FRAME_SIZE = 0x3FFFFFFF;
   static const std::string PRIORITY_HEADER;
   static const std::string CLIENT_TIMEOUT_HEADER;
+  static const std::string QUEUE_TIMEOUT_HEADER;
 
  protected:
   bool isFramed(CLIENT_TYPE clientType);

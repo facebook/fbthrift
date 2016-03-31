@@ -91,13 +91,13 @@ class ProxygenThriftServer : public BaseThriftServer,
           header_(std::make_shared<apache::thrift::transport::THeader>()),
           active_(true),
           cb_(nullptr),
-          softTimeout_(this, false),
-          hardTimeout_(this, true),
+          queueTimeout_(this, false),
+          taskTimeout_(this, true),
           request_(nullptr) {}
 
     virtual ~ThriftRequestHandler() {
-      softTimeout_.cancelTimeout();
-      hardTimeout_.cancelTimeout();
+      queueTimeout_.cancelTimeout();
+      taskTimeout_.cancelTimeout();
     }
 
     void onRequest(
@@ -221,8 +221,8 @@ class ProxygenThriftServer : public BaseThriftServer,
     std::atomic<bool> active_;
     apache::thrift::MessageChannel::SendCallback* cb_;
 
-    TaskTimeout softTimeout_;
-    TaskTimeout hardTimeout_;
+    TaskTimeout queueTimeout_;
+    TaskTimeout taskTimeout_;
 
     ProxygenRequest* request_;
   };

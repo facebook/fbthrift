@@ -61,6 +61,7 @@ const string THeader::ID_VERSION_HEADER = "id_version";
 const string THeader::ID_VERSION = "1";
 const string THeader::PRIORITY_HEADER = "thrift_priority";
 const string THeader::CLIENT_TIMEOUT_HEADER = "client_timeout";
+const string THeader::QUEUE_TIMEOUT_HEADER = "queue_timeout";
 
 string THeader::s_identity = "";
 
@@ -1055,9 +1056,11 @@ THeader::getCallPriority() {
   return apache::thrift::concurrency::N_PRIORITIES;
 }
 
-std::chrono::milliseconds THeader::getClientTimeout() const {
+std::chrono::milliseconds THeader::getTimeoutFromHeader(
+  const std::string header
+) const {
   const auto& map = getHeaders();
-  auto iter = map.find(CLIENT_TIMEOUT_HEADER);
+  auto iter = map.find(header);
   if (iter != map.end()) {
     try {
       int64_t timeout = folly::to<int64_t>(iter->second);
@@ -1067,6 +1070,14 @@ std::chrono::milliseconds THeader::getClientTimeout() const {
   }
 
   return std::chrono::milliseconds(0);
+}
+
+std::chrono::milliseconds THeader::getClientTimeout() const {
+  return getTimeoutFromHeader(CLIENT_TIMEOUT_HEADER);
+}
+
+std::chrono::milliseconds THeader::getClientQueueTimeout() const {
+  return getTimeoutFromHeader(QUEUE_TIMEOUT_HEADER);
 }
 
 void THeader::setHttpClientParser(shared_ptr<THttpClientParser> parser) {

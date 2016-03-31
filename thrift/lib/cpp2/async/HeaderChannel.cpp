@@ -36,6 +36,13 @@ void HeaderChannel::addRpcOptionHeaders(THeader* header,
     header->setHeader(transport::THeader::CLIENT_TIMEOUT_HEADER,
                       folly::to<std::string>(rpcOptions.getTimeout().count()));
   }
+
+  if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
+    header->setHeader(
+      transport::THeader::QUEUE_TIMEOUT_HEADER,
+      folly::to<std::string>(rpcOptions.getQueueTimeout().count())
+    );
+  }
 }
 }
 } // apache::thrift
