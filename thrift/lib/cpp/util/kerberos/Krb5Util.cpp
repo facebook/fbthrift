@@ -26,6 +26,8 @@
 #include <thrift/lib/cpp/util/kerberos/FBKrb5GetCreds.h>
 
 #ifndef NO_LIB_GFLAGS
+ #include <gflags/gflags.h>
+
 DEFINE_string (thrift_krb5_user_instances, "admin,root,sudo",
        "List of possible instances(second component) of "
        "user kerberos credentials. Separated by ','. ");
