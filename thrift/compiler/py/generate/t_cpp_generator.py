@@ -4664,7 +4664,7 @@ class CppGenerator(t_generator.Generator):
             safe_ns, name)
         annclsprefix = '{0}_{1}__struct_unique_annotations'.format(
             safe_ns, name)
-        strclsprefix = '{0}_{1}__struct_unique_strings_list'.format(
+        mnfclsprefix = '{0}_{1}__struct_unique_member_info_list'.format(
             safe_ns, name)
         with sns.namespace(self.fatal_detail_ns).scope as detail:
             members = []
@@ -4689,11 +4689,6 @@ class CppGenerator(t_generator.Generator):
             for i in program.structs:
                 if i.is_union:
                     continue
-                with detail.cls('struct {0}_{1}'.format(
-                        i.name, strclsprefix)).scope as cnms:
-                    for m in i.members:
-                        cnms('using {0} = {1};'
-                            .format(m.name, self._set_fatal_string(m.name)))
                 with detail.cls('class {0}_{1}'.format(
                         i.name, annclsprefix)).scope as cann:
                     members_class = '{0}_{1}_members'.format(
@@ -4716,6 +4711,34 @@ class CppGenerator(t_generator.Generator):
                     cann('using values = annotations::values;')
                     cann('using map = annotations::map;')
                     cann('using members = {0};'.format(members_class))
+                transform_arg = '{0}__struct_unique_member_info_list_arg_T' \
+                  .format(name)
+                detail('template <template <typename> class {0}>'.format(
+                    transform_arg))
+                with detail.cls(('struct {0}_{1}').format(
+                        i.name, mnfclsprefix)).scope as cmnf:
+                    for m in i.members:
+                        cmnf(('using {0} = {1}<'
+                            '::apache::thrift::reflected_struct_data_member<')
+                            .format(m.name, transform_arg))
+                        cmnf('')
+                        cmnf('  {0},'.format(self._get_fatal_string_id(m.name)))
+                        cmnf('  {0},'.format(self._type_name(m.type)))
+                        cmnf('  {0},'.format(m.key))
+                        cmnf('  ::apache::thrift::optionality::{0},'.format(
+                            self._render_fatal_required_qualifier(m.req)))
+                        cmnf('  {0}::{1}::{2},'.format(
+                            self.fatal_detail_ns, dtmclsprefix, m.name))
+                        cmnf('        ::apache::thrift::thrift_category::{0},'
+                            .format(self._render_fatal_thrift_category(m.type)))
+                        cmnf('  {0}::{1}::{2}_{3}_struct_member_pod_{4},'
+                            .format(self.fatal_detail_ns, mpdclsprefix,
+                                safe_ns, name, m.name))
+                        cmnf('  ::apache::thrift::reflected_annotations<'
+                            '{0}::{1}_{2}::members::{3}>'.format(
+                                self.fatal_detail_ns, i.name, annclsprefix,
+                                m.name))
+                        cmnf('>>;')
         result = {}
         order = []
         for i in program.structs:
@@ -4728,28 +4751,15 @@ class CppGenerator(t_generator.Generator):
             sns('  {0},'.format(i.name))
             sns('  {0},'.format(self._get_fatal_string_id(i.name)))
             sns('  {0}::{1}_{2},'.format(
-                self.fatal_detail_ns, i.name, strclsprefix))
+                self.fatal_detail_ns, i.name, mnfclsprefix))
             sns('  ::fatal::type_map<')
             annclsnm = '{0}::{1}_{2}'.format(
                 self.fatal_detail_ns, i.name, annclsprefix)
             for midx, m in enumerate(i.members):
                 sns('    ::fatal::type_pair<')
                 sns('      {0},'.format(self._get_fatal_string_id(m.name)))
-                sns('      ::apache::thrift::reflected_struct_data_member<')
-                sns('        {0},'.format(self._get_fatal_string_id(m.name)))
-                sns('        {0},'.format(self._type_name(m.type)))
-                sns('        {0},'.format(m.key))
-                sns('        ::apache::thrift::optionality::{0},'
-                    .format(self._render_fatal_required_qualifier(m.req)))
-                sns('        {0}::{1}::{2},'.format(
-                    self.fatal_detail_ns, dtmclsprefix, m.name))
-                sns('        ::apache::thrift::thrift_category::{0},'
-                    .format(self._render_fatal_thrift_category(m.type)))
-                sns('        {0}::{1}::{2}_{3}_struct_member_pod_{4},'.format(
-                    self.fatal_detail_ns, mpdclsprefix, safe_ns, name, m.name))
-                sns('        ::apache::thrift::reflected_annotations<'
-                    '{0}::members::{1}>'.format(annclsnm, m.name))
-                sns('      >')
+                sns('      {0}::{1}_{2}<::fatal::identity>::{3}'.format(
+                    self.fatal_detail_ns, i.name, mnfclsprefix, m.name))
                 sns('    >{0}'.format(',' if midx + 1 < len(i.members) else ''))
             sns('  >,')
             sns('  {0}::members,'.format(annclsnm))

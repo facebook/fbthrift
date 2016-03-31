@@ -294,6 +294,31 @@ TEST(fatal_struct, struct1_sanity_check) {
     bool,
     decltype(std::declval<traits::members::get<field5s>::pod<bool>>().field5)
   >();
+
+  EXPECT_SAME<
+    traits::member<>::field0,
+    traits::members::get<traits::names::field0>
+  >();
+  EXPECT_SAME<
+    traits::member<>::field1,
+    traits::members::get<traits::names::field1>
+  >();
+  EXPECT_SAME<
+    traits::member<>::field2,
+    traits::members::get<traits::names::field2>
+  >();
+  EXPECT_SAME<
+    traits::member<>::field3,
+    traits::members::get<traits::names::field3>
+  >();
+  EXPECT_SAME<
+    traits::member<>::field4,
+    traits::members::get<traits::names::field4>
+  >();
+  EXPECT_SAME<
+    traits::member<>::field5,
+    traits::members::get<traits::names::field5>
+  >();
 }
 
 FATAL_STR(structB_annotation1k, "some.annotation");

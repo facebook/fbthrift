@@ -702,7 +702,7 @@ struct reflected_annotations {
 template <
   typename Struct,
   typename Name,
-  typename Names,
+  template <template <typename> class> class MembersInfo,
   typename Info,
   typename MembersAnnotations,
   typename Metadata
@@ -755,6 +755,35 @@ struct reflected_struct {
   using module = typename Metadata::module;
 
   /**
+   * An implementation defined type template that provides the appropriate
+   * `reflected_struct_data_member` for each data member as a member type alias
+   * with the same name.
+   *
+   * These type aliases are used as the type mapped by the `members` member
+   * offered by the `reflected_struct` class.
+   *
+   * An optional transform can be specified, which will be applied on top of the
+   * members' `reflected_struct_data_member`.
+   *
+   * Example:
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *
+   *  // yields `fatal::constant_sequence<char, 'a'>`
+   *  using result1 = info::member<>::a::name;
+   *
+   *  // yields `std::int32_t`
+   *  using result2 = info::member<>::a::type;
+   *
+   *  // yields `1`
+   *  using result3 = info::member<>::a::id::value;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  template <template <typename> class Transform = fatal::identity>
+  using member = MembersInfo<Transform>;
+
+  /**
    * An implementation defined type that provides the names for each data member
    * as a member type alias with the same name.
    *
@@ -779,7 +808,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using names = Names;
+  using names = member<fatal::get_member_type::name>;
 
   /**
    * A `fatal::type_map` from the data member name to the corresponding metadata
