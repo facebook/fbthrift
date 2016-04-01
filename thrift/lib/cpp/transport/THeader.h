@@ -344,8 +344,6 @@ class THeader {
   static const std::string ID_VERSION_HEADER;
   static const std::string ID_VERSION;
 
-  static std::string s_identity;
-
   uint32_t minCompressBytes_;
   bool allowBigFrames_;
 

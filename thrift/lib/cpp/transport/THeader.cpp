@@ -63,8 +63,6 @@ const string THeader::PRIORITY_HEADER = "thrift_priority";
 const string THeader::CLIENT_TIMEOUT_HEADER = "client_timeout";
 const string THeader::QUEUE_TIMEOUT_HEADER = "queue_timeout";
 
-string THeader::s_identity = "";
-
 static const string THRIFT_AUTH_HEADER = "thrift_auth";
 
 THeader::THeader(int options)
@@ -75,7 +73,6 @@ THeader::THeader(int options)
   , forceClientType_(false)
   , seqId(0)
   , flags_(0)
-  , identity(s_identity)
   , minCompressBytes_(0)
   , allowBigFrames_(options & ALLOW_BIG_FRAMES) {}
 
