@@ -27,7 +27,6 @@
 
 #ifndef NO_LIB_GFLAGS
  #include <gflags/gflags.h>
-#endif
 
 DEFINE_string (thrift_krb5_user_instances, "admin,root,sudo",
        "List of possible instances(second component) of "
