@@ -313,6 +313,11 @@ struct to_dynamic_struct_visitor {
       "to_dynamic: unsupported type"
     );
 
+    if (MemberInfo::optional::value == optionality::optional &&
+        !MemberInfo::is_set(input)) {
+      return;
+    }
+
     impl::to(
       out[folly::StringPiece(MemberInfo::name::data(), MemberInfo::name::size)],
       MemberInfo::getter::ref(input),
@@ -322,6 +327,16 @@ struct to_dynamic_struct_visitor {
 };
 
 struct from_dynamic_struct_visitor {
+  using required = std::integral_constant<optionality, optionality::required>;
+
+  template <typename Owner, typename Getter, typename Optionality>
+  typename std::enable_if<Optionality::value == optionality::required>::type
+  assign_is_set(Owner &, bool) const {}
+
+  template <typename Owner, typename Getter, typename Optionality>
+  typename std::enable_if<Optionality::value != optionality::required>::type
+  assign_is_set(Owner &owner, bool v) const { Getter::ref(owner.__isset) = v; }
+
   template <typename Member, typename T>
   void operator ()(
     fatal::type_tag<Member>,
@@ -330,8 +345,11 @@ struct from_dynamic_struct_visitor {
     dynamic_format format,
     format_adherence adherence
   ) const {
-    using getter = typename reflect_struct<T>::getters::template get<Member>;
-    from_dynamic(getter::ref(out), input, format, adherence);
+    using rstruct = reflect_struct<T>;
+    using rmember = typename rstruct::members::template get<Member>;
+    using rgetter = typename rmember::getter;
+    assign_is_set<T, rgetter, typename rmember::optional>(out, true);
+    from_dynamic(rgetter::ref(out), input, format, adherence);
   }
 };
 

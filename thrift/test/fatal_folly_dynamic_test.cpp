@@ -278,65 +278,106 @@ template <
 >
 std::pair<Struct3, char const *> test_data_1() {
   StructA a1;
+  a1.__isset.a = true;
   a1.a = 99;
+  a1.__isset.b = true;
   a1.b = "abc";
   StructA a2;
+  a2.__isset.a = true;
   a2.a = 1001;
+  a2.__isset.b = true;
   a2.b = "foo";
   StructA a3;
+  a3.__isset.a = true;
   a3.a = 654;
+  a3.__isset.b = true;
   a3.b = "bar";
   StructA a4;
+  a4.__isset.a = true;
   a4.a = 9791;
+  a4.__isset.b = true;
   a4.b = "baz";
   StructA a5;
+  a5.__isset.a = true;
   a5.a = 111;
+  a5.__isset.b = true;
   a5.b = "gaz";
 
   StructB b1;
+  b1.__isset.c = true;
   b1.c = 1.23;
+  b1.__isset.d = true;
   b1.d = true;
   StructB b2;
+  b2.__isset.c = true;
   b2.c = 9.8;
+  b2.__isset.d = true;
   b2.d = false;
   StructB b3;
+  b3.__isset.c = true;
   b3.c = 10.01;
+  b3.__isset.d = true;
   b3.d = true;
   StructB b4;
+  b4.__isset.c = true;
   b4.c = 159.73;
+  b4.__isset.d = true;
   b4.d = false;
   StructB b5;
+  b5.__isset.c = true;
   b5.c = 468.02;
+  b5.__isset.d = true;
   b5.d = true;
 
   Struct3 pod;
 
+  pod.__isset.fieldA = true;
   pod.fieldA = 141;
+  pod.__isset.fieldB = true;
   pod.fieldB = "this is a test";
+  pod.__isset.fieldC = true;
   pod.fieldC = Enum1::field0;
+  pod.__isset.fieldD = true;
   pod.fieldD = Enum2::field1_2;
+  pod.__isset.fieldE = true;
   pod.fieldE.set_ud(5.6);
+  pod.__isset.fieldF = true;
   pod.fieldF.set_us_2("this is a variant");
+  pod.__isset.fieldG = true;
   pod.fieldG.field0 = 98;
+  pod.fieldG.__isset.field1 = true;
   pod.fieldG.field1 = "hello, world";
+  pod.fieldG.__isset.field2 = true;
   pod.fieldG.field2 = Enum1::field2;
   pod.fieldG.field3 = Enum2::field0_2;
+  pod.fieldG.__isset.field4 = true;
   pod.fieldG.field4.set_ui(19937);
+  pod.fieldG.__isset.field5 = true;
   pod.fieldG.field5.set_ue_2(Enum1::field1);
   // fieldH intentionally left empty
+  pod.__isset.fieldI = true;
   pod.fieldI = {3, 5, 7, 9};
+  pod.__isset.fieldJ = true;
   pod.fieldJ = {"a", "b", "c", "d"};
+  pod.__isset.fieldK = true;
   pod.fieldK = {};
+  pod.__isset.fieldL = true;
   pod.fieldL.push_back(a1);
   pod.fieldL.push_back(a2);
   pod.fieldL.push_back(a3);
   pod.fieldL.push_back(a4);
   pod.fieldL.push_back(a5);
+  pod.__isset.fieldM = true;
   pod.fieldM = {2, 4, 6, 8};
+  pod.__isset.fieldN = true;
   pod.fieldN = {"w", "x", "y", "z"};
+  pod.__isset.fieldO = true;
   pod.fieldO = {};
+  pod.__isset.fieldP = true;
   pod.fieldP = {b1, b2, b3, b4, b5};
+  pod.__isset.fieldQ = true;
   pod.fieldQ = {{"a1", a1}, {"a2", a2}, {"a3", a3}};
+  pod.__isset.fieldR = true;
   pod.fieldR = {};
 
   auto const json = "{\
@@ -476,4 +517,12 @@ bool global_structA::operator <(global_structA const &rhs) const {
 
 bool global_structB::operator <(global_structB const &rhs) const {
   return c < rhs.c || (c == rhs.c && d < rhs.d);
+}
+
+TEST(fatal_folly_dynamic, optional_string) {
+  auto obj = apache::thrift::from_dynamic<global_struct1>(
+      folly::dynamic::object("field1", "asdf"),
+      apache::thrift::dynamic_format::PORTABLE);
+  EXPECT_TRUE(obj.__isset.field1);
+  EXPECT_EQ("asdf", obj.field1);
 }
