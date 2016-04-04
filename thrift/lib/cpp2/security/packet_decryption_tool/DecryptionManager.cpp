@@ -228,7 +228,7 @@ void DecryptionManager::PacketHandler::handle(unique_ptr<Packet> packet) {
 
 void DecryptionManager::PacketHandler::parseSecondMessage(Packet* packet) {
   // Parse input token from thrift response.
-  unique_ptr<IOBuf> msg = removeThriftHeader(packet);
+  auto msg = removeThriftHeader(packet);
   if (!msg) {
     return;
   }
@@ -242,7 +242,7 @@ void DecryptionManager::PacketHandler::parseSecondMessage(Packet* packet) {
    methodName = PargsPresultProtoDeserialize(
         header_->getProtocolId(),
         presult,
-        msg.get(),
+        msg.get()->getUntransformed(),
         T_REPLY).first;
   } catch (const TProtocolException& e) {
     if (header_->getProtocolId() == protocol::T_BINARY_PROTOCOL &&
@@ -250,7 +250,7 @@ void DecryptionManager::PacketHandler::parseSecondMessage(Packet* packet) {
       methodName = PargsPresultProtoDeserialize(
           protocol::T_COMPACT_PROTOCOL,
           presult,
-          msg.get(),
+          msg.get()->getUntransformed(),
           T_REPLY).first;
     } else {
       onError("Cannot parse second thrift security negotiation message");
@@ -343,12 +343,12 @@ void DecryptionManager::PacketHandler::parseSecondMessage(Packet* packet) {
   }
 }
 
-unique_ptr<IOBuf>
+unique_ptr<transport::THeaderBody>
 DecryptionManager::PacketHandler::removeThriftHeader(Packet* packet) {
   unique_ptr<IOBufQueue> queue = folly::make_unique<IOBufQueue>();
   queue->wrapBuffer(packet->payload_, packet->payloadSize_);
 
-  unique_ptr<IOBuf> msg;
+  unique_ptr<transport::THeaderBody> msg;
   size_t remaining;
   try {
     std::map<std::string, std::string> persistentHeaders;
@@ -368,7 +368,7 @@ DecryptionManager::PacketHandler::removeThriftHeader(Packet* packet) {
 
 void DecryptionManager::PacketHandler::parseFirstMessage(Packet* packet) {
   // Parse input token from thrift request.
-  unique_ptr<IOBuf> msg = removeThriftHeader(packet);
+  auto msg = removeThriftHeader(packet);
   if (!msg) {
     return;
   }
@@ -383,7 +383,7 @@ void DecryptionManager::PacketHandler::parseFirstMessage(Packet* packet) {
      methodName = PargsPresultProtoDeserialize(
           header_->getProtocolId(),
           pargs,
-          msg.get(),
+          msg.get()->getUntransformed(),
           T_CALL).first;
     } catch (const TProtocolException& e) {
       if (header_->getProtocolId() == protocol::T_BINARY_PROTOCOL &&
@@ -391,7 +391,7 @@ void DecryptionManager::PacketHandler::parseFirstMessage(Packet* packet) {
         methodName = PargsPresultProtoDeserialize(
             protocol::T_COMPACT_PROTOCOL,
             pargs,
-            msg.get(),
+            msg.get()->getUntransformed(),
             T_CALL).first;
       } else {
         onError("Protocol mismatch parsing first thrift security message");

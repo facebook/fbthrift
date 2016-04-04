@@ -65,7 +65,7 @@ class MessageChannel :
       return false;
     }
     virtual void messageReceived(
-        std::unique_ptr<folly::IOBuf>&&,
+        std::unique_ptr<transport::THeaderBody>&&,
         std::unique_ptr<apache::thrift::transport::THeader>&&,
         std::unique_ptr<sample>) = 0;
     virtual void messageChannelEOF() = 0;
@@ -73,7 +73,7 @@ class MessageChannel :
   };
 
   virtual void sendMessage(SendCallback*,
-                           std::unique_ptr<folly::IOBuf>&&,
+                           std::unique_ptr<transport::THeaderBody>&&,
                            apache::thrift::transport::THeader*) = 0;
 
   /**

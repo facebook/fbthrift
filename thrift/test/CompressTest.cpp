@@ -95,7 +95,7 @@ void testChainedCompression(uint8_t flag, int iters) {
 
   auto cloned = head->clone();
 
-  auto compressed = header.addHeader(std::move(head), persistentHeaders);
+  auto compressed = header.addHeader(transport::THeaderBody::wrapUntransformed(std::move(head)), persistentHeaders);
   EXPECT_NE(compressed, nullptr);
   printf("%i\n", (int)compressed->length());
 
@@ -108,11 +108,14 @@ void testChainedCompression(uint8_t flag, int iters) {
   EXPECT_EQ(needed, 0);
   EXPECT_TRUE(q.empty());
 
+  auto uncompressed_buf = uncompressed->getUntransformed()->clone();
+
   cloned->coalesce();
-  uncompressed->coalesce();
-  printf("%i, %i\n", (int)cloned->length(), (int)uncompressed->length());
-  EXPECT_EQ(cloned->length(), uncompressed->length());
-  EXPECT_EQ(0, memcmp(cloned->data(), uncompressed->data(), cloned->length()));
+  uncompressed_buf->coalesce();
+
+  printf("%i, %i\n", (int)cloned->length(), (int)uncompressed_buf->length());
+  EXPECT_EQ(cloned->length(), uncompressed_buf->length());
+  EXPECT_EQ(0, memcmp(cloned->data(), uncompressed_buf->data(), cloned->length()));
 }
 
 BENCHMARK(BM_UncompressedBinary, iters) {

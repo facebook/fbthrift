@@ -69,6 +69,8 @@ namespace apache { namespace thrift { namespace transport {
 using apache::thrift::protocol::T_COMPACT_PROTOCOL;
 using apache::thrift::protocol::T_BINARY_PROTOCOL;
 
+class THeaderBody;
+
 /**
  * Class that will take an IOBuf and wrap it in some thrift headers.
  * see thrift/doc/HeaderFormat.txt for details.
@@ -118,9 +120,9 @@ class THeader {
    * We know we got a packet in header format here, try to parse the header
    *
    * @param IObuf of the header + data.  Untransforms the data as appropriate.
-   * @return Just the data section in an IOBuf
+   * @return THeaderBody containing just the data section
    */
-  std::unique_ptr<folly::IOBuf> readHeaderFormat(
+  std::unique_ptr<THeaderBody> readHeaderFormat(
     std::unique_ptr<folly::IOBuf>,
     StringToStringMap& persistentReadHeaders);
 
@@ -132,9 +134,12 @@ class THeader {
    * @param IOBuf input data section
    * @return IOBuf output data section
    */
-  static std::unique_ptr<folly::IOBuf> untransform(
+  static std::unique_ptr<THeaderBody> untransform(
     std::unique_ptr<folly::IOBuf>,
     std::vector<uint16_t>& readTrans);
+
+  std::unique_ptr<THeaderBody> untransform(
+    std::unique_ptr<folly::IOBuf>);
 
   /**
    * Transform the data based on our write transform flags
@@ -144,10 +149,13 @@ class THeader {
    * @param IOBuf to transform.  Returns transformed IOBuf (or chain)
    * @return transformed data IOBuf
    */
-  static std::unique_ptr<folly::IOBuf> transform(
+  static std::unique_ptr<THeaderBody> transform(
     std::unique_ptr<folly::IOBuf>,
     std::vector<uint16_t>& writeTrans,
     size_t minCompressBytes);
+
+  std::unique_ptr<THeaderBody> transform(
+    std::unique_ptr<folly::IOBuf>);
 
   /**
    * Clone a new THeader. Metadata is copied, but not headers.
@@ -228,9 +236,8 @@ class THeader {
    * @return IOBuf chain with header _and_ data.  Data is not copied
    */
   std::unique_ptr<folly::IOBuf> addHeader(
-    std::unique_ptr<folly::IOBuf>,
-    StringToStringMap& persistentWriteHeaders,
-    bool transform=true);
+    std::unique_ptr<THeaderBody> wrapper,
+    StringToStringMap& persistentWriteHeaders);
   /**
    * Given an IOBuf Chain, remove the header.  Supports unframed (sync
    * only), framed, header, and http (sync case only).  This doesn't
@@ -248,7 +255,7 @@ class THeader {
    *                 If nullptr, we didn't get enough data for a whole message,
    *                 call removeHeader again after reading needed more bytes.
    */
-  std::unique_ptr<folly::IOBuf> removeHeader(
+  std::unique_ptr<THeaderBody> removeHeader(
     folly::IOBufQueue*,
     size_t& needed,
     StringToStringMap& persistentReadHeaders);
@@ -300,20 +307,20 @@ class THeader {
 
   // Calls appropriate method based on client type
   // returns nullptr if Header of Unknown type
-  std::unique_ptr<folly::IOBuf> removeNonHeader(folly::IOBufQueue* queue,
-                                                size_t& needed,
-                                                CLIENT_TYPE clientType,
-                                                uint32_t sz);
+  std::unique_ptr<THeaderBody> removeNonHeader(folly::IOBufQueue* queue,
+                                                      size_t& needed,
+                                                      CLIENT_TYPE clientType,
+                                                      uint32_t sz);
 
   template<template <class BaseProt> class ProtocolClass,
            protocol::PROTOCOL_TYPES ProtocolID>
-  std::unique_ptr<folly::IOBuf> removeUnframed(folly::IOBufQueue* queue,
+  std::unique_ptr<THeaderBody> removeUnframed(folly::IOBufQueue* queue,
                                                size_t& needed);
-  std::unique_ptr<folly::IOBuf> removeHttpServer(folly::IOBufQueue* queue);
-  std::unique_ptr<folly::IOBuf> removeHttpClient(folly::IOBufQueue* queue,
-                                                 size_t& needed);
-  std::unique_ptr<folly::IOBuf> removeFramed(uint32_t sz,
-                                             folly::IOBufQueue* queue);
+  std::unique_ptr<THeaderBody> removeHttpServer(folly::IOBufQueue* queue);
+  std::unique_ptr<THeaderBody> removeHttpClient(folly::IOBufQueue* queue,
+                                                       size_t& needed);
+  std::unique_ptr<THeaderBody> removeFramed(uint32_t sz,
+                                                   folly::IOBufQueue* queue);
 
   void setBestClientType();
 
@@ -368,6 +375,62 @@ class THeader {
       END        // signal the end of infoIds we can handle
     };
   };
+};
+
+class THeaderBody {
+ public:
+  static std::unique_ptr<THeaderBody> wrapUntransformed(
+      std::unique_ptr<folly::IOBuf> untransformedBuf,
+      const std::vector<uint16_t>& transforms);
+
+  static std::unique_ptr<THeaderBody> wrapUntransformed(
+      std::unique_ptr<folly::IOBuf> buf);
+
+  static std::unique_ptr<THeaderBody> wrapTransformed(
+      std::unique_ptr<folly::IOBuf> transformedBuf,
+      const std::vector<uint16_t>& transforms);
+
+  static std::unique_ptr<folly::IOBuf> extractTransformed(
+      std::unique_ptr<THeaderBody> wrapper,
+      std::vector<uint16_t>& transforms);
+
+  static std::unique_ptr<folly::IOBuf> extractUntransformed(
+      std::unique_ptr<THeaderBody> wrapper);
+
+  std::tuple<const folly::IOBuf*, const std::vector<uint16_t>&> getTransformed();
+  const folly::IOBuf* getTransformed(std::vector<uint16_t>& transforms);
+  const folly::IOBuf* getUntransformed();
+
+  void ensureTransformsApplied();
+  void ensureTransformsRemoved();
+
+  std::unique_ptr<THeaderBody> clone() const;
+
+ protected:
+  explicit THeaderBody(
+      std::unique_ptr<folly::IOBuf> buf,
+      const std::vector<uint16_t>& transforms,
+      bool transformsApplied);
+
+  void checkCorrupt();
+
+  std::unique_ptr<folly::IOBuf> buf_;
+  std::vector<uint16_t> transforms_;
+
+  // The current state of the data buffer, so we know whether we need to
+  // (un)apply transforms before returning the data.
+  bool isTransformed_;
+
+  // It's inefficient to flip back and forth between transformed and
+  // untransformed data. Set this flag when we go from one to the other, and
+  // log a warning if we flip back.
+  bool transformWorkPerformed_ = false;
+
+  // cpu work can be triggered from multiple sources, not all of which destroy
+  // the THeaderBody instance. If we fail to (un)apply transforms, the data
+  // buffer may be corrupt and we cannot safely return any buffers. This
+  // boolean keeps track of if we have failed before.
+  bool transformsFailed_ = false;
 };
 
 }}} // apache::thrift::transport

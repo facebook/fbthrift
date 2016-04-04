@@ -45,11 +45,11 @@ using apache::thrift::transport::THeader;
 class Cpp2Channel
   : public MessageChannel
   , public wangle::Handler<
-        std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<THeader>>,
+        std::pair<std::unique_ptr<transport::THeaderBody>, std::unique_ptr<THeader>>,
         int, // last inbound handler so this doesn't matter
         // Does nothing when writing
-        std::pair<std::unique_ptr<folly::IOBuf>, THeader*>,
-        std::pair<std::unique_ptr<folly::IOBuf>, THeader*>>
+        std::pair<std::unique_ptr<transport::THeaderBody>, THeader*>,
+        std::pair<std::unique_ptr<transport::THeaderBody>, THeader*>>
  {
  public:
   explicit Cpp2Channel(
@@ -92,7 +92,7 @@ class Cpp2Channel
 
   // BytesToBytesHandler methods
   void read(Context* ctx,
-            std::pair<std::unique_ptr<folly::IOBuf>,
+            std::pair<std::unique_ptr<transport::THeaderBody>,
                       std::unique_ptr<THeader>> bufAndHeader) override;
   void readEOF(Context* ctx) override;
   void readException(Context* ctx, folly::exception_wrapper e) override;
@@ -100,7 +100,7 @@ class Cpp2Channel
 
   folly::Future<folly::Unit> write(
       Context* ctx,
-      std::pair<std::unique_ptr<folly::IOBuf>, THeader*> bufAndHeader) override
+      std::pair<std::unique_ptr<transport::THeaderBody>, THeader*> bufAndHeader) override
   {
     return ctx->fireWrite(std::move(bufAndHeader));
   }
@@ -114,7 +114,7 @@ class Cpp2Channel
 
   // Interface from MessageChannel
   void sendMessage(SendCallback* callback,
-                   std::unique_ptr<folly::IOBuf>&& buf,
+                   std::unique_ptr<transport::THeaderBody>&& buf,
                    apache::thrift::transport::THeader* header) override;
   void setReceiveCallback(RecvCallback* callback) override;
 
@@ -156,7 +156,7 @@ private:
 
   typedef wangle::StaticPipeline<
     folly::IOBufQueue&,
-    std::pair<std::unique_ptr<folly::IOBuf>,
+    std::pair<std::unique_ptr<transport::THeaderBody>,
               apache::thrift::transport::THeader*>,
     TAsyncTransportHandler,
     wangle::OutputBufferingHandler,

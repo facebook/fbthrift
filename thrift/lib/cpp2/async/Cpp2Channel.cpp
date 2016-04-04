@@ -118,7 +118,7 @@ EventBase* Cpp2Channel::getEventBase() {
 
 void Cpp2Channel::read(
     Context* ctx,
-    std::pair<std::unique_ptr<folly::IOBuf>,
+    std::pair<std::unique_ptr<transport::THeaderBody>,
               std::unique_ptr<THeader>> bufAndHeader) {
   DestructorGuard dg(this);
 
@@ -193,7 +193,7 @@ void Cpp2Channel::processReadEOF() noexcept {
 
 // Low level interface
 void Cpp2Channel::sendMessage(SendCallback* callback,
-                              std::unique_ptr<folly::IOBuf>&& buf,
+                              std::unique_ptr<THeaderBody>&& buf,
                               apache::thrift::transport::THeader* header) {
   // Callback may be null.
   assert(buf);

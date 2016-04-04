@@ -84,7 +84,7 @@ void HeaderServerChannel::destroy() {
 
 // Header framing
 unique_ptr<IOBuf>
-HeaderServerChannel::ServerFramingHandler::addFrame(unique_ptr<IOBuf> buf,
+HeaderServerChannel::ServerFramingHandler::addFrame(unique_ptr<transport::THeaderBody> buf,
                                                     THeader* header) {
   channel_.updateClientType(header->getClientType());
 
@@ -93,21 +93,20 @@ HeaderServerChannel::ServerFramingHandler::addFrame(unique_ptr<IOBuf> buf,
   // Instead we have to catch it at sendMessage
   return header->addHeader(
     std::move(buf),
-    channel_.getPersistentWriteHeaders(),
-    false /* Data already transformed in AsyncProcessor.h */);
+    channel_.getPersistentWriteHeaders());
 }
 
-std::tuple<unique_ptr<IOBuf>, size_t, unique_ptr<THeader>>
+std::tuple<unique_ptr<transport::THeaderBody>, size_t, unique_ptr<THeader>>
 HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   std::unique_ptr<THeader> header(new THeader(THeader::ALLOW_BIG_FRAMES));
   // removeHeader will set seqid in header.
   // For older clients with seqid in the protocol, header
   // will dig in to the protocol to get the seqid correctly.
   if (!q || !q->front() || q->front()->empty()) {
-    return make_tuple(std::unique_ptr<IOBuf>(), 0, nullptr);
+    return make_tuple(std::unique_ptr<transport::THeaderBody>(), 0, nullptr);
   }
 
-  std::unique_ptr<folly::IOBuf> buf;
+  std::unique_ptr<transport::THeaderBody> buf;
   size_t remaining = 0;
   try {
     buf = header->removeHeader(q, remaining,
@@ -119,7 +118,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
     throw;
   }
   if (!buf) {
-    return make_tuple(std::unique_ptr<IOBuf>(), remaining, nullptr);
+    return make_tuple(std::move(buf), remaining, nullptr);
   }
 
   CLIENT_TYPE ct = header->getClientType();
@@ -132,7 +131,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   // Check if protocol used in the buffer is consistent with the protocol
   // id in the header.
 
-  folly::io::Cursor c(buf.get());
+  folly::io::Cursor c(buf->getUntransformed());
   auto byte = c.read<uint8_t>();
   // Initialize it to a value never used on the wire
   PROTOCOL_TYPES protInBuf = PROTOCOL_TYPES::T_DEBUG_PROTOCOL;
@@ -147,7 +146,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
                << "protoId: " << header->getProtocolId() << ", "
                << "clientType: " << folly::to<std::string>(ct) << ". "
                << "First few bytes of payload: "
-               << getTHeaderPayloadString(buf.get());
+               << getTHeaderPayloadString(buf->getUntransformed());
 
   }
 
@@ -161,7 +160,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
                << "in payload, protocolId: "
                << folly::to<std::string>(protInBuf)
                << ". First few bytes of payload: "
-               << getTHeaderPayloadString(buf.get());
+               << getTHeaderPayloadString(buf->getUntransformed());
   }
 
   // In order to allow negotiation to happen when the client requests
@@ -176,7 +175,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
 
 bool
 HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
-    std::unique_ptr<folly::IOBuf>&& buf,
+    std::unique_ptr<transport::THeaderBody>&& buf,
     std::unique_ptr<apache::thrift::transport::THeader>&& header) {
   auto ct = header->getClientType();
   auto protectionState = channel_.getProtectionState();
@@ -191,10 +190,7 @@ HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
         try {
           auto trans = header->getWriteTransforms();
           channel_.sendMessage(nullptr,
-                               THeader::transform(
-                                   IOBuf::create(0),
-                                   trans,
-                                   channel_.getMinCompressBytes()),
+                               transport::THeaderBody::wrapUntransformed(IOBuf::create(0)),
                                header.get());
         } catch (const std::exception& e) {
           LOG(ERROR) << "Failed to send message: " << e.what();
@@ -270,7 +266,7 @@ HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
 }
 
 std::string
-HeaderServerChannel::getTHeaderPayloadString(IOBuf* buf) {
+HeaderServerChannel::getTHeaderPayloadString(const IOBuf* buf) {
   auto len = std::min<size_t>(buf->length(), 20);
   return folly::cEscape<std::string>(
       folly::StringPiece((const char*)buf->data(), len));
@@ -302,7 +298,7 @@ HeaderServerChannel::getTransportDebugString(TAsyncTransport* transport) {
 
 HeaderServerChannel::HeaderRequest::HeaderRequest(
       HeaderServerChannel* channel,
-      unique_ptr<IOBuf>&& buf,
+      unique_ptr<transport::THeaderBody>&& buf,
       unique_ptr<THeader>&& header,
       unique_ptr<sample> sample)
   : channel_(channel)
@@ -327,7 +323,7 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
  *
  */
 void HeaderServerChannel::HeaderRequest::sendReply(
-    unique_ptr<IOBuf>&& buf,
+    unique_ptr<transport::THeaderBody>&& buf,
     MessageChannel::SendCallback* cb) {
   // This method is only called and active_ is only touched in evb, so
   // it is safe to use this flag from both timeout and normal responses.
@@ -376,17 +372,14 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
       uint16_t proto = header_->getProtocolId();
       auto transforms = header_->getWriteTransforms();
       try {
-        exbuf = serializeError(proto, tae, getBuf());
+        exbuf = serializeError(proto, tae, getBuf()->getUntransformed());
       } catch (const TProtocolException& pe) {
         LOG(ERROR) << "serializeError failed. type=" << pe.getType()
             << " what()=" << pe.what();
         channel_->closeNow();
         return;
       }
-      exbuf = THeader::transform(std::move(exbuf),
-                                 transforms,
-                                 header_->getMinCompressBytes());
-      sendReply(std::move(exbuf), cb);
+      sendReply(header_->transform(std::move(exbuf)), cb);
     });
 }
 
@@ -403,7 +396,6 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
   ew.with_exception([&](TApplicationException& tae) {
       std::unique_ptr<folly::IOBuf> exbuf;
       uint16_t proto = header_->getProtocolId();
-      auto transforms = header_->getWriteTransforms();
       try {
         exbuf = serializeError(proto, tae, methodName, protoSeqId);
       } catch (const TProtocolException& pe) {
@@ -412,10 +404,7 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
         channel_->closeNow();
         return;
       }
-      exbuf = THeader::transform(std::move(exbuf),
-                                 transforms,
-                                 header_->getMinCompressBytes());
-      sendReply(std::move(exbuf), cb);
+      sendReply(header_->transform(std::move(exbuf)), cb);
     });
 }
 
@@ -451,14 +440,11 @@ void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
     return;
   }
 
-  exbuf = THeader::transform(std::move(exbuf),
-                             timeoutHeader_->getWriteTransforms(),
-                             timeoutHeader_->getMinCompressBytes());
-  sendReply(std::move(exbuf), cb);
+  sendReply(timeoutHeader_->transform(std::move(exbuf)), cb);
 }
 
 void HeaderServerChannel::sendCatchupRequests(
-    std::unique_ptr<folly::IOBuf> next_req,
+    std::unique_ptr<transport::THeaderBody> next_req,
     MessageChannel::SendCallback* cb,
     THeader* header) {
 
@@ -498,7 +484,7 @@ bool HeaderServerChannel::shouldSample() {
     ((sample_++ % sampleRate_) == 0);
 }
 
-void HeaderServerChannel::messageReceived(unique_ptr<IOBuf>&& buf,
+void HeaderServerChannel::messageReceived(unique_ptr<transport::THeaderBody>&& buf,
                                           unique_ptr<THeader>&& header,
                                           unique_ptr<sample> sample) {
   DestructorGuard dg(this);
@@ -585,10 +571,7 @@ void HeaderServerChannel::SaslServerCallback::saslSendClient(
     auto trans = header_->getWriteTransforms();
     channel_.setProtectionState(ProtectionState::WAITING);
     channel_.sendMessage(nullptr,
-                         THeader::transform(
-                           std::move(response),
-                           trans,
-                           channel_.getMinCompressBytes()),
+                         header_->transform(std::move(response)),
                          header_.get());
   } catch (const std::exception& e) {
     LOG(ERROR) << "Failed to send message: " << e.what();
@@ -625,12 +608,8 @@ void HeaderServerChannel::SaslServerCallback::saslError(
   // TODO mhorowitz: generate a real message here.
   header_->setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
   try {
-    auto trans = header_->getWriteTransforms();
     channel_.sendMessage(nullptr,
-                         THeader::transform(
-                           IOBuf::create(0),
-                           trans,
-                           channel_.getMinCompressBytes()),
+                         THeaderBody::wrapUntransformed(IOBuf::create(0)),
                          header_.get());
   } catch (const std::exception& e) {
     LOG(ERROR) << "Failed to send message: " << e.what();

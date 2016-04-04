@@ -199,7 +199,7 @@ void GssSaslClient::start(Callback *cb) {
             return;
           } else {
             logger->logStart("first_rtt");
-            cb->saslSendServer(std::move(*iobuf));
+            cb->saslSendServer(transport::THeaderBody::wrapUntransformed(std::move(*iobuf)));
             // If the context was already established, we're free to send
             // the actual request.
             if (clientHandshake_->isContextEstablished()) {
@@ -229,8 +229,8 @@ void GssSaslClient::start(Callback *cb) {
 }
 
 void GssSaslClient::consumeFromServer(
-  Callback *cb, std::unique_ptr<IOBuf>&& message) {
-  std::shared_ptr<IOBuf> smessage(std::move(message));
+  Callback *cb, std::unique_ptr<transport::THeaderBody>&& message) {
+  std::shared_ptr<transport::THeaderBody> smessage(std::move(message));
 
   auto evb = evb_;
   auto clientHandshake = clientHandshake_;
@@ -304,7 +304,7 @@ void GssSaslClient::consumeFromServer(
             string methodName;
             try {
               methodName = PargsPresultProtoDeserialize(
-                  proto, presult, smessage.get(), T_REPLY).first;
+                  proto, presult, smessage.get()->getUntransformed(), T_REPLY).first;
             } catch (const TProtocolException& e) {
               if (proto == protocol::T_BINARY_PROTOCOL &&
                   e.getType() == TProtocolException::BAD_VERSION) {
@@ -315,7 +315,7 @@ void GssSaslClient::consumeFromServer(
                 methodName = PargsPresultProtoDeserialize(
                     protocol::T_COMPACT_PROTOCOL,
                     presult,
-                    smessage.get(),
+                    smessage.get()->getUntransformed(),
                     T_REPLY).first;
               } else {
                 throw;
@@ -394,7 +394,7 @@ void GssSaslClient::consumeFromServer(
             } else {
               logger->logStart("second_rtt");
             }
-            cb->saslSendServer(std::move(*iobuf));
+            cb->saslSendServer(transport::THeaderBody::wrapUntransformed(std::move(*iobuf)));
           }
           if (clientHandshake_->isContextEstablished()) {
             cb->saslComplete();

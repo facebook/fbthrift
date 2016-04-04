@@ -69,7 +69,7 @@ class DuplexChannel {
       , duplex_(duplex)
     {}
     void sendMessage(Cpp2Channel::SendCallback* callback,
-                     std::unique_ptr<folly::IOBuf> buf,
+                     std::unique_ptr<transport::THeaderBody> buf,
                      apache::thrift::transport::THeader* header) override {
       duplex_.lastSender_.set(Who::CLIENT);
       HeaderClientChannel::sendMessage(callback, std::move(buf), header);
@@ -93,7 +93,7 @@ class DuplexChannel {
       , duplex_(duplex)
     {}
     void sendMessage(Cpp2Channel::SendCallback* callback,
-                     std::unique_ptr<folly::IOBuf> buf,
+                     std::unique_ptr<transport::THeaderBody> buf,
                      apache::thrift::transport::THeader* header) override {
       duplex_.lastSender_.set(Who::SERVER);
       HeaderServerChannel::sendMessage(callback, std::move(buf), header);
@@ -175,13 +175,13 @@ class DuplexChannel {
         : duplex_(duplex)
     {}
 
-    std::tuple<std::unique_ptr<folly::IOBuf>,
+    std::tuple<std::unique_ptr<apache::thrift::transport::THeaderBody>,
                size_t,
                std::unique_ptr<apache::thrift::transport::THeader>>
     removeFrame(folly::IOBufQueue* q) override;
 
     std::unique_ptr<folly::IOBuf>
-    addFrame(std::unique_ptr<folly::IOBuf> buf,
+    addFrame(std::unique_ptr<apache::thrift::transport::THeaderBody> buf,
         apache::thrift::transport::THeader* header) override;
    private:
     DuplexChannel& duplex_;
@@ -237,7 +237,7 @@ class DuplexChannel {
     {}
 
     void read(Context* ctx,
-              std::pair<std::unique_ptr<folly::IOBuf>,
+              std::pair<std::unique_ptr<transport::THeaderBody>,
                         std::unique_ptr<apache::thrift::transport::THeader>> bufAndHeader) override {
       if (!serverHandler_) {
         initializeHandlers(*(duplex_.getServerChannel()));
@@ -256,7 +256,7 @@ class DuplexChannel {
     }
 
     bool handleSecurityMessage(
-        std::unique_ptr<folly::IOBuf>&& buf,
+        std::unique_ptr<apache::thrift::transport::THeaderBody>&& buf,
         std::unique_ptr<apache::thrift::transport::THeader>&& header) override {
       return false;
     }

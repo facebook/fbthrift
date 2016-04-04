@@ -64,14 +64,12 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
     TApplicationException x(msg);
     IOBufQueue queue = helper_w<ProtocolWriter>::write_exn(
         func, &oprot, protoSeqId, nullptr, x);
-    queue.append(THeader::transform(
-          queue.move(),
-          ctx->getHeader()->getWriteTransforms(),
-          ctx->getHeader()->getMinCompressBytes()));
-    auto queue_mw = makeMoveWrapper(move(queue));
+    auto body = ctx->getHeader()->transform(
+          queue.move());
+    auto body_mw = makeMoveWrapper(move(body));
     auto req_mw = makeMoveWrapper(move(req));
     eb->runInEventBaseThread([=]() mutable {
-      (*req_mw)->sendReply(queue_mw->move());
+      (*req_mw)->sendReply(std::move(*body_mw));
     });
   } else {
     LOG(ERROR) << msg << " in oneway function " << func;
@@ -85,7 +83,7 @@ template <class ProtocolReader>
 static
 bool deserializeMessageBegin(
     std::unique_ptr<ResponseChannel::Request>& req,
-    folly::IOBuf* buf,
+    const folly::IOBuf* buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb) {
   using h = helper_r<ProtocolReader>;
@@ -119,7 +117,7 @@ bool deserializeMessageBegin(
 bool deserializeMessageBegin(
     protocol::PROTOCOL_TYPES protType,
     std::unique_ptr<ResponseChannel::Request>& req,
-    folly::IOBuf* buf,
+    const folly::IOBuf* buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb) {
   switch (protType) {

@@ -217,7 +217,7 @@ void Cpp2Connection::killRequest(
 
   // Thrift1 oneway request doesn't use ONEWAY_REQUEST_ID and
   // may end up here. No need to send error back for such requests
-  if (!processor_->isOnewayMethod(req.getBuf(), header_req->getHeader())) {
+  if (!processor_->isOnewayMethod(req.getBuf()->getUntransformed(), header_req->getHeader())) {
     header_req->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(reason,
                                                              comment),
@@ -225,7 +225,7 @@ void Cpp2Connection::killRequest(
         nullptr);
   } else {
     // Send an empty response so reqId will be handled properly
-    req.sendReply(std::unique_ptr<folly::IOBuf>());
+    req.sendReply(std::unique_ptr<transport::THeaderBody>());
   }
 }
 
@@ -258,7 +258,7 @@ void Cpp2Connection::requestReceived(
   bool useHttpHandler = false;
   // Any POST not for / should go to the status handler
   if (hreq->getHeader()->getClientType() == THRIFT_HTTP_SERVER_TYPE) {
-    auto buf = req->getBuf();
+    auto buf = req->getBuf()->getUntransformed();
     // 7 == length of "POST / " - we are matching on the path
     if (buf->length() >= 7 &&
         0 == strncmp(reinterpret_cast<const char*>(buf->data()),
@@ -287,7 +287,7 @@ void Cpp2Connection::requestReceived(
 
   if (useHttpHandler && worker_->getServer()->getGetHandler()) {
     worker_->getServer()->getGetHandler()(
-        worker_->getEventBase(), socket_, req->extractBuf());
+        worker_->getEventBase(), socket_, transport::THeaderBody::extractUntransformed(req->extractBuf()));
 
     // Close the channel, since the handler now owns the socket.
     channel_->setCallback(nullptr);
@@ -325,7 +325,7 @@ void Cpp2Connection::requestReceived(
 
   // After this, the request buffer is no longer owned by the request
   // and will be released after deserializeRequest.
-  unique_ptr<folly::IOBuf> buf = hreq->extractBuf();
+  auto buf = hreq->extractBuf();
   Cpp2Request* t2r = new Cpp2Request(std::move(req), this_);
   auto up2r = std::unique_ptr<ResponseChannel::Request>(t2r);
   activeRequests_.insert(t2r);
@@ -362,14 +362,14 @@ void Cpp2Connection::requestReceived(
         !apache::thrift::detail::ap::deserializeMessageBegin(
           protoId,
           up2r,
-          buf.get(),
+          buf.get()->getUntransformed(),
           reqContext,
           worker_->getEventBase())) {
       return;
     }
 
     processor_->process(std::move(up2r),
-                        std::move(buf),
+                        transport::THeaderBody::extractUntransformed(std::move(buf)),
                         protoId,
                         reqContext,
                         worker_->getEventBase(),
@@ -449,7 +449,7 @@ void Cpp2Connection::Cpp2Request::setLoadHeader() {
 }
 
 void Cpp2Connection::Cpp2Request::sendReply(
-    std::unique_ptr<folly::IOBuf>&& buf,
+    std::unique_ptr<transport::THeaderBody>&& buf,
     MessageChannel::SendCallback* sendCallback) {
   if (req_->isActive()) {
     setLoadHeader();

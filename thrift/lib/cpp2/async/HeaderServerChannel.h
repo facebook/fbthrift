@@ -89,14 +89,14 @@ protected:
   }
 
   virtual void sendMessage(Cpp2Channel::SendCallback* callback,
-                           std::unique_ptr<folly::IOBuf> buf,
+                           std::unique_ptr<transport::THeaderBody> buf,
                            apache::thrift::transport::THeader* header) {
     cpp2Channel_->sendMessage(callback, std::move(buf), header);
   }
 
   // Interface from MessageChannel::RecvCallback
   bool shouldSample() override;
-  void messageReceived(std::unique_ptr<folly::IOBuf>&&,
+  void messageReceived(std::unique_ptr<transport::THeaderBody>&&,
                        std::unique_ptr<apache::thrift::transport::THeader>&&,
                        std::unique_ptr<sample>) override;
   void messageChannelEOF() override;
@@ -107,14 +107,14 @@ protected:
   }
 
   void sendCatchupRequests(
-    std::unique_ptr<folly::IOBuf> next_req,
+    std::unique_ptr<transport::THeaderBody> next_req,
     MessageChannel::SendCallback* cb,
     apache::thrift::transport::THeader* header);
 
   class HeaderRequest : public Request {
    public:
     HeaderRequest(HeaderServerChannel* channel,
-                  std::unique_ptr<folly::IOBuf>&& buf,
+                  std::unique_ptr<transport::THeaderBody>&& buf,
                   std::unique_ptr<apache::thrift::transport::THeader>&& header,
                   std::unique_ptr<sample> sample);
 
@@ -129,7 +129,7 @@ protected:
 
     apache::thrift::transport::THeader* getHeader() {return header_.get(); }
 
-    void sendReply(std::unique_ptr<folly::IOBuf>&&,
+    void sendReply(std::unique_ptr<transport::THeaderBody>&&,
                    MessageChannel::SendCallback* cb = nullptr) override;
 
     void sendErrorWrapped(folly::exception_wrapper ex,
@@ -192,13 +192,13 @@ protected:
     explicit ServerFramingHandler(HeaderServerChannel& channel)
       : channel_(channel) {}
 
-    std::tuple<std::unique_ptr<folly::IOBuf>,
+    std::tuple<std::unique_ptr<apache::thrift::transport::THeaderBody>,
                size_t,
                std::unique_ptr<apache::thrift::transport::THeader>>
     removeFrame(folly::IOBufQueue* q) override;
 
     std::unique_ptr<folly::IOBuf> addFrame(
-        std::unique_ptr<folly::IOBuf> buf,
+        std::unique_ptr<apache::thrift::transport::THeaderBody> buf,
         apache::thrift::transport::THeader* header) override;
   private:
     HeaderServerChannel& channel_;
@@ -210,7 +210,7 @@ protected:
       : channel_(channel) {}
 
     bool handleSecurityMessage(
-        std::unique_ptr<folly::IOBuf>&& buf,
+        std::unique_ptr<apache::thrift::transport::THeaderBody>&& buf,
         std::unique_ptr<apache::thrift::transport::THeader>&& header);
   private:
     HeaderServerChannel& channel_;
@@ -253,7 +253,7 @@ private:
                                                              saslServer_.get());
   }
 
-  static std::string getTHeaderPayloadString(folly::IOBuf* buf);
+  static std::string getTHeaderPayloadString(const folly::IOBuf* buf);
   static std::string getTransportDebugString(
       apache::thrift::async::TAsyncTransport *transport);
 
@@ -265,7 +265,7 @@ private:
     uint32_t,
     std::tuple<
       MessageChannel::SendCallback*,
-      std::unique_ptr<folly::IOBuf>,
+      std::unique_ptr<transport::THeaderBody>,
       std::unique_ptr<apache::thrift::transport::THeader>>> inOrderRequests_;
 
   uint32_t arrivalSeqId_;

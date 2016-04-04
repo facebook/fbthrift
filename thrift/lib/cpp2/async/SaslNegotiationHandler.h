@@ -24,7 +24,7 @@
 namespace apache { namespace thrift {
 
 using BufAndHeader = std::pair<
-    std::unique_ptr<folly::IOBuf>,
+    std::unique_ptr<transport::THeaderBody>,
     std::unique_ptr<apache::thrift::transport::THeader>>;
 
 class SaslNegotiationHandler : public wangle::InboundHandler<BufAndHeader> {
@@ -38,7 +38,7 @@ class SaslNegotiationHandler : public wangle::InboundHandler<BufAndHeader> {
   }
 
   virtual bool handleSecurityMessage(
-      std::unique_ptr<folly::IOBuf>&& buf,
+      std::unique_ptr<apache::thrift::transport::THeaderBody>&& buf,
       std::unique_ptr<apache::thrift::transport::THeader>&& header) = 0;
 
  protected:
@@ -52,7 +52,7 @@ class DummySaslNegotiationHandler : public SaslNegotiationHandler {
   }
 
   bool handleSecurityMessage(
-      std::unique_ptr<folly::IOBuf>&& buf,
+      std::unique_ptr<apache::thrift::transport::THeaderBody>&& buf,
       std::unique_ptr<apache::thrift::transport::THeader>&& header) override {
     return false;
   }

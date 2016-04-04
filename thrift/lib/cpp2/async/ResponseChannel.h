@@ -59,8 +59,8 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
 
   class Request {
    public:
-    folly::IOBuf* getBuf() { return buf_.get(); }
-    std::unique_ptr<folly::IOBuf> extractBuf() { return std::move(buf_); }
+    transport::THeaderBody* getBuf() { return buf_.get(); }
+    std::unique_ptr<transport::THeaderBody> extractBuf() { return std::move(buf_); }
 
     virtual bool isActive() = 0;
 
@@ -68,7 +68,7 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
 
     virtual bool isOneway() = 0;
 
-    virtual void sendReply(std::unique_ptr<folly::IOBuf>&&,
+    virtual void sendReply(std::unique_ptr<transport::THeaderBody>&&,
                            MessageChannel::SendCallback* cb = nullptr) = 0;
 
     virtual void sendErrorWrapped(
@@ -85,7 +85,7 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
 
     apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
    protected:
-    std::unique_ptr<folly::IOBuf> buf_;
+    std::unique_ptr<transport::THeaderBody> buf_;
   };
 
   class Callback {

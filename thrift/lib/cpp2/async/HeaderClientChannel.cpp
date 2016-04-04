@@ -149,8 +149,8 @@ void HeaderClientChannel::startSecurity() {
   saslClient_->start(&saslClientCallback_);
 }
 
-unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
-    unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header) {
+unique_ptr<transport::THeaderBody> HeaderClientChannel::handleSecurityMessage(
+    unique_ptr<transport::THeaderBody>&& buf, unique_ptr<THeader>&& header) {
   if (header->getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
     if (getProtectionState() == ProtectionState::INPROGRESS ||
         getProtectionState() == ProtectionState::WAITING) {
@@ -186,7 +186,7 @@ void HeaderClientChannel::SaslClientCallback::saslStarted() {
 }
 
 void HeaderClientChannel::SaslClientCallback::saslSendServer(
-    std::unique_ptr<folly::IOBuf>&& message) {
+    std::unique_ptr<transport::THeaderBody>&& message) {
   if (channel_.timeoutSASL_ > 0) {
     channel_.timer_->scheduleTimeout(this,
         std::chrono::milliseconds(channel_.timeoutSASL_));
@@ -344,7 +344,7 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
     RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
-    std::unique_ptr<IOBuf> buf,
+    std::unique_ptr<THeaderBody> buf,
     std::shared_ptr<THeader> header) {
   cb->context_ = RequestContext::saveContext();
 
@@ -410,7 +410,7 @@ uint32_t HeaderClientChannel::sendRequest(
     RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
-    std::unique_ptr<IOBuf> buf,
+    std::unique_ptr<THeaderBody> buf,
     std::shared_ptr<THeader> header) {
   // cb is not allowed to be null.
   DCHECK(cb);
@@ -476,7 +476,7 @@ uint32_t HeaderClientChannel::sendRequest(
 
 // Header framing
 std::unique_ptr<folly::IOBuf>
-HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<IOBuf> buf,
+HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<THeaderBody> buf,
                                                     THeader* header) {
   channel_.updateClientType(header->getClientType());
   header->setSequenceNumber(channel_.sendSeqId_);
@@ -484,18 +484,18 @@ HeaderClientChannel::ClientFramingHandler::addFrame(unique_ptr<IOBuf> buf,
                            channel_.getPersistentWriteHeaders());
 }
 
-std::tuple<std::unique_ptr<IOBuf>, size_t, std::unique_ptr<THeader>>
+std::tuple<std::unique_ptr<THeaderBody>, size_t, std::unique_ptr<THeader>>
 HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
   std::unique_ptr<THeader> header(new THeader(THeader::ALLOW_BIG_FRAMES));
   if (!q || !q->front() || q->front()->empty()) {
-    return make_tuple(std::unique_ptr<IOBuf>(), 0, nullptr);
+    return make_tuple(std::unique_ptr<THeaderBody>(), 0, nullptr);
   }
 
   size_t remaining = 0;
-  std::unique_ptr<folly::IOBuf> buf = header->removeHeader(q, remaining,
+  std::unique_ptr<transport::THeaderBody> buf = header->removeHeader(q, remaining,
       channel_.getPersistentReadHeaders());
   if (!buf) {
-    return make_tuple(std::unique_ptr<folly::IOBuf>(), remaining, nullptr);
+    return make_tuple(std::move(buf), remaining, nullptr);
   }
   channel_.checkSupportedClient(header->getClientType());
   header->setMinCompressBytes(channel_.getMinCompressBytes());
@@ -504,7 +504,7 @@ HeaderClientChannel::ClientFramingHandler::removeFrame(IOBufQueue* q) {
 
 // Interface from MessageChannel::RecvCallback
 void HeaderClientChannel::messageReceived(
-    unique_ptr<IOBuf>&& buf,
+    unique_ptr<transport::THeaderBody>&& buf,
     unique_ptr<THeader>&& header,
     unique_ptr<MessageChannel::RecvCallback::sample>) {
   DestructorGuard dg(this);

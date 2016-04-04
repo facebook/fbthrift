@@ -132,7 +132,7 @@ void thriftserver_sendReply(
   ResponseChannel::Request* req, folly::EventBase* eb,
   const char* bytes, size_t len) {
 
-  auto buf = makeMoveWrapper(folly::IOBuf::copyBuffer(bytes, len));
+  auto buf = makeMoveWrapper(transport::THeaderBody::wrapUntransformed(folly::IOBuf::copyBuffer(bytes, len)));
   eb->runInEventBaseThread([=] () mutable {
     req->sendReply(std::move(*buf));
     delete req;

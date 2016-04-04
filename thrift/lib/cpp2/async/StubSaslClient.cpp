@@ -79,13 +79,13 @@ void StubSaslClient::start(Callback *cb) {
         phase_ = 1;
 
         (*evb_)->runInEventBaseThread([=] () mutable {
-            cb->saslSendServer(q->move());
+            cb->saslSendServer(transport::THeaderBody::wrapUntransformed(q->move()));
           });}));
 }
 
 void StubSaslClient::consumeFromServer(
-  Callback *cb, std::unique_ptr<IOBuf>&& message) {
-  std::shared_ptr<IOBuf> smessage(std::move(message));
+  Callback *cb, std::unique_ptr<transport::THeaderBody>&& message) {
+  std::shared_ptr<transport::THeaderBody> smessage(std::move(message));
 
   auto forceTimeout = forceTimeout_;
   auto forceMsSpentPerRTT = forceMsSpentPerRTT_;
@@ -121,7 +121,7 @@ void StubSaslClient::consumeFromServer(
               deserializer;
             ex = folly::try_and_catch<std::exception, TProtocolException>(
               [&]() {
-                deserializer.deserialize(smessage.get(), reply);
+                deserializer.deserialize(smessage->getUntransformed(), reply);
               });
             if (!ex) {
               if (reply.__isset.outcome && !reply.outcome.success) {
@@ -147,7 +147,7 @@ void StubSaslClient::consumeFromServer(
           Serializer<CompactProtocolReader, CompactProtocolWriter> deserializer;
           SaslReply reply;
           ex = folly::try_and_catch<std::exception, TProtocolException>([&]() {
-            deserializer.deserialize(smessage.get(), reply);
+            deserializer.deserialize(smessage->getUntransformed(), reply);
           });
           if (!ex) {
             if (reply.__isset.outcome &&
@@ -189,7 +189,7 @@ void StubSaslClient::consumeFromServer(
 
         (*evb_)->runInEventBaseThread([=] () mutable {
             if (!req_data->empty()) {
-              cb->saslSendServer(req_data->move());
+              cb->saslSendServer(transport::THeaderBody::wrapUntransformed(req_data->move()));
             }
             if (ex) {
               threadManager_->stop();

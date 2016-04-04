@@ -116,7 +116,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
   connCtx_ = std::make_shared<apache::thrift::Cpp2ConnContext>(
       &msg_->getClientAddress(), nullptr, nullptr, nullptr, nullptr);
 
-  buf_ = body_->clone(); // for apache::thrift::ResponseChannel::Request
+  buf_ = transport::THeaderBody::wrapUntransformed(body_->clone()); // for apache::thrift::ResponseChannel::Request
 
   // Set up timeouts
   std::chrono::milliseconds queueTimeout;
@@ -182,7 +182,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onError(
 }
 
 void ProxygenThriftServer::ThriftRequestHandler::sendReply(
-    std::unique_ptr<folly::IOBuf>&& buf, // && from ResponseChannel.h
+    std::unique_ptr<transport::THeaderBody>&& buf, // && from ResponseChannel.h
     apache::thrift::MessageChannel::SendCallback* cb) {
 
   queueTimeout_.cancelTimeout();
@@ -236,7 +236,7 @@ void ProxygenThriftServer::ThriftRequestHandler::sendReply(
     response.header(Cpp2Connection::loadHeader, folly::to<std::string>(load));
   }
 
-  response.body(std::move(buf)).sendWithEOM();
+  response.body(transport::THeaderBody::extractUntransformed(std::move(buf))).sendWithEOM();
 
   if (cb) {
     cb->sendQueued();
@@ -259,7 +259,7 @@ void ProxygenThriftServer::ThriftRequestHandler::sendErrorWrapped(
         std::unique_ptr<folly::IOBuf> exbuf;
         auto proto = header_->getProtocolId();
         try {
-          exbuf = serializeError(proto, tae, getBuf());
+          exbuf = serializeError(proto, tae, getBuf()->getUntransformed());
         } catch (const apache::thrift::protocol::TProtocolException& pe) {
           LOG(ERROR) << "serializeError failed. type=" << pe.getType()
                      << " what()=" << pe.what();
@@ -275,7 +275,7 @@ void ProxygenThriftServer::ThriftRequestHandler::sendErrorWrapped(
           return;
         }
 
-        sendReply(std::move(exbuf), cb);
+        sendReply(transport::THeaderBody::wrapUntransformed(std::move(exbuf)), cb);
       });
 }
 

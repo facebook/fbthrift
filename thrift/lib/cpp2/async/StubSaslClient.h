@@ -36,7 +36,7 @@ public:
     int forceMsSpentPerRTT = 0);
   void start(Callback* cb) override;
   void consumeFromServer(Callback* cb,
-                         std::unique_ptr<folly::IOBuf>&& message) override;
+                         std::unique_ptr<transport::THeaderBody>&& message) override;
   virtual std::unique_ptr<folly::IOBuf> wrap(std::unique_ptr<folly::IOBuf>&&);
   virtual std::unique_ptr<folly::IOBuf> unwrap(
     folly::IOBufQueue* q, size_t* remaining);

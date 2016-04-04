@@ -44,11 +44,11 @@ using folly::IOBufQueue;
 using std::shared_ptr;
 using folly::make_unique;
 
-unique_ptr<IOBuf> makeTestBuf(size_t len) {
+unique_ptr<THeaderBody> makeTestBuf(size_t len) {
   unique_ptr<IOBuf> buf = IOBuf::create(len);
   buf->IOBuf::append(len);
   memset(buf->writableData(), (char) (len % 127), len);
-  return buf;
+  return THeaderBody::wrapUntransformed(std::move(buf));
 }
 
 class EventBaseAborter : public folly::AsyncTimeout {
@@ -71,35 +71,36 @@ class EventBaseAborter : public folly::AsyncTimeout {
 // Creates/unwraps a framed message (LEN(MSG) | MSG)
 class TestFramingHandler : public FramingHandler {
 public:
-  std::tuple<unique_ptr<IOBuf>, size_t, unique_ptr<THeader>>
+  std::tuple<unique_ptr<transport::THeaderBody>, size_t, unique_ptr<THeader>>
   removeFrame(IOBufQueue* q) override {
     assert(q);
     queue_.append(*q);
     if (!queue_.front() || queue_.front()->empty()) {
-      return make_tuple(std::unique_ptr<IOBuf>(), 0, nullptr);
+      return make_tuple(std::unique_ptr<transport::THeaderBody>(), 0, nullptr);
     }
 
     uint32_t len = queue_.front()->computeChainDataLength();
 
     if (len < 4) {
       size_t remaining = 4 - len;
-      return make_tuple(unique_ptr<IOBuf>(), remaining, nullptr);
+      return make_tuple(unique_ptr<transport::THeaderBody>(), remaining, nullptr);
     }
 
     folly::io::Cursor c(queue_.front());
     uint32_t msgLen = c.readBE<uint32_t>();
     if (len - 4 < msgLen) {
       size_t remaining = msgLen - (len - 4);
-      return make_tuple(unique_ptr<IOBuf>(), remaining, nullptr);
+      return make_tuple(unique_ptr<transport::THeaderBody>(), remaining, nullptr);
     }
 
     queue_.trimStart(4);
-    return make_tuple(queue_.split(msgLen), 0, nullptr);
+    return make_tuple(transport::THeaderBody::wrapUntransformed(queue_.split(msgLen)), 0, nullptr);
   }
 
-  unique_ptr<IOBuf> addFrame(unique_ptr<IOBuf> buf,
+  unique_ptr<IOBuf> addFrame(unique_ptr<transport::THeaderBody> body,
                              THeader* header) override {
-    assert(buf);
+    assert(body);
+    auto buf = transport::THeaderBody::extractUntransformed(std::move(body));
     unique_ptr<IOBuf> framing;
 
     if (buf->headroom() > 4) {
@@ -192,11 +193,11 @@ class MessageCallback
     sendError_++;
   }
 
-  void messageReceived(unique_ptr<IOBuf>&& buf,
+  void messageReceived(unique_ptr<transport::THeaderBody>&& buf,
                        unique_ptr<THeader>&& header,
                        unique_ptr<sample>) override {
     recv_++;
-    recvBytes_ += buf->computeChainDataLength();
+    recvBytes_ += buf->getUntransformed()->computeChainDataLength();
   }
   void messageChannelEOF() override { recvEOF_++; }
   void messageReceiveErrorWrapped(folly::exception_wrapper&& ex) override {
@@ -216,7 +217,7 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
   void requestSent() override {}
   void replyReceived(ClientReceiveState&& state) override {
     reply_++;
-    replyBytes_ += state.buf()->computeChainDataLength();
+    replyBytes_ += state.buf()->getUntransformed()->computeChainDataLength();
     if (state.isSecurityActive()) {
       replySecurityActive_++;
     }
@@ -274,7 +275,7 @@ class ResponseCallback
 
   void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override {
     request_++;
-    requestBytes_ += req->getBuf()->computeChainDataLength();
+    requestBytes_ += req->getBuf()->getUntransformed()->computeChainDataLength();
     if (req->isOneway()) {
       oneway_++;
     } else {
@@ -314,7 +315,7 @@ class MessageTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>
     EXPECT_EQ(recvBytes_, len_);
   }
 
-  void messageReceived(unique_ptr<IOBuf>&& buf,
+  void messageReceived(unique_ptr<transport::THeaderBody>&& buf,
                        unique_ptr<THeader>&& header,
                        unique_ptr<sample> sample) override {
     MessageCallback::messageReceived(std::move(buf),
@@ -857,14 +858,14 @@ class InOrderTest
       if (reply_ == 1) {
         c_->channel1_->setCallback(nullptr);
         // Verify that they came back in the same order
-        EXPECT_EQ(state.buf()->computeChainDataLength(), c_->len_ + 1);
+        EXPECT_EQ(state.buf()->getUntransformed()->computeChainDataLength(), c_->len_ + 1);
       }
       TestRequestCallback::replyReceived(std::move(state));
     }
 
     void requestReceived(unique_ptr<ResponseChannel::Request>&& req) {
       c_->request_++;
-      c_->requestBytes_ += req->getBuf()->computeChainDataLength();
+      c_->requestBytes_ += req->getBuf()->getUntransformed()->computeChainDataLength();
       if (c_->firstbuf_) {
         req->sendReply(req->extractBuf());
         c_->firstbuf_->sendReply(c_->firstbuf_->extractBuf());
@@ -942,7 +943,7 @@ public:
 
   void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override {
     request_++;
-    requestBytes_ += req->getBuf()->computeChainDataLength();
+    requestBytes_ += req->getBuf()->getUntransformed()->computeChainDataLength();
     if (req->isOneway()) {
       oneway_++;
       return;
@@ -1043,7 +1044,7 @@ public:
 
   void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override {
     request_++;
-    requestBytes_ += req->getBuf()->computeChainDataLength();
+    requestBytes_ += req->getBuf()->getUntransformed()->computeChainDataLength();
     // Don't respond, let it time out
     // TestRequestCallback::replyReceived(std::move(buf));
     channel1_->getEventBase()->tryRunAfterDelay(
@@ -1119,7 +1120,7 @@ public:
   void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override {
     if (request_ == 0) {
       request_++;
-      requestBytes_ += req->getBuf()->computeChainDataLength();
+      requestBytes_ += req->getBuf()->getUntransformed()->computeChainDataLength();
     } else {
       ResponseCallback::requestReceived(std::move(req));
       channel1_->setCallback(nullptr);
@@ -1312,7 +1313,7 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
     channel_->setReceiveCallback(this);
   }
   void messageReceived(
-    std::unique_ptr<folly::IOBuf>&&,
+    std::unique_ptr<transport::THeaderBody>&&,
     std::unique_ptr<apache::thrift::transport::THeader>&&,
     std::unique_ptr<MessageChannel::RecvCallback::sample> sample) override {}
   void messageChannelEOF() override {

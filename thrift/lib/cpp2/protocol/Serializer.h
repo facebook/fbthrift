@@ -147,7 +147,7 @@ typedef Serializer<SimpleJSONProtocolReader, SimpleJSONProtocolWriter>
 // Serialization code specific to handling errors
 template<typename ProtIn, typename ProtOut>
 std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
-    TApplicationException obj, folly::IOBuf* req) {
+    TApplicationException obj, const folly::IOBuf* req) {
   ProtIn iprot;
   std::string fname;
   apache::thrift::MessageType mtype;
@@ -183,7 +183,7 @@ std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
 }
 
 std::unique_ptr<folly::IOBuf> serializeError(
-  int protId, TApplicationException obj, folly::IOBuf* buf);
+  int protId, TApplicationException obj, const folly::IOBuf* buf);
 
 std::unique_ptr<folly::IOBuf> serializeError(int protId,
                                              TApplicationException obj,

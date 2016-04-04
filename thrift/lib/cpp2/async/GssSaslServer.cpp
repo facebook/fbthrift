@@ -66,8 +66,8 @@ GssSaslServer::GssSaslServer(
 }
 
 void GssSaslServer::consumeFromClient(
-  Callback *cb, std::unique_ptr<IOBuf>&& message) {
-  std::shared_ptr<IOBuf> smessage(std::move(message));
+  Callback *cb, std::unique_ptr<transport::THeaderBody>&& message) {
+  std::shared_ptr<transport::THeaderBody> smessage(std::move(message));
 
   auto evb = evb_;
   auto serverHandshake = serverHandshake_;
@@ -101,7 +101,7 @@ void GssSaslServer::consumeFromClient(
             std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
                 proto,
                 pargs,
-                smessage.get(),
+                smessage.get()->getUntransformed(),
                 T_CALL);
           } catch (const TProtocolException& e) {
             if (proto == protocol::T_BINARY_PROTOCOL &&
@@ -112,7 +112,7 @@ void GssSaslServer::consumeFromClient(
               std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
                   protocol::T_COMPACT_PROTOCOL,
                   pargs,
-                  smessage.get(),
+                  smessage.get()->getUntransformed(),
                   T_CALL);
               replyWithProto = protocol::T_COMPACT_PROTOCOL;
             } else {
@@ -165,7 +165,7 @@ void GssSaslServer::consumeFromClient(
             std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
                     proto,
                     pargs,
-                    smessage.get(),
+                    smessage.get()->getUntransformed(),
                     T_CALL);
           } catch (const TProtocolException& e) {
             if (proto == protocol::T_BINARY_PROTOCOL &&
@@ -176,7 +176,7 @@ void GssSaslServer::consumeFromClient(
               std::tie(methodName, requestSeqId) = PargsPresultProtoDeserialize(
                   protocol::T_COMPACT_PROTOCOL,
                   pargs,
-                  smessage.get(),
+                  smessage.get()->getUntransformed(),
                   T_CALL);
               replyWithProto = protocol::T_COMPACT_PROTOCOL;
             } else {

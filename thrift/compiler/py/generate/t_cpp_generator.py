@@ -1113,18 +1113,18 @@ class CppGenerator(t_generator.Generator):
                 ctx = 'nullptr'
             out('folly::IOBufQueue queue = serializeException("{0}", &prot, {1}, {2}, '
                 'x);'.format(functionname, seqid, ctx))
-            out('queue.append(apache::thrift::transport::THeader::transform('
-                'queue.move(), '
-                '{0}->getHeader()->getWriteTransforms(), '
-                '{0}->getHeader()->getMinCompressBytes()));'.format(reqCtx))
+            out('auto wrapper = {0}->getHeader()->transform('
+                'queue.move());'.format(reqCtx))
+            out('// Make sure compression runs in this thread');
+            out('wrapper->ensureTransformsApplied();');
             if is_in_eb:
-                out('req->sendReply(queue.move());')
+                out('req->sendReply(std::move(wrapper));')
             else:
-                out('auto queue_mw = '
-                        'folly::makeMoveWrapper(std::move(queue));')
+                out('auto wrapper_mw = '
+                        'folly::makeMoveWrapper(std::move(wrapper));')
                 out('auto req_mw = folly::makeMoveWrapper(std::move(req));')
                 with out('eb->runInEventBaseThread([=]() mutable'):
-                    out('(*req_mw)->sendReply(queue_mw->move());')
+                    out('(*req_mw)->sendReply(std::move(*wrapper_mw));')
                 out(');')
             out('return;')
         with out('else'):
@@ -1138,7 +1138,7 @@ class CppGenerator(t_generator.Generator):
                 # oneway id, so we need to send a fake
                 # response to them while in event base.
                 with out('if (!req->isOneway())'):
-                    out('req->sendReply(std::unique_ptr<folly::IOBuf>());')
+                    out('req->sendReply(std::unique_ptr<apache::thrift::transport::THeaderBody>());')
         out("// make sure getConnectionContext is null")
         out("// so async calls don't accidentally use it")
         out('iface_->setConnectionContext(nullptr);')
@@ -1456,12 +1456,11 @@ class CppGenerator(t_generator.Generator):
                             out('auto queue = serializeResponse('
                               '"{0}", &prot, protoSeqId, ctx,'
                               ' result);'.format(function.name))
-                            out('queue.append('
-                                'apache::thrift::transport::THeader::transform('
-                                'queue.move(), '
-                                '{0}->getHeader()->getWriteTransforms(), '
-                                '{0}->getHeader()->getMinCompressBytes()));'.format('reqCtx'))
-                            out('return req->sendReply(queue.move());')
+                            out('auto wrapper = {0}->getHeader()->transform('
+                                'queue.move());'.format('reqCtx'))
+                            out('// Make sure compression runs in this thread');
+                            out('wrapper->ensureTransformsApplied();');
+                            out('return req->sendReply(std::move(wrapper));')
                     with out().defn(
                         'template <class ProtocolIn_, class ProtocolOut_>\n' +
                         'void {name}(std::unique_ptr' +
@@ -1504,12 +1503,11 @@ class CppGenerator(t_generator.Generator):
                             out('auto queue = serializeResponse('
                                 '"{0}", &prot, protoSeqId, ctx,'
                                 ' result);'.format(function.name))
-                            out('queue.append('
-                                'apache::thrift::transport::THeader::transform('
-                                'queue.move(), '
-                                '{0}->getHeader()->getWriteTransforms(), '
-                                '{0}->getHeader()->getMinCompressBytes()));'.format('reqCtx'))
-                            out('return req->sendReply(queue.move());')
+                            out('auto wrapper = {0}->getHeader()->transform('
+                                'queue.move());'.format('reqCtx'))
+                            out('// Make sure compression runs in this thread');
+                            out('wrapper->ensureTransformsApplied();');
+                            out('return req->sendReply(std::move(wrapper));')
 
 
             out().label('public:')
@@ -2047,7 +2045,7 @@ class CppGenerator(t_generator.Generator):
                     output=self._out_tcc):
             with out('if (state.isException())'):
                 out('return state.exceptionWrapper();')
-            out("prot->setInput(state.buf());")
+            out("prot->setInput(state.buf()->getUntransformed());")
             out("auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});")
             out("apache::thrift::ContextStack* ctx = state.ctx();")
             out("std::string fname;")
@@ -2088,7 +2086,7 @@ class CppGenerator(t_generator.Generator):
                     out("return; // from try_and_catch")
                 out("::apache::thrift::SerializedMessage smsg;")
                 out("smsg.protocolType = prot->protocolType();")
-                out("smsg.buffer = state.buf();")
+                out("smsg.buffer = state.buf()->getUntransformed();")
                 out("ctx->onReadData(smsg);")
 
                 out("{0}_{1}_presult result;".format(service.name, function.name))
@@ -2104,7 +2102,7 @@ class CppGenerator(t_generator.Generator):
                     out("result.read(prot);")
 
                 out("prot->readMessageEnd();")
-                out('ctx->postRead(state.header(), state.buf()->length());')
+                out('ctx->postRead(state.header(), smsg.buffer->length());')
 
                 if not function.returntype.is_void:
                     with out("if ({0})".format(self._get_presult_success_isset())):

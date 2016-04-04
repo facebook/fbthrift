@@ -22,7 +22,7 @@
 namespace apache { namespace thrift {
 
 std::unique_ptr<folly::IOBuf> serializeError(
-  int protId, TApplicationException obj, folly::IOBuf* buf) {
+  int protId, TApplicationException obj, const folly::IOBuf* buf) {
   switch(protId) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

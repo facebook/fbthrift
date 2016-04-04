@@ -35,11 +35,12 @@ TEST(THeaderTest, largetransform) {
   header.setTransform(THeader::ZLIB_TRANSFORM); // ZLib flag
 
   size_t buf_size = 1000000;
-  std::unique_ptr<IOBuf> buf(IOBuf::create(buf_size));
+  std::unique_ptr<folly::IOBuf> buf = IOBuf::create(buf_size);
   buf->append(buf_size);
+  auto body = transport::THeaderBody::wrapUntransformed(std::move(buf));
 
   std::map<std::string, std::string> persistentHeaders;
-  buf = header.addHeader(std::move(buf), persistentHeaders);
+  buf = header.addHeader(std::move(body), persistentHeaders);
   buf_size = buf->computeChainDataLength();
   std::unique_ptr<IOBufQueue> queue(new IOBufQueue);
   std::unique_ptr<IOBufQueue> queue2(new IOBufQueue);
@@ -52,7 +53,40 @@ TEST(THeaderTest, largetransform) {
 
   size_t needed;
 
-  buf = header.removeHeader(queue2.get(), needed, persistentHeaders);
+  body = header.removeHeader(queue2.get(), needed, persistentHeaders);
+}
+
+TEST(THeaderTest, minCompressBytes) {
+  THeader header;
+  header.setTransform(THeader::ZLIB_TRANSFORM); // ZLib flag
+  header.setMinCompressBytes(0);
+
+  char srcbuf[100];
+  for (int i = 0; i < sizeof(srcbuf); i++) {
+    srcbuf[i] = (char) (i % 8);
+  }
+
+  size_t buf_size = 100;
+  std::unique_ptr<folly::IOBuf> buf;
+  std::vector<uint16_t> transforms;
+
+  buf = IOBuf::copyBuffer(srcbuf, sizeof(srcbuf));
+  auto compressedBody = header.transform(std::move(buf));
+  auto compressedBuf = compressedBody->getTransformed(transforms);
+
+  EXPECT_EQ(1, transforms.size());
+  EXPECT_LT(0, compressedBuf->computeChainDataLength());
+  EXPECT_GT(buf_size, compressedBuf->computeChainDataLength());
+
+  header.setMinCompressBytes(1000);
+
+  buf = IOBuf::copyBuffer(srcbuf, sizeof(srcbuf));
+  auto uncompressedBody = header.transform(std::move(buf));
+  auto uncompressedBuf = uncompressedBody->getTransformed(transforms);
+
+  EXPECT_EQ(0, transforms.size());
+  EXPECT_LT(0, uncompressedBuf->computeChainDataLength());
+  EXPECT_EQ(buf_size, uncompressedBuf->computeChainDataLength());
 }
 
 TEST(THeaderTest, http_clear_header) {
@@ -64,9 +98,10 @@ TEST(THeaderTest, http_clear_header) {
   header.setHeader("WriteHeader", "foo");
 
   size_t buf_size = 1000000;
-  std::unique_ptr<IOBuf> buf(IOBuf::create(buf_size));
+  std::unique_ptr<IOBuf> buf = IOBuf::create(buf_size);
+  auto body = transport::THeaderBody::wrapUntransformed(std::move(buf));
   std::map<std::string, std::string> persistentHeaders;
-  buf = header.addHeader(std::move(buf), persistentHeaders);
+  buf = header.addHeader(std::move(body), persistentHeaders);
 
   EXPECT_TRUE(header.isWriteHeadersEmpty());
 }

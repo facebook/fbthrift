@@ -79,7 +79,7 @@ class DecryptionManager {
         void parseFirstMessage(Packet* packet);
         void parseSecondMessage(Packet* packet);
         void readServiceSessionKey(krb5_ticket* ticket);
-        unique_ptr<IOBuf> removeThriftHeader(Packet* packet);
+        unique_ptr<transport::THeaderBody> removeThriftHeader(Packet* packet);
         void handleApplicationMessage(unique_ptr<Packet> packet);
         void decryptApplicationMessage(bool fromClient);
         void maybeWritePacket(unique_ptr<Packet> packet);

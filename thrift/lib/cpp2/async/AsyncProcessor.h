@@ -206,7 +206,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     using folly::makeMoveWrapper;
     if (oneway) {
       if (!req->isOneway()) {
-        req->sendReply(std::unique_ptr<folly::IOBuf>());
+        req->sendReply(std::unique_ptr<transport::THeaderBody>());
       }
     }
     auto preq = req.get();
@@ -446,14 +446,14 @@ class HandlerCallbackBase {
     ewp_ = other.ewp_;
   }
 
-  virtual void transform(folly::IOBufQueue& queue) {
+  virtual std::unique_ptr<transport::THeaderBody> transform(folly::IOBufQueue& queue) {
+    auto wrapper = reqCtx_->getHeader()->transform(
+      queue.move());
     // Do any compression or other transforms in this thread, the same thread
     // that serialization happens on.
-    queue.append(
-      transport::THeader::transform(
-        queue.move(),
-        reqCtx_->getHeader()->getWriteTransforms(),
-        reqCtx_->getHeader()->getMinCompressBytes()));
+    wrapper->ensureTransformsApplied();
+
+    return wrapper;
   }
 
   // Can be called from IO or TM thread
@@ -493,14 +493,14 @@ class HandlerCallbackBase {
   }
 
   void sendReply(folly::IOBufQueue queue) {
-    transform(queue);
+    auto wrapper = transform(queue);
     if (getEventBase()->isInEventBaseThread()) {
-      req_->sendReply(queue.move());
+      req_->sendReply(std::move(wrapper));
     } else {
       auto req_mw = folly::makeMoveWrapper(std::move(req_));
-      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
+      auto wrapper_mw = folly::makeMoveWrapper(std::move(wrapper));
       getEventBase()->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(queue_mw->move());
+        (*req_mw)->sendReply(std::move(*wrapper_mw));
       });
     }
   }
@@ -779,16 +779,16 @@ public:
   void sendReplyNonDestructive(folly::IOBufQueue queue,
       const std::string& key,
       const std::string& value) {
-    transform(queue);
+    auto wrapper = transform(queue);
     if (getEventBase()->isInEventBaseThread()) {
       reqCtx_->setHeader(key, value);
-      req_->sendReply(queue.move());
+      req_->sendReply(std::move(wrapper));
     } else {
       auto req_raw = req_.get();
-      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
+      auto wrapper_mw = folly::makeMoveWrapper(std::move(wrapper));
       getEventBase()->runInEventBaseThread([=]() mutable {
         reqCtx_->setHeader(key, value);
-        req_raw->sendReply(queue_mw->move());
+        req_raw->sendReply(std::move(*wrapper_mw));
       });
     }
   }
