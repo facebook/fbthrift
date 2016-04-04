@@ -412,6 +412,49 @@ inline typename MergeTrait<T>::map_merge merge(T&& from, T& to) {
     merge(std::move(kv.second), to[kv.first]);
   }
 }
+
+namespace detail {
+
+template <std::intmax_t Id, typename T>
+struct argument_wrapper {
+  static_assert(
+    std::is_rvalue_reference<T&&>::value,
+    "this wrapper handles only rvalues and initializer_list"
+  );
+
+  template <typename U>
+  explicit argument_wrapper(U&& value):
+    argument_(std::move(value))
+  {
+    static_assert(
+      std::is_rvalue_reference<U&&>::value,
+      "this wrapper handles only rvalues and initializer_list"
+    );
+  }
+
+  T&& move() { return std::move(argument_); }
+
+private:
+  T argument_;
+};
+
+template <std::intmax_t Id, typename T>
+detail::argument_wrapper<Id, std::initializer_list<T>> wrap_argument(
+  std::initializer_list<T> value
+) {
+  return detail::argument_wrapper<Id, std::initializer_list<T>>(
+    std::move(value)
+  );
+}
+
+template <std::intmax_t Id, typename T>
+detail::argument_wrapper<Id, T&&> wrap_argument(T&& value) {
+  static_assert(std::is_rvalue_reference<T&&>::value, "internal thrift error");
+  return detail::argument_wrapper<Id, T&&>(std::forward<T>(value));
+}
+
+} // detail
+
 }} // apache::thrift
 
 #endif // #ifndef THRIFT_THRIFT_H_
