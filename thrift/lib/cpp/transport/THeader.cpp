@@ -957,9 +957,10 @@ void THeaderBody::ensureTransformsApplied() {
     return;
   }
 
-  if (transformWorkPerformed_) {
-    LOG(WARNING) << "THeaderBody decompressed/recompressed";
-  }
+  // TODO(ckwalsh): uncomment when log spew is fixed. T10703606
+  // if (transformWorkPerformed_) {
+  //   LOG(WARNING) << "THeaderBody decompressed/recompressed";
+  // }
   transformWorkPerformed_ = true;
 
   size_t dataSize = buf_->computeChainDataLength();
@@ -1100,9 +1101,10 @@ void THeaderBody::ensureTransformsRemoved() {
     return;
   }
 
-  if (transformWorkPerformed_) {
-    LOG(WARNING) << "THeaderBody compressed/decompressed";
-  }
+  // TODO(ckwalsh): uncomment when log spew is fixed. T10703606
+  // if (transformWorkPerformed_) {
+  //   LOG(WARNING) << "THeaderBody compressed/decompressed";
+  // }
   transformWorkPerformed_ = true;
 
   for (vector<uint16_t>::const_reverse_iterator it = transforms_.rbegin();
