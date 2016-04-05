@@ -949,6 +949,10 @@ const folly::IOBuf* THeaderBody::getUntransformed() {
 void THeaderBody::ensureTransformsApplied() {
   checkCorrupt();
 
+  if (!buf_) {
+    return;
+  }
+
   if (isTransformed_) {
     return;
   }
@@ -1087,6 +1091,10 @@ void THeaderBody::ensureTransformsApplied() {
 
 void THeaderBody::ensureTransformsRemoved() {
   checkCorrupt();
+
+  if (!buf_) {
+    return;
+  }
 
   if (!isTransformed_) {
     return;
