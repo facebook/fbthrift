@@ -40,6 +40,19 @@ class Included : public apache::thrift::TStructType<Included> {
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   Included() : some_val(0) {
   }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit Included(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    Included(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    some_val = arg.move();
+    __isset.some_val = true;
+  }
 
   Included(const Included&) = default;
   Included& operator=(const Included& src)= default;

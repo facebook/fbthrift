@@ -37,6 +37,20 @@ class MyUnion : public apache::thrift::TStructType<MyUnion> {
   };
 
   MyUnion() : type_(Type::__EMPTY__) {}
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit MyUnion(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_anInteger(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit MyUnion(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_aString(arg.move());
+  }
   MyUnion(const MyUnion& rhs) : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -237,6 +251,44 @@ class MyField : public apache::thrift::TStructType<MyField> {
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyField() : opt_value(0), value(0), req_value(0) {
   }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyField(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_value = arg.move();
+    __isset.opt_value = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyField(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    value = arg.move();
+    __isset.value = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyField(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_value = arg.move();
+  }
 
   MyField(const MyField&) = default;
   MyField& operator=(const MyField& src)= default;
@@ -285,6 +337,42 @@ class MyStruct : public apache::thrift::TStructType<MyStruct> {
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyStruct() {
   }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyStruct(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_ref = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyStruct(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    ref = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyStruct(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_ref = arg.move();
+  }
 
   MyStruct(const MyStruct&);
   MyStruct& operator=(const MyStruct& src) {
@@ -332,6 +420,44 @@ class StructWithUnion : public apache::thrift::TStructType<StructWithUnion> {
   static const uint64_t _reflection_id = 11295191354176986988U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   StructWithUnion() : aDouble(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithUnion(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    u = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithUnion(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    aDouble = arg.move();
+    __isset.aDouble = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithUnion(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    f = arg.move();
+    __isset.f = true;
   }
 
   StructWithUnion(const StructWithUnion&);
@@ -384,6 +510,19 @@ class RecursiveStruct : public apache::thrift::TStructType<RecursiveStruct> {
   static const uint64_t _reflection_id = 2826922994162023308U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   RecursiveStruct() {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit RecursiveStruct(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    RecursiveStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    mes = arg.move();
+    __isset.mes = true;
   }
 
   RecursiveStruct(const RecursiveStruct&) = default;

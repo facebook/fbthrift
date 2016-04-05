@@ -113,6 +113,7 @@ class service2_methodA_pargs : public apache::thrift::TStructType<service2_metho
 
   static const uint64_t _reflection_id = 5719438048877717420U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodA_pargs() = default;
 
   virtual ~service2_methodA_pargs() throw() {}
 
@@ -131,6 +132,7 @@ class service2_methodA_presult : public apache::thrift::TStructType<service2_met
 
   static const uint64_t _reflection_id = 3646851313577729228U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodA_presult() = default;
 
   virtual ~service2_methodA_presult() throw() {}
 
@@ -151,6 +153,45 @@ class service2_methodB_args : public apache::thrift::TStructType<service2_method
   static const uint64_t _reflection_id = 16438630555754932108U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service2_methodB_args() : x(0), z(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodB_args(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodB_args(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    x = arg.move();
+    __isset.x = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodB_args(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodB_args(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    y = arg.move();
+    __isset.y = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodB_args(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodB_args(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    z = arg.move();
+    __isset.z = true;
   }
 
   service2_methodB_args(const service2_methodB_args&) = default;
@@ -200,6 +241,43 @@ class service2_methodB_pargs : public apache::thrift::TStructType<service2_metho
 
   static const uint64_t _reflection_id = 11827867718633991500U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodB_pargs() = default;
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodB_pargs(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodB_pargs(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    x = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodB_pargs(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodB_pargs(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    y = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodB_pargs(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodB_pargs(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    z = arg.move();
+  }
 
   virtual ~service2_methodB_pargs() throw() {}
 
@@ -221,6 +299,7 @@ class service2_methodB_presult : public apache::thrift::TStructType<service2_met
 
   static const uint64_t _reflection_id = 17032519182038144204U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodB_presult() = default;
 
   virtual ~service2_methodB_presult() throw() {}
 
@@ -275,6 +354,7 @@ class service2_methodC_pargs : public apache::thrift::TStructType<service2_metho
 
   static const uint64_t _reflection_id = 16786668868553556876U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodC_pargs() = default;
 
   virtual ~service2_methodC_pargs() throw() {}
 
@@ -293,6 +373,20 @@ class service2_methodC_presult : public apache::thrift::TStructType<service2_met
 
   static const uint64_t _reflection_id = 520737506486567340U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodC_presult() = default;
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodC_presult(
+    ::apache::thrift::detail::argument_wrapper<0, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodC_presult(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    success = arg.move();
+    __isset.success = true;
+  }
 
   virtual ~service2_methodC_presult() throw() {}
 
@@ -322,6 +416,45 @@ class service2_methodD_args : public apache::thrift::TStructType<service2_method
   static const uint64_t _reflection_id = 13559834307911128492U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service2_methodD_args() : i(0), k(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodD_args(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodD_args(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    i = arg.move();
+    __isset.i = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodD_args(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodD_args(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    j = arg.move();
+    __isset.j = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodD_args(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodD_args(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    k = arg.move();
+    __isset.k = true;
   }
 
   service2_methodD_args(const service2_methodD_args&) = default;
@@ -371,6 +504,43 @@ class service2_methodD_pargs : public apache::thrift::TStructType<service2_metho
 
   static const uint64_t _reflection_id = 260116069361994860U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodD_pargs() = default;
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodD_pargs(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodD_pargs(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    i = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodD_pargs(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodD_pargs(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    j = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodD_pargs(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodD_pargs(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    k = arg.move();
+  }
 
   virtual ~service2_methodD_pargs() throw() {}
 
@@ -392,6 +562,20 @@ class service2_methodD_presult : public apache::thrift::TStructType<service2_met
 
   static const uint64_t _reflection_id = 15838475084814263916U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodD_presult() = default;
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodD_presult(
+    ::apache::thrift::detail::argument_wrapper<0, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodD_presult(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    success = arg.move();
+    __isset.success = true;
+  }
 
   virtual ~service2_methodD_presult() throw() {}
 
@@ -455,6 +639,7 @@ class service2_methodE_pargs : public apache::thrift::TStructType<service2_metho
 
   static const uint64_t _reflection_id = 9568770577813299788U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodE_pargs() = default;
 
   virtual ~service2_methodE_pargs() throw() {}
 
@@ -473,6 +658,20 @@ class service2_methodE_presult : public apache::thrift::TStructType<service2_met
 
   static const uint64_t _reflection_id = 12662005636544009740U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodE_presult() = default;
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodE_presult(
+    ::apache::thrift::detail::argument_wrapper<0, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodE_presult(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    success = arg.move();
+    __isset.success = true;
+  }
 
   virtual ~service2_methodE_presult() throw() {}
 
@@ -502,6 +701,45 @@ class service2_methodF_args : public apache::thrift::TStructType<service2_method
   static const uint64_t _reflection_id = 9335213369860275500U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service2_methodF_args() : l(0), n(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodF_args(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodF_args(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    l = arg.move();
+    __isset.l = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodF_args(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodF_args(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    m = arg.move();
+    __isset.m = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodF_args(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodF_args(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    n = arg.move();
+    __isset.n = true;
   }
 
   service2_methodF_args(const service2_methodF_args&) = default;
@@ -551,6 +789,43 @@ class service2_methodF_pargs : public apache::thrift::TStructType<service2_metho
 
   static const uint64_t _reflection_id = 13653453787183033740U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodF_pargs() = default;
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodF_pargs(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodF_pargs(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    l = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodF_pargs(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodF_pargs(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    m = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodF_pargs(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodF_pargs(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    n = arg.move();
+  }
 
   virtual ~service2_methodF_pargs() throw() {}
 
@@ -572,6 +847,20 @@ class service2_methodF_presult : public apache::thrift::TStructType<service2_met
 
   static const uint64_t _reflection_id = 16009723004397363244U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
+  service2_methodF_presult() = default;
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit service2_methodF_presult(
+    ::apache::thrift::detail::argument_wrapper<0, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    service2_methodF_presult(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    success = arg.move();
+    __isset.success = true;
+  }
 
   virtual ~service2_methodF_presult() throw() {}
 

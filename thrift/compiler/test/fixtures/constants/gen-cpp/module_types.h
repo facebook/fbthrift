@@ -83,6 +83,44 @@ class Internship : public apache::thrift::TStructType<Internship> {
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   Internship() : weeks(0), employer(static_cast<Company>(0)) {
   }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit Internship(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    Internship(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    weeks = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit Internship(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    Internship(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    title = arg.move();
+    __isset.title = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit Internship(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    Internship(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    employer = arg.move();
+    __isset.employer = true;
+  }
 
   Internship(const Internship&) = default;
   Internship& operator=(const Internship& src)= default;
@@ -130,6 +168,30 @@ class Range : public apache::thrift::TStructType<Range> {
   static const uint64_t _reflection_id = 7757081658652615948U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   Range() : min(0), max(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit Range(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    Range(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    min = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit Range(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    Range(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    max = arg.move();
   }
 
   Range(const Range&) = default;

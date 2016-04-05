@@ -53,6 +53,32 @@ class MyStruct : public apache::thrift::TStructType<MyStruct> {
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyStruct() : MyIntField(0) {
   }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyStruct(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyIntField = arg.move();
+    __isset.MyIntField = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit MyStruct(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyStringField = arg.move();
+    __isset.MyStringField = true;
+  }
 
   MyStruct(const MyStruct&) = default;
   MyStruct& operator=(const MyStruct& src)= default;

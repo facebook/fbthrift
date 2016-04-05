@@ -32,6 +32,41 @@ class ComplexUnion : public apache::thrift::TStructType<ComplexUnion> {
   };
 
   ComplexUnion() : type_(Type::__EMPTY__) {}
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit ComplexUnion(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_intValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit ComplexUnion(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_stringValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit ComplexUnion(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_intListValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit ComplexUnion(
+    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_stringListValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit ComplexUnion(
+    ::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_stringRef(arg.move());
+  }
   ComplexUnion(const ComplexUnion& rhs) : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }

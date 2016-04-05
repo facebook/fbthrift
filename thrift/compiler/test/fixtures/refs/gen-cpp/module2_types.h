@@ -41,6 +41,18 @@ class StructUsingOtherNamespace : public apache::thrift::TStructType<StructUsing
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   StructUsingOtherNamespace() {
   }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructUsingOtherNamespace(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructUsingOtherNamespace(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    other = arg.move();
+  }
 
   StructUsingOtherNamespace(const StructUsingOtherNamespace&);
   StructUsingOtherNamespace& operator=(const StructUsingOtherNamespace& src) {

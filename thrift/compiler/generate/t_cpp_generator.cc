@@ -169,6 +169,8 @@ class t_cpp_generator : public t_oop_generator {
                                       bool swap=false,
                                       bool needs_copy_constructor=false);
   void generate_copy_constructor    (std::ofstream& out, t_struct* tstruct);
+  void generate_selective_constructor(ofstream& out, t_struct* tstruct, bool);
+  void generate_selective_union_constructor(ofstream& out, t_struct* tstruct);
   void generate_equal_operator      (std::ofstream& out, t_struct* tstruct);
   void generate_frozen_struct_definition(t_struct* tstruct);
   void generate_frozen2_struct_definition(t_struct* tstruct);
@@ -1510,6 +1512,8 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent(out) << tstruct->get_name() << "() : type_(Type::__EMPTY__) {}"
               << endl;
 
+  generate_selective_union_constructor(out, tstruct);
+
   // Helper method to write switch cases
   auto writeSwitchCase = [&] (
       const string& switchOn,
@@ -2075,6 +2079,55 @@ void t_cpp_generator::generate_copy_constructor(ofstream& out,
   indent(out) << "}" << endl;
 }
 
+void t_cpp_generator::generate_selective_constructor(ofstream& out,
+                                                     t_struct* tstruct,
+                                                     bool has_isset_flags) {
+  for (auto const& member : tstruct->get_members()) {
+    indent(out) << "template <" << endl;
+    indent_up();
+    indent(out) << "typename T__ThriftWrappedArgument__Ctor," << endl;
+    indent(out) << "typename... Args__ThriftWrappedArgument__Ctor" << endl;
+    indent_down();
+    indent(out) << '>' << endl;
+    indent(out) << "explicit " << tstruct->get_name() << '(' << endl;
+    indent_up();
+    indent(out) << "::apache::thrift::detail::argument_wrapper<"
+                << member->get_key() << ", "
+                << "T__ThriftWrappedArgument__Ctor> arg," << endl;
+    indent(out) << "Args__ThriftWrappedArgument__Ctor&&... args" << endl;
+    indent_down();
+    indent(out) << "):" << endl;
+    indent_up();
+    indent(out) << tstruct->get_name()
+                << "(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)"
+                << endl;
+    indent_down();
+    indent(out) << '{' << endl;
+    indent_up();
+    indent(out) << member->get_name() << " = arg.move();" << endl;
+    if (has_isset_flags && has_isset(member)) {
+      indent(out) << "__isset." << member->get_name() << " = true;" << endl;
+    }
+    indent_down();
+    indent(out) << '}' << endl;
+  }
+}
+
+void t_cpp_generator::generate_selective_union_constructor(ofstream& out,
+                                                     t_struct* tstruct) {
+  for (auto const& member : tstruct->get_members()) {
+    indent(out) << "template <typename T__ThriftWrappedArgument__Ctor>" << endl;
+    indent(out) << "explicit " << tstruct->get_name() << '(' << endl;
+    indent(out) << "  ::apache::thrift::detail::argument_wrapper<"
+                << member->get_key() << ", "
+                << "T__ThriftWrappedArgument__Ctor> arg):" << endl;
+    indent(out) << "  type_(Type::__EMPTY__)" << endl;
+    indent(out) << '{' << endl;
+    indent(out) << "  set_" << member->get_name() << "(arg.move());" << endl;
+    indent(out) << '}' << endl;
+  }
+}
+
 void t_cpp_generator::generate_equal_operator(ofstream& out,
                                               t_struct* tstruct) {
   auto src_name = tmp("rhs");
@@ -2172,10 +2225,11 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
   const bool should_generate_isset =
     has_nonrequired_fields && (!pointers || read);
 
-  if (!pointers) {
-    // Default constructor
-    indent(out) <<
-      tstruct->get_name() << "()";
+  // Default constructor
+  indent(out) << tstruct->get_name() << "()";
+  if (pointers) {
+    out << " = default;" << endl;
+  } else {
 
     bool init_ctor = false;
 
@@ -2211,6 +2265,8 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
     }
     scope_down(out);
   }
+
+  generate_selective_constructor(out, tstruct, should_generate_isset);
 
   if (!pointers &&
       is_exception &&
