@@ -60,6 +60,30 @@ class module_CONSTANTS {
       "\\" => 92,
       "\x61" => 97,
     };
+  const false_c = false;
+  const true_c = true;
+  const zero_byte = 0;
+  const zero16 = 0;
+  const zero32 = 0;
+  const zero64 = 0;
+  const zero_dot_zero = 0.0;
+  const empty_string = "";
+  public static Vector<int> $empty_int_list = Vector {
+    };
+  public static Vector<string> $empty_string_list = Vector {
+    };
+  public static Set<int> $empty_int_set = Set {
+    };
+  public static Set<string> $empty_string_set = Set {
+    };
+  public static Map<int, int> $empty_int_int_map = Map {
+    };
+  public static Map<int, string> $empty_int_string_map = Map {
+    };
+  public static Map<string, int> $empty_string_int_map = Map {
+    };
+  public static Map<string, string> $empty_string_string_map = Map {
+    };
 
   public static array $__values = array(
     "myInt" => 1337,
@@ -115,6 +139,30 @@ class module_CONSTANTS {
         "\"" => 34,
         "\\" => 92,
         "\x61" => 97,
+      },
+    "false_c" => false,
+    "true_c" => true,
+    "zero_byte" => 0,
+    "zero16" => 0,
+    "zero32" => 0,
+    "zero64" => 0,
+    "zero_dot_zero" => 0.0,
+    "empty_string" => "",
+    "empty_int_list" => Vector {
+      },
+    "empty_string_list" => Vector {
+      },
+    "empty_int_set" => Set {
+      },
+    "empty_string_set" => Set {
+      },
+    "empty_int_int_map" => Map {
+      },
+    "empty_int_string_map" => Map {
+      },
+    "empty_string_int_map" => Map {
+      },
+    "empty_string_string_map" => Map {
       },
   );
 }

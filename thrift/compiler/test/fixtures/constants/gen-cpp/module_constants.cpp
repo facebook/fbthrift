@@ -109,6 +109,86 @@ std::map<std::string, int32_t>  const &module_constants::char2ascii() {
   }());
   return instance;
 }
+constexpr bool const module_constants::false_c_;
+constexpr bool const module_constants::true_c_;
+constexpr int8_t const module_constants::zero_byte_;
+constexpr int16_t const module_constants::zero16_;
+constexpr int32_t const module_constants::zero32_;
+constexpr int64_t const module_constants::zero64_;
+constexpr double const module_constants::zero_dot_zero_;
+constexpr char const *const module_constants::empty_string_;
+std::vector<int32_t>  const &module_constants::empty_int_list() {
+  static auto const instance([]() {
+    std::vector<int32_t>  value;
+
+
+    return value;
+  }());
+  return instance;
+}
+std::vector<std::string>  const &module_constants::empty_string_list() {
+  static auto const instance([]() {
+    std::vector<std::string>  value;
+
+
+    return value;
+  }());
+  return instance;
+}
+std::set<int32_t>  const &module_constants::empty_int_set() {
+  static auto const instance([]() {
+    std::set<int32_t>  value;
+
+
+    return value;
+  }());
+  return instance;
+}
+std::set<std::string>  const &module_constants::empty_string_set() {
+  static auto const instance([]() {
+    std::set<std::string>  value;
+
+
+    return value;
+  }());
+  return instance;
+}
+std::map<int32_t, int32_t>  const &module_constants::empty_int_int_map() {
+  static auto const instance([]() {
+    std::map<int32_t, int32_t>  value;
+
+
+    return value;
+  }());
+  return instance;
+}
+std::map<int32_t, std::string>  const &module_constants::empty_int_string_map() {
+  static auto const instance([]() {
+    std::map<int32_t, std::string>  value;
+
+
+    return value;
+  }());
+  return instance;
+}
+std::map<std::string, int32_t>  const &module_constants::empty_string_int_map() {
+  static auto const instance([]() {
+    std::map<std::string, int32_t>  value;
+
+
+    return value;
+  }());
+  return instance;
+}
+std::map<std::string, std::string>  const &module_constants::empty_string_string_map() {
+  static auto const instance([]() {
+    std::map<std::string, std::string>  value;
+
+
+    return value;
+  }());
+  return instance;
+}
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -129,6 +209,22 @@ moduleConstants::moduleConstants() {
   backslash = module_constants::backslash();
   escaped_a = module_constants::escaped_a();
   char2ascii = module_constants::char2ascii();
+  false_c = module_constants::false_c();
+  true_c = module_constants::true_c();
+  zero_byte = module_constants::zero_byte();
+  zero16 = module_constants::zero16();
+  zero32 = module_constants::zero32();
+  zero64 = module_constants::zero64();
+  zero_dot_zero = module_constants::zero_dot_zero();
+  empty_string = module_constants::empty_string();
+  empty_int_list = module_constants::empty_int_list();
+  empty_string_list = module_constants::empty_string_list();
+  empty_int_set = module_constants::empty_int_set();
+  empty_string_set = module_constants::empty_string_set();
+  empty_int_int_map = module_constants::empty_int_int_map();
+  empty_int_string_map = module_constants::empty_int_string_map();
+  empty_string_int_map = module_constants::empty_string_int_map();
+  empty_string_string_map = module_constants::empty_string_string_map();
 }
 
 #pragma GCC diagnostic pop

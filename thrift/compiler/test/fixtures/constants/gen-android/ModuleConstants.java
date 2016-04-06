@@ -87,4 +87,52 @@ public class ModuleConstants {
     char2ascii.put("\x61", 97);
   }
 
+  public static final boolean false_c = false;
+
+  public static final boolean true_c = true;
+
+  public static final byte zero_byte = (byte)0;
+
+  public static final short zero16 = (short)0;
+
+  public static final int zero32 = 0;
+
+  public static final long zero64 = 0L;
+
+  public static final double zero_dot_zero = 0;
+
+  public static final String empty_string = "";
+
+  public static final List<Integer> empty_int_list = new ArrayList<Integer>();
+  static {
+  }
+
+  public static final List<String> empty_string_list = new ArrayList<String>();
+  static {
+  }
+
+  public static final Set<Integer> empty_int_set = new HashSet<Integer>();
+  static {
+  }
+
+  public static final Set<String> empty_string_set = new HashSet<String>();
+  static {
+  }
+
+  public static final Map<Integer,Integer> empty_int_int_map = new HashMap<Integer,Integer>();
+  static {
+  }
+
+  public static final Map<Integer,String> empty_int_string_map = new HashMap<Integer,String>();
+  static {
+  }
+
+  public static final Map<String,Integer> empty_string_int_map = new HashMap<String,Integer>();
+  static {
+  }
+
+  public static final Map<String,String> empty_string_string_map = new HashMap<String,String>();
+  static {
+  }
+
 }

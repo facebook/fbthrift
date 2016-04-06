@@ -31,6 +31,8 @@ TEST(constants, cpp) {
   EXPECT_EQ(99, test_cpp::test_constants::i_2_);
   EXPECT_EQ(99, test_cpp::test_constants::i_2());
 
+  EXPECT_EQ(std::string(), test_cpp::test_constants::str_e_);
+  EXPECT_EQ(std::string(), test_cpp::test_constants::str_e());
   EXPECT_EQ(std::string("hello"), test_cpp::test_constants::str_1_);
   EXPECT_EQ(std::string("hello"), test_cpp::test_constants::str_1());
   EXPECT_EQ(std::string("world"), test_cpp::test_constants::str_2_);
@@ -38,6 +40,7 @@ TEST(constants, cpp) {
   EXPECT_EQ(std::string("'"), test_cpp::test_constants::str_3());
   EXPECT_EQ(std::string("\"foo\""), test_cpp::test_constants::str_4());
 
+  EXPECT_TRUE(test_cpp::test_constants::l_e().empty());
   EXPECT_EQ(
     (std::vector<std::int32_t>{23, 42, 56}),
     test_cpp::test_constants::l_1()
@@ -47,6 +50,7 @@ TEST(constants, cpp) {
     test_cpp::test_constants::l_2()
   );
 
+  EXPECT_TRUE(test_cpp::test_constants::s_e().empty());
   EXPECT_EQ(
     (std::set<std::int32_t>{23, 42, 56}),
     test_cpp::test_constants::s_1()
@@ -56,6 +60,7 @@ TEST(constants, cpp) {
     test_cpp::test_constants::s_2()
   );
 
+  EXPECT_TRUE(test_cpp::test_constants::m_e().empty());
   EXPECT_EQ(
     (std::map<std::int32_t, std::int32_t>{{23, 97}, {42, 37}, {56, 11}}),
     test_cpp::test_constants::m_1()
@@ -174,6 +179,8 @@ TEST(constants, cpp2) {
   EXPECT_EQ(99, test_cpp2::test_constants::i_2_);
   EXPECT_EQ(99, test_cpp2::test_constants::i_2());
 
+  EXPECT_EQ(std::string(), test_cpp2::test_constants::str_e_);
+  EXPECT_EQ(std::string(), test_cpp2::test_constants::str_e());
   EXPECT_EQ(std::string("hello"), test_cpp2::test_constants::str_1_);
   EXPECT_EQ(std::string("hello"), test_cpp2::test_constants::str_1());
   EXPECT_EQ(std::string("world"), test_cpp2::test_constants::str_2_);
@@ -181,6 +188,7 @@ TEST(constants, cpp2) {
   EXPECT_EQ(std::string("'"), test_cpp2::test_constants::str_3());
   EXPECT_EQ(std::string("\"foo\""), test_cpp2::test_constants::str_4());
 
+  EXPECT_TRUE(test_cpp2::test_constants::l_e().empty());
   EXPECT_EQ(
     (std::vector<std::int32_t>{23, 42, 56}),
     test_cpp2::test_constants::l_1()
@@ -190,6 +198,7 @@ TEST(constants, cpp2) {
     test_cpp2::test_constants::l_2()
   );
 
+  EXPECT_TRUE(test_cpp2::test_constants::s_e().empty());
   EXPECT_EQ(
     (std::set<std::int32_t>{23, 42, 56}),
     test_cpp2::test_constants::s_1()
@@ -199,6 +208,7 @@ TEST(constants, cpp2) {
     test_cpp2::test_constants::s_2()
   );
 
+  EXPECT_TRUE(test_cpp2::test_constants::m_e().empty());
   EXPECT_EQ(
     (std::map<std::int32_t, std::int32_t>{{23, 97}, {42, 37}, {56, 11}}),
     test_cpp2::test_constants::m_1()

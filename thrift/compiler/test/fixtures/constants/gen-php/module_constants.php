@@ -62,6 +62,30 @@ class module_CONSTANTS {
       "\\" => 92,
       "\x61" => 97,
     );
+  const false_c = false;
+  const true_c = true;
+  const zero_byte = 0;
+  const zero16 = 0;
+  const zero32 = 0;
+  const zero64 = 0;
+  const zero_dot_zero = 0;
+  const empty_string = "";
+  static $empty_int_list = array(
+    );
+  static $empty_string_list = array(
+    );
+  static $empty_int_set = array(
+    );
+  static $empty_string_set = array(
+    );
+  static $empty_int_int_map = array(
+    );
+  static $empty_int_string_map = array(
+    );
+  static $empty_string_int_map = array(
+    );
+  static $empty_string_string_map = array(
+    );
 
   public static $__values = array(
     "myInt" => 1337,
@@ -117,6 +141,30 @@ class module_CONSTANTS {
         "\"" => 34,
         "\\" => 92,
         "\x61" => 97,
+      ),
+    "false_c" => false,
+    "true_c" => true,
+    "zero_byte" => 0,
+    "zero16" => 0,
+    "zero32" => 0,
+    "zero64" => 0,
+    "zero_dot_zero" => 0,
+    "empty_string" => "",
+    "empty_int_list" => array(
+      ),
+    "empty_string_list" => array(
+      ),
+    "empty_int_set" => array(
+      ),
+    "empty_string_set" => array(
+      ),
+    "empty_int_int_map" => array(
+      ),
+    "empty_int_string_map" => array(
+      ),
+    "empty_string_int_map" => array(
+      ),
+    "empty_string_string_map" => array(
       ),
   );
 }

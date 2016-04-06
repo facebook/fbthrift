@@ -4009,27 +4009,27 @@ class CppGenerator(t_generator.Generator):
                 return out_prefix + '{}' if explicit else None
             return out_prefix + '{' + ', '.join(outlist) + '}'
         elif t.is_list:
+            out_prefix = 'std::initializer_list<' + \
+                self._type_name(t.as_list.elem_type) + '>'
             outlist = []
             for item in value.list:
                 field_render = self._render_const_value(
                     t.as_list.elem_type, item, explicit=True)
                 outlist.append(field_render)
             if not outlist:
-                return '{}' if explicit else None
-            return 'std::initializer_list<' + \
-                self._type_name(t.as_list.elem_type) + '>{' + \
-                ', '.join(outlist) + '}'
+                return out_prefix + '{}' if explicit else None
+            return out_prefix + '{' + ', '.join(outlist) + '}'
         elif t.is_set:
+            out_prefix = 'std::initializer_list<' + \
+                self._type_name(t.as_set.elem_type) + '>'
             outlist = []
             for item in value.list:
                 field_render = self._render_const_value(t.as_set.elem_type,
                                                         item, explicit=True)
                 outlist.append(field_render)
             if not outlist:
-                return '{}' if explicit else None
-            return 'std::initializer_list<' + \
-                self._type_name(t.as_set.elem_type) + '>{' + \
-                ', '.join(outlist) + '}'
+                return out_prefix + '{}' if explicit else None
+            return out_prefix + '{' + ', '.join(outlist) + '}'
         else:
             raise TypeError('INVALID TYPE IN print_const_definition: ' + t.name)
 

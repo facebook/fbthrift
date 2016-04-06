@@ -60,3 +60,20 @@ const map<string, i32> char2ascii = {
   "\\": 92,
   "\x61": 97,
 };
+
+const bool false_c = 0;
+const bool true_c = 1;
+const byte zero_byte = 0;
+const i16 zero16 = 0;
+const i32 zero32 = 0;
+const i64 zero64 = 0;
+const double zero_dot_zero = 0.0;
+const string empty_string = "";
+const list<i32> empty_int_list = {};
+const list<string> empty_string_list = {};
+const set<i32> empty_int_set = {};
+const set<string> empty_string_set = {};
+const map<i32, i32> empty_int_int_map = {};
+const map<i32, string> empty_int_string_map = {};
+const map<string, i32> empty_string_int_map = {};
+const map<string, string> empty_string_string_map = {};

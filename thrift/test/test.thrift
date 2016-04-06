@@ -13,17 +13,21 @@ const enum1 e_2 = field2
 const i32 i_1 = 72;
 const i32 i_2 = 99;
 
+const string str_e = ""
 const string str_1 = "hello"
 const string str_2 = "world"
 const string str_3 = "'"
 const string str_4 = '"foo"'
 
+const list<string> l_e = []
 const list<i32> l_1 = [23, 42, 56]
 const list<string> l_2 = ["foo", "bar", "baz"]
 
+const set<string> s_e = []
 const set<i32> s_1 = [23, 42, 56]
 const set<string> s_2 = ["foo", "bar", "baz"]
 
+const map<string, string> m_e = {}
 const map<i32, i32> m_1 = {23:97, 42:37, 56:11}
 const map<string, string> m_2 = {"foo":"bar", "baz":"gaz"}
 const map<string, i32> m_3 = {'"': 34, "'": 39, "\\": 92, "\x61": 97}

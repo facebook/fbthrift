@@ -54,6 +54,33 @@ struct module_constants {
   static constexpr char const *const escaped_a_ = "\x61";
   static constexpr char const* escaped_a() { return escaped_a_; }
   static std::map<std::string, int32_t>  const& char2ascii();
+  static constexpr bool const false_c_ = false;
+  static constexpr bool false_c() { return false_c_; }
+  static constexpr bool const true_c_ = true;
+  static constexpr bool true_c() { return true_c_; }
+  static constexpr int8_t const zero_byte_ = 0;
+  static constexpr int8_t zero_byte() { return zero_byte_; }
+  static constexpr int16_t const zero16_ = 0;
+  static constexpr int16_t zero16() { return zero16_; }
+  static constexpr int32_t const zero32_ = 0;
+  static constexpr int32_t zero32() { return zero32_; }
+  static constexpr int64_t const zero64_ = 0LL;
+  static constexpr int64_t zero64() { return zero64_; }
+  static constexpr double const zero_dot_zero_ = 0;
+  static constexpr double zero_dot_zero() { return zero_dot_zero_; }
+  // consider using folly::StringPiece instead of std::string whenever possible
+  // to referencing this statically allocated string constant, in order to 
+  // prevent unnecessary allocations
+  static constexpr char const *const empty_string_ = "";
+  static constexpr char const* empty_string() { return empty_string_; }
+  static std::vector<int32_t>  const& empty_int_list();
+  static std::vector<std::string>  const& empty_string_list();
+  static std::set<int32_t>  const& empty_int_set();
+  static std::set<std::string>  const& empty_string_set();
+  static std::map<int32_t, int32_t>  const& empty_int_int_map();
+  static std::map<int32_t, std::string>  const& empty_int_string_map();
+  static std::map<std::string, int32_t>  const& empty_string_int_map();
+  static std::map<std::string, std::string>  const& empty_string_string_map();
 };
 
 class __attribute__((__deprecated__("moduleConstants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH your program. Instead, use module_constants::CONSTANT_NAME()"))) moduleConstants {
@@ -75,6 +102,22 @@ public:
   std::string backslash;
   std::string escaped_a;
   std::map<std::string, int32_t>  char2ascii;
+  bool false_c;
+  bool true_c;
+  int8_t zero_byte;
+  int16_t zero16;
+  int32_t zero32;
+  int64_t zero64;
+  double zero_dot_zero;
+  std::string empty_string;
+  std::vector<int32_t>  empty_int_list;
+  std::vector<std::string>  empty_string_list;
+  std::set<int32_t>  empty_int_set;
+  std::set<std::string>  empty_string_set;
+  std::map<int32_t, int32_t>  empty_int_int_map;
+  std::map<int32_t, std::string>  empty_int_string_map;
+  std::map<std::string, int32_t>  empty_string_int_map;
+  std::map<std::string, std::string>  empty_string_string_map;
 };
 
 

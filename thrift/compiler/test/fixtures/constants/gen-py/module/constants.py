@@ -83,3 +83,43 @@ char2ascii = {
   "\x61" : 97,
 }
 
+false_c = False
+
+true_c = True
+
+zero_byte = 0
+
+zero16 = 0
+
+zero32 = 0
+
+zero64 = 0
+
+zero_dot_zero = 0
+
+empty_string = ""
+
+empty_int_list = [
+]
+
+empty_string_list = [
+]
+
+empty_int_set = set([
+])
+
+empty_string_set = set([
+])
+
+empty_int_int_map = {
+}
+
+empty_int_string_map = {
+}
+
+empty_string_int_map = {
+}
+
+empty_string_string_map = {
+}
+
