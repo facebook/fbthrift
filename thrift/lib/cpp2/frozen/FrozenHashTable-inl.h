@@ -113,7 +113,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
           }
           continue;
         } else {
-          *slot = &item;
+          *slot = KeyExtractor::getPointer(item);
           break;
         }
       }

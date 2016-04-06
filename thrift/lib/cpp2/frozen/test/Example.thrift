@@ -4,6 +4,7 @@ namespace cpp2 example2
 namespace cpp example1
 
 cpp_include "<unordered_set>"
+cpp_include "thrift/lib/cpp2/frozen/VectorAssociative.h"
 
 enum Gender {
   Male = 0,
@@ -62,10 +63,28 @@ struct EveryLayout {
   2: i32 aInt,
   3: list<i32> aList,
   4: set<i32> aSet,
-  5: set<i32> ( cpp.template = "std::unordered_set" ) aHashSet,
+  5: set<i32>
+    (cpp.template = "std::unordered_set")
+    aHashSet,
   6: map<i32, i32> aMap,
   7: hash_map<i32, i32> aHashMap,
   8: optional i32 optInt, // optional layout
   9: float aFloat, // trivial layout
   10: optional map<i32, i32> optMap,
+}
+
+struct VectorTest {
+  1: list<i32> aList;
+  2: set<i32>
+       (cpp.template = "apache::thrift::frozen::VectorAsSet")
+       aSet;
+  3: map<i32, i32>
+       (cpp.template = "apache::thrift::frozen::VectorAsMap")
+       aMap;
+  4: set<i32>
+       (cpp.template = "apache::thrift::frozen::VectorAsHashSet")
+       aHashSet;
+  5: hash_map<i32, i32>
+       (cpp.template = "apache::thrift::frozen::VectorAsHashMap")
+       aHashMap;
 }

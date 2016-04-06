@@ -22,6 +22,17 @@ struct KeyExtractor {
   static const K& getKey(const std::pair<const K, V>& pair) {
     return pair.first;
   }
+
+  static const std::pair<const K, V>* getPointer(
+      const std::pair<const K, V>& pair) {
+    return &pair;
+  }
+
+  static const std::pair<const K, V>* getPointer(const std::pair<K, V>& pair) {
+    // To allow freezing from VectorAsHashMap
+    return reinterpret_cast<const std::pair<const K, V>*>(&pair);
+  }
+
   static typename Layout<K>::View getViewKey(
       const typename Layout<std::pair<const K, V>>::View& pair) {
     return pair.first();
@@ -30,7 +41,14 @@ struct KeyExtractor {
 
 template <class K>
 struct SelfKey {
-  static const K& getKey(const K& item) { return item; }
+  static const K& getKey(const K& item) {
+    return item;
+  }
+
+  static const K* getPointer(const K& item) {
+    return &item;
+  }
+
   static typename Layout<K>::View getViewKey(
       typename Layout<K>::View itemView) {
     return itemView;

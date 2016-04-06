@@ -32,8 +32,15 @@ class VectorAsSet : public std::vector<V> {
   /**
    * Insert value into the set at unspecified location.
    */
-  void insert(const V& value) { this->emplace_back(value); }
-  void insert(V&& value) { this->emplace_back(std::move(value)); }
+  void insert(const V& value) { this->push_back(value); }
+  void insert(V&& value) { this->push_back(std::move(value)); }
+
+  template <class Iterator>
+  void insert(Iterator begin, Iterator end) {
+    for (;begin != end; ++begin) {
+      this->insert(*begin);
+    }
+  }
 
   template <class T>
   void insert(T&& value) {
@@ -53,7 +60,7 @@ class VectorAsSet : public std::vector<V> {
   }
 
   template <class T>
-  void insert(typename Base::iterator hint, T&& value) {
+  void emplace(typename Base::iterator hint, T&& value) {
     this->emplace_back(std::forward<T>(value));
   }
 };
@@ -62,17 +69,21 @@ template <class V>
 class VectorAsHashSet : public VectorAsSet<V> {};
 
 template <class K, class V>
-class VectorAsMap : public VectorAsSet<std::pair<const K, V>> {
+class VectorAsMap : public VectorAsSet<std::pair<K, V>> {
  public:
   typedef K key_type;
   typedef V mapped_type;
+  V& operator[](K key) {
+    this->emplace_back(
+        std::piecewise_construct,
+        std::tuple<K&&>(std::move(key)),
+        std::tuple<>());
+    return this->back().second;
+  }
 };
 
 template <class K, class V>
 class VectorAsHashMap : public VectorAsMap<K, V> {
- public:
-  typedef K key_type;
-  typedef V mapped_type;
 };
 
 }}}
