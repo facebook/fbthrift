@@ -161,6 +161,10 @@ class Internship:
   def __ne__(self, other):
     return not (self == other)
 
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
 class Range:
   """
   Attributes:
@@ -245,6 +249,10 @@ class Range:
 
   def __ne__(self, other):
     return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
 
 all_structs.append(Internship)
 Internship.thrift_spec = (

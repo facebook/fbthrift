@@ -132,6 +132,10 @@ class sleep_args:
   def __ne__(self, other):
     return not (self == other)
 
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
 all_structs.append(sleep_args)
 sleep_args.thrift_spec = (
 )
@@ -195,6 +199,10 @@ class sleep_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
 
 all_structs.append(sleep_result)
 sleep_result.thrift_spec = (
@@ -273,6 +281,10 @@ class isPrime_args:
 
   def __ne__(self, other):
     return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
 
 all_structs.append(isPrime_args)
 isPrime_args.thrift_spec = (
@@ -358,6 +370,10 @@ class isPrime_result:
   def __ne__(self, other):
     return not (self == other)
 
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
 all_structs.append(isPrime_result)
 isPrime_result.thrift_spec = (
   (0, TType.BOOL, 'success', None, None, 2, ), # 0
@@ -427,6 +443,10 @@ class getResult_args:
 
   def __ne__(self, other):
     return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
 
 all_structs.append(getResult_args)
 getResult_args.thrift_spec = (
@@ -506,6 +526,10 @@ class getResult_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
 
 all_structs.append(getResult_result)
 getResult_result.thrift_spec = (

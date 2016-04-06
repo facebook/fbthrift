@@ -120,6 +120,10 @@ class init_args:
   def __ne__(self, other):
     return not (self == other)
 
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
 all_structs.append(init_args)
 init_args.thrift_spec = (
   None, # 0
@@ -204,6 +208,10 @@ class init_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
 
 all_structs.append(init_result)
 init_result.thrift_spec = (

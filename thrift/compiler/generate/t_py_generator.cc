@@ -1673,6 +1673,20 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
   }
 
   indent_down();
+
+  // Hash override for Python3 (t10434117)
+  indent_up();
+  out << indent() <<
+    "# Override the __hash__ function for Python3 - t10434117" << endl;
+  out <<
+    indent() << "if not six.PY2:" << endl;
+  indent_up();
+  out <<
+    indent() << "__hash__ = object.__hash__" << endl;
+  indent_down();
+  out << endl;
+
+  indent_down();
 }
 
 void t_py_generator::generate_fastproto_write(ofstream& out,

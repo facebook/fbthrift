@@ -101,6 +101,10 @@ class MyStruct:
   def __ne__(self, other):
     return not (self == other)
 
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
