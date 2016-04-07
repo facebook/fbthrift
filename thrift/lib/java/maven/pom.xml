@@ -1,17 +1,24 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                         http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.facebook</groupId>
+    <artifactId>facebook-base-pom</artifactId>
+    <version>11</version>
+  </parent>
+
   <groupId>com.facebook</groupId>
   <artifactId>thrift</artifactId>
   <version>${thrift.version}</version>
   <packaging>jar</packaging>
+
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <thrift.version>1.0-SNAPSHOT</thrift.version>
+    <basepom.check.skip-findbugs>true</basepom.check.skip-findbugs>
+    <basepom.check.skip-checkstyle>true</basepom.check.skip-checkstyle>
   </properties>
-  <prerequisites>
-    <maven>3.0</maven>
-  </prerequisites>
+
   <dependencies>
     <dependency>
       <groupId>org.iq80.snappy</groupId>
@@ -21,7 +28,6 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.6.4</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -30,38 +36,19 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.1</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
           <excludes>
              <exclude>**/direct_server/*.java</exclude>
              <exclude>**/direct_server/tests/*.java</exclude>
           </excludes>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>2.2</version>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
-    <!-- <directory>${project.basedir}/target</directory>
-    <finalName>${project.artifactId}-${project.version}</finalName>
-    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory> -->
   </build>
 </project>
