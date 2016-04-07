@@ -49,8 +49,20 @@ TEST(FrozenMap, Basic) {
   auto fmap = freeze(map);
   EXPECT_EQ(map.at(3), fmap.at(3));
   EXPECT_EQ(map.find(3)->second, fmap.find(3)->second());
-  EXPECT_TRUE(map.count(2));
-  EXPECT_FALSE(map.count(8));
+  EXPECT_TRUE(fmap.count(2));
+  EXPECT_FALSE(fmap.count(8));
+}
+
+TEST(FrozenMap, NonSortValue) {
+  std::map<int, std::unordered_map<int, int>> mult{{1, {{1, 1}, {2, 2}}},
+                                                   {2, {{1, 2}, {2, 4}}}};
+  auto fmap = freeze(mult);
+  EXPECT_EQ(fmap.at(1).at(1), 1);
+  EXPECT_EQ(fmap.find(2)->second().find(2)->second(), 4);
+  EXPECT_FALSE(fmap.count(3));
+  EXPECT_TRUE(fmap.count(1));
+  EXPECT_TRUE(fmap.at(2).count(1));
+  EXPECT_FALSE(fmap.at(2).count(3));
 }
 
 TEST(FrozenHashMap, Basic) {
@@ -58,8 +70,8 @@ TEST(FrozenHashMap, Basic) {
   auto fmap = freeze(map);
   EXPECT_EQ(map.at(3), fmap.at(3));
   EXPECT_EQ(map.find(3)->second, fmap.find(3)->second());
-  EXPECT_TRUE(map.count(2));
-  EXPECT_FALSE(map.count(8));
+  EXPECT_TRUE(fmap.count(2));
+  EXPECT_FALSE(fmap.count(8));
 }
 
 TEST(FrozenMap, Strings) {

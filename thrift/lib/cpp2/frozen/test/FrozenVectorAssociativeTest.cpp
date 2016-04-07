@@ -31,11 +31,26 @@ using namespace util;
 
 TEST(FrozenVectorTypes, VectorAsMap) {
   VectorAsMap<int, int> dm;
-  dm.insert({1, 2});
-  dm.insert(dm.end(), {3, 4});
+  dm.insert({9, 81});
+  dm.insert({5, 25});
+  dm.insert({3, 9});
+  dm.insert({7, 49});
+  dm.insert(dm.end(), {1, 1});
+  // ensure it gets sorted
   auto fdm = freeze(dm);
-  EXPECT_EQ(2, fdm.at(1));
-  EXPECT_EQ(4, fdm.at(3));
+  EXPECT_EQ(1, fdm[0].first());
+  EXPECT_EQ(1, fdm[0].second());
+  EXPECT_EQ(81, fdm.at(9));
+  EXPECT_EQ(25, fdm.at(5));
+  {
+    auto found = fdm.find(3);
+    ASSERT_NE(found, fdm.end());
+    EXPECT_EQ(found->second(), 9);
+  }
+  {
+    auto found = fdm.find(2);
+    EXPECT_EQ(found, fdm.end());
+  }
 }
 
 TEST(FrozenVectorTypes, VectorAsHashMap) {
@@ -45,6 +60,39 @@ TEST(FrozenVectorTypes, VectorAsHashMap) {
   auto fdm = freeze(dm);
   EXPECT_EQ(2, fdm.at(1));
   EXPECT_EQ(4, fdm.at(3));
+  {
+    auto found = fdm.find(3);
+    ASSERT_NE(found, fdm.end());
+    EXPECT_EQ(found->second(), 4);
+  }
+  {
+    auto found = fdm.find(2);
+    EXPECT_EQ(found, fdm.end());
+  }
+}
+
+TEST(FrozenVectorTypes, OptionalVectorAsHashMap) {
+  folly::Optional<VectorAsHashMap<int, int>> dm;
+  dm.emplace();
+  dm->insert({1, 2});
+  dm->insert(dm->end(), {3, 4});
+  auto fdm = freeze(dm);
+  EXPECT_EQ(2, fdm->at(1));
+  EXPECT_EQ(4, fdm->at(3));
+  {
+    auto found = fdm->find(3);
+    ASSERT_NE(found, fdm->end());
+    EXPECT_EQ(found->second(), 4);
+  }
+  {
+    auto found = fdm.value().find(3);
+    ASSERT_NE(found, fdm.value().end());
+    EXPECT_EQ(found->second(), 4);
+  }
+  {
+    auto found = fdm->find(2);
+    EXPECT_EQ(found, fdm->end());
+  }
 }
 
 TEST(FrozenVectorTypes, VectorAsSet) {

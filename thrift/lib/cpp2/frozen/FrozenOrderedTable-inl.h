@@ -33,6 +33,75 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
     }
   }
 
+  // provide indirect sort table if the collection isn't pre-sorted
+  static void maybeIndex(const T& coll, std::vector<const Item*>& index) {
+    index.clear();
+    if (std::is_sorted(
+            coll.begin(), coll.end(), [](const Item& a, const Item& b) {
+              return KeyExtractor::getKey(a) < KeyExtractor::getKey(b);
+            })) {
+      return;
+    }
+    index.reserve(coll.size());
+    for (auto& item : coll) {
+      index.push_back(KeyExtractor::getPointer(item));
+    }
+    std::sort(index.begin(), index.end(), [](const Item* pa, const Item* pb) {
+      return KeyExtractor::getKey(*pa) < KeyExtractor::getKey(*pb);
+    });
+  }
+
+  FieldPosition layoutItems(LayoutRoot& root,
+                            const T& coll,
+                            LayoutPosition self,
+                            FieldPosition pos,
+                            LayoutPosition write,
+                            FieldPosition writeStep) final {
+    std::vector<const Item*> index;
+    maybeIndex(coll, index);
+
+    FieldPosition noField; // not really used
+    if (index.empty()) {
+      // either the collection was already sorted or it's empty
+      for (auto& item : coll) {
+        root.layoutField(write, noField, this->itemField, item);
+        write = write(writeStep);
+      }
+    } else {
+      // collection was non-empty and non-sorted, needs indirection table.
+      for (auto ptr : index) {
+          root.layoutField(write, noField, this->itemField, *ptr);
+          write = write(writeStep);
+      }
+    }
+
+    return pos;
+  }
+
+  void freezeItems(FreezeRoot& root,
+                   const T& coll,
+                   FreezePosition self,
+                   FreezePosition write,
+                   FieldPosition writeStep) const final {
+    std::vector<const Item*> index;
+    maybeIndex(coll, index);
+
+    FieldPosition noField; // not really used
+    if (index.empty()) {
+      // either the collection was already sorted or it's empty
+      for (auto& item : coll) {
+        root.freezeField(write, this->itemField, item);
+        write = write(writeStep);
+      }
+    } else {
+      // collection was non-empty and non-sorted, needs indirection table.
+      for (auto ptr : index) {
+        root.freezeField(write, this->itemField, *ptr);
+        write = write(writeStep);
+      }
+    }
+  }
+
   class View : public Base::View {
     typedef typename Layout<Key>::View KeyView;
     typedef typename Layout<Item>::View ItemView;
