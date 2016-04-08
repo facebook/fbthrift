@@ -28,7 +28,8 @@
 #include <folly/String.h>
 
 #ifndef NO_LIB_GFLAGS
-// DO NOT modify this flag from your application
+ #include <gflags/gflags.h>
+ // DO NOT modify this flag from your application
 DEFINE_string(
   thrift_cc_manager_kill_switch_file,
   "/var/thrift_security/disable_cc_manager",
