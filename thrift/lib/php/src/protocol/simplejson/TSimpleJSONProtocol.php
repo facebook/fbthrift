@@ -496,6 +496,10 @@ class TSimpleJSONProtocol extends TProtocol {
               );
           }
           break;
+        case '':
+          // end of buffer, this string is unclosed
+          $reading = false;
+          break;
         default:
           $count++;
           $sb->append($c);

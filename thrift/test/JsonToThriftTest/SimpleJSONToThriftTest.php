@@ -34,6 +34,13 @@ require_once $GLOBALS['THRIFT_ROOT'].'/protocol/binary/TBinaryProtocolBase.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/protocol/binary/TBinaryProtocolAccelerated.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/protocol/binary/TBinaryProtocol.php';
 
+/* Include the simple json serializer */
+require_once $GLOBALS['THRIFT_ROOT'].'/protocol/TProtocolSerializer.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/protocol/simplejson/TSimpleJSONProtocol.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/protocol/simplejson/TSimpleJSONProtocolContext.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/protocol/simplejson/TSimpleJSONProtocolMapContext.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/protocol/simplejson/TSimpleJSONSerializer.php';
+
 /** Include the socket layer */
 require_once $GLOBALS['THRIFT_ROOT'].'/transport/TTransportStatus.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/transport/IThriftRemoteConn.php';
@@ -45,7 +52,10 @@ require_once $GLOBALS['THRIFT_ROOT'].'/transport/TSocketPool.php';
 /** Include the buffered transport layer */
 require_once $GLOBALS['THRIFT_ROOT'].'/transport/IThriftBufferedTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/transport/TBufferedTransport.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/transport/TMemoryBuffer.php';
+require_once $GLOBALS['THRIFT_ROOT'].'/transport/TTransportException.php';
 
+ini_set('max_execution_time', 20);
 
 /**
  * Util Functions
@@ -85,10 +95,10 @@ function fail($message) {
   throw new Exception($message);
 }
 
-function test_exception($thrift_obj, $json_str) {
+function test_exception($fun) {
   $flag = false;
   try {
-    $thrift_obj->readFromJson($json_str);
+    $fun();
     $flag = true;
   } catch (Exception $e) {
   }
@@ -154,7 +164,7 @@ $byteStruct->readFromJson($byteJson1);
 assert_equals($byteStruct->a, 101);
 
 $byteJson2 = "{\n  \"a\": 256\n}";
-test_exception($byteStruct, $byteJson2);
+test_exception(() ==> $byteStruct->readFromJson($byteJson2));
 
 /**
  * Test Complex Structure
@@ -203,14 +213,14 @@ $i16Struct->readFromJson($i16Json1);
 assert_equals($i16Struct->a, 4567);
 
 $i16Json2 = "{\n  \"a\": 68414056839\n}";
-test_exception($i16Struct, $i16Json2);
+test_exception(() ==> $i16Struct->readFromJson($i16Json2));
 
 $i32Json1 = "{\n  \"a\": 12131415\n}";
 $i32Struct->readFromJson($i32Json1);
 assert_equals($i32Struct->a, 12131415);
 
 $i32Json2 = "{\n  \"a\": 4503599627295930\n}";
-test_exception($i32Struct, $i32Json2);
+test_exception(() ==> $i32Struct->readFromJson($i32Json2));
 
 /**
  * Test Map
@@ -256,7 +266,7 @@ $setStruct->readFromJson($setJson2);
 assert_array_equals($setStruct->a, array());
 
 $setJson3 = "{\n  \"a\": [\n    1, 2, 1099511627775\n  ]\n}";
-test_exception($setStruct, $setJson3);
+test_exception(() ==> $setStruct->readFromJson($setJson3));
 
 /**
  * Test for simple structure
@@ -280,7 +290,7 @@ assert_equals($simpleStruct->f, null);
 
 $simpleJson3 = "{\n}";
 $simpleStruct = new mySimpleStruct(array());
-test_exception($simpleStruct, $simpleJson3);
+test_exception(() ==> $simpleStruct->readFromJson($simpleJson3));
 
 /**
  * Test String (empty, null, and normal)
@@ -312,13 +322,22 @@ try {
  * Test invalid JSON string
  */
 $invalidJson1 = "{ 'a': 'baz' }";
-test_exception($stringStruct, $invalidJson1);
+test_exception(() ==> $stringStruct->readFromJson($invalidJson1));
 $invalidJson2 = '{ a : "baz" }';
-test_exception($stringStruct, $invalidJson2);
+test_exception(() ==> $stringStruct->readFromJson($invalidJson2));
 $invalidJson3 = '{ "bar" : "baz", }';
-test_exception($stringStruct, $invalidJson3);
+test_exception(() ==> $stringStruct->readFromJson($invalidJson3));
 $invalidJson4 = 'foo: bar';
-test_exception($stringStruct, $invalidJson4);
+test_exception(() ==> $stringStruct->readFromJson($invalidJson4));
+
+/**
+ * Test TSimpleJSONSerializer::deserialize unclosed string
+ */
+$unclosedString = '{"nayn';
+test_exception(
+  () ==> TSimpleJSONSerializer::deserialize($unclosedString, $stringStruct),
+);
+
 // Restore THRIFT_ROOT
 print "Success!\n";
 return 0;
