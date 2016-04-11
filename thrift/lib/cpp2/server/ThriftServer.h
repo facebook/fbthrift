@@ -109,13 +109,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::shared_ptr<wangle::IOThreadPoolExecutor> ioThreadPool_ =
       std::make_shared<wangle::IOThreadPoolExecutor>(0);
 
-  /*
-   * deserializeMessageBegin is called before thrift server hands over the
-   * request to the processor. Some custom processor (e.g. a proxy) doesn't
-   * need this.
-   */
-  bool skipDeserializeMessageBegin_ = false;
-
   /**
    * The speed for adjusting connection accept rate.
    * 0 for disabling auto adjusting connection accept rate.
@@ -530,14 +523,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    */
   void setMinCompressBytes(uint32_t bytes) {
     minCompressBytes_ = bytes;
-  }
-
-  void setSkipDeserializeMessageBegin(bool skip) {
-    skipDeserializeMessageBegin_ = skip;
-  }
-
-  bool getSkipDeserializeMessageBegin() {
-    return skipDeserializeMessageBegin_;
   }
 
   /**

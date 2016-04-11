@@ -358,8 +358,7 @@ void Cpp2Connection::requestReceived(
     auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>
       (hreq->getHeader()->getProtocolId());
 
-    if (!server->getSkipDeserializeMessageBegin() &&
-        !apache::thrift::detail::ap::deserializeMessageBegin(
+    if (!apache::thrift::detail::ap::deserializeMessageBegin(
           protoId,
           up2r,
           buf.get()->getUntransformed(),
