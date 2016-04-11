@@ -91,10 +91,10 @@ bool deserializeMessageBegin(
   std::string fname;
   MessageType mtype;
   int32_t protoSeqId = 0;
-  auto iprot = folly::make_unique<ProtocolReader>();
-  iprot->setInput(buf);
+  ProtocolReader iprot;
+  iprot.setInput(buf);
   try {
-    auto bytes = iprot->readMessageBegin(fname, mtype, protoSeqId);
+    auto bytes = iprot.readMessageBegin(fname, mtype, protoSeqId);
     ctx->setMessageBeginSize(bytes);
   } catch (const TException& ex) {
     LOG(ERROR) << "received invalid message from client: " << ex.what();
