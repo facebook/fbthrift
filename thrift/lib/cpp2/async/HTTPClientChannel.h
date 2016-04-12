@@ -467,8 +467,7 @@ class HTTPClientChannel : public ClientChannel,
   void onRequestEnd(const proxygen::HTTPSession&,
                     uint32_t /*maxIngressQueueSize*/) override {}
   void onActivateConnection(const proxygen::HTTPSession&) override {}
-  void onDeactivateConnection(const proxygen::HTTPSession&,
-                              const proxygen::TransactionInfo&) override {}
+  void onDeactivateConnection(const proxygen::HTTPSession&) override {}
   void onDestroy(const proxygen::HTTPSession&) override {
     httpSession_ = nullptr;
   }
@@ -476,8 +475,7 @@ class HTTPClientChannel : public ClientChannel,
                         const proxygen::HTTPMessage&) override {}
   void onIngressLimitExceeded(const proxygen::HTTPSession&) override {}
   void onIngressPaused(const proxygen::HTTPSession&) override {}
-  void onTransactionDetached(const proxygen::HTTPSession&,
-                             const proxygen::TransactionInfo&) override {}
+  void onTransactionDetached(const proxygen::HTTPSession&) override {}
   void onPingReplySent(int64_t /*latency*/) override {}
   void onPingReplyReceived() override {}
   void onSettingsOutgoingStreamsFull(const proxygen::HTTPSession&) override {}
