@@ -946,6 +946,15 @@ const folly::IOBuf* THeaderBody::getUntransformed() {
   return buf_.get();
 }
 
+void THeaderBody::setTransforms(const std::vector<uint16_t>& transforms) {
+  if (transforms.size() != transforms_.size() ||
+      !std::equal(transforms.begin(), transforms.end(), transforms_.begin())) {
+    ensureTransformsRemoved();
+    DCHECK(!isTransformed_) << "Buffer is transformed";
+    transforms_ = transforms;
+  }
+}
+
 void THeaderBody::ensureTransformsApplied() {
   checkCorrupt();
 

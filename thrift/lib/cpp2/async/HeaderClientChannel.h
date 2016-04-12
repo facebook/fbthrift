@@ -258,7 +258,9 @@ protected:
 
 private:
 
-  void setRequestHeaderOptions(apache::thrift::transport::THeader* header);
+  void setRequestHeaderOptions(
+    apache::thrift::transport::THeader* header,
+    apache::thrift::transport::THeaderBody* buf);
 
   std::shared_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
 

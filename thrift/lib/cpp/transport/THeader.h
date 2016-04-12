@@ -401,6 +401,8 @@ class THeaderBody {
   const folly::IOBuf* getTransformed(std::vector<uint16_t>& transforms);
   const folly::IOBuf* getUntransformed();
 
+  void setTransforms(const std::vector<uint16_t>& transforms);
+
   void ensureTransformsApplied();
   void ensureTransformsRemoved();
 

@@ -362,7 +362,7 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
     return ResponseChannel::ONEWAY_REQUEST_ID;
   }
 
-  setRequestHeaderOptions(header.get());
+  setRequestHeaderOptions(header.get(), buf.get());
   addRpcOptionHeaders(header.get(), rpcOptions);
 
   // Both cb and buf are allowed to be null.
@@ -385,11 +385,12 @@ void HeaderClientChannel::setCloseCallback(CloseCallback* cb) {
   setBaseReceivedCallback();
 }
 
-void HeaderClientChannel::setRequestHeaderOptions(THeader* header) {
+void HeaderClientChannel::setRequestHeaderOptions(THeader* header, THeaderBody* body) {
   header->setFlags(HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
   header->setClientType(getClientType());
   header->forceClientType(getForceClientType());
   header->setTransforms(getWriteTransforms());
+  body->setTransforms(getWriteTransforms());
   if (getClientType() == THRIFT_HTTP_CLIENT_TYPE) {
     header->setHttpClientParser(httpClientParser_);
   }
@@ -460,7 +461,7 @@ uint32_t HeaderClientChannel::sendRequest(
                                  timeout,
                                  rpcOptions.getChunkTimeout());
 
-  setRequestHeaderOptions(header.get());
+  setRequestHeaderOptions(header.get(), buf.get());
   addRpcOptionHeaders(header.get(), rpcOptions);
 
   if (getClientType() != THRIFT_HEADER_CLIENT_TYPE &&

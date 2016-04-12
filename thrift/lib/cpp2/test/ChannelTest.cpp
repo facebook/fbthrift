@@ -217,6 +217,7 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
   void requestSent() override {}
   void replyReceived(ClientReceiveState&& state) override {
     reply_++;
+    replyBytesCompressed_ += std::get<0>(state.buf()->getTransformed())->computeChainDataLength();
     replyBytes_ += state.buf()->getUntransformed()->computeChainDataLength();
     if (state.isSecurityActive()) {
       replySecurityActive_++;
@@ -241,6 +242,7 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
     closed_ = false;
     reply_ = 0;
     replyBytes_ = 0;
+    replyBytesCompressed_ = 0;
     replyError_ = 0;
     replySecurityActive_ = 0;
     securityStartTime_ = 0;
@@ -250,6 +252,7 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
   static bool closed_;
   static uint32_t reply_;
   static uint32_t replyBytes_;
+  static uint32_t replyBytesCompressed_;
   static uint32_t replyError_;
   static uint32_t replySecurityActive_;
   static int64_t securityStartTime_;
@@ -259,6 +262,7 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
 bool TestRequestCallback::closed_ = false;
 uint32_t TestRequestCallback::reply_ = 0;
 uint32_t TestRequestCallback::replyBytes_ = 0;
+uint32_t TestRequestCallback::replyBytesCompressed_ = 0;
 uint32_t TestRequestCallback::replyError_ = 0;
 uint32_t TestRequestCallback::replySecurityActive_ = 0;
 int64_t TestRequestCallback::securityStartTime_ = 0;
@@ -271,11 +275,13 @@ class ResponseCallback
       : serverClosed_(false)
       , oneway_(0)
       , request_(0)
-      , requestBytes_(0) {}
+      , requestBytes_(0)
+      , requestBytesCompressed_(0) {}
 
   void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override {
     request_++;
     requestBytes_ += req->getBuf()->getUntransformed()->computeChainDataLength();
+    requestBytesCompressed_ += std::get<0>(req->getBuf()->getTransformed())->computeChainDataLength();
     if (req->isOneway()) {
       oneway_++;
     } else {
@@ -291,6 +297,7 @@ class ResponseCallback
   uint32_t oneway_;
   uint32_t request_;
   uint32_t requestBytes_;
+  uint32_t requestBytesCompressed_;
 };
 
 class MessageTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>
@@ -465,6 +472,65 @@ TEST(Channel, HeaderChannelTest) {
   HeaderChannelTest(1).run();
   HeaderChannelTest(100).run();
   HeaderChannelTest(1024*1024).run();
+}
+
+class HeaderChannelCompressionTest
+    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
+    , public TestRequestCallback
+    , public ResponseCallback {
+public:
+  explicit HeaderChannelCompressionTest(size_t len)
+      : len_(len) {
+  }
+
+  class Callback : public TestRequestCallback {
+   public:
+    explicit Callback(HeaderChannelCompressionTest* c)
+    : c_(c) {}
+    void replyReceived(ClientReceiveState&& state) override {
+      TestRequestCallback::replyReceived(std::move(state));
+      c_->channel1_->setCallback(nullptr);
+    }
+   private:
+    HeaderChannelCompressionTest* c_;
+  };
+
+  void preLoop() override {
+    TestRequestCallback::reset();
+    channel0_->setTransform(THeader::TRANSFORMS::ZLIB_TRANSFORM);
+    channel1_->setCallback(this);
+    channel0_->setCloseCallback(this);
+    channel0_->sendRequest(
+      std::unique_ptr<RequestCallback>(new Callback(this)),
+      // Fake method name for creating a ContextStatck
+      std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
+      makeTestBuf(len_),
+      std::unique_ptr<THeader>(new THeader));
+    channel0_->setCloseCallback(nullptr);
+  }
+
+  void postLoop() override {
+    EXPECT_EQ(reply_, 1);
+    EXPECT_EQ(replyError_, 0);
+    EXPECT_EQ(replyBytes_, len_);
+    EXPECT_LT(replyBytesCompressed_, len_);
+    EXPECT_EQ(closed_, false);
+    EXPECT_EQ(serverClosed_, false);
+    EXPECT_EQ(request_, 1);
+    EXPECT_EQ(requestBytes_, len_);
+    EXPECT_LT(requestBytesCompressed_, len_);
+    channel1_->setCallback(nullptr);
+    EXPECT_EQ(securityStartTime_, 0);
+    EXPECT_EQ(securityEndTime_, 0);
+  }
+
+ private:
+  size_t len_;
+};
+
+TEST(Channel, HeaderChannelCompressionTest) {
+  HeaderChannelCompressionTest(1024).run();
+  HeaderChannelCompressionTest(1024*1024).run();
 }
 
 class HeaderChannelClosedTest
