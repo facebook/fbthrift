@@ -1,11 +1,11 @@
-# @lint-avoid-pyflakes2
-# @lint-avoid-python-3-compatibility-imports
+#!/usr/bin/env python3
 
 import asyncio
 import functools
 import logging
 from io import BytesIO
 import struct
+import traceback
 import warnings
 
 from .TServer import TServer, TServerEventHandler, TConnectionContext
@@ -254,6 +254,7 @@ class ThriftHeaderServerProtocol(FramedProtocol):
                 self.transport.write(msg)
         except BaseException as e:
             logger.error("Exception while processing request: %s", str(e))
+            logger.error(traceback.format_exc())
             self.transport.close()
 
     def connection_made(self, transport):
