@@ -4,6 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import os
+import pkg_resources
 import re
 import unittest
 import shlex
@@ -11,6 +12,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import traceback
 
 def ascend_find_exe(path, target):
     if not os.path.isdir(path):
@@ -28,15 +30,20 @@ def read_file(path):
     with open(path, 'r') as f:
         return f.read()
 
+def write_file(path, content):
+    with open(path, 'w') as f:
+        f.write(content)
+
+def read_resource(path):
+    return pkg_resources.resource_string(__name__, path)
+
 def read_lines(path):
     with open(path, 'r') as f:
         return f.readlines()
 
 def mkdir_p(path, mode):
-    try:
+    if not os.path.isdir(path):
         os.makedirs(path, mode)
-    except OSError:
-        pass
 
 def parse_manifest(raw):
     manifest = {}
@@ -49,11 +56,11 @@ def parse_manifest(raw):
 
 exe = os.path.join(os.getcwd(), sys.argv[0])
 thrift = ascend_find_exe(exe, 'thrift')
-fixtureDir = os.path.join(os.path.dirname(exe), 'fixtures')
-manifest = parse_manifest(read_file(os.path.join(fixtureDir, 'MANIFEST')))
+fixtureDir = 'fixtures'
+manifest = parse_manifest(read_resource(os.path.join(fixtureDir, 'MANIFEST')))
 fixtureNames = manifest.keys()
 
-class MyTest(unittest.TestCase):
+class CompilerTest(unittest.TestCase):
 
     MSG = " ".join([
         "One or more fixtures are out of sync with the thrift compiler.",
@@ -71,12 +78,14 @@ class MyTest(unittest.TestCase):
 
     def runTest(self, name):
         fixtureChildDir = os.path.join(fixtureDir, name)
-        shutil.copy2(os.path.join(fixtureChildDir, 'cmd'), self.tmp)
+        cmdc = read_resource(os.path.join(fixtureChildDir, 'cmd'))
+        write_file(os.path.join(self.tmp, "cmd"), cmdc)
         for fn in manifest[name]:
             if fn.startswith('src/'):
-                dn = os.path.dirname(os.path.join(self.tmp, fn))
-                mkdir_p(dn, 0o700)
-                shutil.copy2(os.path.join(fixtureChildDir, fn), dn)
+                out = os.path.join(self.tmp, fn)
+                mkdir_p(os.path.dirname(out), 0o700)
+                srcc = read_resource(os.path.join(fixtureChildDir, fn))
+                write_file(out, srcc)
         cmds = read_lines(os.path.join(self.tmp, 'cmd'))
         for cmd in cmds:
             subprocess.check_call(
@@ -94,10 +103,11 @@ class MyTest(unittest.TestCase):
             self.assertEqual(sorted(gens), sorted(manifest[name]))
             for gen in gens:
                 genc = read_file(os.path.join(self.tmp, gen))
-                fixc = read_file(os.path.join(fixtureChildDir, gen))
+                fixc = read_resource(os.path.join(fixtureChildDir, gen))
                 self.assertMultiLineEqual(genc, fixc)
         except Exception as e:
             print(self.MSG, file=sys.stderr)
+            traceback.print_exc(file=sys.stderr)
             raise e
 
 def add_fixture(klazz, name):
@@ -107,4 +117,4 @@ def add_fixture(klazz, name):
     setattr(klazz, test_method.__name__, test_method)
 
 for name in fixtureNames:
-    add_fixture(MyTest, name)
+    add_fixture(CompilerTest, name)
