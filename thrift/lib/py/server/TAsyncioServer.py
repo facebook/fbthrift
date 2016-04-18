@@ -252,6 +252,8 @@ class ThriftHeaderServerProtocol(FramedProtocol):
             msg = buf.getvalue()
             if len(msg) > 0:
                 self.transport.write(msg)
+        except asyncio.CancelledError:
+            self.transport.close()
         except BaseException as e:
             logger.error("Exception while processing request: %s", str(e))
             logger.error(traceback.format_exc())
