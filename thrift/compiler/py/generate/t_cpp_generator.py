@@ -4294,6 +4294,7 @@ class CppGenerator(t_generator.Generator):
             while uid in self.fatal_str_uid:
                 uid = "{0}_{1}".format(identifier, uid_round)
                 uid_round = uid_round + 1
+            self.fatal_str_uid.append(uid)
             self.fatal_str_map[s] = uid
         return self._get_fatal_string_id(s)
 
