@@ -1410,7 +1410,7 @@ class CppGenerator(t_generator.Generator):
                     for idx, xception in enumerate(xceptions):
                         with out('catch (const {0}& e)'.format(
                             self._type_name(xception.type))):
-                            ew = 'folly::exception_wrapper(e)'
+                            ew = 'folly::exception_wrapper(ep, e)'
                             out('ctx->userExceptionWrapped(true, {});'.format(ew))
                             ex_idx = self._exception_idx(function, idx)
                             out('{0} = e;'.format(

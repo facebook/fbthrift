@@ -195,12 +195,12 @@ void RaiserAsyncProcessor::throw_doRaise(std::unique_ptr<apache::thrift::Respons
     std::rethrow_exception(ep);
   }
   catch (const  ::cpp2::Banal& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(e));
+    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
     result.get<0>().ref() = e;
     result.setIsSet(0, true);
   }
   catch (const  ::cpp2::Fiery& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(e));
+    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
@@ -451,12 +451,12 @@ void RaiserAsyncProcessor::throw_get500(std::unique_ptr<apache::thrift::Response
     std::rethrow_exception(ep);
   }
   catch (const  ::cpp2::Fiery& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(e));
+    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
   catch (const  ::cpp2::Banal& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(e));
+    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
     result.get<2>().ref() = e;
     result.setIsSet(2, true);
   }
