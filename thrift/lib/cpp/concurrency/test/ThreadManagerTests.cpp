@@ -629,16 +629,16 @@ class TestObserver : public ThreadManager::Observer {
     , timeout(timeout)
     , expectedName(expectedName) {}
 
-  void addStats(const std::string& threadPoolName,
-                const SystemClockTimePoint& queueBegin,
-                const SystemClockTimePoint& workBegin,
-                const SystemClockTimePoint& workEnd) override {
-    EXPECT_EQ(expectedName, threadPoolName);
+  void preRun(folly::RequestContext*) override {}
+  void postRun(
+      folly::RequestContext*,
+      const ThreadManager::RunStats& stats) override {
+    EXPECT_EQ(expectedName, stats.threadPoolName);
 
     // Note: Technically could fail if system clock changes.
-    EXPECT_GT((workBegin - queueBegin).count(), 0);
-    EXPECT_GT((workEnd - workBegin).count(), 0);
-    EXPECT_GT((workEnd - workBegin).count(), timeout - 1);
+    EXPECT_GT((stats.workBegin - stats.queueBegin).count(), 0);
+    EXPECT_GT((stats.workEnd - stats.workBegin).count(), 0);
+    EXPECT_GT((stats.workEnd - stats.workBegin).count(), timeout - 1);
     ++timesCalled;
   }
 

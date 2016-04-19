@@ -578,15 +578,12 @@ void ThreadManager::ImplT<SemType>::reportTaskStats(
     // Hold lock to ensure that observer_ does not get deleted.
     folly::RWSpinLock::ReadHolder g(ThreadManager::ImplT<SemType>::observerLock_);
     if (ThreadManager::ImplT<SemType>::observer_) {
-      ThreadManager::ImplT<SemType>::observer_->postRun(
-          task.getContext().get());
       // Note: We are assuming the namePrefix_ does not change after the thread is
       // started.
       // TODO: enforce this.
-      ThreadManager::ImplT<SemType>::observer_->addStats(namePrefix_,
-                                                         queueBegin,
-                                                         workBegin,
-                                                         workEnd);
+      ThreadManager::ImplT<SemType>::observer_->postRun(
+          task.getContext().get(),
+          {namePrefix_, queueBegin, workBegin, workEnd});
     }
   }
 }

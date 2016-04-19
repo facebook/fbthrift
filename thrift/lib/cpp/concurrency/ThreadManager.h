@@ -248,17 +248,19 @@ class ThreadManager : public folly::Executor {
     runTimeUs = 0;
   }
 
+  struct RunStats {
+    const std::string& threadPoolName;
+    SystemClockTimePoint queueBegin;
+    SystemClockTimePoint workBegin;
+    SystemClockTimePoint workEnd;
+  };
+
   class Observer {
    public:
     virtual ~Observer() {}
 
-    virtual void preRun(folly::RequestContext*) {}
-    virtual void postRun(folly::RequestContext*) {}
-
-    virtual void addStats(const std::string& threadPoolName,
-                          const SystemClockTimePoint& queueBegin,
-                          const SystemClockTimePoint& workBegin,
-                          const SystemClockTimePoint& workEnd) = 0;
+    virtual void preRun(folly::RequestContext*) = 0;
+    virtual void postRun(folly::RequestContext*, const RunStats&) = 0;
   };
 
   static void setObserver(std::shared_ptr<Observer> observer);
