@@ -45,6 +45,8 @@ func TestReadWriteCompactProtocol(t *testing.T) {
 		p = NewTCompactProtocol(trans)
 		ReadWriteDouble(t, p, trans)
 		p = NewTCompactProtocol(trans)
+		ReadWriteFloat(t, p, trans)
+		p = NewTCompactProtocol(trans)
 		ReadWriteString(t, p, trans)
 		p = NewTCompactProtocol(trans)
 		ReadWriteBinary(t, p, trans)

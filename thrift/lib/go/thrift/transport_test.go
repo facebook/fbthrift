@@ -21,6 +21,8 @@ package thrift
 
 import (
 	"io"
+	"net"
+	"strconv"
 	"testing"
 )
 
@@ -150,6 +152,18 @@ func CloseTransports(t *testing.T, readTrans TTransport, writeTrans TTransport) 
 			t.Errorf("Transport %T cannot close write transport: %s", writeTrans, err)
 		}
 	}
+}
+
+func FindAvailableTCPServerPort(startPort int) (net.Addr, error) {
+	for i := startPort; i < 65535; i++ {
+		s := "127.0.0.1:" + strconv.Itoa(i)
+		l, err := net.Listen("tcp", s)
+		if err == nil {
+			l.Close()
+			return net.ResolveTCPAddr("tcp", s)
+		}
+	}
+	return nil, NewTTransportException(UNKNOWN_TRANSPORT_EXCEPTION, "Could not find available server port")
 }
 
 func valueInSlice(value string, slice []string) bool {

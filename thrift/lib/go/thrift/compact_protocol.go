@@ -269,8 +269,8 @@ func (p *TCompactProtocol) WriteBool(value bool) error {
 }
 
 // Write a byte. Nothing to see here!
-func (p *TCompactProtocol) WriteByte(value byte) error {
-	err := p.writeByteDirect(value)
+func (p *TCompactProtocol) WriteByte(value int8) error {
+	err := p.writeByteDirect(byte(value))
 	return NewTProtocolException(err)
 }
 
@@ -339,17 +339,24 @@ func (p *TCompactProtocol) WriteBinary(bin []byte) error {
 
 // Read a message header.
 func (p *TCompactProtocol) ReadMessageBegin() (name string, typeId TMessageType, seqId int32, err error) {
-	protocolId, err := p.ReadByte()
+
+	protocolId, err := p.readByteDirect()
+	if err != nil {
+		return
+	}
+
 	if protocolId != COMPACT_PROTOCOL_ID {
 		e := fmt.Errorf("Expected protocol id %02x but got %02x", COMPACT_PROTOCOL_ID, protocolId)
 		return "", typeId, seqId, NewTProtocolExceptionWithType(BAD_VERSION, e)
 	}
-	versionAndType, err := p.ReadByte()
-	version := versionAndType & COMPACT_VERSION_MASK
-	typeId = TMessageType((versionAndType >> COMPACT_TYPE_SHIFT_AMOUNT) & COMPACT_TYPE_BITS)
+
+	versionAndType, err := p.readByteDirect()
 	if err != nil {
 		return
 	}
+
+	version := versionAndType & COMPACT_VERSION_MASK
+	typeId = TMessageType((versionAndType >> COMPACT_TYPE_SHIFT_AMOUNT) & COMPACT_TYPE_BITS)
 	if version != COMPACT_VERSION {
 		e := fmt.Errorf("Expected version %02x but got %02x", COMPACT_VERSION, version)
 		err = NewTProtocolExceptionWithType(BAD_VERSION, e)
@@ -385,7 +392,7 @@ func (p *TCompactProtocol) ReadStructEnd() error {
 
 // Read a field header off the wire.
 func (p *TCompactProtocol) ReadFieldBegin() (name string, typeId TType, id int16, err error) {
-	t, err := p.ReadByte()
+	t, err := p.readByteDirect()
 	if err != nil {
 		return
 	}
@@ -444,7 +451,7 @@ func (p *TCompactProtocol) ReadMapBegin() (keyType TType, valueType TType, size 
 
 	keyAndValueType := byte(STOP)
 	if size != 0 {
-		keyAndValueType, err = p.ReadByte()
+		keyAndValueType, err = p.readByteDirect()
 		if err != nil {
 			return
 		}
@@ -461,7 +468,7 @@ func (p *TCompactProtocol) ReadMapEnd() error { return nil }
 // of the element type header will be 0xF, and a varint will follow with the
 // true size.
 func (p *TCompactProtocol) ReadListBegin() (elemType TType, size int, err error) {
-	size_and_type, err := p.ReadByte()
+	size_and_type, err := p.readByteDirect()
 	if err != nil {
 		return
 	}
@@ -506,17 +513,17 @@ func (p *TCompactProtocol) ReadBool() (value bool, err error) {
 		p.boolValueIsNotNull = false
 		return p.boolValue, nil
 	}
-	v, err := p.ReadByte()
+	v, err := p.readByteDirect()
 	return v == COMPACT_BOOLEAN_TRUE, err
 }
 
 // Read a single byte off the wire. Nothing interesting here.
-func (p *TCompactProtocol) ReadByte() (value byte, err error) {
-	value, err = p.trans.ReadByte()
+func (p *TCompactProtocol) ReadByte() (int8, error) {
+	v, err := p.readByteDirect()
 	if err != nil {
 		return 0, NewTProtocolException(err)
 	}
-	return
+	return int8(v), err
 }
 
 // Read an i16 from the wire as a zigzag varint.
@@ -574,6 +581,9 @@ func (p *TCompactProtocol) ReadString() (value string, err error) {
 	if length < 0 {
 		return "", invalidDataLength
 	}
+	if uint64(length) > p.trans.RemainingBytes() {
+		return "", invalidDataLength
+	}
 
 	if length == 0 {
 		return "", nil
@@ -598,6 +608,9 @@ func (p *TCompactProtocol) ReadBinary() (value []byte, err error) {
 		return []byte{}, nil
 	}
 	if length < 0 {
+		return nil, invalidDataLength
+	}
+	if uint64(length) > p.trans.RemainingBytes() {
 		return nil, invalidDataLength
 	}
 
@@ -728,7 +741,7 @@ func (p *TCompactProtocol) readVarint64() (int64, error) {
 	shift := uint(0)
 	result := int64(0)
 	for {
-		b, err := p.ReadByte()
+		b, err := p.readByteDirect()
 		if err != nil {
 			return 0, err
 		}
@@ -739,6 +752,11 @@ func (p *TCompactProtocol) readVarint64() (int64, error) {
 		shift += 7
 	}
 	return result, nil
+}
+
+// Read a byte, unlike ReadByte that reads Thrift-byte that is i8.
+func (p *TCompactProtocol) readByteDirect() (byte, error) {
+	return p.trans.ReadByte()
 }
 
 //
