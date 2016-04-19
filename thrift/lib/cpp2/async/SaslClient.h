@@ -25,7 +25,6 @@
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
 #include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
-#include <thrift/lib/cpp/transport/THeader.h>
 
 #include <folly/ExceptionWrapper.h>
 
@@ -42,7 +41,7 @@ class SaslClient : public SaslEndpoint {
     virtual void saslStarted() = 0;
 
     // Invoked when a new message should be sent to the server.
-    virtual void saslSendServer(std::unique_ptr<transport::THeaderBody>&&) = 0;
+    virtual void saslSendServer(std::unique_ptr<folly::IOBuf>&&) = 0;
 
     // Invoked when the most recently consumed message results in an
     // error.  Continuation is impossible at this point.
@@ -90,7 +89,7 @@ class SaslClient : public SaslEndpoint {
   // will be invoked.  If there is an error, cb->saslError() will be
   // invoked.
   virtual void consumeFromServer(
-    Callback*, std::unique_ptr<transport::THeaderBody>&&) = 0;
+    Callback*, std::unique_ptr<folly::IOBuf>&&) = 0;
 
   virtual const std::string* getErrorString() const = 0;
 

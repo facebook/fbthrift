@@ -94,7 +94,7 @@ bool THeader::compactFramed(uint32_t magic) {
 
 template<template <class BaseProt> class ProtocolClass,
          PROTOCOL_TYPES ProtocolID>
-unique_ptr<THeaderBody> THeader::removeUnframed(
+unique_ptr<IOBuf> THeader::removeUnframed(
     IOBufQueue* queue,
     size_t& needed) {
   const_cast<IOBuf*>(queue->front())->coalesce();
@@ -121,16 +121,16 @@ unique_ptr<THeaderBody> THeader::removeUnframed(
     }
   }
 
-  return THeaderBody::wrapUntransformed(queue->split(msgSize));
+  return queue->split(msgSize);
 }
 
-unique_ptr<THeaderBody> THeader::removeHttpServer(IOBufQueue* queue) {
+unique_ptr<IOBuf> THeader::removeHttpServer(IOBufQueue* queue) {
   protoId_ = T_BINARY_PROTOCOL;
   // Users must explicitly support this.
-  return THeaderBody::wrapUntransformed(queue->move());
+  return queue->move();
 }
 
-unique_ptr<THeaderBody> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
+unique_ptr<IOBuf> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
   protoId_ = T_BINARY_PROTOCOL;
   TMemoryBuffer memBuffer;
   THttpClientParser parser;
@@ -165,13 +165,13 @@ unique_ptr<THeaderBody> THeader::removeHttpClient(IOBufQueue* queue, size_t& nee
   queue->move();
   readHeaders_ = parser.moveReadHeaders();
 
-  return THeaderBody::wrapUntransformed(memBuffer.cloneBufferAsIOBuf());
+  return memBuffer.cloneBufferAsIOBuf();
 }
 
-unique_ptr<THeaderBody> THeader::removeFramed(uint32_t sz, IOBufQueue* queue) {
+unique_ptr<IOBuf> THeader::removeFramed(uint32_t sz, IOBufQueue* queue) {
   // Trim off the frame size.
   queue->trimStart(4);
-  return THeaderBody::wrapUntransformed(queue->split(sz));
+  return queue->split(sz);
 }
 
 folly::Optional<CLIENT_TYPE> THeader::analyzeFirst32bit(uint32_t w) {
@@ -224,10 +224,10 @@ bool THeader::isFramed(CLIENT_TYPE type) {
 
 }
 
-unique_ptr<THeaderBody> THeader::removeNonHeader(IOBufQueue* queue,
-                                                        size_t& needed,
-                                                        CLIENT_TYPE type,
-                                                        uint32_t sz) {
+unique_ptr<IOBuf> THeader::removeNonHeader(IOBufQueue* queue,
+                                           size_t& needed,
+                                           CLIENT_TYPE type,
+                                           uint32_t sz) {
   switch (type) {
   case THRIFT_FRAMED_DEPRECATED:
     protoId_ = T_BINARY_PROTOCOL;
@@ -249,7 +249,7 @@ unique_ptr<THeaderBody> THeader::removeNonHeader(IOBufQueue* queue,
   };
 }
 
-unique_ptr<THeaderBody> THeader::removeHeader(
+unique_ptr<IOBuf> THeader::removeHeader(
   IOBufQueue* queue,
   size_t& needed,
   StringToStringMap& persistentReadHeaders) {
@@ -273,10 +273,10 @@ unique_ptr<THeaderBody> THeader::removeHeader(
       needed = sz32 - remaining;
       return nullptr;
     }
-    auto buf = THeader::removeNonHeader(queue,
-                                        needed,
-                                        clientType,
-                                        sz32);
+    unique_ptr<IOBuf> buf = THeader::removeNonHeader(queue,
+                                                     needed,
+                                                     clientType,
+                                                     sz32);
     if(buf) {
       return buf;
     }
@@ -340,10 +340,10 @@ unique_ptr<THeaderBody> THeader::removeHeader(
   uint32_t magic = c.readBE<uint32_t>();
   remaining -= 4;
   clientType = analyzeSecond32bit(magic);
-  auto buf = THeader::removeNonHeader(queue,
-                                      needed,
-                                      clientType,
-                                      sz);
+  unique_ptr<IOBuf> buf = THeader::removeNonHeader(queue,
+                                                   needed,
+                                                   clientType,
+                                                   sz);
   if(buf) {
     return buf;
   }
@@ -415,7 +415,7 @@ static void readInfoHeaders(RWPrivateCursor& c,
   }
 }
 
-unique_ptr<THeaderBody> THeader::readHeaderFormat(
+unique_ptr<IOBuf> THeader::readHeaderFormat(
   unique_ptr<IOBuf> buf,
   StringToStringMap& persistentReadHeaders) {
   readTrans_.clear(); // Clear out any previous transforms.
@@ -490,51 +490,266 @@ unique_ptr<THeaderBody> THeader::readHeaderFormat(
   }
 
   // Untransform data section
-  auto wrapper = untransform(std::move(buf));
+  buf = untransform(std::move(buf), readTrans_);
 
   if (protoId_ == T_JSON_PROTOCOL && clientType != THRIFT_HTTP_SERVER_TYPE) {
     throw TApplicationException(TApplicationException::UNSUPPORTED_CLIENT_TYPE,
                                 "Client is trying to send JSON without HTTP");
   }
 
-  return wrapper;
+  return buf;
 }
 
-unique_ptr<THeaderBody> THeader::untransform(
+unique_ptr<IOBuf> THeader::untransform(
   unique_ptr<IOBuf> buf, std::vector<uint16_t>& readTrans) {
-  return THeaderBody::wrapTransformed(std::move(buf), readTrans);
-}
+  for (vector<uint16_t>::const_reverse_iterator it = readTrans.rbegin();
+       it != readTrans.rend(); ++it) {
+    const uint16_t transId = *it;
 
-unique_ptr<THeaderBody> THeader::untransform(
-  unique_ptr<IOBuf> buf) {
-  return THeader::untransform(std::move(buf), readTrans_);
-}
+    if (transId == ZLIB_TRANSFORM) {
+      size_t bufSize = 1024;
+      unique_ptr<IOBuf> out;
 
-unique_ptr<THeaderBody> THeader::transform(
-    unique_ptr<IOBuf> buf,
-    std::vector<uint16_t>& writeTrans,
-    size_t minCompressBytes) {
+      z_stream stream;
+      int err;
 
-  if (minCompressBytes && buf->computeChainDataLength() < minCompressBytes) {
-    // TODO(ckwalsh) If we add other transforms that aren't compression, we
-    // need to be smarter about removing transforms.
-    return THeaderBody::wrapUntransformed(
-        std::move(buf),
-        std::vector<uint16_t>());
+      // Setting these to 0 means use the default free/alloc functions
+      stream.zalloc = (alloc_func)0;
+      stream.zfree = (free_func)0;
+      stream.opaque = (voidpf)0;
+      err = inflateInit(&stream);
+      if (err != Z_OK) {
+        throw TApplicationException(TApplicationException::MISSING_RESULT,
+                                    "Error while zlib inflate Init");
+      }
+      {
+        SCOPE_EXIT { err = inflateEnd(&stream); };
+        do {
+          if (nullptr == buf) {
+            throw TApplicationException(TApplicationException::MISSING_RESULT,
+                "Not enough zlib data in message");
+          }
+          stream.next_in = buf->writableData();
+          stream.avail_in = buf->length();
+          do {
+            unique_ptr<IOBuf> tmp(IOBuf::create(bufSize));
+
+            stream.next_out = tmp->writableData();
+            stream.avail_out = bufSize;
+            err = inflate(&stream, Z_NO_FLUSH);
+            if (err == Z_STREAM_ERROR ||
+                err == Z_DATA_ERROR ||
+                err == Z_MEM_ERROR) {
+              throw TApplicationException(TApplicationException::MISSING_RESULT,
+                  "Error while zlib inflate");
+            }
+            tmp->append(bufSize - stream.avail_out);
+            if (out) {
+              // Add buffer to end (circular list, same as prepend)
+              out->prependChain(std::move(tmp));
+            } else {
+              out = std::move(tmp);
+            }
+          } while (stream.avail_out == 0);
+          // try the next buffer
+          buf = buf->pop();
+        } while (err != Z_STREAM_END);
+      }
+      if (err != Z_OK) {
+        throw TApplicationException(TApplicationException::MISSING_RESULT,
+                                    "Error while zlib inflateEnd");
+      }
+      buf = std::move(out);
+    } else if (transId == SNAPPY_TRANSFORM) {
+      buf->coalesce(); // required for snappy uncompression
+      size_t uncompressed_sz;
+      bool result = snappy::GetUncompressedLength((char*)buf->data(),
+                                                  buf->length(),
+                                                  &uncompressed_sz);
+      unique_ptr<IOBuf> out(IOBuf::create(uncompressed_sz));
+      out->append(uncompressed_sz);
+
+      result = snappy::RawUncompress((char*)buf->data(), buf->length(),
+                                     (char*)out->writableData());
+      if (!result) {
+        throw TApplicationException(TApplicationException::MISSING_RESULT,
+                                    "snappy uncompress failure");
+      }
+
+      buf = std::move(out);
+    } else if (transId == QLZ_TRANSFORM) {
+      buf->coalesce(); // probably needed for uncompression
+      const char *src = (const char *)buf->data();
+      size_t length = buf->length();
+#ifdef HAVE_QUICKLZ
+      // according to QLZ spec, the size info is stored in first 9 bytes
+      if (length < 9 || qlz_size_compressed(src) != length) {
+        throw TApplicationException(TApplicationException::MISSING_RESULT,
+                                    "Error in qlz decompress: bad size");
+      }
+
+      size_t uncompressed_sz = qlz_size_decompressed(src);
+      const unique_ptr<qlz_state_decompress> state(new qlz_state_decompress);
+
+      unique_ptr<IOBuf> out(IOBuf::create(uncompressed_sz));
+      out->append(uncompressed_sz);
+
+      bool success = (qlz_decompress(src,
+                                     out->writableData(),
+                                     state.get()) == uncompressed_sz);
+      if (!success) {
+        throw TApplicationException(TApplicationException::MISSING_RESULT,
+                                    "Error in qlz decompress");
+      }
+      buf = std::move(out);
+#endif
+
+    } else {
+      throw TApplicationException(TApplicationException::MISSING_RESULT,
+                                "Unknown transform");
+    }
   }
 
-  return THeaderBody::wrapUntransformed(
-      std::move(buf),
-      writeTrans);
+  return buf;
 }
 
-unique_ptr<THeaderBody> THeader::transform(
-    unique_ptr<IOBuf> buf) {
+unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
+                                     std::vector<uint16_t>& writeTrans,
+                                     size_t minCompressBytes) {
+  size_t dataSize = buf->computeChainDataLength();
 
-  return THeader::transform(
-      std::move(buf),
-      writeTrans_,
-      minCompressBytes_);
+  for (vector<uint16_t>::iterator it = writeTrans.begin();
+       it != writeTrans.end(); ) {
+    const uint16_t transId = *it;
+
+    if (transId == ZLIB_TRANSFORM) {
+      if (dataSize < minCompressBytes) {
+        it = writeTrans.erase(it);
+        continue;
+      }
+      size_t bufSize = 1024;
+      unique_ptr<IOBuf> out;
+
+      z_stream stream;
+      int err;
+
+      stream.next_in = (unsigned char*)buf->data();
+      stream.avail_in = buf->length();
+
+      stream.zalloc = (alloc_func)0;
+      stream.zfree = (free_func)0;
+      stream.opaque = (voidpf)0;
+      err = deflateInit(&stream, Z_DEFAULT_COMPRESSION);
+      if (err != Z_OK) {
+        throw TTransportException(TTransportException::CORRUPTED_DATA,
+                                  "Error while zlib deflateInit");
+      }
+
+      // Loop until deflate() tells us it's done writing all output
+      while (err != Z_STREAM_END) {
+        // Create a new output chunk
+        unique_ptr<IOBuf> tmp(IOBuf::create(bufSize));
+        stream.next_out = tmp->writableData();
+        stream.avail_out = bufSize;
+
+        // Loop while the current output chunk still has space, call deflate to
+        // try and fill it
+        while (stream.avail_out > 0) {
+          // When providing the last bit of input data and thereafter, pass
+          // Z_FINISH to tell zlib it should flush out remaining compressed
+          // data and finish up with an end marker at the end of the output
+          // stream
+          int flush = (buf && buf->isChained()) ? Z_NO_FLUSH : Z_FINISH;
+          err = deflate(&stream, flush);
+          if (err == Z_STREAM_ERROR) {
+            throw TTransportException(TTransportException::CORRUPTED_DATA,
+                                      "Error while zlib deflate");
+          }
+
+          if (stream.avail_in == 0) {
+            if (buf) {
+              buf = buf->pop();
+            }
+            if (!buf) {
+              // No more input chunks left
+              break;
+            }
+            // Prvoide the next input chunk to zlib
+            stream.next_in = (unsigned char*) buf->data();
+            stream.avail_in = buf->length();
+          }
+        }
+
+        // Tell the tmp IOBuf we wrote some data into it
+        tmp->append(bufSize - stream.avail_out);
+        if (out) {
+          // Add the IOBuf to the end of the chain
+          out->prependChain(std::move(tmp));
+        } else {
+          // This is the first IOBuf, so start the chain
+          out = std::move(tmp);
+        }
+      }
+
+      err = deflateEnd(&stream);
+      if (err != Z_OK) {
+        throw TTransportException(TTransportException::CORRUPTED_DATA,
+                                  "Error while zlib deflateEnd");
+      }
+
+      buf = std::move(out);
+    } else if (transId == SNAPPY_TRANSFORM) {
+      if (dataSize < minCompressBytes) {
+        it = writeTrans.erase(it);
+        continue;
+      }
+
+      buf->coalesce(); // required for snappy compression
+
+      // Check that we have enough space
+      size_t maxCompressedLength = snappy::MaxCompressedLength(buf->length());
+      unique_ptr<IOBuf> out(IOBuf::create(maxCompressedLength));
+
+      size_t compressed_sz;
+      snappy::RawCompress((char*)buf->data(), buf->length(),
+                          (char*)out->writableData(), &compressed_sz);
+      out->append(compressed_sz);
+      buf = std::move(out);
+    } else if (transId == QLZ_TRANSFORM) {
+      if (dataSize < minCompressBytes) {
+        it = writeTrans.erase(it);
+        continue;
+      }
+
+      // max is 400B greater than uncompressed size based on QuickLZ spec
+      size_t maxCompressedLength = buf->length() + 400;
+      unique_ptr<IOBuf> out(IOBuf::create(maxCompressedLength));
+
+#ifdef HAVE_QUICKLZ
+      const unique_ptr<qlz_state_compress> state(new qlz_state_compress);
+
+      const char *src = (const char *)buf->data();
+      char *dst = (char *)out->writableData();
+
+      size_t compressed_sz = qlz_compress(
+        src, dst, buf->length(), state.get());
+
+      if (compressed_sz > maxCompressedLength) {
+        throw TTransportException(TTransportException::CORRUPTED_DATA,
+                                  "Error in qlz compress");
+      }
+
+      out->append(compressed_sz);
+#endif
+      buf = std::move(out);
+    } else {
+      throw TTransportException(TTransportException::CORRUPTED_DATA,
+                                "Unknown transform");
+    }
+    ++it;
+  }
+
+  return buf;
 }
 
 std::unique_ptr<THeader> THeader::clone() {
@@ -655,21 +870,19 @@ void THeader::setIdentity(const string& identity) {
   this->identity = identity;
 }
 
-unique_ptr<IOBuf> THeader::addHeader(unique_ptr<THeaderBody> wrapper,
-                                     StringToStringMap& persistentWriteHeaders) {
+unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
+                                     StringToStringMap& persistentWriteHeaders,
+                                     bool transform) {
   // We may need to modify some transforms before send.  Make
   // a copy here
-  std::vector<uint16_t> writeTrans;
-
-  unique_ptr<IOBuf> buf;
+  std::vector<uint16_t> writeTrans = writeTrans_;
 
   if (clientType == THRIFT_HEADER_CLIENT_TYPE ||
       clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    buf = THeaderBody::extractTransformed(std::move(wrapper), writeTrans);
-  } else {
-    buf = THeaderBody::extractUntransformed(std::move(wrapper));
+    if (transform) {
+      buf = THeader::transform(std::move(buf), writeTrans, minCompressBytes_);
+    }
   }
-
   size_t chainSize = buf->computeChainDataLength();
 
   if (protoId_ == T_JSON_PROTOCOL && clientType != THRIFT_HTTP_SERVER_TYPE) {
@@ -867,389 +1080,6 @@ std::chrono::milliseconds THeader::getClientQueueTimeout() const {
 void THeader::setHttpClientParser(shared_ptr<THttpClientParser> parser) {
   CHECK(clientType == THRIFT_HTTP_CLIENT_TYPE);
   httpClientParser_ = parser;
-}
-
-THeaderBody::THeaderBody(
-    std::unique_ptr<folly::IOBuf> buf,
-    const std::vector<uint16_t>& transforms,
-    bool transformsApplied)
-    : buf_(std::move(buf)),
-    transforms_(transforms),
-    isTransformed_(transformsApplied) {}
-
-std::unique_ptr<THeaderBody> THeaderBody::wrapUntransformed(
-    std::unique_ptr<folly::IOBuf> untransformedBuf,
-    const std::vector<uint16_t>& transforms) {
-  return std::unique_ptr<THeaderBody>(new THeaderBody(
-      std::move(untransformedBuf),
-      transforms,
-      false));
-}
-
-std::unique_ptr<THeaderBody> THeaderBody::wrapUntransformed(
-    std::unique_ptr<folly::IOBuf> buf) {
-  return std::unique_ptr<THeaderBody>(new THeaderBody(
-      std::move(buf),
-      std::vector<uint16_t>(),
-      false));
-}
-
-std::unique_ptr<THeaderBody> THeaderBody::wrapTransformed(
-    std::unique_ptr<folly::IOBuf> transformedBuf,
-    const std::vector<uint16_t>& transforms) {
-  return std::unique_ptr<THeaderBody>(new THeaderBody(
-      std::move(transformedBuf),
-      transforms,
-      true));
-}
-
-std::unique_ptr<folly::IOBuf> THeaderBody::extractTransformed(
-    std::unique_ptr<THeaderBody> wrapper,
-    std::vector<uint16_t>& transforms) {
-  if (!wrapper) {
-    transforms.clear();
-    return std::unique_ptr<folly::IOBuf>();
-  }
-  wrapper->ensureTransformsApplied();
-  DCHECK(wrapper->isTransformed_) << "Buffer is not transformed";
-  transforms.swap(wrapper->transforms_);
-  return std::move(wrapper->buf_);
-}
-
-std::unique_ptr<folly::IOBuf> THeaderBody::extractUntransformed(
-    std::unique_ptr<THeaderBody> wrapper) {
-  if (!wrapper) {
-    return std::unique_ptr<folly::IOBuf>();
-  }
-  wrapper->ensureTransformsRemoved();
-  DCHECK(!wrapper->isTransformed_) <<  "Buffer is transformed";
-  return std::move(wrapper->buf_);
-}
-
-std::tuple<const folly::IOBuf*, const std::vector<uint16_t>&> THeaderBody::getTransformed() {
-  ensureTransformsApplied();
-  DCHECK(isTransformed_) << "Buffer is not transformed";
-  return std::make_tuple(buf_.get(), transforms_);
-}
-
-const folly::IOBuf* THeaderBody::getTransformed(
-    std::vector<uint16_t>& transforms) {
-  ensureTransformsApplied();
-  DCHECK(isTransformed_) << "Buffer is not transformed";
-  transforms = std::vector<uint16_t>(transforms_);
-  return buf_.get();
-}
-
-const folly::IOBuf* THeaderBody::getUntransformed() {
-  ensureTransformsRemoved();
-  DCHECK(!isTransformed_) << "Buffer is transformed";
-  return buf_.get();
-}
-
-void THeaderBody::setTransforms(const std::vector<uint16_t>& transforms) {
-  if (transforms.size() != transforms_.size() ||
-      !std::equal(transforms.begin(), transforms.end(), transforms_.begin())) {
-    ensureTransformsRemoved();
-    DCHECK(!isTransformed_) << "Buffer is transformed";
-    transforms_ = transforms;
-  }
-}
-
-void THeaderBody::ensureTransformsApplied() {
-  checkCorrupt();
-
-  if (!buf_) {
-    return;
-  }
-
-  if (isTransformed_) {
-    return;
-  }
-
-  // TODO(ckwalsh): uncomment when log spew is fixed. T10703606
-  // if (transformWorkPerformed_) {
-  //   LOG(WARNING) << "THeaderBody decompressed/recompressed";
-  // }
-  transformWorkPerformed_ = true;
-
-  size_t dataSize = buf_->computeChainDataLength();
-
-  for (vector<uint16_t>::iterator it = transforms_.begin();
-       it != transforms_.end(); ) {
-    const uint16_t transId = *it;
-
-    if (transId == THeader::ZLIB_TRANSFORM) {
-      size_t bufSize = 1024;
-      unique_ptr<IOBuf> out;
-
-      z_stream stream;
-      int err;
-
-      stream.next_in = (unsigned char*)buf_->data();
-      stream.avail_in = buf_->length();
-
-      stream.zalloc = (alloc_func)0;
-      stream.zfree = (free_func)0;
-      stream.opaque = (voidpf)0;
-      err = deflateInit(&stream, Z_DEFAULT_COMPRESSION);
-      if (err != Z_OK) {
-        transformsFailed_ = true;
-        throw TTransportException(TTransportException::CORRUPTED_DATA,
-                                  "Error while zlib deflateInit");
-      }
-
-      // Loop until deflate() tells us it's done writing all output
-      while (err != Z_STREAM_END) {
-        // Create a new output chunk
-        unique_ptr<IOBuf> tmp(IOBuf::create(bufSize));
-        stream.next_out = tmp->writableData();
-        stream.avail_out = bufSize;
-
-        // Loop while the current output chunk still has space, call deflate to
-        // try and fill it
-        while (stream.avail_out > 0) {
-          // When providing the last bit of input data and thereafter, pass
-          // Z_FINISH to tell zlib it should flush out remaining compressed
-          // data and finish up with an end marker at the end of the output
-          // stream
-          int flush = (buf_ && buf_->isChained()) ? Z_NO_FLUSH : Z_FINISH;
-          err = deflate(&stream, flush);
-          if (err == Z_STREAM_ERROR) {
-            transformsFailed_ = true;
-            throw TTransportException(TTransportException::CORRUPTED_DATA,
-                                      "Error while zlib deflate");
-          }
-
-          if (stream.avail_in == 0) {
-            if (buf_) {
-              buf_ = buf_->pop();
-            }
-            if (!buf_) {
-              // No more input chunks left
-              break;
-            }
-            // Prvoide the next input chunk to zlib
-            stream.next_in = (unsigned char*) buf_->data();
-            stream.avail_in = buf_->length();
-          }
-        }
-
-        // Tell the tmp IOBuf we wrote some data into it
-        tmp->append(bufSize - stream.avail_out);
-        if (out) {
-          // Add the IOBuf to the end of the chain
-          out->prependChain(std::move(tmp));
-        } else {
-          // This is the first IOBuf, so start the chain
-          out = std::move(tmp);
-        }
-      }
-
-      err = deflateEnd(&stream);
-      if (err != Z_OK) {
-        transformsFailed_ = true;
-        throw TTransportException(TTransportException::CORRUPTED_DATA,
-                                  "Error while zlib deflateEnd");
-      }
-
-      buf_ = std::move(out);
-    } else if (transId == THeader::SNAPPY_TRANSFORM) {
-      buf_->coalesce(); // required for snappy compression
-
-      // Check that we have enough space
-      size_t maxCompressedLength = snappy::MaxCompressedLength(buf_->length());
-      unique_ptr<IOBuf> out(IOBuf::create(maxCompressedLength));
-
-      size_t compressed_sz;
-      snappy::RawCompress((char*)buf_->data(), buf_->length(),
-                          (char*)out->writableData(), &compressed_sz);
-      out->append(compressed_sz);
-      buf_ = std::move(out);
-    } else if (transId == THeader::QLZ_TRANSFORM) {
-      // max is 400B greater than uncompressed size based on QuickLZ spec
-      size_t maxCompressedLength = buf_->length() + 400;
-      unique_ptr<IOBuf> out(IOBuf::create(maxCompressedLength));
-
-#ifdef HAVE_QUICKLZ
-      const unique_ptr<qlz_state_compress> state(new qlz_state_compress);
-
-      const char *src = (const char *)buf_->data();
-      char *dst = (char *)out->writableData();
-
-      size_t compressed_sz = qlz_compress(
-        src, dst, buf_->length(), state.get());
-
-      if (compressed_sz > maxCompressedLength) {
-        transformsFailed_ = true;
-        throw TTransportException(TTransportException::CORRUPTED_DATA,
-                                  "Error in qlz compress");
-      }
-
-      out->append(compressed_sz);
-#endif
-      buf_ = std::move(out);
-    } else {
-      transformsFailed_ = true;
-      throw TTransportException(TTransportException::CORRUPTED_DATA,
-                                "Unknown transform");
-    }
-    ++it;
-  }
-
-  isTransformed_ = true;
-}
-
-void THeaderBody::ensureTransformsRemoved() {
-  checkCorrupt();
-
-  if (!buf_) {
-    return;
-  }
-
-  if (!isTransformed_) {
-    return;
-  }
-
-  // TODO(ckwalsh): uncomment when log spew is fixed. T10703606
-  // if (transformWorkPerformed_) {
-  //   LOG(WARNING) << "THeaderBody compressed/decompressed";
-  // }
-  transformWorkPerformed_ = true;
-
-  for (vector<uint16_t>::const_reverse_iterator it = transforms_.rbegin();
-       it != transforms_.rend(); ++it) {
-    const uint16_t transId = *it;
-
-    if (transId == THeader::ZLIB_TRANSFORM) {
-      size_t bufSize = 1024;
-      unique_ptr<IOBuf> out;
-
-      z_stream stream;
-      int err;
-
-      // Setting these to 0 means use the default free/alloc functions
-      stream.zalloc = (alloc_func)0;
-      stream.zfree = (free_func)0;
-      stream.opaque = (voidpf)0;
-      err = inflateInit(&stream);
-      if (err != Z_OK) {
-        transformsFailed_ = true;
-        throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                    "Error while zlib inflate Init");
-      }
-      {
-        SCOPE_EXIT { err = inflateEnd(&stream); };
-        do {
-          if (nullptr == buf_) {
-            transformsFailed_ = true;
-            throw TApplicationException(TApplicationException::MISSING_RESULT,
-                "Not enough zlib data in message");
-          }
-          stream.next_in = buf_->writableData();
-          stream.avail_in = buf_->length();
-          do {
-            unique_ptr<IOBuf> tmp(IOBuf::create(bufSize));
-
-            stream.next_out = tmp->writableData();
-            stream.avail_out = bufSize;
-            err = inflate(&stream, Z_NO_FLUSH);
-            if (err == Z_STREAM_ERROR ||
-                err == Z_DATA_ERROR ||
-                err == Z_MEM_ERROR) {
-              transformsFailed_ = true;
-              throw TApplicationException(TApplicationException::MISSING_RESULT,
-                  "Error while zlib inflate");
-            }
-            tmp->append(bufSize - stream.avail_out);
-            if (out) {
-              // Add buffer to end (circular list, same as prepend)
-              out->prependChain(std::move(tmp));
-            } else {
-              out = std::move(tmp);
-            }
-          } while (stream.avail_out == 0);
-          // try the next buffer
-          buf_ = buf_->pop();
-        } while (err != Z_STREAM_END);
-      }
-      if (err != Z_OK) {
-        transformsFailed_ = true;
-        throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                    "Error while zlib inflateEnd");
-      }
-      buf_ = std::move(out);
-    } else if (transId == THeader::SNAPPY_TRANSFORM) {
-      buf_->coalesce(); // required for snappy uncompression
-      size_t uncompressed_sz;
-      bool result = snappy::GetUncompressedLength((char*)buf_->data(),
-                                                  buf_->length(),
-                                                  &uncompressed_sz);
-      unique_ptr<IOBuf> out(IOBuf::create(uncompressed_sz));
-      out->append(uncompressed_sz);
-
-      result = snappy::RawUncompress((char*)buf_->data(), buf_->length(),
-                                     (char*)out->writableData());
-      if (!result) {
-        transformsFailed_ = true;
-        throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                    "snappy uncompress failure");
-      }
-
-      buf_ = std::move(out);
-    } else if (transId == THeader::QLZ_TRANSFORM) {
-      buf_->coalesce(); // probably needed for uncompression
-      const char *src = (const char *)buf_->data();
-      size_t length = buf_->length();
-#ifdef HAVE_QUICKLZ
-      // according to QLZ spec, the size info is stored in first 9 bytes
-      if (length < 9 || qlz_size_compressed(src) != length) {
-        transformsFailed_ = true;
-        throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                    "Error in qlz decompress: bad size");
-      }
-
-      size_t uncompressed_sz = qlz_size_decompressed(src);
-      const unique_ptr<qlz_state_decompress> state(new qlz_state_decompress);
-
-      unique_ptr<IOBuf> out(IOBuf::create(uncompressed_sz));
-      out->append(uncompressed_sz);
-
-      bool success = (qlz_decompress(src,
-                                     out->writableData(),
-                                     state.get()) == uncompressed_sz);
-      if (!success) {
-        transformsFailed_ = true;
-        throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                    "Error in qlz decompress");
-      }
-      buf_ = std::move(out);
-#endif
-
-    } else {
-      transformsFailed_ = true;
-      throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                "Unknown transform");
-    }
-  }
-
-  isTransformed_ = false;
-}
-
-std::unique_ptr<THeaderBody> THeaderBody::clone() const {
-  auto cl = std::unique_ptr<THeaderBody>(new THeaderBody(
-      buf_->clone(),
-      transforms_,
-      isTransformed_));
-  cl->transformsFailed_ = transformsFailed_;
-
-  return cl;
-}
-
-void THeaderBody::checkCorrupt() {
-  if (transformsFailed_) {
-    throw TTransportException(TTransportException::CORRUPTED_DATA,
-                              "Error applying/removing transforms");
-  }
 }
 
 }}} // apache::thrift::transport

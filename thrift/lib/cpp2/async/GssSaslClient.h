@@ -39,7 +39,7 @@ public:
       std::make_shared<SecurityLogger>());
   void start(Callback* cb) override;
   void consumeFromServer(Callback* cb,
-                         std::unique_ptr<transport::THeaderBody>&& message) override;
+                         std::unique_ptr<folly::IOBuf>&& message) override;
   std::unique_ptr<folly::IOBuf> encrypt(
       std::unique_ptr<folly::IOBuf>&&) override;
   std::unique_ptr<folly::IOBuf> decrypt(

@@ -72,7 +72,7 @@ class HeaderClientChannel : public ClientChannel,
   }
 
   virtual void sendMessage(Cpp2Channel::SendCallback* callback,
-                           std::unique_ptr<transport::THeaderBody> buf,
+                           std::unique_ptr<folly::IOBuf> buf,
                            apache::thrift::transport::THeader* header) {
     cpp2Channel_->sendMessage(callback, std::move(buf), header);
   }
@@ -95,20 +95,20 @@ class HeaderClientChannel : public ClientChannel,
   uint32_t sendRequest(RpcOptions&,
                        std::unique_ptr<RequestCallback>,
                        std::unique_ptr<apache::thrift::ContextStack>,
-                       std::unique_ptr<transport::THeaderBody>,
+                       std::unique_ptr<folly::IOBuf>,
                        std::shared_ptr<apache::thrift::transport::THeader>) override;
 
   using RequestChannel::sendOnewayRequest;
   uint32_t sendOnewayRequest(RpcOptions&,
                              std::unique_ptr<RequestCallback>,
                              std::unique_ptr<apache::thrift::ContextStack>,
-                             std::unique_ptr<transport::THeaderBody>,
+                             std::unique_ptr<folly::IOBuf>,
                              std::shared_ptr<apache::thrift::transport::THeader>) override;
 
   void setCloseCallback(CloseCallback*) override;
 
   // Interface from MessageChannel::RecvCallback
-  void messageReceived(std::unique_ptr<transport::THeaderBody>&&,
+  void messageReceived(std::unique_ptr<folly::IOBuf>&&,
                        std::unique_ptr<apache::thrift::transport::THeader>&&,
                        std::unique_ptr<MessageChannel::RecvCallback::sample>) override;
   void messageChannelEOF() override;
@@ -207,13 +207,13 @@ class HeaderClientChannel : public ClientChannel,
     explicit ClientFramingHandler(HeaderClientChannel& channel)
       : channel_(channel) {}
 
-    std::tuple<std::unique_ptr<apache::thrift::transport::THeaderBody>,
+    std::tuple<std::unique_ptr<folly::IOBuf>,
                size_t,
                std::unique_ptr<apache::thrift::transport::THeader>>
     removeFrame(folly::IOBufQueue* q) override;
 
     std::unique_ptr<folly::IOBuf> addFrame(
-        std::unique_ptr<apache::thrift::transport::THeaderBody> buf,
+        std::unique_ptr<folly::IOBuf> buf,
         apache::thrift::transport::THeader* header) override;
   private:
     HeaderClientChannel& channel_;
@@ -225,7 +225,7 @@ class HeaderClientChannel : public ClientChannel,
       : channel_(channel)
       , header_(new apache::thrift::transport::THeader) {}
     void saslStarted() override;
-    void saslSendServer(std::unique_ptr<transport::THeaderBody>&&) override;
+    void saslSendServer(std::unique_ptr<folly::IOBuf>&&) override;
     void saslError(folly::exception_wrapper&&) override;
     void saslComplete() override;
 
@@ -258,17 +258,15 @@ protected:
 
 private:
 
-  void setRequestHeaderOptions(
-    apache::thrift::transport::THeader* header,
-    apache::thrift::transport::THeaderBody* buf);
+  void setRequestHeaderOptions(apache::thrift::transport::THeader* header);
 
   std::shared_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
 
   // Set the base class callback based on current state.
   void setBaseReceivedCallback();
 
-  std::unique_ptr<transport::THeaderBody> handleSecurityMessage(
-    std::unique_ptr<transport::THeaderBody>&& buf,
+  std::unique_ptr<folly::IOBuf> handleSecurityMessage(
+    std::unique_ptr<folly::IOBuf>&& buf,
     std::unique_ptr<apache::thrift::transport::THeader>&& header);
 
   // Returns true if authentication messages are still pending, false
@@ -286,13 +284,13 @@ private:
     RpcOptions&,
     std::unique_ptr<RequestCallback>,
     std::unique_ptr<apache::thrift::ContextStack>,
-    std::unique_ptr<transport::THeaderBody>,
+    std::unique_ptr<folly::IOBuf>,
     std::shared_ptr<apache::thrift::transport::THeader>);
   std::deque<std::tuple<AfterSecurityMethod,
                         RpcOptions,
                         std::unique_ptr<RequestCallback>,
                         std::unique_ptr<apache::thrift::ContextStack>,
-                        std::unique_ptr<transport::THeaderBody>,
+                        std::unique_ptr<folly::IOBuf>,
                         std::shared_ptr<apache::thrift::transport::THeader>>> afterSecurity_;
   std::unordered_map<uint32_t, TwowayCallback<HeaderClientChannel>*>
       recvCallbacks_;

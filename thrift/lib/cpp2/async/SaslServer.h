@@ -19,7 +19,6 @@
 
 #include <thrift/lib/cpp2/async/SaslEndpoint.h>
 #include <folly/io/async/HHWheelTimer.h>
-#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 #include <folly/ExceptionWrapper.h>
@@ -66,7 +65,7 @@ class SaslServer : public SaslEndpoint {
   // will also be invoked.  If there is an error, cb->saslError() will
   // be invoked.
   virtual void consumeFromClient(
-    Callback *cb, std::unique_ptr<transport::THeaderBody>&& message) = 0;
+    Callback *cb, std::unique_ptr<folly::IOBuf>&& message) = 0;
 };
 
 }} // apache::thrift

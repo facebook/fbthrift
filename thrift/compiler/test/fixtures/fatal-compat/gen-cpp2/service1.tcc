@@ -1018,13 +1018,11 @@ void service1AsyncProcessor::process_method1(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in function method1";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("method1", &prot, ctx->getProtoSeqId(), nullptr, x);
-      auto wrapper = ctx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      auto wrapper_mw = folly::makeMoveWrapper(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(std::move(*wrapper_mw));
+        (*req_mw)->sendReply(queue_mw->move());
       }
       );
       return;
@@ -1063,10 +1061,8 @@ void service1AsyncProcessor::throw_method1(std::unique_ptr<apache::thrift::Respo
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method1", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1078,10 +1074,8 @@ void service1AsyncProcessor::throw_method1(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << "<unknown exception>" << " in function method1";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("method1", &prot, protoSeqId, nullptr, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1103,10 +1097,8 @@ void service1AsyncProcessor::throw_wrapped_method1(std::unique_ptr<apache::thrif
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method1", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1143,13 +1135,11 @@ void service1AsyncProcessor::process_method2(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in function method2";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("method2", &prot, ctx->getProtoSeqId(), nullptr, x);
-      auto wrapper = ctx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      auto wrapper_mw = folly::makeMoveWrapper(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(std::move(*wrapper_mw));
+        (*req_mw)->sendReply(queue_mw->move());
       }
       );
       return;
@@ -1188,10 +1178,8 @@ void service1AsyncProcessor::throw_method2(std::unique_ptr<apache::thrift::Respo
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method2", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1203,10 +1191,8 @@ void service1AsyncProcessor::throw_method2(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << "<unknown exception>" << " in function method2";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("method2", &prot, protoSeqId, nullptr, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1228,10 +1214,8 @@ void service1AsyncProcessor::throw_wrapped_method2(std::unique_ptr<apache::thrif
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method2", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1262,13 +1246,11 @@ void service1AsyncProcessor::process_method3(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in function method3";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("method3", &prot, ctx->getProtoSeqId(), nullptr, x);
-      auto wrapper = ctx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      auto wrapper_mw = folly::makeMoveWrapper(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(std::move(*wrapper_mw));
+        (*req_mw)->sendReply(queue_mw->move());
       }
       );
       return;
@@ -1309,10 +1291,8 @@ void service1AsyncProcessor::throw_method3(std::unique_ptr<apache::thrift::Respo
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method3", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1324,10 +1304,8 @@ void service1AsyncProcessor::throw_method3(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << "<unknown exception>" << " in function method3";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("method3", &prot, protoSeqId, nullptr, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1349,10 +1327,8 @@ void service1AsyncProcessor::throw_wrapped_method3(std::unique_ptr<apache::thrif
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method3", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1389,13 +1365,11 @@ void service1AsyncProcessor::process_method4(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in function method4";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("method4", &prot, ctx->getProtoSeqId(), nullptr, x);
-      auto wrapper = ctx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      auto wrapper_mw = folly::makeMoveWrapper(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(std::move(*wrapper_mw));
+        (*req_mw)->sendReply(queue_mw->move());
       }
       );
       return;
@@ -1436,10 +1410,8 @@ void service1AsyncProcessor::throw_method4(std::unique_ptr<apache::thrift::Respo
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method4", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1451,10 +1423,8 @@ void service1AsyncProcessor::throw_method4(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << "<unknown exception>" << " in function method4";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("method4", &prot, protoSeqId, nullptr, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1476,10 +1446,8 @@ void service1AsyncProcessor::throw_wrapped_method4(std::unique_ptr<apache::thrif
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method4", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1510,13 +1478,11 @@ void service1AsyncProcessor::process_method5(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in function method5";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("method5", &prot, ctx->getProtoSeqId(), nullptr, x);
-      auto wrapper = ctx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      auto wrapper_mw = folly::makeMoveWrapper(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(std::move(*wrapper_mw));
+        (*req_mw)->sendReply(queue_mw->move());
       }
       );
       return;
@@ -1557,10 +1523,8 @@ void service1AsyncProcessor::throw_method5(std::unique_ptr<apache::thrift::Respo
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method5", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1572,10 +1536,8 @@ void service1AsyncProcessor::throw_method5(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << "<unknown exception>" << " in function method5";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("method5", &prot, protoSeqId, nullptr, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1597,10 +1559,8 @@ void service1AsyncProcessor::throw_wrapped_method5(std::unique_ptr<apache::thrif
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method5", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1637,13 +1597,11 @@ void service1AsyncProcessor::process_method6(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in function method6";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("method6", &prot, ctx->getProtoSeqId(), nullptr, x);
-      auto wrapper = ctx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      auto wrapper_mw = folly::makeMoveWrapper(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(std::move(*wrapper_mw));
+        (*req_mw)->sendReply(queue_mw->move());
       }
       );
       return;
@@ -1684,10 +1642,8 @@ void service1AsyncProcessor::throw_method6(std::unique_ptr<apache::thrift::Respo
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method6", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1699,10 +1655,8 @@ void service1AsyncProcessor::throw_method6(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << "<unknown exception>" << " in function method6";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("method6", &prot, protoSeqId, nullptr, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1724,10 +1678,8 @@ void service1AsyncProcessor::throw_wrapped_method6(std::unique_ptr<apache::thrif
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("method6", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -1753,7 +1705,7 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method1T(Protocol_* p
   if (state.isException()) {
     return state.exceptionWrapper();
   }
-  prot->setInput(state.buf()->getUntransformed());
+  prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
   std::string fname;
@@ -1784,12 +1736,12 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method1T(Protocol_* p
     }
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf()->getUntransformed();
+    smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     service1_method1_presult result;
     service1_method1_presult_read(prot, &result);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), smsg.buffer->length());
+    ctx->postRead(state.header(), state.buf()->length());
   }
   );
   auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
@@ -1827,7 +1779,7 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method2T(Protocol_* p
   if (state.isException()) {
     return state.exceptionWrapper();
   }
-  prot->setInput(state.buf()->getUntransformed());
+  prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
   std::string fname;
@@ -1858,12 +1810,12 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method2T(Protocol_* p
     }
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf()->getUntransformed();
+    smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     service1_method2_presult result;
     service1_method2_presult_read(prot, &result);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), smsg.buffer->length());
+    ctx->postRead(state.header(), state.buf()->length());
   }
   );
   auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);
@@ -1898,7 +1850,7 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method3T(Protocol_* p
   if (state.isException()) {
     return state.exceptionWrapper();
   }
-  prot->setInput(state.buf()->getUntransformed());
+  prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
   std::string fname;
@@ -1929,13 +1881,13 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method3T(Protocol_* p
     }
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf()->getUntransformed();
+    smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     service1_method3_presult result;
     result.success = &_return;
     service1_method3_presult_read(prot, &result);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), smsg.buffer->length());
+    ctx->postRead(state.header(), state.buf()->length());
     if (result.__isset.success) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -1983,7 +1935,7 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method4T(Protocol_* p
   if (state.isException()) {
     return state.exceptionWrapper();
   }
-  prot->setInput(state.buf()->getUntransformed());
+  prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
   std::string fname;
@@ -2014,13 +1966,13 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method4T(Protocol_* p
     }
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf()->getUntransformed();
+    smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     service1_method4_presult result;
     result.success = &_return;
     service1_method4_presult_read(prot, &result);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), smsg.buffer->length());
+    ctx->postRead(state.header(), state.buf()->length());
     if (result.__isset.success) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -2065,7 +2017,7 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method5T(Protocol_* p
   if (state.isException()) {
     return state.exceptionWrapper();
   }
-  prot->setInput(state.buf()->getUntransformed());
+  prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
   std::string fname;
@@ -2096,13 +2048,13 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method5T(Protocol_* p
     }
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf()->getUntransformed();
+    smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     service1_method5_presult result;
     result.success = &_return;
     service1_method5_presult_read(prot, &result);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), smsg.buffer->length());
+    ctx->postRead(state.header(), state.buf()->length());
     if (result.__isset.success) {
       // _return pointer has been filled
       return; // from try_and_catch
@@ -2148,7 +2100,7 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method6T(Protocol_* p
   if (state.isException()) {
     return state.exceptionWrapper();
   }
-  prot->setInput(state.buf()->getUntransformed());
+  prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
   std::string fname;
@@ -2179,13 +2131,13 @@ folly::exception_wrapper service1AsyncClient::recv_wrapped_method6T(Protocol_* p
     }
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf()->getUntransformed();
+    smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     service1_method6_presult result;
     result.success = &_return;
     service1_method6_presult_read(prot, &result);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), smsg.buffer->length());
+    ctx->postRead(state.header(), state.buf()->length());
     if (result.__isset.success) {
       // _return pointer has been filled
       return; // from try_and_catch

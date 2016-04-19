@@ -114,7 +114,7 @@ class ChannelCallbacks {
       destroy();
     }
     void replyReceived(
-        std::unique_ptr<transport::THeaderBody> buf,
+        std::unique_ptr<folly::IOBuf> buf,
         std::unique_ptr<apache::thrift::transport::THeader> header) {
       DestructorGuard dg(this);
       X_CHECK_STATE_NE(sendState_, QState::INIT);
@@ -138,7 +138,7 @@ class ChannelCallbacks {
       maybeDeleteThis();
     }
     void partialReplyReceived(
-        std::unique_ptr<transport::THeaderBody> buf,
+        std::unique_ptr<folly::IOBuf> buf,
         std::unique_ptr<apache::thrift::transport::THeader> header) {
       DestructorGuard dg(this);
       X_CHECK_STATE_NE(sendState_, QState::INIT);

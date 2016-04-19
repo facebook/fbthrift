@@ -55,8 +55,8 @@ StubSaslServer::StubSaslServer(folly::EventBase* evb)
 }
 
 void StubSaslServer::consumeFromClient(
-  Callback *cb, std::unique_ptr<transport::THeaderBody>&& message) {
-  std::shared_ptr<transport::THeaderBody> smessage(std::move(message));
+  Callback *cb, std::unique_ptr<IOBuf>&& message) {
+  std::shared_ptr<IOBuf> smessage(std::move(message));
   threadManager_->start();
 
   auto forceSendGarbage = forceSendGarbage_;
@@ -71,7 +71,7 @@ void StubSaslServer::consumeFromClient(
           SaslStart start;
           Serializer<CompactProtocolReader, CompactProtocolWriter> deserializer;
           ex = folly::try_and_catch<std::exception>([&]() {
-            deserializer.deserialize(smessage.get()->getUntransformed(), start);
+            deserializer.deserialize(smessage.get(), start);
           });
           if (!ex) {
             if (start.mechanism == MECH &&
@@ -102,7 +102,7 @@ void StubSaslServer::consumeFromClient(
             Serializer<CompactProtocolReader, CompactProtocolWriter>
               deserializer;
             ex = folly::try_and_catch<std::exception>([&]() {
-              deserializer.deserialize(smessage.get()->getUntransformed(), req);
+              deserializer.deserialize(smessage.get(), req);
             });
             if (!ex) {
               if (req.__isset.response &&

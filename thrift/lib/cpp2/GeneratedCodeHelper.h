@@ -927,7 +927,7 @@ process_missing(
 bool deserializeMessageBegin(
     protocol::PROTOCOL_TYPES protType,
     std::unique_ptr<ResponseChannel::Request>& req,
-    const folly::IOBuf* buf,
+    folly::IOBuf* buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb);
 

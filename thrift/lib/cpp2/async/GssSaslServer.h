@@ -35,7 +35,7 @@ public:
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> thread_manager
   );
   void consumeFromClient(Callback* cb,
-                         std::unique_ptr<transport::THeaderBody>&& message) override;
+                         std::unique_ptr<folly::IOBuf>&& message) override;
   std::unique_ptr<folly::IOBuf> encrypt(
       std::unique_ptr<folly::IOBuf>&&) override;
   std::unique_ptr<folly::IOBuf> decrypt(

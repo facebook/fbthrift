@@ -119,7 +119,7 @@ class ProxygenThriftServer : public BaseThriftServer,
     bool isOneway() override { return false; }
 
     void sendReply(
-        std::unique_ptr<transport::THeaderBody>&&, // && from ResponseChannel.h
+        std::unique_ptr<folly::IOBuf>&&, // && from ResponseChannel.h
         apache::thrift::MessageChannel::SendCallback* cb = nullptr) override;
 
     void sendErrorWrapped(
@@ -168,7 +168,7 @@ class ProxygenThriftServer : public BaseThriftServer,
       }
 
       void sendReply(
-          std::unique_ptr<transport::THeaderBody>&& buf, // && from ResponseChannel.h
+          std::unique_ptr<folly::IOBuf>&& buf, // && from ResponseChannel.h
           apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {
         if (handler_) {
           handler_->sendReply(std::move(buf), cb);

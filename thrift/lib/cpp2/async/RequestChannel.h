@@ -51,7 +51,7 @@ class ClientReceiveState {
   }
 
   ClientReceiveState(uint16_t _protocolId,
-                    std::unique_ptr<transport::THeaderBody> _buf,
+                    std::unique_ptr<folly::IOBuf> _buf,
                     std::unique_ptr<apache::thrift::transport::THeader> _header,
                     std::shared_ptr<apache::thrift::ContextStack> _ctx,
                     bool _isSecurityActive,
@@ -102,11 +102,11 @@ class ClientReceiveState {
     return protocolId_;
   }
 
-  transport::THeaderBody* buf() const {
+  folly::IOBuf* buf() const {
     return buf_.get();
   }
 
-  std::unique_ptr<transport::THeaderBody> extractBuf() {
+  std::unique_ptr<folly::IOBuf> extractBuf() {
     return std::move(buf_);
   }
 
@@ -136,7 +136,7 @@ class ClientReceiveState {
  private:
   uint16_t protocolId_;
   std::shared_ptr<apache::thrift::ContextStack> ctx_;
-  std::unique_ptr<transport::THeaderBody> buf_;
+  std::unique_ptr<folly::IOBuf> buf_;
   std::unique_ptr<apache::thrift::transport::THeader> header_;
   std::exception_ptr exc_;
   folly::exception_wrapper excw_;
@@ -321,13 +321,13 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       RpcOptions&,
       std::unique_ptr<RequestCallback>,
       std::unique_ptr<apache::thrift::ContextStack>,
-      std::unique_ptr<transport::THeaderBody>,
+      std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>) = 0;
 
   uint32_t sendRequest(
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<apache::thrift::ContextStack> ctx,
-      std::unique_ptr<transport::THeaderBody> buf,
+      std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header) {
     RpcOptions options;
     return sendRequest(options,
@@ -345,13 +345,13 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       RpcOptions&,
       std::unique_ptr<RequestCallback>,
       std::unique_ptr<apache::thrift::ContextStack>,
-      std::unique_ptr<transport::THeaderBody>,
+      std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>) = 0;
 
   uint32_t sendOnewayRequest(
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<apache::thrift::ContextStack> ctx,
-      std::unique_ptr<transport::THeaderBody> buf,
+      std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header) {
     RpcOptions options;
     return sendOnewayRequest(options,
@@ -456,7 +456,6 @@ static void clientSendT(
     throw;
   }
 
-  auto body = header->transform(queue.move());
   auto eb = channel->getEventBase();
   if(!eb || eb->isInEventBaseThread()) {
     if (oneway) {
@@ -464,27 +463,27 @@ static void clientSendT(
       // sendOnewayRequest moves from ctx and clears it.
       ctx->asyncComplete();
       channel->sendOnewayRequest(rpcOptions, std::move(callback),
-          std::move(ctx), std::move(body), header);
+          std::move(ctx), queue.move(), header);
     } else {
       channel->sendRequest(rpcOptions, std::move(callback),
-          std::move(ctx), std::move(body), header);
+          std::move(ctx), queue.move(), header);
     }
   }
   else {
     auto mvCb = folly::makeMoveWrapper(std::move(callback));
     auto mvCtx = folly::makeMoveWrapper(std::move(ctx));
-    auto mvBody = folly::makeMoveWrapper(std::move(body));
+    auto mvBuf = folly::makeMoveWrapper(queue.move());
     eb->runInEventBaseThread(
-        [channel, rpcOptions, mvCb, mvCtx, mvBody, header] () mutable {
+        [channel, rpcOptions, mvCb, mvCtx, mvBuf, header] () mutable {
       if (oneway) {
         // Calling asyncComplete before sending because
         // sendOnewayRequest moves from ctx and clears it.
         (*mvCtx)->asyncComplete();
         channel->sendOnewayRequest(rpcOptions, std::move(*mvCb),
-            std::move(*mvCtx), std::move(*mvBody), header);
+            std::move(*mvCtx), std::move(*mvBuf), header);
       } else {
         channel->sendRequest(rpcOptions, std::move(*mvCb),
-            std::move(*mvCtx), std::move(*mvBody), header);
+            std::move(*mvCtx), std::move(*mvBuf), header);
       }
     });
   }

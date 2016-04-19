@@ -86,7 +86,7 @@ class HTTPClientChannel : public ClientChannel,
       RpcOptions&,
       std::unique_ptr<RequestCallback>,
       std::unique_ptr<apache::thrift::ContextStack>,
-      std::unique_ptr<transport::THeaderBody>,
+      std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>) override;
 
   using RequestChannel::sendOnewayRequest;
@@ -94,7 +94,7 @@ class HTTPClientChannel : public ClientChannel,
       RpcOptions&,
       std::unique_ptr<RequestCallback>,
       std::unique_ptr<apache::thrift::ContextStack>,
-      std::unique_ptr<transport::THeaderBody>,
+      std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>) override;
 
   void setCloseCallback(CloseCallback*) override;
@@ -266,7 +266,7 @@ class HTTPClientChannel : public ClientChannel,
 
       folly::RequestContextScopeGuard rctx(cb_->context_);
       cb_->replyReceived(ClientReceiveState(protoId_,
-                                            transport::THeaderBody::wrapUntransformed(std::move(body_)),
+                                            std::move(body_),
                                             std::move(header),
                                             std::move(ctx_),
                                             isSecurityActive_,

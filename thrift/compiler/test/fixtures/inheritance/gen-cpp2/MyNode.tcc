@@ -41,13 +41,11 @@ void MyNodeAsyncProcessor::process_do_mid(std::unique_ptr<apache::thrift::Respon
       LOG(ERROR) << ex.what() << " in function do_mid";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("do_mid", &prot, ctx->getProtoSeqId(), nullptr, x);
-      auto wrapper = ctx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      auto wrapper_mw = folly::makeMoveWrapper(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
       auto req_mw = folly::makeMoveWrapper(std::move(req));
       eb->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(std::move(*wrapper_mw));
+        (*req_mw)->sendReply(queue_mw->move());
       }
       );
       return;
@@ -86,10 +84,8 @@ void MyNodeAsyncProcessor::throw_do_mid(std::unique_ptr<apache::thrift::Response
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("do_mid", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -101,10 +97,8 @@ void MyNodeAsyncProcessor::throw_do_mid(std::unique_ptr<apache::thrift::Response
       LOG(ERROR) << "<unknown exception>" << " in function do_mid";
       apache::thrift::TApplicationException x("<unknown exception>");
       folly::IOBufQueue queue = serializeException("do_mid", &prot, protoSeqId, nullptr, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -126,10 +120,8 @@ void MyNodeAsyncProcessor::throw_wrapped_do_mid(std::unique_ptr<apache::thrift::
       ctx->userExceptionWrapped(false, ew);
       ctx->handlerErrorWrapped(ew);
       folly::IOBufQueue queue = serializeException("do_mid", &prot, protoSeqId, ctx, x);
-      auto wrapper = reqCtx->getHeader()->transform(queue.move());
-      // Make sure compression runs in this thread
-      wrapper->ensureTransformsApplied();
-      req->sendReply(std::move(wrapper));
+      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+      req->sendReply(queue.move());
       return;
     }
     else {
@@ -155,7 +147,7 @@ folly::exception_wrapper MyNodeAsyncClient::recv_wrapped_do_midT(Protocol_* prot
   if (state.isException()) {
     return state.exceptionWrapper();
   }
-  prot->setInput(state.buf()->getUntransformed());
+  prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
   apache::thrift::ContextStack* ctx = state.ctx();
   std::string fname;
@@ -186,12 +178,12 @@ folly::exception_wrapper MyNodeAsyncClient::recv_wrapped_do_midT(Protocol_* prot
     }
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf()->getUntransformed();
+    smsg.buffer = state.buf();
     ctx->onReadData(smsg);
     MyNode_do_mid_presult result;
     result.read(prot);
     prot->readMessageEnd();
-    ctx->postRead(state.header(), smsg.buffer->length());
+    ctx->postRead(state.header(), state.buf()->length());
   }
   );
   auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);

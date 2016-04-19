@@ -144,7 +144,7 @@ class Cpp2Connection
 
     bool isOneway() override { return req_->isOneway(); }
 
-    void sendReply(std::unique_ptr<transport::THeaderBody>&& buf,
+    void sendReply(std::unique_ptr<folly::IOBuf>&& buf,
                    MessageChannel::SendCallback* notUsed = nullptr) override;
     void sendErrorWrapped(
         folly::exception_wrapper ew,

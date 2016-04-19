@@ -165,7 +165,7 @@ public:
                apache::thrift::concurrency::ThreadManager* tm) override {
     bool oneway = isOnewayMethod(buf.get(), context->getHeader());
     if (oneway && !req->isOneway()) {
-      req->sendReply(std::unique_ptr<transport::THeaderBody>());
+      req->sendReply(std::unique_ptr<folly::IOBuf>());
     }
     auto preq = req.get();
     auto buf_mw = folly::makeMoveWrapper(std::move(buf));

@@ -160,7 +160,7 @@ uint32_t HTTPClientChannel::sendOnewayRequest(
     RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
-    unique_ptr<transport::THeaderBody> buf,
+    unique_ptr<IOBuf> buf,
     std::shared_ptr<THeader> header) {
   DestructorGuard dg(this);
   cb->context_ = RequestContext::saveContext();
@@ -209,7 +209,7 @@ uint32_t HTTPClientChannel::sendOnewayRequest(
 
   auto msg = buildHTTPMessage(header.get());
   txn->sendHeaders(msg);
-  txn->sendBody(transport::THeaderBody::extractUntransformed(std::move(buf)));
+  txn->sendBody(std::move(buf));
   txn->sendEOM();
 
   if (owcb) {
@@ -223,7 +223,7 @@ uint32_t HTTPClientChannel::sendRequest(
     RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
-    unique_ptr<transport::THeaderBody> buf,
+    unique_ptr<IOBuf> buf,
     std::shared_ptr<THeader> header) {
   // cb is not allowed to be null.
   DCHECK(cb);
@@ -282,7 +282,7 @@ uint32_t HTTPClientChannel::sendRequest(
   auto msg = buildHTTPMessage(header.get());
 
   txn->sendHeaders(msg);
-  txn->sendBody(transport::THeaderBody::extractUntransformed(std::move(buf)));
+  txn->sendBody(std::move(buf));
   txn->sendEOM();
 
   twcb->sendQueued();

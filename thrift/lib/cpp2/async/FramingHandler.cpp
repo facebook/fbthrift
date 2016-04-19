@@ -35,7 +35,7 @@ void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
         ProtectionHandler::ProtectionState::INPROGRESS) {
       return;
     }
-    std::unique_ptr<transport::THeaderBody> unframed;
+    std::unique_ptr<folly::IOBuf> unframed;
     std::unique_ptr<apache::thrift::transport::THeader> header;
     auto ex = folly::try_and_catch<std::exception>([&]() {
 
@@ -62,7 +62,7 @@ void FramingHandler::read(Context* ctx, folly::IOBufQueue& q) {
 
 folly::Future<folly::Unit> FramingHandler::write(
   Context* ctx,
-  std::pair<std::unique_ptr<transport::THeaderBody>,
+  std::pair<std::unique_ptr<folly::IOBuf>,
             apache::thrift::transport::THeader*> bufAndHeader) {
   return ctx->fireWrite(addFrame(
         std::move(bufAndHeader.first),
