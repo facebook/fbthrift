@@ -32,6 +32,7 @@
 #include <folly/MPMCQueue.h>
 #include <folly/Memory.h>
 #include <folly/io/async/Request.h>
+#include <folly/String.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -128,12 +129,10 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
 
       try {
         task->run();
-      } catch(const std::exception& ex) {
-        T_ERROR("ThreadManager: worker task threw unhandled "
-                "%s exception: %s", typeid(ex).name(), ex.what());
-      } catch(...) {
-        T_ERROR("ThreadManager: worker task threw unhandled "
-                "non-exception object");
+      } catch (const std::exception& ex) {
+        LOG(ERROR) << "worker task threw unhandled " << folly::exceptionStr(ex);
+      } catch (...) {
+        LOG(ERROR) << "worker task threw unhandled non-exception object";
       }
 
       if (task->statsEnabled()) {
@@ -294,7 +293,7 @@ void ThreadManager::ImplT<SemType>::removeWorkerImpl(size_t value, bool afterTas
     size_t bad = 0;
     for (size_t n = 0; n < value; ++n) {
       if (!tasks_.write(nullptr)) {
-        T_ERROR("ThreadManager: Can't remove worker. Increase maxQueueLen?");
+        LOG(ERROR) << "Can't remove worker. Increase maxQueueLen?";
         bad++;
         continue;
       }
@@ -371,7 +370,7 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
   auto task = folly::make_unique<Task>(std::move(value),
                                        std::chrono::milliseconds{expiration});
   if (!tasks_.write(std::move(task))) {
-    T_ERROR("ThreadManager: Failed to enqueue item. Increase maxQueueLen?");
+    LOG(ERROR) << "Failed to enqueue item. Increase maxQueueLen?";
     throw TooManyPendingTasksException();
   }
 
