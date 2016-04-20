@@ -120,23 +120,6 @@
 
 
 /**
- * Analogous to T_ERROR, additionally aborting the process.
- * WARNING: macro calls abort(), ending program execution
- *
- * @param string  format_string input: printf style format string
- */
-#define T_ERROR_ABORT(format_string,...)                                \
-  {                                                                     \
-    COMPUTE_TIME                                                        \
-    fprintf(stderr,"[%s,%d] [%s, %d ms] ERROR: Going to abort " \
-            format_string " \n",                                        \
-            __FILE__, __LINE__,dbgtime, ms,                             \
-            ##__VA_ARGS__);                                             \
-    exit(1);                                                            \
-  }
-
-
-/**
  * Log input message
  *
  * @param string  format_string input: printf style format string
