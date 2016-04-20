@@ -88,8 +88,14 @@ class CompilerTest(unittest.TestCase):
                 write_file(out, srcc)
         cmds = read_lines(os.path.join(self.tmp, 'cmd'))
         for cmd in cmds:
+            args = shlex.split(cmd.strip())
+            if args[0].startswith("cpp"):
+                path = os.path.join("thrift/compiler/test/fixtures", name)
+                extra = "include_prefix=" + path
+                join = "," if ":" in args[0] else ":"
+                args[0] = args[0] + join + extra
             subprocess.check_call(
-                [thrift, '-r', '--gen'] + shlex.split(cmd.strip()),
+                [thrift, '-r', '--gen'] + args,
                 cwd=self.tmp,
                 close_fds=True,
             )

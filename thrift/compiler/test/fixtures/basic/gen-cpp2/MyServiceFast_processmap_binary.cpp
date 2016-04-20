@@ -4,9 +4,9 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "MyServiceFast.h"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceFast.h"
 
-#include "MyServiceFast.tcc"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceFast.tcc"
 
 namespace cpp2 {
 

@@ -4,9 +4,9 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/module_types.h"
 
-#include "module_reflection.h"
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/module_reflection.h"
 
 #include <algorithm>
 #include <string.h>

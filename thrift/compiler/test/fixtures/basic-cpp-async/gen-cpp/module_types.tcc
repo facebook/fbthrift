@@ -6,9 +6,9 @@
  */
 #pragma once
 
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/module_types.h"
 
-#include "module_reflection.h"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/module_reflection.h"
 
 
 

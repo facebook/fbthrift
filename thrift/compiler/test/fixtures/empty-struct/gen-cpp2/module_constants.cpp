@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "module_constants.h"
+#include "thrift/compiler/test/fixtures/empty-struct/gen-cpp2/module_constants.h"
 
 namespace cpp2 {
 

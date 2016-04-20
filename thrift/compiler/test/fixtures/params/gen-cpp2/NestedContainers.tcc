@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "NestedContainers.h"
+#include "thrift/compiler/test/fixtures/params/gen-cpp2/NestedContainers.h"
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/MoveWrapper.h>
 #include <folly/io/IOBuf.h>

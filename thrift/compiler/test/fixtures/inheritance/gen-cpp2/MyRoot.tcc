@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "MyRoot.h"
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRoot.h"
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/MoveWrapper.h>
 #include <folly/io/IOBuf.h>

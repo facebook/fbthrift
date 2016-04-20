@@ -13,7 +13,7 @@
 #include <folly/io/Cursor.h>
 #include <boost/operators.hpp>
 
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/module_types.h"
 
 
 

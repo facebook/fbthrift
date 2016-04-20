@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "module2_types.h"
+#include "thrift/compiler/test/fixtures/refs/gen-cpp/module2_types.h"
 
 
 

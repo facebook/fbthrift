@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/constants/gen-cpp/module_types.h"
 
 
 

@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "module_fatal.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_fatal.h"
 
 namespace test_cpp2 { namespace cpp_reflection {
 

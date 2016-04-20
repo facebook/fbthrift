@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "Raiser.h"
+#include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/Raiser.h"
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/MoveWrapper.h>
 #include <folly/io/IOBuf.h>

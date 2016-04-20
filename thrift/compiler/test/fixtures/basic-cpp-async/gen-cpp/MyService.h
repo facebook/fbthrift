@@ -15,7 +15,7 @@ class TAsyncChannel;
 #include <thrift/lib/cpp/TDispatchProcessor.h>
 #include <folly/ExceptionWrapper.h>
 #include <thrift/lib/cpp/async/TAsyncDispatchProcessor.h>
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/module_types.h"
 
 
 
@@ -1470,7 +1470,7 @@ typedef MyServiceAsyncProcessorFactoryT< ::apache::thrift::protocol::TDummyProto
 
 
 
-#include "MyService.tcc"
-#include "module_types.tcc"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/MyService.tcc"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/module_types.tcc"
 
 #endif

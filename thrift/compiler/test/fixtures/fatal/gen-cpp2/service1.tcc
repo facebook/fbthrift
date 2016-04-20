@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "service1.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service1.h"
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/MoveWrapper.h>
 #include <folly/io/IOBuf.h>

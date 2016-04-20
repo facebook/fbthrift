@@ -7,12 +7,12 @@
 #ifndef  _MyService_TCC
 #define  _MyService_TCC
 
-#include "MyService.h"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/MyService.h"
 #include <folly/ScopeGuard.h>
 #include <folly/ExceptionWrapper.h>
 #include <thrift/lib/cpp/async/TAsyncChannel.h>
 
-#include "module_reflection.h"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/module_reflection.h"
 
 
 

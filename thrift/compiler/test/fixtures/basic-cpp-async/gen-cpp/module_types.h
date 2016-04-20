@@ -121,5 +121,5 @@ void merge(const MyStruct& from, MyStruct& to);
 void merge(MyStruct&& from, MyStruct& to);
 
 
-#include "module_types.tcc"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/module_types.tcc"
 

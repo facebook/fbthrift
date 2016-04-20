@@ -11,9 +11,9 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <folly/futures/Future.h>
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_types.h"
 
-#include "service2.h"
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/service2.h"
 
 
 namespace folly {

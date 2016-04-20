@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/module_types.h"
 
 namespace test_cpp1 { namespace cpp_reflection {
 

@@ -4,9 +4,9 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "Raiser.h"
+#include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/Raiser.h"
 
-#include "Raiser.tcc"
+#include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/Raiser.tcc"
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>

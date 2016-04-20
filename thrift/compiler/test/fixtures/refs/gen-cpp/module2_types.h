@@ -25,7 +25,7 @@ using namespace folly::json;
 namespace apache { namespace thrift { namespace reflection {
 class Schema;
 }}}
-#include "includes_types.h"
+#include "thrift/compiler/test/fixtures/refs/gen-cpp/includes_types.h"
 
 
 

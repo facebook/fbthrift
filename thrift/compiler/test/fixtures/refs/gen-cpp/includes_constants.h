@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "includes_types.h"
+#include "thrift/compiler/test/fixtures/refs/gen-cpp/includes_types.h"
 
 namespace cpp1 {
 

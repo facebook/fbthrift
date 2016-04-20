@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "includes_constants.h"
+#include "thrift/compiler/test/fixtures/refs/gen-cpp/includes_constants.h"
 
 namespace cpp1 {
 

@@ -9,7 +9,7 @@
 // asynchronous server. You should copy it to another filename to
 // avoid overwriting it.
 
-#include "MyService.h"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/MyService.h"
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/util/TEventServerCreator.h>
 

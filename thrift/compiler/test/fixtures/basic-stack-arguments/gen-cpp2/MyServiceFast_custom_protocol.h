@@ -14,6 +14,6 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "MyServiceFast.tcc"
+#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/MyServiceFast.tcc"
 
-#include "module_types_custom_protocol.h"
+#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/module_types_custom_protocol.h"

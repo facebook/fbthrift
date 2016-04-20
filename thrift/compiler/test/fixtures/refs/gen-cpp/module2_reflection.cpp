@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "module2_reflection.h"
+#include "thrift/compiler/test/fixtures/refs/gen-cpp/module2_reflection.h"
 #include <thrift/lib/cpp/Reflection.h>
 
  namespace module2_reflection_ {

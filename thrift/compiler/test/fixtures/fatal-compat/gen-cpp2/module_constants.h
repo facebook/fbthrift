@@ -6,9 +6,9 @@
  */
 #pragma once
 
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include "module_constants.h"
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/module_constants.h"
 namespace test_cpp2 { namespace cpp_reflection {
 
 using ::test_cpp1::cpp_reflection::module_constants;

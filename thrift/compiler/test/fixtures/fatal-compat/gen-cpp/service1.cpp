@@ -4,10 +4,10 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "service1.h"
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/service1.h"
 #include <folly/ScopeGuard.h>
 
-#include "module_reflection.h"
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/module_reflection.h"
 
 namespace test_cpp1 { namespace cpp_reflection {
 

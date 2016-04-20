@@ -4,9 +4,9 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "service1.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service1.h"
 
-#include "service1.tcc"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service1.tcc"
 
 namespace test_cpp2 { namespace cpp_reflection {
 

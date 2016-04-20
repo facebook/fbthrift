@@ -4,9 +4,9 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "MyNode.h"
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyNode.h"
 
-#include "MyNode.tcc"
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyNode.tcc"
 
 namespace cpp2 {
 

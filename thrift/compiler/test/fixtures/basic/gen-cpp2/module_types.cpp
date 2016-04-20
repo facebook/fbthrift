@@ -4,9 +4,9 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_types.h"
 
-#include "module_types.tcc"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_types.tcc"
 
 #include <algorithm>
 

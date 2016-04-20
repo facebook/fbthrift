@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "module_types.h"
+#include "thrift/compiler/test/fixtures/optionals/gen-cpp2/module_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 namespace cpp2 {
 

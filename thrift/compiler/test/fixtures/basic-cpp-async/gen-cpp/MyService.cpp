@@ -4,8 +4,8 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "MyService.h"
-#include "MyService.tcc"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/MyService.h"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/MyService.tcc"
 #include <folly/ScopeGuard.h>
 #include <thrift/lib/cpp/async/TAsyncChannel.h>
 
