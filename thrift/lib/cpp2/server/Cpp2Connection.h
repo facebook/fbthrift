@@ -169,9 +169,6 @@ class Cpp2Connection
     void setLoadHeader();
 
    private:
-    // Creates new requestContext when Cpp2Request is constructed
-    folly::RequestContextScopeGuard rctx;
-
     MessageChannel::SendCallback* prepareSendCallback(
         MessageChannel::SendCallback* sendCallback,
         apache::thrift::server::TServerObserver* observer);

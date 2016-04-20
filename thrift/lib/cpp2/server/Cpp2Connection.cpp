@@ -403,6 +403,8 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
   : req_(static_cast<HeaderServerChannel::HeaderRequest*>(req.release()))
   , connection_(con)
   , reqContext_(&con->context_, req_->getHeader()) {
+  RequestContext::create();
+
   queueTimeout_.request_ = this;
   taskTimeout_.request_ = this;
 

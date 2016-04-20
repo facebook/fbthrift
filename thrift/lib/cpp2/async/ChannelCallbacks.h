@@ -88,8 +88,9 @@ class ChannelCallbacks {
       X_CHECK_STATE_EQ(sendState_, QState::QUEUED);
       if (!cbCalled_) {
         CHECK(cb_);
-        folly::RequestContextScopeGuard rctx(cb_->context_);
+        auto old_ctx = folly::RequestContext::setContext(cb_->context_);
         cb_->requestSent();
+        folly::RequestContext::setContext(old_ctx);
       }
       sendState_ = QState::DONE;
       maybeDeleteThis();
@@ -106,9 +107,10 @@ class ChannelCallbacks {
       if (!cbCalled_) {
         CHECK(cb_);
         cbCalled_ = true;
-        folly::RequestContextScopeGuard rctx(cb_->context_);
+        auto old_ctx = folly::RequestContext::setContext(cb_->context_);
         cb_->requestError(ClientReceiveState(
             std::move(ex), std::move(ctx_), channel_->isSecurityActive()));
+        folly::RequestContext::setContext(old_ctx);
         cb_.reset();
       }
       destroy();
@@ -126,7 +128,7 @@ class ChannelCallbacks {
       CHECK(cb_);
       cbCalled_ = true;
 
-      folly::RequestContextScopeGuard rctx(cb_->context_);
+      auto old_ctx = folly::RequestContext::setContext(cb_->context_);
       cb_->replyReceived(ClientReceiveState(protoId_,
                                             std::move(buf),
                                             std::move(header),
@@ -135,6 +137,7 @@ class ChannelCallbacks {
                                             true));
       cb_.reset();
 
+      folly::RequestContext::setContext(old_ctx);
       maybeDeleteThis();
     }
     void partialReplyReceived(
@@ -147,12 +150,14 @@ class ChannelCallbacks {
 
       CHECK(cb_);
 
-      folly::RequestContextScopeGuard rctx(cb_->context_);
+      auto old_ctx = folly::RequestContext::setContext(cb_->context_);
       cb_->replyReceived(ClientReceiveState(protoId_,
                                             std::move(buf),
                                             std::move(header),
                                             ctx_,
                                             channel_->isSecurityActive()));
+
+      folly::RequestContext::setContext(old_ctx);
     }
     void requestError(folly::exception_wrapper ex) {
       DestructorGuard dg(this);
@@ -162,9 +167,10 @@ class ChannelCallbacks {
       CHECK(cb_);
       if (!cbCalled_) {
         cbCalled_ = true;
-        folly::RequestContextScopeGuard rctx(cb_->context_);
+        auto old_ctx = folly::RequestContext::setContext(cb_->context_);
         cb_->requestError(ClientReceiveState(
             std::move(ex), std::move(ctx_), channel_->isSecurityActive()));
+        folly::RequestContext::setContext(old_ctx);
         cb_.reset();
       }
 
@@ -182,11 +188,12 @@ class ChannelCallbacks {
         cbCalled_ = true;
         TTransportException ex(TTransportException::TIMED_OUT, "Timed Out");
         ex.setOptions(TTransportException::CHANNEL_IS_VALID); // framing okay
-        folly::RequestContextScopeGuard rctx(cb_->context_);
+        auto old_ctx = folly::RequestContext::setContext(cb_->context_);
         cb_->requestError(ClientReceiveState(
             folly::make_exception_wrapper<TTransportException>(std::move(ex)),
             std::move(ctx_),
             channel_->isSecurityActive()));
+        folly::RequestContext::setContext(old_ctx);
         cb_.reset();
       }
       maybeDeleteThis();
@@ -260,16 +267,18 @@ class ChannelCallbacks {
     void messageSent() override {
       DestructorGuard dg(this);
       CHECK(cb_);
-      folly::RequestContextScopeGuard rctx(cb_->context_);
+      auto old_ctx = folly::RequestContext::setContext(cb_->context_);
       cb_->requestSent();
+      folly::RequestContext::setContext(old_ctx);
       destroy();
     }
     void messageSendError(folly::exception_wrapper&& ex) override {
       DestructorGuard dg(this);
       CHECK(cb_);
-      folly::RequestContextScopeGuard rctx(cb_->context_);
+      auto old_ctx = folly::RequestContext::setContext(cb_->context_);
       cb_->requestError(
           ClientReceiveState(ex, std::move(ctx_), isSecurityActive_));
+      folly::RequestContext::setContext(old_ctx);
       destroy();
     }
 
