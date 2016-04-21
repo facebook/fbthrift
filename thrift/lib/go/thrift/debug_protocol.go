@@ -117,7 +117,7 @@ func (tdp *TDebugProtocol) WriteBool(value bool) error {
 	log.Printf("%sWriteBool(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
 }
-func (tdp *TDebugProtocol) WriteByte(value int8) error {
+func (tdp *TDebugProtocol) WriteByte(value byte) error {
 	err := tdp.Delegate.WriteByte(value)
 	log.Printf("%sWriteByte(value=%#v) => %#v", tdp.LogPrefix, value, err)
 	return err
@@ -223,7 +223,7 @@ func (tdp *TDebugProtocol) ReadBool() (value bool, err error) {
 	log.Printf("%sReadBool() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return
 }
-func (tdp *TDebugProtocol) ReadByte() (value int8, err error) {
+func (tdp *TDebugProtocol) ReadByte() (value byte, err error) {
 	value, err = tdp.Delegate.ReadByte()
 	log.Printf("%sReadByte() (value=%#v, err=%#v)", tdp.LogPrefix, value, err)
 	return

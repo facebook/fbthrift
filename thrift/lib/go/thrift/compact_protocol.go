@@ -269,8 +269,8 @@ func (p *TCompactProtocol) WriteBool(value bool) error {
 }
 
 // Write a byte. Nothing to see here!
-func (p *TCompactProtocol) WriteByte(value int8) error {
-	err := p.writeByteDirect(byte(value))
+func (p *TCompactProtocol) WriteByte(value byte) error {
+	err := p.writeByteDirect(value)
 	return NewTProtocolException(err)
 }
 
@@ -518,12 +518,12 @@ func (p *TCompactProtocol) ReadBool() (value bool, err error) {
 }
 
 // Read a single byte off the wire. Nothing interesting here.
-func (p *TCompactProtocol) ReadByte() (int8, error) {
+func (p *TCompactProtocol) ReadByte() (byte, error) {
 	v, err := p.readByteDirect()
 	if err != nil {
 		return 0, NewTProtocolException(err)
 	}
-	return int8(v), err
+	return v, err
 }
 
 // Read an i16 from the wire as a zigzag varint.

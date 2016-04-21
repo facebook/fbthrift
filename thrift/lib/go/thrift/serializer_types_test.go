@@ -113,7 +113,7 @@ func MyTestEnumPtr(v MyTestEnum) *MyTestEnum { return &v }
 //  - E
 type MyTestStruct struct {
 	On         bool              `thrift:"on,1" json:"on"`
-	B          int8              `thrift:"b,2" json:"b"`
+	B          byte              `thrift:"b,2" json:"b"`
 	Int16      int16             `thrift:"int16,3" json:"int16"`
 	Int32      int32             `thrift:"int32,4" json:"int32"`
 	Int64      int64             `thrift:"int64,5" json:"int64"`
@@ -135,7 +135,7 @@ func (p *MyTestStruct) GetOn() bool {
 	return p.On
 }
 
-func (p *MyTestStruct) GetB() int8 {
+func (p *MyTestStruct) GetB() byte {
 	return p.B
 }
 
@@ -276,7 +276,7 @@ func (p *MyTestStruct) ReadField2(iprot TProtocol) error {
 	if v, err := iprot.ReadByte(); err != nil {
 		return PrependError("error reading field 2: ", err)
 	} else {
-		temp := int8(v)
+		temp := byte(v)
 		p.B = temp
 	}
 	return nil
@@ -496,7 +496,7 @@ func (p *MyTestStruct) writeField2(oprot TProtocol) (err error) {
 	if err := oprot.WriteFieldBegin("b", BYTE, 2); err != nil {
 		return PrependError(fmt.Sprintf("%T write field begin error 2:b: ", p), err)
 	}
-	if err := oprot.WriteByte(int8(p.B)); err != nil {
+	if err := oprot.WriteByte(byte(p.B)); err != nil {
 		return PrependError(fmt.Sprintf("%T.b (2) field write error: ", p), err)
 	}
 	if err := oprot.WriteFieldEnd(); err != nil {
