@@ -1132,7 +1132,7 @@ template <class F>
 void
 async_eb_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
   auto callbackp = callback.release();
-  auto fm = folly::makeMoveWrapper(std::move(f));
+  auto fm = folly::makeMoveWrapper(std::forward<F>(f));
   callbackp->runFuncInQueue([=]() mutable {
       async_tm_oneway(si, to_unique_ptr(callbackp), fm.move());
   });
@@ -1142,7 +1142,7 @@ template <class F>
 void
 async_eb(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
   auto callbackp = callback.release();
-  auto fm = folly::makeMoveWrapper(std::move(f));
+  auto fm = folly::makeMoveWrapper(std::forward<F>(f));
   callbackp->runFuncInQueue([=]() mutable {
       async_tm(si, to_unique_ptr(callbackp), fm.move());
   });

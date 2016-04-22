@@ -424,7 +424,7 @@ struct argument_wrapper {
 
   template <typename U>
   explicit argument_wrapper(U&& value):
-    argument_(std::move(value))
+    argument_(std::forward<U>(value))
   {
     static_assert(
       std::is_rvalue_reference<U&&>::value,

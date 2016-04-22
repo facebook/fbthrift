@@ -412,7 +412,7 @@ class HandlerCallbackBase {
   void runFuncInQueue(F&& func) {
     assert(tm_);
     try {
-      tm_->add(concurrency::FunctionRunner::create(std::move(func)),
+      tm_->add(concurrency::FunctionRunner::create(std::forward<F>(func)),
         0, // timeout
         0, // expiration
         true, // cancellable

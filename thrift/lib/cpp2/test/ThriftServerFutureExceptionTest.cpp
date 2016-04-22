@@ -52,7 +52,7 @@ class ThriftServerFutureExceptionTest : public testing::Test {
   template <class V, class F>
   bool exn(Future<V> fv, F&& f) {
     exception_wrapper wrap = fv.waitVia(&eb).getTry().exception();
-    return wrap.with_exception(move(f));
+    return wrap.with_exception(std::forward<F>(f));
   }
 };
 
