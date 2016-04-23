@@ -185,6 +185,15 @@ void Cpp2Connection::requestTimeoutExpired() {
   }
 }
 
+void Cpp2Connection::queueTimeoutExpired() {
+  VLOG(1) << "ERROR: Queue timeout on channel: " <<
+    context_.getPeerAddress()->describe();
+  auto observer = worker_->getServer()->getObserver();
+  if (observer) {
+    observer->queueTimeout();
+  }
+}
+
 bool Cpp2Connection::pending() {
   return socket_ ? socket_->isPending() : false;
 }
@@ -502,8 +511,11 @@ void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
 
 void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
   if (!request_->reqContext_.getStartedProcessing()) {
-    request_->taskTimeout_.timeoutExpired();
+    return;
   }
+  request_->req_->cancel();
+  request_->sendTimeoutResponse();
+  request_->connection_->queueTimeoutExpired();
 }
 
 Cpp2Connection::Cpp2Request::~Cpp2Request() {

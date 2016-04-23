@@ -77,6 +77,8 @@ class Cpp2Connection
 
   void requestTimeoutExpired();
 
+  void queueTimeoutExpired();
+
   bool pending();
 
   // Managed Connection callbacks
