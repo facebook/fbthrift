@@ -1097,11 +1097,6 @@ using CallbackBasePtr = std::unique_ptr<CallbackBase>;
 template <class R> using Callback = HandlerCallback<fut_ret_drop<R>>;
 template <class R> using CallbackPtr = std::unique_ptr<Callback<R>>;
 
-template <class T>
-std::unique_ptr<T> to_unique_ptr(T* t) {
-  return std::unique_ptr<T>(t);
-}
-
 inline
 void
 async_tm_prep(ServerInterface* si, CallbackBase* callback) {
@@ -1131,23 +1126,22 @@ async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
 template <class F>
 void
 async_eb_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
-  auto callbackp = callback.release();
-  auto fm = folly::makeMoveWrapper(std::forward<F>(f));
-  callbackp->runFuncInQueue([=]() mutable {
-      async_tm_oneway(si, to_unique_ptr(callbackp), fm.move());
-  });
+  auto callbackp = callback.get();
+  callbackp->runFuncInQueue(
+      [ si, callback = std::move(callback), f = std::forward<F>(f) ]() mutable {
+        async_tm_oneway(si, std::move(callback), std::move(f));
+      });
 }
 
 template <class F>
 void
 async_eb(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
-  auto callbackp = callback.release();
-  auto fm = folly::makeMoveWrapper(std::forward<F>(f));
-  callbackp->runFuncInQueue([=]() mutable {
-      async_tm(si, to_unique_ptr(callbackp), fm.move());
-  });
+  auto callbackp = callback.get();
+  callbackp->runFuncInQueue(
+      [ si, callback = std::move(callback), f = std::forward<F>(f) ]() mutable {
+        async_tm(si, std::move(callback), std::move(f));
+      });
 }
-
 }} // detail::si
 
 }} // apache::thrift

@@ -424,7 +424,6 @@ class CppOutputContext(OutputContext):
                             self._header_path)
                 print >>self._output_tcc, \
                         '#include <thrift/lib/cpp/TApplicationException.h>'
-                print >>self._output_tcc, '#include <folly/MoveWrapper.h>'
                 print >>self._output_tcc, '#include <folly/io/IOBuf.h>'
                 print >>self._output_tcc, '#include <folly/io/IOBufQueue.h>'
                 print >>self._output_tcc, \

@@ -997,9 +997,9 @@ class CppGenerator(t_generator.Generator):
                     args = ["_return"] + args
                     c = "[&]({r}& _return) {{ {n}({a}); }}"
             else:
-                mv = lambda n: "std::move({n})".format(n=n)
                 args = [
-                    mv(m.name) if self._is_complex_type(m.type) else m.name
+                    "std::move({n})".format(
+                        n=m.name) if self._is_complex_type(m.type) else m.name
                     for m in function.arglist.members
                 ]
                 if not self._is_complex_type(function.returntype):
@@ -1025,20 +1025,22 @@ class CppGenerator(t_generator.Generator):
         stack_args = self.flag_stack_arguments
         is_complex_type = lambda t: self._is_complex_type(t) and not stack_args
         if self._is_processed_in_eb(function):
-            for arg in function.arglist.members:
-                if is_complex_type(arg.type):
-                    out("auto {n}_ = folly::makeMoveWrapper({n});"
-                        .format(n=arg.name))
+            captures = ['this']
+            captures.extend(
+                '{n} = std::move({n})'.format(
+                    n=arg.name) if is_complex_type(arg.type) else arg.name
+                for arg in function.arglist.members
+            )
             f = "async_eb_oneway" if function.oneway else "async_eb"
-            mv = lambda n: "{n}_.move()".format(n=n)
-            c = "[=]() mutable {{ return future_{n}({a}); }}"
+            c = ('[{0}]'.format(', '.join(captures)) +
+                 "() mutable {{ return future_{n}({a}); }}")
         else:
             f = "async_tm_oneway" if function.oneway else "async_tm"
-            mv = lambda n: "std::move({n})".format(n=n)
             c = "[&] {{ return future_{n}({a}); }}"
         s = "{ns}::{f}(this, std::move(callback), " + c + ");"
         args = [
-            mv(m.name) if is_complex_type(m.type) else m.name
+            "std::move({n})".format(n=m.name)
+            if is_complex_type(m.type) else m.name
             for m in function.arglist.members
         ]
         ns = "apache::thrift::detail::si"
@@ -1120,11 +1122,11 @@ class CppGenerator(t_generator.Generator):
             if is_in_eb:
                 out('req->sendReply(queue.move());')
             else:
-                out('auto queue_mw = '
-                        'folly::makeMoveWrapper(std::move(queue));')
-                out('auto req_mw = folly::makeMoveWrapper(std::move(req));')
-                with out('eb->runInEventBaseThread([=]() mutable'):
-                    out('(*req_mw)->sendReply(queue_mw->move());')
+                with out('eb->runInEventBaseThread('
+                         '[queue = std::move(queue), '
+                         'req = std::move(req)]'
+                         '() mutable'):
+                    out('req->sendReply(queue.move());')
                 out(');')
             out('return;')
         with out('else'):

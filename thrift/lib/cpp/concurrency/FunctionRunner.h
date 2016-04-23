@@ -18,7 +18,7 @@
 #define _THRIFT_CONCURRENCY_FUNCTION_RUNNER_H 1
 
 #include <unistd.h>
-#include <functional>
+#include <folly/Function.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
@@ -50,9 +50,9 @@ class FunctionRunner : public Runnable {
   // This is the type of callback 'pthread_create()' expects.
   typedef void* (*PthreadFuncPtr)(void *arg);
   // This a fully-generic void(void) callback for custom bindings.
-  typedef std::function<void()> VoidFunc;
+  typedef folly::Function<void()> VoidFunc;
 
-  typedef std::function<bool()> BoolFunc;
+  typedef folly::Function<bool()> BoolFunc;
 
   /**
    * Syntactic sugar to make it easier to create new FunctionRunner
@@ -111,8 +111,8 @@ class FunctionRunner : public Runnable {
   /**
    * Set a callback to be called when the thread is started.
    */
-  void setInitFunc(const VoidFunc& initFunc) {
-    initFunc_ = initFunc;
+  void setInitFunc(VoidFunc&& initFunc) {
+    initFunc_ = std::move(initFunc);
   }
 
   void run() override {

@@ -26,7 +26,7 @@ folly::Future<bool> MyServiceFastSvIf::future_hasDataById(int64_t id) {
 }
 
 void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_hasDataById(id); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id]() mutable { return future_hasDataById(id); });
 }
 
 void MyServiceFastSvIf::getDataById(std::string& /*_return*/, int64_t /*id*/) {
@@ -38,7 +38,7 @@ folly::Future<std::string> MyServiceFastSvIf::future_getDataById(int64_t id) {
 }
 
 void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback, int64_t id) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_getDataById(id); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id]() mutable { return future_getDataById(id); });
 }
 
 void MyServiceFastSvIf::putDataById(int64_t /*id*/, const std::string& /*data*/) {
@@ -50,7 +50,7 @@ folly::Future<folly::Unit> MyServiceFastSvIf::future_putDataById(int64_t id, con
 }
 
 void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const std::string& data) {
-  apache::thrift::detail::si::async_eb(this, std::move(callback), [=]() mutable { return future_putDataById(id, data); });
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id, data]() mutable { return future_putDataById(id, data); });
 }
 
 void MyServiceFastSvIf::lobDataById(int64_t /*id*/, const std::string& /*data*/) {
@@ -62,7 +62,7 @@ folly::Future<folly::Unit> MyServiceFastSvIf::future_lobDataById(int64_t id, con
 }
 
 void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const std::string& data) {
-  apache::thrift::detail::si::async_eb_oneway(this, std::move(callback), [=]() mutable { return future_lobDataById(id, data); });
+  apache::thrift::detail::si::async_eb_oneway(this, std::move(callback), [this, id, data]() mutable { return future_lobDataById(id, data); });
 }
 
 const char* MyServiceFastAsyncProcessor::getServiceName() {
