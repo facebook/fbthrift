@@ -21,6 +21,13 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <type_traits>
 
+namespace folly {
+class IOBufQueue;
+namespace io {
+class QueueAppender;
+} // io
+} // folly
+
 namespace apache { namespace thrift {
 
 namespace detail {
@@ -851,7 +858,10 @@ class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
 class BinaryProtocolReader;
 class BinaryProtocolWriter;
 class CompactProtocolReader;
-class CompactProtocolWriter;
+template <class Appender, class Storage>
+class CompactProtocolWriterImpl;
+using CompactProtocolWriter
+    = CompactProtocolWriterImpl<folly::io::QueueAppender, folly::IOBufQueue>;
 
 //  AsyncProcessor helpers
 namespace detail { namespace ap {
