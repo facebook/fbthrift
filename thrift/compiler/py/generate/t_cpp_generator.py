@@ -3224,6 +3224,8 @@ class CppGenerator(t_generator.Generator):
                 raise CompilerError('No C++ reader for base type ' + \
                         btype.t_base_name(base) + name)
             dest = name
+            if pointer:
+                dest = '(*{0})'.format(name)
             if optional_wrapped:
                 dest += ".value()"
             txt = 'xfer += iprot->{0};'.format(txt.format(dest))
@@ -3691,6 +3693,8 @@ class CppGenerator(t_generator.Generator):
             else:
                 raise CompilerError('No C++ writer for base type ' + \
                         btype.t_base_name(base) + name)
+            if pointer:
+                val_expr = '(*{0})'.format(name)
             txt = 'xfer += prot_->' + txt.format(name, **locals())
             scope(txt)
         elif ttype.is_enum:

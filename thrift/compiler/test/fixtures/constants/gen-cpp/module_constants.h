@@ -54,6 +54,7 @@ struct module_constants {
   static constexpr char const *const escaped_a_ = "\x61";
   static constexpr char const* escaped_a() { return escaped_a_; }
   static std::map<std::string, int32_t>  const& char2ascii();
+  static std::vector<std::string>  const& escaped_strings();
   static constexpr bool const false_c_ = false;
   static constexpr bool false_c() { return false_c_; }
   static constexpr bool const true_c_ = true;
@@ -102,6 +103,7 @@ public:
   std::string backslash;
   std::string escaped_a;
   std::map<std::string, int32_t>  char2ascii;
+  std::vector<std::string>  escaped_strings;
   bool false_c;
   bool true_c;
   int8_t zero_byte;

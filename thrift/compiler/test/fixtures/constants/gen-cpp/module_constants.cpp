@@ -109,6 +109,31 @@ std::map<std::string, int32_t>  const &module_constants::char2ascii() {
   }());
   return instance;
 }
+std::vector<std::string>  const &module_constants::escaped_strings() {
+  static auto const instance([]() {
+    std::vector<std::string>  value;
+
+    value.push_back("\x61");
+    value.push_back("\xab");
+    value.push_back("\x6a");
+    value.push_back("\xa6");
+    value.push_back("\x61yyy");
+    value.push_back("\xabyyy");
+    value.push_back("\x6ayyy");
+    value.push_back("\xa6yyy");
+    value.push_back("zzz\x61");
+    value.push_back("zzz\xab");
+    value.push_back("zzz\x6a");
+    value.push_back("zzz\xa6");
+    value.push_back("zzz\x61yyy");
+    value.push_back("zzz\xabyyy");
+    value.push_back("zzz\x6ayyy");
+    value.push_back("zzz\xa6yyy");
+
+    return value;
+  }());
+  return instance;
+}
 constexpr bool const module_constants::false_c_;
 constexpr bool const module_constants::true_c_;
 constexpr int8_t const module_constants::zero_byte_;
@@ -209,6 +234,7 @@ moduleConstants::moduleConstants() {
   backslash = module_constants::backslash();
   escaped_a = module_constants::escaped_a();
   char2ascii = module_constants::char2ascii();
+  escaped_strings = module_constants::escaped_strings();
   false_c = module_constants::false_c();
   true_c = module_constants::true_c();
   zero_byte = module_constants::zero_byte();

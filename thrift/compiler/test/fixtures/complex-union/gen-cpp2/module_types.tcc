@@ -135,7 +135,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRING) {
           this->set_stringRef();
-          xfer += iprot->readString(this->mutable_stringRef());
+          xfer += iprot->readString((*this->mutable_stringRef()));
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -196,7 +196,7 @@ uint32_t ComplexUnion::serializedSize(Protocol_* prot_) const {
     case ComplexUnion::Type::stringRef:
     {
       xfer += prot_->serializedFieldSize("stringRef", apache::thrift::protocol::T_STRING, 5);
-      xfer += prot_->serializedSizeString(this->get_stringRef());
+      xfer += prot_->serializedSizeString((*this->get_stringRef()));
       break;
     }
     case ComplexUnion::Type::__EMPTY__:;
@@ -245,7 +245,7 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_* prot_) const {
     case ComplexUnion::Type::stringRef:
     {
       xfer += prot_->serializedFieldSize("stringRef", apache::thrift::protocol::T_STRING, 5);
-      xfer += prot_->serializedSizeString(this->get_stringRef());
+      xfer += prot_->serializedSizeString((*this->get_stringRef()));
       break;
     }
     case ComplexUnion::Type::__EMPTY__:;
@@ -298,7 +298,7 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     case ComplexUnion::Type::stringRef:
     {
       xfer += prot_->writeFieldBegin("stringRef", apache::thrift::protocol::T_STRING, 5);
-      xfer += prot_->writeString(this->get_stringRef());
+      xfer += prot_->writeString((*this->get_stringRef()));
       xfer += prot_->writeFieldEnd();
       break;
     }

@@ -83,6 +83,25 @@ char2ascii = {
   "\x61" : 97,
 }
 
+escaped_strings = [
+  "\x61",
+  "\xab",
+  "\x6a",
+  "\xa6",
+  "\x61yyy",
+  "\xabyyy",
+  "\x6ayyy",
+  "\xa6yyy",
+  "zzz\x61",
+  "zzz\xab",
+  "zzz\x6a",
+  "zzz\xa6",
+  "zzz\x61yyy",
+  "zzz\xabyyy",
+  "zzz\x6ayyy",
+  "zzz\xa6yyy",
+]
+
 false_c = False
 
 true_c = True

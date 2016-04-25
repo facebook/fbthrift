@@ -114,6 +114,11 @@ struct module_constants {
     return instance;
   }
 
+  static std::vector<std::string> const& escaped_strings() {
+    static std::vector<std::string> const instance(std::initializer_list<std::string>{apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\xab"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\x6a"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\xa6"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61yyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\xabyyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\x6ayyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\xa6yyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x61"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xab"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x6a"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xa6"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x61yyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xabyyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x6ayyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xa6yyy")});
+    return instance;
+  }
+
   static constexpr bool const false_c_ = false;
 
   static constexpr bool false_c() {
@@ -224,6 +229,7 @@ class __attribute__((__deprecated__("moduleConstants suffers from the 'static in
       backslash(apache::thrift::StringTraits< std::string>::fromStringLiteral("\\")),
       escaped_a(apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61")),
       char2ascii(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("'"), 39}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\""), 34}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\\"), 92}, {apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"), 97}}),
+      escaped_strings(std::initializer_list<std::string>{apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\xab"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\x6a"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\xa6"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61yyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\xabyyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\x6ayyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("\xa6yyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x61"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xab"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x6a"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xa6"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x61yyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xabyyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x6ayyy"), apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xa6yyy")}),
       false_c(false),
       true_c(true),
       zero_byte((int8_t)0),
@@ -262,6 +268,8 @@ class __attribute__((__deprecated__("moduleConstants suffers from the 'static in
   std::string escaped_a;
 
   std::map<std::string, int32_t> char2ascii;
+
+  std::vector<std::string> escaped_strings;
 
   bool false_c;
 

@@ -61,6 +61,13 @@ const map<string, i32> char2ascii = {
   "\x61": 97,
 };
 
+const list<string> escaped_strings = [
+  "\x61", "\xab", "\x6a", "\xa6",
+  "\x61yyy", "\xabyyy", "\x6ayyy", "\xa6yyy",
+  "zzz\x61", "zzz\xab", "zzz\x6a", "zzz\xa6",
+  "zzz\x61yyy", "zzz\xabyyy", "zzz\x6ayyy", "zzz\xa6yyy"
+];
+
 const bool false_c = 0;
 const bool true_c = 1;
 const byte zero_byte = 0;

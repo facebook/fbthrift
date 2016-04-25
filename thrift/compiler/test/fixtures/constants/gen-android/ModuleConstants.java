@@ -73,18 +73,38 @@ public class ModuleConstants {
 
   public static final String tripleApostrophe = "'''";
 
-  public static final String quotationMark = """;
+  public static final String quotationMark = "\"";
 
   public static final String backslash = "\\";
 
-  public static final String escaped_a = "\x61";
+  public static final String escaped_a = "\u0061";
 
   public static final Map<String,Integer> char2ascii = new HashMap<String,Integer>();
   static {
     char2ascii.put("'", 39);
-    char2ascii.put(""", 34);
+    char2ascii.put("\"", 34);
     char2ascii.put("\\", 92);
-    char2ascii.put("\x61", 97);
+    char2ascii.put("\u0061", 97);
+  }
+
+  public static final List<String> escaped_strings = new ArrayList<String>();
+  static {
+    escaped_strings.add("\u0061");
+    escaped_strings.add("\u00ab");
+    escaped_strings.add("\u006a");
+    escaped_strings.add("\u00a6");
+    escaped_strings.add("\u0061yyy");
+    escaped_strings.add("\u00abyyy");
+    escaped_strings.add("\u006ayyy");
+    escaped_strings.add("\u00a6yyy");
+    escaped_strings.add("zzz\u0061");
+    escaped_strings.add("zzz\u00ab");
+    escaped_strings.add("zzz\u006a");
+    escaped_strings.add("zzz\u00a6");
+    escaped_strings.add("zzz\u0061yyy");
+    escaped_strings.add("zzz\u00abyyy");
+    escaped_strings.add("zzz\u006ayyy");
+    escaped_strings.add("zzz\u00a6yyy");
   }
 
   public static final boolean false_c = false;
