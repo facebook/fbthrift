@@ -511,11 +511,10 @@ void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
 
 void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
   if (!request_->reqContext_.getStartedProcessing()) {
-    return;
+    request_->req_->cancel();
+    request_->sendTimeoutResponse();
+    request_->connection_->queueTimeoutExpired();
   }
-  request_->req_->cancel();
-  request_->sendTimeoutResponse();
-  request_->connection_->queueTimeoutExpired();
 }
 
 Cpp2Connection::Cpp2Request::~Cpp2Request() {
