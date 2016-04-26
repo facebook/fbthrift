@@ -400,7 +400,7 @@ struct dynamic_converter_impl<thrift_category::string> {
     dynamic_format,
     format_adherence
   ) {
-    out = input.asString().toStdString();
+    out = input.asString();
   }
 
   template <typename T>

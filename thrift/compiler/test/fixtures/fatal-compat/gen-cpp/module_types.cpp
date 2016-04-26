@@ -132,7 +132,7 @@ namespace test_cpp1 { namespace cpp_reflection {
     }
     if (parsed["us"] != nullptr) {
       set_us();
-      this->value_.us = parsed["us"].asString().toStdString();
+      this->value_.us = parsed["us"].asString();
       return;
     }
     if (parsed["ue"] != nullptr) {
@@ -270,7 +270,7 @@ uint32_t union1::write(apache::thrift::protocol::TProtocol* oprot) const {
     }
     if (parsed["us_2"] != nullptr) {
       set_us_2();
-      this->value_.us_2 = parsed["us_2"].asString().toStdString();
+      this->value_.us_2 = parsed["us_2"].asString();
       return;
     }
     if (parsed["ue_2"] != nullptr) {
@@ -408,7 +408,7 @@ uint32_t union2::write(apache::thrift::protocol::TProtocol* oprot) const {
     }
     if (parsed["us_3"] != nullptr) {
       set_us_3();
-      this->value_.us_3 = parsed["us_3"].asString().toStdString();
+      this->value_.us_3 = parsed["us_3"].asString();
       return;
     }
     if (parsed["ue_3"] != nullptr) {
@@ -545,7 +545,7 @@ void structA::readFromJson(const char* jsonText, size_t len)
     this->__isset.a = false;
   }
   if (parsed["b"] != nullptr) {
-    this->b = parsed["b"].asString().toStdString();
+    this->b = parsed["b"].asString();
     this->__isset.b = true;
   } else {
     this->__isset.b = false;
@@ -691,7 +691,7 @@ void merge(structA&& from, structA& to) {
     }
     if (parsed["s"] != nullptr) {
       set_s();
-      this->value_.s = parsed["s"].asString().toStdString();
+      this->value_.s = parsed["s"].asString();
       return;
     }
     if (parsed["e"] != nullptr) {
@@ -701,7 +701,7 @@ void merge(structA&& from, structA& to) {
     }
     if (parsed["a"] != nullptr) {
       set_a();
-      this->value_.a.readFromJson(folly::toJson(parsed["a"]).toStdString().c_str());
+      this->value_.a.readFromJson(folly::toJson(parsed["a"]).c_str());
       return;
     }
   }
@@ -1044,7 +1044,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
     this->__isset.a = false;
   }
   if (parsed["b"] != nullptr) {
-    this->b = parsed["b"].asString().toStdString();
+    this->b = parsed["b"].asString();
     this->__isset.b = true;
   } else {
     this->__isset.b = false;
@@ -1074,19 +1074,19 @@ void structC::readFromJson(const char* jsonText, size_t len)
     this->__isset.f = false;
   }
   if (parsed["g"] != nullptr) {
-    this->g.readFromJson(folly::toJson(parsed["g"]).toStdString().c_str());
+    this->g.readFromJson(folly::toJson(parsed["g"]).c_str());
     this->__isset.g = true;
   } else {
     this->__isset.g = false;
   }
   if (parsed["h"] != nullptr) {
-    this->h.readFromJson(folly::toJson(parsed["h"]).toStdString().c_str());
+    this->h.readFromJson(folly::toJson(parsed["h"]).c_str());
     this->__isset.h = true;
   } else {
     this->__isset.h = false;
   }
   if (parsed["i"] != nullptr) {
-    this->i.readFromJson(folly::toJson(parsed["i"]).toStdString().c_str());
+    this->i.readFromJson(folly::toJson(parsed["i"]).c_str());
     this->__isset.i = true;
   } else {
     this->__isset.i = false;
@@ -1147,7 +1147,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
     this->j3.resize(_size31);
     for (uint32_t _i32 = 0; _i32 < _size31; ++_i32)
     {
-      this->j3[_i32].readFromJson(folly::toJson(_json33[_i32]).toStdString().c_str());
+      this->j3[_i32].readFromJson(folly::toJson(_json33[_i32]).c_str());
     }
     this->__isset.j3 = true;
   } else {
@@ -1212,7 +1212,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
     for (uint32_t _i50 = 0; _i50 < _size49; ++_i50)
     {
       structB _elem52;
-      _elem52.readFromJson(folly::toJson(_json51[_i50]).toStdString().c_str());
+      _elem52.readFromJson(folly::toJson(_json51[_i50]).c_str());
       this->k3.insert(_elem52);
     }
     this->__isset.k3 = true;
@@ -1226,7 +1226,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
       int32_t _key57;;
       int32_t _val58;;
       try {
-        _key57 = folly::to<int32_t>((_iter56)->first.asString().toStdString());
+        _key57 = folly::to<int32_t>((_iter56)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
@@ -1249,7 +1249,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
       int32_t _key64;;
       int32_t _val65;;
       try {
-        _key64 = folly::to<int32_t>((_iter63)->first.asString().toStdString());
+        _key64 = folly::to<int32_t>((_iter63)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
@@ -1272,7 +1272,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
       int32_t _key71;;
       enum1 _val72;;
       try {
-        _key71 = folly::to<int32_t>((_iter70)->first.asString().toStdString());
+        _key71 = folly::to<int32_t>((_iter70)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
@@ -1290,11 +1290,11 @@ void structC::readFromJson(const char* jsonText, size_t len)
       int32_t _key78;;
       structB _val79;;
       try {
-        _key78 = folly::to<int32_t>((_iter77)->first.asString().toStdString());
+        _key78 = folly::to<int32_t>((_iter77)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      _val79.readFromJson(folly::toJson(_iter77->second).toStdString().c_str());
+      _val79.readFromJson(folly::toJson(_iter77->second).c_str());
       this->l3[_key78] = _val79;
     }
     this->__isset.l3 = true;
@@ -1308,7 +1308,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
       enum1 _key84;;
       int32_t _val85;;
       try {
-        _key84 = (enum1)folly::to<int>((_iter83)->first.asString().toStdString());
+        _key84 = (enum1)folly::to<int>((_iter83)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
@@ -1331,7 +1331,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
       enum1 _key91;;
       enum2 _val92;;
       try {
-        _key91 = (enum1)folly::to<int>((_iter90)->first.asString().toStdString());
+        _key91 = (enum1)folly::to<int>((_iter90)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
@@ -1349,11 +1349,11 @@ void structC::readFromJson(const char* jsonText, size_t len)
       enum1 _key98;;
       structB _val99;;
       try {
-        _key98 = (enum1)folly::to<int>((_iter97)->first.asString().toStdString());
+        _key98 = (enum1)folly::to<int>((_iter97)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      _val99.readFromJson(folly::toJson(_iter97->second).toStdString().c_str());
+      _val99.readFromJson(folly::toJson(_iter97->second).c_str());
       this->m3[_key98] = _val99;
     }
     this->__isset.m3 = true;
@@ -1366,7 +1366,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
     for (folly::dynamic::const_item_iterator _iter103 = _json102.items().begin(); _iter103 != _json102.items().end(); _iter103++)    {
       std::string _key104;;
       int32_t _val105;;
-      _key104 = (_iter103)->first.asString().toStdString();
+      _key104 = (_iter103)->first.asString();
       int64_t _tmp106 = (int64_t)_iter103->second.asInt();
       if (imaxabs(_tmp106) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
@@ -1385,7 +1385,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
     for (folly::dynamic::const_item_iterator _iter110 = _json109.items().begin(); _iter110 != _json109.items().end(); _iter110++)    {
       std::string _key111;;
       enum1 _val112;;
-      _key111 = (_iter110)->first.asString().toStdString();
+      _key111 = (_iter110)->first.asString();
       _val112=(enum1)(int32_t)_iter110->second.asInt();
       this->n2[_key111] = _val112;
     }
@@ -1399,8 +1399,8 @@ void structC::readFromJson(const char* jsonText, size_t len)
     for (folly::dynamic::const_item_iterator _iter117 = _json116.items().begin(); _iter117 != _json116.items().end(); _iter117++)    {
       std::string _key118;;
       structB _val119;;
-      _key118 = (_iter117)->first.asString().toStdString();
-      _val119.readFromJson(folly::toJson(_iter117->second).toStdString().c_str());
+      _key118 = (_iter117)->first.asString();
+      _val119.readFromJson(folly::toJson(_iter117->second).c_str());
       this->n3[_key118] = _val119;
     }
     this->__isset.n3 = true;
@@ -2900,7 +2900,7 @@ void struct1::readFromJson(const char* jsonText, size_t len)
     throw apache::thrift::TLibraryException("can't parse a required field!");
   }
   if (parsed["field1"] != nullptr) {
-    this->field1 = parsed["field1"].asString().toStdString();
+    this->field1 = parsed["field1"].asString();
     this->__isset.field1 = true;
   } else {
     this->__isset.field1 = false;
@@ -2917,13 +2917,13 @@ void struct1::readFromJson(const char* jsonText, size_t len)
     throw apache::thrift::TLibraryException("can't parse a required field!");
   }
   if (parsed["field4"] != nullptr) {
-    this->field4.readFromJson(folly::toJson(parsed["field4"]).toStdString().c_str());
+    this->field4.readFromJson(folly::toJson(parsed["field4"]).c_str());
     this->__isset.field4 = true;
   } else {
     this->__isset.field4 = false;
   }
   if (parsed["field5"] != nullptr) {
-    this->field5.readFromJson(folly::toJson(parsed["field5"]).toStdString().c_str());
+    this->field5.readFromJson(folly::toJson(parsed["field5"]).c_str());
     this->__isset.field5 = true;
   } else {
     this->__isset.field5 = false;
@@ -3164,7 +3164,7 @@ void struct2::readFromJson(const char* jsonText, size_t len)
     this->__isset.fieldA = false;
   }
   if (parsed["fieldB"] != nullptr) {
-    this->fieldB = parsed["fieldB"].asString().toStdString();
+    this->fieldB = parsed["fieldB"].asString();
     this->__isset.fieldB = true;
   } else {
     this->__isset.fieldB = false;
@@ -3182,19 +3182,19 @@ void struct2::readFromJson(const char* jsonText, size_t len)
     this->__isset.fieldD = false;
   }
   if (parsed["fieldE"] != nullptr) {
-    this->fieldE.readFromJson(folly::toJson(parsed["fieldE"]).toStdString().c_str());
+    this->fieldE.readFromJson(folly::toJson(parsed["fieldE"]).c_str());
     this->__isset.fieldE = true;
   } else {
     this->__isset.fieldE = false;
   }
   if (parsed["fieldF"] != nullptr) {
-    this->fieldF.readFromJson(folly::toJson(parsed["fieldF"]).toStdString().c_str());
+    this->fieldF.readFromJson(folly::toJson(parsed["fieldF"]).c_str());
     this->__isset.fieldF = true;
   } else {
     this->__isset.fieldF = false;
   }
   if (parsed["fieldG"] != nullptr) {
-    this->fieldG.readFromJson(folly::toJson(parsed["fieldG"]).toStdString().c_str());
+    this->fieldG.readFromJson(folly::toJson(parsed["fieldG"]).c_str());
     this->__isset.fieldG = true;
   } else {
     this->__isset.fieldG = false;
@@ -3491,7 +3491,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     this->__isset.fieldA = false;
   }
   if (parsed["fieldB"] != nullptr) {
-    this->fieldB = parsed["fieldB"].asString().toStdString();
+    this->fieldB = parsed["fieldB"].asString();
     this->__isset.fieldB = true;
   } else {
     this->__isset.fieldB = false;
@@ -3509,25 +3509,25 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     this->__isset.fieldD = false;
   }
   if (parsed["fieldE"] != nullptr) {
-    this->fieldE.readFromJson(folly::toJson(parsed["fieldE"]).toStdString().c_str());
+    this->fieldE.readFromJson(folly::toJson(parsed["fieldE"]).c_str());
     this->__isset.fieldE = true;
   } else {
     this->__isset.fieldE = false;
   }
   if (parsed["fieldF"] != nullptr) {
-    this->fieldF.readFromJson(folly::toJson(parsed["fieldF"]).toStdString().c_str());
+    this->fieldF.readFromJson(folly::toJson(parsed["fieldF"]).c_str());
     this->__isset.fieldF = true;
   } else {
     this->__isset.fieldF = false;
   }
   if (parsed["fieldG"] != nullptr) {
-    this->fieldG.readFromJson(folly::toJson(parsed["fieldG"]).toStdString().c_str());
+    this->fieldG.readFromJson(folly::toJson(parsed["fieldG"]).c_str());
     this->__isset.fieldG = true;
   } else {
     this->__isset.fieldG = false;
   }
   if (parsed["fieldH"] != nullptr) {
-    this->fieldH.readFromJson(folly::toJson(parsed["fieldH"]).toStdString().c_str());
+    this->fieldH.readFromJson(folly::toJson(parsed["fieldH"]).c_str());
     this->__isset.fieldH = true;
   } else {
     this->__isset.fieldH = false;
@@ -3557,7 +3557,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     this->fieldJ.resize(_size380);
     for (uint32_t _i381 = 0; _i381 < _size380; ++_i381)
     {
-      this->fieldJ[_i381] = _json382[_i381].asString().toStdString();
+      this->fieldJ[_i381] = _json382[_i381].asString();
     }
     this->__isset.fieldJ = true;
   } else {
@@ -3570,7 +3570,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     this->fieldK.resize(_size383);
     for (uint32_t _i384 = 0; _i384 < _size383; ++_i384)
     {
-      this->fieldK[_i384] = _json385[_i384].asString().toStdString();
+      this->fieldK[_i384] = _json385[_i384].asString();
     }
     this->__isset.fieldK = true;
   } else {
@@ -3583,7 +3583,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     this->fieldL.resize(_size386);
     for (uint32_t _i387 = 0; _i387 < _size386; ++_i387)
     {
-      this->fieldL[_i387].readFromJson(folly::toJson(_json388[_i387]).toStdString().c_str());
+      this->fieldL[_i387].readFromJson(folly::toJson(_json388[_i387]).c_str());
     }
     this->__isset.fieldL = true;
   } else {
@@ -3615,7 +3615,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     for (uint32_t _i395 = 0; _i395 < _size394; ++_i395)
     {
       std::string _elem397;
-      _elem397 = _json396[_i395].asString().toStdString();
+      _elem397 = _json396[_i395].asString();
       this->fieldN.insert(_elem397);
     }
     this->__isset.fieldN = true;
@@ -3629,7 +3629,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     for (uint32_t _i399 = 0; _i399 < _size398; ++_i399)
     {
       std::string _elem401;
-      _elem401 = _json400[_i399].asString().toStdString();
+      _elem401 = _json400[_i399].asString();
       this->fieldO.insert(_elem401);
     }
     this->__isset.fieldO = true;
@@ -3643,7 +3643,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     for (uint32_t _i403 = 0; _i403 < _size402; ++_i403)
     {
       structB _elem405;
-      _elem405.readFromJson(folly::toJson(_json404[_i403]).toStdString().c_str());
+      _elem405.readFromJson(folly::toJson(_json404[_i403]).c_str());
       this->fieldP.insert(_elem405);
     }
     this->__isset.fieldP = true;
@@ -3656,8 +3656,8 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     for (folly::dynamic::const_item_iterator _iter409 = _json408.items().begin(); _iter409 != _json408.items().end(); _iter409++)    {
       std::string _key410;;
       structA _val411;;
-      _key410 = (_iter409)->first.asString().toStdString();
-      _val411.readFromJson(folly::toJson(_iter409->second).toStdString().c_str());
+      _key410 = (_iter409)->first.asString();
+      _val411.readFromJson(folly::toJson(_iter409->second).c_str());
       this->fieldQ[_key410] = _val411;
     }
     this->__isset.fieldQ = true;
@@ -3670,8 +3670,8 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     for (folly::dynamic::const_item_iterator _iter415 = _json414.items().begin(); _iter415 != _json414.items().end(); _iter415++)    {
       std::string _key416;;
       structB _val417;;
-      _key416 = (_iter415)->first.asString().toStdString();
-      _val417.readFromJson(folly::toJson(_iter415->second).toStdString().c_str());
+      _key416 = (_iter415)->first.asString();
+      _val417.readFromJson(folly::toJson(_iter415->second).c_str());
       this->fieldR[_key416] = _val417;
     }
     this->__isset.fieldR = true;

@@ -34,7 +34,7 @@ void insertSeeds(const folly::dynamic& keyConfig,
     return;
   }
   for (const auto& seed : keyConfig) {
-    seedList.push_back(seed.asString().toStdString());
+    seedList.push_back(seed.asString());
   }
 }
 }

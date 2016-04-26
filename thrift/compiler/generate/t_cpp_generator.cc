@@ -2750,7 +2750,7 @@ void t_cpp_generator::generate_json_field(ofstream& out,
       case t_base_type::TYPE_VOID:
         break;
       case t_base_type::TYPE_STRING:
-        asTypeString = "String().toStdString()";
+        asTypeString = "String()";
         break;
       case t_base_type::TYPE_BOOL:
         asTypeString = "Bool()";
@@ -2839,7 +2839,7 @@ void t_cpp_generator::generate_json_struct(ofstream& out,
       << "());" << endl;
   }
   indent(out) << prefix_thrift << ref << "readFromJson(folly::toJson("
-    << prefix_json << ").toStdString().c_str());" << endl;
+    << prefix_json << ").c_str());" << endl;
 }
 
 void t_cpp_generator::generate_json_container(ofstream& out,
@@ -2905,7 +2905,7 @@ void t_cpp_generator::generate_json_container(ofstream& out,
     scope_up(out);
     generate_json_map_element(out, (t_map*)ttype,
                               "(" + iter
-                                + ")->first.asString().toStdString()",
+                                + ")->first.asString()",
                               iter + "->second",
                               prefix_thrift);
     scope_down(out);
