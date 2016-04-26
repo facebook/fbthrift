@@ -20,20 +20,13 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/Cursor.h>
+#include <folly/portability/GFlags.h>
+
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#ifndef NO_LIB_GFLAGS
- #include <gflags/gflags.h>
-#endif
-
-#ifndef NO_LIB_GFLAGS
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 DECLARE_int32(thrift_cpp2_protocol_reader_container_limit);
-#else
-extern int32_t FLAGS_thrift_cpp2_protocol_reader_string_limit;
-extern int32_t FLAGS_thrift_cpp2_protocol_reader_container_limit;
-#endif
 
 namespace apache { namespace thrift {
 

@@ -26,10 +26,9 @@
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 #include <folly/String.h>
+#include <folly/portability/GFlags.h>
 
-#ifndef NO_LIB_GFLAGS
- #include <gflags/gflags.h>
- // DO NOT modify this flag from your application
+// DO NOT modify this flag from your application
 DEFINE_string(
   thrift_cc_manager_kill_switch_file,
   "/var/thrift_security/disable_cc_manager",
@@ -38,15 +37,6 @@ DEFINE_string(
 DEFINE_bool(thrift_cc_manager_renew_user_creds,
             false,
             "If true will try to renew *@REALM and */admin@REALM creds");
-
-#else
-namespace apache { namespace thrift { namespace krb5 {
-const std::string FLAGS_thrift_cc_manager_kill_switch_file(
-  "/var/thrift_security/disable_cc_manager");
-const bool FLAGS_thrift_cc_manager_renew_user_creds = false;
-}}} // namespace apache::thrift::krb5
-#endif
-
 
 // Time in seconds after which cc manager kill switch expires
 static const time_t kCcManagerKillSwitchExpired = 86400;

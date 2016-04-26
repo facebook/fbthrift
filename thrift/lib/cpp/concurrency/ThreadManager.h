@@ -28,6 +28,8 @@
 #include <folly/io/async/Request.h>
 #include <folly/LifoSem.h>
 #include <folly/RWSpinLock.h>
+#include <folly/portability/GFlags.h>
+
 #include <wangle/concurrent/Codel.h>
 
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
@@ -35,16 +37,9 @@
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 
-#ifndef NO_LIB_GFLAGS
-  #include <gflags/gflags.h>
-  DECLARE_bool(codel_enabled);
-#endif
+DECLARE_bool(codel_enabled);
 
 namespace apache { namespace thrift { namespace concurrency {
-
-#ifdef NO_LIB_GFLAGS
-  extern bool FLAGS_codel_enabled;
-#endif
 
 class Runnable;
 class ThreadFactory;

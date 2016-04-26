@@ -22,20 +22,13 @@
 #include <vector>
 #include <folly/ScopeGuard.h>
 #include <folly/String.h>
+#include <folly/portability/GFlags.h>
 
 #include <thrift/lib/cpp/util/kerberos/FBKrb5GetCreds.h>
-
-#ifndef NO_LIB_GFLAGS
- #include <gflags/gflags.h>
 
 DEFINE_string (thrift_krb5_user_instances, "admin,root,sudo",
        "List of possible instances(second component) of "
        "user kerberos credentials. Separated by ','. ");
-#else
-namespace apache { namespace thrift { namespace krb5 {
-  const std::string FLAGS_thrift_krb5_user_instances = "admin,root,sudo";
-}}} // namespace apache::thrift::krb5
-#endif
 static const int kKeytabNameMaxLength = 512;
 
 extern "C" {

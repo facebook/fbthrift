@@ -19,9 +19,7 @@
 
 #include "BinaryProtocol.h"
 
-#if defined(NO_LIB_GFLAGS) && !defined(DEFINE_int32)
-# define DEFINE_int32(name, def, desc) int32_t FLAGS_##name = def
-#endif
+#include <folly/portability/GFlags.h>
 
 DEFINE_int32(thrift_cpp2_protocol_reader_string_limit, 0,
     "Limit on string size when deserializing thrift, 0 is no limit");

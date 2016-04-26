@@ -21,6 +21,7 @@
 
 #include <folly/Conv.h>
 #include <folly/Logging.h>
+#include <folly/portability/GFlags.h>
 
 #include <assert.h>
 #include <atomic>
@@ -32,15 +33,9 @@
 #include <iostream>
 #endif //defined(DEBUG)
 
-#ifndef NO_LIB_GFLAGS
-  DEFINE_bool(codel_enabled, false, "Enable codel queue timeout algorithm");
-#endif
+DEFINE_bool(codel_enabled, false, "Enable codel queue timeout algorithm");
 
 namespace apache { namespace thrift { namespace concurrency {
-
-#ifdef NO_LIB_GFLAGS
-  bool FLAGS_codel_enabled = false;
-#endif
 
 using std::shared_ptr;
 using std::make_shared;
