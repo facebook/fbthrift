@@ -54,10 +54,8 @@ class ThreadManager::Task {
   ~Task() {}
 
   void run() {
-    auto old_ctx =
-      folly::RequestContext::setContext(context_);
+    folly::RequestContextScopeGuard rctx(context_);
     runnable_->run();
-    folly::RequestContext::setContext(old_ctx);
   }
 
   const shared_ptr<Runnable>& getRunnable() const {

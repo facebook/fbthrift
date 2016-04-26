@@ -322,7 +322,8 @@ void HeaderClientChannel::setSecurityComplete(ProtectionState state) {
   // Replay any pending requests
   for (auto&& funcarg : afterSecurity_) {
     auto& cb = std::get<2>(funcarg);
-    folly::RequestContext::setContext(cb->context_);
+    folly::RequestContextScopeGuard rctx(cb->context_);
+
     cb->securityEnd_ = std::chrono::duration_cast<Us>(
         HResClock::now().time_since_epoch()).count();
     (this->*(std::get<0>(funcarg)))(std::get<1>(funcarg),
@@ -596,12 +597,11 @@ void HeaderClientChannel::messageReceiveErrorWrapped(
     auto& cb = std::get<2>(funcarg);
     auto& ctx = std::get<3>(funcarg);
     if (cb) {
-      auto old_ctx = folly::RequestContext::setContext(cb->context_);
+      folly::RequestContextScopeGuard rctx(cb->context_);
       cb->securityEnd_ = std::chrono::duration_cast<Us>(
         HResClock::now().time_since_epoch()).count();
       cb->requestError(
           ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
-      folly::RequestContext::setContext(old_ctx);
     }
   }
   setBaseReceivedCallback();

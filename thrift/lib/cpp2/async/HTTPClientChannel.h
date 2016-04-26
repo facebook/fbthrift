@@ -197,18 +197,16 @@ class HTTPClientChannel : public ClientChannel,
 
     void messageSent() override {
       CHECK(cb_);
-      auto old_ctx = folly::RequestContext::setContext(cb_->context_);
+      folly::RequestContextScopeGuard rctx(cb_->context_);
       cb_->requestSent();
-      folly::RequestContext::setContext(old_ctx);
     }
 
     void messageSendError(folly::exception_wrapper&& ex) override {
       if (!cbCalled_) {
         cbCalled_ = true;
-        auto old_ctx = folly::RequestContext::setContext(cb_->context_);
+        folly::RequestContextScopeGuard rctx(cb_->context_);
         cb_->requestError(ClientReceiveState(
             std::move(ex), std::move(ctx_), isSecurityActive_));
-        folly::RequestContext::setContext(old_ctx);
       }
     }
 
@@ -217,10 +215,9 @@ class HTTPClientChannel : public ClientChannel,
 
       if (!cbCalled_) {
         cbCalled_ = true;
-        auto old_ctx = folly::RequestContext::setContext(cb_->context_);
+        folly::RequestContextScopeGuard rctx(cb_->context_);
         cb_->requestError(ClientReceiveState(
             std::move(ex), std::move(ctx_), isSecurityActive_));
-        folly::RequestContext::setContext(old_ctx);
       }
     }
 
@@ -267,16 +264,13 @@ class HTTPClientChannel : public ClientChannel,
       CHECK(cb_);
       cbCalled_ = true;
 
-      auto old_ctx = folly::RequestContext::setContext(cb_->context_);
-
+      folly::RequestContextScopeGuard rctx(cb_->context_);
       cb_->replyReceived(ClientReceiveState(protoId_,
                                             std::move(body_),
                                             std::move(header),
                                             std::move(ctx_),
                                             isSecurityActive_,
                                             true));
-
-      folly::RequestContext::setContext(old_ctx);
     }
 
     virtual void onUpgrade(
@@ -307,9 +301,8 @@ class HTTPClientChannel : public ClientChannel,
     virtual void firstByteFlushed() noexcept override {}
 
     virtual void lastByteFlushed() noexcept override {
-      auto old_ctx = folly::RequestContext::setContext(cb_->context_);
+      folly::RequestContextScopeGuard rctx(cb_->context_);
       cb_->requestSent();
-      folly::RequestContext::setContext(old_ctx);
       sendQueued_ = false;
     }
 
@@ -384,18 +377,16 @@ class HTTPClientChannel : public ClientChannel,
     void sendQueued() override {}
     void messageSent() override {
       CHECK(cb_);
-      auto old_ctx = folly::RequestContext::setContext(cb_->context_);
+      folly::RequestContextScopeGuard rctx(cb_->context_);
       cb_->requestSent();
-      folly::RequestContext::setContext(old_ctx);
       active_ = false;
     }
 
     void messageSendError(folly::exception_wrapper&& ex) override {
       CHECK(cb_);
-      auto old_ctx = folly::RequestContext::setContext(cb_->context_);
+      folly::RequestContextScopeGuard rctx(cb_->context_);
       cb_->requestError(
           ClientReceiveState(ex, std::move(ctx_), isSecurityActive_));
-      folly::RequestContext::setContext(old_ctx);
       active_ = false;
     }
 
