@@ -24,7 +24,6 @@
 
 #include <limits>
 #include <string>
-#include <boost/static_assert.hpp>
 
 namespace apache { namespace thrift {
 
@@ -133,8 +132,8 @@ uint32_t BinaryProtocolWriter::writeI64(int64_t i64) {
 }
 
 uint32_t BinaryProtocolWriter::writeDouble(double dub) {
-  BOOST_STATIC_ASSERT(sizeof(double) == sizeof(uint64_t));
-  BOOST_STATIC_ASSERT(std::numeric_limits<double>::is_iec559);
+  static_assert(sizeof(double) == sizeof(uint64_t), "");
+  static_assert(std::numeric_limits<double>::is_iec559, "");
 
   uint64_t bits = bitwise_cast<uint64_t>(dub);
   out_.writeBE(bits);
@@ -142,8 +141,8 @@ uint32_t BinaryProtocolWriter::writeDouble(double dub) {
 }
 
 uint32_t BinaryProtocolWriter::writeFloat(float flt) {
-  BOOST_STATIC_ASSERT(sizeof(float) == sizeof(uint32_t));
-  BOOST_STATIC_ASSERT(std::numeric_limits<float>::is_iec559);
+  static_assert(sizeof(float) == sizeof(uint32_t), "");
+  static_assert(std::numeric_limits<float>::is_iec559, "");
 
   uint32_t bits = bitwise_cast<uint32_t>(flt);
   out_.writeBE(bits);
@@ -498,8 +497,8 @@ uint32_t BinaryProtocolReader::readI64(int64_t& i64) {
 }
 
 uint32_t BinaryProtocolReader::readDouble(double& dub) {
-  BOOST_STATIC_ASSERT(sizeof(double) == sizeof(uint64_t));
-  BOOST_STATIC_ASSERT(std::numeric_limits<double>::is_iec559);
+  static_assert(sizeof(double) == sizeof(uint64_t), "");
+  static_assert(std::numeric_limits<double>::is_iec559, "");
 
   uint64_t bits = in_.readBE<int64_t>();
   dub = bitwise_cast<double>(bits);
@@ -507,8 +506,8 @@ uint32_t BinaryProtocolReader::readDouble(double& dub) {
 }
 
 uint32_t BinaryProtocolReader::readFloat(float& flt) {
-  BOOST_STATIC_ASSERT(sizeof(float) == sizeof(uint32_t));
-  BOOST_STATIC_ASSERT(std::numeric_limits<double>::is_iec559);
+  static_assert(sizeof(float) == sizeof(uint32_t), "");
+  static_assert(std::numeric_limits<double>::is_iec559, "");
 
   uint32_t bits = in_.readBE<int32_t>();
   flt = bitwise_cast<float>(bits);

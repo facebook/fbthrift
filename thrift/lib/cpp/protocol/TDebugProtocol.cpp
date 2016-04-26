@@ -23,7 +23,6 @@
 #include <cctype>
 #include <cstdio>
 #include <stdexcept>
-#include <boost/static_assert.hpp>
 #include <boost/lexical_cast.hpp>
 
 using std::string;

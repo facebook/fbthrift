@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 
 #include <limits>
-#include <boost/static_assert.hpp>
 
 
 using apache::thrift::transport::THeaderTransport;

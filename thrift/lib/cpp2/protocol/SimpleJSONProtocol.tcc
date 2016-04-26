@@ -23,7 +23,6 @@
 
 #include <limits>
 #include <string>
-#include <boost/static_assert.hpp>
 #include <folly/Conv.h>
 #include <folly/dynamic.h>
 #include <folly/json.h>

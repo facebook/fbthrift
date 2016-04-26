@@ -20,7 +20,6 @@
 #ifndef THRIFT_UTIL_BITWISECAST_H_
 #define THRIFT_UTIL_BITWISECAST_H_
 
-#include <boost/static_assert.hpp>
 
 // Use this to get around strict aliasing rules.
 // For example, uint64_t i = bitwise_cast<uint64_t>(returns_double());
@@ -31,7 +30,7 @@
 // understanding-strict-aliasing.html
 template <typename To, typename From>
 static inline To bitwise_cast(From from) {
-  BOOST_STATIC_ASSERT(sizeof(From) == sizeof(To));
+  static_assert(sizeof(From) == sizeof(To), "");
 
   // BAD!!!  These are all broken with -O2.
   //return *reinterpret_cast<To*>(&from);  // BAD!!!
