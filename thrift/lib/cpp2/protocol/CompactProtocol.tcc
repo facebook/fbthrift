@@ -343,11 +343,13 @@ uint32_t CompactProtocolWriterImpl<Appender, Storage>::writeBinary(
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
   }
   uint32_t result = apache::thrift::util::writeVarint(out_, (int32_t)size);
-  auto clone = str.clone();
   if (sharing_ != SHARE_EXTERNAL_BUFFER) {
+    auto clone = str.clone();
     clone->makeManaged();
+    out_.insert(std::move(clone));
+  } else {
+    out_.insert(str);
   }
-  out_.insert(std::move(clone));
   return result + size;
 }
 
