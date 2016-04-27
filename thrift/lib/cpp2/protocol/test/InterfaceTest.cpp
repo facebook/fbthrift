@@ -17,6 +17,7 @@
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactV1Protocol.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
@@ -66,6 +67,7 @@ template <> struct maker<Cursor> {
 using Writers = testing::Types<
     BinaryProtocolWriter,
     CompactProtocolWriter,
+    CompactV1ProtocolWriter,
     DebugProtocolWriter,
     JSONProtocolWriter,
     SimpleJSONProtocolWriter,
@@ -78,6 +80,7 @@ using Writers = testing::Types<
 using Readers = testing::Types<
     BinaryProtocolReader,
     CompactProtocolReader,
+    CompactV1ProtocolReader,
     JSONProtocolReader,
     SimpleJSONProtocolReader,
     VirtualReader<BinaryProtocolReader>,
