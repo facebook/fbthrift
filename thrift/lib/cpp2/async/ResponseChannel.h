@@ -45,6 +45,7 @@ extern const std::string kProxyClientAppExceptionErrorCode;
 extern const std::string kProxyProtocolMismatchExceptionErrorCode;
 extern const std::string kProxyThrottledExceptionErrorCode;
 extern const std::string kInjectedFailureErrorCode;
+extern const std::string kServerQueueTimeoutErrorCode;
 
 namespace apache { namespace thrift {
 
