@@ -51,17 +51,18 @@ class TTransportException : public apache::thrift::TLibraryException {
   , SSL_ERROR = 12
   , COULD_NOT_BIND = 13
   , SASL_HANDSHAKE_TIMEOUT = 14
+  , NETWORK_ERROR = 15
   };
 
   TTransportException() :
     apache::thrift::TLibraryException(),
       type_(UNKNOWN), errno_(0), options_(0) {}
 
-  TTransportException(TTransportExceptionType type) :
+  explicit TTransportException(TTransportExceptionType type) :
     apache::thrift::TLibraryException(),
     type_(type), errno_(0), options_(0) {}
 
-  TTransportException(const std::string& message) :
+  explicit TTransportException(const std::string& message) :
     apache::thrift::TLibraryException(message),
     type_(UNKNOWN), errno_(0), options_(0) {}
 
