@@ -335,6 +335,8 @@ void Cpp2Connection::requestReceived(
   // After this, the request buffer is no longer owned by the request
   // and will be released after deserializeRequest.
   unique_ptr<folly::IOBuf> buf = hreq->extractBuf();
+
+  folly::RequestContextScopeGuard rctx;
   Cpp2Request* t2r = new Cpp2Request(std::move(req), this_);
   auto up2r = std::unique_ptr<ResponseChannel::Request>(t2r);
   activeRequests_.insert(t2r);
@@ -412,8 +414,6 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
   : req_(static_cast<HeaderServerChannel::HeaderRequest*>(req.release()))
   , connection_(con)
   , reqContext_(&con->context_, req_->getHeader()) {
-  RequestContext::create();
-
   queueTimeout_.request_ = this;
   taskTimeout_.request_ = this;
 
