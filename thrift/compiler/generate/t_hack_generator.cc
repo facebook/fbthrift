@@ -144,11 +144,12 @@ class t_hack_generator : public t_oop_generator {
    * Serialization constructs
    */
 
-  void generate_deserialize_field        (std::ofstream& out,
-                                          t_name_generator& namer,
-                                          t_field*    tfield,
-                                          std::string name="",
-                                          bool inclass=false);
+  void generate_deserialize_field(
+      std::ofstream& out,
+      t_name_generator& namer,
+      t_field* tfield,
+      std::string name = "",
+      bool declared = false);
 
   void generate_deserialize_struct       (std::ofstream& out,
                                           t_struct*   tstruct,
@@ -2271,7 +2272,7 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
         indent(out) << "if ($ftype == " << type_to_enum((*f_iter)->get_type()) << ") {" << endl;
         indent_up();
         generate_deserialize_field(
-            out, namer, *f_iter, "this->" + (*f_iter)->get_name());
+            out, namer, *f_iter, "this->" + (*f_iter)->get_name(), true);
         if (tstruct->is_union()) {
           // Update _type for union
           indent(out) << "$this->_type = "
@@ -3660,7 +3661,7 @@ void t_hack_generator::generate_deserialize_field(ofstream& out,
                                                   t_name_generator& namer,
                                                   t_field* tfield,
                                                   string name,
-                                                  bool /*inclass*/) {
+                                                  bool declared) {
   t_type* type = get_true_type(tfield->get_type());
   if (name == "") {
     name = tfield->get_name();
@@ -3679,8 +3680,10 @@ void t_hack_generator::generate_deserialize_field(ofstream& out,
     } else if (type->is_base_type() || type->is_enum()) {
 
       if (type->is_base_type()) {
-        indent(out) <<
-          "$xfer += $input->";
+        if (!declared) {
+          indent(out) << "$" << name << " = null;" << endl;
+        }
+        indent(out) << "$xfer += $input->";
 
         t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
         switch (tbase) {
@@ -3852,11 +3855,6 @@ void t_hack_generator::generate_deserialize_map_element(ofstream& out,
     indent() << "  break;" << endl <<
     indent() << "}" << endl;
 
-  indent(out) <<
-    declare_field(&fkey, true, true) << endl;
-  indent(out) <<
-    declare_field(&fval, true, true) << endl;
-
   generate_deserialize_field(out, namer, &fkey);
   generate_deserialize_field(out, namer, &fval);
 
@@ -3882,9 +3880,6 @@ void t_hack_generator::generate_deserialize_set_element(ofstream& out,
     indent() << "if ($" << size << " === null && !$input->readSetHasNext()) {" << endl <<
     indent() << "  break;" << endl <<
     indent() << "}" << endl;
-
-  indent(out) <<
-    "$" << elem << " = null;" << endl;
 
   generate_deserialize_field(out, namer, &felem);
 
@@ -3916,9 +3911,6 @@ void t_hack_generator::generate_deserialize_list_element(
     indent() << "if ($" << size << " === null && !$input->readListHasNext()) {" << endl <<
     indent() << "  break;" << endl <<
     indent() << "}" << endl;
-
-  indent(out) <<
-    "$" << elem << " = null;" << endl;
 
   generate_deserialize_field(out, namer, &felem);
 

@@ -1303,8 +1303,7 @@ class NestedContainers_mapList_args implements IThriftStruct, IThriftShapishStru
               if ($_size1 === null && !$input->readMapHasNext()) {
                 break;
               }
-              $key6 = 0;
-              $val7 = Vector {};
+              $key6 = null;
               $xfer += $input->readI32($key6);
               $_size9 = 0;
               $_val8 = Vector {};
@@ -1552,8 +1551,7 @@ class NestedContainers_mapSet_args implements IThriftStruct, IThriftShapishStruc
               if ($_size1 === null && !$input->readMapHasNext()) {
                 break;
               }
-              $key6 = 0;
-              $val7 = Set {};
+              $key6 = null;
               $xfer += $input->readI32($key6);
               $_size9 = 0;
               $_etype12 = 0;
@@ -1805,7 +1803,6 @@ class NestedContainers_listMap_args implements IThriftStruct, IThriftShapishStru
               if ($_size1 === null && !$input->readListHasNext()) {
                 break;
               }
-              $elem6 = null;
               $_size8 = 0;
               $_val7 = Map {};
               $_ktype9 = 0;
@@ -1816,9 +1813,9 @@ class NestedContainers_listMap_args implements IThriftStruct, IThriftShapishStru
                 if ($_size8 === null && !$input->readMapHasNext()) {
                   break;
                 }
-                $key13 = 0;
-                $val14 = 0;
+                $key13 = null;
                 $xfer += $input->readI32($key13);
+                $val14 = null;
                 $xfer += $input->readI32($val14);
                 if ($key13 !== null && $val14 !== null) {
                   $_val7[$key13] = $val14;
@@ -2050,7 +2047,6 @@ class NestedContainers_listSet_args implements IThriftStruct, IThriftShapishStru
               if ($_size1 === null && !$input->readListHasNext()) {
                 break;
               }
-              $elem6 = null;
               $_size8 = 0;
               $_etype11 = 0;
               $_val7 = Set{};
@@ -2356,7 +2352,6 @@ class NestedContainers_turtles_args implements IThriftStruct, IThriftShapishStru
               if ($_size1 === null && !$input->readListHasNext()) {
                 break;
               }
-              $elem6 = null;
               $_size8 = 0;
               $_val7 = Vector {};
               $_etype11 = 0;
@@ -2366,7 +2361,6 @@ class NestedContainers_turtles_args implements IThriftStruct, IThriftShapishStru
                 if ($_size8 === null && !$input->readListHasNext()) {
                   break;
                 }
-                $elem13 = null;
                 $_size15 = 0;
                 $_val14 = Map {};
                 $_ktype16 = 0;
@@ -2377,8 +2371,7 @@ class NestedContainers_turtles_args implements IThriftStruct, IThriftShapishStru
                   if ($_size15 === null && !$input->readMapHasNext()) {
                     break;
                   }
-                  $key20 = 0;
-                  $val21 = Map {};
+                  $key20 = null;
                   $xfer += $input->readI32($key20);
                   $_size23 = 0;
                   $_val22 = Map {};
@@ -2390,8 +2383,7 @@ class NestedContainers_turtles_args implements IThriftStruct, IThriftShapishStru
                     if ($_size23 === null && !$input->readMapHasNext()) {
                       break;
                     }
-                    $key28 = 0;
-                    $val29 = Set {};
+                    $key28 = null;
                     $xfer += $input->readI32($key28);
                     $_size31 = 0;
                     $_etype34 = 0;

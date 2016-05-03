@@ -515,12 +515,11 @@ class Person implements IThriftStruct {
               if ($_size8 === null && !$input->readMapHasNext()) {
                 break;
               }
-              $key13 = null;
-              $val14 = '';
               $_val15 = null;
               $xfer += $input->readI32($_val15);
               $key13 = Animal::coerce($_val15);
 
+              $val14 = null;
               $xfer += $input->readString($val14);
               if ($key13 !== null && $val14 !== null) {
                 $_val7[$key13] = $val14;
@@ -553,7 +552,6 @@ class Person implements IThriftStruct {
               if ($_size18 === null && !$input->readListHasNext()) {
                 break;
               }
-              $elem23 = null;
               $elem23 = new Vehicle();
               $xfer += $elem23->read($input);
               if ($elem23 !== null) {
