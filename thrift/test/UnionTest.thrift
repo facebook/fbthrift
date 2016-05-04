@@ -69,3 +69,19 @@ struct StructWithUnionAndOther {
   1: TestUnion test_union;
   2: string string_field;
 }
+
+const list<StructWithUnionAndOther> NESTED = [
+  {
+    "test_union": {
+      "i32_field": 3,
+    },
+  },
+  {
+    "string_field": "hello",
+  }
+  {
+    "test_union": {
+      "other_i32_field": 4,
+    },
+  },
+];

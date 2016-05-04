@@ -20,7 +20,9 @@
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/test/gen-cpp/UnionTest_types.h>
+#include <thrift/test/gen-cpp/UnionTest_constants.h>
 #include <thrift/test/gen-cpp2/UnionTest_types.h>
+#include <thrift/test/gen-cpp2/UnionTest_constants.h>
 
 #include <memory>
 #include <gtest/gtest.h>
@@ -178,4 +180,11 @@ TEST_F(UnionTestFixture, CppAndCpp2Compat) {
   std::vector<cpp2::TestUnion> v2;
   v1 = v2;
   v2 = v1;
+}
+
+TEST_F(UnionTestFixture, Constants) {
+  auto& n = UnionTest_constants::NESTED();
+  EXPECT_EQ(3, n[0].test_union.get_i32_field());
+  EXPECT_EQ("hello", n[1].string_field);
+  EXPECT_EQ(4, n[2].test_union.get_other_i32_field());
 }

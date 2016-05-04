@@ -593,7 +593,7 @@ EnumDef:
         // The scope constants never get deleted, so it's okay for us
         // to share a single t_const object between our scope and the parent
         // scope
-        t_const* constant = new t_const(g_type_i32, $2->get_name(),
+        t_const* constant = new t_const(g_program, g_type_i32, $2->get_name(),
                                         new t_const_value($2->get_value()));
         assert(y_enum_name != nullptr);
         string type_prefix = string(y_enum_name) + ".";
@@ -670,7 +670,7 @@ Const:
     {
       pdebug("Const -> tok_const FieldType tok_identifier = ConstValue");
       if (g_parse_mode == PROGRAM) {
-        $$ = new t_const($2, $3, $5);
+        $$ = new t_const(g_program, $2, $3, $5);
         validate_const_type($$);
 
         g_scope->add_constant($3, $$);

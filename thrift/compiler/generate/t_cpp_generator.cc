@@ -120,6 +120,7 @@ class t_cpp_generator : public t_oop_generator {
   void init_generator() override;
   void close_generator() override;
 
+  bool is_inlined(t_const*);
   void generate_consts(std::vector<t_const*> consts) override;
 
   /**
@@ -147,14 +148,16 @@ class t_cpp_generator : public t_oop_generator {
 
   void generate_service(t_service* tservice) override;
 
-  void print_const_value(std::ofstream& out,
-                         std::string name,
-                         t_type* type,
-                         t_const_value* value);
-  std::string render_const_value     (std::ofstream& out,
-                                      t_type*        type,
-                                      t_const_value* value,
-                                      bool           allow_null_val = false);
+  void print_const_value(
+      std::ostream& out,
+      t_type* type,
+      t_const_value* value,
+      bool allow_null_val = false,
+      t_const* defining = nullptr);
+  std::string render_const_value(
+      t_type* type,
+      t_const_value* value,
+      bool allow_null_val = false);
   string get_type_access_suffix(t_type* type);
 
   void generate_struct_isset         (std::ofstream& out,
@@ -979,6 +982,13 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
   generate_hash_and_equal_to(f_types_, tenum, tenum->get_name());
 }
 
+bool t_cpp_generator::is_inlined(t_const* c) {
+  t_type* type = c->get_type();
+  t_type* true_type = get_true_type(type);
+  return type->is_base_type() || true_type->is_enum();
+}
+
+
 /**
  * Generates a class that holds all the constants.
  */
@@ -1000,36 +1010,43 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     autogen_comment();
 
   // Start ifndef
-  f_consts << get_include_guard() <<
-    "#include \"" << get_include_prefix(*get_program()) << program_name_ <<
-    "_types.h\"" << endl <<
-    endl <<
-    ns_open_ << endl <<
-    endl;
+  f_consts << get_include_guard() << "#include \""
+           << get_include_prefix(*get_program()) << program_name_
+           << "_types.h\"" << endl;
 
-  f_consts_impl <<
-    "#include \"" << get_include_prefix(*get_program()) << program_name_ <<
-    "_constants.h\"" << endl <<
-    endl <<
-    ns_open_ << endl <<
-    endl;
+  f_consts_impl << "#include \"" << get_include_prefix(*get_program())
+                << program_name_ << "_constants.h\"" << endl;
+
+  // Include other Thrift includes' constants
+  for (auto* include : program_->get_includes()) {
+    if (include->get_consts().empty()) {
+      continue;
+    }
+    // NB(tjackson): This should be only included from '_constants.cpp', but
+    // there's some odd behavior when building under Buck which causes the
+    // referenced '_constants.h' to not be found.
+    f_consts << "#include \"" << get_include_prefix(*include)
+                  << include->get_name() << "_constants.h\"" << endl;
+  }
+
+  f_consts << endl << ns_open_ << endl << endl;
+  f_consts_impl << endl << ns_open_ << endl << endl;
 
   string consts_struct = program_name_ + "_constants";
   // DECLARATIONS
   f_consts << "struct " << consts_struct << " {" << endl;
-  vector<t_const*>::iterator c_iter;
   indent_up();
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    string name = (*c_iter)->get_name();
-    t_type* type = (*c_iter)->get_type();
-    t_const_value *value = (*c_iter)->get_value();
-    bool const inlined = type->is_base_type() || type->is_enum();
+  for (auto& c : consts) {
+    string name = c->get_name();
+    t_type* type = c->get_type();
+    t_const_value *value = c->get_value();
+    bool const inlined = is_inlined(c);
 
     if (type->is_string()) {
       f_consts << indent() << "// consider using folly::StringPiece instead of"
         << " std::string whenever possible" << endl;
       f_consts << indent() << "// to referencing this statically allocated"
-        << " string constant, in order to " << endl;
+        << " string constant, in order to" << endl;
       f_consts << indent() << "// prevent unnecessary allocations" << endl;
     }
 
@@ -1041,8 +1058,9 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
       } else {
         f_consts << type_name(type) << ' ';
       }
-      f_consts << "const " << name << "_ = "
-        << render_const_value(f_consts, type, value) << ';' << endl;
+      f_consts << "const " << name << "_ = ";
+      print_const_value(f_consts, type, value, false, c);
+      f_consts << ';' << endl;
     }
 
     f_consts << indent() << "static ";
@@ -1068,11 +1086,11 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
   f_consts << "};" << endl << endl;
 
   // DEFINITIONS
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    string name = (*c_iter)->get_name();
-    t_type* type = (*c_iter)->get_type();
-    t_const_value *value = (*c_iter)->get_value();
-    bool const inlined = type->is_base_type() || type->is_enum();
+  for (auto& c : consts) {
+    string name = c->get_name();
+    t_type* type = c->get_type();
+    t_const_value *value = c->get_value();
+    bool const inlined = is_inlined(c);
 
     if (inlined) {
       f_consts_impl << indent() << "constexpr ";
@@ -1089,13 +1107,10 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
       f_consts_impl << indent() << type_name(type) << " const &"
         << program_name_ << "_constants::" << name << "() {" << endl;
       indent_up();
-      f_consts_impl << indent() << "static auto const instance([]() {" << endl;
-      indent_up();
-      f_consts_impl << indent() << type_name(type) << " value;" << endl << endl;
-      print_const_value(f_consts_impl, "value", type, value);
-      f_consts_impl << indent() << "return value;" << endl;
-      indent_down();
-      f_consts_impl << indent() << "}());" << endl;
+      f_consts_impl << indent() << "static " << type_name(type)
+                    << " const instance = ";
+      print_const_value(f_consts_impl, type, value, false, c);
+      f_consts_impl << ";" << endl;
       f_consts_impl << indent() << "return instance;" << endl;
       indent_down();
       f_consts_impl << indent() << '}' << endl;
@@ -1115,9 +1130,9 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     "  " << program_name_ << "Constants();" << endl <<
     endl;
   indent_up();
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    string name = (*c_iter)->get_name();
-    t_type* type = (*c_iter)->get_type();
+  for (auto& c : consts) {
+    string name = c->get_name();
+    t_type* type = c->get_type();
     f_consts <<
       indent() << type_name(type) << " " << name << ";" << endl;
   }
@@ -1132,8 +1147,8 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
   f_consts_impl <<
     program_name_ << "Constants::" << program_name_ << "Constants() {" << endl;
   indent_up();
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    string name = (*c_iter)->get_name();
+  for (auto& c : consts) {
+    string name = c->get_name();
     f_consts_impl << indent() << name << " = "
                   << consts_struct << "::" << name << "();" << endl;
   }
@@ -1153,98 +1168,6 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
     endl;
 }
 
-/**
- * Prints the value of a constant with the given type. Note that type checking
- * is NOT performed in this function as it is always run beforehand using the
- * validate_types method in main.cc
- */
-void t_cpp_generator::print_const_value(ofstream& out, string name, t_type* type, t_const_value* value) {
-  type = get_true_type(type);
-  auto as_struct = dynamic_cast<t_struct *>(type);
-  assert((as_struct != nullptr) == type->is_struct());
-  if (type->is_base_type() || type->is_enum()) {
-    string v2 = render_const_value(out, type, value);
-    indent(out) << name << " = " << v2 << ";" << endl;
-  } else if (as_struct && as_struct->is_union()) {
-    assert(value->get_type() == t_const_value::CV_MAP);
-    auto const &map = value->get_map();
-    assert(map.size() <= 1);
-    if (!map.empty()) {
-      assert(map.front().first->get_type() == t_const_value::CV_STRING);
-      auto &member_name = map.front().first->get_string();
-      indent(out) << name << ".set_" << member_name << "([](){" << endl;
-      indent_up();
-      auto const member = as_struct->get_member(member_name);
-      indent(out) << type_name(member->get_type()) << " value;" << endl << endl;
-      assert(member);
-      print_const_value(out, "value", member->get_type(), map.front().second);
-      indent(out) << "return value;" << endl;
-      indent_down();
-      indent(out) << "}());" << endl;
-    }
-  } else if (type->is_struct() || type->is_xception()) {
-    const vector<t_field*>& fields = ((t_struct*)type)->get_members();
-    vector<t_field*>::const_iterator f_iter;
-    const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
-    vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
-    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = nullptr;
-      bool required = true;
-      for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-        if ((*f_iter)->get_name() == v_iter->first->get_string()) {
-          field_type = (*f_iter)->get_type();
-          required = is_required(*f_iter);
-        }
-      }
-      if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
-      }
-      string val = render_const_value(out, field_type, v_iter->second);
-      indent(out) << name << "." << v_iter->first->get_string() << " = " << val << ";" << endl;
-      if (!required) {
-        indent(out) << name << ".__isset." << v_iter->first->get_string() << " = true;" << endl;
-      }
-    }
-    out << endl;
-  } else if (type->is_map()) {
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
-    const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
-    vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
-    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      string key = render_const_value(out, ktype, v_iter->first);
-      string val = render_const_value(out, vtype, v_iter->second);
-      indent(out) << name << ".insert(std::make_pair(" << key << ", " << val << "));" << endl;
-    }
-    out << endl;
-  } else if (type->is_list()) {
-    t_type* etype = ((t_list*)type)->get_elem_type();
-    const vector<t_const_value*>& val = value->get_list();
-    // Below will fail for certain list types in cpp (eg. dequeue).
-    /*
-    if (!val.empty()) {
-      indent(out) << name << ".reserve(" << val.size() << ");" << endl;
-    }
-    */
-    vector<t_const_value*>::const_iterator v_iter;
-    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      string val = render_const_value(out, etype, *v_iter);
-      indent(out) << name << ".push_back(" << val << ");" << endl;
-    }
-    out << endl;
-  } else if (type->is_set()) {
-    t_type* etype = ((t_set*)type)->get_elem_type();
-    const vector<t_const_value*>& val = value->get_list();
-    vector<t_const_value*>::const_iterator v_iter;
-    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      string val = render_const_value(out, etype, *v_iter);
-      indent(out) << name << ".insert(" << val << ");" << endl;
-    }
-    out << endl;
-  } else {
-    throw "INVALID TYPE IN print_const_value: " + type->get_name();
-  }
-}
 
 string t_cpp_generator::get_type_access_suffix(t_type* type) {
   if (type->is_typedef()) {
@@ -1272,50 +1195,91 @@ string t_cpp_generator::render_string(string value) {
  *
  */
 string t_cpp_generator::render_const_value(
-                          ofstream&      out,
-                          t_type*        type,
-                          t_const_value* value,
-                          bool           allow_null_val) {
-  std::ostringstream render;
+    t_type* type,
+    t_const_value* value,
+    bool allow_null_val) {
+  ostringstream out;
+  print_const_value(out, type, value, allow_null_val);
+  return out.str();
+}
 
-  // Resolve typedefs.
+/**
+ * Prints the value of a constant with the given type. Note that type checking
+ * is NOT performed in this function as it is always run beforehand using the
+ * validate_types method in main.cc
+ */
+void t_cpp_generator::print_const_value(
+    ostream& out,
+    t_type* type,
+    t_const_value* value,
+    bool allow_null_val,
+    t_const* defining) {
+  if (value && defining) {
+    // if we're defining some constant value, try to replace reference to
+    // subtrees of the constant with code references to prior definitions
+    if (auto owner = value->get_owner()) {
+      t_type* ownerType = owner->get_type();
+      ownerType = get_true_type(ownerType);
+
+      if (
+          // we can't reference what we're currently defining
+          owner != defining &&
+          // enum values look like constants of type i32; don't reference them.
+          ownerType != g_type_i32) {
+        t_program* program = owner->get_program();
+        // Make explicit temporary value by copy
+        out << type_name(type) << "(";
+        assert(program != nullptr);
+        if (program != program_) {
+          out << namespace_prefix(program->get_namespace("cpp"));
+        }
+        out << program->get_name() << "_constants::";
+        out << owner->get_name();
+        out << "()";
+        out << ")";
+        return;
+      }
+    }
+  }
   type = get_true_type(type);
 
+  auto as_struct = dynamic_cast<t_struct*>(type);
+  assert((as_struct != nullptr) == type->is_struct());
   if (value == nullptr) {
     if (allow_null_val) {
       if (type->is_enum()) {
-        render << "static_cast<" << type_name(type) << ">(0)";
+        out << "static_cast<" << type_name(type) << ">(0)";
       } else if (type->is_string()) {
-        render << "\"\"";
+        out << "\"\"";
       } else {
-        render << "0";
+        out << "0";
       }
     } else {
-      throw "render_const_value called with value == NULL";
+      throw "print_const_value called with value == NULL";
     }
   } else if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
     case t_base_type::TYPE_STRING:
-      render << render_string(value->get_string());
+      out << render_string(value->get_string());
       break;
     case t_base_type::TYPE_BOOL:
-      render << ((value->get_integer() > 0) ? "true" : "false");
+      out << ((value->get_integer() > 0) ? "true" : "false");
       break;
     case t_base_type::TYPE_BYTE:
     case t_base_type::TYPE_I16:
     case t_base_type::TYPE_I32:
-      render << value->get_integer();
+      out << value->get_integer();
       break;
     case t_base_type::TYPE_I64:
-      render << value->get_integer() << "LL";
+      out << value->get_integer() << "LL";
       break;
     case t_base_type::TYPE_DOUBLE:
     case t_base_type::TYPE_FLOAT:
       if (value->get_type() == t_const_value::CV_INTEGER) {
-        render << value->get_integer();
+        out << value->get_integer();
       } else {
-        render << value->get_double();
+        out << value->get_double();
       }
       break;
     default:
@@ -1332,18 +1296,81 @@ string t_cpp_generator::render_const_value(
                   " for enum \"" << type_name(type) << "\"";
         throw except.str();
       }
-      render << type_name(type) << "::" << val->get_name();
+      out << type_name(type) << "::" << val->get_name();
     } else {
-      render << "(" << type_name(type) << ")" << value->get_integer();
+      out << "(" << type_name(type) << ")" << value->get_integer();
     }
-  } else {
-    string t = tmp("tmp");
-    indent(out) << type_name(type) << " " << t << ";" << endl;
-    print_const_value(out, t, type, value);
-    render << t;
-  }
+  } else if (type->is_struct() || type->is_xception()) { // also unions
+    auto& fieldValues = value->get_map();
+    indent_up();
+    assert(as_struct);
+    if (as_struct->is_union()) {
+      // Note: unions constants are validated upstream
+      assert(fieldValues.size() <= 1);
+    }
+    out << type_name(type) << "(";
+    for (auto& e : fieldValues) {
+      auto& memberName = e.first->get_string();
+      auto const member = as_struct->get_member(memberName);
+      assert(member);
+      t_type* field_type = member->get_type();
+      int16_t key = member->get_key();
+      out << endl;
+      indent(out) << "::apache::thrift::detail::wrap_argument<" << key << ">(";
+      indent_up();
+      print_const_value(out, field_type, e.second, false, defining);
+      indent_down();
+      out << ")";
+      if (&e != &fieldValues.back()) {
+        out << ",";
+      }
+    }
 
-  return render.str();
+    out << ")";
+    indent_down();
+  } else if (type->is_map()) {
+    const auto& entries = value->get_map();
+    out << type_name(type);
+    if (entries.empty()) {
+      out << "{}";
+      return;
+    }
+    t_map* mapType = (t_map*)type;
+    t_type* ktype = mapType->get_key_type();
+    t_type* vtype = mapType->get_val_type();
+    out << "{" << endl;
+    indent_up();
+    for (auto& entry : entries) {
+      indent(out) << '{';
+      indent_up();
+      print_const_value(out, ktype, entry.first, false, defining);
+      out << ", ";
+      print_const_value(out, vtype, entry.second, false, defining);
+      out << "}," << endl;
+      indent_down();
+    }
+    indent_down();
+    indent(out) << "}";
+  } else if (type->is_list() || type->is_set()) {
+    const auto& val = value->get_list();
+    out << type_name(type);
+    if (val.empty()) {
+      out << "{}";
+      return;
+    }
+    t_type* etype = ((t_list*)type)->get_elem_type();
+    out << "{" << endl;
+    indent_up();
+    for (auto& entry : val) {
+      indent(out);
+      print_const_value(out, etype, entry, false, defining);
+      out << "," << endl;
+    }
+    indent_down();
+    indent(out) << "}";
+  } else {
+    throw "INVALID TYPE IN print_const_value: " + type->get_name();
+  }
 }
 
 void t_cpp_generator::generate_forward_declaration(t_struct* tstruct) {
@@ -2239,13 +2266,15 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
       if ((t->is_base_type() &&
            !(t->is_string() && (cv == nullptr || cv->get_string().empty()))) ||
           t->is_enum()) {
-        string dval = render_const_value(out, t, cv, true);
         if (!init_ctor) {
           init_ctor = true;
-          out << " : ";
-          out << (*m_iter)->get_name() << "(" << dval << ")";
+          out << " : " << (*m_iter)->get_name() << "(";
+          print_const_value(out, t, cv, true);
+          out << ")";
         } else {
-          out << ", " << (*m_iter)->get_name() << "(" << dval << ")";
+          out << ", " << (*m_iter)->get_name() << "(";
+          print_const_value(out, t, cv, true);
+          out << ")";
         }
       }
     }
@@ -2256,10 +2285,12 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       t_type* t = get_true_type((*m_iter)->get_type());
 
-      if (!t->is_base_type()) {
+      if (!t->is_base_type() && !t->is_enum()) {
         t_const_value* cv = (*m_iter)->get_value();
-        if (cv != nullptr) {
-          print_const_value(out, (*m_iter)->get_name(), t, cv);
+        if (cv != nullptr && !cv->is_empty()) {
+          indent(out) << (*m_iter)->get_name() << " = ";
+          print_const_value(out, t, cv);
+          out << ";" << endl;
         }
       }
     }
@@ -3115,8 +3146,9 @@ void t_cpp_generator::generate_struct_clear(ofstream& out,
       string name = (*m_iter)->get_name() + get_type_access_suffix(f_type);
       if (t->is_base_type() || t->is_enum()) {
         t_const_value* cv = (*m_iter)->get_value();
-        string dval = render_const_value(out, t, cv, true);
-        indent(out) << name << " = " << dval << ";" << endl;
+        indent(out) << name << " = ";
+        print_const_value(out, t, cv, true);
+        out << ";" << endl;
       } else if (t->is_struct() || t->is_xception()) {
         auto ref = is_reference(*m_iter);
         if (ref) {
@@ -3365,23 +3397,21 @@ bool t_cpp_generator::try_terse_write_predicate(
        ((tval->get_type() == t_const_value::CV_LIST &&
          !tval->get_list().empty()) ||
         (tval->get_type() == t_const_value::CV_MAP &&
-         !tval->get_map().empty())))
-      ) {
+         !tval->get_map().empty())))) {
     return false;
   }
 
   // Containers -> "if (!x.empty())"
   if (type->is_container() ||
       (type->is_base_type() && ((t_base_type*)type)->is_string())) {
-    predicate = "!this->" + tfield->get_name() +
-      (pointers ? "->empty()" : ".empty()");
+    predicate =
+        "!this->" + tfield->get_name() + (pointers ? "->empty()" : ".empty()");
     return true;
   }
   // ints, enum -> "if (x != default value)
   if (type->is_base_type() || type->is_enum()) {
-    predicate = (pointers ? "*(this->" : "this->") +
-      tfield->get_name() + (pointers ? ") != " : " != ") +
-      render_const_value(out, type, tval, true);
+    predicate = (pointers ? "*(this->" : "this->") + tfield->get_name() +
+        (pointers ? ") != " : " != ") + render_const_value(type, tval, true);
     return true;
   }
   return false;

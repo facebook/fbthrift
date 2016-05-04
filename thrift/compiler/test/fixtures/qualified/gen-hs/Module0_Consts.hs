@@ -47,3 +47,9 @@ import qualified Thrift.Arbitraries as Arbitraries
 
 
 import qualified Module0_Types
+c0 :: Module0_Types.Struct
+c0 = Module0_Types.default_Struct{Module0_Types.struct_first = 101, Module0_Types.struct_second = "module0_str"}
+
+e0s :: Vector.Vector Module0_Types.Enum
+e0s = (Vector.fromList [Module0_Types.ONE,Module0_Types.THREE])
+

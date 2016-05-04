@@ -14,7 +14,7 @@ struct module_constants {
   static constexpr int32_t const myInt_ = 1337;
   static constexpr int32_t myInt() { return myInt_; }
   // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to 
+  // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
   static constexpr char const *const name_ = "Mark Zuckerberg";
   static constexpr char const* name() { return name_; }
@@ -29,27 +29,27 @@ struct module_constants {
   static std::vector<Range>  const& kRanges();
   static std::vector<Internship>  const& internList();
   // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to 
+  // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
   static constexpr char const *const apostrophe_ = "'";
   static constexpr char const* apostrophe() { return apostrophe_; }
   // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to 
+  // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
   static constexpr char const *const tripleApostrophe_ = "'''";
   static constexpr char const* tripleApostrophe() { return tripleApostrophe_; }
   // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to 
+  // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
   static constexpr char const *const quotationMark_ = "\"";
   static constexpr char const* quotationMark() { return quotationMark_; }
   // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to 
+  // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
   static constexpr char const *const backslash_ = "\\";
   static constexpr char const* backslash() { return backslash_; }
   // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to 
+  // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
   static constexpr char const *const escaped_a_ = "\x61";
   static constexpr char const* escaped_a() { return escaped_a_; }
@@ -70,7 +70,7 @@ struct module_constants {
   static constexpr double const zero_dot_zero_ = 0;
   static constexpr double zero_dot_zero() { return zero_dot_zero_; }
   // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to 
+  // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
   static constexpr char const *const empty_string_ = "";
   static constexpr char const* empty_string() { return empty_string_; }

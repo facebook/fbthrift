@@ -23,6 +23,7 @@
 #include <thrift/compiler/parse/t_type.h>
 #include <thrift/compiler/parse/t_const_value.h>
 
+class t_program;
 /**
  * A const is a constant value defined across languages that has a type and
  * a value. The trick here is that the declared type might not match the type
@@ -32,10 +33,16 @@
  */
 class t_const : public t_doc {
  public:
-  t_const(t_type* type, std::string name, t_const_value* value) :
-    type_(type),
-    name_(name),
-    value_(value) {}
+  t_const(
+      t_program* program,
+      t_type* type,
+      std::string name,
+      t_const_value* value)
+      : program_(program), type_(type), name_(name), value_(value) {
+    if (value) {
+      value->set_owner(this);
+    }
+  }
 
   t_type* get_type() const {
     return type_;
@@ -49,7 +56,12 @@ class t_const : public t_doc {
     return value_;
   }
 
+  t_program* get_program() const {
+    return program_;
+  }
+
  private:
+  t_program* program_;
   t_type* type_;
   std::string name_;
   t_const_value* value_;

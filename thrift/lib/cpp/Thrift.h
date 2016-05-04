@@ -432,6 +432,8 @@ struct argument_wrapper {
     );
   }
 
+  explicit argument_wrapper(const char* str) : argument_(str) {}
+
   T&& move() { return std::move(argument_); }
 
 private:
@@ -451,6 +453,11 @@ template <std::intmax_t Id, typename T>
 detail::argument_wrapper<Id, T&&> wrap_argument(T&& value) {
   static_assert(std::is_rvalue_reference<T&&>::value, "internal thrift error");
   return detail::argument_wrapper<Id, T&&>(std::forward<T>(value));
+}
+
+template <std::intmax_t Id>
+detail::argument_wrapper<Id, const char*> wrap_argument(const char* str) {
+  return detail::argument_wrapper<Id, const char*>(str);
 }
 
 } // detail

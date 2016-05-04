@@ -25,6 +25,7 @@
 #include <utility>
 #include <vector>
 
+class t_const;
 /**
  * A const value is something parsed that could be a map, set, list, struct
  * or whatever.
@@ -109,6 +110,28 @@ class t_const_value {
     return valType_;
   }
 
+  bool is_empty() const {
+    switch (valType_) {
+      case CV_MAP:
+        return mapVal_.empty();
+      case CV_LIST:
+        return listVal_.empty();
+      case CV_INTEGER:
+        return intVal_ == 0;
+      case CV_DOUBLE:
+        return doubleVal_ == 0;
+      case CV_STRING:
+        return stringVal_.empty();
+    }
+    return false;
+  }
+
+  void set_owner(t_const* owner) {
+    owner_ = owner;
+  }
+
+  t_const* get_owner() const { return owner_;}
+
  private:
 
   // Use a vector of pairs to store the contents of the map so that we
@@ -121,8 +144,8 @@ class t_const_value {
   double doubleVal_;
 
   t_const_value_type valType_;
+  t_const* owner_ = nullptr;
 
 };
 
 #endif
-

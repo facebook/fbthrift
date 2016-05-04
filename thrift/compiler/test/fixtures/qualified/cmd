@@ -1,1 +1,2 @@
 hs src/module2.thrift
+cpp src/module2.thrift

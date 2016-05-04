@@ -15,3 +15,8 @@ struct BigStruct {
   1: Struct s,
   2: i32 id,
 }
+
+const Struct c2 = {
+  "first": module0.c0,
+  "second": module1.c1,
+};
