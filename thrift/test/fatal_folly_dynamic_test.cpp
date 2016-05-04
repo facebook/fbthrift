@@ -500,24 +500,8 @@ TEST(fatal_folly_dynamic, to_from_dynamic_global) {
 namespace test_cpp1 {
 namespace cpp_compat {
 
-bool compat_structA::operator <(compat_structA const &rhs) const {
-  return a < rhs.a || (a == rhs.a && b < rhs.b);
-}
-
-bool compat_structB::operator <(compat_structB const &rhs) const {
-  return c < rhs.c || (c == rhs.c && d < rhs.d);
-}
-
 } // namespace cpp_compat {
 } // namespace test_cpp1 {
-
-bool global_structA::operator <(global_structA const &rhs) const {
-  return a < rhs.a || (a == rhs.a && b < rhs.b);
-}
-
-bool global_structB::operator <(global_structB const &rhs) const {
-  return c < rhs.c || (c == rhs.c && d < rhs.d);
-}
 
 TEST(fatal_folly_dynamic, optional_string) {
   auto obj = apache::thrift::from_dynamic<global_struct1>(
