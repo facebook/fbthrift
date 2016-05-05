@@ -288,7 +288,7 @@ class THeader {
 
   static const uint32_t MAX_FRAME_SIZE = 0x3FFFFFFF;
   static const std::string PRIORITY_HEADER;
-  static const std::string CLIENT_TIMEOUT_HEADER;
+  static const std::string& CLIENT_TIMEOUT_HEADER;
   static const std::string QUEUE_TIMEOUT_HEADER;
 
  protected:

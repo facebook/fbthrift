@@ -60,7 +60,7 @@ const string THeader::IDENTITY_HEADER = "identity";
 const string THeader::ID_VERSION_HEADER = "id_version";
 const string THeader::ID_VERSION = "1";
 const string THeader::PRIORITY_HEADER = "thrift_priority";
-const string THeader::CLIENT_TIMEOUT_HEADER = "client_timeout";
+const string& THeader::CLIENT_TIMEOUT_HEADER = *(new string("client_timeout"));
 const string THeader::QUEUE_TIMEOUT_HEADER = "queue_timeout";
 
 static const string THRIFT_AUTH_HEADER = "thrift_auth";
