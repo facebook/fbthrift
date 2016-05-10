@@ -160,6 +160,29 @@ class CppGenerator(t_generator.Generator):
     def _cpp_type_name(self, type, default=None):
         return self._cpp_annotation(type, 'type', default)
 
+    def _cpp_ref_type(self, type, name):
+        # backward compatibility with 'ref' annotation
+        if self._has_cpp_annotation(type, 'ref'):
+            return 'std::unique_ptr<{0}>'.format(name)
+
+        ref_type = self._cpp_annotation(type, 'ref_type')
+        if ref_type is None:
+            return None
+
+        # useful aliases
+        if ref_type == 'unique':
+            return 'std::unique_ptr<{0}>'.format(name)
+        if ref_type == 'shared':
+            return 'std::shared_ptr<{0}>'.format(name)
+        if ref_type == 'shared_const':
+            return 'std::shared_ptr<const {0}>'.format(name)
+
+        # use custom pointer type
+        return '{0}<{1}>'.format(ref_type, name)
+
+    def _apply_unique_ptr_hack(self, type):
+        return self._cpp_ref_type(type, '') == 'std::unique_ptr<>'
+
     def _type_name(self, ttype, in_typedef=False,
                    arg=False, scope=None, unique=False):
         unique = unique and not self.flag_stack_arguments
@@ -243,6 +266,14 @@ class CppGenerator(t_generator.Generator):
         else:
             return tname
 
+    def _field_type_name(self, field, type):
+        type_name = self._type_name(type)
+        ref_type_name = self._cpp_ref_type(field, type_name)
+        if ref_type_name is not None:
+            return ref_type_name
+        else:
+            return type_name
+
     def _is_orderable_type(self, ttype):
         if ttype.is_base_type:
             return True
@@ -277,7 +308,7 @@ class CppGenerator(t_generator.Generator):
         return foundMember
 
     def _is_reference(self, f):
-        return self._has_cpp_annotation(f, "ref")
+        return self._cpp_ref_type(f, '') is not None
 
     def _is_optional_wrapped(self, f):
         return f.req == e_req.optional and self.flag_optionals
@@ -506,19 +537,17 @@ class CppGenerator(t_generator.Generator):
         self._types_scope(txt)
 
     def _declare_field(self, field, pointer=False, constant=False,
-                        reference=False, unique=False, optional_wrapped=False):
+                        reference=False, optional_wrapped=False):
         # I removed the 'init' argument, as all inits happen in default
         # constructor
         result = ''
         if constant:
             result += 'const '
-        result += self._type_name(field.type)
+        result += self._field_type_name(field, field.type)
         if pointer:
             result += '*'
         if reference:
             result += '&'
-        if unique:
-            result = "std::unique_ptr<" + result + ">"
         if optional_wrapped:
             result = "folly::Optional<" + result + ">"
         result += ' ' + field.name
@@ -2426,9 +2455,7 @@ class CppGenerator(t_generator.Generator):
                 init_vars.append('apache::thrift::FragileConstructor')
                 for member in members:
                     t = self._get_true_type(member.type)
-                    typename = self._type_name(member.type)
-                    if self._is_reference(member):
-                        typename = "std::unique_ptr<" + typename + ">"
+                    typename = self._field_type_name(member, member.type)
                     init_vars.append("{0} {1}__arg".format(
                         typename, member.name))
                 i = OrderedDict()
@@ -2484,7 +2511,7 @@ class CppGenerator(t_generator.Generator):
                 if is_copyable:
                     needs_copy_constructor = False
                     for member in members:
-                        if self._is_reference(member):
+                        if self._apply_unique_ptr_hack(member):
                             needs_copy_constructor = True
                     if needs_copy_constructor:
                         src = self.tmp('src')
@@ -2492,7 +2519,10 @@ class CppGenerator(t_generator.Generator):
                                          .format(obj.name, src),
                                          name=obj.name):
                             for member in members:
-                                if self._is_reference(member):
+                                # custom hacky logic for unique_ptr copying
+                                # it would be much better to use a
+                                # copyable wrapper instead
+                                if self._apply_unique_ptr_hack(member):
                                     out("if ({2}.{0}) {0}.reset("
                                         "new {1}(*{2}.{0}));".format(
                                         member.name, self._type_name(
@@ -2580,7 +2610,11 @@ class CppGenerator(t_generator.Generator):
                                                  self._type_name(member.type),
                                                                  name))
                             elif t.is_container:
-                                out('{0}.clear();'.format(name))
+                                if self._is_reference(member):
+                                    out('{0}.reset(new typename decltype({0})'
+                                        '::element_type());'.format(name))
+                                else:
+                                    out('{0}.clear();'.format(name))
                             else:
                                 raise TypeError('Unknown type for member:' +
                                                 member.name)
@@ -2609,7 +2643,6 @@ class CppGenerator(t_generator.Generator):
                 member,
                 pointers and not member.type.is_xception,
                 not read, False,
-                self._is_reference(member),
                 self._is_optional_wrapped(member)))
 
         if s1 is not struct:
@@ -2803,11 +2836,11 @@ class CppGenerator(t_generator.Generator):
         if obj.is_union:
             for member in members:
                 mtype = member.type
-                t = self._type_name(self._get_true_type(mtype))
-                setter_result = t
+                true_type = self._get_true_type(mtype)
                 is_reference = self._is_reference(member)
-                if is_reference:
-                    setter_result = "std::unique_ptr<" + setter_result + ">"
+                field_type_name = self._field_type_name(member, true_type)
+                t = self._type_name(true_type)
+                setter_result = field_type_name
                 # generate definition on the tcc file if layout information
                 # is incomplete (say, recursive types)
                 outofline = is_reference and not mtype.is_base_type \
@@ -2827,11 +2860,11 @@ class CppGenerator(t_generator.Generator):
                         out('type_ = Type::{0};'.format(member.name))
                         if is_reference:
                             out(('::new (std::addressof(value_.{0})) '
-                                 'std::unique_ptr<{1}>(new {1}(t));')
-                                 .format(member.name, t))
+                                '{1}(new {1}::element_type(t));')
+                                .format(member.name, field_type_name))
                         else:
                             out('::new (std::addressof(value_.{0})) {1}(t);'
-                              .format(member.name, t))
+                                .format(member.name, field_type_name))
                         out('return value_.{0};'.format(member.name))
                 else:
                     with struct.defn('{{result_type}} {{symbol_scope}}'
@@ -2845,11 +2878,11 @@ class CppGenerator(t_generator.Generator):
                         out('type_ = Type::{0};'.format(member.name))
                         if is_reference:
                             out(('::new (std::addressof(value_.{0})) '
-                                 'std::unique_ptr<{1}>(new {1}(t));')
-                                 .format(member.name, t))
+                                '{1}(new {1}::element_type(t));')
+                                .format(member.name, field_type_name))
                         else:
                             out('::new (std::addressof(value_.{0})) {1}(t);'
-                              .format(member.name, t))
+                                .format(member.name, field_type_name))
                         out('return value_.{0};'.format(member.name))
                     with struct.defn('{{result_type}} {{symbol_scope}}'
                                      'set_{{symbol_name}}({0}&& t)'.format(t),
@@ -2861,12 +2894,12 @@ class CppGenerator(t_generator.Generator):
                         out('type_ = Type::{0};'.format(member.name))
                         if is_reference:
                             out(('::new (std::addressof(value_.{0})) '
-                                 'std::unique_ptr<{1}>(new {1}(std::move(t)));')
-                                 .format(member.name, t))
+                                '{1}(new {1}::element_type(std::move(t)));')
+                                .format(member.name, field_type_name))
                         else:
                             out(('::new (std::addressof(value_.{0})) '
-                                 '{1}(std::move(t));')
-                                 .format(member.name, t))
+                                '{1}(std::move(t));')
+                                .format(member.name, field_type_name))
                         out('return value_.{0};'.format(member.name))
                     with struct.defn('template<typename... T, typename '
                                   '{tpl_default_0}> {result_type} '
@@ -2882,19 +2915,18 @@ class CppGenerator(t_generator.Generator):
                         out('type_ = Type::{0};'.format(member.name))
                         if is_reference:
                             out(('::new (std::addressof(value_.{0})) '
-                                 'std::unique_ptr<{1}>(new {1}('
-                                 'std::forward<T>(t)...));')
-                                 .format(member.name, t))
+                                '{1}(new {1}::element_type('
+                                'std::forward<T>(t)...));')
+                                .format(member.name, field_type_name))
                         else:
                             out(('::new (std::addressof(value_.{0})) '
-                                 '{1}(std::forward<T>(t)...);')
-                                 .format(member.name, t))
+                                '{1}(std::forward<T>(t)...);')
+                                .format(member.name, field_type_name))
                         out('return value_.{0};'.format(member.name))
 
             for member in members:
-                t = self._type_name(self._get_true_type(member.type))
-                if self._is_reference(member):
-                    t = "std::unique_ptr<" + t + ">"
+                true_type = self._get_true_type(member.type)
+                t = self._field_type_name(member, true_type)
                 with struct.defn('{result_type} {symbol_scope}'
                                + 'get_{symbol_name}() const',
                                name=member.name,
@@ -2905,9 +2937,8 @@ class CppGenerator(t_generator.Generator):
                     out('return value_.{0};'.format(member.name))
 
             for member in members:
-                t = self._type_name(self._get_true_type(member.type))
-                if self._is_reference(member):
-                    t = "std::unique_ptr<" + t + ">"
+                true_type = self._get_true_type(member.type)
+                t = self._field_type_name(member, true_type)
                 with struct.defn('{result_type} {symbol_scope}'
                                + 'mutable_{symbol_name}()',
                                name=member.name,
@@ -2918,9 +2949,8 @@ class CppGenerator(t_generator.Generator):
                     out('return value_.{0};'.format(member.name))
 
             for member in members:
-                t = self._type_name(self._get_true_type(member.type))
-                if self._is_reference(member):
-                    t = "std::unique_ptr<" + t + ">"
+                true_type = self._get_true_type(member.type)
+                t = self._field_type_name(member, true_type)
                 with struct.defn('{result_type} {symbol_scope}'
                                + 'move_{symbol_name}()',
                                name=member.name,
@@ -3191,7 +3221,8 @@ class CppGenerator(t_generator.Generator):
                 scope, otype, ttype.as_struct, name, pointer, optional_wrapped)
         elif ttype.is_container:
             self._generate_deserialize_container(scope, ttype.as_container,
-                                                 name, otype, optional_wrapped)
+                                                 name, otype, pointer,
+                                                 optional_wrapped)
         elif ttype.is_base_type:
             if optional_wrapped:
                 # assign a new default-constructed value into the Optional
@@ -3241,12 +3272,17 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_deserialize_struct(self, scope, otype, struct, prefix,
                                      pointer=False, optional_wrapped=False):
+        s = scope
         if pointer:
-            scope("{0} = std::unique_ptr<{1}>(new {1});".format(
-                prefix, self._type_name(otype)))
-            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
-                  'iprot, {1}.get());'.format(
-                      self._type_name(otype), prefix))
+            ptrtype = self.tmp('_ptype')
+            s('using element_type = typename std::remove_const<typename '
+                    'std::remove_reference<decltype({0})>::type::element_type>'
+                    '::type;'.format(prefix))
+            s('std::unique_ptr<element_type> {0}(new element_type());'
+                    .format(ptrtype))
+            s('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
+                'iprot, {1}.get());'.format(self._type_name(otype), ptrtype))
+            s('{0} = std::move({1});'.format(prefix, ptrtype))
         elif optional_wrapped:
             scope("{0} = {1}();".format(
                 prefix, self._type_name(otype)))
@@ -3259,7 +3295,7 @@ class CppGenerator(t_generator.Generator):
                       self._type_name(otype), prefix))
 
     def _generate_deserialize_container(self, scope, cont, prefix,
-                                        otype, optional_wrapped):
+                                        otype, pointer, optional_wrapped):
         s = scope
         size = self.tmp('_size')
         ktype = self.tmp('_ktype')
@@ -3269,10 +3305,23 @@ class CppGenerator(t_generator.Generator):
         use_push = (cpptype is not None and 'list' in cpptype) \
             or self._has_cpp_annotation(cont, 'template')
 
-        s('{0} = {1}();'.format(prefix, self._type_name(otype)))
-        if optional_wrapped:
+        if pointer:
+            # Use unique_ptr as a temporary deserialization container
+            # Move it to actual ptr_type later
+            ptrtype = self.tmp('_ptype')
+            reftype = self.tmp('_rtype')
+            s('using element_type = typename std::remove_const<typename '
+                    'std::remove_reference<decltype({0})>::type::element_type>'
+                    '::type;'.format(prefix))
+            s('std::unique_ptr<element_type> {0}(new element_type());'
+                    .format(ptrtype))
+            s('auto& {0} = *{1};'.format(reftype, ptrtype))
+            cont_ref = reftype
+        elif optional_wrapped:
+            s('{0} = {1}();'.format(prefix, self._type_name(otype)))
             cont_ref = "{0}.value()".format(prefix)
         else:
+            s('{0} = {1}();'.format(prefix, self._type_name(otype)))
             cont_ref = prefix
 
         s('uint32_t {0};'.format(size))
@@ -3333,6 +3382,9 @@ class CppGenerator(t_generator.Generator):
                     self._generate_deserialize_list_element(out(), cont.as_list,
                                                             cont_ref, use_push,
                                                             i)
+        if pointer:
+            s('{0} = std::move({1});'.format(prefix, ptrtype))
+
         # Read container end
         if cont.is_map:
             s('xfer += iprot->readMapEnd();')
@@ -3661,6 +3713,7 @@ class CppGenerator(t_generator.Generator):
                                             struct_method, pointer)
         elif ttype.is_container:
             self._generate_serialize_container(scope, ttype.as_container,
+                                               pointer,
                                                val_expr,
                                                method,
                                                struct_method=struct_method,
@@ -3724,8 +3777,8 @@ class CppGenerator(t_generator.Generator):
                       method,
                       prefix))
 
-    def _generate_serialize_container(self, scope, ttype, prefix='',
-                                      method='write', **kwargs):
+    def _generate_serialize_container_internal(self, scope, ttype, pointer,
+                                               prefix, method, **kwargs):
         tte = self._type_to_enum
         s = scope
         if ttype.is_map:
@@ -3763,6 +3816,41 @@ class CppGenerator(t_generator.Generator):
             s('xfer += prot_->{0}SetEnd();'.format(method))
         elif ttype.is_list:
             s('xfer += prot_->{0}ListEnd();'.format(method))
+
+    def _generate_serialize_container(self, scope, ttype, pointer, prefix='',
+                                      method='write', **kwargs):
+        tte = self._type_to_enum
+
+        if pointer:
+            with scope('if ({0})'.format(prefix)):
+                reftype = self.tmp('_rtype')
+                out('const auto& {0} = *{1};'.format(reftype, prefix))
+                prefix = reftype
+                self._generate_serialize_container_internal(scope, ttype,
+                                                            pointer, prefix,
+                                                            method, **kwargs)
+
+            with scope('else'):
+                if ttype.is_map:
+                    out('xfer += prot_->{0}MapBegin({1}, {2}, 0);'.format(
+                            method,
+                            tte(ttype.as_map.key_type),
+                            tte(ttype.as_map.value_type)))
+                    out('xfer += prot_->{0}MapEnd();'.format(method))
+                elif ttype.is_set:
+                    out('xfer += prot_->{0}SetBegin({1}, 0);'.format(
+                            method,
+                            tte(ttype.as_set.elem_type)))
+                    out('xfer += prot_->{0}SetEnd();'.format(method))
+                elif ttype.is_list:
+                    out('xfer += prot_->{0}ListBegin({1}, 0);'.format(
+                            method,
+                            tte(ttype.as_list.elem_type)))
+                    out('xfer += prot_->{0}ListEnd();'.format(method))
+        else:
+            self._generate_serialize_container_internal(scope, ttype, pointer,
+                                                        prefix, method,
+                                                        **kwargs)
 
     def _generate_serialize_map_element(self, scope, tmap, iter_,
                                         method='write', **kwargs):

@@ -70,8 +70,10 @@ uint32_t StructUsingOtherNamespace::read(apache::thrift::protocol::TProtocol* ip
     {
       case 1:
         if (ftype == apache::thrift::protocol::T_STRUCT) {
-          this->other = std::unique_ptr<  ::cpp1::Included>(new  ::cpp1::Included);
-          xfer += this->other->read(iprot);
+          using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->other)>::type::element_type>::type;
+          std::unique_ptr<element_type> _ptype2(new element_type());
+          xfer += _ptype2->read(iprot);
+          this->other = std::move(_ptype2);
           if (false) {
           } else if (this->other->__isset.some_val) {
           } else { this->other = nullptr; }

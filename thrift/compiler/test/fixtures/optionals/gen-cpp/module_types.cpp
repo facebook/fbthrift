@@ -505,19 +505,19 @@ uint32_t Person::read(apache::thrift::protocol::TProtocol* iprot) {
             apache::thrift::protocol::TType _etype7;
             xfer += iprot->readSetBegin(_etype7, _size3, _sizeUnknown4);
             if (!_sizeUnknown4) {
-              uint32_t _i8;
-              for (_i8 = 0; _i8 < _size3; ++_i8)
-              {
-                PersonID _elem9;
-                xfer += iprot->readI64(_elem9);
-                this->friends.insert(_elem9);
-              }
-            } else {
-              while (iprot->peekSet())
+              uint32_t _i9;
+              for (_i9 = 0; _i9 < _size3; ++_i9)
               {
                 PersonID _elem10;
                 xfer += iprot->readI64(_elem10);
                 this->friends.insert(_elem10);
+              }
+            } else {
+              while (iprot->peekSet())
+              {
+                PersonID _elem11;
+                xfer += iprot->readI64(_elem11);
+                this->friends.insert(_elem11);
               }
             }
             xfer += iprot->readSetEnd();
@@ -539,31 +539,31 @@ uint32_t Person::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->petNames.clear();
-            uint32_t _size11;
-            bool _sizeUnknown12;
-            apache::thrift::protocol::TType _ktype13;
-            apache::thrift::protocol::TType _vtype14;
-            xfer += iprot->readMapBegin(_ktype13, _vtype14, _size11, _sizeUnknown12);
-            if (!_sizeUnknown12) {
-              uint32_t _i16;
-              for (_i16 = 0; _i16 < _size11; ++_i16)
+            uint32_t _size12;
+            bool _sizeUnknown13;
+            apache::thrift::protocol::TType _ktype14;
+            apache::thrift::protocol::TType _vtype15;
+            xfer += iprot->readMapBegin(_ktype14, _vtype15, _size12, _sizeUnknown13);
+            if (!_sizeUnknown13) {
+              uint32_t _i18;
+              for (_i18 = 0; _i18 < _size12; ++_i18)
               {
-                Animal _key17;
-                int32_t ecast19;
-                xfer += iprot->readI32(ecast19);
-                _key17 = (Animal)ecast19;
-                std::string& _val18 = this->petNames[_key17];
-                xfer += iprot->readString(_val18);
+                Animal _key19;
+                int32_t ecast21;
+                xfer += iprot->readI32(ecast21);
+                _key19 = (Animal)ecast21;
+                std::string& _val20 = this->petNames[_key19];
+                xfer += iprot->readString(_val20);
               }
             } else {
               while (iprot->peekMap())
               {
-                Animal _key20;
-                int32_t ecast22;
-                xfer += iprot->readI32(ecast22);
-                _key20 = (Animal)ecast22;
-                std::string& _val21 = this->petNames[_key20];
-                xfer += iprot->readString(_val21);
+                Animal _key22;
+                int32_t ecast24;
+                xfer += iprot->readI32(ecast24);
+                _key22 = (Animal)ecast24;
+                std::string& _val23 = this->petNames[_key22];
+                xfer += iprot->readString(_val23);
               }
             }
             xfer += iprot->readMapEnd();
@@ -575,9 +575,9 @@ uint32_t Person::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 9:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast23;
-          xfer += iprot->readI32(ecast23);
-          this->afraidOfAnimal = (Animal)ecast23;
+          int32_t ecast25;
+          xfer += iprot->readI32(ecast25);
+          this->afraidOfAnimal = (Animal)ecast25;
           this->__isset.afraidOfAnimal = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -587,23 +587,23 @@ uint32_t Person::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_LIST) {
           {
             this->vehicles.clear();
-            uint32_t _size24;
-            bool _sizeUnknown25;
-            apache::thrift::protocol::TType _etype28;
-            xfer += iprot->readListBegin(_etype28, _size24, _sizeUnknown25);
-            if (!_sizeUnknown25) {
-              this->vehicles.resize(_size24);
-              uint32_t _i29;
-              for (_i29 = 0; _i29 < _size24; ++_i29)
+            uint32_t _size26;
+            bool _sizeUnknown27;
+            apache::thrift::protocol::TType _etype30;
+            xfer += iprot->readListBegin(_etype30, _size26, _sizeUnknown27);
+            if (!_sizeUnknown27) {
+              this->vehicles.resize(_size26);
+              uint32_t _i32;
+              for (_i32 = 0; _i32 < _size26; ++_i32)
               {
-                xfer += this->vehicles[_i29].read(iprot);
+                xfer += this->vehicles[_i32].read(iprot);
               }
             } else {
               while (iprot->peekList())
               {
-                Vehicle _elem30;
-                xfer += _elem30.read(iprot);
-                this->vehicles.push_back(_elem30);
+                Vehicle _elem33;
+                xfer += _elem33.read(iprot);
+                this->vehicles.push_back(_elem33);
               }
             }
             xfer += iprot->readListEnd();
@@ -666,10 +666,10 @@ uint32_t Person::write(apache::thrift::protocol::TProtocol* oprot) const {
     xfer += oprot->writeFieldBegin("friends", apache::thrift::protocol::T_SET, 6);
     {
       xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I64, this->friends.size());
-      std::set<PersonID> ::const_iterator _iter31;
-      for (_iter31 = this->friends.begin(); _iter31 != this->friends.end(); ++_iter31)
+      std::set<PersonID> ::const_iterator _iter34;
+      for (_iter34 = this->friends.begin(); _iter34 != this->friends.end(); ++_iter34)
       {
-        xfer += oprot->writeI64((*_iter31));
+        xfer += oprot->writeI64((*_iter34));
       }
       xfer += oprot->writeSetEnd();
     }
@@ -684,11 +684,11 @@ uint32_t Person::write(apache::thrift::protocol::TProtocol* oprot) const {
     xfer += oprot->writeFieldBegin("petNames", apache::thrift::protocol::T_MAP, 8);
     {
       xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->petNames.size());
-      std::map<Animal, std::string> ::const_iterator _iter32;
-      for (_iter32 = this->petNames.begin(); _iter32 != this->petNames.end(); ++_iter32)
+      std::map<Animal, std::string> ::const_iterator _iter35;
+      for (_iter35 = this->petNames.begin(); _iter35 != this->petNames.end(); ++_iter35)
       {
-        xfer += oprot->writeI32((int32_t)_iter32->first);
-        xfer += oprot->writeString(_iter32->second);
+        xfer += oprot->writeI32((int32_t)_iter35->first);
+        xfer += oprot->writeString(_iter35->second);
       }
       xfer += oprot->writeMapEnd();
     }
@@ -703,10 +703,10 @@ uint32_t Person::write(apache::thrift::protocol::TProtocol* oprot) const {
     xfer += oprot->writeFieldBegin("vehicles", apache::thrift::protocol::T_LIST, 10);
     {
       xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRUCT, this->vehicles.size());
-      std::vector<Vehicle> ::const_iterator _iter33;
-      for (_iter33 = this->vehicles.begin(); _iter33 != this->vehicles.end(); ++_iter33)
+      std::vector<Vehicle> ::const_iterator _iter36;
+      for (_iter36 = this->vehicles.begin(); _iter36 != this->vehicles.end(); ++_iter36)
       {
-        xfer += (*_iter33).write(oprot);
+        xfer += (*_iter36).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }

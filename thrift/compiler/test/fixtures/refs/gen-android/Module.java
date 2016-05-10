@@ -7,6 +7,8 @@
 
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.facebook.thrift.lite.*;
 import com.facebook.thrift.lite.protocol.*;
@@ -16,7 +18,7 @@ import com.facebook.thrift.lite.annotations.*;
 public class Module {
 
   public enum EventType {
-    MyUnion, MyField, MyStruct, StructWithUnion, RecursiveStruct;
+    MyUnion, MyField, MyStruct, StructWithUnion, RecursiveStruct, StructWithContainers;
   }
 
   @TOptional("MyUnion")
@@ -55,5 +57,29 @@ public class Module {
   @TOptional("RecursiveStruct")
   public static final ThriftProperty<List<ModuleLogger>> RecursiveStruct_mes =
       new ThriftProperty<List<ModuleLogger>>("mes", TType.LIST, (short) 1);
+  @TOptional("StructWithContainers")
+  public static final ThriftProperty<List<Integer>> StructWithContainers_list_ref =
+      new ThriftProperty<List<Integer>>("list_ref", TType.LIST, (short) 1);
+  @TOptional("StructWithContainers")
+  public static final ThriftProperty<Set<Integer>> StructWithContainers_set_ref =
+      new ThriftProperty<Set<Integer>>("set_ref", TType.SET, (short) 2);
+  @TOptional("StructWithContainers")
+  public static final ThriftProperty<Map<Integer,Integer>> StructWithContainers_map_ref =
+      new ThriftProperty<Map<Integer,Integer>>("map_ref", TType.MAP, (short) 3);
+  @TOptional("StructWithContainers")
+  public static final ThriftProperty<List<Integer>> StructWithContainers_list_ref_unique =
+      new ThriftProperty<List<Integer>>("list_ref_unique", TType.LIST, (short) 4);
+  @TOptional("StructWithContainers")
+  public static final ThriftProperty<Set<Integer>> StructWithContainers_set_ref_shared =
+      new ThriftProperty<Set<Integer>>("set_ref_shared", TType.SET, (short) 5);
+  @TOptional("StructWithContainers")
+  public static final ThriftProperty<Map<Integer,Integer>> StructWithContainers_map_ref_custom =
+      new ThriftProperty<Map<Integer,Integer>>("map_ref_custom", TType.MAP, (short) 6);
+  @TOptional("StructWithContainers")
+  public static final ThriftProperty<List<Integer>> StructWithContainers_list_ref_shared_const =
+      new ThriftProperty<List<Integer>>("list_ref_shared_const", TType.LIST, (short) 7);
+  @TOptional("StructWithContainers")
+  public static final ThriftProperty<Set<Integer>> StructWithContainers_set_custom_ref =
+      new ThriftProperty<Set<Integer>>("set_custom_ref", TType.SET, (short) 8);
   
 }

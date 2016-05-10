@@ -28,6 +28,8 @@ class StructWithUnion;
 
 class RecursiveStruct;
 
+class StructWithContainers;
+
 class MyUnion : public apache::thrift::TStructType<MyUnion> {
  public:
   enum class Type {
@@ -559,5 +561,162 @@ class RecursiveStruct : public apache::thrift::TStructType<RecursiveStruct> {
 class RecursiveStruct;
 void merge(const RecursiveStruct& from, RecursiveStruct& to);
 void merge(RecursiveStruct&& from, RecursiveStruct& to);
+void swap(StructWithContainers &a, StructWithContainers &b);
+
+class StructWithContainers : public apache::thrift::TStructType<StructWithContainers> {
+ public:
+
+  static const uint64_t _reflection_id = 18101585657679500556U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  StructWithContainers() {
+    list_ref.reset(new typename decltype(list_ref)::element_type());
+    set_ref.reset(new typename decltype(set_ref)::element_type());
+    map_ref.reset(new typename decltype(map_ref)::element_type());
+    list_ref_unique.reset(new typename decltype(list_ref_unique)::element_type());
+    set_ref_shared.reset(new typename decltype(set_ref_shared)::element_type());
+    map_ref_custom.reset(new typename decltype(map_ref_custom)::element_type());
+    list_ref_shared_const.reset(new typename decltype(list_ref_shared_const)::element_type());
+    set_custom_ref.reset(new typename decltype(set_custom_ref)::element_type());
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithContainers(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    list_ref = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithContainers(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    set_ref = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithContainers(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    map_ref = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithContainers(
+    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    list_ref_unique = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithContainers(
+    ::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    set_ref_shared = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithContainers(
+    ::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    map_ref_custom = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithContainers(
+    ::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    list_ref_shared_const = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit StructWithContainers(
+    ::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    set_custom_ref = arg.move();
+  }
+
+  StructWithContainers(const StructWithContainers&);
+  StructWithContainers& operator=(const StructWithContainers& src) {
+    StructWithContainers tmp(src);
+    swap(*this, tmp);
+    return *this;
+  }
+  StructWithContainers(StructWithContainers&&) = default;
+  StructWithContainers& operator=(StructWithContainers&&) = default;
+
+  void __clear();
+
+  virtual ~StructWithContainers() throw() {}
+
+  std::unique_ptr<std::vector<int32_t> > list_ref;
+  std::unique_ptr<std::set<int32_t> > set_ref;
+  std::unique_ptr<std::map<int32_t, int32_t> > map_ref;
+  std::unique_ptr<std::vector<int32_t> > list_ref_unique;
+  std::shared_ptr<std::set<int32_t> > set_ref_shared;
+  std::shared_ptr<const std::map<int32_t, int32_t>> map_ref_custom;
+  std::shared_ptr<const std::vector<int32_t> > list_ref_shared_const;
+  std::auto_ptr<std::set<int32_t> > set_custom_ref;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+    }
+  } __isset;
+
+  bool operator == (const StructWithContainers &) const;
+  bool operator != (const StructWithContainers& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const StructWithContainers & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class StructWithContainers;
+void merge(const StructWithContainers& from, StructWithContainers& to);
+void merge(StructWithContainers&& from, StructWithContainers& to);
 
 

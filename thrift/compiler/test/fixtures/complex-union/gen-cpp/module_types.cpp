@@ -53,17 +53,17 @@ uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
             xfer += iprot->readListBegin(_etype4, _size0, _sizeUnknown1);
             if (!_sizeUnknown1) {
               this->value_.intListValue.resize(_size0);
-              uint32_t _i5;
-              for (_i5 = 0; _i5 < _size0; ++_i5)
+              uint32_t _i6;
+              for (_i6 = 0; _i6 < _size0; ++_i6)
               {
-                xfer += iprot->readI64(this->value_.intListValue[_i5]);
+                xfer += iprot->readI64(this->value_.intListValue[_i6]);
               }
             } else {
               while (iprot->peekList())
               {
-                int64_t _elem6;
-                xfer += iprot->readI64(_elem6);
-                this->value_.intListValue.push_back(_elem6);
+                int64_t _elem7;
+                xfer += iprot->readI64(_elem7);
+                this->value_.intListValue.push_back(_elem7);
               }
             }
             xfer += iprot->readListEnd();
@@ -78,23 +78,23 @@ uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
           set_stringListValue();
           {
             this->value_.stringListValue.clear();
-            uint32_t _size7;
-            bool _sizeUnknown8;
-            apache::thrift::protocol::TType _etype11;
-            xfer += iprot->readListBegin(_etype11, _size7, _sizeUnknown8);
-            if (!_sizeUnknown8) {
-              this->value_.stringListValue.resize(_size7);
-              uint32_t _i12;
-              for (_i12 = 0; _i12 < _size7; ++_i12)
+            uint32_t _size8;
+            bool _sizeUnknown9;
+            apache::thrift::protocol::TType _etype12;
+            xfer += iprot->readListBegin(_etype12, _size8, _sizeUnknown9);
+            if (!_sizeUnknown9) {
+              this->value_.stringListValue.resize(_size8);
+              uint32_t _i14;
+              for (_i14 = 0; _i14 < _size8; ++_i14)
               {
-                xfer += iprot->readString(this->value_.stringListValue[_i12]);
+                xfer += iprot->readString(this->value_.stringListValue[_i14]);
               }
             } else {
               while (iprot->peekList())
               {
-                std::string _elem13;
-                xfer += iprot->readString(_elem13);
-                this->value_.stringListValue.push_back(_elem13);
+                std::string _elem15;
+                xfer += iprot->readString(_elem15);
+                this->value_.stringListValue.push_back(_elem15);
               }
             }
             xfer += iprot->readListEnd();
@@ -144,10 +144,10 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
       xfer += oprot->writeFieldBegin("intListValue", apache::thrift::protocol::T_LIST, 3);
       {
         xfer += oprot->writeListBegin(apache::thrift::protocol::T_I64, this->value_.intListValue.size());
-        std::vector<int64_t> ::const_iterator _iter14;
-        for (_iter14 = this->value_.intListValue.begin(); _iter14 != this->value_.intListValue.end(); ++_iter14)
+        std::vector<int64_t> ::const_iterator _iter16;
+        for (_iter16 = this->value_.intListValue.begin(); _iter16 != this->value_.intListValue.end(); ++_iter16)
         {
-          xfer += oprot->writeI64((*_iter14));
+          xfer += oprot->writeI64((*_iter16));
         }
         xfer += oprot->writeListEnd();
       }
@@ -158,10 +158,10 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
       xfer += oprot->writeFieldBegin("stringListValue", apache::thrift::protocol::T_LIST, 4);
       {
         xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRING, this->value_.stringListValue.size());
-        std::vector<std::string> ::const_iterator _iter15;
-        for (_iter15 = this->value_.stringListValue.begin(); _iter15 != this->value_.stringListValue.end(); ++_iter15)
+        std::vector<std::string> ::const_iterator _iter17;
+        for (_iter17 = this->value_.stringListValue.begin(); _iter17 != this->value_.stringListValue.end(); ++_iter17)
         {
-          xfer += oprot->writeString((*_iter15));
+          xfer += oprot->writeString((*_iter17));
         }
         xfer += oprot->writeListEnd();
       }

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.facebook.thrift.lite.*;
 import com.facebook.thrift.lite.protocol.*;
@@ -155,6 +156,103 @@ public class ModuleLogger {
             iter0.write(oprot);
           }
           oprot.writeListEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case StructWithContainers: {
+        oprot.writeStructBegin(new TStruct("StructWithContainers"));
+        if (mMap.containsKey(Module.StructWithContainers_list_ref) && mMap.get(Module.StructWithContainers_list_ref) != null) {
+          writeFieldBegin(oprot, Module.StructWithContainers_list_ref);
+          List<Integer> var0 = (List<Integer>) mMap.get(Module.StructWithContainers_list_ref);
+          oprot.writeListBegin(new TList(TType.I32, var0.size()));
+          for (int iter0 : var0) {
+            oprot.writeI32(iter0);
+          }
+          oprot.writeListEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithContainers_set_ref) && mMap.get(Module.StructWithContainers_set_ref) != null) {
+          writeFieldBegin(oprot, Module.StructWithContainers_set_ref);
+          Set<Integer> var0 = (Set<Integer>) mMap.get(Module.StructWithContainers_set_ref);
+          oprot.writeSetBegin(new TSet(TType.I32, var0.size()));
+          for(int iter0 : var0) {
+            oprot.writeI32(iter0);
+          }
+          oprot.writeSetEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithContainers_map_ref) && mMap.get(Module.StructWithContainers_map_ref) != null) {
+          writeFieldBegin(oprot, Module.StructWithContainers_map_ref);
+          Map<Integer,Integer> var0 = (Map<Integer,Integer>) mMap.get(Module.StructWithContainers_map_ref);
+          oprot.writeMapBegin(new TMap(TType.I32, TType.I32, var0.size()));
+          for (Map.Entry<Integer, Integer> iter0 : var0.entrySet()) {
+            oprot.writeI32(iter0.getKey());
+            oprot.writeI32(iter0.getValue());
+          }
+          oprot.writeMapEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithContainers_list_ref_unique) && mMap.get(Module.StructWithContainers_list_ref_unique) != null) {
+          writeFieldBegin(oprot, Module.StructWithContainers_list_ref_unique);
+          List<Integer> var0 = (List<Integer>) mMap.get(Module.StructWithContainers_list_ref_unique);
+          oprot.writeListBegin(new TList(TType.I32, var0.size()));
+          for (int iter0 : var0) {
+            oprot.writeI32(iter0);
+          }
+          oprot.writeListEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithContainers_set_ref_shared) && mMap.get(Module.StructWithContainers_set_ref_shared) != null) {
+          writeFieldBegin(oprot, Module.StructWithContainers_set_ref_shared);
+          Set<Integer> var0 = (Set<Integer>) mMap.get(Module.StructWithContainers_set_ref_shared);
+          oprot.writeSetBegin(new TSet(TType.I32, var0.size()));
+          for(int iter0 : var0) {
+            oprot.writeI32(iter0);
+          }
+          oprot.writeSetEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithContainers_map_ref_custom) && mMap.get(Module.StructWithContainers_map_ref_custom) != null) {
+          writeFieldBegin(oprot, Module.StructWithContainers_map_ref_custom);
+          Map<Integer,Integer> var0 = (Map<Integer,Integer>) mMap.get(Module.StructWithContainers_map_ref_custom);
+          oprot.writeMapBegin(new TMap(TType.I32, TType.I32, var0.size()));
+          for (Map.Entry<Integer, Integer> iter0 : var0.entrySet()) {
+            oprot.writeI32(iter0.getKey());
+            oprot.writeI32(iter0.getValue());
+          }
+          oprot.writeMapEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithContainers_list_ref_shared_const) && mMap.get(Module.StructWithContainers_list_ref_shared_const) != null) {
+          writeFieldBegin(oprot, Module.StructWithContainers_list_ref_shared_const);
+          List<Integer> var0 = (List<Integer>) mMap.get(Module.StructWithContainers_list_ref_shared_const);
+          oprot.writeListBegin(new TList(TType.I32, var0.size()));
+          for (int iter0 : var0) {
+            oprot.writeI32(iter0);
+          }
+          oprot.writeListEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithContainers_set_custom_ref) && mMap.get(Module.StructWithContainers_set_custom_ref) != null) {
+          writeFieldBegin(oprot, Module.StructWithContainers_set_custom_ref);
+          Set<Integer> var0 = (Set<Integer>) mMap.get(Module.StructWithContainers_set_custom_ref);
+          oprot.writeSetBegin(new TSet(TType.I32, var0.size()));
+          for(int iter0 : var0) {
+            oprot.writeI32(iter0);
+          }
+          oprot.writeSetEnd();
           oprot.writeFieldEnd();
         }
       

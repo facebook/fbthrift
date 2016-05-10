@@ -1002,9 +1002,9 @@ void service2Client::send_methodA()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes516 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes547 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes516);
+  if (ctx) ctx->postWrite(_bytes547);
   return;
 }
 
@@ -1107,9 +1107,9 @@ void service2Client::send_methodB(int32_t x, const struct1& y, double z)
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes517 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes548 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes517);
+  if (ctx) ctx->postWrite(_bytes548);
   return;
 }
 
@@ -1209,9 +1209,9 @@ void service2Client::send_methodC()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes518 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes549 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes518);
+  if (ctx) ctx->postWrite(_bytes549);
   return;
 }
 
@@ -1321,9 +1321,9 @@ void service2Client::send_methodD(int32_t i, const struct1& j, double k)
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes519 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes550 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes519);
+  if (ctx) ctx->postWrite(_bytes550);
   return;
 }
 
@@ -1430,9 +1430,9 @@ void service2Client::send_methodE()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes520 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes551 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes520);
+  if (ctx) ctx->postWrite(_bytes551);
   return;
 }
 
@@ -1541,9 +1541,9 @@ void service2Client::send_methodF(int32_t l, const struct1& m, double n)
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes521 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes552 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes521);
+  if (ctx) ctx->postWrite(_bytes552);
   return;
 }
 

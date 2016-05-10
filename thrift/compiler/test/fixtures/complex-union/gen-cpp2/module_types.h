@@ -346,21 +346,21 @@ class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
   std::unique_ptr<std::string>& set_stringRef(std::string const &t) {
     __clear();
     type_ = Type::stringRef;
-    ::new (std::addressof(value_.stringRef)) std::unique_ptr<std::string>(new std::string(t));
+    ::new (std::addressof(value_.stringRef)) std::unique_ptr<std::string>(new std::unique_ptr<std::string>::element_type(t));
     return value_.stringRef;
   }
 
   std::unique_ptr<std::string>& set_stringRef(std::string&& t) {
     __clear();
     type_ = Type::stringRef;
-    ::new (std::addressof(value_.stringRef)) std::unique_ptr<std::string>(new std::string(std::move(t)));
+    ::new (std::addressof(value_.stringRef)) std::unique_ptr<std::string>(new std::unique_ptr<std::string>::element_type(std::move(t)));
     return value_.stringRef;
   }
 
   template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::unique_ptr<std::string>& set_stringRef(T&&... t) {
     __clear();
     type_ = Type::stringRef;
-    ::new (std::addressof(value_.stringRef)) std::unique_ptr<std::string>(new std::string(std::forward<T>(t)...));
+    ::new (std::addressof(value_.stringRef)) std::unique_ptr<std::string>(new std::unique_ptr<std::string>::element_type(std::forward<T>(t)...));
     return value_.stringRef;
   }
 

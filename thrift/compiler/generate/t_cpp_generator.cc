@@ -250,7 +250,8 @@ class t_cpp_generator : public t_oop_generator {
 
   void generate_deserialize_container    (std::ofstream& out,
                                           t_type*     ttype,
-                                          std::string prefix="");
+                                          std::string prefix="",
+                                          bool pointer = false);
 
   void generate_deserialize_set_element  (std::ofstream& out,
                                           t_set*      tset,
@@ -278,7 +279,8 @@ class t_cpp_generator : public t_oop_generator {
 
   void generate_serialize_container      (std::ofstream& out,
                                           t_type*     ttype,
-                                          std::string prefix="");
+                                          std::string prefix="",
+                                          bool pointer=false);
 
   void generate_serialize_map_element    (std::ofstream& out,
                                           t_map*      tmap,
@@ -314,14 +316,20 @@ class t_cpp_generator : public t_oop_generator {
     CHASE_TYPEDEFS = 1 << 2,
     ALWAYS_NAMESPACE = 1 << 3,
   };
-  std::string type_name(t_type* ttype, int flags=0);
-  std::string base_type_name(t_base_type::t_base tbase);
-  std::string cpp_type_name(t_type* ttype, std::string defaultName);
+  std::string type_name(const t_type* ttype, int flags=0) const;
+  std::string base_type_name(t_base_type::t_base tbase) const;
+  std::string cpp_type_name(const t_type* ttype,
+                            const std::string& defaultName) const;
+  std::string cpp_ref_type(const t_field* field, const string& name) const;
+  std::string field_type_name(const t_field* field, const t_type* ttype) const;
+  bool apply_unique_ptr_hack(const t_field* field) const;
 
   std::string generate_reflection_initializer_name(t_type* ttype);
   std::string generate_reflection_datatype(t_type* ttype);
   void generate_struct_reflection(ostream& out, t_struct* tstruct);
-  std::string declare_field(t_field* tfield, bool init=false, bool pointer=false, bool constant=false, bool reference=false, bool unique=false);
+  std::string declare_field(t_field* tfield, bool init=false,
+                            bool pointer=false, bool constant=false,
+                            bool reference=false);
   std::string declare_frozen_field(const t_field* tfield);
   std::string function_signature(t_function* tfunction, std::string style, std::string prefix="", bool name_params=true);
   std::string cob_function_signature(t_function* tfunction, std::string prefix="", bool name_params=true);
@@ -338,7 +346,7 @@ class t_cpp_generator : public t_oop_generator {
                                    const char* typed_name = nullptr);
 
   bool is_reference(const t_field* f) const {
-    return f->annotations_.count("cpp.ref") != 0;
+    return !cpp_ref_type(f, "").empty();
   }
 
   bool is_required(const t_field* f) const {
@@ -354,7 +362,7 @@ class t_cpp_generator : public t_oop_generator {
   }
 
 
-  bool is_complex_type(t_type* ttype) {
+  bool is_complex_type(const t_type* ttype) const {
     ttype = get_true_type(ttype);
 
     return
@@ -1394,7 +1402,7 @@ void t_cpp_generator::generate_forward_declaration(t_struct* tstruct) {
 void t_cpp_generator::generate_cpp_struct(t_struct* tstruct, bool is_exception) {
   bool needs_copy_constructor = false;
   for (auto const& member : tstruct->get_members()) {
-    if (is_reference(member)) {
+    if (apply_unique_ptr_hack(member)) {
       needs_copy_constructor = true;
     }
   }
@@ -2086,7 +2094,7 @@ void t_cpp_generator::generate_copy_constructor(ofstream& out,
 
   for (auto const& member : tstruct->get_members()) {
     auto name = member->get_name();
-    if (is_reference(member)) {
+    if (apply_unique_ptr_hack(member)) {
       auto type = type_name(member->get_type());
       indent(out) << "if (" << src << "." << name << ")" << endl;
       indent_up();
@@ -2283,12 +2291,18 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
     // TODO(dreiss): When everything else in Thrift is perfect,
     // do more of these in the initializer list.
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = get_true_type((*m_iter)->get_type());
+      auto& member = *m_iter;
+      t_type* t = get_true_type(member->get_type());
 
-      if (!t->is_base_type() && !t->is_enum()) {
-        t_const_value* cv = (*m_iter)->get_value();
+      if (is_reference(member) && t->is_container()) {
+        // Pointer to containers have to be initialized so that their behavior
+        // would be consistent with current behavior for optional containers
+        indent(out) << member->get_name() << ".reset(new typename decltype("
+            << member->get_name() << ")::element_type());" << endl;
+      } else if (!t->is_base_type() && !t->is_enum()) {
+        t_const_value* cv = member->get_value();
         if (cv != nullptr && !cv->is_empty()) {
-          indent(out) << (*m_iter)->get_name() << " = ";
+          indent(out) << member->get_name() << " = ";
           print_const_value(out, t, cv);
           out << ";" << endl;
         }
@@ -2389,12 +2403,10 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
 
   // Declare all fields
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    auto ref = is_reference(*m_iter);
-
     indent(out) <<
       declare_field(*m_iter, false, pointers &&
                     !get_true_type((*m_iter)->get_type())->is_xception(),
-                    !read, false, ref) << endl;
+                    !read, false) << endl;
   }
 
   if (should_generate_isset) {
@@ -3157,7 +3169,12 @@ void t_cpp_generator::generate_struct_clear(ofstream& out,
           indent(out) << name << ".__clear();" << endl;
         }
       } else if (t->is_container()) {
-        indent(out) << name << ".clear();" << endl;
+        if (is_reference(*m_iter)) {
+          indent(out) << name << ".reset(new typename decltype(" << name <<
+              ")::element_type());" << endl;
+        } else {
+          indent(out) << name << ".clear();" << endl;
+        }
       } else {
         throw "UNKNOWN TYPE for member: " + name;
       }
@@ -6442,11 +6459,11 @@ void t_cpp_generator::generate_deserialize_field(ofstream& out,
 
   string name = prefix + tfield->get_name() + suffix;
 
+  auto pointer = is_reference(tfield);
   if (type->is_struct() || type->is_xception()) {
-    auto pointer = is_reference(tfield);
     generate_deserialize_struct(out, (t_struct*)type, name, pointer);
   } else if (type->is_container()) {
-    generate_deserialize_container(out, type, name);
+    generate_deserialize_container(out, type, name, pointer);
   } else if (type->is_base_type()) {
     indent(out) <<
       "xfer += iprot->";
@@ -6517,10 +6534,14 @@ void t_cpp_generator::generate_deserialize_struct(ofstream& out,
     indent_up();
   }
   if (pointer) {
-    indent(out) << prefix << " = std::unique_ptr< " << type_name(tstruct) <<
-      ">(new " << type_name(tstruct) << ");" << endl;
-    indent(out) <<
-      "xfer += " << prefix << "->read(iprot);" << endl;
+    string ptrtype = tmp("_ptype");
+    indent(out) << "using element_type = typename std::remove_const<" <<
+        "typename std::remove_reference<decltype(" << prefix <<
+        ")>::type::element_type>::type;" << endl <<
+    indent() << "std::unique_ptr<element_type> " << ptrtype <<
+        "(new element_type());" << endl <<
+    indent() << "xfer += " << ptrtype << "->read(iprot);" << endl <<
+    indent() << prefix << " = std::move(" << ptrtype << ");" << endl;
     if (tstruct->is_union()) {
       indent(out) << "if (" << prefix << "->getType() == "
                   << type_name(tstruct) << "::Type::__EMPTY__) {" << endl;
@@ -6563,7 +6584,8 @@ void t_cpp_generator::generate_deserialize_struct(ofstream& out,
 
 void t_cpp_generator::generate_deserialize_container(ofstream& out,
                                                      t_type* ttype,
-                                                     string prefix) {
+                                                     string prefix,
+                                                     bool pointer) {
   scope_up(out);
 
   string size = tmp("_size");
@@ -6571,14 +6593,27 @@ void t_cpp_generator::generate_deserialize_container(ofstream& out,
   string ktype = tmp("_ktype");
   string vtype = tmp("_vtype");
   string etype = tmp("_etype");
+  string ptrtype = tmp("_ptype");
 
   t_container* tcontainer = (t_container*)ttype;
   // One of them at least is != than annotations_.end()
   bool use_push = tcontainer->annotations_.find("cpp.type")
     != tcontainer->annotations_.find("cpp.template");
 
+  string contref = prefix;
+  if (pointer) {
+    auto reftype = tmp("_rtype");
+    indent(out) << "using element_type = typename std::remove_const<" <<
+        "typename std::remove_reference<decltype(" << prefix <<
+        ")>::type::element_type>::type;" << endl <<
+    indent() << "std::unique_ptr<element_type> " << ptrtype <<
+      "(new element_type());" << endl <<
+    indent() << "auto& " << reftype << " = *" << ptrtype << ";" << endl;
+    contref = reftype;
+  }
+
   indent(out) <<
-    prefix << ".clear();" << endl <<
+    contref << ".clear();" << endl <<
     indent() << "uint32_t " << size << ";" << endl <<
     indent() << "bool " << sizeUnknown << ";" << endl;
 
@@ -6608,10 +6643,10 @@ void t_cpp_generator::generate_deserialize_container(ofstream& out,
     indent_up();
 
     if (ttype->is_list() && !use_push) {
-      out << indent() << prefix << ".resize(" << size << ");" << endl;
+      out << indent() << contref << ".resize(" << size << ");" << endl;
     } else if ((ttype->is_map() && ((t_map*)ttype)->is_unordered()) ||
                (ttype->is_set() && ((t_set*)ttype)->is_unordered())) {
-      out << indent() << prefix << ".reserve(" << size << ");" << endl;
+      out << indent() << contref << ".reserve(" << size << ");" << endl;
     }
 
     // For loop iterates over elements
@@ -6625,11 +6660,11 @@ void t_cpp_generator::generate_deserialize_container(ofstream& out,
       scope_up(out);
 
       if (ttype->is_map()) {
-        generate_deserialize_map_element(out, (t_map*)ttype, prefix);
+        generate_deserialize_map_element(out, (t_map*)ttype, contref);
       } else if (ttype->is_set()) {
-        generate_deserialize_set_element(out, (t_set*)ttype, prefix);
+        generate_deserialize_set_element(out, (t_set*)ttype, contref);
       } else if (ttype->is_list()) {
-        generate_deserialize_list_element(out, (t_list*)ttype, prefix,
+        generate_deserialize_list_element(out, (t_list*)ttype, contref,
                                           use_push, i);
       }
 
@@ -6650,16 +6685,21 @@ void t_cpp_generator::generate_deserialize_container(ofstream& out,
       scope_up(out);
 
       if (ttype->is_map()) {
-        generate_deserialize_map_element(out, (t_map*)ttype, prefix);
+        generate_deserialize_map_element(out, (t_map*)ttype, contref);
       } else if (ttype->is_set()) {
-        generate_deserialize_set_element(out, (t_set*)ttype, prefix);
+        generate_deserialize_set_element(out, (t_set*)ttype, contref);
       } else if (ttype->is_list()) {
-        generate_deserialize_list_element(out, (t_list*)ttype, prefix, true, i);
+        generate_deserialize_list_element(out, (t_list*)ttype, contref,
+                                          true, i);
       }
 
       scope_down(out);
     indent_down();
   indent(out) << "}" << endl;
+
+  if (pointer) {
+    indent(out) << prefix << " =  std::move(" << ptrtype << ");" << endl;
+  }
 
   // Read container end
   if (ttype->is_map()) {
@@ -6750,13 +6790,13 @@ void t_cpp_generator::generate_serialize_field(ofstream& out,
     throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + name;
   }
 
+  auto pointer = is_reference(tfield);
   if (type->is_struct() || type->is_xception()) {
-    auto pointer = is_reference(tfield);
     generate_serialize_struct(out,
                               (t_struct*)type,
                               name, pointer);
   } else if (type->is_container()) {
-    generate_serialize_container(out, type, name);
+    generate_serialize_container(out, type, name, pointer);
   } else if (type->is_base_type() || type->is_enum()) {
 
     indent(out) <<
@@ -6835,8 +6875,17 @@ void t_cpp_generator::generate_serialize_struct(ofstream& out,
 
 void t_cpp_generator::generate_serialize_container(ofstream& out,
                                                    t_type* ttype,
-                                                   string prefix) {
+                                                   string prefix,
+                                                   bool pointer) {
   scope_up(out);
+
+  if (pointer) {
+    auto reftype = tmp("_rtype");
+    indent(out) << "if (" << prefix << ") {" << endl;
+    indent_up();
+    indent(out) << "const auto& " << reftype << " = *" << prefix << ";" << endl;
+    prefix = reftype;
+  }
 
   if (ttype->is_map()) {
     indent(out) <<
@@ -6881,6 +6930,36 @@ void t_cpp_generator::generate_serialize_container(ofstream& out,
   } else if (ttype->is_list()) {
     indent(out) <<
       "xfer += oprot->writeListEnd();" << endl;
+  }
+
+  if (pointer) {
+    indent_down();
+    indent(out) << "} else {" << endl;
+    indent_up();
+
+    if (ttype->is_map()) {
+      indent(out) <<
+        "xfer += oprot->writeMapBegin(" <<
+        type_to_enum(((t_map*)ttype)->get_key_type()) << ", " <<
+        type_to_enum(((t_map*)ttype)->get_val_type()) << ", " <<
+        "0);" << endl;
+      indent(out) << "xfer += oprot->writeMapEnd();" << endl;
+    } else if (ttype->is_set()) {
+      indent(out) <<
+        "xfer += oprot->writeSetBegin(" <<
+        type_to_enum(((t_set*)ttype)->get_elem_type()) << ", " <<
+        "0);" << endl;
+      indent(out) << "xfer += oprot->writeListEnd();" << endl;
+    } else if (ttype->is_list()) {
+      indent(out) <<
+        "xfer += oprot->writeListBegin(" <<
+        type_to_enum(((t_list*)ttype)->get_elem_type()) << ", " <<
+        "0);" << endl;
+      indent(out) << "xfer += oprot->writeListEnd();" << endl;
+    }
+
+    indent_down();
+    indent(out) << "}" << endl;
   }
 
   scope_down(out);
@@ -7004,12 +7083,55 @@ string t_cpp_generator::namespace_close(string ns) {
  * @para defaultName Value to return if type has no cpp.type annotation
  * @return String of the type name, i.e. std::set<type>
  */
-string t_cpp_generator::cpp_type_name(t_type* ttype, string defaultName) {
-  std::map<string, string>::iterator it = ttype->annotations_.find("cpp.type");
+string t_cpp_generator::cpp_type_name(const t_type* ttype,
+                                      const string& defaultName) const {
+  const auto& it = ttype->annotations_.find("cpp.type");
   if (it != ttype->annotations_.end()) {
     return it->second;
   }
   return defaultName;
+}
+
+/**
+ * Wraps type to pointer specified by annotation
+ *
+ * @param ttype The type
+ * @name name Type name to be wrapped
+ */
+string t_cpp_generator::cpp_ref_type(const t_field* field,
+                                     const string& name) const {
+  auto& annotations = field->annotations_;
+
+  // backward compatibility with 'ref' annotation
+  if (annotations.count("cpp.ref") != 0) {
+    return folly::format("std::unique_ptr<{}>", name).str();
+  }
+
+  auto it = annotations.find("cpp.ref_type");
+  if (it == annotations.end()) {
+    return "";
+  }
+
+  auto& reftype = it->second;
+
+  // useful aliases
+  if (reftype == "unique") {
+    return folly::format("std::unique_ptr<{}>", name).str();
+  } else if (reftype == "shared") {
+    return folly::format("std::shared_ptr<{}>", name).str();
+  } else if (reftype== "shared_const") {
+    return folly::format("std::shared_ptr<const {}>", name).str();
+  } else {
+    return folly::format("{}<{}>", reftype, name).str();
+  }
+}
+
+/**
+ * If we should generate copy constructor for unique_ptr field via reset
+ * NOTE: it would be much better to use a copyable wrapper instead
+ */
+bool t_cpp_generator::apply_unique_ptr_hack(const t_field* field) const {
+  return cpp_ref_type(field, "") == "std::unique_ptr<>";
 }
 
 /**
@@ -7018,7 +7140,7 @@ string t_cpp_generator::cpp_type_name(t_type* ttype, string defaultName) {
  * @param ttype The type
  * @return String of the type name, i.e. std::set<type>
  */
-string t_cpp_generator::type_name(t_type* ttype, int flags) {
+string t_cpp_generator::type_name(const t_type* ttype, int flags) const {
   bool in_typedef = flags & IN_TYPEDEF;
   bool arg = flags & IN_ARG;
   bool chase_typedefs = flags & CHASE_TYPEDEFS;
@@ -7030,7 +7152,7 @@ string t_cpp_generator::type_name(t_type* ttype, int flags) {
     ttype = get_true_type(ttype);
   }
   if (ttype->is_base_type()) {
-    t_base_type* btype = static_cast<t_base_type*>(ttype);
+    const t_base_type* btype = static_cast<const t_base_type*>(ttype);
     string bname = cpp_type_name(ttype, base_type_name(btype->get_base()));
 
     if (arg && (btype->get_base() == t_base_type::TYPE_STRING)) {
@@ -7100,7 +7222,7 @@ string t_cpp_generator::type_name(t_type* ttype, int flags) {
   string tname = cpp_type_name(ttype, "");
   if (tname.empty()) {
     // Check if it needs to be namespaced
-    t_program* program = ttype->get_program();
+    const t_program* program = ttype->get_program();
     if (program != nullptr && (always_namespace || program != program_)) {
       tname =
         class_prefix +
@@ -7118,13 +7240,24 @@ string t_cpp_generator::type_name(t_type* ttype, int flags) {
   }
 }
 
+string t_cpp_generator::field_type_name(const t_field* field,
+                                        const t_type* ttype) const {
+  auto name = type_name(ttype);
+  auto ref_type_name = cpp_ref_type(field, name);
+  if (!ref_type_name.empty()) {
+    return ref_type_name;
+  } else {
+    return name;
+  }
+}
+
 /**
  * Returns the C++ type that corresponds to the thrift type.
  *
  * @param tbase The base type
  * @return Explicit C++ type, i.e. "int32_t"
  */
-string t_cpp_generator::base_type_name(t_base_type::t_base tbase) {
+string t_cpp_generator::base_type_name(t_base_type::t_base tbase) const {
   switch (tbase) {
   case t_base_type::TYPE_VOID:
     return "void";
@@ -7369,21 +7502,20 @@ void t_cpp_generator::generate_struct_reflection(ostream& out,
  * @param ttype The type
  * @return Field declaration, i.e. int x = 0;
  */
-string t_cpp_generator::declare_field(t_field* tfield, bool init, bool pointer, bool constant, bool reference, bool unique) {
+string t_cpp_generator::declare_field(t_field* tfield, bool init,
+                                      bool pointer, bool constant,
+                                      bool reference) {
   // TODO(mcslee): do we ever need to initialize the field?
   string result = "";
   if (constant) {
     result += "const ";
   }
-  result += type_name(tfield->get_type());
+  result += field_type_name(tfield, tfield->get_type());
   if (pointer) {
     result += "*";
   }
   if (reference) {
     result += "&";
-  }
-  if (unique) {
-    result = "std::unique_ptr<" + result + ">";
   }
   result += " " + tfield->get_name();
   if (init) {

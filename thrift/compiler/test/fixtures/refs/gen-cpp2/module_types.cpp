@@ -186,17 +186,17 @@ template uint32_t StructWithUnion::write<apache::thrift::CompactProtocolWriter>(
 template uint32_t StructWithUnion::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t StructWithUnion::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
 
-StructWithUnion::StructWithUnion(const StructWithUnion& src3) {
-  if (src3.u) u.reset(new  ::cpp2::MyUnion(*src3.u));
-  aDouble = src3.aDouble;
-  __isset.aDouble = src3.__isset.aDouble;
-  f = src3.f;
-  __isset.f = src3.__isset.f;
+StructWithUnion::StructWithUnion(const StructWithUnion& src6) {
+  if (src6.u) u.reset(new  ::cpp2::MyUnion(*src6.u));
+  aDouble = src6.aDouble;
+  __isset.aDouble = src6.__isset.aDouble;
+  f = src6.f;
+  __isset.f = src6.__isset.f;
 }
 
-StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src4) {
-  StructWithUnion tmp5(src4);
-  swap(*this, tmp5);
+StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src7) {
+  StructWithUnion tmp8(src7);
+  swap(*this, tmp8);
   return *this;
 }
 
@@ -277,6 +277,91 @@ std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() & {
 void swap(RecursiveStruct& a, RecursiveStruct& b) {
   using ::std::swap;
   swap(a.mes, b.mes);
+  swap(a.__isset, b.__isset);
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+template uint32_t StructWithContainers::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithContainers::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithContainers::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithContainers::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithContainers::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithContainers::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithContainers::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithContainers::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+
+StructWithContainers::StructWithContainers(const StructWithContainers& src18) {
+  if (src18.list_ref) list_ref.reset(new std::vector<int32_t>(*src18.list_ref));
+  if (src18.set_ref) set_ref.reset(new std::set<int32_t>(*src18.set_ref));
+  if (src18.map_ref) map_ref.reset(new std::map<int32_t, int32_t>(*src18.map_ref));
+  if (src18.list_ref_unique) list_ref_unique.reset(new std::vector<int32_t>(*src18.list_ref_unique));
+  set_ref_shared = src18.set_ref_shared;
+  map_ref_custom = src18.map_ref_custom;
+  list_ref_shared_const = src18.list_ref_shared_const;
+  set_custom_ref = src18.set_custom_ref;
+}
+
+StructWithContainers& StructWithContainers::operator=(const StructWithContainers& src19) {
+  StructWithContainers tmp20(src19);
+  swap(*this, tmp20);
+  return *this;
+}
+
+void StructWithContainers::__clear() {
+  list_ref.reset(new typename decltype(list_ref)::element_type());
+  set_ref.reset(new typename decltype(set_ref)::element_type());
+  map_ref.reset(new typename decltype(map_ref)::element_type());
+  list_ref_unique.reset(new typename decltype(list_ref_unique)::element_type());
+  set_ref_shared.reset(new typename decltype(set_ref_shared)::element_type());
+  map_ref_custom.reset(new typename decltype(map_ref_custom)::element_type());
+  list_ref_shared_const.reset(new typename decltype(list_ref_shared_const)::element_type());
+  set_custom_ref.reset(new typename decltype(set_custom_ref)::element_type());
+  __isset.__clear();
+}
+
+bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
+  if (!(((list_ref && rhs.list_ref && *list_ref == *rhs.list_ref) ||(!list_ref && !rhs.list_ref)))) {
+    return false;
+  }
+  if (!(((set_ref && rhs.set_ref && *set_ref == *rhs.set_ref) ||(!set_ref && !rhs.set_ref)))) {
+    return false;
+  }
+  if (!(((map_ref && rhs.map_ref && *map_ref == *rhs.map_ref) ||(!map_ref && !rhs.map_ref)))) {
+    return false;
+  }
+  if (!(((list_ref_unique && rhs.list_ref_unique && *list_ref_unique == *rhs.list_ref_unique) ||(!list_ref_unique && !rhs.list_ref_unique)))) {
+    return false;
+  }
+  if (!(((set_ref_shared && rhs.set_ref_shared && *set_ref_shared == *rhs.set_ref_shared) ||(!set_ref_shared && !rhs.set_ref_shared)))) {
+    return false;
+  }
+  if (!(((map_ref_custom && rhs.map_ref_custom && *map_ref_custom == *rhs.map_ref_custom) ||(!map_ref_custom && !rhs.map_ref_custom)))) {
+    return false;
+  }
+  if (!(((list_ref_shared_const && rhs.list_ref_shared_const && *list_ref_shared_const == *rhs.list_ref_shared_const) ||(!list_ref_shared_const && !rhs.list_ref_shared_const)))) {
+    return false;
+  }
+  if (!(((set_custom_ref && rhs.set_custom_ref && *set_custom_ref == *rhs.set_custom_ref) ||(!set_custom_ref && !rhs.set_custom_ref)))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(StructWithContainers& a, StructWithContainers& b) {
+  using ::std::swap;
+  swap(a.list_ref, b.list_ref);
+  swap(a.set_ref, b.set_ref);
+  swap(a.map_ref, b.map_ref);
+  swap(a.list_ref_unique, b.list_ref_unique);
+  swap(a.set_ref_shared, b.set_ref_shared);
+  swap(a.map_ref_custom, b.map_ref_custom);
+  swap(a.list_ref_shared_const, b.list_ref_shared_const);
+  swap(a.set_custom_ref, b.set_custom_ref);
   swap(a.__isset, b.__isset);
 }
 

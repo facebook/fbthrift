@@ -175,5 +175,136 @@ void reflectionInitializer_2826922994162023308(::apache::thrift::reflection::Sch
   reflectionInitializer_1481110219371736233(schema);  // list<struct module.RecursiveStruct>
 }
 
+// Reflection initializer for list<i32>
+static void reflectionInitializer_12058391220869880681(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 12058391220869880681U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "list<i32>";
+  schema.names[dt.name] = id;
+  dt.__isset.valueType = true;
+  dt.valueType = 5U;
+}
+
+// Reflection initializer for set<i32>
+static void reflectionInitializer_10941653322204590122(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 10941653322204590122U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "set<i32>";
+  schema.names[dt.name] = id;
+  dt.__isset.valueType = true;
+  dt.valueType = 5U;
+}
+
+// Reflection initializer for map<i32, i32>
+static void reflectionInitializer_7009713166249494859(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 7009713166249494859U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "map<i32, i32>";
+  schema.names[dt.name] = id;
+  dt.__isset.mapKeyType = true;
+  dt.mapKeyType = 5U;
+  dt.__isset.valueType = true;
+  dt.valueType = 5U;
+}
+
+static void  reflectionInitializer_10941653322204590122(::apache::thrift::reflection::Schema&);  // set<i32>
+static void  reflectionInitializer_12058391220869880681(::apache::thrift::reflection::Schema&);  // list<i32>
+static void  reflectionInitializer_7009713166249494859(::apache::thrift::reflection::Schema&);  // map<i32, i32>
+// Reflection initializer for struct module.StructWithContainers
+void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 18101585657679500556U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.StructWithContainers";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 12058391220869880681U;
+    f.name = "list_ref";
+    f.order = 0;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref"] = "true";
+    f.annotations["cpp2.ref"] = "true";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = true;
+    f.type = 10941653322204590122U;
+    f.name = "set_ref";
+    f.order = 1;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref"] = "true";
+    f.annotations["cpp2.ref"] = "true";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 7009713166249494859U;
+    f.name = "map_ref";
+    f.order = 2;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref"] = "true";
+    f.annotations["cpp2.ref"] = "true";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[4];
+    f.isRequired = true;
+    f.type = 12058391220869880681U;
+    f.name = "list_ref_unique";
+    f.order = 3;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "unique";
+    f.annotations["cpp2.ref_type"] = "unique";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[5];
+    f.isRequired = true;
+    f.type = 10941653322204590122U;
+    f.name = "set_ref_shared";
+    f.order = 4;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared";
+    f.annotations["cpp2.ref_type"] = "shared";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[6];
+    f.isRequired = true;
+    f.type = 7009713166249494859U;
+    f.name = "map_ref_custom";
+    f.order = 5;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared";
+    f.annotations["cpp2.ref_type"] = "shared";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[7];
+    f.isRequired = true;
+    f.type = 12058391220869880681U;
+    f.name = "list_ref_shared_const";
+    f.order = 6;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared_const";
+    f.annotations["cpp2.ref_type"] = "shared_const";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[8];
+    f.isRequired = true;
+    f.type = 10941653322204590122U;
+    f.name = "set_custom_ref";
+    f.order = 7;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "std::auto_ptr";
+    f.annotations["cpp2.ref_type"] = "std::auto_ptr";
+  }
+  reflectionInitializer_10941653322204590122(schema);  // set<i32>
+  reflectionInitializer_12058391220869880681(schema);  // list<i32>
+  reflectionInitializer_7009713166249494859(schema);  // map<i32, i32>
+}
+
 }
 

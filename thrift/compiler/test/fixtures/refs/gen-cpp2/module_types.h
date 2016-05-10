@@ -23,6 +23,7 @@ class MyField;
 class MyStruct;
 class StructWithUnion;
 class RecursiveStruct;
+class StructWithContainers;
 
 class MyUnion : private boost::totally_ordered<MyUnion> {
  public:
@@ -555,10 +556,10 @@ class StructWithUnion : private boost::totally_ordered<StructWithUnion> {
   }
 
   StructWithUnion(StructWithUnion&&) = default;
-  StructWithUnion(const StructWithUnion& src3);
+  StructWithUnion(const StructWithUnion& src6);
 
   StructWithUnion& operator=(StructWithUnion&&) = default;
-  StructWithUnion& operator=(const StructWithUnion& src4);
+  StructWithUnion& operator=(const StructWithUnion& src7);
   void __clear();
 
   virtual ~StructWithUnion() throw() {}
@@ -717,6 +718,164 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Recursive
 }
 
 template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::RecursiveStruct>::serializedSizeZC(Protocol* proto, const  ::cpp2::RecursiveStruct* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
+class StructWithContainers : private boost::totally_ordered<StructWithContainers> {
+ public:
+
+  StructWithContainers() {}
+  // FragileConstructor for use in initialization lists only
+
+  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::map<int32_t, int32_t>> map_ref_custom__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg, std::auto_ptr<std::set<int32_t>> set_custom_ref__arg) :
+      list_ref(std::move(list_ref__arg)),
+      set_ref(std::move(set_ref__arg)),
+      map_ref(std::move(map_ref__arg)),
+      list_ref_unique(std::move(list_ref_unique__arg)),
+      set_ref_shared(std::move(set_ref_shared__arg)),
+      map_ref_custom(std::move(map_ref_custom__arg)),
+      list_ref_shared_const(std::move(list_ref_shared_const__arg)),
+      set_custom_ref(std::move(set_custom_ref__arg)) {}
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithContainers(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    list_ref = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithContainers(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    set_ref = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithContainers(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    map_ref = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithContainers(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    list_ref_unique = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithContainers(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    set_ref_shared = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithContainers(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    map_ref_custom = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithContainers(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    list_ref_shared_const = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithContainers(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    set_custom_ref = arg.move();
+  }
+
+  StructWithContainers(StructWithContainers&&) = default;
+  StructWithContainers(const StructWithContainers& src18);
+
+  StructWithContainers& operator=(StructWithContainers&&) = default;
+  StructWithContainers& operator=(const StructWithContainers& src19);
+  void __clear();
+
+  virtual ~StructWithContainers() throw() {}
+
+  std::unique_ptr<std::vector<int32_t>> list_ref;
+  std::unique_ptr<std::set<int32_t>> set_ref;
+  std::unique_ptr<std::map<int32_t, int32_t>> map_ref;
+  std::unique_ptr<std::vector<int32_t>> list_ref_unique;
+  std::shared_ptr<std::set<int32_t>> set_ref_shared;
+  std::shared_ptr<const std::map<int32_t, int32_t>> map_ref_custom;
+  std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const;
+  std::auto_ptr<std::set<int32_t>> set_custom_ref;
+
+  struct __isset {
+    void __clear() {}
+
+  } __isset;
+  bool operator==(const StructWithContainers& rhs) const;
+
+  bool operator < (const StructWithContainers& rhs) const {
+    if (!(list_ref == rhs.list_ref)) {
+      return list_ref < rhs.list_ref;
+    }
+    if (!(set_ref == rhs.set_ref)) {
+      return set_ref < rhs.set_ref;
+    }
+    if (!(map_ref == rhs.map_ref)) {
+      return map_ref < rhs.map_ref;
+    }
+    if (!(list_ref_unique == rhs.list_ref_unique)) {
+      return list_ref_unique < rhs.list_ref_unique;
+    }
+    if (!(set_ref_shared == rhs.set_ref_shared)) {
+      return set_ref_shared < rhs.set_ref_shared;
+    }
+    if (!(map_ref_custom == rhs.map_ref_custom)) {
+      return map_ref_custom < rhs.map_ref_custom;
+    }
+    if (!(list_ref_shared_const == rhs.list_ref_shared_const)) {
+      return list_ref_shared_const < rhs.list_ref_shared_const;
+    }
+    if (!(set_custom_ref == rhs.set_custom_ref)) {
+      return set_custom_ref < rhs.set_custom_ref;
+    }
+    return false;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(StructWithContainers& a, StructWithContainers& b);
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::StructWithContainers>::clear( ::cpp2::StructWithContainers* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::StructWithContainers>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithContainers>::write(Protocol* proto, const  ::cpp2::StructWithContainers* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithContainers>::read(Protocol* proto,   ::cpp2::StructWithContainers* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithContainers>::serializedSize(Protocol* proto, const  ::cpp2::StructWithContainers* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithContainers>::serializedSizeZC(Protocol* proto, const  ::cpp2::StructWithContainers* obj) {
   return obj->serializedSizeZC(proto);
 }
 
