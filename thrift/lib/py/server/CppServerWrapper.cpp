@@ -535,6 +535,17 @@ public:
     setThreadManager(std::move(tm));
   }
 
+  // this adapts from a std::shared_ptr, which boost::python does not (yet)
+  // support, to a boost::shared_ptr, which it has internal support for.
+  //
+  // the magic is in the custom deleter which takes and releases a refcount on
+  // the std::shared_ptr, instead of doing any local deletion.
+  boost::shared_ptr<ThreadManager>
+  getThreadManagerHelper() {
+    auto ptr = this->getThreadManager();
+    return boost::shared_ptr<ThreadManager>(ptr.get(), [ptr](void*) {});
+  }
+
  private:
   std::unique_ptr<TLSTicketProcessor> ticketProcessor_;
 
@@ -579,6 +590,23 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("stop", &CppServerWrapper::stop)
     .def("setMaxConnections", &CppServerWrapper::setMaxConnections)
     .def("getMaxConnections", &CppServerWrapper::getMaxConnections)
+
+    .def("getLoad", &CppServerWrapper::getLoad)
+    .def("getRequestLoad", &CppServerWrapper::getRequestLoad)
+    .def("getPendingCount", &CppServerWrapper::getPendingCount)
+    .def("getActiveRequests", &CppServerWrapper::getActiveRequests)
+    .def("getThreadManager", &CppServerWrapper::getThreadManagerHelper)
+    ;
+
+  class_<ThreadManager, boost::shared_ptr<ThreadManager>, boost::noncopyable>(
+    "ThreadManager", no_init
+  )
+    .def("idleWorkerCount", &ThreadManager::idleWorkerCount)
+    .def("workerCount", &ThreadManager::workerCount)
+    .def("pendingTaskCount", &ThreadManager::pendingTaskCount)
+    .def("totalTaskCount", &ThreadManager::totalTaskCount)
+    .def("pendingTaskCountMax", &ThreadManager::pendingTaskCountMax)
+    .def("expiredTaskCount", &ThreadManager::expiredTaskCount)
     ;
 
   enum_<SSLPolicy>("SSLPolicy")
