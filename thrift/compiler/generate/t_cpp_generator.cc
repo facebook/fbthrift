@@ -1366,7 +1366,12 @@ void t_cpp_generator::print_const_value(
       out << "{}";
       return;
     }
-    t_type* etype = ((t_list*)type)->get_elem_type();
+    t_type* etype = nullptr;
+    if (type->is_list()) {
+      etype = ((t_list*)type)->get_elem_type();
+    } else {
+      etype = ((t_set*)type)->get_elem_type();
+    }
     out << "{" << endl;
     indent_up();
     for (auto& entry : val) {
