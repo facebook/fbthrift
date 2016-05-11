@@ -1,5 +1,4 @@
-# @lint-avoid-pyflakes2
-# @lint-avoid-python-3-compatibility-imports
+#!/usr/bin/env python3
 
 import asyncio
 import functools
@@ -207,6 +206,12 @@ class ThriftCoroTestCase(unittest.TestCase):
         yield from self.client.testOneway(2)
         start, end, seconds = yield from self.handler.onewaysQueue.get()
         self.assertAlmostEqual(seconds, (end - start), places=1)
+
+    @async_test
+    def testClose(self):
+        self.assertTrue(self.protocol.transport.isOpen())
+        self.protocol.close()
+        self.assertFalse(self.protocol.transport.isOpen())
 
 
 class ThriftAsyncTestCase(unittest.TestCase):

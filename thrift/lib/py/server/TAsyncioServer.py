@@ -3,21 +3,18 @@
 import asyncio
 import functools
 import logging
-from io import BytesIO
-import struct
 import traceback
-import warnings
 
-from .TServer import TServer, TServerEventHandler, TConnectionContext
+from thrift.server.TServer import TServerEventHandler
 from thrift.Thrift import (
     TException,
     TProcessor,
 )
 from thrift.util.async_common import (
-    AsyncClientProtocolBase,
-    AsyncThriftFactory,
+    AsyncioRpcConnectionContext,
     FramedProtocol,
     THeaderProtocol,
+    ThriftHeaderClientProtocolBase,
     TReadOnlyBuffer,
     TReadWriteBuffer,
     WrappedTransport,
@@ -31,6 +28,11 @@ __all__ = [
 
 
 logger = logging.getLogger(__name__)
+
+
+#
+# Thrift server support
+#
 
 
 @asyncio.coroutine
@@ -113,114 +115,10 @@ def ThriftAsyncServerFactory(
     return server
 
 
-def ThriftClientProtocolFactory(
-    client_class,
-    thrift_factory=None,
-    loop=None,
-    timeouts=None,
-    client_type=None,
-):
-    if not thrift_factory:
-        thrift_factory = AsyncioThriftFactory(client_type)
-    return functools.partial(
-        ThriftHeaderClientProtocol,
-        client_class,
-        thrift_factory,
-        loop,
-        timeouts,
-        client_type,
-    )
-
-
 def ThriftServerProtocolFactory(processor, server_event_handler, loop=None):
     return functools.partial(
         ThriftHeaderServerProtocol, processor, server_event_handler, loop,
     )
-
-
-class AsyncioRpcConnectionContext(TConnectionContext):
-
-    def __init__(self, client_socket):
-        self._client_socket = client_socket
-
-    def getPeerName(self):
-        return self._client_socket.getpeername()
-
-
-class SenderTransport:
-    MAX_QUEUE_SIZE = 1024
-
-    def __init__(self, trans, loop=None):
-        self._loop = loop or asyncio.get_event_loop()
-        self._queue = asyncio.Queue(
-            maxsize=self.MAX_QUEUE_SIZE,
-            loop=self._loop,
-        )
-        self._trans = trans
-        self._consumer = self._loop.create_task(self._send())
-        self._producers = []
-
-    def __del__(self):
-        if not self._consumer.done() or not self._consumer.cancelled():
-            logger.debug(
-                'SenderTransport did not finish properly'
-                ' as the consumer asyncio.Task is still pending.'
-                ' Please make sure to call .close() on this object.'
-            )
-
-    def send_message(self, msg):
-        self._producers.append(
-            self._loop.create_task(self._queue.put(msg)),
-        )
-
-    def _clean_producers(self):
-        self._producers = [
-            p for p in self._producers if not p.done() and not p.cancelled()
-        ]
-
-    @asyncio.coroutine
-    def _send(self):
-        while True:
-            msg = yield from self._queue.get()
-            self._clean_producers()
-            self._trans.write(msg)
-
-    def close(self):
-        self._consumer.cancel()
-        for producer in self._producers:
-            if not producer.done() and not producer.cancelled():
-                producer.cancel()
-        if self._trans:
-            self._trans.close()
-
-
-class AsyncioThriftFactory(AsyncThriftFactory):
-
-    def getSenderTransport(self, asyncio_transport, asyncio_loop):
-        return SenderTransport(asyncio_transport, asyncio_loop)
-
-
-class ThriftHeaderClientProtocol(AsyncClientProtocolBase):
-
-    @asyncio.coroutine
-    def message_received(self, frame, delay=0):
-        tmi = TReadOnlyBuffer(frame)
-        iprot = THeaderProtocol(tmi)
-        (fname, mtype, seqid) = iprot.readMessageBegin()
-
-        if delay:
-            yield from asyncio.sleep(delay, loop=self.loop)
-        else:
-            try:
-                timeout_task = self.pending_tasks.pop(seqid)
-            except KeyError:
-                # Task doesn't have a timeout or has already been cancelled
-                # and pruned from `pending_tasks`.
-                pass
-            else:
-                timeout_task.cancel()
-
-        self._handle_message_received(iprot, fname, mtype, seqid)
 
 
 class ThriftHeaderServerProtocol(FramedProtocol):
@@ -270,51 +168,55 @@ class ThriftHeaderServerProtocol(FramedProtocol):
         self.server_event_handler.connectionDestroyed(self.server_context)
 
 
-class TAsyncioServer(TServer):
+#
+# Thrift client support
+#
 
-    """DEPRECATED. Use ThriftAsyncServerFactory instead."""
 
-    def __init__(self, processor, port, nthreads=None, host=None):
-        warnings.warn(
-            'TAsyncioServer is deprecated, use ThriftAsyncServerFactory.',
-            DeprecationWarning,
-        )
-        self.processor = self._getProcessor(processor)
-        self.port = port
-        self.host = host
-        self.nthreads = nthreads
-        self.server_event_handler = TServerEventHandler()
+def ThriftClientProtocolFactory(
+    client_class,
+    loop=None,
+    timeouts=None,
+    client_type=None,
+):
+    return functools.partial(
+        ThriftHeaderClientProtocol,
+        client_class,
+        loop,
+        timeouts,
+        client_type,
+    )
 
-    def setServerEventHandler(self, handler):
-        self.server_event_handler = handler
 
-    def serve(self):
-        self._start_server()
+class SenderTransport(WrappedTransport):
+    @asyncio.coroutine
+    def _send(self):
+        while True:
+            msg = yield from self._queue.get()
+            self._clean_producers()
+            self._trans.write(msg)
 
-        try:
-            self.loop.run_forever()
-        except KeyboardInterrupt:
-            logging.info("Server killed, exiting.")
-        finally:
-            self.server.close()
-            self.loop.close()
 
-    def _start_server(self):
-        self.loop = asyncio.get_event_loop()
-        if self.nthreads is not None:
-            from concurrent.futures import ThreadPoolExecutor
-            self.loop.set_default_executor(ThreadPoolExecutor(
-                max_workers=int(self.nthreads)))
-        pfactory = ThriftServerProtocolFactory(
-            self.processor, self.server_event_handler, self.loop,
-        )
-        try:
-            coro = self.loop.create_server(pfactory, self.host, self.port)
-            self.server = self.loop.run_until_complete(coro)
-        except Exception as e:
-            logging.error("Could not start server at port {}"
-                          .format(self.port), e)
+class ThriftHeaderClientProtocol(ThriftHeaderClientProtocolBase):
+    @asyncio.coroutine
+    def message_received(self, frame, delay=0):
+        tmi = TReadOnlyBuffer(frame)
+        iprot = THeaderProtocol(tmi)
+        (fname, mtype, seqid) = iprot.readMessageBegin()
 
-        if hasattr(self.server, "sockets"):
-            for socket in self.server.sockets:
-                self.server_event_handler.preServe(socket.getsockname())
+        if delay:
+            yield from asyncio.sleep(delay, loop=self.loop)
+        else:
+            try:
+                timeout_task = self.pending_tasks.pop(seqid)
+            except KeyError:
+                # Task doesn't have a timeout or has already been cancelled
+                # and pruned from `pending_tasks`.
+                pass
+            else:
+                timeout_task.cancel()
+
+        self._handle_message_received(iprot, fname, mtype, seqid)
+
+    def wrapAsyncioTransport(self, asyncio_transport):
+        return SenderTransport(asyncio_transport, self, self.loop)

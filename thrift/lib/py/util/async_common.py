@@ -1,3 +1,11 @@
+"""
+Common base for asyncio and Trollius (the Python 2 asyncio backport).
+Ideally this would be all that's necessary but we can't use the async/await
+syntax on Python 2 so we had to abstract coroutines away.
+
+Look for them in TAsyncioServer and TTrolliusServer respectively.
+"""
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -6,10 +14,12 @@ from __future__ import unicode_literals
 import six
 import logging
 import struct
+import warnings
 
 from collections import defaultdict
 from io import BytesIO
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
+from thrift.server.TServer import TConnectionContext
 from thrift.transport.TTransport import (
     TTransportBase,
     TTransportException,
@@ -41,40 +51,8 @@ if six.PY2:
     class PermissionError(IOError):
         pass
 
-
-class FramedProtocol(asyncio.Protocol):
-    MAX_LENGTH = THeaderTransport.MAX_FRAME_SIZE
-
-    def __init__(self, loop=None):
-        self.recvd = b""
-        self.loop = loop or asyncio.get_event_loop()
-
-    def data_received(self, data):
-        self.recvd = self.recvd + data
-        while len(self.recvd) >= 4:
-            length, = struct.unpack("!I", self.recvd[:4])
-            if length > self.MAX_LENGTH:
-                logger.error(
-                    "Frame size %d too large for THeaderProtocol",
-                    length,
-                )
-                self.transport.close()
-                return
-            elif length == 0:
-                logger.error("Empty frame")
-                self.transport.close()
-                return
-
-            if len(self.recvd) < length + 4:
-                return
-
-            frame = self.recvd[0:4 + length]
-            self.recvd = self.recvd[4 + length:]
-            asyncio.Task(self.message_received(frame), loop=self.loop)
-
-    @asyncio.coroutine
-    def message_received(self, frame):
-        raise NotImplementedError
+    class ResourceWarning(RuntimeWarning):
+        pass
 
 
 class TReadOnlyBuffer(TTransportBase):
@@ -130,6 +108,8 @@ class TWriteOnlyBuffer(TTransportBase):
 
 
 class TReadWriteBuffer(TTransportBase):
+    """TMemoryBuffer equivalent with separate buffers to read and write."""
+
     def __init__(self, value=b""):
         self._read_io = TReadOnlyBuffer(value=value)
         self._write_io = TWriteOnlyBuffer()
@@ -153,18 +133,30 @@ class TReadWriteBuffer(TTransportBase):
 
 
 class WrappedTransport(TWriteOnlyBuffer):
+    """Wraps an asyncio.Transport in a Thrift Transport interface."""
 
-    def __init__(self, trans, proto):
+    MAX_QUEUE_SIZE = 1024
+
+    def __init__(self, trans, proto, loop):
         super(WrappedTransport, self).__init__()
         self._trans = trans
         self._proto = proto
+        self._loop = loop
+        self._queue = asyncio.Queue(
+            maxsize=self.MAX_QUEUE_SIZE,
+            loop=self._loop,
+        )
+        self._consumer = self._loop.create_task(self._send())
+        self._producers = []
 
-    def __del__(self):
-        if self.isOpen():
-            logger.debug(
-                'A WrappedTransport object should not be garbage collected'
-                ' while the transport channel is open.',
-            )
+    @asyncio.coroutine
+    def _send(self):
+        raise NotImplementedError
+
+    def send_message(self, msg):
+        self._producers.append(
+            self._loop.create_task(self._queue.put(msg)),
+        )
 
     def flush(self):
         msg = self.getvalue()
@@ -173,115 +165,156 @@ class WrappedTransport(TWriteOnlyBuffer):
         fname, mtype, seqid = iprot.readMessageBegin()
         fname = fname.decode()
         self._proto.schedule_timeout(fname, seqid)
-        self._trans.send_message(msg)
+        self.send_message(msg)
         self.reset()
 
+    def _clean_producers(self):
+        self._producers = [
+            p for p in self._producers if not p.done() and not p.cancelled()
+        ]
+
     def close(self):
-        super(WrappedTransport, self).close()
-        self._trans.close()
+        try:
+            self._consumer.cancel()
+            for producer in self._producers:
+                if not producer.done() and not producer.cancelled():
+                    producer.cancel()
+            super(WrappedTransport, self).close()
+        finally:
+            self._trans.close()
+
+    def __del__(self):
+        if not self._consumer.done() or not self._consumer.cancelled():
+            logger.debug(
+                'WrappedTransport did not finish properly'
+                ' as the consumer asyncio.Task is still pending.'
+                ' Make sure to call .close() on this object.'
+            )
+        if self.isOpen():
+            warnings.warn(
+                'WrappedTransport is being garbage collected'
+                ' while still open.'
+                ' Make sure to call .close() on this object.',
+                ResourceWarning
+            )
 
 
-class WrappedTransportFactory(object):
-    def __init__(self, proto):
-        self._proto = proto
+class FramedProtocol(asyncio.Protocol):
+    """Unpacks Thrift frames and reads them asynchronously."""
 
-    def getTransport(self, trans):
-        return WrappedTransport(trans, self._proto)
+    MAX_LENGTH = THeaderTransport.MAX_FRAME_SIZE
 
+    def __init__(self, loop=None):
+        self.loop = loop or asyncio.get_event_loop()
+        self.recvd = b""
 
-class AsyncThriftFactory(object):
-
-    def __init__(self, client_type=None):
-        super(AsyncThriftFactory, self).__init__()
-        self.client_type = client_type
-
-    def getSenderTransport(self, asyncio_transport, asyncio_loop):
+    @asyncio.coroutine
+    def message_received(self, frame):
         raise NotImplementedError
 
-    def getTransport(self, asyncio_transport, asyncio_loop, client_protocol):
-        '''
-        Given asyncio.Transport and asyncio.BaseEventLoop instances,
-        this method should create a Thrift transport object that is able
-        to interact with the asyncio transport one using the given event loop.
-        '''
-        #FIXME(dresende): let's avoid a dependency that WrappedTransport
-        # has on client_protocol.
-        sender_transport = self.getSenderTransport(
-            asyncio_transport,
-            asyncio_loop,
-        )
-        return WrappedTransport(sender_transport, client_protocol)
+    def data_received(self, data):
+        """Implements asyncio.Protocol.data_received."""
+        self.recvd = self.recvd + data
+        while len(self.recvd) >= 4:
+            length, = struct.unpack("!I", self.recvd[:4])
+            if length > self.MAX_LENGTH:
+                logger.error(
+                    "Frame size %d too large for THeaderProtocol",
+                    length,
+                )
+                self.transport.close()
+                return
+            elif length == 0:
+                logger.error("Empty frame")
+                self.transport.close()
+                return
 
-    def getProtocol(self, thrift_transport):
-        '''
-        Given a Thrift transport instance, which is compatible with
-        asyncio.Transport, this method should create a Thrift protocol object.
-        '''
-        return THeaderProtocolFactory(client_type=self.client_type).getProtocol(
-            thrift_transport,
-        )
+            if len(self.recvd) < length + 4:
+                return
+
+            frame = self.recvd[0:4 + length]
+            self.recvd = self.recvd[4 + length:]
+            self.loop.create_task(self.message_received(frame))
+
+    def eof_received(self):
+        """Implements asyncio.Protocol.eof_received."""
+        return self.connection_lost(exc=None)
+
+    # Don't forget to implement connection_made/connection_lost in your
+    # subclass.  There's also pause_writing/resume_writing but it seems we're
+    # fine without it.
 
 
-class AsyncClientProtocolBase(FramedProtocol):
+class ThriftHeaderClientProtocolBase(FramedProtocol):
+    """asyncio THeader protocol wrapper for client use.
+
+    This is abstract, missing implementation of an async TTransport
+    wrapper and the `message_received` coroutine function.
+    """
     DEFAULT_TIMEOUT = 60.0
+    THEADER_PROTOCOL_FACTORY = THeaderProtocolFactory
     _exception_serializer = None
 
     def __init__(
         self,
         client_class,
-        thrift_factory,
         loop=None,
         timeouts=None,
         client_type=None,
     ):
-        super(AsyncClientProtocolBase, self).__init__(loop=loop)
-        self._client_class = client_class
-        self.thrift_factory = thrift_factory
-        self.client = None
+        super(ThriftHeaderClientProtocolBase, self).__init__(loop=loop)
+        self.client_class = client_class
         if timeouts is None:
             timeouts = {}
         default_timeout = timeouts.get('') or self.DEFAULT_TIMEOUT
         self.timeouts = defaultdict(lambda: default_timeout)
         self.timeouts.update(timeouts)
-        self.pending_tasks = {}
         self.client_type = client_type
-        self.thrift_transport = None
 
-    def _handle_message_received(self, iprot, fname, mtype, seqid):
-        method = getattr(self.client, "recv_" + fname.decode(), None)
-        if method is None:
-            logger.error("Method %r is not supported", fname)
-            self.abort()
-        else:
-            try:
-                method(iprot, mtype, seqid)
-            except (
-                asyncio.futures.InvalidStateError,
-                asyncio.CancelledError,
-            ) as e:
-                logger.warning("Method %r cancelled: %s", fname, str(e))
+        self.client = None
+        self.pending_tasks = {}
+        self.transport = None  # TTransport wrapping an asyncio.Transport
+
+    # message_received still left to be implemented in a subclass
+
+    def wrapAsyncioTransport(self, asyncio_transport):
+        raise NotImplementedError
 
     def connection_made(self, transport):
-        assert self.thrift_transport is None, (
+        """Implements asyncio.Protocol.connection_made."""
+        assert self.transport is None, (
             "Thrift transport already instantiated here."
         )
         assert self.client is None, "Client already instantiated here."
-        # transport is an asyncio.Transport instance
-        self.thrift_transport = self.thrift_factory.getTransport(
-            transport,
-            self.loop,
-            self,
-        )
-        thrift_protocol = self.thrift_factory.getProtocol(self.thrift_transport)
-        self.client = self._client_class(thrift_protocol, self.loop)
+        self.transport = self.wrapAsyncioTransport(transport)
+        thrift_protocol = self.THEADER_PROTOCOL_FACTORY(
+            client_type=self.client_type,
+        ).getProtocol(self.transport)
+        self.client = self.client_class(thrift_protocol, self.loop)
 
     def connection_lost(self, exc):
+        """Implements asyncio.Protocol.connection_lost."""
         for fut in self.client._futures.values():
             te = TTransportException(
                 type=TTransportException.END_OF_FILE,
                 message="Connection closed")
             if not fut.done():
                 fut.set_exception(te)
+
+    def _handle_message_received(self, iprot, fname, mtype, seqid):
+        method = getattr(self.client, "recv_" + fname.decode(), None)
+        if method is None:
+            logger.error("Method %r is not supported", fname)
+            self.close()
+            return
+
+        try:
+            method(iprot, mtype, seqid)
+        except (
+            asyncio.futures.InvalidStateError,
+            asyncio.CancelledError,
+        ) as e:
+            logger.warning("Method %r cancelled: %s", fname, str(e))
 
     def update_pending_tasks(self, seqid, task):
         no_longer_pending = [
@@ -314,12 +347,15 @@ class AsyncClientProtocolBase(FramedProtocol):
         for task in self.pending_tasks.values():
             if not task.done() and not task.cancelled():
                 task.cancel()
-        if self.thrift_transport:
-            self.thrift_transport.close()
+        if not self.transport:
+            return
 
-    def abort(self):
-        if self.thrift_transport:
-            self.thrift_transport.abort()
+        try:
+            # Closing the wrapped sender transport will cascade closing
+            # of the underlying tranports, too.
+            self.transport.close()
+        except Exception:
+            pass
 
     @classmethod
     def serialize_texception(cls, fname, seqid, exception):
@@ -344,3 +380,12 @@ class AsyncClientProtocolBase(FramedProtocol):
         serializer.writeMessageEnd()
         serializer.trans.flush()
         return buffer.getvalue()
+
+
+class AsyncioRpcConnectionContext(TConnectionContext):
+
+    def __init__(self, client_socket):
+        self._client_socket = client_socket
+
+    def getPeerName(self):
+        return self._client_socket.getpeername()
