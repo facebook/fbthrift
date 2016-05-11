@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 
 import collections
 import random
+import sys
 
 import six
 import six.moves as sm
@@ -387,7 +388,10 @@ def _integer_randomizer_factory(name, ttype, n_bits):
             else:
                 raise TypeError("Invalid %s seed: %s" % (_name, seed))
 
-    NBitIntegerRandomizer.__name__ = six.binary_type("%sRandomizer" % _name)
+    if sys.version_info[0] == 2 and isinstance(_name, unicode):
+        NBitIntegerRandomizer.__name__ = "{}Randomizer".format(_name).encode("utf8")
+    else:
+        NBitIntegerRandomizer.__name__ = "{}Randomizer".format(_name)
 
     return NBitIntegerRandomizer
 

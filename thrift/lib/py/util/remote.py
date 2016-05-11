@@ -113,7 +113,7 @@ class RemoteClient(object):
             thrift_types[key] = getattr(self.ttypes, key)
 
         fn_args = []
-        for arg, arg_info in itertools.izip(args, fn.args):
+        for arg, arg_info in zip(args, fn.args):
             if arg_info[2] == 'string':
                 # For ease-of-use, we don't eval string arguments, simply so
                 # users don't have to wrap the arguments in quotes
