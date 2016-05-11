@@ -17,7 +17,6 @@
 #include <thrift/lib/cpp2/async/StubSaslClient.h>
 
 #include <folly/io/Cursor.h>
-#include <folly/MoveWrapper.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBase.h>
@@ -73,14 +72,14 @@ void StubSaslClient::start(Callback *cb) {
         start.__isset.request = true;
         start.request.__isset.response = true;
 
-        folly::MoveWrapper<IOBufQueue> q;
+        IOBufQueue q;
         Serializer<CompactProtocolReader, CompactProtocolWriter> serializer;
-        serializer.serialize(start, &*q);
+        serializer.serialize(start, &q);
         phase_ = 1;
 
-        (*evb_)->runInEventBaseThread([=] () mutable {
-            cb->saslSendServer(q->move());
-          });}));
+        (*evb_)->runInEventBaseThread([ cb, q = std::move(q) ]() mutable {
+          cb->saslSendServer(q.move());
+        });}));
 }
 
 void StubSaslClient::consumeFromServer(
@@ -103,7 +102,7 @@ void StubSaslClient::consumeFromServer(
             forceMsSpentPerRTT));
         }
 
-        folly::MoveWrapper<IOBufQueue> req_data;
+        IOBufQueue req_data;
         folly::exception_wrapper ex;
         bool complete = false;
 
@@ -135,7 +134,7 @@ void StubSaslClient::consumeFromServer(
                 SaslRequest req;
                 req.response = RESPONSE1;
                 req.__isset.response = true;
-                serializer.serialize(req, &*req_data);
+                serializer.serialize(req, &req_data);
                 phase_ = 2;
               } else {
                 ex = folly::make_exception_wrapper<
@@ -177,19 +176,20 @@ void StubSaslClient::consumeFromServer(
         }
 
         if (complete) {
-          CHECK(req_data->empty());
+          CHECK(req_data.empty());
           CHECK(!ex);
         } else {
-          CHECK(req_data->empty() == !!ex);
+          CHECK(req_data.empty() == !!ex);
         }
 
         if (ex) {
           phase_ = -2;
         }
 
-        (*evb_)->runInEventBaseThread([=] () mutable {
-            if (!req_data->empty()) {
-              cb->saslSendServer(req_data->move());
+        (*evb_)->runInEventBaseThread(
+          [=, req_data = std::move(req_data)] () mutable {
+            if (!req_data.empty()) {
+              cb->saslSendServer(req_data.move());
             }
             if (ex) {
               threadManager_->stop();

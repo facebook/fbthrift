@@ -19,7 +19,6 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <folly/MoveWrapper.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -63,7 +62,7 @@ void StubSaslServer::consumeFromClient(
 
   // Double-dispatch, as the more complex implementation will.
   threadManager_->add(std::make_shared<FunctionRunner>([=] {
-        folly::MoveWrapper<IOBufQueue> reply_data;
+        IOBufQueue reply_data;
         folly::exception_wrapper ex;
         bool complete = false;
 
@@ -84,7 +83,7 @@ void StubSaslServer::consumeFromClient(
               SaslReply reply;
               reply.challenge = CHALLENGE1;
               reply.__isset.challenge = true;
-              serializer.serialize(reply, &*reply_data);
+              serializer.serialize(reply, &reply_data);
               phase_ = 1;
             } else {
               ex = folly::make_exception_wrapper<
@@ -115,7 +114,7 @@ void StubSaslServer::consumeFromClient(
                 reply.outcome.success = true;
                 reply.__isset.outcome = true;
                 reply.outcome.__isset.success = true;
-                serializer.serialize(reply, &*reply_data);
+                serializer.serialize(reply, &reply_data);
                 complete = true;
                 phase_ = -1;
               } else {
@@ -135,25 +134,26 @@ void StubSaslServer::consumeFromClient(
               "unexpected message after error");
         }
 
-        if (!ex && !complete && reply_data->empty()) {
+        if (!ex && !complete && reply_data.empty()) {
           Serializer<CompactProtocolReader, CompactProtocolWriter> serializer;
           SaslReply reply;
           reply.outcome.success = false;
           reply.__isset.outcome = true;
           reply.outcome.__isset.success = true;
-          serializer.serialize(reply, &*reply_data);
+          serializer.serialize(reply, &reply_data);
         }
 
-        CHECK(reply_data->empty() == !!ex);
+        CHECK(reply_data.empty() == !!ex);
         CHECK(!(complete && !!ex));
 
         if (ex) {
           phase_ = -2;
         }
 
-        (*evb_)->runInEventBaseThread([=] () mutable {
-            if (!reply_data->empty()) {
-              cb->saslSendClient(reply_data->move());
+        (*evb_)->runInEventBaseThread(
+          [=, reply_data = std::move(reply_data)] () mutable {
+            if (!reply_data.empty()) {
+              cb->saslSendClient(reply_data.move());
               // Send some extra garbage on this channel
               if (forceSendGarbage) {
                 auto str = IOBuf::copyBuffer("garbage", 7);

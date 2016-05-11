@@ -19,6 +19,8 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
+#include <folly/MoveWrapper.h>
+
 using namespace std;
 using namespace folly;
 using namespace apache::thrift;

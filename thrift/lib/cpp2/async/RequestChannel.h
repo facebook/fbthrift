@@ -29,7 +29,6 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/String.h>
 #include <folly/io/IOBufQueue.h>
-#include <folly/MoveWrapper.h>
 #include <wangle/deprecated/rx/Subject.h>
 
 #include <glog/logging.h>
@@ -470,20 +469,31 @@ static void clientSendT(
     }
   }
   else {
-    auto mvCb = folly::makeMoveWrapper(std::move(callback));
-    auto mvCtx = folly::makeMoveWrapper(std::move(ctx));
-    auto mvBuf = folly::makeMoveWrapper(queue.move());
-    eb->runInEventBaseThread(
-        [channel, rpcOptions, mvCb, mvCtx, mvBuf, header] () mutable {
+    eb->runInEventBaseThread([
+      channel,
+      rpcOptions,
+      callback = std::move(callback),
+      ctx = std::move(ctx),
+      queue = queue.move(),
+      header
+    ]() mutable {
       if (oneway) {
         // Calling asyncComplete before sending because
         // sendOnewayRequest moves from ctx and clears it.
-        (*mvCtx)->asyncComplete();
-        channel->sendOnewayRequest(rpcOptions, std::move(*mvCb),
-            std::move(*mvCtx), std::move(*mvBuf), header);
+        ctx->asyncComplete();
+        channel->sendOnewayRequest(
+            rpcOptions,
+            std::move(callback),
+            std::move(ctx),
+            std::move(queue),
+            header);
       } else {
-        channel->sendRequest(rpcOptions, std::move(*mvCb),
-            std::move(*mvCtx), std::move(*mvBuf), header);
+        channel->sendRequest(
+            rpcOptions,
+            std::move(callback),
+            std::move(ctx),
+            std::move(queue),
+            header);
       }
     });
   }

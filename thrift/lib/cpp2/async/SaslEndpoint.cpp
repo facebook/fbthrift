@@ -20,13 +20,11 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/Memory.h>
-#include <folly/MoveWrapper.h>
 
 #include <memory>
 
 using folly::IOBuf;
 using folly::IOBufQueue;
-using folly::MoveWrapper;
 
 using namespace std;
 

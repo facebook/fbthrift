@@ -315,9 +315,8 @@ class HandlerCallbackBase {
     // req must be deleted in the eb
     if (req_) {
       DCHECK(eb_);
-      auto req_mw = folly::makeMoveWrapper(std::move(req_));
-      eb_->runInEventBaseThread([=]() mutable {
-        req_mw->reset();
+      eb_->runInEventBaseThread([req = std::move(req_)]() mutable {
+        req.reset();
       });
     }
   }
@@ -482,13 +481,14 @@ class HandlerCallbackBase {
       f(std::move(req_), protoSeqId_, ctx_.get(), ex, reqCtx_);
       ctx_.reset();
     } else {
-      auto req = folly::makeMoveWrapper(std::move(req_));
-      auto ctx = folly::makeMoveWrapper(std::move(ctx_));
-      auto protoSeqId = protoSeqId_;
-      auto reqCtx = reqCtx_;
-      getEventBase()->runInEventBaseThread([=]() mutable {
-        f(std::move(*req), protoSeqId, ctx->get(), ex, reqCtx);
-      });
+      getEventBase()->runInEventBaseThread([
+        f = std::forward<F>(f),
+        req = std::move(req_),
+        protoSeqId = protoSeqId_,
+        ctx = std::move(ctx_),
+        ex = std::forward<T>(ex),
+        reqCtx = reqCtx_
+      ]() mutable { f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx); });
     }
   }
 
@@ -497,11 +497,10 @@ class HandlerCallbackBase {
     if (getEventBase()->isInEventBaseThread()) {
       req_->sendReply(queue.move());
     } else {
-      auto req_mw = folly::makeMoveWrapper(std::move(req_));
-      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
-      getEventBase()->runInEventBaseThread([=]() mutable {
-        (*req_mw)->sendReply(queue_mw->move());
-      });
+      getEventBase()->runInEventBaseThread(
+          [ req = std::move(req_), queue = std::move(queue) ]() mutable {
+            req->sendReply(queue.move());
+          });
     }
   }
 
@@ -785,11 +784,11 @@ public:
       req_->sendReply(queue.move());
     } else {
       auto req_raw = req_.get();
-      auto queue_mw = folly::makeMoveWrapper(std::move(queue));
-      getEventBase()->runInEventBaseThread([=]() mutable {
-        reqCtx_->setHeader(key, value);
-        req_raw->sendReply(queue_mw->move());
-      });
+      getEventBase()->runInEventBaseThread(
+          [ =, queue = std::move(queue) ]() mutable {
+            reqCtx_->setHeader(key, value);
+            req_raw->sendReply(queue.move());
+          });
     }
   }
 

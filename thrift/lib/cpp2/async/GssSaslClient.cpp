@@ -20,7 +20,6 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/Memory.h>
-#include <folly/MoveWrapper.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/portability/GFlags.h>
 
@@ -40,7 +39,6 @@
 
 using folly::IOBuf;
 using folly::IOBufQueue;
-using folly::MoveWrapper;
 using apache::thrift::concurrency::Guard;
 using apache::thrift::concurrency::Mutex;
 using apache::thrift::concurrency::FunctionRunner;
@@ -116,7 +114,7 @@ void GssSaslClient::start(Callback *cb) {
         logger->logEnd("thread_manager_overhead");
         uint64_t after = getCurTime().count();
 
-        MoveWrapper<unique_ptr<IOBuf>> iobuf;
+        unique_ptr<IOBuf> iobuf;
         folly::exception_wrapper ex;
 
         threadManager->recordActivity();
@@ -169,7 +167,7 @@ void GssSaslClient::start(Callback *cb) {
             SaslAuthService_authFirstRequest_pargs argsp;
             argsp.get<0>().value = &start;
 
-            *iobuf = PargsPresultProtoSerialize(
+            iobuf = PargsPresultProtoSerialize(
               proto, argsp, "authFirstRequest", T_CALL, (*seqId)++);
           });
         }
@@ -183,7 +181,7 @@ void GssSaslClient::start(Callback *cb) {
         // Log the overhead around rescheduling the remainder of the
         // handshake at the back of the evb queue.
         logger->logStart("evb_overhead");
-        (*evb)->runInEventBaseThread([=]() mutable {
+        (*evb)->runInEventBaseThread([ =, iobuf = std::move(iobuf) ]() mutable {
           logger->logEnd("evb_overhead");
           if (!*evb) {
             return;
@@ -197,7 +195,7 @@ void GssSaslClient::start(Callback *cb) {
             return;
           } else {
             logger->logStart("first_rtt");
-            cb->saslSendServer(std::move(*iobuf));
+            cb->saslSendServer(std::move(iobuf));
             // If the context was already established, we're free to send
             // the actual request.
             if (clientHandshake_->isContextEstablished()) {
@@ -252,7 +250,7 @@ void GssSaslClient::consumeFromServer(
       threadManager->get()->add(std::make_shared<FunctionRunner>([=] {
         uint64_t after = getCurTime().count();
         std::string req_data;
-        MoveWrapper<unique_ptr<IOBuf>> iobuf;
+        unique_ptr<IOBuf> iobuf;
         folly::exception_wrapper ex;
 
         threadManager->recordActivity();
@@ -361,7 +359,7 @@ void GssSaslClient::consumeFromServer(
               req.__isset.response = true;
               SaslAuthService_authNextRequest_pargs argsp;
               argsp.get<0>().value = &req;
-              *iobuf = PargsPresultProtoSerialize(
+              iobuf = PargsPresultProtoSerialize(
                 proto, argsp, "authNextRequest", T_CALL, (*seqId)++);
             }
           });
@@ -374,7 +372,7 @@ void GssSaslClient::consumeFromServer(
         }
 
         auto phase = clientHandshake->getPhase();
-        (*evb)->runInEventBaseThread([=]() mutable {
+        (*evb)->runInEventBaseThread([ =, iobuf = std::move(iobuf) ]() mutable {
           if (!*evb) {
             return;
           }
@@ -386,13 +384,13 @@ void GssSaslClient::consumeFromServer(
             }
             return;
           }
-          if (*iobuf && !(*iobuf)->empty()) {
+          if (iobuf && !iobuf->empty()) {
             if (phase == SELECT_SECURITY_LAYER) {
               logger->logStart("third_rtt");
             } else {
               logger->logStart("second_rtt");
             }
-            cb->saslSendServer(std::move(*iobuf));
+            cb->saslSendServer(std::move(iobuf));
           }
           if (clientHandshake_->isContextEstablished()) {
             cb->saslComplete();
