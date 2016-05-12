@@ -640,7 +640,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_pingT(Protocol_* pro
   apache::thrift::MessageType mtype;
   ctx->preRead();
   folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(fname, mtype, protoSeqId);
     if (mtype == apache::thrift::T_EXCEPTION) {
       apache::thrift::TApplicationException x;
@@ -711,7 +711,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getRandomDataT(Proto
   apache::thrift::MessageType mtype;
   ctx->preRead();
   folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(fname, mtype, protoSeqId);
     if (mtype == apache::thrift::T_EXCEPTION) {
       apache::thrift::TApplicationException x;
@@ -792,7 +792,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_hasDataByIdT(Protoco
   apache::thrift::MessageType mtype;
   ctx->preRead();
   folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(fname, mtype, protoSeqId);
     if (mtype == apache::thrift::T_EXCEPTION) {
       apache::thrift::TApplicationException x;
@@ -875,7 +875,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getDataByIdT(Protoco
   apache::thrift::MessageType mtype;
   ctx->preRead();
   folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(fname, mtype, protoSeqId);
     if (mtype == apache::thrift::T_EXCEPTION) {
       apache::thrift::TApplicationException x;
@@ -957,7 +957,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_putDataByIdT(Protoco
   apache::thrift::MessageType mtype;
   ctx->preRead();
   folly::exception_wrapper interior_ew;
-  auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
+  auto caught_ew = folly::try_and_catch<std::exception, apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
     prot->readMessageBegin(fname, mtype, protoSeqId);
     if (mtype == apache::thrift::T_EXCEPTION) {
       apache::thrift::TApplicationException x;

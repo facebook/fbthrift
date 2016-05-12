@@ -2088,6 +2088,7 @@ class CppGenerator(t_generator.Generator):
 
             out("folly::exception_wrapper interior_ew;")
             with out("auto caught_ew = folly::try_and_catch<"
+                     "std::exception, "
                      "apache::thrift::TException, "
                      "apache::thrift::protocol::TProtocolException>([&]() "):
                 out("prot->readMessageBegin(fname, mtype, protoSeqId);")
