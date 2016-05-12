@@ -1140,7 +1140,7 @@ async_eb_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
   callbackp->runFuncInQueue(
       [ si, callback = std::move(callback), f = std::forward<F>(f) ]() mutable {
         async_tm_oneway(si, std::move(callback), std::move(f));
-      });
+      }, true);
 }
 
 template <class F>

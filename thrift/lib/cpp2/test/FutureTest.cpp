@@ -292,7 +292,7 @@ TEST(ThriftServer, OnewayFutureClientTest) {
                     DelayedDestruction::Destructor>(
                       new HeaderClientChannel(socket)));
 
-  auto future = client.future_noResponse(1000);
+  auto future = client.future_noResponse(100);
   steady_clock::time_point sent = steady_clock::now();
 
   // wait for future to finish.
@@ -307,6 +307,12 @@ TEST(ThriftServer, OnewayFutureClientTest) {
 
   int factor = 1;
   EXPECT_GE(waitTime, factor * gotTime);
+  // Client returns quickly because it is oneway, need to sleep for
+  // some time so at least when the request reaches the server it is
+  // not already stopped.
+  // Also consider use a Baton if this is still flaky under stress run.
+  /* sleep override */ std::this_thread::sleep_for(
+      std::chrono::milliseconds(200));
 }
 
 TEST(ThriftServer, FutureHeaderClientTest) {

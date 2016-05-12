@@ -408,15 +408,21 @@ class HandlerCallbackBase {
   }
 
   template <class F>
-  void runFuncInQueue(F&& func) {
+  void runFuncInQueue(F&& func, bool oneway = false) {
     assert(tm_);
+    assert(getEventBase()->isInEventBaseThread());
+    auto task = concurrency::FunctionRunner::create(std::forward<F>(func));
     try {
-      tm_->add(concurrency::FunctionRunner::create(std::forward<F>(func)),
+      tm_->add(task,
         0, // timeout
         0, // expiration
         true, // cancellable
         true); // numa
     } catch (...) {
+      if (oneway) {
+        return;
+      }
+
       apache::thrift::TApplicationException ex(
         "Failed to add task to queue, too full");
       if (req_ && ep_) {
@@ -426,10 +432,9 @@ class HandlerCallbackBase {
       } else {
         LOG(ERROR) << folly::exceptionStr(ex);
       }
-
-      // Delete the callback if exception is thrown since error response
-      // is already sent.
-      deleteInThread();
+      // task owns the callback. If exception is thrown, task isn't added to
+      // thread manager so when task falls out of scope the callback will be
+      // destroyed.
     }
   }
 
