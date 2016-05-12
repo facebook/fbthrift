@@ -182,13 +182,13 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         return self.__trans
 
     def isOpen(self):
-        return self.__trans.isOpen()
+        return self.getTransport().isOpen()
 
     def open(self):
-        return self.__trans.open()
+        return self.getTransport().open()
 
     def close(self):
-        return self.__trans.close()
+        return self.getTransport().close()
 
     def read(self, sz):
         ret = self.__rbuf.read(sz)
@@ -196,14 +196,14 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             return ret
 
         if self.__client_type == self.UNFRAMED_DEPRECATED:
-            return ret + self.__trans.read(sz - len(ret))
+            return ret + self.getTransport().read(sz - len(ret))
 
         self.readFrame(sz - len(ret))
         return ret + self.__rbuf.read(sz - len(ret))
 
     def readFrame(self, req_sz):
         self.__rbuf_frame = True
-        word1 = self.__trans.readAll(4)
+        word1 = self.getTransport().readAll(4)
         # These two unpack statements must use signed integers.
         # See note about hex constants in TBinaryProtocol.py
         sz, = unpack(b'!i', word1)
@@ -213,10 +213,11 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             if req_sz <= 4:  # check for reads < 0.
                 self.__rbuf = StringIO(word1)
             else:
-                self.__rbuf = StringIO(word1 + self.__trans.read(req_sz - 4))
+                self.__rbuf = StringIO(word1 + self.getTransport().read(
+                    req_sz - 4))
         elif sz == self.HTTP_SERVER_MAGIC:
             self.__client_type = self.HTTP_CLIENT_TYPE
-            mf = self.__trans.handle.makefile('rb', -1)
+            mf = self.getTransport().handle.makefile('rb', -1)
 
             self.handler = self.RequestHandler(mf,
                                                'client_address:port', '')
@@ -224,7 +225,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             self.__rbuf = StringIO(self.handler.data)
         else:
             # could be header format or framed.  Check next byte.
-            word2 = self.__trans.readAll(4)
+            word2 = self.getTransport().readAll(4)
             version, = unpack('!i', word2)
             if version & TBinaryProtocol.VERSION_MASK == \
                     TBinaryProtocol.VERSION_1:
@@ -234,7 +235,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                     raise TTransportException(
                             TTransportException.INVALID_FRAME_SIZE,
                             "Framed transport frame was too large")
-                self.__rbuf = StringIO(word2 + self.__trans.readAll(sz - 4))
+                self.__rbuf = StringIO(word2 + self.getTransport().readAll(
+                    sz - 4))
             elif (version & 0xFFFF0000) == (self.HEADER_MAGIC << 16):
                 self.__client_type = self.HEADERS_CLIENT_TYPE
                 # header format.
@@ -244,17 +246,17 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                             "Header transport frame was too large")
                 self.__flags = (version & 0x0000FFFF)
                 # TODO use flags
-                n_seq_id = self.__trans.readAll(4)
+                n_seq_id = self.getTransport().readAll(4)
                 self.__seq_id, = unpack(b'!I', n_seq_id)
 
-                n_header_size = self.__trans.readAll(2)
+                n_header_size = self.getTransport().readAll(2)
                 header_size, = unpack(b'!H', n_header_size)
 
                 data = StringIO()
                 data.write(word2)
                 data.write(n_seq_id)
                 data.write(n_header_size)
-                data.write(self.__trans.readAll(sz - 10))
+                data.write(self.getTransport().readAll(sz - 10))
                 data.seek(10)
                 self.read_header_format(sz - 10, header_size, data)
             else:
@@ -382,7 +384,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
         # Write persistent kv-headers
         THeaderTransport._flush_info_headers(info_data,
-            self.__write_persistent_headers,
+            self.get_write_persistent_headers(),
             self.INFO_PKEYVALUE)
 
         # Write non-persistent kv-headers
@@ -453,11 +455,11 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         if buf.tell() - 4 > self.__max_frame_size:
             raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
                     "Attempting to send frame that is too large")
-        self.__trans.write(buf.getvalue())
+        self.getTransport().write(buf.getvalue())
         if oneway:
-            self.__trans.onewayFlush()
+            self.getTransport().onewayFlush()
         else:
-            self.__trans.flush()
+            self.getTransport().flush()
 
     # Implement the CReadableTransport interface.
     @property
