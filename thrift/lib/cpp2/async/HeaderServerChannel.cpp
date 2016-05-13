@@ -61,7 +61,7 @@ HeaderServerChannel::HeaderServerChannel(
     , timeoutSASL_(5000)
     , saslServerCallback_(*this)
     , cpp2Channel_(cpp2Channel)
-    , timer_(new folly::HHWheelTimer(getEventBase())) {}
+    , timer_(folly::HHWheelTimer::newTimer(getEventBase())) {}
 
 void HeaderServerChannel::destroy() {
   DestructorGuard dg(this);

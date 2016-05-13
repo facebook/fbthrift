@@ -58,7 +58,7 @@ HeaderClientChannel::HeaderClientChannel(
     , keepRegisteredForClose_(true)
     , saslClientCallback_(*this)
     , cpp2Channel_(cpp2Channel)
-    , timer_(new folly::HHWheelTimer(getEventBase()))
+    , timer_(folly::HHWheelTimer::newTimer(getEventBase()))
     , protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL) {}
 
 void HeaderClientChannel::setTimeout(uint32_t ms) {
