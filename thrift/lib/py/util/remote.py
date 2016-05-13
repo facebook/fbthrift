@@ -40,15 +40,17 @@ from thrift.protocol import TBinaryProtocol, TCompactProtocol, \
 
 class Function(object):
     """Metadata for a service method"""
-    def __init__(self, name, return_type, args):
-        self.name = name
+    def __init__(self, fn_name, svc_name, return_type, args):
+        self.fn_name = fn_name
+        self.svc_name = svc_name
         self.return_type = return_type
         self.args = args
 
 class RemoteClient(object):
-    def __init__(self, functions, service_class,
+    def __init__(self, functions, service_names, service_class,
                  ttypes, print_usage, default_port):
         self.functions = functions
+        self.service_names = service_names
         self.service_class = service_class
         self.ttypes = ttypes
         self.print_usage = print_usage
@@ -56,17 +58,20 @@ class RemoteClient(object):
 
     def _print_functions(self, out):
         """Print all the functions available from this service"""
-        out.write('Functions:\n')
-        for fn_name in sorted(self.functions):
-            fn = self.functions[fn_name]
-            if fn.return_type is None:
-                out.write('  oneway void ')
-            else:
-                out.write('  %s ' % (fn.return_type,))
-            out.write(fn_name + '(')
-            out.write(', '.join('%s %s' % (type, name)
-                                for type, name, true_type in fn.args))
-            out.write(')\n')
+        fns_by_service_name = {svc_name: {} for svc_name in self.service_names}
+        for fn in self.functions.values():
+            fns_by_service_name[fn.svc_name][fn.fn_name] = fn
+        for svc_name in reversed(self.service_names):
+            out.write('Functions in %s:\n' % (svc_name,))
+            for fn_name, fn in sorted(fns_by_service_name[svc_name].items()):
+                if fn.return_type is None:
+                    out.write('  oneway void ')
+                else:
+                    out.write('  %s ' % (fn.return_type,))
+                out.write(fn_name + '(')
+                out.write(', '.join('%s %s' % (type, name)
+                                    for type, name, true_type in fn.args))
+                out.write(')\n')
 
 
     def _exit(self, error_message=None, status=os.EX_USAGE, err_out=sys.stderr):
@@ -105,7 +110,7 @@ class RemoteClient(object):
         """Proccess positional commandline args as function arguments"""
         if len(args) != len(fn.args):
             self._exit(error_message=('"%s" expects %d arguments '
-                       '(received %d)') % (fn.name, len(fn.args), len(args)))
+                       '(received %d)') % (fn.fn_name, len(fn.args), len(args)))
 
         # Get all custom Thrift types
         thrift_types = {}
@@ -141,7 +146,7 @@ class RemoteClient(object):
         function_args = self._process_fn_args(function, args.function_args)
 
         self._validate_options(args)
-        return function.name, function_args
+        return function.fn_name, function_args
 
     def _execute(self, fn_name, fn_args, args):
         """Make the requested call.
@@ -487,11 +492,12 @@ class Remote(object):
             return matching_types[0]
 
     @classmethod
-    def run(cls, functions, service_class, ttypes, argv, default_port=9090):
+    def run(cls, functions, service_names, service_class,
+            ttypes, argv, default_port=9090):
         all_options = cls._get_all_options()
         args, print_usage = cls._parse_options(all_options, argv)
         client_type = cls._get_client_type(args, print_usage)
-        client = client_type(functions, service_class, ttypes,
+        client = client_type(functions, service_names, service_class, ttypes,
                              print_usage, default_port)
         client.run(args)
 

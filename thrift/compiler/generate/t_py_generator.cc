@@ -2508,7 +2508,8 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
     << "from . import ttypes\n"
     "\n"
     "from thrift.util.remote import Function\n"
-    "from thrift.remote import Remote\n";
+    "from thrift.remote import Remote\n"
+    << "\n";
 
   // Emit a list of objects describing the service functions.
   // The library code will use this to print the usage message and
@@ -2520,6 +2521,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
   for (t_service* cur_service = tservice;
        cur_service != nullptr;
        cur_service = cur_service->get_extends()) {
+    const string& svc_name = cur_service->get_name();
     const vector<t_function*>& functions = cur_service->get_functions();
     for (vector<t_function*>::const_iterator it = functions.begin();
          it != functions.end();
@@ -2534,7 +2536,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
       }
 
       f_remote <<
-        "    '" << fn_name << "': Function('" << fn_name << "', ";
+        "    '" << fn_name << "': Function('" << fn_name << "', '" << svc_name << "', ";
       if (fn->is_oneway()) {
         f_remote << "None, ";
       } else {
@@ -2560,11 +2562,20 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
       f_remote << "]),\n";
     }
   }
+  f_remote << "}\n\n";
+
+  // Similar, but for service names
+  f_remote << "SERVICE_NAMES = [";
+  for (t_service* cur_service = tservice;
+       cur_service != nullptr;
+       cur_service = cur_service->get_extends()) {
+    f_remote << "'" << cur_service->get_name() << "', ";
+  }
+  f_remote << "]\n\n";
+
   f_remote <<
-    "}\n"
-    "\n"
     "if __name__ == '__main__':\n"
-    "    Remote.run(FUNCTIONS, "
+    "    Remote.run(FUNCTIONS, SERVICE_NAMES, "
            << rename_reserved_keywords(service_name_)
            << ", ttypes, sys.argv, default_port="
            << default_port_

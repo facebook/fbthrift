@@ -39,9 +39,12 @@ from . import ttypes
 
 from thrift.util.remote import Function
 from thrift.remote import Remote
+
 FUNCTIONS = {
-    'init': Function('init', 'i64', [('i64', 'int1', 'i64')]),
+    'init': Function('init', 'TestService', 'i64', [('i64', 'int1', 'i64')]),
 }
 
+SERVICE_NAMES = ['TestService', ]
+
 if __name__ == '__main__':
-    Remote.run(FUNCTIONS, TestService, ttypes, sys.argv, default_port=9090)
+    Remote.run(FUNCTIONS, SERVICE_NAMES, TestService, ttypes, sys.argv, default_port=9090)

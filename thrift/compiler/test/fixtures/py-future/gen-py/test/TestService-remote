@@ -39,11 +39,14 @@ from . import ttypes
 
 from thrift.util.remote import Function
 from thrift.remote import Remote
+
 FUNCTIONS = {
-    'sleep': Function('sleep', 'void', []),
-    'isPrime': Function('isPrime', 'bool', [('i64', 'num', 'i64')]),
-    'getResult': Function('getResult', 'TestStruct', []),
+    'sleep': Function('sleep', 'TestService', 'void', []),
+    'isPrime': Function('isPrime', 'TestService', 'bool', [('i64', 'num', 'i64')]),
+    'getResult': Function('getResult', 'TestService', 'TestStruct', []),
 }
 
+SERVICE_NAMES = ['TestService', ]
+
 if __name__ == '__main__':
-    Remote.run(FUNCTIONS, TestService, ttypes, sys.argv, default_port=9090)
+    Remote.run(FUNCTIONS, SERVICE_NAMES, TestService, ttypes, sys.argv, default_port=9090)
