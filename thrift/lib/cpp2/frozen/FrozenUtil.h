@@ -19,9 +19,12 @@
 
 #include <folly/File.h>
 #include <folly/MemoryMapping.h>
+#include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/thrift/gen-cpp/frozen_constants.h>
+
+DECLARE_bool(thrift_frozen_util_disable_mlock);
 
 namespace apache { namespace thrift { namespace frozen {
 
@@ -150,9 +153,17 @@ MappedFrozen<T> mapFrozen(folly::MemoryMapping mapping) {
 }
 
 template <class T>
+MappedFrozen<T> mapFrozen(folly::File file) {
+  folly::MemoryMapping mapping(std::move(file), 0);
+  if (!FLAGS_thrift_frozen_util_disable_mlock) {
+    mapping.mlock(folly::MemoryMapping::LockMode::TRY_LOCK);
+  }
+  return mapFrozen<T>(std::move(mapping));
+}
+
+template <class T>
 MappedFrozen<T> mapFrozen(folly::File file,
-                          folly::MemoryMapping::LockMode lockMode =
-                              folly::MemoryMapping::LockMode::TRY_LOCK) {
+                          folly::MemoryMapping::LockMode lockMode) {
   folly::MemoryMapping mapping(std::move(file), 0);
   mapping.mlock(lockMode);
   return mapFrozen<T>(std::move(mapping));

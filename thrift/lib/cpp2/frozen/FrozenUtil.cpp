@@ -17,6 +17,9 @@
 
 #include <folly/Conv.h>
 
+DEFINE_bool(thrift_frozen_util_disable_mlock, false,
+    "Don't mlock() files mmaped by mapFrozen() call.");
+
 namespace apache { namespace thrift { namespace frozen {
 
 FrozenFileForwardIncompatible::FrozenFileForwardIncompatible(int fileVersion)
