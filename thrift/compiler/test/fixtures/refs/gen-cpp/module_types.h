@@ -18,6 +18,30 @@ class Schema;
 
 
 
+enum TypedEnum : short {
+  VAL1 = 0,
+  VAL2 = 1
+};
+
+extern const std::map<short, const char*> _TypedEnum_VALUES_TO_NAMES;
+
+extern const std::map<const char*, short, apache::thrift::ltstr> _TypedEnum_NAMES_TO_VALUES;
+
+
+namespace apache { namespace thrift { 
+template<>
+struct TEnumTraits< ::TypedEnum> : public TEnumTraitsBase< ::TypedEnum>
+{
+inline static constexpr  ::TypedEnum min() {
+return  ::TypedEnum::VAL1;
+}
+inline static constexpr  ::TypedEnum max() {
+return  ::TypedEnum::VAL2;
+}
+};
+}} // apache:thrift
+
+
 class MyUnion;
 
 class MyField;

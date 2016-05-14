@@ -39,3 +39,8 @@ struct StructWithContainers {
   8: set<i32> set_custom_ref
       (cpp.ref_type = "std::auto_ptr", cpp2.ref_type = "std::auto_ptr")
 }
+
+enum TypedEnum {
+  VAL1,
+  VAL2,
+} (cpp.enum_type = "short")

@@ -13,6 +13,34 @@
 
 
 
+const short _kTypedEnumValues[] = {
+  VAL1,
+  VAL2
+};
+
+const char* const _kTypedEnumNames[] = {
+  "VAL1",
+  "VAL2"
+};
+
+const std::map<short, const char*> _TypedEnum_VALUES_TO_NAMES(apache::thrift::TEnumIterator<short>(2, _kTypedEnumValues, _kTypedEnumNames), apache::thrift::TEnumIterator<short>(-1, NULL, NULL));
+
+const std::map<const char*, short, apache::thrift::ltstr> _TypedEnum_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<short>(2, _kTypedEnumValues, _kTypedEnumNames), apache::thrift::TEnumInverseIterator<short>(-1, NULL, NULL));
+
+
+namespace apache { namespace thrift {
+template<>
+const char* TEnumTraitsBase< ::TypedEnum>::findName( ::TypedEnum value) {
+return findName( ::_TypedEnum_VALUES_TO_NAMES, value);
+} 
+
+template<>
+bool TEnumTraitsBase< ::TypedEnum>::findValue(const char* name,  ::TypedEnum* out) {
+return findValue( ::_TypedEnum_NAMES_TO_VALUES, name, out);
+} 
+}} // apache::thrift 
+
+
 uint32_t MyUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
   std::string fname;

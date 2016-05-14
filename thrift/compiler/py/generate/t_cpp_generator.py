@@ -462,7 +462,10 @@ class CppGenerator(t_generator.Generator):
                         self._program.get_namespace('cpp')) + tenum.name,
                                         tenum.name))
             return
-        primitive = s.defn('enum class {0.name}'.format(tenum), in_header=True)
+        enum_type = self._cpp_annotation(tenum, "enum_type")
+        enum_type_s = "" if enum_type is None else " : " + enum_type
+        primitive = s.defn('enum class {0.name}{1}'.format(tenum, enum_type_s),
+                           in_header=True)
         # what follows after the closing brace
         primitive.epilogue = ';\n\n'
         with primitive:

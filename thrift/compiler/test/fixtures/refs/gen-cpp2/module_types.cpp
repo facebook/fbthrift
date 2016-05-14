@@ -12,6 +12,36 @@
 
 namespace cpp2 {
 
+TypedEnum _kTypedEnumValues[] = {
+  TypedEnum::VAL1,
+  TypedEnum::VAL2
+};
+
+const char* _kTypedEnumNames[] = {
+  "VAL1",
+  "VAL2"
+};
+
+const std::map<TypedEnum, const char*> _TypedEnum_VALUES_TO_NAMES(apache::thrift::TEnumIterator<TypedEnum>(2, _kTypedEnumValues, _kTypedEnumNames), apache::thrift::TEnumIterator<TypedEnum>(-1, nullptr, nullptr));
+const std::map<const char*, TypedEnum, apache::thrift::ltstr> _TypedEnum_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<TypedEnum>(2, _kTypedEnumValues, _kTypedEnumNames), apache::thrift::TEnumInverseIterator<TypedEnum>(-1, nullptr, nullptr));
+
+} // cpp2
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+template <> const char* TEnumTraitsBase< ::cpp2::TypedEnum>::findName( ::cpp2::TypedEnum value) {
+  return findName( ::cpp2::_TypedEnum_VALUES_TO_NAMES, value);
+}
+
+template <> bool TEnumTraitsBase< ::cpp2::TypedEnum>::findValue(const char* name,  ::cpp2::TypedEnum* outValue) {
+  return findValue( ::cpp2::_TypedEnum_NAMES_TO_VALUES, name, outValue);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
 template uint32_t MyUnion::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t MyUnion::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t MyUnion::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;

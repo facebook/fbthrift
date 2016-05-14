@@ -880,13 +880,25 @@ void t_cpp_generator::generate_enum_constant_list(std::ofstream& f,
  */
 void t_cpp_generator::generate_enum(t_enum* tenum) {
   vector<t_enum_value*> constants = tenum->get_constants();
-  auto value_type   = gen_enum_strict_ ? tenum->get_name().c_str() : "int";
+
+  // Explicit C++11 type (e.g. enum NAME : short).
+  string explicit_type = "";
+  string value_type = "int";
+  const auto& typeAnnotation = tenum->annotations_.find("cpp.enum_type");
+  if (typeAnnotation != tenum->annotations_.end()) {
+    value_type = typeAnnotation->second;
+    explicit_type = string(" : ") + typeAnnotation->second;
+  }
+  if (gen_enum_strict_) {
+    value_type = tenum->get_name().c_str();
+  }
+
   auto typed_prefix = gen_enum_strict_ ? tenum->get_name().c_str() : nullptr;
   auto enum_suffix  = gen_enum_strict_ ? " class "                 : " ";
   auto name = tenum->get_name();
   auto fullname = folly::to<string>(ns_prefix_, name);
 
-  f_types_ << indent() << "enum" << enum_suffix << name;
+  f_types_ << indent() << "enum" << enum_suffix << name << explicit_type;
   generate_enum_constant_list(f_types_, constants, false, true);
 
   std::string minName;

@@ -25,6 +25,37 @@ class StructWithUnion;
 class RecursiveStruct;
 class StructWithContainers;
 
+enum class TypedEnum : short {
+  VAL1 = 0,
+  VAL2 = 1
+};
+
+extern const std::map<TypedEnum, const char*> _TypedEnum_VALUES_TO_NAMES;
+extern const std::map<const char*, TypedEnum, apache::thrift::ltstr> _TypedEnum_NAMES_TO_VALUES;
+
+} // cpp2
+namespace std {
+
+template<> struct hash<typename  ::cpp2::TypedEnum> : public apache::thrift::detail::enum_hash<typename  ::cpp2::TypedEnum> {};
+template<> struct equal_to<typename  ::cpp2::TypedEnum> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::TypedEnum> {};
+
+} // std
+namespace apache { namespace thrift {
+
+template <> const char* TEnumTraitsBase< ::cpp2::TypedEnum>::findName( ::cpp2::TypedEnum value);
+template <> bool TEnumTraitsBase< ::cpp2::TypedEnum>::findValue(const char* name,  ::cpp2::TypedEnum* outValue);
+
+template <> constexpr  ::cpp2::TypedEnum TEnumTraits< ::cpp2::TypedEnum>::min() {
+  return  ::cpp2::TypedEnum::VAL1;
+}
+
+template <> constexpr  ::cpp2::TypedEnum TEnumTraits< ::cpp2::TypedEnum>::max() {
+  return  ::cpp2::TypedEnum::VAL2;
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
 class MyUnion : private boost::totally_ordered<MyUnion> {
  public:
   enum Type {
