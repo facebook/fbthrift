@@ -203,11 +203,11 @@ inline int64_t zigzagToI64(uint64_t n) {
 }
 
 inline uint32_t i32ToZigzag(const int32_t n) {
-  return (n << 1) ^ (n >> 31);
+  return (static_cast<uint32_t>(n) << 1) ^ static_cast<uint32_t>(n >> 31);
 }
 
 inline uint64_t i64ToZigzag(const int64_t l) {
-  return (l << 1) ^ (l >> 63);
+  return (static_cast<uint64_t>(l) << 1) ^ static_cast<uint64_t>(l >> 63);
 }
 
 }}} // apache::thrift::util
