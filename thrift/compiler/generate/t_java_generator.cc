@@ -2043,7 +2043,7 @@ void t_java_generator::generate_field_value_meta_data(std::ofstream& out, t_type
       generate_field_value_meta_data(out, elem_type);
     } else if (type->is_set()){
       indent(out) << "new SetMetaData(TType.SET, ";
-      t_type* elem_type = ((t_list*)type)->get_elem_type();
+      t_type* elem_type = ((t_set*)type)->get_elem_type();
       generate_field_value_meta_data(out, elem_type);
     } else{ // map
       indent(out) << "new MapMetaData(TType.MAP, ";
