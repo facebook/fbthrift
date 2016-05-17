@@ -17,12 +17,9 @@
 #include <string>
 #include <unordered_map>
 #include <gtest/gtest.h>
-#include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 #include <thrift/test/gen-cpp2/CustomStruct.h>
 
@@ -30,7 +27,6 @@ using namespace apache::thrift;
 using namespace apache::thrift::async;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::transport;
-using namespace apache::thrift::util;
 using namespace thrift::test;
 
 Container createContainer() {
@@ -65,25 +61,6 @@ class CustomStructHandler : public CustomStructSvIf {
     out = in;
   }
 };
-
-
-std::shared_ptr<ThriftServer> getServer() {
-  auto server = std::make_shared<ThriftServer>();
-  auto threadFactory = std::make_shared<PosixThreadFactory>();
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-    threadManager(
-        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(1,
-          5,
-          false,
-          2));
-  threadManager->threadFactory(threadFactory);
-  threadManager->start();
-  server->setThreadManager(threadManager);
-  server->setPort(0);
-  server->setInterface(std::unique_ptr<CustomStructSvIf>(
-      new CustomStructHandler));
-  return server;
-}
 
 
 TEST(CustomStructs, RoundTripContainer) {
@@ -123,34 +100,28 @@ TEST(CustomStructs, RoundTripEmptyContainer) {
 
 
 TEST(CustomStructs, SerializeOverHandler) {
-  ScopedServerThread sst(getServer());
-  folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
-
-  CustomStructAsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    folly::DelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
+  ScopedServerInterfaceThread runner(std::make_shared<CustomStructHandler>());
+  auto eb = folly::EventBaseManager::get()->getEventBase();
+  auto client = runner.newClient<CustomStructAsyncClient>(eb);
 
   {
     MyCustomStruct expected("Goodnight Moon");
     MyCustomStruct actual("UNKNOWN");
-    client.sync_echoStruct(actual, expected);
+    client->sync_echoStruct(actual, expected);
     EXPECT_EQ(expected, actual);
   }
 
   {
     MyCustomUnion expected("Goodnight Moon");
     MyCustomUnion actual;
-    client.sync_echoUnion(actual, expected);
+    client->sync_echoUnion(actual, expected);
     EXPECT_EQ(expected, actual);
   }
 
   {
     MyCustomUnion expected("-4601");
     MyCustomUnion actual;
-    client.sync_echoUnion(actual, expected);
+    client->sync_echoUnion(actual, expected);
     EXPECT_EQ(expected, actual);
   }
 }

@@ -48,10 +48,7 @@ int SyncClientTest() {
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
-  TestServiceAsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    folly::DelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   std::string response;
   client.sync_sendResponse(response, 64);

@@ -83,10 +83,7 @@ TEST(ThriftServer, OnewayClientConnectionCloseTest) {
     folly::EventBase base;
     std::shared_ptr<TAsyncSocket> socket(
         TAsyncSocket::newSocket(&base, *st.getAddress()));
-    TestServiceAsyncClient client(
-        std::unique_ptr<HeaderClientChannel,
-                        folly::DelayedDestruction::Destructor>(
-            new HeaderClientChannel(socket)));
+    TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
     client.sync_noResponse(10000);
   } // client out of scope
@@ -102,10 +99,7 @@ TEST(ThriftServer, CompressionClientTest) {
   std::shared_ptr<TAsyncSocket> socket(
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  TestServiceAsyncClient client(
-      std::unique_ptr<HeaderClientChannel,
-                      folly::DelayedDestruction::Destructor>(
-          new HeaderClientChannel(socket)));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   auto channel =
       boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
@@ -131,10 +125,7 @@ TEST(ThriftServer, CompressionServerTest) {
   std::shared_ptr<TAsyncSocket> socket(
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  TestServiceAsyncClient client(
-      std::unique_ptr<HeaderClientChannel,
-                      folly::DelayedDestruction::Destructor>(
-          new HeaderClientChannel(socket)));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   auto channel =
       boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
@@ -156,10 +147,7 @@ TEST(ThriftServer, HeaderTest) {
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  TestServiceAsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    folly::DelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   RpcOptions options;
   // Set it as a header directly so the client channel won't set a
@@ -228,9 +216,7 @@ TEST(ThriftServer, ClientTimeoutTest) {
         TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
     return std::make_shared<TestServiceAsyncClient>(
-        std::unique_ptr<HeaderClientChannel,
-                        folly::DelayedDestruction::Destructor>(
-            new HeaderClientChannel(socket)));
+        HeaderClientChannel::newChannel(socket));
   };
 
   int cbCtor = 0;
@@ -332,10 +318,7 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
   std::shared_ptr<TAsyncSocket> socket(
       TAsyncSocket::newSocket(&base, *st.getAddress()));
 
-  TestServiceAsyncClient client(
-      std::unique_ptr<HeaderClientChannel,
-                      folly::DelayedDestruction::Destructor>(
-          new HeaderClientChannel(socket)));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   std::string response;
   client.sync_sendResponse(response, 200);
@@ -397,10 +380,7 @@ TEST(ThriftServer, BadSendTest) {
   std::shared_ptr<TAsyncSocket> socket(
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  TestServiceAsyncClient client(
-      std::unique_ptr<HeaderClientChannel,
-                      folly::DelayedDestruction::Destructor>(
-          new HeaderClientChannel(socket)));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   client.sendResponse(std::unique_ptr<RequestCallback>(new Callback), 64);
 
@@ -430,10 +410,7 @@ TEST(ThriftServer, ResetStateTest) {
         TAsyncSocket::newSocket(&base, ssock->getAddresses()[0]));
 
     // Create a client.
-    TestServiceAsyncClient client(
-        std::unique_ptr<HeaderClientChannel,
-                        folly::DelayedDestruction::Destructor>(
-            new HeaderClientChannel(socket)));
+    TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
     std::string response;
     // This will fail, because there's no server.
@@ -509,10 +486,7 @@ TEST(ThriftServer, FailureInjection) {
   std::shared_ptr<TAsyncSocket> socket(
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  TestServiceAsyncClient client(
-      std::unique_ptr<HeaderClientChannel,
-                      folly::DelayedDestruction::Destructor>(
-          new HeaderClientChannel(socket)));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   auto server = std::dynamic_pointer_cast<ThriftServer>(sst.getServer().lock());
   CHECK(server);
@@ -577,10 +551,7 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
   std::shared_ptr<TAsyncSocket> socket(
       TAsyncSocket::newSocket(&base, *st.getAddress()));
 
-  TestServiceAsyncClient client(
-      std::unique_ptr<HeaderClientChannel,
-                      folly::DelayedDestruction::Destructor>(
-          new HeaderClientChannel(socket)));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   std::string response;
   client.sync_sendResponse(response, 200);
@@ -649,10 +620,7 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
   std::shared_ptr<TAsyncSocket> socket(
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  TestServiceAsyncClient client(
-      std::unique_ptr<HeaderClientChannel,
-                      folly::DelayedDestruction::Destructor>(
-          new HeaderClientChannel(socket)));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   std::string response;
 
@@ -671,10 +639,7 @@ TEST(ThriftServer, ModifyingIOThreadCountLive) {
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   // Can't reuse client since the channel has gone bad
-  TestServiceAsyncClient client2(
-      std::unique_ptr<HeaderClientChannel,
-                      folly::DelayedDestruction::Destructor>(
-          new HeaderClientChannel(socket2)));
+  TestServiceAsyncClient client2(HeaderClientChannel::newChannel(socket2));
 
   client2.sync_sendResponse(response, 64);
 }

@@ -77,10 +77,7 @@ int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  SampleService2AsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    folly::DelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
+  SampleService2AsyncClient client(HeaderClientChannel::newChannel(socket));
 
   Inner2 inner;
   inner.i = 7;

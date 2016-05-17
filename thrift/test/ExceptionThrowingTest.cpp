@@ -142,8 +142,7 @@ TEST(ExceptionThrowingTest, Thrift2Client) {
   auto* serverAddr = serverThread->getAddress();
   std::shared_ptr<TAsyncSocket> socket(TAsyncSocket::newSocket(
       &eb, *serverAddr));
-  std::unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor> channel(
-      new HeaderClientChannel(socket));
+  auto channel = HeaderClientChannel::newChannel(socket);
   ExceptionThrowingServiceAsyncClient client(std::move(channel));
 
   // Verify that recv_echo works

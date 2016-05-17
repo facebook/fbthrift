@@ -127,17 +127,16 @@ void AsyncCpp2Test(bool enable_security) {
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  auto client_channel = HeaderClientChannel::newChannel(socket);
+  auto channel = HeaderClientChannel::newChannel(socket);
+  channel->setTimeout(10000);
   if (enable_security) {
-    client_channel->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
-    client_channel->setSaslClient(std::unique_ptr<SaslClient>(
+    channel->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
+    channel->setSaslClient(std::unique_ptr<SaslClient>(
       new StubSaslClient(socket->getEventBase())
     ));
   }
-  FutureServiceAsyncClient client(std::move(client_channel));
+  FutureServiceAsyncClient client(std::move(channel));
 
-  boost::polymorphic_downcast<HeaderClientChannel*>(
-    client.getChannel())->setTimeout(10000);
   client.sendResponse([](ClientReceiveState&& state) {
                         std::string response;
                         try {
@@ -158,10 +157,8 @@ TEST(ThriftServer, FutureExceptions) {
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  FutureServiceAsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    DelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
+  auto channel = HeaderClientChannel::newChannel(socket);
+  FutureServiceAsyncClient client(std::move(channel));
   auto f = client.future_throwing().waitVia(&base);
 
   EXPECT_THROW(f.value(), Xception);
@@ -180,13 +177,9 @@ TEST(ThriftServer, FutureClientTest) {
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  FutureServiceAsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    DelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
-
-  boost::polymorphic_downcast<HeaderClientChannel*>(
-    client.getChannel())->setTimeout(10000);
+  auto channel = HeaderClientChannel::newChannel(socket);
+  channel->setTimeout(10000);
+  FutureServiceAsyncClient client(std::move(channel));
 
   // only once you call wait() should you start looping,
   // so the wait time in value() (which calls wait()) should
@@ -247,13 +240,9 @@ TEST(ThriftServer, FutureGetOrderTest) {
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  FutureServiceAsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    DelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
-
-  boost::polymorphic_downcast<HeaderClientChannel*>(
-    client.getChannel())->setTimeout(10000);
+  auto channel = HeaderClientChannel::newChannel(socket);
+  channel->setTimeout(10000);
+  FutureServiceAsyncClient client(std::move(channel));
 
   auto future0 = client.future_sendResponse(0);
   auto future1 = client.future_sendResponse(10);
@@ -287,10 +276,8 @@ TEST(ThriftServer, OnewayFutureClientTest) {
   std::shared_ptr<TAsyncSocket> socket(
     TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  FutureServiceAsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    DelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
+  auto channel = HeaderClientChannel::newChannel(socket);
+  FutureServiceAsyncClient client(std::move(channel));
 
   auto future = client.future_noResponse(100);
   steady_clock::time_point sent = steady_clock::now();

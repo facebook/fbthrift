@@ -19,13 +19,10 @@
 #include <folly/json.h>
 #include <gtest/gtest.h>
 
-#include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <thrift/test/gen-cpp2/DynamicTestCompatService.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
 using namespace cpp2;
 using namespace std;
@@ -34,7 +31,6 @@ using namespace apache::thrift;
 using namespace apache::thrift::async;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::transport;
-using namespace apache::thrift::util;
 
 static dynamic kDynamics[] = {
   // NULL
@@ -107,25 +103,6 @@ class TestServiceHandler : public DynamicTestCompatServiceSvIf {
 };
 
 
-std::shared_ptr<ThriftServer> getServer() {
-  auto server = std::make_shared<ThriftServer>();
-  auto threadFactory = std::make_shared<PosixThreadFactory>();
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-    threadManager(
-        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(1,
-          5,
-          false,
-          2));
-  threadManager->threadFactory(threadFactory);
-  threadManager->start();
-  server->setThreadManager(threadManager);
-  server->setPort(0);
-  server->setInterface(std::unique_ptr<DynamicTestCompatServiceSvIf>(
-      new TestServiceHandler));
-  return server;
-}
-
-
 class RoundtripTestFixture : public ::testing::TestWithParam<dynamic> {
 };
 
@@ -153,18 +130,13 @@ TEST_P(RoundtripTestFixture, RoundtripContainer) {
 }
 
 TEST_P(RoundtripTestFixture, SerializeOverHandler) {
-  ScopedServerThread sst(getServer());
-  EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  ScopedServerInterfaceThread runner(std::make_shared<TestServiceHandler>());
+  auto eb = EventBaseManager::get()->getEventBase();
+  auto client = runner.newClient<DynamicTestCompatServiceAsyncClient>(eb);
 
-  DynamicTestCompatServiceAsyncClient client(
-    std::unique_ptr<HeaderClientChannel,
-                    DelayedDestruction::Destructor>(
-                      new HeaderClientChannel(socket)));
   const SerializableDynamic expected = GetParam();
   SerializableDynamic actual;
-  client.sync_echo(actual, expected);
+  client->sync_echo(actual, expected);
   EXPECT_EQ(expected, actual) << "Expected: " << toJson(*expected)
                               << " Actual: " << toJson(*actual);
 }
