@@ -63,6 +63,19 @@ public class ModuleLogger {
         break;
       }
       
+      case UnEnumStruct: {
+        oprot.writeStructBegin(new TStruct("UnEnumStruct"));
+        if (mMap.containsKey(Module.UnEnumStruct_city) && mMap.get(Module.UnEnumStruct_city) != null) {
+          writeFieldBegin(oprot, Module.UnEnumStruct_city);
+          oprot.writeI32(((ModuleEnum) mMap.get(Module.UnEnumStruct_city)).getValue());
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
       case Range: {
         oprot.writeStructBegin(new TStruct("Range"));
         if (mMap.containsKey(Module.Range_min) && mMap.get(Module.Range_min) != null) {

@@ -523,6 +523,17 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
     if (value->get_type() != t_const_value::CV_INTEGER) {
       throw string("type error: const \"" + name + "\" was declared as enum");
     }
+    const auto as_enum = dynamic_cast<t_enum*>(type);
+    assert(as_enum != nullptr);
+    const auto enum_val = as_enum->find_value(value->get_integer());
+    if (enum_val == nullptr) {
+      pwarning(
+          0,
+          "type error: const \"%s\" was declared as enum \"%s\" with a value"
+          " not of that enum",
+          name.c_str(),
+          type->get_name().c_str());
+    }
   } else if (as_struct && as_struct->is_union()) {
     if (value->get_type() != t_const_value::CV_MAP) {
       throw string("type error: const \"" + name + "\" was declared as union");

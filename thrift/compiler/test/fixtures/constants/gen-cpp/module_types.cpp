@@ -222,6 +222,104 @@ void merge(Internship&& from, Internship& to) {
   }
 }
 
+const uint64_t UnEnumStruct::_reflection_id;
+void UnEnumStruct::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::module_reflection_::reflectionInitializer_18314195816413397484(schema);
+}
+
+bool UnEnumStruct::operator == (const UnEnumStruct & rhs) const {
+  if (!(this->city == rhs.city))
+    return false;
+  return true;
+}
+
+uint32_t UnEnumStruct::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::module_reflection_::reflectionInitializer_18314195816413397484(*schema);
+    iprot->setNextStructType(UnEnumStruct::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          int32_t ecast3;
+          xfer += iprot->readI32(ecast3);
+          this->city = (City)ecast3;
+          this->__isset.city = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void UnEnumStruct::__clear() {
+  city = (City)-1;
+  __isset.__clear();
+}
+uint32_t UnEnumStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("UnEnumStruct");
+  xfer += oprot->writeFieldBegin("city", apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32((int32_t)this->city);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(UnEnumStruct &a, UnEnumStruct &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.city, b.city);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const UnEnumStruct& from, UnEnumStruct& to) {
+  using apache::thrift::merge;
+  if (from.__isset.city) {
+    merge(from.city, to.city);
+    to.__isset.city = true;
+  }
+}
+
+void merge(UnEnumStruct&& from, UnEnumStruct& to) {
+  using apache::thrift::merge;
+  if (from.__isset.city) {
+    merge(std::move(from.city), to.city);
+    to.__isset.city = true;
+  }
+}
+
 const uint64_t Range::_reflection_id;
 void Range::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_7757081658652615948(schema);

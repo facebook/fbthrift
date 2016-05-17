@@ -72,6 +72,8 @@ return  ::Company::INSTAGRAM;
 
 class Internship;
 
+class UnEnumStruct;
+
 class Range;
 
 void swap(Internship &a, Internship &b);
@@ -160,6 +162,63 @@ class Internship : public apache::thrift::TStructType<Internship> {
 class Internship;
 void merge(const Internship& from, Internship& to);
 void merge(Internship&& from, Internship& to);
+void swap(UnEnumStruct &a, UnEnumStruct &b);
+
+class UnEnumStruct : public apache::thrift::TStructType<UnEnumStruct> {
+ public:
+
+  static const uint64_t _reflection_id = 18314195816413397484U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  UnEnumStruct() : city((City)-1) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit UnEnumStruct(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    UnEnumStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    city = arg.move();
+    __isset.city = true;
+  }
+
+  UnEnumStruct(const UnEnumStruct&) = default;
+  UnEnumStruct& operator=(const UnEnumStruct& src)= default;
+  UnEnumStruct(UnEnumStruct&&) = default;
+  UnEnumStruct& operator=(UnEnumStruct&&) = default;
+
+  void __clear();
+
+  virtual ~UnEnumStruct() throw() {}
+
+  City city;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      city = false;
+    }
+    bool city;
+  } __isset;
+
+  bool operator == (const UnEnumStruct &) const;
+  bool operator != (const UnEnumStruct& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const UnEnumStruct & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class UnEnumStruct;
+void merge(const UnEnumStruct& from, UnEnumStruct& to);
+void merge(UnEnumStruct&& from, UnEnumStruct& to);
 void swap(Range &a, Range &b);
 
 class Range : public apache::thrift::TStructType<Range> {

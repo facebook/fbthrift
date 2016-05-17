@@ -19,6 +19,7 @@
 namespace cpp2 {
 
 class Internship;
+class UnEnumStruct;
 class Range;
 
 enum class City {
@@ -225,6 +226,106 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internshi
 }
 
 template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::serializedSizeZC(Protocol* proto, const  ::cpp2::Internship* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
+class UnEnumStruct : private boost::totally_ordered<UnEnumStruct> {
+ public:
+
+  UnEnumStruct() :
+      city(static_cast< ::cpp2::City>(-1)) {}
+  // FragileConstructor for use in initialization lists only
+
+  UnEnumStruct(apache::thrift::FragileConstructor,  ::cpp2::City city__arg) :
+      city(std::move(city__arg)) {
+    __isset.city = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  UnEnumStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    UnEnumStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    city = arg.move();
+    __isset.city = true;
+  }
+
+  UnEnumStruct(UnEnumStruct&&) = default;
+
+  UnEnumStruct(const UnEnumStruct&) = default;
+
+  UnEnumStruct& operator=(UnEnumStruct&&) = default;
+
+  UnEnumStruct& operator=(const UnEnumStruct&) = default;
+  void __clear();
+
+  virtual ~UnEnumStruct() throw() {}
+
+   ::cpp2::City city;
+
+  struct __isset {
+    void __clear() {
+      city = false;
+    }
+
+    bool city = false;
+  } __isset;
+  bool operator==(const UnEnumStruct& rhs) const;
+
+  bool operator < (const UnEnumStruct& rhs) const {
+    if (!(city == rhs.city)) {
+      return city < rhs.city;
+    }
+    return false;
+  }
+
+   ::cpp2::City get_city() const {
+    return city;
+  }
+
+   ::cpp2::City& set_city( ::cpp2::City city_) {
+    city = city_;
+    __isset.city = true;
+    return city;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(UnEnumStruct& a, UnEnumStruct& b);
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::UnEnumStruct>::clear( ::cpp2::UnEnumStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::UnEnumStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::write(Protocol* proto, const  ::cpp2::UnEnumStruct* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::read(Protocol* proto,   ::cpp2::UnEnumStruct* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::serializedSize(Protocol* proto, const  ::cpp2::UnEnumStruct* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::serializedSizeZC(Protocol* proto, const  ::cpp2::UnEnumStruct* obj) {
   return obj->serializedSizeZC(proto);
 }
 

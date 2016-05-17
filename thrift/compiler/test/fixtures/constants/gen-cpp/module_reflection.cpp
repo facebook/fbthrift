@@ -59,6 +59,42 @@ void reflectionInitializer_9022508676980868684(::apache::thrift::reflection::Sch
   reflectionInitializer_16163282776448022760(schema);  // enum module.Company
 }
 
+// Reflection initializer for enum module.City
+static void reflectionInitializer_12670503349505482568(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 12670503349505482568U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "enum module.City";
+  schema.names[dt.name] = id;
+  dt.__isset.enumValues = true;
+  static const std::pair<const char*, int32_t> enumValues[] = {
+    {"LON", 3},
+    {"MPK", 1},
+    {"NYC", 0},
+    {"SEA", 2},
+  };
+  dt.enumValues.insert(boost::container::ordered_unique_range_t(), enumValues, enumValues + 4);
+}
+
+static void  reflectionInitializer_12670503349505482568(::apache::thrift::reflection::Schema&);  // enum module.City
+// Reflection initializer for struct module.UnEnumStruct
+void reflectionInitializer_18314195816413397484(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 18314195816413397484U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.UnEnumStruct";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 12670503349505482568U;
+    f.name = "city";
+    f.order = 0;
+  }
+  reflectionInitializer_12670503349505482568(schema);  // enum module.City
+}
+
 // Reflection initializer for struct module.Range
 void reflectionInitializer_7757081658652615948(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 7757081658652615948U;

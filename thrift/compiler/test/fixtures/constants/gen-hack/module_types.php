@@ -153,6 +153,88 @@ class Internship implements IThriftStruct {
 
 }
 
+class UnEnumStruct implements IThriftStruct {
+  public static array $_TSPEC = array(
+    1 => array(
+      'var' => 'city',
+      'type' => TType::I32,
+      'enum' => 'City',
+      ),
+    );
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'city' => 1,
+  };
+  const int STRUCTURAL_ID = 8709689501091584749;
+  public ?City $city;
+
+  public function __construct(?City $city = null  ) {
+    if ($city === null) {
+      $this->city = City::coerce(-1);
+    } else {
+      $this->city = $city;
+    }
+  }
+
+  public function getName(): string {
+    return 'UnEnumStruct';
+  }
+
+  public function read(TProtocol $input): int {
+    $xfer = 0;
+    $fname = '';
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      if (!$fid && $fname !== null) {
+        $fid = (int) self::$_TFIELDMAP->get($fname);
+        if ($fid !== 0) {
+          $ftype = self::$_TSPEC[$fid]['type'];
+        }
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I32) {
+            $_val0 = null;
+            $xfer += $input->readI32($_val0);
+            $this->city = City::coerce($_val0);
+
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write(TProtocol $output): int {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('UnEnumStruct');
+    if ($this->city !== null) {
+      $_val0 = City::assert($this->city);
+      $xfer += $output->writeFieldBegin('city', TType::I32, 1);
+      $xfer += $output->writeI32($_val0);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
 class Range implements IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(

@@ -995,9 +995,13 @@ string t_hack_generator::render_const_value(t_type* type, t_const_value* value) 
   } else if (type->is_enum()) {
     t_enum* tenum = (t_enum*) type;
     const t_enum_value* val = tenum->find_value(value->get_integer());
-
-    out << php_namespace(tenum->get_program()) << tenum->get_name()
-      << "::" << val->get_name();
+    if (val != nullptr) {
+      out << php_namespace(tenum->get_program()) << tenum->get_name()
+        << "::" << val->get_name();
+    } else {
+      out << php_namespace(tenum->get_program()) << tenum->get_name()
+        << "::coerce(" << value->get_integer() << ")";
+    }
   } else if (type->is_struct() || type->is_xception()) {
     out << "new " << php_namespace(type->get_program()) << type->get_name() << "(" << endl;
     indent_up();

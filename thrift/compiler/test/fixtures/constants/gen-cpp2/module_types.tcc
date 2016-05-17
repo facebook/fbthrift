@@ -176,6 +176,93 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 template <class Protocol_>
+uint32_t UnEnumStruct::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  while (true) {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "city") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          int32_t ecast1;
+          xfer += iprot->readI32(ecast1);
+          this->city = ( ::cpp2::City)ecast1;
+          this->__isset.city = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t UnEnumStruct::serializedSize(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("UnEnumStruct");
+  xfer += prot_->serializedFieldSize("city", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->serializedSizeI32((int32_t)this->city);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t UnEnumStruct::serializedSizeZC(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("UnEnumStruct");
+  xfer += prot_->serializedFieldSize("city", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->serializedSizeI32((int32_t)this->city);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t UnEnumStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("UnEnumStruct");
+  xfer += prot_->writeFieldBegin("city", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->writeI32((int32_t)this->city);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+template <class Protocol_>
 uint32_t Range::read(Protocol_* iprot) {
   uint32_t xfer = 0;
   std::string fname;

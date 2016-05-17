@@ -126,6 +126,39 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+template uint32_t UnEnumStruct::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t UnEnumStruct::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t UnEnumStruct::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t UnEnumStruct::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t UnEnumStruct::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t UnEnumStruct::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t UnEnumStruct::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t UnEnumStruct::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+
+void UnEnumStruct::__clear() {
+  city = static_cast< ::cpp2::City>(-1);
+  __isset.__clear();
+}
+
+bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
+  if (!((city == rhs.city))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(UnEnumStruct& a, UnEnumStruct& b) {
+  using ::std::swap;
+  swap(a.city, b.city);
+  swap(a.__isset, b.__isset);
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 template uint32_t Range::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t Range::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t Range::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
