@@ -4076,8 +4076,12 @@ class CppGenerator(t_generator.Generator):
                                     bt.t_base_name(bt.base))
             return mapping[bt.base](value)
         elif t.is_enum:
-            return '{0}::{1}'.format(self._type_name(t),
-                                    t.find_value(value.integer).name)
+            name = self._type_name(t)
+            const = t.find_value(value.integer)
+            if const:
+                return '{0}::{1}'.format(name, const.name)
+            else:
+                return 'static_cast<{0}>({1})'.format(name, value.integer)
         elif t.is_struct or t.is_xception:
             value_map = {}
             for k, v in value.map.items():
