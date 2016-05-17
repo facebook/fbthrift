@@ -138,6 +138,19 @@ class Guard : boost::noncopyable {
     release();
   }
 
+  // Move constructor/assignment.
+  Guard(Guard&& other) noexcept {
+    *this = std::move(other);
+  }
+  Guard& operator=(Guard&& other) noexcept {
+    if (&other != this) {
+      release();
+      using std::swap;
+      swap(mutex_, other.mutex_);
+    }
+    return *this;
+  }
+
   bool release() {
     if (!mutex_) {
       return false;
@@ -147,21 +160,12 @@ class Guard : boost::noncopyable {
     return true;
   }
 
-  /*
-   * This is really operator bool. However, implementing it to return
-   * bool is actually harmful. See
-   * www.artima.com/cppsource/safebool.html for the details; in brief,
-   * converting to bool allows a lot of nonsensical operations in
-   * addition to simple testing. To avoid that, we return a pointer to
-   * member which can only be used for testing.
-   */
-  typedef const Mutex*const Guard::* pBoolMember;
-  inline operator pBoolMember() const {
-    return mutex_ != nullptr ? &Guard::mutex_ : nullptr;
+  explicit operator bool() const {
+    return mutex_ != nullptr;
   }
 
  private:
-  const Mutex* mutex_;
+  const Mutex* mutex_ = nullptr;
 };
 
 // Can be used as second argument to RWGuard to make code more readable
@@ -173,66 +177,62 @@ enum RWGuardType {
 
 
 class RWGuard : boost::noncopyable {
-  public:
+ public:
   explicit RWGuard(const ReadWriteMutex& value, bool write = false,
                    int64_t timeout=0)
-         : rw_mutex_(value), locked_(true) {
-      if (write) {
-        if (timeout) {
-          locked_ = rw_mutex_.timedWrite(timeout);
-        } else {
-          rw_mutex_.acquireWrite();
-        }
+      : rw_mutex_(&value) {
+    bool locked = true;
+    if (write) {
+      if (timeout) {
+        locked = rw_mutex_->timedWrite(timeout);
       } else {
-        if (timeout) {
-          locked_ = rw_mutex_.timedRead(timeout);
-        } else {
-          rw_mutex_.acquireRead();
-        }
+        rw_mutex_->acquireWrite();
       }
-    }
-
-    RWGuard(const ReadWriteMutex& value, RWGuardType type, int64_t timeout = 0)
-         : rw_mutex_(value), locked_(true) {
-      if (type == RW_WRITE) {
-        if (timeout) {
-          locked_ = rw_mutex_.timedWrite(timeout);
-        } else {
-          rw_mutex_.acquireWrite();
-        }
+    } else {
+      if (timeout) {
+        locked = rw_mutex_->timedRead(timeout);
       } else {
-        if (timeout) {
-          locked_ = rw_mutex_.timedRead(timeout);
-        } else {
-          rw_mutex_.acquireRead();
-        }
+        rw_mutex_->acquireRead();
       }
     }
-    ~RWGuard() {
-      if (locked_) {
-        rw_mutex_.release();
-      }
+    if (!locked) {
+      rw_mutex_ = nullptr;
     }
+  }
+  RWGuard(const ReadWriteMutex& value, RWGuardType type, int64_t timeout = 0)
+      : RWGuard(value, type == RW_WRITE, timeout) {
+  }
 
-  typedef const bool RWGuard::* pBoolMember;
-  operator pBoolMember() const {
-    return locked_ ? &RWGuard::locked_ : nullptr;
+  ~RWGuard() {
+    release();
+  }
+
+  // Move constructor/assignment.
+  RWGuard(RWGuard&& other) noexcept {
+    *this = std::move(other);
+  }
+  RWGuard& operator=(RWGuard&& other) noexcept {
+    if (&other != this) {
+      release();
+      using std::swap;
+      swap(rw_mutex_, other.rw_mutex_);
     }
+    return *this;
+  }
 
-    bool operator!() const {
-      return !locked_;
-    }
+  explicit operator bool() const {
+    return rw_mutex_ != nullptr;
+  }
 
-    bool release() {
-      if (!locked_) return false;
-      rw_mutex_.release();
-      locked_ = false;
-      return true;
-    }
+  bool release() {
+    if (rw_mutex_ == nullptr) return false;
+    rw_mutex_->release();
+    rw_mutex_ = nullptr;
+    return true;
+  }
 
-  private:
-    const ReadWriteMutex& rw_mutex_;
-    mutable bool locked_;
+ private:
+  const ReadWriteMutex* rw_mutex_ = nullptr;
 };
 
 
