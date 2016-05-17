@@ -59,7 +59,12 @@ TEST(FrozenIntegral, IntBounds) {
 }
 
 TEST(FrozenIntegral, UIntPacking) {
-  FreezeRoot* fr = nullptr;
+  class DummyFreezer : public FreezeRoot {
+   private:
+    void doAppendBytes(byte*, size_t, folly::MutableByteRange&,
+                       size_t&) override {}
+  };
+  DummyFreezer fr;
   size_t value = 5;
   size_t width = 3;
   for (size_t start = 0; start <= 64 - width; start += 7) {
@@ -68,7 +73,7 @@ TEST(FrozenIntegral, UIntPacking) {
       l.bits = bits;
       size_t container = 0xDEADBEEFDEADBEEF;
       FreezePosition fpos{(byte*)&container, start};
-      l.freeze(*fr, value, fpos);
+      l.freeze(fr, value, fpos);
       ViewPosition vpos{(byte*)&container, start};
       size_t confirm;
       l.thaw(vpos, confirm);

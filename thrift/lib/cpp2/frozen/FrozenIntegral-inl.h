@@ -21,8 +21,10 @@ namespace detail {
 template <class T,
           class = typename std::enable_if<std::is_integral<T>::value>::type>
 size_t bitsNeeded(const T& x) {
-  return x ? folly::findLastSet(std::is_signed<T>::value ? x ^ (x << 1) : x)
-           : 0;
+  using UT = typename std::make_unsigned<T>::type;
+  auto ux = static_cast<UT>(x);
+  return ux ? folly::findLastSet(std::is_signed<T>::value ? ux ^ (ux << 1) : ux)
+            : 0;
 }
 
 /**
