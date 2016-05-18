@@ -435,8 +435,7 @@ class t_d_generator : public t_oop_generator {
           indent() << "// Your implementation goes here." << endl <<
           indent() << "writeln(\"" << (*f_iter)->get_name() << " called\");" << endl;
 
-        t_base_type* rt = (t_base_type*)(*f_iter)->get_returntype();
-        if (rt->get_base() != t_base_type::TYPE_VOID) {
+        if (!(*f_iter)->get_returntype()->is_void()) {
           indent(out) << "return typeof(return).init;" << endl;
         }
 
