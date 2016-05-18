@@ -23,7 +23,9 @@ template <class T,
 size_t bitsNeeded(const T& x) {
   using UT = typename std::make_unsigned<T>::type;
   auto ux = static_cast<UT>(x);
-  return ux ? folly::findLastSet(std::is_signed<T>::value ? ux ^ (ux << 1) : ux)
+  return ux ? folly::findLastSet(std::is_signed<T>::value
+                                 ? static_cast<UT>(ux ^ (ux << 1))
+                                 : ux)
             : 0;
 }
 

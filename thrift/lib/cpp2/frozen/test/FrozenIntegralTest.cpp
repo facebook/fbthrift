@@ -34,6 +34,10 @@ TEST(FrozenIntegral, UIntBounds) {
   EXPECT_EQ(7, frozenSize(0xFFFFFFFFFFFFFFUL));
   EXPECT_EQ(8, frozenSize(0x0100000000000000UL));
   EXPECT_EQ(8, frozenSize(0xFFFFFFFFFFFFFFFFUL));
+  EXPECT_EQ(0, frozenSize(std::numeric_limits<uint8_t>::min()));
+  EXPECT_EQ(1, frozenSize(std::numeric_limits<uint8_t>::max()));
+  EXPECT_EQ(0, frozenSize(std::numeric_limits<uint16_t>::min()));
+  EXPECT_EQ(2, frozenSize(std::numeric_limits<uint16_t>::max()));
   EXPECT_EQ(0, frozenSize(std::numeric_limits<uint32_t>::min()));
   EXPECT_EQ(4, frozenSize(std::numeric_limits<uint32_t>::max()));
   EXPECT_EQ(0, frozenSize(std::numeric_limits<uint64_t>::min()));
@@ -56,6 +60,10 @@ TEST(FrozenIntegral, IntBounds) {
   EXPECT_EQ(8, frozenSize(std::numeric_limits<int64_t>::max()));
   EXPECT_EQ(4, frozenSize(std::numeric_limits<int32_t>::min()));
   EXPECT_EQ(4, frozenSize(std::numeric_limits<int32_t>::max()));
+  EXPECT_EQ(2, frozenSize(std::numeric_limits<int16_t>::min()));
+  EXPECT_EQ(2, frozenSize(std::numeric_limits<int16_t>::max()));
+  EXPECT_EQ(1, frozenSize(std::numeric_limits<int8_t>::min()));
+  EXPECT_EQ(1, frozenSize(std::numeric_limits<int8_t>::max()));
 }
 
 TEST(FrozenIntegral, UIntPacking) {
