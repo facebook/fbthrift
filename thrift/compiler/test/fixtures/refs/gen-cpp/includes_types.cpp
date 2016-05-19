@@ -115,18 +115,14 @@ void swap(Included &a, Included &b) {
 
 void merge(const Included& from, Included& to) {
   using apache::thrift::merge;
-  if (from.__isset.some_val) {
-    merge(from.some_val, to.some_val);
-    to.__isset.some_val = true;
-  }
+  merge(from.some_val, to.some_val);
+  to.__isset.some_val = to.__isset.some_val || from.__isset.some_val;
 }
 
 void merge(Included&& from, Included& to) {
   using apache::thrift::merge;
-  if (from.__isset.some_val) {
-    merge(std::move(from.some_val), to.some_val);
-    to.__isset.some_val = true;
-  }
+  merge(std::move(from.some_val), to.some_val);
+  to.__isset.some_val = to.__isset.some_val || from.__isset.some_val;
 }
 
 } // namespace

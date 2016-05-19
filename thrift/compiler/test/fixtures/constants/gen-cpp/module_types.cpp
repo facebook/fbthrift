@@ -199,10 +199,8 @@ void swap(Internship &a, Internship &b) {
 void merge(const Internship& from, Internship& to) {
   using apache::thrift::merge;
   merge(from.weeks, to.weeks);
-  if (from.__isset.title) {
-    merge(from.title, to.title);
-    to.__isset.title = true;
-  }
+  merge(from.title, to.title);
+  to.__isset.title = to.__isset.title || from.__isset.title;
   if (from.__isset.employer) {
     merge(from.employer, to.employer);
     to.__isset.employer = true;
@@ -212,10 +210,8 @@ void merge(const Internship& from, Internship& to) {
 void merge(Internship&& from, Internship& to) {
   using apache::thrift::merge;
   merge(std::move(from.weeks), to.weeks);
-  if (from.__isset.title) {
-    merge(std::move(from.title), to.title);
-    to.__isset.title = true;
-  }
+  merge(std::move(from.title), to.title);
+  to.__isset.title = to.__isset.title || from.__isset.title;
   if (from.__isset.employer) {
     merge(std::move(from.employer), to.employer);
     to.__isset.employer = true;
@@ -306,18 +302,14 @@ void swap(UnEnumStruct &a, UnEnumStruct &b) {
 
 void merge(const UnEnumStruct& from, UnEnumStruct& to) {
   using apache::thrift::merge;
-  if (from.__isset.city) {
-    merge(from.city, to.city);
-    to.__isset.city = true;
-  }
+  merge(from.city, to.city);
+  to.__isset.city = to.__isset.city || from.__isset.city;
 }
 
 void merge(UnEnumStruct&& from, UnEnumStruct& to) {
   using apache::thrift::merge;
-  if (from.__isset.city) {
-    merge(std::move(from.city), to.city);
-    to.__isset.city = true;
-  }
+  merge(std::move(from.city), to.city);
+  to.__isset.city = to.__isset.city || from.__isset.city;
 }
 
 const uint64_t Range::_reflection_id;

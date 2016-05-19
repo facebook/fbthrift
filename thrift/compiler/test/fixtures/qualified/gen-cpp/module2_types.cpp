@@ -110,26 +110,18 @@ void swap(Struct &a, Struct &b) {
 
 void merge(const Struct& from, Struct& to) {
   using apache::thrift::merge;
-  if (from.__isset.first) {
-    merge(from.first, to.first);
-    to.__isset.first = true;
-  }
-  if (from.__isset.second) {
-    merge(from.second, to.second);
-    to.__isset.second = true;
-  }
+  merge(from.first, to.first);
+  to.__isset.first = to.__isset.first || from.__isset.first;
+  merge(from.second, to.second);
+  to.__isset.second = to.__isset.second || from.__isset.second;
 }
 
 void merge(Struct&& from, Struct& to) {
   using apache::thrift::merge;
-  if (from.__isset.first) {
-    merge(std::move(from.first), to.first);
-    to.__isset.first = true;
-  }
-  if (from.__isset.second) {
-    merge(std::move(from.second), to.second);
-    to.__isset.second = true;
-  }
+  merge(std::move(from.first), to.first);
+  to.__isset.first = to.__isset.first || from.__isset.first;
+  merge(std::move(from.second), to.second);
+  to.__isset.second = to.__isset.second || from.__isset.second;
 }
 
 const uint64_t BigStruct::_reflection_id;
@@ -229,26 +221,18 @@ void swap(BigStruct &a, BigStruct &b) {
 
 void merge(const BigStruct& from, BigStruct& to) {
   using apache::thrift::merge;
-  if (from.__isset.s) {
-    merge(from.s, to.s);
-    to.__isset.s = true;
-  }
-  if (from.__isset.id) {
-    merge(from.id, to.id);
-    to.__isset.id = true;
-  }
+  merge(from.s, to.s);
+  to.__isset.s = to.__isset.s || from.__isset.s;
+  merge(from.id, to.id);
+  to.__isset.id = to.__isset.id || from.__isset.id;
 }
 
 void merge(BigStruct&& from, BigStruct& to) {
   using apache::thrift::merge;
-  if (from.__isset.s) {
-    merge(std::move(from.s), to.s);
-    to.__isset.s = true;
-  }
-  if (from.__isset.id) {
-    merge(std::move(from.id), to.id);
-    to.__isset.id = true;
-  }
+  merge(std::move(from.s), to.s);
+  to.__isset.s = to.__isset.s || from.__isset.s;
+  merge(std::move(from.id), to.id);
+  to.__isset.id = to.__isset.id || from.__isset.id;
 }
 
 } // namespace

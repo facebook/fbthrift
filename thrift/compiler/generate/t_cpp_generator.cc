@@ -3690,10 +3690,9 @@ void t_cpp_generator::generate_struct_merge(ofstream& out, t_struct* tstruct) {
     indent_up();
     indent(out) << "using apache::thrift::merge;" << endl;
     for (auto field : tstruct->get_members()) {
-      const bool isset = has_isset(field);
       code_map["field_name"] = field->get_name();
 
-      if (isset) {
+      if (is_optional(field) && has_isset(field)) {
         indent(out) << vformat("if (from.__isset.{field_name}) {{", code_map)
                     << endl;
         indent_up();
@@ -3703,11 +3702,20 @@ void t_cpp_generator::generate_struct_merge(ofstream& out, t_struct* tstruct) {
                          vformat(code_map["from_field_format"], code_map),
                          vformat(code_map["to_field_format"], code_map))
         << endl;
-      if (isset) {
-        indent(out) << vformat("to.__isset.{field_name} = true;", code_map)
-                    << endl;
-        indent_down();
-        indent(out) << "}" << endl;
+      if (has_isset(field)) {
+        if (is_optional(field)) {
+          indent(out) << vformat("to.__isset.{field_name} = true;", code_map)
+                      << endl;
+          indent_down();
+          indent(out) << "}" << endl;
+        } else {
+          indent(out)
+            << vformat(
+                   "to.__isset.{field_name} = "
+                   "to.__isset.{field_name} || from.__isset.{field_name};",
+                   code_map)
+            << endl;
+        }
       }
     }
     indent_down();

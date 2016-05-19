@@ -227,10 +227,8 @@ void merge(const MyField& from, MyField& to) {
     merge(from.opt_value, to.opt_value);
     to.__isset.opt_value = true;
   }
-  if (from.__isset.value) {
-    merge(from.value, to.value);
-    to.__isset.value = true;
-  }
+  merge(from.value, to.value);
+  to.__isset.value = to.__isset.value || from.__isset.value;
   merge(from.req_value, to.req_value);
 }
 
@@ -240,10 +238,8 @@ void merge(MyField&& from, MyField& to) {
     merge(std::move(from.opt_value), to.opt_value);
     to.__isset.opt_value = true;
   }
-  if (from.__isset.value) {
-    merge(std::move(from.value), to.value);
-    to.__isset.value = true;
-  }
+  merge(std::move(from.value), to.value);
+  to.__isset.value = to.__isset.value || from.__isset.value;
   merge(std::move(from.req_value), to.req_value);
 }
 
@@ -575,27 +571,19 @@ void swap(StructWithUnion &a, StructWithUnion &b) {
 void merge(const StructWithUnion& from, StructWithUnion& to) {
   using apache::thrift::merge;
   merge(from.u, to.u);
-  if (from.__isset.aDouble) {
-    merge(from.aDouble, to.aDouble);
-    to.__isset.aDouble = true;
-  }
-  if (from.__isset.f) {
-    merge(from.f, to.f);
-    to.__isset.f = true;
-  }
+  merge(from.aDouble, to.aDouble);
+  to.__isset.aDouble = to.__isset.aDouble || from.__isset.aDouble;
+  merge(from.f, to.f);
+  to.__isset.f = to.__isset.f || from.__isset.f;
 }
 
 void merge(StructWithUnion&& from, StructWithUnion& to) {
   using apache::thrift::merge;
   merge(std::move(from.u), to.u);
-  if (from.__isset.aDouble) {
-    merge(std::move(from.aDouble), to.aDouble);
-    to.__isset.aDouble = true;
-  }
-  if (from.__isset.f) {
-    merge(std::move(from.f), to.f);
-    to.__isset.f = true;
-  }
+  merge(std::move(from.aDouble), to.aDouble);
+  to.__isset.aDouble = to.__isset.aDouble || from.__isset.aDouble;
+  merge(std::move(from.f), to.f);
+  to.__isset.f = to.__isset.f || from.__isset.f;
 }
 
 const uint64_t RecursiveStruct::_reflection_id;

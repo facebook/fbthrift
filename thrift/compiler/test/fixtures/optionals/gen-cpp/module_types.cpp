@@ -170,42 +170,26 @@ void swap(Color &a, Color &b) {
 
 void merge(const Color& from, Color& to) {
   using apache::thrift::merge;
-  if (from.__isset.red) {
-    merge(from.red, to.red);
-    to.__isset.red = true;
-  }
-  if (from.__isset.green) {
-    merge(from.green, to.green);
-    to.__isset.green = true;
-  }
-  if (from.__isset.blue) {
-    merge(from.blue, to.blue);
-    to.__isset.blue = true;
-  }
-  if (from.__isset.alpha) {
-    merge(from.alpha, to.alpha);
-    to.__isset.alpha = true;
-  }
+  merge(from.red, to.red);
+  to.__isset.red = to.__isset.red || from.__isset.red;
+  merge(from.green, to.green);
+  to.__isset.green = to.__isset.green || from.__isset.green;
+  merge(from.blue, to.blue);
+  to.__isset.blue = to.__isset.blue || from.__isset.blue;
+  merge(from.alpha, to.alpha);
+  to.__isset.alpha = to.__isset.alpha || from.__isset.alpha;
 }
 
 void merge(Color&& from, Color& to) {
   using apache::thrift::merge;
-  if (from.__isset.red) {
-    merge(std::move(from.red), to.red);
-    to.__isset.red = true;
-  }
-  if (from.__isset.green) {
-    merge(std::move(from.green), to.green);
-    to.__isset.green = true;
-  }
-  if (from.__isset.blue) {
-    merge(std::move(from.blue), to.blue);
-    to.__isset.blue = true;
-  }
-  if (from.__isset.alpha) {
-    merge(std::move(from.alpha), to.alpha);
-    to.__isset.alpha = true;
-  }
+  merge(std::move(from.red), to.red);
+  to.__isset.red = to.__isset.red || from.__isset.red;
+  merge(std::move(from.green), to.green);
+  to.__isset.green = to.__isset.green || from.__isset.green;
+  merge(std::move(from.blue), to.blue);
+  to.__isset.blue = to.__isset.blue || from.__isset.blue;
+  merge(std::move(from.alpha), to.alpha);
+  to.__isset.alpha = to.__isset.alpha || from.__isset.alpha;
 }
 
 const uint64_t Vehicle::_reflection_id;
@@ -347,10 +331,8 @@ void swap(Vehicle &a, Vehicle &b) {
 
 void merge(const Vehicle& from, Vehicle& to) {
   using apache::thrift::merge;
-  if (from.__isset.color) {
-    merge(from.color, to.color);
-    to.__isset.color = true;
-  }
+  merge(from.color, to.color);
+  to.__isset.color = to.__isset.color || from.__isset.color;
   if (from.__isset.licensePlate) {
     merge(from.licensePlate, to.licensePlate);
     to.__isset.licensePlate = true;
@@ -367,10 +349,8 @@ void merge(const Vehicle& from, Vehicle& to) {
 
 void merge(Vehicle&& from, Vehicle& to) {
   using apache::thrift::merge;
-  if (from.__isset.color) {
-    merge(std::move(from.color), to.color);
-    to.__isset.color = true;
-  }
+  merge(std::move(from.color), to.color);
+  to.__isset.color = to.__isset.color || from.__isset.color;
   if (from.__isset.licensePlate) {
     merge(std::move(from.licensePlate), to.licensePlate);
     to.__isset.licensePlate = true;
@@ -736,14 +716,10 @@ void swap(Person &a, Person &b) {
 
 void merge(const Person& from, Person& to) {
   using apache::thrift::merge;
-  if (from.__isset.id) {
-    merge(from.id, to.id);
-    to.__isset.id = true;
-  }
-  if (from.__isset.name) {
-    merge(from.name, to.name);
-    to.__isset.name = true;
-  }
+  merge(from.id, to.id);
+  to.__isset.id = to.__isset.id || from.__isset.id;
+  merge(from.name, to.name);
+  to.__isset.name = to.__isset.name || from.__isset.name;
   if (from.__isset.age) {
     merge(from.age, to.age);
     to.__isset.age = true;
@@ -780,14 +756,10 @@ void merge(const Person& from, Person& to) {
 
 void merge(Person&& from, Person& to) {
   using apache::thrift::merge;
-  if (from.__isset.id) {
-    merge(std::move(from.id), to.id);
-    to.__isset.id = true;
-  }
-  if (from.__isset.name) {
-    merge(std::move(from.name), to.name);
-    to.__isset.name = true;
-  }
+  merge(std::move(from.id), to.id);
+  to.__isset.id = to.__isset.id || from.__isset.id;
+  merge(std::move(from.name), to.name);
+  to.__isset.name = to.__isset.name || from.__isset.name;
   if (from.__isset.age) {
     merge(std::move(from.age), to.age);
     to.__isset.age = true;

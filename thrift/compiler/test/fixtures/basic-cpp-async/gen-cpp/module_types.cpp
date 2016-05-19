@@ -68,26 +68,18 @@ void swap(MyStruct &a, MyStruct &b) {
 
 void merge(const MyStruct& from, MyStruct& to) {
   using apache::thrift::merge;
-  if (from.__isset.MyIntField) {
-    merge(from.MyIntField, to.MyIntField);
-    to.__isset.MyIntField = true;
-  }
-  if (from.__isset.MyStringField) {
-    merge(from.MyStringField, to.MyStringField);
-    to.__isset.MyStringField = true;
-  }
+  merge(from.MyIntField, to.MyIntField);
+  to.__isset.MyIntField = to.__isset.MyIntField || from.__isset.MyIntField;
+  merge(from.MyStringField, to.MyStringField);
+  to.__isset.MyStringField = to.__isset.MyStringField || from.__isset.MyStringField;
 }
 
 void merge(MyStruct&& from, MyStruct& to) {
   using apache::thrift::merge;
-  if (from.__isset.MyIntField) {
-    merge(std::move(from.MyIntField), to.MyIntField);
-    to.__isset.MyIntField = true;
-  }
-  if (from.__isset.MyStringField) {
-    merge(std::move(from.MyStringField), to.MyStringField);
-    to.__isset.MyStringField = true;
-  }
+  merge(std::move(from.MyIntField), to.MyIntField);
+  to.__isset.MyIntField = to.__isset.MyIntField || from.__isset.MyIntField;
+  merge(std::move(from.MyStringField), to.MyStringField);
+  to.__isset.MyStringField = to.__isset.MyStringField || from.__isset.MyStringField;
 }
 
 

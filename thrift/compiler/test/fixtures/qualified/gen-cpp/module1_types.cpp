@@ -140,26 +140,18 @@ void swap(Struct &a, Struct &b) {
 
 void merge(const Struct& from, Struct& to) {
   using apache::thrift::merge;
-  if (from.__isset.first) {
-    merge(from.first, to.first);
-    to.__isset.first = true;
-  }
-  if (from.__isset.second) {
-    merge(from.second, to.second);
-    to.__isset.second = true;
-  }
+  merge(from.first, to.first);
+  to.__isset.first = to.__isset.first || from.__isset.first;
+  merge(from.second, to.second);
+  to.__isset.second = to.__isset.second || from.__isset.second;
 }
 
 void merge(Struct&& from, Struct& to) {
   using apache::thrift::merge;
-  if (from.__isset.first) {
-    merge(std::move(from.first), to.first);
-    to.__isset.first = true;
-  }
-  if (from.__isset.second) {
-    merge(std::move(from.second), to.second);
-    to.__isset.second = true;
-  }
+  merge(std::move(from.first), to.first);
+  to.__isset.first = to.__isset.first || from.__isset.first;
+  merge(std::move(from.second), to.second);
+  to.__isset.second = to.__isset.second || from.__isset.second;
 }
 
 } // namespace

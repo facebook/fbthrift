@@ -35,7 +35,6 @@ using std::unordered_set;
 
 namespace {
 
-// TODO(chaoyc): kill this after D434776
 void setAll(Xtruct& xtruct) {
   xtruct.__isset.string_thing = true;
   xtruct.__isset.byte_thing = true;
@@ -188,16 +187,20 @@ TEST(MergeTest, OptionalField) {
   mergeFrom.im_optional = 2;
 
   merge(mergeFrom, mergeTo);
+  EXPECT_EQ(mergeFrom.im_default, mergeTo.im_default);
   EXPECT_EQ(mergeFrom.im_required, mergeTo.im_required);
-  // ignored because !__isset
-  EXPECT_EQ(1, mergeTo.im_default);
   EXPECT_EQ(1, mergeTo.im_optional);
+  EXPECT_FALSE(mergeTo.__isset.im_default);
+  EXPECT_FALSE(mergeTo.__isset.im_optional);
 
-  mergeFrom.__isset.im_optional = true;
   mergeFrom.__isset.im_default = true;
+  mergeFrom.__isset.im_optional = true;
   merge(mergeFrom, mergeTo);
   EXPECT_EQ(mergeFrom.im_default, mergeTo.im_default);
+  EXPECT_EQ(mergeFrom.im_required, mergeTo.im_required);
   EXPECT_EQ(mergeFrom.im_optional, mergeTo.im_optional);
+  EXPECT_TRUE(mergeTo.__isset.im_default);
+  EXPECT_TRUE(mergeTo.__isset.im_optional);
 }
 
 namespace {

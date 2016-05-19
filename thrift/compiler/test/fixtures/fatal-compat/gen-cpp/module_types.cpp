@@ -640,26 +640,18 @@ void swap(structA &a, structA &b) {
 
 void merge(const structA& from, structA& to) {
   using apache::thrift::merge;
-  if (from.__isset.a) {
-    merge(from.a, to.a);
-    to.__isset.a = true;
-  }
-  if (from.__isset.b) {
-    merge(from.b, to.b);
-    to.__isset.b = true;
-  }
+  merge(from.a, to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(from.b, to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
 }
 
 void merge(structA&& from, structA& to) {
   using apache::thrift::merge;
-  if (from.__isset.a) {
-    merge(std::move(from.a), to.a);
-    to.__isset.a = true;
-  }
-  if (from.__isset.b) {
-    merge(std::move(from.b), to.b);
-    to.__isset.b = true;
-  }
+  merge(std::move(from.a), to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(std::move(from.b), to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
 }
 
   void unionA::readFromJson(const char* jsonText, size_t len)
@@ -938,26 +930,18 @@ void swap(structB &a, structB &b) {
 
 void merge(const structB& from, structB& to) {
   using apache::thrift::merge;
-  if (from.__isset.c) {
-    merge(from.c, to.c);
-    to.__isset.c = true;
-  }
-  if (from.__isset.d) {
-    merge(from.d, to.d);
-    to.__isset.d = true;
-  }
+  merge(from.c, to.c);
+  to.__isset.c = to.__isset.c || from.__isset.c;
+  merge(from.d, to.d);
+  to.__isset.d = to.__isset.d || from.__isset.d;
 }
 
 void merge(structB&& from, structB& to) {
   using apache::thrift::merge;
-  if (from.__isset.c) {
-    merge(std::move(from.c), to.c);
-    to.__isset.c = true;
-  }
-  if (from.__isset.d) {
-    merge(std::move(from.d), to.d);
-    to.__isset.d = true;
-  }
+  merge(std::move(from.c), to.c);
+  to.__isset.c = to.__isset.c || from.__isset.c;
+  merge(std::move(from.d), to.d);
+  to.__isset.d = to.__isset.d || from.__isset.d;
 }
 
 const uint64_t structC::_reflection_id;
@@ -2615,250 +2599,130 @@ void swap(structC &a, structC &b) {
 
 void merge(const structC& from, structC& to) {
   using apache::thrift::merge;
-  if (from.__isset.a) {
-    merge(from.a, to.a);
-    to.__isset.a = true;
-  }
-  if (from.__isset.b) {
-    merge(from.b, to.b);
-    to.__isset.b = true;
-  }
-  if (from.__isset.c) {
-    merge(from.c, to.c);
-    to.__isset.c = true;
-  }
-  if (from.__isset.d) {
-    merge(from.d, to.d);
-    to.__isset.d = true;
-  }
-  if (from.__isset.e) {
-    merge(from.e, to.e);
-    to.__isset.e = true;
-  }
-  if (from.__isset.f) {
-    merge(from.f, to.f);
-    to.__isset.f = true;
-  }
-  if (from.__isset.g) {
-    merge(from.g, to.g);
-    to.__isset.g = true;
-  }
-  if (from.__isset.h) {
-    merge(from.h, to.h);
-    to.__isset.h = true;
-  }
-  if (from.__isset.i) {
-    merge(from.i, to.i);
-    to.__isset.i = true;
-  }
-  if (from.__isset.j) {
-    merge(from.j, to.j);
-    to.__isset.j = true;
-  }
-  if (from.__isset.j1) {
-    merge(from.j1, to.j1);
-    to.__isset.j1 = true;
-  }
-  if (from.__isset.j2) {
-    merge(from.j2, to.j2);
-    to.__isset.j2 = true;
-  }
-  if (from.__isset.j3) {
-    merge(from.j3, to.j3);
-    to.__isset.j3 = true;
-  }
-  if (from.__isset.k) {
-    merge(from.k, to.k);
-    to.__isset.k = true;
-  }
-  if (from.__isset.k1) {
-    merge(from.k1, to.k1);
-    to.__isset.k1 = true;
-  }
-  if (from.__isset.k2) {
-    merge(from.k2, to.k2);
-    to.__isset.k2 = true;
-  }
-  if (from.__isset.k3) {
-    merge(from.k3, to.k3);
-    to.__isset.k3 = true;
-  }
-  if (from.__isset.l) {
-    merge(from.l, to.l);
-    to.__isset.l = true;
-  }
-  if (from.__isset.l1) {
-    merge(from.l1, to.l1);
-    to.__isset.l1 = true;
-  }
-  if (from.__isset.l2) {
-    merge(from.l2, to.l2);
-    to.__isset.l2 = true;
-  }
-  if (from.__isset.l3) {
-    merge(from.l3, to.l3);
-    to.__isset.l3 = true;
-  }
-  if (from.__isset.m1) {
-    merge(from.m1, to.m1);
-    to.__isset.m1 = true;
-  }
-  if (from.__isset.m2) {
-    merge(from.m2, to.m2);
-    to.__isset.m2 = true;
-  }
-  if (from.__isset.m3) {
-    merge(from.m3, to.m3);
-    to.__isset.m3 = true;
-  }
-  if (from.__isset.n1) {
-    merge(from.n1, to.n1);
-    to.__isset.n1 = true;
-  }
-  if (from.__isset.n2) {
-    merge(from.n2, to.n2);
-    to.__isset.n2 = true;
-  }
-  if (from.__isset.n3) {
-    merge(from.n3, to.n3);
-    to.__isset.n3 = true;
-  }
-  if (from.__isset.o1) {
-    merge(from.o1, to.o1);
-    to.__isset.o1 = true;
-  }
-  if (from.__isset.o2) {
-    merge(from.o2, to.o2);
-    to.__isset.o2 = true;
-  }
-  if (from.__isset.o3) {
-    merge(from.o3, to.o3);
-    to.__isset.o3 = true;
-  }
+  merge(from.a, to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(from.b, to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
+  merge(from.c, to.c);
+  to.__isset.c = to.__isset.c || from.__isset.c;
+  merge(from.d, to.d);
+  to.__isset.d = to.__isset.d || from.__isset.d;
+  merge(from.e, to.e);
+  to.__isset.e = to.__isset.e || from.__isset.e;
+  merge(from.f, to.f);
+  to.__isset.f = to.__isset.f || from.__isset.f;
+  merge(from.g, to.g);
+  to.__isset.g = to.__isset.g || from.__isset.g;
+  merge(from.h, to.h);
+  to.__isset.h = to.__isset.h || from.__isset.h;
+  merge(from.i, to.i);
+  to.__isset.i = to.__isset.i || from.__isset.i;
+  merge(from.j, to.j);
+  to.__isset.j = to.__isset.j || from.__isset.j;
+  merge(from.j1, to.j1);
+  to.__isset.j1 = to.__isset.j1 || from.__isset.j1;
+  merge(from.j2, to.j2);
+  to.__isset.j2 = to.__isset.j2 || from.__isset.j2;
+  merge(from.j3, to.j3);
+  to.__isset.j3 = to.__isset.j3 || from.__isset.j3;
+  merge(from.k, to.k);
+  to.__isset.k = to.__isset.k || from.__isset.k;
+  merge(from.k1, to.k1);
+  to.__isset.k1 = to.__isset.k1 || from.__isset.k1;
+  merge(from.k2, to.k2);
+  to.__isset.k2 = to.__isset.k2 || from.__isset.k2;
+  merge(from.k3, to.k3);
+  to.__isset.k3 = to.__isset.k3 || from.__isset.k3;
+  merge(from.l, to.l);
+  to.__isset.l = to.__isset.l || from.__isset.l;
+  merge(from.l1, to.l1);
+  to.__isset.l1 = to.__isset.l1 || from.__isset.l1;
+  merge(from.l2, to.l2);
+  to.__isset.l2 = to.__isset.l2 || from.__isset.l2;
+  merge(from.l3, to.l3);
+  to.__isset.l3 = to.__isset.l3 || from.__isset.l3;
+  merge(from.m1, to.m1);
+  to.__isset.m1 = to.__isset.m1 || from.__isset.m1;
+  merge(from.m2, to.m2);
+  to.__isset.m2 = to.__isset.m2 || from.__isset.m2;
+  merge(from.m3, to.m3);
+  to.__isset.m3 = to.__isset.m3 || from.__isset.m3;
+  merge(from.n1, to.n1);
+  to.__isset.n1 = to.__isset.n1 || from.__isset.n1;
+  merge(from.n2, to.n2);
+  to.__isset.n2 = to.__isset.n2 || from.__isset.n2;
+  merge(from.n3, to.n3);
+  to.__isset.n3 = to.__isset.n3 || from.__isset.n3;
+  merge(from.o1, to.o1);
+  to.__isset.o1 = to.__isset.o1 || from.__isset.o1;
+  merge(from.o2, to.o2);
+  to.__isset.o2 = to.__isset.o2 || from.__isset.o2;
+  merge(from.o3, to.o3);
+  to.__isset.o3 = to.__isset.o3 || from.__isset.o3;
 }
 
 void merge(structC&& from, structC& to) {
   using apache::thrift::merge;
-  if (from.__isset.a) {
-    merge(std::move(from.a), to.a);
-    to.__isset.a = true;
-  }
-  if (from.__isset.b) {
-    merge(std::move(from.b), to.b);
-    to.__isset.b = true;
-  }
-  if (from.__isset.c) {
-    merge(std::move(from.c), to.c);
-    to.__isset.c = true;
-  }
-  if (from.__isset.d) {
-    merge(std::move(from.d), to.d);
-    to.__isset.d = true;
-  }
-  if (from.__isset.e) {
-    merge(std::move(from.e), to.e);
-    to.__isset.e = true;
-  }
-  if (from.__isset.f) {
-    merge(std::move(from.f), to.f);
-    to.__isset.f = true;
-  }
-  if (from.__isset.g) {
-    merge(std::move(from.g), to.g);
-    to.__isset.g = true;
-  }
-  if (from.__isset.h) {
-    merge(std::move(from.h), to.h);
-    to.__isset.h = true;
-  }
-  if (from.__isset.i) {
-    merge(std::move(from.i), to.i);
-    to.__isset.i = true;
-  }
-  if (from.__isset.j) {
-    merge(std::move(from.j), to.j);
-    to.__isset.j = true;
-  }
-  if (from.__isset.j1) {
-    merge(std::move(from.j1), to.j1);
-    to.__isset.j1 = true;
-  }
-  if (from.__isset.j2) {
-    merge(std::move(from.j2), to.j2);
-    to.__isset.j2 = true;
-  }
-  if (from.__isset.j3) {
-    merge(std::move(from.j3), to.j3);
-    to.__isset.j3 = true;
-  }
-  if (from.__isset.k) {
-    merge(std::move(from.k), to.k);
-    to.__isset.k = true;
-  }
-  if (from.__isset.k1) {
-    merge(std::move(from.k1), to.k1);
-    to.__isset.k1 = true;
-  }
-  if (from.__isset.k2) {
-    merge(std::move(from.k2), to.k2);
-    to.__isset.k2 = true;
-  }
-  if (from.__isset.k3) {
-    merge(std::move(from.k3), to.k3);
-    to.__isset.k3 = true;
-  }
-  if (from.__isset.l) {
-    merge(std::move(from.l), to.l);
-    to.__isset.l = true;
-  }
-  if (from.__isset.l1) {
-    merge(std::move(from.l1), to.l1);
-    to.__isset.l1 = true;
-  }
-  if (from.__isset.l2) {
-    merge(std::move(from.l2), to.l2);
-    to.__isset.l2 = true;
-  }
-  if (from.__isset.l3) {
-    merge(std::move(from.l3), to.l3);
-    to.__isset.l3 = true;
-  }
-  if (from.__isset.m1) {
-    merge(std::move(from.m1), to.m1);
-    to.__isset.m1 = true;
-  }
-  if (from.__isset.m2) {
-    merge(std::move(from.m2), to.m2);
-    to.__isset.m2 = true;
-  }
-  if (from.__isset.m3) {
-    merge(std::move(from.m3), to.m3);
-    to.__isset.m3 = true;
-  }
-  if (from.__isset.n1) {
-    merge(std::move(from.n1), to.n1);
-    to.__isset.n1 = true;
-  }
-  if (from.__isset.n2) {
-    merge(std::move(from.n2), to.n2);
-    to.__isset.n2 = true;
-  }
-  if (from.__isset.n3) {
-    merge(std::move(from.n3), to.n3);
-    to.__isset.n3 = true;
-  }
-  if (from.__isset.o1) {
-    merge(std::move(from.o1), to.o1);
-    to.__isset.o1 = true;
-  }
-  if (from.__isset.o2) {
-    merge(std::move(from.o2), to.o2);
-    to.__isset.o2 = true;
-  }
-  if (from.__isset.o3) {
-    merge(std::move(from.o3), to.o3);
-    to.__isset.o3 = true;
-  }
+  merge(std::move(from.a), to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(std::move(from.b), to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
+  merge(std::move(from.c), to.c);
+  to.__isset.c = to.__isset.c || from.__isset.c;
+  merge(std::move(from.d), to.d);
+  to.__isset.d = to.__isset.d || from.__isset.d;
+  merge(std::move(from.e), to.e);
+  to.__isset.e = to.__isset.e || from.__isset.e;
+  merge(std::move(from.f), to.f);
+  to.__isset.f = to.__isset.f || from.__isset.f;
+  merge(std::move(from.g), to.g);
+  to.__isset.g = to.__isset.g || from.__isset.g;
+  merge(std::move(from.h), to.h);
+  to.__isset.h = to.__isset.h || from.__isset.h;
+  merge(std::move(from.i), to.i);
+  to.__isset.i = to.__isset.i || from.__isset.i;
+  merge(std::move(from.j), to.j);
+  to.__isset.j = to.__isset.j || from.__isset.j;
+  merge(std::move(from.j1), to.j1);
+  to.__isset.j1 = to.__isset.j1 || from.__isset.j1;
+  merge(std::move(from.j2), to.j2);
+  to.__isset.j2 = to.__isset.j2 || from.__isset.j2;
+  merge(std::move(from.j3), to.j3);
+  to.__isset.j3 = to.__isset.j3 || from.__isset.j3;
+  merge(std::move(from.k), to.k);
+  to.__isset.k = to.__isset.k || from.__isset.k;
+  merge(std::move(from.k1), to.k1);
+  to.__isset.k1 = to.__isset.k1 || from.__isset.k1;
+  merge(std::move(from.k2), to.k2);
+  to.__isset.k2 = to.__isset.k2 || from.__isset.k2;
+  merge(std::move(from.k3), to.k3);
+  to.__isset.k3 = to.__isset.k3 || from.__isset.k3;
+  merge(std::move(from.l), to.l);
+  to.__isset.l = to.__isset.l || from.__isset.l;
+  merge(std::move(from.l1), to.l1);
+  to.__isset.l1 = to.__isset.l1 || from.__isset.l1;
+  merge(std::move(from.l2), to.l2);
+  to.__isset.l2 = to.__isset.l2 || from.__isset.l2;
+  merge(std::move(from.l3), to.l3);
+  to.__isset.l3 = to.__isset.l3 || from.__isset.l3;
+  merge(std::move(from.m1), to.m1);
+  to.__isset.m1 = to.__isset.m1 || from.__isset.m1;
+  merge(std::move(from.m2), to.m2);
+  to.__isset.m2 = to.__isset.m2 || from.__isset.m2;
+  merge(std::move(from.m3), to.m3);
+  to.__isset.m3 = to.__isset.m3 || from.__isset.m3;
+  merge(std::move(from.n1), to.n1);
+  to.__isset.n1 = to.__isset.n1 || from.__isset.n1;
+  merge(std::move(from.n2), to.n2);
+  to.__isset.n2 = to.__isset.n2 || from.__isset.n2;
+  merge(std::move(from.n3), to.n3);
+  to.__isset.n3 = to.__isset.n3 || from.__isset.n3;
+  merge(std::move(from.o1), to.o1);
+  to.__isset.o1 = to.__isset.o1 || from.__isset.o1;
+  merge(std::move(from.o2), to.o2);
+  to.__isset.o2 = to.__isset.o2 || from.__isset.o2;
+  merge(std::move(from.o3), to.o3);
+  to.__isset.o3 = to.__isset.o3 || from.__isset.o3;
 }
 
 const uint64_t struct1::_reflection_id;
@@ -3089,19 +2953,15 @@ void merge(const struct1& from, struct1& to) {
     merge(from.field1, to.field1);
     to.__isset.field1 = true;
   }
-  if (from.__isset.field2) {
-    merge(from.field2, to.field2);
-    to.__isset.field2 = true;
-  }
+  merge(from.field2, to.field2);
+  to.__isset.field2 = to.__isset.field2 || from.__isset.field2;
   merge(from.field3, to.field3);
   if (from.__isset.field4) {
     merge(from.field4, to.field4);
     to.__isset.field4 = true;
   }
-  if (from.__isset.field5) {
-    merge(from.field5, to.field5);
-    to.__isset.field5 = true;
-  }
+  merge(from.field5, to.field5);
+  to.__isset.field5 = to.__isset.field5 || from.__isset.field5;
 }
 
 void merge(struct1&& from, struct1& to) {
@@ -3111,19 +2971,15 @@ void merge(struct1&& from, struct1& to) {
     merge(std::move(from.field1), to.field1);
     to.__isset.field1 = true;
   }
-  if (from.__isset.field2) {
-    merge(std::move(from.field2), to.field2);
-    to.__isset.field2 = true;
-  }
+  merge(std::move(from.field2), to.field2);
+  to.__isset.field2 = to.__isset.field2 || from.__isset.field2;
   merge(std::move(from.field3), to.field3);
   if (from.__isset.field4) {
     merge(std::move(from.field4), to.field4);
     to.__isset.field4 = true;
   }
-  if (from.__isset.field5) {
-    merge(std::move(from.field5), to.field5);
-    to.__isset.field5 = true;
-  }
+  merge(std::move(from.field5), to.field5);
+  to.__isset.field5 = to.__isset.field5 || from.__isset.field5;
 }
 
 const uint64_t struct2::_reflection_id;
@@ -3369,66 +3225,38 @@ void swap(struct2 &a, struct2 &b) {
 
 void merge(const struct2& from, struct2& to) {
   using apache::thrift::merge;
-  if (from.__isset.fieldA) {
-    merge(from.fieldA, to.fieldA);
-    to.__isset.fieldA = true;
-  }
-  if (from.__isset.fieldB) {
-    merge(from.fieldB, to.fieldB);
-    to.__isset.fieldB = true;
-  }
-  if (from.__isset.fieldC) {
-    merge(from.fieldC, to.fieldC);
-    to.__isset.fieldC = true;
-  }
-  if (from.__isset.fieldD) {
-    merge(from.fieldD, to.fieldD);
-    to.__isset.fieldD = true;
-  }
-  if (from.__isset.fieldE) {
-    merge(from.fieldE, to.fieldE);
-    to.__isset.fieldE = true;
-  }
-  if (from.__isset.fieldF) {
-    merge(from.fieldF, to.fieldF);
-    to.__isset.fieldF = true;
-  }
-  if (from.__isset.fieldG) {
-    merge(from.fieldG, to.fieldG);
-    to.__isset.fieldG = true;
-  }
+  merge(from.fieldA, to.fieldA);
+  to.__isset.fieldA = to.__isset.fieldA || from.__isset.fieldA;
+  merge(from.fieldB, to.fieldB);
+  to.__isset.fieldB = to.__isset.fieldB || from.__isset.fieldB;
+  merge(from.fieldC, to.fieldC);
+  to.__isset.fieldC = to.__isset.fieldC || from.__isset.fieldC;
+  merge(from.fieldD, to.fieldD);
+  to.__isset.fieldD = to.__isset.fieldD || from.__isset.fieldD;
+  merge(from.fieldE, to.fieldE);
+  to.__isset.fieldE = to.__isset.fieldE || from.__isset.fieldE;
+  merge(from.fieldF, to.fieldF);
+  to.__isset.fieldF = to.__isset.fieldF || from.__isset.fieldF;
+  merge(from.fieldG, to.fieldG);
+  to.__isset.fieldG = to.__isset.fieldG || from.__isset.fieldG;
 }
 
 void merge(struct2&& from, struct2& to) {
   using apache::thrift::merge;
-  if (from.__isset.fieldA) {
-    merge(std::move(from.fieldA), to.fieldA);
-    to.__isset.fieldA = true;
-  }
-  if (from.__isset.fieldB) {
-    merge(std::move(from.fieldB), to.fieldB);
-    to.__isset.fieldB = true;
-  }
-  if (from.__isset.fieldC) {
-    merge(std::move(from.fieldC), to.fieldC);
-    to.__isset.fieldC = true;
-  }
-  if (from.__isset.fieldD) {
-    merge(std::move(from.fieldD), to.fieldD);
-    to.__isset.fieldD = true;
-  }
-  if (from.__isset.fieldE) {
-    merge(std::move(from.fieldE), to.fieldE);
-    to.__isset.fieldE = true;
-  }
-  if (from.__isset.fieldF) {
-    merge(std::move(from.fieldF), to.fieldF);
-    to.__isset.fieldF = true;
-  }
-  if (from.__isset.fieldG) {
-    merge(std::move(from.fieldG), to.fieldG);
-    to.__isset.fieldG = true;
-  }
+  merge(std::move(from.fieldA), to.fieldA);
+  to.__isset.fieldA = to.__isset.fieldA || from.__isset.fieldA;
+  merge(std::move(from.fieldB), to.fieldB);
+  to.__isset.fieldB = to.__isset.fieldB || from.__isset.fieldB;
+  merge(std::move(from.fieldC), to.fieldC);
+  to.__isset.fieldC = to.__isset.fieldC || from.__isset.fieldC;
+  merge(std::move(from.fieldD), to.fieldD);
+  to.__isset.fieldD = to.__isset.fieldD || from.__isset.fieldD;
+  merge(std::move(from.fieldE), to.fieldE);
+  to.__isset.fieldE = to.__isset.fieldE || from.__isset.fieldE;
+  merge(std::move(from.fieldF), to.fieldF);
+  to.__isset.fieldF = to.__isset.fieldF || from.__isset.fieldF;
+  merge(std::move(from.fieldG), to.fieldG);
+  to.__isset.fieldG = to.__isset.fieldG || from.__isset.fieldG;
 }
 
 const uint64_t struct3::_reflection_id;
@@ -4305,154 +4133,82 @@ void swap(struct3 &a, struct3 &b) {
 
 void merge(const struct3& from, struct3& to) {
   using apache::thrift::merge;
-  if (from.__isset.fieldA) {
-    merge(from.fieldA, to.fieldA);
-    to.__isset.fieldA = true;
-  }
-  if (from.__isset.fieldB) {
-    merge(from.fieldB, to.fieldB);
-    to.__isset.fieldB = true;
-  }
-  if (from.__isset.fieldC) {
-    merge(from.fieldC, to.fieldC);
-    to.__isset.fieldC = true;
-  }
-  if (from.__isset.fieldD) {
-    merge(from.fieldD, to.fieldD);
-    to.__isset.fieldD = true;
-  }
-  if (from.__isset.fieldE) {
-    merge(from.fieldE, to.fieldE);
-    to.__isset.fieldE = true;
-  }
-  if (from.__isset.fieldF) {
-    merge(from.fieldF, to.fieldF);
-    to.__isset.fieldF = true;
-  }
-  if (from.__isset.fieldG) {
-    merge(from.fieldG, to.fieldG);
-    to.__isset.fieldG = true;
-  }
-  if (from.__isset.fieldH) {
-    merge(from.fieldH, to.fieldH);
-    to.__isset.fieldH = true;
-  }
-  if (from.__isset.fieldI) {
-    merge(from.fieldI, to.fieldI);
-    to.__isset.fieldI = true;
-  }
-  if (from.__isset.fieldJ) {
-    merge(from.fieldJ, to.fieldJ);
-    to.__isset.fieldJ = true;
-  }
-  if (from.__isset.fieldK) {
-    merge(from.fieldK, to.fieldK);
-    to.__isset.fieldK = true;
-  }
-  if (from.__isset.fieldL) {
-    merge(from.fieldL, to.fieldL);
-    to.__isset.fieldL = true;
-  }
-  if (from.__isset.fieldM) {
-    merge(from.fieldM, to.fieldM);
-    to.__isset.fieldM = true;
-  }
-  if (from.__isset.fieldN) {
-    merge(from.fieldN, to.fieldN);
-    to.__isset.fieldN = true;
-  }
-  if (from.__isset.fieldO) {
-    merge(from.fieldO, to.fieldO);
-    to.__isset.fieldO = true;
-  }
-  if (from.__isset.fieldP) {
-    merge(from.fieldP, to.fieldP);
-    to.__isset.fieldP = true;
-  }
-  if (from.__isset.fieldQ) {
-    merge(from.fieldQ, to.fieldQ);
-    to.__isset.fieldQ = true;
-  }
-  if (from.__isset.fieldR) {
-    merge(from.fieldR, to.fieldR);
-    to.__isset.fieldR = true;
-  }
+  merge(from.fieldA, to.fieldA);
+  to.__isset.fieldA = to.__isset.fieldA || from.__isset.fieldA;
+  merge(from.fieldB, to.fieldB);
+  to.__isset.fieldB = to.__isset.fieldB || from.__isset.fieldB;
+  merge(from.fieldC, to.fieldC);
+  to.__isset.fieldC = to.__isset.fieldC || from.__isset.fieldC;
+  merge(from.fieldD, to.fieldD);
+  to.__isset.fieldD = to.__isset.fieldD || from.__isset.fieldD;
+  merge(from.fieldE, to.fieldE);
+  to.__isset.fieldE = to.__isset.fieldE || from.__isset.fieldE;
+  merge(from.fieldF, to.fieldF);
+  to.__isset.fieldF = to.__isset.fieldF || from.__isset.fieldF;
+  merge(from.fieldG, to.fieldG);
+  to.__isset.fieldG = to.__isset.fieldG || from.__isset.fieldG;
+  merge(from.fieldH, to.fieldH);
+  to.__isset.fieldH = to.__isset.fieldH || from.__isset.fieldH;
+  merge(from.fieldI, to.fieldI);
+  to.__isset.fieldI = to.__isset.fieldI || from.__isset.fieldI;
+  merge(from.fieldJ, to.fieldJ);
+  to.__isset.fieldJ = to.__isset.fieldJ || from.__isset.fieldJ;
+  merge(from.fieldK, to.fieldK);
+  to.__isset.fieldK = to.__isset.fieldK || from.__isset.fieldK;
+  merge(from.fieldL, to.fieldL);
+  to.__isset.fieldL = to.__isset.fieldL || from.__isset.fieldL;
+  merge(from.fieldM, to.fieldM);
+  to.__isset.fieldM = to.__isset.fieldM || from.__isset.fieldM;
+  merge(from.fieldN, to.fieldN);
+  to.__isset.fieldN = to.__isset.fieldN || from.__isset.fieldN;
+  merge(from.fieldO, to.fieldO);
+  to.__isset.fieldO = to.__isset.fieldO || from.__isset.fieldO;
+  merge(from.fieldP, to.fieldP);
+  to.__isset.fieldP = to.__isset.fieldP || from.__isset.fieldP;
+  merge(from.fieldQ, to.fieldQ);
+  to.__isset.fieldQ = to.__isset.fieldQ || from.__isset.fieldQ;
+  merge(from.fieldR, to.fieldR);
+  to.__isset.fieldR = to.__isset.fieldR || from.__isset.fieldR;
 }
 
 void merge(struct3&& from, struct3& to) {
   using apache::thrift::merge;
-  if (from.__isset.fieldA) {
-    merge(std::move(from.fieldA), to.fieldA);
-    to.__isset.fieldA = true;
-  }
-  if (from.__isset.fieldB) {
-    merge(std::move(from.fieldB), to.fieldB);
-    to.__isset.fieldB = true;
-  }
-  if (from.__isset.fieldC) {
-    merge(std::move(from.fieldC), to.fieldC);
-    to.__isset.fieldC = true;
-  }
-  if (from.__isset.fieldD) {
-    merge(std::move(from.fieldD), to.fieldD);
-    to.__isset.fieldD = true;
-  }
-  if (from.__isset.fieldE) {
-    merge(std::move(from.fieldE), to.fieldE);
-    to.__isset.fieldE = true;
-  }
-  if (from.__isset.fieldF) {
-    merge(std::move(from.fieldF), to.fieldF);
-    to.__isset.fieldF = true;
-  }
-  if (from.__isset.fieldG) {
-    merge(std::move(from.fieldG), to.fieldG);
-    to.__isset.fieldG = true;
-  }
-  if (from.__isset.fieldH) {
-    merge(std::move(from.fieldH), to.fieldH);
-    to.__isset.fieldH = true;
-  }
-  if (from.__isset.fieldI) {
-    merge(std::move(from.fieldI), to.fieldI);
-    to.__isset.fieldI = true;
-  }
-  if (from.__isset.fieldJ) {
-    merge(std::move(from.fieldJ), to.fieldJ);
-    to.__isset.fieldJ = true;
-  }
-  if (from.__isset.fieldK) {
-    merge(std::move(from.fieldK), to.fieldK);
-    to.__isset.fieldK = true;
-  }
-  if (from.__isset.fieldL) {
-    merge(std::move(from.fieldL), to.fieldL);
-    to.__isset.fieldL = true;
-  }
-  if (from.__isset.fieldM) {
-    merge(std::move(from.fieldM), to.fieldM);
-    to.__isset.fieldM = true;
-  }
-  if (from.__isset.fieldN) {
-    merge(std::move(from.fieldN), to.fieldN);
-    to.__isset.fieldN = true;
-  }
-  if (from.__isset.fieldO) {
-    merge(std::move(from.fieldO), to.fieldO);
-    to.__isset.fieldO = true;
-  }
-  if (from.__isset.fieldP) {
-    merge(std::move(from.fieldP), to.fieldP);
-    to.__isset.fieldP = true;
-  }
-  if (from.__isset.fieldQ) {
-    merge(std::move(from.fieldQ), to.fieldQ);
-    to.__isset.fieldQ = true;
-  }
-  if (from.__isset.fieldR) {
-    merge(std::move(from.fieldR), to.fieldR);
-    to.__isset.fieldR = true;
-  }
+  merge(std::move(from.fieldA), to.fieldA);
+  to.__isset.fieldA = to.__isset.fieldA || from.__isset.fieldA;
+  merge(std::move(from.fieldB), to.fieldB);
+  to.__isset.fieldB = to.__isset.fieldB || from.__isset.fieldB;
+  merge(std::move(from.fieldC), to.fieldC);
+  to.__isset.fieldC = to.__isset.fieldC || from.__isset.fieldC;
+  merge(std::move(from.fieldD), to.fieldD);
+  to.__isset.fieldD = to.__isset.fieldD || from.__isset.fieldD;
+  merge(std::move(from.fieldE), to.fieldE);
+  to.__isset.fieldE = to.__isset.fieldE || from.__isset.fieldE;
+  merge(std::move(from.fieldF), to.fieldF);
+  to.__isset.fieldF = to.__isset.fieldF || from.__isset.fieldF;
+  merge(std::move(from.fieldG), to.fieldG);
+  to.__isset.fieldG = to.__isset.fieldG || from.__isset.fieldG;
+  merge(std::move(from.fieldH), to.fieldH);
+  to.__isset.fieldH = to.__isset.fieldH || from.__isset.fieldH;
+  merge(std::move(from.fieldI), to.fieldI);
+  to.__isset.fieldI = to.__isset.fieldI || from.__isset.fieldI;
+  merge(std::move(from.fieldJ), to.fieldJ);
+  to.__isset.fieldJ = to.__isset.fieldJ || from.__isset.fieldJ;
+  merge(std::move(from.fieldK), to.fieldK);
+  to.__isset.fieldK = to.__isset.fieldK || from.__isset.fieldK;
+  merge(std::move(from.fieldL), to.fieldL);
+  to.__isset.fieldL = to.__isset.fieldL || from.__isset.fieldL;
+  merge(std::move(from.fieldM), to.fieldM);
+  to.__isset.fieldM = to.__isset.fieldM || from.__isset.fieldM;
+  merge(std::move(from.fieldN), to.fieldN);
+  to.__isset.fieldN = to.__isset.fieldN || from.__isset.fieldN;
+  merge(std::move(from.fieldO), to.fieldO);
+  to.__isset.fieldO = to.__isset.fieldO || from.__isset.fieldO;
+  merge(std::move(from.fieldP), to.fieldP);
+  to.__isset.fieldP = to.__isset.fieldP || from.__isset.fieldP;
+  merge(std::move(from.fieldQ), to.fieldQ);
+  to.__isset.fieldQ = to.__isset.fieldQ || from.__isset.fieldQ;
+  merge(std::move(from.fieldR), to.fieldR);
+  to.__isset.fieldR = to.__isset.fieldR || from.__isset.fieldR;
 }
 
 }} // namespace
