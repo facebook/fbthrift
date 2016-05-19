@@ -38,7 +38,7 @@
 #include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
 #include <thrift/lib/cpp2/test/util/TestHTTPClientChannelFactory.h>
 
-#include <folly/experimental/fibers/FiberManagerMap.h>
+#include <folly/fibers/FiberManagerMap.h>
 #include <wangle/concurrent/GlobalExecutor.h>
 
 #include <boost/cast.hpp>
