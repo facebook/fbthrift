@@ -25,6 +25,8 @@ class TCppConnectionContext(TConnectionContext):
 
     def getClientPrincipalUser(self):
         principal = self.getClientPrincipal()
+        if not principal:
+            return None
         user, match, domain = principal.partition('@')
         if match:
             return user
