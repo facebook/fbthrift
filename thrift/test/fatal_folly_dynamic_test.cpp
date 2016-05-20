@@ -18,15 +18,9 @@
 
 #include <thrift/lib/cpp2/fatal/debug.h>
 #include <thrift/lib/cpp2/fatal/pretty_print.h>
-#include <thrift/test/gen-cpp2/compat_fatal_enum.h>
-#include <thrift/test/gen-cpp2/compat_fatal_struct.h>
-#include <thrift/test/gen-cpp2/compat_fatal_union.h>
-#include <thrift/test/gen-cpp2/global_fatal_enum.h>
-#include <thrift/test/gen-cpp2/global_fatal_struct.h>
-#include <thrift/test/gen-cpp2/global_fatal_union.h>
-#include <thrift/test/gen-cpp2/reflection_fatal_enum.h>
-#include <thrift/test/gen-cpp2/reflection_fatal_struct.h>
-#include <thrift/test/gen-cpp2/reflection_fatal_union.h>
+#include <thrift/test/gen-cpp2/compat_fatal_types.h>
+#include <thrift/test/gen-cpp2/global_fatal_types.h>
+#include <thrift/test/gen-cpp2/reflection_fatal_types.h>
 
 #include <folly/json.h>
 

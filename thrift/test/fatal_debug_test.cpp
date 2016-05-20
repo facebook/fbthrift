@@ -16,9 +16,7 @@
 
 #include <thrift/lib/cpp2/fatal/debug.h>
 
-#include <thrift/test/gen-cpp2/reflection_fatal_enum.h>
-#include <thrift/test/gen-cpp2/reflection_fatal_struct.h>
-#include <thrift/test/gen-cpp2/reflection_fatal_union.h>
+#include <thrift/test/gen-cpp2/reflection_fatal_types.h>
 
 #include <gtest/gtest.h>
 

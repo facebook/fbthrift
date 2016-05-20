@@ -17,9 +17,7 @@
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 
 #include <thrift/test/gen-cpp2/reflection_fatal.h>
-#include <thrift/test/gen-cpp2/reflection_fatal_enum.h>
-#include <thrift/test/gen-cpp2/reflection_fatal_struct.h>
-#include <thrift/test/gen-cpp2/reflection_fatal_union.h>
+#include <thrift/test/gen-cpp2/reflection_fatal_types.h>
 
 #include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
 
