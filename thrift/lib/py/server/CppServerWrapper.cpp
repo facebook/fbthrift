@@ -46,6 +46,7 @@ using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
 using apache::thrift::transport::THeader;
 using apache::thrift::server::TServerEventHandler;
+using apache::thrift::server::TServerObserver;
 using apache::thrift::server::TConnectionContext;
 using folly::SSLContext;
 using wangle::SSLContextConfig;
@@ -146,6 +147,60 @@ private:
   }
 
   std::shared_ptr<object> handler_;
+};
+
+class CppServerObserver : public TServerObserver {
+public:
+  explicit CppServerObserver(object serverObserver)
+    : observer_(serverObserver) {}
+
+  void connAccepted() override { this->call("connAccepted"); }
+  void connDropped() override { this->call("connDropped"); }
+  void connRejected() override { this->call("connRejected"); }
+  void saslError() override { this->call("saslError"); }
+  void saslFallBack() override { this->call("saslFallback"); }
+  void saslComplete() override { this->call("saslComplete"); }
+  void tlsError() override { this->call("tlsError"); }
+  void tlsComplete() override { this->call("tlsComplete"); }
+  void tlsFallback() override { this->call("tlsFallback"); }
+  void tlsResumption() override { this->call("tlsResumption"); }
+  void taskKilled() override { this->call("taskKilled"); }
+  void taskTimeout() override { this->call("taskTimeout"); }
+  void serverOverloaded() override { this->call("serverOverloaded"); }
+  void receivedRequest() override { this->call("receivedRequest"); }
+  void queuedRequests(int32_t n) override { this->call("queudRequests", n); }
+  void queueTimeout() override { this->call("queueTimeout"); }
+  void sentReply() override { this->call("sentReply"); }
+  void activeRequests(int32_t n) override { this->call("activeRequests", n); }
+  void callCompleted(const CallTimestamps& runtimes) override {
+     this->call("callCompleted", runtimes);
+   }
+
+private:
+  template<class ... Types>
+  void call(const char* method_name, Types ... args) {
+    PyGILState_STATE state = PyGILState_Ensure();
+    SCOPE_EXIT { PyGILState_Release(state); };
+
+    // check if the object has an attribute, because we want to be accepting
+    // if we added a new listener callback and didn't yet update call the
+    // people using this interface.
+    if (!PyObject_HasAttrString(observer_.ptr(), method_name)) {
+      return;
+    }
+
+    try {
+      (void)observer_.attr(method_name)(args...);
+    } catch (const error_already_set&) {
+      // print the error to sys.stderr and carry on, because raising here
+      // would break the server protocol, and raising in Python later
+      // would be extremely disconnected and confusing since it would
+      // happen in apparently unconnected Python code.
+      PyErr_Print();
+    }
+  }
+
+  object observer_;
 };
 
 class PythonAsyncProcessor : public AsyncProcessor {
@@ -372,6 +427,12 @@ public:
         std::make_shared<object>(adapter)));
   }
 
+  // peer to setObserver, but since we want a different argument, avoid
+  // shadowing in our parent class.
+  void setObserverFromPython(object observer) {
+    setObserver(std::make_shared<CppServerObserver>(observer));
+  }
+
   object getAddress() {
     return makePythonAddress(ThriftServer::getAddress());
   }
@@ -568,6 +629,7 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     "CppServerWrapper")
     // methods added or customized for the python implementation
     .def("setAdapter", &CppServerWrapper::setAdapter)
+    .def("setObserver", &CppServerWrapper::setObserverFromPython)
     .def("setIdleTimeout", &CppServerWrapper::setIdleTimeout)
     .def("setTaskExpireTime", &CppServerWrapper::setTaskExpireTime)
     .def("getAddress", &CppServerWrapper::getAddress)
@@ -607,6 +669,15 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("totalTaskCount", &ThreadManager::totalTaskCount)
     .def("pendingTaskCountMax", &ThreadManager::pendingTaskCountMax)
     .def("expiredTaskCount", &ThreadManager::expiredTaskCount)
+    ;
+
+  class_<TServerObserver::CallTimestamps>("CallTimestamps", no_init)
+    .def_readonly("readBegin", &TServerObserver::CallTimestamps::readBegin)
+    .def_readonly("readEnd", &TServerObserver::CallTimestamps::readEnd)
+    .def_readonly("processBegin", &TServerObserver::CallTimestamps::processBegin)
+    .def_readonly("processEnd", &TServerObserver::CallTimestamps::processEnd)
+    .def_readonly("writeBegin", &TServerObserver::CallTimestamps::writeBegin)
+    .def_readonly("writeEnd", &TServerObserver::CallTimestamps::writeEnd)
     ;
 
   enum_<SSLPolicy>("SSLPolicy")
