@@ -1082,11 +1082,11 @@ void structC::readFromJson(const char* jsonText, size_t len)
     this->j.resize(_size19);
     for (uint32_t _i20 = 0; _i20 < _size19; ++_i20)
     {
-      int64_t _tmp22 = (int64_t)_json21[_i20].asInt();
-      if (imaxabs(_tmp22) > 0x7fffffffL) {
+      int64_t _tmp23 = (int64_t)_json21[_i20].asInt();
+      if (imaxabs(_tmp23) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->j[_i20] = (int32_t)_tmp22;
+        this->j[_i20] = (int32_t)_tmp23;
       }
     }
     this->__isset.j = true;
@@ -1094,17 +1094,17 @@ void structC::readFromJson(const char* jsonText, size_t len)
     this->__isset.j = false;
   }
   if (parsed["j1"] != nullptr) {
-    folly::dynamic _json25 = parsed["j1"];
+    folly::dynamic _json26 = parsed["j1"];
     this->j1.clear();
-    uint32_t _size23 = _json25.size();
-    this->j1.resize(_size23);
-    for (uint32_t _i24 = 0; _i24 < _size23; ++_i24)
+    uint32_t _size24 = _json26.size();
+    this->j1.resize(_size24);
+    for (uint32_t _i25 = 0; _i25 < _size24; ++_i25)
     {
-      int64_t _tmp26 = (int64_t)_json25[_i24].asInt();
-      if (imaxabs(_tmp26) > 0x7fffffffL) {
+      int64_t _tmp28 = (int64_t)_json26[_i25].asInt();
+      if (imaxabs(_tmp28) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->j1[_i24] = (int32_t)_tmp26;
+        this->j1[_i25] = (int32_t)_tmp28;
       }
     }
     this->__isset.j1 = true;
@@ -1112,280 +1112,280 @@ void structC::readFromJson(const char* jsonText, size_t len)
     this->__isset.j1 = false;
   }
   if (parsed["j2"] != nullptr) {
-    folly::dynamic _json29 = parsed["j2"];
+    folly::dynamic _json31 = parsed["j2"];
     this->j2.clear();
-    uint32_t _size27 = _json29.size();
-    this->j2.resize(_size27);
-    for (uint32_t _i28 = 0; _i28 < _size27; ++_i28)
+    uint32_t _size29 = _json31.size();
+    this->j2.resize(_size29);
+    for (uint32_t _i30 = 0; _i30 < _size29; ++_i30)
     {
-      this->j2[_i28]=(enum1)(int32_t)_json29[_i28].asInt();
+      this->j2[_i30]=(enum1)(int32_t)_json31[_i30].asInt();
     }
     this->__isset.j2 = true;
   } else {
     this->__isset.j2 = false;
   }
   if (parsed["j3"] != nullptr) {
-    folly::dynamic _json33 = parsed["j3"];
+    folly::dynamic _json36 = parsed["j3"];
     this->j3.clear();
-    uint32_t _size31 = _json33.size();
-    this->j3.resize(_size31);
-    for (uint32_t _i32 = 0; _i32 < _size31; ++_i32)
+    uint32_t _size34 = _json36.size();
+    this->j3.resize(_size34);
+    for (uint32_t _i35 = 0; _i35 < _size34; ++_i35)
     {
-      this->j3[_i32].readFromJson(folly::toJson(_json33[_i32]).c_str());
+      this->j3[_i35].readFromJson(folly::toJson(_json36[_i35]).c_str());
     }
     this->__isset.j3 = true;
   } else {
     this->__isset.j3 = false;
   }
   if (parsed["k"] != nullptr) {
-    folly::dynamic _json36 = parsed["k"];
+    folly::dynamic _json40 = parsed["k"];
     this->k.clear();
-    uint32_t _size34 = _json36.size();
-    for (uint32_t _i35 = 0; _i35 < _size34; ++_i35)
+    uint32_t _size38 = _json40.size();
+    for (uint32_t _i39 = 0; _i39 < _size38; ++_i39)
     {
-      int32_t _elem37;
-      int64_t _tmp38 = (int64_t)_json36[_i35].asInt();
-      if (imaxabs(_tmp38) > 0x7fffffffL) {
+      int32_t _elem42;
+      int64_t _tmp43 = (int64_t)_json40[_i39].asInt();
+      if (imaxabs(_tmp43) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        _elem37 = (int32_t)_tmp38;
+        _elem42 = (int32_t)_tmp43;
       }
-      this->k.insert(_elem37);
+      this->k.insert(_elem42);
     }
     this->__isset.k = true;
   } else {
     this->__isset.k = false;
   }
   if (parsed["k1"] != nullptr) {
-    folly::dynamic _json41 = parsed["k1"];
+    folly::dynamic _json46 = parsed["k1"];
     this->k1.clear();
-    uint32_t _size39 = _json41.size();
-    for (uint32_t _i40 = 0; _i40 < _size39; ++_i40)
+    uint32_t _size44 = _json46.size();
+    for (uint32_t _i45 = 0; _i45 < _size44; ++_i45)
     {
-      int32_t _elem42;
-      int64_t _tmp43 = (int64_t)_json41[_i40].asInt();
-      if (imaxabs(_tmp43) > 0x7fffffffL) {
+      int32_t _elem48;
+      int64_t _tmp49 = (int64_t)_json46[_i45].asInt();
+      if (imaxabs(_tmp49) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        _elem42 = (int32_t)_tmp43;
+        _elem48 = (int32_t)_tmp49;
       }
-      this->k1.insert(_elem42);
+      this->k1.insert(_elem48);
     }
     this->__isset.k1 = true;
   } else {
     this->__isset.k1 = false;
   }
   if (parsed["k2"] != nullptr) {
-    folly::dynamic _json46 = parsed["k2"];
+    folly::dynamic _json52 = parsed["k2"];
     this->k2.clear();
-    uint32_t _size44 = _json46.size();
-    for (uint32_t _i45 = 0; _i45 < _size44; ++_i45)
+    uint32_t _size50 = _json52.size();
+    for (uint32_t _i51 = 0; _i51 < _size50; ++_i51)
     {
-      enum2 _elem47;
-      _elem47=(enum2)(int32_t)_json46[_i45].asInt();
-      this->k2.insert(_elem47);
+      enum2 _elem54;
+      _elem54=(enum2)(int32_t)_json52[_i51].asInt();
+      this->k2.insert(_elem54);
     }
     this->__isset.k2 = true;
   } else {
     this->__isset.k2 = false;
   }
   if (parsed["k3"] != nullptr) {
-    folly::dynamic _json51 = parsed["k3"];
+    folly::dynamic _json58 = parsed["k3"];
     this->k3.clear();
-    uint32_t _size49 = _json51.size();
-    for (uint32_t _i50 = 0; _i50 < _size49; ++_i50)
+    uint32_t _size56 = _json58.size();
+    for (uint32_t _i57 = 0; _i57 < _size56; ++_i57)
     {
-      structB _elem52;
-      _elem52.readFromJson(folly::toJson(_json51[_i50]).c_str());
-      this->k3.insert(_elem52);
+      structB _elem60;
+      _elem60.readFromJson(folly::toJson(_json58[_i57]).c_str());
+      this->k3.insert(_elem60);
     }
     this->__isset.k3 = true;
   } else {
     this->__isset.k3 = false;
   }
   if (parsed["l"] != nullptr) {
-    folly::dynamic _json55 = parsed["l"];
+    folly::dynamic _json63 = parsed["l"];
     this->l.clear();
-    for (folly::dynamic::const_item_iterator _iter56 = _json55.items().begin(); _iter56 != _json55.items().end(); _iter56++)    {
-      int32_t _key57;;
-      int32_t _val58;;
+    for (folly::dynamic::const_item_iterator _iter65 = _json63.items().begin(); _iter65 != _json63.items().end(); _iter65++)    {
+      int32_t _key66;
+      int32_t _val67;
       try {
-        _key57 = folly::to<int32_t>((_iter56)->first.asString());
+        _key66 = folly::to<int32_t>((_iter65)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      int64_t _tmp59 = (int64_t)_iter56->second.asInt();
-      if (imaxabs(_tmp59) > 0x7fffffffL) {
+      int64_t _tmp68 = (int64_t)_iter65->second.asInt();
+      if (imaxabs(_tmp68) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        _val58 = (int32_t)_tmp59;
+        _val67 = (int32_t)_tmp68;
       }
-      this->l[_key57] = _val58;
+      this->l[_key66] = _val67;
     }
     this->__isset.l = true;
   } else {
     this->__isset.l = false;
   }
   if (parsed["l1"] != nullptr) {
-    folly::dynamic _json62 = parsed["l1"];
+    folly::dynamic _json71 = parsed["l1"];
     this->l1.clear();
-    for (folly::dynamic::const_item_iterator _iter63 = _json62.items().begin(); _iter63 != _json62.items().end(); _iter63++)    {
-      int32_t _key64;;
-      int32_t _val65;;
+    for (folly::dynamic::const_item_iterator _iter73 = _json71.items().begin(); _iter73 != _json71.items().end(); _iter73++)    {
+      int32_t _key74;
+      int32_t _val75;
       try {
-        _key64 = folly::to<int32_t>((_iter63)->first.asString());
+        _key74 = folly::to<int32_t>((_iter73)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      int64_t _tmp66 = (int64_t)_iter63->second.asInt();
-      if (imaxabs(_tmp66) > 0x7fffffffL) {
+      int64_t _tmp76 = (int64_t)_iter73->second.asInt();
+      if (imaxabs(_tmp76) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        _val65 = (int32_t)_tmp66;
+        _val75 = (int32_t)_tmp76;
       }
-      this->l1[_key64] = _val65;
+      this->l1[_key74] = _val75;
     }
     this->__isset.l1 = true;
   } else {
     this->__isset.l1 = false;
   }
   if (parsed["l2"] != nullptr) {
-    folly::dynamic _json69 = parsed["l2"];
+    folly::dynamic _json79 = parsed["l2"];
     this->l2.clear();
-    for (folly::dynamic::const_item_iterator _iter70 = _json69.items().begin(); _iter70 != _json69.items().end(); _iter70++)    {
-      int32_t _key71;;
-      enum1 _val72;;
+    for (folly::dynamic::const_item_iterator _iter81 = _json79.items().begin(); _iter81 != _json79.items().end(); _iter81++)    {
+      int32_t _key82;
+      enum1 _val83;
       try {
-        _key71 = folly::to<int32_t>((_iter70)->first.asString());
+        _key82 = folly::to<int32_t>((_iter81)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      _val72=(enum1)(int32_t)_iter70->second.asInt();
-      this->l2[_key71] = _val72;
+      _val83=(enum1)(int32_t)_iter81->second.asInt();
+      this->l2[_key82] = _val83;
     }
     this->__isset.l2 = true;
   } else {
     this->__isset.l2 = false;
   }
   if (parsed["l3"] != nullptr) {
-    folly::dynamic _json76 = parsed["l3"];
+    folly::dynamic _json87 = parsed["l3"];
     this->l3.clear();
-    for (folly::dynamic::const_item_iterator _iter77 = _json76.items().begin(); _iter77 != _json76.items().end(); _iter77++)    {
-      int32_t _key78;;
-      structB _val79;;
+    for (folly::dynamic::const_item_iterator _iter89 = _json87.items().begin(); _iter89 != _json87.items().end(); _iter89++)    {
+      int32_t _key90;
+      structB _val91;
       try {
-        _key78 = folly::to<int32_t>((_iter77)->first.asString());
+        _key90 = folly::to<int32_t>((_iter89)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      _val79.readFromJson(folly::toJson(_iter77->second).c_str());
-      this->l3[_key78] = _val79;
+      _val91.readFromJson(folly::toJson(_iter89->second).c_str());
+      this->l3[_key90] = _val91;
     }
     this->__isset.l3 = true;
   } else {
     this->__isset.l3 = false;
   }
   if (parsed["m1"] != nullptr) {
-    folly::dynamic _json82 = parsed["m1"];
+    folly::dynamic _json94 = parsed["m1"];
     this->m1.clear();
-    for (folly::dynamic::const_item_iterator _iter83 = _json82.items().begin(); _iter83 != _json82.items().end(); _iter83++)    {
-      enum1 _key84;;
-      int32_t _val85;;
+    for (folly::dynamic::const_item_iterator _iter96 = _json94.items().begin(); _iter96 != _json94.items().end(); _iter96++)    {
+      enum1 _key97;
+      int32_t _val98;
       try {
-        _key84 = (enum1)folly::to<int>((_iter83)->first.asString());
+        _key97 = (enum1)folly::to<int>((_iter96)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      int64_t _tmp86 = (int64_t)_iter83->second.asInt();
-      if (imaxabs(_tmp86) > 0x7fffffffL) {
+      int64_t _tmp99 = (int64_t)_iter96->second.asInt();
+      if (imaxabs(_tmp99) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        _val85 = (int32_t)_tmp86;
+        _val98 = (int32_t)_tmp99;
       }
-      this->m1[_key84] = _val85;
+      this->m1[_key97] = _val98;
     }
     this->__isset.m1 = true;
   } else {
     this->__isset.m1 = false;
   }
   if (parsed["m2"] != nullptr) {
-    folly::dynamic _json89 = parsed["m2"];
+    folly::dynamic _json102 = parsed["m2"];
     this->m2.clear();
-    for (folly::dynamic::const_item_iterator _iter90 = _json89.items().begin(); _iter90 != _json89.items().end(); _iter90++)    {
-      enum1 _key91;;
-      enum2 _val92;;
+    for (folly::dynamic::const_item_iterator _iter104 = _json102.items().begin(); _iter104 != _json102.items().end(); _iter104++)    {
+      enum1 _key105;
+      enum2 _val106;
       try {
-        _key91 = (enum1)folly::to<int>((_iter90)->first.asString());
+        _key105 = (enum1)folly::to<int>((_iter104)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      _val92=(enum2)(int32_t)_iter90->second.asInt();
-      this->m2[_key91] = _val92;
+      _val106=(enum2)(int32_t)_iter104->second.asInt();
+      this->m2[_key105] = _val106;
     }
     this->__isset.m2 = true;
   } else {
     this->__isset.m2 = false;
   }
   if (parsed["m3"] != nullptr) {
-    folly::dynamic _json96 = parsed["m3"];
+    folly::dynamic _json110 = parsed["m3"];
     this->m3.clear();
-    for (folly::dynamic::const_item_iterator _iter97 = _json96.items().begin(); _iter97 != _json96.items().end(); _iter97++)    {
-      enum1 _key98;;
-      structB _val99;;
+    for (folly::dynamic::const_item_iterator _iter112 = _json110.items().begin(); _iter112 != _json110.items().end(); _iter112++)    {
+      enum1 _key113;
+      structB _val114;
       try {
-        _key98 = (enum1)folly::to<int>((_iter97)->first.asString());
+        _key113 = (enum1)folly::to<int>((_iter112)->first.asString());
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      _val99.readFromJson(folly::toJson(_iter97->second).c_str());
-      this->m3[_key98] = _val99;
+      _val114.readFromJson(folly::toJson(_iter112->second).c_str());
+      this->m3[_key113] = _val114;
     }
     this->__isset.m3 = true;
   } else {
     this->__isset.m3 = false;
   }
   if (parsed["n1"] != nullptr) {
-    folly::dynamic _json102 = parsed["n1"];
+    folly::dynamic _json117 = parsed["n1"];
     this->n1.clear();
-    for (folly::dynamic::const_item_iterator _iter103 = _json102.items().begin(); _iter103 != _json102.items().end(); _iter103++)    {
-      std::string _key104;;
-      int32_t _val105;;
-      _key104 = (_iter103)->first.asString();
-      int64_t _tmp106 = (int64_t)_iter103->second.asInt();
-      if (imaxabs(_tmp106) > 0x7fffffffL) {
+    for (folly::dynamic::const_item_iterator _iter119 = _json117.items().begin(); _iter119 != _json117.items().end(); _iter119++)    {
+      std::string _key120;
+      int32_t _val121;
+      _key120 = (_iter119)->first.asString();
+      int64_t _tmp122 = (int64_t)_iter119->second.asInt();
+      if (imaxabs(_tmp122) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        _val105 = (int32_t)_tmp106;
+        _val121 = (int32_t)_tmp122;
       }
-      this->n1[_key104] = _val105;
+      this->n1[_key120] = _val121;
     }
     this->__isset.n1 = true;
   } else {
     this->__isset.n1 = false;
   }
   if (parsed["n2"] != nullptr) {
-    folly::dynamic _json109 = parsed["n2"];
+    folly::dynamic _json125 = parsed["n2"];
     this->n2.clear();
-    for (folly::dynamic::const_item_iterator _iter110 = _json109.items().begin(); _iter110 != _json109.items().end(); _iter110++)    {
-      std::string _key111;;
-      enum1 _val112;;
-      _key111 = (_iter110)->first.asString();
-      _val112=(enum1)(int32_t)_iter110->second.asInt();
-      this->n2[_key111] = _val112;
+    for (folly::dynamic::const_item_iterator _iter127 = _json125.items().begin(); _iter127 != _json125.items().end(); _iter127++)    {
+      std::string _key128;
+      enum1 _val129;
+      _key128 = (_iter127)->first.asString();
+      _val129=(enum1)(int32_t)_iter127->second.asInt();
+      this->n2[_key128] = _val129;
     }
     this->__isset.n2 = true;
   } else {
     this->__isset.n2 = false;
   }
   if (parsed["n3"] != nullptr) {
-    folly::dynamic _json116 = parsed["n3"];
+    folly::dynamic _json133 = parsed["n3"];
     this->n3.clear();
-    for (folly::dynamic::const_item_iterator _iter117 = _json116.items().begin(); _iter117 != _json116.items().end(); _iter117++)    {
-      std::string _key118;;
-      structB _val119;;
-      _key118 = (_iter117)->first.asString();
-      _val119.readFromJson(folly::toJson(_iter117->second).c_str());
-      this->n3[_key118] = _val119;
+    for (folly::dynamic::const_item_iterator _iter135 = _json133.items().begin(); _iter135 != _json133.items().end(); _iter135++)    {
+      std::string _key136;
+      structB _val137;
+      _key136 = (_iter135)->first.asString();
+      _val137.readFromJson(folly::toJson(_iter135->second).c_str());
+      this->n3[_key136] = _val137;
     }
     this->__isset.n3 = true;
   } else {
@@ -1472,9 +1472,9 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 5:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast129;
-          xfer += iprot->readI32(ecast129);
-          this->e = (enum1)ecast129;
+          int32_t ecast150;
+          xfer += iprot->readI32(ecast150);
+          this->e = (enum1)ecast150;
           this->__isset.e = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1482,9 +1482,9 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 6:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast130;
-          xfer += iprot->readI32(ecast130);
-          this->f = (enum2)ecast130;
+          int32_t ecast151;
+          xfer += iprot->readI32(ecast151);
+          this->f = (enum2)ecast151;
           this->__isset.f = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1518,23 +1518,23 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_LIST) {
           {
             this->j.clear();
-            uint32_t _size131;
-            bool _sizeUnknown132;
-            apache::thrift::protocol::TType _etype135;
-            xfer += iprot->readListBegin(_etype135, _size131, _sizeUnknown132);
-            if (!_sizeUnknown132) {
-              this->j.resize(_size131);
-              uint32_t _i137;
-              for (_i137 = 0; _i137 < _size131; ++_i137)
+            uint32_t _size152;
+            bool _sizeUnknown153;
+            apache::thrift::protocol::TType _etype156;
+            xfer += iprot->readListBegin(_etype156, _size152, _sizeUnknown153);
+            if (!_sizeUnknown153) {
+              this->j.resize(_size152);
+              uint32_t _i158;
+              for (_i158 = 0; _i158 < _size152; ++_i158)
               {
-                xfer += iprot->readI32(this->j[_i137]);
+                xfer += iprot->readI32(this->j[_i158]);
               }
             } else {
               while (iprot->peekList())
               {
-                int32_t _elem138;
-                xfer += iprot->readI32(_elem138);
-                this->j.push_back(_elem138);
+                int32_t _elem159;
+                xfer += iprot->readI32(_elem159);
+                this->j.push_back(_elem159);
               }
             }
             xfer += iprot->readListEnd();
@@ -1548,23 +1548,23 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_LIST) {
           {
             this->j1.clear();
-            uint32_t _size139;
-            bool _sizeUnknown140;
-            apache::thrift::protocol::TType _etype143;
-            xfer += iprot->readListBegin(_etype143, _size139, _sizeUnknown140);
-            if (!_sizeUnknown140) {
-              this->j1.resize(_size139);
-              uint32_t _i145;
-              for (_i145 = 0; _i145 < _size139; ++_i145)
+            uint32_t _size160;
+            bool _sizeUnknown161;
+            apache::thrift::protocol::TType _etype164;
+            xfer += iprot->readListBegin(_etype164, _size160, _sizeUnknown161);
+            if (!_sizeUnknown161) {
+              this->j1.resize(_size160);
+              uint32_t _i166;
+              for (_i166 = 0; _i166 < _size160; ++_i166)
               {
-                xfer += iprot->readI32(this->j1[_i145]);
+                xfer += iprot->readI32(this->j1[_i166]);
               }
             } else {
               while (iprot->peekList())
               {
-                int32_t _elem146;
-                xfer += iprot->readI32(_elem146);
-                this->j1.push_back(_elem146);
+                int32_t _elem167;
+                xfer += iprot->readI32(_elem167);
+                this->j1.push_back(_elem167);
               }
             }
             xfer += iprot->readListEnd();
@@ -1578,27 +1578,27 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_LIST) {
           {
             this->j2.clear();
-            uint32_t _size147;
-            bool _sizeUnknown148;
-            apache::thrift::protocol::TType _etype151;
-            xfer += iprot->readListBegin(_etype151, _size147, _sizeUnknown148);
-            if (!_sizeUnknown148) {
-              this->j2.resize(_size147);
-              uint32_t _i153;
-              for (_i153 = 0; _i153 < _size147; ++_i153)
+            uint32_t _size168;
+            bool _sizeUnknown169;
+            apache::thrift::protocol::TType _etype172;
+            xfer += iprot->readListBegin(_etype172, _size168, _sizeUnknown169);
+            if (!_sizeUnknown169) {
+              this->j2.resize(_size168);
+              uint32_t _i174;
+              for (_i174 = 0; _i174 < _size168; ++_i174)
               {
-                int32_t ecast154;
-                xfer += iprot->readI32(ecast154);
-                this->j2[_i153] = (enum1)ecast154;
+                int32_t ecast175;
+                xfer += iprot->readI32(ecast175);
+                this->j2[_i174] = (enum1)ecast175;
               }
             } else {
               while (iprot->peekList())
               {
-                enum1 _elem155;
-                int32_t ecast156;
-                xfer += iprot->readI32(ecast156);
-                _elem155 = (enum1)ecast156;
-                this->j2.push_back(_elem155);
+                enum1 _elem176;
+                int32_t ecast177;
+                xfer += iprot->readI32(ecast177);
+                _elem176 = (enum1)ecast177;
+                this->j2.push_back(_elem176);
               }
             }
             xfer += iprot->readListEnd();
@@ -1612,23 +1612,23 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_LIST) {
           {
             this->j3.clear();
-            uint32_t _size157;
-            bool _sizeUnknown158;
-            apache::thrift::protocol::TType _etype161;
-            xfer += iprot->readListBegin(_etype161, _size157, _sizeUnknown158);
-            if (!_sizeUnknown158) {
-              this->j3.resize(_size157);
-              uint32_t _i163;
-              for (_i163 = 0; _i163 < _size157; ++_i163)
+            uint32_t _size178;
+            bool _sizeUnknown179;
+            apache::thrift::protocol::TType _etype182;
+            xfer += iprot->readListBegin(_etype182, _size178, _sizeUnknown179);
+            if (!_sizeUnknown179) {
+              this->j3.resize(_size178);
+              uint32_t _i184;
+              for (_i184 = 0; _i184 < _size178; ++_i184)
               {
-                xfer += this->j3[_i163].read(iprot);
+                xfer += this->j3[_i184].read(iprot);
               }
             } else {
               while (iprot->peekList())
               {
-                structA _elem164;
-                xfer += _elem164.read(iprot);
-                this->j3.push_back(_elem164);
+                structA _elem185;
+                xfer += _elem185.read(iprot);
+                this->j3.push_back(_elem185);
               }
             }
             xfer += iprot->readListEnd();
@@ -1642,24 +1642,24 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_SET) {
           {
             this->k.clear();
-            uint32_t _size165;
-            bool _sizeUnknown166;
-            apache::thrift::protocol::TType _etype169;
-            xfer += iprot->readSetBegin(_etype169, _size165, _sizeUnknown166);
-            if (!_sizeUnknown166) {
-              uint32_t _i171;
-              for (_i171 = 0; _i171 < _size165; ++_i171)
+            uint32_t _size186;
+            bool _sizeUnknown187;
+            apache::thrift::protocol::TType _etype190;
+            xfer += iprot->readSetBegin(_etype190, _size186, _sizeUnknown187);
+            if (!_sizeUnknown187) {
+              uint32_t _i192;
+              for (_i192 = 0; _i192 < _size186; ++_i192)
               {
-                int32_t _elem172;
-                xfer += iprot->readI32(_elem172);
-                this->k.insert(_elem172);
+                int32_t _elem193;
+                xfer += iprot->readI32(_elem193);
+                this->k.insert(_elem193);
               }
             } else {
               while (iprot->peekSet())
               {
-                int32_t _elem173;
-                xfer += iprot->readI32(_elem173);
-                this->k.insert(_elem173);
+                int32_t _elem194;
+                xfer += iprot->readI32(_elem194);
+                this->k.insert(_elem194);
               }
             }
             xfer += iprot->readSetEnd();
@@ -1673,24 +1673,24 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_SET) {
           {
             this->k1.clear();
-            uint32_t _size174;
-            bool _sizeUnknown175;
-            apache::thrift::protocol::TType _etype178;
-            xfer += iprot->readSetBegin(_etype178, _size174, _sizeUnknown175);
-            if (!_sizeUnknown175) {
-              uint32_t _i180;
-              for (_i180 = 0; _i180 < _size174; ++_i180)
+            uint32_t _size195;
+            bool _sizeUnknown196;
+            apache::thrift::protocol::TType _etype199;
+            xfer += iprot->readSetBegin(_etype199, _size195, _sizeUnknown196);
+            if (!_sizeUnknown196) {
+              uint32_t _i201;
+              for (_i201 = 0; _i201 < _size195; ++_i201)
               {
-                int32_t _elem181;
-                xfer += iprot->readI32(_elem181);
-                this->k1.insert(_elem181);
+                int32_t _elem202;
+                xfer += iprot->readI32(_elem202);
+                this->k1.insert(_elem202);
               }
             } else {
               while (iprot->peekSet())
               {
-                int32_t _elem182;
-                xfer += iprot->readI32(_elem182);
-                this->k1.insert(_elem182);
+                int32_t _elem203;
+                xfer += iprot->readI32(_elem203);
+                this->k1.insert(_elem203);
               }
             }
             xfer += iprot->readSetEnd();
@@ -1704,28 +1704,28 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_SET) {
           {
             this->k2.clear();
-            uint32_t _size183;
-            bool _sizeUnknown184;
-            apache::thrift::protocol::TType _etype187;
-            xfer += iprot->readSetBegin(_etype187, _size183, _sizeUnknown184);
-            if (!_sizeUnknown184) {
-              uint32_t _i189;
-              for (_i189 = 0; _i189 < _size183; ++_i189)
+            uint32_t _size204;
+            bool _sizeUnknown205;
+            apache::thrift::protocol::TType _etype208;
+            xfer += iprot->readSetBegin(_etype208, _size204, _sizeUnknown205);
+            if (!_sizeUnknown205) {
+              uint32_t _i210;
+              for (_i210 = 0; _i210 < _size204; ++_i210)
               {
-                enum2 _elem190;
-                int32_t ecast191;
-                xfer += iprot->readI32(ecast191);
-                _elem190 = (enum2)ecast191;
-                this->k2.insert(_elem190);
+                enum2 _elem211;
+                int32_t ecast212;
+                xfer += iprot->readI32(ecast212);
+                _elem211 = (enum2)ecast212;
+                this->k2.insert(_elem211);
               }
             } else {
               while (iprot->peekSet())
               {
-                enum2 _elem192;
-                int32_t ecast193;
-                xfer += iprot->readI32(ecast193);
-                _elem192 = (enum2)ecast193;
-                this->k2.insert(_elem192);
+                enum2 _elem213;
+                int32_t ecast214;
+                xfer += iprot->readI32(ecast214);
+                _elem213 = (enum2)ecast214;
+                this->k2.insert(_elem213);
               }
             }
             xfer += iprot->readSetEnd();
@@ -1739,24 +1739,24 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_SET) {
           {
             this->k3.clear();
-            uint32_t _size194;
-            bool _sizeUnknown195;
-            apache::thrift::protocol::TType _etype198;
-            xfer += iprot->readSetBegin(_etype198, _size194, _sizeUnknown195);
-            if (!_sizeUnknown195) {
-              uint32_t _i200;
-              for (_i200 = 0; _i200 < _size194; ++_i200)
+            uint32_t _size215;
+            bool _sizeUnknown216;
+            apache::thrift::protocol::TType _etype219;
+            xfer += iprot->readSetBegin(_etype219, _size215, _sizeUnknown216);
+            if (!_sizeUnknown216) {
+              uint32_t _i221;
+              for (_i221 = 0; _i221 < _size215; ++_i221)
               {
-                structB _elem201;
-                xfer += _elem201.read(iprot);
-                this->k3.insert(_elem201);
+                structB _elem222;
+                xfer += _elem222.read(iprot);
+                this->k3.insert(_elem222);
               }
             } else {
               while (iprot->peekSet())
               {
-                structB _elem202;
-                xfer += _elem202.read(iprot);
-                this->k3.insert(_elem202);
+                structB _elem223;
+                xfer += _elem223.read(iprot);
+                this->k3.insert(_elem223);
               }
             }
             xfer += iprot->readSetEnd();
@@ -1770,27 +1770,27 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->l.clear();
-            uint32_t _size203;
-            bool _sizeUnknown204;
-            apache::thrift::protocol::TType _ktype205;
-            apache::thrift::protocol::TType _vtype206;
-            xfer += iprot->readMapBegin(_ktype205, _vtype206, _size203, _sizeUnknown204);
-            if (!_sizeUnknown204) {
-              uint32_t _i209;
-              for (_i209 = 0; _i209 < _size203; ++_i209)
+            uint32_t _size224;
+            bool _sizeUnknown225;
+            apache::thrift::protocol::TType _ktype226;
+            apache::thrift::protocol::TType _vtype227;
+            xfer += iprot->readMapBegin(_ktype226, _vtype227, _size224, _sizeUnknown225);
+            if (!_sizeUnknown225) {
+              uint32_t _i230;
+              for (_i230 = 0; _i230 < _size224; ++_i230)
               {
-                int32_t _key210;
-                xfer += iprot->readI32(_key210);
-                int32_t& _val211 = this->l[_key210];
-                xfer += iprot->readI32(_val211);
+                int32_t _key231;
+                xfer += iprot->readI32(_key231);
+                int32_t& _val232 = this->l[_key231];
+                xfer += iprot->readI32(_val232);
               }
             } else {
               while (iprot->peekMap())
               {
-                int32_t _key212;
-                xfer += iprot->readI32(_key212);
-                int32_t& _val213 = this->l[_key212];
-                xfer += iprot->readI32(_val213);
+                int32_t _key233;
+                xfer += iprot->readI32(_key233);
+                int32_t& _val234 = this->l[_key233];
+                xfer += iprot->readI32(_val234);
               }
             }
             xfer += iprot->readMapEnd();
@@ -1804,27 +1804,27 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->l1.clear();
-            uint32_t _size214;
-            bool _sizeUnknown215;
-            apache::thrift::protocol::TType _ktype216;
-            apache::thrift::protocol::TType _vtype217;
-            xfer += iprot->readMapBegin(_ktype216, _vtype217, _size214, _sizeUnknown215);
-            if (!_sizeUnknown215) {
-              uint32_t _i220;
-              for (_i220 = 0; _i220 < _size214; ++_i220)
+            uint32_t _size235;
+            bool _sizeUnknown236;
+            apache::thrift::protocol::TType _ktype237;
+            apache::thrift::protocol::TType _vtype238;
+            xfer += iprot->readMapBegin(_ktype237, _vtype238, _size235, _sizeUnknown236);
+            if (!_sizeUnknown236) {
+              uint32_t _i241;
+              for (_i241 = 0; _i241 < _size235; ++_i241)
               {
-                int32_t _key221;
-                xfer += iprot->readI32(_key221);
-                int32_t& _val222 = this->l1[_key221];
-                xfer += iprot->readI32(_val222);
+                int32_t _key242;
+                xfer += iprot->readI32(_key242);
+                int32_t& _val243 = this->l1[_key242];
+                xfer += iprot->readI32(_val243);
               }
             } else {
               while (iprot->peekMap())
               {
-                int32_t _key223;
-                xfer += iprot->readI32(_key223);
-                int32_t& _val224 = this->l1[_key223];
-                xfer += iprot->readI32(_val224);
+                int32_t _key244;
+                xfer += iprot->readI32(_key244);
+                int32_t& _val245 = this->l1[_key244];
+                xfer += iprot->readI32(_val245);
               }
             }
             xfer += iprot->readMapEnd();
@@ -1838,31 +1838,31 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->l2.clear();
-            uint32_t _size225;
-            bool _sizeUnknown226;
-            apache::thrift::protocol::TType _ktype227;
-            apache::thrift::protocol::TType _vtype228;
-            xfer += iprot->readMapBegin(_ktype227, _vtype228, _size225, _sizeUnknown226);
-            if (!_sizeUnknown226) {
-              uint32_t _i231;
-              for (_i231 = 0; _i231 < _size225; ++_i231)
+            uint32_t _size246;
+            bool _sizeUnknown247;
+            apache::thrift::protocol::TType _ktype248;
+            apache::thrift::protocol::TType _vtype249;
+            xfer += iprot->readMapBegin(_ktype248, _vtype249, _size246, _sizeUnknown247);
+            if (!_sizeUnknown247) {
+              uint32_t _i252;
+              for (_i252 = 0; _i252 < _size246; ++_i252)
               {
-                int32_t _key232;
-                xfer += iprot->readI32(_key232);
-                enum1& _val233 = this->l2[_key232];
-                int32_t ecast234;
-                xfer += iprot->readI32(ecast234);
-                _val233 = (enum1)ecast234;
+                int32_t _key253;
+                xfer += iprot->readI32(_key253);
+                enum1& _val254 = this->l2[_key253];
+                int32_t ecast255;
+                xfer += iprot->readI32(ecast255);
+                _val254 = (enum1)ecast255;
               }
             } else {
               while (iprot->peekMap())
               {
-                int32_t _key235;
-                xfer += iprot->readI32(_key235);
-                enum1& _val236 = this->l2[_key235];
-                int32_t ecast237;
-                xfer += iprot->readI32(ecast237);
-                _val236 = (enum1)ecast237;
+                int32_t _key256;
+                xfer += iprot->readI32(_key256);
+                enum1& _val257 = this->l2[_key256];
+                int32_t ecast258;
+                xfer += iprot->readI32(ecast258);
+                _val257 = (enum1)ecast258;
               }
             }
             xfer += iprot->readMapEnd();
@@ -1876,27 +1876,27 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->l3.clear();
-            uint32_t _size238;
-            bool _sizeUnknown239;
-            apache::thrift::protocol::TType _ktype240;
-            apache::thrift::protocol::TType _vtype241;
-            xfer += iprot->readMapBegin(_ktype240, _vtype241, _size238, _sizeUnknown239);
-            if (!_sizeUnknown239) {
-              uint32_t _i244;
-              for (_i244 = 0; _i244 < _size238; ++_i244)
+            uint32_t _size259;
+            bool _sizeUnknown260;
+            apache::thrift::protocol::TType _ktype261;
+            apache::thrift::protocol::TType _vtype262;
+            xfer += iprot->readMapBegin(_ktype261, _vtype262, _size259, _sizeUnknown260);
+            if (!_sizeUnknown260) {
+              uint32_t _i265;
+              for (_i265 = 0; _i265 < _size259; ++_i265)
               {
-                int32_t _key245;
-                xfer += iprot->readI32(_key245);
-                structB& _val246 = this->l3[_key245];
-                xfer += _val246.read(iprot);
+                int32_t _key266;
+                xfer += iprot->readI32(_key266);
+                structB& _val267 = this->l3[_key266];
+                xfer += _val267.read(iprot);
               }
             } else {
               while (iprot->peekMap())
               {
-                int32_t _key247;
-                xfer += iprot->readI32(_key247);
-                structB& _val248 = this->l3[_key247];
-                xfer += _val248.read(iprot);
+                int32_t _key268;
+                xfer += iprot->readI32(_key268);
+                structB& _val269 = this->l3[_key268];
+                xfer += _val269.read(iprot);
               }
             }
             xfer += iprot->readMapEnd();
@@ -1910,31 +1910,31 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->m1.clear();
-            uint32_t _size249;
-            bool _sizeUnknown250;
-            apache::thrift::protocol::TType _ktype251;
-            apache::thrift::protocol::TType _vtype252;
-            xfer += iprot->readMapBegin(_ktype251, _vtype252, _size249, _sizeUnknown250);
-            if (!_sizeUnknown250) {
-              uint32_t _i255;
-              for (_i255 = 0; _i255 < _size249; ++_i255)
+            uint32_t _size270;
+            bool _sizeUnknown271;
+            apache::thrift::protocol::TType _ktype272;
+            apache::thrift::protocol::TType _vtype273;
+            xfer += iprot->readMapBegin(_ktype272, _vtype273, _size270, _sizeUnknown271);
+            if (!_sizeUnknown271) {
+              uint32_t _i276;
+              for (_i276 = 0; _i276 < _size270; ++_i276)
               {
-                enum1 _key256;
-                int32_t ecast258;
-                xfer += iprot->readI32(ecast258);
-                _key256 = (enum1)ecast258;
-                int32_t& _val257 = this->m1[_key256];
-                xfer += iprot->readI32(_val257);
+                enum1 _key277;
+                int32_t ecast279;
+                xfer += iprot->readI32(ecast279);
+                _key277 = (enum1)ecast279;
+                int32_t& _val278 = this->m1[_key277];
+                xfer += iprot->readI32(_val278);
               }
             } else {
               while (iprot->peekMap())
               {
-                enum1 _key259;
-                int32_t ecast261;
-                xfer += iprot->readI32(ecast261);
-                _key259 = (enum1)ecast261;
-                int32_t& _val260 = this->m1[_key259];
-                xfer += iprot->readI32(_val260);
+                enum1 _key280;
+                int32_t ecast282;
+                xfer += iprot->readI32(ecast282);
+                _key280 = (enum1)ecast282;
+                int32_t& _val281 = this->m1[_key280];
+                xfer += iprot->readI32(_val281);
               }
             }
             xfer += iprot->readMapEnd();
@@ -1948,35 +1948,35 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->m2.clear();
-            uint32_t _size262;
-            bool _sizeUnknown263;
-            apache::thrift::protocol::TType _ktype264;
-            apache::thrift::protocol::TType _vtype265;
-            xfer += iprot->readMapBegin(_ktype264, _vtype265, _size262, _sizeUnknown263);
-            if (!_sizeUnknown263) {
-              uint32_t _i268;
-              for (_i268 = 0; _i268 < _size262; ++_i268)
+            uint32_t _size283;
+            bool _sizeUnknown284;
+            apache::thrift::protocol::TType _ktype285;
+            apache::thrift::protocol::TType _vtype286;
+            xfer += iprot->readMapBegin(_ktype285, _vtype286, _size283, _sizeUnknown284);
+            if (!_sizeUnknown284) {
+              uint32_t _i289;
+              for (_i289 = 0; _i289 < _size283; ++_i289)
               {
-                enum1 _key269;
-                int32_t ecast271;
-                xfer += iprot->readI32(ecast271);
-                _key269 = (enum1)ecast271;
-                enum2& _val270 = this->m2[_key269];
-                int32_t ecast272;
-                xfer += iprot->readI32(ecast272);
-                _val270 = (enum2)ecast272;
+                enum1 _key290;
+                int32_t ecast292;
+                xfer += iprot->readI32(ecast292);
+                _key290 = (enum1)ecast292;
+                enum2& _val291 = this->m2[_key290];
+                int32_t ecast293;
+                xfer += iprot->readI32(ecast293);
+                _val291 = (enum2)ecast293;
               }
             } else {
               while (iprot->peekMap())
               {
-                enum1 _key273;
-                int32_t ecast275;
-                xfer += iprot->readI32(ecast275);
-                _key273 = (enum1)ecast275;
-                enum2& _val274 = this->m2[_key273];
-                int32_t ecast276;
-                xfer += iprot->readI32(ecast276);
-                _val274 = (enum2)ecast276;
+                enum1 _key294;
+                int32_t ecast296;
+                xfer += iprot->readI32(ecast296);
+                _key294 = (enum1)ecast296;
+                enum2& _val295 = this->m2[_key294];
+                int32_t ecast297;
+                xfer += iprot->readI32(ecast297);
+                _val295 = (enum2)ecast297;
               }
             }
             xfer += iprot->readMapEnd();
@@ -1990,31 +1990,31 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->m3.clear();
-            uint32_t _size277;
-            bool _sizeUnknown278;
-            apache::thrift::protocol::TType _ktype279;
-            apache::thrift::protocol::TType _vtype280;
-            xfer += iprot->readMapBegin(_ktype279, _vtype280, _size277, _sizeUnknown278);
-            if (!_sizeUnknown278) {
-              uint32_t _i283;
-              for (_i283 = 0; _i283 < _size277; ++_i283)
+            uint32_t _size298;
+            bool _sizeUnknown299;
+            apache::thrift::protocol::TType _ktype300;
+            apache::thrift::protocol::TType _vtype301;
+            xfer += iprot->readMapBegin(_ktype300, _vtype301, _size298, _sizeUnknown299);
+            if (!_sizeUnknown299) {
+              uint32_t _i304;
+              for (_i304 = 0; _i304 < _size298; ++_i304)
               {
-                enum1 _key284;
-                int32_t ecast286;
-                xfer += iprot->readI32(ecast286);
-                _key284 = (enum1)ecast286;
-                structB& _val285 = this->m3[_key284];
-                xfer += _val285.read(iprot);
+                enum1 _key305;
+                int32_t ecast307;
+                xfer += iprot->readI32(ecast307);
+                _key305 = (enum1)ecast307;
+                structB& _val306 = this->m3[_key305];
+                xfer += _val306.read(iprot);
               }
             } else {
               while (iprot->peekMap())
               {
-                enum1 _key287;
-                int32_t ecast289;
-                xfer += iprot->readI32(ecast289);
-                _key287 = (enum1)ecast289;
-                structB& _val288 = this->m3[_key287];
-                xfer += _val288.read(iprot);
+                enum1 _key308;
+                int32_t ecast310;
+                xfer += iprot->readI32(ecast310);
+                _key308 = (enum1)ecast310;
+                structB& _val309 = this->m3[_key308];
+                xfer += _val309.read(iprot);
               }
             }
             xfer += iprot->readMapEnd();
@@ -2028,27 +2028,27 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->n1.clear();
-            uint32_t _size290;
-            bool _sizeUnknown291;
-            apache::thrift::protocol::TType _ktype292;
-            apache::thrift::protocol::TType _vtype293;
-            xfer += iprot->readMapBegin(_ktype292, _vtype293, _size290, _sizeUnknown291);
-            if (!_sizeUnknown291) {
-              uint32_t _i296;
-              for (_i296 = 0; _i296 < _size290; ++_i296)
+            uint32_t _size311;
+            bool _sizeUnknown312;
+            apache::thrift::protocol::TType _ktype313;
+            apache::thrift::protocol::TType _vtype314;
+            xfer += iprot->readMapBegin(_ktype313, _vtype314, _size311, _sizeUnknown312);
+            if (!_sizeUnknown312) {
+              uint32_t _i317;
+              for (_i317 = 0; _i317 < _size311; ++_i317)
               {
-                std::string _key297;
-                xfer += iprot->readString(_key297);
-                int32_t& _val298 = this->n1[_key297];
-                xfer += iprot->readI32(_val298);
+                std::string _key318;
+                xfer += iprot->readString(_key318);
+                int32_t& _val319 = this->n1[_key318];
+                xfer += iprot->readI32(_val319);
               }
             } else {
               while (iprot->peekMap())
               {
-                std::string _key299;
-                xfer += iprot->readString(_key299);
-                int32_t& _val300 = this->n1[_key299];
-                xfer += iprot->readI32(_val300);
+                std::string _key320;
+                xfer += iprot->readString(_key320);
+                int32_t& _val321 = this->n1[_key320];
+                xfer += iprot->readI32(_val321);
               }
             }
             xfer += iprot->readMapEnd();
@@ -2062,31 +2062,31 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->n2.clear();
-            uint32_t _size301;
-            bool _sizeUnknown302;
-            apache::thrift::protocol::TType _ktype303;
-            apache::thrift::protocol::TType _vtype304;
-            xfer += iprot->readMapBegin(_ktype303, _vtype304, _size301, _sizeUnknown302);
-            if (!_sizeUnknown302) {
-              uint32_t _i307;
-              for (_i307 = 0; _i307 < _size301; ++_i307)
+            uint32_t _size322;
+            bool _sizeUnknown323;
+            apache::thrift::protocol::TType _ktype324;
+            apache::thrift::protocol::TType _vtype325;
+            xfer += iprot->readMapBegin(_ktype324, _vtype325, _size322, _sizeUnknown323);
+            if (!_sizeUnknown323) {
+              uint32_t _i328;
+              for (_i328 = 0; _i328 < _size322; ++_i328)
               {
-                std::string _key308;
-                xfer += iprot->readString(_key308);
-                enum1& _val309 = this->n2[_key308];
-                int32_t ecast310;
-                xfer += iprot->readI32(ecast310);
-                _val309 = (enum1)ecast310;
+                std::string _key329;
+                xfer += iprot->readString(_key329);
+                enum1& _val330 = this->n2[_key329];
+                int32_t ecast331;
+                xfer += iprot->readI32(ecast331);
+                _val330 = (enum1)ecast331;
               }
             } else {
               while (iprot->peekMap())
               {
-                std::string _key311;
-                xfer += iprot->readString(_key311);
-                enum1& _val312 = this->n2[_key311];
-                int32_t ecast313;
-                xfer += iprot->readI32(ecast313);
-                _val312 = (enum1)ecast313;
+                std::string _key332;
+                xfer += iprot->readString(_key332);
+                enum1& _val333 = this->n2[_key332];
+                int32_t ecast334;
+                xfer += iprot->readI32(ecast334);
+                _val333 = (enum1)ecast334;
               }
             }
             xfer += iprot->readMapEnd();
@@ -2100,27 +2100,27 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->n3.clear();
-            uint32_t _size314;
-            bool _sizeUnknown315;
-            apache::thrift::protocol::TType _ktype316;
-            apache::thrift::protocol::TType _vtype317;
-            xfer += iprot->readMapBegin(_ktype316, _vtype317, _size314, _sizeUnknown315);
-            if (!_sizeUnknown315) {
-              uint32_t _i320;
-              for (_i320 = 0; _i320 < _size314; ++_i320)
+            uint32_t _size335;
+            bool _sizeUnknown336;
+            apache::thrift::protocol::TType _ktype337;
+            apache::thrift::protocol::TType _vtype338;
+            xfer += iprot->readMapBegin(_ktype337, _vtype338, _size335, _sizeUnknown336);
+            if (!_sizeUnknown336) {
+              uint32_t _i341;
+              for (_i341 = 0; _i341 < _size335; ++_i341)
               {
-                std::string _key321;
-                xfer += iprot->readString(_key321);
-                structB& _val322 = this->n3[_key321];
-                xfer += _val322.read(iprot);
+                std::string _key342;
+                xfer += iprot->readString(_key342);
+                structB& _val343 = this->n3[_key342];
+                xfer += _val343.read(iprot);
               }
             } else {
               while (iprot->peekMap())
               {
-                std::string _key323;
-                xfer += iprot->readString(_key323);
-                structB& _val324 = this->n3[_key323];
-                xfer += _val324.read(iprot);
+                std::string _key344;
+                xfer += iprot->readString(_key344);
+                structB& _val345 = this->n3[_key344];
+                xfer += _val345.read(iprot);
               }
             }
             xfer += iprot->readMapEnd();
@@ -2134,27 +2134,27 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->o1.clear();
-            uint32_t _size325;
-            bool _sizeUnknown326;
-            apache::thrift::protocol::TType _ktype327;
-            apache::thrift::protocol::TType _vtype328;
-            xfer += iprot->readMapBegin(_ktype327, _vtype328, _size325, _sizeUnknown326);
-            if (!_sizeUnknown326) {
-              uint32_t _i331;
-              for (_i331 = 0; _i331 < _size325; ++_i331)
+            uint32_t _size346;
+            bool _sizeUnknown347;
+            apache::thrift::protocol::TType _ktype348;
+            apache::thrift::protocol::TType _vtype349;
+            xfer += iprot->readMapBegin(_ktype348, _vtype349, _size346, _sizeUnknown347);
+            if (!_sizeUnknown347) {
+              uint32_t _i352;
+              for (_i352 = 0; _i352 < _size346; ++_i352)
               {
-                structA _key332;
-                xfer += _key332.read(iprot);
-                int32_t& _val333 = this->o1[_key332];
-                xfer += iprot->readI32(_val333);
+                structA _key353;
+                xfer += _key353.read(iprot);
+                int32_t& _val354 = this->o1[_key353];
+                xfer += iprot->readI32(_val354);
               }
             } else {
               while (iprot->peekMap())
               {
-                structA _key334;
-                xfer += _key334.read(iprot);
-                int32_t& _val335 = this->o1[_key334];
-                xfer += iprot->readI32(_val335);
+                structA _key355;
+                xfer += _key355.read(iprot);
+                int32_t& _val356 = this->o1[_key355];
+                xfer += iprot->readI32(_val356);
               }
             }
             xfer += iprot->readMapEnd();
@@ -2168,31 +2168,31 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->o2.clear();
-            uint32_t _size336;
-            bool _sizeUnknown337;
-            apache::thrift::protocol::TType _ktype338;
-            apache::thrift::protocol::TType _vtype339;
-            xfer += iprot->readMapBegin(_ktype338, _vtype339, _size336, _sizeUnknown337);
-            if (!_sizeUnknown337) {
-              uint32_t _i342;
-              for (_i342 = 0; _i342 < _size336; ++_i342)
+            uint32_t _size357;
+            bool _sizeUnknown358;
+            apache::thrift::protocol::TType _ktype359;
+            apache::thrift::protocol::TType _vtype360;
+            xfer += iprot->readMapBegin(_ktype359, _vtype360, _size357, _sizeUnknown358);
+            if (!_sizeUnknown358) {
+              uint32_t _i363;
+              for (_i363 = 0; _i363 < _size357; ++_i363)
               {
-                structA _key343;
-                xfer += _key343.read(iprot);
-                enum1& _val344 = this->o2[_key343];
-                int32_t ecast345;
-                xfer += iprot->readI32(ecast345);
-                _val344 = (enum1)ecast345;
+                structA _key364;
+                xfer += _key364.read(iprot);
+                enum1& _val365 = this->o2[_key364];
+                int32_t ecast366;
+                xfer += iprot->readI32(ecast366);
+                _val365 = (enum1)ecast366;
               }
             } else {
               while (iprot->peekMap())
               {
-                structA _key346;
-                xfer += _key346.read(iprot);
-                enum1& _val347 = this->o2[_key346];
-                int32_t ecast348;
-                xfer += iprot->readI32(ecast348);
-                _val347 = (enum1)ecast348;
+                structA _key367;
+                xfer += _key367.read(iprot);
+                enum1& _val368 = this->o2[_key367];
+                int32_t ecast369;
+                xfer += iprot->readI32(ecast369);
+                _val368 = (enum1)ecast369;
               }
             }
             xfer += iprot->readMapEnd();
@@ -2206,27 +2206,27 @@ uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->o3.clear();
-            uint32_t _size349;
-            bool _sizeUnknown350;
-            apache::thrift::protocol::TType _ktype351;
-            apache::thrift::protocol::TType _vtype352;
-            xfer += iprot->readMapBegin(_ktype351, _vtype352, _size349, _sizeUnknown350);
-            if (!_sizeUnknown350) {
-              uint32_t _i355;
-              for (_i355 = 0; _i355 < _size349; ++_i355)
+            uint32_t _size370;
+            bool _sizeUnknown371;
+            apache::thrift::protocol::TType _ktype372;
+            apache::thrift::protocol::TType _vtype373;
+            xfer += iprot->readMapBegin(_ktype372, _vtype373, _size370, _sizeUnknown371);
+            if (!_sizeUnknown371) {
+              uint32_t _i376;
+              for (_i376 = 0; _i376 < _size370; ++_i376)
               {
-                structA _key356;
-                xfer += _key356.read(iprot);
-                structB& _val357 = this->o3[_key356];
-                xfer += _val357.read(iprot);
+                structA _key377;
+                xfer += _key377.read(iprot);
+                structB& _val378 = this->o3[_key377];
+                xfer += _val378.read(iprot);
               }
             } else {
               while (iprot->peekMap())
               {
-                structA _key358;
-                xfer += _key358.read(iprot);
-                structB& _val359 = this->o3[_key358];
-                xfer += _val359.read(iprot);
+                structA _key379;
+                xfer += _key379.read(iprot);
+                structB& _val380 = this->o3[_key379];
+                xfer += _val380.read(iprot);
               }
             }
             xfer += iprot->readMapEnd();
@@ -2314,10 +2314,10 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("j", apache::thrift::protocol::T_LIST, 10);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->j.size());
-    std::vector<int32_t> ::const_iterator _iter360;
-    for (_iter360 = this->j.begin(); _iter360 != this->j.end(); ++_iter360)
+    std::vector<int32_t> ::const_iterator _iter381;
+    for (_iter381 = this->j.begin(); _iter381 != this->j.end(); ++_iter381)
     {
-      xfer += oprot->writeI32((*_iter360));
+      xfer += oprot->writeI32((*_iter381));
     }
     xfer += oprot->writeListEnd();
   }
@@ -2325,10 +2325,10 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("j1", apache::thrift::protocol::T_LIST, 11);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->j1.size());
-    std::vector<int32_t> ::const_iterator _iter361;
-    for (_iter361 = this->j1.begin(); _iter361 != this->j1.end(); ++_iter361)
+    std::vector<int32_t> ::const_iterator _iter382;
+    for (_iter382 = this->j1.begin(); _iter382 != this->j1.end(); ++_iter382)
     {
-      xfer += oprot->writeI32((*_iter361));
+      xfer += oprot->writeI32((*_iter382));
     }
     xfer += oprot->writeListEnd();
   }
@@ -2336,10 +2336,10 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("j2", apache::thrift::protocol::T_LIST, 12);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->j2.size());
-    std::vector<enum1> ::const_iterator _iter362;
-    for (_iter362 = this->j2.begin(); _iter362 != this->j2.end(); ++_iter362)
+    std::vector<enum1> ::const_iterator _iter383;
+    for (_iter383 = this->j2.begin(); _iter383 != this->j2.end(); ++_iter383)
     {
-      xfer += oprot->writeI32((int32_t)(*_iter362));
+      xfer += oprot->writeI32((int32_t)(*_iter383));
     }
     xfer += oprot->writeListEnd();
   }
@@ -2347,10 +2347,10 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("j3", apache::thrift::protocol::T_LIST, 13);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRUCT, this->j3.size());
-    std::vector<structA> ::const_iterator _iter363;
-    for (_iter363 = this->j3.begin(); _iter363 != this->j3.end(); ++_iter363)
+    std::vector<structA> ::const_iterator _iter384;
+    for (_iter384 = this->j3.begin(); _iter384 != this->j3.end(); ++_iter384)
     {
-      xfer += (*_iter363).write(oprot);
+      xfer += (*_iter384).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -2358,10 +2358,10 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("k", apache::thrift::protocol::T_SET, 14);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, this->k.size());
-    std::set<int32_t> ::const_iterator _iter364;
-    for (_iter364 = this->k.begin(); _iter364 != this->k.end(); ++_iter364)
+    std::set<int32_t> ::const_iterator _iter385;
+    for (_iter385 = this->k.begin(); _iter385 != this->k.end(); ++_iter385)
     {
-      xfer += oprot->writeI32((*_iter364));
+      xfer += oprot->writeI32((*_iter385));
     }
     xfer += oprot->writeSetEnd();
   }
@@ -2369,10 +2369,10 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("k1", apache::thrift::protocol::T_SET, 15);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, this->k1.size());
-    std::set<int32_t> ::const_iterator _iter365;
-    for (_iter365 = this->k1.begin(); _iter365 != this->k1.end(); ++_iter365)
+    std::set<int32_t> ::const_iterator _iter386;
+    for (_iter386 = this->k1.begin(); _iter386 != this->k1.end(); ++_iter386)
     {
-      xfer += oprot->writeI32((*_iter365));
+      xfer += oprot->writeI32((*_iter386));
     }
     xfer += oprot->writeSetEnd();
   }
@@ -2380,10 +2380,10 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("k2", apache::thrift::protocol::T_SET, 16);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, this->k2.size());
-    std::set<enum2> ::const_iterator _iter366;
-    for (_iter366 = this->k2.begin(); _iter366 != this->k2.end(); ++_iter366)
+    std::set<enum2> ::const_iterator _iter387;
+    for (_iter387 = this->k2.begin(); _iter387 != this->k2.end(); ++_iter387)
     {
-      xfer += oprot->writeI32((int32_t)(*_iter366));
+      xfer += oprot->writeI32((int32_t)(*_iter387));
     }
     xfer += oprot->writeSetEnd();
   }
@@ -2391,10 +2391,10 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("k3", apache::thrift::protocol::T_SET, 17);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_STRUCT, this->k3.size());
-    std::set<structB> ::const_iterator _iter367;
-    for (_iter367 = this->k3.begin(); _iter367 != this->k3.end(); ++_iter367)
+    std::set<structB> ::const_iterator _iter388;
+    for (_iter388 = this->k3.begin(); _iter388 != this->k3.end(); ++_iter388)
     {
-      xfer += (*_iter367).write(oprot);
+      xfer += (*_iter388).write(oprot);
     }
     xfer += oprot->writeSetEnd();
   }
@@ -2402,11 +2402,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("l", apache::thrift::protocol::T_MAP, 18);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, this->l.size());
-    std::map<int32_t, int32_t> ::const_iterator _iter368;
-    for (_iter368 = this->l.begin(); _iter368 != this->l.end(); ++_iter368)
+    std::map<int32_t, int32_t> ::const_iterator _iter389;
+    for (_iter389 = this->l.begin(); _iter389 != this->l.end(); ++_iter389)
     {
-      xfer += oprot->writeI32(_iter368->first);
-      xfer += oprot->writeI32(_iter368->second);
+      xfer += oprot->writeI32(_iter389->first);
+      xfer += oprot->writeI32(_iter389->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2414,11 +2414,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("l1", apache::thrift::protocol::T_MAP, 19);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, this->l1.size());
-    std::map<int32_t, int32_t> ::const_iterator _iter369;
-    for (_iter369 = this->l1.begin(); _iter369 != this->l1.end(); ++_iter369)
+    std::map<int32_t, int32_t> ::const_iterator _iter390;
+    for (_iter390 = this->l1.begin(); _iter390 != this->l1.end(); ++_iter390)
     {
-      xfer += oprot->writeI32(_iter369->first);
-      xfer += oprot->writeI32(_iter369->second);
+      xfer += oprot->writeI32(_iter390->first);
+      xfer += oprot->writeI32(_iter390->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2426,11 +2426,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("l2", apache::thrift::protocol::T_MAP, 20);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, this->l2.size());
-    std::map<int32_t, enum1> ::const_iterator _iter370;
-    for (_iter370 = this->l2.begin(); _iter370 != this->l2.end(); ++_iter370)
+    std::map<int32_t, enum1> ::const_iterator _iter391;
+    for (_iter391 = this->l2.begin(); _iter391 != this->l2.end(); ++_iter391)
     {
-      xfer += oprot->writeI32(_iter370->first);
-      xfer += oprot->writeI32((int32_t)_iter370->second);
+      xfer += oprot->writeI32(_iter391->first);
+      xfer += oprot->writeI32((int32_t)_iter391->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2438,11 +2438,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("l3", apache::thrift::protocol::T_MAP, 21);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRUCT, this->l3.size());
-    std::map<int32_t, structB> ::const_iterator _iter371;
-    for (_iter371 = this->l3.begin(); _iter371 != this->l3.end(); ++_iter371)
+    std::map<int32_t, structB> ::const_iterator _iter392;
+    for (_iter392 = this->l3.begin(); _iter392 != this->l3.end(); ++_iter392)
     {
-      xfer += oprot->writeI32(_iter371->first);
-      xfer += _iter371->second.write(oprot);
+      xfer += oprot->writeI32(_iter392->first);
+      xfer += _iter392->second.write(oprot);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2450,11 +2450,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("m1", apache::thrift::protocol::T_MAP, 22);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, this->m1.size());
-    std::map<enum1, int32_t> ::const_iterator _iter372;
-    for (_iter372 = this->m1.begin(); _iter372 != this->m1.end(); ++_iter372)
+    std::map<enum1, int32_t> ::const_iterator _iter393;
+    for (_iter393 = this->m1.begin(); _iter393 != this->m1.end(); ++_iter393)
     {
-      xfer += oprot->writeI32((int32_t)_iter372->first);
-      xfer += oprot->writeI32(_iter372->second);
+      xfer += oprot->writeI32((int32_t)_iter393->first);
+      xfer += oprot->writeI32(_iter393->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2462,11 +2462,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("m2", apache::thrift::protocol::T_MAP, 23);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, this->m2.size());
-    std::map<enum1, enum2> ::const_iterator _iter373;
-    for (_iter373 = this->m2.begin(); _iter373 != this->m2.end(); ++_iter373)
+    std::map<enum1, enum2> ::const_iterator _iter394;
+    for (_iter394 = this->m2.begin(); _iter394 != this->m2.end(); ++_iter394)
     {
-      xfer += oprot->writeI32((int32_t)_iter373->first);
-      xfer += oprot->writeI32((int32_t)_iter373->second);
+      xfer += oprot->writeI32((int32_t)_iter394->first);
+      xfer += oprot->writeI32((int32_t)_iter394->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2474,11 +2474,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("m3", apache::thrift::protocol::T_MAP, 24);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRUCT, this->m3.size());
-    std::map<enum1, structB> ::const_iterator _iter374;
-    for (_iter374 = this->m3.begin(); _iter374 != this->m3.end(); ++_iter374)
+    std::map<enum1, structB> ::const_iterator _iter395;
+    for (_iter395 = this->m3.begin(); _iter395 != this->m3.end(); ++_iter395)
     {
-      xfer += oprot->writeI32((int32_t)_iter374->first);
-      xfer += _iter374->second.write(oprot);
+      xfer += oprot->writeI32((int32_t)_iter395->first);
+      xfer += _iter395->second.write(oprot);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2486,11 +2486,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("n1", apache::thrift::protocol::T_MAP, 25);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_I32, this->n1.size());
-    std::map<std::string, int32_t> ::const_iterator _iter375;
-    for (_iter375 = this->n1.begin(); _iter375 != this->n1.end(); ++_iter375)
+    std::map<std::string, int32_t> ::const_iterator _iter396;
+    for (_iter396 = this->n1.begin(); _iter396 != this->n1.end(); ++_iter396)
     {
-      xfer += oprot->writeString(_iter375->first);
-      xfer += oprot->writeI32(_iter375->second);
+      xfer += oprot->writeString(_iter396->first);
+      xfer += oprot->writeI32(_iter396->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2498,11 +2498,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("n2", apache::thrift::protocol::T_MAP, 26);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_I32, this->n2.size());
-    std::map<std::string, enum1> ::const_iterator _iter376;
-    for (_iter376 = this->n2.begin(); _iter376 != this->n2.end(); ++_iter376)
+    std::map<std::string, enum1> ::const_iterator _iter397;
+    for (_iter397 = this->n2.begin(); _iter397 != this->n2.end(); ++_iter397)
     {
-      xfer += oprot->writeString(_iter376->first);
-      xfer += oprot->writeI32((int32_t)_iter376->second);
+      xfer += oprot->writeString(_iter397->first);
+      xfer += oprot->writeI32((int32_t)_iter397->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2510,11 +2510,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("n3", apache::thrift::protocol::T_MAP, 27);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_STRUCT, this->n3.size());
-    std::map<std::string, structB> ::const_iterator _iter377;
-    for (_iter377 = this->n3.begin(); _iter377 != this->n3.end(); ++_iter377)
+    std::map<std::string, structB> ::const_iterator _iter398;
+    for (_iter398 = this->n3.begin(); _iter398 != this->n3.end(); ++_iter398)
     {
-      xfer += oprot->writeString(_iter377->first);
-      xfer += _iter377->second.write(oprot);
+      xfer += oprot->writeString(_iter398->first);
+      xfer += _iter398->second.write(oprot);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2522,11 +2522,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("o1", apache::thrift::protocol::T_MAP, 28);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRUCT, apache::thrift::protocol::T_I32, this->o1.size());
-    std::map<structA, int32_t> ::const_iterator _iter378;
-    for (_iter378 = this->o1.begin(); _iter378 != this->o1.end(); ++_iter378)
+    std::map<structA, int32_t> ::const_iterator _iter399;
+    for (_iter399 = this->o1.begin(); _iter399 != this->o1.end(); ++_iter399)
     {
-      xfer += _iter378->first.write(oprot);
-      xfer += oprot->writeI32(_iter378->second);
+      xfer += _iter399->first.write(oprot);
+      xfer += oprot->writeI32(_iter399->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2534,11 +2534,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("o2", apache::thrift::protocol::T_MAP, 29);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRUCT, apache::thrift::protocol::T_I32, this->o2.size());
-    std::map<structA, enum1> ::const_iterator _iter379;
-    for (_iter379 = this->o2.begin(); _iter379 != this->o2.end(); ++_iter379)
+    std::map<structA, enum1> ::const_iterator _iter400;
+    for (_iter400 = this->o2.begin(); _iter400 != this->o2.end(); ++_iter400)
     {
-      xfer += _iter379->first.write(oprot);
-      xfer += oprot->writeI32((int32_t)_iter379->second);
+      xfer += _iter400->first.write(oprot);
+      xfer += oprot->writeI32((int32_t)_iter400->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2546,11 +2546,11 @@ uint32_t structC::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("o3", apache::thrift::protocol::T_MAP, 30);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRUCT, apache::thrift::protocol::T_STRUCT, this->o3.size());
-    std::map<structA, structB> ::const_iterator _iter380;
-    for (_iter380 = this->o3.begin(); _iter380 != this->o3.end(); ++_iter380)
+    std::map<structA, structB> ::const_iterator _iter401;
+    for (_iter401 = this->o3.begin(); _iter401 != this->o3.end(); ++_iter401)
     {
-      xfer += _iter380->first.write(oprot);
-      xfer += _iter380->second.write(oprot);
+      xfer += _iter401->first.write(oprot);
+      xfer += _iter401->second.write(oprot);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -2754,11 +2754,11 @@ void struct1::readFromJson(const char* jsonText, size_t len)
 {
   folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
   if (parsed["field0"] != nullptr) {
-    int64_t _tmp382 = (int64_t)parsed["field0"].asInt();
-    if (imaxabs(_tmp382) > 0x7fffffffL) {
+    int64_t _tmp403 = (int64_t)parsed["field0"].asInt();
+    if (imaxabs(_tmp403) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->field0 = (int32_t)_tmp382;
+      this->field0 = (int32_t)_tmp403;
     }
   } else {
     throw apache::thrift::TLibraryException("can't parse a required field!");
@@ -2844,9 +2844,9 @@ uint32_t struct1::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 3:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast385;
-          xfer += iprot->readI32(ecast385);
-          this->field2 = (enum1)ecast385;
+          int32_t ecast406;
+          xfer += iprot->readI32(ecast406);
+          this->field2 = (enum1)ecast406;
           this->__isset.field2 = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2854,9 +2854,9 @@ uint32_t struct1::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 4:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast386;
-          xfer += iprot->readI32(ecast386);
-          this->field3 = (enum2)ecast386;
+          int32_t ecast407;
+          xfer += iprot->readI32(ecast407);
+          this->field3 = (enum2)ecast407;
           isset_field3 = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -3009,11 +3009,11 @@ void struct2::readFromJson(const char* jsonText, size_t len)
 {
   folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
   if (parsed["fieldA"] != nullptr) {
-    int64_t _tmp388 = (int64_t)parsed["fieldA"].asInt();
-    if (imaxabs(_tmp388) > 0x7fffffffL) {
+    int64_t _tmp409 = (int64_t)parsed["fieldA"].asInt();
+    if (imaxabs(_tmp409) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->fieldA = (int32_t)_tmp388;
+      this->fieldA = (int32_t)_tmp409;
     }
     this->__isset.fieldA = true;
   } else {
@@ -3106,9 +3106,9 @@ uint32_t struct2::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 3:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast391;
-          xfer += iprot->readI32(ecast391);
-          this->fieldC = (enum1)ecast391;
+          int32_t ecast412;
+          xfer += iprot->readI32(ecast412);
+          this->fieldC = (enum1)ecast412;
           this->__isset.fieldC = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -3116,9 +3116,9 @@ uint32_t struct2::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 4:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast392;
-          xfer += iprot->readI32(ecast392);
-          this->fieldD = (enum2)ecast392;
+          int32_t ecast413;
+          xfer += iprot->readI32(ecast413);
+          this->fieldD = (enum2)ecast413;
           this->__isset.fieldD = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -3308,11 +3308,11 @@ void struct3::readFromJson(const char* jsonText, size_t len)
 {
   folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
   if (parsed["fieldA"] != nullptr) {
-    int64_t _tmp394 = (int64_t)parsed["fieldA"].asInt();
-    if (imaxabs(_tmp394) > 0x7fffffffL) {
+    int64_t _tmp415 = (int64_t)parsed["fieldA"].asInt();
+    if (imaxabs(_tmp415) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->fieldA = (int32_t)_tmp394;
+      this->fieldA = (int32_t)_tmp415;
     }
     this->__isset.fieldA = true;
   } else {
@@ -3361,17 +3361,17 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     this->__isset.fieldH = false;
   }
   if (parsed["fieldI"] != nullptr) {
-    folly::dynamic _json399 = parsed["fieldI"];
+    folly::dynamic _json420 = parsed["fieldI"];
     this->fieldI.clear();
-    uint32_t _size397 = _json399.size();
-    this->fieldI.resize(_size397);
-    for (uint32_t _i398 = 0; _i398 < _size397; ++_i398)
+    uint32_t _size418 = _json420.size();
+    this->fieldI.resize(_size418);
+    for (uint32_t _i419 = 0; _i419 < _size418; ++_i419)
     {
-      int64_t _tmp400 = (int64_t)_json399[_i398].asInt();
-      if (imaxabs(_tmp400) > 0x7fffffffL) {
+      int64_t _tmp422 = (int64_t)_json420[_i419].asInt();
+      if (imaxabs(_tmp422) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->fieldI[_i398] = (int32_t)_tmp400;
+        this->fieldI[_i419] = (int32_t)_tmp422;
       }
     }
     this->__isset.fieldI = true;
@@ -3379,128 +3379,128 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     this->__isset.fieldI = false;
   }
   if (parsed["fieldJ"] != nullptr) {
-    folly::dynamic _json403 = parsed["fieldJ"];
+    folly::dynamic _json425 = parsed["fieldJ"];
     this->fieldJ.clear();
-    uint32_t _size401 = _json403.size();
-    this->fieldJ.resize(_size401);
-    for (uint32_t _i402 = 0; _i402 < _size401; ++_i402)
+    uint32_t _size423 = _json425.size();
+    this->fieldJ.resize(_size423);
+    for (uint32_t _i424 = 0; _i424 < _size423; ++_i424)
     {
-      this->fieldJ[_i402] = _json403[_i402].asString();
+      this->fieldJ[_i424] = _json425[_i424].asString();
     }
     this->__isset.fieldJ = true;
   } else {
     this->__isset.fieldJ = false;
   }
   if (parsed["fieldK"] != nullptr) {
-    folly::dynamic _json406 = parsed["fieldK"];
+    folly::dynamic _json429 = parsed["fieldK"];
     this->fieldK.clear();
-    uint32_t _size404 = _json406.size();
-    this->fieldK.resize(_size404);
-    for (uint32_t _i405 = 0; _i405 < _size404; ++_i405)
+    uint32_t _size427 = _json429.size();
+    this->fieldK.resize(_size427);
+    for (uint32_t _i428 = 0; _i428 < _size427; ++_i428)
     {
-      this->fieldK[_i405] = _json406[_i405].asString();
+      this->fieldK[_i428] = _json429[_i428].asString();
     }
     this->__isset.fieldK = true;
   } else {
     this->__isset.fieldK = false;
   }
   if (parsed["fieldL"] != nullptr) {
-    folly::dynamic _json409 = parsed["fieldL"];
+    folly::dynamic _json433 = parsed["fieldL"];
     this->fieldL.clear();
-    uint32_t _size407 = _json409.size();
-    this->fieldL.resize(_size407);
-    for (uint32_t _i408 = 0; _i408 < _size407; ++_i408)
+    uint32_t _size431 = _json433.size();
+    this->fieldL.resize(_size431);
+    for (uint32_t _i432 = 0; _i432 < _size431; ++_i432)
     {
-      this->fieldL[_i408].readFromJson(folly::toJson(_json409[_i408]).c_str());
+      this->fieldL[_i432].readFromJson(folly::toJson(_json433[_i432]).c_str());
     }
     this->__isset.fieldL = true;
   } else {
     this->__isset.fieldL = false;
   }
   if (parsed["fieldM"] != nullptr) {
-    folly::dynamic _json412 = parsed["fieldM"];
+    folly::dynamic _json437 = parsed["fieldM"];
     this->fieldM.clear();
-    uint32_t _size410 = _json412.size();
-    for (uint32_t _i411 = 0; _i411 < _size410; ++_i411)
+    uint32_t _size435 = _json437.size();
+    for (uint32_t _i436 = 0; _i436 < _size435; ++_i436)
     {
-      int32_t _elem413;
-      int64_t _tmp414 = (int64_t)_json412[_i411].asInt();
-      if (imaxabs(_tmp414) > 0x7fffffffL) {
+      int32_t _elem439;
+      int64_t _tmp440 = (int64_t)_json437[_i436].asInt();
+      if (imaxabs(_tmp440) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        _elem413 = (int32_t)_tmp414;
+        _elem439 = (int32_t)_tmp440;
       }
-      this->fieldM.insert(_elem413);
+      this->fieldM.insert(_elem439);
     }
     this->__isset.fieldM = true;
   } else {
     this->__isset.fieldM = false;
   }
   if (parsed["fieldN"] != nullptr) {
-    folly::dynamic _json417 = parsed["fieldN"];
+    folly::dynamic _json443 = parsed["fieldN"];
     this->fieldN.clear();
-    uint32_t _size415 = _json417.size();
-    for (uint32_t _i416 = 0; _i416 < _size415; ++_i416)
+    uint32_t _size441 = _json443.size();
+    for (uint32_t _i442 = 0; _i442 < _size441; ++_i442)
     {
-      std::string _elem418;
-      _elem418 = _json417[_i416].asString();
-      this->fieldN.insert(_elem418);
+      std::string _elem445;
+      _elem445 = _json443[_i442].asString();
+      this->fieldN.insert(_elem445);
     }
     this->__isset.fieldN = true;
   } else {
     this->__isset.fieldN = false;
   }
   if (parsed["fieldO"] != nullptr) {
-    folly::dynamic _json421 = parsed["fieldO"];
+    folly::dynamic _json448 = parsed["fieldO"];
     this->fieldO.clear();
-    uint32_t _size419 = _json421.size();
-    for (uint32_t _i420 = 0; _i420 < _size419; ++_i420)
+    uint32_t _size446 = _json448.size();
+    for (uint32_t _i447 = 0; _i447 < _size446; ++_i447)
     {
-      std::string _elem422;
-      _elem422 = _json421[_i420].asString();
-      this->fieldO.insert(_elem422);
+      std::string _elem450;
+      _elem450 = _json448[_i447].asString();
+      this->fieldO.insert(_elem450);
     }
     this->__isset.fieldO = true;
   } else {
     this->__isset.fieldO = false;
   }
   if (parsed["fieldP"] != nullptr) {
-    folly::dynamic _json425 = parsed["fieldP"];
+    folly::dynamic _json453 = parsed["fieldP"];
     this->fieldP.clear();
-    uint32_t _size423 = _json425.size();
-    for (uint32_t _i424 = 0; _i424 < _size423; ++_i424)
+    uint32_t _size451 = _json453.size();
+    for (uint32_t _i452 = 0; _i452 < _size451; ++_i452)
     {
-      structB _elem426;
-      _elem426.readFromJson(folly::toJson(_json425[_i424]).c_str());
-      this->fieldP.insert(_elem426);
+      structB _elem455;
+      _elem455.readFromJson(folly::toJson(_json453[_i452]).c_str());
+      this->fieldP.insert(_elem455);
     }
     this->__isset.fieldP = true;
   } else {
     this->__isset.fieldP = false;
   }
   if (parsed["fieldQ"] != nullptr) {
-    folly::dynamic _json429 = parsed["fieldQ"];
+    folly::dynamic _json458 = parsed["fieldQ"];
     this->fieldQ.clear();
-    for (folly::dynamic::const_item_iterator _iter430 = _json429.items().begin(); _iter430 != _json429.items().end(); _iter430++)    {
-      std::string _key431;;
-      structA _val432;;
-      _key431 = (_iter430)->first.asString();
-      _val432.readFromJson(folly::toJson(_iter430->second).c_str());
-      this->fieldQ[_key431] = _val432;
+    for (folly::dynamic::const_item_iterator _iter460 = _json458.items().begin(); _iter460 != _json458.items().end(); _iter460++)    {
+      std::string _key461;
+      structA _val462;
+      _key461 = (_iter460)->first.asString();
+      _val462.readFromJson(folly::toJson(_iter460->second).c_str());
+      this->fieldQ[_key461] = _val462;
     }
     this->__isset.fieldQ = true;
   } else {
     this->__isset.fieldQ = false;
   }
   if (parsed["fieldR"] != nullptr) {
-    folly::dynamic _json435 = parsed["fieldR"];
+    folly::dynamic _json465 = parsed["fieldR"];
     this->fieldR.clear();
-    for (folly::dynamic::const_item_iterator _iter436 = _json435.items().begin(); _iter436 != _json435.items().end(); _iter436++)    {
-      std::string _key437;;
-      structB _val438;;
-      _key437 = (_iter436)->first.asString();
-      _val438.readFromJson(folly::toJson(_iter436->second).c_str());
-      this->fieldR[_key437] = _val438;
+    for (folly::dynamic::const_item_iterator _iter467 = _json465.items().begin(); _iter467 != _json465.items().end(); _iter467++)    {
+      std::string _key468;
+      structB _val469;
+      _key468 = (_iter467)->first.asString();
+      _val469.readFromJson(folly::toJson(_iter467->second).c_str());
+      this->fieldR[_key468] = _val469;
     }
     this->__isset.fieldR = true;
   } else {
@@ -3557,9 +3557,9 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 3:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast439;
-          xfer += iprot->readI32(ecast439);
-          this->fieldC = (enum1)ecast439;
+          int32_t ecast470;
+          xfer += iprot->readI32(ecast470);
+          this->fieldC = (enum1)ecast470;
           this->__isset.fieldC = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -3567,9 +3567,9 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 4:
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast440;
-          xfer += iprot->readI32(ecast440);
-          this->fieldD = (enum2)ecast440;
+          int32_t ecast471;
+          xfer += iprot->readI32(ecast471);
+          this->fieldD = (enum2)ecast471;
           this->__isset.fieldD = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -3618,23 +3618,23 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_LIST) {
           {
             this->fieldI.clear();
-            uint32_t _size441;
-            bool _sizeUnknown442;
-            apache::thrift::protocol::TType _etype445;
-            xfer += iprot->readListBegin(_etype445, _size441, _sizeUnknown442);
-            if (!_sizeUnknown442) {
-              this->fieldI.resize(_size441);
-              uint32_t _i447;
-              for (_i447 = 0; _i447 < _size441; ++_i447)
+            uint32_t _size472;
+            bool _sizeUnknown473;
+            apache::thrift::protocol::TType _etype476;
+            xfer += iprot->readListBegin(_etype476, _size472, _sizeUnknown473);
+            if (!_sizeUnknown473) {
+              this->fieldI.resize(_size472);
+              uint32_t _i478;
+              for (_i478 = 0; _i478 < _size472; ++_i478)
               {
-                xfer += iprot->readI32(this->fieldI[_i447]);
+                xfer += iprot->readI32(this->fieldI[_i478]);
               }
             } else {
               while (iprot->peekList())
               {
-                int32_t _elem448;
-                xfer += iprot->readI32(_elem448);
-                this->fieldI.push_back(_elem448);
+                int32_t _elem479;
+                xfer += iprot->readI32(_elem479);
+                this->fieldI.push_back(_elem479);
               }
             }
             xfer += iprot->readListEnd();
@@ -3648,23 +3648,23 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_LIST) {
           {
             this->fieldJ.clear();
-            uint32_t _size449;
-            bool _sizeUnknown450;
-            apache::thrift::protocol::TType _etype453;
-            xfer += iprot->readListBegin(_etype453, _size449, _sizeUnknown450);
-            if (!_sizeUnknown450) {
-              this->fieldJ.resize(_size449);
-              uint32_t _i455;
-              for (_i455 = 0; _i455 < _size449; ++_i455)
+            uint32_t _size480;
+            bool _sizeUnknown481;
+            apache::thrift::protocol::TType _etype484;
+            xfer += iprot->readListBegin(_etype484, _size480, _sizeUnknown481);
+            if (!_sizeUnknown481) {
+              this->fieldJ.resize(_size480);
+              uint32_t _i486;
+              for (_i486 = 0; _i486 < _size480; ++_i486)
               {
-                xfer += iprot->readString(this->fieldJ[_i455]);
+                xfer += iprot->readString(this->fieldJ[_i486]);
               }
             } else {
               while (iprot->peekList())
               {
-                std::string _elem456;
-                xfer += iprot->readString(_elem456);
-                this->fieldJ.push_back(_elem456);
+                std::string _elem487;
+                xfer += iprot->readString(_elem487);
+                this->fieldJ.push_back(_elem487);
               }
             }
             xfer += iprot->readListEnd();
@@ -3678,23 +3678,23 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_LIST) {
           {
             this->fieldK.clear();
-            uint32_t _size457;
-            bool _sizeUnknown458;
-            apache::thrift::protocol::TType _etype461;
-            xfer += iprot->readListBegin(_etype461, _size457, _sizeUnknown458);
-            if (!_sizeUnknown458) {
-              this->fieldK.resize(_size457);
-              uint32_t _i463;
-              for (_i463 = 0; _i463 < _size457; ++_i463)
+            uint32_t _size488;
+            bool _sizeUnknown489;
+            apache::thrift::protocol::TType _etype492;
+            xfer += iprot->readListBegin(_etype492, _size488, _sizeUnknown489);
+            if (!_sizeUnknown489) {
+              this->fieldK.resize(_size488);
+              uint32_t _i494;
+              for (_i494 = 0; _i494 < _size488; ++_i494)
               {
-                xfer += iprot->readString(this->fieldK[_i463]);
+                xfer += iprot->readString(this->fieldK[_i494]);
               }
             } else {
               while (iprot->peekList())
               {
-                std::string _elem464;
-                xfer += iprot->readString(_elem464);
-                this->fieldK.push_back(_elem464);
+                std::string _elem495;
+                xfer += iprot->readString(_elem495);
+                this->fieldK.push_back(_elem495);
               }
             }
             xfer += iprot->readListEnd();
@@ -3708,23 +3708,23 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_LIST) {
           {
             this->fieldL.clear();
-            uint32_t _size465;
-            bool _sizeUnknown466;
-            apache::thrift::protocol::TType _etype469;
-            xfer += iprot->readListBegin(_etype469, _size465, _sizeUnknown466);
-            if (!_sizeUnknown466) {
-              this->fieldL.resize(_size465);
-              uint32_t _i471;
-              for (_i471 = 0; _i471 < _size465; ++_i471)
+            uint32_t _size496;
+            bool _sizeUnknown497;
+            apache::thrift::protocol::TType _etype500;
+            xfer += iprot->readListBegin(_etype500, _size496, _sizeUnknown497);
+            if (!_sizeUnknown497) {
+              this->fieldL.resize(_size496);
+              uint32_t _i502;
+              for (_i502 = 0; _i502 < _size496; ++_i502)
               {
-                xfer += this->fieldL[_i471].read(iprot);
+                xfer += this->fieldL[_i502].read(iprot);
               }
             } else {
               while (iprot->peekList())
               {
-                structA _elem472;
-                xfer += _elem472.read(iprot);
-                this->fieldL.push_back(_elem472);
+                structA _elem503;
+                xfer += _elem503.read(iprot);
+                this->fieldL.push_back(_elem503);
               }
             }
             xfer += iprot->readListEnd();
@@ -3738,24 +3738,24 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_SET) {
           {
             this->fieldM.clear();
-            uint32_t _size473;
-            bool _sizeUnknown474;
-            apache::thrift::protocol::TType _etype477;
-            xfer += iprot->readSetBegin(_etype477, _size473, _sizeUnknown474);
-            if (!_sizeUnknown474) {
-              uint32_t _i479;
-              for (_i479 = 0; _i479 < _size473; ++_i479)
+            uint32_t _size504;
+            bool _sizeUnknown505;
+            apache::thrift::protocol::TType _etype508;
+            xfer += iprot->readSetBegin(_etype508, _size504, _sizeUnknown505);
+            if (!_sizeUnknown505) {
+              uint32_t _i510;
+              for (_i510 = 0; _i510 < _size504; ++_i510)
               {
-                int32_t _elem480;
-                xfer += iprot->readI32(_elem480);
-                this->fieldM.insert(_elem480);
+                int32_t _elem511;
+                xfer += iprot->readI32(_elem511);
+                this->fieldM.insert(_elem511);
               }
             } else {
               while (iprot->peekSet())
               {
-                int32_t _elem481;
-                xfer += iprot->readI32(_elem481);
-                this->fieldM.insert(_elem481);
+                int32_t _elem512;
+                xfer += iprot->readI32(_elem512);
+                this->fieldM.insert(_elem512);
               }
             }
             xfer += iprot->readSetEnd();
@@ -3769,24 +3769,24 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_SET) {
           {
             this->fieldN.clear();
-            uint32_t _size482;
-            bool _sizeUnknown483;
-            apache::thrift::protocol::TType _etype486;
-            xfer += iprot->readSetBegin(_etype486, _size482, _sizeUnknown483);
-            if (!_sizeUnknown483) {
-              uint32_t _i488;
-              for (_i488 = 0; _i488 < _size482; ++_i488)
+            uint32_t _size513;
+            bool _sizeUnknown514;
+            apache::thrift::protocol::TType _etype517;
+            xfer += iprot->readSetBegin(_etype517, _size513, _sizeUnknown514);
+            if (!_sizeUnknown514) {
+              uint32_t _i519;
+              for (_i519 = 0; _i519 < _size513; ++_i519)
               {
-                std::string _elem489;
-                xfer += iprot->readString(_elem489);
-                this->fieldN.insert(_elem489);
+                std::string _elem520;
+                xfer += iprot->readString(_elem520);
+                this->fieldN.insert(_elem520);
               }
             } else {
               while (iprot->peekSet())
               {
-                std::string _elem490;
-                xfer += iprot->readString(_elem490);
-                this->fieldN.insert(_elem490);
+                std::string _elem521;
+                xfer += iprot->readString(_elem521);
+                this->fieldN.insert(_elem521);
               }
             }
             xfer += iprot->readSetEnd();
@@ -3800,24 +3800,24 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_SET) {
           {
             this->fieldO.clear();
-            uint32_t _size491;
-            bool _sizeUnknown492;
-            apache::thrift::protocol::TType _etype495;
-            xfer += iprot->readSetBegin(_etype495, _size491, _sizeUnknown492);
-            if (!_sizeUnknown492) {
-              uint32_t _i497;
-              for (_i497 = 0; _i497 < _size491; ++_i497)
+            uint32_t _size522;
+            bool _sizeUnknown523;
+            apache::thrift::protocol::TType _etype526;
+            xfer += iprot->readSetBegin(_etype526, _size522, _sizeUnknown523);
+            if (!_sizeUnknown523) {
+              uint32_t _i528;
+              for (_i528 = 0; _i528 < _size522; ++_i528)
               {
-                std::string _elem498;
-                xfer += iprot->readString(_elem498);
-                this->fieldO.insert(_elem498);
+                std::string _elem529;
+                xfer += iprot->readString(_elem529);
+                this->fieldO.insert(_elem529);
               }
             } else {
               while (iprot->peekSet())
               {
-                std::string _elem499;
-                xfer += iprot->readString(_elem499);
-                this->fieldO.insert(_elem499);
+                std::string _elem530;
+                xfer += iprot->readString(_elem530);
+                this->fieldO.insert(_elem530);
               }
             }
             xfer += iprot->readSetEnd();
@@ -3831,24 +3831,24 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_SET) {
           {
             this->fieldP.clear();
-            uint32_t _size500;
-            bool _sizeUnknown501;
-            apache::thrift::protocol::TType _etype504;
-            xfer += iprot->readSetBegin(_etype504, _size500, _sizeUnknown501);
-            if (!_sizeUnknown501) {
-              uint32_t _i506;
-              for (_i506 = 0; _i506 < _size500; ++_i506)
+            uint32_t _size531;
+            bool _sizeUnknown532;
+            apache::thrift::protocol::TType _etype535;
+            xfer += iprot->readSetBegin(_etype535, _size531, _sizeUnknown532);
+            if (!_sizeUnknown532) {
+              uint32_t _i537;
+              for (_i537 = 0; _i537 < _size531; ++_i537)
               {
-                structB _elem507;
-                xfer += _elem507.read(iprot);
-                this->fieldP.insert(_elem507);
+                structB _elem538;
+                xfer += _elem538.read(iprot);
+                this->fieldP.insert(_elem538);
               }
             } else {
               while (iprot->peekSet())
               {
-                structB _elem508;
-                xfer += _elem508.read(iprot);
-                this->fieldP.insert(_elem508);
+                structB _elem539;
+                xfer += _elem539.read(iprot);
+                this->fieldP.insert(_elem539);
               }
             }
             xfer += iprot->readSetEnd();
@@ -3862,27 +3862,27 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->fieldQ.clear();
-            uint32_t _size509;
-            bool _sizeUnknown510;
-            apache::thrift::protocol::TType _ktype511;
-            apache::thrift::protocol::TType _vtype512;
-            xfer += iprot->readMapBegin(_ktype511, _vtype512, _size509, _sizeUnknown510);
-            if (!_sizeUnknown510) {
-              uint32_t _i515;
-              for (_i515 = 0; _i515 < _size509; ++_i515)
+            uint32_t _size540;
+            bool _sizeUnknown541;
+            apache::thrift::protocol::TType _ktype542;
+            apache::thrift::protocol::TType _vtype543;
+            xfer += iprot->readMapBegin(_ktype542, _vtype543, _size540, _sizeUnknown541);
+            if (!_sizeUnknown541) {
+              uint32_t _i546;
+              for (_i546 = 0; _i546 < _size540; ++_i546)
               {
-                std::string _key516;
-                xfer += iprot->readString(_key516);
-                structA& _val517 = this->fieldQ[_key516];
-                xfer += _val517.read(iprot);
+                std::string _key547;
+                xfer += iprot->readString(_key547);
+                structA& _val548 = this->fieldQ[_key547];
+                xfer += _val548.read(iprot);
               }
             } else {
               while (iprot->peekMap())
               {
-                std::string _key518;
-                xfer += iprot->readString(_key518);
-                structA& _val519 = this->fieldQ[_key518];
-                xfer += _val519.read(iprot);
+                std::string _key549;
+                xfer += iprot->readString(_key549);
+                structA& _val550 = this->fieldQ[_key549];
+                xfer += _val550.read(iprot);
               }
             }
             xfer += iprot->readMapEnd();
@@ -3896,27 +3896,27 @@ uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == apache::thrift::protocol::T_MAP) {
           {
             this->fieldR.clear();
-            uint32_t _size520;
-            bool _sizeUnknown521;
-            apache::thrift::protocol::TType _ktype522;
-            apache::thrift::protocol::TType _vtype523;
-            xfer += iprot->readMapBegin(_ktype522, _vtype523, _size520, _sizeUnknown521);
-            if (!_sizeUnknown521) {
-              uint32_t _i526;
-              for (_i526 = 0; _i526 < _size520; ++_i526)
+            uint32_t _size551;
+            bool _sizeUnknown552;
+            apache::thrift::protocol::TType _ktype553;
+            apache::thrift::protocol::TType _vtype554;
+            xfer += iprot->readMapBegin(_ktype553, _vtype554, _size551, _sizeUnknown552);
+            if (!_sizeUnknown552) {
+              uint32_t _i557;
+              for (_i557 = 0; _i557 < _size551; ++_i557)
               {
-                std::string _key527;
-                xfer += iprot->readString(_key527);
-                structB& _val528 = this->fieldR[_key527];
-                xfer += _val528.read(iprot);
+                std::string _key558;
+                xfer += iprot->readString(_key558);
+                structB& _val559 = this->fieldR[_key558];
+                xfer += _val559.read(iprot);
               }
             } else {
               while (iprot->peekMap())
               {
-                std::string _key529;
-                xfer += iprot->readString(_key529);
-                structB& _val530 = this->fieldR[_key529];
-                xfer += _val530.read(iprot);
+                std::string _key560;
+                xfer += iprot->readString(_key560);
+                structB& _val561 = this->fieldR[_key560];
+                xfer += _val561.read(iprot);
               }
             }
             xfer += iprot->readMapEnd();
@@ -3992,10 +3992,10 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldI", apache::thrift::protocol::T_LIST, 9);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->fieldI.size());
-    std::vector<int32_t> ::const_iterator _iter531;
-    for (_iter531 = this->fieldI.begin(); _iter531 != this->fieldI.end(); ++_iter531)
+    std::vector<int32_t> ::const_iterator _iter562;
+    for (_iter562 = this->fieldI.begin(); _iter562 != this->fieldI.end(); ++_iter562)
     {
-      xfer += oprot->writeI32((*_iter531));
+      xfer += oprot->writeI32((*_iter562));
     }
     xfer += oprot->writeListEnd();
   }
@@ -4003,10 +4003,10 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldJ", apache::thrift::protocol::T_LIST, 10);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRING, this->fieldJ.size());
-    std::vector<std::string> ::const_iterator _iter532;
-    for (_iter532 = this->fieldJ.begin(); _iter532 != this->fieldJ.end(); ++_iter532)
+    std::vector<std::string> ::const_iterator _iter563;
+    for (_iter563 = this->fieldJ.begin(); _iter563 != this->fieldJ.end(); ++_iter563)
     {
-      xfer += oprot->writeString((*_iter532));
+      xfer += oprot->writeString((*_iter563));
     }
     xfer += oprot->writeListEnd();
   }
@@ -4014,10 +4014,10 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldK", apache::thrift::protocol::T_LIST, 11);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRING, this->fieldK.size());
-    std::vector<std::string> ::const_iterator _iter533;
-    for (_iter533 = this->fieldK.begin(); _iter533 != this->fieldK.end(); ++_iter533)
+    std::vector<std::string> ::const_iterator _iter564;
+    for (_iter564 = this->fieldK.begin(); _iter564 != this->fieldK.end(); ++_iter564)
     {
-      xfer += oprot->writeString((*_iter533));
+      xfer += oprot->writeString((*_iter564));
     }
     xfer += oprot->writeListEnd();
   }
@@ -4025,10 +4025,10 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldL", apache::thrift::protocol::T_LIST, 12);
   {
     xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRUCT, this->fieldL.size());
-    std::vector<structA> ::const_iterator _iter534;
-    for (_iter534 = this->fieldL.begin(); _iter534 != this->fieldL.end(); ++_iter534)
+    std::vector<structA> ::const_iterator _iter565;
+    for (_iter565 = this->fieldL.begin(); _iter565 != this->fieldL.end(); ++_iter565)
     {
-      xfer += (*_iter534).write(oprot);
+      xfer += (*_iter565).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -4036,10 +4036,10 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldM", apache::thrift::protocol::T_SET, 13);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, this->fieldM.size());
-    std::set<int32_t> ::const_iterator _iter535;
-    for (_iter535 = this->fieldM.begin(); _iter535 != this->fieldM.end(); ++_iter535)
+    std::set<int32_t> ::const_iterator _iter566;
+    for (_iter566 = this->fieldM.begin(); _iter566 != this->fieldM.end(); ++_iter566)
     {
-      xfer += oprot->writeI32((*_iter535));
+      xfer += oprot->writeI32((*_iter566));
     }
     xfer += oprot->writeSetEnd();
   }
@@ -4047,10 +4047,10 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldN", apache::thrift::protocol::T_SET, 14);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_STRING, this->fieldN.size());
-    std::set<std::string> ::const_iterator _iter536;
-    for (_iter536 = this->fieldN.begin(); _iter536 != this->fieldN.end(); ++_iter536)
+    std::set<std::string> ::const_iterator _iter567;
+    for (_iter567 = this->fieldN.begin(); _iter567 != this->fieldN.end(); ++_iter567)
     {
-      xfer += oprot->writeString((*_iter536));
+      xfer += oprot->writeString((*_iter567));
     }
     xfer += oprot->writeSetEnd();
   }
@@ -4058,10 +4058,10 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldO", apache::thrift::protocol::T_SET, 15);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_STRING, this->fieldO.size());
-    std::set<std::string> ::const_iterator _iter537;
-    for (_iter537 = this->fieldO.begin(); _iter537 != this->fieldO.end(); ++_iter537)
+    std::set<std::string> ::const_iterator _iter568;
+    for (_iter568 = this->fieldO.begin(); _iter568 != this->fieldO.end(); ++_iter568)
     {
-      xfer += oprot->writeString((*_iter537));
+      xfer += oprot->writeString((*_iter568));
     }
     xfer += oprot->writeSetEnd();
   }
@@ -4069,10 +4069,10 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldP", apache::thrift::protocol::T_SET, 16);
   {
     xfer += oprot->writeSetBegin(apache::thrift::protocol::T_STRUCT, this->fieldP.size());
-    std::set<structB> ::const_iterator _iter538;
-    for (_iter538 = this->fieldP.begin(); _iter538 != this->fieldP.end(); ++_iter538)
+    std::set<structB> ::const_iterator _iter569;
+    for (_iter569 = this->fieldP.begin(); _iter569 != this->fieldP.end(); ++_iter569)
     {
-      xfer += (*_iter538).write(oprot);
+      xfer += (*_iter569).write(oprot);
     }
     xfer += oprot->writeSetEnd();
   }
@@ -4080,11 +4080,11 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldQ", apache::thrift::protocol::T_MAP, 17);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_STRUCT, this->fieldQ.size());
-    std::map<std::string, structA> ::const_iterator _iter539;
-    for (_iter539 = this->fieldQ.begin(); _iter539 != this->fieldQ.end(); ++_iter539)
+    std::map<std::string, structA> ::const_iterator _iter570;
+    for (_iter570 = this->fieldQ.begin(); _iter570 != this->fieldQ.end(); ++_iter570)
     {
-      xfer += oprot->writeString(_iter539->first);
-      xfer += _iter539->second.write(oprot);
+      xfer += oprot->writeString(_iter570->first);
+      xfer += _iter570->second.write(oprot);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -4092,11 +4092,11 @@ uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("fieldR", apache::thrift::protocol::T_MAP, 18);
   {
     xfer += oprot->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_STRUCT, this->fieldR.size());
-    std::map<std::string, structB> ::const_iterator _iter540;
-    for (_iter540 = this->fieldR.begin(); _iter540 != this->fieldR.end(); ++_iter540)
+    std::map<std::string, structB> ::const_iterator _iter571;
+    for (_iter571 = this->fieldR.begin(); _iter571 != this->fieldR.end(); ++_iter571)
     {
-      xfer += oprot->writeString(_iter540->first);
-      xfer += _iter540->second.write(oprot);
+      xfer += oprot->writeString(_iter571->first);
+      xfer += _iter571->second.write(oprot);
     }
     xfer += oprot->writeMapEnd();
   }

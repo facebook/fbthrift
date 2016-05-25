@@ -195,7 +195,8 @@ class t_cpp_generator : public t_oop_generator {
   void generate_json_container       (std::ofstream& out,
                                       t_type* ttype,
                                       const string& prefix_thrift = "",
-                                      const string& prefix_json = "");
+                                      const string& prefix_json = "",
+                                      bool pointer = false);
   void generate_json_set_element     (std::ofstream& out,
                                       t_set* tset,
                                       const string& prefix_thrift = "",
@@ -2795,7 +2796,8 @@ void t_cpp_generator::generate_json_field(ofstream& out,
     generate_json_container(out,
         (t_container*)type,
         name,
-        prefix_json);
+        prefix_json,
+        is_reference(tfield));
   } else if (type->is_enum()) {
     generate_json_enum(out,
         static_cast<t_enum*>(type),
@@ -2905,7 +2907,8 @@ void t_cpp_generator::generate_json_struct(ofstream& out,
 void t_cpp_generator::generate_json_container(ofstream& out,
     t_type* ttype,
     const string& prefix_thrift,
-    const string& prefix_json) {
+    const string& prefix_json,
+    bool pointer) {
 
   string size = tmp("_size");
   string i = tmp("_i");
@@ -2916,34 +2919,47 @@ void t_cpp_generator::generate_json_container(ofstream& out,
   bool use_push = tcontainer->annotations_.find("cpp.type") !=
                   tcontainer->annotations_.find("cpp.template");
 
+  string containerPrefix = prefix_thrift;
+  auto ptrtype = tmp("_ptype");
+  if (pointer) {
+    auto reftype = tmp("_rtype");
+    indent(out) << "using element_type = typename std::remove_const<" <<
+        "typename std::remove_reference<decltype(" << containerPrefix <<
+        ")>::type::element_type>::type;" << endl <<
+    indent() << "std::unique_ptr<element_type> " << ptrtype <<
+        "(new element_type());" << endl <<
+    indent() << "auto& " << reftype << " = *" << ptrtype << ";" << endl;
+    containerPrefix = reftype;
+  }
+
   if (ttype->is_list()) {
     indent(out) << "folly::dynamic " << json << " = " << prefix_json << ";"
                 << endl;
-    indent(out) << prefix_thrift << ".clear();" << endl;
+    indent(out) << containerPrefix << ".clear();" << endl;
     indent(out) << "uint32_t " << size << " = " << json << ".size();" << endl;
     if (!use_push) {
-      indent(out) << prefix_thrift << ".resize(" << size << ");" << endl;
+      indent(out) << containerPrefix << ".resize(" << size << ");" << endl;
     }
     out << indent() << "for (uint32_t " << i << " = 0; " << i << " < " << size
       << "; ++" << i << ")" << endl;
     scope_up(out);
     generate_json_list_element(out, (t_list*)ttype, use_push, i,
-                               prefix_thrift, json + "[" + i + "]");
+                               containerPrefix, json + "[" + i + "]");
     scope_down(out);
 
   } else if (ttype->is_set()) {
     indent(out) << "folly::dynamic " << json << " = " << prefix_json << ";"
                 << endl;
-    indent(out) << prefix_thrift << ".clear();" << endl;
+    indent(out) << containerPrefix << ".clear();" << endl;
     indent(out) << "uint32_t " << size << " = " << json << ".size();" << endl;
     if (((t_set*)ttype)->is_unordered()) {
-      indent(out) << prefix_thrift << ".reserve(" << size << ");" << endl;
+      indent(out) << containerPrefix << ".reserve(" << size << ");" << endl;
     }
     indent(out) << "for (uint32_t " << i << " = 0; " << i << " < " << size
                 << "; ++" << i << ")" << endl;
     scope_up(out);
     generate_json_set_element(out, (t_set*)ttype,
-                              prefix_thrift, json + "[" + i + "]");
+                              containerPrefix, json + "[" + i + "]");
     scope_down(out);
 
   } else if (ttype->is_map()) {
@@ -2953,9 +2969,9 @@ void t_cpp_generator::generate_json_container(ofstream& out,
     }
     indent(out) << "folly::dynamic " << json << " = " << prefix_json << ";"
                 << endl;
-    indent(out) << prefix_thrift << ".clear();" << endl;
+    indent(out) << containerPrefix << ".clear();" << endl;
     if (((t_map*)ttype)->is_unordered()) {
-      indent(out) << prefix_thrift << ".reserve(" << json << ".size());"
+      indent(out) << containerPrefix << ".reserve(" << json << ".size());"
                   << endl;
     }
     string iter = tmp("_iter");
@@ -2967,8 +2983,14 @@ void t_cpp_generator::generate_json_container(ofstream& out,
                               "(" + iter
                                 + ")->first.asString()",
                               iter + "->second",
-                              prefix_thrift);
+                              containerPrefix);
     scope_down(out);
+
+  }
+
+  if (pointer) {
+    indent(out) << prefix_thrift << " =  std::move(" << ptrtype << ");"
+        << endl;
   }
 }
 
@@ -3011,8 +3033,8 @@ void t_cpp_generator::generate_json_map_element(ofstream& out,
   t_field kval(tmap->get_key_type(), _key);
   t_field fval(tmap->get_val_type(), _val);
   t_type* key_type = get_true_type(tmap->get_key_type());
-  out << indent() << declare_field(&kval) << ";" << endl;
-  out << indent() << declare_field(&fval) << ";" << endl;
+  out << indent() << declare_field(&kval) << endl;
+  out << indent() << declare_field(&fval) << endl;
   if (key_type->is_string()) {
     out <<
       indent() << _key << " = " << key << ";" << endl;
