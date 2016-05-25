@@ -65,6 +65,18 @@ TEST(FrozenMap, NonSortValue) {
   EXPECT_FALSE(fmap.at(2).count(3));
 }
 
+TEST(FrozenMap, Iteration) {
+  auto& map = osquares;
+  auto fmap = freeze(map);
+  int sumK = 0, sumV = 0;
+  for (auto entry : fmap) {
+    sumK += entry.first();
+    sumV += entry.second();
+  }
+  EXPECT_EQ(10, sumK);
+  EXPECT_EQ(30, sumV);
+}
+
 TEST(FrozenHashMap, Basic) {
   auto& map = usquares;
   auto fmap = freeze(map);
@@ -72,6 +84,18 @@ TEST(FrozenHashMap, Basic) {
   EXPECT_EQ(map.find(3)->second, fmap.find(3)->second());
   EXPECT_TRUE(fmap.count(2));
   EXPECT_FALSE(fmap.count(8));
+}
+
+TEST(FrozenHashMap, Iteration) {
+  auto& map = usquares;
+  auto fmap = freeze(map);
+  int sumK = 0, sumV = 0;
+  for (auto entry : fmap) {
+    sumK += entry.first();
+    sumV += entry.second();
+  }
+  EXPECT_EQ(10, sumK);
+  EXPECT_EQ(30, sumV);
 }
 
 TEST(FrozenMap, Strings) {
