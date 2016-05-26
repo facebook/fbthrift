@@ -95,7 +95,7 @@ def main():
         server = TCppServer.TCppServer(processor)
         server.setPort(options.port)
         print 'Worker threads: ' + str(options.workers)
-        server.setNWorkerThreads(options.workers)
+        server.setNumIOWorkerThreads(options.workers)
     else:
         transport = TSocket.TServerSocket(options.port)
         tfactory = TTransport.TBufferedTransportFactory()

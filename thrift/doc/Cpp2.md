@@ -66,9 +66,9 @@ Useful (but not complete set of) options that can be set on the ThriftServer:
   per-function bases by overriding the appropriate generated code
   method.
 
-* setNWorkerThreads(int) - Number of IO async worker threads.  Defaults to number of cores.
+* setNumIOWorkerThreads(int) - Number of IO async worker threads.  Defaults to number of cores.
 
-* setNPoolThreads(int) - Number of synchronous pool threads.  Defaults
+* setNumCPUWorkerThreads(int) - Number of synchronous pool threads.  Defaults
   to number of IO threads.  If you do a lot of blocking synchronous
   work, you may want to increase this.
 

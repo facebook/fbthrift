@@ -184,7 +184,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    * pool's thread factory will be overridden - if you'd like to use your own,
    * set it afterwards via ThriftServer::setIOThreadFactory(). If the given
    * thread pool has one or more allocated threads, the number of workers will
-   * be set to this number. Use ThreadServer::setNWorkerThreads() to set
+   * be set to this number. Use ThreadServer::setNumIOWorkerThreads() to set
    * it afterwards if you want to change the number of works.
    *
    * @param the new thread pool

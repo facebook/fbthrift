@@ -212,22 +212,45 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    */
   bool configMutable() { return configMutable_; }
 
+
   /**
-   * Get the prefix for naming the pool threads.
+   * Get the prefix for naming the CPU (pool) threads.
    *
    * @return current setting.
    */
-  const std::string& getPoolThreadName() const { return poolThreadName_; }
+  const std::string& getCPUWorkerThreadName() const { return poolThreadName_; }
 
   /**
-   * Set the prefix for naming the pool threads. Not set by default.
+   * DEPRECATED: Get the prefix for naming the CPU (pool) threads.
+   * Use getCPUWorkerThreadName instead.
+   *
+   * @return current setting.
+   */
+  inline const std::string& getPoolThreadName() const {
+    return getCPUWorkerThreadName();
+  }
+
+  /**
+   * Set the prefix for naming the CPU (pool) threads. Not set by default.
    * must be called before serve() for it to take effect
    * ignored if setThreadManager() is called.
    *
+   * @param cpuWorkerThreadName thread name prefix
+   */
+  void setCPUWorkerThreadName(const std::string& cpuWorkerThreadName) {
+    poolThreadName_ = cpuWorkerThreadName;
+  }
+
+  /**
+   * DEPRECATED: Set the prefix for naming the CPU (pool) threads. Not set by
+   * default. Must be called before serve() for it to take effect
+   * ignored if setThreadManager() is called.
+   * Use setCPUWorkerThreadName instead.
+   *
    * @param poolThreadName thread name prefix
    */
-  void setPoolThreadName(const std::string& poolThreadName) {
-    poolThreadName_ = poolThreadName;
+  inline void setPoolThreadName(const std::string& poolThreadName) {
+    setCPUWorkerThreadName(poolThreadName);
   }
 
   /**
@@ -414,41 +437,78 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   }
 
   /**
-   * Set the number of worker threads
+   * Set the number of IO worker threads
    *
-   * @param number of worker threads
+   * @param number of IO worker threads
    */
-  void setNWorkerThreads(int nWorkers) {
+  void setNumIOWorkerThreads(int numIOWorkerThreads) {
     CHECK(configMutable());
-    nWorkers_ = nWorkers;
+    nWorkers_ = numIOWorkerThreads;
   }
 
   /**
-   * Get the number of worker threads
+   * DEPRECATED: Set the number of IO worker threads
+   * Use setNumIOWorkerThreads instead.
    *
-   * @return number of worker threads
+   * @param number of IO worker threads
    */
-  int getNWorkerThreads() { return nWorkers_; }
+  inline void setNWorkerThreads(int nWorkers) {
+    setNumIOWorkerThreads(nWorkers);
+  }
 
   /**
-   * Set the number of pool threads
+   * Get the number of IO worker threads
+   *
+   * @return number of IO worker threads
+   */
+  int getNumIOWorkerThreads() { return nWorkers_; }
+
+  /**
+   * DEPRECATED: Get the number of IO worker threads
+   * Use getNumIOWorkerThreads instead.
+   *
+   * @return number of IO worker threads
+   */
+  inline int getNWorkerThreads() { return getNumIOWorkerThreads(); }
+
+  /**
+   * Set the number of CPU (pool) threads.
    * Only valid if you do not also set a threadmanager.
    *
-   * @param number of pool threads
+   * @param number of CPU (pool) threads
    */
-  void setNPoolThreads(int nPoolThreads) {
+  void setNumCPUWorkerThreads(int numCPUWorkerThreads) {
     CHECK(configMutable());
     CHECK(!threadManager_);
 
-    nPoolThreads_ = nPoolThreads;
+    nPoolThreads_ = numCPUWorkerThreads;
   }
 
   /**
-   * Get the number of pool threads
+   * DEPRECATED: Set the number of CPU (pool) threads
+   * Only valid if you do not also set a threadmanager.
+   * Use setNumCPUWorkerThreads instead.
    *
-   * @return number of pool threads
+   * @param number of CPU (pool) threads
    */
-  int getNPoolThreads() { return nPoolThreads_; }
+  inline void setNPoolThreads(int nPoolThreads) {
+    setNumCPUWorkerThreads(nPoolThreads);
+  }
+
+  /**
+   * Get the number of CPU (pool) threads
+   *
+   * @return number of CPU (pool) threads
+   */
+  int getNumCPUWorkerThreads() { return nPoolThreads_; }
+
+  /**
+   * DEPRECATED: Get the number of CPU (pool) threads
+   * Use getNumCPUWorkerThreads instead.
+   *
+   * @return number of CPU (pool) threads
+   */
+  inline int getNPoolThreads() { return getNumCPUWorkerThreads(); }
 
   /**
    * Codel queuing timeout - limit queueing time before overload

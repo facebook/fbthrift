@@ -35,7 +35,7 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   auto ts = make_shared<ThriftServer>();
   ts->setAddress(host, port);
   ts->setProcessorFactory(move(apf));
-  ts->setNWorkerThreads(1);
+  ts->setNumIOWorkerThreads(1);
   ts->setThreadManager(tm);
   ts_ = move(ts);
   sst_.start(ts_);

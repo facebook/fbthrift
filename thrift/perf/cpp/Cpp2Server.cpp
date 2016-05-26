@@ -100,8 +100,8 @@ int main(int argc, char* argv[]) {
   server.reset(new ThriftServer());
   server->setInterface(handler);
   server->setPort(FLAGS_port);
-  server->setNWorkerThreads(FLAGS_num_threads);
-  server->setNPoolThreads(FLAGS_num_queue_threads);
+  server->setNumIOWorkerThreads(FLAGS_num_threads);
+  server->setNumCPUWorkerThreads(FLAGS_num_queue_threads);
   server->setMaxConnections(FLAGS_max_connections);
   server->setMaxRequests(FLAGS_max_requests);
   server->setQueueSends(FLAGS_queue_sends);

@@ -329,7 +329,7 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
 TEST(ThriftServer, Thrift1OnewayRequestTest) {
   TestThriftServerFactory<TestInterface> factory;
   auto cpp2Server = factory.create();
-  cpp2Server->setNWorkerThreads(1);
+  cpp2Server->setNumIOWorkerThreads(1);
   cpp2Server->setIsOverloaded([](const THeader*) { return true; });
   apache::thrift::util::ScopedServerThread st(cpp2Server);
 
@@ -595,7 +595,7 @@ TEST(ThriftServer, ShutdownDegenarateServer) {
   TestThriftServerFactory<TestInterface> factory;
   auto server = factory.create();
   server->setMaxRequests(1);
-  server->setNWorkerThreads(1);
+  server->setNumIOWorkerThreads(1);
   ScopedServerThread sst(server);
 }
 
@@ -653,7 +653,7 @@ TEST(ThriftServer, setIOThreadPool) {
   // Set the exe, this used to trip various calls like
   // CHECK(ioThreadPool->numThreads() == 0).
   server->setIOThreadPool(exe);
-  EXPECT_EQ(1, server->getNWorkerThreads());
+  EXPECT_EQ(1, server->getNumIOWorkerThreads());
 }
 
 namespace {

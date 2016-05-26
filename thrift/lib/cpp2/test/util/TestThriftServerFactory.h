@@ -29,7 +29,7 @@ struct TestThriftServerFactory : public TestServerFactory {
   public:
     std::shared_ptr<BaseThriftServer> create() {
       auto server = std::make_shared<apache::thrift::ThriftServer>();
-      server->setNWorkerThreads(1);
+      server->setNumIOWorkerThreads(1);
       if (useSimpleThreadManager_) {
         auto threadFactory =
             std::make_shared<apache::thrift::concurrency::PosixThreadFactory>();

@@ -37,8 +37,8 @@ class TCppServerTestManager(object):
         """
         server = TCppServer(processor)
         server.setPort(0)
-        server.setNPoolThreads(1)
-        server.setNWorkerThreads(1)
+        server.setNumCPUWorkerThreads(1)
+        server.setNumIOWorkerThreads(1)
         server.setNewSimpleThreadManager(1, 5, False, 50)
         return server
 

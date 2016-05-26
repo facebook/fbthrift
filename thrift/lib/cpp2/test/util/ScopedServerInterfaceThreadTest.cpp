@@ -81,8 +81,8 @@ TEST(ScopedServerInterfaceThread, getThriftServer) {
   ScopedServerInterfaceThread ssit(
     make_shared<SimpleServiceImpl>());
   auto& ts = ssit.getThriftServer();
-  EXPECT_EQ(0, ts.getNPoolThreads());
-  EXPECT_EQ(1, ts.getNWorkerThreads());
+  EXPECT_EQ(0, ts.getNumCPUWorkerThreads());
+  EXPECT_EQ(1, ts.getNumIOWorkerThreads());
 }
 
 TEST(ScopedServerInterfaceThread, ctor_with_thriftserver) {
@@ -90,7 +90,7 @@ TEST(ScopedServerInterfaceThread, ctor_with_thriftserver) {
   auto ts = make_shared<ThriftServer>();
   ts->setInterface(si);
   ts->setAddress("::1", 0);
-  ts->setNWorkerThreads(1);
+  ts->setNumIOWorkerThreads(1);
   ScopedServerInterfaceThread ssit(ts);
   EXPECT_EQ(uintptr_t(ts.get()), uintptr_t(&ssit.getThriftServer())); // sanity
 
