@@ -145,7 +145,7 @@ class THttpClient(TTransportBase):
             self.__http.putheader('User-Agent', user_agent)
 
         if self.__custom_headers:
-            if sys.version_info[0] > 3:
+            if sys.version_info[0] >= 3:
                 custom_headers_iter = self.__custom_headers.items()
             else:
                 custom_headers_iter = self.__custom_headers.iteritems()
