@@ -23,6 +23,7 @@
 #include <memory>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/Random.h>
 
 #include <gtest/gtest.h>
 
@@ -34,13 +35,21 @@ TEST(THeaderTest, largetransform) {
   THeader header;
   header.setTransform(THeader::ZLIB_TRANSFORM); // ZLib flag
 
-  size_t buf_size = 1000000;
+  size_t buf_size = 10000000;
   std::unique_ptr<IOBuf> buf(IOBuf::create(buf_size));
+  // Make the data compressible, but not totally random
+  for (int i = 0; i < buf_size/4; i++) {
+    buf->writableData()[i] = (int8_t)folly::Random::rand32(256);
+    buf->writableData()[i+1] = buf->writableData()[i];
+    buf->writableData()[i+2] = buf->writableData()[i];
+    buf->writableData()[i+3] = (int8_t)folly::Random::rand32(256);
+  }
   buf->append(buf_size);
 
   std::map<std::string, std::string> persistentHeaders;
   buf = header.addHeader(std::move(buf), persistentHeaders);
   buf_size = buf->computeChainDataLength();
+  buf->gather(buf_size);
   std::unique_ptr<IOBufQueue> queue(new IOBufQueue);
   std::unique_ptr<IOBufQueue> queue2(new IOBufQueue);
   queue->append(std::move(buf));
@@ -53,6 +62,7 @@ TEST(THeaderTest, largetransform) {
   size_t needed;
 
   buf = header.removeHeader(queue2.get(), needed, persistentHeaders);
+  EXPECT_EQ(buf->computeChainDataLength(), 10000000);
 }
 
 TEST(THeaderTest, http_clear_header) {

@@ -507,7 +507,9 @@ unique_ptr<IOBuf> THeader::untransform(
     const uint16_t transId = *it;
 
     if (transId == ZLIB_TRANSFORM) {
-      size_t bufSize = 1024;
+      size_t bufSize;
+      uint32_t minAllocation =
+        buf->computeChainDataLength() > 1024 * 1024 ? 16 * 1024 : 1024;
       unique_ptr<IOBuf> out;
 
       z_stream stream;
@@ -532,6 +534,7 @@ unique_ptr<IOBuf> THeader::untransform(
           stream.next_in = buf->writableData();
           stream.avail_in = buf->length();
           do {
+            bufSize = std::max(minAllocation, stream.avail_in);
             unique_ptr<IOBuf> tmp(IOBuf::create(bufSize));
 
             stream.next_out = tmp->writableData();
