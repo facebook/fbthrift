@@ -184,8 +184,11 @@ void validate_const_type(t_const* c);
 void validate_field_value(t_field* field, t_const_value* cv);
 
 /**
- * Parses a program
+ * Parses a program. already_parsed_paths is deliberately passed by value
+ * because it should be the set of files in the direct inclusion tree.
  */
-void parse(t_program* program, t_program* parent_program);
+void parse(t_program* program,
+           t_program* parent_program,
+           set<string> already_parsed_paths = set<string>());
 
 #endif

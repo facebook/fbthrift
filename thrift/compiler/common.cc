@@ -607,9 +607,18 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
   }
 }
 
-void parse(t_program* program, t_program* parent_program) {
+void parse(t_program* program,
+           t_program* parent_program,
+           set<string> already_parsed_paths) {
   // Get scope file path
   string path = program->get_path();
+
+  if (already_parsed_paths.count(path)) {
+    failure("Circular dependecy found: file %s is already parsed. ",
+            path.c_str());
+  } else {
+    already_parsed_paths.insert(path);
+  }
 
   // Set current dir global, which is used in the include_file function
   g_curdir = directory_name(path);
@@ -647,7 +656,7 @@ void parse(t_program* program, t_program* parent_program) {
   g_allow_neg_enum_vals = true;
   g_allow_neg_field_keys = true;
   for (iter = includes.begin(); iter != includes.end(); ++iter) {
-    parse(*iter, program);
+    parse(*iter, program, already_parsed_paths);
   }
   g_allow_neg_enum_vals = main_allow_neg_enum_vals;
   g_allow_neg_field_keys = main_allow_neg_keys;
