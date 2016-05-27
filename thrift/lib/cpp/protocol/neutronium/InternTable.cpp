@@ -100,10 +100,10 @@ void InternTable::deserialize(std::unique_ptr<folly::IOBuf>&& data) {
   {
     folly::io::RWPrivateCursor cursor(head_.get());
     for (auto length : tab.sizes) {
-      auto pos = cursor.peek();
+      auto pos = cursor.peekBytes();
       // the first pass ensured that we have enough space
-      DCHECK_GE(pos.second, length);
-      strings_.emplace_back(reinterpret_cast<const char*>(pos.first), length);
+      DCHECK_GE(pos.size(), length);
+      strings_.emplace_back(reinterpret_cast<const char*>(pos.data()), length);
       cursor.skip(length);
     }
   }

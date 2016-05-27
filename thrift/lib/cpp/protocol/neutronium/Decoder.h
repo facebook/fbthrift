@@ -235,7 +235,7 @@ class Decoder {
   DecoderState& top();
   uint32_t peekElementCount();
   int64_t nextType();
-  std::pair<const uint8_t*, size_t> ensure(size_t n);
+  folly::ByteRange ensure(size_t n);
 };
 
 

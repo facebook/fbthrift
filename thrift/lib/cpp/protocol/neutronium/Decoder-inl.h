@@ -32,22 +32,6 @@ namespace thrift {
 namespace protocol {
 namespace neutronium {
 
-inline const char* CH(const uint8_t* p) {
-  return reinterpret_cast<const char*>(p);
-}
-inline char* CH(uint8_t* p) {
-  return reinterpret_cast<char*>(p);
-}
-
-template <class P>
-inline auto CH(P p) -> std::pair<decltype(CH(p.first)), decltype(p.second)> {
-  return std::make_pair(CH(p.first), p.second);
-}
-
-inline folly::StringPiece SP(std::pair<const uint8_t*, size_t> p) {
-  return folly::StringPiece(CH(p.first), p.second);
-}
-
 inline void Decoder::setRootType(int64_t rootType) {
   CHECK(stack_.empty());
   rootType_ = rootType;
@@ -296,7 +280,7 @@ inline void Decoder::DecoderState::setLength() {
 inline uint32_t Decoder::peekElementCount() {
   uint32_t len;
   cursor_.gatherAtMost(folly::GroupVarint32::maxSize(1));
-  folly::GroupVarint32Decoder decoder(SP(cursor_.peek()));
+  folly::GroupVarint32Decoder decoder(folly::StringPiece(cursor_.peekBytes()));
   uint32_t count;
   if (!decoder.next(&count)) {
     throw TProtocolException("underflow");
@@ -409,21 +393,21 @@ inline void Decoder::readString(StrType& str) {
       char terminator = top().type.terminator;
       const uint8_t* term = nullptr;
       while (!term) {
-        auto p = cursor_.peek();
-        if (p.second == 0) throw TLibraryException("eof");
+        auto b = cursor_.peekBytes();
+        if (b.empty()) throw TLibraryException("eof");
         term = static_cast<const uint8_t*>(
-            memchr(p.first, terminator, p.second));
-        size_t n = term ? term - p.first : p.second;
-        str.append(reinterpret_cast<const char*>(p.first), n);
+            memchr(b.data(), terminator, b.size()));
+        size_t n = term ? term - b.data() : b.size();
+        str.append(reinterpret_cast<const char*>(b.data()), n);
         cursor_.skip(n);
         top().bytesRead += n;
       }
     } else {
       while (len) {
-        auto p = cursor_.peek();
-        if (p.second == 0) throw TLibraryException("eof");
-        auto n = std::min(len, static_cast<int64_t>(p.second));
-        str.append(reinterpret_cast<const char*>(p.first), n);
+        auto b = cursor_.peekBytes();
+        if (b.empty()) throw TLibraryException("eof");
+        auto n = std::min(len, static_cast<int64_t>(b.size()));
+        str.append(reinterpret_cast<const char*>(b.data()), n);
         cursor_.skip(n);
         top().bytesRead += n;
         len -= n;

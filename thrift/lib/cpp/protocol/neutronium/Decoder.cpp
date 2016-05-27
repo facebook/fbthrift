@@ -161,12 +161,12 @@ void Decoder::DecoderState::addType(TypeInfo& tinfo,
   }
 }
 
-std::pair<const uint8_t*, size_t> Decoder::ensure(size_t n) {
-  auto p = cursor_.peek();
-  if (UNLIKELY(p.second < n)) {
+folly::ByteRange Decoder::ensure(size_t n) {
+  auto b = cursor_.peekBytes();
+  if (UNLIKELY(b.size() < n)) {
     throw TProtocolException("underflow");
   }
-  return p;
+  return b;
 }
 
 void Decoder::readBoolsAndStrictEnums(size_t skipBits) {
@@ -209,7 +209,7 @@ void Decoder::read() {
     size_t nbytes = byteCount(nbits);
 
     cursor_.gather(nbytes);
-    auto optionalSet = ensure(nbytes).first;
+    auto optionalSet = ensure(nbytes).data();
 
     // Now we know which optionals are set
     // Assign by tag.
@@ -261,7 +261,7 @@ void Decoder::read() {
     size_t maxSize = folly::GroupVarint32::maxSize(totalVarIntCount);
     cursor_.gatherAtMost(maxSize);
 
-    folly::StringPiece data = SP(cursor_.peek());
+    folly::StringPiece data{cursor_.peekBytes()};
     folly::GroupVarint32Decoder decoder(data, totalVarIntCount);
 
     if (s.state != IN_STRUCT) {

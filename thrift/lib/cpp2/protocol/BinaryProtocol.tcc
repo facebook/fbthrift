@@ -582,13 +582,13 @@ uint32_t BinaryProtocolReader::readStringBody(StrType& str,
   str.clear();
   size_t size_left = size;
   while (size_left > 0) {
-    std::pair<const uint8_t*, size_t> data = in_.peek();
-    int32_t data_avail = std::min(data.second, size_left);
-    if (data.second <= 0) {
+    auto data = in_.peekBytes();
+    auto data_avail = std::min(data.size(), size_left);
+    if (data.empty()) {
       throw TProtocolException(TProtocolException::SIZE_LIMIT);
     }
 
-    str.append((const char*)data.first, data_avail);
+    str.append((const char*)data.data(), data_avail);
     size_left -= data_avail;
     in_.skip(data_avail);
   }

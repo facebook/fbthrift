@@ -259,29 +259,28 @@ TEST_P(SharedServerTests, HandlerInEventBaseTest) {
 bool compareIOBufChain(const folly::IOBuf* buf1, const folly::IOBuf* buf2) {
   folly::io::Cursor c1(buf1);
   folly::io::Cursor c2(buf2);
-  std::pair<const uint8_t *, size_t> p1, p2;
+  folly::ByteRange b1;
+  folly::ByteRange b2;
   while (1) {
-    if (p1.second == 0) {
-      p1 = c1.peek();
-      c1.skip(p1.second);
+    if (b1.empty()) {
+      b1 = c1.peekBytes();
+      c1.skip(b1.size());
     }
-    if (p2.second == 0) {
-      p2 = c2.peek();
-      c2.skip(p2.second);
+    if (b2.empty()) {
+      b2 = c2.peekBytes();
+      c2.skip(b2.size());
     }
-    if (p1.second == 0 || p2.second == 0) {
+    if (b1.empty() || b2.empty()) {
       // one is finished, the other must be finished too
-      return p1.second == 0 && p2.second == 0;
+      return b1.empty() && b2.empty();
     }
 
-    size_t m = std::min(p1.second, p2.second);
-    if (memcmp(p1.first, p2.first, m) != 0) {
+    size_t m = std::min(b1.size(), b2.size());
+    if (memcmp(b1.data(), b2.data(), m) != 0) {
       return false;
     }
-    p1.first += m;
-    p1.second -= m;
-    p2.first += m;
-    p2.second -= m;
+    b1.advance(m);
+    b2.advance(m);
   }
 }
 
