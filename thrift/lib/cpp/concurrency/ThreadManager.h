@@ -18,7 +18,6 @@
 #define _THRIFT_CONCURRENCY_THREADMANAGER_H_ 1
 
 #include <sys/types.h>
-#include <unistd.h>
 
 #include <array>
 #include <functional>
@@ -29,7 +28,7 @@
 #include <folly/LifoSem.h>
 #include <folly/RWSpinLock.h>
 #include <folly/portability/GFlags.h>
-
+#include <folly/portability/Unistd.h>
 #include <wangle/concurrent/Codel.h>
 
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>

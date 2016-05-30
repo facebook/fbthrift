@@ -18,13 +18,14 @@
  */
 
 #include <iostream>
-#include <unistd.h>
 
 #include <atomic>
 #include <memory>
 
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+
+#include <folly/portability/Unistd.h>
 
 #include <gtest/gtest.h>
 

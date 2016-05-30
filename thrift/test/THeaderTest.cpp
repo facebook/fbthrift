@@ -17,7 +17,6 @@
 #include <memory>
 #include <stdio.h>
 #include <iostream>
-#include <unistd.h>
 
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/async/TSyncToAsyncProcessor.h>
@@ -47,6 +46,7 @@
 #include <thrift/test/gen-cpp/Service.h>
 
 #include <folly/portability/SysTime.h>
+#include <folly/portability/Unistd.h>
 
 #include <gtest/gtest.h>
 

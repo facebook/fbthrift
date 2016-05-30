@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/TLogging.h>
 
-#include <unistd.h>
+#include <folly/portability/Unistd.h>
 
 namespace apache { namespace thrift { namespace loadgen {
 

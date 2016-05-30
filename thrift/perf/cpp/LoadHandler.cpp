@@ -20,7 +20,7 @@
 
 #include <thrift/lib/cpp/concurrency/Util.h>
 
-#include <unistd.h>
+#include <folly/portability/Unistd.h>
 
 using apache::thrift::concurrency::Util;
 

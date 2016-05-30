@@ -22,12 +22,12 @@
 #include <vector>
 
 #include <folly/Optional.h>
+#include <folly/portability/Unistd.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
 #include <bitset>
 #include <pwd.h>
-#include <unistd.h>
 #include <chrono>
 
 // Don't include the unknown client.

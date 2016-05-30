@@ -26,10 +26,12 @@
 #include <netdb.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <unistd.h>
 
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <thrift/lib/cpp/util/FdUtils.h>
+
+#include <folly/portability/Unistd.h>
+
 #include <memory>
 
 namespace apache { namespace thrift { namespace transport {

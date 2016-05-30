@@ -19,9 +19,8 @@
 #include <thrift/perf/cpp/AsyncLoadHandler2.h>
 
 #include <folly/io/async/EventBase.h>
+#include <folly/portability/Unistd.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
-
-#include <unistd.h>
 
 using folly::EventBase;
 using apache::thrift::concurrency::Util;

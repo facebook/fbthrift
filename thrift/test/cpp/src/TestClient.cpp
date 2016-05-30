@@ -19,7 +19,6 @@
 
 #define __STDC_FORMAT_MACROS
 #include <stdio.h>
-#include <unistd.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/transport/TTransportUtils.h>
@@ -30,6 +29,7 @@
 #include <thrift/test/gen-cpp/ThriftTest.h>
 
 #include <folly/portability/SysTime.h>
+#include <folly/portability/Unistd.h>
 
 #include <inttypes.h>
 

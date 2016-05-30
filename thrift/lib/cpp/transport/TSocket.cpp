@@ -27,11 +27,12 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
-#include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
+
+#include <folly/portability/Unistd.h>
 
 namespace apache { namespace thrift { namespace transport {
 

@@ -26,6 +26,7 @@
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TRpcTransport.h>
 #include <thrift/lib/cpp/TProcessor.h>
+#include <folly/portability/Unistd.h>
 
 #include <fcntl.h>
 #include <gtest/gtest.h>
@@ -34,7 +35,6 @@
 #include <poll.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <unistd.h>
 
 using std::string;
 using std::vector;

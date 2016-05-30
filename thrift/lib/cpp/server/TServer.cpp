@@ -19,10 +19,9 @@
 
 #include <thrift/lib/cpp/server/TServer.h>
 
-#include <unistd.h>
-
 #include <folly/portability/SysResource.h>
 #include <folly/portability/SysTime.h>
+#include <folly/portability/Unistd.h>
 
 namespace apache { namespace thrift { namespace server {
 

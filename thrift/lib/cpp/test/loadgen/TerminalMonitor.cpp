@@ -18,7 +18,8 @@
  */
 #include <thrift/lib/cpp/test/loadgen/TerminalMonitor.h>
 
-#include <unistd.h>
+#include <folly/portability/Unistd.h>
+
 #include <sys/ioctl.h>
 
 namespace apache { namespace thrift { namespace loadgen {

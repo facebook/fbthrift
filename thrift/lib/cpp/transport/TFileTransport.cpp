@@ -27,7 +27,6 @@
 #include <time.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <unistd.h>
 #ifdef THRIFT_HAVE_STRINGS_H
 #include <strings.h>
 #endif
@@ -37,6 +36,7 @@
 #include <sys/stat.h>
 
 #include <folly/portability/SysTime.h>
+#include <folly/portability/Unistd.h>
 
 namespace apache { namespace thrift { namespace transport {
 

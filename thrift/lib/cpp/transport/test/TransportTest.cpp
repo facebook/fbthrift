@@ -23,7 +23,7 @@
 
 #include <thrift/lib/cpp/transport/TMemPagedTransport.tcc>
 
-#include <unistd.h>
+#include <folly/portability/Unistd.h>
 
 using std::cout;
 using std::cerr;

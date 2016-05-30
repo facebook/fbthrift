@@ -21,9 +21,9 @@
 #include <cstdlib>
 #include <ctime>
 #include <functional>
-#include <unistd.h>
 #include <folly/Conv.h>
 #include <folly/experimental/TestUtil.h>
+#include <folly/portability/Unistd.h>
 
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/TFDTransport.h>

@@ -32,11 +32,11 @@
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/portability/Unistd.h>
 
 #include <bitset>
 #include <boost/scoped_array.hpp>
 #include <pwd.h>
-#include <unistd.h>
 
 namespace apache { namespace thrift { namespace transport {
 
