@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <sys/resource.h>
 #include <numa.h>
 
 #include <chrono>
@@ -25,6 +24,7 @@
 #include <thread>
 
 #include <folly/Synchronized.h>
+#include <folly/portability/SysResource.h>
 #include <folly/portability/SysTime.h>
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>

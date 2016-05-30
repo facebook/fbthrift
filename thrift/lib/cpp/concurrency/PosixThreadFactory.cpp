@@ -25,11 +25,11 @@
 
 #include <assert.h>
 #include <pthread.h>
-#include <sys/resource.h>
 
 #include <iostream>
 
 #include <folly/String.h>
+#include <folly/portability/SysResource.h>
 #include <glog/logging.h>
 
 namespace apache { namespace thrift { namespace concurrency {
