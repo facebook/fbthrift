@@ -16,17 +16,12 @@
 
 #include <thrift/lib/cpp/transport/TSocket.h>
 
+#include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/thrift_config.h>
 #include <thrift/lib/cpp/util/PausableTimer.h>
 #include <cstring>
 #include <sstream>
-#include <sys/socket.h>
-#include <sys/poll.h>
 #include <sys/types.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <netdb.h>
 #include <errno.h>
 #include <fcntl.h>
 

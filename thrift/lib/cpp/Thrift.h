@@ -18,6 +18,7 @@
 #define THRIFT_THRIFT_H_
 
 #include <thrift/lib/cpp/thrift_config.h>
+#include <folly/portability/Sockets.h>
 
 #ifdef THRIFT_PLATFORM_CONFIG
 # include THRIFT_PLATFORM_CONFIG
@@ -28,7 +29,6 @@
 #ifdef THRIFT_HAVE_INTTYPES_H
 #include <inttypes.h>
 #endif
-#include <netinet/in.h>
 #include <stdio.h>
 #include <string.h>
 

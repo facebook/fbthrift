@@ -16,7 +16,8 @@
 
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
-#include <arpa/inet.h>
+#include <folly/portability/Sockets.h>
+
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_array.hpp>
 #include <errno.h>

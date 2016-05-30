@@ -17,7 +17,7 @@
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 
-#include <arpa/inet.h>
+#include <folly/portability/Sockets.h>
 
 #include <openssl/ssl.h>
 #include <openssl/x509.h>

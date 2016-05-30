@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp/async/TEventServer.h>
 
 #include <folly/ScopeGuard.h>
+#include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/async/TEventConnection.h>
 #include <thrift/lib/cpp/async/TEventWorker.h>
 #include <thrift/lib/cpp/async/TEventTask.h>
@@ -25,10 +26,6 @@
 #include <boost/thread/barrier.hpp>
 
 #include <iostream>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <netdb.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <assert.h>

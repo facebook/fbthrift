@@ -17,6 +17,7 @@
 #include <signal.h>
 #include <pthread.h>
 
+#include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -32,8 +33,6 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <list>
-#include <poll.h>
-#include <sys/socket.h>
 #include <sys/types.h>
 
 using std::string;

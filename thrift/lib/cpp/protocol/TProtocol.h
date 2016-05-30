@@ -17,6 +17,7 @@
 #ifndef THRIFT_PROTOCOL_TPROTOCOL_H_
 #define THRIFT_PROTOCOL_TPROTOCOL_H_ 1
 
+#include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
@@ -25,7 +26,6 @@
 
 #include <memory>
 
-#include <netinet/in.h>
 #include <sys/types.h>
 #include <string>
 #include <map>
