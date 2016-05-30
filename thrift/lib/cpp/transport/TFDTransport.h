@@ -21,7 +21,8 @@
 #define _THRIFT_TRANSPORT_TFDTRANSPORT_H_ 1
 
 #include <string>
-#include <sys/time.h>
+
+#include <folly/portability/SysTime.h>
 
 #include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/transport/TVirtualTransport.h>

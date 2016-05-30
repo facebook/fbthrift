@@ -24,8 +24,9 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <time.h>
-#include <sys/time.h>
 #include <chrono>
+
+#include <folly/portability/SysTime.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

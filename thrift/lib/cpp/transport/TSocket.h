@@ -18,11 +18,11 @@
 #define _THRIFT_TRANSPORT_TSOCKET_H_ 1
 
 #include <string>
-#include <sys/time.h>
 
 #include <thrift/lib/cpp/transport/TRpcTransport.h>
 #include <thrift/lib/cpp/transport/TVirtualTransport.h>
 #include <folly/SocketAddress.h>
+#include <folly/portability/SysTime.h>
 
 namespace apache { namespace thrift { namespace transport {
 

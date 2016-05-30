@@ -24,11 +24,7 @@
 #include <thrift/lib/cpp/TProcessor.h>
 
 #include <pthread.h>
-#ifdef THRIFT_HAVE_SYS_TIME_H
-#include <sys/time.h>
-#else
 #include <time.h>
-#endif
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
@@ -39,6 +35,8 @@
 #include <cstring>
 #include <iostream>
 #include <sys/stat.h>
+
+#include <folly/portability/SysTime.h>
 
 namespace apache { namespace thrift { namespace transport {
 

@@ -17,7 +17,6 @@
 #include <memory>
 #include <stdio.h>
 #include <iostream>
-#include <sys/time.h>
 #include <unistd.h>
 
 #include <thrift/lib/cpp/async/TEventServer.h>
@@ -46,6 +45,8 @@
 #include <thrift/lib/cpp/util/example/TThreadPoolServerCreator.h>
 
 #include <thrift/test/gen-cpp/Service.h>
+
+#include <folly/portability/SysTime.h>
 
 #include <gtest/gtest.h>
 

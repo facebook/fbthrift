@@ -17,7 +17,8 @@
 #include <thrift/lib/cpp/util/PausableTimer.h>
 
 #include <stdint.h>
-#include <sys/time.h>
+
+#include <folly/portability/SysTime.h>
 
 namespace apache { namespace thrift { namespace util {
 

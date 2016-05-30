@@ -24,7 +24,7 @@
 #if defined(THRIFT_HAVE_CLOCK_GETTIME)
 #include <time.h>
 #elif defined(THRIFT_HAVE_GETTIMEOFDAY)
-#include <sys/time.h>
+#include <folly/portability/SysTime.h>
 #endif // defined(THRIFT_HAVE_CLOCK_GETTIME)
 #include <errno.h>
 #include <assert.h>

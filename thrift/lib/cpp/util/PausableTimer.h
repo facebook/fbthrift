@@ -17,8 +17,9 @@
 #pragma once
 
 #include <stdint.h>
-#include <sys/time.h>
 #include <sys/types.h>
+
+#include <folly/portability/SysTime.h>
 
 namespace apache { namespace thrift { namespace util {
 

@@ -31,7 +31,7 @@
  */
 
 #ifdef THRIFT_HAVE_CLOCK_GETTIME
-#include <sys/time.h>
+#include <folly/portability/SysTime.h>
 #endif
 #include <time.h>
 

@@ -24,12 +24,12 @@
 #include <getopt.h>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
-#include <sys/time.h>
 
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/transport/TFileTransport.h>
 #include <folly/io/async/test/Util.h>
+#include <folly/portability/SysTime.h>
 
 using apache::thrift::concurrency::Guard;
 using apache::thrift::concurrency::Mutex;
