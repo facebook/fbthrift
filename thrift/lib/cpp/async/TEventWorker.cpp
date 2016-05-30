@@ -23,9 +23,10 @@
 #include <thrift/lib/cpp/async/TEventTask.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
+#include <folly/portability/SysUio.h>
+
 #include <iostream>
 #include <sys/socket.h>
-#include <sys/uio.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
