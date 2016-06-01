@@ -488,7 +488,8 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
   }
 }
 
-void Cpp2Connection::Cpp2Request::sendTimeoutResponse() {
+void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
+  HeaderServerChannel::HeaderRequest::TimeoutResponseType responseType) {
   auto observer = connection_->getWorker()->getServer()->getObserver().get();
   std::map<std::string, std::string> headers;
   if (loadHeader_) {
@@ -499,20 +500,23 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse() {
   req_->sendTimeoutResponse(reqContext_.getMethodName(),
                             reqContext_.getProtoSeqId(),
                             prepareSendCallback(nullptr, observer),
-                            headers);
+                            headers,
+                            responseType);
   cancelTimeout();
 }
 
 void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
   request_->req_->cancel();
-  request_->sendTimeoutResponse();
+  request_->sendTimeoutResponse(
+    HeaderServerChannel::HeaderRequest::TimeoutResponseType::TASK);
   request_->connection_->requestTimeoutExpired();
 }
 
 void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
   if (!request_->reqContext_.getStartedProcessing()) {
     request_->req_->cancel();
-    request_->sendTimeoutResponse();
+    request_->sendTimeoutResponse(
+      HeaderServerChannel::HeaderRequest::TimeoutResponseType::QUEUE);
     request_->connection_->queueTimeoutExpired();
   }
 }

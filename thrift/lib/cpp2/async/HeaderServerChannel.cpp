@@ -16,7 +16,6 @@
 
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <folly/io/Cursor.h>
@@ -357,6 +356,29 @@ void HeaderServerChannel::HeaderRequest::sendReply(
   }
 }
 
+void HeaderServerChannel::HeaderRequest::serializeAndSendError(
+  apache::thrift::transport::THeader& header,
+  TApplicationException& tae,
+  const std::string& methodName,
+  int32_t protoSeqId,
+  MessageChannel::SendCallback* cb
+) {
+  std::unique_ptr<folly::IOBuf> exbuf;
+  uint16_t proto = header.getProtocolId();
+  try {
+    exbuf = serializeError(proto, tae, methodName, protoSeqId);
+  } catch (const TProtocolException& pe) {
+    LOG(ERROR) << "serializeError failed. type=" << pe.getType()
+               << " what()=" << pe.what();
+    channel_->closeNow();
+    return;
+  }
+  exbuf = THeader::transform(std::move(exbuf),
+                             header.getWriteTransforms(),
+                             header.getMinCompressBytes());
+  sendReply(std::move(exbuf), cb);
+}
+
 /**
  * Send a serialized error back to the client.
  * For a header server, this means serializing the exception, and setting
@@ -401,21 +423,7 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
 
   header_->setHeader("ex", exCode);
   ew.with_exception([&](TApplicationException& tae) {
-      std::unique_ptr<folly::IOBuf> exbuf;
-      uint16_t proto = header_->getProtocolId();
-      auto transforms = header_->getWriteTransforms();
-      try {
-        exbuf = serializeError(proto, tae, methodName, protoSeqId);
-      } catch (const TProtocolException& pe) {
-        LOG(ERROR) << "serializeError failed. type=" << pe.getType()
-            << " what()=" << pe.what();
-        channel_->closeNow();
-        return;
-      }
-      exbuf = THeader::transform(std::move(exbuf),
-                                 transforms,
-                                 header_->getMinCompressBytes());
-      sendReply(std::move(exbuf), cb);
+      serializeAndSendError(*header_, tae, methodName, protoSeqId, cb);
     });
 }
 
@@ -423,38 +431,27 @@ void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
     const std::string& methodName,
     int32_t protoSeqId,
     MessageChannel::SendCallback* cb,
-    const std::map<std::string, std::string>& headers) {
-  // Sending tiemout response always happens on eb thread, while normal
+    const std::map<std::string, std::string>& headers,
+    TimeoutResponseType responseType) {
+  // Sending timeout response always happens on eb thread, while normal
   // request handling might still be work-in-progress on tm thread and
   // touches the per-request THeader at any time. This builds a new THeader
   // and only reads certain fields from header_. To avoid race condition,
   // DO NOT read any header from the per-request THeader.
   timeoutHeader_ = header_->clone();
-  timeoutHeader_->setHeader("ex", kTaskExpiredErrorCode);
+  auto errorCode = responseType == TimeoutResponseType::QUEUE ?
+    kServerQueueTimeoutErrorCode : kTaskExpiredErrorCode;
+  timeoutHeader_->setHeader("ex", errorCode);
+  auto errorMsg = responseType == TimeoutResponseType::QUEUE ?
+    "Queue Timeout" : "Task expired";
   for (const auto& it : headers) {
     timeoutHeader_->setHeader(it.first, it.second);
   }
 
-  std::unique_ptr<folly::IOBuf> exbuf;
   TApplicationException tae(
       TApplicationException::TApplicationExceptionType::TIMEOUT,
-      "Task expired");
-  try {
-    exbuf = serializeError(timeoutHeader_->getProtocolId(),
-                           tae,
-                           methodName,
-                           protoSeqId);
-  } catch (const TProtocolException& pe) {
-    LOG(ERROR) << "serializeError failed. type=" << pe.getType()
-      << " what()=" << pe.what();
-    channel_->closeNow();
-    return;
-  }
-
-  exbuf = THeader::transform(std::move(exbuf),
-                             timeoutHeader_->getWriteTransforms(),
-                             timeoutHeader_->getMinCompressBytes());
-  sendReply(std::move(exbuf), cb);
+      errorMsg);
+  serializeAndSendError(*timeoutHeader_, tae, methodName, protoSeqId, cb);
 }
 
 void HeaderServerChannel::sendCatchupRequests(

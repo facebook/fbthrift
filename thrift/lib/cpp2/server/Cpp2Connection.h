@@ -152,7 +152,9 @@ class Cpp2Connection
         folly::exception_wrapper ew,
         std::string exCode,
         MessageChannel::SendCallback* notUsed = nullptr) override;
-    void sendTimeoutResponse();
+    void sendTimeoutResponse(
+      apache::thrift::HeaderServerChannel::HeaderRequest::TimeoutResponseType
+      responseType);
 
     ~Cpp2Request() override;
 

@@ -20,6 +20,8 @@
 #define THRIFT_ASYNC_THEADERSERVERCHANNEL_H_ 1
 
 #include <folly/io/async/HHWheelTimer.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/ServerChannel.h>
 #include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
@@ -132,6 +134,13 @@ protected:
     void sendReply(std::unique_ptr<folly::IOBuf>&&,
                    MessageChannel::SendCallback* cb = nullptr) override;
 
+    void serializeAndSendError(
+      apache::thrift::transport::THeader& header,
+      TApplicationException& tae,
+      const std::string& methodName,
+      int32_t protoSeqId,
+      MessageChannel::SendCallback* cb);
+
     void sendErrorWrapped(folly::exception_wrapper ex,
                           std::string exCode,
                           MessageChannel::SendCallback* cb = nullptr) override;
@@ -142,10 +151,23 @@ protected:
                           int32_t protoSeqId,
                           MessageChannel::SendCallback* cb = nullptr);
 
+    /* We differentiate between two types of timeouts:
+       1) Task timeouts refer to timeouts that fire while the request is
+       currently being proceesed
+       2) Queue timeouts refer to timeouts that fire before processing
+       of the request has begun
+    */
+    enum TimeoutResponseType {
+      TASK,
+      QUEUE
+    };
+
     void sendTimeoutResponse(const std::string& methodName,
                              int32_t protoSeqId,
                              MessageChannel::SendCallback* cb,
-                             const std::map<std::string, std::string>& headers);
+                             const std::map<std::string, std::string>& headers,
+                             TimeoutResponseType responseType);
+
    private:
     HeaderServerChannel* channel_;
     std::unique_ptr<apache::thrift::transport::THeader> header_;
