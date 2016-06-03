@@ -84,45 +84,35 @@ func (p *HTTPHeaderEchoServer) ServeHTTP(w http.ResponseWriter, req *http.Reques
 	}
 }
 
-func HttpClientSetupForTest(t *testing.T) (net.Listener, net.Addr) {
-	addr, err := FindAvailableTCPServerPort(40000)
+func HttpClientSetupForTest(t *testing.T) net.Listener {
+	l, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
-		t.Fatalf("Unable to find available tcp port addr: %s", err)
-		return nil, addr
-	}
-	l, err := net.Listen(addr.Network(), addr.String())
-	if err != nil {
-		t.Fatalf("Unable to setup tcp listener on %s: %s", addr.String(), err)
-		return l, addr
+		t.Fatalf("Unable to setup tcp listener on local port: %s", err)
+		return l
 	}
 	go http.Serve(l, &HTTPEchoServer{})
-	return l, addr
+	return l
 }
 
-func HttpClientSetupForHeaderTest(t *testing.T) (net.Listener, net.Addr) {
-	addr, err := FindAvailableTCPServerPort(40000)
+func HttpClientSetupForHeaderTest(t *testing.T) net.Listener {
+	l, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
-		t.Fatalf("Unable to find available tcp port addr: %s", err)
-		return nil, addr
-	}
-	l, err := net.Listen(addr.Network(), addr.String())
-	if err != nil {
-		t.Fatalf("Unable to setup tcp listener on %s: %s", addr.String(), err)
-		return l, addr
+		t.Fatalf("Unable to setup tcp listener on local port: %s", err)
+		return l
 	}
 	go http.Serve(l, &HTTPHeaderEchoServer{})
-	return l, addr
+	return l
 }
 
 func ReadWriteProtocolTest(t *testing.T, protocolFactory TProtocolFactory) {
 	buf := bytes.NewBuffer(make([]byte, 0, 1024))
-	l, addr := HttpClientSetupForTest(t)
+	l := HttpClientSetupForTest(t)
 	defer l.Close()
 	transports := []TTransportFactory{
 		NewTMemoryBufferTransportFactory(1024),
 		NewStreamTransportFactory(buf, buf, true),
 		NewTFramedTransportFactory(NewTMemoryBufferTransportFactory(1024)),
-		NewTHttpPostClientTransportFactory("http://" + addr.String()),
+		NewTHttpPostClientTransportFactory("http://" + l.Addr().String()),
 	}
 	for _, tf := range transports {
 		trans := tf.GetTransport(nil)
