@@ -88,8 +88,6 @@ class TCompactProtocolT
       lastFieldId_(0),
       version_(VERSION_N),
       string_limit_(0),
-      string_buf_(nullptr),
-      string_buf_size_(0),
       container_limit_(0) {
     booleanField_.name = nullptr;
     boolValue_.hasBoolValue = false;
@@ -103,8 +101,6 @@ class TCompactProtocolT
     lastFieldId_(0),
     version_(VERSION_N),
     string_limit_(string_limit),
-    string_buf_(nullptr),
-    string_buf_size_(0),
     container_limit_(container_limit) {
     booleanField_.name = nullptr;
     boolValue_.hasBoolValue = false;
@@ -122,17 +118,9 @@ class TCompactProtocolT
     lastFieldId_(0),
     version_(VERSION_N),
     string_limit_(0),
-    string_buf_(nullptr),
-    string_buf_size_(0),
     container_limit_(0) {
     booleanField_.name = nullptr;
     boolValue_.hasBoolValue = false;
-  }
-
-  ~TCompactProtocolT() override {
-    if (string_buf_) {
-      free(string_buf_);
-    }
   }
 
   void setStringSizeLimit(int32_t string_limit) {
@@ -289,11 +277,7 @@ class TCompactProtocolT
   uint32_t readVarint64(int64_t& i64);
   TType getTType(int8_t type);
 
-  // Buffer for reading strings, save for the lifetime of the protocol to
-  // avoid memory churn allocating memory on every string read
   int32_t string_limit_;
-  uint8_t* string_buf_;
-  int32_t string_buf_size_;
   int32_t container_limit_;
 };
 

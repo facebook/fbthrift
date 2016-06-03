@@ -724,19 +724,20 @@ uint32_t TCompactProtocolT<Transport_>::readBinary(String_& str) {
     return rsize + (uint32_t)size;
   }
 
-  // Use the heap here to prevent stack overflow for v. large strings
-  if (size > string_buf_size_ || string_buf_ == nullptr) {
-    void* new_string_buf = std::realloc(string_buf_, (uint32_t)size);
-    if (new_string_buf == nullptr) {
-      throw std::bad_alloc();
-    }
-    string_buf_ = (uint8_t*)new_string_buf;
-    string_buf_size_ = size;
-  }
-  trans_->readAll(string_buf_, size);
-  str.assign((const char*)string_buf_, size);
+  rsize += size;
 
-  return rsize + (uint32_t)size;
+  str.clear();
+  while (size > 0) {
+    // Protect against malformed input and avoid pre-allocating
+    // requested size unless it is small
+    constexpr int32_t kMaxChunkSize = 1024 * 1024; // 1 MB
+    const int32_t chunk = std::min(size, kMaxChunkSize);
+    str.append(chunk, '\0');
+    trans_->readAll((uint8_t*)(&str.front() + str.size() - chunk), chunk);
+    size -= chunk;
+  }
+
+  return rsize;
 }
 
 /**
