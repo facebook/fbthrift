@@ -21,7 +21,8 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
                  maybe, not, null, otherwise, return, show, toEnum,
-                 enumFromTo, Bounded, minBound, maxBound, seq,
+                 enumFromTo, Bounded, minBound, maxBound, seq, succ,
+                 pred, enumFrom, enumFromThen, enumFromThenTo,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
 import qualified Control.Applicative as Applicative (ZipList(..))
@@ -33,6 +34,7 @@ import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
 import qualified Data.Hashable as Hashable
 import qualified Data.Int as Int
+import Data.List
 import qualified Data.Maybe as Maybe (catMaybes)
 import qualified Data.Text.Lazy.Encoding as Encoding ( decodeUtf8, encodeUtf8 )
 import qualified Data.Text.Lazy as LT

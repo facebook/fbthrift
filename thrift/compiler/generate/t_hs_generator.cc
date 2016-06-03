@@ -332,7 +332,8 @@ string t_hs_generator::hs_imports() {
       "                 Eq, Show, Ord,\n"
       "                 concat, error, fromIntegral, fromEnum, length, map,\n"
       "                 maybe, not, null, otherwise, return, show, toEnum,\n"
-      "                 enumFromTo, Bounded, minBound, maxBound, seq,\n"
+      "                 enumFromTo, Bounded, minBound, maxBound, seq, succ,\n"
+      "                 pred, enumFrom, enumFromThen, enumFromThenTo,\n"
       "                 (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))\n"
       "\n"
       "import qualified Control.Applicative as Applicative (ZipList(..))\n"
@@ -344,6 +345,7 @@ string t_hs_generator::hs_imports() {
       "import Data.Functor ( (<$>) )\n"
       "import qualified Data.Hashable as Hashable\n"
       "import qualified Data.Int as Int\n"
+      "import Data.List\n"
       "import qualified Data.Maybe as Maybe (catMaybes)\n"
       "import qualified Data.Text.Lazy.Encoding as "
         "Encoding ( decodeUtf8, encodeUtf8 )\n"
@@ -444,6 +446,40 @@ void t_hs_generator::generate_enum(t_enum* tenum) {
   indent(f_types_)
     << "_ -> Exception.throw Thrift.ThriftException" << nl;
   indent_down();
+  indent(f_types_) << "succ t = case t of" << nl;
+  indent_up();
+  for(c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
+    string name = capitalize((*c_iter)->get_name());
+    auto succ = c_iter + 1;
+    string succ_value = succ == constants.end()
+      ? string("Exception.throw Thrift.ThriftException")
+      : capitalize((*succ)->get_name());
+    indent(f_types_) << name << " -> " << succ_value << nl;
+  }
+  indent_down();
+  indent(f_types_) << "pred t = case t of" << nl;
+  indent_up();
+  for(c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
+    string name = capitalize((*c_iter)->get_name());
+    string succ_value = c_iter == constants.begin()
+      ? string("Exception.throw Thrift.ThriftException")
+      : capitalize((*(c_iter - 1))->get_name());
+    indent(f_types_) << name << " -> " << succ_value << nl;
+  }
+  indent_down();
+  indent(f_types_) << "enumFrom x = enumFromTo x maxBound" << nl;
+  indent(f_types_) << "enumFromTo x y = takeUpToInc y $ iterate succ x" << nl;
+  indent_up();
+  indent(f_types_) << "where" << nl;
+  indent(f_types_) << "takeUpToInc _ [] = []" << nl;
+  indent(f_types_) << "takeUpToInc m (x:_) | m == x = [x]" << nl;
+  indent(f_types_) << "takeUpToInc m (x:xs) | otherwise = "
+                   << "x : takeUpToInc m xs" << nl;
+  indent_down();
+  indent(f_types_) << "enumFromThen _ _ = "
+                   << "Exception.throw Thrift.ThriftException" << nl;
+  indent(f_types_) << "enumFromThenTo _ _ _ = "
+                   << "Exception.throw Thrift.ThriftException" << nl;
   indent_down();
 
   indent(f_types_) << "instance Hashable.Hashable " << ename

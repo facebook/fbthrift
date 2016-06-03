@@ -18,7 +18,8 @@ import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
                  concat, error, fromIntegral, fromEnum, length, map,
                  maybe, not, null, otherwise, return, show, toEnum,
-                 enumFromTo, Bounded, minBound, maxBound, seq,
+                 enumFromTo, Bounded, minBound, maxBound, seq, succ,
+                 pred, enumFrom, enumFromThen, enumFromThenTo,
                  (.), (&&), (||), (==), (++), ($), (-), (>>=), (>>))
 
 import qualified Control.Applicative as Applicative (ZipList(..))
@@ -30,6 +31,7 @@ import qualified Data.ByteString.Lazy as BS
 import Data.Functor ( (<$>) )
 import qualified Data.Hashable as Hashable
 import qualified Data.Int as Int
+import Data.List
 import qualified Data.Maybe as Maybe (catMaybes)
 import qualified Data.Text.Lazy.Encoding as Encoding ( decodeUtf8, encodeUtf8 )
 import qualified Data.Text.Lazy as LT
@@ -57,6 +59,22 @@ instance Enum Enum where
     2 -> TWO
     3 -> THREE
     _ -> Exception.throw Thrift.ThriftException
+  succ t = case t of
+    ONE -> TWO
+    TWO -> THREE
+    THREE -> Exception.throw Thrift.ThriftException
+  pred t = case t of
+    ONE -> Exception.throw Thrift.ThriftException
+    TWO -> ONE
+    THREE -> TWO
+  enumFrom x = enumFromTo x maxBound
+  enumFromTo x y = takeUpToInc y $ iterate succ x
+    where
+    takeUpToInc _ [] = []
+    takeUpToInc m (x:_) | m == x = [x]
+    takeUpToInc m (x:xs) | otherwise = x : takeUpToInc m xs
+  enumFromThen _ _ = Exception.throw Thrift.ThriftException
+  enumFromThenTo _ _ _ = Exception.throw Thrift.ThriftException
 instance Hashable.Hashable Enum where
   hashWithSalt salt = Hashable.hashWithSalt salt . fromEnum
 instance DeepSeq.NFData Enum where
