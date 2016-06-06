@@ -190,6 +190,8 @@ class StructSpec(ThriftSpec):
     def readFieldBegin(self, fname, guess_func):
         field_spec = None
         self.nextSpec = None
+        if sys.version_info[0] >= 3:
+            fname = fname.decode()
         for s in self.spec:
             if s is not None and s[2] == fname:
                 field_spec = s
@@ -564,14 +566,14 @@ class TSimpleJSONProtocolBase(TProtocolBase):
         if self.reader.peek() == b't':
             true_string = b'true'
             for i in range(4):
-                if self.reader.read() != true_string[i]:
+                if self.reader.read() != true_string[i:i+1]:
                     raise TProtocolException(TProtocolException.INVALID_DATA,
                             "Bad data encountered in bool")
             boolVal = True
         elif self.reader.peek() == b'f':
             false_string = b'false'
             for i in range(5):
-                if self.reader.read() != false_string[i]:
+                if self.reader.read() != false_string[i:i+1]:
                     raise TProtocolException(TProtocolException.INVALID_DATA,
                             "Bad data encountered in bool")
             boolVal = False
