@@ -1835,9 +1835,12 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   indent(out) << "Type getType() const { return type_; }" << endl << endl;
 
   if (gen_json_) {
-    out << indent() << "void readFromJson(const char* jsonText, size_t len);"
-      << endl;
-    out << indent() << "void readFromJson(const char* jsonText);" << endl;
+    out << indent() << "void readFromJson(const char* jsonText, size_t len, "
+        << "const folly::json::serialization_opts& opts = "
+        << "folly::json::serialization_opts());" << endl;
+    out << indent() << "void readFromJson(const char* jsonText, "
+        << "const folly::json::serialization_opts& opts = "
+        << "folly::json::serialization_opts());" << endl;
 
     generate_union_json_reader(f_types_impl_, tstruct);
   }
@@ -1880,11 +1883,12 @@ void t_cpp_generator::generate_union_json_reader(ofstream& out,
   const vector<t_field*>& members = tstruct->get_members();
 
   indent(out) << "void " << name
-    << "::readFromJson(const char* jsonText, size_t len)" << endl;
+              << "::readFromJson(const char* jsonText, size_t len, "
+              << "const folly::json::serialization_opts& opts)" << endl;
   scope_up(out);
   indent(out) << "__clear();" << endl;
   indent(out) << "folly::dynamic parsed = "
-    << "folly::parseJson(folly::StringPiece(jsonText, len));" << endl;
+    << "folly::parseJson(folly::StringPiece(jsonText, len), opts);" << endl;
 
   indent(out) << "if (!parsed.isObject() || parsed.size() > 1) {" << endl;
   indent(out) << "  throw apache::thrift::TLibraryException("
@@ -1908,10 +1912,10 @@ void t_cpp_generator::generate_union_json_reader(ofstream& out,
   indent_down();
   indent(out) << "}" << endl;
 
-  indent(out) << "void " << name << "::readFromJson(const char* jsonText)"
-    << endl;
+  indent(out) << "void " << name << "::readFromJson(const char* jsonText, "
+              << "const folly::json::serialization_opts& opts)" << endl;
   scope_up(out);
-  indent(out) << "readFromJson(jsonText, strlen(jsonText));" << endl;
+  indent(out) << "readFromJson(jsonText, strlen(jsonText), opts);" << endl;
   indent_down();
   indent(out) << "}" << endl << endl;
 }

@@ -452,8 +452,8 @@ class union1 : public apache::thrift::TStructType<union1> {
 
   Type getType() const { return type_; }
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
  private:
@@ -790,8 +790,8 @@ class union2 : public apache::thrift::TStructType<union2> {
 
   Type getType() const { return type_; }
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
  private:
@@ -1128,8 +1128,8 @@ class union3 : public apache::thrift::TStructType<union3> {
 
   Type getType() const { return type_; }
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
  private:
@@ -1602,8 +1602,8 @@ class unionA : public apache::thrift::TStructType<unionA> {
 
   Type getType() const { return type_; }
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
  private:

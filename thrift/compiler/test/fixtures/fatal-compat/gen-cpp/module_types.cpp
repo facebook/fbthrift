@@ -103,10 +103,10 @@ return findValue( ::test_cpp1::cpp_reflection::_enum3_NAMES_TO_VALUES, name, out
 }} // apache::thrift 
 
 namespace test_cpp1 { namespace cpp_reflection {
-  void union1::readFromJson(const char* jsonText, size_t len)
+  void union1::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
   {
     __clear();
-    folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+    folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
     if (!parsed.isObject() || parsed.size() > 1) {
       throw apache::thrift::TLibraryException("Can't parse union1");
     }
@@ -141,9 +141,9 @@ namespace test_cpp1 { namespace cpp_reflection {
       return;
     }
   }
-  void union1::readFromJson(const char* jsonText)
+  void union1::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
   {
-    readFromJson(jsonText, strlen(jsonText));
+    readFromJson(jsonText, strlen(jsonText), opts);
   }
 
 uint32_t union1::read(apache::thrift::protocol::TProtocol* iprot) {
@@ -241,10 +241,10 @@ uint32_t union1::write(apache::thrift::protocol::TProtocol* oprot) const {
   return xfer;
 }
 
-  void union2::readFromJson(const char* jsonText, size_t len)
+  void union2::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
   {
     __clear();
-    folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+    folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
     if (!parsed.isObject() || parsed.size() > 1) {
       throw apache::thrift::TLibraryException("Can't parse union2");
     }
@@ -279,9 +279,9 @@ uint32_t union1::write(apache::thrift::protocol::TProtocol* oprot) const {
       return;
     }
   }
-  void union2::readFromJson(const char* jsonText)
+  void union2::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
   {
-    readFromJson(jsonText, strlen(jsonText));
+    readFromJson(jsonText, strlen(jsonText), opts);
   }
 
 uint32_t union2::read(apache::thrift::protocol::TProtocol* iprot) {
@@ -379,10 +379,10 @@ uint32_t union2::write(apache::thrift::protocol::TProtocol* oprot) const {
   return xfer;
 }
 
-  void union3::readFromJson(const char* jsonText, size_t len)
+  void union3::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
   {
     __clear();
-    folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+    folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
     if (!parsed.isObject() || parsed.size() > 1) {
       throw apache::thrift::TLibraryException("Can't parse union3");
     }
@@ -417,9 +417,9 @@ uint32_t union2::write(apache::thrift::protocol::TProtocol* oprot) const {
       return;
     }
   }
-  void union3::readFromJson(const char* jsonText)
+  void union3::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
   {
-    readFromJson(jsonText, strlen(jsonText));
+    readFromJson(jsonText, strlen(jsonText), opts);
   }
 
 uint32_t union3::read(apache::thrift::protocol::TProtocol* iprot) {
@@ -654,10 +654,10 @@ void merge(structA&& from, structA& to) {
   to.__isset.b = to.__isset.b || from.__isset.b;
 }
 
-  void unionA::readFromJson(const char* jsonText, size_t len)
+  void unionA::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
   {
     __clear();
-    folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+    folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
     if (!parsed.isObject() || parsed.size() > 1) {
       throw apache::thrift::TLibraryException("Can't parse unionA");
     }
@@ -697,9 +697,9 @@ void merge(structA&& from, structA& to) {
       return;
     }
   }
-  void unionA::readFromJson(const char* jsonText)
+  void unionA::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
   {
-    readFromJson(jsonText, strlen(jsonText));
+    readFromJson(jsonText, strlen(jsonText), opts);
   }
 
 uint32_t unionA::read(apache::thrift::protocol::TProtocol* iprot) {
