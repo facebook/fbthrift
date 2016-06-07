@@ -378,7 +378,10 @@ class TSimpleJSONProtocolBase(TProtocolBase):
     def writeJSONString(self, outStr):
         self.context.write(self.trans)
         self.trans.write(JSON_STRING_DELIMITER)
-        for ch in outStr:
+        is_bytes_type = isinstance(outStr, bytes)
+        for i in range(len(outStr)):
+            # Slicing of bytes in Py3 produces bytes!
+            ch = outStr[i:(i + 1)] if is_bytes_type else outStr[i]
             self.writeJSONChar(ch)
         self.trans.write(JSON_STRING_DELIMITER)
 

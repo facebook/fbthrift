@@ -46,6 +46,13 @@ class TestSimpleJSONRead(unittest.TestCase):
         self.assertEqual(stuff_read.aDouble, 1234567.9)
         self.assertTrue(stuff_read.aBool)
 
+    def test_escape_string(self):
+        stuff = Stuff(
+            aString=b'\\hello')
+        j = writeToJSON(stuff)
+        stuff_read = readStuffFromJSON(j)
+        self.assertEqual(stuff_read.aString, '\\hello')
+
     def test_unusual_numbers(self):
         j = '{ "aListOfDouble": ["inf", "-inf", "nan"]}'
         stuff_read = readStuffFromJSON(j)
