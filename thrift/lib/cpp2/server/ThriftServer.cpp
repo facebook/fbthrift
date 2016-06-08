@@ -289,6 +289,10 @@ void ThriftServer::setup() {
     if (!serverChannel_) {
 
       ServerBootstrap::socketConfig.acceptBacklog = listenBacklog_;
+      if (enableTFO_) {
+        ServerBootstrap::socketConfig.enableTCPFastOpen = *enableTFO_;
+        ServerBootstrap::socketConfig.fastOpenQueueSize = fastOpenQueueSize_;
+      }
 
       // Resize the IO pool
       ioThreadPool_->setNumThreads(nWorkers_);

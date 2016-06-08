@@ -75,6 +75,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::shared_ptr<wangle::SSLContextConfig> sslContext_;
   folly::Optional<wangle::TLSTicketKeySeeds> ticketSeeds_;
 
+  folly::Optional<bool> enableTFO_;
+  uint32_t fastOpenQueueSize_{10000};
+
   folly::Optional<wangle::SSLCacheOptions> sslCacheOptions_;
 
   // Security negotiation settings
@@ -273,6 +276,15 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   void updateTicketSeeds(wangle::TLSTicketKeySeeds seeds);
 
+  void setFastOpenOptions(bool enableTFO, uint32_t fastOpenQueueSize) {
+    enableTFO_ = enableTFO;
+    fastOpenQueueSize_ = fastOpenQueueSize;
+  }
+
+  folly::Optional<bool> getTFOEnabled() {
+    return enableTFO_;
+  }
+
   std::shared_ptr<wangle::SSLContextConfig>
   getSSLConfig() const {
     return sslContext_;
@@ -299,6 +311,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     config.acceptBacklog = getListenBacklog();
     if (ticketSeeds_) {
       config.initialTicketSeeds = *ticketSeeds_;
+    }
+    if (enableTFO_) {
+      config.enableTCPFastOpen = *enableTFO_;
+      config.fastOpenQueueSize = fastOpenQueueSize_;
     }
     return config;
   }
