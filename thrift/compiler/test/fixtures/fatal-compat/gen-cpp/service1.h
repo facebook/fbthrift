@@ -98,8 +98,8 @@ class service1_method1_args : public apache::thrift::TStructType<service1_method
 
   bool operator < (const service1_method1_args & ) const;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -118,8 +118,8 @@ class service1_method1_pargs : public apache::thrift::TStructType<service1_metho
   virtual ~service1_method1_pargs() throw() {}
 
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
 };
@@ -137,8 +137,8 @@ class service1_method1_presult : public apache::thrift::TStructType<service1_met
   virtual ~service1_method1_presult() throw() {}
 
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -226,8 +226,8 @@ class service1_method2_args : public apache::thrift::TStructType<service1_method
 
   bool operator < (const service1_method2_args & ) const;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -285,8 +285,8 @@ class service1_method2_pargs : public apache::thrift::TStructType<service1_metho
   const struct1* y;
   const double* z;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
 };
@@ -304,8 +304,8 @@ class service1_method2_presult : public apache::thrift::TStructType<service1_met
   virtual ~service1_method2_presult() throw() {}
 
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -339,8 +339,8 @@ class service1_method3_args : public apache::thrift::TStructType<service1_method
 
   bool operator < (const service1_method3_args & ) const;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -359,8 +359,8 @@ class service1_method3_pargs : public apache::thrift::TStructType<service1_metho
   virtual ~service1_method3_pargs() throw() {}
 
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
 };
@@ -400,8 +400,8 @@ class service1_method3_presult : public apache::thrift::TStructType<service1_met
     bool success;
   } __isset;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -489,8 +489,8 @@ class service1_method4_args : public apache::thrift::TStructType<service1_method
 
   bool operator < (const service1_method4_args & ) const;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -548,8 +548,8 @@ class service1_method4_pargs : public apache::thrift::TStructType<service1_metho
   const struct1* j;
   const double* k;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
 };
@@ -589,8 +589,8 @@ class service1_method4_presult : public apache::thrift::TStructType<service1_met
     bool success;
   } __isset;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -624,8 +624,8 @@ class service1_method5_args : public apache::thrift::TStructType<service1_method
 
   bool operator < (const service1_method5_args & ) const;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -644,8 +644,8 @@ class service1_method5_pargs : public apache::thrift::TStructType<service1_metho
   virtual ~service1_method5_pargs() throw() {}
 
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
 };
@@ -685,8 +685,8 @@ class service1_method5_presult : public apache::thrift::TStructType<service1_met
     bool success;
   } __isset;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -774,8 +774,8 @@ class service1_method6_args : public apache::thrift::TStructType<service1_method
 
   bool operator < (const service1_method6_args & ) const;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -833,8 +833,8 @@ class service1_method6_pargs : public apache::thrift::TStructType<service1_metho
   const struct1* m;
   const double* n;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 
 };
@@ -874,8 +874,8 @@ class service1_method6_presult : public apache::thrift::TStructType<service1_met
     bool success;
   } __isset;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 

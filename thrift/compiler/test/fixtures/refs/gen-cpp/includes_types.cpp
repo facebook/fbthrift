@@ -24,9 +24,9 @@ bool Included::operator == (const Included & rhs) const {
   return true;
 }
 
-void Included::readFromJson(const char* jsonText, size_t len)
+void Included::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
 {
-  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
   if (parsed["some_val"] != nullptr) {
     int64_t _tmp1 = (int64_t)parsed["some_val"].asInt();
     if (imaxabs(_tmp1) > 0x7fff) {
@@ -39,9 +39,9 @@ void Included::readFromJson(const char* jsonText, size_t len)
     this->__isset.some_val = false;
   }
 }
-void Included::readFromJson(const char* jsonText)
+void Included::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
 {
-  readFromJson(jsonText, strlen(jsonText));
+  readFromJson(jsonText, strlen(jsonText), opts);
 }
 
 uint32_t Included::read(apache::thrift::protocol::TProtocol* iprot) {

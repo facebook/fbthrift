@@ -82,8 +82,8 @@ class StructUsingOtherNamespace : public apache::thrift::TStructType<StructUsing
 
   bool operator < (const StructUsingOtherNamespace & ) const;
 
-  void readFromJson(const char* jsonText, size_t len);
-  void readFromJson(const char* jsonText);
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
 

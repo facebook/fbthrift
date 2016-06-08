@@ -2454,9 +2454,12 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
   }
 
   if (gen_json_) {
-    out << indent() << "void readFromJson(const char* jsonText, size_t len);"
-      << endl;
-    out << indent() << "void readFromJson(const char* jsonText);" << endl;
+    out << indent() << "void readFromJson(const char* jsonText, size_t len, "
+        << "const folly::json::serialization_opts& opts = "
+        << "folly::json::serialization_opts());" << endl;
+    out << indent() << "void readFromJson(const char* jsonText, "
+        << "const folly::json::serialization_opts& opts = "
+        << "folly::json::serialization_opts());" << endl;
   }
   if (read) {
     if (gen_templates_) {
@@ -2905,7 +2908,7 @@ void t_cpp_generator::generate_json_struct(ofstream& out,
       << "());" << endl;
   }
   indent(out) << prefix_thrift << ref << "readFromJson(folly::toJson("
-    << prefix_json << ").c_str());" << endl;
+    << prefix_json << ").c_str(), opts);" << endl;
 }
 
 void t_cpp_generator::generate_json_container(ofstream& out,
@@ -3089,10 +3092,11 @@ void t_cpp_generator::generate_json_reader(ofstream& out,
   string name = tstruct->get_name();
 
   indent(out) << "void " << name
-    << "::readFromJson(const char* jsonText, size_t len)" << endl;
+              << "::readFromJson(const char* jsonText, size_t len, "
+              << "const folly::json::serialization_opts& opts)" << endl;
   scope_up(out);
   indent(out) << "folly::dynamic parsed = "
-    << "folly::parseJson(folly::StringPiece(jsonText, len));" << endl;
+    << "folly::parseJson(folly::StringPiece(jsonText, len), opts);" << endl;
 
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     indent(out) << "if (parsed[\"" << (*f_iter)->get_name()
@@ -3127,10 +3131,10 @@ void t_cpp_generator::generate_json_reader(ofstream& out,
   indent_down();
   indent(out) << "}" << endl;
 
-  indent(out) << "void " << name << "::readFromJson(const char* jsonText)"
-    << endl;
+  indent(out) << "void " << name << "::readFromJson(const char* jsonText, "
+              << "const folly::json::serialization_opts& opts)" << endl;
   scope_up(out);
-  indent(out) << "readFromJson(jsonText, strlen(jsonText));" << endl;
+  indent(out) << "readFromJson(jsonText, strlen(jsonText), opts);" << endl;
   indent_down();
   indent(out) << "}" << endl << endl;
 }

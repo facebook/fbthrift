@@ -30,16 +30,16 @@ bool StructUsingOtherNamespace::operator == (const StructUsingOtherNamespace & r
   return true;
 }
 
-void StructUsingOtherNamespace::readFromJson(const char* jsonText, size_t len)
+void StructUsingOtherNamespace::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
 {
-  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
   if (parsed["other"] != nullptr) {
     this->other.reset(new  ::cpp1::Included());
-    this->other->readFromJson(folly::toJson(parsed["other"]).c_str());
+    this->other->readFromJson(folly::toJson(parsed["other"]).c_str(), opts);
   }}
-void StructUsingOtherNamespace::readFromJson(const char* jsonText)
+void StructUsingOtherNamespace::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
 {
-  readFromJson(jsonText, strlen(jsonText));
+  readFromJson(jsonText, strlen(jsonText), opts);
 }
 
 uint32_t StructUsingOtherNamespace::read(apache::thrift::protocol::TProtocol* iprot) {

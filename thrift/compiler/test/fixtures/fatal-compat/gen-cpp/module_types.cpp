@@ -530,9 +530,9 @@ bool structA::operator == (const structA & rhs) const {
   return true;
 }
 
-void structA::readFromJson(const char* jsonText, size_t len)
+void structA::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
 {
-  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
   if (parsed["a"] != nullptr) {
     int64_t _tmp10 = (int64_t)parsed["a"].asInt();
     if (imaxabs(_tmp10) > 0x7fffffffL) {
@@ -551,9 +551,9 @@ void structA::readFromJson(const char* jsonText, size_t len)
     this->__isset.b = false;
   }
 }
-void structA::readFromJson(const char* jsonText)
+void structA::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
 {
-  readFromJson(jsonText, strlen(jsonText));
+  readFromJson(jsonText, strlen(jsonText), opts);
 }
 
 uint32_t structA::read(apache::thrift::protocol::TProtocol* iprot) {
@@ -693,7 +693,7 @@ void merge(structA&& from, structA& to) {
     }
     if (parsed["a"] != nullptr) {
       set_a();
-      this->value_.a.readFromJson(folly::toJson(parsed["a"]).c_str());
+      this->value_.a.readFromJson(folly::toJson(parsed["a"]).c_str(), opts);
       return;
     }
   }
@@ -825,9 +825,9 @@ bool structB::operator == (const structB & rhs) const {
   return true;
 }
 
-void structB::readFromJson(const char* jsonText, size_t len)
+void structB::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
 {
-  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
   if (parsed["c"] != nullptr) {
     this->c = parsed["c"].asDouble();
     this->__isset.c = true;
@@ -841,9 +841,9 @@ void structB::readFromJson(const char* jsonText, size_t len)
     this->__isset.d = false;
   }
 }
-void structB::readFromJson(const char* jsonText)
+void structB::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
 {
-  readFromJson(jsonText, strlen(jsonText));
+  readFromJson(jsonText, strlen(jsonText), opts);
 }
 
 uint32_t structB::read(apache::thrift::protocol::TProtocol* iprot) {
@@ -1013,9 +1013,9 @@ bool structC::operator == (const structC & rhs) const {
   return true;
 }
 
-void structC::readFromJson(const char* jsonText, size_t len)
+void structC::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
 {
-  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
   if (parsed["a"] != nullptr) {
     int64_t _tmp16 = (int64_t)parsed["a"].asInt();
     if (imaxabs(_tmp16) > 0x7fffffffL) {
@@ -1058,19 +1058,19 @@ void structC::readFromJson(const char* jsonText, size_t len)
     this->__isset.f = false;
   }
   if (parsed["g"] != nullptr) {
-    this->g.readFromJson(folly::toJson(parsed["g"]).c_str());
+    this->g.readFromJson(folly::toJson(parsed["g"]).c_str(), opts);
     this->__isset.g = true;
   } else {
     this->__isset.g = false;
   }
   if (parsed["h"] != nullptr) {
-    this->h.readFromJson(folly::toJson(parsed["h"]).c_str());
+    this->h.readFromJson(folly::toJson(parsed["h"]).c_str(), opts);
     this->__isset.h = true;
   } else {
     this->__isset.h = false;
   }
   if (parsed["i"] != nullptr) {
-    this->i.readFromJson(folly::toJson(parsed["i"]).c_str());
+    this->i.readFromJson(folly::toJson(parsed["i"]).c_str(), opts);
     this->__isset.i = true;
   } else {
     this->__isset.i = false;
@@ -1131,7 +1131,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
     this->j3.resize(_size34);
     for (uint32_t _i35 = 0; _i35 < _size34; ++_i35)
     {
-      this->j3[_i35].readFromJson(folly::toJson(_json36[_i35]).c_str());
+      this->j3[_i35].readFromJson(folly::toJson(_json36[_i35]).c_str(), opts);
     }
     this->__isset.j3 = true;
   } else {
@@ -1196,7 +1196,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
     for (uint32_t _i57 = 0; _i57 < _size56; ++_i57)
     {
       structB _elem60;
-      _elem60.readFromJson(folly::toJson(_json58[_i57]).c_str());
+      _elem60.readFromJson(folly::toJson(_json58[_i57]).c_str(), opts);
       this->k3.insert(_elem60);
     }
     this->__isset.k3 = true;
@@ -1278,7 +1278,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      _val91.readFromJson(folly::toJson(_iter89->second).c_str());
+      _val91.readFromJson(folly::toJson(_iter89->second).c_str(), opts);
       this->l3[_key90] = _val91;
     }
     this->__isset.l3 = true;
@@ -1337,7 +1337,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
       } catch (std::range_error& ex) {
         throw apache::thrift::TLibraryException(ex.what());
       }
-      _val114.readFromJson(folly::toJson(_iter112->second).c_str());
+      _val114.readFromJson(folly::toJson(_iter112->second).c_str(), opts);
       this->m3[_key113] = _val114;
     }
     this->__isset.m3 = true;
@@ -1384,7 +1384,7 @@ void structC::readFromJson(const char* jsonText, size_t len)
       std::string _key136;
       structB _val137;
       _key136 = (_iter135)->first.asString();
-      _val137.readFromJson(folly::toJson(_iter135->second).c_str());
+      _val137.readFromJson(folly::toJson(_iter135->second).c_str(), opts);
       this->n3[_key136] = _val137;
     }
     this->__isset.n3 = true;
@@ -1407,9 +1407,9 @@ void structC::readFromJson(const char* jsonText, size_t len)
     this->__isset.o3 = false;
   }
 }
-void structC::readFromJson(const char* jsonText)
+void structC::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
 {
-  readFromJson(jsonText, strlen(jsonText));
+  readFromJson(jsonText, strlen(jsonText), opts);
 }
 
 uint32_t structC::read(apache::thrift::protocol::TProtocol* iprot) {
@@ -2750,9 +2750,9 @@ bool struct1::operator == (const struct1 & rhs) const {
   return true;
 }
 
-void struct1::readFromJson(const char* jsonText, size_t len)
+void struct1::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
 {
-  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
   if (parsed["field0"] != nullptr) {
     int64_t _tmp403 = (int64_t)parsed["field0"].asInt();
     if (imaxabs(_tmp403) > 0x7fffffffL) {
@@ -2781,21 +2781,21 @@ void struct1::readFromJson(const char* jsonText, size_t len)
     throw apache::thrift::TLibraryException("can't parse a required field!");
   }
   if (parsed["field4"] != nullptr) {
-    this->field4.readFromJson(folly::toJson(parsed["field4"]).c_str());
+    this->field4.readFromJson(folly::toJson(parsed["field4"]).c_str(), opts);
     this->__isset.field4 = true;
   } else {
     this->__isset.field4 = false;
   }
   if (parsed["field5"] != nullptr) {
-    this->field5.readFromJson(folly::toJson(parsed["field5"]).c_str());
+    this->field5.readFromJson(folly::toJson(parsed["field5"]).c_str(), opts);
     this->__isset.field5 = true;
   } else {
     this->__isset.field5 = false;
   }
 }
-void struct1::readFromJson(const char* jsonText)
+void struct1::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
 {
-  readFromJson(jsonText, strlen(jsonText));
+  readFromJson(jsonText, strlen(jsonText), opts);
 }
 
 uint32_t struct1::read(apache::thrift::protocol::TProtocol* iprot) {
@@ -3005,9 +3005,9 @@ bool struct2::operator == (const struct2 & rhs) const {
   return true;
 }
 
-void struct2::readFromJson(const char* jsonText, size_t len)
+void struct2::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
 {
-  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
   if (parsed["fieldA"] != nullptr) {
     int64_t _tmp409 = (int64_t)parsed["fieldA"].asInt();
     if (imaxabs(_tmp409) > 0x7fffffffL) {
@@ -3038,27 +3038,27 @@ void struct2::readFromJson(const char* jsonText, size_t len)
     this->__isset.fieldD = false;
   }
   if (parsed["fieldE"] != nullptr) {
-    this->fieldE.readFromJson(folly::toJson(parsed["fieldE"]).c_str());
+    this->fieldE.readFromJson(folly::toJson(parsed["fieldE"]).c_str(), opts);
     this->__isset.fieldE = true;
   } else {
     this->__isset.fieldE = false;
   }
   if (parsed["fieldF"] != nullptr) {
-    this->fieldF.readFromJson(folly::toJson(parsed["fieldF"]).c_str());
+    this->fieldF.readFromJson(folly::toJson(parsed["fieldF"]).c_str(), opts);
     this->__isset.fieldF = true;
   } else {
     this->__isset.fieldF = false;
   }
   if (parsed["fieldG"] != nullptr) {
-    this->fieldG.readFromJson(folly::toJson(parsed["fieldG"]).c_str());
+    this->fieldG.readFromJson(folly::toJson(parsed["fieldG"]).c_str(), opts);
     this->__isset.fieldG = true;
   } else {
     this->__isset.fieldG = false;
   }
 }
-void struct2::readFromJson(const char* jsonText)
+void struct2::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
 {
-  readFromJson(jsonText, strlen(jsonText));
+  readFromJson(jsonText, strlen(jsonText), opts);
 }
 
 uint32_t struct2::read(apache::thrift::protocol::TProtocol* iprot) {
@@ -3304,9 +3304,9 @@ bool struct3::operator == (const struct3 & rhs) const {
   return true;
 }
 
-void struct3::readFromJson(const char* jsonText, size_t len)
+void struct3::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
 {
-  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len));
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
   if (parsed["fieldA"] != nullptr) {
     int64_t _tmp415 = (int64_t)parsed["fieldA"].asInt();
     if (imaxabs(_tmp415) > 0x7fffffffL) {
@@ -3337,25 +3337,25 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     this->__isset.fieldD = false;
   }
   if (parsed["fieldE"] != nullptr) {
-    this->fieldE.readFromJson(folly::toJson(parsed["fieldE"]).c_str());
+    this->fieldE.readFromJson(folly::toJson(parsed["fieldE"]).c_str(), opts);
     this->__isset.fieldE = true;
   } else {
     this->__isset.fieldE = false;
   }
   if (parsed["fieldF"] != nullptr) {
-    this->fieldF.readFromJson(folly::toJson(parsed["fieldF"]).c_str());
+    this->fieldF.readFromJson(folly::toJson(parsed["fieldF"]).c_str(), opts);
     this->__isset.fieldF = true;
   } else {
     this->__isset.fieldF = false;
   }
   if (parsed["fieldG"] != nullptr) {
-    this->fieldG.readFromJson(folly::toJson(parsed["fieldG"]).c_str());
+    this->fieldG.readFromJson(folly::toJson(parsed["fieldG"]).c_str(), opts);
     this->__isset.fieldG = true;
   } else {
     this->__isset.fieldG = false;
   }
   if (parsed["fieldH"] != nullptr) {
-    this->fieldH.readFromJson(folly::toJson(parsed["fieldH"]).c_str());
+    this->fieldH.readFromJson(folly::toJson(parsed["fieldH"]).c_str(), opts);
     this->__isset.fieldH = true;
   } else {
     this->__isset.fieldH = false;
@@ -3411,7 +3411,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     this->fieldL.resize(_size431);
     for (uint32_t _i432 = 0; _i432 < _size431; ++_i432)
     {
-      this->fieldL[_i432].readFromJson(folly::toJson(_json433[_i432]).c_str());
+      this->fieldL[_i432].readFromJson(folly::toJson(_json433[_i432]).c_str(), opts);
     }
     this->__isset.fieldL = true;
   } else {
@@ -3471,7 +3471,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     for (uint32_t _i452 = 0; _i452 < _size451; ++_i452)
     {
       structB _elem455;
-      _elem455.readFromJson(folly::toJson(_json453[_i452]).c_str());
+      _elem455.readFromJson(folly::toJson(_json453[_i452]).c_str(), opts);
       this->fieldP.insert(_elem455);
     }
     this->__isset.fieldP = true;
@@ -3485,7 +3485,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
       std::string _key461;
       structA _val462;
       _key461 = (_iter460)->first.asString();
-      _val462.readFromJson(folly::toJson(_iter460->second).c_str());
+      _val462.readFromJson(folly::toJson(_iter460->second).c_str(), opts);
       this->fieldQ[_key461] = _val462;
     }
     this->__isset.fieldQ = true;
@@ -3499,7 +3499,7 @@ void struct3::readFromJson(const char* jsonText, size_t len)
       std::string _key468;
       structB _val469;
       _key468 = (_iter467)->first.asString();
-      _val469.readFromJson(folly::toJson(_iter467->second).c_str());
+      _val469.readFromJson(folly::toJson(_iter467->second).c_str(), opts);
       this->fieldR[_key468] = _val469;
     }
     this->__isset.fieldR = true;
@@ -3507,9 +3507,9 @@ void struct3::readFromJson(const char* jsonText, size_t len)
     this->__isset.fieldR = false;
   }
 }
-void struct3::readFromJson(const char* jsonText)
+void struct3::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
 {
-  readFromJson(jsonText, strlen(jsonText));
+  readFromJson(jsonText, strlen(jsonText), opts);
 }
 
 uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
