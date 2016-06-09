@@ -1,0 +1,2 @@
+cpp2 src/present.thrift
+cpp2 src/absent.thrift
