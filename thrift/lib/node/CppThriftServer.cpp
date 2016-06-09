@@ -23,10 +23,10 @@
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 
 using namespace v8;
-folly::EventBase integrated_uv_event_base;
+std::unique_ptr<folly::EventBase> integrated_uv_event_base;
 
 void run_loop(uv_async_t *handle, int status) {
-  integrated_uv_event_base.loop();
+  integrated_uv_event_base->loop();
 }
 
 uv_async_t async;
@@ -123,7 +123,7 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
 
     auto reqd = folly::makeMoveWrapper(std::move(req));
     auto bufd = folly::makeMoveWrapper(std::move(buf));
-    integrated_uv_event_base.runInEventBaseThread([=]() mutable {
+    integrated_uv_event_base->runInEventBaseThread([=]() mutable {
         HandleScope scope;
         (*bufd)->coalesce();
         uint64_t resp;
@@ -280,6 +280,7 @@ class CppThriftServer : public node::ObjectWrap {
 Persistent<Function> CppThriftServer::constructor;
 
 void init(Handle<Object> exports) {
+  integrated_uv_event_base.reset(new folly::EventBase());
   CppThriftServer::Init(exports);
   ThriftServerCallback::Init(exports);
 
