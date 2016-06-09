@@ -57,6 +57,9 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
         configs["thrift_security_service_tier"] = config->SASLServiceTier();
       }
     }
+    if (config->useSSLTFO()) {
+      configs["enable_ssl_tfo"] = "true";
+    }
     channel = facebook::servicerouter::cpp2::getClientFactory()
       .getChannel(config->srTier(), ebm_.getEventBase(), options, configs);
   } else {

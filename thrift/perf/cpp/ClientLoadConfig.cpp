@@ -46,6 +46,7 @@ DEFINE_string(key, "", "client SSL private key file");
 DEFINE_string(cert, "", "client SSL certificate file");
 DEFINE_string(trusted_ca_list, "", "file pointing to a trusted CA or list");
 DEFINE_bool(use_tickets, true, "Use SSL session tickets on the client?");
+DEFINE_bool(use_ssl_tfo, true, "Use TFO for SSL connections");
 /*
  * Please refer to the online OpenSSL manual for the format of the string of
  * ciphers. The default cipher list is "ALL:!aNULL:!eNULL", which means all
@@ -215,6 +216,10 @@ bool ClientLoadConfig::useSSL() const {
 
 bool ClientLoadConfig::useSR() const {
   return FLAGS_sr;
+}
+
+bool ClientLoadConfig::useSSLTFO() const {
+  return FLAGS_use_ssl_tfo;
 }
 
 bool ClientLoadConfig::useSingleHost() const {

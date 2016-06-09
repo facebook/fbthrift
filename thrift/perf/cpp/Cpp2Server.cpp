@@ -59,6 +59,8 @@ DEFINE_string(client_ca_list, "", "file pointing to a client CA or list");
 DEFINE_bool(queue_sends, true, "Queue sends for better throughput");
 DEFINE_string(ecc_curve, "prime256v1",
     "The ECC curve to use for EC handshakes");
+DEFINE_bool(enable_tfo, true, "Enable TFO");
+DEFINE_int32(tfo_queue_size, 1000, "TFO queue size");
 
 void setTunables(ThriftServer* server) {
   if (FLAGS_idle_timeout > 0) {
@@ -105,6 +107,7 @@ int main(int argc, char* argv[]) {
   server->setMaxConnections(FLAGS_max_connections);
   server->setMaxRequests(FLAGS_max_requests);
   server->setQueueSends(FLAGS_queue_sends);
+  server->setFastOpenOptions(FLAGS_enable_tfo, FLAGS_tfo_queue_size);
   wangle::TLSTicketKeySeeds seeds = {
     { "11111111" },
     { "22111111" },

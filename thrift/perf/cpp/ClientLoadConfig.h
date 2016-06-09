@@ -102,6 +102,8 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
 
   bool useSR() const;
 
+  bool useSSLTFO() const;
+
   bool useSingleHost() const;
 
   std::string srTier() const;
