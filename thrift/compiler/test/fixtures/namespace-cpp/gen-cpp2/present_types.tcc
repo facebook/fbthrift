@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace foo { namespace bar { namespace cpp2 {
+namespace foo { namespace bar {
 
 template <class Protocol_>
 uint32_t MyData::read(Protocol_* iprot) {
@@ -97,10 +97,10 @@ uint32_t MyData::write(Protocol_* prot_) const {
   return xfer;
 }
 
-}}} // foo::bar::cpp2
+}} // foo::bar
 namespace apache { namespace thrift {
 
 }} // apache::thrift
-namespace foo { namespace bar { namespace cpp2 {
+namespace foo { namespace bar {
 
-}}} // foo::bar::cpp2
+}} // foo::bar

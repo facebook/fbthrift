@@ -289,24 +289,27 @@ class Catch(Primitive):
 class Namespace(Primitive):
     def __init__(self, parent, path):
         super(Namespace, self).__init__(parent, text=None, path=path)
+        self.epilogue = None
 
     def _write(self, context):
-        path = self.path
-        text = ' '.join(r'namespace {0} {{'.format(i) for i in path) + \
-                '\n'
-        self.epilogue = '}' * len(path) + ' // ' + '::'.join(path)
-        context.outputs.line_feed()
-        print >>context.outputs, text
+        path = filter(None, self.path)
+        if path:
+            parts = [r'namespace {0} {{'.format(i) for i in path]
+            text = ' '.join(parts) + '\n'
+            self.epilogue = '}' * len(path) + ' // ' + '::'.join(path)
+            context.outputs.line_feed()
+            print >>context.outputs, text
 
     def enter_scope_callback(self, context, scope):
         return dict(physical_scope=False)
 
     def exit_scope_callback(self, context, scope):
-        # namespaces don't have physical_scope cause they have an ending text
-        # hardcoded into .epilogue by the write_primitive method
-        context.outputs.double_space()
-        # => write the epilogue statement for all outputs
-        print >>context.outputs, scope.opts.epilogue,
+        if scope.opts.epilogue:
+            # namespaces don't have physical_scope cause they have an ending
+            # text hardcoded into .epilogue by the write_primitive method
+            context.outputs.double_space()
+            # => write the epilogue statement for all outputs
+            print >>context.outputs, scope.opts.epilogue,
         return dict(physical_scope=False)
 
 

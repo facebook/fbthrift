@@ -8,7 +8,6 @@
 
 #include "thrift/compiler/test/fixtures/namespace-cpp/gen-cpp2/absent_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-namespace cpp2 {
 
 struct absent_constants {};
 
@@ -17,4 +16,3 @@ class __attribute__((__deprecated__("absentConstants suffers from the 'static in
   absentConstants() {}
 };
 
-} // cpp2

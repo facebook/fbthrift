@@ -103,6 +103,7 @@ class CppGenerator(t_generator.Generator):
         'separate_processmap': "generate processmap in separate files",
         'optionals': "produce folly::Optional<...> for optional members",
         'fatal': 'uses the Fatal library to generate reflection metadata',
+        'namespace_cpp': 'skip the cpp2 namespace component (temporary hack)',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -341,12 +342,13 @@ class CppGenerator(t_generator.Generator):
         if program == None:
             program = self._program
         ns = program.get_namespace('cpp2')
-        if ns == '':
-            if len(program.get_namespace('cpp')) > 0:
-                ns = program.get_namespace('cpp') + '.cpp2'
-            else:
-                ns = 'cpp2'
-        return ns
+        if ns:
+            return ns
+        ns = program.get_namespace('cpp')
+        parts = filter(None, ns.split('.'))
+        if not self.flag_namespace_cpp:
+            parts.append('cpp2')
+        return '.'.join(parts)
 
     def _namespace_prefix(self, ns):
         'Return the absolute c++ prefix for the .-separated namespace param'

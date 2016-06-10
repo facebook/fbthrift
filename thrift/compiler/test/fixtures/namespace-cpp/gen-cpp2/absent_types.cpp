@@ -10,8 +10,6 @@
 
 #include <algorithm>
 
-namespace cpp2 {
-
 template uint32_t MyData::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t MyData::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t MyData::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
@@ -39,10 +37,6 @@ void swap(MyData& a, MyData& b) {
   swap(a.__isset, b.__isset);
 }
 
-} // cpp2
 namespace apache { namespace thrift {
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

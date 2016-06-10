@@ -6,6 +6,6 @@
  */
 #include "thrift/compiler/test/fixtures/namespace-cpp/gen-cpp2/present_constants.h"
 
-namespace foo { namespace bar { namespace cpp2 {
+namespace foo { namespace bar {
 
-}}} // foo::bar::cpp2
+}} // foo::bar

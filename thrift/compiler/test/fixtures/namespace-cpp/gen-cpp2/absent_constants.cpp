@@ -6,6 +6,3 @@
  */
 #include "thrift/compiler/test/fixtures/namespace-cpp/gen-cpp2/absent_constants.h"
 
-namespace cpp2 {
-
-} // cpp2

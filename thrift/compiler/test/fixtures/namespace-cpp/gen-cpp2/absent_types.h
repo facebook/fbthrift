@@ -16,8 +16,6 @@
 
 
 
-namespace cpp2 {
-
 class MyData;
 
 class MyData : private boost::totally_ordered<MyData> {
@@ -93,35 +91,30 @@ class MyData : private boost::totally_ordered<MyData> {
 };
 
 void swap(MyData& a, MyData& b);
-
-} // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::MyData>::clear( ::cpp2::MyData* obj) {
+template <> inline void Cpp2Ops< ::MyData>::clear( ::MyData* obj) {
   return obj->__clear();
 }
 
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::MyData>::thriftType() {
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::MyData>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyData>::write(Protocol* proto, const  ::cpp2::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::write(Protocol* proto, const  ::MyData* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyData>::read(Protocol* proto,   ::cpp2::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::read(Protocol* proto,   ::MyData* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyData>::serializedSize(Protocol* proto, const  ::cpp2::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::serializedSize(Protocol* proto, const  ::MyData* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyData>::serializedSizeZC(Protocol* proto, const  ::cpp2::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::serializedSizeZC(Protocol* proto, const  ::MyData* obj) {
   return obj->serializedSizeZC(proto);
 }
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2

@@ -8,7 +8,7 @@
 
 #include "thrift/compiler/test/fixtures/namespace-cpp/gen-cpp2/present_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-namespace foo { namespace bar { namespace cpp2 {
+namespace foo { namespace bar {
 
 struct present_constants {};
 
@@ -17,4 +17,4 @@ class __attribute__((__deprecated__("presentConstants suffers from the 'static i
   presentConstants() {}
 };
 
-}}} // foo::bar::cpp2
+}} // foo::bar

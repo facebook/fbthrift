@@ -16,7 +16,7 @@
 
 
 
-namespace foo { namespace bar { namespace cpp2 {
+namespace foo { namespace bar {
 
 class MyData;
 
@@ -94,34 +94,34 @@ class MyData : private boost::totally_ordered<MyData> {
 
 void swap(MyData& a, MyData& b);
 
-}}} // foo::bar::cpp2
+}} // foo::bar
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::foo::bar::cpp2::MyData>::clear( ::foo::bar::cpp2::MyData* obj) {
+template <> inline void Cpp2Ops< ::foo::bar::MyData>::clear( ::foo::bar::MyData* obj) {
   return obj->__clear();
 }
 
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::foo::bar::cpp2::MyData>::thriftType() {
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::foo::bar::MyData>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::cpp2::MyData>::write(Protocol* proto, const  ::foo::bar::cpp2::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::write(Protocol* proto, const  ::foo::bar::MyData* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::cpp2::MyData>::read(Protocol* proto,   ::foo::bar::cpp2::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::read(Protocol* proto,   ::foo::bar::MyData* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::cpp2::MyData>::serializedSize(Protocol* proto, const  ::foo::bar::cpp2::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::serializedSize(Protocol* proto, const  ::foo::bar::MyData* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::cpp2::MyData>::serializedSizeZC(Protocol* proto, const  ::foo::bar::cpp2::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::serializedSizeZC(Protocol* proto, const  ::foo::bar::MyData* obj) {
   return obj->serializedSizeZC(proto);
 }
 
 }} // apache::thrift
-namespace foo { namespace bar { namespace cpp2 {
+namespace foo { namespace bar {
 
-}}} // foo::bar::cpp2
+}} // foo::bar

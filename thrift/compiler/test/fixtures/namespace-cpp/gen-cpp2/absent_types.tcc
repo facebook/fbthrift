@@ -16,8 +16,6 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace cpp2 {
-
 template <class Protocol_>
 uint32_t MyData::read(Protocol_* iprot) {
   uint32_t xfer = 0;
@@ -97,10 +95,6 @@ uint32_t MyData::write(Protocol_* prot_) const {
   return xfer;
 }
 
-} // cpp2
 namespace apache { namespace thrift {
 
 }} // apache::thrift
-namespace cpp2 {
-
-} // cpp2
