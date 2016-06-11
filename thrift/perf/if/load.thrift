@@ -3,6 +3,7 @@ include "common/fb303/if/fb303.thrift"
 namespace cpp apache.thrift.test
 namespace cpp2 apache.thrift
 namespace py apache.thrift.test.load
+namespace py.asyncio apache.thrift.test.asyncio.load
 namespace py.twisted apache.thrift.test.twisted.load
 namespace java com.facebook.thrift.perf
 namespace java.swift org.apache.swift.thrift.perf
