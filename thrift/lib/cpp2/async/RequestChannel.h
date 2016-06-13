@@ -117,9 +117,14 @@ class ClientReceiveState {
     return std::move(header_);
   }
 
+  void resetHeader(std::unique_ptr<apache::thrift::transport::THeader> h) {
+    header_ = std::move(h);
+  }
+
   apache::thrift::ContextStack* ctx() const {
     return ctx_.get();
   }
+
   bool isSecurityActive() const {
     return isSecurityActive_;
   }
