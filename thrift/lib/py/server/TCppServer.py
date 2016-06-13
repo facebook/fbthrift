@@ -171,6 +171,9 @@ class TCppServer(CppServerWrapper, TServer):
             raise ValueError("Options might be of type TSSLCacheOptions")
         self.setCppSSLCacheOptions(cache_options)
 
+    def setFastOpenOptions(self, enabled, tfo_max_queue):
+        self.setCppFastOpenOptions(enabled, tfo_max_queue)
+
     def getTicketSeeds(self):
         return self.getCppTicketSeeds()
 

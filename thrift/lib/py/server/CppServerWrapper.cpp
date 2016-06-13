@@ -529,6 +529,12 @@ public:
     }
   }
 
+  void setCppFastOpenOptions(object enabledObj, object tfoMaxQueueObj) {
+    bool enabled{extract<bool>(enabledObj)};
+    uint32_t tfoMaxQueue{extract<uint32_t>(tfoMaxQueueObj)};
+    ThriftServer::setFastOpenOptions(enabled, tfoMaxQueue);
+  }
+
   void setCppSSLCacheOptions(object cacheOptions) {
     SSLCacheOptions options = {
         .sslCacheTimeout = std::chrono::seconds(
@@ -641,6 +647,7 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
          &CppServerWrapper::setNewSimpleThreadManager)
     .def("setCppSSLConfig", &CppServerWrapper::setCppSSLConfig)
     .def("setCppSSLCacheOptions", &CppServerWrapper::setCppSSLCacheOptions)
+    .def("setCppFastOpenOptions", &CppServerWrapper::setCppFastOpenOptions)
     .def("getCppTicketSeeds", &CppServerWrapper::getCppTicketSeeds)
     .def("validateCppSSLConfig", &CppServerWrapper::validateCppSSLConfig)
 
