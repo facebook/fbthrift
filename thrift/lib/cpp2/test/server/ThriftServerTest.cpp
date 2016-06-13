@@ -118,6 +118,9 @@ TEST(ThriftServer, CompressionClientTest) {
 }
 
 TEST(ThriftServer, CompressionServerTest) {
+  /* This tests the boundary condition of uncompressed value being larger
+     than minCompressBytes and compressed value being smaller. We want to ensure
+     this case does not cause corruption */
   TestThriftServerFactory<TestInterface> factory;
   factory.minCompressBytes(100);
   ScopedServerThread sst(factory.create());
@@ -128,7 +131,7 @@ TEST(ThriftServer, CompressionServerTest) {
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   auto channel =
-      boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
+    boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
   channel->setTransform(apache::thrift::transport::THeader::ZLIB_TRANSFORM);
 
   std::string request(55, 'a');
@@ -137,6 +140,80 @@ TEST(ThriftServer, CompressionServerTest) {
   // and less than 100 bytes after compression
   client.sync_echoRequest(response, request);
   EXPECT_EQ(response.size(), 100);
+}
+
+TEST(ThriftServer, DefaultCompressionTest) {
+  /* Tests the functionality of default transforms, ensuring the server properly
+     applies them even if the client does not apply any transforms. */
+  class Callback : public RequestCallback {
+   public:
+    explicit Callback(bool compressionExpected, uint16_t expectedTransform)
+        : compressionExpected_(compressionExpected),
+          expectedTransform_(expectedTransform) {}
+
+   private:
+    void requestSent() override {}
+
+    void replyReceived(ClientReceiveState&& state) override {
+      auto trans = state.header()->getTransforms();
+      if (compressionExpected_) {
+        EXPECT_EQ(trans.size(), 1);
+        for (auto& tran : trans) {
+          EXPECT_EQ(tran, expectedTransform_);
+        }
+      } else {
+        EXPECT_EQ(trans.size(), 0);
+      }
+    }
+    void requestError(ClientReceiveState&& state) override {
+      std::rethrow_exception(state.exception());
+    }
+    bool compressionExpected_;
+    uint16_t expectedTransform_;
+  };
+
+  TestThriftServerFactory<TestInterface> factory;
+  factory.minCompressBytes(1);
+  factory.defaultWriteTransform(
+    apache::thrift::transport::THeader::ZLIB_TRANSFORM);
+  auto server = std::static_pointer_cast<ThriftServer>(factory.create());
+  ScopedServerThread sst(server);
+  folly::EventBase base;
+
+  // First, with minCompressBytes set low, ensure we compress even though the
+  // client did not compress
+  std::shared_ptr<TAsyncSocket> socket(
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  client.sendResponse(
+    folly::make_unique<Callback>(
+      true, apache::thrift::transport::THeader::ZLIB_TRANSFORM
+    ),
+    64
+  );
+  base.loop();
+
+  // Ensure that client transforms take precedence
+  auto channel =
+    boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
+  channel->setTransform(apache::thrift::transport::THeader::SNAPPY_TRANSFORM);
+  client.sendResponse(
+    folly::make_unique<Callback>(
+      true, apache::thrift::transport::THeader::SNAPPY_TRANSFORM
+    ),
+    64
+  );
+  base.loop();
+
+  // Ensure that minCompressBytes still works with default transforms. We
+  // Do not expect compression
+  server->setMinCompressBytes(1000);
+  std::shared_ptr<TAsyncSocket> socket2(
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  TestServiceAsyncClient client2(HeaderClientChannel::newChannel(socket2));
+  client2.sendResponse(folly::make_unique<Callback>(false, 0), 64);
+  base.loop();
+
 }
 
 TEST(ThriftServer, HeaderTest) {

@@ -205,6 +205,12 @@ protected:
     cpp2Channel_->setQueueSends(queueSends);
   }
 
+  void setDefaultWriteTransforms(std::vector<uint16_t>& writeTrans) {
+    writeTrans_ = writeTrans;
+  }
+
+  std::vector<uint16_t>& getDefaultWriteTransforms() { return writeTrans_; }
+
   void closeNow() {
     cpp2Channel_->closeNow();
   }
@@ -294,6 +300,8 @@ private:
   uint32_t lastWrittenSeqId_;
 
   folly::Optional<bool> outOfOrder_;
+
+  std::vector<uint16_t> writeTrans_;
 
   static const int MAX_REQUEST_SIZE = 2000;
   static std::atomic<uint32_t> sample_;

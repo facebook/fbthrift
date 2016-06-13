@@ -65,6 +65,9 @@ Cpp2Connection::Cpp2Connection(
 
   channel_->setQueueSends(worker->getServer()->getQueueSends());
   channel_->setMinCompressBytes(worker_->getServer()->getMinCompressBytes());
+  channel_->setDefaultWriteTransforms(
+    worker_->getServer()->getDefaultWriteTransforms()
+  );
   auto observer = worker->getServer()->getObserver();
   if (observer) {
     channel_->setSampleRate(observer->getSampleRate());

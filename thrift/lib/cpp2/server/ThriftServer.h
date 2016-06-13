@@ -137,9 +137,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   // Minimum size of response before it might be compressed
   // Prevents small responses from being compressed,
-  // does not by itself turn on compression.  Client must
-  // request compression.
+  // does not by itself turn on compression. Either client
+  // must request or a default transform must be set
   uint32_t minCompressBytes_ = 0;
+
+  std::vector<uint16_t> writeTrans_;
 
   bool queueSends_ = true;
 
@@ -539,6 +541,39 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    */
   void setMinCompressBytes(uint32_t bytes) {
     minCompressBytes_ = bytes;
+  }
+
+  /**
+   * Set the default write transforms to be used on replies. If client
+   * sets transforms, server will reflect them. Otherwise, these will
+   * be used.
+   */
+  void setDefaultWriteTransforms(std::vector<uint16_t>& writeTrans) {
+    writeTrans_ = writeTrans;
+  }
+
+  /*
+   * Append a default write transform to be used on reply.
+   */
+  void addDefaultWriteTransform(uint16_t transId) {
+    for (auto& trans : writeTrans_) {
+      if (trans == transId) {
+        return;
+      }
+    }
+    writeTrans_.push_back(transId);
+  }
+
+  /**
+   * Returns default write transforms to be used on replies.
+   */
+  std::vector<uint16_t>& getDefaultWriteTransforms() { return writeTrans_; }
+
+  /**
+   * Clears our default write transforms
+   */
+  void clearDefaultWriteTransforms() {
+    writeTrans_.clear();
   }
 
   /**

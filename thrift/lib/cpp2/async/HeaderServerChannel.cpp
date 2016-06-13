@@ -170,6 +170,10 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   // ServerSaslNegotiationHandler.
 
   header->setMinCompressBytes(channel_.getMinCompressBytes());
+  // Only set default transforms if client has not set any
+  if (header->getWriteTransforms().empty()) {
+    header->setTransforms(channel_.getDefaultWriteTransforms());
+  }
   return make_tuple(std::move(buf), 0, std::move(header));
 }
 
