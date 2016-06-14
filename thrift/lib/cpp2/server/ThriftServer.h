@@ -552,18 +552,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     writeTrans_ = writeTrans;
   }
 
-  /*
-   * Append a default write transform to be used on reply.
-   */
-  void addDefaultWriteTransform(uint16_t transId) {
-    for (auto& trans : writeTrans_) {
-      if (trans == transId) {
-        return;
-      }
-    }
-    writeTrans_.push_back(transId);
-  }
-
   /**
    * Returns default write transforms to be used on replies.
    */
