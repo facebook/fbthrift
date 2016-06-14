@@ -190,6 +190,12 @@ struct ArrayLayout : public LayoutBase {
     bool empty() const { return !count_; }
     size_t size() const { return count_; }
 
+    folly::Range<const Item*> range() const {
+      static_assert(detail::IsBlitType<Item>::value, "");
+      auto data = reinterpret_cast<const Item*>(data_);
+      return {data, data + count_};
+    }
+
    private:
     /**
      * Simple iterator on a range, with additional '.thaw()' member for thawing

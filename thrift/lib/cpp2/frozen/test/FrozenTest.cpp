@@ -361,6 +361,13 @@ TEST(Frozen, DedupedSchema) {
   }
 }
 
+TEST(Frozen, RangeTrivialRange) {
+  auto data = std::vector<float>{3.0, 4.0, 5.0};
+  auto view = freeze(data);
+  auto r = folly::Range<const float*>(view.range());
+  EXPECT_EQ(data, std::vector<float>(r.begin(), r.end()));
+}
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   google::InitGoogleLogging(argv[0]);
