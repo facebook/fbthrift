@@ -156,7 +156,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   // If it is set true, server will check and use client timeout header
   bool useClientTimeout_ = true;
 
-  std::function<bool(const transport::THeader*)> isOverloaded_ =
+  folly::Function<bool(const transport::THeader*)> isOverloaded_ =
       [](const transport::THeader* header) { return false; };
   std::function<int64_t(const std::string&)> getLoad_;
 
@@ -613,9 +613,9 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    */
   int getListenBacklog() const { return listenBacklog_; }
 
-  void setIsOverloaded(std::function<
+  void setIsOverloaded(folly::Function<
       bool(const apache::thrift::transport::THeader*)> isOverloaded) {
-    isOverloaded_ = isOverloaded;
+    isOverloaded_ = std::move(isOverloaded);
   }
 
   void setGetLoad(std::function<int64_t(const std::string&)> getLoad) {
