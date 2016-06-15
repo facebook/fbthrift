@@ -1211,7 +1211,7 @@ struct reflected_struct_data_member {
    *  // yields `fatal::constant_sequence<char,
    *  //   's', 'o', 'm', 'e', ' ', 'n', 'o', 't', 'e', 's'
    *  // >`
-   *  using result = info::annotations::values::field_note;
+   *  using result = member::annotations::values::field_note;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
