@@ -171,12 +171,14 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
           .getSelector()
           ->getSelection(hosts, config->srTier());
 
-        options["single_host"] = {hosts[0].ip(), TOSTRING(hosts[0].port())};
+        options["single_host"] = {hosts[0].ip(),
+                                  folly::to<std::string>(hosts[0].port())};
       } else {
         // hit the specified server/port
         auto socketAddr = config->getAddress();
-        options["single_host"] = {socketAddr->getAddressStr(),
-                                  TOSTRING(socketAddr->getPort())};
+        options["single_host"] = {
+            socketAddr->getAddressStr(),
+            folly::to<std::string>(socketAddr->getPort())};
       }
     }
     std::shared_ptr<LoadTestAsyncClient> loadClient;
