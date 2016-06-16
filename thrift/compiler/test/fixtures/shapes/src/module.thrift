@@ -1,3 +1,7 @@
+enum Enum {
+  ENUM = 1;
+}
+
 struct A {
   1: string a;
 }
@@ -19,6 +23,7 @@ struct B {
   14: list<map<string, A>> list_of_map_of_string_to_A;
   15: list<B> list_of_self;
   16: map<string, B> map_of_string_to_self;
+  17: Enum just_an_enum;
 
   51: optional A optional_just_an_A;
   52: optional set<i32>  optional_set_of_i32;
@@ -29,5 +34,5 @@ struct B {
   57: optional map<string, list<i32>>  optional_map_of_string_to_list_of_i32;
   58: optional map<string, list<A>>  optional_map_of_string_to_list_of_A;
   59: optional map<string, set<i32>>  optional_map_of_string_to_set_of_i32;
-
+  60: optional Enum optional_enum;
 }
