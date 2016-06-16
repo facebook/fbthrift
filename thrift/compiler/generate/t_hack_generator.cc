@@ -1622,7 +1622,11 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(std::ofstream& 
     }
   } else if (t->is_enum()) {
     if (!shape_unsafe_json_) {
-      indent(out) << "if (!is_int(" << shape_data << ")) {" << endl;
+      indent(out) << "if (!is_int(" << shape_data << ")";
+      if (nullable) {
+        out << " && !is_null(" << shape_data << ")";
+      }
+      out << ") {" << endl;
       indent(out) << "  return null;" << endl;
       indent(out) << "}" << endl;
     }

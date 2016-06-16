@@ -1041,7 +1041,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
     if (!array_key_exists('just_an_enum', $shape_data)) {
       $shape_data['just_an_enum'] = null;
     }
-    if (!is_int($shape_data['just_an_enum'])) {
+    if (!is_int($shape_data['just_an_enum']) && !is_null($shape_data['just_an_enum'])) {
       return null;
     }
 
@@ -1235,7 +1235,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
     if (!array_key_exists('optional_enum', $shape_data)) {
       $shape_data['optional_enum'] = null;
     }
-    if (!is_int($shape_data['optional_enum'])) {
+    if (!is_int($shape_data['optional_enum']) && !is_null($shape_data['optional_enum'])) {
       return null;
     }
 
