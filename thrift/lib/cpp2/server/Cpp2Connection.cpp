@@ -247,6 +247,8 @@ void Cpp2Connection::requestReceived(
   auto server = worker_->getServer();
   auto observer = server->getObserver();
 
+  server->touchRequestTimestamp();
+
   auto injectedFailure = server->maybeInjectFailure();
   switch (injectedFailure) {
   case ThriftServer::InjectedFailure::NONE:

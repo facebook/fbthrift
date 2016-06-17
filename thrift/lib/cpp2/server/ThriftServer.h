@@ -99,8 +99,33 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   //! Listen socket
   folly::AsyncServerSocket::UniquePtr socket_;
 
+  using monotonic_clock = std::chrono::steady_clock;
+
+  struct IdleServerAction:
+    public folly::HHWheelTimer::Callback
+  {
+    IdleServerAction(
+      ThriftServer &server,
+      folly::HHWheelTimer &timer,
+      std::chrono::milliseconds timeout
+    );
+
+    void timeoutExpired() noexcept override;
+
+    ThriftServer &server_;
+    folly::HHWheelTimer &timer_;
+    std::chrono::milliseconds timeout_;
+  };
+
   //! The folly::EventBase currently driving serve().  NULL when not serving.
   std::atomic<folly::EventBase*> serveEventBase_{nullptr};
+  folly::HHWheelTimer::UniquePtr serverTimer_;
+  folly::Optional<IdleServerAction> idleServer_;
+  std::chrono::milliseconds idleServerTimeout_ = std::chrono::milliseconds(0);
+  std::atomic<monotonic_clock::duration::rep> lastRequestTime_;
+
+  monotonic_clock::time_point lastRequestTime() const noexcept;
+  void touchRequestTimestamp() noexcept;
 
   //! Thread stack size in MB
   int threadStackSizeMB_ = 1;
@@ -271,9 +296,15 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     sslCacheOptions_ = std::move(options);
   }
 
-  void setTicketSeeds(
-      wangle::TLSTicketKeySeeds seeds) {
+  void setTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
     ticketSeeds_ = seeds;
+  }
+
+  /**
+   * Stops the Thrift server if it's idle for the given time.
+   */
+  void setIdleServerTimeout(std::chrono::milliseconds timeout) {
+    idleServerTimeout_ = timeout;
   }
 
   void updateTicketSeeds(wangle::TLSTicketKeySeeds seeds);

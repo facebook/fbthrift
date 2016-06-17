@@ -100,6 +100,7 @@ ThriftServer::ThriftServer(const std::string& saslPolicy,
   : BaseThriftServer()
   , saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy)
   , allowInsecureLoopback_(allowInsecureLoopback)
+  , lastRequestTime_(monotonic_clock::now().time_since_epoch().count())
 {
   // SASL setup
   if (saslPolicy_ == "required") {
@@ -185,6 +186,57 @@ folly::EventBaseManager* ThriftServer::getEventBaseManager() {
   return eventBaseManager_;
 }
 
+ThriftServer::IdleServerAction::IdleServerAction(
+  ThriftServer &server,
+  folly::HHWheelTimer &timer,
+  std::chrono::milliseconds timeout
+):
+  server_(server),
+  timer_(timer),
+  timeout_(timeout)
+{
+  timer_.scheduleTimeout(this, timeout_);
+}
+
+void ThriftServer::IdleServerAction::timeoutExpired() noexcept {
+  try {
+    auto const lastRequestTime = server_.lastRequestTime();
+    if (lastRequestTime.time_since_epoch()
+        != monotonic_clock::duration::zero()) {
+      auto const elapsed = monotonic_clock::now() - lastRequestTime;
+      if (elapsed >= timeout_) {
+        LOG(INFO) << "shutting down server due to inactivity after "
+          << std::chrono::duration_cast<std::chrono::milliseconds>(
+            elapsed).count() << "ms";
+        server_.stop();
+        return;
+      }
+    }
+
+    timer_.scheduleTimeout(this, timeout_);
+  } catch (std::exception const &e) {
+    LOG(ERROR) << e.what();
+  }
+}
+
+ThriftServer::monotonic_clock::time_point
+ThriftServer::lastRequestTime() const noexcept {
+  return monotonic_clock::time_point(
+    monotonic_clock::duration(
+      lastRequestTime_.load(std::memory_order_acquire)
+    )
+  );
+}
+
+void ThriftServer::touchRequestTimestamp() noexcept {
+  if (idleServer_.hasValue()) {
+    lastRequestTime_.store(
+      monotonic_clock::now().time_since_epoch().count(),
+      std::memory_order_release
+    );
+  }
+}
+
 void ThriftServer::setup() {
   DCHECK_NOTNULL(cpp2Pfac_.get());
   DCHECK_GT(nWorkers_, 0);
@@ -193,6 +245,10 @@ void ThriftServer::setup() {
 
   // Initialize event base for this thread, ensure event_init() is called
   serveEventBase_ = eventBaseManager_->getEventBase();
+  if (idleServerTimeout_.count() > 0) {
+    serverTimer_ = folly::HHWheelTimer::newTimer(serveEventBase_);
+    idleServer_.emplace(*this, *serverTimer_, idleServerTimeout_);
+  }
   // Print some libevent stats
   VLOG(1) << "libevent " <<
     folly::EventBase::getLibeventVersion() << " method " <<

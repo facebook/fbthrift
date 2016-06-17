@@ -278,6 +278,10 @@ void ScopedServerThread::stop() {
   thread_.reset();
 }
 
+void ScopedServerThread::join() {
+  thread_->join();
+}
+
 const folly::SocketAddress* ScopedServerThread::getAddress() const {
   if (!helper_) {
     throw TTransportException(TTransportException::NOT_OPEN,

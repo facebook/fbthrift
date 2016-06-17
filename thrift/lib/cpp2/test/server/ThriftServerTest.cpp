@@ -754,3 +754,14 @@ TEST(ThriftServer, CacheAnnotation) {
   ExtendedTestServiceAsyncProcessor processor(testInterface.get());
   EXPECT_FALSE(processor.getCacheKeyTest().hasValue());
 }
+
+TEST(ThriftServer, IdleServerTimeout) {
+  TestThriftServerFactory<TestInterface> factory;
+
+  auto server = factory.create();
+  auto thriftServer = dynamic_cast<ThriftServer *>(server.get());
+  thriftServer->setIdleServerTimeout(std::chrono::milliseconds(50));
+
+  ScopedServerThread scopedServer(server);
+  scopedServer.join();
+}

@@ -87,6 +87,12 @@ class ScopedServerThread : public boost::noncopyable {
   void stop();
 
   /**
+   * Waits for the server thread to finish.
+   * Note that this doesn't stop the thread.
+   */
+  void join();
+
+  /**
    * Get the address on which the server is listening.
    */
   const folly::SocketAddress* getAddress() const;
