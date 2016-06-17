@@ -74,15 +74,27 @@ TEST(FrozenUtil, FileSize) {
 
 TEST(FrozenUtil, FreezeToString) {
   // multiplication tables for first three primes
-  std::map<int, std::map<int, int>> m{
+  using TestType = std::map<int, std::map<int, int>>;
+  TestType m{
       {2, {{2, 4}, {3, 6}, {5, 10}}},
       {3, {{2, 6}, {3, 9}, {5, 15}}},
       {5, {{2, 10}, {3, 15}, {5, 25}}},
   };
-  // In this example, the schema is 101 bytes and the data is only 17 bytes!
-  std::string store;
-  freezeToString(m, store);
-  auto frozen = mapFrozen<std::map<int, std::map<int, int>>>(store);
+  MappedFrozen<TestType> frozen;
+  {
+    std::string store;
+    freezeToString(m, store);
+    // In this example, the schema is 101 bytes and the data is only 17 bytes!
+    // By default, this is stripped out by this overload.
+    frozen = mapFrozen<TestType>(std::move(store));
+  }
+  EXPECT_EQ(frozen.at(3).at(5), 15);
+  {
+    std::string store;
+    freezeToString(m, store);
+    // false = don't trim the space for the schema
+    frozen = mapFrozen<TestType>(std::move(store), false);
+  }
   EXPECT_EQ(frozen.at(3).at(5), 15);
 }
 

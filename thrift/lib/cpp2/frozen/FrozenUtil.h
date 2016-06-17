@@ -152,6 +152,37 @@ MappedFrozen<T> mapFrozen(folly::MemoryMapping mapping) {
   return ret;
 }
 
+/**
+ * Maps from the given string, taking ownership of it and bundling it with the
+ * return object to ensure its lifetime.
+ * @param trim Trims the serialized layout from the input string.
+ */
+template <class T>
+MappedFrozen<T> mapFrozen(std::string&& str, bool trim = true) {
+  auto layout = folly::make_unique<Layout<T>>();
+  auto holder = folly::make_unique<HolderImpl<std::string>>(std::move(str));
+  auto& ownedStr = holder->t_;
+  folly::ByteRange rangeBefore = folly::StringPiece(ownedStr);
+  folly::ByteRange range = rangeBefore;
+  deserializeRootLayout(range, *layout);
+  if (trim) {
+    size_t trimSize = range.begin() - rangeBefore.begin();
+    ownedStr.erase(ownedStr.begin(), ownedStr.begin() + trimSize);
+    ownedStr.shrink_to_fit();
+    range = folly::StringPiece(holder->t_);
+  }
+  MappedFrozen<T> ret(layout->view({range.begin(), 0}));
+  ret.holdImpl(std::move(holder));
+  ret.hold(std::move(layout));
+  return ret;
+}
+
+template <class T>
+FOLLY_DEPRECATED(
+    "std::string values must be passed by move with std::move(str) or "
+    "passed through non-owning StringPiece")
+MappedFrozen<T> mapFrozen(const std::string& str) = delete;
+
 template <class T>
 MappedFrozen<T> mapFrozen(folly::File file) {
   folly::MemoryMapping mapping(std::move(file), 0);

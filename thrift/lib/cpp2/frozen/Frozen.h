@@ -33,6 +33,7 @@
 #include <folly/Demangle.h>
 #include <folly/Hash.h>
 #include <folly/MapUtil.h>
+#include <folly/Memory.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
 #include <folly/experimental/Bits.h>
@@ -700,8 +701,13 @@ class Bundled : public Base {
     std::unique_ptr<HolderImpl<Decayed>> holder(
         new HolderImpl<Decayed>(std::forward<T>(t)));
     Decayed* ptr =  &holder->t_;
-    holds_.push_back(std::move(holder));
+    holdImpl(std::move(holder));
     return ptr;
+  }
+
+  template <class T>
+  void holdImpl(std::unique_ptr<HolderImpl<T>>&& holder) {
+    holds_.push_back(std::move(holder));
   }
 
  private:
@@ -760,14 +766,15 @@ void thawField(ViewPosition self,
 
 }}}
 
-#include <thrift/lib/cpp2/frozen/FrozenTrivial-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenIntegral-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenBool-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenOptional-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenString-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenPair-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenRange-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenOrderedTable-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenHashTable-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenAssociative-inl.h>
-#include <thrift/lib/cpp2/frozen/FrozenEnum-inl.h> // depends on Integral
+#include <thrift/lib/cpp2/frozen/FrozenTrivial-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenIntegral-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenBool-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenOptional-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenString-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenPair-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenRange-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenOrderedTable-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenHashTable-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenAssociative-inl.h> // @nolint
+// depends on Integral
+#include <thrift/lib/cpp2/frozen/FrozenEnum-inl.h> // @nolint
