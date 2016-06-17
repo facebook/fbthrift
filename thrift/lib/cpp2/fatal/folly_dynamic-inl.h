@@ -25,6 +25,10 @@
 
 namespace apache { namespace thrift { namespace detail {
 
+template <thrift_category>
+struct dynamic_converter_impl {
+};
+
 template <>
 struct dynamic_converter_impl<thrift_category::enumeration> {
   template <typename T>
