@@ -620,7 +620,7 @@ void HeaderServerChannel::SaslServerCallback::saslError(
     observer->saslFallBack();
   }
 
-  LOG(INFO) << "SASL server falling back to insecure: " << ex.what();
+  VLOG(1) << "SASL server falling back to insecure: " << ex.what();
 
   // Send the client a null message so the client will try again.
   // TODO mhorowitz: generate a real message here.
