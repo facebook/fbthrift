@@ -11,7 +11,6 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <boost/operators.hpp>
 
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/module_types.h"
 

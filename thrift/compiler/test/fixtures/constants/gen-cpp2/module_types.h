@@ -11,7 +11,6 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <boost/operators.hpp>
 
 
 
@@ -88,7 +87,7 @@ template <> constexpr  ::cpp2::Company TEnumTraits< ::cpp2::Company>::max() {
 }} // apache::thrift
 namespace cpp2 {
 
-class Internship : private boost::totally_ordered<Internship> {
+class Internship : private apache::thrift::detail::st::ComparisonOperators<Internship> {
  public:
 
   Internship() :
@@ -232,7 +231,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internshi
 }} // apache::thrift
 namespace cpp2 {
 
-class UnEnumStruct : private boost::totally_ordered<UnEnumStruct> {
+class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnEnumStruct> {
  public:
 
   UnEnumStruct() :
@@ -332,7 +331,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStr
 }} // apache::thrift
 namespace cpp2 {
 
-class Range : private boost::totally_ordered<Range> {
+class Range : private apache::thrift::detail::st::ComparisonOperators<Range> {
  public:
 
   Range() :

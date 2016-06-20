@@ -11,14 +11,13 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <boost/operators.hpp>
 
 
 
 
 class MyData;
 
-class MyData : private boost::totally_ordered<MyData> {
+class MyData : private apache::thrift::detail::st::ComparisonOperators<MyData> {
  public:
 
   MyData() {}

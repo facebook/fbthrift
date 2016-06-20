@@ -11,7 +11,6 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <boost/operators.hpp>
 
 
 
@@ -51,7 +50,7 @@ template <> constexpr  ::cpp2::MyEnum TEnumTraits< ::cpp2::MyEnum>::max() {
 }} // apache::thrift
 namespace cpp2 {
 
-class MyStruct : private boost::totally_ordered<MyStruct> {
+class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
   MyStruct() :

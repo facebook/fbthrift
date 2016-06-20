@@ -2396,9 +2396,13 @@ class CppGenerator(t_generator.Generator):
                 self._generate_struct_writer(s, obj, pointers, result)
             return
 
-        extends = ' : private boost::totally_ordered<{0}>'.format(obj.name)
+        extends = [
+            'private apache::thrift::detail::st::ComparisonOperators<{0}>'
+            .format(obj.name),
+        ]
         if is_exception:
-            extends += ', public apache::thrift::TException'
+            extends += ['public apache::thrift::TException']
+        extends = ' : ' + ', '.join(extends)
         # Open struct def
         struct = s.cls('class {0}{1}'.format(obj.name, extends)).scope
         struct.acquire()
@@ -5028,7 +5032,6 @@ class CppGenerator(t_generator.Generator):
             s('#include <folly/Optional.h>')
         s('#include <folly/io/IOBuf.h>')
         s('#include <folly/io/Cursor.h>')
-        s('#include <boost/operators.hpp>')
         s()
         if self.flag_compatibility:
             # Transform the cpp2 include prefix path into a cpp prefix path.

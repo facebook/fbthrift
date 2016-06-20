@@ -31,6 +31,22 @@ enum FragileConstructor {
   FRAGILE,
 };
 
+namespace detail { namespace st {
+
+/**
+ *  Like boost::totally_ordered, but does not cause boost functions always to
+ *  be included in overload resolution sets due to ADL.
+ */
+template <typename T>
+struct ComparisonOperators {
+  friend bool operator !=(const T& x, const T& y) { return !(x == y); }
+  friend bool operator > (const T& x, const T& y) { return y < x; }
+  friend bool operator <=(const T& x, const T& y) { return !(y < x); }
+  friend bool operator >=(const T& x, const T& y) { return !(x < y); }
+};
+
+}}
+
 namespace detail {
 
 template <typename T>

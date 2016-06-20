@@ -11,7 +11,6 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <boost/operators.hpp>
 
 
 
@@ -20,7 +19,7 @@ namespace cpp2 {
 
 class Empty;
 
-class Empty : private boost::totally_ordered<Empty> {
+class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
   Empty() {}

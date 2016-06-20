@@ -11,7 +11,6 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <boost/operators.hpp>
 
 
 
@@ -20,7 +19,7 @@ namespace cpp2 {
 
 class ComplexUnion;
 
-class ComplexUnion : private boost::totally_ordered<ComplexUnion> {
+class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
  public:
   enum Type {
     __EMPTY__ = 0,

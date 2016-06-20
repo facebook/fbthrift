@@ -11,7 +11,6 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <boost/operators.hpp>
 
 
 
@@ -125,7 +124,7 @@ template <> constexpr  ::test_cpp2::cpp_reflection::enum3 TEnumTraits< ::test_cp
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-class union1 : private boost::totally_ordered<union1> {
+class union1 : private apache::thrift::detail::st::ComparisonOperators<union1> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -499,7 +498,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-class union2 : private boost::totally_ordered<union2> {
+class union2 : private apache::thrift::detail::st::ComparisonOperators<union2> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -873,7 +872,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-class union3 : private boost::totally_ordered<union3> {
+class union3 : private apache::thrift::detail::st::ComparisonOperators<union3> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -1247,7 +1246,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-class structA : private boost::totally_ordered<structA> {
+class structA : private apache::thrift::detail::st::ComparisonOperators<structA> {
  public:
 
   structA() :
@@ -1377,7 +1376,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-class unionA : private boost::totally_ordered<unionA> {
+class unionA : private apache::thrift::detail::st::ComparisonOperators<unionA> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -1820,7 +1819,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-class structB : private boost::totally_ordered<structB> {
+class structB : private apache::thrift::detail::st::ComparisonOperators<structB> {
  public:
 
   structB() :
@@ -1946,7 +1945,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-class structC : private boost::totally_ordered<structC> {
+class structC : private apache::thrift::detail::st::ComparisonOperators<structC> {
  public:
 
   structC() :
@@ -2636,7 +2635,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-class struct1 : private boost::totally_ordered<struct1> {
+class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1> {
  public:
 
   struct1() :
@@ -2827,7 +2826,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-class struct2 : private boost::totally_ordered<struct2> {
+class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2> {
  public:
 
   struct2() :
@@ -3042,7 +3041,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-class struct3 : private boost::totally_ordered<struct3> {
+class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3> {
  public:
 
   struct3() :

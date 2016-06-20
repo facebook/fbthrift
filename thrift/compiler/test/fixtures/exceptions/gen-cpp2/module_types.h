@@ -11,7 +11,6 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <boost/operators.hpp>
 
 
 
@@ -21,7 +20,7 @@ namespace cpp2 {
 class Banal;
 class Fiery;
 
-class Banal : private boost::totally_ordered<Banal>, public apache::thrift::TException {
+class Banal : private apache::thrift::detail::st::ComparisonOperators<Banal>, public apache::thrift::TException {
  public:
 
   Banal() {}
@@ -87,7 +86,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Banal>::s
 }} // apache::thrift
 namespace cpp2 {
 
-class Fiery : private boost::totally_ordered<Fiery>, public apache::thrift::TException {
+class Fiery : private apache::thrift::detail::st::ComparisonOperators<Fiery>, public apache::thrift::TException {
  public:
 
   Fiery() {}

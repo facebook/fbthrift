@@ -12,7 +12,6 @@
 #include <folly/Optional.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <boost/operators.hpp>
 
 
 
@@ -57,7 +56,7 @@ namespace cpp2 {
 
 typedef int64_t PersonID;
 
-class Color : private boost::totally_ordered<Color> {
+class Color : private apache::thrift::detail::st::ComparisonOperators<Color> {
  public:
 
   Color() :
@@ -172,7 +171,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Color>::s
 }} // apache::thrift
 namespace cpp2 {
 
-class Vehicle : private boost::totally_ordered<Vehicle> {
+class Vehicle : private apache::thrift::detail::st::ComparisonOperators<Vehicle> {
  public:
 
   Vehicle() {}
@@ -268,7 +267,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Vehicle>:
 }} // apache::thrift
 namespace cpp2 {
 
-class Person : private boost::totally_ordered<Person> {
+class Person : private apache::thrift::detail::st::ComparisonOperators<Person> {
  public:
 
   Person() :

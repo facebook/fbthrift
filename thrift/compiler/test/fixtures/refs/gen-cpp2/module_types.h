@@ -11,7 +11,6 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
-#include <boost/operators.hpp>
 
 
 
@@ -56,7 +55,7 @@ template <> constexpr  ::cpp2::TypedEnum TEnumTraits< ::cpp2::TypedEnum>::max() 
 }} // apache::thrift
 namespace cpp2 {
 
-class MyUnion : private boost::totally_ordered<MyUnion> {
+class MyUnion : private apache::thrift::detail::st::ComparisonOperators<MyUnion> {
  public:
   enum Type {
     __EMPTY__ = 0,
@@ -320,7 +319,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyUnion>:
 }} // apache::thrift
 namespace cpp2 {
 
-class MyField : private boost::totally_ordered<MyField> {
+class MyField : private apache::thrift::detail::st::ComparisonOperators<MyField> {
  public:
 
   MyField() :
@@ -460,7 +459,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyField>:
 }} // apache::thrift
 namespace cpp2 {
 
-class MyStruct : private boost::totally_ordered<MyStruct> {
+class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
   MyStruct() {}
@@ -551,7 +550,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::MyStruct>
 }} // apache::thrift
 namespace cpp2 {
 
-class StructWithUnion : private boost::totally_ordered<StructWithUnion> {
+class StructWithUnion : private apache::thrift::detail::st::ComparisonOperators<StructWithUnion> {
  public:
 
   StructWithUnion() :
@@ -667,7 +666,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWit
 }} // apache::thrift
 namespace cpp2 {
 
-class RecursiveStruct : private boost::totally_ordered<RecursiveStruct> {
+class RecursiveStruct : private apache::thrift::detail::st::ComparisonOperators<RecursiveStruct> {
  public:
 
   RecursiveStruct() {}
@@ -755,7 +754,7 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Recursive
 }} // apache::thrift
 namespace cpp2 {
 
-class StructWithContainers : private boost::totally_ordered<StructWithContainers> {
+class StructWithContainers : private apache::thrift::detail::st::ComparisonOperators<StructWithContainers> {
  public:
 
   StructWithContainers() {}
