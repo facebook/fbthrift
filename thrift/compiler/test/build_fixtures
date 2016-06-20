@@ -14,9 +14,11 @@ import sys
 """
 Invoke as:
 
-    thrift/compiler/test/build_fixtures $BUILDDIR
+    thrift/compiler/test/build_fixtures [$BUILDDIR]
 
-where $BUILDDIR/thrift/compiler/thrift is the thrift compiler
+where $BUILDDIR/thrift/compiler/thrift is the thrift compiler.
+
+If using Buck to build the thrift compiler, the $BUILDDIR default will work.
 """
 
 def ascend_find_exe(path, target):
@@ -48,7 +50,7 @@ def read_lines(path):
         return f.readlines()
 
 exe = os.path.join(os.getcwd(), sys.argv[0])
-buildDir = sys.argv[1]
+buildDir = sys.argv[1] if len(sys.argv) > 1 else 'buck-out/gen'
 thriftRel = os.path.join(buildDir, 'thrift/compiler/thrift')
 thrift = ascend_find_exe(exe, thriftRel)
 fixtureDir = ascend_find_dir(exe, 'thrift/compiler/test/fixtures')
