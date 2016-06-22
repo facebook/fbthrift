@@ -249,6 +249,10 @@ public:
   template<typename T>
   typename std::enable_if<!std::is_enum<T>::value, void>::type
   write(const T& t) {
+    static_assert(
+      std::is_base_of<TStructType<T>, T>::value ||
+      std::is_base_of<TException, T>::value,
+      "Only works with legacy structs.");
     t.write(this);
   }
 
