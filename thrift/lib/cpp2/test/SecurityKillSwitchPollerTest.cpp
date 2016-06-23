@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-#include <thrift/lib/cpp2/security/SecurityKillSwitchPoller.h>
-#include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
-#include <folly/futures/Barrier.h>
 #include <folly/Baton.h>
 #include <folly/Singleton.h>
+#include <folly/futures/Barrier.h>
+#include <gtest/gtest.h>
+#include <thrift/lib/cpp2/test/MockSecurityKillSwitchPoller.h>
 
 namespace apache {
 namespace thrift {
@@ -35,8 +34,8 @@ TEST(PollerTest, StartsCleanly) {
     b.post();
     return true;
   };
-  SecurityKillSwitchPoller poller(chrono::milliseconds(10000), counter);
-  EXPECT_TRUE(b.timed_wait(chrono::seconds(5)));
+  MockSecurityKillSwitchPoller poller(counter);
+  EXPECT_TRUE(b.timed_wait(chrono::seconds(11)));
   EXPECT_EQ(numCalls, 1);
 }
 
@@ -47,24 +46,19 @@ TEST(PollerTest, PollsInSeparateThread) {
     b.post();
     return current != this_thread::get_id();
   };
-  SecurityKillSwitchPoller poller(chrono::milliseconds(10), func);
-  EXPECT_TRUE(b.timed_wait(chrono::seconds(5)));
+  MockSecurityKillSwitchPoller poller(func);
+  EXPECT_TRUE(b.timed_wait(chrono::seconds(11)));
   EXPECT_TRUE(poller.isKillSwitchEnabled());
 }
 
 TEST(PollerTest, RunsRepeatedly) {
-  folly::futures::Barrier b(5);
+  folly::futures::Barrier b(2);
   auto countdown = [&]{
     b.wait();
     return true;
   };
-  SecurityKillSwitchPoller poller(chrono::milliseconds(10), countdown);
-  b.wait().get(chrono::seconds(5));
-}
-
-TEST(PollerTest, SingletonTest) {
-  auto poller = folly::Singleton<SecurityKillSwitchPoller>::try_get();
-  EXPECT_TRUE(poller);
+  MockSecurityKillSwitchPoller poller(countdown);
+  b.wait().get(chrono::seconds(20));
 }
 }
 }

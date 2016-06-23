@@ -20,72 +20,84 @@
 using namespace folly;
 
 namespace {
-
-// Returns <file exists, file update time>
-std::pair<bool, time_t> getFileProps(const std::string& path) {
-  struct stat info;
-  int ret = stat(path.c_str(), &info);
-  if (ret != 0) {
-    return std::make_pair(false, 0);
-  }
-  return std::make_pair(true, info.st_mtime);
-}
+folly::Singleton<
+    apache::thrift::FilePoller,
+    apache::thrift::FilePoller::ThriftInternalPollerTag>
+    thriftInternalFilePoller;
 }
 
 namespace apache {
 namespace thrift {
 
-FilePoller::FilePoller(std::string fileName,
-                       std::chrono::milliseconds pollInterval)
-    : fileName_(std::move(fileName)) {
-  auto fileProps = getFileProps(fileName_);
-  fileExists_ = fileProps.first;
-  lastUpdateAt_ = fileProps.second;
-  scheduler_.setThreadName("file-poller");
-  scheduler_.addFunction(
-      [this] { this->checkFile(); }, pollInterval, "file-poller");
-  scheduler_.start();
+thread_local bool FilePoller::ThreadProtector::polling_ = false;
+
+FilePoller::FilePoller(std::chrono::milliseconds pollInterval) {
+  init(pollInterval);
 }
 
 FilePoller::~FilePoller() { scheduler_.shutdown(); }
 
-void FilePoller::addCallback(std::function<void()> callback) {
-  SharedMutex::WriteHolder holder(mutex_);
-  callbacks_.push_back(std::move(callback));
+void FilePoller::init(std::chrono::milliseconds pollInterval) {
+  scheduler_.setThreadName("file-poller");
+  scheduler_.addFunction(
+      [this] { this->checkFiles(); }, pollInterval, "file-poller");
+  start();
 }
 
-void FilePoller::checkFile() noexcept {
-  if (updateFileState()) {
-    SharedMutex::ReadHolder holder(mutex_);
-    for (auto& callback : callbacks_) {
-      callback();
+void FilePoller::checkFiles() noexcept {
+  std::lock_guard<std::mutex> lg(filesMutex_);
+  ThreadProtector tp;
+  for (auto& fData : fileDatum_) {
+    auto modData = getFileModData(fData.first);
+    auto& fileData = fData.second;
+    if (fileData.condition(fileData.modData, modData) && fileData.yCob) {
+      fileData.yCob();
+    } else if (fileData.nCob) {
+      fileData.nCob();
     }
+    fileData.modData = modData;
   }
 }
 
-bool FilePoller::updateFileState() noexcept {
-  bool stateChanged = false;
-  auto fileProps = getFileProps(fileName_);
-  bool fileNowExists = fileProps.first;
-  // If the file did not exist before, and now exists.
-  if (fileNowExists ^ fileExists_) {
-    fileExists_ = fileNowExists;
-    stateChanged = true;
-  }
+void FilePoller::initFileData(
+    const std::string& fName,
+    FileData& fData) noexcept {
+  auto modData = getFileModData(fName);
+  fData.modData.exists = modData.exists;
+  fData.modData.modTime = modData.modTime;
+}
 
-  if (!fileExists_) {
-    return stateChanged;
+void FilePoller::addFileToTrack(
+    const std::string& fileName,
+    Cob yCob,
+    Cob nCob,
+    Condition condition) {
+  if (ThreadProtector::inPollerThread()) {
+    LOG(ERROR) << "Adding files from a callback is disallowd";
+    return;
   }
+  std::lock_guard<std::mutex> lg(filesMutex_);
+  fileDatum_[fileName] = FileData(yCob, nCob, condition);
+  initFileData(fileName, fileDatum_[fileName]);
+}
 
-  const time_t mtime = fileProps.second;
-  if (!mtime) {
-    LOG(ERROR) << "File exists, and bad modified time";
+void FilePoller::removeFileToTrack(const std::string& fileName) {
+  if (ThreadProtector::inPollerThread()) {
+    LOG(ERROR) << "Removing files from a callback is disallowd";
+    return;
   }
-  if (mtime != lastUpdateAt_) {
-    lastUpdateAt_ = mtime;
-    stateChanged = true;
+  std::lock_guard<std::mutex> lg(filesMutex_);
+  fileDatum_.erase(fileName);
+}
+
+FilePoller::FileModificationData FilePoller::getFileModData(
+    const std::string& path) noexcept {
+  struct stat info;
+  int ret = stat(path.c_str(), &info);
+  if (ret != 0) {
+    return FileModificationData{false, 0};
   }
-  return stateChanged;
+  return FileModificationData{true, info.st_mtime};
 }
 }
 }

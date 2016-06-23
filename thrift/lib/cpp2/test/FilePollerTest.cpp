@@ -60,8 +60,8 @@ TEST_F(FilePollerTest, TestUpdateFile) {
   createFile();
   Baton<> baton;
   bool updated = false;
-  FilePoller poller(tmpFile, std::chrono::milliseconds(1));
-  poller.addCallback([&]() {
+  FilePoller poller(std::chrono::milliseconds(1));
+  poller.addFileToTrack(tmpFile, [&]() {
     updated = true;
     baton.post();
   });
@@ -74,8 +74,8 @@ TEST_F(FilePollerTest, TestUpdateFileBackwards) {
   createFile();
   Baton<> baton;
   bool updated = false;
-  FilePoller poller(tmpFile, std::chrono::milliseconds(1));
-  poller.addCallback([&]() {
+  FilePoller poller(std::chrono::milliseconds(1));
+  poller.addFileToTrack(tmpFile, [&]() {
     updated = true;
     baton.post();
   });
@@ -89,8 +89,8 @@ TEST_F(FilePollerTest, TestCreateFile) {
   bool updated = false;
   createFile();
   remove(tmpFile.c_str());
-  FilePoller poller(tmpFile, std::chrono::milliseconds(1));
-  poller.addCallback([&]() {
+  FilePoller poller(std::chrono::milliseconds(1));
+  poller.addFileToTrack(tmpFile, [&]() {
     updated = true;
     baton.post();
   });
@@ -103,22 +103,30 @@ TEST_F(FilePollerTest, TestDeleteFile) {
   Baton<> baton;
   bool updated = false;
   createFile();
-  FilePoller poller(tmpFile, std::chrono::milliseconds(1));
-  poller.addCallback([&]() {
+  FilePoller poller(std::chrono::milliseconds(1));
+  poller.addFileToTrack(tmpFile, [&]() {
     updated = true;
     baton.post();
   });
   remove(tmpFile.c_str());
-  ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(5)));
-  ASSERT_TRUE(updated);
+  ASSERT_FALSE(baton.timed_wait(std::chrono::seconds(5)));
+  ASSERT_FALSE(updated);
 }
 
-void waitForUpdate(std::mutex& m, std::condition_variable& cv, bool& x) {
+void waitForUpdate(
+    std::mutex& m,
+    std::condition_variable& cv,
+    bool& x,
+    bool expect = true) {
   std::unique_lock<std::mutex> lk(m);
   if (!x) {
     cv.wait_for(lk, std::chrono::seconds(5), [&] { return x; });
   }
-  ASSERT_TRUE(x);
+  if (expect) {
+    ASSERT_TRUE(x);
+  } else {
+    ASSERT_FALSE(x);
+  }
   x = false;
 }
 
@@ -128,8 +136,8 @@ TEST_F(FilePollerTest, TestTwoUpdatesAndDelete) {
   std::condition_variable cv;
 
   bool updated = false;
-  FilePoller poller(tmpFile, std::chrono::milliseconds(1));
-  poller.addCallback([&]() {
+  FilePoller poller(std::chrono::milliseconds(1));
+  poller.addFileToTrack(tmpFile, [&]() {
     std::unique_lock<std::mutex> lk(m);
     updated = true;
     cv.notify_one();
@@ -142,5 +150,11 @@ TEST_F(FilePollerTest, TestTwoUpdatesAndDelete) {
   ASSERT_NO_FATAL_FAILURE(waitForUpdate(m, cv, updated));
 
   remove(tmpFile.c_str());
-  ASSERT_NO_FATAL_FAILURE(waitForUpdate(m, cv, updated));
+  ASSERT_NO_FATAL_FAILURE(waitForUpdate(m, cv, updated, false));
+}
+
+TEST_F(FilePollerTest, SingletonTest) {
+  auto poller = folly::
+      Singleton<FilePoller, FilePoller::ThriftInternalPollerTag>::try_get();
+  EXPECT_TRUE(poller);
 }
