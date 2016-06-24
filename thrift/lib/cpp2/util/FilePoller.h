@@ -16,18 +16,14 @@
 
 #pragma once
 
+#include <chrono>
 #include <folly/SharedMutex.h>
 #include <folly/experimental/FunctionScheduler.h>
 #include <folly/io/async/AsyncTimeout.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
-#include <chrono>
-#include <functional>
 
 namespace apache {
 namespace thrift {
-
-static constexpr std::chrono::milliseconds kPollInterval =
-    std::chrono::milliseconds(10000);
 
 /**
  * Polls for updates in the files. This poller uses
@@ -42,21 +38,7 @@ static constexpr std::chrono::milliseconds kPollInterval =
  */
 class FilePoller {
  public:
-  struct ThriftInternalPollerTag {};
-  struct FileModificationData {
-    FileModificationData() {}
-    FileModificationData(bool fileExists, time_t modificationTime)
-        : exists(fileExists), modTime(modificationTime) {}
-    bool exists{false};
-    time_t modTime{0};
-  };
-  using Cob = std::function<void()>;
-  // First arg is info about previous modification of a file,
-  // Second arg is info about last modification of a file
-  using Condition = std::function<
-      bool(const FileModificationData&, const FileModificationData&)>;
-
-  explicit FilePoller(std::chrono::milliseconds pollInterval = kPollInterval);
+  FilePoller(std::string fileName, std::chrono::milliseconds pollInterval);
 
   ~FilePoller();
 
@@ -66,101 +48,31 @@ class FilePoller {
   FilePoller(FilePoller&& other) = delete;
   FilePoller&& operator=(FilePoller&& other) = delete;
 
-  // This is threadsafe
-  // yCob will be called if condition is met,
-  // nCob is called if condition is not met.
-  void addFileToTrack(
-      const std::string& fileName,
-      Cob yCob,
-      Cob nCob = nullptr,
-      Condition condition = fileTouchedCondInternal);
-
-  void removeFileToTrack(const std::string& fileName);
-
   void stop() { scheduler_.shutdown(); }
 
   void start() { scheduler_.start(); }
 
-  static Condition fileTouchedWithinCond(std::chrono::seconds expireTime) {
-    return std::bind(
-        fileTouchedWithinCondInternal,
-        std::placeholders::_1,
-        std::placeholders::_2,
-        expireTime);
-  }
-
-  static Condition doAlwaysCond() {
-    return doAlwaysCondInternal;
-  }
-
-  static Condition fileTouchedCond() {
-    return fileTouchedCondInternal;
-  }
+  /**
+   * Adds a callback for changes in the file.
+   * The thread that the callback is invoked on is not
+   * specified, so the caller needs to ensure thread
+   * safety on their own.
+   */
+  void addCallback(std::function<void()> callback);
 
  private:
-  struct FileData {
-    FileData(Cob yesCob, Cob noCob, Condition cond)
-        : yCob(yesCob), nCob(noCob), condition(cond) {}
-    FileData() {}
+  bool updateFileState() noexcept;
+  void checkFile() noexcept;
 
-    Cob yCob{nullptr};
-    Cob nCob{nullptr};
-    Condition condition{doAlwaysCondInternal};
-    FileModificationData modData;
-  };
-  using FileDatas = std::unordered_map<std::string, FileData>;
-
-  static bool fileTouchedWithinCondInternal(
-      const FilePoller::FileModificationData&,
-      const FilePoller::FileModificationData& fModData,
-      std::chrono::seconds expireTime) {
-    return fModData.exists &&
-        (time(nullptr) < fModData.modTime + expireTime.count());
-  }
-
-  static bool doAlwaysCondInternal(
-      const FileModificationData&,
-      const FileModificationData&) {
-    return true;
-  }
-
-  static bool fileTouchedCondInternal(
-      const FileModificationData& oldModData,
-      const FileModificationData& modData) {
-    const bool fileStillExists = oldModData.exists && modData.exists;
-    const bool fileTouched = modData.modTime != oldModData.modTime;
-    const bool fileCreated = !oldModData.exists && modData.exists;
-    return (fileStillExists && fileTouched) || fileCreated;
-  }
-
-  static FileModificationData getFileModData(const std::string& path) noexcept;
-
-  // Grabs a read lock
-  void checkFiles() noexcept;
-  void initFileData(const std::string& fName, FileData& fData) noexcept;
-  void init(std::chrono::milliseconds pollInterval);
-
+  std::string fileName_;
   folly::FunctionScheduler scheduler_;
+  std::vector<std::function<void()>> callbacks_;
 
-  FileDatas fileDatum_;
-
-  // Files to track are added under a rw lock and are checked under a read lock.
-  std::mutex filesMutex_;
-
-  // Used to disallow locking calls from callbacks.
-  class ThreadProtector {
-   public:
-    ThreadProtector() {
-      polling_ = true;
-    }
-    ~ThreadProtector() {
-      polling_ = false;
-    }
-    static bool inPollerThread() {
-      return polling_;
-    }
-    static thread_local bool polling_;
-  };
+  std::string functionName_;
+  time_t lastUpdateAt_{0};
+  bool fileExists_{false};
+  // protects callbacks
+  folly::SharedMutex mutex_;
 };
 }
 }

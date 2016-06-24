@@ -188,8 +188,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     return getIOGroup();
   }
 
-  SecurityKillSwitchPoller securityKillSwitchPoller_;
-
   friend class Cpp2Connection;
   friend class Cpp2Worker;
 
@@ -397,7 +395,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   SSLPolicy getSSLPolicy() const {
     auto policy = sslPolicy_;
     if (policy == SSLPolicy::REQUIRED) {
-      if (securityKillSwitchPoller_.isKillSwitchEnabled()) {
+      auto ksPoller = folly::Singleton<SecurityKillSwitchPoller>::try_get();
+      if (ksPoller && ksPoller->isKillSwitchEnabled()) {
         policy = SSLPolicy::PERMITTED;
       }
     }

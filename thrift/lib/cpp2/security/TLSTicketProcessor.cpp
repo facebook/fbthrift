@@ -24,6 +24,10 @@ using namespace wangle;
 
 namespace {
 
+constexpr std::chrono::milliseconds kTicketPollInterval =
+    std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::seconds(10));
+
 void insertSeeds(const folly::dynamic& keyConfig,
                  std::vector<std::string>& seedList) {
   if (!keyConfig.isArray()) {
@@ -39,24 +43,8 @@ namespace apache {
 namespace thrift {
 
 TLSTicketProcessor::TLSTicketProcessor(std::string ticketFile)
-    : ticketFile_(ticketFile) {
-  auto ticketsChangedCob = [this]() { fileUpdated(); };
-  auto poller = folly::
-      Singleton<FilePoller, FilePoller::ThriftInternalPollerTag>::try_get();
-  if (!poller) {
-    LOG(WARNING) << "Can't register " << ticketFile
-                 << " to poll: FilePoller Singleton destroyed";
-    return;
-  }
-  poller->addFileToTrack(ticketFile, ticketsChangedCob);
-}
-
-void TLSTicketProcessor::stop() {
-  auto poller = folly::
-      Singleton<FilePoller, FilePoller::ThriftInternalPollerTag>::try_get();
-  if (poller) {
-    poller->removeFileToTrack(ticketFile_);
-  } // else poller already destroyed
+    : ticketFile_(ticketFile), poller_(ticketFile, kTicketPollInterval) {
+  poller_.addCallback([&] { fileUpdated(); });
 }
 
 TLSTicketProcessor::~TLSTicketProcessor() { stop(); }
@@ -74,6 +62,8 @@ void TLSTicketProcessor::fileUpdated() noexcept {
     }
   }
 }
+
+void TLSTicketProcessor::stop() { poller_.stop(); }
 
 /* static */ Optional<TLSTicketKeySeeds> TLSTicketProcessor::processTLSTickets(
     const std::string& fileName) {

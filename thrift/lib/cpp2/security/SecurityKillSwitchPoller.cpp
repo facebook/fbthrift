@@ -18,43 +18,51 @@
 #include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
 #include <folly/Singleton.h>
 
-DEFINE_string(
-    thrift_security_tls_kill_switch_file,
-    "/var/thrift_security/disable_thrift_security_tls",
-    "A file, which when present on a client, disables the use of TLS to "
-    "endpoints, and on servers will downgrade a 'required' SSL policy to "
-    "'permitted'");
-
 namespace apache { namespace thrift {
 
-static constexpr std::chrono::seconds thriftKillSwitchExpired =
-    std::chrono::seconds(86400);
+namespace {
+auto defaultInstance = folly::Singleton<SecurityKillSwitchPoller>()
+  .shouldEagerInit();
+}
 
 using namespace std;
 using namespace folly;
 
 SecurityKillSwitchPoller::SecurityKillSwitchPoller()
-    : SecurityKillSwitchPoller(true) {}
+    : SecurityKillSwitchPoller(chrono::milliseconds(1000),
+                               apache::thrift::isTlsKillSwitchEnabled) {}
 
-SecurityKillSwitchPoller::SecurityKillSwitchPoller(bool autostart)
-    : yCob_([this]() { switchEnabled_ = true; }),
-      nCob_([this]() { switchEnabled_ = false; }),
-      condition_(FilePoller::fileTouchedWithinCond(thriftKillSwitchExpired)) {
-  if (autostart) {
-    setup();
+SecurityKillSwitchPoller::SecurityKillSwitchPoller(
+  const chrono::milliseconds& timeout, function<bool()> pollFunc)
+    : timeout_(timeout), pollFunc_(pollFunc), thread_(true) {
+  setup();
+}
+
+SecurityKillSwitchPoller::~SecurityKillSwitchPoller() {
+  thread_.stop();
+}
+
+void SecurityKillSwitchPoller::setup() {
+  auto evb = thread_.getEventBase();
+  evb->runInEventBaseThread([this, evb]() {
+      attachEventBase(evb);
+      updateSwitchState();
+      scheduleTimeout(timeout_);
+  });
+}
+
+void SecurityKillSwitchPoller::updateSwitchState() noexcept {
+  try {
+    switchEnabled_ = pollFunc_();
+  } catch (...) {
+    VLOG(5) << "Error checking kill switch.  Disabling.";
+    switchEnabled_ = false;
   }
 }
 
-void SecurityKillSwitchPoller::setup() noexcept {
-  auto poller = folly::
-      Singleton<FilePoller, FilePoller::ThriftInternalPollerTag>::try_get();
-  if (!poller) {
-    LOG(WARNING) << "Can't register "
-                 << FLAGS_thrift_security_tls_kill_switch_file
-                 << " to poll: FilePoller Singleton destroyed";
-    return;
-  }
-  poller->addFileToTrack(
-      FLAGS_thrift_security_tls_kill_switch_file, yCob_, nCob_, condition_);
+void SecurityKillSwitchPoller::timeoutExpired() noexcept {
+  updateSwitchState();
+  scheduleTimeout(timeout_);
 }
+
 }}

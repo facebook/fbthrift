@@ -59,7 +59,8 @@ class TLSTicketProcessor {
   static folly::Optional<wangle::TLSTicketKeySeeds> processTLSTickets(
       const std::string& fileName);
 
-  const std::string ticketFile_;
+  std::string ticketFile_;
+  FilePoller poller_;
   std::vector<std::function<void(wangle::TLSTicketKeySeeds)>> callbacks_;
 };
 }
