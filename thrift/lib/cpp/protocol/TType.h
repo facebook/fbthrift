@@ -22,7 +22,7 @@ namespace apache { namespace thrift { namespace protocol {
  * Take special note of the T_END type which is used specifically to mark
  * the end of a sequence of fields.
  */
-enum TType : uint8_t {
+enum TType {
   T_STOP       = 0,
   T_VOID       = 1,
   T_BOOL       = 2,
