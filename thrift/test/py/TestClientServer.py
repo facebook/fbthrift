@@ -15,6 +15,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import os.path
 import sys
 from subprocess import Popen
 import time
@@ -49,11 +50,13 @@ except:
 
 def start_server(server_type, ssl, server_header, server_context,
         multiple, port):
+    server_path = os.path.dirname(sys.argv[0])
     if sys.version_info[0] >= 3:
-        server_path = '_bin/thrift/test/py/py3_test_server.par'
+        server_bin = os.path.join(server_path, 'py3_test_server.par')
     else:
-        server_path = '_bin/thrift/test/py/python_test_server.par'
-    args = [server_path, '--port', str(port)]
+        server_bin = os.path.join(server_path, 'python_test_server.par')
+
+    args = [server_bin, '--port', str(port)]
     if ssl:
         args.append('--ssl')
     if server_header:
