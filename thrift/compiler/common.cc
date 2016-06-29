@@ -197,6 +197,7 @@ void pwarning(int level, const char* fmt, ...) {
   fprintf(stderr, "\n");
 }
 
+[[noreturn]]
 void failure(const char* fmt, ...) {
   va_list args;
   fprintf(stderr, "[FAILURE:%s:%d] ", g_curpath.c_str(), yylineno);
@@ -234,8 +235,7 @@ string include_file(string filename) {
     // Realpath!
     char rp[PATH_MAX];
     if (saferealpath(filename.c_str(), rp) == nullptr) {
-      pwarning(0, "Cannot open include file %s\n", filename.c_str());
-      return std::string();
+      failure("Cannot open include file %s\n", filename.c_str());
     }
 
     // Stat this file
@@ -268,8 +268,7 @@ string include_file(string filename) {
   }
 
   // Uh oh
-  pwarning(0, "Could not find include file %s", filename.c_str());
-  return std::string();
+  failure("Could not find include file %s", filename.c_str());
 }
 
 void clear_doctext() {

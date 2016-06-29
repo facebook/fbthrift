@@ -122,6 +122,7 @@ void pwarning(int level, const char* fmt, ...);
  *
  * @param fmt C format string followed by additional arguments
  */
+[[noreturn]]
 void failure(const char* fmt, ...);
 
 /**

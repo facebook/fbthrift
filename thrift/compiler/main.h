@@ -54,6 +54,7 @@ void pwarning(int level, const char* fmt, ...);
 /**
  * Failure!
  */
+[[noreturn]]
 void failure(const char* fmt, ...);
 
 /**
