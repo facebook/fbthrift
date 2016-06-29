@@ -429,24 +429,28 @@ void runRequestContextTest(bool failSecurity) {
   TestServiceAsyncClient client(std::move(channel));
   Countdown c(2, [&base](){base.terminateLoopSoon();});
 
-  // Send first request with a unique RequestContext. This would trigger
-  // security. Rest of the request would queue behind it.
-  folly::RequestContext::create();
-  folly::RequestContext::get()->setContextData("first", nullptr);
-  client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
-    EXPECT_TRUE(folly::RequestContext::get()->hasContextData("first"));
-    c.down();
-  }, 10);
+  {
+    // Send first request with a unique RequestContext. This would trigger
+    // security. Rest of the request would queue behind it.
+    folly::RequestContextScopeGuard rctx;
+    folly::RequestContext::get()->setContextData("first", nullptr);
+    client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
+      EXPECT_TRUE(folly::RequestContext::get()->hasContextData("first"));
+      c.down();
+    }, 10);
+  }
 
-  // Send another request with a unique RequestContext. This request would
-  // queue behind the first one inside HeaderClientChannel.
-  folly::RequestContext::create();
-  folly::RequestContext::get()->setContextData("second", nullptr);
-  client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
-    EXPECT_FALSE(folly::RequestContext::get()->hasContextData("first"));
-    EXPECT_TRUE(folly::RequestContext::get()->hasContextData("second"));
-    c.down();
-  }, 10);
+  {
+    // Send another request with a unique RequestContext. This request would
+    // queue behind the first one inside HeaderClientChannel.
+    folly::RequestContextScopeGuard rctx;
+    folly::RequestContext::get()->setContextData("second", nullptr);
+    client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
+      EXPECT_FALSE(folly::RequestContext::get()->hasContextData("first"));
+      EXPECT_TRUE(folly::RequestContext::get()->hasContextData("second"));
+      c.down();
+    }, 10);
+  }
 
   // Now start looping the eventbase to guarantee that all the above requests
   // would always queue.
