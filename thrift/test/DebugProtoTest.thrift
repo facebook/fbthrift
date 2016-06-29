@@ -232,6 +232,13 @@ struct CompactProtoTestStruct {
   59: map<i16, float>             i16_float_map;
 }
 
+typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
+typedef binary (cpp2.type = "folly::IOBuf") IOBuf
+struct BufferStruct {
+  1: binary bin_field;
+  2: IOBufPtr iobuf_ptr_field;
+  3: IOBuf iobuf_field;
+}
 
 const CompactProtoTestStruct COMPACT_TEST = {
   'a_byte'             : 127,

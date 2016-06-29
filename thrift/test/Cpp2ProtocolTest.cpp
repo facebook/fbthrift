@@ -17,12 +17,14 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
+#include <thrift/lib/cpp2/protocol/JSONProtocol.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 
 #include <thrift/test/gen-cpp2/DebugProtoTest_types.h>
+#include <thrift/test/gen-cpp2/DebugProtoTest_types.tcc>
 #include <thrift/test/gen-cpp/DebugProtoTest_types.h>
 
 #include <math.h>
@@ -284,6 +286,52 @@ TEST(protocol2, simpleJsonExceptions) {
   ASSERT_NO_THROW(doDecode("{\"im_true\": false}"));
   ASSERT_NO_THROW(doDecode("{\"some_characters\": \"\\u1111\"}"));
   ASSERT_NO_THROW(doDecode("{\"barfoo\": []}"));
+}
+
+namespace {
+  const std::uint8_t testBytes[] = {0xFA, 0xCE, 0xB0, 0x00, 0x00, 0x0C};
+  folly::ByteRange testByteRange(testBytes, sizeof(testBytes));
+  const std::uint8_t testBytes2[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xAB, 0xBA, 0x10};
+  folly::ByteRange testByteRange2(testBytes2, sizeof(testBytes2));
+  const std::uint8_t testBytes3[] = {0xCA, 0xFE, 0xBA, 0xBE, 0xFA, 0xBE};
+  folly::ByteRange testByteRange3(testBytes3, sizeof(testBytes3));
+}
+template <typename Cpp2Reader, typename Cpp2Writer>
+void testCustomBuffers() {
+    Cpp2Reader reader;
+    Cpp2Writer writer;
+    cpp2::BufferStruct a;
+
+    IOBufQueue buf;
+    writer.setOutput(&buf, 1024);
+
+    std::string binString(reinterpret_cast<const char*>(testBytes), sizeof(testBytes));
+    a.bin_field = binString;
+    a.iobuf_ptr_field = folly::IOBuf::copyBuffer(testByteRange2);
+    a.iobuf_field = folly::IOBuf::wrapBufferAsValue(testByteRange3);
+
+    a.write(&writer);
+    auto underlying = buf.move();
+
+    reader.setInput(underlying.get());
+    cpp2::BufferStruct b;
+    b.read(&reader);
+
+    ASSERT_EQ(b.bin_field, binString);
+    ASSERT_EQ(b.iobuf_ptr_field->coalesce(), testByteRange2);
+    ASSERT_EQ(b.iobuf_field.coalesce(), testByteRange3);
+}
+TEST(protocol2, customBufferContainersSimpleJson) {
+  testCustomBuffers<SimpleJSONProtocolReader, SimpleJSONProtocolWriter>();
+}
+TEST(protocol2, customBufferContainersJSON) {
+  testCustomBuffers<JSONProtocolReader, JSONProtocolWriter>();
+}
+TEST(protocol2, customBufferContainersBinary) {
+  testCustomBuffers<BinaryProtocolReader, BinaryProtocolWriter>();
+}
+TEST(protocol2, customBufferContainersCompact) {
+  testCustomBuffers<CompactProtocolReader, CompactProtocolWriter>();
 }
 
 int main(int argc, char** argv) {

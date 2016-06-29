@@ -96,8 +96,8 @@ uint32_t JSONProtocolWriterCommon::writeBinary(folly::ByteRange v) {
 uint32_t JSONProtocolWriterCommon::writeBinary(
     const std::unique_ptr<folly::IOBuf>& str) {
   DCHECK(str);
-  auto ret = writeContext();
   if (!str) {
+    auto ret = writeContext();
     return ret + writeJSONString(folly::StringPiece());
   }
   return writeBinary(*str);
