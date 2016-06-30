@@ -81,6 +81,6 @@ void test_thrift_map_traits();
 
 }} // apache::thrift
 
-#include <thrift/lib/cpp2/fatal/traits_test_helpers-inl.h>
+#include <thrift/lib/cpp2/fatal/internal/traits_test_helpers-inl.h>
 
 #endif // THRIFT_FATAL_TRAITS_TEST_HELPERS_H

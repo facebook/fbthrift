@@ -16,7 +16,7 @@
 #ifndef THRIFT_FATAL_REFLECTION_H_
 #define THRIFT_FATAL_REFLECTION_H_ 1
 
-#include <thrift/lib/cpp2/fatal/reflection-inl-pre.h>
+#include <thrift/lib/cpp2/fatal/internal/reflection-inl-pre.h>
 
 #include <fatal/type/enum.h>
 #include <fatal/type/map.h>
@@ -1982,6 +1982,6 @@ template <typename> struct thrift_map_traits;
 
 }} // apache::thrift
 
-#include <thrift/lib/cpp2/fatal/reflection-inl-post.h>
+#include <thrift/lib/cpp2/fatal/internal/reflection-inl-post.h>
 
 #endif // THRIFT_FATAL_REFLECTION_H_

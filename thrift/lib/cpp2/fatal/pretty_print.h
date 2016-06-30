@@ -84,6 +84,6 @@ std::string pretty_string(Args &&...args) {
 
 }} // apache::thrift
 
-#include <thrift/lib/cpp2/fatal/pretty_print-inl.h>
+#include <thrift/lib/cpp2/fatal/internal/pretty_print-inl.h>
 
 #endif // THRIFT_FATAL_PRETTY_PRINT_H_

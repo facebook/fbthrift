@@ -191,6 +191,6 @@ T from_dynamic(
 
 }} // apache::thrift
 
-#include <thrift/lib/cpp2/fatal/folly_dynamic-inl.h>
+#include <thrift/lib/cpp2/fatal/internal/folly_dynamic-inl.h>
 
 #endif // THRIFT_FATAL_FOLLY_DYNAMIC_H_

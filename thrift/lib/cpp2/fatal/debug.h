@@ -36,7 +36,7 @@
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 
-#include <thrift/lib/cpp2/fatal/debug-inl-pre.h>
+#include <thrift/lib/cpp2/fatal/internal/debug-inl-pre.h>
 
 #include <thrift/lib/cpp2/fatal/pretty_print.h>
 
@@ -129,6 +129,6 @@ debug_output_callback<Output> make_debug_output_callback(Output &output) {
 
 }} // apache::thrift
 
-#include <thrift/lib/cpp2/fatal/debug-inl-post.h>
+#include <thrift/lib/cpp2/fatal/internal/debug-inl-post.h>
 
 #endif // THRIFT_FATAL_DEBUG_H_

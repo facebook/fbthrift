@@ -78,19 +78,19 @@ thrift2include_fataldir = $(thrift2includedir)/fatal
 thrift2include_fatal_HEADERS = \
   fatal/container_traits.h \
   fatal/container_traits_folly.h \
-	fatal/debug-inl-post.h \
-	fatal/debug-inl-pre.h \
+	fatal/internal/debug-inl-post.h \
+	fatal/internal/debug-inl-pre.h \
 	fatal/debug.h \
-	fatal/folly_dynamic-inl.h \
+	fatal/internal/folly_dynamic-inl.h \
 	fatal/folly_dynamic.h \
 	fatal/indenter.h \
-	fatal/pretty_print-inl.h \
+	fatal/internal/pretty_print-inl.h \
 	fatal/pretty_print.h \
-	fatal/reflection-inl-post.h \
-	fatal/reflection-inl-pre.h \
+	fatal/internal/reflection-inl-post.h \
+	fatal/internal/reflection-inl-pre.h \
 	fatal/reflection.h \
 	fatal/traits_test_helpers.h \
-	fatal/traits_test_helpers-inl.h \
+	fatal/internal/traits_test_helpers-inl.h \
 	fatal/internal/test_helpers.h \
 	fatal/variant.h
 
