@@ -4428,32 +4428,39 @@ class CppGenerator(t_generator.Generator):
         result += ">"
         return result
 
-    def _render_fatal_thrift_category(self, ttype):
+    def _render_fatal_type_class(self, ttype):
         while ttype.is_typedef:
             ttype = ttype.type
+
         if ttype.is_void:
-            return 'nothing'
+            return '::apache::thrift::type_class::nothing'
+        elif ttype.is_base_type and ttype.as_base_type.is_binary:
+            return '::apache::thrift::type_class::binary'
         elif ttype.is_string:
-            return 'string'
+            return '::apache::thrift::type_class::string'
         elif ttype.is_floating_point:
-            return 'floating_point'
+            return '::apache::thrift::type_class::floating_point'
         elif ttype.is_base_type:
-            return 'integral'
+            return '::apache::thrift::type_class::integral'
         elif ttype.is_enum:
-            return 'enumeration'
+            return '::apache::thrift::type_class::enumeration'
         elif ttype.is_list:
-            return 'list'
+            return '::apache::thrift::type_class::list<{0}>'.format(
+                self._render_fatal_type_class(ttype.as_list.elem_type))
         elif ttype.is_map:
-            return 'map'
+            return '::apache::thrift::type_class::map<{0}, {1}>'.format(
+                self._render_fatal_type_class(ttype.as_map.key_type),
+                self._render_fatal_type_class(ttype.as_map.value_type))
         elif ttype.is_set:
-            return 'set'
+            return '::apache::thrift::type_class::set<{0}>'.format(
+                self._render_fatal_type_class(ttype.as_set.elem_type))
         elif ttype.is_struct:
             if ttype.as_struct.is_union:
-                return 'variant'
+                return '::apache::thrift::type_class::variant'
             else:
-                return 'structure'
-        else:
-            return 'unknown'
+                return '::apache::thrift::type_class::structure'
+
+        return '::apache::thrift::type_class::unknown'
 
     def _render_fatal_required_qualifier(self, required):
         if required == e_req.required:
@@ -4687,7 +4694,12 @@ class CppGenerator(t_generator.Generator):
                 t('    {0},'.format(self._type_name(i.type)))
                 t('    {0}::{1},'.format(idscls, i.name))
                 t('    {0}::{1},'.format(getcls, i.name))
-                t('    {0}::{1}'.format(setcls, i.name))
+                t('    {0}::{1},'.format(setcls, i.name))
+                t('    ::apache::thrift::reflected_union_member_metadata<')
+                t('      {0},'.format(self._get_fatal_string_id(i.name)))
+                t('      {0},'.format(i.key))
+                t('      {0}'.format(self._render_fatal_type_class(i.type)))
+                t('    >')
                 t('  >{0}'.format(',' if idx + 1 < len(union.members) else ''))
             t('>;')
             t()
@@ -4838,8 +4850,8 @@ class CppGenerator(t_generator.Generator):
                             self._render_fatal_required_qualifier(m.req)))
                         cmnf('  {0}::{1}::{2},'.format(
                             self.fatal_detail_ns, dtmclsprefix, m.name))
-                        cmnf('        ::apache::thrift::thrift_category::{0},'
-                            .format(self._render_fatal_thrift_category(m.type)))
+                        cmnf('        {0},'.format(
+                            self._render_fatal_type_class(m.type)))
                         cmnf('  {0}::{1}::{2}_{3}_struct_member_pod_{4},'
                             .format(self.fatal_detail_ns, mpdclsprefix,
                                 safe_ns, name, m.name))

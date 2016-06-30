@@ -40,10 +40,9 @@
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 
-namespace apache { namespace thrift { namespace detail {
-template <typename OutputStream, typename T>
-OutputStream &pretty_print(OutputStream &&, T &&);
-} // namespace detail {
+#include <thrift/lib/cpp2/fatal/internal/pretty_print-inl-pre.h>
+
+namespace apache { namespace thrift {
 
 /**
  * Pretty-prints an object to the given output stream using Thrift's reflection
@@ -61,10 +60,12 @@ void pretty_print(
   std::string indentation = "  ",
   std::string margin = std::string()
 ) {
-  detail::pretty_print(
-    make_indenter(out, std::move(indentation), std::move(margin)),
-    std::forward<T>(what)
-  );
+  using impl = detail::pretty_print_impl<
+    reflect_type_class<typename std::decay<T>::type>
+  >;
+
+  auto indenter = make_indenter(out, std::move(indentation), std::move(margin));
+  impl::print(indenter, std::forward<T>(what));
 }
 
 /**
@@ -84,6 +85,6 @@ std::string pretty_string(Args &&...args) {
 
 }} // apache::thrift
 
-#include <thrift/lib/cpp2/fatal/internal/pretty_print-inl.h>
+#include <thrift/lib/cpp2/fatal/internal/pretty_print-inl-post.h>
 
 #endif // THRIFT_FATAL_PRETTY_PRINT_H_

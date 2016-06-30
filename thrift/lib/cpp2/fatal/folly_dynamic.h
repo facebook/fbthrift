@@ -25,6 +25,8 @@
 #include <type_traits>
 #include <utility>
 
+#include <thrift/lib/cpp2/fatal/internal/folly_dynamic-inl-pre.h>
+
 /**
  * READ ME FIRST: this header enhances Thrift support for the `folly::dynamic`
  * container.
@@ -90,10 +92,6 @@ enum class format_adherence {
   LENIENT
 };
 
-namespace detail {
-template <thrift_category> struct dynamic_converter_impl;
-} // namespace detail {
-
 /**
  * Converts an object to its `folly::dynamic` representation using Thrift's
  * reflection support.
@@ -108,7 +106,7 @@ template <thrift_category> struct dynamic_converter_impl;
 template <typename T>
 void to_dynamic(folly::dynamic &out, T &&input, dynamic_format format) {
   using impl = detail::dynamic_converter_impl<
-    reflect_category<typename std::decay<T>::type>::value
+    reflect_type_class<typename std::decay<T>::type>
   >;
 
   static_assert(
@@ -156,7 +154,7 @@ void from_dynamic(
   format_adherence adherence = format_adherence::STRICT
 ) {
   using impl = detail::dynamic_converter_impl<
-    reflect_category<typename std::decay<T>::type>::value
+    reflect_type_class<typename std::decay<T>::type>
   >;
 
   static_assert(
@@ -191,6 +189,6 @@ T from_dynamic(
 
 }} // apache::thrift
 
-#include <thrift/lib/cpp2/fatal/internal/folly_dynamic-inl.h>
+#include <thrift/lib/cpp2/fatal/internal/folly_dynamic-inl-post.h>
 
 #endif // THRIFT_FATAL_FOLLY_DYNAMIC_H_

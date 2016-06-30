@@ -46,45 +46,62 @@ struct type_common_metadata_impl {
   using legacy_id = std::integral_constant<legacy_type_id_t, LegacyTypeId>;
 };
 
-template <thrift_category Category>
-using as_thrift_category = std::integral_constant<thrift_category, Category>;
+template <
+  typename T,
+  bool = fatal::is_complete<thrift_list_traits<T>>::value,
+  bool = fatal::is_complete<thrift_map_traits<T>>::value,
+  bool = fatal::is_complete<thrift_set_traits<T>>::value
+>
+struct reflect_container_type_class_impl {
+  using type = type_class::unknown;
+};
 
 template <typename T>
-struct reflect_category_impl {
+struct reflect_container_type_class_impl<T, true, false, false> {
+  using type = type_class::list<
+    reflect_type_class<typename thrift_list_traits<T>::value_type>
+  >;
+};
+
+template <typename T>
+struct reflect_container_type_class_impl<T, false, true, false> {
+  using type = type_class::map<
+    reflect_type_class<typename thrift_map_traits<T>::key_type>,
+    reflect_type_class<typename thrift_map_traits<T>::mapped_type>
+  >;
+};
+
+template <typename T>
+struct reflect_container_type_class_impl<T, false, false, true> {
+  using type = type_class::set<
+    reflect_type_class<typename thrift_set_traits<T>::value_type>
+  >;
+};
+
+template <typename T>
+struct reflect_type_class_impl {
   using type = typename std::conditional<
     is_reflectable_enum<T>::value,
-    as_thrift_category<thrift_category::enumeration>,
+    type_class::enumeration,
     typename std::conditional<
       is_reflectable_union<T>::value,
-      as_thrift_category<thrift_category::variant>,
+      type_class::variant,
       typename std::conditional<
         is_reflectable_struct<T>::value,
-        as_thrift_category<thrift_category::structure>,
+        type_class::structure,
         typename std::conditional<
           std::is_floating_point<T>::value,
-          as_thrift_category<thrift_category::floating_point>,
+          type_class::floating_point,
           typename std::conditional<
             std::is_integral<T>::value,
-            as_thrift_category<thrift_category::integral>,
+            type_class::integral,
             typename std::conditional<
               std::is_same<void, T>::value,
-              as_thrift_category<thrift_category::nothing>,
+              type_class::nothing,
               typename std::conditional<
                 fatal::is_complete<thrift_string_traits<T>>::value,
-                as_thrift_category<thrift_category::string>,
-                typename std::conditional<
-                  fatal::is_complete<thrift_list_traits<T>>::value,
-                  as_thrift_category<thrift_category::list>,
-                  typename std::conditional<
-                    fatal::is_complete<thrift_set_traits<T>>::value,
-                    as_thrift_category<thrift_category::set>,
-                    typename std::conditional<
-                      fatal::is_complete<thrift_map_traits<T>>::value,
-                      as_thrift_category<thrift_category::map>,
-                      as_thrift_category<thrift_category::unknown>
-                    >::type
-                  >::type
-                >::type
+                type_class::string,
+                typename reflect_container_type_class_impl<T>::type
               >::type
             >::type
           >::type
@@ -94,7 +111,7 @@ struct reflect_category_impl {
   >::type;
 };
 
-template <thrift_category, typename>
+template <typename, typename>
 struct reflect_module_tag_selector {
   using type = void;
 };
@@ -104,7 +121,7 @@ struct reflect_module_tag_impl {
   template <typename = void>
   struct get {
     using type = typename reflect_module_tag_selector<
-      reflect_category<T>::value,
+      reflect_type_class<T>,
       T
     >::type;
 
@@ -117,7 +134,7 @@ struct reflect_module_tag_impl {
   template <typename Default>
   class try_get {
     using impl = typename reflect_module_tag_selector<
-      reflect_category<T>::value,
+      reflect_type_class<T>,
       T
     >::type;
 
@@ -129,17 +146,17 @@ struct reflect_module_tag_impl {
 };
 
 template <typename T>
-struct reflect_module_tag_selector<thrift_category::enumeration, T> {
+struct reflect_module_tag_selector<type_class::enumeration, T> {
   using type = typename fatal::enum_traits<T>::metadata::module;
 };
 
 template <typename T>
-struct reflect_module_tag_selector<thrift_category::variant, T> {
+struct reflect_module_tag_selector<type_class::variant, T> {
   using type = typename fatal::variant_traits<T>::metadata::module;
 };
 
 template <typename T>
-struct reflect_module_tag_selector<thrift_category::structure, T> {
+struct reflect_module_tag_selector<type_class::structure, T> {
   using type = typename reflect_struct<T>::module;
 };
 

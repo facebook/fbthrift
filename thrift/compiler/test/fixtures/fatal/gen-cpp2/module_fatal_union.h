@@ -230,25 +230,45 @@ class union1_variant_traits {
       int32_t,
       union1__struct_unique_identifiers_list::ui,
       union1__struct_unique_getters_list::ui,
-      union1__struct_unique_setters_list::ui
+      union1__struct_unique_setters_list::ui,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui,
+        1,
+        ::apache::thrift::type_class::integral
+      >
     >,
     ::fatal::variant_type_descriptor<
       double,
       union1__struct_unique_identifiers_list::ud,
       union1__struct_unique_getters_list::ud,
-      union1__struct_unique_setters_list::ud
+      union1__struct_unique_setters_list::ud,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud,
+        2,
+        ::apache::thrift::type_class::floating_point
+      >
     >,
     ::fatal::variant_type_descriptor<
       std::string,
       union1__struct_unique_identifiers_list::us,
       union1__struct_unique_getters_list::us,
-      union1__struct_unique_setters_list::us
+      union1__struct_unique_setters_list::us,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us,
+        3,
+        ::apache::thrift::type_class::string
+      >
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       union1__struct_unique_identifiers_list::ue,
       union1__struct_unique_getters_list::ue,
-      union1__struct_unique_setters_list::ue
+      union1__struct_unique_setters_list::ue,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue,
+        4,
+        ::apache::thrift::type_class::enumeration
+      >
     >
   >;
 
@@ -493,25 +513,45 @@ class union2_variant_traits {
       int32_t,
       union2__struct_unique_identifiers_list::ui_2,
       union2__struct_unique_getters_list::ui_2,
-      union2__struct_unique_setters_list::ui_2
+      union2__struct_unique_setters_list::ui_2,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_2,
+        1,
+        ::apache::thrift::type_class::integral
+      >
     >,
     ::fatal::variant_type_descriptor<
       double,
       union2__struct_unique_identifiers_list::ud_2,
       union2__struct_unique_getters_list::ud_2,
-      union2__struct_unique_setters_list::ud_2
+      union2__struct_unique_setters_list::ud_2,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_2,
+        2,
+        ::apache::thrift::type_class::floating_point
+      >
     >,
     ::fatal::variant_type_descriptor<
       std::string,
       union2__struct_unique_identifiers_list::us_2,
       union2__struct_unique_getters_list::us_2,
-      union2__struct_unique_setters_list::us_2
+      union2__struct_unique_setters_list::us_2,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_2,
+        3,
+        ::apache::thrift::type_class::string
+      >
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       union2__struct_unique_identifiers_list::ue_2,
       union2__struct_unique_getters_list::ue_2,
-      union2__struct_unique_setters_list::ue_2
+      union2__struct_unique_setters_list::ue_2,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_2,
+        4,
+        ::apache::thrift::type_class::enumeration
+      >
     >
   >;
 
@@ -756,25 +796,45 @@ class union3_variant_traits {
       int32_t,
       union3__struct_unique_identifiers_list::ui_3,
       union3__struct_unique_getters_list::ui_3,
-      union3__struct_unique_setters_list::ui_3
+      union3__struct_unique_setters_list::ui_3,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_3,
+        1,
+        ::apache::thrift::type_class::integral
+      >
     >,
     ::fatal::variant_type_descriptor<
       double,
       union3__struct_unique_identifiers_list::ud_3,
       union3__struct_unique_getters_list::ud_3,
-      union3__struct_unique_setters_list::ud_3
+      union3__struct_unique_setters_list::ud_3,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_3,
+        2,
+        ::apache::thrift::type_class::floating_point
+      >
     >,
     ::fatal::variant_type_descriptor<
       std::string,
       union3__struct_unique_identifiers_list::us_3,
       union3__struct_unique_getters_list::us_3,
-      union3__struct_unique_setters_list::us_3
+      union3__struct_unique_setters_list::us_3,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_3,
+        3,
+        ::apache::thrift::type_class::string
+      >
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       union3__struct_unique_identifiers_list::ue_3,
       union3__struct_unique_getters_list::ue_3,
-      union3__struct_unique_setters_list::ue_3
+      union3__struct_unique_setters_list::ue_3,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_3,
+        4,
+        ::apache::thrift::type_class::enumeration
+      >
     >
   >;
 
@@ -1057,31 +1117,56 @@ class unionA_variant_traits {
       int32_t,
       unionA__struct_unique_identifiers_list::i,
       unionA__struct_unique_getters_list::i,
-      unionA__struct_unique_setters_list::i
+      unionA__struct_unique_setters_list::i,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::i,
+        1,
+        ::apache::thrift::type_class::integral
+      >
     >,
     ::fatal::variant_type_descriptor<
       double,
       unionA__struct_unique_identifiers_list::d,
       unionA__struct_unique_getters_list::d,
-      unionA__struct_unique_setters_list::d
+      unionA__struct_unique_setters_list::d,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d,
+        2,
+        ::apache::thrift::type_class::floating_point
+      >
     >,
     ::fatal::variant_type_descriptor<
       std::string,
       unionA__struct_unique_identifiers_list::s,
       unionA__struct_unique_getters_list::s,
-      unionA__struct_unique_setters_list::s
+      unionA__struct_unique_setters_list::s,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::s,
+        3,
+        ::apache::thrift::type_class::string
+      >
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       unionA__struct_unique_identifiers_list::e,
       unionA__struct_unique_getters_list::e,
-      unionA__struct_unique_setters_list::e
+      unionA__struct_unique_setters_list::e,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::e,
+        4,
+        ::apache::thrift::type_class::enumeration
+      >
     >,
     ::fatal::variant_type_descriptor<
        ::test_cpp2::cpp_reflection::structA,
       unionA__struct_unique_identifiers_list::a,
       unionA__struct_unique_getters_list::a,
-      unionA__struct_unique_setters_list::a
+      unionA__struct_unique_setters_list::a,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::a,
+        5,
+        ::apache::thrift::type_class::structure
+      >
     >
   >;
 

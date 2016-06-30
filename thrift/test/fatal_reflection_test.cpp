@@ -26,12 +26,6 @@
 namespace test_cpp2 {
 namespace cpp_reflection {
 
-template <apache::thrift::thrift_category Category>
-using category = std::integral_constant<
-  apache::thrift::thrift_category,
-  Category
->;
-
 TEST(reflection, is_reflectable_module) {
   EXPECT_SAME<
     std::true_type,
@@ -381,230 +375,245 @@ TEST(reflection, is_reflectable_union) {
   >();
 }
 
-TEST(reflection, reflect_category) {
+TEST(reflection, reflect_type_class) {
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::unknown>,
-    apache::thrift::reflect_category<reflection_tags::module>
+    apache::thrift::type_class::unknown,
+    apache::thrift::reflect_type_class<reflection_tags::module>
   >();
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::nothing>,
-    apache::thrift::reflect_category<void>
+    apache::thrift::type_class::nothing,
+    apache::thrift::reflect_type_class<void>
   >();
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<signed char>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<signed char>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<signed short>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<signed short>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<signed int>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<signed int>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<signed long>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<signed long>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<signed long long>
-  >();
-
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<bool>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<unsigned char>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<unsigned short>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<unsigned int>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<unsigned long>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<unsigned long long>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<signed long long>
   >();
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::int8_t>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<bool>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::int16_t>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<unsigned char>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::int32_t>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<unsigned short>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::int64_t>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<unsigned int>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::intmax_t>
-  >();
-
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::uint8_t>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<unsigned long>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::uint16_t>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::uint32_t>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::uint64_t>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::uintmax_t>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<unsigned long long>
   >();
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::size_t>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::int8_t>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::intptr_t>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::int16_t>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    apache::thrift::reflect_category<std::uintptr_t>
-  >();
-
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::floating_point>,
-    apache::thrift::reflect_category<float>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::int32_t>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::floating_point>,
-    apache::thrift::reflect_category<double>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::int64_t>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::floating_point>,
-    apache::thrift::reflect_category<long double>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::intmax_t>
   >();
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::string>,
-    apache::thrift::reflect_category<std::string>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::uint8_t>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::uint16_t>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::uint32_t>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::uint64_t>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::uintmax_t>
   >();
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::enumeration>,
-    apache::thrift::reflect_category<enum1>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::size_t>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::enumeration>,
-    apache::thrift::reflect_category<enum2>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::intptr_t>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::enumeration>,
-    apache::thrift::reflect_category<enum3>
-  >();
-
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::variant>,
-    apache::thrift::reflect_category<union1>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::variant>,
-    apache::thrift::reflect_category<union2>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::variant>,
-    apache::thrift::reflect_category<union3>
+    apache::thrift::type_class::integral,
+    apache::thrift::reflect_type_class<std::uintptr_t>
   >();
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::structure>,
-    apache::thrift::reflect_category<struct1>
+    apache::thrift::type_class::floating_point,
+    apache::thrift::reflect_type_class<float>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::structure>,
-    apache::thrift::reflect_category<struct2>
+    apache::thrift::type_class::floating_point,
+    apache::thrift::reflect_type_class<double>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::structure>,
-    apache::thrift::reflect_category<struct3>
-  >();
-
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::list>,
-    apache::thrift::reflect_category<std::vector<int>>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::list>,
-    apache::thrift::reflect_category<std::vector<std::string>>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::list>,
-    apache::thrift::reflect_category<std::vector<struct1>>
+    apache::thrift::type_class::floating_point,
+    apache::thrift::reflect_type_class<long double>
   >();
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::set>,
-    apache::thrift::reflect_category<std::set<int>>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::set>,
-    apache::thrift::reflect_category<std::set<std::string>>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::set>,
-    apache::thrift::reflect_category<std::set<struct1>>
+    apache::thrift::type_class::string,
+    apache::thrift::reflect_type_class<std::string>
   >();
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::set>,
-    apache::thrift::reflect_category<std::unordered_set<int>>
+    apache::thrift::type_class::enumeration,
+    apache::thrift::reflect_type_class<enum1>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::set>,
-    apache::thrift::reflect_category<std::unordered_set<std::string>>
-  >();
-
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::map>,
-    apache::thrift::reflect_category<std::map<int, std::string>>
+    apache::thrift::type_class::enumeration,
+    apache::thrift::reflect_type_class<enum2>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::map>,
-    apache::thrift::reflect_category<std::map<std::string, struct1>>
-  >();
-  EXPECT_SAME<
-    category<apache::thrift::thrift_category::map>,
-    apache::thrift::reflect_category<std::map<struct1, struct2>>
+    apache::thrift::type_class::enumeration,
+    apache::thrift::reflect_type_class<enum3>
   >();
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::map>,
-    apache::thrift::reflect_category<std::unordered_map<int, std::string>>
+    apache::thrift::type_class::variant,
+    apache::thrift::reflect_type_class<union1>
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::map>,
-    apache::thrift::reflect_category<std::unordered_map<std::string, struct1>>
+    apache::thrift::type_class::variant,
+    apache::thrift::reflect_type_class<union2>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::variant,
+    apache::thrift::reflect_type_class<union3>
+  >();
+
+  EXPECT_SAME<
+    apache::thrift::type_class::structure,
+    apache::thrift::reflect_type_class<struct1>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::structure,
+    apache::thrift::reflect_type_class<struct2>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::structure,
+    apache::thrift::reflect_type_class<struct3>
+  >();
+
+  EXPECT_SAME<
+    apache::thrift::type_class::list<apache::thrift::type_class::integral>,
+    apache::thrift::reflect_type_class<std::vector<int>>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::list<apache::thrift::type_class::string>,
+    apache::thrift::reflect_type_class<std::vector<std::string>>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::list<apache::thrift::type_class::structure>,
+    apache::thrift::reflect_type_class<std::vector<struct1>>
+  >();
+
+  EXPECT_SAME<
+    apache::thrift::type_class::set<apache::thrift::type_class::integral>,
+    apache::thrift::reflect_type_class<std::set<int>>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::set<apache::thrift::type_class::string>,
+    apache::thrift::reflect_type_class<std::set<std::string>>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::set<apache::thrift::type_class::structure>,
+    apache::thrift::reflect_type_class<std::set<struct1>>
+  >();
+
+  EXPECT_SAME<
+    apache::thrift::type_class::set<apache::thrift::type_class::integral>,
+    apache::thrift::reflect_type_class<std::unordered_set<int>>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::set<apache::thrift::type_class::string>,
+    apache::thrift::reflect_type_class<std::unordered_set<std::string>>
+  >();
+
+  EXPECT_SAME<
+    apache::thrift::type_class::map<
+      apache::thrift::type_class::integral,
+      apache::thrift::type_class::string
+    >,
+    apache::thrift::reflect_type_class<std::map<int, std::string>>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::map<
+      apache::thrift::type_class::string,
+      apache::thrift::type_class::structure
+    >,
+    apache::thrift::reflect_type_class<std::map<std::string, struct1>>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::map<
+      apache::thrift::type_class::structure,
+      apache::thrift::type_class::structure
+    >,
+    apache::thrift::reflect_type_class<std::map<struct1, struct2>>
+  >();
+
+  EXPECT_SAME<
+    apache::thrift::type_class::map<
+      apache::thrift::type_class::integral,
+      apache::thrift::type_class::string
+    >,
+    apache::thrift::reflect_type_class<std::unordered_map<int, std::string>>
+  >();
+  EXPECT_SAME<
+    apache::thrift::type_class::map<
+      apache::thrift::type_class::string,
+      apache::thrift::type_class::structure
+    >,
+    apache::thrift::reflect_type_class<std::unordered_map<std::string, struct1>>
   >();
 }
 

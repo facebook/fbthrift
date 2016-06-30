@@ -32,7 +32,7 @@
 
 namespace apache { namespace thrift { namespace detail {
 
-template <thrift_category> struct debug_equals_impl;
+template <typename> struct debug_equals_impl;
 
 template <typename T, typename Callback>
 bool debug_equals(
@@ -42,7 +42,7 @@ bool debug_equals(
   Callback &&callback
 ) {
   using impl = detail::debug_equals_impl<
-    reflect_category<typename std::decay<T>::type>::value
+    reflect_type_class<typename std::decay<T>::type>
   >;
 
   static_assert(
@@ -76,7 +76,8 @@ private:
   std::string &path_;
 };
 
-template <> struct debug_equals_impl<thrift_category::enumeration> {
+template <>
+struct debug_equals_impl<type_class::enumeration> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
@@ -97,7 +98,8 @@ template <> struct debug_equals_impl<thrift_category::enumeration> {
   }
 };
 
-template <> struct debug_equals_impl<thrift_category::list> {
+template <typename ValueTypeClass>
+struct debug_equals_impl<type_class::list<ValueTypeClass>> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
@@ -119,7 +121,7 @@ template <> struct debug_equals_impl<thrift_category::list> {
     for (std::size_t index = 0; l != le && r != re; ++l, ++r, ++index) {
       scoped_path guard(path, index);
 
-      if (!debug_equals(path, *l, *r, callback)) {
+      if (!debug_equals_impl<ValueTypeClass>::equals(path, *l, *r, callback)) {
         return false;
       }
     }
@@ -129,7 +131,8 @@ template <> struct debug_equals_impl<thrift_category::list> {
   }
 };
 
-template <> struct debug_equals_impl<thrift_category::map> {
+template <typename KeyTypeClass, typename MappedTypeClass>
+struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
@@ -150,9 +153,13 @@ template <> struct debug_equals_impl<thrift_category::map> {
     for (std::size_t index = 0; l != le && r != re; ++l, ++r, ++index) {
       scoped_path guard(path, index);
 
-      if (!debug_equals(path, traits::key(l), traits::key(r), callback)
-        || !debug_equals(path, traits::mapped(l), traits::mapped(r), callback)
-      ) {
+      bool const equals = debug_equals_impl<KeyTypeClass>::equals(
+        path, traits::key(l), traits::key(r), callback
+      ) && debug_equals_impl<MappedTypeClass>::equals(
+        path, traits::mapped(l), traits::mapped(r), callback
+      );
+
+      if (!equals) {
         return false;
       }
     }
@@ -162,7 +169,8 @@ template <> struct debug_equals_impl<thrift_category::map> {
   }
 };
 
-template <> struct debug_equals_impl<thrift_category::set> {
+template <typename ValueTypeClass>
+struct debug_equals_impl<type_class::set<ValueTypeClass>> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
@@ -184,7 +192,7 @@ template <> struct debug_equals_impl<thrift_category::set> {
     for (std::size_t index = 0; l != le && r != re; ++l, ++r, ++index) {
       scoped_path guard(path, index);
 
-      if (!debug_equals(path, *l, *r, callback)) {
+      if (!debug_equals_impl<ValueTypeClass>::equals(path, *l, *r, callback)) {
         return false;
       }
     }
@@ -212,16 +220,19 @@ struct debug_equals_variant_visitor {
     assert(Id::value == VariantTraits::get_id(lhs));
     assert(Id::value == VariantTraits::get_id(rhs));
 
-    using name = typename fatal::enum_traits<typename VariantTraits::id>
-      ::value_to_name::template get<Id>;
+    using name = typename Descriptor::metadata::name;
     scoped_path guard(path, name::z_data());
 
+    using type_class = typename Descriptor::metadata::type_class;
     typename Descriptor::getter getter;
-    result = debug_equals(path, getter(lhs), getter(rhs), callback);
+    result = debug_equals_impl<type_class>::equals(
+      path, getter(lhs), getter(rhs), callback
+    );
   }
 };
 
-template <> struct debug_equals_impl<thrift_category::variant> {
+template <>
+struct debug_equals_impl<type_class::variant> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
@@ -273,11 +284,14 @@ struct debug_equals_struct_visitor {
     scoped_path guard(path, Member::name::z_data());
 
     using getter = typename Member::getter;
-    result = debug_equals(path, getter::ref(lhs), getter::ref(rhs), callback);
+    result = debug_equals_impl<typename Member::type_class>::equals(
+      path, getter::ref(lhs), getter::ref(rhs), callback
+    );
   }
 };
 
-template <> struct debug_equals_impl<thrift_category::structure> {
+template <>
+struct debug_equals_impl<type_class::structure> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
@@ -296,7 +310,8 @@ template <> struct debug_equals_impl<thrift_category::structure> {
   }
 };
 
-template <> struct debug_equals_impl<thrift_category::string> {
+template <>
+struct debug_equals_impl<type_class::string> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
@@ -312,7 +327,8 @@ template <> struct debug_equals_impl<thrift_category::string> {
   }
 };
 
-template <> struct debug_equals_impl<thrift_category::floating_point> {
+template <>
+struct debug_equals_impl<type_class::floating_point> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
@@ -328,7 +344,8 @@ template <> struct debug_equals_impl<thrift_category::floating_point> {
   }
 };
 
-template <> struct debug_equals_impl<thrift_category::integral> {
+template <>
+struct debug_equals_impl<type_class::integral> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,

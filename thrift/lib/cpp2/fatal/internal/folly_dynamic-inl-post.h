@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef THRIFT_FATAL_FOLLY_DYNAMIC_INL_H_
-#define THRIFT_FATAL_FOLLY_DYNAMIC_INL_H_ 1
+#ifndef THRIFT_FATAL_FOLLY_DYNAMIC_INL_POST_H_
+#define THRIFT_FATAL_FOLLY_DYNAMIC_INL_POST_H_ 1
 
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 
@@ -25,12 +25,8 @@
 
 namespace apache { namespace thrift { namespace detail {
 
-template <thrift_category>
-struct dynamic_converter_impl {
-};
-
 template <>
-struct dynamic_converter_impl<thrift_category::enumeration> {
+struct dynamic_converter_impl<type_class::enumeration> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     switch (format) {
@@ -107,8 +103,8 @@ struct dynamic_converter_impl<thrift_category::enumeration> {
   }
 };
 
-template <>
-struct dynamic_converter_impl<thrift_category::list> {
+template <typename ValueTypeClass>
+struct dynamic_converter_impl<type_class::list<ValueTypeClass>> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     using traits = thrift_list_traits<T>;
@@ -116,7 +112,9 @@ struct dynamic_converter_impl<thrift_category::list> {
     out = folly::dynamic::array;
 
     for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
-      out.push_back(to_dynamic(*i, format));
+      folly::dynamic value(folly::dynamic::object);
+      dynamic_converter_impl<ValueTypeClass>::to(value, *i, format);
+      out.push_back(std::move(value));
     }
   }
 
@@ -127,18 +125,17 @@ struct dynamic_converter_impl<thrift_category::list> {
     dynamic_format format,
     format_adherence adherence
   ) {
-    using traits = thrift_list_traits<T>;
-
     for (auto const &i: input) {
-      out.push_back(
-        from_dynamic<typename traits::value_type>(i, format, adherence)
+      out.emplace_back();
+      dynamic_converter_impl<ValueTypeClass>::from(
+        out.back(), i, format, adherence
       );
     }
   }
 };
 
-template <>
-struct dynamic_converter_impl<thrift_category::map> {
+template <typename KeyTypeClass, typename MappedTypeClass>
+struct dynamic_converter_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     using traits = thrift_map_traits<T>;
@@ -146,10 +143,10 @@ struct dynamic_converter_impl<thrift_category::map> {
     out = folly::dynamic::object;
 
     for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
-      to_dynamic(
-        out[to_dynamic(traits::key(i), format)],
-        traits::mapped(i),
-        format
+      folly::dynamic key(folly::dynamic::object);
+      dynamic_converter_impl<KeyTypeClass>::to(key, traits::key(i), format);
+      dynamic_converter_impl<MappedTypeClass>::to(
+        out[std::move(key)], traits::mapped(i), format
       );
     }
   }
@@ -164,14 +161,13 @@ struct dynamic_converter_impl<thrift_category::map> {
     using traits = thrift_map_traits<T>;
 
     for (auto const &i: input.items()) {
-      from_dynamic(
-        out[
-          from_dynamic<typename traits::key_type>(
-            i.first,
-            format,
-            adherence
-          )
-        ],
+      typename traits::key_type key;
+      dynamic_converter_impl<KeyTypeClass>::from(
+        key, i.first, format, adherence
+      );
+
+      dynamic_converter_impl<MappedTypeClass>::from(
+        out[std::move(key)],
         i.second,
         format,
         adherence
@@ -180,8 +176,8 @@ struct dynamic_converter_impl<thrift_category::map> {
   }
 };
 
-template <>
-struct dynamic_converter_impl<thrift_category::set> {
+template <typename ValueTypeClass>
+struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     using traits = thrift_set_traits<T>;
@@ -189,7 +185,9 @@ struct dynamic_converter_impl<thrift_category::set> {
     out = folly::dynamic::array;
 
     for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
-      out.push_back(to_dynamic(*i, format));
+      folly::dynamic value(folly::dynamic::object);
+      dynamic_converter_impl<ValueTypeClass>::to(value, *i, format);
+      out.push_back(std::move(value));
     }
   }
 
@@ -203,9 +201,9 @@ struct dynamic_converter_impl<thrift_category::set> {
     using traits = thrift_set_traits<T>;
 
     for (auto const &i: input) {
-      out.insert(
-        from_dynamic<typename traits::value_type>(i, format, adherence)
-      );
+      typename traits::value_type value;
+      dynamic_converter_impl<ValueTypeClass>::from(value, i, format, adherence);
+      out.emplace(std::move(value));
     }
   }
 };
@@ -222,7 +220,7 @@ struct to_dynamic_variant_visitor {
     T const &input,
     dynamic_format format
   ) const {
-    to_dynamic(
+    dynamic_converter_impl<typename Descriptor::metadata::type_class>::to(
       out[fatal::enum_to_string(input.getType())],
       typename Descriptor::getter()(input),
       format
@@ -242,17 +240,17 @@ struct from_dynamic_variant_visitor {
   ) const {
     using id_traits = fatal::enum_traits<typename VariantTraits::id>;
     using id = typename id_traits::name_to_value::template get<IdName>;
-    using type = typename VariantTraits::by_id::template type<id>;
+    using descriptor = typename VariantTraits::by_id::template descriptor<id>;
 
-    VariantTraits::by_id::template set<id>(
-      out,
-      from_dynamic<type>(input, format, adherence)
+    VariantTraits::by_id::template set<id>(out);
+    dynamic_converter_impl<typename descriptor::metadata::type_class>::from(
+      VariantTraits::by_id::template get<id>(out), input, format, adherence
     );
   }
 };
 
 template <>
-struct dynamic_converter_impl<thrift_category::variant> {
+struct dynamic_converter_impl<type_class::variant> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     using traits = fatal::variant_traits<T>;
@@ -310,7 +308,7 @@ struct to_dynamic_struct_visitor {
     T const &input,
     dynamic_format format
   ) const {
-    using impl = dynamic_converter_impl<MemberInfo::category::value>;
+    using impl = dynamic_converter_impl<typename MemberInfo::type_class>;
 
     static_assert(
       fatal::is_complete<impl>::value,
@@ -353,12 +351,14 @@ struct from_dynamic_struct_visitor {
     using rmember = typename rstruct::members::template get<Member>;
     using rgetter = typename rmember::getter;
     assign_is_set<T, rgetter, typename rmember::optional>(out, true);
-    from_dynamic(rgetter::ref(out), input, format, adherence);
+    dynamic_converter_impl<typename rmember::type_class>::from(
+      rgetter::ref(out), input, format, adherence
+    );
   }
 };
 
 template <>
-struct dynamic_converter_impl<thrift_category::structure> {
+struct dynamic_converter_impl<type_class::structure> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     out = folly::dynamic::object;
@@ -392,7 +392,7 @@ struct dynamic_converter_impl<thrift_category::structure> {
 };
 
 template <>
-struct dynamic_converter_impl<thrift_category::string> {
+struct dynamic_converter_impl<type_class::string> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format) {
     out = input;
@@ -419,7 +419,7 @@ struct dynamic_converter_impl<thrift_category::string> {
 };
 
 template <>
-struct dynamic_converter_impl<thrift_category::floating_point> {
+struct dynamic_converter_impl<type_class::floating_point> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format) {
     out = static_cast<double>(input);
@@ -437,7 +437,7 @@ struct dynamic_converter_impl<thrift_category::floating_point> {
 };
 
 template <>
-struct dynamic_converter_impl<thrift_category::integral> {
+struct dynamic_converter_impl<type_class::integral> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format) {
     out = input;
@@ -465,4 +465,4 @@ struct dynamic_converter_impl<thrift_category::integral> {
 
 }}} // apache::thrift::detail
 
-#endif // THRIFT_FATAL_FOLLY_DYNAMIC_INL_H_
+#endif // THRIFT_FATAL_FOLLY_DYNAMIC_INL_POST_H_

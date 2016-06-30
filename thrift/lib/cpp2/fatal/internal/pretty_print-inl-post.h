@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef THRIFT_FATAL_PRETTY_PRINT_INL_H_
-#define THRIFT_FATAL_PRETTY_PRINT_INL_H_ 1
+#ifndef THRIFT_FATAL_PRETTY_PRINT_INL_POST_H_
+#define THRIFT_FATAL_PRETTY_PRINT_INL_POST_H_ 1
 
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 
@@ -23,30 +23,13 @@
 
 namespace apache { namespace thrift { namespace detail {
 
-template <thrift_category> struct pretty_print_impl;
-
-/**
- * Pretty print entry point that reuses existing stream.
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename OutputStream, typename T>
-OutputStream &pretty_print(OutputStream &&out, T &&what) {
-  using impl = detail::pretty_print_impl<
-    reflect_category<typename std::decay<T>::type>::value
-  >;
-
-  impl::print(out, std::forward<T>(what));
-
-  return out;
-}
-
 /**
  * Pretty print specialization for enumerations.
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <> struct pretty_print_impl<thrift_category::enumeration> {
+template <>
+struct pretty_print_impl<type_class::enumeration> {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
     out << fatal::enum_to_string(what);
@@ -58,7 +41,8 @@ template <> struct pretty_print_impl<thrift_category::enumeration> {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <> struct pretty_print_impl<thrift_category::list> {
+template <typename ValueTypeClass>
+struct pretty_print_impl<type_class::list<ValueTypeClass>> {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
     out << "<list>[";
@@ -69,7 +53,7 @@ template <> struct pretty_print_impl<thrift_category::list> {
       for (auto const &i: what) {
         auto scope = out.start_scope();
         scope << index << ": ";
-        detail::pretty_print(scope, i);
+        pretty_print_impl<ValueTypeClass>::print(scope, i);
         if (++index < size) {
           scope << ',';
         }
@@ -85,7 +69,8 @@ template <> struct pretty_print_impl<thrift_category::list> {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <> struct pretty_print_impl<thrift_category::map> {
+template <typename KeyTypeClass, typename MappedTypeClass>
+struct pretty_print_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
     out << "<map>{";
@@ -95,9 +80,9 @@ template <> struct pretty_print_impl<thrift_category::map> {
       std::size_t index = 0;
       for (auto const &i: what) {
         auto scope = out.start_scope();
-        detail::pretty_print(scope, i.first);
+        pretty_print_impl<KeyTypeClass>::print(scope, i.first);
         scope << ": ";
-        detail::pretty_print(scope, i.second);
+        pretty_print_impl<MappedTypeClass>::print(scope, i.second);
         if (++index < size) {
           scope << ',';
         }
@@ -113,7 +98,8 @@ template <> struct pretty_print_impl<thrift_category::map> {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <> struct pretty_print_impl<thrift_category::set> {
+template <typename ValueTypeClass>
+struct pretty_print_impl<type_class::set<ValueTypeClass>> {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
     out << "<set>{";
@@ -123,7 +109,7 @@ template <> struct pretty_print_impl<thrift_category::set> {
       std::size_t index = 0;
       for (auto const &i: what) {
         auto scope = out.start_scope();
-        detail::pretty_print(scope, i);
+        pretty_print_impl<ValueTypeClass>::print(scope, i);
         if (++index < size) {
           scope << ',';
         }
@@ -152,7 +138,9 @@ struct pretty_print_variant_visitor {
   ) const {
     out.newline();
     out << fatal::enum_to_string(what.getType()) << ": ";
-    detail::pretty_print(out, typename Descriptor::getter()(what));
+    pretty_print_impl<typename Descriptor::metadata::type_class>::print(
+      out, typename Descriptor::getter()(what)
+    );
     out.newline();
   }
 };
@@ -162,7 +150,8 @@ struct pretty_print_variant_visitor {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <> struct pretty_print_impl<thrift_category::variant> {
+template <>
+struct pretty_print_impl<type_class::variant> {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
     out << "<variant>{";
@@ -194,7 +183,9 @@ struct pretty_print_struct_visitor {
   ) const {
     auto scope = out.start_scope();
     scope << MemberInfo::name::z_data() << ": ";
-    detail::pretty_print(scope, MemberInfo::getter::ref(what));
+    pretty_print_impl<typename MemberInfo::type_class>::print(
+      scope, MemberInfo::getter::ref(what)
+    );
     if (Index + 1 < Size) {
       scope << ',';
     }
@@ -207,7 +198,8 @@ struct pretty_print_struct_visitor {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <> struct pretty_print_impl<thrift_category::structure> {
+template <>
+struct pretty_print_impl<type_class::structure> {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
     out << "<struct>{";
@@ -227,7 +219,8 @@ template <> struct pretty_print_impl<thrift_category::structure> {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <> struct pretty_print_impl<thrift_category::string> {
+template <>
+struct pretty_print_impl<type_class::string> {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
     out << '"' << what << '"';
@@ -239,7 +232,7 @@ template <> struct pretty_print_impl<thrift_category::string> {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <thrift_category Category>
+template <typename>
 struct pretty_print_impl {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
@@ -249,4 +242,4 @@ struct pretty_print_impl {
 
 }}} // apache::thrift::detail
 
-#endif // THRIFT_FATAL_PRETTY_PRINT_INL_H_
+#endif // THRIFT_FATAL_PRETTY_PRINT_INL_POST_H_

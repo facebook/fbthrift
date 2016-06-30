@@ -38,12 +38,6 @@ FATAL_STR(fieldGs, "fieldG");
 template <apache::thrift::field_id_t Id>
 using field_id = std::integral_constant<apache::thrift::field_id_t, Id>;
 
-template <apache::thrift::thrift_category Category>
-using category = std::integral_constant<
-  apache::thrift::thrift_category,
-  Category
->;
-
 template <apache::thrift::optionality Optionality>
 using required = std::integral_constant<
   apache::thrift::optionality,
@@ -221,28 +215,28 @@ TEST(fatal_struct, struct1_sanity_check) {
   );
 
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::integral>,
-    traits::members::get<field0s>::category
+    apache::thrift::type_class::integral,
+    traits::members::get<field0s>::type_class
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::string>,
-    traits::members::get<field1s>::category
+    apache::thrift::type_class::string,
+    traits::members::get<field1s>::type_class
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::enumeration>,
-    traits::members::get<field2s>::category
+    apache::thrift::type_class::enumeration,
+    traits::members::get<field2s>::type_class
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::enumeration>,
-    traits::members::get<field3s>::category
+    apache::thrift::type_class::enumeration,
+    traits::members::get<field3s>::type_class
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::variant>,
-    traits::members::get<field4s>::category
+    apache::thrift::type_class::variant,
+    traits::members::get<field4s>::type_class
   >();
   EXPECT_SAME<
-    category<apache::thrift::thrift_category::variant>,
-    traits::members::get<field5s>::category
+    apache::thrift::type_class::variant,
+    traits::members::get<field5s>::type_class
   >();
 
   EXPECT_SAME<

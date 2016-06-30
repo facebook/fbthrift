@@ -109,100 +109,148 @@ using field_id_t = std::int16_t;
 using legacy_type_id_t = std::uint64_t;
 
 /**
- * The high-level category of a type as it concerns Thrift.
+ * The type class of a type as declared on a Thrift file.
  *
- * See `reflect_category` for more information.
+ * See `reflect_type_class` for more information.
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-enum class thrift_category {
+struct type_class {
   /**
    * Represents types unknown to the reflection framework.
    *
-   * NOTE: if this is the returned category, there's a good chance that's
+   * NOTE: if this is the returned type class, there's a good chance that's
    * because it's a custom type with no specialization of the approriate
    * container trait class. See documentation for `string`, `list`, `set`
    * and `map` enum values below.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  unknown,
+  struct unknown {};
+
   /**
    * Represents types with no actual data representation. Most commonly `void`.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  nothing,
+  struct nothing {};
+
   /**
    * Represents all signed and unsigned integral types, including `bool`.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  integral,
+  struct integral {};
+
   /**
    * Represents all floating point types.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  floating_point,
+  struct floating_point {};
+
   /**
-   * Represents all known strings implementation.
+   * Represents opaque binary data.
    *
-   * NOTE: if this is not the category returned for a string, there's a good
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  struct binary {};
+
+  /**
+   * Represents all known string implementations.
+   *
+   * NOTE: if this is not the type class returned for a string, there's a good
    * chance that's because it's a custom type with no specialization of the
    * string trait class. See documentation for `thrift_string_traits`.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  string,
+  struct string {};
+
   /**
    * Represents an enum.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  enumeration,
+  struct enumeration {};
+
   /**
    * Represents an class or structure.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  structure,
+  struct structure {};
+
   /**
    * Represents a variant (or union, as the Thrift IDL grammar goes).
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  variant,
+  struct variant {};
+
   /**
    * Represents all known list implementations.
    *
-   * NOTE: if this is not the category returned for a list, there's a good
+   * NOTE: if this is not the type class returned for a list, there's a good
    * chance that's because it's a custom type with no specialization of the
    * list trait class. See documentation for `thrift_list_traits`.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  list,
+  template <typename ValueTypeClass>
+  struct list {
+    /**
+     * The type class of the elements of this container.
+     *
+     * @author: Marcelo Juchem <marcelo@fb.com>
+     */
+    using value_type_class = ValueTypeClass;
+  };
+
   /**
    * Represents all known set implementations.
    *
-   * NOTE: if this is not the category returned for a set, there's a good
+   * NOTE: if this is not the type class returned for a set, there's a good
    * chance that's because it's a custom type with no specialization of the
    * set trait class. See documentation for `thrift_set_traits`.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  set,
+  template <typename ValueTypeClass>
+  struct set {
+    /**
+     * The type class of the elements of this container.
+     *
+     * @author: Marcelo Juchem <marcelo@fb.com>
+     */
+    using value_type_class = ValueTypeClass;
+  };
+
   /**
    * Represents all known map implementations.
    *
-   * NOTE: if this is not the category returned for a map, there's a good
+   * NOTE: if this is not the type class returned for a map, there's a good
    * chance that's because it's a custom type with no specialization of the
    * map trait class. See documentation for `thrift_map_traits`.
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  map
+  template <typename KeyTypeClass, typename MappedTypeClass>
+  struct map {
+    /**
+     * The type class of the keys of this container.
+     *
+     * @author: Marcelo Juchem <marcelo@fb.com>
+     */
+    using key_type_class = KeyTypeClass;
+
+    /**
+     * The type class of the mapped elements of this container.
+     *
+     * @author: Marcelo Juchem <marcelo@fb.com>
+     */
+    using mapped_type_class = MappedTypeClass;
+  };
 };
 
 /**
@@ -964,7 +1012,7 @@ template <
   field_id_t Id,
   optionality Optionality,
   typename Getter,
-  thrift_category Category,
+  typename TypeClass,
   template <typename> class Pod,
   typename Annotations
 >
@@ -1141,11 +1189,31 @@ struct reflected_struct_data_member {
   using getter = Getter;
 
   /**
-   * Tells what's the Thrift category for this member.
+   * The type class for this member.
+   *
+   * Example:
+   *
+   *  // MyModule.thrift
+   *
+   *  namespace cpp2 My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: i32 fieldA
+   *    2: string fieldB
+   *    3: double fieldC
+   *  }
+   *
+   *  // C++
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *  using member = info::types::members<info::names::fieldC>;
+   *
+   *  // yields `type_class::floating_point`
+   *  using result1 = member::type_class;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using category = std::integral_constant<thrift_category, Category>;
+  using type_class = TypeClass;
 
   /**
    * A POD (plain old data) that holds a single data member with the same name
@@ -1691,6 +1759,83 @@ template <typename T>
 using reflect_union = reflected_union<T>;
 
 /**
+ * Represents Thrift specific metadata for a given union's member.
+ *
+ * This is exposed as the metadata for Fatal's `variant_type_descriptor`.
+ *
+ * For the examples below, consider code generated for this Thrift file:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  union MyUnion {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ * Example:
+ *
+ *  //////////////////
+ *  // whatever.cpp //
+ *  //////////////////
+ *  using info = reflect_union<My::Namespace::MyUnion>;
+ *  using metadata = info::by_type<double>::metadata;
+ *
+ *  // yields "c"
+ *  auto result = metadata::name::z_data();
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename Name, field_id_t Id, typename TypeClass>
+struct reflected_union_member_metadata {
+  /**
+   * A compile-time string representing the name of this member.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<My::Namespace::MyUnion>;
+   *
+   *  // yields "c"
+   *  auto result = info::by_type<double>::metadata::name::z_data();
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using name = Name;
+
+  /**
+   * A `std::integral_constant` of type `field_id_t` representing the Thrift
+   * field id for this member.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<My::Namespace::MyUnion>;
+   *
+   *  // yields `3`
+   *  auto result = info::by_type<double>::metadata::id::value;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using id = std::integral_constant<field_id_t, Id>;
+
+  /**
+   * The type class for this member.
+   *
+   * Example:
+   *
+   *  using info = reflect_union<My::Namespace::MyUnion>;
+   *
+   *  // yields `type_class::floating_point`
+   *  auto result = info::by_type<double>::metadata::id;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using type_class = TypeClass;
+};
+
+/**
  * Tells whether the given type is a Thrift union with compile-time reflection
  * support.
  *
@@ -1727,23 +1872,23 @@ using reflect_union = reflected_union<T>;
 template <typename T>
 using is_reflectable_union = fatal::has_variant_traits<T>;
 
-///////////////////////////
-// SECTION: CATEGORY API //
-///////////////////////////
+/////////////////////////////
+// SECTION: TYPE CLASS API //
+/////////////////////////////
 
 namespace detail {
-template <typename> struct reflect_category_impl;
+template <typename> struct reflect_type_class_impl;
 } // namespace detail {
 
 /**
- * Returns the Thrift category of a type.
+ * Returns the type class of a type.
  *
  * To keep compilation times at bay, strings and containers are not detected by
- * default, therefore they will yield `unknown` as the category. To enable their
- * detection you must include `container_traits.h`. There's also support
+ * default, therefore they will yield `unknown` as their type class. To enable
+ * their detection you must include `container_traits.h`. There's also support
  * for containers defined in Folly at `container_traits_folly.h`.
  *
- * See `thrift_category` for the possible categories.
+ * See `type_class` for the possible categories.
  *
  * Example:
  *
@@ -1766,34 +1911,22 @@ template <typename> struct reflect_category_impl;
  *  // foo.cpp //
  *  /////////////
  *
- *  // yields `std::integral_constant<
- *  //   thrift_category,
- *  //   thrift_category::structure
- *  // >`
- *  using result1 = reflect_category<MyStruct>;
+ *  // yields `type_class::structure`
+ *  using result1 = reflect_type_class<MyStruct>;
  *
- *  // yields `std::integral_constant<
- *  //   thrift_category,
- *  //   thrift_category::enumeration
- *  // >`
- *  using result2 = reflect_category<MyEnum>;
+ *  // yields `type_class::enumeration`
+ *  using result2 = reflect_type_class<MyEnum>;
  *
- *  // yields `std::integral_constant<
- *  //   thrift_category,
- *  //   thrift_category::list
- *  // >`
- *  using result3 = reflect_category<MyList>;
+ *  // yields `type_class::list<type_class::string>`
+ *  using result3 = reflect_type_class<MyList>;
  *
- *  // yields `std::integral_constant<
- *  //   thrift_category,
- *  //   thrift_category::unknown
- *  // >`
- *  using result4 = reflect_category<void>;
+ *  // yields `type_class::unknown`
+ *  using result4 = reflect_type_class<void>;
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T>
-using reflect_category = typename detail::reflect_category_impl<T>::type;
+using reflect_type_class = typename detail::reflect_type_class_impl<T>::type;
 
 /**
  * This is the type trait class that provides uniform interface to the
