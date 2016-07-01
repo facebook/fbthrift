@@ -25,7 +25,9 @@ namespace detail { namespace reflection_impl {
 
 template <typename Owner, typename Getter, typename>
 struct is_set {
-  static bool check(Owner const &owner) { return Getter::ref(owner.__isset); }
+  constexpr static bool check(Owner const &owner) {
+    return Getter::ref(owner.__isset);
+  }
 };
 
 template <typename Owner, typename Getter>
@@ -35,6 +37,37 @@ struct is_set<
   std::integral_constant<optionality, optionality::required>
 > {
   constexpr static bool check(Owner const &) { return true; }
+};
+
+template <typename Owner, typename Getter, typename>
+struct mark_set {
+  constexpr static void mark(Owner& owner) {
+    Getter::ref(owner.__isset) = true;
+  }
+};
+
+template <typename Owner, typename Getter>
+struct mark_set<
+  Owner,
+  Getter,
+  std::integral_constant<optionality, optionality::required>
+> {
+  constexpr static void mark(Owner& owner) {
+    // nop
+    return;
+  }
+};
+
+template <typename Owner, typename Getter, optionality opt>
+struct unmark_set<
+  Owner,
+  Getter,
+  std::integral_constant<optionality, opt>
+> {
+  constexpr static void mark(Owner& owner) {
+    static_assert(opt != optionality::required, "Can't unset a required field");
+    Getter::ref(owner.__isset) = false;
+  }
 };
 
 } // reflection_impl

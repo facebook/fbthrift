@@ -1322,6 +1322,68 @@ struct reflected_struct_data_member {
       owner
     );
   }
+
+  /**
+   * Marks the member as being set on the parent object.
+   *
+   * Example:
+   *
+   *  // MyModule.thrift
+   *
+   *  namespace cpp2 My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: optional i32 field
+   *  }
+   *
+   *  // MyModule.cpp
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *  using member = info::types::members<info::names::field>;
+   *
+   * MyStruct pod;
+   *
+   * // mark `field` as being set
+   * member::mark_set(pod)
+   *
+   *
+   * @author: Dylan Knutson <dymk@fb.com>
+   */
+  template <typename Owner>
+  static void mark_set(Owner& owner) {
+    detail::reflection_impl::mark_set<Owner, getter, optional>::mark(owner);
+  }
+
+  /**
+   * Marks the member as being not set on the parent object.
+   *
+   * Example:
+   *
+   *  // MyModule.thrift
+   *
+   *  namespace cpp2 My.Namespace
+   *
+   *  struct MyStruct {
+   *    1: optional i32 field
+   *  }
+   *
+   *  // MyModule.cpp
+   *
+   *  using info = reflect_struct<MyStruct>;
+   *  using member = info::types::members<info::names::field>;
+   *
+   * MyStruct pod;
+   *
+   * // mark `field` as being not set
+   * member::unmark_set(pod)
+   *
+   *
+   * @author: Dylan Knutson <dymk@fb.com>
+   */
+  template <typename Owner>
+  static void unmark_set(Owner& owner) {
+    detail::reflection_impl::unmark_set<Owner, getter, optional>::mark(owner);
+  }
 };
 
 /**

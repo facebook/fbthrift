@@ -27,6 +27,8 @@ struct reflection_metadata_tag {};
 struct struct_traits_metadata_tag {};
 
 template <typename, typename, typename> struct is_set;
+template <typename, typename, typename> struct mark_set;
+template <typename, typename, typename> struct unmark_set;
 
 }} // detail::reflection_impl
 
