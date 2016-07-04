@@ -58,7 +58,6 @@ HeaderClientChannel::HeaderClientChannel(
     , keepRegisteredForClose_(true)
     , saslClientCallback_(*this)
     , cpp2Channel_(cpp2Channel)
-    , timer_(folly::HHWheelTimer::newTimer(getEventBase()))
     , protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL) {}
 
 void HeaderClientChannel::setTimeout(uint32_t ms) {
@@ -93,7 +92,6 @@ void HeaderClientChannel::useAsHttpClient(const std::string& host,
 void HeaderClientChannel::attachEventBase(
     EventBase* eventBase) {
   cpp2Channel_->attachEventBase(eventBase);
-  timer_->attachEventBase(eventBase);
   if (saslClient_ && getProtectionState() == ProtectionState::UNKNOWN) {
     // Note that we only want to attach the event base here if
     // the handshake never started. If it started then reattaching the
@@ -111,11 +109,10 @@ void HeaderClientChannel::detachEventBase() {
   }
 
   cpp2Channel_->detachEventBase();
-  timer_->detachEventBase();
 }
 
 bool HeaderClientChannel::isDetachable() {
-  return getTransport()->isDetachable() && timer_->isDetachable();
+  return getTransport()->isDetachable() && recvCallbacks_.empty();
 }
 
 void HeaderClientChannel::startSecurity() {
@@ -180,7 +177,7 @@ unique_ptr<IOBuf> HeaderClientChannel::handleSecurityMessage(
 
 void HeaderClientChannel::SaslClientCallback::saslStarted() {
   if (channel_.timeoutSASL_ > 0) {
-    channel_.timer_->scheduleTimeout(
+    channel_.getEventBase()->timer().scheduleTimeout(
       this, std::chrono::milliseconds(channel_.timeoutSASL_));
   }
 }
@@ -188,7 +185,7 @@ void HeaderClientChannel::SaslClientCallback::saslStarted() {
 void HeaderClientChannel::SaslClientCallback::saslSendServer(
     std::unique_ptr<folly::IOBuf>&& message) {
   if (channel_.timeoutSASL_ > 0) {
-    channel_.timer_->scheduleTimeout(this,
+    channel_.getEventBase()->timer().scheduleTimeout(this,
         std::chrono::milliseconds(channel_.timeoutSASL_));
   }
   if (sendServerHook_) {
@@ -457,7 +454,7 @@ uint32_t HeaderClientChannel::sendRequest(
                                  getProtocolId(),
                                  std::move(cb),
                                  std::move(ctx),
-                                 timer_.get(),
+                                 &getEventBase()->timer(),
                                  timeout,
                                  rpcOptions.getChunkTimeout());
 

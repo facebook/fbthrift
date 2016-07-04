@@ -316,8 +316,6 @@ private:
 
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 
-  folly::HHWheelTimer::UniquePtr timer_;
-
   uint16_t protocolId_;
   uint16_t userProtocolId_;
 };
