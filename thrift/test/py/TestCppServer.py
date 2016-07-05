@@ -23,7 +23,13 @@ from thrift.Thrift import TProcessorEventHandler, TProcessor, TMessageType, \
 from thrift.server.TCppServer import TCppServer, TSSLConfig, TSSLCacheOptions, \
     SSLPolicy, SSLVerifyPeerEnum
 from thrift.server.TServer import TServerEventHandler
-from tools.test.stubs import fbpyunit
+# Load test fixtures from either fbbuild or Buck.
+try:
+    # Try an fbconfig-style main module
+    from tools.test.stubs.fbpyunit import MainProgram
+except ImportError:
+    # Assume a buck-style main module
+    from __test_main__ import MainProgram
 
 from concurrent.futures import ProcessPoolExecutor
 from test.sleep import SleepService, ttypes
@@ -449,5 +455,5 @@ class SSLHeaderTestServer(TestServer):
         self.assertIsNotNone(msg)
 
 if __name__ == '__main__':
-    rc = fbpyunit.MainProgram(sys.argv).run()
+    rc = MainProgram(sys.argv).run()
     sys.exit(rc)
