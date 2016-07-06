@@ -24,34 +24,24 @@
 #include <thread>
 
 #include <folly/io/async/ScopedEventBaseThread.h>
+#include <thrift/lib/cpp2/util/FilePoller.h>
 
 namespace apache { namespace thrift {
 
 // A class that polls for the existence of the TLS Killswitch
 // on some specified interval.  Instances start automatically.
-class SecurityKillSwitchPoller : public folly::AsyncTimeout {
+class SecurityKillSwitchPoller {
  public:
   SecurityKillSwitchPoller();
-  // public for test only
-  SecurityKillSwitchPoller(const std::chrono::milliseconds& timeout,
-                           std::function<bool()> pollFunc);
-
   ~SecurityKillSwitchPoller();
-
-  // timeout callback
-  void timeoutExpired() noexcept override;
-
   bool isKillSwitchEnabled() const { return switchEnabled_; }
 
- private:
+ protected:
+  explicit SecurityKillSwitchPoller(bool autostart);
 
-  void setup();
-  void updateSwitchState() noexcept;
-
-  const std::chrono::milliseconds timeout_;
-  std::function<bool()> pollFunc_;
   std::atomic<bool> switchEnabled_{false};
-  folly::ScopedEventBaseThread thread_;
+
+  std::unique_ptr<FilePoller> poller_;
 };
 }
 }

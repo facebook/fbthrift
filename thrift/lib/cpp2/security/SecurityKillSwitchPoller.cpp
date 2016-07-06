@@ -18,51 +18,38 @@
 #include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
 #include <folly/Singleton.h>
 
+DEFINE_string(
+    thrift_security_tls_kill_switch_file,
+    "/var/thrift_security/disable_thrift_security_tls",
+    "A file, which when present on a client, disables the use of TLS to "
+    "endpoints, and on servers will downgrade a 'required' SSL policy to "
+    "'permitted'");
+
 namespace apache { namespace thrift {
 
-namespace {
-auto defaultInstance = folly::Singleton<SecurityKillSwitchPoller>()
-  .shouldEagerInit();
-}
+static constexpr std::chrono::seconds kThriftKillSwitchExpired =
+    std::chrono::seconds(86400);
+static constexpr std::chrono::seconds kPollInterval =
+    std::chrono::seconds(1);
 
 using namespace std;
 using namespace folly;
 
 SecurityKillSwitchPoller::SecurityKillSwitchPoller()
-    : SecurityKillSwitchPoller(chrono::milliseconds(1000),
-                               apache::thrift::isTlsKillSwitchEnabled) {}
+    : SecurityKillSwitchPoller(true) {}
 
-SecurityKillSwitchPoller::SecurityKillSwitchPoller(
-  const chrono::milliseconds& timeout, function<bool()> pollFunc)
-    : timeout_(timeout), pollFunc_(pollFunc), thread_(true) {
-  setup();
-}
-
-SecurityKillSwitchPoller::~SecurityKillSwitchPoller() {
-  thread_.stop();
-}
-
-void SecurityKillSwitchPoller::setup() {
-  auto evb = thread_.getEventBase();
-  evb->runInEventBaseThread([this, evb]() {
-      attachEventBase(evb);
-      updateSwitchState();
-      scheduleTimeout(timeout_);
-  });
-}
-
-void SecurityKillSwitchPoller::updateSwitchState() noexcept {
-  try {
-    switchEnabled_ = pollFunc_();
-  } catch (...) {
-    VLOG(5) << "Error checking kill switch.  Disabling.";
-    switchEnabled_ = false;
+SecurityKillSwitchPoller::SecurityKillSwitchPoller(bool autostart)
+    : poller_(folly::make_unique<FilePoller>(kPollInterval)) {
+  auto yCob = [this]() { switchEnabled_ = true; };
+  auto nCob = [this]() { switchEnabled_ = false; };
+  auto condition = FilePoller::fileTouchedWithinCond(kThriftKillSwitchExpired);
+  if (autostart) {
+    poller_->addFileToTrack(
+        FLAGS_thrift_security_tls_kill_switch_file, yCob, nCob, condition);
   }
 }
 
-void SecurityKillSwitchPoller::timeoutExpired() noexcept {
-  updateSwitchState();
-  scheduleTimeout(timeout_);
+SecurityKillSwitchPoller::~SecurityKillSwitchPoller() {
+  poller_->stop();
 }
-
 }}

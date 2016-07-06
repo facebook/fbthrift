@@ -43,8 +43,14 @@ namespace apache {
 namespace thrift {
 
 TLSTicketProcessor::TLSTicketProcessor(std::string ticketFile)
-    : ticketFile_(ticketFile), poller_(ticketFile, kTicketPollInterval) {
-  poller_.addCallback([&] { fileUpdated(); });
+    : ticketFile_(ticketFile),
+      poller_(folly::make_unique<FilePoller>(kTicketPollInterval)) {
+  auto ticketsChangedCob = [this]() { fileUpdated(); };
+  poller_->addFileToTrack(ticketFile, ticketsChangedCob);
+}
+
+void TLSTicketProcessor::stop() {
+  poller_->stop();
 }
 
 TLSTicketProcessor::~TLSTicketProcessor() { stop(); }
@@ -62,8 +68,6 @@ void TLSTicketProcessor::fileUpdated() noexcept {
     }
   }
 }
-
-void TLSTicketProcessor::stop() { poller_.stop(); }
 
 /* static */ Optional<TLSTicketKeySeeds> TLSTicketProcessor::processTLSTickets(
     const std::string& fileName) {
