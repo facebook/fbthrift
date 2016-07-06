@@ -419,6 +419,33 @@ struct dynamic_converter_impl<type_class::string> {
 };
 
 template <>
+struct dynamic_converter_impl<type_class::binary> {
+  template <typename T>
+  static void to(folly::dynamic &out, T const &input, dynamic_format) {
+    out = folly::to<std::string>(input);
+  }
+
+  static void from(
+    std::string &out,
+    folly::dynamic const &input,
+    dynamic_format,
+    format_adherence
+  ) {
+    out = input.asString();
+  }
+
+  template <typename T>
+  static void from(
+    T &out,
+    folly::dynamic const &input,
+    dynamic_format,
+    format_adherence
+  ) {
+    out = input.asString();
+  }
+};
+
+template <>
 struct dynamic_converter_impl<type_class::floating_point> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format) {

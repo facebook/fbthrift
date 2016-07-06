@@ -53,6 +53,7 @@ FATAL_STR(structCs, "structC");
 FATAL_STR(struct1s, "struct1");
 FATAL_STR(struct2s, "struct2");
 FATAL_STR(struct3s, "struct3");
+FATAL_STR(struct_binarys, "struct_binary");
 
 FATAL_STR(constant1s, "constant1");
 FATAL_STR(constant2s, "constant2");
@@ -98,6 +99,7 @@ TEST(fatal, tags) {
   EXPECT_SAME<struct1s, reflection_tags::structs::struct1>();
   EXPECT_SAME<struct2s, reflection_tags::structs::struct2>();
   EXPECT_SAME<struct3s, reflection_tags::structs::struct3>();
+  EXPECT_SAME<struct_binarys, reflection_tags::structs::struct_binary>();
   EXPECT_SAME<
     struct_with_special_namess,
     reflection_tags::structs::struct_with_special_names
@@ -171,6 +173,7 @@ TEST(fatal, metadata) {
       struct1, struct1s,
       struct2, struct2s,
       struct3, struct3s,
+      struct_binary, struct_binarys,
       struct_with_special_names, struct_with_special_namess
     >,
     info::structs
@@ -219,6 +222,7 @@ TEST(fatal, reflect_module_tag) {
   EXPECT_SAME<tag, apache::thrift::reflect_module_tag<struct1>>();
   EXPECT_SAME<tag, apache::thrift::reflect_module_tag<struct2>>();
   EXPECT_SAME<tag, apache::thrift::reflect_module_tag<struct3>>();
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<struct_binary>>();
   EXPECT_SAME<
     tag,
     apache::thrift::reflect_module_tag<struct_with_special_names>
@@ -249,6 +253,8 @@ TEST(fatal, try_reflect_module_tag) {
   EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<struct1, void>>();
   EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<struct2, void>>();
   EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<struct3, void>>();
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<
+    struct_binary, void>>();
   EXPECT_SAME<
     tag,
     apache::thrift::try_reflect_module_tag<struct_with_special_names, void>

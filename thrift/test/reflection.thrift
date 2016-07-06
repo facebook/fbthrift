@@ -152,6 +152,10 @@ struct struct3 {
   18: map<string, structB> fieldR
 }
 
+struct struct_binary {
+  1: binary bi
+}
+
 service service1 {
   void method1();
   void method2(1: i32 x, 2: struct1 y, 3: double z);

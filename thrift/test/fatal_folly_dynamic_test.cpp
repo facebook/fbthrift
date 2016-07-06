@@ -489,6 +489,27 @@ TEST(fatal_folly_dynamic, to_from_dynamic_global) {
   test_compat(pod, json);
 }
 
+TEST(fatal_folly_dynamic, to_from_dynamic_binary) {
+  folly::dynamic actl = folly::dynamic::object;
+  folly::dynamic expt = folly::dynamic::object;
+
+  // to
+  test_cpp2::cpp_reflection::struct_binary a;
+  a.bi = "123abc";
+
+  actl = to_dynamic(a, dynamic_format::PORTABLE);
+  expt = folly::dynamic::object
+      ("bi", "123abc");
+
+  EXPECT_EQ(expt, actl);
+
+  // from
+  auto obj = from_dynamic<test_cpp2::cpp_reflection::struct_binary>(
+      folly::dynamic::object("bi", "123abc"),
+      apache::thrift::dynamic_format::PORTABLE);
+  EXPECT_EQ("123abc", obj.bi);
+}
+
 }} // apache::thrift
 
 namespace test_cpp1 {
