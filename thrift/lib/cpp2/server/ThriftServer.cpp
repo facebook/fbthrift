@@ -338,7 +338,11 @@ void ThriftServer::setup() {
     threadManager_->setCodelCallback([&](std::shared_ptr<Runnable> r) {
         auto observer = getObserver();
         if (observer) {
-          observer->queueTimeout();
+          if (getEnableCodel()) {
+            observer->queueTimeout();
+          } else {
+            observer->shadowQueueTimeout();
+          }
         }
     });
 

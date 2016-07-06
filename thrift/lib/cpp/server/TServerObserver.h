@@ -85,6 +85,8 @@ class TServerObserver {
 
   virtual void queueTimeout() {}
 
+  virtual void shadowQueueTimeout() {}
+
   virtual void sentReply() {}
 
   virtual void activeRequests(int32_t /*numRequests*/) {}
