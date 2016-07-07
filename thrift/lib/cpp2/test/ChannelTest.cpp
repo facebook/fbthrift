@@ -44,6 +44,9 @@ using folly::IOBufQueue;
 using std::shared_ptr;
 using folly::make_unique;
 
+// +/- for checking timing due to timer granularity, in microseconds
+constexpr size_t kTimingEpsilon = 1000;
+
 unique_ptr<IOBuf> makeTestBuf(size_t len) {
   unique_ptr<IOBuf> buf = IOBuf::create(len);
   buf->IOBuf::append(len);
@@ -685,7 +688,7 @@ public:
          * security latency at least being greater than expectedSecurityLatency_
          */
         EXPECT_GT(securityEndTime_ - securityStartTime_,
-                  expectedSecurityLatency_);
+                  expectedSecurityLatency_ - kTimingEpsilon);
         EXPECT_LT(securityEndTime_ - securityStartTime_,
                   static_cast<int64_t>(expectedSecurityLatency_ * 1.2));
       }

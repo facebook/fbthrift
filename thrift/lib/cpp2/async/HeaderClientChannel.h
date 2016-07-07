@@ -17,7 +17,6 @@
 #ifndef THRIFT_ASYNC_THEADERCLIENTCHANNEL_H_
 #define THRIFT_ASYNC_THEADERCLIENTCHANNEL_H_ 1
 
-#include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp2/async/ChannelCallbacks.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>

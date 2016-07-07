@@ -19,7 +19,6 @@
 #ifndef THRIFT_ASYNC_THEADERSERVERCHANNEL_H_
 #define THRIFT_ASYNC_THEADERSERVERCHANNEL_H_ 1
 
-#include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
@@ -312,8 +311,6 @@ private:
   SaslServerCallback saslServerCallback_;
 
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
-
-  folly::HHWheelTimer::UniquePtr timer_;
 };
 
 }} // apache::thrift

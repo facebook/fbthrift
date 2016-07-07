@@ -59,8 +59,7 @@ HeaderServerChannel::HeaderServerChannel(
     , sampleRate_(0)
     , timeoutSASL_(5000)
     , saslServerCallback_(*this)
-    , cpp2Channel_(cpp2Channel)
-    , timer_(folly::HHWheelTimer::newTimer(getEventBase())) {}
+    , cpp2Channel_(cpp2Channel) {}
 
 void HeaderServerChannel::destroy() {
   DestructorGuard dg(this);
@@ -579,7 +578,7 @@ void HeaderServerChannel::messageReceiveErrorWrapped(
 void HeaderServerChannel::SaslServerCallback::saslSendClient(
     std::unique_ptr<folly::IOBuf>&& response) {
   if (channel_.timeoutSASL_ > 0) {
-    channel_.timer_->scheduleTimeout(this,
+    channel_.getEventBase()->timer().scheduleTimeout(this,
         std::chrono::milliseconds(channel_.timeoutSASL_));
   }
   try {
