@@ -1494,6 +1494,15 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(std::ofstream& 
   } else if (t->is_set()) {
     string k = "$" + namer("key");
     string v = "$" + namer("shape_data");
+    if (nullable) {
+      indent(out) << "if (!is_null(" << shape_data << ")) {" << endl;
+      indent_up();
+    }
+    if (!shape_unsafe_json_) {
+      indent(out) << "if (!is_array(" << shape_data << ")) {" << endl;
+      indent(out) << "  return null;" << endl;
+      indent(out) << "}" << endl;
+    }
     t_type* val_type = get_true_type(((t_set*)t)->get_elem_type());
     string the_set = "$" + namer("the_set");
     indent(out) << the_set << " = array();" << endl;
@@ -1513,15 +1522,19 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(std::ofstream& 
     indent(out) << "  " << the_set << "[" << v << "] = true;" << endl;
     indent(out) << "}" << endl;
     indent(out) << shape_data << " = " << the_set << ";" << endl;
+    if (nullable) {
+      indent_down();
+      indent(out) << "}" << endl;
+    }
   } else if (t->is_list()) {
     t_type* val_type = get_true_type(((t_list*)t)->get_elem_type());
     string k = "$" + namer("key");
     string v = "$" + namer("value");
+    if (nullable) {
+      indent(out) << "if (!is_null(" << shape_data << ")) {" << endl;
+      indent_up();
+    }
     if (!shape_unsafe_json_) {
-      if (nullable) {
-        indent(out) << "if (!is_null(" << shape_data << ")) {" << endl;
-        indent_up();
-      }
       indent(out) << "if (!is_array(" << shape_data << ")) {" << endl;
       indent(out) << "  return null;" << endl;
       indent(out) << "}" << endl;
@@ -1543,7 +1556,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(std::ofstream& 
     indent(out) << shape_data << "[" << k << "] = " << v << ";" << endl;
     indent_down();
     indent(out) << "}" << endl;
-    if (nullable && !shape_unsafe_json_) {
+    if (nullable) {
       indent_down();
       indent(out) << "}" << endl;
     }

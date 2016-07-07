@@ -1489,6 +1489,9 @@ class NestedContainers_mapSet_args implements IThriftStruct, IThriftShapishStruc
       if (!is_int($key0)) {
         return null;
       }
+      if (!is_array($value1)) {
+        return null;
+      }
       $the_set4 = array();
       foreach (/* HH_IGNORE_ERROR[4110] */ $value1 as $key2 => $shape_data3) {
         if (!is_int($shape_data3)) {
@@ -1986,6 +1989,9 @@ class NestedContainers_listSet_args implements IThriftStruct, IThriftShapishStru
       if (!is_int($key0)) {
         return null;
       }
+      if (!is_array($value1)) {
+        return null;
+      }
       $the_set4 = array();
       foreach (/* HH_IGNORE_ERROR[4110] */ $value1 as $key2 => $shape_data3) {
         if (!is_int($shape_data3)) {
@@ -2268,6 +2274,9 @@ class NestedContainers_turtles_args implements IThriftStruct, IThriftShapishStru
           }
           foreach (/* HH_IGNORE_ERROR[4110] */$value5 as $key6 => $value7) {
             if (!is_int($key6)) {
+              return null;
+            }
+            if (!is_array($value7)) {
               return null;
             }
             $the_set10 = array();

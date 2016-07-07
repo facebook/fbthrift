@@ -767,20 +767,26 @@ class B implements IThriftStruct, IThriftShapishStruct {
 
     $shape_data['optional_just_an_A'] = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_just_an_A']);
 
-    $the_set53 = array();
-    foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_set_of_i32'] as $key51 => $shape_data52) {
-      $the_set53[$shape_data52] = true;
-    }
-    $shape_data['optional_set_of_i32'] = $the_set53;
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_list_of_i32'] as $key54 => $value55) {
-      /* HH_IGNORE_ERROR[4005] */
-      $shape_data['optional_list_of_i32'][$key54] = $value55;
+    if (!is_null($shape_data['optional_set_of_i32'])) {
+      $the_set53 = array();
+      foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_set_of_i32'] as $key51 => $shape_data52) {
+        $the_set53[$shape_data52] = true;
+      }
+      $shape_data['optional_set_of_i32'] = $the_set53;
     }
 
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_list_of_string'] as $key56 => $value57) {
-      /* HH_IGNORE_ERROR[4005] */
-      $shape_data['optional_list_of_string'][$key56] = $value57;
+    if (!is_null($shape_data['optional_list_of_i32'])) {
+      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_list_of_i32'] as $key54 => $value55) {
+        /* HH_IGNORE_ERROR[4005] */
+        $shape_data['optional_list_of_i32'][$key54] = $value55;
+      }
+    }
+
+    if (!is_null($shape_data['optional_list_of_string'])) {
+      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_list_of_string'] as $key56 => $value57) {
+        /* HH_IGNORE_ERROR[4005] */
+        $shape_data['optional_list_of_string'][$key56] = $value57;
+      }
     }
 
     if (!is_null($shape_data['optional_map_of_string_to_i32'])) {

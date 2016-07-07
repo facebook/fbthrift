@@ -684,6 +684,9 @@ class B implements IThriftStruct, IThriftShapishStruct {
     if (!array_key_exists('set_of_i32', $shape_data)) {
       return null;
     }
+    if (!is_array($shape_data['set_of_i32'])) {
+      return null;
+    }
     $the_set2 = array();
     foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['set_of_i32'] as $key0 => $shape_data1) {
       if (!is_int($shape_data1)) {
@@ -827,6 +830,9 @@ class B implements IThriftStruct, IThriftShapishStruct {
       if (!is_string($key19)) {
         return null;
       }
+      if (!is_array($value20)) {
+        return null;
+      }
       $the_set23 = array();
       foreach (/* HH_IGNORE_ERROR[4110] */ $value20 as $key21 => $shape_data22) {
         if (!is_int($shape_data22)) {
@@ -902,6 +908,9 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_set_of_i32'] as $key32 => $value33) {
       if (!is_int($key32)) {
+        return null;
+      }
+      if (!is_array($value33)) {
         return null;
       }
       $the_set36 = array();
@@ -1038,14 +1047,19 @@ class B implements IThriftStruct, IThriftShapishStruct {
     if (!array_key_exists('optional_set_of_i32', $shape_data)) {
       $shape_data['optional_set_of_i32'] = null;
     }
-    $the_set53 = array();
-    foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_set_of_i32'] as $key51 => $shape_data52) {
-      if (!is_int($shape_data52)) {
+    if (!is_null($shape_data['optional_set_of_i32'])) {
+      if (!is_array($shape_data['optional_set_of_i32'])) {
         return null;
       }
-      $the_set53[$shape_data52] = true;
+      $the_set53 = array();
+      foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_set_of_i32'] as $key51 => $shape_data52) {
+        if (!is_int($shape_data52)) {
+          return null;
+        }
+        $the_set53[$shape_data52] = true;
+      }
+      $shape_data['optional_set_of_i32'] = $the_set53;
     }
-    $shape_data['optional_set_of_i32'] = $the_set53;
 
     if (!array_key_exists('optional_list_of_i32', $shape_data)) {
       $shape_data['optional_list_of_i32'] = null;
@@ -1192,6 +1206,9 @@ class B implements IThriftStruct, IThriftShapishStruct {
       }
       foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_set_of_i32'] as $key70 => $value71) {
         if (!is_string($key70)) {
+          return null;
+        }
+        if (!is_array($value71)) {
           return null;
         }
         $the_set74 = array();
