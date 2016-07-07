@@ -43,7 +43,8 @@ extern const std::string kProxyLookupAppExceptionErrorCode;
 extern const std::string kProxyWhitelistExceptionErrorCode;
 extern const std::string kProxyClientAppExceptionErrorCode;
 extern const std::string kProxyProtocolMismatchExceptionErrorCode;
-extern const std::string kProxyThrottledExceptionErrorCode;
+extern const std::string kProxyQPSThrottledExceptionErrorCode;
+extern const std::string kProxyResponseSizeThrottledExceptionErrorCode;
 extern const std::string kInjectedFailureErrorCode;
 extern const std::string kServerQueueTimeoutErrorCode;
 
