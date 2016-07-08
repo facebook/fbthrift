@@ -1908,7 +1908,7 @@ void t_java_generator::generate_java_struct_tostring(ofstream& out,
       indent(out) << "  }" << endl;
       indent(out) << "  if (" << field_getter << ".length > 128) sb.append(\" ...\");" << endl;
     } else if(ftype->is_enum()) {
-      indent(out) << "String " << fname << "_name = " << get_enum_class_name(ftype) << ".VALUES_TO_NAMES.get(this." << fname << ");"<< endl;
+      indent(out) << "String " << fname << "_name = " << get_enum_class_name(ftype) << ".VALUES_TO_NAMES.get(" << field_getter << ");"<< endl;
       indent(out) << "if (" << fname << "_name != null) {" << endl;
       indent(out) << "  sb.append(" << fname << "_name);" << endl;
       indent(out) << "  sb.append(\" (\");" << endl;

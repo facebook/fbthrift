@@ -1134,7 +1134,7 @@ String space = prettyPrint ? " " : "";
       sb.append("afraidOfAnimal");
       sb.append(space);
       sb.append(":").append(space);
-      String afraidOfAnimal_name = Animal.VALUES_TO_NAMES.get(this.afraidOfAnimal);
+      String afraidOfAnimal_name = Animal.VALUES_TO_NAMES.get(this. getAfraidOfAnimal());
       if (afraidOfAnimal_name != null) {
         sb.append(afraidOfAnimal_name);
         sb.append(" (");
