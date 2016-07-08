@@ -464,7 +464,8 @@ void t_py_generator::generate_json_enum(ofstream& out,
               << type_name(tenum) << "._VALUES_TO_NAMES:" << endl;
   indent_up();
   indent(out) << "raise TProtocolException(TProtocolException.INVALID_DATA,"
-              << " 'enum exceeds limit')" << endl;
+              << " 'enum exceeds limit ''%s''' % "
+              << prefix_thrift << ")" << endl;
   indent_down();
 }
 
