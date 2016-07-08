@@ -4856,9 +4856,14 @@ class CppGenerator(t_generator.Generator):
                             .format(self.fatal_detail_ns, mpdclsprefix,
                                 safe_ns, name, m.name))
                         cmnf('  ::apache::thrift::reflected_annotations<'
-                            '{0}::{1}_{2}::members::{3}>'.format(
+                             '{0}::{1}_{2}::members::{3}>,'.format(
                                 self.fatal_detail_ns, i.name, annclsprefix,
                                 m.name))
+                        # Owner
+                        cmnf('  {0},'.format(i.name))
+                        # HasIsSet
+                        cmnf('  {0}'.format(
+                            'true' if self._has_isset(m) else 'false'))
                         cmnf('>>;')
         result = {}
         order = []

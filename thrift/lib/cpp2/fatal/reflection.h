@@ -23,6 +23,7 @@
 #include <fatal/type/registry.h>
 #include <fatal/type/transform.h>
 #include <fatal/type/variant_traits.h>
+#include <fatal/type/traits.h>
 
 #include <type_traits>
 
@@ -1014,7 +1015,9 @@ template <
   typename Getter,
   typename TypeClass,
   template <typename> class Pod,
-  typename Annotations
+  typename Annotations,
+  typename Owner,
+  bool HasIsSet
 >
 struct reflected_struct_data_member {
   /**
@@ -1316,11 +1319,10 @@ struct reflected_struct_data_member {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  template <typename Owner>
   static bool is_set(Owner const &owner) {
-    return detail::reflection_impl::is_set<Owner, getter, optional>::check(
-      owner
-    );
+    return detail::reflection_impl::is_set<
+        Owner, getter, HasIsSet
+      >::check(owner);
   }
 
   /**
@@ -1349,9 +1351,8 @@ struct reflected_struct_data_member {
    *
    * @author: Dylan Knutson <dymk@fb.com>
    */
-  template <typename Owner>
   static void mark_set(Owner& owner) {
-    detail::reflection_impl::mark_set<Owner, getter, optional>::mark(owner);
+    detail::reflection_impl::mark_set<Owner, getter, HasIsSet>::mark(owner);
   }
 
   /**
@@ -1380,9 +1381,8 @@ struct reflected_struct_data_member {
    *
    * @author: Dylan Knutson <dymk@fb.com>
    */
-  template <typename Owner>
   static void unmark_set(Owner& owner) {
-    detail::reflection_impl::unmark_set<Owner, getter, optional>::mark(owner);
+    detail::reflection_impl::unmark_set<Owner, getter, HasIsSet>::mark(owner);
   }
 };
 

@@ -156,6 +156,13 @@ struct struct_binary {
   1: binary bi
 }
 
+struct struct4 {
+  1: required i32 field0
+  2: optional string field1
+  3: enum1 field2
+  6: structA field3 (cpp2.ref = "true")
+}
+
 service service1 {
   void method1();
   void method2(1: i32 x, 2: struct1 y, 3: double z);

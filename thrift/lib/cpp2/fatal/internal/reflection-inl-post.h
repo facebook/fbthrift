@@ -23,7 +23,7 @@
 namespace apache { namespace thrift {
 namespace detail { namespace reflection_impl {
 
-template <typename Owner, typename Getter, typename>
+template <typename Owner, typename Getter, bool has_isset>
 struct is_set {
   constexpr static bool check(Owner const &owner) {
     return Getter::ref(owner.__isset);
@@ -34,12 +34,12 @@ template <typename Owner, typename Getter>
 struct is_set<
   Owner,
   Getter,
-  std::integral_constant<optionality, optionality::required>
+  false
 > {
   constexpr static bool check(Owner const &) { return true; }
 };
 
-template <typename Owner, typename Getter, typename>
+template <typename Owner, typename Getter, bool has_isset>
 struct mark_set {
   constexpr static void mark(Owner& owner) {
     Getter::ref(owner.__isset) = true;
@@ -50,7 +50,7 @@ template <typename Owner, typename Getter>
 struct mark_set<
   Owner,
   Getter,
-  std::integral_constant<optionality, optionality::required>
+  false
 > {
   constexpr static void mark(Owner& owner) {
     // nop
@@ -58,14 +58,16 @@ struct mark_set<
   }
 };
 
-template <typename Owner, typename Getter, optionality opt>
+template <typename, typename, bool has_isset>
+struct unmark_set;
+
+template <typename Owner, typename Getter>
 struct unmark_set<
   Owner,
   Getter,
-  std::integral_constant<optionality, opt>
+  true
 > {
   constexpr static void mark(Owner& owner) {
-    static_assert(opt != optionality::required, "Can't unset a required field");
     Getter::ref(owner.__isset) = false;
   }
 };

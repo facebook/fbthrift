@@ -433,12 +433,14 @@ TEST(fatal_struct, member_annotations) {
 }
 
 TEST(fatal_struct, set_methods) {
-  using info = apache::thrift::reflect_struct<struct1>;
+  using info = apache::thrift::reflect_struct<struct4>;
   using req_field = info::members::get<info::names::field0>;
   using opt_field = info::members::get<info::names::field1>;
   using def_field = info::members::get<info::names::field2>;
 
-  struct1 a;
+  using ref_field = info::members::get<info::names::field3>;
+
+  struct4 a;
   EXPECT_EQ(true, req_field::is_set(a));
   req_field::mark_set(a);
   EXPECT_EQ(true, req_field::is_set(a));
@@ -457,6 +459,10 @@ TEST(fatal_struct, set_methods) {
   EXPECT_EQ(true, def_field::is_set(a));
   def_field::unmark_set(a);
   EXPECT_EQ(false, def_field::is_set(a));
+
+  EXPECT_EQ(true, ref_field::is_set(a));
+  ref_field::mark_set(a);
+  EXPECT_EQ(true, req_field::is_set(a));
 }
 
 } // namespace cpp_reflection {
