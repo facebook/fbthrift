@@ -511,13 +511,18 @@ int32_t ThriftServer::getPendingCount() const {
 
 void ThriftServer::updateTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
   forEachWorker([&](wangle::Acceptor* acceptor) {
-    auto ctxMgr = acceptor->getSSLContextManager();
-    if (ctxMgr) {
-      ctxMgr->reloadTLSTicketKeys(
-          seeds.oldSeeds,
-          seeds.currentSeeds,
-          seeds.newSeeds);
+    if (!acceptor) {
+      return;
     }
+    auto ctxMgr = acceptor->getSSLContextManager();
+    auto evb = acceptor->getEventBase();
+    if (!ctxMgr || !evb) {
+      return;
+    }
+    evb->runImmediatelyOrRunInEventBaseThreadAndWait([&] {
+      ctxMgr->reloadTLSTicketKeys(
+          seeds.oldSeeds, seeds.currentSeeds, seeds.newSeeds);
+    });
   });
 }
 
