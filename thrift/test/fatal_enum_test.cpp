@@ -66,11 +66,6 @@ TEST(fatal_enum, sanity_check) {
   EXPECT_SAME<names, traits::names>();
   EXPECT_SAME<fatal::type_list<field0v, field1v, field2v>, traits::values>();
 
-  EXPECT_SAME<
-    names::apply<fatal::build_type_prefix_tree<>::from>,
-    traits::prefix_tree
-  >();
-
   EXPECT_EQ("field0", fatal::enum_to_string(enum1::field0));
   EXPECT_EQ("field1", fatal::enum_to_string(enum1::field1));
   EXPECT_EQ("field2", fatal::enum_to_string(enum1::field2));

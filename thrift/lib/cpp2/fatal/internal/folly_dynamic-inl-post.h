@@ -285,8 +285,11 @@ struct dynamic_converter_impl<type_class::variant> {
     if (i == items.end()) {
       variant_traits::clear(out);
     } else {
+      using prefix_tree = typename id_traits::names::template apply<
+        fatal::build_type_prefix_tree<>::from
+      >;
       auto const type = i->first.stringPiece();
-      bool const found = id_traits::prefix_tree::template match<>::exact(
+      bool const found = prefix_tree::template match<>::exact(
         type.begin(), type.end(),
         from_dynamic_variant_visitor<variant_traits>(),
         out, i->second,
