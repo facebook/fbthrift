@@ -22,6 +22,7 @@
 #include <ctime>
 #include <functional>
 #include <folly/Conv.h>
+#include <folly/Format.h>
 #include <folly/experimental/TestUtil.h>
 #include <folly/portability/Unistd.h>
 
