@@ -75,11 +75,8 @@ class DuplexChannel {
       HeaderClientChannel::sendMessage(callback, std::move(buf), header);
     }
     void messageChannelEOF() override {
-      if (duplex_.mainChannel_.get() == Who::CLIENT) {
-        HeaderClientChannel::messageChannelEOF();
-      } else {
-        duplex_.serverChannel_->messageChannelEOF();
-      }
+      HeaderClientChannel::messageChannelEOF();
+      duplex_.serverChannel_->HeaderServerChannel::messageChannelEOF();
     }
    private:
     DuplexChannel& duplex_;
@@ -99,11 +96,8 @@ class DuplexChannel {
       HeaderServerChannel::sendMessage(callback, std::move(buf), header);
     }
     void messageChannelEOF() override {
-      if (duplex_.mainChannel_.get() == Who::SERVER) {
-        HeaderServerChannel::messageChannelEOF();
-      } else {
-        duplex_.clientChannel_->messageChannelEOF();
-      }
+      HeaderServerChannel::messageChannelEOF();
+      duplex_.clientChannel_->HeaderClientChannel::messageChannelEOF();
     }
    private:
     DuplexChannel& duplex_;
