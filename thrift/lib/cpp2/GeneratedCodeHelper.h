@@ -1127,9 +1127,8 @@ void
 async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
   async_tm_prep(si, callback.get());
   auto fut = future_catching(std::forward<F>(f));
-  auto callbackp = callback.release();
-  fut.then([=](folly::Try<fut_ret<F>>&& _return) {
-      callbackp->completeInThread(std::move(_return));
+  fut.then([cb = std::move(callback)](folly::Try<fut_ret<F>> && _return) {
+    cb->complete(std::move(_return));
   });
 }
 
