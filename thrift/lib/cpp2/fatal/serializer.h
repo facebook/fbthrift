@@ -43,11 +43,14 @@ namespace detail {
  * refers to the general type of data that Type is, and is passed around for
  * two reasons:
  *  - to provide support for generic containers which have a common interface
- *    for building collections (e.g. a std::vector and std::deque, which
- *    can back a Thrift list, and thus have type_class::list)
+ *    for building collections (e.g. a `std::vector<int>` and `std::deque<int>`,
+ *    which can back a Thrift list, and thus have
+ *    `type_class::list<type_class::integral>`, or an
+ *    `std::map<std::string, MyStruct>` would have
+ *    `type_class::map<type_class::string, type_class::structure>``).
  *  - to differentiate between Thrift types that are represented with the
  *    same C++ type, e.g. both Thrift binaries and strings are represented
- *    with an std::string, TypeClass is used to decide which protocol
+ *    with an `std::string`, TypeClass is used to decide which protocol
  *    method to call.
  *
  * Example:
@@ -187,7 +190,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         assert(reported_type == elem_proto_methods::ttype_value);
       }
 
-      for(int i = 0; protocol.peekList(); i++) {
+      for(decltype(list_size) i = 0; protocol.peekList(); i++) {
         // TODO: this should grow better (e.g., 1.5x each time)
         // For now, we just bump the container size by 1 each time
         // because that's what the currently generated Thrift code does.
@@ -197,7 +200,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     } else {
       assert(reported_type == elem_proto_methods::ttype_value);
       out.resize(list_size);
-      for(int i = 0; i < list_size; i++) {
+      for(decltype(list_size) i = 0; i < list_size; i++) {
         xfer += elem_proto_methods::read(protocol, out[i]);
       }
     }
@@ -226,6 +229,17 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
     "Unable to serialize unknown type");
   using elem_proto_methods = protocol_methods<elem_tclass, elem_type>;
 
+private:
+  template <typename Protocol>
+  static std::size_t consume_elem(Protocol& protocol, Type& out) {
+    elem_type tmp;
+    std::size_t xfer =
+      elem_proto_methods::read(protocol, tmp);
+    out.insert(std::move(tmp));
+    return xfer;
+  }
+
+public:
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Type& out) {
     std::size_t xfer = 0;
@@ -234,22 +248,16 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
     std::uint32_t set_size = -1;
     TType reported_type = protocol::T_STOP;
 
-    const auto consume_elem = [&protocol, &xfer, &out]() {
-      elem_type tmp;
-      xfer += elem_proto_methods::template read<Protocol>(protocol, tmp);
-      out.insert(std::move(tmp));
-    };
-
     out = Type();
     xfer += protocol.readSetBegin(reported_type, set_size);
     if(detail::is_unknown_container_size(set_size)) {
       while(protocol.peekSet()) {
-        consume_elem();
+        xfer += consume_elem(protocol, out);
       }
     } else {
       assert(reported_type == elem_proto_methods::ttype_value);
-      for(int i = 0; i < set_size; i++) {
-        consume_elem();
+      for(decltype(set_size) i = 0; i < set_size; i++) {
+        xfer += consume_elem(protocol, out);
       }
     }
 
@@ -283,6 +291,18 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     using key_methods    = protocol_methods<key_tclass, key_type>;
     using mapped_methods = protocol_methods<mapped_tclass, mapped_type>;
 
+private:
+  template <typename Protocol>
+  static std::size_t consume_elem(Protocol& protocol, Type& out) {
+    std::size_t xfer = 0;
+    key_type key_tmp;
+    xfer += key_methods::template read<>(protocol, key_tmp);
+    xfer += mapped_methods::
+      template read<>(protocol, out[std::move(key_tmp)]);
+    return xfer;
+  }
+
+public:
     template <typename Protocol>
     static std::size_t read(Protocol& protocol, Type& out) {
       std::size_t xfer = 0;
@@ -291,23 +311,16 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
       TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
       out = Type();
 
-      const auto consume_elem = [&protocol, &xfer, &out]() {
-        key_type key_tmp;
-        xfer += key_methods::template read<>(protocol, key_tmp);
-        xfer += mapped_methods::
-          template read<>(protocol, out[std::move(key_tmp)]);
-      };
-
       xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
       if(detail::is_unknown_container_size(map_size)) {
         while(protocol.peekMap()) {
-          consume_elem();
+          xfer += consume_elem(protocol, out);
         }
       } else {
         assert(key_methods::ttype_value == rpt_key_type);
         assert(mapped_methods::ttype_value == rpt_mapped_type);
-        for(int i = 0; i < map_size; i++) {
-          consume_elem();
+        for(decltype(map_size) i = 0; i < map_size; i++) {
+          xfer += consume_elem(protocol, out);
         }
       }
 
@@ -385,8 +398,10 @@ struct protocol_methods<type_class::variant, Union> {
     ::template type_map_from<detail::extract_descriptor_fid>
     ::list<typename traits::descriptors>;
 
-  // Visitor, mapping member fname -> fid & ftype
-  struct member_match_op {
+private:
+  // Visitor for a fatal prefix tree of union field names,
+  // for mapping member field `fname` to  field `fid` and `ftype`
+  struct member_fname_to_fid {
     template <typename TString>
     void operator ()(
       fatal::type_tag<TString>,
@@ -416,14 +431,15 @@ struct protocol_methods<type_class::variant, Union> {
     }
   };
 
-  // Visitor, match on member field id -> set that field
+  // Visitor for a fatal binary search on (sorted) field IDs,
+  // sets the field `Fid` on the Union `obj` when called
   template <typename Protocol>
-  struct member_id_match_op {
+  struct set_member_by_fid {
     std::size_t& xfer;
     Protocol& protocol;
     Union& obj;
 
-    member_id_match_op(std::size_t& xfer_, Protocol& protocol_, Union& obj_) :
+    set_member_by_fid(std::size_t& xfer_, Protocol& protocol_, Union& obj_) :
       xfer(xfer_),
       protocol(protocol_),
       obj(obj_)
@@ -448,15 +464,16 @@ struct protocol_methods<type_class::variant, Union> {
 
       if(ftype == field_methods::ttype_value) {
         typename descriptor::type tmp;
-        typename descriptor::setter s;
-        xfer += field_methods::template read<Protocol>(protocol, tmp);
-        s(obj, std::move(tmp));
+        typename descriptor::setter field_setter;
+        xfer += field_methods::read(protocol, tmp);
+        field_setter(obj, std::move(tmp));
       } else {
         xfer += protocol.skip(ftype);
       }
     }
   };
 
+public:
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Union& out) {
     field_id_t fid = -1;
@@ -478,14 +495,14 @@ struct protocol_methods<type_class::variant, Union> {
         auto found_ = id_name_strs
           ::template apply<fatal::string_lookup>
           ::template match<>::exact(
-          fname.begin(), fname.end(), member_match_op(), fid, ftype
+          fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype
         );
         assert(found_ == 1);
       }
 
       if(!sorted_fids::
         template binary_search<>::
-        exact(fid, member_id_match_op<Protocol>(xfer, protocol, out), ftype))
+        exact(fid, set_member_by_fid<Protocol>(xfer, protocol, out), ftype))
       {
         DLOG(INFO) << "didn't find field, fid: " << fid;
         xfer += protocol.skip(ftype);
@@ -541,7 +558,7 @@ struct protocol_methods<type_class::structure, Struct> {
   using isset_array = std::array<bool, required_fields::size>;
 
   // mapping member fname -> fid
-  struct member_match_op {
+  struct member_fname_to_fid {
     template <typename TString>
     void operator ()(
       fatal::type_tag<TString>,
@@ -562,13 +579,13 @@ struct protocol_methods<type_class::structure, Struct> {
 
   // match on member field id -> set that field
   template <typename Protocol>
-  struct member_id_match_op {
+  struct set_member_by_fid {
     std::size_t& xfer;
     Protocol& protocol;
     Struct& obj;
     isset_array& required_isset;
 
-    member_id_match_op(std::size_t& xfer_, Protocol& protocol_,
+    set_member_by_fid(std::size_t& xfer_, Protocol& protocol_,
       Struct& obj_, isset_array& required_isset_) :
       xfer(xfer_),
       protocol(protocol_),
@@ -638,12 +655,12 @@ struct protocol_methods<type_class::structure, Struct> {
         // if so, look up fid via fname
         assert(fname != "");
         auto found_ = member_matcher::template match<>::exact(
-          fname.begin(), fname.end(), member_match_op(), fid, ftype
+          fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype
         );
         assert(found_ == 1);
       }
 
-      member_id_match_op<Protocol> member_fid_visitor(
+      set_member_by_fid<Protocol> member_fid_visitor(
         xfer, protocol, out, required_isset);
 
       if(!sorted_fids::
