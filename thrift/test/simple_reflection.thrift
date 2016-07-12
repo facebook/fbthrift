@@ -31,6 +31,8 @@ struct struct1 {
   7: required nested1 field6
   8: i64 field7 # generate writer req/reader opt field
   9: string field8 # default requiredness type field
+  # this generates an invalid thrift definition, so it won't be tested
+  // 10: string field9 (cpp.ref = "true", cpp2.ref = "true")
 }
 
 struct struct2 {
@@ -46,6 +48,7 @@ union union1 {
   99: list<string> field_list_string;
   5: string field_string_ref (cpp2.ref = "true")
   999: binary field_binary
+  12: smallstruct field_smallstruct (cpp2.ref = "true")
 }
 
 struct struct3 {

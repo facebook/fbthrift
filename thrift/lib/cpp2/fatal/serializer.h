@@ -83,11 +83,12 @@ struct protocol_methods;
     constexpr static protocol::TType ttype_value = protocol::TTypeValue; \
     template <typename Protocol>              \
     static std::size_t read(Protocol& protocol, Type& out) {       \
-      DLOG(INFO) << "read primitive " << #Class << ": " << #Type; \
+      VLOG(3) << "read primitive " << #Class << ": " << #Type; \
       return protocol.read##Method(out); \
     } \
     template <typename Protocol>              \
     static std::size_t write(Protocol& protocol, Type const& in) { \
+      VLOG(3) << "write primitive " << #Class << ": "<< #Type; \
       return protocol.write##Method(in); \
     } \
   }
@@ -131,7 +132,7 @@ struct protocol_methods<TypeClass, std::unique_ptr<Type>> {
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, pointer_type& in) {
+  static std::size_t write(Protocol& protocol, pointer_type const& in) {
     return type_methods::write(protocol, *in);
   }
 };
@@ -147,13 +148,13 @@ struct protocol_methods<type_class::enumeration, Type> {
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Type& out) {
     int_type tmp;
-    std::size_t xfer = int_methods::template read<Protocol>(protocol, tmp);
+    std::size_t xfer = int_methods::read(protocol, tmp);
     out = static_cast<Type>(tmp);
     return xfer;
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type& in) {
+  static std::size_t write(Protocol& protocol, Type const& in) {
     int_type tmp = static_cast<int_type>(in);
     return int_methods::template write<Protocol>(protocol, tmp);
   }
@@ -179,7 +180,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
 
     out = Type();
 
-    protocol.readListBegin(reported_type, list_size);
+    xfer += protocol.readListBegin(reported_type, list_size);
 
     Type list;
     if(detail::is_unknown_container_size(list_size)) {
@@ -210,9 +211,20 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type& out) {
-    assert(false);
-    return 0;
+  static std::size_t write(Protocol& protocol, Type const& out) {
+    std::size_t xfer = 0;
+    xfer += protocol.writeListBegin(
+      elem_proto_methods::ttype_value,
+      out.size()
+    );
+    using methods = protocol_methods<elem_tclass, elem_type>;
+
+    for(auto const& elem : out) {
+      xfer += methods::write(protocol, elem);
+    }
+
+    xfer += protocol.writeListEnd();
+    return xfer;
   }
 };
 
@@ -227,14 +239,14 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   using elem_tclass = ElemClass;
   static_assert(!std::is_same<elem_tclass, type_class::unknown>(),
     "Unable to serialize unknown type");
-  using elem_proto_methods = protocol_methods<elem_tclass, elem_type>;
+  using elem_methods = protocol_methods<elem_tclass, elem_type>;
 
 private:
   template <typename Protocol>
   static std::size_t consume_elem(Protocol& protocol, Type& out) {
     elem_type tmp;
     std::size_t xfer =
-      elem_proto_methods::read(protocol, tmp);
+      elem_methods::read(protocol, tmp);
     out.insert(std::move(tmp));
     return xfer;
   }
@@ -255,7 +267,7 @@ public:
         xfer += consume_elem(protocol, out);
       }
     } else {
-      assert(reported_type == elem_proto_methods::ttype_value);
+      assert(reported_type == elem_methods::ttype_value);
       for(decltype(set_size) i = 0; i < set_size; i++) {
         xfer += consume_elem(protocol, out);
       }
@@ -266,9 +278,14 @@ public:
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type& in) {
-    assert(false);
-    return 0;
+  static std::size_t write(Protocol& protocol, Type const& in) {
+    std::size_t xfer = 0;
+    xfer += protocol.writeSetBegin(elem_methods::ttype_value, in.size());
+    for(auto const& elem : in) {
+      xfer += elem_methods::write(protocol, elem);
+    }
+    xfer += protocol.writeSetEnd();
+    return xfer;
   }
 };
 
@@ -296,9 +313,8 @@ private:
   static std::size_t consume_elem(Protocol& protocol, Type& out) {
     std::size_t xfer = 0;
     key_type key_tmp;
-    xfer += key_methods::template read<>(protocol, key_tmp);
-    xfer += mapped_methods::
-      template read<>(protocol, out[std::move(key_tmp)]);
+    xfer += key_methods::read(protocol, key_tmp);
+    xfer += mapped_methods::read(protocol, out[std::move(key_tmp)]);
     return xfer;
   }
 
@@ -312,6 +328,9 @@ public:
       out = Type();
 
       xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
+      VLOG(3) << "read map begin: " << rpt_key_type << "/" << rpt_mapped_type
+        << " (" << map_size << ")";
+
       if(detail::is_unknown_container_size(map_size)) {
         while(protocol.peekMap()) {
           xfer += consume_elem(protocol, out);
@@ -329,9 +348,23 @@ public:
     }
 
     template <typename Protocol>
-    static std::size_t write(Protocol& protocol, Type& out) {
-      assert(false);
-      return 0;
+    static std::size_t write(Protocol& protocol, Type const& out) {
+      std::size_t xfer = 0;
+      VLOG(3) << "start map write: " <<
+        key_methods::ttype_value << "/" <<
+        mapped_methods::ttype_value << " (" << out.size() << ")";
+      xfer += protocol.writeMapBegin(
+        key_methods::ttype_value,
+        mapped_methods::ttype_value,
+        out.size());
+
+      for(auto const& elem_pair : out) {
+        xfer += key_methods::write(protocol, elem_pair.first);
+        xfer += mapped_methods::write(protocol, elem_pair.second);
+      }
+
+      xfer += protocol.writeMapEnd();
+      return xfer;
     }
 };
 
@@ -378,8 +411,35 @@ namespace detail {
 
   template <typename T>
   using extract_descriptor_fid = typename T::metadata::id;
-} /* namespace detail */
 
+  // General case: methods on deref are no-op, returning their input
+  template <typename T>
+  struct deref {
+      static T& clear_and_get(T& in) { return in; }
+      static T const& get_const(T const& in) { return in; }
+  };
+  // Special case: We specifically *do not* dereference a unique pointer to
+  // an IOBuf, because this is a type that the protocol can (de)serialize
+  // directly
+  template <>
+  struct deref<std::unique_ptr<folly::IOBuf>> {
+    using T =  std::unique_ptr<folly::IOBuf>;
+    static T& clear_and_get(T& in) { return in; }
+    static T const& get_const(T const& in) { return in; }
+  };
+  // General case: deref returns a reference to what the
+  // unique pointer contains
+  template <typename T>
+  struct deref<std::unique_ptr<T>> {
+    static T& clear_and_get(std::unique_ptr<T>& in) {
+      in = std::make_unique<T>();
+      return *in;
+    }
+    static T const& get_const(std::unique_ptr<T> const& in) {
+      return *in;
+    }
+  };
+} // namespace detail
 
 // specialization for variants (Thrift unions)
 template <typename Union>
@@ -390,17 +450,28 @@ struct protocol_methods<type_class::variant, Union> {
   using traits = fatal::variant_traits<Union>;
   using enum_traits = fatal::enum_traits<typename traits::id>;
   using id_name_strs = typename enum_traits::name_to_value::keys;
-  using sorted_fids = typename traits::
-    descriptors::
-    template transform<detail::extract_descriptor_fid>::
-    template sort<>;
+
+  // Field ID -> descriptor
+  using sorted_fids = typename traits
+    ::descriptors
+    ::template transform<detail::extract_descriptor_fid>
+    ::template sort<>;
   using fid_to_descriptor_map = typename fatal
     ::template type_map_from<detail::extract_descriptor_fid>
     ::list<typename traits::descriptors>;
 
-private:
-  // Visitor for a fatal prefix tree of union field names,
-  // for mapping member field `fname` to  field `fid` and `ftype`
+  // Union.Type id -> descriptor
+  using sorted_ids = typename traits
+    ::descriptors
+    ::template transform<fatal::get_member_type::id>
+    ::template sort<>;
+  using id_to_descriptor_map = typename fatal
+    ::template type_map_from<fatal::get_member_type::id>
+    ::list<typename traits::descriptors>;
+
+  private:
+    // Visitor for a fatal prefix tree of union field names,
+    // for mapping member field `fname` to  field `fid` and `ftype`
   struct member_fname_to_fid {
     template <typename TString>
     void operator ()(
@@ -422,7 +493,7 @@ private:
         std::is_same<typename descriptor::metadata::name, TString>(),
         "Instantiation failure, descriptor name mismatch");
 
-      DLOG(INFO) << "(union) matched string: " << TString::string()
+      VLOG(3) << "(union) matched string: " << TString::string()
         << ", fid: " << fid
         << ", ftype: " << ftype;
 
@@ -456,8 +527,6 @@ private:
       constexpr field_id_t fid = Fid::value;
       assert(needle == fid);
 
-      DLOG(INFO) << "matched needle: " << fid;
-
       using field_methods = protocol_methods<
           typename descriptor::metadata::type_class,
           typename descriptor::type>;
@@ -483,7 +552,7 @@ public:
 
     xfer += protocol.readStructBegin(fname);
 
-    DLOG(INFO) << "began reading union: " << fname;
+    VLOG(3) << "began reading union: " << fname;
     xfer += protocol.readFieldBegin(fname, ftype, fid);
     if(ftype == protocol::T_STOP) {
       out.__clear();
@@ -500,18 +569,19 @@ public:
         assert(found_ == 1);
       }
 
-      if(!sorted_fids::
-        template binary_search<>::
-        exact(fid, set_member_by_fid<Protocol>(xfer, protocol, out), ftype))
+      if(!sorted_fids
+        ::template binary_search<>
+        ::exact(fid, set_member_by_fid<Protocol>(xfer, protocol, out), ftype))
       {
-        DLOG(INFO) << "didn't find field, fid: " << fid;
+        VLOG(3) << "didn't find field, fid: " << fid;
         xfer += protocol.skip(ftype);
       }
 
       xfer += protocol.readFieldEnd();
       xfer += protocol.readFieldBegin(fname, ftype, fid);
       if(UNLIKELY(ftype != protocol::T_STOP)) {
-        // TODO: TProtocolException::throwUnionMissingStop() once D3474801 lands
+        // TODO: TProtocolException::throwUnionMissingStop() once
+        // union deserialization is fixed
         xfer += protocol.readFieldEnd();
       }
       xfer += protocol.readStructEnd();
@@ -520,9 +590,66 @@ public:
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol&, Union&) {
-    assert(false);
-    return 0;
+  struct fid_match_write_op {
+    std::size_t& xfer;
+    Protocol& protocol;
+    Union const& obj;
+
+    fid_match_write_op(std::size_t& xfer_, Protocol& protocol_,
+      Union const& obj_) :
+      xfer(xfer_),
+      protocol(protocol_),
+      obj(obj_)
+      {}
+
+    template <typename Id, std::size_t Index>
+    void operator ()(
+      fatal::indexed_type_tag<Id, Index>,
+      const typename Union::Type needle)
+    {
+      using descriptor = typename id_to_descriptor_map::template get<Id>;
+      typename descriptor::getter getter;
+      using methods = protocol_methods<
+        typename descriptor::metadata::type_class,
+        typename descriptor::type>;
+
+      assert(needle == Id::value);
+      assert(needle == descriptor::id::value);
+
+      VLOG(3) << "writing union field "
+        << descriptor::metadata::name::z_data()
+        << ", fid: " << descriptor::metadata::id::value
+        << ", ttype: " << methods::ttype_value;
+
+      xfer += protocol.writeFieldBegin(
+        descriptor::metadata::name::z_data(),
+        methods::ttype_value,
+        descriptor::metadata::id::value
+      );
+      auto const& tmp = getter(obj);
+      using member_type = typename std::decay<decltype(tmp)>::type;
+      xfer += methods::write(
+        protocol,
+        detail::deref<member_type>::get_const(tmp)
+      );
+      xfer += protocol.writeFieldEnd();
+    }
+  };
+
+  template <typename Protocol>
+  static std::size_t write(Protocol& protocol, Union const& in) {
+    std::size_t xfer = 0;
+    VLOG(3) << "begin writing union: " << traits::name::z_data()
+      << ", type: " << in.getType();
+    xfer += protocol.writeStructBegin(traits::name::z_data());
+    sorted_ids::template binary_search<>::exact(
+      in.getType(),
+      fid_match_write_op<Protocol>(xfer, protocol, in)
+    );
+    xfer += protocol.writeFieldStop();
+    xfer += protocol.writeStructEnd();
+    VLOG(3) << "end writing union";
+    return xfer;
   }
 };
 
@@ -531,18 +658,19 @@ template <typename Struct>
 struct protocol_methods<type_class::structure, Struct> {
   constexpr static protocol::TType ttype_value = protocol::T_STRUCT;
 
+private:
   using traits = apache::thrift::reflect_struct<Struct>;
 
   // fatal::type_list
   using member_names = typename traits::members::keys;
-  using sorted_fids  = typename traits::members::mapped::
-    template transform<fatal::get_member_type::id>::
-    template sort<>;
+  using sorted_fids  = typename traits::members::mapped
+    ::template transform<fatal::get_member_type::id>
+    ::template sort<>;
 
   // fatal::prefix_tree
   using member_matcher =
-    typename member_names::
-    template apply<fatal::string_lookup>;
+    typename member_names
+    ::template apply<fatal::string_lookup>;
 
   // fatal::type_list
   using required_fields = typename
@@ -553,7 +681,8 @@ struct protocol_methods<type_class::structure, Struct> {
   // fatal::type_map {std::integral_constant<field_id_t, Id> => MemberInfo}
   using id_to_member_map =
     typename fatal::type_map_from<fatal::get_member_type::id>::list<
-      typename traits::members::mapped>;
+      typename traits::members::mapped
+    >;
 
   using isset_array = std::array<bool, required_fields::size>;
 
@@ -571,7 +700,7 @@ struct protocol_methods<type_class::structure, Struct> {
         typename member::type
       >::ttype_value;
 
-      DLOG(INFO) << "matched string: " << TString::string()
+      VLOG(3) << "matched string: " << TString::string()
         << ", fid: " << fid
         << ", ftype: " << ftype;
     }
@@ -603,16 +732,18 @@ struct protocol_methods<type_class::structure, Struct> {
       constexpr field_id_t
             fid    = Fid::value;
       using member = typename id_to_member_map::template get<Fid>;
-      using getter = typename traits::getters::
-        template get<typename member::name>;
+      using getter = typename traits::getters
+        ::template get<typename member::name>;
       assert(needle == fid);
 
-      DLOG(INFO) << "matched needle: " << fid;
+      VLOG(3) << "matched needle: " << fid;
 
       using protocol_method = protocol_methods<
         typename member::type_class,
         typename member::type
       >;
+
+      using member_type = typename std::decay<decltype(getter::ref(obj))>::type;
 
       if(ftype == protocol_method::ttype_value) {
         detail::mark_isset<
@@ -620,15 +751,19 @@ struct protocol_methods<type_class::structure, Struct> {
             required_fields,
             isset_array,
             Struct,
-            member>(required_isset, obj);
-        xfer += protocol_method
-          ::template read<Protocol>(protocol, getter::ref(obj));
+            member
+          >(required_isset, obj);
+        xfer += protocol_method::read(
+            protocol,
+            detail::deref<member_type>::clear_and_get(getter::ref(obj))
+          );
       } else {
         xfer += protocol.skip(ftype);
       }
     }
   };
 
+public:
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Struct& out) {
     std::size_t xfer = 0;
@@ -638,11 +773,11 @@ struct protocol_methods<type_class::structure, Struct> {
     isset_array required_isset = {};
 
     xfer += protocol.readStructBegin(fname);
-    DLOG(INFO) << "start reading struct: " << fname;
+    VLOG(3) << "start reading struct: " << fname;
 
     while(true) {
       xfer += protocol.readFieldBegin(fname, ftype, fid);
-      DLOG(INFO) << "type: " << ftype
+      VLOG(3) << "type: " << ftype
                  << ", fname: " << fname
                  << ", fid: " << fid;
 
@@ -661,13 +796,14 @@ struct protocol_methods<type_class::structure, Struct> {
       }
 
       set_member_by_fid<Protocol> member_fid_visitor(
-        xfer, protocol, out, required_isset);
+        xfer, protocol, out, required_isset
+      );
 
-      if(!sorted_fids::
-        template binary_search<>::
-        exact(fid, member_fid_visitor, ftype))
+      if(!sorted_fids
+        ::template binary_search<>
+        ::exact(fid, member_fid_visitor, ftype))
       {
-        DLOG(INFO) << "didn't find field, fid: " << fid
+        VLOG(3) << "didn't find field, fid: " << fid
                    << ", fname: " << fname;
         xfer += protocol.skip(ftype);
       }
@@ -687,10 +823,162 @@ struct protocol_methods<type_class::structure, Struct> {
     return xfer;
   }
 
+private:
+  // generic field writer
+  template <
+    typename Protocol,
+    typename Member,
+    typename TypeClass,
+    typename MemberType,
+    typename Methods,
+    optionality _opt
+  >
+  struct field_writer {
+    static std::size_t write(Protocol& protocol, MemberType const& in) {
+      std::size_t xfer = 0;
+      // TODO: can maybe get rid of get_const?
+      xfer += protocol.writeFieldBegin(
+        Member::name::z_data(),
+        Methods::ttype_value,
+        Member::id::value
+      );
+      xfer += Methods::write(
+        protocol,
+        detail::deref<MemberType>::get_const(in)
+      );
+      xfer += protocol.writeFieldEnd();
+      return xfer;
+    }
+  };
+
+  // writer for default/required ref structrs
+  template <
+    typename Protocol,
+    typename Member,
+    typename SType,
+    typename Methods,
+    optionality _opt
+  >
+  struct field_writer <
+    Protocol,
+    Member,
+    type_class::structure,
+    std::unique_ptr<SType>,
+    Methods,
+    _opt
+  > {
+    static
+    std::size_t write(Protocol& protocol, std::unique_ptr<SType> const& in) {
+      std::size_t xfer = 0;
+      // `in` is a pointer to a struct.
+      // if not present, and this isn't an optional field,
+      // write out an empty struct
+      if(in) {
+        xfer += field_writer<
+          Protocol,
+          Member,
+          type_class::structure,
+          SType,
+          Methods,
+          _opt
+        >::write(protocol, *in);
+      }
+      else {
+        using field_traits = reflect_struct<SType>;
+        VLOG(3) << "empty ref struct, writing blank struct! "
+          << field_traits::name::z_data();
+        xfer += protocol.writeFieldBegin(
+          Member::name::z_data(),
+          Methods::ttype_value,
+          Member::id::value
+        );
+        xfer += protocol.writeStructBegin(field_traits::name::z_data());
+        xfer += protocol.writeFieldStop();
+        xfer += protocol.writeStructEnd();
+        xfer += protocol.writeFieldEnd();
+      }
+
+      return xfer;
+    }
+  };
+
+  // writer for optional ref structs
+  template <
+    typename Protocol,
+    typename Member,
+    typename SType,
+    typename Methods
+  >
+  struct field_writer <
+    Protocol,
+    Member,
+    type_class::structure,
+    std::unique_ptr<SType>,
+    Methods,
+    optionality::optional
+  > {
+    using ptr_type = std::unique_ptr<SType>;
+    static std::size_t write(Protocol& protocol, ptr_type const& in) {
+      if(in) {
+        return field_writer<
+          Protocol,
+          Member,
+          type_class::structure,
+          ptr_type,
+          Methods,
+          optionality::required
+        >::write(protocol, in);
+      }
+      else {
+        return 0;
+      }
+    }
+  };
+
+  struct member_writer {
+    template<typename Member, std::size_t Index, typename Protocol>
+    void operator()(
+      fatal::indexed_type_tag<Member, Index>,
+      Protocol& protocol,
+      Struct const& in,
+      std::size_t& xfer)
+    {
+      using methods = protocol_methods<
+        typename Member::type_class,
+        typename Member::type>;
+
+      if(
+        (Member::optional::value == optionality::required_of_writer) ||
+        Member::is_set(in))
+      {
+        VLOG(3) << "start field write: "
+          << Member::name::z_data() << " ttype:" << methods::ttype_value
+          << ", id:" << Member::id::value;
+
+        auto const& got = Member::getter::ref(in);
+        using member_type = typename std::decay<decltype(got)>::type;
+
+        xfer += field_writer<
+          Protocol,
+          Member,
+          typename Member::type_class,
+          member_type,
+          methods,
+          Member::optional::value>::write(protocol, got);
+      }
+    }
+  };
+
+public:
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Struct& in) {
-    assert(false);
-    return 0;
+  static std::size_t write(Protocol& protocol, Struct const& in) {
+    std::size_t xfer = 0;
+
+    xfer += protocol.writeStructBegin(traits::name::z_data());
+    traits::members::mapped::foreach(member_writer(), protocol, in, xfer);
+    xfer += protocol.writeFieldStop();
+    xfer += protocol.writeStructEnd();
+    return xfer;
   }
 };
 
@@ -712,14 +1000,12 @@ struct protocol_methods<type_class::structure, Struct> {
 
 template <typename Type, typename Protocol>
 std::size_t serializer_read(Type& out, Protocol& protocol) {
-  return protocol_methods<reflect_type_class<Type>, Type>::
-    template read<>(protocol, out);
+  return protocol_methods<reflect_type_class<Type>, Type>::read(protocol, out);
 }
 
 template <typename Type, typename Protocol>
 std::size_t serializer_write(Type const& in, Protocol& protocol) {
-  return protocol_methods<reflect_type_class<Type>, Type>::
-    template write<>(protocol, in);
+  return protocol_methods<reflect_type_class<Type>, Type>::write(protocol, in);
 }
 
-} } /* namespace apache::thrift */
+} } // namespace apache::thrift

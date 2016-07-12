@@ -30,33 +30,51 @@
 #include <gtest/gtest.h>
 #include <folly/Memory.h>
 
+#include <iomanip>
+
 namespace test_cpp2 { namespace simple_cpp_reflection {
 
-// Build with, or without, the new templated serializer
-// (Useful for a crude benchmark of compile time, and for verifying
-// that the legacy serializer behaves the same under these unittests)
-// #undef USE_NEW_SERIALIZER
-#define USE_NEW_SERIALIZER
+// TODO: undef this once union deserialization has a fix
+// this basically disables testing unions, because unions are broken
+// in the JSON readers when using the legacy deserializer
+#define UNIONS_STILL_BROKEN
 
-using test_cpp2::simple_cpp_reflection::struct1;
 using namespace apache::thrift;
 
-template <typename Reader, typename Writer>
+template <typename Reader, typename Writer, bool Printable>
 struct RWPair {
   using reader = Reader;
   using writer = Writer;
+  using printable = std::integral_constant<bool, Printable>;
 };
 
 using protocol_type_pairs = ::testing::Types<
-  RWPair<SimpleJSONProtocolReader, SimpleJSONProtocolWriter>,
-  RWPair<JSONProtocolReader, JSONProtocolWriter>,
-  RWPair<BinaryProtocolReader, BinaryProtocolWriter>,
-  RWPair<CompactProtocolReader, CompactProtocolWriter>
+  RWPair<SimpleJSONProtocolReader, SimpleJSONProtocolWriter, true>,
+  RWPair<JSONProtocolReader, JSONProtocolWriter, true>,
+  RWPair<BinaryProtocolReader, BinaryProtocolWriter, false>,
+  RWPair<CompactProtocolReader, CompactProtocolWriter, false>
 >;
 
+template <bool printable>
+void print_underlying(folly::IOBuf& buffer) {
+  if(VLOG_IS_ON(5)) {
+    auto range = buffer.coalesce();
+    if(printable) {
+      VLOG(5) << "buffer: "
+        << std::string((const char*)range.data(), range.size());
+    } else {
+      std::ostringstream out;
+      for(int i = 0; i < range.size(); i++) {
+        out << std::setw(2) << std::setfill('0')
+                << std::hex << (int)range.data()[i] << " ";
+      }
+      VLOG(5) << "buffer: " << out.str();
+    }
+  }
+}
+
 template <typename Pair>
-class TypedTestCommon : public ::testing::Test {
-protected:
+struct TypedTestCommon : public ::testing::Test {
   typename Pair::reader reader;
   typename Pair::writer writer;
   folly::IOBufQueue buffer;
@@ -70,16 +88,39 @@ protected:
     this->underlying = this->buffer.move();
     this->reader.setInput(this->underlying.get());
   }
+
+  void debug_buffer() {
+    print_underlying<Pair::printable::value>(*underlying);
+  }
 };
 
 template <typename Pair>
-class StructTest : public TypedTestCommon<Pair> {};
+struct StructTest : public TypedTestCommon<Pair> {};
+
+template <typename Pair>
+struct StructTestConcrete : public TypedTestCommon<Pair> {
+  virtual void TestBody() { return; }
+};
+
+template <typename Pair>
+struct CompareStructTest : public ::testing::Test {
+  StructTestConcrete<Pair> st1, st2;
+
+  void prep_read() {
+    st1.prep_read();
+    st2.prep_read();
+  }
+
+  void debug_buffer() {
+    st1.debug_buffer();
+    st2.debug_buffer();
+  }
+};
 
 TYPED_TEST_CASE(StructTest, protocol_type_pairs);
+TYPED_TEST_CASE(CompareStructTest, protocol_type_pairs);
 
-TYPED_TEST(StructTest, test_serialization) {
-  // test/reflection.thrift
-  struct1 a, b;
+void init_struct_1(struct1& a) {
   a.field0 = 10;
   a.field1 = "this is a string";
   a.field2 = enum1::field1;
@@ -96,17 +137,19 @@ TYPED_TEST(StructTest, test_serialization) {
   a.field6.__isset.nfield00 = true;
   a.field6.__isset.nfield01 = true;
   a.__isset.field7 = true;
+}
+
+TYPED_TEST(StructTest, test_serialization) {
+  // test/reflection.thrift
+  struct1 a, b;
+  init_struct_1(a);
 
   EXPECT_EQ(a.field4, std::set<int32_t>({1, 2, 3, 4, 6, 10}));
 
-  a.write(&this->writer);
+  serializer_write(a, this->writer);
   this->prep_read();
 
-#ifdef USE_NEW_SERIALIZER
-  apache::thrift::serializer_read(b, this->reader);
-#else
-  b.read(&this->reader);
-#endif
+  serializer_read(b, this->reader);
 
   EXPECT_EQ(a.field0, b.field0);
   EXPECT_EQ(a.field1, b.field1);
@@ -134,14 +177,9 @@ TYPED_TEST(StructTest, test_other_containers) {
   a.us_field = {7, 11, 13, 17, 13, 19, 11};
   a.deq_field = {10, 20, 30, 40};
 
-  a.write(&this->writer);
+  serializer_write(a, this->writer);
   this->prep_read();
-
-#ifdef USE_NEW_SERIALIZER
-  apache::thrift::serializer_read(b, this->reader);
-#else
-  b.read(&this->reader);
-#endif
+  serializer_read(b, this->reader);
 
   EXPECT_EQ(true, b.__isset.um_field);
   EXPECT_EQ(true, b.__isset.us_field);
@@ -150,6 +188,97 @@ TYPED_TEST(StructTest, test_other_containers) {
   EXPECT_EQ(a.us_field, b.us_field);
   EXPECT_EQ(a.deq_field, b.deq_field);
 }
+
+TYPED_TEST(StructTest, test_blank_default_ref_field) {
+  struct3 a, b;
+  a.opt_nested = std::make_unique<smallstruct>();
+  a.req_nested = std::make_unique<smallstruct>();
+
+  a.opt_nested->f1 = 5;
+  a.req_nested->f1 = 10;
+
+  // ref fields, interesting enough, do not have an __isset,
+  // but are xfered based on the pointer value (nullptr or not)
+
+  serializer_write(a, this->writer);
+  this->prep_read();
+  this->debug_buffer();
+  serializer_read(b, this->reader);
+
+  EXPECT_EQ(smallstruct(),   *(b.def_nested));
+  EXPECT_EQ(*(a.opt_nested), *(b.opt_nested));
+  EXPECT_EQ(*(a.req_nested), *(b.req_nested));
+}
+
+TYPED_TEST(StructTest, test_blank_optional_ref_field) {
+  struct3 a, b;
+  a.def_nested = std::make_unique<smallstruct>();
+  a.req_nested = std::make_unique<smallstruct>();
+
+  a.def_nested->f1 = 5;
+  a.req_nested->f1 = 10;
+
+  serializer_write(a, this->writer);
+  this->prep_read();
+  this->debug_buffer();
+  serializer_read(b, this->reader);
+
+  // null optional fields are deserialized to nullptr
+  EXPECT_EQ(*(a.def_nested), *(b.def_nested));
+  EXPECT_EQ(nullptr,           b.opt_nested.get());
+  EXPECT_EQ(*(a.req_nested), *(b.req_nested));
+}
+
+TYPED_TEST(StructTest, test_blank_required_ref_field) {
+  struct3 a, b;
+  a.def_nested = std::make_unique<smallstruct>();
+  a.opt_nested = std::make_unique<smallstruct>();
+
+  a.def_nested->f1 = 5;
+  a.opt_nested->f1 = 10;
+
+  serializer_write(a, this->writer);
+  this->prep_read();
+  this->debug_buffer();
+  serializer_read(b, this->reader);
+
+  EXPECT_EQ(*(a.def_nested), *(b.def_nested));
+  EXPECT_EQ(*(a.opt_nested), *(b.opt_nested));
+  EXPECT_EQ(smallstruct(),   *(b.req_nested));
+}
+
+TYPED_TEST(CompareStructTest, test_struct_xfer) {
+  struct1 a1, a2, b1, b2;
+  init_struct_1(a1);
+  init_struct_1(a2);
+  const std::size_t legacy_write_xfer = a1.write(&this->st1.writer);
+  const std::size_t new_write_xfer = serializer_write(a2, this->st2.writer);
+  EXPECT_EQ(legacy_write_xfer, new_write_xfer);
+
+  this->prep_read();
+  this->debug_buffer();
+
+  const std::size_t legacy_read_xfer = b1.read(&this->st1.reader);
+  const std::size_t new_read_xfer    = serializer_read(b2, this->st2.reader);
+  EXPECT_EQ(legacy_read_xfer, new_read_xfer);
+  EXPECT_EQ(b1, b2);
+}
+
+#ifndef UNIONS_STILL_BROKEN
+TYPED_TEST(CompareStructTest, test_union_xfer) {
+  union1 a1, a2, b1, b2;
+  a1.set_field_i64(0x1ABBADABAD00);
+  a2.set_field_i64(0x1ABBADABAD00);
+  const std::size_t lwx = a1.write(&this->st1.writer);
+  const std::size_t nwx = serializer_write(a2, this->st2.writer);
+  EXPECT_EQ(lwx, nwx);
+
+  const std::size_t lrx = b1.read(&this->st1.reader);
+  const std::size_t nrx = serializer_read(b2, this->st2.reader);
+  EXPECT_EQ(lrx, nrx);
+  EXPECT_EQ(b1, b2);
+}
+#endif /* UNIONS_STILL_BROKEN */
 
 namespace {
   const std::array<uint8_t, 5> test_buffer{{0xBA, 0xDB, 0xEE, 0xF0, 0x42}};
@@ -169,18 +298,11 @@ TYPED_TEST(StructTest, test_binary_containers) {
   a.iobuf_field = folly::IOBuf::wrapBufferAsValue(test_range);
   a.iobufptr_field = folly::IOBuf::wrapBuffer(test_range2);
 
-  a.write(&this->writer);
+  serializer_write(a, this->writer);
   this->prep_read();
+  this->debug_buffer();
 
-  auto range = this->underlying->coalesce();
-  DLOG(INFO) << "buffer: " <<
-    std::string((const char*)range.data(), range.size());
-
-#ifdef USE_NEW_SERIALIZER
-  apache::thrift::serializer_read(b, this->reader);
-#else
-  b.read(&this->reader);
-#endif
+  serializer_read(b, this->reader);
 
   EXPECT_EQ(true, b.__isset.def_field);
   EXPECT_EQ(true, b.__isset.iobuf_field);
@@ -196,14 +318,9 @@ TYPED_TEST(StructTest, test_workaround_binary) {
   a.def_field = test_string.str();
   a.iobuf_field = folly::IOBuf::wrapBufferAsValue(test_range2);
 
-  a.write(&this->writer);
+  serializer_write(a, this->writer);
   this->prep_read();
-
-#ifdef USE_NEW_SERIALIZER
-  apache::thrift::serializer_read(b, this->reader);
-#else
-  b.read(&this->reader);
-#endif
+  serializer_read(b, this->reader);
 
   EXPECT_EQ(true, b.__isset.def_field);
   EXPECT_EQ(true, b.__isset.iobuf_field);
@@ -217,21 +334,17 @@ protected:
   union1 a, b;
 
   void xfer() {
-    this->a.write(&this->writer);
+    serializer_write(this->a, this->writer);
     this->prep_read();
 
-    auto range = this->underlying->coalesce();
-    DLOG(INFO) << "buffer: " <<
-      std::string((const char*)range.data(), range.size());
+    print_underlying<Pair::printable::value>(*this->underlying);
 
-#ifdef USE_NEW_SERIALIZER
-    apache::thrift::serializer_read(this->b, this->reader);
-#else
-    this->b.read(&this->reader);
-#endif
+    serializer_read(b, this->reader);
     EXPECT_EQ(this->b.getType(), this->a.getType());
   }
 };
+
+#ifndef UNIONS_STILL_BROKEN
 TYPED_TEST_CASE(UnionTest, protocol_type_pairs);
 
 TYPED_TEST(UnionTest, can_read_union_i64s) {
@@ -256,6 +369,14 @@ TYPED_TEST(UnionTest, can_read_iobufs) {
   this->xfer();
   EXPECT_EQ(test_string.str(), this->b.get_field_binary());
 }
+TYPED_TEST(UnionTest, can_read_nestedstructs) {
+  smallstruct nested;
+  nested.f1 = 6;
+  this->a.set_field_smallstruct(nested);
+  this->xfer();
+  EXPECT_EQ(6, this->b.get_field_smallstruct()->f1);
+}
+#endif // UNIONS_STILL_BROKEN
 
 template <typename Pair>
 class BinaryInContainersTest : public TypedTestCommon<Pair> {
@@ -263,13 +384,9 @@ protected:
   struct5_listworkaround a, b;
 
   void xfer() {
-    this->a.write(&this->writer);
+    serializer_write(this->a, this->writer);
     this->prep_read();
-#ifdef USE_NEW_SERIALIZER
-    apache::thrift::serializer_read(this->b, this->reader);
-#else
-    this->b.read(&this->reader);
-#endif
+    serializer_read(this->b, this->reader);
   }
 };
 TYPED_TEST_CASE(BinaryInContainersTest, protocol_type_pairs);
@@ -289,10 +406,17 @@ TYPED_TEST(BinaryInContainersTest, lists_of_binary_fields_work) {
 
 struct SimpleJsonTest : public ::testing::Test {
   SimpleJSONProtocolReader reader;
+  std::unique_ptr<folly::IOBuf> underlying;
 
   void set_input(std::string&& str) {
-    auto buffer = folly::IOBuf::copyBuffer(str);
-    reader.setInput(&*buffer);
+    underlying = folly::IOBuf::copyBuffer(str);
+    reader.setInput(underlying.get());
+
+    if(VLOG_IS_ON(5)) {
+      auto range = underlying->coalesce();
+      VLOG(5) << "buffer: "
+        << std::string((const char*)range.data(), range.size());
+    }
   }
 };
 
@@ -300,27 +424,25 @@ TEST_F(SimpleJsonTest, throws_on_unset_required_value) {
   set_input("{}");
   try {
     struct2 a;
-#ifdef USE_NEW_SERIALIZER
-    apache::thrift::serializer_read(a, reader);
-#else
-    a.read(&reader);
-#endif
-    EXPECT_TRUE(false) << "serializer_read didn't throw";
+    serializer_read(a, reader);
+    EXPECT_TRUE(false) << "didn't throw!";
   }
   catch(TProtocolException& e) {
     EXPECT_EQ(TProtocolException::MISSING_REQUIRED_FIELD, e.getType());
   }
 }
 
-#define KV(key, value) "\"" key "\":\"" value "\""
+// wrap in quotes
+#define Q(val) "\"" val "\""
+// emit key/value json pair
+#define KV(key, value) "\"" key "\":" value
+// emit key/value json pair, where value is a string
+#define KVS(key, value) KV(key, Q(value))
+
 TEST_F(SimpleJsonTest, handles_unset_default_member) {
-  set_input("{" KV("req_string", "required") "}");
+  set_input("{" KVS("req_string", "required") "}");
   struct2 a;
-#ifdef USE_NEW_SERIALIZER
-  apache::thrift::serializer_read(a, reader);
-#else
-  a.read(&reader);
-#endif
+  serializer_read(a, reader);
   EXPECT_TRUE(false == a.__isset.opt_string); // gcc bug?
   EXPECT_TRUE(false == a.__isset.def_string);
   EXPECT_EQ("required", a.req_string);
@@ -328,13 +450,12 @@ TEST_F(SimpleJsonTest, handles_unset_default_member) {
   EXPECT_EQ("", a.def_string);
 }
 TEST_F(SimpleJsonTest, sets_opt_members) {
-  set_input("{" KV("req_string","required")"," KV("opt_string","optional") "}");
+  set_input("{"
+    KVS("req_string","required")","
+    KVS("opt_string","optional")
+  "}");
   struct2 a;
-#ifdef USE_NEW_SERIALIZER
-  apache::thrift::serializer_read(a, reader);
-#else
-  a.read(&reader);
-#endif
+  serializer_read(a, reader);
   EXPECT_TRUE(true == a.__isset.opt_string); // gcc bug?
   EXPECT_TRUE(false == a.__isset.def_string);
   EXPECT_EQ("required", a.req_string);
@@ -342,18 +463,56 @@ TEST_F(SimpleJsonTest, sets_opt_members) {
   EXPECT_EQ("", a.def_string);
 }
 TEST_F(SimpleJsonTest, sets_def_members) {
-  set_input("{" KV("req_string","required")"," KV("def_string", "default") "}");
+  set_input("{"
+    KVS("req_string","required")","
+    KVS("def_string", "default")
+  "}");
   struct2 a;
-#ifdef USE_NEW_SERIALIZER
-  apache::thrift::serializer_read(a, reader);
-#else
-  a.read(&reader);
-#endif
+  serializer_read(a, reader);
   EXPECT_TRUE(false == a.__isset.opt_string);
   EXPECT_EQ(true,  a.__isset.def_string);
   EXPECT_EQ("required", a.req_string);
   EXPECT_EQ("", a.opt_string);
   EXPECT_EQ("default", a.def_string);
+}
+TEST_F(SimpleJsonTest, throws_on_missing_required_ref) {
+  set_input("{"
+    KV("opt_nested", "{"
+      KV("f1", "10")
+    "}")","
+    KV("def_nested", "{"
+      KV("f1", "5")
+    "}")
+  "}");
+
+  struct3 a;
+
+  try {
+    serializer_read(a, reader);
+    EXPECT_TRUE(false) << "didn't throw!";
+  }
+  catch(TProtocolException& e) {
+    EXPECT_EQ(TProtocolException::MISSING_REQUIRED_FIELD, e.getType());
+  }
+}
+TEST_F(SimpleJsonTest, doesnt_throw_when_req_field_present) {
+  set_input("{"
+    KV("opt_nested", "{"
+      KV("f1", "10")
+    "}")","
+    KV("def_nested", "{"
+      KV("f1", "5")
+    "}")","
+    KV("req_nested", "{"
+      KV("f1", "15")
+    "}")
+  "}");
+
+  struct3 a;
+  serializer_read(a, reader);
+  EXPECT_EQ(10, a.opt_nested->f1);
+  EXPECT_EQ(5, a.def_nested->f1);
+  EXPECT_EQ(15, a.req_nested->f1);
 }
 #undef KV
 } } /* namespace cpp_reflection::test_cpp2 */
