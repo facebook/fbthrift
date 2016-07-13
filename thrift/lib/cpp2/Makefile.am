@@ -214,9 +214,11 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   ../cpp/util/kerberos/Krb5CredentialsCacheManager.cpp \
 			   ../cpp/util/kerberos/Krb5CCacheStore.cpp \
 			   ../cpp/util/kerberos/Krb5Tgts.cpp \
-			   ../cpp/util/kerberos/FBKrb5GetCreds.cpp \
-			   ../cpp/concurrency/NumaThreadManager.cpp
+			   ../cpp/util/kerberos/FBKrb5GetCreds.cpp
 
+if WITH_NUMA
+libthriftcpp2_la_SOURCES += ../cpp/concurrency/NumaThreadManager.cpp
+endif
 
 libthriftcpp2_la_LIBADD = \
 	../cpp/libthrift.la \

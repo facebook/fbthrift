@@ -113,10 +113,18 @@ if test "$with_cpp" = "yes";  then
              [Please install google-gflags library])])
   AC_CHECK_LIB([snappy], [main], [], [AC_MSG_ERROR(
              [Please install snappy library])])
-  AC_CHECK_LIB([numa], [numa_available], [], [AC_MSG_ERROR(
-             [Please install numa library])])
   AC_CHECK_LIB([wangle], [getenv], [], [AC_MSG_ERROR(
              [Please install the wangle library from https://github.com/facebook/wangle])])
+
+  have_libnuma=no
+  AC_CHECK_LIB([numa], [numa_available],[
+    AC_CHECK_HEADER([numa.h], [
+      have_libnuma=yes
+    ], [
+      AC_MSG_ERROR([numa not installed correctly])
+    ])
+  ])
+  AM_CONDITIONAL([WITH_NUMA], [test "$have_libnuma" = "yes"])
 
   AX_BOOST_THREAD
 
@@ -138,9 +146,6 @@ if test "$with_cpp" = "yes";  then
     AC_MSG_ERROR([Please install libsnappy-dev])
   ], [])
 
-  AC_CHECK_HEADER([numa.h], [], [
-    AC_MSG_ERROR([Please install libnuma-dev])
-  ], [])
 
   AX_LIB_ZLIB([1.2.3])
   have_zlib=$success
