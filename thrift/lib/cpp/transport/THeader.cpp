@@ -146,7 +146,7 @@ unique_ptr<IOBuf> THeader::removeHttpClient(IOBufQueue* queue, size_t& needed) {
       void* parserBuf;
       size_t parserBufLen;
       parser.getReadBuffer(&parserBuf, &parserBufLen);
-      size_t toCopyLen = std::min(parserBufLen, remainingDataLen);
+      size_t toCopyLen = std::min(parserBufLen, size_t(remainingDataLen));
       memcpy(parserBuf, ioBufData + offset, toCopyLen);
       success |= parser.readDataAvailable(toCopyLen);
       remainingDataLen -= toCopyLen;
