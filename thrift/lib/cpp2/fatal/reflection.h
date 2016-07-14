@@ -782,7 +782,7 @@ struct reflected_struct {
    *  //   char,
    *  //   'M', 'y', 'S', 't', 'r', 'u', 'c', 't'
    *  // >`
-   *  using result = info::type;
+   *  using result = info::name;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
@@ -1100,7 +1100,7 @@ struct reflected_struct_data_member {
    *  using member = info::types::members<info::names::fieldC>;
    *
    *  // yields `std::integral_constant<field_id_t, 3>`
-   *  using result1 = member::type;
+   *  using result1 = member::id;
    *
    *  // yields `3`
    *  auto result2 = result1::value;
@@ -1172,20 +1172,20 @@ struct reflected_struct_data_member {
    *  using info = reflect_struct<MyStruct>;
    *  using member = info::types::members<info::names::fieldC>;
    *
-   *  using getter = info::getters::get<info::names::a>;
+   *  using getter = info::getters::get<info::names::fieldC>;
    *
    *  MyStruct pod;
    *
-   *  pod.c = 7.2;
+   *  pod.fieldC = 7.2;
    *
    *  // yields `7.2`
    *  auto result1 = getter::ref(pod);
    *
-   *  // sets  `5.6` on `pod.c`
+   *  // sets  `5.6` on `pod.fieldC`
    *  getter::ref(pod) = 5.6;
    *
    *  // yields `5.6`
-   *  auto result2 = pod.c;
+   *  auto result2 = pod.fieldC;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
