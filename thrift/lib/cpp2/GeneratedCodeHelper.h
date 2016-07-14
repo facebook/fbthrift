@@ -1126,10 +1126,10 @@ template <class F>
 void
 async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
   async_tm_prep(si, callback.get());
-  auto fut = future_catching(std::forward<F>(f));
-  fut.then([cb = std::move(callback)](folly::Try<fut_ret<F>> && _return) {
-    cb->complete(std::move(_return));
-  });
+  future_catching(std::forward<F>(f))
+    .then([cb = std::move(callback)](folly::Try<fut_ret<F>>&& _return) mutable {
+      Callback<F>::completeInThread(std::move(cb), std::move(_return));
+    });
 }
 
 template <class F>
