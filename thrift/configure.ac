@@ -108,6 +108,7 @@ AC_CHECK_LIB([glog],[openlog],[],[AC_MSG_ERROR(
            [Please install google-glog library])])
 
 have_cpp=yes
+have_libnuma=no
 if test "$with_cpp" = "yes";  then
   AC_CHECK_LIB([gflags],[getenv],[],[AC_MSG_ERROR(
              [Please install google-gflags library])])
@@ -116,7 +117,6 @@ if test "$with_cpp" = "yes";  then
   AC_CHECK_LIB([wangle], [getenv], [], [AC_MSG_ERROR(
              [Please install the wangle library from https://github.com/facebook/wangle])])
 
-  have_libnuma=no
   AC_CHECK_LIB([numa], [numa_available],[
     AC_CHECK_HEADER([numa.h], [
       have_libnuma=yes
@@ -124,7 +124,6 @@ if test "$with_cpp" = "yes";  then
       AC_MSG_ERROR([numa not installed correctly])
     ])
   ])
-  AM_CONDITIONAL([WITH_NUMA], [test "$have_libnuma" = "yes"])
 
   AX_BOOST_THREAD
 
@@ -152,6 +151,7 @@ if test "$with_cpp" = "yes";  then
 fi
 AM_CONDITIONAL([WITH_CPP], [test "$have_cpp" = "yes" -a "$with_cpp" = "yes"])
 AM_CONDITIONAL([AMX_HAVE_ZLIB], [test "$have_zlib" = "yes"])
+AM_CONDITIONAL([WITH_NUMA], [test "$have_libnuma" = "yes"])
 
 AX_THRIFT_LIB(d, [D], yes)
 if test "$with_d" = "yes";  then
