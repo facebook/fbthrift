@@ -30,8 +30,9 @@ using std::string;
 
 static string byte_to_hex(const uint8_t byte) {
   char buf[3];
-  int ret = std::sprintf(buf, "%02x", (int)byte);
-  assert(ret == 2);
+  if (std::sprintf(buf, "%02x", (int)byte) != 2) {
+    assert(false);
+  }
   assert(buf[2] == '\0');
   return buf;
 }
