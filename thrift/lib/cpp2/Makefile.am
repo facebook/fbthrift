@@ -228,7 +228,7 @@ libthriftcpp2_la_LIBADD = \
 	-lkrb5 \
 	-lgssapi_krb5 \
 	-lboost_system \
-	-lboost_thread
+	$(BOOST_THREAD_LIB)
 
 libthriftcpp2_la_LDFLAGS = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
 libthriftcpp2_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top_builddir)/../../gperftools-2.0.99/src
