@@ -22,7 +22,9 @@ using namespace folly;
 namespace apache {
 namespace thrift {
 
-thread_local bool FilePoller::ThreadProtector::polling_ = false;
+folly::ThreadLocal<bool> FilePoller::ThreadProtector::polling_([] {
+  return new bool(false);
+});
 
 FilePoller::FilePoller(std::chrono::milliseconds pollInterval) {
   init(pollInterval);
