@@ -54,11 +54,17 @@ class PthreadMutex {
 
   template<class Rep, class Period>
   bool try_lock_for(const std::chrono::duration<Rep,Period>& timeout_duration) {
+#if defined(_POSIX_TIMEOUTS) && _POSIX_TIMEOUTS >= 200112L
     auto durationMs = std::chrono::duration_cast<std::chrono::milliseconds>(
         timeout_duration);
     struct timespec ts;
     Util::toTimespec(ts, Util::currentTime() + durationMs.count());
     return 0 == pthread_mutex_timedlock(&pthread_mutex_, &ts);
+#else
+    // Some systems, notably macOS, don't have timeouts for pthreads,
+    // so we fall back to just trying once.
+    return try_lock();
+#endif
   }
 
   void unlock() {
@@ -109,11 +115,17 @@ class PthreadRWMutex {
 
   template<class Rep, class Period>
   bool try_lock_for(const std::chrono::duration<Rep,Period>& timeout_duration) {
+#if defined(_POSIX_TIMEOUTS) && _POSIX_TIMEOUTS >= 200112L
     auto durationMs = std::chrono::duration_cast<std::chrono::milliseconds>(
         timeout_duration);
     struct timespec ts;
     Util::toTimespec(ts, Util::currentTime() + durationMs.count());
     return 0 == pthread_rwlock_timedwrlock(&rw_lock_, &ts);
+#else
+    // Some systems, notably macOS, don't have timeouts for pthreads,
+    // so we fall back to just trying once.
+    return try_lock();
+#endif
   }
 
   void unlock() {
@@ -132,11 +144,17 @@ class PthreadRWMutex {
   template<class Rep, class Period>
   bool try_lock_shared_for(
       const std::chrono::duration<Rep,Period>& timeout_duration) {
+#if defined(_POSIX_TIMEOUTS) && _POSIX_TIMEOUTS >= 200112L
     auto durationMs = std::chrono::duration_cast<std::chrono::milliseconds>(
         timeout_duration);
     struct timespec ts;
     Util::toTimespec(ts, Util::currentTime() + durationMs.count());
     return 0 == pthread_rwlock_timedrdlock(&rw_lock_, &ts);
+#else
+    // Some systems, notably macOS, don't have timeouts for pthreads,
+    // so we fall back to just trying once.
+    return try_lock_shared();
+#endif
   }
 
   void unlock_shared() {
