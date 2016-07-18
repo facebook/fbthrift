@@ -42,8 +42,12 @@ TEST(PollerTest, StartsCleanly) {
 TEST(PollerTest, PollsInSeparateThread) {
   auto current = this_thread::get_id();
   folly::Baton<> b;
+  bool firstTime = true;
   auto func = [&]{
-    b.post();
+    if (!firstTime) {
+      b.post();
+    }
+    firstTime = false;
     return current != this_thread::get_id();
   };
   MockSecurityKillSwitchPoller poller(func);
