@@ -765,3 +765,31 @@ TEST(ThriftServer, IdleServerTimeout) {
   ScopedServerThread scopedServer(server);
   scopedServer.join();
 }
+
+TEST(ThriftServer, LocalIPCheck) {
+  folly::SocketAddress empty;
+  folly::SocketAddress v4Local("127.0.0.1", 1);
+  folly::SocketAddress v4NonLocal1("128.0.0.1", 2);
+  folly::SocketAddress v4NonLocal2("128.0.0.2", 3);
+  folly::SocketAddress v6Local("::1", 4);
+  folly::SocketAddress v6NonLocal1("::2", 5);
+  folly::SocketAddress v6NonLocal2("::3", 6);
+
+  // expect true for client loopback regardless of server
+  EXPECT_TRUE(Cpp2Connection::isClientLocal(v4Local, empty));
+  EXPECT_TRUE(Cpp2Connection::isClientLocal(v6Local, empty));
+
+  // expect false for any empty address
+  EXPECT_FALSE(Cpp2Connection::isClientLocal(empty, v4NonLocal1));
+  EXPECT_FALSE(Cpp2Connection::isClientLocal(v4NonLocal1, empty));
+  EXPECT_FALSE(Cpp2Connection::isClientLocal(empty, v6NonLocal1));
+  EXPECT_FALSE(Cpp2Connection::isClientLocal(v6NonLocal1, empty));
+
+  // expect false for non matching addrs
+  EXPECT_FALSE(Cpp2Connection::isClientLocal(v4NonLocal1, v4NonLocal2));
+  EXPECT_FALSE(Cpp2Connection::isClientLocal(v6NonLocal1, v6NonLocal2));
+
+  // expect true for matches
+  EXPECT_TRUE(Cpp2Connection::isClientLocal(v4NonLocal1, v4NonLocal1));
+  EXPECT_TRUE(Cpp2Connection::isClientLocal(v6NonLocal1, v6NonLocal1));
+}

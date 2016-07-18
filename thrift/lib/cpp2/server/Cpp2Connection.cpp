@@ -39,6 +39,17 @@ using apache::thrift::TApplicationException;
 
 const std::string Cpp2Connection::loadHeader{"load"};
 
+bool Cpp2Connection::isClientLocal(const folly::SocketAddress& clientAddr,
+                                   const folly::SocketAddress& serverAddr) {
+  if (clientAddr.isLoopbackAddress()) {
+    return true;
+  }
+  if (clientAddr.empty() || serverAddr.empty()) {
+    return false;
+  }
+  return clientAddr.getIPAddress() == serverAddr.getIPAddress();
+}
+
 Cpp2Connection::Cpp2Connection(
   const std::shared_ptr<TAsyncSocket>& asyncSocket,
   const folly::SocketAddress* address,
@@ -101,8 +112,9 @@ Cpp2Connection::Cpp2Connection(
     }
   }
 
-  const bool downgradeSaslPolicy = address->isLoopbackAddress() &&
-      worker_->getServer()->getAllowInsecureLoopback();
+  const bool downgradeSaslPolicy =
+    worker_->getServer()->getAllowInsecureLoopback() &&
+    isClientLocal(*address, *context_.getLocalAddress());
 
   if (worker_->getServer()->getSaslEnabled() &&
       (worker_->getServer()->getNonSaslEnabled() || downgradeSaslPolicy)) {

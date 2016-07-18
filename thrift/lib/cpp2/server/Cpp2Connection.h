@@ -44,6 +44,9 @@ class Cpp2Connection
     , public wangle::ManagedConnection {
  public:
 
+  static bool isClientLocal(const folly::SocketAddress& clientAddr,
+                            const folly::SocketAddress& serverAddr);
+
   static const std::string loadHeader;
   /**
    * Constructor for Cpp2Connection.
