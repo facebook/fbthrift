@@ -3777,9 +3777,17 @@ class CppGenerator(t_generator.Generator):
                         method,
                         prefix))
             with scope('else'):
-                out('prot_->writeStructBegin(\"{0}\");'.format(tstruct.name))
-                out('prot_->writeStructEnd();')
-                out('prot_->writeFieldStop();')
+                if method == "serializedSize" or method == "serializedSizeZC":
+                    out('xfer += prot_->serializedStructSize(\"{0}\");'
+                        .format(tstruct.name))
+                    out('xfer += prot_->serializedSizeStop();')
+                elif method == "write":
+                    out('xfer += prot_->writeStructBegin(\"{0}\");'
+                        .format(tstruct.name))
+                    out('xfer += prot_->writeStructEnd();')
+                    out('xfer += prot_->writeFieldStop();')
+                else:
+                    assert False, method
         else:
             scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::{1}('
                   'prot_, &{2});'.format(

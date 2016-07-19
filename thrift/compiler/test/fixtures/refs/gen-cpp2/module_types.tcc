@@ -400,9 +400,8 @@ uint32_t MyStruct::serializedSize(Protocol_* prot_) const {
       xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::serializedSize(prot_, this->opt_ref.get());
     }
     else {
-      prot_->writeStructBegin("MyField");
-      prot_->writeStructEnd();
-      prot_->writeFieldStop();
+      xfer += prot_->serializedStructSize("MyField");
+      xfer += prot_->serializedSizeStop();
     }
   }
   xfer += prot_->serializedFieldSize("ref", apache::thrift::protocol::T_STRUCT, 2);
@@ -410,18 +409,16 @@ uint32_t MyStruct::serializedSize(Protocol_* prot_) const {
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::serializedSize(prot_, this->ref.get());
   }
   else {
-    prot_->writeStructBegin("MyField");
-    prot_->writeStructEnd();
-    prot_->writeFieldStop();
+    xfer += prot_->serializedStructSize("MyField");
+    xfer += prot_->serializedSizeStop();
   }
   xfer += prot_->serializedFieldSize("req_ref", apache::thrift::protocol::T_STRUCT, 3);
   if (this->req_ref) {
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::serializedSize(prot_, this->req_ref.get());
   }
   else {
-    prot_->writeStructBegin("MyField");
-    prot_->writeStructEnd();
-    prot_->writeFieldStop();
+    xfer += prot_->serializedStructSize("MyField");
+    xfer += prot_->serializedSizeStop();
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -437,9 +434,8 @@ uint32_t MyStruct::serializedSizeZC(Protocol_* prot_) const {
       xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::serializedSizeZC(prot_, this->opt_ref.get());
     }
     else {
-      prot_->writeStructBegin("MyField");
-      prot_->writeStructEnd();
-      prot_->writeFieldStop();
+      xfer += prot_->serializedStructSize("MyField");
+      xfer += prot_->serializedSizeStop();
     }
   }
   xfer += prot_->serializedFieldSize("ref", apache::thrift::protocol::T_STRUCT, 2);
@@ -447,18 +443,16 @@ uint32_t MyStruct::serializedSizeZC(Protocol_* prot_) const {
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::serializedSizeZC(prot_, this->ref.get());
   }
   else {
-    prot_->writeStructBegin("MyField");
-    prot_->writeStructEnd();
-    prot_->writeFieldStop();
+    xfer += prot_->serializedStructSize("MyField");
+    xfer += prot_->serializedSizeStop();
   }
   xfer += prot_->serializedFieldSize("req_ref", apache::thrift::protocol::T_STRUCT, 3);
   if (this->req_ref) {
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::serializedSizeZC(prot_, this->req_ref.get());
   }
   else {
-    prot_->writeStructBegin("MyField");
-    prot_->writeStructEnd();
-    prot_->writeFieldStop();
+    xfer += prot_->serializedStructSize("MyField");
+    xfer += prot_->serializedSizeStop();
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -474,9 +468,9 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
       xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::write(prot_, this->opt_ref.get());
     }
     else {
-      prot_->writeStructBegin("MyField");
-      prot_->writeStructEnd();
-      prot_->writeFieldStop();
+      xfer += prot_->writeStructBegin("MyField");
+      xfer += prot_->writeStructEnd();
+      xfer += prot_->writeFieldStop();
     }
     xfer += prot_->writeFieldEnd();
   }
@@ -485,9 +479,9 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::write(prot_, this->ref.get());
   }
   else {
-    prot_->writeStructBegin("MyField");
-    prot_->writeStructEnd();
-    prot_->writeFieldStop();
+    xfer += prot_->writeStructBegin("MyField");
+    xfer += prot_->writeStructEnd();
+    xfer += prot_->writeFieldStop();
   }
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("req_ref", apache::thrift::protocol::T_STRUCT, 3);
@@ -495,9 +489,9 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::write(prot_, this->req_ref.get());
   }
   else {
-    prot_->writeStructBegin("MyField");
-    prot_->writeStructEnd();
-    prot_->writeFieldStop();
+    xfer += prot_->writeStructBegin("MyField");
+    xfer += prot_->writeStructEnd();
+    xfer += prot_->writeFieldStop();
   }
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
@@ -604,9 +598,8 @@ uint32_t StructWithUnion::serializedSize(Protocol_* prot_) const {
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::serializedSize(prot_, this->u.get());
   }
   else {
-    prot_->writeStructBegin("MyUnion");
-    prot_->writeStructEnd();
-    prot_->writeFieldStop();
+    xfer += prot_->serializedStructSize("MyUnion");
+    xfer += prot_->serializedSizeStop();
   }
   xfer += prot_->serializedFieldSize("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
   xfer += prot_->serializedSizeDouble(this->aDouble);
@@ -625,9 +618,8 @@ uint32_t StructWithUnion::serializedSizeZC(Protocol_* prot_) const {
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::serializedSizeZC(prot_, this->u.get());
   }
   else {
-    prot_->writeStructBegin("MyUnion");
-    prot_->writeStructEnd();
-    prot_->writeFieldStop();
+    xfer += prot_->serializedStructSize("MyUnion");
+    xfer += prot_->serializedSizeStop();
   }
   xfer += prot_->serializedFieldSize("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
   xfer += prot_->serializedSizeDouble(this->aDouble);
@@ -646,9 +638,9 @@ uint32_t StructWithUnion::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::write(prot_, this->u.get());
   }
   else {
-    prot_->writeStructBegin("MyUnion");
-    prot_->writeStructEnd();
-    prot_->writeFieldStop();
+    xfer += prot_->writeStructBegin("MyUnion");
+    xfer += prot_->writeStructEnd();
+    xfer += prot_->writeFieldStop();
   }
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
