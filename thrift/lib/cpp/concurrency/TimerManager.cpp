@@ -237,15 +237,15 @@ void TimerManager::add(shared_ptr<Runnable> task, int64_t timeout) {
       throw IllegalStateException();
     }
 
-    taskCount_++;
-    taskMap_.insert(std::pair<int64_t, shared_ptr<Task> >(timeout, shared_ptr<Task>(new Task(task))));
-
     // If the task map was empty, or if we have an expiration that is earlier
     // than any previously seen, kick the dispatcher so it can update its
-    // timeout
-    if (taskCount_ == 1 || timeout < taskMap_.begin()->first) {
+    // timeout. Do this before inserting to limit comparisons to current tasks
+    if (taskCount_ == 0 || timeout < taskMap_.begin()->first) {
       monitor_.notify();
     }
+
+    taskCount_++;
+    taskMap_.insert({timeout, std::make_shared<Task>(std::move(task))});
   }
 }
 
@@ -274,4 +274,3 @@ void TimerManager::remove(shared_ptr<Runnable> /*task*/) {
 const TimerManager::STATE TimerManager::state() const { return state_; }
 
 }}} // apache::thrift::concurrency
-
