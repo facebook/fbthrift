@@ -120,6 +120,18 @@ struct CompareStructTest : public ::testing::Test {
 TYPED_TEST_CASE(StructTest, protocol_type_pairs);
 TYPED_TEST_CASE(CompareStructTest, protocol_type_pairs);
 
+template <typename Type, typename Protocol>
+void expect_same_serialized_size(Type& type, Protocol& protocol) {
+  EXPECT_EQ(
+    type.serializedSize(&protocol),
+    serializer_serialized_size(type, protocol)
+  );
+  EXPECT_EQ(
+    type.serializedSizeZC(&protocol),
+    serializer_serialized_size_zc(type, protocol)
+  );
+}
+
 void init_struct_1(struct1& a) {
   a.field0 = 10;
   a.field1 = "this is a string";
@@ -187,6 +199,7 @@ TYPED_TEST(StructTest, test_other_containers) {
   EXPECT_EQ(a.um_field, b.um_field);
   EXPECT_EQ(a.us_field, b.us_field);
   EXPECT_EQ(a.deq_field, b.deq_field);
+  expect_same_serialized_size(a, this->writer);
 }
 
 TYPED_TEST(StructTest, test_blank_default_ref_field) {
@@ -208,6 +221,7 @@ TYPED_TEST(StructTest, test_blank_default_ref_field) {
   EXPECT_EQ(smallstruct(),   *(b.def_nested));
   EXPECT_EQ(*(a.opt_nested), *(b.opt_nested));
   EXPECT_EQ(*(a.req_nested), *(b.req_nested));
+  expect_same_serialized_size(a, this->writer);
 }
 
 TYPED_TEST(StructTest, test_blank_optional_ref_field) {
@@ -227,6 +241,7 @@ TYPED_TEST(StructTest, test_blank_optional_ref_field) {
   EXPECT_EQ(*(a.def_nested), *(b.def_nested));
   EXPECT_EQ(nullptr,           b.opt_nested.get());
   EXPECT_EQ(*(a.req_nested), *(b.req_nested));
+  expect_same_serialized_size(a, this->writer);
 }
 
 TYPED_TEST(StructTest, test_blank_required_ref_field) {
@@ -245,6 +260,7 @@ TYPED_TEST(StructTest, test_blank_required_ref_field) {
   EXPECT_EQ(*(a.def_nested), *(b.def_nested));
   EXPECT_EQ(*(a.opt_nested), *(b.opt_nested));
   EXPECT_EQ(smallstruct(),   *(b.req_nested));
+  expect_same_serialized_size(a, this->writer);
 }
 
 TYPED_TEST(CompareStructTest, test_struct_xfer) {
@@ -262,6 +278,8 @@ TYPED_TEST(CompareStructTest, test_struct_xfer) {
   const std::size_t new_read_xfer    = serializer_read(b2, this->st2.reader);
   EXPECT_EQ(legacy_read_xfer, new_read_xfer);
   EXPECT_EQ(b1, b2);
+
+  expect_same_serialized_size(a1, this->st1.writer);
 }
 
 #ifndef UNIONS_STILL_BROKEN
@@ -277,6 +295,8 @@ TYPED_TEST(CompareStructTest, test_union_xfer) {
   const std::size_t nrx = serializer_read(b2, this->st2.reader);
   EXPECT_EQ(lrx, nrx);
   EXPECT_EQ(b1, b2);
+
+  expect_same_serialized_size(a1, this->st1.writer);
 }
 #endif /* UNIONS_STILL_BROKEN */
 
@@ -311,6 +331,7 @@ TYPED_TEST(StructTest, test_binary_containers) {
 
   EXPECT_EQ(test_range, b.iobuf_field.coalesce());
   EXPECT_EQ(test_range2, b.iobufptr_field->coalesce());
+  expect_same_serialized_size(a, this->writer);
 }
 
 TYPED_TEST(StructTest, test_workaround_binary) {
@@ -326,6 +347,7 @@ TYPED_TEST(StructTest, test_workaround_binary) {
   EXPECT_EQ(true, b.__isset.iobuf_field);
   EXPECT_EQ(test_string.str(), b.def_field);
   EXPECT_EQ(test_range2, b.iobuf_field.coalesce());
+  expect_same_serialized_size(a, this->writer);
 }
 
 template <typename Pair>
@@ -344,18 +366,20 @@ protected:
   }
 };
 
-#ifndef UNIONS_STILL_BROKEN
+// #ifndef UNIONS_STILL_BROKEN
 TYPED_TEST_CASE(UnionTest, protocol_type_pairs);
 
 TYPED_TEST(UnionTest, can_read_union_i64s) {
   this->a.set_field_i64(0xFACEB00CFACEDEAD);
   this->xfer();
   EXPECT_EQ(this->b.get_field_i64(), this->a.get_field_i64());
+  expect_same_serialized_size(this->a, this->writer);
 }
 TYPED_TEST(UnionTest, can_read_strings) {
   this->a.set_field_string("test string? oh my!");
   this->xfer();
   EXPECT_EQ(this->b.get_field_string(), this->a.get_field_string());
+  expect_same_serialized_size(this->a, this->writer);
 }
 TYPED_TEST(UnionTest, can_read_refstrings) {
   this->a.set_field_string_ref("also reference strings!");
@@ -363,11 +387,13 @@ TYPED_TEST(UnionTest, can_read_refstrings) {
   EXPECT_EQ(
     *(this->b.get_field_string_ref().get()),
     *(this->a.get_field_string_ref().get()));
+  expect_same_serialized_size(this->a, this->writer);
 }
 TYPED_TEST(UnionTest, can_read_iobufs) {
   this->a.set_field_binary(test_string.str());
   this->xfer();
   EXPECT_EQ(test_string.str(), this->b.get_field_binary());
+  expect_same_serialized_size(this->a, this->writer);
 }
 TYPED_TEST(UnionTest, can_read_nestedstructs) {
   smallstruct nested;
@@ -375,8 +401,9 @@ TYPED_TEST(UnionTest, can_read_nestedstructs) {
   this->a.set_field_smallstruct(nested);
   this->xfer();
   EXPECT_EQ(6, this->b.get_field_smallstruct()->f1);
+  expect_same_serialized_size(this->a, this->writer);
 }
-#endif // UNIONS_STILL_BROKEN
+// #endif // UNIONS_STILL_BROKEN
 
 template <typename Pair>
 class BinaryInContainersTest : public TypedTestCommon<Pair> {
@@ -401,7 +428,9 @@ TYPED_TEST(BinaryInContainersTest, lists_of_binary_fields_work) {
 
   EXPECT_EQ(
     std::vector<std::string>({test_string.str()}),
-    this->b.binary_list_field);
+    this->b.binary_list_field
+  );
+  expect_same_serialized_size(this->a, this->writer);
 }
 
 struct SimpleJsonTest : public ::testing::Test {

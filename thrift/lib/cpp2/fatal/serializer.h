@@ -75,21 +75,28 @@ namespace detail {
 template <typename TypeClass, typename Type>
 struct protocol_methods;
 
+#define REGISTER_OVERLOAD_COMMON(Class, Type, Method, TTypeValue) \
+  constexpr static protocol::TType ttype_value = protocol::TTypeValue; \
+  template <typename Protocol>              \
+  static std::size_t read(Protocol& protocol, Type& out) {       \
+    VLOG(3) << "read primitive " << #Class << ": " << #Type; \
+    return protocol.read##Method(out); \
+  } \
+  template <typename Protocol>              \
+  static std::size_t write(Protocol& protocol, Type const& in) { \
+    VLOG(3) << "write primitive " << #Class << ": "<< #Type; \
+    return protocol.write##Method(in); \
+  }
+
 // stamp out specializations for primitive types
 // TODO: Perhaps change ttype_value to a static constexpr member function, as
 // those might instantiate faster than a constexpr objects
 #define REGISTER_OVERLOAD(Class, Type, Method, TTypeValue) \
   template <> struct protocol_methods<type_class::Class, Type> { \
-    constexpr static protocol::TType ttype_value = protocol::TTypeValue; \
-    template <typename Protocol>              \
-    static std::size_t read(Protocol& protocol, Type& out) {       \
-      VLOG(3) << "read primitive " << #Class << ": " << #Type; \
-      return protocol.read##Method(out); \
-    } \
-    template <typename Protocol>              \
-    static std::size_t write(Protocol& protocol, Type const& in) { \
-      VLOG(3) << "write primitive " << #Class << ": "<< #Type; \
-      return protocol.write##Method(in); \
+    REGISTER_OVERLOAD_COMMON(Class, Type, Method, TTypeValue) \
+    template <bool, typename Protocol> \
+    static std::size_t serialized_size(Protocol& protocol, Type const& in) { \
+      return protocol.serializedSize##Method(in); \
     } \
   }
 
@@ -110,12 +117,31 @@ REGISTER_FP(float,        Float,  T_FLOAT);
 // just the string typeclass
 REGISTER_OVERLOAD(string, std::string, String, T_STRING);
 
-#define REGISTER_BINARY(...) REGISTER_OVERLOAD(binary, __VA_ARGS__)
+#undef REGISTER_OVERLOAD
+
+#define REGISTER_OVERLOAD_ZC(Class, Type, Method, TTypeValue) \
+  template <> struct protocol_methods<type_class::Class, Type> { \
+    REGISTER_OVERLOAD_COMMON(Class, Type, Method, TTypeValue) \
+    template <bool ZeroCopy, typename Protocol> \
+    static std::enable_if_t<ZeroCopy, std::size_t> \
+    serialized_size(Protocol& protocol, Type const& in) { \
+      return protocol.serializedSizeZC##Method(in); \
+    } \
+    template <bool ZeroCopy, typename Protocol> \
+    static std::enable_if_t<!ZeroCopy, std::size_t> \
+    serialized_size(Protocol& protocol, Type const& in) { \
+      return protocol.serializedSize##Method(in); \
+    } \
+  };
+
+#define REGISTER_BINARY(...) REGISTER_OVERLOAD_ZC(binary, __VA_ARGS__)
 REGISTER_BINARY(std::string,                   Binary, T_STRING);
 REGISTER_BINARY(folly::IOBuf,                  Binary, T_STRING);
 REGISTER_BINARY(std::unique_ptr<folly::IOBuf>, Binary, T_STRING);
+
 #undef REGISTER_BINARY
-#undef REGISTER_OVERLOAD
+#undef REGISTER_OVERLOAD_ZC
+#undef REGISTER_OVERLOAD_COMMON
 
 // special case: must dereference contents within unique_ptr
 // TODO: probably also need to have a specialization for
@@ -134,6 +160,13 @@ struct protocol_methods<TypeClass, std::unique_ptr<Type>> {
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, pointer_type const& in) {
     return type_methods::write(protocol, *in);
+  }
+
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serialized_size(
+    Protocol& protocol, pointer_type const& in
+  ) {
+    return type_methods::template serialized_size<ZeroCopy>(protocol, *in);
   }
 };
 
@@ -158,6 +191,12 @@ struct protocol_methods<type_class::enumeration, Type> {
     int_type tmp = static_cast<int_type>(in);
     return int_methods::template write<Protocol>(protocol, tmp);
   }
+
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serialized_size(Protocol& protocol, Type const& in) {
+    int_type tmp = static_cast<int_type>(in);
+    return int_methods::template serialized_size<ZeroCopy>(protocol, tmp);
+  }
 };
 
 // Lists
@@ -170,7 +209,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   static_assert(!std::is_same<elem_tclass, type_class::unknown>(),
     "Unable to serialize unknown list element");
 
-  using elem_proto_methods = protocol_methods<elem_tclass, elem_type>;
+  using elem_methods = protocol_methods<elem_tclass, elem_type>;
 
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Type& out) {
@@ -188,7 +227,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
       // so let's just hope that it spits out something that makes sense
       // (if it did set reported_type to something known)
       if(reported_type != protocol::T_STOP) {
-        assert(reported_type == elem_proto_methods::ttype_value);
+        assert(reported_type == elem_methods::ttype_value);
       }
 
       for(decltype(list_size) i = 0; protocol.peekList(); i++) {
@@ -196,13 +235,13 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         // For now, we just bump the container size by 1 each time
         // because that's what the currently generated Thrift code does.
         out.resize(i+1);
-        xfer += elem_proto_methods::read(protocol, out[i]);
+        xfer += elem_methods::read(protocol, out[i]);
       }
     } else {
-      assert(reported_type == elem_proto_methods::ttype_value);
+      assert(reported_type == elem_methods::ttype_value);
       out.resize(list_size);
       for(decltype(list_size) i = 0; i < list_size; i++) {
-        xfer += elem_proto_methods::read(protocol, out[i]);
+        xfer += elem_methods::read(protocol, out[i]);
       }
     }
 
@@ -214,16 +253,31 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
     xfer += protocol.writeListBegin(
-      elem_proto_methods::ttype_value,
+      elem_methods::ttype_value,
       out.size()
     );
-    using methods = protocol_methods<elem_tclass, elem_type>;
 
     for(auto const& elem : out) {
-      xfer += methods::write(protocol, elem);
+      xfer += elem_methods::write(protocol, elem);
     }
 
     xfer += protocol.writeListEnd();
+    return xfer;
+  }
+
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serialized_size(Protocol& protocol, Type const& out) {
+    std::size_t xfer = 0;
+    xfer += protocol.serializedSizeListBegin(
+      elem_methods::ttype_value,
+      out.size()
+    );
+
+    for(auto const& elem : out) {
+      xfer += elem_methods::template serialized_size<ZeroCopy>(protocol, elem);
+    }
+
+    xfer += protocol.serializedSizeListEnd();
     return xfer;
   }
 };
@@ -287,6 +341,22 @@ public:
     xfer += protocol.writeSetEnd();
     return xfer;
   }
+
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serialized_size(Protocol& protocol, Type const& out) {
+    std::size_t xfer = 0;
+    xfer += protocol.serializedSizeSetBegin(
+      elem_methods::ttype_value,
+      out.size()
+    );
+
+    for(auto const& elem : out) {
+      xfer += elem_methods::template serialized_size<ZeroCopy>(protocol, elem);
+    }
+
+    xfer += protocol.serializedSizeSetEnd();
+    return xfer;
+  }
 };
 
 // Maps
@@ -319,53 +389,73 @@ private:
   }
 
 public:
-    template <typename Protocol>
-    static std::size_t read(Protocol& protocol, Type& out) {
-      std::size_t xfer = 0;
-      // TODO: see above re: readMapBegin taking a uint32_t size param
-      std::uint32_t map_size = -1;
-      TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
-      out = Type();
+  template <typename Protocol>
+  static std::size_t read(Protocol& protocol, Type& out) {
+    std::size_t xfer = 0;
+    // TODO: see above re: readMapBegin taking a uint32_t size param
+    std::uint32_t map_size = -1;
+    TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
+    out = Type();
 
-      xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
-      VLOG(3) << "read map begin: " << rpt_key_type << "/" << rpt_mapped_type
-        << " (" << map_size << ")";
+    xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
+    VLOG(3) << "read map begin: " << rpt_key_type << "/" << rpt_mapped_type
+      << " (" << map_size << ")";
 
-      if(detail::is_unknown_container_size(map_size)) {
-        while(protocol.peekMap()) {
-          xfer += consume_elem(protocol, out);
-        }
-      } else {
-        assert(key_methods::ttype_value == rpt_key_type);
-        assert(mapped_methods::ttype_value == rpt_mapped_type);
-        for(decltype(map_size) i = 0; i < map_size; i++) {
-          xfer += consume_elem(protocol, out);
-        }
+    if(detail::is_unknown_container_size(map_size)) {
+      while(protocol.peekMap()) {
+        xfer += consume_elem(protocol, out);
       }
-
-      xfer += protocol.readMapEnd();
-      return xfer;
+    } else {
+      assert(key_methods::ttype_value == rpt_key_type);
+      assert(mapped_methods::ttype_value == rpt_mapped_type);
+      for(decltype(map_size) i = 0; i < map_size; i++) {
+        xfer += consume_elem(protocol, out);
+      }
     }
 
-    template <typename Protocol>
-    static std::size_t write(Protocol& protocol, Type const& out) {
-      std::size_t xfer = 0;
-      VLOG(3) << "start map write: " <<
-        key_methods::ttype_value << "/" <<
-        mapped_methods::ttype_value << " (" << out.size() << ")";
-      xfer += protocol.writeMapBegin(
-        key_methods::ttype_value,
-        mapped_methods::ttype_value,
-        out.size());
+    xfer += protocol.readMapEnd();
+    return xfer;
+  }
 
-      for(auto const& elem_pair : out) {
-        xfer += key_methods::write(protocol, elem_pair.first);
-        xfer += mapped_methods::write(protocol, elem_pair.second);
-      }
+  template <typename Protocol>
+  static std::size_t write(Protocol& protocol, Type const& out) {
+    std::size_t xfer = 0;
+    VLOG(3) << "start map write: " <<
+      key_methods::ttype_value << "/" <<
+      mapped_methods::ttype_value << " (" << out.size() << ")";
+    xfer += protocol.writeMapBegin(
+      key_methods::ttype_value,
+      mapped_methods::ttype_value,
+      out.size());
 
-      xfer += protocol.writeMapEnd();
-      return xfer;
+    for(auto const& elem_pair : out) {
+      xfer += key_methods::write(protocol, elem_pair.first);
+      xfer += mapped_methods::write(protocol, elem_pair.second);
     }
+
+    xfer += protocol.writeMapEnd();
+    return xfer;
+  }
+
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serialized_size(Protocol& protocol, Type const& out) {
+    std::size_t xfer = 0;
+    xfer += protocol.serializedSizeMapBegin(
+      key_methods::ttype_value,
+      mapped_methods::ttype_value,
+      out.size()
+    );
+
+    for(auto const& elem_pair : out) {
+      xfer += key_methods
+        ::template serialized_size<ZeroCopy>(protocol, elem_pair.first);
+      xfer += mapped_methods
+        ::template serialized_size<ZeroCopy>(protocol, elem_pair.second);
+    }
+
+    xfer += protocol.serializedSizeMapEnd();
+    return xfer;
+  }
 };
 
 namespace detail {
@@ -510,10 +600,10 @@ struct protocol_methods<type_class::variant, Union> {
     Protocol& protocol;
     Union& obj;
 
-    set_member_by_fid(std::size_t& xfer_, Protocol& protocol_, Union& obj_) :
-      xfer(xfer_),
-      protocol(protocol_),
-      obj(obj_)
+    set_member_by_fid(std::size_t& xfer, Protocol& protocol, Union& obj) :
+      xfer(xfer),
+      protocol(protocol),
+      obj(obj)
       {}
 
     // Fid is a std::integral_constant<field_id_t, fid>
@@ -589,24 +679,16 @@ public:
     return xfer;
   }
 
-  template <typename Protocol>
-  struct fid_match_write_op {
-    std::size_t& xfer;
-    Protocol& protocol;
-    Union const& obj;
-
-    fid_match_write_op(std::size_t& xfer_, Protocol& protocol_,
-      Union const& obj_) :
-      xfer(xfer_),
-      protocol(protocol_),
-      obj(obj_)
-      {}
-
-    template <typename Id, std::size_t Index>
+private:
+  struct write_member_by_fid {
+    template <typename Id, std::size_t Index, typename Protocol>
     void operator ()(
       fatal::indexed_type_tag<Id, Index>,
-      const typename Union::Type needle)
-    {
+      const typename Union::Type needle,
+      std::size_t& xfer,
+      Protocol& protocol,
+      Union const& obj
+    ) {
       using descriptor = typename id_to_descriptor_map::template get<Id>;
       typename descriptor::getter getter;
       using methods = protocol_methods<
@@ -636,6 +718,7 @@ public:
     }
   };
 
+public:
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Union const& in) {
     std::size_t xfer = 0;
@@ -644,11 +727,67 @@ public:
     xfer += protocol.writeStructBegin(traits::name::z_data());
     sorted_ids::template binary_search<>::exact(
       in.getType(),
-      fid_match_write_op<Protocol>(xfer, protocol, in)
+      write_member_by_fid(),
+      xfer, protocol, in
     );
     xfer += protocol.writeFieldStop();
     xfer += protocol.writeStructEnd();
     VLOG(3) << "end writing union";
+    return xfer;
+  }
+
+private:
+  template <bool ZeroCopy>
+  struct size_member_by_type_id {
+    template <typename Id, std::size_t Index, typename Protocol>
+    void operator ()(
+      fatal::indexed_type_tag<Id, Index>,
+      const typename Union::Type needle,
+      std::size_t& xfer,
+      Protocol& protocol,
+      Union const& obj
+    )
+    {
+      using descriptor = typename id_to_descriptor_map::template get<Id>;
+      typename descriptor::getter getter;
+      using methods = protocol_methods<
+        typename descriptor::metadata::type_class,
+        typename descriptor::type>;
+
+      assert(needle == Id::value);
+      assert(needle == descriptor::id::value);
+
+      VLOG(3) << "sizing union field "
+        << descriptor::metadata::name::z_data()
+        << ", fid: " << descriptor::metadata::id::value
+        << ", ttype: " << methods::ttype_value;
+
+      xfer += protocol.serializedFieldSize(
+        descriptor::metadata::name::z_data(),
+        methods::ttype_value,
+        descriptor::metadata::id::value
+      );
+      auto const& tmp = getter(obj);
+      using member_type = typename std::decay<decltype(tmp)>::type;
+      xfer += methods::template serialized_size<ZeroCopy>(
+        protocol,
+        detail::deref<member_type>::get_const(tmp)
+      );
+    }
+  };
+
+public:
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serialized_size(Protocol& protocol, Union const& in) {
+    std::size_t xfer = 0;
+
+    xfer += protocol.serializedStructSize(traits::name::z_data());
+    sorted_ids::template binary_search<>::exact(
+      in.getType(),
+      size_member_by_type_id<ZeroCopy>(),
+      xfer, protocol, in
+    );
+    xfer += protocol.serializedSizeStop();
     return xfer;
   }
 };
@@ -714,12 +853,12 @@ private:
     Struct& obj;
     isset_array& required_isset;
 
-    set_member_by_fid(std::size_t& xfer_, Protocol& protocol_,
-      Struct& obj_, isset_array& required_isset_) :
-      xfer(xfer_),
-      protocol(protocol_),
-      obj(obj_),
-      required_isset(required_isset_)
+    set_member_by_fid(std::size_t& xfer, Protocol& protocol,
+      Struct& obj, isset_array& required_isset) :
+      xfer(xfer),
+      protocol(protocol),
+      obj(obj),
+      required_isset(required_isset)
       {}
 
     // Fid is a std::integral_constant<field_id_t, fid>
@@ -831,7 +970,7 @@ private:
     typename TypeClass,
     typename MemberType,
     typename Methods,
-    optionality _opt
+    optionality opt
   >
   struct field_writer {
     static std::size_t write(Protocol& protocol, MemberType const& in) {
@@ -857,7 +996,7 @@ private:
     typename Member,
     typename SType,
     typename Methods,
-    optionality _opt
+    optionality opt
   >
   struct field_writer <
     Protocol,
@@ -865,7 +1004,7 @@ private:
     type_class::structure,
     std::unique_ptr<SType>,
     Methods,
-    _opt
+    opt
   > {
     static
     std::size_t write(Protocol& protocol, std::unique_ptr<SType> const& in) {
@@ -880,7 +1019,7 @@ private:
           type_class::structure,
           SType,
           Methods,
-          _opt
+          opt
         >::write(protocol, *in);
       }
       else {
@@ -936,7 +1075,7 @@ private:
   };
 
   struct member_writer {
-    template<typename Member, std::size_t Index, typename Protocol>
+    template <typename Member, std::size_t Index, typename Protocol>
     void operator()(
       fatal::indexed_type_tag<Member, Index>,
       Protocol& protocol,
@@ -945,7 +1084,8 @@ private:
     {
       using methods = protocol_methods<
         typename Member::type_class,
-        typename Member::type>;
+        typename Member::type
+      >;
 
       if(
         (Member::optional::value == optionality::required_of_writer) ||
@@ -969,6 +1109,145 @@ private:
     }
   };
 
+  // generic field size
+  template <
+    bool ZeroCopy,
+    typename Protocol,
+    typename Member,
+    typename TypeClass,
+    typename MemberType,
+    typename Methods,
+    optionality
+  >
+  struct field_size {
+    static std::size_t size(Protocol& protocol, MemberType const& in) {
+      std::size_t xfer = 0;
+      xfer += protocol.serializedFieldSize(
+        Member::name::z_data(),
+        Methods::ttype_value,
+        Member::id::value
+      );
+      xfer += Methods::template serialized_size<ZeroCopy>(
+        protocol,
+        detail::deref<MemberType>::get_const(in)
+      );
+      return xfer;
+    }
+  };
+
+  // size for default/required ref structrs
+  template <
+    bool ZeroCopy,
+    typename Protocol,
+    typename Member,
+    typename SType,
+    typename Methods,
+    optionality opt
+  >
+  struct field_size <
+    ZeroCopy,
+    Protocol,
+    Member,
+    type_class::structure,
+    std::unique_ptr<SType>,
+    Methods,
+    opt
+  > {
+    static
+    std::size_t size(Protocol& protocol, std::unique_ptr<SType> const& in) {
+      std::size_t xfer = 0;
+      if(in) {
+        xfer += field_size<
+          ZeroCopy,
+          Protocol,
+          Member,
+          type_class::structure,
+          SType,
+          Methods,
+          opt
+        >::size(protocol, *in);
+      }
+      else {
+        using field_traits = reflect_struct<SType>;
+        VLOG(3) << "empty ref struct, sizing blank struct! "
+          << field_traits::name::z_data();
+        xfer += protocol.serializedFieldSize(
+          Member::name::z_data(),
+          Methods::ttype_value,
+          Member::id::value
+        );
+        xfer += protocol.serializedStructSize(field_traits::name::z_data());
+        xfer += protocol.serializedSizeStop();
+      }
+
+      return xfer;
+    }
+  };
+
+  // size for optional ref structs
+  template <
+    bool ZeroCopy,
+    typename Protocol,
+    typename Member,
+    typename SType,
+    typename Methods
+  >
+  struct field_size <
+    ZeroCopy,
+    Protocol,
+    Member,
+    type_class::structure,
+    std::unique_ptr<SType>,
+    Methods,
+    optionality::optional
+  > {
+    using ptr_type = std::unique_ptr<SType>;
+    static std::size_t size(Protocol& protocol, ptr_type const& in) {
+      if(in) {
+        return field_size<
+          ZeroCopy,
+          Protocol,
+          Member,
+          type_class::structure,
+          ptr_type,
+          Methods,
+          optionality::required
+        >::size(protocol, in);
+      }
+      else {
+        return 0;
+      }
+    }
+  };
+
+  template <bool ZeroCopy>
+  struct member_size {
+    template <typename Member, std::size_t Index, typename Protocol>
+    void inline operator()(
+      fatal::indexed_type_tag<Member, Index>,
+      Protocol& protocol,
+      Struct const& in,
+      std::size_t& xfer)
+    {
+      using methods = protocol_methods<
+        typename Member::type_class,
+        typename Member::type
+      >;
+
+      auto const& got = Member::getter::ref(in);
+      using member_type = typename std::decay<decltype(got)>::type;
+
+      xfer += field_size <
+        ZeroCopy,
+        Protocol,
+        Member,
+        typename Member::type_class,
+        member_type,
+        methods,
+        Member::optional::value>::size(protocol, got);
+    }
+  };
+
 public:
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Struct const& in) {
@@ -978,6 +1257,17 @@ public:
     traits::members::mapped::foreach(member_writer(), protocol, in, xfer);
     xfer += protocol.writeFieldStop();
     xfer += protocol.writeStructEnd();
+    return xfer;
+  }
+
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serialized_size(Protocol& protocol, Struct const& in) {
+    std::size_t xfer = 0;
+    xfer += protocol.serializedStructSize(traits::name::z_data());
+    traits::members::mapped::foreach(
+      member_size<ZeroCopy>(), protocol, in, xfer
+    );
+    xfer += protocol.serializedSizeStop();
     return xfer;
   }
 };
@@ -1007,5 +1297,18 @@ template <typename Type, typename Protocol>
 std::size_t serializer_write(Type const& in, Protocol& protocol) {
   return protocol_methods<reflect_type_class<Type>, Type>::write(protocol, in);
 }
+
+template <typename Type, typename Protocol>
+std::size_t serializer_serialized_size(Type const& in, Protocol& protocol) {
+  return protocol_methods<reflect_type_class<Type>, Type>
+    ::template serialized_size<false>(protocol, in);
+}
+
+template <typename Type, typename Protocol>
+std::size_t serializer_serialized_size_zc(Type const& in, Protocol& protocol) {
+  return protocol_methods<reflect_type_class<Type>, Type>
+    ::template serialized_size<true>(protocol, in);
+}
+
 
 } } // namespace apache::thrift
