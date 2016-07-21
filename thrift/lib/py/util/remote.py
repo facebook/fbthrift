@@ -333,6 +333,26 @@ class RemoteHttpClient(RemoteTransportClient):
             self._exit(error_message='can only specify --url with '
                        '--unframed or --json')
 
+class RemoteUNIXDomainClient(RemoteTransportClient):
+    selector_option = 'path'
+    options = list(RemoteTransportClient.options)
+
+    options.append((
+        ['p', 'path'],
+        {
+            'action': 'store',
+            'help': 'The path of the socket to use'
+        }
+    ))
+
+    def _get_client(self, options):
+        socket = TSocket.TSocket(unix_socket=options.path)
+        if options.framed:
+            transport = TTransport.TFramedTransport(socket)
+        else:
+            transport = TTransport.TBufferedTransport(socket)
+        return self._get_client_by_transport(options, transport, socket=socket)
+
 class Namespace(object):
     def __init__(self, attrs=None):
         if attrs is not None:
@@ -503,3 +523,4 @@ class Remote(object):
 
 Remote.register_client_type(RemoteHostClient)
 Remote.register_client_type(RemoteHttpClient)
+Remote.register_client_type(RemoteUNIXDomainClient)
