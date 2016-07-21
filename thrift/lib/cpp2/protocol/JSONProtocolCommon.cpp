@@ -29,10 +29,7 @@ const uint8_t JSONProtocolWriterCommon::kJSONCharTable[0x30] = {
     1,  1,'"',  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1, // 2
 };
 
-// This string's characters must match up with the elements in kEscapeCharVals
-// I don't have '/' on this list even though it appears on www.json.org --
-// it is not in the RFC
-const std::string JSONProtocolReaderCommon::kEscapeChars("\"\\/bfnrt");
+constexpr folly::StringPiece JSONProtocolReaderCommon::kEscapeChars;
 
 // The elements of this array must match up with the sequence of characters in
 // kEscapeChars

@@ -832,7 +832,7 @@ uint32_t JSONProtocolReaderCommon::readJSONString(StrType& val) {
           ret += readJSONEscapeChar(ch);
         }
       } else {
-        size_t pos = kEscapeChars.find(ch);
+        size_t pos = kEscapeChars.find_first_of(ch);
         if (pos == std::string::npos) {
           throw TProtocolException(TProtocolException::INVALID_DATA,
                                    "Expected control char, got '" +
