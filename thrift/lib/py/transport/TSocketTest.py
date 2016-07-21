@@ -27,3 +27,12 @@ class TSocketTest(unittest.TestCase):
             self.assertFalse(conn.isOpen())
         self.assertFalse(server.isListening())
         self.assertEquals(read, text)
+
+    def test_server_context_errors(self):
+        # Make sure the TServerSocket context manager doesn't
+        # swallow exceptions
+        def do_test():
+            with TSocket.TServerSocket(port=0, family=socket.AF_INET6):
+                raise Exception('test_error')
+
+        self.assertRaisesRegexp(Exception, 'test_error', do_test)

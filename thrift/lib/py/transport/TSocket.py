@@ -330,7 +330,6 @@ class TServerSocket(TSocketBase, TServerTransportBase):
     def __exit__(self, type, value, traceback):
         if self.isListening():
             self.close()
-        return self
 
     def getSocketName(self):
         warnings.warn('getSocketName() is deprecated for TServerSocket.  '
