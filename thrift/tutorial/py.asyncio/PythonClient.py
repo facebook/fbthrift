@@ -1,5 +1,4 @@
-# @lint-avoid-pyflakes2
-# @lint-avoid-python-3-compatibility-imports
+#!/usr/bin/env python3
 
 import asyncio
 import time
@@ -10,22 +9,21 @@ from thrift_asyncio.tutorial import Calculator
 from thrift_asyncio.tutorial.ttypes import Work, Operation, InvalidOperation
 
 
-@asyncio.coroutine
-def main(loop):
-    (transport, protocol) = yield from loop.create_connection(
+async def main(loop):
+    (transport, protocol) = await loop.create_connection(
             ThriftClientProtocolFactory(Calculator.Client),
-            host="127.0.0.1",
+            host='::1',
             port=8848)
     client = protocol.client
 
     # Wait for the server to solve this super hard problem indefinitely.
-    sum = yield from asyncio.wait_for(client.add(1, 2), None)
-    print("1 + 2 = {}".format(sum))
+    sum_ = await asyncio.wait_for(client.add(1, 2), None)
+    print("1 + 2 = {}".format(sum_))
 
     # Try divide by zero.
     try:
         work = Work(num1=2, num2=0, op=Operation.DIVIDE)
-        yield from asyncio.wait_for(client.calculate(1, work), None)
+        await asyncio.wait_for(client.calculate(1, work), None)
     except InvalidOperation as e:
         print("InvalidOperation: {}".format(e))
 
@@ -40,7 +38,7 @@ def main(loop):
             client.ping(),
             client.zip(),
             ]
-    done, pending = yield from asyncio.wait(calls)
+    done, pending = await asyncio.wait(calls)
     if len(done) != len(calls):
         raise RuntimeError("Not all calls finished!")
     time_spent = time.time() - start
