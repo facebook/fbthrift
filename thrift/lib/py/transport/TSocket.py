@@ -262,6 +262,7 @@ class TSocket(TSocketBase):
                 try:
                     handle.connect(res[4])
                 except socket.error as e:
+                    self.close()
                     if res is not res0[-1]:
                         continue
                     else:

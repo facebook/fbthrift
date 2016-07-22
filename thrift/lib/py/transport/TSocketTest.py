@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import socket
 
 import thrift.transport.TSocket as TSocket
+import thrift.transport.TTransport as TTransport
 
 import unittest
 
@@ -36,3 +37,30 @@ class TSocketTest(unittest.TestCase):
                 raise Exception('test_error')
 
         self.assertRaisesRegexp(Exception, 'test_error', do_test)
+
+    def test_open_failure(self):
+        # Bind a server socket to an address, but don't actually listen on it.
+        server_socket = socket.socket(socket.AF_INET6)
+        try:
+            server_socket.bind(('::', 0))
+            server_port = server_socket.getsockname()[1]
+
+            # Explicitly use "localhost" as the hostname, so that the
+            # connect code will try both IPv6 and IPv4.  We want to
+            # exercise the failure behavior when trying multiple addresses.
+            sock = TSocket.TSocket(host='localhost', port=server_port)
+            sock.setTimeout(50)  # ms
+            try:
+                sock.open()
+                self.fail('unexpectedly succeeded to connect to closed socket')
+            except TTransport.TTransportException:
+                # sock.open() should not leave the file descriptor open
+                # when it fails
+                self.assertEquals(None, sock.handle)
+                self.assertEquals({}, sock.handles)
+
+                # Calling close() again on the socket should be a no-op,
+                # and shouldn't throw an error
+                sock.close()
+        finally:
+            server_socket.close()
