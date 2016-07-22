@@ -56,9 +56,9 @@ using protocol_type_pairs = ::testing::Types<
 >;
 
 template <bool printable>
-void print_underlying(folly::IOBuf& buffer) {
+void print_underlying(folly::IOBuf const& buffer) {
   if(VLOG_IS_ON(5)) {
-    auto range = buffer.coalesce();
+    folly::ByteRange range(buffer.data(), buffer.length());
     if(printable) {
       VLOG(5) << "buffer: "
         << std::string((const char*)range.data(), range.size());
@@ -350,6 +350,21 @@ TYPED_TEST(StructTest, test_workaround_binary) {
   expect_same_serialized_size(a, this->writer);
 }
 
+TYPED_TEST(StructTest, shared_ptr_test) {
+  struct6 a, b;
+  a.def_field = std::make_shared<smallstruct>();
+  a.req_field = std::make_shared<smallstruct>();
+  a.opt_field = a.req_field;
+
+  serializer_write(a, this->writer);
+  this->prep_read();
+  this->debug_buffer();
+  serializer_read(b, this->reader);
+
+  EXPECT_EQ(a, b);
+  expect_same_serialized_size(a, this->writer);
+}
+
 template <typename Pair>
 class UnionTest : public TypedTestCommon<Pair> {
 protected:
@@ -366,7 +381,6 @@ protected:
   }
 };
 
-// #ifndef UNIONS_STILL_BROKEN
 TYPED_TEST_CASE(UnionTest, protocol_type_pairs);
 
 TYPED_TEST(UnionTest, can_read_union_i64s) {
@@ -403,7 +417,6 @@ TYPED_TEST(UnionTest, can_read_nestedstructs) {
   EXPECT_EQ(6, this->b.get_field_smallstruct()->f1);
   expect_same_serialized_size(this->a, this->writer);
 }
-// #endif // UNIONS_STILL_BROKEN
 
 template <typename Pair>
 class BinaryInContainersTest : public TypedTestCommon<Pair> {

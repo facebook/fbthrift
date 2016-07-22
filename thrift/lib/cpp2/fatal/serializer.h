@@ -72,7 +72,7 @@ namespace detail {
  *
  * @author: Dylan Knutson <dymk@fb.com>
  */
-template <typename TypeClass, typename Type>
+template <typename TypeClass, typename Type, typename Enable = void>
 struct protocol_methods;
 
 #define REGISTER_OVERLOAD_COMMON(Class, Type, Method, TTypeValue) \
@@ -123,12 +123,12 @@ REGISTER_OVERLOAD(string, std::string, String, T_STRING);
   template <> struct protocol_methods<type_class::Class, Type> { \
     REGISTER_OVERLOAD_COMMON(Class, Type, Method, TTypeValue) \
     template <bool ZeroCopy, typename Protocol> \
-    static std::enable_if_t<ZeroCopy, std::size_t> \
+    static typename std::enable_if<ZeroCopy, std::size_t>::type \
     serialized_size(Protocol& protocol, Type const& in) { \
       return protocol.serializedSizeZC##Method(in); \
     } \
     template <bool ZeroCopy, typename Protocol> \
-    static std::enable_if_t<!ZeroCopy, std::size_t> \
+    static typename std::enable_if<!ZeroCopy, std::size_t>::type \
     serialized_size(Protocol& protocol, Type const& in) { \
       return protocol.serializedSize##Method(in); \
     } \
@@ -143,28 +143,60 @@ REGISTER_BINARY(std::unique_ptr<folly::IOBuf>, Binary, T_STRING);
 #undef REGISTER_OVERLOAD_ZC
 #undef REGISTER_OVERLOAD_COMMON
 
-// special case: must dereference contents within unique_ptr
-// TODO: probably also need to have a specialization for
-// std::shared_ptr
-template <typename TypeClass, typename Type>
-struct protocol_methods<TypeClass, std::unique_ptr<Type>> {
-  using pointer_type = std::unique_ptr<Type>;
-  using type_methods = protocol_methods<TypeClass, Type>;
+namespace detail {
+  // is_smart_pointer is a helper for determining if a type is a supported
+  // pointer type for cpp2.ref fields, while discrimiminating against the
+  // pointer corner case in Thrift (e.g., a unqiue_pointer<folly::IOBuf>)
+  template <typename>
+  struct is_smart_pointer : std::false_type {};
+  template <typename D>
+  struct is_smart_pointer<std::unique_ptr<folly::IOBuf, D>>
+    : std::false_type {};
+
+  // supported smart pointer types for cpp2.ref_type fields
+  template <typename T, typename D>
+  struct is_smart_pointer<std::unique_ptr<T, D>> : std::true_type {};
+  template <typename T>
+  struct is_smart_pointer<std::shared_ptr<T>> : std::true_type {};
+
+  template <typename T>
+  using enable_if_smart_pointer =
+    typename std::enable_if<is_smart_pointer<T>::value>::type;
+
+  template <typename T>
+  using disable_if_smart_pointer =
+    typename std::enable_if<!is_smart_pointer<T>::value>::type;
+}
+
+// handle dereferencing smart pointers
+template <
+  typename TypeClass,
+  typename PtrType
+>
+struct protocol_methods <
+  TypeClass,
+  PtrType,
+  typename detail::enable_if_smart_pointer<PtrType>
+>
+{
+  using value_type   = typename PtrType::element_type;
+  using type_methods = protocol_methods<TypeClass, value_type>;
+
   constexpr static protocol::TType ttype_value = type_methods::ttype_value;
 
   template <typename Protocol>
-  static std::size_t read(Protocol& protocol, pointer_type& out) {
+  static std::size_t read(Protocol& protocol, PtrType& out) {
     return type_methods::read(protocol, *out);
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, pointer_type const& in) {
+  static std::size_t write(Protocol& protocol, PtrType const& in) {
     return type_methods::write(protocol, *in);
   }
 
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serialized_size(
-    Protocol& protocol, pointer_type const& in
+    Protocol& protocol, PtrType const& in
   ) {
     return type_methods::template serialized_size<ZeroCopy>(protocol, *in);
   }
@@ -204,8 +236,8 @@ template<typename ElemClass, typename Type>
 struct protocol_methods<type_class::list<ElemClass>, Type> {
   constexpr static protocol::TType ttype_value = protocol::T_LIST;
 
-  using elem_type    = typename Type::value_type;
-  using elem_tclass   = ElemClass;
+  using elem_type   = typename Type::value_type;
+  using elem_tclass = ElemClass;
   static_assert(!std::is_same<elem_tclass, type_class::unknown>(),
     "Unable to serialize unknown list element");
 
@@ -473,9 +505,9 @@ namespace detail {
   template <
     optionality opt,
     typename,
+    typename MemberInfo,
     typename isset_array,
-    typename Struct,
-    typename MemberInfo
+    typename Struct
   >
   typename std::enable_if<opt != optionality::required>::type
   mark_isset(isset_array& /*isset*/, Struct& obj) {
@@ -485,9 +517,9 @@ namespace detail {
   template <
     optionality opt,
     typename required_fields,
+    typename MemberInfo,
     typename isset_array,
-    typename Struct,
-    typename MemberInfo
+    typename Struct
   >
   typename std::enable_if<opt == optionality::required>::type
   mark_isset(isset_array& isset, Struct& /*obj*/) {
@@ -502,12 +534,19 @@ namespace detail {
   template <typename T>
   using extract_descriptor_fid = typename T::metadata::id;
 
+  template <typename T, typename Enable = void>
+  struct deref;
+
   // General case: methods on deref are no-op, returning their input
   template <typename T>
-  struct deref {
+  struct deref <
+    T,
+    disable_if_smart_pointer<T>
+  > {
       static T& clear_and_get(T& in) { return in; }
       static T const& get_const(T const& in) { return in; }
   };
+
   // Special case: We specifically *do not* dereference a unique pointer to
   // an IOBuf, because this is a type that the protocol can (de)serialize
   // directly
@@ -517,18 +556,32 @@ namespace detail {
     static T& clear_and_get(T& in) { return in; }
     static T const& get_const(T const& in) { return in; }
   };
+
   // General case: deref returns a reference to what the
   // unique pointer contains
-  template <typename T>
-  struct deref<std::unique_ptr<T>> {
-    static T& clear_and_get(std::unique_ptr<T>& in) {
-      in = std::make_unique<T>();
+  template <typename PtrType>
+  struct deref <
+    PtrType,
+    enable_if_smart_pointer<PtrType>
+  > {
+    using T = typename PtrType::element_type;
+    static T& clear_and_get(PtrType& in) {
+      clear(in);
       return *in;
     }
-    static T const& get_const(std::unique_ptr<T> const& in) {
+    static T const& get_const(PtrType const& in) {
       return *in;
+    }
+
+  private:
+    static void clear(std::shared_ptr<T>& in) {
+      in = std::make_shared<T>();
+    }
+    static void clear(std::unique_ptr<T>& in) {
+      in = std::make_unique<T>();
     }
   };
+
 } // namespace detail
 
 // specialization for variants (Thrift unions)
@@ -846,27 +899,22 @@ private:
   };
 
   // match on member field id -> set that field
-  template <typename Protocol>
   struct set_member_by_fid {
-    std::size_t& xfer;
-    Protocol& protocol;
-    Struct& obj;
-    isset_array& required_isset;
-
-    set_member_by_fid(std::size_t& xfer, Protocol& protocol,
-      Struct& obj, isset_array& required_isset) :
-      xfer(xfer),
-      protocol(protocol),
-      obj(obj),
-      required_isset(required_isset)
-      {}
-
     // Fid is a std::integral_constant<field_id_t, fid>
-    template <typename Fid, std::size_t Index>
+    template <
+      typename Fid,
+      std::size_t Index,
+      typename Protocol,
+      typename isset_array
+    >
     void operator ()(
       fatal::indexed_type_tag<Fid, Index>,
       const field_id_t needle,
-      const TType ftype)
+      const TType ftype,
+      std::size_t& xfer,
+      Protocol& protocol,
+      Struct& obj,
+      isset_array& required_isset)
     {
       constexpr field_id_t
             fid    = Fid::value;
@@ -874,8 +922,6 @@ private:
       using getter = typename traits::getters
         ::template get<typename member::name>;
       assert(needle == fid);
-
-      VLOG(3) << "matched needle: " << fid;
 
       using protocol_method = protocol_methods<
         typename member::type_class,
@@ -888,8 +934,6 @@ private:
         detail::mark_isset<
             member::optional::value,
             required_fields,
-            isset_array,
-            Struct,
             member
           >(required_isset, obj);
         xfer += protocol_method::read(
@@ -934,14 +978,18 @@ public:
         assert(found_ == 1);
       }
 
-      set_member_by_fid<Protocol> member_fid_visitor(
-        xfer, protocol, out, required_isset
-      );
-
       if(!sorted_fids
         ::template binary_search<>
-        ::exact(fid, member_fid_visitor, ftype))
-      {
+        ::exact(
+          fid,
+          set_member_by_fid(),
+          ftype,
+          xfer,
+          protocol,
+          out,
+          required_isset
+        )
+      ) {
         VLOG(3) << "didn't find field, fid: " << fid
                    << ", fname: " << fname;
         xfer += protocol.skip(ftype);
@@ -963,6 +1011,17 @@ public:
   }
 
 private:
+  template <
+    typename Protocol,
+    typename Member,
+    typename TypeClass,
+    typename MemberType,
+    typename Methods,
+    optionality optional,
+    typename Enable = void
+  >
+  struct field_writer;
+
   // generic field writer
   template <
     typename Protocol,
@@ -972,7 +1031,11 @@ private:
     typename Methods,
     optionality opt
   >
-  struct field_writer {
+  struct field_writer
+  <
+    Protocol, Member, TypeClass, MemberType, Methods, opt,
+    detail::disable_if_smart_pointer<MemberType>
+  > {
     static std::size_t write(Protocol& protocol, MemberType const& in) {
       std::size_t xfer = 0;
       // TODO: can maybe get rid of get_const?
@@ -994,20 +1057,18 @@ private:
   template <
     typename Protocol,
     typename Member,
-    typename SType,
+    typename PtrType,
     typename Methods,
     optionality opt
   >
   struct field_writer <
-    Protocol,
-    Member,
-    type_class::structure,
-    std::unique_ptr<SType>,
-    Methods,
-    opt
+    Protocol, Member, type_class::structure, PtrType, Methods, opt,
+    detail::enable_if_smart_pointer<PtrType>
   > {
+    using struct_type  = typename PtrType::element_type;
+
     static
-    std::size_t write(Protocol& protocol, std::unique_ptr<SType> const& in) {
+    std::size_t write(Protocol& protocol, PtrType const& in) {
       std::size_t xfer = 0;
       // `in` is a pointer to a struct.
       // if not present, and this isn't an optional field,
@@ -1017,13 +1078,13 @@ private:
           Protocol,
           Member,
           type_class::structure,
-          SType,
+          struct_type,
           Methods,
           opt
         >::write(protocol, *in);
       }
       else {
-        using field_traits = reflect_struct<SType>;
+        using field_traits = reflect_struct<struct_type>;
         VLOG(3) << "empty ref struct, writing blank struct! "
           << field_traits::name::z_data();
         xfer += protocol.writeFieldBegin(
@@ -1045,25 +1106,21 @@ private:
   template <
     typename Protocol,
     typename Member,
-    typename SType,
+    typename PtrType,
     typename Methods
   >
   struct field_writer <
-    Protocol,
-    Member,
-    type_class::structure,
-    std::unique_ptr<SType>,
-    Methods,
-    optionality::optional
+    Protocol, Member, type_class::structure, PtrType, Methods,
+    optionality::optional,
+    detail::enable_if_smart_pointer<PtrType>
   > {
-    using ptr_type = std::unique_ptr<SType>;
-    static std::size_t write(Protocol& protocol, ptr_type const& in) {
+    static std::size_t write(Protocol& protocol, PtrType const& in) {
       if(in) {
         return field_writer<
           Protocol,
           Member,
           type_class::structure,
-          ptr_type,
+          PtrType,
           Methods,
           optionality::required
         >::write(protocol, in);
@@ -1109,6 +1166,18 @@ private:
     }
   };
 
+  template <
+    bool ZeroCopy,
+    typename Protocol,
+    typename Member,
+    typename TypeClass,
+    typename MemberType,
+    typename Methods,
+    optionality,
+    typename Enable = void
+  >
+  struct field_size;
+
   // generic field size
   template <
     bool ZeroCopy,
@@ -1117,9 +1186,12 @@ private:
     typename TypeClass,
     typename MemberType,
     typename Methods,
-    optionality
+    optionality opt
   >
-  struct field_size {
+  struct field_size <
+    ZeroCopy, Protocol, Member, TypeClass, MemberType, Methods, opt,
+    detail::disable_if_smart_pointer<MemberType>
+  > {
     static std::size_t size(Protocol& protocol, MemberType const& in) {
       std::size_t xfer = 0;
       xfer += protocol.serializedFieldSize(
@@ -1140,21 +1212,18 @@ private:
     bool ZeroCopy,
     typename Protocol,
     typename Member,
-    typename SType,
+    typename PtrType,
     typename Methods,
     optionality opt
   >
   struct field_size <
-    ZeroCopy,
-    Protocol,
-    Member,
-    type_class::structure,
-    std::unique_ptr<SType>,
-    Methods,
-    opt
+    ZeroCopy, Protocol, Member, type_class::structure, PtrType, Methods, opt,
+    detail::enable_if_smart_pointer<PtrType>
   > {
+    using struct_type = typename PtrType::element_type;
+
     static
-    std::size_t size(Protocol& protocol, std::unique_ptr<SType> const& in) {
+    std::size_t size(Protocol& protocol, PtrType const& in) {
       std::size_t xfer = 0;
       if(in) {
         xfer += field_size<
@@ -1162,13 +1231,13 @@ private:
           Protocol,
           Member,
           type_class::structure,
-          SType,
+          struct_type,
           Methods,
           opt
         >::size(protocol, *in);
       }
       else {
-        using field_traits = reflect_struct<SType>;
+        using field_traits = reflect_struct<struct_type>;
         VLOG(3) << "empty ref struct, sizing blank struct! "
           << field_traits::name::z_data();
         xfer += protocol.serializedFieldSize(
@@ -1189,27 +1258,22 @@ private:
     bool ZeroCopy,
     typename Protocol,
     typename Member,
-    typename SType,
+    typename PtrType,
     typename Methods
   >
   struct field_size <
-    ZeroCopy,
-    Protocol,
-    Member,
-    type_class::structure,
-    std::unique_ptr<SType>,
-    Methods,
-    optionality::optional
+    ZeroCopy, Protocol, Member, type_class::structure, PtrType, Methods,
+    optionality::optional,
+    detail::enable_if_smart_pointer<PtrType>
   > {
-    using ptr_type = std::unique_ptr<SType>;
-    static std::size_t size(Protocol& protocol, ptr_type const& in) {
+    static std::size_t size(Protocol& protocol, PtrType const& in) {
       if(in) {
         return field_size<
           ZeroCopy,
           Protocol,
           Member,
           type_class::structure,
-          ptr_type,
+          PtrType,
           Methods,
           optionality::required
         >::size(protocol, in);
@@ -1271,7 +1335,6 @@ public:
     return xfer;
   }
 };
-
 
 /**
  * Entrypoints for using new serialization methods

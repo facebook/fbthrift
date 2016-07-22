@@ -1,4 +1,3 @@
-namespace cpp test_cpp1.simple_cpp_reflection
 namespace cpp2 test_cpp2.simple_cpp_reflection
 
 cpp_include "<deque>"
@@ -81,4 +80,13 @@ struct struct5_workaround {
 struct struct5_listworkaround {
   1: list<binary> binary_list_field
   2: map<i32, binary> binary_map_field1
+}
+
+struct struct6 {
+  1: smallstruct def_field
+    (cpp2.ref_type = "shared")
+  2: optional smallstruct opt_field
+    (cpp2.ref_type = "shared")
+  3: required smallstruct req_field
+    (cpp2.ref_type = "shared")
 }
