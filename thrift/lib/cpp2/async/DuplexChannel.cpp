@@ -33,7 +33,7 @@ namespace apache { namespace thrift {
 DuplexChannel::DuplexChannel(Who::WhoEnum who,
                              const shared_ptr<TAsyncTransport>& transport)
   : cpp2Channel_(new DuplexCpp2Channel(
-                     *this, transport,
+                     who, transport,
                      make_unique<DuplexFramingHandler>(*this),
                      make_unique<DuplexProtectionHandler>(*this),
                      make_unique<DuplexSaslNegotiationHandler>(*this)),
