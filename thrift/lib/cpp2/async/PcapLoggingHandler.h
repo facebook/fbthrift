@@ -17,6 +17,7 @@
 
 #include <wangle/channel/Handler.h>
 #include <wangle/channel/StaticPipeline.h>
+#include <folly/Singleton.h>
 #include <folly/SocketAddress.h>
 
 namespace apache { namespace thrift {

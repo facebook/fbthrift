@@ -18,6 +18,7 @@
 #include <folly/dynamic.h>
 #include <folly/json.h>
 #include <folly/FileUtil.h>
+#include <folly/Memory.h>
 
 using namespace folly;
 using namespace wangle;
