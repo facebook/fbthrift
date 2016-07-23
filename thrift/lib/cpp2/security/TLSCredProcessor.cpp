@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <thrift/lib/cpp2/security/TLSTicketProcessor.h>
+#include <thrift/lib/cpp2/security/TLSCredProcessor.h>
 
 #include <folly/dynamic.h>
 #include <folly/json.h>
@@ -42,34 +42,53 @@ void insertSeeds(const folly::dynamic& keyConfig,
 namespace apache {
 namespace thrift {
 
-TLSTicketProcessor::TLSTicketProcessor(std::string ticketFile)
+TLSCredProcessor::TLSCredProcessor(const std::string& ticketFile,
+                                   const std::string& certFile)
     : ticketFile_(ticketFile),
+      certFile_(certFile),
       poller_(folly::make_unique<FilePoller>(kTicketPollInterval)) {
-  auto ticketsChangedCob = [this]() { fileUpdated(); };
-  poller_->addFileToTrack(ticketFile, ticketsChangedCob);
+  if (!ticketFile_.empty()) {
+    auto ticketsChangedCob = [this]() { ticketFileUpdated(); };
+    poller_->addFileToTrack(ticketFile_, ticketsChangedCob);
+  }
+  if (!certFile_.empty()) {
+    auto certChangedCob = [this]() { certFileUpdated(); };
+    poller_->addFileToTrack(certFile_, certChangedCob);
+  }
 }
 
-void TLSTicketProcessor::stop() {
+void TLSCredProcessor::stop() {
   poller_->stop();
 }
 
-TLSTicketProcessor::~TLSTicketProcessor() { stop(); }
+TLSCredProcessor::~TLSCredProcessor() { stop(); }
 
-void TLSTicketProcessor::addCallback(
+void TLSCredProcessor::addTicketCallback(
     std::function<void(TLSTicketKeySeeds)> callback) {
-  callbacks_.push_back(std::move(callback));
+  ticketCallbacks_.push_back(std::move(callback));
 }
 
-void TLSTicketProcessor::fileUpdated() noexcept {
+void TLSCredProcessor::addCertCallback(
+    std::function<void()> callback) {
+  certCallbacks_.push_back(std::move(callback));
+}
+
+void TLSCredProcessor::ticketFileUpdated() noexcept {
   auto seeds = processTLSTickets(ticketFile_);
   if (seeds) {
-    for (auto& callback : callbacks_) {
+    for (auto& callback : ticketCallbacks_) {
       callback(*seeds);
     }
   }
 }
 
-/* static */ Optional<TLSTicketKeySeeds> TLSTicketProcessor::processTLSTickets(
+void TLSCredProcessor::certFileUpdated() noexcept {
+  for (const auto& callback: certCallbacks_) {
+    callback();
+  }
+}
+
+/* static */ Optional<TLSTicketKeySeeds> TLSCredProcessor::processTLSTickets(
     const std::string& fileName) {
   try {
     std::string jsonData;

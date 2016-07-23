@@ -20,7 +20,7 @@
 #include <folly/File.h>
 #include <folly/FileUtil.h>
 #include <folly/Range.h>
-#include <thrift/lib/cpp2/security/TLSTicketProcessor.h>
+#include <thrift/lib/cpp2/security/TLSCredProcessor.h>
 #include <thrift/lib/cpp2/test/util/TicketUtil.h>
 
 using namespace testing;
@@ -32,15 +32,22 @@ namespace fs = boost::filesystem;
 
 class ProcessTicketTest : public testing::Test {
  public:
-  void SetUp() {
-    char temp[] = "/tmp/ticketFile-XXXXXX";
-    File(mkstemp(temp), true);
-    ticketFile = temp;
+  void SetUp() override {
+    char ticketTemp[] = {"/tmp/ticketFile-XXXXXX"};
+    File(mkstemp(ticketTemp), true);
+    ticketFile = ticketTemp;
+    char certTemp[] = {"/tmp/certFile-XXXXXX"};
+    File(mkstemp(certTemp), true);
+    certFile = certTemp;
   }
 
-  void TearDown() { remove(ticketFile.c_str()); }
+  void TearDown() override {
+    remove(ticketFile.c_str());
+    remove(certFile.c_str());
+  }
 
   std::string ticketFile;
+  std::string certFile;
 };
 
 void expectValidData(folly::Optional<wangle::TLSTicketKeySeeds> seeds) {
@@ -54,13 +61,13 @@ void expectValidData(folly::Optional<wangle::TLSTicketKeySeeds> seeds) {
 
 TEST_F(ProcessTicketTest, ParseTicketFile) {
   CHECK(writeFile(validTicketData, ticketFile.c_str()));
-  auto seeds = TLSTicketProcessor::processTLSTickets(ticketFile);
+  auto seeds = TLSCredProcessor::processTLSTickets(ticketFile);
   expectValidData(seeds);
 }
 
 TEST_F(ProcessTicketTest, ParseInvalidFile) {
   CHECK(writeFile(invalidTicketData, ticketFile.c_str()));
-  auto seeds = TLSTicketProcessor::processTLSTickets(ticketFile);
+  auto seeds = TLSCredProcessor::processTLSTickets(ticketFile);
   ASSERT_FALSE(seeds);
 }
 
@@ -73,15 +80,28 @@ void updateModifiedTime(const std::string& fileName) {
 }
 
 TEST_F(ProcessTicketTest, TestUpdateTicketFile) {
-  Baton<> baton;
-  TLSTicketProcessor processor(ticketFile);
-  bool updated = false;
-  processor.addCallback([&](TLSTicketKeySeeds) {
-    updated = true;
-    baton.post();
+  Baton<> ticketBaton;
+  Baton<> certBaton;
+  TLSCredProcessor processor(ticketFile, certFile);
+  bool ticketUpdated = false;
+  bool certUpdated = false;
+  processor.addTicketCallback([&](TLSTicketKeySeeds) {
+    ticketUpdated = true;
+    ticketBaton.post();
+  });
+  processor.addCertCallback([&]() {
+    certUpdated = true;
+    certBaton.post();
   });
   CHECK(writeFile(validTicketData, ticketFile.c_str()));
   updateModifiedTime(ticketFile);
-  baton.timed_wait(std::chrono::seconds(30));
-  ASSERT_TRUE(updated);
+  ticketBaton.timed_wait(std::chrono::seconds(30));
+  ASSERT_TRUE(ticketUpdated);
+  ASSERT_FALSE(certUpdated);
+  ticketUpdated = false;
+  CHECK(writeFile(validTicketData, certFile.c_str()));
+  updateModifiedTime(certFile);
+  certBaton.timed_wait(std::chrono::seconds(30));
+  ASSERT_TRUE(certUpdated);
+  ASSERT_FALSE(ticketUpdated);
 }

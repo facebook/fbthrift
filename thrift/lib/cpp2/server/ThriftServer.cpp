@@ -526,6 +526,12 @@ void ThriftServer::updateTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
   });
 }
 
+void ThriftServer::updateTLSCert() {
+  forEachWorker([&](wangle::Acceptor* acceptor) {
+    acceptor->resetSSLContextConfigs();
+  });
+}
+
 bool ThriftServer::isOverloaded(const THeader* header) {
   if (UNLIKELY(isOverloaded_(header))) {
     return true;

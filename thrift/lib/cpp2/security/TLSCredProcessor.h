@@ -25,15 +25,19 @@
 namespace apache {
 namespace thrift {
 
-class TLSTicketProcessor {
+class TLSCredProcessor {
  public:
-  explicit TLSTicketProcessor(std::string ticketFile);
+  TLSCredProcessor(const std::string& ticketFile,
+                   const std::string& certFile);
 
-  ~TLSTicketProcessor();
+  ~TLSCredProcessor();
 
-  void addCallback(std::function<void(wangle::TLSTicketKeySeeds)> callback);
+  void addTicketCallback(
+      std::function<void(wangle::TLSTicketKeySeeds)> callback);
+  void addCertCallback(std::function<void()> callback);
 
-  void fileUpdated() noexcept;
+  void ticketFileUpdated() noexcept;
+  void certFileUpdated() noexcept;
 
   void stop();
 
@@ -60,8 +64,10 @@ class TLSTicketProcessor {
       const std::string& fileName);
 
   const std::string ticketFile_;
+  const std::string certFile_;
   std::unique_ptr<FilePoller> poller_;
-  std::vector<std::function<void(wangle::TLSTicketKeySeeds)>> callbacks_;
+  std::vector<std::function<void(wangle::TLSTicketKeySeeds)>> ticketCallbacks_;
+  std::vector<std::function<void()>> certCallbacks_;
 };
 }
 }

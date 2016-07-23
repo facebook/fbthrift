@@ -31,7 +31,7 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
-#include <thrift/lib/cpp2/security/TLSTicketProcessor.h>
+#include <thrift/lib/cpp2/security/TLSCredProcessor.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -516,17 +516,19 @@ public:
     setSSLPolicy(extract<SSLPolicy>(sslConfig.attr("ssl_policy")));
 
     auto ticketFilePath = getStringAttrSafe(sslConfig, "ticket_file_path");
-    ticketProcessor_.reset(); // stops the existing poller if any
-    if (!ticketFilePath.empty()) {
-      ticketProcessor_.reset(new TLSTicketProcessor(ticketFilePath));
-      ticketProcessor_->addCallback([this](wangle::TLSTicketKeySeeds seeds) {
-        updateTicketSeeds(std::move(seeds));
-      });
-      auto seeds = TLSTicketProcessor::processTLSTickets(ticketFilePath);
-      if (seeds) {
-        setTicketSeeds(std::move(*seeds));
-      }
+    tlsCredProcessor_.reset(); // stops the existing poller if any
+    tlsCredProcessor_.reset(new TLSCredProcessor(ticketFilePath, certPath));
+    tlsCredProcessor_->addTicketCallback(
+        [this](wangle::TLSTicketKeySeeds seeds) {
+      updateTicketSeeds(std::move(seeds));
+    });
+    auto seeds = TLSCredProcessor::processTLSTickets(ticketFilePath);
+    if (seeds) {
+      setTicketSeeds(std::move(*seeds));
     }
+    tlsCredProcessor_->addCertCallback([this]() {
+      updateTLSCert();
+    });
   }
 
   void setCppFastOpenOptions(object enabledObj, object tfoMaxQueueObj) {
@@ -571,7 +573,7 @@ public:
 
     PyThreadState* save_state = PyEval_SaveThread();
     SCOPE_EXIT { PyEval_RestoreThread(save_state); };
-    ticketProcessor_.reset();
+    tlsCredProcessor_.reset();
     ThriftServer::cleanUp();
   }
 
@@ -614,7 +616,7 @@ public:
   }
 
  private:
-  std::unique_ptr<TLSTicketProcessor> ticketProcessor_;
+  std::unique_ptr<TLSCredProcessor> tlsCredProcessor_;
 
 };
 

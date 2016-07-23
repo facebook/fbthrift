@@ -122,7 +122,7 @@ thrift2include_security_HEADERS = \
 	security/SecurityKillSwitch.h \
 	security/SecurityKillSwitchPoller.h \
 	security/SecurityLogger.h \
-	security/TLSTicketProcessor.h
+	security/TLSCredProcessor.h
 
 thrift2include_protocoldir = $(thrift2includedir)/protocol
 
@@ -194,7 +194,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   security/KerberosSASLThreadManager.cpp \
 			   security/SecurityKillSwitch.cpp \
 			   security/SecurityKillSwitchPoller.cpp \
-			   security/TLSTicketProcessor.cpp \
+			   security/TLSCredProcessor.cpp \
 			   server/BaseThriftServer.cpp \
 			   server/Cpp2Connection.cpp \
 			   server/Cpp2Worker.cpp \

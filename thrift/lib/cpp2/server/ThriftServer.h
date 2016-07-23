@@ -311,6 +311,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   void updateTicketSeeds(wangle::TLSTicketKeySeeds seeds);
 
+  void updateTLSCert();
+
   void setFastOpenOptions(bool enableTFO, uint32_t fastOpenQueueSize) {
     enableTFO_ = enableTFO;
     fastOpenQueueSize_ = fastOpenQueueSize;
