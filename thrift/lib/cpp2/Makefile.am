@@ -85,6 +85,9 @@ thrift2include_fatal_HEADERS = \
 	fatal/internal/folly_dynamic-inl-post.h \
 	fatal/folly_dynamic.h \
 	fatal/indenter.h \
+	fatal/internal/merge-inl-pre.h \
+	fatal/internal/merge-inl-post.h \
+	fatal/merge.h \
 	fatal/internal/pretty_print-inl-pre.h \
 	fatal/internal/pretty_print-inl-post.h \
 	fatal/pretty_print.h \

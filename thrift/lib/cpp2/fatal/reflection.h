@@ -2070,6 +2070,11 @@ template <typename> struct thrift_string_traits;
  *
  *    static void clear(type &what) { what.clear(); }
  *    static bool empty(type const &what) { return what.empty(); }
+ *    static void push_back(type &what, value_type const &e) {
+ *      what.push_back(e); }
+ *    static void push_back(type &what, value_type &&e) {
+ *      what.push_back(std::move(e)); }
+ *    static void reserve(type &what, size_type size) { what.reserve(size); }
  *    static size_type size(type const &what) { return what.size(); }
  *  };
  *
@@ -2116,6 +2121,12 @@ template <typename> struct thrift_list_traits;
  *
  *    static void clear(type &what) { what.clear(); }
  *    static bool empty(type const &what) { return what.empty(); }
+ *    static iterator insert(
+ *        type &what, const_iterator position, value_type const &val) {
+ *      return what.insert(position, val); }
+ *    static iteratorinsert(
+ *        type &what, const_iterator position, value_type &&val) {
+ *      return what.insert(position, std::move(e)); }
  *    static size_type size(type const &what) { return what.size(); }
  *  };
  *
@@ -2145,6 +2156,7 @@ template <typename> struct thrift_set_traits;
  *
  *    using key_type = typename type::key_type;
  *    using mapped_type = typename type::mapped_type;
+ *    using value_type = typename type::value_type;
  *    using size_type = typename type::size_type;
  *    using iterator = typename type::iterator;
  *    using const_iterator = typename type::const_iterator;
@@ -2168,6 +2180,10 @@ template <typename> struct thrift_set_traits;
  *
  *    static void clear(type &what) { what.clear(); }
  *    static bool empty(type const &what) { return what.empty(); }
+ *    static mapped_type& get_or_create(type &what, key_type const &k) {
+ *      return what[k]; }
+ *    static mapped_type& get_or_create(type &what, key_type &&k) {
+ *      return what[std::move(k)]; }
  *    static size_type size(type const &what) { return what.size(); }
  *  };
  *

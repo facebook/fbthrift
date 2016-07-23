@@ -42,6 +42,14 @@ struct thrift_set_traits<folly::sorted_vector_set<T, C, A, G>> {
 
   static void clear(type &what) { what.clear(); }
   static bool empty(type const &what) { return what.empty(); }
+  static iterator insert(
+      type &what, const_iterator position, value_type const &val) {
+    return what.insert(position, val);
+  }
+  static iterator insert(
+      type &what, const_iterator position, value_type &&val) {
+    return what.insert(position, std::move(val));
+  }
   static size_type size(type const &what) { return what.size(); }
 };
 
@@ -51,6 +59,7 @@ struct thrift_map_traits<folly::sorted_vector_map<K, V, C, A, G>> {
 
   using key_type = typename type::key_type;
   using mapped_type = typename type::mapped_type;
+  using value_type = typename type::value_type;
   using size_type = typename type::size_type;
   using iterator = typename type::iterator;
   using const_iterator = typename type::const_iterator;
@@ -74,6 +83,12 @@ struct thrift_map_traits<folly::sorted_vector_map<K, V, C, A, G>> {
 
   static void clear(type &what) { what.clear(); }
   static bool empty(type const &what) { return what.empty(); }
+  static mapped_type& get_or_create(type &what, key_type const &k) {
+    return what[k];
+  }
+  static mapped_type& get_or_create(type &what, key_type &&k) {
+    return what[std::move(k)];
+  }
   static size_type size(type const &what) { return what.size(); }
 };
 
