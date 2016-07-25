@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <gmock/gmock.h>
 #include <thrift/lib/cpp2/security/SecurityKillSwitchPoller.h>
 
 namespace apache {
@@ -29,6 +30,13 @@ class MockSecurityKillSwitchPoller : public SecurityKillSwitchPoller {
     auto condition = FilePoller::doAlwaysCond();
     poller_->addFileToTrack("no_file", yCob, nullptr, condition);
   }
+  MOCK_METHOD4(
+      addFileToTrack,
+      void(
+          const std::string&,
+          FilePoller::Cob,
+          FilePoller::Cob,
+          FilePoller::Condition));
 };
 }
 }

@@ -26,6 +26,8 @@ folly::ThreadLocal<bool> FilePoller::ThreadProtector::polling_([] {
   return new bool(false);
 });
 
+constexpr std::chrono::milliseconds FilePoller::kDefaultPollInterval;
+
 FilePoller::FilePoller(std::chrono::milliseconds pollInterval) {
   init(pollInterval);
 }

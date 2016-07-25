@@ -33,8 +33,14 @@ namespace apache { namespace thrift {
 class SecurityKillSwitchPoller {
  public:
   SecurityKillSwitchPoller();
-  ~SecurityKillSwitchPoller();
+  virtual ~SecurityKillSwitchPoller();
   bool isKillSwitchEnabled() const { return switchEnabled_; }
+
+  virtual void addFileToTrack(const std::string& filePath,
+                              FilePoller::Cob yCob,
+                              FilePoller::Cob nCob = nullptr,
+                              FilePoller::Condition cond =
+                                  FilePoller::fileTouchedCond());
 
  protected:
   explicit SecurityKillSwitchPoller(bool autostart);

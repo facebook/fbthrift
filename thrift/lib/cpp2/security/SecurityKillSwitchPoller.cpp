@@ -49,6 +49,13 @@ SecurityKillSwitchPoller::SecurityKillSwitchPoller(bool autostart)
   }
 }
 
+void SecurityKillSwitchPoller::addFileToTrack(const std::string& filePath,
+                                              FilePoller::Cob yCob,
+                                              FilePoller::Cob nCob,
+                                              FilePoller::Condition cond) {
+  poller_->addFileToTrack(filePath, yCob, nCob, cond);
+}
+
 SecurityKillSwitchPoller::~SecurityKillSwitchPoller() {
   poller_->stop();
 }
