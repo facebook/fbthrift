@@ -36,19 +36,19 @@ public:
   typedef std::unique_ptr<T, Deleter> Base;
   CloneableUniquePtr()
     : std::unique_ptr<T, Deleter>() {}
-  CloneableUniquePtr(std::nullptr_t x)
+  explicit CloneableUniquePtr(std::nullptr_t)
     : std::unique_ptr<T, Deleter>(nullptr) {}
-  CloneableUniquePtr(typename Base::pointer p)
+  explicit CloneableUniquePtr(typename Base::pointer p)
     : std::unique_ptr<T, Deleter>(p) {}
   template<typename D>
   CloneableUniquePtr(typename Base::pointer p, D&& d)
     : std::unique_ptr<T, Deleter>(p, std::forward<D>(d)) {}
-  CloneableUniquePtr(Base&& other)
+  explicit CloneableUniquePtr(Base&& other)
     : std::unique_ptr<T, Deleter>(std::move(other)) {}
-  CloneableUniquePtr(CloneableUniquePtr&& other)
+  explicit CloneableUniquePtr(CloneableUniquePtr&& other) noexcept
     : std::unique_ptr<T, Deleter>(std::move(other)) {}
 
-  CloneableUniquePtr(const Base& other)
+  explicit CloneableUniquePtr(const Base& other)
     : std::unique_ptr<T, Deleter>(other ? other->clone() : nullptr) {
     LOG(INFO) << "Clone";
   }
@@ -64,7 +64,7 @@ public:
     Base::operator=(std::move(other));
     return *this;
   }
-  CloneableUniquePtr& operator=(std::nullptr_t x) {
+  CloneableUniquePtr& operator=(std::nullptr_t) {
     Base::operator=(nullptr);
     return *this;
   }

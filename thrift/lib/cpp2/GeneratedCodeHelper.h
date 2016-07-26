@@ -190,7 +190,7 @@ using is_map_like = has_op_bracket_of_key<C>;
 
 template <class T, class = void>
 struct Reserver {
-  static void reserve(T& container, typename T::size_type size) {}
+  static void reserve(T&, typename T::size_type) {}
 };
 
 template <class C>
@@ -904,13 +904,13 @@ using is_root_async_processor = std::is_void<typename T::BaseAsyncProcessor>;
 template <class ProtocolReader, class Processor>
 typename std::enable_if<is_root_async_processor<Processor>::value>::type
 process_missing(
-    Processor* processor,
+    Processor*,
     const std::string& fname,
     std::unique_ptr<ResponseChannel::Request> req,
-    std::unique_ptr<folly::IOBuf> buf,
+    std::unique_ptr<folly::IOBuf>,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
-    concurrency::ThreadManager* tm,
+    concurrency::ThreadManager*,
     int32_t protoSeqId) {
   using h = helper_r<ProtocolReader>;
   const char* fn = "process";

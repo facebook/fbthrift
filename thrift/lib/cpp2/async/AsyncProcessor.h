@@ -178,7 +178,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       const char* method,
       ProtocolOut* prot,
       int32_t protoSeqId,
-      apache::thrift::ContextStack* ctx,
+      apache::thrift::ContextStack*,
       const apache::thrift::TApplicationException& x) {
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
     size_t bufSize = x.serializedSizeZC(prot);
@@ -763,7 +763,7 @@ public:
     delete this;
   }
 
-  void resultInThread(const ResultType& value) {
+  void resultInThread(const ResultType&) {
     LOG(FATAL) << "resultInThread";
   }
 
