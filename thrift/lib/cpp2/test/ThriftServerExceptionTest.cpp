@@ -83,11 +83,11 @@ class RaiserHandler : public RaiserSvIf {
  public:
   RaiserHandler(
       vector<shared_ptr<TProcessorEventHandler>> handlers,
-      function<exception_ptr()> go) :
+      Function<exception_ptr()> go) :
     handlers_(move(handlers)), go_(wrap(move(go))) {}
   RaiserHandler(
       vector<shared_ptr<TProcessorEventHandler>> handlers,
-      function<exception_wrapper()> go) :
+      Function<exception_wrapper()> go) :
     handlers_(move(handlers)), go_(wrap(move(go))) {}
 
   unique_ptr<AsyncProcessor> getProcessor() override {
@@ -113,14 +113,15 @@ class RaiserHandler : public RaiserSvIf {
   }
 
   template <typename E>
-  function<void(unique_ptr<HandlerCallbackBase>)> wrap(E e) {
-    auto em = makeMoveWrapper(move(e));
-    return [=](unique_ptr<HandlerCallbackBase> cb) { cb->exception((*em)()); };
+  Function<void(unique_ptr<HandlerCallbackBase>)> wrap(E e) {
+    return [e = std::move(e)](unique_ptr<HandlerCallbackBase> cb) mutable {
+      cb->exception(e());
+    };
   }
 
  private:
   vector<shared_ptr<TProcessorEventHandler>> handlers_;
-  function<void(unique_ptr<HandlerCallbackBase>)> go_;
+  Function<void(unique_ptr<HandlerCallbackBase>)> go_;
 };
 
 }
@@ -160,9 +161,9 @@ class ThriftServerExceptionTest : public testing::Test {
 };
 
 TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
-  auto go = [&] { return to_eptr(make_lulz()); };
+  Function<exception_ptr()> go = [&] { return to_eptr(make_lulz()); };
 
-  auto handler = make_shared<RaiserHandler>(evhandlers, go);
+  auto handler = make_shared<RaiserHandler>(evhandlers, std::move(go));
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
@@ -205,9 +206,9 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
 }
 
 TEST_F(ThriftServerExceptionTest, banal_with_exception_ptr) {
-  auto go = [&] { return to_eptr(make_banal()); };
+  Function<exception_ptr()> go = [&] { return to_eptr(make_banal()); };
 
-  auto handler = make_shared<RaiserHandler>(evhandlers, go);
+  auto handler = make_shared<RaiserHandler>(evhandlers, std::move(go));
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
@@ -247,9 +248,9 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_ptr) {
 }
 
 TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
-  auto go = [&] { return to_eptr(make_fiery()); };
+  Function<exception_ptr()> go = [&] { return to_eptr(make_fiery()); };
 
-  auto handler = make_shared<RaiserHandler>(evhandlers, go);
+  auto handler = make_shared<RaiserHandler>(evhandlers, std::move(go));
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
@@ -291,9 +292,9 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
 }
 
 TEST_F(ThriftServerExceptionTest, bland_with_exception_wrapper) {
-  auto go = [&] { return to_wrap(make_lulz()); };
+  Function<exception_wrapper()> go = [&] { return to_wrap(make_lulz()); };
 
-  auto handler = make_shared<RaiserHandler>(evhandlers, go);
+  auto handler = make_shared<RaiserHandler>(evhandlers, std::move(go));
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
@@ -336,9 +337,9 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_wrapper) {
 }
 
 TEST_F(ThriftServerExceptionTest, banal_with_exception_wrapper) {
-  auto go = [&] { return to_wrap(make_banal()); };
+  Function<exception_wrapper()> go = [&] { return to_wrap(make_banal()); };
 
-  auto handler = make_shared<RaiserHandler>(evhandlers, go);
+  auto handler = make_shared<RaiserHandler>(evhandlers, std::move(go));
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
@@ -378,9 +379,9 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_wrapper) {
 }
 
 TEST_F(ThriftServerExceptionTest, fiery_with_exception_wrapper) {
-  auto go = [&] { return to_wrap(make_fiery()); };
+  Function<exception_wrapper()> go = [&] { return to_wrap(make_fiery()); };
 
-  auto handler = make_shared<RaiserHandler>(evhandlers, go);
+  auto handler = make_shared<RaiserHandler>(evhandlers, std::move(go));
   ScopedServerInterfaceThread runner(handler);
 
   auto client = runner.newClient<RaiserAsyncClient>(&eb);

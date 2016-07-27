@@ -51,32 +51,34 @@ class TestInterface : public FutureServiceSvIf {
       int64_t size) override {
     EXPECT_NE("", getConnectionContext()->getPeerAddress()->describe());
 
-    MoveWrapper<Promise<std::unique_ptr<std::string> > > p;
-    auto f = p->getFuture();
+    Promise<std::unique_ptr<std::string>> p;
+    auto f = p.getFuture();
 
-    auto func = std::function<void()>([=]() mutable {
+    auto func = [ p = std::move(p), size ]() mutable {
       std::unique_ptr<std::string> _return(
         new std::string("test" + boost::lexical_cast<std::string>(size)));
-      p->setValue(std::move(_return));
-    });
+      p.setValue(std::move(_return));
+    };
 
-    RequestEventBase::get()->runInEventBaseThread([this, func, size](){
-      RequestEventBase::get()->tryRunAfterDelay(func, size);
-    });
+    RequestEventBase::get()->runInEventBaseThread(
+        [ this, func = std::move(func), size ]() mutable {
+          RequestEventBase::get()->tryRunAfterDelay(std::move(func), size);
+        });
 
     return f;
   }
 
   Future<Unit> future_noResponse(int64_t size) override {
-    MoveWrapper<Promise<Unit>> p;
-    auto f = p->getFuture();
+    Promise<Unit> p;
+    auto f = p.getFuture();
 
-    auto func = std::function<void()>([=]() mutable {
-      p->setValue();
-    });
-    RequestEventBase::get()->runInEventBaseThread([this, func, size](){
-      RequestEventBase::get()->tryRunAfterDelay(func, size);
-    });
+    auto func = [p = std::move(p)]() mutable {
+      p.setValue();
+    };
+    RequestEventBase::get()->runInEventBaseThread(
+        [ this, func = std::move(func), size ]() mutable {
+          RequestEventBase::get()->tryRunAfterDelay(std::move(func), size);
+        });
     return f;
   }
 

@@ -19,8 +19,6 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
-#include <folly/MoveWrapper.h>
-
 using namespace std;
 using namespace folly;
 using namespace apache::thrift;
@@ -70,11 +68,10 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
           queue.move(),
           ctx->getHeader()->getWriteTransforms(),
           ctx->getHeader()->getMinCompressBytes()));
-    auto queue_mw = makeMoveWrapper(move(queue));
-    auto req_mw = makeMoveWrapper(move(req));
-    eb->runInEventBaseThread([=]() mutable {
-      (*req_mw)->sendReply(queue_mw->move());
-    });
+    eb->runInEventBaseThread(
+        [ queue = move(queue), req = move(req) ]() mutable {
+          req->sendReply(queue.move());
+        });
   } else {
     LOG(ERROR) << msg << " in oneway function " << func;
   }

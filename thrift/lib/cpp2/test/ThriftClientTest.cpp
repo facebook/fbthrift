@@ -31,8 +31,11 @@ namespace {
 //  Until we can use move captures....
 template <class T, class F>
 void eb_delay(EventBase* eb, milliseconds delay, unique_ptr<T> x, F&& f) {
-  auto xm = makeMoveWrapper(x);
-  eb->runAfterDelay([=]() mutable { f(xm.move()); }, delay.count());
+  eb->runAfterDelay(
+      [ f = std::forward<F>(f), x = std::move(x) ]() mutable {
+        f(std::move(x));
+      },
+      delay.count());
 }
 
 }
