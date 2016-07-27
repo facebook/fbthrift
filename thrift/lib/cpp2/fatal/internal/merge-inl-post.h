@@ -127,7 +127,7 @@ struct merge_impl<type_class::set<ValueTypeClass>> {
     std::copy(
         traits::cbegin(src),
         traits::cend(src),
-        std::inserter(dstw, traits::cend(dst)));
+        std::inserter(dstw, traits::end(dst)));
   }
   template <typename T>
   static void go(T&& src, T& dst) {
@@ -136,7 +136,7 @@ struct merge_impl<type_class::set<ValueTypeClass>> {
     std::move(
         traits::begin(src),
         traits::end(src),
-        std::inserter(dstw, traits::cend(dst)));
+        std::inserter(dstw, traits::end(dst)));
   }
 };
 
