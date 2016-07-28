@@ -438,8 +438,12 @@ public:
         xfer += consume_elem(protocol, out);
       }
     } else {
-      assert(key_methods::ttype_value == rpt_key_type);
-      assert(mapped_methods::ttype_value == rpt_mapped_type);
+      // CompactProtocol does not transmit key/mapped types if
+      // the map is empty
+      if(map_size > 0) {
+        assert(key_methods::ttype_value == rpt_key_type);
+        assert(mapped_methods::ttype_value == rpt_mapped_type);
+      }
       for(decltype(map_size) i = 0; i < map_size; i++) {
         xfer += consume_elem(protocol, out);
       }

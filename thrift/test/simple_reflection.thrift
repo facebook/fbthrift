@@ -90,3 +90,21 @@ struct struct6 {
   3: required smallstruct req_field
     (cpp2.ref_type = "shared")
 }
+
+struct struct7 {
+  1:  i32 field1
+  2:  string field2
+  3:  enum1 field3
+  4:  list<i32> field4
+  5:  set<i32> field5
+  6:  map<i32, string> field6
+  7:  nested1 field7
+  8:  i64 field8
+  9:  string field9
+  10: smallstruct field10 (cpp2.ref_type = "shared")
+  11: IOBuf field11
+  12: binary field12
+  13: optional smallstruct field13 (cpp2.ref="true")
+  14: required smallstruct field14 (cpp2.ref="true")
+  15:          smallstruct field15 (cpp2.ref="true")
+}

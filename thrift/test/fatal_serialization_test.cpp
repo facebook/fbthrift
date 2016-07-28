@@ -21,14 +21,11 @@
 
 #include <thrift/lib/cpp2/fatal/serializer.h>
 #include <thrift/lib/cpp2/fatal/pretty_print.h>
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
-#include <thrift/lib/cpp2/protocol/JSONProtocol.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
 
-#include <gtest/gtest.h>
 #include <folly/Memory.h>
+
+#include <thrift/test/fatal_serialization_common.h>
 
 #include <iomanip>
 
@@ -39,86 +36,8 @@ namespace test_cpp2 { namespace simple_cpp_reflection {
 // in the JSON readers when using the legacy deserializer
 #define UNIONS_STILL_BROKEN
 
-using namespace apache::thrift;
-
-template <typename Reader, typename Writer, bool Printable>
-struct RWPair {
-  using reader = Reader;
-  using writer = Writer;
-  using printable = std::integral_constant<bool, Printable>;
-};
-
-using protocol_type_pairs = ::testing::Types<
-  RWPair<SimpleJSONProtocolReader, SimpleJSONProtocolWriter, true>,
-  RWPair<JSONProtocolReader, JSONProtocolWriter, true>,
-  RWPair<BinaryProtocolReader, BinaryProtocolWriter, false>,
-  RWPair<CompactProtocolReader, CompactProtocolWriter, false>
->;
-
-template <bool printable>
-void print_underlying(folly::IOBuf const& buffer) {
-  if(VLOG_IS_ON(5)) {
-    folly::ByteRange range(buffer.data(), buffer.length());
-    if(printable) {
-      VLOG(5) << "buffer: "
-        << std::string((const char*)range.data(), range.size());
-    } else {
-      std::ostringstream out;
-      for(int i = 0; i < range.size(); i++) {
-        out << std::setw(2) << std::setfill('0')
-                << std::hex << (int)range.data()[i] << " ";
-      }
-      VLOG(5) << "buffer: " << out.str();
-    }
-  }
-}
-
-template <typename Pair>
-struct TypedTestCommon : public ::testing::Test {
-  typename Pair::reader reader;
-  typename Pair::writer writer;
-  folly::IOBufQueue buffer;
-  std::unique_ptr<folly::IOBuf> underlying;
-
-  TypedTestCommon() {
-    this->writer.setOutput(&this->buffer, 1024);
-  }
-
-  void prep_read() {
-    this->underlying = this->buffer.move();
-    this->reader.setInput(this->underlying.get());
-  }
-
-  void debug_buffer() {
-    print_underlying<Pair::printable::value>(*underlying);
-  }
-};
-
-template <typename Pair>
-struct StructTest : public TypedTestCommon<Pair> {};
-
-template <typename Pair>
-struct StructTestConcrete : public TypedTestCommon<Pair> {
-  virtual void TestBody() { return; }
-};
-
-template <typename Pair>
-struct CompareStructTest : public ::testing::Test {
-  StructTestConcrete<Pair> st1, st2;
-
-  void prep_read() {
-    st1.prep_read();
-    st2.prep_read();
-  }
-
-  void debug_buffer() {
-    st1.debug_buffer();
-    st2.debug_buffer();
-  }
-};
-
-TYPED_TEST_CASE(StructTest, protocol_type_pairs);
-TYPED_TEST_CASE(CompareStructTest, protocol_type_pairs);
+TYPED_TEST_CASE(MultiProtocolTest, protocol_type_pairs);
+TYPED_TEST_CASE(CompareProtocolTest, protocol_type_pairs);
 
 template <typename Type, typename Protocol>
 void expect_same_serialized_size(Type& type, Protocol& protocol) {
@@ -151,7 +70,7 @@ void init_struct_1(struct1& a) {
   a.__isset.field7 = true;
 }
 
-TYPED_TEST(StructTest, test_serialization) {
+TYPED_TEST(MultiProtocolTest, test_serialization) {
   // test/reflection.thrift
   struct1 a, b;
   init_struct_1(a);
@@ -182,7 +101,7 @@ TYPED_TEST(StructTest, test_serialization) {
   EXPECT_EQ(true, b.__isset.field8);
 }
 
-TYPED_TEST(StructTest, test_other_containers) {
+TYPED_TEST(MultiProtocolTest, test_other_containers) {
   struct4 a, b;
 
   a.um_field = {{42, "answer"}, {5, "five"}};
@@ -202,7 +121,7 @@ TYPED_TEST(StructTest, test_other_containers) {
   expect_same_serialized_size(a, this->writer);
 }
 
-TYPED_TEST(StructTest, test_blank_default_ref_field) {
+TYPED_TEST(MultiProtocolTest, test_blank_default_ref_field) {
   struct3 a, b;
   a.opt_nested = std::make_unique<smallstruct>();
   a.req_nested = std::make_unique<smallstruct>();
@@ -224,7 +143,7 @@ TYPED_TEST(StructTest, test_blank_default_ref_field) {
   expect_same_serialized_size(a, this->writer);
 }
 
-TYPED_TEST(StructTest, test_blank_optional_ref_field) {
+TYPED_TEST(MultiProtocolTest, test_blank_optional_ref_field) {
   struct3 a, b;
   a.def_nested = std::make_unique<smallstruct>();
   a.req_nested = std::make_unique<smallstruct>();
@@ -244,7 +163,7 @@ TYPED_TEST(StructTest, test_blank_optional_ref_field) {
   expect_same_serialized_size(a, this->writer);
 }
 
-TYPED_TEST(StructTest, test_blank_required_ref_field) {
+TYPED_TEST(MultiProtocolTest, test_blank_required_ref_field) {
   struct3 a, b;
   a.def_nested = std::make_unique<smallstruct>();
   a.opt_nested = std::make_unique<smallstruct>();
@@ -263,7 +182,17 @@ TYPED_TEST(StructTest, test_blank_required_ref_field) {
   expect_same_serialized_size(a, this->writer);
 }
 
-TYPED_TEST(CompareStructTest, test_struct_xfer) {
+TYPED_TEST(MultiProtocolTest, test_empty_containers) {
+  struct1 a, b;
+  serializer_write(a, this->writer);
+  this->prep_read();
+  this->debug_buffer();
+  serializer_read(b, this->reader);
+
+  EXPECT_EQ(a, b);
+}
+
+TYPED_TEST(CompareProtocolTest, test_struct_xfer) {
   struct1 a1, a2, b1, b2;
   init_struct_1(a1);
   init_struct_1(a2);
@@ -283,7 +212,7 @@ TYPED_TEST(CompareStructTest, test_struct_xfer) {
 }
 
 #ifndef UNIONS_STILL_BROKEN
-TYPED_TEST(CompareStructTest, test_union_xfer) {
+TYPED_TEST(CompareProtocolTest, test_union_xfer) {
   union1 a1, a2, b1, b2;
   a1.set_field_i64(0x1ABBADABAD00);
   a2.set_field_i64(0x1ABBADABAD00);
@@ -311,7 +240,7 @@ namespace {
   const folly::StringPiece test_string2(test_range2);
 }
 
-TYPED_TEST(StructTest, test_binary_containers) {
+TYPED_TEST(MultiProtocolTest, test_binary_containers) {
   struct5 a, b;
 
   a.def_field = test_string.str();
@@ -334,7 +263,7 @@ TYPED_TEST(StructTest, test_binary_containers) {
   expect_same_serialized_size(a, this->writer);
 }
 
-TYPED_TEST(StructTest, test_workaround_binary) {
+TYPED_TEST(MultiProtocolTest, test_workaround_binary) {
   struct5_workaround a, b;
   a.def_field = test_string.str();
   a.iobuf_field = folly::IOBuf::wrapBufferAsValue(test_range2);
@@ -350,7 +279,7 @@ TYPED_TEST(StructTest, test_workaround_binary) {
   expect_same_serialized_size(a, this->writer);
 }
 
-TYPED_TEST(StructTest, shared_ptr_test) {
+TYPED_TEST(MultiProtocolTest, shared_ptr_test) {
   struct6 a, b;
   a.def_field = std::make_shared<smallstruct>();
   a.req_field = std::make_shared<smallstruct>();
