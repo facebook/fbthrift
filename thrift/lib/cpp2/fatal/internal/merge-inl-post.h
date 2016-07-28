@@ -42,39 +42,36 @@ struct merge_impl {
   }
 };
 
-template <bool Move>
-struct merge_structure_visitor {
-  template <typename T>
-  using Src = typename std::conditional<Move, T, const T>::type;
-  template <typename MemberInfo, std::size_t Index, typename T>
-  void operator()(
-      fatal::indexed_type_tag<MemberInfo, Index>,
-      Src<T>& src,
-      T& dst) const {
-    using mgetter = typename MemberInfo::getter;
-    using merge_field = merge<typename MemberInfo::type>;
-    using mtype = typename MemberInfo::type;
-    using mref = typename std::conditional<Move, mtype&&, const mtype&>::type;
-    if (MemberInfo::optional::value == optionality::optional &&
-        !MemberInfo::is_set(src)) {
-      return;
-    }
-    MemberInfo::mark_set(dst);
-    merge_field::go(static_cast<mref>(mgetter::ref(src)), mgetter::ref(dst));
-  }
-};
-
 template <>
 struct merge_impl<type_class::structure> {
+  template <bool Move>
+  struct visitor {
+    template <typename T>
+    using Src = typename std::conditional<Move, T, const T>::type;
+    template <typename MemberInfo, std::size_t Index, typename T>
+    void operator()(
+        fatal::indexed_type_tag<MemberInfo, Index>,
+        Src<T>& src,
+        T& dst) const {
+      using mgetter = typename MemberInfo::getter;
+      using merge_field = merge<typename MemberInfo::type>;
+      using mtype = typename MemberInfo::type;
+      using mref = typename std::conditional<Move, mtype&&, const mtype&>::type;
+      if (MemberInfo::optional::value == optionality::optional &&
+          !MemberInfo::is_set(src)) {
+        return;
+      }
+      MemberInfo::mark_set(dst);
+      merge_field::go(static_cast<mref>(mgetter::ref(src)), mgetter::ref(dst));
+    }
+  };
   template <typename T>
   static void go(const T& src, T& dst) {
-    const auto visitor = merge_structure_visitor<false>();
-    reflect_struct<T>::members::mapped::foreach(visitor, src, dst);
+    reflect_struct<T>::members::mapped::foreach(visitor<false>(), src, dst);
   }
   template <typename T>
   static void go(T&& src, T& dst) {
-    const auto visitor = merge_structure_visitor<true>();
-    reflect_struct<T>::members::mapped::foreach(visitor, src, dst);
+    reflect_struct<T>::members::mapped::foreach(visitor<true>(), src, dst);
   }
 };
 
