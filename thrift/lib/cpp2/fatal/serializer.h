@@ -79,12 +79,12 @@ struct protocol_methods;
   constexpr static protocol::TType ttype_value = protocol::TTypeValue; \
   template <typename Protocol>              \
   static std::size_t read(Protocol& protocol, Type& out) {       \
-    VLOG(3) << "read primitive " << #Class << ": " << #Type; \
+    DVLOG(3) << "read primitive " << #Class << ": " << #Type; \
     return protocol.read##Method(out); \
   } \
   template <typename Protocol>              \
   static std::size_t write(Protocol& protocol, Type const& in) { \
-    VLOG(3) << "write primitive " << #Class << ": "<< #Type; \
+    DVLOG(3) << "write primitive " << #Class << ": "<< #Type; \
     return protocol.write##Method(in); \
   }
 
@@ -430,7 +430,7 @@ public:
     out = Type();
 
     xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
-    VLOG(3) << "read map begin: " << rpt_key_type << "/" << rpt_mapped_type
+    DVLOG(3) << "read map begin: " << rpt_key_type << "/" << rpt_mapped_type
       << " (" << map_size << ")";
 
     if(detail::is_unknown_container_size(map_size)) {
@@ -456,7 +456,7 @@ public:
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
-    VLOG(3) << "start map write: " <<
+    DVLOG(3) << "start map write: " <<
       key_methods::ttype_value << "/" <<
       mapped_methods::ttype_value << " (" << out.size() << ")";
     xfer += protocol.writeMapBegin(
@@ -640,7 +640,7 @@ struct protocol_methods<type_class::variant, Union> {
         std::is_same<typename descriptor::metadata::name, TString>(),
         "Instantiation failure, descriptor name mismatch");
 
-      VLOG(3) << "(union) matched string: " << TString::string()
+      DVLOG(3) << "(union) matched string: " << TString::string()
         << ", fid: " << fid
         << ", ftype: " << ftype;
 
@@ -699,7 +699,7 @@ public:
 
     xfer += protocol.readStructBegin(fname);
 
-    VLOG(3) << "began reading union: " << fname;
+    DVLOG(3) << "began reading union: " << fname;
     xfer += protocol.readFieldBegin(fname, ftype, fid);
     if(ftype == protocol::T_STOP) {
       out.__clear();
@@ -720,7 +720,7 @@ public:
         ::template binary_search<>
         ::exact(fid, set_member_by_fid<Protocol>(xfer, protocol, out), ftype))
       {
-        VLOG(3) << "didn't find field, fid: " << fid;
+        DVLOG(3) << "didn't find field, fid: " << fid;
         xfer += protocol.skip(ftype);
       }
 
@@ -755,7 +755,7 @@ private:
       assert(needle == Id::value);
       assert(needle == descriptor::id::value);
 
-      VLOG(3) << "writing union field "
+      DVLOG(3) << "writing union field "
         << descriptor::metadata::name::z_data()
         << ", fid: " << descriptor::metadata::id::value
         << ", ttype: " << methods::ttype_value;
@@ -779,7 +779,7 @@ public:
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Union const& in) {
     std::size_t xfer = 0;
-    VLOG(3) << "begin writing union: " << traits::name::z_data()
+    DVLOG(3) << "begin writing union: " << traits::name::z_data()
       << ", type: " << in.getType();
     xfer += protocol.writeStructBegin(traits::name::z_data());
     sorted_ids::template binary_search<>::exact(
@@ -789,7 +789,7 @@ public:
     );
     xfer += protocol.writeFieldStop();
     xfer += protocol.writeStructEnd();
-    VLOG(3) << "end writing union";
+    DVLOG(3) << "end writing union";
     return xfer;
   }
 
@@ -814,7 +814,7 @@ private:
       assert(needle == Id::value);
       assert(needle == descriptor::id::value);
 
-      VLOG(3) << "sizing union field "
+      DVLOG(3) << "sizing union field "
         << descriptor::metadata::name::z_data()
         << ", fid: " << descriptor::metadata::id::value
         << ", ttype: " << methods::ttype_value;
@@ -896,7 +896,7 @@ private:
         typename member::type
       >::ttype_value;
 
-      VLOG(3) << "matched string: " << TString::string()
+      DVLOG(3) << "matched string: " << TString::string()
         << ", fid: " << fid
         << ", ftype: " << ftype;
     }
@@ -960,11 +960,11 @@ public:
     isset_array required_isset = {};
 
     xfer += protocol.readStructBegin(fname);
-    VLOG(3) << "start reading struct: " << fname;
+    DVLOG(3) << "start reading struct: " << fname;
 
     while(true) {
       xfer += protocol.readFieldBegin(fname, ftype, fid);
-      VLOG(3) << "type: " << ftype
+      DVLOG(3) << "type: " << ftype
                  << ", fname: " << fname
                  << ", fid: " << fid;
 
@@ -994,7 +994,7 @@ public:
           required_isset
         )
       ) {
-        VLOG(3) << "didn't find field, fid: " << fid
+        DVLOG(3) << "didn't find field, fid: " << fid
                    << ", fname: " << fname;
         xfer += protocol.skip(ftype);
       }
@@ -1089,7 +1089,7 @@ private:
       }
       else {
         using field_traits = reflect_struct<struct_type>;
-        VLOG(3) << "empty ref struct, writing blank struct! "
+        DVLOG(3) << "empty ref struct, writing blank struct! "
           << field_traits::name::z_data();
         xfer += protocol.writeFieldBegin(
           Member::name::z_data(),
@@ -1152,7 +1152,7 @@ private:
         (Member::optional::value == optionality::required_of_writer) ||
         Member::is_set(in))
       {
-        VLOG(3) << "start field write: "
+        DVLOG(3) << "start field write: "
           << Member::name::z_data() << " ttype:" << methods::ttype_value
           << ", id:" << Member::id::value;
 
@@ -1242,7 +1242,7 @@ private:
       }
       else {
         using field_traits = reflect_struct<struct_type>;
-        VLOG(3) << "empty ref struct, sizing blank struct! "
+        DVLOG(3) << "empty ref struct, sizing blank struct! "
           << field_traits::name::z_data();
         xfer += protocol.serializedFieldSize(
           Member::name::z_data(),

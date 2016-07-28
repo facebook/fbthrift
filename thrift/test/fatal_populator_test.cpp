@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
 #include <thrift/lib/cpp2/fatal/populator.h>
 #include <thrift/lib/cpp2/fatal/serializer.h>
-#include <thrift/lib/cpp2/fatal/pretty_print.h>
 
 #include <thrift/test/fatal_serialization_common.h>
 
@@ -41,6 +40,7 @@ TYPED_TEST_CASE(MultiProtocolTest, protocol_type_pairs);
 TYPED_TEST(MultiProtocolTest, test_structs_populate) {
   populator_opts opts;
   std::mt19937 rng;
+
   for (int i = 0; i < 100; i++) {
     struct7 a, b;
     populator::populate(a, opts, rng);
@@ -81,6 +81,7 @@ TYPED_TEST(MultiProtocolTest, test_structs_populate) {
 TYPED_TEST(MultiProtocolTest, test_unions_populate) {
   std::mt19937 rng;
   populator_opts opts;
+
   for (int i = 0; i < 100; i++) {
     union1 a, b;
     populator::populate(a, opts, rng);

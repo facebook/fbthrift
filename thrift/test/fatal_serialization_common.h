@@ -85,13 +85,13 @@ template <typename Pair>
 struct MultiProtocolTest : public TypedTestCommon<Pair> {};
 
 template <typename Pair>
-struct MultiProtocolTestComcrete : public TypedTestCommon<Pair> {
+struct MultiProtocolTestConcrete : public TypedTestCommon<Pair> {
   virtual void TestBody() { return; }
 };
 
 template <typename Pair>
 struct CompareProtocolTest : public ::testing::Test {
-  MultiProtocolTestComcrete<Pair> st1, st2;
+  MultiProtocolTestConcrete<Pair> st1, st2;
 
   void prep_read() {
     st1.prep_read();

@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/simple_reflection_fatal.h>
-#include <thrift/test/gen-cpp2/simple_reflection_types.tcc>
 #include <thrift/test/gen-cpp2/simple_reflection_fatal_types.h>
-#include <thrift/test/gen-cpp2/simple_reflection_fatal_struct.h>
+#include <thrift/test/gen-cpp2/simple_reflection_types_custom_protocol.h>
 
 #include <thrift/lib/cpp2/fatal/serializer.h>
 #include <thrift/lib/cpp2/fatal/pretty_print.h>

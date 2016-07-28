@@ -100,7 +100,7 @@ struct populator_methods<type_class::integral, Int> {
     out = detail::rand_in_range(
       rng, populator_opts::range<Int>(limits::min(), limits::max())
     );
-    VLOG(4) << "generated int: " << out;
+    DVLOG(4) << "generated int: " << out;
   }
 };
 
@@ -110,7 +110,7 @@ struct populator_methods<type_class::floating_point, Fp> {
   static void populate(Rng& rng, populator_opts const& opts, Fp& out) {
     std::uniform_real_distribution<Fp> gen;
     out = gen(rng);
-    VLOG(4) << "generated real: " << out;
+    DVLOG(4) << "generated real: " << out;
   }
 };
 
@@ -136,7 +136,7 @@ struct populator_methods<type_class::string, std::string> {
       return static_cast<char>(char_gen(rng));
     });
 
-    VLOG(4) << "generated string of len" << length;
+    DVLOG(4) << "generated string of len" << length;
   }
 };
 
@@ -151,7 +151,7 @@ void generate_bytes(
   for(std::size_t i = 0; i < length; i++) {
     write_func(static_cast<uint8_t>(byte_gen(rng)));
   }
-  VLOG(4) << "generated binary of length " << length;
+  DVLOG(4) << "generated binary of length " << length;
 }
 
 template <>
@@ -257,7 +257,7 @@ struct populator_methods<type_class::list<ElemClass>, Type> {
     std::uint32_t list_size = detail::rand_in_range(rng, opts.list_len);
     out = Type();
 
-    VLOG(3) << "populating list size " << list_size;
+    DVLOG(3) << "populating list size " << list_size;
 
     out.resize(list_size);
     for(decltype(list_size) i = 0; i < list_size; i++) {
@@ -282,7 +282,7 @@ struct populator_methods<type_class::set<ElemClass>, Type> {
   static void populate(Rng& rng, populator_opts const& opts, Type& out) {
     std::uint32_t set_size = detail::rand_in_range(rng, opts.set_len);
 
-    VLOG(3) << "populating set size " << set_size;
+    DVLOG(3) << "populating set size " << set_size;
     out = Type();
 
     for(decltype(set_size) i = 0; i < set_size; i++) {
@@ -315,7 +315,7 @@ struct populator_methods<type_class::map<KeyClass, MappedClass>, Type> {
   static void populate(Rng& rng, populator_opts const& opts, Type& out) {
     std::uint32_t map_size = detail::rand_in_range(rng, opts.map_len);
 
-    VLOG(3) << "populating map size " << map_size;
+    DVLOG(3) << "populating map size " << map_size;
     out = Type();
 
     for(decltype(map_size) i = 0; i < map_size; i++) {
@@ -369,7 +369,7 @@ private:
       assert(needle == Fid::value);
       assert(needle == descriptor::metadata::id::value);
 
-      VLOG(3) << "writing union field "
+      DVLOG(3) << "writing union field "
         << descriptor::metadata::name::z_data()
         << ", fid: " << descriptor::metadata::id::value;
 
@@ -388,7 +388,7 @@ private:
 public:
   template <typename Rng>
   static void populate(Rng& rng, populator_opts const& opts, Union& out) {
-    VLOG(3) << "begin writing union: " << traits::name::z_data()
+    DVLOG(3) << "begin writing union: " << traits::name::z_data()
       << ", type: " << out.getType();
 
     // array of all possible FIDs of this union
@@ -407,7 +407,7 @@ public:
       opts,
       out
     );
-    VLOG(3) << "end writing union";
+    DVLOG(3) << "end writing union";
   }
 };
 
@@ -558,7 +558,7 @@ private:
       using member_type = typename std::decay<decltype(got)>::type;
       member_type tmp;
 
-      VLOG(3) << "populating member: " << Member::name::z_data();
+      DVLOG(3) << "populating member: " << Member::name::z_data();
 
       field_populator<
         Member,
