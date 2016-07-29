@@ -108,11 +108,6 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
     AsyncSocket::setReadCB(callback);
   }
 
-  TAsyncTransport::ReadCallback* getReadCallback() const override {
-    return dynamic_cast<TAsyncTransport::ReadCallback*>(
-      AsyncSocket::getReadCallback());
-  }
-
   void setIsAccepted(bool accepted) {
     accepted_ = accepted;
   }

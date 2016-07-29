@@ -80,7 +80,6 @@ class TAsyncTransport : virtual public folly::AsyncTransportWrapper {
   virtual void setReadCallback(TAsyncTransport::ReadCallback* callback) {
     setReadCB(callback);
   }
-  TAsyncTransport::ReadCallback* getReadCallback() const override = 0;
 };
 
 }}} // apache::thrift::async
