@@ -361,6 +361,12 @@ TEST(Frozen, DedupedSchema) {
   }
 }
 
+TEST(Frozen, TypeHelpers) {
+  auto f = freeze(tom1);
+  View<example2::Pet1> m = f.pets()[0];
+  EXPECT_EQ(m.name(), "max");
+}
+
 TEST(Frozen, RangeTrivialRange) {
   auto data = std::vector<float>{3.0, 4.0, 5.0};
   auto view = freeze(data);

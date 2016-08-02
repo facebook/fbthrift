@@ -764,6 +764,14 @@ void thawField(ViewPosition self,
   }
 }
 
+/**
+ * Type alias for a View object which can be treated like a 'const T*', but for
+ * Frozen types. Note that like raw pointers, this does not own the referenced
+ * memory, it only points to it.
+ */
+template<class T>
+using View = typename Layout<T>::View;
+
 }}}
 
 #include <thrift/lib/cpp2/frozen/FrozenTrivial-inl.h> // @nolint
