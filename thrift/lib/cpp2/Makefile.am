@@ -106,7 +106,9 @@ thrift2include_server_HEADERS = \
 	server/Cpp2ConnContext.h \
 	server/Cpp2Connection.h \
 	server/Cpp2Worker.h \
-	server/ThriftServer.h
+	server/SSLRejectingManager.h \
+	server/ThriftServer.h \
+	server/TLSHelper.h
 
 thrift2include_utildir = $(thrift2includedir)/util
 
@@ -202,6 +204,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   server/Cpp2Connection.cpp \
 			   server/Cpp2Worker.cpp \
 			   server/ThriftServer.cpp \
+			   server/TLSHelper.cpp \
 			   util/FilePoller.cpp \
 			   util/ScopedServerInterfaceThread.cpp \
 			   ../cpp/EventHandlerBase.cpp \

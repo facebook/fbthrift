@@ -117,6 +117,34 @@ TEST(ThriftServer, CompressionClientTest) {
   }
 }
 
+class ConnCallback : public TAsyncSocket::ConnectCallback {
+ public:
+  void connectSuccess() noexcept override {
+  }
+
+  void connectError(
+      const transport::TTransportException& ex) noexcept override {
+    exception.reset(new transport::TTransportException(ex));
+  }
+
+  std::unique_ptr<transport::TTransportException> exception;
+};
+
+TEST(ThriftServer, SSLClientOnPlaintextServerTest) {
+  TestThriftServerFactory<TestInterface> factory;
+  ScopedServerThread sst(factory.create());
+  folly::EventBase base;
+  auto sslCtx = std::make_shared<SSLContext>();
+  std::shared_ptr<TAsyncSocket> socket(
+      TAsyncSSLSocket::newSocket(sslCtx, &base));
+  ConnCallback cb;
+  socket->connect(&cb, *sst.getAddress());
+  base.loop();
+  ASSERT_TRUE(cb.exception);
+  auto msg = cb.exception->what();
+  EXPECT_NE(nullptr, strstr(msg, "unexpected message"));
+}
+
 TEST(ThriftServer, CompressionServerTest) {
   /* This tests the boundary condition of uncompressed value being larger
      than minCompressBytes and compressed value being smaller. We want to ensure

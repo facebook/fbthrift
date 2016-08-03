@@ -93,6 +93,8 @@ class TServerObserver {
 
   virtual void callCompleted(const CallTimestamps& /*runtimes*/) {}
 
+  virtual void protocolError() {}
+
   // The observer has to specify a sample rate for callCompleted notifications
   inline uint32_t getSampleRate() const {
     return sampleRate_;

@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/server/TLSHelper.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventHandler.h>
 #include <thrift/lib/cpp/server/TServer.h>
@@ -115,13 +116,12 @@ class Cpp2Worker
     SecureTransportType type = SecureTransportType::TLS) noexcept override;
 
  protected:
-  enum { kPeekCount = 9 };
-  using PeekingHelper = wangle::PeekingAcceptorHandshakeHelper<kPeekCount>;
+  using PeekingHelper = wangle::PeekingAcceptorHandshakeHelper<kTLSPeekBytes>;
 
   class PeekingCallback : public PeekingHelper::PeekCallback {
    public:
     virtual wangle::AcceptorHandshakeHelper::UniquePtr getHelper(
-        std::array<uint8_t, kPeekCount> bytes,
+        std::array<uint8_t, kTLSPeekBytes> bytes,
         wangle::Acceptor* acceptor,
         const folly::SocketAddress& clientAddr,
         std::chrono::steady_clock::time_point acceptTime,
@@ -141,11 +141,18 @@ class Cpp2Worker
                        SecureTransportType,
                        const wangle::TransportInfo&) override;
 
-  static bool looksLikeTLS(std::array<uint8_t, kPeekCount>& bytes);
+  static bool looksLikeTLS(std::array<uint8_t, kTLSPeekBytes>& bytes);
 
   SSLPolicy getSSLPolicy() {
     return server_->getSSLPolicy();
   }
+
+  void plaintextConnectionReady(
+      folly::AsyncTransportWrapper::UniquePtr sock,
+      const folly::SocketAddress& clientAddr,
+      const std::string& nextProtocolName,
+      SecureTransportType secureTransportType,
+      wangle::TransportInfo& tinfo) override;
 
  private:
   /// The mother ship.
@@ -203,7 +210,7 @@ class Cpp2Worker
 
     case SSLPolicy::PERMITTED: {
       // Peek and fall back to insecure if non-TLS bytes discovered
-      auto manager = new wangle::PeekingAcceptorHandshakeManager<kPeekCount>(
+      auto manager = new wangle::PeekingAcceptorHandshakeManager<kTLSPeekBytes>(
           this,
           clientAddr,
           acceptTime,
