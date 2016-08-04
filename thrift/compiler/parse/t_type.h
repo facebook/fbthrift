@@ -79,6 +79,12 @@ class t_type : public t_doc {
   virtual bool is_base_type()      const { return false; }
   virtual bool is_string()         const { return false; }
   virtual bool is_bool()           const { return false; }
+  virtual bool is_byte()           const { return false; }
+  virtual bool is_i16()            const { return false; }
+  virtual bool is_i32()            const { return false; }
+  virtual bool is_i64()            const { return false; }
+  virtual bool is_float()          const { return false; }
+  virtual bool is_double()         const { return false; }
   virtual bool is_floating_point() const { return false; }
   virtual bool is_typedef()        const { return false; }
   virtual bool is_enum()           const { return false; }
