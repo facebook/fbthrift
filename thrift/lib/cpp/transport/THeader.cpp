@@ -63,7 +63,7 @@ const string THeader::PRIORITY_HEADER = "thrift_priority";
 const string& THeader::CLIENT_TIMEOUT_HEADER = *(new string("client_timeout"));
 const string THeader::QUEUE_TIMEOUT_HEADER = "queue_timeout";
 
-static const string THRIFT_AUTH_HEADER = "thrift_auth";
+static constexpr StringPiece THRIFT_AUTH_HEADER = "thrift_auth";
 
 THeader::THeader(int options)
   : queue_(new folly::IOBufQueue)
@@ -369,7 +369,7 @@ unique_ptr<IOBuf> THeader::removeHeader(
   buf = readHeaderFormat(queue->split(sz), persistentReadHeaders);
 
   // auth client?
-  auto auth_header = getHeaders().find(THRIFT_AUTH_HEADER);
+  auto auth_header = getHeaders().find(THRIFT_AUTH_HEADER.str());
 
   // Correct client type if needed
   if (auth_header != getHeaders().end()) {
