@@ -263,7 +263,7 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::write(
 template <>
 template <class Protocol_>
 inline uint32_t Cpp2Ops< SerializableDynamic>::serializedSize(
-    Protocol_* p,
+    Protocol_ const* p,
     const SerializableDynamic* obj) {
   uint32_t xfer = 0;
   xfer += p->serializedStructSize("Variant");
@@ -324,7 +324,7 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::serializedSize(
 template <>
 template <class Protocol_>
 inline uint32_t Cpp2Ops< SerializableDynamic>::serializedSizeZC(
-    Protocol_* p,
+    Protocol_ const* p,
     const SerializableDynamic* obj) {
   return Cpp2Ops< SerializableDynamic>::serializedSize(p, obj);
 }

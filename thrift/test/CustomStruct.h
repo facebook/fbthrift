@@ -96,7 +96,7 @@ inline uint32_t Cpp2Ops< ::thrift::test::MyCustomStruct>::write(
 template <>
 template <class Protocol>
 inline uint32_t Cpp2Ops< ::thrift::test::MyCustomStruct>::serializedSize(
-    Protocol* p,
+    Protocol const* p,
     const ::thrift::test::MyCustomStruct* obj) {
   uint32_t xfer = 0;
   assert(obj->data_.size() >= sizeof(int));
@@ -114,7 +114,7 @@ inline uint32_t Cpp2Ops< ::thrift::test::MyCustomStruct>::serializedSize(
 template <>
 template <class Protocol>
 inline uint32_t Cpp2Ops< ::thrift::test::MyCustomStruct>::serializedSizeZC(
-    Protocol* p,
+    Protocol const* p,
     const ::thrift::test::MyCustomStruct* obj) {
   return Cpp2Ops< ::thrift::test::MyCustomStruct>::serializedSize(p, obj);
 }
@@ -206,7 +206,7 @@ inline uint32_t Cpp2Ops< ::thrift::test::MyCustomUnion>::write(
 template <>
 template <class Protocol>
 inline uint32_t Cpp2Ops< ::thrift::test::MyCustomUnion>::serializedSize(
-    Protocol* p,
+    Protocol const* p,
     const ::thrift::test::MyCustomUnion* obj) {
   uint32_t xfer = 0;
   xfer += p->serializedStructSize("MyStruct");
@@ -225,7 +225,7 @@ inline uint32_t Cpp2Ops< ::thrift::test::MyCustomUnion>::serializedSize(
 template <>
 template <class Protocol>
 inline uint32_t Cpp2Ops< ::thrift::test::MyCustomUnion>::serializedSizeZC(
-    Protocol* p,
+    Protocol const* p,
     const ::thrift::test::MyCustomUnion* obj) {
   return Cpp2Ops< ::thrift::test::MyCustomUnion>::serializedSize(p, obj);
 }

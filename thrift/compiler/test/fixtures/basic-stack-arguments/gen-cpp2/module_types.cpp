@@ -44,12 +44,12 @@ namespace cpp2 {
 
 template uint32_t MyStruct::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t MyStruct::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyStruct::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyStruct::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyStruct::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyStruct::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t MyStruct::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t MyStruct::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyStruct::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyStruct::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyStruct::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyStruct::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void MyStruct::__clear() {
   MyIntField = 0;

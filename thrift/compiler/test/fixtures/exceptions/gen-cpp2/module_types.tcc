@@ -51,7 +51,7 @@ uint32_t Banal::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t Banal::serializedSize(Protocol_* prot_) const {
+uint32_t Banal::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Banal");
   xfer += prot_->serializedSizeStop();
@@ -59,7 +59,7 @@ uint32_t Banal::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Banal::serializedSizeZC(Protocol_* prot_) const {
+uint32_t Banal::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Banal");
   xfer += prot_->serializedSizeStop();
@@ -133,7 +133,7 @@ uint32_t Fiery::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t Fiery::serializedSize(Protocol_* prot_) const {
+uint32_t Fiery::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Fiery");
   xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
@@ -143,7 +143,7 @@ uint32_t Fiery::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Fiery::serializedSizeZC(Protocol_* prot_) const {
+uint32_t Fiery::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Fiery");
   xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);

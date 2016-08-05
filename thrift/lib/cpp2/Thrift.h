@@ -90,10 +90,10 @@ class Cpp2Ops {
   static uint32_t read(P*, T*);
 
   template <class P>
-  static uint32_t serializedSize(P*, const T*);
+  static uint32_t serializedSize(P const*, T const*);
 
   template <class P>
-  static uint32_t serializedSizeZC(P*, const T*);
+  static uint32_t serializedSizeZC(P const*, T const*);
 
   static constexpr apache::thrift::protocol::TType thriftType();
 };

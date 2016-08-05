@@ -359,7 +359,7 @@ uint32_t CompactProtocolWriterImpl<Appender, Storage>::writeBinary(
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedMessageSize(
-    const std::string& name) {
+    const std::string& name) const {
   // I32{version} + String{name} + I32{seqid}
   return 2*serializedSizeI32() + serializedSizeString(name);
 }
@@ -368,14 +368,14 @@ template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedFieldSize(
     const char* /*name*/,
     TType /*fieldType*/,
-    int16_t /*fieldId*/) {
+    int16_t /*fieldId*/) const {
   // byte + I16
   return serializedSizeByte() + serializedSizeI16();
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedStructSize(
-    const char* /*name*/) {
+    const char* /*name*/) const {
   return 0;
 }
 
@@ -383,116 +383,120 @@ template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeMapBegin(
     TType /*keyType*/,
     TType /*valType*/,
-    uint32_t /*size*/) {
+    uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeByte() +
          serializedSizeI32();
 }
 
 template <class Appender, class Storage>
-uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeMapEnd() {
+uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeMapEnd()
+const {
   return 0;
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeListBegin(
     TType /*elemType*/,
-    uint32_t /*size*/) {
+    uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeI32();
 }
 
 template <class Appender, class Storage>
-uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeListEnd() {
+uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeListEnd()
+const {
   return 0;
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeSetBegin(
     TType /*elemType*/,
-    uint32_t /*size*/) {
+    uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeI32();
 }
 
 template <class Appender, class Storage>
-uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeSetEnd() {
+uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeSetEnd()
+const {
   return 0;
 }
 
 template <class Appender, class Storage>
-uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeStop() {
+uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeStop()
+const {
   return 1;
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeBool(
-    bool /* val */) {
+    bool /* val */) const {
   return 1;
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeByte(
-    int8_t /* val */) {
+    int8_t /* val */) const {
   return 1;
 }
 
 // Varint writes can be up to one additional byte
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeI16(
-    int16_t /*val*/) {
+    int16_t /*val*/) const {
   return 3;
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeI32(
-    int32_t /*val*/) {
+    int32_t /*val*/) const {
   return 5;
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeI64(
-    int64_t /*val*/) {
+    int64_t /*val*/) const {
   return 10;
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeDouble(
-    double /*val*/) {
+    double /*val*/) const {
   return 8;
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeFloat(
-    float /*val*/) {
+    float /*val*/) const {
   return 4;
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeString(
-    folly::StringPiece str) {
+    folly::StringPiece str) const {
   return serializedSizeBinary(str);
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeBinary(
-    folly::StringPiece str) {
+    folly::StringPiece str) const {
   return serializedSizeBinary(folly::ByteRange(str));
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeBinary(
-    folly::ByteRange v) {
+    folly::ByteRange v) const {
   // I32{length of string} + binary{string contents}
   return serializedSizeI32() + v.size();
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeBinary(
-    const std::unique_ptr<folly::IOBuf>& v) {
+    std::unique_ptr<folly::IOBuf> const& v) const {
   return v ? serializedSizeBinary(*v) : 0;
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeBinary(
-    const folly::IOBuf& v) {
+    folly::IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
@@ -502,26 +506,26 @@ uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeBinary(
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeZCBinary(
-    folly::StringPiece str) {
+    folly::StringPiece str) const {
   return serializedSizeZCBinary(folly::ByteRange(str));
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeZCBinary(
-    folly::ByteRange v) {
+    folly::ByteRange v) const {
   return serializedSizeBinary(v);
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeZCBinary(
-    const std::unique_ptr<IOBuf>& /*v*/) {
+    std::unique_ptr<IOBuf> const& /*v*/) const {
   // size only
   return serializedSizeI32();
 }
 
 template <class Appender, class Storage>
 uint32_t CompactProtocolWriterImpl<Appender, Storage>::serializedSizeZCBinary(
-    const IOBuf& /*v*/) {
+    IOBuf const& /*v*/) const {
   // size only
   return serializedSizeI32();
 }

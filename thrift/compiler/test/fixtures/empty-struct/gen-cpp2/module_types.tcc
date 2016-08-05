@@ -51,7 +51,7 @@ uint32_t Empty::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t Empty::serializedSize(Protocol_* prot_) const {
+uint32_t Empty::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Empty");
   xfer += prot_->serializedSizeStop();
@@ -59,7 +59,7 @@ uint32_t Empty::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Empty::serializedSizeZC(Protocol_* prot_) const {
+uint32_t Empty::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Empty");
   xfer += prot_->serializedSizeStop();

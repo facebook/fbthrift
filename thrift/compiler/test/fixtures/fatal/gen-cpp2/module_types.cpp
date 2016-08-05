@@ -110,12 +110,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template uint32_t union1::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t union1::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t union1::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t union1::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t union1::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t union1::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t union1::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t union1::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t union1::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t union1::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t union1::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t union1::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void union1::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
@@ -194,12 +194,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template uint32_t union2::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t union2::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t union2::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t union2::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t union2::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t union2::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t union2::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t union2::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t union2::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t union2::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t union2::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t union2::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void union2::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
@@ -278,12 +278,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template uint32_t union3::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t union3::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t union3::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t union3::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t union3::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t union3::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t union3::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t union3::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t union3::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t union3::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t union3::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t union3::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void union3::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
@@ -362,12 +362,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template uint32_t structA::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t structA::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t structA::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t structA::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t structA::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t structA::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t structA::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t structA::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t structA::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t structA::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t structA::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t structA::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void structA::__clear() {
   a = 0;
@@ -400,12 +400,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template uint32_t unionA::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t unionA::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t unionA::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t unionA::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t unionA::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t unionA::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t unionA::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t unionA::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t unionA::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t unionA::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t unionA::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t unionA::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void unionA::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
@@ -494,12 +494,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template uint32_t structB::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t structB::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t structB::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t structB::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t structB::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t structB::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t structB::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t structB::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t structB::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t structB::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t structB::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t structB::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void structB::__clear() {
   c = 0;
@@ -532,12 +532,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template uint32_t structC::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t structC::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t structC::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t structC::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t structC::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t structC::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t structC::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t structC::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t structC::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t structC::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t structC::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t structC::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void structC::__clear() {
   a = 0;
@@ -902,12 +902,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template uint32_t struct1::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct1::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t struct1::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t struct1::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct1::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct1::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct1::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct1::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t struct1::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t struct1::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct1::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct1::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void struct1::__clear() {
   field0 = 0;
@@ -982,12 +982,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template uint32_t struct2::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct2::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t struct2::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t struct2::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct2::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct2::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct2::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct2::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t struct2::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t struct2::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct2::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct2::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void struct2::__clear() {
   fieldA = 0;
@@ -1069,12 +1069,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template uint32_t struct3::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct3::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t struct3::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t struct3::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct3::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct3::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct3::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct3::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t struct3::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t struct3::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct3::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct3::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void struct3::__clear() {
   fieldA = 0;

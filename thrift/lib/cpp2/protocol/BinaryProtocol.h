@@ -113,40 +113,42 @@ class BinaryProtocolWriter {
    * Functions that return the serialized size
    */
 
-  inline uint32_t serializedMessageSize(const std::string& name);
+  inline uint32_t serializedMessageSize(const std::string& name) const;
   inline uint32_t serializedFieldSize(const char* name,
                                       TType fieldType,
-                                      int16_t fieldId);
-  inline uint32_t serializedStructSize(const char* name);
+                                      int16_t fieldId) const;
+  inline uint32_t serializedStructSize(const char* name) const;
   inline uint32_t serializedSizeMapBegin(TType keyType,
                                          TType valType,
-                                         uint32_t size);
-  inline uint32_t serializedSizeMapEnd();
+                                         uint32_t size) const;
+  inline uint32_t serializedSizeMapEnd() const;
   inline uint32_t serializedSizeListBegin(TType elemType,
-                                            uint32_t size);
-  inline uint32_t serializedSizeListEnd();
+                                            uint32_t size) const;
+  inline uint32_t serializedSizeListEnd() const;
   inline uint32_t serializedSizeSetBegin(TType elemType,
-                                           uint32_t size);
-  inline uint32_t serializedSizeSetEnd();
-  inline uint32_t serializedSizeStop();
-  inline uint32_t serializedSizeBool(bool = false);
-  inline uint32_t serializedSizeByte(int8_t = 0);
-  inline uint32_t serializedSizeI16(int16_t = 0);
-  inline uint32_t serializedSizeI32(int32_t = 0);
-  inline uint32_t serializedSizeI64(int64_t = 0);
-  inline uint32_t serializedSizeDouble(double = 0.0);
-  inline uint32_t serializedSizeFloat(float = 0);
-  inline uint32_t serializedSizeString(folly::StringPiece str);
-  inline uint32_t serializedSizeBinary(folly::StringPiece str);
-  inline uint32_t serializedSizeBinary(folly::ByteRange);
-  inline uint32_t serializedSizeBinary(const std::unique_ptr<folly::IOBuf>& v);
-  inline uint32_t serializedSizeBinary(const folly::IOBuf& v);
-  inline uint32_t serializedSizeZCBinary(folly::StringPiece str);
-  inline uint32_t serializedSizeZCBinary(folly::ByteRange v);
-  inline uint32_t serializedSizeZCBinary(const std::unique_ptr<folly::IOBuf>&);
-  inline uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/);
+                                           uint32_t size) const;
+  inline uint32_t serializedSizeSetEnd() const;
+  inline uint32_t serializedSizeStop() const;
+  inline uint32_t serializedSizeBool(bool = false) const;
+  inline uint32_t serializedSizeByte(int8_t = 0) const;
+  inline uint32_t serializedSizeI16(int16_t = 0) const;
+  inline uint32_t serializedSizeI32(int32_t = 0) const;
+  inline uint32_t serializedSizeI64(int64_t = 0) const;
+  inline uint32_t serializedSizeDouble(double = 0.0) const;
+  inline uint32_t serializedSizeFloat(float = 0) const;
+  inline uint32_t serializedSizeString(folly::StringPiece str) const;
+  inline uint32_t serializedSizeBinary(folly::StringPiece str) const;
+  inline uint32_t serializedSizeBinary(folly::ByteRange) const;
+  inline uint32_t serializedSizeBinary(
+    std::unique_ptr<folly::IOBuf> const& v) const;
+  inline uint32_t serializedSizeBinary(folly::IOBuf const& v) const;
+  inline uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
+  inline uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
+  inline uint32_t serializedSizeZCBinary(
+    std::unique_ptr<folly::IOBuf> const&) const;
+  inline uint32_t serializedSizeZCBinary(folly::IOBuf const& /*v*/) const;
   inline uint32_t serializedSizeSerializedData(
-      const std::unique_ptr<folly::IOBuf>& data);
+      std::unique_ptr<folly::IOBuf> const& data) const;
 
  protected:
   /**

@@ -90,7 +90,7 @@ uint32_t MyUnion::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t MyUnion::serializedSize(Protocol_* prot_) const {
+uint32_t MyUnion::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyUnion");
   switch(this->getType()) {
@@ -113,7 +113,7 @@ uint32_t MyUnion::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyUnion::serializedSizeZC(Protocol_* prot_) const {
+uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyUnion");
   switch(this->getType()) {
@@ -247,7 +247,7 @@ uint32_t MyField::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t MyField::serializedSize(Protocol_* prot_) const {
+uint32_t MyField::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyField");
   if (this->__isset.opt_value) {
@@ -263,7 +263,7 @@ uint32_t MyField::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyField::serializedSizeZC(Protocol_* prot_) const {
+uint32_t MyField::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyField");
   if (this->__isset.opt_value) {
@@ -391,7 +391,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t MyStruct::serializedSize(Protocol_* prot_) const {
+uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   if (this->opt_ref) {
@@ -425,7 +425,7 @@ uint32_t MyStruct::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyStruct::serializedSizeZC(Protocol_* prot_) const {
+uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   if (this->opt_ref) {
@@ -590,7 +590,7 @@ uint32_t StructWithUnion::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t StructWithUnion::serializedSize(Protocol_* prot_) const {
+uint32_t StructWithUnion::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("StructWithUnion");
   xfer += prot_->serializedFieldSize("u", apache::thrift::protocol::T_STRUCT, 1);
@@ -610,7 +610,7 @@ uint32_t StructWithUnion::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t StructWithUnion::serializedSizeZC(Protocol_* prot_) const {
+uint32_t StructWithUnion::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("StructWithUnion");
   xfer += prot_->serializedFieldSize("u", apache::thrift::protocol::T_STRUCT, 1);
@@ -732,7 +732,7 @@ uint32_t RecursiveStruct::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t RecursiveStruct::serializedSize(Protocol_* prot_) const {
+uint32_t RecursiveStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("RecursiveStruct");
   if (this->__isset.mes) {
@@ -748,7 +748,7 @@ uint32_t RecursiveStruct::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t RecursiveStruct::serializedSizeZC(Protocol_* prot_) const {
+uint32_t RecursiveStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("RecursiveStruct");
   if (this->__isset.mes) {
@@ -1101,7 +1101,7 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t StructWithContainers::serializedSize(Protocol_* prot_) const {
+uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("StructWithContainers");
   xfer += prot_->serializedFieldSize("list_ref", apache::thrift::protocol::T_LIST, 1);
@@ -1215,7 +1215,7 @@ uint32_t StructWithContainers::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t StructWithContainers::serializedSizeZC(Protocol_* prot_) const {
+uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("StructWithContainers");
   xfer += prot_->serializedFieldSize("list_ref", apache::thrift::protocol::T_LIST, 1);

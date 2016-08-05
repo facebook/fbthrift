@@ -157,7 +157,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t ComplexUnion::serializedSize(Protocol_* prot_) const {
+uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ComplexUnion");
   switch(this->getType()) {
@@ -206,7 +206,7 @@ uint32_t ComplexUnion::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t ComplexUnion::serializedSizeZC(Protocol_* prot_) const {
+uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ComplexUnion");
   switch(this->getType()) {

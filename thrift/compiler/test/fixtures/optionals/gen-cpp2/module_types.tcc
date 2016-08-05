@@ -113,7 +113,7 @@ uint32_t Color::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t Color::serializedSize(Protocol_* prot_) const {
+uint32_t Color::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Color");
   xfer += prot_->serializedFieldSize("red", apache::thrift::protocol::T_DOUBLE, 1);
@@ -129,7 +129,7 @@ uint32_t Color::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Color::serializedSizeZC(Protocol_* prot_) const {
+uint32_t Color::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Color");
   xfer += prot_->serializedFieldSize("red", apache::thrift::protocol::T_DOUBLE, 1);
@@ -260,7 +260,7 @@ uint32_t Vehicle::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t Vehicle::serializedSize(Protocol_* prot_) const {
+uint32_t Vehicle::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Vehicle");
   xfer += prot_->serializedFieldSize("color", apache::thrift::protocol::T_STRUCT, 1);
@@ -282,7 +282,7 @@ uint32_t Vehicle::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Vehicle::serializedSizeZC(Protocol_* prot_) const {
+uint32_t Vehicle::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Vehicle");
   xfer += prot_->serializedFieldSize("color", apache::thrift::protocol::T_STRUCT, 1);
@@ -568,7 +568,7 @@ uint32_t Person::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t Person::serializedSize(Protocol_* prot_) const {
+uint32_t Person::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Person");
   xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
@@ -625,7 +625,7 @@ uint32_t Person::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Person::serializedSizeZC(Protocol_* prot_) const {
+uint32_t Person::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Person");
   xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);

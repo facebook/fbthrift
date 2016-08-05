@@ -60,23 +60,23 @@ class JSONProtocolWriter : public JSONProtocolWriterCommon {
    * Functions that return the serialized size
    */
 
-  inline uint32_t serializedMessageSize(const std::string& name);
+  inline uint32_t serializedMessageSize(const std::string& name) const;
   inline uint32_t serializedFieldSize(const char* name,
                                       TType fieldType,
-                                      int16_t fieldId);
-  inline uint32_t serializedStructSize(const char* name);
+                                      int16_t fieldId) const;
+  inline uint32_t serializedStructSize(const char* name) const;
   inline uint32_t serializedSizeMapBegin(TType keyType,
                                          TType valType,
-                                         uint32_t size);
-  inline uint32_t serializedSizeMapEnd();
+                                         uint32_t size) const;
+  inline uint32_t serializedSizeMapEnd() const;
   inline uint32_t serializedSizeListBegin(TType elemType,
-                                            uint32_t size);
-  inline uint32_t serializedSizeListEnd();
+                                            uint32_t size) const;
+  inline uint32_t serializedSizeListEnd() const;
   inline uint32_t serializedSizeSetBegin(TType elemType,
-                                           uint32_t size);
-  inline uint32_t serializedSizeSetEnd();
-  inline uint32_t serializedSizeStop();
-  inline uint32_t serializedSizeBool(bool = false);
+                                           uint32_t size) const;
+  inline uint32_t serializedSizeSetEnd() const;
+  inline uint32_t serializedSizeStop() const;
+  inline uint32_t serializedSizeBool(bool = false) const;
 };
 
 class JSONProtocolReader : public JSONProtocolReaderCommon {

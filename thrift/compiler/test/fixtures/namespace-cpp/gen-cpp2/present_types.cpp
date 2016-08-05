@@ -14,12 +14,12 @@ namespace foo { namespace bar {
 
 template uint32_t MyData::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t MyData::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyData::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyData::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyData::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyData::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t MyData::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
 template uint32_t MyData::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyData::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyData::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyData::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyData::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void MyData::__clear() {
   datum = std::string();

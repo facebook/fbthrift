@@ -208,7 +208,7 @@ uint32_t JSONProtocolWriter::writeBool(bool value) {
  */
 
 uint32_t JSONProtocolWriter::serializedMessageSize(
-    const std::string& name) {
+    const std::string& name) const {
   return 2 // list begin and end
     + serializedSizeI32() * 3
     + serializedSizeString(name);
@@ -216,48 +216,48 @@ uint32_t JSONProtocolWriter::serializedMessageSize(
 
 uint32_t JSONProtocolWriter::serializedFieldSize(const char* name,
                                                  TType /*fieldType*/,
-                                                 int16_t /*fieldId*/) {
+                                                 int16_t /*fieldId*/) const {
   // string plus ":"
   return folly::constexpr_strlen(R"(,"32767":{"typ":})");
 }
 
-uint32_t JSONProtocolWriter::serializedStructSize(const char* /*name*/) {
+uint32_t JSONProtocolWriter::serializedStructSize(const char* /*name*/) const {
   return folly::constexpr_strlen(R"({})");
 }
 
 uint32_t JSONProtocolWriter::serializedSizeMapBegin(TType /*keyType*/,
                                                     TType /*valType*/,
-                                                    uint32_t /*size*/) {
+                                                    uint32_t /*size*/) const {
   return folly::constexpr_strlen(R"(["typ","typ",4294967295,{)");
 }
 
-uint32_t JSONProtocolWriter::serializedSizeMapEnd() {
+uint32_t JSONProtocolWriter::serializedSizeMapEnd() const {
   return folly::constexpr_strlen(R"(}])");
 }
 
 uint32_t JSONProtocolWriter::serializedSizeListBegin(TType /*elemType*/,
-                                                           uint32_t /*size*/) {
+                                                     uint32_t /*size*/) const {
   return folly::constexpr_strlen(R"(["typ",4294967295)");
 }
 
-uint32_t JSONProtocolWriter::serializedSizeListEnd() {
+uint32_t JSONProtocolWriter::serializedSizeListEnd() const {
   return folly::constexpr_strlen(R"(])");
 }
 
 uint32_t JSONProtocolWriter::serializedSizeSetBegin(TType /*elemType*/,
-                                                          uint32_t /*size*/) {
+                                                    uint32_t /*size*/) const {
   return folly::constexpr_strlen(R"(["typ",4294967295)");
 }
 
-uint32_t JSONProtocolWriter::serializedSizeSetEnd() {
+uint32_t JSONProtocolWriter::serializedSizeSetEnd() const {
   return folly::constexpr_strlen(R"(])");
 }
 
-uint32_t JSONProtocolWriter::serializedSizeStop() {
+uint32_t JSONProtocolWriter::serializedSizeStop() const {
   return 0;
 }
 
-uint32_t JSONProtocolWriter::serializedSizeBool(bool /*val*/) {
+uint32_t JSONProtocolWriter::serializedSizeBool(bool /*val*/) const {
   return 2;
 }
 

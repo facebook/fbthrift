@@ -2349,37 +2349,41 @@ class CppGenerator(t_generator.Generator):
                 if a == 'simple_json' and not simplejson:
                     continue
                 if not self.flag_compatibility:
-                    output(("template uint32_t {1}::read<apache::thrift::{0}Reader>"
-                           "(apache::thrift::{0}Reader*);").format(b,obj.name))
+                    output(("template uint32_t {1}::read<"
+                            "apache::thrift::{0}Reader>"
+                            "(apache::thrift::{0}Reader*);").format(
+                                    b, obj.name))
 
                     output(("template uint32_t {1}::write<"
                             "apache::thrift::{0}Writer"">("
                             "apache::thrift::{0}Writer*) const;").format(
-                                    b,obj.name))
+                                    b, obj.name))
                     output(("template uint32_t {1}::serializedSize"
-                           "<apache::thrift::{0}Writer>(apache::thrift::{0}Writer*)"
-                            " const;").format(b,obj.name))
+                            "<apache::thrift::{0}Writer>("
+                            "apache::thrift::{0}Writer const*)"
+                            " const;").format(b, obj.name))
                     output(("template uint32_t {1}::serializedSizeZC"
                             "<apache::thrift::{0}Writer>("
-                            "apache::thrift::{0}Writer*) const;").format(
-                                        b,obj.name))
+                            "apache::thrift::{0}Writer const*) const;").format(
+                                    b, obj.name))
                 else:
                     output(("template uint32_t {1}_read<"
                             "apache::thrift::{0}Reader>("
                             "apache::thrift::{0}Reader*, {1}*);").format(
-                                        b,obj.name))
+                                    b, obj.name))
                     output(("template uint32_t {1}_write<"
                             "apache::thrift::{0}Writer>("
                             "apache::thrift::{0}Writer*, const {1}*);").format(
-                                    b,obj.name))
+                                    b, obj.name))
                     output(("template uint32_t {1}_serializedSize<"
                             "apache::thrift::{0}Writer>("
-                            "apache::thrift::{0}Writer*, const {1}*);").format(
-                                    b,obj.name))
+                            "apache::thrift::{0}Writer const*, "
+                            "const {1}*);").format(
+                                    b, obj.name))
                     output(("template uint32_t {1}_serializedSizeZC<"
                             "apache::thrift::{0}Writer>("
-                            "apache::thrift::{0}Writer*, const {1}*);").format(
-                                        b,obj.name))
+                            "apache::thrift::{0}Writer const*, "
+                            "const {1}*);").format(b, obj.name))
 
         if self.flag_compatibility:
             base = self._namespace_prefix(
@@ -3449,13 +3453,13 @@ class CppGenerator(t_generator.Generator):
             this = 'obj'
             name = '{0}_{1}'.format(obj.name, method)
             d = scope.defn('template <class Protocol_>\n' +
-                           'uint32_t {name}(Protocol_* prot_, const ' +
+                           'uint32_t {name}(Protocol_ const* prot_, const ' +
                            obj.name + '* obj)',
                            name=name,
                            output=self._out_tcc)
         else:
             d = scope.defn('template <class Protocol_>\n'
-                        'uint32_t {name}(Protocol_* prot_) const',
+                        'uint32_t {name}(Protocol_ const* prot_) const',
                         name=method,
                         output=self._out_tcc)
 
@@ -3909,10 +3913,11 @@ class CppGenerator(t_generator.Generator):
                  format(**locals())), in_header=True):
                 out('return obj->__clear();')
 
-        ops = (('write', True),
-               ('read', False),
-               ('serializedSize', True),
-               ('serializedSizeZC', True))
+        # (method name, const protocol, const object)
+        ops = (('write', False, True),
+               ('read', False, False),
+               ('serializedSize', True, True),
+               ('serializedSizeZC', True, True))
 
         with scope.defn('template <> inline constexpr '
                 'apache::thrift::protocol::TType '
@@ -3920,12 +3925,13 @@ class CppGenerator(t_generator.Generator):
                 .format(**locals()), in_header=True):
             out('return apache::thrift::protocol::T_STRUCT;')
 
-        for method, is_const in ops:
-            const = 'const' if is_const else ''
+        for method, prt_is_const, obj_is_const in ops:
+            obj_const = ' const' if obj_is_const else ''
+            prt_const = ' const' if prt_is_const else ''
             with scope.defn(
                 ('template <> template <class Protocol> inline '
                  'uint32_t Cpp2Ops<{compat_full_name}>::{method}('
-                 'Protocol* proto, {const} {full_name}* obj)'.
+                 'Protocol{prt_const}* proto, {full_name}{obj_const}* obj)'.
                  format(**locals())), name=method, in_header=True):
                 if self.flag_compatibility:
                     out(('return {full_name}_{method}(proto, obj);'.

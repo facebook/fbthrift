@@ -82,9 +82,9 @@ class MyData : private apache::thrift::detail::st::ComparisonOperators<MyData> {
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
-  uint32_t serializedSize(Protocol_* prot_) const;
+  uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 };
@@ -100,19 +100,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::MyData>:
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::write(Protocol* proto, const  ::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::write(Protocol* proto,  ::MyData const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::read(Protocol* proto,   ::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::read(Protocol* proto,  ::MyData* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::serializedSize(Protocol* proto, const  ::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::serializedSize(Protocol const* proto,  ::MyData const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::serializedSizeZC(Protocol* proto, const  ::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::MyData>::serializedSizeZC(Protocol const* proto,  ::MyData const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

@@ -73,24 +73,25 @@ class JSONProtocolWriterCommon {
       const std::unique_ptr<folly::IOBuf>& data);
 
   //  These sizes are common to both json and simple-json protocols.
-  inline uint32_t serializedSizeByte(int8_t = 0);
-  inline uint32_t serializedSizeI16(int16_t = 0);
-  inline uint32_t serializedSizeI32(int32_t = 0);
-  inline uint32_t serializedSizeI64(int64_t = 0);
-  inline uint32_t serializedSizeDouble(double = 0.0);
-  inline uint32_t serializedSizeFloat(float = 0);
-  inline uint32_t serializedSizeString(folly::StringPiece);
-  inline uint32_t serializedSizeBinary(folly::StringPiece str);
-  inline uint32_t serializedSizeBinary(folly::ByteRange v);
-  inline uint32_t serializedSizeBinary(const std::unique_ptr<folly::IOBuf>& v);
-  inline uint32_t serializedSizeBinary(const folly::IOBuf& v);
-  inline uint32_t serializedSizeZCBinary(folly::StringPiece str);
-  inline uint32_t serializedSizeZCBinary(folly::ByteRange v);
+  inline uint32_t serializedSizeByte(int8_t = 0) const;
+  inline uint32_t serializedSizeI16(int16_t = 0) const;
+  inline uint32_t serializedSizeI32(int32_t = 0) const;
+  inline uint32_t serializedSizeI64(int64_t = 0) const;
+  inline uint32_t serializedSizeDouble(double = 0.0) const;
+  inline uint32_t serializedSizeFloat(float = 0) const;
+  inline uint32_t serializedSizeString(folly::StringPiece) const;
+  inline uint32_t serializedSizeBinary(folly::StringPiece str) const;
+  inline uint32_t serializedSizeBinary(folly::ByteRange v) const;
+  inline uint32_t serializedSizeBinary(
+    const std::unique_ptr<folly::IOBuf>& v) const;
+  inline uint32_t serializedSizeBinary(const folly::IOBuf& v) const;
+  inline uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
+  inline uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
   inline uint32_t serializedSizeZCBinary(
-      const std::unique_ptr<folly::IOBuf>& /*v*/);
-  inline uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/);
+      const std::unique_ptr<folly::IOBuf>& /*v*/) const;
+  inline uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/) const;
   inline uint32_t serializedSizeSerializedData(
-      const std::unique_ptr<folly::IOBuf>& data);
+      const std::unique_ptr<folly::IOBuf>& data) const;
 
  protected:
 

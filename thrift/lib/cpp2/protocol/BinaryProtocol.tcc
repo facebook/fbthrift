@@ -210,103 +210,110 @@ uint32_t BinaryProtocolWriter::writeSerializedData(
  */
 
 uint32_t BinaryProtocolWriter::serializedMessageSize(
-  const std::string& name) {
+  const std::string& name) const {
   // I32{version} + String{name} + I32{seqid}
   return 2*serializedSizeI32() + serializedSizeString(name);
 }
 
 uint32_t BinaryProtocolWriter::serializedFieldSize(const char* /*name*/,
                                                    TType /*fieldType*/,
-                                                   int16_t /*fieldId*/) {
+                                                   int16_t /*fieldId*/) const {
   // byte + I16
   return serializedSizeByte() + serializedSizeI16();
 }
 
-uint32_t BinaryProtocolWriter::serializedStructSize(const char* /*name*/) {
+uint32_t BinaryProtocolWriter::serializedStructSize(
+  const char* /*name*/
+) const {
   return 0;
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeMapBegin(TType /*keyType*/,
                                                       TType /*valType*/,
-                                                      uint32_t /*size*/) {
+                                                      uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeByte() +
          serializedSizeI32();
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeMapEnd() {
+uint32_t BinaryProtocolWriter::serializedSizeMapEnd() const {
   return 0;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeListBegin(TType /*elemType*/,
-                                                       uint32_t /*size*/) {
+uint32_t BinaryProtocolWriter::serializedSizeListBegin(
+  TType /*elemType*/,
+  uint32_t /*size*/
+) const {
   return serializedSizeByte() + serializedSizeI32();
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeListEnd() {
+uint32_t BinaryProtocolWriter::serializedSizeListEnd() const {
   return 0;
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeSetBegin(TType /*elemType*/,
-                                                      uint32_t /*size*/) {
+                                                      uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeI32();
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeSetEnd() {
+uint32_t BinaryProtocolWriter::serializedSizeSetEnd() const {
   return 0;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeStop() {
+uint32_t BinaryProtocolWriter::serializedSizeStop() const {
   return 1;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeBool(bool /*val*/) {
+uint32_t BinaryProtocolWriter::serializedSizeBool(bool /*val*/) const {
   return 1;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeByte(int8_t /*val*/) {
+uint32_t BinaryProtocolWriter::serializedSizeByte(int8_t /*val*/) const {
   return 1;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeI16(int16_t /*val*/) {
+uint32_t BinaryProtocolWriter::serializedSizeI16(int16_t /*val*/) const {
   return 2;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeI32(int32_t /*val*/) {
+uint32_t BinaryProtocolWriter::serializedSizeI32(int32_t /*val*/) const {
   return 4;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeI64(int64_t /*val*/) {
+uint32_t BinaryProtocolWriter::serializedSizeI64(int64_t /*val*/) const {
   return 8;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeDouble(double /*val*/) {
+uint32_t BinaryProtocolWriter::serializedSizeDouble(double /*val*/) const {
   return 8;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeFloat(float /*val*/) {
+uint32_t BinaryProtocolWriter::serializedSizeFloat(float /*val*/) const {
   return 4;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeString(folly::StringPiece str) {
+uint32_t BinaryProtocolWriter::serializedSizeString(
+  folly::StringPiece str) const {
   return serializedSizeBinary(str);
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeBinary(folly::StringPiece str) {
+uint32_t BinaryProtocolWriter::serializedSizeBinary(
+  folly::StringPiece str) const {
   return serializedSizeBinary(folly::ByteRange(str));
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeBinary(folly::ByteRange str) {
+uint32_t BinaryProtocolWriter::serializedSizeBinary(
+  folly::ByteRange str) const {
   // I32{length of string} + binary{string contents}
   return serializedSizeI32() + str.size();
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeBinary(
-    const std::unique_ptr<folly::IOBuf>& v) {
+    std::unique_ptr<folly::IOBuf> const& v) const {
   return v ? serializedSizeBinary(*v) : 0;
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeBinary(
-    const folly::IOBuf& v) {
+    folly::IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
@@ -314,24 +321,27 @@ uint32_t BinaryProtocolWriter::serializedSizeBinary(
   return serializedSizeI32() + size;
 }
 
-uint32_t BinaryProtocolWriter::serializedSizeZCBinary(folly::StringPiece str) {
+uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
+  folly::StringPiece str) const {
   return serializedSizeZCBinary(folly::ByteRange(str));
 }
-uint32_t BinaryProtocolWriter::serializedSizeZCBinary(folly::ByteRange v) {
+uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
+  folly::ByteRange v) const {
   return serializedSizeBinary(v);
 }
 uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
-    const std::unique_ptr<folly::IOBuf>&) {
+    std::unique_ptr<folly::IOBuf> const&) const {
   // size only
   return serializedSizeI32();
 }
-uint32_t BinaryProtocolWriter::serializedSizeZCBinary(const folly::IOBuf&) {
+uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
+  folly::IOBuf const&) const {
   // size only
   return serializedSizeI32();
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeSerializedData(
-    const std::unique_ptr<IOBuf>& /*buf*/) {
+    std::unique_ptr<IOBuf> const& /*buf*/) const {
   // writeSerializedData's implementation just chains IOBufs together. Thus
   // we don't expect external buffer space for it.
   return 0;

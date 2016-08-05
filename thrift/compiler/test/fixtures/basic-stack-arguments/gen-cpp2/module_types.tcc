@@ -89,7 +89,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t MyStruct::serializedSize(Protocol_* prot_) const {
+uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
@@ -101,7 +101,7 @@ uint32_t MyStruct::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyStruct::serializedSizeZC(Protocol_* prot_) const {
+uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);

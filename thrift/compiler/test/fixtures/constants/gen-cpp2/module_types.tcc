@@ -118,7 +118,7 @@ uint32_t Internship::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t Internship::serializedSize(Protocol_* prot_) const {
+uint32_t Internship::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Internship");
   xfer += prot_->serializedFieldSize("weeks", apache::thrift::protocol::T_I32, 1);
@@ -134,7 +134,7 @@ uint32_t Internship::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Internship::serializedSizeZC(Protocol_* prot_) const {
+uint32_t Internship::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Internship");
   xfer += prot_->serializedFieldSize("weeks", apache::thrift::protocol::T_I32, 1);
@@ -225,7 +225,7 @@ uint32_t UnEnumStruct::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t UnEnumStruct::serializedSize(Protocol_* prot_) const {
+uint32_t UnEnumStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("UnEnumStruct");
   xfer += prot_->serializedFieldSize("city", apache::thrift::protocol::T_I32, 1);
@@ -235,7 +235,7 @@ uint32_t UnEnumStruct::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t UnEnumStruct::serializedSizeZC(Protocol_* prot_) const {
+uint32_t UnEnumStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("UnEnumStruct");
   xfer += prot_->serializedFieldSize("city", apache::thrift::protocol::T_I32, 1);
@@ -332,7 +332,7 @@ uint32_t Range::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t Range::serializedSize(Protocol_* prot_) const {
+uint32_t Range::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Range");
   xfer += prot_->serializedFieldSize("min", apache::thrift::protocol::T_I32, 1);
@@ -344,7 +344,7 @@ uint32_t Range::serializedSize(Protocol_* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t Range::serializedSizeZC(Protocol_* prot_) const {
+uint32_t Range::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Range");
   xfer += prot_->serializedFieldSize("min", apache::thrift::protocol::T_I32, 1);

@@ -84,9 +84,9 @@ class MyData : private apache::thrift::detail::st::ComparisonOperators<MyData> {
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
-  uint32_t serializedSize(Protocol_* prot_) const;
+  uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 };
@@ -104,19 +104,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::foo::bar
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::write(Protocol* proto, const  ::foo::bar::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::write(Protocol* proto,  ::foo::bar::MyData const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::read(Protocol* proto,   ::foo::bar::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::read(Protocol* proto,  ::foo::bar::MyData* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::serializedSize(Protocol* proto, const  ::foo::bar::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::serializedSize(Protocol const* proto,  ::foo::bar::MyData const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::serializedSizeZC(Protocol* proto, const  ::foo::bar::MyData* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::foo::bar::MyData>::serializedSizeZC(Protocol const* proto,  ::foo::bar::MyData const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

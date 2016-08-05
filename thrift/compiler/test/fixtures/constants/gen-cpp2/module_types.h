@@ -192,9 +192,9 @@ class Internship : private apache::thrift::detail::st::ComparisonOperators<Inter
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
-  uint32_t serializedSize(Protocol_* prot_) const;
+  uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 };
@@ -212,19 +212,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::In
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::write(Protocol* proto, const  ::cpp2::Internship* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::write(Protocol* proto,  ::cpp2::Internship const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::read(Protocol* proto,   ::cpp2::Internship* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::read(Protocol* proto,  ::cpp2::Internship* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::serializedSize(Protocol* proto, const  ::cpp2::Internship* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::serializedSize(Protocol const* proto,  ::cpp2::Internship const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::serializedSizeZC(Protocol* proto, const  ::cpp2::Internship* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::serializedSizeZC(Protocol const* proto,  ::cpp2::Internship const* obj) {
   return obj->serializedSizeZC(proto);
 }
 
@@ -292,9 +292,9 @@ class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnE
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
-  uint32_t serializedSize(Protocol_* prot_) const;
+  uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 };
@@ -312,19 +312,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Un
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::write(Protocol* proto, const  ::cpp2::UnEnumStruct* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::write(Protocol* proto,  ::cpp2::UnEnumStruct const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::read(Protocol* proto,   ::cpp2::UnEnumStruct* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::read(Protocol* proto,  ::cpp2::UnEnumStruct* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::serializedSize(Protocol* proto, const  ::cpp2::UnEnumStruct* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::serializedSize(Protocol const* proto,  ::cpp2::UnEnumStruct const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::serializedSizeZC(Protocol* proto, const  ::cpp2::UnEnumStruct* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::serializedSizeZC(Protocol const* proto,  ::cpp2::UnEnumStruct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 
@@ -401,9 +401,9 @@ class Range : private apache::thrift::detail::st::ComparisonOperators<Range> {
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
-  uint32_t serializedSize(Protocol_* prot_) const;
+  uint32_t serializedSize(Protocol_ const* prot_) const;
   template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_* prot_) const;
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 };
@@ -421,19 +421,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Ra
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::write(Protocol* proto, const  ::cpp2::Range* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::write(Protocol* proto,  ::cpp2::Range const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::read(Protocol* proto,   ::cpp2::Range* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::read(Protocol* proto,  ::cpp2::Range* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::serializedSize(Protocol* proto, const  ::cpp2::Range* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::serializedSize(Protocol const* proto,  ::cpp2::Range const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::serializedSizeZC(Protocol* proto, const  ::cpp2::Range* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::serializedSizeZC(Protocol const* proto,  ::cpp2::Range const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

@@ -111,7 +111,7 @@ uint32_t union1_read(Protocol_* iprot, union1* obj) {
 }
 
 template <class Protocol_>
-uint32_t union1_serializedSize(Protocol_* prot_, const union1* obj) {
+uint32_t union1_serializedSize(Protocol_ const* prot_, const union1* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union1");
   switch(obj->getType()) {
@@ -146,7 +146,7 @@ uint32_t union1_serializedSize(Protocol_* prot_, const union1* obj) {
 }
 
 template <class Protocol_>
-uint32_t union1_serializedSizeZC(Protocol_* prot_, const union1* obj) {
+uint32_t union1_serializedSizeZC(Protocol_ const* prot_, const union1* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union1");
   switch(obj->getType()) {
@@ -319,7 +319,7 @@ uint32_t union2_read(Protocol_* iprot, union2* obj) {
 }
 
 template <class Protocol_>
-uint32_t union2_serializedSize(Protocol_* prot_, const union2* obj) {
+uint32_t union2_serializedSize(Protocol_ const* prot_, const union2* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union2");
   switch(obj->getType()) {
@@ -354,7 +354,7 @@ uint32_t union2_serializedSize(Protocol_* prot_, const union2* obj) {
 }
 
 template <class Protocol_>
-uint32_t union2_serializedSizeZC(Protocol_* prot_, const union2* obj) {
+uint32_t union2_serializedSizeZC(Protocol_ const* prot_, const union2* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union2");
   switch(obj->getType()) {
@@ -527,7 +527,7 @@ uint32_t union3_read(Protocol_* iprot, union3* obj) {
 }
 
 template <class Protocol_>
-uint32_t union3_serializedSize(Protocol_* prot_, const union3* obj) {
+uint32_t union3_serializedSize(Protocol_ const* prot_, const union3* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union3");
   switch(obj->getType()) {
@@ -562,7 +562,7 @@ uint32_t union3_serializedSize(Protocol_* prot_, const union3* obj) {
 }
 
 template <class Protocol_>
-uint32_t union3_serializedSizeZC(Protocol_* prot_, const union3* obj) {
+uint32_t union3_serializedSizeZC(Protocol_ const* prot_, const union3* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union3");
   switch(obj->getType()) {
@@ -704,7 +704,7 @@ uint32_t structA_read(Protocol_* iprot, structA* obj) {
 }
 
 template <class Protocol_>
-uint32_t structA_serializedSize(Protocol_* prot_, const structA* obj) {
+uint32_t structA_serializedSize(Protocol_ const* prot_, const structA* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structA");
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
@@ -716,7 +716,7 @@ uint32_t structA_serializedSize(Protocol_* prot_, const structA* obj) {
 }
 
 template <class Protocol_>
-uint32_t structA_serializedSizeZC(Protocol_* prot_, const structA* obj) {
+uint32_t structA_serializedSizeZC(Protocol_ const* prot_, const structA* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structA");
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
@@ -855,7 +855,7 @@ uint32_t unionA_read(Protocol_* iprot, unionA* obj) {
 }
 
 template <class Protocol_>
-uint32_t unionA_serializedSize(Protocol_* prot_, const unionA* obj) {
+uint32_t unionA_serializedSize(Protocol_ const* prot_, const unionA* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("unionA");
   switch(obj->getType()) {
@@ -896,7 +896,7 @@ uint32_t unionA_serializedSize(Protocol_* prot_, const unionA* obj) {
 }
 
 template <class Protocol_>
-uint32_t unionA_serializedSizeZC(Protocol_* prot_, const unionA* obj) {
+uint32_t unionA_serializedSizeZC(Protocol_ const* prot_, const unionA* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("unionA");
   switch(obj->getType()) {
@@ -1051,7 +1051,7 @@ uint32_t structB_read(Protocol_* iprot, structB* obj) {
 }
 
 template <class Protocol_>
-uint32_t structB_serializedSize(Protocol_* prot_, const structB* obj) {
+uint32_t structB_serializedSize(Protocol_ const* prot_, const structB* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structB");
   xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_DOUBLE, 1);
@@ -1063,7 +1063,7 @@ uint32_t structB_serializedSize(Protocol_* prot_, const structB* obj) {
 }
 
 template <class Protocol_>
-uint32_t structB_serializedSizeZC(Protocol_* prot_, const structB* obj) {
+uint32_t structB_serializedSizeZC(Protocol_ const* prot_, const structB* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structB");
   xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_DOUBLE, 1);
@@ -2019,7 +2019,7 @@ uint32_t structC_read(Protocol_* iprot, structC* obj) {
 }
 
 template <class Protocol_>
-uint32_t structC_serializedSize(Protocol_* prot_, const structC* obj) {
+uint32_t structC_serializedSize(Protocol_ const* prot_, const structC* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structC");
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
@@ -2184,7 +2184,7 @@ uint32_t structC_serializedSize(Protocol_* prot_, const structC* obj) {
 }
 
 template <class Protocol_>
-uint32_t structC_serializedSizeZC(Protocol_* prot_, const structC* obj) {
+uint32_t structC_serializedSizeZC(Protocol_ const* prot_, const structC* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structC");
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
@@ -2680,7 +2680,7 @@ uint32_t struct1_read(Protocol_* iprot, struct1* obj) {
 }
 
 template <class Protocol_>
-uint32_t struct1_serializedSize(Protocol_* prot_, const struct1* obj) {
+uint32_t struct1_serializedSize(Protocol_ const* prot_, const struct1* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct1");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
@@ -2704,7 +2704,7 @@ uint32_t struct1_serializedSize(Protocol_* prot_, const struct1* obj) {
 }
 
 template <class Protocol_>
-uint32_t struct1_serializedSizeZC(Protocol_* prot_, const struct1* obj) {
+uint32_t struct1_serializedSizeZC(Protocol_ const* prot_, const struct1* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct1");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
@@ -2900,7 +2900,7 @@ uint32_t struct2_read(Protocol_* iprot, struct2* obj) {
 }
 
 template <class Protocol_>
-uint32_t struct2_serializedSize(Protocol_* prot_, const struct2* obj) {
+uint32_t struct2_serializedSize(Protocol_ const* prot_, const struct2* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct2");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
@@ -2922,7 +2922,7 @@ uint32_t struct2_serializedSize(Protocol_* prot_, const struct2* obj) {
 }
 
 template <class Protocol_>
-uint32_t struct2_serializedSizeZC(Protocol_* prot_, const struct2* obj) {
+uint32_t struct2_serializedSizeZC(Protocol_ const* prot_, const struct2* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct2");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
@@ -3457,7 +3457,7 @@ uint32_t struct3_read(Protocol_* iprot, struct3* obj) {
 }
 
 template <class Protocol_>
-uint32_t struct3_serializedSize(Protocol_* prot_, const struct3* obj) {
+uint32_t struct3_serializedSize(Protocol_ const* prot_, const struct3* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct3");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
@@ -3543,7 +3543,7 @@ uint32_t struct3_serializedSize(Protocol_* prot_, const struct3* obj) {
 }
 
 template <class Protocol_>
-uint32_t struct3_serializedSizeZC(Protocol_* prot_, const struct3* obj) {
+uint32_t struct3_serializedSizeZC(Protocol_ const* prot_, const struct3* obj) {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct3");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);

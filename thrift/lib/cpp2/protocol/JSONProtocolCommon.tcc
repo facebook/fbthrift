@@ -117,52 +117,53 @@ uint32_t JSONProtocolWriterCommon::writeSerializedData(
   return buf->computeChainDataLength();
 }
 
-uint32_t JSONProtocolWriterCommon::serializedSizeByte(int8_t /*val*/) {
+uint32_t JSONProtocolWriterCommon::serializedSizeByte(int8_t /*val*/) const {
   // 3 bytes for serialized, plus it might be a key, plus context
   return 6;
 }
 
-uint32_t JSONProtocolWriterCommon::serializedSizeI16(int16_t /*val*/) {
+uint32_t JSONProtocolWriterCommon::serializedSizeI16(int16_t /*val*/) const {
   return 8;
 }
 
-uint32_t JSONProtocolWriterCommon::serializedSizeI32(int32_t /*val*/) {
+uint32_t JSONProtocolWriterCommon::serializedSizeI32(int32_t /*val*/) const {
   return 13;
 }
 
-uint32_t JSONProtocolWriterCommon::serializedSizeI64(int64_t /*val*/) {
+uint32_t JSONProtocolWriterCommon::serializedSizeI64(int64_t /*val*/) const {
   return 25;
 }
 
-uint32_t JSONProtocolWriterCommon::serializedSizeDouble(double /*val*/) {
+uint32_t JSONProtocolWriterCommon::serializedSizeDouble(double /*val*/) const {
   return 25;
 }
 
-uint32_t JSONProtocolWriterCommon::serializedSizeFloat(float /*val*/) {
+uint32_t JSONProtocolWriterCommon::serializedSizeFloat(float /*val*/) const {
   return 25;
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeString(
-    folly::StringPiece str) {
+    folly::StringPiece str) const {
   return str.size() * 6 + 3;
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
-    folly::StringPiece str) {
+    folly::StringPiece str) const {
   return serializedSizeBinary(folly::ByteRange(str));
 }
 
-uint32_t JSONProtocolWriterCommon::serializedSizeBinary(folly::ByteRange v) {
+uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
+  folly::ByteRange v) const {
   return v.size() * 6 + 3;
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
-    const std::unique_ptr<folly::IOBuf>& v) {
+    std::unique_ptr<folly::IOBuf> const& v) const {
   return (v ? serializedSizeBinary(*v) * 6 : 0) + 3;
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
-    const folly::IOBuf& v) {
+    folly::IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
     throw TProtocolException(TProtocolException::SIZE_LIMIT);
@@ -171,27 +172,29 @@ uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(
-    folly::StringPiece str) {
+    folly::StringPiece str) const {
   return serializedSizeZCBinary(folly::ByteRange(str));
 }
 
-uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(folly::ByteRange v) {
+uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(
+  folly::ByteRange v) const {
   return serializedSizeBinary(v);
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(
-    const std::unique_ptr<folly::IOBuf>&) {
+    std::unique_ptr<folly::IOBuf> const&) const {
   // size only
   return serializedSizeI32();
 }
 
-uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(const folly::IOBuf&) {
+uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(
+  folly::IOBuf const&) const {
   // size only
   return serializedSizeI32();
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeSerializedData(
-    const std::unique_ptr<folly::IOBuf>& /*buf*/) {
+    std::unique_ptr<folly::IOBuf> const& /*buf*/) const {
   // writeSerializedData's implementation just chains IOBufs together. Thus
   // we don't expect external buffer space for it.
   return 0;

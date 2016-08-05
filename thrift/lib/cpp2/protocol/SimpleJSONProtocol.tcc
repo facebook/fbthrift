@@ -99,7 +99,7 @@ uint32_t SimpleJSONProtocolWriter::writeBool(bool value) {
  */
 
 uint32_t SimpleJSONProtocolWriter::serializedMessageSize(
-    const std::string& name) {
+    const std::string& name) const {
   return 2 // list begin and end
     + serializedSizeI32() * 3
     + serializedSizeString(name);
@@ -107,48 +107,55 @@ uint32_t SimpleJSONProtocolWriter::serializedMessageSize(
 
 uint32_t SimpleJSONProtocolWriter::serializedFieldSize(const char* name,
                                                    TType /*fieldType*/,
-                                                   int16_t /*fieldId*/) {
+                                                   int16_t /*fieldId*/) const {
   // string plus ":"
   return strlen(name) * 6 + 3;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedStructSize(const char* /*name*/) {
+uint32_t SimpleJSONProtocolWriter::serializedStructSize(
+  const char* /*name*/) const {
   return 2; // braces
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeMapBegin(TType /*keyType*/,
-                                                      TType /*valType*/,
-                                                      uint32_t /*size*/) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeMapBegin(
+  TType /*keyType*/,
+  TType /*valType*/,
+  uint32_t /*size*/) const
+{
   return 1;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeMapEnd() {
+uint32_t SimpleJSONProtocolWriter::serializedSizeMapEnd() const {
   return 1;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeListBegin(TType /*elemType*/,
-                                                       uint32_t /*size*/) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeListBegin(
+  TType /*elemType*/,
+  uint32_t /*size*/) const
+{
   return 1;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeListEnd() {
+uint32_t SimpleJSONProtocolWriter::serializedSizeListEnd() const {
   return 1;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeSetBegin(TType /*elemType*/,
-                                                      uint32_t /*size*/) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeSetBegin(
+  TType /*elemType*/,
+  uint32_t /*size*/) const
+{
   return 1;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeSetEnd() {
+uint32_t SimpleJSONProtocolWriter::serializedSizeSetEnd() const {
   return 1;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeStop() {
+uint32_t SimpleJSONProtocolWriter::serializedSizeStop() const {
   return 0;
 }
 
-uint32_t SimpleJSONProtocolWriter::serializedSizeBool(bool /*val*/) {
+uint32_t SimpleJSONProtocolWriter::serializedSizeBool(bool /*val*/) const {
   return 6;
 }
 
